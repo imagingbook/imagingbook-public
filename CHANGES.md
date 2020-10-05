@@ -1,5 +1,19 @@
 # Recent Changes
 
+* [2020/10/05] Revised corner detection, added Shi-Tomasi and MOPS score functions and subpixel-positioning.
+
+* [2020/10/03] Added ``CustomOverlay`` to ``imagingbook.lib.ij`` for easier handling of specific overlay 
+construction (initially used for corner and SIFT detection).
+
+* [2020/04/10] Various additons to ``Arithmetic`` and ``Matrix`` classes.
+
+* [2020/04/01] Adapted binary regions and Fourier descriptors to use the common ``imagingbook.pub.geometry.basic.Point`` class.
+
+* [2020/02/25] Unified the use of ``GaussianFilter`` in various applications.
+
+* [2020/01/07] Added ``ImageGraphics`` in ``imagingbook.lib.image``, facilitating anti-aliased 
+drawing on images (not possible in vanilla ImageJ).
+
 * [2020/01/06] Release 1.6: 
 Revised packages ``delaunay``, ``mappings`` and ``fitting`` in ``imagingbook.pub.geometry``.
 Added a new interface ``Point`` to handle various implementations of 2D points
