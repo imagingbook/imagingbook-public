@@ -32,6 +32,7 @@
 		<commons-math3.version>3.6.1</commons-math3.version>
 		<jtransforms.version>3.1</jtransforms.version>
 		<itext.version>5.5.8</itext.version>
+		<junit.version>4.13.1</junit.version>
 		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -133,14 +134,14 @@
 		<plugins>
 
 			<!-- skip tests -->
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M4</version>
 				<configuration>
 					<skipTests>true</skipTests>
 				</configuration>
-			</plugin>
+			</plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
