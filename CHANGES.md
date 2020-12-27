@@ -1,20 +1,12 @@
 # Recent Changes
 
-* [2020/10/05] Revised corner detection, added Shi-Tomasi and MOPS score functions and subpixel-positioning.
+* [2020/12/25] Point API completely revised, additional tests and documentation (renamed to ``Pnt2d``.
 
-* [2020/10/03] Added ``CustomOverlay`` to ``imagingbook.lib.ij`` for easier handling of specific overlay 
-construction (initially used for corner and SIFT detection).
+* [2020/12/25] Region segmentation API revised, bug fixed in sequential method, additional tests.
 
-* [2020/04/10] Various additons to ``Arithmetic`` and ``Matrix`` classes.
+* [2020/12/20] **Release 1.7**. Revised line classes and additional tests. Revised ``HoughOverlay``. New simplified mechanism for accessing Java resources. Setup for JUnit4 testing. Additions to ``Matrix`` class (static methods). Revised ``ConvexHull`` and ``AxisAlignedBoundingBox``. Revised corner detection, added Shi-Tomasi and MOPS score functions and subpixel-positioning. Added ``CustomOverlay`` to ``imagingbook.lib.ij`` for easier handling of specific overlay  construction (initially used for corner and SIFT detection). Various additions to ``Arithmetic`` and ``Matrix`` classes. Adapted binary regions and Fourier descriptors to use the common ``imagingbook.pub.geometry.basic.Point`` class. Unified the use of ``GaussianFilter`` in various applications. Added ``ImageGraphics`` in ``imagingbook.lib.image``, facilitating anti-aliased drawing on images (not possible in vanilla ImageJ).
 
-* [2020/04/01] Adapted binary regions and Fourier descriptors to use the common ``imagingbook.pub.geometry.basic.Point`` class.
-
-* [2020/02/25] Unified the use of ``GaussianFilter`` in various applications.
-
-* [2020/01/07] Added ``ImageGraphics`` in ``imagingbook.lib.image``, facilitating anti-aliased 
-drawing on images (not possible in vanilla ImageJ).
-
-* [2020/01/06] Release 1.6: 
+* [2020/01/06] **Release 1.6**: 
 Revised packages ``delaunay``, ``mappings`` and ``fitting`` in ``imagingbook.pub.geometry``.
 Added a new interface ``Point`` to handle various implementations of 2D points
 across different packages. Two implementations of the Delaunay triangulation are now
