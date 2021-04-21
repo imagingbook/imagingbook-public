@@ -190,6 +190,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.1.1</version>
 				<configuration>
+					<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
 					<!-- Default configuration for all reports -->
 					<!-- Problem with Java 12: mixing named and unnamed modules?? -->
 					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->  <!-- add for Java 10, 11, 12 .. -->
