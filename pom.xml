@@ -4,11 +4,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.imagingbook</groupId>
-	<artifactId>imagingbook-super</artifactId>
+	<artifactId>imagingbook-public</artifactId>
 	<version>4.0A-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
-	<!-- This POM is only for defining Maven sub-modules to allow single-click bilds. -->
+	<!-- This POM is only for defining Maven sub-modules to allow single-click bilds. It is never used as a parent artifact. -->
 
 	<modules>
 		<module>imagingbook-parent-pom</module>
