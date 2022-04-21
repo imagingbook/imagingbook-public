@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<!-- Note: The artifact ID has hyphens replaced by underscores to be compatible
+	with the standard naming scheme for ImageJ plugins 
+	(see https://imagej.nih.gov/ij/plugins/jar-demo.html). -->
+
+	<artifactId>imagingbook_plugins_extras</artifactId>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>com.imagingbook</groupId>
+		<artifactId>imagingbook-plugins-pom</artifactId>
+		<version>4.0A-SNAPSHOT</version>
+		<relativePath />
+	</parent>
+	
+	<!-- needed for stand-alone build -->
+	<!-- <repositories>
+		<repository>
+			<id>imagingbook-maven-repository</id>
+			<url>https://raw.github.com/imagingbook/imagingbook-maven-repository/master</url>
+		</repository>
+	</repositories> -->
+
+	<dependencies>
+	
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.librepdf</groupId>
+			<artifactId>openpdf</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-common</artifactId>
+			<version>4.0A-SNAPSHOT</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+   		<!-- needed for updating Eclipse settings (see also ij-plugins-build profile) -->
+    	<outputDirectory>ImageJ/plugins</outputDirectory>
+    </build>
+	
+
+</project>
