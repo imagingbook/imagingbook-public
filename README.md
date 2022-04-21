@@ -20,7 +20,7 @@ Source code is divided into multiple Maven modules (sub-projects):
 * **imagingbook-plugins-demos** (various ImageJ plugins)
 * **imagingbook-plugins-tools** (ImageJ plugins providing useful tools for working with ImageJ)
 
-See [here](https://imagingbook.com/source/) for additional details.
+See [here](https://imagingbook.com/source/) for additional details (OBSOLETE, needs updating!).
 
 ## Documentation: JavaDoc Pages, code examples etc.
 
