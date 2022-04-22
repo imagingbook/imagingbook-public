@@ -76,6 +76,7 @@
 		
 		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>
 		<maven.javadoc.skip>false</maven.javadoc.skip>
+		<gpg.skip>true</gpg.skip>
 	</properties>
 
 	<!-- <id>imagingbook-maven-repository</id> -->
@@ -339,6 +340,7 @@
 								<echo level="info">**** outputDirectory = ${outputDirectory}</echo>
 								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
 								<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>
+								<echo level="info">**** gpg.skip = ${gpg.skip}</echo>
 							</target>
 						</configuration>
 					</execution>
@@ -427,7 +429,7 @@
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>3.0.1</version>
 				<configuration>
-        			<skip>false</skip>	<!-- exception with Eclipse maven plugin! -->
+        			<skip>${gpg.skip}</skip>	<!-- exception with Eclipse maven plugin! -->
     			</configuration>
 				<executions>
 					<execution>
