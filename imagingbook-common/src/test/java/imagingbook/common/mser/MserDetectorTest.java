@@ -1,19 +1,19 @@
 package imagingbook.common.mser;
 
-import static imagingbook.DATA.MserTestImage.AllBlack;
-import static imagingbook.DATA.MserTestImage.AllWhite;
-import static imagingbook.DATA.MserTestImage.Blob1;
-import static imagingbook.DATA.MserTestImage.Blob2;
-import static imagingbook.DATA.MserTestImage.Blob3;
-import static imagingbook.DATA.MserTestImage.BlobLevelTest;
-import static imagingbook.DATA.MserTestImage.BlobLevelTestNoise;
-import static imagingbook.DATA.MserTestImage.BlobOriented;
-import static imagingbook.DATA.MserTestImage.BlobsInWhite;
-import static imagingbook.DATA.MserTestImage.BoatsTiny;
-import static imagingbook.DATA.MserTestImage.BoatsTinyB;
-import static imagingbook.DATA.MserTestImage.BoatsTinyBW;
-import static imagingbook.DATA.MserTestImage.BoatsTinyW;
-import static imagingbook.DATA.MserTestImage.BoatsTinyW2;
+import static imagingbook.sampleimages.MserTestImage.AllBlack;
+import static imagingbook.sampleimages.MserTestImage.AllWhite;
+import static imagingbook.sampleimages.MserTestImage.Blob1;
+import static imagingbook.sampleimages.MserTestImage.Blob2;
+import static imagingbook.sampleimages.MserTestImage.Blob3;
+import static imagingbook.sampleimages.MserTestImage.BlobLevelTest;
+import static imagingbook.sampleimages.MserTestImage.BlobLevelTestNoise;
+import static imagingbook.sampleimages.MserTestImage.BlobOriented;
+import static imagingbook.sampleimages.MserTestImage.BlobsInWhite;
+import static imagingbook.sampleimages.MserTestImage.BoatsTiny;
+import static imagingbook.sampleimages.MserTestImage.BoatsTinyB;
+import static imagingbook.sampleimages.MserTestImage.BoatsTinyBW;
+import static imagingbook.sampleimages.MserTestImage.BoatsTinyW;
+import static imagingbook.sampleimages.MserTestImage.BoatsTinyW2;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;

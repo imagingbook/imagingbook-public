@@ -1,4 +1,4 @@
-package imagingbook.DATA;
+package imagingbook.sampleimages;
 
 import imagingbook.core.resource.ImageResource;
 

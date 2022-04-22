@@ -9,11 +9,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
-import imagingbook.DATA.GeneralTestImage;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.GeneralTestImage;
 
 public class RegionContourSegmentationTest {
 	

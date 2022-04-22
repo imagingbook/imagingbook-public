@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import ij.process.ImageProcessor;
-import imagingbook.DATA.GeneralTestImage;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.GeneralTestImage;
 import imagingbook.testutils.ImageTests;
 
 public class LinearFilterTest {

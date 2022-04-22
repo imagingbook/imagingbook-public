@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.DATA.GeneralTestImage;
 import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.GeneralTestImage;
 
 public class SkeletonTest {
 	

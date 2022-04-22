@@ -9,8 +9,6 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import imagingbook.common.ransac.RandomDraw;
-
 public class RandomDrawTest {
 
 	@Test
