@@ -31,9 +31,9 @@
 	</licenses>
 	
 	<scm>
-		<connection>scm:git:git://github.com/imagingbook/imagingbook-parent-pom.git</connection>
-		<developerConnection>scm:git:ssh://github.com:imagingbook/imagingbook-parent-pom.git.git</developerConnection>
-		<url>http://github.com/imagingbook/imagingbook-parent-pom.git/tree/master</url>
+		<connection>scm:git:git://github.com/imagingbook/imagingbook-public.git</connection>
+		<developerConnection>scm:git:ssh://github.com:imagingbook/imagingbook-public.git.git</developerConnection>
+		<url>http://github.com/imagingbook/imagingbook-public.git/tree/master</url>
 	</scm>
 
 	<properties>
