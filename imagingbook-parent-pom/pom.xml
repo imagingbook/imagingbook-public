@@ -55,7 +55,8 @@
 		<directory-up-3>${project.basedir}${file.separator}..${file.separator}..${file.separator}..</directory-up-3>	
 		<imagingbook.rootdir>${directory-up-1}</imagingbook.rootdir>   <!-- to be modified by nested projects -->
 		
-		<imagingbook.repodir>imagingbook-maven-repository</imagingbook.repodir>
+		<!-- <imagingbook.repodir>imagingbook-maven-repository</imagingbook.repodir> -->
+		<imagingbook.repodir>DEPLOY</imagingbook.repodir>
 		<imagingbook.docdir>${project.basedir}/docs</imagingbook.docdir>
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
 
@@ -91,11 +92,22 @@
 
 	<distributionManagement>
 		<repository>
-			<id>${imagingbook.repodir}</id>     <!-- used by 'mvn deploy' -->
-			<!-- <id>imagingbook-maven-repository</id> -->
-			<!-- <name>Imagingbook Maven Repository on GitHub</name> -->
+			<id>${imagingbook.repodir}</id> <!-- used by 'mvn deploy' -->
 			<url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.repodir}</url>
 		</repository>
+
+		<!--
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+
+		<repository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		-->
+
 	</distributionManagement>
 
 	<dependencyManagement>
@@ -358,7 +370,7 @@
 					<execution>
 						<id>attach-sources</id>
 						<goals>
-							<goal>jar</goal>
+							<goal>jar-no-fork</goal>	<!-- was "jar" only -->
 						</goals>
 					</execution>
 				</executions>
@@ -400,6 +412,32 @@
 					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
 					<additionalOptions>--frames</additionalOptions> <!-- by default, javadoc does not generate HTML with frames any more! -->
 				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+        			<skip>false</skip>	<!-- exception with Eclipse maven plugin! -->
+    			</configuration>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
