@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-plugins-pom</artifactId>
-		<version>4.0A-SNAPSHOT</version>
+		<version>4.0.0</version>
 		<relativePath />
 	</parent>
 	
@@ -41,13 +41,13 @@
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-common</artifactId>
-			<version>4.0A-SNAPSHOT</version>
+			<version>4.0.0</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-sample-images</artifactId>
-			<version>4.0A-SNAPSHOT</version>
+			<version>4.0.0</version>
 		</dependency>
 		
 	</dependencies>

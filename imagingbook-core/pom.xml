@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.imagingbook</groupId>
     <artifactId>imagingbook-parent-pom</artifactId>
-    <version>4.0A-SNAPSHOT</version>
+    <version>4.0.0</version>
     <relativePath />
   </parent>
   

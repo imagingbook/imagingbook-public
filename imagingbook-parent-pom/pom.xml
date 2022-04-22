@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.imagingbook</groupId>
 	<artifactId>imagingbook-parent-pom</artifactId>
-	<version>4.0A-SNAPSHOT</version>
+	<version>4.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -36,20 +36,7 @@
 		<url>http://github.com/imagingbook/imagingbook-public.git/tree/master</url>
 	</scm>
 
-	<properties>
-		<!-- <maven-clean-plugin-version>3.1.0</maven-clean-plugin-version> -->
-		<!-- <maven-resources-plugin-version>3.0.2</maven-resources-plugin-version> -->
-		<!-- <maven-deploy-plugin-version>3.0.0-M2</maven-deploy-plugin-version> -->
-		<!-- <maven-surefire-plugin-version>3.0.0-M5</maven-surefire-plugin-version> -->
-		<!-- <maven-dependency-plugin-version>3.3.0</maven-dependency-plugin-version> -->
-		<!-- <maven-release-plugin-version>3.0.0-M5</maven-release-plugin-version> -->
-		<!-- <maven-antrun-plugin-version>3.0.0</maven-antrun-plugin-version> -->
-		<!-- <maven-jar-plugin-version>3.2.2</maven-jar-plugin-version> -->
-		<!-- <maven-source-plugin-version>3.2.1</maven-source-plugin-version> -->
-		<!-- <maven-javadoc-plugin-version>3.3.2</maven-javadoc-plugin-version> -->
-		<!-- <maven-project-info-reports-plugin-version>3.0.0</maven-project-info-reports-plugin-version> -->
-		<!-- <exec-maven-plugin-version>3.0.0</exec-maven-plugin-version> -->
-	
+	<properties>	
 		<directory-up-1>${project.basedir}${file.separator}..</directory-up-1>
 		<directory-up-2>${project.basedir}${file.separator}..${file.separator}..</directory-up-2>
 		<directory-up-3>${project.basedir}${file.separator}..${file.separator}..${file.separator}..</directory-up-3>	
@@ -60,7 +47,6 @@
 		<imagingbook.docdir>${project.basedir}/docs</imagingbook.docdir>
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
 
-		<!-- <imagingbook.version>2.0-SNAPSHOT</imagingbook.version> -->
 		<java.version>1.8</java.version>
 		<imagej.version>1.53p</imagej.version> <!-- see https://mvnrepository.com/artifact/net.imagej/ij -->
 		<commons-math3.version>3.6.1</commons-math3.version>
@@ -79,22 +65,11 @@
 		<gpg.skip>true</gpg.skip>
 	</properties>
 
-	<!-- <id>imagingbook-maven-repository</id> -->
-	<!-- <repositories>
-		<repository>
-			<id>${imagingbook.repodir}</id>
-			
-			<name>Imagingbook Maven Repository on GitHub</name>
-			<url>https://raw.github.com/imagingbook/imagingbook-maven-repository/master</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
-	-->
-
 	<distributionManagement>
+	 	<!-- used by 'mvn deploy' -->
 		<repository>
-			<id>${imagingbook.repodir}</id> <!-- used by 'mvn deploy' -->
-			<url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.repodir}</url>
+			<!-- <id>local-deploy-repo</id><url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.repodir}</url> -->
+			<id>ossrh</id><url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 
 		<!--
@@ -113,11 +88,12 @@
 
 	<dependencyManagement>
 		<dependencies>
+		
+			<!-- https://mvnrepository.com/artifact/net.imagej/ij -->
 			<dependency>
 				<groupId>net.imagej</groupId>
 				<artifactId>ij</artifactId>
 				<version>${imagej.version}</version>
-				<!-- https://mvnrepository.com/artifact/net.imagej/ij -->
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
@@ -335,6 +311,7 @@
 						</goals>
 						<configuration>
 							<target>
+								<!-- output some status information -->
 								<echo level="info">**** imagingbook.buildprofile = ${imagingbook.buildprofile}</echo>
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
 								<echo level="info">**** outputDirectory = ${outputDirectory}</echo>
