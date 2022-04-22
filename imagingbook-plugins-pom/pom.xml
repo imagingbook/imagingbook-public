@@ -232,7 +232,7 @@
 									<goal>java</goal>
 								</goals>
 								<configuration>
-									<mainClass>imagingbook.pluginutils.PluginsConfigBuilder</mainClass>
+									<mainClass>imagingbook.core.plugin.PluginsConfigBuilder</mainClass>
 									<arguments>
 										<argument>${project.build.outputDirectory}</argument>
 										<argument>${project.name}</argument>

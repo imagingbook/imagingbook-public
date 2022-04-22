@@ -19,7 +19,7 @@ public class FiniteRandomColorSequencer extends FiniteLinearColorSequencer {
 	
 	/**
 	 * Sets the seed of the internal {@link Random} instance, which
-	 * affects successive calls to {@link #nextRandom()} only.
+	 * affects successive calls to {@link #next()} only.
 	 * 
 	 * @param seed the new seed value
 	 * @see Random#setSeed(long)

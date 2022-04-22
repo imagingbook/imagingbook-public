@@ -10,8 +10,8 @@ package Tools;
 
 import ij.IJ;
 import ij.plugin.PlugIn;
-import imagingbook.Info;
-import imagingbook.common.util.FileUtils;
+import imagingbook.core.FileUtils;
+import imagingbook.core.Info;
 
 /**
  * A simple ImageJ plugin for validating the 'imagingbook' installation.

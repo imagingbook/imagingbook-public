@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 import ij.ImagePlus;
 import ij.io.Opener;
-import imagingbook.common.util.FileUtils;
+import imagingbook.core.FileUtils;
 
 
 /**

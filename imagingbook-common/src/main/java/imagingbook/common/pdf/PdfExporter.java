@@ -20,8 +20,8 @@ import com.lowagie.text.pdf.PdfWriter;
 import ij.ImagePlus;
 import ij.gui.Overlay;
 import ij.gui.Roi;
-import imagingbook.Info;
 import imagingbook.common.util.ParameterBundle;
+import imagingbook.core.Info;
 
 
 /**

@@ -33,7 +33,7 @@ public class CircleSampler {
 	 * @param endAngle   final angle (in radians)
 	 * @param sigma      Add noise of intensity 'noise'
 	 *
-	 * @return
+	 * @return an array of sample points
 	 */
 	public Pnt2d[] getPoints(int n, double startAngle, double endAngle, double sigma) {
 		double xc = circle.getXc();

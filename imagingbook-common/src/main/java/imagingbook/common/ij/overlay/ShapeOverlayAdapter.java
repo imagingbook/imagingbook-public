@@ -75,7 +75,7 @@ import ij.gui.TextRoi;
  * ola.setTextColor(Color.green);
  * ola.addText(x, y, "text using current font/color state");
  * 
- * ola.addText(x, y, "text with explicit font & color", new Font(Font.SERIF, Font.PLAIN, 10), Color.black);
+ * ola.addText(x, y, "text with explicit font and color", new Font(Font.SERIF, Font.PLAIN, 10), Color.black);
  * ...
  * im.setOverlay(oly);
  * im.show();</pre>

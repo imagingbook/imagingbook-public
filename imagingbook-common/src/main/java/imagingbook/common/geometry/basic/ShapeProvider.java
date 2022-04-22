@@ -51,7 +51,7 @@ public interface ShapeProvider {
 	 * </p>
 	 * 
 	 * @param scale a scale factor (may be used or ignored)
-	 * @return
+	 * @return sequence of {@link Shape} items
 	 */
 	public default Shape[] getShapes(double scale) {
 		return new Shape[] { getShape(scale) };

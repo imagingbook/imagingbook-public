@@ -83,6 +83,7 @@ public class GeometricCircle implements Circle, ShapeProvider, Curve2d {
 	 * and a set of 2D points.
 	 *
 	 * @param points a set of sample points (usually the points used for fitting)
+	 * @return the mean squared error
 	 */
 	public double getMeanSquareError(Pnt2d[] points) {
 		final int n = points.length;
@@ -300,7 +301,7 @@ public class GeometricCircle implements Circle, ShapeProvider, Curve2d {
 	 * @param dr max. segment length
 	 * @param w width of rectangle
 	 * @param h height of rectangle
-	 * @return
+	 * @return the outer circle path
 	 */
 	@Deprecated
 	public Path2D getOutlinePath(double dr, int w, int h) {

@@ -10,7 +10,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
  * 
  * @author WB
  *
- * @param <T>
+ * @param <T> generic primitive type
  */
 public class RansacResult<T extends Curve2d> {
 	

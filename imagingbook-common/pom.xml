@@ -38,6 +38,13 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-sample-images</artifactId>
+			<version>4.0A-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 		</dependency>

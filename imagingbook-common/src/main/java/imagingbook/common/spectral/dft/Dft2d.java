@@ -2,6 +2,7 @@ package imagingbook.common.spectral.dft;
 
 import java.util.Arrays;
 
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.math.Matrix;
 

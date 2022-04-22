@@ -7,12 +7,10 @@
  * Visit http://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook;
+package imagingbook.core;
 
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-
-import imagingbook.common.util.FileUtils;
 
 /**
  * This class provides version information for this library.

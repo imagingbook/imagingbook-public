@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import imagingbook.core.FileUtils;
+
 public abstract class ClassUtils {
 	
 	/**

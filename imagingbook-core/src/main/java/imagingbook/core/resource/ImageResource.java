@@ -12,7 +12,6 @@ import ij.ImagePlus;
  * which returns an {@link ImagePlus} instance.
  * So this can be used, e.g., on the named resource {@code MyImages.image1}, simply in the form
  * </p>
- * <pre
  * <pre>
  * ImagePlus im = MyImages.image1.getImage();
  * im.show();

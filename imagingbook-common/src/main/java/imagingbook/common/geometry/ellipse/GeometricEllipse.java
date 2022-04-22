@@ -154,8 +154,8 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 	 * same ellipse use {@link OrthogonalEllipseProjector}.
 	 * 
 	 * @see OrthogonalEllipseProjector
-	 * @param pnt
-	 * @return
+	 * @param pnt some 2D point
+	 * @return the closest ("contact") point on the ellipse
 	 */
 	public Pnt2d getClosestPoint(Pnt2d pnt) {
 		return projector.project(pnt);
@@ -176,6 +176,7 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 	 * and a set of 2D points.
 	 *
 	 * @param points a set of sample points (usually the points used for fitting)
+	 * @return the mean squared error
 	 */
 	public double getMeanSquareError(Pnt2d[] points) {
 		double sum2 = 0;
@@ -187,8 +188,8 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 	
 	/**
 	 * Returns the closest (geometric) distance of the specified point to this ellipse.
-	 * @param p
-	 * @return
+	 * @param p some 2D point
+	 * @return the distance to the closest point on the ellipse
 	 */
 	@Override
 	public double getDistance(Pnt2d p) {

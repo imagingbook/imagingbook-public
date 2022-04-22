@@ -16,7 +16,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.edge.ColorEdgeDetector;
 import imagingbook.common.color.edge.DiZenzoCumaniEdgeDetector;
-import imagingbook.common.util.FileUtils;
+import imagingbook.core.FileUtils;
 
 
 /**

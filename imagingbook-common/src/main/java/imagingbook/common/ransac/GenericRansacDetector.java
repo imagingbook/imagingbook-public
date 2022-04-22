@@ -168,8 +168,9 @@ public abstract class GenericRansacDetector<T extends Curve2d> {
 	// abstract methods to be implemented by specific sub-classes: -----------------------
 	
 	/**
-	 * Fits an initial primitive to the {@link #K} specified points.
-	 * This abstract method must be implemented by inheriting classes.
+	 * Fits an initial primitive to the specified points.
+	 * This abstract method must be implemented by inheriting classes,
+	 * which must also specify the required number of initial points ({@link #K}).
 	 * 
 	 * @param draw an array of exactly {@link #K} points
 	 * @return a new primitive of type T
@@ -181,7 +182,7 @@ public abstract class GenericRansacDetector<T extends Curve2d> {
 	 * This abstract method must be implemented by inheriting classes.
 	 * 
 	 * @param inliers an array of at least {@link #K} points
-	 * @return a new primitive of type T
+	 * @return a new primitive of type T.
 	 */
 	protected abstract T fitFinal(Pnt2d[] inliers);
 	

@@ -1,4 +1,7 @@
+/**
+ * 
+ */
 @IjPluginPath("Plugins>B&B Thresholding")
 package Thresholding;
 
-import imagingbook.pluginutils.annotations.IjPluginPath;
+import imagingbook.core.plugin.IjPluginPath;

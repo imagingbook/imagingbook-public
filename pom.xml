@@ -20,6 +20,7 @@
 		<module>imagingbook-plugins-demos</module>
 		<module>imagingbook-plugins-extras</module>
 		<module>imagingbook-plugins-tools</module>
+		<module>imagingbook-sample-images</module>
 		<!-- <module>imagingbook-plugins-EN4</module> -->
 		<!-- <module>imagingbook-plugins-private</module> -->
 		<!-- <module>imagingbook-calibrate</module> -->
@@ -28,7 +29,6 @@
 		<!-- <module>imagingbook-pdftools</module> -->
 		<!-- <module>imagingbook-earth-movers-distance</module> -->
 		<!-- <module>imagingbook-programming-examples</module> -->
-		<!-- <module>imagingbook-test-images</module> -->
 	</modules>
 	
 	<build>

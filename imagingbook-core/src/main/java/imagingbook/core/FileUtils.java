@@ -7,7 +7,7 @@
  * Visit http://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.util;
+package imagingbook.core;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -314,19 +314,19 @@ public abstract class FileUtils {
 	
 	// -----------------------------------------------------------------
 			
-	public static void main(String[] args) {
-//		String fileName = ".txt";
-//		System.out.println("name = " + fileName);
-//		System.out.println("stripped = " + stripFileExtension(fileName));
-//		System.out.println("ext = " + getFileExtension(fileName));
-//		System.out.println(getClassPath(FileUtils.class));
-		
-		System.out.println("dir = " + getCurrentDirectory());
-		setCurrentDirectory("C:/tmp");
-		System.out.println("dir = " + getCurrentDirectory());
-		setCurrentDirectory("D:/tmp");
-		System.out.println("dir = " + getCurrentDirectory());
-	}
+//	public static void main(String[] args) {
+////		String fileName = ".txt";
+////		System.out.println("name = " + fileName);
+////		System.out.println("stripped = " + stripFileExtension(fileName));
+////		System.out.println("ext = " + getFileExtension(fileName));
+////		System.out.println(getClassPath(FileUtils.class));
+//		
+//		System.out.println("dir = " + getCurrentDirectory());
+//		setCurrentDirectory("C:/tmp");
+//		System.out.println("dir = " + getCurrentDirectory());
+//		setCurrentDirectory("D:/tmp");
+//		System.out.println("dir = " + getCurrentDirectory());
+//	}
 	
 
 }

@@ -26,17 +26,12 @@ public class EllipseSampler {
 	
 	/**
 	 * Create an array of (x,y) coordinates on an ellipse of radii (a,b) and
-	 * rotated r radians. Random noise is added if noise > 0.
-	 * @param xc x-center
-	 * @param yc y-center
-	 * @param ra first axis length
-	 * @param rb second axis length
-	 * @param theta angle of rotation
+	 * rotated r radians. Random noise is added if noise &gt; 0.
 	 * @param n number of points
 	 * @param startAngle initial angle (radians)
 	 * @param arcAngle arc angle (radians)
-	 * @param sigma intensity of random noise
-	 * @return
+	 * @param sigma amount of random noise
+	 * @return an array of sample points
 	 */
 	public Pnt2d[] getPoints(int n, double startAngle, double arcAngle, double sigma) {
 		Pnt2d[] points = new Pnt2d[n];

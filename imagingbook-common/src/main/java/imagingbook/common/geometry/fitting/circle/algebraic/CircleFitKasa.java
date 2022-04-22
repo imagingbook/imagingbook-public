@@ -29,9 +29,7 @@ public class CircleFitKasa extends CircleFitAlgebraic {
 		return new double[] {1, q[0], q[1], q[2]};
 	}
 	
-	/**
-	 * WB's version: Original from Kasa's paper
-	 */
+	// WB's version: Original from Kasa's paper
 	public double[] fit(Pnt2d[] pts) {
 		final int n = pts.length;
 		if (n < 3) {

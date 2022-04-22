@@ -13,7 +13,7 @@ public abstract class Outlines {
 	 * Note that line segments are not ordered.
 	 *
 	 * 
-	 * @param bp a binary image (background = 0, foreground > 0)
+	 * @param bp a binary image (background = 0, foreground &gt; 0)
 	 * @return an unordered collection of line segments
 	 */
 	public static Collection<LineSegment2d> getCrackOutlines(ByteProcessor bp) {

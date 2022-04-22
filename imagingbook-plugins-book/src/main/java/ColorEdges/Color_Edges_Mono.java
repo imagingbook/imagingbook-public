@@ -19,7 +19,7 @@ import imagingbook.common.color.edge.MonochromaticEdgeDetector;
 import imagingbook.common.color.edge.MonochromaticEdgeDetector.Parameters;
 import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.common.util.Enums;
-import imagingbook.common.util.FileUtils;
+import imagingbook.core.FileUtils;
 
 /**
  * This is a simple color edge detector based on monochromatic techniques.

@@ -1,4 +1,4 @@
-package imagingbook.common.random;
+package imagingbook.common.ransac;
 
 import static imagingbook.common.ransac.RandomDraw.hasDuplicates;
 import static org.junit.Assert.assertEquals;

@@ -86,10 +86,11 @@ public class RandomDraw<T> {
 	
 	/**
 	 * Checks for duplicate ("==") elements in the result (simple, for testing only).
+	 * @param <Q> the generic element type
 	 * @param items array of objects
 	 * @return true if any object is null or contained more than once
 	 */
-	public static <Q> boolean hasDuplicates(Q[] items) {
+	protected static <Q> boolean hasDuplicates(Q[] items) {
 		for (int i = 0; i < items.length; i++) {
 			Q x = items[i];
 			if (x == null)

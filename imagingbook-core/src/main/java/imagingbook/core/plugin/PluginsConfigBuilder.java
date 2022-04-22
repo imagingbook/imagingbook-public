@@ -1,4 +1,4 @@
-package imagingbook.pluginutils;
+package imagingbook.core.plugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,9 +14,7 @@ import java.util.stream.Stream;
 
 import ij.plugin.PlugIn;
 import ij.plugin.filter.PlugInFilter;
-import imagingbook.common.util.FileUtils;
-import imagingbook.pluginutils.annotations.IjPluginName;
-import imagingbook.pluginutils.annotations.IjPluginPath;
+import imagingbook.core.FileUtils;
 
 /**
  * <p>

@@ -33,9 +33,9 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	/**
 	 * Creates a new component tree for the specified image using the
 	 * default method ({@link Method#LinearTime}).
-	 * @param <T>
-	 * @param ip
-	 * @return
+	 * @param <T> the generic node type
+	 * @param ip the input image
+	 * @return the component tree for the specified image
 	 */
 	public static <T> ComponentTree<T> from(ByteProcessor ip) {
 		return from(ip, Method.LinearTime);

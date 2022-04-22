@@ -1,4 +1,4 @@
-package imagingbook.pluginutils.annotations;
+package imagingbook.core.plugin;
 
 import static java.lang.annotation.ElementType.PACKAGE;
 import static java.lang.annotation.ElementType.TYPE;

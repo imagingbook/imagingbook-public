@@ -33,7 +33,7 @@ public interface EllipseFitAlgebraic {
 	 * Returns a vector of algebraic ellipse parameters:
 	 * {@code (a,b,c,d,e,f)}, representing the ellipse by
 	 * {@code a x^2 + b x y + c y^2 + d x + e y + f = 0}.
-	 * @return
+	 * @return the ellipse parameters
 	 */
 	public double[] getParameters();
 	
@@ -41,7 +41,7 @@ public interface EllipseFitAlgebraic {
 	 * Returns a algebraic ellipse constructed from the 
 	 * estimated ellipse parameters.
 	 * 
-	 * @return
+	 * @return an {@link AlgebraicEllipse} instance
 	 */
 	public default AlgebraicEllipse getEllipse() {
 		return AlgebraicEllipse.from(getParameters());

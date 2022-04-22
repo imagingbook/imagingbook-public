@@ -9,9 +9,9 @@ import imagingbook.common.color.sets.ColorEnumeration;
  * <p>
  * This class defines methods for iterating over an ordered set of AWT colors.
  * The color set can be constructed from individual AWT colors 
- * (see {@link #ColorSequencer(Color...)})
+ * (see {@link #FiniteLinearColorSequencer(Color...)})
  * or an enum class implementing
- * {@link ColorEnumeration} (see {@link #ColorSequencer(Class)}).
+ * {@link ColorEnumeration} (see {@link #FiniteLinearColorSequencer(Class)}).
  * </p>
  * <p>
  * Usage examples:
@@ -19,7 +19,7 @@ import imagingbook.common.color.sets.ColorEnumeration;
  * <pre>
  * // from individual colors (or array of colors):
  * ColorSequencer iter1 = new FiniteLinearColorSequencer(Color.blue, Color.green, Color.red);
- * for (int i = 0; i < 10; i++) {
+ * for (int i = 0; i &lt; 10; i++) {
  * 	Color c = iter1.next();
  * 	// use color c
  * }
@@ -27,7 +27,7 @@ import imagingbook.common.color.sets.ColorEnumeration;
  * // from enum type:
  * FiniteLinearColorSequencer iter2 = new FiniteLinearColorSequencer(BasicAwtColor.class);
  * iter2.reset(5);
- * for (int i = 0; i < 10; i++) {
+ * for (int i = 0; i &lt; 10; i++) {
  * 	Color c = iter2.nextRandom();
  * 	// use color c
  * }

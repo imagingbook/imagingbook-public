@@ -24,7 +24,7 @@ import imagingbook.common.geometry.hulls.AxisAlignedBoundingBox;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
-import imagingbook.pluginutils.annotations.IjPluginName;
+import imagingbook.core.plugin.IjPluginName;
 
 /**
  * This plugin creates a binary region segmentation, calculates 

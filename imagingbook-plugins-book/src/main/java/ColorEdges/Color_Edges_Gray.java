@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.color.edge.ColorEdgeDetector;
 import imagingbook.common.color.edge.GrayscaleEdgeDetector;
 import imagingbook.common.color.edge.GrayscaleEdgeDetector.Parameters;
-import imagingbook.common.util.FileUtils;
+import imagingbook.core.FileUtils;
 
 /**
  * TThis is a simple grayscale edge detector for RGB color images.

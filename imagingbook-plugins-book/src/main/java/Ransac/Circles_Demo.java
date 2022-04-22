@@ -1,8 +1,7 @@
 package Ransac;
 
 import imagingbook.common.ij.IjUtils;
-import imagingbook.testimages.RansacTestImage;
-
+import imagingbook.sampleimages.RansacTestImage;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
 

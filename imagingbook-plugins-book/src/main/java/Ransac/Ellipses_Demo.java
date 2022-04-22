@@ -1,14 +1,13 @@
 package Ransac;
 
-import imagingbook.common.ij.IjUtils;
-import imagingbook.testimages.RansacTestImage;
-
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
+import imagingbook.common.ij.IjUtils;
+import imagingbook.sampleimages.RansacTestImage;
 
 /**
  * RANSAC ellipse detection demo. Opens a local sample image and then runs
- * plugin {@link Ransac_Ellipses_Detect_OLD}.
+ * plugin {@link Ellipses_Detect}.
  * 
  * @author WB
  *
