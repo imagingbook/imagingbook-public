@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"Color_Quantization"},{"l":"Fourier_Shape_Descriptors"},{"l":"Synthetic_Noise"}]

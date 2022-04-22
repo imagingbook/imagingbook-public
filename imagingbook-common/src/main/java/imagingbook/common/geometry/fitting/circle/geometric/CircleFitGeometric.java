@@ -38,8 +38,8 @@ public abstract class CircleFitGeometric {
 	public abstract List<double[]> getHistory();
 	
 	/**
-	 * Returns a geometric Circle
-	 * @return
+	 * Returns the geometric circle produced by this fit.
+	 * @return a {@link GeometricCircle} instance
 	 */
 	public GeometricCircle getCircle() {
 		return new GeometricCircle(getParameters());

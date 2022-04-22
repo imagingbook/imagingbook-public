@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"Tools","l":"Check_Installation"},{"p":"Tools","l":"Close_Other_Images"},{"p":"Tools","l":"Export_PDF_With_Overlay"},{"p":"Tools","l":"Unlock_Image"},{"p":"Tools","l":"Zoom_Exact"},{"p":"Tools","l":"Zoom_To_Selection"}]
