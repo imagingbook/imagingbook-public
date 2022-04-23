@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.imagingbook</groupId>
 	<artifactId>imagingbook-public</artifactId>
-	<version>4.0.0</version>
+	<version>4.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<!-- This POM is only for defining Maven sub-modules to allow single-click bilds. It is never used as a parent artifact. -->

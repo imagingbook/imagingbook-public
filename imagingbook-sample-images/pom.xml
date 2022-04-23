@@ -5,8 +5,8 @@
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-parent-pom</artifactId>
-		<version>4.0.0</version>
-		<relativePath />
+		<version>4.0.1-SNAPSHOT</version>
+		<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>
 	</parent>
 
 	<dependencies>
@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-core</artifactId>
-			<version>4.0.0</version>
+			<version>4.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>

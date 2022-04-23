@@ -7,9 +7,9 @@
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-parent-pom</artifactId>
-		<version>4.0.0</version>
-		<relativePath />	
-		<!-- <relativePath>../imagingbook-parent-pom</relativePath>	 -->
+		<version>4.0.1-SNAPSHOT</version>
+		<!-- <relativePath /> -->
+		<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>
 	</parent>
 	
 	<properties>
@@ -34,13 +34,13 @@
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-core</artifactId>
-			<version>4.0.0</version>
+			<version>4.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-sample-images</artifactId>
-			<version>4.0.0</version>
+			<version>4.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		
