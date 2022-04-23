@@ -59,8 +59,6 @@ public class Zoom_To_Selection implements PlugIn {
 		}
 		
 		Rectangle bounds = roi.getBounds();
-		IJ.log("bounds = " + bounds);
-		
 		if (bounds.width == 0 || bounds.height == 0) {
 			IJ.showMessage("Selected width and height must not be zero");
 			return;
