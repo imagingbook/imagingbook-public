@@ -155,7 +155,7 @@
 							</execution>
 							
 							<execution>
-								<!-- copy all imagingbook plugins into ImageJ/plugins/ -->
+								<!-- copy all imagingbook plugins (but not library JARs) into ImageJ/plugins/ -->
 								<id>copy-imagingbook-dependencies</id>
 								<phase>package</phase>
 								<goals>
@@ -172,7 +172,7 @@
 							</execution>
 							
 							<execution>
-								<!-- copy only imagingbook-common into ImageJ/jars/ -->
+								<!-- copy only imagingbook-common and imagingbook-core into ImageJ/jars/ -->
 								<id>copy-imagingbook-common</id>
 								<phase>package</phase>
 								<goals>

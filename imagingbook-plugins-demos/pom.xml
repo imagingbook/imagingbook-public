@@ -18,14 +18,6 @@
 		<!-- <relativePath /> -->
 		<relativePath>../imagingbook-plugins-pom/pom.xml</relativePath>
 	</parent>
-	
-	<!-- needed for stand-alone build -->
-	<!-- <repositories>
-		<repository>
-			<id>imagingbook-maven-repository</id>
-			<url>https://raw.github.com/imagingbook/imagingbook-maven-repository/master</url>
-		</repository>
-	</repositories> -->
 
 	<dependencies>
 	
