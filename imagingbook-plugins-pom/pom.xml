@@ -37,6 +37,15 @@
 
 	<artifactId>imagingbook-plugins-pom</artifactId>
 	<packaging>pom</packaging>
+	
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>
+		Parent POM (Project Object Model) for ImageJ plugin-related imagingbook artifacts.
+		This code is part of the imagingbook software suite accompanying the
+		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
+	</description>
+	<inceptionYear>2006</inceptionYear>
+	<url>http://www.imagingbook.com</url>
 
 	<properties>
 		<!-- <imagingbook.rootdir>${directory-up-1}</imagingbook.rootdir> -->

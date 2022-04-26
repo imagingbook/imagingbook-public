@@ -18,6 +18,15 @@
 		<!-- <relativePath /> -->
 		<relativePath>../imagingbook-plugins-pom/pom.xml</relativePath>
 	</parent>
+	
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>
+		ImageJ plugins related to individual book chapters.
+		This code is part of the imagingbook software suite accompanying the
+		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
+	</description>
+	<inceptionYear>2006</inceptionYear>
+	<url>http://www.imagingbook.com</url>
 
 	<dependencies>
 	

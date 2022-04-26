@@ -12,17 +12,15 @@
 		<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>
 	</parent>
 	
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>
+		Java code for image processing books by W. Burger and M.J. Burge
+	</description>
+	<inceptionYear>2006</inceptionYear>
+	<url>http://www.imagingbook.com</url>
+	
 	<properties>
 	</properties>
-	
-	<!--
-	<repositories>
-		<repository>
-			<id>imagingbook-maven-repository</id>
-			<url>https://raw.github.com/imagingbook/imagingbook-maven-repository/master</url>
-		</repository>
-	</repositories>
-	-->
 
 	<dependencies>
             

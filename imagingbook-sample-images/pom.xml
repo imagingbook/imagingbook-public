@@ -8,6 +8,15 @@
 		<version>4.0.1-SNAPSHOT</version>
 		<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>
 	</parent>
+	
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>
+		Various sample images used in unit testing and demo programs.
+		This code is part of the imagingbook software suite accompanying the
+		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
+	</description>
+	<inceptionYear>2006</inceptionYear>
+	<url>http://www.imagingbook.com</url>
 
 	<dependencies>
 	

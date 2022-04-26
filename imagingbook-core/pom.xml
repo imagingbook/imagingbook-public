@@ -1,21 +1,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.imagingbook</groupId>
-    <artifactId>imagingbook-parent-pom</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
-    <!-- <relativePath /> -->
-	<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>
-  </parent>
-  
-  <artifactId>imagingbook-core</artifactId>
-  
-  	<dependencies>
-  		<dependency>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.imagingbook</groupId>
+		<artifactId>imagingbook-parent-pom</artifactId>
+		<version>4.0.1-SNAPSHOT</version>
+		<!-- <relativePath /> -->
+		<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>imagingbook-core</artifactId>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>
+		Small core library with minimal dependencies.
+		This code is part of the imagingbook software suite accompanying the
+		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
+	</description>
+	<inceptionYear>2006</inceptionYear>
+	<url>http://www.imagingbook.com</url>
+
+	<dependencies>
+		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>ij</artifactId>
 		</dependency>
-  
- 	</dependencies>
- 
+
+	</dependencies>
+
 </project>
