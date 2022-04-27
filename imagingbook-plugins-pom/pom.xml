@@ -52,6 +52,7 @@
 		<pluginConfigFile>plugins.config</pluginConfigFile>
 		<!-- future use to specify general plugins path: -->
 		<pluginPrefix>"Plugins&gt;B&amp;B "</pluginPrefix>	
+		<imagingbook.libs>imagingbook-common,imagingbook-core,imagingbook-sample-images</imagingbook.libs>
 	</properties>
 
 	<dependencies>
@@ -172,7 +173,8 @@
 								</goals>
 								<configuration>
 									<includeGroupIds>com.imagingbook</includeGroupIds>
-									<excludeArtifactIds>imagingbook-common,imagingbook-core,imagingbook-sample-images</excludeArtifactIds>
+									<excludeArtifactIds>${imagingbook.libs}</excludeArtifactIds>
+									<!-- <excludeArtifactIds>imagingbook-common,imagingbook-core,imagingbook-sample-images</excludeArtifactIds> -->
 									<outputDirectory>${project.basedir}/ImageJ/plugins</outputDirectory>
 									<overWriteIfNewer>true</overWriteIfNewer>
 									<overWriteReleases>false</overWriteReleases>
@@ -189,7 +191,8 @@
 								</goals>
 								<configuration>
 									<includeGroupIds>com.imagingbook</includeGroupIds>
-									<includeArtifactIds>imagingbook-common,imagingbook-core,imagingbook-sample-images</includeArtifactIds>
+									<includeArtifactIds>${imagingbook.libs}</includeArtifactIds>
+									<!-- <includeArtifactIds>imagingbook-common,imagingbook-core,imagingbook-sample-images</includeArtifactIds> -->
 									<outputDirectory>${project.basedir}/ImageJ/jars</outputDirectory>
 									<overWriteIfNewer>true</overWriteIfNewer>
 									<overWriteReleases>false</overWriteReleases>
