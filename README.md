@@ -18,13 +18,17 @@ The source code is built as a modular Maven project, which inlcudes the followin
 * **imagingbook-plugins-demos**: various ImageJ plugins illustrating basic concepts.
 * **imagingbook-plugins-tools**: plugins providing useful tools for working with ImageJ.
 
-## Documentation: JavaDoc Pages, code examples etc.
+[**Change Log**](CHANGES.md)
 
-* [**JavaDoc pages for common library and ImageJ plugins**](https://imagingbook.github.io/imagingbook-doc/)
-* [**Recent changes**](CHANGES.md)
+## Documentation (JavaDoc):
+
+* [**imagingbook-common**](https://imagingbook.github.io/imagingbook-public/imagingbook-common/javadoc)
+* [**imagingbook-plugins-book**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-book/javadoc)
+* [**imagingbook-plugins-demos**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-demos/javadoc)
+* [**imagingbook-plugins-tools**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-tools/javadoc)
 
 
-## Related projects
+## Related Projects
 
 * **[imagingbook-maven-demo-project](https://github.com/imagingbook/imagingbook-maven-demo-project)** (minimal Maven setup for ImageJ + imagingbook-library)
 * **[imagingbook-calibrate](https://github.com/imagingbook/imagingbook-calibrate)** (camera calibration)
