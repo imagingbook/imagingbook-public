@@ -8,27 +8,18 @@
 	<version>4.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
-	<!-- This POM is only for defining Maven sub-modules to allow single-click bilds. It is never used as a parent artifact. -->
+	<!-- This POM is only for defining Maven sub-modules to allow single-click bilds. It is not used as a parent POM. -->
 
 	<modules>
 		<module>imagingbook-parent-pom</module>
 		<module>imagingbook-plugins-pom</module>
 		<module>imagingbook-core</module>
 		<module>imagingbook-common</module>
-		<!-- <module>imagingbook-plugins-all</module> -->
 		<module>imagingbook-plugins-book</module>
 		<module>imagingbook-plugins-demos</module>
 		<module>imagingbook-plugins-extras</module>
 		<module>imagingbook-plugins-tools</module>
 		<module>imagingbook-sample-images</module>
-		<!-- <module>imagingbook-plugins-EN4</module> -->
-		<!-- <module>imagingbook-plugins-private</module> -->
-		<!-- <module>imagingbook-calibrate</module> -->
-		<!-- <module>imagingbook-violajones</module> -->
-		<!-- <module>imagingbook-maven-demo-project</module> -->
-		<!-- <module>imagingbook-pdftools</module> -->
-		<!-- <module>imagingbook-earth-movers-distance</module> -->
-		<!-- <module>imagingbook-programming-examples</module> -->
 	</modules>
 	
 	<build>
