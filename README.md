@@ -67,7 +67,7 @@ In an existing (non-Maven based) ImageJ environvent, you need to manually copy a
 Then restart ImageJ. Libraries and plugins should be loaded automatically.
 Note that the JAR files in [imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all)
 correspond to the most recent (development) build.
-Stable release files can be downloaded from https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common.
+JAR files from stable releases can be found at [Maven Central](https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common).
 
 ## Related Projects
 
