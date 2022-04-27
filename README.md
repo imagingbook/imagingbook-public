@@ -2,24 +2,21 @@
 
 # 'imagingbook' Main Source Code Repository
 
-This repository contains **Java source code** accompanying the 
+This repository contains the **Java source code** accompanying the 
 **digital image processing books** by **W. Burger and M. J. Burge**, 
 published by Springer. This software is based on **[ImageJ](http://rsbweb.nih.gov/ij/index.html)**.
 Please visit the main website **[imagingbook.com](https://imagingbook.com/)** for more information.
 
 **Index terms:** digital image processing, computer algorithms, Java, ImageJ, textbook support.
 
-## Source code
+## Repository Structure
 
-Source code is divided into multiple Maven modules (sub-projects):
+The source code is built as a modular Maven project, which inlcudes the following sub-projects:
 
-
-* **imagingbook-common** (the `imagingbook-common` library)
-* **imagingbook-plugins-book** (collection of ImageJ plugins related to book chapters)
-* **imagingbook-plugins-demos** (various ImageJ plugins)
-* **imagingbook-plugins-tools** (ImageJ plugins providing useful tools for working with ImageJ)
-
-See [here](https://imagingbook.com/source/) for additional details (OBSOLETE, needs updating!).
+* **imagingbook-common**: the common library.
+* **imagingbook-plugins-book**: a collection of ImageJ plugins related to individual book chapters.
+* **imagingbook-plugins-demos**: various ImageJ plugins illustrating basic concepts.
+* **imagingbook-plugins-tools**: plugins providing useful tools for working with ImageJ.
 
 ## Documentation: JavaDoc Pages, code examples etc.
 
