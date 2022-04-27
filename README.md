@@ -41,7 +41,7 @@ For example, to use the `imagingbook-common` library, simply include the followi
   <version>4.0.0</version>
 </dependency>
 ```
-Replace `4.0.0` with the most current release version found on https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common.
+Replace `4.0.0` with the most current release version found on [Maven Central](https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common).
 
 ### Preconfigured Maven Projects
 
@@ -67,7 +67,7 @@ In an existing (non-Maven based) ImageJ environvent, you need to manually copy a
 Then restart ImageJ. Libraries and plugins should be loaded automatically.
 Note that the JAR files in [imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all)
 correspond to the most recent (development) build.
-JAR files from stable releases can be found at [Maven Central](https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common).
+JAR files from stable release versions can be found at [Maven Central](https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common).
 
 ## Related Projects
 
