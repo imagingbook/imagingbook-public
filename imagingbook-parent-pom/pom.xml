@@ -47,7 +47,8 @@
 		
 		<!-- <imagingbook.repodir>imagingbook-maven-repository</imagingbook.repodir> -->
 		<imagingbook.repodir>DEPLOY</imagingbook.repodir>
-		<imagingbook.docdir>${project.basedir}${file.separator}docs</imagingbook.docdir>
+		<!-- <imagingbook.docdir>${project.basedir}${file.separator}docs</imagingbook.docdir> -->
+		<imagingbook.docdir>${project.basedir}</imagingbook.docdir>
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
 
 		<java.version>1.8</java.version>
@@ -319,6 +320,7 @@
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
 								<echo level="info">**** outputDirectory = ${outputDirectory}</echo>
 								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
+								<echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>
 								<echo level="info">**** gpg.skip = ${gpg.skip}</echo>
@@ -370,8 +372,10 @@
 					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->  <!-- add for Java 10, 11, 12 .. -->
 					<!-- <source>8</source> -->
 					<detectJavaApiLink>false</detectJavaApiLink>
+					
 					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
 					<destDir>javadoc</destDir>
+					
 					<!-- <doctitle>${javadoc-doctitle}</doctitle> -->
 					<packagesheader>${project.name}</packagesheader>
 					<!-- <header>The ImagingBook HEADER</header> -->
