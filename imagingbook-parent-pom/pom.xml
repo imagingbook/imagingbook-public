@@ -45,8 +45,7 @@
 		<directory-up-3>${project.basedir}${file.separator}..${file.separator}..${file.separator}..</directory-up-3>	
 		<imagingbook.rootdir>${directory-up-1}</imagingbook.rootdir>   <!-- to be modified by nested projects -->
 		
-		<!-- <imagingbook.repodir>imagingbook-maven-repository</imagingbook.repodir> -->
-		<imagingbook.repodir>DEPLOY</imagingbook.repodir>
+		<imagingbook.deploydir>DEPLOY</imagingbook.deploydir>
 		<!-- <imagingbook.docdir>${project.basedir}${file.separator}docs</imagingbook.docdir> -->
 		<imagingbook.docdir>${project.basedir}</imagingbook.docdir>
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
@@ -64,29 +63,25 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
-		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>
-		<maven.javadoc.skip>true</maven.javadoc.skip>
-		<gpg.skip>true</gpg.skip>
+		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
+		
+		<maven.javadoc.skip>false</maven.javadoc.skip>
+		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
+		
 	</properties>
 
 	<distributionManagement>
 	 	<!-- used by 'mvn deploy' -->
 		<repository>
-			<!-- <id>local-deploy-repo</id><url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.repodir}</url> -->
+			<!-- <id>local-deploy</id><url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.deploydir}</url> -->
 			<id>ossrh</id><url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 
-		<!--
 		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-
-		<repository>
-			<id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-		-->
+			<!-- <id>ossrh</id><url>https://s01.oss.sonatype.org/content/repositories/snapshots</url> -->
+			<id>local-deploy</id>
+			<url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.deploydir}</url>
+		</snapshotRepository>	
 
 	</distributionManagement>
 
@@ -160,7 +155,7 @@
 				<plugin>
 					  <groupId>org.apache.maven.plugins</groupId>
 					  <artifactId>maven-deploy-plugin</artifactId>
-					  <!-- <version>${maven-deploy-plugin-version}</version> -->
+					  <version>3.0.0-M2</version>
 					  <configuration>
 					    <skip>${imagingbook.skipdeploy}</skip>
 					  </configuration>
@@ -197,7 +192,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.3.2</version>
+					<version>3.4.0</version>
 				</plugin>
 				
 				<plugin>  
@@ -323,7 +318,9 @@
 								<echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>
-								<echo level="info">**** gpg.skip = ${gpg.skip}</echo>
+								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
+								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
+								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
 							</target>
 						</configuration>
 					</execution>
@@ -370,9 +367,11 @@
 					<!-- Default configuration for all reports -->
 					<!-- Problem with Java 12: mixing named and unnamed modules?? -->
 					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->  <!-- add for Java 10, 11, 12 .. -->
-					<!-- <source>8</source> -->
-					<detectJavaApiLink>false</detectJavaApiLink>
-					
+					<!-- <source>1.8</source> -->
+					<detectJavaApiLink>true</detectJavaApiLink>
+					<detectLinks>true</detectLinks>
+					<!-- <detectOfflineLinks>true</detectOfflineLinks> -->
+
 					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
 					<destDir>javadoc</destDir>
 					
@@ -393,9 +392,7 @@
 					<linksource>true</linksource>
 					<author>false</author>
 					<verbose>true</verbose>
-					<!-- <quiet>true</quiet> -->
-					<!-- <detectLinks>true</detectLinks> -->
-					<!-- <detectOfflineLinks>true</detectOfflineLinks> -->
+					<!-- <quiet>true</quiet> -->				
 					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
 					<additionalOptions>--frames</additionalOptions> <!-- by default, javadoc does not generate HTML with frames any more! -->
 				</configuration>
@@ -414,7 +411,7 @@
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>3.0.1</version>
 				<configuration>
-        			<skip>${gpg.skip}</skip>	<!-- exception with Eclipse maven plugin! -->
+        			<skip>${imagingbook.gpgSkip}</skip>	<!-- exception with Eclipse maven plugin! -->
     			</configuration>
 				<executions>
 					<execution>
@@ -432,7 +429,7 @@
 
 	<reporting>
 		<plugins>
-			<plugin>  
+			<plugin>
 				<!-- to stop Maven complaining about missing version number -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
