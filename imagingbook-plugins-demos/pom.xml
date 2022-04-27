@@ -21,7 +21,7 @@
 	
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>
-		Various ImageJ demo plugins.
+		Various demo plugins illustrating basic ImageJ concepts.
 		This code is part of the imagingbook software suite accompanying the
 		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
 	</description>

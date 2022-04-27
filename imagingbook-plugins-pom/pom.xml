@@ -172,7 +172,7 @@
 								</goals>
 								<configuration>
 									<includeGroupIds>com.imagingbook</includeGroupIds>
-									<excludeArtifactIds>imagingbook-common,imagingbook-core</excludeArtifactIds>
+									<excludeArtifactIds>imagingbook-common,imagingbook-core,imagingbook-sample-images</excludeArtifactIds>
 									<outputDirectory>${project.basedir}/ImageJ/plugins</outputDirectory>
 									<overWriteIfNewer>true</overWriteIfNewer>
 									<overWriteReleases>false</overWriteReleases>
@@ -189,7 +189,7 @@
 								</goals>
 								<configuration>
 									<includeGroupIds>com.imagingbook</includeGroupIds>
-									<includeArtifactIds>imagingbook-common,imagingbook-core</includeArtifactIds>
+									<includeArtifactIds>imagingbook-common,imagingbook-core,imagingbook-sample-images</includeArtifactIds>
 									<outputDirectory>${project.basedir}/ImageJ/jars</outputDirectory>
 									<overWriteIfNewer>true</overWriteIfNewer>
 									<overWriteReleases>false</overWriteReleases>
