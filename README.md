@@ -30,7 +30,7 @@ The source code is built as a modular Maven project, which includes the followin
 * [**imagingbook-plugins-demos**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-demos/javadoc)
 * [**imagingbook-plugins-tools**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-tools/javadoc)
 
-## Usage with Maven
+## Use with Maven
 
 Each of the above items is available as a [Maven artifact on Maven Central](https://mvnrepository.com/artifact/com.imagingbook).
 For example, to use the `imagingbook-common` library, simply include the following in your project's `pom.xml`file:
@@ -43,7 +43,7 @@ For example, to use the `imagingbook-common` library, simply include the followi
 ```
 Replace `4.0.0` with the most current release version found on https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common.
 
-## Preconfigured Maven Projects
+### Preconfigured Maven Projects
 
 Two preconfigures Maven projects are available for getting started:
 
@@ -54,8 +54,20 @@ These projects are set up to develop and run ImageJ user plugins out of the box.
 ([**imagingbook-plugins-pom**](https://github.com/imagingbook/imagingbook-public/tree/master/imagingbook-plugins-pom)),
 which takes care of ImageJ's particular directory structure.
 To use, clone one of the repositories and import it as a Maven project in your favorite IDE (the projects are preconfigured for Eclipse).
+If necessary, perform Maven `clean` and `install` to update all dependencies and the runtime setup.
 
+## Use without Maven
 
+In an existing (non-Maven based) ImageJ environvent, you need to manually copy all necessary JAR files from
+[imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all):
+
+* `ImageJ/jars/*.jar` &rarr; `ImageJ/jars`
+* `ImageJ/plugins/*.jar` &rarr;  `ImageJ/plugins`
+
+Then restart ImageJ. Libraries and plugins should be loaded automatically.
+Note that the JAR files in [imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all)
+correspond to the most recent (development) build.
+Stable release files can be downloaded from https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common.
 
 ## Related Projects
 
