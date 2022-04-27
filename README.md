@@ -18,6 +18,7 @@ The source code is built as a modular Maven project, which includes the followin
 * **imagingbook-plugins-extras**: plugins related to chapters in previous book editions or other publications.
 * **imagingbook-plugins-demos**: various plugins illustrating basic ImageJ concepts.
 * **imagingbook-plugins-tools**: plugins providing tools for working with ImageJ.
+* **imagingbook-sample**: a small set of sample images used for demos and testing.
 
 [**Change Log**](CHANGES.md)
 
@@ -30,12 +31,33 @@ The source code is built as a modular Maven project, which includes the followin
 * [**imagingbook-plugins-tools**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-tools/javadoc)
 
 ## Usage with Maven
+
 Each of the above items is available as a [Maven artifact on Maven Central](https://mvnrepository.com/artifact/com.imagingbook).
 For example, to use the `imagingbook-common` library, simply include the following in your project's `pom.xml`file:
+```
+<dependency>
+  <groupId>com.imagingbook</groupId>
+  <artifactId>imagingbook-common</artifactId>
+  <version>4.0.0</version>
+</dependency>
+```
+Replace `4.0.0` with the most current release version found on https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common.
+
+## Preconfigured Maven Projects
+
+Two preconfigures Maven projects are available for getting started:
+
+* **[imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all)**: ready-to-go Maven project setup that includes the `imagingbook` library and all plugin sets listed above.
+* **[imagingbook-maven-demo-project](https://github.com/imagingbook/imagingbook-maven-demo-project)**: minimal Maven setup for ImageJ with the `imagingbook` library only.
+
+These projects are set up to develop and run ImageJ user plugins out of the box. They are based on a special parent POM file 
+([**imagingbook-plugins-pom**](https://github.com/imagingbook/imagingbook-public/tree/master/imagingbook-plugins-pom)),
+which takes care of ImageJ's particular directory structure.
+To use, clone one of the repositories and import it as a Maven project in your favorite IDE (the projects are preconfigured for Eclipse).
+
+
 
 ## Related Projects
 
-* **[imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all)**: Ready-to-go Maven project setup with imagingbook-library and all plugins.
-* **[imagingbook-maven-demo-project](https://github.com/imagingbook/imagingbook-maven-demo-project)**: A minimal Maven setup for ImageJ + imagingbook-library.
 * **[imagingbook-calibrate](https://github.com/imagingbook/imagingbook-calibrate)**. Implementation of Zhang's camera calibration scheme.
 * **[imagingbook-violajones](https://github.com/imagingbook/imagingbook-violajones)**: Implementation of Viola-Jones face detection.
