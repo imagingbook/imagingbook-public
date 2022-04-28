@@ -41,17 +41,11 @@ public class Close_Other_Images implements PlugInFilter {
 		GenericDialog dlg = new GenericDialog("Close all images");
 		dlg.addCheckbox("Close current image too?", false);
 		dlg.showDialog();
-		if (dlg.wasCanceled())
+		if (dlg.wasCanceled()) {
 			return;
-		boolean closeCurrentImage = dlg.getNextBoolean();
-				
-//		int nImages = winIds.length - 1;
-//		YesNoCancelDialog yncd = 
-//			new YesNoCancelDialog(null, "Close all images", "Close all " + nImages + " images?");
-//		if (yncd.cancelPressed() || !yncd.yesPressed()) {
-//			return;
-//		}
+		}
 		
+		boolean closeCurrentImage = dlg.getNextBoolean();
 		int thisId = this.im.getID();
 		
 		for (int id : winIds) {

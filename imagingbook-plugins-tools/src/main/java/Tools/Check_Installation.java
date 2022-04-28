@@ -17,7 +17,6 @@ import imagingbook.core.Info;
  * A simple ImageJ plugin for validating the 'imagingbook' installation.
  * 
  * @author W. Burger
- * @version 2016/03/23
  */
 public class Check_Installation implements PlugIn {
 
