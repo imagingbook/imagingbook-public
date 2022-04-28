@@ -38,11 +38,24 @@ public abstract class CircleFitAlgebraic {
 	}
 	
 	/**
-	 * Returns the parameters (A, B, C, D) of the algebraic circle
-	 * A (x^2 + y^2) + B x + C y + D = 0.
-	 * @return the algebraic circle parameters (A, B, C, D)
+	 * Returns the parameters (A, B, C, D) of the {@link AlgebraicCircle}
+	 * or {@code null} if the fit was unsuccessful.
+	 * Parameters are not normalized.
+	 * 
+	 * @return the algebraic circle parameters or {@code null}
 	 */
 	public abstract double[] getParameters();
+	
+	
+	/**
+	 * Returns a {@link AlgebraicCircle} instance for this fit 
+	 * or {@code null} if the fit was unsuccessful.
+	 * @return
+	 */
+	public AlgebraicCircle getAlgebraicCircle() {
+		double[] p = getParameters();
+		return (p == null) ? null : new AlgebraicCircle(p);
+	}
 	
 	public GeometricCircle getGeometricCircle() {
 		double[] q = this.getParameters();	// assumed to be (A, B, C, D)
