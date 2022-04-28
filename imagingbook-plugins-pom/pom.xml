@@ -40,7 +40,7 @@
 	
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>
-		Parent POM (Project Object Model) for ImageJ plugin-related imagingbook artifacts.
+		Parent POM for plugin projects that rely on ImageJ's directory setup.
 		This code is part of the imagingbook software suite accompanying the
 		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
 	</description>
@@ -116,10 +116,6 @@
 								<!-- also clean the output directory (needed?) -->
 								<fileset>
 									<directory>${outputDirectory}</directory>
-									 <!-- <includes> -->
-										<!-- <include>**/*</include> -->
-										<!-- <include>**/*.jar</include> -->
-									<!-- </includes> -->
 									<excludes>
 										<exclude>.gitignore</exclude>
 									</excludes>
@@ -158,14 +154,12 @@
 											<destFileName>ij.jar</destFileName>
 										</artifactItem>
 									</artifactItems>
-									<overWriteIfNewer>true</overWriteIfNewer>
-									<overWriteReleases>false</overWriteReleases>
 									<overWriteSnapshots>true</overWriteSnapshots>
 								</configuration>
 							</execution>
 							
 							<execution>
-								<!-- copy all imagingbook plugins (but not library JARs) into ImageJ/plugins/ -->
+								<!-- copy imagingbook plugins (but not library JARs) into ImageJ/plugins/ -->
 								<id>copy-imagingbook-dependencies</id>
 								<phase>package</phase>
 								<goals>
@@ -174,16 +168,13 @@
 								<configuration>
 									<includeGroupIds>com.imagingbook</includeGroupIds>
 									<excludeArtifactIds>${imagingbook.libs}</excludeArtifactIds>
-									<!-- <excludeArtifactIds>imagingbook-common,imagingbook-core,imagingbook-sample-images</excludeArtifactIds> -->
 									<outputDirectory>${project.basedir}/ImageJ/plugins</outputDirectory>
-									<overWriteIfNewer>true</overWriteIfNewer>
-									<overWriteReleases>false</overWriteReleases>
 									<overWriteSnapshots>true</overWriteSnapshots>
 								</configuration>
 							</execution>
 							
 							<execution>
-								<!-- copy only imagingbook-common and imagingbook-core into ImageJ/jars/ -->
+								<!-- copy imagingbook libraries (not plugin JARs) into ImageJ/jars/ -->
 								<id>copy-imagingbook-common</id>
 								<phase>package</phase>
 								<goals>
@@ -192,10 +183,7 @@
 								<configuration>
 									<includeGroupIds>com.imagingbook</includeGroupIds>
 									<includeArtifactIds>${imagingbook.libs}</includeArtifactIds>
-									<!-- <includeArtifactIds>imagingbook-common,imagingbook-core,imagingbook-sample-images</includeArtifactIds> -->
 									<outputDirectory>${project.basedir}/ImageJ/jars</outputDirectory>
-									<overWriteIfNewer>true</overWriteIfNewer>
-									<overWriteReleases>false</overWriteReleases>
 									<overWriteSnapshots>true</overWriteSnapshots>
 								</configuration>
 							</execution>
@@ -211,26 +199,15 @@
 									<excludeGroupIds>com.imagingbook,net.imagej</excludeGroupIds>
 									<excludeArtifactIds>ij</excludeArtifactIds>
 									<outputDirectory>${project.basedir}/ImageJ/jars</outputDirectory>
-									<overWriteIfNewer>true</overWriteIfNewer>
-									<overWriteReleases>false</overWriteReleases>
 									<overWriteSnapshots>true</overWriteSnapshots>
 								</configuration>
 							</execution>
-							
-							<!-- copy the newly installed target jar to ImageJ/jars (could this
-								be a problem?) -->
-							<!-- <execution> <id>copy-installed</id> <phase>install</phase> <goals> 
-								<goal>copy</goal> </goals> <configuration> <artifactItems> <artifactItem> 
-								<groupId>${project.groupId}</groupId> <artifactId>${project.artifactId}</artifactId> 
-								<version>${project.version}</version> <type>${project.packaging}</type> </artifactItem> 
-								</artifactItems> <outputDirectory>${project.basedir}/ImageJ/jars</outputDirectory> 
-								</configuration> </execution> -->
 
 						</executions>
 					</plugin>
 					<!-- end of copy -->
 					
-					<!-- Run Java program to build plugins.config file in output directory (to be included in output JAR) -->
+					<!-- Run a Java program to build plugins.config file in output directory (to be included in output JAR) -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>

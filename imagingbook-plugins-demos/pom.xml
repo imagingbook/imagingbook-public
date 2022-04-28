@@ -27,6 +27,11 @@
 	</description>
 	<inceptionYear>2006</inceptionYear>
 	<url>http://www.imagingbook.com</url>
+	<developers>
+		<developer>
+			<name>Wilhelm Burger</name>
+		</developer>
+	</developers>
 
 	<dependencies>
 	

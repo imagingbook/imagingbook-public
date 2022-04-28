@@ -73,12 +73,15 @@
 	<distributionManagement>
 	 	<!-- used by 'mvn deploy' -->
 		<repository>
-			<!-- <id>local-deploy</id><url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.deploydir}</url> -->
-			<id>ossrh</id><url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 
 		<snapshotRepository>
-			<!-- <id>ossrh</id><url>https://s01.oss.sonatype.org/content/repositories/snapshots</url> -->
+			<!-- 
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url> 
+			-->
 			<id>local-deploy</id>
 			<url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.deploydir}</url>
 		</snapshotRepository>	
@@ -127,8 +130,6 @@
 
 		</dependencies>
 	</dependencyManagement>
-
-	<dependencies />
 
 	<build>
 		<pluginManagement>
@@ -276,28 +277,7 @@
 		</pluginManagement>
 
 		<plugins>
-			<!-- skip tests -->
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId> 
-				<version>3.0.0-M4</version> <configuration> <skipTests>${skipTests}</skipTests> 
-				</configuration> </plugin> -->
-
-			<!-- Directory plugin to find parent root directory absolute path -->
-			<!-- <plugin> <groupId>org.commonjava.maven.plugins</groupId> <artifactId>directory-maven-plugin</artifactId> 
-				<version>0.1</version> <executions> <execution> <id>directories</id> <goals> 
-				<goal>highest-basedir</goal> </goals> <phase>initialize</phase> <configuration> 
-				<property>main.basedir</property> </configuration> </execution> </executions> 
-				</plugin> -->
-
-			<!-- https://stackoverflow.com/questions/1012402/maven2-property-that-indicates-the-parent-directory/37965143#37965143 -->
-			<!-- <plugin> <groupId>org.commonjava.maven.plugins</groupId> <artifactId>directory-maven-plugin</artifactId> 
-				<version>0.1</version> <executions> <execution> <id>directories</id> <goals> 
-				<goal>directory-of</goal> </goals> <phase>initialize</phase> <configuration> 
-				<property>imagingbookFOO.basedir</property> <project> <groupId>com.imagingbook</groupId> 
-				<artifactId>imagingbook-parent-pom</artifactId> </project> </configuration> 
-				</execution> </executions> </plugin> -->
-
-
-			<!-- To output the value of certain variables for testing -->
+			<!-- Output the value of certain variables for debugging -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -461,7 +441,5 @@
 				</reportSets> </plugin> -->
 		</plugins>
 	</reporting>
-
-
 
 </project>
