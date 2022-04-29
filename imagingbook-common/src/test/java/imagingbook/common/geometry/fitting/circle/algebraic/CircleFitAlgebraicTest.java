@@ -8,13 +8,14 @@
  *******************************************************************************/
 package imagingbook.common.geometry.fitting.circle.algebraic;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
+import imagingbook.common.geometry.circle.AlgebraicCircle;
 import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType;
 
@@ -305,9 +306,12 @@ public class CircleFitAlgebraicTest {
 			{123, 173}, 
 			{105, 174}};
 	
-	static double ProblemPointSet1_Xc = 116.484103;
-	static double ProblemPointSet1_Yc = 121.593799;
-	static double ProblemPointSet1_R  =  51.509581;
+	static double Xc = 116.484103;
+	static double Yc = 121.593799;
+	static double R  =  51.509581;
+	
+	static GeometricCircle gcExpected = new GeometricCircle(Xc, Yc, R);
+	static AlgebraicCircle acExpected = new AlgebraicCircle(gcExpected);
 
 	@Test
 	public void testProblemSet1() {
@@ -315,23 +319,30 @@ public class CircleFitAlgebraicTest {
 		for (FitType type : FitType.values()) {
 			runTest1(type, pnts);
 		}
-//		runTest1(FitType.Hyper, pnts);
-//		runTest1(FitType.KasaA, pnts);
-//		runTest1(FitType.KasaB, pnts);
-//		runTest1(FitType.KasaOrig, pnts);
-//		runTest1(FitType.Pratt, pnts);
-//		runTest1(FitType.Taubin, pnts);
 	}
 	
 	private void runTest1(FitType type, Pnt2d[] pnts) {
+//		System.out.println("Type = " + type);
 		CircleFitAlgebraic fit = CircleFitAlgebraic.getFit(type, pnts);
+		
+		double[] p = fit.getParameters();
+		assertNotNull("algebraic circle parameters are null", p);
+//		System.out.println("p = "  + Arrays.toString(p));
+		
+		AlgebraicCircle ac = fit.getAlgebraicCircle();
+		assertNotNull("algebraic circle is null", ac);
+//		System.out.println("ac = "  + ac);
+		assertTrue(acExpected.equals(ac, 0.1));					// compare ac to expected circle
+		
+		
 //		double[] p = fit.getParameters();
 //		Assert.assertNotNull("algebraic circle parameters are null", p);
-		GeometricCircle circle = fit.getGeometricCircle();
-		assertNotNull("geometric circle is null", circle);
-		assertEquals(ProblemPointSet1_Xc, circle.getXc(), 1.0);
-		assertEquals(ProblemPointSet1_Yc, circle.getYc(), 1.0);
-		assertEquals(ProblemPointSet1_R,  circle.getR(), 1.0);
+//		GeometricCircle circle = fit.getGeometricCircle();
+//		System.out.println("gc = "  + circle);
+//		assertNotNull("geometric circle is null", circle);
+//		assertEquals(ProblemPointSet1_Xc, circle.getXc(), 1.0);
+//		assertEquals(ProblemPointSet1_Yc, circle.getYc(), 1.0);
+//		assertEquals(ProblemPointSet1_R,  circle.getR(), 1.0);
 	}
 
 }

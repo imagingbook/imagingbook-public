@@ -10,6 +10,15 @@ package imagingbook.common.geometry.circle;
 
 public interface Circle {	// TODO: add extends ShapeProvider
 	
+	/**
+	 * Return a vector of parameters for this circle.
+	 * The length of the vector and the meaning of the parameters depends
+	 * on the concrete circle type.
+	 * 
+	 * @return a vector of parameters
+	 * @see AlgebraicCircle
+	 * @see GeometricCircle
+	 */
 	public double[] getParameters();
 
 }

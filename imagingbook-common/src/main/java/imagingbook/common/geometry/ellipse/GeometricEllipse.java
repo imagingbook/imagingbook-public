@@ -27,7 +27,9 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.PrintPrecision;
 
 /**
- * Represents an ellipse shape with arbitrary orientation.
+ * Represents an ellipse shape with 
+ * major axis length ra, minor axis length rb, center point (xc, yc),
+ * and orientation theta. Instances are immutable.
  * 
  * @author WB
  *
@@ -37,6 +39,16 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 	public final double ra, rb, xc, yc, theta;	// TODO: make private!
 	private final OrthogonalEllipseProjector projector;
 	
+	/**
+	 * Constructor.
+	 * Axis lengths may be exchanged to ensure ra &geq; rb.
+	 * 
+	 * @param ra major axis length
+	 * @param rb minor axis length
+	 * @param xc center point (x)
+	 * @param yc center point (y)
+	 * @param theta orientation
+	 */
 	public GeometricEllipse(double ra, double rb, double xc, double yc, double theta) {
 		this.xc = xc;
 		this.yc = yc;
@@ -57,28 +69,37 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		}
 	}
 	
+	/**
+	 * Constructor, short version for axis-aligned ellipses.
+	 * @param ra major axis length
+	 * @param rb minor axis length
+	 * @param xc center point (x)
+	 * @param yc center point (y)
+	 */
 	public GeometricEllipse(double ra, double rb, double xc, double yc) {
 		this(ra, rb, xc, yc, 0.0);
 	}
 	
-	// TODO: reorder parameters
+	/**
+	 * Constructor.
+	 * @param p parameter vector [ra, rb, xc, yc, theta].
+	 * @see #getParameters()
+	 */
 	public GeometricEllipse(double[] p) {
 		this(p[0], p[1], p[2], p[3], p[4]);
 	}
 	
+	/**
+	 * Constructor.
+	 * Creates a new {@link GeometricEllipse} from a {@link AlgebraicEllipse} instance.
+	 * @param ae a {@link AlgebraicEllipse} instance
+	 */
 	public GeometricEllipse(AlgebraicEllipse ae) {
-		this(makeGeometricEllipseParameters(ae));
+		this(getGeometricEllipseParameters(ae));
 	}
-	
-	public GeometricEllipse scale(double scaleFactor) {
-		return new GeometricEllipse(ra * scaleFactor, rb * scaleFactor, xc, yc, theta);
-	}
-	
-//	public static GeometricEllipse from(double[] p) {
-//		return new GeometricEllipse(p);
-//	}
-	
-	private static double[] makeGeometricEllipseParameters(AlgebraicEllipse ae) {
+
+	private static double[] getGeometricEllipseParameters(AlgebraicEllipse ae) {
+		// see Eq. 19-23 at http://mathworld.wolfram.com/Ellipse.html
 		final double A = ae.A;
 		final double B = ae.B;
 		final double C = ae.C;
@@ -104,37 +125,6 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		return (ra >= rb) ? // make sure ra >= rb (ra is the major axis)
 			new double[] {ra, rb, xc, yc, theta} :
 			new double[] {rb, ra, xc, yc, theta + PI/2} ;
-	}
-	
-	// see Eq. 19-23 at http://mathworld.wolfram.com/Ellipse.html
-	@Deprecated
-	public static GeometricEllipse from(AlgebraicEllipse ae) {
-		return new GeometricEllipse(ae);
-//		final double A = ae.A;
-//		final double B = ae.B;
-//		final double C = ae.C;
-//		final double D = ae.D;
-//		final double E = ae.E;
-//		final double F = ae.F;
-//		
-//		final double p = sqr(B) - 4*A*C;
-//		
-//		if (p >= 0) {
-//			throw new IllegalArgumentException("B^2 - 4AC must be negative for an ellipse");
-//		}
-//
-//		final double q = sqrt(sqr(A-C) + sqr(B));
-//		final double s = 2*(A*sqr(E) + C*sqr(D) + F*sqr(B) - B*D*E - 4*A*C*F);
-//		
-//		double xc = (2*C*D - B*E) / p;
-//		double yc = (2*A*E - B*D) / p;
-//		double ra = sqrt(s / (p*(- A - C + q)));
-//		double rb = sqrt(s / (p*(- A - C - q)));
-//		double theta = 0.5 * Math.atan2(-B, C - A);	// theta = -pi/2,...,+pi/2
-//		
-//		return (ra >= rb) ? // make sure ra >= rb (ra is the major axis)
-//			new GeometricEllipse(xc, yc, ra, rb, theta) :
-//			new GeometricEllipse(xc, yc, rb, ra, theta + PI/2) ;
 	}
 	
 	// ---------------------------------------
@@ -173,10 +163,6 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		return projector.project(pnt);
 	}
 	
-	public GeometricEllipse disturb(double dra, double drb, double dxc, double dyc, double dtheta) {
-		return new GeometricEllipse(ra + dra, rb + drb, xc + dxc, yc + dyc, theta + dtheta);
-	}
-		
 	// ---------------------------------------------------------------------------------
 
     /**
@@ -220,8 +206,7 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		};
 	}
 	
-	@Deprecated	// TODO: should be private
-	public Shape getOuterShape() {
+	private Shape getOuterShape() {
 		Ellipse2D oval = new Ellipse2D.Double(-ra, -rb, 2 * ra, 2 * rb);
 		AffineTransform trans = new AffineTransform();
 		trans.translate(xc, yc);
@@ -229,8 +214,7 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		return trans.createTransformedShape(oval);
 	}
 	
-	@Deprecated	// TODO: should be private
-	public Shape getCenterShape(double radius) {
+	private Shape getCenterShape(double radius) {
 		double dxa = 2 * radius * cos(theta);	// major axis is drawn longer
 		double dya = 2 * radius * sin(theta);
 		double dxb = 1 * radius * cos(theta + PI/2);
@@ -240,15 +224,11 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		path.lineTo(xc + dxa, yc + dya);
 		path.moveTo(xc - dxb, yc - dyb);
 		path.lineTo(xc + dxb, yc + dyb);
-//		path.moveTo(xc - radius, yc);
-//		path.lineTo(xc + radius, yc);
-//		path.moveTo(xc, yc - radius);
-//		path.lineTo(xc, yc + radius);
 		return path;
 	}
 	
-	@Deprecated	// TODO: should be private
-	public Shape getAxisShape() {
+	@SuppressWarnings("unused")
+	private Shape getAxisShape() {
 		double dxa = ra * cos(theta);
 		double dya = ra * sin(theta);
 		double dxb = rb * cos(theta + PI/2);
@@ -261,7 +241,7 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		return path;
 	}
 	
-	@Deprecated
+	@Deprecated		// used for book figures only
 	public Pnt2d getLeftAxisPoint() {
 		return Pnt2d.from(xc - ra * cos(theta), yc - ra * sin(theta));
 	}
@@ -306,7 +286,7 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		System.out.println("eg = " + eg1.toString());
 		AlgebraicEllipse ea = AlgebraicEllipse.from(eg1);
 		System.out.println("ea = " + ea.toString());
-		GeometricEllipse eg2 = GeometricEllipse.from(ea);
+		GeometricEllipse eg2 = new GeometricEllipse(ea);
 		System.out.println("eg2 = " + eg2.toString());
 		
 	}

@@ -50,20 +50,25 @@ public abstract class CircleFitAlgebraic {
 	/**
 	 * Returns a {@link AlgebraicCircle} instance for this fit 
 	 * or {@code null} if the fit was unsuccessful.
-	 * @return
+	 * @return a {@link AlgebraicCircle} instance or null
 	 */
 	public AlgebraicCircle getAlgebraicCircle() {
 		double[] p = getParameters();
 		return (p == null) ? null : new AlgebraicCircle(p);
 	}
 	
+	/**
+	 * Returns a {@link GeometricCircle} instance for this fit 
+	 * or {@code null} if the fit was unsuccessful.
+	 * @return a {@link GeometricCircle} instance or null
+	 */
 	public GeometricCircle getGeometricCircle() {
 		double[] q = this.getParameters();	// assumed to be (A, B, C, D)
 		if (q == null || isZero(q[0])) {	// (abs(2 * A / s) < (1 / Rmax))
 			return null;			// return a straight line
 		}
 		else {
-			return GeometricCircle.from(new AlgebraicCircle(q));
+			return new GeometricCircle(getAlgebraicCircle());
 		}
 	}
 	

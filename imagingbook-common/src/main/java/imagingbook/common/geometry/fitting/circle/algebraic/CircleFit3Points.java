@@ -11,14 +11,14 @@ package imagingbook.common.geometry.fitting.circle.algebraic;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import java.util.Arrays;
-
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.math.Arithmetic;
 
 /**
- * Performs an exact circle fit on 3 given (non-collinear) points.
+ * Performs an exact circle fit to 3 given (non-collinear) points.
+ * If the fit is unsuccessful, {@link #getParameters()} 
+ * returns {@code null}.
+ * 
  * @author WB
  *
  */
@@ -26,16 +26,13 @@ public class CircleFit3Points extends CircleFitAlgebraic {
 	
 	private final double[] p;
 	
-	public CircleFit3Points(Pnt2d ... pts) {				// Pnt2d p0, Pnt2d p1, Pnt2d p2
-		if (pts.length != 3) {
-			throw new IllegalArgumentException("exactly 3 points required for exact circle fit");
-		}
-		final double x0 = pts[0].getX();
-		final double y0 = pts[0].getY();
-		final double x1 = pts[1].getX();
-		final double y1 = pts[1].getY();
-		final double x2 = pts[2].getX();
-		final double y2 = pts[2].getY();
+	public CircleFit3Points(Pnt2d p0, Pnt2d p1, Pnt2d p2) {
+		final double x0 = p0.getX();
+		final double y0 = p0.getY();
+		final double x1 = p1.getX();
+		final double y1 = p1.getY();
+		final double x2 = p2.getX();
+		final double y2 = p2.getY();
 		
 		final double A = x0 * (y1 - y2) - y0 * (x1 - x2) + x1 * y2 - x2 * y1;		
 		if (Arithmetic.isZero(A)) {
@@ -51,38 +48,14 @@ public class CircleFit3Points extends CircleFitAlgebraic {
 			this.p = new double[] {A, B, C, D};
 		}
 	}
+	
+	public CircleFit3Points(Pnt2d[] pts) {
+		this(pts[0], pts[1], pts[2]);
+	}
 
 	@Override
 	public double[] getParameters() {
 		return this.p;
-	}
-	
-	// ----------------------------------------------------------------
-	
-	public static void main(String[] args) {
-		Pnt2d p0 = Pnt2d.from(6, 7);
-		Pnt2d p1 = Pnt2d.from(1, 9);
-		Pnt2d p2 = Pnt2d.from(-3, 5);
-		
-		
-		CircleFitAlgebraic fitA = new CircleFitKasaA(new Pnt2d[] {p0, p1, p2});
-		System.out.println(fitA.getClass().getSimpleName());
-		double[] pA = fitA.getParameters();
-		double[] pAn = {1, pA[1]/pA[0], pA[2]/pA[0], pA[3]/pA[0]};
-		
-		System.out.println(Arrays.toString(pAn));
-		GeometricCircle cA = fitA.getGeometricCircle();
-		System.out.println(cA);
-		
-		System.out.println("CircleFit3Points:");
-		
-		CircleFit3Points fit3 = new CircleFit3Points(p0, p1, p2);
-		double[] p3 = fit3.getParameters();
-		System.out.println(Arrays.toString(p3));
-		GeometricCircle c = fit3.getGeometricCircle();
-		System.out.println(c);
-		
-		
 	}
 
 }

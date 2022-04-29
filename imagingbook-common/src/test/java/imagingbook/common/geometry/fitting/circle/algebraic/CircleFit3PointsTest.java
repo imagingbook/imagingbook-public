@@ -1,6 +1,7 @@
 package imagingbook.common.geometry.fitting.circle.algebraic;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -20,17 +21,32 @@ public class CircleFit3PointsTest {
 		Pnt2d p1 = Pnt2d.from(1, 9);
 		Pnt2d p2 = Pnt2d.from(-3, 5);
 		
-		double[] pExp = {28.0, -108.0, -228.0, -136.0};		// algebraic circle parameters (not normalized)
-		AlgebraicCircle acExp = new AlgebraicCircle(pExp);	// expected circle (normalized)
+		AlgebraicCircle acExp = new AlgebraicCircle(28.0, -108.0, -228.0, -136.0);	// expected circle (normalized)
 		
-		CircleFit3Points fit = new CircleFit3Points(p0, p1, p2);
-		
+		doCheck(new CircleFit3Points(p0, p1, p2), acExp);
+		doCheck(new CircleFit3Points(p2, p0, p1), acExp);
+		doCheck(new CircleFit3Points(p1, p2, p0), acExp);
+	}
+	
+	private void doCheck(CircleFit3Points fit, AlgebraicCircle acExp) {
 		double[] p = fit.getParameters();
 		assertNotNull(p);
-		
 		AlgebraicCircle ac = fit.getAlgebraicCircle();		// fitted circle
 		assertNotNull(ac);	
 		assertTrue(acExp.equals(ac, 1e-6));					// compare ac to expected circle
+	}
+	
+	
+	@Test
+	public void test2() {
+		// fit to 3 collinear points  (getParameters() must return null)
+		Pnt2d p0 = Pnt2d.from(-1, -1);
+		Pnt2d p1 = Pnt2d.from(4, 4);
+		Pnt2d p2 = Pnt2d.from(99, 99);
+		
+		CircleFitAlgebraic fit = new CircleFit3Points(p0, p1, p2);
+		assertNull(fit.getParameters());
+
 	}
 
 }

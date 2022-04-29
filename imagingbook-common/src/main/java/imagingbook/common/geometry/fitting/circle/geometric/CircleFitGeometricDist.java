@@ -130,6 +130,8 @@ public class CircleFitGeometricDist extends CircleFitGeometric {
     	
     }
     
+    
+    
     // -------------------------------------------------------------------
     
     public static void main(String[] args) {
@@ -158,7 +160,7 @@ public class CircleFitGeometricDist extends CircleFitGeometric {
 		
 		//Circle2D init = new Circle2D(XC, YC, R);
 		//Circle2D init = estimA;
-		GeometricCircle init = estimA.disturb(-1.5, 0.5, 10);
+		GeometricCircle init = disturbCircle(estimA, -1.5, 0.5, 10);
 		IJ.log(" init: " + init.toString());
 		IJ.log(" init error = " + init.getMeanSquareError(points));
 		
@@ -173,4 +175,7 @@ public class CircleFitGeometricDist extends CircleFitGeometric {
 		IJ.log("final error = " + refined.getMeanSquareError(points));
     }
 
+    private static GeometricCircle disturbCircle (GeometricCircle circle, double dxc, double dyc, double dr) {
+		return new GeometricCircle(circle.getXc() + dxc, circle.getYc() + dyc, circle.getR() + dr);
+	}
 }
