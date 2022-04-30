@@ -18,6 +18,8 @@ import imagingbook.common.geometry.line.AlgebraicLine;
 
 public class HoughLineTest {
 	
+	static double TOL = 1e-6;
+	
 	static Pnt2d p1 = PntInt.from(30, 10);
 	static Pnt2d p2 = PntInt.from(200, 100);
 	static Pnt2d p3 = PntInt.from(90, 40);
@@ -31,8 +33,8 @@ public class HoughLineTest {
 		AlgebraicLine h12 = AlgebraicLine.from(p1, p2);
 	
 		HoughLine L12 = new HoughLine(h12, xRef.getX(), xRef.getY(), 0);
-		Assert.assertEquals(0.0, L12.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, L12.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, L12.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L12.getDistance(p2), TOL);
 	}
 
 	@Test
@@ -40,19 +42,19 @@ public class HoughLineTest {
 		HoughLine L12 = HoughLine.fromPoints(p1, p2, pRef, 2);
 		HoughLine L21 = HoughLine.fromPoints(p2, p1, pRef, 2);
 		
-		Assert.assertEquals(0.0, L12.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, L12.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, L12.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L12.getDistance(p2), TOL);
 		
-		Assert.assertEquals(0.0, L21.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, L21.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, L21.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L21.getDistance(p2), TOL);
 	}
 	
 	@Test
 	public void test2() {
 		HoughLine l12 = HoughLine.fromPoints(p1, p2, pRef, 2);
 		Pnt2d x0 = l12.getClosestLinePoint(p3);
-		Assert.assertEquals(0.0, l12.getDistance(x0), 1E-6);						// x0 is actually ON the line
-		Assert.assertEquals(p3.distance(x0), Math.abs(l12.getDistance(p3)), 1E-6);	// distance (p3,x0) is shortest 
+		Assert.assertEquals(0.0, l12.getDistance(x0), TOL);						// x0 is actually ON the line
+		Assert.assertEquals(p3.distance(x0), Math.abs(l12.getDistance(p3)), TOL);	// distance (p3,x0) is shortest 
 	}
 	
 	@Test
@@ -62,14 +64,14 @@ public class HoughLineTest {
 		HoughLine L1 = HoughLine.fromPoints(p1, p2, pRef, 2);
 		HoughLine L2 = new HoughLine(LA, pRef.getX(), pRef.getY(), 2);
 		
-		Assert.assertEquals(0.0, LA.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, LA.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, LA.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, LA.getDistance(p2), TOL);
 		
-		Assert.assertEquals(0.0, L1.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, L1.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, L1.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L1.getDistance(p2), TOL);
 		
-		Assert.assertEquals(0.0, L2.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, L2.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, L2.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L2.getDistance(p2), TOL);
 	}
 	
 	@Test
@@ -77,26 +79,26 @@ public class HoughLineTest {
 		// create a HoughLine from two points
 		HoughLine L1 = HoughLine.fromPoints(p1, p2, pRef, 2);
 		// check if both points are on the line
-		Assert.assertEquals(0.0, L1.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, L1.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, L1.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L1.getDistance(p2), TOL);
 		
 		// create a duplicate HoughLine from L1's angle and radius
 		HoughLine L2 = new HoughLine(L1.getAngle(), L1.getRadius(), pRef.getX(), pRef.getY(), 2);
 		// check if the two points are on this line too
-		Assert.assertEquals(0.0, L2.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, L2.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, L2.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L2.getDistance(p2), TOL);
 		
 		// create a duplicate HoughLine directly from L1 (using the same reference point)
 		HoughLine L3 = new HoughLine(L1, pRef.getX(), pRef.getY(), 2);
 		// check if the two points are on this line too
-		Assert.assertEquals(0.0, L3.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, L3.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, L3.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L3.getDistance(p2), TOL);
 		
 		// create a duplicate HoughLine directly from L1 (using a different reference point)
 		HoughLine L4 = new HoughLine(L1, pRef.getX() - 10, pRef.getY() + 15, 2);
 		// check if the two points are on this line too
-		Assert.assertEquals(0.0, L4.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, L4.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, L4.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L4.getDistance(p2), TOL);
 	}
 	
 	@Test
@@ -111,8 +113,8 @@ public class HoughLineTest {
 		HoughLine L2 = new HoughLine(a2, b2, c2, xR, yR, 0);
 		
 		// make sure both are "equivalent" (contain the same points (x,y))
-		Assert.assertTrue(L1.equals(L2));
-		Assert.assertTrue(L2.equals(L1));
+		Assert.assertTrue(L1.equals(L2, TOL));
+		Assert.assertTrue(L2.equals(L1, TOL));
 	}
 
 }

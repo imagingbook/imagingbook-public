@@ -106,22 +106,21 @@ public class GeometricEllipse implements ShapeProvider, Curve2d {
 		final double C = ae.C;
 		final double D = ae.D;
 		final double E = ae.E;
-		final double F = ae.F;
+		final double F = ae.F;		
+		final double d = sqr(B) - 4*A*C;
 		
-		final double bac = sqr(B) - 4*A*C;
-		
-		if (bac >= 0) {
+		if (d >= 0) {
 			throw new IllegalArgumentException("B^2 - 4AC must be negative for an ellipse");
 		}
 
 		final double q = sqrt(sqr(A-C) + sqr(B));
 		final double s = 2*(A*sqr(E) + C*sqr(D) + F*sqr(B) - B*D*E - 4*A*C*F);
 		
-		double xc = (2*C*D - B*E) / bac;
-		double yc = (2*A*E - B*D) / bac;
-		double ra = sqrt(s / (bac*(- A - C + q)));
-		double rb = sqrt(s / (bac*(- A - C - q)));
-		double theta = 0.5 * Math.atan2(-B, C - A);	// theta = -pi/2,...,+pi/2
+		double xc = (2 * C * D - B * E) / d;
+		double yc = (2 * A * E - B * D) / d;
+		double ra = sqrt(s / (d * (-A - C + q)));
+		double rb = sqrt(s / (d * (-A - C - q)));
+		double theta = 0.5 * Math.atan2(-B, C - A); // theta = -pi/2,...,+pi/2
 		
 		return (ra >= rb) ? // make sure ra >= rb (ra is the major axis)
 			new double[] {ra, rb, xc, yc, theta} :
