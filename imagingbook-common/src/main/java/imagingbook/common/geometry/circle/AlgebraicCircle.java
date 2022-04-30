@@ -26,7 +26,7 @@ import imagingbook.common.math.Arithmetic;
  * @author WB
  *
  */
-public class AlgebraicCircle  implements Circle, Cloneable {
+public class AlgebraicCircle {
 
 	private final double A, B, C, D;
 	
@@ -91,7 +91,13 @@ public class AlgebraicCircle  implements Circle, Cloneable {
 		return new double[] {A, B, C, D};
 	}
 	
-	@Override
+	/**
+	 * Return a vector of parameters for this circle.
+	 * The length of the vector and the meaning of the parameters depends
+	 * on the concrete circle type.
+	 * 
+	 * @return a vector of parameters
+	 */
 	public double[] getParameters() {
 		return new double[] {A, B, C, D};
 	}
@@ -115,19 +121,15 @@ public class AlgebraicCircle  implements Circle, Cloneable {
 				Arithmetic.equals(D, other.D, tolerance) ;
 	}
 	
+	public AlgebraicCircle duplicate() {
+		return new AlgebraicCircle(this.getParameters());
+	}
+	
+	
 	@Override
 	public String toString() {
 		return String.format(Locale.US, "%s [A=%f, B=%f, C=%f, D=%f]", 
 				AlgebraicCircle.class.getSimpleName(), A, B, C, D);
-	}
-	
-	@Override
-	public AlgebraicCircle clone() {
-		AlgebraicCircle copy = null;
-		try {
-			copy = (AlgebraicCircle) super.clone();
-		} catch (CloneNotSupportedException e) { }
-		return copy;
 	}
 	
 }

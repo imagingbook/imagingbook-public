@@ -20,10 +20,10 @@ import ij.gui.NewImage;
 import ij.gui.Overlay;
 import ij.plugin.PlugIn;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.ellipse.ConfocalConicEllipseProjector;
-import imagingbook.common.geometry.ellipse.EllipseProjector;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.geometry.ellipse.OrthogonalEllipseProjector;
+import imagingbook.common.geometry.ellipse.project.ConfocalConicEllipseProjector;
+import imagingbook.common.geometry.ellipse.project.EllipseProjector;
+import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 

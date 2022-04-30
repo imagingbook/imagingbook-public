@@ -18,16 +18,17 @@ import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.hough.lines.HoughLine;
+import imagingbook.common.math.Arithmetic;
 
 /**
- * This class represents an algebraic line of the form A x + B  y + C = 0.
+ * This class represents an algebraic line of the form A x + B y + C = 0.
  * Instances are immutable and normalized such that ||(A,B)|| = 1.
  * @author WB
  *
  */
 public class AlgebraicLine implements Curve2d {
 	
-	private final double A, B, C;
+	public final double A, B, C;
 	
 	// constructors --------------------------------------------------
 
@@ -89,17 +90,17 @@ public class AlgebraicLine implements Curve2d {
 		return new double[] {A, B, C};
 	}
 	
-	public final double getA() {
-		return A;
-	}
+//	public final double getA() {
+//		return A;
+//	}
 
-	public final double getB() {
-		return B;
-	}
-
-	public final double getC() {
-		return C;
-	}
+//	public final double getB() {
+//		return B;
+//	}
+//
+//	public final double getC() {
+//		return C;
+//	}
 	
 	public double getXref() {
 		return 0.0;
@@ -212,18 +213,22 @@ public class AlgebraicLine implements Curve2d {
 			return true;
 		}
 		if (other instanceof AlgebraicLine) {
-			AlgebraicLine L1 = this;
-			AlgebraicLine L2 = (AlgebraicLine) other;
-			double delta = 1E-6;
-			// get two different points on L1:
-			Pnt2d xA = L1.getClosestLinePoint(PntDouble.ZERO);
-			Pnt2d xB = PntDouble.from(xA.getX() - L1.B, xA.getY() + L1.A);
-			// check if both points are on L2 too:
-			return (isZero(L2.getDistance(xA), delta) && isZero(L2.getDistance(xB), delta));
+			return this.equals((AlgebraicLine) other, Arithmetic.EPSILON_DOUBLE);
 		}
 		else {
 			return false;
 		}
+	}
+	
+	// TODO: this should be easier to do if parameters are normalized
+	public boolean equals(AlgebraicLine other, double tolerance) {
+		AlgebraicLine L1 = this;
+		AlgebraicLine L2 = (AlgebraicLine) other;
+		// get two different points on L1:
+		Pnt2d xA = L1.getClosestLinePoint(PntDouble.ZERO);
+		Pnt2d xB = PntDouble.from(xA.getX() - L1.B, xA.getY() + L1.A);
+		// check if both points are on L2 too:
+		return (isZero(L2.getDistance(xA), tolerance) && isZero(L2.getDistance(xB), tolerance));
 	}
 	
 	@Override

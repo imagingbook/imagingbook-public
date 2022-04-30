@@ -6,10 +6,12 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.geometry.ellipse;
+package imagingbook.common.geometry.ellipse.project;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
+
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 
 /**

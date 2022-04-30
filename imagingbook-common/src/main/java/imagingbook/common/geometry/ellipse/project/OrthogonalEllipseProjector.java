@@ -6,12 +6,13 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.geometry.ellipse;
+package imagingbook.common.geometry.ellipse.project;
 
 import static imagingbook.common.math.Arithmetic.isZero;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.PrintPrecision;
 
@@ -26,8 +27,8 @@ import imagingbook.common.math.PrintPrecision;
  * Technical Report, Geometric Tools, www.geometrictools.com, Redmont, WA (June 2013).
  * </blockquote>
  * <p>
- * In contrast to the Newton-based algorithm, his version returns valid results for
- * points close to the x- and y-axis but requires significantly more iterations to 
+ * In contrast to the Newton-based algorithm, this version returns valid results for
+ * points close to the x- and y-axis but requires significantly more iterations to
  * converge.
  * </p>
  * @version 2022/04/09

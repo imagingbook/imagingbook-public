@@ -43,13 +43,13 @@ public class HessianLine extends AlgebraicLine {
 	
 	public HessianLine(double a, double b, double c) {
 		super(a, b, c);	// creates a normalized line
-		this.angle = Math.atan2(this.getB(), this.getA());
-		this.radius = -this.getC(); // ... / Math.sqrt(sqr(this.a) + sqr(this.b));
+		this.angle = Math.atan2(this.B, this.A);
+		this.radius = -this.C; // ... / Math.sqrt(sqr(this.a) + sqr(this.b));
 		this.refPnt = Pnt2d.from(0, 0);
 	}
 	
 	public HessianLine(AlgebraicLine L) {
-		this(L.getA(), L.getB(), L.getC());
+		this(L.A, L.B, L.C);
 	}
 	
 	// getter methods ------------------------------------------

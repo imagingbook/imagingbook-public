@@ -8,8 +8,18 @@
  *******************************************************************************/
 package imagingbook.common.geometry.ellipse;
 
+
 public interface Ellipse {
 	
+	/**
+	 * Return a vector of parameters for this ellipse.
+	 * The length of the vector and the meaning of the parameters depends
+	 * on the concrete ellipse type.
+	 * 
+	 * @return a vector of parameters
+	 * @see AlgebraicEllipse
+	 * @see GeometricEllipse
+	 */
 	public double[] getParameters();
 
 }

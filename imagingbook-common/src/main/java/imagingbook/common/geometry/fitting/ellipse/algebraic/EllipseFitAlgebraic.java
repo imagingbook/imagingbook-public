@@ -52,7 +52,8 @@ public interface EllipseFitAlgebraic {
 	 * @return an {@link AlgebraicEllipse} instance
 	 */
 	public default AlgebraicEllipse getEllipse() {
-		return AlgebraicEllipse.from(getParameters());
+		double[] p = getParameters();
+		return (p == null) ? null : new AlgebraicEllipse(p);
 	}
 	
 	public default boolean isEllipse() {
@@ -64,7 +65,7 @@ public interface EllipseFitAlgebraic {
 			double a = p[0];
 			double b = p[1];
 			double c = p[2];
-			return (4*a*c - sqr(b)) > 0;
+			return (sqr(b) - 4*a*c) < 0;
 		}
 	}
 	

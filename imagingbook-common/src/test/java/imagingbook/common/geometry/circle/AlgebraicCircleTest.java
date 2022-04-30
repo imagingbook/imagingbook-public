@@ -23,10 +23,10 @@ public class AlgebraicCircleTest {
 		assertTrue(ac2.equals(ac1, 1e-9));
 	}
 
-	@Test		// test cloning
+	@Test		// test duplication
 	public void test2() {
 		AlgebraicCircle ac1 = new AlgebraicCircle(17, -23, 7, 6);
-		AlgebraicCircle ac2 = ac1.clone();
+		AlgebraicCircle ac2 = ac1.duplicate();
 		assertTrue(ac1.equals(ac2, 1e-6));
 	}
 	

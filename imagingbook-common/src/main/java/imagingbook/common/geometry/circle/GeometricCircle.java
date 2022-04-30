@@ -29,7 +29,7 @@ import imagingbook.common.math.Arithmetic;
  * @author WB
  *
  */
-public class GeometricCircle implements Circle, Cloneable, ShapeProvider, Curve2d {
+public class GeometricCircle implements ShapeProvider, Curve2d {
 	
 	private final double xc, yc, r;
 
@@ -89,7 +89,13 @@ public class GeometricCircle implements Circle, Cloneable, ShapeProvider, Curve2
 	
 	// --------------------------------------------------------------------------------
 	
-	@Override
+	/**
+	 * Return a vector of parameters for this circle.
+	 * The length of the vector and the meaning of the parameters depends
+	 * on the concrete circle type.
+	 * 
+	 * @return a vector of parameters
+	 */
 	public double[] getParameters() {
 		return new double[] {xc, yc, r};
 	}
@@ -189,13 +195,9 @@ public class GeometricCircle implements Circle, Cloneable, ShapeProvider, Curve2
 				Arithmetic.equals(r, other.r, tolerance) ;
 	}
 	
-	@Override
-	public GeometricCircle clone() {
-		GeometricCircle copy = null;
-		try {
-			copy = (GeometricCircle) super.clone();
-		} catch (CloneNotSupportedException e) { }
-		return copy;
+
+	public GeometricCircle duplicate() {
+		return new GeometricCircle(this.getParameters());
 	}
 	
 	@Override

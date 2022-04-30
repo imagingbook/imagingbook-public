@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.geometry.ellipse;
+package imagingbook.common.geometry.ellipse.project;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 import static imagingbook.common.math.Matrix.add;
@@ -19,6 +19,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 /**
  * Abstract superclass of ellipse projectors, used to find the

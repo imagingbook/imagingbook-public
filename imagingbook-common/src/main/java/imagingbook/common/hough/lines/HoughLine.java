@@ -82,9 +82,7 @@ public class HoughLine extends HessianLine implements Comparable<HoughLine>, Sha
 	 * @param count pixel votes for this line
 	 */
 	public HoughLine(AlgebraicLine line, double xR, double yR, int count) {
-		super(line.getA(),
-			  line.getB(),
-			  line.getC() + line.getA()*(xR-line.getXref()) + line.getB()*(yR-line.getYref())); // = a', b', c'
+		super(line.A, line.B, line.C + line.A*(xR-line.getXref()) + line.B*(yR-line.getYref())); // = a', b', c'
 		this.xRef = xR;
 		this.yRef = yR;
 		this.count = count;

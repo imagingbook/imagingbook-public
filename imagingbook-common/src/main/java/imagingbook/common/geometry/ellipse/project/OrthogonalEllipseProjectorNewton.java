@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.geometry.ellipse;
+package imagingbook.common.geometry.ellipse.project;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.abs;
@@ -14,20 +14,26 @@ import static java.lang.Math.max;
 import static java.lang.Math.pow;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.math.PrintPrecision;
 
 
 /**
+ * <p>
  * Calculates orthogonal projections of points onto an ellipse using
  * Newton-based iterative root finding.
- * NOTE that this version is quick but may fail to return a valid result if the 
+ * </p>
+ * <p>
+ * <strong>NOTE:</strong> This version is quick but may fail to return a valid result if the 
  * target point is close to the x- or y-axis.
  * See {@link OrthogonalEllipseProjector} for a robust solution
- * or {@link ConfocalConicEllipseProjector} for an approximate but 
+ * or {@link ConfocalConicEllipseProjector} for an approximate but
  * non-iterative (i.e., fast) alternative.
+ * </p>
  * 
  * @author WB
  * @see OrthogonalEllipseProjector
+ * @see ConfocalConicEllipseProjector
  */
 public class OrthogonalEllipseProjectorNewton extends EllipseProjector {
 	

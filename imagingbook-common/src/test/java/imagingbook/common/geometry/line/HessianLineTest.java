@@ -28,9 +28,9 @@ public class HessianLineTest {
 		Assert.assertEquals(0.0, h12.getDistance(p1), 1E-6);						// x1 is actually ON the line
 		Assert.assertEquals(0.0, h12.getDistance(p2), 1E-6);						// x1 is actually ON the line
 		
-		Assert.assertEquals(-0.4678877204190327, h12.getA(), 1E-6);
-		Assert.assertEquals(0.8837879163470618, h12.getB(), 1E-6);
-		Assert.assertEquals(5.198752449100363, h12.getC(), 1E-6);
+		Assert.assertEquals(-0.4678877204190327, h12.A, 1E-6);
+		Assert.assertEquals(0.8837879163470618, h12.B, 1E-6);
+		Assert.assertEquals(5.198752449100363, h12.C, 1E-6);
 		
 		Assert.assertEquals(2.0576955586061656, h12.getAngle(), 1E-6);
 		Assert.assertEquals(-5.198752449100363, h12.getRadius(), 1E-6);

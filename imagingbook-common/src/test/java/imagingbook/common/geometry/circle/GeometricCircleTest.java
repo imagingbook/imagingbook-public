@@ -19,10 +19,10 @@ public class GeometricCircleTest {
 	}
 
 	
-	@Test	// test cloning
+	@Test	// test duplication
 	public void test2() {
 		GeometricCircle gc1 = new GeometricCircle(17, -23, 7);
-		GeometricCircle gc2 = gc1.clone();
+		GeometricCircle gc2 = gc1.duplicate();
 		assertTrue(gc1.equals(gc2, 1e-6));
 	}
 }

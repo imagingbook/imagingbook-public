@@ -23,8 +23,9 @@ import java.util.Locale;
 import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.ShapeProvider;
+import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
 import imagingbook.common.math.Arithmetic;
-import imagingbook.common.math.PrintPrecision;
+
 
 /**
  * Represents an ellipse shape with 
@@ -143,7 +144,7 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 	}
 	
 	public double getAlgebraicDistance(Pnt2d p) {
-		return AlgebraicEllipse.from(this).getAlgebraicDistance(p);
+		return new AlgebraicEllipse(this).getAlgebraicDistance(p);
 	}
 	
 	/**
@@ -202,7 +203,7 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		return new Shape[] {
 				getOuterShape(),
 				getCenterShape(scale),
-				//getAxisShape()
+				getAxisShape()
 		};
 	}
 	
@@ -227,7 +228,6 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 		return path;
 	}
 	
-	@SuppressWarnings("unused")
 	private Shape getAxisShape() {
 		double dxa = ra * cos(theta);
 		double dya = ra * sin(theta);
@@ -248,48 +248,35 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 	
 	// -------------------------------
 	
+	public GeometricEllipse duplicate() {
+		return new GeometricEllipse(this.getParameters());
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof GeometricEllipse)) {
+            return false;
+        }
+		return this.equals((GeometricEllipse) other, Arithmetic.EPSILON_DOUBLE);
+	}
+	
+	public boolean equals(GeometricEllipse other, double tolerance) {
+		return 
+				Arithmetic.equals(xc, other.xc, tolerance) &&
+				Arithmetic.equals(yc, other.yc, tolerance) &&
+				Arithmetic.equals(ra, other.ra, tolerance) &&
+				Arithmetic.equals(rb, other.rb, tolerance) &&
+				Arithmetic.equals(Math.cos(theta), Math.cos(other.theta), tolerance) &&
+				Arithmetic.equals(Math.sin(theta), Math.sin(other.theta), tolerance) ;
+	}
+	
 	@Override
 	public String toString() {
 		return String.format(Locale.US, "%s [ra=%.8f, rb=%.8f, xc=%.8f, yc=%.8f, theta=%.8f]", 
 				this.getClass().getSimpleName(), ra, rb, xc, yc, theta);
 	}
-	
-	// ----------------------------------------------------------
-	
-	public static void main(String[] args) {
-		PrintPrecision.set(12);
-		
-//		Ellipse e1 = new Ellipse( 13, 77, 66, 33, Math.PI/2+9.5);
-//		System.out.println("e1 = " + e1.toString());
-//		AlgebraicEllipse a1 = AlgebraicEllipse.from(e1);
-//		System.out.println("a1 = " + a1.toString());
-//		
-//		Ellipse e2 = Ellipse.from(a1);
-//		System.out.println("e2 = " + e2.toString());
-//		AlgebraicEllipse a2 = AlgebraicEllipse.from(e2);
-//		System.out.println("a2 = " + a2.toString());
-		
-		GeometricEllipse ell = new GeometricEllipse(6, 5, 0, 0, 0);
-		
-		Pnt2d x = Pnt2d.from(0, -0.000000001);
-		System.out.println("x  = " + x);
-		
-		Pnt2d xp = ell.getClosestPoint(x);
-		System.out.println("xp = " + xp);
-		
-		// ---------------------------------------------
-		
-//		Ellipse eg = new Ellipse(120, 50, 200, 200, 0.4);
-//		Ellipse eg = new Ellipse(120, 50, 200, 200, 0.0);
-		GeometricEllipse eg1 = new GeometricEllipse(120, 50, 200, 200, Math.PI/2);
-		System.out.println("eg1 = " + eg1.toString());
-		System.out.println("eg = " + eg1.toString());
-		AlgebraicEllipse ea = AlgebraicEllipse.from(eg1);
-		System.out.println("ea = " + ea.toString());
-		GeometricEllipse eg2 = new GeometricEllipse(ea);
-		System.out.println("eg2 = " + eg2.toString());
-		
-	}
-
 
 }

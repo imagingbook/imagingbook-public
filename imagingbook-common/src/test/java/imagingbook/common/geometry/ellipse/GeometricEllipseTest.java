@@ -9,6 +9,9 @@
 package imagingbook.common.geometry.ellipse;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -16,23 +19,57 @@ import imagingbook.common.geometry.basic.Pnt2d;
 
 public class GeometricEllipseTest {
 	
-	private static final double TOL = 0.001;
+	private static final double TOL = 1e-6;
 
-	@Test
-	public void testGeometricToAlgebraicEllipseConversion() {		
-		GeometricEllipse eg1 = new GeometricEllipse(120, 50, 200, -70, Math.PI/3);
-		AlgebraicEllipse ea = AlgebraicEllipse.from(eg1);	
-		GeometricEllipse eg2 = new GeometricEllipse(ea);
-
-		assertEquals(eg1.ra, eg2.ra, TOL);
-		assertEquals(eg1.rb, eg2.rb, TOL);
-		assertEquals(eg1.xc, eg2.xc, TOL);
-		assertEquals(eg1.yc, eg2.yc, TOL);
-		assertEquals(eg1.theta, eg2.theta, TOL);
+	@Test		// GeometricEllipse to/from AlgebraicEllipse conversion
+	public void test1() {
+		{
+			GeometricEllipse ge1 = new GeometricEllipse(120, 50, 200, -70, Math.PI/3);
+			AlgebraicEllipse ae1 = new AlgebraicEllipse(ge1);	
+			GeometricEllipse ge2 = new GeometricEllipse(ae1);
+	
+			assertTrue(ge1.equals(ge2, TOL));
+			assertTrue(ge2.equals(ge1, TOL));
+		}
+		{	// axis lengths reversed, big angle
+			GeometricEllipse ge1 = new GeometricEllipse(50, 120, 200, -70, 1000);
+			AlgebraicEllipse ae1 = new AlgebraicEllipse(ge1);	
+			GeometricEllipse ge2 = new GeometricEllipse(ae1);
+	
+			assertTrue(ge1.equals(ge2, TOL));
+			assertTrue(ge2.equals(ge1, TOL));
+		}
 	}
 	
-	@Test
-	public void testGeometricEllipseClosestPoint() {	
+	@Test		// GeometricEllipse to/from AlgebraicEllipse conversion (random)
+	public void test2() {
+		Random rg = new Random(17);
+		for (int i = 0; i < 1000; i++) {
+			double ra = 1 + 100 * rg.nextDouble();
+			double rb = 1 + 100 * rg.nextDouble();
+			double xc = 500 * (rg.nextDouble() - 0.5);
+			double yc = 500 * (rg.nextDouble() - 0.5);
+			double theta = 20 * (rg.nextDouble() - 0.5);
+			
+			GeometricEllipse ge1 = new GeometricEllipse(ra, rb, xc, yc, theta);
+			AlgebraicEllipse ae1 = new AlgebraicEllipse(ge1);	
+			GeometricEllipse ge2 = new GeometricEllipse(ae1);
+	
+			assertTrue(ge1.equals(ge2, TOL));
+		}
+	}
+	
+	
+	@Test		// check duplicate and equals
+	public void test3() {
+		GeometricEllipse ge1 = new GeometricEllipse(120, 50, 200, -70, Math.PI/3);
+		GeometricEllipse ge2 = ge1.duplicate();
+		assertTrue(ge1.equals(ge2, TOL));
+		assertTrue(ge2.equals(ge1, TOL));
+	}
+	
+	@Test	// GeometricEllipse closest point
+	public void test4() {	
 		GeometricEllipse ell = new GeometricEllipse(6, 5, 0, 0, 0);
 		{
 			Pnt2d x = Pnt2d.from(0, -0.000000001);

@@ -13,53 +13,90 @@ import static imagingbook.common.math.Matrix.multiply;
 import static imagingbook.common.math.Matrix.normL2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 
 import java.util.Locale;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
+/**
+ * Represents an algebraic ellipse with the implicit equation
+ * A x^2 + B x y + C y^2 + D x + E y + F = 0.
+ * Parameters [A, ..., F] are normalized such that B^2 - 4 A C = -1.
+ * Instances are immutable.
+ * 
+ * @author WB
+ */
 public class AlgebraicEllipse implements Ellipse {
-	
-	/**
-	 * Represents an algebraic ellipse of the form
-	 * A x^2 + B xy + C y^2 + D x + E y + F = 0
-	 * 
-	 * @author WB
-	 */
 	
 	public final double A, B, C, D, E, F;
 	
+	/**
+	 * The main constructor.
+	 * Creates a {@link AlgebraicEllipse} instance by normalizing the
+	 * supplied parameters [A,...,F] such that d = B^2 - 4 A C = -1.
+	 * Throws an exception if d is non-negative.
+	 * 
+	 * @param A parameter A
+	 * @param B parameter B
+	 * @param C parameter C
+	 * @param D parameter D
+	 * @param E parameter E
+	 * @param F parameter F
+	 */
 	public AlgebraicEllipse(double A, double B, double C, double D, double E, double F) {
-		this(new double[] {A, B, C, D, E, F});
+		double d = sqr(B) - 4 * A * C;
+		if (d > -Arithmetic.EPSILON_DOUBLE) {	// discriminant (d) must be negative!
+			throw new IllegalArgumentException("illegal ellipse parameters, non-negative discriminant " + d);
+		}
+		// d < 0, normalize to B^2 - 4 A C = -1
+		double s = 1 / sqrt(-d);
+		if (A >= 0) {
+			this.A = A * s;
+			this.B = B * s;
+			this.C = C * s;
+			this.D = D * s;
+			this.E = E * s;
+			this.F = F * s;
+		}
+		else {
+			this.A = -A * s;
+			this.B = -B * s;
+			this.C = -C * s;
+			this.D = -D * s;
+			this.E = -E * s;
+			this.F = -F * s;
+		}
 	}
 	
+	/**
+	 * Constructor. Creates a {@link AlgebraicEllipse} instance from the
+	 * specified parameter vector [A,...,F].
+	 * 
+	 * @param p algebraic ellipse parameters
+	 */
 	public AlgebraicEllipse(double[] p) {
-		p = Matrix.normalize(p);
-		A = p[0];
-		B = p[1];
-		C = p[2];
-		D = p[3];
-		E = p[4];
-		F = p[5];
+		this(p[0], p[1], p[2], p[3], p[4], p[5]);
 	}
 	
-	public static AlgebraicEllipse from(double[] p) {
-		return (p == null) ? null : new AlgebraicEllipse(p);
+	/**
+	 * Constructor. Creates a {@link AlgebraicEllipse} instance from
+	 * a {@link GeometricEllipse}.
+	 * 
+	 * @param ge a {@link GeometricEllipse}
+	 */
+	public AlgebraicEllipse(GeometricEllipse ge) {
+		this(getAlgebraicEllipseParameters(ge));
 	}
 	
-	@Override
-	public double[] getParameters() {
-		return new double[] {A, B, C, D, E, F};
-	}
-	
-	public static AlgebraicEllipse from(GeometricEllipse ell) {
-		double ra = ell.ra;
-		double rb = ell.rb;
-		double xc = ell.xc;
-		double yc = ell.yc;
-		double theta = ell.theta;
+	private static double[] getAlgebraicEllipseParameters(GeometricEllipse ge) {
+		double ra = ge.ra;
+		double rb = ge.rb;
+		double xc = ge.xc;
+		double yc = ge.yc;
+		double theta = ge.theta;
 		
 		double cosT = cos(theta);
 		double sinT = sin(theta);
@@ -69,61 +106,26 @@ public class AlgebraicEllipse implements Ellipse {
 		double C = sqr(ra * cosT) + sqr(rb * sinT);
 		double D = -2 * A * xc - B * yc;
 		double E = -2 * C * yc - B * xc;
-		double F = A * sqr(xc) + B * xc * yc + C * sqr(yc) - sqr(ra * rb);
-		
-		return new AlgebraicEllipse(A, B, C, D, E, F);
+		double F = A * sqr(xc) + B * xc * yc + C * sqr(yc) - sqr(ra * rb);	
+		return new double[] {A, B, C, D, E, F};
+	}
+	
+	@Override
+	public double[] getParameters() {
+		return new double[] {A, B, C, D, E, F};
 	}
 	
 	public double getAlgebraicDistance(Pnt2d p) {
 		double x = p.getX();
 		double y = p.getY();
-
-//		double s = 1.0 / Math.sqrt(4*A*C - sqr(B));
-//		double s = 1.0 / (4*A*C - sqr(B));
 		return A * sqr(x) + B * x * y + C * sqr(y) + D * x + E * y + F;
-//		double a = s * A;
-//		double b = s * B;
-//		double c = s * C;
-//		double d = s * D;
-//		double e = s * E;
-//		double f = s * F;
-		
-//		System.out.println("norm = " + (4*a*c - sqr(b)));
-//		return a * sqr(x) + b * x * y + c * sqr(y) + d * x + e * y + f;
 	}
-	
-	
-//	public double getSampsonDistance1(Pnt2d p) {
-//		double x = p.getX();
-//		double y = p.getY();
-//		double da = A * sqr(x) + B * x * y + C * sqr(y) + D * x + E * y + F;	// algebraic distance
-//		double s = 2 * sqrt(sqr(A*x + B*y/2 + D) + sqr(B*x/2 + C*y + F));
-//		return Math.abs(da) / s;
-//	}
-	
-//	public double getSampsonDistance2(Pnt2d p) {
-//		double x = p.getX();
-//		double y = p.getY();
-//		double da = A*sqr(x) + B*x*y + C*sqr(y) + D*x + E*y + F;	// algebraic distance
-//		System.out.println("   da = " + da);
-//		double s = 4 * (sqr(A*x + B*y/2 + D) + sqr(B*x/2 + C*y + F));
-//		return sqr(da) / s;
-//	}
-	
 	
 	public double getSampsonDistance(Pnt2d p) {
 		double x = p.getX();
 		double y = p.getY();
 		double ad = A * sqr(x) + B * x * y + C * sqr(y) + D * x + E * y + F;	// algebraic distance
-//		System.out.println("   ad = " + ad);
-		
-//		RealVector J = Matrix.makeRealVector(2*A*x + B*y + D, B*x + 2*C*y + E);
-//		System.out.println("J = " + Matrix.toString(J));
-//		double nJ = J.getNorm();
-		
-		// norm of gradient of da at (x,y)
 		double nGrad = Math.hypot(2*A*x + B*y + D, 2*C*y + B*x + E);
-//		System.out.println("nJ = " + nJ);
 		return ad / nGrad;
 	}
 	
@@ -138,13 +140,37 @@ public class AlgebraicEllipse implements Ellipse {
 		
 		double[][] H = {{ 2*A, B }, { B, 2*C }};
 		double gd = sd * (1 + G * Matrix.dotProduct(multiply(gV, H), gV) / (2 * Math.pow(ngV, 4)));
-		
 		return gd;
 	}
 	
+	// --------------------------------------------------------------------------
+	
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof AlgebraicEllipse)) {
+            return false;
+        }
+		return this.equals((AlgebraicEllipse) other, Arithmetic.EPSILON_DOUBLE);
+	}
+	
+	public boolean equals(AlgebraicEllipse other, double tolerance) {
+		return 
+				Arithmetic.equals(A, other.A, tolerance) &&
+				Arithmetic.equals(B, other.B, tolerance) &&
+				Arithmetic.equals(C, other.C, tolerance) &&
+				Arithmetic.equals(D, other.D, tolerance) &&
+				Arithmetic.equals(E, other.E, tolerance) &&
+				Arithmetic.equals(F, other.F, tolerance) ;
+	}
 	
 	// --------------------------------------------------------------------------
 	
+	public AlgebraicEllipse duplicate() {
+		return new AlgebraicEllipse(this.getParameters());
+	}
 	
 	@Override
 	public String toString() {
@@ -155,23 +181,21 @@ public class AlgebraicEllipse implements Ellipse {
 	
 	// --------------------------------------------------------------------------
 	
-	public static void main(String[] args) {
-		PrintPrecision.set(9);
-		GeometricEllipse eg  = new GeometricEllipse(150, 50, 150, 150, 0.5);
-		System.out.println("eg = " + eg);
-		AlgebraicEllipse ea = AlgebraicEllipse.from(eg);
-		System.out.println("ea = " + ea);
-		
-		Pnt2d p = Pnt2d.from(300, 300);
-		System.out.println("p  = " + p);
-		Pnt2d pc = eg.getClosestPoint(p);
-		System.out.println("pc = " + pc);
-		
-//		System.out.println("Sampson dist1(p) = " + ea.getSampsonDistance1(p));
-//		System.out.println("Sampson dist2(p) = " + ea.getSampsonDistance2(p));
-		System.out.println("Sampson distS(p) = " + ea.getSampsonDistance(p));
-		System.out.println("Gonch distS(p) = " + ea.getGoncharovaDistance(p));
-		
-	}
+//	public static void main(String[] args) {
+//		PrintPrecision.set(9);
+//		GeometricEllipse eg  = new GeometricEllipse(150, 50, 150, 150, 0.5);
+//		System.out.println("eg = " + eg);
+//		AlgebraicEllipse ea = new AlgebraicEllipse(eg);
+//		System.out.println("ea = " + ea);
+//		
+//		Pnt2d p = Pnt2d.from(300, 300);
+//		System.out.println("p  = " + p);
+//		Pnt2d pc = eg.getClosestPoint(p);
+//		System.out.println("pc = " + pc);
+//		
+//		System.out.println("Sampson dist(p) = " + ea.getSampsonDistance(p));
+//		System.out.println("Gonch dist(p) = " + ea.getGoncharovaDistance(p));
+//		
+//	}
 
 }
