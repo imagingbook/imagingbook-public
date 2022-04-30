@@ -29,7 +29,7 @@ import imagingbook.common.math.Matrix;
  * 
  * @author WB
  */
-public class AlgebraicEllipse implements Ellipse {
+public class AlgebraicEllipse {
 	
 	public final double A, B, C, D, E, F;
 	
@@ -110,7 +110,13 @@ public class AlgebraicEllipse implements Ellipse {
 		return new double[] {A, B, C, D, E, F};
 	}
 	
-	@Override
+	/**
+	 * Return a vector of parameters for this ellipse.
+	 * The length of the vector and the meaning of the parameters depends
+	 * on the concrete ellipse type.
+	 * 
+	 * @return a vector of parameters [A, B, C, D, E, F]
+	 */
 	public double[] getParameters() {
 		return new double[] {A, B, C, D, E, F};
 	}

@@ -35,7 +35,7 @@ import imagingbook.common.math.Arithmetic;
  * @author WB
  *
  */
-public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
+public class GeometricEllipse implements ShapeProvider, Curve2d {
 	
 	public final double ra, rb, xc, yc, theta;	// TODO: make private!
 	private final OrthogonalEllipseProjector projector;
@@ -130,7 +130,14 @@ public class GeometricEllipse implements Ellipse, ShapeProvider, Curve2d {
 	
 	// ---------------------------------------
 	
-	@Override
+
+	/**
+	 * Return a vector of parameters for this ellipse.
+	 * The length of the vector and the meaning of the parameters depends
+	 * on the concrete ellipse type.
+	 * 
+	 * @return a vector of parameters [ra, rb, xc, yc, theta]
+	 */
 	public double[] getParameters() {
 		return new double[] {ra, rb, xc, yc, theta};
 	}
