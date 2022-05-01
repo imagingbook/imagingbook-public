@@ -49,7 +49,7 @@ public class AlgebraicLineTest {
 	@Test
 	public void test3() {
 		AlgebraicLine L1 = new AlgebraicLine(10, 15, -2);
-		AlgebraicLine L2 = new AlgebraicLine(L1);
+		AlgebraicLine L2 = new AlgebraicLine(L1.getParameters());
 		Assert.assertTrue(L1.equals(L2));
 		Assert.assertTrue(L2.equals(L1));
 	}

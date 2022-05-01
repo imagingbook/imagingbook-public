@@ -36,8 +36,8 @@ public class HessianLineTest {
 		assertEquals(0.8837879163470618, H1.B, TOL);
 		assertEquals(5.198752449100363, H1.C, TOL);
 		
-		assertEquals(2.0576955586061656, H1.angle, TOL);
-		assertEquals(-5.198752449100363, H1.radius, TOL);
+		assertEquals(2.0576955586061656, H1.getAngle(), TOL);
+		assertEquals(-5.198752449100363, H1.getRadius(), TOL);
 	}
 	
 	@Test
@@ -46,8 +46,8 @@ public class HessianLineTest {
 		double radius = 80;
 		HessianLine H1 = new HessianLine(angle, radius);
 		HessianLine H2 = new HessianLine(H1);
-		assertEquals(angle, H2.angle, TOL);
-		assertEquals(radius, H2.radius, TOL);
+		assertEquals(angle, H2.getAngle(), TOL);
+		assertEquals(radius, H2.getRadius(), TOL);
 		
 		assertTrue(H1.equals(H2, TOL));
 		assertTrue(H2.equals(H1, TOL));

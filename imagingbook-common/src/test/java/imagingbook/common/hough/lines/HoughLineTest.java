@@ -32,11 +32,14 @@ public class HoughLineTest {
 	public void test0() {
 		// example from CV lecture notes
 		Pnt2d xRef = PntInt.from(90, 60);
-		AlgebraicLine AL1 = AlgebraicLine.from(p1, p2);
+		AlgebraicLine AL = AlgebraicLine.from(p1, p2);
 	
-		HoughLine HL12 = new HoughLine(AL1, xRef.getX(), xRef.getY(), 0);
-		assertEquals(0.0, HL12.getDistance(p1), TOL);
-		assertEquals(0.0, HL12.getDistance(p2), TOL);
+		HoughLine HL = new HoughLine(AL, xRef.getX(), xRef.getY(), 0);
+		assertEquals(0.0, HL.getDistance(p1), TOL);
+		assertEquals(0.0, HL.getDistance(p2), TOL);
+		
+		assertTrue(HL.equals(AL, TOL));
+		assertTrue(AL.equals(HL, TOL));
 	}
 
 	@Test
@@ -94,12 +97,11 @@ public class HoughLineTest {
 		assertEquals(0.0, HL1.getDistance(p2), TOL);
 		
 		// create a duplicate HoughLine from L1's angle and radius
-		HoughLine HL2 = new HoughLine(HL1.angle, HL1.radius, pRef.getX(), pRef.getY(), 2);
+		HoughLine HL2 = new HoughLine(HL1.getAngle(), HL1.getRadius(), pRef.getX(), pRef.getY(), 2);
 		// check if the two points are on this line too
 		assertEquals(0.0, HL2.getDistance(p1), TOL);
 		assertEquals(0.0, HL2.getDistance(p2), TOL);
 		assertTrue(HL1.equals(HL2, TOL));
-		
 		
 		// create a duplicate HoughLine directly from HL1 (using the same reference point)
 		HoughLine HL3 = new HoughLine(HL1, pRef.getX(), pRef.getY(), 2);
@@ -124,12 +126,55 @@ public class HoughLineTest {
 		
 		// create HL (with specific reference point):
 		double xR = 10, yR = 50;
-		double a2 = a1, b2 = b1, c2 = c1 + a1 * xR + b1 * yR;
-		HoughLine HL = new HoughLine(a2, b2, c2, xR, yR, 0);
 		
-		// make sure both are "equivalent" (contain the same points (x,y))
+		HoughLine HL = new HoughLine(AL, xR, yR, 0);
+		
 		assertTrue(AL.equals(HL, TOL));
 		assertTrue(HL.equals(AL, TOL));
 	}
+	
+	@Test	// copy the reference point of a HoughLine
+	public void test6() {
+		HoughLine HL1 = HoughLine.fromPoints(p1, p2, pRef, 2);
+//		System.out.println("HL1 = " + HL1);
+		
+		HoughLine HL2 = new HoughLine(HL1);
+//		System.out.println("HL2 = " + HL2);
+		
+		// the 2 lines must be equal (describe the same points)
+		assertTrue(HL1.equals(HL2, TOL));
+		assertTrue(HL2.equals(HL1, TOL));
+		
+		// the 2 lines must have the same reference point
+		assertEquals(HL1.getXref(), HL2.getXref(), TOL);
+		assertEquals(HL1.getYref(), HL2.getYref(), TOL);
+	}
 
+	@Test	// change the reference point of a HoughLine
+	public void test7() {
+		Pnt2d pRefA = PntInt.from(70, 50);
+		Pnt2d pRefB = PntInt.from(-5, 19);
+
+		HoughLine HL1 = HoughLine.fromPoints(p1, p2, pRefA, 2);
+		HoughLine HL2 = HoughLine.fromPoints(p1, p2, pRefB, 2);
+			
+//		System.out.println("HL1 = " + HL1);
+//		System.out.println("HL2 = " + HL2);
+		
+		// the 2 lines must be equal (describe the same points)
+		assertTrue(HL1.equals(HL2, TOL));
+		assertTrue(HL2.equals(HL1, TOL));
+
+		
+		HoughLine HL3 = new HoughLine(HL1, pRefB.getX(), pRefB.getY(), 2);
+//		System.out.println("HL3 = " + HL3);
+		assertTrue(HL1.equals(HL3, TOL));
+		assertTrue(HL3.equals(HL1, TOL));
+		
+		// the 2 lines must have the same reference point
+		assertEquals(HL2.getXref(), HL3.getXref(), TOL);
+		assertEquals(HL2.getYref(), HL3.getYref(), TOL);
+	}
+
+	
 }

@@ -35,11 +35,11 @@ public class LineTest {
 			assertTrue(L1.equals(L2, TOL));
 		}
 		
-		{
-			HessianLine H1 =  new HessianLine(L1);
-			AlgebraicLine L2 = new AlgebraicLine(H1);
-			assertTrue(L1.equals(L2, TOL));
-		}
+//		{
+//			HessianLine H1 =  new HessianLine(L1);
+//			AlgebraicLine L2 = new AlgebraicLine(H1);
+//			assertTrue(L1.equals(L2, TOL));
+//		}
 		
 	}
 

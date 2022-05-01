@@ -22,8 +22,8 @@ import imagingbook.common.geometry.basic.Pnt2d;
  */
 public class HessianLine extends AlgebraicLine {
 	
-	public final double angle;
-	public final double radius;
+//	private final double angle;
+//	private final double radius;
 	
 	// static factory methods ----------------------------------------
 	
@@ -34,25 +34,38 @@ public class HessianLine extends AlgebraicLine {
 	// constructors --------------------------------------------------
 
 	public HessianLine(double angle, double radius) {
-		this(Math.cos(angle), Math.sin(angle), -radius);	// = A, B, C
+		super(Math.cos(angle), Math.sin(angle), -radius);	// = A, B, C
 	}
 	
 	public HessianLine(double A, double B, double C) {
 		super(A, B, C);						// creates a normalized line
-		this.angle = Math.atan2(this.B, this.A);
-		this.radius = -this.C; 			// ... / Math.sqrt(sqr(this.a) + sqr(this.b));
+//		this.angle = Math.atan2(this.B, this.A);
+//		this.radius = -this.C; 			// ... / Math.sqrt(sqr(this.a) + sqr(this.b));
 	}
 	
+	// TODO: what is this for?
 	public HessianLine(AlgebraicLine L) {
-		this(L.A, L.B, L.C);
+//		this(L.A, L.B, L.C);
+		super(L.getParameters());
 	}
+	
+	public double getAngle() {
+//		return this.angle;
+		return Math.atan2(this.B, this.A);
+	}
+	
+	public double getRadius() {
+//		return this.radius;
+		return -this.C;
+	}
+	
 	
 	// -------------------------------------------------------------------
 	
 	@Override
 	public String toString() {
 		return String.format(Locale.US, "%s <angle = %.3f, radius = %.3f>",
-				this.getClass().getSimpleName(), angle, radius);
+				this.getClass().getSimpleName(), getAngle(), getRadius());
 	}
 
 }

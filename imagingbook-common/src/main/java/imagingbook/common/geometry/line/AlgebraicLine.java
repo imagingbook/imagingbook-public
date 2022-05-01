@@ -12,11 +12,13 @@ import static imagingbook.common.math.Arithmetic.isZero;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import java.awt.Shape;
+import java.awt.geom.Path2D;
 import java.util.Locale;
 
 import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.basic.ShapeProvider;
 import imagingbook.common.hough.lines.HoughLine;
 import imagingbook.common.math.Arithmetic;
 
@@ -26,38 +28,46 @@ import imagingbook.common.math.Arithmetic;
  * @author WB
  *
  */
-public class AlgebraicLine implements Curve2d {
+public class AlgebraicLine implements Curve2d, ShapeProvider {
 	
 	public final double A, B, C;
 	
 	// constructors --------------------------------------------------
 
-	public AlgebraicLine(double a, double b, double c) {
-		double norm = Math.sqrt(sqr(a) + sqr(b));
+	/**
+	 * Constructor. Creates a {@link AlgebraicLine} instance with parameters A, B, C.
+	 * @param A line parameter A
+	 * @param B line parameter B
+	 * @param C line parameter C
+	 */
+	public AlgebraicLine(double A, double B, double C) {
+		double norm = Math.sqrt(sqr(A) + sqr(B));
 		if (isZero(norm)) {
 			throw new IllegalArgumentException("a and b may not both be zero");
 		}
-		this.A = a / norm;
-		this.B = b / norm;
-		this.C = c / norm;
+		this.A = A / norm;
+		this.B = B / norm;
+		this.C = C / norm;
 	}
 	
+	/**
+	 * Constructor.  Creates a {@link AlgebraicLine} instance from a 
+	 * parameter vector [A, B, C].
+	 * @param p parameter vector [A, B, C]
+	 */
 	public AlgebraicLine(double[] p) {
 		this(p[0], p[1], p[2]);
 	}
 	
-	public AlgebraicLine(AlgebraicLine L) {
-		this(L.A, L.B, L.C);
-	}
 	
 	// static factory methods ----------------------------------------
 	
 	// Line from start point s and direction vector v
 	public static AlgebraicLine from(double[] s, double[] v) {
-		double A = -v[1];
-		double B = v[0];
-		double C = v[1] * s[0] - v[0] * s[1];
-		return new AlgebraicLine(A, B, C);
+		double a = -v[1];
+		double b = v[0];
+		double c = v[1] * s[0] - v[0] * s[1];
+		return new AlgebraicLine(a, b, c);
 	}
 	
 	public static AlgebraicLine from(ParametricLine pl) {
@@ -65,10 +75,6 @@ public class AlgebraicLine implements Curve2d {
 	}
 	
 	public static AlgebraicLine from(Pnt2d p0, Pnt2d p1) {
-//		double A = p0.getY() - p1.getY();
-//		double B = p1.getX() - p0.getX();
-//		double C = -A * p0.getX() - B * p0.getY();
-//		return new AlgebraicLine(A, B, C);
 		double[] s = p0.toDoubleArray();
 		double[] v = p1.minus(p0).toDoubleArray();
 		return AlgebraicLine.from(s, v);
@@ -78,9 +84,6 @@ public class AlgebraicLine implements Curve2d {
 	public static AlgebraicLine from(SlopeInterceptLine sil) {
 		double a = sil.getK();
 		double c = sil.getD();
-//		Pnt2d p0 = Pnt2d.from(0, B);
-//		Pnt2d p1 = Pnt2d.from(1, A + B);
-//		return AlgebraicLine.from(p0, p1);
 		return new AlgebraicLine(a, -1, c);
 	}
 	
@@ -89,18 +92,6 @@ public class AlgebraicLine implements Curve2d {
 	public double[] getParameters() {
 		return new double[] {A, B, C};
 	}
-	
-//	public final double getA() {
-//		return A;
-//	}
-
-//	public final double getB() {
-//		return B;
-//	}
-//
-//	public final double getC() {
-//		return C;
-//	}
 	
 	/**
 	 * Returns the x-coordinate of the reference point.
@@ -212,11 +203,50 @@ public class AlgebraicLine implements Curve2d {
 	
 	// -------------------------------------------------------------------
 	
-	// TODO: this is temporary, write a general method (without HoughLine)!
-	public Shape getShape(int width, int height) {
-		HoughLine hl = new HoughLine(this, 0.5 * width, 0.5 * height, 0);
-		return hl.getShape(width, height);
+	@Override
+	public Shape getShape(double length) {
+		double xRef = this.getXref();
+		double yRef = this.getYref();
+//		double angle = Math.atan2(this.B, this.A); 	//this.getAngle();
+		double radius = -this.C;					//this.getRadius();
+		// unit vector perpendicular to the line
+		double dx = this.A; 						// Math.cos(angle);	
+		double dy = this.B;							// Math.sin(angle);
+		// calculate the line's center point (closest to the reference point)
+		double x0 = xRef + radius * dx;
+		double y0 = yRef + radius * dy;
+		// calculate the line end points (using normal vectors)
+		double x1 = x0 + dy * length;
+		double y1 = y0 - dx * length;
+		double x2 = x0 - dy * length;
+		double y2 = y0 + dx * length;
+		Path2D path = new Path2D.Double();
+		path.moveTo(x1, y1);
+		path.lineTo(x2, y2);
+		return path;
 	}
+	
+	/**
+	 * Returns a {@link Shape} for this line to be drawn in a canvas of the
+	 * specified size. Since an algebraic line is of infinite extent, we need
+	 * to know the drawing size. The returned line segment is sufficiently long 
+	 * to cover the entire canvas, i.e., both end points are outside the
+	 * canvas.
+	 *
+	 * @param width the width of the drawing canvas
+	 * @param height the height of the drawing canvas
+	 * @return
+	 */
+	public Shape getShape(int width, int height) {
+		double length = Math.sqrt(sqr(width) + sqr(height));
+		return this.getShape(length);
+	}
+	
+//	public Shape getShape(int width, int height) {
+//		HoughLine hl = new HoughLine(this, 0.5 * width, 0.5 * height, 0);
+//		return hl.getShape(width, height);
+//		
+//	}
 	
 	// -------------------------------------------------------------------
 	
@@ -281,6 +311,7 @@ public class AlgebraicLine implements Curve2d {
 		Pnt2d y = L1.intersect(L1);	// --> null
 		System.out.println("y = " + y);
 	}
+
 }
 
 //	x = PntDouble[4.000, 3.000]
