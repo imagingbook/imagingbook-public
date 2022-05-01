@@ -122,7 +122,7 @@ public class HoughLine extends HessianLine implements Comparable<HoughLine>, Sha
 	@Override
 	public String toString() {
 		return String.format(Locale.US, "%s <angle = %.3f, radius = %.3f, xRef = %.3f, yRef = %.3f, count = %d>",
-				this.getClass().getSimpleName(), getAngle(), getRadius(), getXref(), getYref(), count);
+				this.getClass().getSimpleName(), angle, radius, getXref(), getYref(), count);
 	}
 	
 	// ------------------------------------------------------------------------------
@@ -131,8 +131,8 @@ public class HoughLine extends HessianLine implements Comparable<HoughLine>, Sha
 		double xRef = this.getXref();
 		double yRef = this.getYref();
 		double length = Math.sqrt(sqr(width) + sqr(height));
-		double angle = this.getAngle();
-		double radius = this.getRadius();
+//		double angle = this.getAngle();
+//		double radius = this.getRadius();
 		// unit vector perpendicular to the line
 		double dx = Math.cos(angle);	
 		double dy = Math.sin(angle);
@@ -155,8 +155,8 @@ public class HoughLine extends HessianLine implements Comparable<HoughLine>, Sha
 		double xRef = this.getXref();
 		double yRef = this.getYref();
 //		double length = Math.sqrt(sqr(width) + sqr(height)); //Math.sqrt(sqr(xRef) + sqr(yRef));
-		double angle = this.getAngle();
-		double radius = this.getRadius();
+//		double angle = this.getAngle();
+//		double radius = this.getRadius();
 		// unit vector perpendicular to the line
 		double dx = Math.cos(angle);	
 		double dy = Math.sin(angle);

@@ -105,7 +105,7 @@ public class AlgebraicLine implements Curve2d {
 	/**
 	 * Returns the x-coordinate of the reference point.
 	 * For a {@link AlgebraicLine}, the result is always zero.
-	 * Inheriting classes (like {@link HessianLine}) override this method.
+	 * Inheriting classes (like {@link HoughLine}) override this method.
 	 * 
 	 * @return the x-coordinate reference
 	 */
@@ -116,7 +116,7 @@ public class AlgebraicLine implements Curve2d {
 	/**
 	 * Returns the y-coordinate of the reference point.
 	 * For a {@link AlgebraicLine}, the result is always zero.
-	 * Inheriting classes (like {@link HessianLine}) override this method.
+	 * Inheriting classes (like {@link HoughLine}) override this method.
 	 * 
 	 * @return the y-coordinate reference
 	 */

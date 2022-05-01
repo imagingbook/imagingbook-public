@@ -94,7 +94,7 @@ public class HoughLineTest {
 		assertEquals(0.0, HL1.getDistance(p2), TOL);
 		
 		// create a duplicate HoughLine from L1's angle and radius
-		HoughLine HL2 = new HoughLine(HL1.getAngle(), HL1.getRadius(), pRef.getX(), pRef.getY(), 2);
+		HoughLine HL2 = new HoughLine(HL1.angle, HL1.radius, pRef.getX(), pRef.getY(), 2);
 		// check if the two points are on this line too
 		assertEquals(0.0, HL2.getDistance(p1), TOL);
 		assertEquals(0.0, HL2.getDistance(p2), TOL);

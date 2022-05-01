@@ -18,16 +18,12 @@ import imagingbook.common.geometry.basic.Pnt2d;
  * This class represents a straight line in Hessian normal form, i.e., 
  * x * cos(angle) + y * sin(angle) = radius.
  * It is a specialization (subclass) of {@link AlgebraicLine}.
- * Instances are immutable.
- * 
- * TODO: This class is unfinished! Handling reference points to be added/completed!
+ * Instances are immutable. Reference point is (0,0).
  */
 public class HessianLine extends AlgebraicLine {
 	
-	private final double angle;
-	private final double radius;
-	private final Pnt2d refPnt;	// reference point x_r, TODO: always zero!
-	
+	public final double angle;
+	public final double radius;
 	
 	// static factory methods ----------------------------------------
 	
@@ -38,38 +34,17 @@ public class HessianLine extends AlgebraicLine {
 	// constructors --------------------------------------------------
 
 	public HessianLine(double angle, double radius) {
-		this(Math.cos(angle), Math.sin(angle), -radius);	// = a, b, c
+		this(Math.cos(angle), Math.sin(angle), -radius);	// = A, B, C
 	}
 	
-	public HessianLine(double a, double b, double c) {
-		super(a, b, c);	// creates a normalized line
+	public HessianLine(double A, double B, double C) {
+		super(A, B, C);						// creates a normalized line
 		this.angle = Math.atan2(this.B, this.A);
-		this.radius = -this.C; // ... / Math.sqrt(sqr(this.a) + sqr(this.b));
-		this.refPnt = Pnt2d.from(0, 0);
+		this.radius = -this.C; 			// ... / Math.sqrt(sqr(this.a) + sqr(this.b));
 	}
 	
 	public HessianLine(AlgebraicLine L) {
 		this(L.A, L.B, L.C);
-	}
-	
-	// getter methods ------------------------------------------
-	
-	public double getAngle() {
-		return angle;
-	}
-
-	public double getRadius() {
-		return radius;
-	}
-	
-	@Override
-	public double getXref() {
-		return refPnt.getX();
-	}
-	
-	@Override
-	public double getYref() {
-		return refPnt.getY();
 	}
 	
 	// -------------------------------------------------------------------
