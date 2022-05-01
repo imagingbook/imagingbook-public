@@ -17,6 +17,8 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 public class AlgebraicLineTest {
 	
+	static double TOL = 1E-6;
+	
 	static Pnt2d p1 = PntInt.from(30, 10);
 	static Pnt2d p2 = PntInt.from(200, 100);
 	static Pnt2d p3 = PntInt.from(90, 40);
@@ -26,19 +28,22 @@ public class AlgebraicLineTest {
 		AlgebraicLine l12 = AlgebraicLine.from(p1, p2);		
 		AlgebraicLine l21 = AlgebraicLine.from(p2, p1);
 		
-		Assert.assertEquals(0.0, l12.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, l12.getDistance(p2), 1E-6);
+		Assert.assertTrue(l12.equals(l21, TOL));
+		Assert.assertTrue(l21.equals(l12, TOL));
 		
-		Assert.assertEquals(0.0, l21.getDistance(p1), 1E-6);
-		Assert.assertEquals(0.0, l21.getDistance(p2), 1E-6);
+		Assert.assertEquals(0.0, l12.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, l12.getDistance(p2), TOL);
+		
+		Assert.assertEquals(0.0, l21.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, l21.getDistance(p2), TOL);
 	}
 	
 	@Test
 	public void test2() {
 		AlgebraicLine l12 = AlgebraicLine.from(p1, p2);
 		Pnt2d x0 = l12.getClosestLinePoint(p3);
-		Assert.assertEquals(0.0, l12.getDistance(x0), 1E-6);						// x0 is actually ON the line
-		Assert.assertEquals(p3.distance(x0), Math.abs(l12.getDistance(p3)), 1E-6);	// distance (p3,x0) is shortest 
+		Assert.assertEquals(0.0, l12.getDistance(x0), TOL);						// x0 is actually ON the line
+		Assert.assertEquals(p3.distance(x0), Math.abs(l12.getDistance(p3)), TOL);	// distance (p3,x0) is shortest 
 	}
 
 	@Test

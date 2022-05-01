@@ -76,12 +76,12 @@ public class AlgebraicLine implements Curve2d {
 	
 	// TODO: replace by direct calculation
 	public static AlgebraicLine from(SlopeInterceptLine sil) {
-		double A = sil.getK();
-		double B = sil.getD();
+		double a = sil.getK();
+		double c = sil.getD();
 //		Pnt2d p0 = Pnt2d.from(0, B);
 //		Pnt2d p1 = Pnt2d.from(1, A + B);
 //		return AlgebraicLine.from(p0, p1);
-		return new AlgebraicLine(A, -1, B);
+		return new AlgebraicLine(a, -1, c);
 	}
 	
 	// getter/setter methods ------------------------------------------
@@ -102,10 +102,24 @@ public class AlgebraicLine implements Curve2d {
 //		return C;
 //	}
 	
+	/**
+	 * Returns the x-coordinate of the reference point.
+	 * For a {@link AlgebraicLine}, the result is always zero.
+	 * Inheriting classes (like {@link HessianLine}) override this method.
+	 * 
+	 * @return the x-coordinate reference
+	 */
 	public double getXref() {
 		return 0.0;
 	}
 	
+	/**
+	 * Returns the y-coordinate of the reference point.
+	 * For a {@link AlgebraicLine}, the result is always zero.
+	 * Inheriting classes (like {@link HessianLine}) override this method.
+	 * 
+	 * @return the y-coordinate reference
+	 */
 	public double getYref() {
 		return 0.0;
 	}
@@ -113,7 +127,7 @@ public class AlgebraicLine implements Curve2d {
 	// other methods ------------------------------------------
 	
 	/**
-	 * Returns the perpendicular distance between this line and the point (x, y).
+	 * Returns the orthogonal distance between this line and the point (x, y).
 	 * The result may be positive or negative, depending on which side of the line
 	 * (x, y) is located. It is assumed that the line is normalized, i.e.,
 	 * ||(a,b)|| = 1.
@@ -124,7 +138,6 @@ public class AlgebraicLine implements Curve2d {
 	 */
 	public double getDistance(double x, double y) {
 		return Math.abs(getSignedDistance(x, y));
-//		return (A * (x - this.getXref()) + B * (y - this.getYref()) + C);
 	}
 	
 	/**
@@ -140,7 +153,7 @@ public class AlgebraicLine implements Curve2d {
 	}
 	
 	/**
-	 * Returns the perpendicular (signed) distance between this line and the point (x, y).
+	 * Returns the orthogonal (signed) distance between this line and the point (x, y).
 	 * The result may be positive or negative, depending on which side of the line
 	 * (x, y) is located. It is assumed that the line is normalized, i.e.,
 	 * ||(A,B)|| = 1.
@@ -221,6 +234,14 @@ public class AlgebraicLine implements Curve2d {
 	}
 	
 	// TODO: this should be easier to do if parameters are normalized
+	/**
+	 * Evaluates if this {@link AlgebraicLine} is equal to another {@link AlgebraicLine}.
+	 * 
+	 * 
+	 * @param other another {@link AlgebraicLine}
+	 * @param tolerance the maximum deviation
+	 * @return true if both lines are equal
+	 */
 	public boolean equals(AlgebraicLine other, double tolerance) {
 		AlgebraicLine L1 = this;
 		AlgebraicLine L2 = (AlgebraicLine) other;

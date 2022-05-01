@@ -70,13 +70,17 @@ public class ParametricLine {
 	public static void main (String[] args) {
 		Pnt2d p1 = Pnt2d.from(1, 2);
 		Pnt2d p2 = Pnt2d.from(4, 3);
+		
 		AlgebraicLine al1 = AlgebraicLine.from(p1, p2);
 		System.out.println("al1 = " + al1);
+		
 		ParametricLine pl = ParametricLine.from(al1);
 		System.out.println("pl = " + pl);
+		
 		AlgebraicLine al2 = AlgebraicLine.from(pl);
 		System.out.println("al2 = " + al2);
-		System.out.println("al1 = al2 ? " + al1.equals(al2));
+		
+		System.out.println("al1 = al2 ? " + al1.equals(al2, 1e-6));
 	}
 
 	/*

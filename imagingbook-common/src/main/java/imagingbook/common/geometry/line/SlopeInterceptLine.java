@@ -48,6 +48,31 @@ public class SlopeInterceptLine {
 		return new SlopeInterceptLine(-p[0]/p[1], -p[2]/p[1]);	// =(-A/B, -C/B)
 	}
 	
+	public double getY(double x) {
+		return k * x + d;
+	}
+	
+	// --------------------------------------------------
+	
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (other instanceof SlopeInterceptLine) {
+			return this.equals((SlopeInterceptLine) other, Arithmetic.EPSILON_DOUBLE);
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean equals(SlopeInterceptLine other, double tolerance) {
+		return 
+				Arithmetic.equals(k, other.k, tolerance) &&
+				Arithmetic.equals(d, other.d, tolerance);
+	}
+	
 	@Override
 	public String toString() {
 		return String.format(Locale.US, "%s <k=%.3f, d=%.3f>",
