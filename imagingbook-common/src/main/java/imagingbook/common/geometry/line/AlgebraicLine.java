@@ -18,7 +18,7 @@ import java.util.Locale;
 import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
-import imagingbook.common.geometry.basic.ShapeProvider;
+import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.hough.lines.HoughLine;
 import imagingbook.common.math.Arithmetic;
 
@@ -28,7 +28,7 @@ import imagingbook.common.math.Arithmetic;
  * @author WB
  *
  */
-public class AlgebraicLine implements Curve2d, ShapeProvider {
+public class AlgebraicLine implements Curve2d, ShapeProducer {
 	
 	public final double A, B, C;
 	

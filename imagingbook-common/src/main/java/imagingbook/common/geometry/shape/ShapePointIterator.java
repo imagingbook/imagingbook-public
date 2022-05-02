@@ -1,9 +1,10 @@
-package imagingbook.common.geometry.basic;
+package imagingbook.common.geometry.shape;
 
 import java.awt.Shape;
 import java.awt.geom.PathIterator;
 import java.util.Iterator;
 
+import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 
 public class ShapePointIterator implements Iterator<Pnt2d> {

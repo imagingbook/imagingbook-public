@@ -15,9 +15,9 @@ import java.awt.geom.Path2D;
 import java.util.Locale;
 
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.ShapeProvider;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.line.HessianLine;
+import imagingbook.common.geometry.shape.ShapeProducer;
 
 /**
  * This class represents a straight line of the form
@@ -28,7 +28,7 @@ import imagingbook.common.geometry.line.HessianLine;
  * It adds an arbitrary reference point (xRef, yRef) and a counter (count) for pixel votes.
  * Instances are immutable.
  */
-public class HoughLine extends HessianLine implements Comparable<HoughLine>, ShapeProvider {
+public class HoughLine extends HessianLine implements Comparable<HoughLine>, ShapeProducer {
 	
 	private final double xRef, yRef;	// reference point
 	private final int count;			// pixel votes for this line

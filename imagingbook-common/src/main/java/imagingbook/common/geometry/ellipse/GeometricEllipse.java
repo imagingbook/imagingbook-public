@@ -22,8 +22,8 @@ import java.util.Locale;
 
 import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.ShapeProvider;
 import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
+import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.Arithmetic;
 
 
@@ -35,7 +35,7 @@ import imagingbook.common.math.Arithmetic;
  * @author WB
  *
  */
-public class GeometricEllipse implements ShapeProvider, Curve2d {
+public class GeometricEllipse implements ShapeProducer, Curve2d {
 	
 	public final double ra, rb, xc, yc, theta;	// TODO: make private!
 	private final OrthogonalEllipseProjector projector;

@@ -21,6 +21,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
+import imagingbook.common.geometry.shape.ShapeProducer;
+
 /** 
  * Interface specifying the behavior of simple 2D points. 
  * It is used to adapt to different (legacy) point implementations 
@@ -39,7 +41,7 @@ import org.apache.commons.math3.linear.RealVector;
  * to instantiate such point objects.
  * 
  */
-public interface Pnt2d extends ShapeProvider {
+public interface Pnt2d extends ShapeProducer {
 	
 	/**
 	 * The default tolerance for matching coordinates (1E-6).

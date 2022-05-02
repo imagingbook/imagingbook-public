@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.geometry.basic;
+package imagingbook.common.geometry.shape;
 
 import java.awt.Shape;
 
@@ -18,7 +18,7 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
  * @author WB
  *
  */
-public interface ShapeProvider {
+public interface ShapeProducer {
 	
 	/**
 	 * Returns a scaled {@link Shape} for this object
@@ -68,5 +68,7 @@ public interface ShapeProvider {
 	public default Shape[] getShapes() {
 		return getShapes(1);
 	}
+	
+	
 	
 }
