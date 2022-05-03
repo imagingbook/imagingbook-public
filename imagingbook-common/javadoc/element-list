@@ -19,6 +19,7 @@ imagingbook.common.geometry.delaunay
 imagingbook.common.geometry.delaunay.chew
 imagingbook.common.geometry.delaunay.guibas
 imagingbook.common.geometry.ellipse
+imagingbook.common.geometry.ellipse.project
 imagingbook.common.geometry.fitting
 imagingbook.common.geometry.fitting.circle
 imagingbook.common.geometry.fitting.circle.algebraic
@@ -34,6 +35,7 @@ imagingbook.common.geometry.mappings
 imagingbook.common.geometry.mappings.linear
 imagingbook.common.geometry.mappings.nonlinear
 imagingbook.common.geometry.moments
+imagingbook.common.geometry.shape
 imagingbook.common.histogram
 imagingbook.common.hough
 imagingbook.common.hough.lines

@@ -120,18 +120,19 @@
 <span class="sourceLineNo">110</span><a id="line.110">        static double[][] X = {{1, 8}, {4, 5}, {4, 7}, {6, 4}, {9, 4}}; // book example</a>
 <span class="sourceLineNo">111</span><a id="line.111">        </a>
 <span class="sourceLineNo">112</span><a id="line.112">        public static void main(String[] args) {</a>
-<span class="sourceLineNo">113</span><a id="line.113">                Pnt2d[] pts = PntUtils.fromDoubleArray(X);</a>
-<span class="sourceLineNo">114</span><a id="line.114">                OrthogonalLineFitHomogeneous fit = new OrthogonalLineFitHomogeneous(pts);</a>
-<span class="sourceLineNo">115</span><a id="line.115">                System.out.println(fit.getClass());</a>
-<span class="sourceLineNo">116</span><a id="line.116">                AlgebraicLine line = fit.getLine();</a>
-<span class="sourceLineNo">117</span><a id="line.117">                System.out.println("line = " + line);</a>
-<span class="sourceLineNo">118</span><a id="line.118">                System.out.println("avg error = " + fit.getOrthogonalError(pts) / X.length);</a>
-<span class="sourceLineNo">119</span><a id="line.119">        }</a>
-<span class="sourceLineNo">120</span><a id="line.120">        </a>
-<span class="sourceLineNo">121</span><a id="line.121">//      line = AlgebraicLine &lt;a=-0.497, b=-0.868, c=7.245&gt;</a>
-<span class="sourceLineNo">122</span><a id="line.122">//      avg error = 0.532916687009732</a>
-<span class="sourceLineNo">123</span><a id="line.123">        </a>
-<span class="sourceLineNo">124</span><a id="line.124">}</a>
+<span class="sourceLineNo">113</span><a id="line.113">                VERBOSE = true;</a>
+<span class="sourceLineNo">114</span><a id="line.114">                Pnt2d[] pts = PntUtils.fromDoubleArray(X);</a>
+<span class="sourceLineNo">115</span><a id="line.115">                OrthogonalLineFitHomogeneous fit = new OrthogonalLineFitHomogeneous(pts);</a>
+<span class="sourceLineNo">116</span><a id="line.116">                System.out.println(fit.getClass());</a>
+<span class="sourceLineNo">117</span><a id="line.117">                AlgebraicLine line = fit.getLine();</a>
+<span class="sourceLineNo">118</span><a id="line.118">                System.out.println("line = " + line);</a>
+<span class="sourceLineNo">119</span><a id="line.119">                System.out.println("avg error = " + fit.getSquaredOrthogonalError(pts) / X.length);</a>
+<span class="sourceLineNo">120</span><a id="line.120">        }</a>
+<span class="sourceLineNo">121</span><a id="line.121">        </a>
+<span class="sourceLineNo">122</span><a id="line.122">//      line = AlgebraicLine &lt;a=-0.497, b=-0.868, c=7.245&gt;</a>
+<span class="sourceLineNo">123</span><a id="line.123">//      avg error = 0.532916687009732</a>
+<span class="sourceLineNo">124</span><a id="line.124">        </a>
+<span class="sourceLineNo">125</span><a id="line.125">}</a>
 
 
 

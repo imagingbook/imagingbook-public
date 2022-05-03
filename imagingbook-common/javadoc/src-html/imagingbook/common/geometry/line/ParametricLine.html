@@ -80,23 +80,27 @@
 <span class="sourceLineNo">070</span><a id="line.70">        public static void main (String[] args) {</a>
 <span class="sourceLineNo">071</span><a id="line.71">                Pnt2d p1 = Pnt2d.from(1, 2);</a>
 <span class="sourceLineNo">072</span><a id="line.72">                Pnt2d p2 = Pnt2d.from(4, 3);</a>
-<span class="sourceLineNo">073</span><a id="line.73">                AlgebraicLine al1 = AlgebraicLine.from(p1, p2);</a>
-<span class="sourceLineNo">074</span><a id="line.74">                System.out.println("al1 = " + al1);</a>
-<span class="sourceLineNo">075</span><a id="line.75">                ParametricLine pl = ParametricLine.from(al1);</a>
-<span class="sourceLineNo">076</span><a id="line.76">                System.out.println("pl = " + pl);</a>
-<span class="sourceLineNo">077</span><a id="line.77">                AlgebraicLine al2 = AlgebraicLine.from(pl);</a>
-<span class="sourceLineNo">078</span><a id="line.78">                System.out.println("al2 = " + al2);</a>
-<span class="sourceLineNo">079</span><a id="line.79">                System.out.println("al1 = al2 ? " + al1.equals(al2));</a>
-<span class="sourceLineNo">080</span><a id="line.80">        }</a>
-<span class="sourceLineNo">081</span><a id="line.81"></a>
-<span class="sourceLineNo">082</span><a id="line.82">        /*</a>
-<span class="sourceLineNo">083</span><a id="line.83">        al1 = AlgebraicLine &lt;a=-0.316, b=0.949, c=-1.581&gt;</a>
-<span class="sourceLineNo">084</span><a id="line.84">        pl = ParametricLine &lt;s=[-0.500, 1.500], v=[-0.949, -0.316]&gt;</a>
-<span class="sourceLineNo">085</span><a id="line.85">        al2 = AlgebraicLine &lt;a=0.316, b=-0.949, c=1.581&gt;</a>
-<span class="sourceLineNo">086</span><a id="line.86">        al1 = al2 ? true</a>
-<span class="sourceLineNo">087</span><a id="line.87">        */</a>
-<span class="sourceLineNo">088</span><a id="line.88"></a>
-<span class="sourceLineNo">089</span><a id="line.89">}</a>
+<span class="sourceLineNo">073</span><a id="line.73">                </a>
+<span class="sourceLineNo">074</span><a id="line.74">                AlgebraicLine al1 = AlgebraicLine.from(p1, p2);</a>
+<span class="sourceLineNo">075</span><a id="line.75">                System.out.println("al1 = " + al1);</a>
+<span class="sourceLineNo">076</span><a id="line.76">                </a>
+<span class="sourceLineNo">077</span><a id="line.77">                ParametricLine pl = ParametricLine.from(al1);</a>
+<span class="sourceLineNo">078</span><a id="line.78">                System.out.println("pl = " + pl);</a>
+<span class="sourceLineNo">079</span><a id="line.79">                </a>
+<span class="sourceLineNo">080</span><a id="line.80">                AlgebraicLine al2 = AlgebraicLine.from(pl);</a>
+<span class="sourceLineNo">081</span><a id="line.81">                System.out.println("al2 = " + al2);</a>
+<span class="sourceLineNo">082</span><a id="line.82">                </a>
+<span class="sourceLineNo">083</span><a id="line.83">                System.out.println("al1 = al2 ? " + al1.equals(al2, 1e-6));</a>
+<span class="sourceLineNo">084</span><a id="line.84">        }</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">        /*</a>
+<span class="sourceLineNo">087</span><a id="line.87">        al1 = AlgebraicLine &lt;a=-0.316, b=0.949, c=-1.581&gt;</a>
+<span class="sourceLineNo">088</span><a id="line.88">        pl = ParametricLine &lt;s=[-0.500, 1.500], v=[-0.949, -0.316]&gt;</a>
+<span class="sourceLineNo">089</span><a id="line.89">        al2 = AlgebraicLine &lt;a=0.316, b=-0.949, c=1.581&gt;</a>
+<span class="sourceLineNo">090</span><a id="line.90">        al1 = al2 ? true</a>
+<span class="sourceLineNo">091</span><a id="line.91">        */</a>
+<span class="sourceLineNo">092</span><a id="line.92"></a>
+<span class="sourceLineNo">093</span><a id="line.93">}</a>
 
 
 

@@ -25,216 +25,149 @@
 <span class="sourceLineNo">015</span><a id="line.15">import java.util.Locale;</a>
 <span class="sourceLineNo">016</span><a id="line.16"></a>
 <span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.geometry.basic.ShapeProvider;</a>
-<span class="sourceLineNo">019</span><a id="line.19">import imagingbook.common.geometry.line.AlgebraicLine;</a>
-<span class="sourceLineNo">020</span><a id="line.20">import imagingbook.common.geometry.line.HessianLine;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.geometry.line.AlgebraicLine;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import imagingbook.common.geometry.line.HessianLine;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import imagingbook.common.geometry.shape.ShapeProducer;</a>
 <span class="sourceLineNo">021</span><a id="line.21"></a>
 <span class="sourceLineNo">022</span><a id="line.22">/**</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * This class represents a straight line used by the Hough transform</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * (see {@link imagingbook.common.hough.HoughTransformLines}).</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * It inherits from {@link HessianLine} which is, in turn, a subclass of </a>
-<span class="sourceLineNo">026</span><a id="line.26"> * {@link AlgebraicLine}.</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * It adds an arbitrary reference point and a counter for pixel votes.</a>
-<span class="sourceLineNo">028</span><a id="line.28"> */</a>
-<span class="sourceLineNo">029</span><a id="line.29">public class HoughLine extends HessianLine implements Comparable&lt;HoughLine&gt;, ShapeProvider {</a>
-<span class="sourceLineNo">030</span><a id="line.30">        </a>
-<span class="sourceLineNo">031</span><a id="line.31">        private final int count;                        // pixel votes for this line</a>
-<span class="sourceLineNo">032</span><a id="line.32">        private final double xRef, yRef;        // reference point</a>
-<span class="sourceLineNo">033</span><a id="line.33">        </a>
-<span class="sourceLineNo">034</span><a id="line.34">        </a>
-<span class="sourceLineNo">035</span><a id="line.35">        // static factory methods -------------------------------</a>
-<span class="sourceLineNo">036</span><a id="line.36">        </a>
-<span class="sourceLineNo">037</span><a id="line.37">        public static HoughLine fromPoints(Pnt2d p1, Pnt2d p2, Pnt2d pRef, int count) {</a>
-<span class="sourceLineNo">038</span><a id="line.38">                return new HoughLine(AlgebraicLine.from(p1, p2), pRef.getX(), pRef.getY(), count);</a>
-<span class="sourceLineNo">039</span><a id="line.39">        }</a>
-<span class="sourceLineNo">040</span><a id="line.40">        </a>
-<span class="sourceLineNo">041</span><a id="line.41">        // constructors -----------------------------------------</a>
-<span class="sourceLineNo">042</span><a id="line.42">        </a>
-<span class="sourceLineNo">043</span><a id="line.43">        public HoughLine(double a, double b, double c, double xR, double yR, int count) {</a>
-<span class="sourceLineNo">044</span><a id="line.44">                super(a, b, c);</a>
-<span class="sourceLineNo">045</span><a id="line.45">                this.xRef = xR;</a>
-<span class="sourceLineNo">046</span><a id="line.46">                this.yRef = yR;</a>
-<span class="sourceLineNo">047</span><a id="line.47">                this.count = count;</a>
-<span class="sourceLineNo">048</span><a id="line.48">        }</a>
-<span class="sourceLineNo">049</span><a id="line.49"></a>
-<span class="sourceLineNo">050</span><a id="line.50">        /**</a>
-<span class="sourceLineNo">051</span><a id="line.51">         * Constructor.</a>
-<span class="sourceLineNo">052</span><a id="line.52">         * @param angle the line's normal angle (see {@link HessianLine})</a>
-<span class="sourceLineNo">053</span><a id="line.53">         * @param radius the line's radius (distance to reference point)</a>
-<span class="sourceLineNo">054</span><a id="line.54">         * @param xRef reference point x-coordinate</a>
-<span class="sourceLineNo">055</span><a id="line.55">         * @param yRef reference point y-coordinate</a>
-<span class="sourceLineNo">056</span><a id="line.56">         * @param count pixel votes for this line</a>
-<span class="sourceLineNo">057</span><a id="line.57">         */</a>
-<span class="sourceLineNo">058</span><a id="line.58">        public HoughLine(double angle, double radius, double xRef, double yRef, int count) {</a>
-<span class="sourceLineNo">059</span><a id="line.59">                super(angle, radius);</a>
-<span class="sourceLineNo">060</span><a id="line.60">                this.xRef = xRef;</a>
-<span class="sourceLineNo">061</span><a id="line.61">                this.yRef = yRef;</a>
-<span class="sourceLineNo">062</span><a id="line.62">                this.count = count;</a>
-<span class="sourceLineNo">063</span><a id="line.63">        }</a>
-<span class="sourceLineNo">064</span><a id="line.64">        </a>
-<span class="sourceLineNo">065</span><a id="line.65">        public HoughLine(AlgebraicLine line) {</a>
-<span class="sourceLineNo">066</span><a id="line.66">                this(line, 0.0, 0.0, 0);</a>
-<span class="sourceLineNo">067</span><a id="line.67">        }</a>
-<span class="sourceLineNo">068</span><a id="line.68">        </a>
-<span class="sourceLineNo">069</span><a id="line.69">        /**</a>
-<span class="sourceLineNo">070</span><a id="line.70">         * Constructor. </a>
-<span class="sourceLineNo">071</span><a id="line.71">         * Creates a new {@link HoughLine} instance from a given</a>
-<span class="sourceLineNo">072</span><a id="line.72">         * {@link AlgebraicLine} (or any subclass) instance.</a>
-<span class="sourceLineNo">073</span><a id="line.73">         * The line parameters are adjusted to the specified reference point</a>
-<span class="sourceLineNo">074</span><a id="line.74">         * (actually only parameter c is modified, since a change of reference point</a>
-<span class="sourceLineNo">075</span><a id="line.75">         * effects only a shift of the line).</a>
-<span class="sourceLineNo">076</span><a id="line.76">         * The two lines are equivalent, i.e., contain the same points (x,y).</a>
-<span class="sourceLineNo">077</span><a id="line.77">         * Thus the distance from a given point (x,y) is the same from the original</a>
-<span class="sourceLineNo">078</span><a id="line.78">         * line and the new line.</a>
-<span class="sourceLineNo">079</span><a id="line.79">         * @param line an existing line ({@link AlgebraicLine} or subclass)</a>
-<span class="sourceLineNo">080</span><a id="line.80">         * @param xR reference point x-coordinate</a>
-<span class="sourceLineNo">081</span><a id="line.81">         * @param yR reference point y-coordinate</a>
-<span class="sourceLineNo">082</span><a id="line.82">         * @param count pixel votes for this line</a>
-<span class="sourceLineNo">083</span><a id="line.83">         */</a>
-<span class="sourceLineNo">084</span><a id="line.84">        public HoughLine(AlgebraicLine line, double xR, double yR, int count) {</a>
-<span class="sourceLineNo">085</span><a id="line.85">                super(line.getA(),</a>
-<span class="sourceLineNo">086</span><a id="line.86">                          line.getB(),</a>
-<span class="sourceLineNo">087</span><a id="line.87">                          line.getC() + line.getA()*(xR-line.getXref()) + line.getB()*(yR-line.getYref())); // = a', b', c'</a>
-<span class="sourceLineNo">088</span><a id="line.88">                this.xRef = xR;</a>
-<span class="sourceLineNo">089</span><a id="line.89">                this.yRef = yR;</a>
-<span class="sourceLineNo">090</span><a id="line.90">                this.count = count;</a>
-<span class="sourceLineNo">091</span><a id="line.91">        }</a>
-<span class="sourceLineNo">092</span><a id="line.92">        </a>
-<span class="sourceLineNo">093</span><a id="line.93">        // getter/setter methods ------------------------------------------</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * This class represents a straight line of the form</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * (x - xRef) * cos(angle) + (y - yRef) * sin(angle) = radius.</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * It is used by the Hough transform (see {@link imagingbook.common.hough.HoughTransformLines}).</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * It inherits from {@link HessianLine} which is, in turn, a subclass of </a>
+<span class="sourceLineNo">027</span><a id="line.27"> * {@link AlgebraicLine}.</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * It adds an arbitrary reference point (xRef, yRef) and a counter (count) for pixel votes.</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * Instances are immutable.</a>
+<span class="sourceLineNo">030</span><a id="line.30"> */</a>
+<span class="sourceLineNo">031</span><a id="line.31">public class HoughLine extends HessianLine implements Comparable&lt;HoughLine&gt;, ShapeProducer {</a>
+<span class="sourceLineNo">032</span><a id="line.32">        </a>
+<span class="sourceLineNo">033</span><a id="line.33">        private final double xRef, yRef;        // reference point</a>
+<span class="sourceLineNo">034</span><a id="line.34">        private final int count;                        // pixel votes for this line</a>
+<span class="sourceLineNo">035</span><a id="line.35">        </a>
+<span class="sourceLineNo">036</span><a id="line.36">        // static factory methods -------------------------------</a>
+<span class="sourceLineNo">037</span><a id="line.37">        </a>
+<span class="sourceLineNo">038</span><a id="line.38">        public static HoughLine fromPoints(Pnt2d p1, Pnt2d p2, Pnt2d pRef, int count) {</a>
+<span class="sourceLineNo">039</span><a id="line.39">                return new HoughLine(AlgebraicLine.from(p1, p2), pRef.getX(), pRef.getY(), count);</a>
+<span class="sourceLineNo">040</span><a id="line.40">        }</a>
+<span class="sourceLineNo">041</span><a id="line.41">        </a>
+<span class="sourceLineNo">042</span><a id="line.42">        // constructors -----------------------------------------</a>
+<span class="sourceLineNo">043</span><a id="line.43"></a>
+<span class="sourceLineNo">044</span><a id="line.44">        /**</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * Constructor. Creates a new {@link HoughLine} instance from the</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * specified {@link HessianLine} parameters (angle, radius),</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * an arbitrary reference point (xRef, yRef) and count.</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * </a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @param angle the line's normal angle (see {@link HessianLine})</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @param radius the line's radius (distance to reference point)</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @param xRef reference point x-coordinate</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * @param yRef reference point y-coordinate</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * @param count pixel votes for this line</a>
+<span class="sourceLineNo">054</span><a id="line.54">         */</a>
+<span class="sourceLineNo">055</span><a id="line.55">        public HoughLine(double angle, double radius, double xRef, double yRef, int count) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                super(angle, radius);</a>
+<span class="sourceLineNo">057</span><a id="line.57">                this.xRef = xRef;</a>
+<span class="sourceLineNo">058</span><a id="line.58">                this.yRef = yRef;</a>
+<span class="sourceLineNo">059</span><a id="line.59">                this.count = count;</a>
+<span class="sourceLineNo">060</span><a id="line.60">        }</a>
+<span class="sourceLineNo">061</span><a id="line.61">        </a>
+<span class="sourceLineNo">062</span><a id="line.62">        /**</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * Constructor. </a>
+<span class="sourceLineNo">064</span><a id="line.64">         * Creates a new {@link HoughLine} instance from a given</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * {@link AlgebraicLine} (or any subclass) instance.</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * The line parameters are adjusted to the specified reference point</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * (actually only parameter c is modified, since a change of reference point</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * effects only a shift of the line).</a>
+<span class="sourceLineNo">069</span><a id="line.69">         * The two lines are equivalent, i.e., contain the same points (x,y).</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * Thus the distance from a given point (x,y) is the same from the original</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * line and the new line.</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * @param line an existing line ({@link AlgebraicLine} or subclass)</a>
+<span class="sourceLineNo">073</span><a id="line.73">         * @param xRef reference point x-coordinate</a>
+<span class="sourceLineNo">074</span><a id="line.74">         * @param yRef reference point y-coordinate</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * @param count pixel votes for this line</a>
+<span class="sourceLineNo">076</span><a id="line.76">         */</a>
+<span class="sourceLineNo">077</span><a id="line.77">        public HoughLine(AlgebraicLine line, double xRef, double yRef, int count) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">                super(new AlgebraicLine(line.A, line.B, line.C + line.A * (xRef - line.getXref()) + line.B * (yRef - line.getYref())));</a>
+<span class="sourceLineNo">079</span><a id="line.79">                this.xRef = xRef;</a>
+<span class="sourceLineNo">080</span><a id="line.80">                this.yRef = yRef;</a>
+<span class="sourceLineNo">081</span><a id="line.81">                this.count = count;</a>
+<span class="sourceLineNo">082</span><a id="line.82">        }</a>
+<span class="sourceLineNo">083</span><a id="line.83">        </a>
+<span class="sourceLineNo">084</span><a id="line.84">        /**</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * Convenience constructor. Creates a new {@link HoughLine} instance from a given</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * {@link AlgebraicLine} (or any subclass) instance with the same reference point </a>
+<span class="sourceLineNo">087</span><a id="line.87">         * as the original line and zero count.</a>
+<span class="sourceLineNo">088</span><a id="line.88">         * </a>
+<span class="sourceLineNo">089</span><a id="line.89">         * @param line a {@link AlgebraicLine} instance</a>
+<span class="sourceLineNo">090</span><a id="line.90">         */</a>
+<span class="sourceLineNo">091</span><a id="line.91">        public HoughLine(AlgebraicLine line) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">                this(line, line.getXref(), line.getYref(), 0);</a>
+<span class="sourceLineNo">093</span><a id="line.93">        }</a>
 <span class="sourceLineNo">094</span><a id="line.94">        </a>
-<span class="sourceLineNo">095</span><a id="line.95">        /**</a>
-<span class="sourceLineNo">096</span><a id="line.96">         * @return The accumulator count associated with this line.</a>
-<span class="sourceLineNo">097</span><a id="line.97">         */</a>
-<span class="sourceLineNo">098</span><a id="line.98">        public int getCount() {</a>
-<span class="sourceLineNo">099</span><a id="line.99">                return count;</a>
+<span class="sourceLineNo">095</span><a id="line.95">        // ------------------------------------------</a>
+<span class="sourceLineNo">096</span><a id="line.96">        </a>
+<span class="sourceLineNo">097</span><a id="line.97">        @Override</a>
+<span class="sourceLineNo">098</span><a id="line.98">        public double getXref() {</a>
+<span class="sourceLineNo">099</span><a id="line.99">                return xRef;</a>
 <span class="sourceLineNo">100</span><a id="line.100">        }</a>
 <span class="sourceLineNo">101</span><a id="line.101">        </a>
 <span class="sourceLineNo">102</span><a id="line.102">        @Override</a>
-<span class="sourceLineNo">103</span><a id="line.103">        public double getXref() {</a>
-<span class="sourceLineNo">104</span><a id="line.104">                return xRef;</a>
+<span class="sourceLineNo">103</span><a id="line.103">        public double getYref() {</a>
+<span class="sourceLineNo">104</span><a id="line.104">                return yRef;</a>
 <span class="sourceLineNo">105</span><a id="line.105">        }</a>
 <span class="sourceLineNo">106</span><a id="line.106">        </a>
-<span class="sourceLineNo">107</span><a id="line.107">        @Override</a>
-<span class="sourceLineNo">108</span><a id="line.108">        public double getYref() {</a>
-<span class="sourceLineNo">109</span><a id="line.109">                return yRef;</a>
-<span class="sourceLineNo">110</span><a id="line.110">        }</a>
-<span class="sourceLineNo">111</span><a id="line.111">        </a>
-<span class="sourceLineNo">112</span><a id="line.112">        // other methods ------------------------------------------</a>
-<span class="sourceLineNo">113</span><a id="line.113">        </a>
-<span class="sourceLineNo">114</span><a id="line.114">        /**</a>
-<span class="sourceLineNo">115</span><a id="line.115">         * Required by the {@link Comparable} interface, used for sorting lines by their</a>
-<span class="sourceLineNo">116</span><a id="line.116">         * point count (in descending order, i.e., strong lines come first).</a>
-<span class="sourceLineNo">117</span><a id="line.117">         * @param other another {@link HoughLine} instance.</a>
-<span class="sourceLineNo">118</span><a id="line.118">         */</a>
-<span class="sourceLineNo">119</span><a id="line.119">        @Override</a>
-<span class="sourceLineNo">120</span><a id="line.120">        public int compareTo(HoughLine other) {</a>
-<span class="sourceLineNo">121</span><a id="line.121">                return Integer.compare(other.count, this.count);</a>
-<span class="sourceLineNo">122</span><a id="line.122">        }</a>
-<span class="sourceLineNo">123</span><a id="line.123">        </a>
-<span class="sourceLineNo">124</span><a id="line.124">        @Override</a>
-<span class="sourceLineNo">125</span><a id="line.125">        public String toString() {</a>
-<span class="sourceLineNo">126</span><a id="line.126">                return String.format(Locale.US, "%s &lt;angle = %.3f, radius = %.3f, xRef = %.3f, yRef = %.3f, count = %d&gt;",</a>
-<span class="sourceLineNo">127</span><a id="line.127">                                this.getClass().getSimpleName(), getAngle(), getRadius(), getXref(), getYref(), count);</a>
-<span class="sourceLineNo">128</span><a id="line.128">        }</a>
-<span class="sourceLineNo">129</span><a id="line.129">        </a>
-<span class="sourceLineNo">130</span><a id="line.130">        // ------------------------------------------------------------------------------</a>
-<span class="sourceLineNo">131</span><a id="line.131">        </a>
-<span class="sourceLineNo">132</span><a id="line.132">        public Shape getShape(int width, int height) {</a>
-<span class="sourceLineNo">133</span><a id="line.133">                double xRef = this.getXref();</a>
-<span class="sourceLineNo">134</span><a id="line.134">                double yRef = this.getYref();</a>
-<span class="sourceLineNo">135</span><a id="line.135">                double length = Math.sqrt(sqr(width) + sqr(height));</a>
-<span class="sourceLineNo">136</span><a id="line.136">                double angle = this.getAngle();</a>
-<span class="sourceLineNo">137</span><a id="line.137">                double radius = this.getRadius();</a>
-<span class="sourceLineNo">138</span><a id="line.138">                // unit vector perpendicular to the line</a>
-<span class="sourceLineNo">139</span><a id="line.139">                double dx = Math.cos(angle);    </a>
-<span class="sourceLineNo">140</span><a id="line.140">                double dy = Math.sin(angle);</a>
-<span class="sourceLineNo">141</span><a id="line.141">                // calculate the line's center point (closest to the reference point)</a>
-<span class="sourceLineNo">142</span><a id="line.142">                double x0 = xRef + radius * dx;</a>
-<span class="sourceLineNo">143</span><a id="line.143">                double y0 = yRef + radius * dy;</a>
-<span class="sourceLineNo">144</span><a id="line.144">                // calculate the line end points (using normal vectors)</a>
-<span class="sourceLineNo">145</span><a id="line.145">                double x1 = x0 + dy * length;</a>
-<span class="sourceLineNo">146</span><a id="line.146">                double y1 = y0 - dx * length;</a>
-<span class="sourceLineNo">147</span><a id="line.147">                double x2 = x0 - dy * length;</a>
-<span class="sourceLineNo">148</span><a id="line.148">                double y2 = y0 + dx * length;</a>
-<span class="sourceLineNo">149</span><a id="line.149">                Path2D path = new Path2D.Double();</a>
-<span class="sourceLineNo">150</span><a id="line.150">                path.moveTo(x1, y1);</a>
-<span class="sourceLineNo">151</span><a id="line.151">                path.lineTo(x2, y2);</a>
-<span class="sourceLineNo">152</span><a id="line.152">                return path;</a>
-<span class="sourceLineNo">153</span><a id="line.153">        }</a>
-<span class="sourceLineNo">154</span><a id="line.154"></a>
-<span class="sourceLineNo">155</span><a id="line.155">        @Override</a>
-<span class="sourceLineNo">156</span><a id="line.156">        public Shape getShape(double length) {</a>
-<span class="sourceLineNo">157</span><a id="line.157">                double xRef = this.getXref();</a>
-<span class="sourceLineNo">158</span><a id="line.158">                double yRef = this.getYref();</a>
-<span class="sourceLineNo">159</span><a id="line.159">//              double length = Math.sqrt(sqr(width) + sqr(height)); //Math.sqrt(sqr(xRef) + sqr(yRef));</a>
-<span class="sourceLineNo">160</span><a id="line.160">                double angle = this.getAngle();</a>
-<span class="sourceLineNo">161</span><a id="line.161">                double radius = this.getRadius();</a>
-<span class="sourceLineNo">162</span><a id="line.162">                // unit vector perpendicular to the line</a>
-<span class="sourceLineNo">163</span><a id="line.163">                double dx = Math.cos(angle);    </a>
-<span class="sourceLineNo">164</span><a id="line.164">                double dy = Math.sin(angle);</a>
-<span class="sourceLineNo">165</span><a id="line.165">                // calculate the line's center point (closest to the reference point)</a>
-<span class="sourceLineNo">166</span><a id="line.166">                double x0 = xRef + radius * dx;</a>
-<span class="sourceLineNo">167</span><a id="line.167">                double y0 = yRef + radius * dy;</a>
-<span class="sourceLineNo">168</span><a id="line.168">                // calculate the line end points (using normal vectors)</a>
-<span class="sourceLineNo">169</span><a id="line.169">//              float x1 = (float) (x0 + dy * length);</a>
-<span class="sourceLineNo">170</span><a id="line.170">//              float y1 = (float) (y0 - dx * length);</a>
-<span class="sourceLineNo">171</span><a id="line.171">//              float x2 = (float) (x0 - dy * length);</a>
-<span class="sourceLineNo">172</span><a id="line.172">//              float y2 = (float) (y0 + dx * length);</a>
-<span class="sourceLineNo">173</span><a id="line.173">//              float[] xpoints = { x1, x2 };</a>
-<span class="sourceLineNo">174</span><a id="line.174">//              float[] ypoints = { y1, y2 };</a>
-<span class="sourceLineNo">175</span><a id="line.175">                //Roi roi = new PolygonRoi(xpoints, ypoints, Roi.POLYLINE);</a>
-<span class="sourceLineNo">176</span><a id="line.176">                </a>
-<span class="sourceLineNo">177</span><a id="line.177">                double x1 = x0 + dy * length;</a>
-<span class="sourceLineNo">178</span><a id="line.178">                double y1 = y0 - dx * length;</a>
-<span class="sourceLineNo">179</span><a id="line.179">                double x2 = x0 - dy * length;</a>
-<span class="sourceLineNo">180</span><a id="line.180">                double y2 = y0 + dx * length;</a>
-<span class="sourceLineNo">181</span><a id="line.181">                Path2D path = new Path2D.Double();</a>
-<span class="sourceLineNo">182</span><a id="line.182">                path.moveTo(x1, y1);</a>
-<span class="sourceLineNo">183</span><a id="line.183">                path.lineTo(x2, y2);</a>
-<span class="sourceLineNo">184</span><a id="line.184">                return path;</a>
-<span class="sourceLineNo">185</span><a id="line.185">        }</a>
-<span class="sourceLineNo">186</span><a id="line.186">        </a>
-<span class="sourceLineNo">187</span><a id="line.187"></a>
-<span class="sourceLineNo">188</span><a id="line.188">//      /**</a>
-<span class="sourceLineNo">189</span><a id="line.189">//       * Creates a vector line to be used an element in an ImageJ graphic overlay</a>
-<span class="sourceLineNo">190</span><a id="line.190">//       * (see {@link ij.gui.Overlay}). The length of the displayed line </a>
-<span class="sourceLineNo">191</span><a id="line.191">//       * is equivalent to the distance of the reference point (typically the</a>
-<span class="sourceLineNo">192</span><a id="line.192">//       * image center) to the coordinate origin.</a>
-<span class="sourceLineNo">193</span><a id="line.193">//       * @return the new line</a>
-<span class="sourceLineNo">194</span><a id="line.194">//       * @deprecated</a>
-<span class="sourceLineNo">195</span><a id="line.195">//       */</a>
-<span class="sourceLineNo">196</span><a id="line.196">//      public PolygonRoi makeLineRoi() {</a>
-<span class="sourceLineNo">197</span><a id="line.197">//              double length = Math.sqrt(xRef * xRef + yRef * yRef);</a>
-<span class="sourceLineNo">198</span><a id="line.198">//              return this.makeLineRoi(length);</a>
-<span class="sourceLineNo">199</span><a id="line.199">//      }</a>
-<span class="sourceLineNo">200</span><a id="line.200">        </a>
-<span class="sourceLineNo">201</span><a id="line.201">//      /**</a>
-<span class="sourceLineNo">202</span><a id="line.202">//       * Creates a vector line to be used an element in an ImageJ graphic overlay</a>
-<span class="sourceLineNo">203</span><a id="line.203">//       * (see {@link ij.gui.Overlay}). The length of the displayed line </a>
-<span class="sourceLineNo">204</span><a id="line.204">//       * is measured from its center point (the point closest to the reference</a>
-<span class="sourceLineNo">205</span><a id="line.205">//       * point) in both directions.</a>
-<span class="sourceLineNo">206</span><a id="line.206">//       * </a>
-<span class="sourceLineNo">207</span><a id="line.207">//       * @param length the length of the line</a>
-<span class="sourceLineNo">208</span><a id="line.208">//       * @return the new line</a>
-<span class="sourceLineNo">209</span><a id="line.209">//       */</a>
-<span class="sourceLineNo">210</span><a id="line.210">//      public PolygonRoi makeLineRoi(double length) {</a>
-<span class="sourceLineNo">211</span><a id="line.211">//              // unit vector perpendicular to the line</a>
-<span class="sourceLineNo">212</span><a id="line.212">//              double dx = Math.cos(angle);    </a>
-<span class="sourceLineNo">213</span><a id="line.213">//              double dy = Math.sin(angle);</a>
-<span class="sourceLineNo">214</span><a id="line.214">//              // calculate the line's center point (closest to the reference point)</a>
-<span class="sourceLineNo">215</span><a id="line.215">//              double x0 = xRef + radius * dx;</a>
-<span class="sourceLineNo">216</span><a id="line.216">//              double y0 = yRef + radius * dy;</a>
-<span class="sourceLineNo">217</span><a id="line.217">//              // calculate the line end points (using normal vectors)</a>
-<span class="sourceLineNo">218</span><a id="line.218">//              float x1 = (float) (x0 + dy * length);</a>
-<span class="sourceLineNo">219</span><a id="line.219">//              float y1 = (float) (y0 - dx * length);</a>
-<span class="sourceLineNo">220</span><a id="line.220">//              float x2 = (float) (x0 - dy * length);</a>
-<span class="sourceLineNo">221</span><a id="line.221">//              float y2 = (float) (y0 + dx * length);</a>
-<span class="sourceLineNo">222</span><a id="line.222">//              float[] xpoints = { x1, x2 };</a>
-<span class="sourceLineNo">223</span><a id="line.223">//              float[] ypoints = { y1, y2 };</a>
-<span class="sourceLineNo">224</span><a id="line.224">//              return new PolygonRoi(xpoints, ypoints, Roi.POLYLINE);</a>
-<span class="sourceLineNo">225</span><a id="line.225">//      }</a>
-<span class="sourceLineNo">226</span><a id="line.226"></a>
-<span class="sourceLineNo">227</span><a id="line.227">}</a>
+<span class="sourceLineNo">107</span><a id="line.107">        public int getCount() {</a>
+<span class="sourceLineNo">108</span><a id="line.108">                return count;</a>
+<span class="sourceLineNo">109</span><a id="line.109">        }</a>
+<span class="sourceLineNo">110</span><a id="line.110">        </a>
+<span class="sourceLineNo">111</span><a id="line.111">        // other methods ------------------------------------------</a>
+<span class="sourceLineNo">112</span><a id="line.112">        </a>
+<span class="sourceLineNo">113</span><a id="line.113">        /**</a>
+<span class="sourceLineNo">114</span><a id="line.114">         * Required by the {@link Comparable} interface, used for sorting lines by their</a>
+<span class="sourceLineNo">115</span><a id="line.115">         * point count (in descending order, i.e., strong lines come first).</a>
+<span class="sourceLineNo">116</span><a id="line.116">         * @param other another {@link HoughLine} instance.</a>
+<span class="sourceLineNo">117</span><a id="line.117">         */</a>
+<span class="sourceLineNo">118</span><a id="line.118">        @Override</a>
+<span class="sourceLineNo">119</span><a id="line.119">        public int compareTo(HoughLine other) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">                return Integer.compare(other.count, this.count);</a>
+<span class="sourceLineNo">121</span><a id="line.121">        }</a>
+<span class="sourceLineNo">122</span><a id="line.122">        </a>
+<span class="sourceLineNo">123</span><a id="line.123">        @Override</a>
+<span class="sourceLineNo">124</span><a id="line.124">        public String toString() {</a>
+<span class="sourceLineNo">125</span><a id="line.125">                return String.format(Locale.US, "%s &lt;angle = %.3f, radius = %.3f, xRef = %.3f, yRef = %.3f, count = %d&gt;",</a>
+<span class="sourceLineNo">126</span><a id="line.126">                                this.getClass().getSimpleName(), getAngle(), getRadius(), getXref(), getYref(), count);</a>
+<span class="sourceLineNo">127</span><a id="line.127">        }</a>
+<span class="sourceLineNo">128</span><a id="line.128">        </a>
+<span class="sourceLineNo">129</span><a id="line.129">        // ------------------------------------------------------------------------------</a>
+<span class="sourceLineNo">130</span><a id="line.130">        </a>
+<span class="sourceLineNo">131</span><a id="line.131">//      @Override</a>
+<span class="sourceLineNo">132</span><a id="line.132">//      public Shape getShape(int width, int height) {</a>
+<span class="sourceLineNo">133</span><a id="line.133">//              double length = Math.sqrt(sqr(width) + sqr(height));</a>
+<span class="sourceLineNo">134</span><a id="line.134">//              return this.getShape(length);</a>
+<span class="sourceLineNo">135</span><a id="line.135">//      }</a>
+<span class="sourceLineNo">136</span><a id="line.136">//</a>
+<span class="sourceLineNo">137</span><a id="line.137">//      @Override</a>
+<span class="sourceLineNo">138</span><a id="line.138">//      public Shape getShape(double length) {</a>
+<span class="sourceLineNo">139</span><a id="line.139">//              double xRef = this.getXref();</a>
+<span class="sourceLineNo">140</span><a id="line.140">//              double yRef = this.getYref();</a>
+<span class="sourceLineNo">141</span><a id="line.141">//              double angle = this.getAngle();</a>
+<span class="sourceLineNo">142</span><a id="line.142">//              double radius = this.getRadius();</a>
+<span class="sourceLineNo">143</span><a id="line.143">//              // unit vector perpendicular to the line</a>
+<span class="sourceLineNo">144</span><a id="line.144">//              double dx = Math.cos(angle);    </a>
+<span class="sourceLineNo">145</span><a id="line.145">//              double dy = Math.sin(angle);</a>
+<span class="sourceLineNo">146</span><a id="line.146">//              // calculate the line's center point (closest to the reference point)</a>
+<span class="sourceLineNo">147</span><a id="line.147">//              double x0 = xRef + radius * dx;</a>
+<span class="sourceLineNo">148</span><a id="line.148">//              double y0 = yRef + radius * dy;</a>
+<span class="sourceLineNo">149</span><a id="line.149">//              // calculate the line end points (using normal vectors)</a>
+<span class="sourceLineNo">150</span><a id="line.150">//              double x1 = x0 + dy * length;</a>
+<span class="sourceLineNo">151</span><a id="line.151">//              double y1 = y0 - dx * length;</a>
+<span class="sourceLineNo">152</span><a id="line.152">//              double x2 = x0 - dy * length;</a>
+<span class="sourceLineNo">153</span><a id="line.153">//              double y2 = y0 + dx * length;</a>
+<span class="sourceLineNo">154</span><a id="line.154">//              Path2D path = new Path2D.Double();</a>
+<span class="sourceLineNo">155</span><a id="line.155">//              path.moveTo(x1, y1);</a>
+<span class="sourceLineNo">156</span><a id="line.156">//              path.lineTo(x2, y2);</a>
+<span class="sourceLineNo">157</span><a id="line.157">//              return path;</a>
+<span class="sourceLineNo">158</span><a id="line.158">//      }</a>
+<span class="sourceLineNo">159</span><a id="line.159"></a>
+<span class="sourceLineNo">160</span><a id="line.160">}</a>
 
 
 

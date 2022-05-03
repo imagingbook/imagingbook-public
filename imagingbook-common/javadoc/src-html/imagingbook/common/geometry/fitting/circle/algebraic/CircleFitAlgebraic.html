@@ -48,23 +48,41 @@
 <span class="sourceLineNo">038</span><a id="line.38">        }</a>
 <span class="sourceLineNo">039</span><a id="line.39">        </a>
 <span class="sourceLineNo">040</span><a id="line.40">        /**</a>
-<span class="sourceLineNo">041</span><a id="line.41">         * Returns the parameters (A, B, C, D) of the algebraic circle</a>
-<span class="sourceLineNo">042</span><a id="line.42">         * A (x^2 + y^2) + B x + C y + D = 0.</a>
-<span class="sourceLineNo">043</span><a id="line.43">         * @return the algebraic circle parameters (A, B, C, D)</a>
-<span class="sourceLineNo">044</span><a id="line.44">         */</a>
-<span class="sourceLineNo">045</span><a id="line.45">        public abstract double[] getParameters();</a>
-<span class="sourceLineNo">046</span><a id="line.46">        </a>
-<span class="sourceLineNo">047</span><a id="line.47">        public GeometricCircle getGeometricCircle() {</a>
-<span class="sourceLineNo">048</span><a id="line.48">                double[] q = this.getParameters();      // assumed to be (A, B, C, D)</a>
-<span class="sourceLineNo">049</span><a id="line.49">                if (q == null || isZero(q[0])) {        // (abs(2 * A / s) &lt; (1 / Rmax))</a>
-<span class="sourceLineNo">050</span><a id="line.50">                        return null;                    // return a straight line</a>
-<span class="sourceLineNo">051</span><a id="line.51">                }</a>
-<span class="sourceLineNo">052</span><a id="line.52">                else {</a>
-<span class="sourceLineNo">053</span><a id="line.53">                        return GeometricCircle.from(new AlgebraicCircle(q));</a>
-<span class="sourceLineNo">054</span><a id="line.54">                }</a>
-<span class="sourceLineNo">055</span><a id="line.55">        }</a>
-<span class="sourceLineNo">056</span><a id="line.56">        </a>
-<span class="sourceLineNo">057</span><a id="line.57">}</a>
+<span class="sourceLineNo">041</span><a id="line.41">         * Returns the parameters (A, B, C, D) of the {@link AlgebraicCircle}</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * or {@code null} if the fit was unsuccessful.</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * Parameters are not normalized.</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * </a>
+<span class="sourceLineNo">045</span><a id="line.45">         * @return the algebraic circle parameters or {@code null}</a>
+<span class="sourceLineNo">046</span><a id="line.46">         */</a>
+<span class="sourceLineNo">047</span><a id="line.47">        public abstract double[] getParameters();</a>
+<span class="sourceLineNo">048</span><a id="line.48">        </a>
+<span class="sourceLineNo">049</span><a id="line.49">        </a>
+<span class="sourceLineNo">050</span><a id="line.50">        /**</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * Returns a {@link AlgebraicCircle} instance for this fit </a>
+<span class="sourceLineNo">052</span><a id="line.52">         * or {@code null} if the fit was unsuccessful.</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * @return a {@link AlgebraicCircle} instance or null</a>
+<span class="sourceLineNo">054</span><a id="line.54">         */</a>
+<span class="sourceLineNo">055</span><a id="line.55">        public AlgebraicCircle getAlgebraicCircle() {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                double[] p = getParameters();</a>
+<span class="sourceLineNo">057</span><a id="line.57">                return (p == null) ? null : new AlgebraicCircle(p);</a>
+<span class="sourceLineNo">058</span><a id="line.58">        }</a>
+<span class="sourceLineNo">059</span><a id="line.59">        </a>
+<span class="sourceLineNo">060</span><a id="line.60">        /**</a>
+<span class="sourceLineNo">061</span><a id="line.61">         * Returns a {@link GeometricCircle} instance for this fit </a>
+<span class="sourceLineNo">062</span><a id="line.62">         * or {@code null} if the fit was unsuccessful.</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * @return a {@link GeometricCircle} instance or null</a>
+<span class="sourceLineNo">064</span><a id="line.64">         */</a>
+<span class="sourceLineNo">065</span><a id="line.65">        public GeometricCircle getGeometricCircle() {</a>
+<span class="sourceLineNo">066</span><a id="line.66">                double[] q = this.getParameters();      // assumed to be (A, B, C, D)</a>
+<span class="sourceLineNo">067</span><a id="line.67">                if (q == null || isZero(q[0])) {        // (abs(2 * A / s) &lt; (1 / Rmax))</a>
+<span class="sourceLineNo">068</span><a id="line.68">                        return null;                    // return a straight line</a>
+<span class="sourceLineNo">069</span><a id="line.69">                }</a>
+<span class="sourceLineNo">070</span><a id="line.70">                else {</a>
+<span class="sourceLineNo">071</span><a id="line.71">                        return new GeometricCircle(getAlgebraicCircle());</a>
+<span class="sourceLineNo">072</span><a id="line.72">                }</a>
+<span class="sourceLineNo">073</span><a id="line.73">        }</a>
+<span class="sourceLineNo">074</span><a id="line.74">        </a>
+<span class="sourceLineNo">075</span><a id="line.75">}</a>
 
 
 

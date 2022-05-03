@@ -21,7 +21,6 @@ import imagingbook.common.math.Arithmetic;
  * A * (x^2 + y^2) + B * x + C * y + D = 0.
  * Circle instances are normalized and immutable.
  * 
- * TODO: add implementation of Curve2d, Shape2d
  * 
  * @author WB
  *

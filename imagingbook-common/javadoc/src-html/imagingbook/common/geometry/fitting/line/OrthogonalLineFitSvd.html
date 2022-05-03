@@ -29,78 +29,73 @@
 <span class="sourceLineNo">019</span><a id="line.19"></a>
 <span class="sourceLineNo">020</span><a id="line.20">public class OrthogonalLineFitSvd implements LineFit {</a>
 <span class="sourceLineNo">021</span><a id="line.21">        </a>
-<span class="sourceLineNo">022</span><a id="line.22">        private final Pnt2d[] points;</a>
+<span class="sourceLineNo">022</span><a id="line.22">        private final int n;</a>
 <span class="sourceLineNo">023</span><a id="line.23">        private final double[] p;       // line parameters A,B,C</a>
 <span class="sourceLineNo">024</span><a id="line.24">        </a>
 <span class="sourceLineNo">025</span><a id="line.25">        public OrthogonalLineFitSvd(Pnt2d[] points) {</a>
 <span class="sourceLineNo">026</span><a id="line.26">                if (points.length &lt; 2) {</a>
 <span class="sourceLineNo">027</span><a id="line.27">                        throw new IllegalArgumentException("line fit requires at least 2 points");</a>
 <span class="sourceLineNo">028</span><a id="line.28">                }</a>
-<span class="sourceLineNo">029</span><a id="line.29">                this.points = points;</a>
-<span class="sourceLineNo">030</span><a id="line.30">                this.p = fit();</a>
+<span class="sourceLineNo">029</span><a id="line.29">                this.n = points.length;</a>
+<span class="sourceLineNo">030</span><a id="line.30">                this.p = fit(points);</a>
 <span class="sourceLineNo">031</span><a id="line.31">        }</a>
 <span class="sourceLineNo">032</span><a id="line.32">        </a>
 <span class="sourceLineNo">033</span><a id="line.33">        @Override</a>
 <span class="sourceLineNo">034</span><a id="line.34">        public int getSize() {</a>
-<span class="sourceLineNo">035</span><a id="line.35">                return points.length;</a>
+<span class="sourceLineNo">035</span><a id="line.35">                return n;</a>
 <span class="sourceLineNo">036</span><a id="line.36">        }</a>
-<span class="sourceLineNo">037</span><a id="line.37">        </a>
-<span class="sourceLineNo">038</span><a id="line.38">//      @Override</a>
-<span class="sourceLineNo">039</span><a id="line.39">//      public Pnt2d[] getPoints() {</a>
-<span class="sourceLineNo">040</span><a id="line.40">//              return points;</a>
-<span class="sourceLineNo">041</span><a id="line.41">//      }</a>
-<span class="sourceLineNo">042</span><a id="line.42"></a>
-<span class="sourceLineNo">043</span><a id="line.43">        @Override</a>
-<span class="sourceLineNo">044</span><a id="line.44">        public double[] getLineParameters() {</a>
-<span class="sourceLineNo">045</span><a id="line.45">                return p;</a>
-<span class="sourceLineNo">046</span><a id="line.46">        }</a>
-<span class="sourceLineNo">047</span><a id="line.47">        </a>
-<span class="sourceLineNo">048</span><a id="line.48">        private double[] fit() {</a>
-<span class="sourceLineNo">049</span><a id="line.49">                final int n = points.length;</a>
-<span class="sourceLineNo">050</span><a id="line.50">                final double[][] X = new double[n][2];</a>
-<span class="sourceLineNo">051</span><a id="line.51">                Pnt2d ctr = PntUtils.centroid(points);</a>
-<span class="sourceLineNo">052</span><a id="line.52">                final double xc = ctr.getX();</a>
-<span class="sourceLineNo">053</span><a id="line.53">                final double yc = ctr.getY();</a>
-<span class="sourceLineNo">054</span><a id="line.54">                for (int i = 0; i &lt; n; i++) {</a>
-<span class="sourceLineNo">055</span><a id="line.55">                        X[i][0] = points[i].getX() - xc;</a>
-<span class="sourceLineNo">056</span><a id="line.56">                        X[i][1] = points[i].getY() - yc;</a>
-<span class="sourceLineNo">057</span><a id="line.57">                }</a>
-<span class="sourceLineNo">058</span><a id="line.58">                </a>
-<span class="sourceLineNo">059</span><a id="line.59">                SingularValueDecomposition svd =  </a>
-<span class="sourceLineNo">060</span><a id="line.60">                                new SingularValueDecomposition(MatrixUtils.createRealMatrix(X));</a>
-<span class="sourceLineNo">061</span><a id="line.61">                </a>
-<span class="sourceLineNo">062</span><a id="line.62">                RealMatrix V = svd.getV();</a>
-<span class="sourceLineNo">063</span><a id="line.63">                double[] s = svd.getSingularValues();</a>
-<span class="sourceLineNo">064</span><a id="line.64">                int k = Matrix.idxMin(s);</a>
-<span class="sourceLineNo">065</span><a id="line.65">                double[] e = V.getColumn(k);</a>
-<span class="sourceLineNo">066</span><a id="line.66"></a>
-<span class="sourceLineNo">067</span><a id="line.67">                double A = e[0];</a>
-<span class="sourceLineNo">068</span><a id="line.68">                double B = e[1];</a>
-<span class="sourceLineNo">069</span><a id="line.69">                double C = -A * xc - B * yc;</a>
-<span class="sourceLineNo">070</span><a id="line.70">                return new double[] {A,B,C};</a>
-<span class="sourceLineNo">071</span><a id="line.71">        }</a>
-<span class="sourceLineNo">072</span><a id="line.72">        </a>
-<span class="sourceLineNo">073</span><a id="line.73">        // -------------------------------------------------------------------</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">        @Override</a>
+<span class="sourceLineNo">039</span><a id="line.39">        public double[] getLineParameters() {</a>
+<span class="sourceLineNo">040</span><a id="line.40">                return p;</a>
+<span class="sourceLineNo">041</span><a id="line.41">        }</a>
+<span class="sourceLineNo">042</span><a id="line.42">        </a>
+<span class="sourceLineNo">043</span><a id="line.43">        private double[] fit(Pnt2d[] points) {</a>
+<span class="sourceLineNo">044</span><a id="line.44">                final int n = points.length;</a>
+<span class="sourceLineNo">045</span><a id="line.45">                final double[][] X = new double[n][2];</a>
+<span class="sourceLineNo">046</span><a id="line.46">                Pnt2d ctr = PntUtils.centroid(points);</a>
+<span class="sourceLineNo">047</span><a id="line.47">                final double xc = ctr.getX();</a>
+<span class="sourceLineNo">048</span><a id="line.48">                final double yc = ctr.getY();</a>
+<span class="sourceLineNo">049</span><a id="line.49">                for (int i = 0; i &lt; n; i++) {</a>
+<span class="sourceLineNo">050</span><a id="line.50">                        X[i][0] = points[i].getX() - xc;</a>
+<span class="sourceLineNo">051</span><a id="line.51">                        X[i][1] = points[i].getY() - yc;</a>
+<span class="sourceLineNo">052</span><a id="line.52">                }</a>
+<span class="sourceLineNo">053</span><a id="line.53">                </a>
+<span class="sourceLineNo">054</span><a id="line.54">                SingularValueDecomposition svd =  </a>
+<span class="sourceLineNo">055</span><a id="line.55">                                new SingularValueDecomposition(MatrixUtils.createRealMatrix(X));</a>
+<span class="sourceLineNo">056</span><a id="line.56">                </a>
+<span class="sourceLineNo">057</span><a id="line.57">                RealMatrix V = svd.getV();</a>
+<span class="sourceLineNo">058</span><a id="line.58">                double[] s = svd.getSingularValues();</a>
+<span class="sourceLineNo">059</span><a id="line.59">                int k = Matrix.idxMin(s);</a>
+<span class="sourceLineNo">060</span><a id="line.60">                double[] e = V.getColumn(k);</a>
+<span class="sourceLineNo">061</span><a id="line.61"></a>
+<span class="sourceLineNo">062</span><a id="line.62">                double A = e[0];</a>
+<span class="sourceLineNo">063</span><a id="line.63">                double B = e[1];</a>
+<span class="sourceLineNo">064</span><a id="line.64">                double C = -A * xc - B * yc;</a>
+<span class="sourceLineNo">065</span><a id="line.65">                return new double[] {A,B,C};</a>
+<span class="sourceLineNo">066</span><a id="line.66">        }</a>
+<span class="sourceLineNo">067</span><a id="line.67">        </a>
+<span class="sourceLineNo">068</span><a id="line.68">        // -------------------------------------------------------------------</a>
+<span class="sourceLineNo">069</span><a id="line.69">        </a>
+<span class="sourceLineNo">070</span><a id="line.70">//      static double[][] X = {{ 10, 6 }, { 4, 3 }, { 18, 2 }, { 7, 1 }, { 5, 6 }};</a>
+<span class="sourceLineNo">071</span><a id="line.71">//      static double[][] X = {{ 10, 6 }, { 4, 3 }};</a>
+<span class="sourceLineNo">072</span><a id="line.72">//      static double[][] X = {{ 1, 1 }, { 3, 3 },  { 13, 13 }};</a>
+<span class="sourceLineNo">073</span><a id="line.73">        static double[][] X = {{1, 8}, {4, 5}, {4, 7}, {6, 4}, {9, 4}}; // book example</a>
 <span class="sourceLineNo">074</span><a id="line.74">        </a>
-<span class="sourceLineNo">075</span><a id="line.75">//      static double[][] X = {{ 10, 6 }, { 4, 3 }, { 18, 2 }, { 7, 1 }, { 5, 6 }};</a>
-<span class="sourceLineNo">076</span><a id="line.76">//      static double[][] X = {{ 10, 6 }, { 4, 3 }};</a>
-<span class="sourceLineNo">077</span><a id="line.77">//      static double[][] X = {{ 1, 1 }, { 3, 3 },  { 13, 13 }};</a>
-<span class="sourceLineNo">078</span><a id="line.78">        static double[][] X = {{1, 8}, {4, 5}, {4, 7}, {6, 4}, {9, 4}}; // book example</a>
-<span class="sourceLineNo">079</span><a id="line.79">        </a>
-<span class="sourceLineNo">080</span><a id="line.80">        public static void main(String[] args) {</a>
-<span class="sourceLineNo">081</span><a id="line.81">                Pnt2d[] pts = PntUtils.fromDoubleArray(X);</a>
-<span class="sourceLineNo">082</span><a id="line.82">                LineFit fit = new OrthogonalLineFitSvd(pts);</a>
-<span class="sourceLineNo">083</span><a id="line.83">                System.out.println(fit.getClass());</a>
-<span class="sourceLineNo">084</span><a id="line.84">                AlgebraicLine line = fit.getLine();</a>
-<span class="sourceLineNo">085</span><a id="line.85">                System.out.println("line = " + line);</a>
-<span class="sourceLineNo">086</span><a id="line.86">                System.out.println("avg error = " + fit.getOrthogonalError(pts) / X.length);</a>
-<span class="sourceLineNo">087</span><a id="line.87">        }</a>
-<span class="sourceLineNo">088</span><a id="line.88">        </a>
-<span class="sourceLineNo">089</span><a id="line.89">//      class Fitting_Lines.lib.OrthogonalLineFitSvd</a>
-<span class="sourceLineNo">090</span><a id="line.90">//      line = AlgebraicLine &lt;a=0.497, b=0.868, c=-7.245&gt;</a>
-<span class="sourceLineNo">091</span><a id="line.91">//      avg error = 0.5329166870097324</a>
-<span class="sourceLineNo">092</span><a id="line.92">        </a>
-<span class="sourceLineNo">093</span><a id="line.93">}</a>
+<span class="sourceLineNo">075</span><a id="line.75">        public static void main(String[] args) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                Pnt2d[] pts = PntUtils.fromDoubleArray(X);</a>
+<span class="sourceLineNo">077</span><a id="line.77">                LineFit fit = new OrthogonalLineFitSvd(pts);</a>
+<span class="sourceLineNo">078</span><a id="line.78">                System.out.println(fit.getClass());</a>
+<span class="sourceLineNo">079</span><a id="line.79">                AlgebraicLine line = fit.getLine();</a>
+<span class="sourceLineNo">080</span><a id="line.80">                System.out.println("line = " + line);</a>
+<span class="sourceLineNo">081</span><a id="line.81">                System.out.println("avg error = " + fit.getSquaredOrthogonalError(pts) / X.length);</a>
+<span class="sourceLineNo">082</span><a id="line.82">        }</a>
+<span class="sourceLineNo">083</span><a id="line.83">        </a>
+<span class="sourceLineNo">084</span><a id="line.84">//      class Fitting_Lines.lib.OrthogonalLineFitSvd</a>
+<span class="sourceLineNo">085</span><a id="line.85">//      line = AlgebraicLine &lt;a=0.497, b=0.868, c=-7.245&gt;</a>
+<span class="sourceLineNo">086</span><a id="line.86">//      avg error = 0.5329166870097324</a>
+<span class="sourceLineNo">087</span><a id="line.87">        </a>
+<span class="sourceLineNo">088</span><a id="line.88">}</a>
 
 
 
