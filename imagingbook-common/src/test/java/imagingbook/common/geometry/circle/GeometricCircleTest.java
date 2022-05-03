@@ -2,6 +2,7 @@ package imagingbook.common.geometry.circle;
 
 import static org.junit.Assert.*;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class GeometricCircleTest {
@@ -25,4 +26,11 @@ public class GeometricCircleTest {
 		GeometricCircle gc2 = gc1.duplicate();
 		assertTrue(gc1.equals(gc2, 1e-6));
 	}
+	
+	@Test	// test AWT Shape generation
+	public void test3() {
+		GeometricCircle gc = new GeometricCircle(17, -23, 7);
+		Assert.assertTrue("produced Shape does not match line", gc.checkShape(gc.getShape(), 0.5));
+	}
+
 }

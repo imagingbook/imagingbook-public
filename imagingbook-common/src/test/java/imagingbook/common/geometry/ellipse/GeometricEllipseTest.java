@@ -11,11 +11,14 @@ package imagingbook.common.geometry.ellipse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Shape;
 import java.util.Random;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.shape.ShapePointIterator;
 
 public class GeometricEllipseTest {
 	
@@ -101,6 +104,12 @@ public class GeometricEllipseTest {
 			Pnt2d xp = Pnt2d.from(3.107598626723163, 4.277104138229151);
 			assertEquals(xp, ell.getClosestPoint(x));
 		}
+	}
+	
+	@Test		// check AWT Shape generation
+	public void test5() {
+		GeometricEllipse ge = new GeometricEllipse(120, 50, 200, -70, Math.PI/3);
+		Assert.assertTrue("produced Shape does not match line", ge.checkShape(ge.getShape(), 0.5));
 	}
 
 }

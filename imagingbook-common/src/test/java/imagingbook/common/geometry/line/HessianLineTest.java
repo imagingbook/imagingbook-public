@@ -11,6 +11,7 @@ package imagingbook.common.geometry.line;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
@@ -27,17 +28,17 @@ public class HessianLineTest {
 	@Test
 	public void test1() {
 		// example from CV lecture notes
-		HessianLine H1 = HessianLine.fromPoints(p1, p2);
+		HessianLine H1 = HessianLine.from(p1, p2);
 		
 		assertEquals(0.0, H1.getDistance(p1), TOL);						// x1 is actually ON the line
 		assertEquals(0.0, H1.getDistance(p2), TOL);						// x1 is actually ON the line
 		
-		assertEquals(-0.4678877204190327, H1.A, TOL);
-		assertEquals(0.8837879163470618, H1.B, TOL);
-		assertEquals(5.198752449100363, H1.C, TOL);
+		assertEquals(0.4678877204190327, H1.A, TOL);
+		assertEquals(-0.8837879163470618, H1.B, TOL);
+		assertEquals(-5.198752449100363, H1.C, TOL);
 		
-		assertEquals(2.0576955586061656, H1.getAngle(), TOL);
-		assertEquals(-5.198752449100363, H1.getRadius(), TOL);
+		assertEquals(-1.0838970949836275, H1.getAngle(), TOL); 	// was 2.0576955586061656 before forcing A to be positive
+		assertEquals(5.198752449100363, H1.getRadius(), TOL); 	// was -5.198752449100363
 	}
 	
 	@Test
@@ -55,10 +56,16 @@ public class HessianLineTest {
 	
 	@Test
 	public void test3() {
-		HessianLine H1 = HessianLine.fromPoints(p1, p2);
+		HessianLine H1 = HessianLine.from(p1, p2);
 		Pnt2d x0 = H1.getClosestLinePoint(p3);
 		assertEquals(0.0, H1.getDistance(x0), TOL);							// x0 is actually ON the line
 		assertEquals(p3.distance(x0), Math.abs(H1.getDistance(p3)), TOL);	// distance (p3,x0) is shortest 
+	}
+	
+	@Test
+	public void test4() {
+		HessianLine L12 = HessianLine.from(p1, p2);
+		Assert.assertTrue("produced Shape does not match line", L12.checkShape(L12.getShape(), 0.5));
 	}
 
 }

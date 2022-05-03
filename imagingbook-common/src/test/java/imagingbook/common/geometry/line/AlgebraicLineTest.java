@@ -8,6 +8,8 @@
  *******************************************************************************/
 package imagingbook.common.geometry.line;
 
+import java.awt.Shape;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,25 +27,25 @@ public class AlgebraicLineTest {
 
 	@Test
 	public void test1() {
-		AlgebraicLine l12 = AlgebraicLine.from(p1, p2);		
-		AlgebraicLine l21 = AlgebraicLine.from(p2, p1);
+		AlgebraicLine L12 = AlgebraicLine.from(p1, p2);		
+		AlgebraicLine L21 = AlgebraicLine.from(p2, p1);
 		
-		Assert.assertTrue(l12.equals(l21, TOL));
-		Assert.assertTrue(l21.equals(l12, TOL));
+		Assert.assertTrue(L12.equals(L21, TOL));
+		Assert.assertTrue(L21.equals(L12, TOL));
 		
-		Assert.assertEquals(0.0, l12.getDistance(p1), TOL);
-		Assert.assertEquals(0.0, l12.getDistance(p2), TOL);
+		Assert.assertEquals(0.0, L12.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L12.getDistance(p2), TOL);
 		
-		Assert.assertEquals(0.0, l21.getDistance(p1), TOL);
-		Assert.assertEquals(0.0, l21.getDistance(p2), TOL);
+		Assert.assertEquals(0.0, L21.getDistance(p1), TOL);
+		Assert.assertEquals(0.0, L21.getDistance(p2), TOL);
 	}
 	
 	@Test
 	public void test2() {
-		AlgebraicLine l12 = AlgebraicLine.from(p1, p2);
-		Pnt2d x0 = l12.getClosestLinePoint(p3);
-		Assert.assertEquals(0.0, l12.getDistance(x0), TOL);						// x0 is actually ON the line
-		Assert.assertEquals(p3.distance(x0), Math.abs(l12.getDistance(p3)), TOL);	// distance (p3,x0) is shortest 
+		AlgebraicLine L12 = AlgebraicLine.from(p1, p2);
+		Pnt2d x0 = L12.getClosestLinePoint(p3);
+		Assert.assertEquals(0.0, L12.getDistance(x0), TOL);						// x0 is actually ON the line
+		Assert.assertEquals(p3.distance(x0), Math.abs(L12.getDistance(p3)), TOL);	// distance (p3,x0) is shortest 
 	}
 
 	@Test
@@ -56,8 +58,8 @@ public class AlgebraicLineTest {
 	
 	@Test
 	public void test4() {
-		AlgebraicLine L1 = new AlgebraicLine(10, 0, -2);
-		AlgebraicLine L2 = new AlgebraicLine(-10, 0, 2);
+		AlgebraicLine L1 = new AlgebraicLine(10, 3, -2);
+		AlgebraicLine L2 = new AlgebraicLine(-10, -3, 2);
 		Assert.assertTrue(L1.equals(L2));
 		Assert.assertTrue(L2.equals(L1));
 	}
@@ -65,5 +67,12 @@ public class AlgebraicLineTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void test5() {
 		new AlgebraicLine(0, 0, -2);
+	}
+	
+	
+	@Test	// check AWT Shape generation
+	public void test6() {
+		AlgebraicLine L12 = AlgebraicLine.from(p1, p2);
+		Assert.assertTrue("produced Shape does not match line", L12.checkShape(L12.getShape(), 0.5));
 	}
 }

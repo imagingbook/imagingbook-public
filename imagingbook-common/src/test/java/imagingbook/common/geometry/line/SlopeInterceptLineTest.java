@@ -3,6 +3,7 @@ package imagingbook.common.geometry.line;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class SlopeInterceptLineTest {
@@ -32,6 +33,19 @@ public class SlopeInterceptLineTest {
 				assertTrue(sl2.equals(sl1, TOL));
 			}
 		}
+	}
+	
+	@Test	// check points on line
+	public void test3() {
+		SlopeInterceptLine sil = new SlopeInterceptLine(-2, 3);
+		assertEquals(0, sil.getDistance(0, 3), TOL);
+		assertEquals(0, sil.getDistance(1, 1), TOL);
+	}
+	
+	@Test	// check AWT Shape generation
+	public void test4() {
+		SlopeInterceptLine sil = new SlopeInterceptLine(-2, 3);
+		Assert.assertTrue("produced Shape does not match line", sil.checkShape(sil.getShape(), 0.5));
 	}
 
 }
