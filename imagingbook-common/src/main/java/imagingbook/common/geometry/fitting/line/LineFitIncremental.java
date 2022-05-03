@@ -189,7 +189,7 @@ public class LineFitIncremental implements LineFit {
 			System.out.println("size = " + fit.getSize());
 			AlgebraicLine line = fit.getLine();
 			System.out.println("  line = " +  line);
-			System.out.println("  mean square error = " + fit.getOrthogonalError(fit.getPoints()) / X.length);
+			System.out.println("  mean square error = " + fit.getSquaredOrthogonalError(fit.getPoints()) / X.length);
 		}
 		
 		System.out.println("Removing points -------------------------- ");
@@ -198,7 +198,7 @@ public class LineFitIncremental implements LineFit {
 			System.out.println("size = " + fit.getSize());
 			AlgebraicLine line = fit.getLine();
 			System.out.println("  line = " +  line);
-			System.out.println("  mean square error = " + fit.getOrthogonalError(fit.getPoints()) / X.length);
+			System.out.println("  mean square error = " + fit.getSquaredOrthogonalError(fit.getPoints()) / X.length);
 		}
 			
 		

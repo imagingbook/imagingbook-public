@@ -27,7 +27,7 @@ public class HessianLine extends AlgebraicLine {
 	
 	// static factory methods ----------------------------------------
 	
-	public static HessianLine fromPoints(Pnt2d p1, Pnt2d p2) {
+	public static HessianLine from(Pnt2d p1, Pnt2d p2) {
 		return new HessianLine(AlgebraicLine.from(p1, p2));
 	}
 	

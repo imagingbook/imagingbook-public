@@ -18,10 +18,10 @@ package imagingbook.common.geometry.basic;
 public interface Curve2d {
 	
 	/**
-	 * Returns the minimum distance from the specified point to this curve.
+	 * Returns the minimum absolute distance from the specified point to this curve.
 	 * 
 	 * @param p a 2D point
-	 * @return the minimum distance
+	 * @return the minimum distance (always positive)
 	 */
 	public double getDistance(Pnt2d p);
 

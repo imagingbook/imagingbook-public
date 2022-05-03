@@ -269,6 +269,15 @@ public interface Pnt2d extends ShapeProducer {
 		return Math.sqrt(this.distanceSq(other));
 	}
 	
+	
+	/**
+	 * Implementation required by {@link Curve2d} interface.
+	 */
+	@Override
+	public default double getDistance(Pnt2d other) {
+		return Math.sqrt(this.distanceSq(other));
+	}
+	
 	/**
 	 * Returns the L2 (Euclidean) distance between this point and the
 	 * given point. This method is equivalent to {@link #distance(Pnt2d)}.

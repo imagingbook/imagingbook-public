@@ -15,7 +15,6 @@ import java.awt.Shape;
 import java.awt.geom.Path2D;
 import java.util.Locale;
 
-import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.shape.ShapeProducer;
@@ -28,7 +27,7 @@ import imagingbook.common.math.Arithmetic;
  * @author WB
  *
  */
-public class AlgebraicLine implements Curve2d, ShapeProducer {
+public class AlgebraicLine implements ShapeProducer {
 	
 	public final double A, B, C;
 	
@@ -43,11 +42,18 @@ public class AlgebraicLine implements Curve2d, ShapeProducer {
 	public AlgebraicLine(double A, double B, double C) {
 		double norm = Math.sqrt(sqr(A) + sqr(B));
 		if (isZero(norm)) {
-			throw new IllegalArgumentException("a and b may not both be zero");
+			throw new IllegalArgumentException("A and B may not both be zero");
 		}
-		this.A = A / norm;
-		this.B = B / norm;
-		this.C = C / norm;
+		if (A >= 0) {
+			this.A = A / norm;
+			this.B = B / norm;
+			this.C = C / norm;
+		}
+		else {
+			this.A = -A / norm;
+			this.B = -B / norm;
+			this.C = -C / norm;
+		}
 	}
 	
 	/**
@@ -80,11 +86,11 @@ public class AlgebraicLine implements Curve2d, ShapeProducer {
 		return AlgebraicLine.from(s, v);
 	}
 	
-	// TODO: replace by direct calculation
 	public static AlgebraicLine from(SlopeInterceptLine sil) {
-		double a = sil.getK();
-		double c = sil.getD();
-		return new AlgebraicLine(a, -1, c);
+//		double a = sil.getK();
+//		double c = sil.getD();
+//		return new AlgebraicLine(a, -1, c);	
+		return new AlgebraicLine(sil.A, sil.B, sil.C);	
 	}
 	
 	// getter/setter methods ------------------------------------------
@@ -235,7 +241,7 @@ public class AlgebraicLine implements Curve2d, ShapeProducer {
 	 *
 	 * @param width the width of the drawing canvas
 	 * @param height the height of the drawing canvas
-	 * @return
+	 * @return a {@link Shape} instance for this line
 	 */
 	public Shape getShape(int width, int height) {
 		double length = Math.sqrt(sqr(width) + sqr(height));

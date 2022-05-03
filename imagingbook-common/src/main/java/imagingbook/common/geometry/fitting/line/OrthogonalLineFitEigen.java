@@ -22,33 +22,28 @@ public class OrthogonalLineFitEigen implements LineFit {
 	
 	public static boolean VERBOSE = false;
 	
-	private final Pnt2d[] points;
+	private final int n;
 	private final double[] p;	// line parameters A,B,C
 	
 	public OrthogonalLineFitEigen(Pnt2d[] points) {
 		if (points.length < 2) {
 			throw new IllegalArgumentException("line fit requires at least 2 points");
 		}
-		this.points = points;
-		this.p = fit();
+		this.n = points.length;
+		this.p = fit(points);
 	}
 	
 	@Override
 	public int getSize() {
-		return points.length;
+		return n;
 	}
-	
-//	@Override
-//	public Pnt2d[] getPoints() {
-//		return points;
-//	}
 
 	@Override
 	public double[] getLineParameters() {
 		return p;
 	}
 	
-	private double[] fit() {
+	private double[] fit(Pnt2d[] points) {
 		final int n = points.length;
 	
 		double Sx = 0, Sy = 0, Sxx = 0, Syy = 0, Sxy = 0;
@@ -103,13 +98,13 @@ public class OrthogonalLineFitEigen implements LineFit {
 //	static double[][] X = {{1, 8}, {4, 5}};
 	
 	public static void main(String[] args) {
+		VERBOSE = true;
 		PrintPrecision.set(4);
 		Pnt2d[] pts = PntUtils.fromDoubleArray(X);	
 		LineFit fit = new OrthogonalLineFitEigen(pts);
-		System.out.println(fit.getClass());
 		AlgebraicLine line = fit.getLine();
 		System.out.println("line = " +  Matrix.toString(line.getParameters()));
-		System.out.println("mean square error = " + fit.getOrthogonalError(pts) / X.length);
+		System.out.println("mean square error = " + fit.getSquaredOrthogonalError(pts) / X.length);
 	}
 
 	// class Fitting_Lines.lib.OrthogonalLineFitEigen

@@ -110,12 +110,13 @@ public class OrthogonalLineFitHomogeneous implements LineFit {
 	static double[][] X = {{1, 8}, {4, 5}, {4, 7}, {6, 4}, {9, 4}}; // book example
 	
 	public static void main(String[] args) {
+		VERBOSE = true;
 		Pnt2d[] pts = PntUtils.fromDoubleArray(X);
 		OrthogonalLineFitHomogeneous fit = new OrthogonalLineFitHomogeneous(pts);
 		System.out.println(fit.getClass());
 		AlgebraicLine line = fit.getLine();
 		System.out.println("line = " + line);
-		System.out.println("avg error = " + fit.getOrthogonalError(pts) / X.length);
+		System.out.println("avg error = " + fit.getSquaredOrthogonalError(pts) / X.length);
 	}
 	
 //	line = AlgebraicLine <a=-0.497, b=-0.868, c=7.245>

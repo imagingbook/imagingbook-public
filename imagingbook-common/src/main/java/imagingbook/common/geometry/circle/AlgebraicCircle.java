@@ -21,7 +21,7 @@ import imagingbook.common.math.Arithmetic;
  * A * (x^2 + y^2) + B * x + C * y + D = 0.
  * Circle instances are normalized and immutable.
  * 
- * TODO: add implementation of Curve2d
+ * TODO: add implementation of Curve2d, Shape2d
  * 
  * @author WB
  *
@@ -33,7 +33,7 @@ public class AlgebraicCircle {
 	/**
 	 * Constructor. Creates a {@link AlgebraicCircle} instance
 	 * whose parameters A, B, C, D are normalized such that
-	 * B^2 + C^2 - 4 * A * D = 1 and A &geq; 0.
+	 * B^2 + C^2 - 4 * A * D = 1 and A &ge; 0.
 	 * Throws an exception if d = B^2 + C^2 - 4 * A * D (the <em>discriminant</em>) is negative.
 	 * 
 	 * @param A circle parameter A

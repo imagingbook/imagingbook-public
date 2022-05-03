@@ -14,7 +14,6 @@ public class ShapePointIterator implements Iterator<Pnt2d> {
 	
 	public ShapePointIterator(Shape s, double flatness) {
 		this.pi = s.getPathIterator(null, flatness);
-		System.out.println(this.pi);
 	}
 
 	@Override
@@ -41,11 +40,13 @@ public class ShapePointIterator implements Iterator<Pnt2d> {
 		Shape circle = gc.getShape();
 		System.out.println("circle = " + circle);
 		
-		ShapePointIterator iter = new ShapePointIterator(circle, 0.01);
-		while(iter.hasNext()) {
-			Pnt2d p = iter.next();
-			System.out.println(p + " dist = " + p.distance(ctr));
-		}
+//		ShapePointIterator iter = new ShapePointIterator(circle, 0.01);
+//		while(iter.hasNext()) {
+//			Pnt2d p = iter.next();
+//			System.out.println(p + " dist = " + gc.getDistance(p));
+//		}
+		
+		System.out.println("checkShape = " + gc.checkShape(circle, 0.5));
 		
 	}
 }

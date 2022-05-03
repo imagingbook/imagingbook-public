@@ -21,7 +21,8 @@ public class LinearRegressionFit implements LineFit {
 	
 	public static boolean VERBOSE = false;
 	
-	private final Pnt2d[] points;
+//	private final Pnt2d[] points;
+	private final int n;
 	private final double[] p;	// line parameters A,B,C
 	private double k, d;
 	
@@ -29,13 +30,15 @@ public class LinearRegressionFit implements LineFit {
 		if (points.length < 2) {
 			throw new IllegalArgumentException("line fit requires at least 2 points");
 		}
-		this.points = points;
-		this.p = fit();
+//		this.points = points;
+		this.n = points.length;
+		this.p = fit(points);
 	}
 	
 	@Override
 	public int getSize() {
-		return points.length;
+//		return points.length;
+		return n;
 	}
 
 //	@Override
@@ -57,7 +60,7 @@ public class LinearRegressionFit implements LineFit {
 	}
 	
 	
-	private double[] fit() {
+	private double[] fit(Pnt2d[] points) {
 		final int n = points.length;
 	
 		double Sx = 0, Sy = 0, Sxx = 0, Sxy = 0;
@@ -82,7 +85,6 @@ public class LinearRegressionFit implements LineFit {
 			System.out.println("Sxy = " + Sxy);
 			System.out.println("k = " + k);
 			System.out.println("d = " + d);
-			System.out.println("squared regression error = " + getOrthogonalError(this.points));
 		}
 	
 		AlgebraicLine line = AlgebraicLine.from(new SlopeInterceptLine(k, d));
@@ -90,9 +92,17 @@ public class LinearRegressionFit implements LineFit {
 	}
 
 
-	public double getRegressionError() {
+	/**
+	 * Calculates and returns the sum of the squared differences between
+	 * the y-coordinates of the data points (xi, yi) and the associated y-value
+	 * of the regression line (y = k x + d).
+	 * 
+	 * @param points an array of 2D points
+	 * @return the squared regression error
+	 */
+	public double getSquaredRegressionError(Pnt2d[] points) {
 		double s2 = 0;
-		for (Pnt2d p : this.points) {
+		for (Pnt2d p : points) {
 			double y = k * p.getX() + d;
 			s2 = s2 + sqr(y - p.getY());
 		}
@@ -108,6 +118,7 @@ public class LinearRegressionFit implements LineFit {
 	
 	
 	public static void main(String[] args) {
+		VERBOSE = true;
 		PrintPrecision.set(6);
 		Pnt2d[] pts = PntUtils.fromDoubleArray(X);	
 		LinearRegressionFit fit = new LinearRegressionFit(pts);
@@ -115,8 +126,8 @@ public class LinearRegressionFit implements LineFit {
 		System.out.println("k = " + fit.getK());
 		System.out.println("d = " + fit.getD());
 		System.out.println("line = " + Matrix.toString(line.getParameters()));
-		System.out.println("regression error = " + fit.getRegressionError());
-		System.out.println("orthogonal error = " + fit.getOrthogonalError(pts));
+		System.out.println("regression error = " + fit.getSquaredRegressionError(pts));
+		System.out.println("orthogonal error = " + fit.getSquaredOrthogonalError(pts));
 	}
 
 
@@ -126,8 +137,8 @@ public class LinearRegressionFit implements LineFit {
 //	Sxy = 116.0
 //	k = -0.5287356321839081
 //	d = 8.137931034482758
+//	line = {0.467421, 0.884035, -7.194216}
 //	regression error = 3.471264367816092
-//	line = {-0.467421, -0.884035, 7.194216}
-//	orth error = 2.712854930304596
+//	orthogonal error = 2.7128549303045952
 
 }

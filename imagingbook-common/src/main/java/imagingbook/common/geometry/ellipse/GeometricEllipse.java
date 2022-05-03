@@ -42,7 +42,7 @@ public class GeometricEllipse implements ShapeProducer, Curve2d {
 	
 	/**
 	 * Constructor.
-	 * Axis lengths may be exchanged to ensure ra &geq; rb.
+	 * Axis lengths may be exchanged to ensure ra &ge; rb.
 	 * 
 	 * @param ra major axis length
 	 * @param rb minor axis length

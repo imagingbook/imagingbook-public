@@ -15,8 +15,22 @@ public interface LineFit {
 	
 	public abstract int getSize();
 	
+	/**
+	 * Returns the parameters [A, B, C] for the {@link AlgebraicLine}
+	 * associated with this line fit. To be implemented by concrete
+	 * classes. {@code null} is returned if no fit was found.
+	 * 
+	 * @return algebraic line parameters [A, B, C]
+	 * @see AlgebraicLine
+	 */
 	public abstract double[] getLineParameters();
 
+	/**
+	 * Returns the {@link AlgebraicLine} associated with this line fit.
+	 * {@code null} is returned if no fit was found.
+	 * 
+	 * @return an {@link AlgebraicLine} instance
+	 */
 	public default AlgebraicLine getLine() {
 		double[] p = this.getLineParameters();
 		if (p == null) {
@@ -27,10 +41,14 @@ public interface LineFit {
 		}
 	}
 	
-//	public abstract Pnt2d[] getPoints();
-	
-	public default double getOrthogonalError(Pnt2d[] points) {
-//		final Pnt2d[] points = getPoints();
+	/**
+	 * Calculates and returns the sum of the squared orthogonal distances
+	 * of the specified points for this line fit.
+	 * 
+	 * @param points an array of 2D points
+	 * @return the squared orthogonal error
+	 */
+	public default double getSquaredOrthogonalError(Pnt2d[] points) {
 		AlgebraicLine line = getLine();
 		return line.getSquareError(points);
 	}
