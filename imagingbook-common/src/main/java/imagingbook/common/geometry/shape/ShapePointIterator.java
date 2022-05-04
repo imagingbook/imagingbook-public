@@ -44,19 +44,19 @@ public class ShapePointIterator implements Iterator<Pnt2d> {
 	}
 
 	
-	public static void main(String[] args) {
-		Pnt2d ctr = Pnt2d.from(20, 30);
-		GeometricCircle gc = new GeometricCircle(20, 30, 100);
-		Shape circle = gc.getShape();
-		System.out.println("circle = " + circle);
-		
-//		ShapePointIterator iter = new ShapePointIterator(circle, 0.01);
-//		while(iter.hasNext()) {
-//			Pnt2d p = iter.next();
-//			System.out.println(p + " dist = " + gc.getDistance(p));
-//		}
-		
-		System.out.println("checkShape = " + gc.checkShape(circle, 0.5));
-		
-	}
+//	public static void main(String[] args) {
+//		Pnt2d ctr = Pnt2d.from(20, 30);
+//		GeometricCircle gc = new GeometricCircle(20, 30, 100);
+//		Shape circle = gc.getShape();
+//		System.out.println("circle = " + circle);
+//		
+////		ShapePointIterator iter = new ShapePointIterator(circle, 0.01);
+////		while(iter.hasNext()) {
+////			Pnt2d p = iter.next();
+////			System.out.println(p + " dist = " + gc.getDistance(p));
+////		}
+//		
+//		System.out.println("checkShape = " + gc.checkShape(circle, 0.5));
+//		
+//	}
 }
