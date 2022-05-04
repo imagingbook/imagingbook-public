@@ -8,21 +8,21 @@
  *******************************************************************************/
 package Ransac;
 
-import imagingbook.common.ij.IjUtils;
-import imagingbook.sampleimages.RansacTestImage;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
+import imagingbook.common.ij.IjUtils;
+import imagingbook.sampleimages.RansacTestImage;
 
 /**
- * RANSAC line detection demo. Opens a local sample image and then runs
- * plugin {@link Lines_Detect}.
+ * RANSAC ellipse detection demo. Opens a local sample image and then runs
+ * plugin {@link Ransac_Ellipse_Detect}.
  * 
  * @author WB
  *
  */
-public class Lines_Demo implements PlugIn {
+public class Ransac_Ellipse_Demo implements PlugIn {
 	
-	private static RansacTestImage resource = RansacTestImage.NoisyLines;
+	private static RansacTestImage resource = RansacTestImage.NoisyEllipses;
 
 	@Override
 	public void run(String arg) {
@@ -30,7 +30,7 @@ public class Lines_Demo implements PlugIn {
 		ImagePlus im = resource.getImage();
 		im.show();
 		
-		IjUtils.run(new Lines_Detect());
+		IjUtils.run(new Ransac_Ellipse_Detect());
 		im.close();
 	}
 

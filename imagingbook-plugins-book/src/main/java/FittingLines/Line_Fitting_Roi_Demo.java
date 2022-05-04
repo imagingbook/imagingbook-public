@@ -25,7 +25,7 @@ import imagingbook.common.geometry.fitting.line.LineFit;
 import imagingbook.common.geometry.fitting.line.LinearRegressionFit;
 import imagingbook.common.geometry.fitting.line.OrthogonalLineFitEigen;
 import imagingbook.common.geometry.line.AlgebraicLine;
-import imagingbook.common.hough.lines.HoughLine;
+import imagingbook.common.hough.HoughLine;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;

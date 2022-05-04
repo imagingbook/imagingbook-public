@@ -8,29 +8,29 @@
  *******************************************************************************/
 package Ransac;
 
-import ij.ImagePlus;
-import ij.plugin.PlugIn;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.sampleimages.RansacTestImage;
+import ij.ImagePlus;
+import ij.plugin.PlugIn;
 
 /**
- * RANSAC ellipse detection demo. Opens a local sample image and then runs
- * plugin {@link Ellipses_Detect}.
+ * RANSAC circle detection demo. Opens a local sample image and then runs
+ * plugin {@link Ransac_Circles_Detect}.
  * 
  * @author WB
  *
  */
-public class Ellipses_Demo implements PlugIn {
-	
-	private static RansacTestImage resource = RansacTestImage.NoisyEllipses;
+public class Ransac_Circles_Demo implements PlugIn {
 
+	private static RansacTestImage resource = RansacTestImage.NoisyCircles;
+	
 	@Override
 	public void run(String arg) {
 		
 		ImagePlus im = resource.getImage();
 		im.show();
 		
-		IjUtils.run(new Ellipses_Detect());
+		IjUtils.run(new Ransac_Circles_Detect());
 		im.close();
 	}
 

@@ -13,9 +13,9 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.hough.HoughLine;
 import imagingbook.common.hough.HoughTransformLines;
 import imagingbook.common.hough.HoughTransformLines.Parameters;
-import imagingbook.common.hough.lines.HoughLine;
 
 /** 
  * This plugin implements a simple Hough transform for straight lines.

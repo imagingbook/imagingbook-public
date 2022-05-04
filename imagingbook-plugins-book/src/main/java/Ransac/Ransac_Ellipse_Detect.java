@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ij.IJ;
+//import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Overlay;
@@ -20,26 +21,26 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.line.AlgebraicLine;
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.ransac.RansacDetectorLine;
+import imagingbook.common.ransac.RansacDetectorCircle;
+import imagingbook.common.ransac.RansacDetectorEllipse;
 import imagingbook.common.ransac.RansacResult;
 
 /**
- * RANSAC line detection using imagingbook library class {@link RansacDetectorLine}.
+ * RANSAC ellipse detection implemented with imagingbook library class
+ * {@link RansacDetectorCircle}.
  * 
  * @author WB
  *
  */
-public class Lines_Detect implements PlugInFilter, Settings {
-	
-	private static RansacDetectorLine.Parameters params = new RansacDetectorLine.Parameters();
-	private static int MaxLineCount = 6;
+public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
+
+	private static RansacDetectorEllipse.Parameters params = new RansacDetectorEllipse.Parameters();
+	private static int MaxEllipseCount = 3;
 	private static int RandomSeed = 17;
-	
-	// --------------------
 	
 	private int W, H;
 	private ImagePlus im;
@@ -53,38 +54,38 @@ public class Lines_Detect implements PlugInFilter, Settings {
 
 	@Override
 	public void run(ImageProcessor ip) {
-		title = "Lines from " + im.getTitle();
+		title = "Ellipses from " + im.getTitle();
 		W = ip.getWidth();
-		H = ip.getHeight();
+		H = ip.getHeight();	
 		
 		if (!runDialog()) {
 			return;
 		}
-		
+	
 		Pnt2d[] points = IjUtils.collectNonzeroPoints(ip);
-		List<RansacResult<AlgebraicLine>> lines = new ArrayList<>();
+		List<RansacResult<GeometricEllipse>> ellipses = new ArrayList<>();
 
-		// ---------------------------------------------------------------
-		RansacDetectorLine detector = new RansacDetectorLine();
-		// ---------------------------------------------------------------
-
+		// ---------------------------------------------------------------------
+		RansacDetectorEllipse detector = new RansacDetectorEllipse(params);
+		// ---------------------------------------------------------------------
+		
 		if (RandomSeed > 0) {
 			detector.getRandom().setSeed(RandomSeed);
 		}
 		
 		List<ImagePlus> resultImages = new ArrayList<>();
 		int cnt = 0;
-		
-		RansacResult<AlgebraicLine> sol = detector.findNext(points);
-		while (sol != null && cnt < MaxLineCount) {
-			lines.add(sol);
+
+		RansacResult<GeometricEllipse> sol = detector.findNext(points);
+		while (sol != null && cnt < MaxEllipseCount) {
+			ellipses.add(sol);
 			cnt = cnt + 1;
 			
-			ImagePlus imSnap = new ImagePlus("line-"+cnt, showPointSet(points));
+			ImagePlus imSnap = new ImagePlus("circle-"+cnt, showPointSet(points));
 			Overlay oly = new Overlay();
 			ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
 			imSnap.setOverlay(oly);
-
+			
 			{	// draw inliers (points)
 				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, InlierColor, 0);
 				stroke.setFillColor(InlierColor);
@@ -93,23 +94,23 @@ public class Lines_Detect implements PlugInFilter, Settings {
 				}
 			}
 	
-			{ 	// draw initial line
-				AlgebraicLine line = sol.getPrimitiveInit();
+			{ 	// draw initial circle
+				GeometricEllipse ellipse = sol.getPrimitiveInit();
 				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, InitialFitColor, 0);
-				ola.addShape(line.getShape(W, H), stroke);
+				ola.addShape(ellipse.getShape(), stroke);
 			}
 	
-			{	// draw final line
-				AlgebraicLine line = sol.getPrimitiveFinal();
+			{ 	// draw final circle
+				GeometricEllipse ellipse = sol.getPrimitiveFinal();
 				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, FinalFitColor, 0);
-				ola.addShape(line.getShape(W, H), stroke);
+				ola.addShape(ellipse.getShape(), stroke);
 			}
 	
-			{	// draw the 2 random points used
-				ColoredStroke pointStroke = new ColoredStroke(LineStrokeWidth, RandomDrawDotColor, 0);
-				pointStroke.setFillColor(RandomDrawDotColor);
+			{	// draw the 5 random points used
+				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, RandomDrawDotColor, 0);
+				stroke.setFillColor(RandomDrawDotColor);
 				for (Pnt2d p : sol.getDraw()) {
-					ola.addShape(p.getShape(RandoDrawDotRadius), pointStroke);
+					ola.addShape(p.getShape(RandoDrawDotRadius), stroke);
 				}
 			}
 			
@@ -128,6 +129,7 @@ public class Lines_Detect implements PlugInFilter, Settings {
 		}
 	}
 
+	// ------------------------------------------------------
 	
 	private ByteProcessor showPointSet(Pnt2d[] points) {
 		ByteProcessor bp = new ByteProcessor(W, H);
@@ -139,7 +141,7 @@ public class Lines_Detect implements PlugInFilter, Settings {
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		params.addToDialog(gd);
-		gd.addNumericField("Max. number of circles", MaxLineCount);
+		gd.addNumericField("Max. number of ellipses", MaxEllipseCount);
 		gd.addNumericField("Random seed", RandomSeed);
 		
 		gd.addStringField("Output title", title, 16);
@@ -149,11 +151,10 @@ public class Lines_Detect implements PlugInFilter, Settings {
 			return false;
 		
 		params.getFromDialog(gd);
-		MaxLineCount = (int) gd.getNextNumber();
+		MaxEllipseCount = (int) gd.getNextNumber();
 		RandomSeed = (int) gd.getNextNumber();
 		title = gd.getNextString();
 		
 		return params.validate();
 	}
-
 }

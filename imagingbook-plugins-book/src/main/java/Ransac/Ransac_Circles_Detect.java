@@ -35,7 +35,7 @@ import imagingbook.common.ransac.RansacResult;
  * @author WB
  *
  */
-public class Circles_Detect implements PlugInFilter, Settings {
+public class Ransac_Circles_Detect implements PlugInFilter, Settings {
 
 	private static RansacDetectorCircle.Parameters params = new RansacDetectorCircle.Parameters();
 	private static int MaxCircleCount = 3;

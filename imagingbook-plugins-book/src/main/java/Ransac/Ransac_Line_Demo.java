@@ -14,23 +14,23 @@ import ij.ImagePlus;
 import ij.plugin.PlugIn;
 
 /**
- * RANSAC circle detection demo. Opens a local sample image and then runs
- * plugin {@link Circles_Detect}.
+ * RANSAC line detection demo. Opens a local sample image and then runs
+ * plugin {@link Ransac_Line_Detect}.
  * 
  * @author WB
  *
  */
-public class Circles_Demo implements PlugIn {
-
-	private static RansacTestImage resource = RansacTestImage.NoisyCircles;
+public class Ransac_Line_Demo implements PlugIn {
 	
+	private static RansacTestImage resource = RansacTestImage.NoisyLines;
+
 	@Override
 	public void run(String arg) {
 		
 		ImagePlus im = resource.getImage();
 		im.show();
 		
-		IjUtils.run(new Circles_Detect());
+		IjUtils.run(new Ransac_Line_Detect());
 		im.close();
 	}
 
