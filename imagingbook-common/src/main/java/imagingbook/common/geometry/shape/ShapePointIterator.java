@@ -1,12 +1,22 @@
 package imagingbook.common.geometry.shape;
 
 import java.awt.Shape;
+import java.awt.geom.FlatteningPathIterator;
 import java.awt.geom.PathIterator;
 import java.util.Iterator;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 
+/**
+ * A small wrapper class to create a simple {@link Iterator} of
+ * {@link Pnt2d} to step over the individual points of
+ * a AWT {@link Shape} object. Curved shapes are flattened by a
+ * {@link FlatteningPathIterator}.
+ * 
+ * @author WB
+ * @see FlatteningPathIterator
+ */
 public class ShapePointIterator implements Iterator<Pnt2d> {
 	
 	private final PathIterator pi;

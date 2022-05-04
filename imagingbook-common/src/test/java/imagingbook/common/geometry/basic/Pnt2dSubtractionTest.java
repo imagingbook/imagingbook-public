@@ -21,7 +21,7 @@ public class Pnt2dSubtractionTest {
 
 	@Test
 	public void testSubtractIntInt() {
-		// int + int points must create another int point
+		// subtracting int - int points must create another int point
 		Pnt2d p1 = PntInt.from( 3, 8);
 		Pnt2d p2 = PntInt.from(-2, 7);
 		Pnt2d p3 = p1.minus(p2);
@@ -32,7 +32,7 @@ public class Pnt2dSubtractionTest {
 
 	@Test
 	public void testSubtractDoubleDouble() {
-		// double + double points must create another double point
+		// subtracting double - double points must create another double point
 		Pnt2d p1 = PntDouble.from( 3, 8);
 		Pnt2d p2 = PntDouble.from(-2, 7);
 		Pnt2d p3 = p1.minus(p2);
@@ -42,8 +42,8 @@ public class Pnt2dSubtractionTest {
 	}
 	
 	@Test
-	public void testSUbtractDoubleInt() {
-		// adding double + int point a double point
+	public void testSubtractDoubleInt() {
+		// subtracting double - int point a double point
 		Pnt2d p1 = PntDouble.from( 3, 8);
 		Pnt2d p2 = PntInt.from(-2, 7);
 		Pnt2d p3 = p1.minus(p2);
@@ -52,12 +52,14 @@ public class Pnt2dSubtractionTest {
 		Assert.assertEquals(1, p3.getY(), DELTA);
 	}
 
-	@Test (expected = IllegalArgumentException.class)
+	@Test
 	public void testSubtractIntDouble() {
-		// adding int + double throws an exception
+		// subtracting int - double
 		Pnt2d p1 = PntInt.from( 3, 8);
 		Pnt2d p2 = PntDouble.from(-2, 7);
-		@SuppressWarnings("unused")
 		Pnt2d p3 = p1.minus(p2);
+		Assert.assertTrue(p3 instanceof PntDouble);
+		Assert.assertEquals(5, p3.getX(), DELTA);
+		Assert.assertEquals(1, p3.getY(), DELTA);
 	}
 }

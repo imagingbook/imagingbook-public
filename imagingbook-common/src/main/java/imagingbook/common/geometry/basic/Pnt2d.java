@@ -191,7 +191,7 @@ public interface Pnt2d extends ShapeProducer {
 	 * @return a new point
 	 */
 	public default Pnt2d plus(Pnt2d p) {
-		throw new UnsupportedOperationException();
+		return this.plus(p.getX(), p.getY());
 	}
 	
 	/**
@@ -202,20 +202,7 @@ public interface Pnt2d extends ShapeProducer {
 	 * @return a new point
 	 */
 	public default Pnt2d plus(double dx, double dy) {
-		throw new UnsupportedOperationException();
-	}
-	
-	/**
-	 * Returns a new point whose coordinates are the sum of this point and 
-	 * the specified {@code int} coordinates.
-	 * The concrete type of the returned object depends on the type
-	 * of the original point.
-	 * @param dx the x-coordinate to be added 
-	 * @param dy the y-coordinate to be added 
-	 * @return a new point
-	 */
-	public default Pnt2d plus(int dx, int dy) {
-		return plus((double)dx, (double)dy);
+		return new PntDouble(this.getX() + dx, this.getY() + dy);
 	}
 	
 	/**
@@ -226,7 +213,11 @@ public interface Pnt2d extends ShapeProducer {
 	 * @return a new point
 	 */
 	public default Pnt2d minus(Pnt2d p) {
-		throw new UnsupportedOperationException();
+		return this.minus(p.getX(), p.getY());
+	}
+	
+	public default Pnt2d minus(double dx, double dy) {
+		return new PntDouble(this.getX() - dx, this.getY() - dy);
 	}
 	
 	// ----------------------------------------------------------
@@ -439,11 +430,6 @@ public interface Pnt2d extends ShapeProducer {
 		// addition -----------------------------------
 		
 		@Override
-		public PntDouble plus(Pnt2d p) {
-			return new PntDouble(this.x + p.getX(), this.y + p.getY());
-		}
-		
-		@Override
 		public PntDouble plus(double dx, double dy) {
 			return new PntDouble(this.x + dx, this.y + dy);
 		}
@@ -611,35 +597,42 @@ public interface Pnt2d extends ShapeProducer {
 		
 		// addition -----------------------------------
 		
-		@Override
-		public PntInt plus(Pnt2d p) {
-			if (p instanceof PntInt) {		 
-				return new PntInt(this.x + ((PntInt)p).x, this.y + ((PntInt)p).y);
-			}
-			else throw new IllegalArgumentException("cannot add " + p.getClass().getSimpleName() + " to " +
-					this.getClass().getSimpleName());
+		public PntInt plus(PntInt p) {
+			return this.plus(p.x, p.y);
 		}
 		
-		@Override
-		public PntInt plus(double dx, double dy) {
-			throw new IllegalArgumentException("cannot add (double, double) to " +
-					this.getClass().getSimpleName());
-		}
-		
-		@Override
 		public PntInt plus(int dx, int dy) {
 			return new PntInt(this.x + dx, this.y + dy);
 		}
 		
+		@Override
+		public Pnt2d plus(Pnt2d p) {
+			if (p instanceof PntInt) {		 
+				return this.plus((PntInt)p); // new PntInt(this.x + ((PntInt)p).x, this.y + ((PntInt)p).y);
+			}
+			else {
+				return this.plus(p.getX(), p.getY());
+			}
+		}
+		
 		// subtraction -----------------------------------
 		
+		public PntInt minus(PntInt p) {
+			return this.minus(p.x, p.y);
+		}
+		
+		public PntInt minus(int dx, int dy) {
+			return new PntInt(this.x - dx, this.y - dy);
+		}
+		
 		@Override
-		public PntInt minus(Pnt2d p) {
+		public Pnt2d minus(Pnt2d p) {
 			if (p instanceof PntInt) {		 
-				return new PntInt(this.x - ((PntInt)p).x, this.y - ((PntInt)p).y);
+				return this.minus((PntInt)p);
 			}
-			else throw new IllegalArgumentException("cannot subtract " + p.getClass().getSimpleName() + " from " +
-					this.getClass().getSimpleName());
+			else {
+				return this.minus(p.getX(), p.getY());
+			}
 		}
 		
 		// distance -----------------------------------
