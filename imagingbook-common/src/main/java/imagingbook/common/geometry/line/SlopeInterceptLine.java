@@ -17,70 +17,45 @@ import imagingbook.common.math.Arithmetic;
  * This class represents a line in slope-intercept form: y = k x + d.
  * Instances are immutable. Not all possible lines in the 2D plane
  * can be represented.
- * A {@link SlopeInterceptLine} is really a {@link AlgebraicLine}
- * with two additional fields and a special constructor.
+ * A {@link SlopeInterceptLine} is merely a {@link AlgebraicLine}
+ * with a special constructor and getter methods for k, d.
  */
 public class SlopeInterceptLine extends AlgebraicLine {
 	
-	private final double k, d;
-	
 	public SlopeInterceptLine(double k, double d) {
 		super(k, -1, d);
-		this.k = k;
-		this.d = d;
+	}
+	
+	public SlopeInterceptLine(AlgebraicLine al) {
+		super(al.getParameters());
+		if (Arithmetic.isZero(al.B)) {
+			throw new IllegalArgumentException("cannot convert vertical line (B=0)");
+		}
 	}
 	
 	public double getK() {
-//		return k;
-		return A / -B;
+		return A / -B;	// = k
 	}
 
 	public double getD() {
-//		return d;
-		return C / - B;
+		return C / -B;	// = d
 	}
 	
-	public double[] getParameters() {
-		return new double[] {k, d};
-	}
-	
-	public static SlopeInterceptLine from(AlgebraicLine al) {
-		double[] p = al.getParameters(); 	// =(A,B,C)
-		if (Arithmetic.isZero(p[1])) { 		// B == 0?
-			throw new IllegalArgumentException("cannot convert vertical line (B=0)");
-		}
-		return new SlopeInterceptLine(-p[0]/p[1], -p[2]/p[1]);	// =(-A/B, -C/B)
-	}
-	
+	/**
+	 * Returns the line's y-value for the specified x-position.
+	 * @param x position along the x-axis
+	 * @return the associated y-value
+	 */
 	public double getY(double x) {
-		return k * x + d;
+		return (A * x + C) / -B; 	// = y = k * x + d
 	}
 	
 	// --------------------------------------------------
 	
 	@Override
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (other instanceof SlopeInterceptLine) {
-			return this.equals((SlopeInterceptLine) other, Arithmetic.EPSILON_DOUBLE);
-		}
-		else {
-			return false;
-		}
-	}
-	
-	public boolean equals(SlopeInterceptLine other, double tolerance) {
-		return 
-				Arithmetic.equals(k, other.k, tolerance) &&
-				Arithmetic.equals(d, other.d, tolerance);
-	}
-	
-	@Override
 	public String toString() {
-		return String.format(Locale.US, "%s <k=%.3f, d=%.3f> A=%.3f B=%.3f C=%.3f",
-				this.getClass().getSimpleName(), k, d, A, B, C);
+		return String.format(Locale.US, "%s <A=%.3f B=%.3f C=%.3f k=%.3f, d=%.3f>",
+				this.getClass().getSimpleName(), A, B, C, getK(), getD());
 	}
 	
 	// --------------------------------------------------
@@ -92,7 +67,7 @@ public class SlopeInterceptLine extends AlgebraicLine {
 		AlgebraicLine al1 = AlgebraicLine.from(p1, p2);
 		System.out.println("al1 = " + al1);
 		
-		SlopeInterceptLine sl = SlopeInterceptLine.from(al1);
+		SlopeInterceptLine sl = new SlopeInterceptLine(al1);
 		System.out.println("sl = " + sl);
 		System.out.println("sl k = " + (sl.A / -sl.B));
 		System.out.println("sl d = " + (sl.C / -sl.B));
@@ -102,10 +77,12 @@ public class SlopeInterceptLine extends AlgebraicLine {
 		
 		System.out.println("al1 = al2 ? " + al1.equals(al2, 1e-6));
 	}
-	/*
-	al1 = AlgebraicLine <a=-0.316, b=0.949, c=-1.581>
-	sl = SlopeInterceptLine <k=0.333, d=1.667>
-	al2 = AlgebraicLine <a=0.316, b=-0.949, c=1.581>
-	al1 = al2 ? true
-	*/
+/*
+al1 = AlgebraicLine <a=0.316, b=-0.949, c=1.581>
+sl = SlopeInterceptLine <A=0.316 B=-0.949 C=1.581 k=0.333, d=1.667>
+sl k = 0.33333333333333337
+sl d = 1.6666666666666665
+al2 = AlgebraicLine <a=0.316, b=-0.949, c=1.581>
+al1 = al2 ? true
+*/
 }

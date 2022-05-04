@@ -16,7 +16,6 @@ import ij.IJ;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.hough.lines.HoughLine;
 import imagingbook.common.util.ParameterBundle;
 import imagingbook.common.util.progress.ProgressReporter;
 

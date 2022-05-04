@@ -6,12 +6,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+
 public class SlopeInterceptLineTest {
 	
 	static double TOL = 1e-6;
 
 	@Test
-	public void test1() {
+	public void test1() { 	// check y-values obtained from getY()
 		for (int k = -10; k <= 10; k++) {
 			for (int d = -10; d <= 10; d++) {
 				SlopeInterceptLine line = new SlopeInterceptLine(k, d);
@@ -22,15 +24,15 @@ public class SlopeInterceptLineTest {
 		}
 	}
 	
-	@Test
+	@Test	// check conversion to AlgebraicLine and equality
 	public void test2() {
 		for (int k = -1000; k <= 1000; k+=33) {
 			for (int d = -1000; d <= 1000; d+=77) {
-				SlopeInterceptLine sl1 = new SlopeInterceptLine(k, d);
-				AlgebraicLine al1 = AlgebraicLine.from(sl1);
-				SlopeInterceptLine sl2 = SlopeInterceptLine.from(al1);
-				assertTrue(sl1.equals(sl2, TOL));
-				assertTrue(sl2.equals(sl1, TOL));
+				SlopeInterceptLine SL1 = new SlopeInterceptLine(k, d);
+				AlgebraicLine AL1 = AlgebraicLine.from(SL1);
+				SlopeInterceptLine SL2 = new SlopeInterceptLine(AL1);
+				assertTrue(SL1.equals(SL2, TOL));
+				assertTrue(SL2.equals(SL1, TOL));
 			}
 		}
 	}
@@ -47,5 +49,20 @@ public class SlopeInterceptLineTest {
 		SlopeInterceptLine sil = new SlopeInterceptLine(-2, 3);
 		Assert.assertTrue("produced Shape does not match line", sil.checkShape(sil.getShape(), 0.5));
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test5() {
+		AlgebraicLine al = AlgebraicLine.from(Pnt2d.from(2, -1), Pnt2d.from(2, 17)); 	// vertical line
+		@SuppressWarnings("unused")
+		SlopeInterceptLine sl = new SlopeInterceptLine(al);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test6() {
+		AlgebraicLine al = new AlgebraicLine(0.3, 0, -2); 	// vertical line
+		@SuppressWarnings("unused")
+		SlopeInterceptLine sl = new SlopeInterceptLine(al);
+	}
 
 }
+

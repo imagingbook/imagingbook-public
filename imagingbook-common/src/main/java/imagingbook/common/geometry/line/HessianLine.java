@@ -8,7 +8,6 @@
  *******************************************************************************/
 package imagingbook.common.geometry.line;
 
-//import static imagingbook.lib.math.Arithmetic.sqr;
 
 import java.util.Locale;
 
@@ -17,13 +16,11 @@ import imagingbook.common.geometry.basic.Pnt2d;
 /**
  * This class represents a straight line in Hessian normal form, i.e., 
  * x * cos(angle) + y * sin(angle) = radius.
- * It is a specialization (subclass) of {@link AlgebraicLine}.
+ * It is merely a subclass of {@link AlgebraicLine} with a different constructor
+ * and getter methods for angle and radius.
  * Instances are immutable. Reference point is (0,0).
  */
 public class HessianLine extends AlgebraicLine {
-	
-//	private final double angle;
-//	private final double radius;
 	
 	// static factory methods ----------------------------------------
 	
@@ -33,32 +30,35 @@ public class HessianLine extends AlgebraicLine {
 	
 	// constructors --------------------------------------------------
 
+	/**
+	 * Constructor. Creates a new {@link HessianLine} instance with the
+	 * specified angle and radius.
+	 * Note that this really creates a normalized {@link AlgebraicLine}.
+	 * The values returned by {@link #getAngle()} and {@link #getRadius()}
+	 * may not be identical to the values passed to this constructor.
+	 * 
+	 * @param angle the line's angle
+	 * @param radius the line's radius
+	 */
 	public HessianLine(double angle, double radius) {
 		super(Math.cos(angle), Math.sin(angle), -radius);	// = A, B, C
 	}
 	
-	public HessianLine(double A, double B, double C) {
-		super(A, B, C);						// creates a normalized line
-//		this.angle = Math.atan2(this.B, this.A);
-//		this.radius = -this.C; 			// ... / Math.sqrt(sqr(this.a) + sqr(this.b));
+	public HessianLine(double a, double b, double c) {
+		super(a, b, c);			// creates a normalized line
 	}
 	
-	// TODO: what is this for?
-	public HessianLine(AlgebraicLine L) {
-//		this(L.A, L.B, L.C);
-		super(L.getParameters());
+	public HessianLine(AlgebraicLine al) {
+		super(al.getParameters());
 	}
 	
 	public double getAngle() {
-//		return this.angle;
-		return Math.atan2(this.B, this.A);
+		return Math.atan2(B, A);
 	}
 	
 	public double getRadius() {
-//		return this.radius;
-		return -this.C;
+		return -C;
 	}
-	
 	
 	// -------------------------------------------------------------------
 	

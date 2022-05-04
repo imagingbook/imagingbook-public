@@ -24,7 +24,7 @@ public class LineTest {
 	public void test1() {
 		AlgebraicLine L1 = AlgebraicLine.from(p1, p2);
 		{
-			SlopeInterceptLine S1 = SlopeInterceptLine.from(L1);
+			SlopeInterceptLine S1 = new SlopeInterceptLine(L1);
 			AlgebraicLine L2 = AlgebraicLine.from(S1);
 			assertTrue(L1.equals(L2, TOL));
 		}

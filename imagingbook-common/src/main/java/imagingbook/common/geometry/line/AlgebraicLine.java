@@ -18,7 +18,7 @@ import java.util.Locale;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.shape.ShapeProducer;
-import imagingbook.common.hough.lines.HoughLine;
+import imagingbook.common.hough.HoughLine;
 import imagingbook.common.math.Arithmetic;
 
 /**
@@ -95,7 +95,11 @@ public class AlgebraicLine implements ShapeProducer {
 	
 	// getter/setter methods ------------------------------------------
 	
-	public double[] getParameters() {
+	/**
+	 * Returns the algebraic line parameters [A, B, C].
+	 * @return algebraic line parameters
+	 */
+	public final double[] getParameters() {
 		return new double[] {A, B, C};
 	}
 	
