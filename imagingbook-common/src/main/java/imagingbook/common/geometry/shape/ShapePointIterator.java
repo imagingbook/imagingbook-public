@@ -6,7 +6,6 @@ import java.awt.geom.PathIterator;
 import java.util.Iterator;
 
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.circle.GeometricCircle;
 
 /**
  * A small wrapper class to create a simple {@link Iterator} of
