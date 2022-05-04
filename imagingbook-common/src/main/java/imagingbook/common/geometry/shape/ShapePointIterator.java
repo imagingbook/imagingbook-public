@@ -14,6 +14,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
  * {@link FlatteningPathIterator}.
  * 
  * @author WB
+ * @see PathIterator
  * @see FlatteningPathIterator
  */
 public class ShapePointIterator implements Iterator<Pnt2d> {
