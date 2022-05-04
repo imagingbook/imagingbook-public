@@ -8,16 +8,11 @@
  *******************************************************************************/
 package imagingbook.common.hough;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.awt.Shape;
-import java.awt.geom.Path2D;
 import java.util.Locale;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.line.HessianLine;
-import imagingbook.common.geometry.shape.ShapeProducer;
 
 /**
  * This class represents a straight line of the form
