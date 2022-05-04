@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.hough.lines;
+package imagingbook.common.hough;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
@@ -28,14 +28,14 @@ import imagingbook.common.geometry.shape.ShapeProducer;
  * It adds an arbitrary reference point (xRef, yRef) and a counter (count) for pixel votes.
  * Instances are immutable.
  */
-public class HoughLine extends HessianLine implements Comparable<HoughLine>, ShapeProducer {
+public class HoughLine extends HessianLine implements Comparable<HoughLine> {
 	
 	private final double xRef, yRef;	// reference point
 	private final int count;			// pixel votes for this line
 	
 	// static factory methods -------------------------------
 	
-	public static HoughLine fromPoints(Pnt2d p1, Pnt2d p2, Pnt2d pRef, int count) {
+	public static HoughLine from(Pnt2d p1, Pnt2d p2, Pnt2d pRef, int count) {
 		return new HoughLine(AlgebraicLine.from(p1, p2), pRef.getX(), pRef.getY(), count);
 	}
 	
@@ -126,35 +126,4 @@ public class HoughLine extends HessianLine implements Comparable<HoughLine>, Sha
 				this.getClass().getSimpleName(), getAngle(), getRadius(), getXref(), getYref(), count);
 	}
 	
-	// ------------------------------------------------------------------------------
-	
-//	@Override
-//	public Shape getShape(int width, int height) {
-//		double length = Math.sqrt(sqr(width) + sqr(height));
-//		return this.getShape(length);
-//	}
-//
-//	@Override
-//	public Shape getShape(double length) {
-//		double xRef = this.getXref();
-//		double yRef = this.getYref();
-//		double angle = this.getAngle();
-//		double radius = this.getRadius();
-//		// unit vector perpendicular to the line
-//		double dx = Math.cos(angle);	
-//		double dy = Math.sin(angle);
-//		// calculate the line's center point (closest to the reference point)
-//		double x0 = xRef + radius * dx;
-//		double y0 = yRef + radius * dy;
-//		// calculate the line end points (using normal vectors)
-//		double x1 = x0 + dy * length;
-//		double y1 = y0 - dx * length;
-//		double x2 = x0 - dy * length;
-//		double y2 = y0 + dx * length;
-//		Path2D path = new Path2D.Double();
-//		path.moveTo(x1, y1);
-//		path.lineTo(x2, y2);
-//		return path;
-//	}
-
 }

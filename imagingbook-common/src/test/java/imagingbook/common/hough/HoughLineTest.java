@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.hough.lines;
+package imagingbook.common.hough;
 
 
 import static org.junit.Assert.assertEquals;
@@ -17,6 +17,7 @@ import org.junit.Test;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.line.AlgebraicLine;
+
 
 public class HoughLineTest {
 	
@@ -44,8 +45,8 @@ public class HoughLineTest {
 
 	@Test
 	public void test1() {
-		HoughLine HL1 = HoughLine.fromPoints(p1, p2, pRef, 2);
-		HoughLine HL2 = HoughLine.fromPoints(p2, p1, pRef, 2);
+		HoughLine HL1 = HoughLine.from(p1, p2, pRef, 2);
+		HoughLine HL2 = HoughLine.from(p2, p1, pRef, 2);
 		
 		assertEquals(0.0, HL1.getDistance(p1), TOL);
 		assertEquals(0.0, HL1.getDistance(p2), TOL);
@@ -59,7 +60,7 @@ public class HoughLineTest {
 	
 	@Test
 	public void test2() {
-		HoughLine l12 = HoughLine.fromPoints(p1, p2, pRef, 2);
+		HoughLine l12 = HoughLine.from(p1, p2, pRef, 2);
 		Pnt2d x0 = l12.getClosestLinePoint(p3);
 		assertEquals(0.0, l12.getDistance(x0), TOL);						// x0 is actually ON the line
 		assertEquals(p3.distance(x0), Math.abs(l12.getDistance(p3)), TOL);	// distance (p3,x0) is shortest 
@@ -67,9 +68,9 @@ public class HoughLineTest {
 	
 	@Test
 	public void test3() {
-		// AL, lH1 lH2 must be the same lines:
+		// AL, HL1 HL2 must be the same lines:
 		AlgebraicLine AL = AlgebraicLine.from(p1, p2);
-		HoughLine HL1 = HoughLine.fromPoints(p1, p2, pRef, 2);
+		HoughLine HL1 = HoughLine.from(p1, p2, pRef, 2);
 		HoughLine HL2 = new HoughLine(AL, pRef.getX(), pRef.getY(), 2);
 		
 		assertEquals(0.0, AL.getDistance(p1), TOL);
@@ -91,7 +92,7 @@ public class HoughLineTest {
 	@Test
 	public void test4() {
 		// create a HoughLine from two points
-		HoughLine HL1 = HoughLine.fromPoints(p1, p2, pRef, 2);
+		HoughLine HL1 = HoughLine.from(p1, p2, pRef, 2);
 		// check if both points are on the line
 		assertEquals(0.0, HL1.getDistance(p1), TOL);
 		assertEquals(0.0, HL1.getDistance(p2), TOL);
@@ -135,7 +136,7 @@ public class HoughLineTest {
 	
 	@Test	// copy the reference point of a HoughLine
 	public void test6() {
-		HoughLine HL1 = HoughLine.fromPoints(p1, p2, pRef, 2);
+		HoughLine HL1 = HoughLine.from(p1, p2, pRef, 2);
 //		System.out.println("HL1 = " + HL1);
 		
 		HoughLine HL2 = new HoughLine(HL1);
@@ -155,8 +156,8 @@ public class HoughLineTest {
 		Pnt2d pRefA = PntInt.from(70, 50);
 		Pnt2d pRefB = PntInt.from(-5, 19);
 
-		HoughLine HL1 = HoughLine.fromPoints(p1, p2, pRefA, 2);
-		HoughLine HL2 = HoughLine.fromPoints(p1, p2, pRefB, 2);
+		HoughLine HL1 = HoughLine.from(p1, p2, pRefA, 2);
+		HoughLine HL2 = HoughLine.from(p1, p2, pRefB, 2);
 			
 //		System.out.println("HL1 = " + HL1);
 //		System.out.println("HL2 = " + HL2);
@@ -165,7 +166,6 @@ public class HoughLineTest {
 		assertTrue(HL1.equals(HL2, TOL));
 		assertTrue(HL2.equals(HL1, TOL));
 
-		
 		HoughLine HL3 = new HoughLine(HL1, pRefB.getX(), pRefB.getY(), 2);
 //		System.out.println("HL3 = " + HL3);
 		assertTrue(HL1.equals(HL3, TOL));
@@ -176,5 +176,4 @@ public class HoughLineTest {
 		assertEquals(HL2.getYref(), HL3.getYref(), TOL);
 	}
 
-	
 }
