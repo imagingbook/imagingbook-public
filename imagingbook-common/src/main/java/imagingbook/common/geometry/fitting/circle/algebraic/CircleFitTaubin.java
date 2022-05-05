@@ -20,6 +20,7 @@ import imagingbook.common.math.Matrix;
 
 /**
  * Taubin's algebraic circle fitting method (SVD version)
+ * See also http://www.ne.jp/asahi/paleomagnetism.rock-magnetism/basics/pmag/circ/circ2E.html
  *
  */
 public class CircleFitTaubin extends CircleFitAlgebraic {

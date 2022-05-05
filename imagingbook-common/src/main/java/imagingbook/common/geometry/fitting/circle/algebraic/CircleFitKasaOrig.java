@@ -18,17 +18,30 @@ import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.math.Matrix;
 
 /**
- * Implemented from the original paper:
- * Kasa, I., A curve fitting procedure and its error analysis, IEEE Trans. Inst. Meas., 25, 8-14, 1976.
+ * This is an implementation of the algebraic circle fitting algorithm described in [1].
+ * This algorithm is among the oldest and simplest algebraic circle fitting methods.
+ * This implementation closely follows the original paper. The only difference is the
+ * use of a numerical solver (as compared to using the inverse of matrix M) for
+ * solving the 3x3 linear system.
+ * Its performance is sufficient if points are sampled over a large part of the circle.
+ * It shows significant bias (estimated circles are too small) when sample points are 
+ * confined to a small segment of the circle. It fails when matrix M becomes singular.
+ * Fits to exactly 3 (non-collinear) points are handled properly.
+ * No data centering (which should improve numerical stability) is used.
  * 
+ * <p>
+ * [1] I. Kåsa. "A circle fitting procedure and its error analysis",
+ * <em>IEEE Transactions on Instrumentation and Measurement</em> <strong>25</strong>(1), 
+ * 8–14 (1976).
+ * </p>
  * @author WB
- *
+ * 
  */
-public class CircleFitKasa extends CircleFitAlgebraic {
+public class CircleFitKasaOrig extends CircleFitAlgebraic {
 
 	private final double[] q;	// p = (B,C,D) algebraic circle parameters
 	
-	public CircleFitKasa(Pnt2d[] points) {
+	public CircleFitKasaOrig(Pnt2d[] points) {
 		this.q = fit(points);
 	}
 	
@@ -44,8 +57,8 @@ public class CircleFitKasa extends CircleFitAlgebraic {
 			throw new IllegalArgumentException("at least 3 points are required");
 		}
 
-		// calculate sums
-		double sx = 0, sy = 0; // sz = 0;
+		// calculate sums:
+		double sx = 0, sy = 0;
 		double sxy = 0, sxx = 0, syy = 0;
 		double sxxx = 0, syyy = 0;
 		for (int i = 0; i < n; i++) {
@@ -58,28 +71,26 @@ public class CircleFitKasa extends CircleFitAlgebraic {
 			sxx  += x2;
 			syy  += y2;
 			sxy  += x * y;
-			sxxx += x2 * x + x * y2;	// = x^3 + x * y^2
-			syyy += x2 * y + y * y2;	// = y^3 + x^2 * y
+			sxxx += x2 * x + y2 * x;	// = x^3 + x * y^2
+			syyy += y2 * y + x2 * y;	// = y^3 + x^2 * y
 		}
 		
 		double sz = sxx + syy;
 		
-		double[][] M = {	// = E in the paper
+		double[][] M = {				// = D in the paper
 				{ 2 * sx,  2 * sy,  n},
 				{ 2 * sxx, 2 * sxy, sx},
 				{ 2 * sxy, 2 * syy, sy}};
-		
-		//IJ.log("D = " + Matrix.toString(D));
 	    
 		double[] b = {sz, sxxx, syyy};	 // RHS vector (= E in the paper)
-//		IJ.log("b = " + Matrix.toString(b));
 		
+		// find exact solution to 3x3 system M * q = b (using a numerical solver):
 		double[] q = Matrix.solve(M, b); // = Q in the paper, q = (B,C,D)
-//		IJ.log("s = " + Matrix.toString(q));
 		
 		double B = -2 * q[0];
 		double C = -2 * q[1];
 		double D = -q[2];
+		
 		return new double[] {B, C, D};
 	}
 	
@@ -378,19 +389,29 @@ public class CircleFitKasa extends CircleFitAlgebraic {
 		System.out.println("-------------- KASA orig (WB) -----------------------------");
 		{
 			Pnt2d[] pnts = PntUtils.fromDoubleArray(PA);
-			CircleFitKasa fit = new CircleFitKasa(pnts);
+			CircleFitKasaOrig fit = new CircleFitKasaOrig(pnts);
 			double[] p = fit.getParameters();
 			System.out.println("p = " + Arrays.toString(p));
 			GeometricCircle circle = fit.getGeometricCircle();
 			System.out.println("circle = " + circle);
 		}
 		
+//		p = [1.0, -232.96820632032384, -243.18759873153792, 25700.36135744312]
+//		circle = GeometricCircle [xc=116.484103, yc=121.593799, r=51.509581]
 		
-//		System.out.println("-------------- PRATT (SVD Doube) -----------------------------");
-//		{
-//			double[] p = FitCircle.prattSVD(PA);
-//			System.out.println("p = " + Arrays.toString(p));
-//		}
+		
+		System.out.println("-------------- PRATT (SVD Doube) -----------------------------");
+		{
+			Pnt2d[] pnts = PntUtils.fromDoubleArray(PA);
+			CircleFitPratt fit = new CircleFitPratt(pnts);
+			double[] p = fit.getParameters();
+			System.out.println("p = " + Arrays.toString(p));
+			GeometricCircle circle = fit.getGeometricCircle();
+			System.out.println("circle = " + circle);
+		}
+
+//		p = [-9.016530562303072E-4, 0.21005596898192244, 0.21927054349745514, -23.17197540917899]
+//		circle = GeometricCircle [xc=116.483811, yc=121.593634, r=51.517509]
 	}
 	
 

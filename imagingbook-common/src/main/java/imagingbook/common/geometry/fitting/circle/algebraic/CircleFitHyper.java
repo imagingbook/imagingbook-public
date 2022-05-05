@@ -36,7 +36,6 @@ public class CircleFitHyper extends CircleFitAlgebraic {
 	// -------------------------------------------------------------------------
 	
 	private double[] fit(Pnt2d[] pts) {
-//		IJ.log(this.getClass().getSimpleName());
 		final int n = pts.length;
 		if (n < 3) {
 			throw new IllegalArgumentException("at least 3 points are required");

@@ -12,25 +12,43 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import java.util.Arrays;
 
-//import Fitting.org.doube.geometry.FitCircle;
-import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.math.Matrix;
 
 /**
- * Original: Kasa, I., A curve fitting procedure and its error analysis, IEEE Trans. Inst. Meas., 25, 8-14, 1976.
- * See https://people.cas.uab.edu/~mosya/cl/CircleFitByKasa.cpp (orig code)
- * http://www.ne.jp/asahi/paleomagnetism.rock-magnetism/basics/pmag/circ/circ1E.html
- * http://www.ne.jp/asahi/paleomagnetism.rock-magnetism/basics/pmag/circ/circ2E.html
+ * This is an implementation of the modified Kåsa [1] circle fitting algorithm described in 
+ * [2, Sec. 5.1]. A description of the concrete algorithm can be found in [3, Alg. 11.1].
+ * See {@link CircleFitKasaOrig} for the original version.
+ * <p>
+ * Compared to the original Kåsa algorithm, this variant also solves a 3x3 linear
+ * system but uses a slightly different setup of the scatter matrix (using only
+ * powers of 2 instead of 3). A numerical solver is used for this purpose.
+ * The algorithm is fast but shares the same numerical instabilities and bias when 
+ * sample points are taken from a small circle segment.
+ * It fails when matrix M becomes singular.
+ * Fits to exactly 3 (non-collinear) points are handled properly.
+ * No data centering (which should improve numerical stability) is used.
+ * </p>
+ * <p>
+ * [1] I. Kåsa. "A circle fitting procedure and its error analysis",
+ * <em>IEEE Transactions on Instrumentation and Measurement</em> <strong>25</strong>(1), 
+ * 8–14 (1976).
+ * <br>
+ * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
+ * Lines by Least Squares". Monographs on Statistics and Applied Probability.
+ * Taylor & Francis (2011).
+ * <br>
+ * [3] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  *
  */
 public class CircleFitKasaA extends CircleFitAlgebraic {
 
-	private final double[] q;	// q = (B,C,D) circle parameters
+	private final double[] q;	// q = (B,C,D) circle parameters, A=1
 	
 	public CircleFitKasaA(Pnt2d[] points) {
 		q = fit(points);
@@ -41,61 +59,13 @@ public class CircleFitKasaA extends CircleFitAlgebraic {
 		return new double[] {1, q[0], q[1], q[2]};
 	}
 	
-	/**
-	 * WB's version: Original fails early on shorter arcs, due to numerical problems
-	 * 	   in solving the system of linear equations.
-	 * Modified to use (exact) SVD solution on scatter matrix, as described 
-	 * in Chernov's book (Eq. 5.5).
-	 * This version works with non-centered data!
-	 * 
-	 * ---------------------------------------------------------------------
-	 * 
-	 * Circle fit to a given set of data points (in 2D)
-	 * 
-	 * This is an algebraic fit, disovered and rediscovered by many people. One of
-	 * the earliest publications is due to Kasa:
-	 * 
-	 * I. Kasa, "A curve fitting procedure and its error analysis", IEEE Trans.
-	 * Inst. Meas., Vol. 25, pages 8-14, (1976)
-	 * 
-	 * Input: data - the class of data (contains the given points):
-	 * 
-	 * data.n - the number of data points data.X[] - the array of X-coordinates
-	 * data.Y[] - the array of Y-coordinates
-	 * 
-	 * Output: circle - parameters of the fitting circle:
-	 * 
-	 * circle.a - the X-coordinate of the center of the fitting circle circle.b -
-	 * the Y-coordinate of the center of the fitting circle circle.r - the radius of
-	 * the fitting circle circle.s - the root mean square error (the estimate of
-	 * sigma) circle.j - the total number of iterations
-	 * 
-	 * The method is based on the minimization of the function
-	 * 
-	 * F = sum [(x-a)^2 + (y-b)^2 - R^2]^2
-	 * 
-	 * This is perhaps the simplest and fastest circle fit.
-	 * 
-	 * It works well when data points are sampled along an entire circle or a large
-	 * part of it (at least half circle).
-	 * 
-	 * It does not work well when data points are sampled along a small arc of a
-	 * circle. In that case the method is heavily biased, it returns circles that
-	 * are too often too small.
-	 * 
-	 * It is the oldest algebraic circle fit (first published in 1972?). For 20-30
-	 * years it has been the most popular circle fit, at least until the more robust
-	 * Pratt fit (1987) and Taubin fit (1991) were invented.
-	 * 
-	 * Nikolai Chernov (September 2012)
-	 */
 	private double[] fit(Pnt2d[] pts) {
 		final int n = pts.length;
 		if (n < 3) {
 			throw new IllegalArgumentException("at least 3 points are required");
 		}
 
-		// calculate means and elements of scatter matrix
+		// calculate elements of scatter matrix
 		double sx = 0, sy = 0, sz = 0;
 		double sxy = 0, sxx = 0, syy = 0, sxz = 0, syz = 0;
 		for (int i = 0; i < n; i++) {
@@ -111,10 +81,10 @@ public class CircleFitKasaA extends CircleFitAlgebraic {
 			syy += y2;
 			sxy += x * y;	
 			sxz += x * z;
-			syz  += y * z;
+			syz += y * z;
 		}
 		
-		double[][] M = {
+		double[][] M = {				// scatter matrix M
 				{sxx, sxy, sx},
 				{sxy, syy, sy},
 				{ sx,  sy,  n}};
@@ -122,8 +92,7 @@ public class CircleFitKasaA extends CircleFitAlgebraic {
 		double[] b = {-sxz, -syz, -sz};	 // RHS vector
 		double[] q = Matrix.solve(M, b); // solve M * q = b (exact), for parameter vector q = (B, C, D)
 		if (q == null) {
-			IJ.log("KasaA: singular!");
-			return null;	// no solution
+			return null;	// M is singular, no solution
 		}
 		else {
 			return q;
@@ -432,12 +401,21 @@ public class CircleFitKasaA extends CircleFitAlgebraic {
 			System.out.println("circle = " + circle);
 		}
 		
+//		p = [1.0, -232.96820632032384, -243.18759873153792, 25700.36135744312]
+//		circle = GeometricCircle [xc=116.484103, yc=121.593799, r=51.509581]
 		
-//		System.out.println("-------------- PRATT (SVD Doube) -----------------------------");
-//		{
-//			double[] p = FitCircle.prattSVD(PA);
-//			System.out.println("p = " + Arrays.toString(p));
-//		}
+		System.out.println("-------------- PRATT (SVD Doube) -----------------------------");
+		{
+			Pnt2d[] pnts = PntUtils.fromDoubleArray(PA);
+			CircleFitPratt fit = new CircleFitPratt(pnts);
+			double[] p = fit.getParameters();
+			System.out.println("p = " + Arrays.toString(p));
+			GeometricCircle circle = fit.getGeometricCircle();
+			System.out.println("circle = " + circle);
+		}
+
+//		p = [-9.016530562303072E-4, 0.21005596898192244, 0.21927054349745514, -23.17197540917899]
+//		circle = GeometricCircle [xc=116.483811, yc=121.593634, r=51.517509]
 	}
 
 }

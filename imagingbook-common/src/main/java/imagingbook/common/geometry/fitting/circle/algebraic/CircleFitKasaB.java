@@ -18,19 +18,36 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
- * 
- * WB: numerically potentially more stable solution using Moore-Penrose pseudoinverse (see Chernov book p. 104, eq. 5.12)
- * Original: Kasa, I., A curve fitting procedure and its error analysis, IEEE Trans. Inst. Meas., 25, 8-14, 1976.
- * See https://people.cas.uab.edu/~mosya/cl/CircleFitByKasa.cpp (orig code)
- * http://www.ne.jp/asahi/paleomagnetism.rock-magnetism/basics/pmag/circ/circ1E.html
- * http://www.ne.jp/asahi/paleomagnetism.rock-magnetism/basics/pmag/circ/circ2E.html
+ * This is an improved implementation of the Kåsa [1] circle fitting algorithm described in 
+ * [2, Sec. 5.2, eq. 5.12], based on the Moore-Penrose pseudo-inverse applied to the full data
+ * matrix (i.e, no 3x3 scatter matrix is mounted).
+ * See also [3, Sec. 11.1.2] and {@link CircleFitKasaOrig} for the original version.
+ * <p>
+ * This algorithm is assumed to be numerically more stable than solutions based on solving
+ * a 3x3 system. The pseudo-inverse is obtained by singular-value decomposition (SVD).
+ * However, the significant bias on points sampled from a small circle
+ * segment remains.
+ * Fits to exactly 3 (non-collinear) points are handled properly.
+ * No data centering (which should improve numerical stability) is used.
+ * </p>
+ * <p>
+ * [1] I. Kåsa. "A circle fitting procedure and its error analysis",
+ * <em>IEEE Transactions on Instrumentation and Measurement</em> <strong>25</strong>(1), 
+ * 8–14 (1976).
+ * <br>
+ * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
+ * Lines by Least Squares". Monographs on Statistics and Applied Probability.
+ * Taylor & Francis (2011).
+ * <br>
+ * [3] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  *
  */
 public class CircleFitKasaB extends CircleFitAlgebraic {
 
-	private final double[] q;	// p = (B,C,D) circle parameters
+	private final double[] q;	// p = (B,C,D) circle parameters, A=1
 	
 	public CircleFitKasaB(Pnt2d[] points) {
 		q = fit(points);
@@ -41,24 +58,6 @@ public class CircleFitKasaB extends CircleFitAlgebraic {
 		return new double[] {1, q[0], q[1], q[2]};
 	}
 	
-	
-	
-	/**
-	 * Ported from Doube: FitCircle.java (adapted to use Apache Commons Math)
-	 *
-	 * @author Michael Doube, ported from Nikolai Chernov's MATLAB scripts
-	 * @see
-	 *      <p>
-	 *      Al-Sharadqha & Chernov (2009)
-	 *      <a href="http://dx.doi.org/10.1214/09-EJS419"> Error analysis for circle
-	 *      fitting algorithms</a>. Electronic Journal of Statistics 3, pp. 886-911
-	 *      <br/>
-	 *      <br />
-	 *      <a href="http://www.math.uab.edu/~chernov/cl/MATLABcircle.html" >http://
-	 *      www.math.uab.edu/~chernov/cl/MATLABcircle.html</a>
-	 *      </p>
-	 *
-	 */
 	private double[] fit(Pnt2d[] pts) {
 		final int n = pts.length;
 		if (n < 3) {

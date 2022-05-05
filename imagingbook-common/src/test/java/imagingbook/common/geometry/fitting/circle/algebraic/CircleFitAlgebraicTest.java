@@ -315,6 +315,7 @@ public class CircleFitAlgebraicTest {
 
 	@Test
 	public void testProblemSet1() {
+		// run test on types KasaOrig, KasaA, KasaB, Pratt, Hyper, Taubin:
 		Pnt2d[] pnts = PntUtils.fromDoubleArray(ProblemPointSet1);
 		for (FitType type : FitType.values()) {
 			runTest1(type, pnts);

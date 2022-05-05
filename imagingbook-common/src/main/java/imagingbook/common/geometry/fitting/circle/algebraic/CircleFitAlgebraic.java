@@ -14,6 +14,11 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.AlgebraicCircle;
 import imagingbook.common.geometry.circle.GeometricCircle;
 
+/**
+ * ABstract super-class of all algebraic circle fits.
+ * @author WB
+ *
+ */
 public abstract class CircleFitAlgebraic {
 	
 	public enum FitType {
@@ -30,7 +35,7 @@ public abstract class CircleFitAlgebraic {
 		case Hyper: 	return new CircleFitHyper(points);
 		case KasaA: 	return new CircleFitKasaA(points);
 		case KasaB: 	return new CircleFitKasaB(points);
-		case KasaOrig: 	return new CircleFitKasa(points);
+		case KasaOrig: 	return new CircleFitKasaOrig(points);
 		case Pratt: 	return new CircleFitPratt(points);
 		case Taubin: 	return new CircleFitTaubin(points);
 		default: return null;
@@ -38,7 +43,7 @@ public abstract class CircleFitAlgebraic {
 	}
 	
 	/**
-	 * Returns the parameters (A, B, C, D) of the {@link AlgebraicCircle}
+	 * Returns parameters (A, B, C, D) of the {@link AlgebraicCircle}
 	 * or {@code null} if the fit was unsuccessful.
 	 * Parameters are not normalized.
 	 * 
@@ -65,7 +70,7 @@ public abstract class CircleFitAlgebraic {
 	public GeometricCircle getGeometricCircle() {
 		double[] q = this.getParameters();	// assumed to be (A, B, C, D)
 		if (q == null || isZero(q[0])) {	// (abs(2 * A / s) < (1 / Rmax))
-			return null;			// return a straight line
+			return null;					// return a straight line?
 		}
 		else {
 			return new GeometricCircle(getAlgebraicCircle());
