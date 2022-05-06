@@ -10,20 +10,23 @@ package imagingbook.common.geometry.fitting.circle.algebraic;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.SingularMatrixException;
+import org.apache.commons.math3.linear.SingularValueDecomposition;
+
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.Matrix;
 
 /**
- * This is an implementation of the modified Kåsa [1] circle fitting algorithm described in 
- * [2, Sec. 5.1]. A description of the concrete algorithm can be found in [3, Alg. 11.1].
- * See {@link CircleFitKasaA} for the original version.
+ * This is an improved implementation of the Kåsa [1] circle fitting algorithm described in 
+ * [2, Sec. 5.2] (Eq. 5.12). It is based on the Moore-Penrose pseudo-inverse which is applied to the full data
+ * matrix (i.e, no 3x3 scatter matrix is mounted).
+ * See also [3, Sec. 11.1.2] and {@link CircleFitKasaA} for the original version.
  * <p>
- * Compared to the original Kåsa algorithm, this variant also solves a 3x3 linear
- * system but uses a slightly different setup of the scatter matrix (using only
- * powers of 2 instead of 3). A numerical solver is used for this purpose.
- * The algorithm is fast but shares the same numerical instabilities and bias when 
- * sample points are taken from a small circle segment.
- * It fails when matrix M becomes singular.
+ * This algorithm is assumed to be numerically more stable than solutions based on solving
+ * a 3x3 system. The pseudo-inverse is obtained by singular-value decomposition (SVD).
+ * However, the significant bias on points sampled from a small circle
+ * segment remains.
  * Fits to exactly 3 (non-collinear) points are handled properly.
  * No data centering (which should improve numerical stability) is used.
  * </p>
@@ -42,11 +45,11 @@ import imagingbook.common.math.Matrix;
  * @author WB
  *
  */
-public class CircleFitKasaB extends CircleFitAlgebraic {
+public class CircleFitKasaC extends CircleFitAlgebraic {
 
 	private final double[] q;	// q = (B,C,D) circle parameters, A=1
 	
-	public CircleFitKasaB(Pnt2d[] points) {
+	public CircleFitKasaC(Pnt2d[] points) {
 		q = fit(points);
 	}
 	
@@ -60,37 +63,31 @@ public class CircleFitKasaB extends CircleFitAlgebraic {
 		if (n < 3) {
 			throw new IllegalArgumentException("at least 3 points are required");
 		}
-
-		// calculate elements of scatter matrix
-		double sx = 0, sy = 0, sz = 0;
-		double sxy = 0, sxx = 0, syy = 0, sxz = 0, syz = 0;
+		
+		final double[] z = new double[n];
+		final double[][] Xa = new double[n][];
 		for (int i = 0; i < n; i++) {
 			final double x = pts[i].getX();
 			final double y = pts[i].getY();
-			final double x2 = sqr(x);
-			final double y2 = sqr(y);
-			final double z = x2 + y2;
-			sx  += x;
-			sy  += y;
-			sz  += z;
-			sxx += x2;
-			syy += y2;
-			sxy += x * y;	
-			sxz += x * z;
-			syz += y * z;
+			Xa[i] = new double[] {x, y, 1};
+			z[i] = -(sqr(x) + sqr(y));
 		}
+
+		RealMatrix X = MatrixUtils.createRealMatrix(Xa);
 		
-		double[][] M = {				// scatter matrix M
-				{sxx, sxy, sx},
-				{sxy, syy, sy},
-				{ sx,  sy,  n}};
-	    
-		double[] b = {-sxz, -syz, -sz};	 // RHS vector
-		double[] q = Matrix.solve(M, b); // solve M * q = b (exact), for parameter vector q = (B, C, D)
-		if (q == null) {
-			return null;	// M is singular, no solution
+		RealMatrix Xi = null;
+		try {
+			SingularValueDecomposition svd = new SingularValueDecomposition(X);
+			Xi = svd.getSolver().getInverse();		// get (3,N) pseudoinverse of X
+//			IJ.log("solver = " + svd.getSolver());
+//			IJ.log("rank X = " + svd.getRank());
+		} catch (SingularMatrixException e) { }
+		
+		if (Xi == null) {
+			return null;
 		}
 		else {
+			double[] q = Xi.operate(z);	// solution vector q = X^-1 * z = (B, C, D)
 			return q;
 		}
 	}

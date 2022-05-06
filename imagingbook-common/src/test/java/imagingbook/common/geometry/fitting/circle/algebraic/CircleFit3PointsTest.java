@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.AlgebraicCircle;
+import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType;
 
 public class CircleFit3PointsTest {
 	
@@ -31,20 +32,26 @@ public class CircleFit3PointsTest {
 	
 	@Test
 	public void test2() {
-		doCheck(new CircleFitHyper(pnts), acExp);
-		doCheck(new CircleFitKasaOrig(pnts), acExp);
-		doCheck(new CircleFitKasaA(pnts), acExp);
-		doCheck(new CircleFitKasaB(pnts), acExp);
-		doCheck(new CircleFitPratt(pnts), acExp);
-		doCheck(new CircleFitTaubin(pnts), acExp);
+		for (FitType type : FitType.values()) {
+			doCheck(CircleFitAlgebraic.getFit(type, pnts), acExp);
+		}
+//		doCheck(new CircleFitKasaA(pnts), acExp);
+//		doCheck(new CircleFitKasaB(pnts), acExp);
+//		doCheck(new CircleFitKasaC(pnts), acExp);
+//		doCheck(new CircleFitPratt(pnts), acExp);
+//		doCheck(new CircleFitTaubin(pnts), acExp);
+//		doCheck(new CircleFitHyperSimple(pnts), acExp);
+//		doCheck(new CircleFitHyperStable(pnts), acExp);
 	}
 	
 	private void doCheck(CircleFitAlgebraic fit, AlgebraicCircle acExp) {
 		double[] p = fit.getParameters();
-		assertNotNull(p);
+		String msg = "fit type = " + fit.getClass().getSimpleName();
+		assertNotNull(msg, p);
 		AlgebraicCircle ac = fit.getAlgebraicCircle();		// fitted circle
-		assertNotNull(ac);	
-		assertTrue(acExp.equals(ac, 1e-6));					// compare ac to expected circle
+		assertNotNull(msg, ac);	
+		System.out.println(msg + " ac=" + ac);
+		assertTrue(msg, acExp.equals(ac, 1e-6));					// compare ac to expected circle
 	}
 	
 	

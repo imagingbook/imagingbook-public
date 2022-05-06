@@ -15,31 +15,33 @@ import imagingbook.common.geometry.circle.AlgebraicCircle;
 import imagingbook.common.geometry.circle.GeometricCircle;
 
 /**
- * ABstract super-class of all algebraic circle fits.
+ * Abstract super-class of all algebraic circle fits.
  * @author WB
  *
  */
 public abstract class CircleFitAlgebraic {
 	
 	public enum FitType {
-		KasaOrig,
 		KasaA,
 		KasaB,
+		KasaC,
 		Pratt,
-		Hyper,
-		Taubin
+		Taubin,
+		HyperSimple,
+		HyperStable
 	}
 	
 	public static CircleFitAlgebraic getFit(FitType type, Pnt2d[] points) {
 		switch (type) {
-		case Hyper: 	return new CircleFitHyper(points);
 		case KasaA: 	return new CircleFitKasaA(points);
 		case KasaB: 	return new CircleFitKasaB(points);
-		case KasaOrig: 	return new CircleFitKasaOrig(points);
+		case KasaC: 	return new CircleFitKasaC(points);
 		case Pratt: 	return new CircleFitPratt(points);
 		case Taubin: 	return new CircleFitTaubin(points);
-		default: return null;
+		case HyperSimple: 	return new CircleFitHyperSimple(points);
+		case HyperStable: 	return new CircleFitHyperStable(points);
 		}
+		return null;
 	}
 	
 	/**

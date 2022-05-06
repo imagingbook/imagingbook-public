@@ -12,7 +12,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFit3Points;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic;
-import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitHyper;
+import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitHyperSimple;
 
 /**
  * RANSAC detector for circles.
@@ -54,7 +54,7 @@ public class RansacDetectorCircle extends GenericRansacDetector<GeometricCircle>
 	@Override
 	protected GeometricCircle fitFinal(Pnt2d[] inliers) {
 //		CircleFitAlgebraic fit2 = new CircleFitPratt(inliers);	// TODO: fails, check why
-		CircleFitAlgebraic fit2 = new CircleFitHyper(inliers);
+		CircleFitAlgebraic fit2 = new CircleFitHyperSimple(inliers);
 		if (fit2.getParameters() == null) 
 			throw new RuntimeException("circle fitFinal() failed!");
 		return fit2.getGeometricCircle();
