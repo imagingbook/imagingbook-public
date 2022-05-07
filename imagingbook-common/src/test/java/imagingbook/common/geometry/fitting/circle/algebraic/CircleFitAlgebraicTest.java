@@ -17,6 +17,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.circle.AlgebraicCircle;
 import imagingbook.common.geometry.circle.GeometricCircle;
+import imagingbook.common.geometry.fitting.circle.CircleSampler;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType;
 
 public class CircleFitAlgebraicTest {
@@ -313,8 +314,8 @@ public class CircleFitAlgebraicTest {
 	static GeometricCircle gcExpected = new GeometricCircle(Xc, Yc, R);
 	static AlgebraicCircle acExpected = new AlgebraicCircle(gcExpected);
 
-	@Test
-	public void testProblemSet1() {
+	@Test		// check the above problem set
+	public void test1() {
 		// run test on types KasaA, KasaB, KasaC, Pratt, Hyper, Taubin:
 		Pnt2d[] pnts = PntUtils.fromDoubleArray(ProblemPointSet1);
 		for (FitType type : FitType.values()) {
@@ -329,6 +330,40 @@ public class CircleFitAlgebraicTest {
 		AlgebraicCircle ac = fit.getAlgebraicCircle();
 		assertNotNull("algebraic circle is null: " + type, ac);
 		assertTrue("failed fit-type: " + type, acExpected.equals(ac, 0.1));					// compare ac to expected circle
+	}
+	
+	
+	
+	@Test		// check randomly sampled circle
+	public void test2() {
+		double xc = 200;
+		double yc = 190;
+		double rad = 150;	
+		long seed = 17;
+		
+		GeometricCircle realCircle = new GeometricCircle(xc, yc, rad);
+		CircleSampler sampler = new CircleSampler(realCircle, seed);
+		
+		for (FitType type : FitType.values()) {
+			runTest2(type, sampler, realCircle);
+		}
+	}
+	
+	private void runTest2(FitType type, CircleSampler sampler, GeometricCircle realCircle) {
+		int n = 50;
+		double angle0 = 0;
+		double angle1 = Math.PI;
+		double sigma = 2.0;
+		
+		for (int i = 0; i < 100; i++) {
+			Pnt2d[] pnts = sampler.getPoints(n, angle0, angle1, sigma);
+			CircleFitAlgebraic fit = CircleFitAlgebraic.getFit(type, pnts);
+			GeometricCircle fitCircle = fit.getGeometricCircle();
+			assertNotNull("geometric circle is null: " + type, fitCircle);
+//			System.out.println(type + ": " + fitCircle);
+			assertTrue("failed fit-type: " + type, realCircle.equals(fitCircle, 4.0, 4.0, 4.0));
+		}
+		
 	}
 
 }

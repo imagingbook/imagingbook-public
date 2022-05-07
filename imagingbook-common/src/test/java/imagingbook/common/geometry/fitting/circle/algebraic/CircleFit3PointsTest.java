@@ -23,40 +23,33 @@ public class CircleFit3PointsTest {
 	/**
 	 * Fits a circle to 3 given points and checks the outcome.
 	 */
-	@Test
+	@Test	// check dedicated 3-point fit
 	public void test1() {
-		doCheck(new CircleFit3Points(p0, p1, p2), acExp);
-		doCheck(new CircleFit3Points(p2, p0, p1), acExp);
-		doCheck(new CircleFit3Points(p1, p2, p0), acExp);
+		doCheck12(new CircleFit3Points(p0, p1, p2), acExp);
+		doCheck12(new CircleFit3Points(p2, p0, p1), acExp);
+		doCheck12(new CircleFit3Points(p1, p2, p0), acExp);
 	}
 	
-	@Test
+	@Test	// test all algebraic circle fit types on 3 points
 	public void test2() {
-		for (FitType type : FitType.values()) {
-			doCheck(CircleFitAlgebraic.getFit(type, pnts), acExp);
+		for (FitType type : FitType.values()) {		
+			doCheck12(CircleFitAlgebraic.getFit(type, pnts), acExp);
 		}
-//		doCheck(new CircleFitKasaA(pnts), acExp);
-//		doCheck(new CircleFitKasaB(pnts), acExp);
-//		doCheck(new CircleFitKasaC(pnts), acExp);
-//		doCheck(new CircleFitPratt(pnts), acExp);
-//		doCheck(new CircleFitTaubin(pnts), acExp);
-//		doCheck(new CircleFitHyperSimple(pnts), acExp);
-//		doCheck(new CircleFitHyperStable(pnts), acExp);
 	}
 	
-	private void doCheck(CircleFitAlgebraic fit, AlgebraicCircle acExp) {
+	private void doCheck12(CircleFitAlgebraic fit, AlgebraicCircle acExp) {
 		double[] p = fit.getParameters();
 		String msg = "fit type = " + fit.getClass().getSimpleName();
 		assertNotNull(msg, p);
 		AlgebraicCircle ac = fit.getAlgebraicCircle();		// fitted circle
 		assertNotNull(msg, ac);	
-		System.out.println(msg + " ac=" + ac);
+//		System.out.println(msg + " ac=" + ac);
 		assertTrue(msg, acExp.equals(ac, 1e-6));					// compare ac to expected circle
 	}
 	
 	
 	@Test
-	public void test4() {
+	public void test3() {
 		// fit to 3 collinear points  (getParameters() must return null)
 		Pnt2d x0 = Pnt2d.from(-1, -1);
 		Pnt2d x1 = Pnt2d.from(4, 4);
