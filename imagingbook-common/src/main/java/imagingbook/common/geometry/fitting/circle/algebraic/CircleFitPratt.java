@@ -55,13 +55,21 @@ public class CircleFitPratt extends CircleFitAlgebraic {
 	
 	private final double[] q;	// q = (A,B,C,D) circle parameters
 	
+	@Override
+	public double[] getParameters() {
+		return this.q;
+	}
+	
 	/**
 	 * Constructor.
+	 * The centroid of the sample points is used as the reference point.
+	 * 
 	 * @param points sample points
 	 */
 	public CircleFitPratt(Pnt2d[] points) {
 		this(points, null);
 	}
+	
 	/**
 	 * Constructor.
 	 * The centroid of the sample points is used as the reference point for data
@@ -74,18 +82,6 @@ public class CircleFitPratt extends CircleFitAlgebraic {
 		this.q = fit(points, xref);
 	}
 
-	// enforce constraint B^2 + C^2 - 4 A D = 1 :
-	@SuppressWarnings("unused")
-	private double[] normalizeP(double[] q) {
-		final double A = q[0];
-		final double B = q[1];
-		final double C = q[2];
-		final double D = q[3];
-		double s  = Math.sqrt(sqr(B) + sqr(C) - 4 * A * D);
-		return new double[] {A/s, B/s, C/s, D/s};
-	}
-
-	
 	private double[] fit(Pnt2d[] pts, Pnt2d xref) {
 		final int n = pts.length;
 		if (n < 3) {
@@ -155,16 +151,9 @@ public class CircleFitPratt extends CircleFitAlgebraic {
 			// Version2 ---------------------------------------------------
 			qq = V.operate(MatrixUtils.inverse(S).operate(el));	// simpler since S is diagonal
 		}
-		
-		double[][] M = 			// re-adjust for data centering
-			{{ 1, 0, 0, 0 },
-			 {-2*xr, 1, 0, 0 },
-			 {-2*yr, 0, 1, 0 },
-			 {sqr(xr) + sqr(yr), -xr, -yr, 1}};	
-		RealMatrix MM = MatrixUtils.createRealMatrix(M);
-		
-		double[] q = MM.operate(qq).toArray();
-		return q;		// q = (A,B,C,D)
+
+		RealMatrix M = getDecenteringMatrix(xr, yr);
+		return M.operate(qq).toArray();  // q = (A,B,C,D)
 	}
 	
 //	private int getSmallestPositiveIdx(double[] x) {
@@ -180,9 +169,15 @@ public class CircleFitPratt extends CircleFitAlgebraic {
 //		return minidx;
 //	}
 
-	@Override
-	public double[] getParameters() {
-		return this.q;
+
+	// enforce constraint B^2 + C^2 - 4 A D = 1 :
+	@SuppressWarnings("unused")
+	private double[] normalizeP(double[] q) {
+		final double A = q[0];
+		final double B = q[1];
+		final double C = q[2];
+		final double D = q[3];
+		double s  = Math.sqrt(sqr(B) + sqr(C) - 4 * A * D);
+		return new double[] {A/s, B/s, C/s, D/s};
 	}
-		
 }

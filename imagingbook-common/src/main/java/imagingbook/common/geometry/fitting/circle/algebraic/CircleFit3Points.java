@@ -18,6 +18,10 @@ import imagingbook.common.math.Arithmetic;
  * Performs an exact circle fit to 3 given (non-collinear) points.
  * If the fit is unsuccessful, {@link #getParameters()} 
  * returns {@code null}.
+ * See the Appendix of [1] (Sec. F.2.2) for details.
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  *
@@ -26,6 +30,18 @@ public class CircleFit3Points extends CircleFitAlgebraic {
 	
 	private final double[] p;
 	
+	@Override
+	public double[] getParameters() {
+		return this.p;
+	}
+	
+	/**
+	 * Constructor. Fits a circle to the specified three sample points.
+	 * If the fit is unsuccessful, {@link #getParameters()} returns {@code null}.
+	 * @param p0 sample point 1
+	 * @param p1 sample point 2
+	 * @param p2 sample point 3
+	 */
 	public CircleFit3Points(Pnt2d p0, Pnt2d p1, Pnt2d p2) {
 		final double x0 = p0.getX();
 		final double y0 = p0.getY();
@@ -49,13 +65,17 @@ public class CircleFit3Points extends CircleFitAlgebraic {
 		}
 	}
 	
+	/**
+	 * Constructor. Fits a circle to the specified three sample points,
+	 * passed as an array of points. Only the first three points are
+	 * used, additional points are ignored.
+	 * If the fit is unsuccessful, {@link #getParameters()} returns {@code null}.
+	 * 
+	 * @param pts three or more sample points
+	 */
 	public CircleFit3Points(Pnt2d[] pts) {
 		this(pts[0], pts[1], pts[2]);
 	}
 
-	@Override
-	public double[] getParameters() {
-		return this.p;
-	}
 
 }

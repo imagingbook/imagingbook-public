@@ -10,7 +10,10 @@ package imagingbook.common.geometry.fitting.circle.algebraic;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
+import org.apache.commons.math3.linear.RealMatrix;
+
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 
 /**
@@ -46,27 +49,53 @@ public class CircleFitKasaB extends CircleFitAlgebraic {
 
 	private final double[] q;	// q = (B,C,D) circle parameters, A=1
 	
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point.
+	 * 
+	 * @param points sample points
+	 */
 	public CircleFitKasaB(Pnt2d[] points) {
-		q = fit(points);
+		this(points, null);
 	}
+
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point for data
+	 * centering if {@code null} is passed for {@code xref}.
+	 * 
+	 * @param points sample points
+	 * @param xref reference point or {@code null}
+	 */
+	public CircleFitKasaB(Pnt2d[] points, Pnt2d xref) {
+		this.q = fit(points, xref);
+	}
+	
 	
 	@Override
 	public double[] getParameters() {
-		return new double[] {1, q[0], q[1], q[2]};
+		//return new double[] {1, q[0], q[1], q[2]};
+		return q;
 	}
 	
-	private double[] fit(Pnt2d[] pts) {
+	private double[] fit(Pnt2d[] pts, Pnt2d xref) {
 		final int n = pts.length;
 		if (n < 3) {
 			throw new IllegalArgumentException("at least 3 points are required");
 		}
+		
+		if (xref == null) {
+			xref = PntUtils.centroid(pts);
+		}
+		final double xr = xref.getX();
+		final double yr = xref.getY();
 
 		// calculate elements of scatter matrix
 		double sx = 0, sy = 0, sz = 0;
 		double sxy = 0, sxx = 0, syy = 0, sxz = 0, syz = 0;
 		for (int i = 0; i < n; i++) {
-			final double x = pts[i].getX();
-			final double y = pts[i].getY();
+			final double x = pts[i].getX() - xr;
+			final double y = pts[i].getY() - yr;
 			final double x2 = sqr(x);
 			final double y2 = sqr(y);
 			final double z = x2 + y2;
@@ -80,18 +109,20 @@ public class CircleFitKasaB extends CircleFitAlgebraic {
 			syz += y * z;
 		}
 		
-		double[][] M = {				// scatter matrix M
+		double[][] X = {				// scatter matrix X
 				{sxx, sxy, sx},
 				{sxy, syy, sy},
 				{ sx,  sy,  n}};
 	    
 		double[] b = {-sxz, -syz, -sz};	 // RHS vector
-		double[] q = Matrix.solve(M, b); // solve M * q = b (exact), for parameter vector q = (B, C, D)
-		if (q == null) {
+		double[] qq = Matrix.solve(X, b); // solve M * qq = b (exact), for parameter vector qq = (B, C, D)
+		if (qq == null) {
 			return null;	// M is singular, no solution
 		}
 		else {
-			return q;
+			// re-adjust for data centering
+			RealMatrix M = getDecenteringMatrix(xr, yr);
+			return M.operate(new double[] {1, qq[0], qq[1], qq[2]});	// q = (A,B,C,D)
 		}
 	}
 

@@ -131,7 +131,6 @@ public class CircleFitHyperStable extends CircleFitAlgebraic {
 			EigenvalueDecomposition ed = new EigenvalueDecomposition(Z);
 			double[] evals = ed.getRealEigenvalues();
 			
-//			int l = getSmallestPositiveIdx(evals);	
 			int l = new SortingOrder(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
 			RealVector el = ed.getEigenvector(l);
 			
@@ -141,25 +140,8 @@ public class CircleFitHyperStable extends CircleFitAlgebraic {
 		}
 		
 		// re-adjust circle parameters for data centering:
-		RealMatrix MM = MatrixUtils.createRealMatrix(new double[][] 
-			{{ 1, 0, 0, 0 },
-			 {-2*xr, 1, 0, 0 },
-			 {-2*yr, 0, 1, 0 },
-			 {sqr(xr) + sqr(yr), -xr, -yr, 1}});		
-		double[] q = MM.operate(p).toArray();
-		return q;		// q = (A, B, C, D)	
+		RealMatrix M = getDecenteringMatrix(xr, yr);
+		return M.operate(p).toArray();	// q = (A, B, C, D)		
 	}
-	
-//	private int getSmallestPositiveIdx(double[] x) {
-//		double minval = Double.POSITIVE_INFINITY;
-//		int minidx = -1;
-//		for (int i = 0; i < x.length; i++) {
-//			if (x[i] >= 0 && x[i] < minval) {
-//				minval = x[i];
-//				minidx = i;
-//			}
-//		}
-//		return minidx;
-//	}
 	
 }

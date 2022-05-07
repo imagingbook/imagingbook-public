@@ -16,6 +16,7 @@ import org.apache.commons.math3.linear.SingularMatrixException;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.PntUtils;
 
 /**
  * This is an improved implementation of the Kåsa [1] circle fitting algorithm described in 
@@ -49,26 +50,51 @@ public class CircleFitKasaC extends CircleFitAlgebraic {
 
 	private final double[] q;	// q = (B,C,D) circle parameters, A=1
 	
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point.
+	 * 
+	 * @param points sample points
+	 */
 	public CircleFitKasaC(Pnt2d[] points) {
-		q = fit(points);
+		this(points, null);
+	}
+
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point for data
+	 * centering if {@code null} is passed for {@code xref}.
+	 * 
+	 * @param points sample points
+	 * @param xref reference point or {@code null}
+	 */
+	public CircleFitKasaC(Pnt2d[] points, Pnt2d xref) {
+		this.q = fit(points, xref);
 	}
 	
 	@Override
 	public double[] getParameters() {
-		return new double[] {1, q[0], q[1], q[2]};
+		return q;
 	}
 	
-	private double[] fit(Pnt2d[] pts) {
+	private double[] fit(Pnt2d[] pts, Pnt2d xref) {
 		final int n = pts.length;
 		if (n < 3) {
 			throw new IllegalArgumentException("at least 3 points are required");
 		}
 		
+		if (xref == null) {
+			xref = PntUtils.centroid(pts);
+		}
+		final double xr = xref.getX();
+		final double yr = xref.getY();
+
+		
 		final double[] z = new double[n];
 		final double[][] Xa = new double[n][];
 		for (int i = 0; i < n; i++) {
-			final double x = pts[i].getX();
-			final double y = pts[i].getY();
+			final double x = pts[i].getX() - xr;
+			final double y = pts[i].getY() - yr;
 			Xa[i] = new double[] {x, y, 1};
 			z[i] = -(sqr(x) + sqr(y));
 		}
@@ -79,16 +105,16 @@ public class CircleFitKasaC extends CircleFitAlgebraic {
 		try {
 			SingularValueDecomposition svd = new SingularValueDecomposition(X);
 			Xi = svd.getSolver().getInverse();		// get (3,N) pseudoinverse of X
-//			IJ.log("solver = " + svd.getSolver());
-//			IJ.log("rank X = " + svd.getRank());
 		} catch (SingularMatrixException e) { }
 		
 		if (Xi == null) {
 			return null;
 		}
 		else {
-			double[] q = Xi.operate(z);	// solution vector q = X^-1 * z = (B, C, D)
-			return q;
+			double[] qq = Xi.operate(z);	// solution vector qq = X^-1 * z = (B, C, D)	
+			// re-adjust for data centering
+			RealMatrix M = getDecenteringMatrix(xr, yr);		
+			return M.operate(new double[] {1, qq[0], qq[1], qq[2]});	// q = (A,B,C,D)
 		}
 	}
 

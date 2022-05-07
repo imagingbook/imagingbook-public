@@ -9,6 +9,10 @@
 package imagingbook.common.geometry.fitting.circle.algebraic;
 
 import static imagingbook.common.math.Arithmetic.isZero;
+import static imagingbook.common.math.Arithmetic.sqr;
+
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.AlgebraicCircle;
@@ -79,4 +83,22 @@ public abstract class CircleFitAlgebraic {
 		}
 	}
 	
+	/**
+	 * Used to transform the algebraic parameter vector for sample data
+	 * shifted to the reference point specified.
+	 * If qq is the parameter vector for the data centered at (xr, yr),
+	 * the original parameters q are obtained as
+	 * <pre>q = M * qq</pre>
+	 * 
+	 * @param xr reference point (x)
+	 * @param yr reference point (y)
+	 * @return the transformation matrix
+	 */
+	protected static RealMatrix getDecenteringMatrix(double xr, double yr) {
+		return MatrixUtils.createRealMatrix(new double[][]
+				{{ 1, 0, 0, 0 },
+				 {-2*xr, 1, 0, 0 },
+				 {-2*yr, 0, 1, 0 },
+				 {sqr(xr) + sqr(yr), -xr, -yr, 1}});
+	}
 }

@@ -29,7 +29,7 @@ import imagingbook.common.util.SortingOrder;
  * (see https://people.cas.uab.edu/~mosya/cl/Hyper.m), also referred to 
  * as "simple" version. 
  * Fits to exactly 3 (non-collinear) points are handled properly.
- * Note that is works without data centering (by using x/y/z means internally).
+ * Note that is works without explicit data centering (by using x/y/z means internally).
  * The algorithm may fail on certain critical point constellations, see 
  * {@link CircleFitHyperStable} for a superior implementation.
  * </p>
