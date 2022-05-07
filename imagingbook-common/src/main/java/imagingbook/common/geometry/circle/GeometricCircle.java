@@ -194,6 +194,13 @@ public class GeometricCircle implements ShapeProducer {
 				Arithmetic.equals(r, other.r, tolerance) ;
 	}
 	
+	public boolean equals(GeometricCircle other, double tolXc, double tolYc, double tolR) {
+		return 
+				Arithmetic.equals(xc, other.xc, tolXc) &&
+				Arithmetic.equals(yc, other.yc, tolYc) &&
+				Arithmetic.equals(r, other.r, tolR) ;
+	}
+	
 
 	public GeometricCircle duplicate() {
 		return new GeometricCircle(this.getParameters());
