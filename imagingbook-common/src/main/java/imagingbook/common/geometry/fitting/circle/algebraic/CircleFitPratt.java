@@ -19,6 +19,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.EigenvalueDecomposition;
+import imagingbook.common.util.SortingOrder;
 
 /**
  * This is an implementation of the algebraic circle fitting algorithm by Pratt [1],
@@ -142,7 +143,10 @@ public class CircleFitPratt extends CircleFitAlgebraic {
 			EigenvalueDecomposition ed = new EigenvalueDecomposition(Z);
 			
 			double[] evals = ed.getRealEigenvalues();
-			int l = getSmallestPositiveIdx(evals);
+			
+//			int l = getSmallestPositiveIdx(evals);
+			int l = new SortingOrder(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
+			
 			RealVector el = ed.getEigenvector(l);
 			
 			// Version1 ---------------------------------------------------
@@ -163,18 +167,18 @@ public class CircleFitPratt extends CircleFitAlgebraic {
 		return q;		// q = (A,B,C,D)
 	}
 	
-	private int getSmallestPositiveIdx(double[] x) {
-		double minval = Double.POSITIVE_INFINITY;
-		int minidx = -1;
-		for (int i = 0; i < x.length; i++) {
-			// ignore complex eigenvalues (x[i] == NaN)
-			if (Double.isFinite(x[i]) && x[i] >= 0 && x[i] < minval) {
-				minval = x[i];
-				minidx = i;
-			}
-		}
-		return minidx;
-	}
+//	private int getSmallestPositiveIdx(double[] x) {
+//		double minval = Double.POSITIVE_INFINITY;
+//		int minidx = -1;
+//		for (int i = 0; i < x.length; i++) {
+//			// ignore complex eigenvalues (x[i] == NaN)
+//			if (Double.isFinite(x[i]) && x[i] >= 0 && x[i] < minval) {
+//				minval = x[i];
+//				minidx = i;
+//			}
+//		}
+//		return minidx;
+//	}
 
 	@Override
 	public double[] getParameters() {

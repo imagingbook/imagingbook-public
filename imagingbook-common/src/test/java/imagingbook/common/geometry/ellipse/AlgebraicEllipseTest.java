@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
 public class AlgebraicEllipseTest {
 

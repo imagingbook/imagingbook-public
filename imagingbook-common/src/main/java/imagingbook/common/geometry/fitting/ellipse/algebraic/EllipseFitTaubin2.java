@@ -20,6 +20,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.GeneralizedSymmetricEigenSolver;
+import imagingbook.common.util.SortingOrder;
 
 /**
  * Algebraic ellipse fit based on Taubin's method [1].
@@ -101,7 +102,7 @@ public class EllipseFitTaubin2 implements EllipseFitAlgebraic {
 		double[] evals = eigen.getRealEigenvalues();
 //		IJ.log("evals = " + Arrays.toString(evals));
 		
-		int k = getSmallestPositiveIdx(evals);
+		int k = getSmallestPositiveIdx(evals);		// TODO: replace by new SortingOrder(evals).getIndex(1); (see CircleFitHyperStable)
 		RealVector q0 = eigen.getEigenVector(k);
 //		IJ.log("pInit = " + Matrix.toString(pInit.toArray()));
 		
@@ -115,6 +116,7 @@ public class EllipseFitTaubin2 implements EllipseFitAlgebraic {
 	
 	// --------------------------------------------------------------------
 	
+	// TODO: This is not reliable, replace!
 	private int getSmallestPositiveIdx(double[] x) {
 		double minval = Double.POSITIVE_INFINITY;
 		int minidx = -1;

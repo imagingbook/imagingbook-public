@@ -18,6 +18,7 @@ import org.apache.commons.math3.linear.RealVector;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.math.eigen.EigenvalueDecomposition;
+import imagingbook.common.util.SortingOrder;
 
 /**
  * <p>
@@ -97,22 +98,25 @@ public class CircleFitHyperSimple extends CircleFitAlgebraic {
 		RealMatrix NM = MatrixUtils.inverse(N).multiply(M);
 		EigenvalueDecomposition ed = new EigenvalueDecomposition(NM);
 		double[] evals = ed.getRealEigenvalues();
-		int k = getSmallestPositiveIdx(evals);
+		
+//		int k = getSmallestPositiveIdx(evals);
+		int k = new SortingOrder(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
+		
 		RealVector p = ed.getEigenvector(k);
 
 		return p.toArray();			// p = (A, B, C, D)
 	}
 
 
-	private int getSmallestPositiveIdx(double[] x) {
-		double minval = Double.POSITIVE_INFINITY;
-		int minidx = -1;
-		for (int i = 0; i < x.length; i++) {
-			if (x[i] >= 0 && x[i] < minval) {
-				minval = x[i];
-				minidx = i;
-			}
-		}
-		return minidx;
-	}
+//	private int getSmallestPositiveIdx(double[] x) {
+//		double minval = Double.POSITIVE_INFINITY;
+//		int minidx = -1;
+//		for (int i = 0; i < x.length; i++) {
+//			if (x[i] >= 0 && x[i] < minval) {
+//				minval = x[i];
+//				minidx = i;
+//			}
+//		}
+//		return minidx;
+//	}
 }

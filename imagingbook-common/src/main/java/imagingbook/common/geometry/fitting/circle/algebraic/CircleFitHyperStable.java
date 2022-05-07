@@ -22,6 +22,7 @@ import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.math.eigen.EigenvalueDecomposition;
+import imagingbook.common.util.SortingOrder;
 
 /**
  * <p>
@@ -129,14 +130,11 @@ public class CircleFitHyperStable extends CircleFitAlgebraic {
 			RealMatrix W = V.multiply(S).multiply(V.transpose());
 			RealMatrix Z = W.multiply(Ci).multiply(W);
 
-			EigenDecomposition ed1 = new EigenDecomposition(Z);
-			PrintPrecision.set(9);
-			System.out.println("D1 = \n" + Matrix.toString(ed1.getD()));
-			
 			EigenvalueDecomposition ed = new EigenvalueDecomposition(Z);
 			double[] evals = ed.getRealEigenvalues();
-			System.out.println("D = \n" + Matrix.toString(ed.getD()));
-			int l = getSmallestPositiveIdx(evals);	
+			
+//			int l = getSmallestPositiveIdx(evals);	
+			int l = new SortingOrder(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
 			RealVector el = ed.getEigenvector(l);
 			
 			p = Matrix.solve(W, el);
@@ -154,19 +152,16 @@ public class CircleFitHyperStable extends CircleFitAlgebraic {
 		return q;		// q = (A, B, C, D)	
 	}
 	
-	private int getSmallestPositiveIdx(double[] x) {
-		double minval = Double.POSITIVE_INFINITY;
-		int minidx = -1;
-		for (int i = 0; i < x.length; i++) {
-			if (x[i] >= 0 && x[i] < minval) {
-				minval = x[i];
-				minidx = i;
-			}
-		}
-		return minidx;
-	}
+//	private int getSmallestPositiveIdx(double[] x) {
+//		double minval = Double.POSITIVE_INFINITY;
+//		int minidx = -1;
+//		for (int i = 0; i < x.length; i++) {
+//			if (x[i] >= 0 && x[i] < minval) {
+//				minval = x[i];
+//				minidx = i;
+//			}
+//		}
+//		return minidx;
+//	}
 	
-	private int getNthSmallestIdx(double[] x, int n) {
-		return 0;
-	}
 }
