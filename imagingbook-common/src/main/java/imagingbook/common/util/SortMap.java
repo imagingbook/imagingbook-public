@@ -89,7 +89,7 @@ public class SortMap {
 	
 	/**
 	 * Returns the nth smallest element of the specified  {@code double[]},
-	 * starting with n = 0, which returns the smallest element.
+	 * starting with {@code n = 0}, which returns the smallest element of {@code numbers}.
 	 * 
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
@@ -102,7 +102,7 @@ public class SortMap {
 	
 	/**
 	 * Returns the nth smallest element of the specified {@code float[]},
-	 * starting with n = 0, which returns the smallest element.
+	 * starting with {@code n = 0}, which returns the smallest element of {@code numbers}.
 	 * 
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
@@ -115,7 +115,7 @@ public class SortMap {
 	
 	/**
 	 * Returns the nth smallest element of the specified {@code int[]},
-	 * starting with n = 0, which returns the smallest element.
+	 * starting with {@code n = 0}, which returns the smallest element of {@code numbers}.
 	 * 
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
