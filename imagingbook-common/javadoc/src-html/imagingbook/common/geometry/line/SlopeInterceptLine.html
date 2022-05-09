@@ -27,98 +27,75 @@
 <span class="sourceLineNo">017</span><a id="line.17"> * This class represents a line in slope-intercept form: y = k x + d.</a>
 <span class="sourceLineNo">018</span><a id="line.18"> * Instances are immutable. Not all possible lines in the 2D plane</a>
 <span class="sourceLineNo">019</span><a id="line.19"> * can be represented.</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * A {@link SlopeInterceptLine} is really a {@link AlgebraicLine}</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * with two additional fields and a special constructor.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * A {@link SlopeInterceptLine} is merely a {@link AlgebraicLine}</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * with a special constructor and getter methods for k, d.</a>
 <span class="sourceLineNo">022</span><a id="line.22"> */</a>
 <span class="sourceLineNo">023</span><a id="line.23">public class SlopeInterceptLine extends AlgebraicLine {</a>
 <span class="sourceLineNo">024</span><a id="line.24">        </a>
-<span class="sourceLineNo">025</span><a id="line.25">        private final double k, d;</a>
-<span class="sourceLineNo">026</span><a id="line.26">        </a>
-<span class="sourceLineNo">027</span><a id="line.27">        public SlopeInterceptLine(double k, double d) {</a>
-<span class="sourceLineNo">028</span><a id="line.28">                super(k, -1, d);</a>
-<span class="sourceLineNo">029</span><a id="line.29">                this.k = k;</a>
-<span class="sourceLineNo">030</span><a id="line.30">                this.d = d;</a>
-<span class="sourceLineNo">031</span><a id="line.31">        }</a>
-<span class="sourceLineNo">032</span><a id="line.32">        </a>
-<span class="sourceLineNo">033</span><a id="line.33">        public double getK() {</a>
-<span class="sourceLineNo">034</span><a id="line.34">//              return k;</a>
-<span class="sourceLineNo">035</span><a id="line.35">                return A / -B;</a>
-<span class="sourceLineNo">036</span><a id="line.36">        }</a>
-<span class="sourceLineNo">037</span><a id="line.37"></a>
-<span class="sourceLineNo">038</span><a id="line.38">        public double getD() {</a>
-<span class="sourceLineNo">039</span><a id="line.39">//              return d;</a>
-<span class="sourceLineNo">040</span><a id="line.40">                return C / - B;</a>
-<span class="sourceLineNo">041</span><a id="line.41">        }</a>
-<span class="sourceLineNo">042</span><a id="line.42">        </a>
-<span class="sourceLineNo">043</span><a id="line.43">        public double[] getParameters() {</a>
-<span class="sourceLineNo">044</span><a id="line.44">                return new double[] {k, d};</a>
-<span class="sourceLineNo">045</span><a id="line.45">        }</a>
-<span class="sourceLineNo">046</span><a id="line.46">        </a>
-<span class="sourceLineNo">047</span><a id="line.47">        public static SlopeInterceptLine from(AlgebraicLine al) {</a>
-<span class="sourceLineNo">048</span><a id="line.48">                double[] p = al.getParameters();        // =(A,B,C)</a>
-<span class="sourceLineNo">049</span><a id="line.49">                if (Arithmetic.isZero(p[1])) {          // B == 0?</a>
-<span class="sourceLineNo">050</span><a id="line.50">                        throw new IllegalArgumentException("cannot convert vertical line (B=0)");</a>
-<span class="sourceLineNo">051</span><a id="line.51">                }</a>
-<span class="sourceLineNo">052</span><a id="line.52">                return new SlopeInterceptLine(-p[0]/p[1], -p[2]/p[1]);  // =(-A/B, -C/B)</a>
-<span class="sourceLineNo">053</span><a id="line.53">        }</a>
+<span class="sourceLineNo">025</span><a id="line.25">        public SlopeInterceptLine(double k, double d) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">                super(k, -1, d);</a>
+<span class="sourceLineNo">027</span><a id="line.27">        }</a>
+<span class="sourceLineNo">028</span><a id="line.28">        </a>
+<span class="sourceLineNo">029</span><a id="line.29">        public SlopeInterceptLine(AlgebraicLine al) {</a>
+<span class="sourceLineNo">030</span><a id="line.30">                super(al.getParameters());</a>
+<span class="sourceLineNo">031</span><a id="line.31">                if (Arithmetic.isZero(al.B)) {</a>
+<span class="sourceLineNo">032</span><a id="line.32">                        throw new IllegalArgumentException("cannot convert vertical line (B=0)");</a>
+<span class="sourceLineNo">033</span><a id="line.33">                }</a>
+<span class="sourceLineNo">034</span><a id="line.34">        }</a>
+<span class="sourceLineNo">035</span><a id="line.35">        </a>
+<span class="sourceLineNo">036</span><a id="line.36">        public double getK() {</a>
+<span class="sourceLineNo">037</span><a id="line.37">                return A / -B;  // = k</a>
+<span class="sourceLineNo">038</span><a id="line.38">        }</a>
+<span class="sourceLineNo">039</span><a id="line.39"></a>
+<span class="sourceLineNo">040</span><a id="line.40">        public double getD() {</a>
+<span class="sourceLineNo">041</span><a id="line.41">                return C / -B;  // = d</a>
+<span class="sourceLineNo">042</span><a id="line.42">        }</a>
+<span class="sourceLineNo">043</span><a id="line.43">        </a>
+<span class="sourceLineNo">044</span><a id="line.44">        /**</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * Returns the line's y-value for the specified x-position.</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * @param x position along the x-axis</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * @return the associated y-value</a>
+<span class="sourceLineNo">048</span><a id="line.48">         */</a>
+<span class="sourceLineNo">049</span><a id="line.49">        public double getY(double x) {</a>
+<span class="sourceLineNo">050</span><a id="line.50">                return (A * x + C) / -B;        // = y = k * x + d</a>
+<span class="sourceLineNo">051</span><a id="line.51">        }</a>
+<span class="sourceLineNo">052</span><a id="line.52">        </a>
+<span class="sourceLineNo">053</span><a id="line.53">        // --------------------------------------------------</a>
 <span class="sourceLineNo">054</span><a id="line.54">        </a>
-<span class="sourceLineNo">055</span><a id="line.55">        public double getY(double x) {</a>
-<span class="sourceLineNo">056</span><a id="line.56">                return k * x + d;</a>
-<span class="sourceLineNo">057</span><a id="line.57">        }</a>
-<span class="sourceLineNo">058</span><a id="line.58">        </a>
-<span class="sourceLineNo">059</span><a id="line.59">        // --------------------------------------------------</a>
+<span class="sourceLineNo">055</span><a id="line.55">        @Override</a>
+<span class="sourceLineNo">056</span><a id="line.56">        public String toString() {</a>
+<span class="sourceLineNo">057</span><a id="line.57">                return String.format(Locale.US, "%s &lt;A=%.3f B=%.3f C=%.3f k=%.3f, d=%.3f&gt;",</a>
+<span class="sourceLineNo">058</span><a id="line.58">                                this.getClass().getSimpleName(), A, B, C, getK(), getD());</a>
+<span class="sourceLineNo">059</span><a id="line.59">        }</a>
 <span class="sourceLineNo">060</span><a id="line.60">        </a>
-<span class="sourceLineNo">061</span><a id="line.61">        @Override</a>
-<span class="sourceLineNo">062</span><a id="line.62">        public boolean equals(Object other) {</a>
-<span class="sourceLineNo">063</span><a id="line.63">                if (this == other) {</a>
-<span class="sourceLineNo">064</span><a id="line.64">                        return true;</a>
-<span class="sourceLineNo">065</span><a id="line.65">                }</a>
-<span class="sourceLineNo">066</span><a id="line.66">                if (other instanceof SlopeInterceptLine) {</a>
-<span class="sourceLineNo">067</span><a id="line.67">                        return this.equals((SlopeInterceptLine) other, Arithmetic.EPSILON_DOUBLE);</a>
-<span class="sourceLineNo">068</span><a id="line.68">                }</a>
-<span class="sourceLineNo">069</span><a id="line.69">                else {</a>
-<span class="sourceLineNo">070</span><a id="line.70">                        return false;</a>
-<span class="sourceLineNo">071</span><a id="line.71">                }</a>
-<span class="sourceLineNo">072</span><a id="line.72">        }</a>
-<span class="sourceLineNo">073</span><a id="line.73">        </a>
-<span class="sourceLineNo">074</span><a id="line.74">        public boolean equals(SlopeInterceptLine other, double tolerance) {</a>
-<span class="sourceLineNo">075</span><a id="line.75">                return </a>
-<span class="sourceLineNo">076</span><a id="line.76">                                Arithmetic.equals(k, other.k, tolerance) &amp;&amp;</a>
-<span class="sourceLineNo">077</span><a id="line.77">                                Arithmetic.equals(d, other.d, tolerance);</a>
-<span class="sourceLineNo">078</span><a id="line.78">        }</a>
-<span class="sourceLineNo">079</span><a id="line.79">        </a>
-<span class="sourceLineNo">080</span><a id="line.80">        @Override</a>
-<span class="sourceLineNo">081</span><a id="line.81">        public String toString() {</a>
-<span class="sourceLineNo">082</span><a id="line.82">                return String.format(Locale.US, "%s &lt;k=%.3f, d=%.3f&gt; A=%.3f B=%.3f C=%.3f",</a>
-<span class="sourceLineNo">083</span><a id="line.83">                                this.getClass().getSimpleName(), k, d, A, B, C);</a>
-<span class="sourceLineNo">084</span><a id="line.84">        }</a>
-<span class="sourceLineNo">085</span><a id="line.85">        </a>
-<span class="sourceLineNo">086</span><a id="line.86">        // --------------------------------------------------</a>
-<span class="sourceLineNo">087</span><a id="line.87">        </a>
-<span class="sourceLineNo">088</span><a id="line.88">        public static void main (String[] args) {</a>
-<span class="sourceLineNo">089</span><a id="line.89">                Pnt2d p1 = Pnt2d.from(1, 2);</a>
-<span class="sourceLineNo">090</span><a id="line.90">                Pnt2d p2 = Pnt2d.from(4, 3);</a>
-<span class="sourceLineNo">091</span><a id="line.91">                </a>
-<span class="sourceLineNo">092</span><a id="line.92">                AlgebraicLine al1 = AlgebraicLine.from(p1, p2);</a>
-<span class="sourceLineNo">093</span><a id="line.93">                System.out.println("al1 = " + al1);</a>
-<span class="sourceLineNo">094</span><a id="line.94">                </a>
-<span class="sourceLineNo">095</span><a id="line.95">                SlopeInterceptLine sl = SlopeInterceptLine.from(al1);</a>
-<span class="sourceLineNo">096</span><a id="line.96">                System.out.println("sl = " + sl);</a>
-<span class="sourceLineNo">097</span><a id="line.97">                System.out.println("sl k = " + (sl.A / -sl.B));</a>
-<span class="sourceLineNo">098</span><a id="line.98">                System.out.println("sl d = " + (sl.C / -sl.B));</a>
-<span class="sourceLineNo">099</span><a id="line.99">                </a>
-<span class="sourceLineNo">100</span><a id="line.100">                AlgebraicLine al2 = AlgebraicLine.from(sl);</a>
-<span class="sourceLineNo">101</span><a id="line.101">                System.out.println("al2 = " + al2);</a>
-<span class="sourceLineNo">102</span><a id="line.102">                </a>
-<span class="sourceLineNo">103</span><a id="line.103">                System.out.println("al1 = al2 ? " + al1.equals(al2, 1e-6));</a>
-<span class="sourceLineNo">104</span><a id="line.104">        }</a>
-<span class="sourceLineNo">105</span><a id="line.105">        /*</a>
-<span class="sourceLineNo">106</span><a id="line.106">        al1 = AlgebraicLine &lt;a=-0.316, b=0.949, c=-1.581&gt;</a>
-<span class="sourceLineNo">107</span><a id="line.107">        sl = SlopeInterceptLine &lt;k=0.333, d=1.667&gt;</a>
-<span class="sourceLineNo">108</span><a id="line.108">        al2 = AlgebraicLine &lt;a=0.316, b=-0.949, c=1.581&gt;</a>
-<span class="sourceLineNo">109</span><a id="line.109">        al1 = al2 ? true</a>
-<span class="sourceLineNo">110</span><a id="line.110">        */</a>
-<span class="sourceLineNo">111</span><a id="line.111">}</a>
+<span class="sourceLineNo">061</span><a id="line.61">        // --------------------------------------------------</a>
+<span class="sourceLineNo">062</span><a id="line.62">        </a>
+<span class="sourceLineNo">063</span><a id="line.63">        public static void main (String[] args) {</a>
+<span class="sourceLineNo">064</span><a id="line.64">                Pnt2d p1 = Pnt2d.from(1, 2);</a>
+<span class="sourceLineNo">065</span><a id="line.65">                Pnt2d p2 = Pnt2d.from(4, 3);</a>
+<span class="sourceLineNo">066</span><a id="line.66">                </a>
+<span class="sourceLineNo">067</span><a id="line.67">                AlgebraicLine al1 = AlgebraicLine.from(p1, p2);</a>
+<span class="sourceLineNo">068</span><a id="line.68">                System.out.println("al1 = " + al1);</a>
+<span class="sourceLineNo">069</span><a id="line.69">                </a>
+<span class="sourceLineNo">070</span><a id="line.70">                SlopeInterceptLine sl = new SlopeInterceptLine(al1);</a>
+<span class="sourceLineNo">071</span><a id="line.71">                System.out.println("sl = " + sl);</a>
+<span class="sourceLineNo">072</span><a id="line.72">                System.out.println("sl k = " + (sl.A / -sl.B));</a>
+<span class="sourceLineNo">073</span><a id="line.73">                System.out.println("sl d = " + (sl.C / -sl.B));</a>
+<span class="sourceLineNo">074</span><a id="line.74">                </a>
+<span class="sourceLineNo">075</span><a id="line.75">                AlgebraicLine al2 = AlgebraicLine.from(sl);</a>
+<span class="sourceLineNo">076</span><a id="line.76">                System.out.println("al2 = " + al2);</a>
+<span class="sourceLineNo">077</span><a id="line.77">                </a>
+<span class="sourceLineNo">078</span><a id="line.78">                System.out.println("al1 = al2 ? " + al1.equals(al2, 1e-6));</a>
+<span class="sourceLineNo">079</span><a id="line.79">        }</a>
+<span class="sourceLineNo">080</span><a id="line.80">/*</a>
+<span class="sourceLineNo">081</span><a id="line.81">al1 = AlgebraicLine &lt;a=0.316, b=-0.949, c=1.581&gt;</a>
+<span class="sourceLineNo">082</span><a id="line.82">sl = SlopeInterceptLine &lt;A=0.316 B=-0.949 C=1.581 k=0.333, d=1.667&gt;</a>
+<span class="sourceLineNo">083</span><a id="line.83">sl k = 0.33333333333333337</a>
+<span class="sourceLineNo">084</span><a id="line.84">sl d = 1.6666666666666665</a>
+<span class="sourceLineNo">085</span><a id="line.85">al2 = AlgebraicLine &lt;a=0.316, b=-0.949, c=1.581&gt;</a>
+<span class="sourceLineNo">086</span><a id="line.86">al1 = al2 ? true</a>
+<span class="sourceLineNo">087</span><a id="line.87">*/</a>
+<span class="sourceLineNo">088</span><a id="line.88">}</a>
 
 
 

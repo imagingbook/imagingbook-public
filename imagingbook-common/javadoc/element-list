@@ -38,7 +38,6 @@ imagingbook.common.geometry.moments
 imagingbook.common.geometry.shape
 imagingbook.common.histogram
 imagingbook.common.hough
-imagingbook.common.hough.lines
 imagingbook.common.ij
 imagingbook.common.ij.overlay
 imagingbook.common.image

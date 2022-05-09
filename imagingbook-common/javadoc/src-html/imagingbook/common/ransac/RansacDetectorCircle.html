@@ -22,7 +22,7 @@
 <span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.geometry.circle.GeometricCircle;</a>
 <span class="sourceLineNo">013</span><a id="line.13">import imagingbook.common.geometry.fitting.circle.algebraic.CircleFit3Points;</a>
 <span class="sourceLineNo">014</span><a id="line.14">import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitHyper;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitHyperSimple;</a>
 <span class="sourceLineNo">016</span><a id="line.16"></a>
 <span class="sourceLineNo">017</span><a id="line.17">/**</a>
 <span class="sourceLineNo">018</span><a id="line.18"> * RANSAC detector for circles.</a>
@@ -64,7 +64,7 @@
 <span class="sourceLineNo">054</span><a id="line.54">        @Override</a>
 <span class="sourceLineNo">055</span><a id="line.55">        protected GeometricCircle fitFinal(Pnt2d[] inliers) {</a>
 <span class="sourceLineNo">056</span><a id="line.56">//              CircleFitAlgebraic fit2 = new CircleFitPratt(inliers);  // TODO: fails, check why</a>
-<span class="sourceLineNo">057</span><a id="line.57">                CircleFitAlgebraic fit2 = new CircleFitHyper(inliers);</a>
+<span class="sourceLineNo">057</span><a id="line.57">                CircleFitAlgebraic fit2 = new CircleFitHyperSimple(inliers);</a>
 <span class="sourceLineNo">058</span><a id="line.58">                if (fit2.getParameters() == null) </a>
 <span class="sourceLineNo">059</span><a id="line.59">                        throw new RuntimeException("circle fitFinal() failed!");</a>
 <span class="sourceLineNo">060</span><a id="line.60">                return fit2.getGeometricCircle();</a>

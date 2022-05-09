@@ -204,17 +204,24 @@
 <span class="sourceLineNo">194</span><a id="line.194">                                Arithmetic.equals(r, other.r, tolerance) ;</a>
 <span class="sourceLineNo">195</span><a id="line.195">        }</a>
 <span class="sourceLineNo">196</span><a id="line.196">        </a>
-<span class="sourceLineNo">197</span><a id="line.197"></a>
-<span class="sourceLineNo">198</span><a id="line.198">        public GeometricCircle duplicate() {</a>
-<span class="sourceLineNo">199</span><a id="line.199">                return new GeometricCircle(this.getParameters());</a>
-<span class="sourceLineNo">200</span><a id="line.200">        }</a>
-<span class="sourceLineNo">201</span><a id="line.201">        </a>
-<span class="sourceLineNo">202</span><a id="line.202">        @Override</a>
-<span class="sourceLineNo">203</span><a id="line.203">        public String toString() {</a>
-<span class="sourceLineNo">204</span><a id="line.204">                return String.format(Locale.US, "%s [xc=%f, yc=%f, r=%f]", </a>
-<span class="sourceLineNo">205</span><a id="line.205">                                this.getClass().getSimpleName(), xc, yc, r);</a>
-<span class="sourceLineNo">206</span><a id="line.206">        }</a>
-<span class="sourceLineNo">207</span><a id="line.207">}</a>
+<span class="sourceLineNo">197</span><a id="line.197">        public boolean equals(GeometricCircle other, double tolXc, double tolYc, double tolR) {</a>
+<span class="sourceLineNo">198</span><a id="line.198">                return </a>
+<span class="sourceLineNo">199</span><a id="line.199">                                Arithmetic.equals(xc, other.xc, tolXc) &amp;&amp;</a>
+<span class="sourceLineNo">200</span><a id="line.200">                                Arithmetic.equals(yc, other.yc, tolYc) &amp;&amp;</a>
+<span class="sourceLineNo">201</span><a id="line.201">                                Arithmetic.equals(r, other.r, tolR) ;</a>
+<span class="sourceLineNo">202</span><a id="line.202">        }</a>
+<span class="sourceLineNo">203</span><a id="line.203">        </a>
+<span class="sourceLineNo">204</span><a id="line.204"></a>
+<span class="sourceLineNo">205</span><a id="line.205">        public GeometricCircle duplicate() {</a>
+<span class="sourceLineNo">206</span><a id="line.206">                return new GeometricCircle(this.getParameters());</a>
+<span class="sourceLineNo">207</span><a id="line.207">        }</a>
+<span class="sourceLineNo">208</span><a id="line.208">        </a>
+<span class="sourceLineNo">209</span><a id="line.209">        @Override</a>
+<span class="sourceLineNo">210</span><a id="line.210">        public String toString() {</a>
+<span class="sourceLineNo">211</span><a id="line.211">                return String.format(Locale.US, "%s [xc=%f, yc=%f, r=%f]", </a>
+<span class="sourceLineNo">212</span><a id="line.212">                                this.getClass().getSimpleName(), xc, yc, r);</a>
+<span class="sourceLineNo">213</span><a id="line.213">        }</a>
+<span class="sourceLineNo">214</span><a id="line.214">}</a>
 
 
 
