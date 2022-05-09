@@ -54,7 +54,7 @@
 <span class="sourceLineNo">044</span><a id="line.44"> * @author WB</a>
 <span class="sourceLineNo">045</span><a id="line.45"> *</a>
 <span class="sourceLineNo">046</span><a id="line.46"> */</a>
-<span class="sourceLineNo">047</span><a id="line.47">public class CircleFitPratt extends CircleFitAlgebraic {</a>
+<span class="sourceLineNo">047</span><a id="line.47">public class CircleFitPratt implements CircleFitAlgebraic {</a>
 <span class="sourceLineNo">048</span><a id="line.48">        </a>
 <span class="sourceLineNo">049</span><a id="line.49">        private static final RealMatrix Ci =    // inverse of constraint matrix C</a>
 <span class="sourceLineNo">050</span><a id="line.50">                        MatrixUtils.createRealMatrix(new double[][] { </a>
@@ -162,7 +162,7 @@
 <span class="sourceLineNo">152</span><a id="line.152">                        qq = V.operate(MatrixUtils.inverse(S).operate(el));     // simpler since S is diagonal</a>
 <span class="sourceLineNo">153</span><a id="line.153">                }</a>
 <span class="sourceLineNo">154</span><a id="line.154"></a>
-<span class="sourceLineNo">155</span><a id="line.155">                RealMatrix M = getDecenteringMatrix(xr, yr);</a>
+<span class="sourceLineNo">155</span><a id="line.155">                RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);</a>
 <span class="sourceLineNo">156</span><a id="line.156">                return M.operate(qq).toArray();  // q = (A,B,C,D)</a>
 <span class="sourceLineNo">157</span><a id="line.157">        }</a>
 <span class="sourceLineNo">158</span><a id="line.158">        </a>

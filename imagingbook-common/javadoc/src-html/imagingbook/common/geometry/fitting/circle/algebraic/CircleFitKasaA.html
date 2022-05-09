@@ -48,7 +48,7 @@
 <span class="sourceLineNo">038</span><a id="line.38"> * @author WB</a>
 <span class="sourceLineNo">039</span><a id="line.39"> * </a>
 <span class="sourceLineNo">040</span><a id="line.40"> */</a>
-<span class="sourceLineNo">041</span><a id="line.41">public class CircleFitKasaA extends CircleFitAlgebraic {</a>
+<span class="sourceLineNo">041</span><a id="line.41">public class CircleFitKasaA implements CircleFitAlgebraic {</a>
 <span class="sourceLineNo">042</span><a id="line.42"></a>
 <span class="sourceLineNo">043</span><a id="line.43">        private final double[] q;       // q = (A,B,C,D) algebraic circle parameters</a>
 <span class="sourceLineNo">044</span><a id="line.44">        </a>
@@ -126,7 +126,7 @@
 <span class="sourceLineNo">116</span><a id="line.116">                double D = -qq[2];</a>
 <span class="sourceLineNo">117</span><a id="line.117">                </a>
 <span class="sourceLineNo">118</span><a id="line.118">                // re-adjust for data centering</a>
-<span class="sourceLineNo">119</span><a id="line.119">                RealMatrix M = getDecenteringMatrix(xr, yr);</a>
+<span class="sourceLineNo">119</span><a id="line.119">                RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);</a>
 <span class="sourceLineNo">120</span><a id="line.120">                return M.operate(new double[] {1, B, C, D});    // q = (A,B,C,D)</a>
 <span class="sourceLineNo">121</span><a id="line.121">        }</a>
 <span class="sourceLineNo">122</span><a id="line.122"></a>

@@ -51,7 +51,7 @@
 <span class="sourceLineNo">041</span><a id="line.41"> * @author WB</a>
 <span class="sourceLineNo">042</span><a id="line.42"> *</a>
 <span class="sourceLineNo">043</span><a id="line.43"> */</a>
-<span class="sourceLineNo">044</span><a id="line.44">public class CircleFitTaubin extends CircleFitAlgebraic {</a>
+<span class="sourceLineNo">044</span><a id="line.44">public class CircleFitTaubin implements CircleFitAlgebraic {</a>
 <span class="sourceLineNo">045</span><a id="line.45">        </a>
 <span class="sourceLineNo">046</span><a id="line.46">        private final double[] q;       // p = (A,B,C,D) circle parameters</a>
 <span class="sourceLineNo">047</span><a id="line.47">        </a>
@@ -124,7 +124,7 @@
 <span class="sourceLineNo">114</span><a id="line.114">                qq[3] = -a[0] * zmr / 2;</a>
 <span class="sourceLineNo">115</span><a id="line.115">                                </a>
 <span class="sourceLineNo">116</span><a id="line.116">                // re-adjust for data centering:</a>
-<span class="sourceLineNo">117</span><a id="line.117">                RealMatrix M = getDecenteringMatrix(xr, yr);</a>
+<span class="sourceLineNo">117</span><a id="line.117">                RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);</a>
 <span class="sourceLineNo">118</span><a id="line.118">                return M.operate(qq);           // q = (A,B,C,D)</a>
 <span class="sourceLineNo">119</span><a id="line.119">        }</a>
 <span class="sourceLineNo">120</span><a id="line.120">        </a>

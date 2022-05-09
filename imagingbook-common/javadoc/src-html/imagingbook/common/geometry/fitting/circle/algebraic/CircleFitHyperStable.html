@@ -57,7 +57,7 @@
 <span class="sourceLineNo">047</span><a id="line.47"> * @author WB</a>
 <span class="sourceLineNo">048</span><a id="line.48"> *</a>
 <span class="sourceLineNo">049</span><a id="line.49"> */</a>
-<span class="sourceLineNo">050</span><a id="line.50">public class CircleFitHyperStable extends CircleFitAlgebraic {</a>
+<span class="sourceLineNo">050</span><a id="line.50">public class CircleFitHyperStable implements CircleFitAlgebraic {</a>
 <span class="sourceLineNo">051</span><a id="line.51">        </a>
 <span class="sourceLineNo">052</span><a id="line.52">        private final double[] q;       // q = (A,B,C,D) circle parameters</a>
 <span class="sourceLineNo">053</span><a id="line.53">        </a>
@@ -165,7 +165,7 @@
 <span class="sourceLineNo">155</span><a id="line.155">                }</a>
 <span class="sourceLineNo">156</span><a id="line.156">                </a>
 <span class="sourceLineNo">157</span><a id="line.157">                // re-adjust circle parameters for data centering:</a>
-<span class="sourceLineNo">158</span><a id="line.158">                RealMatrix M = getDecenteringMatrix(xr, yr);</a>
+<span class="sourceLineNo">158</span><a id="line.158">                RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);</a>
 <span class="sourceLineNo">159</span><a id="line.159">                return M.operate(qq).toArray(); // q = (A, B, C, D)             </a>
 <span class="sourceLineNo">160</span><a id="line.160">        }</a>
 <span class="sourceLineNo">161</span><a id="line.161">        </a>
