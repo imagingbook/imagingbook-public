@@ -46,7 +46,7 @@ import imagingbook.common.geometry.basic.PntUtils;
  * @author WB
  *
  */
-public class CircleFitKasaC extends CircleFitAlgebraic {
+public class CircleFitKasaC implements CircleFitAlgebraic {
 
 	private final double[] q;	// q = (B,C,D) circle parameters, A=1
 	
@@ -113,7 +113,7 @@ public class CircleFitKasaC extends CircleFitAlgebraic {
 		else {
 			double[] qq = Xi.operate(z);	// solution vector qq = X^-1 * z = (B, C, D)	
 			// re-adjust for data centering
-			RealMatrix M = getDecenteringMatrix(xr, yr);		
+			RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);		
 			return M.operate(new double[] {1, qq[0], qq[1], qq[2]});	// q = (A,B,C,D)
 		}
 	}

@@ -47,7 +47,7 @@ import imagingbook.common.util.SortMap;
  * @author WB
  *
  */
-public class CircleFitHyperStable extends CircleFitAlgebraic {
+public class CircleFitHyperStable implements CircleFitAlgebraic {
 	
 	private final double[] q;	// q = (A,B,C,D) circle parameters
 	
@@ -155,7 +155,7 @@ public class CircleFitHyperStable extends CircleFitAlgebraic {
 		}
 		
 		// re-adjust circle parameters for data centering:
-		RealMatrix M = getDecenteringMatrix(xr, yr);
+		RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);
 		return M.operate(qq).toArray();	// q = (A, B, C, D)		
 	}
 	

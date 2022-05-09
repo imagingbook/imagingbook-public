@@ -46,7 +46,7 @@ import imagingbook.common.math.Matrix;
  * @author WB
  *
  */
-public class CircleFitKasaB extends CircleFitAlgebraic {
+public class CircleFitKasaB implements CircleFitAlgebraic {
 
 	private final double[] q;	// q = (B,C,D) circle parameters, A=1
 	
@@ -121,7 +121,7 @@ public class CircleFitKasaB extends CircleFitAlgebraic {
 		}
 		else {
 			// re-adjust for data centering
-			RealMatrix M = getDecenteringMatrix(xr, yr);
+			RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);
 			return M.operate(new double[] {1, qq[0], qq[1], qq[2]});	// q = (A,B,C,D)
 		}
 	}

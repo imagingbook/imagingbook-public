@@ -44,7 +44,7 @@ import imagingbook.common.util.SortMap;
  * @author WB
  *
  */
-public class CircleFitPratt extends CircleFitAlgebraic {
+public class CircleFitPratt implements CircleFitAlgebraic {
 	
 	private static final RealMatrix Ci =	// inverse of constraint matrix C
 			MatrixUtils.createRealMatrix(new double[][] { 
@@ -152,7 +152,7 @@ public class CircleFitPratt extends CircleFitAlgebraic {
 			qq = V.operate(MatrixUtils.inverse(S).operate(el));	// simpler since S is diagonal
 		}
 
-		RealMatrix M = getDecenteringMatrix(xr, yr);
+		RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);
 		return M.operate(qq).toArray();  // q = (A,B,C,D)
 	}
 	

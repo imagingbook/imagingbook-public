@@ -13,7 +13,12 @@ import java.util.List;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 
-public abstract class CircleFitGeometric {
+/**
+ * Common interface for geometric circle fits.
+ * @author WB
+ *
+ */
+public interface CircleFitGeometric {
 	
 	public enum FitType {
 		CoordinateBased,
@@ -25,7 +30,7 @@ public abstract class CircleFitGeometric {
 		case CoordinateBased: return new CircleFitGeometricCoord(points, initCircle);
 		case DistanceBased: return new CircleFitGeometricDist(points, initCircle);
 		}
-		throw new RuntimeException("unknown geometric fit type: " + type);
+		throw new IllegalArgumentException("unknown geometric fit type: " + type);
 	}
 	
 	public static boolean VERBOSE = false;
@@ -41,7 +46,7 @@ public abstract class CircleFitGeometric {
 	 * Returns the geometric circle produced by this fit.
 	 * @return a {@link GeometricCircle} instance
 	 */
-	public GeometricCircle getCircle() {
+	public default GeometricCircle getCircle() {
 		return new GeometricCircle(getParameters());
 	}
 

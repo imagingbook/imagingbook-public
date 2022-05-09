@@ -26,7 +26,7 @@ import imagingbook.common.math.Arithmetic;
  * @author WB
  *
  */
-public class CircleFit3Points extends CircleFitAlgebraic {
+public class CircleFit3Points implements CircleFitAlgebraic {
 	
 	private final double[] p;
 	

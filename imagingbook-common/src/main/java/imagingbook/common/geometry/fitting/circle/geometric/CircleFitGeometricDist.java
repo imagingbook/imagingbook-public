@@ -28,11 +28,8 @@ import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.SimpleVectorValueChecker;
 import org.apache.commons.math3.util.Pair;
 
-import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
-import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitPratt;
-import imagingbook.common.math.PrintPrecision;
 
 /**
  * "Distance-based" geometric circle fitter using a
@@ -41,7 +38,7 @@ import imagingbook.common.math.PrintPrecision;
  * @author WB
  *
  */
-public class CircleFitGeometricDist extends CircleFitGeometric {
+public class CircleFitGeometricDist implements CircleFitGeometric {
 	
 	private final Pnt2d[] pts;
 	private final double[] V;
@@ -134,48 +131,48 @@ public class CircleFitGeometricDist extends CircleFitGeometric {
     
     // -------------------------------------------------------------------
     
-    public static void main(String[] args) {
-    	PrintPrecision.set(9);
-    	//Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, 100, Angle0, Angle1, SigmaNoise);
-    	//Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, 4, Angle0, Angle1, 0.1);
-    	//Pnt2d[] points = CircleMaker.makeTestGander(30);
-    	//Pnt2d[] points = CircleSampler.make3Points(30);
-    	
-    	Pnt2d[] points = {
-				Pnt2d.from(15,9),
-				Pnt2d.from(68,33),
-				Pnt2d.from(35,69),
-				Pnt2d.from(17,51),
-				Pnt2d.from(90,54)
-		};
-    		
-//    	Circle2D real = new Circle2D(XC, YC, R);
-//    	IJ.log(" real: " + real.toString());
-    	
-//    	Pnt2d[] points = makeTestPoints();
-		
-		GeometricCircle estimA = new CircleFitPratt(points).getGeometricCircle();
-		IJ.log("estimA: " + estimA.toString());
-		IJ.log("estimA error = " + estimA.getMeanSquareError(points));
-		
-		//Circle2D init = new Circle2D(XC, YC, R);
-		//Circle2D init = estimA;
-		GeometricCircle init = disturbCircle(estimA, -1.5, 0.5, 10);
-		IJ.log(" init: " + init.toString());
-		IJ.log(" init error = " + init.getMeanSquareError(points));
-		
-		CircleFitGeometricDist geomfitter = new CircleFitGeometricDist(points, init);
-		GeometricCircle refined = geomfitter.getCircle();
-		
-		//Circle2D refined = Doube.levenMarqFull(points, init);
-		
-		IJ.log("refin: " + refined.toString());
-		IJ.log("iterations: " + geomfitter.getIterations());
-		
-		IJ.log("final error = " + refined.getMeanSquareError(points));
-    }
-
-    private static GeometricCircle disturbCircle (GeometricCircle circle, double dxc, double dyc, double dr) {
-		return new GeometricCircle(circle.getXc() + dxc, circle.getYc() + dyc, circle.getR() + dr);
-	}
+//    public static void main(String[] args) {
+//    	PrintPrecision.set(9);
+//    	//Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, 100, Angle0, Angle1, SigmaNoise);
+//    	//Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, 4, Angle0, Angle1, 0.1);
+//    	//Pnt2d[] points = CircleMaker.makeTestGander(30);
+//    	//Pnt2d[] points = CircleSampler.make3Points(30);
+//    	
+//    	Pnt2d[] points = {
+//				Pnt2d.from(15,9),
+//				Pnt2d.from(68,33),
+//				Pnt2d.from(35,69),
+//				Pnt2d.from(17,51),
+//				Pnt2d.from(90,54)
+//		};
+//    		
+////    	Circle2D real = new Circle2D(XC, YC, R);
+////    	IJ.log(" real: " + real.toString());
+//    	
+////    	Pnt2d[] points = makeTestPoints();
+//		
+//		GeometricCircle estimA = new CircleFitPratt(points).getGeometricCircle();
+//		IJ.log("estimA: " + estimA.toString());
+//		IJ.log("estimA error = " + estimA.getMeanSquareError(points));
+//		
+//		//Circle2D init = new Circle2D(XC, YC, R);
+//		//Circle2D init = estimA;
+//		GeometricCircle init = disturbCircle(estimA, -1.5, 0.5, 10);
+//		IJ.log(" init: " + init.toString());
+//		IJ.log(" init error = " + init.getMeanSquareError(points));
+//		
+//		CircleFitGeometricDist geomfitter = new CircleFitGeometricDist(points, init);
+//		GeometricCircle refined = geomfitter.getCircle();
+//		
+//		//Circle2D refined = Doube.levenMarqFull(points, init);
+//		
+//		IJ.log("refin: " + refined.toString());
+//		IJ.log("iterations: " + geomfitter.getIterations());
+//		
+//		IJ.log("final error = " + refined.getMeanSquareError(points));
+//    }
+//
+//    private static GeometricCircle disturbCircle (GeometricCircle circle, double dxc, double dyc, double dr) {
+//		return new GeometricCircle(circle.getXc() + dxc, circle.getYc() + dyc, circle.getR() + dr);
+//	}
 }

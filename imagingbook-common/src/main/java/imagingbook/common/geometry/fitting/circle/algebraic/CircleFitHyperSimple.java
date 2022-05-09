@@ -47,7 +47,7 @@ import imagingbook.common.util.SortMap;
  * @author WB
  *
  */
-public class CircleFitHyperSimple extends CircleFitAlgebraic {
+public class CircleFitHyperSimple implements CircleFitAlgebraic {
 
 	private final double[] q;	// q = (A,B,C,D) circle parameters
 
@@ -137,7 +137,7 @@ public class CircleFitHyperSimple extends CircleFitAlgebraic {
 		int l = new SortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue	(1st is negative)
 		RealVector qq = ed.getEigenvector(l);
 		
-		RealMatrix M = getDecenteringMatrix(xr, yr);
+		RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);
 		return M.operate(qq).toArray();	// q = (A, B, C, D)		
 	}
 

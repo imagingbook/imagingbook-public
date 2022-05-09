@@ -19,11 +19,11 @@ import imagingbook.common.geometry.circle.AlgebraicCircle;
 import imagingbook.common.geometry.circle.GeometricCircle;
 
 /**
- * Abstract super-class of all algebraic circle fits.
+ * Common interface for all algebraic circle fits.
  * @author WB
  *
  */
-public abstract class CircleFitAlgebraic {
+public interface CircleFitAlgebraic {
 	
 	public enum FitType {
 		KasaA,
@@ -45,7 +45,7 @@ public abstract class CircleFitAlgebraic {
 		case HyperSimple: 	return new CircleFitHyperSimple(points);
 		case HyperStable: 	return new CircleFitHyperStable(points);
 		}
-		return null;
+		throw new IllegalArgumentException("unknown algebraic fit type: " + type);
 	}
 	
 	/**
@@ -55,7 +55,7 @@ public abstract class CircleFitAlgebraic {
 	 * 
 	 * @return the algebraic circle parameters or {@code null}
 	 */
-	public abstract double[] getParameters();
+	public double[] getParameters();
 	
 	
 	/**
@@ -63,7 +63,7 @@ public abstract class CircleFitAlgebraic {
 	 * or {@code null} if the fit was unsuccessful.
 	 * @return a {@link AlgebraicCircle} instance or null
 	 */
-	public AlgebraicCircle getAlgebraicCircle() {
+	public default AlgebraicCircle getAlgebraicCircle() {
 		double[] p = getParameters();
 		return (p == null) ? null : new AlgebraicCircle(p);
 	}
@@ -73,7 +73,7 @@ public abstract class CircleFitAlgebraic {
 	 * or {@code null} if the fit was unsuccessful.
 	 * @return a {@link GeometricCircle} instance or null
 	 */
-	public GeometricCircle getGeometricCircle() {
+	public default GeometricCircle getGeometricCircle() {
 		double[] q = this.getParameters();	// assumed to be (A, B, C, D)
 		if (q == null || isZero(q[0])) {	// (abs(2 * A / s) < (1 / Rmax))
 			return null;					// return a straight line?
@@ -94,7 +94,7 @@ public abstract class CircleFitAlgebraic {
 	 * @param yr reference point (y)
 	 * @return the transformation matrix
 	 */
-	protected static RealMatrix getDecenteringMatrix(double xr, double yr) {
+	static RealMatrix getDecenteringMatrix(double xr, double yr) {
 		return MatrixUtils.createRealMatrix(new double[][]
 				{{ 1, 0, 0, 0 },
 				 {-2*xr, 1, 0, 0 },

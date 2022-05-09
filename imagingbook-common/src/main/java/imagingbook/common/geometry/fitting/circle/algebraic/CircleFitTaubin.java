@@ -41,7 +41,7 @@ import imagingbook.common.math.Matrix;
  * @author WB
  *
  */
-public class CircleFitTaubin extends CircleFitAlgebraic {
+public class CircleFitTaubin implements CircleFitAlgebraic {
 	
 	private final double[] q;	// p = (A,B,C,D) circle parameters
 	
@@ -114,7 +114,7 @@ public class CircleFitTaubin extends CircleFitAlgebraic {
 		qq[3] = -a[0] * zmr / 2;
 				
 		// re-adjust for data centering:
-		RealMatrix M = getDecenteringMatrix(xr, yr);
+		RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);
 		return M.operate(qq);		// q = (A,B,C,D)
 	}
 	

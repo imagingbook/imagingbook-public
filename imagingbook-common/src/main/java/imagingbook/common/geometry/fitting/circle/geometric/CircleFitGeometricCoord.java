@@ -32,9 +32,7 @@ import org.apache.commons.math3.util.Pair;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
-import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitPratt;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
 /**
  * "Coordinate-based" geometric circle fit using iterative minimization using
@@ -43,7 +41,7 @@ import imagingbook.common.math.PrintPrecision;
  * @author WB
  *
  */
-public class CircleFitGeometricCoord extends CircleFitGeometric {
+public class CircleFitGeometricCoord implements CircleFitGeometric {
 	
 	private final Pnt2d[] pts;
 	private final double[] V;
@@ -151,40 +149,40 @@ public class CircleFitGeometricCoord extends CircleFitGeometric {
     
     // -------------------------------------------------------------------
     
-    public static void main(String[] args) {
-    	PrintPrecision.set(3);
-    	CircleFitGeometric.RecordHistory = true;
-    	
-    	Pnt2d[] points = {
-				Pnt2d.from(15,9),
-				Pnt2d.from(68,33),
-				Pnt2d.from(35,69),
-				Pnt2d.from(17,51),
-				Pnt2d.from(90,54)
-		};
-    	
-		GeometricCircle estimA = new CircleFitPratt(points).getGeometricCircle();
-		System.out.println("estimA: " + estimA.toString());
-		System.out.println("estimA error = " + estimA.getMeanSquareError(points));
-		
-		GeometricCircle init = new GeometricCircle(45, 40, 30);		// Example (a)
-//		GeometricCircle init = new GeometricCircle(75, 75, 12);		// Example (b)
-		//GeometricCircle init = estimA;
-//		GeometricCircle init = estimA.disturb(0, 0, 0);
-		System.out.println(" init: " + init.toString());
-		System.out.println(" init error = " + init.getMeanSquareError(points));
-		
-		CircleFitGeometricCoord geomfitter = new CircleFitGeometricCoord(points, init);
-		GeometricCircle circleG = geomfitter.getCircle();
+//    public static void main(String[] args) {
+//    	PrintPrecision.set(3);
+////    	CircleFitGeometric.RecordHistory = true;
+//    	
+//    	Pnt2d[] points = {
+//				Pnt2d.from(15,9),
+//				Pnt2d.from(68,33),
+//				Pnt2d.from(35,69),
+//				Pnt2d.from(17,51),
+//				Pnt2d.from(90,54)
+//		};
+//    	
+//		GeometricCircle estimA = new CircleFitPratt(points).getGeometricCircle();
+//		System.out.println("estimA: " + estimA.toString());
+//		System.out.println("estimA error = " + estimA.getMeanSquareError(points));
 //		
-//		//Circle2D refined = Doube.levenMarqFull(points, init);
+//		GeometricCircle init = new GeometricCircle(45, 40, 30);		// Example (a)
+////		GeometricCircle init = new GeometricCircle(75, 75, 12);		// Example (b)
+//		//GeometricCircle init = estimA;
+////		GeometricCircle init = estimA.disturb(0, 0, 0);
+//		System.out.println(" init: " + init.toString());
+//		System.out.println(" init error = " + init.getMeanSquareError(points));
 //		
-		System.out.println("circleG: " + circleG.toString());
-		System.out.println("iterations: " + geomfitter.getIterations());
-		System.out.println("final error = " + circleG.getMeanSquareError(points));
-		for (double[] p : geomfitter.getHistory()) {
-			System.out.println(Matrix.toString(p));
-		}
-    }
+//		CircleFitGeometricCoord geomfitter = new CircleFitGeometricCoord(points, init);
+//		GeometricCircle circleG = geomfitter.getCircle();
+////		
+////		//Circle2D refined = Doube.levenMarqFull(points, init);
+////		
+//		System.out.println("circleG: " + circleG.toString());
+//		System.out.println("iterations: " + geomfitter.getIterations());
+//		System.out.println("final error = " + circleG.getMeanSquareError(points));
+//		for (double[] p : geomfitter.getHistory()) {
+//			System.out.println(Matrix.toString(p));
+//		}
+//    }
 
 }
