@@ -35,7 +35,7 @@ import imagingbook.common.math.Matrix;
  * <br>
  * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
  * Lines by Least Squares". Monographs on Statistics and Applied Probability.
- * Taylor & Francis (2011).
+ * Taylor &amp; Francis (2011).
  * </p>
  * 
  * @author WB
@@ -45,12 +45,26 @@ public class CircleFitTaubin extends CircleFitAlgebraic {
 	
 	private final double[] q;	// p = (A,B,C,D) circle parameters
 	
-	public CircleFitTaubin(Pnt2d[] pts) {
-		this(pts, null);
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point.
+	 * 
+	 * @param points sample points
+	 */
+	public CircleFitTaubin(Pnt2d[] points) {
+		this(points, null);
 	}
 	
-	public CircleFitTaubin(Pnt2d[] pts, Pnt2d xref) {
-		this.q = fit(pts, xref);
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point for data
+	 * centering if {@code null} is passed for {@code xref}.
+	 * 
+	 * @param points sample points
+	 * @param xref reference point or {@code null}
+	 */
+	public CircleFitTaubin(Pnt2d[] points, Pnt2d xref) {
+		this.q = fit(points, xref);
 	}
 	
 	private double[] fit(Pnt2d[] pts, Pnt2d xref) {

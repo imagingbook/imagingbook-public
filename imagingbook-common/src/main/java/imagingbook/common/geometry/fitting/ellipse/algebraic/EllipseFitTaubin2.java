@@ -20,7 +20,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.GeneralizedSymmetricEigenSolver;
-import imagingbook.common.util.SortingOrder;
+import imagingbook.common.util.SortMap;
 
 /**
  * Algebraic ellipse fit based on Taubin's method [1].

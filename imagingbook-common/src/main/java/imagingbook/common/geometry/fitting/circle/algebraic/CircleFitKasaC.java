@@ -38,7 +38,7 @@ import imagingbook.common.geometry.basic.PntUtils;
  * <br>
  * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
  * Lines by Least Squares". Monographs on Statistics and Applied Probability.
- * Taylor & Francis (2011).
+ * Taylor &amp; Francis (2011).
  * <br>
  * [3] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
  * </p>

@@ -19,7 +19,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.EigenvalueDecomposition;
-import imagingbook.common.util.SortingOrder;
+import imagingbook.common.util.SortMap;
 
 /**
  * This is an implementation of the algebraic circle fitting algorithm by Pratt [1],
@@ -36,7 +36,7 @@ import imagingbook.common.util.SortingOrder;
  * <br>
  * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
  * Lines by Least Squares". Monographs on Statistics and Applied Probability.
- * Taylor & Francis (2011).
+ * Taylor &amp; Francis (2011).
  * <br>
  * [3] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
  * </p>
@@ -141,7 +141,7 @@ public class CircleFitPratt extends CircleFitAlgebraic {
 			double[] evals = ed.getRealEigenvalues();
 			
 //			int l = getSmallestPositiveIdx(evals);
-			int l = new SortingOrder(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
+			int l = new SortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
 			
 			RealVector el = ed.getEigenvector(l);
 			

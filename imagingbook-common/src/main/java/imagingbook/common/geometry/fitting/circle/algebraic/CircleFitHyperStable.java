@@ -20,7 +20,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.EigenvalueDecomposition;
-import imagingbook.common.util.SortingOrder;
+import imagingbook.common.util.SortMap;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ import imagingbook.common.util.SortingOrder;
  * <br>
  * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
  * Lines by Least Squares". Monographs on Statistics and Applied Probability.
- * Taylor & Francis (2011).
+ * Taylor &amp; Francis (2011).
  * </p>
  * 
  * @author WB
@@ -51,12 +51,26 @@ public class CircleFitHyperStable extends CircleFitAlgebraic {
 	
 	private final double[] q;	// q = (A,B,C,D) circle parameters
 	
-	public CircleFitHyperStable(Pnt2d[] points, Pnt2d xref) {
-		this.q = fit(points, xref);
-	}
-	
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point.
+	 * 
+	 * @param points sample points
+	 */
 	public CircleFitHyperStable(Pnt2d[] points) {
 		this.q = fit(points, null);
+	}
+	
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point for data
+	 * centering if {@code null} is passed for {@code xref}.
+	 * 
+	 * @param points sample points
+	 * @param xref reference point or {@code null}
+	 */
+	public CircleFitHyperStable(Pnt2d[] points, Pnt2d xref) {
+		this.q = fit(points, xref);
 	}
 	
 	@Override
@@ -102,16 +116,16 @@ public class CircleFitHyperStable extends CircleFitAlgebraic {
 		double smin = svals[k];
 		double smax = svals[Matrix.idxMax(svals)];
 		double icond = smin / smax;			// inverse condition number of X	
-		RealVector p = null;				// solution vector (circle parameters)
+		RealVector qq = null;				// solution vector (circle parameters)
 
 		if (icond < 1e-12) { 				// singular case		
-			p = V.getColumnVector(k);		// take the vector for smallest singular value as the solution
+			qq = V.getColumnVector(k);		// take the vector for smallest singular value as the solution
 		} 
 		else {								// regular (non-singular) case
 			double xm = xs / n;
 			double ym = ys / n;			
 			double zm = zs / n;
-			// Eigenvalue calculation appears to be numerically very sensitive in Apache Commons Math implementation:
+			// data-dependent constraint matrix:
 //			RealMatrix C = MatrixUtils.createRealMatrix(new double[][]
 //				{{ 8 * zm, 4 * xm, 4 * ym, 2 },
 //				 { 4 * xm, 1,      0,      0 },
@@ -119,6 +133,7 @@ public class CircleFitHyperStable extends CircleFitAlgebraic {
 //				 { 2,      0,      0,      0 }});
 //			RealMatrix Ci = MatrixUtils.inverse(C);
 			
+			// define the inverse constraint matrix directly:
 			RealMatrix Ci = MatrixUtils.createRealMatrix(new double[][]
 					{{ 0,   0, 0, 0.5 }, 
 					 { 0,   1, 0, -2 * xm }, 
@@ -131,17 +146,17 @@ public class CircleFitHyperStable extends CircleFitAlgebraic {
 			EigenvalueDecomposition ed = new EigenvalueDecomposition(Z);
 			double[] evals = ed.getRealEigenvalues();
 			
-			int l = new SortingOrder(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
+			int l = new SortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
 			RealVector el = ed.getEigenvector(l);
 			
-			p = Matrix.solve(W, el);
-//			p = MatrixUtils.inverse(Y).operate(el);	// alternatively p = Y^-1 * el			// alternative 1
-//			p = V.multiply(MatrixUtils.inverse(S)).multiply(V.transpose()).operate(el);		// alternative 2 (S is diagonal!)
+			qq = Matrix.solve(W, el);
+//			qq = MatrixUtils.inverse(Y).operate(el);										// alt. 1 (qq = Y^-1 * el)
+//			qq = V.multiply(MatrixUtils.inverse(S)).multiply(V.transpose()).operate(el);	// alt. 2 (S is diagonal!)
 		}
 		
 		// re-adjust circle parameters for data centering:
 		RealMatrix M = getDecenteringMatrix(xr, yr);
-		return M.operate(p).toArray();	// q = (A, B, C, D)		
+		return M.operate(qq).toArray();	// q = (A, B, C, D)		
 	}
 	
 }
