@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"imagingbook.spectral"},{"l":"imagingbook.spectral.dct"},{"l":"imagingbook.spectral.dft"},{"l":"imagingbook.spectral.dft.obsolete"},{"l":"imagingbook.spectral.fd"}]

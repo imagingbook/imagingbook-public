@@ -8,14 +8,15 @@
  *******************************************************************************/
 package imagingbook.common.geometry.delaunay.guibas;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+
 /**
  * This class represents a 2D edge (line segment), specified
  * by its two end-points. Instances of this class are immutable.
  */
 public class Edge2D {
 
-	protected final Vector2D a;
-	protected final Vector2D b;
+	protected final Pnt2d a, b;
 
 	/**
 	 * Constructor of the 2D edge class used to create a new edge instance from two
@@ -24,30 +25,31 @@ public class Edge2D {
 	 * @param a first vertex of the edge
 	 * @param b second vertex of the edge
 	 */
-	protected Edge2D(Vector2D a, Vector2D b) {
+	protected Edge2D(Pnt2d a, Pnt2d b) {
 		this.a = a;
 		this.b = b;
 	}
 
-	private double getMinDistance(Vector2D point) {
-		return getClosestPoint(point).sub(point).mag();
+	private double getMinDistance(Pnt2d point) {
+		//return getClosestPoint(point).minus(point).mag();
+		return getClosestPoint(point).distance(point);
 	}
 
 	/**
-	 * Calculates the point ON this edge that is closest to the
+	 * Calculates the point on this edge that is closest to the
 	 * specified point.
-	 * @param point the point whose distance is to me calculated
+	 * @param point the point whose distance is to be calculated
 	 * @return the closest point on this edge
 	 */
-	private Vector2D getClosestPoint(Vector2D point) {
-		Vector2D ab = b.sub(a);
-		double t = point.sub(a).dot(ab) / ab.dot(ab); // TODO: check for zero denominator?
+	private Pnt2d getClosestPoint(Pnt2d point) {
+		Pnt2d ab = b.minus(a);
+		double t = point.minus(a).dot(ab) / ab.dot(ab); // TODO: check for zero denominator?
 		if (t < 0.0) {
 			t = 0.0;
 		} else if (t > 1.0) {
 			t = 1.0;
 		}
-		return a.add(ab.mult(t));
+		return a.plus(ab.mult(t));
 	}
 
 	/**
@@ -56,7 +58,7 @@ public class Edge2D {
 	 * @param point the point to calculate the distance for
 	 * @return a new {@link Edge2D.Distance} instance
 	 */
-	protected Distance distanceFromPoint(Vector2D point) {
+	protected Distance distanceFromPoint(Pnt2d point) {
 		return new Distance(point);
 	}
 
@@ -68,7 +70,7 @@ public class Edge2D {
 
 		private final double distance;
 
-		protected Distance(Vector2D point) {
+		protected Distance(Pnt2d point) {
 			this(Edge2D.this.getMinDistance(point));
 		}
 

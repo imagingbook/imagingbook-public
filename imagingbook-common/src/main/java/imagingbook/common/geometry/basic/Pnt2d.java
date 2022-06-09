@@ -42,24 +42,24 @@ import imagingbook.common.geometry.shape.ShapeProducer;
  * 
  */
 public interface Pnt2d extends ShapeProducer {
-	
+
 	/**
 	 * The default tolerance for matching coordinates (1E-6).
 	 */
 	public final static double TOLERANCE = 1E-6;
-	
+
 	/**
 	 * Returns the x-coordinate of this point.
 	 * @return the x-coordinate value
 	 */
 	double getX();
-	
+
 	/**
 	 * Returns the y-coordinate of this point.
 	 * @return the y-coordinate value
 	 */
 	double getY();
-	
+
 	/**
 	 * Returns the x-coordinate of this point as a 
 	 * (truncated) integer value.
@@ -68,7 +68,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default int getXint() {
 		return (int) this.getX();
 	}
-	
+
 	/**
 	 * Returns the y-coordinate of this point as a 
 	 * (truncated) integer value.
@@ -77,9 +77,9 @@ public interface Pnt2d extends ShapeProducer {
 	public default int getYint() {
 		return (int) this.getY();
 	}
-	
+
 	// ----------------------------------------------------------
-	
+
 	/**
 	 * Creates and returns a new point of type {@link Pnt2d.PntInt}
 	 * with the specified coordinates.
@@ -91,7 +91,7 @@ public interface Pnt2d extends ShapeProducer {
 	public static Pnt2d from(int x, int y) {
 		return PntInt.from(x, y);
 	}
-	
+
 	/**
 	 * Creates and returns a new point of type {@link Pnt2d.PntInt}
 	 * with the specified coordinates.
@@ -103,7 +103,7 @@ public interface Pnt2d extends ShapeProducer {
 	public static Pnt2d from(int[] xy) {
 		return PntInt.from(xy);
 	}
-	
+
 	/**
 	 * Creates and returns a new point of type {@link Pnt2d.PntDouble}
 	 * with the specified coordinates.
@@ -116,7 +116,7 @@ public interface Pnt2d extends ShapeProducer {
 	public static Pnt2d from(double x, double y) {
 		return PntDouble.from(x, y);
 	}
-	
+
 	/**
 	 * Creates and returns a new point of type {@link Pnt2d.PntDouble}
 	 * with the specified coordinates.
@@ -128,7 +128,7 @@ public interface Pnt2d extends ShapeProducer {
 	public static Pnt2d from(double[] xy) {
 		return PntDouble.from(xy[0], xy[1]);
 	}
-	
+
 	public static Pnt2d from(Point2D p) {
 		if (p instanceof Point) {
 			Point pi = (Point) p;
@@ -138,9 +138,9 @@ public interface Pnt2d extends ShapeProducer {
 			return PntDouble.from(p.getX(), p.getY());
 		}
 	}
-	
+
 	// ----------------------------------------------------------
-	
+
 	/**
 	 * Returns this point's coordinates as a new 2-element {@code double} array.
 	 * @return the array
@@ -148,7 +148,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default double[] toDoubleArray() {
 		return new double[] {this.getX(), this.getY()};
 	}
-	
+
 	/**
 	 * Returns this point's coordinates as a new AWT {@link Point2D.Double} point.
 	 * @return the new point
@@ -156,7 +156,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default Point2D.Double toAwtPoint2D() {
 		return new Point2D.Double(this.getX(), this.getY());
 	}
-	
+
 	/**
 	 * Returns this point's coordinates as a new {@link Vector2D} instance
 	 * (for interfacing with Apache Commons Math).
@@ -165,7 +165,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default Vector2D toVector2D() {
 		return new Vector2D(getX(), getY());
 	}
-	
+
 	/**
 	 * Returns this point's coordinates as a new {@link RealVector} instance
 	 * (for interfacing with Apache Commons Math).
@@ -174,7 +174,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default RealVector toRealVector() {
 		return MatrixUtils.createRealVector(this.toDoubleArray());
 	}
-	
+
 	/**
 	 * Returns a copy of this point which is of the same type as the original.
 	 * @return a new instance.
@@ -182,7 +182,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default Pnt2d duplicate() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * Returns a new point whose coordinates are the sum of this point and 
 	 * the given point. The concrete type of the returned object depends on the type
@@ -193,7 +193,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default Pnt2d plus(Pnt2d p) {
 		return this.plus(p.getX(), p.getY());
 	}
-	
+
 	/**
 	 * Returns a new point whose coordinates are the sum of this point and 
 	 * the specified {@code double} coordinates.
@@ -204,11 +204,10 @@ public interface Pnt2d extends ShapeProducer {
 	public default Pnt2d plus(double dx, double dy) {
 		return new PntDouble(this.getX() + dx, this.getY() + dy);
 	}
-	
+
 	/**
 	 * Returns a new point whose coordinates are the difference of this point and 
-	 * the given point. The concrete type of the returned object depends on the type
-	 * of the original points.
+	 * the given point.
 	 * @param p the point to be subtracted
 	 * @return a new point
 	 */
@@ -216,10 +215,60 @@ public interface Pnt2d extends ShapeProducer {
 		return this.minus(p.getX(), p.getY());
 	}
 	
+	/**
+	 * Returns a new point whose coordinates are multiplied by the
+	 * specified scalar value.
+	 * 
+	 * @param s some scalar value
+	 * @return a new point
+	 */
+	public default Pnt2d mult(double s) {
+		return new PntDouble(s * this.getX(), s * this.getY());
+	}
+
+	/**
+	 * Returns a new point whose coordinates are the difference of this point and 
+	 * the given point (specified as a coordinate pair). 
+	 * @param dx x-coordinate
+	 * @param dy y-coordinate
+	 * @return a new point
+	 */
 	public default Pnt2d minus(double dx, double dy) {
 		return new PntDouble(this.getX() - dx, this.getY() - dy);
 	}
-	
+
+	/**
+	 * Returns a point (vector) perpendicular to this point (vector).
+	 * @return a perpendicular vector
+	 */
+	public default Pnt2d perp() {
+		return new PntDouble(this.getY(), -this.getX());
+	}
+
+	/**
+	 * Calculates and returns the dot product of this point and another point
+	 * (both points are interpreted as 2D vectors) 
+	 * 
+	 * @param other the point (vector) to be multiplied by this vector
+	 * @return a new point (vector)
+	 */
+	public default double dot(Pnt2d other) {
+		return this.getX() * other.getX() + this.getY() * other.getY();
+	}
+
+	/**
+	 * Calculates and returns the 2D pseudo cross product of this point
+	 * and another point (both points are interpreted as 2D vectors).
+	 * The result of {@code a.cross(b)} is equivalent to {@code a.perp().dot(b)}.
+	 * 
+	 * @param other the point (vector) to be multiplied to the perpendicular vector of this vector
+	 * @return a new point (vector)
+	 */
+	public default double cross(Pnt2d other) {
+		return this.getY() * other.getX() - this.getX() * other.getY();
+	}
+
+
 	// ----------------------------------------------------------
 
 	/**
@@ -233,11 +282,11 @@ public interface Pnt2d extends ShapeProducer {
 	 */
 	public default boolean equals(Pnt2d p, double tolerance) {
 		return isZero(this.getX() - p.getX(), tolerance) 
-			&& isZero(this.getY() - p.getY(), tolerance);
+				&& isZero(this.getY() - p.getY(), tolerance);
 	}
-	
+
 	// ----------------------------------------------------------
-	
+
 	/**
 	 * Returns the squared L2 distance between this point and the
 	 * given point.
@@ -248,7 +297,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default double distanceSq(Pnt2d other) {
 		return sqr(this.getX() - other.getX()) + sqr(this.getY() - other.getY());
 	}
-	
+
 	/**
 	 * Returns the L2 (Euclidean) distance between this point and the
 	 * given point. This method is equivalent to {@link #distL2(Pnt2d)}.
@@ -259,8 +308,8 @@ public interface Pnt2d extends ShapeProducer {
 	public default double distance(Pnt2d other) {
 		return Math.sqrt(this.distanceSq(other));
 	}
-	
-	
+
+
 	/**
 	 * Implementation required by {@link Curve2d} interface.
 	 */
@@ -268,7 +317,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default double getDistance(Pnt2d other) {
 		return Math.sqrt(this.distanceSq(other));
 	}
-	
+
 	/**
 	 * Returns the L2 (Euclidean) distance between this point and the
 	 * given point. This method is equivalent to {@link #distance(Pnt2d)}.
@@ -279,7 +328,7 @@ public interface Pnt2d extends ShapeProducer {
 	public default double distL2(Pnt2d other) {
 		return distance(other);
 	}
-	
+
 	/**
 	 * Returns the L1 (Manhattan) distance between this point and the
 	 * given point. 
@@ -290,9 +339,9 @@ public interface Pnt2d extends ShapeProducer {
 	public default double distL1(Pnt2d other) {
 		return Math.abs(this.getX() - other.getX()) + Math.abs(this.getY() - other.getY());
 	}
-	
+
 	public static final double DefaultDotRadius = 1.0;
-	
+
 	/**
 	 * Returns a round dot ({@link Shape} instance) for drawing this point.
 	 * 
@@ -303,15 +352,15 @@ public interface Pnt2d extends ShapeProducer {
 	public default Shape getShape(double scale) {
 		double rad = scale * DefaultDotRadius;
 		Shape circ= new Arc2D.Double(
-			this.getX() - rad, 
-			this.getY() - rad, 
-			2 * rad, 2 * rad,
-			0, 360, Arc2D.CHORD);
+				this.getX() - rad, 
+				this.getY() - rad, 
+				2 * rad, 2 * rad,
+				0, 360, Arc2D.CHORD);
 		return circ;
 	}
-	
+
 	// ----------------------------------------------------------
-	
+
 	/**
 	 * Immutable 2D point implementation with {@code double} coordinates.
 	 * This class implements the {@link Pnt2d} interface.
@@ -326,7 +375,7 @@ public interface Pnt2d extends ShapeProducer {
 	 * publicly accessible (for better performance and less clutter).
 	 */
 	public class PntDouble implements Pnt2d {
-		
+
 		/**
 		 * Singleton point instance with zero coordinates.
 		 */
@@ -346,14 +395,14 @@ public interface Pnt2d extends ShapeProducer {
 			this.x = x;
 			this.y = y;
 		}
-		
+
 		@Override
 		public PntDouble duplicate() {
 			return new PntDouble(this.x, this.y);
 		}
-		
+
 		// static factory methods ---------------------------------
-		
+
 		/**
 		 * Returns a new {@link PntDouble} instance.
 		 * @param xy x/y-coordinate array
@@ -362,7 +411,7 @@ public interface Pnt2d extends ShapeProducer {
 		public static PntDouble from(double[] xy) {
 			return new PntDouble(xy[0], xy[1]);
 		}
-		
+
 		/**
 		 * Returns a new {@link PntDouble} instance.
 		 * @param x x-coordinate value
@@ -372,7 +421,7 @@ public interface Pnt2d extends ShapeProducer {
 		public static PntDouble from(double x, double y) {
 			return new PntDouble(x, y);
 		}
-		
+
 		/**
 		 * Returns a new {@link PntDouble} instance with the same coordinates as the given point.
 		 * Equivalent to {@link #duplicate()}.
@@ -382,7 +431,7 @@ public interface Pnt2d extends ShapeProducer {
 		public static PntDouble from(Pnt2d p) {
 			return new PntDouble(p.getX(), p.getY());
 		}
-		
+
 		/**
 		 * Returns a new {@link PntDouble} instance
 		 * with the same coordinates as the given AWT {@link Point2D}.
@@ -392,7 +441,7 @@ public interface Pnt2d extends ShapeProducer {
 		public static PntDouble from(Point2D p) {
 			return new PntDouble(p.getX(), p.getY());
 		}
-		
+
 		/**
 		 * Returns a new {@link PntDouble} instance
 		 * with the same coordinates as the given Apache Commons Math
@@ -403,9 +452,9 @@ public interface Pnt2d extends ShapeProducer {
 		public static PntDouble from(Vector2D vec) {
 			return new PntDouble(vec.getX(), vec.getY());
 		}	
-		
+
 		// getter methods
-		
+
 		@Override
 		public double getX() {
 			return this.x;
@@ -415,7 +464,7 @@ public interface Pnt2d extends ShapeProducer {
 		public double getY() {
 			return this.y;
 		}
-		
+
 		@Override
 		public int getXint() {
 			return (int) this.x;
@@ -425,24 +474,24 @@ public interface Pnt2d extends ShapeProducer {
 		public int getYint() {
 			return (int) this.y;
 		}
-		
-		
+
+
 		// addition -----------------------------------
-		
+
 		@Override
 		public PntDouble plus(double dx, double dy) {
 			return new PntDouble(this.x + dx, this.y + dy);
 		}
-		
+
 		// subtraction -----------------------------------
-		
+
 		@Override
 		public PntDouble minus(Pnt2d p) {
 			return new PntDouble(this.x - p.getX(), this.y - p.getY());
 		}
-		
+
 		// equality -----------------------------------
-		
+
 		@Override
 		public boolean equals(Object p) {
 			if (this == p) {
@@ -453,26 +502,26 @@ public interface Pnt2d extends ShapeProducer {
 			}
 			return false;
 		}
-		
+
 		// misc -----------------------------------
-		
+
 		@Override
 		public String toString() {
 			return String.format(Locale.US, "%s[%.3f, %.3f]", 
 					getClass().getSimpleName(), x, y);
 		}
-		
+
 		@Override
-	    public int hashCode() {	// taken from awt.Point2D.Double
-	        long bits = java.lang.Double.doubleToLongBits(this.x);
-	        bits ^= java.lang.Double.doubleToLongBits(this.y) * 31;
-	        return (((int) bits) ^ ((int) (bits >> 32)));
-	    }
+		public int hashCode() {	// taken from awt.Point2D.Double
+			long bits = java.lang.Double.doubleToLongBits(this.x);
+			bits ^= java.lang.Double.doubleToLongBits(this.y) * 31;
+			return (((int) bits) ^ ((int) (bits >> 32)));
+		}
 
 	}
-	
+
 	// ----------------------------------------------------------
-	
+
 	/**
 	 * Immutable 2D point implementation with {@code int} coordinates.
 	 * This class implements the {@link Pnt2d} interface.
@@ -487,18 +536,18 @@ public interface Pnt2d extends ShapeProducer {
 	 * return {@code double} values for compatibility reasons.
 	 */
 	public class PntInt implements Pnt2d {
-		
+
 		/**
 		 * Singleton point instance with zero coordinates.
 		 */
 		public static final PntInt ZERO = PntInt.from(0, 0);
-		
+
 		/** The (immutable) x-coordinate of this point */
 		public final int x;
 		/** The (immutable) y-coordinate of this point */
 		public final int y;
 
-		
+
 		/**
 		 * Constructor.
 		 * @param x x-coordinate
@@ -508,14 +557,14 @@ public interface Pnt2d extends ShapeProducer {
 			this.x = x;
 			this.y = y;
 		}
-		
+
 		@Override
 		public PntInt duplicate() {
 			return new PntInt(this.x, this.y);
 		}
-		
+
 		// static factory methods --------------------------------------
-		
+
 		/**
 		 * Returns a new {@link PntInt} instance from
 		 * a given point.
@@ -525,7 +574,7 @@ public interface Pnt2d extends ShapeProducer {
 		public static PntInt from(PntInt p) {
 			return new PntInt(p.x, p.y);
 		}
-		
+
 		/**
 		 * Returns a new {@link PntInt} instance.
 		 * @param x x-coordinate value
@@ -535,7 +584,7 @@ public interface Pnt2d extends ShapeProducer {
 		public static PntInt from(int x, int y) {
 			return new PntInt(x, y);
 		}
-		
+
 		/**
 		 * Returns a new {@link PntInt} instance.
 		 * @param xy x/y-coordinates
@@ -544,7 +593,7 @@ public interface Pnt2d extends ShapeProducer {
 		public static PntInt from(int[] xy) {
 			return new PntInt(xy[0], xy[1]);
 		}
-		
+
 		/**
 		 * Returns a new {@link PntInt} from a given {@link Pnt2d} instance.
 		 * This only works if the argument is of type {@link Pnt2d.PntInt},
@@ -559,10 +608,10 @@ public interface Pnt2d extends ShapeProducer {
 			}
 			else {
 				throw new IllegalArgumentException("cannot convert to " +
-							PntInt.class.getSimpleName());
+						PntInt.class.getSimpleName());
 			}
 		}
-		
+
 		/**
 		 * Returns a new {@link PntDouble} instance
 		 * with the same coordinates as the given AWT {@link Point}.
@@ -572,7 +621,7 @@ public interface Pnt2d extends ShapeProducer {
 		public static PntInt from(Point p) {
 			return new PntInt(p.x, p.y);
 		}
-		
+
 		// getter methods
 
 		@Override
@@ -584,7 +633,7 @@ public interface Pnt2d extends ShapeProducer {
 		public double getY() {
 			return this.y;
 		}
-		
+
 		@Override
 		public int getXint() {
 			return this.x;
@@ -594,17 +643,17 @@ public interface Pnt2d extends ShapeProducer {
 		public int getYint() {
 			return this.y;
 		}
-		
+
 		// addition -----------------------------------
-		
+
 		public PntInt plus(PntInt p) {
 			return this.plus(p.x, p.y);
 		}
-		
+
 		public PntInt plus(int dx, int dy) {
 			return new PntInt(this.x + dx, this.y + dy);
 		}
-		
+
 		@Override
 		public Pnt2d plus(Pnt2d p) {
 			if (p instanceof PntInt) {		 
@@ -614,17 +663,17 @@ public interface Pnt2d extends ShapeProducer {
 				return this.plus(p.getX(), p.getY());
 			}
 		}
-		
+
 		// subtraction -----------------------------------
-		
+
 		public PntInt minus(PntInt p) {
 			return this.minus(p.x, p.y);
 		}
-		
+
 		public PntInt minus(int dx, int dy) {
 			return new PntInt(this.x - dx, this.y - dy);
 		}
-		
+
 		@Override
 		public Pnt2d minus(Pnt2d p) {
 			if (p instanceof PntInt) {		 
@@ -634,9 +683,9 @@ public interface Pnt2d extends ShapeProducer {
 				return this.minus(p.getX(), p.getY());
 			}
 		}
-		
+
 		// distance -----------------------------------
-		
+
 		/**
 		 * Returns the L1 (Manhattan) distance between this point and the
 		 * given point. 
@@ -647,7 +696,7 @@ public interface Pnt2d extends ShapeProducer {
 		public int distL1(PntInt p) {
 			return Math.abs(this.x - p.x) + Math.abs(this.y - p.y);
 		}
-		
+
 		/**
 		 * Returns the squared L2 distance between this point and the
 		 * given point.
@@ -658,9 +707,9 @@ public interface Pnt2d extends ShapeProducer {
 		public int distanceSq(PntInt other) {
 			return sqr(this.x - other.x) + sqr(this.y - other.y);
 		}
-		
+
 		// equality -----------------------------------
-		
+
 		@Override
 		public boolean equals(Object p) {
 			if (this == p) {
@@ -675,28 +724,28 @@ public interface Pnt2d extends ShapeProducer {
 			}
 			return false;
 		}
-		
+
 		// misc -----------------------------------
-		
+
 		@Override
 		public String toString() {
 			return String.format(Locale.US, "%s[%d, %d]", 
 					getClass().getSimpleName(), x, y);
 		}
-		
-//		@Override
-//		public int hashCode() {
-//			return (17 + this.x) * 37 + this.y;	
-//		}
-		
+
+		//		@Override
+		//		public int hashCode() {
+		//			return (17 + this.x) * 37 + this.y;	
+		//		}
+
 		@Override
-	    public int hashCode() {
-	        long bits = java.lang.Double.doubleToLongBits(getX());
-	        bits ^= java.lang.Double.doubleToLongBits(getY()) * 31;
-	        return (((int) bits) ^ ((int) (bits >> 32)));
-	    }
-		
-		
+		public int hashCode() {
+			long bits = java.lang.Double.doubleToLongBits(getX());
+			bits ^= java.lang.Double.doubleToLongBits(getY()) * 31;
+			return (((int) bits) ^ ((int) (bits >> 32)));
+		}
+
+
 		/**
 		 * Returns this point's coordinates as a new 2-element {@code int} array.
 		 * @return the array
@@ -704,7 +753,7 @@ public interface Pnt2d extends ShapeProducer {
 		public int[] toIntArray() {
 			return new int[] {this.x, this.y};
 		}
-		
+
 		/**
 		 * Returns this point's coordinates as a new AWT {@link Point} point.
 		 * @return the new point
@@ -714,17 +763,36 @@ public interface Pnt2d extends ShapeProducer {
 		}
 
 
-		
+
 	}
-	
+
 	// -------------------------------------------------------------------------
-	
-//	public static void main(String[] args) {
-//		PntInt a = PntInt.from(10,  7);
-//		PntInt b = PntInt.from(3,  5);
-//		System.out.println(" a = " + a.getClass());
-//		System.out.println(" b = " + b.getClass());
-//		System.out.println("dist1 = " + a.distL1(b));
-//		System.out.println("dist2 = " + a.distL1(b));
-//	}
+
+	public static void main(String[] args) {
+		PntInt a = PntInt.from(10,  7);
+		PntInt b = PntInt.from(3,  5);
+		System.out.println("a = " + a);
+		System.out.println("b = " + b);
+
+		System.out.println("a.perp = " + a.perp());
+		System.out.println("b.perp = " + b.perp());
+
+		//		System.out.println(" a = " + a.getClass());
+		//		System.out.println(" b = " + b.getClass());
+		//		System.out.println("dist1 = " + a.distL1(b));
+		//		System.out.println("dist2 = " + a.distL1(b));
+
+		System.out.println("a . b = " + a.dot(b));
+		System.out.println("b . a = " + b.dot(a));
+
+		System.out.println("a . a.perp() = " + a.dot(a.perp()));
+		System.out.println("b . b.perp() = " + b.dot(b.perp()));
+
+		System.out.println("a x b = " + a.cross(b));
+		System.out.println("b x a = " + b.cross(a));
+		
+		System.out.println("a x b = " + a.perp().dot(b));
+		System.out.println("a x b = " + b.perp().dot(a));
+
+	}
 }

@@ -370,7 +370,6 @@ public class TriangulationChew extends AbstractSet<Triangle2D> implements Delaun
 		return this.stream().filter(t -> !connectsToSuperTriangle(t)).collect(Collectors.toList());
 	}
 	
-	@Override
 	public List<Pnt2d> getPoints() {
 		return Collections.unmodifiableList(points);
 	}
@@ -399,22 +398,20 @@ public class TriangulationChew extends AbstractSet<Triangle2D> implements Delaun
 //    	}
 //    }
 
-//    /**
-//     * Main program; used for testing. ------------------------------------
-//     */
-//    public static void main (String[] args) {
-//        Triangle2D tri =
-//            new Triangle2D(new Vector2D(-10,10), new Vector2D(10,10), new Vector2D(0,-10));
-//        System.out.println("Triangle created: " + tri);
-//        TriangulationChew dt = new TriangulationChew(tri);
-//        System.out.println("DelaunayTriangulation created: " + dt);
-//        dt.insert(new Vector2D(0,0));
-//        dt.insert(new Vector2D(1,0));
-//        dt.insert(new Vector2D(0,1));
-//        System.out.println("After adding 3 points, we have a " + dt);
-//        Triangle2D.moreInfo = true;
-//        System.out.println("Triangles: " + dt.triGraph.nodeSet());
-//    }
+    // Main program; used for testing. ------------------------------------
+	
+    public static void main (String[] args) {
+        Triangle2D tri = new Triangle2D(new Pnt(-10,10), new Pnt(10,10), new Pnt(0,-10));
+        System.out.println("Triangle created: " + tri);
+        TriangulationChew dt = new TriangulationChew(tri);
+        System.out.println("DelaunayTriangulation created: " + dt);
+        dt.insert(new Pnt(0,0));
+        dt.insert(new Pnt(1,0));
+        dt.insert(new Pnt(0,1));
+        System.out.println("After adding 3 points, we have a " + dt);
+        Triangle2D.moreInfo = true;
+        System.out.println("Triangles: " + dt.triGraph.nodeSet());
+    }
 
 
 }

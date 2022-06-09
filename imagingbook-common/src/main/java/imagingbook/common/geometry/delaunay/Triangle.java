@@ -8,13 +8,43 @@
  *******************************************************************************/
 package imagingbook.common.geometry.delaunay;
 
+import java.awt.Shape;
+import java.awt.geom.Path2D;
+
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.shape.ShapeProducer;
 
 /** 
  * Interface specifying the behavior of a 2D triangle.
  */
-public interface Triangle {
+public interface Triangle extends ShapeProducer {
 	
+	/**
+	 * Returns an array of points used by the triangulation in the order 
+	 * of their insertion.
+	 * 
+	 * @return an array of points
+	 */
 	Pnt2d[] getPoints();
+	
+	@Override
+	public default Shape getShape(double scale) {
+		Path2D path = new Path2D.Double();
+		Pnt2d[] pts = this.getPoints();
+		Pnt2d a = pts[0];
+		Pnt2d b = pts[1];
+		Pnt2d c = pts[2];
+		path.moveTo(a.getX(), a.getY());
+		path.lineTo(b.getX(), b.getY());
+		path.lineTo(c.getX(), c.getY());
+//		path.lineTo(a.getX(), a.getY());
+		path.closePath();
+		return path;
+	}
+	
+	public default double getDistance(Pnt2d p) {
+		throw new UnsupportedOperationException();	// TODO: check how to implement or decouple from ShapeProducer
+//		return Double.NaN;
+	}
 }
 

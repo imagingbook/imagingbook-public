@@ -20,9 +20,7 @@ import imagingbook.common.geometry.delaunay.Triangle;
  */
 public class Triangle2D implements Triangle {
 
-	protected final Vector2D a;
-	protected final Vector2D b;
-	protected final Vector2D c;
+	protected final Pnt2d a, b, c;
 	private final boolean isOrientedCCW;
 
 	/**
@@ -33,7 +31,7 @@ public class Triangle2D implements Triangle {
 	 * @param b The second vertex of the triangle
 	 * @param c The third vertex of the triangle
 	 */
-	public Triangle2D(Vector2D a, Vector2D b, Vector2D c) {
+	public Triangle2D(Pnt2d a, Pnt2d b, Pnt2d c) {
 		this.a = a;
 		this.b = b;
 		this.c = c;
@@ -41,7 +39,8 @@ public class Triangle2D implements Triangle {
 	}
 	
 	public Triangle2D(Pnt2d[] points) {
-		this(new Vector2D(points[0]), new Vector2D(points[1]), new Vector2D(points[2]));
+//		this(new Vector2D(points[0]), new Vector2D(points[1]), new Vector2D(points[2]));
+		this(points[0], points[1], points[2]);
 	}
 
 	/**
@@ -51,13 +50,13 @@ public class Triangle2D implements Triangle {
 	 * @param point the point to be checked
 	 * @return {@code true} iff the point lies inside this 2D triangle
 	 */
-	public boolean containsPoint(Vector2D point) {
-		double pab = point.sub(a).cross(b.sub(a));
-		double pbc = point.sub(b).cross(c.sub(b));
+	public boolean containsPoint(Pnt2d point) {
+		double pab = point.minus(a).cross(b.minus(a));
+		double pbc = point.minus(b).cross(c.minus(b));
 		if (!hasSameSign(pab, pbc)) {
 			return false;
 		}
-		double pca = point.sub(c).cross(a.sub(c));
+		double pca = point.minus(c).cross(a.minus(c));
 		if (!hasSameSign(pab, pca)) {
 			return false;
 		}
@@ -77,7 +76,7 @@ public class Triangle2D implements Triangle {
 	 * @return {@code true} iff the point lies inside the circumcircle through the
 	 *         three points a, b, and c of the triangle
 	 */
-	protected boolean isPointInCircumCircle(Vector2D point) {
+	protected boolean isPointInCircumCircle(Pnt2d point) {
 		final double a11 = a.getX() - point.getX();
 		final double a21 = b.getX() - point.getX();
 		final double a31 = c.getX() - point.getX();
@@ -145,9 +144,9 @@ public class Triangle2D implements Triangle {
 	 * @param edge the edge (which must be contained in this triangle)
 	 * @return the triangle vertex opposite to the specified edge
 	 */
-	public Vector2D getOppositeVertex(Edge2D edge) {
-		final Vector2D p1 = edge.a;
-		final Vector2D p2 = edge.b;
+	public Pnt2d getOppositeVertex(Edge2D edge) {
+		final Pnt2d p1 = edge.a;
+		final Pnt2d p2 = edge.b;
 		if ((a == p1 && b == p2) || (a == p2 && b == p1)) {
 			return c;
 		}
@@ -166,7 +165,7 @@ public class Triangle2D implements Triangle {
 	 * @param vertex the vertex to be checked
 	 * @return {@code true} if the vertex is one of the corners of this triangle
 	 */
-	public boolean hasVertex(Vector2D vertex) {
+	public boolean hasVertex(Pnt2d vertex) {
 		return (a == vertex || b == vertex || c == vertex);
 	}
 
@@ -178,7 +177,7 @@ public class Triangle2D implements Triangle {
 	 * @param point the point to be checked
 	 * @return the edge of this triangle that is closest to the specified point
 	 */
-	public Edge2D.Distance findMinEdgeDistance(Vector2D point) {
+	public Edge2D.Distance findMinEdgeDistance(Pnt2d point) {
 		Edge2D.Distance[] distances = {
 				new Edge2D(a, b).distanceFromPoint(point),
 				new Edge2D(b, c).distanceFromPoint(point),

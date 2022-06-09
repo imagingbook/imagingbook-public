@@ -160,9 +160,10 @@ public class ColoredStroke implements Cloneable {
 	/**
 	 * Returns a AWT {@link BasicStroke} instance for the current
 	 * state of this stroke (with no color information).
+	 * 
 	 * @return a AWT {@link BasicStroke}
 	 */
-	public BasicStroke getBasicStroke() {
+	public BasicStroke getBasicStroke() {	// TODO: invoke once or only when parameters change?
 		return new BasicStroke(lineWidth, endCap, lineJoin, 
 			miterLimit, dashArray, dashPhase);
 	}

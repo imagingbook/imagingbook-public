@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"imagingbook.pdf","l":"CoreFontMapper"},{"p":"imagingbook.pdf","l":"PdfExporter.Parameters"},{"p":"imagingbook.pdf","l":"PdfExporter"},{"p":"imagingbook.pdf","l":"Type1CoreFont"},{"p":"imagingbook.pdf","l":"Type1FontPdfDemo"},{"p":"imagingbook.pdf","l":"Utils"}]

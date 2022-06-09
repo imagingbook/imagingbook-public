@@ -1,7 +1,15 @@
+/*******************************************************************************
+ * This software is provided as a supplement to the authors' textbooks on digital
+ * image processing published by Springer-Verlag in various languages and editions.
+ * Permission to use and distribute this software is granted under the BSD 2-Clause 
+ * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). 
+ * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
+ * All rights reserved. Visit http://www.imagingbook.com for additional details.
+ *******************************************************************************/
+
 package imagingbook.common.geometry.delaunay.guibas;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -12,74 +20,67 @@ import imagingbook.common.geometry.delaunay.DelaunayTriangulation;
 import imagingbook.common.geometry.delaunay.Triangle;
 import imagingbook.common.geometry.delaunay.Utils;
 
-
-/*******************************************************************************
- * This software is provided as a supplement to the authors' textbooks on digital
- * image processing published by Springer-Verlag in various languages and editions.
- * Permission to use and distribute this software is granted under the BSD 2-Clause 
- * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). 
- * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
- * All rights reserved. Visit http://www.imagingbook.com for additional details.
- *******************************************************************************/
+/**
+ * This is an implementation of the triangulation algorithm described in
+ * <blockquote>
+ * L. J. Guibas, D. E. Knuth, and M. Sharir" "Randomized incremental construction of Delaunay and Voronoi diagrams", 
+ * Algorithmica, 7, pp. 381--413 (1992).
+ * </blockquote>
+ * 
+ * @author WB
+ *
+ */
 public class TriangulationGuibas implements DelaunayTriangulation {
 
-	private final List<Vector2D> points;
+	private final List<Pnt2d> points;
 	private final List<Triangle2D> triangles;
 	private final Triangle2D outerTriangle;
 
 	/**
 	 * Constructor. 
-	 * @param pointSet the point set to be triangulated
+	 * @param points the point set to be triangulated
 	 * @param shuffle set {@code true} to randomly shuffle the input points
 	 */
-	public TriangulationGuibas(List<? extends Pnt2d> pointSet, boolean shuffle) {
-		if (pointSet == null || pointSet.size() < 3) {
+	public TriangulationGuibas(Collection<? extends Pnt2d> points, boolean shuffle) {
+		if (points == null || points.size() < 3) {
 			throw new IllegalArgumentException("Point set must contain at least 3 points.");
 		}
-		this.points = makePointset(pointSet, shuffle);
+		this.points = new ArrayList<Pnt2d>(points);
+		if (shuffle) {
+			Collections.shuffle(this.points);
+		}
+		this.outerTriangle = new Triangle2D(Utils.makeOuterTriangle(points));
 		this.triangles = new ArrayList<>();
-		this.outerTriangle = new Triangle2D(Utils.makeOuterTriangle(pointSet));
 		triangulate();
 	}
 	
 	/**
-	 * The simplest constructor. The supplied points will be inserted
+	 * Convenience constructor. The supplied points will be inserted
 	 * in their original order (without shuffling).
-	 * @param pointSet the point set to be triangulated
+	 * @param points the point set to be triangulated
 	 */
-	public TriangulationGuibas(List<? extends Pnt2d> pointSet) {
-		this(pointSet, false);
+	public TriangulationGuibas(Collection<? extends Pnt2d> points) {
+		this(points, false);
 	}
 	
 	// -----------------------------------------------------------------------------
 	
-	/** 
-	 * Converts the incoming points (of unknown type but implementing the {@link Pnt2d} interface)
-	 * to instances of the local implementation ({@link Vector2D}).
-	 * 
-	 * @param inPoints the input points (must implement {@link Pnt2d})
-	 * @param shuffle if {@code true}, the input point sequence is randomly permuted
-	 * @return the new point sequence
-	 */
-	private List<Vector2D> makePointset(Collection<? extends Pnt2d> inPoints, boolean shuffle) {
-		Vector2D[] outPoints = new Vector2D[inPoints.size()];
-		int i = 0;
-		for (Pnt2d ip : inPoints) {
-			outPoints[i] = new Vector2D(ip);
-			i++;
-		}
-		List<Vector2D> outList = Arrays.asList(outPoints);
-		if (shuffle) {
-			Collections.shuffle(outList);	// random permutation of pointset (in-place)
-		}
-		return outList;
+	@Override
+	public List<Pnt2d> getPoints() {
+		return points;
 	}
+	
+	@Override
+	public List<Triangle> getTriangles() {
+		return Collections.unmodifiableList(triangles);
+	}
+	
+	// -----------------------------------------------------------------------------
 
 	private void triangulate() {
 		triangles.add(outerTriangle);
 		
-		for (Vector2D pnt : points) {
-
+		for (Pnt2d pnt : points) {
 			Triangle2D triangle = this.findContainingTriangle(pnt);
 
 			if (triangle == null) {	// pnt is outside of any triangle
@@ -94,8 +95,8 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 				Triangle2D tr1 = this.findOneTriangleSharing(edge);
 				Triangle2D tr2 = this.findNeighbour(tr1, edge);
 
-				Vector2D noneEdgeVertex1 = tr1.getOppositeVertex(edge);
-				Vector2D noneEdgeVertex2 = tr2.getOppositeVertex(edge);
+				Pnt2d noneEdgeVertex1 = tr1.getOppositeVertex(edge);
+				Pnt2d noneEdgeVertex2 = tr2.getOppositeVertex(edge);
 
 				triangles.remove(tr1);
 				triangles.remove(tr2);
@@ -117,9 +118,9 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 				legalizeEdge(triangle4, new Edge2D(edge.b, noneEdgeVertex2), pnt);
 			} 
 			else { // pnt is inside the triangle <a,b,c>.
-				Vector2D a = triangle.a;
-				Vector2D b = triangle.b;
-				Vector2D c = triangle.c;
+				Pnt2d a = triangle.a;
+				Pnt2d b = triangle.b;
+				Pnt2d c = triangle.c;
 
 				triangles.remove(triangle);
 
@@ -150,7 +151,7 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	 * @param edge      the edge to be legalized
 	 * @param newVertex the new vertex
 	 */
-	private void legalizeEdge(Triangle2D triangle, Edge2D edge, Vector2D newVertex) {
+	private void legalizeEdge(Triangle2D triangle, Edge2D edge, Pnt2d newVertex) {
 		Triangle2D neighbourTriangle = this.findNeighbour(triangle, edge);
 		// If the triangle has a neighbor, then legalize the edge
 		if (neighbourTriangle != null) {
@@ -158,7 +159,7 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 				triangles.remove(triangle);
 				triangles.remove(neighbourTriangle);
 
-				Vector2D noneEdgeVertex = neighbourTriangle.getOppositeVertex(edge);
+				Pnt2d noneEdgeVertex = neighbourTriangle.getOppositeVertex(edge);
 
 				Triangle2D triangle1 = new Triangle2D(noneEdgeVertex, edge.a, newVertex);
 				Triangle2D triangle2 = new Triangle2D(noneEdgeVertex, edge.b, newVertex);
@@ -171,32 +172,6 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 			}
 		}
 	}
-
-	/**
-	 * Returns the point set in form of a vector of 2D vectors.
-	 * 
-	 * @return Returns the points set.
-	 */
-	public List<Vector2D> getPointSet() {
-		return points;
-	}
-
-	/**
-	 * Returns the triangles of the triangulation in form of a vector of 2D
-	 * triangles. The initial 'superTriangle' is removed.
-	 * The resulting triangles should form a convex structure.
-	 * 
-	 * @return the triangles of this triangulation.
-	 */
-	@Override
-	public List<Triangle> getTriangles() {
-		return Collections.unmodifiableList(triangles);
-	}
-
-	@Override
-	public List<Pnt2d> getPoints() {
-		return Collections.unmodifiableList(points);
-	}
 	
 	// triangle-related methods ---------------------------
 
@@ -206,7 +181,7 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	 * @param point the query point
 	 * @return the containing triangle or {@code null} if none was found
 	 */
-	public Triangle2D findContainingTriangle(Vector2D point) {
+	public Triangle2D findContainingTriangle(Pnt2d point) {
 		for (Triangle2D triangle : triangles) {
 			if (triangle.containsPoint(point)) {
 				return triangle;
@@ -256,7 +231,7 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	 * @param point the query point
 	 * @return the triangle edge nearest to the specified point
 	 */
-	private Edge2D findNearestEdge(Vector2D point) {
+	private Edge2D findNearestEdge(Pnt2d point) {
 		Edge2D minEdge = null;
 		double minDist = Double.POSITIVE_INFINITY;
 		for (Triangle2D tri : triangles) {
@@ -274,7 +249,7 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	 * Removes all triangles that contain the specified corner point.
 	 * @param point the corner point
 	 */
-	public void removeTrianglesUsing(Vector2D point) {
+	public void removeTrianglesUsing(Pnt2d point) {
 		List<Triangle2D> trianglesToBeRemoved = new LinkedList<>();
 		for (Triangle2D triangle : triangles) {
 			if (triangle.hasVertex(point)) {
@@ -283,5 +258,26 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 		}
 		triangles.removeAll(trianglesToBeRemoved);
 	}
-
+	
+	
+	// --------------------------------------------------------------------------------------
+	
+	public static void main (String[] args) {
+		List<Pnt2d> points = new ArrayList<>();
+		points.add(Pnt2d.from(-10,10));
+		points.add(Pnt2d.from(10,10));
+		points.add(Pnt2d.from(0,-10));
+		
+		points.add(Pnt2d.from(0,0));
+		points.add(Pnt2d.from(1,0));
+		points.add(Pnt2d.from(0,1));
+		
+		TriangulationGuibas triangulation = new TriangulationGuibas(points, false);
+		
+		List<Triangle> triangles = triangulation.getTriangles();
+		System.out.println("triangles: " + triangles.size());
+		
+		System.out.println("containing triangle: " + triangulation.findContainingTriangle(Pnt2d.from(2, 0.5)));
+		System.out.println("containing triangle: " + triangulation.findContainingTriangle(Pnt2d.from(100, 0)));
+	}
 }

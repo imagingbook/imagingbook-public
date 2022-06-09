@@ -50,7 +50,7 @@
 <span class="sourceLineNo">040</span><a id="line.40"> * By default, shapes added to {@link ShapeOverlayAdapter} are automatically translated</a>
 <span class="sourceLineNo">041</span><a id="line.41"> * by 0.5 units in x/y direction, such that integer coordinates are shifted to pixel</a>
 <span class="sourceLineNo">042</span><a id="line.42"> * centers. This can be deactivated by using constructor </a>
-<span class="sourceLineNo">043</span><a id="line.43"> * {@link #ShapeOverlayAdapter(Overlay, boolean)}.</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * {@link #ShapeOverlayAdapter(Overlay, boolean, boolean)}.</a>
 <span class="sourceLineNo">044</span><a id="line.44"> * &lt;/p&gt;</a>
 <span class="sourceLineNo">045</span><a id="line.45"> * &lt;p&gt;</a>
 <span class="sourceLineNo">046</span><a id="line.46"> * &lt;strong&gt;Usage example 1 (adding shapes using stroke/color state):&lt;/strong&gt;</a>
@@ -100,7 +100,7 @@
 <span class="sourceLineNo">090</span><a id="line.90"> * </a>
 <span class="sourceLineNo">091</span><a id="line.91"> * </a>
 <span class="sourceLineNo">092</span><a id="line.92"> * @author WB</a>
-<span class="sourceLineNo">093</span><a id="line.93"> * @version 2022/03/30</a>
+<span class="sourceLineNo">093</span><a id="line.93"> * @version 2022/06/09</a>
 <span class="sourceLineNo">094</span><a id="line.94"> * </a>
 <span class="sourceLineNo">095</span><a id="line.95"> * @see ColoredStroke</a>
 <span class="sourceLineNo">096</span><a id="line.96"> * @see Shape</a>
@@ -112,115 +112,114 @@
 <span class="sourceLineNo">102</span><a id="line.102">        public static float DefaultStrokeWidth = 0.5f;</a>
 <span class="sourceLineNo">103</span><a id="line.103">        public static Font DefaultFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);</a>
 <span class="sourceLineNo">104</span><a id="line.104">        </a>
-<span class="sourceLineNo">105</span><a id="line.105">        private final AffineTransform PixelOffsetTransform; // AWT transformation!</a>
+<span class="sourceLineNo">105</span><a id="line.105">        private static final AffineTransform PixelOffsetTransform = new AffineTransform(1, 0, 0, 1, 0.5, 0.5); // AWT transformation!</a>
 <span class="sourceLineNo">106</span><a id="line.106">        </a>
-<span class="sourceLineNo">107</span><a id="line.107">        private final Overlay overlay;</a>
-<span class="sourceLineNo">108</span><a id="line.108">        private ColoredStroke stroke;</a>
-<span class="sourceLineNo">109</span><a id="line.109">        private Color textColor = DefaultTextColor;</a>
-<span class="sourceLineNo">110</span><a id="line.110">        private Font font = DefaultFont;</a>
-<span class="sourceLineNo">111</span><a id="line.111">        </a>
-<span class="sourceLineNo">112</span><a id="line.112">        private boolean pixelOffset = true;</a>
-<span class="sourceLineNo">113</span><a id="line.113">        </a>
-<span class="sourceLineNo">114</span><a id="line.114">        // ----------------------------------------------------------</a>
-<span class="sourceLineNo">115</span><a id="line.115">        </a>
-<span class="sourceLineNo">116</span><a id="line.116">        public ShapeOverlayAdapter(Overlay oly, boolean halfPixelOffset) {</a>
-<span class="sourceLineNo">117</span><a id="line.117">                this.overlay = oly;</a>
-<span class="sourceLineNo">118</span><a id="line.118">                this.stroke = makeDefaultStroke();</a>
-<span class="sourceLineNo">119</span><a id="line.119">                this.PixelOffsetTransform = (halfPixelOffset) ?</a>
-<span class="sourceLineNo">120</span><a id="line.120">                                new AffineTransform(1, 0, 0, 1, 0.5, 0.5) :</a>
-<span class="sourceLineNo">121</span><a id="line.121">                                new AffineTransform();</a>
-<span class="sourceLineNo">122</span><a id="line.122">        }</a>
-<span class="sourceLineNo">123</span><a id="line.123">        </a>
-<span class="sourceLineNo">124</span><a id="line.124">        public ShapeOverlayAdapter(Overlay oly) {</a>
-<span class="sourceLineNo">125</span><a id="line.125">                this(oly, true);</a>
-<span class="sourceLineNo">126</span><a id="line.126">        }</a>
-<span class="sourceLineNo">127</span><a id="line.127">        </a>
-<span class="sourceLineNo">128</span><a id="line.128">        public ShapeOverlayAdapter() {</a>
-<span class="sourceLineNo">129</span><a id="line.129">                this(new Overlay());</a>
-<span class="sourceLineNo">130</span><a id="line.130">        }</a>
-<span class="sourceLineNo">131</span><a id="line.131">        </a>
-<span class="sourceLineNo">132</span><a id="line.132">        // ----------------------------------------------------------</a>
+<span class="sourceLineNo">107</span><a id="line.107">        private final boolean antiAlias;</a>
+<span class="sourceLineNo">108</span><a id="line.108">        private final boolean halfPixelOffset;</a>
+<span class="sourceLineNo">109</span><a id="line.109">        private final Overlay overlay;</a>
+<span class="sourceLineNo">110</span><a id="line.110">        </a>
+<span class="sourceLineNo">111</span><a id="line.111">        private ColoredStroke stroke;</a>
+<span class="sourceLineNo">112</span><a id="line.112">        private Color textColor = DefaultTextColor;</a>
+<span class="sourceLineNo">113</span><a id="line.113">        private Font font = DefaultFont;</a>
+<span class="sourceLineNo">114</span><a id="line.114">        </a>
+<span class="sourceLineNo">115</span><a id="line.115"></a>
+<span class="sourceLineNo">116</span><a id="line.116">        </a>
+<span class="sourceLineNo">117</span><a id="line.117">        // ----------------------------------------------------------</a>
+<span class="sourceLineNo">118</span><a id="line.118">        </a>
+<span class="sourceLineNo">119</span><a id="line.119">        public ShapeOverlayAdapter(Overlay oly, boolean halfPixelOffset, boolean antiAlias) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">                this.overlay = oly;</a>
+<span class="sourceLineNo">121</span><a id="line.121">                this.halfPixelOffset = halfPixelOffset;</a>
+<span class="sourceLineNo">122</span><a id="line.122">                this.antiAlias = antiAlias;</a>
+<span class="sourceLineNo">123</span><a id="line.123">                this.stroke = makeDefaultStroke();</a>
+<span class="sourceLineNo">124</span><a id="line.124">        }</a>
+<span class="sourceLineNo">125</span><a id="line.125">        </a>
+<span class="sourceLineNo">126</span><a id="line.126">        public ShapeOverlayAdapter(Overlay oly) {</a>
+<span class="sourceLineNo">127</span><a id="line.127">                this(oly, true, true);</a>
+<span class="sourceLineNo">128</span><a id="line.128">        }</a>
+<span class="sourceLineNo">129</span><a id="line.129">        </a>
+<span class="sourceLineNo">130</span><a id="line.130">        public ShapeOverlayAdapter() {</a>
+<span class="sourceLineNo">131</span><a id="line.131">                this(new Overlay());</a>
+<span class="sourceLineNo">132</span><a id="line.132">        }</a>
 <span class="sourceLineNo">133</span><a id="line.133">        </a>
-<span class="sourceLineNo">134</span><a id="line.134">        public ColoredStroke getStroke() {</a>
-<span class="sourceLineNo">135</span><a id="line.135">                return stroke;</a>
-<span class="sourceLineNo">136</span><a id="line.136">        }</a>
-<span class="sourceLineNo">137</span><a id="line.137">        </a>
-<span class="sourceLineNo">138</span><a id="line.138">        public void setStroke(ColoredStroke stroke) {</a>
-<span class="sourceLineNo">139</span><a id="line.139">                this.stroke = stroke;</a>
-<span class="sourceLineNo">140</span><a id="line.140">        }</a>
-<span class="sourceLineNo">141</span><a id="line.141">        </a>
-<span class="sourceLineNo">142</span><a id="line.142">        public void setTextColor(Color color) {</a>
-<span class="sourceLineNo">143</span><a id="line.143">                this.textColor = color;</a>
-<span class="sourceLineNo">144</span><a id="line.144">        }</a>
-<span class="sourceLineNo">145</span><a id="line.145">        </a>
-<span class="sourceLineNo">146</span><a id="line.146">        public void setFont(Font font) {</a>
-<span class="sourceLineNo">147</span><a id="line.147">                this.font = font;</a>
-<span class="sourceLineNo">148</span><a id="line.148">        }</a>
-<span class="sourceLineNo">149</span><a id="line.149">        </a>
-<span class="sourceLineNo">150</span><a id="line.150">        public void setPixelOffset(boolean pixelOffset) {</a>
-<span class="sourceLineNo">151</span><a id="line.151">                this.pixelOffset = pixelOffset;</a>
-<span class="sourceLineNo">152</span><a id="line.152">        }</a>
-<span class="sourceLineNo">153</span><a id="line.153">        </a>
-<span class="sourceLineNo">154</span><a id="line.154">        public Overlay getOverlay() {</a>
-<span class="sourceLineNo">155</span><a id="line.155">                return this.overlay;</a>
-<span class="sourceLineNo">156</span><a id="line.156">        }</a>
+<span class="sourceLineNo">134</span><a id="line.134">        // ----------------------------------------------------------</a>
+<span class="sourceLineNo">135</span><a id="line.135">        </a>
+<span class="sourceLineNo">136</span><a id="line.136">        public ColoredStroke getStroke() {</a>
+<span class="sourceLineNo">137</span><a id="line.137">                return stroke;</a>
+<span class="sourceLineNo">138</span><a id="line.138">        }</a>
+<span class="sourceLineNo">139</span><a id="line.139">        </a>
+<span class="sourceLineNo">140</span><a id="line.140">        public void setStroke(ColoredStroke stroke) {</a>
+<span class="sourceLineNo">141</span><a id="line.141">                this.stroke = stroke;</a>
+<span class="sourceLineNo">142</span><a id="line.142">        }</a>
+<span class="sourceLineNo">143</span><a id="line.143">        </a>
+<span class="sourceLineNo">144</span><a id="line.144">        public void setTextColor(Color color) {</a>
+<span class="sourceLineNo">145</span><a id="line.145">                this.textColor = color;</a>
+<span class="sourceLineNo">146</span><a id="line.146">        }</a>
+<span class="sourceLineNo">147</span><a id="line.147">        </a>
+<span class="sourceLineNo">148</span><a id="line.148">        public void setFont(Font font) {</a>
+<span class="sourceLineNo">149</span><a id="line.149">                this.font = font;</a>
+<span class="sourceLineNo">150</span><a id="line.150">        }</a>
+<span class="sourceLineNo">151</span><a id="line.151">        </a>
+<span class="sourceLineNo">152</span><a id="line.152">        public Overlay getOverlay() {</a>
+<span class="sourceLineNo">153</span><a id="line.153">                return this.overlay;</a>
+<span class="sourceLineNo">154</span><a id="line.154">        }</a>
+<span class="sourceLineNo">155</span><a id="line.155">        </a>
+<span class="sourceLineNo">156</span><a id="line.156">        // ----------------------------------------------------------</a>
 <span class="sourceLineNo">157</span><a id="line.157">        </a>
-<span class="sourceLineNo">158</span><a id="line.158">        // ----------------------------------------------------------</a>
-<span class="sourceLineNo">159</span><a id="line.159">        </a>
-<span class="sourceLineNo">160</span><a id="line.160">        protected ShapeRoi shapeToRoi(Shape s, ColoredStroke stroke) {</a>
-<span class="sourceLineNo">161</span><a id="line.161">                s = (pixelOffset) ? PixelOffsetTransform.createTransformedShape(s) : s;</a>
-<span class="sourceLineNo">162</span><a id="line.162">                ShapeRoi roi = new ShapeRoi(s);</a>
-<span class="sourceLineNo">163</span><a id="line.163">                BasicStroke bs = stroke.getBasicStroke();</a>
-<span class="sourceLineNo">164</span><a id="line.164">                roi.setStrokeWidth(bs.getLineWidth());</a>
-<span class="sourceLineNo">165</span><a id="line.165">                roi.setStrokeColor(stroke.getStrokeColor());</a>
-<span class="sourceLineNo">166</span><a id="line.166">                roi.setFillColor(stroke.getFillColor());</a>
-<span class="sourceLineNo">167</span><a id="line.167">                roi.setStroke(bs);</a>
-<span class="sourceLineNo">168</span><a id="line.168">                return roi;</a>
-<span class="sourceLineNo">169</span><a id="line.169">        }</a>
-<span class="sourceLineNo">170</span><a id="line.170">        </a>
-<span class="sourceLineNo">171</span><a id="line.171">        public void addShape(Shape s) {</a>
-<span class="sourceLineNo">172</span><a id="line.172">                overlay.add(shapeToRoi(s, this.stroke));</a>
-<span class="sourceLineNo">173</span><a id="line.173">        }</a>
-<span class="sourceLineNo">174</span><a id="line.174">        </a>
-<span class="sourceLineNo">175</span><a id="line.175">        public void addShapes(Shape[] shapes) {</a>
-<span class="sourceLineNo">176</span><a id="line.176">                for (Shape s : shapes) {</a>
-<span class="sourceLineNo">177</span><a id="line.177">                        overlay.add(shapeToRoi(s, this.stroke));</a>
-<span class="sourceLineNo">178</span><a id="line.178">                }</a>
-<span class="sourceLineNo">179</span><a id="line.179">        }</a>
-<span class="sourceLineNo">180</span><a id="line.180">        </a>
-<span class="sourceLineNo">181</span><a id="line.181">        public void addShape(Shape s, ColoredStroke stroke) {</a>
-<span class="sourceLineNo">182</span><a id="line.182">                overlay.add(shapeToRoi(s, stroke));</a>
-<span class="sourceLineNo">183</span><a id="line.183">        }</a>
-<span class="sourceLineNo">184</span><a id="line.184">        </a>
-<span class="sourceLineNo">185</span><a id="line.185">        public void addShapes(Shape[] shapes, ColoredStroke stroke) {</a>
-<span class="sourceLineNo">186</span><a id="line.186">                for (Shape s : shapes) {</a>
-<span class="sourceLineNo">187</span><a id="line.187">                        overlay.add(shapeToRoi(s, stroke));</a>
-<span class="sourceLineNo">188</span><a id="line.188">                }</a>
-<span class="sourceLineNo">189</span><a id="line.189">        }</a>
-<span class="sourceLineNo">190</span><a id="line.190">        </a>
-<span class="sourceLineNo">191</span><a id="line.191">        // TODO: check font/color settings</a>
-<span class="sourceLineNo">192</span><a id="line.192">        public void addText(double x, double y, String text) {</a>
-<span class="sourceLineNo">193</span><a id="line.193">                TextRoi troi = new TextRoi(x, y, text, this.font);</a>
-<span class="sourceLineNo">194</span><a id="line.194">                troi.setStrokeColor(this.textColor);</a>
-<span class="sourceLineNo">195</span><a id="line.195">                overlay.add(troi);</a>
-<span class="sourceLineNo">196</span><a id="line.196">        }</a>
-<span class="sourceLineNo">197</span><a id="line.197">        </a>
-<span class="sourceLineNo">198</span><a id="line.198">        public void addText(double x, double y, String text, Font font, Color textColor) {</a>
-<span class="sourceLineNo">199</span><a id="line.199">                TextRoi troi = new TextRoi(x, y, text, font);</a>
-<span class="sourceLineNo">200</span><a id="line.200">                troi.setStrokeColor(textColor);</a>
-<span class="sourceLineNo">201</span><a id="line.201">                overlay.add(troi);</a>
-<span class="sourceLineNo">202</span><a id="line.202">        }</a>
-<span class="sourceLineNo">203</span><a id="line.203"></a>
-<span class="sourceLineNo">204</span><a id="line.204">        // ----------------------------------------------------------</a>
-<span class="sourceLineNo">205</span><a id="line.205">        </a>
-<span class="sourceLineNo">206</span><a id="line.206">        private static ColoredStroke makeDefaultStroke() {</a>
-<span class="sourceLineNo">207</span><a id="line.207">                ColoredStroke stroke = new ColoredStroke();</a>
-<span class="sourceLineNo">208</span><a id="line.208">                stroke.setLineWidth(DefaultStrokeWidth);</a>
-<span class="sourceLineNo">209</span><a id="line.209">                stroke.setStrokeColor(DefaultTextColor);</a>
-<span class="sourceLineNo">210</span><a id="line.210">                return stroke;</a>
-<span class="sourceLineNo">211</span><a id="line.211">        }</a>
-<span class="sourceLineNo">212</span><a id="line.212"></a>
-<span class="sourceLineNo">213</span><a id="line.213">}</a>
+<span class="sourceLineNo">158</span><a id="line.158">        protected ShapeRoi shapeToRoi(Shape s, ColoredStroke stroke) {</a>
+<span class="sourceLineNo">159</span><a id="line.159">                s = (halfPixelOffset) ? PixelOffsetTransform.createTransformedShape(s) : s;</a>
+<span class="sourceLineNo">160</span><a id="line.160">                ShapeRoi roi = new ShapeRoi(s);</a>
+<span class="sourceLineNo">161</span><a id="line.161">                BasicStroke bs = stroke.getBasicStroke();</a>
+<span class="sourceLineNo">162</span><a id="line.162">                roi.setStrokeWidth(bs.getLineWidth());</a>
+<span class="sourceLineNo">163</span><a id="line.163">                roi.setStrokeColor(stroke.getStrokeColor());</a>
+<span class="sourceLineNo">164</span><a id="line.164">                roi.setFillColor(stroke.getFillColor());</a>
+<span class="sourceLineNo">165</span><a id="line.165">                roi.setStroke(bs);</a>
+<span class="sourceLineNo">166</span><a id="line.166">                roi.setAntiAlias(antiAlias);</a>
+<span class="sourceLineNo">167</span><a id="line.167">                return roi;</a>
+<span class="sourceLineNo">168</span><a id="line.168">        }</a>
+<span class="sourceLineNo">169</span><a id="line.169">        </a>
+<span class="sourceLineNo">170</span><a id="line.170">        public void addShape(Shape s) {</a>
+<span class="sourceLineNo">171</span><a id="line.171">                overlay.add(shapeToRoi(s, this.stroke));</a>
+<span class="sourceLineNo">172</span><a id="line.172">        }</a>
+<span class="sourceLineNo">173</span><a id="line.173">        </a>
+<span class="sourceLineNo">174</span><a id="line.174">        public void addShapes(Shape[] shapes) {</a>
+<span class="sourceLineNo">175</span><a id="line.175">                for (Shape s : shapes) {</a>
+<span class="sourceLineNo">176</span><a id="line.176">                        overlay.add(shapeToRoi(s, this.stroke));</a>
+<span class="sourceLineNo">177</span><a id="line.177">                }</a>
+<span class="sourceLineNo">178</span><a id="line.178">        }</a>
+<span class="sourceLineNo">179</span><a id="line.179">        </a>
+<span class="sourceLineNo">180</span><a id="line.180">        public void addShape(Shape s, ColoredStroke stroke) {</a>
+<span class="sourceLineNo">181</span><a id="line.181">                overlay.add(shapeToRoi(s, stroke));</a>
+<span class="sourceLineNo">182</span><a id="line.182">        }</a>
+<span class="sourceLineNo">183</span><a id="line.183">        </a>
+<span class="sourceLineNo">184</span><a id="line.184">        public void addShapes(Shape[] shapes, ColoredStroke stroke) {</a>
+<span class="sourceLineNo">185</span><a id="line.185">                for (Shape s : shapes) {</a>
+<span class="sourceLineNo">186</span><a id="line.186">                        overlay.add(shapeToRoi(s, stroke));</a>
+<span class="sourceLineNo">187</span><a id="line.187">                }</a>
+<span class="sourceLineNo">188</span><a id="line.188">        }</a>
+<span class="sourceLineNo">189</span><a id="line.189">        </a>
+<span class="sourceLineNo">190</span><a id="line.190">        // TODO: check font/color settings</a>
+<span class="sourceLineNo">191</span><a id="line.191">        public void addText(double x, double y, String text) {</a>
+<span class="sourceLineNo">192</span><a id="line.192">                TextRoi troi = new TextRoi(x, y, text, this.font);</a>
+<span class="sourceLineNo">193</span><a id="line.193">                troi.setStrokeColor(this.textColor);</a>
+<span class="sourceLineNo">194</span><a id="line.194">                overlay.add(troi);</a>
+<span class="sourceLineNo">195</span><a id="line.195">        }</a>
+<span class="sourceLineNo">196</span><a id="line.196">        </a>
+<span class="sourceLineNo">197</span><a id="line.197">        public void addText(double x, double y, String text, Font font, Color textColor) {</a>
+<span class="sourceLineNo">198</span><a id="line.198">                TextRoi troi = new TextRoi(x, y, text, font);</a>
+<span class="sourceLineNo">199</span><a id="line.199">                troi.setStrokeColor(textColor);</a>
+<span class="sourceLineNo">200</span><a id="line.200">                overlay.add(troi);</a>
+<span class="sourceLineNo">201</span><a id="line.201">        }</a>
+<span class="sourceLineNo">202</span><a id="line.202"></a>
+<span class="sourceLineNo">203</span><a id="line.203">        // ----------------------------------------------------------</a>
+<span class="sourceLineNo">204</span><a id="line.204">        </a>
+<span class="sourceLineNo">205</span><a id="line.205">        private static ColoredStroke makeDefaultStroke() {</a>
+<span class="sourceLineNo">206</span><a id="line.206">                ColoredStroke stroke = new ColoredStroke();</a>
+<span class="sourceLineNo">207</span><a id="line.207">                stroke.setLineWidth(DefaultStrokeWidth);</a>
+<span class="sourceLineNo">208</span><a id="line.208">                stroke.setStrokeColor(DefaultTextColor);</a>
+<span class="sourceLineNo">209</span><a id="line.209">                return stroke;</a>
+<span class="sourceLineNo">210</span><a id="line.210">        }</a>
+<span class="sourceLineNo">211</span><a id="line.211"></a>
+<span class="sourceLineNo">212</span><a id="line.212">}</a>
 
 
 

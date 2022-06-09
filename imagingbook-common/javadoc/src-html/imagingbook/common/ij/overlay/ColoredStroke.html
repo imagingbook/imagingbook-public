@@ -170,14 +170,15 @@
 <span class="sourceLineNo">160</span><a id="line.160">        /**</a>
 <span class="sourceLineNo">161</span><a id="line.161">         * Returns a AWT {@link BasicStroke} instance for the current</a>
 <span class="sourceLineNo">162</span><a id="line.162">         * state of this stroke (with no color information).</a>
-<span class="sourceLineNo">163</span><a id="line.163">         * @return a AWT {@link BasicStroke}</a>
-<span class="sourceLineNo">164</span><a id="line.164">         */</a>
-<span class="sourceLineNo">165</span><a id="line.165">        public BasicStroke getBasicStroke() {</a>
-<span class="sourceLineNo">166</span><a id="line.166">                return new BasicStroke(lineWidth, endCap, lineJoin, </a>
-<span class="sourceLineNo">167</span><a id="line.167">                        miterLimit, dashArray, dashPhase);</a>
-<span class="sourceLineNo">168</span><a id="line.168">        }</a>
-<span class="sourceLineNo">169</span><a id="line.169"></a>
-<span class="sourceLineNo">170</span><a id="line.170">}</a>
+<span class="sourceLineNo">163</span><a id="line.163">         * </a>
+<span class="sourceLineNo">164</span><a id="line.164">         * @return a AWT {@link BasicStroke}</a>
+<span class="sourceLineNo">165</span><a id="line.165">         */</a>
+<span class="sourceLineNo">166</span><a id="line.166">        public BasicStroke getBasicStroke() {   // TODO: invoke once or only when parameters change?</a>
+<span class="sourceLineNo">167</span><a id="line.167">                return new BasicStroke(lineWidth, endCap, lineJoin, </a>
+<span class="sourceLineNo">168</span><a id="line.168">                        miterLimit, dashArray, dashPhase);</a>
+<span class="sourceLineNo">169</span><a id="line.169">        }</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">}</a>
 
 
 

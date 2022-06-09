@@ -40,7 +40,7 @@ import ij.gui.TextRoi;
  * By default, shapes added to {@link ShapeOverlayAdapter} are automatically translated
  * by 0.5 units in x/y direction, such that integer coordinates are shifted to pixel
  * centers. This can be deactivated by using constructor 
- * {@link #ShapeOverlayAdapter(Overlay, boolean)}.
+ * {@link #ShapeOverlayAdapter(Overlay, boolean, boolean)}.
  * </p>
  * <p>
  * <strong>Usage example 1 (adding shapes using stroke/color state):</strong>
@@ -90,7 +90,7 @@ import ij.gui.TextRoi;
  * 
  * 
  * @author WB
- * @version 2022/03/30
+ * @version 2022/06/09
  * 
  * @see ColoredStroke
  * @see Shape
@@ -102,27 +102,29 @@ public class ShapeOverlayAdapter {
 	public static float DefaultStrokeWidth = 0.5f;
 	public static Font DefaultFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
 	
-	private final AffineTransform PixelOffsetTransform; // AWT transformation!
+	private static final AffineTransform PixelOffsetTransform = new AffineTransform(1, 0, 0, 1, 0.5, 0.5); // AWT transformation!
 	
+	private final boolean antiAlias;
+	private final boolean halfPixelOffset;
 	private final Overlay overlay;
+	
 	private ColoredStroke stroke;
 	private Color textColor = DefaultTextColor;
 	private Font font = DefaultFont;
 	
-	private boolean pixelOffset = true;
+
 	
 	// ----------------------------------------------------------
 	
-	public ShapeOverlayAdapter(Overlay oly, boolean halfPixelOffset) {
+	public ShapeOverlayAdapter(Overlay oly, boolean halfPixelOffset, boolean antiAlias) {
 		this.overlay = oly;
+		this.halfPixelOffset = halfPixelOffset;
+		this.antiAlias = antiAlias;
 		this.stroke = makeDefaultStroke();
-		this.PixelOffsetTransform = (halfPixelOffset) ?
-				new AffineTransform(1, 0, 0, 1, 0.5, 0.5) :
-				new AffineTransform();
 	}
 	
 	public ShapeOverlayAdapter(Overlay oly) {
-		this(oly, true);
+		this(oly, true, true);
 	}
 	
 	public ShapeOverlayAdapter() {
@@ -147,10 +149,6 @@ public class ShapeOverlayAdapter {
 		this.font = font;
 	}
 	
-	public void setPixelOffset(boolean pixelOffset) {
-		this.pixelOffset = pixelOffset;
-	}
-	
 	public Overlay getOverlay() {
 		return this.overlay;
 	}
@@ -158,13 +156,14 @@ public class ShapeOverlayAdapter {
 	// ----------------------------------------------------------
 	
 	protected ShapeRoi shapeToRoi(Shape s, ColoredStroke stroke) {
-		s = (pixelOffset) ? PixelOffsetTransform.createTransformedShape(s) : s;
+		s = (halfPixelOffset) ? PixelOffsetTransform.createTransformedShape(s) : s;
 		ShapeRoi roi = new ShapeRoi(s);
 		BasicStroke bs = stroke.getBasicStroke();
 		roi.setStrokeWidth(bs.getLineWidth());
 		roi.setStrokeColor(stroke.getStrokeColor());
 		roi.setFillColor(stroke.getFillColor());
 		roi.setStroke(bs);
+		roi.setAntiAlias(antiAlias);
 		return roi;
 	}
 	
