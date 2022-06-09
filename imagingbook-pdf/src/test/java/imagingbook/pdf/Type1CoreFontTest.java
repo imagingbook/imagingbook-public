@@ -12,8 +12,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import imagingbook.pdf.Type1CoreFont;
-
 public class Type1CoreFontTest {
 
 	@Test
