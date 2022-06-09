@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.pdf;
+package imagingbook.pdf;
 
 import java.awt.Graphics2D;
 import java.awt.color.ColorSpace;
@@ -30,7 +30,6 @@ import ij.gui.Overlay;
 import ij.gui.Roi;
 import imagingbook.common.util.ParameterBundle;
 import imagingbook.core.Info;
-
 
 /**
  * Exports an {@link ImagePlus} instance, including its vector overly

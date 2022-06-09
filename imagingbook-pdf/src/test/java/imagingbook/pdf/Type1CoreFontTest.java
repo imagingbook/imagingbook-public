@@ -6,17 +6,22 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.pdf;
+package imagingbook.pdf;
 
-public abstract class Utils {
-	
-	public static boolean verifyPdfLib() {
-		try {
-			if (Class.forName("com.lowagie.text.Document") != null) {
-				return true;
-			}
-		} catch (ClassNotFoundException e) { }
-		return false;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+
+import imagingbook.pdf.Type1CoreFont;
+
+public class Type1CoreFontTest {
+
+	@Test
+	public void test1() {
+		for (Type1CoreFont fnt : Type1CoreFont.values()) {
+			assertNotNull("could not find URL for resource " + fnt, fnt.getURL());
+			assertNotNull("could not create font for resource " + fnt, fnt.getBaseFont());
+		}
 	}
 
 }

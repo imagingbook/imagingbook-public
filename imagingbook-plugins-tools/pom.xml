@@ -35,14 +35,20 @@
 			<artifactId>ij</artifactId>
 		</dependency>
 		
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.github.librepdf</groupId>
 			<artifactId>openpdf</artifactId>
-		</dependency>
+		</dependency>-->
 		
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-common</artifactId>
+			<version>4.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-pdf</artifactId>
 			<version>4.0.1-SNAPSHOT</version>
 		</dependency>
 		

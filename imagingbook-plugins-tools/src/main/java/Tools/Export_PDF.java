@@ -18,10 +18,10 @@ import ij.gui.GenericDialog;
 import ij.io.LogStream;
 import ij.io.SaveDialog;
 import ij.plugin.PlugIn;
-import imagingbook.common.pdf.PdfExporter;
-import imagingbook.common.pdf.PdfExporter.Parameters;
-import imagingbook.common.pdf.Utils;
 import imagingbook.core.FileUtils;
+import imagingbook.pdf.PdfExporter;
+import imagingbook.pdf.Utils;
+import imagingbook.pdf.PdfExporter.Parameters;
 
 
 /**

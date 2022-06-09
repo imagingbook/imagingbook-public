@@ -8,6 +8,8 @@
 	<version>4.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
+	<name>${project.groupId}:${project.artifactId}</name>
+	
 	<!-- This POM is only for defining Maven sub-modules to allow single-click bilds. It is not used as a parent POM. -->
 
 	<modules>
@@ -16,12 +18,12 @@
 		<module>imagingbook-core</module>
 		<module>imagingbook-common</module>
 		<module>imagingbook-spectral</module>
+		<module>imagingbook-pdf</module>
 		<module>imagingbook-plugins-book</module>
 		<module>imagingbook-plugins-demos</module>
 		<module>imagingbook-plugins-extras</module>
 		<module>imagingbook-plugins-tools</module>
 		<module>imagingbook-sample-images</module>
-		<module>imagingbook-pdf</module>
 	</modules>
 	
 	<build>

@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.pdf;
+package imagingbook.pdf;
 
 import java.io.IOException;
 
@@ -89,13 +89,12 @@ public enum Type1CoreFont implements NamedResource {
 	public static void main(String[] args) {
 		System.out.println("Anchor is in JAR: " + Type1CoreFont.Courier.isInsideJar());
 		for (Type1CoreFont sf : Type1CoreFont.values()) {
-//			System.out.println(sf.getRelativePath());
-//			System.out.println(sf.getURL());
-//			System.out.println(sf.getURI());
-//			System.out.println(sf.getStream());
-//			System.out.println(sf.getFontPath());
-//			System.out.println(sf.getBaseFont());
 			System.out.println(sf.toString() + ": " + sf.getBaseFont().getPostscriptFontName());
+			System.out.println("   " + sf.getRelativePath());
+			System.out.println("   " + sf.getStream());
+			System.out.println("   " + sf.getFontPath());
+			System.out.println("   " + sf.getBaseFont());
+			
 		}
 	}
 
