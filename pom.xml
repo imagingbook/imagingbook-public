@@ -15,6 +15,7 @@
 		<module>imagingbook-plugins-pom</module>
 		<module>imagingbook-core</module>
 		<module>imagingbook-common</module>
+		<module>imagingbook-spectral</module>
 		<module>imagingbook-plugins-book</module>
 		<module>imagingbook-plugins-demos</module>
 		<module>imagingbook-plugins-extras</module>

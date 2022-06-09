@@ -1,9 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
-	<artifactId>imagingbook-common</artifactId>
+
+	<artifactId>imagingbook-spectral</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-parent-pom</artifactId>
@@ -14,49 +14,24 @@
 	
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>
-		Common library packages.
+		Library packages for spectral computations.
 		This code is part of the imagingbook software suite accompanying the
 		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
 	</description>
 	<inceptionYear>2006</inceptionYear>
 	<url>http://www.imagingbook.com</url>
 	
-	<properties>
-	</properties>
-
 	<dependencies>
-            
-		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>ij</artifactId>
-		</dependency>
-		
+	
 		<dependency>
 			<groupId>com.imagingbook</groupId>
-			<artifactId>imagingbook-core</artifactId>
+			<artifactId>imagingbook-common</artifactId>
 			<version>4.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>com.imagingbook</groupId>
-			<artifactId>imagingbook-sample-images</artifactId>
-			<version>4.0.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-math3</artifactId>
-		</dependency>
-		
-		<!-- <dependency>
 		    <groupId>com.github.wendykierp</groupId>
 		    <artifactId>JTransforms</artifactId>
-		</dependency> -->
-
-		<dependency>
-			<groupId>com.github.librepdf</groupId>
-			<artifactId>openpdf</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -64,6 +39,7 @@
       		<artifactId>junit</artifactId>
       		<scope>test</scope>
     	</dependency>
-    	
+		
 	</dependencies>
+
 </project>
