@@ -33,10 +33,10 @@ import imagingbook.common.math.Complex;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
-import imagingbook.common.spectral.fd.Colors;
-import imagingbook.common.spectral.fd.FourierDescriptor;
-import imagingbook.common.spectral.fd.FourierDescriptorUniform;
-import imagingbook.common.spectral.fd.PolygonSampler;
+import imagingbook.spectral.fd.Colors;
+import imagingbook.spectral.fd.FourierDescriptor;
+import imagingbook.spectral.fd.FourierDescriptorUniform;
+import imagingbook.spectral.fd.PolygonSampler;
 
 /**
  * @version 2020/04/01

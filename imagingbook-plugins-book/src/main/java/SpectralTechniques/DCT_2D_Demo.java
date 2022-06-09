@@ -14,7 +14,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.spectral.dct.Dct2d;
+import imagingbook.spectral.dct.Dct2d;
 
 /** 
  * Calculates and displays the 2-dimensional DCT after converting the input image to a float image.

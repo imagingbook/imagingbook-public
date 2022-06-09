@@ -14,7 +14,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.spectral.dft.Dft2d;
+import imagingbook.spectral.dft.Dft2d;
 
 /** 
  * This ImageJ plugin computes the 2-dimensional (power-spectrum) DFT on an image

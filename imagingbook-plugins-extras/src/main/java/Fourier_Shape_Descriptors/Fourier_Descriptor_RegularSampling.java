@@ -22,8 +22,8 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Complex;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
-import imagingbook.common.spectral.fd.FourierDescriptor;
-import imagingbook.common.spectral.fd.FourierDescriptorUniform;
+import imagingbook.spectral.fd.FourierDescriptor;
+import imagingbook.spectral.fd.FourierDescriptorUniform;
 
 
 /**

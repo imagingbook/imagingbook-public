@@ -13,7 +13,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.spectral.dft.Dft2d;
+import imagingbook.spectral.dft.Dft2d;
 
 
 /** 

@@ -7,7 +7,7 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.spectral.dct;
+package imagingbook.spectral.dct;
 
 import imagingbook.common.math.Matrix;
 

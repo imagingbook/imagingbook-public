@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.spectral.fd;
+package imagingbook.spectral.fd;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.PI;

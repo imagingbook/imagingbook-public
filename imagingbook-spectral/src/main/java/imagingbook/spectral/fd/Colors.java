@@ -7,7 +7,7 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.spectral.fd;
+package imagingbook.spectral.fd;
 
 import java.awt.Color;
 

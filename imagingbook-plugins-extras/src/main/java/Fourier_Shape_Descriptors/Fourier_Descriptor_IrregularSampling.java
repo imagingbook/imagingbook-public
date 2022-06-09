@@ -21,8 +21,8 @@ import ij.gui.ShapeRoi;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.math.Complex;
-import imagingbook.common.spectral.fd.FourierDescriptor;
-import imagingbook.common.spectral.fd.FourierDescriptorFromPolygon;
+import imagingbook.spectral.fd.FourierDescriptor;
+import imagingbook.spectral.fd.FourierDescriptorFromPolygon;
 
 /**
  * This plugin demonstrates the use of the trigonometric method for calculating Fourier

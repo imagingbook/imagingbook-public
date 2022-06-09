@@ -38,21 +38,9 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.imagingbook</groupId>
-			<artifactId>imagingbook-sample-images</artifactId>
-			<version>4.0.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 		</dependency>
-		
-		<!-- <dependency>
-		    <groupId>com.github.wendykierp</groupId>
-		    <artifactId>JTransforms</artifactId>
-		</dependency> -->
 
 		<dependency>
 			<groupId>com.github.librepdf</groupId>
@@ -65,5 +53,12 @@
       		<scope>test</scope>
     	</dependency>
     	
+    	<dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-sample-images</artifactId>
+			<version>4.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 </project>
