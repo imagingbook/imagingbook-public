@@ -14,6 +14,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.delaunay.Triangle;
 
 
+
 /**
  * Represents a 2D triangle, specified by three corner points.
  * Instances of this class are immutable.
@@ -203,7 +204,7 @@ public class Triangle2D implements Triangle {
 		return Triangle2D.class.getSimpleName() + "[" + a + ", " + b + ", " + c + "]";
 	}
 
-	@Override
+
 	public Pnt2d[] getPoints() {
 		return new Pnt2d[] {a, b, c};
 	}

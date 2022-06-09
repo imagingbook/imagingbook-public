@@ -23,8 +23,8 @@ import imagingbook.common.geometry.delaunay.Utils;
 /**
  * This is an implementation of the triangulation algorithm described in
  * <blockquote>
- * L. J. Guibas, D. E. Knuth, and M. Sharir" "Randomized incremental construction of Delaunay and Voronoi diagrams", 
- * Algorithmica, 7, pp. 381--413 (1992).
+ * L. J. Guibas, D. E. Knuth, and M. Sharir" "Randomized incremental construction of 
+ * Delaunay and Voronoi diagrams", Algorithmica, 7, pp. 381--413 (1992).
  * </blockquote>
  * 
  * @author WB
@@ -66,13 +66,18 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	// -----------------------------------------------------------------------------
 	
 	@Override
-	public List<Pnt2d> getPoints() {
-		return points;
+	public int size() {
+		return triangles.size();
 	}
 	
 	@Override
 	public List<Triangle> getTriangles() {
 		return Collections.unmodifiableList(triangles);
+	}
+	
+	@Override
+	public List<Pnt2d> getPoints() {
+		return points;
 	}
 	
 	// -----------------------------------------------------------------------------
@@ -228,10 +233,11 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	
 	/**
 	 * Returns the triangle edge nearest to the specified point.
+	 * 
 	 * @param point the query point
 	 * @return the triangle edge nearest to the specified point
 	 */
-	private Edge2D findNearestEdge(Pnt2d point) {
+	public Edge2D findNearestEdge(Pnt2d point) {
 		Edge2D minEdge = null;
 		double minDist = Double.POSITIVE_INFINITY;
 		for (Triangle2D tri : triangles) {
@@ -259,25 +265,26 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 		triangles.removeAll(trianglesToBeRemoved);
 	}
 	
-	
 	// --------------------------------------------------------------------------------------
 	
-	public static void main (String[] args) {
-		List<Pnt2d> points = new ArrayList<>();
-		points.add(Pnt2d.from(-10,10));
-		points.add(Pnt2d.from(10,10));
-		points.add(Pnt2d.from(0,-10));
-		
-		points.add(Pnt2d.from(0,0));
-		points.add(Pnt2d.from(1,0));
-		points.add(Pnt2d.from(0,1));
-		
-		TriangulationGuibas triangulation = new TriangulationGuibas(points, false);
-		
-		List<Triangle> triangles = triangulation.getTriangles();
-		System.out.println("triangles: " + triangles.size());
-		
-		System.out.println("containing triangle: " + triangulation.findContainingTriangle(Pnt2d.from(2, 0.5)));
-		System.out.println("containing triangle: " + triangulation.findContainingTriangle(Pnt2d.from(100, 0)));
-	}
+//	public static void main (String[] args) {
+//		List<Pnt2d> points = new ArrayList<>();
+//		points.add(Pnt2d.from(-10,10));
+//		points.add(Pnt2d.from(10,10));
+//		points.add(Pnt2d.from(0,-10));
+//		
+//		points.add(Pnt2d.from(0,0));
+//		points.add(Pnt2d.from(1,0));
+//		points.add(Pnt2d.from(0,1));
+//		
+//		TriangulationGuibas triangulation = new TriangulationGuibas(points, false);
+//		
+//		List<Triangle> triangles = triangulation.getTriangles();
+//		System.out.println("triangles: " + triangles.size());
+//		
+//		System.out.println("containing triangle: " + triangulation.findContainingTriangle(Pnt2d.from(2, 0.5)));
+//		System.out.println("containing triangle: " + triangulation.findContainingTriangle(Pnt2d.from(100, 0)));
+//	}
+
+
 }

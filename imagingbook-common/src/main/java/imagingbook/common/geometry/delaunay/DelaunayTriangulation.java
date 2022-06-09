@@ -11,6 +11,7 @@ package imagingbook.common.geometry.delaunay;
 import java.util.List;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.delaunay.guibas.Triangle2D;
 
 /**
  * Interface specification for various implementations of the
@@ -19,12 +20,18 @@ import imagingbook.common.geometry.basic.Pnt2d;
 public interface DelaunayTriangulation {
 	
 	/**
-	 * Returns a list of 2D triangles (implementing the {@link Triangle} interface) 
+	 * Returns the number of triangles in this triangulation.
+	 * @return the number of triangles
+	 */
+	public int size();
+	
+	/**
+	 * Returns a list of {@link Triangle2D} instances
 	 * contained in this triangulation. The list does not contain the initial outer 
 	 * triangle.
 	 * @return a list of triangles 
 	 */
-	List<Triangle> getTriangles();
+	public List<Triangle> getTriangles();
 	
 	/**
 	 * Returns a list of 2D vertices (implementing the {@link Pnt2d} interface)
@@ -33,6 +40,6 @@ public interface DelaunayTriangulation {
 	 * vertices of the initial (outer) triangle.
 	 * @return a list of points
 	 */
-	List<Pnt2d> getPoints();
+	public List<Pnt2d> getPoints();
 
 }

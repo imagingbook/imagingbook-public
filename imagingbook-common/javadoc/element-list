@@ -16,7 +16,6 @@ imagingbook.common.filter.linear
 imagingbook.common.geometry.basic
 imagingbook.common.geometry.circle
 imagingbook.common.geometry.delaunay
-imagingbook.common.geometry.delaunay.chew
 imagingbook.common.geometry.delaunay.guibas
 imagingbook.common.geometry.ellipse
 imagingbook.common.geometry.ellipse.project
