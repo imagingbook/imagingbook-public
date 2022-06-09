@@ -52,7 +52,7 @@
 		<pluginConfigFile>plugins.config</pluginConfigFile>
 		<!-- future use to specify general plugins path: -->
 		<pluginPrefix>"Plugins&gt;B&amp;B "</pluginPrefix>	
-		<imagingbook.libs>imagingbook-common,imagingbook-core,imagingbook-sample-images</imagingbook.libs>
+		<imagingbook.libs>imagingbook-core,imagingbook-common,imagingbook-spectral,imagingbook-pdf,imagingbook-sample-images</imagingbook.libs>
 	</properties>
 
 	<dependencies>
