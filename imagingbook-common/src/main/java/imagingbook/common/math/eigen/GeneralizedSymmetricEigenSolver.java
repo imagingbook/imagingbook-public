@@ -53,6 +53,11 @@ public class GeneralizedSymmetricEigenSolver {
 		if (!MatrixUtils.isSymmetric(A, rsth)) {
 			throw new RuntimeException("matrix A must be symmetric");
 		}
+		
+		if (!MatrixUtils.isSymmetric(B, rsth)) {
+			throw new RuntimeException("matrix B must be symmetric");
+		}
+		
 		final RealMatrix L = new CholeskyDecomposition(B, rsth, apth).getL();
 		final RealMatrix Li = MatrixUtils.inverse(L);
 		this.LiT = Li.transpose();
@@ -63,7 +68,7 @@ public class GeneralizedSymmetricEigenSolver {
 		// alternatively:
 		//RealMatrix Y = Li.multiply(A).multiply(LiT);
 		
-		this.ed =  new EigenDecomposition(Y);
+		this.ed = new EigenDecomposition(Y);
 	}
 	
 	/**
@@ -100,7 +105,6 @@ public class GeneralizedSymmetricEigenSolver {
 		return ed.getD();
 	}
 
-	
 	public RealMatrix getV() {
 		return LiT.multiply(ed.getV());
 	}

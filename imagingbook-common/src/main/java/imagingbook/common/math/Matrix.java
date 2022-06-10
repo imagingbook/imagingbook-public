@@ -18,9 +18,11 @@ import java.util.Locale;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.DecompositionSolver;
 import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.NonPositiveDefiniteMatrixException;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularMatrixException;
@@ -242,6 +244,19 @@ public abstract class Matrix {
 		}		
 		DecompositionSolver solver = new LUDecomposition(new Array2DRowRealMatrix(A)).getSolver();		
 		return solver.isNonSingular();
+	}
+	
+	/**
+	 * Checks is the given square matrix is positive definite.
+	 * @param A a square matrix
+	 * @return true if the matrix is positive definite
+	 */
+	public static boolean isPositiveDefinite(RealMatrix A) {
+		try {
+			new CholeskyDecomposition(A, 1e-15, 1e-15);
+			return true;
+		} catch (NonPositiveDefiniteMatrixException e) {};
+		return false;
 	}
 	
 	/**
@@ -1428,6 +1443,21 @@ public abstract class Matrix {
 	
 	public static boolean isZero(float[] x) {
 		return isZero(x, Arithmetic.EPSILON_FLOAT);
+	}
+	
+	// Checking matrices for all zero values  ------------------------------
+	
+	public static boolean isZero(double[][] A, double tolerance) {
+		for (int i = 0; i < A.length; i++) {	// for each matrix row i
+			if (!Matrix.isZero(A[i], tolerance)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean isZero(double[][] A) {
+		return isZero(A, Arithmetic.EPSILON_DOUBLE);
 	}
 	
 	// Matrix inversion ---------------------------------------
