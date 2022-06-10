@@ -13,11 +13,11 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.edgepreservingfilters.PeronaMalikFilterScalar;
-import imagingbook.common.edgepreservingfilters.PeronaMalikFilterVector;
-import imagingbook.common.edgepreservingfilters.PeronaMalikF.ColorMode;
-import imagingbook.common.edgepreservingfilters.PeronaMalikF.Parameters;
-import imagingbook.common.filter.GenericFilter;
+import imagingbook.common.filter.edgepreserving.PeronaMalikFilterScalar;
+import imagingbook.common.filter.edgepreserving.PeronaMalikFilterVector;
+import imagingbook.common.filter.edgepreserving.PeronaMalikF.ColorMode;
+import imagingbook.common.filter.edgepreserving.PeronaMalikF.Parameters;
+import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.common.util.progress.ij.ProgressBarMonitor;
 

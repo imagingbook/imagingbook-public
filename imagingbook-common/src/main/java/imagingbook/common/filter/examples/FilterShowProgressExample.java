@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.filter.examples;
 
-import imagingbook.common.filter.GenericFilterVector;
+import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.data.PixelPack;
 
 // a custom filter that provides its own progress data

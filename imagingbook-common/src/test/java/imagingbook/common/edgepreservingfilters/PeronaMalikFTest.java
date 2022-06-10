@@ -11,8 +11,8 @@ package imagingbook.common.edgepreservingfilters;
 import org.junit.Assert;
 import org.junit.Test;
 
-import imagingbook.common.edgepreservingfilters.PeronaMalikF.ConductanceFunction;
-import imagingbook.common.edgepreservingfilters.PeronaMalikF.ConductanceFunction.Type;
+import imagingbook.common.filter.edgepreserving.PeronaMalikF.ConductanceFunction;
+import imagingbook.common.filter.edgepreserving.PeronaMalikF.ConductanceFunction.Type;
 
 public class PeronaMalikFTest {
 

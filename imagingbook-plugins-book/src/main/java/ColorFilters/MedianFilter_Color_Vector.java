@@ -12,8 +12,8 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.filters.VectorMedianFilter;
-import imagingbook.common.color.filters.VectorMedianFilter.Parameters;
+import imagingbook.common.filter.nonlinear.VectorMedianFilter;
+import imagingbook.common.filter.nonlinear.VectorMedianFilter.Parameters;
 import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.common.util.Enums;
 

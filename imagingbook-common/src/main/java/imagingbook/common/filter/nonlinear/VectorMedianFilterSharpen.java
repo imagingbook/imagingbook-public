@@ -7,12 +7,12 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.filters;
+package imagingbook.common.filter.nonlinear;
 
 import java.awt.Color;
 import java.util.Arrays;
 
-import imagingbook.common.filter.GenericFilterVector;
+import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.data.PixelPack;
 import imagingbook.common.math.VectorNorm;
 
@@ -67,7 +67,8 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 		this.vNorm = params.distanceNorm.create();
 		
 		this.modColor = params.modifiedColor.getRGBColorComponents(null);
-		if (params.showMask) Utils.showMask(this.mask, "Mask-" + this.getClass().getSimpleName());
+		if (params.showMask) 
+			mask.show("Mask-" + this.getClass().getSimpleName());
 	}
 	
 	@Override

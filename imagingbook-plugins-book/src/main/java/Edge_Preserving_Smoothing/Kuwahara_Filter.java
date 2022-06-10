@@ -13,9 +13,9 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.edgepreservingfilters.KuwaharaFilterScalar;
-import imagingbook.common.edgepreservingfilters.KuwaharaFilterVector;
-import imagingbook.common.edgepreservingfilters.KuwaharaF.Parameters;
+import imagingbook.common.filter.edgepreserving.KuwaharaFilterScalar;
+import imagingbook.common.filter.edgepreserving.KuwaharaFilterVector;
+import imagingbook.common.filter.edgepreserving.KuwaharaF.Parameters;
 
 /**
  * Scalar version. Applied to color images, each color component is filtered separately.

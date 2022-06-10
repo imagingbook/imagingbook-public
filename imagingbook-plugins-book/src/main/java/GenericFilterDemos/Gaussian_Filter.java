@@ -11,7 +11,7 @@ package GenericFilterDemos;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.common.filter.GenericFilter;
+import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianKernel2D;
 import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.filter.linear.LinearFilter;

@@ -7,11 +7,11 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.edgepreservingfilters;
+package imagingbook.common.filter.edgepreserving;
 
 import static imagingbook.common.math.Matrix.subtract;
 
-import imagingbook.common.filter.GenericFilterVector;
+import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.data.PixelPack;
 import imagingbook.common.math.Matrix;
 

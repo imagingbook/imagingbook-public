@@ -16,7 +16,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import imagingbook.common.color.RgbUtils;
-import imagingbook.common.filter.GenericFilter;
+import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.image.access.GridIndexer2D;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 

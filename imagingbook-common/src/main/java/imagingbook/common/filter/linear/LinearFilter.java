@@ -8,8 +8,8 @@
  *******************************************************************************/
 package imagingbook.common.filter.linear;
 
-import imagingbook.common.filter.GenericFilter;
-import imagingbook.common.filter.GenericFilterScalar;
+import imagingbook.common.filter.generic.GenericFilter;
+import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.image.data.PixelPack.PixelSlice;
 
 /**

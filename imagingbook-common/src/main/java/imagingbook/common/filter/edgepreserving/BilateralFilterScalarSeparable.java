@@ -7,12 +7,12 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.edgepreservingfilters;
+package imagingbook.common.filter.edgepreserving;
 
-import static imagingbook.common.edgepreservingfilters.BilateralF.gauss;
+import static imagingbook.common.filter.edgepreserving.BilateralF.gauss;
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import imagingbook.common.filter.GenericFilterScalarSeparable;
+import imagingbook.common.filter.generic.GenericFilterScalarSeparable;
 import imagingbook.common.filter.linear.GaussianKernel1D;
 import imagingbook.common.image.data.PixelPack.PixelSlice;
 

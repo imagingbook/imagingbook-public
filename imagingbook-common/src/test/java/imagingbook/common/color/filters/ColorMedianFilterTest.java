@@ -13,6 +13,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import ij.process.ImageProcessor;
+import imagingbook.common.filter.nonlinear.ScalarMedianFilter;
+import imagingbook.common.filter.nonlinear.VectorMedianFilter;
+import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.core.resource.ImageResource;

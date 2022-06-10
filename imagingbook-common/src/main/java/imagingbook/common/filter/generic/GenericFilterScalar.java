@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.filter;
+package imagingbook.common.filter.generic;
 
 import imagingbook.common.image.data.PixelPack;
 import imagingbook.common.image.data.PixelPack.PixelSlice;

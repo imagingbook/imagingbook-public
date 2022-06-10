@@ -12,8 +12,8 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.filters.ScalarMedianFilter;
-import imagingbook.common.color.filters.ScalarMedianFilter.Parameters;
+import imagingbook.common.filter.nonlinear.ScalarMedianFilter;
+import imagingbook.common.filter.nonlinear.ScalarMedianFilter.Parameters;
 
 /**
  * This plugin applies a scalar median filter to all three planes

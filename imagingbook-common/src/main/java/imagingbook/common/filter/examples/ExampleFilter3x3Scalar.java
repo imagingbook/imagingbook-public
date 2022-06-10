@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.filter.examples;
 
-import imagingbook.common.filter.GenericFilterScalar;
+import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.image.data.PixelPack.PixelSlice;
 
 public class ExampleFilter3x3Scalar extends GenericFilterScalar {

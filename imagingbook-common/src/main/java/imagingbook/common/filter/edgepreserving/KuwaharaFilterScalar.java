@@ -7,9 +7,9 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.edgepreservingfilters;
+package imagingbook.common.filter.edgepreserving;
 
-import imagingbook.common.filter.GenericFilterScalar;
+import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.image.data.PixelPack.PixelSlice;
 
 /**

@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.filter;
+package imagingbook.common.filter.generic;
 
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.examples.ExampleFilter3x3Scalar;

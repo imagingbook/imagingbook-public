@@ -7,13 +7,13 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.filters;
+package imagingbook.common.filter.nonlinear;
 
 import java.util.Arrays;
 
 import ij.process.ImageProcessor;
-import imagingbook.common.filter.GenericFilter;
-import imagingbook.common.filter.GenericFilterScalar;
+import imagingbook.common.filter.generic.GenericFilter;
+import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.image.data.PixelPack.PixelSlice;
 

@@ -7,18 +7,19 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.edgepreservingfilters;
+package imagingbook.common.filter.edgepreserving;
 
-import static imagingbook.common.edgepreservingfilters.BilateralF.gauss;
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import imagingbook.common.filter.GenericFilterScalar;
+import ij.process.ColorProcessor;
+import imagingbook.common.filter.edgepreserving.BilateralF.Parameters;
+import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.filter.linear.GaussianKernel2D;
-import imagingbook.common.image.data.PixelPack.PixelSlice;
+import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.math.VectorNorm;
 
 /**
- * Scalar version, applicable to all image types.
- * On color images, this filter is applied separately to each color component.
+ * Vector version, for RGB images only (accepts {@link ColorProcessor} only).
  * This class implements a bilateral filter as proposed in
  * C. Tomasi and R. Manduchi, "Bilateral Filtering for Gray and Color Images",
  * Proceedings of the 1998 IEEE International Conference on Computer Vision,
@@ -29,39 +30,56 @@ import imagingbook.common.image.data.PixelPack.PixelSlice;
  * @author W. Burger
  * @version 2021/01/01
  */
-public class BilateralFilterScalar extends GenericFilterScalar implements BilateralF {
+public class BilateralFilterVector extends GenericFilterVector {
 	
 	private final float[][] Hd;	// the domain kernel
 	private final int K;		// the domain kernel size [-K,...,K]
 	private final double sigmaR2;
+	private final VectorNorm colorNorm;
+	private final double colorScale2;
 	
-	public BilateralFilterScalar() {
+	public BilateralFilterVector() {
 		this(new Parameters());
 	}
 	
-	public BilateralFilterScalar(Parameters params) {
+	public BilateralFilterVector(Parameters params) {
 		GaussianKernel2D kernel = new GaussianKernel2D(params.sigmaD);
 		this.Hd = kernel.getH();
 		this.K = kernel.getXc();
 		this.sigmaR2 = sqr(params.sigmaR);
+		this.colorNorm = params.colorNormType.create();
+		this.colorScale2 = sqr(colorNorm.getScale(3));
 	}
 	
 	@Override
-	protected float doPixel(PixelSlice plane, int u, int v) {
-		float S = 0;			// sum of weighted pixel values
-		float W = 0;			// sum of weights		
-		final float a = plane.getVal(u, v); // value of the current center pixel
+	protected float[] doPixel(PixelPack pack, int u, int v) {
+		float[] S = new float[3]; 	// sum of weighted RGB values
+		float W = 0;				// sum of weights
+		float[] a = pack.getVec(u, v);			// value of the current center pixel
+		
 		for (int m = -K; m <= K; m++) {
 			for (int n = -K; n <= K; n++) {
-				float b = plane.getVal(u + m, v + n);
-				float wd = Hd[m + K][n + K];		// domain weight
-				float wr = gauss(a - b, sigmaR2);	// range weight
+				float[] b = pack.getVec(u + m, v + n);
+				float wd = Hd[m + K][n + K];				// domain weight
+				float wr = similarityGauss(a, b);			// range weight
 				float w = wd * wr;
-				S = S + w * b;
+				S[0] = S[0] + w * b[0];
+				S[1] = S[1] + w * b[1];
+				S[2] = S[2] + w * b[2];
 				W = W + w;
 			}
 		}
-		return S / W;
+		S[0] = S[0] / W;
+		S[1] = S[1] / W;
+		S[2] = S[2] / W;
+ 		return S;
+ 	}
+	
+	// ------------------------------------------------------
+	
+	// This returns the weights for a Gaussian range kernel (color vector version):
+	private float similarityGauss(float[] A, float[] B) {
+		double d2 = colorScale2 * colorNorm.distance2(A, B);
+		return (float) Math.exp(-d2 / (2 * sigmaR2));
 	}
-
 }

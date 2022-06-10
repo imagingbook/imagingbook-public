@@ -12,11 +12,11 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.edgepreservingfilters.PeronaMalikFilterScalar;
-import imagingbook.common.edgepreservingfilters.PeronaMalikFilterVector;
-import imagingbook.common.edgepreservingfilters.PeronaMalikF.ColorMode;
-import imagingbook.common.edgepreservingfilters.PeronaMalikF.Parameters;
-import imagingbook.common.filter.GenericFilter;
+import imagingbook.common.filter.edgepreserving.PeronaMalikFilterScalar;
+import imagingbook.common.filter.edgepreserving.PeronaMalikFilterVector;
+import imagingbook.common.filter.edgepreserving.PeronaMalikF.ColorMode;
+import imagingbook.common.filter.edgepreserving.PeronaMalikF.Parameters;
+import imagingbook.common.filter.generic.GenericFilter;
 
 /**
  * Minimal plugin to demonstrate the use of the PeronaMalikFilter class.

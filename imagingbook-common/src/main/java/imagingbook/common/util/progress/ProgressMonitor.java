@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.util.progress;
 
-import imagingbook.common.filter.GenericFilter;
+import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.util.progress.ij.ProgressBarMonitor;
 
 /**

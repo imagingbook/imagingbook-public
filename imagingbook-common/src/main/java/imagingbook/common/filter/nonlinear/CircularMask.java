@@ -7,7 +7,12 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.filters;
+package imagingbook.common.filter.nonlinear;
+
+import ij.ImagePlus;
+import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
+import imagingbook.common.ij.GuiTools;
 
 public class CircularMask {
 	
@@ -45,6 +50,14 @@ public class CircularMask {
 	
 	public int[][] getMask() {
 		return mask;
+	}
+	
+	public void show(String title) {
+		ByteProcessor bp = new FloatProcessor(this.getMask()).convertToByteProcessor(false);
+		bp.threshold(0);
+		ImagePlus im = new ImagePlus(title, bp);
+		im.show();
+		GuiTools.zoomExact(im, 32);
 	}
 
 }

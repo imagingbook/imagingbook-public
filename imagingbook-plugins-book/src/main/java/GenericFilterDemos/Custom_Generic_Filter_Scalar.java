@@ -11,7 +11,7 @@ package GenericFilterDemos;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.common.filter.GenericFilterScalar;
+import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.image.data.PixelPack.PixelSlice;
 
 /**

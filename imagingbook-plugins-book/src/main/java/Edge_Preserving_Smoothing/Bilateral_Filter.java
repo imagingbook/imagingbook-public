@@ -13,12 +13,12 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.edgepreservingfilters.BilateralFilterScalar;
-import imagingbook.common.edgepreservingfilters.BilateralFilterScalarSeparable;
-import imagingbook.common.edgepreservingfilters.BilateralFilterVector;
-import imagingbook.common.edgepreservingfilters.BilateralFilterVectorSeparable;
-import imagingbook.common.edgepreservingfilters.BilateralF.Parameters;
-import imagingbook.common.filter.GenericFilter;
+import imagingbook.common.filter.edgepreserving.BilateralFilterScalar;
+import imagingbook.common.filter.edgepreserving.BilateralFilterScalarSeparable;
+import imagingbook.common.filter.edgepreserving.BilateralFilterVector;
+import imagingbook.common.filter.edgepreserving.BilateralFilterVectorSeparable;
+import imagingbook.common.filter.edgepreserving.BilateralF.Parameters;
+import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.common.util.progress.ij.ProgressBarMonitor;
 
