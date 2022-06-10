@@ -22,22 +22,21 @@ import imagingbook.common.color.RgbUtils;
 
 /**
  * This class implements color quantization based on the octree method. It is a
- * re-factored version of an implementation (OctTreeOpImage.java) used in Sun's JAI 
+ * re-factored version of an implementation ({@code OctTreeOpImage.java}) used in Sun's JAI 
  * (Java Advanced Imaging) framework, which &ndash; in turn &ndash; is based on a 
- * C implementation (quantize.c) authored by John Cristy in 1992 as part of 
+ * C implementation ({@code quantize.c}) by John Cristy in 1992 as part of 
  * <a href="http://www.imagemagick.org/">ImageMagick</a>.
  * The associated source code can be found 
- * <a href="http://git.imagemagick.org/repos/ImageMagick/blob/master/MagickCore/quantize.c">
+ * <a href="https://github.com/ImageMagick/ImageMagick/blob/main/MagickCore/quantize.c">
  * here</a>, the original copyright note is provided at the bottom of this source file.
  * 
- * See also the abovementioned JAI implementation in
- * <a href="https://java.net/projects/jai-core/sources/svn/content/trunk/src/share/classes/com/sun/media/jai/opimage/OctTreeOpImage.java">
- * OctTreeOpImage.java</a>.
- * 
- * This implementation is similar but not identical to the original octree quantization algorithm proposed
- * by Gervautz and Purgathofer [M. Gervautz and W. Purgathofer. "A simple method for color
+ * This implementation is similar but not identical to the original octree quantization
+ * algorithm described in
+ * <blockquote>
+ * M. Gervautz and W. Purgathofer, "A simple method for color
  * quantization: octree quantization", in A. Glassner (editor), Graphics Gems I, 
- * pp. 287–293. Academic Press, New York (1990)].
+ * pp. 287–293. Academic Press, New York (1990).
+ * </blockquote>
  * This implementation uses a modified strategy for pruning the octree for better efficiency.
  * 
  * "Quick quantization" means that original colors are mapped to their color index by simply
@@ -63,22 +62,7 @@ public class OctreeQuantizer implements ColorQuantizer {
 	private int nodeCnt = 0;		// counts the number of nodes in the tree
 	private int colorCnt = 0; 		// counts the number of colors in the cube (used for temp. counting)
 
-//	private final float[][] colormap;
 	private boolean quickQuantization = false;
-	
-	
-//	public static class Parameters {
-//		/** Maximum number of quantized colors. */
-//		public int maxColors = 16;
-//		/** Enable/disable quick quantization */
-//		public boolean quickQuantization = false;
-//		
-//		void check() {
-//			if (maxColors < 2 || maxColors > 256) {
-//				throw new IllegalArgumentException();
-//			}
-//		}
-//	}
 
 	// -------------------------------------------------------------------------
 	
@@ -95,10 +79,6 @@ public class OctreeQuantizer implements ColorQuantizer {
 		
 		this.nColors = reduceTree(initColorCnt, pixels.length);
 	}
-	
-//	public OctreeQuantizer(int[] pixels) {
-//		this(pixels, new Parameters());
-//	}
 	
 	public void setQuickQuantization(boolean quickQuantization) {
 		this.quickQuantization = quickQuantization;
@@ -158,7 +138,6 @@ public class OctreeQuantizer implements ColorQuantizer {
 	 * 		The total number of color samples used for creating the tree.
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	private int reduceTree(int initColorCnt, int nSamples) {
 		int minPixelCnt = Math.max(1,  nSamples / (maxColors * 8));
 		colorCnt = initColorCnt;
@@ -447,13 +426,12 @@ public class OctreeQuantizer implements ColorQuantizer {
 
 		OctreeQuantizer quantizer = new OctreeQuantizer(cp, K);
 		quantizer.setQuickQuantization(false);
-	
 		quantizer.listColorMap();
 		
 		System.out.println("quantizing image");
 		ByteProcessor qi = quantizer.quantize(cp);
 		System.out.println("showing image");
-		(new ImagePlus("quantizez", qi)).show();
+		(new ImagePlus("quantized", qi)).show();
 		
 	}
 }
