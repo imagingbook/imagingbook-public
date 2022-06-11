@@ -234,6 +234,16 @@ public abstract class Matrix {
 	}
 	
 	/**
+	 * TODO
+	 * @param A
+	 * @return
+	 */
+	public static RealVector getDiagonal(RealMatrix A) {
+		return null;
+	}
+	
+	
+	/**
 	 * Checks is the given square matrix is non-singular.
 	 * @param A a square matrix
 	 * @return true if the matrix is non-singular
@@ -242,7 +252,19 @@ public abstract class Matrix {
 		if (!Matrix.isSquare(A)) {
 			throw new NonsquareMatrixException();
 		}		
-		DecompositionSolver solver = new LUDecomposition(new Array2DRowRealMatrix(A)).getSolver();		
+		return isNonSingular(new Array2DRowRealMatrix(A));		
+	}
+	
+	/**
+	 * Checks is the given square matrix is non-singular.
+	 * @param A a square matrix
+	 * @return true if the matrix is non-singular
+	 */
+	public static boolean isNonSingular(RealMatrix A) throws NonsquareMatrixException {
+		if (!A.isSquare()) {
+			throw new NonsquareMatrixException();
+		}		
+		DecompositionSolver solver = new LUDecomposition(A).getSolver();
 		return solver.isNonSingular();
 	}
 	
@@ -251,12 +273,21 @@ public abstract class Matrix {
 	 * @param A a square matrix
 	 * @return true if the matrix is positive definite
 	 */
-	public static boolean isPositiveDefinite(RealMatrix A) {
+	public static boolean isPositiveDefinite(RealMatrix A, double tolerance) {
 		try {
-			new CholeskyDecomposition(A, 1e-15, 1e-15);
+			new CholeskyDecomposition(A, tolerance, tolerance);
 			return true;
 		} catch (NonPositiveDefiniteMatrixException e) {};
 		return false;
+	}
+	
+	/**
+	 * Checks is the given square matrix is positive definite.
+	 * @param A a square matrix
+	 * @return true if the matrix is positive definite
+	 */
+	public static boolean isPositiveDefinite(RealMatrix A) {
+		return isPositiveDefinite(A, Arithmetic.EPSILON_DOUBLE);
 	}
 	
 	/**

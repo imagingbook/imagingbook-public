@@ -13,6 +13,8 @@ import org.junit.Test;
 import imagingbook.common.math.Matrix;
 
 public class GeneralizedSymmetricEigenSolverTest {
+	
+	static double TOL = 1e-6;
 
 	/* 
 	 * Find solutions for A x = lambda B x,
@@ -22,15 +24,23 @@ public class GeneralizedSymmetricEigenSolverTest {
 	@Test
 	public void test1() {
 		
+		// A is symmetric but not necessarily positive definite (this one is not)
 		RealMatrix A = MatrixUtils.createRealMatrix(new double[][] {
 			{  3, -1, 5},
 			{ -1, -2, 7},
 			{  5,  7, 0}});
 		
+		// B is symmetric and positive definite
 		RealMatrix B = MatrixUtils.createRealMatrix(new double[][] {
 			{ 10,  2,  7},
 			{  2, 12,  3},
 			{  7,  3, 15}});
+		
+		assertTrue("matrix A must be symmetric", MatrixUtils.isSymmetric(A, TOL));
+		assertTrue("matrix B must be symmetric", MatrixUtils.isSymmetric(B, TOL));
+		
+		assertTrue("matrix A may be positive definite or not", !Matrix.isPositiveDefinite(A, TOL));
+		assertTrue("matrix B must be positive definite", Matrix.isPositiveDefinite(B, TOL));
 		
 		GeneralizedSymmetricEigenSolver solver = new GeneralizedSymmetricEigenSolver(A, B);
 		

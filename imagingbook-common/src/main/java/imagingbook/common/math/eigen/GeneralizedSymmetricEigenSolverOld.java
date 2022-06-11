@@ -26,13 +26,12 @@ import imagingbook.common.math.Matrix;
 /**
  * Solver for generalized symmetric eigenproblems.
  * @author WB
- * @version 2022/06/11
+ * @version 2021/11/11
  */
-public class GeneralizedSymmetricEigenSolver {
+public class GeneralizedSymmetricEigenSolverOld {
 	
-//	private final RealMatrix LT;
+	private final RealMatrix LiT;
 	private final EigenDecomposition ed;
-	private final DecompositionSolver ds;
 	
 	/**
 	 * Solves the generalized symmetric eigenproblem of the form
@@ -50,7 +49,7 @@ public class GeneralizedSymmetricEigenSolver {
 	 * @param rsth	relative symmetry threshold
 	 * @param apth absolute positivity threshold
 	 */
-	public GeneralizedSymmetricEigenSolver(RealMatrix A, RealMatrix B, double rsth, double apth) {
+	public GeneralizedSymmetricEigenSolverOld(RealMatrix A, RealMatrix B, double rsth, double apth) {
 		if (!MatrixUtils.isSymmetric(A, rsth)) {
 			throw new RuntimeException("matrix A must be symmetric");
 		}
@@ -59,56 +58,36 @@ public class GeneralizedSymmetricEigenSolver {
 			throw new RuntimeException("matrix B must be symmetric");
 		}
 		
-		CholeskyDecomposition cd = new CholeskyDecomposition(B, rsth, apth);
+		final RealMatrix L = new CholeskyDecomposition(B, rsth, apth).getL();
+		final RealMatrix Li = MatrixUtils.inverse(L);
+		this.LiT = Li.transpose();
 		
-		// find Y, such that Y * LT = A or equivalently L * YT = AT = A (since A is symmetric)
-		DecompositionSolver s1 = new LUDecomposition(cd.getL()).getSolver();
-		RealMatrix Y = s1.solve(A).transpose();
-		System.out.println("Y = \n" + Matrix.toString(Y.getData()));
-
-		// find C, such that L * C = Y
-		RealMatrix C = s1.solve(Y);
-		System.out.println("C = \n" + Matrix.toString(C.getData()));
+		final DecompositionSolver ds = new LUDecomposition(L).getSolver();
+		final RealMatrix Q = ds.solve(A);		// solve L * Q = A
+		final RealMatrix Y = ds.solve(Q.transpose()); // solve L * Y = Q^T
+		// alternatively:
+		//RealMatrix Y = Li.multiply(A).multiply(LiT);
 		
-		this.ed = new EigenDecomposition(C);
-		this.ds = new LUDecomposition(cd.getLT()).getSolver();
+		this.ed = new EigenDecomposition(Y);
 	}
 	
-//	public GeneralizedSymmetricEigenSolver(RealMatrix A, RealMatrix B, double rsth, double apth) {
-//		if (!MatrixUtils.isSymmetric(A, rsth)) {
-//			throw new RuntimeException("matrix A must be symmetric");
-//		}
-//		
-//		if (!MatrixUtils.isSymmetric(B, rsth)) {
-//			throw new RuntimeException("matrix B must be symmetric");
-//		}
-//		
-//		final RealMatrix L = new CholeskyDecomposition(B, rsth, apth).getL();
-//		final RealMatrix Li = MatrixUtils.inverse(L);
-//		this.LiT = Li.transpose();
-//		
-//		final DecompositionSolver ds = new LUDecomposition(L).getSolver();
-//		final RealMatrix Q = ds.solve(A);		// solve L * Q = A
-//		final RealMatrix Y = ds.solve(Q.transpose()); // solve L * Y = Q^T
-//		// alternatively:
-//		//RealMatrix Y = Li.multiply(A).multiply(LiT);
-//		
-//		this.ed = new EigenDecomposition(Y);
-//	}
-	
 	/**
-	 * See {@link #GeneralizedSymmetricEigenSolver(RealMatrix, RealMatrix, double, double)}.
+	 * See {@link #GeneralizedSymmetricEigenSolverOld(RealMatrix, RealMatrix, double, double)}.
 	 * 
 	 * @param A real symmetric matrix
 	 * @param B real symmetric and positive definite matrix
 	 */
-	public GeneralizedSymmetricEigenSolver(RealMatrix A, RealMatrix B) {
+	public GeneralizedSymmetricEigenSolverOld(RealMatrix A, RealMatrix B) {
 		this(A, B, 
 				DEFAULT_RELATIVE_SYMMETRY_THRESHOLD, 
 				DEFAULT_ABSOLUTE_POSITIVITY_THRESHOLD);
 	}
 	
 	// ---------------------------------------------------------------------
+	
+	public RealVector getEigenVector(int i) {
+		return LiT.operate(ed.getEigenvector(i));
+	}
 	
 	public double[] getRealEigenvalues() {
 		return ed.getRealEigenvalues();
@@ -125,15 +104,9 @@ public class GeneralizedSymmetricEigenSolver {
 	public RealMatrix getD() {
 		return ed.getD();
 	}
-	
-	public RealVector getEigenVector(int i) {
-//		return LiT.operate(ed.getEigenvector(i));
-		return ds.solve(ed.getEigenvector(i));
-	}
 
 	public RealMatrix getV() {
-//		return LiT.multiply(ed.getV());
-		return ds.solve(ed.getV());
+		return LiT.multiply(ed.getV());
 	}
 
 	// ---------------------------------------------------------------------
@@ -149,20 +122,22 @@ public class GeneralizedSymmetricEigenSolver {
 			{  2, 12, 3},
 			{  7, 3, 15}});
 		
-		GeneralizedSymmetricEigenSolver decomp = new GeneralizedSymmetricEigenSolver(A, B);
+		GeneralizedSymmetricEigenSolverOld decomp =
+				new GeneralizedSymmetricEigenSolverOld(A, B);
 		
-		System.out.println("has complex eigenvalues = " + decomp.hasComplexEigenvalues());
 		double[] evals = decomp.getRealEigenvalues();
 		System.out.println("evals = " + Arrays.toString(evals));
-		// evals = [0.39652279397140217, 0.2884669048273067, -1.2739949344008035]
 		
+		RealMatrix V = decomp.getV();
+		System.out.println("V = \n" + Matrix.toString(V.getData()));
+		
+		RealMatrix D = decomp.getD();
+		System.out.println("D = \n" + Matrix.toString(D.getData()));
 		
 		for (int i = 0; i < evals.length; i++) {
 			double lambda = evals[i];
 			RealVector evec = decomp.getEigenVector(i);
-			System.out.println("i = " + i);
-			System.out.println("  eval = " + lambda);
-			System.out.println("  evec = " + Arrays.toString(evec.toArray()));
+			System.out.println("evec = " + Arrays.toString(evec.toArray()));
 			
 			RealVector L = A.operate(evec);
 //			System.out.println("L = "+ Arrays.toString(L.toArray()));
@@ -170,19 +145,14 @@ public class GeneralizedSymmetricEigenSolver {
 //			System.out.println("R = "+ Arrays.toString(R.toArray()));
 			RealVector res = L.subtract(R);
 			//System.out.println("res = "+ Arrays.toString(res.toArray()));	// L - R must be 0
-			System.out.println("  res = 0? "+  Matrix.isZero(res.toArray(), 1e-6));
+			System.out.println("res = 0? "+  Matrix.isZero(res.toArray(), 1e-6));
+			
+			// check A*V = B*V*D
+			RealMatrix AV = A.multiply(V);
+			System.out.println("AV = \n" + Matrix.toString(AV.getData()));
+			RealMatrix BVD = B.multiply(V).multiply(D);
+			System.out.println("BVD = \n" + Matrix.toString(BVD.getData()));
 		}
-		
-		RealMatrix V = decomp.getV();
-		System.out.println("V = \n" + Matrix.toString(V.getData()));
-		RealMatrix D = decomp.getD();
-		System.out.println("D = \n" + Matrix.toString(D.getData()));
-		
-		// check A*V = B*V*D
-		RealMatrix AV = A.multiply(V);
-		System.out.println("AV = \n" + Matrix.toString(AV.getData()));
-		RealMatrix BVD = B.multiply(V).multiply(D);
-		System.out.println("BVD = \n" + Matrix.toString(BVD.getData()));
 		
 	}
 }
