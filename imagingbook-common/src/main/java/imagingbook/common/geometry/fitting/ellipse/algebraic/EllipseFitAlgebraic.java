@@ -29,7 +29,7 @@ public interface EllipseFitAlgebraic {
 	public static EllipseFitAlgebraic getFit(FitType type, Pnt2d[] points, Pnt2d xref) {
 		switch (type) {
 		case FitzgibbonNaive: 		return new EllipseFitFitzgibbonNaive(points);
-		case FitzgibbonOriginal: 	return new EllipseFitFitzgibbon(points);
+		case FitzgibbonOriginal: 	return new EllipseFitFitzgibbonOriginal(points);
 		case FitzgibbonStable: 		return new EllipseFitFitzgibbonStable(points, xref);
 		case Taubin1: 				return new EllipseFitTaubin1(points, xref);
 		case Taubin2: 				return new EllipseFitTaubin2(points, xref);

@@ -21,10 +21,16 @@ import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularMatrixException;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
 /**
- * 
+ * Performs an exact ellipse fit to 5 given points.
+ * If the fit is unsuccessful, {@link #getParameters()} returns {@code null}.
+ * The underlying algorithm is described in [1, Section F.3.3].
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * @author WB
  *
  */
@@ -84,49 +90,9 @@ public class EllipseFit5Points implements EllipseFitAlgebraic {
 		double E = x.getEntry(3);
 		double F = x.getEntry(4);
 		
-		
 		boolean isEllipse = (4 * A * C - sqr(B)) > 0;
 		
-		if (isEllipse) {
-			double[] p = {A,B,C,D,E,F};
-			return p;
-		}
-		else {
-			return null;
-		}
-		
-		/*
-		double[] p = {A,B,C,D,E,F};
-		System.out.println("p = " + Matrix.toString(p));
-		
-		
-		
-		if (isEllipse) {	
-			AlgebraicEllipse ea = new AlgebraicEllipse(p);
-			Ellipse eg = Ellipse.from(ea);
-			System.out.println("P1: ellipse = " + eg);
-		}
-		else {
-			System.out.println("P1: NO ellipse!");
-		}
-		
-		EllipseFitAlgebraic fit2 = new EllipseFitFitzgibbonStable(points);
-		double[] p2 = fit2.getParameters();
-		if (p2 == null) {
-			System.out.println("P2: NULL ellipse!");
-		}
-		else {
-			boolean isEllipse2 = (4 * p2[0] * p2[2] - sqr(p2[1])) > 0;
-			System.out.println("P2: is ellipse = " +isEllipse2);
-			if (isEllipse2) {
-				Ellipse ell2 = Ellipse.from(fit2.getEllipse());
-				System.out.println("P2: error = " + ell2.getError(points));
-			}
-			
-		}
-		System.out.println();
-		return p;
-		*/
+		return (isEllipse) ? new double[] {A,B,C,D,E,F} : null;
 	}
 	
 	public static void main(String[] args) {
@@ -139,10 +105,12 @@ public class EllipseFit5Points implements EllipseFitAlgebraic {
 		
 		Pnt2d[] points = {p0, p1, p2, p3, p4};
 		EllipseFit5Points fit = new EllipseFit5Points(points);
+		System.out.println("fit parameters = " + Matrix.toString(fit.getParameters()));
 		System.out.println("fit ellipse = " + fit.getEllipse());
+		System.out.println("fit ellipse = " +  Matrix.toString(fit.getEllipse().getParameters()));
 		
-		Random rg = new Random();
-		
+		// create random 5-point sets and try to fit ellipses, counting null results:
+		Random rg = new Random(17);
 		int N = 1000;
 		int nullCnt = 0;
 		for (int k = 0; k < N; k++) {
@@ -159,6 +127,6 @@ public class EllipseFit5Points implements EllipseFitAlgebraic {
 			
 		}
 		
-		System.out.println("null count: " + nullCnt);
+		System.out.println(nullCnt + " null results out of " + N);
 	}
 }

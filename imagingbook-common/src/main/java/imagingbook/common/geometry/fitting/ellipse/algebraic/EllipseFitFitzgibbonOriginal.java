@@ -12,10 +12,12 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.math.eigen.GeneralizedSymmetricEigenSolver;
 
 /**
@@ -38,11 +40,11 @@ import imagingbook.common.math.eigen.GeneralizedSymmetricEigenSolver;
  * @author WB
  *
  */
-public class EllipseFitFitzgibbon implements EllipseFitAlgebraic {
+public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 	
 	private final double[] p;	// = (A,B,C,D,E,F) algebraic ellipse parameters
 	
-	public EllipseFitFitzgibbon(Pnt2d[] points) {
+	public EllipseFitFitzgibbonOriginal(Pnt2d[] points) {
 		this.p = fit(points);
 	}
 
@@ -67,6 +69,13 @@ public class EllipseFitFitzgibbon implements EllipseFitAlgebraic {
 		
 		// scatter matrix S:
 		RealMatrix S = X.transpose().multiply(X);
+		System.out.println("S = \n" + Matrix.toString(S));
+		System.out.println("S nonsingular: " + Matrix.isNonSingular(S));
+		
+		SingularValueDecomposition svdS = new SingularValueDecomposition(S);
+		System.out.println("   rank(S) = " + svdS.getRank());
+		System.out.println("   singular values = "  + Matrix.toString(svdS.getSingularValues()));
+		System.out.println("   condition no = " + svdS.getConditionNumber());
 		
 		// constraint matrix C:
 		RealMatrix C = MatrixUtils.createRealMatrix(6, 6);
@@ -76,8 +85,7 @@ public class EllipseFitFitzgibbon implements EllipseFitAlgebraic {
 		
 		// solve C*p = lambda*S*p  which is equiv. to 
 		// A*x = lambda*B*x (A, B symmetric, B positive definite)
-		GeneralizedSymmetricEigenSolver eigen = 
-				new GeneralizedSymmetricEigenSolver(C, S, 1e-15, 1e-15); 
+		GeneralizedSymmetricEigenSolver eigen = new GeneralizedSymmetricEigenSolver(C, S, 1e-15, 1e-15); 
 				// low ABSOLUTE_POSITIVITY_THRESHOLD (last argument) is important!
 		
 		double[] evals = eigen.getRealEigenvalues(); 
@@ -99,6 +107,41 @@ public class EllipseFitFitzgibbon implements EllipseFitAlgebraic {
 			}
 		}
 		return maxidx;
+	}
+	
+	// -------------------------------------------------
+	
+	public static void main(String[] args) {
+		PrintPrecision.set(9);
+		Pnt2d p0 = Pnt2d.from(40, 53);
+		Pnt2d p1 = Pnt2d.from(107, 20);
+		Pnt2d p2 = Pnt2d.from(170, 26);
+		Pnt2d p3 = Pnt2d.from(186, 55);
+		Pnt2d p4 = Pnt2d.from(135, 103);
+		
+		Pnt2d[] points = {p0, p1, p2, p3, p4};
+		EllipseFitAlgebraic fit = new EllipseFitFitzgibbonOriginal(points);
+		System.out.println("fit parameters = " + Matrix.toString(fit.getParameters()));
+		System.out.println("fit ellipse = " + fit.getEllipse());
+		System.out.println("fit ellipse = " +  Matrix.toString(fit.getEllipse().getParameters()));
+		
+		// create random 5-point sets and try to fit ellipses, counting null results:
+//		Random rg = new Random(17);
+//		int N = 1000;
+//		int nullCnt = 0;
+//		for (int k = 0; k < N; k++) {
+//			for (int i = 0; i < points.length; i++) {
+//				double x = rg.nextInt(200);
+//				double y = rg.nextInt(200);
+//				points[i] = Pnt2d.from(x, y);
+//			}
+//			fit = new EllipseFit5Points(points);
+//			if (fit.getEllipse() == null) {
+//				nullCnt++;
+//			}	
+//		}
+//		
+//		System.out.println(nullCnt + " null results out of " + N);
 	}
 	
 }

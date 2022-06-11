@@ -51,7 +51,8 @@ public class AlgebraicEllipse {
 		if (d > -Arithmetic.EPSILON_DOUBLE) {	// discriminant (d) must be negative!
 			throw new IllegalArgumentException("illegal ellipse parameters, non-negative discriminant " + d);
 		}
-		// d < 0, normalize to B^2 - 4 A C = -1
+		// d < 0
+		// normalize to B^2 - 4 A C = -1
 		double s = 1 / sqrt(-d);
 		if (A >= 0) {
 			this.A = A * s;
