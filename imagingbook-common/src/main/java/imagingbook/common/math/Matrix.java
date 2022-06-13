@@ -1401,11 +1401,14 @@ public abstract class Matrix {
 			A[2][2] * A[1][0] * A[0][1] ;
 	}
 	
-	public static double determinant(final double[][] A) throws NonsquareMatrixException {
-		if (!isSquare(A))
+	public static double determinant(RealMatrix A) throws NonsquareMatrixException {
+		if (!A.isSquare())
 			throw new NonsquareMatrixException();
-		RealMatrix M = MatrixUtils.createRealMatrix(A);
-		return new LUDecomposition(M).getDeterminant();
+		return new LUDecomposition(A).getDeterminant();
+	}
+	
+	public static double determinant(final double[][] A) throws NonsquareMatrixException {
+		return determinant(MatrixUtils.createRealMatrix(A));
 	}
 	
 	// Matrix trace ---------------------------------------
