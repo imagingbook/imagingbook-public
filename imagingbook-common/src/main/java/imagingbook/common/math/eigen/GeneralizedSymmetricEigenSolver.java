@@ -14,36 +14,43 @@ import static org.apache.commons.math3.linear.CholeskyDecomposition.DEFAULT_RELA
 import java.util.Arrays;
 
 import org.apache.commons.math3.linear.CholeskyDecomposition;
+//import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.DecompositionSolver;
 import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.NonPositiveDefiniteMatrixException;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
+//import imagingbook.common.math.CholeskyDecomposition;
 import imagingbook.common.math.Matrix;
 
 /**
- * Solver for generalized symmetric eigenproblems.
+ * Solves the generalized symmetric eigenproblem of the form A x = &lambda; B x,
+ * where matrices A, B are symmetric and B is positive definite
+ * (see Sec. 11.0.5. of [1]).
+ * The methods defined by this class are analogous to the conventional
+ * eigendecomposition (see {@link EigenDecomposition}).
+ * 
+ * <p>
+ * [1] Press, Teukolsky, Vetterling, Flannery:
+ * "Numerical Recipes". Cambridge University Press, 3rd ed. (2007).
+ * </p>
+ * @see EigenDecomposition
  * @author WB
  * @version 2022/06/11
  */
 public class GeneralizedSymmetricEigenSolver {
 	
-//	private final RealMatrix LT;
-	private final EigenDecomposition ed;
-	private final DecompositionSolver ds;
+	private final EigenDecomposition eigendecompY;
+	private final DecompositionSolver solverLT;
 	
 	/**
-	 * Solves the generalized symmetric eigenproblem of the form
-	 *       A x = lambda B x,
-	 * where matrices A, B are symmetric and B is positive definite.
-	 * See Sec. 11.0.5. of Press, Teukolsky, Vetterling, Flannery. 
-	 * "Numerical Recipes". Cambridge University Press, third ed. (2007).
-	 * 
+	 * Constructor.
 	 * An exception is thrown if A is not symmetric and
-	 * the Cholesky decomposition throws an exception if B is not symmetric
-	 * and positive definite.
+	 * the Cholesky decomposition throws an exception if B is either not symmetric
+	 * not positive definite or non-singular.
 	 * 
 	 * @param A real symmetric matrix
 	 * @param B real symmetric and positive definite matrix
@@ -52,51 +59,40 @@ public class GeneralizedSymmetricEigenSolver {
 	 */
 	public GeneralizedSymmetricEigenSolver(RealMatrix A, RealMatrix B, double rsth, double apth) {
 		if (!MatrixUtils.isSymmetric(A, rsth)) {
-			throw new RuntimeException("matrix A must be symmetric");
+			throw new IllegalArgumentException("matrix A must be symmetric");
 		}
 		
 		if (!MatrixUtils.isSymmetric(B, rsth)) {
-			throw new RuntimeException("matrix B must be symmetric");
+			throw new IllegalArgumentException("matrix B must be symmetric");
 		}
 		
-		CholeskyDecomposition cd = new CholeskyDecomposition(B, rsth, apth);
-		
-		// find Y, such that Y * LT = A or equivalently L * YT = AT = A (since A is symmetric)
-		DecompositionSolver s1 = new LUDecomposition(cd.getL()).getSolver();
-		RealMatrix Y = s1.solve(A).transpose();
-		System.out.println("Y = \n" + Matrix.toString(Y.getData()));
+		CholeskyDecomposition cd = null;
+		try {
+			cd = new CholeskyDecomposition(B, rsth, apth);
+		} catch (NonPositiveDefiniteMatrixException e) {
+			throw new IllegalArgumentException("matrix B must be positive definite");
+		}
 
-		// find C, such that L * C = Y
-		RealMatrix C = s1.solve(Y);
-		System.out.println("C = \n" + Matrix.toString(C.getData()));
+		RealMatrix L = cd.getL();
+
+		// find Q, such that Q * LT = A or equivalently L * QT = AT = A (since A is symmetric)
+		DecompositionSolver sL = new LUDecomposition(L).getSolver();
+		RealMatrix Q = sL.solve(A);
+
+		// find Y, such that L * Y = QT
+		RealMatrix Y = sL.solve(Q.transpose());
 		
-		this.ed = new EigenDecomposition(C);
-		this.ds = new LUDecomposition(cd.getLT()).getSolver();
+		// Y has the same eigenvalues as the original system and eigenvectors v_k
+		this.eigendecompY = new EigenDecomposition(Y);
+		
+		// the eigenvectors x_k of the original system are related
+		// to the eigenvectors v_k of Y as x_k = (LT)^(-1) * v_k = (L^(-1))^T * v_k
+		// or found by solving L^T * x_k = y_k, using the following solver:
+		this.solverLT = new LUDecomposition(cd.getLT()).getSolver();
 	}
 	
-//	public GeneralizedSymmetricEigenSolver(RealMatrix A, RealMatrix B, double rsth, double apth) {
-//		if (!MatrixUtils.isSymmetric(A, rsth)) {
-//			throw new RuntimeException("matrix A must be symmetric");
-//		}
-//		
-//		if (!MatrixUtils.isSymmetric(B, rsth)) {
-//			throw new RuntimeException("matrix B must be symmetric");
-//		}
-//		
-//		final RealMatrix L = new CholeskyDecomposition(B, rsth, apth).getL();
-//		final RealMatrix Li = MatrixUtils.inverse(L);
-//		this.LiT = Li.transpose();
-//		
-//		final DecompositionSolver ds = new LUDecomposition(L).getSolver();
-//		final RealMatrix Q = ds.solve(A);		// solve L * Q = A
-//		final RealMatrix Y = ds.solve(Q.transpose()); // solve L * Y = Q^T
-//		// alternatively:
-//		//RealMatrix Y = Li.multiply(A).multiply(LiT);
-//		
-//		this.ed = new EigenDecomposition(Y);
-//	}
-	
 	/**
+	 * Constructor.
 	 * See {@link #GeneralizedSymmetricEigenSolver(RealMatrix, RealMatrix, double, double)}.
 	 * 
 	 * @param A real symmetric matrix
@@ -111,29 +107,32 @@ public class GeneralizedSymmetricEigenSolver {
 	// ---------------------------------------------------------------------
 	
 	public double[] getRealEigenvalues() {
-		return ed.getRealEigenvalues();
+		return eigendecompY.getRealEigenvalues();
 	}
 	
 	public double[] getImagEigenvalues() {
-		return ed.getImagEigenvalues();
+		return eigendecompY.getImagEigenvalues();
 	}
 	
 	public boolean hasComplexEigenvalues() {
-		return ed.hasComplexEigenvalues();
+		return eigendecompY.hasComplexEigenvalues();
 	}
 	
 	public RealMatrix getD() {
-		return ed.getD();
+		return eigendecompY.getD();
 	}
 	
-	public RealVector getEigenVector(int i) {
-//		return LiT.operate(ed.getEigenvector(i));
-		return ds.solve(ed.getEigenvector(i));
+	public RealVector getEigenVector(int k) {
+//		return LiT.operate(ed.getEigenvector(k));
+		// solve LT * x_k = v_k
+		RealVector vk = eigendecompY.getEigenvector(k);
+		return solverLT.solve(vk);
 	}
 
 	public RealMatrix getV() {
 //		return LiT.multiply(ed.getV());
-		return ds.solve(ed.getV());
+		// solve LT * X = V
+		return solverLT.solve(eigendecompY.getV());
 	}
 
 	// ---------------------------------------------------------------------
@@ -149,17 +148,15 @@ public class GeneralizedSymmetricEigenSolver {
 			{  2, 12, 3},
 			{  7, 3, 15}});
 		
-		GeneralizedSymmetricEigenSolver decomp = new GeneralizedSymmetricEigenSolver(A, B);
+		GeneralizedSymmetricEigenSolver solver = new GeneralizedSymmetricEigenSolver(A, B);
 		
-		System.out.println("has complex eigenvalues = " + decomp.hasComplexEigenvalues());
-		double[] evals = decomp.getRealEigenvalues();
+		System.out.println("has complex eigenvalues = " + solver.hasComplexEigenvalues());
+		double[] evals = solver.getRealEigenvalues();
 		System.out.println("evals = " + Arrays.toString(evals));
-		// evals = [0.39652279397140217, 0.2884669048273067, -1.2739949344008035]
-		
 		
 		for (int i = 0; i < evals.length; i++) {
 			double lambda = evals[i];
-			RealVector evec = decomp.getEigenVector(i);
+			RealVector evec = solver.getEigenVector(i);
 			System.out.println("i = " + i);
 			System.out.println("  eval = " + lambda);
 			System.out.println("  evec = " + Arrays.toString(evec.toArray()));
@@ -173,9 +170,9 @@ public class GeneralizedSymmetricEigenSolver {
 			System.out.println("  res = 0? "+  Matrix.isZero(res.toArray(), 1e-6));
 		}
 		
-		RealMatrix V = decomp.getV();
+		RealMatrix V = solver.getV();
 		System.out.println("V = \n" + Matrix.toString(V.getData()));
-		RealMatrix D = decomp.getD();
+		RealMatrix D = solver.getD();
 		System.out.println("D = \n" + Matrix.toString(D.getData()));
 		
 		// check A*V = B*V*D
@@ -183,6 +180,37 @@ public class GeneralizedSymmetricEigenSolver {
 		System.out.println("AV = \n" + Matrix.toString(AV.getData()));
 		RealMatrix BVD = B.multiply(V).multiply(D);
 		System.out.println("BVD = \n" + Matrix.toString(BVD.getData()));
-		
 	}
 }
+/*
+has complex eigenvalues = false
+evals = [0.39652279397140217, 0.2884669048273067, -1.2739949344008035]
+i = 0
+  eval = 0.39652279397140217
+  evec = [0.1763871132237779, 0.06192779664186667, 0.12646136674589745]
+  res = 0? true
+i = 1
+  eval = 0.2884669048273067
+  evec = [-0.2690030812171035, 0.22022575242852008, 0.12691709905459791]
+  res = 0? true
+i = 2
+  eval = -1.2739949344008035
+  evec = [-0.2138681562789338, -0.1892041258097452, 0.2629091348298518]
+  res = 0? true
+V = 
+{{0.176, -0.269, -0.214}, 
+{0.062, 0.220, -0.189}, 
+{0.126, 0.127, 0.263}}
+D = 
+{{0.397, 0.000, 0.000}, 
+{0.000, 0.288, 0.000}, 
+{0.000, 0.000, -1.274}}
+AV = 
+{{1.100, -0.393, 0.862}, 
+{0.585, 0.717, 2.433}, 
+{1.315, 0.197, -2.394}}
+BVD = 
+{{1.100, -0.393, 0.862}, 
+{0.585, 0.717, 2.433}, 
+{1.315, 0.197, -2.394}}
+*/
