@@ -113,18 +113,8 @@ package imagingbook.common.math.eigen;
 	 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	 * </p>
 	 */
-	public class GeneralizedEigenvalueMipav implements java.io.Serializable {
+	public class GeneralizedEigenvalueMipav {
 
-	    // ~ Static fields/initializers
-	    // -------------------------------------------------------------------------------------
-
-	    /** Use serialVersionUID for interoperability. */
-	    private static final long serialVersionUID = 3809017135250813360L;
-
-	    // ~ Instance fields
-	    // ------------------------------------------------------------------------------------------------
-
-	    /** DOCUMENT ME! */
 	    private double base;
 
 	    /** DOCUMENT ME! */
@@ -152,15 +142,10 @@ package imagingbook.common.math.eigen;
 
 	    /** Found in routine dlatb4 */
 	    private boolean first_dlatb4 = true;
-
 	    private double eps_dlatb4;
-
 	    private final double small_dlatb4[] = new double[1];
-
 	    private final double large_dlatb4[] = new double[1];
-
 	    private double badc1_dlatb4;
-
 	    private double badc2_dlatb4;
 
 	    /** DOCUMENT ME! */
@@ -221,7 +206,7 @@ package imagingbook.common.math.eigen;
 	     * Numerical values were obtained from the dgg.in datafile. Original DCHKEE created by Univ. of Tennessee, Univ. of
 	     * California Berkeley, and NAG Ltd., January, 2007
 	     */
-	    public void dchkgg_test() {
+	    private void dchkgg_test() {
 
 	        // Number of values of n
 	        final int nn = 7;
@@ -390,7 +375,7 @@ package imagingbook.common.math.eigen;
 	     * California Berkeley, and NAG Ltd., November, 2006 Sample data values obtained from the file dgbak.in dchkgk tests
 	     * dggbak, a routine for backward balancing of a matrix pair (A, B).
 	     */
-	    public void dchkgk() {
+	    private void dchkgk() {
 	        final int lda = 50;
 	        final int ldb = 50;
 	        final int ldvl = 50;
@@ -800,7 +785,7 @@ package imagingbook.common.math.eigen;
 	     * dchkgl tests dggbal, a routine for balancing a matrix pair (A, B)
 	     * </p>
 	     */
-	    public void dchkgl() {
+	    private void dchkgl() {
 	        final int lda = 20;
 	        final int ldb = 20;
 	        final int lwork = 6 * lda;
@@ -1583,7 +1568,7 @@ package imagingbook.common.math.eigen;
 	     * Tennessee, Univ. Of California Berkeley and NAG Ltd., January, 2007. and some values from the test data file
 	     * dtest.in.
 	     */
-	    public void dchkqr_test() {
+	    private void dchkqr_test() {
 
 	        // Number of values of m
 	        final int nm = 7;
@@ -1667,7 +1652,7 @@ package imagingbook.common.math.eigen;
 	     * dsteqr, and dsterf. Numerical values were obtained from the sep.in datafile. Original DCHKEE created by Univ. of
 	     * Tennessee, Univ. of California Berkeley, and NAG Ltd., January, 2007
 	     */
-	    public void dchkst_test() {
+	    private void dchkst_test() {
 
 	        // Number of values of n
 	        final int nn = 6;
@@ -1818,7 +1803,7 @@ package imagingbook.common.math.eigen;
 	     * from the sep.in datafile. Original DCHKEE created by Univ. of Tennessee, Univ. of California Berkeley, and NAG
 	     * Ltd., January, 2007
 	     */
-	    public void ddrvst_test() {
+	    private void ddrvst_test() {
 
 	        // Number of values of n
 	        final int nn = 6;
@@ -2360,7 +2345,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * INFO (output) INTEGER = 0: successful exit < 0: if INFO = -i, the i-th argument had an illegal value
 	     */
-	    public void dgeqrs(final int m, final int n, final int nrhs, final double A[][], final int lda,
+	    private void dgeqrs(final int m, final int n, final int nrhs, final double A[][], final int lda,
 	            final double[] tau, final double[][] B, final int ldb, final double[] work, final int lwork,
 	            final int info[]) {
 
@@ -2442,7 +2427,7 @@ package imagingbook.common.math.eigen;
 	     * RESID (output) DOUBLE PRECISION The maximum over the number of right hand sides of norm(B - A*X) / ( norm(A) *
 	     * norm(X) * EPS ).
 	     */
-	    public void dget02(final char trans, final int m, final int n, final int nrhs, final double[][] A, final int lda,
+	    private void dget02(final char trans, final int m, final int n, final int nrhs, final double[][] A, final int lda,
 	            final double[][] X, final int ldx, final double[][] B, final int ldb, final double[] rwork,
 	            final double[] resid) {
 	        int j;
@@ -2565,7 +2550,7 @@ package imagingbook.common.math.eigen;
 	     *            beta[j] should be correct for j = info[0],...,n-1. > n: = n+1: other than QZ iteration failed in
 	     *            DHGEQZ. = n+2: error return from dtgevc.
 	     */
-	    public void dggev(final char jobvl, final char jobvr, final int n, final double[][] A, final int lda,
+	    private void dggev(final char jobvl, final char jobvr, final int n, final double[][] A, final int lda,
 	            final double[][] B, final int ldb, final double[] alphar, final double[] alphai, final double[] beta,
 	            final double[][] vl, final int ldvl, final double[][] vr, final int ldvr, final double[] work,
 	            final int lwork, final int[] info) {
@@ -3166,7 +3151,7 @@ package imagingbook.common.math.eigen;
 	     * from the dgv section in the dgd.in datafile. Original DCHKEE created by Univ. of Tennessee, Univ. of California
 	     * Berkeley, and NAG Ltd., January, 2007
 	     */
-	    public void dggev_test() {
+	    private void dggev_test() {
 
 	        // Number of values of n
 	        final int nn = 6;
@@ -3314,7 +3299,7 @@ package imagingbook.common.math.eigen;
 	     *            If info[0] = i, the algorithm failed to converge; i off-diagonal elements of an intermediate
 	     *            tridiagonal form did not converge to zero.
 	     */
-	    public void dsyev(final char jobz, final char uplo, final int n, final double[][] A, final int lda,
+	    private void dsyev(final char jobz, final char uplo, final int n, final double[][] A, final int lda,
 	            final double[] w, final double[] work, final int lwork, final int[] info) {
 	        boolean lower;
 	        boolean lquery;
@@ -3552,7 +3537,7 @@ package imagingbook.common.math.eigen;
 	     *            i <= n, then the leading minor of order i of B is not positive definite. The factorization of B could
 	     *            not be completed and no eigenvalues or eigenvectors were computed.
 	     */
-	    public void dsygv(final int itype, final char jobz, final char uplo, final int n, final double[][] A,
+	    private void dsygv(final int itype, final char jobz, final char uplo, final int n, final double[][] A,
 	            final int lda, final double[][] B, final int ldb, final double[] w, final double[] work, final int lwork,
 	            final int[] info) {
 	        boolean wantz;
@@ -3702,7 +3687,7 @@ package imagingbook.common.math.eigen;
 	     * from the dsg.in datafile. Original DCHKEE created by Univ. of Tennessee, Univ. of California Berkeley, and NAG
 	     * Ltd., January, 2007
 	     */
-	    public void dsygv_test() {
+	    private void dsygv_test() {
 
 	        // Number of values of n
 	        final int nn = 7;
@@ -3830,7 +3815,7 @@ package imagingbook.common.math.eigen;
 	    /**
 	     * DOCUMENT ME!
 	     */
-	    public void dsygv_test2() {
+	    private void dsygv_test2() {
 //	        this.UI = ViewUserInterface.getReference();
 
 	        final int itype = 1;
@@ -3918,7 +3903,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @param UI DOCUMENT ME!
 	     */
-	    public void dsygv_test3() {	//final ViewUserInterface UI
+	    private void dsygv_test3() {	//final ViewUserInterface UI
 //	        this.UI = UI;
 
 	        final int itype = 1;
@@ -3974,7 +3959,7 @@ package imagingbook.common.math.eigen;
 	     * @param dy input/output double[]
 	     * @param incy input int
 	     */
-	    public void daxpy(final int n, final double da, final double[] dx, final int incx, final double[] dy,
+	    private void daxpy(final int n, final double da, final double[] dx, final int incx, final double[] dy,
 	            final int incy) {
 	        int i;
 	        int ix;
@@ -5821,7 +5806,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double answer
 	     */
-	    public double ddot(final int n, final double[] dx, final int incx, final double[] dy, final int incy) {
+	    private double ddot(final int n, final double[] dx, final int incx, final double[] dy, final int incy) {
 	        double answer;
 	        int ix;
 	        int iy;
@@ -7645,7 +7630,7 @@ package imagingbook.common.math.eigen;
 	     * @param ldc input int On entry, ldc specifies the first dimension of C as declared in the calling (sub) program.
 	     *            ldc must be at least max(1,m).
 	     */
-	    public void dgemm(final char transa, final char transb, final int m, final int n, final int k, final double alpha,
+	    private void dgemm(final char transa, final char transb, final int m, final int n, final int k, final double alpha,
 	            final double[][] A, final int lda, final double[][] B, final int ldb, final double beta,
 	            final double[][] C, final int ldc) {
 	        boolean nota;
@@ -7876,7 +7861,7 @@ package imagingbook.common.math.eigen;
 	     *            contain the vector y. On exit, array y is overwritten with the updated vector y.
 	     * @param incy input int On entry, incy specifies the increment for the elements of y. incy must not be zero.
 	     */
-	    public void dgemv(final char trans, final int m, final int n, final double alpha, final double[][] A,
+	    private void dgemv(final char trans, final int m, final int n, final double alpha, final double[][] A,
 	            final int lda, final double[] x, final int incx, final double beta, final double[] y, final int incy) {
 	        int info;
 	        int lenx;
@@ -8082,7 +8067,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * LDA (input) INTEGER Leading dimension of A.
 	     */
-	    public boolean dgennd(final int m, final int n, final double A[][], final int lda) {
+	    private boolean dgennd(final int m, final int n, final double A[][], final int lda) {
 	        int i;
 	        int k;
 
@@ -8114,7 +8099,7 @@ package imagingbook.common.math.eigen;
 	     * @param work (workspace) double[] of dimension (n)
 	     * @param info output int[] = 0: successful exit, < 0: If info[0] = -i, the i-th argument had an illegal value.
 	     */
-	    public void dgeqr2(final int m, final int n, final double[][] A, final int lda, final double[] tau,
+	    private void dgeqr2(final int m, final int n, final double[][] A, final int lda, final double[] tau,
 	            final double[] work, final int[] info) {
 	        int i;
 	        int k;
@@ -8227,7 +8212,7 @@ package imagingbook.common.math.eigen;
 	     *            array, and no error message related to lwork is output.
 	     * @param info output int[] = 0: successful exit, < 0: If info[0] = -i, the i-th argument had an illegal value
 	     */
-	    public void dgeqrf(final int m, final int n, final double[][] A, final int lda, final double[] tau,
+	    private void dgeqrf(final int m, final int n, final double[][] A, final int lda, final double[] tau,
 	            final double[] work, final int lwork, final int[] info) {
 	        boolean lquery;
 	        int i;
@@ -8444,7 +8429,7 @@ package imagingbook.common.math.eigen;
 	     * @param lda input int On entry, lda specifies the first dimension of A as declared in the calling (sub) program.
 	     *            lda must be at least max(1,m).
 	     */
-	    public void dger(final int m, final int n, final double alpha, final double[] x, final int incx, final double[] y,
+	    private void dger(final int m, final int n, final double alpha, final double[] x, final int incx, final double[] y,
 	            final int incy, final double[][] A, final int lda) {
 	        double temp;
 	        int i;
@@ -11580,7 +11565,7 @@ package imagingbook.common.math.eigen;
 	     * @param large input/output double[] On entry, the overflow threshold as computed by dlamch. On exit, if
 	     *            log10(large) is sufficiently large, the square root of large, otherwise unchanged.
 	     */
-	    public void dlabad(final double[] small, final double[] large) {
+	    private void dlabad(final double[] small, final double[] large) {
 
 	        // If it looks like we're on a Cray, take the square root of small and
 	        // large to avoid overflow and underflow problems.
@@ -11607,7 +11592,7 @@ package imagingbook.common.math.eigen;
 	     * @param B output double[][] of dimension (ldb,n). On exit, B = A in the locations specified by uplo.
 	     * @param ldb input int The leading dimension of the array B. ldb >= max(1,m).
 	     */
-	    public void dlacpy(final char uplo, final int m, final int n, final double[][] A, final int lda,
+	    private void dlacpy(final char uplo, final int m, final int n, final double[][] A, final int lda,
 	            final double[][] B, final int ldb) {
 	        int i, j;
 
@@ -11654,7 +11639,7 @@ package imagingbook.common.math.eigen;
 	     * @param p output double[]
 	     * @param q output double[]
 	     */
-	    public void dladiv(final double a, final double b, final double c, final double d, final double[] p,
+	    private void dladiv(final double a, final double b, final double c, final double d, final double[] p,
 	            final double[] q) {
 	    	final double bs = 2.0;
 	        double aa, bb, cc, dd, ab, cd, s, ov, un, be, eps;
@@ -11773,7 +11758,7 @@ package imagingbook.common.math.eigen;
 	     *            of 5 of overflow. Underflow is harmless if the input data is 0 or exceeds underflow_threshold /
 	     *            macheps.
 	     */
-	    public void dlae2(final double a, final double b, final double c, final double[] rt1, final double[] rt2) {
+	    private void dlae2(final double a, final double b, final double c, final double[] rt1, final double[] rt2) {
 	        double ab;
 	        double acmn;
 	        double acmx;
@@ -11847,7 +11832,7 @@ package imagingbook.common.math.eigen;
 	     *            accurate to a few ulps barring over/underflow. Overflow if possible only if rt1[0] is within a factor
 	     *            of 5 of overflow. Underflow is harmless if the input data is 0 or exceeds underflow_threshold/macheps.
 	     */
-	    public void dlaev2(final double a, final double b, final double c, final double[] rt1, final double[] rt2,
+	    private void dlaev2(final double a, final double b, final double c, final double[] rt1, final double[] rt2,
 	            final double[] cs1, final double[] sn1) {
 	        int sgn1;
 	        int sgn2;
@@ -11965,7 +11950,7 @@ package imagingbook.common.math.eigen;
 	     * @param ie input/output int[] On entry, ie contains the number of tests which have failed to pass the threshold so
 	     *            far. Updated on exit if any of the ratios in result also fail.
 	     */
-	    public void dlafts(final String type, final int m, final int n, final int imat, final int ntests,
+	    private void dlafts(final String type, final int m, final int n, final int imat, final int ntests,
 	            final double[] result, final int[] iseed, final double thresh, final int[] ie) {
 	        int k;
 
@@ -12328,7 +12313,7 @@ package imagingbook.common.math.eigen;
 	     * @param work workspace double[] of dimension (m+n)
 	     * @param info output int[] = 0: successful exit < 0: If info = -i, the i-th argument had an illegal value
 	     */
-	    public void dlagge(final int m, final int n, final int kl, final int ku, final double[] D, final double[][] A,
+	    private void dlagge(final int m, final int n, final int kl, final int ku, final double[] D, final double[][] A,
 	            final int lda, final int[] iseed, final double[] work, final int[] info) {
 	        int i;
 	        int j;
@@ -12766,7 +12751,7 @@ package imagingbook.common.math.eigen;
 	     * @param work workspace double[] of dimension (2*n)
 	     * @param info output int[] = 0: successful exit < 0: If info[0] = -i, the i-th argument had an illegal value
 	     */
-	    public void dlagsy(final int n, final int k, final double[] D, final double[][] A, final int lda,
+	    private void dlagsy(final int n, final int k, final double[] D, final double[][] A, final int lda,
 	            final int[] iseed, final double[] work, final int[] info) {
 	        int i;
 	        int j;
@@ -14032,7 +14017,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlamch(final char cmach) {
+	    private double dlamch(final char cmach) {
 
 	        final boolean[] lrnd = new boolean[1];
 	        final int[] beta = new int[1];
@@ -14118,7 +14103,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlangb(final char norm, final int n, final int kl, final int ku, final double[][] ab,
+	    private double dlangb(final char norm, final int n, final int kl, final int ku, final double[][] ab,
 	            final int ldab, final double[] work) {
 	        int i;
 	        int j;
@@ -14223,7 +14208,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlange(final char norm, final int m, final int n, final double[][] A, final int lda,
+	    private double dlange(final char norm, final int m, final int n, final double[][] A, final int lda,
 	            final double[] work) {
 	        int i;
 	        int j;
@@ -14321,7 +14306,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlanhs(final char norm, final int n, final double[][] A, final int lda, final double[] work) {
+	    private double dlanhs(final char norm, final int n, final double[][] A, final int lda, final double[] work) {
 	        int i;
 	        int j;
 	        final double[] scale = new double[1];
@@ -14424,7 +14409,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return DOCUMENT ME!
 	     */
-	    public double dlansb(final char norm, final char uplo, final int n, final int k, final double[][] ab,
+	    private double dlansb(final char norm, final char uplo, final int n, final int k, final double[][] ab,
 	            final int ldab, final double[] work) {
 	        int i;
 	        int j;
@@ -14584,7 +14569,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlansp(final char norm, final char uplo, final int n, final double[] ap, final double[] work) {
+	    private double dlansp(final char norm, final char uplo, final int n, final double[] ap, final double[] work) {
 	        int i;
 	        int j;
 	        int k;
@@ -14755,7 +14740,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlanst(final char norm, final int n, final double[] d, final double[] e) {
+	    private double dlanst(final char norm, final int n, final double[] d, final double[] e) {
 	        int i;
 	        double anorm = 0.0;
 	        final double[] scale = new double[1];
@@ -14832,7 +14817,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlansy(final char norm, final char uplo, final int n, final double[][] A, final int lda,
+	    private double dlansy(final char norm, final char uplo, final int n, final double[][] A, final int lda,
 	            final double[] work) {
 	        int i;
 	        int j;
@@ -14965,7 +14950,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlapy2(final double x, final double y) {
+	    private double dlapy2(final double x, final double y) {
 	        double w;
 	        double xabs;
 	        double yabs;
@@ -15041,7 +15026,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlaran(final int[] iseed) {
+	    private double dlaran(final int[] iseed) {
 	        final int m1 = 494;
 	        final int m2 = 322;
 	        final int m3 = 2508;
@@ -15104,7 +15089,7 @@ package imagingbook.common.math.eigen;
 	     * @param ldc input int The leading dimension of array C. ldc >= max(1,m).
 	     * @param work workspace double[] If side = 'L', dimension = n. If side = 'R', dimension = m.
 	     */
-	    public void dlarf(final char side, final int m, final int n, final double[] v, final int incv, final double tau,
+	    private void dlarf(final char side, final int m, final int n, final double[] v, final int incv, final double tau,
 	            final double[][] C, final int ldc, final double[] work) {
 	        boolean applyLeft;
 	        int i;
@@ -15267,7 +15252,7 @@ package imagingbook.common.math.eigen;
 	     * @param ldwork input int The leading dimension of the array work. If side = 'L', ldwork >= max(1,n). If side =
 	     *            'R', ldwork >= max(1,m).
 	     */
-	    public void dlarfb(final char side, final char trans, final char direct, final char storev, final int m,
+	    private void dlarfb(final char side, final char trans, final char direct, final char storev, final int m,
 	            final int n, final int k, final double[][] V, final int ldv, final double[][] T, final int ldt,
 	            final double[][] C, final int ldc, final double[][] work, final int ldwork) {
 	        char transt;
@@ -15957,7 +15942,7 @@ package imagingbook.common.math.eigen;
 	     * @param incx input int The increment between elements of x. incx > 0
 	     * @param tau output double[] The value tau
 	     */
-	    public void dlarfg(final int n, final double[] alpha, final double[] x, final int incx, final double[] tau) {
+	    private void dlarfg(final int n, final double[] alpha, final double[] x, final int incx, final double[] tau) {
 	        int j;
 	        int knt;
 	        double beta;
@@ -16039,7 +16024,7 @@ package imagingbook.common.math.eigen;
 	     * @param incx input int The increment between elements of x. incx > 0
 	     * @param tau output double[] The value tau
 	     */
-	    public void dlarfp(final int n, final double[] alpha, final double[] x, final int incx, final double[] tau) {
+	    private void dlarfp(final int n, final double[] alpha, final double[] x, final int incx, final double[] tau) {
 	        int j;
 	        int knt;
 	        double beta;
@@ -16161,7 +16146,7 @@ package imagingbook.common.math.eigen;
 	     *            ) ( v2 v2 v2 1 ) ( v3 v3 v3 v3 1 )
 	     *            </p>
 	     */
-	    public void dlarft(final char direct, final char storev, final int n, final int k, final double[][] V,
+	    private void dlarft(final char direct, final char storev, final int n, final int k, final double[][] V,
 	            final int ldv, final double[] tau, final double[][] T, final int ldt) {
 	        int i;
 	        int j;
@@ -16472,7 +16457,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return DOCUMENT ME!
 	     */
-	    public double dlarnd(final int idist, final int[] iseed) {
+	    private double dlarnd(final int idist, final int[] iseed) {
 	        double t1;
 	        double t2;
 	        double result = 0.0;
@@ -16514,7 +16499,7 @@ package imagingbook.common.math.eigen;
 	     *            distribution, in batches of up to 128 using vectorizable code. The Box-Muller method is used to
 	     *            transform numbers from a uniform to a normal distribution.
 	     */
-	    public void dlarnv(final int idist, final int[] iseed, final int n, final double[] x) {
+	    private void dlarnv(final int idist, final int[] iseed, final int n, final double[] x) {
 	        final int lv = 128;
 	        int i;
 	        int il;
@@ -16675,7 +16660,7 @@ package imagingbook.common.math.eigen;
 	     * @param xright input/output double[] If lright is true, then xright will be used and modified instead of
 	     *            A[0][nl-1] (if lrows = true) or A[nl-1][0] (if lrows = false).
 	     */
-	    public void dlarot(final boolean lrows, final boolean lleft, final boolean lright, final int nl, final double c,
+	    private void dlarot(final boolean lrows, final boolean lleft, final boolean lright, final int nl, final double c,
 	            final double s, final double[] A, final int lda, final double[] xleft, final double[] xright) {
 	        int iinc;
 	        int inext;
@@ -16780,7 +16765,7 @@ package imagingbook.common.math.eigen;
 	     * @param sn output double[] The sine of the rotation.
 	     * @param r output double[] The nonzero component of the rotated vector.
 	     */
-	    public void dlartg(final double f, final double g, final double[] cs, final double[] sn, final double[] r) {
+	    private void dlartg(final double f, final double g, final double[] cs, final double[] sn, final double[] r) {
 	        int count;
 	        int i;
 	        double eps;
@@ -16879,7 +16864,7 @@ package imagingbook.common.math.eigen;
 	     *            48-bit integers are stored in 4 integer array elements with 12 bits per element. Hence the routine is
 	     *            portable across machines with integers of 32 bits or more.
 	     */
-	    public void dlaruv(final int[] iseed, final int n, final double[] x) {
+	    private void dlaruv(final int[] iseed, final int n, final double[] x) {
 	        final int lv = 128;
 	        final int ipw2 = 4096;
 	        final double r = 1.0 / ipw2;
@@ -17481,7 +17466,7 @@ package imagingbook.common.math.eigen;
 	     * @param lda input int The leading dimension of the array A. lda >= max(1,m).
 	     * @param info output int[] = 0: successful exit < 0: If info = -i, the i-th argument had an illegal value
 	     */
-	    public void dlascl(final char type, final int kL, final int ku, final double cfrom, final double cto, final int m,
+	    private void dlascl(final char type, final int kL, final int ku, final double cfrom, final double cto, final int m,
 	            final int n, final double[][] A, final int lda, final int[] info) {
 	        boolean done;
 	        int i;
@@ -17698,7 +17683,7 @@ package imagingbook.common.math.eigen;
 	     *            for all uplo, A(i,i) = beta, 0 <= i <= min(m-1,n-1).
 	     * @param lda input int The leading dimension of the array A. lda >= max(1,m).
 	     */
-	    public void dlaset(final char uplo, final int m, final int n, final double alpha, final double beta,
+	    private void dlaset(final char uplo, final int m, final int n, final double alpha, final double beta,
 	            final double[][] A, final int lda) {
 	        int i;
 	        int j;
@@ -17785,7 +17770,7 @@ package imagingbook.common.math.eigen;
 	     *            by P*A if side = 'L' or by A*P' if side = 'R'.
 	     * @param lda input int The leading dimension of the array A. lda >= max(1,m).
 	     */
-	    public void dlasr(final char side, final char pivot, final char direct, final int m, final int n,
+	    private void dlasr(final char side, final char pivot, final char direct, final int m, final int n,
 	            final double[] c, final double[] s, final double[][] A, final int lda) {
 	        int i;
 	        int info;
@@ -18058,7 +18043,7 @@ package imagingbook.common.math.eigen;
 	     *            on id.
 	     * @param info output int[] = 0: successful exit < 0: If info = -i, the i-th argument had an illegal value
 	     */
-	    public void dlasrt(final char id, final int n, final double[] d, final int[] info) {
+	    private void dlasrt(final char id, final int n, final double[] d, final int[] info) {
 	        final int select = 20;
 	        int dir;
 	        int endd;
@@ -18292,7 +18277,7 @@ package imagingbook.common.math.eigen;
 	     * @param sumsq input/output double[] On entry, the value sumsq in the equation above. On exit, sumsq is overwritten
 	     *            with smsq, the basic sum of squares from which scl has been factored out.
 	     */
-	    public void dlassq(final int n, final double[] x, final int incx, final double[] scale, final double[] sumsq) {
+	    private void dlassq(final int n, final double[] x, final int incx, final double[] scale, final double[] sumsq) {
 	        int ix;
 	        double absxi;
 	        double ratio;
@@ -18360,7 +18345,7 @@ package imagingbook.common.math.eigen;
 	     *            by perturbations of size near the underflow threshold.
 	     *            </p>
 	     */
-	    public void dlasv2(final double f, final double g, final double h, final double[] ssmin, final double[] ssmax,
+	    private void dlasv2(final double f, final double g, final double h, final double[] ssmin, final double[] ssmax,
 	            final double[] snr, final double[] csr, final double[] snl, final double[] csl) {
 	        boolean gasmal;
 	        boolean swap;
@@ -18638,7 +18623,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * DIST (output) CHARACTER*1 The type of distribution to be used by the random number generator.
 	     */
-	    public void dlatb4(final String path, final int imat, final int m, final int n, final char[] type, final int[] kl,
+	    private void dlatb4(final String path, final int imat, final int m, final int n, final char[] type, final int[] kl,
 	            final int[] ku, final double anorm[], final int[] mode, final double[] cndnum, final char[] dist) {
 	        String c2;
 	        int mat;
@@ -18973,7 +18958,7 @@ package imagingbook.common.math.eigen;
 	     *            or 6, and irsign neither 0 nor 1 -3 => if mode neither -6, 0, or 6 and cond less than 1 -4 => if mode
 	     *            equals 6 or -6 and idist not in range 1 to 3 -7 => if n negative
 	     */
-	    public void dlatm1(final int mode, final double cond, final int irsign, final int idist, final int[] iseed,
+	    private void dlatm1(final int mode, final double cond, final int irsign, final int idist, final int[] iseed,
 	            final double[] D, final int n, final int[] info) {
 	        int i;
 	        double alpha;
@@ -19180,7 +19165,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlatm2(final int m, final int n, final int i, final int j, final int kl, final int ku,
+	    private double dlatm2(final int m, final int n, final int i, final int j, final int kl, final int ku,
 	            final int idist, final int[] iseed, final double[] D, final int igrade, final double[] dl,
 	            final double[] dr, final int ipvtng, final int[] iwork, final double sparse) {
 	        int isub = 0;
@@ -19322,7 +19307,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dlatm3(final int m, final int n, final int i, final int j, final int[] isub, final int[] jsub,
+	    private double dlatm3(final int m, final int n, final int i, final int j, final int[] isub, final int[] jsub,
 	            final int kl, final int ku, final int idist, final int[] iseed, final double[] D, final int igrade,
 	            final double[] dl, final double[] dr, final int ipvtng, final int[] iwork, final double sparse) {
 	        double temp;
@@ -19844,7 +19829,7 @@ package imagingbook.common.math.eigen;
 	     *            dlatm1 (computing dr) 5 => anorm is positive, but matrix, constructed prior to attempting to scale it
 	     *            to have norm anorm, is zero.
 	     */
-	    public void dlatmr(final int m, final int n, final char dist, final int[] iseed, final char sym, final double[] D,
+	    private void dlatmr(final int m, final int n, final char dist, final int[] iseed, final char sym, final double[] D,
 	            final int mode, final double cond, final double dmax, final char rsign, final char grade,
 	            final double[] dl, final int model, final double condl, final double[] dr, final int moder,
 	            final double condr, final char pivtng, final int[] ipivot, final int kl, final int ku, final double sparse,
@@ -20810,7 +20795,7 @@ package imagingbook.common.math.eigen;
 	     *            + min(kl,m-1) + 1. 1 => Error return from dlatm1 2 => Cannot scale to dmax (maximum singular value is
 	     *            0) 3 => Error return from dlagge or dlagsy
 	     */
-	    public void dlatms(final int m, final int n, final char dist, final int[] iseed, final char sym, final double[] D,
+	    private void dlatms(final int m, final int n, final char dist, final int[] iseed, final char sym, final double[] D,
 	            final int mode, final double cond, final double dmax, final int kl, final int ku, final char pack,
 	            final double[][] A, final int lda, final double[] work, final int[] info) {
 	        boolean givens;
@@ -22622,7 +22607,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * @return double
 	     */
-	    public double dnrm2(final int n, final double[] x, final int incx) {
+	    private double dnrm2(final int n, final double[] x, final int incx) {
 	        int ix;
 	        double absxi;
 	        double norm;
@@ -22774,7 +22759,7 @@ package imagingbook.common.math.eigen;
 	     * @param work workspace double[] of dimension n.
 	     * @param info output int[] = 0: successful exit < 0: If info = -i, the i-th argument has an illegal value.
 	     */
-	    public void dorg2r(final int m, final int n, final int k, final double[][] A, final int lda, final double[] tau,
+	    private void dorg2r(final int m, final int n, final int k, final double[][] A, final int lda, final double[] tau,
 	            final double[] work, final int[] info) {
 	        int i;
 	        int j;
@@ -23113,7 +23098,7 @@ package imagingbook.common.math.eigen;
 	     *            array, and no error message related to lwork is issued.
 	     * @param info output int[] = 0: successful exit < 0: If info = -i, the i-th argument has an illegal value
 	     */
-	    public void dorgqr(final int m, final int n, final int k, final double[][] A, final int lda, final double[] tau,
+	    private void dorgqr(final int m, final int n, final int k, final double[][] A, final int lda, final double[] tau,
 	            final double[] work, final int lwork, final int[] info) {
 	        boolean lquery;
 	        int i;
@@ -23365,7 +23350,7 @@ package imagingbook.common.math.eigen;
 	     *            the work array, and no error message related to lwork is issued.
 	     * @param info output int[] = 0: successful exit < 0: If info = -i, the i-th argument had an illegal value
 	     */
-	    public void dorgtr(final char uplo, final int n, final double[][] A, final int lda, final double[] tau,
+	    private void dorgtr(final char uplo, final int n, final double[][] A, final int lda, final double[] tau,
 	            final double[] work, final int lwork, final int[] info) {
 	        boolean lquery;
 	        boolean upper;
@@ -23530,7 +23515,7 @@ package imagingbook.common.math.eigen;
 	     * @param work (workspace) double[] of dimension (n) if side == 'L', (m) if side == 'R'.
 	     * @param info (output) int[] = 0: successful exit < 0: If info[0] = -i, the i-th argument had an illegal value.
 	     */
-	    public void dorm2l(final char side, final char trans, final int m, final int n, final int k, final double[][] A,
+	    private void dorm2l(final char side, final char trans, final int m, final int n, final int k, final double[][] A,
 	            final int lda, final double[] tau, final double[][] C, final int ldc, final double[] work, final int[] info) {
 	        boolean left;
 	        boolean notran;
@@ -23705,7 +23690,7 @@ package imagingbook.common.math.eigen;
 	     * @param work (workspace) double[] of dimension (n) if side = 'L' (m) if side = 'R'
 	     * @param info output int[] = 0: successful exit < 0: If info[0] = -i, the i-th argument had an illegal value.
 	     */
-	    public void dorm2r(final char side, final char trans, final int m, final int n, final int k, final double[][] A,
+	    private void dorm2r(final char side, final char trans, final int m, final int n, final int k, final double[][] A,
 	            final int lda, final double[] tau, final double[][] C, final int ldc, final double[] work, final int[] info) {
 	        boolean left;
 	        boolean notran;
@@ -23932,7 +23917,7 @@ package imagingbook.common.math.eigen;
 	     *            error message related to lwork is output.
 	     * @param info output int[] = 0: successful exit < 0: If info[0] = -i, the i-th argument had an illegal value
 	     */
-	    public void dormqr(final char side, final char trans, final int m, final int n, final int k, final double[][] A,
+	    private void dormqr(final char side, final char trans, final int m, final int n, final int k, final double[][] A,
 	            final int lda, final double[] tau, final double[][] C, final int ldc, final double[] work, final int lwork,
 	            final int[] info) {
 	        final int nbmax = 64;
@@ -24475,7 +24460,7 @@ package imagingbook.common.math.eigen;
 	     *            If info[0] = i, the leading minor of order i is not positive definite, and the factorization could not
 	     *            be completed.
 	     */
-	    public void dpotrf(final char uplo, final int n, final double[][] A, final int lda, final int[] info) {
+	    private void dpotrf(final char uplo, final int n, final double[][] A, final int lda, final int[] info) {
 	        boolean upper;
 	        String name;
 	        int nb;
@@ -25127,7 +25112,7 @@ package imagingbook.common.math.eigen;
 	     * @param c double
 	     * @param s double
 	     */
-	    public void drot(final int n, final double[] dx, final int incx, final double[] dy, final int incy,
+	    private void drot(final int n, final double[] dx, final int incx, final double[] dy, final int incy,
 	            final double c, final double s) {
 	        double dtemp;
 	        int i;
@@ -25182,7 +25167,7 @@ package imagingbook.common.math.eigen;
 	     * @param dx double[]
 	     * @param incx int
 	     */
-	    public void dscal(final int n, final double da, final double[] dx, final int incx) {
+	    private void dscal(final int n, final double da, final double[] dx, final int incx) {
 	        int nincx;
 	        int i;
 	        int m;
@@ -25636,7 +25621,7 @@ package imagingbook.common.math.eigen;
 	     *            then i elements of e have not converged to zero; on exit, d and e contain the elements of a symmetric
 	     *            tridiagonal matrix which is orthogonally similar to the original matrix.
 	     */
-	    public void dsteqr(final char compz, final int n, final double[] d, final double[] e, final double[][] Z,
+	    private void dsteqr(final char compz, final int n, final double[] d, final double[] e, final double[][] Z,
 	            final int ldz, final double[] work, final int[] info) {
 	        final int maxit = 30;
 	        int i;
@@ -26352,7 +26337,7 @@ package imagingbook.common.math.eigen;
 	     *            The algorithm failed to find all of the eigenvalues in a total of 30*n iterations; if info = i, then i
 	     *            elements of e have not converged to zero.
 	     */
-	    public void dsterf(final int n, final double[] d, final double[] e, final int[] info) {
+	    private void dsterf(final int n, final double[] d, final double[] e, final int[] info) {
 	        final int maxit = 30;
 	        int i;
 	        int iscale;
@@ -26831,7 +26816,7 @@ package imagingbook.common.math.eigen;
 	     * @param result (output) double[] of dimension (2) The values computed by the two tests described above. The values
 	     *            are currently limited to 1/ulp, to avoid overflow. result[0] is always modified.
 	     */
-	    public void dstt21(final int n, final int kband, final double[] AD, final double[] AE, final double[] SD,
+	    private void dstt21(final int n, final int kband, final double[] AD, final double[] AE, final double[] SD,
 	            final double[] SE, final double[][] U, final int ldu, final double[] work, final double[] result) {
 	        int j;
 	        double anorm;
@@ -27956,7 +27941,7 @@ package imagingbook.common.math.eigen;
 	     * @param ldc input int On entry, ldc specifies the first dimension of C as declared in the calling (sub) program.
 	     *            ldc must be at least max(1,m).
 	     */
-	    public void dsymm(final char side, final char uplo, final int m, final int n, final double alpha,
+	    private void dsymm(final char side, final char uplo, final int m, final int n, final double alpha,
 	            final double[][] A, final int lda, final double[][] B, final int ldb, final double beta,
 	            final double[][] C, final int ldc) {
 	        boolean upper;
@@ -28158,7 +28143,7 @@ package imagingbook.common.math.eigen;
 	     *            must contain the n element vector y. On exit, y is overwritten by the updated vector y.
 	     * @param incy input int On entry, incy specifies the increment for the elements of y. incy must not be zero.
 	     */
-	    public void dsymv(final char uplo, final int n, final double alpha, final double[][] A, final int lda,
+	    private void dsymv(final char uplo, final int n, final double alpha, final double[][] A, final int lda,
 	            final double[] x, final int incx, final double beta, final double[] y, final int incy) {
 	        double temp1;
 	        double temp2;
@@ -28369,7 +28354,7 @@ package imagingbook.common.math.eigen;
 	     * @param lda (input) int On entry, lda specifies the first dimension of A as declared in the calling (sub) program.
 	     *            lda must be at least max(1,n). Unchanged on exit.
 	     */
-	    public void dsyr(final char uplo, final int n, final double alpha, final double[] x, final int incx,
+	    private void dsyr(final char uplo, final int n, final double alpha, final double[] x, final int incx,
 	            final double[][] A, final int lda) {
 	        double temp;
 	        int i;
@@ -28511,7 +28496,7 @@ package imagingbook.common.math.eigen;
 	     * @param lda input int On entry, lda specifies the first dimension of A as declared in the calling (sub) program.
 	     *            lda must be at least max(1,n).
 	     */
-	    public void dsyr2(final char uplo, final int n, final double alpha, final double[] x, final int incx,
+	    private void dsyr2(final char uplo, final int n, final double alpha, final double[] x, final int incx,
 	            final double[] y, final int incy, final double[][] A, final int lda) {
 	        double temp1;
 	        double temp2;
@@ -28947,7 +28932,7 @@ package imagingbook.common.math.eigen;
 	     * @param ldc input int On entry, ldc specifies the first dimension of C as declared in the calling (sub) program.
 	     *            ldc must be at least max(1,n).
 	     */
-	    public void dsyrk(final char uplo, final char trans, final int n, final int k, final double alpha,
+	    private void dsyrk(final char uplo, final char trans, final int n, final int k, final double alpha,
 	            final double[][] A, final int lda, final double beta, final double[][] C, final int ldc) {
 	        int nrowa;
 	        boolean upper;
@@ -29218,7 +29203,7 @@ package imagingbook.common.math.eigen;
 	     *            values are currently limited to 1/ulp, to avoid overflow. result[0] is always modified. result[1] is
 	     *            modified only if itype == 1.
 	     */
-	    public void dsyt21(final int itype, final char uplo, final int n, final int kband, final double[][] A,
+	    private void dsyt21(final int itype, final char uplo, final int n, final int kband, final double[][] A,
 	            final int lda, final double[] D, final double[] E, final double[][] U, final int ldu, final double[][] V,
 	            final int ldv, final double[] tau, final double[] work, final double[] result) {
 	        boolean lower;
@@ -29960,7 +29945,7 @@ package imagingbook.common.math.eigen;
 	     *            vector defining H[i].
 	     *            </p>
 	     */
-	    public void dsytrd(final char uplo, final int n, final double[][] A, final int lda, final double[] d,
+	    private void dsytrd(final char uplo, final int n, final double[][] A, final int lda, final double[] d,
 	            final double[] e, final double[] tau, final double[] work, final int lwork, final int[] info) {
 	        boolean lquery;
 	        boolean upper;
@@ -31505,7 +31490,7 @@ package imagingbook.common.math.eigen;
 	     * @param ldb input int On entry, ldb specifies the first dimension of B as declared in the calling (sub) program.
 	     *            ldb must be at least max(1,m).
 	     */
-	    public void dtrmm(final char side, final char uplo, final char transa, final char diag, final int m, final int n,
+	    private void dtrmm(final char side, final char uplo, final char transa, final char diag, final int m, final int n,
 	            final double alpha, final double[][] A, final int lda, final double[][] B, final int ldb) {
 	        boolean lside;
 	        boolean nounit;
@@ -31826,7 +31811,7 @@ package imagingbook.common.math.eigen;
 	     *            must contain the n element vector x. On exit, array x is is overwritten with the transformed vector x.
 	     * @param incx input int On entry, incx specifies the increment for the elements of x. incx must not be zero.
 	     */
-	    public void dtrmv(final char uplo, final char trans, final char diag, final int n, final double[][] A,
+	    private void dtrmv(final char uplo, final char trans, final char diag, final int n, final double[][] A,
 	            final int lda, final double[] x, final int incx) {
 	        double temp;
 	        int i;
@@ -32091,7 +32076,7 @@ package imagingbook.common.math.eigen;
 	     * @param ldb input int On entry, ldb specifies the first dimension of B as declared in the calling (sub) program.
 	     *            ldb must be at least max(1,m).
 	     */
-	    public void dtrsm(final char side, final char uplo, final char transa, final char diag, final int m, final int n,
+	    private void dtrsm(final char side, final char uplo, final char transa, final char diag, final int m, final int n,
 	            final double alpha, final double[][] A, final int lda, final double[][] B, final int ldb) {
 	        boolean lside;
 	        boolean nounit;
@@ -32441,7 +32426,7 @@ package imagingbook.common.math.eigen;
 	     *            vector x.
 	     * @param incx input int On entry, incx specifies the increment for the elements of x. incx must not be zero.
 	     */
-	    public void dtrsv(final char uplo, final char trans, final char diag, final int n, final double[][] A,
+	    private void dtrsv(final char uplo, final char trans, final char diag, final int n, final double[][] A,
 	            final int lda, final double[] x, final int incx) {
 	        double temp;
 	        int i;
@@ -32851,7 +32836,7 @@ package imagingbook.common.math.eigen;
 	     *         parameter had an illegal value The parameter value returned by ilaenv is checked for validity in the
 	     *         calling routine.
 	     */
-	    public int ilaenv(final int ispec, final String name, final String opts, final int n1, final int n2, final int n3,
+	    private int ilaenv(final int ispec, final String name, final String opts, final int n1, final int n2, final int n3,
 	            final int n4) {
 	        String subnam;
 	        int answer;
@@ -33199,7 +33184,7 @@ package imagingbook.common.math.eigen;
 	     * 
 	     * NVALUE (input) INTEGER The value of the parameter specified by ISPEC.
 	     */
-	    public void xlaenv(final int ispec, final int nvalue) {
+	    private void xlaenv(final int ispec, final int nvalue) {
 	        if ( (ispec >= 1) && (ispec <= 9)) {
 	            iparms[ispec - 1] = nvalue;
 	        }
