@@ -7,6 +7,11 @@ package imagingbook.common.math.eigen;
  */
 public class GeneralzedEigenSolverAccord {
 	
+	// TODO: 
+	//		look at http://www.netlib.no/netlib/eispack/qzhes.f
+	//				http://www.netlib.no/netlib/eispack/qzit.f
+	//	also https://github.com/johannesgerer/jburkardt-f/blob/master/eispack/eispack.f90
+	
 	
 	// EISPACK Routines (starting in line 305)
 	
@@ -180,7 +185,7 @@ public class GeneralzedEigenSolverAccord {
         return 0;
     }
 	
-/* Can't do, since no goto's allowed in Java!
+// Can't do, since no goto's allowed in Java!
 
 	/// <summary>  (line 474)
     ///   Adaptation of the original Fortran QZIT routine from EISPACK.
@@ -200,7 +205,7 @@ public class GeneralzedEigenSolverAccord {
     ///   
     ///   For the full documentation, please check the original function.
     /// </remarks>
-    private static int qzit(int n, double[][] a, double[][] b, double eps1, bool matz, double[][] z, int ierr)	// wilbur: was ref int ierr
+    private static int qzit(int n, double[][] a, double[][] b, double eps1, boolean matz, double[][] z, int ierr)	// wilbur: was ref int ierr
     {
 
         int i, j, k, l = 0;
@@ -230,12 +235,12 @@ public class GeneralzedEigenSolverAccord {
             bni = 0.0;
 
             if (i != 0)
-                ani = (Math.Abs(a[i][(i - 1)]));
+                ani = (Math.abs(a[i][(i - 1)]));
 
             for (j = i; j < n; ++j)
             {
-                ani += Math.Abs(a[i][j]);
-                bni += Math.Abs(b[i][j]);
+                ani += Math.abs(a[i][j]);
+                bni += Math.abs(b[i][j]);
             }
 
             if (ani > anorm) anorm = ani;
@@ -283,7 +288,7 @@ public class GeneralzedEigenSolverAccord {
             if (l + 1 == 1)
                 goto L95;
 
-            if ((Math.Abs(a[l][lm1])) <= epsa)
+            if ((Math.abs(a[l][lm1])) <= epsa)
                 break;
         }
 
@@ -303,10 +308,10 @@ public class GeneralzedEigenSolverAccord {
         l1 = l + 1;
         b11 = b[l][l];
 
-        if (Math.Abs(b11) > epsb) goto L120;
+        if (Math.abs(b11) > epsb) goto L120;
 
         b[l][l] = 0.0;
-        s = (Math.Abs(a[l][l]) + Math.Abs(a[l1][l]));
+        s = (Math.abs(a[l][l]) + Math.abs(a[l1][l]));
         u1 = a[l][l] / s;
         u2 = a[l1][l] / s;
         r = Special.Sign(Math.Sqrt(u1 * u1 + u2 * u2), u1);
@@ -343,11 +348,11 @@ public class GeneralzedEigenSolverAccord {
 
         // Determine type of shift
         b22 = b[l1][l1];
-        if (Math.Abs(b22) < epsb) b22 = epsb;
+        if (Math.abs(b22) < epsb) b22 = epsb;
         b33 = b[na][na];
-        if (Math.Abs(b33) < epsb) b33 = epsb;
+        if (Math.abs(b33) < epsb) b33 = epsb;
         b44 = b[en][en];
-        if (Math.Abs(b44) < epsb) b44 = epsb;
+        if (Math.abs(b44) < epsb) b44 = epsb;
         a33 = a[na][na] / b33;
         a34 = a[na][en] / b44;
         a43 = a[en][na] / b33;
@@ -362,7 +367,7 @@ public class GeneralzedEigenSolverAccord {
         r = Math.Sqrt(r);
         sh = -t + r;
         s = -t - r;
-        if (Math.Abs(s - a44) < Math.Abs(sh - a44))
+        if (Math.abs(s - a44) < Math.abs(sh - a44))
             sh = s;
 
         // Look for two consecutive small sub-diagonal elements of a.
@@ -377,10 +382,10 @@ public class GeneralzedEigenSolverAccord {
             l1 = l + 1;
             t = a[l + 1][l + 1];
 
-            if (Math.Abs(b[l][l]) > epsb)
+            if (Math.abs(b[l][l]) > epsb)
                 t -= sh * b[l][l];
 
-            if (Math.Abs(a[l][lm1]) <= (Math.Abs(t / a[l1][l])) * epsa)
+            if (Math.abs(a[l][lm1]) <= (Math.abs(t / a[l1][l])) * epsa)
                 goto L100;
         }
 
@@ -431,7 +436,7 @@ public class GeneralzedEigenSolverAccord {
             a2 = a[k1][km1];
 
         L170:
-            s = Math.Abs(a1) + Math.Abs(a2);
+            s = Math.abs(a1) + Math.abs(a2);
             if (s == 0.0) goto L70;
             u1 = a1 / s;
             u2 = a2 / s;
@@ -463,7 +468,7 @@ public class GeneralzedEigenSolverAccord {
             a3 = a[k2][km1];
 
         L200:
-            s = Math.Abs(a1) + Math.Abs(a2) + Math.Abs(a3);
+            s = Math.abs(a1) + Math.abs(a2) + Math.abs(a3);
             if (s == 0.0) goto L260;
             u1 = a1 / s;
             u2 = a2 / s;
@@ -494,7 +499,7 @@ public class GeneralzedEigenSolverAccord {
 
         // Zero b(k+2,k+1) and b(k+2,k)
         L220:
-            s = (Math.Abs(b[k2][k2])) + (Math.Abs(b[k2][k1])) + (Math.Abs(b[k2][k]));
+            s = (Math.abs(b[k2][k2])) + (Math.abs(b[k2][k1])) + (Math.abs(b[k2][k]));
             if (s == 0.0) goto L240;
             u1 = b[k2][k2] / s;
             u2 = b[k2][k1] / s;
@@ -535,7 +540,7 @@ public class GeneralzedEigenSolverAccord {
 
         // Zero b(k+1,k)
         L240:
-            s = (Math.Abs(b[k1][k1])) + (Math.Abs(b[k1][k]));
+            s = (Math.abs(b[k1][k1])) + (Math.abs(b[k1][k]));
             if (s == 0.0) goto L260;
             u1 = b[k1][k1] / s;
             u2 = b[k1][k] / s;
@@ -584,7 +589,7 @@ public class GeneralzedEigenSolverAccord {
         return 0;
     }
 
-*/
+
 	
 	
 }

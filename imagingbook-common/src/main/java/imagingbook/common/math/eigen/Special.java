@@ -20,6 +20,50 @@ public abstract class Special {
 		double x = (a >= 0 ? a : -a);
 		return (b >= 0 ? x : -x);
 	}
+	
+	
+	   /// <summary>
+    ///   Estimates unit round-off in quantities of size x.
+    /// </summary>
+    /// <remarks>
+    ///   This is a port of the epslon function from EISPACK.
+    /// </remarks>
+    /// 
+	public static double Epslon(double x)
+	{
+		double a, b, c, eps;
+		a = 1.3333333333333333;
+
+		L10: do {
+			b = a - 1.0;
+			c = b + b + b;
+			eps = Math.abs(c - 1.0);
+
+			if (eps == 0.0) {
+				//goto L10;
+				break L10;
+			}
+		} while (true);
+
+		return eps * Math.abs(x);
+	}
+	
+//    public static double Epslon(double x)
+//    {
+//        double a, b, c, eps;
+//
+//        a = 1.3333333333333333;
+//
+//    L10:
+//        b = a - 1.0;
+//        c = b + b + b;
+//        eps = System.Math.Abs(c - 1.0);
+//
+//        if (eps == 0.0)
+//            goto L10;
+//
+//        return eps * System.Math.Abs(x);
+//    }
 
 
 }
