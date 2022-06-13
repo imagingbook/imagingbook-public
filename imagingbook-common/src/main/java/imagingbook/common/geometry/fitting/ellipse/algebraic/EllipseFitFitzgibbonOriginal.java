@@ -26,17 +26,25 @@ import imagingbook.common.math.eigen.GeneralizedSymmetricEigenSolver;
  * as described in Halir and Flusser [2] (WITHOUT their numerical
  * improvements). Based on generalized eigenproblem solution.
  * 
- * Does not use data centering nor accepts a specific reference point.
+ * This implementation does not use data centering nor accepts a specific reference point.
  * 
+ * <p>
+ * Note: With exactly 5 input points (generally sufficient for ellipse fitting) the scatter matrix
+ * X is singular and thus the Cholesky decomposition used by the {@link GeneralizedSymmetricEigenSolver}
+ * cannot be applied. At least 6 distinct input points are required (i.e., no duplicate points are
+ * allowed).
+ * </p>
+ * 
+ * <p>
  * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least-
  * squares fitting of ellipses. IEEE Transactions on Pattern Analysis
  * and Machine Intelligence 21(5), 476-480 (1999).
- * 
+ * <br>
  * [2] R. Halíř and J. Flusser. Numerically stable direct least squares
  * fitting of ellipses. In "Proceedings of the 6th International
  * Conference in Central Europe on Computer Graphics and Visualization
  * (WSCG’98)", pp. 125-132, Plzeň, CZ (February 1998).
- * 
+ * </p>
  * @author WB
  *
  */
@@ -54,6 +62,7 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 	}
 	
 	private double[] fit(Pnt2d[] points) {
+		PrintPrecision.set(3);
 		IJ.log("**** " + this.getClass().getSimpleName());
 		final int n = points.length;
 
@@ -69,13 +78,15 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 		
 		// scatter matrix S:
 		RealMatrix S = X.transpose().multiply(X);
-		System.out.println("S = \n" + Matrix.toString(S));
-		System.out.println("S nonsingular: " + Matrix.isNonSingular(S));
+//		System.out.println("S = \n" + Matrix.toString(S));
+//		System.out.println("S nonsingular: " + Matrix.isNonSingular(S));
+//		System.out.println("S pos. definite: " + Matrix.isPositiveDefinite(S));
+//		System.out.println("S determinant = " + Matrix.determinant(S.getData()));
 		
-		SingularValueDecomposition svdS = new SingularValueDecomposition(S);
-		System.out.println("   rank(S) = " + svdS.getRank());
-		System.out.println("   singular values = "  + Matrix.toString(svdS.getSingularValues()));
-		System.out.println("   condition no = " + svdS.getConditionNumber());
+//		SingularValueDecomposition svdS = new SingularValueDecomposition(S);
+//		System.out.println("   rank(S) = " + svdS.getRank());
+//		System.out.println("   singular values = "  + Matrix.toString(svdS.getSingularValues()));
+//		System.out.println("   condition no = " + svdS.getConditionNumber());
 		
 		// constraint matrix C:
 		RealMatrix C = MatrixUtils.createRealMatrix(6, 6);
@@ -112,14 +123,15 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 	// -------------------------------------------------
 	
 	public static void main(String[] args) {
-		PrintPrecision.set(9);
-		Pnt2d p0 = Pnt2d.from(40, 53);
-		Pnt2d p1 = Pnt2d.from(107, 20);
-		Pnt2d p2 = Pnt2d.from(170, 26);
-		Pnt2d p3 = Pnt2d.from(186, 55);
-		Pnt2d p4 = Pnt2d.from(135, 103);
+		Pnt2d[] points = {
+				Pnt2d.from(40, 53),
+				Pnt2d.from(107, 20),
+				Pnt2d.from(170, 26),
+				Pnt2d.from(186, 55),
+				Pnt2d.from(135, 103),
+//				Pnt2d.from(135, 113)
+				};
 		
-		Pnt2d[] points = {p0, p1, p2, p3, p4};
 		EllipseFitAlgebraic fit = new EllipseFitFitzgibbonOriginal(points);
 		System.out.println("fit parameters = " + Matrix.toString(fit.getParameters()));
 		System.out.println("fit ellipse = " + fit.getEllipse());
@@ -143,5 +155,7 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 //		
 //		System.out.println(nullCnt + " null results out of " + N);
 	}
+	
+	// fit ellipse = AlgebraicEllipse {0.317325319, 0.332954818, 0.875173557, -89.442594143, -150.574265066, 7886.192568730}
 	
 }

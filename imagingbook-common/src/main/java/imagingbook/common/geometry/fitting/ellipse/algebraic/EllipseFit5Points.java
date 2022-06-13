@@ -95,6 +95,8 @@ public class EllipseFit5Points implements EllipseFitAlgebraic {
 		return (isEllipse) ? new double[] {A,B,C,D,E,F} : null;
 	}
 	
+	// --------------------------------------------------------------------------------------------
+	
 	public static void main(String[] args) {
 		PrintPrecision.set(9);
 		Pnt2d p0 = Pnt2d.from(40, 53);
