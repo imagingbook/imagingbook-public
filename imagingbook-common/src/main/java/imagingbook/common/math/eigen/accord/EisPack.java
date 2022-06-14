@@ -190,9 +190,7 @@ public abstract class EisPack {
 	///   For the full documentation, please check the original function.
 	/// </remarks>
 
-	static int qzit(int n, double[][] a, double[][] b, double eps1, boolean matz, double[][] z, int ierr)	// wilbur: was ref int ierr
-	{
-
+	static int qzit(int n, double[][] a, double[][] b, double eps1, boolean matz, double[][] z, int ierr) { // wilbur: was ref int ierr
 		int i, j, k, l = 0;
 		double r, s, t, a1 = 0, a2 = 0, a3 = 0;
 		int k1, k2, l1 = 0, ll;
@@ -213,30 +211,31 @@ public abstract class EisPack {
 		ierr = 0;
 
 		// Compute epsa and epsb
-		for (i = 0; i < n; ++i)
-		{
+		for (i = 0; i < n; ++i) {
 			ani = 0.0;
 			bni = 0.0;
 
 			if (i != 0)
 				ani = (Math.abs(a[i][(i - 1)]));
 
-			for (j = i; j < n; ++j)
-			{
+			for (j = i; j < n; ++j) {
 				ani += Math.abs(a[i][j]);
 				bni += Math.abs(b[i][j]);
 			}
 
-			if (ani > anorm) anorm = ani;
-			if (bni > bnorm) bnorm = bni;
+			if (ani > anorm)
+				anorm = ani;
+			if (bni > bnorm)
+				bnorm = bni;
 		}
 
-		if (anorm == 0.0) anorm = 1.0;
-		if (bnorm == 0.0) bnorm = 1.0;
+		if (anorm == 0.0)
+			anorm = 1.0;
+		if (bnorm == 0.0)
+			bnorm = 1.0;
 
 		ep = eps1;
-		if (ep == 0.0)
-		{
+		if (ep == 0.0) {
 			// Use round-off level if eps1 is zero
 			ep = Special.Epslon(1.0);
 		}
@@ -254,8 +253,9 @@ public abstract class EisPack {
 
 		while (STATE != qzitState.Final) {
 			switch (STATE) {
-			// Begin QZ step
-			case L60 :
+
+			case L60: 
+				// Begin QZ step
 				if (en <= 1) {
 					STATE = qzitState.L1001;
 					break;
@@ -269,12 +269,10 @@ public abstract class EisPack {
 				STATE = qzitState.L70;
 				break;
 
-			case L70 :
+			case L70:
 				ish = 2;
 				// Check for convergence or reducibility.
-				STATE = qzitState.L90;
-				loop70: for (ll = 0; ll <= en; ++ll)
-				{
+				loop70: for (ll = 0; ll <= en; ++ll) {
 					lm1 = en - ll - 1;
 					l = lm1 + 1;
 					if (l + 1 == 1) {
@@ -284,9 +282,10 @@ public abstract class EisPack {
 					if ((Math.abs(a[l][lm1])) <= epsa)
 						break loop70;
 				}
+				STATE = qzitState.L90;
 				break;
 
-			case L90 :
+			case L90:
 				a[l][lm1] = 0.0;
 				if (l < na) {
 					STATE = qzitState.L95;
@@ -297,8 +296,7 @@ public abstract class EisPack {
 				STATE = qzitState.L60;
 				break;
 
-				// Check for small top of b 
-			case L95:
+			case L95: // Check for small top of b
 				ld = l;
 				STATE = qzitState.L100;
 				break;
@@ -321,8 +319,7 @@ public abstract class EisPack {
 				v2 = -u2 / r;
 				u2 = v2 / v1;
 
-				for (j = l; j < enorn; ++j)
-				{
+				for (j = l; j < enorn; ++j) {
 					t = a[l][j] + u2 * a[l1][j];
 					a[l][j] += t * v1;
 					a[l1][j] += t * v2;
@@ -341,7 +338,6 @@ public abstract class EisPack {
 				break;
 
 			case L120:
-				STATE = qzitState.L140;
 				a11 = a[l][l] / b11;
 				a21 = a[l1][l] / b11;
 				if (ish == 1) {
@@ -349,8 +345,7 @@ public abstract class EisPack {
 					break;
 				}
 
-				// Iteration strategy
-				if (itn == 0) {
+				if (itn == 0) { // Iteration strategy
 					STATE = qzitState.L1000;
 					break;
 				}
@@ -361,11 +356,14 @@ public abstract class EisPack {
 
 				// Determine type of shift
 				b22 = b[l1][l1];
-				if (Math.abs(b22) < epsb) b22 = epsb;
+				if (Math.abs(b22) < epsb)
+					b22 = epsb;
 				b33 = b[na][na];
-				if (Math.abs(b33) < epsb) b33 = epsb;
+				if (Math.abs(b33) < epsb)
+					b33 = epsb;
 				b44 = b[en][en];
-				if (Math.abs(b44) < epsb) b44 = epsb;
+				if (Math.abs(b44) < epsb)
+					b44 = epsb;
 				a33 = a[na][na] / b33;
 				a34 = a[na][en] / b44;
 				a43 = a[en][na] / b33;
@@ -385,10 +383,9 @@ public abstract class EisPack {
 				s = -t - r;
 				if (Math.abs(s - a44) < Math.abs(sh - a44))
 					sh = s;
-				
+
 				// Look for two consecutive small sub-diagonal elements of a.
-				loop120: for (ll = ld; ll + 1 <= enm2; ++ll)
-				{
+				loop120: for (ll = ld; ll + 1 <= enm2; ++ll) {
 					l = enm2 + ld - ll - 1;
 
 					if (l == ld) {
@@ -407,17 +404,19 @@ public abstract class EisPack {
 						break loop120;
 					}
 				}
+				STATE = qzitState.L140;
 				break;
 
-			case L140 :
+			case L140:
 				a1 = a11 - sh;
 				a2 = a21;
-				if (l != ld)
+				if (l != ld) {
 					a[l][lm1] = -a[l][lm1];
+				}
 				STATE = qzitState.L160;
 				break;
 
-			case L150 : // Determine double shift zero-th column of a
+			case L150: // Determine double shift zero-th column of a
 				a12 = a[l][l1] / b22;
 				a22 = a[l1][l1] / b22;
 				b12 = b[l][l1] / b22;
@@ -427,14 +426,14 @@ public abstract class EisPack {
 				STATE = qzitState.L160;
 				break;
 
-			case L155 :	// Ad hoc shift
-				STATE = qzitState.L160;
+			case L155: // Ad hoc shift
 				a1 = 0.0;
 				a2 = 1.0;
 				a3 = 1.1605;
+				STATE = qzitState.L160;
 				break;
 
-			case L160 :
+			case L160:
 				++its;
 				--itn;
 
@@ -442,13 +441,13 @@ public abstract class EisPack {
 					lor1 = ld;
 				}
 
-				mainloop : for (k = l; k <= na; ++k) {
+				mainloop: for (k = l; k <= na; ++k) {
 					notlas = k != na && ish == 2;
 					k1 = k + 1;
 					k2 = k + 2;
 
 					km1 = Math.max(k, l + 1) - 1; // Computing MAX
-					ll = Math.min(en, k1 + ish);  // Computing MIN
+					ll = Math.min(en, k1 + ish); // Computing MIN
 
 					if (!notlas) {
 						// Zero a(k+1,k-1)
@@ -469,8 +468,7 @@ public abstract class EisPack {
 						v2 = -u2 / r;
 						u2 = v2 / v1;
 
-						for (j = km1; j < enorn; ++j)
-						{
+						for (j = km1; j < enorn; ++j) {
 							t = a[k][j] + u2 * a[k1][j];
 							a[k][j] += t * v1;
 							a[k1][j] += t * v2;
@@ -485,7 +483,7 @@ public abstract class EisPack {
 						}
 						// goto L240;
 					}
-					
+
 					else {
 						// Zero a(k+1,k-1) and a(k+2,k-1)
 						if (k != l) {
@@ -510,8 +508,7 @@ public abstract class EisPack {
 						u2 = v2 / v1;
 						u3 = v3 / v1;
 
-						for (j = km1; j < enorn; ++j)
-						{
+						for (j = km1; j < enorn; ++j) {
 							t = a[k][j] + u2 * a[k1][j] + u3 * a[k2][j];
 							a[k][j] += t * v1;
 							a[k1][j] += t * v2;
@@ -531,7 +528,7 @@ public abstract class EisPack {
 						// Zero b(k+2,k+1) and b(k+2,k)
 						s = (Math.abs(b[k2][k2])) + (Math.abs(b[k2][k1])) + (Math.abs(b[k2][k]));
 
-						if (s != 0.0) {		
+						if (s != 0.0) {
 							u1 = b[k2][k2] / s;
 							u2 = b[k2][k1] / s;
 							u3 = b[k2][k] / s;
@@ -542,8 +539,7 @@ public abstract class EisPack {
 							u2 = v2 / v1;
 							u3 = v3 / v1;
 
-							for (i = lor1; i < ll + 1; ++i)
-							{
+							for (i = lor1; i < ll + 1; ++i) {
 								t = a[i][k2] + u2 * a[i][k1] + u3 * a[i][k];
 								a[i][k2] += t * v1;
 								a[i][k1] += t * v2;
@@ -558,10 +554,8 @@ public abstract class EisPack {
 							b[k2][k] = 0.0;
 							b[k2][k1] = 0.0;
 
-							if (matz)
-							{
-								for (i = 0; i < n; ++i)
-								{
+							if (matz) {
+								for (i = 0; i < n; ++i) {
 									t = z[i][k2] + u2 * z[i][k1] + u3 * z[i][k];
 									z[i][k2] += t * v1;
 									z[i][k1] += t * v2;
@@ -570,8 +564,8 @@ public abstract class EisPack {
 							}
 						}
 					}
-					
-					//L240:
+
+					// L240:
 					// Zero b(k+1,k)
 					s = (Math.abs(b[k1][k1])) + (Math.abs(b[k1][k]));
 					if (s == 0.0) {
@@ -585,8 +579,7 @@ public abstract class EisPack {
 					v2 = -u2 / r;
 					u2 = v2 / v1;
 
-					for (i = lor1; i < ll + 1; ++i)
-					{
+					for (i = lor1; i < ll + 1; ++i) {
 						t = a[i][k1] + u2 * a[i][k];
 						a[i][k1] += t * v1;
 						a[i][k] += t * v2;
@@ -598,359 +591,398 @@ public abstract class EisPack {
 
 					b[k1][k] = 0.0;
 
-					if (matz)
-					{
-						for (i = 0; i < n; ++i)
-						{
+					if (matz) {
+						for (i = 0; i < n; ++i) {
 							t = z[i][k1] + u2 * z[i][k];
 							z[i][k1] += t * v1;
 							z[i][k] += t * v2;
 						}
 					}
 
-					//L260: ;
+					// L260: ;
 				}
 
 				STATE = qzitState.L70; // End QZ step
 				break;
-				
-			case L1000 : // Set error -- all eigenvalues have not converged after 30*n iterations
+
+			case L1000: // Set error -- all eigenvalues have not converged after 30*n iterations
 				ierr = en + 1;
+				STATE = qzitState.L1001;
 				break;
-				
-			case L1001 : // Save epsb for use by qzval and qzvec
+
+			case L1001: // Save epsb for use by qzval and qzvec
 				if (n > 1) {
 					b[n - 1][0] = epsb;
 				}
 				STATE = qzitState.Final;
 				break;
-			
-			case Final :
+
+			case Final:
 				break;
 			}
-
 		}
 
 		return 0;
 	} // end of qzit()
 
-
-
-	/// <summary>
-	///   Adaptation of the original Fortran QZVAL routine from EISPACK.
-	/// </summary>
-	/// <remarks>
-	///   This subroutine is the third step of the qz algorithm
-	///   for solving generalized matrix eigenvalue problems,
-	///   Siam J. Numer. anal. 10, 241-256(1973) by Moler and Stewart.
-	///   
-	///   This subroutine accepts a pair of real matrices, one of them
-	///   in quasi-triangular form and the other in upper triangular form.
-	///   it reduces the quasi-triangular matrix further, so that any
-	///   remaining 2-by-2 blocks correspond to pairs of complex
-	///   Eigenvalues, and returns quantities whose ratios give the
-	///   generalized eigenvalues.  it is usually preceded by  qzhes
-	///   and  qzit  and may be followed by  qzvec.
-	///   
-	///   For the full documentation, please check the original function.
-	/// </remarks>
-	static int qzval(int n, double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, boolean matz, double[][] z) {
-		return 0;
+	private enum qzvalState {
+		Initial, Final, L505, L410, L420, L455, L430, L435, L480, L475, L485, L503, L502, L460
 	}
 
-	/*
-    static int qzval(int n, double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, boolean matz, double[][] z)
-    {
-        int i, j;
-        int na, en, nn;
-        double c, d, e = 0;
-        double r, s, t;
-        double a1, a2, u1, u2, v1, v2;
-        double a11, a12, a21, a22;
-        double b11, b12, b22;
-        double di, ei;
-        double an = 0, bn;
-        double cq, dr;
-        double cz, ti, tr;
-        double a1i, a2i, a11i, a12i, a22i, a11r, a12r, a22r;
-        double sqi, ssi, sqr, szi, ssr, szr;
+	/// <summary>
+	/// Adaptation of the original Fortran QZVAL routine from EISPACK.
+	/// </summary>
+	/// <remarks>
+	/// This subroutine is the third step of the qz algorithm
+	/// for solving generalized matrix eigenvalue problems,
+	/// Siam J. Numer. anal. 10, 241-256(1973) by Moler and Stewart.
+	///
+	/// This subroutine accepts a pair of real matrices, one of them
+	/// in quasi-triangular form and the other in upper triangular form.
+	/// it reduces the quasi-triangular matrix further, so that any
+	/// remaining 2-by-2 blocks correspond to pairs of complex
+	/// Eigenvalues, and returns quantities whose ratios give the
+	/// generalized eigenvalues. it is usually preceded by qzhes
+	/// and qzit and may be followed by qzvec.
+	///
+	/// For the full documentation, please check the original function.
+	/// </remarks>
 
-        double epsb = b[n - 1, 0];
-        int isw = 1;
+	static int qzval(int n, double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, boolean matz,
+			double[][] z) {
+		int i = 0, j;
+		int na = 0, en = 0, nn;
+		double c = 0, d = 0, e = 0;
+		double r, s, t;
+		double a1 = 0, a2 = 0, u1, u2, v1, v2;
+		double a11 = 0, a12 = 0, a21 = 0, a22 = 0;
+		double b11 = 0, b12 = 0, b22 = 0;
+		double di = 0, ei = 0;
+		double an = 0, bn = 0;
+		double cq = 0, dr = 0;
+		double cz = 0, ti = 0, tr = 0;
+		double a1i = 0, a2i = 0, a11i, a12i, a22i, a11r, a12r, a22r;
+		double sqi = 0, ssi = 0, sqr = 0, szi = 0, ssr = 0, szr = 0;
 
+		double epsb = b[n - 1][0];
+		int isw = 1;
 
-        // Find eigenvalues of quasi-triangular matrices.
-        for (nn = 0; nn < n; ++nn)
-        {
-            en = n - nn - 1;
-            na = en - 1;
+		// Find eigenvalues of quasi-triangular matrices.
+		for (nn = 0; nn < n; ++nn) {
 
-            if (isw == 2) goto L505;
-            if (en == 0) goto L410;
-            if (a[en, na] != 0.0) goto L420;
+			qzvalState STATE = qzvalState.Initial;
 
-        // 1-by-1 block, one real root
-        L410:
-            alfr[en] = a[en, en];
-            if (b[en, en] < 0.0)
-            {
-                alfr[en] = -alfr[en];
-            }
-            beta[en] = (Math.Abs(b[en, en]));
-            alfi[en] = 0.0;
-            goto L510;
+			switch (STATE) {
+			case Initial:
+				en = n - nn - 1;
+				na = en - 1;
 
-        // 2-by-2 block
-        L420:
-            if (Math.Abs(b[na, na]) <= epsb) goto L455;
-            if (Math.Abs(b[en, en]) > epsb) goto L430;
-            a1 = a[en, en];
-            a2 = a[en, na];
-            bn = 0.0;
-            goto L435;
+				if (isw == 2) {
+					STATE = qzvalState.L505;
+					break;
+				}
+				if (en == 0) {
+					STATE = qzvalState.L410;
+					break;
+				}
+				if (a[en][na] != 0.0) {
+					STATE = qzvalState.L420;
+					break;
+				}
+				break;
 
-        L430:
-            an = Math.Abs(a[na, na]) + Math.Abs(a[na, en]) + Math.Abs(a[en, na]) + Math.Abs(a[en, en]);
-            bn = Math.Abs(b[na, na]) + Math.Abs(b[na, en]) + Math.Abs(b[en, en]);
-            a11 = a[na, na] / an;
-            a12 = a[na, en] / an;
-            a21 = a[en, na] / an;
-            a22 = a[en, en] / an;
-            b11 = b[na, na] / bn;
-            b12 = b[na, en] / bn;
-            b22 = b[en, en] / bn;
-            e = a11 / b11;
-            ei = a22 / b22;
-            s = a21 / (b11 * b22);
-            t = (a22 - e * b22) / b22;
+			case L410:
+				// 1-by-1 block, one real root
+				alfr[en] = a[en][en];
+				if (b[en][en] < 0.0) {
+					alfr[en] = -alfr[en];
+				}
+				beta[en] = (Math.abs(b[en][en]));
+				alfi[en] = 0.0;
+				STATE = qzvalState.Final;
+				break;
 
-            if (Math.Abs(e) <= Math.Abs(ei))
-                goto L431;
+			case L420:
+				// 2-by-2 block
+				if (Math.abs(b[na][na]) <= epsb) {
+					STATE = qzvalState.L455;
+					break;
+				}
+				if (Math.abs(b[en][en]) > epsb) {
+					STATE = qzvalState.L430;
+					break;
+				}
+				a1 = a[en][en];
+				a2 = a[en][na];
+				bn = 0.0;
+				STATE = qzvalState.L435;
+				break;
 
-            e = ei;
-            t = (a11 - e * b11) / b11;
+			case L430:
+				an = Math.abs(a[na][na]) + Math.abs(a[na][en]) + Math.abs(a[en][na]) + Math.abs(a[en][en]);
+				bn = Math.abs(b[na][na]) + Math.abs(b[na][en]) + Math.abs(b[en][en]);
+				a11 = a[na][na] / an;
+				a12 = a[na][en] / an;
+				a21 = a[en][na] / an;
+				a22 = a[en][en] / an;
+				b11 = b[na][na] / bn;
+				b12 = b[na][en] / bn;
+				b22 = b[en][en] / bn;
+				e = a11 / b11;
+				ei = a22 / b22;
+				s = a21 / (b11 * b22);
+				t = (a22 - e * b22) / b22;
 
-        L431:
-            c = (t - s * b12) * .5;
-            d = c * c + s * (a12 - e * b12);
-            if (d < 0.0) goto L480;
+				if (Math.abs(e) > Math.abs(ei)) {
+					e = ei;
+					t = (a11 - e * b11) / b11;
+				}
 
-            // Two real roots. Zero both a(en,na) and b(en,na)
-            e += c + Special.Sign(Math.Sqrt(d), c);
-            a11 -= e * b11;
-            a12 -= e * b12;
-            a22 -= e * b22;
+				c = (t - s * b12) * .5;
+				d = c * c + s * (a12 - e * b12);
 
-            if (Math.Abs(a11) + Math.Abs(a12) < Math.Abs(a21) + Math.Abs(a22))
-                goto L432;
+				if (d < 0.0) {
+					STATE = qzvalState.L480;
+					break;
+				}
 
-            a1 = a12;
-            a2 = a11;
-            goto L435;
+				// Two real roots. Zero both a(en,na) and b(en,na)
+				e += c + Special.Sign(Math.sqrt(d), c);
+				a11 -= e * b11;
+				a12 -= e * b12;
+				a22 -= e * b22;
 
-        L432:
-            a1 = a22;
-            a2 = a21;
+				if (Math.abs(a11) + Math.abs(a12) < Math.abs(a21) + Math.abs(a22)) {
+					a1 = a22;
+					a2 = a21;
+				} else {
+					a1 = a12;
+					a2 = a11;
+				}
+				STATE = qzvalState.L435;
+				break;
 
-        // Choose and apply real z
-        L435:
-            s = Math.Abs(a1) + Math.Abs(a2);
-            u1 = a1 / s;
-            u2 = a2 / s;
-            r = Special.Sign(Math.Sqrt(u1 * u1 + u2 * u2), u1);
-            v1 = -(u1 + r) / r;
-            v2 = -u2 / r;
-            u2 = v2 / v1;
+			case L435:
+				// Choose and apply real z
+				s = Math.abs(a1) + Math.abs(a2);
+				u1 = a1 / s;
+				u2 = a2 / s;
+				r = Special.Sign(Math.sqrt(u1 * u1 + u2 * u2), u1);
+				v1 = -(u1 + r) / r;
+				v2 = -u2 / r;
+				u2 = v2 / v1;
 
-            for (i = 0; i <= en; ++i)
-            {
-                t = a[i, en] + u2 * a[i, na];
-                a[i, en] += t * v1;
-                a[i, na] += t * v2;
+				for (i = 0; i <= en; ++i) {
+					t = a[i][en] + u2 * a[i][na];
+					a[i][en] += t * v1;
+					a[i][na] += t * v2;
 
-                t = b[i, en] + u2 * b[i, na];
-                b[i, en] += t * v1;
-                b[i, na] += t * v2;
-            }
+					t = b[i][en] + u2 * b[i][na];
+					b[i][en] += t * v1;
+					b[i][na] += t * v2;
+				}
 
-            if (matz)
-            {
-                for (i = 0; i < n; ++i)
-                {
-                    t = z[i, en] + u2 * z[i, na];
-                    z[i, en] += t * v1;
-                    z[i, na] += t * v2;
-                }
-            }
+				if (matz) {
+					for (i = 0; i < n; ++i) {
+						t = z[i][en] + u2 * z[i][na];
+						z[i][en] += t * v1;
+						z[i][na] += t * v2;
+					}
+				}
 
-            if (bn == 0.0) goto L475;
-            if (an < System.Math.Abs(e) * bn) goto L455;
-            a1 = b[na, na];
-            a2 = b[en, na];
-            goto L460;
+				if (bn == 0.0) {
+					STATE = qzvalState.L475;
+					break;
+				}
+				if (an < Math.abs(e) * bn) {
+					STATE = qzvalState.L455;
+					break;
+				}
+				a1 = b[na][na];
+				a2 = b[en][na];
+				STATE = qzvalState.L460;
+				break;
 
-        L455:
-            a1 = a[na, na];
-            a2 = a[en, na];
+			case L455:
+				a1 = a[na][na];
+				a2 = a[en][na];
+				STATE = qzvalState.L475;
+				break;
 
-        // Choose and apply real q
-        L460:
-            s = System.Math.Abs(a1) + System.Math.Abs(a2);
-            if (s == 0.0) goto L475;
-            u1 = a1 / s;
-            u2 = a2 / s;
-            r = Special.Sign(Math.Sqrt(u1 * u1 + u2 * u2), u1);
-            v1 = -(u1 + r) / r;
-            v2 = -u2 / r;
-            u2 = v2 / v1;
+			case L460:
+				s = Math.abs(a1) + Math.abs(a2);
+				if (s == 0.0) {
+					STATE = qzvalState.L475;
+					break;
+				}
+				u1 = a1 / s;
+				u2 = a2 / s;
+				r = Special.Sign(Math.sqrt(u1 * u1 + u2 * u2), u1);
+				v1 = -(u1 + r) / r;
+				v2 = -u2 / r;
+				u2 = v2 / v1;
 
-            for (j = na; j < n; ++j)
-            {
-                t = a[na, j] + u2 * a[en, j];
-                a[na, j] += t * v1;
-                a[en, j] += t * v2;
+				for (j = na; j < n; ++j) {
+					t = a[na][j] + u2 * a[en][j];
+					a[na][j] += t * v1;
+					a[en][j] += t * v2;
 
-                t = b[na, j] + u2 * b[en, j];
-                b[na, j] += t * v1;
-                b[en, j] += t * v2;
-            }
+					t = b[na][j] + u2 * b[en][j];
+					b[na][j] += t * v1;
+					b[en][j] += t * v2;
+				}
+				STATE = qzvalState.L475;
+				break;
 
-        L475:
-            a[en, na] = 0.0;
-            b[en, na] = 0.0;
-            alfr[na] = a[na, na];
-            alfr[en] = a[en, en];
+			case L475:
+				a[en][na] = 0.0;
+				b[en][na] = 0.0;
+				alfr[na] = a[na][na];
+				alfr[en] = a[en][en];
 
-            if (b[na, na] < 0.0)
-                alfr[na] = -alfr[na];
+				if (b[na][na] < 0.0)
+					alfr[na] = -alfr[na];
 
-            if (b[en, en] < 0.0)
-                alfr[en] = -alfr[en];
+				if (b[en][en] < 0.0)
+					alfr[en] = -alfr[en];
 
-            beta[na] = (System.Math.Abs(b[na, na]));
-            beta[en] = (System.Math.Abs(b[en, en]));
-            alfi[en] = 0.0;
-            alfi[na] = 0.0;
-            goto L505;
+				beta[na] = (Math.abs(b[na][na]));
+				beta[en] = (Math.abs(b[en][en]));
+				alfi[en] = 0.0;
+				alfi[na] = 0.0;
+				// goto L505;
+				STATE = qzvalState.L505;
+				break;
 
-            // Two complex roots
-        L480:
-            e += c;
-            ei = System.Math.Sqrt(-d);
-            a11r = a11 - e * b11;
-            a11i = ei * b11;
-            a12r = a12 - e * b12;
-            a12i = ei * b12;
-            a22r = a22 - e * b22;
-            a22i = ei * b22;
+			case L480:
+				// Two complex roots
+				e += c;
+				ei = Math.sqrt(-d);
+				a11r = a11 - e * b11;
+				a11i = ei * b11;
+				a12r = a12 - e * b12;
+				a12i = ei * b12;
+				a22r = a22 - e * b22;
+				a22i = ei * b22;
 
-            if (System.Math.Abs(a11r) + System.Math.Abs(a11i) +
-                System.Math.Abs(a12r) + System.Math.Abs(a12i) <
-                System.Math.Abs(a21) + System.Math.Abs(a22r)
-                + System.Math.Abs(a22i))
-                goto L482;
+				if (Math.abs(a11r) + Math.abs(a11i) + Math.abs(a12r) + Math.abs(a12i) < Math.abs(a21) + Math.abs(a22r)
+						+ Math.abs(a22i)) {
+					// goto L482;
+					a1 = a22r;
+					a1i = a22i;
+					a2 = -a21;
+					a2i = 0.0;
+				} else {
+					a1 = a12r;
+					a1i = a12i;
+					a2 = -a11r;
+					a2i = -a11i;
+				}
+				// goto L485;
+				STATE = qzvalState.L485;
+				break;
 
-            a1 = a12r;
-            a1i = a12i;
-            a2 = -a11r;
-            a2i = -a11i;
-            goto L485;
+			case L485:
+				// Choose complex z
+				cz = Math.sqrt(a1 * a1 + a1i * a1i);
+				if (cz == 0.0) {
+					szr = 1.0;
+					szi = 0.0;
+				} else {
+					szr = (a1 * a2 + a1i * a2i) / cz;
+					szi = (a1 * a2i - a1i * a2) / cz;
+					r = Math.sqrt(cz * cz + szr * szr + szi * szi);
+					cz /= r;
+					szr /= r;
+					szi /= r;
+				}
 
-        L482:
-            a1 = a22r;
-            a1i = a22i;
-            a2 = -a21;
-            a2i = 0.0;
+				// L490:
+				if (an < (Math.abs(e) + ei) * bn) {
+					// goto L492;
+					a1 = cz * a11 + szr * a12;
+					a1i = szi * a12;
+					a2 = cz * a21 + szr * a22;
+					a2i = szi * a22;
+				} else {
+					a1 = cz * b11 + szr * b12;
+					a1i = szi * b12;
+					a2 = szr * b22;
+					a2i = szi * b22;
+				}
 
-        // Choose complex z
-        L485:
-            cz = System.Math.Sqrt(a1 * a1 + a1i * a1i);
-            if (cz == 0.0) goto L487;
-            szr = (a1 * a2 + a1i * a2i) / cz;
-            szi = (a1 * a2i - a1i * a2) / cz;
-            r = System.Math.Sqrt(cz * cz + szr * szr + szi * szi);
-            cz /= r;
-            szr /= r;
-            szi /= r;
-            goto L490;
+				// Choose complex q
+				// L495:
+				cq = Math.sqrt(a1 * a1 + a1i * a1i);
+				if (cq == 0.0) {
+					sqr = 1.0;
+					sqi = 0.0;
+				} else {
+					sqr = (a1 * a2 + a1i * a2i) / cq;
+					sqi = (a1 * a2i - a1i * a2) / cq;
+					r = Math.sqrt(cq * cq + sqr * sqr + sqi * sqi);
+					cq /= r;
+					sqr /= r;
+					sqi /= r;
+				}
 
-        L487:
-            szr = 1.0;
-            szi = 0.0;
+				// Compute diagonal elements that would result if transformations were applied
+				// L500:
+				ssr = sqr * szr + sqi * szi;
+				ssi = sqr * szi - sqi * szr;
+				i = 0;
+				tr = cq * cz * a11 + cq * szr * a12 + sqr * cz * a21 + ssr * a22;
+				ti = cq * szi * a12 - sqi * cz * a21 + ssi * a22;
+				dr = cq * cz * b11 + cq * szr * b12 + ssr * b22;
+				di = cq * szi * b12 + ssi * b22;
+				// goto L503;
+				STATE = qzvalState.L503;
+				break;
 
-        L490:
-            if (an < (System.Math.Abs(e) + ei) * bn) goto L492;
-            a1 = cz * b11 + szr * b12;
-            a1i = szi * b12;
-            a2 = szr * b22;
-            a2i = szi * b22;
-            goto L495;
+			case L502:
+				i = 1;
+				tr = ssr * a11 - sqr * cz * a12 - cq * szr * a21 + cq * cz * a22;
+				ti = -ssi * a11 - sqi * cz * a12 + cq * szi * a21;
+				dr = ssr * b11 - sqr * cz * b12 + cq * cz * b22;
+				di = -ssi * b11 - sqi * cz * b12;
+				STATE = qzvalState.L503;
+				break;
 
-        L492:
-            a1 = cz * a11 + szr * a12;
-            a1i = szi * a12;
-            a2 = cz * a21 + szr * a22;
-            a2i = szi * a22;
+			case L503:
+				t = ti * dr - tr * di;
+				j = na;
 
-        // Choose complex q
-        L495:
-            cq = System.Math.Sqrt(a1 * a1 + a1i * a1i);
-            if (cq == 0.0) goto L497;
-            sqr = (a1 * a2 + a1i * a2i) / cq;
-            sqi = (a1 * a2i - a1i * a2) / cq;
-            r = System.Math.Sqrt(cq * cq + sqr * sqr + sqi * sqi);
-            cq /= r;
-            sqr /= r;
-            sqi /= r;
-            goto L500;
+				if (t < 0.0)
+					j = en;
 
-        L497:
-            sqr = 1.0;
-            sqi = 0.0;
+				r = Math.sqrt(dr * dr + di * di);
+				beta[j] = bn * r;
+				alfr[j] = an * (tr * dr + ti * di) / r;
+				alfi[j] = an * t / r;
+				if (i == 0) {
+					// goto L502;
+					STATE = qzvalState.L502;
+					break;
+				}
+				STATE = qzvalState.L505;
+				break;
 
-        // Compute diagonal elements that would result if transformations were applied
-        L500:
-            ssr = sqr * szr + sqi * szi;
-            ssi = sqr * szi - sqi * szr;
-            i = 0;
-            tr = cq * cz * a11 + cq * szr * a12 + sqr * cz * a21 + ssr * a22;
-            ti = cq * szi * a12 - sqi * cz * a21 + ssi * a22;
-            dr = cq * cz * b11 + cq * szr * b12 + ssr * b22;
-            di = cq * szi * b12 + ssi * b22;
-            goto L503;
+			case L505:
+				isw = 3 - isw;
+				STATE = qzvalState.Final;
+				break;
 
-        L502:
-            i = 1;
-            tr = ssr * a11 - sqr * cz * a12 - cq * szr * a21 + cq * cz * a22;
-            ti = -ssi * a11 - sqi * cz * a12 + cq * szi * a21;
-            dr = ssr * b11 - sqr * cz * b12 + cq * cz * b22;
-            di = -ssi * b11 - sqi * cz * b12;
+			case Final:
+				break;
+			}
 
-        L503:
-            t = ti * dr - tr * di;
-            j = na;
+		}
 
-            if (t < 0.0)
-                j = en;
+		b[n - 1][0] = epsb;
 
-            r = Math.Sqrt(dr * dr + di * di);
-            beta[j] = bn * r;
-            alfr[j] = an * (tr * dr + ti * di) / r;
-            alfi[j] = an * t / r;
-            if (i == 0) goto L502;
+		return 0;
+	} // end of qzval()
 
-        L505:
-            isw = 3 - isw;
-
-        L510:
-            ;
-        }
-
-        b[n - 1, 0] = epsb;
-
-        return 0;
-    }	// end of qzval()
-	 */
 
 	/// <summary>
 	///   Adaptation of the original Fortran QZVEC routine from EISPACK.
@@ -1216,13 +1248,13 @@ public abstract class EisPack {
         L920:
             for (i = 0; i < n; ++i)
             {
-                r = System.Math.Abs(z[i, j - 1]) + System.Math.Abs(z[i, j]);
+                r = Math.Abs(z[i, j - 1]) + Math.Abs(z[i, j]);
                 if (r != 0.0)
                 {
                     // Computing 2nd power
                     double u1 = z[i, j - 1] / r;
                     double u2 = z[i, j] / r;
-                    r *= Math.Sqrt(u1 * u1 + u2 * u2);
+                    r *= Math.sqrt(u1 * u1 + u2 * u2);
                 }
                 if (r > d)
                     d = r;
