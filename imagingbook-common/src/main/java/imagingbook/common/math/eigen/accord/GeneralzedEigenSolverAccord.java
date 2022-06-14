@@ -64,22 +64,22 @@ public class GeneralzedEigenSolverAccord {
 
             // reduces A to upper Hessenberg form and B to upper
             // triangular form using orthogonal transformations
-            EisPack.qzhes(n, A, B, matz, Z);
+            QZHES.qzhes(n, A, B, matz, Z);
 
             // reduces the Hessenberg matrix A to quasi-triangular form
             // using orthogonal transformations while maintaining the
             // triangular form of the B matrix.
-            EisPack.qzit(n, A, B, Arithmetic.EPSILON_DOUBLE, matz, Z, ierr);		// ref ierr
+            QZIT.qzit(n, A, B, Arithmetic.EPSILON_DOUBLE, matz, Z, ierr);		// ref ierr
 
             // reduces the quasi-triangular matrix further, so that any
             // remaining 2-by-2 blocks correspond to pairs of complex
             // eigenvalues, and returns quantities whose ratios give the
             // generalized eigenvalues.
-            EisPack.qzval(n, A, B, ar, ai, beta, matz, Z);
+            QZVAL.qzval(n, A, B, ar, ai, beta, matz, Z);
 
             // computes the eigenvectors of the triangular problem and
             // transforms the results back to the original coordinate system.
-            EisPack.qzvec(n, A, B, ar, ai, beta, Z);
+            QZVEC.qzvec(n, A, B, ar, ai, beta, Z);
 
 //            if (sort)
 //            {
