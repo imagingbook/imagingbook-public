@@ -1,4 +1,4 @@
-package imagingbook.common.math.eigen;
+package imagingbook.common.math.eigen.mipav;
 
 // File ported from gov.nih.mipav.model.structures.jama.GeneralizedEigenvalue.java
 

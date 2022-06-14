@@ -1,4 +1,4 @@
-package imagingbook.common.math.eigen;
+package imagingbook.common.math.eigen.accord;
 
 
 // ported from https://github.com/accord-net/framework/blob/development/Sources/Accord.Math/Special.cs
