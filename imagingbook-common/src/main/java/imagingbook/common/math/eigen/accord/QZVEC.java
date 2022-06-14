@@ -3,19 +3,19 @@ package imagingbook.common.math.eigen.accord;
 public abstract class QZVEC {
 	
 	enum StateA {
-		Initial, Final, L795, L710, L800
+		Ainit, Afinal, A795, A710, A800
 	}
 	
 	enum StateB {
-		Initial, Final, L630, L690, L640, L700, L650
+		Binit, Bfinal, B630, B690, B640, B700, B650
 	}
 	
 	enum StateC {
-		Initial, Final, L770, L790, L780, L773, L775, L777, L787, L782, L785
+		Cinit, Cfinal, C770, C790, C780, C773, C775, C777, C787, C782, C785
 	}
 	
 	enum StateD {
-		Initial, Final, L920, L945, L950
+		Dinit, Dfinal, D920, D945, D950
 	}
 	
 	
@@ -51,19 +51,19 @@ public abstract class QZVEC {
         // for en=n step -1 until 1 do --
         LoopA: for (nn = 0; nn < n; ++nn) {
 
-        	StateA stateA = StateA.Initial;
-        	while (stateA != StateA.Final) {
+        	StateA stateA = StateA.Ainit;
+        	while (stateA != StateA.Afinal) {
         		
         		switch(stateA) {
-        		case Initial :
+        		case Ainit :
         			en = n - nn - 1;
             		na = en - 1;
             		if (isw == 2) {
-            			stateA = StateA.L795;
+            			stateA = StateA.A795;
             			break;
             		}
             		if (alfi[en] != 0.0) {
-            			stateA = StateA.L710;
+            			stateA = StateA.A710;
             			break;
             		}
             		
@@ -71,7 +71,7 @@ public abstract class QZVEC {
             		m = en;
             		b[en][en] = 1.0;
             		if (na == -1) {
-            			stateA = StateA.L800;
+            			stateA = StateA.A800;
             			break;
             		}
             		alfm = alfr[m];
@@ -79,10 +79,10 @@ public abstract class QZVEC {
             		
                		// for i=en-1 step -1 until 1 do --
             		LoopB: for (ii = 0; ii <= na; ++ii) {
-            			StateB stateB = StateB.Initial;
-            			while (stateB != StateB.Final) {
+            			StateB stateB = StateB.Binit;
+            			while (stateB != StateB.Bfinal) {
             				switch (stateB) {
-            				case Initial :
+            				case Binit :
             					i = en - ii - 1;
                     			w = betm * a[i][i] - alfm * b[i][i];
                     			r = 0.0;
@@ -91,22 +91,22 @@ public abstract class QZVEC {
                     				r += (betm * a[i][j] - alfm * b[i][j]) * b[j][en];
 
                     			if (i == 0 || isw == 2) {
-                    				stateB = StateB.L630;
+                    				stateB = StateB.B630;
                     				break;
                     			}
                     			if (betm * a[i][i - 1] == 0.0) {
-                    				stateB = StateB.L630;
+                    				stateB = StateB.B630;
                     				break;
                     			}
                     			zz = w;
                     			s = r;
-                    			stateB = StateB.L690;
+                    			stateB = StateB.B690;
                     			break;
                     			
-            				case L630 :
+            				case B630 :
             					m = i;
                     			if (isw == 2) {
-                    				stateB = StateB.L640;
+                    				stateB = StateB.B640;
                     				break;
                     			}
                     			// Real 1-by-1 block
@@ -114,10 +114,10 @@ public abstract class QZVEC {
                     			if (w == 0.0)
                     				t = epsb;
                     			b[i][en] = -r / t;
-                    			stateB = StateB.L700;
+                    			stateB = StateB.B700;
                     			break;
                     			
-            				case L640 :
+            				case B640 :
             					// Real 2-by-2 block
             					x = betm * a[i][i + 1] - alfm * b[i][i + 1];
                     			y = betm * a[i + 1][i];
@@ -125,26 +125,26 @@ public abstract class QZVEC {
                     			t = (x * s - zz * r) / q;
                     			b[i][en] = t;
                     			if (Math.abs(x) <= Math.abs(zz)) {
-                    				stateB = StateB.L650;
+                    				stateB = StateB.B650;
                     				break;
                     			}
                     			b[i + 1][en] = (-r - w * t) / x;
-                    			stateB = StateB.L690;
+                    			stateB = StateB.B690;
                     			break;
                     			
-            				case L650 :
+            				case B650 :
             					b[i + 1][en] = (-s - y * t) / zz;
             					break;
             					
-            				case L690 :
+            				case B690 :
             					isw = 3 - isw;
             					break;
             					
-            				case L700 :
-            					stateB = StateB.Final;
+            				case B700 :
+            					stateB = StateB.Bfinal;
             					break;
             					
-            				case Final :
+            				case Bfinal :
             					break LoopB;
                     			
             				}	// end switch (stateB)
@@ -154,10 +154,10 @@ public abstract class QZVEC {
             		}	// end of LoopB, for (ii ..
             		// End real vector
             		
-            		stateA = StateA.L800;
+            		stateA = StateA.A800;
             		break;
 				
-				case L710:
+				case A710:
 					// Complex vector
 					m = na;
 	        		almr = alfr[m];
@@ -171,16 +171,16 @@ public abstract class QZVEC {
 	        		b[en][en] = 1.0;
 	        		enm2 = na;
 	        		if (enm2 == 0) {
-	        			stateA = StateA.L795;
+	        			stateA = StateA.A795;
 	        			break;
 	        		}
 	        		
 	        		// for i=en-2 step -1 until 1 do --
 	        		LoopC: for (ii = 0; ii < enm2; ++ii) {
-	        			StateC stateC = StateC.Initial;
-	        			while (stateC != StateC.Final) {
+	        			StateC stateC = StateC.Cinit;
+	        			while (stateC != StateC.Cfinal) {
 	        				switch (stateC) {
-	        				case Initial :
+	        				case Cinit :
 	        					i = na - ii - 1;
 	    	        			w = betm * a[i][i] - almr * b[i][i];
 	    	        			w1 = -almi * b[i][i];
@@ -196,11 +196,11 @@ public abstract class QZVEC {
 	    	        			}
 
 	    	        			if (i == 0 || isw == 2) {
-	    	        				stateC = StateC.L770;
+	    	        				stateC = StateC.C770;
 	    	        				break;
 	    	        			}
 	    	        			if (betm * a[i][i - 1] == 0.0) {
-	    	        				stateC = StateC.L770;
+	    	        				stateC = StateC.C770;
 	    	        				break;
 	    	        			}
 
@@ -209,31 +209,31 @@ public abstract class QZVEC {
 	    	        			r = ra;
 	    	        			s = sa;
 	    	        			isw = 2;
-	    	        			stateC = StateC.L790;
+	    	        			stateC = StateC.C790;
 	        					break;
 	        				
-	        				case L770 :
+	        				case C770 :
 	        					m = i;
 	    	        			if (isw == 2) {
-	    	        				stateC = StateC.L780;
+	    	        				stateC = StateC.C780;
 	    	        				break;
 	    	        			}
 	    	        			// Complex 1-by-1 block 
 	    	        			tr = -ra;
 	    	        			ti = -sa;
-	    	        			stateC = StateC.L773;
+	    	        			stateC = StateC.C773;
 	        					break;
 	        					
-	        				case L773:
+	        				case C773:
 	    	        			dr = w;
 	    	        			di = w1;
-	    	        			stateC = StateC.L775;
+	    	        			stateC = StateC.C775;
 	        					break;
 	        				
-	        				case L775:
+	        				case C775:
 	        					// Complex divide (t1,t2) = (tr,ti) / (dr,di)
 		        				if (Math.abs(di) > Math.abs(dr)) {
-		        					stateC = StateC.L777;
+		        					stateC = StateC.C777;
 		        					break;
 		        				}
 			        			rr = di / dr;
@@ -243,16 +243,16 @@ public abstract class QZVEC {
 	
 			        			switch (isw) {
 			        			case 1: 
-			        				stateC = StateC.L787;
+			        				stateC = StateC.C787;
 			        				break;
 			        			case 2:
-			        				stateC = StateC.L782;
+			        				stateC = StateC.C782;
 			        				break;
 			        			}
-			        			stateC = StateC.L777;
+			        			stateC = StateC.C777;
 			        			break;
 
-	        				case L777:
+	        				case C777:
 		        				rr = dr / di;
 			        			d = dr * rr + di;
 			        			t1 = (tr * rr + ti) / d;
@@ -260,16 +260,16 @@ public abstract class QZVEC {
 			        			switch (isw)
 			        			{
 			        			case 1: 
-			        				stateC = StateC.L787;
+			        				stateC = StateC.C787;
 			        				break;
 			        			case 2: 
-			        				stateC = StateC.L782;
+			        				stateC = StateC.C782;
 			        				break;
 			        			}
-			        			stateC = StateC.L780;
+			        			stateC = StateC.C780;
 			        			break;
 			        			
-	        				case L780:
+	        				case C780:
 	        					// Complex 2-by-2 block 
 		        				x = betm * a[i][i + 1] - almr * b[i][i + 1];
 			        			x1 = -almi * b[i][i + 1];
@@ -281,39 +281,39 @@ public abstract class QZVEC {
 			        			if (dr == 0.0 && di == 0.0) {
 			        				dr = epsb;
 			        			}
-			        			stateC = StateC.L775;
+			        			stateC = StateC.C775;
 			        			break;
 			        			
-	        				case L782:
+	        				case C782:
 		        				b[i + 1][na] = t1;
 			        			b[i + 1][en] = t2;
 			        			isw = 1;
 			        			if (Math.abs(y) > Math.abs(w) + Math.abs(w1)) {
-			        				stateC = StateC.L785;
+			        				stateC = StateC.C785;
 			        				break;
 			        			}
 			        			tr = -ra - x * b[(i + 1)][na] + x1 * b[(i + 1)][en];
 			        			ti = -sa - x * b[(i + 1)][en] - x1 * b[(i + 1)][na];
-			        			stateC = StateC.L773;
+			        			stateC = StateC.C773;
 			        			break;
 			        			
-	        				case L785:
+	        				case C785:
 		        				t1 = (-r - zz * b[(i + 1)][na] + z1 * b[(i + 1)][en]) / y;
 			        			t2 = (-s - zz * b[(i + 1)][en] - z1 * b[(i + 1)][na]) / y;
-			        			stateC = StateC.L787;
+			        			stateC = StateC.C787;
 			        			break;
 
-	        				case L787:
+	        				case C787:
 			        			b[i][na] = t1;
 			        			b[i][en] = t2;
-			        			stateC = StateC.L790;
+			        			stateC = StateC.C790;
 			        			break;
 							
-							case L790:
-								stateC = StateC.Final;
+							case C790:
+								stateC = StateC.Cfinal;
 								break;
 
-							case Final:
+							case Cfinal:
 								break LoopC;
 			        			
 	        				}	// end switch (stateC)
@@ -324,15 +324,15 @@ public abstract class QZVEC {
 					break;
 					// End complex vector
 					
-				case L795:
+				case A795:
 					isw = 3 - isw;
-					stateA = StateA.L800;
+					stateA = StateA.A800;
 					break;
 					
-				case L800:
-					stateA = StateA.Final;
+				case A800:
+					stateA = StateA.Afinal;
 					break;
-				case Final:
+				case Afinal:
 					break LoopA;
         		
         		}	// end switch (stateA)
@@ -356,17 +356,17 @@ public abstract class QZVEC {
         // Normalize so that modulus of largest component of each vector is 1.
         // (isw is 1 initially from before)
         LoopD: for (j = 0; j < n; ++j) {
-        	StateD stateD = StateD.Initial;
-        	while (stateD != StateD.Final) {
+        	StateD stateD = StateD.Dinit;
+        	while (stateD != StateD.Dfinal) {
 				switch (stateD) {
-				case Initial :
+				case Dinit :
 					d = 0.0;
 		            if (isw == 2) {
-		            	stateD = StateD.L920;
+		            	stateD = StateD.D920;
 		            	break;
 		            }
 		            if (alfi[j] != 0.0) {
-		            	stateD = StateD.L945;
+		            	stateD = StateD.D945;
 		            	break;
 		            }
 
@@ -379,10 +379,10 @@ public abstract class QZVEC {
 		                z[i][j] /= d;
 		            }
 		            
-		            stateD = StateD.L950;
+		            stateD = StateD.D950;
 					break;
 					
-				case L920:
+				case D920:
 		            for (i = 0; i < n; ++i) {
 		                r = Math.abs(z[i][j - 1]) + Math.abs(z[i][j]);
 		                if (r != 0.0) {
@@ -400,19 +400,19 @@ public abstract class QZVEC {
 		                z[i][j] /= d;
 		            }
 		            
-		            stateD = StateD.L945;
+		            stateD = StateD.D945;
 					break;
 					
-				case L945:
+				case D945:
 		            isw = 3 - isw;
-		            stateD = StateD.L950;
+		            stateD = StateD.D950;
 					break;
 					
-				case L950:
-					stateD = StateD.Final;
+				case D950:
+					stateD = StateD.Dfinal;
 					break;
 					
-				case Final:
+				case Dfinal:
 					break LoopD;
 		            
 				}	// end switch (stateD)

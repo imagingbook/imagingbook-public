@@ -49,24 +49,29 @@ public abstract class QZIT {
 			ani = 0.0;
 			bni = 0.0;
 	
-			if (i != 0)
+			if (i != 0) {
 				ani = (Math.abs(a[i][(i - 1)]));
-	
+			}
+			
 			for (j = i; j < n; ++j) {
 				ani += Math.abs(a[i][j]);
 				bni += Math.abs(b[i][j]);
 			}
 	
-			if (ani > anorm)
+			if (ani > anorm) {
 				anorm = ani;
-			if (bni > bnorm)
+			}
+			if (bni > bnorm) {
 				bnorm = bni;
+			}
 		}
 	
-		if (anorm == 0.0)
+		if (anorm == 0.0) {
 			anorm = 1.0;
-		if (bnorm == 0.0)
+		}
+		if (bnorm == 0.0) {
 			bnorm = 1.0;
+		}
 	
 		ep = eps1;
 		if (ep == 0.0) {
@@ -83,15 +88,15 @@ public abstract class QZIT {
 		en = n - 1;
 		itn = n * 30;
 	
-		State STATE = State.L60;
+		State state = State.L60;
 	
-		while (STATE != State.Final) {
-			switch (STATE) {
+		StateLoop: while (state != State.Final) {
+			switch (state) {
 	
 			case L60: 
 				// Begin QZ step
 				if (en <= 1) {
-					STATE = State.L1001;
+					state = State.L1001;
 					break;
 				}
 				if (!matz) {
@@ -100,39 +105,40 @@ public abstract class QZIT {
 				its = 0;
 				na = en - 1;
 				enm2 = na;
-				STATE = State.L70;
+				state = State.L70;
 				break;
 	
 			case L70:
 				ish = 2;
 				// Check for convergence or reducibility.
-				loop70: for (ll = 0; ll <= en; ++ll) {
+				for (ll = 0; ll <= en; ++ll) {
 					lm1 = en - ll - 1;
 					l = lm1 + 1;
 					if (l + 1 == 1) {
-						STATE = State.L95;
-						break loop70;
+						state = State.L95;
+						continue StateLoop;		// check again!!
 					}
-					if ((Math.abs(a[l][lm1])) <= epsa)
-						break loop70;
+					if ((Math.abs(a[l][lm1])) <= epsa) {
+						break;
+					}
 				}
-				STATE = State.L90;
+				state = State.L90;
 				break;
 	
 			case L90:
 				a[l][lm1] = 0.0;
 				if (l < na) {
-					STATE = State.L95;
+					state = State.L95;
 					break;
 				}
 				// 1-by-1 or 2-by-2 block isolated
 				en = lm1;
-				STATE = State.L60;
+				state = State.L60;
 				break;
 	
 			case L95: // Check for small top of b
 				ld = l;
-				STATE = State.L100;
+				state = State.L100;
 				break;
 	
 			case L100:
@@ -140,7 +146,7 @@ public abstract class QZIT {
 				b11 = b[l][l];
 	
 				if (Math.abs(b11) > epsb) {
-					STATE = State.L120;
+					state = State.L120;
 					break;
 				}
 	
@@ -163,38 +169,40 @@ public abstract class QZIT {
 					b[l1][j] += t * v2;
 				}
 	
-				if (l != 0)
+				if (l != 0) {
 					a[l][lm1] = -a[l][lm1];
-	
+				}
 				lm1 = l;
 				l = l1;
-				STATE = State.L90;
+				state = State.L90;
 				break;
 	
 			case L120:
 				a11 = a[l][l] / b11;
 				a21 = a[l1][l] / b11;
 				if (ish == 1) {
-					STATE = State.L140;
+					state = State.L140;
 					break;
 				}
 	
 				if (itn == 0) { // Iteration strategy
-					STATE = State.L1000;
+					state = State.L1000;
 					break;
 				}
 				if (its == 10) {
-					STATE = State.L155;
+					state = State.L155;
 					break;
 				}
 	
 				// Determine type of shift
 				b22 = b[l1][l1];
-				if (Math.abs(b22) < epsb)
+				if (Math.abs(b22) < epsb) {
 					b22 = epsb;
+				}
 				b33 = b[na][na];
-				if (Math.abs(b33) < epsb)
+				if (Math.abs(b33) < epsb) {
 					b33 = epsb;
+				}
 				b44 = b[en][en];
 				if (Math.abs(b44) < epsb)
 					b44 = epsb;
@@ -206,7 +214,7 @@ public abstract class QZIT {
 				t = (a43 * b34 - a33 - a44) * .5;
 				r = t * t + a34 * a43 - a33 * a44;
 				if (r < 0.0) {
-					STATE = State.L150;
+					state = State.L150;
 					break;
 				}
 	
@@ -223,7 +231,7 @@ public abstract class QZIT {
 					l = enm2 + ld - ll - 1;
 	
 					if (l == ld) {
-						STATE = State.L140;
+						state = State.L140;
 						break loop120;
 					}
 					lm1 = l - 1;
@@ -234,11 +242,11 @@ public abstract class QZIT {
 						t -= sh * b[l][l];
 	
 					if (Math.abs(a[l][lm1]) <= (Math.abs(t / a[l1][l])) * epsa) {
-						STATE = State.L100;
-						break loop120;
+						state = State.L100;
+						continue StateLoop;
 					}
 				}
-				STATE = State.L140;
+				state = State.L140;
 				break;
 	
 			case L140:
@@ -247,7 +255,7 @@ public abstract class QZIT {
 				if (l != ld) {
 					a[l][lm1] = -a[l][lm1];
 				}
-				STATE = State.L160;
+				state = State.L160;
 				break;
 	
 			case L150: // Determine double shift zero-th column of a
@@ -257,14 +265,14 @@ public abstract class QZIT {
 				a1 = ((a33 - a11) * (a44 - a11) - a34 * a43 + a43 * b34 * a11) / a21 + a12 - a11 * b12;
 				a2 = a22 - a11 - a21 * b12 - (a33 - a11) - (a44 - a11) + a43 * b34;
 				a3 = a[l1 + 1][l1] / b22;
-				STATE = State.L160;
+				state = State.L160;
 				break;
 	
 			case L155: // Ad hoc shift
 				a1 = 0.0;
 				a2 = 1.0;
 				a3 = 1.1605;
-				STATE = State.L160;
+				state = State.L160;
 				break;
 	
 			case L160:
@@ -292,7 +300,7 @@ public abstract class QZIT {
 	
 						s = Math.abs(a1) + Math.abs(a2);
 						if (s == 0.0) {
-							STATE = State.L70;
+							state = State.L70;
 							break mainloop;
 						}
 						u1 = a1 / s;
@@ -436,19 +444,19 @@ public abstract class QZIT {
 					// L260: ;
 				}
 	
-				STATE = State.L70; // End QZ step
+				state = State.L70; // End QZ step
 				break;
 	
 			case L1000: // Set error -- all eigenvalues have not converged after 30*n iterations
 				ierr = en + 1;
-				STATE = State.L1001;
+				state = State.L1001;
 				break;
 	
 			case L1001: // Save epsb for use by qzval and qzvec
 				if (n > 1) {
 					b[n - 1][0] = epsb;
 				}
-				STATE = State.Final;
+				state = State.Final;
 				break;
 	
 			case Final:
@@ -458,5 +466,7 @@ public abstract class QZIT {
 	
 		return 0;
 	} // end of qzit()
+	
+
 
 }

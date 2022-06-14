@@ -46,25 +46,23 @@ public abstract class QZVAL {
 		// Find eigenvalues of quasi-triangular matrices.
 		for (nn = 0; nn < n; ++nn) {
 
-			State STATE = State.Initial;
-
-			while (STATE != State.Final) {
-
-				switch (STATE) {
+			State state = State.Initial;
+			StateLoop: while (state != State.Final) {
+				switch (state) {
 				case Initial:
 					en = n - nn - 1;
 					na = en - 1;
 
 					if (isw == 2) {
-						STATE = State.L505;
+						state = State.L505;
 						break;
 					}
 					if (en == 0) {
-						STATE = State.L410;
+						state = State.L410;
 						break;
 					}
 					if (a[en][na] != 0.0) {
-						STATE = State.L420;
+						state = State.L420;
 						break;
 					}
 					break;
@@ -77,23 +75,23 @@ public abstract class QZVAL {
 					}
 					beta[en] = (Math.abs(b[en][en]));
 					alfi[en] = 0.0;
-					STATE = State.Final;
+					state = State.Final;
 					break;
 
 				case L420:
 					// 2-by-2 block
 					if (Math.abs(b[na][na]) <= epsb) {
-						STATE = State.L455;
+						state = State.L455;
 						break;
 					}
 					if (Math.abs(b[en][en]) > epsb) {
-						STATE = State.L430;
+						state = State.L430;
 						break;
 					}
 					a1 = a[en][en];
 					a2 = a[en][na];
 					bn = 0.0;
-					STATE = State.L435;
+					state = State.L435;
 					break;
 
 				case L430:
@@ -120,7 +118,7 @@ public abstract class QZVAL {
 					d = c * c + s * (a12 - e * b12);
 
 					if (d < 0.0) {
-						STATE = State.L480;
+						state = State.L480;
 						break;
 					}
 
@@ -137,7 +135,7 @@ public abstract class QZVAL {
 						a1 = a12;
 						a2 = a11;
 					}
-					STATE = State.L435;
+					state = State.L435;
 					break;
 
 				case L435:
@@ -169,28 +167,28 @@ public abstract class QZVAL {
 					}
 
 					if (bn == 0.0) {
-						STATE = State.L475;
+						state = State.L475;
 						break;
 					}
 					if (an < Math.abs(e) * bn) {
-						STATE = State.L455;
+						state = State.L455;
 						break;
 					}
 					a1 = b[na][na];
 					a2 = b[en][na];
-					STATE = State.L460;
+					state = State.L460;
 					break;
 
 				case L455:
 					a1 = a[na][na];
 					a2 = a[en][na];
-					STATE = State.L475;
+					state = State.L475;
 					break;
 
 				case L460:
 					s = Math.abs(a1) + Math.abs(a2);
 					if (s == 0.0) {
-						STATE = State.L475;
+						state = State.L475;
 						break;
 					}
 					u1 = a1 / s;
@@ -209,7 +207,7 @@ public abstract class QZVAL {
 						b[na][j] += t * v1;
 						b[en][j] += t * v2;
 					}
-					STATE = State.L475;
+					state = State.L475;
 					break;
 
 				case L475:
@@ -229,7 +227,7 @@ public abstract class QZVAL {
 					alfi[en] = 0.0;
 					alfi[na] = 0.0;
 					// goto L505;
-					STATE = State.L505;
+					state = State.L505;
 					break;
 
 				case L480:
@@ -257,7 +255,7 @@ public abstract class QZVAL {
 						a2i = -a11i;
 					}
 					// goto L485;
-					STATE = State.L485;
+					state = State.L485;
 					break;
 
 				case L485:
@@ -314,7 +312,7 @@ public abstract class QZVAL {
 					dr = cq * cz * b11 + cq * szr * b12 + ssr * b22;
 					di = cq * szi * b12 + ssi * b22;
 					// goto L503;
-					STATE = State.L503;
+					state = State.L503;
 					break;
 
 				case L502:
@@ -323,39 +321,39 @@ public abstract class QZVAL {
 					ti = -ssi * a11 - sqi * cz * a12 + cq * szi * a21;
 					dr = ssr * b11 - sqr * cz * b12 + cq * cz * b22;
 					di = -ssi * b11 - sqi * cz * b12;
-					STATE = State.L503;
+					state = State.L503;
 					break;
 
 				case L503:
 					t = ti * dr - tr * di;
 					j = na;
 
-					if (t < 0.0)
+					if (t < 0.0) {
 						j = en;
-
+					}
 					r = Math.sqrt(dr * dr + di * di);
 					beta[j] = bn * r;
 					alfr[j] = an * (tr * dr + ti * di) / r;
 					alfi[j] = an * t / r;
 					if (i == 0) {
 						// goto L502;
-						STATE = State.L502;
+						state = State.L502;
 						break;
 					}
-					STATE = State.L505;
+					state = State.L505;
 					break;
 
 				case L505:
 					isw = 3 - isw;
-					STATE = State.Final;
+					state = State.Final;
 					break;
 
 				case Final:
-					break;
+					break StateLoop;
 				}
-			}	// end while
+			}	// end StateLoop: while (state
 
-		}	// end for
+		}	// end for (nn ..
 
 		b[n - 1][0] = epsb;
 
