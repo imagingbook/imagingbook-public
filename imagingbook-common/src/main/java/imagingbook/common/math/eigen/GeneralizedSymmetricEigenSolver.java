@@ -25,6 +25,7 @@ import org.apache.commons.math3.linear.RealVector;
 
 //import imagingbook.common.math.CholeskyDecomposition;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 
 /**
  * Solves the generalized symmetric eigenproblem of the form A x = &lambda; B x,
@@ -138,6 +139,8 @@ public class GeneralizedSymmetricEigenSolver {
 	// ---------------------------------------------------------------------
 	
 	public static void main(String[] args) {
+		PrintPrecision.set(9);
+		
 		RealMatrix A = MatrixUtils.createRealMatrix(new double[][] {
 			{ 3,  -1,  5},
 			{ -1,  -2, 7},
@@ -154,17 +157,21 @@ public class GeneralizedSymmetricEigenSolver {
 		double[] evals = solver.getRealEigenvalues();
 		System.out.println("evals = " + Arrays.toString(evals));
 		
-		for (int i = 0; i < evals.length; i++) {
-			double lambda = evals[i];
-			RealVector evec = solver.getEigenVector(i);
-			System.out.println("i = " + i);
+		for (int k = 0; k < evals.length; k++) {
+			double lambda = evals[k];
+			RealVector evec = solver.getEigenVector(k);
+			RealVector evecn = normalize(evec);
+			System.out.println("k = " + k);
 			System.out.println("  eval = " + lambda);
-			System.out.println("  evec = " + Arrays.toString(evec.toArray()));
+			System.out.println("  evec = " + Matrix.toString(evec));
+			System.out.println("  evecn = " + Matrix.toString(evecn));
 			
-			RealVector L = A.operate(evec);
-//			System.out.println("L = "+ Arrays.toString(L.toArray()));
-			RealVector R = B.operate(evec).mapMultiply(lambda);
-//			System.out.println("R = "+ Arrays.toString(R.toArray()));
+			RealVector L = A.operate(evecn);
+			System.out.println("L = "+ Arrays.toString(L.toArray()));
+			
+			RealVector R = B.operate(evecn).mapMultiply(lambda);
+			System.out.println("R = "+ Arrays.toString(R.toArray()));
+			
 			RealVector res = L.subtract(R);
 			//System.out.println("res = "+ Arrays.toString(res.toArray()));	// L - R must be 0
 			System.out.println("  res = 0? "+  Matrix.isZero(res.toArray(), 1e-6));
@@ -180,6 +187,31 @@ public class GeneralizedSymmetricEigenSolver {
 		System.out.println("AV = \n" + Matrix.toString(AV.getData()));
 		RealMatrix BVD = B.multiply(V).multiply(D);
 		System.out.println("BVD = \n" + Matrix.toString(BVD.getData()));
+		
+		// normalize V:
+		// each eigenvector is normalized so that the modulus of its largest component is 1.0 .
+		for (int k = 0; k < evals.length; k++) {
+			V.setColumn(k, normalize(V.getColumn(k)));
+		}
+		System.out.println("V normalized = \n" + Matrix.toString(V.getData()));
+		
+	}
+	
+	static RealVector normalize(RealVector x) {
+		return MatrixUtils.createRealVector(normalize(x.toArray()));
+	}
+	
+	static double[] normalize(double[] x) {
+		int n = x.length;
+		double[] y = new double[n];
+		double maxval = -1;
+		for (int i = 0; i < n; i++) {
+			maxval = Math.max(maxval, Math.abs(x[i]));
+		}
+		for (int i = 0; i < n; i++) {
+			y[i] = x[i] / maxval;
+		}
+		return y;
 	}
 }
 /*

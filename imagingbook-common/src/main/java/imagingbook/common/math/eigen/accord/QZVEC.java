@@ -55,7 +55,7 @@ public abstract class QZVEC {
 
         // for en=n step -1 until 1 do --
         LoopA: for (nn = 0; nn < n; ++nn) {
-
+        	System.out.println(" **** nn = " + nn);
         	StateA stateA = StateA.Ainit;
         	StateLoopA: while (stateA != StateA.Afinal) {
         		System.out.println("    StateLoopA: " + stateA);
@@ -87,6 +87,7 @@ public abstract class QZVEC {
             		LoopB: for (ii = 0; ii <= na; ++ii) {
             			StateB stateB = StateB.Binit;
             			StateLoopB: while (stateB != StateB.Bfinal) {
+            				System.out.println("       StateLoopB: " + stateB);
             				switch (stateB) {
             				case Binit :
             					i = en - ii - 1;
@@ -154,12 +155,10 @@ public abstract class QZVEC {
             					break;
             					
             				case Bfinal :
-            					break StateLoopB;
+            					throw new RuntimeException("this should never happen!");
                     			
-            				}	// end switch (stateB)
-	
-            			}	// end while (stateB ...
-            			
+            				}	// end switch (stateB)	
+            			}	// end while (stateB ...     			
             		}	// end of LoopB, for (ii ..
             		// End real vector
             		
@@ -188,6 +187,7 @@ public abstract class QZVEC {
 	        		LoopC: for (ii = 0; ii < enm2; ++ii) {
 	        			StateC stateC = StateC.Cinit;
 	        			StateLoopC: while (stateC != StateC.Cfinal) {
+	        				System.out.println("       StateLoopC: " + stateC);
 	        				switch (stateC) {
 	        				case Cinit :
 	        					i = na - ii - 1;
@@ -322,8 +322,8 @@ public abstract class QZVEC {
 								break;
 
 							case Cfinal:
-								break StateLoopC;
-			        			
+								throw new RuntimeException("this should never happen!");
+								
 	        				}	// end switch (stateC)
 	        			}	// end of while (stateC
 	        			
@@ -341,8 +341,7 @@ public abstract class QZVEC {
 					stateA = StateA.Afinal;
 					break;
 				case Afinal:
-					break StateLoopA;
-        		
+					throw new RuntimeException("this should never happen!");
         		}	// end switch (stateA)
         		
         	}	// end while
@@ -364,8 +363,10 @@ public abstract class QZVEC {
         // Normalize so that modulus of largest component of each vector is 1.
         // (isw is 1 initially from before)
         LoopD: for (j = 0; j < n; ++j) {
+        	if (true) break;	//do not normalize
         	StateD stateD = StateD.Dinit;
-        	while (stateD != StateD.Dfinal) {
+        	StateLoopD: while (stateD != StateD.Dfinal) {
+        		System.out.println("       StateLoopD: " + stateD);
 				switch (stateD) {
 				case Dinit :
 					d = 0.0;
@@ -397,15 +398,15 @@ public abstract class QZVEC {
 		                    // Computing 2nd power
 		                    double u1 = z[i][j - 1] / r;
 		                    double u2 = z[i][j] / r;
-		                    r *= Math.sqrt(u1 * u1 + u2 * u2);
+		                    r = r * Math.sqrt(u1 * u1 + u2 * u2);
 		                }
 		                if (r > d)
 		                    d = r;
 		            }
 
 		            for (i = 0; i < n; ++i) {
-		                z[i][j - 1] /= d;
-		                z[i][j] /= d;
+		                z[i][j - 1] = z[i][j - 1] / d;
+		                z[i][j] = z[i][j] / d;
 		            }
 		            
 		            stateD = StateD.D945;
@@ -421,7 +422,7 @@ public abstract class QZVEC {
 					break;
 					
 				case Dfinal:
-					break LoopD;
+					throw new RuntimeException("this should never happen!");
 		            
 				}	// end switch (stateD)
         	}	// end while (stateD ...

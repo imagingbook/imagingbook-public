@@ -5,7 +5,7 @@ public abstract class QZVAL {
 	// EISPACK Routines, see http://www.netlib.org/eispack/
 
 	enum State {
-		Initial, Final, L505, L410, L420, L455, L430, L435, L480, L475, L485, L503, L502, L460
+		Linit, Lfinal, L505, L410, L420, L455, L430, L435, L480, L475, L485, L503, L502, L460, L510
 	}
 
 	/// <summary>
@@ -28,7 +28,7 @@ public abstract class QZVAL {
 	/// </remarks>
 	static int qzval(int n, double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, boolean matz,
 			double[][] z) {
-//		System.out.println("runnin qzval");
+		System.out.println("runnin qzval");
 		int i = 0, j;
 		int na = 0, en = 0, nn;
 		double c = 0, d = 0, e = 0;
@@ -48,12 +48,11 @@ public abstract class QZVAL {
 
 		// Find eigenvalues of quasi-triangular matrices.
 		for (nn = 0; nn < n; ++nn) {
-
-			State state = State.Initial;
-			StateLoop: while (state != State.Final) {
-//				System.out.println("    StateLoop: " + state);
+			State state = State.Linit;
+			StateLoop: while (state != State.Lfinal) {
+				System.out.println("    StateLoop: " + state);
 				switch (state) {
-				case Initial:
+				case Linit:
 					en = n - nn - 1;
 					na = en - 1;
 
@@ -80,7 +79,7 @@ public abstract class QZVAL {
 					}
 					beta[en] = (Math.abs(b[en][en]));
 					alfi[en] = 0.0;
-					state = State.Final;
+					state = State.L510;
 					break;
 
 				case L420:
@@ -350,11 +349,16 @@ public abstract class QZVAL {
 
 				case L505:
 					isw = 3 - isw;
-					state = State.Final;
+					state = State.L510;
 					break;
 
-				case Final:
-					break StateLoop;
+				case L510:
+					state = State.Lfinal;
+					break;
+					
+				case Lfinal:
+					throw new RuntimeException("this should never happen!");
+//					break StateLoop;
 				}
 			}	// end StateLoop: while (state
 
@@ -362,7 +366,7 @@ public abstract class QZVAL {
 
 		b[n - 1][0] = epsb;
 
-//		System.out.println("done qzval");
+		System.out.println("done qzval");
 		return 0;
 	} // end of qzval()
 
