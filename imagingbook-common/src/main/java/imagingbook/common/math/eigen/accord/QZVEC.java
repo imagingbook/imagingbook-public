@@ -54,11 +54,11 @@ public abstract class QZVEC {
         int isw = 1;
 
         // for en=n step -1 until 1 do --
-        LoopA: for (nn = 0; nn < n; ++nn) {
-        	System.out.println(" **** nn = " + nn);
+        LoopA: for (nn = 0; nn < n; nn++) {
+//        	System.out.println(" **** nn = " + nn);
         	StateA stateA = StateA.Ainit;
         	StateLoopA: while (stateA != StateA.Afinal) {
-        		System.out.println("    StateLoopA: " + stateA);
+//        		System.out.println("    StateLoopA: " + stateA);
         		
         		switch(stateA) {
         		case Ainit :
@@ -84,7 +84,7 @@ public abstract class QZVEC {
             		betm = beta[m];
             		
                		// for i=en-1 step -1 until 1 do --
-            		LoopB: for (ii = 0; ii <= na; ++ii) {
+            		LoopB: for (ii = 0; ii <= na; ii++) {
             			StateB stateB = StateB.Binit;
             			StateLoopB: while (stateB != StateB.Bfinal) {
             				System.out.println("       StateLoopB: " + stateB);
@@ -94,8 +94,9 @@ public abstract class QZVEC {
                     			w = betm * a[i][i] - alfm * b[i][i];
                     			r = 0.0;
 
-                    			for (j = m; j <= en; ++j)
-                    				r += (betm * a[i][j] - alfm * b[i][j]) * b[j][en];
+                    			for (j = m; j <= en; j++) {
+                    				r = r +(betm * a[i][j] - alfm * b[i][j]) * b[j][en];
+                    			}
 
                     			if (i == 0 || isw == 2) {
                     				stateB = StateB.B630;
@@ -116,7 +117,7 @@ public abstract class QZVEC {
                     				stateB = StateB.B640;
                     				break;
                     			}
-                    			// Real 1-by-1 block
+                    			// real 1-by-1 block
                     			t = w;
                     			if (w == 0.0) {
                     				t = epsb;
@@ -126,7 +127,7 @@ public abstract class QZVEC {
                     			break;
                     			
             				case B640 :
-            					// Real 2-by-2 block
+            					// real 2-by-2 block
             					x = betm * a[i][i + 1] - alfm * b[i][i + 1];
                     			y = betm * a[i + 1][i];
                     			q = w * zz - x * y;
@@ -160,13 +161,13 @@ public abstract class QZVEC {
             				}	// end switch (stateB)	
             			}	// end while (stateB ...     			
             		}	// end of LoopB, for (ii ..
-            		// End real vector
+            		// end real vector
             		
             		stateA = StateA.A800;
             		break;
 				
 				case A710:
-					// Complex vector
+					// complex vector
 					m = na;
 	        		almr = alfr[m];
 	        		almi = alfi[m];
@@ -184,7 +185,7 @@ public abstract class QZVEC {
 	        		}
 	        		
 	        		// for i=en-2 step -1 until 1 do --
-	        		LoopC: for (ii = 0; ii < enm2; ++ii) {
+	        		LoopC: for (ii = 0; ii < enm2; ii++) {
 	        			StateC stateC = StateC.Cinit;
 	        			StateLoopC: while (stateC != StateC.Cfinal) {
 	        				System.out.println("       StateLoopC: " + stateC);
@@ -196,7 +197,7 @@ public abstract class QZVEC {
 	    	        			ra = 0.0;
 	    	        			sa = 0.0;
 
-	    	        			for (j = m; j <= en; ++j)
+	    	        			for (j = m; j <= en; j++)
 	    	        			{
 	    	        				x = betm * a[i][j] - almr * b[i][j];
 	    	        				x1 = -almi * b[i][j];
@@ -240,7 +241,7 @@ public abstract class QZVEC {
 	        					break;
 	        				
 	        				case C775:
-	        					// Complex divide (t1,t2) = (tr,ti) / (dr,di)
+	        					// complex divide (t1,t2) = (tr,ti) / (dr,di)
 		        				if (Math.abs(di) > Math.abs(dr)) {
 		        					stateC = StateC.C777;
 		        					break;
@@ -257,6 +258,8 @@ public abstract class QZVEC {
 			        			case 2:
 			        				stateC = StateC.C782;
 			        				break;
+			        			default: 
+			        				throw new RuntimeException("illegal state isw = " + isw);
 			        			}
 			        			stateC = StateC.C777;
 			        			break;
@@ -273,12 +276,14 @@ public abstract class QZVEC {
 			        			case 2: 
 			        				stateC = StateC.C782;
 			        				break;
+			        			default: 
+			        				throw new RuntimeException("illegal state isw = " + isw);
 			        			}
 			        			stateC = StateC.C780;
 			        			break;
 			        			
 	        				case C780:
-	        					// Complex 2-by-2 block 
+	        					// complex 2-by-2 block 
 		        				x = betm * a[i][i + 1] - almr * b[i][i + 1];
 			        			x1 = -almi * b[i][i + 1];
 			        			y = betm * a[i + 1][i];
@@ -328,9 +333,10 @@ public abstract class QZVEC {
 	        			}	// end of while (stateC
 	        			
 	        		}	// end of LoopC: for (ii ..
+	        		
 	        		stateA = StateA.A795;
 					break;
-					// End complex vector
+					// end complex vector
 					
 				case A795:
 					isw = 3 - isw;
@@ -347,23 +353,22 @@ public abstract class QZVEC {
         	}	// end while
         }	// end LoopA, for (nn ...
  
-        // End back substitution. Transform to original coordinate system.
-        for (jj = 0; jj < n; ++jj) {
+        // end back substitution. Transform to original coordinate system.
+        for (jj = 0; jj < n; jj++) {
             j = n - jj - 1;
 
-            for (i = 0; i < n; ++i)
-            {
+            for (i = 0; i < n; i++) {
                 zz = 0.0;
-                for (k = 0; k <= j; ++k)
-                    zz += z[i][k] * b[k][j];
+                for (k = 0; k <= j; k++) {
+                    zz = zz + z[i][k] * b[k][j];
+                }
                 z[i][j] = zz;
             }
         } 	// end for (jj ...
 
-        // Normalize so that modulus of largest component of each vector is 1.
+        // normalize so that modulus of largest component of each vector is 1.
         // (isw is 1 initially from before)
-        LoopD: for (j = 0; j < n; ++j) {
-        	if (true) break;	//do not normalize
+        LoopD: for (j = 0; j < n; j++) {
         	StateD stateD = StateD.Dinit;
         	StateLoopD: while (stateD != StateD.Dfinal) {
         		System.out.println("       StateLoopD: " + stateD);
@@ -379,32 +384,35 @@ public abstract class QZVEC {
 		            	break;
 		            }
 
-		            for (i = 0; i < n; ++i) {
-		                if ((Math.abs(z[i][j])) > d)
-		                    d = (Math.abs(z[i][j]));
+		            for (i = 0; i < n; i++) {
+//		                if ((Math.abs(z[i][j])) > d)
+//		                    d = (Math.abs(z[i][j]));
+		            	d = Math.max(d, Math.abs(z[i][j]));
 		            }
 
-		            for (i = 0; i < n; ++i) {
-		                z[i][j] /= d;
+		            for (i = 0; i < n; i++) {
+		                z[i][j] = z[i][j] / d;
 		            }
 		            
 		            stateD = StateD.D950;
 					break;
 					
 				case D920:
-		            for (i = 0; i < n; ++i) {
+		            for (i = 0; i < n; i++) {
 		                r = Math.abs(z[i][j - 1]) + Math.abs(z[i][j]);
 		                if (r != 0.0) {
 		                    // Computing 2nd power
-		                    double u1 = z[i][j - 1] / r;
-		                    double u2 = z[i][j] / r;
-		                    r = r * Math.sqrt(u1 * u1 + u2 * u2);
+//		                    double u1 = z[i][j - 1] / r;
+//		                    double u2 = z[i][j] / r;
+//		                    r = r * Math.sqrt(u1 * u1 + u2 * u2);
+		                    r = r * Math.hypot(z[i][j - 1] / r, z[i][j] / r);
 		                }
-		                if (r > d)
+		                if (r > d) {
 		                    d = r;
+		                }
 		            }
 
-		            for (i = 0; i < n; ++i) {
+		            for (i = 0; i < n; i++) {
 		                z[i][j - 1] = z[i][j - 1] / d;
 		                z[i][j] = z[i][j] / d;
 		            }

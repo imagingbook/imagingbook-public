@@ -22,7 +22,7 @@ public abstract class QZHES {
 	static int qzhes(int n, double[][] a, double[][] b, boolean matz, double[][] z) {
 		
 //		System.out.println("runnin qzhes");
-		int i, j, k, l;
+		int i, j, k, l, nm1;
 		double r, s, t;
 		int l1;
 		double u1, u2, v1, v2;
@@ -32,25 +32,29 @@ public abstract class QZHES {
 		if (matz) {
 			// If we are interested in computing the
 			// eigenvectors, set Z to identity(n,n)
-			for (j = 0; j < n; ++j) {
-				for (i = 0; i < n; ++i)
+			for (j = 0; j < n; j++) {
+				for (i = 0; i < n; i++)
 					z[i][j] = 0.0;
 				z[j][j] = 1.0;
 			}
 		}
 	
-		// Reduce b to upper triangular form
-		if (n <= 1)
+		// reduce b to upper triangular form
+		if (n <= 1) {
 			return 0;
-		for (l = 0; l < n - 1; ++l) {
+		}
+		
+		nm1 = n - 1;
+		for (l = 0; l < nm1; l++) {
 			l1 = l + 1;
 			s = 0.0;
 	
-			for (i = l1; i < n; ++i)
-				s += (Math.abs(b[i][l]));
+			for (i = l1; i < n; i++)
+				s = s + (Math.abs(b[i][l]));
 	
-			if (s == 0.0)
+			if (s == 0.0) {
 				continue;
+			}
 			s += (Math.abs(b[l][l]));
 			r = 0.0;
 	
