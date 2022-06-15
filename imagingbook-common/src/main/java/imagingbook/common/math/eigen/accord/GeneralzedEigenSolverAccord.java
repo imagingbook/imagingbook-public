@@ -67,8 +67,6 @@ public class GeneralzedEigenSolverAccord {
 		double[][] B = Matrix.duplicate(b); // wrong! b.clone();
 
 		boolean matz = true;
-		int ierr = 0;
-
 
 		// reduces A to upper Hessenberg form and B to upper
 		// triangular form using orthogonal transformations
@@ -81,8 +79,13 @@ public class GeneralzedEigenSolverAccord {
 		// reduces the Hessenberg matrix A to quasi-triangular form
 		// using orthogonal transformations while maintaining the
 		// triangular form of the B matrix.
-		ierr = QZIT.qzit(n, A, B, Arithmetic.EPSILON_DOUBLE, matz, Z, ierr);		// ref ierr  -- remove ierr argument!
-		//            System.out.println("Z = \n" + Matrix.toString(Z));
+		double eps1 = 0.0;
+		int ierr = QZIT.qzit(A, B, eps1 , matz, Z);
+		//  System.out.println("Z = \n" + Matrix.toString(Z));
+		
+		if (ierr >= 0) {
+			throw new RuntimeException("limit of 30*n iterations was exhausted for eigenvalue " + ierr);
+		}
 
 		// reduces the quasi-triangular matrix further, so that any
 		// remaining 2-by-2 blocks correspond to pairs of complex
@@ -264,12 +267,12 @@ public class GeneralzedEigenSolverAccord {
 			System.out.println("k = " + k);
 			System.out.println("  eval = " + lambda);
 			System.out.println("  evec = " + Matrix.toString(evec));
-			System.out.println("  evecn = " + Matrix.toString(evecn));
+//			System.out.println("  evecn = " + Matrix.toString(evecn));
 			
-			RealVector L = A.operate(evecn);
+			RealVector L = A.operate(evec);
 			System.out.println("L = "+ Arrays.toString(L.toArray()));
 			
-			RealVector R = B.operate(evecn).mapMultiply(lambda);
+			RealVector R = B.operate(evec).mapMultiply(lambda);
 			System.out.println("R = "+ Arrays.toString(R.toArray()));
 			
 			RealVector res = L.subtract(R);

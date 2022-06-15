@@ -29,26 +29,29 @@ public abstract class Special {
     ///   This is a port of the epslon function from EISPACK.
     /// </remarks>
     /// 
-	public static double Epslon(double x)
-	{
-		double a, b, c, eps;
-		a = 1.3333333333333333;
-
-		L10: do {
-			b = a - 1.0;
-			c = b + b + b;
+	public static double Epslon(double x) {
+		double eps;
+		double a = 4.0 / 3.0;
+		do {
+			double b = a - 1.0;
+			double c = b + b + b;
 			eps = Math.abs(c - 1.0);
-
-			if (eps == 0.0) {
-				//goto L10;
-				break L10;
-			}
-		} while (true);
-
+		} while (eps == 0);
 		return eps * Math.abs(x);
 	}
 	
-//    public static double Epslon(double x)
+	/* original FORTRAN code:
+	  a = 4.0d0/3.0d0
+   10 b = a - 1.0d0
+      c = b + b + b
+      eps = dabs(c-1.0d0)
+      if (eps .eq. 0.0d0) go to 10
+      epslon = eps*dabs(x)
+      return
+      end
+      */
+	
+//    public static double Epslon2(double x)
 //    {
 //        double a, b, c, eps;
 //
@@ -65,5 +68,8 @@ public abstract class Special {
 //        return eps * System.Math.Abs(x);
 //    }
 
+	public static void main(String[] args) {
+		System.out.println(Epslon(1.0));
+	}
 
 }

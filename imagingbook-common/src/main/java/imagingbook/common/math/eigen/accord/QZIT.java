@@ -8,26 +8,58 @@ public abstract class QZIT {
 		L60, L70, L90, L95, L100, L120, L140, L150, L155, L160, L1000, L1001, Final;
 	}
 
-	/// <summary>  (line 474)
-	///   Adaptation of the original Fortran QZIT routine from EISPACK.
-	/// </summary>
-	/// <remarks>
-	///   This subroutine is the second step of the qz algorithm
-	///   for solving generalized matrix eigenvalue problems,
-	///   Siam J. Numer. anal. 10, 241-256(1973) by Moler and Stewart,
-	///   as modified in technical note nasa tn d-7305(1973) by ward.
-	///   
-	///   This subroutine accepts a pair of real matrices, one of them
-	///   in upper Hessenberg form and the other in upper triangular form.
-	///   it reduces the Hessenberg matrix to quasi-triangular form using
-	///   orthogonal transformations while maintaining the triangular form
-	///   of the other matrix.  it is usually preceded by  qzhes  and
-	///   followed by  qzval  and, possibly,  qzvec.
-	///   
-	///   For the full documentation, please check the original function.
-	/// </remarks>
-	static int qzit(int n, double[][] a, double[][] b, double eps1, boolean matz, double[][] z, int ierr) { // wilbur: was ref int ierr
-		System.out.println("runnin qzit");
+	/**
+	 * <p>
+	 * This subroutine is the second step of the qz algorithm for solving
+	 * generalized matrix eigenvalue problems, Siam J. Numer. anal. 10,
+	 * 241-256(1973) by Moler and Stewart, as modified in technical note NASA TN
+	 * D-7305(1973) by Ward. This description has been adapted from original version
+	 * (dated August 1983).
+	 * </p>
+	 * <p>
+	 * This subroutine accepts a pair of real matrices, one of them in upper
+	 * Hessenberg form and the other in upper triangular form. It reduces the
+	 * Hessenberg matrix to quasi-triangular form using orthogonal transformations
+	 * while maintaining the triangular form of the other matrix. It is usually
+	 * preceded by qzhes and followed by qzval and, possibly, qzvec.
+	 * </p>
+	 * <p>
+	 * On output:
+	 * <ul>
+	 * <li><strong>a</strong> has been reduced to quasi-triangular form. The elements 
+	 * below the first subdiagonal are still zero and no two consecutive subdiagonal
+	 * elements are nonzero.</li>
+	 * 
+	 * <li><strong>b</strong> is still in upper triangular form, although its elements have been altered.
+	 * the location b(n,1) is used to store eps1 times the norm of b for later use
+	 * by qzval and qzvec.
+	 * 
+	 * <li><strong>z</strong> contains the product of the right hand transformations (for both steps) if
+	 * matz has been set to true.</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param a    contains a real upper hessenberg matrix.
+	 * @param b    contains a real upper triangular matrix.
+	 * @param eps1 is a tolerance used to determine negligible elements. eps1 = 0.0
+	 *             (or negative) may be input, in which case an element will be
+	 *             neglected only if it is less than roundoff error times the norm
+	 *             of its matrix. If the input eps1 is positive, then an element
+	 *             will be considered negligible if it is less than eps1 times the
+	 *             norm of its matrix. A positive value of eps1 may result in faster
+	 *             execution, but less accurate results.
+	 * @param matz should be set to true if the right hand transformations are to be
+	 *             accumulated for later use in computing eigenvectors, and to false
+	 *             otherwise.
+	 * @param z    contains, if matz has been set to true, the transformation matrix
+	 *             produced in the reduction by qzhes, if performed, or else the
+	 *             identity matrix. If matz has been set to false, z is not
+	 *             referenced.
+	 * @return -1 for normal return, j if the limit of 30*n iterations is exhausted
+	 *         while the j-th eigenvalue is being sought.
+	 */
+	static int qzit(double[][] a, double[][] b, double eps1, boolean matz, double[][] z) {
+//		System.out.println("running qzit");
 		int i, j, k, l = 0;
 		double r, s, t, a1 = 0, a2 = 0, a3 = 0;
 		int k1, k2, l1 = 0, ll;
@@ -41,22 +73,25 @@ public abstract class QZIT {
 		int km1, lm1 = 0;
 		double ani, bni;
 		int ish = 0, itn, its = 0, enm2 = 0, lor1;
-		double epsa, epsb, anorm = 0, bnorm = 0;
+		double epsa, epsb, anorm, bnorm;
 		int enorn;
 		boolean notlas;
 	
-		ierr = 0;
+		int n = a.length;
+		int ierr = -1;		// no error 
 	
-		// Compute epsa and epsb
-		for (i = 0; i < n; ++i) {
+		// compute epsa and epsb
+		anorm = 0.0;
+		bnorm = 0.0;
+			      
+		for (i = 0; i < n; i++) {
 			ani = 0.0;
-			bni = 0.0;
-	
 			if (i != 0) {
 				ani = (Math.abs(a[i][(i - 1)]));
 			}
+			bni = 0.0;
 			
-			for (j = i; j < n; ++j) {
+			for (j = i; j < n; j++) {
 				ani += Math.abs(a[i][j]);
 				bni += Math.abs(b[i][j]);
 			}
@@ -76,23 +111,24 @@ public abstract class QZIT {
 			bnorm = 1.0;
 		}
 	
-		ep = eps1;
-		if (ep == 0.0) {
-			// Use round-off level if eps1 is zero
-			ep = Special.Epslon(1.0);
-		}
-	
+//		ep = eps1;
+//		if (ep == 0.0) {
+//			// Use round-off level if eps1 is zero
+//			ep = Special.Epslon(1.0);
+//		}
+		ep = (eps1 > 0) ? eps1 : Special.Epslon(1.0);
 		epsa = ep * anorm;
 		epsb = ep * bnorm;
 	
-		// Reduce a to quasi-triangular form, while keeping b triangular
+		// rReduce a to quasi-triangular form, while keeping b triangular
 		lor1 = 0;
 		enorn = n;
 		en = n - 1;
 		itn = n * 30;
+		
+		// ------------------------------------------
 	
 		State state = State.L60;
-	
 		StateLoop: while (state != State.Final) {
 			switch (state) {
 	
@@ -113,15 +149,16 @@ public abstract class QZIT {
 	
 			case L70:
 				ish = 2;
-				// Check for convergence or reducibility.
+				// check for convergence or reducibility.
 				for (ll = 0; ll <= en; ++ll) {
 					lm1 = en - ll - 1;
 					l = lm1 + 1;
-					if (l + 1 == 1) {
+					if (l == 0) {
 						state = State.L95;
 						continue StateLoop;		// check again!!
 					}
-					if ((Math.abs(a[l][lm1])) <= epsa) {
+					if (Math.abs(a[l][lm1]) <= epsa) {
+						state = State.L90;
 						break;
 					}
 				}
@@ -139,7 +176,8 @@ public abstract class QZIT {
 				state = State.L60;
 				break;
 	
-			case L95: // Check for small top of b
+			case L95: 
+				// check for small top of b
 				ld = l;
 				state = State.L100;
 				break;
@@ -154,22 +192,23 @@ public abstract class QZIT {
 				}
 	
 				b[l][l] = 0.0;
-				s = (Math.abs(a[l][l]) + Math.abs(a[l1][l]));
+				s = Math.abs(a[l][l]) + Math.abs(a[l1][l]);
 				u1 = a[l][l] / s;
 				u2 = a[l1][l] / s;
-				r = Special.Sign(Math.sqrt(u1 * u1 + u2 * u2), u1);
+//				r = Special.Sign(Math.sqrt(u1 * u1 + u2 * u2), u1);
+				r = Math.copySign(Math.hypot(u1, u2), u1);
 				v1 = -(u1 + r) / r;
 				v2 = -u2 / r;
 				u2 = v2 / v1;
 	
-				for (j = l; j < enorn; ++j) {
+				for (j = l; j < enorn; j++) {
 					t = a[l][j] + u2 * a[l1][j];
-					a[l][j] += t * v1;
-					a[l1][j] += t * v2;
+					a[l][j] = a[l][j] + t * v1;
+					a[l1][j] = a[l1][j] + t * v2;
 	
 					t = b[l][j] + u2 * b[l1][j];
-					b[l][j] += t * v1;
-					b[l1][j] += t * v2;
+					b[l][j] = b[l][j] + t * v1;
+					b[l1][j] = b[l1][j] + t * v2;
 				}
 	
 				if (l != 0) {
@@ -187,8 +226,8 @@ public abstract class QZIT {
 					state = State.L140;
 					break;
 				}
-	
-				if (itn == 0) { // Iteration strategy
+				// iteration strategy
+				if (itn == 0) {
 					state = State.L1000;
 					break;
 				}
@@ -197,7 +236,7 @@ public abstract class QZIT {
 					break;
 				}
 	
-				// Determine type of shift
+				// determine type of shift
 				b22 = b[l1][l1];
 				if (Math.abs(b22) < epsb) {
 					b22 = epsb;
@@ -214,37 +253,40 @@ public abstract class QZIT {
 				a43 = a[en][na] / b33;
 				a44 = a[en][en] / b44;
 				b34 = b[na][en] / b44;
-				t = (a43 * b34 - a33 - a44) * .5;
+				t = 0.5 * (a43 * b34 - a33 - a44);
 				r = t * t + a34 * a43 - a33 * a44;
 				if (r < 0.0) {
 					state = State.L150;
 					break;
 				}
 	
-				// Determine single shift zero-th column of a
+				// determine single shift zero-th column of a
 				ish = 1;
 				r = Math.sqrt(r);
 				sh = -t + r;
 				s = -t - r;
-				if (Math.abs(s - a44) < Math.abs(sh - a44))
+				if (Math.abs(s - a44) < Math.abs(sh - a44)) {
 					sh = s;
+				}
 	
-				// Look for two consecutive small sub-diagonal elements of a.
-				loop120: for (ll = ld; ll + 1 <= enm2; ++ll) {
+				// look for two consecutive small sub-diagonal elements of a.
+				for (ll = ld; ll < enm2; ll++) {
 					l = enm2 + ld - ll - 1;
-	
 					if (l == ld) {
 						state = State.L140;
-						break loop120;
+						//break loop130;
+						continue StateLoop;
 					}
 					lm1 = l - 1;
 					l1 = l + 1;
-					t = a[l + 1][l + 1];
+//					t = a[l + 1][l + 1];	// CHECK THIS!!
+					t = a[l][l];
 	
-					if (Math.abs(b[l][l]) > epsb)
-						t -= sh * b[l][l];
+					if (Math.abs(b[l][l]) > epsb) {
+						t = t - sh * b[l][l];
+					}
 	
-					if (Math.abs(a[l][lm1]) <= (Math.abs(t / a[l1][l])) * epsa) {
+					if (Math.abs(a[l][lm1]) <= Math.abs(t / a[l1][l]) * epsa) {
 						state = State.L100;
 						continue StateLoop;
 					}
@@ -261,7 +303,8 @@ public abstract class QZIT {
 				state = State.L160;
 				break;
 	
-			case L150: // Determine double shift zero-th column of a
+			case L150: 
+				// determine double shift zero-th column of a
 				a12 = a[l][l1] / b22;
 				a22 = a[l1][l1] / b22;
 				b12 = b[l][l1] / b22;
@@ -271,31 +314,30 @@ public abstract class QZIT {
 				state = State.L160;
 				break;
 	
-			case L155: // Ad hoc shift
+			case L155: 
+				// ad hoc shift
 				a1 = 0.0;
 				a2 = 1.0;
-				a3 = 1.1605;
+				a3 = 1.1605;			// magic!
 				state = State.L160;
 				break;
 	
 			case L160:
-				++its;
-				--itn;
-	
+				its = its + 1;
+			    itn = itn - 1;
 				if (!matz) {
 					lor1 = ld;
 				}
 	
-				mainloop: for (k = l; k <= na; ++k) {
-					notlas = k != na && ish == 2;
+				mainloop: for (k = l; k <= na; k++) {
+					notlas = (k != na && ish == 2);
 					k1 = k + 1;
 					k2 = k + 2;
-	
-					km1 = Math.max(k, l + 1) - 1; // Computing MAX
-					ll = Math.min(en, k1 + ish); // Computing MIN
+					km1 = Math.max(k, l + 1) - 1;
+					ll = Math.min(en, k1 + ish);
 	
 					if (!notlas) {
-						// Zero a(k+1,k-1)
+						// zero a(k+1,k-1)
 						if (k != l) {
 							a1 = a[k][km1];
 							a2 = a[k1][km1];
@@ -304,23 +346,23 @@ public abstract class QZIT {
 						s = Math.abs(a1) + Math.abs(a2);
 						if (s == 0.0) {
 							state = State.L70;
-							break mainloop;
+							continue StateLoop;
 						}
 						u1 = a1 / s;
 						u2 = a2 / s;
-						r = Special.Sign(Math.sqrt(u1 * u1 + u2 * u2), u1);
+						r = Math.copySign(Math.hypot(u1, u2), u1);
 						v1 = -(u1 + r) / r;
 						v2 = -u2 / r;
 						u2 = v2 / v1;
 	
-						for (j = km1; j < enorn; ++j) {
+						for (j = km1; j < enorn; j++) {
 							t = a[k][j] + u2 * a[k1][j];
-							a[k][j] += t * v1;
-							a[k1][j] += t * v2;
+							a[k][j] = a[k][j] + t * v1;
+							a[k1][j] = a[k1][j] + t * v2;
 	
 							t = b[k][j] + u2 * b[k1][j];
-							b[k][j] += t * v1;
-							b[k1][j] += t * v2;
+							b[k][j] = b[k][j] + t * v1;
+							b[k1][j] = b[k1][j] + t * v2;
 						}
 	
 						if (k != l) {
@@ -330,39 +372,38 @@ public abstract class QZIT {
 					}
 	
 					else {
-						// Zero a(k+1,k-1) and a(k+2,k-1)
+						// zero a(k+1,k-1) and a(k+2,k-1)
+						//L190:
 						if (k != l) {
 							a1 = a[k][km1];
 							a2 = a[k1][km1];
 							a3 = a[k2][km1];
 						}
-	
+						//L200:
 						s = Math.abs(a1) + Math.abs(a2) + Math.abs(a3);
 						if (s == 0.0) {
-							// goto L260;
-							continue;
+							continue mainloop;	// goto L260;
 						}
-	
 						u1 = a1 / s;
 						u2 = a2 / s;
 						u3 = a3 / s;
-						r = Special.Sign(Math.sqrt(u1 * u1 + u2 * u2 + u3 * u3), u1);
+						r = Math.copySign(Math.sqrt(u1 * u1 + u2 * u2 + u3 * u3), u1);
 						v1 = -(u1 + r) / r;
 						v2 = -u2 / r;
 						v3 = -u3 / r;
 						u2 = v2 / v1;
 						u3 = v3 / v1;
 	
-						for (j = km1; j < enorn; ++j) {
+						for (j = km1; j < enorn; j++) {
 							t = a[k][j] + u2 * a[k1][j] + u3 * a[k2][j];
-							a[k][j] += t * v1;
-							a[k1][j] += t * v2;
-							a[k2][j] += t * v3;
+							a[k][j] = a[k][j] + t * v1;
+							a[k1][j] = a[k1][j] + t * v2;
+							a[k2][j] = a[k2][j] + t * v3;
 	
 							t = b[k][j] + u2 * b[k1][j] + u3 * b[k2][j];
-							b[k][j] += t * v1;
-							b[k1][j] += t * v2;
-							b[k2][j] += t * v3;
+							b[k][j] = b[k][j] + t * v1;
+							b[k1][j] = b[k1][j] + t * v2;
+							b[k2][j] = b[k2][j] + t * v3;
 						}
 	
 						if (k != l) {
@@ -370,92 +411,92 @@ public abstract class QZIT {
 							a[k2][km1] = 0.0;
 						}
 	
-						// Zero b(k+2,k+1) and b(k+2,k)
-						s = (Math.abs(b[k2][k2])) + (Math.abs(b[k2][k1])) + (Math.abs(b[k2][k]));
-	
+						// zero b(k+2,k+1) and b(k+2,k)
+						s = Math.abs(b[k2][k2]) + Math.abs(b[k2][k1]) + Math.abs(b[k2][k]);
 						if (s != 0.0) {
 							u1 = b[k2][k2] / s;
 							u2 = b[k2][k1] / s;
 							u3 = b[k2][k] / s;
-							r = Special.Sign(Math.sqrt(u1 * u1 + u2 * u2 + u3 * u3), u1);
+							r = Math.copySign(Math.sqrt(u1 * u1 + u2 * u2 + u3 * u3), u1);
 							v1 = -(u1 + r) / r;
 							v2 = -u2 / r;
 							v3 = -u3 / r;
 							u2 = v2 / v1;
 							u3 = v3 / v1;
 	
-							for (i = lor1; i < ll + 1; ++i) {
+							for (i = lor1; i < ll + 1; i++) {
 								t = a[i][k2] + u2 * a[i][k1] + u3 * a[i][k];
-								a[i][k2] += t * v1;
-								a[i][k1] += t * v2;
-								a[i][k] += t * v3;
+								a[i][k2] = a[i][k2] + t * v1;
+								a[i][k1] = a[i][k1] + t * v2;
+								a[i][k] = a[i][k] + t * v3;
 	
 								t = b[i][k2] + u2 * b[i][k1] + u3 * b[i][k];
-								b[i][k2] += t * v1;
-								b[i][k1] += t * v2;
-								b[i][k] += t * v3;
+								b[i][k2] = b[i][k2] + t * v1;
+								b[i][k1] = b[i][k1] + t * v2;
+								b[i][k] = b[i][k] + t * v3;
 							}
 	
 							b[k2][k] = 0.0;
 							b[k2][k1] = 0.0;
 	
 							if (matz) {
-								for (i = 0; i < n; ++i) {
+								for (i = 0; i < n; i++) {
 									t = z[i][k2] + u2 * z[i][k1] + u3 * z[i][k];
-									z[i][k2] += t * v1;
-									z[i][k1] += t * v2;
-									z[i][k] += t * v3;
+									z[i][k2] = z[i][k2] + t * v1;
+									z[i][k1] = z[i][k1] + t * v2;
+									z[i][k] = z[i][k] + t * v3;
 								}
 							}
 						}
 					}
 	
 					// L240:
-					// Zero b(k+1,k)
+					// zero b(k+1,k)
 					s = (Math.abs(b[k1][k1])) + (Math.abs(b[k1][k]));
 					if (s == 0.0) {
-						// goto L260;
-						continue;
+						continue;	// goto L260;
 					}
 					u1 = b[k1][k1] / s;
 					u2 = b[k1][k] / s;
-					r = Special.Sign(Math.sqrt(u1 * u1 + u2 * u2), u1);
+					r = Math.copySign(Math.hypot(u1, u2), u1);
 					v1 = -(u1 + r) / r;
 					v2 = -u2 / r;
 					u2 = v2 / v1;
 	
-					for (i = lor1; i < ll + 1; ++i) {
+					for (i = lor1; i <= ll; i++) {
 						t = a[i][k1] + u2 * a[i][k];
-						a[i][k1] += t * v1;
-						a[i][k] += t * v2;
+						a[i][k1] = a[i][k1] + t * v1;
+						a[i][k] = a[i][k] + t * v2;
 	
 						t = b[i][k1] + u2 * b[i][k];
-						b[i][k1] += t * v1;
-						b[i][k] += t * v2;
+						b[i][k1] = b[i][k1] + t * v1;
+						b[i][k] = b[i][k] + t * v2;
 					}
 	
 					b[k1][k] = 0.0;
 	
 					if (matz) {
-						for (i = 0; i < n; ++i) {
+						for (i = 0; i < n; i++) {
 							t = z[i][k1] + u2 * z[i][k];
-							z[i][k1] += t * v1;
-							z[i][k] += t * v2;
+							z[i][k1] = z[i][k1] + t * v1;
+							z[i][k] = z[i][k] + t * v2;
 						}
 					}
 	
 					// L260: ;
 				}
 	
-				state = State.L70; // End QZ step
+				state = State.L70; // end qz step
 				break;
 	
-			case L1000: // Set error -- all eigenvalues have not converged after 30*n iterations
+			case L1000: 
+				// set error -- all eigenvalues have not converged after 30*n iterations
 				ierr = en + 1;
 				state = State.L1001;
 				break;
 	
-			case L1001: // Save epsb for use by qzval and qzvec
+			case L1001: 
+				// save epsb for use by qzval and qzvec
 				if (n > 1) {
 					b[n - 1][0] = epsb;
 				}
@@ -463,12 +504,12 @@ public abstract class QZIT {
 				break;
 	
 			case Final:
-				break;
+				throw new RuntimeException("this should never happen!");
 			}
 		}
 	
 		System.out.println("done qzit");
-		return ierr;	// wilbur: was 0
+		return ierr;	// return error code
 	} // end of qzit()
 	
 
