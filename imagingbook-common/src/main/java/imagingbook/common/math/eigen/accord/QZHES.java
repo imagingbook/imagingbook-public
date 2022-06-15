@@ -1,6 +1,8 @@
 package imagingbook.common.math.eigen.accord;
 
 public abstract class QZHES {
+	
+	// EISPACK Routines, see http://www.netlib.org/eispack/
 
 	/// <summary>
 	///   Adaptation of the original Fortran QZHES routine from EISPACK.
@@ -18,6 +20,8 @@ public abstract class QZHES {
 	///   For the full documentation, please check the original function.
 	/// </remarks>
 	static int qzhes(int n, double[][] a, double[][] b, boolean matz, double[][] z) {
+		
+//		System.out.println("runnin qzhes");
 		int i, j, k, l;
 		double r, s, t;
 		int l1;
@@ -156,6 +160,7 @@ public abstract class QZHES {
 			}
 		}
 	
+//		System.out.println("done qzhes");
 		return 0;
 	} // end of qzhes
 

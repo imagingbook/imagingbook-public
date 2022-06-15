@@ -1,6 +1,12 @@
 package imagingbook.common.math.eigen.accord;
 
+import java.util.Arrays;
+
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+
 import imagingbook.common.math.Arithmetic;
+import imagingbook.common.math.Matrix;
 
 /**
  * Ported from https://github.com/accord-net/framework/blob/development/Sources/Accord.Math/Decompositions/GeneralizedEigenvalueDecomposition.cs
@@ -65,21 +71,28 @@ public class GeneralzedEigenSolverAccord {
             // reduces A to upper Hessenberg form and B to upper
             // triangular form using orthogonal transformations
             QZHES.qzhes(n, A, B, matz, Z);
+//            System.out.println("QZHES done -----------------------------------------");
+            System.out.println("A = \n" + Matrix.toString(A));
+            System.out.println("B = \n" + Matrix.toString(B));
+            System.out.println("Z = \n" + Matrix.toString(Z));
 
             // reduces the Hessenberg matrix A to quasi-triangular form
             // using orthogonal transformations while maintaining the
             // triangular form of the B matrix.
-            QZIT.qzit(n, A, B, Arithmetic.EPSILON_DOUBLE, matz, Z, ierr);		// ref ierr
+            ierr = QZIT.qzit(n, A, B, Arithmetic.EPSILON_DOUBLE, matz, Z, ierr);		// ref ierr  -- remove ierr argument!
+            System.out.println("Z = \n" + Matrix.toString(Z));
 
             // reduces the quasi-triangular matrix further, so that any
             // remaining 2-by-2 blocks correspond to pairs of complex
             // eigenvalues, and returns quantities whose ratios give the
             // generalized eigenvalues.
             QZVAL.qzval(n, A, B, ar, ai, beta, matz, Z);
+            System.out.println("Z = \n" + Matrix.toString(Z));
 
             // computes the eigenvectors of the triangular problem and
             // transforms the results back to the original coordinate system.
             QZVEC.qzvec(n, A, B, ar, ai, beta, Z);
+            System.out.println("Z = \n" + Matrix.toString(Z));
 
 //            if (sort)
 //            {
@@ -181,6 +194,11 @@ public class GeneralzedEigenSolverAccord {
         {
                 return Z;
         }
+        
+        public double[] getEigenvector(int k) {
+        	RealMatrix V = MatrixUtils.createRealMatrix(Z);
+        	return V.getColumn(k);
+        }
 
         /// <summary>Returns the block diagonal eigenvalue matrix.</summary>
         public double[][] DiagonalMatrix()
@@ -200,5 +218,51 @@ public class GeneralzedEigenSolverAccord {
                 }
 
                 return x;
+        }
+        
+        // ----------------------------------------------------------
+        
+        
+        public static void main(String[] args) {
+        	
+        	double[][] A = new double[][] {
+    			{ 3,  -1,  5},
+    			{ -1,  -2, 7},
+    			{ 5,  7,  0}};
+    		
+    			double[][] B = new double[][] {
+    			{ 10, 2,  7},
+    			{  2, 12, 3},
+    			{  7, 3, 15}};
+    			
+        	int n = A.length;
+        	
+    		GeneralzedEigenSolverAccord ges = new GeneralzedEigenSolverAccord(A, B, false);
+    		
+    		double[] evals = ges.RealEigenvalues();
+    		System.out.println("evals = " + Matrix.toString(evals));
+    		
+        	double[][] evecs = ges.Eigenvectors();
+        	System.out.println("evecs = \n" + Matrix.toString(evecs));
+        	
+        	// check A x_k = lambda_k B x_k
+        	for (int k = 0; k < n; k++) {
+        		double lambda_k = evals[k];
+        		double[] x_k = ges.getEigenvector(k);
+        		System.out.println("lambda_" + k + " = " + lambda_k);
+        		System.out.println(    "x_" + k + " = " + Matrix.toString(ges.getEigenvector(k)));
+
+        		double[] LHS = Matrix.multiply(A, x_k);
+        		double[] RHS = Matrix.multiply(lambda_k, Matrix.multiply(B, x_k));
+        		System.out.println("   LHS = " + Matrix.toString(LHS));
+        		System.out.println("   RHS = " + Matrix.toString(RHS));
+        		
+        		double[] fac = new double[n];
+        		for (int i = 0; i < n; i++) {
+        			fac[i] = RHS[i] / LHS[i];
+        		}
+        		System.out.println("   fac = " + Matrix.toString(fac));
+        	}
+        	
         }
 }

@@ -1,6 +1,8 @@
 package imagingbook.common.math.eigen.accord;
 
 public abstract class QZVAL {
+	
+	// EISPACK Routines, see http://www.netlib.org/eispack/
 
 	enum State {
 		Initial, Final, L505, L410, L420, L455, L430, L435, L480, L475, L485, L503, L502, L460
@@ -26,6 +28,7 @@ public abstract class QZVAL {
 	/// </remarks>
 	static int qzval(int n, double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, boolean matz,
 			double[][] z) {
+//		System.out.println("runnin qzval");
 		int i = 0, j;
 		int na = 0, en = 0, nn;
 		double c = 0, d = 0, e = 0;
@@ -48,6 +51,7 @@ public abstract class QZVAL {
 
 			State state = State.Initial;
 			StateLoop: while (state != State.Final) {
+//				System.out.println("    StateLoop: " + state);
 				switch (state) {
 				case Initial:
 					en = n - nn - 1;
@@ -65,6 +69,7 @@ public abstract class QZVAL {
 						state = State.L420;
 						break;
 					}
+					state = State.L410;
 					break;
 
 				case L410:
@@ -357,6 +362,7 @@ public abstract class QZVAL {
 
 		b[n - 1][0] = epsb;
 
+//		System.out.println("done qzval");
 		return 0;
 	} // end of qzval()
 

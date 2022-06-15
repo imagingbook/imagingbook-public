@@ -1,6 +1,8 @@
 package imagingbook.common.math.eigen.accord;
 
 public abstract class QZIT {
+	
+	// EISPACK Routines, see http://www.netlib.org/eispack/
 
 	enum State {
 		L60, L70, L90, L95, L100, L120, L140, L150, L155, L160, L1000, L1001, Final;
@@ -25,6 +27,7 @@ public abstract class QZIT {
 	///   For the full documentation, please check the original function.
 	/// </remarks>
 	static int qzit(int n, double[][] a, double[][] b, double eps1, boolean matz, double[][] z, int ierr) { // wilbur: was ref int ierr
+		System.out.println("runnin qzit");
 		int i, j, k, l = 0;
 		double r, s, t, a1 = 0, a2 = 0, a3 = 0;
 		int k1, k2, l1 = 0, ll;
@@ -464,7 +467,8 @@ public abstract class QZIT {
 			}
 		}
 	
-		return 0;
+		System.out.println("done qzit");
+		return ierr;	// wilbur: was 0
 	} // end of qzit()
 	
 

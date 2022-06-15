@@ -1,6 +1,10 @@
 package imagingbook.common.math.eigen.accord;
 
+
+
 public abstract class QZVEC {
+	
+	// EISPACK Routines, see http://www.netlib.org/eispack/
 	
 	enum StateA {
 		Ainit, Afinal, A795, A710, A800
@@ -37,6 +41,7 @@ public abstract class QZVEC {
 	///   For the full documentation, please check the original function.
 	/// </remarks>
     static int qzvec(int n, double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, double[][] z) {
+    	System.out.println("runnin qzvec");
         int i = 0, j, k, m;
         int na = 0, ii, en = 0, jj, nn, enm2;
         double d = 0, q;
@@ -52,7 +57,8 @@ public abstract class QZVEC {
         LoopA: for (nn = 0; nn < n; ++nn) {
 
         	StateA stateA = StateA.Ainit;
-        	while (stateA != StateA.Afinal) {
+        	StateLoopA: while (stateA != StateA.Afinal) {
+        		System.out.println("    StateLoopA: " + stateA);
         		
         		switch(stateA) {
         		case Ainit :
@@ -80,7 +86,7 @@ public abstract class QZVEC {
                		// for i=en-1 step -1 until 1 do --
             		LoopB: for (ii = 0; ii <= na; ++ii) {
             			StateB stateB = StateB.Binit;
-            			while (stateB != StateB.Bfinal) {
+            			StateLoopB: while (stateB != StateB.Bfinal) {
             				switch (stateB) {
             				case Binit :
             					i = en - ii - 1;
@@ -111,8 +117,9 @@ public abstract class QZVEC {
                     			}
                     			// Real 1-by-1 block
                     			t = w;
-                    			if (w == 0.0)
+                    			if (w == 0.0) {
                     				t = epsb;
+                    			}
                     			b[i][en] = -r / t;
                     			stateB = StateB.B700;
                     			break;
@@ -134,10 +141,12 @@ public abstract class QZVEC {
                     			
             				case B650 :
             					b[i + 1][en] = (-s - y * t) / zz;
+            					stateB = StateB.B690;
             					break;
             					
             				case B690 :
             					isw = 3 - isw;
+            					stateB = StateB.B700;
             					break;
             					
             				case B700 :
@@ -145,7 +154,7 @@ public abstract class QZVEC {
             					break;
             					
             				case Bfinal :
-            					break LoopB;
+            					break StateLoopB;
                     			
             				}	// end switch (stateB)
 	
@@ -178,7 +187,7 @@ public abstract class QZVEC {
 	        		// for i=en-2 step -1 until 1 do --
 	        		LoopC: for (ii = 0; ii < enm2; ++ii) {
 	        			StateC stateC = StateC.Cinit;
-	        			while (stateC != StateC.Cfinal) {
+	        			StateLoopC: while (stateC != StateC.Cfinal) {
 	        				switch (stateC) {
 	        				case Cinit :
 	        					i = na - ii - 1;
@@ -257,8 +266,7 @@ public abstract class QZVEC {
 			        			d = dr * rr + di;
 			        			t1 = (tr * rr + ti) / d;
 			        			t2 = (ti * rr - tr) / d;
-			        			switch (isw)
-			        			{
+			        			switch (isw) {
 			        			case 1: 
 			        				stateC = StateC.C787;
 			        				break;
@@ -314,13 +322,13 @@ public abstract class QZVEC {
 								break;
 
 							case Cfinal:
-								break LoopC;
+								break StateLoopC;
 			        			
 	        				}	// end switch (stateC)
 	        			}	// end of while (stateC
 	        			
 	        		}	// end of LoopC: for (ii ..
-	        		
+	        		stateA = StateA.A795;
 					break;
 					// End complex vector
 					
@@ -333,7 +341,7 @@ public abstract class QZVEC {
 					stateA = StateA.Afinal;
 					break;
 				case Afinal:
-					break LoopA;
+					break StateLoopA;
         		
         		}	// end switch (stateA)
         		
@@ -420,6 +428,7 @@ public abstract class QZVEC {
  
         }	// end LoopD: for (j..
 
+        System.out.println("done qzvec");
         return 0;
     }	// end of qzvec()
 
