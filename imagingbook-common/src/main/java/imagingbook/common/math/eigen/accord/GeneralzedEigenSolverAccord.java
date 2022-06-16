@@ -70,7 +70,7 @@ public class GeneralzedEigenSolverAccord {
 
 		// reduces A to upper Hessenberg form and B to upper
 		// triangular form using orthogonal transformations
-		QZHES.qzhes(n, A, B, matz, Z);
+		QZHES.qzhes(A, B, matz, Z);
 		//            System.out.println("QZHES done -----------------------------------------");
 		System.out.println("A = \n" + Matrix.toString(A));
 		System.out.println("B = \n" + Matrix.toString(B));
@@ -276,7 +276,7 @@ public class GeneralzedEigenSolverAccord {
 			System.out.println("R = "+ Arrays.toString(R.toArray()));
 			
 			RealVector res = L.subtract(R);
-			//System.out.println("res = "+ Arrays.toString(res.toArray()));	// L - R must be 0
+			System.out.println("res = "+ Arrays.toString(res.toArray()));	// L - R must be 0
 			System.out.println("  res = 0? "+  Matrix.isZero(res.toArray(), 1e-4));
 		}
 	}

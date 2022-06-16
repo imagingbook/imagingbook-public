@@ -13,7 +13,8 @@ public abstract class QZIT {
 	 * This subroutine is the second step of the qz algorithm for solving
 	 * generalized matrix eigenvalue problems, Siam J. Numer. anal. 10,
 	 * 241-256(1973) by Moler and Stewart, as modified in technical note NASA TN
-	 * D-7305(1973) by Ward. This description has been adapted from original version
+	 * D-7305(1973) by Ward. 
+	 * This description has been adapted from the original version
 	 * (dated August 1983).
 	 * </p>
 	 * <p>
@@ -482,7 +483,6 @@ public abstract class QZIT {
 							z[i][k] = z[i][k] + t * v2;
 						}
 					}
-	
 					// L260: ;
 				}
 	
@@ -508,7 +508,7 @@ public abstract class QZIT {
 			}
 		}
 	
-		System.out.println("done qzit");
+//		System.out.println("done qzit");
 		return ierr;	// return error code
 	} // end of qzit()
 	
