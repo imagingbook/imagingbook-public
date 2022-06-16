@@ -18,7 +18,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.eigen.GeneralizedSymmetricEigenSolver;
+import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
 
 /**
  * Algebraic ellipse fit based on Taubin's method [1].
@@ -93,8 +93,8 @@ public class EllipseFitTaubin1 implements EllipseFitAlgebraic {
 //		IJ.log("C is positive definite: " + isPositiveDefinite(C));
 		
 		// solve C*p = lambda*S*p
-		GeneralizedSymmetricEigenSolver eigen = 
-				new GeneralizedSymmetricEigenSolver(C, S, 1e-15, 1e-15);	// S, C reversed, since C is not positive definite
+		GeneralizedSymmetricEigenDecomposition eigen = 
+				new GeneralizedSymmetricEigenDecomposition(C, S, 1e-15, 1e-15);	// S, C reversed, since C is not positive definite
 		
 		double[] evals = eigen.getRealEigenvalues();
 //		IJ.log("evals = " + Arrays.toString(evals));

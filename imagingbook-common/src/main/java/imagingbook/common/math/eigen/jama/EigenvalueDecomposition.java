@@ -1,4 +1,4 @@
-package imagingbook.common.math.eigen;
+package imagingbook.common.math.eigen.jama;
 
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -11,7 +11,11 @@ import imagingbook.common.math.PrintPrecision;
 /**
  * Eigenvalues and eigenvectors of a real matrix.
  * This code has been ported from https://math.nist.gov/javanumerics/jama/ (Version 1.0.3), with the
- * public API (and some internals) adapted to Apache Commons Math (by W. Burger). 
+ * public API (and some internals) adapted to Apache Commons Math (by W. Burger).
+ * 
+ * PROBLEM: If the supplied matrix is singular, the returned decomposition is only partial!
+ * Use Apache's implementation instead!
+ * 
  * This is intended as a temporary substitute for Apache Commons Math's own implementation
  * of Eigenvalue decomposition, which behaves strangely at times. 
  * Most comments below were taken from the original sources.
@@ -30,7 +34,7 @@ import imagingbook.common.math.PrintPrecision;
  * validity of the equation A = V*D*inverse(V) depends upon V.cond().
  * </p>
  **/
-
+@Deprecated
 public class EigenvalueDecomposition {
 	
 	private final static double SymmetryTolerance = 1e-6;
@@ -997,12 +1001,13 @@ public class EigenvalueDecomposition {
 		}
 		
 		{
-			System.out.println("Apache Commons Math:");
+			System.out.println("\nApache Commons Math:");
 			org.apache.commons.math3.linear.EigenDecomposition  ed = 
 					new org.apache.commons.math3.linear.EigenDecomposition(MatrixUtils.createRealMatrix(M));
 			double[] evals = ed.getRealEigenvalues();
 			PrintPrecision.set(9);
-			System.out.println("evals = " + Matrix.toString(evals));
+			System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
+			System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
 			System.out.println("has complex evs = " + ed.hasComplexEigenvalues());
 			System.out.println("D = \n" + Matrix.toString(ed.getD()));
 			System.out.println("det = " + ed.getDeterminant());

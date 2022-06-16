@@ -10,6 +10,7 @@ package imagingbook.common.geometry.fitting.circle.algebraic;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
+import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
@@ -18,7 +19,6 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.eigen.EigenvalueDecomposition;
 import imagingbook.common.util.SortMap;
 
 /**
@@ -136,7 +136,7 @@ public class CircleFitPratt implements CircleFitAlgebraic {
 			RealMatrix Y = V.multiply(S);
 			RealMatrix Z = Y.transpose().multiply(Ci).multiply(Y); // = Y^T * Ci * Y
 
-			EigenvalueDecomposition ed = new EigenvalueDecomposition(Z);
+			EigenDecomposition ed = new EigenDecomposition(Z);
 			
 			double[] evals = ed.getRealEigenvalues();
 			

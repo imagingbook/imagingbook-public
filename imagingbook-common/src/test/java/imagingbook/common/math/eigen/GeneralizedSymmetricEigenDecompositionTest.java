@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
 
-public class GeneralizedSymmetricEigenSolverTest {
+public class GeneralizedSymmetricEigenDecompositionTest {
 	
 	static double TOL = 1e-6;
 
@@ -42,7 +42,7 @@ public class GeneralizedSymmetricEigenSolverTest {
 		assertTrue("matrix A may be positive definite or not", !Matrix.isPositiveDefinite(A, TOL));
 		assertTrue("matrix B must be positive definite", Matrix.isPositiveDefinite(B, TOL));
 		
-		GeneralizedSymmetricEigenSolver solver = new GeneralizedSymmetricEigenSolver(A, B);
+		GeneralizedSymmetricEigenDecomposition solver = new GeneralizedSymmetricEigenDecomposition(A, B);
 		
 		assertFalse("should not have complex eigenvalues", solver.hasComplexEigenvalues());
 		

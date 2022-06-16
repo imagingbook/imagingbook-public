@@ -18,7 +18,7 @@ import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.math.eigen.GeneralizedSymmetricEigenSolver;
+import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
 
 /**
  * 
@@ -30,7 +30,7 @@ import imagingbook.common.math.eigen.GeneralizedSymmetricEigenSolver;
  * 
  * <p>
  * Note: With exactly 5 input points (generally sufficient for ellipse fitting) the scatter matrix
- * X is singular and thus the Cholesky decomposition used by the {@link GeneralizedSymmetricEigenSolver}
+ * X is singular and thus the Cholesky decomposition used by the {@link GeneralizedSymmetricEigenDecomposition}
  * cannot be applied. At least 6 distinct input points are required (i.e., no duplicate points are
  * allowed).
  * </p>
@@ -96,7 +96,7 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 		
 		// solve C*p = lambda*S*p  which is equiv. to 
 		// A*x = lambda*B*x (A, B symmetric, B positive definite)
-		GeneralizedSymmetricEigenSolver eigen = new GeneralizedSymmetricEigenSolver(C, S, 1e-15, 1e-15); 
+		GeneralizedSymmetricEigenDecomposition eigen = new GeneralizedSymmetricEigenDecomposition(C, S, 1e-15, 1e-15); 
 				// low ABSOLUTE_POSITIVITY_THRESHOLD (last argument) is important!
 		
 		double[] evals = eigen.getRealEigenvalues(); 

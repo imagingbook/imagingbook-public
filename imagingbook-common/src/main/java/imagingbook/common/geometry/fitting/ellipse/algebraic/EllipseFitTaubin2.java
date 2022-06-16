@@ -19,7 +19,7 @@ import org.apache.commons.math3.linear.RealVector;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.eigen.GeneralizedSymmetricEigenSolver;
+import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
 import imagingbook.common.util.SortMap;
 
 /**
@@ -97,7 +97,7 @@ public class EllipseFitTaubin2 implements EllipseFitAlgebraic {
 				2*d, e,   0,   1,   0,
 				0,   d,   2*e, 0,   1);
 		
-		GeneralizedSymmetricEigenSolver eigen = new GeneralizedSymmetricEigenSolver(P, Q);
+		GeneralizedSymmetricEigenDecomposition eigen = new GeneralizedSymmetricEigenDecomposition(P, Q);
 		
 		double[] evals = eigen.getRealEigenvalues();
 //		IJ.log("evals = " + Arrays.toString(evals));

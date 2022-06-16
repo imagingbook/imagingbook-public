@@ -42,7 +42,7 @@ import imagingbook.common.math.PrintPrecision;
  * @author WB
  * @version 2022/06/11
  */
-public class GeneralizedSymmetricEigenSolver {
+public class GeneralizedSymmetricEigenDecomposition {
 	
 	private final EigenDecomposition eigendecompY;
 	private final DecompositionSolver solverLT;
@@ -58,7 +58,7 @@ public class GeneralizedSymmetricEigenSolver {
 	 * @param rsth	relative symmetry threshold
 	 * @param apth absolute positivity threshold
 	 */
-	public GeneralizedSymmetricEigenSolver(RealMatrix A, RealMatrix B, double rsth, double apth) {
+	public GeneralizedSymmetricEigenDecomposition(RealMatrix A, RealMatrix B, double rsth, double apth) {
 		if (!MatrixUtils.isSymmetric(A, rsth)) {
 			throw new IllegalArgumentException("matrix A must be symmetric");
 		}
@@ -99,7 +99,7 @@ public class GeneralizedSymmetricEigenSolver {
 	 * @param A real symmetric matrix
 	 * @param B real symmetric and positive definite matrix
 	 */
-	public GeneralizedSymmetricEigenSolver(RealMatrix A, RealMatrix B) {
+	public GeneralizedSymmetricEigenDecomposition(RealMatrix A, RealMatrix B) {
 		this(A, B, 
 				DEFAULT_RELATIVE_SYMMETRY_THRESHOLD, 
 				DEFAULT_ABSOLUTE_POSITIVITY_THRESHOLD);
@@ -151,7 +151,7 @@ public class GeneralizedSymmetricEigenSolver {
 			{  2, 12, 3},
 			{  7, 3, 15}});
 		
-		GeneralizedSymmetricEigenSolver solver = new GeneralizedSymmetricEigenSolver(A, B);
+		GeneralizedSymmetricEigenDecomposition solver = new GeneralizedSymmetricEigenDecomposition(A, B);
 		
 		System.out.println("has complex eigenvalues = " + solver.hasComplexEigenvalues());
 		double[] evals = solver.getRealEigenvalues();
