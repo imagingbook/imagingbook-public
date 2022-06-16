@@ -101,7 +101,7 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 		
 		double[] evals = eigen.getRealEigenvalues(); 
 		int k = getLargestPositiveIdx(evals);
-		double[] p = eigen.getEigenVector(k).toArray();
+		double[] p = eigen.getEigenvector(k).toArray();
 		
 		return Matrix.normalize(p);		
 	}

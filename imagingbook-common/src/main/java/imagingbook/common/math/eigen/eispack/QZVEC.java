@@ -1,6 +1,4 @@
-package imagingbook.common.math.eigen.accord;
-
-
+package imagingbook.common.math.eigen.eispack;
 
 public abstract class QZVEC {
 
@@ -56,10 +54,9 @@ public abstract class QZVEC {
 	 *             qzhes, qzit, and qzval, if performed. If the eigenvectors of the
 	 *             triangular problem are desired, z must contain the identity
 	 *             matrix.
-	 * @return
 	 */
 	@SuppressWarnings("unused")
-	static void qzvec(double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, double[][] z) {
+	public static void qzvec(double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, double[][] z) {
 
 		final int n = a.length;
 
@@ -107,7 +104,6 @@ public abstract class QZVEC {
 						
 						StateB stateB = StateB.Binit;
 						StateLoopB: while (stateB != StateB.Bfinal) {
-							System.out.println("       StateLoopB: " + stateB);
 							switch (stateB) {
 							case Binit :
 								i = en - ii - 1;

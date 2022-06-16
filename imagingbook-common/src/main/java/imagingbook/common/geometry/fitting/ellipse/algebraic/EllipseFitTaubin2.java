@@ -103,7 +103,7 @@ public class EllipseFitTaubin2 implements EllipseFitAlgebraic {
 //		IJ.log("evals = " + Arrays.toString(evals));
 		
 		int k = getSmallestPositiveIdx(evals);		// TODO: replace by new SortingOrder(evals).getIndex(1); (see CircleFitHyperStable)
-		RealVector q0 = eigen.getEigenVector(k);
+		RealVector q0 = eigen.getEigenvector(k);
 //		IJ.log("pInit = " + Matrix.toString(pInit.toArray()));
 		
 		double f = -s5.dotProduct(q0);

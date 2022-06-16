@@ -1,4 +1,4 @@
-package imagingbook.common.math.eigen.accord;
+package imagingbook.common.math.eigen;
 
 import java.util.Arrays;
 
@@ -18,7 +18,7 @@ import imagingbook.common.math.eigen.eispack.QZVEC;
  * @author WB
  *
  */
-public class GeneralzedEigenSolverAccord {
+public class GeneralizedEigenDecomposition {
 
 	// TODO: 
 	//		look at http://www.netlib.no/netlib/eispack/qzhes.f
@@ -46,58 +46,41 @@ public class GeneralzedEigenSolverAccord {
 	///   Pass <see langword="true"/> to sort the eigenvalues and eigenvectors at the end
 	///   of the decomposition.</param>
 	///
-	public GeneralzedEigenSolverAccord(double[][] a, double[][] b, boolean sort) // boolean sort = false
-	{
-		if (a == null)
-			throw new IllegalArgumentException("Matrix A cannot be null.");
+	public GeneralizedEigenDecomposition(double[][] A, double[][] B, boolean sort) {
+		if (A == null)
+			throw new IllegalArgumentException("matrix A may not be null");
 
-		if (b == null)
-			throw new IllegalArgumentException("Matrix B cannot be null.");
+		if (B == null)
+			throw new IllegalArgumentException("matrix B may not be null");
 
-		if (a.length != a[0].length)
-			throw new IllegalArgumentException("Matrix is not a square matrix.");
+		if (!Matrix.isSquare(A))
+			throw new IllegalArgumentException("matrix A is not a square");
 
-		if (b.length != b[0].length)
-			throw new IllegalArgumentException("Matrix is not a square matrix.");
+		if (!Matrix.isSquare(A))
+			throw new IllegalArgumentException("matrix A is not a square");
 
-		if (a.length != b.length || a[0].length!= b[0].length)
-			throw new IllegalArgumentException("Matrix dimensions do not match");
+		if (A.length != B.length || A[0].length!= B[0].length)
+			throw new IllegalArgumentException("dimensions od A, B do not match");
 
-
-		n = a.length;
-		double[][] A = Matrix.duplicate(a);
-		double[][] B = Matrix.duplicate(b);
-		ar = new double[n];
-		ai = new double[n];
-		beta = new double[n];
-		Z = new double[n][n];
+		this.n = A.length;
+		
+		double[][] a = Matrix.duplicate(A);
+		double[][] b = Matrix.duplicate(B);
+		
+		this.ar = new double[n];
+		this.ai = new double[n];
+		this.beta = new double[n];
+		this.Z = new double[n][n];
 		boolean matz = true;
 
-		// reduces A to upper Hessenberg form and B to upper
-		// triangular form using orthogonal transformations
-		QZHES.qzhes(A, B, matz, Z);
-
-		// reduces the Hessenberg matrix A to quasi-triangular form
-		// using orthogonal transformations while maintaining the
-		// triangular form of the B matrix.
-		double eps1 = 0.0;
-		int ierr = QZIT.qzit(A, B, eps1 , matz, Z);
-		//  System.out.println("Z = \n" + Matrix.toString(Z));
-		
+		QZHES.qzhes(a, b, matz, Z);
+		int ierr = QZIT.qzit(a, b, 0.0 , matz, Z);
 		if (ierr >= 0) {
 			throw new RuntimeException("limit of 30*n iterations was exhausted for eigenvalue " + ierr);
 		}
-
-		// reduces the quasi-triangular matrix further, so that any
-		// remaining 2-by-2 blocks correspond to pairs of complex
-		// eigenvalues, and returns quantities whose ratios give the
-		// generalized eigenvalues.
-		QZVAL.qzval(A, B, ar, ai, beta, matz, Z);
-		//            System.out.println("Z = \n" + Matrix.toString(Z));
-
-		// computes the eigenvectors of the triangular problem and
-		// transforms the results back to the original coordinate system.
-		QZVEC.qzvec(A, B, ar, ai, beta, Z);
+		QZVAL.qzval(a, b, ar, ai, beta, matz, Z);
+		QZVEC.qzvec(a, b, ar, ai, beta, Z);
+		
 		//            System.out.println("Z = \n" + Matrix.toString(Z));
 
 		//            if (sort)
@@ -119,34 +102,14 @@ public class GeneralzedEigenSolverAccord {
 	}
 
 
-	/// <summary>Returns the real parts of the alpha values.</summary>
-	public double[] RealAlphas()
-	{
-		return ar;
-	}
-
-	/// <summary>Returns the imaginary parts of the alpha values.</summary>
-	public double[] ImaginaryAlphas()
-	{
-		return ai;
-	}
-
-	/// <summary>Returns the beta values.</summary>
-	public double[] Betas()
-	{
-		return beta;
-	}
-
-	/// <summary>
-	///   Returns true if matrix B is singular.
-	/// </summary>
-	/// <remarks>
-	///   This method checks if any of the generated betas is zero. It
-	///   does not says that the problem is singular, but only that one
-	///   of the matrices of the pencil (A,B) is singular.
-	/// </remarks>
-	public boolean IsSingular()
-	{
+	/**
+	 * This method checks if any of the generated betas is zero. It does not says
+	 * that the problem is singular, but only that one of the matrices 
+	 * A, B is singular.
+	 * 
+	 * @return true if A or B is singular
+	 */
+	public boolean isSingular() {
 		for (int i = 0; i < n; i++) {
 			if (beta[i] == 0)
 				return true;
@@ -154,11 +117,12 @@ public class GeneralzedEigenSolverAccord {
 		return false;
 	}
 
-	/// <summary>
-	///   Returns true if the eigenvalue problem is degenerate (ill-posed).
-	/// </summary>
-	public boolean IsDegenerate()
-	{
+	/**
+	 * Returns true if the eigenvalue problem is degenerate (i.e., ill-posed).
+	 * 
+	 * @return true if degenerate
+	 */
+	public boolean IsDegenerate() {
 		for (int i = 0; i < n; i++) {
 			if (beta[i] == 0 && ar[i] == 0)
 				return true;
@@ -166,13 +130,14 @@ public class GeneralzedEigenSolverAccord {
 		return false;
 	}
 
-	/// <summary>Returns the real parts of the eigenvalues.</summary>
-	/// <remarks>
-	///   The eigenvalues are computed using the ratio alpha[i]/beta[i],
-	///   which can lead to valid, but infinite eigenvalues.
-	/// </remarks>
-	public double[] RealEigenvalues()
-	{
+	/**
+	 * Returns a vector with the real parts of the eigenvalues.
+	 * Note: The eigenvalues are calculated using the ratio alpha[i]/beta[i],
+	 * which can lead to valid, but infinite eigenvalues.
+	 * 
+	 * @return the real parts of the eigenvalues
+	 */
+	public double[] getRealEigenvalues() {
 		// ((alfr+i*alfi)/beta)
 		double[] eval = new double[n];
 		for (int i = 0; i < n; i++) {
@@ -181,13 +146,14 @@ public class GeneralzedEigenSolverAccord {
 		return eval;
 	}
 
-	/// <summary>Returns the imaginary parts of the eigenvalues.</summary>	
-	/// <remarks>
-	///   The eigenvalues are computed using the ratio alpha[i]/beta[i],
-	///   which can lead to valid, but infinite eigenvalues.
-	/// </remarks>
-	public double[] ImaginaryEigenvalues()
-	{
+	/**
+	 * Returns a vector with the imaginary parts of the eigenvalues.
+	 * Note: The eigenvalues are computed using the ratio alpha[i]/beta[i],
+	 * which can lead to valid, but infinite eigenvalues.
+	 * 
+	 * @return the imaginary parts of the eigenvalues
+	 */
+	public double[] getImagEigenvalues() {
 		// ((alfr+i*alfi)/beta)
 		double[] eval = new double[n];
 		for (int i = 0; i < n; i++)
@@ -195,15 +161,31 @@ public class GeneralzedEigenSolverAccord {
 		return eval;
 	}
 
-	/// <summary>Returns the eigenvector matrix.</summary>
-	public double[][] Eigenvectors()
-	{
-		return Z;
+	/**
+	 * Returns a nxn matrix whose columns are the eigenvectors.
+	 * @return
+	 */
+	public RealMatrix getV() {
+		return MatrixUtils.createRealMatrix(Z);
 	}
 
-	public double[] getEigenvector(int k) {
-		RealMatrix V = MatrixUtils.createRealMatrix(Z);
-		return V.getColumn(k);
+	/**
+	 * Returns the specified eigenvector.
+	 * 
+	 * @param k index
+	 * @return the kth eigenvector
+	 */
+	public RealVector getEigenvector(int k) {
+		return MatrixUtils.createRealVector(Matrix.getColumn(Z, k));
+	}
+	
+	public boolean hasComplexEigenvalues() {
+		for (int i = 0; i < n; i++) {
+			if (ai[i] != 0.0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/// <summary>Returns the block diagonal eigenvalue matrix.</summary>
@@ -247,23 +229,24 @@ public class GeneralzedEigenSolverAccord {
 		RealMatrix A = MatrixUtils.createRealMatrix(a);
 		RealMatrix B = MatrixUtils.createRealMatrix(b);
 
-		GeneralzedEigenSolverAccord ges = new GeneralzedEigenSolverAccord(a, b, false);
+		GeneralizedEigenDecomposition ges = new GeneralizedEigenDecomposition(a, b, false);
 		
 		System.out.println("a = \n" + Matrix.toString(a));
 		System.out.println("b = \n" + Matrix.toString(b));
 		
 
-		double[] evals = ges.RealEigenvalues();
-		System.out.println("evals Re = " + Matrix.toString(ges.RealEigenvalues()));
-		System.out.println("evals Im = " + Matrix.toString(ges.ImaginaryEigenvalues()));
+		double[] evals = ges.getRealEigenvalues();
+		System.out.println("evals Re = " + Matrix.toString(ges.getRealEigenvalues()));
+		System.out.println("evals Im = " + Matrix.toString(ges.getImagEigenvalues()));
+		System.out.println("has complex eigenvals = " + ges.hasComplexEigenvalues());
 
-		double[][] evecs = ges.Eigenvectors();
+		RealMatrix evecs = ges.getV();
 		System.out.println("evecs = \n" + Matrix.toString(evecs));
 
 		// check A x_k = lambda_k B x_k
 		for (int k = 0; k < n; k++) {
 			double lambda = evals[k];
-			RealVector evec = MatrixUtils.createRealVector(ges.getEigenvector(k));
+			RealVector evec = ges.getEigenvector(k);
 			RealVector evecn = normalize(evec);
 			System.out.println("k = " + k);
 			System.out.println("  eval = " + lambda);

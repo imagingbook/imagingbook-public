@@ -100,7 +100,7 @@ public class EllipseFitTaubin1 implements EllipseFitAlgebraic {
 //		IJ.log("evals = " + Arrays.toString(evals));
 		
 		int k = Matrix.idxMax(evals);	// index of largest eigenvalue
-		double[] p0 = eigen.getEigenVector(k).toArray();
+		double[] p0 = eigen.getEigenvector(k).toArray();
 		
 		RealMatrix U = getDataOffsetCorrectionMatrix(xr, yr);
 		double[] p = U.operate(p0);

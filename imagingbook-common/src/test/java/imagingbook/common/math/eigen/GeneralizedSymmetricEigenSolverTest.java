@@ -62,7 +62,7 @@ public class GeneralizedSymmetricEigenSolverTest {
 		
 		for (int i = 0; i < evals.length; i++) {
 			double lambda = evals[i];
-			RealVector x = solver.getEigenVector(i);
+			RealVector x = solver.getEigenvector(i);
 //			System.out.println("x = " + Arrays.toString(x.toArray()));
 			
 			RealVector L = A.operate(x);						// L = A * x

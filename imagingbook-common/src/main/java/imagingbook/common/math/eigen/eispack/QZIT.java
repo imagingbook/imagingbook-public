@@ -1,4 +1,4 @@
-package imagingbook.common.math.eigen.accord;
+package imagingbook.common.math.eigen.eispack;
 
 public abstract class QZIT {
 	
@@ -55,7 +55,7 @@ public abstract class QZIT {
 	 * @return -1 for normal return, j if the limit of 30*n iterations is exhausted
 	 *         while the j-th eigenvalue is being sought.
 	 */
-	static int qzit(double[][] a, double[][] b, double eps1, boolean matz, double[][] z) {
+	public static int qzit(double[][] a, double[][] b, double eps1, boolean matz, double[][] z) {
 
 		final int n = a.length;
 		
@@ -111,10 +111,10 @@ public abstract class QZIT {
 	
 //		ep = eps1;
 //		if (ep == 0.0) {
-//			// Use round-off level if eps1 is zero
-//			ep = Special.Epslon(1.0);
+//			// use round-off level if eps1 is zero
+//			ep = epsilon(1.0);
 //		}
-		ep = (eps1 > 0) ? eps1 : Special.Epslon(1.0);
+		ep = (eps1 > 0) ? eps1 : epsilon(1.0);
 		epsa = ep * anorm;
 		epsb = ep * bnorm;
 	
@@ -505,13 +505,89 @@ public abstract class QZIT {
 			}
 		}
 	
-//		System.out.println("done qzit");
-		return ierr;	// return error code
+		return ierr;	// return eigenvalue index if iteration count exceeded
 	} // end of qzit()
 	
 
 	private enum State {
 		L60, L70, L90, L95, L100, L120, L140, L150, L155, L160, L1000, L1001, Final;
+	}
+
+	private static double EpsDouble;
+	static {
+		double eps;
+		double a = 4.0 / 3.0;
+		do {
+			double b = a - 1.0;
+			double c = b + b + b;
+			eps = Math.abs(c - 1.0);
+		} while (eps == 0);
+		EpsDouble = eps;
+	}
+	
+	private static float EpsFloat;
+	static {
+		float eps;
+		float a = 4.0f / 3.0f;
+		do {
+			float b = a - 1.0f;
+			float c = b + b + b;
+			eps = Math.abs(c - 1.0f);
+		} while (eps == 0);
+		EpsFloat = eps;
+	}
+ 
+	/**
+	 * Estimates unit round-off in quantities of size x.
+	 * This is a port of the epsilon function from EISPACK.
+	 * See also
+	 * https://www.researchgate.net/publication/2860253_A_Comment_on_the_Eispack_Machine_Epsilon_Routine
+	 * 
+	 * @param x some quantity
+	 * @return returns the smallest number e of the same kind as x such that 1 + e > 1.
+	 */
+	private static double epsilon(double x) {
+//		double eps;
+//		double a = 4.0 / 3.0;
+//		do {
+//			double b = a - 1.0;
+//			double c = b + b + b;
+//			eps = Math.abs(c - 1.0);
+//		} while (eps == 0);
+		return EpsDouble * Math.abs(x);
+	}
+	
+	private static float epsilon(float x) {
+		return EpsFloat * Math.abs(x);
+		
+	}
+	
+/* original FORTRAN code:
+	   a = 4.0d0/3.0d0
+	10 b = a - 1.0d0
+	   c = b + b + b
+	   eps = dabs(c-1.0d0)
+	   if (eps .eq. 0.0d0) go to 10
+	   epslon = eps*dabs(x)
+	   return
+	   end
+*/
+	
+/*
+program test_epsilon
+    real :: x = 3.143
+    real(8) :: y = 2.33
+    print *, epsilon(x)
+    print *, epsilon(y)
+end program test_epsilon
+ */
+	
+	public static void main(String[] args) {
+		double x = 3.143;
+		System.out.println(epsilon(x));
+		float y = 2.33f;
+		System.out.println(epsilon(y));
+		
 	}
 
 }

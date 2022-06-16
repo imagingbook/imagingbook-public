@@ -1,8 +1,9 @@
-package imagingbook.common.math.eigen.accord;
+package imagingbook.common.math.eigen.eispack;
 
 public abstract class QZHES {
 	
 	// EISPACK Routines, see http://www.netlib.org/eispack/
+	
 	/**
 	 * <p>
 	 * This subroutine is the first step of the qz algorithm for solving generalized
@@ -39,8 +40,10 @@ public abstract class QZHES {
 	 * @param z    on output, contains the product of the right hand transformations if matz
 	 *             has been set to true. Otherwise, z is not referenced.
 	 */
-	static void qzhes(double[][] a, double[][] b, boolean matz, double[][] z) {
-		int n = a.length;
+	public static void qzhes(double[][] a, double[][] b, boolean matz, double[][] z) {
+		
+		final int n = a.length;
+		
 		int i, j, k, l, nm1, nm2;
 		double r, s, t;
 		int l1;
@@ -63,7 +66,8 @@ public abstract class QZHES {
 			return;
 		}
 		
-		nm1 = n - 1;
+		nm1 = n - 1;	// TODO: check!!
+		
 		for (l = 0; l < nm1; l++) {
 			l1 = l + 1;
 			s = 0.0;
@@ -72,56 +76,51 @@ public abstract class QZHES {
 				s = s + Math.abs(b[i][l]);
 			}	// L20
 	
-			if (s == 0.0) {
-				continue;
-			}
-			s = s + Math.abs(b[l][l]);
-			r = 0.0;
-	
-			for (i = l; i < n; i++) {
-				b[i][l] = b[i][l] / s;
-				r = r + b[i][l] * b[i][l];
-			}	// L25
-	
-			r = Math.copySign(Math.sqrt(r), b[l][l]);
-			b[l][l] = b[l][l] + r;
-			rho = r * b[l][l];
-	
-			for (j = l1; j < n; j++) {
-				t = 0.0;
-				
+			if (s != 0.0) {		
+				s = s + Math.abs(b[l][l]);
+				r = 0.0;
 				for (i = l; i < n; i++) {
-					t = t + b[i][l] * b[i][j];
-				}	//L30
-				
-				t = -t / rho;
-				
-				for (i = l; i < n; i++) {
-					b[i][j] = b[i][j] + t * b[i][l];
-				}	// L40
-				
-			}	// L50
-	
-			for (j = 0; j < n; j++) {
-				t = 0.0;
-				
-				for (i = l; i < n; i++) {
-					t = t + b[i][l] * a[i][j];
-				}	// L60
-				
-				t = -t / rho;
-				
-				for (i = l; i < n; i++) {
-					a[i][j] = a[i][j] + t * b[i][l];
-				}	// L70
-				
-			}	// L80
-	
-			b[l][l] = -s * r;
-			for (i = l1; i < n; i++) {
-				b[i][l] = 0.0;
-			}	// L90
+					b[i][l] = b[i][l] / s;
+					r = r + b[i][l] * b[i][l];
+				}	// L25
+		
+				r = Math.copySign(Math.sqrt(r), b[l][l]);
+				b[l][l] = b[l][l] + r;
+				rho = r * b[l][l];
+		
+				for (j = l1; j < n; j++) {
+					t = 0.0;	// dot product
+					for (i = l; i < n; i++) {
+						t = t + b[i][l] * b[i][j];
+					}	//L30
+					t = -t / rho;
+					
+					for (i = l; i < n; i++) {
+						b[i][j] = b[i][j] + t * b[i][l];
+					}	// L40
+					
+				}	// L50
+		
+				for (j = 0; j < n; j++) {
+					t = 0.0;	// dot product
+					for (i = l; i < n; i++) {
+						t = t + b[i][l] * a[i][j];
+					}	// L60
+					
+					t = -t / rho;
+					
+					for (i = l; i < n; i++) {
+						a[i][j] = a[i][j] + t * b[i][l];
+					}	// L70
+					
+				}	// L80
+		
+				b[l][l] = -s * r;
+				for (i = l1; i < n; i++) {
+					b[i][l] = 0.0;
+				}	// L90
 			
+			}	// end if		
 		}	// L100
 	
 		// reduce a to upper Hessenberg form, while keeping b triangular

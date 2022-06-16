@@ -123,7 +123,7 @@ public class GeneralizedSymmetricEigenSolver {
 		return eigendecompY.getD();
 	}
 	
-	public RealVector getEigenVector(int k) {
+	public RealVector getEigenvector(int k) {
 //		return LiT.operate(ed.getEigenvector(k));
 		// solve LT * x_k = v_k
 		RealVector vk = eigendecompY.getEigenvector(k);
@@ -159,7 +159,7 @@ public class GeneralizedSymmetricEigenSolver {
 		
 		for (int k = 0; k < evals.length; k++) {
 			double lambda = evals[k];
-			RealVector evec = solver.getEigenVector(k);
+			RealVector evec = solver.getEigenvector(k);
 			RealVector evecn = normalize(evec);
 			System.out.println("k = " + k);
 			System.out.println("  eval = " + lambda);

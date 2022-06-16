@@ -1,4 +1,4 @@
-package imagingbook.common.math.eigen.accord;
+package imagingbook.common.math.eigen.eispack;
 
 public abstract class QZVAL {
 
@@ -66,7 +66,7 @@ public abstract class QZVAL {
 	 *             <strong>matz</strong> has been set to false, z is not referenced.
 	 */
 	@SuppressWarnings("unused")
-	static void qzval(double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, boolean matz,
+	public static void qzval(double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, boolean matz,
 			double[][] z) {
 
 		final int n = a.length;
