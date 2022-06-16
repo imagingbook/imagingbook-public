@@ -4,10 +4,6 @@ public abstract class QZVAL {
 
 	// EISPACK Routines, see http://www.netlib.org/eispack/
 
-	enum State {
-		Linit, Lfinal, L505, L410, L420, L455, L430, L435, L480, L475, L485, L503, L502, L460, L510
-	}
-
 	/**
 	 * <p>
 	 * This subroutine is the third step of the qz algorithm for solving generalized
@@ -69,6 +65,7 @@ public abstract class QZVAL {
 	 *             qzit, if performed, or else the identity matrix. If
 	 *             <strong>matz</strong> has been set to false, z is not referenced.
 	 */
+	@SuppressWarnings("unused")
 	static void qzval(double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, boolean matz,
 			double[][] z) {
 
@@ -411,5 +408,9 @@ public abstract class QZVAL {
 		b[n - 1][0] = epsb;
 		
 	} // end of qzval()
+
+	private enum State {
+		Linit, Lfinal, L505, L410, L420, L455, L430, L435, L480, L475, L485, L503, L502, L460, L510
+	}
 
 }

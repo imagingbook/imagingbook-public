@@ -4,10 +4,6 @@ public abstract class QZIT {
 	
 	// EISPACK Routines, see http://www.netlib.org/eispack/
 
-	enum State {
-		L60, L70, L90, L95, L100, L120, L140, L150, L155, L160, L1000, L1001, Final;
-	}
-
 	/**
 	 * <p>
 	 * This subroutine is the second step of the qz algorithm for solving
@@ -514,5 +510,8 @@ public abstract class QZIT {
 	} // end of qzit()
 	
 
+	private enum State {
+		L60, L70, L90, L95, L100, L120, L140, L150, L155, L160, L1000, L1001, Final;
+	}
 
 }

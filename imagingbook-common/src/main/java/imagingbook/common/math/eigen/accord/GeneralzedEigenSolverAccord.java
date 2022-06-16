@@ -96,7 +96,7 @@ public class GeneralzedEigenSolverAccord {
 
 		// computes the eigenvectors of the triangular problem and
 		// transforms the results back to the original coordinate system.
-		QZVEC.qzvec(n, A, B, ar, ai, beta, Z);
+		QZVEC.qzvec(A, B, ar, ai, beta, Z);
 		//            System.out.println("Z = \n" + Matrix.toString(Z));
 
 		//            if (sort)
