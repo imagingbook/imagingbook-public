@@ -7,8 +7,7 @@ public abstract class QZHES {
 	 * <p>
 	 * This subroutine is the first step of the qz algorithm for solving generalized
 	 * matrix eigenvalue problems, SIAM J. Numer. Anal. 10, 241-256 (1973) by Moler
-	 * and Stewart.
-	 * This description has been adapted from the original version
+	 * and Stewart. This description has been adapted from the original version
 	 * (dated August 1983).
 	 * </p>
 	 * <p>
@@ -27,7 +26,8 @@ public abstract class QZHES {
 	 * elements below the main diagonal have been set to zero.</li>
 	 * 
 	 * <li><strong>z</strong> contains the product of the right hand transformations
-	 * if matz has been set to true. Otherwise, <strong>z</strong> is not referenced.</li>
+	 * if matz has been set to true. Otherwise, <strong>z</strong> is not
+	 * referenced.</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -36,8 +36,8 @@ public abstract class QZHES {
 	 * @param matz should be set to true if the right hand transformations are to be
 	 *             accumulated for later use in computing eigenvectors, and to false
 	 *             otherwise.
-	 * @param z
-	 * @return
+	 * @param z    on output, contains the product of the right hand transformations if matz
+	 *             has been set to true. Otherwise, z is not referenced.
 	 */
 	static void qzhes(double[][] a, double[][] b, boolean matz, double[][] z) {
 		int n = a.length;
@@ -48,7 +48,7 @@ public abstract class QZHES {
 		int lb, nk1;
 		double rho;
 	
-		// initialize z
+		// initialize z (with identity matrix)
 		if (matz) {
 			for (j = 0; j < n; j++) {
 				for (i = 0; i < n; i++) {

@@ -60,7 +60,9 @@ public abstract class QZIT {
 	 *         while the j-th eigenvalue is being sought.
 	 */
 	static int qzit(double[][] a, double[][] b, double eps1, boolean matz, double[][] z) {
-//		System.out.println("running qzit");
+
+		final int n = a.length;
+		
 		int i, j, k, l = 0;
 		double r, s, t, a1 = 0, a2 = 0, a3 = 0;
 		int k1, k2, l1 = 0, ll;
@@ -78,7 +80,6 @@ public abstract class QZIT {
 		int enorn;
 		boolean notlas;
 	
-		int n = a.length;
 		int ierr = -1;		// no error 
 	
 		// compute epsa and epsb

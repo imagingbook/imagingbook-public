@@ -91,7 +91,7 @@ public class GeneralzedEigenSolverAccord {
 		// remaining 2-by-2 blocks correspond to pairs of complex
 		// eigenvalues, and returns quantities whose ratios give the
 		// generalized eigenvalues.
-		QZVAL.qzval(n, A, B, ar, ai, beta, matz, Z);
+		QZVAL.qzval(A, B, ar, ai, beta, matz, Z);
 		//            System.out.println("Z = \n" + Matrix.toString(Z));
 
 		// computes the eigenvectors of the triangular problem and
