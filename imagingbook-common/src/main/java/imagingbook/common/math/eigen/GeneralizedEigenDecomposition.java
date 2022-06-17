@@ -35,6 +35,9 @@ public class GeneralizedEigenDecomposition {
 	private double[] beta;
 	private double[][] Z;
 
+	public GeneralizedEigenDecomposition(RealMatrix A, RealMatrix B) {
+		this(A.getData(), B.getData(), false);
+	}
 
 	/// <summary>
 	///   Constructs a new generalized eigenvalue decomposition.
@@ -247,7 +250,6 @@ public class GeneralizedEigenDecomposition {
 		for (int k = 0; k < n; k++) {
 			double lambda = evals[k];
 			RealVector evec = ges.getEigenvector(k);
-			RealVector evecn = normalize(evec);
 			System.out.println("k = " + k);
 			System.out.println("  eval = " + lambda);
 			System.out.println("  evec = " + Matrix.toString(evec));
