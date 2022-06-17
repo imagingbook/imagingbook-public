@@ -27,7 +27,7 @@ public abstract class QZVEC {
 	 * <li><strong>b</strong> has been destroyed.</li>
 	 * 
 	 * <li><strong>alfr</strong>, <strong>alfi</strong> and <strong>beta</strong>
-	 * care unaltered.</li>
+	 * are unaltered.</li>
 	 * 
 	 * <li><strong>z</strong> contains the real and imaginary parts of the
 	 * eigenvectors. If alfi(i) = 0.0, the i-th eigenvalue is real and the i-th

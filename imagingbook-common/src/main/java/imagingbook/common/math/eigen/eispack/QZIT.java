@@ -114,7 +114,7 @@ public abstract class QZIT {
 //			// use round-off level if eps1 is zero
 //			ep = epsilon(1.0);
 //		}
-		ep = (eps1 > 0) ? eps1 : epsilon(1.0);
+		ep = (eps1 > 0) ? eps1 : epslon(1.0);
 		epsa = ep * anorm;
 		epsb = ep * bnorm;
 	
@@ -546,7 +546,7 @@ public abstract class QZIT {
 	 * @param x some quantity
 	 * @return returns the smallest number e of the same kind as x such that 1 + e > 1.
 	 */
-	private static double epsilon(double x) {
+	private static double epslon(double x) {
 //		double eps;
 //		double a = 4.0 / 3.0;
 //		do {
@@ -557,7 +557,7 @@ public abstract class QZIT {
 		return EpsDouble * Math.abs(x);
 	}
 	
-	private static float epsilon(float x) {
+	private static float epslon(float x) {
 		return EpsFloat * Math.abs(x);
 		
 	}
@@ -584,9 +584,9 @@ end program test_epsilon
 	
 	public static void main(String[] args) {
 		double x = 3.143;
-		System.out.println(epsilon(x));
+		System.out.println(epslon(x));
 		float y = 2.33f;
-		System.out.println(epsilon(y));
+		System.out.println(epslon(y));
 		
 	}
 
