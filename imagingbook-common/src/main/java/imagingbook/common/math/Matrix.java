@@ -246,26 +246,26 @@ public abstract class Matrix {
 	/**
 	 * Checks is the given square matrix is non-singular.
 	 * @param A a square matrix
-	 * @return true if the matrix is non-singular
+	 * @return true if the matrix is singular
 	 */
-	public static boolean isNonSingular(double[][] A) throws NonsquareMatrixException {
+	public static boolean isSingular(double[][] A) throws NonsquareMatrixException {
 		if (!Matrix.isSquare(A)) {
 			throw new NonsquareMatrixException();
 		}		
-		return isNonSingular(new Array2DRowRealMatrix(A));		
+		return isSingular(new Array2DRowRealMatrix(A));		
 	}
 	
 	/**
 	 * Checks is the given square matrix is non-singular.
 	 * @param A a square matrix
-	 * @return true if the matrix is non-singular
+	 * @return true if the matrix is singular
 	 */
-	public static boolean isNonSingular(RealMatrix A) throws NonsquareMatrixException {
+	public static boolean isSingular(RealMatrix A) throws NonsquareMatrixException {
 		if (!A.isSquare()) {
 			throw new NonsquareMatrixException();
 		}		
 		DecompositionSolver solver = new LUDecomposition(A).getSolver();
-		return solver.isNonSingular();
+		return !solver.isNonSingular();
 	}
 	
 	/**
