@@ -95,9 +95,20 @@ public class SortMap {
 	 * @param n the index
 	 * @return the n-th smallest element of {@code numbers}
 	 */
-	public static double getNthSmallest(double[] numbers, int n) {
-		int idx = new SortMap(numbers).getIndex(n);
-		return numbers[idx];
+	public static double getNthSmallestValue(double[] numbers, int n) {
+		return numbers[getNthSmallestIndex(numbers, n)];
+	}
+	
+	public static int getNthSmallestIndex(double[] numbers, int n) {
+		return new SortMap(numbers).getIndex(n);
+	}
+	
+	public static double getLargestValue(double[] numbers) {
+		return numbers[getLargestIndex(numbers)];
+	}
+	
+	public static int getLargestIndex(double[] numbers) {
+		return getNthSmallestIndex(numbers, numbers.length - 1);
 	}
 	
 	/**
@@ -108,9 +119,20 @@ public class SortMap {
 	 * @param n the index
 	 * @return the n-th smallest element of {@code numbers}
 	 */
-	public static float getNthSmallest(float[] numbers, int n) {
-		int idx = new SortMap(numbers).getIndex(n);
-		return numbers[idx];
+	public static float getNthSmallestValue(float[] numbers, int n) {
+		return numbers[getNthSmallestIndex(numbers, n)];
+	}
+	
+	public static int getNthSmallestIndex(float[] numbers, int n) {
+		return new SortMap(numbers).getIndex(n);
+	}
+	
+	public static float getLargestValue(float[] numbers) {
+		return numbers[getLargestIndex(numbers)];
+	}
+	
+	public static int getLargestIndex(float[] numbers) {
+		return getNthSmallestIndex(numbers, numbers.length - 1);
 	}
 	
 	/**
@@ -121,10 +143,20 @@ public class SortMap {
 	 * @param n the index
 	 * @return the n-th smallest element of {@code numbers}
 	 */
-	public static int getNthSmallest(int[] numbers, int n) {
-		int idx = new SortMap(numbers).getIndex(n);
-		return numbers[idx];
+	public static int getNthSmallestValue(int[] numbers, int n) {
+		return numbers[getNthSmallestIndex(numbers, n)];
 	}
 	
-
+	public static int getNthSmallestIndex(int[] numbers, int n) {
+		return new SortMap(numbers).getIndex(n);
+	}
+	
+	public static float getLargestValue(int[] numbers) {
+		return numbers[getLargestIndex(numbers)];
+	}
+	
+	public static int getLargestIndex(int[] numbers) {
+		return getNthSmallestIndex(numbers, numbers.length - 1);
+	}
+	
 }

@@ -14,11 +14,24 @@ public class SortMapTest {
 	public void test1() {
 		double[] numbers = { 50, 20, 100, 120, 40, -10 };
 		int[] permExpected = {5, 1, 4, 0, 2, 3};
+		int n = numbers.length;
+		
 		SortMap sm = new SortMap(numbers);
+		
 		int[] perm = sm.getPermutation();
 		assertArrayEquals(permExpected, perm);
-		assertEquals(numbers[perm[0]], SortMap.getNthSmallest(numbers, 0), 0);
+		
+		for (int k = 0; k < n; k++) {
+			int smallestIdx = SortMap.getNthSmallestIndex(numbers, k);
+			assertEquals(numbers[perm[k]], numbers[smallestIdx], 0);
+			assertEquals(numbers[perm[k]], SortMap.getNthSmallestValue(numbers, k), 0);
+		}
+		
+		int largestIdx = SortMap.getLargestIndex(numbers);
+		assertEquals(numbers[perm[n - 1]], numbers[largestIdx], 0);
 	}
+	
+
 	
 	@Test		// check if permutation is "sorted"
 	public void test2Double() {
@@ -28,10 +41,10 @@ public class SortMapTest {
 			double[] numbers = makeRandomDoubleArr(n, rg);
 			int[] perm = new SortMap(numbers).getPermutation();
 			for (int i = 1; i < numbers.length; i++) {
-				assertTrue(numbers[perm[i-1]] <= numbers[perm[i]]);
+				assertTrue(numbers[perm[i - 1]] <= numbers[perm[i]]);
 			}
-			assertEquals(numbers[perm[0]], SortMap.getNthSmallest(numbers, 0), 0);
-			assertEquals(numbers[perm[n-1]], SortMap.getNthSmallest(numbers, n-1), 0);
+			assertEquals(numbers[perm[0]], SortMap.getNthSmallestValue(numbers, 0), 0);
+			assertEquals(numbers[perm[n - 1]], SortMap.getNthSmallestValue(numbers, n - 1), 0);
 		}
 	}
 	
@@ -43,10 +56,10 @@ public class SortMapTest {
 			float[] numbers = makeRandomFloatArr(n, rg);
 			int[] perm = new SortMap(numbers).getPermutation();
 			for (int i = 1; i < numbers.length; i++) {
-				assertTrue(numbers[perm[i-1]] <= numbers[perm[i]]);
+				assertTrue(numbers[perm[i - 1]] <= numbers[perm[i]]);
 			}
-			assertEquals(numbers[perm[0]], SortMap.getNthSmallest(numbers, 0), 0);
-			assertEquals(numbers[perm[n-1]], SortMap.getNthSmallest(numbers, n-1), 0);
+			assertEquals(numbers[perm[0]], SortMap.getNthSmallestValue(numbers, 0), 0);
+			assertEquals(numbers[perm[n - 1]], SortMap.getNthSmallestValue(numbers, n - 1), 0);
 		}
 	}
 	
@@ -58,10 +71,10 @@ public class SortMapTest {
 			int[] numbers = makeRandomIntArr(n, rg);
 			int[] perm = new SortMap(numbers).getPermutation();
 			for (int i = 1; i < numbers.length; i++) {
-				assertTrue(numbers[perm[i-1]] <= numbers[perm[i]]);
+				assertTrue(numbers[perm[i - 1]] <= numbers[perm[i]]);
 			}
-			assertEquals(numbers[perm[0]], SortMap.getNthSmallest(numbers, 0), 0);
-			assertEquals(numbers[perm[n-1]], SortMap.getNthSmallest(numbers, n-1), 0);
+			assertEquals(numbers[perm[0]], SortMap.getNthSmallestValue(numbers, 0), 0);
+			assertEquals(numbers[perm[n - 1]], SortMap.getNthSmallestValue(numbers, n - 1), 0);
 		}
 	}
 	
