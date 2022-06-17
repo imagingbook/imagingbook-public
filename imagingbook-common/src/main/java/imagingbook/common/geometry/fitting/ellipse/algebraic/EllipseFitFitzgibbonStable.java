@@ -21,11 +21,13 @@ import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 
 /**
  * Algebraic ellipse fit based on Fitzgibbon's method [1], numerically
  * improved by Halir and Flusser [2].
  * Performs data centering or alternatively accepts a specific reference point.
+ * Capable of performing an (exact) 5-point fit!
  * 
  * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least-
  * squares fitting of ellipses. IEEE Transactions on Pattern Analysis
@@ -70,6 +72,9 @@ public class EllipseFitFitzgibbonStable implements EllipseFitAlgebraic {
 	
 	private double[] fit(Pnt2d[] points, Pnt2d xref) {
 		final int n = points.length;
+//		if (n < 6) {
+//			throw new IllegalArgumentException("fitter requires at least 6 sample points instead of " + points.length);
+//		}
 
 		// reference point
 		final double xr = xref.getX();
@@ -135,6 +140,46 @@ public class EllipseFitFitzgibbonStable implements EllipseFitAlgebraic {
 //		}
 		
 		return  Matrix.normalize(p);
+	}
+	
+	// -------------------------------------------------------
+	
+	
+	public static void main(String[] args) {
+		Pnt2d[] points = {
+				Pnt2d.from(40, 53),
+				Pnt2d.from(107, 20),
+				Pnt2d.from(170, 26),
+				Pnt2d.from(186, 55),
+				Pnt2d.from(135, 103),
+				//Pnt2d.from(135, 113)
+				};
+		
+		EllipseFitAlgebraic fit = new EllipseFitFitzgibbonStable(points);
+		PrintPrecision.set(9);
+		System.out.println("fit parameters = " + Matrix.toString(fit.getParameters()));
+		System.out.println("fit ellipse = " + fit.getEllipse());
+		System.out.println("fit ellipse = " +  Matrix.toString(fit.getEllipse().getParameters()));
+		
+		// create random 5-point sets and try to fit ellipses, counting null results:
+//		Random rg = new Random(17);
+//		int N = 1000;
+//		int nullCnt = 0;
+//		for (int k = 0; k < N; k++) {
+//			for (int i = 0; i < points.length; i++) {
+//				double x = rg.nextInt(200);
+//				double y = rg.nextInt(200);
+//				points[i] = Pnt2d.from(x, y);
+//			}
+//			fit = new EllipseFit5Points(points);
+//			if (fit.getEllipse() == null) {
+//				nullCnt++;
+//			}	
+//		}
+//		
+//		System.out.println(nullCnt + " null results out of " + N);
+		
+		// fit ellipse = {0.317325319, 0.332954818, 0.875173557, -89.442594143, -150.574265066, 7886.192568730}
 	}
 
 }

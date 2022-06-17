@@ -12,13 +12,10 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.SingularValueDecomposition;
 
-import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.math.eigen.GeneralizedEigenDecomposition;
 import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
 import imagingbook.common.util.SortMap;
 

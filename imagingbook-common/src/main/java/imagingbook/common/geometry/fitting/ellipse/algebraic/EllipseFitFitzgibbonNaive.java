@@ -10,18 +10,14 @@ package imagingbook.common.geometry.fitting.ellipse.algebraic;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import java.util.Random;
-
 import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
-import org.apache.commons.math3.linear.SingularValueDecomposition;
 
-import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
+import imagingbook.common.util.SortMap;
 
 /**
  * Works by matrix inversion  (naive).
@@ -48,6 +44,9 @@ public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
 	private final double[] p;	// p = (A,B,C,D,E,F) ellipse parameters
 	
 	public EllipseFitFitzgibbonNaive(Pnt2d[] points) {
+		if (points.length < 6) {
+			throw new IllegalArgumentException("fitter requires at least 6 sample points instead of " + points.length);
+		}
 		this.p = fit(points);
 	}
 
@@ -73,12 +72,12 @@ public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
 		}
 		
 		RealMatrix S = X.transpose().multiply(X);
-		IJ.log("S = \n" + Matrix.toString(S.getData()));
+//		IJ.log("S = \n" + Matrix.toString(S.getData()));
 		
-		SingularValueDecomposition svdS = new SingularValueDecomposition(S);
-		IJ.log("rank(S) = " + svdS.getRank());
-		IJ.log("   singular values = "  + Matrix.toString(svdS.getSingularValues()));
-		IJ.log("   condition no = " + svdS.getConditionNumber());
+//		SingularValueDecomposition svdS = new SingularValueDecomposition(S);
+//		IJ.log("rank(S) = " + svdS.getRank());
+//		IJ.log("   singular values = "  + Matrix.toString(svdS.getSingularValues()));
+//		IJ.log("   condition no = " + svdS.getConditionNumber());
 		
 		RealMatrix C = MatrixUtils.createRealMatrix(6, 6);
 		C.setEntry(0, 2, 2);
@@ -95,58 +94,30 @@ public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
 //		IJ.log("  singular values = "  + Matrix.toString(svdSiB.getSingularValues()));
 //		IJ.log("  condition no = " + svdSiB.getConditionNumber());
 		
-		
 		EigenDecomposition ed = new EigenDecomposition(SiB);
 //		IJ.log("nonsingular = " + ed.getSolver().isNonSingular());
-		
 		
 //		IJ.log("det(SiB) = " + ed.getDeterminant());
 //		PrintPrecision.set(10);
 //		IJ.log("eigenvalues = "  + Matrix.toString(ed.getRealEigenvalues()));
 		
 		double[] evals = ed.getRealEigenvalues();
-		int k = getLargestPositiveIdx(evals);
-//		IJ.log("idx k = " + k);
-//		IJ.log("eval(k) = " + evals[k]);
+		int k = SortMap.getLargestIndex(evals);				// index of the largest eigenvalue
 		RealVector p = ed.getEigenvector(k);
 		
-		//p.mapDivideToSelf(p.getNorm());
 		return p.toArray();
 	}
 	
-	private int getLargestPositiveIdx(double[] x) {
-		double maxval = Double.NEGATIVE_INFINITY;
-		int maxidx = -1;
-		for (int i = 0; i < x.length; i++) {
-			if (Double.isFinite(x[i]) && x[i] >= 0 && x[i] > maxval) {
-				maxval = x[i];
-				maxidx = i;
-			}
-		}
-		return maxidx;
-	}
-	
-//	private int getSmallestPositiveIdx(double[] x) {
-//		double minval = Double.POSITIVE_INFINITY;
-//		int minidx = -1;
-//		for (int i = 0; i < x.length; i++) {
-//			if (x[i] > 1e-9 && x[i] < minval) {
-//				minval = x[i];
-//				minidx = i;
-//			}
-//		}
-//		return minidx;
-//	}
-	
 	public static void main(String[] args) {
-		PrintPrecision.set(9);
-		Pnt2d p0 = Pnt2d.from(40, 53);
-		Pnt2d p1 = Pnt2d.from(107, 20);
-		Pnt2d p2 = Pnt2d.from(170, 26);
-		Pnt2d p3 = Pnt2d.from(186, 55);
-		Pnt2d p4 = Pnt2d.from(135, 103);
+		Pnt2d[] points = {
+				Pnt2d.from(40, 53),
+				Pnt2d.from(107, 20),
+				Pnt2d.from(170, 26),
+				Pnt2d.from(186, 55),
+				Pnt2d.from(135, 103),
+				Pnt2d.from(135, 113)
+				};
 		
-		Pnt2d[] points = {p0, p1, p2, p3, p4};
 		EllipseFitAlgebraic fit = new EllipseFitFitzgibbonNaive(points);
 		System.out.println("fit parameters = " + Matrix.toString(fit.getParameters()));
 		System.out.println("fit ellipse = " + fit.getEllipse());

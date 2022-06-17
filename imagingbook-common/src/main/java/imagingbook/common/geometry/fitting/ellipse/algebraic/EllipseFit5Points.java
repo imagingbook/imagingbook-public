@@ -130,5 +130,7 @@ public class EllipseFit5Points implements EllipseFitAlgebraic {
 		}
 		
 		System.out.println(nullCnt + " null results out of " + N);
+		
+		// fit ellipse = {0.317325319, 0.332954818, 0.875173557, -89.442594143, -150.574265066, 7886.192568730}
 	}
 }
