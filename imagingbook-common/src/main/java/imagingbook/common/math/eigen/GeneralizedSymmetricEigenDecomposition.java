@@ -50,8 +50,8 @@ public class GeneralizedSymmetricEigenDecomposition {
 	/**
 	 * Constructor.
 	 * An exception is thrown if A is not symmetric and
-	 * the Cholesky decomposition throws an exception if B is either not symmetric
-	 * not positive definite or non-singular.
+	 * the Cholesky decomposition throws an exception if B is either not symmetric,
+	 * not positive definite or singular.
 	 * 
 	 * @param A real symmetric matrix
 	 * @param B real symmetric and positive definite matrix
