@@ -18,7 +18,9 @@ import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
+import imagingbook.common.math.eigen.GeneralizedEigenDecomposition;
 import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
+import imagingbook.common.util.SortMap;
 
 /**
  * 
@@ -53,6 +55,9 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 	private final double[] p;	// = (A,B,C,D,E,F) algebraic ellipse parameters
 	
 	public EllipseFitFitzgibbonOriginal(Pnt2d[] points) {
+		if (points.length < 6) {
+			throw new IllegalArgumentException("fitter requires at least 6 sample points instead of " + points.length);
+		}
 		this.p = fit(points);
 	}
 
@@ -62,8 +67,6 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 	}
 	
 	private double[] fit(Pnt2d[] points) {
-		PrintPrecision.set(3);
-		IJ.log("**** " + this.getClass().getSimpleName());
 		final int n = points.length;
 
 		// design matrix X:
@@ -78,15 +81,6 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 		
 		// scatter matrix S:
 		RealMatrix S = X.transpose().multiply(X);
-//		System.out.println("S = \n" + Matrix.toString(S));
-//		System.out.println("S nonsingular: " + Matrix.isNonSingular(S));
-//		System.out.println("S pos. definite: " + Matrix.isPositiveDefinite(S));
-//		System.out.println("S determinant = " + Matrix.determinant(S.getData()));
-		
-//		SingularValueDecomposition svdS = new SingularValueDecomposition(S);
-//		System.out.println("   rank(S) = " + svdS.getRank());
-//		System.out.println("   singular values = "  + Matrix.toString(svdS.getSingularValues()));
-//		System.out.println("   condition no = " + svdS.getConditionNumber());
 		
 		// constraint matrix C:
 		RealMatrix C = MatrixUtils.createRealMatrix(6, 6);
@@ -94,42 +88,45 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 		C.setEntry(1, 1, -1);
 		C.setEntry(2, 0, 2);
 		
-		// solve C*p = lambda*S*p  which is equiv. to 
-		// A*x = lambda*B*x (A, B symmetric, B positive definite)
+		// solve C*p = lambda*S*p, equiv. to A*x = lambda*B*x (with A, B symmetric, B positive definite):
 		GeneralizedSymmetricEigenDecomposition eigen = new GeneralizedSymmetricEigenDecomposition(C, S, 1e-15, 1e-15); 
-				// low ABSOLUTE_POSITIVITY_THRESHOLD (last argument) is important!
 		
-		double[] evals = eigen.getRealEigenvalues(); 
-		int k = getLargestPositiveIdx(evals);
-		double[] p = eigen.getEigenvector(k).toArray();
+		if (eigen.hasComplexEigenvalues()) {
+			throw new RuntimeException("encountered complex eigenvalues");
+		}
+		
+		double[] evals = eigen.getRealEigenvalues();	
+		int k = SortMap.getLargestIndex(evals);				// index of the largest eigenvalue
+		double[] p = eigen.getEigenvector(k).toArray();		// associated eigenvector
 		
 		return Matrix.normalize(p);		
 	}
 	
 	// ------------------------------
 	
-	private int getLargestPositiveIdx(double[] x) {
-		double maxval = Double.NEGATIVE_INFINITY;
-		int maxidx = -1;
-		for (int i = 0; i < x.length; i++) {
-			if (Double.isFinite(x[i]) && x[i] >= 0 && x[i] > maxval) {
-				maxval = x[i];
-				maxidx = i;
-			}
-		}
-		return maxidx;
-	}
-	
+//	private int getLargestPositiveIdx(double[] x) {
+//		double maxval = Double.NEGATIVE_INFINITY;
+//		int maxidx = -1;
+//		for (int i = 0; i < x.length; i++) {
+//			if (Double.isFinite(x[i]) && x[i] >= 0 && x[i] > maxval) {
+//				maxval = x[i];
+//				maxidx = i;
+//			}
+//		}
+//		return maxidx;
+//	}
+//	
 	// -------------------------------------------------
 	
 	public static void main(String[] args) {
+		PrintPrecision.set(9);
 		Pnt2d[] points = {
 				Pnt2d.from(40, 53),
 				Pnt2d.from(107, 20),
 				Pnt2d.from(170, 26),
 				Pnt2d.from(186, 55),
 				Pnt2d.from(135, 103),
-//				Pnt2d.from(135, 113)
+				Pnt2d.from(135, 113)
 				};
 		
 		EllipseFitAlgebraic fit = new EllipseFitFitzgibbonOriginal(points);
@@ -157,5 +154,5 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 	}
 	
 	// fit ellipse = AlgebraicEllipse {0.317325319, 0.332954818, 0.875173557, -89.442594143, -150.574265066, 7886.192568730}
-	
+	// fit ellipse = AlgebraicEllipse {0.338021608, 0.315146286, 0.813052446, -93.275080603, -145.094714549, 7969.519273622}
 }
