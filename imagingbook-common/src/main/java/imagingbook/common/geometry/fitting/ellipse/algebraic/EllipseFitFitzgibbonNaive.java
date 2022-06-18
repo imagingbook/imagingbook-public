@@ -16,30 +16,45 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.Matrix;
 import imagingbook.common.util.SortMap;
 
 /**
- * Works by matrix inversion  (naive).
- * FAILS on PERFECT FIT!
+ * <p>
+ * Algebraic ellipse fit using Fitzgibbon's original method [1], based on simple 
+ * matrix inversion. See [2, Sec. 11.2.1] for a detailed description.
+ * </p>
  * 
- * Algebraic ellipse fit based on Fitzgibbon's original method [1], 
- * as described in Halir and Flusser [2] (WITHOUT their numerical
- * improvements).
+ * <p>
+ * Note: 
+ * This implementation does not use data centering nor accepts a specific reference point.
+ * With exactly 5 input points (generally sufficient for ellipse fitting) the scatter matrix
+ * X is singular and in this case matrix S has no inverse. 
+ * Thus at least 6 distinct input points are required (i.e., no duplicate points are
+ * allowed).
+ * </p>
  * 
+ * <p>
  * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least-
  * squares fitting of ellipses. IEEE Transactions on Pattern Analysis
  * and Machine Intelligence 21(5), 476-480 (1999).
- * 
- * [2] R. Halíř and J. Flusser. Numerically stable direct least squares
- * fitting of ellipses. In "Proceedings of the 6th International
- * Conference in Central Europe on Computer Graphics and Visualization
- * (WSCG’98)", pp. 125-132, Plzeň, CZ (February 1998).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  *
  */
 public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
+	
+	// constraint matrix
+	private static final RealMatrix C = MatrixUtils.createRealMatrix(new double[][]
+			   {{0, 0, 2, 0, 0, 0},
+				{0,-1, 0, 0, 0, 0},
+				{2, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0}});
 	
 	private final double[] p;	// p = (A,B,C,D,E,F) ellipse parameters
 	
@@ -71,75 +86,17 @@ public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
 			X.setEntry(i, 5, 1);
 		}
 		
-		RealMatrix S = X.transpose().multiply(X);
-//		IJ.log("S = \n" + Matrix.toString(S.getData()));
-		
-//		SingularValueDecomposition svdS = new SingularValueDecomposition(S);
-//		IJ.log("rank(S) = " + svdS.getRank());
-//		IJ.log("   singular values = "  + Matrix.toString(svdS.getSingularValues()));
-//		IJ.log("   condition no = " + svdS.getConditionNumber());
-		
-		RealMatrix C = MatrixUtils.createRealMatrix(6, 6);
-		C.setEntry(0, 2, 2);
-		C.setEntry(1, 1, -1);
-		C.setEntry(2, 0, 2);
-		
+		// scatter matrix S:
+		RealMatrix S = X.transpose().multiply(X);	
 		RealMatrix Si = MatrixUtils.inverse(S, 1e-15);
-//		IJ.log("Si = \n" + Matrix.toString(Si.getData()));
 		
-		RealMatrix SiB = Si.multiply(C);
-		
-//		SingularValueDecomposition svdSiB = new SingularValueDecomposition(SiB);
-//		IJ.log("rank(SiB) = " + svdSiB.getRank());
-//		IJ.log("  singular values = "  + Matrix.toString(svdSiB.getSingularValues()));
-//		IJ.log("  condition no = " + svdSiB.getConditionNumber());
-		
-		EigenDecomposition ed = new EigenDecomposition(SiB);
-//		IJ.log("nonsingular = " + ed.getSolver().isNonSingular());
-		
-//		IJ.log("det(SiB) = " + ed.getDeterminant());
-//		PrintPrecision.set(10);
-//		IJ.log("eigenvalues = "  + Matrix.toString(ed.getRealEigenvalues()));
-		
+		EigenDecomposition ed = new EigenDecomposition(Si.multiply(C));
+
 		double[] evals = ed.getRealEigenvalues();
 		int k = SortMap.getLargestIndex(evals);				// index of the largest eigenvalue
 		RealVector p = ed.getEigenvector(k);
 		
 		return p.toArray();
-	}
-	
-	public static void main(String[] args) {
-		Pnt2d[] points = {
-				Pnt2d.from(40, 53),
-				Pnt2d.from(107, 20),
-				Pnt2d.from(170, 26),
-				Pnt2d.from(186, 55),
-				Pnt2d.from(135, 103),
-				Pnt2d.from(135, 113)
-				};
-		
-		EllipseFitAlgebraic fit = new EllipseFitFitzgibbonNaive(points);
-		System.out.println("fit parameters = " + Matrix.toString(fit.getParameters()));
-		System.out.println("fit ellipse = " + fit.getEllipse());
-		System.out.println("fit ellipse = " +  Matrix.toString(fit.getEllipse().getParameters()));
-		
-		// create random 5-point sets and try to fit ellipses, counting null results:
-//		Random rg = new Random(17);
-//		int N = 1000;
-//		int nullCnt = 0;
-//		for (int k = 0; k < N; k++) {
-//			for (int i = 0; i < points.length; i++) {
-//				double x = rg.nextInt(200);
-//				double y = rg.nextInt(200);
-//				points[i] = Pnt2d.from(x, y);
-//			}
-//			fit = new EllipseFit5Points(points);
-//			if (fit.getEllipse() == null) {
-//				nullCnt++;
-//			}	
-//		}
-//		
-//		System.out.println(nullCnt + " null results out of " + N);
 	}
 	
 }

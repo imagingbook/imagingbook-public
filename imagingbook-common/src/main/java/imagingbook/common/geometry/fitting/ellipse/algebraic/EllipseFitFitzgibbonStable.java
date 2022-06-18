@@ -24,19 +24,31 @@ import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
 /**
+ * <p>
  * Algebraic ellipse fit based on Fitzgibbon's method [1], numerically
- * improved by Halir and Flusser [2].
- * Performs data centering or alternatively accepts a specific reference point.
- * Capable of performing an (exact) 5-point fit!
+ * improved as suggested by Halir and Flusser [2].
+ * See [3, Sec. 11.2.1] for a detailed description.
+ * </p>
  * 
+ * <p>
+ * Note: This implementation performs data centering or, alternatively, 
+ * accepts a specific reference point. 
+ * Capable of performing an (exact) 5-point fit!
+ * </p>
+ * 
+ * <p>
  * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least-
  * squares fitting of ellipses. IEEE Transactions on Pattern Analysis
  * and Machine Intelligence 21(5), 476-480 (1999).
- * 
+ * <br>
  * [2] R. Halíř and J. Flusser. Numerically stable direct least squares
  * fitting of ellipses. In "Proceedings of the 6th International
  * Conference in Central Europe on Computer Graphics and Visualization
  * (WSCG’98)", pp. 125-132, Plzeň, CZ (February 1998).
+ * <br>
+ * [3] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2021/11/06
@@ -72,9 +84,9 @@ public class EllipseFitFitzgibbonStable implements EllipseFitAlgebraic {
 	
 	private double[] fit(Pnt2d[] points, Pnt2d xref) {
 		final int n = points.length;
-//		if (n < 6) {
-//			throw new IllegalArgumentException("fitter requires at least 6 sample points instead of " + points.length);
-//		}
+		if (n < 5) {
+			throw new IllegalArgumentException("fitter requires at least 5 sample points instead of " + points.length);
+		}
 
 		// reference point
 		final double xr = xref.getX();
@@ -101,7 +113,7 @@ public class EllipseFitFitzgibbonStable implements EllipseFitAlgebraic {
 		RealMatrix T = S3i.scalarMultiply(-1).multiply(S2.transpose());		
 		RealMatrix Z = C1i.multiply(S1.add(S2.multiply(T)));
 		
-		// find the eigenvector of Z which satisfies ellipse constraint:
+		// find the eigenvector of Z which satisfies the ellipse constraint:
 		EigenDecomposition ed = new EigenDecomposition(Z);
 		double[] p1 = null;
 		for (int i = 0; i < 3; i++) {
