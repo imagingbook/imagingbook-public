@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.AlgebraicEllipse;
+import imagingbook.common.geometry.fitting.ellipse.algebraic.data.TestPointSet5;
 
 public class EllipseFit5PointsTest {
 
