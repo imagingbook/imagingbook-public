@@ -10,9 +10,7 @@ package imagingbook.common.geometry.fitting.ellipse.algebraic;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.NonPositiveDefiniteMatrixException;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
@@ -20,26 +18,39 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
-import imagingbook.common.util.SortMap;
 
 /**
+ * <p>
  * Algebraic ellipse fit based on Taubin's method [1].
- * Version 2 uses a reduced scatter and constraint matrix (5x5).
- * solution is found by a generalized symmetric eigenproblem.
- * Performs data centering or alternatively accepts a specific reference point.
+ * Version 2 uses a reduced scatter and constraint matrix (5x5),
+ * the solution is found by generalized symmetric eigendecomposition.
+ * See [3, Sec. 11.2.1] for a detailed description (Alg. 11.8).
+ * This implementation performs data centering or, alternatively, accepts
+ * a specific reference point.
+ * </p>
+ * <p>
+ * [1] G. Taubin, G. Taubin. "Estimation of planar curves, surfaces, and
+ * nonplanar space curves defined by implicit equations with applications to
+ * edge and range image segmentation", IEEE Transactions on Pattern Analysis and
+ * Machine Intelligence 13(11), 1115–1138 (1991).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2021/11/09
+ * @see EllipseFitTaubin1
  */
 public class EllipseFitTaubin2 implements EllipseFitAlgebraic {
 	
-	private final double[] p;	// p = (A,B,C,D,E,F) ellipse parameters
+	private final double[] q;	// = (A,B,C,D,E,F) ellipse parameters
 	
 	public EllipseFitTaubin2(Pnt2d[] points, Pnt2d xref) {
 		if (points.length < 5) {
 			throw new IllegalArgumentException("at least 5 points must be supplied for ellipse fitting");
 		}
-		this.p = fit(points, xref);
+		this.q = fit(points, xref);
 		
 	}
 	
@@ -49,7 +60,7 @@ public class EllipseFitTaubin2 implements EllipseFitAlgebraic {
 
 	@Override
 	public double[] getParameters() {
-		return this.p;
+		return this.q;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -72,16 +83,10 @@ public class EllipseFitTaubin2 implements EllipseFitAlgebraic {
 		
 		// scatter matrix S (normalized by 1/n)
 		RealMatrix S = X.transpose().multiply(X).scalarMultiply(1.0/n);
-//		IJ.log("M = \n" + imagingbook.lib.math.Matrix.toString(S.getData()));
-		
 		RealMatrix S1 = S.getSubMatrix(0, 4, 0, 4);
-//		IJ.log("S1 = \n" + imagingbook.lib.math.Matrix.toString(S1.getData()));
-		
 		RealVector s5 = S.getColumnVector(5).getSubVector(0, 5);
-//		IJ.log("s5 = " + imagingbook.lib.math.Matrix.toString(s5.toArray()));
 
 		RealMatrix P = S1.subtract(s5.outerProduct(s5));
-//		IJ.log("P = \n" + imagingbook.lib.math.Matrix.toString(P.getData()));
 	
 		double a = S.getEntry(0, 5);
 		double b = S.getEntry(2, 5);
@@ -100,23 +105,19 @@ public class EllipseFitTaubin2 implements EllipseFitAlgebraic {
 		GeneralizedSymmetricEigenDecomposition eigen = new GeneralizedSymmetricEigenDecomposition(P, Q);
 		
 		double[] evals = eigen.getRealEigenvalues();
-//		IJ.log("evals = " + Arrays.toString(evals));
 		
-		int k = getSmallestPositiveIdx(evals);		// TODO: replace by new SortingOrder(evals).getIndex(1); (see CircleFitHyperStable)
+		int k = getSmallestPositiveIdx(evals);			
 		RealVector q0 = eigen.getEigenvector(k);
-//		IJ.log("pInit = " + Matrix.toString(pInit.toArray()));
 		
 		double f = -s5.dotProduct(q0);
-		RealVector qopt = q0.append(f);
+		double[] qopt = q0.append(f).toArray();
 		
 		RealMatrix U = getDataOffsetCorrectionMatrix(xr, yr);
-		double[] q = U.operate(qopt.toArray());
-		return Matrix.normalize(q);
+		return U.operate(qopt);
 	}
 	
 	// --------------------------------------------------------------------
 	
-	// TODO: This is not reliable, replace!
 	private int getSmallestPositiveIdx(double[] x) {
 		double minval = Double.POSITIVE_INFINITY;
 		int minidx = -1;
@@ -129,18 +130,4 @@ public class EllipseFitTaubin2 implements EllipseFitAlgebraic {
 		return minidx;
 	}
 	
-	private static double TOLERANCE = 1e-6;
-	
-	@SuppressWarnings("unused")
-	private boolean isPositiveDefinite(RealMatrix A) {	
-		try {
-			new CholeskyDecomposition(A, TOLERANCE, TOLERANCE);
-			return true;
-		} catch (NonPositiveDefiniteMatrixException e) {};
-		
-		return false;
-	}
-	
-
-
 }

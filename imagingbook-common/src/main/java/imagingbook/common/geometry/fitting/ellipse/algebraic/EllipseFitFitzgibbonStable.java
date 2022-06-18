@@ -21,7 +21,6 @@ import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
 /**
  * <p>
@@ -67,10 +66,10 @@ public class EllipseFitFitzgibbonStable implements EllipseFitAlgebraic {
 					0.0, -1.0, 0.0, 
 					0.5,  0.0, 0.0);
 	
-	private final double[] p;	// p = (A,B,C,D,E,F) ellipse parameters
+	private final double[] q;	// = (A,B,C,D,E,F) ellipse parameters
 	
 	public EllipseFitFitzgibbonStable(Pnt2d[] points, Pnt2d xref) {
-		this.p = fit(points, xref);
+		this.q = fit(points, xref);
 	}
 	
 	public EllipseFitFitzgibbonStable(Pnt2d[] points) {
@@ -79,7 +78,7 @@ public class EllipseFitFitzgibbonStable implements EllipseFitAlgebraic {
 
 	@Override
 	public double[] getParameters() {
-		return this.p;
+		return this.q;
 	}
 	
 	private double[] fit(Pnt2d[] points, Pnt2d xref) {
@@ -124,13 +123,6 @@ public class EllipseFitFitzgibbonStable implements EllipseFitAlgebraic {
 			}
 		}
 		
-//		if (T == null) {
-//			throw new RuntimeException("T is null! " + Arrays.toString(points));
-//		}
-//		if (p1 == null) {
-//			throw new RuntimeException("p1 is null! " + Arrays.toString(points));
-//		}
-		
 		if (p1 == null) {
 			IJ.log("p1 is null! " + Arrays.toString(points));
 			return null;
@@ -140,58 +132,8 @@ public class EllipseFitFitzgibbonStable implements EllipseFitAlgebraic {
 		
 		RealMatrix U = getDataOffsetCorrectionMatrix(xr, yr);
 		
-		// assemble p and correct for data centering:
-		double[] p = U.operate(Matrix.join(p1, p2));
-		
-		// for plotting only:
-//		for (int i = 0; i < 3; i++) {
-//			double[] p1i = ed.getEigenvector(i).toArray();
-//			double[] p2i = T.operate(p1i);
-//			double[] pi = Matrix.multiply(U, Matrix.join(p1i, p2i));
-//			IJ.log("p" + i + " = " + Matrix.toString(pi));
-//		}
-		
-		return  Matrix.normalize(p);
+		// assemble q
+		return U.operate(Matrix.join(p1, p2));
 	}
 	
-	// -------------------------------------------------------
-	
-	
-	public static void main(String[] args) {
-		Pnt2d[] points = {
-				Pnt2d.from(40, 53),
-				Pnt2d.from(107, 20),
-				Pnt2d.from(170, 26),
-				Pnt2d.from(186, 55),
-				Pnt2d.from(135, 103),
-				//Pnt2d.from(135, 113)
-				};
-		
-		EllipseFitAlgebraic fit = new EllipseFitFitzgibbonStable(points);
-		PrintPrecision.set(9);
-		System.out.println("fit parameters = " + Matrix.toString(fit.getParameters()));
-		System.out.println("fit ellipse = " + fit.getEllipse());
-		System.out.println("fit ellipse = " +  Matrix.toString(fit.getEllipse().getParameters()));
-		
-		// create random 5-point sets and try to fit ellipses, counting null results:
-//		Random rg = new Random(17);
-//		int N = 1000;
-//		int nullCnt = 0;
-//		for (int k = 0; k < N; k++) {
-//			for (int i = 0; i < points.length; i++) {
-//				double x = rg.nextInt(200);
-//				double y = rg.nextInt(200);
-//				points[i] = Pnt2d.from(x, y);
-//			}
-//			fit = new EllipseFit5Points(points);
-//			if (fit.getEllipse() == null) {
-//				nullCnt++;
-//			}	
-//		}
-//		
-//		System.out.println(nullCnt + " null results out of " + N);
-		
-		// fit ellipse = {0.317325319, 0.332954818, 0.875173557, -89.442594143, -150.574265066, 7886.192568730}
-	}
-
 }

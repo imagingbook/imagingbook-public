@@ -69,7 +69,22 @@ public interface EllipseFitAlgebraic {
 		}
 	}
 	
-	default RealMatrix getDataOffsetCorrectionMatrix(double xr, double yr) {
+	/**
+	 * <p>
+	 * Returns a 6x6 matrix (U) to convert ellipse parameters qr = (ar,...,fr)
+	 * calculated for data centered at (xr, yr) to ellipse parameters q = (a,...,f)
+	 * for the original non-centered data: q = U * qr. See [1, Sec. 11.2.1] (e.g.,
+	 * Alg. 11.6) for additional information.
+	 * </p>
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+	 * Approach</em>, 3rd ed, Springer (2022).
+	 * </p>
+	 * 
+	 * @param xr data reference point (x)
+	 * @param yr data reference point (y)
+	 * @return the offset correction matrix (U)
+	 */
+	public default RealMatrix getDataOffsetCorrectionMatrix(double xr, double yr) {
 		return Matrix.makeRealMatrix(6, 6,
 				1,       0,     0,        0,   0,  0 ,
 				0,       1,     0,        0,   0,  0 ,
@@ -92,10 +107,12 @@ public interface EllipseFitAlgebraic {
 		Pnt2d[] pts = {p1, p2, p3, p4, p5, p6};
 		Pnt2d xr = Pnt2d.from(100,100);
 		
-		EllipseFitAlgebraic fit = EllipseFitAlgebraic.getFit(FitType.Taubin2, pts, xr);
-		System.out.println(fit);
-		if (fit != null) {
-			System.out.println(fit.getEllipse());
+		for (FitType type : FitType.values()) {
+			EllipseFitAlgebraic fit = EllipseFitAlgebraic.getFit(type, pts, xr);
+			System.out.println(type);
+			if (fit != null) {
+				System.out.println(fit.getEllipse());
+			}
 		}
 		
 	}

@@ -16,7 +16,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.util.SortMap;
+import imagingbook.common.math.Matrix;
 
 /**
  * <p>
@@ -56,18 +56,18 @@ public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
 				{0, 0, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0}});
 	
-	private final double[] p;	// p = (A,B,C,D,E,F) ellipse parameters
+	private final double[] q;	// = (A,B,C,D,E,F) ellipse parameters
 	
 	public EllipseFitFitzgibbonNaive(Pnt2d[] points) {
 		if (points.length < 6) {
 			throw new IllegalArgumentException("fitter requires at least 6 sample points instead of " + points.length);
 		}
-		this.p = fit(points);
+		this.q = fit(points);
 	}
 
 	@Override
 	public double[] getParameters() {
-		return this.p;
+		return this.q;
 	}
 	
 	private double[] fit(Pnt2d[] points) {
@@ -93,10 +93,8 @@ public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
 		EigenDecomposition ed = new EigenDecomposition(Si.multiply(C));
 
 		double[] evals = ed.getRealEigenvalues();
-		int k = SortMap.getLargestIndex(evals);				// index of the largest eigenvalue
-		RealVector p = ed.getEigenvector(k);
-		
-		return p.toArray();
+		int k = Matrix.idxMax(evals);				// index of the largest eigenvalue
+		return ed.getEigenvector(k).toArray();
 	}
 	
 }

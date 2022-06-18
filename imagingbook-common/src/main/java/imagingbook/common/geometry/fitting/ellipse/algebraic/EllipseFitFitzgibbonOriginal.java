@@ -16,7 +16,6 @@ import org.apache.commons.math3.linear.RealMatrix;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
-import imagingbook.common.util.SortMap;
 
 /**
  * <p>
@@ -62,18 +61,18 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 				{0, 0, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0}});
 
-	private final double[] p;	// = (A,B,C,D,E,F) algebraic ellipse parameters
+	private final double[] q;	// = (A,B,C,D,E,F) algebraic ellipse parameters
 	
 	public EllipseFitFitzgibbonOriginal(Pnt2d[] points) {
 		if (points.length < 6) {
 			throw new IllegalArgumentException("fitter requires at least 6 sample points instead of " + points.length);
 		}
-		this.p = fit(points);
+		this.q = fit(points);
 	}
 
 	@Override
 	public double[] getParameters() {
-		return this.p;
+		return this.q;
 	}
 	
 	private double[] fit(Pnt2d[] points) {
@@ -102,10 +101,8 @@ public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {
 		}
 		
 		double[] evals = eigen.getRealEigenvalues();	
-		int k = SortMap.getLargestIndex(evals);				// index of the largest eigenvalue
-		double[] p = eigen.getEigenvector(k).toArray();		// associated eigenvector
-		
-		return Matrix.normalize(p);		
+		int k = Matrix.idxMax(evals);					// index of the largest eigenvalue
+		return eigen.getEigenvector(k).toArray();		// associated eigenvector	
 	}
 	
 }
