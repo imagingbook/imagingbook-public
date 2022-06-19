@@ -33,6 +33,7 @@ public class CircleFit3PointsTest {
 	@Test	// test all algebraic circle fit types on 3 points
 	public void test2() {
 		for (FitType type : FitType.values()) {		
+			System.out.println("fit type = " + type);
 			doCheck12(CircleFitAlgebraic.getFit(type, pnts), acExp);
 		}
 	}

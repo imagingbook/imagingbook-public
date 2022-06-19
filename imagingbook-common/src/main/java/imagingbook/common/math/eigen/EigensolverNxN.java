@@ -46,6 +46,7 @@ import imagingbook.common.math.Matrix;
  * @author WB
  * @version 2021/11/25
  */
+@Deprecated			// use EigenvalueDecomposition instead!
 public class EigensolverNxN implements RealEigensolver {
 
 	private final int n;

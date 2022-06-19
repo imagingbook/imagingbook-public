@@ -345,8 +345,12 @@ public class CircleFitAlgebraicTest {
 		CircleSampler sampler = new CircleSampler(realCircle, seed);
 		
 		for (FitType type : FitType.values()) {
+//			System.out.println(type + ": " + type);
 			runTest2(type, sampler, realCircle);
 		}
+		
+//		runTest2(FitType.KasaA, sampler, realCircle);
+		runTest2(FitType.Pratt, sampler, realCircle);
 	}
 	
 	private void runTest2(FitType type, CircleSampler sampler, GeometricCircle realCircle) {

@@ -14,9 +14,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
+import org.apache.commons.math3.linear.MatrixUtils;
 import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.testing.RandomMatrixGenerator;
 
 public class Eigensolver2x2Test {
 
@@ -100,11 +102,11 @@ public class Eigensolver2x2Test {
 	
 	@Test
 	public void testRandomMatrix2x2() {
-		Random RG = new Random(17);
+		RandomMatrixGenerator rg = new RandomMatrixGenerator(17);
 		final int N = 1000;
 		//int cnt = 0;
 		for (int i = 0; i < N; i++) {
-			double[][] A = makeRandomMatrix2x2(RG);
+			double[][] A = rg.makeRandomSymmetricMatrix(2);
 			RealEigensolver solver = new Eigensolver2x2(A);
 			if (solver.isReal()) {
 				//cnt++;

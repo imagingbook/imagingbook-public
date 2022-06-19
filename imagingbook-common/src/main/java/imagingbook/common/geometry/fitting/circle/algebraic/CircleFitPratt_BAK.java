@@ -10,8 +10,6 @@ package imagingbook.common.geometry.fitting.circle.algebraic;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import java.util.Arrays;
-
 import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -23,37 +21,158 @@ import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.geometry.fitting.circle.CircleSampler;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.math.eigen.EigenvalueDecomposition;
-
+import imagingbook.common.util.SortMap;
 
 /**
+ * This is an implementation of the algebraic circle fitting algorithm by Pratt [1],
+ * as described in [2] (Sec. 5.5-5.6). The algorithm uses singular-value decomposition
+ * (SVD) and eigen-decomposition. See [3, Alg. 11.2] for additional details.
+ * <p>
+ * Fits to exactly 3 (non-collinear) points are handled properly.
+ * Data centering is used to improve numerical stability (alternatively, a reference
+ * point can be specified).
+ * </p>
+ * <p>
+ * [1] V. Pratt. "Direct least-squares fitting of algebraic surfaces". <em>ACM
+ * SIGGRAPH Computer Graphics</em> <strong>21</strong>(4), 145–152 (July 1987).
+ * <br>
+ * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
+ * Lines by Least Squares". Monographs on Statistics and Applied Probability.
+ * Taylor &amp; Francis (2011).
+ * <br>
+ * [3] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
  *
  */
-public class CircleFitPratt implements CircleFitAlgebraic {
+public class CircleFitPratt_BAK implements CircleFitAlgebraic {
 	
-	private static final RealMatrix Ci =	// inverse of constraint matrix B
+	private static final RealMatrix Ci =	// inverse of constraint matrix C
 			MatrixUtils.createRealMatrix(new double[][] { 
 				{  0,   0, 0, -0.5 },
 				{  0,   1, 0,  0 },
 				{  0,   0, 1,  0 },
 				{ -0.5, 0, 0,  0 }});
 	
-	private final double[] q;	// p = (A,B,C,D) circle parameters
+	private final double[] q;	// q = (A,B,C,D) circle parameters
 	
-	public CircleFitPratt(Pnt2d[] points) {
-		this.q = fit(points);
+	@Override
+	public double[] getParameters() {
+		return this.q;
 	}
 	
-//	@Override
-//	public GeometricCircle getGeometricCircle() {
-//		if (isZero(p[0])) {			// (abs(2 * A / s) < (1 / Rmax))
-//			return null;			// return a straight line
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point.
+	 * 
+	 * @param points sample points
+	 */
+	public CircleFitPratt_BAK(Pnt2d[] points) {
+		this(points, null);
+	}
+	
+	/**
+	 * Constructor.
+	 * The centroid of the sample points is used as the reference point for data
+	 * centering if {@code null} is passed for {@code xref}.
+	 * 
+	 * @param points sample points
+	 * @param xref reference point or {@code null}
+	 */
+	public CircleFitPratt_BAK(Pnt2d[] points, Pnt2d xref) {
+		this.q = fit(points, xref);
+	}
+
+	private double[] fit(Pnt2d[] pts, Pnt2d xref) {
+		final int n = pts.length;
+		if (n < 3) {
+			throw new IllegalArgumentException("at least 3 points are required");
+		}
+		
+		if (xref == null) {
+			xref = PntUtils.centroid(pts);
+		}
+		final double xr = xref.getX();
+		final double yr = xref.getY();
+
+		double[][] Xa = new double[Math.max(n, 4)][4];	// Xa must have at least 4 rows!
+		for (int i = 0; i < pts.length; i++) {
+			double x = pts[i].getX() - xr;		// = x_i
+			double y = pts[i].getY() - yr;		// = y_i
+			Xa[i][0] = sqr(x) + sqr(y);			// = z_i
+			Xa[i][1] = x;
+			Xa[i][2] = y;
+			Xa[i][3] = 1;
+		}
+		// if nPoints = 3 (special case) the last row of the
+		// 4x4 matrix contains all zeros (make X singular)!
+
+		RealMatrix X = MatrixUtils.createRealMatrix(Xa);
+
+		SingularValueDecomposition svd = new SingularValueDecomposition(X);
+		RealMatrix S = svd.getS();	
+		RealMatrix V = svd.getV();
+		double[] svals = svd.getSingularValues(); 	// note: singular values are all positive (>= 0)
+		
+		int k = Matrix.idxMin(svals);
+		double smin = svals[k];
+		double smax = Matrix.max(svals); 
+		//int maxIdx = Matrix.idxMax(svals);
+		//double smax = svals[maxIdx];
+		
+		RealVector qq = null;		// = \dot{q} solution vector (algebraic circle parameters)
+
+		double icond = smin / smax;
+		if (icond < 1e-12) { 			// smin/smax = inverse condition number of X, 1e-12
+			// singular case (X is rank deficient)
+			qq = V.getColumnVector(k);
+		} else {
+			// regular (non-singular) case
+		
+			// Version1 ---------------------------------------------------
+//			RealMatrix Y = V.multiply(S).multiply(V.transpose());
+//			RealMatrix Z = Y.multiply(Ci).multiply(Y); // = Y * Ci * Y
+			
+			// Version2 ---------------------------------------------------
+			RealMatrix Y = V.multiply(S);
+			RealMatrix Z = Y.transpose().multiply(Ci).multiply(Y); // = Y^T * Ci * Y
+
+			EigenDecomposition ed = new EigenDecomposition(Z);
+//			EigenvalueDecomposition ed = new EigenvalueDecomposition(Z);
+			
+			
+			double[] evals = ed.getRealEigenvalues();
+			
+//			int l = getSmallestPositiveIdx(evals);
+			int l = new SortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
+			
+			RealVector el = ed.getEigenvector(l);
+			
+			// Version1 ---------------------------------------------------
+//			qq = Matrix.solve(S.multiply(svd.getVT()), el);		// solve S * V^T * p = el
+			
+			// Version2 ---------------------------------------------------
+			qq = V.operate(MatrixUtils.inverse(S).operate(el));	// simpler since S is diagonal
+		}
+
+		RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);
+		return M.operate(qq).toArray();  // q = (A,B,C,D)
+	}
+	
+//	private int getSmallestPositiveIdx(double[] x) {
+//		double minval = Double.POSITIVE_INFINITY;
+//		int minidx = -1;
+//		for (int i = 0; i < x.length; i++) {
+//			// ignore complex eigenvalues (x[i] == NaN)
+//			if (Double.isFinite(x[i]) && x[i] >= 0 && x[i] < minval) {
+//				minval = x[i];
+//				minidx = i;
+//			}
 //		}
-//		else {
-//			return GeometricCircle.from(new AlgebraicCircle(p));
-//		}
+//		return minidx;
 //	}
+
 
 	// enforce constraint B^2 + C^2 - 4 A D = 1 :
 	@SuppressWarnings("unused")
@@ -66,127 +185,9 @@ public class CircleFitPratt implements CircleFitAlgebraic {
 		return new double[] {A/s, B/s, C/s, D/s};
 	}
 	
-
-	private double[] fit(Pnt2d[] pts) {	// Version in Chernov (Table 5.1) - this version also works for the HyperFitter!
-//		IJ.log(this.getClass().getSimpleName() + " -- Version B");
-		final int nPoints = pts.length;
-		if (nPoints < 3) {
-			throw new IllegalArgumentException("at least 3 points are required");
-		}
-		
-//		IJ.log("n = " + nPoints);
-		Pnt2d ctr = PntUtils.centroid(pts);
-		final double xr = ctr.getX();
-		final double yr = ctr.getY();
-
-		double[][] Xa = new double[Math.max(nPoints, 4)][4];	// Xa must have at least 4 rows!
-		for (int i = 0; i < pts.length; i++) {
-			double x = pts[i].getX() - xr;
-			double y = pts[i].getY() - yr;
-			Xa[i][0] = sqr(x) + sqr(y);
-			Xa[i][1] = x;
-			Xa[i][2] = y;
-			Xa[i][3] = 1;
-		}
-		// if nPoints = 3 (special case) the last row of the
-		// 4x4 matrix contains all zeros to make X singular!
-
-		RealMatrix X = MatrixUtils.createRealMatrix(Xa);
-//		IJ.log("X = \n" + Matrix.toString(X.getData()));
-
-		SingularValueDecomposition svd = new SingularValueDecomposition(X);
-		RealMatrix S = svd.getS();	
-		RealMatrix V = svd.getV();
-		double[] svals = svd.getSingularValues(); 	// note: singular values are all positive (or zero)
-		
-		int minIdx = Matrix.idxMin(svals);
-		double smin = svals[minIdx];
-		int maxIdx = Matrix.idxMax(svals);
-		double smax = svals[maxIdx];
-		
-		RealVector qq = null;		// = \dot{q} solution vector (algebraic circle parameters)
-
-		double icond = smin / smax;
-//		IJ.log("Pratt fitter: icond = " + icond);
-		
-		if (icond < 1e-12) { 			// smin/smax = inverse condition number of X, 1e-12
-			// singular case (X is rank deficient)
-			qq = V.getColumnVector(minIdx);
-		} else {
-			// regular (non-singular) case
-		
-			// Version1 ---------------------------------------------------
-//			RealMatrix Y = V.multiply(S).multiply(V.transpose());
-//			RealMatrix Z = Y.multiply(Bi).multiply(Y); // = Y * Bi * Y
-			// Version2 ---------------------------------------------------
-			RealMatrix Y = V.multiply(S);
-			RealMatrix Z = Y.transpose().multiply(Ci).multiply(Y); // = Y^T * Bi * Y
-			// ------------------------------------------------------------
-			
-//			EigenDecomposition ed = new EigenDecomposition(Z);	// tends to produce complex eigenvalues!
-			EigenvalueDecomposition ed = new EigenvalueDecomposition(Z);
-			PrintPrecision.set(15);
-//			System.out.println("   re = " + Arrays.toString(ed.getRealEigenvalues()));
-//			System.out.println("   im = " + Arrays.toString(ed.getImagEigenvalues()));
-//			System.out.println("   V = \n" + Matrix.toString(ed.getV()));
-//			
-//			System.out.println("   singular Z = " + Matrix.isSingular(Z));
-//			System.out.println("   det(Z) = " + Matrix.determinant(Z));
-//			System.out.println("    Z = \n" +  Matrix.toString(Z));
-			
-			if (ed.hasComplexEigenvalues()) {
-//				System.out.println("**** complex **********");
-//				System.out.println("   icond = " + icond);
-				throw new RuntimeException("Pratt circle fit encountered complex eigenvalues");
-			}
-			
-			double[] evals = ed.getRealEigenvalues();
-			int k = getSmallestPositiveIdx(evals);
-
-//			IJ.log("l = " + l);
-			RealVector ek = ed.getEigenvector(k);
-			
-			// Version1 ---------------------------------------------------
-//			qq = Matrix.solve(S.multiply(svd.getVT()), ek);		// solve S * V^T * p = ek
-			// Version2 ---------------------------------------------------
-			qq = V.operate(MatrixUtils.inverse(S).operate(ek));	// simpler since S is diagonal
-			// ------------------------------------------------------------
-		}
-		
-		double[][] M = 
-			{{ 1, 0, 0, 0 },
-			 {-2*xr, 1, 0, 0 },
-			 {-2*yr, 0, 1, 0 },
-			 {sqr(xr) + sqr(yr), -xr, -yr, 1}};
-		
-		RealMatrix MM = MatrixUtils.createRealMatrix(M);
-		
-		double[] q = MM.operate(qq).toArray();
-		return q;
-	}
+	// --------------------------------------------------------------------------------------
 	
-	private int getSmallestPositiveIdx(double[] x) {
-		double minval = Double.POSITIVE_INFINITY;
-		int minidx = -1;
-		for (int i = 0; i < x.length; i++) {
-			// ignore complex eigenvalues (x[i] == NaN)
-			if (Double.isFinite(x[i]) && x[i] >= 0 && x[i] < minval) {
-				minval = x[i];
-				minidx = i;
-			}
-		}
-		return minidx;
-	}
-
-	public double[] getParameters() {
-		return this.q;
-	}
-	
-	
-	// -------------------------------------------------------------------------------------
-	
-	// Problem point set 1
-	static double[][] PA = {
+	static double[][] ProblemPointSet1 = {
 			{110, 70}, 
 			{113, 70}, 
 			{114, 70}, 
@@ -471,7 +472,10 @@ public class CircleFitPratt implements CircleFitAlgebraic {
 			{120, 173}, 
 			{123, 173}, 
 			{105, 174}};
-
+	
+	static double Xc = 116.484103;
+	static double Yc = 121.593799;
+	static double R  =  51.509581;
 	
 	public static void main(String[] args) {
 		
@@ -499,14 +503,13 @@ public class CircleFitPratt implements CircleFitAlgebraic {
 		
 		for (int i = 0; i < 100; i++) {
 			Pnt2d[] pnts = sampler.getPoints(n, angle0, angle1, sigma);
-			CircleFitPratt fit = new CircleFitPratt(pnts);
+			CircleFitAlgebraic fit = CircleFitAlgebraic.getFit(type, pnts);
 			GeometricCircle fitCircle = fit.getGeometricCircle();
-			System.out.println(i + " " + type + " = " + fitCircle + " " + realCircle.equals(fitCircle, 4.0, 4.0, 4.0));
+			System.out.println(type + " = " + fitCircle + " " + realCircle.equals(fitCircle, 4.0, 4.0, 4.0));
 //			assertNotNull("geometric circle is null: " + type, fitCircle);
 //			System.out.println(type + ": " + fitCircle);
 //			assertTrue("failed fit-type: " + type, realCircle.equals(fitCircle, 4.0, 4.0, 4.0));
 		}
 		
 	}
-		
 }

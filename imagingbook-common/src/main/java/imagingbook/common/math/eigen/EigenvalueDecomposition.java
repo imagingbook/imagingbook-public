@@ -1,4 +1,4 @@
-package imagingbook.common.math.eigen.jama;
+package imagingbook.common.math.eigen;
 
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -7,18 +7,20 @@ import org.apache.commons.math3.linear.RealVector;
 
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
+import imagingbook.common.math.exception.MaxIterationsExceededException;
 
 /**
  * Eigenvalues and eigenvectors of a real matrix.
  * This code has been ported from https://math.nist.gov/javanumerics/jama/ (Version 1.0.3), with the
  * public API (and some internals) adapted to Apache Commons Math (by W. Burger).
- * 
- * PROBLEM: If the supplied matrix is singular, the returned decomposition is only partial!
- * Use Apache's implementation instead!
- * 
- * This is intended as a temporary substitute for Apache Commons Math's own implementation
- * of Eigenvalue decomposition, which behaves strangely at times. 
  * Most comments below were taken from the original sources.
+ * <p>
+ * This is intended as a temporary substitute for Apache Commons Math's 
+ * implementation ({@link org.apache.commons.math3.linear.EigenDecomposition},
+ * which sometimes returns complex eigenvalues although solutions with real-only 
+ * eigenvalues exist.
+ *
+ * </p>
  * <p>
  * If A is symmetric, then A = V*D*V' where the eigenvalue matrix D is diagonal
  * and the eigenvector matrix V is orthogonal. I.e. A =
@@ -33,29 +35,32 @@ import imagingbook.common.math.PrintPrecision;
  * V.times(D). The matrix V may be badly conditioned, or even singular, so the
  * validity of the equation A = V*D*inverse(V) depends upon V.cond().
  * </p>
- **/
-@Deprecated
+ * 
+ * 
+ * @version 2022/06/19
+ */
 public class EigenvalueDecomposition {
 	
 	private final static double SymmetryTolerance = 1e-6;
 	private final static double EPSILON = 1e-12;
 
-	private final int n;			// Row and column dimension (square matrix).
-	private final boolean issymmetric;	// Symmetry flag.
+	private final int n;			// row and column dimension (square matrix).
+	private final boolean issymmetric;	// symmetry flag.
 	private final double[] d;		// real parts of eigenvalues.
 	private final double[] e;		// imaginary parts of eigenvalues.
-	private final double[][] V;		// Array for internal storage of eigenvectors.
+	private final double[][] V;		// array for internal storage of eigenvectors.
 	
-	private double[][] H;			// Array for internal storage of nonsymmetric Hessenberg form.
-	private double[] ort;			// Working storage for nonsymmetric algorithm.
+	private double[][] H;			// array for internal storage of nonsymmetric Hessenberg form.
+	private double[] ort;			// working storage for nonsymmetric algorithm.
 
 	/**
 	 * Constructor. 
 	 * Checks for symmetry, then constructs the eigenvalue decomposition.
 	 *
 	 * @param M a square matrix
+	 * @throws MaxIterationsExceededException
 	 */
-	public EigenvalueDecomposition(final RealMatrix M) {
+	public EigenvalueDecomposition(final RealMatrix M) throws MaxIterationsExceededException {
 		final double[][] A = M.getData();
 		this.n = M.getColumnDimension();
 		this.V = new double[n][n];
@@ -112,8 +117,7 @@ public class EigenvalueDecomposition {
 	 * @return the transposed matrix of eigenvectors
 	 */
 	public RealMatrix getVT() {
-		RealMatrix v = MatrixUtils.createRealMatrix(V);
-		return v.transpose();
+		return MatrixUtils.createRealMatrix(V).transpose();
 	}
 	
 	 /**
@@ -176,7 +180,6 @@ public class EigenvalueDecomposition {
 //	/**
 //	 * Return the block diagonal eigenvalue matrix
 //	 * @return D
-//   * WB: don't understand -- index problem??
 //	 */
 //	public RealMatrix getD() {
 //		final double[][] D = new double[n][n];
@@ -216,7 +219,7 @@ public class EigenvalueDecomposition {
 	}
 	
 	/**
-     * Calculates and returns the determinant of the matrix.
+     * Calculates and returns the determinant of the decomposed matrix.
      *
      * @return the determinant of the matrix.
      */
@@ -719,6 +722,9 @@ public class EigenvalueDecomposition {
 				}
 
 				iter = iter + 1; // (Could check iteration count here.)
+				if (iter > 30) {
+					throw new MaxIterationsExceededException(30);	// wilbur added as safeguard
+				}
 
 				// Look for two consecutive small sub-diagonal elements
 				int m = n - 2;
@@ -981,37 +987,58 @@ public class EigenvalueDecomposition {
 	// --------------------------------------------------------------------------------------------------
 	
 	public static void main(String[] args) {
-		double[][] M = 
+		
+		// 2 examples where Apache's implementation fails:
+		
+		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]  
 			{{4455707.000000000, 16685.500000000, 17344.500000000, 142.000000000}, 
 			{-951005821.436619800, -3525507.007042253, -4059917.288732395, -33371.000000000}, 
 			{-997789920.901407700, -4059917.288732392, -3879630.838028166, -34689.000000000}, 
-			{70029373562.509700000, 297685588.322852130, 314485277.997519970, 2949430.845070420}};
+			{70029373562.509700000, 297685588.322852130, 314485277.997519970, 2949430.845070420}});
+		
+//		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
+//			{{-635322.712034708800000, 4756.174679968795000, -265184.797553499500000, 20382.684252847448000}, 
+//			{4756.174679968796000, 560670.646574945200000, 0.190328961575323, -0.016193729208773}, 
+//			{-265184.797553499500000, 0.190328961575416, 74652.065423977560000, 1.470729864949432}, 
+//			{20382.684252847444000, -0.016193729208773, 1.470729864949432, 0.000035786438260}});
+		
+		// singular matrix
+//		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
+//				{{2, 1, 0},
+//				{0, 2, 0},
+//				{0, 0, 0}});
+		
+		// singular matrix
+//				RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
+//						{{2, 1, 4, -1},
+//						{3, -2, 1, 0},
+//						{5, 1, -3, 2},
+//						{-1, 3, 3, -1}});
+		
+		PrintPrecision.set(9);
+		
+		System.out.println("det(M) = " + Matrix.determinant(M));
+		System.out.println("singular(M) = " + Matrix.isSingular(M));
 		
 		{
-			System.out.println("JAMA:");
-			EigenvalueDecomposition ed = new EigenvalueDecomposition(MatrixUtils.createRealMatrix(M));
-			double[] evals = ed.getRealEigenvalues();
-			PrintPrecision.set(9);
-			System.out.println("evals = " + Matrix.toString(evals));
-			System.out.println("has complex evs = " + ed.hasComplexEigenvalues());
-			System.out.println("D = \n" + Matrix.toString(ed.getD()));
-			System.out.println("det = " + ed.getDeterminant());
-			
-			// evals = {-753386.305449104, 115.864946503, 401745.451068664, 351524.989423574}
-		}
-		
-		{
-			System.out.println("\nApache Commons Math:");
-			org.apache.commons.math3.linear.EigenDecomposition  ed = 
-					new org.apache.commons.math3.linear.EigenDecomposition(MatrixUtils.createRealMatrix(M));
-			double[] evals = ed.getRealEigenvalues();
-			PrintPrecision.set(9);
+			System.out.println("\nJAMA: *****************************");
+			EigenvalueDecomposition ed = new EigenvalueDecomposition(M);
 			System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
 			System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
 			System.out.println("has complex evs = " + ed.hasComplexEigenvalues());
 			System.out.println("D = \n" + Matrix.toString(ed.getD()));
-			System.out.println("det = " + ed.getDeterminant());
-			// evals = {-753386.305357033, 200930.657960727, 200930.657960727, 351524.989425229} - complex!
+			System.out.println("V = \n" + Matrix.toString(ed.getV()));
+		}
+		
+		{
+			System.out.println("\nApache Commons Math: *****************************");
+			org.apache.commons.math3.linear.EigenDecomposition  ed = 
+					new org.apache.commons.math3.linear.EigenDecomposition(M);
+			System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
+			System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
+			System.out.println("has complex evs = " + ed.hasComplexEigenvalues());
+			System.out.println("D = \n" + Matrix.toString(ed.getD()));
+			System.out.println("V = \n" + Matrix.toString(ed.getV()));
 		}
 	}
 	

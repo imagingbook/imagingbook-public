@@ -48,13 +48,13 @@ import imagingbook.common.math.Matrix;
 public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
 	
 	// constraint matrix
-	private static final RealMatrix C = MatrixUtils.createRealMatrix(new double[][]
-			   {{0, 0, 2, 0, 0, 0},
-				{0,-1, 0, 0, 0, 0},
-				{2, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0}});
+	private static final RealMatrix C = Matrix.makeRealMatrix(6, 6,
+			  	0, 0, 2, 0, 0, 0,
+				0,-1, 0, 0, 0, 0,
+				2, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0 );
 	
 	private final double[] q;	// = (A,B,C,D,E,F) ellipse parameters
 	
