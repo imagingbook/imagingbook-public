@@ -14,12 +14,15 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 
+import org.apache.commons.math3.linear.MatrixUtils;
+
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.math.eigen.EigensolverNxN;
+import imagingbook.common.math.eigen.EigenvalueDecomposition;
 import imagingbook.common.math.eigen.RealEigensolver;
 
 public class LineFitIncremental implements LineFit {
@@ -149,6 +152,8 @@ public class LineFitIncremental implements LineFit {
 		
 		RealEigensolver es = new EigensolverNxN(S);
 		double[] e = es.getEigenvector(1);
+//		EigenvalueDecomposition es = new EigenvalueDecomposition(MatrixUtils.createRealMatrix(S));
+//		double[] e = es.getEigenvector(1).toArray();
 		
 		double A = e[0];
 		double B = e[1];
@@ -159,8 +164,10 @@ public class LineFitIncremental implements LineFit {
 			System.out.println("Sy = " + Sy);
 			System.out.println("xc = " + PntUtils.centroid(pts));
 			System.out.println("S = \n" + Matrix.toString(S));
-			System.out.println("eVal = " + Matrix.toString(es.getEigenvalues()));
-			System.out.println("eVec = \n" + Matrix.toString(es.getEigenvectors()));
+//			System.out.println("eVal = " + Matrix.toString(es.getEigenvalues()));
+//			System.out.println("eVec = \n" + Matrix.toString(es.getEigenvectors()));
+//			System.out.println("eVal = " + Matrix.toString(es.getRealEigenvalues()));
+//			System.out.println("eVec = \n" + Matrix.toString(es.getV()));
 			System.out.println("A = \n" + A);
 			System.out.println("B = \n" + B);
 			System.out.println("C = \n" + C);
@@ -208,6 +215,31 @@ public class LineFitIncremental implements LineFit {
 //	line = {-0.4969, -0.8678, 7.2448}
 //	square error = 2.6645834350486606
 //	mean square error = 0.5329166870097322
-	
+
+/*
+ Adding points -------------------------- 
+size = 2
+  line = AlgebraicLine <a=0.707, b=0.707, c=-6.364>
+  mean square error = 1.5777218104420237E-31
+size = 3
+  line = AlgebraicLine <a=0.646, b=0.763, c=-7.026>
+  mean square error = 0.25563166262690407
+size = 4
+  line = AlgebraicLine <a=0.657, b=0.754, c=-6.987>
+  mean square error = 0.2561822766777585
+size = 5
+  line = AlgebraicLine <a=0.497, b=0.868, c=-7.245>
+  mean square error = 0.5329166870097322
+Removing points -------------------------- 
+size = 4
+  line = AlgebraicLine <a=0.657, b=0.754, c=-6.987>
+  mean square error = 0.2561822766777585
+size = 3
+  line = AlgebraicLine <a=0.646, b=0.763, c=-7.026>
+  mean square error = 0.25563166262690407
+size = 2
+  line = AlgebraicLine <a=0.707, b=0.707, c=-6.364>
+  mean square error = 1.5777218104420237E-31
+ */
 	
 }

@@ -26,7 +26,7 @@ public class EigensolverNxNTest {
 		double[][] M = {
 				{3, -2},
 				{-4, 1}};
-		runTest(M);
+		runEigenTest(M);
 	}
 	
 	@Test
@@ -34,7 +34,7 @@ public class EigensolverNxNTest {
 		double[][] M = {
 				{-0.004710, -0.006970},
 				{-0.006970, -0.029195}};
-		runTest(M);
+		runEigenTest(M);
 	}
 	
 	@Test
@@ -42,7 +42,7 @@ public class EigensolverNxNTest {
 		double[][] M = {
 				{0, 0},
 				{0, 1}};
-		runTest(M);
+		runEigenTest(M);
 	}
 	
 	@Test
@@ -50,7 +50,7 @@ public class EigensolverNxNTest {
 		double[][] M = {
 				{1, 0},
 				{0, 0}};
-		runTest(M);
+		runEigenTest(M);
 	}
 	
 	@Test
@@ -58,7 +58,7 @@ public class EigensolverNxNTest {
 		double[][] M = {
 				{1, 0},
 				{-2, 1}};
-		runTest(M);
+		runEigenTest(M);
 	}
 	
 	@Test
@@ -66,7 +66,7 @@ public class EigensolverNxNTest {
 		double[][] M = {
 				{1, -2},
 				{0, 1}};
-		runTest(M);
+		runEigenTest(M);
 	}
 	
 	@Test
@@ -74,7 +74,7 @@ public class EigensolverNxNTest {
 		double[][] M = {
 				{1, 2},
 				{2, 1}};
-		runTest(M);
+		runEigenTest(M);
 	}
 	
 	@Test
@@ -82,7 +82,7 @@ public class EigensolverNxNTest {
 		double[][] M = {
 				{0, -1},
 				{2, 0}};
-		runTest(M, false);
+		runEigenTest(M, false);
 	}
 	
 	@Test
@@ -90,7 +90,7 @@ public class EigensolverNxNTest {
 		double[][] M = {
 				{4, -1},
 				{2, 4}};
-		runTest(M, false);
+		runEigenTest(M, false);
 	}
 	
 	@Test
@@ -99,7 +99,7 @@ public class EigensolverNxNTest {
 				{5, 2, 0},
 				{2, 5, 0},
 				{-3, 4, 6}};
-		runTest(M);
+		runEigenTest(M);
 	}
 	
 	@Test
@@ -109,7 +109,7 @@ public class EigensolverNxNTest {
 				{2, 5, 0, 7},
 				{-3, 4, 6, 0},
 				{1 , 2, 3, 4}};
-		runTest(M, false);
+		runEigenTest(M, false);
 	}
 	
 	@Test
@@ -135,11 +135,11 @@ public class EigensolverNxNTest {
 	
 	// ---------------------------------------------------------
 	
-	private void runTest(double[][] M) {
-		runTest(M, true);
+	private void runEigenTest(double[][] M) {
+		runEigenTest(M, true);
 	}
 
-	private void runTest(double[][] M, boolean shouldBeReal) {
+	private void runEigenTest(double[][] M, boolean shouldBeReal) {
 		RealEigensolver solver = new EigensolverNxN(M);	
 
 		if (shouldBeReal) {
