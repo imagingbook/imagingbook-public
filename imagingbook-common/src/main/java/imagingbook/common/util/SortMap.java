@@ -3,11 +3,24 @@ package imagingbook.common.util;
 import java.util.stream.IntStream;
 
 /**
+ * <p>
  * Determines the 'permutation' of a sequence of numbers and
  * keeps it as an array ({@link #perm}) of position indexes.
  * These indexes indicate how the original input array
  * may be re-ordered to become sorted
  * (see {@link #getPermutation()}).
+ * </p>
+ * 
+ * <p>
+ * Usage example: Get the second-smallest element in some array
+ * {@code double[] A}:
+ * </p>
+ * <pre>
+ * int k = SortMap.getNthSmallestIndex(A, 1);
+ * double x = A[k];</pre>
+ * <p>or, directly,</p>
+ * <pre>
+ * double x = getNthSmallestValue(A, 1);</pre>
  * 
  * @author WB
  *
@@ -49,19 +62,21 @@ public class SortMap {
 	// --------------------------------------------------
 	
 	/**
-	 * Returns the permutation (sorted position indexes) for the underlying
-	 * number sequence ({@code numbers}) as a {@code int} array.
+	 * Returns the permutation (position indexes) for the underlying
+	 * number sequence as a {@code int} array.
 	 * That is, the first value in the returned array is the index
 	 * of the smallest element in {@code numbers}, the second element
 	 * points to the second-smallest element, etc.
 	 * For example, if the original number sequence (passed to the constructor) is
-	 * <pre>numbers = (50.0, 20.0, 100.0, 120.0, 40.0, -10.0)</pre>
-	 * then the permutation array returned by {@link #getPermutation()} is
-	 * <pre>perm = (5, 1, 4, 0, 2, 3)</pre>
+	 * <pre>
+	 * double[] A = {50.0, 20.0, 100.0, 120.0, 40.0, -10.0};</pre>
+	 * then the index array produced by 
+	 * <pre>int[] perm = new SortMap(A).getPermutation();</pre> contains
+	 * {@code (5, 1, 4, 0, 2, 3)}.
 	 * This means that 
-	 * <pre>numbers[perm[i]] &le; numbers[perm[i+1]]</pre>
+	 * <pre>A[perm[i]] &le; A[perm[i+1]]</pre>
 	 * and thus the sequence
-	 * <pre>(numbers[perm[0]], numbers[perm[1]],..., numbers[perm[N-1]])</pre>
+	 * <pre>{A[perm[0]], A[perm[1]],..., A[perm[N-1]]}</pre>
 	 * is sorted.
 	 * 
 	 * @return the sorting map (permutation)
