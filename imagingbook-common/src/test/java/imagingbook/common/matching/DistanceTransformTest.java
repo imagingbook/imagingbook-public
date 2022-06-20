@@ -13,7 +13,7 @@ import org.junit.Test;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.matching.DistanceTransform.Norm;
-import imagingbook.testutils.ArrayTests;
+import imagingbook.testutils.NumericTestUtils;
 
 public class DistanceTransformTest {
 	
@@ -66,7 +66,7 @@ public class DistanceTransformTest {
 		ImageProcessor ip = new ByteProcessor(W, H, pixels);
 		DistanceTransform dt = new DistanceTransform(ip, Norm.L1);
 		float[][] dmap = dt.getDistanceMap();
-		ArrayTests.assertArrayEquals(distL1, dmap, 1e-6);
+		NumericTestUtils.assertArrayEquals(distL1, dmap, 1e-6);
 	}
 	
 	@Test
@@ -74,7 +74,7 @@ public class DistanceTransformTest {
 		ImageProcessor ip = new ByteProcessor(W, H, pixels);
 		DistanceTransform dt = new DistanceTransform(ip, Norm.L2);
 		float[][] dmap = dt.getDistanceMap();
-		ArrayTests.assertArrayEquals(distL2, dmap, 1e-3);
+		NumericTestUtils.assertArrayEquals(distL2, dmap, 1e-3);
 	}
 	
 }

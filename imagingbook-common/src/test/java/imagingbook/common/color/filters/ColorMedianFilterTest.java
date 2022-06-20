@@ -20,7 +20,7 @@ import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralTestImage;
-import imagingbook.testutils.ImageTests;
+import imagingbook.testutils.ImageTestUtils;
 
 public class ColorMedianFilterTest {
 	
@@ -40,7 +40,7 @@ public class ColorMedianFilterTest {
 		
 		ScalarMedianFilter filter = new ScalarMedianFilter(params);
 		filter.applyTo(ipA);
-		assertTrue(ImageTests.match(ipA, ipB, 1E-6));
+		assertTrue(ImageTestUtils.match(ipA, ipB, 1E-6));
 	}
 	
 	@Test
@@ -56,7 +56,7 @@ public class ColorMedianFilterTest {
 		
 		VectorMedianFilter filter = new VectorMedianFilter(params);
 		filter.applyTo(ipA);
-		assertTrue(ImageTests.match(ipA, ipB, 1E-6));
+		assertTrue(ImageTestUtils.match(ipA, ipB, 1E-6));
 	}
 	
 	@Test
@@ -74,7 +74,7 @@ public class ColorMedianFilterTest {
 		
 		VectorMedianFilterSharpen filter = new VectorMedianFilterSharpen(params);
 		filter.applyTo(ipA);
-		assertTrue(ImageTests.match(ipA, ipB, 1E-6));
+		assertTrue(ImageTestUtils.match(ipA, ipB, 1E-6));
 	}
 
 }

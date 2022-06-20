@@ -15,7 +15,7 @@ import org.junit.Test;
 import ij.process.ImageProcessor;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralTestImage;
-import imagingbook.testutils.ImageTests;
+import imagingbook.testutils.ImageTestUtils;
 
 public class GaussianFilterTest {
 	
@@ -37,7 +37,7 @@ public class GaussianFilterTest {
 		
 		//new GaussianFilter(ipA, SIGMA).apply();
 		new GaussianFilter(SIGMA).applyTo(ipA);
-		assertTrue(ImageTests.match(ipA, ipB, TOL));
+		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
 	
 	@Test
@@ -46,7 +46,7 @@ public class GaussianFilterTest {
 		ImageProcessor ipB = res2B.getImage().getProcessor();
 		
 		new GaussianFilter(SIGMA).applyTo(ipA);
-		assertTrue(ImageTests.match(ipA, ipB, TOL));
+		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
 	
 	// -----------------------------------------------------------------------
@@ -57,7 +57,7 @@ public class GaussianFilterTest {
 		ImageProcessor ipB = res1B.getImage().getProcessor();
 		
 		new GaussianFilter(SIGMA).applyTo(ipA);
-		assertTrue(ImageTests.match(ipA, ipB, TOL));
+		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
 
 	@Test
@@ -66,6 +66,6 @@ public class GaussianFilterTest {
 		ImageProcessor ipB = res2B.getImage().getProcessor();
 		
 		new GaussianFilter(SIGMA).applyTo(ipA);
-		assertTrue(ImageTests.match(ipA, ipB, TOL));
+		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
 }

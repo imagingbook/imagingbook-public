@@ -21,6 +21,7 @@ import imagingbook.common.geometry.fitting.circle.CircleSampler;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType;
 
 public class CircleFitAlgebraicTest {
+	
 	static double[][] ProblemPointSet1 = {
 			{110, 70}, 
 			{113, 70}, 

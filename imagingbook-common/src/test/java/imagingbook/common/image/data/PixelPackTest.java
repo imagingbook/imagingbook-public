@@ -15,7 +15,7 @@ import org.junit.Test;
 import ij.process.ImageProcessor;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralTestImage;
-import imagingbook.testutils.ImageTests;
+import imagingbook.testutils.ImageTestUtils;
 
 public class PixelPackTest {
 	
@@ -28,7 +28,7 @@ public class PixelPackTest {
     	PixelPack pack = new PixelPack(ip1);
     	ImageProcessor ip2 = ip1.duplicate();
     	pack.copyToImageProcessor(ip2);
-    	assertTrue(ImageTests.match(ip1, ip2, 1E-6));
+    	assertTrue(ImageTestUtils.match(ip1, ip2, 1E-6));
 	}
 	
 	@Test
@@ -37,7 +37,7 @@ public class PixelPackTest {
 		PixelPack pack = new PixelPack(ip1);
     	ImageProcessor ip2 = ip1.duplicate();
     	pack.copyToImageProcessor(ip2);
-    	assertTrue(ImageTests.match(ip1, ip2, 1E-6));
+    	assertTrue(ImageTestUtils.match(ip1, ip2, 1E-6));
 	}
 	
 	@Test
@@ -46,7 +46,7 @@ public class PixelPackTest {
 		PixelPack pack = new PixelPack(ip1);
     	ImageProcessor ip2 = ip1.duplicate();
     	pack.copyToImageProcessor(ip2);
-    	assertTrue(ImageTests.match(ip1, ip2, 1E-6));
+    	assertTrue(ImageTestUtils.match(ip1, ip2, 1E-6));
 	}
 	
 	@Test
@@ -55,7 +55,7 @@ public class PixelPackTest {
 		PixelPack pack = new PixelPack(ip1);
     	ImageProcessor ip2 = ip1.duplicate();
     	pack.copyToImageProcessor(ip2);
-    	assertTrue(ImageTests.match(ip1, ip2, 1E-6));
+    	assertTrue(ImageTestUtils.match(ip1, ip2, 1E-6));
 	}
 
 }

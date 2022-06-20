@@ -10,7 +10,7 @@ package imagingbook.common.math;
 
 import org.junit.Test;
 
-import imagingbook.testutils.ArrayTests;
+import imagingbook.testutils.NumericTestUtils;
 
 public class StatisticsTest extends Statistics {
 	
@@ -33,7 +33,7 @@ public class StatisticsTest extends Statistics {
 				{-470.4375, -53.1875, 278.1875}};
 		
 		double[][] cov = covarianceMatrix(samples, BIAS_CORRECT);
-		ArrayTests.assertArrayEquals(covExpected, cov, 1E-3);
+		NumericTestUtils.assertArrayEquals(covExpected, cov, 1E-3);
 	}
 	
 	@Test
@@ -46,7 +46,7 @@ public class StatisticsTest extends Statistics {
 				{-627.250, -70.917, 370.917}};
 		
 		double[][] cov = covarianceMatrix(samples, BIAS_CORRECT);
-		ArrayTests.assertArrayEquals(covExpected, cov, 1E-3);
+		NumericTestUtils.assertArrayEquals(covExpected, cov, 1E-3);
 	}
 
 }

@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
-import imagingbook.testutils.ImageTests;
+import imagingbook.testutils.ImageTestUtils;
 
 public class IjUtilsTest {
 
@@ -29,7 +29,7 @@ public class IjUtilsTest {
 		byte[][] A = IjUtils.toByteArray(bp1);
 		
 		ByteProcessor bp2 = IjUtils.toByteProcessor(A);
-		assertTrue(ImageTests.match(bp1, bp2));
+		assertTrue(ImageTestUtils.match(bp1, bp2));
 	}
 	
 	@Test
@@ -38,7 +38,7 @@ public class IjUtilsTest {
 		int[][] A = bp1.getIntArray();
 		
 		ByteProcessor bp2 = IjUtils.toByteProcessor(A);
-		assertTrue(ImageTests.match(bp1, bp2));
+		assertTrue(ImageTestUtils.match(bp1, bp2));
 	}
 	
 	@Test
@@ -47,7 +47,7 @@ public class IjUtilsTest {
 		float[][] A = IjUtils.toFloatArray(fp1);
 		
 		FloatProcessor fp2 = IjUtils.toFloatProcessor(A);
-		assertTrue(ImageTests.match(fp1, fp2, 1e-6));
+		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-6));
 	}
 	
 	// ----------------------------------------------------------------
