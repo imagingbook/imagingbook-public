@@ -17,9 +17,9 @@ import imagingbook.common.math.exception.MaxIterationsExceededException;
  * <p>
  * This is intended as a temporary substitute for Apache Commons Math's 
  * implementation ({@link org.apache.commons.math3.linear.EigenDecomposition},
- * which sometimes returns complex eigenvalues although solutions with real-only 
+ * whose symmetry tolerance appears to be too low and thus 
+ * returns complex eigenvalues for close-to-symmetric matrices although solutions with real
  * eigenvalues exist.
- *
  * </p>
  * <p>
  * If A is symmetric, then A = V*D*V' where the eigenvalue matrix D is diagonal
@@ -41,8 +41,8 @@ import imagingbook.common.math.exception.MaxIterationsExceededException;
  */
 public class EigenvalueDecomposition {
 	
-	private final static double SymmetryTolerance = 1e-6;
-	private final static double EPSILON = 1e-12;
+	public static final double DefaultSymmetryTolerance = 1e-12;
+	public static final double DefaultZeroTolerance = 1e-12;
 
 	private final int n;			// row and column dimension (square matrix).
 	private final boolean issymmetric;	// symmetry flag.
@@ -52,22 +52,32 @@ public class EigenvalueDecomposition {
 	
 	private double[][] H;			// array for internal storage of nonsymmetric Hessenberg form.
 	private double[] ort;			// working storage for nonsymmetric algorithm.
+	
+	private final double symmetryTol;
+	private final double zeroTol;
 
 	/**
 	 * Constructor. 
 	 * Checks for symmetry, then constructs the eigenvalue decomposition.
-	 *
-	 * @param M a square matrix
+	 * 
+	 * @param M matrix to be decomposed
+	 * @param symmetryTol absolute threshold for determining matrix symmetry
+	 * @param zeroTol absolute threshold for determining zero matrix entries
+	 * 
 	 * @throws MaxIterationsExceededException
 	 */
-	public EigenvalueDecomposition(final RealMatrix M) throws MaxIterationsExceededException {
+	public EigenvalueDecomposition(RealMatrix M, double symmetryTol, double zeroTol)
+			throws MaxIterationsExceededException {
+		
 		final double[][] A = M.getData();
+		this.symmetryTol = symmetryTol;
+		this.zeroTol = zeroTol;
 		this.n = M.getColumnDimension();
 		this.V = new double[n][n];
 		this.d = new double[n];
 		this.e = new double[n];
 		
-		this.issymmetric = MatrixUtils.isSymmetric(M, SymmetryTolerance);
+		this.issymmetric = Matrix.isSymmetric(M, this.symmetryTol);
 
 //		issymmetric = true;
 //		for (int j = 0; (j < n) & issymmetric; j++) {
@@ -98,7 +108,29 @@ public class EigenvalueDecomposition {
 		}
 	}
 	
+	/**
+	 * Constructor using default tolerance setting.
+	 * See also {@link #DefaultSymmetryTolerance},  {@link #DefaultZeroTolerance}.
+	 * 
+	 * @param M matrix to be decomposed
+	 */
+	public EigenvalueDecomposition(RealMatrix M) {
+		this(M, DefaultSymmetryTolerance, DefaultZeroTolerance);
+	}
+	
 	// ------------------------ Public Methods ------------------------
+	
+	/**
+	 * Returns true if the decomposed matrix is considered symmetric.
+	 * See also {@link #EigenvalueDecomposition(RealMatrix, double, double)},
+	 * {@link #DefaultSymmetryTolerance}.
+	 * 
+	 * @return true if symmetric, false otherwise
+	 *
+	 */
+	public boolean isSymmetric() {
+		return this.issymmetric;
+	}
 
 	/**
 	 * Return the matrix of eigenvectors, which are its column
@@ -170,7 +202,7 @@ public class EigenvalueDecomposition {
      */
     public boolean hasComplexEigenvalues() {
         for (int i = 0; i < e.length; i++) {
-            if (Math.abs(e[i]) > EPSILON) {
+            if (Math.abs(e[i]) > zeroTol) {
                 return true;
             }
         }
@@ -209,9 +241,9 @@ public class EigenvalueDecomposition {
 	public RealMatrix getD() {
 		RealMatrix D = MatrixUtils.createRealDiagonalMatrix(d);
 		for (int i = 0; i < e.length; i++) {
-			if (e[i] > EPSILON) {
+			if (e[i] > zeroTol) {
 				D.setEntry(i, i + 1, e[i]);
-			} else if (e[i] < -EPSILON) {
+			} else if (e[i] < -zeroTol) {
 				D.setEntry(i, i - 1, e[i]);
 			}
 		}
@@ -990,17 +1022,19 @@ public class EigenvalueDecomposition {
 		
 		// 2 examples where Apache's implementation fails:
 		
-		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]  
-			{{4455707.000000000, 16685.500000000, 17344.500000000, 142.000000000}, 
-			{-951005821.436619800, -3525507.007042253, -4059917.288732395, -33371.000000000}, 
-			{-997789920.901407700, -4059917.288732392, -3879630.838028166, -34689.000000000}, 
-			{70029373562.509700000, 297685588.322852130, 314485277.997519970, 2949430.845070420}});
+		// non-symmetric example:
+//		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]  
+//			{{4455707.000000000, 16685.500000000, 17344.500000000, 142.000000000}, 
+//			{-951005821.436619800, -3525507.007042253, -4059917.288732395, -33371.000000000}, 
+//			{-997789920.901407700, -4059917.288732392, -3879630.838028166, -34689.000000000}, 
+//			{70029373562.509700000, 297685588.322852130, 314485277.997519970, 2949430.845070420}});
 		
-//		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
-//			{{-635322.712034708800000, 4756.174679968795000, -265184.797553499500000, 20382.684252847448000}, 
-//			{4756.174679968796000, 560670.646574945200000, 0.190328961575323, -0.016193729208773}, 
-//			{-265184.797553499500000, 0.190328961575416, 74652.065423977560000, 1.470729864949432}, 
-//			{20382.684252847444000, -0.016193729208773, 1.470729864949432, 0.000035786438260}});
+		// symmetric example:
+		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
+			{{-635322.712034708800000, 4756.174679968795000, -265184.797553499500000, 20382.684252847448000}, 
+			{4756.174679968796000, 560670.646574945200000, 0.190328961575323, -0.016193729208773}, 
+			{-265184.797553499500000, 0.190328961575416, 74652.065423977560000, 1.470729864949432}, 
+			{20382.684252847444000, -0.016193729208773, 1.470729864949432, 0.000035786438260}});
 		
 		// singular matrix
 //		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
@@ -1018,6 +1052,7 @@ public class EigenvalueDecomposition {
 		PrintPrecision.set(9);
 		
 		System.out.println("det(M) = " + Matrix.determinant(M));
+		System.out.println("symmetric(M) = " + MatrixUtils.isSymmetric(M, 1e-12));
 		System.out.println("singular(M) = " + Matrix.isSingular(M));
 		
 		{

@@ -13,13 +13,14 @@ import org.junit.Test;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
 import imagingbook.common.math.testing.RandomMatrixGenerator;
+import imagingbook.testutils.NumericTestUtils;
 
 public class EigenvalueDecompositionTest {
 	
 	// two examples which Apache's implementation does not handle (finds complex eigenvals)
 	
 	@Test
-	public void test1A() {
+	public void test1A() {	// non-symmetric example
 		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]  
 				{{4455707.000000000, 16685.500000000, 17344.500000000, 142.000000000}, 
 				{-951005821.436619800, -3525507.007042253, -4059917.288732395, -33371.000000000}, 
@@ -32,7 +33,7 @@ public class EigenvalueDecompositionTest {
 	}
 	
 	@Test
-	public void test1B() {
+	public void test1B() {	// symmetric example
 		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]  
 			{{-635322.712034708800000, 4756.174679968795000, -265184.797553499500000, 20382.684252847448000}, 
 			{4756.174679968796000, 560670.646574945200000, 0.190328961575323, -0.016193729208773}, 
@@ -48,17 +49,35 @@ public class EigenvalueDecompositionTest {
 		EigenvalueDecomposition ed = new EigenvalueDecomposition(M);
 		assertFalse("", ed.hasComplexEigenvalues());
 		double[] evalsRe = ed.getRealEigenvalues();
-		assertArrayEquals(evalsExpected, evalsRe, 1E-6);
+		assertArrayEquals("", evalsExpected, evalsRe, 1E-6);
 	}
 	
 	// ---------------------------------------------------------------------
 	
 	@Test
-	public void test2() {
-		// only checks if no exception occurs (iteration count exceeded)
+	public void test2A() {
+		// only checks if no exception occurs (iteration count exceeded) on square, non-symmetric matrices
 		RandomMatrixGenerator rg = new RandomMatrixGenerator(17);
 		for (int i = 0; i < 1000; i++) {
 			RealMatrix M = MatrixUtils.createRealMatrix(rg.makeRandomSquareMatrix(6, 10));
+//			System.out.println("M = \n" + Matrix.toString(M));	
+			try {
+				EigenvalueDecomposition ed = new EigenvalueDecomposition(M);
+//				System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
+//				System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
+				assertNotNull("", ed.getRealEigenvalues());
+			} catch (MaxIterationsExceededException e) {
+				fail("max. number of iterations exceeded");
+			}
+		}
+	}
+	
+	@Test
+	public void test2B() {
+		// only checks if no exception occurs (iteration count exceeded) on non-square matrices
+		RandomMatrixGenerator rg = new RandomMatrixGenerator(17);
+		for (int i = 0; i < 1000; i++) {
+			RealMatrix M = MatrixUtils.createRealMatrix(rg.makeRandomMatrix(6, 4, 10));
 //			System.out.println("M = \n" + Matrix.toString(M));	
 			try {
 				EigenvalueDecomposition ed = new EigenvalueDecomposition(M);
@@ -193,6 +212,26 @@ public class EigenvalueDecompositionTest {
 		runEigenTest(M, false);
 	}
 	
+	@Test
+	public void testEigensolverNxNj() {
+		double[][] M = {
+				{4455707.000000000, 16685.500000000, 17344.500000000, 142.000000000}, 
+				{-951005821.436619800, -3525507.007042253, -4059917.288732395, -33371.000000000}, 
+				{-997789920.901407700, -4059917.288732392, -3879630.838028166, -34689.000000000}, 
+				{70029373562.509700000, 297685588.322852130, 314485277.997519970, 2949430.845070420}};
+		runEigenTest(M);
+	}
+	
+	@Test
+	public void testEigensolverNxNk() {
+		double[][] M = {
+				{-635322.712034708800000, 4756.174679968795000, -265184.797553499500000, 20382.684252847448000}, 
+				{4756.174679968796000, 560670.646574945200000, 0.190328961575323, -0.016193729208773}, 
+				{-265184.797553499500000, 0.190328961575416, 74652.065423977560000, 1.470729864949432}, 
+				{20382.684252847444000, -0.016193729208773, 1.470729864949432, 0.000035786438260}};
+		runEigenTest(M);
+	}
+	
 	// ---------------------------------------------------------
 	
 		private void runEigenTest(double[][] M) {
@@ -221,7 +260,13 @@ public class EigenvalueDecompositionTest {
 				double lambda = eigenvals[k];
 				double[] x = solver.getEigenvector(k).toArray();
 				// check: M * x_k = λ_k * x_k
-				assertArrayEquals(Matrix.multiply(M, x), Matrix.multiply(lambda, x), 1E-6);
+				double[] LH = Matrix.multiply(M, x);
+				double[] RH = Matrix.multiply(lambda, x);
+//				System.out.println("LH = " + Matrix.toString(LH));
+//				System.out.println("RH = " + Matrix.toString(RH));
+//				assertArrayEquals("eigenvalue " + k, 
+//						Matrix.multiply(M, x), Matrix.multiply(lambda, x), 1E-3);
+				NumericTestUtils.assertArrayEqualsRelative(Matrix.multiply(M, x), Matrix.multiply(lambda, x), 1E-6);
 			}
 		}
 	
