@@ -8,13 +8,16 @@
  *******************************************************************************/
 package imagingbook.testutils;
 
+import static org.junit.Assert.assertEquals;
+
+
 import org.junit.Assert;
 
-public abstract class ArrayTests {
+public abstract class NumericTestUtils {
 	
 	public static float TOLERANCE = 1E-6f;
 	
-	// utility methods ---------------------------------------------------------------
+	// utility methods for comparing 2D arrays ---------------------------------------------------------------
 	
 	public static void assertArrayEquals(double[][] expecteds, double[][] actuals) {
 		assertArrayEquals(expecteds, actuals, TOLERANCE);
@@ -37,7 +40,34 @@ public abstract class ArrayTests {
 			Assert.assertArrayEquals(expecteds[i], actuals[i], (float) delta);
 		}
 	}
+	
+	// comparison by relative magnitude -------------------------------------------------------
+	
+	public static void assertEqualsRelative(double expected, double actual, double relDelta) {
+		double maxAbs = Math.max(Math.abs(expected), Math.abs(actual));
+		// if magnitude of both values is less than relDelta we don't check any more:
+		if (maxAbs < relDelta)
+			return;
+		double delta = maxAbs * relDelta;
+//		System.out.format(Locale.US, "x=%f y=%f delta=%f\n", expected, actual, delta);
+		assertEquals(null, expected, actual, delta);
+	}
+        
+	
+	public static void assertArrayEqualsRelative(double[] expecteds, double[] actuals, double relDelta) {
+		Assert.assertEquals(expecteds.length, actuals.length);
+		for (int i = 0; i < expecteds.length; i++) {
+			assertEqualsRelative(expecteds[i], actuals[i], relDelta);
+		}
+	}
 
 	
-
+	public static void main(String[] args) {
+		assertEqualsRelative(1.0000000000, 1.0000000001, 1e-6);
+		assertEqualsRelative(100000000, 100000001, 1e-6);
+		
+		double[] a = {1.0000000000, 2, 3, 1000000};
+		double[] b = {1.0000000001, 2, 3, 1000001};
+		assertArrayEqualsRelative(a, b, 1e-6);
+	}
 }

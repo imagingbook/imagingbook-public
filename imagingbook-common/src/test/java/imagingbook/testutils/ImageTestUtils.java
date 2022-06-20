@@ -22,7 +22,7 @@ import ij.process.ShortProcessor;
 import imagingbook.common.ij.IjUtils;
 
 
-public class ImageTests {
+public class ImageTestUtils {
 	
 	public static float TOLERANCE = 1E-6f;
 	
