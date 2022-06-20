@@ -11,13 +11,13 @@ package imagingbook.common.geometry.fitting.circle.algebraic;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
+import imagingbook.common.math.EigenvalueDecomposition;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.util.SortMap;
 
@@ -131,7 +131,7 @@ public class CircleFitHyperSimple implements CircleFitAlgebraic {
 				 { 0.5, -2 * xm, -2 * ym, 4 * (sqr(xm) + sqr(ym)) - 2 * zm }});
 
 		RealMatrix CiD = Ci.multiply(D);
-		EigenDecomposition ed = new EigenDecomposition(CiD);
+		EigenvalueDecomposition ed = new EigenvalueDecomposition(CiD);
 		double[] evals = ed.getRealEigenvalues();
 		
 		int l = new SortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue	(1st is negative)
