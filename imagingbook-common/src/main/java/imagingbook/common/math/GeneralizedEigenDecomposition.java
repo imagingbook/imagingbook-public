@@ -17,6 +17,8 @@ import imagingbook.common.math.eispack.QZVEC;
  *
  */
 public class GeneralizedEigenDecomposition {
+	
+	static boolean VERBOSE = true;
 
 	// TODO: 
 	//		look at http://www.netlib.no/netlib/eispack/qzhes.f
@@ -75,12 +77,17 @@ public class GeneralizedEigenDecomposition {
 		boolean matz = true;
 
 		QZHES.qzhes(a, b, matz, Z);
+		if (VERBOSE) System.out.println("done with QZHES");
 		int ierr = QZIT.qzit(a, b, 0.0 , matz, Z);
+		if (VERBOSE) System.out.println("done with QZIZ");
 		if (ierr >= 0) {
 			throw new RuntimeException("limit of 30*n iterations was exhausted for eigenvalue " + ierr);
 		}
 		QZVAL.qzval(a, b, ar, ai, beta, matz, Z);
+		if (VERBOSE) System.out.println("done with QZVAL");
+
 		QZVEC.qzvec(a, b, ar, ai, beta, Z);
+		if (VERBOSE) System.out.println("done with QZVEC");
 		
 		//            System.out.println("Z = \n" + Matrix.toString(Z));
 
@@ -190,8 +197,7 @@ public class GeneralizedEigenDecomposition {
 	}
 
 	/// <summary>Returns the block diagonal eigenvalue matrix.</summary>
-	public double[][] DiagonalMatrix()
-	{
+	public RealMatrix getD() {
 		double[][] x = new double[n][n];
 
 		for (int i = 0; i < n; i++)
@@ -206,7 +212,7 @@ public class GeneralizedEigenDecomposition {
 				x[i][ i - 1] = ai[i] / beta[i];
 		}
 
-		return x;
+		return MatrixUtils.createRealMatrix(x);
 	}
 
 	// ----------------------------------------------------------
@@ -216,8 +222,18 @@ public class GeneralizedEigenDecomposition {
 
 		PrintPrecision.set(15);
 
+//		double[][] a = new double[][] {
+//			{ 3,  -1,  5},
+//			{ -1,  -2, 7},
+//			{ 5,  7,  0}};
+//
+//		double[][] b = new double[][] {
+//			{ 10, 2,  7},
+//			{  2, 12, 3},
+//			{  7, 3, 15}};
+			
 		double[][] a = new double[][] {
-			{ 3,  -1,  5},
+			{ 3,  -1,  4},
 			{ -1,  -2, 7},
 			{ 5,  7,  0}};
 
