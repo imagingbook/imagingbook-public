@@ -1,6 +1,8 @@
 package imagingbook.common.math.eispack;
 
 public abstract class QZVEC {
+	
+	public static boolean VERBOSE = true;
 
 	// EISPACK Routines, see http://www.netlib.org/eispack/
 
@@ -71,6 +73,7 @@ public abstract class QZVEC {
 		double epsb = b[n - 1][0];
 		int isw = 1;
 
+		if (VERBOSE) System.out.println("QZVEC: starting Loop A ***********************");
 		LoopA: for (nn = 0; nn < n; nn++) {
 
 			StateA stateA = StateA.Ainit;
@@ -99,6 +102,8 @@ public abstract class QZVEC {
 					alfm = alfr[m];
 					betm = beta[m];
 
+					if (VERBOSE) System.out.println("QZVEC: starting Loop B ***********************");
+					
 					// for i=en-1 step -1 until 1 do --
 					LoopB: for (ii = 0; ii <= na; ii++) {
 						
@@ -177,6 +182,7 @@ public abstract class QZVEC {
 							}	// end switch (stateB)	
 						}	// end StateLoopB    			
 					}	// L700: end of LoopB
+					if (VERBOSE) System.out.println("QZVEC: finished Loop B ***********************");
 					// end real vector
 					stateA = StateA.A800;
 					break;
@@ -199,11 +205,12 @@ public abstract class QZVEC {
 						break;
 					}
 
+					if (VERBOSE) System.out.println("QZVEC: starting Loop C, enm2 = " + enm2);
 					LoopC: for (ii = 0; ii < enm2; ii++) {
-						
+						if (VERBOSE) System.out.println("    ii = " + ii);
 						StateC stateC = StateC.Cinit;
 						StateLoopC: while (stateC != StateC.Cfinal) {
-							System.out.println("       StateLoopC: " + stateC);
+							if (VERBOSE) System.out.println("       StateLoopC: " + stateC);
 							switch (stateC) {
 							
 							case Cinit :
@@ -260,8 +267,7 @@ public abstract class QZVEC {
 								if (Math.abs(di) > Math.abs(dr)) {
 									stateC = StateC.C777;
 									break;
-								}
-								
+								}							
 								rr = di / dr;
 								d = dr + di * rr;
 								t1 = (tr + ti * rr) / d;
@@ -270,15 +276,17 @@ public abstract class QZVEC {
 								switch (isw) {	// go to (787,782), isw
 								case 1: 
 									stateC = StateC.C787;
-									break;
+									continue StateLoopC;
+									//break;
 								case 2:
 									stateC = StateC.C782;
-									break;
+									continue StateLoopC;
+									//break;
 								default: 
 									throw new RuntimeException("illegal state isw = " + isw);
 								}
-								stateC = StateC.C777;
-								break;
+								//stateC = StateC.C777;
+								//break;
 
 							case C777:
 								rr = dr / di;
@@ -288,15 +296,17 @@ public abstract class QZVEC {
 								switch (isw) {	// go to (787,782), isw
 								case 1: 
 									stateC = StateC.C787;
-									break;
+									continue StateLoopC;
+									//break;
 								case 2: 
 									stateC = StateC.C782;
-									break;
+									continue StateLoopC;
+									//break;
 								default: 
 									throw new RuntimeException("illegal state isw = " + isw);
 								}
-								stateC = StateC.C780;
-								break;
+								//stateC = StateC.C780;
+								//break;
 
 							case C780:
 								// complex 2-by-2 block 
@@ -350,6 +360,7 @@ public abstract class QZVEC {
 
 					}	// L790: end of LoopC:
 
+					if (VERBOSE) System.out.println("QZVEC: finished Loop C ***********************");
 					stateA = StateA.A795;
 					break;
 					// end complex vector
@@ -369,6 +380,7 @@ public abstract class QZVEC {
 
 			}	// end StateLoopA 
 		}	// L800: end LoopA
+		if (VERBOSE) System.out.println("QZVEC: finished Loop A ***********************");
 
 		// end back substitution. transform to original coordinate system.
 		for (jj = 0; jj < n; jj++) {
@@ -383,6 +395,7 @@ public abstract class QZVEC {
 			}
 		} 	// L880: end for (jj ...
 
+		if (VERBOSE) System.out.println("QZVEC: starting Loop D ***********************");
 		// normalize so that modulus of largest component of each vector is 1.
 		// (isw is 1 initially from before)
 		LoopD: for (j = 0; j < n; j++) {
@@ -450,6 +463,7 @@ public abstract class QZVEC {
 			}	// end StateLoopD
 
 		}	// L950: end LoopD
+		if (VERBOSE) System.out.println("QZVEC: finished Loop D ***********************");
 
 	}	// end of qzvec()
 
