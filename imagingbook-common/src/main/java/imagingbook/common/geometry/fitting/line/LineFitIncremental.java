@@ -21,9 +21,8 @@ import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.math.eigen.EigensolverNxN;
 import imagingbook.common.math.eigen.EigenvalueDecomposition;
-import imagingbook.common.math.eigen.RealEigensolver;
+import imagingbook.common.util.SortMap;
 
 public class LineFitIncremental implements LineFit {
 	
@@ -150,10 +149,11 @@ public class LineFitIncremental implements LineFit {
 				{sxy, syy} 
 		};
 		
-		RealEigensolver es = new EigensolverNxN(S);
-		double[] e = es.getEigenvector(1);
-//		EigenvalueDecomposition es = new EigenvalueDecomposition(MatrixUtils.createRealMatrix(S));
-//		double[] e = es.getEigenvector(1).toArray();
+//		RealEigensolver es = new EigensolverNxN(S);
+//		double[] e = es.getEigenvector(1);
+		EigenvalueDecomposition es = new EigenvalueDecomposition(MatrixUtils.createRealMatrix(S));
+		int k = SortMap.getNthSmallestIndex(es.getRealEigenvalues(), 0);
+		double[] e = es.getEigenvector(k).toArray();
 		
 		double A = e[0];
 		double B = e[1];

@@ -12,6 +12,7 @@ package imagingbook.common.math.eigen;
  * Interface for classes performing eigenvalue/eigenvector calculations.
  *
  */
+@Deprecated		// not used any longer
 public interface RealEigensolver {
 	
 	/**

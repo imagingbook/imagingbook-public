@@ -10,13 +10,16 @@ package imagingbook.common.geometry.fitting.line;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
+import org.apache.commons.math3.linear.MatrixUtils;
+
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.math.eigen.EigensolverNxN;
+import imagingbook.common.math.eigen.EigenvalueDecomposition;
 import imagingbook.common.math.eigen.RealEigensolver;
+import imagingbook.common.util.SortMap;
 
 public class OrthogonalLineFitEigen implements LineFit {
 	
@@ -68,8 +71,11 @@ public class OrthogonalLineFitEigen implements LineFit {
 		};
 		
 		
-		RealEigensolver es = new EigensolverNxN(S);
-		double[] e = es.getEigenvector(1);
+//		RealEigensolver es = new EigensolverNxN(S);
+		EigenvalueDecomposition es = new EigenvalueDecomposition(MatrixUtils.createRealMatrix(S));
+//		double[] e = es.getEigenvector(1);
+		int k = SortMap.getNthSmallestIndex(es.getRealEigenvalues(), 0);
+		double[] e = es.getEigenvector(k).toArray();
 		
 		double A = e[0];
 		double B = e[1];
@@ -80,8 +86,10 @@ public class OrthogonalLineFitEigen implements LineFit {
 			System.out.println("Sy = " + Sy);
 			System.out.println("xc = " + PntUtils.centroid(points));
 			System.out.println("S = \n" + Matrix.toString(S));
-			System.out.println("eVal = " + Matrix.toString(es.getEigenvalues()));
-			System.out.println("eVec = \n" + Matrix.toString(es.getEigenvectors()));
+//			System.out.println("eVal = " + Matrix.toString(es.getEigenvalues()));
+//			System.out.println("eVec = \n" + Matrix.toString(es.getEigenvectors()));
+			System.out.println("eVal = " + Matrix.toString(es.getRealEigenvalues()));
+			System.out.println("eVec = \n" + Matrix.toString(es.getV()));
 			System.out.println("A = \n" + A);
 			System.out.println("B = \n" + B);
 			System.out.println("C = \n" + C);
@@ -112,3 +120,24 @@ public class OrthogonalLineFitEigen implements LineFit {
 	// square error = 2.6645834350486606
 	// mean square error = 0.5329166870097322
 }
+
+/*
+Sx = 24.0
+Sy = 28.0
+xc = PntDouble[4.800, 5.600]
+S = 
+{{34.8000, -18.4000}, 
+{-18.4000, 13.2000}}
+eVal = {2.6646, 45.3354}
+eVec = 
+{{-0.4969, 0.8678}, 
+{-0.8678, -0.4969}}
+A = 
+-0.4968900437902618
+B = 
+-0.8678135078357052
+C = 
+7.244827854073206
+line = {0.4969, 0.8678, -7.2448}
+mean square error = 0.5329166870097322
+*/
