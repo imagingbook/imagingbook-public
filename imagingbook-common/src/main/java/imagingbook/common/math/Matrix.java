@@ -268,6 +268,25 @@ public abstract class Matrix {
 		return !solver.isNonSingular();
 	}
 	
+	
+	public static final double DefaultSymmetryTolerance = 1e-12;
+	
+	public static boolean isSymmetric(RealMatrix A, double relTolerance) {
+		return MatrixUtils.isSymmetric(A, relTolerance);
+	}
+	
+	public static boolean isSymmetric(RealMatrix A) {
+		return isSymmetric(A, DefaultSymmetryTolerance);
+	}
+	
+	public static boolean isSymmetric(double[][] A, double relTolerance) {
+		return MatrixUtils.isSymmetric(MatrixUtils.createRealMatrix(A), relTolerance);
+	}
+	
+	public static boolean isSymmetric(double[][] A) {
+		return isSymmetric(A, DefaultSymmetryTolerance);
+	}
+	
 	/**
 	 * Checks is the given square matrix is positive definite.
 	 * @param A a square matrix
