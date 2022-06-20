@@ -8,9 +8,11 @@
  *******************************************************************************/
 package imagingbook.common.math.testing;
 
+import java.util.Locale;
+
+import imagingbook.common.math.Eigensolver2x2;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.math.eigen.Eigensolver2x2;
 
 /**
  * This is a small demo program to show the use of the
@@ -28,6 +30,7 @@ public class Eigensolver2x2Demo {
 	public static void main(String[] args) {
 		
 		PrintPrecision.set(6);
+		Locale.setDefault(Locale.US);
 		
 		// specify a 2x2 matrix
 		double[][] M = {
@@ -37,7 +40,7 @@ public class Eigensolver2x2Demo {
 		System.out.format("M =\n%s\n\n", Matrix.toString(M));
 		
 		Eigensolver2x2 solver = new Eigensolver2x2(M);
-		double[]   eigenvalues  = solver.getEigenvalues();
+		double[]   eigenvalues  = solver.getRealEigenvalues();
 		//double[][] eigenvectors = solver.getEigenvectors();
 		
 		System.out.println("eigenvalues/eigenvectors: check if M*x = \u03BB*x \n");
@@ -45,7 +48,7 @@ public class Eigensolver2x2Demo {
 		for (int i = 1; i <= 2; i++) {
 			// get the eigen-pair <lambda_i, x_i>
 			double lambda = eigenvalues[i-1];
-			double[] x = solver.getEigenvector(i-1);
+			double[] x = solver.getEigenvector(i-1).toArray();
 			
 			System.out.format("\u03BB_%d  = %.6f\n", i, lambda);
 			System.out.format("x_%d = %s\n", i, Matrix.toString(x));
@@ -54,7 +57,7 @@ public class Eigensolver2x2Demo {
 			System.out.format("Check:   M * x_%d = %s\n\n", i, Matrix.toString(Matrix.multiply(M, x)));
 		}
 
-	}
+	} 
 }
 
 /*

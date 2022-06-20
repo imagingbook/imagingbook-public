@@ -8,10 +8,10 @@ import org.apache.commons.math3.linear.RealVector;
 
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.math.eigen.eispack.QZHES;
-import imagingbook.common.math.eigen.eispack.QZIT;
-import imagingbook.common.math.eigen.eispack.QZVAL;
-import imagingbook.common.math.eigen.eispack.QZVEC;
+import imagingbook.common.math.eispack.QZHES;
+import imagingbook.common.math.eispack.QZIT;
+import imagingbook.common.math.eispack.QZVAL;
+import imagingbook.common.math.eispack.QZVEC;
 
 /**
  * Ported from https://github.com/accord-net/framework/blob/development/Sources/Accord.Math/Decompositions/GeneralizedEigenvalueDecomposition.cs

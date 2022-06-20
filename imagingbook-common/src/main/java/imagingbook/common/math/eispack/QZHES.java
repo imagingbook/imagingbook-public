@@ -1,4 +1,4 @@
-package imagingbook.common.math.eigen.eispack;
+package imagingbook.common.math.eispack;
 
 public abstract class QZHES {
 	

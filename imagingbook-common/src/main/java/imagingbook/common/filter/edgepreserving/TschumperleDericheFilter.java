@@ -14,8 +14,8 @@ import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.filter.linear.LinearFilter;
 import imagingbook.common.image.data.PixelPack;
 import imagingbook.common.image.data.PixelPack.PixelSlice;
+import imagingbook.common.math.Eigensolver2x2;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.eigen.Eigensolver2x2;
 
 /**
  * This class implements the Anisotropic Diffusion filter proposed by David Tschumperle 
@@ -159,9 +159,9 @@ public class TschumperleDericheFilter extends GenericFilter implements Tschumper
 			throw new RuntimeException("undefined eigenvalues in " + 
 					this.getClass().getSimpleName());
 		}
-		double lambda0 = solver.getEigenvalue(0);
-		double lambda1 = solver.getEigenvalue(1);
-		double[] evec0 = solver.getEigenvector(0);
+		double lambda0 = solver.getRealEigenvalue(0);
+		double lambda1 = solver.getRealEigenvalue(1);
+		double[] evec0 = solver.getEigenvector(0).toArray();
 		Matrix.normalizeD(evec0);//  normalize(evec1);	
 		double arg = 1.0 + lambda0 + lambda1;	// 1 + lambda_1 + lambda_2
 		float c0 = (float) Math.pow(arg, -a0);

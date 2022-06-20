@@ -10,7 +10,7 @@ package imagingbook.common.mser;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.math.eigen.Eigensolver2x2;
+import imagingbook.common.math.Eigensolver2x2;
 import imagingbook.common.regions.BinaryRegion;
 
 /**
@@ -29,9 +29,9 @@ public abstract class Utils {
 		final double mu11 = moments[2];
 		
 		Eigensolver2x2 es = new Eigensolver2x2(mu20, mu11, mu11, mu02);
-		double ra = 2 * Math.sqrt(es.getEigenvalue(0) / n);	// correct (see Book p.238)
-		double rb = 2 * Math.sqrt(es.getEigenvalue(1) / n);
-		double[] x0 = es.getEigenvector(0);
+		double ra = 2 * Math.sqrt(es.getRealEigenvalue(0) / n);	// correct (see Book p.238)
+		double rb = 2 * Math.sqrt(es.getRealEigenvalue(1) / n);
+		double[] x0 = es.getEigenvector(0).toArray();
 		double theta = Math.atan2(x0[1], x0[0]);
 		return new GeometricEllipse(ra, rb, xc.getX(), xc.getY(), theta);
 	}

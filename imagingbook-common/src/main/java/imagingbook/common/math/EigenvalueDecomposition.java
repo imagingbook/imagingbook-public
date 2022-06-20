@@ -1,12 +1,10 @@
-package imagingbook.common.math.eigen;
+package imagingbook.common.math;
 
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
 
 /**

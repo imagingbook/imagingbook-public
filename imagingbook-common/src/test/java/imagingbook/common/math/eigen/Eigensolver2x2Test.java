@@ -14,13 +14,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
-import org.apache.commons.math3.linear.MatrixUtils;
 import org.junit.Test;
 
+import imagingbook.common.math.Eigensolver2x2;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.testing.RandomMatrixGenerator;
 
-public class Eigensolver2x2Test {
+public class Eigensolver2x2Test { 
 
 	@Test
 	public void testEigensolver2x2A() { // λ1 = 5.0000, λ2 = -1.0000 x1 = {4.000, -4.000}, x2 = {-2.000, -4.000}
@@ -107,14 +107,14 @@ public class Eigensolver2x2Test {
 		//int cnt = 0;
 		for (int i = 0; i < N; i++) {
 			double[][] A = rg.makeRandomSymmetricMatrix(2);
-			RealEigensolver solver = new Eigensolver2x2(A);
+			Eigensolver2x2 solver = new Eigensolver2x2(A);
 			if (solver.isReal()) {
 				//cnt++;
 				// check if A * x_i = lambda_i * x_i :
-				double[] eigenvals = solver.getEigenvalues();
+				double[] eigenvals = solver.getRealEigenvalues();
 				for (int k = 0; k < eigenvals.length; k++) {
-					double lambda = solver.getEigenvalue(k); //eigenvals[k];
-					double[] x = solver.getEigenvector(k);
+					double lambda = solver.getRealEigenvalue(k); //eigenvals[k];
+					double[] x = solver.getEigenvector(k).toArray();
 					assertArrayEquals(Matrix.multiply(A, x), Matrix.multiply(lambda, x), 1E-6);
 				}
 			}
@@ -129,7 +129,7 @@ public class Eigensolver2x2Test {
 	}
 
 	private void runTest(double[][] M, boolean shouldBeReal) {
-		RealEigensolver solver = new Eigensolver2x2(M);	
+		Eigensolver2x2 solver = new Eigensolver2x2(M);	
 		if (shouldBeReal) {
 			assertTrue(solver.isReal());
 		}
@@ -138,7 +138,7 @@ public class Eigensolver2x2Test {
 			return;
 		}
 		
-		double[] eigenvals = solver.getEigenvalues();
+		double[] eigenvals = solver.getRealEigenvalues();
 		
 		
 		for (int k = 0; k < eigenvals.length; k++) {
@@ -147,7 +147,7 @@ public class Eigensolver2x2Test {
 			}
 			//System.out.println("testing " + eigenvals[k]);
 			double lambda = eigenvals[k];
-			double[] x = solver.getEigenvector(k);
+			double[] x = solver.getEigenvector(k).toArray();
 			// check: M * x_k = λ_k * x_k
 			assertArrayEquals(Matrix.multiply(M, x), Matrix.multiply(lambda, x), 1E-6);
 		}

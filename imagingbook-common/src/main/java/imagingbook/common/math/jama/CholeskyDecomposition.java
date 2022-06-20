@@ -1,8 +1,11 @@
-package imagingbook.common.math;
+package imagingbook.common.math.jama;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.NonSquareMatrixException;
 import org.apache.commons.math3.linear.RealMatrix;
+
+import imagingbook.common.math.Arithmetic;
+import imagingbook.common.math.Matrix;
 
 /**
  * Cholesky Decomposition adapted from (back-factored to) JAMA implementation 

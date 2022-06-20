@@ -7,19 +7,24 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.math.eigen;
+package imagingbook.common.math;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import imagingbook.common.math.Matrix;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
 
 
 /**
+ * <p>
  * Implements an efficient, closed form algorithm for calculating the real 
  * eigenvalues (&lambda;) and eigenvectors (x) of a 2x2 matrix of the form
+ * </p>
  * <pre>
  *   | a b |
  *   | c d | </pre>
+ * <p>
  * There are typically (but not always) two pairs of real-valued 
  * solutions 
  * &lang;&lambda;<sub>1</sub>, x<sub>0</sub>&rang;,
@@ -32,24 +37,28 @@ import imagingbook.common.math.Matrix;
  * Non-real eigenvalues are not handled.
  * Clients should call method {@link #isReal()} to check if the 
  * eigenvalue calculation was successful.
+ * </p>
  * <p>
- * This implementation is inspired by Blinn, Jim: "Jim Blinn's Corner: 
- * Notation, Notation, Notation", Morgan Kaufmann (2002) -
- * Ch. 5 ("Consider the Lowly 2x2 Matrix").
+ * This implementation is inspired by Ch. 5 ("Consider the Lowly 2x2 Matrix") of [1].
  * Note that Blinn uses the notation 
  * x&middot;A = &lambda;&middot;x for the matrix-vector product (as common in computer graphics),
  * while this implementation uses 
  * A&middot;x = &lambda;&middot;x.
  * Thus x is treated as a column vector and matrix A is transposed (elements b/c are exchanged).
  * </p>
+ * <p>
  * This implementation is considerably (ca. factor 5) faster than the general solution
  * available in {@link EigensolverNxN} (based on Apache Commons Math) for 2x2 matrices.
+ * </p>
+ * <p>
+ * [1] Blinn, Jim: "Jim Blinn's Corner: Notation, Notation, Notation", Morgan Kaufmann (2002).
+ * </p>
  * 
  * @author W. Burger
  * @version 2022/02/18
  * 
  */
-public class Eigensolver2x2 implements RealEigensolver { // to check: http://www.akiti.ca/Eig2Solv.html
+public class Eigensolver2x2 { // to check: http://www.akiti.ca/Eig2Solv.html
 	
 	private final boolean isReal;
 	private final double[] eVals = {Double.NaN, Double.NaN};
@@ -78,11 +87,6 @@ public class Eigensolver2x2 implements RealEigensolver { // to check: http://www
 	 */
 	public Eigensolver2x2(double a, double b, double c, double d) {
 		isReal = solve(a, b, c, d);
-	}
-	
-	@Override
-	public int getSize() {
-		return 2;
 	}
 	
 	private boolean solve(final double a, final double b, final double c, final double d) {
@@ -159,30 +163,32 @@ public class Eigensolver2x2 implements RealEigensolver { // to check: http://www
 		return true;	// real eigenvalues
 	}
 	
-	@Override
 	public boolean isReal() {
 		return isReal;
 	}
 	
-	@Override
-	public double[] getEigenvalues() {
+	public boolean hasComplexEigenvalues() {
+		return !isReal;
+	}
+	
+	public double[] getRealEigenvalues() {
 		return eVals;
 	}
 	
-	@Override
-	public double getEigenvalue(int k) {
+	public double getRealEigenvalue(int k) {
 		return eVals[k];
 	}
 	
-
-	@Override
-	public double[][] getEigenvectors() { // TODO: needs to be tested!
-		return Matrix.transpose(eVecs);
+//	public double[][] getEigenvectors() { // TODO: needs to be tested!
+//		return Matrix.transpose(eVecs);
+//	}
+	
+	public RealMatrix getV() { // TODO: needs to be tested!
+		return MatrixUtils.createRealMatrix(Matrix.transpose(eVecs));
 	}
 	
-	@Override
-	public double[] getEigenvector(int k) {
-		return eVecs[k].clone();
+	public RealVector getEigenvector(int k) {	// TODO: needs to be tested! Note that eigenvalues are not sorted!
+		return MatrixUtils.createRealVector(eVecs[k]);
 	}
 	
 	@Override
@@ -202,7 +208,7 @@ public class Eigensolver2x2 implements RealEigensolver { // to check: http://www
 		
 		double[][] M = Matrix.multiply(0.1, Matrix.idMatrix(2)); 
 		Eigensolver2x2  es = new Eigensolver2x2(M);
-		System.out.println(Matrix.toString(es.getEigenvalues()));
+		System.out.println(Matrix.toString(es.getRealEigenvalues()));
 		System.out.println(Matrix.toString(es.getEigenvector(0)));
 		System.out.println(Matrix.toString(es.getEigenvector(1)));
 	}

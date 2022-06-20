@@ -18,7 +18,7 @@ import java.util.Map;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.math.eigen.Eigensolver2x2;
+import imagingbook.common.math.Eigensolver2x2;
 
 /**
  * <p>
@@ -167,9 +167,9 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 		final double mu11 = moments[2];
 		
 		Eigensolver2x2 solver = new Eigensolver2x2(mu20, mu11, mu11, mu02);
-		double ra = 2 * Math.sqrt(solver.getEigenvalue(0) / n);
-		double rb = 2 * Math.sqrt(solver.getEigenvalue(1) / n);
-		double[] e0 = solver.getEigenvector(0);
+		double ra = 2 * Math.sqrt(solver.getRealEigenvalue(0) / n);
+		double rb = 2 * Math.sqrt(solver.getRealEigenvalue(1) / n);
+		double[] e0 = solver.getEigenvector(0).toArray();
 		double theta = Math.atan2(e0[1], e0[0]);
 		return new GeometricEllipse(ra, rb, xc.getX(), xc.getY(), theta);
 	}
