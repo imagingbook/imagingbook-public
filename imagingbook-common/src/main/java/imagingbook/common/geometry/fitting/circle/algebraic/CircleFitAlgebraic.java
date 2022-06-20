@@ -101,4 +101,20 @@ public interface CircleFitAlgebraic {
 				 {-2*yr, 0, 1, 0 },
 				 {sqr(xr) + sqr(yr), -xr, -yr, 1}});
 	}
+	
+	/**
+	 * Normalize parameter vector q=(A,B,C,D) by enforcing 
+	 * the constraint B^2 + C^2 - 4 A D = 1.
+	 * 
+	 * @param q original parameter vector
+	 * @return normalized parameter vector
+	 */
+	public default double[] normalizeP(double[] q) {
+		final double A = q[0];
+		final double B = q[1];
+		final double C = q[2];
+		final double D = q[3];
+		double s  = Math.sqrt(sqr(B) + sqr(C) - 4 * A * D);
+		return new double[] {A/s, B/s, C/s, D/s};
+	}
 }
