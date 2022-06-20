@@ -44,6 +44,8 @@ import imagingbook.common.math.Matrix;
  * </p>
  * 
  * @author WB
+ * @see CircleFitKasaA
+ * @see CircleFitKasaC
  *
  */
 public class CircleFitKasaB implements CircleFitAlgebraic {

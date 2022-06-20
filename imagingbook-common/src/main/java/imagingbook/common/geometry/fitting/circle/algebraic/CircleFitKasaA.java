@@ -17,18 +17,21 @@ import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 
 /**
+ * <p>
  * This is an implementation of the algebraic circle fitting algorithm described in [1].
  * This algorithm is among the oldest and simplest algebraic circle fitting methods.
  * This implementation closely follows the original paper. The only difference is the
  * use of a numerical solver (as compared to using the inverse of matrix M) for
  * solving the 3x3 linear system.
+ * </p>
+ * <p>
  * Its performance is sufficient if points are sampled over a large part of the circle.
  * It shows significant bias (estimated circles are too small) when sample points are 
  * confined to a small segment of the circle. It fails when matrix M becomes singular.
  * Fits to exactly 3 (non-collinear) points are handled properly.
  * Data centering is used to improve numerical stability (alternatively, a reference
  * point can be specified).
- * 
+ * </p>
  * <p>
  * [1] I. Kåsa. "A circle fitting procedure and its error analysis",
  * <em>IEEE Transactions on Instrumentation and Measurement</em> <strong>25</strong>(1), 
