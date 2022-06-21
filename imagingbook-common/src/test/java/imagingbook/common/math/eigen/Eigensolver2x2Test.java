@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import imagingbook.common.math.Eigensolver2x2;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.testing.RandomMatrixGenerator;
+import imagingbook.common.math.RandomMatrixGenerator;
 
 public class Eigensolver2x2Test { 
 

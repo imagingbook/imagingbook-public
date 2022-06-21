@@ -12,8 +12,8 @@ import org.junit.Test;
 
 import imagingbook.common.math.EigenvalueDecomposition;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.RandomMatrixGenerator;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
-import imagingbook.common.math.testing.RandomMatrixGenerator;
 import imagingbook.testutils.NumericTestUtils;
 
 public class EigenvalueDecompositionTest {
