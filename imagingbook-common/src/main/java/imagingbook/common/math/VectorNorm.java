@@ -59,9 +59,9 @@ public abstract class VectorNorm {
 		};
 	}
 
-	static String wrongLengthMessage = "feature vectors must be of same length";
+	private static String wrongLengthMessage = "feature vectors must be of same length";
 
-	// ------------------------------------------------------------------------------
+	//  concrete classes -----------------------------------------------
 
 	public static class L1 extends VectorNorm {
 
@@ -78,7 +78,7 @@ public abstract class VectorNorm {
 			for (int i = 0; i < X.length; i++) {
 				sum = sum + Math.abs(X[i]);
 			}
-			return (double) sum;
+			return sum;
 		}
 
 		public double distance(final double[] X, final double[] Y) {
