@@ -62,6 +62,10 @@ public class MahalanobisDistance { // extends VectorNorm
 	 *      samples[k][i] represents the i-th component of the k-th sample
 	 * @param minDiagVal the minimum diagonal value used to condition the
 	 *      covariance matrix to avoid singularity (see {@link #DefaultMinimumDiagonalValue})
+	 * @param relSymThr
+	 * 		maximum deviation from symmetry (see {@link #DefaultRelativeSymmetryThreshold})
+	 * @param absPosThr
+	 * 		maximum deviation from positivity (see {@link #DefaultAbsolutePositivityThreshold})
 	 */
 	public MahalanobisDistance(double[][] samples, double minDiagVal, double relSymThr, double absPosThr) {
 		if (samples.length < 2)

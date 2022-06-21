@@ -48,7 +48,7 @@ import org.apache.commons.math3.linear.RealVector;
  * </p>
  * <p>
  * This implementation is considerably (ca. factor 5) faster than the general solution
- * available in {@link EigensolverNxN} (based on Apache Commons Math) for 2x2 matrices.
+ * available in {@link EigenvalueDecomposition} (based on Apache Commons Math) for 2x2 matrices.
  * </p>
  * <p>
  * [1] Blinn, Jim: "Jim Blinn's Corner: Notation, Notation, Notation", Morgan Kaufmann (2002).

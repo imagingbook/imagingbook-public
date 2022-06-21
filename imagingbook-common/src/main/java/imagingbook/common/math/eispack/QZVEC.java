@@ -1,6 +1,6 @@
 package imagingbook.common.math.eispack;
 
-public abstract class QZVEC {
+abstract class QZVEC {
 	
 	public static boolean VERBOSE = false;
 
@@ -22,6 +22,7 @@ public abstract class QZVEC {
 	 * </p>
 	 * <p>
 	 * On output:
+	 * </p>
 	 * <ul>
 	 * <li><strong>a</strong> is unaltered. Its subdiagonal elements provide
 	 * information about the storage of the complex eigenvectors.</li>
@@ -41,7 +42,6 @@ public abstract class QZVEC {
 	 * eigenvector is normalized so that the modulus of its largest component is
 	 * 1.0.</li>
 	 * </ul>
-	 * </p>
 	 * 
 	 * @param a    contains a real upper quasi-triangular matrix.
 	 * @param b    contains a real upper triangular matrix. In addition, location

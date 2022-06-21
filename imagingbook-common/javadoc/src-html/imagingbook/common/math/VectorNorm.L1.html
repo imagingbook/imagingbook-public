@@ -69,9 +69,9 @@
 <span class="sourceLineNo">059</span><a id="line.59">                };</a>
 <span class="sourceLineNo">060</span><a id="line.60">        }</a>
 <span class="sourceLineNo">061</span><a id="line.61"></a>
-<span class="sourceLineNo">062</span><a id="line.62">        static String wrongLengthMessage = "feature vectors must be of same length";</a>
+<span class="sourceLineNo">062</span><a id="line.62">        private static String wrongLengthMessage = "feature vectors must be of same length";</a>
 <span class="sourceLineNo">063</span><a id="line.63"></a>
-<span class="sourceLineNo">064</span><a id="line.64">        // ------------------------------------------------------------------------------</a>
+<span class="sourceLineNo">064</span><a id="line.64">        //  concrete classes -----------------------------------------------</a>
 <span class="sourceLineNo">065</span><a id="line.65"></a>
 <span class="sourceLineNo">066</span><a id="line.66">        public static class L1 extends VectorNorm {</a>
 <span class="sourceLineNo">067</span><a id="line.67"></a>
@@ -88,7 +88,7 @@
 <span class="sourceLineNo">078</span><a id="line.78">                        for (int i = 0; i &lt; X.length; i++) {</a>
 <span class="sourceLineNo">079</span><a id="line.79">                                sum = sum + Math.abs(X[i]);</a>
 <span class="sourceLineNo">080</span><a id="line.80">                        }</a>
-<span class="sourceLineNo">081</span><a id="line.81">                        return (double) sum;</a>
+<span class="sourceLineNo">081</span><a id="line.81">                        return sum;</a>
 <span class="sourceLineNo">082</span><a id="line.82">                }</a>
 <span class="sourceLineNo">083</span><a id="line.83"></a>
 <span class="sourceLineNo">084</span><a id="line.84">                public double distance(final double[] X, final double[] Y) {</a>

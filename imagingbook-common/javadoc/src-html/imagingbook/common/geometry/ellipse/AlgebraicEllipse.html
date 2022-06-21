@@ -61,160 +61,161 @@
 <span class="sourceLineNo">051</span><a id="line.51">                if (d &gt; -Arithmetic.EPSILON_DOUBLE) {   // discriminant (d) must be negative!</a>
 <span class="sourceLineNo">052</span><a id="line.52">                        throw new IllegalArgumentException("illegal ellipse parameters, non-negative discriminant " + d);</a>
 <span class="sourceLineNo">053</span><a id="line.53">                }</a>
-<span class="sourceLineNo">054</span><a id="line.54">                // d &lt; 0, normalize to B^2 - 4 A C = -1</a>
-<span class="sourceLineNo">055</span><a id="line.55">                double s = 1 / sqrt(-d);</a>
-<span class="sourceLineNo">056</span><a id="line.56">                if (A &gt;= 0) {</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        this.A = A * s;</a>
-<span class="sourceLineNo">058</span><a id="line.58">                        this.B = B * s;</a>
-<span class="sourceLineNo">059</span><a id="line.59">                        this.C = C * s;</a>
-<span class="sourceLineNo">060</span><a id="line.60">                        this.D = D * s;</a>
-<span class="sourceLineNo">061</span><a id="line.61">                        this.E = E * s;</a>
-<span class="sourceLineNo">062</span><a id="line.62">                        this.F = F * s;</a>
-<span class="sourceLineNo">063</span><a id="line.63">                }</a>
-<span class="sourceLineNo">064</span><a id="line.64">                else {</a>
-<span class="sourceLineNo">065</span><a id="line.65">                        this.A = -A * s;</a>
-<span class="sourceLineNo">066</span><a id="line.66">                        this.B = -B * s;</a>
-<span class="sourceLineNo">067</span><a id="line.67">                        this.C = -C * s;</a>
-<span class="sourceLineNo">068</span><a id="line.68">                        this.D = -D * s;</a>
-<span class="sourceLineNo">069</span><a id="line.69">                        this.E = -E * s;</a>
-<span class="sourceLineNo">070</span><a id="line.70">                        this.F = -F * s;</a>
-<span class="sourceLineNo">071</span><a id="line.71">                }</a>
-<span class="sourceLineNo">072</span><a id="line.72">        }</a>
-<span class="sourceLineNo">073</span><a id="line.73">        </a>
-<span class="sourceLineNo">074</span><a id="line.74">        /**</a>
-<span class="sourceLineNo">075</span><a id="line.75">         * Constructor. Creates a {@link AlgebraicEllipse} instance from the</a>
-<span class="sourceLineNo">076</span><a id="line.76">         * specified parameter vector [A,...,F].</a>
-<span class="sourceLineNo">077</span><a id="line.77">         * </a>
-<span class="sourceLineNo">078</span><a id="line.78">         * @param p algebraic ellipse parameters</a>
-<span class="sourceLineNo">079</span><a id="line.79">         */</a>
-<span class="sourceLineNo">080</span><a id="line.80">        public AlgebraicEllipse(double[] p) {</a>
-<span class="sourceLineNo">081</span><a id="line.81">                this(p[0], p[1], p[2], p[3], p[4], p[5]);</a>
-<span class="sourceLineNo">082</span><a id="line.82">        }</a>
-<span class="sourceLineNo">083</span><a id="line.83">        </a>
-<span class="sourceLineNo">084</span><a id="line.84">        /**</a>
-<span class="sourceLineNo">085</span><a id="line.85">         * Constructor. Creates a {@link AlgebraicEllipse} instance from</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * a {@link GeometricEllipse}.</a>
-<span class="sourceLineNo">087</span><a id="line.87">         * </a>
-<span class="sourceLineNo">088</span><a id="line.88">         * @param ge a {@link GeometricEllipse}</a>
-<span class="sourceLineNo">089</span><a id="line.89">         */</a>
-<span class="sourceLineNo">090</span><a id="line.90">        public AlgebraicEllipse(GeometricEllipse ge) {</a>
-<span class="sourceLineNo">091</span><a id="line.91">                this(getAlgebraicEllipseParameters(ge));</a>
-<span class="sourceLineNo">092</span><a id="line.92">        }</a>
-<span class="sourceLineNo">093</span><a id="line.93">        </a>
-<span class="sourceLineNo">094</span><a id="line.94">        private static double[] getAlgebraicEllipseParameters(GeometricEllipse ge) {</a>
-<span class="sourceLineNo">095</span><a id="line.95">                double ra = ge.ra;</a>
-<span class="sourceLineNo">096</span><a id="line.96">                double rb = ge.rb;</a>
-<span class="sourceLineNo">097</span><a id="line.97">                double xc = ge.xc;</a>
-<span class="sourceLineNo">098</span><a id="line.98">                double yc = ge.yc;</a>
-<span class="sourceLineNo">099</span><a id="line.99">                double theta = ge.theta;</a>
-<span class="sourceLineNo">100</span><a id="line.100">                </a>
-<span class="sourceLineNo">101</span><a id="line.101">                double cosT = cos(theta);</a>
-<span class="sourceLineNo">102</span><a id="line.102">                double sinT = sin(theta);</a>
-<span class="sourceLineNo">103</span><a id="line.103">                </a>
-<span class="sourceLineNo">104</span><a id="line.104">                double A = sqr(ra * sinT) + sqr(rb * cosT);</a>
-<span class="sourceLineNo">105</span><a id="line.105">                double B = 2 * (sqr(rb) - sqr(ra)) * sinT * cosT;</a>
-<span class="sourceLineNo">106</span><a id="line.106">                double C = sqr(ra * cosT) + sqr(rb * sinT);</a>
-<span class="sourceLineNo">107</span><a id="line.107">                double D = -2 * A * xc - B * yc;</a>
-<span class="sourceLineNo">108</span><a id="line.108">                double E = -2 * C * yc - B * xc;</a>
-<span class="sourceLineNo">109</span><a id="line.109">                double F = A * sqr(xc) + B * xc * yc + C * sqr(yc) - sqr(ra * rb);      </a>
-<span class="sourceLineNo">110</span><a id="line.110">                return new double[] {A, B, C, D, E, F};</a>
-<span class="sourceLineNo">111</span><a id="line.111">        }</a>
-<span class="sourceLineNo">112</span><a id="line.112">        </a>
-<span class="sourceLineNo">113</span><a id="line.113">        /**</a>
-<span class="sourceLineNo">114</span><a id="line.114">         * Return a vector of parameters for this ellipse.</a>
-<span class="sourceLineNo">115</span><a id="line.115">         * The length of the vector and the meaning of the parameters depends</a>
-<span class="sourceLineNo">116</span><a id="line.116">         * on the concrete ellipse type.</a>
-<span class="sourceLineNo">117</span><a id="line.117">         * </a>
-<span class="sourceLineNo">118</span><a id="line.118">         * @return a vector of parameters [A, B, C, D, E, F]</a>
-<span class="sourceLineNo">119</span><a id="line.119">         */</a>
-<span class="sourceLineNo">120</span><a id="line.120">        public double[] getParameters() {</a>
-<span class="sourceLineNo">121</span><a id="line.121">                return new double[] {A, B, C, D, E, F};</a>
-<span class="sourceLineNo">122</span><a id="line.122">        }</a>
-<span class="sourceLineNo">123</span><a id="line.123">        </a>
-<span class="sourceLineNo">124</span><a id="line.124">        public double getAlgebraicDistance(Pnt2d p) {</a>
-<span class="sourceLineNo">125</span><a id="line.125">                double x = p.getX();</a>
-<span class="sourceLineNo">126</span><a id="line.126">                double y = p.getY();</a>
-<span class="sourceLineNo">127</span><a id="line.127">                return A * sqr(x) + B * x * y + C * sqr(y) + D * x + E * y + F;</a>
-<span class="sourceLineNo">128</span><a id="line.128">        }</a>
-<span class="sourceLineNo">129</span><a id="line.129">        </a>
-<span class="sourceLineNo">130</span><a id="line.130">        public double getSampsonDistance(Pnt2d p) {</a>
-<span class="sourceLineNo">131</span><a id="line.131">                double x = p.getX();</a>
-<span class="sourceLineNo">132</span><a id="line.132">                double y = p.getY();</a>
-<span class="sourceLineNo">133</span><a id="line.133">                double ad = A * sqr(x) + B * x * y + C * sqr(y) + D * x + E * y + F;    // algebraic distance</a>
-<span class="sourceLineNo">134</span><a id="line.134">                double nGrad = Math.hypot(2*A*x + B*y + D, 2*C*y + B*x + E);</a>
-<span class="sourceLineNo">135</span><a id="line.135">                return ad / nGrad;</a>
-<span class="sourceLineNo">136</span><a id="line.136">        }</a>
-<span class="sourceLineNo">137</span><a id="line.137">        </a>
-<span class="sourceLineNo">138</span><a id="line.138">        public double getGoncharovaDistance(Pnt2d p) {</a>
-<span class="sourceLineNo">139</span><a id="line.139">                double x = p.getX();</a>
-<span class="sourceLineNo">140</span><a id="line.140">                double y = p.getY();</a>
-<span class="sourceLineNo">141</span><a id="line.141">                double G = A * sqr(x) + B * x * y + C * sqr(y) + D * x + E * y + F;     // algebraic distance</a>
-<span class="sourceLineNo">142</span><a id="line.142">                </a>
-<span class="sourceLineNo">143</span><a id="line.143">                double[] gV = {2*A*x + B*y + D, 2*C*y + B*x + E};</a>
-<span class="sourceLineNo">144</span><a id="line.144">                double ngV = normL2(gV);</a>
-<span class="sourceLineNo">145</span><a id="line.145">                double sd = G / ngV;</a>
-<span class="sourceLineNo">146</span><a id="line.146">                </a>
-<span class="sourceLineNo">147</span><a id="line.147">                double[][] H = {{ 2*A, B }, { B, 2*C }};</a>
-<span class="sourceLineNo">148</span><a id="line.148">                double gd = sd * (1 + G * Matrix.dotProduct(multiply(gV, H), gV) / (2 * Math.pow(ngV, 4)));</a>
-<span class="sourceLineNo">149</span><a id="line.149">                return gd;</a>
-<span class="sourceLineNo">150</span><a id="line.150">        }</a>
-<span class="sourceLineNo">151</span><a id="line.151">        </a>
-<span class="sourceLineNo">152</span><a id="line.152">        // --------------------------------------------------------------------------</a>
-<span class="sourceLineNo">153</span><a id="line.153">        </a>
-<span class="sourceLineNo">154</span><a id="line.154">        @Override</a>
-<span class="sourceLineNo">155</span><a id="line.155">        public boolean equals(Object other) {</a>
-<span class="sourceLineNo">156</span><a id="line.156">                if (this == other) {</a>
-<span class="sourceLineNo">157</span><a id="line.157">                        return true;</a>
-<span class="sourceLineNo">158</span><a id="line.158">                }</a>
-<span class="sourceLineNo">159</span><a id="line.159">                if (!(other instanceof AlgebraicEllipse)) {</a>
-<span class="sourceLineNo">160</span><a id="line.160">            return false;</a>
-<span class="sourceLineNo">161</span><a id="line.161">        }</a>
-<span class="sourceLineNo">162</span><a id="line.162">                return this.equals((AlgebraicEllipse) other, Arithmetic.EPSILON_DOUBLE);</a>
-<span class="sourceLineNo">163</span><a id="line.163">        }</a>
-<span class="sourceLineNo">164</span><a id="line.164">        </a>
-<span class="sourceLineNo">165</span><a id="line.165">        public boolean equals(AlgebraicEllipse other, double tolerance) {</a>
-<span class="sourceLineNo">166</span><a id="line.166">                return </a>
-<span class="sourceLineNo">167</span><a id="line.167">                                Arithmetic.equals(A, other.A, tolerance) &amp;&amp;</a>
-<span class="sourceLineNo">168</span><a id="line.168">                                Arithmetic.equals(B, other.B, tolerance) &amp;&amp;</a>
-<span class="sourceLineNo">169</span><a id="line.169">                                Arithmetic.equals(C, other.C, tolerance) &amp;&amp;</a>
-<span class="sourceLineNo">170</span><a id="line.170">                                Arithmetic.equals(D, other.D, tolerance) &amp;&amp;</a>
-<span class="sourceLineNo">171</span><a id="line.171">                                Arithmetic.equals(E, other.E, tolerance) &amp;&amp;</a>
-<span class="sourceLineNo">172</span><a id="line.172">                                Arithmetic.equals(F, other.F, tolerance) ;</a>
-<span class="sourceLineNo">173</span><a id="line.173">        }</a>
-<span class="sourceLineNo">174</span><a id="line.174">        </a>
-<span class="sourceLineNo">175</span><a id="line.175">        // --------------------------------------------------------------------------</a>
-<span class="sourceLineNo">176</span><a id="line.176">        </a>
-<span class="sourceLineNo">177</span><a id="line.177">        public AlgebraicEllipse duplicate() {</a>
-<span class="sourceLineNo">178</span><a id="line.178">                return new AlgebraicEllipse(this.getParameters());</a>
-<span class="sourceLineNo">179</span><a id="line.179">        }</a>
-<span class="sourceLineNo">180</span><a id="line.180">        </a>
-<span class="sourceLineNo">181</span><a id="line.181">        @Override</a>
-<span class="sourceLineNo">182</span><a id="line.182">        public String toString() {</a>
-<span class="sourceLineNo">183</span><a id="line.183">                return String.format(Locale.US, "%s %s", </a>
-<span class="sourceLineNo">184</span><a id="line.184">                                this.getClass().getSimpleName(), </a>
-<span class="sourceLineNo">185</span><a id="line.185">                                Matrix.toString(getParameters()));</a>
-<span class="sourceLineNo">186</span><a id="line.186">        }</a>
-<span class="sourceLineNo">187</span><a id="line.187">        </a>
-<span class="sourceLineNo">188</span><a id="line.188">        // --------------------------------------------------------------------------</a>
-<span class="sourceLineNo">189</span><a id="line.189">        </a>
-<span class="sourceLineNo">190</span><a id="line.190">//      public static void main(String[] args) {</a>
-<span class="sourceLineNo">191</span><a id="line.191">//              PrintPrecision.set(9);</a>
-<span class="sourceLineNo">192</span><a id="line.192">//              GeometricEllipse eg  = new GeometricEllipse(150, 50, 150, 150, 0.5);</a>
-<span class="sourceLineNo">193</span><a id="line.193">//              System.out.println("eg = " + eg);</a>
-<span class="sourceLineNo">194</span><a id="line.194">//              AlgebraicEllipse ea = new AlgebraicEllipse(eg);</a>
-<span class="sourceLineNo">195</span><a id="line.195">//              System.out.println("ea = " + ea);</a>
-<span class="sourceLineNo">196</span><a id="line.196">//              </a>
-<span class="sourceLineNo">197</span><a id="line.197">//              Pnt2d p = Pnt2d.from(300, 300);</a>
-<span class="sourceLineNo">198</span><a id="line.198">//              System.out.println("p  = " + p);</a>
-<span class="sourceLineNo">199</span><a id="line.199">//              Pnt2d pc = eg.getClosestPoint(p);</a>
-<span class="sourceLineNo">200</span><a id="line.200">//              System.out.println("pc = " + pc);</a>
-<span class="sourceLineNo">201</span><a id="line.201">//              </a>
-<span class="sourceLineNo">202</span><a id="line.202">//              System.out.println("Sampson dist(p) = " + ea.getSampsonDistance(p));</a>
-<span class="sourceLineNo">203</span><a id="line.203">//              System.out.println("Gonch dist(p) = " + ea.getGoncharovaDistance(p));</a>
-<span class="sourceLineNo">204</span><a id="line.204">//              </a>
-<span class="sourceLineNo">205</span><a id="line.205">//      }</a>
-<span class="sourceLineNo">206</span><a id="line.206"></a>
-<span class="sourceLineNo">207</span><a id="line.207">}</a>
+<span class="sourceLineNo">054</span><a id="line.54">                // d &lt; 0</a>
+<span class="sourceLineNo">055</span><a id="line.55">                // normalize to B^2 - 4 A C = -1</a>
+<span class="sourceLineNo">056</span><a id="line.56">                double s = 1 / sqrt(-d);</a>
+<span class="sourceLineNo">057</span><a id="line.57">                if (A &gt;= 0) {</a>
+<span class="sourceLineNo">058</span><a id="line.58">                        this.A = A * s;</a>
+<span class="sourceLineNo">059</span><a id="line.59">                        this.B = B * s;</a>
+<span class="sourceLineNo">060</span><a id="line.60">                        this.C = C * s;</a>
+<span class="sourceLineNo">061</span><a id="line.61">                        this.D = D * s;</a>
+<span class="sourceLineNo">062</span><a id="line.62">                        this.E = E * s;</a>
+<span class="sourceLineNo">063</span><a id="line.63">                        this.F = F * s;</a>
+<span class="sourceLineNo">064</span><a id="line.64">                }</a>
+<span class="sourceLineNo">065</span><a id="line.65">                else {</a>
+<span class="sourceLineNo">066</span><a id="line.66">                        this.A = -A * s;</a>
+<span class="sourceLineNo">067</span><a id="line.67">                        this.B = -B * s;</a>
+<span class="sourceLineNo">068</span><a id="line.68">                        this.C = -C * s;</a>
+<span class="sourceLineNo">069</span><a id="line.69">                        this.D = -D * s;</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        this.E = -E * s;</a>
+<span class="sourceLineNo">071</span><a id="line.71">                        this.F = -F * s;</a>
+<span class="sourceLineNo">072</span><a id="line.72">                }</a>
+<span class="sourceLineNo">073</span><a id="line.73">        }</a>
+<span class="sourceLineNo">074</span><a id="line.74">        </a>
+<span class="sourceLineNo">075</span><a id="line.75">        /**</a>
+<span class="sourceLineNo">076</span><a id="line.76">         * Constructor. Creates a {@link AlgebraicEllipse} instance from the</a>
+<span class="sourceLineNo">077</span><a id="line.77">         * specified parameter vector [A,...,F].</a>
+<span class="sourceLineNo">078</span><a id="line.78">         * </a>
+<span class="sourceLineNo">079</span><a id="line.79">         * @param p algebraic ellipse parameters</a>
+<span class="sourceLineNo">080</span><a id="line.80">         */</a>
+<span class="sourceLineNo">081</span><a id="line.81">        public AlgebraicEllipse(double[] p) {</a>
+<span class="sourceLineNo">082</span><a id="line.82">                this(p[0], p[1], p[2], p[3], p[4], p[5]);</a>
+<span class="sourceLineNo">083</span><a id="line.83">        }</a>
+<span class="sourceLineNo">084</span><a id="line.84">        </a>
+<span class="sourceLineNo">085</span><a id="line.85">        /**</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * Constructor. Creates a {@link AlgebraicEllipse} instance from</a>
+<span class="sourceLineNo">087</span><a id="line.87">         * a {@link GeometricEllipse}.</a>
+<span class="sourceLineNo">088</span><a id="line.88">         * </a>
+<span class="sourceLineNo">089</span><a id="line.89">         * @param ge a {@link GeometricEllipse}</a>
+<span class="sourceLineNo">090</span><a id="line.90">         */</a>
+<span class="sourceLineNo">091</span><a id="line.91">        public AlgebraicEllipse(GeometricEllipse ge) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">                this(getAlgebraicEllipseParameters(ge));</a>
+<span class="sourceLineNo">093</span><a id="line.93">        }</a>
+<span class="sourceLineNo">094</span><a id="line.94">        </a>
+<span class="sourceLineNo">095</span><a id="line.95">        private static double[] getAlgebraicEllipseParameters(GeometricEllipse ge) {</a>
+<span class="sourceLineNo">096</span><a id="line.96">                double ra = ge.ra;</a>
+<span class="sourceLineNo">097</span><a id="line.97">                double rb = ge.rb;</a>
+<span class="sourceLineNo">098</span><a id="line.98">                double xc = ge.xc;</a>
+<span class="sourceLineNo">099</span><a id="line.99">                double yc = ge.yc;</a>
+<span class="sourceLineNo">100</span><a id="line.100">                double theta = ge.theta;</a>
+<span class="sourceLineNo">101</span><a id="line.101">                </a>
+<span class="sourceLineNo">102</span><a id="line.102">                double cosT = cos(theta);</a>
+<span class="sourceLineNo">103</span><a id="line.103">                double sinT = sin(theta);</a>
+<span class="sourceLineNo">104</span><a id="line.104">                </a>
+<span class="sourceLineNo">105</span><a id="line.105">                double A = sqr(ra * sinT) + sqr(rb * cosT);</a>
+<span class="sourceLineNo">106</span><a id="line.106">                double B = 2 * (sqr(rb) - sqr(ra)) * sinT * cosT;</a>
+<span class="sourceLineNo">107</span><a id="line.107">                double C = sqr(ra * cosT) + sqr(rb * sinT);</a>
+<span class="sourceLineNo">108</span><a id="line.108">                double D = -2 * A * xc - B * yc;</a>
+<span class="sourceLineNo">109</span><a id="line.109">                double E = -2 * C * yc - B * xc;</a>
+<span class="sourceLineNo">110</span><a id="line.110">                double F = A * sqr(xc) + B * xc * yc + C * sqr(yc) - sqr(ra * rb);      </a>
+<span class="sourceLineNo">111</span><a id="line.111">                return new double[] {A, B, C, D, E, F};</a>
+<span class="sourceLineNo">112</span><a id="line.112">        }</a>
+<span class="sourceLineNo">113</span><a id="line.113">        </a>
+<span class="sourceLineNo">114</span><a id="line.114">        /**</a>
+<span class="sourceLineNo">115</span><a id="line.115">         * Return a vector of parameters for this ellipse.</a>
+<span class="sourceLineNo">116</span><a id="line.116">         * The length of the vector and the meaning of the parameters depends</a>
+<span class="sourceLineNo">117</span><a id="line.117">         * on the concrete ellipse type.</a>
+<span class="sourceLineNo">118</span><a id="line.118">         * </a>
+<span class="sourceLineNo">119</span><a id="line.119">         * @return a vector of parameters [A, B, C, D, E, F]</a>
+<span class="sourceLineNo">120</span><a id="line.120">         */</a>
+<span class="sourceLineNo">121</span><a id="line.121">        public double[] getParameters() {</a>
+<span class="sourceLineNo">122</span><a id="line.122">                return new double[] {A, B, C, D, E, F};</a>
+<span class="sourceLineNo">123</span><a id="line.123">        }</a>
+<span class="sourceLineNo">124</span><a id="line.124">        </a>
+<span class="sourceLineNo">125</span><a id="line.125">        public double getAlgebraicDistance(Pnt2d p) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                double x = p.getX();</a>
+<span class="sourceLineNo">127</span><a id="line.127">                double y = p.getY();</a>
+<span class="sourceLineNo">128</span><a id="line.128">                return A * sqr(x) + B * x * y + C * sqr(y) + D * x + E * y + F;</a>
+<span class="sourceLineNo">129</span><a id="line.129">        }</a>
+<span class="sourceLineNo">130</span><a id="line.130">        </a>
+<span class="sourceLineNo">131</span><a id="line.131">        public double getSampsonDistance(Pnt2d p) {</a>
+<span class="sourceLineNo">132</span><a id="line.132">                double x = p.getX();</a>
+<span class="sourceLineNo">133</span><a id="line.133">                double y = p.getY();</a>
+<span class="sourceLineNo">134</span><a id="line.134">                double ad = A * sqr(x) + B * x * y + C * sqr(y) + D * x + E * y + F;    // algebraic distance</a>
+<span class="sourceLineNo">135</span><a id="line.135">                double nGrad = Math.hypot(2*A*x + B*y + D, 2*C*y + B*x + E);</a>
+<span class="sourceLineNo">136</span><a id="line.136">                return ad / nGrad;</a>
+<span class="sourceLineNo">137</span><a id="line.137">        }</a>
+<span class="sourceLineNo">138</span><a id="line.138">        </a>
+<span class="sourceLineNo">139</span><a id="line.139">        public double getGoncharovaDistance(Pnt2d p) {</a>
+<span class="sourceLineNo">140</span><a id="line.140">                double x = p.getX();</a>
+<span class="sourceLineNo">141</span><a id="line.141">                double y = p.getY();</a>
+<span class="sourceLineNo">142</span><a id="line.142">                double G = A * sqr(x) + B * x * y + C * sqr(y) + D * x + E * y + F;     // algebraic distance</a>
+<span class="sourceLineNo">143</span><a id="line.143">                </a>
+<span class="sourceLineNo">144</span><a id="line.144">                double[] gV = {2*A*x + B*y + D, 2*C*y + B*x + E};</a>
+<span class="sourceLineNo">145</span><a id="line.145">                double ngV = normL2(gV);</a>
+<span class="sourceLineNo">146</span><a id="line.146">                double sd = G / ngV;</a>
+<span class="sourceLineNo">147</span><a id="line.147">                </a>
+<span class="sourceLineNo">148</span><a id="line.148">                double[][] H = {{ 2*A, B }, { B, 2*C }};</a>
+<span class="sourceLineNo">149</span><a id="line.149">                double gd = sd * (1 + G * Matrix.dotProduct(multiply(gV, H), gV) / (2 * Math.pow(ngV, 4)));</a>
+<span class="sourceLineNo">150</span><a id="line.150">                return gd;</a>
+<span class="sourceLineNo">151</span><a id="line.151">        }</a>
+<span class="sourceLineNo">152</span><a id="line.152">        </a>
+<span class="sourceLineNo">153</span><a id="line.153">        // --------------------------------------------------------------------------</a>
+<span class="sourceLineNo">154</span><a id="line.154">        </a>
+<span class="sourceLineNo">155</span><a id="line.155">        @Override</a>
+<span class="sourceLineNo">156</span><a id="line.156">        public boolean equals(Object other) {</a>
+<span class="sourceLineNo">157</span><a id="line.157">                if (this == other) {</a>
+<span class="sourceLineNo">158</span><a id="line.158">                        return true;</a>
+<span class="sourceLineNo">159</span><a id="line.159">                }</a>
+<span class="sourceLineNo">160</span><a id="line.160">                if (!(other instanceof AlgebraicEllipse)) {</a>
+<span class="sourceLineNo">161</span><a id="line.161">            return false;</a>
+<span class="sourceLineNo">162</span><a id="line.162">        }</a>
+<span class="sourceLineNo">163</span><a id="line.163">                return this.equals((AlgebraicEllipse) other, Arithmetic.EPSILON_DOUBLE);</a>
+<span class="sourceLineNo">164</span><a id="line.164">        }</a>
+<span class="sourceLineNo">165</span><a id="line.165">        </a>
+<span class="sourceLineNo">166</span><a id="line.166">        public boolean equals(AlgebraicEllipse other, double tolerance) {</a>
+<span class="sourceLineNo">167</span><a id="line.167">                return </a>
+<span class="sourceLineNo">168</span><a id="line.168">                                Arithmetic.equals(A, other.A, tolerance) &amp;&amp;</a>
+<span class="sourceLineNo">169</span><a id="line.169">                                Arithmetic.equals(B, other.B, tolerance) &amp;&amp;</a>
+<span class="sourceLineNo">170</span><a id="line.170">                                Arithmetic.equals(C, other.C, tolerance) &amp;&amp;</a>
+<span class="sourceLineNo">171</span><a id="line.171">                                Arithmetic.equals(D, other.D, tolerance) &amp;&amp;</a>
+<span class="sourceLineNo">172</span><a id="line.172">                                Arithmetic.equals(E, other.E, tolerance) &amp;&amp;</a>
+<span class="sourceLineNo">173</span><a id="line.173">                                Arithmetic.equals(F, other.F, tolerance) ;</a>
+<span class="sourceLineNo">174</span><a id="line.174">        }</a>
+<span class="sourceLineNo">175</span><a id="line.175">        </a>
+<span class="sourceLineNo">176</span><a id="line.176">        // --------------------------------------------------------------------------</a>
+<span class="sourceLineNo">177</span><a id="line.177">        </a>
+<span class="sourceLineNo">178</span><a id="line.178">        public AlgebraicEllipse duplicate() {</a>
+<span class="sourceLineNo">179</span><a id="line.179">                return new AlgebraicEllipse(this.getParameters());</a>
+<span class="sourceLineNo">180</span><a id="line.180">        }</a>
+<span class="sourceLineNo">181</span><a id="line.181">        </a>
+<span class="sourceLineNo">182</span><a id="line.182">        @Override</a>
+<span class="sourceLineNo">183</span><a id="line.183">        public String toString() {</a>
+<span class="sourceLineNo">184</span><a id="line.184">                return String.format(Locale.US, "%s %s", </a>
+<span class="sourceLineNo">185</span><a id="line.185">                                this.getClass().getSimpleName(), </a>
+<span class="sourceLineNo">186</span><a id="line.186">                                Matrix.toString(getParameters()));</a>
+<span class="sourceLineNo">187</span><a id="line.187">        }</a>
+<span class="sourceLineNo">188</span><a id="line.188">        </a>
+<span class="sourceLineNo">189</span><a id="line.189">        // --------------------------------------------------------------------------</a>
+<span class="sourceLineNo">190</span><a id="line.190">        </a>
+<span class="sourceLineNo">191</span><a id="line.191">//      public static void main(String[] args) {</a>
+<span class="sourceLineNo">192</span><a id="line.192">//              PrintPrecision.set(9);</a>
+<span class="sourceLineNo">193</span><a id="line.193">//              GeometricEllipse eg  = new GeometricEllipse(150, 50, 150, 150, 0.5);</a>
+<span class="sourceLineNo">194</span><a id="line.194">//              System.out.println("eg = " + eg);</a>
+<span class="sourceLineNo">195</span><a id="line.195">//              AlgebraicEllipse ea = new AlgebraicEllipse(eg);</a>
+<span class="sourceLineNo">196</span><a id="line.196">//              System.out.println("ea = " + ea);</a>
+<span class="sourceLineNo">197</span><a id="line.197">//              </a>
+<span class="sourceLineNo">198</span><a id="line.198">//              Pnt2d p = Pnt2d.from(300, 300);</a>
+<span class="sourceLineNo">199</span><a id="line.199">//              System.out.println("p  = " + p);</a>
+<span class="sourceLineNo">200</span><a id="line.200">//              Pnt2d pc = eg.getClosestPoint(p);</a>
+<span class="sourceLineNo">201</span><a id="line.201">//              System.out.println("pc = " + pc);</a>
+<span class="sourceLineNo">202</span><a id="line.202">//              </a>
+<span class="sourceLineNo">203</span><a id="line.203">//              System.out.println("Sampson dist(p) = " + ea.getSampsonDistance(p));</a>
+<span class="sourceLineNo">204</span><a id="line.204">//              System.out.println("Gonch dist(p) = " + ea.getGoncharovaDistance(p));</a>
+<span class="sourceLineNo">205</span><a id="line.205">//              </a>
+<span class="sourceLineNo">206</span><a id="line.206">//      }</a>
+<span class="sourceLineNo">207</span><a id="line.207"></a>
+<span class="sourceLineNo">208</span><a id="line.208">}</a>
 
 
 

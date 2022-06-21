@@ -1,6 +1,6 @@
 package imagingbook.common.math.eispack;
 
-public abstract class QZVAL {
+abstract class QZVAL {
 
 	// EISPACK Routines, see http://www.netlib.org/eispack/
 
@@ -21,6 +21,7 @@ public abstract class QZVAL {
 	 * </p>
 	 * <p>
 	 * On output:
+	 * </p>
 	 * <ul>
 	 * <li><strong>a</strong> has been reduced further to a quasi-triangular matrix
 	 * in which all nonzero subdiagonal elements correspond to pairs of complex
@@ -42,7 +43,6 @@ public abstract class QZVAL {
 	 * <li><strong>z</strong> contains the product of the right hand transformations
 	 * (for all three steps) if <strong>matz</strong> has been set to true.</li>
 	 * </ul>
-	 * </p>
 	 * 
 	 * @param a    contains a real upper quasi-triangular matrix.
 	 * @param b    contains a real upper triangular matrix. In addition, location

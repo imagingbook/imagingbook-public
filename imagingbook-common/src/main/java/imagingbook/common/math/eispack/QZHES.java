@@ -1,6 +1,6 @@
 package imagingbook.common.math.eispack;
 
-public abstract class QZHES {
+abstract class QZHES {
 	
 	// EISPACK Routines, see http://www.netlib.org/eispack/
 	
@@ -19,6 +19,7 @@ public abstract class QZHES {
 	 * </p>
 	 * <p>
 	 * On output:
+	 * </p>
 	 * <ul>
 	 * <li><strong>a</strong> has been reduced to upper hessenberg form. The
 	 * elements below the first subdiagonal have been set to zero.</li>
@@ -30,7 +31,7 @@ public abstract class QZHES {
 	 * if matz has been set to true. Otherwise, <strong>z</strong> is not
 	 * referenced.</li>
 	 * </ul>
-	 * </p>
+	 * 
 	 * 
 	 * @param a    contains a real general matrix.
 	 * @param b    contains a real general matrix.

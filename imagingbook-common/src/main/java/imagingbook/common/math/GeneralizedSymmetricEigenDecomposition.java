@@ -90,7 +90,6 @@ public class GeneralizedSymmetricEigenDecomposition {
 	
 	/**
 	 * Constructor.
-	 * See {@link #GeneralizedSymmetricEigenSolver(RealMatrix, RealMatrix, double, double)}.
 	 * 
 	 * @param A real symmetric matrix
 	 * @param B real symmetric and positive definite matrix

@@ -22,7 +22,7 @@
 <span class="sourceLineNo">012</span><a id="line.12"></a>
 <span class="sourceLineNo">013</span><a id="line.13">import imagingbook.common.geometry.basic.Pnt2d.PntDouble;</a>
 <span class="sourceLineNo">014</span><a id="line.14">import imagingbook.common.geometry.ellipse.GeometricEllipse;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.math.eigen.Eigensolver2x2;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.math.Eigensolver2x2;</a>
 <span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.mser.components.Component;</a>
 <span class="sourceLineNo">017</span><a id="line.17"></a>
 <span class="sourceLineNo">018</span><a id="line.18">/**</a>
@@ -118,9 +118,9 @@
 <span class="sourceLineNo">108</span><a id="line.108">                final double mu02 = moments[3];</a>
 <span class="sourceLineNo">109</span><a id="line.109">                final double mu11 = moments[4];</a>
 <span class="sourceLineNo">110</span><a id="line.110">                Eigensolver2x2 es = new Eigensolver2x2(mu20, mu11, mu11, mu02);</a>
-<span class="sourceLineNo">111</span><a id="line.111">                double ra = 2 * Math.sqrt(es.getEigenvalue(0) / n);     // correct (see Book p.238)</a>
-<span class="sourceLineNo">112</span><a id="line.112">                double rb = 2 * Math.sqrt(es.getEigenvalue(1) / n);</a>
-<span class="sourceLineNo">113</span><a id="line.113">                double[] x1 = es.getEigenvector(0);</a>
+<span class="sourceLineNo">111</span><a id="line.111">                double ra = 2 * Math.sqrt(es.getRealEigenvalue(0) / n); // correct (see Book p.238)</a>
+<span class="sourceLineNo">112</span><a id="line.112">                double rb = 2 * Math.sqrt(es.getRealEigenvalue(1) / n);</a>
+<span class="sourceLineNo">113</span><a id="line.113">                double[] x1 = es.getEigenvector(0).toArray();</a>
 <span class="sourceLineNo">114</span><a id="line.114">                double theta = Math.atan2(x1[1], x1[0]);</a>
 <span class="sourceLineNo">115</span><a id="line.115">                this.ellipse = new GeometricEllipse(ra, rb, mu10, mu01, theta);</a>
 <span class="sourceLineNo">116</span><a id="line.116">        }</a>

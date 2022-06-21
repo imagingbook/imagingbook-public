@@ -1,6 +1,6 @@
 package imagingbook.common.math.eispack;
 
-public abstract class QZIT {
+abstract class QZIT {
 	
 	// EISPACK Routines, see http://www.netlib.org/eispack/
 
@@ -22,6 +22,7 @@ public abstract class QZIT {
 	 * </p>
 	 * <p>
 	 * On output:
+	 * </p>
 	 * <ul>
 	 * <li><strong>a</strong> has been reduced to quasi-triangular form. The elements 
 	 * below the first subdiagonal are still zero and no two consecutive subdiagonal
@@ -34,7 +35,7 @@ public abstract class QZIT {
 	 * <li><strong>z</strong> contains the product of the right hand transformations (for both steps) if
 	 * matz has been set to true.</li>
 	 * </ul>
-	 * </p>
+	 * 
 	 * 
 	 * @param a    contains a real upper hessenberg matrix.
 	 * @param b    contains a real upper triangular matrix.

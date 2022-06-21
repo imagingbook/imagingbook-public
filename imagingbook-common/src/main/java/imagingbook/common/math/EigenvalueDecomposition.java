@@ -61,8 +61,6 @@ public class EigenvalueDecomposition {
 	 * @param M matrix to be decomposed
 	 * @param symmetryTol absolute threshold for determining matrix symmetry
 	 * @param zeroTol absolute threshold for determining zero matrix entries
-	 * 
-	 * @throws MaxIterationsExceededException
 	 */
 	public EigenvalueDecomposition(RealMatrix M, double symmetryTol, double zeroTol)
 			throws MaxIterationsExceededException {

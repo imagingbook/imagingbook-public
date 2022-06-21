@@ -76,6 +76,7 @@ public interface EllipseFitAlgebraic {
 	 * for the original non-centered data: q = U * qr. See [1, Sec. 11.2.1] (e.g.,
 	 * Alg. 11.6) for additional information.
 	 * </p>
+	 * <p>
 	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
 	 * Approach</em>, 3rd ed, Springer (2022).
 	 * </p>

@@ -44,9 +44,8 @@ import imagingbook.common.math.Arithmetic.DivideByZeroException;
  * 
  * <p>Most methods are self-explanatory and are therefore left undocumented.</p>
  * 
- * @see RealEigensolver
  * @author W. Burger
- * @version 2021/10/10
+ * @version 2022/06/21
  */
 public abstract class Matrix {
 	
@@ -233,9 +232,9 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * TODO
-	 * @param A
-	 * @return
+	 * TODO: implement!
+	 * @param A a matrix
+	 * @return the vector of diagonal elements
 	 */
 	public static RealVector getDiagonal(RealMatrix A) {
 		return null;
@@ -288,7 +287,9 @@ public abstract class Matrix {
 	
 	/**
 	 * Checks is the given square matrix is positive definite.
+	 * TODO: split tolerance in two parameters
 	 * @param A a square matrix
+	 * @param tolerance the absolute positivity and relative symmetry tolerance
 	 * @return true if the matrix is positive definite
 	 */
 	public static boolean isPositiveDefinite(RealMatrix A, double tolerance) {

@@ -39,7 +39,7 @@
 <span class="sourceLineNo">029</span><a id="line.29">        public static EllipseFitAlgebraic getFit(FitType type, Pnt2d[] points, Pnt2d xref) {</a>
 <span class="sourceLineNo">030</span><a id="line.30">                switch (type) {</a>
 <span class="sourceLineNo">031</span><a id="line.31">                case FitzgibbonNaive:           return new EllipseFitFitzgibbonNaive(points);</a>
-<span class="sourceLineNo">032</span><a id="line.32">                case FitzgibbonOriginal:        return new EllipseFitFitzgibbon(points);</a>
+<span class="sourceLineNo">032</span><a id="line.32">                case FitzgibbonOriginal:        return new EllipseFitFitzgibbonOriginal(points);</a>
 <span class="sourceLineNo">033</span><a id="line.33">                case FitzgibbonStable:          return new EllipseFitFitzgibbonStable(points, xref);</a>
 <span class="sourceLineNo">034</span><a id="line.34">                case Taubin1:                           return new EllipseFitTaubin1(points, xref);</a>
 <span class="sourceLineNo">035</span><a id="line.35">                case Taubin2:                           return new EllipseFitTaubin2(points, xref);</a>
@@ -79,39 +79,57 @@
 <span class="sourceLineNo">069</span><a id="line.69">                }</a>
 <span class="sourceLineNo">070</span><a id="line.70">        }</a>
 <span class="sourceLineNo">071</span><a id="line.71">        </a>
-<span class="sourceLineNo">072</span><a id="line.72">        default RealMatrix getDataOffsetCorrectionMatrix(double xr, double yr) {</a>
-<span class="sourceLineNo">073</span><a id="line.73">                return Matrix.makeRealMatrix(6, 6,</a>
-<span class="sourceLineNo">074</span><a id="line.74">                                1,       0,     0,        0,   0,  0 ,</a>
-<span class="sourceLineNo">075</span><a id="line.75">                                0,       1,     0,        0,   0,  0 ,</a>
-<span class="sourceLineNo">076</span><a id="line.76">                                0,       0,     1,        0,   0,  0 ,</a>
-<span class="sourceLineNo">077</span><a id="line.77">                           -2*xr,   -yr,    0,        1,   0,  0 ,</a>
-<span class="sourceLineNo">078</span><a id="line.78">                                0,      -xr,   -2*yr,     0,   1,  0 ,</a>
-<span class="sourceLineNo">079</span><a id="line.79">                                sqr(xr), xr*yr, sqr(yr), -xr, -yr, 1 );</a>
-<span class="sourceLineNo">080</span><a id="line.80">        }</a>
-<span class="sourceLineNo">081</span><a id="line.81">        </a>
-<span class="sourceLineNo">082</span><a id="line.82">        // ----------------------------------------------------------------------</a>
-<span class="sourceLineNo">083</span><a id="line.83">        </a>
-<span class="sourceLineNo">084</span><a id="line.84">        public static void main(String[] args) {</a>
-<span class="sourceLineNo">085</span><a id="line.85">                Pnt2d p1 = Pnt2d.from(31, 90);</a>
-<span class="sourceLineNo">086</span><a id="line.86">                Pnt2d p2 = Pnt2d.from(79, 25);</a>
-<span class="sourceLineNo">087</span><a id="line.87">                Pnt2d p3 = Pnt2d.from(159, 31);</a>
-<span class="sourceLineNo">088</span><a id="line.88">                Pnt2d p4 = Pnt2d.from(174, 55);</a>
-<span class="sourceLineNo">089</span><a id="line.89">                Pnt2d p5 = Pnt2d.from(173, 84);</a>
-<span class="sourceLineNo">090</span><a id="line.90">                Pnt2d p6 = Pnt2d.from(135, 114);</a>
-<span class="sourceLineNo">091</span><a id="line.91">                </a>
-<span class="sourceLineNo">092</span><a id="line.92">                Pnt2d[] pts = {p1, p2, p3, p4, p5, p6};</a>
-<span class="sourceLineNo">093</span><a id="line.93">                Pnt2d xr = Pnt2d.from(100,100);</a>
-<span class="sourceLineNo">094</span><a id="line.94">                </a>
-<span class="sourceLineNo">095</span><a id="line.95">                EllipseFitAlgebraic fit = EllipseFitAlgebraic.getFit(FitType.Taubin2, pts, xr);</a>
-<span class="sourceLineNo">096</span><a id="line.96">                System.out.println(fit);</a>
-<span class="sourceLineNo">097</span><a id="line.97">                if (fit != null) {</a>
-<span class="sourceLineNo">098</span><a id="line.98">                        System.out.println(fit.getEllipse());</a>
-<span class="sourceLineNo">099</span><a id="line.99">                }</a>
-<span class="sourceLineNo">100</span><a id="line.100">                </a>
-<span class="sourceLineNo">101</span><a id="line.101">        }</a>
-<span class="sourceLineNo">102</span><a id="line.102"></a>
-<span class="sourceLineNo">103</span><a id="line.103"></a>
-<span class="sourceLineNo">104</span><a id="line.104">}</a>
+<span class="sourceLineNo">072</span><a id="line.72">        /**</a>
+<span class="sourceLineNo">073</span><a id="line.73">         * &lt;p&gt;</a>
+<span class="sourceLineNo">074</span><a id="line.74">         * Returns a 6x6 matrix (U) to convert ellipse parameters qr = (ar,...,fr)</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * calculated for data centered at (xr, yr) to ellipse parameters q = (a,...,f)</a>
+<span class="sourceLineNo">076</span><a id="line.76">         * for the original non-centered data: q = U * qr. See [1, Sec. 11.2.1] (e.g.,</a>
+<span class="sourceLineNo">077</span><a id="line.77">         * Alg. 11.6) for additional information.</a>
+<span class="sourceLineNo">078</span><a id="line.78">         * &lt;/p&gt;</a>
+<span class="sourceLineNo">079</span><a id="line.79">         * &lt;p&gt;</a>
+<span class="sourceLineNo">080</span><a id="line.80">         * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing - An Algorithmic</a>
+<span class="sourceLineNo">081</span><a id="line.81">         * Approach&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * &lt;/p&gt;</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * </a>
+<span class="sourceLineNo">084</span><a id="line.84">         * @param xr data reference point (x)</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * @param yr data reference point (y)</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * @return the offset correction matrix (U)</a>
+<span class="sourceLineNo">087</span><a id="line.87">         */</a>
+<span class="sourceLineNo">088</span><a id="line.88">        public default RealMatrix getDataOffsetCorrectionMatrix(double xr, double yr) {</a>
+<span class="sourceLineNo">089</span><a id="line.89">                return Matrix.makeRealMatrix(6, 6,</a>
+<span class="sourceLineNo">090</span><a id="line.90">                                1,       0,     0,        0,   0,  0 ,</a>
+<span class="sourceLineNo">091</span><a id="line.91">                                0,       1,     0,        0,   0,  0 ,</a>
+<span class="sourceLineNo">092</span><a id="line.92">                                0,       0,     1,        0,   0,  0 ,</a>
+<span class="sourceLineNo">093</span><a id="line.93">                           -2*xr,   -yr,    0,        1,   0,  0 ,</a>
+<span class="sourceLineNo">094</span><a id="line.94">                                0,      -xr,   -2*yr,     0,   1,  0 ,</a>
+<span class="sourceLineNo">095</span><a id="line.95">                                sqr(xr), xr*yr, sqr(yr), -xr, -yr, 1 );</a>
+<span class="sourceLineNo">096</span><a id="line.96">        }</a>
+<span class="sourceLineNo">097</span><a id="line.97">        </a>
+<span class="sourceLineNo">098</span><a id="line.98">        // ----------------------------------------------------------------------</a>
+<span class="sourceLineNo">099</span><a id="line.99">        </a>
+<span class="sourceLineNo">100</span><a id="line.100">        public static void main(String[] args) {</a>
+<span class="sourceLineNo">101</span><a id="line.101">                Pnt2d p1 = Pnt2d.from(31, 90);</a>
+<span class="sourceLineNo">102</span><a id="line.102">                Pnt2d p2 = Pnt2d.from(79, 25);</a>
+<span class="sourceLineNo">103</span><a id="line.103">                Pnt2d p3 = Pnt2d.from(159, 31);</a>
+<span class="sourceLineNo">104</span><a id="line.104">                Pnt2d p4 = Pnt2d.from(174, 55);</a>
+<span class="sourceLineNo">105</span><a id="line.105">                Pnt2d p5 = Pnt2d.from(173, 84);</a>
+<span class="sourceLineNo">106</span><a id="line.106">                Pnt2d p6 = Pnt2d.from(135, 114);</a>
+<span class="sourceLineNo">107</span><a id="line.107">                </a>
+<span class="sourceLineNo">108</span><a id="line.108">                Pnt2d[] pts = {p1, p2, p3, p4, p5, p6};</a>
+<span class="sourceLineNo">109</span><a id="line.109">                Pnt2d xr = Pnt2d.from(100,100);</a>
+<span class="sourceLineNo">110</span><a id="line.110">                </a>
+<span class="sourceLineNo">111</span><a id="line.111">                for (FitType type : FitType.values()) {</a>
+<span class="sourceLineNo">112</span><a id="line.112">                        EllipseFitAlgebraic fit = EllipseFitAlgebraic.getFit(type, pts, xr);</a>
+<span class="sourceLineNo">113</span><a id="line.113">                        System.out.println(type);</a>
+<span class="sourceLineNo">114</span><a id="line.114">                        if (fit != null) {</a>
+<span class="sourceLineNo">115</span><a id="line.115">                                System.out.println(fit.getEllipse());</a>
+<span class="sourceLineNo">116</span><a id="line.116">                        }</a>
+<span class="sourceLineNo">117</span><a id="line.117">                }</a>
+<span class="sourceLineNo">118</span><a id="line.118">                </a>
+<span class="sourceLineNo">119</span><a id="line.119">        }</a>
+<span class="sourceLineNo">120</span><a id="line.120"></a>
+<span class="sourceLineNo">121</span><a id="line.121"></a>
+<span class="sourceLineNo">122</span><a id="line.122">}</a>
 
 
 

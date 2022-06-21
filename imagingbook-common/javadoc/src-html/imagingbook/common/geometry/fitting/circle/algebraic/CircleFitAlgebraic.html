@@ -111,7 +111,23 @@
 <span class="sourceLineNo">101</span><a id="line.101">                                 {-2*yr, 0, 1, 0 },</a>
 <span class="sourceLineNo">102</span><a id="line.102">                                 {sqr(xr) + sqr(yr), -xr, -yr, 1}});</a>
 <span class="sourceLineNo">103</span><a id="line.103">        }</a>
-<span class="sourceLineNo">104</span><a id="line.104">}</a>
+<span class="sourceLineNo">104</span><a id="line.104">        </a>
+<span class="sourceLineNo">105</span><a id="line.105">        /**</a>
+<span class="sourceLineNo">106</span><a id="line.106">         * Normalize parameter vector q=(A,B,C,D) by enforcing </a>
+<span class="sourceLineNo">107</span><a id="line.107">         * the constraint B^2 + C^2 - 4 A D = 1.</a>
+<span class="sourceLineNo">108</span><a id="line.108">         * </a>
+<span class="sourceLineNo">109</span><a id="line.109">         * @param q original parameter vector</a>
+<span class="sourceLineNo">110</span><a id="line.110">         * @return normalized parameter vector</a>
+<span class="sourceLineNo">111</span><a id="line.111">         */</a>
+<span class="sourceLineNo">112</span><a id="line.112">        public default double[] normalizeP(double[] q) {</a>
+<span class="sourceLineNo">113</span><a id="line.113">                final double A = q[0];</a>
+<span class="sourceLineNo">114</span><a id="line.114">                final double B = q[1];</a>
+<span class="sourceLineNo">115</span><a id="line.115">                final double C = q[2];</a>
+<span class="sourceLineNo">116</span><a id="line.116">                final double D = q[3];</a>
+<span class="sourceLineNo">117</span><a id="line.117">                double s  = Math.sqrt(sqr(B) + sqr(C) - 4 * A * D);</a>
+<span class="sourceLineNo">118</span><a id="line.118">                return new double[] {A/s, B/s, C/s, D/s};</a>
+<span class="sourceLineNo">119</span><a id="line.119">        }</a>
+<span class="sourceLineNo">120</span><a id="line.120">}</a>
 
 
 
