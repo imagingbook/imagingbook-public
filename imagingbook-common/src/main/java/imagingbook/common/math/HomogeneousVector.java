@@ -33,7 +33,7 @@ public class HomogeneousVector extends ArrayRealVector {
 	 * coordinates.
 	 * @param c Cartesian coordinates.
 	 */
-	public HomogeneousVector(double[] c) {
+	public HomogeneousVector(double... c) {
 		super(c, new double[] {1});
 	}
 	
