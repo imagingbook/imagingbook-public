@@ -196,7 +196,7 @@ public class EigenvalueDecomposition {
      * {@link #getImagEigenvalues()} array and returns {@code true} if any
      * element is not equal to zero.
      *
-     * @return {@code true} if the eigenvalues are complex, {@code false} otherwise
+     * @return {@code true} if any of the eigenvalues is complex, {@code false} otherwise
      */
     public boolean hasComplexEigenvalues() {
         for (int i = 0; i < e.length; i++) {

@@ -2,7 +2,7 @@ package imagingbook.common.math.eispack;
 
 public abstract class QZVEC {
 	
-	public static boolean VERBOSE = true;
+	public static boolean VERBOSE = false;
 
 	// EISPACK Routines, see http://www.netlib.org/eispack/
 
