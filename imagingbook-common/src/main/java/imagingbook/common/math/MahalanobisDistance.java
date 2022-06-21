@@ -23,32 +23,35 @@ import org.apache.commons.math3.stat.correlation.Covariance;
 public class MahalanobisDistance { // extends VectorNorm 
 
 	/** The default minimum diagonal value used to condition the covariance matrix. */
-	public static final double DEFAULT_MIN_DIAGONAL_VALUE = 1.0E-15;
+	public static final double DefaultMinimumDiagonalValue = 1.0E-15;
 	
 	/** Used for Cholesky decomposition. 
 	 * See {@link CholeskyDecomposition#DEFAULT_RELATIVE_SYMMETRY_THRESHOLD} (1.0E-15), which seems too small). */
+	public static final double DefaultRelativeSymmetryThreshold = 1.0E-6;
 	
-	public static double RELATIVE_SYMMETRY_THRESHOLD = 1.0E-6;
 	/** Used for Cholesky decomposition.
 	 * See {@link CholeskyDecomposition#DEFAULT_ABSOLUTE_POSITIVITY_THRESHOLD}. */
-	
-	public static double ABSOLUTE_POSITIVITY_THRESHOLD = CholeskyDecomposition.DEFAULT_ABSOLUTE_POSITIVITY_THRESHOLD;
+	public static final double DefaultAbsolutePositivityThreshold = CholeskyDecomposition.DEFAULT_ABSOLUTE_POSITIVITY_THRESHOLD;
 
-	private final int M;					// feature dimension
+	private final int m;					// feature dimension (length of sample vectors)
 	private final double[] mean;			// the distribution's mean vector (\mu)
 	private final double[][] cov;			// covariance matrix of size n x n
 	private final double[][] icov;			// inverse covariance matrix of size n x n
+	
+	private final double minimumDiagonalValue;
+	private final double relativeSymmetryThreshold;
+	private final double absolutePositivityThreshold;
 
 	/**
 	 * Create a new instance from an array of m-dimensional samples, e.g.,
 	 * samples = {{x1,y1}, {x2,y2},...,{xn,yn}} for a vector of n two-dimensional
-	 * samples. Uses {@link #DEFAULT_MIN_DIAGONAL_VALUE} to condition the 
+	 * samples. Uses {@link #DefaultMinimumDiagonalValue} to condition the 
 	 * covariance matrix.
 	 * @param samples a sequence of m-dimensional samples, i.e.,
 	 *      samples[k][i] represents the i-th component of the k-th sample
 	 */
 	public MahalanobisDistance(double[][] samples) {
-		this(samples, DEFAULT_MIN_DIAGONAL_VALUE);
+		this(samples, DefaultMinimumDiagonalValue, DefaultRelativeSymmetryThreshold, DefaultAbsolutePositivityThreshold);
 	}
 	
 	/**
@@ -58,27 +61,41 @@ public class MahalanobisDistance { // extends VectorNorm
 	 * @param samples a vector of length n with m-dimensional samples, i.e.,
 	 *      samples[k][i] represents the i-th component of the k-th sample
 	 * @param minDiagVal the minimum diagonal value used to condition the
-	 *      covariance matrix to avoid singularity (see {@link #DEFAULT_MIN_DIAGONAL_VALUE})
+	 *      covariance matrix to avoid singularity (see {@link #DefaultMinimumDiagonalValue})
 	 */
-	public MahalanobisDistance(double[][] samples, double minDiagVal) {
-		this(makeCovarianceMatrix(samples, minDiagVal), makeMeanVector(samples));
-	}
-
-	/**
-	 * Create a new instance from the m x m covariance matrix and the m-dimensional
-	 * mean vector of a distribution of m-dimensional data. The covariance matrix is 
-	 * assumed to be properly conditioned, i.e., has all-positive diagonal values.
-	 * @param cov the covariance matrix of size m x m
-	 * @param mean the mean vector of length m
-	 */
-	public MahalanobisDistance(double[][] cov, double[] mean) {
-		this.cov = cov;
-		this.mean = mean;
-		this.M = mean.length;
+	public MahalanobisDistance(double[][] samples, double minDiagVal, double relSymThr, double absPosThr) {
+		if (samples.length < 2)
+			throw new IllegalArgumentException("number of samples must be 2 or more");
+		if (samples[0].length < 1)
+			throw new IllegalArgumentException("sample dimension must be at least 1");
+		//this(makeCovarianceMatrix(samples, minDiagVal), makeMeanVector(samples));
+		this.minimumDiagonalValue = minDiagVal;
+		this.relativeSymmetryThreshold = relSymThr;
+		this.absolutePositivityThreshold = absPosThr;
+		
+		this.cov = makeCovarianceMatrix(samples, minimumDiagonalValue);
+		this.mean = makeMeanVector(samples);
+		this.m = mean.length;
 		RealMatrix S = MatrixUtils.createRealMatrix(cov);
 		// get the inverse covariance matrix
 		this.icov = MatrixUtils.inverse(S).getData();	// not always symmetric?
 	}
+
+//	/**
+//	 * Create a new instance from the m x m covariance matrix and the m-dimensional
+//	 * mean vector of a distribution of m-dimensional data. The covariance matrix is 
+//	 * assumed to be properly conditioned, i.e., has all-positive diagonal values.
+//	 * @param cov the covariance matrix of size m x m
+//	 * @param mean the mean vector of length m
+//	 */
+//	public MahalanobisDistance(double[][] cov, double[] mean) {
+//		this.cov = cov;
+//		this.mean = mean;
+//		this.M = mean.length;
+//		RealMatrix S = MatrixUtils.createRealMatrix(cov);
+//		// get the inverse covariance matrix
+//		this.icov = MatrixUtils.inverse(S).getData();	// not always symmetric?
+//	}
 
 	// 
 	/**
@@ -124,16 +141,16 @@ public class MahalanobisDistance { // extends VectorNorm
 	 * @param samples a sequence of m-dimensional samples, i.e.,
 	 *      samples[k][i] represents the i-th component of the k-th sample
 	 * @param minDiagVal the minimum positive value of covariance matrix diagonal elements
-	 * 		(see {@link #DEFAULT_MIN_DIAGONAL_VALUE})
+	 * 		(see {@link #DefaultMinimumDiagonalValue})
 	 * 
 	 * @return the covariance matrix for the supplied samples
 	 */
 	public static double[][] makeCovarianceMatrix(double[][] samples, double minDiagVal) {
-		if (samples.length < 1)
-			throw new IllegalArgumentException("number of samples must be > 0");
+		if (samples.length < 2)
+			throw new IllegalArgumentException("number of samples must be 2 or more");
 		if (samples[0].length < 1)
-			throw new IllegalArgumentException("sample dimension must be > 0");
-		RealMatrix S = new Covariance(samples, false).getCovarianceMatrix();
+			throw new IllegalArgumentException("sample dimension must be at least 1");
+		RealMatrix S = new Covariance(samples, false).getCovarianceMatrix();	// no bias correction!
 		// condition the covariance matrix to avoid singularity:
 		S = conditionCovarianceMatrix(S, minDiagVal);
 		return S.getData();
@@ -144,7 +161,7 @@ public class MahalanobisDistance { // extends VectorNorm
 	 * @return the sample dimension
 	 */
 	public int getDimension() {
-		return M;
+		return m;
 	}
 
 	//------------------------------------------------------------------------------------
@@ -185,10 +202,11 @@ public class MahalanobisDistance { // extends VectorNorm
 	public double[][] getWhiteningTransformation() {
 		CholeskyDecomposition cd = 
 				new CholeskyDecomposition(MatrixUtils.createRealMatrix(icov),
-						RELATIVE_SYMMETRY_THRESHOLD, ABSOLUTE_POSITIVITY_THRESHOLD);
+						relativeSymmetryThreshold, absolutePositivityThreshold);
 		RealMatrix U = cd.getLT();
 		return U.getData();
 	}
+	
 
 	//------------------------------------------------------------------------------------
 
@@ -209,23 +227,23 @@ public class MahalanobisDistance { // extends VectorNorm
 	 * @return the squared Mahalanobis distance
 	 */
 	public double distance2(double[] X, double[] Y) {
-		if (X.length != M || Y.length != M) {
-			throw new IllegalArgumentException("vectors must be of length " + M);
+		if (X.length != m || Y.length != m) {
+			throw new IllegalArgumentException("vectors must be of length " + m);
 		}
 		// TODO: implement with methods from Matrix class
 		// d^2(X,Y) = (X-Y)^T . S^{-1} . (X-Y)
-		double[] dXY = new double[M]; // = (X-Y)
-		for (int k = 0; k < M; k++) {
+		double[] dXY = new double[m]; // = (X-Y)
+		for (int k = 0; k < m; k++) {
 			dXY[k] = X[k] - Y[k];
 		}
-		double[] iSdXY = new double[M]; // = S^{-1} . (X-Y)
-		for (int k = 0; k < M; k++) {
-			for (int i = 0; i < M; i++) {
+		double[] iSdXY = new double[m]; // = S^{-1} . (X-Y)
+		for (int k = 0; k < m; k++) {
+			for (int i = 0; i < m; i++) {
 				iSdXY[k] += icov[i][k] * dXY[i];
 			}
 		}
 		double d2 = 0;	// final sum
-		for (int k = 0; k < M; k++) {
+		for (int k = 0; k < m; k++) {
 			d2 += dXY[k] * iSdXY[k];
 		}						// d = (X-Y)^T . S^{-1} . (X-Y)
 		return d2;
