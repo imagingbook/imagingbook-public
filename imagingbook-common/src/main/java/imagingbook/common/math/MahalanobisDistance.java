@@ -32,15 +32,15 @@ public class MahalanobisDistance { // extends VectorNorm
 	/** Used for Cholesky decomposition.
 	 * See {@link CholeskyDecomposition#DEFAULT_ABSOLUTE_POSITIVITY_THRESHOLD}. */
 	public static final double DefaultAbsolutePositivityThreshold = CholeskyDecomposition.DEFAULT_ABSOLUTE_POSITIVITY_THRESHOLD;
+	
+	private final double minimumDiagonalValue;
+	private final double relativeSymmetryThreshold;
+	private final double absolutePositivityThreshold;
 
 	private final int m;					// feature dimension (length of sample vectors)
 	private final double[] mean;			// the distribution's mean vector (\mu)
 	private final double[][] cov;			// covariance matrix of size n x n
 	private final double[][] icov;			// inverse covariance matrix of size n x n
-	
-	private final double minimumDiagonalValue;
-	private final double relativeSymmetryThreshold;
-	private final double absolutePositivityThreshold;
 
 	/**
 	 * Create a new instance from an array of m-dimensional samples, e.g.,
@@ -68,7 +68,7 @@ public class MahalanobisDistance { // extends VectorNorm
 			throw new IllegalArgumentException("number of samples must be 2 or more");
 		if (samples[0].length < 1)
 			throw new IllegalArgumentException("sample dimension must be at least 1");
-		//this(makeCovarianceMatrix(samples, minDiagVal), makeMeanVector(samples));
+
 		this.minimumDiagonalValue = minDiagVal;
 		this.relativeSymmetryThreshold = relSymThr;
 		this.absolutePositivityThreshold = absPosThr;
