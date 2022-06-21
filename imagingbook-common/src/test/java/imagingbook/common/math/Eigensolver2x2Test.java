@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.math.eigen;
+package imagingbook.common.math;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
@@ -15,10 +15,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Random;
 
 import org.junit.Test;
-
-import imagingbook.common.math.Eigensolver2x2;
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.RandomMatrixGenerator;
 
 public class Eigensolver2x2Test { 
 

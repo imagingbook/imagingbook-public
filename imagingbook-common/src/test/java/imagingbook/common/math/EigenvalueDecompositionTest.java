@@ -1,4 +1,4 @@
-package imagingbook.common.math.eigen;
+package imagingbook.common.math;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
@@ -10,9 +10,6 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Test;
 
-import imagingbook.common.math.EigenvalueDecomposition;
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.RandomMatrixGenerator;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
 import imagingbook.testutils.NumericTestUtils;
 
@@ -267,7 +264,7 @@ public class EigenvalueDecompositionTest {
 //				System.out.println("RH = " + Matrix.toString(RH));
 //				assertArrayEquals("eigenvalue " + k, 
 //						Matrix.multiply(M, x), Matrix.multiply(lambda, x), 1E-3);
-				NumericTestUtils.assertArrayEqualsRelative(Matrix.multiply(M, x), Matrix.multiply(lambda, x), 1E-6);
+				NumericTestUtils.assertArrayEqualsRelative(LH, RH, 1E-6);
 			}
 		}
 	
