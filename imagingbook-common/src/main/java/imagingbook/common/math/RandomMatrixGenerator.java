@@ -1,11 +1,9 @@
-package imagingbook.common.math.testing;
+package imagingbook.common.math;
 
 import java.util.Random;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
-
-import imagingbook.common.math.Matrix;
 
 public class RandomMatrixGenerator {
 	
