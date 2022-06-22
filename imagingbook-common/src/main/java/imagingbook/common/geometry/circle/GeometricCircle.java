@@ -17,6 +17,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Path2D;
 import java.util.Locale;
 
+import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.Arithmetic;
@@ -28,7 +29,7 @@ import imagingbook.common.math.Arithmetic;
  * @author WB
  *
  */
-public class GeometricCircle implements ShapeProducer {
+public class GeometricCircle implements ShapeProducer, Curve2d {
 	
 	private final double xc, yc, r;
 

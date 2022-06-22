@@ -10,7 +10,6 @@ package imagingbook.common.geometry.shape;
 
 import java.awt.Shape;
 
-import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
@@ -20,7 +19,7 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
  * @author WB
  *
  */
-public interface ShapeProducer extends Curve2d {
+public interface ShapeProducer {
 	
 	/**
 	 * Returns a scaled {@link Shape} for this object
@@ -71,36 +70,7 @@ public interface ShapeProducer extends Curve2d {
 		return getShapes(1);
 	}
 	
-	// ---------------------------------------------------------------------------
-	
-	/**
-	 * Checks if all points of the specified AWT shape are sufficiently
-	 * close to this 2D curve. This is typically used to test if the shape produced
-	 * by {@link #getShape()} coincide with this curve.
-	 * Only the discrete sample points produced by {@link ShapePointIterator}
-	 * are checked, not the points on connecting polygon segments. 
-	 * Typical usage:
-	 * <pre>
-	 * Shape s = this.getShape();
-	 * boolean ok = this.checkShape(s, 1.0);</pre>
-	 * 
-	 * @param s the AWT shape
-	 * @param tolerance the maximum shape point distance from the curve
-	 * @return true if all  points of shape s are closer to this curve than tolerance
-	 */
-	public default boolean checkShape(Shape s, double tolerance) {
-		ShapePointIterator iter = new ShapePointIterator(s, 0.5 * tolerance);
-		boolean result = true;
-		while(iter.hasNext()) {
-			Pnt2d p = iter.next();
-			if (getDistance(p) > tolerance) {
-				result = false;
-				break;
-			}
-		}
-		return result;
-	}
-	
+
 	
 	
 }

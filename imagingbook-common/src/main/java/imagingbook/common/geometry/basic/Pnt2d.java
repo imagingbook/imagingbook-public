@@ -41,7 +41,7 @@ import imagingbook.common.geometry.shape.ShapeProducer;
  * to instantiate such point objects.
  * 
  */
-public interface Pnt2d extends ShapeProducer {
+public interface Pnt2d extends ShapeProducer, Curve2d {
 
 	/**
 	 * The default tolerance for matching coordinates (1E-6).
