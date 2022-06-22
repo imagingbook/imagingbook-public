@@ -34,7 +34,8 @@ import org.apache.commons.math3.linear.RealVector;
  * [1] Press, Teukolsky, Vetterling, Flannery:
  * "Numerical Recipes". Cambridge University Press, 3rd ed. (2007).
  * </p>
- * @see EigenDecomposition
+ * @see GeneralizedEigenDecomposition
+ * @see EigenvalueDecomposition
  * @author WB
  * @version 2022/06/11
  */
