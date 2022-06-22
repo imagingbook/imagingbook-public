@@ -32,9 +32,9 @@ import org.apache.commons.math3.util.Pair;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.geometry.fitting.ellipse.EllipseSampler;
 import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic;
 import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbonStable;
+import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.util.ParameterBundle;

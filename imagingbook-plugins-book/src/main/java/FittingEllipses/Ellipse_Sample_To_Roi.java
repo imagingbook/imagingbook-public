@@ -18,7 +18,7 @@ import ij.plugin.PlugIn;
 import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.geometry.fitting.ellipse.EllipseSampler;
+import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
