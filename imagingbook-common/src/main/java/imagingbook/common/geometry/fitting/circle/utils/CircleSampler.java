@@ -49,9 +49,9 @@ public class CircleSampler {
 	 * @return an array of sample points
 	 */
 	public Pnt2d[] getPoints(int n, double startAngle, double endAngle, double sigma) {
-		double xc = circle.getXc();
-		double yc = circle.getYc();
-		double r = circle.getR();
+		double xc = circle.xc;
+		double yc = circle.yc;
+		double r = circle.r;
 		Pnt2d[] pts = new Pnt2d[n];
 		
 		startAngle = mod(startAngle, 2 * PI);

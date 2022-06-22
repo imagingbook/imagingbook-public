@@ -19,15 +19,19 @@ import imagingbook.common.math.Arithmetic;
 /**
  * Represents an algebraic circle with four parameters A, B, C, D in the form
  * A * (x^2 + y^2) + B * x + C * y + D = 0.
- * Circle instances are normalized and immutable.
- * 
+ * Parameters are normalized such that
+ * B^2 + C^2 - 4 * A * D = 1 and A &ge; 0
+ * Circle instances are immutable.
  * 
  * @author WB
  *
  */
 public class AlgebraicCircle {
 
-	private final double A, B, C, D;
+	/**
+	 * Circle parameters.
+	 */
+	public final double A, B, C, D;
 	
 	/**
 	 * Constructor. Creates a {@link AlgebraicCircle} instance
@@ -83,9 +87,9 @@ public class AlgebraicCircle {
 	}
 
 	private static double[] getAlgebraicCircleParameters(GeometricCircle gc) {
-		double A = 1 / (2 * gc.getR());
-		double B = -2 * A * gc.getXc();
-		double C = -2 * A * gc.getYc();
+		double A = 1 / (2 * gc.r);
+		double B = -2 * A * gc.xc;
+		double C = -2 * A * gc.yc;
 		double D = (sqr(B) + sqr(C) - 1) / (4 * A);
 		return new double[] {A, B, C, D};
 	}

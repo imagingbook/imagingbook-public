@@ -24,7 +24,7 @@ import imagingbook.common.math.Matrix;
 /**
  * Represents an algebraic ellipse with the implicit equation
  * A x^2 + B x y + C y^2 + D x + E y + F = 0.
- * Parameters [A, ..., F] are normalized such that B^2 - 4 A C = -1.
+ * Parameters A, ..., F are normalized such that B^2 - 4 A C = -1.
  * Instances are immutable.
  * 
  * @author WB
@@ -32,7 +32,7 @@ import imagingbook.common.math.Matrix;
 public class AlgebraicEllipse {
 	
 	/**
-	 * Ellipse parameter.
+	 * Ellipse parameters.
 	 */
 	public final double A, B, C, D, E, F;
 	

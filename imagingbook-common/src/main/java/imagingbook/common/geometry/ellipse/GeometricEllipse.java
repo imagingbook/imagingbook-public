@@ -37,7 +37,10 @@ import imagingbook.common.math.Arithmetic;
  */
 public class GeometricEllipse implements ShapeProducer, Curve2d {
 	
-	public final double ra, rb, xc, yc, theta;	// TODO: make private!
+	/**
+	 * Ellipse parameters.
+	 */
+	public final double ra, rb, xc, yc, theta;
 	private final OrthogonalEllipseProjector projector;
 	
 	/**
@@ -72,6 +75,8 @@ public class GeometricEllipse implements ShapeProducer, Curve2d {
 	
 	/**
 	 * Constructor, short version for axis-aligned ellipses.
+	 * Axis lengths may be exchanged to ensure ra &ge; rb.
+	 * 
 	 * @param ra major axis length
 	 * @param rb minor axis length
 	 * @param xc center point (x)
@@ -99,7 +104,17 @@ public class GeometricEllipse implements ShapeProducer, Curve2d {
 		this(getGeometricEllipseParameters(ae));
 	}
 
-	private static double[] getGeometricEllipseParameters(AlgebraicEllipse ae) {
+	/**
+	 * Calculates and returns the geometric ellipse parameters from a
+	 * given algebraic ellipse
+	 * (see Eqns. 19-23 at 
+	 * <a href="http://mathworld.wolfram.com/Ellipse.html">http://mathworld.wolfram.com/Ellipse.html</a>).
+	 * 
+	 * @param ae a {@linkplain AlgebraicEllipse} instance with parameters (A,...,F)
+	 * @return the geometric ellipse parameters (ra, rb, xc, yc, theta)
+	 * @see AlgebraicEllipse
+	 */
+	public static double[] getGeometricEllipseParameters(AlgebraicEllipse ae) {
 		// see Eq. 19-23 at http://mathworld.wolfram.com/Ellipse.html
 		final double A = ae.A;
 		final double B = ae.B;
