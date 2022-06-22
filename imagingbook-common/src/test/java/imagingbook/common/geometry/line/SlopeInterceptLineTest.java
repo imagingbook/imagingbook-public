@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.shape.ShapeChecker;
 
 public class SlopeInterceptLineTest {
 	
@@ -47,7 +48,7 @@ public class SlopeInterceptLineTest {
 	@Test	// check AWT Shape generation
 	public void test4() {
 		SlopeInterceptLine sil = new SlopeInterceptLine(-2, 3);
-		Assert.assertTrue("produced Shape does not match line", sil.checkShape(sil.getShape(), 0.5));
+		Assert.assertTrue("produced Shape does not match line", new ShapeChecker().check(sil, sil.getShape()));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

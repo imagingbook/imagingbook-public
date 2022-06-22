@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.geometry.shape.ShapeChecker;
 
 public class HessianLineTest {
 	
@@ -65,7 +66,7 @@ public class HessianLineTest {
 	@Test
 	public void test4() {
 		HessianLine L12 = HessianLine.from(p1, p2);
-		Assert.assertTrue("produced Shape does not match line", L12.checkShape(L12.getShape(), 0.5));
+		Assert.assertTrue("produced Shape does not match line", new ShapeChecker().check(L12, L12.getShape()));
 	}
 
 }

@@ -18,6 +18,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.shape.ShapeChecker;
 import imagingbook.common.geometry.shape.ShapePointIterator;
 
 public class GeometricEllipseTest {
@@ -109,7 +110,7 @@ public class GeometricEllipseTest {
 	@Test		// check AWT Shape generation
 	public void test5() {
 		GeometricEllipse ge = new GeometricEllipse(120, 50, 200, -70, Math.PI/3);
-		Assert.assertTrue("produced Shape does not match line", ge.checkShape(ge.getShape(), 0.5));
+		Assert.assertTrue("produced Shape does not match line", new ShapeChecker().check(ge, ge.getShape()));
 	}
 
 }

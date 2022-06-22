@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.geometry.shape.ShapeChecker;
 
 
 public class AlgebraicLineTest {
@@ -73,6 +74,6 @@ public class AlgebraicLineTest {
 	@Test	// check AWT Shape generation
 	public void test6() {
 		AlgebraicLine L12 = AlgebraicLine.from(p1, p2);
-		Assert.assertTrue("produced Shape does not match line", L12.checkShape(L12.getShape(), 0.5));
+		Assert.assertTrue("produced Shape does not match line", new ShapeChecker().check(L12, L12.getShape()));
 	}
 }

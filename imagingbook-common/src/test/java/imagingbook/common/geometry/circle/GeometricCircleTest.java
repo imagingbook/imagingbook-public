@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import imagingbook.common.geometry.shape.ShapeChecker;
+
 public class GeometricCircleTest {
 
 	@Test	// test constructors
@@ -30,7 +32,8 @@ public class GeometricCircleTest {
 	@Test	// test AWT Shape generation
 	public void test3() {
 		GeometricCircle gc = new GeometricCircle(17, -23, 7);
-		Assert.assertTrue("produced Shape does not match line", gc.checkShape(gc.getShape(), 0.5));
+		Assert.assertTrue("produced Shape does not match line", new ShapeChecker().check(gc, gc.getShape()));
+		
 	}
 
 }
