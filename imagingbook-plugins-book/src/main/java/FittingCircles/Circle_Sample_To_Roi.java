@@ -18,7 +18,7 @@ import ij.plugin.PlugIn;
 import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
-import imagingbook.common.geometry.fitting.circle.CircleSampler;
+import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;

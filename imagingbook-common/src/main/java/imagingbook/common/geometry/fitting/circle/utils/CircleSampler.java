@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.geometry.fitting.circle;
+package imagingbook.common.geometry.fitting.circle.utils;
 
 import static imagingbook.common.math.Arithmetic.mod;
 import static java.lang.Math.PI;
@@ -18,8 +18,7 @@ import imagingbook.common.geometry.circle.GeometricCircle;
 
 public class CircleSampler {
 	
-	private final Random rg;
-	
+	private final Random rg;	
 	private final GeometricCircle circle;
 	
 	public CircleSampler(GeometricCircle circle) {

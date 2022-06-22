@@ -52,6 +52,11 @@ public class GeneralizedEigenDecomposition {
 	private double[] beta;
 	private double[][] Z;
 
+	/**
+	 * Constructor.
+	 * @param A first matrix
+	 * @param B second matrix
+	 */
 	public GeneralizedEigenDecomposition(RealMatrix A, RealMatrix B) {
 		this(A.getData(), B.getData());
 	}

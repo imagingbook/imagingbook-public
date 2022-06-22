@@ -55,7 +55,7 @@ public class Circle_Fit_Algebraic implements PlugIn {
 		GeometricCircle realCircle = new GeometricCircle(XC, YC, R);
 		IJ.log(" real: " + realCircle.toString());
 		
-		Pnt2d[] points = new imagingbook.common.geometry.fitting.circle.CircleSampler(realCircle).getPoints(N, Angle0, Angle1, SigmaNoise);
+		Pnt2d[] points = new imagingbook.common.geometry.fitting.circle.utils.CircleSampler(realCircle).getPoints(N, Angle0, Angle1, SigmaNoise);
 		
 		// ------------------------------------------------------------------------
 		CircleFitAlgebraic fitter = CircleFitAlgebraic.getFit(algType, points);

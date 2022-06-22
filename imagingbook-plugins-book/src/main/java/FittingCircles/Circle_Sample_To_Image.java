@@ -20,7 +20,7 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
-import imagingbook.common.geometry.fitting.circle.CircleSampler;
+import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.PrintPrecision;

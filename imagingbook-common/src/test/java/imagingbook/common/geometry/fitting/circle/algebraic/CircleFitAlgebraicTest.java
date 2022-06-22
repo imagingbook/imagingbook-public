@@ -17,8 +17,8 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.circle.AlgebraicCircle;
 import imagingbook.common.geometry.circle.GeometricCircle;
-import imagingbook.common.geometry.fitting.circle.CircleSampler;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType;
+import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;
 
 public class CircleFitAlgebraicTest {
 	
