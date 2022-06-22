@@ -31,10 +31,13 @@ import imagingbook.common.math.Matrix;
  */
 public class AlgebraicEllipse {
 	
+	/**
+	 * Ellipse parameter.
+	 */
 	public final double A, B, C, D, E, F;
 	
 	/**
-	 * The main constructor.
+	 * Constructor.
 	 * Creates a {@link AlgebraicEllipse} instance by normalizing the
 	 * supplied parameters [A,...,F] such that d = B^2 - 4 A C = -1.
 	 * Throws an exception if d is non-negative.

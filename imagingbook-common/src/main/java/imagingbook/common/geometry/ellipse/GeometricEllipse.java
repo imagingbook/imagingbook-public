@@ -28,7 +28,7 @@ import imagingbook.common.math.Arithmetic;
 
 
 /**
- * Represents an ellipse shape with 
+ * Represents an ellipse with 
  * major axis length ra, minor axis length rb, center point (xc, yc),
  * and orientation theta. Instances are immutable.
  * 
