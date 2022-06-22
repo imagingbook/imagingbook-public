@@ -31,16 +31,20 @@ import imagingbook.common.math.Arithmetic;
  */
 public class GeometricCircle implements ShapeProducer, Curve2d {
 	
-	private final double xc, yc, r;
+	/**
+	 * Circle parameters.
+	 */
+	public final double xc, yc, r;
 
+	@Deprecated		// use field access instead
 	public double getXc() {
 		return xc;
 	}
-
+	@Deprecated		// use field access instead
 	public double getYc() {
 		return yc;
 	}
-
+	@Deprecated		// use field access instead
 	public double getR() {
 		return r;
 	}
