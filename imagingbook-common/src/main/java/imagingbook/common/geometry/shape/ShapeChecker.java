@@ -5,21 +5,31 @@ import java.awt.Shape;
 import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 
+/**
+ * Used to check if AWT shapes produced by {@link ShapeProducer#getShape()}
+ * match the underlying curve ({@link Curve2d}).
+ * This is mainly used to test if generated shapes (to be drawn
+ * to the screen) are sufficiently accurate.
+ * 
+ * @see ShapeProducer
+ * @see Curve2d
+ */
 public class ShapeChecker {
 
 	private final double tolerance;
 	
 	/**
-	 * Used to check if AWT shapes produced by {@link ShapeProducer#getShape()}
-	 * match the underlying curve.
+	 * Constructor.
 	 * 
-	 * @param curve a {@link Curve2d} instance
-	 * @param tolerance maximum deviation from curve
+	 * @param tolerance maximum deviation between curve and shape
 	 */
 	public ShapeChecker(double tolerance) {
 		this.tolerance = tolerance;
 	}
 	
+	/**
+	 * Constructor.
+	 */
 	public ShapeChecker() {
 		this(0.5);
 	}
@@ -34,12 +44,12 @@ public class ShapeChecker {
 	 * Typical usage example:
 	 * <pre>
 	 * GeometricCircle circle = ... ; // implements ShapeProducer and Curve2d
-	 * Shape s = circle.getShape();
-	 * boolean ok = new ShapeChecker().checkShape(circle, s);</pre>
+	 * Shape shape = circle.getShape();
+	 * boolean ok = new ShapeChecker().checkShape(circle, shape);</pre>
 	 * 
 	 * @param curve a {@link Curve2d} instance
 	 * @param shape the AWT shape to check
-	 * @return true if all  points of shape s are closer to this curve than tolerance
+	 * @return true if all points of the shape are closer to the curve than tolerance
 	 */
 	public boolean check(Curve2d curve, Shape shape) {
 		ShapePointIterator iter = new ShapePointIterator(shape, 0.5 * tolerance);
