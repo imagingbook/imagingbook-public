@@ -35,13 +35,22 @@ import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.math.Matrix;
 
 /**
- * "Coordinate-based" geometric circle fit using iterative minimization using
- * a Levenberg-Marquart optimizer.
+ * <p>
+ * "Coordinate-based" geometric circle fitter using a nonlinear least-squares 
+ * (Levenberg-Marquart) optimizer.
+ * See [1, Sec. 11.1.3] for a detailed description (Alg. 11.4).
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
  */
 public class CircleFitGeometricCoord implements CircleFitGeometric {
+	
+	public static final int DefaultMaxIterations = 1000;
+	public static final double DefaultTolerance = 1e-6;
 	
 	private final Pnt2d[] pts;
 	private final double[] V;

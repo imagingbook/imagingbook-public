@@ -27,16 +27,17 @@ public interface CircleFitGeometric {
 	
 	public static CircleFitGeometric getFit(FitType type, Pnt2d[] points, GeometricCircle initCircle) {
 		switch (type) {
-		case CoordinateBased: return new CircleFitGeometricCoord(points, initCircle);
-		case DistanceBased: return new CircleFitGeometricDist(points, initCircle);
+		case CoordinateBased:
+			return new CircleFitGeometricCoord(points, initCircle);
+		case DistanceBased:
+			return new CircleFitGeometricDist(points, initCircle);
 		}
-		throw new IllegalArgumentException("unknown geometric fit type: " + type);
+		//throw new IllegalArgumentException("unknown geometric fit type: " + type);
+		return null;
 	}
 	
 	public static boolean VERBOSE = false;
 	public static boolean RecordHistory = false;	
-	public static int DefaultMaxIterations = 1000;
-	public static double DefaultTolerance = 1e-6;
 	
 	public abstract double[] getParameters();	
 	public abstract int getIterations();
