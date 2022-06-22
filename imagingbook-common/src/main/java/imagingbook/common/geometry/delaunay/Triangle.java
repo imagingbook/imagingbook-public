@@ -42,9 +42,5 @@ public interface Triangle extends ShapeProducer {
 		return path;
 	}
 	
-	public default double getDistance(Pnt2d p) {
-		throw new UnsupportedOperationException();	// TODO: check how to implement or decouple from ShapeProducer
-//		return Double.NaN;
-	}
 }
 
