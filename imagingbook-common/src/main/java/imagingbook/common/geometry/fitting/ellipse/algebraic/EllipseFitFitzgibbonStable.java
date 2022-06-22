@@ -12,7 +12,6 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import java.util.Arrays;
 
-import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;

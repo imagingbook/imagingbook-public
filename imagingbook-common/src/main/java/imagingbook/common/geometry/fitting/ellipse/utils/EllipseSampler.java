@@ -16,6 +16,11 @@ import java.util.Random;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
+/**
+ * Utility class for picking random points on a given ellipse. 
+ * @author WB
+ *
+ */
 public class EllipseSampler {
 	
 	private final Random rg;
@@ -33,8 +38,11 @@ public class EllipseSampler {
 	}
 	
 	/**
-	 * Create an array of (x,y) coordinates on an ellipse of radii (a,b) and
-	 * rotated r radians. Random noise is added if noise &gt; 0.
+	 * Creates and returns an array of 2D points sampled on 
+	 * the ellipse associated with this {@link EllipseSampler}.
+	 * Random Gaussian noise (with standard deviation sigma)
+	 * is added to the individual x/y coordinates.
+	 * 
 	 * @param n number of points
 	 * @param startAngle initial angle (radians)
 	 * @param arcAngle arc angle (radians)
@@ -55,7 +63,6 @@ public class EllipseSampler {
 		if (arcAngle == 0)
 			arcAngle = 2 * PI;
 
-		
 //		double dAngle;
 //		if (endAngle > startAngle) {
 //			dAngle = endAngle - startAngle;

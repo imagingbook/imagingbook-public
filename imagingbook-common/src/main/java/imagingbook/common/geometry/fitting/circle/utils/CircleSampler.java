@@ -16,6 +16,11 @@ import java.util.Random;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 
+/**
+ * Utility class for picking random points on a given circle. 
+ * @author WB
+ *
+ */
 public class CircleSampler {
 	
 	private final Random rg;	
@@ -32,14 +37,15 @@ public class CircleSampler {
 	}
 	
 	/**
-	 * Generate point coordinates on a circular arc.
-	 * Sampled x/y positions are disturbed by additive Gaussian noise.
+	 * Creates and returns an array of 2D points sampled on 
+	 * the circle associated with this {@link CircleSampler}.
+	 * Random Gaussian noise (with standard deviation sigma)
+	 * is added to the individual x/y coordinates.
 	 *
 	 * @param n          number of points to sample
 	 * @param startAngle initial angle (in radians)
 	 * @param endAngle   final angle (in radians)
 	 * @param sigma      sigma of Gaussian noise
-	 *
 	 * @return an array of sample points
 	 */
 	public Pnt2d[] getPoints(int n, double startAngle, double endAngle, double sigma) {
