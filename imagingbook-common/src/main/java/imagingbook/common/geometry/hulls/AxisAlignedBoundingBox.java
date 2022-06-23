@@ -15,22 +15,41 @@ import static imagingbook.common.math.Matrix.add;
 import static imagingbook.common.math.Matrix.multiply;
 import static java.lang.Math.sqrt;
 
+import java.awt.Shape;
+import java.awt.geom.Path2D;
+
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.shape.ShapeProducer;
 
 /**
  * Represents a major axis-aligned bounding box of a 2D point set.
  * 
  * @author WB
- * @version 2021/10/11
+ * @version 2022/06/23
  * 
  */
-public class AxisAlignedBoundingBox {
+public class AxisAlignedBoundingBox implements ShapeProducer {
 	
-	private final Pnt2d[] boundingBox;	
+	private final Iterable<Pnt2d> points;
+	private final PntDouble centroid;
+	private final double[] orientationVector;
+	private final Pnt2d[] boundingbox;
+
 	
 	public AxisAlignedBoundingBox(Iterable<Pnt2d> points) {
-		this.boundingBox = makeBox(points);
+		this.points = points;
+		this.centroid = makeCentroid();
+		this.orientationVector = makeOrientationVector();
+		this.boundingbox = makeBox();
+	}
+	
+	public Pnt2d getCentroid() {
+		return centroid;
+	}
+	
+	public double[] getOrientationVector() {
+		return orientationVector;
 	}
 	
 	/**
@@ -39,7 +58,7 @@ public class AxisAlignedBoundingBox {
 	 * @return as described above
 	 */
 	public Pnt2d[] getCornerPoints() {
-		return (boundingBox == null) ? null : boundingBox;
+		return (boundingbox == null) ? null : boundingbox;
 	}
 		
 	/**
@@ -50,10 +69,10 @@ public class AxisAlignedBoundingBox {
 	 * @param points binary region
 	 * @return the region's bounding box as a sequence of 4 coordinates (p0, p1, p2, p3)
 	 */
-	private Pnt2d[] makeBox(Iterable<Pnt2d> points) {
+	private Pnt2d[] makeBox() {
 		//double theta = getOrientationAngle(points);
 		
-		double[] xy = getOrientationVector(points);
+		double[] xy = this.orientationVector;
 		if (xy == null) {	// regin's orientation is undefined
 			return null;
 		}
@@ -87,17 +106,14 @@ public class AxisAlignedBoundingBox {
 		return corners;
 	}
 
-	private double[] getOrientationVector(Iterable<Pnt2d> points) {
-		double[] centroid = getCentroid(points);
-		final double xc = centroid[0];
-		final double yc = centroid[1];
+	public double[] makeOrientationVector() {
 		double mu20 = 0;
 		double mu02 = 0;
 		double mu11 = 0;
 
 		for (Pnt2d p : points) {
-			double dx = (p.getX() - xc);
-			double dy = (p.getY() - yc);
+			double dx = (p.getX() - centroid.x);
+			double dy = (p.getY() - centroid.y);
 			mu20 = mu20 + dx * dx;
 			mu02 = mu02 + dy * dy;
 			mu11 = mu11 + dx * dy;
@@ -113,7 +129,7 @@ public class AxisAlignedBoundingBox {
 		return (isZero(d)) ? null : new double[] {xTheta / d, yTheta / d};
 	}
 	
-	private double[] getCentroid(Iterable<Pnt2d> points) {
+	private PntDouble makeCentroid() {
 		int n = 0;
 		double su = 0;
 		double sv = 0;
@@ -125,7 +141,29 @@ public class AxisAlignedBoundingBox {
 		if (n == 0) {
 			throw new IllegalArgumentException("empty point sequence!");
 		}
-		return new double[] {su/n, sv/n};
+		return PntDouble.from(su/n, sv/n);
+	}
+
+
+	// shape-related methods:
+	
+	@Override
+	public Path2D getShape(double scale) {
+		// shape of the actual bounding box
+		Path2D p = new Path2D.Double(Path2D.WIND_NON_ZERO, 4);
+		p.moveTo(boundingbox[0].getX(), boundingbox[0].getY());
+		p.lineTo(boundingbox[1].getX(), boundingbox[1].getY());
+		p.lineTo(boundingbox[2].getX(), boundingbox[2].getY());
+		p.lineTo(boundingbox[3].getX(), boundingbox[3].getY());
+		p.closePath();
+		return p;
 	}
 	
+	@Override
+	public Shape[] getShapes(double scale) {
+		return new Shape[] { 
+				getShape(scale), 				// primary shape element
+				getCentroid().getShape(scale) 	// additional shape elements
+				};
+	}
 }

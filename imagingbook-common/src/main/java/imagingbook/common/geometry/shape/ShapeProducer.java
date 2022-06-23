@@ -9,6 +9,10 @@
 package imagingbook.common.geometry.shape;
 
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
@@ -70,7 +74,50 @@ public interface ShapeProducer {
 		return getShapes(1);
 	}
 	
+	// TODO: experimental
+	public static Pnt2d[] getShapePoints(Shape shape) {
+	    double[] coords = new double[6];
+	    PathIterator pathIterator = shape.getPathIterator(null);
 
+	    List<Pnt2d> points = new ArrayList<>();
+	    
+	    while (!pathIterator.isDone()) {
+	    	int segmentType = pathIterator.currentSegment(coords);
+	        switch (segmentType) {
+	        
+	        case PathIterator.SEG_MOVETO :
+	            System.out.printf("move to x1=%f, y1=%f\n", coords[0], coords[1]);
+	            points.add(Pnt2d.from(coords[0], coords[1]));
+	            break;
+	            
+	        case PathIterator.SEG_LINETO :
+	            System.out.printf("line to x1=%f, y1=%f\n", coords[0], coords[1]);
+	            points.add(Pnt2d.from(coords[0], coords[1]));
+	            break;
+	            
+	        case PathIterator.SEG_QUADTO :
+	            System.out.printf("quad to x1=%f, y1=%f, x2=%f, y2=%f\n", coords[0], coords[1], coords[2], coords[3]);
+	            points.add(Pnt2d.from(coords[0], coords[1]));
+	            break;
+	            
+	        case PathIterator.SEG_CUBICTO :
+	            System.out.printf("cubic to x1=%f, y1=%f, x2=%f, y2=%f, x3=%f, y3=%f\n",
+	                    coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+	            points.add(Pnt2d.from(coords[0], coords[1]));
+	            break;
+	            
+	        case PathIterator.SEG_CLOSE :
+	            System.out.printf("close\n");
+	            break;
+	            
+	        default : throw new RuntimeException("unknown path segment type " + segmentType);
+	        }
+	        
+	        
+	        pathIterator.next();
+	    }
+	    return points.toArray(new Pnt2d[points.size()]);
+	}
 	
 	
 }

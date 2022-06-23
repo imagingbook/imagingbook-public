@@ -14,13 +14,14 @@ import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
-import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.hulls.AxisAlignedBoundingBox;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.common.ij.overlay.ColoredStroke;
+import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
@@ -29,10 +30,10 @@ import imagingbook.core.plugin.IjPluginName;
  * This plugin creates a binary region segmentation, calculates 
  * the center and major axis and subsequently the major axis-aligned
  * bounding box for each region.
- * Requires a binary (segmented) image.
+ * Requires a binary image.
  * 
  * @author WB
- * @version 2020/12/17
+ * @version 2022/06/23
  */
 @IjPluginName("Axis-Aligned Bounding Box")
 public class AxisAligned_Bounding_Box_Demo implements PlugInFilter {
@@ -61,46 +62,22 @@ public class AxisAligned_Bounding_Box_Demo implements PlugInFilter {
 			return;
 		}
 		
-		ColorProcessor cp = ip.convertToColorProcessor();
-		cp.add(128);	// brighten
+		ImageProcessor ip2 = ip.duplicate();
+		ip2.add(128);	// brighten
 		
+		// draw bounding boxes as vector overlay
+		Overlay oly = new Overlay();
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+		ola.setStroke(new ColoredStroke(0.5, BoundingBoxColor));
 		
 		for (BinaryRegion r: regions) {
-			Pnt2d xc = r.getCenter();
-			int uc = (int) Math.round(xc.getX());
-			int vc = (int) Math.round(xc.getY());
-			Pnt2d[] box = (new AxisAlignedBoundingBox(r)).getCornerPoints();
-			if (box != null) {
-				//double[][] box = getAxisAlignedBoundingBox(r);
-				drawCenter(cp,  uc,  vc);
-				drawBox(cp, box);
-			}
+			AxisAlignedBoundingBox box = new AxisAlignedBoundingBox(r);
+			ola.addShapes(box.getShapes());
 		}
-
-		(new ImagePlus(im.getShortTitle() + "-aligned-bb", cp)).show();
+		
+		ImagePlus im2 = new ImagePlus(im.getShortTitle() + "-aligned-bb", ip2);
+		im2.setOverlay(oly);
+		im2.show();
 	}
 	
-	
-	private void drawBox(ImageProcessor ip, Pnt2d[] box) {
-		ip.setColor(BoundingBoxColor);
-		ip.setLineWidth(1);
-		drawLine(ip, box[0], box[1]);
-		drawLine(ip, box[1], box[2]);
-		drawLine(ip, box[2], box[3]);
-		drawLine(ip, box[3], box[0]);
-	}
-	
-	private void drawLine(ImageProcessor ip, Pnt2d p0, Pnt2d p1) {
-		int u0 = (int) Math.round(p0.getX());
-		int v0 = (int) Math.round(p0.getY());
-		int u1 = (int) Math.round(p1.getX());
-		int v1 = (int) Math.round(p1.getY());
-		ip.drawLine(u0, v0, u1, v1);	
-	}
-	
-	void drawCenter(ImageProcessor ip, int uc, int vc) {
-		ip.setColor(CenterColor);
-		ip.setLineWidth(1);
-		ip.drawRect(uc - 2, vc - 2, 5, 5);
-	}
 }
