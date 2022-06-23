@@ -20,12 +20,12 @@ imagingbook.common.geometry.delaunay.guibas
 imagingbook.common.geometry.ellipse
 imagingbook.common.geometry.ellipse.project
 imagingbook.common.geometry.fitting
-imagingbook.common.geometry.fitting.circle
 imagingbook.common.geometry.fitting.circle.algebraic
 imagingbook.common.geometry.fitting.circle.geometric
-imagingbook.common.geometry.fitting.ellipse
+imagingbook.common.geometry.fitting.circle.utils
 imagingbook.common.geometry.fitting.ellipse.algebraic
 imagingbook.common.geometry.fitting.ellipse.geometric
+imagingbook.common.geometry.fitting.ellipse.utils
 imagingbook.common.geometry.fitting.line
 imagingbook.common.geometry.homography
 imagingbook.common.geometry.hulls

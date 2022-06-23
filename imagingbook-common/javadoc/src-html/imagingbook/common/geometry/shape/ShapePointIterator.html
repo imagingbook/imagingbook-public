@@ -32,8 +32,8 @@
 <span class="sourceLineNo">022</span><a id="line.22">        private final PathIterator pi;</a>
 <span class="sourceLineNo">023</span><a id="line.23">        private final double coords[] = new double[6];</a>
 <span class="sourceLineNo">024</span><a id="line.24">        </a>
-<span class="sourceLineNo">025</span><a id="line.25">        public ShapePointIterator(Shape s, double flatness) {</a>
-<span class="sourceLineNo">026</span><a id="line.26">                this.pi = s.getPathIterator(null, flatness);</a>
+<span class="sourceLineNo">025</span><a id="line.25">        public ShapePointIterator(Shape shape, double flatness) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">                this.pi = shape.getPathIterator(null, flatness);</a>
 <span class="sourceLineNo">027</span><a id="line.27">        }</a>
 <span class="sourceLineNo">028</span><a id="line.28"></a>
 <span class="sourceLineNo">029</span><a id="line.29">        @Override</a>
