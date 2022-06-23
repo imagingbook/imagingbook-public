@@ -21,6 +21,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.hough.HoughLine;
 import imagingbook.common.math.Arithmetic;
+import imagingbook.common.math.Matrix;
 
 /**
  * This class represents an algebraic line of the form A x + B y + C = 0.
@@ -45,16 +46,19 @@ public class AlgebraicLine implements ShapeProducer, Curve2d {
 		if (isZero(norm)) {
 			throw new IllegalArgumentException("A and B may not both be zero");
 		}
-		if (A >= 0) {
-			this.A = A / norm;
-			this.B = B / norm;
-			this.C = C / norm;
-		}
-		else {
-			this.A = -A / norm;
-			this.B = -B / norm;
-			this.C = -C / norm;
-		}
+		this.A = A / norm;	// don't switch sign here since this messes up signed point distance calculation
+		this.B = B / norm;
+		this.C = C / norm;
+//		if (A >= 0) {
+//			this.A = A / norm;
+//			this.B = B / norm;
+//			this.C = C / norm;
+//		}
+//		else {
+//			this.A = -A / norm;
+//			this.B = -B / norm;
+//			this.C = -C / norm;
+//		}
 	}
 	
 	/**

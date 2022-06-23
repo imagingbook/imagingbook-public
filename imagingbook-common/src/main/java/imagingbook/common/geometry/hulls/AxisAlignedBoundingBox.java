@@ -20,6 +20,7 @@ import java.awt.geom.Path2D;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.shape.ShapeProducer;
 
 /**
@@ -35,6 +36,7 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	private final PntDouble centroid;
 	private final double[] orientationVector;
 	private final Pnt2d[] boundingbox;
+	private final AlgebraicLine[] boundinglines;
 
 	
 	public AxisAlignedBoundingBox(Iterable<Pnt2d> points) {
@@ -42,6 +44,11 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 		this.centroid = makeCentroid();
 		this.orientationVector = makeOrientationVector();
 		this.boundingbox = makeBox();
+		this.boundinglines = new AlgebraicLine[] {
+			AlgebraicLine.from(boundingbox[0], boundingbox[1]),
+			AlgebraicLine.from(boundingbox[1], boundingbox[2]),
+			AlgebraicLine.from(boundingbox[2], boundingbox[3]),
+			AlgebraicLine.from(boundingbox[3], boundingbox[0])};
 	}
 	
 	public Pnt2d getCentroid() {
@@ -97,6 +104,12 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 			bmin = Math.min(b, bmin);
 			bmax = Math.max(b, bmax);
 		}
+		
+//		double delta = 1e-6;
+//		amin -= delta;
+//		bmin -= delta;
+//		amax += delta;
+//		bmax += delta;
 		
 		Pnt2d[] corners = new Pnt2d[4];
 		corners[0] = PntDouble.from(add(multiply(amin, ea), multiply(bmin, eb)));
@@ -165,5 +178,31 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 				getShape(scale), 				// primary shape element
 				getCentroid().getShape(scale) 	// additional shape elements
 				};
+	}
+	
+	public static final double DefaultContainsTolerance = 1e-12;
+	
+	public boolean contains(Pnt2d p) {
+		return contains(p, DefaultContainsTolerance);
+	}
+	
+	/**
+	 * Checks if this bounding box contains the specified point.
+	 * This method is used instead of {@link Path2D#contains(double, double)}
+	 * to avoid false results due to roundoff errors.
+	 * 
+	 * @param p some 2D point
+	 * @param tolerance positive quantity for being outside
+	 * @return true if the point is inside the bounding box
+	 */
+	public boolean contains(Pnt2d p, double tolerance) {
+		for (int i = 0; i < 4; i++) {
+			double dist = boundinglines[0].getSignedDistance(p);
+			// positive signed distance means that the point is to the left
+			if (dist + tolerance < 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

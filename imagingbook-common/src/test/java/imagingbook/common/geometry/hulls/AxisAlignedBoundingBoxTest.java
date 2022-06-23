@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -28,19 +28,31 @@ public class AxisAlignedBoundingBoxTest {
 		runPointTest(points);
 	}
 	
-	private void runPointTest(Iterable<Pnt2d> points) {
+	@Test
+	public void test2() {
+		int N = 100; 	// number of random points
+		int K = 100;	// number of tries
+		Random rg = new Random(17);
+		Pnt2d[] pointArray = new Pnt2d[N];
+		
+		for (int k = 0; k < K; k++) {
+			for (int i = 0; i < N; i++) {
+				pointArray[i] = Pnt2d.from(100 * rg.nextDouble(), 100 * rg.nextDouble());
+			}
+			runPointTest(Arrays.asList(pointArray));
+		}
+	}
+	
+	private static void runPointTest(Iterable<Pnt2d> points) {
 		AxisAlignedBoundingBox box = new AxisAlignedBoundingBox(points);
 		
 		Pnt2d[] corners = box.getCornerPoints();
 		assertNotNull(corners);
 		assertEquals(4, corners.length);
-//		System.out.println(Arrays.toString(corners));
-		
-		Path2D poly = box.getShape(1);
 		
 		// check if all sample points are inside the bounding box
 		for (Pnt2d p : points) {
-			assertTrue(poly.contains(p.getX(), p.getY()));
+			assertTrue("point not contained in bounding box: " + p, box.contains(p));
 		}
 	}
 

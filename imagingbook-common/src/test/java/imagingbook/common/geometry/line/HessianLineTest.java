@@ -34,12 +34,12 @@ public class HessianLineTest {
 		assertEquals(0.0, H1.getDistance(p1), TOL);						// x1 is actually ON the line
 		assertEquals(0.0, H1.getDistance(p2), TOL);						// x1 is actually ON the line
 		
-		assertEquals(0.4678877204190327, H1.A, TOL);
-		assertEquals(-0.8837879163470618, H1.B, TOL);
-		assertEquals(-5.198752449100363, H1.C, TOL);
+		assertEquals(-0.4678877204190327, H1.A, TOL);
+		assertEquals( 0.8837879163470618, H1.B, TOL);
+		assertEquals( 5.198752449100363, H1.C, TOL);
 		
-		assertEquals(-1.0838970949836275, H1.getAngle(), TOL); 	// was 2.0576955586061656 before forcing A to be positive
-		assertEquals(5.198752449100363, H1.getRadius(), TOL); 	// was -5.198752449100363
+		assertEquals( 2.0576955586061656, H1.getAngle(), TOL); 	
+		assertEquals(-5.198752449100363, H1.getRadius(), TOL); 
 	}
 	
 	@Test

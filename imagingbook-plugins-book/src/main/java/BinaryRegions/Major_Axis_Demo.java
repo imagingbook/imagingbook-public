@@ -31,6 +31,8 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * to assign numeric properties to regions and retrieve them afterwards.
  * Requires a binary (segmented) image.
  * 
+ * TODO: convert to overlay display
+ * 
  * @author W. Burger
  * @version 2020/12/17
  */

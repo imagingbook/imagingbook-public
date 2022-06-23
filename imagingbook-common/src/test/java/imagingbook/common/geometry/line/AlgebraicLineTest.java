@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.geometry.line;
 
-import java.awt.Shape;
+import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -71,8 +71,42 @@ public class AlgebraicLineTest {
 	}
 	
 	
-	@Test	// check AWT Shape generation
+	@Test
 	public void test6() {
+		Pnt2d A = Pnt2d.from(0, 0);
+		Pnt2d B = Pnt2d.from(10, 10);
+		AlgebraicLine LAB = AlgebraicLine.from(A, B);
+		AlgebraicLine LBA = AlgebraicLine.from(B, A);
+		{
+			Pnt2d C = Pnt2d.from(0, 10);
+			Pnt2d D = Pnt2d.from(10, 0);
+			
+			Assert.assertEquals(-LAB.getSignedDistance(C), LAB.getSignedDistance(D), TOL);
+			Assert.assertEquals(-LBA.getSignedDistance(C), LBA.getSignedDistance(D), TOL);
+			
+			Assert.assertEquals(-LAB.getSignedDistance(C), LBA.getSignedDistance(C), TOL);
+			Assert.assertEquals(-LAB.getSignedDistance(D), LBA.getSignedDistance(D), TOL);
+		}
+		
+		Random rg = new Random(17);
+		for (int i = 0; i < 1000; i++) {
+			double x = 10 * rg.nextDouble();
+			double y = 10 * rg.nextDouble();
+			Pnt2d C = Pnt2d.from(x, y);
+			Pnt2d D = Pnt2d.from(y, x);
+			
+			Assert.assertEquals(-LAB.getSignedDistance(C), LAB.getSignedDistance(D), TOL);
+			Assert.assertEquals(-LBA.getSignedDistance(C), LBA.getSignedDistance(D), TOL);
+			
+			Assert.assertEquals(-LAB.getSignedDistance(C), LBA.getSignedDistance(C), TOL);
+			Assert.assertEquals(-LAB.getSignedDistance(D), LBA.getSignedDistance(D), TOL);
+		}
+	}
+
+	
+	
+	@Test	// check AWT Shape generation
+	public void test10() {
 		AlgebraicLine L12 = AlgebraicLine.from(p1, p2);
 		Assert.assertTrue("produced Shape does not match line", new ShapeChecker().check(L12, L12.getShape()));
 	}
