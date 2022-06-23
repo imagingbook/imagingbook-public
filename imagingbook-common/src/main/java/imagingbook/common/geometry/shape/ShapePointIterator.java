@@ -22,8 +22,8 @@ public class ShapePointIterator implements Iterator<Pnt2d> {
 	private final PathIterator pi;
 	private final double coords[] = new double[6];
 	
-	public ShapePointIterator(Shape s, double flatness) {
-		this.pi = s.getPathIterator(null, flatness);
+	public ShapePointIterator(Shape shape, double flatness) {
+		this.pi = shape.getPathIterator(null, flatness);
 	}
 
 	@Override
