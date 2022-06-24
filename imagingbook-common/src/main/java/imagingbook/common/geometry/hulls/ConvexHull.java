@@ -8,9 +8,12 @@
  *******************************************************************************/
 package imagingbook.common.geometry.hulls;
 
+import java.awt.Shape;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Segment;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -19,6 +22,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.line.AlgebraicLine;
+import imagingbook.common.geometry.shape.ShapeProducer;
 
 /**
  * This class serves to calculate the convex hull of a binary region
@@ -30,29 +35,39 @@ import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
  * TODO: implement ShapeProducer
  * 
  * @author W. Burger
- * @version 2020/10/11
+ * @version 2022/06/24
  */
-public class ConvexHull {
+public class ConvexHull implements ShapeProducer {
 	
 	private final ConvexHull2D hull;
+	private final Pnt2d[] vertices;
 	
 	// public constructors ------------------------
 	
 	public ConvexHull(Iterable<Pnt2d> points) {
-		this.hull = new MonotoneChain().generate(convertToVector2D(points));
+		List<Vector2D> pts = convertToVector2D(points);
+		if (pts.size() < 1) {
+			throw new IllegalArgumentException("at least 1 point required for convex hull");
+		}
+		this.hull = new MonotoneChain().generate(pts);
+		Vector2D[] vecs = hull.getVertices();
+		this.vertices = new Pnt2d[vecs.length];
+		for (int i = 0; i < vecs.length; i++) {
+			vertices[i] = PntDouble.from(vecs[i]);
+		}
+	}
+	
+	public ConvexHull(Pnt2d[] points) {
+		this(() -> Arrays.stream(points).iterator());
 	}
 	
 	// public methods ------------------------
 	
 	public Pnt2d[] getVertices() {
-		Vector2D[] vecs = hull.getVertices();	// apparently vertices are ordered, but is this guaranteed?
-		Pnt2d[] pnts = new Pnt2d[vecs.length];
-		for (int i = 0; i < vecs.length; i++) {
-			pnts[i] = PntDouble.from(vecs[i]);
-		}
-		return pnts;
+		return this.vertices;
 	}
 	
+	@Deprecated
 	public Line2D[] getSegments() {
 		Segment[] origSegments = hull.getLineSegments();
 		Line2D[] newSegments = new Line2D.Double[origSegments.length];
@@ -67,12 +82,58 @@ public class ConvexHull {
 	
 	// --------------------------------------------------------------------
 	
-	private static Collection<Vector2D> convertToVector2D(Iterable<Pnt2d> points) {
-		Collection<Vector2D> vecs = new ArrayList<Vector2D>();
+	private static List<Vector2D> convertToVector2D(Iterable<Pnt2d> points) {
+		List<Vector2D> vecs = new ArrayList<Vector2D>();
 		for (Pnt2d p : points) {
 			vecs.add(new Vector2D(p.getX(), p.getY()));
 		}
 		return vecs;
+	}
+
+	@Override
+	public Shape getShape(double scale) {
+		if (vertices.length < 2) {	// degenerate case (single point)
+			return vertices[0].getShape(scale);
+		}
+		else {
+			Path2D path = new Path2D.Double(Path2D.WIND_NON_ZERO, 4);
+			path.moveTo(vertices[0].getX(), vertices[0].getY());
+			for (int i = 1; i < vertices.length; i++) {
+				path.lineTo(vertices[i].getX(), vertices[i].getY());
+			}
+			path.closePath();
+			return path;
+		}
+	}
+	
+	// --------------------------------------------------------------------
+	
+	public static final double DefaultContainsTolerance = 1e-12;
+	
+	public boolean contains(Pnt2d p) {
+		return contains(p, DefaultContainsTolerance);
+	}
+	
+	/**
+	 * Checks if this bounding box contains the specified point.
+	 * This method is used instead of {@link Path2D#contains(double, double)}
+	 * to avoid false results due to roundoff errors.
+	 * 
+	 * @param p some 2D point
+	 * @param tolerance positive quantity for being outside
+	 * @return true if the point is inside the bounding box
+	 */
+	public boolean contains(Pnt2d p, double tolerance) {
+		for (int i = 0; i < vertices.length; i++) {
+			int j = (i + 1) % vertices.length;
+			AlgebraicLine line = AlgebraicLine.from(vertices[i], vertices[j]);
+			double dist = line.getSignedDistance(p);
+			// positive signed distance means that the point is to the left
+			if (dist + tolerance < 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

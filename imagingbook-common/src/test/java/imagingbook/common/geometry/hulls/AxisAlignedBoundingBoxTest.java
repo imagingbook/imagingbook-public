@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
@@ -16,14 +14,14 @@ public class AxisAlignedBoundingBoxTest {
 
 	@Test
 	public void test1() {
-		List<Pnt2d> points = Arrays.asList(
+		Pnt2d[] points = {
 				Pnt2d.from(2, 5),
 				Pnt2d.from(5, 4),
 				Pnt2d.from(5, 7),
 				Pnt2d.from(7, 6),
 				Pnt2d.from(9, 9),
 				Pnt2d.from(6, 2)
-				);
+		};
 		
 		runPointTest(points);
 	}
@@ -39,11 +37,11 @@ public class AxisAlignedBoundingBoxTest {
 			for (int i = 0; i < N; i++) {
 				pointArray[i] = Pnt2d.from(100 * rg.nextDouble(), 100 * rg.nextDouble());
 			}
-			runPointTest(Arrays.asList(pointArray));
+			runPointTest(pointArray);
 		}
 	}
 	
-	private static void runPointTest(Iterable<Pnt2d> points) {
+	private static void runPointTest(Pnt2d[] points) {
 		AxisAlignedBoundingBox box = new AxisAlignedBoundingBox(points);
 		
 		Pnt2d[] corners = box.getCornerPoints();

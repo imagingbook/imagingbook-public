@@ -10,33 +10,31 @@
 package BinaryRegions;
 
 import java.awt.Color;
-import java.awt.geom.Line2D;
 import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
-import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.hulls.ConvexHull;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.common.ij.overlay.ColoredStroke;
+import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 
 /**
- * This plugin demonstrates the use of the {@link ConvexHull} class.
+ * This ImageJ plugin demonstrates the use of the {@link ConvexHull} class.
  * It performs region segmentation, calculates the convex hull
  * for each region found and then draws the result into a new color
  * image.
- * Requires a binary (segmented) image.
+ * Requires a binary image.
  * 
- * TODO: convert to overlay display
  * 
  * @author W. Burger
- * @version 2020/12/17
+ * @version 2022/06/24
  * 
  */
 public class Convex_Hull_Demo implements PlugInFilter {
@@ -66,34 +64,22 @@ public class Convex_Hull_Demo implements PlugInFilter {
 			return;
 		}
 		
-		ColorProcessor cp = ip.convertToColorProcessor();
-		cp.add(128);
+		ImageProcessor ip2 = ip.duplicate();
+		ip2.add(128);
+		
+		// draw convex hulls as vector overlay
+		Overlay oly = new Overlay();
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+		ola.setStroke(new ColoredStroke(0.5, ConvexHullColor));
 		
 		for (BinaryRegion r: regions) {
 			//ConvexHull hull = new ConvexHull(r);					// takes all region points
 			ConvexHull hull = new ConvexHull(r.getOuterContour());	// takes only outer contour points
-			
-			Line2D[] segments = hull.getSegments();
-			drawHull(cp, segments);
+			ola.addShapes(hull.getShapes());
 		}
 
-		(new ImagePlus(im.getShortTitle() + "-convex-hulls", cp)).show();
+		ImagePlus im2 = new ImagePlus(im.getShortTitle() + "-convex-hulls", ip2);
+		im2.setOverlay(oly);
+		im2.show();
 	}
-	
-	// ----------------------------------------------------
-	
-	private void drawHull(ImageProcessor ip, Line2D[] segments) {
-		for (Line2D line : segments) {
-			drawSegment(ip, PntDouble.from(line.getP1()), PntDouble.from(line.getP2()));
-		}
-	}
-
-	private void drawSegment(ImageProcessor ip, Pnt2d p1, Pnt2d p2) {
-		int x1 = (int) Math.round(p1.getX());
-		int y1 = (int) Math.round(p1.getY());
-		int x2 = (int) Math.round(p2.getX());
-		int y2 = (int) Math.round(p2.getY());
-		ip.drawLine(x1, y1, x2, y2);
-	}
-
 }
