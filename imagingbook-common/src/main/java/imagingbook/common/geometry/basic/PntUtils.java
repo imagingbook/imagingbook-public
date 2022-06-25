@@ -8,19 +8,50 @@
  *******************************************************************************/
 package imagingbook.common.geometry.basic;
 
+import java.util.Arrays;
+
 public abstract class PntUtils {
 	
-	public static Pnt2d centroid(Pnt2d[] pts) {
-		final int n = pts.length;
+	/**
+	 * Calculates and returns the centroid of the specified
+	 * point set.
+	 * @param pts an {@link Iterable} of {@link Pnt2d} instances
+	 * @return the centroid (as a {@link Pnt2d} instance)
+	 */
+	public static Pnt2d centroid(Iterable<Pnt2d> pts) {
 		double sx = 0;
 		double sy = 0;
-		for (int i = 0; i < n; i++) {
-			sx = sx + pts[i].getX();
-			sy = sy + pts[i].getY();
+		int n = 0;
+		for (Pnt2d p : pts) {
+			sx = sx + p.getX();
+			sy = sy + p.getY();
+			n++;
+		}
+		if (n == 0) {
+			throw new IllegalArgumentException("at least one point is required for centroid calculation");
 		}
 		return Pnt2d.from(sx/n, sy/n);
 	}
 	
+	/**
+	 * Calculates and returns the centroid of the specified
+	 * point set.
+	 * @param pts an array of {@link Pnt2d} instances
+	 * @return the centroid (as a {@link Pnt2d} instance)
+	 */
+	public static Pnt2d centroid(Pnt2d[] pts) {
+		return centroid(() -> Arrays.stream(pts).iterator());
+	}
+	
+	// -------------------------------------------------------------------
+	
+	
+	/**
+	 * Converts a given point array {@code Pnt2d[n]} to a {@code double[n][2]},
+	 * with the x-coordinates in column 0 and y-coordinates in column 1.
+	 * @param pts the point array
+	 * @return a 2D double array
+	 */
 	public static double[][] toDoubleArray(Pnt2d[] pts) {
 		final int n = pts.length;
 		double[][] pa = new double[n][2];
@@ -31,6 +62,12 @@ public abstract class PntUtils {
 		return pa;
 	}
 	
+	/**
+	 * Converts a given 2D array {@code double[n][2]} to a point array {@code Pnt2d[n]},
+	 * taking the x-coordinates from column 0 and y-coordinates from column 1.
+	 * @param pa a 2D double array 
+	 * @return a point array
+	 */
 	public static Pnt2d[] fromDoubleArray(double[][] pa) {
 		final int n = pa.length;
 		Pnt2d[] pts = new Pnt2d[n];

@@ -23,7 +23,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 public class Pnt2dDuplicateTest {
 	
 	@Test
-	public void testDuplicateClass() {
+	public void testDuplicateClass1() {
 		// duplicates are always of the same class as the original
 		
 		Pnt2d p1 = PntInt.from(3, 8);
@@ -33,6 +33,19 @@ public class Pnt2dDuplicateTest {
 		Pnt2d p2 = PntDouble.from(3, 8);
 		Assert.assertTrue(p2.duplicate() instanceof PntDouble);
 		Assert.assertTrue(p2.duplicate().getClass() == p2.getClass());
+	}
+	
+	@Test
+	public void testDuplicateClass2() {
+		// duplicates are always of the same class as the original
+		
+		Pnt2d p1 = PntInt.from(3, 8);
+		Assert.assertTrue(Pnt2d.from(p1) instanceof PntInt);
+		Assert.assertTrue(Pnt2d.from(p1).getClass() == p1.getClass());
+		
+		Pnt2d p2 = PntDouble.from(3, 8);
+		Assert.assertTrue(Pnt2d.from(p2) instanceof PntDouble);
+		Assert.assertTrue(Pnt2d.from(p2).getClass() == p2.getClass());
 	}
 
 	@Test
