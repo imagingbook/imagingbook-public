@@ -32,8 +32,6 @@ import imagingbook.common.geometry.shape.ShapeProducer;
  * Apache Commons Math library, in particular classes 
  * {@link ConvexHull2D} and {@link MonotoneChain}.
  * 
- * TODO: implement ShapeProducer
- * 
  * @author W. Burger
  * @version 2022/06/24
  */
@@ -42,8 +40,11 @@ public class ConvexHull implements ShapeProducer {
 	private final ConvexHull2D hull;
 	private final Pnt2d[] vertices;
 	
-	// public constructors ------------------------
-	
+	/**
+	 * Constructor.
+	 * 
+	 * @param points a (iterable) set of 2D sample points
+	 */
 	public ConvexHull(Iterable<Pnt2d> points) {
 		List<Vector2D> pts = convertToVector2D(points);
 		if (pts.size() < 1) {
@@ -57,12 +58,23 @@ public class ConvexHull implements ShapeProducer {
 		}
 	}
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param points an array of 2D sample points
+	 */
 	public ConvexHull(Pnt2d[] points) {
 		this(() -> Arrays.stream(points).iterator());
 	}
 	
 	// public methods ------------------------
 	
+	/**
+	 * Returns a sequence of 2D points on the convex hull
+	 * (in counter-clockwise order).
+	 * 
+	 * @return sequence of 2D points on the convex hull
+	 */
 	public Pnt2d[] getVertices() {
 		return this.vertices;
 	}
@@ -115,13 +127,13 @@ public class ConvexHull implements ShapeProducer {
 	}
 	
 	/**
-	 * Checks if this bounding box contains the specified point.
+	 * Checks if this convex hull contains the specified point.
 	 * This method is used instead of {@link Path2D#contains(double, double)}
 	 * to avoid false results due to roundoff errors.
 	 * 
 	 * @param p some 2D point
 	 * @param tolerance positive quantity for being outside
-	 * @return true if the point is inside the bounding box
+	 * @return true if the point is inside the hull
 	 */
 	public boolean contains(Pnt2d p, double tolerance) {
 		for (int i = 0; i < vertices.length; i++) {

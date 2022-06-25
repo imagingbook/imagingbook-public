@@ -55,8 +55,10 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	}
 	
 	/**
-	 * Convenience constructor. The supplied points will be inserted
-	 * in their original order (without shuffling).
+	 * Constructor. 
+	 * Supplied points are inserted without shuffling, i.e.,
+	 * in their original order.
+	 * 
 	 * @param points the point set to be triangulated
 	 */
 	public TriangulationGuibas(Collection<? extends Pnt2d> points) {

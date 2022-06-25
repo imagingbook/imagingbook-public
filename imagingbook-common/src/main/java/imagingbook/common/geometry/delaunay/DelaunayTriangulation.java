@@ -8,10 +8,11 @@
  *******************************************************************************/
 package imagingbook.common.geometry.delaunay;
 
+import java.util.Collection;
 import java.util.List;
 
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.delaunay.guibas.Triangle2D;
+import imagingbook.common.geometry.delaunay.guibas.TriangulationGuibas;
 
 /**
  * Interface specification for various implementations of the
@@ -26,7 +27,7 @@ public interface DelaunayTriangulation {
 	public int size();
 	
 	/**
-	 * Returns a list of {@link Triangle2D} instances
+	 * Returns a list of {@link Triangle} instances
 	 * contained in this triangulation. The list does not contain the initial outer 
 	 * triangle.
 	 * @return a list of triangles 
@@ -35,11 +36,32 @@ public interface DelaunayTriangulation {
 	
 	/**
 	 * Returns a list of 2D vertices (implementing the {@link Pnt2d} interface)
-	 * contained in this triangulation. The sequence of points is assumed
-	 * to be in the order of their actual insertion. The list does not contain the
+	 * contained in this triangulation. The list does not contain the
 	 * vertices of the initial (outer) triangle.
 	 * @return a list of points
 	 */
 	public List<Pnt2d> getPoints();
+	
+	/**
+	 * Performs Delaunay triangulation on the specified points.
+	 * Supplied points are inserted without shuffling, i.e.,
+	 * in their original order.
+	 * 
+	 * @param points the point set to be triangulated
+	 */
+	public static DelaunayTriangulation from(Collection<? extends Pnt2d> points) {
+		return DelaunayTriangulation.from(points, false);
+	}
+	
+	/**
+	 * Performs Delaunay triangulation on the specified points with
+	 * (optional) random insertion order.
+	 * 
+	 * @param points the point set to be triangulated
+	 * @param shuffle set {@code true} to randomly shuffle the input points
+	 */
+	public static DelaunayTriangulation from(Collection<? extends Pnt2d> points, boolean shuffle) {
+		return new TriangulationGuibas(points, shuffle);
+	}
 
 }
