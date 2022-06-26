@@ -64,15 +64,15 @@ public abstract class PntUtils {
 	
 	/**
 	 * Converts a given 2D double array {@code double[n][2]} to a point array {@code Pnt2d[n]},
-	 * taking the x-coordinates from column 0 and y-coordinates from column 1.
-	 * @param pa a 2D double array 
+	 * taking x-coordinates from column 0 and y-coordinates from column 1.
+	 * @param da a 2D double array 
 	 * @return a point array
 	 */
-	public static Pnt2d[] fromDoubleArray(double[][] pa) {
-		final int n = pa.length;
+	public static Pnt2d[] fromDoubleArray(double[][] da) {
+		final int n = da.length;
 		Pnt2d[] pts = new Pnt2d[n];
 		for (int i = 0; i < n; i++) {
-			pts[i] = Pnt2d.from(pa[i]);
+			pts[i] = Pnt2d.from(da[i]);
 		}
 		return pts;
 	}
