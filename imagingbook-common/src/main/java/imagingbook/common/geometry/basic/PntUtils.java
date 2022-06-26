@@ -47,8 +47,8 @@ public abstract class PntUtils {
 	
 	
 	/**
-	 * Converts a given point array {@code Pnt2d[n]} to a {@code double[n][2]},
-	 * with the x-coordinates in column 0 and y-coordinates in column 1.
+	 * Converts a given point array {@code Pnt2d[n]} to a 2D double array {@code double[n][2]},
+	 * with x-coordinates in column 0 and y-coordinates in column 1.
 	 * @param pts the point array
 	 * @return a 2D double array
 	 */
@@ -63,7 +63,7 @@ public abstract class PntUtils {
 	}
 	
 	/**
-	 * Converts a given 2D array {@code double[n][2]} to a point array {@code Pnt2d[n]},
+	 * Converts a given 2D double array {@code double[n][2]} to a point array {@code Pnt2d[n]},
 	 * taking the x-coordinates from column 0 and y-coordinates from column 1.
 	 * @param pa a 2D double array 
 	 * @return a point array
