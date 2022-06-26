@@ -21,11 +21,11 @@ import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.hough.HoughLine;
 import imagingbook.common.math.Arithmetic;
-import imagingbook.common.math.Matrix;
 
 /**
  * This class represents an algebraic line of the form A x + B y + C = 0.
  * Instances are immutable and normalized such that ||(A,B)|| = 1.
+ * 
  * @author WB
  *
  */
@@ -49,16 +49,6 @@ public class AlgebraicLine implements ShapeProducer, Curve2d {
 		this.A = A / norm;	// don't switch sign here since this messes up signed point distance calculation
 		this.B = B / norm;
 		this.C = C / norm;
-//		if (A >= 0) {
-//			this.A = A / norm;
-//			this.B = B / norm;
-//			this.C = C / norm;
-//		}
-//		else {
-//			this.A = -A / norm;
-//			this.B = -B / norm;
-//			this.C = -C / norm;
-//		}
 	}
 	
 	/**
@@ -73,7 +63,17 @@ public class AlgebraicLine implements ShapeProducer, Curve2d {
 	
 	// static factory methods ----------------------------------------
 	
-	// Line from start point s and direction vector v
+	/**
+	 * Creates a new {@link AlgebraicLine} instance from a given
+	 * start point and orientation vector.
+	 * For a point on the left side of the line (looking along the direction
+	 * vector), the value returned by {@link #getSignedDistance(Pnt2d)} is positive
+	 * and negative for points on the right side.
+	 * 
+	 * @param s start point
+	 * @param v orientation vector
+	 * @return a new {@link AlgebraicLine} instance
+	 */
 	public static AlgebraicLine from(double[] s, double[] v) {
 		double a = -v[1];
 		double b = v[0];
@@ -81,16 +81,41 @@ public class AlgebraicLine implements ShapeProducer, Curve2d {
 		return new AlgebraicLine(a, b, c);
 	}
 	
+	/**
+	 * Creates a new {@link AlgebraicLine} instance from a given
+	 * {@link ParametricLine}.
+	 * 
+	 * @param pl a {@link ParametricLine}
+	 * @return a new {@link AlgebraicLine} instance
+	 */
 	public static AlgebraicLine from(ParametricLine pl) {
 		return AlgebraicLine.from(pl.getS(), pl.getV());
 	}
 	
+	/**
+	 * Creates a new {@link AlgebraicLine} instance from two given
+	 * points. The direction of the line is from the first
+	 * to the second point.
+	 * 
+	 * @param p0 first point
+	 * @param p1 second point
+	 * @return a new {@link AlgebraicLine} instance
+	 */
 	public static AlgebraicLine from(Pnt2d p0, Pnt2d p1) {
 		double[] s = p0.toDoubleArray();
 		double[] v = p1.minus(p0).toDoubleArray();
 		return AlgebraicLine.from(s, v);
 	}
 	
+	/**
+	 * Creates a new {@link AlgebraicLine} instance from a given
+	 * {@link SlopeInterceptLine}.
+	 * Note: This is trivial, since {@link SlopeInterceptLine} is 
+	 * a (restricted) {@link AlgebraicLine} itself.
+	 * 
+	 * @param sil a {@link SlopeInterceptLine}
+	 * @return a new {@link AlgebraicLine} instance
+	 */
 	public static AlgebraicLine from(SlopeInterceptLine sil) {
 //		double a = sil.getK();
 //		double c = sil.getD();
@@ -195,6 +220,13 @@ public class AlgebraicLine implements ShapeProducer, Curve2d {
 		return PntDouble.from(x0, y0);
 	}	
 
+	/**
+	 * Calculates the sum of squared distances between this line
+	 * and a given array of 2D points.
+	 * 
+	 * @param points an array of points
+	 * @return the sum of squared distances
+	 */
 	public double getSquareError(Pnt2d[] points) {
 		double sum2 = 0;
 		for (Pnt2d p : points) {
@@ -203,15 +235,23 @@ public class AlgebraicLine implements ShapeProducer, Curve2d {
 		return sum2;
 	}
 	
-	public Pnt2d intersect(AlgebraicLine L2) {
-		AlgebraicLine L1 = this;	
-		double det = L1.A * L2.B - L2.A * L1.B;
+	/**
+	 * Finds the intersection point between this line and
+	 * another {@link AlgebraicLine}. Returns {@code null} 
+	 * if the two lines are parallel.
+	 * 
+	 * @param l2 another {@link AlgebraicLine}
+	 * @return the intersection point or {@code null} if lines are parallel
+	 */
+	public Pnt2d intersect(AlgebraicLine l2) {
+		AlgebraicLine l1 = this;	
+		double det = l1.A * l2.B - l2.A * l1.B;
 		if (isZero(det)) {
 			return null;
 		}
 		else {
-			double x = (L1.B * L2.C - L2.B * L1.C) / det;
-			double y = (L2.A * L1.C - L1.A * L2.C) / det;
+			double x = (l1.B * l2.C - l2.B * l1.C) / det;
+			double y = (l2.A * l1.C - l1.A * l2.C) / det;
 			return Pnt2d.from(x, y);
 		}
 	}
@@ -302,35 +342,7 @@ public class AlgebraicLine implements ShapeProducer, Curve2d {
 		return String.format(Locale.US, "%s <a=%.3f, b=%.3f, c=%.3f>",
 				this.getClass().getSimpleName(), A, B, C);
 	}
-	
-	// -------------------------------------------------------------------
-	
-	public static void main (String[] args) {
-		Pnt2d p1 = Pnt2d.from(1, 2);
-		Pnt2d p2 = Pnt2d.from(4, 3);
-		Pnt2d p3 = Pnt2d.from(9, -7);
-		AlgebraicLine L1 = AlgebraicLine.from(p1, p2);
-		AlgebraicLine L2 = AlgebraicLine.from(p3, p2);
-		{
-			Pnt2d x = L1.intersect(L2);
-			System.out.println("x = " + x);
-			System.out.println("x = p2 ? " + x.equals(p2));
-		}
-		{
-			Pnt2d x = L2.intersect(L1);
-			System.out.println("x = " + x);
-			System.out.println("x = p2 ? " + x.equals(p2));
-		}
-		
-		
-		Pnt2d y = L1.intersect(L1);	// --> null
-		System.out.println("y = " + y);
-	}
 
 }
 
-//	x = PntDouble[4.000, 3.000]
-//	x = p2 ? true
-//	x = PntDouble[4.000, 3.000]
-//	x = p2 ? true
-//	y = null
+
