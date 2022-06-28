@@ -10,7 +10,6 @@ package imagingbook.common.geometry.line;
 
 import java.util.Locale;
 
-import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;
 
 /**
