@@ -17,7 +17,8 @@ import imagingbook.common.geometry.mappings.Mapping2D;
  * A non-linear mapping that produces a ripple effect.
  * The transformation is implicitly inverted, i.e., maps target to source image
  * coordinates.
- * Note: This class has been deprecated and substituted by an ImageJ plugin.
+ * Note: This class has been deprecated and substituted by an ImageJ plugin
+ * ("Geometric_Operations.Map_Ripple" in "imagingbook-plugins-book").
  * 
  * @author WB
  *

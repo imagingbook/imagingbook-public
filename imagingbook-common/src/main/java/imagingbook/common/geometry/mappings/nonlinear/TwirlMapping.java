@@ -13,8 +13,9 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.mappings.Mapping2D;
 
-/*
- * Note: This class has been deprecated and substituted by an ImageJ plugin.
+/**
+ * Note: This class has been deprecated and substituted by an ImageJ plugin
+ * ("Geometric_Operations.Map_Twirl" in "imagingbook-plugins-book").
  */
 @Deprecated
 public class TwirlMapping implements Mapping2D {
