@@ -22,12 +22,12 @@ import imagingbook.common.math.Matrix;
  * x' = a0 * x + a1 * y + a2 * x * y + a3
  * y' = b0 * x + b1 * y + b2 * x * y + b3
  * </pre>
- * Note that this is a non-linear transformation because of the mixed term.
+ * Note that this is a non-linear transformation because of the mixed term x * y.
  */
 public class BilinearMapping2D implements Mapping2D {
 	
-	private final double a0, a1, a2, a3;
-	private final double b0, b1, b2, b3;
+	public final double a0, a1, a2, a3;
+	public final double b0, b1, b2, b3;
 	
 	public BilinearMapping2D(
 			double a0, double a1, double a2, double a3,
@@ -105,8 +105,7 @@ public class BilinearMapping2D implements Mapping2D {
 		for (int i = 0; i < P.length; i++) {
 			Pnt2d Qi = bm.applyTo(P[i]);
 			System.out.println(P[i].toString() + " -> " + Qi.toString());
-		}
-		
+		}	
 	}
 
 

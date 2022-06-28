@@ -72,29 +72,7 @@ public class Rotation2D extends AffineMapping2D {
 	public Rotation2D getInverse() {
 		return new Rotation2D(a00, -a01, -a10, a11);
 	}
-	
-	// ----------------------------------------------------------------------
-	
-	/**
-	 * For testing only.
-	 * @param args ignored
-	 */
-	public static void main(String[] args) {
-		PrintPrecision.set(6);
-		Rotation2D R = new Rotation2D(0.5);
-		double[][] A = R.getTransformationMatrix();
-		
-		System.out.println("A = \n" + Matrix.toString(A));
-		System.out.println();
-		
-		AffineMapping2D Ri = R.getInverse();
-		double[][] Ai = Ri.getTransformationMatrix();
-		
-		System.out.println("Ai = \n" + Matrix.toString(Ai));
-		
-		double[][] I = Matrix.multiply(A, Ai);
-		System.out.println("\ntest: should be the  identity matrix: \n" + Matrix.toString(I));
-	}
+
 }
 
 
