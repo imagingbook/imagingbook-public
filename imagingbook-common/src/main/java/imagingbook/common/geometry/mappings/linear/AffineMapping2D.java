@@ -28,42 +28,62 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	 * minimum least-squares fit is calculated.
 	 * @param P the source points
 	 * @param Q the target points
-	 * @return a new affine mapping for the two point sets
+	 * @return a new {@link AffineMapping2D} instance for the two point sets
 	 */
 	public static AffineMapping2D fromPoints(Pnt2d[] P, Pnt2d[] Q) {
-		AffineFit2D fit = new AffineFit2D(P, Q);
-		return new AffineMapping2D(fit.getTransformationMatrix());
+		if (P.length != Q.length) {
+			throw new IllegalArgumentException("point sets P, Q must have the same size");
+		}
+		if (P.length < 3) {
+			throw new IllegalArgumentException("at least 3 point pairs are required");
+		}
+		if (P.length == 3) {
+			// exact fit
+			return fromPoints(P[0], P[1], P[2], Q[0], Q[1], Q[2]);
+		}
+		else {
+			// minimum least-squares fit
+			AffineFit2D fit = new AffineFit2D(P, Q);
+			return new AffineMapping2D(fit.getTransformationMatrix());
+		}
 	}
 	
 	/**
-	 * Creates an affine mapping from an arbitrary 2D triangle A to another triangle B.
-	 * In this case the solution is found in closed form 
-	 * (see Burger/Burge 2016, Sec. 21.1.3, eq. 21.26).
-	 * @param A1 point 1 of source triangle A
-	 * @param A2 point 2 of source triangle A
-	 * @param A3 point 3 of source triangle A
-	 * @param B1 point 1 of source triangle B
-	 * @param B2 point 2 of source triangle B
-	 * @param B3 point 3 of source triangle B
-	 * @return a new affine mapping
-	 * @deprecated
+	 * <p>
+	 * Creates an affine mapping from 3 pairs of corresponding 2D points
+	 * (p0, p1, p2) &rarr; (q0, q1, q2).
+	 * The solution is found in closed form (see [1], Sec. 21.1.3, eq. 21.31).
+	 * </p>
+	 * <p>
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+	 * </p>
+	 * 
+	 * @param p0 point 1 of source triangle A
+	 * @param p1 point 2 of source triangle A
+	 * @param p2 point 3 of source triangle A
+	 * @param q0 point 1 of source triangle B
+	 * @param q1 point 2 of source triangle B
+	 * @param q2 point 3 of source triangle B
+	 * @return a new {@link AffineMapping2D} instance
 	 */
-	public static AffineMapping2D from3Points(Pnt2d A1, Pnt2d A2, Pnt2d A3, Pnt2d B1, Pnt2d B2, Pnt2d B3) {
-		double ax1 = A1.getX(), ax2 = A2.getX(), ax3 = A3.getX();
-		double ay1 = A1.getY(), ay2 = A2.getY(), ay3 = A3.getY();
-		double bx1 = B1.getX(), bx2 = B2.getX(), bx3 = B3.getX();
-		double by1 = B1.getY(), by2 = B2.getY(), by3 = B3.getY();
+	public static AffineMapping2D fromPoints(Pnt2d p0, Pnt2d p1, Pnt2d p2, Pnt2d q0, Pnt2d q1, Pnt2d q2) {
+		final double px0 = p0.getX(), px1 = p1.getX(), px2 = p2.getX();
+		final double py0 = p0.getY(), py1 = p1.getY(), py2 = p2.getY();
+		final double qx0 = q0.getX(), qx1 = q1.getX(), qx2 = q2.getX();
+		final double qy0 = q0.getY(), qy1 = q1.getY(), qy2 = q2.getY();
 
-		double S = ax1 * (ay3 - ay2) + ax2 * (ay1 - ay3) + ax3 * (ay2 - ay1); //
-		if (Arithmetic.isZero(S)) {
-			throw new ArithmeticException("from3Points(): division by zero!");
+		final double d = px0 * (py2 - py1) + px1 * (py0 - py2) + px2 * (py1 - py0); 
+		if (Arithmetic.isZero(d)) {
+			throw new ArithmeticException("affine mapping is undefined (d=0)");
 		}
-		double a00 = (ay1 * (bx2 - bx3) + ay2 * (bx3 - bx1) + ay3 * (bx1 - bx2)) / S;
-		double a01 = (ax1 * (bx3 - bx2) + ax2 * (bx1 - bx3) + ax3 * (bx2 - bx1)) / S;
-		double a10 = (ay1 * (by2 - by3) + ay2 * (by3 - by1) + ay3 * (by1 - by2)) / S;
-		double a11 = (ax1 * (by3 - by2) + ax2 * (by1 - by3) + ax3 * (by2 - by1)) / S;
-		double a02 = (ax1*(ay3*bx2-ay2*bx3) + ax2*(ay1*bx3-ay3*bx1) + ax3*(ay2*bx1-ay1*bx2)) / S;
-		double a12 = (ax1*(ay3*by2-ay2*by3) + ax2*(ay1*by3-ay3*by1) + ax3*(ay2*by1-ay1*by2)) / S;
+		double a00 = (py0 * (qx1 - qx2) + py1 * (qx2 - qx0) + py2 * (qx0 - qx1)) / d;
+		double a01 = (px0 * (qx2 - qx1) + px1 * (qx0 - qx2) + px2 * (qx1 - qx0)) / d;
+		double a10 = (py0 * (qy1 - qy2) + py1 * (qy2 - qy0) + py2 * (qy0 - qy1)) / d;
+		double a11 = (px0 * (qy2 - qy1) + px1 * (qy0 - qy2) + px2 * (qy1 - qy0)) / d;
+		
+		double a02 = (px0*(py2*qx1-py1*qx2) + px1*(py0*qx2-py2*qx0) + px2*(py1*qx0-py0*qx1)) / d;
+		double a12 = (px0*(py2*qy1-py1*qy2) + px1*(py0*qy2-py2*qy0) + px2*(py1*qy0-py0*qy1)) / d;
+		
 		return new AffineMapping2D(a00, a01, a02, a10, a11, a12);
 	}
 	
@@ -91,7 +111,7 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	 * which must be at least of size 2 x 3.
 	 * The elements of A are copied into a 3x3 identity matrix.
 	 * If A is larger than 2 x 3, the remaining elements are ignored.
-	 * @param A a 2 x 3(or larger) matrix
+	 * @param A a 2x3 (or larger) matrix
 	 */
 	public AffineMapping2D(double[][] A) {
 		//super(A[0][0], A[0][1], A[0][2], A[1][0], A[1][1], A[1][2], 0, 0);
@@ -201,34 +221,34 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	
 	// ----------------------------------------------------------------------
 	
-	/**
-	 * For testing only.
-	 * @param args ignored
-	 */
-	public static void main(String[] args) {
-		PrintPrecision.set(6);
-		double[][] A = 
-			{{-2, 4, -3}, 
-			{3, 7, 2}, 
-			{0, 0, 1}};
-		System.out.println("a = \n" + Matrix.toString(A));
-		System.out.println();
-		double[][] ai = Matrix.inverse(A);
-		System.out.println("ai = \n" + Matrix.toString(ai));
-		
-		LinearMapping2D Ai = new LinearMapping2D(ai);
-		System.out.println("Ai is affine: " + isAffine(Ai));
-		
-		double[][] I = Matrix.multiply(A, ai);
-		System.out.println("\ntest: should be the  identity matrix: = \n" + Matrix.toString(I));
-		
-		double[][] B = 
-			{{-2, 4, -3}, 
-			{3, 7, 2}};
-		
-		LinearMapping2D am = new AffineMapping2D(B);
-		System.out.println("an = \n" + Matrix.toString(am.getTransformationMatrix()));
-	}
+//	/**
+//	 * For testing only.
+//	 * @param args ignored
+//	 */
+//	public static void main(String[] args) {
+//		PrintPrecision.set(6);
+//		double[][] A = 
+//			{{-2, 4, -3}, 
+//			{3, 7, 2}, 
+//			{0, 0, 1}};
+//		System.out.println("a = \n" + Matrix.toString(A));
+//		System.out.println();
+//		double[][] ai = Matrix.inverse(A);
+//		System.out.println("ai = \n" + Matrix.toString(ai));
+//		
+//		LinearMapping2D Ai = new LinearMapping2D(ai);
+//		System.out.println("Ai is affine: " + isAffine(Ai));
+//		
+//		double[][] I = Matrix.multiply(A, ai);
+//		System.out.println("\ntest: should be the  identity matrix: = \n" + Matrix.toString(I));
+//		
+//		double[][] B = 
+//			{{-2, 4, -3}, 
+//			{3, 7, 2}};
+//		
+//		LinearMapping2D am = new AffineMapping2D(B);
+//		System.out.println("an = \n" + Matrix.toString(am.getTransformationMatrix()));
+//	}
 
 }
 

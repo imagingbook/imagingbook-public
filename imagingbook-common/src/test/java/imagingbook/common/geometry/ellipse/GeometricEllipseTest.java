@@ -11,7 +11,6 @@ package imagingbook.common.geometry.ellipse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Shape;
 import java.util.Random;
 
 import org.junit.Assert;
@@ -19,7 +18,6 @@ import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.shape.ShapeChecker;
-import imagingbook.common.geometry.shape.ShapePointIterator;
 
 public class GeometricEllipseTest {
 	

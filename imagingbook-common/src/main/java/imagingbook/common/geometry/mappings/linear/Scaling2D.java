@@ -9,6 +9,8 @@
 
 package imagingbook.common.geometry.mappings.linear;
 
+import imagingbook.common.math.Arithmetic;
+
 /**
  * This class represents a 2D scaling transformation (as a special case of 
  * affine transformation).
@@ -29,8 +31,15 @@ public class Scaling2D extends AffineMapping2D {
 	 */
 	public Scaling2D(double sx, double sy) {
 		super(
-			sx, 0,  0,
-			0,  sy, 0);
+			checkZero(sx), 0,  0,
+			0,  checkZero(sy), 0);
+	}
+	
+	private static double checkZero(double s) {
+		if (Arithmetic.isZero(s)) {
+			throw new IllegalArgumentException("zero scale parameter " + s);
+		}
+		return s;
 	}
 	
 	/**
@@ -39,6 +48,15 @@ public class Scaling2D extends AffineMapping2D {
 	 */
 	public Scaling2D(double s) {
 		this(s, s);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @return a new scaling transformation
+	 */
+	@Override
+	public Scaling2D getInverse() {
+		return new Scaling2D(1/a00, 1/a11);
 	}
 	
 	/**

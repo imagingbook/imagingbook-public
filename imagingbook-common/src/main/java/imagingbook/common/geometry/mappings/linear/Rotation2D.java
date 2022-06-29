@@ -10,7 +10,6 @@
 package imagingbook.common.geometry.mappings.linear;
 
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
 /**
  * This class represents a pure 2D rotation about the coordinate origin 
@@ -53,8 +52,8 @@ public class Rotation2D extends AffineMapping2D {
 	// ----------------------------------------------------------
 	
 	/**
-	 * Concatenates this rotation A with another rotation B and returns
-	 * a new rotation C, such that C(x) = B(A(x)).
+	 * Concatenates this rotation (A) with another rotation (B) and returns
+	 * a new rotation (C), such that C(x) = B(A(x)).
 	 * @param B the second rotation
 	 * @return the concatenated rotations
 	 */

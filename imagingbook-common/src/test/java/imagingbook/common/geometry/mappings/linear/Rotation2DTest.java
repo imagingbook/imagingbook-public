@@ -10,11 +10,11 @@ import imagingbook.testutils.NumericTestUtils;
 public class Rotation2DTest {
 
 	@Test
-	public void test1() {
+	public void test1() {	// test inverse of rotation
 		Rotation2D R = new Rotation2D(0.5);
 		double[][] A = R.getTransformationMatrix();		
 
-		AffineMapping2D Ri = R.getInverse();
+		Rotation2D Ri = R.getInverse();
 		double[][] Ai = Ri.getTransformationMatrix();
 		
 		double[][] AAi = Matrix.multiply(A, Ai);
@@ -24,7 +24,7 @@ public class Rotation2DTest {
 	}
 	
 	@Test
-	public void test2() {
+	public void test2() {	// test forward/backward rotation by same angle
 		Random rg = new Random(17);
 		for (int i = 0; i < 1000; i++) {
 			double angle = 2000 * rg.nextDouble() - 1000; 	// degrees
@@ -38,7 +38,7 @@ public class Rotation2DTest {
 	}
 	
 	@Test
-	public void test3() {
+	public void test3() {	// test two-step rotation and concatentation
 		double angle1 = 25; 	// degrees
 		double angle2 = 87; 	// degrees
 		Rotation2D R1 = new Rotation2D(Math.toRadians(angle1));
@@ -49,7 +49,7 @@ public class Rotation2DTest {
 		
 		double[][] A3 = R3.getTransformationMatrix();		
 		double[][] A12 = R12.getTransformationMatrix();
-		NumericTestUtils.assertArrayEquals(A3, A12); 	
+		NumericTestUtils.assertArrayEquals(A3, A12);
 	}
 	
 }
