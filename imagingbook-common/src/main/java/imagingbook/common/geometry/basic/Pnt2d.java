@@ -777,26 +777,10 @@ public interface Pnt2d extends ShapeProducer, Curve2d {
 
 	// -------------------------------------------------------------------------
 	
-	static class Foo extends PntDouble {
-
-		protected Foo(double x, double y) {
-			super(x, y);
-			// TODO Auto-generated constructor stub
-		}
-		
-	}
 
 	public static void main(String[] args) {
 		PntInt a = PntInt.from(10,  7);
 		PntInt b = PntInt.from(3,  5);
-		
-		Foo foo = new Foo(4, 5);
-		System.out.println("foo instanceof Foo = " + (foo instanceof Foo));
-		System.out.println("foo instanceof Pnt2d = " + (foo instanceof Pnt2d));
-		System.out.println("foo instanceof PntDouble = " + (foo instanceof PntDouble));
-		Object y = foo;
-		System.out.println("foo instanceof PntInt = " + (y instanceof PntDouble));
-		
 		
 		System.out.println("a = " + a);
 		System.out.println("b = " + b);
