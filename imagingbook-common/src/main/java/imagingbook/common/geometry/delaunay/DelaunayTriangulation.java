@@ -48,6 +48,7 @@ public interface DelaunayTriangulation {
 	 * in their original order.
 	 * 
 	 * @param points the point set to be triangulated
+	 * @return a {@link DelaunayTriangulation} instance
 	 */
 	public static DelaunayTriangulation from(Collection<? extends Pnt2d> points) {
 		return DelaunayTriangulation.from(points, false);
@@ -59,6 +60,7 @@ public interface DelaunayTriangulation {
 	 * 
 	 * @param points the point set to be triangulated
 	 * @param shuffle set {@code true} to randomly shuffle the input points
+	 * @return a {@link DelaunayTriangulation} instance
 	 */
 	public static DelaunayTriangulation from(Collection<? extends Pnt2d> points, boolean shuffle) {
 		return new TriangulationGuibas(points, shuffle);
