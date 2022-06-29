@@ -27,7 +27,6 @@ imagingbook.common.geometry.fitting.ellipse.algebraic
 imagingbook.common.geometry.fitting.ellipse.geometric
 imagingbook.common.geometry.fitting.ellipse.utils
 imagingbook.common.geometry.fitting.line
-imagingbook.common.geometry.homography
 imagingbook.common.geometry.hulls
 imagingbook.common.geometry.line
 imagingbook.common.geometry.mappings

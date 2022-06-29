@@ -32,12 +32,12 @@
 <span class="sourceLineNo">022</span><a id="line.22"> * x' = a0 * x + a1 * y + a2 * x * y + a3</a>
 <span class="sourceLineNo">023</span><a id="line.23"> * y' = b0 * x + b1 * y + b2 * x * y + b3</a>
 <span class="sourceLineNo">024</span><a id="line.24"> * &lt;/pre&gt;</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * Note that this is a non-linear transformation because of the mixed term.</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * Note that this is a non-linear transformation because of the mixed term x * y.</a>
 <span class="sourceLineNo">026</span><a id="line.26"> */</a>
 <span class="sourceLineNo">027</span><a id="line.27">public class BilinearMapping2D implements Mapping2D {</a>
 <span class="sourceLineNo">028</span><a id="line.28">        </a>
-<span class="sourceLineNo">029</span><a id="line.29">        private final double a0, a1, a2, a3;</a>
-<span class="sourceLineNo">030</span><a id="line.30">        private final double b0, b1, b2, b3;</a>
+<span class="sourceLineNo">029</span><a id="line.29">        public final double a0, a1, a2, a3;</a>
+<span class="sourceLineNo">030</span><a id="line.30">        public final double b0, b1, b2, b3;</a>
 <span class="sourceLineNo">031</span><a id="line.31">        </a>
 <span class="sourceLineNo">032</span><a id="line.32">        public BilinearMapping2D(</a>
 <span class="sourceLineNo">033</span><a id="line.33">                        double a0, double a1, double a2, double a3,</a>
@@ -115,12 +115,11 @@
 <span class="sourceLineNo">105</span><a id="line.105">                for (int i = 0; i &lt; P.length; i++) {</a>
 <span class="sourceLineNo">106</span><a id="line.106">                        Pnt2d Qi = bm.applyTo(P[i]);</a>
 <span class="sourceLineNo">107</span><a id="line.107">                        System.out.println(P[i].toString() + " -&gt; " + Qi.toString());</a>
-<span class="sourceLineNo">108</span><a id="line.108">                }</a>
-<span class="sourceLineNo">109</span><a id="line.109">                </a>
-<span class="sourceLineNo">110</span><a id="line.110">        }</a>
+<span class="sourceLineNo">108</span><a id="line.108">                }       </a>
+<span class="sourceLineNo">109</span><a id="line.109">        }</a>
+<span class="sourceLineNo">110</span><a id="line.110"></a>
 <span class="sourceLineNo">111</span><a id="line.111"></a>
-<span class="sourceLineNo">112</span><a id="line.112"></a>
-<span class="sourceLineNo">113</span><a id="line.113">}</a>
+<span class="sourceLineNo">112</span><a id="line.112">}</a>
 
 
 

@@ -18,74 +18,147 @@
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9">package imagingbook.common.geometry.hulls;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
-<span class="sourceLineNo">011</span><a id="line.11">import java.awt.geom.Line2D;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import java.util.ArrayList;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import java.util.Collection;</a>
-<span class="sourceLineNo">014</span><a id="line.14"></a>
-<span class="sourceLineNo">015</span><a id="line.15">import org.apache.commons.math3.geometry.euclidean.twod.Segment;</a>
-<span class="sourceLineNo">016</span><a id="line.16">import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHull2D;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;</a>
-<span class="sourceLineNo">019</span><a id="line.19"></a>
-<span class="sourceLineNo">020</span><a id="line.20">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">021</span><a id="line.21">import imagingbook.common.geometry.basic.Pnt2d.PntDouble;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.awt.Shape;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.awt.geom.Line2D;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.awt.geom.Path2D;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.ArrayList;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.util.Arrays;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.util.List;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">import org.apache.commons.math3.geometry.euclidean.twod.Segment;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHull2D;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;</a>
 <span class="sourceLineNo">022</span><a id="line.22"></a>
-<span class="sourceLineNo">023</span><a id="line.23">/**</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * This class serves to calculate the convex hull of a binary region</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * or a closed contour, given as a sequence of point coordinates.</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * It is based on the convex hull implementation provided by the</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * Apache Commons Math library, in particular classes </a>
-<span class="sourceLineNo">028</span><a id="line.28"> * {@link ConvexHull2D} and {@link MonotoneChain}.</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * </a>
-<span class="sourceLineNo">030</span><a id="line.30"> * TODO: implement ShapeProducer</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * </a>
-<span class="sourceLineNo">032</span><a id="line.32"> * @author W. Burger</a>
-<span class="sourceLineNo">033</span><a id="line.33"> * @version 2020/10/11</a>
-<span class="sourceLineNo">034</span><a id="line.34"> */</a>
-<span class="sourceLineNo">035</span><a id="line.35">public class ConvexHull {</a>
-<span class="sourceLineNo">036</span><a id="line.36">        </a>
-<span class="sourceLineNo">037</span><a id="line.37">        private final ConvexHull2D hull;</a>
-<span class="sourceLineNo">038</span><a id="line.38">        </a>
-<span class="sourceLineNo">039</span><a id="line.39">        // public constructors ------------------------</a>
-<span class="sourceLineNo">040</span><a id="line.40">        </a>
-<span class="sourceLineNo">041</span><a id="line.41">        public ConvexHull(Iterable&lt;Pnt2d&gt; points) {</a>
-<span class="sourceLineNo">042</span><a id="line.42">                this.hull = new MonotoneChain().generate(convertToVector2D(points));</a>
-<span class="sourceLineNo">043</span><a id="line.43">        }</a>
-<span class="sourceLineNo">044</span><a id="line.44">        </a>
-<span class="sourceLineNo">045</span><a id="line.45">        // public methods ------------------------</a>
-<span class="sourceLineNo">046</span><a id="line.46">        </a>
-<span class="sourceLineNo">047</span><a id="line.47">        public Pnt2d[] getVertices() {</a>
-<span class="sourceLineNo">048</span><a id="line.48">                Vector2D[] vecs = hull.getVertices();   // apparently vertices are ordered, but is this guaranteed?</a>
-<span class="sourceLineNo">049</span><a id="line.49">                Pnt2d[] pnts = new Pnt2d[vecs.length];</a>
-<span class="sourceLineNo">050</span><a id="line.50">                for (int i = 0; i &lt; vecs.length; i++) {</a>
-<span class="sourceLineNo">051</span><a id="line.51">                        pnts[i] = PntDouble.from(vecs[i]);</a>
+<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.geometry.basic.Pnt2d.PntDouble;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.geometry.line.AlgebraicLine;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.geometry.shape.ShapeProducer;</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">/**</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * This class serves to calculate the convex hull of a binary region</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * or a closed contour, given as a sequence of point coordinates.</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * It is based on the convex hull implementation provided by the</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * Apache Commons Math library, in particular classes </a>
+<span class="sourceLineNo">033</span><a id="line.33"> * {@link ConvexHull2D} and {@link MonotoneChain}.</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * </a>
+<span class="sourceLineNo">035</span><a id="line.35"> * @author W. Burger</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * @version 2022/06/24</a>
+<span class="sourceLineNo">037</span><a id="line.37"> */</a>
+<span class="sourceLineNo">038</span><a id="line.38">public class ConvexHull implements ShapeProducer {</a>
+<span class="sourceLineNo">039</span><a id="line.39">        </a>
+<span class="sourceLineNo">040</span><a id="line.40">        private final ConvexHull2D hull;</a>
+<span class="sourceLineNo">041</span><a id="line.41">        private final Pnt2d[] vertices;</a>
+<span class="sourceLineNo">042</span><a id="line.42">        </a>
+<span class="sourceLineNo">043</span><a id="line.43">        /**</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * Constructor.</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * </a>
+<span class="sourceLineNo">046</span><a id="line.46">         * @param points a (iterable) set of 2D sample points</a>
+<span class="sourceLineNo">047</span><a id="line.47">         */</a>
+<span class="sourceLineNo">048</span><a id="line.48">        public ConvexHull(Iterable&lt;Pnt2d&gt; points) {</a>
+<span class="sourceLineNo">049</span><a id="line.49">                List&lt;Vector2D&gt; pts = convertToVector2D(points);</a>
+<span class="sourceLineNo">050</span><a id="line.50">                if (pts.size() &lt; 1) {</a>
+<span class="sourceLineNo">051</span><a id="line.51">                        throw new IllegalArgumentException("at least 1 point required for convex hull");</a>
 <span class="sourceLineNo">052</span><a id="line.52">                }</a>
-<span class="sourceLineNo">053</span><a id="line.53">                return pnts;</a>
-<span class="sourceLineNo">054</span><a id="line.54">        }</a>
-<span class="sourceLineNo">055</span><a id="line.55">        </a>
-<span class="sourceLineNo">056</span><a id="line.56">        public Line2D[] getSegments() {</a>
-<span class="sourceLineNo">057</span><a id="line.57">                Segment[] origSegments = hull.getLineSegments();</a>
-<span class="sourceLineNo">058</span><a id="line.58">                Line2D[] newSegments = new Line2D.Double[origSegments.length];</a>
-<span class="sourceLineNo">059</span><a id="line.59">                for (int i = 0; i &lt; origSegments.length; i++) {</a>
-<span class="sourceLineNo">060</span><a id="line.60">                        Segment seg = origSegments[i];</a>
-<span class="sourceLineNo">061</span><a id="line.61">                        Vector2D start = seg.getStart();</a>
-<span class="sourceLineNo">062</span><a id="line.62">                        Vector2D end = seg.getEnd();</a>
-<span class="sourceLineNo">063</span><a id="line.63">                        newSegments[i] = new Line2D.Double(start.getX(), start.getY(), end.getX(), end.getY());</a>
-<span class="sourceLineNo">064</span><a id="line.64">                }</a>
-<span class="sourceLineNo">065</span><a id="line.65">                return newSegments;</a>
-<span class="sourceLineNo">066</span><a id="line.66">        }</a>
-<span class="sourceLineNo">067</span><a id="line.67">        </a>
-<span class="sourceLineNo">068</span><a id="line.68">        // --------------------------------------------------------------------</a>
+<span class="sourceLineNo">053</span><a id="line.53">                this.hull = new MonotoneChain().generate(pts);</a>
+<span class="sourceLineNo">054</span><a id="line.54">                Vector2D[] vecs = hull.getVertices();</a>
+<span class="sourceLineNo">055</span><a id="line.55">                this.vertices = new Pnt2d[vecs.length];</a>
+<span class="sourceLineNo">056</span><a id="line.56">                for (int i = 0; i &lt; vecs.length; i++) {</a>
+<span class="sourceLineNo">057</span><a id="line.57">                        vertices[i] = PntDouble.from(vecs[i]);</a>
+<span class="sourceLineNo">058</span><a id="line.58">                }</a>
+<span class="sourceLineNo">059</span><a id="line.59">        }</a>
+<span class="sourceLineNo">060</span><a id="line.60">        </a>
+<span class="sourceLineNo">061</span><a id="line.61">        /**</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * Constructor.</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * </a>
+<span class="sourceLineNo">064</span><a id="line.64">         * @param points an array of 2D sample points</a>
+<span class="sourceLineNo">065</span><a id="line.65">         */</a>
+<span class="sourceLineNo">066</span><a id="line.66">        public ConvexHull(Pnt2d[] points) {</a>
+<span class="sourceLineNo">067</span><a id="line.67">                this(() -&gt; Arrays.stream(points).iterator());</a>
+<span class="sourceLineNo">068</span><a id="line.68">        }</a>
 <span class="sourceLineNo">069</span><a id="line.69">        </a>
-<span class="sourceLineNo">070</span><a id="line.70">        private static Collection&lt;Vector2D&gt; convertToVector2D(Iterable&lt;Pnt2d&gt; points) {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                Collection&lt;Vector2D&gt; vecs = new ArrayList&lt;Vector2D&gt;();</a>
-<span class="sourceLineNo">072</span><a id="line.72">                for (Pnt2d p : points) {</a>
-<span class="sourceLineNo">073</span><a id="line.73">                        vecs.add(new Vector2D(p.getX(), p.getY()));</a>
-<span class="sourceLineNo">074</span><a id="line.74">                }</a>
-<span class="sourceLineNo">075</span><a id="line.75">                return vecs;</a>
-<span class="sourceLineNo">076</span><a id="line.76">        }</a>
-<span class="sourceLineNo">077</span><a id="line.77"></a>
-<span class="sourceLineNo">078</span><a id="line.78">}</a>
+<span class="sourceLineNo">070</span><a id="line.70">        // public methods ------------------------</a>
+<span class="sourceLineNo">071</span><a id="line.71">        </a>
+<span class="sourceLineNo">072</span><a id="line.72">        /**</a>
+<span class="sourceLineNo">073</span><a id="line.73">         * Returns a sequence of 2D points on the convex hull</a>
+<span class="sourceLineNo">074</span><a id="line.74">         * (in counter-clockwise order).</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * </a>
+<span class="sourceLineNo">076</span><a id="line.76">         * @return sequence of 2D points on the convex hull</a>
+<span class="sourceLineNo">077</span><a id="line.77">         */</a>
+<span class="sourceLineNo">078</span><a id="line.78">        public Pnt2d[] getVertices() {</a>
+<span class="sourceLineNo">079</span><a id="line.79">                return this.vertices;</a>
+<span class="sourceLineNo">080</span><a id="line.80">        }</a>
+<span class="sourceLineNo">081</span><a id="line.81">        </a>
+<span class="sourceLineNo">082</span><a id="line.82">        @Deprecated</a>
+<span class="sourceLineNo">083</span><a id="line.83">        public Line2D[] getSegments() {</a>
+<span class="sourceLineNo">084</span><a id="line.84">                Segment[] origSegments = hull.getLineSegments();</a>
+<span class="sourceLineNo">085</span><a id="line.85">                Line2D[] newSegments = new Line2D.Double[origSegments.length];</a>
+<span class="sourceLineNo">086</span><a id="line.86">                for (int i = 0; i &lt; origSegments.length; i++) {</a>
+<span class="sourceLineNo">087</span><a id="line.87">                        Segment seg = origSegments[i];</a>
+<span class="sourceLineNo">088</span><a id="line.88">                        Vector2D start = seg.getStart();</a>
+<span class="sourceLineNo">089</span><a id="line.89">                        Vector2D end = seg.getEnd();</a>
+<span class="sourceLineNo">090</span><a id="line.90">                        newSegments[i] = new Line2D.Double(start.getX(), start.getY(), end.getX(), end.getY());</a>
+<span class="sourceLineNo">091</span><a id="line.91">                }</a>
+<span class="sourceLineNo">092</span><a id="line.92">                return newSegments;</a>
+<span class="sourceLineNo">093</span><a id="line.93">        }</a>
+<span class="sourceLineNo">094</span><a id="line.94">        </a>
+<span class="sourceLineNo">095</span><a id="line.95">        // --------------------------------------------------------------------</a>
+<span class="sourceLineNo">096</span><a id="line.96">        </a>
+<span class="sourceLineNo">097</span><a id="line.97">        private static List&lt;Vector2D&gt; convertToVector2D(Iterable&lt;Pnt2d&gt; points) {</a>
+<span class="sourceLineNo">098</span><a id="line.98">                List&lt;Vector2D&gt; vecs = new ArrayList&lt;Vector2D&gt;();</a>
+<span class="sourceLineNo">099</span><a id="line.99">                for (Pnt2d p : points) {</a>
+<span class="sourceLineNo">100</span><a id="line.100">                        vecs.add(new Vector2D(p.getX(), p.getY()));</a>
+<span class="sourceLineNo">101</span><a id="line.101">                }</a>
+<span class="sourceLineNo">102</span><a id="line.102">                return vecs;</a>
+<span class="sourceLineNo">103</span><a id="line.103">        }</a>
+<span class="sourceLineNo">104</span><a id="line.104"></a>
+<span class="sourceLineNo">105</span><a id="line.105">        @Override</a>
+<span class="sourceLineNo">106</span><a id="line.106">        public Shape getShape(double scale) {</a>
+<span class="sourceLineNo">107</span><a id="line.107">                if (vertices.length &lt; 2) {      // degenerate case (single point)</a>
+<span class="sourceLineNo">108</span><a id="line.108">                        return vertices[0].getShape(scale);</a>
+<span class="sourceLineNo">109</span><a id="line.109">                }</a>
+<span class="sourceLineNo">110</span><a id="line.110">                else {</a>
+<span class="sourceLineNo">111</span><a id="line.111">                        Path2D path = new Path2D.Double(Path2D.WIND_NON_ZERO, 4);</a>
+<span class="sourceLineNo">112</span><a id="line.112">                        path.moveTo(vertices[0].getX(), vertices[0].getY());</a>
+<span class="sourceLineNo">113</span><a id="line.113">                        for (int i = 1; i &lt; vertices.length; i++) {</a>
+<span class="sourceLineNo">114</span><a id="line.114">                                path.lineTo(vertices[i].getX(), vertices[i].getY());</a>
+<span class="sourceLineNo">115</span><a id="line.115">                        }</a>
+<span class="sourceLineNo">116</span><a id="line.116">                        path.closePath();</a>
+<span class="sourceLineNo">117</span><a id="line.117">                        return path;</a>
+<span class="sourceLineNo">118</span><a id="line.118">                }</a>
+<span class="sourceLineNo">119</span><a id="line.119">        }</a>
+<span class="sourceLineNo">120</span><a id="line.120">        </a>
+<span class="sourceLineNo">121</span><a id="line.121">        // --------------------------------------------------------------------</a>
+<span class="sourceLineNo">122</span><a id="line.122">        </a>
+<span class="sourceLineNo">123</span><a id="line.123">        public static final double DefaultContainsTolerance = 1e-12;</a>
+<span class="sourceLineNo">124</span><a id="line.124">        </a>
+<span class="sourceLineNo">125</span><a id="line.125">        public boolean contains(Pnt2d p) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                return contains(p, DefaultContainsTolerance);</a>
+<span class="sourceLineNo">127</span><a id="line.127">        }</a>
+<span class="sourceLineNo">128</span><a id="line.128">        </a>
+<span class="sourceLineNo">129</span><a id="line.129">        /**</a>
+<span class="sourceLineNo">130</span><a id="line.130">         * Checks if this convex hull contains the specified point.</a>
+<span class="sourceLineNo">131</span><a id="line.131">         * This method is used instead of {@link Path2D#contains(double, double)}</a>
+<span class="sourceLineNo">132</span><a id="line.132">         * to avoid false results due to roundoff errors.</a>
+<span class="sourceLineNo">133</span><a id="line.133">         * </a>
+<span class="sourceLineNo">134</span><a id="line.134">         * @param p some 2D point</a>
+<span class="sourceLineNo">135</span><a id="line.135">         * @param tolerance positive quantity for being outside</a>
+<span class="sourceLineNo">136</span><a id="line.136">         * @return true if the point is inside the hull</a>
+<span class="sourceLineNo">137</span><a id="line.137">         */</a>
+<span class="sourceLineNo">138</span><a id="line.138">        public boolean contains(Pnt2d p, double tolerance) {</a>
+<span class="sourceLineNo">139</span><a id="line.139">                for (int i = 0; i &lt; vertices.length; i++) {</a>
+<span class="sourceLineNo">140</span><a id="line.140">                        int j = (i + 1) % vertices.length;</a>
+<span class="sourceLineNo">141</span><a id="line.141">                        AlgebraicLine line = AlgebraicLine.from(vertices[i], vertices[j]);</a>
+<span class="sourceLineNo">142</span><a id="line.142">                        double dist = line.getSignedDistance(p);</a>
+<span class="sourceLineNo">143</span><a id="line.143">                        // positive signed distance means that the point is to the left</a>
+<span class="sourceLineNo">144</span><a id="line.144">                        if (dist + tolerance &lt; 0) {</a>
+<span class="sourceLineNo">145</span><a id="line.145">                                return false;</a>
+<span class="sourceLineNo">146</span><a id="line.146">                        }</a>
+<span class="sourceLineNo">147</span><a id="line.147">                }</a>
+<span class="sourceLineNo">148</span><a id="line.148">                return true;</a>
+<span class="sourceLineNo">149</span><a id="line.149">        }</a>
+<span class="sourceLineNo">150</span><a id="line.150"></a>
+<span class="sourceLineNo">151</span><a id="line.151">}</a>
 
 
 

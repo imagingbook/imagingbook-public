@@ -18,41 +18,65 @@
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9">package imagingbook.common.geometry.delaunay;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
-<span class="sourceLineNo">011</span><a id="line.11">import java.util.List;</a>
-<span class="sourceLineNo">012</span><a id="line.12"></a>
-<span class="sourceLineNo">013</span><a id="line.13">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import imagingbook.common.geometry.delaunay.guibas.Triangle2D;</a>
-<span class="sourceLineNo">015</span><a id="line.15"></a>
-<span class="sourceLineNo">016</span><a id="line.16">/**</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * Interface specification for various implementations of the</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * Delaunay triangulation.</a>
-<span class="sourceLineNo">019</span><a id="line.19"> */</a>
-<span class="sourceLineNo">020</span><a id="line.20">public interface DelaunayTriangulation {</a>
-<span class="sourceLineNo">021</span><a id="line.21">        </a>
-<span class="sourceLineNo">022</span><a id="line.22">        /**</a>
-<span class="sourceLineNo">023</span><a id="line.23">         * Returns the number of triangles in this triangulation.</a>
-<span class="sourceLineNo">024</span><a id="line.24">         * @return the number of triangles</a>
-<span class="sourceLineNo">025</span><a id="line.25">         */</a>
-<span class="sourceLineNo">026</span><a id="line.26">        public int size();</a>
-<span class="sourceLineNo">027</span><a id="line.27">        </a>
-<span class="sourceLineNo">028</span><a id="line.28">        /**</a>
-<span class="sourceLineNo">029</span><a id="line.29">         * Returns a list of {@link Triangle2D} instances</a>
-<span class="sourceLineNo">030</span><a id="line.30">         * contained in this triangulation. The list does not contain the initial outer </a>
-<span class="sourceLineNo">031</span><a id="line.31">         * triangle.</a>
-<span class="sourceLineNo">032</span><a id="line.32">         * @return a list of triangles </a>
-<span class="sourceLineNo">033</span><a id="line.33">         */</a>
-<span class="sourceLineNo">034</span><a id="line.34">        public List&lt;Triangle&gt; getTriangles();</a>
-<span class="sourceLineNo">035</span><a id="line.35">        </a>
-<span class="sourceLineNo">036</span><a id="line.36">        /**</a>
-<span class="sourceLineNo">037</span><a id="line.37">         * Returns a list of 2D vertices (implementing the {@link Pnt2d} interface)</a>
-<span class="sourceLineNo">038</span><a id="line.38">         * contained in this triangulation. The sequence of points is assumed</a>
-<span class="sourceLineNo">039</span><a id="line.39">         * to be in the order of their actual insertion. The list does not contain the</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.util.Collection;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.util.List;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.geometry.delaunay.guibas.TriangulationGuibas;</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">/**</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * Interface specification for various implementations of the</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * Delaunay triangulation.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> */</a>
+<span class="sourceLineNo">021</span><a id="line.21">public interface DelaunayTriangulation {</a>
+<span class="sourceLineNo">022</span><a id="line.22">        </a>
+<span class="sourceLineNo">023</span><a id="line.23">        /**</a>
+<span class="sourceLineNo">024</span><a id="line.24">         * Returns the number of triangles in this triangulation.</a>
+<span class="sourceLineNo">025</span><a id="line.25">         * @return the number of triangles</a>
+<span class="sourceLineNo">026</span><a id="line.26">         */</a>
+<span class="sourceLineNo">027</span><a id="line.27">        public int size();</a>
+<span class="sourceLineNo">028</span><a id="line.28">        </a>
+<span class="sourceLineNo">029</span><a id="line.29">        /**</a>
+<span class="sourceLineNo">030</span><a id="line.30">         * Returns a list of {@link Triangle} instances</a>
+<span class="sourceLineNo">031</span><a id="line.31">         * contained in this triangulation. The list does not contain the initial outer </a>
+<span class="sourceLineNo">032</span><a id="line.32">         * triangle.</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * @return a list of triangles </a>
+<span class="sourceLineNo">034</span><a id="line.34">         */</a>
+<span class="sourceLineNo">035</span><a id="line.35">        public List&lt;Triangle&gt; getTriangles();</a>
+<span class="sourceLineNo">036</span><a id="line.36">        </a>
+<span class="sourceLineNo">037</span><a id="line.37">        /**</a>
+<span class="sourceLineNo">038</span><a id="line.38">         * Returns a list of 2D vertices (implementing the {@link Pnt2d} interface)</a>
+<span class="sourceLineNo">039</span><a id="line.39">         * contained in this triangulation. The list does not contain the</a>
 <span class="sourceLineNo">040</span><a id="line.40">         * vertices of the initial (outer) triangle.</a>
 <span class="sourceLineNo">041</span><a id="line.41">         * @return a list of points</a>
 <span class="sourceLineNo">042</span><a id="line.42">         */</a>
 <span class="sourceLineNo">043</span><a id="line.43">        public List&lt;Pnt2d&gt; getPoints();</a>
-<span class="sourceLineNo">044</span><a id="line.44"></a>
-<span class="sourceLineNo">045</span><a id="line.45">}</a>
+<span class="sourceLineNo">044</span><a id="line.44">        </a>
+<span class="sourceLineNo">045</span><a id="line.45">        /**</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * Performs Delaunay triangulation on the specified points.</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * Supplied points are inserted without shuffling, i.e.,</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * in their original order.</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * </a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @param points the point set to be triangulated</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @return a {@link DelaunayTriangulation} instance</a>
+<span class="sourceLineNo">052</span><a id="line.52">         */</a>
+<span class="sourceLineNo">053</span><a id="line.53">        public static DelaunayTriangulation from(Collection&lt;? extends Pnt2d&gt; points) {</a>
+<span class="sourceLineNo">054</span><a id="line.54">                return DelaunayTriangulation.from(points, false);</a>
+<span class="sourceLineNo">055</span><a id="line.55">        }</a>
+<span class="sourceLineNo">056</span><a id="line.56">        </a>
+<span class="sourceLineNo">057</span><a id="line.57">        /**</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * Performs Delaunay triangulation on the specified points with</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * (optional) random insertion order.</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * </a>
+<span class="sourceLineNo">061</span><a id="line.61">         * @param points the point set to be triangulated</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * @param shuffle set {@code true} to randomly shuffle the input points</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * @return a {@link DelaunayTriangulation} instance</a>
+<span class="sourceLineNo">064</span><a id="line.64">         */</a>
+<span class="sourceLineNo">065</span><a id="line.65">        public static DelaunayTriangulation from(Collection&lt;? extends Pnt2d&gt; points, boolean shuffle) {</a>
+<span class="sourceLineNo">066</span><a id="line.66">                return new TriangulationGuibas(points, shuffle);</a>
+<span class="sourceLineNo">067</span><a id="line.67">        }</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">}</a>
 
 
 
