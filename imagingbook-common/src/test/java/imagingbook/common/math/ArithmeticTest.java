@@ -12,17 +12,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Random;
+
 import org.junit.Test;
 
 public class ArithmeticTest {
+	
+	static double TOL = 1E-9;
 
 	@Test
 	public void testModDoubleDouble() {
-		double D = 1E-9;
-		assertEquals( 1.4, Arithmetic.mod( 3.5,  2.1), D);
-		assertEquals( 0.7, Arithmetic.mod(-3.5,  2.1), D);
-		assertEquals(-0.7, Arithmetic.mod( 3.5, -2.1), D);
-		assertEquals(-1.4, Arithmetic.mod(-3.5, -2.1), D);
+		
+		assertEquals( 1.4, Arithmetic.mod( 3.5,  2.1), TOL);
+		assertEquals( 0.7, Arithmetic.mod(-3.5,  2.1), TOL);
+		assertEquals(-0.7, Arithmetic.mod( 3.5, -2.1), TOL);
+		assertEquals(-1.4, Arithmetic.mod(-3.5, -2.1), TOL);
 	}
 
 	@Test
@@ -39,6 +43,30 @@ public class ArithmeticTest {
 		assertTrue(Arithmetic.equals(-0.7f, -0.7f));
 		assertTrue(Arithmetic.equals(1.0f, 1.0f + Arithmetic.EPSILON_FLOAT / 2));
 		assertTrue(Arithmetic.equals(1.0f, 1.0f - Arithmetic.EPSILON_FLOAT / 2));
+	}
+	
+	@Test
+	public void testToPolar0() {
+		double x = 0;
+		double y = 0;
+		double[] polar = Arithmetic.toPolar(x, y);
+		assertEquals(0, polar[0], TOL);
+		double[] cart = Arithmetic.toCartesian(polar);
+		assertEquals(x, cart[0], TOL);
+		assertEquals(y, cart[1], TOL);
+	}
+	
+	@Test
+	public void testToPolar1() {
+		Random rg = new Random(17);
+		for (int i = 0; i < 1000; i++) {
+			double x = 100 * rg.nextDouble() - 50;
+			double y = 100 * rg.nextDouble() - 50;
+			double[] polar = Arithmetic.toPolar(x, y);
+			double[] cart = Arithmetic.toCartesian(polar);
+			assertEquals(x, cart[0], TOL);
+			assertEquals(y, cart[1], TOL);
+		}
 	}
 	
 //	@Test

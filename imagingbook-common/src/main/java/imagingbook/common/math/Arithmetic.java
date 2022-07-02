@@ -13,12 +13,18 @@ import java.util.Arrays;
 
 import org.apache.commons.math3.util.FastMath;
 
+/**
+ * This class defines various static methods implementing arithmetic operations and predicates.
+ * 
+ * @author WB
+ *
+ */
 public abstract class Arithmetic {
 	
 	// machine accuracy for IEEE 754 float/double;
-	/** Tolerance used for comparing {@code float} quantities. */
+	/** Default tolerance used for comparing {@code float} quantities. */
 	public static final float EPSILON_FLOAT 	= 1e-7f;	// 1.19 x 10^-7
-	/** Tolerance used for comparing {@code double} quantities. */
+	/** Default tolerance used for comparing {@code double} quantities. */
 	public static final double EPSILON_DOUBLE 	= 2e-16;	// 2.22 x 10^-16
 
 	/**
@@ -77,18 +83,40 @@ public abstract class Arithmetic {
 		return FastMath.atan2(y, x);
 	}
 	
+	/**
+	 * Returns the polar coordinates of the Cartesian point (x,y).
+	 * @param x x-component
+	 * @param y y-component
+	 * @return a 2-element array holding the polar coordinates (radius, angle)
+	 */
 	public static double[] toPolar(double x, double y) {
 		return new double[] {FastMath.hypot(x, y), FastMath.atan2(y, x)};
 	}
 	
-	public static double[] toPolar(double[] cart) {
-		return toPolar(cart[0], cart[1]);
+	/**
+	 * Returns the polar coordinates of the Cartesian point xy.
+	 * @param xy the Cartesian coordinates
+	 * @return a 2-element array holding the polar coordinates (radius, angle)
+	 */
+	public static double[] toPolar(double[] xy) {
+		return toPolar(xy[0], xy[1]);
 	}
 	
+	/**
+	 * Converts polar point coordinates to Cartesian coordinates.
+	 * @param radius the radius 
+	 * @param angle the angle
+	 * @return a 2-element array holding the Cartesian coordinates (x,y)
+	 */
 	public static double[] toCartesian(double radius, double angle) {
 		return new double[] {radius * FastMath.cos(angle), radius * FastMath.sin(angle)};
 	}
 	
+	/**
+	 * Converts polar point coordinates to Cartesian coordinates.
+	 * @param polar the polar coordinates (radius, angle)
+	 * @return a 2-element array holding the Cartesian coordinates (x,y)
+	 */
 	public static double[] toCartesian(double[] polar) {
 		return toCartesian(polar[0], polar[1]);
 	}
@@ -186,33 +214,47 @@ public abstract class Arithmetic {
 	}
 	
 	/**
-	 * Test for numerical equality (double version) using a predefined tolerance.
+	 * Test for numerical equality (double version) using the default tolerance.
 	 * Returns true if the absolute difference of the arguments
 	 * is less than {@link EPSILON_DOUBLE}.
 	 * @param x first argument
 	 * @param y second argument
-	 * @return true if both arguments are numerically the same.
+	 * @return true if the absolute difference of the arguments is less than the tolerance
 	 */
 	public static boolean equals(double x, double y) {
 		return Arithmetic.isZero(x - y);
 	}
 	
+	/**
+	 * Test for numerical equality (double version) using a specific tolerance.
+	 * @param x first argument
+	 * @param y second argument
+	 * @param tolerance the maximum (absolute) deviation
+	 * @return true if the absolute difference of the arguments is less than the tolerance
+	 */
 	public static boolean equals(double x, double y, double tolerance) {
 		return Arithmetic.isZero(x - y, tolerance);
 	}
 	
 	/**
-	 * Test for numerical equality (float version) using a predefined tolerance.
+	 * Test for numerical equality (float version) using the default tolerance.
 	 * Returns true if the absolute difference of the arguments
 	 * is less than {@link EPSILON_FLOAT}.
 	 * @param x first argument
 	 * @param y second argument
-	 * @return true if both arguments are numerically the same.
+	 * @return true if the absolute difference of the arguments is less than the tolerance
 	 */
 	public static boolean equals(float x, float y) {
 		return Arithmetic.isZero(x - y);
 	}
 	
+	/**
+	 * Test for numerical equality (float version) using a specific tolerance.
+	 * @param x first argument
+	 * @param y second argument
+	 * @param tolerance the maximum (absolute) deviation
+	 * @return true if the absolute difference of the arguments is less than the tolerance
+	 */
 	public static boolean equals(float x, float y, float tolerance) {
 		return Arithmetic.isZero(x - y, tolerance);
 	}
