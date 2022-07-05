@@ -9,6 +9,8 @@
 
 package imagingbook.common.math;
 
+import static imagingbook.common.math.Arithmetic.isZero;
+
 import java.util.Locale;
 
 import imagingbook.common.geometry.basic.Pnt2d;
@@ -22,7 +24,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
  * Apache implementation.
  * 
  * @author W. Burger
- * @version 2020/11/20
+ * @version 2022/07/05
  */
 public class Complex {
 	
@@ -209,56 +211,31 @@ public class Complex {
 	}
 	
 	@Override
-	public boolean equals(Object o) {
-        if (o == this) {
+	public boolean equals(Object other) {
+        if (other == this) {
             return true;
         }       
-        if (o instanceof Complex) {
-	        final Complex c = (Complex) o;
-	        return Double.compare(this.re, c.re) == 0 && Double.compare(this.im, c.im) == 0;
+        if (other instanceof Complex) {
+	        final Complex z = (Complex) other;
+//	        return Double.compare(this.re, z.re) == 0 && Double.compare(this.im, z.im) == 0;
+	        return this.equals(z, Arithmetic.EPSILON_DOUBLE);
         }
         return false;
 	}
 	
+	public boolean equals(Complex z, double tolerance) {
+		return isZero(this.re - z.re, tolerance) 
+				&& isZero(this.im - z.im, tolerance);
+	}
+	
 	public boolean equals(double a, double b) {
-		return Double.compare(this.re, a) == 0 && Double.compare(this.im, b) == 0;
+		//return Double.compare(this.re, a) == 0 && Double.compare(this.im, b) == 0;
+		return this.equals(a, b, Arithmetic.EPSILON_DOUBLE);
+	}
+	
+	public boolean equals(double a, double b, double tolerance) {
+		return isZero(this.re - a, tolerance) 
+				&& isZero(this.im - b, tolerance);
 	}
 
-	//------------ TESTING only ------------------------------
-
-//	public static void main(String[] args) {
-//		Complex z1 = new Complex(0.3, 0.6);
-//		Complex z2 = new Complex(-1, 0.2);
-//		
-//		System.out.println("z1 = " + z1);
-//		System.out.println("z2 = " + z2);
-//		
-//		System.out.println("z1 + z2 = " + z1.add(z2));
-//		System.out.println("z2 + z1 = " + z2.add(z1));
-//		
-//		
-//		System.out.println("z1 = " + z1);
-//		System.out.println("z2 = " + z2);
-//		Complex z3 = z1.multiply(z2);
-//		System.out.println("z1 * z2 = " + z3);
-//		Complex z4 = z2.multiply(z1);
-//		System.out.println("z2 * z1 = " + z4);
-//		
-//		System.out.println("z1.pow(5) = " + z1.pow(5));
-//		
-//		System.out.println("z1.rotate(0.1) = " + z1.rotate(0.1));
-//	}
-
 }
-/*
-z1 = (0.300000000, 0.600000000)
-z2 = (-1.000000000, 0.200000000)
-z1 + z2 = (-0.700000000, 0.800000000)
-z2 + z1 = (-0.700000000, 0.800000000)
-z1 = (0.300000000, 0.600000000)
-z2 = (-1.000000000, 0.200000000)
-z1 * z2 = (-0.420000000, -0.540000000)
-z2 * z1 = (-0.420000000, -0.540000000)
-z1.pow(5) = (0.099630000, -0.092340000)
-z1.rotate(0.1) = (0.238601200, 0.626952524)
-*/

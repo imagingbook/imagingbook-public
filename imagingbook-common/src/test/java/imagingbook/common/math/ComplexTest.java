@@ -8,7 +8,6 @@
  *******************************************************************************/
 package imagingbook.common.math;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -53,16 +52,18 @@ public class ComplexTest {
 	public void testComplexPow() {
 		// test multiplication (commutative)
 		Complex z12 = z1.pow(5);
-		assertEquals( 0.09963, z12.re, 1E-6);
-		assertEquals(-0.09234, z12.im, 1E-6);
+//		assertEquals( 0.09963, z12.re, 1E-6);
+//		assertEquals(-0.09234, z12.im, 1E-6);
+		assertTrue(z12.equals(0.09963, -0.09234, 1E-6));
 	}
 
 	@Test // z1.rotate(0.1) = (0.238601200, 0.626952524)
 	public void testComplexRotate() {
 		// test multiplication (commutative)
 		Complex z12 = z1.rotate(0.1);
-		assertEquals( 0.238601200, z12.re, 1E-6);
-		assertEquals( 0.626952524, z12.im, 1E-6);
+//		assertEquals(0.238601200, z12.re, 1E-6);
+//		assertEquals(0.626952524, z12.im, 1E-6);
+		assertTrue(z12.equals(0.238601200, 0.626952524, 1E-6));
 	}
 	
 }
