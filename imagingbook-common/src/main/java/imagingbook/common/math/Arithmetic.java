@@ -369,7 +369,7 @@ public abstract class Arithmetic {
 	 * @param a function coefficient
 	 * @param b function coefficient
 	 * @param c function coefficient
-	 * @return an array [x1, x2] with the two roots or null if roots are complex
+	 * @return an array with the two roots x1, x2 (in no particular order) or null if the function has complex roots
 	 */
 	public static double[] getRealRoots(double a, double b, double c) {
 		double d = sqr(b) - 4 * a * c;

@@ -13,6 +13,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
@@ -95,13 +96,16 @@ public class ArithmeticTest {
 	public void testRoots() {
 		{
 			double[] x12 = Arithmetic.getRealRoots(1, -7, 10);	// -> {2, 5}
+			Arrays.sort(x12);
 			assertEquals(2.0, x12[0], TOL);
 			assertEquals(5.0, x12[1], TOL);
 		}		
 		{
 			double[] x12 = Arithmetic.getRealRoots(-2, 2, 1);	// -> {1.3660254037844386, -0.3660254037844386}
-			assertEquals(1.3660254037844386, x12[0], TOL);
-			assertEquals(-0.3660254037844386, x12[1], TOL);
+			Arrays.sort(x12);
+			assertEquals(-0.3660254037844386, x12[0], TOL);
+			assertEquals( 1.3660254037844386, x12[1], TOL);
+			
 		}		
 		{
 			double[] x12 = Arithmetic.getRealRoots(5, 2, 3);	// -> {-0.2 - 0.748331 I, -0.2 + 0.748331 I}
@@ -109,21 +113,5 @@ public class ArithmeticTest {
 		}
 		
 	}
-	
-//	@Test
-//	public void modVsRemainder() {
-//		double a = 3.5, b = 2.1;
-//		doIt(a,b);
-//		doIt(a,-b);
-//		doIt(-a,b);
-//		doIt(-a,-b);
-//	}
-//	
-//	private void doIt(double a, double b) {
-//		double r1 = Arithmetic.mod( a,  b);
-//		double r2 = a %  b;
-//		System.out.format("(%.1f, %.1f): %.1f  vs %.1f\n", a, b, r1, r2);
-//		//System.out.format("(%.1f mod %.1f) -> %.3f\n", a, b, r1);
-//	}
 
 }
