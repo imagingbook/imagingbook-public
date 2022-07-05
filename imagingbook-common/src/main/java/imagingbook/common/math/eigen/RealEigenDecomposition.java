@@ -9,7 +9,7 @@ import org.apache.commons.math3.linear.RealVector;
  * delivering solutions when all eigenvalues are real.
  *  
  * @author WB
- *
+ * @version 2022/07/05
  */
 public interface RealEigenDecomposition {
 	
