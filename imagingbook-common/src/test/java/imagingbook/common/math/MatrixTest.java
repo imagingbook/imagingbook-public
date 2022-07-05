@@ -13,9 +13,9 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Assert;
 import org.junit.Test;
 
-import imagingbook.common.math.Arithmetic.DivideByZeroException;
 import imagingbook.common.math.Matrix.IncompatibleDimensionsException;
 import imagingbook.common.math.Matrix.NonsquareMatrixException;
+import imagingbook.common.math.exception.DivideByZeroException;
 import imagingbook.testutils.NumericTestUtils;
 
 

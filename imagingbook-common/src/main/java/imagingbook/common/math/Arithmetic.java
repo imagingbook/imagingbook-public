@@ -9,9 +9,13 @@
 
 package imagingbook.common.math;
 
-import java.util.Arrays;
-
-import org.apache.commons.math3.util.FastMath;
+import static org.apache.commons.math3.util.FastMath.abs;
+import static org.apache.commons.math3.util.FastMath.atan2;
+import static org.apache.commons.math3.util.FastMath.cos;
+import static org.apache.commons.math3.util.FastMath.floor;
+import static org.apache.commons.math3.util.FastMath.floorMod;
+import static org.apache.commons.math3.util.FastMath.hypot;
+import static org.apache.commons.math3.util.FastMath.sin;
 
 /**
  * This class defines various static methods implementing arithmetic operations and predicates.
@@ -70,7 +74,7 @@ public abstract class Arithmetic {
 	 * @return the radius
 	 */
 	public static double radius(double x, double y) {
-		return FastMath.hypot(x, y);
+		return hypot(x, y);
 	}
 	
 	/**
@@ -80,7 +84,7 @@ public abstract class Arithmetic {
 	 * @return the angle
 	 */
 	public static double angle(double x, double y) {
-		return FastMath.atan2(y, x);
+		return atan2(y, x);
 	}
 	
 	/**
@@ -90,7 +94,7 @@ public abstract class Arithmetic {
 	 * @return a 2-element array holding the polar coordinates (radius, angle)
 	 */
 	public static double[] toPolar(double x, double y) {
-		return new double[] {FastMath.hypot(x, y), FastMath.atan2(y, x)};
+		return new double[] {hypot(x, y), atan2(y, x)};
 	}
 	
 	/**
@@ -109,7 +113,7 @@ public abstract class Arithmetic {
 	 * @return a 2-element array holding the Cartesian coordinates (x,y)
 	 */
 	public static double[] toCartesian(double radius, double angle) {
-		return new double[] {radius * FastMath.cos(angle), radius * FastMath.sin(angle)};
+		return new double[] {radius * cos(angle), radius * sin(angle)};
 	}
 	
 	/**
@@ -130,7 +134,7 @@ public abstract class Arithmetic {
 	 * @return {@code a mod b}
 	 */
 	public static int mod(int a, int b) {
-		return FastMath.floorMod(a, b);
+		return floorMod(a, b);
 	}
 	
 	// original implementation (obsolete)
@@ -157,6 +161,7 @@ public abstract class Arithmetic {
 	 * mod(-3.5, 2.1) =  0.7
 	 * mod( 3.5,-2.1) = -0.7
 	 * mod(-3.5,-2.1) = -1.4</pre>
+	 * 
 	 * @param a dividend
 	 * @param b divisor (modulus), must be nonzero
 	 * @return {@code a mod b}
@@ -164,7 +169,7 @@ public abstract class Arithmetic {
 	public static double mod(double a, double b) {
 		if (isZero(b))
 				throw new IllegalArgumentException("zero modulus in mod");
-		return a - b * FastMath.floor(a / b);
+		return a - b * floor(a / b);
 	}
 	
 	/**
@@ -175,7 +180,7 @@ public abstract class Arithmetic {
 	 * @return true if argument is close to zero
 	 */
 	public static boolean isZero(float x) {
-		return FastMath.abs(x) < EPSILON_FLOAT;
+		return abs(x) < EPSILON_FLOAT;
 	}
 	
 	/**
@@ -187,7 +192,7 @@ public abstract class Arithmetic {
 	 * @return true if argument is close to zero
 	 */
 	public static boolean isZero(float x, float tolerance) {
-		return FastMath.abs(x) < tolerance;
+		return abs(x) < tolerance;
 	}
 	
 	/**
@@ -198,7 +203,7 @@ public abstract class Arithmetic {
 	 * @return true if argument is close to zero
 	 */
 	public static boolean isZero(double x) {
-		return FastMath.abs(x) < EPSILON_DOUBLE;
+		return abs(x) < EPSILON_DOUBLE;
 	}
 	
 	/**
@@ -210,7 +215,7 @@ public abstract class Arithmetic {
 	 * @return true if argument is close to zero
 	 */
 	public static boolean isZero(double x, double tolerance) {
-		return FastMath.abs(x) < tolerance;
+		return abs(x) < tolerance;
 	}
 	
 	/**
@@ -222,7 +227,7 @@ public abstract class Arithmetic {
 	 * @return true if the absolute difference of the arguments is less than the tolerance
 	 */
 	public static boolean equals(double x, double y) {
-		return Arithmetic.isZero(x - y);
+		return isZero(x - y);
 	}
 	
 	/**
@@ -233,7 +238,7 @@ public abstract class Arithmetic {
 	 * @return true if the absolute difference of the arguments is less than the tolerance
 	 */
 	public static boolean equals(double x, double y, double tolerance) {
-		return Arithmetic.isZero(x - y, tolerance);
+		return isZero(x - y, tolerance);
 	}
 	
 	/**
@@ -245,7 +250,7 @@ public abstract class Arithmetic {
 	 * @return true if the absolute difference of the arguments is less than the tolerance
 	 */
 	public static boolean equals(float x, float y) {
-		return Arithmetic.isZero(x - y);
+		return isZero(x - y);
 	}
 	
 	/**
@@ -256,7 +261,7 @@ public abstract class Arithmetic {
 	 * @return true if the absolute difference of the arguments is less than the tolerance
 	 */
 	public static boolean equals(float x, float y, float tolerance) {
-		return Arithmetic.isZero(x - y, tolerance);
+		return isZero(x - y, tolerance);
 	}
 	
 	// ---------------------------------------------------------------------------
@@ -360,56 +365,21 @@ public abstract class Arithmetic {
 	/**
 	 * Returns the two real roots of the quadratic function
 	 * f(x) = ax^2 + bx + c.
-	 * @param a coefficient
-	 * @param b coefficient
-	 * @param c coefficient
-	 * @return an array [x1, x2] with the two roots
+	 * Null is returned if roots are non-real.
+	 * @param a function coefficient
+	 * @param b function coefficient
+	 * @param c function coefficient
+	 * @return an array [x1, x2] with the two roots or null if roots are complex
 	 */
-	public static double[] getRoots(double a, double b, double c) {
-		double d = Math.sqrt(sqr(b) - 4 * a * c);
-		double x1 = (-b - d) / (2 * a);
-		double x2 = (-b + d) / (2 * a);
-		return new double[] {x1, x2};
-	}
-	
-	//--------------------------------------------------------------------------
-	
-	public static class DivideByZeroException extends ArithmeticException {
-		private static final long serialVersionUID = 1L;
-		private static String DefaultMessage = "zero denominator in division";
-		
-		public DivideByZeroException() {
-			super(DefaultMessage);
+	public static double[] getRealRoots(double a, double b, double c) {
+		double d = sqr(b) - 4 * a * c;
+		if (d < 0) {
+			return null;	// complex roots
 		}
-	}
-	
-	// -------------------------------------
-	
-//	public static void main(String[] args) {
-//		System.out.println(Arithmetic.mod(13, 4));
-//		System.out.println(Arithmetic.mod(13, -4));
-//		System.out.println(Arithmetic.mod(-13, 4));
-//		System.out.println(Arithmetic.mod(-13, -4));
-//		
-//		int b = 7;
-//		System.out.format("   i  -> floor |  mod\n");
-//		for (int i = -25; i < 25; i++) {
-//			System.out.format("%4d  -> %4d  | %4d \n", i, Math.floorMod(i, b), Arithmetic.mod(i, b));
-//		}
-//	}
-	
-	public static void main(String[] args) {	// TODO: add to tests
-//		System.out.println(Arithmetic.max(13));
-//		System.out.println(Arithmetic.max(13, 7, 22));
-//		System.out.println(Math.max(13,Math.max(7,22)));
-//		
-//		System.out.println(Arithmetic.min(13));
-//		System.out.println(Arithmetic.min(13, 7, 22));
-		double[] x12 = getRoots(1, -7, 10);
-		System.out.println("x12 = " + Arrays.toString(x12));		// x12 = [2.0, 5.0]
-		
-		x12 = getRoots(-2, 2, 1);
-		System.out.println("x12 = " + Arrays.toString(x12));		// x12 = [1.3660254037844386, -0.3660254037844386]
+		double dr = Math.sqrt(d);	
+		double x1 = (-b - dr) / (2 * a);
+		double x2 = (-b + dr) / (2 * a);
+		return new double[] {x1, x2};
 	}
 
 }

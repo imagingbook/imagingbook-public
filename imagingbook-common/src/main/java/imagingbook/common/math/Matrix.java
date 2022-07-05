@@ -27,7 +27,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularMatrixException;
 
-import imagingbook.common.math.Arithmetic.DivideByZeroException;
+import imagingbook.common.math.exception.DivideByZeroException;
 
 /**
  * <p>This class defines a set of static methods for calculations
