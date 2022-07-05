@@ -12,7 +12,7 @@ import imagingbook.common.math.exception.MaxIterationsExceededException;
 /**
  * Eigenvalues and eigenvectors of a real matrix.
  * This code has been ported from https://math.nist.gov/javanumerics/jama/ (Version 1.0.3), with the
- * public API (and some internals) adapted to Apache Commons Math (by W. Burger).
+ * public API (and some internals) adapted to Apache Commons Math.
  * Most comments below were taken from the original sources.
  * <p>
  * This is intended as a temporary substitute for Apache Commons Math's 
@@ -39,7 +39,7 @@ import imagingbook.common.math.exception.MaxIterationsExceededException;
  * 
  * @version 2022/06/19
  */
-public class EigenvalueDecomposition {
+public class EigenDecompositionJama implements RealEigenDecomposition {
 	
 	public static final double DefaultSymmetryTolerance = 1e-12;
 	public static final double DefaultZeroTolerance = 1e-12;
@@ -64,7 +64,7 @@ public class EigenvalueDecomposition {
 	 * @param symmetryTol absolute threshold for determining matrix symmetry
 	 * @param zeroTol absolute threshold for determining zero matrix entries
 	 */
-	public EigenvalueDecomposition(RealMatrix M, double symmetryTol, double zeroTol)
+	public EigenDecompositionJama(RealMatrix M, double symmetryTol, double zeroTol)
 			throws MaxIterationsExceededException {
 		
 		final double[][] A = M.getData();
@@ -112,7 +112,7 @@ public class EigenvalueDecomposition {
 	 * 
 	 * @param M matrix to be decomposed
 	 */
-	public EigenvalueDecomposition(RealMatrix M) {
+	public EigenDecompositionJama(RealMatrix M) {
 		this(M, DefaultSymmetryTolerance, DefaultZeroTolerance);
 	}
 	
@@ -136,6 +136,7 @@ public class EigenvalueDecomposition {
 	 * 
 	 * @return the matrix of eigenvectors
 	 */
+	@Override
 	public RealMatrix getV() {
 		return MatrixUtils.createRealMatrix(V);
 	}
@@ -158,6 +159,7 @@ public class EigenvalueDecomposition {
      * @param k index of the eigenvector (counting from 0).
      * @return a copy of the k-th eigenvector
      */
+	@Override
     public RealVector getEigenvector(int k) {
     	double[] ev = new double[n];
     	for (int i = 0; i < n; i++) {
@@ -170,6 +172,7 @@ public class EigenvalueDecomposition {
 	 * Return the real parts of the eigenvalues
 	 * @return real(diag(D))
 	 */
+	@Override
 	public double[] getRealEigenvalues() {
 		return d;
 	}
@@ -182,6 +185,7 @@ public class EigenvalueDecomposition {
 		return e;
 	}
 	
+	@Override
 	public double getRealEigenvalue(int k) {
 		return d[k];
 	}
@@ -198,6 +202,7 @@ public class EigenvalueDecomposition {
      *
      * @return {@code true} if any of the eigenvalues is complex, {@code false} otherwise
      */
+	@Override
     public boolean hasComplexEigenvalues() {
         for (int i = 0; i < e.length; i++) {
             if (Math.abs(e[i]) > zeroTol) {
@@ -236,6 +241,7 @@ public class EigenvalueDecomposition {
      *
 	 * @return D
 	 */
+	@Override
 	public RealMatrix getD() {
 		RealMatrix D = MatrixUtils.createRealDiagonalMatrix(d);
 		for (int i = 0; i < e.length; i++) {
@@ -1055,7 +1061,7 @@ public class EigenvalueDecomposition {
 		
 		{
 			System.out.println("\nJAMA: *****************************");
-			EigenvalueDecomposition ed = new EigenvalueDecomposition(M);
+			EigenDecompositionJama ed = new EigenDecompositionJama(M);
 			System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
 			System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
 			System.out.println("has complex evs = " + ed.hasComplexEigenvalues());

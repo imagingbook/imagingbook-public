@@ -19,7 +19,7 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.eigen.EigenvalueDecomposition;
+import imagingbook.common.math.eigen.EigenDecompositionJama;
 import imagingbook.common.util.SortMap;
 
 /**
@@ -144,7 +144,7 @@ public class CircleFitHyperStable implements CircleFitAlgebraic {
 			RealMatrix Z = W.multiply(Ci).multiply(W);
 
 //			EigenDecomposition ed = new EigenDecomposition(Z);
-			EigenvalueDecomposition ed = new EigenvalueDecomposition(Z);
+			EigenDecompositionJama ed = new EigenDecompositionJama(Z);
 			double[] evals = ed.getRealEigenvalues();
 			
 			int l = new SortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue

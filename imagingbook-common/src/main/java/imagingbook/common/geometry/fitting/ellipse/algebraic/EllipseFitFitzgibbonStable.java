@@ -20,7 +20,7 @@ import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.eigen.EigenvalueDecomposition;
+import imagingbook.common.math.eigen.EigenDecompositionJama;
 
 /**
  * <p>
@@ -114,7 +114,7 @@ public class EllipseFitFitzgibbonStable implements EllipseFitAlgebraic {
 		
 		// find the eigenvector of Z which satisfies the ellipse constraint:
 //		EigenDecomposition ed = new EigenDecomposition(Z);
-		EigenvalueDecomposition ed = new EigenvalueDecomposition(Z);
+		EigenDecompositionJama ed = new EigenDecompositionJama(Z);
 		double[] p1 = null;
 		for (int i = 0; i < 3; i++) {
 			RealVector e = ed.getEigenvector(i);

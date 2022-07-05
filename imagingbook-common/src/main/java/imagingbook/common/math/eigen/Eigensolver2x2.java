@@ -50,7 +50,7 @@ import imagingbook.common.math.Matrix;
  * </p>
  * <p>
  * This implementation is considerably faster (ca. factor 5) than the general solution
- * available in {@link EigenvalueDecomposition} (based on Apache Commons Math) for 2x2 matrices.
+ * available in {@link EigenDecompositionJama} (based on Apache Commons Math) for 2x2 matrices.
  * </p>
  * <p>
  * [1] Blinn, Jim: "Jim Blinn's Corner: Notation, Notation, Notation", Morgan Kaufmann (2002).
@@ -60,7 +60,7 @@ import imagingbook.common.math.Matrix;
  * @version 2022/02/18
  * 
  */
-public class Eigensolver2x2 { // to check: http://www.akiti.ca/Eig2Solv.html
+public class Eigensolver2x2 implements RealEigenDecomposition { // to check: http://www.akiti.ca/Eig2Solv.html
 	
 	private final boolean isReal;
 	private final double[] eVals = {Double.NaN, Double.NaN};
@@ -169,22 +169,27 @@ public class Eigensolver2x2 { // to check: http://www.akiti.ca/Eig2Solv.html
 		return isReal;
 	}
 	
+	@Override
 	public boolean hasComplexEigenvalues() {
 		return !isReal;
 	}
 	
+	@Override
 	public double[] getRealEigenvalues() {
 		return eVals;
 	}
 	
+	@Override
 	public double getRealEigenvalue(int k) {
 		return eVals[k];
 	}
 	
+	@Override
 	public RealMatrix getV() { // TODO: needs to be tested!
 		return MatrixUtils.createRealMatrix(Matrix.transpose(eVecs));
 	}
 	
+	@Override
 	public RealVector getEigenvector(int k) {
 		return MatrixUtils.createRealVector(eVecs[k]);
 	}

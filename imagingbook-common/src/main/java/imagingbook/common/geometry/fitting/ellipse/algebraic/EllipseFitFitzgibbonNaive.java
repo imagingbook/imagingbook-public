@@ -15,7 +15,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.eigen.EigenvalueDecomposition;
+import imagingbook.common.math.eigen.EigenDecompositionJama;
 
 /**
  * <p>
@@ -90,7 +90,7 @@ public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
 		RealMatrix Si = MatrixUtils.inverse(S, 1e-15);
 		
 //		EigenDecomposition ed = new EigenDecomposition(Si.multiply(C));
-		EigenvalueDecomposition ed = new EigenvalueDecomposition(Si.multiply(C));
+		EigenDecompositionJama ed = new EigenDecompositionJama(Si.multiply(C));
 
 		double[] evals = ed.getRealEigenvalues();
 		int k = Matrix.idxMax(evals);				// index of the largest eigenvalue

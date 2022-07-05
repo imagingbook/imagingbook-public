@@ -38,11 +38,11 @@ import imagingbook.common.math.PrintPrecision;
  * "Numerical Recipes". Cambridge University Press, 3rd ed. (2007).
  * </p>
  * @see GeneralizedEigenDecomposition
- * @see EigenvalueDecomposition
+ * @see EigenDecompositionJama
  * @author WB
  * @version 2022/06/11
  */
-public class GeneralizedSymmetricEigenDecomposition {
+public class GeneralizedSymmetricEigenDecomposition implements RealEigenDecomposition {
 	
 	private final EigenDecomposition eigendecompY;
 	private final DecompositionSolver solverLT;
@@ -106,22 +106,31 @@ public class GeneralizedSymmetricEigenDecomposition {
 	
 	// ---------------------------------------------------------------------
 	
+	@Override
 	public double[] getRealEigenvalues() {
 		return eigendecompY.getRealEigenvalues();
+	}
+	
+	@Override
+	public double getRealEigenvalue(int k) {
+		return eigendecompY.getRealEigenvalue(k);
 	}
 	
 	public double[] getImagEigenvalues() {
 		return eigendecompY.getImagEigenvalues();
 	}
 	
+	@Override
 	public boolean hasComplexEigenvalues() {
 		return eigendecompY.hasComplexEigenvalues();
 	}
 	
+	@Override
 	public RealMatrix getD() {
 		return eigendecompY.getD();
 	}
 	
+	@Override
 	public RealVector getEigenvector(int k) {
 //		return LiT.operate(ed.getEigenvector(k));
 		// solve LT * x_k = v_k
@@ -129,6 +138,7 @@ public class GeneralizedSymmetricEigenDecomposition {
 		return solverLT.solve(vk);
 	}
 
+	@Override
 	public RealMatrix getV() {
 //		return LiT.multiply(ed.getV());
 		// solve LT * X = V

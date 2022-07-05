@@ -44,7 +44,7 @@ import imagingbook.common.math.Matrix;
  * @version 2022/06/21
  * @see GeneralizedSymmetricEigenDecomposition
  */
-public class GeneralizedEigenDecomposition {
+public class GeneralizedEigenDecomposition implements RealEigenDecomposition {
 	
 	static boolean VERBOSE = false;
 
@@ -98,6 +98,7 @@ public class GeneralizedEigenDecomposition {
 	 * 
 	 * @return the real parts of the eigenvalues
 	 */
+	@Override
 	public double[] getRealEigenvalues() {
 		double[] eval = new double[n];
 		for (int i = 0; i < n; i++) {
@@ -106,6 +107,11 @@ public class GeneralizedEigenDecomposition {
 		return eval;
 	}
 
+	@Override
+	public double getRealEigenvalue(int k) {
+		return alphaR[k] / beta[k];
+	}
+	
 	/**
 	 * Returns a vector with the imaginary parts of the eigenvalues.
 	 * 
@@ -125,6 +131,7 @@ public class GeneralizedEigenDecomposition {
 	 * 
 	 * @return the matrix of eigenvectors
 	 */
+	@Override
 	public RealMatrix getV() {
 		return MatrixUtils.createRealMatrix(Z);
 	}
@@ -148,6 +155,7 @@ public class GeneralizedEigenDecomposition {
      *
      * @return {@code true} if any of the eigenvalues is complex, {@code false} otherwise
      */
+	@Override
 	public boolean hasComplexEigenvalues() {
 		for (int i = 0; i < n; i++) {
 			if (alphaI[i] != 0.0) {
@@ -162,6 +170,7 @@ public class GeneralizedEigenDecomposition {
 	 * TODO: check complex case!
 	 * @return the block diagonal eigenvalue matrix
 	 */
+	@Override
 	public RealMatrix getD() {
 		double[][] x = new double[n][n];
 

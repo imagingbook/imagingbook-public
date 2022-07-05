@@ -17,7 +17,7 @@ import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.math.eigen.EigenvalueDecomposition;
+import imagingbook.common.math.eigen.EigenDecompositionJama;
 import imagingbook.common.util.SortMap;
 
 public class OrthogonalLineFitEigen implements LineFit {
@@ -71,7 +71,7 @@ public class OrthogonalLineFitEigen implements LineFit {
 		
 		
 //		RealEigensolver es = new EigensolverNxN(S);
-		EigenvalueDecomposition es = new EigenvalueDecomposition(MatrixUtils.createRealMatrix(S));
+		EigenDecompositionJama es = new EigenDecompositionJama(MatrixUtils.createRealMatrix(S));
 //		double[] e = es.getEigenvector(1);
 		int k = SortMap.getNthSmallestIndex(es.getRealEigenvalues(), 0);
 		double[] e = es.getEigenvector(k).toArray();

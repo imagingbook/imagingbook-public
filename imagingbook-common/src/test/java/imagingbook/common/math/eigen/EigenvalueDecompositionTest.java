@@ -1,4 +1,4 @@
-package imagingbook.common.math;
+package imagingbook.common.math.eigen;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
@@ -10,7 +10,8 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Test;
 
-import imagingbook.common.math.eigen.EigenvalueDecomposition;
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.RandomMatrixGenerator;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
 import imagingbook.testutils.NumericTestUtils;
 
@@ -45,7 +46,7 @@ public class EigenvalueDecompositionTest {
 	}
 	
 	private void runTest1(RealMatrix M, double[] evalsExpected) {
-		EigenvalueDecomposition ed = new EigenvalueDecomposition(M);
+		EigenDecompositionJama ed = new EigenDecompositionJama(M);
 		assertFalse("", ed.hasComplexEigenvalues());
 		double[] evalsRe = ed.getRealEigenvalues();
 		assertArrayEquals("", evalsExpected, evalsRe, 1E-6);
@@ -61,7 +62,7 @@ public class EigenvalueDecompositionTest {
 			RealMatrix M = MatrixUtils.createRealMatrix(rg.makeRandomSquareMatrix(6, 10));
 //			System.out.println("M = \n" + Matrix.toString(M));	
 			try {
-				EigenvalueDecomposition ed = new EigenvalueDecomposition(M);
+				EigenDecompositionJama ed = new EigenDecompositionJama(M);
 //				System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
 //				System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
 				assertNotNull("", ed.getRealEigenvalues());
@@ -79,7 +80,7 @@ public class EigenvalueDecompositionTest {
 			RealMatrix M = MatrixUtils.createRealMatrix(rg.makeRandomMatrix(6, 4, 10));
 //			System.out.println("M = \n" + Matrix.toString(M));	
 			try {
-				EigenvalueDecomposition ed = new EigenvalueDecomposition(M);
+				EigenDecompositionJama ed = new EigenDecompositionJama(M);
 //				System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
 //				System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
 				assertNotNull("", ed.getRealEigenvalues());
@@ -97,7 +98,7 @@ public class EigenvalueDecompositionTest {
 			RealMatrix M = MatrixUtils.createRealMatrix(rg.makeRandomSymmetricMatrix(6, 10));
 //			System.out.println("M = \n" + Matrix.toString(M));	
 			try {
-				EigenvalueDecomposition ed = new EigenvalueDecomposition(M);
+				EigenDecompositionJama ed = new EigenDecompositionJama(M);
 //				System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
 //				System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
 				assertNotNull("", ed.getRealEigenvalues());
@@ -238,7 +239,7 @@ public class EigenvalueDecompositionTest {
 		}
 
 		private void runEigenTest(double[][] M, boolean shouldBeReal) {
-			EigenvalueDecomposition solver = new EigenvalueDecomposition(MatrixUtils.createRealMatrix(M));	
+			EigenDecompositionJama solver = new EigenDecompositionJama(MatrixUtils.createRealMatrix(M));	
 
 			if (shouldBeReal) {
 				assertFalse(solver.hasComplexEigenvalues());
