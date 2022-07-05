@@ -19,8 +19,8 @@ import org.apache.commons.math3.linear.RealVector;
 import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
-import imagingbook.common.math.EigenvalueDecomposition;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.eigen.EigenvalueDecomposition;
 
 /**
  * <p>

@@ -10,6 +10,7 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Test;
 
+import imagingbook.common.math.eigen.EigenvalueDecomposition;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
 import imagingbook.testutils.NumericTestUtils;
 

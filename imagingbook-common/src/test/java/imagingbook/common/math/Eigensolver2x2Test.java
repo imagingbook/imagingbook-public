@@ -16,6 +16,8 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import imagingbook.common.math.eigen.Eigensolver2x2;
+
 public class Eigensolver2x2Test { 
 
 	@Test

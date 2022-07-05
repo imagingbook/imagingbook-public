@@ -7,13 +7,15 @@
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.math;
+package imagingbook.common.math.eigen;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
+
+import imagingbook.common.math.Matrix;
 
 
 /**
@@ -27,8 +29,8 @@ import org.apache.commons.math3.linear.RealVector;
  * <p>
  * There are typically (but not always) two pairs of real-valued 
  * solutions 
- * &lang;&lambda;<sub>1</sub>, x<sub>0</sub>&rang;,
- * &lang;&lambda;<sub>2</sub>, x<sub>1</sub>&rang;
+ * &lang;&lambda;<sub>0</sub>, x<sub>0</sub>&rang;,
+ * &lang;&lambda;<sub>1</sub>, x<sub>1</sub>&rang;
  * such that A&middot;x<sub>k</sub> = &lambda;<sub>k</sub>&middot;x<sub>k</sub>.
  * The resulting eigensystems are ordered such that
  * &lambda;<sub>0</sub> &ge; &lambda;<sub>1</sub>.
@@ -47,7 +49,7 @@ import org.apache.commons.math3.linear.RealVector;
  * Thus x is treated as a column vector and matrix A is transposed (elements b/c are exchanged).
  * </p>
  * <p>
- * This implementation is considerably (ca. factor 5) faster than the general solution
+ * This implementation is considerably faster (ca. factor 5) than the general solution
  * available in {@link EigenvalueDecomposition} (based on Apache Commons Math) for 2x2 matrices.
  * </p>
  * <p>
@@ -179,15 +181,11 @@ public class Eigensolver2x2 { // to check: http://www.akiti.ca/Eig2Solv.html
 		return eVals[k];
 	}
 	
-//	public double[][] getEigenvectors() { // TODO: needs to be tested!
-//		return Matrix.transpose(eVecs);
-//	}
-	
 	public RealMatrix getV() { // TODO: needs to be tested!
 		return MatrixUtils.createRealMatrix(Matrix.transpose(eVecs));
 	}
 	
-	public RealVector getEigenvector(int k) {	// TODO: needs to be tested! Note that eigenvalues are not sorted!
+	public RealVector getEigenvector(int k) {
 		return MatrixUtils.createRealVector(eVecs[k]);
 	}
 	
@@ -201,16 +199,6 @@ public class Eigensolver2x2 { // to check: http://www.akiti.ca/Eig2Solv.html
 			return "<not real>";
 		}
 	}
-	
-	// ----------------------------------------------------
-	
-	public static void main(String[] args) {
-		
-		double[][] M = Matrix.multiply(0.1, Matrix.idMatrix(2)); 
-		Eigensolver2x2  es = new Eigensolver2x2(M);
-		System.out.println(Matrix.toString(es.getRealEigenvalues()));
-		System.out.println(Matrix.toString(es.getEigenvector(0)));
-		System.out.println(Matrix.toString(es.getEigenvector(1)));
-	}
+
 		
 }

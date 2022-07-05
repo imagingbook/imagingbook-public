@@ -10,6 +10,8 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.junit.Test;
 
+import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
+
 public class GeneralizedSymmetricEigenDecompositionTest {
 	
 	static double TOL = 1e-6;

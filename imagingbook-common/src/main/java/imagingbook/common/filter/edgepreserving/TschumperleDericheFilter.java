@@ -14,8 +14,8 @@ import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.filter.linear.LinearFilter;
 import imagingbook.common.image.data.PixelPack;
 import imagingbook.common.image.data.PixelPack.PixelSlice;
-import imagingbook.common.math.Eigensolver2x2;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.eigen.Eigensolver2x2;
 
 /**
  * This class implements the Anisotropic Diffusion filter proposed by David Tschumperle 

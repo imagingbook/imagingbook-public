@@ -10,7 +10,7 @@ package imagingbook.common.mser;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.math.Eigensolver2x2;
+import imagingbook.common.math.eigen.Eigensolver2x2;
 import imagingbook.common.regions.BinaryRegion;
 
 /**

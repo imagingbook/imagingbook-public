@@ -19,9 +19,9 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.line.AlgebraicLine;
-import imagingbook.common.math.EigenvalueDecomposition;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
+import imagingbook.common.math.eigen.EigenvalueDecomposition;
 import imagingbook.common.util.SortMap;
 
 public class LineFitIncremental implements LineFit {

@@ -9,6 +9,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.junit.Test;
 
+import imagingbook.common.math.eigen.GeneralizedEigenDecomposition;
 import imagingbook.testutils.NumericTestUtils;
 
 public class GeneralizedEigenDecompositionTest {

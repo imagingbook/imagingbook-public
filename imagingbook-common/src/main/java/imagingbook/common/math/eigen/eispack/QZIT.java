@@ -1,4 +1,4 @@
-package imagingbook.common.math.eispack;
+package imagingbook.common.math.eigen.eispack;
 
 abstract class QZIT {
 	
