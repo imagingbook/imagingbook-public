@@ -1498,6 +1498,20 @@ public abstract class Matrix {
 		return isZero(x, Arithmetic.EPSILON_FLOAT);
 	}
 	
+	// Sorting vectors (non-destructively)  ------------------------------
+	
+	public static double[] sort(double[] x) {
+		double[] y = Arrays.copyOf(x, x.length);
+		Arrays.sort(y);
+		return y;
+	}
+	
+	public static float[] sort(float[] x) {
+		float[] y = Arrays.copyOf(x, x.length);
+		Arrays.sort(y);
+		return y;
+	}
+	
 	// Checking matrices for all zero values  ------------------------------
 	
 	public static boolean isZero(double[][] A, double tolerance) {
