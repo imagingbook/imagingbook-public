@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Test;
@@ -29,7 +31,7 @@ public class EigenDecompositionJamaTest {
 		
 		double[] evalsRe = {-753386.305449104, 115.864946503, 401745.451068664, 351524.989423574};
 		
-		runTest1(M, evalsRe);
+		checkEigenvalues(M, evalsRe);
 	}
 	
 	@Test
@@ -40,22 +42,50 @@ public class EigenDecompositionJamaTest {
 			{-265184.797553499500000, 0.190328961575416, 74652.065423977560000, 1.470729864949432}, 
 			{20382.684252847444000, -0.016193729208773, 1.470729864949432, 0.000035786438260}});
 		
-		double[] evalsRe = {-723969.633924302, 262.920133439, 163014.536230610, 560692.177560255};
-		
-		runTest1(M, evalsRe);
+		double[] evalsRe = {-723969.633924302, 262.920133439, 163014.536230610, 560692.177560255};		
+		checkEigenvalues(M, evalsRe);
 	}
 	
-	private void runTest1(RealMatrix M, double[] evalsExpected) {
+	@Test
+	public void test1C() {	// non-symmetric example
+		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]  
+				{	{1, 1, 2, 0}, 
+					{0, 1, 3, 0}, 
+					{0, 0, 2, 2}, 
+					{0, 0, 0, 1}});
+		
+		double[] evalsRe = {1, 1, 1, 2};		
+		checkEigenvalues(M, evalsRe);
+	}
+	
+	@Test
+	public void test1D() {	// non-symmetric example, only 1 eigenvalue
+		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]  
+				{	{2, 1, 0, 0, 0}, 
+					{0, 2, 0, 0, 0}, 
+					{0, 0, 2, 0, 0}, 
+					{0, 0, 0, 2, 1}, 
+					{0, 0, 0, 0, 2}});
+		
+		double[] evalsRe = {2, 2, 2, 2, 2};
+	
+		checkEigenvalues(M, evalsRe);
+	}
+	
+
+	
+	private void checkEigenvalues(RealMatrix M, double[] evalsExpected) {
 		EigenDecompositionJama ed = new EigenDecompositionJama(M);
 		assertFalse("", ed.hasComplexEigenvalues());
 		double[] evalsRe = ed.getRealEigenvalues();
-		assertArrayEquals("", evalsExpected, evalsRe, 1E-6);
+//		System.out.println(Arrays.toString(evalsRe));
+		assertArrayEquals("", Matrix.sort(evalsExpected), Matrix.sort(evalsRe), 1E-6);
 	}
 	
 	// ---------------------------------------------------------------------
 	
 	@Test
-	public void test2A() {
+	public void randomMatrixTestA() {
 		// only checks if no exception occurs (iteration count exceeded) on square, non-symmetric matrices
 		RandomMatrixGenerator rg = new RandomMatrixGenerator(17);
 		for (int i = 0; i < 1000; i++) {
@@ -73,7 +103,7 @@ public class EigenDecompositionJamaTest {
 	}
 	
 	@Test
-	public void test2B() {
+	public void randomMatrixTestB() {
 		// only checks if no exception occurs (iteration count exceeded) on non-square matrices
 		RandomMatrixGenerator rg = new RandomMatrixGenerator(17);
 		for (int i = 0; i < 1000; i++) {
@@ -91,7 +121,7 @@ public class EigenDecompositionJamaTest {
 	}
 	
 	@Test
-	public void test3() {
+	public void randomMatrixTest3() {
 		// checks decomposition of random symmetric matrices, always real eigenvalues!
 		RandomMatrixGenerator rg = new RandomMatrixGenerator(17);
 		for (int i = 0; i < 1000; i++) {
@@ -122,63 +152,63 @@ public class EigenDecompositionJamaTest {
 	
 	
 	@Test
-	public void testEigensolverNxNa() {
+	public void testEigenValueVectorProduct01() {
 		double[][] M = {
 				{3, -2},
 				{-4, 1}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
 	}
 	
 	@Test
-	public void testEigensolverNxNb() {
+	public void testEigenValueVectorProduct02() {
 		double[][] M = {
 				{-0.004710, -0.006970},
 				{-0.006970, -0.029195}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
 	}
 	
 	@Test
-	public void testEigensolverNxNc() {
+	public void testEigenValueVectorProduct03() {
 		double[][] M = {
 				{0, 0},
 				{0, 1}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
 	}
 	
 	@Test
-	public void testEigensolverNxNd() {
+	public void testEigenValueVectorProduct04() {
 		double[][] M = {
 				{1, 0},
 				{0, 0}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
 	}
 	
 	@Test
-	public void testEigensolverNxNe() {
+	public void testEigenValueVectorProduct05() {
 		double[][] M = {
 				{1, 0},
 				{-2, 1}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
 	}
 	
 	@Test
-	public void testEigensolverNxNf() {
+	public void testEigenValueVectorProduct06() {
 		double[][] M = {
 				{1, -2},
 				{0, 1}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
 	}
 	
 	@Test
-	public void testEigensolverNxNg() {
+	public void testEigenValueVectorProduct07() {
 		double[][] M = {
 				{1, 2},
 				{2, 1}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
 	}
 	
 	@Test
-	public void testEigensolver2x2H() {
+	public void testEigenValueVectorProduct08() {
 		double[][] M = {
 				{0, -1},
 				{2, 0}};
@@ -186,7 +216,7 @@ public class EigenDecompositionJamaTest {
 	}
 	
 	@Test
-	public void testEigensolver2x2I() {
+	public void testEigenValueVectorProduct09() {
 		double[][] M = {
 				{4, -1},
 				{2, 4}};
@@ -194,16 +224,16 @@ public class EigenDecompositionJamaTest {
 	}
 	
 	@Test
-	public void testEigensolverNxNh() {
+	public void testEigenValueVectorProduct10() {
 		double[][] M = {
 				{5, 2, 0},
 				{2, 5, 0},
 				{-3, 4, 6}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
 	}
 	
 	@Test
-	public void testEigensolverNxNi() {
+	public void testEigenValueVectorProduct11() {
 		double[][] M = {		// has complex eigenvalues!
 				{5, 2, 0, 1},
 				{2, 5, 0, 7},
@@ -213,28 +243,49 @@ public class EigenDecompositionJamaTest {
 	}
 	
 	@Test
-	public void testEigensolverNxNj() {
+	public void testEigenValueVectorProduct12() {
 		double[][] M = {
 				{4455707.000000000, 16685.500000000, 17344.500000000, 142.000000000}, 
 				{-951005821.436619800, -3525507.007042253, -4059917.288732395, -33371.000000000}, 
 				{-997789920.901407700, -4059917.288732392, -3879630.838028166, -34689.000000000}, 
 				{70029373562.509700000, 297685588.322852130, 314485277.997519970, 2949430.845070420}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
 	}
 	
 	@Test
-	public void testEigensolverNxNk() {
+	public void testEigenValueVectorProduct13() {
 		double[][] M = {
 				{-635322.712034708800000, 4756.174679968795000, -265184.797553499500000, 20382.684252847448000}, 
 				{4756.174679968796000, 560670.646574945200000, 0.190328961575323, -0.016193729208773}, 
 				{-265184.797553499500000, 0.190328961575416, 74652.065423977560000, 1.470729864949432}, 
 				{20382.684252847444000, -0.016193729208773, 1.470729864949432, 0.000035786438260}};
-		runEigenTest(M);
+		checkEigenValueVectorProducts(M);
+	}
+	
+	@Test
+	public void testEigenValueVectorProduct14() {
+		double[][] M = {
+				{1, 1, 2, 0}, 
+				{0, 1, 3, 0}, 
+				{0, 0, 2, 2}, 
+				{0, 0, 0, 1}};
+		checkEigenValueVectorProducts(M);
+	}
+	
+	@Test
+	public void testEigenValueVectorProduct15() {
+		double[][] M = {
+				{2, 1, 0, 0, 0}, 
+				{0, 2, 0, 0, 0}, 
+				{0, 0, 2, 0, 0}, 
+				{0, 0, 0, 2, 1}, 
+				{0, 0, 0, 0, 2}};
+		checkEigenValueVectorProducts(M);
 	}
 	
 	// ---------------------------------------------------------
 	
-		private void runEigenTest(double[][] M) {
+		private void checkEigenValueVectorProducts(double[][] M) {
 			runEigenTest(M, true);
 		}
 
