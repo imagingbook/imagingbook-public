@@ -32,7 +32,7 @@ import imagingbook.common.mser.MserDetector;
 import imagingbook.common.mser.MserDetector.Parameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.common.mser.visualize.Colors;
+import imagingbook.common.mser.visualize.MserColors;
 
 /**
  * Runs MSER detection on the current image and produces a color image
@@ -59,8 +59,8 @@ public class MSER_Detect implements PlugInFilter {
 	private static boolean WhiteToBlack = false;	// detect on inverted image
 	
 	private static boolean UseTwoColorsOnly = false;	// detect on inverted image
-	private Color BlackToWhiteColor = Colors.Yellow; //.Orange;
-	private Color WhiteToBlackColor = Colors.Cyan;
+	private Color BlackToWhiteColor = MserColors.Yellow; //.Orange;
+	private Color WhiteToBlackColor = MserColors.Cyan;
 	
 	private static int MinDisplayWidth = 300;
 	
@@ -109,7 +109,7 @@ public class MSER_Detect implements PlugInFilter {
 		if (WhiteToBlack)  title = title + "W";
 		if (UseTwoColorsOnly) title = title + "-2c";
 		
-		Color[] palette = Colors.LevelColors;
+		Color[] palette = MserColors.LevelColors;
 		
 		labelFont = new Font(Font.SANS_SERIF, Font.PLAIN, labelFontSize);
 		

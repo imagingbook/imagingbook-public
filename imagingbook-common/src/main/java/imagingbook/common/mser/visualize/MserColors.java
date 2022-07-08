@@ -11,7 +11,12 @@ package imagingbook.common.mser.visualize;
 
 import java.awt.Color;
 
-public class Colors {
+/**
+ * Color definitions used in MSER demo plugins.
+ * @author WB
+ *
+ */
+public class MserColors {
 	
 	public static Color Red = new Color(240,0,0);
 	public static Color Green = new Color(0,185,15);

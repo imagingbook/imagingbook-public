@@ -12,9 +12,9 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 /**
- * Basically a 2D array of pixels.
- * This class holds all necessary information about the image geometry.
- * It keeps track of which pixels have been visited and knows how
+ * Basically a 2D array of pixels which
+ * holds all necessary information about the image geometry,
+ * keeps track of which pixels have been visited and knows how
  * to access neighboring pixels (currently 4-neighborhood only).
  * TODO: Bring in line with binary region neighborhoods (type).
  * 
@@ -22,10 +22,18 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
  */
 public class PixelMap {
 	
-	public final int width, height;
+	/** Image width */
+	public final int width;
+	
+	/** Image height */
+	public final int height;
 	
 	private final Pixel[][] pixels;
 	
+	/**
+	 * Constructor.
+	 * @param ip source image
+	 */
 	public PixelMap(ImageProcessor ip) {
 		this.width = ip.getWidth();
 		this.height = ip.getHeight();
@@ -42,12 +50,18 @@ public class PixelMap {
 		return ipts;
 	}
 
+	/**
+	 * Returns the {@link Pixel} instance at the specified position.
+	 * @param u horizontal position
+	 * @param v vertical position
+	 * @return the {@link Pixel} instance
+	 */
 	public Pixel getPixel(int u, int v) {
 		return pixels[u][v];
 	}
 	
 	/**
-	 * Returns a new 1D array (i.e., a "flattened" vector) of {@link Pixel} elements,
+	 * Returns a new 1D array (i.e., a "flattened" vector in row-first order) of {@link Pixel} elements,
 	 * e.g., for sorting pixels by value.
 	 * 
 	 * @return a 1D array of pixels
@@ -67,7 +81,7 @@ public class PixelMap {
 	/**
 	 * Sets all pixels to unvisited and resets next-neighbor search directions.
 	 */
-	public void reset() {
+	void reset() {
 		//this.visited.unsetAll();
 		for (int u = 0; u < width; u++) {
 			for (int v = 0; v < height; v++) {

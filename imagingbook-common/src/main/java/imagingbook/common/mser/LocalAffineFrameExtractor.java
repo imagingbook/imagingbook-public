@@ -24,9 +24,8 @@ import imagingbook.common.mser.components.Component;
 
 
 /**
- * Assumes that the given image has white background (255) and black (0) objects.
- * TODO: check the above!
- *
+ * Provides functionality to extract local affine frames from a given image.
+ * Assumes that the specified image has a white background (255) and black (0) objects.
  */
 public class LocalAffineFrameExtractor {
 	
@@ -36,7 +35,7 @@ public class LocalAffineFrameExtractor {
 	private final int m;		// size of frame to extract (W = H = 2 m + 1)
 	private final double s;		// size ratio between outer and inner ellipse
 	
-	public boolean useAntiAliasingFilter = true;
+	public boolean useAntiAliasingFilter = true;	// public, can be set any time
 	
 	public LocalAffineFrameExtractor(ImageProcessor sourceIp, int m, double s) {
 		this.sourceIp = sourceIp;

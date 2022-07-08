@@ -23,15 +23,17 @@ import java.util.Set;
 import imagingbook.common.mser.components.PixelMap.Pixel;
 
 /**
- * This class represents a connected component (binary image region), i.e.,
- * the node of a component tree.
+ * This class represents a connected component (i.e., a binary image region).
+ * Instances of this class form the nodes of a {@link ComponentTree}.
  *
- * @param <T> the type of properties that can be attached to instances
+ * @param <T> the type of properties that can be attached to instances of this class
  */
 public class Component<T> { // implements Comparable<Component<?>>
 	
 	static int NEXT_ID = 0;	// IDs are only used for debugging
-	public final int ID;				// unique component ID, for debugging only	
+	
+	/** The ID number of this component (only used for debugging). */
+	public final int ID;	// unique component ID, for debugging only	
 	
 	// ------------------------------------------------------------
 	
@@ -75,6 +77,11 @@ public class Component<T> { // implements Comparable<Component<?>>
 	
 	// --------------------------------------------------------
 	
+	/**
+	 * Returns the parent component of this component ({@code null} if 
+	 * this node is the tree's root).
+	 * @return the parent component
+	 */
 	public Component<T> getParent() {
 		return parent;
 	}
@@ -88,6 +95,10 @@ public class Component<T> { // implements Comparable<Component<?>>
 		size = size + sizeInc;
 	}
 	
+	/**
+	 * Returns the size (number of pixels) of this component.
+	 * @return the size of this component
+	 */
 	public int getSize() {
 		return size;
 	}
@@ -109,6 +120,10 @@ public class Component<T> { // implements Comparable<Component<?>>
 		}
 	}
 
+	/**
+	 * Returns the level (max. gray value) of this component.
+	 * @return the component's level
+	 */
 	public int getLevel() {
 		return this.level;
 	}
@@ -118,6 +133,10 @@ public class Component<T> { // implements Comparable<Component<?>>
 		size = size + 1;
 	}
 	
+	/**
+	 * Returns the height of the sub-tree which this component is the root of.
+	 * @return the height of the sub-tree rooted by this component
+	 */
 	public int getHeight() {
 		return this.height;
 	}
@@ -168,10 +187,18 @@ public class Component<T> { // implements Comparable<Component<?>>
 		return childPoints;
 	}
 	
+	/**
+	 * Sets the properties of this component.
+	 * @param properties a property object (of type T)
+	 */
 	public void setProperties(T properties) {
 		this.properties = properties;
 	}
 	
+	/**
+	 * Returns the properties attached to this component.
+	 * @return the properties attached to this component
+	 */
 	public T getProperties() {
 		return properties;
 	}
@@ -197,10 +224,18 @@ public class Component<T> { // implements Comparable<Component<?>>
 		}
 	}
 	
+	/**
+	 * Returns {@code true} if this component is the root of the associated {@link ComponentTree}.
+	 * @return {@code true} if this component is the root
+	 */
 	public boolean isRoot() {	// TODO: change/clean/check!
 		return parent == null; // || this.parent == this;
 	}
 	
+	/**
+	 * Returns {@code true} if this component represents an extremal region.
+	 * @return {@code true} if the component is extremal
+	 */
 	public boolean isExtremal() {
 		return isRoot() || parent.level > this.level;
 	}
@@ -276,7 +311,7 @@ public class Component<T> { // implements Comparable<Component<?>>
 //				);
 //	}
 	
-	public void printToStream(PrintStream strm) {
+	void printToStream(PrintStream strm) {
 		strm.format("Component %d(%d): size=%d locPts=%d chldPts=%d allPts=%d parent=%s",
 				this.ID, this.level, 
 				this.size,
@@ -287,6 +322,7 @@ public class Component<T> { // implements Comparable<Component<?>>
 				);
 	}
 	
+	@Override
 	public String toString() {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		PrintStream ps = new PrintStream(os);
@@ -294,21 +330,21 @@ public class Component<T> { // implements Comparable<Component<?>>
 		return os.toString();
 	}
 	
-	public String toStringShort() {
-		return String.format("%d(%d)", ID, level);
-	}
+//	public String toStringShort() {
+//		return String.format("%d(%d)", ID, level);
+//	}
 	
 
 	
-	public String levelsToString() {
-		int[] levels = new int[this.getSize()];
-		int i = 0;
-		for (Pixel p : this.points) {
-			levels[i] = p.val;
-			i++;
-		}
-		Arrays.sort(levels);
-		return Arrays.toString(levels);
-	}
+//	public String levelsToString() {
+//		int[] levels = new int[this.getSize()];
+//		int i = 0;
+//		for (Pixel p : this.points) {
+//			levels[i] = p.val;
+//			i++;
+//		}
+//		Arrays.sort(levels);
+//		return Arrays.toString(levels);
+//	}
 	
 }

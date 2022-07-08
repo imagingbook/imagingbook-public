@@ -254,7 +254,7 @@ public class MserDetector {
 					compactness > params.minCompactness) {
 				this.msers.add(c); //this.msers.add(mser);
 				ap = ac;
-				props.isMser = true;	// mark component c as a selected MSER
+				props.isMserP = true;	// mark component c as a selected MSER
 			}
 		}
 		

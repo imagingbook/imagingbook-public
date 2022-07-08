@@ -27,16 +27,19 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
 public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
 	/**
-	 * The method (algorithm) for building the component tree.
+	 * Enumeration specifying the method (algorithm) for building the component tree.
 	 */
 	public enum Method {
-		/** Specifies the classic (global immersion) algorithm. */
+		/** Specifies the classic (global immersion) algorithm, see {@link ComponentTreeGlobalImmersion}. */
 		GlobalImmersion,
-		/** Specifies the linear-time algorithm. */
+		/** Specifies the linear-time algorithm, see {@link ComponentTreeLinearTime}. */
 		LinearTime;
 	}
 	
 	// --------------------------------------------------------------
+	
+	ComponentTree() {		// non-public constructor
+	}
 	
 	/**
 	 * Creates a new component tree for the specified image using the
@@ -112,7 +115,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	// -------------------------------------------------------------------------------
 	
 	/**
-	 * Component tree integrity checks.
+	 * Performs integrity checks on this component tree.
 	 * @return true iff all checks are passed
 	 */
 	public boolean validate() {
@@ -320,6 +323,46 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 			strm.println();
 		}
 		strm.println("root = " + getRoot());
+	}
+	
+	// ---------------------------------------------------------------------
+	
+	private static int INDENT = 4;
+	
+	// print a forest with multiple roots
+	static String toStringRecursive(ComponentTree<?> rt) { 
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(os);
+		
+		for (Component<?> c : rt) {
+			if (c.getParent() == null || c.getParent() == c) {	// start at any root
+				printToStreamRecursive(c, ps, 0);
+			}	
+		}	
+		return os.toString();
+	}
+	
+	// print tree with a single root
+	static String toStringRecursive(Component<?> rt) { 
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(os);
+		printToStreamRecursive(rt, ps, 0);	
+		return os.toString();
+	}
+	
+	
+	private static void printToStreamRecursive(Component<?> c, PrintStream ps, int indent) {
+		for (int i=0; i < indent; i++) {
+			ps.append('|');
+			for (int j = 0; j < INDENT; j++) {
+				ps.append(' ');
+			}
+		}
+		c.printToStream(ps);
+		ps.println();
+		for (Component<?> child : c.getChildren()) {
+			printToStreamRecursive(child, ps, indent + 1);
+		}
 	}
 
 }

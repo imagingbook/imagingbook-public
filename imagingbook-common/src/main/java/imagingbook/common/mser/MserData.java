@@ -16,21 +16,17 @@ import imagingbook.common.math.eigen.Eigensolver2x2;
 import imagingbook.common.mser.components.Component;
 
 /**
- * A container holding the data for calculating MSER properties.
- * Instances of this type are attached to {@link Component} during
+ * Defines a container holding the data for calculating MSER properties.
+ * Instances of this type are attached to {@link Component} objects during
  * MSER calculation in {@link MserDetector}.
  */
 public class MserData {
 	
 	private final Component<MserData> component;	// reference to associated component
 	
-	public MserData(Component<MserData> c) {
-		this.component = c;
-	}
+	/** True iff the associated component is a MSER. */
+	protected boolean isMserP = false;
 	
-	/** True iff component is a MSER */
-	public boolean isMser = false;			// should be protected at least!
-
 	/** Component size variation (wrt. to the size at delta levels higher), undefined = -1 */
 	protected float variation = -1;
 	
@@ -45,6 +41,24 @@ public class MserData {
 	
 	/** Reference to the equivalent ellipse */
 	private GeometricEllipse ellipse = null;
+	
+	
+	/**
+	 * Constructor.
+	 * @param c the associated {@link Component}
+	 */
+	public MserData(Component<MserData> c) {
+		this.component = c;
+	}
+	
+	
+	/**
+	 * Return true iff the associated component is a MSER.
+	 * @return true iff a MSER
+	 */
+	public boolean isMser() {
+		return isMserP;
+	}
 	
 	/**
 	 * Returns the vector of central moments (mu10, mu01, mu20, mu02, mu11).

@@ -20,8 +20,9 @@ import imagingbook.common.util.bits.BitMap;
 
 /**
  * This class implements the "linear-time" component tree algorithm 
- * described by D. Nister and H. Stewenius
- * in "Linear Time Maximally Stable Extremal Regions" (ECCV 2008).
+ * described in D. Nister and H. Stewenius,
+ * "Linear Time Maximally Stable Extremal Regions", Computer Vision - ECCV 2008 
+ * pp. 183-196, Springer Berlin/Heidelberg (2008).
  * 
  * @author WB
  *
