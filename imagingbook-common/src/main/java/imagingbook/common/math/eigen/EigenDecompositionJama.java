@@ -120,11 +120,10 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 	
 	/**
 	 * Returns true if the decomposed matrix is considered symmetric.
-	 * See also {@link #EigenvalueDecomposition(RealMatrix, double, double)},
+	 * See also {@link #EigenDecompositionJama(RealMatrix, double, double)},
 	 * {@link #DefaultSymmetryTolerance}.
 	 * 
 	 * @return true if symmetric, false otherwise
-	 *
 	 */
 	public boolean isSymmetric() {
 		return this.issymmetric;

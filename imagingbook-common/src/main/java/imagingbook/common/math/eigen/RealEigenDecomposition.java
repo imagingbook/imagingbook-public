@@ -7,6 +7,7 @@ import org.apache.commons.math3.linear.RealVector;
 /**
  * Common interface for eigendecompositions capable of
  * delivering solutions when all eigenvalues are real.
+ * TODO: add 'ComplexEigenDecomposition' interface and implementations
  *  
  * @author WB
  * @version 2022/07/08
@@ -22,6 +23,8 @@ public interface RealEigenDecomposition {
 	
 	/**
 	 * Returns the real part of the k-th eigenvalue
+	 * 
+	 * @param k index of the eigenvalue @param k index of the eigenvector (0-based)
 	 * @return real part of the k-th eigenvalue
 	 */
 	public double getRealEigenvalue(int k);
@@ -53,7 +56,7 @@ public interface RealEigenDecomposition {
      * k-th column vector of the matrix returned
      * by {@link #getV()}.
      * 
-     * @param k index of the eigenvector (counting from 0).
+     * @param k index of the eigenvector (0-based)
      * @return the k-th eigenvector (instance of {@link RealVector})
      */
 	public RealVector getEigenvector(int k);
