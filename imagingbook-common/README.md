@@ -6,7 +6,7 @@ the digital image processing books by W. Burger & M. J. Burge
 
 **Parent repository:** [imagingbook-public](https://github.com/imagingbook/imagingbook-public)
 
-**JavaDoc:** https://imagingbook.github.io/imagingbook-common/javadoc/
+**JavaDoc:** https://imagingbook.github.io/imagingbook-public/imagingbook-common/javadoc/
 
 ## Maven setup
 
