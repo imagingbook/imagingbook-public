@@ -46,7 +46,8 @@ imagingbook.common.lucaskanade
 imagingbook.common.lucaskanade.utils
 imagingbook.common.matching
 imagingbook.common.math
-imagingbook.common.math.eispack
+imagingbook.common.math.eigen
+imagingbook.common.math.eigen.eispack
 imagingbook.common.math.exception
 imagingbook.common.math.jama
 imagingbook.common.math.nonlinear

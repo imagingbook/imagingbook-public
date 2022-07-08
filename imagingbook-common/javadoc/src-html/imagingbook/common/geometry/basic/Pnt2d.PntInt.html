@@ -787,52 +787,36 @@
 <span class="sourceLineNo">777</span><a id="line.777"></a>
 <span class="sourceLineNo">778</span><a id="line.778">        // -------------------------------------------------------------------------</a>
 <span class="sourceLineNo">779</span><a id="line.779">        </a>
-<span class="sourceLineNo">780</span><a id="line.780">        static class Foo extends PntDouble {</a>
-<span class="sourceLineNo">781</span><a id="line.781"></a>
-<span class="sourceLineNo">782</span><a id="line.782">                protected Foo(double x, double y) {</a>
-<span class="sourceLineNo">783</span><a id="line.783">                        super(x, y);</a>
-<span class="sourceLineNo">784</span><a id="line.784">                        // TODO Auto-generated constructor stub</a>
-<span class="sourceLineNo">785</span><a id="line.785">                }</a>
-<span class="sourceLineNo">786</span><a id="line.786">                </a>
-<span class="sourceLineNo">787</span><a id="line.787">        }</a>
-<span class="sourceLineNo">788</span><a id="line.788"></a>
-<span class="sourceLineNo">789</span><a id="line.789">        public static void main(String[] args) {</a>
-<span class="sourceLineNo">790</span><a id="line.790">                PntInt a = PntInt.from(10,  7);</a>
-<span class="sourceLineNo">791</span><a id="line.791">                PntInt b = PntInt.from(3,  5);</a>
-<span class="sourceLineNo">792</span><a id="line.792">                </a>
-<span class="sourceLineNo">793</span><a id="line.793">                Foo foo = new Foo(4, 5);</a>
-<span class="sourceLineNo">794</span><a id="line.794">                System.out.println("foo instanceof Foo = " + (foo instanceof Foo));</a>
-<span class="sourceLineNo">795</span><a id="line.795">                System.out.println("foo instanceof Pnt2d = " + (foo instanceof Pnt2d));</a>
-<span class="sourceLineNo">796</span><a id="line.796">                System.out.println("foo instanceof PntDouble = " + (foo instanceof PntDouble));</a>
-<span class="sourceLineNo">797</span><a id="line.797">                Object y = foo;</a>
-<span class="sourceLineNo">798</span><a id="line.798">                System.out.println("foo instanceof PntInt = " + (y instanceof PntDouble));</a>
-<span class="sourceLineNo">799</span><a id="line.799">                </a>
-<span class="sourceLineNo">800</span><a id="line.800">                </a>
-<span class="sourceLineNo">801</span><a id="line.801">                System.out.println("a = " + a);</a>
-<span class="sourceLineNo">802</span><a id="line.802">                System.out.println("b = " + b);</a>
-<span class="sourceLineNo">803</span><a id="line.803"></a>
-<span class="sourceLineNo">804</span><a id="line.804">                System.out.println("a.perp = " + a.perp());</a>
-<span class="sourceLineNo">805</span><a id="line.805">                System.out.println("b.perp = " + b.perp());</a>
-<span class="sourceLineNo">806</span><a id="line.806"></a>
-<span class="sourceLineNo">807</span><a id="line.807">                //              System.out.println(" a = " + a.getClass());</a>
-<span class="sourceLineNo">808</span><a id="line.808">                //              System.out.println(" b = " + b.getClass());</a>
-<span class="sourceLineNo">809</span><a id="line.809">                //              System.out.println("dist1 = " + a.distL1(b));</a>
-<span class="sourceLineNo">810</span><a id="line.810">                //              System.out.println("dist2 = " + a.distL1(b));</a>
-<span class="sourceLineNo">811</span><a id="line.811"></a>
-<span class="sourceLineNo">812</span><a id="line.812">                System.out.println("a . b = " + a.dot(b));</a>
-<span class="sourceLineNo">813</span><a id="line.813">                System.out.println("b . a = " + b.dot(a));</a>
-<span class="sourceLineNo">814</span><a id="line.814"></a>
-<span class="sourceLineNo">815</span><a id="line.815">                System.out.println("a . a.perp() = " + a.dot(a.perp()));</a>
-<span class="sourceLineNo">816</span><a id="line.816">                System.out.println("b . b.perp() = " + b.dot(b.perp()));</a>
-<span class="sourceLineNo">817</span><a id="line.817"></a>
-<span class="sourceLineNo">818</span><a id="line.818">                System.out.println("a x b = " + a.cross(b));</a>
-<span class="sourceLineNo">819</span><a id="line.819">                System.out.println("b x a = " + b.cross(a));</a>
-<span class="sourceLineNo">820</span><a id="line.820">                </a>
-<span class="sourceLineNo">821</span><a id="line.821">                System.out.println("a x b = " + a.perp().dot(b));</a>
-<span class="sourceLineNo">822</span><a id="line.822">                System.out.println("a x b = " + b.perp().dot(a));</a>
-<span class="sourceLineNo">823</span><a id="line.823"></a>
-<span class="sourceLineNo">824</span><a id="line.824">        }</a>
-<span class="sourceLineNo">825</span><a id="line.825">}</a>
+<span class="sourceLineNo">780</span><a id="line.780"></a>
+<span class="sourceLineNo">781</span><a id="line.781">        public static void main(String[] args) {</a>
+<span class="sourceLineNo">782</span><a id="line.782">                PntInt a = PntInt.from(10,  7);</a>
+<span class="sourceLineNo">783</span><a id="line.783">                PntInt b = PntInt.from(3,  5);</a>
+<span class="sourceLineNo">784</span><a id="line.784">                </a>
+<span class="sourceLineNo">785</span><a id="line.785">                System.out.println("a = " + a);</a>
+<span class="sourceLineNo">786</span><a id="line.786">                System.out.println("b = " + b);</a>
+<span class="sourceLineNo">787</span><a id="line.787"></a>
+<span class="sourceLineNo">788</span><a id="line.788">                System.out.println("a.perp = " + a.perp());</a>
+<span class="sourceLineNo">789</span><a id="line.789">                System.out.println("b.perp = " + b.perp());</a>
+<span class="sourceLineNo">790</span><a id="line.790"></a>
+<span class="sourceLineNo">791</span><a id="line.791">                //              System.out.println(" a = " + a.getClass());</a>
+<span class="sourceLineNo">792</span><a id="line.792">                //              System.out.println(" b = " + b.getClass());</a>
+<span class="sourceLineNo">793</span><a id="line.793">                //              System.out.println("dist1 = " + a.distL1(b));</a>
+<span class="sourceLineNo">794</span><a id="line.794">                //              System.out.println("dist2 = " + a.distL1(b));</a>
+<span class="sourceLineNo">795</span><a id="line.795"></a>
+<span class="sourceLineNo">796</span><a id="line.796">                System.out.println("a . b = " + a.dot(b));</a>
+<span class="sourceLineNo">797</span><a id="line.797">                System.out.println("b . a = " + b.dot(a));</a>
+<span class="sourceLineNo">798</span><a id="line.798"></a>
+<span class="sourceLineNo">799</span><a id="line.799">                System.out.println("a . a.perp() = " + a.dot(a.perp()));</a>
+<span class="sourceLineNo">800</span><a id="line.800">                System.out.println("b . b.perp() = " + b.dot(b.perp()));</a>
+<span class="sourceLineNo">801</span><a id="line.801"></a>
+<span class="sourceLineNo">802</span><a id="line.802">                System.out.println("a x b = " + a.cross(b));</a>
+<span class="sourceLineNo">803</span><a id="line.803">                System.out.println("b x a = " + b.cross(a));</a>
+<span class="sourceLineNo">804</span><a id="line.804">                </a>
+<span class="sourceLineNo">805</span><a id="line.805">                System.out.println("a x b = " + a.perp().dot(b));</a>
+<span class="sourceLineNo">806</span><a id="line.806">                System.out.println("a x b = " + b.perp().dot(a));</a>
+<span class="sourceLineNo">807</span><a id="line.807"></a>
+<span class="sourceLineNo">808</span><a id="line.808">        }</a>
+<span class="sourceLineNo">809</span><a id="line.809">}</a>
 
 
 

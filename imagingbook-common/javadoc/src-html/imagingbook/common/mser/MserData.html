@@ -22,133 +22,147 @@
 <span class="sourceLineNo">012</span><a id="line.12"></a>
 <span class="sourceLineNo">013</span><a id="line.13">import imagingbook.common.geometry.basic.Pnt2d.PntDouble;</a>
 <span class="sourceLineNo">014</span><a id="line.14">import imagingbook.common.geometry.ellipse.GeometricEllipse;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.math.Eigensolver2x2;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.math.eigen.Eigensolver2x2;</a>
 <span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.mser.components.Component;</a>
 <span class="sourceLineNo">017</span><a id="line.17"></a>
 <span class="sourceLineNo">018</span><a id="line.18">/**</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * A container holding the data for calculating MSER properties.</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * Instances of this type are attached to {@link Component} during</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * Defines a container holding the data for calculating MSER properties.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * Instances of this type are attached to {@link Component} objects during</a>
 <span class="sourceLineNo">021</span><a id="line.21"> * MSER calculation in {@link MserDetector}.</a>
 <span class="sourceLineNo">022</span><a id="line.22"> */</a>
 <span class="sourceLineNo">023</span><a id="line.23">public class MserData {</a>
 <span class="sourceLineNo">024</span><a id="line.24">        </a>
 <span class="sourceLineNo">025</span><a id="line.25">        private final Component&lt;MserData&gt; component;    // reference to associated component</a>
 <span class="sourceLineNo">026</span><a id="line.26">        </a>
-<span class="sourceLineNo">027</span><a id="line.27">        public MserData(Component&lt;MserData&gt; c) {</a>
-<span class="sourceLineNo">028</span><a id="line.28">                this.component = c;</a>
-<span class="sourceLineNo">029</span><a id="line.29">        }</a>
-<span class="sourceLineNo">030</span><a id="line.30">        </a>
-<span class="sourceLineNo">031</span><a id="line.31">        /** True iff component is a MSER */</a>
-<span class="sourceLineNo">032</span><a id="line.32">        public boolean isMser = false;                  // should be protected at least!</a>
-<span class="sourceLineNo">033</span><a id="line.33"></a>
-<span class="sourceLineNo">034</span><a id="line.34">        /** Component size variation (wrt. to the size at delta levels higher), undefined = -1 */</a>
-<span class="sourceLineNo">035</span><a id="line.35">        protected float variation = -1;</a>
-<span class="sourceLineNo">036</span><a id="line.36">        </a>
-<span class="sourceLineNo">037</span><a id="line.37">        /** Component stability status */</a>
-<span class="sourceLineNo">038</span><a id="line.38">        protected boolean isStable = true;</a>
-<span class="sourceLineNo">039</span><a id="line.39">        </a>
-<span class="sourceLineNo">040</span><a id="line.40">        /** Component coordinate ordinary moments (m10, m01, m20, m02, m11) */</a>
-<span class="sourceLineNo">041</span><a id="line.41">        protected long[] stats = null;</a>
-<span class="sourceLineNo">042</span><a id="line.42">        </a>
-<span class="sourceLineNo">043</span><a id="line.43">        /** Central moments of pixel coordinates (mu10, mu01, mu20, mu02, mu11) */</a>
-<span class="sourceLineNo">044</span><a id="line.44">        private double[] moments = null;</a>
+<span class="sourceLineNo">027</span><a id="line.27">        /** True iff the associated component is a MSER. */</a>
+<span class="sourceLineNo">028</span><a id="line.28">        protected boolean isMserP = false;</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">        /** Component size variation (wrt. to the size at delta levels higher), undefined = -1 */</a>
+<span class="sourceLineNo">031</span><a id="line.31">        protected float variation = -1;</a>
+<span class="sourceLineNo">032</span><a id="line.32">        </a>
+<span class="sourceLineNo">033</span><a id="line.33">        /** Component stability status */</a>
+<span class="sourceLineNo">034</span><a id="line.34">        protected boolean isStable = true;</a>
+<span class="sourceLineNo">035</span><a id="line.35">        </a>
+<span class="sourceLineNo">036</span><a id="line.36">        /** Component coordinate ordinary moments (m10, m01, m20, m02, m11) */</a>
+<span class="sourceLineNo">037</span><a id="line.37">        protected long[] stats = null;</a>
+<span class="sourceLineNo">038</span><a id="line.38">        </a>
+<span class="sourceLineNo">039</span><a id="line.39">        /** Central moments of pixel coordinates (mu10, mu01, mu20, mu02, mu11) */</a>
+<span class="sourceLineNo">040</span><a id="line.40">        private double[] moments = null;</a>
+<span class="sourceLineNo">041</span><a id="line.41">        </a>
+<span class="sourceLineNo">042</span><a id="line.42">        /** Reference to the equivalent ellipse */</a>
+<span class="sourceLineNo">043</span><a id="line.43">        private GeometricEllipse ellipse = null;</a>
+<span class="sourceLineNo">044</span><a id="line.44">        </a>
 <span class="sourceLineNo">045</span><a id="line.45">        </a>
-<span class="sourceLineNo">046</span><a id="line.46">        /** Reference to the equivalent ellipse */</a>
-<span class="sourceLineNo">047</span><a id="line.47">        private GeometricEllipse ellipse = null;</a>
-<span class="sourceLineNo">048</span><a id="line.48">        </a>
-<span class="sourceLineNo">049</span><a id="line.49">        /**</a>
-<span class="sourceLineNo">050</span><a id="line.50">         * Returns the vector of central moments (mu10, mu01, mu20, mu02, mu11).</a>
-<span class="sourceLineNo">051</span><a id="line.51">         * @return the vector of central moments</a>
-<span class="sourceLineNo">052</span><a id="line.52">         */</a>
-<span class="sourceLineNo">053</span><a id="line.53">        public double[] getCentralMoments() {</a>
-<span class="sourceLineNo">054</span><a id="line.54">                return this.moments;</a>
-<span class="sourceLineNo">055</span><a id="line.55">        }</a>
-<span class="sourceLineNo">056</span><a id="line.56">        </a>
-<span class="sourceLineNo">057</span><a id="line.57">        public double[][] getCovarianceMatrix() {</a>
-<span class="sourceLineNo">058</span><a id="line.58">                double[] mu = getCentralMoments(); // = (mu10, mu01, mu20, mu02, mu11)</a>
-<span class="sourceLineNo">059</span><a id="line.59">                final int size = component.getSize();</a>
-<span class="sourceLineNo">060</span><a id="line.60">                double[][] S = {</a>
-<span class="sourceLineNo">061</span><a id="line.61">                                {mu[2]/size, mu[4]/size},</a>
-<span class="sourceLineNo">062</span><a id="line.62">                                {mu[4]/size, mu[3]/size}};</a>
-<span class="sourceLineNo">063</span><a id="line.63">                return S;</a>
-<span class="sourceLineNo">064</span><a id="line.64">        }</a>
-<span class="sourceLineNo">065</span><a id="line.65">        </a>
-<span class="sourceLineNo">066</span><a id="line.66">        /**</a>
-<span class="sourceLineNo">067</span><a id="line.67">         * Returns the center point for the associated component.</a>
-<span class="sourceLineNo">068</span><a id="line.68">         * @return the center point</a>
-<span class="sourceLineNo">069</span><a id="line.69">         */</a>
-<span class="sourceLineNo">070</span><a id="line.70">        public PntDouble getCenter() {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                double mu10 = moments[0];</a>
-<span class="sourceLineNo">072</span><a id="line.72">                double mu01 = moments[1];</a>
-<span class="sourceLineNo">073</span><a id="line.73">                return PntDouble.from(mu10, mu01);</a>
-<span class="sourceLineNo">074</span><a id="line.74">        }</a>
-<span class="sourceLineNo">075</span><a id="line.75">        </a>
-<span class="sourceLineNo">076</span><a id="line.76">        /**</a>
-<span class="sourceLineNo">077</span><a id="line.77">         * Returns the equivalent ellipse for the associated component.</a>
-<span class="sourceLineNo">078</span><a id="line.78">         * @return the equivalent ellipse</a>
-<span class="sourceLineNo">079</span><a id="line.79">         */</a>
-<span class="sourceLineNo">080</span><a id="line.80">        public GeometricEllipse getEllipse() {</a>
-<span class="sourceLineNo">081</span><a id="line.81">                return this.ellipse;</a>
-<span class="sourceLineNo">082</span><a id="line.82">        }</a>
-<span class="sourceLineNo">083</span><a id="line.83">        </a>
-<span class="sourceLineNo">084</span><a id="line.84">        /**</a>
-<span class="sourceLineNo">085</span><a id="line.85">         * Calculates the central moments and the equivalent ellipse</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * for the associated component.</a>
-<span class="sourceLineNo">087</span><a id="line.87">         */</a>
-<span class="sourceLineNo">088</span><a id="line.88">        protected void init() {</a>
-<span class="sourceLineNo">089</span><a id="line.89">                calculateMoments();</a>
-<span class="sourceLineNo">090</span><a id="line.90">                makeEllipse();</a>
-<span class="sourceLineNo">091</span><a id="line.91">        }</a>
-<span class="sourceLineNo">092</span><a id="line.92">        </a>
-<span class="sourceLineNo">093</span><a id="line.93">        private void calculateMoments() {</a>
-<span class="sourceLineNo">094</span><a id="line.94">                double n = component.getSize();</a>
-<span class="sourceLineNo">095</span><a id="line.95">                double mu10 = stats[0] / n;</a>
-<span class="sourceLineNo">096</span><a id="line.96">                double mu01 = stats[1] / n;</a>
-<span class="sourceLineNo">097</span><a id="line.97">                double mu20 = stats[2] - stats[0] * stats[0] / n; // = size times the covariance, see Book p.750</a>
-<span class="sourceLineNo">098</span><a id="line.98">                double mu02 = stats[3] - stats[1] * stats[1] / n;</a>
-<span class="sourceLineNo">099</span><a id="line.99">                double mu11 = stats[4] - stats[0] * stats[1] / n;</a>
-<span class="sourceLineNo">100</span><a id="line.100">                this.moments = new double[] {mu10, mu01, mu20, mu02, mu11};</a>
-<span class="sourceLineNo">101</span><a id="line.101">        }</a>
-<span class="sourceLineNo">102</span><a id="line.102">        </a>
-<span class="sourceLineNo">103</span><a id="line.103">        private void makeEllipse() {</a>
-<span class="sourceLineNo">104</span><a id="line.104">                final double n = component.getSize();</a>
-<span class="sourceLineNo">105</span><a id="line.105">                final double mu10 = moments[0];</a>
-<span class="sourceLineNo">106</span><a id="line.106">                final double mu01 = moments[1];</a>
-<span class="sourceLineNo">107</span><a id="line.107">                final double mu20 = moments[2];</a>
-<span class="sourceLineNo">108</span><a id="line.108">                final double mu02 = moments[3];</a>
-<span class="sourceLineNo">109</span><a id="line.109">                final double mu11 = moments[4];</a>
-<span class="sourceLineNo">110</span><a id="line.110">                Eigensolver2x2 es = new Eigensolver2x2(mu20, mu11, mu11, mu02);</a>
-<span class="sourceLineNo">111</span><a id="line.111">                double ra = 2 * Math.sqrt(es.getRealEigenvalue(0) / n); // correct (see Book p.238)</a>
-<span class="sourceLineNo">112</span><a id="line.112">                double rb = 2 * Math.sqrt(es.getRealEigenvalue(1) / n);</a>
-<span class="sourceLineNo">113</span><a id="line.113">                double[] x1 = es.getEigenvector(0).toArray();</a>
-<span class="sourceLineNo">114</span><a id="line.114">                double theta = Math.atan2(x1[1], x1[0]);</a>
-<span class="sourceLineNo">115</span><a id="line.115">                this.ellipse = new GeometricEllipse(ra, rb, mu10, mu01, theta);</a>
-<span class="sourceLineNo">116</span><a id="line.116">        }</a>
-<span class="sourceLineNo">117</span><a id="line.117">        </a>
-<span class="sourceLineNo">118</span><a id="line.118">//      /**</a>
-<span class="sourceLineNo">119</span><a id="line.119">//       * Sorts a list of MSERs by (decreasing) component size, i.e.,</a>
-<span class="sourceLineNo">120</span><a id="line.120">//       * the largest MSER (with the most pixels) becomes the first.</a>
-<span class="sourceLineNo">121</span><a id="line.121">//       * </a>
-<span class="sourceLineNo">122</span><a id="line.122">//       * @param msers a list of {@link MSER} instances</a>
-<span class="sourceLineNo">123</span><a id="line.123">//       */</a>
-<span class="sourceLineNo">124</span><a id="line.124">//      public static void sortBySize(List&lt;Component&lt;MserData&gt;&gt; msers) {</a>
-<span class="sourceLineNo">125</span><a id="line.125">//              Comparator&lt;Component&lt;MserData&gt;&gt; cmp = new Comparator&lt;Component&lt;MserData&gt;&gt;() {</a>
-<span class="sourceLineNo">126</span><a id="line.126">//                      @Override</a>
-<span class="sourceLineNo">127</span><a id="line.127">//                      public int compare(Component&lt;MserData&gt; mser1, Component&lt;MserData&gt; mser2) {</a>
-<span class="sourceLineNo">128</span><a id="line.128">//                              return Integer.compare(mser2.getSize(), mser1.getSize());</a>
-<span class="sourceLineNo">129</span><a id="line.129">//                      }</a>
-<span class="sourceLineNo">130</span><a id="line.130">//              };</a>
-<span class="sourceLineNo">131</span><a id="line.131">//              Collections.sort(msers, cmp);</a>
-<span class="sourceLineNo">132</span><a id="line.132">//      }</a>
-<span class="sourceLineNo">133</span><a id="line.133"></a>
-<span class="sourceLineNo">134</span><a id="line.134">        @Override</a>
-<span class="sourceLineNo">135</span><a id="line.135">        public String toString() {</a>
-<span class="sourceLineNo">136</span><a id="line.136">                return String.format("variation=%.2f stability=%d stats=%s",</a>
-<span class="sourceLineNo">137</span><a id="line.137">                                variation, isStable, (stats == null) ? "x" : Arrays.toString(stats));</a>
-<span class="sourceLineNo">138</span><a id="line.138">        }</a>
-<span class="sourceLineNo">139</span><a id="line.139">        </a>
-<span class="sourceLineNo">140</span><a id="line.140"></a>
-<span class="sourceLineNo">141</span><a id="line.141">}</a>
+<span class="sourceLineNo">046</span><a id="line.46">        /**</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * Constructor.</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @param c the associated {@link Component}</a>
+<span class="sourceLineNo">049</span><a id="line.49">         */</a>
+<span class="sourceLineNo">050</span><a id="line.50">        public MserData(Component&lt;MserData&gt; c) {</a>
+<span class="sourceLineNo">051</span><a id="line.51">                this.component = c;</a>
+<span class="sourceLineNo">052</span><a id="line.52">        }</a>
+<span class="sourceLineNo">053</span><a id="line.53">        </a>
+<span class="sourceLineNo">054</span><a id="line.54">        </a>
+<span class="sourceLineNo">055</span><a id="line.55">        /**</a>
+<span class="sourceLineNo">056</span><a id="line.56">         * Return true iff the associated component is a MSER.</a>
+<span class="sourceLineNo">057</span><a id="line.57">         * @return true iff a MSER</a>
+<span class="sourceLineNo">058</span><a id="line.58">         */</a>
+<span class="sourceLineNo">059</span><a id="line.59">        public boolean isMser() {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                return isMserP;</a>
+<span class="sourceLineNo">061</span><a id="line.61">        }</a>
+<span class="sourceLineNo">062</span><a id="line.62">        </a>
+<span class="sourceLineNo">063</span><a id="line.63">        /**</a>
+<span class="sourceLineNo">064</span><a id="line.64">         * Returns the vector of central moments (mu10, mu01, mu20, mu02, mu11).</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * @return the vector of central moments</a>
+<span class="sourceLineNo">066</span><a id="line.66">         */</a>
+<span class="sourceLineNo">067</span><a id="line.67">        public double[] getCentralMoments() {</a>
+<span class="sourceLineNo">068</span><a id="line.68">                return this.moments;</a>
+<span class="sourceLineNo">069</span><a id="line.69">        }</a>
+<span class="sourceLineNo">070</span><a id="line.70">        </a>
+<span class="sourceLineNo">071</span><a id="line.71">        public double[][] getCovarianceMatrix() {</a>
+<span class="sourceLineNo">072</span><a id="line.72">                double[] mu = getCentralMoments(); // = (mu10, mu01, mu20, mu02, mu11)</a>
+<span class="sourceLineNo">073</span><a id="line.73">                final int size = component.getSize();</a>
+<span class="sourceLineNo">074</span><a id="line.74">                double[][] S = {</a>
+<span class="sourceLineNo">075</span><a id="line.75">                                {mu[2]/size, mu[4]/size},</a>
+<span class="sourceLineNo">076</span><a id="line.76">                                {mu[4]/size, mu[3]/size}};</a>
+<span class="sourceLineNo">077</span><a id="line.77">                return S;</a>
+<span class="sourceLineNo">078</span><a id="line.78">        }</a>
+<span class="sourceLineNo">079</span><a id="line.79">        </a>
+<span class="sourceLineNo">080</span><a id="line.80">        /**</a>
+<span class="sourceLineNo">081</span><a id="line.81">         * Returns the center point for the associated component.</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * @return the center point</a>
+<span class="sourceLineNo">083</span><a id="line.83">         */</a>
+<span class="sourceLineNo">084</span><a id="line.84">        public PntDouble getCenter() {</a>
+<span class="sourceLineNo">085</span><a id="line.85">                double mu10 = moments[0];</a>
+<span class="sourceLineNo">086</span><a id="line.86">                double mu01 = moments[1];</a>
+<span class="sourceLineNo">087</span><a id="line.87">                return PntDouble.from(mu10, mu01);</a>
+<span class="sourceLineNo">088</span><a id="line.88">        }</a>
+<span class="sourceLineNo">089</span><a id="line.89">        </a>
+<span class="sourceLineNo">090</span><a id="line.90">        /**</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * Returns the equivalent ellipse for the associated component.</a>
+<span class="sourceLineNo">092</span><a id="line.92">         * @return the equivalent ellipse</a>
+<span class="sourceLineNo">093</span><a id="line.93">         */</a>
+<span class="sourceLineNo">094</span><a id="line.94">        public GeometricEllipse getEllipse() {</a>
+<span class="sourceLineNo">095</span><a id="line.95">                return this.ellipse;</a>
+<span class="sourceLineNo">096</span><a id="line.96">        }</a>
+<span class="sourceLineNo">097</span><a id="line.97">        </a>
+<span class="sourceLineNo">098</span><a id="line.98">        /**</a>
+<span class="sourceLineNo">099</span><a id="line.99">         * Calculates the central moments and the equivalent ellipse</a>
+<span class="sourceLineNo">100</span><a id="line.100">         * for the associated component.</a>
+<span class="sourceLineNo">101</span><a id="line.101">         */</a>
+<span class="sourceLineNo">102</span><a id="line.102">        protected void init() {</a>
+<span class="sourceLineNo">103</span><a id="line.103">                calculateMoments();</a>
+<span class="sourceLineNo">104</span><a id="line.104">                makeEllipse();</a>
+<span class="sourceLineNo">105</span><a id="line.105">        }</a>
+<span class="sourceLineNo">106</span><a id="line.106">        </a>
+<span class="sourceLineNo">107</span><a id="line.107">        private void calculateMoments() {</a>
+<span class="sourceLineNo">108</span><a id="line.108">                double n = component.getSize();</a>
+<span class="sourceLineNo">109</span><a id="line.109">                double mu10 = stats[0] / n;</a>
+<span class="sourceLineNo">110</span><a id="line.110">                double mu01 = stats[1] / n;</a>
+<span class="sourceLineNo">111</span><a id="line.111">                double mu20 = stats[2] - stats[0] * stats[0] / n; // = size times the covariance, see Book p.750</a>
+<span class="sourceLineNo">112</span><a id="line.112">                double mu02 = stats[3] - stats[1] * stats[1] / n;</a>
+<span class="sourceLineNo">113</span><a id="line.113">                double mu11 = stats[4] - stats[0] * stats[1] / n;</a>
+<span class="sourceLineNo">114</span><a id="line.114">                this.moments = new double[] {mu10, mu01, mu20, mu02, mu11};</a>
+<span class="sourceLineNo">115</span><a id="line.115">        }</a>
+<span class="sourceLineNo">116</span><a id="line.116">        </a>
+<span class="sourceLineNo">117</span><a id="line.117">        private void makeEllipse() {</a>
+<span class="sourceLineNo">118</span><a id="line.118">                final double n = component.getSize();</a>
+<span class="sourceLineNo">119</span><a id="line.119">                final double mu10 = moments[0];</a>
+<span class="sourceLineNo">120</span><a id="line.120">                final double mu01 = moments[1];</a>
+<span class="sourceLineNo">121</span><a id="line.121">                final double mu20 = moments[2];</a>
+<span class="sourceLineNo">122</span><a id="line.122">                final double mu02 = moments[3];</a>
+<span class="sourceLineNo">123</span><a id="line.123">                final double mu11 = moments[4];</a>
+<span class="sourceLineNo">124</span><a id="line.124">                Eigensolver2x2 es = new Eigensolver2x2(mu20, mu11, mu11, mu02);</a>
+<span class="sourceLineNo">125</span><a id="line.125">                double ra = 2 * Math.sqrt(es.getRealEigenvalue(0) / n); // correct (see Book p.238)</a>
+<span class="sourceLineNo">126</span><a id="line.126">                double rb = 2 * Math.sqrt(es.getRealEigenvalue(1) / n);</a>
+<span class="sourceLineNo">127</span><a id="line.127">                double[] x1 = es.getEigenvector(0).toArray();</a>
+<span class="sourceLineNo">128</span><a id="line.128">                double theta = Math.atan2(x1[1], x1[0]);</a>
+<span class="sourceLineNo">129</span><a id="line.129">                this.ellipse = new GeometricEllipse(ra, rb, mu10, mu01, theta);</a>
+<span class="sourceLineNo">130</span><a id="line.130">        }</a>
+<span class="sourceLineNo">131</span><a id="line.131">        </a>
+<span class="sourceLineNo">132</span><a id="line.132">//      /**</a>
+<span class="sourceLineNo">133</span><a id="line.133">//       * Sorts a list of MSERs by (decreasing) component size, i.e.,</a>
+<span class="sourceLineNo">134</span><a id="line.134">//       * the largest MSER (with the most pixels) becomes the first.</a>
+<span class="sourceLineNo">135</span><a id="line.135">//       * </a>
+<span class="sourceLineNo">136</span><a id="line.136">//       * @param msers a list of {@link MSER} instances</a>
+<span class="sourceLineNo">137</span><a id="line.137">//       */</a>
+<span class="sourceLineNo">138</span><a id="line.138">//      public static void sortBySize(List&lt;Component&lt;MserData&gt;&gt; msers) {</a>
+<span class="sourceLineNo">139</span><a id="line.139">//              Comparator&lt;Component&lt;MserData&gt;&gt; cmp = new Comparator&lt;Component&lt;MserData&gt;&gt;() {</a>
+<span class="sourceLineNo">140</span><a id="line.140">//                      @Override</a>
+<span class="sourceLineNo">141</span><a id="line.141">//                      public int compare(Component&lt;MserData&gt; mser1, Component&lt;MserData&gt; mser2) {</a>
+<span class="sourceLineNo">142</span><a id="line.142">//                              return Integer.compare(mser2.getSize(), mser1.getSize());</a>
+<span class="sourceLineNo">143</span><a id="line.143">//                      }</a>
+<span class="sourceLineNo">144</span><a id="line.144">//              };</a>
+<span class="sourceLineNo">145</span><a id="line.145">//              Collections.sort(msers, cmp);</a>
+<span class="sourceLineNo">146</span><a id="line.146">//      }</a>
+<span class="sourceLineNo">147</span><a id="line.147"></a>
+<span class="sourceLineNo">148</span><a id="line.148">        @Override</a>
+<span class="sourceLineNo">149</span><a id="line.149">        public String toString() {</a>
+<span class="sourceLineNo">150</span><a id="line.150">                return String.format("variation=%.2f stability=%d stats=%s",</a>
+<span class="sourceLineNo">151</span><a id="line.151">                                variation, isStable, (stats == null) ? "x" : Arrays.toString(stats));</a>
+<span class="sourceLineNo">152</span><a id="line.152">        }</a>
+<span class="sourceLineNo">153</span><a id="line.153">        </a>
+<span class="sourceLineNo">154</span><a id="line.154"></a>
+<span class="sourceLineNo">155</span><a id="line.155">}</a>
 
 
 

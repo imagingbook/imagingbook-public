@@ -24,8 +24,8 @@
 <span class="sourceLineNo">014</span><a id="line.14">import org.apache.commons.math3.linear.RealMatrix;</a>
 <span class="sourceLineNo">015</span><a id="line.15"></a>
 <span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.math.EigenvalueDecomposition;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.math.Matrix;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.math.Matrix;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.math.eigen.EigenDecompositionJama;</a>
 <span class="sourceLineNo">019</span><a id="line.19"></a>
 <span class="sourceLineNo">020</span><a id="line.20">/**</a>
 <span class="sourceLineNo">021</span><a id="line.21"> * &lt;p&gt;</a>
@@ -100,7 +100,7 @@
 <span class="sourceLineNo">090</span><a id="line.90">                RealMatrix Si = MatrixUtils.inverse(S, 1e-15);</a>
 <span class="sourceLineNo">091</span><a id="line.91">                </a>
 <span class="sourceLineNo">092</span><a id="line.92">//              EigenDecomposition ed = new EigenDecomposition(Si.multiply(C));</a>
-<span class="sourceLineNo">093</span><a id="line.93">                EigenvalueDecomposition ed = new EigenvalueDecomposition(Si.multiply(C));</a>
+<span class="sourceLineNo">093</span><a id="line.93">                EigenDecompositionJama ed = new EigenDecompositionJama(Si.multiply(C));</a>
 <span class="sourceLineNo">094</span><a id="line.94"></a>
 <span class="sourceLineNo">095</span><a id="line.95">                double[] evals = ed.getRealEigenvalues();</a>
 <span class="sourceLineNo">096</span><a id="line.96">                int k = Matrix.idxMax(evals);                           // index of the largest eigenvalue</a>

@@ -37,302 +37,345 @@
 <span class="sourceLineNo">027</span><a id="line.27">public abstract class ComponentTree&lt;T&gt; implements Iterable&lt;Component&lt;T&gt;&gt; {</a>
 <span class="sourceLineNo">028</span><a id="line.28">        </a>
 <span class="sourceLineNo">029</span><a id="line.29">        /**</a>
-<span class="sourceLineNo">030</span><a id="line.30">         * The method (algorithm) for building the component tree.</a>
+<span class="sourceLineNo">030</span><a id="line.30">         * Enumeration specifying the method (algorithm) for building the component tree.</a>
 <span class="sourceLineNo">031</span><a id="line.31">         */</a>
 <span class="sourceLineNo">032</span><a id="line.32">        public enum Method {</a>
-<span class="sourceLineNo">033</span><a id="line.33">                /** Specifies the classic (global immersion) algorithm. */</a>
+<span class="sourceLineNo">033</span><a id="line.33">                /** Specifies the classic (global immersion) algorithm, see {@link ComponentTreeGlobalImmersion}. */</a>
 <span class="sourceLineNo">034</span><a id="line.34">                GlobalImmersion,</a>
-<span class="sourceLineNo">035</span><a id="line.35">                /** Specifies the linear-time algorithm. */</a>
+<span class="sourceLineNo">035</span><a id="line.35">                /** Specifies the linear-time algorithm, see {@link ComponentTreeLinearTime}. */</a>
 <span class="sourceLineNo">036</span><a id="line.36">                LinearTime;</a>
 <span class="sourceLineNo">037</span><a id="line.37">        }</a>
 <span class="sourceLineNo">038</span><a id="line.38">        </a>
 <span class="sourceLineNo">039</span><a id="line.39">        // --------------------------------------------------------------</a>
 <span class="sourceLineNo">040</span><a id="line.40">        </a>
-<span class="sourceLineNo">041</span><a id="line.41">        /**</a>
-<span class="sourceLineNo">042</span><a id="line.42">         * Creates a new component tree for the specified image using the</a>
-<span class="sourceLineNo">043</span><a id="line.43">         * default method ({@link Method#LinearTime}).</a>
-<span class="sourceLineNo">044</span><a id="line.44">         * @param &lt;T&gt; the generic node type</a>
-<span class="sourceLineNo">045</span><a id="line.45">         * @param ip the input image</a>
-<span class="sourceLineNo">046</span><a id="line.46">         * @return the component tree for the specified image</a>
-<span class="sourceLineNo">047</span><a id="line.47">         */</a>
-<span class="sourceLineNo">048</span><a id="line.48">        public static &lt;T&gt; ComponentTree&lt;T&gt; from(ByteProcessor ip) {</a>
-<span class="sourceLineNo">049</span><a id="line.49">                return from(ip, Method.LinearTime);</a>
-<span class="sourceLineNo">050</span><a id="line.50">        }</a>
-<span class="sourceLineNo">051</span><a id="line.51">        </a>
-<span class="sourceLineNo">052</span><a id="line.52">        /**</a>
-<span class="sourceLineNo">053</span><a id="line.53">         * Creates a new component tree for the specified image.</a>
-<span class="sourceLineNo">054</span><a id="line.54">         * @param &lt;T&gt; the data type of components (e.g., {@link MserData})</a>
-<span class="sourceLineNo">055</span><a id="line.55">         * @param ip the input (gray-level) image</a>
-<span class="sourceLineNo">056</span><a id="line.56">         * @param method the method for building the component tree</a>
-<span class="sourceLineNo">057</span><a id="line.57">         * @return the component tree</a>
-<span class="sourceLineNo">058</span><a id="line.58">         */</a>
-<span class="sourceLineNo">059</span><a id="line.59">        public static &lt;T&gt; ComponentTree&lt;T&gt; from(ByteProcessor ip, Method method) {</a>
-<span class="sourceLineNo">060</span><a id="line.60">                return from(new PixelMap(ip), method);</a>
-<span class="sourceLineNo">061</span><a id="line.61">        }</a>
-<span class="sourceLineNo">062</span><a id="line.62">        </a>
-<span class="sourceLineNo">063</span><a id="line.63">        /**</a>
-<span class="sourceLineNo">064</span><a id="line.64">         * Creates a new component tree for the specified {@link PixelMap}.</a>
-<span class="sourceLineNo">065</span><a id="line.65">         * @param &lt;T&gt; the data type of components (e.g., {@link MserData})</a>
-<span class="sourceLineNo">066</span><a id="line.66">         * @param pm a {@link PixelMap} instance</a>
-<span class="sourceLineNo">067</span><a id="line.67">         * @param method the method for building the component tree</a>
-<span class="sourceLineNo">068</span><a id="line.68">         * @return the component tree</a>
-<span class="sourceLineNo">069</span><a id="line.69">         */</a>
-<span class="sourceLineNo">070</span><a id="line.70">        public static &lt;T&gt; ComponentTree&lt;T&gt; from(PixelMap pm, Method method) {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                switch (method) {</a>
-<span class="sourceLineNo">072</span><a id="line.72">                case LinearTime:  return new ComponentTreeLinearTime&lt;&gt;(pm);</a>
-<span class="sourceLineNo">073</span><a id="line.73">                case GlobalImmersion: return new ComponentTreeGlobalImmersion&lt;&gt;(pm);</a>
-<span class="sourceLineNo">074</span><a id="line.74">                }</a>
-<span class="sourceLineNo">075</span><a id="line.75">                return null;</a>
-<span class="sourceLineNo">076</span><a id="line.76">        }</a>
-<span class="sourceLineNo">077</span><a id="line.77">        </a>
-<span class="sourceLineNo">078</span><a id="line.78">        // --------------------------------------------------------------</a>
-<span class="sourceLineNo">079</span><a id="line.79"></a>
-<span class="sourceLineNo">080</span><a id="line.80">        /**</a>
-<span class="sourceLineNo">081</span><a id="line.81">         * Returns the root component of this component tree.</a>
-<span class="sourceLineNo">082</span><a id="line.82">         * @return the root component</a>
-<span class="sourceLineNo">083</span><a id="line.83">         */</a>
-<span class="sourceLineNo">084</span><a id="line.84">        public abstract Component&lt;T&gt; getRoot();</a>
-<span class="sourceLineNo">085</span><a id="line.85"></a>
-<span class="sourceLineNo">086</span><a id="line.86">        /**</a>
-<span class="sourceLineNo">087</span><a id="line.87">         * Returns an unordered collection of all tree components.</a>
-<span class="sourceLineNo">088</span><a id="line.88">         * @return all tree components</a>
-<span class="sourceLineNo">089</span><a id="line.89">         */</a>
-<span class="sourceLineNo">090</span><a id="line.90">        public abstract Collection&lt;Component&lt;T&gt;&gt; getComponents();</a>
-<span class="sourceLineNo">091</span><a id="line.91">        </a>
-<span class="sourceLineNo">092</span><a id="line.92">        @Override</a>
-<span class="sourceLineNo">093</span><a id="line.93">        public Iterator&lt;Component&lt;T&gt;&gt; iterator() {</a>
-<span class="sourceLineNo">094</span><a id="line.94">                return getComponents().iterator();</a>
-<span class="sourceLineNo">095</span><a id="line.95">        }</a>
-<span class="sourceLineNo">096</span><a id="line.96">        </a>
-<span class="sourceLineNo">097</span><a id="line.97">        /**</a>
-<span class="sourceLineNo">098</span><a id="line.98">         * Finds and returns a collection of all leaf components of this tree.</a>
-<span class="sourceLineNo">099</span><a id="line.99">         * A leaf is a component which has no children.</a>
-<span class="sourceLineNo">100</span><a id="line.100">         * @return all leaf components</a>
-<span class="sourceLineNo">101</span><a id="line.101">         */</a>
-<span class="sourceLineNo">102</span><a id="line.102">        public Collection&lt;Component&lt;T&gt;&gt; getLeaves() {</a>
-<span class="sourceLineNo">103</span><a id="line.103">                Collection&lt;Component&lt;T&gt;&gt; leaves = new LinkedList&lt;&gt;();</a>
-<span class="sourceLineNo">104</span><a id="line.104">                for (Component&lt;T&gt; c : getComponents()) {</a>
-<span class="sourceLineNo">105</span><a id="line.105">                        if (c.getChildren().isEmpty()) {</a>
-<span class="sourceLineNo">106</span><a id="line.106">                                leaves.add(c);</a>
-<span class="sourceLineNo">107</span><a id="line.107">                        }</a>
-<span class="sourceLineNo">108</span><a id="line.108">                }       </a>
-<span class="sourceLineNo">109</span><a id="line.109">                return leaves;</a>
-<span class="sourceLineNo">110</span><a id="line.110">        }</a>
-<span class="sourceLineNo">111</span><a id="line.111">        </a>
-<span class="sourceLineNo">112</span><a id="line.112">        // -------------------------------------------------------------------------------</a>
-<span class="sourceLineNo">113</span><a id="line.113">        </a>
-<span class="sourceLineNo">114</span><a id="line.114">        /**</a>
-<span class="sourceLineNo">115</span><a id="line.115">         * Component tree integrity checks.</a>
-<span class="sourceLineNo">116</span><a id="line.116">         * @return true iff all checks are passed</a>
-<span class="sourceLineNo">117</span><a id="line.117">         */</a>
-<span class="sourceLineNo">118</span><a id="line.118">        public boolean validate() {</a>
-<span class="sourceLineNo">119</span><a id="line.119">                if (!checkNodes()) {</a>
-<span class="sourceLineNo">120</span><a id="line.120">                        System.out.println("checkNodes failed");</a>
-<span class="sourceLineNo">121</span><a id="line.121">                        return false;</a>
-<span class="sourceLineNo">122</span><a id="line.122">                }</a>
-<span class="sourceLineNo">123</span><a id="line.123">                if (!checkParents()) {</a>
-<span class="sourceLineNo">124</span><a id="line.124">                        System.out.println("checkParents failed");</a>
-<span class="sourceLineNo">125</span><a id="line.125">                        return false;</a>
-<span class="sourceLineNo">126</span><a id="line.126">                }</a>
-<span class="sourceLineNo">127</span><a id="line.127">                if (!checkChildren()) {</a>
-<span class="sourceLineNo">128</span><a id="line.128">                        System.out.println("checkChildren failed");</a>
-<span class="sourceLineNo">129</span><a id="line.129">                        return false;</a>
-<span class="sourceLineNo">130</span><a id="line.130">                }</a>
-<span class="sourceLineNo">131</span><a id="line.131">                if (!checkRoot()) {</a>
-<span class="sourceLineNo">132</span><a id="line.132">                        System.out.println("checkRoot failed");</a>
-<span class="sourceLineNo">133</span><a id="line.133">                        return false;</a>
-<span class="sourceLineNo">134</span><a id="line.134">                }</a>
-<span class="sourceLineNo">135</span><a id="line.135">                if (!checkLevels()) {</a>
-<span class="sourceLineNo">136</span><a id="line.136">                        System.out.println("checkLevels failed");</a>
-<span class="sourceLineNo">137</span><a id="line.137">                        return false;</a>
-<span class="sourceLineNo">138</span><a id="line.138">                }</a>
-<span class="sourceLineNo">139</span><a id="line.139">                if (!checkSize()) {</a>
-<span class="sourceLineNo">140</span><a id="line.140">                        System.out.println("checkSize failed");</a>
-<span class="sourceLineNo">141</span><a id="line.141">                        return false;</a>
-<span class="sourceLineNo">142</span><a id="line.142">                }</a>
-<span class="sourceLineNo">143</span><a id="line.143">                return true;</a>
-<span class="sourceLineNo">144</span><a id="line.144">        }</a>
-<span class="sourceLineNo">145</span><a id="line.145">        </a>
-<span class="sourceLineNo">146</span><a id="line.146">        </a>
-<span class="sourceLineNo">147</span><a id="line.147">        /**</a>
-<span class="sourceLineNo">148</span><a id="line.148">         * Checks if all tree nodes reachable through root are contained in components list</a>
-<span class="sourceLineNo">149</span><a id="line.149">         * and the tree has no duplicate nodes (and no cycles).</a>
-<span class="sourceLineNo">150</span><a id="line.150">         * @return true iff OK</a>
-<span class="sourceLineNo">151</span><a id="line.151">         */</a>
-<span class="sourceLineNo">152</span><a id="line.152">        boolean checkNodes() {</a>
-<span class="sourceLineNo">153</span><a id="line.153">                Set&lt;Component&lt;T&gt;&gt; componentSet = new HashSet&lt;&gt;(); // empty hash set</a>
-<span class="sourceLineNo">154</span><a id="line.154">                int duplicateID = traverse(getRoot(), componentSet);</a>
-<span class="sourceLineNo">155</span><a id="line.155">                if (duplicateID &gt;= 0) {         // traverse() registers all visited components</a>
-<span class="sourceLineNo">156</span><a id="line.156">                        System.out.println("*** component tree has duplicate node: " + duplicateID);</a>
-<span class="sourceLineNo">157</span><a id="line.157">                        return false;</a>
-<span class="sourceLineNo">158</span><a id="line.158">                }</a>
-<span class="sourceLineNo">159</span><a id="line.159">                if (getComponents().size() != componentSet.size()) {</a>
-<span class="sourceLineNo">160</span><a id="line.160">                        System.out.println("*** some nodes in components list can not be reached!");</a>
-<span class="sourceLineNo">161</span><a id="line.161">                        return false;</a>
-<span class="sourceLineNo">162</span><a id="line.162">                }</a>
-<span class="sourceLineNo">163</span><a id="line.163">                return true;</a>
-<span class="sourceLineNo">164</span><a id="line.164">        }</a>
-<span class="sourceLineNo">165</span><a id="line.165">        </a>
-<span class="sourceLineNo">166</span><a id="line.166">        int traverse(Component&lt;T&gt; c, Set&lt;Component&lt;T&gt;&gt; cS) {</a>
-<span class="sourceLineNo">167</span><a id="line.167">                if (cS.add(c)) {</a>
-<span class="sourceLineNo">168</span><a id="line.168">                        for (Component&lt;T&gt; cc : c.getChildren()) {</a>
-<span class="sourceLineNo">169</span><a id="line.169">                                int duplicateId = traverse(cc, cS);</a>
-<span class="sourceLineNo">170</span><a id="line.170">                                if (duplicateId &gt;= 0) { // duplicate node</a>
-<span class="sourceLineNo">171</span><a id="line.171">                                        return duplicateId;</a>
-<span class="sourceLineNo">172</span><a id="line.172">                                };</a>
-<span class="sourceLineNo">173</span><a id="line.173">                        }</a>
-<span class="sourceLineNo">174</span><a id="line.174">                        return -1;      // everything OK, no duplicate node</a>
-<span class="sourceLineNo">175</span><a id="line.175">                }</a>
-<span class="sourceLineNo">176</span><a id="line.176">                else {  // c was already in set</a>
-<span class="sourceLineNo">177</span><a id="line.177">                        System.out.println("*** duplicate tree node: " + c.ID);</a>
-<span class="sourceLineNo">178</span><a id="line.178">                        return c.ID;</a>
-<span class="sourceLineNo">179</span><a id="line.179">                }</a>
-<span class="sourceLineNo">180</span><a id="line.180">        }</a>
-<span class="sourceLineNo">181</span><a id="line.181"></a>
-<span class="sourceLineNo">182</span><a id="line.182">        /**</a>
-<span class="sourceLineNo">183</span><a id="line.183">         * Checks if all parent relations are consistent.</a>
-<span class="sourceLineNo">184</span><a id="line.184">         * @return true iff OK</a>
-<span class="sourceLineNo">185</span><a id="line.185">         */</a>
-<span class="sourceLineNo">186</span><a id="line.186">        boolean checkParents() {</a>
-<span class="sourceLineNo">187</span><a id="line.187">                Collection&lt;Component&lt;T&gt;&gt; comps = getComponents();</a>
-<span class="sourceLineNo">188</span><a id="line.188">                HashSet&lt;Component&lt;T&gt;&gt; compsH = new HashSet&lt;&gt;(comps); // to improve lookup speed</a>
-<span class="sourceLineNo">189</span><a id="line.189">                </a>
-<span class="sourceLineNo">190</span><a id="line.190">                for (Component&lt;?&gt; c : comps) {</a>
-<span class="sourceLineNo">191</span><a id="line.191">                        Component&lt;?&gt; p = c.getParent();</a>
-<span class="sourceLineNo">192</span><a id="line.192">                        if (p == null) {</a>
-<span class="sourceLineNo">193</span><a id="line.193">                                continue;</a>
-<span class="sourceLineNo">194</span><a id="line.194">                        }</a>
-<span class="sourceLineNo">195</span><a id="line.195">                        </a>
-<span class="sourceLineNo">196</span><a id="line.196">                        // check if parent is listed in 'components' (use HashSet for speed)</a>
-<span class="sourceLineNo">197</span><a id="line.197">                        if (!compsH.contains(p)) {</a>
-<span class="sourceLineNo">198</span><a id="line.198">                                System.out.println("*** component not contained in components list: " + c.ID);</a>
-<span class="sourceLineNo">199</span><a id="line.199">                                return false;</a>
-<span class="sourceLineNo">200</span><a id="line.200">                        }</a>
-<span class="sourceLineNo">201</span><a id="line.201">                                                </a>
-<span class="sourceLineNo">202</span><a id="line.202">                        // check if parent is not c itself</a>
-<span class="sourceLineNo">203</span><a id="line.203">                        if (p == c) {</a>
-<span class="sourceLineNo">204</span><a id="line.204">                                System.out.println("*** self-referring parent link in component " + c.ID);</a>
-<span class="sourceLineNo">205</span><a id="line.205">                                return false;</a>
-<span class="sourceLineNo">206</span><a id="line.206">                        }                               </a>
-<span class="sourceLineNo">207</span><a id="line.207">                }</a>
-<span class="sourceLineNo">208</span><a id="line.208">                return true;</a>
-<span class="sourceLineNo">209</span><a id="line.209">        }</a>
-<span class="sourceLineNo">210</span><a id="line.210">        </a>
-<span class="sourceLineNo">211</span><a id="line.211">        /**</a>
-<span class="sourceLineNo">212</span><a id="line.212">         * Checks if all child relations are consistent.</a>
-<span class="sourceLineNo">213</span><a id="line.213">         * @return true iff OK</a>
-<span class="sourceLineNo">214</span><a id="line.214">         */</a>
-<span class="sourceLineNo">215</span><a id="line.215">        boolean checkChildren() {</a>
-<span class="sourceLineNo">216</span><a id="line.216">                for (Component&lt;?&gt; c : getComponents()) {</a>
-<span class="sourceLineNo">217</span><a id="line.217">                        // check if children is a list (not null)</a>
-<span class="sourceLineNo">218</span><a id="line.218">                        if (c.getChildren() == null) {</a>
-<span class="sourceLineNo">219</span><a id="line.219">                                System.out.println("*** children is null (not an empty list) in component " + c.ID);</a>
-<span class="sourceLineNo">220</span><a id="line.220">                                return false;</a>
-<span class="sourceLineNo">221</span><a id="line.221">                        }</a>
-<span class="sourceLineNo">222</span><a id="line.222">                        </a>
-<span class="sourceLineNo">223</span><a id="line.223">                        // check if all children of c have c as parent</a>
-<span class="sourceLineNo">224</span><a id="line.224">                        for (Component&lt;?&gt; child : c.getChildren()) {</a>
-<span class="sourceLineNo">225</span><a id="line.225">                                // check if c is parent of its child:</a>
-<span class="sourceLineNo">226</span><a id="line.226">                                if (child.getParent() != c) {</a>
-<span class="sourceLineNo">227</span><a id="line.227">                                        System.out.println("*** incorrect parent link in component " + child.ID);</a>
-<span class="sourceLineNo">228</span><a id="line.228">                                        return false;</a>
-<span class="sourceLineNo">229</span><a id="line.229">                                }</a>
-<span class="sourceLineNo">230</span><a id="line.230">                        }       </a>
-<span class="sourceLineNo">231</span><a id="line.231">                }</a>
-<span class="sourceLineNo">232</span><a id="line.232">                return true;</a>
-<span class="sourceLineNo">233</span><a id="line.233">        }</a>
-<span class="sourceLineNo">234</span><a id="line.234">        /** </a>
-<span class="sourceLineNo">235</span><a id="line.235">         * Checks if the tree has a unique root.</a>
-<span class="sourceLineNo">236</span><a id="line.236">         * @return true iff OK</a>
-<span class="sourceLineNo">237</span><a id="line.237">         */</a>
-<span class="sourceLineNo">238</span><a id="line.238">        boolean checkRoot() {</a>
-<span class="sourceLineNo">239</span><a id="line.239">                // check if a single root exists and is properly marked (with null parent)</a>
-<span class="sourceLineNo">240</span><a id="line.240">                int rootcnt = 0;</a>
-<span class="sourceLineNo">241</span><a id="line.241">                Component&lt;T&gt; root = getRoot();</a>
-<span class="sourceLineNo">242</span><a id="line.242">                for (Component&lt;?&gt; c : getComponents()) {</a>
-<span class="sourceLineNo">243</span><a id="line.243">                        if (c.getParent() == null) {</a>
-<span class="sourceLineNo">244</span><a id="line.244">                                rootcnt++;</a>
-<span class="sourceLineNo">245</span><a id="line.245">                                if (c != root) {</a>
-<span class="sourceLineNo">246</span><a id="line.246">                                        System.out.println("*** found non-root node without parent: " + c.ID);</a>
-<span class="sourceLineNo">247</span><a id="line.247">                                        return false;</a>
-<span class="sourceLineNo">248</span><a id="line.248">                                }</a>
-<span class="sourceLineNo">249</span><a id="line.249">                        }</a>
-<span class="sourceLineNo">250</span><a id="line.250">                }</a>
-<span class="sourceLineNo">251</span><a id="line.251">                if (rootcnt &gt; 1) {</a>
-<span class="sourceLineNo">252</span><a id="line.252">                        System.out.println("*** found multiple roots: " + rootcnt);</a>
-<span class="sourceLineNo">253</span><a id="line.253">                        return false;</a>
-<span class="sourceLineNo">254</span><a id="line.254">                }</a>
-<span class="sourceLineNo">255</span><a id="line.255">                return true;</a>
-<span class="sourceLineNo">256</span><a id="line.256">        }</a>
-<span class="sourceLineNo">257</span><a id="line.257">        </a>
-<span class="sourceLineNo">258</span><a id="line.258">        /**</a>
-<span class="sourceLineNo">259</span><a id="line.259">         * Checks if all local pixels of have the same value as {@link #level}.</a>
-<span class="sourceLineNo">260</span><a id="line.260">         * @return true iff OK</a>
-<span class="sourceLineNo">261</span><a id="line.261">         */</a>
-<span class="sourceLineNo">262</span><a id="line.262">        boolean checkLevels() {</a>
-<span class="sourceLineNo">263</span><a id="line.263">                for (Component&lt;?&gt; c : getComponents()) {</a>
-<span class="sourceLineNo">264</span><a id="line.264">                        int lc = c.getLevel();</a>
-<span class="sourceLineNo">265</span><a id="line.265">                        </a>
-<span class="sourceLineNo">266</span><a id="line.266">                        // check if parent's level is greater than this component's level:</a>
-<span class="sourceLineNo">267</span><a id="line.267">                        Component&lt;?&gt; p = c.getParent();</a>
-<span class="sourceLineNo">268</span><a id="line.268">                        if (p != null) {</a>
-<span class="sourceLineNo">269</span><a id="line.269">                                int lp = p.getLevel();</a>
-<span class="sourceLineNo">270</span><a id="line.270">                                if (lc &gt;= lp) { // must be lc &lt; lp</a>
-<span class="sourceLineNo">271</span><a id="line.271">                                        System.out.println("*** value lc &gt;= lp for component " + c.ID);</a>
-<span class="sourceLineNo">272</span><a id="line.272">                                }</a>
-<span class="sourceLineNo">273</span><a id="line.273">                        }</a>
-<span class="sourceLineNo">274</span><a id="line.274">                        </a>
-<span class="sourceLineNo">275</span><a id="line.275">                        // check if all local points have the same level as this component's level:</a>
-<span class="sourceLineNo">276</span><a id="line.276">                        for (Pixel x : c.getLocalPixels()) {</a>
-<span class="sourceLineNo">277</span><a id="line.277">                                if (x.val != lc) {</a>
-<span class="sourceLineNo">278</span><a id="line.278">                                        System.out.println("*** local pixel with wrong value in component " + c.ID);</a>
-<span class="sourceLineNo">279</span><a id="line.279">                                        return false;</a>
-<span class="sourceLineNo">280</span><a id="line.280">                                }</a>
-<span class="sourceLineNo">281</span><a id="line.281">                        }</a>
-<span class="sourceLineNo">282</span><a id="line.282">                }</a>
-<span class="sourceLineNo">283</span><a id="line.283">                return true;</a>
-<span class="sourceLineNo">284</span><a id="line.284">        }</a>
-<span class="sourceLineNo">285</span><a id="line.285">        </a>
-<span class="sourceLineNo">286</span><a id="line.286">        /**</a>
-<span class="sourceLineNo">287</span><a id="line.287">         * Checks if the size of each component is the same as the number of</a>
-<span class="sourceLineNo">288</span><a id="line.288">         * local pixels plus the combined size of all children.</a>
-<span class="sourceLineNo">289</span><a id="line.289">         * @return true iff OK</a>
-<span class="sourceLineNo">290</span><a id="line.290">         */</a>
-<span class="sourceLineNo">291</span><a id="line.291">        boolean checkSize() {</a>
-<span class="sourceLineNo">292</span><a id="line.292">                for (Component&lt;?&gt; c : getComponents()) {</a>
-<span class="sourceLineNo">293</span><a id="line.293">                        int csize = c.getLocalPixels().size();</a>
-<span class="sourceLineNo">294</span><a id="line.294">                        for (Component&lt;?&gt; cc : c.getChildren()) {</a>
-<span class="sourceLineNo">295</span><a id="line.295">                                csize = csize + cc.getSize();</a>
-<span class="sourceLineNo">296</span><a id="line.296">                        }</a>
-<span class="sourceLineNo">297</span><a id="line.297">                        if (csize != c.getSize()) {</a>
-<span class="sourceLineNo">298</span><a id="line.298">                                System.out.println("*** wrong size in component " + c.ID);</a>
-<span class="sourceLineNo">299</span><a id="line.299">                                return false;</a>
-<span class="sourceLineNo">300</span><a id="line.300">                        }</a>
-<span class="sourceLineNo">301</span><a id="line.301">                }</a>
-<span class="sourceLineNo">302</span><a id="line.302">                return true;</a>
-<span class="sourceLineNo">303</span><a id="line.303">        }</a>
-<span class="sourceLineNo">304</span><a id="line.304">        </a>
-<span class="sourceLineNo">305</span><a id="line.305">        // ---------------------------------------------------------------</a>
-<span class="sourceLineNo">306</span><a id="line.306">        </a>
-<span class="sourceLineNo">307</span><a id="line.307">        @Override</a>
-<span class="sourceLineNo">308</span><a id="line.308">        public String toString() { </a>
-<span class="sourceLineNo">309</span><a id="line.309">                ByteArrayOutputStream os = new ByteArrayOutputStream();</a>
-<span class="sourceLineNo">310</span><a id="line.310">                PrintStream ps = new PrintStream(os);</a>
-<span class="sourceLineNo">311</span><a id="line.311">                this.printToStream(ps);</a>
-<span class="sourceLineNo">312</span><a id="line.312">                return os.toString();</a>
-<span class="sourceLineNo">313</span><a id="line.313">        }</a>
-<span class="sourceLineNo">314</span><a id="line.314">        </a>
-<span class="sourceLineNo">315</span><a id="line.315">        private void printToStream(PrintStream strm) {</a>
-<span class="sourceLineNo">316</span><a id="line.316">                strm.print(this.getClass().getSimpleName() + ": ");</a>
-<span class="sourceLineNo">317</span><a id="line.317">                strm.format("   number of components: %d\n", getComponents().size());</a>
-<span class="sourceLineNo">318</span><a id="line.318">                for (Component&lt;?&gt; r : getComponents()) {</a>
-<span class="sourceLineNo">319</span><a id="line.319">                        r.printToStream(strm);</a>
-<span class="sourceLineNo">320</span><a id="line.320">                        strm.println();</a>
-<span class="sourceLineNo">321</span><a id="line.321">                }</a>
-<span class="sourceLineNo">322</span><a id="line.322">                strm.println("root = " + getRoot());</a>
-<span class="sourceLineNo">323</span><a id="line.323">        }</a>
-<span class="sourceLineNo">324</span><a id="line.324"></a>
-<span class="sourceLineNo">325</span><a id="line.325">}</a>
+<span class="sourceLineNo">041</span><a id="line.41">        ComponentTree() {               // non-public constructor</a>
+<span class="sourceLineNo">042</span><a id="line.42">        }</a>
+<span class="sourceLineNo">043</span><a id="line.43">        </a>
+<span class="sourceLineNo">044</span><a id="line.44">        /**</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * Creates a new component tree for the specified image using the</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * default method ({@link Method#LinearTime}).</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * @param &lt;T&gt; the generic node type</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @param ip the input image</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @return the component tree for the specified image</a>
+<span class="sourceLineNo">050</span><a id="line.50">         */</a>
+<span class="sourceLineNo">051</span><a id="line.51">        public static &lt;T&gt; ComponentTree&lt;T&gt; from(ByteProcessor ip) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">                return from(ip, Method.LinearTime);</a>
+<span class="sourceLineNo">053</span><a id="line.53">        }</a>
+<span class="sourceLineNo">054</span><a id="line.54">        </a>
+<span class="sourceLineNo">055</span><a id="line.55">        /**</a>
+<span class="sourceLineNo">056</span><a id="line.56">         * Creates a new component tree for the specified image.</a>
+<span class="sourceLineNo">057</span><a id="line.57">         * @param &lt;T&gt; the data type of components (e.g., {@link MserData})</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * @param ip the input (gray-level) image</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * @param method the method for building the component tree</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * @return the component tree</a>
+<span class="sourceLineNo">061</span><a id="line.61">         */</a>
+<span class="sourceLineNo">062</span><a id="line.62">        public static &lt;T&gt; ComponentTree&lt;T&gt; from(ByteProcessor ip, Method method) {</a>
+<span class="sourceLineNo">063</span><a id="line.63">                return from(new PixelMap(ip), method);</a>
+<span class="sourceLineNo">064</span><a id="line.64">        }</a>
+<span class="sourceLineNo">065</span><a id="line.65">        </a>
+<span class="sourceLineNo">066</span><a id="line.66">        /**</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * Creates a new component tree for the specified {@link PixelMap}.</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * @param &lt;T&gt; the data type of components (e.g., {@link MserData})</a>
+<span class="sourceLineNo">069</span><a id="line.69">         * @param pm a {@link PixelMap} instance</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * @param method the method for building the component tree</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * @return the component tree</a>
+<span class="sourceLineNo">072</span><a id="line.72">         */</a>
+<span class="sourceLineNo">073</span><a id="line.73">        public static &lt;T&gt; ComponentTree&lt;T&gt; from(PixelMap pm, Method method) {</a>
+<span class="sourceLineNo">074</span><a id="line.74">                switch (method) {</a>
+<span class="sourceLineNo">075</span><a id="line.75">                case LinearTime:  return new ComponentTreeLinearTime&lt;&gt;(pm);</a>
+<span class="sourceLineNo">076</span><a id="line.76">                case GlobalImmersion: return new ComponentTreeGlobalImmersion&lt;&gt;(pm);</a>
+<span class="sourceLineNo">077</span><a id="line.77">                }</a>
+<span class="sourceLineNo">078</span><a id="line.78">                return null;</a>
+<span class="sourceLineNo">079</span><a id="line.79">        }</a>
+<span class="sourceLineNo">080</span><a id="line.80">        </a>
+<span class="sourceLineNo">081</span><a id="line.81">        // --------------------------------------------------------------</a>
+<span class="sourceLineNo">082</span><a id="line.82"></a>
+<span class="sourceLineNo">083</span><a id="line.83">        /**</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * Returns the root component of this component tree.</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * @return the root component</a>
+<span class="sourceLineNo">086</span><a id="line.86">         */</a>
+<span class="sourceLineNo">087</span><a id="line.87">        public abstract Component&lt;T&gt; getRoot();</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">        /**</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * Returns an unordered collection of all tree components.</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * @return all tree components</a>
+<span class="sourceLineNo">092</span><a id="line.92">         */</a>
+<span class="sourceLineNo">093</span><a id="line.93">        public abstract Collection&lt;Component&lt;T&gt;&gt; getComponents();</a>
+<span class="sourceLineNo">094</span><a id="line.94">        </a>
+<span class="sourceLineNo">095</span><a id="line.95">        @Override</a>
+<span class="sourceLineNo">096</span><a id="line.96">        public Iterator&lt;Component&lt;T&gt;&gt; iterator() {</a>
+<span class="sourceLineNo">097</span><a id="line.97">                return getComponents().iterator();</a>
+<span class="sourceLineNo">098</span><a id="line.98">        }</a>
+<span class="sourceLineNo">099</span><a id="line.99">        </a>
+<span class="sourceLineNo">100</span><a id="line.100">        /**</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * Finds and returns a collection of all leaf components of this tree.</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * A leaf is a component which has no children.</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * @return all leaf components</a>
+<span class="sourceLineNo">104</span><a id="line.104">         */</a>
+<span class="sourceLineNo">105</span><a id="line.105">        public Collection&lt;Component&lt;T&gt;&gt; getLeaves() {</a>
+<span class="sourceLineNo">106</span><a id="line.106">                Collection&lt;Component&lt;T&gt;&gt; leaves = new LinkedList&lt;&gt;();</a>
+<span class="sourceLineNo">107</span><a id="line.107">                for (Component&lt;T&gt; c : getComponents()) {</a>
+<span class="sourceLineNo">108</span><a id="line.108">                        if (c.getChildren().isEmpty()) {</a>
+<span class="sourceLineNo">109</span><a id="line.109">                                leaves.add(c);</a>
+<span class="sourceLineNo">110</span><a id="line.110">                        }</a>
+<span class="sourceLineNo">111</span><a id="line.111">                }       </a>
+<span class="sourceLineNo">112</span><a id="line.112">                return leaves;</a>
+<span class="sourceLineNo">113</span><a id="line.113">        }</a>
+<span class="sourceLineNo">114</span><a id="line.114">        </a>
+<span class="sourceLineNo">115</span><a id="line.115">        // -------------------------------------------------------------------------------</a>
+<span class="sourceLineNo">116</span><a id="line.116">        </a>
+<span class="sourceLineNo">117</span><a id="line.117">        /**</a>
+<span class="sourceLineNo">118</span><a id="line.118">         * Performs integrity checks on this component tree.</a>
+<span class="sourceLineNo">119</span><a id="line.119">         * @return true iff all checks are passed</a>
+<span class="sourceLineNo">120</span><a id="line.120">         */</a>
+<span class="sourceLineNo">121</span><a id="line.121">        public boolean validate() {</a>
+<span class="sourceLineNo">122</span><a id="line.122">                if (!checkNodes()) {</a>
+<span class="sourceLineNo">123</span><a id="line.123">                        System.out.println("checkNodes failed");</a>
+<span class="sourceLineNo">124</span><a id="line.124">                        return false;</a>
+<span class="sourceLineNo">125</span><a id="line.125">                }</a>
+<span class="sourceLineNo">126</span><a id="line.126">                if (!checkParents()) {</a>
+<span class="sourceLineNo">127</span><a id="line.127">                        System.out.println("checkParents failed");</a>
+<span class="sourceLineNo">128</span><a id="line.128">                        return false;</a>
+<span class="sourceLineNo">129</span><a id="line.129">                }</a>
+<span class="sourceLineNo">130</span><a id="line.130">                if (!checkChildren()) {</a>
+<span class="sourceLineNo">131</span><a id="line.131">                        System.out.println("checkChildren failed");</a>
+<span class="sourceLineNo">132</span><a id="line.132">                        return false;</a>
+<span class="sourceLineNo">133</span><a id="line.133">                }</a>
+<span class="sourceLineNo">134</span><a id="line.134">                if (!checkRoot()) {</a>
+<span class="sourceLineNo">135</span><a id="line.135">                        System.out.println("checkRoot failed");</a>
+<span class="sourceLineNo">136</span><a id="line.136">                        return false;</a>
+<span class="sourceLineNo">137</span><a id="line.137">                }</a>
+<span class="sourceLineNo">138</span><a id="line.138">                if (!checkLevels()) {</a>
+<span class="sourceLineNo">139</span><a id="line.139">                        System.out.println("checkLevels failed");</a>
+<span class="sourceLineNo">140</span><a id="line.140">                        return false;</a>
+<span class="sourceLineNo">141</span><a id="line.141">                }</a>
+<span class="sourceLineNo">142</span><a id="line.142">                if (!checkSize()) {</a>
+<span class="sourceLineNo">143</span><a id="line.143">                        System.out.println("checkSize failed");</a>
+<span class="sourceLineNo">144</span><a id="line.144">                        return false;</a>
+<span class="sourceLineNo">145</span><a id="line.145">                }</a>
+<span class="sourceLineNo">146</span><a id="line.146">                return true;</a>
+<span class="sourceLineNo">147</span><a id="line.147">        }</a>
+<span class="sourceLineNo">148</span><a id="line.148">        </a>
+<span class="sourceLineNo">149</span><a id="line.149">        </a>
+<span class="sourceLineNo">150</span><a id="line.150">        /**</a>
+<span class="sourceLineNo">151</span><a id="line.151">         * Checks if all tree nodes reachable through root are contained in components list</a>
+<span class="sourceLineNo">152</span><a id="line.152">         * and the tree has no duplicate nodes (and no cycles).</a>
+<span class="sourceLineNo">153</span><a id="line.153">         * @return true iff OK</a>
+<span class="sourceLineNo">154</span><a id="line.154">         */</a>
+<span class="sourceLineNo">155</span><a id="line.155">        boolean checkNodes() {</a>
+<span class="sourceLineNo">156</span><a id="line.156">                Set&lt;Component&lt;T&gt;&gt; componentSet = new HashSet&lt;&gt;(); // empty hash set</a>
+<span class="sourceLineNo">157</span><a id="line.157">                int duplicateID = traverse(getRoot(), componentSet);</a>
+<span class="sourceLineNo">158</span><a id="line.158">                if (duplicateID &gt;= 0) {         // traverse() registers all visited components</a>
+<span class="sourceLineNo">159</span><a id="line.159">                        System.out.println("*** component tree has duplicate node: " + duplicateID);</a>
+<span class="sourceLineNo">160</span><a id="line.160">                        return false;</a>
+<span class="sourceLineNo">161</span><a id="line.161">                }</a>
+<span class="sourceLineNo">162</span><a id="line.162">                if (getComponents().size() != componentSet.size()) {</a>
+<span class="sourceLineNo">163</span><a id="line.163">                        System.out.println("*** some nodes in components list can not be reached!");</a>
+<span class="sourceLineNo">164</span><a id="line.164">                        return false;</a>
+<span class="sourceLineNo">165</span><a id="line.165">                }</a>
+<span class="sourceLineNo">166</span><a id="line.166">                return true;</a>
+<span class="sourceLineNo">167</span><a id="line.167">        }</a>
+<span class="sourceLineNo">168</span><a id="line.168">        </a>
+<span class="sourceLineNo">169</span><a id="line.169">        int traverse(Component&lt;T&gt; c, Set&lt;Component&lt;T&gt;&gt; cS) {</a>
+<span class="sourceLineNo">170</span><a id="line.170">                if (cS.add(c)) {</a>
+<span class="sourceLineNo">171</span><a id="line.171">                        for (Component&lt;T&gt; cc : c.getChildren()) {</a>
+<span class="sourceLineNo">172</span><a id="line.172">                                int duplicateId = traverse(cc, cS);</a>
+<span class="sourceLineNo">173</span><a id="line.173">                                if (duplicateId &gt;= 0) { // duplicate node</a>
+<span class="sourceLineNo">174</span><a id="line.174">                                        return duplicateId;</a>
+<span class="sourceLineNo">175</span><a id="line.175">                                };</a>
+<span class="sourceLineNo">176</span><a id="line.176">                        }</a>
+<span class="sourceLineNo">177</span><a id="line.177">                        return -1;      // everything OK, no duplicate node</a>
+<span class="sourceLineNo">178</span><a id="line.178">                }</a>
+<span class="sourceLineNo">179</span><a id="line.179">                else {  // c was already in set</a>
+<span class="sourceLineNo">180</span><a id="line.180">                        System.out.println("*** duplicate tree node: " + c.ID);</a>
+<span class="sourceLineNo">181</span><a id="line.181">                        return c.ID;</a>
+<span class="sourceLineNo">182</span><a id="line.182">                }</a>
+<span class="sourceLineNo">183</span><a id="line.183">        }</a>
+<span class="sourceLineNo">184</span><a id="line.184"></a>
+<span class="sourceLineNo">185</span><a id="line.185">        /**</a>
+<span class="sourceLineNo">186</span><a id="line.186">         * Checks if all parent relations are consistent.</a>
+<span class="sourceLineNo">187</span><a id="line.187">         * @return true iff OK</a>
+<span class="sourceLineNo">188</span><a id="line.188">         */</a>
+<span class="sourceLineNo">189</span><a id="line.189">        boolean checkParents() {</a>
+<span class="sourceLineNo">190</span><a id="line.190">                Collection&lt;Component&lt;T&gt;&gt; comps = getComponents();</a>
+<span class="sourceLineNo">191</span><a id="line.191">                HashSet&lt;Component&lt;T&gt;&gt; compsH = new HashSet&lt;&gt;(comps); // to improve lookup speed</a>
+<span class="sourceLineNo">192</span><a id="line.192">                </a>
+<span class="sourceLineNo">193</span><a id="line.193">                for (Component&lt;?&gt; c : comps) {</a>
+<span class="sourceLineNo">194</span><a id="line.194">                        Component&lt;?&gt; p = c.getParent();</a>
+<span class="sourceLineNo">195</span><a id="line.195">                        if (p == null) {</a>
+<span class="sourceLineNo">196</span><a id="line.196">                                continue;</a>
+<span class="sourceLineNo">197</span><a id="line.197">                        }</a>
+<span class="sourceLineNo">198</span><a id="line.198">                        </a>
+<span class="sourceLineNo">199</span><a id="line.199">                        // check if parent is listed in 'components' (use HashSet for speed)</a>
+<span class="sourceLineNo">200</span><a id="line.200">                        if (!compsH.contains(p)) {</a>
+<span class="sourceLineNo">201</span><a id="line.201">                                System.out.println("*** component not contained in components list: " + c.ID);</a>
+<span class="sourceLineNo">202</span><a id="line.202">                                return false;</a>
+<span class="sourceLineNo">203</span><a id="line.203">                        }</a>
+<span class="sourceLineNo">204</span><a id="line.204">                                                </a>
+<span class="sourceLineNo">205</span><a id="line.205">                        // check if parent is not c itself</a>
+<span class="sourceLineNo">206</span><a id="line.206">                        if (p == c) {</a>
+<span class="sourceLineNo">207</span><a id="line.207">                                System.out.println("*** self-referring parent link in component " + c.ID);</a>
+<span class="sourceLineNo">208</span><a id="line.208">                                return false;</a>
+<span class="sourceLineNo">209</span><a id="line.209">                        }                               </a>
+<span class="sourceLineNo">210</span><a id="line.210">                }</a>
+<span class="sourceLineNo">211</span><a id="line.211">                return true;</a>
+<span class="sourceLineNo">212</span><a id="line.212">        }</a>
+<span class="sourceLineNo">213</span><a id="line.213">        </a>
+<span class="sourceLineNo">214</span><a id="line.214">        /**</a>
+<span class="sourceLineNo">215</span><a id="line.215">         * Checks if all child relations are consistent.</a>
+<span class="sourceLineNo">216</span><a id="line.216">         * @return true iff OK</a>
+<span class="sourceLineNo">217</span><a id="line.217">         */</a>
+<span class="sourceLineNo">218</span><a id="line.218">        boolean checkChildren() {</a>
+<span class="sourceLineNo">219</span><a id="line.219">                for (Component&lt;?&gt; c : getComponents()) {</a>
+<span class="sourceLineNo">220</span><a id="line.220">                        // check if children is a list (not null)</a>
+<span class="sourceLineNo">221</span><a id="line.221">                        if (c.getChildren() == null) {</a>
+<span class="sourceLineNo">222</span><a id="line.222">                                System.out.println("*** children is null (not an empty list) in component " + c.ID);</a>
+<span class="sourceLineNo">223</span><a id="line.223">                                return false;</a>
+<span class="sourceLineNo">224</span><a id="line.224">                        }</a>
+<span class="sourceLineNo">225</span><a id="line.225">                        </a>
+<span class="sourceLineNo">226</span><a id="line.226">                        // check if all children of c have c as parent</a>
+<span class="sourceLineNo">227</span><a id="line.227">                        for (Component&lt;?&gt; child : c.getChildren()) {</a>
+<span class="sourceLineNo">228</span><a id="line.228">                                // check if c is parent of its child:</a>
+<span class="sourceLineNo">229</span><a id="line.229">                                if (child.getParent() != c) {</a>
+<span class="sourceLineNo">230</span><a id="line.230">                                        System.out.println("*** incorrect parent link in component " + child.ID);</a>
+<span class="sourceLineNo">231</span><a id="line.231">                                        return false;</a>
+<span class="sourceLineNo">232</span><a id="line.232">                                }</a>
+<span class="sourceLineNo">233</span><a id="line.233">                        }       </a>
+<span class="sourceLineNo">234</span><a id="line.234">                }</a>
+<span class="sourceLineNo">235</span><a id="line.235">                return true;</a>
+<span class="sourceLineNo">236</span><a id="line.236">        }</a>
+<span class="sourceLineNo">237</span><a id="line.237">        /** </a>
+<span class="sourceLineNo">238</span><a id="line.238">         * Checks if the tree has a unique root.</a>
+<span class="sourceLineNo">239</span><a id="line.239">         * @return true iff OK</a>
+<span class="sourceLineNo">240</span><a id="line.240">         */</a>
+<span class="sourceLineNo">241</span><a id="line.241">        boolean checkRoot() {</a>
+<span class="sourceLineNo">242</span><a id="line.242">                // check if a single root exists and is properly marked (with null parent)</a>
+<span class="sourceLineNo">243</span><a id="line.243">                int rootcnt = 0;</a>
+<span class="sourceLineNo">244</span><a id="line.244">                Component&lt;T&gt; root = getRoot();</a>
+<span class="sourceLineNo">245</span><a id="line.245">                for (Component&lt;?&gt; c : getComponents()) {</a>
+<span class="sourceLineNo">246</span><a id="line.246">                        if (c.getParent() == null) {</a>
+<span class="sourceLineNo">247</span><a id="line.247">                                rootcnt++;</a>
+<span class="sourceLineNo">248</span><a id="line.248">                                if (c != root) {</a>
+<span class="sourceLineNo">249</span><a id="line.249">                                        System.out.println("*** found non-root node without parent: " + c.ID);</a>
+<span class="sourceLineNo">250</span><a id="line.250">                                        return false;</a>
+<span class="sourceLineNo">251</span><a id="line.251">                                }</a>
+<span class="sourceLineNo">252</span><a id="line.252">                        }</a>
+<span class="sourceLineNo">253</span><a id="line.253">                }</a>
+<span class="sourceLineNo">254</span><a id="line.254">                if (rootcnt &gt; 1) {</a>
+<span class="sourceLineNo">255</span><a id="line.255">                        System.out.println("*** found multiple roots: " + rootcnt);</a>
+<span class="sourceLineNo">256</span><a id="line.256">                        return false;</a>
+<span class="sourceLineNo">257</span><a id="line.257">                }</a>
+<span class="sourceLineNo">258</span><a id="line.258">                return true;</a>
+<span class="sourceLineNo">259</span><a id="line.259">        }</a>
+<span class="sourceLineNo">260</span><a id="line.260">        </a>
+<span class="sourceLineNo">261</span><a id="line.261">        /**</a>
+<span class="sourceLineNo">262</span><a id="line.262">         * Checks if all local pixels of have the same value as {@link #level}.</a>
+<span class="sourceLineNo">263</span><a id="line.263">         * @return true iff OK</a>
+<span class="sourceLineNo">264</span><a id="line.264">         */</a>
+<span class="sourceLineNo">265</span><a id="line.265">        boolean checkLevels() {</a>
+<span class="sourceLineNo">266</span><a id="line.266">                for (Component&lt;?&gt; c : getComponents()) {</a>
+<span class="sourceLineNo">267</span><a id="line.267">                        int lc = c.getLevel();</a>
+<span class="sourceLineNo">268</span><a id="line.268">                        </a>
+<span class="sourceLineNo">269</span><a id="line.269">                        // check if parent's level is greater than this component's level:</a>
+<span class="sourceLineNo">270</span><a id="line.270">                        Component&lt;?&gt; p = c.getParent();</a>
+<span class="sourceLineNo">271</span><a id="line.271">                        if (p != null) {</a>
+<span class="sourceLineNo">272</span><a id="line.272">                                int lp = p.getLevel();</a>
+<span class="sourceLineNo">273</span><a id="line.273">                                if (lc &gt;= lp) { // must be lc &lt; lp</a>
+<span class="sourceLineNo">274</span><a id="line.274">                                        System.out.println("*** value lc &gt;= lp for component " + c.ID);</a>
+<span class="sourceLineNo">275</span><a id="line.275">                                }</a>
+<span class="sourceLineNo">276</span><a id="line.276">                        }</a>
+<span class="sourceLineNo">277</span><a id="line.277">                        </a>
+<span class="sourceLineNo">278</span><a id="line.278">                        // check if all local points have the same level as this component's level:</a>
+<span class="sourceLineNo">279</span><a id="line.279">                        for (Pixel x : c.getLocalPixels()) {</a>
+<span class="sourceLineNo">280</span><a id="line.280">                                if (x.val != lc) {</a>
+<span class="sourceLineNo">281</span><a id="line.281">                                        System.out.println("*** local pixel with wrong value in component " + c.ID);</a>
+<span class="sourceLineNo">282</span><a id="line.282">                                        return false;</a>
+<span class="sourceLineNo">283</span><a id="line.283">                                }</a>
+<span class="sourceLineNo">284</span><a id="line.284">                        }</a>
+<span class="sourceLineNo">285</span><a id="line.285">                }</a>
+<span class="sourceLineNo">286</span><a id="line.286">                return true;</a>
+<span class="sourceLineNo">287</span><a id="line.287">        }</a>
+<span class="sourceLineNo">288</span><a id="line.288">        </a>
+<span class="sourceLineNo">289</span><a id="line.289">        /**</a>
+<span class="sourceLineNo">290</span><a id="line.290">         * Checks if the size of each component is the same as the number of</a>
+<span class="sourceLineNo">291</span><a id="line.291">         * local pixels plus the combined size of all children.</a>
+<span class="sourceLineNo">292</span><a id="line.292">         * @return true iff OK</a>
+<span class="sourceLineNo">293</span><a id="line.293">         */</a>
+<span class="sourceLineNo">294</span><a id="line.294">        boolean checkSize() {</a>
+<span class="sourceLineNo">295</span><a id="line.295">                for (Component&lt;?&gt; c : getComponents()) {</a>
+<span class="sourceLineNo">296</span><a id="line.296">                        int csize = c.getLocalPixels().size();</a>
+<span class="sourceLineNo">297</span><a id="line.297">                        for (Component&lt;?&gt; cc : c.getChildren()) {</a>
+<span class="sourceLineNo">298</span><a id="line.298">                                csize = csize + cc.getSize();</a>
+<span class="sourceLineNo">299</span><a id="line.299">                        }</a>
+<span class="sourceLineNo">300</span><a id="line.300">                        if (csize != c.getSize()) {</a>
+<span class="sourceLineNo">301</span><a id="line.301">                                System.out.println("*** wrong size in component " + c.ID);</a>
+<span class="sourceLineNo">302</span><a id="line.302">                                return false;</a>
+<span class="sourceLineNo">303</span><a id="line.303">                        }</a>
+<span class="sourceLineNo">304</span><a id="line.304">                }</a>
+<span class="sourceLineNo">305</span><a id="line.305">                return true;</a>
+<span class="sourceLineNo">306</span><a id="line.306">        }</a>
+<span class="sourceLineNo">307</span><a id="line.307">        </a>
+<span class="sourceLineNo">308</span><a id="line.308">        // ---------------------------------------------------------------</a>
+<span class="sourceLineNo">309</span><a id="line.309">        </a>
+<span class="sourceLineNo">310</span><a id="line.310">        @Override</a>
+<span class="sourceLineNo">311</span><a id="line.311">        public String toString() { </a>
+<span class="sourceLineNo">312</span><a id="line.312">                ByteArrayOutputStream os = new ByteArrayOutputStream();</a>
+<span class="sourceLineNo">313</span><a id="line.313">                PrintStream ps = new PrintStream(os);</a>
+<span class="sourceLineNo">314</span><a id="line.314">                this.printToStream(ps);</a>
+<span class="sourceLineNo">315</span><a id="line.315">                return os.toString();</a>
+<span class="sourceLineNo">316</span><a id="line.316">        }</a>
+<span class="sourceLineNo">317</span><a id="line.317">        </a>
+<span class="sourceLineNo">318</span><a id="line.318">        private void printToStream(PrintStream strm) {</a>
+<span class="sourceLineNo">319</span><a id="line.319">                strm.print(this.getClass().getSimpleName() + ": ");</a>
+<span class="sourceLineNo">320</span><a id="line.320">                strm.format("   number of components: %d\n", getComponents().size());</a>
+<span class="sourceLineNo">321</span><a id="line.321">                for (Component&lt;?&gt; r : getComponents()) {</a>
+<span class="sourceLineNo">322</span><a id="line.322">                        r.printToStream(strm);</a>
+<span class="sourceLineNo">323</span><a id="line.323">                        strm.println();</a>
+<span class="sourceLineNo">324</span><a id="line.324">                }</a>
+<span class="sourceLineNo">325</span><a id="line.325">                strm.println("root = " + getRoot());</a>
+<span class="sourceLineNo">326</span><a id="line.326">        }</a>
+<span class="sourceLineNo">327</span><a id="line.327">        </a>
+<span class="sourceLineNo">328</span><a id="line.328">        // ---------------------------------------------------------------------</a>
+<span class="sourceLineNo">329</span><a id="line.329">        </a>
+<span class="sourceLineNo">330</span><a id="line.330">        private static int INDENT = 4;</a>
+<span class="sourceLineNo">331</span><a id="line.331">        </a>
+<span class="sourceLineNo">332</span><a id="line.332">        // print a forest with multiple roots</a>
+<span class="sourceLineNo">333</span><a id="line.333">        static String toStringRecursive(ComponentTree&lt;?&gt; rt) { </a>
+<span class="sourceLineNo">334</span><a id="line.334">                ByteArrayOutputStream os = new ByteArrayOutputStream();</a>
+<span class="sourceLineNo">335</span><a id="line.335">                PrintStream ps = new PrintStream(os);</a>
+<span class="sourceLineNo">336</span><a id="line.336">                </a>
+<span class="sourceLineNo">337</span><a id="line.337">                for (Component&lt;?&gt; c : rt) {</a>
+<span class="sourceLineNo">338</span><a id="line.338">                        if (c.getParent() == null || c.getParent() == c) {      // start at any root</a>
+<span class="sourceLineNo">339</span><a id="line.339">                                printToStreamRecursive(c, ps, 0);</a>
+<span class="sourceLineNo">340</span><a id="line.340">                        }       </a>
+<span class="sourceLineNo">341</span><a id="line.341">                }       </a>
+<span class="sourceLineNo">342</span><a id="line.342">                return os.toString();</a>
+<span class="sourceLineNo">343</span><a id="line.343">        }</a>
+<span class="sourceLineNo">344</span><a id="line.344">        </a>
+<span class="sourceLineNo">345</span><a id="line.345">        // print tree with a single root</a>
+<span class="sourceLineNo">346</span><a id="line.346">        static String toStringRecursive(Component&lt;?&gt; rt) { </a>
+<span class="sourceLineNo">347</span><a id="line.347">                ByteArrayOutputStream os = new ByteArrayOutputStream();</a>
+<span class="sourceLineNo">348</span><a id="line.348">                PrintStream ps = new PrintStream(os);</a>
+<span class="sourceLineNo">349</span><a id="line.349">                printToStreamRecursive(rt, ps, 0);      </a>
+<span class="sourceLineNo">350</span><a id="line.350">                return os.toString();</a>
+<span class="sourceLineNo">351</span><a id="line.351">        }</a>
+<span class="sourceLineNo">352</span><a id="line.352">        </a>
+<span class="sourceLineNo">353</span><a id="line.353">        </a>
+<span class="sourceLineNo">354</span><a id="line.354">        private static void printToStreamRecursive(Component&lt;?&gt; c, PrintStream ps, int indent) {</a>
+<span class="sourceLineNo">355</span><a id="line.355">                for (int i=0; i &lt; indent; i++) {</a>
+<span class="sourceLineNo">356</span><a id="line.356">                        ps.append('|');</a>
+<span class="sourceLineNo">357</span><a id="line.357">                        for (int j = 0; j &lt; INDENT; j++) {</a>
+<span class="sourceLineNo">358</span><a id="line.358">                                ps.append(' ');</a>
+<span class="sourceLineNo">359</span><a id="line.359">                        }</a>
+<span class="sourceLineNo">360</span><a id="line.360">                }</a>
+<span class="sourceLineNo">361</span><a id="line.361">                c.printToStream(ps);</a>
+<span class="sourceLineNo">362</span><a id="line.362">                ps.println();</a>
+<span class="sourceLineNo">363</span><a id="line.363">                for (Component&lt;?&gt; child : c.getChildren()) {</a>
+<span class="sourceLineNo">364</span><a id="line.364">                        printToStreamRecursive(child, ps, indent + 1);</a>
+<span class="sourceLineNo">365</span><a id="line.365">                }</a>
+<span class="sourceLineNo">366</span><a id="line.366">        }</a>
+<span class="sourceLineNo">367</span><a id="line.367"></a>
+<span class="sourceLineNo">368</span><a id="line.368">}</a>
 
 
 

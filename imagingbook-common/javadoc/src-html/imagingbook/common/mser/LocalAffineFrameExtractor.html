@@ -34,80 +34,79 @@
 <span class="sourceLineNo">024</span><a id="line.24"></a>
 <span class="sourceLineNo">025</span><a id="line.25"></a>
 <span class="sourceLineNo">026</span><a id="line.26">/**</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * Assumes that the given image has white background (255) and black (0) objects.</a>
-<span class="sourceLineNo">028</span><a id="line.28"> * TODO: check the above!</a>
-<span class="sourceLineNo">029</span><a id="line.29"> *</a>
-<span class="sourceLineNo">030</span><a id="line.30"> */</a>
-<span class="sourceLineNo">031</span><a id="line.31">public class LocalAffineFrameExtractor {</a>
-<span class="sourceLineNo">032</span><a id="line.32">        </a>
-<span class="sourceLineNo">033</span><a id="line.33">        static InterpolationMethod interpolMethod = InterpolationMethod.Bilinear;</a>
-<span class="sourceLineNo">034</span><a id="line.34">        </a>
-<span class="sourceLineNo">035</span><a id="line.35">        private final ImageProcessor sourceIp;</a>
-<span class="sourceLineNo">036</span><a id="line.36">        private final int m;            // size of frame to extract (W = H = 2 m + 1)</a>
-<span class="sourceLineNo">037</span><a id="line.37">        private final double s;         // size ratio between outer and inner ellipse</a>
-<span class="sourceLineNo">038</span><a id="line.38">        </a>
-<span class="sourceLineNo">039</span><a id="line.39">        public boolean useAntiAliasingFilter = true;</a>
-<span class="sourceLineNo">040</span><a id="line.40">        </a>
-<span class="sourceLineNo">041</span><a id="line.41">        public LocalAffineFrameExtractor(ImageProcessor sourceIp, int m, double s) {</a>
-<span class="sourceLineNo">042</span><a id="line.42">                this.sourceIp = sourceIp;</a>
-<span class="sourceLineNo">043</span><a id="line.43">                this.m = m;</a>
-<span class="sourceLineNo">044</span><a id="line.44">                this.s = s;</a>
-<span class="sourceLineNo">045</span><a id="line.45">        }</a>
-<span class="sourceLineNo">046</span><a id="line.46">        </a>
-<span class="sourceLineNo">047</span><a id="line.47">        public ImageProcessor getLocalAffineFrame(Component&lt;MserData&gt; mser) {</a>
-<span class="sourceLineNo">048</span><a id="line.48">                MserData props = mser.getProperties();</a>
-<span class="sourceLineNo">049</span><a id="line.49">                double[] xc = props.getCenter().toDoubleArray(); //{mu10, mu01};</a>
-<span class="sourceLineNo">050</span><a id="line.50">                double[][] S = props.getCovarianceMatrix();</a>
-<span class="sourceLineNo">051</span><a id="line.51">                </a>
-<span class="sourceLineNo">052</span><a id="line.52">                EigenDecomposition ed = new EigenDecomposition(MatrixUtils.createRealMatrix(S));</a>
-<span class="sourceLineNo">053</span><a id="line.53">                RealMatrix V = ed.getV();</a>
-<span class="sourceLineNo">054</span><a id="line.54">                RealMatrix D = ed.getD();</a>
-<span class="sourceLineNo">055</span><a id="line.55">                </a>
-<span class="sourceLineNo">056</span><a id="line.56">                for (int i = 0; i &lt; 2; i++) {</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        D.setEntry(i, i, Math.sqrt(D.getEntry(i, i)));</a>
-<span class="sourceLineNo">058</span><a id="line.58">                }</a>
-<span class="sourceLineNo">059</span><a id="line.59">                </a>
-<span class="sourceLineNo">060</span><a id="line.60">                RealMatrix A = V.multiply(D).scalarMultiply(2.0 * s / m);</a>
-<span class="sourceLineNo">061</span><a id="line.61">                double detA = Matrix.determinant2x2(A.getData());</a>
-<span class="sourceLineNo">062</span><a id="line.62"></a>
-<span class="sourceLineNo">063</span><a id="line.63">                if (detA &lt; 0) { // reflection</a>
-<span class="sourceLineNo">064</span><a id="line.64">                        RealMatrix reflect = MatrixUtils.createRealMatrix(new double[][] {{1,0},{0,-1}});</a>
-<span class="sourceLineNo">065</span><a id="line.65">                        A = A.multiply(reflect);        // undo reflection!!</a>
-<span class="sourceLineNo">066</span><a id="line.66">                }</a>
-<span class="sourceLineNo">067</span><a id="line.67">                </a>
-<span class="sourceLineNo">068</span><a id="line.68">                ImageProcessor ip2 = sourceIp.duplicate();</a>
-<span class="sourceLineNo">069</span><a id="line.69">                ip2.invert(); // makes the background black, objects white</a>
-<span class="sourceLineNo">070</span><a id="line.70">                </a>
-<span class="sourceLineNo">071</span><a id="line.71">                if (useAntiAliasingFilter) {</a>
-<span class="sourceLineNo">072</span><a id="line.72">                        GeometricEllipse ellipse = props.getEllipse();</a>
-<span class="sourceLineNo">073</span><a id="line.73">                        double dMax = s * ellipse.ra / m;       // scale ratio</a>
-<span class="sourceLineNo">074</span><a id="line.74">                        double sigma = 0;</a>
-<span class="sourceLineNo">075</span><a id="line.75">                        if (dMax &gt; 1.5) {       // down-scaling, sample width increases by factor dScale</a>
-<span class="sourceLineNo">076</span><a id="line.76">                                sigma = (dMax - 1) * 0.5;       // factor 0.5 is ad hoc (full dMax blurs too much)</a>
-<span class="sourceLineNo">077</span><a id="line.77">                        }</a>
-<span class="sourceLineNo">078</span><a id="line.78">                        if (sigma &gt; 0) {</a>
-<span class="sourceLineNo">079</span><a id="line.79">                                GaussianFilter gf = new GaussianFilter(sigma);</a>
-<span class="sourceLineNo">080</span><a id="line.80">                                gf.applyTo(ip2);</a>
-<span class="sourceLineNo">081</span><a id="line.81">                        }</a>
-<span class="sourceLineNo">082</span><a id="line.82">                }</a>
-<span class="sourceLineNo">083</span><a id="line.83">                </a>
-<span class="sourceLineNo">084</span><a id="line.84">                int frameSize = 2 * m + 1;</a>
-<span class="sourceLineNo">085</span><a id="line.85">                ImageProcessor laf = sourceIp.createProcessor(frameSize, frameSize);</a>
-<span class="sourceLineNo">086</span><a id="line.86">                </a>
-<span class="sourceLineNo">087</span><a id="line.87">                AffineMapping2D T1 = new Translation2D(-m, -m);</a>
-<span class="sourceLineNo">088</span><a id="line.88">                AffineMapping2D AA = new AffineMapping2D(A.getData());</a>
-<span class="sourceLineNo">089</span><a id="line.89">                AffineMapping2D T2 = new Translation2D(xc);</a>
-<span class="sourceLineNo">090</span><a id="line.90">                </a>
-<span class="sourceLineNo">091</span><a id="line.91">                AffineMapping2D M = T1.concat(AA).concat(T2);</a>
-<span class="sourceLineNo">092</span><a id="line.92">                ImageMapper mapper = new ImageMapper(M, null, interpolMethod);</a>
-<span class="sourceLineNo">093</span><a id="line.93">                </a>
-<span class="sourceLineNo">094</span><a id="line.94">                mapper.map(ip2, laf);</a>
-<span class="sourceLineNo">095</span><a id="line.95">                </a>
-<span class="sourceLineNo">096</span><a id="line.96">                laf.invert(); // makes background white again           </a>
-<span class="sourceLineNo">097</span><a id="line.97">                return laf;</a>
-<span class="sourceLineNo">098</span><a id="line.98">        }</a>
-<span class="sourceLineNo">099</span><a id="line.99"></a>
-<span class="sourceLineNo">100</span><a id="line.100">}</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * Provides functionality to extract local affine frames from a given image.</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * Assumes that the specified image has a white background (255) and black (0) objects.</a>
+<span class="sourceLineNo">029</span><a id="line.29"> */</a>
+<span class="sourceLineNo">030</span><a id="line.30">public class LocalAffineFrameExtractor {</a>
+<span class="sourceLineNo">031</span><a id="line.31">        </a>
+<span class="sourceLineNo">032</span><a id="line.32">        static InterpolationMethod interpolMethod = InterpolationMethod.Bilinear;</a>
+<span class="sourceLineNo">033</span><a id="line.33">        </a>
+<span class="sourceLineNo">034</span><a id="line.34">        private final ImageProcessor sourceIp;</a>
+<span class="sourceLineNo">035</span><a id="line.35">        private final int m;            // size of frame to extract (W = H = 2 m + 1)</a>
+<span class="sourceLineNo">036</span><a id="line.36">        private final double s;         // size ratio between outer and inner ellipse</a>
+<span class="sourceLineNo">037</span><a id="line.37">        </a>
+<span class="sourceLineNo">038</span><a id="line.38">        public boolean useAntiAliasingFilter = true;    // public, can be set any time</a>
+<span class="sourceLineNo">039</span><a id="line.39">        </a>
+<span class="sourceLineNo">040</span><a id="line.40">        public LocalAffineFrameExtractor(ImageProcessor sourceIp, int m, double s) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">                this.sourceIp = sourceIp;</a>
+<span class="sourceLineNo">042</span><a id="line.42">                this.m = m;</a>
+<span class="sourceLineNo">043</span><a id="line.43">                this.s = s;</a>
+<span class="sourceLineNo">044</span><a id="line.44">        }</a>
+<span class="sourceLineNo">045</span><a id="line.45">        </a>
+<span class="sourceLineNo">046</span><a id="line.46">        public ImageProcessor getLocalAffineFrame(Component&lt;MserData&gt; mser) {</a>
+<span class="sourceLineNo">047</span><a id="line.47">                MserData props = mser.getProperties();</a>
+<span class="sourceLineNo">048</span><a id="line.48">                double[] xc = props.getCenter().toDoubleArray(); //{mu10, mu01};</a>
+<span class="sourceLineNo">049</span><a id="line.49">                double[][] S = props.getCovarianceMatrix();</a>
+<span class="sourceLineNo">050</span><a id="line.50">                </a>
+<span class="sourceLineNo">051</span><a id="line.51">                EigenDecomposition ed = new EigenDecomposition(MatrixUtils.createRealMatrix(S));</a>
+<span class="sourceLineNo">052</span><a id="line.52">                RealMatrix V = ed.getV();</a>
+<span class="sourceLineNo">053</span><a id="line.53">                RealMatrix D = ed.getD();</a>
+<span class="sourceLineNo">054</span><a id="line.54">                </a>
+<span class="sourceLineNo">055</span><a id="line.55">                for (int i = 0; i &lt; 2; i++) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                        D.setEntry(i, i, Math.sqrt(D.getEntry(i, i)));</a>
+<span class="sourceLineNo">057</span><a id="line.57">                }</a>
+<span class="sourceLineNo">058</span><a id="line.58">                </a>
+<span class="sourceLineNo">059</span><a id="line.59">                RealMatrix A = V.multiply(D).scalarMultiply(2.0 * s / m);</a>
+<span class="sourceLineNo">060</span><a id="line.60">                double detA = Matrix.determinant2x2(A.getData());</a>
+<span class="sourceLineNo">061</span><a id="line.61"></a>
+<span class="sourceLineNo">062</span><a id="line.62">                if (detA &lt; 0) { // reflection</a>
+<span class="sourceLineNo">063</span><a id="line.63">                        RealMatrix reflect = MatrixUtils.createRealMatrix(new double[][] {{1,0},{0,-1}});</a>
+<span class="sourceLineNo">064</span><a id="line.64">                        A = A.multiply(reflect);        // undo reflection!!</a>
+<span class="sourceLineNo">065</span><a id="line.65">                }</a>
+<span class="sourceLineNo">066</span><a id="line.66">                </a>
+<span class="sourceLineNo">067</span><a id="line.67">                ImageProcessor ip2 = sourceIp.duplicate();</a>
+<span class="sourceLineNo">068</span><a id="line.68">                ip2.invert(); // makes the background black, objects white</a>
+<span class="sourceLineNo">069</span><a id="line.69">                </a>
+<span class="sourceLineNo">070</span><a id="line.70">                if (useAntiAliasingFilter) {</a>
+<span class="sourceLineNo">071</span><a id="line.71">                        GeometricEllipse ellipse = props.getEllipse();</a>
+<span class="sourceLineNo">072</span><a id="line.72">                        double dMax = s * ellipse.ra / m;       // scale ratio</a>
+<span class="sourceLineNo">073</span><a id="line.73">                        double sigma = 0;</a>
+<span class="sourceLineNo">074</span><a id="line.74">                        if (dMax &gt; 1.5) {       // down-scaling, sample width increases by factor dScale</a>
+<span class="sourceLineNo">075</span><a id="line.75">                                sigma = (dMax - 1) * 0.5;       // factor 0.5 is ad hoc (full dMax blurs too much)</a>
+<span class="sourceLineNo">076</span><a id="line.76">                        }</a>
+<span class="sourceLineNo">077</span><a id="line.77">                        if (sigma &gt; 0) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">                                GaussianFilter gf = new GaussianFilter(sigma);</a>
+<span class="sourceLineNo">079</span><a id="line.79">                                gf.applyTo(ip2);</a>
+<span class="sourceLineNo">080</span><a id="line.80">                        }</a>
+<span class="sourceLineNo">081</span><a id="line.81">                }</a>
+<span class="sourceLineNo">082</span><a id="line.82">                </a>
+<span class="sourceLineNo">083</span><a id="line.83">                int frameSize = 2 * m + 1;</a>
+<span class="sourceLineNo">084</span><a id="line.84">                ImageProcessor laf = sourceIp.createProcessor(frameSize, frameSize);</a>
+<span class="sourceLineNo">085</span><a id="line.85">                </a>
+<span class="sourceLineNo">086</span><a id="line.86">                AffineMapping2D T1 = new Translation2D(-m, -m);</a>
+<span class="sourceLineNo">087</span><a id="line.87">                AffineMapping2D AA = new AffineMapping2D(A.getData());</a>
+<span class="sourceLineNo">088</span><a id="line.88">                AffineMapping2D T2 = new Translation2D(xc);</a>
+<span class="sourceLineNo">089</span><a id="line.89">                </a>
+<span class="sourceLineNo">090</span><a id="line.90">                AffineMapping2D M = T1.concat(AA).concat(T2);</a>
+<span class="sourceLineNo">091</span><a id="line.91">                ImageMapper mapper = new ImageMapper(M, null, interpolMethod);</a>
+<span class="sourceLineNo">092</span><a id="line.92">                </a>
+<span class="sourceLineNo">093</span><a id="line.93">                mapper.map(ip2, laf);</a>
+<span class="sourceLineNo">094</span><a id="line.94">                </a>
+<span class="sourceLineNo">095</span><a id="line.95">                laf.invert(); // makes background white again           </a>
+<span class="sourceLineNo">096</span><a id="line.96">                return laf;</a>
+<span class="sourceLineNo">097</span><a id="line.97">        }</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">}</a>
 
 
 
