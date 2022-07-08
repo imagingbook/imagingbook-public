@@ -194,8 +194,8 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 		return e[k];
 	}
 	
-    /**
-     * Returns whether the calculated eigen values are complex or real.
+	/**
+     * Returns whether the calculated eigenvalues are complex or real.
      * The method performs a zero check on each element of the
      * {@link #getImagEigenvalues()} array and returns {@code true} if any
      * element is not equal to zero.

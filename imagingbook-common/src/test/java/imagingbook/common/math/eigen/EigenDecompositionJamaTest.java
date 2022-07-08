@@ -15,7 +15,7 @@ import imagingbook.common.math.RandomMatrixGenerator;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
 import imagingbook.testutils.NumericTestUtils;
 
-public class EigenvalueDecompositionTest {
+public class EigenDecompositionJamaTest {
 	
 	// two examples which Apache's implementation does not handle (finds complex eigenvals)
 	
