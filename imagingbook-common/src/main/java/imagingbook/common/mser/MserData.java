@@ -53,7 +53,7 @@ public class MserData {
 	
 	
 	/**
-	 * Return true iff the associated component is a MSER.
+	 * Returns true iff the associated component is a MSER.
 	 * @return true iff a MSER
 	 */
 	public boolean isMser() {
