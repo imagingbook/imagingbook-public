@@ -26,13 +26,13 @@ public interface RealEigenDecomposition {
 	 */
 	public double getRealEigenvalue(int k);
 	
-	/**
-	 * Returns the imaginary part of the k-th eigenvalue
-	 * @return imaginary part of the k-th eigenvalue
-	 */
-	public default double getImagEigenvalue(int k) {
-		throw new UnsupportedOperationException();
-	}
+//	/**
+//	 * Returns the imaginary part of the k-th eigenvalue
+//	 * @return imaginary part of the k-th eigenvalue
+//	 */
+//	public default double getImagEigenvalue(int k) {
+//		throw new UnsupportedOperationException();
+//	}
 	
 	/**
 	 * Returns a vector holding the real parts of the eigenvalues
@@ -40,13 +40,13 @@ public interface RealEigenDecomposition {
 	 */
 	public double[] getRealEigenvalues();
 	
-	/**
-	 * Returns a vector holding the imaginary parts of the eigenvalues
-	 * @return imag(diag(D))
-	 */
-	public default double[] getImagEigenvalues() {
-		throw new UnsupportedOperationException();
-	}
+//	/**
+//	 * Returns a vector holding the imaginary parts of the eigenvalues
+//	 * @return imag(diag(D))
+//	 */
+//	public default double[] getImagEigenvalues() {
+//		throw new UnsupportedOperationException();
+//	}
 	
 	 /**
      * Returns the k-th eigenvector, i.e., the
