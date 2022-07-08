@@ -9,7 +9,6 @@
 package imagingbook.common.geometry.shape;
 
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.List;
