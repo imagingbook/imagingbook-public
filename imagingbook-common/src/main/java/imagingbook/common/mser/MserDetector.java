@@ -37,7 +37,7 @@ import imagingbook.common.util.ParameterBundle;
 public class MserDetector {
 
 	/**
-	 * Parameters for MSER detection.
+	 * Inner class defining parameters for MSER detection.
 	 */
 	public static class Parameters implements ParameterBundle {
 		
@@ -93,7 +93,7 @@ public class MserDetector {
 	}
 
 	/**
-	 * Constructor using specific parameters.
+	 * Constructor using explicit parameters.
 	 * @see MserDetector.Parameters
 	 */
 	public MserDetector(Parameters params) {
@@ -102,6 +102,13 @@ public class MserDetector {
 
 	// -----------------------------------------------------------------------
 
+	/**
+	 * Applies this {@link MserDetector} to the specified gray-scale image
+	 * and returns a list of detected MSER components.
+	 * 
+	 * @param ip a gray-scale image
+	 * @return a list of detected MSER components
+	 */
 	public List<Component<MserData>> applyTo(ByteProcessor ip) {
 		long startTime = System.nanoTime();
 		compTree = ComponentTree.from(ip, params.method);
@@ -290,13 +297,19 @@ public class MserDetector {
 	 * @return the list of collected MSERs
 	 */
 	public Collection<Component<MserData>> getMser() {
-		//return new MserCollector(minSizeAbs, maxSizeAbs, maxVar, minDiv).getMsers(compTree);
 		if (msers == null) {
 			throw new IllegalStateException("no MSERs available yet, call applyTo() first!");
 		}
 		return this.msers;
 	}
 
+	/**
+	 * Returns the tree of detected MSER components.
+	 * An exception is thrown if method {@link #applyTo(ByteProcessor)} 
+	 * was not previously called.
+	 * 
+	 * @return the tree of detected MSER components
+	 */
 	public ComponentTree<MserData> getComponentTree() {
 		if (compTree == null) {
 			throw new IllegalStateException("no component tree yet, call applyTo() first!");
@@ -304,6 +317,13 @@ public class MserDetector {
 		return compTree;
 	}
 
+	/**
+	 * Returns the time required for the
+	 * most recent invocation of {@link #applyTo(ByteProcessor)}) in milliseconds.
+	 * {@code NaN} is returned if method {@link #applyTo(ByteProcessor)} 
+	 * was not previously called.
+	 * @return time required for MSER detection (ms)
+	 */
 	public double getElapsedTime() {
 		return elapsedTimeMs;
 	}
