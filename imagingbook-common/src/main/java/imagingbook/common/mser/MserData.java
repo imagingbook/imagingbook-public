@@ -61,13 +61,19 @@ public class MserData {
 	}
 	
 	/**
-	 * Returns the vector of central moments (mu10, mu01, mu20, mu02, mu11).
+	 * Returns the vector of central moments (mu10, mu01, mu20, mu02, mu11)
+	 * for the pixel coordinates contained in the associated component.
 	 * @return the vector of central moments
 	 */
 	public double[] getCentralMoments() {
 		return this.moments;
 	}
 	
+	/**
+	 * Returns the covariance matrix for the pixel coordinates contained
+	 * in the associated component.
+	 * @return the covariance matrix 
+	 */
 	public double[][] getCovarianceMatrix() {
 		double[] mu = getCentralMoments(); // = (mu10, mu01, mu20, mu02, mu11)
 		final int size = component.getSize();

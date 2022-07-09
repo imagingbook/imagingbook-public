@@ -20,13 +20,25 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Performs MSER detection on gray-level images.
- * TODO: add JavaDoc
+ * <p>
+ * Performs "Maximally Stable Extremal Region" (MSER) detection [1] on gray-scale images.
+ * See Chapter 26 of [2] for a detailed description.
+ * </p>
+ * <p>
+ * [1 J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline
+ * stereo from maximally stable extremal regions. Image and Vision Computing 22(10), 
+ * 761–767 (2004).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  */
 public class MserDetector {
 
+	/**
+	 * Parameters for MSER detection.
+	 */
 	public static class Parameters implements ParameterBundle {
 		
 		@DialogLabel("Component tree method")
@@ -73,10 +85,17 @@ public class MserDetector {
 	
 	// --------------------------------------------------------------------
 	
+	/**
+	 * Constructor using default parameters.
+	 */
 	public MserDetector() {
 		this(new Parameters());
 	}
 
+	/**
+	 * Constructor using specific parameters.
+	 * @see MserDetector.Parameters
+	 */
 	public MserDetector(Parameters params) {
 		this.params = params;
 	}
