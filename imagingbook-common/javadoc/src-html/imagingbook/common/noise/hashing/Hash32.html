@@ -20,13 +20,13 @@
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.common.noise.hashing;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
 <span class="sourceLineNo">012</span><a id="line.12">/**</a>
-<span class="sourceLineNo">013</span><a id="line.13"> * Gradient (Perlin) noise implementation. </a>
+<span class="sourceLineNo">013</span><a id="line.13"> * Hash functions for gradient (Perlin) noise.</a>
 <span class="sourceLineNo">014</span><a id="line.14"> */</a>
 <span class="sourceLineNo">015</span><a id="line.15">public abstract class Hash32 extends HashFun {</a>
 <span class="sourceLineNo">016</span><a id="line.16">        </a>
-<span class="sourceLineNo">017</span><a id="line.17">        static final int maxInt = 0x7fffffff;</a>
+<span class="sourceLineNo">017</span><a id="line.17">        private static final int maxInt = 0x7fffffff;</a>
 <span class="sourceLineNo">018</span><a id="line.18">        </a>
-<span class="sourceLineNo">019</span><a id="line.19">        static final int[] smallPrimes = {      // used for N-dimensional hashing</a>
+<span class="sourceLineNo">019</span><a id="line.19">        private static final int[] smallPrimes = {      // used for N-dimensional hashing</a>
 <span class="sourceLineNo">020</span><a id="line.20">                73, 79, 83, 89, 97, 101, 103, 107, 109, 113,</a>
 <span class="sourceLineNo">021</span><a id="line.21">                127, 131, 137, 139, 149, 151, 157, 163, 167, 173, </a>
 <span class="sourceLineNo">022</span><a id="line.22">            179, 181, 191, 193, 197, 199, 211, 223, 227, 229,</a>
