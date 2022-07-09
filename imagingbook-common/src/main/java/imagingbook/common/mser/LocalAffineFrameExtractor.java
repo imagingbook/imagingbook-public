@@ -24,25 +24,59 @@ import imagingbook.common.mser.components.Component;
 
 
 /**
+ * <p>
  * Provides functionality to extract local affine frames from a given image.
  * Assumes that the specified image has a white background (255) and black (0) objects.
+ * See Section 26.5 of [1] for a detailed description.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @see AffineMapping2D
+ * @see ImageMapper
  */
 public class LocalAffineFrameExtractor {
 	
-	static InterpolationMethod interpolMethod = InterpolationMethod.Bilinear;
+	private static InterpolationMethod interpolMethod = InterpolationMethod.Bilinear;
 	
 	private final ImageProcessor sourceIp;
-	private final int m;		// size of frame to extract (W = H = 2 m + 1)
-	private final double s;		// size ratio between outer and inner ellipse
+	private final int m;					// size of frame to extract (W = H = 2 m + 1)
+	private final double s;					// size ratio between outer and inner ellipse
+	private final boolean useAntiAliasingFilter;	
 	
-	public boolean useAntiAliasingFilter = true;	// public, can be set any time
-	
-	public LocalAffineFrameExtractor(ImageProcessor sourceIp, int m, double s) {
+	/**
+	 * Full constructor.
+	 * @param sourceIp the image to extract frames from
+	 * @param m size of the (square) frames to extract (W = H = 2 m + 1)
+	 * @param s size ratio between outer and inner ellipse
+	 * @param useAntiAliasingFilter turn anti-aliasing filter on or off
+	 */
+	public LocalAffineFrameExtractor(ImageProcessor sourceIp, int m, double s, boolean useAntiAliasingFilter) {
 		this.sourceIp = sourceIp;
 		this.m = m;
 		this.s = s;
+		this.useAntiAliasingFilter = useAntiAliasingFilter;
 	}
 	
+	/**
+	 * Short constructor.
+	 * @param sourceIp the image to extract frames from
+	 * @param m size of the (square) frames to extract (W = H = 2 m + 1)
+	 */
+	public LocalAffineFrameExtractor(ImageProcessor sourceIp, int m) {
+		this(sourceIp, m, 1.5, true);
+	}
+	
+	/**
+	 * Extracts a single local-affine frame for the specified
+	 * MSER component.
+	 * The extracted image has the same type as the original source image
+	 * (passed to the constructor).
+	 * 
+	 * @param mser a MSER component
+	 * @return the local-affine frame (instance of {@link ImageProcessor})
+	 */
 	public ImageProcessor getLocalAffineFrame(Component<MserData> mser) {
 		MserData props = mser.getProperties();
 		double[] xc = props.getCenter().toDoubleArray(); //{mu10, mu01};
