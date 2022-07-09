@@ -13,9 +13,17 @@ import imagingbook.common.noise.hashing.Hash32Shift;
 import imagingbook.common.noise.hashing.HashFun;
 
 /**
- * Gradient (Perlin) noise implementation.
+ * <p>
+ * Gradient (Perlin) noise implementation (see [1] for a detailed description).
  * This is the super-class for all other Perlin noise
  * generators (1D, 2D, N-dimensional).
+ * </p>
+ * <p>
+ * [1] "Synthetic Gradient Noise", supplementary book chapter (8) to W. Burger and M.J. Burge, 
+ * "Principles of Digital Image Processing - Advanced Methods (Vol. 3)", 
+ * Undergraduate Topics in Computer Science, Springer-Verlag, London (2013).
+ * <a href="http://dx.doi.org/10.13140/RG.2.1.3427.7284">http://dx.doi.org/10.13140/RG.2.1.3427.7284</a>
+ * </p>
  */
 
 public abstract class PerlinNoiseGen {

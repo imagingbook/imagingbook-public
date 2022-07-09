@@ -27,7 +27,7 @@ import java.util.Random;
 
 public abstract class HashFun {
 	
-	static final Random rand = new Random();
+	private static final Random rand = new Random();
 	int seed;
 	
 	protected HashFun() {
@@ -46,7 +46,6 @@ public abstract class HashFun {
 		return new Hash32Shift();
 	}
 	
-
 	/**
 	 * Creates a new {@link HashFun} object initialized with seed. 
 	 * Has32Shift is used as the default type.

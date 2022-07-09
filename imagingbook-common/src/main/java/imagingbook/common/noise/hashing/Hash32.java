@@ -10,13 +10,13 @@
 package imagingbook.common.noise.hashing;
 
 /**
- * Gradient (Perlin) noise implementation. 
+ * Hash functions for gradient (Perlin) noise.
  */
 public abstract class Hash32 extends HashFun {
 	
-	static final int maxInt = 0x7fffffff;
+	private static final int maxInt = 0x7fffffff;
 	
-	static final int[] smallPrimes = {	// used for N-dimensional hashing
+	private static final int[] smallPrimes = {	// used for N-dimensional hashing
 		73, 79, 83, 89, 97, 101, 103, 107, 109, 113,
 		127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 
 	    179, 181, 191, 193, 197, 199, 211, 223, 227, 229,

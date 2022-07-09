@@ -95,6 +95,8 @@ public class MserDetector {
 	/**
 	 * Constructor using explicit parameters.
 	 * @see MserDetector.Parameters
+	 * 
+	 * @param params a {@link MserDetector.Parameters} instance
 	 */
 	public MserDetector(Parameters params) {
 		this.params = params;

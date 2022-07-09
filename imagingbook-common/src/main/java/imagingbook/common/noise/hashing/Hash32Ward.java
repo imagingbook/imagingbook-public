@@ -23,6 +23,7 @@ public class Hash32Ward extends Hash32 {
 		super(seed);
 	}
 	
+	@Override
 	int hashInt(int key) {
 		return hashIntWard(key);
 	}
