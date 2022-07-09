@@ -21,21 +21,62 @@ import ij.gui.GenericDialog;
 
 
 /**
- * Interface to be implemented by local 'Parameters' classes.
- * This is part of the 'simple parameter object' scheme,
- * working with public fields.
- * Only non-static, non-final, public fields are accepted as parameters.
+ * Interface to be implemented by local 'Parameters' classes. This is part of
+ * the 'simple parameter object' scheme, working with public fields. Only
+ * non-static, non-final, public fields are accepted as parameters.
  * 
- * Current features:
- * (a) Makes parameter bundles printable by listing all eligible fields.
+ * Current features: (a) Makes parameter bundles printable by listing all
+ * eligible fields.
  * 
- * (b) Parameter bundles can be added/modified as a whole by ImageJ's 
- * {@link GenericDialog}, supported by specific annotations.
- * Use methods {@link #addToDialog(GenericDialog)} and 
+ * (b) Parameter bundles can be added/modified as a whole by ImageJ's
+ * {@link GenericDialog}, supported by specific annotations. Use methods
+ * {@link #addToDialog(GenericDialog)} and
  * {@link #getFromDialog(GenericDialog)}.
  * 
- * See the example in {@code DemoParameters} below.
- * Other functionality may be added in the future.
+ * See the example in {@code DemoParameters} below. Other functionality may be
+ * added in the future.
+ * 
+ * <pre>
+ * // Example parameter bundle:
+ * 
+ * enum MyEnum { A, B, Cee };
+ * 
+ * static class DemoParameters implements ParameterBundle {
+ * 	public static int staticInt = 44; // currently static members are listed too!
+ * 
+ * 	&#64;DialogLabel("Make a decision:")
+ * 	public boolean someBool = true;
+ * 	public int someInt = 39;
+ * 	public float someFloat = 1.99f;
+ * 
+ * 	&#64;DialogLabel("Math.PI")
+ * 	&#64;DialogDigits(10)
+ * 	public double someDouble = Math.PI;
+ * 	public String someString = "SHOW ME";
+ * 
+ * 	&#64;DialogHide
+ * 	public String hiddenString = "HIDE ME";
+ * 	public MyEnum someEnum = MyEnum.B;
+ * }
+ * 
+ * public static void main(String[] args) {
+ * 	ParameterBundle params = new DemoParameters();
+ * 	System.out.println("p1 = \n" + params.printToString());
+ * 
+ * 	GenericDialog gd = new GenericDialog(ParameterBundle.class.getSimpleName());
+ * 	gd.addNumericField("some single int", 123, 0);
+ * 	params.addToDialog(gd);
+ * 
+ * 	gd.showDialog();
+ * 	if (gd.wasCanceled())
+ * 		return;
+ * 
+ * 	int singleInt = (int) gd.getNextNumber();
+ * 	boolean success = params.getFromDialog(gd);
+ * 	System.out.println("success = " + success);
+ * 	System.out.println("p2 = \n" + params.printToString());
+ * }
+ * </pre>
  * 
  * @author WB
  * @version 2022/02/02
