@@ -19,12 +19,23 @@ import imagingbook.common.mser.MserData;
 import imagingbook.common.mser.components.PixelMap.Pixel;
 
 /**
+ * <p>
  * This class is a re-implementation of the "quasi-linear-time" component
- * tree algorithm which is based on efficient, tree-based union finding as described in 
- * L. Vincent and P. Soille, "Watersheds in digital spaces: An efficient 
+ * tree algorithm which is based on efficient, tree-based union finding as described in [1].
+ * See Section 26.2.2 of [2] for a detailed description (Algs. 26.1 - 26.2).
+ * This algorithm is also used in the original MSER paper by Matas et al. [3].
+ * </p>
+ * <p>
+ * [1] L. Vincent and P. Soille, "Watersheds in digital spaces: An efficient 
  * algorithm based on immersion simulations", IEEE Transactions on 
  * Pattern Analysis and Machine Intelligence 13(6), 583–598 (1991).
- * This algorithm is used in the original MSER paper by Matas et al. (2004).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * <br>
+ * [3] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline
+ * stereo from maximally stable extremal regions. Image and Vision Computing 22(10), 
+ * 761–767 (2004).
+ * </p>
  * 
  * @author WB
  *
@@ -236,11 +247,11 @@ public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 		 * @return the new component
 		 */
 		public Component<T> makeComponent(Pixel p) {
-			int idx = width * p.y + p.x;
+			int idx = width * p.y + p.x;	// unique component index
 			if (compArr[idx] != null) {
 				throw new RuntimeException("component already exists for point " + ((PntInt)p).toString());
 			}
-			Component<T> c = new Component<>(p.val, idx);	// new Component<>(p.val);
+			Component<T> c = new Component<>(p.val, idx);
 			c.addPoint(p);
 			compArr[idx] = c;
 			return c;

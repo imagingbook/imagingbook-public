@@ -19,10 +19,17 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
 import imagingbook.common.util.bits.BitMap;
 
 /**
- * This class implements the "linear-time" component tree algorithm 
- * described in D. Nister and H. Stewenius,
- * "Linear Time Maximally Stable Extremal Regions", Computer Vision - ECCV 2008 
- * pp. 183-196, Springer Berlin/Heidelberg (2008).
+ * <p>
+ * This class implements the "linear-time" ("local flooding")
+ * component tree algorithm described in [1].
+ * See Section 26.2.3 of [2] for a detailed description (Algs. 26.3 - 26.4).
+ * </p>
+ * <p>
+ * [1] D. Nister and H. Stewenius, "Linear Time Maximally Stable Extremal Regions", 
+ * Computer Vision - ECCV 2008. pp. 183-196, Springer Berlin/Heidelberg (2008).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  *
@@ -43,11 +50,6 @@ public class ComponentTreeLinearTime<T> extends ComponentTree<T> {
 		components = new ArrayList<Component<T>>();
 		root = buildTree(P);
 	}
-	
-//	public ComponentTreeLinearTime(ByteProcessor I) {
-//		components = new ArrayList<Component<T>>();
-//		root = buildTree(I);
-//	}
 	
 	// -----------------------------------------------------------------------------------
 	
@@ -70,29 +72,26 @@ public class ComponentTreeLinearTime<T> extends ComponentTree<T> {
 	 * The last item in {@link #components} is the root component.
 	 * @param P the input image
 	 */
-	private Component<T> buildTree(PixelMap P) {
-		Component.NEXT_ID = 0;		// reset component IDs (for debugging only)
-		//List<Component<T>> components = new ArrayList<Component<T>>();
-		
+	private Component<T> buildTree(PixelMap P) {		
 		final BitMap V = new BitMap(P.width, P.height);		// "visited", all set to false by default
 		final PriorityQueue<Pixel> B = new PriorityQueue<>();	// heap of boundary points that is sorted by 'val'
 		final Deque<Component<T>> C = new LinkedList<>();		// stack of region components
 		
 		Pixel p = P.getPixel(0, 0); 				// start point (seed), could be any pixel
-		V.set(p); //p.setVisited();								// p is the current point, mark as accessible
-		C.push(new Component<>(p.val)); 			// push an empty component onto stack				
+		V.set(p); //p.setVisited();					// p is the current point, mark as accessible
+		C.push(makeComponent(p.val));				// push an empty component onto stack
 		
 		while (p != null) {							// repeat until all pixels are done
 			Pixel n = p.getNextNeighbor();			// get the next neighbor of p (pixels keep track of visited neighbors)
 			while (n != null) {
-				if (!V.get(n)) {	// (!n.isVisited())
-					V.set(n); //n.setVisited();
+				if (!V.get(n)) {					// (!n.isVisited())
+					V.set(n); 						//n.setVisited();
 					if (n.val >= p.val) {		
 						B.add(n);					// add neighbor to the boundary heap
 					}
 					else {
 						B.add(p);							// move current pixel back to boundary heap 
-						C.push(new Component<>(n.val));		// create an empty component for the neighbor pixel
+						C.push(makeComponent(n.val));	// create an empty component for the neighbor pixel
 						p = n;								// make neighbor the current pixel
 					}
 				}
@@ -135,7 +134,7 @@ public class ComponentTreeLinearTime<T> extends ComponentTree<T> {
 
 			if (v < Integer.MAX_VALUE) {
 				Component<T> c2 = (C.isEmpty() || v < C.peek().getLevel()) ?
-						new Component<>(v) : 	// c2 = artificial component with level v
+						makeComponent(v) :		// c2 = artificial component with level v
 						C.pop();				// c2 = next component on the stack 
 				
 				// merge c1 into c2 (c2 becomes parent of c1)
@@ -145,6 +144,13 @@ public class ComponentTreeLinearTime<T> extends ComponentTree<T> {
 				C.push(c2);	// insert c2 into the stack C (again)
 			}
 		}
+	}
+	
+	
+	private int nextComponentIndex = 0;
+	
+	private Component<T> makeComponent(int level) {
+		return new Component<>(level, nextComponentIndex++);
 	}
 
 }

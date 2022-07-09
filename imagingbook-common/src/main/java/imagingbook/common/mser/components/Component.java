@@ -28,18 +28,16 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
  *
  * @param <T> the type of properties that can be attached to instances of this class
  */
-public class Component<T> { // implements Comparable<Component<?>>
-	
-	static int NEXT_ID = 0;	// IDs are only used for debugging
+public class Component<T> {
 	
 	/** The ID number of this component (only used for debugging). */
-	public final int ID;	// unique component ID, for debugging only	
+	public final int ID;
 	
 	// ------------------------------------------------------------
 	
-	private final int level;			// intensity level associated with this region
-	private final List<Pixel> points;	// local points in this component (does not include points in child components)	
-	private int size;					// the total size of this component (number of points, includes children) 
+	private final int level;				// intensity level associated with this region
+	private final List<Pixel> points;		// local points in this component (does not include points in child components)	
+	private int size;						// the total size of this component (number of points, includes children) 
 	
 	private Component<T> parent;			// reference to the parent component (null if this is the root)
 	private Component<T> shortcut;			// reference to a component in the same tree but closer to the root
@@ -51,20 +49,11 @@ public class Component<T> { // implements Comparable<Component<?>>
 	// ------------------------------------------------------------
 	
 	/**
-	 * Constructor. 
-	 * Assigns a unique component id.
-	 * @param level the maximum pixel value in this component
-	 */
-	public Component(int level) {
-		this(level, NEXT_ID++);
-	}
-	
-	/**
 	 * Constructor.
 	 * @param level the maximum pixel value in this component
 	 * @param id a unique component id (assigned by the factory)
 	 */
-	Component(int level, int id) {
+	protected Component(int level, int id) {
 		this.ID = id;
 		this.level = level;
 		this.points = new LinkedList<>();
