@@ -21,18 +21,25 @@ import imagingbook.common.geometry.line.AlgebraicLine;
  * @author WB
  * 
  * @see AlgebraicLine
- * @see GenericRansacDetector
+ * @see RansacCurveDetector
  *
  */
-public class RansacDetectorLine extends GenericRansacDetector<AlgebraicLine>{
+public class RansacDetectorLine extends RansacCurveDetector<AlgebraicLine>{
 	
 	private final Parameters params;
 	
-	public static class Parameters extends RansacParameters {
+	/**
+	 * Nested class extending {@link RansacCurveDetector.RansacParameters} 
+	 * to specify additional RANSAC parameters.
+	 */
+	public static class Parameters extends RansacCurveDetector.RansacParameters {
+		
 		@DialogLabel("Min. distance between sample points")
 		public int minPairDistance;
 		
-		// default parameters can be set here
+		/**
+		 * Constructor used to define default parameter values.
+		 */
 		public Parameters() {
 			this.maxIterations = 1000;
 			this.distanceThreshold = 2.0;
@@ -43,11 +50,18 @@ public class RansacDetectorLine extends GenericRansacDetector<AlgebraicLine>{
 	
 	// constructors ------------------------------------
 	
+	/**
+	 * Constructor using specific parameters.
+	 * @param params RANSAC parameters
+	 */
 	public RansacDetectorLine(Parameters params) {
 		super(2, params);
 		this.params = params;
 	}
 	
+	/**
+	 * Constructor using default parameters.
+	 */
 	public RansacDetectorLine() {
 		this(new Parameters());
 	}

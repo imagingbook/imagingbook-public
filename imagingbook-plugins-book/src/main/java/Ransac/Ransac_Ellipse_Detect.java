@@ -27,7 +27,7 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.ransac.RansacDetectorCircle;
 import imagingbook.common.ransac.RansacDetectorEllipse;
-import imagingbook.common.ransac.RansacResult;
+import imagingbook.common.ransac.RansacCurveResult;
 
 /**
  * RANSAC ellipse detection implemented with imagingbook library class
@@ -63,7 +63,7 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 		}
 	
 		Pnt2d[] points = IjUtils.collectNonzeroPoints(ip);
-		List<RansacResult<GeometricEllipse>> ellipses = new ArrayList<>();
+		List<RansacCurveResult<GeometricEllipse>> ellipses = new ArrayList<>();
 
 		// ---------------------------------------------------------------------
 		RansacDetectorEllipse detector = new RansacDetectorEllipse(params);
@@ -76,7 +76,7 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 		List<ImagePlus> resultImages = new ArrayList<>();
 		int cnt = 0;
 
-		RansacResult<GeometricEllipse> sol = detector.findNext(points);
+		RansacCurveResult<GeometricEllipse> sol = detector.findNext(points);
 		while (sol != null && cnt < MaxEllipseCount) {
 			ellipses.add(sol);
 			cnt = cnt + 1;

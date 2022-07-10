@@ -25,7 +25,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.ransac.RansacDetectorLine;
-import imagingbook.common.ransac.RansacResult;
+import imagingbook.common.ransac.RansacCurveResult;
 
 /**
  * RANSAC line detection using imagingbook library class {@link RansacDetectorLine}.
@@ -62,7 +62,7 @@ public class Ransac_Line_Detect implements PlugInFilter, Settings {
 		}
 		
 		Pnt2d[] points = IjUtils.collectNonzeroPoints(ip);
-		List<RansacResult<AlgebraicLine>> lines = new ArrayList<>();
+		List<RansacCurveResult<AlgebraicLine>> lines = new ArrayList<>();
 
 		// ---------------------------------------------------------------
 		RansacDetectorLine detector = new RansacDetectorLine();
@@ -75,7 +75,7 @@ public class Ransac_Line_Detect implements PlugInFilter, Settings {
 		List<ImagePlus> resultImages = new ArrayList<>();
 		int cnt = 0;
 		
-		RansacResult<AlgebraicLine> sol = detector.findNext(points);
+		RansacCurveResult<AlgebraicLine> sol = detector.findNext(points);
 		while (sol != null && cnt < MaxLineCount) {
 			lines.add(sol);
 			cnt = cnt + 1;

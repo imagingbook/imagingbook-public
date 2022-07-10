@@ -21,12 +21,19 @@ import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbo
  * @author WB
  * 
  * @see GeometricEllipse
- * @see GenericRansacDetector
+ * @see RansacCurveDetector
  */
-public class RansacDetectorEllipse extends GenericRansacDetector<GeometricEllipse>{
+public class RansacDetectorEllipse extends RansacCurveDetector<GeometricEllipse> {
 	
-	// default parameters can be set here
-	public static class Parameters extends RansacParameters {
+	/**
+	 * Nested class extending {@link RansacCurveDetector.RansacParameters} 
+	 * to specify additional RANSAC parameters.
+	 */
+	public static class Parameters extends RansacCurveDetector.RansacParameters {
+		
+		/**
+		 * Constructor used to define default parameter values.
+		 */
 		public Parameters() {
 			this.maxIterations = 1000;
 			this.distanceThreshold = 2.0;
@@ -36,10 +43,17 @@ public class RansacDetectorEllipse extends GenericRansacDetector<GeometricEllips
 	
 	// constructors ------------------------------------
 	
+	/**
+	 * Constructor using specific parameters.
+	 * @param params RANSAC parameters
+	 */
 	public RansacDetectorEllipse(Parameters params) {
 		super(5, params);
 	}
 	
+	/**
+	 * Constructor using default parameters.
+	 */
 	public RansacDetectorEllipse() {
 		this(new Parameters());
 	}

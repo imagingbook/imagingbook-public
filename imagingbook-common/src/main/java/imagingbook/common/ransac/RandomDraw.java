@@ -24,7 +24,7 @@ import java.util.Random;
  */
 public class RandomDraw<T> {
 	
-	private static final int MaxTries = 1000;	// worst case number of tries before exception is thrown
+	private static final int MaxTries = 1000;	// maximum number of tries before exception is thrown
 	private final Random rand;
 	
 	// -------------------------------------------------------------
@@ -39,12 +39,12 @@ public class RandomDraw<T> {
 	
 	// -------------------------------------------------------------
 	
-	// version using a HashSet (slower)
+	// alternative version using a HashSet (slower)
 //	public T[] drawFrom(T[] items, int k) {
 //		if (k < 1) throw new IllegalArgumentException("k must be greater or equal 1");
-//		 HashSet<T> hs = new HashSet<>(k);
+//		HashSet<T> hs = new HashSet<>(k);
 //		int i = 0;
-//		while (i < k) {	// TODO: avoid infinite loop!
+//		while (i < k) {
 //			int j = rand.nextInt(items.length);	// next random index
 //			T item = items[j];
 //			if (item != null && hs.add(item)) {
@@ -54,7 +54,22 @@ public class RandomDraw<T> {
 //		return hs.toArray(Arrays.copyOf(items, k));
 //	}
 	
-	
+	/**
+	 * Randomly draws a set of k unique, non-null elements from the specified
+	 * array of items, ignoring possible null elements.
+	 * An exception is thrown if the maximum number of tries is exceeded.
+	 * The returned array contains no null elements and no duplicates.
+	 * Example:
+	 * <pre>
+	 * Integer[] numbers = {null, 1, 2, null, 3, 4, 5, 6, 7, null, null, null, 8, 9, 10 , null};
+	 * RandomDraw<Integer> rd = new RandomDraw<>();
+	 * Integer[] draw = rd.drawFrom(numbers, 2);
+	 * </pre>
+	 * 
+	 * @param items an array of elements of type T, null elements being allowed
+	 * @param k the number of items to draw
+	 * @return an array of k randomly drawn (non-null) items
+	 */
 	public T[] drawFrom(T[] items, int k) {
 		if (k < 1) throw new IllegalArgumentException("k must be greater or equal 1");
 		int[] idx = drawRandomIndexes(items, k);
@@ -111,35 +126,5 @@ public class RandomDraw<T> {
 		}
 		return false;
 	}
-	
-	
-	// --------------------------------------------------------------------
-	
-	public static void main(String[] args) {
-		Integer[] numbers = { null, 1, 2, null, 3, 4, 5, 6, 7, null, null, null, 8, 9, 10 , null};
-//		Integer[] numbers = { 1,2,3,4,5,6,7,8};
-		int N = 1000000;
-		RandomDraw<Integer> rd = new RandomDraw<>();
-		
-//		Object[] x = rd.drawFrom(numbers);
-//		System.out.println("x = " + x.getClass());
-//		for(Object o : x) {
-//			System.out.println(o.getClass());
-//		}
-		
-		for (int i = 0; i < N; i++) {
-			Integer[] draw = rd.drawFrom(numbers, 2);
-//			System.out.println(Arrays.toString(draw));
-			if (hasDuplicates(draw)) {
-				throw new RuntimeException("duplicates found in " + Arrays.toString(draw));
-			}
-		}
-		System.out.println("done " + N);
-	}
-	
-//	public static void main(String[] args) {
-//		Integer[] numbers = { 1, 2, 2};
-//		System.out.println("hasDuplicates " + RandomDraw.hasDuplicates2(numbers));
-//	}
 	
 }

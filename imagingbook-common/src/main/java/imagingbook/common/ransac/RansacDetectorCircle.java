@@ -20,12 +20,19 @@ import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitHyperSimple
  * @author WB
  * 
  * @see GeometricCircle
- * @see GenericRansacDetector
+ * @see RansacCurveDetector
  */
-public class RansacDetectorCircle extends GenericRansacDetector<GeometricCircle>{
+public class RansacDetectorCircle extends RansacCurveDetector<GeometricCircle>{
 	
-	// default parameters can be set here
-	public static class Parameters extends RansacParameters {
+	/**
+	 * Nested class extending {@link RansacCurveDetector.RansacParameters} 
+	 * to specify additional RANSAC parameters.
+	 */
+	public static class Parameters extends RansacCurveDetector.RansacParameters {
+		
+		/**
+		 * Constructor used to define default parameter values.
+		 */
 		public Parameters() {
 			this.maxIterations = 1000;
 			this.distanceThreshold = 2.0;
@@ -35,10 +42,17 @@ public class RansacDetectorCircle extends GenericRansacDetector<GeometricCircle>
 	
 	// constructors ------------------------------------
 
+	/**
+	 * Constructor using specific parameters.
+	 * @param params RANSAC parameters
+	 */
 	public RansacDetectorCircle(Parameters params) {
 		super(3, params);
 	}
 	
+	/**
+	 * Constructor using default parameters.
+	 */
 	public RansacDetectorCircle() {
 		this(new Parameters());
 	}
