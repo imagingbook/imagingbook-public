@@ -17,7 +17,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Generic RANSAC curve detector. This abstract class defines the core RANSAC
+ * Generic RANSAC detector for 2D curves. This abstract class defines the core RANSAC
  * functionality used by all derived (concrete) classes.
  * 
  * @author WB
@@ -25,6 +25,7 @@ import imagingbook.common.util.ParameterBundle;
  * @see RansacDetectorLine
  * @see RansacDetectorCircle
  * @see RansacDetectorEllipse
+ * @see Curve2d
  *
  * @param <T> primitive type
  */
@@ -32,18 +33,20 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	
 	/**
 	 * Parameters used by all RANSAC types.
-	 * @author WB
-	 *
 	 */
 	public static class RansacParameters implements ParameterBundle {
-		@DialogLabel("Max. iterations")
+			
+		/** The maximum number of iterations (random draws) to use.*/
+		@DialogLabel("Max. iterations") 
 		public int maxIterations = 1000;
 		
-		@DialogLabel("Distance threshold")
-		public double distanceThreshold = 2.0;
+		/** The maximum distance of any point from the curve to be considered an "inlier".*/
+		@DialogLabel("Max. inlier distance") 
+		public double maxInlierDistance = 2.0;
 		
-		@DialogLabel("Min. support count")
-		public int minSupportCount = 100;
+		/** The minimum number of inliers required for successful detection.*/
+		@DialogLabel("Min. inlier count") 
+		public int minInlierCount = 100;
 	}
 	
 	// -----------------------------------------------------------
@@ -79,7 +82,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 		for (Pnt2d p : points) {
 			if (p != null) {
 				double d = curve.getDistance(p);
-				if (d < params.distanceThreshold) {
+				if (d < params.maxInlierDistance) {
 					count++;
 				}
 			}
@@ -93,7 +96,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 			Pnt2d p = points[i];
 			if (p != null) {
 				double d = curve.getDistance(p);
-				if (d < params.distanceThreshold) {
+				if (d < params.maxInlierDistance) {
 					pList.add(p);
 					if (removeInliers) {
 						points[i] = null;
@@ -138,7 +141,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 				continue;
 			}
 			double score = countInliers(primitive, points);
-			if (score >= params.minSupportCount && score > scoreInit) {
+			if (score >= params.minInlierCount && score > scoreInit) {
 				scoreInit = score;
 				drawInit = draw;
 				primitiveInit = primitive;

@@ -34,6 +34,7 @@ public class RansacDetectorLine extends RansacCurveDetector<AlgebraicLine>{
 	 */
 	public static class Parameters extends RansacCurveDetector.RansacParameters {
 		
+		/** The minimum distance between two random sample points. */
 		@DialogLabel("Min. distance between sample points")
 		public int minPairDistance;
 		
@@ -42,8 +43,8 @@ public class RansacDetectorLine extends RansacCurveDetector<AlgebraicLine>{
 		 */
 		public Parameters() {
 			this.maxIterations = 1000;
-			this.distanceThreshold = 2.0;
-			this.minSupportCount = 100;
+			this.maxInlierDistance = 2.0;
+			this.minInlierCount = 100;
 			this.minPairDistance = 25;
 		}	
 	}

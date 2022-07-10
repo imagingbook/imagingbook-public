@@ -35,8 +35,8 @@ public class RansacDetectorCircle extends RansacCurveDetector<GeometricCircle>{
 		 */
 		public Parameters() {
 			this.maxIterations = 1000;
-			this.distanceThreshold = 2.0;
-			this.minSupportCount = 70;
+			this.maxInlierDistance = 2.0;
+			this.minInlierCount = 70;
 		}
 	}
 	

@@ -139,7 +139,7 @@ public class Ransac_Line_Detect implements PlugInFilter, Settings {
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		params.addToDialog(gd);
-		gd.addNumericField("Max. number of circles", MaxLineCount);
+		gd.addNumericField("Max. number of lines", MaxLineCount);
 		gd.addNumericField("Random seed", RandomSeed);
 		
 		gd.addStringField("Output title", title, 16);

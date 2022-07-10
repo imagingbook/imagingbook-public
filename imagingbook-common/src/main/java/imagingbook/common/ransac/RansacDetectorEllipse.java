@@ -36,8 +36,8 @@ public class RansacDetectorEllipse extends RansacCurveDetector<GeometricEllipse>
 		 */
 		public Parameters() {
 			this.maxIterations = 1000;
-			this.distanceThreshold = 2.0;
-			this.minSupportCount = 100;
+			this.maxInlierDistance = 2.0;
+			this.minInlierCount = 100;
 		}
 	}
 	

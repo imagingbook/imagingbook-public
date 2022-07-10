@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.ransac;
 
-import static imagingbook.common.ransac.RandomDraw.hasDuplicates;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -18,6 +18,26 @@ import java.util.Random;
 import org.junit.Test;
 
 public class RandomDrawTest {
+	
+	/**
+	 * Checks for duplicate ("==") elements in the result (simple, for testing only).
+	 * @param <Q> the generic element type
+	 * @param items array of objects
+	 * @return true if any object is null or contained more than once
+	 */
+	private static <Q> boolean hasDuplicates(Q[] items) {
+		for (int i = 0; i < items.length; i++) {
+			Q x = items[i];
+			if (x == null)
+				return true;
+			for (int j = 0; j < i; j++) {
+				if (x == items[j]) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	@Test
 	public void test1() {
@@ -46,7 +66,7 @@ public class RandomDrawTest {
 		for (int i = 0; i < N; i++) {
 			String[] draw = rd.drawFrom(numbers, K);
 			assertEquals(K, draw.length);
-			assertFalse("duplicates found in " + Arrays.toString(draw), RandomDraw.hasDuplicates(draw));
+			assertFalse("duplicates found in " + Arrays.toString(draw), hasDuplicates(draw));
 		}
 	}
 	
@@ -62,7 +82,7 @@ public class RandomDrawTest {
 		for (int i = 0; i < N; i++) {
 			String[] draw = rd.drawFrom(numbers, K);
 			assertEquals(K, draw.length);
-			assertFalse("duplicates found in " + Arrays.toString(draw), RandomDraw.hasDuplicates(draw));
+			assertFalse("duplicates found in " + Arrays.toString(draw), hasDuplicates(draw));
 		}
 	}
 

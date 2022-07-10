@@ -24,17 +24,40 @@ import java.util.Random;
  */
 public class RandomDraw<T> {
 	
-	private static final int MaxTries = 1000;	// maximum number of tries before exception is thrown
+	/**
+	 * Default maximum number of tries before exception is thrown.
+	 */
+	public static final int DefaultMaxTries = 1000;
+	
+	private int maxTries = DefaultMaxTries;
 	private final Random rand;
 	
 	// -------------------------------------------------------------
 	
+	/**
+	 * Constructor accepting an existing random generator.
+	 * This may be useful to achieve predictable (repetitive) random behavior.
+	 * 
+	 * @param rand a random generator of type {@link Random}
+	 */
 	public RandomDraw(Random rand) {
 		this.rand = (rand == null) ? new Random() : rand;
 	}
 	
+	/**
+	 * Constructor creating its own random generator.
+	 */
 	public RandomDraw() {
 		this(new Random());
+	}
+	
+	/**
+	 * Set the maximum number of tries.
+	 * @param maxTries new maximum number of tries
+	 * @see DefaultMaxTries
+	 */
+	public void setMaxTries(int maxTries) {
+		this.maxTries = maxTries;
 	}
 	
 	// -------------------------------------------------------------
@@ -55,19 +78,19 @@ public class RandomDraw<T> {
 //	}
 	
 	/**
-	 * Randomly draws a set of k unique, non-null elements from the specified
-	 * array of items, ignoring possible null elements.
-	 * An exception is thrown if the maximum number of tries is exceeded.
+	 * Randomly draws a set of k unique, non-null elements from the specified array
+	 * of items, ignoring possible null elements. An exception is thrown if the
+	 * maximum number of tries is exceeded (see {@link #DefaultMaxTries}). 
 	 * The returned array contains no null elements and no duplicates.
 	 * Example:
 	 * <pre>
-	 * Integer[] numbers = {null, 1, 2, null, 3, 4, 5, 6, 7, null, null, null, 8, 9, 10 , null};
-	 * RandomDraw<Integer> rd = new RandomDraw<>();
+	 * Integer[] numbers = { null, 1, 2, null, 3, 4, 5, 6, 7, null, null, null, 8, 9, 10, null };
+	 * RandomDraw&lt;Integer&gt; rd = new RandomDraw&lt;&gt;();
 	 * Integer[] draw = rd.drawFrom(numbers, 2);
 	 * </pre>
 	 * 
 	 * @param items an array of elements of type T, null elements being allowed
-	 * @param k the number of items to draw
+	 * @param k     the number of items to draw
 	 * @return an array of k randomly drawn (non-null) items
 	 */
 	public T[] drawFrom(T[] items, int k) {
@@ -88,7 +111,7 @@ public class RandomDraw<T> {
 			int i = rand.nextInt(items.length);
 			while (items[i] == null || wasPickedBefore(indexes, d, i)) {
 				i = rand.nextInt(items.length);
-				if (j++ > MaxTries) {
+				if (j++ > maxTries) {
 					throw new RuntimeException("max. tries exceeded: " + j);
 				}
 			}
@@ -104,26 +127,6 @@ public class RandomDraw<T> {
 				return true;
 			}
 		}	
-		return false;
-	}
-	
-	/**
-	 * Checks for duplicate ("==") elements in the result (simple, for testing only).
-	 * @param <Q> the generic element type
-	 * @param items array of objects
-	 * @return true if any object is null or contained more than once
-	 */
-	protected static <Q> boolean hasDuplicates(Q[] items) {
-		for (int i = 0; i < items.length; i++) {
-			Q x = items[i];
-			if (x == null)
-				return true;
-			for (int j = 0; j < i; j++) {
-				if (x == items[j]) {
-					return true;
-				}
-			}
-		}
 		return false;
 	}
 	
