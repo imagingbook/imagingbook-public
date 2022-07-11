@@ -42,7 +42,7 @@
 <span class="sourceLineNo">032</span><a id="line.32">import imagingbook.common.mser.MserDetector.Parameters;</a>
 <span class="sourceLineNo">033</span><a id="line.33">import imagingbook.common.mser.components.Component;</a>
 <span class="sourceLineNo">034</span><a id="line.34">import imagingbook.common.mser.components.PixelMap.Pixel;</a>
-<span class="sourceLineNo">035</span><a id="line.35">import imagingbook.common.mser.visualize.Colors;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import imagingbook.common.mser.visualize.MserColors;</a>
 <span class="sourceLineNo">036</span><a id="line.36"></a>
 <span class="sourceLineNo">037</span><a id="line.37">/**</a>
 <span class="sourceLineNo">038</span><a id="line.38"> * Runs MSER detection on the current image and produces a color image</a>
@@ -69,8 +69,8 @@
 <span class="sourceLineNo">059</span><a id="line.59">        private static boolean WhiteToBlack = false;    // detect on inverted image</a>
 <span class="sourceLineNo">060</span><a id="line.60">        </a>
 <span class="sourceLineNo">061</span><a id="line.61">        private static boolean UseTwoColorsOnly = false;        // detect on inverted image</a>
-<span class="sourceLineNo">062</span><a id="line.62">        private Color BlackToWhiteColor = Colors.Yellow; //.Orange;</a>
-<span class="sourceLineNo">063</span><a id="line.63">        private Color WhiteToBlackColor = Colors.Cyan;</a>
+<span class="sourceLineNo">062</span><a id="line.62">        private Color BlackToWhiteColor = MserColors.Yellow; //.Orange;</a>
+<span class="sourceLineNo">063</span><a id="line.63">        private Color WhiteToBlackColor = MserColors.Cyan;</a>
 <span class="sourceLineNo">064</span><a id="line.64">        </a>
 <span class="sourceLineNo">065</span><a id="line.65">        private static int MinDisplayWidth = 300;</a>
 <span class="sourceLineNo">066</span><a id="line.66">        </a>
@@ -119,7 +119,7 @@
 <span class="sourceLineNo">109</span><a id="line.109">                if (WhiteToBlack)  title = title + "W";</a>
 <span class="sourceLineNo">110</span><a id="line.110">                if (UseTwoColorsOnly) title = title + "-2c";</a>
 <span class="sourceLineNo">111</span><a id="line.111">                </a>
-<span class="sourceLineNo">112</span><a id="line.112">                Color[] palette = Colors.LevelColors;</a>
+<span class="sourceLineNo">112</span><a id="line.112">                Color[] palette = MserColors.LevelColors;</a>
 <span class="sourceLineNo">113</span><a id="line.113">                </a>
 <span class="sourceLineNo">114</span><a id="line.114">                labelFont = new Font(Font.SANS_SERIF, Font.PLAIN, labelFontSize);</a>
 <span class="sourceLineNo">115</span><a id="line.115">                </a>

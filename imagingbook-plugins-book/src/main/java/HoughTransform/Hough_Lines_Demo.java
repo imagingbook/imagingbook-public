@@ -14,8 +14,8 @@ import ij.ImagePlus;
 import ij.plugin.PlugIn;
 
 /**
- * RANSAC line detection demo. Opens a local sample image and then runs
- * plugin {@link Ransac_Line_Detect}.
+ * Hough line detection demo. Opens a local sample image and then runs
+ * plugin {@link Hough_Lines_Detect}.
  * 
  * @author WB
  *

@@ -53,7 +53,7 @@
 <span class="sourceLineNo">043</span><a id="line.43">        public void run(ImageProcessor ip) {</a>
 <span class="sourceLineNo">044</span><a id="line.44">                </a>
 <span class="sourceLineNo">045</span><a id="line.45">                Parameters params = new Parameters();</a>
-<span class="sourceLineNo">046</span><a id="line.46">                if (!setParameters(params)) return;</a>
+<span class="sourceLineNo">046</span><a id="line.46">                if (!runDialog(params)) return;</a>
 <span class="sourceLineNo">047</span><a id="line.47">                </a>
 <span class="sourceLineNo">048</span><a id="line.48">                CannyEdgeDetector detector = new CannyEdgeDetector(ip, params);</a>
 <span class="sourceLineNo">049</span><a id="line.49">                </a>
@@ -83,8 +83,8 @@
 <span class="sourceLineNo">073</span><a id="line.73">                }</a>
 <span class="sourceLineNo">074</span><a id="line.74">        }</a>
 <span class="sourceLineNo">075</span><a id="line.75"></a>
-<span class="sourceLineNo">076</span><a id="line.76">        boolean setParameters(Parameters params) {</a>
-<span class="sourceLineNo">077</span><a id="line.77">                GenericDialog gd = new GenericDialog("Canny Detector");</a>
+<span class="sourceLineNo">076</span><a id="line.76">        private boolean runDialog(Parameters params) {</a>
+<span class="sourceLineNo">077</span><a id="line.77">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</a>
 <span class="sourceLineNo">078</span><a id="line.78">                // Canny parameters:</a>
 <span class="sourceLineNo">079</span><a id="line.79">                params.addToDialog(gd);</a>
 <span class="sourceLineNo">080</span><a id="line.80">                // plugin parameters:</a>

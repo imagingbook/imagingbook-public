@@ -20,93 +20,79 @@
 <span class="sourceLineNo">010</span><a id="line.10">package BinaryRegions;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
 <span class="sourceLineNo">012</span><a id="line.12">import java.awt.Color;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import java.awt.geom.Line2D;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import java.util.List;</a>
-<span class="sourceLineNo">015</span><a id="line.15"></a>
-<span class="sourceLineNo">016</span><a id="line.16">import ij.IJ;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import ij.ImagePlus;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.util.List;</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">import ij.IJ;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import ij.ImagePlus;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import ij.gui.Overlay;</a>
 <span class="sourceLineNo">018</span><a id="line.18">import ij.plugin.filter.PlugInFilter;</a>
 <span class="sourceLineNo">019</span><a id="line.19">import ij.process.ByteProcessor;</a>
-<span class="sourceLineNo">020</span><a id="line.20">import ij.process.ColorProcessor;</a>
-<span class="sourceLineNo">021</span><a id="line.21">import ij.process.ImageProcessor;</a>
-<span class="sourceLineNo">022</span><a id="line.22">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.geometry.basic.Pnt2d.PntDouble;</a>
-<span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.geometry.hulls.ConvexHull;</a>
-<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.ij.IjUtils;</a>
-<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.regions.BinaryRegion;</a>
-<span class="sourceLineNo">027</span><a id="line.27">import imagingbook.common.regions.segment.RegionContourSegmentation;</a>
-<span class="sourceLineNo">028</span><a id="line.28"></a>
-<span class="sourceLineNo">029</span><a id="line.29">/**</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * This plugin demonstrates the use of the {@link ConvexHull} class.</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * It performs region segmentation, calculates the convex hull</a>
-<span class="sourceLineNo">032</span><a id="line.32"> * for each region found and then draws the result into a new color</a>
-<span class="sourceLineNo">033</span><a id="line.33"> * image.</a>
-<span class="sourceLineNo">034</span><a id="line.34"> * Requires a binary (segmented) image.</a>
+<span class="sourceLineNo">020</span><a id="line.20">import ij.process.ImageProcessor;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import imagingbook.common.geometry.hulls.ConvexHull;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import imagingbook.common.ij.IjUtils;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.ij.overlay.ColoredStroke;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.regions.BinaryRegion;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.regions.segment.RegionContourSegmentation;</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">/**</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * This ImageJ plugin demonstrates the use of the {@link ConvexHull} class.</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * It performs region segmentation, calculates the convex hull</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * for each region found and then draws the result into a new color</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * image.</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * Requires a binary image.</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * </a>
 <span class="sourceLineNo">035</span><a id="line.35"> * </a>
-<span class="sourceLineNo">036</span><a id="line.36"> * TODO: convert to overlay display</a>
-<span class="sourceLineNo">037</span><a id="line.37"> * </a>
-<span class="sourceLineNo">038</span><a id="line.38"> * @author W. Burger</a>
-<span class="sourceLineNo">039</span><a id="line.39"> * @version 2020/12/17</a>
-<span class="sourceLineNo">040</span><a id="line.40"> * </a>
-<span class="sourceLineNo">041</span><a id="line.41"> */</a>
-<span class="sourceLineNo">042</span><a id="line.42">public class Convex_Hull_Demo implements PlugInFilter {</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * @author W. Burger</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * @version 2022/06/24</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * </a>
+<span class="sourceLineNo">039</span><a id="line.39"> */</a>
+<span class="sourceLineNo">040</span><a id="line.40">public class Convex_Hull_Demo implements PlugInFilter {</a>
+<span class="sourceLineNo">041</span><a id="line.41">        </a>
+<span class="sourceLineNo">042</span><a id="line.42">        static Color ConvexHullColor = Color.blue;</a>
 <span class="sourceLineNo">043</span><a id="line.43">        </a>
-<span class="sourceLineNo">044</span><a id="line.44">        static Color ConvexHullColor = Color.blue;</a>
+<span class="sourceLineNo">044</span><a id="line.44">        private ImagePlus im = null;</a>
 <span class="sourceLineNo">045</span><a id="line.45">        </a>
-<span class="sourceLineNo">046</span><a id="line.46">        private ImagePlus im = null;</a>
-<span class="sourceLineNo">047</span><a id="line.47">        </a>
-<span class="sourceLineNo">048</span><a id="line.48">        public int setup(String arg, ImagePlus im) {</a>
-<span class="sourceLineNo">049</span><a id="line.49">                this.im = im;</a>
-<span class="sourceLineNo">050</span><a id="line.50">                return DOES_8G + NO_CHANGES; </a>
-<span class="sourceLineNo">051</span><a id="line.51">        }</a>
-<span class="sourceLineNo">052</span><a id="line.52">        </a>
-<span class="sourceLineNo">053</span><a id="line.53">        public void run(ImageProcessor ip) {</a>
-<span class="sourceLineNo">054</span><a id="line.54">                </a>
-<span class="sourceLineNo">055</span><a id="line.55">                if (!IjUtils.isBinary(ip)) {</a>
-<span class="sourceLineNo">056</span><a id="line.56">                        IJ.showMessage("Plugin requires a binary image!");</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        return;</a>
-<span class="sourceLineNo">058</span><a id="line.58">                }</a>
-<span class="sourceLineNo">059</span><a id="line.59">                </a>
-<span class="sourceLineNo">060</span><a id="line.60">                RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);</a>
-<span class="sourceLineNo">061</span><a id="line.61">//              RegionLabeling segmenter = new DepthFirstLabeling((ByteProcessor) ip);</a>
-<span class="sourceLineNo">062</span><a id="line.62">                </a>
-<span class="sourceLineNo">063</span><a id="line.63">                List&lt;BinaryRegion&gt; regions = segmenter.getRegions();</a>
-<span class="sourceLineNo">064</span><a id="line.64">                if (regions.isEmpty()) {</a>
-<span class="sourceLineNo">065</span><a id="line.65">                        IJ.error("No regions detected!");</a>
-<span class="sourceLineNo">066</span><a id="line.66">                        return;</a>
-<span class="sourceLineNo">067</span><a id="line.67">                }</a>
-<span class="sourceLineNo">068</span><a id="line.68">                </a>
-<span class="sourceLineNo">069</span><a id="line.69">                ColorProcessor cp = ip.convertToColorProcessor();</a>
-<span class="sourceLineNo">070</span><a id="line.70">                cp.add(128);</a>
-<span class="sourceLineNo">071</span><a id="line.71">                </a>
-<span class="sourceLineNo">072</span><a id="line.72">                for (BinaryRegion r: regions) {</a>
-<span class="sourceLineNo">073</span><a id="line.73">                        //ConvexHull hull = new ConvexHull(r);                                  // takes all region points</a>
-<span class="sourceLineNo">074</span><a id="line.74">                        ConvexHull hull = new ConvexHull(r.getOuterContour());  // takes only outer contour points</a>
-<span class="sourceLineNo">075</span><a id="line.75">                        </a>
-<span class="sourceLineNo">076</span><a id="line.76">                        Line2D[] segments = hull.getSegments();</a>
-<span class="sourceLineNo">077</span><a id="line.77">                        drawHull(cp, segments);</a>
-<span class="sourceLineNo">078</span><a id="line.78">                }</a>
-<span class="sourceLineNo">079</span><a id="line.79"></a>
-<span class="sourceLineNo">080</span><a id="line.80">                (new ImagePlus(im.getShortTitle() + "-convex-hulls", cp)).show();</a>
-<span class="sourceLineNo">081</span><a id="line.81">        }</a>
-<span class="sourceLineNo">082</span><a id="line.82">        </a>
-<span class="sourceLineNo">083</span><a id="line.83">        // ----------------------------------------------------</a>
-<span class="sourceLineNo">084</span><a id="line.84">        </a>
-<span class="sourceLineNo">085</span><a id="line.85">        private void drawHull(ImageProcessor ip, Line2D[] segments) {</a>
-<span class="sourceLineNo">086</span><a id="line.86">                for (Line2D line : segments) {</a>
-<span class="sourceLineNo">087</span><a id="line.87">                        drawSegment(ip, PntDouble.from(line.getP1()), PntDouble.from(line.getP2()));</a>
-<span class="sourceLineNo">088</span><a id="line.88">                }</a>
-<span class="sourceLineNo">089</span><a id="line.89">        }</a>
-<span class="sourceLineNo">090</span><a id="line.90"></a>
-<span class="sourceLineNo">091</span><a id="line.91">        private void drawSegment(ImageProcessor ip, Pnt2d p1, Pnt2d p2) {</a>
-<span class="sourceLineNo">092</span><a id="line.92">                int x1 = (int) Math.round(p1.getX());</a>
-<span class="sourceLineNo">093</span><a id="line.93">                int y1 = (int) Math.round(p1.getY());</a>
-<span class="sourceLineNo">094</span><a id="line.94">                int x2 = (int) Math.round(p2.getX());</a>
-<span class="sourceLineNo">095</span><a id="line.95">                int y2 = (int) Math.round(p2.getY());</a>
-<span class="sourceLineNo">096</span><a id="line.96">                ip.drawLine(x1, y1, x2, y2);</a>
-<span class="sourceLineNo">097</span><a id="line.97">        }</a>
-<span class="sourceLineNo">098</span><a id="line.98"></a>
-<span class="sourceLineNo">099</span><a id="line.99">}</a>
+<span class="sourceLineNo">046</span><a id="line.46">        public int setup(String arg, ImagePlus im) {</a>
+<span class="sourceLineNo">047</span><a id="line.47">                this.im = im;</a>
+<span class="sourceLineNo">048</span><a id="line.48">                return DOES_8G + NO_CHANGES; </a>
+<span class="sourceLineNo">049</span><a id="line.49">        }</a>
+<span class="sourceLineNo">050</span><a id="line.50">        </a>
+<span class="sourceLineNo">051</span><a id="line.51">        public void run(ImageProcessor ip) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">                </a>
+<span class="sourceLineNo">053</span><a id="line.53">                if (!IjUtils.isBinary(ip)) {</a>
+<span class="sourceLineNo">054</span><a id="line.54">                        IJ.showMessage("Plugin requires a binary image!");</a>
+<span class="sourceLineNo">055</span><a id="line.55">                        return;</a>
+<span class="sourceLineNo">056</span><a id="line.56">                }</a>
+<span class="sourceLineNo">057</span><a id="line.57">                </a>
+<span class="sourceLineNo">058</span><a id="line.58">                RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);</a>
+<span class="sourceLineNo">059</span><a id="line.59">//              RegionLabeling segmenter = new DepthFirstLabeling((ByteProcessor) ip);</a>
+<span class="sourceLineNo">060</span><a id="line.60">                </a>
+<span class="sourceLineNo">061</span><a id="line.61">                List&lt;BinaryRegion&gt; regions = segmenter.getRegions();</a>
+<span class="sourceLineNo">062</span><a id="line.62">                if (regions.isEmpty()) {</a>
+<span class="sourceLineNo">063</span><a id="line.63">                        IJ.error("No regions detected!");</a>
+<span class="sourceLineNo">064</span><a id="line.64">                        return;</a>
+<span class="sourceLineNo">065</span><a id="line.65">                }</a>
+<span class="sourceLineNo">066</span><a id="line.66">                </a>
+<span class="sourceLineNo">067</span><a id="line.67">                ImageProcessor ip2 = ip.duplicate();</a>
+<span class="sourceLineNo">068</span><a id="line.68">                ip2.add(128);</a>
+<span class="sourceLineNo">069</span><a id="line.69">                </a>
+<span class="sourceLineNo">070</span><a id="line.70">                // draw convex hulls as vector overlay</a>
+<span class="sourceLineNo">071</span><a id="line.71">                Overlay oly = new Overlay();</a>
+<span class="sourceLineNo">072</span><a id="line.72">                ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);</a>
+<span class="sourceLineNo">073</span><a id="line.73">                ola.setStroke(new ColoredStroke(0.5, ConvexHullColor));</a>
+<span class="sourceLineNo">074</span><a id="line.74">                </a>
+<span class="sourceLineNo">075</span><a id="line.75">                for (BinaryRegion r: regions) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                        //ConvexHull hull = new ConvexHull(r);                                  // takes all region points</a>
+<span class="sourceLineNo">077</span><a id="line.77">                        ConvexHull hull = new ConvexHull(r.getOuterContour());  // takes only outer contour points</a>
+<span class="sourceLineNo">078</span><a id="line.78">                        ola.addShapes(hull.getShapes());</a>
+<span class="sourceLineNo">079</span><a id="line.79">                }</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">                ImagePlus im2 = new ImagePlus(im.getShortTitle() + "-convex-hulls", ip2);</a>
+<span class="sourceLineNo">082</span><a id="line.82">                im2.setOverlay(oly);</a>
+<span class="sourceLineNo">083</span><a id="line.83">                im2.show();</a>
+<span class="sourceLineNo">084</span><a id="line.84">        }</a>
+<span class="sourceLineNo">085</span><a id="line.85">}</a>
 
 
 

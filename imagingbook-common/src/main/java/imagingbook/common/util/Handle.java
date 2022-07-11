@@ -21,7 +21,7 @@ package imagingbook.common.util;
  * 
  * public static void main(String[] args) {
  * 	Handle&gt;Integer&lt; a1 = Handle.of(10);
- * 	Handle&gt;Integer&lt; a2 = Handle.<Integer>of(10);
+ * 	Handle&gt;Integer&lt; a2 = Handle.&gt;Integer&lt;of(10);
  * 
  * 	Handle&gt;Double&lt; b = new Handle&gt;&lt;(10.0);
  * 	Handle&gt;String&lt; s = Handle.of("prima!");

@@ -67,10 +67,9 @@ imagingbook.common.sift.util
 imagingbook.common.threshold
 imagingbook.common.threshold.adaptive
 imagingbook.common.threshold.global
-imagingbook.common.tuples
 imagingbook.common.util
 imagingbook.common.util.bits
-imagingbook.common.util.choice
 imagingbook.common.util.progress
 imagingbook.common.util.progress.ij
 imagingbook.common.util.resource
+imagingbook.common.util.tuples

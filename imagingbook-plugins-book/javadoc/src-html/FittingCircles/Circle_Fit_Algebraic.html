@@ -65,51 +65,46 @@
 <span class="sourceLineNo">055</span><a id="line.55">                GeometricCircle realCircle = new GeometricCircle(XC, YC, R);</a>
 <span class="sourceLineNo">056</span><a id="line.56">                IJ.log(" real: " + realCircle.toString());</a>
 <span class="sourceLineNo">057</span><a id="line.57">                </a>
-<span class="sourceLineNo">058</span><a id="line.58">                Pnt2d[] points = new imagingbook.common.geometry.fitting.circle.CircleSampler(realCircle).getPoints(N, Angle0, Angle1, SigmaNoise);</a>
-<span class="sourceLineNo">059</span><a id="line.59">//              Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, N, 0, 2 * Math.PI, 10.0);        // fit-01</a>
-<span class="sourceLineNo">060</span><a id="line.60">//              Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, N, 0, Math.PI/4, 5.0);           // fit-02</a>
-<span class="sourceLineNo">061</span><a id="line.61">//              Pnt2d[] points = CircleMaker.makeTestGander(30);</a>
-<span class="sourceLineNo">062</span><a id="line.62">//              Pnt2d[] points = CircleMaker.make3Points(30);</a>
-<span class="sourceLineNo">063</span><a id="line.63">//              Pnt2d[] points = CircleMaker.collinearPoints1();</a>
-<span class="sourceLineNo">064</span><a id="line.64">                </a>
-<span class="sourceLineNo">065</span><a id="line.65">                // ------------------------------------------------------------------------</a>
-<span class="sourceLineNo">066</span><a id="line.66">                CircleFitAlgebraic fitter = CircleFitAlgebraic.getFit(algType, points);</a>
-<span class="sourceLineNo">067</span><a id="line.67">                // ------------------------------------------------------------------------</a>
-<span class="sourceLineNo">068</span><a id="line.68">                </a>
-<span class="sourceLineNo">069</span><a id="line.69">                GeometricCircle fitCircle = fitter.getGeometricCircle();</a>
-<span class="sourceLineNo">070</span><a id="line.70">                if (fitCircle == null) {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                        IJ.log("Algebraic fit: no result!");</a>
-<span class="sourceLineNo">072</span><a id="line.72">                        return;</a>
-<span class="sourceLineNo">073</span><a id="line.73">                }</a>
-<span class="sourceLineNo">074</span><a id="line.74">                IJ.log("  fit: " + fitCircle);</a>
-<span class="sourceLineNo">075</span><a id="line.75">                </a>
-<span class="sourceLineNo">076</span><a id="line.76">                IJ.log(String.format(Locale.US, "  error real = %.3f", realCircle.getMeanSquareError(points)));</a>
-<span class="sourceLineNo">077</span><a id="line.77">                IJ.log(String.format(Locale.US, "  error fit  = %.3f", fitCircle.getMeanSquareError(points)));</a>
-<span class="sourceLineNo">078</span><a id="line.78">        }</a>
-<span class="sourceLineNo">079</span><a id="line.79">        </a>
-<span class="sourceLineNo">080</span><a id="line.80">        // ------------------------------------------</a>
-<span class="sourceLineNo">081</span><a id="line.81">        </a>
-<span class="sourceLineNo">082</span><a id="line.82">        private boolean runDialog() {</a>
-<span class="sourceLineNo">083</span><a id="line.83">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</a>
+<span class="sourceLineNo">058</span><a id="line.58">                Pnt2d[] points = new imagingbook.common.geometry.fitting.circle.utils.CircleSampler(realCircle).getPoints(N, Angle0, Angle1, SigmaNoise);</a>
+<span class="sourceLineNo">059</span><a id="line.59">                </a>
+<span class="sourceLineNo">060</span><a id="line.60">                // ------------------------------------------------------------------------</a>
+<span class="sourceLineNo">061</span><a id="line.61">                CircleFitAlgebraic fitter = CircleFitAlgebraic.getFit(algType, points);</a>
+<span class="sourceLineNo">062</span><a id="line.62">                // ------------------------------------------------------------------------</a>
+<span class="sourceLineNo">063</span><a id="line.63">                </a>
+<span class="sourceLineNo">064</span><a id="line.64">                GeometricCircle fitCircle = fitter.getGeometricCircle();</a>
+<span class="sourceLineNo">065</span><a id="line.65">                if (fitCircle == null) {</a>
+<span class="sourceLineNo">066</span><a id="line.66">                        IJ.log("Algebraic fit: no result!");</a>
+<span class="sourceLineNo">067</span><a id="line.67">                        return;</a>
+<span class="sourceLineNo">068</span><a id="line.68">                }</a>
+<span class="sourceLineNo">069</span><a id="line.69">                IJ.log("  fit: " + fitCircle);</a>
+<span class="sourceLineNo">070</span><a id="line.70">                </a>
+<span class="sourceLineNo">071</span><a id="line.71">                IJ.log(String.format(Locale.US, "  error real = %.3f", realCircle.getMeanSquareError(points)));</a>
+<span class="sourceLineNo">072</span><a id="line.72">                IJ.log(String.format(Locale.US, "  error fit  = %.3f", fitCircle.getMeanSquareError(points)));</a>
+<span class="sourceLineNo">073</span><a id="line.73">        }</a>
+<span class="sourceLineNo">074</span><a id="line.74">        </a>
+<span class="sourceLineNo">075</span><a id="line.75">        // ------------------------------------------</a>
+<span class="sourceLineNo">076</span><a id="line.76">        </a>
+<span class="sourceLineNo">077</span><a id="line.77">        private boolean runDialog() {</a>
+<span class="sourceLineNo">078</span><a id="line.78">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</a>
+<span class="sourceLineNo">079</span><a id="line.79">                </a>
+<span class="sourceLineNo">080</span><a id="line.80">                gd.addEnumChoice("fit method", algType);</a>
+<span class="sourceLineNo">081</span><a id="line.81">                gd.addCheckbox("DrawPoints", DrawPoints);</a>
+<span class="sourceLineNo">082</span><a id="line.82">                gd.addCheckbox("DrawRealCircle", DrawRealCircle);</a>
+<span class="sourceLineNo">083</span><a id="line.83">                gd.addCheckbox("DrawFitCircle", DrawFitCircle);</a>
 <span class="sourceLineNo">084</span><a id="line.84">                </a>
-<span class="sourceLineNo">085</span><a id="line.85">                gd.addEnumChoice("fit method", algType);</a>
-<span class="sourceLineNo">086</span><a id="line.86">                gd.addCheckbox("DrawPoints", DrawPoints);</a>
-<span class="sourceLineNo">087</span><a id="line.87">                gd.addCheckbox("DrawRealCircle", DrawRealCircle);</a>
-<span class="sourceLineNo">088</span><a id="line.88">                gd.addCheckbox("DrawFitCircle", DrawFitCircle);</a>
-<span class="sourceLineNo">089</span><a id="line.89">                </a>
-<span class="sourceLineNo">090</span><a id="line.90">                gd.showDialog();</a>
-<span class="sourceLineNo">091</span><a id="line.91">                if (gd.wasCanceled())</a>
-<span class="sourceLineNo">092</span><a id="line.92">                        return false;</a>
-<span class="sourceLineNo">093</span><a id="line.93">                </a>
-<span class="sourceLineNo">094</span><a id="line.94">                algType = gd.getNextEnumChoice(CircleFitAlgebraic.FitType.class);</a>
-<span class="sourceLineNo">095</span><a id="line.95">                DrawPoints = gd.getNextBoolean();</a>
-<span class="sourceLineNo">096</span><a id="line.96">                DrawRealCircle = gd.getNextBoolean();</a>
-<span class="sourceLineNo">097</span><a id="line.97">                DrawFitCircle = gd.getNextBoolean();</a>
-<span class="sourceLineNo">098</span><a id="line.98"></a>
-<span class="sourceLineNo">099</span><a id="line.99">                return true;</a>
-<span class="sourceLineNo">100</span><a id="line.100">        }</a>
-<span class="sourceLineNo">101</span><a id="line.101"></a>
-<span class="sourceLineNo">102</span><a id="line.102">}</a>
+<span class="sourceLineNo">085</span><a id="line.85">                gd.showDialog();</a>
+<span class="sourceLineNo">086</span><a id="line.86">                if (gd.wasCanceled())</a>
+<span class="sourceLineNo">087</span><a id="line.87">                        return false;</a>
+<span class="sourceLineNo">088</span><a id="line.88">                </a>
+<span class="sourceLineNo">089</span><a id="line.89">                algType = gd.getNextEnumChoice(CircleFitAlgebraic.FitType.class);</a>
+<span class="sourceLineNo">090</span><a id="line.90">                DrawPoints = gd.getNextBoolean();</a>
+<span class="sourceLineNo">091</span><a id="line.91">                DrawRealCircle = gd.getNextBoolean();</a>
+<span class="sourceLineNo">092</span><a id="line.92">                DrawFitCircle = gd.getNextBoolean();</a>
+<span class="sourceLineNo">093</span><a id="line.93"></a>
+<span class="sourceLineNo">094</span><a id="line.94">                return true;</a>
+<span class="sourceLineNo">095</span><a id="line.95">        }</a>
+<span class="sourceLineNo">096</span><a id="line.96"></a>
+<span class="sourceLineNo">097</span><a id="line.97">}</a>
 
 
 
