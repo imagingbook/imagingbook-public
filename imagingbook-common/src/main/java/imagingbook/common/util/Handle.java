@@ -9,10 +9,11 @@
 package imagingbook.common.util;
 
 /**
+ * <p>
  * An elementary "handle" mechanism to facilitate indirect (two-stage)
  * references to objects. The main purpose is to allow true "calls by
  * reference", as shown in the example below.
- * 
+ * </p>
  * <pre>
  * private static void foo(Handle&gt;Intege&lt; h) {
  * 	h.set(33);
@@ -27,7 +28,7 @@ package imagingbook.common.util;
  * 
  * 	System.out.println("orig a = " + a1.get());
  * 
- * 	// Example: call by reference (foo() modifies the contents of a)
+ * 	// Example: call by reference (foo() modifies the contents of a1)
  * 	foo(a1);
  * 	System.out.println("modified a = " + a1.get());
  * }
@@ -64,6 +65,8 @@ public class Handle<T> {
 		h.set(33);
 	}
 
+	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Handle<Integer> a1 = Handle.of(10);
 		Handle<Integer> a2 = Handle.<Integer>of(15);
@@ -73,7 +76,7 @@ public class Handle<T> {
 		
 		System.out.println("orig a = " + a1.get());
 		
-		// Example 1: call by reference (foo modifies the contents of a)
+		// Example: call by reference (foo modifies the contents of a1)
 		foo(a1);
 		System.out.println("modified a = " + a1.get());
 	}
