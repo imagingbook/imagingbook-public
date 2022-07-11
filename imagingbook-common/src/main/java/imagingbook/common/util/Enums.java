@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import imagingbook.common.corners.subpixel.SubpixelMaxInterpolator;
+import imagingbook.common.util.Enums.Description;
 
 /**
  * This class defines static methods for handling enum types.
@@ -64,7 +65,14 @@ public abstract class Enums {
 	
 	/**
 	 * Field annotation with a (required) string parameter to supply a descriptive
-	 * text to the associated enum constant.
+	 * text to the associated enum constant. Example:
+	 * <pre>
+	 * public enum EnumWithAnnotationsExample {
+	 *	@Description("Abra Kadabra") A, 
+	 *	@Description("Bubba Can Walk") B, 
+	 *	C;
+	 * }
+	 * </pre>
 	 */
 	@Target({ElementType.FIELD})
 	@Retention(RetentionPolicy.RUNTIME)
