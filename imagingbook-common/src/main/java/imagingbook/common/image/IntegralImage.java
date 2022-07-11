@@ -12,12 +12,18 @@ import ij.process.ByteProcessor;
 
 
 /**
- * This class represents an 'integral image' or 'summed area table' [Crow, 1984], 
- * as described in the book (see 2nd English ed. 2016, Sec. 3.8).
+ * <p>
+ * This class represents an 'integral image' or 'summed area table' as proposed in [1], 
+ * See Sec. 2.8 of [2] for a detailed description.
  * Currently only implemented for images of type {@link ByteProcessor}.
+ * </p>
+ * <p>
+ * [1] F. C. Crow. Summed-area tables for texture mapping. SIGGRAPH, Computer Graphics 18(3), 207–212 (1984).<br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author W. Burger
- * @version 2015/11/15
+ * @version 2022/07/11
  *
  */
 public class IntegralImage {
@@ -68,7 +74,7 @@ public class IntegralImage {
 	
 	/**
 	 * Returns the summed area table of pixel values (Sigma_1).
-	 * @return Array of Sigma_1 values
+	 * @return array of Sigma_1 values
 	 */
 	public long[][] getS1() {
 		return S1;
@@ -76,7 +82,7 @@ public class IntegralImage {
 	
 	/**
 	 * Returns the summed area table of squared pixel values (Sigma_2).
-	 * @return Array of Sigma_2 values
+	 * @return array of Sigma_2 values
 	 */
 	public long[][] getS2() {
 		return S2;
@@ -95,8 +101,9 @@ public class IntegralImage {
 	 * or zero if the rectangle is empty.
 	 */
 	public long getBlockSum1(int ua, int va, int ub, int vb) {
-		if (ub < ua || vb < va) 
+		if (ub < ua || vb < va) {
 			return 0;
+		}
 		final long saa = (ua > 0  && va > 0)  ? S1[ua - 1][va - 1] : 0;
 		final long sba = (ub >= 0 && va > 0)  ? S1[ub][va - 1] : 0;
 		final long sab = (ua > 0  && vb >= 0) ? S1[ua - 1][vb] : 0;
@@ -115,8 +122,9 @@ public class IntegralImage {
 	 * or zero if the rectangle is empty.
 	 */
 	public long getBlockSum2(int ua, int va, int ub, int vb) {
-		if (ub < ua || vb < va) 
+		if (ub < ua || vb < va) {
 			return 0;
+		}
 		final long saa = (ua > 0  && va > 0)  ? S2[ua - 1][va - 1] : 0;
 		final long sba = (ub >= 0 && va > 0)  ? S2[ub][va - 1] : 0;
 		final long sab = (ua > 0  && vb >= 0) ? S2[ua - 1][vb] : 0;
@@ -124,8 +132,16 @@ public class IntegralImage {
 		return sbb + saa - sba - sab;
 	}
 	
-	public int getSize(int u0, int v0, int u1, int v1) {
-		return (1 + u1 - u0) * (1 + v1 - v0);
+	/**
+	 * Returns the size of (number of pixels in) the specified rectangle.
+	 * @param ua leftmost position in R
+	 * @param va top position in R
+	 * @param ub rightmost position in R {@literal (ub >= ua)}
+	 * @param vb bottom position in R {@literal (vb >= va)}
+	 * @return the size of the specified rectangle
+	 */
+	public int getSize(int ua, int va, int ub, int vb) {
+		return (ub - ua + 1) * (vb - va + 1);
 	}
 	
 	/**
@@ -133,16 +149,17 @@ public class IntegralImage {
 	 * 
 	 * @param ua leftmost position in R
 	 * @param va top position in R
-	 * @param ub rightmost position in R {@literal (u1 >= u0)}
-	 * @param vb bottom position in R {@literal (v1 >= v0)}
+	 * @param ub rightmost position in R {@literal (ub >= ua)}
+	 * @param vb bottom position in R {@literal (vb >= va)}
 	 * @return the mean value for the specified rectangle
 	 */
 	public double getMean(int ua, int va, int ub, int vb) {
-		int N = getSize(ua, va, ub, vb);
-		if (N <= 0)
+		int size = getSize(ua, va, ub, vb);
+		if (size <= 0) {
 			throw new IllegalArgumentException("region size must be positive");
+		}
 		double S1 = getBlockSum1(ua, va, ub, vb);
-		return S1 / N;
+		return S1 / size;
 	}
 	
 	/**
@@ -155,12 +172,13 @@ public class IntegralImage {
 	 * @return the variance for the specified rectangle
 	 */
 	public double getVariance(int ua, int va, int ub, int vb) {
-		int N = getSize(ua, va, ub, vb);
-		if (N <= 0)
+		int size = getSize(ua, va, ub, vb);
+		if (size <= 0) {
 			throw new IllegalArgumentException("region size must be positive");
+		}
 		double S1 = getBlockSum1(ua, va, ub, vb);
 		double S2 = getBlockSum2(ua, va, ub, vb);
-		return (S2 - (S1 * S1) / N) / N;
+		return (S2 - (S1 * S1) / size) / size;
 	}
 
 }
