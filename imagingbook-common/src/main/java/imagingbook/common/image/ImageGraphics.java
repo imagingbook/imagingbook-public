@@ -139,7 +139,7 @@ public class ImageGraphics implements AutoCloseable {
 	 */
 	public ImageGraphics(ImageProcessor ip, Color color, BasicStroke stroke) {
 		this.ip = ip;
-		this.bi = toBufferedImage(ip);
+		this.bi = toBufferedImage(ip);	// throws exception when ip is a ShortProcessor
 		
 		if (color != null) this.color = color;
 		if (stroke != null) this.stroke = stroke;
