@@ -14,8 +14,8 @@ import java.util.Arrays;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterScalar;
+import imagingbook.common.image.PixelPack.PixelSlice;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
-import imagingbook.common.image.data.PixelPack.PixelSlice;
 
 /**
  * Ordinary (scalar) median filter for color images implemented

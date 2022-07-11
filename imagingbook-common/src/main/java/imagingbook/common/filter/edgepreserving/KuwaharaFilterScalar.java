@@ -10,7 +10,7 @@
 package imagingbook.common.filter.edgepreserving;
 
 import imagingbook.common.filter.generic.GenericFilterScalar;
-import imagingbook.common.image.data.PixelPack.PixelSlice;
+import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
  * Scalar version.

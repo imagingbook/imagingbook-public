@@ -14,7 +14,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
 import ij.process.ColorProcessor;
 import imagingbook.common.filter.generic.GenericFilterVectorSeparable;
 import imagingbook.common.filter.linear.GaussianKernel1D;
-import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
 
 /**

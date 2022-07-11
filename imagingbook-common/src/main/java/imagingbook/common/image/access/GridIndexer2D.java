@@ -9,7 +9,7 @@
 
 package imagingbook.common.image.access;
 
-import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.image.PixelPack;
 
 /**
  * <p>Instances of this class perform the transformation between 2D image coordinates 

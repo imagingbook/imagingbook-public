@@ -12,8 +12,8 @@ package imagingbook.common.filter.edgepreserving;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.filter.linear.LinearFilter;
-import imagingbook.common.image.data.PixelPack;
-import imagingbook.common.image.data.PixelPack.PixelSlice;
+import imagingbook.common.image.PixelPack;
+import imagingbook.common.image.PixelPack.PixelSlice;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.Eigensolver2x2;
 

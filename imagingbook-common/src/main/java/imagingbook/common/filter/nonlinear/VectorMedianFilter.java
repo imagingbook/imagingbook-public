@@ -12,7 +12,7 @@ package imagingbook.common.filter.nonlinear;
 import java.awt.Color;
 
 import imagingbook.common.filter.generic.GenericFilterVector;
-import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
 import imagingbook.common.math.VectorNorm.NormType;
 

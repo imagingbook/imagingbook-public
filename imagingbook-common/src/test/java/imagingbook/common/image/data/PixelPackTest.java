@@ -13,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import ij.process.ImageProcessor;
+import imagingbook.common.image.PixelPack;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralTestImage;
 import imagingbook.testutils.ImageTestUtils;

@@ -9,7 +9,7 @@
 package imagingbook.common.filter.examples;
 
 import imagingbook.common.filter.generic.GenericFilterVector;
-import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.image.PixelPack;
 
 // a custom filter that provides its own progress data
 public class FilterShowProgressExample extends GenericFilterVector {

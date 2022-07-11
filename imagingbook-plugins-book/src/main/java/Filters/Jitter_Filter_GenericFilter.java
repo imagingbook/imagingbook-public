@@ -14,7 +14,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterVector;
-import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.image.PixelPack;
 
 /**
  * Implementation of the "Jitter filter" based on the {@link GenericFilter}

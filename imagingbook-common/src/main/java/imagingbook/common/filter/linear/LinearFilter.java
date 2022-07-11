@@ -10,7 +10,7 @@ package imagingbook.common.filter.linear;
 
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterScalar;
-import imagingbook.common.image.data.PixelPack.PixelSlice;
+import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
  * This class represents a 2D linear filter specified by an

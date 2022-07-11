@@ -12,7 +12,7 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilterScalar;
-import imagingbook.common.image.data.PixelPack.PixelSlice;
+import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
  * This ImageJ plugin shows how to construct a 3x3 custom generic filter

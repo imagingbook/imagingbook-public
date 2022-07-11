@@ -12,7 +12,7 @@ package imagingbook.common.filter.edgepreserving;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import imagingbook.common.filter.generic.GenericFilterVector;
-import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.image.PixelPack;
 
 /**
  * Vector version (applicable to ColorProcessor only).

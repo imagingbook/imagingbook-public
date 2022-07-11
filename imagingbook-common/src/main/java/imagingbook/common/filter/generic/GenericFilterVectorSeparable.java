@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.filter.generic;
 
-import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.image.PixelPack;
 
 /**
  * This (abstract) class represents a generic vector filter whose pixel-operation

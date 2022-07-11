@@ -8,8 +8,8 @@
  *******************************************************************************/
 package imagingbook.common.filter.generic;
 
-import imagingbook.common.image.data.PixelPack;
-import imagingbook.common.image.data.PixelPack.PixelSlice;
+import imagingbook.common.image.PixelPack;
+import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
  * <p>

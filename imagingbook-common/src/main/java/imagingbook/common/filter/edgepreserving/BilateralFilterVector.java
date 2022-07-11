@@ -15,7 +15,7 @@ import ij.process.ColorProcessor;
 import imagingbook.common.filter.edgepreserving.BilateralF.Parameters;
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.filter.linear.GaussianKernel2D;
-import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
 
 /**

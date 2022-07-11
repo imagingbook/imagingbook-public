@@ -13,7 +13,7 @@ import java.awt.Color;
 import java.util.Arrays;
 
 import imagingbook.common.filter.generic.GenericFilterVector;
-import imagingbook.common.image.data.PixelPack;
+import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
 
 /**

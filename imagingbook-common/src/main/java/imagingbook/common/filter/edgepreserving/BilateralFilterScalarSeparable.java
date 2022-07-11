@@ -14,7 +14,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import imagingbook.common.filter.generic.GenericFilterScalarSeparable;
 import imagingbook.common.filter.linear.GaussianKernel1D;
-import imagingbook.common.image.data.PixelPack.PixelSlice;
+import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
  * Scalar version, applicable to all image types.
