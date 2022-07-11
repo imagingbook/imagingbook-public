@@ -19,7 +19,7 @@ import java.awt.image.IndexColorModel;
 
 
 /**
- * This class holds utility methods for lookup-tables and implementations
+ * This class defines utility methods for lookup-tables and implementations
  * of various standard ImageJ lookup tables (originally defined in class
  * {@link ij.plugin.LutLoader}.
  * 

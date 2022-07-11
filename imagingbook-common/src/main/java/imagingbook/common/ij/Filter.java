@@ -12,12 +12,13 @@ import ij.plugin.filter.Convolver;
 import ij.process.ImageProcessor;
 
 /**
- * Utility methods for filtering images. 
+ * Utility methods for filtering images based on ImageJ's {@link Convolver} class. 
  * None of the filter methods modifies the kernel, i.e., kernels are 
  * used as supplied and never normalized.
  * 
  * @author WB
  * @version 2020-02-19
+ * @see Convolver
  */
 public abstract class Filter {
 

@@ -8,10 +8,6 @@
  *******************************************************************************/
 package imagingbook.common.geometry.moments;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;
 

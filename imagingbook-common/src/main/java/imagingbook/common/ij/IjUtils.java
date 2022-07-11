@@ -37,7 +37,7 @@ import imagingbook.common.util.bits.BitMap;
 
 
 /**
- * TODO: Clarify assumed arrangement of 2D arrays!
+ * This class defines static utility methods adding to ImageJs functionality.
  * @author WB
  *
  */
