@@ -26,7 +26,8 @@ public class IntegralImage {
 	private final long[][] S1, S2;
 	
 	/**
-	 * Creates a new integral image from pixel values in a 2D int-array.
+	 * Constructor. Creates a new {@link IntegralImage} instance from pixel values 
+	 * in a 2D int-array I[x][y].
 	 * @param I pixel values
 	 */
 	public IntegralImage(int[][] I) {
@@ -55,7 +56,8 @@ public class IntegralImage {
 	}
 	
 	/**
-	 * Creates a new integral image from pixel values in a {@link ByteProcessor}.
+	 * Constructor. Creates a new {@link IntegralImage} instance from pixel values in the 
+	 * specified {@link ByteProcessor}.
 	 * @param I input image
 	 */
 	public IntegralImage(ByteProcessor I) {
@@ -140,9 +142,6 @@ public class IntegralImage {
 		if (N <= 0)
 			throw new IllegalArgumentException("region size must be positive");
 		double S1 = getBlockSum1(ua, va, ub, vb);
-//		IJ.log("u0 = " + ua); IJ.log("v0 = " + va);
-//		IJ.log("u1 = " + ub); IJ.log("v1 = " + vb);
-//		IJ.log("S1 = " + S1);
 		return S1 / N;
 	}
 	

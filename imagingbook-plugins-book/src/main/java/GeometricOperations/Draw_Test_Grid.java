@@ -66,7 +66,7 @@ public class Draw_Test_Grid implements PlugIn {
 			ig.drawLine(0, 0, W - 1, H - 1);
 			ig.drawOval(xStart, yStart, W/2, H/2);
 			
-			Graphics2D g = ig.getGraphics();
+			Graphics2D g = ig.getGraphics2D();
 			g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
 			float xLeft = 8;
 			float yTop  = 19;

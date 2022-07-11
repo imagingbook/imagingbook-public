@@ -54,11 +54,11 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * </p>
  * <pre>
  * ImageProcessor ip = ... ;   // some ByteProcessor, ShortProcessor or ColorProcessor
- * try (ImageGraphics g = new ImageGraphics(ip)) {
- * 	g.setColor(255);
- * 	g.setLineWidth(1.0);
- * 	g.drawLine(40, 100.5, 250, 101.5);
- * 	g.drawOval(230.6, 165.2, 150, 150);
+ * try (ImageGraphics ig = new ImageGraphics(ip)) {
+ * 	ig.setColor(255);
+ * 	ig.setLineWidth(1.0);
+ * 	ig.drawLine(40, 100.5, 250, 101.5);
+ * 	ig.drawOval(230.6, 165.2, 150, 150);
  * 	...
  * }</pre>
  * <p>
@@ -66,14 +66,14 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * The original image ({@code ip} in the above example) is automatically updated 
  * at the end of the {@code try() ...} clause (by {@link ImageGraphics} implementing the
  * {@link AutoCloseable} interface).
- * The {@link #getGraphics()} method exposes the underlying 
+ * The {@link #getGraphics2D()} method exposes the underlying 
  * {@link Graphics2D} instance of the {@link ImageGraphics} object, which can then be used to
  * perform arbitrary graphic operations.
  * Thus, the above example could <strong>alternatively</strong> be implemented as follows:
  * <pre>
  * ImageProcessor ip = ... ;   // some ByteProcessor, ShortProcessor or ColorProcessor
- * try (ImageGraphics g = new ImageGraphics(ip)) {
- * 	Graphics2D g2 = g.getGraphics();
+ * try (ImageGraphics ig = new ImageGraphics(ip)) {
+ * 	Graphics2D g2 = ig.getGraphics2D();
  * 	g2.setColor(Color.white);
  * 	g2.setStroke(new BasicStroke(1.0f));
  * 	g2.draw(new Line2D.Double(40, 100.5, 250, 101.5));
@@ -106,7 +106,7 @@ public class ImageGraphics implements AutoCloseable {
 	
 	private ImageProcessor ip;
 	private BufferedImage bi;
-	private final Graphics2D g;
+	private final Graphics2D g2;
 	
 	private BasicStroke stroke = DEFAULT_STROKE;
 	private Color color = DEFAULT_COLOR;
@@ -144,17 +144,17 @@ public class ImageGraphics implements AutoCloseable {
 		if (color != null) this.color = color;
 		if (stroke != null) this.stroke = stroke;
 		
-		this.g = (Graphics2D) bi.getGraphics();
-		this.g.setColor(color);
-		this.g.setColor(this.color);
-		this.g.setStroke(this.stroke);
+		this.g2 = (Graphics2D) bi.getGraphics();
+		this.g2.setColor(color);
+		this.g2.setColor(this.color);
+		this.g2.setStroke(this.stroke);
 		this.setAntialiasing(DEFAULT_ANTIALIASING);
 	}
 	
 	public void setAntialiasing(boolean on) {
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, on ? 
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, on ? 
 				RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, on ?
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, on ?
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 	}
 	
@@ -163,8 +163,8 @@ public class ImageGraphics implements AutoCloseable {
 	 * which can be used to perform arbitrary graphics operations.
 	 * @return the {@link Graphics2D} object
 	 */
-	public Graphics2D getGraphics() {
-		return this.g;
+	public Graphics2D getGraphics2D() {
+		return this.g2;
 	}
 	
 	/**
@@ -245,7 +245,7 @@ public class ImageGraphics implements AutoCloseable {
 	 * @see Line2D
 	 */
 	public void drawLine(double x1, double y1, double x2, double y2) {
-		g.draw(new Line2D.Double(x1, y1, x2, y2));
+		g2.draw(new Line2D.Double(x1, y1, x2, y2));
 	}
 	
 	/**
@@ -258,7 +258,7 @@ public class ImageGraphics implements AutoCloseable {
 	 * @see Ellipse2D
 	 */
 	public void drawOval(double x, double y, double w, double h) {
-		g.draw(new Ellipse2D.Double(x, y, w, h));
+		g2.draw(new Ellipse2D.Double(x, y, w, h));
 	}
 	
 	/**
@@ -271,7 +271,7 @@ public class ImageGraphics implements AutoCloseable {
 	 * @see Rectangle2D
 	 */
 	public void drawRectangle(double x, double y, double w, double h) {
-		g.draw(new Rectangle2D.Double(x, y, w, h));
+		g2.draw(new Rectangle2D.Double(x, y, w, h));
 	}
 	
 	/**
@@ -289,7 +289,7 @@ public class ImageGraphics implements AutoCloseable {
 			p.lineTo(points[i].getX(), points[i].getY());
 		}
 		p.closePath();
-		g.draw(p);
+		g2.draw(p);
 	}
 	
 	// stroke-related methods -------------------------------------
@@ -303,7 +303,7 @@ public class ImageGraphics implements AutoCloseable {
 	 */
 	public void setColor(Color color) {
 		this.color = color;
-		g.setColor(color);
+		g2.setColor(color);
 	}
 	
 	/**
@@ -324,7 +324,7 @@ public class ImageGraphics implements AutoCloseable {
 	 */
 	public void setStroke(BasicStroke stroke) {
 		this.stroke = stroke;
-		g.setStroke(this.stroke);
+		g2.setStroke(this.stroke);
 	}
 	
 	/**
@@ -335,7 +335,7 @@ public class ImageGraphics implements AutoCloseable {
 	 */
 	public void setLineWidth(double width) {
 		this.stroke = new BasicStroke((float)width, stroke.getEndCap(), stroke.getLineJoin());
-		g.setStroke(this.stroke);
+		g2.setStroke(this.stroke);
 	}
 	
 	/**
