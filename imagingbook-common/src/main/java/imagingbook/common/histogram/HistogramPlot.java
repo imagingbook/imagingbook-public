@@ -54,21 +54,21 @@ public class HistogramPlot {
 	void createHistogramImage(String title) {
 		if (title == null)
 			title = "Histogram Plot";
-		hist_img  = NewImage.createByteImage(title,width,height,1,0);
+		hist_img = NewImage.createByteImage(title, width, height, 1, 0);
 		ip = hist_img.getProcessor();
-        ip.setValue(BACKGROUND);
-        ip.fill();
+		ip.setValue(BACKGROUND);
+		ip.fill();
 	}
 	
 	void draw() {
 		ip.setValue(0);
-		ip.drawLine(0,base,width-1,base);
+		ip.drawLine(0, base, width - 1, base);
 		ip.setValue(paintValue);
 		int u = 0;
-		for (int i=0; i<H.length; i++) {
+		for (int i = 0; i < H.length; i++) {
 			int k = H[i];
-			if (k > 0){
-			ip.drawLine(u, base-1, u, base-k);
+			if (k > 0) {
+				ip.drawLine(u, base - 1, u, base - k);
 			}
 			u = u + 1;
 		}

@@ -9,6 +9,8 @@
 
 package imagingbook.common.histogram;
 
+// TODO: needs revision, histogram should get its own class.
+
 public class Util {
 
 	static int[] makeGaussianHistogram () {

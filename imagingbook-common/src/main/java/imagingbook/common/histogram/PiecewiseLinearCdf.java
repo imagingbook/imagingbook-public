@@ -9,11 +9,24 @@
 
 package imagingbook.common.histogram;
 
+/**
+ * Represents a "cumulative distribution function" that is piecewise linear.
+ * @author WB
+ *
+ */
 public class PiecewiseLinearCdf {
 	private int K;
 	private int[] iArr;
 	private double[] pArr;
 	
+	/**
+	 * Constructor creating a {@link PiecewiseLinearCdf} from a sequence of 
+	 * brightness / probability pairs.
+	 * 
+	 * @param K number of brightness values (typ. 256)
+	 * @param ik a sequence of brightness values serving as control points
+	 * @param Pk a sequence of probability values, one for each control point
+	 */
 	public PiecewiseLinearCdf(int K, int[] ik, double[] Pk) {
 		this.K = K; // number of intensity values (typ. 256)
 		int N = ik.length;

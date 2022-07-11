@@ -39,7 +39,7 @@ public class HistogramMatcher {
 	public int[] matchHistograms(int[] hA, PiecewiseLinearCdf PR) {
 		int K = hA.length;
 		double[] PA = Util.Cdf(hA); // get p.d.f. of histogram Ha
-		int[] F = new int[K]; // pixel mapping function f()
+		int[] F = new int[K]; 		// pixel mapping function f()
 
 		// compute pixel mapping function f():
 		for (int a = 0; a < K; a++) {
