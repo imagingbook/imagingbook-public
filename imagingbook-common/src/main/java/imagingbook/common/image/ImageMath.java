@@ -11,20 +11,15 @@ package imagingbook.common.image;
 import ij.process.Blitter;
 import ij.process.ImageProcessor;
 
-
 /**
- * This class provides some static utility methods for ImageJ's ImageProcessors.
+ * This class defines static methods for non-destructive, arithmetic operations on ImageJ's 
+ * {@link ImageProcessor} objects.
  * Unlike the built-in {@link ImageProcessor} methods, the methods below
  * return new images and keep the original images unmodified.
  * 
  * @version 2013/08/23: static methods converted to use generics.
  */
 public abstract class ImageMath {
-	
-//	public static FloatProcessor sqr(FloatProcessor fp) {
-//		fp.sqr();
-//		return fp;
-//	}
 	
 	public static <T extends ImageProcessor> T abs(T ip) {
 		@SuppressWarnings("unchecked")
