@@ -9,6 +9,7 @@
 package imagingbook.common.geometry.moments;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import imagingbook.common.geometry.basic.Pnt2d;
@@ -59,60 +60,65 @@ public abstract class Moments2D {
 	}
 
 
-	public static void main(String[] args) {
-//		double s = 1.0;
-
-		List<Pnt2d> pts = new ArrayList<>();
-		pts.add(Pnt2d.from(10, 15));
-		pts.add(Pnt2d.from(3, 7));
-		pts.add(Pnt2d.from(-1, 5));
-		pts.add(Pnt2d.from(-1, 5));
-		
-//		Pnt2d[] points = pts.toArray(new Pnt2d[0]);
-//		System.out.println("set size = " + points.length);
-		Iterable<Pnt2d> points = pts;
-
-		System.out.println("Ordinary moments:");
-		System.out.println("m00 = " + ordinaryMoment(points, 0, 0));
-		System.out.println("m10 = " + ordinaryMoment(points, 1, 0));
-		System.out.println("m01 = " + ordinaryMoment(points, 0, 1));
-		System.out.println("m11 = " + ordinaryMoment(points, 1, 1));
-		System.out.println("m20 = " + ordinaryMoment(points, 2, 0));
-		System.out.println("m02 = " + ordinaryMoment(points, 0, 2));
-
-		double a = ordinaryMoment(points, 0, 0);
-		System.out.println("a = " + a);
-		System.out.println("xc = " + (ordinaryMoment(points, 1, 0) / a));
-		System.out.println("yc = " + (ordinaryMoment(points, 0, 1) / a));	
-
-		System.out.println("Central moments:");
-		System.out.println("mu10 = " + centralMoment(points, 1, 0));
-		System.out.println("mu01 = " + centralMoment(points, 0, 1));
-		System.out.println("mu11 = " + centralMoment(points, 1, 1));
-		System.out.println("mu20 = " + centralMoment(points, 2, 0));
-		System.out.println("mu02 = " + centralMoment(points, 0, 2));
-		
-		System.out.println("Normalized central moments:");
-		System.out.println("nu10 = " + normalizedCentralMoment(points, 1, 0));
-		System.out.println("nu01 = " + normalizedCentralMoment(points, 0, 1));
-		System.out.println("nu11 = " + normalizedCentralMoment(points, 1, 1));
-		System.out.println("nu20 = " + normalizedCentralMoment(points, 2, 0));
-		System.out.println("nu02 = " + normalizedCentralMoment(points, 0, 2));
-	}
+//	public static void main(String[] args) {
+//
+//		List<Pnt2d> points = Arrays.asList(
+//				Pnt2d.from(10, 15), 
+//				Pnt2d.from(3, 7), 
+//				Pnt2d.from(-1, 5), 
+//				Pnt2d.from(-1, 5));
+//
+//		System.out.println("Ordinary moments:");
+//		System.out.println("m00 = " + ordinaryMoment(points, 0, 0));
+//		System.out.println("m10 = " + ordinaryMoment(points, 1, 0));
+//		System.out.println("m01 = " + ordinaryMoment(points, 0, 1));
+//		System.out.println("m11 = " + ordinaryMoment(points, 1, 1));
+//		System.out.println("m20 = " + ordinaryMoment(points, 2, 0));
+//		System.out.println("m02 = " + ordinaryMoment(points, 0, 2));
+//
+//		double a = ordinaryMoment(points, 0, 0);
+//		System.out.println("a = " + a);
+//		System.out.println("xc = " + (ordinaryMoment(points, 1, 0) / a));
+//		System.out.println("yc = " + (ordinaryMoment(points, 0, 1) / a));	
+//
+//		System.out.println("Central moments:");
+//		System.out.println("mu10 = " + centralMoment(points, 1, 0));
+//		System.out.println("mu01 = " + centralMoment(points, 0, 1));
+//		System.out.println("mu11 = " + centralMoment(points, 1, 1));
+//		System.out.println("mu20 = " + centralMoment(points, 2, 0));
+//		System.out.println("mu02 = " + centralMoment(points, 0, 2));
+//
+//		System.out.println("Normalized central moments:");
+//		System.out.println("nu10 = " + normalizedCentralMoment(points, 1, 0));
+//		System.out.println("nu01 = " + normalizedCentralMoment(points, 0, 1));
+//		System.out.println("nu11 = " + normalizedCentralMoment(points, 1, 1));
+//		System.out.println("nu20 = " + normalizedCentralMoment(points, 2, 0));
+//		System.out.println("nu02 = " + normalizedCentralMoment(points, 0, 2));
+//	}
 
 }
 
 /*
-set size = 4
+Ordinary moments:
 m00 = 4.0
 m10 = 11.0
 m01 = 32.0
+m11 = 161.0
+m20 = 111.0
+m02 = 324.0
 a = 4.0
 xc = 2.75
 yc = 8.0
+Central moments:
 mu10 = 0.0
 mu01 = 0.0
 mu11 = 73.0
 mu20 = 80.75
 mu02 = 68.0
+Normalized central moments:
+nu10 = 0.0
+nu01 = 0.0
+nu11 = 4.5625
+nu20 = 5.046875
+nu02 = 4.25
  */
