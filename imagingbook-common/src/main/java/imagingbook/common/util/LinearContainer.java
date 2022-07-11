@@ -16,7 +16,7 @@ import java.util.Iterator;
 /**
  * This class implements a 1D map for arbitrary objects
  * with flexible bottom and top index,
- * similar to an array in Pascal. Containers are immutable.
+ * similar to an array in Pascal. Containers are immutable (apart from element values).
  */
 public class LinearContainer<T> implements Iterable<T> {
 	
@@ -50,6 +50,7 @@ public class LinearContainer<T> implements Iterable<T> {
 	}
 	
 	public T getElement(int k) {
+		// TODO: check for out-of-bounds index k
 		return data[k - botIndex];
 	}
 	
