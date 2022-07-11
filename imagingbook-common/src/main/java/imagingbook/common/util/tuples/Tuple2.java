@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.tuples;
+package imagingbook.common.util.tuples;
 
 /**
  * A tuple with exactly 2 elements of arbitrary types.

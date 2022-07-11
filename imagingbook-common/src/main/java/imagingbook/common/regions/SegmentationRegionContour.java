@@ -22,7 +22,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.regions.segment.BinaryRegionSegmentation;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 import imagingbook.common.regions.segment.SegmentationBackedRegion;
-import imagingbook.common.tuples.Tuple2;
+import imagingbook.common.util.tuples.Tuple2;
 
 /**
  * Binary region segmenter based on a combined region labeling

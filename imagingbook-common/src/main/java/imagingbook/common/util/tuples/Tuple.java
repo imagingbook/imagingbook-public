@@ -6,9 +6,10 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.tuples;
+package imagingbook.common.util.tuples;
 
 /**
+ * <p>
  * Elementary implementation of tuples, i.e, ordered sequences
  * of items of arbitrary types.
  * Tuples are generally immutable and their main use is to get methods
@@ -16,10 +17,14 @@ package imagingbook.common.tuples;
  * A concrete tuple class is defined for
  * each "arity", e.g., {@link Tuple2} for 2 elements.
  * Currently tuple classes for 2, 3 and 4 elements are defined.
- * <br>
+ * </p>
+ * <p>
  * A tuple may be instantiated using either the class constructor, e.g.,
+ * </p>
  * <pre>new Tuple2&lt;Integer, String&gt;(10, "Foo")</pre>
- * or the associated static method 
+ * <p>
+ * or the associated static method
+ * </p>
  * <pre>Tuple2.of(10, "Foo")</pre>
  * Individual tuple elements can be accessed (read-only) by the associated
  * field names, e.g. {@code f0}, {@code f1} ... etc.
