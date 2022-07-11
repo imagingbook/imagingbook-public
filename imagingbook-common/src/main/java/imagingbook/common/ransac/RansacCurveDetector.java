@@ -27,7 +27,7 @@ import imagingbook.common.util.ParameterBundle;
  * @see RansacDetectorEllipse
  * @see Curve2d
  *
- * @param <T> primitive type
+ * @param <T> generic type extending {@link Curve2d}
  */
 public abstract class RansacCurveDetector<T extends Curve2d> {
 	
