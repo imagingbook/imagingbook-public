@@ -13,7 +13,6 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fitting.AffineFit2D;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
 /**
  * This class represents an affine transformation in 2D, which can be defined 
