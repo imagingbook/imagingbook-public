@@ -31,8 +31,8 @@ public class ImageTestUtils {
 	}
 	
 	public static boolean match(ImageProcessor ip1, ImageProcessor ip2, double tolerance) {
-		assertTrue("images are of different type", IjUtils.sameType(ip1, ip2));
-		assertTrue("images are of different size", IjUtils.sameSize(ip1, ip2));
+		assertTrue("images ip1, ip2 must be of same type", IjUtils.sameType(ip1, ip2));
+		assertTrue("images ip1, ip2 must be of same size", IjUtils.sameSize(ip1, ip2));
 		int width = ip1.getWidth();
 		int height = ip1.getHeight();
 		
