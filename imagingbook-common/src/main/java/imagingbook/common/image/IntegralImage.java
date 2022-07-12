@@ -92,13 +92,16 @@ public class IntegralImage {
 	
 	/**
 	 * Calculates the sum of the pixel values in the rectangle
-	 * R, specified by the corner points a = (ua, va) and b = (b1, vb).
+	 * R, specified by the corner points a = (ua, va) and b = (ub, vb).
+	 * TODO: allow coordinates outside image boundaries
+	 * 
 	 * @param ua leftmost position in R
 	 * @param va top position in R
 	 * @param ub rightmost position in R
 	 * @param vb bottom position in R
 	 * @return the first-order block sum (S1(R)) inside the specified rectangle 
 	 * or zero if the rectangle is empty.
+	 * 
 	 */
 	public long getBlockSum1(int ua, int va, int ub, int vb) {
 		if (ub < ua || vb < va) {
@@ -113,7 +116,9 @@ public class IntegralImage {
 	
 	/**
 	 * Calculates the sum of the squared pixel values in the rectangle
-	 * R, specified by the corner points a = (ua, va) and b = (b1, vb).
+	 * R, specified by the corner points a = (ua, va) and b = (ub, vb).
+	 * TODO: allow coordinates outside image boundaries
+	 * 
 	 * @param ua leftmost position in R
 	 * @param va top position in R
 	 * @param ub rightmost position in R
@@ -158,8 +163,7 @@ public class IntegralImage {
 		if (size <= 0) {
 			throw new IllegalArgumentException("region size must be positive");
 		}
-		double S1 = getBlockSum1(ua, va, ub, vb);
-		return S1 / size;
+		return getBlockSum1(ua, va, ub, vb) / size;
 	}
 	
 	/**
@@ -176,9 +180,9 @@ public class IntegralImage {
 		if (size <= 0) {
 			throw new IllegalArgumentException("region size must be positive");
 		}
-		double S1 = getBlockSum1(ua, va, ub, vb);
-		double S2 = getBlockSum2(ua, va, ub, vb);
-		return (S2 - (S1 * S1) / size) / size;
+		double s1 = getBlockSum1(ua, va, ub, vb);
+		double s2 = getBlockSum2(ua, va, ub, vb);
+		return (s2 - (s1 * s1) / size) / size;
 	}
 
 }

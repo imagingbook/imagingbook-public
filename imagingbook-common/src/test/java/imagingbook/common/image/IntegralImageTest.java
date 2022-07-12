@@ -26,19 +26,22 @@ public class IntegralImageTest {
 		int width = bp.getWidth();
 		int height = bp.getHeight();
 		
-		// check sums over all single-pixel blocks (size = 1):
+		// check sums over all single-pixel blocks 
 		for (int u = 0; u < width; u++) {
 			for (int v = 0; v < height; v++) {
-				assertEquals(1, iim.getSize(u, v, u, v));
 				
+				// single pixel rectangle (size = 1):
+				assertEquals(1, iim.getSize(u, v, u, v));
 				assertEquals(bp.get(u, v), iim.getBlockSum1(u, v, u, v));
 				assertEquals(sqr(bp.get(u, v)), iim.getBlockSum2(u, v, u, v));
 				
+				// empty rectangle
 				assertEquals(0, iim.getBlockSum1(u, v, u - 1, v));
 				assertEquals(0, iim.getBlockSum1(u, v, u, v - 1));
 				assertEquals(0, iim.getBlockSum2(u, v, u - 1, v));
 				assertEquals(0, iim.getBlockSum2(u, v, u, v - 1));
 				
+				// 0 outside first quadrant
 				assertEquals(iim.getBlockSum1(0, 0, u, v), iim.getBlockSum1(-10, -99, u, v));
 				assertEquals(iim.getBlockSum2(0, 0, u, v), iim.getBlockSum2(-10, -99, u, v));
 				
