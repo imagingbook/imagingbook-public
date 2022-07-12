@@ -66,14 +66,14 @@ public class PixelPack {
 	}
 	
 	/**
-	 * Creates a pack of pixel data from the given 
+	 * Constructor. Creates a pack of pixel data from the given 
 	 * {@link ImageProcessor} object, using the specified out-of-bounds strategy.
 	 * @param ip the source image
 	 * @param obs the strategy to be used when reading from out-of-bounds coordinates
 	 */
 	public PixelPack(ImageProcessor ip, OutOfBoundsStrategy obs) {
 		this(ip.getWidth(), ip.getHeight(), ip.getNChannels(), obs);
-		copyFromImageProcessor(ip, this);
+		copyFromImageProcessor(ip);
 	}
 	
 	/**
@@ -455,53 +455,49 @@ public class PixelPack {
 	 * @param ip the image processor to be copied
 	 * @param pack the receiving pixel pack
 	 */
-	public static void copyFromImageProcessor(ImageProcessor ip, PixelPack pack) {
-		if (!pack.isCompatibleTo(ip) ){
+	public void copyFromImageProcessor(ImageProcessor ip) {
+		if (!isCompatibleTo(ip) ){
 			throw new IllegalArgumentException("copyFromImageProcessor(): incompatible ImageProcessor/PixelPack)");
 		}
 		if (ip instanceof ByteProcessor)
-			copyFromByteProcessor((ByteProcessor)ip, pack);
+			copyFromByteProcessor((ByteProcessor)ip);
 		else if (ip instanceof ShortProcessor)
-			copyFromShortProcessor((ShortProcessor)ip, pack);
+			copyFromShortProcessor((ShortProcessor)ip);
 		else if (ip instanceof FloatProcessor)
-			copyFromFloatProcessor((FloatProcessor)ip, pack);
+			copyFromFloatProcessor((FloatProcessor)ip);
 		else if (ip instanceof ColorProcessor)
-			copyFromColorProcessor((ColorProcessor)ip, pack);
+			copyFromColorProcessor((ColorProcessor)ip);
 		else 
 			throw new IllegalArgumentException("unknown processor type " + ip.getClass().getSimpleName());
 	}
 	
-	private static void copyFromByteProcessor(ByteProcessor ip, PixelPack pack) {
-		final float[][] P = pack.data;
+	private void copyFromByteProcessor(ByteProcessor ip) {
 		byte[] pixels = (byte[]) ip.getPixels();
 		for (int i = 0; i < pixels.length; i++) {
-			P[0][i] = 0xff & pixels[i];
+			data[0][i] = 0xff & pixels[i];
 		}
 	}
 	
-	private static void copyFromShortProcessor(ShortProcessor ip, PixelPack pack) {
-		final float[][] P = pack.data;
+	private void copyFromShortProcessor(ShortProcessor ip) {
 		short[] pixels = (short[]) ip.getPixels();
 		for (int i = 0; i < pixels.length; i++) {
-			P[0][i] = 0xffff & pixels[i];
+			data[0][i] = 0xffff & pixels[i];
 		}
 	}
 	
-	private static void copyFromFloatProcessor(FloatProcessor ip, PixelPack pack) {
-		final float[][] P = pack.data;
+	private void copyFromFloatProcessor(FloatProcessor ip) {
 		float[] pixels = (float[]) ip.getPixels();
-		System.arraycopy(pixels, 0, P[0], 0, pixels.length);
+		System.arraycopy(pixels, 0, data[0], 0, pixels.length);
 	}
 	
-	private static void copyFromColorProcessor(ColorProcessor ip, PixelPack pack) {
-		final float[][] P = pack.data;
+	private void copyFromColorProcessor(ColorProcessor ip) {
 		final int[] pixels = (int[]) ip.getPixels();
 		final int[] rgb = new int[3];
 		for (int i = 0; i < pixels.length; i++) {
 			RgbUtils.intToRgb(pixels[i], rgb);
-			P[0][i] = rgb[0];
-			P[1][i] = rgb[1];
-			P[2][i] = rgb[2];
+			data[0][i] = rgb[0];
+			data[1][i] = rgb[1];
+			data[2][i] = rgb[2];
 		}
 	}
 	
