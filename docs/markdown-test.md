@@ -27,4 +27,4 @@ try (ProgressMonitor m = new ProgressBarMonitor(filter)) {
 
 When $a \ne 0$, there are two solutions to $(ax^2 + bx + c = 0)$ and they are 
 $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}$$
-Note that NO space or newline may be inserted after `$$` in display mode.
+Note that NO space or newline is allowed after `$$` in display mode.
