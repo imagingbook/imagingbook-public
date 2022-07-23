@@ -1,5 +1,9 @@
 # Testing Various Markdown Features
 
+## Link to another page
+
+Example: `[Markdown tests](docs/markdown-test.md)`<br>
+[Link to README.md](../README.md)
 
 ## Including Images
 
