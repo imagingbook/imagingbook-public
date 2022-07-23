@@ -32,6 +32,8 @@ Note that NO space or newline is allowed after `$$` in display mode.
 ## Fotnotes (references)
 
 You can also use words, to fit your writing style more closely.[^BurgerBurge2022][^Foo]
+There may be problems though![^problem]
 
 [^BurgerBurge2022]: W. Burger, M.J. Burge, "Digital Image Processing", 3rd ed., Springer (2022).
 [^Foo]: Some other reference.
+[^problem]: https://stackoverflow.com/questions/69995853/github-pages-footnotes-not-working-on-site-but-they-are-working-in-preview
