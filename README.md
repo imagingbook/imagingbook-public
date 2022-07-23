@@ -74,3 +74,6 @@ JAR files from stable release versions can be found at [Maven Central](https://m
 * **[imagingbook-calibrate](https://github.com/imagingbook/imagingbook-calibrate)**: Implementation of Zhang's camera calibration scheme.
 * **[imagingbook-violajones](https://github.com/imagingbook/imagingbook-violajones)**: Implementation of Viola-Jones face detection.
 
+## Tests
+
+* [Markdown tests](docs/markdown-test.md)
