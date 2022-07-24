@@ -10,8 +10,11 @@ Example: `[Markdown tests](docs/markdown-test.md)`<br>
 Size specifications are ignored in Github markdown:<br>
 ![boats image](img/boats.png)
 
-Use of plain HTLM works OK:<br>
+Size settings with plain HTLM work OK:<br>
 <img src="img/boats.png" width="375">
+
+Centered image required deprecated `align="center"` HTML tag:<br>
+<p align="center" width="100%"><img src="img/boats.png" width="375"></p>
 
 ## Java Syntax Highlighting
 
