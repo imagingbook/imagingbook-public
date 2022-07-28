@@ -52,7 +52,6 @@ public class DirectoryWalker {
 	 * @return A list of file names.
 	 */
 	public Collection<String> collectFiles(String startDir) {
-//		DirectoryWalker walker = new DirectoryWalker(extensions);
 		try {
 			this.traverse(Paths.get(startDir));
 		} catch (IOException e) { }

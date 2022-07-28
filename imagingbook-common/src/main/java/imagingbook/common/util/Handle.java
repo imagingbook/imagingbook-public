@@ -42,34 +42,50 @@ package imagingbook.common.util;
 public class Handle<T> {
 	
 	private T obj;
-		
+	
+	/**
+	 * Constructor. Creates a {@link Handle} with a reference to the specified 
+	 * object.
+	 * 
+	 * @param obj the object the handle should reference
+	 */
 	public Handle(T obj) {
 		this.obj = obj;
 	}
 	
+	/**
+	 * Returns the object referenced by this handle.
+	 * @return the referenced object
+	 */
 	public T get() {
 		return this.obj;
 	}
 	
+	/**
+	 * Sets (replaces) the object referenced by this handle.
+	 * @param obj the referenced object
+	 */
 	public void set(T obj) {
 		this.obj = obj;
 	}
 	
+	/**
+	 * Static convenience method. Creates a {@link Handle} with a reference to the specified 
+	 * object.
+	 * @param <T> type parameter
+	 * @param obj the object referenced
+	 * @return a new handle
+	 */
 	public static <T> Handle<T> of(T obj) {
 		return new Handle<T>(obj);
 	}
 	
 	// ---------------------------------------------
 	
-	private static void foo(Handle<Integer> h) {
-		h.set(33);
-	}
-
-	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		Handle<Integer> a1 = Handle.of(10);
-		Handle<Integer> a2 = Handle.<Integer>of(15);
+		Handle<Integer> a1 = Handle.<Integer>of(10);
+		Handle<Integer> a2 = Handle.of(15);
 		
 		Handle<Double> b = new Handle<>(10.0);
 		Handle<String> s = Handle.of("prima!");
@@ -80,6 +96,10 @@ public class Handle<T> {
 		foo(a1);
 		System.out.println("modified a = " + a1.get());
 	}
-
+	
+	// call by reference
+	private static void foo(Handle<Integer> h) {
+		h.set(33);
+	}
 
 }

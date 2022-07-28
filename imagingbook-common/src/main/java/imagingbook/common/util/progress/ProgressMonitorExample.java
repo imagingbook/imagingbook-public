@@ -8,34 +8,45 @@
  *******************************************************************************/
 package imagingbook.common.util.progress;
 
-final class ProgressMonitorExample implements ProgressReporter {
-	
-	int iter = 0;
-	int iterMax = 100;
-	
-	@Override
-	public double getProgress() {
-		return (double) iter / iterMax;
-	}
-	
-	/**
-	 * The task (slow process) to be monitored.
-	 */
-	protected void run() {
-		for (iter = 0; iter < iterMax; iter++) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {}
-		}
-	}
+/**
+ * A simple example for how to use {@link ProgressReporter} and
+ * {@link ProgressMonitor}.
+ *
+ */
+public class ProgressMonitorExample {
 	
 	public static void main(String[] args) {
-		ProgressMonitorExample reporter = new ProgressMonitorExample();
-		try (ProgressMonitor monitor = new MyProcessMonitor(reporter)) {	// uses autoStart
-			reporter.run();	// the task to be monitored
+		SlowProcess process = new SlowProcess();
+		try (ProgressMonitor monitor = new MyProcessMonitor(process)) {	// uses autoStart
+			monitor.setWaitTime(200); 	// monitor progress every 200 ms
+			process.run();				// the task to be monitored
 		}
 		System.out.println("done.");
 
+	}
+	
+	// --------------------------------------------------------------
+	
+	/**
+	 * The task to be monitored (slow process).
+	 */
+	static class SlowProcess implements ProgressReporter {
+		
+		int iter = 0;
+		int iterMax = 100;
+		
+		@Override
+		public double getProgress() {
+			return (double) iter / iterMax;
+		}
+		
+		protected void run() {
+			for (iter = 0; iter < iterMax; iter++) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {}
+			}
+		}
 	}
 
 	// --------------------------------------------------------------

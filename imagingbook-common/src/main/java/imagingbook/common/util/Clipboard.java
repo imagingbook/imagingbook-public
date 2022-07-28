@@ -14,29 +14,36 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 
 /** 
- * Methods from
+ * Clipboard-related methods from
  * http://examples.javacodegeeks.com/desktop-java/awt/datatransfer/getting-and-setting-text-on-the-system-clipboard/
- * @author wilbur
+ * 
+ * @author WB
  */
 
 public abstract class Clipboard {
 	
-	// This method writes a string to the clipboard. 
-	public static void copyStringToClipboard(String text) {
-		StringSelection stringSelection = new StringSelection(text);
+	/**
+	 * Writes a string to the system clipboard.
+	 * @param str some string
+	 */
+	public static void copyStringToClipboard(String str) {
+		StringSelection stringSelection = new StringSelection(str);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);  
 	} 
 
-	// If a string is on the system clipboard, this method returns it; otherwise it returns null.
+	/**
+	 * If a string is on the system clipboard, this method returns it; otherwise it returns null.
+	 * @return the clipboard string or null
+	 */
 	public static String getStringFromClipboard() { 
-		String text = null;
+		String str = null;
 		Transferable trf = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null); 
 		if (trf != null && trf.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
-				text = (String) trf.getTransferData(DataFlavor.stringFlavor);
+				str = (String) trf.getTransferData(DataFlavor.stringFlavor);
 			}  catch (Exception e) {};
 		}
-		return text; 
+		return str; 
 	}
 
 }

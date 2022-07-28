@@ -15,7 +15,7 @@ public abstract class ArrayUtils {
 	 * @param arr an array of non-primitive type
 	 * @return the number of non-null elements
 	 */
-	public static int countElements(Object[] arr) {
+	public static int countNonNullElements(Object[] arr) {
 		int cnt = 0;
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i] != null) {

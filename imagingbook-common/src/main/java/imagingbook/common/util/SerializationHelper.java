@@ -22,17 +22,17 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 /**
- * Helper class providing simple static methods for writing/reading
+ * Helper class providing static methods for writing/reading
  * serialized data to/from files. It is recommended to serialize
  * only data structures composed of standard Java types.
  * Otherwise, if self-defined classes are reloaded, classes of 
  * previously serialized objects may not match any more, causing
- * a ClassNotFoundException to be thrown.
+ * a {@link ClassNotFoundException} to be thrown.
  * 
  * @author WB
- * @version 2018/04/03
+ * @version 2022/07/28
  */
-public class SerializationHelper {
+public abstract class SerializationHelper {
 	
 	// This class is not supposed to be instantiated.
 	private SerializationHelper() {
@@ -40,24 +40,10 @@ public class SerializationHelper {
 	
 	/**
 	 * Writes a serialized representation of an arbitrary Java object to 
-	 * a file. Make sure the serialized object is composed of standard Java types 
-	 * only to avoid class loader problems.
-	 * @param obj The object to be serialized.
-	 * @param fileName The file to write to.
-	 * @return The full path of the written file.
-	 * @deprecated
-	 */
-	public static String writeObject(Object obj, String fileName) {
-		File file = new File(fileName);
-		return writeObject(obj, file);
-	}
-	
-	/**
-	 * Writes a serialized representation of an arbitrary Java object to 
 	 * a file.
-	 * @param obj The object to be serialized.
-	 * @param file The file to write to.
-	 * @return The full path of the written file.
+	 * @param obj the object to be serialized.
+	 * @param file the file to write to.
+	 * @return the full path of the written file.
 	 */
 	public static String writeObject(Object obj, File file) {
 		String path = file.getAbsolutePath();
@@ -72,27 +58,13 @@ public class SerializationHelper {
 		}
 		return path;
 	}
-	
-	/**
-	 * Reads an object (of known type) from a serialization file.
-	 * The return value must be cast to the appropriate type, which
-	 * must be known.
-	 * @param fileName The file containing serialized data.
-	 * @return The object reconstructed from the file representation or null if unsuccessful.
-	 * @deprecated
-	 */
-	public static Object readObject(String fileName) {
-		File file = new File(fileName);
-		return readObject(file);
-	}
-	
 
 	/**
-	 * Reads an object (of known type) from a serialization file.
+	 * Reads an object from a serialization file.
 	 * The return value must be cast to the appropriate type, which
 	 * must be known.
-	 * @param file The file to read.
-	 * @return The object reconstructed from the file representation or null if unsuccessful.
+	 * @param file the file to read.
+	 * @return the object reconstructed from the file representation or null if unsuccessful.
 	 */
 	public static Object readObject(File file) {
 		Object obj = null;

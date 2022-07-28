@@ -52,6 +52,7 @@ public abstract class Enums {
 		}
 		return eNames;
 	}
+	
 //	public static String[] getEnumNames(Class<? extends Enum<?>> enumclass) {
 //		Enum<?>[] eConstants = enumclass.getEnumConstants();
 //		String[] eNames = new String[eConstants.length];

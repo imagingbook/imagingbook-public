@@ -11,8 +11,6 @@ package imagingbook.common.util;
 
 import java.util.Iterator;
 
-//import java.util.Iterator;
-
 /**
  * This class implements a 1D map for arbitrary objects
  * with flexible bottom and top index,
@@ -49,24 +47,43 @@ public class LinearContainer<T> implements Iterable<T> {
 		data = (T[]) new Object[n];
 	}
 	
+	/**
+	 * Returns the k-th element of this container.
+	 * @param k the element index
+	 * @return the k-th element
+	 */
 	public T getElement(int k) {
 		// TODO: check for out-of-bounds index k
 		return data[k - botIndex];
 	}
 	
+	/**
+	 * Sets (replaces) the k-th element of this container.
+	 * @param k the element index
+	 * @param elem the new element
+	 */
 	public void setElement(int k, T elem) {
 		// TODO: check for out-of-bounds index k
 		data[k - botIndex] = elem;
 	}
 
+	/**
+	 * Returns the bottom index of this container.
+	 * @return the bottom index
+	 */
 	public int getBotIndex() {
 		return botIndex;
 	}
 	
+	/**
+	 * Returns the top index of this container.
+	 * @return the top index
+	 */
 	public int getTopIndex() {
 		return topIndex;
 	}
 
+	@Override
 	public Iterator<T> iterator() {
 		return new ArrayIterator<T>(data);
 	}

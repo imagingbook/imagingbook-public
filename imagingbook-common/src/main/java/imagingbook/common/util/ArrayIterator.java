@@ -14,32 +14,41 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * This utility class implements a basic iterator for arbitrary arrays.
+ * This class implements a simple iterator for arbitrary arrays.
  * Does not care about array elements being null.
  * 
  * TODO: skip null elements
  */
 public class ArrayIterator<T> implements Iterator<T> {
 
+	private final T[] data;
 	private int next;
-	private T[] data;
 
+	/**
+	 * Constructor.
+	 * @param data the array to be iterated
+	 */
 	public ArrayIterator(T[] data) {
 		this.data = data;
 		next = 0;
 	}
 
+	@Override
 	public boolean hasNext() {
 		return next < data.length;
 	}
 
+	@Override
 	public T next() {
-		if (hasNext())
+		if (hasNext()) {
 			return data[next++];
-		else
+		}
+		else {
 			throw new NoSuchElementException();
+		}
 	}
 
+	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
 	}

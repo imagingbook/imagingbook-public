@@ -37,7 +37,7 @@ import ij.gui.GenericDialog;
  * added in the future.
  * 
  * <pre>
- * // Example parameter bundle:
+ * // Sample parameter bundle:
  * 
  * enum MyEnum { A, B, Cee };
  * 

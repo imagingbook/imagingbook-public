@@ -34,6 +34,7 @@ public class PrintsToStreamTest {
 			strm.format("name=%s x=%d y=%d", name, x, y);
 		}
 		
+		@Override
 		public String toString() {
 			return this.printToString();
 		}
