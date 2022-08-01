@@ -62,65 +62,64 @@
 <span class="sourceLineNo">052</span><a id="line.52">         * @return A list of file names.</a>
 <span class="sourceLineNo">053</span><a id="line.53">         */</a>
 <span class="sourceLineNo">054</span><a id="line.54">        public Collection&lt;String&gt; collectFiles(String startDir) {</a>
-<span class="sourceLineNo">055</span><a id="line.55">//              DirectoryWalker walker = new DirectoryWalker(extensions);</a>
-<span class="sourceLineNo">056</span><a id="line.56">                try {</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        this.traverse(Paths.get(startDir));</a>
-<span class="sourceLineNo">058</span><a id="line.58">                } catch (IOException e) { }</a>
-<span class="sourceLineNo">059</span><a id="line.59">                return this.fileList;</a>
-<span class="sourceLineNo">060</span><a id="line.60">        }</a>
-<span class="sourceLineNo">061</span><a id="line.61">        </a>
-<span class="sourceLineNo">062</span><a id="line.62">        /**</a>
-<span class="sourceLineNo">063</span><a id="line.63">         * Traverses the directory tree and collects all matching file names.</a>
-<span class="sourceLineNo">064</span><a id="line.64">         * TODO: clean up exception handling.</a>
-<span class="sourceLineNo">065</span><a id="line.65">         * </a>
-<span class="sourceLineNo">066</span><a id="line.66">         * @param startDir start directory</a>
-<span class="sourceLineNo">067</span><a id="line.67">         * @throws IOException</a>
-<span class="sourceLineNo">068</span><a id="line.68">         */</a>
-<span class="sourceLineNo">069</span><a id="line.69">        private void traverse(Path startDir) throws IOException {</a>
-<span class="sourceLineNo">070</span><a id="line.70">                Files.walkFileTree(startDir, new SimpleFileVisitor&lt;Path&gt;() {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                        @Override</a>
-<span class="sourceLineNo">072</span><a id="line.72">                        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {</a>
-<span class="sourceLineNo">073</span><a id="line.73">                                String pathName = file.toString();</a>
-<span class="sourceLineNo">074</span><a id="line.74">                                if (hasMatchingExtension(pathName)) {</a>
-<span class="sourceLineNo">075</span><a id="line.75">                                        fileList.add(pathName);</a>
-<span class="sourceLineNo">076</span><a id="line.76">                                        // System.out.println("added file " + file.toString());</a>
-<span class="sourceLineNo">077</span><a id="line.77">                                }</a>
-<span class="sourceLineNo">078</span><a id="line.78">                                return FileVisitResult.CONTINUE;</a>
-<span class="sourceLineNo">079</span><a id="line.79">                        }</a>
-<span class="sourceLineNo">080</span><a id="line.80">                        @Override</a>
-<span class="sourceLineNo">081</span><a id="line.81">                        public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {</a>
-<span class="sourceLineNo">082</span><a id="line.82">                                if (e == null) {</a>
-<span class="sourceLineNo">083</span><a id="line.83">                                        //System.out.println("visiting " + dir.toString());</a>
-<span class="sourceLineNo">084</span><a id="line.84">                                        return FileVisitResult.CONTINUE;</a>
-<span class="sourceLineNo">085</span><a id="line.85">                                } else {</a>
-<span class="sourceLineNo">086</span><a id="line.86">                                        // directory iteration failed</a>
-<span class="sourceLineNo">087</span><a id="line.87">                                        throw e;</a>
-<span class="sourceLineNo">088</span><a id="line.88">                                }</a>
-<span class="sourceLineNo">089</span><a id="line.89">                        }</a>
-<span class="sourceLineNo">090</span><a id="line.90">                });</a>
-<span class="sourceLineNo">091</span><a id="line.91">        }</a>
-<span class="sourceLineNo">092</span><a id="line.92">        </a>
-<span class="sourceLineNo">093</span><a id="line.93">        /**</a>
-<span class="sourceLineNo">094</span><a id="line.94">         * Checks if the pathName has any of the specified extensions.</a>
-<span class="sourceLineNo">095</span><a id="line.95">         * This is case sensitive!</a>
-<span class="sourceLineNo">096</span><a id="line.96">         * </a>
-<span class="sourceLineNo">097</span><a id="line.97">         * @param pathName</a>
-<span class="sourceLineNo">098</span><a id="line.98">         * @return true if the path name matches one of the specified extensions</a>
-<span class="sourceLineNo">099</span><a id="line.99">         */</a>
-<span class="sourceLineNo">100</span><a id="line.100">        private boolean hasMatchingExtension(String pathName) {</a>
-<span class="sourceLineNo">101</span><a id="line.101">                if (extensions == null || extensions.length == 0)</a>
-<span class="sourceLineNo">102</span><a id="line.102">                        return true;</a>
-<span class="sourceLineNo">103</span><a id="line.103">                boolean result = false;</a>
-<span class="sourceLineNo">104</span><a id="line.104">                for (String s : extensions) {</a>
-<span class="sourceLineNo">105</span><a id="line.105">                        if (pathName.endsWith(s)) {</a>
-<span class="sourceLineNo">106</span><a id="line.106">                                result = true;</a>
-<span class="sourceLineNo">107</span><a id="line.107">                                break;</a>
-<span class="sourceLineNo">108</span><a id="line.108">                        }</a>
-<span class="sourceLineNo">109</span><a id="line.109">                }</a>
-<span class="sourceLineNo">110</span><a id="line.110">                return result;</a>
-<span class="sourceLineNo">111</span><a id="line.111">        }</a>
-<span class="sourceLineNo">112</span><a id="line.112"></a>
-<span class="sourceLineNo">113</span><a id="line.113">}</a>
+<span class="sourceLineNo">055</span><a id="line.55">                try {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                        this.traverse(Paths.get(startDir));</a>
+<span class="sourceLineNo">057</span><a id="line.57">                } catch (IOException e) { }</a>
+<span class="sourceLineNo">058</span><a id="line.58">                return this.fileList;</a>
+<span class="sourceLineNo">059</span><a id="line.59">        }</a>
+<span class="sourceLineNo">060</span><a id="line.60">        </a>
+<span class="sourceLineNo">061</span><a id="line.61">        /**</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * Traverses the directory tree and collects all matching file names.</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * TODO: clean up exception handling.</a>
+<span class="sourceLineNo">064</span><a id="line.64">         * </a>
+<span class="sourceLineNo">065</span><a id="line.65">         * @param startDir start directory</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * @throws IOException</a>
+<span class="sourceLineNo">067</span><a id="line.67">         */</a>
+<span class="sourceLineNo">068</span><a id="line.68">        private void traverse(Path startDir) throws IOException {</a>
+<span class="sourceLineNo">069</span><a id="line.69">                Files.walkFileTree(startDir, new SimpleFileVisitor&lt;Path&gt;() {</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        @Override</a>
+<span class="sourceLineNo">071</span><a id="line.71">                        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {</a>
+<span class="sourceLineNo">072</span><a id="line.72">                                String pathName = file.toString();</a>
+<span class="sourceLineNo">073</span><a id="line.73">                                if (hasMatchingExtension(pathName)) {</a>
+<span class="sourceLineNo">074</span><a id="line.74">                                        fileList.add(pathName);</a>
+<span class="sourceLineNo">075</span><a id="line.75">                                        // System.out.println("added file " + file.toString());</a>
+<span class="sourceLineNo">076</span><a id="line.76">                                }</a>
+<span class="sourceLineNo">077</span><a id="line.77">                                return FileVisitResult.CONTINUE;</a>
+<span class="sourceLineNo">078</span><a id="line.78">                        }</a>
+<span class="sourceLineNo">079</span><a id="line.79">                        @Override</a>
+<span class="sourceLineNo">080</span><a id="line.80">                        public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {</a>
+<span class="sourceLineNo">081</span><a id="line.81">                                if (e == null) {</a>
+<span class="sourceLineNo">082</span><a id="line.82">                                        //System.out.println("visiting " + dir.toString());</a>
+<span class="sourceLineNo">083</span><a id="line.83">                                        return FileVisitResult.CONTINUE;</a>
+<span class="sourceLineNo">084</span><a id="line.84">                                } else {</a>
+<span class="sourceLineNo">085</span><a id="line.85">                                        // directory iteration failed</a>
+<span class="sourceLineNo">086</span><a id="line.86">                                        throw e;</a>
+<span class="sourceLineNo">087</span><a id="line.87">                                }</a>
+<span class="sourceLineNo">088</span><a id="line.88">                        }</a>
+<span class="sourceLineNo">089</span><a id="line.89">                });</a>
+<span class="sourceLineNo">090</span><a id="line.90">        }</a>
+<span class="sourceLineNo">091</span><a id="line.91">        </a>
+<span class="sourceLineNo">092</span><a id="line.92">        /**</a>
+<span class="sourceLineNo">093</span><a id="line.93">         * Checks if the pathName has any of the specified extensions.</a>
+<span class="sourceLineNo">094</span><a id="line.94">         * This is case sensitive!</a>
+<span class="sourceLineNo">095</span><a id="line.95">         * </a>
+<span class="sourceLineNo">096</span><a id="line.96">         * @param pathName</a>
+<span class="sourceLineNo">097</span><a id="line.97">         * @return true if the path name matches one of the specified extensions</a>
+<span class="sourceLineNo">098</span><a id="line.98">         */</a>
+<span class="sourceLineNo">099</span><a id="line.99">        private boolean hasMatchingExtension(String pathName) {</a>
+<span class="sourceLineNo">100</span><a id="line.100">                if (extensions == null || extensions.length == 0)</a>
+<span class="sourceLineNo">101</span><a id="line.101">                        return true;</a>
+<span class="sourceLineNo">102</span><a id="line.102">                boolean result = false;</a>
+<span class="sourceLineNo">103</span><a id="line.103">                for (String s : extensions) {</a>
+<span class="sourceLineNo">104</span><a id="line.104">                        if (pathName.endsWith(s)) {</a>
+<span class="sourceLineNo">105</span><a id="line.105">                                result = true;</a>
+<span class="sourceLineNo">106</span><a id="line.106">                                break;</a>
+<span class="sourceLineNo">107</span><a id="line.107">                        }</a>
+<span class="sourceLineNo">108</span><a id="line.108">                }</a>
+<span class="sourceLineNo">109</span><a id="line.109">                return result;</a>
+<span class="sourceLineNo">110</span><a id="line.110">        }</a>
+<span class="sourceLineNo">111</span><a id="line.111"></a>
+<span class="sourceLineNo">112</span><a id="line.112">}</a>
 
 
 

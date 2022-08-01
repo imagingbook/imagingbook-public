@@ -40,7 +40,6 @@ imagingbook.common.ij
 imagingbook.common.ij.overlay
 imagingbook.common.image
 imagingbook.common.image.access
-imagingbook.common.image.data
 imagingbook.common.interpolation
 imagingbook.common.lucaskanade
 imagingbook.common.lucaskanade.utils
@@ -71,5 +70,4 @@ imagingbook.common.util
 imagingbook.common.util.bits
 imagingbook.common.util.progress
 imagingbook.common.util.progress.ij
-imagingbook.common.util.resource
 imagingbook.common.util.tuples

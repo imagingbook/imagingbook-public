@@ -19,149 +19,29 @@
 <span class="sourceLineNo">009</span><a id="line.9"></a>
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.common.threshold;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
-<span class="sourceLineNo">012</span><a id="line.12">/**</a>
-<span class="sourceLineNo">013</span><a id="line.13"> * </a>
-<span class="sourceLineNo">014</span><a id="line.14"> * TODO: convert to interface.</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * @author WB</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * @version 2022/04/02</a>
-<span class="sourceLineNo">017</span><a id="line.17"> *</a>
-<span class="sourceLineNo">018</span><a id="line.18"> */</a>
-<span class="sourceLineNo">019</span><a id="line.19">public abstract class Thresholder {</a>
-<span class="sourceLineNo">020</span><a id="line.20">        </a>
-<span class="sourceLineNo">021</span><a id="line.21">        // compute the sum of a histogram array</a>
-<span class="sourceLineNo">022</span><a id="line.22">        protected int sum(int[] h) {</a>
-<span class="sourceLineNo">023</span><a id="line.23">                int cnt = 0;</a>
-<span class="sourceLineNo">024</span><a id="line.24">                for (int i = 0; i &lt; h.length; i++) {</a>
-<span class="sourceLineNo">025</span><a id="line.25">                        cnt += h[i];</a>
-<span class="sourceLineNo">026</span><a id="line.26">                }</a>
-<span class="sourceLineNo">027</span><a id="line.27">                return cnt;</a>
-<span class="sourceLineNo">028</span><a id="line.28">        }</a>
-<span class="sourceLineNo">029</span><a id="line.29">        </a>
-<span class="sourceLineNo">030</span><a id="line.30">        protected int count(int[] h) {</a>
-<span class="sourceLineNo">031</span><a id="line.31">                return count(h, 0, h.length - 1);</a>
-<span class="sourceLineNo">032</span><a id="line.32">        }</a>
-<span class="sourceLineNo">033</span><a id="line.33">        </a>
-<span class="sourceLineNo">034</span><a id="line.34">        // compute the population of a histogram from index lo...hi</a>
-<span class="sourceLineNo">035</span><a id="line.35">        protected int count(int[] h, int lo, int hi) {</a>
-<span class="sourceLineNo">036</span><a id="line.36">                if (lo &lt; 0) lo = 0;</a>
-<span class="sourceLineNo">037</span><a id="line.37">                if (hi &gt;= h.length) hi = h.length-1;</a>
-<span class="sourceLineNo">038</span><a id="line.38">                int cnt = 0;</a>
-<span class="sourceLineNo">039</span><a id="line.39">                for (int i = lo; i &lt;= hi; i++) {</a>
-<span class="sourceLineNo">040</span><a id="line.40">                        cnt += h[i];</a>
-<span class="sourceLineNo">041</span><a id="line.41">                }</a>
-<span class="sourceLineNo">042</span><a id="line.42">                return cnt;</a>
-<span class="sourceLineNo">043</span><a id="line.43">        }</a>
-<span class="sourceLineNo">044</span><a id="line.44">        </a>
-<span class="sourceLineNo">045</span><a id="line.45">        protected double mean(int[] h) {</a>
-<span class="sourceLineNo">046</span><a id="line.46">                return mean(h,0,h.length-1);</a>
-<span class="sourceLineNo">047</span><a id="line.47">        }</a>
-<span class="sourceLineNo">048</span><a id="line.48">        </a>
-<span class="sourceLineNo">049</span><a id="line.49">        protected double mean(int[] h, int lo, int hi) {</a>
-<span class="sourceLineNo">050</span><a id="line.50">                if (lo &lt; 0)</a>
-<span class="sourceLineNo">051</span><a id="line.51">                        lo = 0;</a>
-<span class="sourceLineNo">052</span><a id="line.52">                if (hi &gt;= h.length)</a>
-<span class="sourceLineNo">053</span><a id="line.53">                        hi = h.length - 1;</a>
-<span class="sourceLineNo">054</span><a id="line.54">                long cnt = 0;</a>
-<span class="sourceLineNo">055</span><a id="line.55">                long sum = 0;</a>
-<span class="sourceLineNo">056</span><a id="line.56">                for (int i = lo; i &lt;= hi; i++) {</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        cnt = cnt + h[i];</a>
-<span class="sourceLineNo">058</span><a id="line.58">                        sum = sum + i * h[i];</a>
-<span class="sourceLineNo">059</span><a id="line.59">                }</a>
-<span class="sourceLineNo">060</span><a id="line.60">                if (cnt &gt; 0)</a>
-<span class="sourceLineNo">061</span><a id="line.61">                        return ((double) sum) / cnt;</a>
-<span class="sourceLineNo">062</span><a id="line.62">                else</a>
-<span class="sourceLineNo">063</span><a id="line.63">                        return 0;</a>
-<span class="sourceLineNo">064</span><a id="line.64">        }</a>
-<span class="sourceLineNo">065</span><a id="line.65">        </a>
-<span class="sourceLineNo">066</span><a id="line.66">        protected double sigma2(int[] h) {</a>
-<span class="sourceLineNo">067</span><a id="line.67">                return sigma2(h, 0, h.length-1);</a>
-<span class="sourceLineNo">068</span><a id="line.68">        }</a>
-<span class="sourceLineNo">069</span><a id="line.69">                        </a>
-<span class="sourceLineNo">070</span><a id="line.70">        // this is a slow version, only for testing:</a>
-<span class="sourceLineNo">071</span><a id="line.71">//      protected double sigma2(int[] h, int lo, int hi) {</a>
-<span class="sourceLineNo">072</span><a id="line.72">//              if (lo &lt; 0) lo = 0;</a>
-<span class="sourceLineNo">073</span><a id="line.73">//              if (hi &gt;= h.length) hi = h.length-1;</a>
-<span class="sourceLineNo">074</span><a id="line.74">//              double mu = mean(h,lo,hi);</a>
-<span class="sourceLineNo">075</span><a id="line.75">//              long cnt = 0;</a>
-<span class="sourceLineNo">076</span><a id="line.76">//              double sum = 0;</a>
-<span class="sourceLineNo">077</span><a id="line.77">//              for (int i=lo; i&lt;=hi; i++) {</a>
-<span class="sourceLineNo">078</span><a id="line.78">//                      cnt = cnt + h[i];</a>
-<span class="sourceLineNo">079</span><a id="line.79">//                      sum = sum + (i - mu) * (i - mu) * h[i];</a>
-<span class="sourceLineNo">080</span><a id="line.80">//              }</a>
-<span class="sourceLineNo">081</span><a id="line.81">//              if (cnt &gt; 0)</a>
-<span class="sourceLineNo">082</span><a id="line.82">//                      return ((double)sum) / cnt;</a>
-<span class="sourceLineNo">083</span><a id="line.83">//              else </a>
-<span class="sourceLineNo">084</span><a id="line.84">//                      return 0;</a>
-<span class="sourceLineNo">085</span><a id="line.85">//      }</a>
-<span class="sourceLineNo">086</span><a id="line.86">        </a>
-<span class="sourceLineNo">087</span><a id="line.87">        // fast version</a>
-<span class="sourceLineNo">088</span><a id="line.88">        protected double sigma2(int[] h, int lo, int hi) {</a>
-<span class="sourceLineNo">089</span><a id="line.89">                if (lo &lt; 0)</a>
-<span class="sourceLineNo">090</span><a id="line.90">                        lo = 0;</a>
-<span class="sourceLineNo">091</span><a id="line.91">                if (hi &gt;= h.length)</a>
-<span class="sourceLineNo">092</span><a id="line.92">                        hi = h.length - 1;</a>
-<span class="sourceLineNo">093</span><a id="line.93">                long A = 0;</a>
-<span class="sourceLineNo">094</span><a id="line.94">                long B = 0;</a>
-<span class="sourceLineNo">095</span><a id="line.95">                long N = 0;</a>
-<span class="sourceLineNo">096</span><a id="line.96">                for (int i = lo; i &lt;= hi; i++) {</a>
-<span class="sourceLineNo">097</span><a id="line.97">                        int ni = h[i];</a>
-<span class="sourceLineNo">098</span><a id="line.98">                        A = A + i * ni;</a>
-<span class="sourceLineNo">099</span><a id="line.99">                        B = B + i * i * ni;</a>
-<span class="sourceLineNo">100</span><a id="line.100">                        N = N + ni;</a>
-<span class="sourceLineNo">101</span><a id="line.101">                }</a>
-<span class="sourceLineNo">102</span><a id="line.102">                if (N &gt; 0)</a>
-<span class="sourceLineNo">103</span><a id="line.103">                        return ((double) B - (double) A * A / N) / N;</a>
-<span class="sourceLineNo">104</span><a id="line.104">                else</a>
-<span class="sourceLineNo">105</span><a id="line.105">                        return 0;</a>
-<span class="sourceLineNo">106</span><a id="line.106">        }</a>
-<span class="sourceLineNo">107</span><a id="line.107">        </a>
-<span class="sourceLineNo">108</span><a id="line.108">        </a>
-<span class="sourceLineNo">109</span><a id="line.109">        // ---  utility methods -----------------------------</a>
-<span class="sourceLineNo">110</span><a id="line.110">        </a>
-<span class="sourceLineNo">111</span><a id="line.111">        // compute the median of a histogram </a>
-<span class="sourceLineNo">112</span><a id="line.112">        protected int median(int[] h) {</a>
-<span class="sourceLineNo">113</span><a id="line.113">                int K = h.length;</a>
-<span class="sourceLineNo">114</span><a id="line.114">                int N = sum(h);</a>
-<span class="sourceLineNo">115</span><a id="line.115">                int m = N / 2;</a>
-<span class="sourceLineNo">116</span><a id="line.116">                int i = 0;</a>
-<span class="sourceLineNo">117</span><a id="line.117">                int sum = h[0];</a>
-<span class="sourceLineNo">118</span><a id="line.118">                while (sum &lt;= m &amp;&amp; i &lt; K) {</a>
-<span class="sourceLineNo">119</span><a id="line.119">                        i++;</a>
-<span class="sourceLineNo">120</span><a id="line.120">                        sum += h[i];</a>
-<span class="sourceLineNo">121</span><a id="line.121">                }</a>
-<span class="sourceLineNo">122</span><a id="line.122">                return i;</a>
-<span class="sourceLineNo">123</span><a id="line.123">        }</a>
-<span class="sourceLineNo">124</span><a id="line.124"></a>
-<span class="sourceLineNo">125</span><a id="line.125">        public double[] normalize(int[] h) {</a>
-<span class="sourceLineNo">126</span><a id="line.126">                int K = h.length;</a>
-<span class="sourceLineNo">127</span><a id="line.127">                int N = count(h);</a>
-<span class="sourceLineNo">128</span><a id="line.128">                double[] nh = new double[K];</a>
-<span class="sourceLineNo">129</span><a id="line.129">                for (int i = 0; i &lt; K; i++) {</a>
-<span class="sourceLineNo">130</span><a id="line.130">                        nh[i] = ((double) h[i]) / N;</a>
-<span class="sourceLineNo">131</span><a id="line.131">                }</a>
-<span class="sourceLineNo">132</span><a id="line.132">                return nh;</a>
-<span class="sourceLineNo">133</span><a id="line.133">        }</a>
-<span class="sourceLineNo">134</span><a id="line.134"></a>
-<span class="sourceLineNo">135</span><a id="line.135">        public double[] normalize(double[] h) {</a>
-<span class="sourceLineNo">136</span><a id="line.136">                double[] nh = new double[h.length];</a>
-<span class="sourceLineNo">137</span><a id="line.137">                double hmax = max(h);</a>
-<span class="sourceLineNo">138</span><a id="line.138">                for (int i = 0; i &lt; h.length; i++) {</a>
-<span class="sourceLineNo">139</span><a id="line.139">                        nh[i] = (double) h[i] / hmax;</a>
-<span class="sourceLineNo">140</span><a id="line.140">                }</a>
-<span class="sourceLineNo">141</span><a id="line.141">                return nh;</a>
-<span class="sourceLineNo">142</span><a id="line.142">        }</a>
-<span class="sourceLineNo">143</span><a id="line.143"></a>
-<span class="sourceLineNo">144</span><a id="line.144">        public double max(double[] h) {</a>
-<span class="sourceLineNo">145</span><a id="line.145">                double hmax = Double.NEGATIVE_INFINITY;</a>
-<span class="sourceLineNo">146</span><a id="line.146">                for (int i = 0; i &lt; h.length; i++) {</a>
-<span class="sourceLineNo">147</span><a id="line.147">                        double n = h[i];</a>
-<span class="sourceLineNo">148</span><a id="line.148">                        if (n &gt; hmax)</a>
-<span class="sourceLineNo">149</span><a id="line.149">                                hmax = n;</a>
-<span class="sourceLineNo">150</span><a id="line.150">                }</a>
-<span class="sourceLineNo">151</span><a id="line.151">                return hmax;</a>
-<span class="sourceLineNo">152</span><a id="line.152">        }</a>
-<span class="sourceLineNo">153</span><a id="line.153"></a>
-<span class="sourceLineNo">154</span><a id="line.154">}</a>
+<span class="sourceLineNo">012</span><a id="line.12">import ij.process.ByteProcessor;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">/**</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Common interface to be implemented by all thresholders.</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * </a>
+<span class="sourceLineNo">017</span><a id="line.17"> * @author WB</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * @version 2022/08/01</a>
+<span class="sourceLineNo">019</span><a id="line.19"> *</a>
+<span class="sourceLineNo">020</span><a id="line.20"> */</a>
+<span class="sourceLineNo">021</span><a id="line.21">public interface Thresholder {</a>
+<span class="sourceLineNo">022</span><a id="line.22">                        </a>
+<span class="sourceLineNo">023</span><a id="line.23">        /**</a>
+<span class="sourceLineNo">024</span><a id="line.24">         * Thresholds the specified {@link ByteProcessor} (8-bit image),</a>
+<span class="sourceLineNo">025</span><a id="line.25">         * which is modified.</a>
+<span class="sourceLineNo">026</span><a id="line.26">         * Does nothing and returns {@code true} if no valid threshold could be found</a>
+<span class="sourceLineNo">027</span><a id="line.27">         * (e.g., if all image pixels have the same value).</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * </a>
+<span class="sourceLineNo">029</span><a id="line.29">         * @param ip a {@link ByteProcessor} (8-bit image)</a>
+<span class="sourceLineNo">030</span><a id="line.30">         * @return {@code true} iff the operation was successful</a>
+<span class="sourceLineNo">031</span><a id="line.31">         */</a>
+<span class="sourceLineNo">032</span><a id="line.32">        public boolean threshold(ByteProcessor ip);</a>
+<span class="sourceLineNo">033</span><a id="line.33"></a>
+<span class="sourceLineNo">034</span><a id="line.34">}</a>
 
 
 
