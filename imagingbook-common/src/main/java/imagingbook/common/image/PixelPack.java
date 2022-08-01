@@ -453,7 +453,6 @@ public class PixelPack {
 	 * pixel pack. They must be compatible w.r.t. size and depth.
 	 * 
 	 * @param ip the image processor to be copied
-	 * @param pack the receiving pixel pack
 	 */
 	public void copyFromImageProcessor(ImageProcessor ip) {
 		if (!isCompatibleTo(ip) ){
