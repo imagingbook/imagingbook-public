@@ -47,12 +47,12 @@ public abstract class NiblackThresholder extends AdaptiveThresholder {
 	protected FloatProcessor Imean;
 	protected FloatProcessor Isigma;
 
-	private NiblackThresholder () {
+	private NiblackThresholder() {
 		super();
 		this.params = new Parameters();
 	}
 
-	private NiblackThresholder (Parameters params) {
+	private NiblackThresholder(Parameters params) {
 		super();
 		this.params = params;
 	}
