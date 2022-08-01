@@ -59,7 +59,7 @@ public class AdaptiveThresholderTest {
 		thresholder.threshold(bp);
 		int zeros = countZeros(bp);
 //		System.out.println(res + ": " + zeros + " / " + (bp.getWidth() * bp.getHeight()));
-		assertEquals("detected SIFT features (" + res + ")", expectedZeros, zeros);
+		assertEquals("threhold to zero pixels (" + res + ")", expectedZeros, zeros);
 	}
 	
 	private int countZeros(ByteProcessor bp) {
