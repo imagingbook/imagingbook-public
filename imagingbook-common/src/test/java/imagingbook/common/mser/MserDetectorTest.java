@@ -8,20 +8,6 @@
  *******************************************************************************/
 package imagingbook.common.mser;
 
-import static imagingbook.sampleimages.MserTestImage.AllBlack;
-import static imagingbook.sampleimages.MserTestImage.AllWhite;
-import static imagingbook.sampleimages.MserTestImage.Blob1;
-import static imagingbook.sampleimages.MserTestImage.Blob2;
-import static imagingbook.sampleimages.MserTestImage.Blob3;
-import static imagingbook.sampleimages.MserTestImage.BlobLevelTest;
-import static imagingbook.sampleimages.MserTestImage.BlobLevelTestNoise;
-import static imagingbook.sampleimages.MserTestImage.BlobOriented;
-import static imagingbook.sampleimages.MserTestImage.BlobsInWhite;
-import static imagingbook.sampleimages.MserTestImage.BoatsTiny;
-import static imagingbook.sampleimages.MserTestImage.BoatsTinyB;
-import static imagingbook.sampleimages.MserTestImage.BoatsTinyBW;
-import static imagingbook.sampleimages.MserTestImage.BoatsTinyW;
-import static imagingbook.sampleimages.MserTestImage.BoatsTinyW2;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
@@ -33,6 +19,7 @@ import imagingbook.common.mser.MserDetector.Parameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.MserTestImage;
 
 public class MserDetectorTest {
 
@@ -59,20 +46,20 @@ public class MserDetectorTest {
 
 		detector = new MserDetector(params);
 		
-		runMser(Blob1, 3);
-		runMser(Blob2, 6);
-		runMser(Blob3, 9);
-		runMser(BlobLevelTest, 2);
-		runMser(BlobLevelTestNoise, 2);
-		runMser(BlobOriented, 3);
-		runMser(BlobsInWhite, 3);
-		runMser(BoatsTiny, 21);
-		runMser(BoatsTinyB, 22);
-		runMser(BoatsTinyBW, 1);
-		runMser(BoatsTinyW, 21);
-		runMser(BoatsTinyW2, 22);
-		runMser(AllBlack, 0);
-		runMser(AllWhite, 0);
+		runMser(MserTestImage.Blob1, 3);
+		runMser(MserTestImage.Blob2, 6);
+		runMser(MserTestImage.Blob3, 9);
+		runMser(MserTestImage.BlobLevelTest, 2);
+		runMser(MserTestImage.BlobLevelTestNoise, 2);
+		runMser(MserTestImage.BlobOriented, 3);
+		runMser(MserTestImage.BlobsInWhite, 3);
+		runMser(MserTestImage.BoatsTiny, 21);
+		runMser(MserTestImage.BoatsTinyB, 22);
+		runMser(MserTestImage.BoatsTinyBW, 1);
+		runMser(MserTestImage.BoatsTinyW, 21);
+		runMser(MserTestImage.BoatsTinyW2, 22);
+		runMser(MserTestImage.AllBlack, 0);
+		runMser(MserTestImage.AllWhite, 0);
 	}
 
 	private void runMser(ImageResource res, int mserExpected) {
