@@ -10,19 +10,34 @@
 package imagingbook.common.threshold.adaptive;
 
 import ij.process.ByteProcessor;
-import ij.process.FloatProcessor;
 import imagingbook.common.threshold.Thresholder;
 
 /**
- * TODO: convert to interface.
+ * Common interface to be implemented by all adaptive (i.e., non-global)
+ * thresholders.
+ * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  */
-public abstract class AdaptiveThresholder extends Thresholder {
+public interface AdaptiveThresholder extends Thresholder {
 	
-	public abstract ByteProcessor getThreshold(ByteProcessor bp);
+	/**
+	 * Calculates a adaptive "threshold surface" for the specified
+	 * {@link ByteProcessor} and returns it as another {@link ByteProcessor}.
+	 * 
+	 * @param bp the input image
+	 * @return the threshold surface
+	 */
+	public ByteProcessor getThreshold(ByteProcessor bp);
 	
-	public void threshold(ByteProcessor bp, ByteProcessor Q) {
+	/**
+	 * Thresholds a  {@link ByteProcessor} image by the specified
+	 * threshold surface.
+	 * 
+	 * @param bp the input image (gets modified)
+	 * @param Q the threshold surface
+	 */
+	public default void threshold(ByteProcessor bp, ByteProcessor Q) {
 		final int w = bp.getWidth();
 		final int h = bp.getHeight();
 		for (int v = 0; v < h; v++) {
@@ -34,7 +49,8 @@ public abstract class AdaptiveThresholder extends Thresholder {
 		}
 	}
 	
-	public boolean threshold(ByteProcessor ip) {
+	@Override
+	public default boolean threshold(ByteProcessor ip) {
 		ByteProcessor Q = this.getThreshold(ip);
 		if (Q != null) {
 			this.threshold(ip, Q);
@@ -44,37 +60,5 @@ public abstract class AdaptiveThresholder extends Thresholder {
 			return false;
 		}
 	}
-	
-	// TODO: change to use an ImageAccessor!
-	protected int getPaddedPixel(ByteProcessor bp, int u, int v) {
-		final int w = bp.getWidth();
-		final int h = bp.getHeight();
-		if (u < 0)
-			u = 0;
-		else if (u >= w)
-			u = w - 1;
-		if (v < 0)
-			v = 0;
-		else if (v >= h)
-			v = h - 1;
-		return bp.get(u, v);
-	}
-	
-	// used for logging/testing only
-	protected double[] getLine(ByteProcessor bp, int v) {
-		double[] line = new double[bp.getWidth()];
-		for (int u = 0; u < line.length; u++) {
-			line[u] = bp.get(u, v);
-		}
-		return line;
-	}
-	
-	// used for logging/testing only
-	protected double[] getLine(FloatProcessor fp, int v) {
-		double[] line = new double[fp.getWidth()];
-		for (int u = 0; u < line.length; u++) {
-			line[u] = fp.getf(u, v);
-		}
-		return line;
-	}
+
 }

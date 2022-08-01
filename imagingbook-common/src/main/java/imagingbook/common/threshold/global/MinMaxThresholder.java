@@ -14,10 +14,10 @@ package imagingbook.common.threshold.global;
  * the image's minimum and maximum pixel value.
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  *
  */
-public class MinMaxThresholder extends GlobalThresholder {
+public class MinMaxThresholder implements GlobalThresholder {
 	
 	public MinMaxThresholder() {
 		super();

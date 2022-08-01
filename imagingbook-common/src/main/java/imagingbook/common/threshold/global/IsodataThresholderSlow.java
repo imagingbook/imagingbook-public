@@ -9,6 +9,8 @@
 
 package imagingbook.common.threshold.global;
 
+import imagingbook.common.threshold.Utils;
+
 /**
  * This thresholder implements the algorithm proposed by Ridler and Calvard (1978),
  * T.W. Ridler, S. Calvard, Picture thresholding using an iterative selection method,
@@ -19,9 +21,9 @@ package imagingbook.common.threshold.global;
  * in every iteration.
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  */
-public class IsodataThresholderSlow extends GlobalThresholder {
+public class IsodataThresholderSlow implements GlobalThresholder {
 	
 	
 	private int MAX_ITERATIONS = 100;
@@ -33,18 +35,18 @@ public class IsodataThresholderSlow extends GlobalThresholder {
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;
-		int q = (int) mean(h, 0, K-1); 	// start with the total mean
+		int q = (int) Utils.mean(h, 0, K-1); 	// start with the total mean
 		int q_;
 		
 		int i = 0;	// iteration counter
 		do {
 			i++;
-			int nB = count(h, 0, q);
-			int nF = count(h, q+1, K-1);
+			int nB = Utils.count(h, 0, q);
+			int nF = Utils.count(h, q+1, K-1);
 			if (nB == 0 || nF == 0)
 				return -1;
-			double meanB = mean(h, 0, q);
-			double meanF = mean(h, q+1, K-1);
+			double meanB = Utils.mean(h, 0, q);
+			double meanF = Utils.mean(h, q+1, K-1);
 			q_ = q;				
 			q = (int)((meanB + meanF)/2);
 		} while (q != q_ && i < MAX_ITERATIONS);

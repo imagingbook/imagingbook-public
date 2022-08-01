@@ -13,9 +13,9 @@ package imagingbook.common.threshold.global;
  * Minimum Error thresholder after Kittler and Illingworth (1986).
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  */
-public class MinErrorThresholder extends GlobalThresholder {
+public class MinErrorThresholder implements GlobalThresholder {
 	
 	static final double EPSILON = 1E-12;
 	

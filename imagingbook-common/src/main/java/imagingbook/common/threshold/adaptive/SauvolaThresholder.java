@@ -21,9 +21,9 @@ import imagingbook.common.util.ParameterBundle;
  * 1135-1143 (2000).
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  */
-public class SauvolaThresholder extends AdaptiveThresholder {
+public class SauvolaThresholder implements AdaptiveThresholder {
 	
 	public static class Parameters implements ParameterBundle {
 		

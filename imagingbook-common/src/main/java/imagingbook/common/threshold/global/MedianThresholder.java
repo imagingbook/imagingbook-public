@@ -10,10 +10,10 @@
 package imagingbook.common.threshold.global;
 
 /**
- * This is only a special case of a QuantileThresholder with b = 0.5.
+ * This is a special case of a {@link QuantileThresholder} with b = 0.5.
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  * 
  */
 public class MedianThresholder extends QuantileThresholder {

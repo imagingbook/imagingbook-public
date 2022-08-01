@@ -14,10 +14,10 @@ package imagingbook.common.threshold.global;
  * IEEE Transactions on Systems, Man, and Cybernetics 9(1), 62-66 (1979).
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  * 
  */
-public class OtsuThresholder extends GlobalThresholder {
+public class OtsuThresholder implements GlobalThresholder {
 	
 	private int[] h = null;
 	private double[] M0 = null;		// table of background means

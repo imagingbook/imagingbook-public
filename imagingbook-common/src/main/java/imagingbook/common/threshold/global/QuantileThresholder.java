@@ -9,12 +9,14 @@
 
 package imagingbook.common.threshold.global;
 
+import imagingbook.common.threshold.Utils;
+
 /**
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  *
  */
-public class QuantileThresholder extends GlobalThresholder {
+public class QuantileThresholder implements GlobalThresholder {
 	
 	private double b = 0.5;	// quantile of expected background pixels
 
@@ -30,7 +32,7 @@ public class QuantileThresholder extends GlobalThresholder {
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;
-		int N = sum(h);
+		int N = Utils.sum(h);
 		
 		double n = N * b;	
 		int i = 0;

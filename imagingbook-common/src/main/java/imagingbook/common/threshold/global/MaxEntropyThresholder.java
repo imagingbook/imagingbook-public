@@ -9,13 +9,15 @@
 
 package imagingbook.common.threshold.global;
 
+import imagingbook.common.threshold.Utils;
+
 /**
  * Maximum entropy thresholder modeled after Kapur et al. (1985).
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  */
-public class MaxEntropyThresholder extends GlobalThresholder {
+public class MaxEntropyThresholder implements GlobalThresholder {
 	
 	static final double EPSILON = 1E-12;
 	
@@ -33,7 +35,7 @@ public class MaxEntropyThresholder extends GlobalThresholder {
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;	
-		double[] p = normalize(h);		// normalized histogram (probabilities)
+		double[] p = Utils.normalize(h);		// normalized histogram (probabilities)
 		makeTables(p);	// initialize S0, S1
 		
 		double P0 = 0, P1;

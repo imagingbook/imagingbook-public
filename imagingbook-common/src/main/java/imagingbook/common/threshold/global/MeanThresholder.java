@@ -11,10 +11,10 @@ package imagingbook.common.threshold.global;
 
 /**
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  *
  */
-public class MeanThresholder extends GlobalThresholder {
+public class MeanThresholder implements GlobalThresholder {
 	
 	public MeanThresholder() {
 		super();

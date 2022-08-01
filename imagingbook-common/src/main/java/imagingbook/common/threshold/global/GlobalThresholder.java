@@ -13,22 +13,36 @@ import ij.process.ByteProcessor;
 import imagingbook.common.threshold.Thresholder;
 
 /**
- * TODO: convert to interface.
+ * Common interface to be implemented by all global thresholders.
+ * 
  * @author WB
- * @version 2022/04/02
- *
+ * @version 2022/08/01
  */
-public abstract class GlobalThresholder extends Thresholder {
+public interface GlobalThresholder extends Thresholder {
 	
-	// must be implemented by concrete subclasses
-	protected abstract int getThreshold(int[] h);
+	/**
+	 * Returns a single (global) threshold value for the
+	 * specified histogram.
+	 * 
+	 * @param h a histogram (array of frequencies)
+	 * @return a single (global) threshold value
+	 */
+	public int getThreshold(int[] h);
 	
-	public int getThreshold(ByteProcessor bp) {
+	/**
+	 * Returns a single (global) threshold value for the
+	 * specified {@link ByteProcessor} (8-bit image).
+	 * 
+	 * @param bp a {@link ByteProcessor} (8-bit image)
+	 * @return a single (global) threshold value
+	 */
+	public default int getThreshold(ByteProcessor bp) {
 		int[] h = bp.getHistogram();
 		return getThreshold(h);
 	}
 	
-	public boolean threshold(ByteProcessor ip) {
+	@Override
+	public default boolean threshold(ByteProcessor ip) {
 		int q = getThreshold(ip);
 		if (q > 0) {
 			ip.threshold(q);

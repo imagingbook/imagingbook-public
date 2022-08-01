@@ -15,6 +15,7 @@ import ij.process.FloatProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.threshold.BackgroundMode;
+import imagingbook.common.threshold.Utils;
 import imagingbook.common.util.ParameterBundle;
 
 /**
@@ -22,9 +23,9 @@ import imagingbook.common.util.ParameterBundle;
  * with IJ's rank-filter methods.
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  */
-public abstract class NiblackThresholder extends AdaptiveThresholder {
+public abstract class NiblackThresholder implements AdaptiveThresholder {
 	
 	public enum RegionType { Box, Disk, Gaussian }
 	
@@ -121,7 +122,7 @@ public abstract class NiblackThresholder extends AdaptiveThresholder {
 					long B = 0;	// sum of squared image values in support region
 					for (int j = -radius; j <= radius; j++) {
 						for (int i = -radius; i <= radius; i++) {
-							int p = getPaddedPixel(I, u + i, v + j); // this is slow!
+							int p = Utils.getPaddedPixel(I, u + i, v + j); // this is slow!
 							A = A + p;
 							B = B + p * p;
 						}

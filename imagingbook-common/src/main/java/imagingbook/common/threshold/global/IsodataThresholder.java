@@ -18,9 +18,9 @@ package imagingbook.common.threshold.global;
  * Fast version using tables of background and foreground means.
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  */
-public class IsodataThresholder extends GlobalThresholder {
+public class IsodataThresholder implements GlobalThresholder {
 	
 	private int MAX_ITERATIONS = 100;
 

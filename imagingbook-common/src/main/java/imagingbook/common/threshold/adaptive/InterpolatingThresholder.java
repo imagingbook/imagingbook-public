@@ -11,6 +11,7 @@ package imagingbook.common.threshold.adaptive;
 
 import ij.process.ByteProcessor;
 import imagingbook.common.threshold.BackgroundMode;
+import imagingbook.common.threshold.Utils;
 import imagingbook.common.threshold.global.OtsuThresholder;
 import imagingbook.common.util.ParameterBundle;
 
@@ -21,9 +22,9 @@ import imagingbook.common.util.ParameterBundle;
  * these local thresholds.
  * 
  * @author WB
- * @version 2022/04/02
+ * @version 2022/08/01
  */
-public class InterpolatingThresholder extends AdaptiveThresholder {
+public class InterpolatingThresholder implements AdaptiveThresholder {
 	
 	public static class Parameters implements ParameterBundle {
 		@DialogLabel("Tile size")
@@ -119,7 +120,7 @@ public class InterpolatingThresholder extends AdaptiveThresholder {
 		}
 		for (int v = v0; v < v0 + size; v++) {
 			for (int u = u0; u < u0 + size; u++) {
-				int p = getPaddedPixel(ip, u, v);
+				int p = Utils.getPaddedPixel(ip, u, v);
 				h[p]++;
 			}
 		}
