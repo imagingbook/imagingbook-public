@@ -12,9 +12,16 @@ package imagingbook.common.threshold.global;
 import imagingbook.common.histogram.Util;
 
 /**
+ * <p>
+ * This is an implementation of the global "quantile" thresholder, described in
+ * Sec. 9.1 (Alg. 9.1) of [1].
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
  * @author WB
  * @version 2022/08/01
- *
  */
 public class QuantileThresholder implements GlobalThresholder {
 	

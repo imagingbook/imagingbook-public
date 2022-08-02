@@ -12,13 +12,12 @@ package imagingbook.common.threshold.global;
 import imagingbook.common.histogram.Util;
 
 /**
- * This thresholder implements the algorithm proposed by Ridler and Calvard (1978),
- * T.W. Ridler, S. Calvard, Picture thresholding using an iterative selection method,
- * IEEE Trans. System, Man and Cybernetics, SMC-8 (August 1978) 630-632.
- * described in Glasbey/Horgan: "Image Analysis for the Biological Sciences" (Ch. 4).
- * 
- * Slow version using explicit recalculation of background and foreground means 
- * in every iteration.
+ * Slow version of {@link IsodataThresholder} using explicit recalculation of 
+ * background and foreground means in every iteration. See [1], Alg. 9.2.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/08/01

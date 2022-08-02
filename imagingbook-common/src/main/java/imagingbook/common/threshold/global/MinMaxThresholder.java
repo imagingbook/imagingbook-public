@@ -10,8 +10,14 @@
 package imagingbook.common.threshold.global;
 
 /**
+ * <p>
  * Simple global thresholder which sets the threshold centered between
  * the image's minimum and maximum pixel value.
+ * See Sec. 9.1.2 of [1] for additional details (Eq. 9.12).
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/08/01

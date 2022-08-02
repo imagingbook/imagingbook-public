@@ -10,15 +10,19 @@
 package imagingbook.common.threshold.global;
 
 /**
- * This thresholder implements the algorithm proposed by Ridler and Calvard (1978),
- * T.W. Ridler, S. Calvard, Picture thresholding using an iterative selection method,
- * IEEE Trans. System, Man and Cybernetics, SMC-8 (August 1978) 630-632.
- * described in Glasbey/Horgan: "Image Analysis for the Biological Sciences" (Ch. 4).
- * 
- * Fast version using tables of background and foreground means.
+ * <p>
+ * This is an implementation of the global thresholder proposed by Ridler and Calvard [1].
+ * See Sec. 9.1.3 (Alg. 9.3) of [2] for a detailed description.
+ * </p>
+ * <p>
+ * [1] T.W. Ridler, S. Calvard, Picture thresholding using an iterative selection method,
+ * IEEE Transactions on Systems, Man and Cybernetics, SMC-8 (August 1978) 630-632.
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2022/08/01
+ * @version 2022/04/02
  */
 public class IsodataThresholder implements GlobalThresholder {
 	

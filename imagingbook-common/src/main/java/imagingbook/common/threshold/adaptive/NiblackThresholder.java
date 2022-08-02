@@ -17,8 +17,21 @@ import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * This version of Niblack's thresholder uses a circular support region, implemented 
- * with IJ's rank-filter methods.
+ * <p>
+ * This is an implementation of the adaptive thresholder proposed by Niblack in [1].
+ * See Sec. 9.2.2 of [2] for a detailed description.
+ * It comes in three different version, depending on the type of local support region:
+ * </p>
+ * <ul>
+ * <li>{@link Box}: uses a rectangular (box-shaped) support region;</li> 
+ * <li>{@link Disk}: uses a circular (disk-shaped) support region (see [2], Alg. 9.8);</li> 
+ * <li>{@link Gauss}: uses a 2D isotropic Gaussian support region (see [2], Alg. 9.9 and Prog. 9.2).</li> 
+ * </ul>
+ * <p>
+ * [1] W. Niblack. “An Introduction to Digital Image Processing”. Prentice-Hall (1986).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/08/01
@@ -47,8 +60,7 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	protected FloatProcessor Isigma;
 
 	private NiblackThresholder() {
-		super();
-		this.params = new Parameters();
+		this(new Parameters());
 	}
 
 	private NiblackThresholder(Parameters params) {
@@ -96,6 +108,11 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	
 	// -----------------------------------------------------------------------
 	
+	/**
+	 * Implementation of Niblack's adaptive thresholder using a
+	 * rectangular (box-shaped) support region 
+	 * (concrete implementation of abstract class {@link NiblackThresholder}).
+	 */
 	public static class Box extends NiblackThresholder {
 
 		public Box() {
@@ -150,6 +167,11 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	
 	// -----------------------------------------------------------------------
 	
+	/**
+	 * Implementation of Niblack's adaptive thresholder using a
+	 * circular (disk-shaped) support region 
+	 * (concrete implementation of abstract class {@link NiblackThresholder}).
+	 */
 	public static class Disk extends NiblackThresholder {
 		
 		public Disk() {
@@ -177,6 +199,11 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	
 	// -----------------------------------------------------------------------
 	
+	/**
+	 * Implementation of Niblack's adaptive thresholder using a
+	 * 2D Gaussian support region 
+	 * (concrete implementation of abstract class {@link NiblackThresholder}).
+	 */
 	public static class Gauss extends NiblackThresholder {
 		
 		public Gauss() {

@@ -12,7 +12,17 @@ package imagingbook.common.threshold.global;
 import imagingbook.common.histogram.Util;
 
 /**
- * Maximum entropy thresholder modeled after Kapur et al. (1985).
+ * <p>
+ * This is an implementation of the global thresholder proposed by Kapur et al. in [1].
+ * See Sec. 9.1.5 (Alg. 9.5) of [2] for a detailed description.
+ * </p>
+ * <p>
+ * [1] J. N. Kapur, P. K. Sahoo, and A. K. C. Wong. A new
+ * method for gray-level picture thresholding using the entropy of the
+ * histogram. Computer Vision, Graphics, and Image Processing 29, 273–285 (1985).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/08/01

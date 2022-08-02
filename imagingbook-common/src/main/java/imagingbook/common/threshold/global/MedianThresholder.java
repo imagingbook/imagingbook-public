@@ -10,16 +10,22 @@
 package imagingbook.common.threshold.global;
 
 /**
- * This is a special case of a {@link QuantileThresholder} with b = 0.5.
- * 
+ * This is a special case of a {@link QuantileThresholder} with quantile b = 0.5.
+ * Sec. 9.1 (Alg. 9.1) of [1].
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ 
  * @author WB
  * @version 2022/08/01
  * 
  */
 public class MedianThresholder extends QuantileThresholder {
 	
-	// b is fixed at 0.5 and cannot be set, so we do not 
-	// provide a constructor with this parameter
+	/**
+	 * Constructor, effectively creates a {@link QuantileThresholder} with quantile b = 0.5.
+	 */
 	public MedianThresholder() {
 		super(0.5);
 	}

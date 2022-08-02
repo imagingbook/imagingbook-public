@@ -9,8 +9,19 @@
 
 package imagingbook.common.threshold.global;
 
+
 /**
- * Minimum Error thresholder after Kittler and Illingworth (1986).
+ * <p>
+ * This is an implementation of the global "minimum error" thresholder proposed by 
+ * Kittler and Illingworth in [1].
+ * See Sec. 9.1.6 (Alg. 9.6) of [2] for a detailed description.
+ * </p>
+ * <p>
+ * [1] J. Illingworth and J. Kittler. "Minimum error thresholding". 
+ * Pattern Recognition 19(1), 41–47 (1986).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/08/01

@@ -10,9 +10,16 @@
 package imagingbook.common.threshold.global;
 
 /**
+ * <p>
+ * Simple global thresholder which uses the mean pixel value as the threshold .
+ * See Sec. 9.1.2 of [1] for additional details (Eq. 9.10).
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
  * @author WB
  * @version 2022/08/01
- *
  */
 public class MeanThresholder implements GlobalThresholder {
 	
