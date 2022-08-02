@@ -12,13 +12,19 @@ package imagingbook.common.threshold;
 import ij.process.ByteProcessor;
 
 /**
- * Common interface to be implemented by all thresholders.
+ * Common interface to be implemented by all thresholders (global and adaptive).
  * 
  * @author WB
- * @version 2022/08/01
+ * @version 2022/08/02
  *
  */
 public interface Thresholder {
+	
+	/**
+	 * Enum type to discriminate if the image background is assumed to be
+	 * bright or dark.
+	 */
+	public enum BackgroundMode {BRIGHT, DARK}
 			
 	/**
 	 * Thresholds the specified {@link ByteProcessor} (8-bit image),

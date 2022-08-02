@@ -9,7 +9,7 @@
 
 package imagingbook.common.threshold.global;
 
-import imagingbook.common.threshold.Utils;
+import imagingbook.common.histogram.Util;
 
 /**
  * @author WB
@@ -32,7 +32,7 @@ public class QuantileThresholder implements GlobalThresholder {
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;
-		int N = Utils.sum(h);
+		int N = Util.sum(h);
 		
 		double n = N * b;	
 		int i = 0;

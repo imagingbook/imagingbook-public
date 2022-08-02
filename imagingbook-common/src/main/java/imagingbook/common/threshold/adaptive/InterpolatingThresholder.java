@@ -10,8 +10,6 @@
 package imagingbook.common.threshold.adaptive;
 
 import ij.process.ByteProcessor;
-import imagingbook.common.threshold.BackgroundMode;
-import imagingbook.common.threshold.Utils;
 import imagingbook.common.threshold.global.OtsuThresholder;
 import imagingbook.common.util.ParameterBundle;
 
@@ -120,10 +118,25 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 		}
 		for (int v = v0; v < v0 + size; v++) {
 			for (int u = u0; u < u0 + size; u++) {
-				int p = Utils.getPaddedPixel(ip, u, v);
+				int p = getPaddedPixel(ip, u, v);
 				h[p]++;
 			}
 		}
+	}
+	
+	// TODO: change to use an ImageAccessor!
+	private int getPaddedPixel(ByteProcessor bp, int u, int v) {
+		final int w = bp.getWidth();
+		final int h = bp.getHeight();
+		if (u < 0)
+			u = 0;
+		else if (u >= w)
+			u = w - 1;
+		if (v < 0)
+			v = 0;
+		else if (v >= h)
+			v = h - 1;
+		return bp.get(u, v);
 	}
 
 }

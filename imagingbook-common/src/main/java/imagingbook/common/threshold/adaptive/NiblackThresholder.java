@@ -14,8 +14,6 @@ import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
-import imagingbook.common.threshold.BackgroundMode;
-import imagingbook.common.threshold.Utils;
 import imagingbook.common.util.ParameterBundle;
 
 /**
@@ -122,7 +120,7 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 					long B = 0;	// sum of squared image values in support region
 					for (int j = -radius; j <= radius; j++) {
 						for (int i = -radius; i <= radius; i++) {
-							int p = Utils.getPaddedPixel(I, u + i, v + j); // this is slow!
+							int p = getPaddedPixel(I, u + i, v + j); // this is slow!
 							A = A + p;
 							B = B + p * p;
 						}
@@ -131,6 +129,21 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 					Isigma.setf(u, v, (float) Math.sqrt((B - (double) (A * A) / n) / n));
 				}
 			}
+		}
+		
+		// TODO: change to use an ImageAccessor!
+		private int getPaddedPixel(ByteProcessor bp, int u, int v) {
+			final int w = bp.getWidth();
+			final int h = bp.getHeight();
+			if (u < 0)
+				u = 0;
+			else if (u >= w)
+				u = w - 1;
+			if (v < 0)
+				v = 0;
+			else if (v >= h)
+				v = h - 1;
+			return bp.get(u, v);
 		}
 		
 	}
@@ -209,5 +222,7 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 			}
 		}
 	}
+	
+
 
 }

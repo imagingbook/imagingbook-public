@@ -11,7 +11,6 @@ package imagingbook.common.threshold.adaptive;
 
 import ij.plugin.filter.RankFilters;
 import ij.process.ByteProcessor;
-import imagingbook.common.threshold.BackgroundMode;
 import imagingbook.common.util.ParameterBundle;
 
 /**
