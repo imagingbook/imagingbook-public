@@ -10,6 +10,7 @@
 package imagingbook.common.threshold.global;
 
 /**
+ * <p>
  * This is a special case of a {@link QuantileThresholder} with quantile b = 0.5.
  * Sec. 9.1 (Alg. 9.1) of [1].
  * </p>

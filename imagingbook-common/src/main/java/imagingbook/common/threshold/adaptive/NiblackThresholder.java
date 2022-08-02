@@ -27,6 +27,7 @@ import imagingbook.common.util.ParameterBundle;
  * <li>{@link Disk}: uses a circular (disk-shaped) support region (see [2], Alg. 9.8);</li> 
  * <li>{@link Gauss}: uses a 2D isotropic Gaussian support region (see [2], Alg. 9.9 and Prog. 9.2).</li> 
  * </ul>
+ * Note that {@link NiblackThresholder} itself is abstract and thus cannot be instantiated.
  * <p>
  * [1] W. Niblack. “An Introduction to Digital Image Processing”. Prentice-Hall (1986).
  * <br>
@@ -38,7 +39,7 @@ import imagingbook.common.util.ParameterBundle;
  */
 public abstract class NiblackThresholder implements AdaptiveThresholder {
 	
-	public enum RegionType { Box, Disk, Gaussian }
+	public enum RegionType { Box, Disk, Gauss }
 	
 	public static class Parameters implements ParameterBundle {
 		
@@ -56,8 +57,8 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	}
 	
 	private final Parameters params;
-	protected FloatProcessor Imean;
-	protected FloatProcessor Isigma;
+	FloatProcessor Imean;
+	FloatProcessor Isigma;
 
 	private NiblackThresholder() {
 		this(new Parameters());
@@ -69,7 +70,7 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	}
 	
 	// method to be implemented by real sub-classes:
-	protected abstract void makeMeanAndVariance(ByteProcessor I, int radius);
+	abstract void makeMeanAndVariance(ByteProcessor I, int radius);
 	
 	@Override
 	public ByteProcessor getThreshold(ByteProcessor I) {
@@ -97,11 +98,21 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	
 	// -----------------------------------------------------------------------
 	
+	/**
+	 * Static convenience method for creating a {@link NiblackThresholder} with
+	 * a specific support region type.
+	 * Note that {@link NiblackThresholder} itself is abstract and cannot be instantiated
+	 * (see concrete sub-types {@link Box}, {@link Disk}, {@link Gauss}).
+	 * 
+	 * @param regType support region type
+	 * @param params other parameters
+	 * @return an instance of {@link NiblackThresholder}
+	 */
 	public static NiblackThresholder create(RegionType regType, Parameters params) {
 		switch (regType) {
 		case Box : 		return new NiblackThresholder.Box(params);
 		case Disk : 	return new NiblackThresholder.Disk(params);
-		case Gaussian : return new NiblackThresholder.Gauss(params);
+		case Gauss : return new NiblackThresholder.Gauss(params);
 		default : 		return null;
 		}
 	}
@@ -115,16 +126,23 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	 */
 	public static class Box extends NiblackThresholder {
 
+		/**
+		 * Constructor using default parameters.
+		 */
 		public Box() {
 			super();
 		}
 		
+		/**
+		 * Constructor with specific parameters.
+		 * @param params parameters
+		 */
 		public Box(Parameters params) {
 			super(params);
 		}
 
 		@Override
-		protected void makeMeanAndVariance(ByteProcessor I, int radius) {
+		void makeMeanAndVariance(ByteProcessor I, int radius) {
 			int M = I.getWidth();
 			int N = I.getHeight();
 			Imean =  new FloatProcessor(M, N);
@@ -174,16 +192,23 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	 */
 	public static class Disk extends NiblackThresholder {
 		
+		/**
+		 * Constructor using default parameters.
+		 */
 		public Disk() {
 			super();
 		}
 		
+		/**
+		 * Constructor with specific parameters.
+		 * @param params parameters
+		 */
 		public Disk(Parameters params) {
 			super(params);
 		}
 
 		@Override
-		protected void makeMeanAndVariance(ByteProcessor I, int radius) {
+		void makeMeanAndVariance(ByteProcessor I, int radius) {
 			FloatProcessor mean = (FloatProcessor) I.convertToFloat();
 			FloatProcessor var =  (FloatProcessor) mean.duplicate();
 			
@@ -206,16 +231,23 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	 */
 	public static class Gauss extends NiblackThresholder {
 		
+		/**
+		 * Constructor using default parameters.
+		 */
 		public Gauss() {
 			super();
 		}
 		
+		/**
+		 * Constructor with specific parameters.
+		 * @param params parameters
+		 */
 		public Gauss(Parameters params) {
 			super(params);
 		}
 		
 		@Override
-		protected void makeMeanAndVariance(ByteProcessor I, int r) {
+		void makeMeanAndVariance(ByteProcessor I, int r) {
 			// //uses ImageJ's GaussianBlur
 			// local variance over square of size (size + 1 + size)^2
 			int M = I.getWidth();

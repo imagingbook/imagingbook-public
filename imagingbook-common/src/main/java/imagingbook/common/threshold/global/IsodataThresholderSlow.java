@@ -12,7 +12,8 @@ package imagingbook.common.threshold.global;
 import imagingbook.common.histogram.Util;
 
 /**
- * Slow version of {@link IsodataThresholder} using explicit recalculation of 
+ * <p>
+ * Slow version of the {@link IsodataThresholder} using explicit recalculation of 
  * background and foreground means in every iteration. See [1], Alg. 9.2.
  * </p>
  * <p>
