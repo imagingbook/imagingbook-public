@@ -89,7 +89,7 @@ public abstract class ImageAccessor {
 	}
 	
 	// constructor (used by all subtypes)
-	protected ImageAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+	ImageAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
 		this.ip = ip;
 		this.width  = ip.getWidth();
 		this.height = ip.getHeight();
@@ -235,6 +235,6 @@ public abstract class ImageAccessor {
 	 */
 	public abstract ScalarAccessor getComponentAccessor(int k);
 	
-	protected abstract void checkComponentIndex(int k);
+	abstract void checkComponentIndex(int k);
 		
 }

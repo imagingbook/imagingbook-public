@@ -19,8 +19,7 @@ public class ByteAccessor extends ScalarAccessor {
 	private final byte[] pixels;
 
 	/**
-	 * Constructor. Creates a new image accessor of type {@link ByteAccessor}. See also the
-	 * generic factory method
+	 * Constructor. See also the factory method
 	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy, InterpolationMethod)}.
 	 * 
 	 * @param ip  an instance of {@link ByteProcessor}

@@ -19,8 +19,7 @@ public class ShortAccessor extends ScalarAccessor {
 	private final short[] pixels;
 
 	/**
-	 * Constructor. Creates a new image accessor of type {@link ShortAccessor}. See also the
-	 * generic factory method
+	 * Constructor. See also the factory method
 	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy, InterpolationMethod)}.
 	 * 
 	 * @param ip  an instance of {@link ShortProcessor}

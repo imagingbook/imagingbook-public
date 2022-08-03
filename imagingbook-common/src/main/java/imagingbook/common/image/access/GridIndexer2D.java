@@ -12,12 +12,14 @@ package imagingbook.common.image.access;
 import imagingbook.common.image.PixelPack;
 
 /**
- * <p>Instances of this class perform the transformation between 2D image coordinates 
+ * <p>
+ * Instances of this class perform the transformation between 2D image coordinates 
  * and indexes into the associated 1D pixel array and vice versa.
  * As usual images are assumed to be stored in row-major order.
- * Objects of this class do not hold any image date themselves, they just
- * perform the indexing task. 
- * Class {@link PixelPack} provides a universal image data container which 
+ * Instances of this class do not hold any image data themselves, they just
+ * perform the indexing task.
+ * This is used, for example, by class {@link PixelPack}, which
+ * provides a universal image data container which 
  * uses {@link GridIndexer2D} internally.
  * </p>
  * <p>
@@ -32,12 +34,23 @@ public abstract class GridIndexer2D implements Cloneable {
 	
 	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.NearestBorder;
 	
+	/**
+	 * Creates and returns a new {@link GridIndexer2D} with the specified
+	 * size and {@link OutOfBoundsStrategy}.
+	 * 
+	 * @param width grid size (horizontal)
+	 * @param height grid size (vertical)
+	 * @param obs out-of-bounds strategy
+	 * @return a new {@link GridIndexer2D}
+	 */
 	public static GridIndexer2D create(int width, int height, OutOfBoundsStrategy obs) {
-		obs = (obs != null) ? obs : DefaultOutOfBoundsStrategy;
+		if (obs == null) {
+			obs = DefaultOutOfBoundsStrategy;
+		}
 		switch (obs) {
-		case ZeroValues 		: return new ZeroValueIndexer(width, height);
-		case NearestBorder		: return new NearestBorderIndexer(width, height);
-		case MirrorImage		: return new MirrorImageIndexer(width, height);
+		case ZeroValues 	: return new ZeroValueIndexer(width, height);
+		case NearestBorder	: return new NearestBorderIndexer(width, height);
+		case MirrorImage	: return new MirrorImageIndexer(width, height);
 		case ThrowException	: return new ExceptionIndexer(width, height);
 		}
 		return null;
@@ -190,6 +203,10 @@ public abstract class GridIndexer2D implements Cloneable {
 	
 	// -----------------------------------------------------------
 	
+	/**
+	 * Exception to be thrown by {@link ExceptionIndexer}.
+	 *
+	 */
 	public static class OutOfImageException extends RuntimeException {
 		private static final long serialVersionUID = 1L;
 		

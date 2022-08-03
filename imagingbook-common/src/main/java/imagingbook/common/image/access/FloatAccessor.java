@@ -19,8 +19,7 @@ public class FloatAccessor extends ScalarAccessor {
 	private final float[] pixels;
 
 	/**
-	 * Constructor. Creates a new image accessor of type {@link FloatAccessor}. See also the
-	 * generic factory method
+	 * Constructor. See also the factory method
 	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy, InterpolationMethod)}.
 	 * 
 	 * @param ip  an instance of {@link FloatProcessor}

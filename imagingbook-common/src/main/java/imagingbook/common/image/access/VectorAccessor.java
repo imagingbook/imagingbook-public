@@ -18,10 +18,10 @@ import imagingbook.common.interpolation.InterpolationMethod;
  */
 public abstract class VectorAccessor extends ImageAccessor {
 	
-	protected final int depth;
-	protected final ScalarAccessor[] componentAccessors;
+	final int depth;
+	final ScalarAccessor[] componentAccessors;
 
-	protected VectorAccessor(ImageProcessor ip, int depth, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+	VectorAccessor(ImageProcessor ip, int depth, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
 		super(ip, obs, ipm);
 		this.depth = depth;
 		this.componentAccessors = new ScalarAccessor[this.depth];
@@ -38,7 +38,7 @@ public abstract class VectorAccessor extends ImageAccessor {
 	 * @param k the component index
 	 * @return the image accessor for the specified component
 	 */
-	protected abstract ScalarAccessor makeComponentAccessor(int k);
+	abstract ScalarAccessor makeComponentAccessor(int k);
 	
 	@Override
 	public int getDepth() {
@@ -89,7 +89,7 @@ public abstract class VectorAccessor extends ImageAccessor {
 //	}
 	
 	@Override
-	protected void checkComponentIndex(int k) {
+	void checkComponentIndex(int k) {
 		if (k < 0 || k >= depth) {
 			throw new IllegalArgumentException("invalid component index " + k);
 		}

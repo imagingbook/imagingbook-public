@@ -24,7 +24,7 @@ import imagingbook.common.interpolation.PixelInterpolator;
  */
 public abstract class ScalarAccessor extends ImageAccessor {
 	
-	protected float defaultValue = 0f;
+	float defaultValue = 0f;
 
 	/**
 	 * Creates a new image accessor of general type {@link ScalarAccessor}. The conrete type
@@ -118,9 +118,9 @@ public abstract class ScalarAccessor extends ImageAccessor {
 		}
 	}
 
-	protected final PixelInterpolator interpolator; // performs interpolation
+	final PixelInterpolator interpolator; // performs interpolation
 
-	protected ScalarAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+	ScalarAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
 		super(ip, obs, ipm);
 		this.interpolator = PixelInterpolator.create(interpolationMethod);
 	}
@@ -155,7 +155,7 @@ public abstract class ScalarAccessor extends ImageAccessor {
 //	}
 	
 	@Override
-	protected void checkComponentIndex(int k) {
+	void checkComponentIndex(int k) {
 		if (k != 0) {
 			throw new IllegalArgumentException("invalid component index " + k);
 		}

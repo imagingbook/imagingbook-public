@@ -19,13 +19,14 @@ public class RgbAccessor extends VectorAccessor {
 	
 	private final int[] pixels;
 
+	
 	public RgbAccessor(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
 		super(ip, 3, obs, ipm);
 		this.pixels = (int[]) this.ip.getPixels();
 	}
 	
 	@Override
-	protected ScalarAccessor makeComponentAccessor(int k) {
+	ScalarAccessor makeComponentAccessor(int k) {
 		return new ComponentAccessor((ColorProcessor)ip, outOfBoundsStrategy, interpolationMethod, k);
 	}
 	
