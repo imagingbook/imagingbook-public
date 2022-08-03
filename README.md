@@ -13,6 +13,7 @@ Please visit the main website **[imagingbook.com](https://imagingbook.com/)** fo
 
 The source code is built as a modular Maven project, which includes the following sub-projects:
 
+* **imagingbook-core**: basic infrastructure required in other imagingbook library packages.
 * **imagingbook-common**: the common library of image processing algorithms and utility code.
 * **imagingbook-spectral**: library code related to spectral image processing (Fourier transforms etc.).
 * **imagingbook-plugins-book**: a collection of ImageJ plugins related to individual book chapters.
@@ -25,6 +26,7 @@ The source code is built as a modular Maven project, which includes the followin
 
 ## Documentation (JavaDoc):
 
+* [**imagingbook-core**](https://imagingbook.github.io/imagingbook-public/imagingbook-core/javadoc)
 * [**imagingbook-common**](https://imagingbook.github.io/imagingbook-public/imagingbook-common/javadoc)
 * [**imagingbook-spectral**](https://imagingbook.github.io/imagingbook-public/imagingbook-spectral/javadoc)
 * [**imagingbook-plugins-book**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-book/javadoc)
