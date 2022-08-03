@@ -26,7 +26,7 @@ The source code is built as a modular Maven project, which includes the followin
 
 ## Documentation (JavaDoc):
 
-* [**imagingbook-core**](https://imagingbook.github.io/imagingbook-public/imagingbook-core/javadoc)
+* [**imagingbook-core**](imagingbook-core/javadoc)
 * [**imagingbook-common**](https://imagingbook.github.io/imagingbook-public/imagingbook-common/javadoc)
 * [**imagingbook-spectral**](https://imagingbook.github.io/imagingbook-public/imagingbook-spectral/javadoc)
 * [**imagingbook-plugins-book**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-book/javadoc)
