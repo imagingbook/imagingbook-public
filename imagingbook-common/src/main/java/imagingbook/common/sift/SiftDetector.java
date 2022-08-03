@@ -26,9 +26,11 @@ import imagingbook.common.sift.scalespace.ScaleOctave;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * TODO: Add description
+ * This class implements the detection of SIFT features from images.
+ * Currently only images of type {@link FloatProcessor} are supported.
  * 
  * @author WB
+ * @version 2022/08/03
  *
  */
 public class SiftDetector {
@@ -36,9 +38,8 @@ public class SiftDetector {
 	/**
 	 * Default parameters; a (usually modified) instance of this class
 	 * may be passed to constructor of {@link SiftDetector}.
-	 * TODO: add dialog annotations
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle {	// TODO: add dialog annotations
 		/** Set true to output debug information */
 		public boolean DEBUG = false;
 		/** Type of neigborhood used for peak detection in 3D scale space */
@@ -104,10 +105,19 @@ public class SiftDetector {
 
 	/* Constructors */
 
+	/**
+	 * Constructor using default parameters.
+	 * @param fp the input image
+	 */
 	public SiftDetector(FloatProcessor fp) {
 		this(fp, new Parameters());	// uses default parameters
 	}
 
+	/**
+	 * Constructor using specific parameters.
+	 * @param fp the input image
+	 * @param params parameters (see {@link Parameters})
+	 */
 	public SiftDetector(FloatProcessor fp, Parameters params) {
 		//normalize(fp);	// was destructive, delegated to ScaleLevel.getValues()
 		this.params = params;
@@ -194,9 +204,9 @@ public class SiftDetector {
 
 
 	/**
-	 * THE REAL STUFF: Creating the SIFT Descriptors
+	 * Calculates and returns a list of SIFT descriptors.
 	 * 
-	 * @return the sequence of extracted SIFT descriptors
+	 * @return a list of extracted SIFT descriptors
 	 */
 	public List<SiftDescriptor> getSiftFeatures() {
 		List<KeyPoint> keyPoints = getKeyPoints();

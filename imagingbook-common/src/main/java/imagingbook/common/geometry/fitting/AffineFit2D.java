@@ -17,6 +17,12 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 
+/**
+ * This class implements 2D point fitting under affine transformations.
+ * 
+ * @author WB
+ * @version 2022/08/01
+ */
 public class AffineFit2D implements LinearFit2D {
 	
 	private final RealMatrix A;		// the calculated transformation matrix

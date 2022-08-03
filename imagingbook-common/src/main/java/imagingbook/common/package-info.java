@@ -8,7 +8,9 @@
  *******************************************************************************/
 
 /**
- * This package holds the common library for the {@literal imagingbook}
- * software suite.
+ * This package contains the common library for the {@literal imagingbook}
+ * software suite supporting the Digital Image Processing books by
+ * Wilhelm Burger and Mark J Burge 
+ * (see <a href="https://www.imagingbook.com">https://www.imagingbook.com</a>).
  */
 package imagingbook.common;

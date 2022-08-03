@@ -33,6 +33,9 @@ import imagingbook.common.util.ParameterBundle;
  */
 public class SauvolaThresholder implements AdaptiveThresholder {
 	
+	/**
+	 * Parameters for class {@link SauvolaThresholder}.
+	 */
 	public static class Parameters implements ParameterBundle {
 		
 		@DialogLabel("Radius")

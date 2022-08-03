@@ -29,6 +29,9 @@ import imagingbook.common.util.ParameterBundle;
  */
 public class InterpolatingThresholder implements AdaptiveThresholder {
 	
+	/**
+	 * Parameters for class {@link InterpolatingThresholder}.
+	 */
 	public static class Parameters implements ParameterBundle {
 		@DialogLabel("Tile size")
 		public int tileSize = 32;
@@ -129,7 +132,7 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 		}
 	}
 	
-	// TODO: change to use an ImageAccessor!
+	// TODO: change to use ImageAccessor!
 	private int getPaddedPixel(ByteProcessor bp, int u, int v) {
 		final int w = bp.getWidth();
 		final int h = bp.getHeight();

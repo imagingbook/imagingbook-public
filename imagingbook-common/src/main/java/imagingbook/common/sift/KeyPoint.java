@@ -11,23 +11,41 @@ package imagingbook.common.sift;
 
 import java.util.Locale;
 
+/**
+ * Represents a SIFT key point in hierarchical scale space.
+ * 
+ * @author WB
+ *
+ */
 public class KeyPoint implements Cloneable, Comparable<KeyPoint> {
-	public final int p;	// octave index
-	public final int q;	// level index
+	/** octave index */
+	public final int p;
+	/** level index */
+	public final int q;
 	
-	public final int u;	// lattice x-position 
-	public final int v;	// lattice y-position 
-	public float x;		// interpolated lattice x-position 
-	public float y;		// interpolated lattice y-position 
+	/** lattice x-position */
+	public final int u;
+	/** lattice y-position */
+	public final int v;
+	/** interpolated lattice x-position */
+	public float x;
+	/** interpolated lattice y-position */
+	public float y;
 	
-	public float x_real;	// real x-position (in image coordinates)		
-	public float y_real;	// real y-position (in image coordinates)		
-	public float scale;		// absolute scale
+	/** real x-position (in image coordinates) */
+	public float x_real;
+	/** real y-position (in image coordinates) */	
+	public float y_real;
+	/** absolute scale */
+	public float scale;
 	
-	public final float magnitude;	// magnitude of DoG response
+	/** magnitude of DoG response */
+	public final float magnitude;
 	
-	protected float[] orientation_histogram;	// for debugging only
-	protected double orientation;				// dominant orientation (for debugging only)
+	/** for debugging only */
+	protected float[] orientation_histogram;
+	/** dominant orientation (for debugging only) */
+	protected double orientation;
 	
 	protected KeyPoint(int p, int q, int u, int v, float x, float y, float x_real, float y_real, float scale, float magnitude) {
 		this.p = p;
@@ -61,9 +79,6 @@ public class KeyPoint implements Cloneable, Comparable<KeyPoint> {
 	public int compareTo(KeyPoint other) {
 		//used for sorting keypoints by magnitude
 		return Float.compare(other.magnitude, this.magnitude);
-//		if (this.magnitude > other.magnitude) return -1;
-//		if (this.magnitude < other.magnitude) return 1;
-//		else return 0;
 	}
 	
 	

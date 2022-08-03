@@ -32,6 +32,9 @@ import imagingbook.common.util.ParameterBundle;
  */
 public class BernsenThresholder implements AdaptiveThresholder {
 	
+	/**
+	 * Parameters for class {@link BernsenThresholder}.
+	 */
 	public static class Parameters implements ParameterBundle {
 		@DialogLabel("Radius")
 		public int radius = 15;

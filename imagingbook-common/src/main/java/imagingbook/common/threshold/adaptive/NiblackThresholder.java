@@ -41,6 +41,9 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	
 	public enum RegionType { Box, Disk, Gauss }
 	
+	/**
+	 * Parameters for class {@link NiblackThresholder}.
+	 */
 	public static class Parameters implements ParameterBundle {
 		
 		@DialogLabel("Radius")
@@ -282,6 +285,4 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 		}
 	}
 	
-
-
 }
