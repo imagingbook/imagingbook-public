@@ -59,7 +59,7 @@ public abstract class ImageAccessor {
 	
 	/**
 	 * Creates a new {@code ImageAccessor} instance for the given image,
-	 * using the default out-of-bounds strategy and interpolation methods.
+	 * using the default out-of-bounds strategy and interpolation method.
 	 * The concrete type of the returned instance depends on the specified image.
 	 * 
 	 * @param ip the source image
@@ -71,7 +71,7 @@ public abstract class ImageAccessor {
 	
 	/**
 	 * Creates a new {@code ImageAccessor} instance for the given image,
-	 * using the specified out-of-bounds strategy and interpolation methods.
+	 * using the specified out-of-bounds strategy and interpolation method.
 	 * The concrete type of the returned instance depends on the specified image.
 	 * 
 	 * @param ip the source image
