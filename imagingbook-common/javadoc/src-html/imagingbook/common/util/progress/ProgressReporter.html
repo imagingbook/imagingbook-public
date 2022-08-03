@@ -21,21 +21,25 @@
 <span class="sourceLineNo">011</span><a id="line.11">import imagingbook.common.filter.generic.GenericFilter;</a>
 <span class="sourceLineNo">012</span><a id="line.12"></a>
 <span class="sourceLineNo">013</span><a id="line.13">/**</a>
-<span class="sourceLineNo">014</span><a id="line.14"> * Monitored objects (tasks) must implement this interface.</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * See {@link GenericFilter} for an example.</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * See also {@link ProgressMonitor}.</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * </a>
-<span class="sourceLineNo">018</span><a id="line.18"> */</a>
-<span class="sourceLineNo">019</span><a id="line.19">public interface ProgressReporter {</a>
-<span class="sourceLineNo">020</span><a id="line.20">        </a>
-<span class="sourceLineNo">021</span><a id="line.21">        /**</a>
-<span class="sourceLineNo">022</span><a id="line.22">         * Returns a value in [0,1) indicating to which degree this</a>
-<span class="sourceLineNo">023</span><a id="line.23">         * task is complete.</a>
-<span class="sourceLineNo">024</span><a id="line.24">         * @return a value between 0 and 1</a>
-<span class="sourceLineNo">025</span><a id="line.25">         */</a>
-<span class="sourceLineNo">026</span><a id="line.26">        public double getProgress();</a>
-<span class="sourceLineNo">027</span><a id="line.27"></a>
-<span class="sourceLineNo">028</span><a id="line.28">}</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Interface for defining tasks that may be queried (monitored) to</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * report their current progress status.</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * Monitored objects (tasks) must only implement method</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * {@link #getProgress()}, which returns the current completion status.</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * See {@link GenericFilter} for an example.</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * </a>
+<span class="sourceLineNo">020</span><a id="line.20"> * @see ProgressMonitor</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * </a>
+<span class="sourceLineNo">022</span><a id="line.22"> */</a>
+<span class="sourceLineNo">023</span><a id="line.23">public interface ProgressReporter {</a>
+<span class="sourceLineNo">024</span><a id="line.24">        </a>
+<span class="sourceLineNo">025</span><a id="line.25">        /**</a>
+<span class="sourceLineNo">026</span><a id="line.26">         * Returns a value in [0,1) indicating to which degree this</a>
+<span class="sourceLineNo">027</span><a id="line.27">         * task is complete.</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * @return a value between 0 and 1</a>
+<span class="sourceLineNo">029</span><a id="line.29">         */</a>
+<span class="sourceLineNo">030</span><a id="line.30">        public double getProgress();</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">}</a>
 
 
 

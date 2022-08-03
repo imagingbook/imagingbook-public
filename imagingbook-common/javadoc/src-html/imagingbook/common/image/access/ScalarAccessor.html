@@ -34,7 +34,7 @@
 <span class="sourceLineNo">024</span><a id="line.24"> */</a>
 <span class="sourceLineNo">025</span><a id="line.25">public abstract class ScalarAccessor extends ImageAccessor {</a>
 <span class="sourceLineNo">026</span><a id="line.26">        </a>
-<span class="sourceLineNo">027</span><a id="line.27">        protected float defaultValue = 0f;</a>
+<span class="sourceLineNo">027</span><a id="line.27">        float defaultValue = 0f;</a>
 <span class="sourceLineNo">028</span><a id="line.28"></a>
 <span class="sourceLineNo">029</span><a id="line.29">        /**</a>
 <span class="sourceLineNo">030</span><a id="line.30">         * Creates a new image accessor of general type {@link ScalarAccessor}. The conrete type</a>
@@ -128,9 +128,9 @@
 <span class="sourceLineNo">118</span><a id="line.118">                }</a>
 <span class="sourceLineNo">119</span><a id="line.119">        }</a>
 <span class="sourceLineNo">120</span><a id="line.120"></a>
-<span class="sourceLineNo">121</span><a id="line.121">        protected final PixelInterpolator interpolator; // performs interpolation</a>
+<span class="sourceLineNo">121</span><a id="line.121">        final PixelInterpolator interpolator; // performs interpolation</a>
 <span class="sourceLineNo">122</span><a id="line.122"></a>
-<span class="sourceLineNo">123</span><a id="line.123">        protected ScalarAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {</a>
+<span class="sourceLineNo">123</span><a id="line.123">        ScalarAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {</a>
 <span class="sourceLineNo">124</span><a id="line.124">                super(ip, obs, ipm);</a>
 <span class="sourceLineNo">125</span><a id="line.125">                this.interpolator = PixelInterpolator.create(interpolationMethod);</a>
 <span class="sourceLineNo">126</span><a id="line.126">        }</a>
@@ -165,7 +165,7 @@
 <span class="sourceLineNo">155</span><a id="line.155">//      }</a>
 <span class="sourceLineNo">156</span><a id="line.156">        </a>
 <span class="sourceLineNo">157</span><a id="line.157">        @Override</a>
-<span class="sourceLineNo">158</span><a id="line.158">        protected void checkComponentIndex(int k) {</a>
+<span class="sourceLineNo">158</span><a id="line.158">        void checkComponentIndex(int k) {</a>
 <span class="sourceLineNo">159</span><a id="line.159">                if (k != 0) {</a>
 <span class="sourceLineNo">160</span><a id="line.160">                        throw new IllegalArgumentException("invalid component index " + k);</a>
 <span class="sourceLineNo">161</span><a id="line.161">                }</a>

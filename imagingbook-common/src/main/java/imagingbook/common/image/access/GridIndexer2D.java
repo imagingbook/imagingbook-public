@@ -56,9 +56,9 @@ public abstract class GridIndexer2D implements Cloneable {
 		return null;
 	}
 	
-	protected final int width;
-	protected final int height;
-	protected final OutOfBoundsStrategy obs;
+	final int width;
+	final int height;
+	final OutOfBoundsStrategy obs;
 
 	private GridIndexer2D(int width, int height, OutOfBoundsStrategy obs) {
 		this.width = width;

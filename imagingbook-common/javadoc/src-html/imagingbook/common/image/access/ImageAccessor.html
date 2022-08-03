@@ -69,7 +69,7 @@
 <span class="sourceLineNo">059</span><a id="line.59">        </a>
 <span class="sourceLineNo">060</span><a id="line.60">        /**</a>
 <span class="sourceLineNo">061</span><a id="line.61">         * Creates a new {@code ImageAccessor} instance for the given image,</a>
-<span class="sourceLineNo">062</span><a id="line.62">         * using the default out-of-bounds strategy and interpolation methods.</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * using the default out-of-bounds strategy and interpolation method.</a>
 <span class="sourceLineNo">063</span><a id="line.63">         * The concrete type of the returned instance depends on the specified image.</a>
 <span class="sourceLineNo">064</span><a id="line.64">         * </a>
 <span class="sourceLineNo">065</span><a id="line.65">         * @param ip the source image</a>
@@ -81,7 +81,7 @@
 <span class="sourceLineNo">071</span><a id="line.71">        </a>
 <span class="sourceLineNo">072</span><a id="line.72">        /**</a>
 <span class="sourceLineNo">073</span><a id="line.73">         * Creates a new {@code ImageAccessor} instance for the given image,</a>
-<span class="sourceLineNo">074</span><a id="line.74">         * using the specified out-of-bounds strategy and interpolation methods.</a>
+<span class="sourceLineNo">074</span><a id="line.74">         * using the specified out-of-bounds strategy and interpolation method.</a>
 <span class="sourceLineNo">075</span><a id="line.75">         * The concrete type of the returned instance depends on the specified image.</a>
 <span class="sourceLineNo">076</span><a id="line.76">         * </a>
 <span class="sourceLineNo">077</span><a id="line.77">         * @param ip the source image</a>
@@ -99,7 +99,7 @@
 <span class="sourceLineNo">089</span><a id="line.89">        }</a>
 <span class="sourceLineNo">090</span><a id="line.90">        </a>
 <span class="sourceLineNo">091</span><a id="line.91">        // constructor (used by all subtypes)</a>
-<span class="sourceLineNo">092</span><a id="line.92">        protected ImageAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">        ImageAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {</a>
 <span class="sourceLineNo">093</span><a id="line.93">                this.ip = ip;</a>
 <span class="sourceLineNo">094</span><a id="line.94">                this.width  = ip.getWidth();</a>
 <span class="sourceLineNo">095</span><a id="line.95">                this.height = ip.getHeight();</a>
@@ -245,7 +245,7 @@
 <span class="sourceLineNo">235</span><a id="line.235">         */</a>
 <span class="sourceLineNo">236</span><a id="line.236">        public abstract ScalarAccessor getComponentAccessor(int k);</a>
 <span class="sourceLineNo">237</span><a id="line.237">        </a>
-<span class="sourceLineNo">238</span><a id="line.238">        protected abstract void checkComponentIndex(int k);</a>
+<span class="sourceLineNo">238</span><a id="line.238">        abstract void checkComponentIndex(int k);</a>
 <span class="sourceLineNo">239</span><a id="line.239">                </a>
 <span class="sourceLineNo">240</span><a id="line.240">}</a>
 
