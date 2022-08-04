@@ -15,17 +15,40 @@ The source code is built as a modular Maven project, which includes the followin
 
 ### Library and Data Packages
 
-* **imagingbook-core**: basic infrastructure required in other imagingbook library packages.
-* **imagingbook-common**: the common library of image processing algorithms and utility code.
-* **imagingbook-spectral**: library code related to spectral image processing (Fourier transforms etc.).
-* **imagingbook-pdf**: PDF-related library code.
-* **imagingbook-sample-images**: a small set of sample images used for demos and testing.
+These "library-only" packages are packaged as `JAR` files, which are typically imported as Maven
+dependencies. They may also be copied manually to ImageJ's `jars/` directory:
+
+* **imagingbook-core**:
+    Minimal infrastructure required for building other `imagingbook` library packages.
+    Includes code for handling resources and automatically compiling `plugins.config` files
+    for ImageJ plugin sets.  
+* **imagingbook-common**: 
+    This is the main `imagingbook` library with implementions of image processing algorithms,
+    associated data structures and utility code. Users interested in applying `imagingbook`
+    functionality in their own ImageJ plugins only require this package as a Maven dependency.
+* **imagingbook-spectral**: 
+    Library code related to spectral image processing (Fourier transforms etc.),
+    separated from the main `imagingbook` library to minimize third-party dependencies.
+* **imagingbook-pdf**: 
+    PDF-related library code,
+    separated from the main `imagingbook` library to minimize third-party dependencies.
+* **imagingbook-sample-images**: 
+    A small set of sample images used for demos and testing.
 
 ### ImageJ Plugin Packages
-* **imagingbook-plugins-book**: a collection of ImageJ plugins related to individual book chapters.
-* **imagingbook-plugins-extras**: plugins related to chapters in previous book editions or other publications.
-* **imagingbook-plugins-demos**: various plugins illustrating basic ImageJ concepts.
-* **imagingbook-plugins-tools**: plugins providing tools for working with ImageJ.
+
+These packages contain sets of `ImageJ` plugins that make use of `imagingbook` library.
+Each plugin set is packaged to a `JAR` file that can be copied to ImageJ's `plugins/` directory
+or imported as a Maven dependency:
+
+* **imagingbook-plugins-book**: 
+    A collection of `ImageJ` plugins related to individual book chapters.
+* **imagingbook-plugins-extras**: 
+    `ImageJ` plugins related to chapters in previous book editions or other publications.
+* **imagingbook-plugins-demos**: 
+    Various plugins illustrating basic `ImageJ` concepts.
+* **imagingbook-plugins-tools**: 
+    Plugins providing tools for working with `ImageJ` (e.g., exact zooming and PDF-export).
 
 <!-- [**Change Log**](CHANGES.md) -->
 
