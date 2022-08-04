@@ -11,24 +11,31 @@ Please visit the main website **[imagingbook.com](https://imagingbook.com/)** fo
 
 ## Repository Structure
 
-The source code is built as a modular Maven project, which includes the following sub-projects:
+The source code is built as a modular Maven project, which includes the following packages:
+
+### Library and Data Packages
 
 * **imagingbook-core**: basic infrastructure required in other imagingbook library packages.
 * **imagingbook-common**: the common library of image processing algorithms and utility code.
 * **imagingbook-spectral**: library code related to spectral image processing (Fourier transforms etc.).
+* **imagingbook-pdf**: PDF-related library code.
+* **imagingbook-sample-images**: a small set of sample images used for demos and testing.
+
+### ImageJ Plugin Packages
 * **imagingbook-plugins-book**: a collection of ImageJ plugins related to individual book chapters.
 * **imagingbook-plugins-extras**: plugins related to chapters in previous book editions or other publications.
 * **imagingbook-plugins-demos**: various plugins illustrating basic ImageJ concepts.
 * **imagingbook-plugins-tools**: plugins providing tools for working with ImageJ.
-* **imagingbook-sample**: a small set of sample images used for demos and testing.
 
-[**Change Log**](CHANGES.md)
+<!-- [**Change Log**](CHANGES.md) -->
 
 ## Documentation (JavaDoc):
 
 * [**imagingbook-core**](https://imagingbook.github.io/imagingbook-public/imagingbook-core/javadoc)
 * [**imagingbook-common**](https://imagingbook.github.io/imagingbook-public/imagingbook-common/javadoc)
 * [**imagingbook-spectral**](https://imagingbook.github.io/imagingbook-public/imagingbook-spectral/javadoc)
+* [**imagingbook-pdf**](https://imagingbook.github.io/imagingbook-public/imagingbook-pdf/javadoc)
+* [**imagingbook-sample-images**](https://imagingbook.github.io/imagingbook-public/imagingbook-sample-images/javadoc)
 * [**imagingbook-plugins-book**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-book/javadoc)
 * [**imagingbook-plugins-extras**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-extras/javadoc)
 * [**imagingbook-plugins-demos**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-demos/javadoc)
