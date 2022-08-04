@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-plugins-pom</artifactId>
-		<version>5.0.0</version>
+		<version>5.0.1-SNAPSHOT</version>
 		<!-- <relativePath /> -->
 		<relativePath>../imagingbook-plugins-pom/pom.xml</relativePath>
 	</parent>
@@ -36,26 +36,21 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.github.librepdf</groupId>
-			<artifactId>openpdf</artifactId>
-		</dependency>
-		
-		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-common</artifactId>
-			<version>5.0.0</version>
+			<version>5.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-spectral</artifactId>
-			<version>5.0.0</version>
+			<version>5.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-sample-images</artifactId>
-			<version>5.0.0</version>
+			<version>5.0.1-SNAPSHOT</version>
 		</dependency>
 		
 	</dependencies>

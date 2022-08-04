@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-parent-pom</artifactId>
-		<version>5.0.0</version>
+		<version>5.0.1-SNAPSHOT</version>
 		<!-- <relativePath /> -->
 		<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>
 	</parent>
@@ -26,12 +26,16 @@
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-common</artifactId>
-			<version>5.0.0</version>
+			<version>5.0.1-SNAPSHOT</version>
 		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/com.github.wendykierp/JTransforms, 
+			https://github.com/wendykierp/JTransforms -->
 		<dependency>
-		    <groupId>com.github.wendykierp</groupId>
-		    <artifactId>JTransforms</artifactId>
+			<groupId>com.github.wendykierp</groupId>
+			<artifactId>JTransforms</artifactId>
+			<version>3.1</version>
+			<!-- <classifier>with-dependencies</classifier> -->
 		</dependency>
 		
 		<dependency>

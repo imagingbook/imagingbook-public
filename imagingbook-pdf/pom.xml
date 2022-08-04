@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-parent-pom</artifactId>
-		<version>5.0.0</version>
+		<version>5.0.1-SNAPSHOT</version>
 		<!-- <relativePath /> -->
 		<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>
 	</parent>
@@ -26,18 +26,19 @@
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-core</artifactId>
-			<version>5.0.0</version>
+			<version>5.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-common</artifactId>
-			<version>5.0.0</version>
+			<version>5.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.github.librepdf</groupId>
 			<artifactId>openpdf</artifactId>
+			<version>1.3.29</version>
 		</dependency>
 		
 		<dependency>
