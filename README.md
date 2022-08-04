@@ -98,17 +98,19 @@ These projects may also be used as a good starting point when working without Ma
 ## Use without Maven
 
 In an existing (non-Maven based) `ImageJ` environvent, you need to manually copy all necessary JAR files from
-[imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all):
+[imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all/tree/master/ImageJ/jars):
 
 * `ImageJ/jars/*.jar` &rarr; `ImageJ/jars`
 * `ImageJ/plugins/*.jar` &rarr;  `ImageJ/plugins`
 
 Then restart `ImageJ`. Libraries and plugins should be loaded automatically.
-Note that the JAR files in [imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all)
-correspond to the most recent (development) build.
+Note that the JAR files in [imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all/tree/master/ImageJ/jars)
+are typically from the most recent development ("snapshot") build.
 JAR files from stable release versions can be found on Maven Central (https://mvnrepository.com/artifact/com.imagingbook).
 
 ## Related Projects on GitHub
+
+Other projects using the `imagingbook` library include:
 
 * **[imagingbook-calibrate](https://github.com/imagingbook/imagingbook-calibrate)**: Implementation of Zhang's camera calibration scheme.
 * **[imagingbook-violajones](https://github.com/imagingbook/imagingbook-violajones)**: Implementation of Viola-Jones face detection.
