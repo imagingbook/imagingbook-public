@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Hough Transform")
+@IjPluginPath("B&B>Book>Hough Transform")
 package HoughTransform;
 
 import imagingbook.core.plugin.IjPluginPath;

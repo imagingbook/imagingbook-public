@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Lucas-Kanade")
+@IjPluginPath("B&B>Book>Lucas-Kanade")
 package LucasKanade;
 
 import imagingbook.core.plugin.IjPluginPath;

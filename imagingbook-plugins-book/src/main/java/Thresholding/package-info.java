@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Thresholding")
+@IjPluginPath("B&B>Book>Thresholding")
 package Thresholding;
 
 import imagingbook.core.plugin.IjPluginPath;

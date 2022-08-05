@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B GenericFilter Demos")
+@IjPluginPath("B&B>Book>GenericFilter Demos")
 package GenericFilterDemos;
 
 import imagingbook.core.plugin.IjPluginPath;

@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Binary Regions")
+@IjPluginPath("B&B>Book>Binary Regions")
 package BinaryRegions;
 
 import imagingbook.core.plugin.IjPluginPath;

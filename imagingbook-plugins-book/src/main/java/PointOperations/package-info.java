@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Point Operations")
+@IjPluginPath("B&B>Book>Point Operations")
 package PointOperations;
 
 import imagingbook.core.plugin.IjPluginPath;

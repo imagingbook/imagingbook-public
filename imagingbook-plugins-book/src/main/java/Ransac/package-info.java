@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B RANSAC")
+@IjPluginPath("B&B>Book>RANSAC")
 package Ransac;
 
 import imagingbook.core.plugin.IjPluginPath;

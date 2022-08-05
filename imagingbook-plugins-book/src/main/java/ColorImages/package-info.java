@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Color Images")
+@IjPluginPath("B&B>Book>Color Images")
 package ColorImages;
 
 import imagingbook.core.plugin.IjPluginPath;

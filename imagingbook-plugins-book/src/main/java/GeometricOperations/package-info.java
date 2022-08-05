@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Geometric Operations")
+@IjPluginPath("B&B>Book>Geometric Operations")
 package GeometricOperations;
 
 import imagingbook.core.plugin.IjPluginPath;

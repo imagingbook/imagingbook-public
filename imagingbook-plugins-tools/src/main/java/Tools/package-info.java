@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Tools")
+@IjPluginPath("B&B>Tools")
 package Tools;
 
 import imagingbook.core.plugin.IjPluginPath;

@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Color Quantization")
+@IjPluginPath("B&B>Extras>Color Quantization")
 package Color_Quantization;
 
 import imagingbook.core.plugin.IjPluginPath;

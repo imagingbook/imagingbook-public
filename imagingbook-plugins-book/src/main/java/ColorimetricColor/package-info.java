@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Colorimetric Colors")
+@IjPluginPath("B&B>Book>Colorimetric Colors")
 package ColorimetricColor;
 
 import imagingbook.core.plugin.IjPluginPath;

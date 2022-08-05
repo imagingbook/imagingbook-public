@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Morphological Filters")
+@IjPluginPath("B&B>Book>Morphological Filters")
 package MorphologicalFilters;
 
 import imagingbook.core.plugin.IjPluginPath;

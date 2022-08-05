@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Image Matching")
+@IjPluginPath("B&B>Book>Image Matching")
 package ImageMatching;
 
 import imagingbook.core.plugin.IjPluginPath;

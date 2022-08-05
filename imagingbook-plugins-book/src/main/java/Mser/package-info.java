@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B MSER")
+@IjPluginPath("B&B>Book>MSER")
 package Mser;
 
 import imagingbook.core.plugin.IjPluginPath;

@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Edge-Preserving Smoothing")
+@IjPluginPath("B&B>Book>Edge-Preserving Smoothing")
 package Edge_Preserving_Smoothing;
 
 import imagingbook.core.plugin.IjPluginPath;

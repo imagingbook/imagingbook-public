@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Fitting Ellipses")
+@IjPluginPath("B&B>Book>Fitting Ellipses")
 package FittingEllipses;
 
 import imagingbook.core.plugin.IjPluginPath;

@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Corner Detection")
+@IjPluginPath("B&B>Book>Corner Detection")
 package CornerDetection;
 
 import imagingbook.core.plugin.IjPluginPath;

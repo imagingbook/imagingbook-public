@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Fitting Circles")
+@IjPluginPath("B&B>Book>Fitting Circles")
 package FittingCircles;
 
 import imagingbook.core.plugin.IjPluginPath;

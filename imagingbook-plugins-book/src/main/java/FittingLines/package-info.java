@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Fitting Lines")
+@IjPluginPath("B&B>Book>Fitting Lines")
 package FittingLines;
 
 import imagingbook.core.plugin.IjPluginPath;

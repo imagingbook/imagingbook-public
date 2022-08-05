@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B SIFT")
+@IjPluginPath("B&B>Book>SIFT")
 package Sift;
 
 import imagingbook.core.plugin.IjPluginPath;

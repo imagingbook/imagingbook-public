@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Pixel Interpolation")
+@IjPluginPath("B&B>Book>Pixel Interpolation")
 package PixelInterpolation;
 
 import imagingbook.core.plugin.IjPluginPath;

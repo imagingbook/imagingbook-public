@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("B&B>Extras>Fourier Shape Descriptors")
-package Fourier_Shape_Descriptors;
+@IjPluginPath("B&B>Extras>Delaunay")
+package Delaunay_Triangulation;
 
 import imagingbook.core.plugin.IjPluginPath;

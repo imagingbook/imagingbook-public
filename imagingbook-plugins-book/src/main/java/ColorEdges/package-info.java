@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Color Edges")
+@IjPluginPath("B&B>Book>Color Edges")
 package ColorEdges;
 
 import imagingbook.core.plugin.IjPluginPath;

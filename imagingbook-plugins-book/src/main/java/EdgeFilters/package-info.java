@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Edge Filters")
+@IjPluginPath("B&B>Book>Edge Filters")
 package EdgeFilters;
 
 import imagingbook.core.plugin.IjPluginPath;

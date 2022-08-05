@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Histograms/Statistics")
+@IjPluginPath("B&B>Book>Histograms/Statistics")
 package HistogramsStatistics;
 
 import imagingbook.core.plugin.IjPluginPath;

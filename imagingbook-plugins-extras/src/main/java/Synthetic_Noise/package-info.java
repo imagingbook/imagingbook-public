@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("Plugins>B&B Synthetic Noise")
+@IjPluginPath("B&B>Extras>Synthetic Noise")
 package Synthetic_Noise;
 
 import imagingbook.core.plugin.IjPluginPath;
