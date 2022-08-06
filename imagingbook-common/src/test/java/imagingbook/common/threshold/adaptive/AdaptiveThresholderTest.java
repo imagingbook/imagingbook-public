@@ -13,42 +13,42 @@ public class AdaptiveThresholderTest {
 	@Test
 	public void testBernsenThresholder() {
 		AdaptiveThresholder thresholder = new BernsenThresholder();
-		runThreshold(thresholder, GeneralTestImage.Blobs, 21896);
+		runThreshold(thresholder, GeneralTestImage.Blobs, 43574);
 		runThreshold(thresholder, GeneralTestImage.Boats, 147239);	
 	}
 	
 	@Test
 	public void testInterpolatingThresholder() {
 		AdaptiveThresholder thresholder = new InterpolatingThresholder();
-		runThreshold(thresholder, GeneralTestImage.Blobs, 21908);
+		runThreshold(thresholder, GeneralTestImage.Blobs, 42354);
 		runThreshold(thresholder, GeneralTestImage.Boats, 164349);	
 	}
 	
 	@Test
 	public void testNiblackThresholderBox() {
 		AdaptiveThresholder thresholder = new NiblackThresholder.Box();
-		runThreshold(thresholder, GeneralTestImage.Blobs, 31876);
+		runThreshold(thresholder, GeneralTestImage.Blobs, 44121);
 		runThreshold(thresholder, GeneralTestImage.Boats, 323029);	
 	}
 	
 	@Test
 	public void testNiblackThresholderDisk() {
 		AdaptiveThresholder thresholder = new NiblackThresholder.Disk();
-		runThreshold(thresholder, GeneralTestImage.Blobs, 34699);
+		runThreshold(thresholder, GeneralTestImage.Blobs, 44571);
 		runThreshold(thresholder, GeneralTestImage.Boats, 328857);	
 	}
 	
 	@Test
 	public void testNiblackThresholderGauss() {
 		AdaptiveThresholder thresholder = new NiblackThresholder.Gauss();
-		runThreshold(thresholder, GeneralTestImage.Blobs, 33200);
+		runThreshold(thresholder, GeneralTestImage.Blobs, 44358);
 		runThreshold(thresholder, GeneralTestImage.Boats, 328838);	
 	}
 	
 	@Test
 	public void testSauvolaThresholder() {
 		AdaptiveThresholder thresholder = new SauvolaThresholder();
-		runThreshold(thresholder, GeneralTestImage.Blobs, 48597);
+		runThreshold(thresholder, GeneralTestImage.Blobs, 45399);
 		runThreshold(thresholder, GeneralTestImage.Boats, 387246);	
 	}
 	

@@ -35,7 +35,7 @@ public class AlgebraicEllipseTest {
 		GeometricEllipse ge1 = new GeometricEllipse(ae1);
 		
 		AlgebraicEllipse ae2  = new AlgebraicEllipse(ge1);
-		System.out.println("ae2 = " + ae2);
+//		System.out.println("ae2 = " + ae2);
 		
 		assertTrue(ae1.equals(ae2, 1e-6));
 	}
