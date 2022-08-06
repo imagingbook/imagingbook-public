@@ -11,6 +11,7 @@ package imagingbook.sampleimages;
 import imagingbook.core.resource.ImageResource;
 
 /**
+ * <p>
  * Enumeration defining a set of {@link ImageResource} objects for RANSAC test images.
  * Usage example:
  * </p>

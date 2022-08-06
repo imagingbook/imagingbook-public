@@ -11,6 +11,7 @@ package imagingbook.sampleimages;
 import imagingbook.core.resource.ImageResource;
 
 /**
+ * <p>
  * Enumeration defining a set of {@link ImageResource} objects for MSER test images.
  * Usage example:
  * </p>
@@ -28,14 +29,14 @@ import imagingbook.core.resource.ImageResource;
  */
 public enum MserTestImage implements ImageResource {
 	AllBlack("all-black.png"),
-	Blob1("blob1.png"),  
-	Blob3("blob3.png"),            
+	AllWhite("all-white.png"),  
+	Blob1("blob1.png"),
+	Blob2("blob2.png"),
+	Blob3("blob3.png"),          
 	BlobLevelTestNoise("blob-level-test-noise.png"),
 	BlobsInWhite("blobs-in-white.png"),  
 	BoatsTinyB("boats-tiny-b.png"),   
 	BoatsTinyW("boats-tiny-w.png"),
-	AllWhite("all-white.png"),  
-	Blob2("blob2.png"),  
 	BlobLevelTest("blob-level-test.png"),  
 	BlobOriented("blob-oriented.png"),          
 	BoatsTiny("boats-tiny.png"),      
