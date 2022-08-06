@@ -6,6 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit http://www.imagingbook.com for additional details.
  *******************************************************************************/
+
 /**
  * <p>
  * This package contains test and sample images to be used with the {@literal imagingbook}
