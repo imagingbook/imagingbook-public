@@ -11,7 +11,8 @@
  * This package contains test and sample images to be used with the {@literal imagingbook}
  * software suite.
  * Sample images are packed into a JAR file which is supposed to be imported as a Maven artifact.
- * Images are defined as "named resources".
+ * Images are defined as "named resources" and verified (by unit testing) to exist in the
+ * source tree.
  * </p>
  * <p>
  * This code is part of the {@literal imagingbook}
