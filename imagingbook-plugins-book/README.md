@@ -1,3 +1,9 @@
 # imagingbook-plugins-book
 
-Contains ImageJ plugins directly associated with book chapters (Burger/Burger 3rd edition, 2022).
+A collection of `ImageJ` plugins related to individual book chapters (Burger/Burger 3rd edition, 2022).
+
+**Repository:** [imagingbook-public](https://github.com/imagingbook/imagingbook-public)
+
+**JavaDoc:** https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-book/javadoc/
+
+**Maven Artifact:** https://mvnrepository.com/artifact/com.imagingbook/imagingbook_plugins_book
