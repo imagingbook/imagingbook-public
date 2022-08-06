@@ -10,7 +10,22 @@ package imagingbook.sampleimages;
 
 import imagingbook.core.resource.ImageResource;
 
-
+/**
+ * Enumeration defining a set of {@link ImageResource} objects for MSER test images.
+ * Usage example:
+ * </p>
+ * <pre>
+ * import ij.process.ImageProcessor;
+ * import imagingbook.core.resource.ImageResource;
+ * import imagingbook.sampleimages.GeneralTestImage;
+ * 
+ * ImageResource ir = MserTestImage.BoatsTiny;
+ * ImageProcessor ip = ir.getImage().getProcessor();
+ * // process ip ...
+ * </pre>
+ * @see ImageResource
+ *
+ */
 public enum MserTestImage implements ImageResource {
 	AllBlack("all-black.png"),
 	Blob1("blob1.png"),  

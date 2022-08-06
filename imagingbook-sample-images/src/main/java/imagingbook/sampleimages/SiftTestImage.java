@@ -10,23 +10,38 @@ package imagingbook.sampleimages;
 
 import imagingbook.core.resource.ImageResource;
 
-
+/**
+ * Enumeration defining a set of {@link ImageResource} objects for SIFT test images.
+ * Usage example:
+ * </p>
+ * <pre>
+ * import ij.process.ImageProcessor;
+ * import imagingbook.core.resource.ImageResource;
+ * import imagingbook.sampleimages.GeneralTestImage;
+ * 
+ * ImageResource ir = SiftTestImage.Stars;
+ * ImageProcessor ip = ir.getImage().getProcessor();
+ * // process ip ...
+ * </pre>
+ * @see ImageResource
+ *
+ */
 public enum SiftTestImage implements ImageResource {
-	box00("box00.png"),
-	box15("box15.png"),
-	box30("box30.png"),
-	box45("box45.png"),
-	box60("box60.png"),
-	box75("box75.png"),
-	box90("box90.png"),
-	halfdiskH("halfdiskH.png"),
-	halfdiskV("halfdiskV.png"),
-	ireland02tiny("ireland02tiny.png"),
-	rectangleH("rectangleH.png"),
-	rectangleV("rectangleV.png"),
-	stars("stars.png"),
-	starsH("starsH.png"),
-	starsV("starsV.png"),
+	Box00("box00.png"),
+	Box15("box15.png"),
+	Box30("box30.png"),
+	Box45("box45.png"),
+	Box60("box60.png"),
+	Box75("box75.png"),
+	Box90("box90.png"),
+	HalfDiskH("halfdiskH.png"),
+	HalfDiskV("halfdiskV.png"),
+	Ireland02tiny("ireland02tiny.png"),
+	RectangleH("rectangleH.png"),
+	RectangleV("rectangleV.png"),
+	Stars("stars.png"),
+	StarsH("starsH.png"),
+	StarsV("starsV.png"),
 	;
 	
 	private static final String BASEDIR = "sift/";

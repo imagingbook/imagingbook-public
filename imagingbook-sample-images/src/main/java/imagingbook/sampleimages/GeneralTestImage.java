@@ -10,7 +10,22 @@ package imagingbook.sampleimages;
 
 import imagingbook.core.resource.ImageResource;
 
-
+/**
+ * Enumeration defining a set of {@link ImageResource} objects for some general test images.
+ * Usage example:
+ * </p>
+ * <pre>
+ * import ij.process.ImageProcessor;
+ * import imagingbook.core.resource.ImageResource;
+ * import imagingbook.sampleimages.GeneralTestImage;
+ * 
+ * ImageResource ir = GeneralTestImage.Clown;
+ * ImageProcessor ip = ir.getImage().getProcessor();
+ * // process ip ...
+ * </pre>
+ * @see ImageResource
+ *
+ */
 public enum GeneralTestImage implements ImageResource {
 		DotBlot("Dot_Blot.png"),
 		Blobs("blobs.png"),

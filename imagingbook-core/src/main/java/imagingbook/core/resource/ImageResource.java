@@ -13,12 +13,13 @@ import ij.ImagePlus;
 
 /**
  * <p>
- * Named image resource types implement this interface.
+ * Interface to be implemented by named image resources.
  * This indicates (for testing) that the associated resource can be opened as
  * an image (by ImageJ).
  * Extends interface {@link NamedResource} by adding method {@link #getImage()},
  * which returns an {@link ImagePlus} instance.
- * So this can be used, e.g., on the named resource {@code MyImages.image1}, simply in the form
+ * For example, given a named resource {@code MyImages.image1},
+ * this can be used simply in the form
  * </p>
  * <pre>
  * ImagePlus im = MyImages.image1.getImage();

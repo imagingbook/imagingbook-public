@@ -8,8 +8,15 @@
  *******************************************************************************/
 
 /**
- * This package hold elementary functionality required in other imagingbook library packages.
- * It does not depend on any other imagingbook packages but must be separate to avoid
- * circular project dependencies.
+ * <p>
+ * Minimal infrastructure required for building other {@literal imagingbook} library packages
+ * Includes code for handling resources and automatically compiling {@literal plugins.config} 
+ * files for ImageJ plugin sets.
+ * </p>
+ * <p>
+ * This code is part of the {@literal imagingbook}
+ * software suite supporting the Digital Image Processing books by Wilhelm Burger and Mark J Burge 
+ * (see <a href="https://www.imagingbook.com">https://www.imagingbook.com</a>).
+ * </p>
  */
 package imagingbook.core;

@@ -8,9 +8,15 @@
  *******************************************************************************/
 
 /**
- * This package contains the common library for the {@literal imagingbook}
- * software suite supporting the Digital Image Processing books by
- * Wilhelm Burger and Mark J Burge 
+ * <p>
+ * This is the main {@literal imagingbook} library with implementions of image processing algorithms, 
+ * associated data structures and utility code. Users interested in applying imagingbook 
+ * functionality in their own ImageJ plugins only require this package as a Maven dependency.
+ * </p>
+ * <p>
+ * This code is part of the {@literal imagingbook}
+ * software suite supporting the Digital Image Processing books by Wilhelm Burger and Mark J Burge 
  * (see <a href="https://www.imagingbook.com">https://www.imagingbook.com</a>).
+ * </p>
  */
 package imagingbook.common;

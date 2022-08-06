@@ -43,11 +43,11 @@ public class SiftDetectorTest {
 		params.sFscale = 512.0;
 
 		runSift(GeneralTestImage.MonasterySmall, 291);
-		runSift(SiftTestImage.box00, 38);
-		runSift(SiftTestImage.halfdiskH, 8);
-		runSift(SiftTestImage.halfdiskV, 8);
-		runSift(SiftTestImage.starsH, 259);
-		runSift(SiftTestImage.starsV, 251);
+		runSift(SiftTestImage.Box00, 38);
+		runSift(SiftTestImage.HalfDiskH, 8);
+		runSift(SiftTestImage.HalfDiskV, 8);
+		runSift(SiftTestImage.StarsH, 259);
+		runSift(SiftTestImage.StarsV, 251);
 	}
 	
 	private void runSift(ImageResource res, int siftExpected) {
