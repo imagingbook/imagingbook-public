@@ -70,10 +70,16 @@ public class GlobalThresholderTest {
 	
 	private void runThreshold(GlobalThresholder thresholder, ImageResource res, int expectedZeros) {
 		ByteProcessor bp = res.getImage().getProcessor().convertToByteProcessor();
+		// apply thresholder and count resulting zero pixels
 		thresholder.threshold(bp);
-		int zeros = countZeros(bp);
+		int zeros1 = countZeros(bp);
 //		System.out.println(res + ": " + zeros + " / " + (bp.getWidth() * bp.getHeight()));
-		assertEquals("threhold to zero pixels (" + res + ")", expectedZeros, zeros);
+		assertEquals("threshold zero pixels 1st (" + res + ")", expectedZeros, zeros1);
+		
+		// repeat on binary image (should give the same number of zero pixels)
+		thresholder.threshold(bp);
+		int zeros2 = countZeros(bp);
+		assertEquals("threshold zero pixels 2nd (" + res + ")", expectedZeros, zeros2);
 	}
 	
 	private int countZeros(ByteProcessor bp) {
