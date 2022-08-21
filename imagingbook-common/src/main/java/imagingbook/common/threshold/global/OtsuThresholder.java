@@ -9,10 +9,13 @@
 
 package imagingbook.common.threshold.global;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+
+
 /**
  * <p>
  * This is an implementation of the global thresholder proposed by Otsu [1].
- * See Sec. 9.1.4 (Alg. 9.4) of [2] for a detailed description.
+ * See Sec. 9.1.4 (Alg. 9.4 and 9.3) in [2] for a detailed description.
  * </p>
  * <p>
  * [1] N. Otsu, "A threshold selection method from gray-level histograms",
@@ -21,7 +24,7 @@ package imagingbook.common.threshold.global;
  * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * @author WB
- * @version 2022/08/01
+ * @version 2022/08/21
  * 
  */
 public class OtsuThresholder implements GlobalThresholder {
@@ -47,11 +50,10 @@ public class OtsuThresholder implements GlobalThresholder {
 		
 		// examine all possible threshold values q:
 		for (int q = 0; q <= K-2; q++) {
-			n0 = n0 +  h[q]; 
-			int n1 = N - n0;
-			if (n0 > 0 && n1 > 0) {
-				double meanDiff = M0[q] - M1[q];
-				double sigma2B =  meanDiff * meanDiff * n0 * n1; // (1/N^2) has been omitted
+			n0 = n0 +  h[q]; 			// # of background pixels for q
+			int n1 = N - n0;			// # of foreground pixels for q
+			if (n0 > 0 && n1 > 0) {		// both sets must be non-empty
+				double sigma2B =  sqr(M0[q] - M1[q]) * n0 * n1; 	// factor (1/N^2) omitted
 				if (sigma2B > sigma2Bmax) {
 					sigma2Bmax = sigma2B;
 					qMax = q;
@@ -71,7 +73,7 @@ public class OtsuThresholder implements GlobalThresholder {
 		for (int q = 0; q < K; q++) {
 			n0 = n0 + h[q];
 			s0 = s0 + q * h[q];
-			M0[q] = (n0 > 0) ? ((double) s0)/n0 : -1;
+			M0[q] = (n0 > 0) ? ((double) s0) / n0 : -1;
 		}
 		
 		this.N = n0;
@@ -84,7 +86,5 @@ public class OtsuThresholder implements GlobalThresholder {
 			s1 = s1 + (q+1) * h[q+1];
 			M1[q] = (n1 > 0) ? ((double) s1)/n1 : -1;
 		}
-		
-//		return N;
 	}
 }
