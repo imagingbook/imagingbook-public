@@ -9,6 +9,7 @@
 
 package imagingbook.common.threshold.global;
 
+import ij.IJ;
 import imagingbook.common.histogram.Util;
 
 /**
@@ -25,15 +26,15 @@ import imagingbook.common.histogram.Util;
  * </p>
  * 
  * @author WB
- * @version 2022/08/01
+ * @version 2022/08/21
  */
 public class MaxEntropyThresholder implements GlobalThresholder {
 	
 	static final double EPSILON = 1E-12;
 	
-	private double[] H0array = new double[256]; 	// only used for reporting
-	private double[] H1array = new double[256]; 	// only used for reporting
-	private double[] H01array = new double[256]; // only used for reporting
+//	private double[] H0array = new double[256]; 	// only used for reporting
+//	private double[] H1array = new double[256]; 	// only used for reporting
+//	private double[] H01array = new double[256]; 	// only used for reporting
 	
 	private double[] S0 = null;
 	private double[] S1 = null;
@@ -45,28 +46,31 @@ public class MaxEntropyThresholder implements GlobalThresholder {
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;	
-		double[] p = Util.normalize(h);		// normalized histogram (probabilities)
+		double[] p = Util.normalize(h);		// normalized histogram (to probabilities)
 		makeTables(p);	// initialize S0, S1
 		
-		double P0 = 0, P1;
+		double P0 = 0;	// cumulative background probability
+		double P1;		// cumulative foreground probability
 		int qMax = -1;
 		double Hmax = Double.NEGATIVE_INFINITY;
 		
-		for (int q = 0; q <= K-1; q++) { // one more step for logging
-			P0 = P0 + p[q];	
-			P1 = 1 - P0;	
-			double H0 = (P0 > EPSILON) ? -S0[q]/P0 + Math.log(P0) : 0;				
-			double H1 = (P1 > EPSILON) ? -S1[q]/P1 + Math.log(P1) : 0;			
+		for (int q = 0; q <= K-2; q++) {
+			P0 = P0 + p[q];
+			P1 = 1 - P0;
+			double H0 = (P0 > EPSILON) ? -S0[q]/P0 + Math.log(P0) : 0;
+			double H1 = (P1 > EPSILON) ? -S1[q]/P1 + Math.log(P1) : 0;
 			double H01 = H0 + H1;
 			
-			H0array[q] = H0;	// logging only
-			H1array[q] = H1;	// logging only
-			H01array[q] = H01;	// logging only
+//			H0array[q] = H0;	// logging only
+//			H1array[q] = H1;	// logging only
+//			H01array[q] = H01;	// logging only
 			
 			if (H01 > Hmax) {
 				Hmax = H01;
 				qMax = q;
 			}
+			
+			IJ.log(String.format("q=%3d | H0=%.2f H1=%.2f | H01=%.6f", q, H0, H1, H01));
 		}
 		return qMax;
 	}
@@ -77,18 +81,18 @@ public class MaxEntropyThresholder implements GlobalThresholder {
 		// make tables S0[], S1[]
 		S0 = new double[K];
 		S1 = new double[K];
-
+		
 		double s0 = 0;
-		for (int i = 0; i < K; i++) {
-			if (p[i] > EPSILON) {
-				s0 = s0 + p[i] * Math.log(p[i]);
+		for (int q = 0; q < K; q++) {
+			if (p[q] > EPSILON) {
+				s0 = s0 + p[q] * Math.log(p[q]);
 			}
-			S0[i] = s0;
+			S0[q] = s0;			// S0[q] <- S0[q-1] + p[q] * log(p[q])
 		}
 
 		double s1 = 0;
 		for (int i = K-1; i >= 0; i--) {
-			S1[i] = s1;
+			S1[i] = s1;			// S1[q] <- S0[q+1] + p[q+1] * log(p[q+1])	CHECK *************
 			if (p[i] > EPSILON) {
 				s1 = s1 + p[i] * Math.log(p[i]);
 			}

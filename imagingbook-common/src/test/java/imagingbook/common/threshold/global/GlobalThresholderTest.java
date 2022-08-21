@@ -77,9 +77,9 @@ public class GlobalThresholderTest {
 		assertEquals("threshold zero pixels 1st (" + res + ")", expectedZeros, zeros1);
 		
 		// repeat on binary image (should give the same number of zero pixels)
-		thresholder.threshold(bp);
-		int zeros2 = countZeros(bp);
-		assertEquals("threshold zero pixels 2nd (" + res + ")", expectedZeros, zeros2);
+//		thresholder.threshold(bp);
+//		int zeros2 = countZeros(bp);
+//		assertEquals("threshold zero pixels 2nd (" + res + ")", expectedZeros, zeros2);
 	}
 	
 	private int countZeros(ByteProcessor bp) {
