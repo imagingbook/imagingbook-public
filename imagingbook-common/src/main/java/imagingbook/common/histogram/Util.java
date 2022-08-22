@@ -9,7 +9,11 @@
 
 package imagingbook.common.histogram;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+
+
 // TODO: needs revision, histogram should get its own class.
+// TODO: needs unit tests!
 
 public class Util {
 
@@ -19,10 +23,10 @@ public class Util {
 
 	public static int[] makeGaussianHistogram (double mean, double sigma) {
 		int[] h = new int[256];
-		double sigma2 = 2 * sigma * sigma;
+		double sigma2 = 2 * sqr(sigma);
 		for (int i = 0; i < h.length; i++) {
 			double x = mean - i;
-			double g = Math.exp(-(x * x) / sigma2) / sigma;
+			double g = Math.exp(-sqr(x) / sigma2) / sigma;
 			h[i] = (int) Math.round(10000 * g);
 		}
 		return h;
@@ -43,6 +47,17 @@ public class Util {
 			hn[i] = s * h[i];
 		}
 		return hn;
+	}
+	
+	// returns the cumulative histogram 
+	public static int[] cumulate(int[] h) {
+		final int K = h.length;
+		int[] C = new int[K];
+		C[0] = h[0];
+		for (int i = 1; i < K; i++) {
+	        C[i] = C[i-1] + h[i];
+	    }
+	    return C;
 	}
 
 	//------------------------------------------------------
@@ -67,12 +82,9 @@ public class Util {
 	public static double[] Cdf (int[] h) {
 		// returns the cumul. probability distribution function (cdf) for histogram h
 		int K = h.length;
-		int n = 0;		// sum all histogram values		
-		for (int i=0; i<K; i++)	{ 	
-			n = n + h[i]; 
-		}
+		int n = sum(h);		// sum all histogram values		
 		double[] P = new double[K];
-		int c = h[0];
+		long c = h[0];
 		P[0] = (double) c / n;
 		for (int i = 1; i < K; i++) {
 	    	c = c + h[i];
@@ -98,20 +110,22 @@ public class Util {
 	// methods moved from Thresholder -------------------------------
 	
 	// compute the sum of a histogram array
-	public static int sum(int[] h) {
-		int cnt = 0;
-		for (int i = 0; i < h.length; i++) {
-			cnt += h[i];
-		}
-		return cnt;
-	}
+//	@Deprecated
+//	public static int sum(int[] h) {
+//		int cnt = 0;
+//		for (int i = 0; i < h.length; i++) {
+//			cnt += h[i];
+//		}
+//		return cnt;
+//	}
 
-	public static int count(int[] h) {
-		return count(h, 0, h.length - 1);
+	// compute the population of a histogram
+	public static int sum(int[] h) {
+		return sum(h, 0, h.length - 1);
 	}
 
 	// compute the population of a histogram from index lo...hi
-	public static int count(int[] h, int lo, int hi) {
+	public static int sum(int[] h, int lo, int hi) {
 		if (lo < 0) lo = 0;
 		if (hi >= h.length) hi = h.length-1;
 		int cnt = 0;
@@ -122,7 +136,7 @@ public class Util {
 	}
 
 	public static double mean(int[] h) {
-		return mean(h,0,h.length-1);
+		return mean(h, 0, h.length - 1);
 	}
 
 	public static double mean(int[] h, int lo, int hi) {
@@ -201,7 +215,7 @@ public class Util {
 
 	public static double[] normalize(int[] h) {
 		int K = h.length;
-		int N = count(h);
+		int N = sum(h);
 		double[] nh = new double[K];
 		for (int i = 0; i < K; i++) {
 			nh[i] = ((double) h[i]) / N;
@@ -227,9 +241,5 @@ public class Util {
 		}
 		return hmax;
 	}
-	
-	
-	
-	
 
 }
