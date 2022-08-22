@@ -1,6 +1,7 @@
 package imagingbook.common.threshold.global;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -70,16 +71,21 @@ public class GlobalThresholderTest {
 	
 	private void runThreshold(GlobalThresholder thresholder, ImageResource res, int expectedZeros) {
 		ByteProcessor bp = res.getImage().getProcessor().convertToByteProcessor();
-		// apply thresholder and count resulting zero pixels
+		
+		// check it a valid threshold was found:
+		int q = thresholder.getThreshold(bp);
+		assertTrue("threshold must be positive", q >= 0);
+		
+		// apply thresholder and count resulting zero pixels:
 		thresholder.threshold(bp);
 		int zeros1 = countZeros(bp);
 //		System.out.println(res + ": " + zeros + " / " + (bp.getWidth() * bp.getHeight()));
 		assertEquals("threshold zero pixels 1st (" + res + ")", expectedZeros, zeros1);
 		
 		// repeat on binary image (should give the same number of zero pixels)
-//		thresholder.threshold(bp);
-//		int zeros2 = countZeros(bp);
-//		assertEquals("threshold zero pixels 2nd (" + res + ")", expectedZeros, zeros2);
+		thresholder.threshold(bp);
+		int zeros2 = countZeros(bp);
+		assertEquals("threshold zero pixels 2nd (" + res + ")", expectedZeros, zeros2);
 	}
 	
 	private int countZeros(ByteProcessor bp) {

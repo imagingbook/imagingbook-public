@@ -8,11 +8,9 @@
  *******************************************************************************/
 package imagingbook.sampleimages;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 
-import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.lib.TestUtils;
 
 
 /**
@@ -21,13 +19,10 @@ import imagingbook.core.resource.ImageResource;
  *
  */
 public class MserTestImageTest {
-
+	
 	@Test
 	public void test1() {
-	for (ImageResource ir : MserTestImage.values()) {
-		assertNotNull("could not find URL for resource " + ir.toString(), ir.getURL());
-		assertNotNull("could not open image for resource " + ir,  ir.getImage());
+		TestUtils.testImageResource(MserTestImage.class);
 	}
-}
 
 }
