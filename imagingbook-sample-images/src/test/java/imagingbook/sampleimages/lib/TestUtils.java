@@ -25,7 +25,8 @@ public abstract class TestUtils {
 			for (E c : enumClass.getEnumConstants()) {
 //				System.out.println(c.toString());
 				NamedResource nr = (NamedResource) c;
-				assertNotNull("could not find URL for resource " + nr.toString(), nr.getURL());
+				assertNotNull("could not find resource " + c.toString(), nr.getURL());
+//				assertNotNull("could not obtain URL for resource " + nr.toString(), nr.getURL());
 			}
 				
 		}
@@ -41,6 +42,7 @@ public abstract class TestUtils {
 			for (E c : enumClass.getEnumConstants()) {
 //				System.out.println(c.toString());
 				ImageResource ir = (ImageResource) c;
+				assertNotNull("could not find resource " + c.toString(), ir.getURL());
 				assertNotNull("could not open image for resource " + ir,  ir.getImage());
 			}
 		}
