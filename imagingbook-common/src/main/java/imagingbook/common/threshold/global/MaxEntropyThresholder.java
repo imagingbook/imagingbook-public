@@ -9,7 +9,6 @@
 
 package imagingbook.common.threshold.global;
 
-import ij.IJ;
 import imagingbook.common.histogram.Util;
 
 /**
@@ -30,11 +29,7 @@ import imagingbook.common.histogram.Util;
  */
 public class MaxEntropyThresholder implements GlobalThresholder {
 	
-	static final double EPSILON = 1E-12;
-	
-//	private double[] H0array = new double[256]; 	// only used for reporting
-//	private double[] H1array = new double[256]; 	// only used for reporting
-//	private double[] H01array = new double[256]; 	// only used for reporting
+	static final double EPSILON = 1E-16;
 	
 	private double[] S0 = null;
 	private double[] S1 = null;
@@ -46,54 +41,56 @@ public class MaxEntropyThresholder implements GlobalThresholder {
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;	
-		double[] p = Util.normalize(h);		// normalized histogram (to probabilities)
+		double[] p = Util.normalize(h);			// normalized histogram (to probabilities)	
 		makeTables(p);	// initialize S0, S1
 		
-		double P0 = 0;	// cumulative background probability
-		double P1;		// cumulative foreground probability
+		double P0 = 0;	// cumulative probability
+		double P1;
+		
 		int qMax = -1;
 		double Hmax = Double.NEGATIVE_INFINITY;
 		
-		for (int q = 0; q <= K-2; q++) {
-			P0 = P0 + p[q];
+		for (int q = 0; q <= K-2; q++) {		
+			P0 = P0 + p[q];	
+			if (P0 < EPSILON) continue;		// empty histogram so far, nothing to do
+				
 			P1 = 1 - P0;
-			double H0 = (P0 > EPSILON) ? -S0[q]/P0 + Math.log(P0) : 0;
-			double H1 = (P1 > EPSILON) ? -S1[q]/P1 + Math.log(P1) : 0;
-			double H01 = H0 + H1;
+			if (P1 < EPSILON) break;		// no more histogram entries, finished
 			
-//			H0array[q] = H0;	// logging only
-//			H1array[q] = H1;	// logging only
-//			H01array[q] = H01;	// logging only
+			// P0, P1 are nonzero!			
+			double H0 = -S0[q]/P0 + Math.log(P0);
+			double H1 = -S1[q]/P1 + Math.log(P1);
+			double H01 = H0 + H1;		
 			
 			if (H01 > Hmax) {
 				Hmax = H01;
 				qMax = q;
-			}
-			
-			IJ.log(String.format("q=%3d | H0=%.2f H1=%.2f | H01=%.6f", q, H0, H1, H01));
+			}		
 		}
+
 		return qMax;
 	}
 	
+	// pre-calculate tables S0 and S1
 	private void makeTables(double[] p) {
-		int K = p.length;
+		int K = p.length;		
+		S0 = new double[K];		
+		S1 = new double[K];		
 
-		// make tables S0[], S1[]
-		S0 = new double[K];
-		S1 = new double[K];
-		
+		// S0[q] = \sum_{i=0}^{q} p[i] * \log(p[i])
 		double s0 = 0;
-		for (int q = 0; q < K; q++) {
-			if (p[q] > EPSILON) {
-				s0 = s0 + p[q] * Math.log(p[q]);
+		for (int i = 0; i < K; i++) {
+			if (p[i] > 0) {
+				s0 = s0 + p[i] * Math.log(p[i]);
 			}
-			S0[q] = s0;			// S0[q] <- S0[q-1] + p[q] * log(p[q])
+			S0[i] = s0;
 		}
-
+		
+		// S1[q] = \sum_{i=q+1}^{K-1} p[i] * \log(p[i])
 		double s1 = 0;
 		for (int i = K-1; i >= 0; i--) {
-			S1[i] = s1;			// S1[q] <- S0[q+1] + p[q+1] * log(p[q+1])	CHECK *************
-			if (p[i] > EPSILON) {
+			S1[i] = s1;
+			if (p[i] > 0) {
 				s1 = s1 + p[i] * Math.log(p[i]);
 			}
 		}

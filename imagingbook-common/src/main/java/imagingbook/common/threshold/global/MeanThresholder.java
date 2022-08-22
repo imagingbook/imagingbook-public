@@ -11,7 +11,7 @@ package imagingbook.common.threshold.global;
 
 /**
  * <p>
- * Simple global thresholder which uses the mean pixel value as the threshold .
+ * Simple global thresholder which uses the mean pixel value as the threshold.
  * See Sec. 9.1.2 of [1] for additional details (Eq. 9.10).
  * </p>
  * <p>
@@ -24,21 +24,21 @@ package imagingbook.common.threshold.global;
 public class MeanThresholder implements GlobalThresholder {
 	
 	public MeanThresholder() {
-		super();
 	}
 
 	@Override
 	public int getThreshold(int[] h) {
-		// calculate mean of entire image:
+		// calculate mean of the entire image:
 		int K = h.length;
-		int cnt = 0;
+		int N = 0;
+		
 		long sum = 0;
-		for (int i=0; i<K; i++) {
-			cnt += h[i];
+		for (int i = 0; i < K; i++) {
+			N += h[i];
 			sum += i * h[i];
 		}
 		
-		int mean = (int) Math.rint((double)sum / cnt);
+		int mean = (int) Math.floor((double)sum / N);	// important to use floor if only two pixel values
 
 		// count resulting background pixels:
 		int n0 = 0;
@@ -47,7 +47,7 @@ public class MeanThresholder implements GlobalThresholder {
 		}
 		
 		// determine if background or foreground is empty:
-		int q = (n0 < cnt) ? mean : -1; 
+		int q = (n0 < N) ? mean : -1;
 		return q;
 	}
 }

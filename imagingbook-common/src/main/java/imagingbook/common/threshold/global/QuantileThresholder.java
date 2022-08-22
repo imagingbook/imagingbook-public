@@ -15,41 +15,42 @@ import imagingbook.common.histogram.Util;
  * <p>
  * This is an implementation of the global "quantile" thresholder, described in
  * Sec. 9.1 (Alg. 9.1) of [1].
+ * Requires the quantile (b) to be specified at instantiation.
+ * Method {@link #getThreshold(int[])} returns a threshold that will put AT LEAST the
+ * b-fraction of pixels (but not all pixels) in the background.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
- * @version 2022/08/01
+ * @version 2022/08/22
  */
 public class QuantileThresholder implements GlobalThresholder {
 	
-	private double b = 0.5;	// quantile of expected background pixels
-
-	public QuantileThresholder() {
-		super();
-	}
+	private final double b;	// quantile of expected background pixels
 	
 	public QuantileThresholder(double b) {
-		super();
+		if (b <= 0 || b >= 1) {
+			throw new IllegalArgumentException("quantile b must be in [0,1]");
+		}
 		this.b = b;
 	}
 
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;
-		int N = Util.sum(h);
+		int N = Util.sum(h);	// total number of pixels	
+		double n = N * b;		// number of pixels in quantile
 		
-		double n = N * b;	
 		int i = 0;
 		int c = h[0];
 		while (i < K && c < n) {
 			i++;
-			c+= h[i];
+			c = c + h[i];
 		}
 		
-		int q = (c < N) ? i : -1; 
+		int q = (c < N) ? i : -1; // check if all pixels are included by the estimated threshold
 		return q;
 	}
 }

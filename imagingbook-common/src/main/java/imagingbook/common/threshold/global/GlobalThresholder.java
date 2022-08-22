@@ -33,7 +33,7 @@ public interface GlobalThresholder extends Thresholder {
 	 * @param h a histogram (array of frequencies)
 	 * @return a single (global) threshold value
 	 */
-	public int getThreshold(int[] h);
+	public int getThreshold(int[] h);	// TODO: change return type to double?
 	
 	/**
 	 * Returns a single (global) threshold value for the
