@@ -21,53 +21,40 @@
 <span class="sourceLineNo">011</span><a id="line.11">import imagingbook.core.resource.ImageResource;</a>
 <span class="sourceLineNo">012</span><a id="line.12"></a>
 <span class="sourceLineNo">013</span><a id="line.13">/**</a>
-<span class="sourceLineNo">014</span><a id="line.14"> * &lt;p&gt;</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * Enumeration defining a set of {@link ImageResource} objects for SIFT test images.</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * Usage example:</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * &lt;pre&gt;</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * import ij.process.ImageProcessor;</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * import imagingbook.core.resource.ImageResource;</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * import imagingbook.sampleimages.GeneralTestImage;</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * </a>
-<span class="sourceLineNo">023</span><a id="line.23"> * ImageResource ir = SiftTestImage.Stars;</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * ImageProcessor ip = ir.getImage().getProcessor();</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * // process ip ...</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * &lt;/pre&gt;</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * @see ImageResource</a>
-<span class="sourceLineNo">028</span><a id="line.28"> *</a>
-<span class="sourceLineNo">029</span><a id="line.29"> */</a>
-<span class="sourceLineNo">030</span><a id="line.30">public enum SiftTestImage implements ImageResource {</a>
-<span class="sourceLineNo">031</span><a id="line.31">        Box00("box00.png"),</a>
-<span class="sourceLineNo">032</span><a id="line.32">        Box15("box15.png"),</a>
-<span class="sourceLineNo">033</span><a id="line.33">        Box30("box30.png"),</a>
-<span class="sourceLineNo">034</span><a id="line.34">        Box45("box45.png"),</a>
-<span class="sourceLineNo">035</span><a id="line.35">        Box60("box60.png"),</a>
-<span class="sourceLineNo">036</span><a id="line.36">        Box75("box75.png"),</a>
-<span class="sourceLineNo">037</span><a id="line.37">        Box90("box90.png"),</a>
-<span class="sourceLineNo">038</span><a id="line.38">        HalfDiskH("halfdiskH.png"),</a>
-<span class="sourceLineNo">039</span><a id="line.39">        HalfDiskV("halfdiskV.png"),</a>
-<span class="sourceLineNo">040</span><a id="line.40">        Ireland02tiny("ireland02tiny.png"),</a>
-<span class="sourceLineNo">041</span><a id="line.41">        RectangleH("rectangleH.png"),</a>
-<span class="sourceLineNo">042</span><a id="line.42">        RectangleV("rectangleV.png"),</a>
-<span class="sourceLineNo">043</span><a id="line.43">        Stars("stars.png"),</a>
-<span class="sourceLineNo">044</span><a id="line.44">        StarsH("starsH.png"),</a>
-<span class="sourceLineNo">045</span><a id="line.45">        StarsV("starsV.png"),</a>
-<span class="sourceLineNo">046</span><a id="line.46">        ;</a>
-<span class="sourceLineNo">047</span><a id="line.47">        </a>
-<span class="sourceLineNo">048</span><a id="line.48">        private static final String BASEDIR = "sift/";</a>
-<span class="sourceLineNo">049</span><a id="line.49">        </a>
-<span class="sourceLineNo">050</span><a id="line.50">        private final String relPath;</a>
-<span class="sourceLineNo">051</span><a id="line.51">        </a>
-<span class="sourceLineNo">052</span><a id="line.52">        @Override</a>
-<span class="sourceLineNo">053</span><a id="line.53">        public String getRelativePath() {</a>
-<span class="sourceLineNo">054</span><a id="line.54">                return relPath;</a>
-<span class="sourceLineNo">055</span><a id="line.55">        }</a>
-<span class="sourceLineNo">056</span><a id="line.56">        </a>
-<span class="sourceLineNo">057</span><a id="line.57">        SiftTestImage(String filename) {</a>
-<span class="sourceLineNo">058</span><a id="line.58">                this.relPath = BASEDIR + filename;</a>
-<span class="sourceLineNo">059</span><a id="line.59">        }</a>
-<span class="sourceLineNo">060</span><a id="line.60">}</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Enumeration defining a set of {@link ImageResource} objects associated</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * with SIFT test images.</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * @see ImageResource</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * @see GeneralTestImage</a>
+<span class="sourceLineNo">018</span><a id="line.18"> */</a>
+<span class="sourceLineNo">019</span><a id="line.19">public enum SiftTestImage implements ImageResource {</a>
+<span class="sourceLineNo">020</span><a id="line.20">        Box00("box00.png"),</a>
+<span class="sourceLineNo">021</span><a id="line.21">        Box15("box15.png"),</a>
+<span class="sourceLineNo">022</span><a id="line.22">        Box30("box30.png"),</a>
+<span class="sourceLineNo">023</span><a id="line.23">        Box45("box45.png"),</a>
+<span class="sourceLineNo">024</span><a id="line.24">        Box60("box60.png"),</a>
+<span class="sourceLineNo">025</span><a id="line.25">        Box75("box75.png"),</a>
+<span class="sourceLineNo">026</span><a id="line.26">        Box90("box90.png"),</a>
+<span class="sourceLineNo">027</span><a id="line.27">        HalfDiskH("halfdiskH.png"),</a>
+<span class="sourceLineNo">028</span><a id="line.28">        HalfDiskV("halfdiskV.png"),</a>
+<span class="sourceLineNo">029</span><a id="line.29">        Ireland02tiny("ireland02tiny.png"),</a>
+<span class="sourceLineNo">030</span><a id="line.30">        RectangleH("rectangleH.png"),</a>
+<span class="sourceLineNo">031</span><a id="line.31">        RectangleV("rectangleV.png"),</a>
+<span class="sourceLineNo">032</span><a id="line.32">        Stars("stars.png"),</a>
+<span class="sourceLineNo">033</span><a id="line.33">        StarsH("starsH.png"),</a>
+<span class="sourceLineNo">034</span><a id="line.34">        StarsV("starsV.png"),</a>
+<span class="sourceLineNo">035</span><a id="line.35">        ;</a>
+<span class="sourceLineNo">036</span><a id="line.36">        </a>
+<span class="sourceLineNo">037</span><a id="line.37">private final String filename;</a>
+<span class="sourceLineNo">038</span><a id="line.38">        </a>
+<span class="sourceLineNo">039</span><a id="line.39">        SiftTestImage(String filename) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">                this.filename = filename;</a>
+<span class="sourceLineNo">041</span><a id="line.41">        }</a>
+<span class="sourceLineNo">042</span><a id="line.42">        </a>
+<span class="sourceLineNo">043</span><a id="line.43">        @Override</a>
+<span class="sourceLineNo">044</span><a id="line.44">        public String getFileName() {</a>
+<span class="sourceLineNo">045</span><a id="line.45">                return filename;</a>
+<span class="sourceLineNo">046</span><a id="line.46">        }</a>
+<span class="sourceLineNo">047</span><a id="line.47">}</a>
 
 
 

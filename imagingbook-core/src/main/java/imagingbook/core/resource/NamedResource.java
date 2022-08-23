@@ -20,7 +20,7 @@ import java.net.URL;
  * to the location of the enum class itself must be specified
  * and images must be stored there.
  * The enum type must define an appropriate constructor and implement
- * method {@link #getRelativePath()}:
+ * method {@link #getFileName()}:
  * </p>
 
  * <pre>
@@ -29,21 +29,24 @@ import java.net.URL;
  *	image2("image2.png"),
  * 	image3("jpegs/image3.jpg");
  * 
- * 	// field to associate relative resource path
- * 	private final String relPath;
+ * 	// field to associate the resource's file name
+ * 	private final String filename;
  * 
  * 	&#64;Override
- * 	public String getRelativePath() {
- * 		return relPath;
+ * 	public String getFileName() {
+ * 		return filename;
  * 	}
  * 
  * 	// constructor
- * 	MyImages(String relPath) {
- * 		this.relPath = relPath;
+ * 	MyImages(String filename) {
+ * 		this.filename = filename;
  * 	}
  * }</pre>
  * <p>
- * Resources are then only referenced by their enum-name, for example,
+ * By default, resource files are assumed to be placed in a folder
+ * with the same name as the resource class (i.e., "MyImages") relative
+ * to the location of the class.
+ * Resources may then only be referenced by their enum-name, for example,
  * </p>
  * <pre>
  * URI uri = MyImages.image1.getURI();
@@ -54,8 +57,8 @@ import java.net.URL;
  * is that the resource is guaranteed to exist at compile time (this is assured
  * by validating the existence of all named resources in the test phase) and can be retrieved
  * even if located inside a JAR file.
- *
  * </p>
+ * @see ImageResource
  * @author WB
  * @version 2022/08/23
  */

@@ -11,21 +11,10 @@ package imagingbook.sampleimages;
 import imagingbook.core.resource.ImageResource;
 
 /**
- * <p>
- * Enumeration defining a set of {@link ImageResource} objects for SIFT test images.
- * Usage example:
- * </p>
- * <pre>
- * import ij.process.ImageProcessor;
- * import imagingbook.core.resource.ImageResource;
- * import imagingbook.sampleimages.GeneralTestImage;
- * 
- * ImageResource ir = SiftTestImage.Stars;
- * ImageProcessor ip = ir.getImage().getProcessor();
- * // process ip ...
- * </pre>
+ * Enumeration defining a set of {@link ImageResource} objects associated
+ * with test images for automatic thresholding.
  * @see ImageResource
- *
+ * @see GeneralTestImage
  */
 public enum ThresholdTestImage implements ImageResource {
 	/** Original gray scan from Kepler manuscript. */

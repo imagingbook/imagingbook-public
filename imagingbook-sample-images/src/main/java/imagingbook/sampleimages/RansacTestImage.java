@@ -11,21 +11,10 @@ package imagingbook.sampleimages;
 import imagingbook.core.resource.ImageResource;
 
 /**
- * <p>
- * Enumeration defining a set of {@link ImageResource} objects for RANSAC test images.
- * Usage example:
- * </p>
- * <pre>
- * import ij.process.ImageProcessor;
- * import imagingbook.core.resource.ImageResource;
- * import imagingbook.sampleimages.GeneralTestImage;
- * 
- * ImageResource ir = RansacTestImage.NoisyLines;
- * ImageProcessor ip = ir.getImage().getProcessor();
- * // process ip ...
- * </pre>
+ * Enumeration defining a set of {@link ImageResource} objects associated
+ * with RANSAC test images.
  * @see ImageResource
- *
+ * @see GeneralTestImage
  */
 public enum RansacTestImage implements ImageResource {
 	

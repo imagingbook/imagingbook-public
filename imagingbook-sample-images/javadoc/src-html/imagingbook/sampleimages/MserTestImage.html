@@ -21,51 +21,38 @@
 <span class="sourceLineNo">011</span><a id="line.11">import imagingbook.core.resource.ImageResource;</a>
 <span class="sourceLineNo">012</span><a id="line.12"></a>
 <span class="sourceLineNo">013</span><a id="line.13">/**</a>
-<span class="sourceLineNo">014</span><a id="line.14"> * &lt;p&gt;</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * Enumeration defining a set of {@link ImageResource} objects for MSER test images.</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * Usage example:</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * &lt;pre&gt;</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * import ij.process.ImageProcessor;</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * import imagingbook.core.resource.ImageResource;</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * import imagingbook.sampleimages.GeneralTestImage;</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * </a>
-<span class="sourceLineNo">023</span><a id="line.23"> * ImageResource ir = MserTestImage.BoatsTiny;</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * ImageProcessor ip = ir.getImage().getProcessor();</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * // process ip ...</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * &lt;/pre&gt;</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * @see ImageResource</a>
-<span class="sourceLineNo">028</span><a id="line.28"> *</a>
-<span class="sourceLineNo">029</span><a id="line.29"> */</a>
-<span class="sourceLineNo">030</span><a id="line.30">public enum MserTestImage implements ImageResource {</a>
-<span class="sourceLineNo">031</span><a id="line.31">        AllBlack("all-black.png"),</a>
-<span class="sourceLineNo">032</span><a id="line.32">        AllWhite("all-white.png"),  </a>
-<span class="sourceLineNo">033</span><a id="line.33">        Blob1("blob1.png"),</a>
-<span class="sourceLineNo">034</span><a id="line.34">        Blob2("blob2.png"),</a>
-<span class="sourceLineNo">035</span><a id="line.35">        Blob3("blob3.png"),          </a>
-<span class="sourceLineNo">036</span><a id="line.36">        BlobLevelTestNoise("blob-level-test-noise.png"),</a>
-<span class="sourceLineNo">037</span><a id="line.37">        BlobsInWhite("blobs-in-white.png"),  </a>
-<span class="sourceLineNo">038</span><a id="line.38">        BoatsTinyB("boats-tiny-b.png"),   </a>
-<span class="sourceLineNo">039</span><a id="line.39">        BoatsTinyW("boats-tiny-w.png"),</a>
-<span class="sourceLineNo">040</span><a id="line.40">        BlobLevelTest("blob-level-test.png"),  </a>
-<span class="sourceLineNo">041</span><a id="line.41">        BlobOriented("blob-oriented.png"),          </a>
-<span class="sourceLineNo">042</span><a id="line.42">        BoatsTiny("boats-tiny.png"),      </a>
-<span class="sourceLineNo">043</span><a id="line.43">        BoatsTinyBW("boats-tiny-bw.png"),  </a>
-<span class="sourceLineNo">044</span><a id="line.44">        BoatsTinyW2("boats-tiny-w2.png");</a>
-<span class="sourceLineNo">045</span><a id="line.45">        </a>
-<span class="sourceLineNo">046</span><a id="line.46">        private static final String BASEDIR = "mser/";</a>
-<span class="sourceLineNo">047</span><a id="line.47">        </a>
-<span class="sourceLineNo">048</span><a id="line.48">        private final String relPath;</a>
-<span class="sourceLineNo">049</span><a id="line.49">        </a>
-<span class="sourceLineNo">050</span><a id="line.50">        @Override</a>
-<span class="sourceLineNo">051</span><a id="line.51">        public String getRelativePath() {</a>
-<span class="sourceLineNo">052</span><a id="line.52">                return relPath;</a>
-<span class="sourceLineNo">053</span><a id="line.53">        }</a>
-<span class="sourceLineNo">054</span><a id="line.54">        </a>
-<span class="sourceLineNo">055</span><a id="line.55">        MserTestImage(String filename) {</a>
-<span class="sourceLineNo">056</span><a id="line.56">                this.relPath = BASEDIR + filename;</a>
-<span class="sourceLineNo">057</span><a id="line.57">        }</a>
-<span class="sourceLineNo">058</span><a id="line.58">}</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Enumeration defining a set of {@link ImageResource} objects associated</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * with MSER test images.</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * @see ImageResource</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * @see GeneralTestImage</a>
+<span class="sourceLineNo">018</span><a id="line.18"> */</a>
+<span class="sourceLineNo">019</span><a id="line.19">public enum MserTestImage implements ImageResource {</a>
+<span class="sourceLineNo">020</span><a id="line.20">        AllBlack("all-black.png"),</a>
+<span class="sourceLineNo">021</span><a id="line.21">        AllWhite("all-white.png"),  </a>
+<span class="sourceLineNo">022</span><a id="line.22">        Blob1("blob1.png"),</a>
+<span class="sourceLineNo">023</span><a id="line.23">        Blob2("blob2.png"),</a>
+<span class="sourceLineNo">024</span><a id="line.24">        Blob3("blob3.png"),          </a>
+<span class="sourceLineNo">025</span><a id="line.25">        BlobLevelTestNoise("blob-level-test-noise.png"),</a>
+<span class="sourceLineNo">026</span><a id="line.26">        BlobsInWhite("blobs-in-white.png"),  </a>
+<span class="sourceLineNo">027</span><a id="line.27">        BoatsTinyB("boats-tiny-b.png"),   </a>
+<span class="sourceLineNo">028</span><a id="line.28">        BoatsTinyW("boats-tiny-w.png"),</a>
+<span class="sourceLineNo">029</span><a id="line.29">        BlobLevelTest("blob-level-test.png"),  </a>
+<span class="sourceLineNo">030</span><a id="line.30">        BlobOriented("blob-oriented.png"),          </a>
+<span class="sourceLineNo">031</span><a id="line.31">        BoatsTiny("boats-tiny.png"),      </a>
+<span class="sourceLineNo">032</span><a id="line.32">        BoatsTinyBW("boats-tiny-bw.png"),  </a>
+<span class="sourceLineNo">033</span><a id="line.33">        BoatsTinyW2("boats-tiny-w2.png");</a>
+<span class="sourceLineNo">034</span><a id="line.34">        </a>
+<span class="sourceLineNo">035</span><a id="line.35">        private final String filename;</a>
+<span class="sourceLineNo">036</span><a id="line.36">        </a>
+<span class="sourceLineNo">037</span><a id="line.37">        MserTestImage(String filename) {</a>
+<span class="sourceLineNo">038</span><a id="line.38">                this.filename = filename;</a>
+<span class="sourceLineNo">039</span><a id="line.39">        }</a>
+<span class="sourceLineNo">040</span><a id="line.40">        </a>
+<span class="sourceLineNo">041</span><a id="line.41">        @Override</a>
+<span class="sourceLineNo">042</span><a id="line.42">        public String getFileName() {</a>
+<span class="sourceLineNo">043</span><a id="line.43">                return filename;</a>
+<span class="sourceLineNo">044</span><a id="line.44">        }</a>
+<span class="sourceLineNo">045</span><a id="line.45">}</a>
 
 
 

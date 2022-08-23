@@ -37,23 +37,23 @@
 <span class="sourceLineNo">027</span><a id="line.27"> * @see ImageResource</a>
 <span class="sourceLineNo">028</span><a id="line.28"> *</a>
 <span class="sourceLineNo">029</span><a id="line.29"> */</a>
-<span class="sourceLineNo">030</span><a id="line.30">public enum GeneralTestImage implements ImageResource {</a>
+<span class="sourceLineNo">030</span><a id="line.30">public enum GeneralTestImage implements ImageResource { // TODO: make ImageResource abstract class?</a>
 <span class="sourceLineNo">031</span><a id="line.31">                /** Original: https://imagej.nih.gov/ij/images/blobs.gif */</a>
 <span class="sourceLineNo">032</span><a id="line.32">                Blobs("blobs.png"),</a>
-<span class="sourceLineNo">033</span><a id="line.33">                BoatsFilter3x3("boats-filter3x3.png"),</a>
-<span class="sourceLineNo">034</span><a id="line.34">                /** Original: https://imagej.nih.gov/ij/images/boats.gif */</a>
-<span class="sourceLineNo">035</span><a id="line.35">                Boats("boats.png"),</a>
-<span class="sourceLineNo">036</span><a id="line.36">                CatSkeleton("cat-skeleton.png"),</a>
-<span class="sourceLineNo">037</span><a id="line.37">                Cat("cat.png"),</a>
-<span class="sourceLineNo">038</span><a id="line.38">                /** Original: https://imagej.nih.gov/ij/images/clown.png */</a>
-<span class="sourceLineNo">039</span><a id="line.39">                Clown("clown.png"),</a>
-<span class="sourceLineNo">040</span><a id="line.40">                ClownFilter3x3("clown-filter3x3.png"),</a>
-<span class="sourceLineNo">041</span><a id="line.41">                ClownGauss3("clown-gauss3.png"),</a>
-<span class="sourceLineNo">042</span><a id="line.42">                ClownMedianScalar3("clown-median-scalar-3.png"),</a>
-<span class="sourceLineNo">043</span><a id="line.43">                ClownMedianVector3L1("clown-median-vector-3-L1.png"),</a>
-<span class="sourceLineNo">044</span><a id="line.44">                ClownMedianVectorsharpen3L1("clown-median-vectorsharpen-3-L1.png"),</a>
-<span class="sourceLineNo">045</span><a id="line.45">                /** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */</a>
-<span class="sourceLineNo">046</span><a id="line.46">                DotBlot("Dot_Blot.png"),</a>
+<span class="sourceLineNo">033</span><a id="line.33">                /** Original: https://imagej.nih.gov/ij/images/boats.gif */</a>
+<span class="sourceLineNo">034</span><a id="line.34">                Boats("boats.png"),</a>
+<span class="sourceLineNo">035</span><a id="line.35">                /** Original: https://imagej.nih.gov/ij/images/clown.png */</a>
+<span class="sourceLineNo">036</span><a id="line.36">                Clown("clown.png"),</a>
+<span class="sourceLineNo">037</span><a id="line.37">                BoatsFilter3x3("boats-filter3x3.png"),</a>
+<span class="sourceLineNo">038</span><a id="line.38">                /** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */</a>
+<span class="sourceLineNo">039</span><a id="line.39">                DotBlot("Dot_Blot.png"),</a>
+<span class="sourceLineNo">040</span><a id="line.40">                CatSkeleton("cat-skeleton.png"),</a>
+<span class="sourceLineNo">041</span><a id="line.41">                Cat("cat.png"),</a>
+<span class="sourceLineNo">042</span><a id="line.42">                ClownFilter3x3("clown-filter3x3.png"),</a>
+<span class="sourceLineNo">043</span><a id="line.43">                ClownGauss3("clown-gauss3.png"),</a>
+<span class="sourceLineNo">044</span><a id="line.44">                ClownMedianScalar3("clown-median-scalar-3.png"),</a>
+<span class="sourceLineNo">045</span><a id="line.45">                ClownMedianVector3L1("clown-median-vector-3-L1.png"),</a>
+<span class="sourceLineNo">046</span><a id="line.46">                ClownMedianVectorsharpen3L1("clown-median-vectorsharpen-3-L1.png"),</a>
 <span class="sourceLineNo">047</span><a id="line.47">                MonasterySmallFilter3x3("monastery-small-filter3x3.png"),</a>
 <span class="sourceLineNo">048</span><a id="line.48">                MonasterySmallGauss3("monastery-small-gauss3.png"),</a>
 <span class="sourceLineNo">049</span><a id="line.49">                MonasterySmall("monastery-small.png"),</a>
@@ -62,20 +62,18 @@
 <span class="sourceLineNo">052</span><a id="line.52">                SegmentationSmall("segmentation-small.png"),</a>
 <span class="sourceLineNo">053</span><a id="line.53">                SimpleTestGridImg("simple-test-grid-img.png"),</a>
 <span class="sourceLineNo">054</span><a id="line.54">                SimpleTestGridImg2("simple-test-grid-img2.png");</a>
-<span class="sourceLineNo">055</span><a id="line.55">        </a>
-<span class="sourceLineNo">056</span><a id="line.56">        private static final String BASEDIR = "general/";</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">        private final String filename;</a>
 <span class="sourceLineNo">057</span><a id="line.57">        </a>
-<span class="sourceLineNo">058</span><a id="line.58">        private final String relPath;</a>
-<span class="sourceLineNo">059</span><a id="line.59">        </a>
-<span class="sourceLineNo">060</span><a id="line.60">        @Override</a>
-<span class="sourceLineNo">061</span><a id="line.61">        public String getRelativePath() {</a>
-<span class="sourceLineNo">062</span><a id="line.62">                return relPath;</a>
-<span class="sourceLineNo">063</span><a id="line.63">        }</a>
-<span class="sourceLineNo">064</span><a id="line.64">        </a>
-<span class="sourceLineNo">065</span><a id="line.65">        GeneralTestImage(String filename) {</a>
-<span class="sourceLineNo">066</span><a id="line.66">                this.relPath = BASEDIR + filename;</a>
-<span class="sourceLineNo">067</span><a id="line.67">        }</a>
-<span class="sourceLineNo">068</span><a id="line.68">}</a>
+<span class="sourceLineNo">058</span><a id="line.58">        GeneralTestImage(String filename) {</a>
+<span class="sourceLineNo">059</span><a id="line.59">                this.filename = filename;</a>
+<span class="sourceLineNo">060</span><a id="line.60">        }</a>
+<span class="sourceLineNo">061</span><a id="line.61">        </a>
+<span class="sourceLineNo">062</span><a id="line.62">        @Override</a>
+<span class="sourceLineNo">063</span><a id="line.63">        public String getFileName() {</a>
+<span class="sourceLineNo">064</span><a id="line.64">                return filename;</a>
+<span class="sourceLineNo">065</span><a id="line.65">        }</a>
+<span class="sourceLineNo">066</span><a id="line.66">}</a>
 
 
 
