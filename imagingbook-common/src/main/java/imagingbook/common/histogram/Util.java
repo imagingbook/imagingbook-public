@@ -82,7 +82,7 @@ public class Util {
 	public static double[] Cdf (int[] h) {
 		// returns the cumul. probability distribution function (cdf) for histogram h
 		int K = h.length;
-		int n = sum(h);		// sum all histogram values		
+		int n = count(h);		// sum all histogram values		
 		double[] P = new double[K];
 		long c = h[0];
 		P[0] = (double) c / n;
@@ -120,12 +120,12 @@ public class Util {
 //	}
 
 	// compute the population of a histogram
-	public static int sum(int[] h) {
-		return sum(h, 0, h.length - 1);
+	public static int count(int[] h) {
+		return count(h, 0, h.length - 1);
 	}
 
 	// compute the population of a histogram from index lo...hi
-	public static int sum(int[] h, int lo, int hi) {
+	public static int count(int[] h, int lo, int hi) {
 		if (lo < 0) lo = 0;
 		if (hi >= h.length) hi = h.length-1;
 		int cnt = 0;
@@ -202,7 +202,7 @@ public class Util {
 	// compute the median of a histogram 
 	public static int median(int[] h) {
 		int K = h.length;
-		int N = sum(h);
+		int N = count(h);
 		int m = N / 2;
 		int i = 0;
 		int sum = h[0];
@@ -215,7 +215,7 @@ public class Util {
 
 	public static double[] normalize(int[] h) {
 		int K = h.length;
-		int N = sum(h);
+		int N = count(h);
 		double[] nh = new double[K];
 		for (int i = 0; i < K; i++) {
 			nh[i] = ((double) h[i]) / N;

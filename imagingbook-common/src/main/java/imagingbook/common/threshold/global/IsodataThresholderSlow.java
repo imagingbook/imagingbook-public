@@ -41,8 +41,8 @@ public class IsodataThresholderSlow implements GlobalThresholder {
 		int i = 0;	// iteration counter
 		do {
 			i++;
-			int nB = Util.sum(h, 0, q);
-			int nF = Util.sum(h, q+1, K-1);
+			int nB = Util.count(h, 0, q);
+			int nF = Util.count(h, q+1, K-1);
 			if (nB == 0 || nF == 0)
 				return -1;
 			double meanB = Util.mean(h, 0, q);

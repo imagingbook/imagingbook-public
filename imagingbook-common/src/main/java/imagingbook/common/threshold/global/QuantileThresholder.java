@@ -40,7 +40,7 @@ public class QuantileThresholder implements GlobalThresholder {
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;
-		int N = Util.sum(h);	// total number of pixels	
+		int N = Util.count(h);	// total number of pixels	
 		double n = N * b;		// number of pixels in quantile
 		
 		int i = 0;
