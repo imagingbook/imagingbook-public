@@ -45,16 +45,14 @@ public enum SiftTestImage implements ImageResource {
 	StarsV("starsV.png"),
 	;
 	
-	private static final String BASEDIR = "sift/";
-	
-	private final String relPath;
-	
-	@Override
-	public String getRelativePath() {
-		return relPath;
-	}
+private final String filename;
 	
 	SiftTestImage(String filename) {
-		this.relPath = BASEDIR + filename;
+		this.filename = filename;
+	}
+	
+	@Override
+	public String getFileName() {
+		return filename;
 	}
 }

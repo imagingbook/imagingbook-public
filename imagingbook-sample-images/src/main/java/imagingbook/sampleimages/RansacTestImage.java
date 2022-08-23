@@ -33,16 +33,14 @@ public enum RansacTestImage implements ImageResource {
 	NoisyCircles("noisy-circles.png"), 
 	NoisyEllipses("noisy-ellipses.png");
 	
-	private static final String BASEDIR = "ransac/";
-	
-	private final String relPath;
-	
-	@Override
-	public String getRelativePath() {
-		return relPath;
-	}
+	private final String filename;
 	
 	RansacTestImage(String filename) {
-		this.relPath = BASEDIR + filename;
+		this.filename = filename;
+	}
+	
+	@Override
+	public String getFileName() {
+		return filename;
 	}
 }

@@ -52,17 +52,15 @@ public enum GeneralTestImage implements ImageResource {	// TODO: make ImageResou
 		SegmentationSmall("segmentation-small.png"),
 		SimpleTestGridImg("simple-test-grid-img.png"),
 		SimpleTestGridImg2("simple-test-grid-img2.png");
-	
-	private static final String BASEDIR = "general/";
-	
-	private final String relPath;
-	
-	@Override
-	public String getRelativePath() {
-		return relPath;
-	}
+
+	private final String filename;
 	
 	GeneralTestImage(String filename) {
-		this.relPath = BASEDIR + filename;
+		this.filename = filename;
+	}
+	
+	@Override
+	public String getFileName() {
+		return filename;
 	}
 }

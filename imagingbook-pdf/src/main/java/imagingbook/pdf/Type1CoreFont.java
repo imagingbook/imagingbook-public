@@ -27,7 +27,6 @@ import imagingbook.core.resource.NamedResource;
  *
  */
 public enum Type1CoreFont implements NamedResource {
-	
 	Courier("Courier.afm"),
 	CourierBold("Courier-Bold.afm"),
 	CourierBoldOblique("Courier-BoldOblique.afm"),
@@ -41,30 +40,28 @@ public enum Type1CoreFont implements NamedResource {
 	TimesBoldItalic("Times-BoldItalic.afm"),
 	TimesItalic("Times-Italic.afm"),	
 	Symbol("Symbol.afm"),
-	ZapfDingbats("ZapfDingbats.afm")
-	;
+	ZapfDingbats("ZapfDingbats.afm");
 	
-	private static final String BASEDIR = "fonts/type1/";
-	
-	private final String relPath;
-	private BaseFont basefont = null;		// cached BaseFont instance
+	private static final String BASEDIR = "fonts/type1";	
+	private final String filename;
+	private BaseFont basefont = null;		// cached singleton BaseFont instance
 
 	/**
 	 * Constructor.
-	 * @param afmName the name of the associated AFM file
+	 * @param filename the name of the font's AFM file
 	 */
-	Type1CoreFont(String afmName) {
-		this.relPath = BASEDIR + afmName;
+	Type1CoreFont(String filename) {
+		this.filename = filename;
 	}
 	
 	@Override
-	public String getRelativePath() {
-		return relPath;
+	public String getFileName() {
+		return filename;
 	}
 	
-	
-	private String getFontPath() {
-		return getURL().toString();
+	@Override
+	public String getRelativeDirectory() {
+		return BASEDIR;
 	}
 	
 	/** 
@@ -76,7 +73,8 @@ public enum Type1CoreFont implements NamedResource {
 	public BaseFont getBaseFont() {
 		if (basefont == null) {
 			try {
-				basefont = BaseFont.createFont(getFontPath(), "", BaseFont.EMBEDDED);
+				String fontpath = getURL().toString();
+				basefont = BaseFont.createFont(fontpath, "", BaseFont.EMBEDDED);
 			} catch (DocumentException | IOException e) { 
 				System.out.println("Trouble: " + e);
 			}
@@ -87,17 +85,16 @@ public enum Type1CoreFont implements NamedResource {
 	// -----------------------------------------------
 	
 	public static void main(String[] args) {
-		System.out.println("Anchor is in JAR: " + Type1CoreFont.Courier.isInsideJar());
+		System.out.println("Font resource is in JAR: " + Type1CoreFont.Courier.isInsideJar());
 		for (Type1CoreFont sf : Type1CoreFont.values()) {
 			System.out.println(sf.toString() + ": " + sf.getBaseFont().getPostscriptFontName());
 			System.out.println("   " + sf.getRelativePath());
 			System.out.println("   " + sf.getStream());
-			System.out.println("   " + sf.getFontPath());
+			System.out.println("   " + sf.getURL());
 			System.out.println("   " + sf.getBaseFont());
 			
 		}
 	}
-
 
 }
 

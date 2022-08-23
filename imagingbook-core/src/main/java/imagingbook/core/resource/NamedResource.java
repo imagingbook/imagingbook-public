@@ -57,12 +57,47 @@ import java.net.URL;
  *
  * </p>
  * @author WB
- * @version 2022/04/12
+ * @version 2022/08/23
  */
 public interface NamedResource {
 	
-	public String getRelativePath();
+	/**
+	 * Returns the resource directory relative to the implementing class.
+	 * The default implementations assumes that this is a single-level directory
+	 * with exactly the same name as the implementing class.
+	 * Implementations may override this definition to return some other 
+	 * relative directory.
+	 * 
+	 * @return the relative resource directory for the associated resource
+	 */
+	public default String getRelativeDirectory() {
+		return this.getClass().getSimpleName();
+	}
 	
+	/**
+	 * Returns the file name of the associated resource.
+	 * 
+	 * @return the name of the resource file
+	 */
+	public String getFileName();
+	
+	/**
+	 * Returns the path to the associated resource relative to the
+	 * location of the implementing class.
+	 * This method is not supposed to be overridden.
+	 * 
+	 * @return the relative path to the associated resource
+	 */
+	public default String getRelativePath() {
+		return getRelativeDirectory() + "/" + getFileName();
+	}
+	
+	/**
+	 * Returns the URL to the associated resource.
+	 * This method is not supposed to be overridden.
+	 * 
+	 * @return the URL to the associated resource
+	 */
 	public default URL getURL() {
 		Class<?> clazz = this.getClass();
 		return clazz.getResource(this.getRelativePath());
@@ -160,6 +195,11 @@ public interface NamedResource {
 //		return path;
 //	}
 	
+	/**
+	 * Returns true if the associated resource (class) is located inside a JAR file.
+	 * 
+	 * @return true if inside a JAR file
+	 */
 	public default boolean isInsideJar() {
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 		String path = url.getPath();
@@ -177,7 +217,9 @@ public interface NamedResource {
 	/**
 	 * Returns an {@link InputStream} for reading from this resource.
 	 * See also {@link Class#getResourceAsStream(String)}.
-	 * @return an {@link InputStream} for this resource
+	 * This method is not supposed to be overridden.
+	 * 
+	 * @return an {@link InputStream} for the associated resource
 	 */
 	public default InputStream getStream() {
 		return getClass().getResourceAsStream(getRelativePath());

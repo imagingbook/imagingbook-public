@@ -43,16 +43,14 @@ public enum MserTestImage implements ImageResource {
 	BoatsTinyBW("boats-tiny-bw.png"),  
 	BoatsTinyW2("boats-tiny-w2.png");
 	
-	private static final String BASEDIR = "mser/";
-	
-	private final String relPath;
-	
-	@Override
-	public String getRelativePath() {
-		return relPath;
-	}
+	private final String filename;
 	
 	MserTestImage(String filename) {
-		this.relPath = BASEDIR + filename;
+		this.filename = filename;
+	}
+	
+	@Override
+	public String getFileName() {
+		return filename;
 	}
 }

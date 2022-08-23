@@ -46,16 +46,14 @@ public enum ThresholdTestImage implements ImageResource {
 	flat255("flat255.png"),
 	;
 	
-	private static final String BASEDIR = "threshold/";
-	
-	private final String relPath;
-	
-	@Override
-	public String getRelativePath() {
-		return relPath;
-	}
+private final String filename;
 	
 	ThresholdTestImage(String filename) {
-		this.relPath = BASEDIR + filename;
+		this.filename = filename;
+	}
+	
+	@Override
+	public String getFileName() {
+		return filename;
 	}
 }
