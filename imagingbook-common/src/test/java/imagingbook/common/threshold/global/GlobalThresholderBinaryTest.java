@@ -38,12 +38,12 @@ public class GlobalThresholderBinaryTest {
 	}
 	
 	@Test
-	public void testMaxMedianThresholder() {	// TODO: fix median/quantile thresholder to work on any binary image
+	public void testMaxMedianThresholder() {
 		GlobalThresholder thresholder = new MedianThresholder();
-//		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 203);
-//		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 123);
-//		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 223);
-//		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, -1);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, -1);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, -1);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, -1);
 	}
 	
 	@Test
@@ -58,10 +58,10 @@ public class GlobalThresholderBinaryTest {
 	@Test
 	public void testMinMaxThresholder() {
 		GlobalThresholder thresholder = new MinMaxThresholder();
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 128);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 78);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 178);
-//		runThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);	// fix!
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 127);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 77);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 177);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);
 	}
 	
 	@Test

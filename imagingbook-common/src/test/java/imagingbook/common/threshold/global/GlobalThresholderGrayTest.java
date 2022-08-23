@@ -75,7 +75,7 @@ public class GlobalThresholderGrayTest {
 	public void testMinMaxThresholder() {
 		GlobalThresholder thresholder = new MinMaxThresholder();
 		checkThreshold(thresholder, GeneralTestImage.Blobs, 128);
-		checkThreshold(thresholder, GeneralTestImage.Boats, 112);
+		checkThreshold(thresholder, GeneralTestImage.Boats, 111);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 115);
 		// flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1);

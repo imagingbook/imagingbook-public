@@ -20,7 +20,7 @@ package imagingbook.common.threshold.global;
  * </p>
  * 
  * @author WB
- * @version 2022/08/01
+ * @version 2022/08/23
  *
  */
 public class MinMaxThresholder implements GlobalThresholder {
@@ -50,7 +50,8 @@ public class MinMaxThresholder implements GlobalThresholder {
 		}
 		
 		int q = (minVal < maxVal) ? 
-				(int) Math.rint(0.5 * (minVal + maxVal)) : -1;
+				(int) Math.floor((minVal + maxVal) / 2.0) : -1;
+		
 		return q;
 	}
 }
