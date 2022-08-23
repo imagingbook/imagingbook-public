@@ -33,6 +33,9 @@ public enum ThresholdTestImage implements ImageResource {
 	keplerBinMinus100("keplerBinMinus100.png"),
 	keplerBinPlus100("keplerBinPlus100.png"),
 	keplerBin("keplerBin.png"),
+	flat000("flat000.png"),
+	flat031("flat031.png"),
+	flat255("flat255.png"),
 	;
 	
 	private static final String BASEDIR = "threshold/";
