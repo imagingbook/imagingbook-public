@@ -45,10 +45,10 @@ public class IsodataThresholder implements GlobalThresholder {
 		int i = 0;
 		do {
 			i++; 
-			if (M0[q]<0 || M1[q]<0)  // background or foreground is empty
+			if (M0[q] < 0 || M1[q] < 0)  // background or foreground is empty
 				return -1;
 			q_ = q;				
-			q = (int) ((M0[q] + M1[q])/2);
+			q = (int) ((M0[q] + M1[q]) / 2);
 		} while (q != q_ && i < MAX_ITERATIONS);
 		
 		return q;
@@ -58,6 +58,7 @@ public class IsodataThresholder implements GlobalThresholder {
 		int K = h.length;
 		M0 = new double[K];
 		M1 = new double[K];
+		
 		int n0 = 0;
 		long s0 = 0;
 		for (int q = 0; q < K; q++) {

@@ -45,7 +45,6 @@ public class MaxEntropyThresholder implements GlobalThresholder {
 		makeTables(p);	// initialize S0, S1
 		
 		double P0 = 0;	// cumulative probability
-		double P1;
 		
 		int qMax = -1;
 		double Hmax = Double.NEGATIVE_INFINITY;
@@ -54,7 +53,7 @@ public class MaxEntropyThresholder implements GlobalThresholder {
 			P0 = P0 + p[q];	
 			if (P0 < EPSILON) continue;		// empty histogram so far, nothing to do
 				
-			P1 = 1 - P0;
+			double P1 = 1 - P0;
 			if (P1 < EPSILON) break;		// no more histogram entries, finished
 			
 			// P0, P1 are nonzero!			
@@ -79,19 +78,19 @@ public class MaxEntropyThresholder implements GlobalThresholder {
 
 		// S0[q] = \sum_{i=0}^{q} p[i] * \log(p[i])
 		double s0 = 0;
-		for (int i = 0; i < K; i++) {
-			if (p[i] > 0) {
-				s0 = s0 + p[i] * Math.log(p[i]);
+		for (int q = 0; q < K; q++) {
+			if (p[q] > 0) {
+				s0 = s0 + p[q] * Math.log(p[q]);
 			}
-			S0[i] = s0;
+			S0[q] = s0;
 		}
 		
 		// S1[q] = \sum_{i=q+1}^{K-1} p[i] * \log(p[i])
 		double s1 = 0;
-		for (int i = K-1; i >= 0; i--) {
-			S1[i] = s1;
-			if (p[i] > 0) {
-				s1 = s1 + p[i] * Math.log(p[i]);
+		for (int q = K-1; q >= 0; q--) {
+			S1[q] = s1;
+			if (p[q] > 0) {
+				s1 = s1 + p[q] * Math.log(p[q]);
 			}
 		}
 	}
