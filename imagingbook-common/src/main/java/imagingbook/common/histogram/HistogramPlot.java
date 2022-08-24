@@ -27,7 +27,7 @@ public class HistogramPlot {
 	int[] H = new int[256];
 	
 	public HistogramPlot(int[] h, String title) {
-		this(Util.normalizeHistogram(h), title);
+		this(HistogramUtils.normalizeMax(h), title);
 	}
 	
 	public HistogramPlot(double[] nH, String title) {

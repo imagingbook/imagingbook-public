@@ -8,12 +8,14 @@
  *******************************************************************************/
 package PointOperations;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramMatcher;
 import imagingbook.common.histogram.HistogramPlot;
-import imagingbook.common.histogram.Util;
+import imagingbook.common.histogram.HistogramUtils;
 
 /**
  * Adapts image intensities to match a Gaussian histogram.
@@ -22,7 +24,7 @@ import imagingbook.common.histogram.Util;
  * 
  * @see HistogramMatcher
  * @see HistogramPlot
- * @see Util#makeGaussianHistogram(double, double)
+ * @see HistogramUtils#makeGaussianHistogram(double, double)
  *
  */
 public class Match_To_Gaussian_Histogram implements PlugInFilter {
@@ -40,15 +42,15 @@ public class Match_To_Gaussian_Histogram implements PlugInFilter {
 		
 		// get histograms
 		int[] hi = ip.getHistogram();
-		int[] hG = Util.makeGaussianHistogram(GaussMean, GaussVariance);
+		int[] hG = makeGaussianHistogram(GaussMean, GaussVariance);
 				
 		(new HistogramPlot(hi, "Image Histogram")).show();
 		(new HistogramPlot(hG, "Gaussian Histogram")).show();
 		
-		double[] nhG = Util.normalizeHistogram(hG);
+		double[] nhG = HistogramUtils.normalizeMax(hG);
 		(new HistogramPlot(nhG, "Gaussian Hist. normalized")).show();
 		
-		double[] chG = Util.Cdf(hG);
+		double[] chG = HistogramUtils.cdf(hG);
     	(new HistogramPlot(chG, "Gaussian Hist. cumulative")).show();
 		
 		HistogramMatcher m = new HistogramMatcher();
@@ -61,7 +63,18 @@ public class Match_To_Gaussian_Histogram implements PlugInFilter {
 		ip.applyTable(F);
 		int[] hAm = ip.getHistogram();
 		(new HistogramPlot(hAm, "Histogram A (mod)")).show();
-		(new HistogramPlot(Util.Cdf(hAm), "Cumulative Histogram A (mod)")).show();
+		(new HistogramPlot(HistogramUtils.cdf(hAm), "Cumulative Histogram A (mod)")).show();
+	}
+	
+	private int[] makeGaussianHistogram (double mean, double sigma) {
+		int[] h = new int[256];
+		double sigma2 = 2 * sqr(sigma);
+		for (int i = 0; i < h.length; i++) {
+			double x = mean - i;
+			double g = Math.exp(-sqr(x) / sigma2) / sigma;
+			h[i] = (int) Math.round(10000 * g);
+		}
+		return h;
 	}
 
 }

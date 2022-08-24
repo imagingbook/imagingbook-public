@@ -14,7 +14,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramMatcher;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.PiecewiseLinearCdf;
-import imagingbook.common.histogram.Util;
+import imagingbook.common.histogram.HistogramUtils;
 
 /**
  * Adapts image intensities to match a piecewise-linear histogram.
@@ -38,7 +38,7 @@ public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
 		int[] hA = ipA.getHistogram();
 		
 		(new HistogramPlot(hA, "Histogram A")).show();
-		(new HistogramPlot(Util.Cdf(hA), "Cumulative Histogram A")).show();
+		(new HistogramPlot(HistogramUtils.cdf(hA), "Cumulative Histogram A")).show();
 		
 		// -------------------------
 		int[] ik = {28, 75, 150, 210};
@@ -47,7 +47,7 @@ public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
 		// -------------------------
 		
 		double[] nhB = pLCdf.getPdf();
-		nhB = Util.normalizeHistogram(nhB);
+		nhB = HistogramUtils.normalizeMax(nhB);
 		(new HistogramPlot(nhB, "Piecewise Linear")).show();
 		(new HistogramPlot(pLCdf, "Piecewise Linear Cumulative")).show();
 		
@@ -61,7 +61,7 @@ public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
 		ipA.applyTable(F);
 		int[] hAm = ipA.getHistogram();
 		(new HistogramPlot(hAm, "Histogram A (mod)")).show();
-		(new HistogramPlot(Util.Cdf(hAm), "Cumulative Histogram A (mod)")).show();
+		(new HistogramPlot(HistogramUtils.cdf(hAm), "Cumulative Histogram A (mod)")).show();
 	}
 
 }

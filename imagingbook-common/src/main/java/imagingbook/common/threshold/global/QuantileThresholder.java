@@ -9,7 +9,7 @@
 
 package imagingbook.common.threshold.global;
 
-import imagingbook.common.histogram.Util;
+import imagingbook.common.histogram.HistogramUtils;
 
 /**
  * <p>
@@ -40,7 +40,7 @@ public class QuantileThresholder implements GlobalThresholder {
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;
-		int N = Util.count(h);	// total number of pixels	
+		int N = HistogramUtils.count(h);	// total number of pixels	
 		double n = N * b;		// number of pixels in quantile
 		
 		int i = 0;

@@ -16,7 +16,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramMatcher;
 import imagingbook.common.histogram.HistogramPlot;
-import imagingbook.common.histogram.Util;
+import imagingbook.common.histogram.HistogramUtils;
 
 /**
  * Adapts image intensities to match the histogram of another image.
@@ -48,8 +48,8 @@ public class Match_To_Image_Histogram implements PlugInFilter {
 		int[] hB = ipB.getHistogram();
 		(new HistogramPlot(hA, "Histogram A")).show();
 		(new HistogramPlot(hB, "Histogram B")).show();
-		(new HistogramPlot(Util.Cdf(hA), "Cumulative Histogram A")).show();
-		(new HistogramPlot(Util.Cdf(hB), "Cumulative Histogram B")).show();
+		(new HistogramPlot(HistogramUtils.cdf(hA), "Cumulative Histogram A")).show();
+		(new HistogramPlot(HistogramUtils.cdf(hB), "Cumulative Histogram B")).show();
 		
 		HistogramMatcher m = new HistogramMatcher();
 		int[] F = m.matchHistograms(hA, hB);
@@ -61,7 +61,7 @@ public class Match_To_Image_Histogram implements PlugInFilter {
 		ipA.applyTable(F);
 		int[] hAm = ipA.getHistogram();
 		(new HistogramPlot(hAm, "Histogram A (mod)")).show();
-		(new HistogramPlot(Util.Cdf(hAm), "Cumulative Histogram A (mod)")).show();
+		(new HistogramPlot(HistogramUtils.cdf(hAm), "Cumulative Histogram A (mod)")).show();
 	}
 
 	boolean runDialog() {

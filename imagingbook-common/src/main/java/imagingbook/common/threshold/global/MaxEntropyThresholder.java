@@ -9,7 +9,7 @@
 
 package imagingbook.common.threshold.global;
 
-import imagingbook.common.histogram.Util;
+import imagingbook.common.histogram.HistogramUtils;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ public class MaxEntropyThresholder implements GlobalThresholder {
 	@Override
 	public int getThreshold(int[] h) {
 		int K = h.length;	
-		double[] p = Util.normalize(h);			// normalized histogram (to probabilities)	
+		double[] p = HistogramUtils.pdf(h);			// normalized histogram (to probabilities)	
 		makeTables(p);	// initialize S0, S1
 		
 		double P0 = 0;	// cumulative probability

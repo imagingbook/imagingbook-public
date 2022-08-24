@@ -12,7 +12,7 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramPlot;
-import imagingbook.common.histogram.Util;
+import imagingbook.common.histogram.HistogramUtils;
 
 public class Show_Histogram implements PlugInFilter { 
 	
@@ -29,7 +29,7 @@ public class Show_Histogram implements PlugInFilter {
 		int[] h = ip.getHistogram();
 		String title = im.getShortTitle();
 		(new HistogramPlot(h, "Histogram of " + title)).show();
-		(new HistogramPlot(Util.Cdf(h), "Cum. Histogram of " + title)).show();
+		(new HistogramPlot(HistogramUtils.cdf(h), "Cum. Histogram of " + title)).show();
 	}
 	
 }
