@@ -234,11 +234,11 @@ public abstract class HistogramUtils {
 			throw new IllegalArgumentException("empty histogram");
 		}
 		
-		return ((double) B - (double) A * A / N) / N;
+		return ((double) B - (double) (A * A) / N) / N;
 	}
 	
 	// This is a naive (slow) version, for testing only:
-	public double varianceSlow(int[] h, int lo, int hi) {
+	public static double varianceSlow(int[] h, int lo, int hi) {
 		if (lo < 0)
 			lo = 0;
 		if (hi >= h.length)
