@@ -9,19 +9,19 @@
 
 package imagingbook.common.histogram;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+
 import imagingbook.common.math.Arithmetic;
 
-// TODO: needs unit tests!
-
 /**
- * This class defines a set of simple static utility methods for processing histograms.
+ * This class defines a set of simple static methods for processing histograms.
  * 
  * @author WB
  * @version 2022/08/24
  */
 public abstract class HistogramUtils {
 	
-	//private HistogramUtils() { }
+	private HistogramUtils() { }
 	
 	/**
 	 * Calculates and returns the total population (sum of
@@ -222,16 +222,16 @@ public abstract class HistogramUtils {
 			hi = h.length - 1;
 		long A = 0;
 		long B = 0;
-		long N = 0;
+		int N = 0;
 		for (int i = lo; i <= hi; i++) {
 			int ni = h[i];
-			A = A + i * ni;
-			B = B + i * i * ni;
+			A = A + (long) i * ni;
+			B = B + (long) i * i * ni;
 			N = N + ni;
 		}
 		
 		if (N == 0) {
-			throw new IllegalArgumentException("empty histogram");
+			throw new IllegalArgumentException("empty histogram or range");
 		}
 		
 		return ((double) B - (double) (A * A) / N) / N;
@@ -244,18 +244,18 @@ public abstract class HistogramUtils {
 		if (hi >= h.length)
 			hi = h.length - 1;
 		final double mu = mean(h, lo, hi);
-		long N = 0;
+		int N = 0;
 		double sum = 0;
 		for (int i = lo; i <= hi; i++) {
 			N = N + h[i];
-			sum = sum + Arithmetic.sqr(i - mu) * h[i];
+			sum = sum + sqr(i - mu) * h[i];
 		}
 		
 		if (N == 0) {
-			throw new IllegalArgumentException("empty histogram");
+			throw new IllegalArgumentException("empty histogram or range");
 		}
 
-		return ((double) sum) / N;
+		return (double) sum / N;
 	}
 	
 	// -----------------------------------------------------------
