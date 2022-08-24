@@ -26,6 +26,8 @@ import imagingbook.common.geometry.basic.Pnt2d;
  */
 public class RoiUtils {
 	
+	private RoiUtils() {}
+	
 	/**
 	 * Retrieves the outline of the specified ROI as an
 	 * array of {@link Pnt2d} points with {@code int}

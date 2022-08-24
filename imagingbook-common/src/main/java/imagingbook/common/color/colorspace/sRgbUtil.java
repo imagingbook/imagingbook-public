@@ -9,9 +9,6 @@
 
 package imagingbook.common.color.colorspace;
 
-import java.util.Locale;
-import java.util.Random;
-
 /**
  * This is a utility class with static methods for gamma correction
  * used by LabColorSpace and LuvColorSpace color spaces.
@@ -20,6 +17,8 @@ import java.util.Random;
  * TODO: duplicate in lib.color? add JavaDoc!
  */
 public abstract class sRgbUtil {
+	
+	private sRgbUtil() {}
 	
 	// specs according to official sRGB standard:
 	private static final double s = 12.92;
@@ -68,15 +67,15 @@ public abstract class sRgbUtil {
     
     // -------------------------------------------------------------------------
 	
-	public static void main(String[] args) {
-		Random rg = new Random();
-		for (int i = 0; i < 20; i++) {
-			double lc = rg.nextDouble();
-			double nc = gammaFwd(lc);
-			System.out.format(Locale.US, "lc = %.8f,  nc = %.8f, check = %.8f\n", lc, nc, lc-gammaInv(nc));
-		}
-		System.out.println("" + (s * a0));
-
-	}
+//	public static void main(String[] args) {
+//		Random rg = new Random();
+//		for (int i = 0; i < 20; i++) {
+//			double lc = rg.nextDouble();
+//			double nc = gammaFwd(lc);
+//			System.out.format(Locale.US, "lc = %.8f,  nc = %.8f, check = %.8f\n", lc, nc, lc-gammaInv(nc));
+//		}
+//		System.out.println("" + (s * a0));
+//
+//	}
     
 }

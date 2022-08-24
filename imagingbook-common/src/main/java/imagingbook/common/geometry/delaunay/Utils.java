@@ -17,6 +17,8 @@ import imagingbook.common.geometry.basic.Pnt2d;
  */
 public abstract class Utils {
 	
+	private Utils() {}
+	
 	/**
 	 * Creates a 2D triangle that is sufficiently large to be used as 
 	 * an outer triangle for the Delaunay triangulation of the given

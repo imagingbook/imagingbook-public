@@ -41,6 +41,8 @@ import imagingbook.common.math.PrintPrecision;
  */
 public abstract class NonlinearLeastSquares {
 	
+	private NonlinearLeastSquares() {}
+	
 	public static int MaxEvaluations = 1000;
 	public static int MaxIterations = 1000;
 	public static double Tolerance = 1e-6;

@@ -12,6 +12,8 @@ import java.util.Arrays;
 
 public abstract class PntUtils {
 	
+	private PntUtils() {}
+	
 	/**
 	 * Calculates and returns the centroid of the specified
 	 * point set.

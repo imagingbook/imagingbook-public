@@ -15,6 +15,8 @@ package imagingbook.common.math;
  */
 public abstract class PrintPrecision {
 	
+	private PrintPrecision() {}
+	
 	private static int defaultPrecision = 3;
 	private static int precision = defaultPrecision;
 	private static String formatStringFloat;

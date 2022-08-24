@@ -11,14 +11,17 @@ package imagingbook.common.geometry.moments;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;
 
+//TODO: make more efficient versions!
+
 /**
  * This class defines static methods for moment calculations on 2D point sets.
- * TODO: make more efficient versions!
  * 
  * @author WB
  *
  */
 public abstract class Moments2D {
+	
+	private Moments2D() {}
 	
 	public static double ordinaryMoment(Iterable<Pnt2d> R, int p, int q) {
 		double mpq = 0.0;

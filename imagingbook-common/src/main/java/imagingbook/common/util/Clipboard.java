@@ -22,6 +22,8 @@ import java.awt.datatransfer.Transferable;
 
 public abstract class Clipboard {
 	
+	private Clipboard() {}
+	
 	/**
 	 * Writes a string to the system clipboard.
 	 * @param str some string

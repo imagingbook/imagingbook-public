@@ -21,6 +21,8 @@ import ij.process.ImageProcessor;
  */
 public abstract class ImageMath {
 	
+	private ImageMath() {}
+	
 	public static <T extends ImageProcessor> T abs(T ip) {
 		@SuppressWarnings("unchecked")
 		T ip2 = (T) ip.duplicate();

@@ -12,7 +12,7 @@ import ij.plugin.filter.Convolver;
 import ij.process.ImageProcessor;
 
 /**
- * Utility methods for filtering images based on ImageJ's {@link Convolver} class. 
+ * Defines static methods for filtering images based on ImageJ's {@link Convolver} class. 
  * None of the filter methods modifies the kernel, i.e., kernels are 
  * used as supplied and never normalized.
  * 
@@ -21,6 +21,8 @@ import ij.process.ImageProcessor;
  * @see Convolver
  */
 public abstract class Filter {
+	
+	private Filter() {}
 
 	/**
 	 * Applies a one-dimensional convolution kernel to the given image,

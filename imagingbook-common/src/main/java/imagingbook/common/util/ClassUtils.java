@@ -28,6 +28,8 @@ import imagingbook.core.FileUtils;
 
 public abstract class ClassUtils {
 	
+	private ClassUtils() {}
+	
 	/**
 	 * Lists all accessible public fields of the given object and 
 	 * returns the result as a string.
@@ -48,8 +50,6 @@ public abstract class ClassUtils {
 		}
 		return buf.toString();
 	}
-	
-	
 	
 	/**
 	 * Collects and returns the list of classes defined in the specified package.

@@ -13,6 +13,8 @@ package imagingbook.common.color.colorspace;
 
 public abstract class CieUtil {
 	
+	private CieUtil() {}
+	
 	/**
 	 * Calculates the XYZ coordinates for a given point (x,y) in the CIE
 	 * xy-color diagram. XYZ is located on the 3D plane X + Y + Z = 1.

@@ -13,6 +13,8 @@ import java.awt.Color;
 import imagingbook.common.math.Matrix;
 
 public abstract class RgbUtils {
+	
+	private RgbUtils() {}
 
 	public static int[] intToRgb(int p) {
 		int[] RGB = new int[3];

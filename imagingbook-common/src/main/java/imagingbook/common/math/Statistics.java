@@ -19,6 +19,8 @@ import org.apache.commons.math3.stat.correlation.Covariance;
  */
 public abstract class Statistics {
 	
+	private Statistics() {}
+	
 	/**
 	 * Calculates the covariance matrix for a sequence of sample vectors.
 	 * Takes a sequence of n data samples, each of dimension m.

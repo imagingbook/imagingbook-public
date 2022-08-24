@@ -35,8 +35,7 @@ import java.io.OutputStream;
 public abstract class SerializationHelper {
 	
 	// This class is not supposed to be instantiated.
-	private SerializationHelper() {
-	}
+	private SerializationHelper() {}
 	
 	/**
 	 * Writes a serialized representation of an arbitrary Java object to 

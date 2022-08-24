@@ -10,6 +10,8 @@ package imagingbook.common.util;
 
 public abstract class ArrayUtils {
 	
+	private ArrayUtils() {}
+	
 	/**
 	 * Counts the number of non-null elements in the given (non-primitive) array.
 	 * @param arr an array of non-primitive type

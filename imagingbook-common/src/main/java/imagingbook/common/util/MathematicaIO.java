@@ -22,6 +22,8 @@ import imagingbook.common.math.PrintPrecision;
  * @version 2014/12/03
  */
 public abstract class MathematicaIO {
+	
+	private MathematicaIO() {}
 
 	/**
 	 * Generates a string holding the named definition

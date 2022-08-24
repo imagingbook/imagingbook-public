@@ -14,7 +14,12 @@ import ij.process.ShortProcessor;
 import imagingbook.common.color.iterate.RandomHueGenerator;
 import imagingbook.common.regions.segment.BinaryRegionSegmentation;
 
+/**
+ * Defines static methods for displaying binary segmentations.
+ */
 public abstract class Display {
+	
+	private Display() {}
 	
 	/**
 	 * Utility method that creates an image to display a binary segmentation.

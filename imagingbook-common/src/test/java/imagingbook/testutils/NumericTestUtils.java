@@ -15,6 +15,8 @@ import org.junit.Assert;
 
 public abstract class NumericTestUtils {
 	
+	private NumericTestUtils() {}
+	
 	public static float TOLERANCE = 1E-6f;
 	
 	// utility methods for comparing 2D arrays ---------------------------------------------------------------
@@ -62,12 +64,12 @@ public abstract class NumericTestUtils {
 	}
 
 	
-	public static void main(String[] args) {
-		assertEqualsRelative(1.0000000000, 1.0000000001, 1e-6);
-		assertEqualsRelative(100000000, 100000001, 1e-6);
-		
-		double[] a = {1.0000000000, 2, 3, 1000000};
-		double[] b = {1.0000000001, 2, 3, 1000001};
-		assertArrayEqualsRelative(a, b, 1e-6);
-	}
+//	public static void main(String[] args) {
+//		assertEqualsRelative(1.0000000000, 1.0000000001, 1e-6);
+//		assertEqualsRelative(100000000, 100000001, 1e-6);
+//		
+//		double[] a = {1.0000000000, 2, 3, 1000000};
+//		double[] b = {1.0000000001, 2, 3, 1000001};
+//		assertArrayEqualsRelative(a, b, 1e-6);
+//	}
 }

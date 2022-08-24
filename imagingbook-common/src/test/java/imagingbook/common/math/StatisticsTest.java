@@ -8,11 +8,13 @@
  *******************************************************************************/
 package imagingbook.common.math;
 
+import static imagingbook.common.math.Statistics.covarianceMatrix;
+
 import org.junit.Test;
 
 import imagingbook.testutils.NumericTestUtils;
 
-public class StatisticsTest extends Statistics {
+public class StatisticsTest {
 	
 	// example: n = 4 samples of dimension m = 3:
 	// samples[i][j], i = column (sample index), j = row (dimension index).

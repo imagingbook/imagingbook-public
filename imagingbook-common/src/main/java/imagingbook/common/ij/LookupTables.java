@@ -28,6 +28,8 @@ import java.awt.image.IndexColorModel;
  */
 public abstract class LookupTables {
 	
+	private LookupTables() {}
+	
 	/**
 	 * Create a new lookup-table from three RGB arrays of length 256.
 	 * @param r Red component values.

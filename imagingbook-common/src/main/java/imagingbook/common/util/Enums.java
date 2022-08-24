@@ -29,6 +29,8 @@ import imagingbook.common.util.Enums.Description;
 @SuppressWarnings("unused")
 public abstract class Enums {
 
+	private Enums() {}
+	
 	/**
 	 * This static method returns an array of all constant names (strings) 
 	 * for a given enumeration class. 

@@ -12,6 +12,8 @@ import ij.gui.Overlay;
 import ij.gui.Roi;
 
 public abstract class OverlayUtils {
+	
+	private OverlayUtils() {}
 
 	/**
 	 * Returns a new overlay produced by joining two existing

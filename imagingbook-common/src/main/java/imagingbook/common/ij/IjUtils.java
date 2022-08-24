@@ -43,6 +43,8 @@ import imagingbook.common.util.bits.BitMap;
  */
 public abstract class IjUtils {
 	
+	private IjUtils() {}
+	
 	/**
 	 * Returns a (possibly empty) array of ImagePlus objects that are
 	 * sorted by their titles if the 'sortByTitle' flag is set.

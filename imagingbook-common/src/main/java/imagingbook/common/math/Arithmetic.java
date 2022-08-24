@@ -25,6 +25,8 @@ import static org.apache.commons.math3.util.FastMath.sin;
  */
 public abstract class Arithmetic {
 	
+	private Arithmetic() {}
+	
 	// machine accuracy for IEEE 754 float/double;
 	/** Default tolerance used for comparing {@code float} quantities. */
 	public static final float EPSILON_FLOAT 	= 1e-7f;	// 1.19 x 10^-7

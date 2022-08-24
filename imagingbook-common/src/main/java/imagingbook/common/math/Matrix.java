@@ -49,6 +49,8 @@ import imagingbook.common.math.exception.DivideByZeroException;
  */
 public abstract class Matrix {
 	
+	private Matrix() {}
+	
 	/** Locale used for printing decimal numbers. */
 	public static Locale PrintLocale = Locale.US;
 	
