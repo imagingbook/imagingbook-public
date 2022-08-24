@@ -19,7 +19,7 @@
 <span class="sourceLineNo">009</span><a id="line.9"></a>
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.common.threshold.global;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
-<span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.histogram.Util;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.histogram.HistogramUtils;</a>
 <span class="sourceLineNo">013</span><a id="line.13"></a>
 <span class="sourceLineNo">014</span><a id="line.14">/**</a>
 <span class="sourceLineNo">015</span><a id="line.15"> * &lt;p&gt;</a>
@@ -45,18 +45,18 @@
 <span class="sourceLineNo">035</span><a id="line.35">        @Override</a>
 <span class="sourceLineNo">036</span><a id="line.36">        public int getThreshold(int[] h) {</a>
 <span class="sourceLineNo">037</span><a id="line.37">                int K = h.length;</a>
-<span class="sourceLineNo">038</span><a id="line.38">                int q = (int) Util.mean(h, 0, K-1);     // start with the total mean</a>
+<span class="sourceLineNo">038</span><a id="line.38">                int q = (int) HistogramUtils.mean(h, 0, K-1);   // start with the total mean</a>
 <span class="sourceLineNo">039</span><a id="line.39">                int q_;</a>
 <span class="sourceLineNo">040</span><a id="line.40">                </a>
 <span class="sourceLineNo">041</span><a id="line.41">                int i = 0;      // iteration counter</a>
 <span class="sourceLineNo">042</span><a id="line.42">                do {</a>
 <span class="sourceLineNo">043</span><a id="line.43">                        i++;</a>
-<span class="sourceLineNo">044</span><a id="line.44">                        int nB = Util.count(h, 0, q);</a>
-<span class="sourceLineNo">045</span><a id="line.45">                        int nF = Util.count(h, q+1, K-1);</a>
+<span class="sourceLineNo">044</span><a id="line.44">                        int nB = HistogramUtils.count(h, 0, q);</a>
+<span class="sourceLineNo">045</span><a id="line.45">                        int nF = HistogramUtils.count(h, q+1, K-1);</a>
 <span class="sourceLineNo">046</span><a id="line.46">                        if (nB == 0 || nF == 0)</a>
 <span class="sourceLineNo">047</span><a id="line.47">                                return -1;</a>
-<span class="sourceLineNo">048</span><a id="line.48">                        double meanB = Util.mean(h, 0, q);</a>
-<span class="sourceLineNo">049</span><a id="line.49">                        double meanF = Util.mean(h, q+1, K-1);</a>
+<span class="sourceLineNo">048</span><a id="line.48">                        double meanB = HistogramUtils.mean(h, 0, q);</a>
+<span class="sourceLineNo">049</span><a id="line.49">                        double meanF = HistogramUtils.mean(h, q+1, K-1);</a>
 <span class="sourceLineNo">050</span><a id="line.50">                        q_ = q;                         </a>
 <span class="sourceLineNo">051</span><a id="line.51">                        q = (int)((meanB + meanF)/2);</a>
 <span class="sourceLineNo">052</span><a id="line.52">                } while (q != q_ &amp;&amp; i &lt; MAX_ITERATIONS);</a>

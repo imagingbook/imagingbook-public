@@ -32,31 +32,33 @@
 <span class="sourceLineNo">022</span><a id="line.22"></a>
 <span class="sourceLineNo">023</span><a id="line.23">public abstract class Clipboard {</a>
 <span class="sourceLineNo">024</span><a id="line.24">        </a>
-<span class="sourceLineNo">025</span><a id="line.25">        /**</a>
-<span class="sourceLineNo">026</span><a id="line.26">         * Writes a string to the system clipboard.</a>
-<span class="sourceLineNo">027</span><a id="line.27">         * @param str some string</a>
-<span class="sourceLineNo">028</span><a id="line.28">         */</a>
-<span class="sourceLineNo">029</span><a id="line.29">        public static void copyStringToClipboard(String str) {</a>
-<span class="sourceLineNo">030</span><a id="line.30">                StringSelection stringSelection = new StringSelection(str);</a>
-<span class="sourceLineNo">031</span><a id="line.31">                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);  </a>
-<span class="sourceLineNo">032</span><a id="line.32">        } </a>
-<span class="sourceLineNo">033</span><a id="line.33"></a>
-<span class="sourceLineNo">034</span><a id="line.34">        /**</a>
-<span class="sourceLineNo">035</span><a id="line.35">         * If a string is on the system clipboard, this method returns it; otherwise it returns null.</a>
-<span class="sourceLineNo">036</span><a id="line.36">         * @return the clipboard string or null</a>
-<span class="sourceLineNo">037</span><a id="line.37">         */</a>
-<span class="sourceLineNo">038</span><a id="line.38">        public static String getStringFromClipboard() { </a>
-<span class="sourceLineNo">039</span><a id="line.39">                String str = null;</a>
-<span class="sourceLineNo">040</span><a id="line.40">                Transferable trf = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null); </a>
-<span class="sourceLineNo">041</span><a id="line.41">                if (trf != null &amp;&amp; trf.isDataFlavorSupported(DataFlavor.stringFlavor)) {</a>
-<span class="sourceLineNo">042</span><a id="line.42">                        try {</a>
-<span class="sourceLineNo">043</span><a id="line.43">                                str = (String) trf.getTransferData(DataFlavor.stringFlavor);</a>
-<span class="sourceLineNo">044</span><a id="line.44">                        }  catch (Exception e) {};</a>
-<span class="sourceLineNo">045</span><a id="line.45">                }</a>
-<span class="sourceLineNo">046</span><a id="line.46">                return str; </a>
-<span class="sourceLineNo">047</span><a id="line.47">        }</a>
-<span class="sourceLineNo">048</span><a id="line.48"></a>
-<span class="sourceLineNo">049</span><a id="line.49">}</a>
+<span class="sourceLineNo">025</span><a id="line.25">        private Clipboard() {}</a>
+<span class="sourceLineNo">026</span><a id="line.26">        </a>
+<span class="sourceLineNo">027</span><a id="line.27">        /**</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * Writes a string to the system clipboard.</a>
+<span class="sourceLineNo">029</span><a id="line.29">         * @param str some string</a>
+<span class="sourceLineNo">030</span><a id="line.30">         */</a>
+<span class="sourceLineNo">031</span><a id="line.31">        public static void copyStringToClipboard(String str) {</a>
+<span class="sourceLineNo">032</span><a id="line.32">                StringSelection stringSelection = new StringSelection(str);</a>
+<span class="sourceLineNo">033</span><a id="line.33">                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);  </a>
+<span class="sourceLineNo">034</span><a id="line.34">        } </a>
+<span class="sourceLineNo">035</span><a id="line.35"></a>
+<span class="sourceLineNo">036</span><a id="line.36">        /**</a>
+<span class="sourceLineNo">037</span><a id="line.37">         * If a string is on the system clipboard, this method returns it; otherwise it returns null.</a>
+<span class="sourceLineNo">038</span><a id="line.38">         * @return the clipboard string or null</a>
+<span class="sourceLineNo">039</span><a id="line.39">         */</a>
+<span class="sourceLineNo">040</span><a id="line.40">        public static String getStringFromClipboard() { </a>
+<span class="sourceLineNo">041</span><a id="line.41">                String str = null;</a>
+<span class="sourceLineNo">042</span><a id="line.42">                Transferable trf = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null); </a>
+<span class="sourceLineNo">043</span><a id="line.43">                if (trf != null &amp;&amp; trf.isDataFlavorSupported(DataFlavor.stringFlavor)) {</a>
+<span class="sourceLineNo">044</span><a id="line.44">                        try {</a>
+<span class="sourceLineNo">045</span><a id="line.45">                                str = (String) trf.getTransferData(DataFlavor.stringFlavor);</a>
+<span class="sourceLineNo">046</span><a id="line.46">                        }  catch (Exception e) {};</a>
+<span class="sourceLineNo">047</span><a id="line.47">                }</a>
+<span class="sourceLineNo">048</span><a id="line.48">                return str; </a>
+<span class="sourceLineNo">049</span><a id="line.49">        }</a>
+<span class="sourceLineNo">050</span><a id="line.50"></a>
+<span class="sourceLineNo">051</span><a id="line.51">}</a>
 
 
 

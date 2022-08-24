@@ -37,7 +37,7 @@
 <span class="sourceLineNo">027</span><a id="line.27">        int[] H = new int[256];</a>
 <span class="sourceLineNo">028</span><a id="line.28">        </a>
 <span class="sourceLineNo">029</span><a id="line.29">        public HistogramPlot(int[] h, String title) {</a>
-<span class="sourceLineNo">030</span><a id="line.30">                this(Util.normalizeHistogram(h), title);</a>
+<span class="sourceLineNo">030</span><a id="line.30">                this(HistogramUtils.normalizeMax(h), title);</a>
 <span class="sourceLineNo">031</span><a id="line.31">        }</a>
 <span class="sourceLineNo">032</span><a id="line.32">        </a>
 <span class="sourceLineNo">033</span><a id="line.33">        public HistogramPlot(double[] nH, String title) {</a>

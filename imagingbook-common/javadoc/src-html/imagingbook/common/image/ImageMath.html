@@ -31,42 +31,44 @@
 <span class="sourceLineNo">021</span><a id="line.21"> */</a>
 <span class="sourceLineNo">022</span><a id="line.22">public abstract class ImageMath {</a>
 <span class="sourceLineNo">023</span><a id="line.23">        </a>
-<span class="sourceLineNo">024</span><a id="line.24">        public static &lt;T extends ImageProcessor&gt; T abs(T ip) {</a>
-<span class="sourceLineNo">025</span><a id="line.25">                @SuppressWarnings("unchecked")</a>
-<span class="sourceLineNo">026</span><a id="line.26">                T ip2 = (T) ip.duplicate();</a>
-<span class="sourceLineNo">027</span><a id="line.27">                ip2.abs();</a>
-<span class="sourceLineNo">028</span><a id="line.28">                return ip2;</a>
-<span class="sourceLineNo">029</span><a id="line.29">        }</a>
-<span class="sourceLineNo">030</span><a id="line.30">        </a>
-<span class="sourceLineNo">031</span><a id="line.31">        public static &lt;T extends ImageProcessor&gt; T sqr(T ip) {</a>
-<span class="sourceLineNo">032</span><a id="line.32">                @SuppressWarnings("unchecked")</a>
-<span class="sourceLineNo">033</span><a id="line.33">                T ip2 = (T) ip.duplicate();</a>
-<span class="sourceLineNo">034</span><a id="line.34">                ip2.sqr();</a>
-<span class="sourceLineNo">035</span><a id="line.35">                return ip2;</a>
-<span class="sourceLineNo">036</span><a id="line.36">        }</a>
-<span class="sourceLineNo">037</span><a id="line.37">        </a>
-<span class="sourceLineNo">038</span><a id="line.38">        public static &lt;T extends ImageProcessor&gt; T sqrt(T ip) {</a>
-<span class="sourceLineNo">039</span><a id="line.39">                @SuppressWarnings("unchecked")</a>
-<span class="sourceLineNo">040</span><a id="line.40">                T ip2 = (T) ip.duplicate();</a>
-<span class="sourceLineNo">041</span><a id="line.41">                ip2.sqrt();</a>
-<span class="sourceLineNo">042</span><a id="line.42">                return ip2;</a>
-<span class="sourceLineNo">043</span><a id="line.43">        }</a>
-<span class="sourceLineNo">044</span><a id="line.44">        </a>
-<span class="sourceLineNo">045</span><a id="line.45">        public static&lt;T extends ImageProcessor&gt; T add(T ip1, T ip2) {</a>
-<span class="sourceLineNo">046</span><a id="line.46">                @SuppressWarnings("unchecked")</a>
-<span class="sourceLineNo">047</span><a id="line.47">                T ip3 = (T) ip1.duplicate();</a>
-<span class="sourceLineNo">048</span><a id="line.48">                ip3.copyBits(ip2, 0, 0, Blitter.ADD);</a>
-<span class="sourceLineNo">049</span><a id="line.49">                return ip3;</a>
-<span class="sourceLineNo">050</span><a id="line.50">        }</a>
-<span class="sourceLineNo">051</span><a id="line.51">        </a>
-<span class="sourceLineNo">052</span><a id="line.52">        public static&lt;T extends ImageProcessor&gt; T mult(T ip1, T ip2) {</a>
-<span class="sourceLineNo">053</span><a id="line.53">                @SuppressWarnings("unchecked")</a>
-<span class="sourceLineNo">054</span><a id="line.54">                T ip3 = (T) ip1.duplicate();</a>
-<span class="sourceLineNo">055</span><a id="line.55">                ip3.copyBits(ip2, 0, 0, Blitter.MULTIPLY);</a>
-<span class="sourceLineNo">056</span><a id="line.56">                return ip3;</a>
-<span class="sourceLineNo">057</span><a id="line.57">        }</a>
-<span class="sourceLineNo">058</span><a id="line.58"></a>
-<span class="sourceLineNo">059</span><a id="line.59">}</a>
+<span class="sourceLineNo">024</span><a id="line.24">        private ImageMath() {}</a>
+<span class="sourceLineNo">025</span><a id="line.25">        </a>
+<span class="sourceLineNo">026</span><a id="line.26">        public static &lt;T extends ImageProcessor&gt; T abs(T ip) {</a>
+<span class="sourceLineNo">027</span><a id="line.27">                @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">028</span><a id="line.28">                T ip2 = (T) ip.duplicate();</a>
+<span class="sourceLineNo">029</span><a id="line.29">                ip2.abs();</a>
+<span class="sourceLineNo">030</span><a id="line.30">                return ip2;</a>
+<span class="sourceLineNo">031</span><a id="line.31">        }</a>
+<span class="sourceLineNo">032</span><a id="line.32">        </a>
+<span class="sourceLineNo">033</span><a id="line.33">        public static &lt;T extends ImageProcessor&gt; T sqr(T ip) {</a>
+<span class="sourceLineNo">034</span><a id="line.34">                @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">035</span><a id="line.35">                T ip2 = (T) ip.duplicate();</a>
+<span class="sourceLineNo">036</span><a id="line.36">                ip2.sqr();</a>
+<span class="sourceLineNo">037</span><a id="line.37">                return ip2;</a>
+<span class="sourceLineNo">038</span><a id="line.38">        }</a>
+<span class="sourceLineNo">039</span><a id="line.39">        </a>
+<span class="sourceLineNo">040</span><a id="line.40">        public static &lt;T extends ImageProcessor&gt; T sqrt(T ip) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">                @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">042</span><a id="line.42">                T ip2 = (T) ip.duplicate();</a>
+<span class="sourceLineNo">043</span><a id="line.43">                ip2.sqrt();</a>
+<span class="sourceLineNo">044</span><a id="line.44">                return ip2;</a>
+<span class="sourceLineNo">045</span><a id="line.45">        }</a>
+<span class="sourceLineNo">046</span><a id="line.46">        </a>
+<span class="sourceLineNo">047</span><a id="line.47">        public static&lt;T extends ImageProcessor&gt; T add(T ip1, T ip2) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">                @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">049</span><a id="line.49">                T ip3 = (T) ip1.duplicate();</a>
+<span class="sourceLineNo">050</span><a id="line.50">                ip3.copyBits(ip2, 0, 0, Blitter.ADD);</a>
+<span class="sourceLineNo">051</span><a id="line.51">                return ip3;</a>
+<span class="sourceLineNo">052</span><a id="line.52">        }</a>
+<span class="sourceLineNo">053</span><a id="line.53">        </a>
+<span class="sourceLineNo">054</span><a id="line.54">        public static&lt;T extends ImageProcessor&gt; T mult(T ip1, T ip2) {</a>
+<span class="sourceLineNo">055</span><a id="line.55">                @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">056</span><a id="line.56">                T ip3 = (T) ip1.duplicate();</a>
+<span class="sourceLineNo">057</span><a id="line.57">                ip3.copyBits(ip2, 0, 0, Blitter.MULTIPLY);</a>
+<span class="sourceLineNo">058</span><a id="line.58">                return ip3;</a>
+<span class="sourceLineNo">059</span><a id="line.59">        }</a>
+<span class="sourceLineNo">060</span><a id="line.60"></a>
+<span class="sourceLineNo">061</span><a id="line.61">}</a>
 
 
 
