@@ -51,20 +51,31 @@ public abstract class Matrix {
 	
 	private Matrix() {}
 	
-	/** Locale used for printing decimal numbers. */
+	/** Locale used for printing decimal numbers by {@code toString()} methods. */
 	public static Locale PrintLocale = Locale.US;
 	
-	/** Character used to separate successive vector and matrix elements. */
+	/** Character used to separate successive vector and matrix elements by {@code toString()} methods. */
 	public static char SeparationChar = ',';
 	
-	/** Leading delimiter used for lists of vector and matrix elements. */
+	/** Leading delimiter used for lists of vector and matrix elements by {@code toString()} methods. */
 	public static char LeftDelimitChar = '{';
 	
-	/** Trailing delimiter used for lists of vector and matrix elements. */
+	/** Trailing delimiter used for lists of vector and matrix elements by {@code toString()} methods. */
 	public static char RightDelimitChar = '}';
 	
 	// ----  Matrix creation -----------------------------
 	
+	/**
+	 * Creates and returns a {@code double[][]} matrix containing the specified values.
+	 * Throws an {@link IllegalArgumentException} if the number of supplied values does
+	 * not exactly match the matrix size.
+	 * See also {@link #flatten(double[][])}.
+	 * 
+	 * @param rows the number of matrix rows
+	 * @param cols the number of matrix columns
+	 * @param values the matrix values in row-major order (may also be passed as a {@code double[]})
+	 * @return a {@code double[][]} matrix
+	 */
 	public static double[][] makeDoubleMatrix(final int rows, final int cols, final double... values) {
 		final double[][] A = new double[rows][cols];
 		if (values == null || values.length == 0) {
@@ -84,6 +95,17 @@ public abstract class Matrix {
 		return A;
 	}
 	
+	/**
+	 * Creates and returns a {@code float[][]} matrix containing the specified values.
+	 * Throws an {@link IllegalArgumentException} if the number of supplied values does
+	 * not exactly match the matrix size.
+	 * See also {@link #flatten(float[][])}.
+	 * 
+	 * @param rows the number of matrix rows
+	 * @param cols the number of matrix columns
+	 * @param values the matrix values in row-major order (may also be passed as a {@code float[]})
+	 * @return a {@code float[][]} matrix
+	 */
 	public static float[][] makeFloatMatrix(final int rows, final int cols, final float... values) {
 		final float[][] A = new float[rows][cols];
 		if (values == null || values.length == 0) {
@@ -106,6 +128,55 @@ public abstract class Matrix {
 	public static RealMatrix makeRealMatrix(final int rows, final int cols, final double... values) {
 		return MatrixUtils.createRealMatrix(makeDoubleMatrix(rows, cols, values));
 	}
+	
+
+	/**
+	 * Returns the values of the specified matrix as a {@code double[]}
+	 * with elements arranged in row-major order.
+	 * The matrix must be fully rectangular (all rows of same length).
+	 * See also {@link #makeDoubleMatrix(int, int, double...)}.
+	 *  
+	 * @param A a matrix
+	 * @return a {@code double[]} with the matrix elements
+	 */
+	public static double[] flatten(double[][] A) {
+		final int rows = A.length;
+		final int cols = A[0].length;
+		final double[] vals = new double[rows * cols];
+		int i = 0;
+		for (int r = 0; r < rows; r++) {
+			for (int c = 0; c < cols; c++) {
+				vals[i] = A[r][c];
+				i++;
+			}
+		}
+		return vals;
+	}
+	
+	/**
+	 * Returns the values of the specified matrix as a {@code float[]}
+	 * with elements arranged in row-major order.
+	 * The matrix must be fully rectangular (all rows of same length).
+	 * See also {@link #makeFloatMatrix(int, int, double...)}.
+	 *  
+	 * @param A a matrix
+	 * @return a {@code float[]} with the matrix elements
+	 */
+	public static float[] flatten(float[][] A) {
+		final int rows = A.length;
+		final int cols = A[0].length;
+		final float[] vals = new float[rows * cols];
+		int i = 0;
+		for (int r = 0; r < rows; r++) {
+			for (int c = 0; c < cols; c++) {
+				vals[i] = A[r][c];
+				i++;
+			}
+		}
+		return vals;
+	}
+	
+	// --------------------------------------------------------------------------
 	
 	public static double[] makeDoubleVector(double... values) {
 		return values;
@@ -234,12 +305,43 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * TODO: implement!
-	 * @param A a matrix
+	 * @param A a square matrix
+	 * @return the vector of diagonal elements
+	 */
+	public static double[] getDiagonal(double[][] A) {
+		if (!isSquare(A)) {
+			throw new NonsquareMatrixException();
+		}
+		final int n = A.length;
+		double[] diag = new double[n];
+		for (int i = 0; i < n; i++) {
+			diag[i] = A[i][i];
+		}
+		return diag;
+	}
+	
+	/**
+	 * @param A a square matrix
+	 * @return the vector of diagonal elements
+	 */
+	public static float[] getDiagonal(float[][] A) {
+		if (!isSquare(A)) {
+			throw new NonsquareMatrixException();
+		}
+		final int n = A.length;
+		float[] diag = new float[n];
+		for (int i = 0; i < n; i++) {
+			diag[i] = A[i][i];
+		}
+		return diag;
+	}
+	
+	/**
+	 * @param A a square matrix
 	 * @return the vector of diagonal elements
 	 */
 	public static RealVector getDiagonal(RealMatrix A) {
-		return null;
+		return MatrixUtils.createRealVector(getDiagonal(A.getData()));
 	}
 	
 	
@@ -251,8 +353,8 @@ public abstract class Matrix {
 	public static boolean isSingular(double[][] A) throws NonsquareMatrixException {
 		if (!Matrix.isSquare(A)) {
 			throw new NonsquareMatrixException();
-		}		
-		return isSingular(new Array2DRowRealMatrix(A));		
+		}	
+		return isSingular(new Array2DRowRealMatrix(A));
 	}
 	
 	/**
@@ -724,7 +826,8 @@ public abstract class Matrix {
 	}
 	
 	// A * B -> C (destructive)
-	public static void multiplyD(final double[][] A, final double[][] B, final double[][] C) throws SameSourceTargetException, IncompatibleDimensionsException {
+	public static void multiplyD(final double[][] A, final double[][] B, final double[][] C) 
+			throws SameSourceTargetException, IncompatibleDimensionsException {
 		if (A == C || B == C) 
 			throw new SameSourceTargetException();
 		final int mA = getNumberOfRows(A);
@@ -1144,7 +1247,6 @@ public abstract class Matrix {
 	
 	// min/max of vectors ------------------------
 	
-	// TODO:  testing,  add float version
 	/**
 	 * Returns the index of the smallest element in the
 	 * specified vector. If the smallest value is
@@ -1153,6 +1255,7 @@ public abstract class Matrix {
 	 * 
 	 * @param x a vector
 	 * @return the index of the smallest value
+	 * @throws ZeroLengthVectorException
 	 */
 	public static int idxMin(double[] x) {
 		if (x.length == 0)
@@ -1168,7 +1271,31 @@ public abstract class Matrix {
 		return minidx;
 	}
 	
-	// TODO: testing, add float version
+	/**
+	 * Returns the index of the smallest element in the
+	 * specified vector. If the smallest value is
+	 * not unique, the lowest index is returned.
+	 * An exception is thrown if the vector has zero length.
+	 * 
+	 * @param x a vector
+	 * @return the index of the smallest value
+	 * @throws ZeroLengthVectorException
+	 */
+	public static int idxMin(float[] x) {
+		if (x.length == 0)
+			throw new ZeroLengthVectorException();
+		float minval = x[0];
+		int minidx = 0;
+		for (int i = 1; i < x.length; i++) {
+			if (x[i] < minval) {
+				minval = x[i];
+				minidx = i;
+			}
+		}
+		return minidx;
+	}
+	
+	
 	/**
 	 * Returns the index of the largest element in the
 	 * specified vector. If the largest value is
@@ -1177,6 +1304,7 @@ public abstract class Matrix {
 	 * 
 	 * @param x a vector
 	 * @return the index of the largest value
+	 * @throws ZeroLengthVectorException
 	 */
 	public static int idxMax(double[] x) {
 		if (x.length == 0)
@@ -1192,7 +1320,39 @@ public abstract class Matrix {
 		return maxidx;
 	}
 	
+	/**
+	 * Returns the index of the largest element in the
+	 * specified vector. If the largest value is
+	 * not unique, the lowest index is returned.
+	 * An exception is thrown if the vector has zero length.
+	 * 
+	 * @param x a vector
+	 * @return the index of the largest value
+	 * @throws ZeroLengthVectorException
+	 */
+	public static int idxMax(float[] x) {
+		if (x.length == 0)
+			throw new ZeroLengthVectorException();
+		float maxval = x[0];
+		int maxidx = 0;
+		for (int i = 1; i < x.length; i++) {
+			if (x[i] > maxval) {
+				maxval = x[i];
+				maxidx = i;
+			}
+		}
+		return maxidx;
+	}
 	
+	
+	/**
+	 * Returns the smallest value in the
+	 * specified vector. 
+	 * An exception is thrown if the vector has zero length.
+	 * @param x a vector
+	 * @return the largest value
+	 * @throws ZeroLengthVectorException
+	 */
 	public static float min(final float[] x) throws ZeroLengthVectorException {
 		if (x.length == 0)
 			throw new ZeroLengthVectorException();
@@ -1205,6 +1365,14 @@ public abstract class Matrix {
 		return minval;
 	}
 	
+	/**
+	 * Returns the smallest value in the
+	 * specified vector. 
+	 * An exception is thrown if the vector has zero length.
+	 * @param x a vector
+	 * @return the largest value
+	 * @throws ZeroLengthVectorException
+	 */
 	public static double min(final double[] x) throws ZeroLengthVectorException {
 		if (x.length == 0)
 			throw new ZeroLengthVectorException();
@@ -1218,7 +1386,14 @@ public abstract class Matrix {
 	}
 	
 
-	
+	/**
+	 * Returns the largest value in the
+	 * specified vector. 
+	 * An exception is thrown if the vector has zero length.
+	 * @param x a vector
+	 * @return the largest value
+	 * @throws ZeroLengthVectorException
+	 */
 	public static float max(final float[] x) throws ZeroLengthVectorException {
 		if (x.length == 0)
 			throw new ZeroLengthVectorException();
@@ -1231,6 +1406,14 @@ public abstract class Matrix {
 		return maxval;
 	}
 	
+	/**
+	 * Returns the largest value in the
+	 * specified vector. 
+	 * An exception is thrown if the vector has zero length.
+	 * @param x a vector
+	 * @return the largest value
+	 * @throws ZeroLengthVectorException
+	 */
 	public static double max(final double[] x) throws ZeroLengthVectorException {
 		if (x.length == 0)
 			throw new ZeroLengthVectorException();
@@ -1323,7 +1506,7 @@ public abstract class Matrix {
 	 * @return the interpolated vector
 	 */
 	public static float[] lerp(float[] a, float[] b, final float t) {
-		float[] c = new float[a.length];
+		final float[] c = new float[a.length];
 		for (int i = 0; i < a.length; i++) {
 			c[i] = a[i] + t * (b[i] - a[i]);
 		}
@@ -1340,7 +1523,7 @@ public abstract class Matrix {
 	 * @return the interpolated vector
 	 */
 	public static double[] lerp(double[] a, double[] b, final double t) {
-		double[] c = new double[a.length];
+		final double[] c = new double[a.length];
 		for (int i = 0; i < a.length; i++) {
 			c[i] = a[i] + t * (b[i] - a[i]);
 		}
@@ -1444,6 +1627,18 @@ public abstract class Matrix {
 				s = s + A[i][i];
 		}
 		return s;
+	}
+	
+	public static float trace(final float[][] A) throws NonsquareMatrixException {
+		final int m = getNumberOfRows(A);
+		final int n = getNumberOfColumns(A);
+		if (m != n) 
+			throw new NonsquareMatrixException();
+		double s = 0;
+		for (int i = 0; i < m; i++) {
+				s = s + A[i][i];
+		}
+		return (float) s;
 	}
 	
 	// Matrix transposition ---------------------------------------
@@ -1775,23 +1970,22 @@ public abstract class Matrix {
 	
 	// ------------------------------------------------------------------------
 	
-	public static void main(String[] args) {
-		double s = Double.NaN;
-		s = -1.0 / 1E-200; // / 1E-200;
-		System.out.println(Double.isFinite(s));
-		System.out.println((double[]) null);
-		
-		double[][] A = makeDoubleMatrix(5, 4,
-				1,2,3,4,
-				5,6,7,8,
-				9,10,11,12,
-				13,14,15,16,
-				17,18,19,20);
-		System.out.println("A = \n" + toString(A));
-		
-		RealMatrix B = makeRealMatrix(5, 4);
-		System.out.println("B = \n" + toString(B.getData()));
-
-	}
+//	public static void main(String[] args) {
+//		double s = Double.NaN;
+//		s = -1.0 / 1E-200; // / 1E-200;
+//		System.out.println(Double.isFinite(s));
+//		System.out.println((double[]) null);
+//		
+//		double[][] A = makeDoubleMatrix(5, 4,
+//				1,2,3,4,
+//				5,6,7,8,
+//				9,10,11,12,
+//				13,14,15,16,
+//				17,18,19,20);
+//		System.out.println("A = \n" + toString(A));
+//		
+//		RealMatrix B = makeRealMatrix(5, 4);
+//		System.out.println("B = \n" + toString(B.getData()));
+//	}
 
 }
