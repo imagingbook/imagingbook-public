@@ -16,11 +16,18 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
 /**
- * This class implements the Mahalanobis distance using the Apache commons math library.
+ * <p>
+ * This class implements the Mahalanobis distance using the Apache Commons Math library.
  * No statistical bias correction is used.
- * TODO: Check/reuse methods for covariance matrix etc in class 'Statistics'!
+ * See the Appendix G (Sections G.2-G.3) of [1] for additional details and examples.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
  */
-public class MahalanobisDistance { // extends VectorNorm 
+public class MahalanobisDistance { 	//TODO: Check/reuse methods for covariance matrix etc in class 'Statistics'!
 
 	/** The default minimum diagonal value used to condition the covariance matrix. */
 	public static final double DefaultMinimumDiagonalValue = 1.0E-15;

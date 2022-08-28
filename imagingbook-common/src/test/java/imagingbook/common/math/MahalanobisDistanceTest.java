@@ -29,7 +29,7 @@ public class MahalanobisDistanceTest {
 	@Test
 	public void test1() {
 		/*
-		 * Test example from Burger/Burge 3rd edition (Appendix D):
+		 * Test example from Burger/Burge 3rd edition (Appendix G.2.1):
 		 * N = 4 samples, K = 3 dimensions
 		 */
 		double[] X1 = {75, 37, 12};
@@ -40,8 +40,8 @@ public class MahalanobisDistanceTest {
 		double[] muExp = {55.25, 48.25, 23.75};	
 		double[][] covExp =
 			{{972.1875, 331.9375, -470.4375}, 
-			{331.9375, 412.6875, -53.1875}, 
-			{-470.4375, -53.1875, 278.1875}};
+			 {331.9375, 412.6875,  -53.1875}, 
+			 {-470.4375, -53.1875, 278.1875}};
 
 //		System.out.println("X1 = " + Matrix.toString(X1));
 //		System.out.println("X2 = " + Matrix.toString(X2));
@@ -150,7 +150,7 @@ public class MahalanobisDistanceTest {
 	}
 	
 	
-	@Test
+	@Test		// using repeatable random samples (with fixed seed)
 	public void test2() {
 		
 		double[][] samples = makeSamples2();
