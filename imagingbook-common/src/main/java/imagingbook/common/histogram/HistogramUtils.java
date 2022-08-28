@@ -11,8 +11,6 @@ package imagingbook.common.histogram;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import imagingbook.common.math.Arithmetic;
-
 /**
  * This class defines a set of simple static methods for processing histograms.
  * 
