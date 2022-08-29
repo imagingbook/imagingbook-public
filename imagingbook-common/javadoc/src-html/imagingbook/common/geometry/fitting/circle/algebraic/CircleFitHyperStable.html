@@ -160,8 +160,8 @@
 <span class="sourceLineNo">150</span><a id="line.150">                        int l = new SortMap(evals).getIndex(1); // index of the 2nd-smallest eigenvalue</a>
 <span class="sourceLineNo">151</span><a id="line.151">                        RealVector el = ed.getEigenvector(l);</a>
 <span class="sourceLineNo">152</span><a id="line.152">                        </a>
-<span class="sourceLineNo">153</span><a id="line.153">                        qq = Matrix.solve(W, el);</a>
-<span class="sourceLineNo">154</span><a id="line.154">//                      qq = MatrixUtils.inverse(Y).operate(el);                                                                                // alt. 1 (qq = Y^-1 * el)</a>
+<span class="sourceLineNo">153</span><a id="line.153">//                      qq = Matrix.solve(W, el);       // may return null!</a>
+<span class="sourceLineNo">154</span><a id="line.154">                        qq = MatrixUtils.inverse(W).operate(el);                                                                                // alt. 1 (qq = Y^-1 * el)</a>
 <span class="sourceLineNo">155</span><a id="line.155">//                      qq = V.multiply(MatrixUtils.inverse(S)).multiply(V.transpose()).operate(el);    // alt. 2 (S is diagonal!)</a>
 <span class="sourceLineNo">156</span><a id="line.156">                }</a>
 <span class="sourceLineNo">157</span><a id="line.157">                </a>
