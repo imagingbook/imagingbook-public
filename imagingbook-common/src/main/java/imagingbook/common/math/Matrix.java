@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.DecompositionSolver;
 import org.apache.commons.math3.linear.LUDecomposition;
@@ -125,6 +124,15 @@ public abstract class Matrix {
 		return A;
 	}
 	
+	/**
+	 * Creates and returns a {@link RealMatrix} containing the specified values.
+	 * Calls {@link #makeDoubleMatrix(int, int, double...)}.
+	 * 
+	 * @param rows the number of matrix rows
+	 * @param cols the number of matrix columns
+	 * @param values the matrix values in row-major order (may also be passed as a {@code double[]})
+	 * @return a {@link RealMatrix} 
+	 */
 	public static RealMatrix makeRealMatrix(final int rows, final int cols, final double... values) {
 		return MatrixUtils.createRealMatrix(makeDoubleMatrix(rows, cols, values));
 	}
@@ -178,17 +186,31 @@ public abstract class Matrix {
 	
 	// --------------------------------------------------------------------------
 	
+	/**
+	 * Creates and returns a {@code double[]} vector from the
+	 * specified values.
+	 * 
+	 * @param values the vector values (may also be passed as a single {@code double[]})
+	 * @return a {@code double[]}
+	 */
 	public static double[] makeDoubleVector(double... values) {
 		return values;
 	}
 	
+	/**
+	 * Creates and returns a {@code float[]} vector from the
+	 * specified values.
+	 * 
+	 * @param values the vector values (may also be passed as a single {@code float[]})
+	 * @return a {@code float[]}
+	 */
 	public static float[] makeFloatVector(float... values) {
 		return values;
 	}
 	
 	public static RealVector makeRealVector(double... values) {
-		//return MatrixUtils.createRealVector(values);
-		return new ArrayRealVector(values);
+		return MatrixUtils.createRealVector(values);
+//		return new ArrayRealVector(values);
 	}
 	
 	// Specific vector/matrix creation:
@@ -223,31 +245,92 @@ public abstract class Matrix {
 	
 	// Matrix properties -------------------------------------
 
+	/**
+	 * Returns the number of rows of the specified {@code double} matrix.
+	 * @param A a {@code double[][]} matrix
+	 * @return the number of rows
+	 */
 	public static int getNumberOfRows(double[][] A) {
 		return A.length;
 	}
 	
+	/**
+	 * Returns the number of columns of the specified {@code double} matrix.
+	 * @param A a {@code double[][]} matrix
+	 * @return the number of columns
+	 */
 	public static int getNumberOfColumns(double[][] A) {
 		return A[0].length;
 	}
 	
+	/**
+	 * Returns the number of rows of the specified {@code float} matrix.
+	 * @param A a {@code float[][]} matrix
+	 * @return the number of rows
+	 */
 	public static int getNumberOfRows(float[][] A) {
 		return A.length;
 	}
 	
+	/**
+	 * Returns the number of columns of the specified {@code float} matrix.
+	 * @param A a {@code float[][]} matrix
+	 * @return the number of columns
+	 */
 	public static int getNumberOfColumns(float[][] A) {
 		return A[0].length;
 	}
 	
 	// Extract rows or columns
 	
+	/**
+	 * Returns a particular row of the specified {@code double} matrix 
+	 * as a {@code double} vector.
+	 * @param A a {@code double[][]} matrix
+	 * @param r the row index (starting with 0)
+	 * @return a {@code double} vector
+	 */
 	public static double[] getRow(double[][] A, int r) {
 		return A[r].clone();
 	}
 	
+	/**
+	 * Returns a particular row of the specified {@code float} matrix 
+	 * as a {@code float} vector.
+	 * @param A a {@code float[][]} matrix
+	 * @param r the row index (starting with 0)
+	 * @return a {@code float} vector
+	 */
+	public static float[] getRow(float[][] A, int r) {
+		return A[r].clone();
+	}
+	
+	/**
+	 * Returns a particular column of the specified {@code double} matrix 
+	 * as a {@code double} vector.
+	 * @param A a {@code double[][]} matrix
+	 * @param c the column index (starting with 0)
+	 * @return a {@code double} vector
+	 */
 	public static double[] getColumn(double[][] A, int c) {
 		final int rows = A.length;
 		double[] col = new double[rows];
+		for (int r = 0; r < rows; r++) {
+			col[r] = A[r][c];
+		}
+		return col;
+	}
+	
+	/**
+	 * Returns a particular column of the specified {@code float} matrix 
+	 * as a {@code float} vector.
+	 * @param A a {@code float[][]} matrix
+	 * @param c the column index (starting with 0)
+	 * @return a {@code float} vector
+	 */
+	public static float[] getColumn(float[][] A, int c) {
+		final int rows = A.length;
+		float[] col = new float[rows];
 		for (int r = 0; r < rows; r++) {
 			col[r] = A[r][c];
 		}
@@ -258,7 +341,7 @@ public abstract class Matrix {
 	
 	/**
 	 * Checks if all rows of the given matrix have the same length.
-	 * @param A a matrix
+	 * @param A a {@code float[][]} matrix
 	 * @return true iff the matrix is rectangular
 	 */
 	public static boolean isRectangular(float[][] A) {
@@ -273,7 +356,7 @@ public abstract class Matrix {
 	
 	/**
 	 * Checks if all rows of the given matrix have the same length.
-	 * @param A a matrix
+	 * @param A a {@code double[][]} matrix
 	 * @return true iff the matrix is rectangular
 	 */
 	public static boolean isRectangular(double[][] A) {
@@ -288,7 +371,7 @@ public abstract class Matrix {
 	
 	/** Checks it the given matrix has the same number of rows
 	 * and columns.
-	 * @param A a matrix
+	 * @param A a {@code double[][]} matrix
 	 * @return true iff the matrix is square
 	 */
 	public static boolean isSquare(double[][] A) {
@@ -297,7 +380,7 @@ public abstract class Matrix {
 	
 	/** Checks it the given matrix has the same number of rows
 	 * and columns.
-	 * @param A a matrix
+	 * @param A a {@code float[][]} matrix
 	 * @return true iff the matrix is square
 	 */
 	public static boolean isSquare(float[][] A) {
@@ -305,7 +388,8 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * @param A a square matrix
+	 * Returns a vector with the diagonal elements of the specified matrix.
+	 * @param A a square {@code double[][]} matrix
 	 * @return the vector of diagonal elements
 	 */
 	public static double[] getDiagonal(double[][] A) {
@@ -321,7 +405,8 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * @param A a square matrix
+	 * Returns a vector with the diagonal elements of the specified matrix.
+	 * @param A a square {@code float[][]} matrix
 	 * @return the vector of diagonal elements
 	 */
 	public static float[] getDiagonal(float[][] A) {
@@ -337,8 +422,9 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * @param A a square matrix
-	 * @return the vector of diagonal elements
+	 * Returns a vector with the diagonal elements of the specified matrix.
+	 * @param A a square {@link RealMatrix}
+	 * @return the {@link RealVector} of diagonal elements
 	 */
 	public static RealVector getDiagonal(RealMatrix A) {
 		return MatrixUtils.createRealVector(getDiagonal(A.getData()));
@@ -346,8 +432,8 @@ public abstract class Matrix {
 	
 	
 	/**
-	 * Checks is the given square matrix is non-singular.
-	 * @param A a square matrix
+	 * Checks is the given square {@code double[][]} matrix is non-singular.
+	 * @param A a square {@code double[][]} matrix
 	 * @return true if the matrix is singular
 	 */
 	public static boolean isSingular(double[][] A) throws NonsquareMatrixException {
@@ -359,7 +445,7 @@ public abstract class Matrix {
 	
 	/**
 	 * Checks is the given square matrix is non-singular.
-	 * @param A a square matrix
+	 * @param A a square {@link RealMatrix}
 	 * @return true if the matrix is singular
 	 */
 	public static boolean isSingular(RealMatrix A) throws NonsquareMatrixException {
@@ -370,21 +456,45 @@ public abstract class Matrix {
 		return !solver.isNonSingular();
 	}
 	
-	
+	/** Default matrix symmetry tolerance. */
 	public static final double DefaultSymmetryTolerance = 1e-12;
 	
+	/**
+	 * Checks is the given square matrix is symmetric
+	 * using the specified relative tolerance.
+	 * @param A a square matrix
+	 * @return true if the matrix is symmetric
+	 */
 	public static boolean isSymmetric(RealMatrix A, double relTolerance) {
 		return MatrixUtils.isSymmetric(A, relTolerance);
 	}
 	
+	/**
+	 * Checks is the given square matrix is symmetric
+	 * (using {@link DefaultSymmetryTolerance}).
+	 * @param A a square matrix
+	 * @return true if the matrix is symmetric
+	 */
 	public static boolean isSymmetric(RealMatrix A) {
 		return isSymmetric(A, DefaultSymmetryTolerance);
 	}
 	
+	/**
+	 * Checks is the given square matrix is symmetric
+	 * using the specified relative tolerance.
+	 * @param A a square matrix
+	 * @return true if the matrix is symmetric
+	 */
 	public static boolean isSymmetric(double[][] A, double relTolerance) {
 		return MatrixUtils.isSymmetric(MatrixUtils.createRealMatrix(A), relTolerance);
 	}
 	
+	/**
+	 * Checks is the given square matrix is symmetric
+	 * (using {@link DefaultSymmetryTolerance}).
+	 * @param A a square matrix
+	 * @return true if the matrix is symmetric
+	 */
 	public static boolean isSymmetric(double[][] A) {
 		return isSymmetric(A, DefaultSymmetryTolerance);
 	}
@@ -455,12 +565,13 @@ public abstract class Matrix {
 
 	// Matrix and vector duplication ------------------------------
 
-	public static double[] duplicate(final double[] A) {
-		return A.clone();
+	
+	public static double[] duplicate(final double[] x) {
+		return x.clone();
 	}
 	
-	public static float[] duplicate(final float[] A) {
-		return A.clone();
+	public static float[] duplicate(final float[] x) {
+		return x.clone();
 	}
 
 	public static double[][] duplicate(final double[][] A) {
@@ -483,11 +594,11 @@ public abstract class Matrix {
 	
 	// ----- double <-> float conversions -----------------
 	
-	public static float[] toFloat(final double[] A) {
-		final int m = A.length;
+	public static float[] toFloat(final double[] x) {
+		final int m = x.length;
 		final float[] B = new float[m];
 		for (int i = 0; i < m; i++) {
-			B[i] = (float) A[i];
+			B[i] = (float) x[i];
 		}
 		return B;
 	}
@@ -504,11 +615,11 @@ public abstract class Matrix {
 		return B;
 	}
 	
-	public static double[] toDouble(final float[] A) {
-		final int m = A.length;
+	public static double[] toDouble(final float[] x) {
+		final int m = x.length;
 		final double[] B = new double[m];
 		for (int i = 0; i < m; i++) {
-			B[i] = A[i];
+			B[i] = x[i];
 		}
 		return B;
 	}
@@ -527,37 +638,74 @@ public abstract class Matrix {
 	
 	// ----------- fill operations (destructive) ------------------------
 	
-	public static void fillD(final float[] A, float val) {
-		Arrays.fill(A, val);
+	/**
+	 * Fills the given {@code double} vector with the specified value (destructively).
+	 * @param x a vector (which is modified)
+	 * @param val the fill value
+	 */
+	public static void fillD(final double[] x, double val) {
+		Arrays.fill(x, val);
 	}
 	
-	public static void fillD(final float[][] A, float val) {
-		for (int i = 0; i < A.length; i++) { 
-			Arrays.fill(A[i], val);
-		}
+	/**
+	 * Fills the given {@code float} vector with the specified value (destructively).
+	 * @param x a vector (which is modified)
+	 * @param val the fill value
+	 */
+	public static void fillD(final float[] x, float val) {
+		Arrays.fill(x, val);
 	}
 	
-	public static void fillD(final double[] A, double val) {
-		Arrays.fill(A, val);
-	}
-	
+	/**
+	 * Fills the given {@code double} matrix with the specified value (destructively).
+	 * @param x a matrix (which is modified)
+	 * @param val the fill value
+	 */
 	public static void fillD(final double[][] A, double val) {
 		for (int i = 0; i < A.length; i++) { 
 			Arrays.fill(A[i], val);
 		}
 	}
 	
+	/**
+	 * Fills the given {@code float} matrix with the specified value (destructively).
+	 * @param x a matrix (which is modified)
+	 * @param val the fill value
+	 */
+	public static void fillD(final float[][] A, float val) {
+		for (int i = 0; i < A.length; i++) { 
+			Arrays.fill(A[i], val);
+		}
+	}
+	
+
 	// Element-wise arithmetic -------------------------------
 	
-	// non-destructive
-	public static double[] add(final double[] a, final double[] b) throws IncompatibleDimensionsException {
+	/**
+	 * Calculates and returns the sum of the specified {@code double} vectors
+	 * (non-destructively). An exception is thrown if the vectors are of
+	 * different lengths.
+	 * None of the arguments is modified.
+	 * @param a the first vector
+	 * @param b the second vector
+	 * @return a new {@code double} vector
+	 */
+	public static double[] add(final double[] a, final double[] b) {
 		double[] c = b.clone();
 		addD(a, c);
 		return c;
 	}
 	
-	// destructive, b is modified
-	public static void addD(final double[] a, final double[] b) throws IncompatibleDimensionsException {
+	/**
+	 * Adds the elements of the first {@code double} vector
+	 * to the second vector (destructively).
+	 * An exception is thrown if the vectors are of
+	 * different lengths.
+	 * The second vector is modified.
+	 * @param a the first vector
+	 * @param b the second vector
+	 */
+	public static void addD(final double[] a, final double[] b) {
 		if (!sameSize(a, b))
 			throw new IncompatibleDimensionsException();
 		for (int i = 0; i < a.length; i++) {
@@ -565,14 +713,30 @@ public abstract class Matrix {
 		}
 	}
 	
-	// non-destructive
-	public static float[] add(final float[] a, final float[] b) throws IncompatibleDimensionsException {
+	/**
+	 * Calculates and returns the sum of the specified {@code float} vectors
+	 * (non-destructively). An exception is thrown if the vectors are of
+	 * different lengths.
+	 * None of the arguments is modified.
+	 * @param a the first vector
+	 * @param b the second vector
+	 * @return a new {@code float} vector
+	 */
+	public static float[] add(final float[] a, final float[] b) {
 		float[] c = b.clone();
 		addD(a, c);
 		return c;
 	}
 	
-	// destructive, b is modified
+	/**
+	 * Adds the elements of the first {@code float} vector
+	 * to the second vector (destructively).
+	 * An exception is thrown if the vectors are of
+	 * different lengths.
+	 * The second vector is modified.
+	 * @param a the first vector
+	 * @param b the second vector
+	 */
 	public static void addD(final float[] a, final float[] b) throws IncompatibleDimensionsException {
 		if (!sameSize(a, b))
 			throw new IncompatibleDimensionsException();
@@ -581,15 +745,31 @@ public abstract class Matrix {
 		}
 	}
 
-	// non-destructive
-	public static double[][] add(final double[][] A, final double[][] B) throws IncompatibleDimensionsException {
+	/**
+	 * Calculates and returns the sum of the specified {@code double} matrix
+	 * (non-destructively). An exception is thrown if the matrices are of
+	 * different size.
+	 * None of the arguments is modified.
+	 * @param A the first matrix
+	 * @param B the second matrix
+	 * @return a new {@code double} matrix
+	 */
+	public static double[][] add(final double[][] A, final double[][] B) {
 		double[][] C = duplicate(B);
 		addD(A, C);
 		return C;
 	}
 	
-	// destructive, B is modified
-	public static void addD(final double[][] A, final double[][] B) throws IncompatibleDimensionsException {
+	/**
+	 * Adds the elements of the first {@code double} matrix
+	 * to the second vector (destructively).
+	 * An exception is thrown if the matrices are of
+	 * different size.
+	 * The second matrix is modified.
+	 * @param A the first matrix
+	 * @param B the second matrix
+	 */
+	public static void addD(final double[][] A, final double[][] B) {
 		if (!sameSize(A, B))
 			throw new IncompatibleDimensionsException();
 		for (int i = 0; i < A.length; i++) {
@@ -599,15 +779,31 @@ public abstract class Matrix {
 		}
 	}
 	
-	// non-destructive
-	public static float[][] add(final float[][] A, final float[][] B) throws IncompatibleDimensionsException {
+	/**
+	 * Calculates and returns the sum of the specified {@code float} matrix
+	 * (non-destructively). An exception is thrown if the matrices are of
+	 * different size.
+	 * None of the arguments is modified.
+	 * @param A the first matrix
+	 * @param B the second matrix
+	 * @return a new {@code float} matrix
+	 */
+	public static float[][] add(final float[][] A, final float[][] B) {
 		float[][] C = duplicate(B);
 		addD(A, C);
 		return C;
 	}
 	
-	// destructive, B is modified
-	public static void addD(final float[][] A, final float[][] B) throws IncompatibleDimensionsException {
+	/**
+	 * Adds the elements of the first {@code float} matrix
+	 * to the second vector (destructively).
+	 * An exception is thrown if the matrices are of
+	 * different size.
+	 * The second matrix is modified.
+	 * @param A the first matrix
+	 * @param B the second matrix
+	 */
+	public static void addD(final float[][] A, final float[][] B) {
 		if (!sameSize(A, B))
 			throw new IncompatibleDimensionsException();
 		for (int i = 0; i < A.length; i++) {
@@ -619,8 +815,16 @@ public abstract class Matrix {
 	
 	// ------------------------------------------------
 	
-	// non-destructive a - b
-	public static double[] subtract(final double[] a, final double[] b) throws IncompatibleDimensionsException {
+	/**
+	 * Calculates and returns the difference (a - b) of the specified {@code double} vectors
+	 * (non-destructively). An exception is thrown if the vectors are of
+	 * different lengths.
+	 * None of the arguments is modified.
+	 * @param a the first vector
+	 * @param b the second vector
+	 * @return a new {@code double} vector
+	 */
+	public static double[] subtract(final double[] a, final double[] b) {
 		if (!sameSize(a, b))
 			throw new IncompatibleDimensionsException();
 		final int n = a.length;
@@ -632,7 +836,16 @@ public abstract class Matrix {
 	}
 	
 	// non-destructive a - b
-	public static float[] subtract(final float[] a, final float[] b) throws IncompatibleDimensionsException {
+	/**
+	 * Calculates and returns the difference (a - b) of the specified {@code float} vectors
+	 * (non-destructively). An exception is thrown if the vectors are of
+	 * different lengths.
+	 * None of the arguments is modified.
+	 * @param a the first vector
+	 * @param b the second vector
+	 * @return a new {@code float} vector
+	 */
+	public static float[] subtract(final float[] a, final float[] b) {
 		if (!sameSize(a, b))
 			throw new IncompatibleDimensionsException();
 		final int n = a.length;

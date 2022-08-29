@@ -46,7 +46,7 @@ public class MatrixTest {
 	private static final float[][] Bf = Matrix.toFloat(Bd);
 
 	@Test
-	public void testMatrixRowsAndColumns() {
+	public void testMatrixNumberOfRowsAndColumns() {
 		assertEquals(3, Matrix.getNumberOfRows(Af));
 		assertEquals(3, Matrix.getNumberOfColumns(Af));
 		assertEquals(6.0, Af[1][2], 1E-6);
