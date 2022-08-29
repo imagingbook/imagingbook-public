@@ -31,17 +31,17 @@ import imagingbook.common.math.exception.DivideByZeroException;
 /**
  * <p>This class defines a set of static methods for calculations
  * with vectors and matrices using native Java arrays without any enclosing 
- * objects structures. 
- * Matrices are simply two-dimensional arrays A[r][c], where r is the row index
+ * object structures. 
+ * Matrices are simple two-dimensional arrays A[r][c], where r is the row index
  * and c is the column index (as common in linear algebra). This means that
  * matrices are really vectors of row vectors.
  * Only arrays of type {@code float} and {@code double} are supported.
  * All matrices are assumed to be rectangular (i.e., all rows are of equal length).</p>
  * 
  * <p>Methods named with a trailing 'D' (e.g., {@link #multiplyD(double, double[])}) 
- * operate destructively, i.e., modify one of the passed arguments.</p>
- * 
- * <p>Some methods are self-explanatory and are therefore left undocumented.</p>
+ * operate destructively, i.e., modify one of the passed arguments.
+ * Some methods are self-explanatory and are therefore left undocumented.
+ * </p>
  * 
  * @author W. Burger
  * @version 2022/08/29
@@ -125,7 +125,7 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Creates and returns a {@link RealMatrix} containing the specified values.
+	 * Creates and returns a {@link RealMatrix} containing the specified {@code double} values.
 	 * Calls {@link #makeDoubleMatrix(int, int, double...)}.
 	 * 
 	 * @param rows the number of matrix rows
@@ -208,6 +208,13 @@ public abstract class Matrix {
 		return values;
 	}
 	
+	/**
+	 * Creates and returns a {@link RealVector} from the
+	 * specified {@code double} values.
+	 * 
+	 * @param values the vector values (may also be passed as a single {@code double[]})
+	 * @return a {@link RealVector} 
+	 */
 	public static RealVector makeRealVector(double... values) {
 		return MatrixUtils.createRealVector(values);
 //		return new ArrayRealVector(values);
@@ -216,8 +223,9 @@ public abstract class Matrix {
 	// Specific vector/matrix creation:
 	
 	/**
-	 * Creates and returns a new zero-valued {@code double} vector of the 
+	 * Creates and returns a new zero-valued {@code double[]} vector of the 
 	 * specified length.
+	 * Throws an exception if the length is less than 1.
 	 * @param length the length of the vector
 	 * @return a vector with zero values
 	 */
@@ -230,6 +238,7 @@ public abstract class Matrix {
 	/**
 	 * Creates and returns a new identity matrix of the 
 	 * specified size.
+	 * Throws an exception if the size is less than 1.
 	 * @param size the size of the matrix
 	 * @return an identity matrix
 	 */
@@ -734,13 +743,12 @@ public abstract class Matrix {
 	/**
 	 * Adds the elements of the first {@code float} vector
 	 * to the second vector (destructively).
-	 * An exception is thrown if the vectors are of
-	 * different lengths.
+	 * An exception is thrown if the vectors are of different lengths.
 	 * The second vector is modified.
 	 * @param a the first vector
 	 * @param b the second vector
 	 */
-	public static void addD(final float[] a, final float[] b) throws IncompatibleDimensionsException {
+	public static void addD(final float[] a, final float[] b) {
 		if (!sameSize(a, b))
 			throw new IncompatibleDimensionsException();
 		for (int i = 0; i < a.length; i++) {
@@ -862,27 +870,53 @@ public abstract class Matrix {
 	// Scalar multiplications -------------------------------
 
 	// non-destructive
-	public static double[] multiply(final double s, final double[] a) {
-		double[] b = a.clone();
+	/**
+	 * Multiplies a {@code double[]} vector by a scalar and returns a new
+	 * {@code double[]} vector (non-destructive).
+	 * @param s a scalar
+	 * @param x a vector
+	 * @return a new vector
+	 */
+	public static double[] multiply(final double s, final double[] x) {
+		double[] b = x.clone();
 		multiplyD(s, b);
 		return b;
 	}
 	
 	// destructive
-	public static void multiplyD(final double s, final double[] a) {
-		for (int i = 0; i < a.length; i++) {
-			a[i] = a[i] * s;
+	/**
+	 * Multiplies a {@code double[]} vector by a scalar.
+	 * Destructive, i.e., the specified vector is modified.
+	 * @param s a scalar
+	 * @param x a vector
+	 */
+	public static void multiplyD(final double s, final double[] x) {
+		for (int i = 0; i < x.length; i++) {
+			x[i] = x[i] * s;
 		}
 	}
 	
 
 	// non-destructive
+	/**
+	 * Multiplies a {@code double[][]} matrix by a scalar and returns a new
+	 * {@code double[][]} matrix (non-destructive).
+	 * @param s a scalar
+	 * @param A a matrix
+	 * @return a new matrix
+	 */
 	public static double[][] multiply(final double s, final double[][] A) {
 		double[][] B = duplicate(A);
 		multiplyD(s, B);
 		return B;
 	}
 	
+	/**
+	 * Multiplies a {@code double[][]} matrix by a scalar.
+	 * Destructive, i.e., the specified matrix is modified.
+	 * @param s a scalar
+	 * @param A a matrix
+	 */
 	public static void multiplyD(final double s, final double[][] A) {
 		for (int i = 0; i < A.length; i++) {
 			for (int j = 0; j < A[i].length; j++) {
@@ -892,20 +926,40 @@ public abstract class Matrix {
 	}
 	
 	// non-destructive
-	public static float[] multiply(final float s, final float[] A) {
-		float[] B = duplicate(A);
+	/**
+	 * Multiplies a {@code float[]} vector by a scalar and returns a new
+	 * {@code float[]} vector (non-destructive).
+	 * @param s a scalar
+	 * @param x a vector
+	 * @return a new vector
+	 */
+	public static float[] multiply(final float s, final float[] x) {
+		float[] B = duplicate(x);
 		multiplyD(s, B);
 		return B;
 	}
 	
 	// destructive
-	public static void multiplyD(final float s, final float[] A) {
-		for (int i = 0; i < A.length; i++) {
-			A[i] = A[i] * s;
+	/**
+	 * Multiplies a {@code float[]} vector by a scalar.
+	 * Destructive, i.e., the specified vector is modified.
+	 * @param s a scalar
+	 * @param x a matrix
+	 */
+	public static void multiplyD(final float s, final float[] x) {
+		for (int i = 0; i < x.length; i++) {
+			x[i] = x[i] * s;
 		}
 	}
 
 	// non-destructive
+	/**
+	 * Multiplies a {@code float[][]} matrix by a scalar and returns a new
+	 * {@code float[][]} matrix (non-destructive).
+	 * @param s a scalar
+	 * @param A a matrix
+	 * @return a new matrix
+	 */
 	public static float[][] multiply(final float s, final float[][] A) {
 		float[][] B = duplicate(A);
 		multiplyD(s, B);
@@ -913,6 +967,12 @@ public abstract class Matrix {
 	}
 	
 	// destructive
+	/**
+	 * Multiplies a {@code float[][]} matrix by a scalar.
+	 * Destructive, i.e., the specified matrix is modified.
+	 * @param s a scalar
+	 * @param A a matrix
+	 */
 	public static void multiplyD(final float s, final float[][] A) {
 		for (int i = 0; i < A.length; i++) {
 			for (int j = 0; j < A[i].length; j++) {
@@ -942,7 +1002,7 @@ public abstract class Matrix {
 	 * @param A matrix of size (m,n)
 	 * @param y a (row) vector of length n
 	 */
-	public static void multiplyD(final double[] x, final double[][] A, double[] y) throws SameSourceTargetException {
+	public static void multiplyD(final double[] x, final double[][] A, double[] y) {
 		if (x == y) 
 			throw new SameSourceTargetException();
 		final int m = getNumberOfRows(A);
@@ -972,12 +1032,18 @@ public abstract class Matrix {
 	}
 	
 	/**
+	 * Multiplies a matrix A with a vector x "from the right", i.e., y = A * x,
+	 * where x is treated as a column vector and the result y is also a column vector.
+	 * The result is placed in the vector passed as the last argument, 
+	 * which is modified.
 	 * Destructive version of {@link #multiply(double[][], double[])}.
+	 * An exception is thrown if any matrix or vector dimensions do not match
+	 * or if the two vectors are the same.
 	 * @param A matrix of size (m,n)
 	 * @param x a (column) vector of length n
 	 * @param y a (column) vector of length m
 	 */
-	public static void multiplyD(final double[][] A, final double[] x, double[] y) throws SameSourceTargetException, IncompatibleDimensionsException {
+	public static void multiplyD(final double[][] A, final double[] x, double[] y) {
 		if (x == y) 
 			throw new SameSourceTargetException();
 		final int m = getNumberOfRows(A);
@@ -1007,12 +1073,18 @@ public abstract class Matrix {
 	}
 	
 	/**
+	 * Multiplies a matrix A with a vector x "from the right", i.e., y = A * x,
+	 * where x is treated as a column vector and the result y is also a column vector.
+	 * The result is placed in the vector passed as the last argument, 
+	 * which is modified.
 	 * Destructive version of {@link #multiply(float[][], float[])}.
+	 * An exception is thrown if any matrix or vector dimensions do not match
+	 * or if the two vectors are the same.
 	 * @param A matrix of size (m,n)
 	 * @param x a (column) vector of length n
 	 * @param y a (column) vector of length m
 	 */
-	public static void multiplyD(final float[][] A, final float[] x, float[] y) throws SameSourceTargetException, IncompatibleDimensionsException {
+	public static void multiplyD(final float[][] A, final float[] x, float[] y) {
 		if (x == y) 
 			throw new SameSourceTargetException();
 		final int m = getNumberOfRows(A);
@@ -1033,6 +1105,14 @@ public abstract class Matrix {
 	// Matrix-matrix products ---------------------------------------
 	
 	// returns A * B (non-destructive)
+	/**
+	 * Returns the product of two {@code double[][]} matrices A, B
+	 * as a new {@code double[][]} matrix.
+	 * Non-destructive, i.e., none of the arguments is modified.
+	 * @param A first matrix
+	 * @param B second matrix
+	 * @return the matrix product A * B
+	 */
 	public static double[][] multiply(final double[][] A, final double[][] B) {
 		int m = getNumberOfRows(A);
 		int q = getNumberOfColumns(B);
@@ -1042,6 +1122,16 @@ public abstract class Matrix {
 	}
 	
 	// A * B -> C (destructive)
+	/**
+	 * Calculates the product of two {@code double[][]} matrices A, B
+	 * and places the results in the third {@code double[][]} matrix C,
+	 * which is modified (destructively).
+	 * An exception is thrown if any matrix dimensions do not match
+	 * or if the target matrix is the same as one of the source matrices.
+	 * @param A first matrix
+	 * @param B second matrix
+	 * @param C the result matrix
+	 */
 	public static void multiplyD(final double[][] A, final double[][] B, final double[][] C) 
 			throws SameSourceTargetException, IncompatibleDimensionsException {
 		if (A == C || B == C) 
@@ -1051,7 +1141,7 @@ public abstract class Matrix {
 		final int mB = getNumberOfRows(B);
 		final int nB = getNumberOfColumns(B);
 		if (nA != mB)
-			throw new IncompatibleDimensionsException();
+			throw new IncompatibleDimensionsException();	// TODO: check size of C
 		for (int i = 0; i < mA; i++) {
 			for (int j = 0; j < nB; j++) {
 				double s = 0;
@@ -1064,6 +1154,14 @@ public abstract class Matrix {
 	}
 	
 	// returns A * B (non-destructive)
+	/**
+	 * Returns the product of two {@code float[][]} matrices A, B
+	 * as a new {@code float[][]} matrix.
+	 * Non-destructive, i.e., none of the arguments is modified.
+	 * @param A first matrix
+	 * @param B second matrix
+	 * @return the matrix product A * B
+	 */
 	public static float[][] multiply(final float[][] A, final float[][] B) {
 		// TODO: also check nA = mB
 		final int mA = getNumberOfRows(A);
@@ -1074,7 +1172,17 @@ public abstract class Matrix {
 	}
 
 	// A * B -> C (destructive)
-	public static void multiplyD(final float[][] A, final float[][] B, final float[][] C) throws SameSourceTargetException, IncompatibleDimensionsException {
+	/**
+	 * Calculates the product of two {@code float[][]} matrices A, B
+	 * and places the results in the third {@code float[][]} matrix C,
+	 * which is modified (destructively).
+	 * An exception is thrown if any matrix dimensions do not match
+	 * or if the target matrix is the same as one of the source matrices.
+	 * @param A first matrix
+	 * @param B second matrix
+	 * @param C the result matrix
+	 */
+	public static void multiplyD(final float[][] A, final float[][] B, final float[][] C) {
 		if (A == C || B == C) 
 			throw new SameSourceTargetException();
 		final int mA = getNumberOfRows(A);
@@ -1082,7 +1190,7 @@ public abstract class Matrix {
 		final int mB = getNumberOfRows(B);
 		final int nB = getNumberOfColumns(B);
 		if (nA != mB)
-			throw new IncompatibleDimensionsException();
+			throw new IncompatibleDimensionsException();	// TODO: check size of C
 		for (int i = 0; i < mA; i++) {
 			for (int j = 0; j < nB; j++) {
 				float s = 0;
@@ -1099,11 +1207,12 @@ public abstract class Matrix {
 	/**
 	 * Calculates and returns the dot (inner or scalar) product of two vectors,
 	 * which must have the same length.
+	 * Throws an exceptions if vector dimensions do not match.
 	 * @param x first vector
 	 * @param y second vector
 	 * @return the dot product
 	 */
-	public static double dotProduct(final double[] x, final double[] y) throws IncompatibleDimensionsException {
+	public static double dotProduct(final double[] x, final double[] y) {
 		if (!sameSize(x, y))
 			throw new IncompatibleDimensionsException();
 		double sum = 0;
@@ -1213,13 +1322,25 @@ public abstract class Matrix {
 	
 	// Normalize vectors
 	
+	/**
+	 * Normalizes the specified {@code double[]} vector to unit
+	 * (L2) norm and returns the result as a new {@code double[]} vector.
+	 * @param x a vector
+	 * @return the normalized vector
+	 */
 	public static double[] normalize(final double[] x) {
 		double[] xx = duplicate(x);
 		normalizeD(xx);
 		return xx;
 	}
 	
+	/**
+	 * Normalizes the specified {@code double[]} vector to unit
+	 * (L2) norm. The vector is modified (destructively).
+	 * @param x a vector
+	 */
 	public static void normalizeD(final double[] x) {
+		//TODO: check for zero norm!
 		multiplyD(1.0 / normL2(x), x);
 	}
 	
@@ -1302,6 +1423,12 @@ public abstract class Matrix {
 
 	// Summation --------------------------------------------------
 
+	/**
+	 * Calculates and returns the sum of the elements in the specified 
+	 * {@code double[]} vector.
+	 * @param x a vector
+	 * @return the sum of vector elements
+	 */
 	public static double sum(final double[] x) {
 		double sum = 0;
 		for (int i = 0; i < x.length; i++) {
@@ -1310,6 +1437,12 @@ public abstract class Matrix {
 		return sum;
 	}
 	
+	/**
+	 * Calculates and returns the sum of the elements in the specified 
+	 * {@code double[][]} matrix.
+	 * @param A a matrix
+	 * @return the sum of matrix elements
+	 */
 	public static double sum(final double[][] A) {
 		double sum = 0;
 		for (int i = 0; i < A.length; i++) {
@@ -1320,6 +1453,12 @@ public abstract class Matrix {
 		return sum;
 	}
 	
+	/**
+	 * Calculates and returns the sum of the elements in the specified 
+	 * {@code float[]} vector.
+	 * @param x a vector
+	 * @return the sum of vector elements
+	 */
 	public static float sum(final float[] x) {
 		double sum = 0;
 		for (int i = 0; i < x.length; i++) {
@@ -1328,6 +1467,12 @@ public abstract class Matrix {
 		return (float) sum;
 	}
 	
+	/**
+	 * Calculates and returns the sum of the elements in the specified 
+	 * {@code float[][]} matrix.
+	 * @param A a matrix
+	 * @return the sum of matrix elements
+	 */
 	public static double sum(final float[][] A) {
 		double sum = 0;
 		for (int i = 0; i < A.length; i++) {
@@ -1595,10 +1740,26 @@ public abstract class Matrix {
 		return minval;
 	}
 	
+	/**
+	 * Returns the largest value in the specified {@code double[]} vector. 
+	 * An exception is thrown if the vector has zero length.
+	 * @param x a vector
+	 * @return the largest value
+	 */
+	public static double max(final double[] x) {
+		if (x.length == 0)
+			throw new ZeroLengthVectorException();
+		double maxval = Double.NEGATIVE_INFINITY;
+		for (double val : x) {
+			if (val > maxval) {
+				maxval = val;
+			}
+		}
+		return maxval;
+	}
 
 	/**
-	 * Returns the largest value in the
-	 * specified vector. 
+	 * Returns the largest value in the specified {@code float[]} vector. 
 	 * An exception is thrown if the vector has zero length.
 	 * @param x a vector
 	 * @return the largest value
@@ -1616,24 +1777,10 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Returns the largest value in the
-	 * specified vector. 
-	 * An exception is thrown if the vector has zero length.
-	 * @param x a vector
-	 * @return the largest value
+	 * Returns the largest value in the specified {@code double[][]} matrix. 
+	 * @param A a matrix
+	 * @return the largest matrix value
 	 */
-	public static double max(final double[] x) {
-		if (x.length == 0)
-			throw new ZeroLengthVectorException();
-		double maxval = Double.NEGATIVE_INFINITY;
-		for (double val : x) {
-			if (val > maxval) {
-				maxval = val;
-			}
-		}
-		return maxval;
-	}
-	
 	public static double max(double[][] A) {
 		double maxval = Double.NEGATIVE_INFINITY;
 		for (int r = 0; r < A.length; r++) {
@@ -1646,6 +1793,11 @@ public abstract class Matrix {
 		return maxval;
 	}
 	
+	/**
+	 * Returns the largest value in the specified {@code float[][]} matrix. 
+	 * @param A a matrix
+	 * @return the largest matrix value
+	 */
 	public static float max(float[][] A) {
 		float maxval = Float.NEGATIVE_INFINITY;
 		for (int r = 0; r < A.length; r++) {
