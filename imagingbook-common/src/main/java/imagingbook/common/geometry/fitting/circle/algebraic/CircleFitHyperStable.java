@@ -150,8 +150,8 @@ public class CircleFitHyperStable implements CircleFitAlgebraic {
 			int l = new SortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
 			RealVector el = ed.getEigenvector(l);
 			
-			qq = Matrix.solve(W, el);
-//			qq = MatrixUtils.inverse(Y).operate(el);										// alt. 1 (qq = Y^-1 * el)
+//			qq = Matrix.solve(W, el);	// may return null!
+			qq = MatrixUtils.inverse(W).operate(el);										// alt. 1 (qq = Y^-1 * el)
 //			qq = V.multiply(MatrixUtils.inverse(S)).multiply(V.transpose()).operate(el);	// alt. 2 (S is diagonal!)
 		}
 		
