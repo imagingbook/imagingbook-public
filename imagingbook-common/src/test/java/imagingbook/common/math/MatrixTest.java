@@ -8,13 +8,17 @@
  *******************************************************************************/
 package imagingbook.common.math;
 
+import static imagingbook.common.math.Arithmetic.sqr;
 import static imagingbook.testutils.NumericTestUtils.TOLERANCE;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+
 import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.NonSymmetricMatrixException;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Assert;
 import org.junit.Test;
@@ -79,12 +83,68 @@ public class MatrixTest {
 	}
 	
 	@Test
+	public void testMatrixMakeDoubleVector() {
+		double[] x = {1, 3, 7, 8, 9};
+		assertArrayEquals(x, Matrix.makeDoubleVector(1, 3, 7, 8, 9), TOLERANCE);
+		assertArrayEquals(x, Matrix.makeDoubleVector(x), TOLERANCE);
+		assertArrayEquals(new double[0], Matrix.makeDoubleVector(), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixMakeFloatVector() {
+		float[] x = {1, 3, 7, 8, 9};
+		assertArrayEquals(x, Matrix.makeFloatVector(1, 3, 7, 8, 9), TOLERANCE);
+		assertArrayEquals(x, Matrix.makeFloatVector(x), TOLERANCE);
+		assertArrayEquals(new float[0], Matrix.makeFloatVector(), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixMakeRealVector() {
+		double[] x = {1, 3, 7, 8, 9};
+		assertArrayEquals(x, Matrix.makeRealVector(1, 3, 7, 8, 9).toArray(), TOLERANCE);
+		assertArrayEquals(x, Matrix.makeRealVector(x).toArray(), TOLERANCE);
+		assertArrayEquals(new double[0], Matrix.makeRealVector().toArray(), TOLERANCE);
+	}
+	
+	@Test
 	public void testMatrixSameSize() {
 		assertTrue(Matrix.sameSize(Ad, Ad));
 		assertTrue(Matrix.sameSize(Af, Af));
 		
 		assertFalse(Matrix.sameSize(Ad, Bd));
 		assertFalse(Matrix.sameSize(Af, Bf));
+	}
+	
+	@Test
+	public void testMatrixIsRectangularDouble() {
+		double[][] X =
+			{{1, 2, 3},
+			 {4},
+			 {5, 6, 7, 8}};
+		assertTrue(Matrix.isRectangular(Ad));
+		assertFalse(Matrix.isRectangular(X));
+	}
+	
+	@Test
+	public void testMatrixIsRectangularFloat() {
+		float[][] X =
+			{{1, 2, 3},
+			 {4},
+			 {5, 6, 7, 8}};
+		assertTrue(Matrix.isRectangular(Af));
+		assertFalse(Matrix.isRectangular(X));
+	}
+	
+	@Test
+	public void testMatrixIsSquareDouble() {
+		assertTrue(Matrix.isSquare(Ad));
+		assertFalse(Matrix.isSquare(Bd));
+	}
+	
+	@Test
+	public void testMatrixIsSquareFloat() {
+		assertTrue(Matrix.isSquare(Af));
+		assertFalse(Matrix.isSquare(Bf));
 	}
 	
 	// --------------------------------------------------------------------
@@ -364,6 +424,258 @@ public class MatrixTest {
 	
 	// --------------------------------------------------------------------
 	
+	@Test
+	public void testMatrixIsSymmetric() {
+		double[][] X =
+			{{1, 2, 3},
+			 {2, 0, 6},
+			 {3, 6, 9}};
+		assertTrue(Matrix.isSymmetric(X));
+		assertTrue(Matrix.isSymmetric(new double[][] {{1}}));
+		assertFalse(Matrix.isSymmetric(Ad));
+	}
 	
+	// --------------------------------------------------------------------
+	
+	@Test
+	public void testMatrixIsSingular() {
+		double[][] X =
+			{{1, 2, 3},
+			 {4, 5, 6},
+			 {7, 8, 9}};
+		double[][] Y =
+			{{3, 6},
+			 {2, 4}};
+		double[][] Z =
+			{{1, 2, 2},
+			 {1, 2, 2},
+			 {3, 2, -1}};
+		assertTrue(Matrix.isSingular(X));
+		assertTrue(Matrix.isSingular(Y));
+		assertFalse(Matrix.isSingular(Ad));
+		assertFalse(Matrix.isSingular(new double[][] {{3, 2}, {1, -2}}));	
+	}
+	
+	@Test(expected = NonsquareMatrixException.class)
+	public void testMatrixIsSingularFail() {
+		Matrix.isSingular(Bd);
+	}
+	
+	// --------------------------------------------------------------------
 
+	@Test
+	public void testMatrixIsPositiveDefinite() {
+		double[][] X =
+			{{2, -1, 0},
+			 {-1, 2, -1},
+			 {0, -1, 2}};
+		double[][] Y =
+			{{-3, 2, 0},
+			 {2, -3, 0},
+			 {0, 0, 5}};
+		double[][] Z1 =
+			{{7, 2},
+			 {2, 1}};
+		double[][] Z2 =
+			{{7, 2},
+			 {2, -1}};
+		assertTrue(Matrix.isPositiveDefinite(MatrixUtils.createRealMatrix(X)));
+		assertFalse(Matrix.isPositiveDefinite(MatrixUtils.createRealMatrix(Y)));
+		assertTrue(Matrix.isPositiveDefinite(MatrixUtils.createRealMatrix(Z1)));
+		assertFalse(Matrix.isPositiveDefinite(MatrixUtils.createRealMatrix(Z2)));
+	}
+	
+	@Test(expected = NonSymmetricMatrixException.class)
+	public void testMatrixIsPositiveDefiniteFail() {
+		assertFalse(Matrix.isPositiveDefinite(MatrixUtils.createRealMatrix(Ad)));
+	}
+	
+	// --------------------------------------------------------------------
+	
+	@Test
+	public void testMatrixDistL2Double() {
+		double[] x = {5, 3, -1, 7};
+		double[] y = {-1, 3, 2, 4};
+		assertEquals(7.3484692283495345, Matrix.distL2(x, y), TOLERANCE);
+		assertEquals(Matrix.distL2(y, x), Matrix.distL2(x, y), TOLERANCE);
+		assertEquals(sqr(Matrix.distL2(x, y)), Matrix.distL2squared(x, y), TOLERANCE);
+	}
+	
+	// --------------------------------------------------------------------
+	
+	@Test
+	public void testMatrixDistL2Float() {
+		float[] x = {5, 3, -1, 7};
+		float[] y = {-1, 3, 2, 4};
+		assertEquals(7.3484692283495345, Matrix.distL2(x, y), TOLERANCE);
+		assertEquals(Matrix.distL2(y, x), Matrix.distL2(x, y), TOLERANCE);
+		assertEquals(sqr(Matrix.distL2(x, y)), Matrix.distL2squared(x, y), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixNormL1Double() {
+		double[] x = {5, 3, -1, 7};
+		double[] y = {6};
+		assertEquals(16.0, Matrix.normL1(x), TOLERANCE);
+		assertEquals(6.0, Matrix.normL1(y), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixNormL1Float() {
+		float[] x = {5, 3, -1, 7};
+		float[] y = {6};
+		assertEquals(16.0, Matrix.normL1(x), TOLERANCE);
+		assertEquals(6.0, Matrix.normL1(y), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixNormL2Double() {
+		double[] x = {5, 3, -1, 7};
+		double[] y = {6};
+		assertEquals(9.16515138991168, Matrix.normL2(x), TOLERANCE);
+		assertEquals(6.0, Matrix.normL2(y), TOLERANCE);
+		
+		assertEquals(sqr(Matrix.normL2(x)), Matrix.normL2squared(x), TOLERANCE);
+		assertEquals(sqr(Matrix.normL2(y)), Matrix.normL2squared(y), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixNormL2Float() {
+		float[] x = {5, 3, -1, 7};
+		float[] y = {6};
+		assertEquals(9.16515138991168, Matrix.normL2(x), TOLERANCE);
+		assertEquals(6.0, Matrix.normL2(y), TOLERANCE);
+		
+		assertEquals(sqr(Matrix.normL2(x)), Matrix.normL2squared(x), TOLERANCE);
+		assertEquals(sqr(Matrix.normL2(y)), Matrix.normL2squared(y), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixNorm() {
+		assertEquals(16.881943016134134, Matrix.norm(Ad), TOLERANCE);
+		assertEquals(9.539392014169456, Matrix.norm(Bd), TOLERANCE);
+		assertEquals(6.0, Matrix.norm(new double[][] {{6}}), TOLERANCE);
+		assertEquals(1.0, Matrix.norm(new double[][] {{-1}}), TOLERANCE);
+	}
+	
+	// ---------------------------------------------------------
+	
+	@Test
+	public void testMatrixSumDouble() {
+		double[] x = {5, 3, -1, 7};
+		double[] y = {6};
+		assertEquals(14.0, Matrix.sum(x), TOLERANCE);
+		assertEquals(6.0, Matrix.sum(y), TOLERANCE);
+		
+		assertEquals(43.0, Matrix.sum(Ad), TOLERANCE);
+		assertEquals(19.0, Matrix.sum(Bd), TOLERANCE);
+		
+	}
+	
+	@Test
+	public void testMatrixSumFloat() {
+		float[] x = {5, 3, -1, 7};
+		float[] y = {6};
+		assertEquals(14.0, Matrix.sum(x), TOLERANCE);
+		assertEquals(6.0, Matrix.sum(y), TOLERANCE);
+		
+		assertEquals(43.0, Matrix.sum(Af), TOLERANCE);
+		assertEquals(19.0, Matrix.sum(Bf), TOLERANCE);
+		
+	}
+	
+	// ---------------------------------------------------------
+	
+	@Test
+	public void testMatrixSumRowDouble() {
+		assertEquals( 4.0, Matrix.sumRow(Ad, 0), TOLERANCE);
+		assertEquals(15.0, Matrix.sumRow(Ad, 1), TOLERANCE);
+		assertEquals(24.0, Matrix.sumRow(Ad, 2), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixSumRowFloat() {
+		assertEquals( 4.0, Matrix.sumRow(Af, 0), TOLERANCE);
+		assertEquals(15.0, Matrix.sumRow(Af, 1), TOLERANCE);
+		assertEquals(24.0, Matrix.sumRow(Af, 2), TOLERANCE);
+	}
+
+	@Test
+	public void testMatrixSumColumnDouble() {
+		assertEquals(10.0, Matrix.sumColumn(Ad, 0), TOLERANCE);
+		assertEquals(15.0, Matrix.sumColumn(Ad, 1), TOLERANCE);
+		assertEquals(18.0, Matrix.sumColumn(Ad, 2), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixSumColumnFloat() {
+		assertEquals(10.0, Matrix.sumColumn(Af, 0), TOLERANCE);
+		assertEquals(15.0, Matrix.sumColumn(Af, 1), TOLERANCE);
+		assertEquals(18.0, Matrix.sumColumn(Af, 2), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixSumRowsDouble() {
+		double[] sums = Matrix.sumRows(Ad);
+		for (int r = 0; r < sums.length; r++) {
+			assertEquals(sums[r], Matrix.sumRow(Ad, r), TOLERANCE);
+		}
+	}
+	
+	@Test
+	public void testMatrixSumRowsFloat() {
+		float[] sums = Matrix.sumRows(Af);
+		for (int r = 0; r < sums.length; r++) {
+			assertEquals(sums[r], Matrix.sumRow(Af, r), TOLERANCE);
+		}
+	}
+	
+	@Test
+	public void testMatrixSumColumnsDouble() {
+		double[] sums = Matrix.sumColumns(Ad);
+		for (int c = 0; c < sums.length; c++) {
+			assertEquals(sums[c], Matrix.sumColumn(Ad, c), TOLERANCE);
+		}
+	}
+	
+	@Test
+	public void testMatrixSumColumnsFloat() {
+		float[] sums = Matrix.sumColumns(Af);
+		for (int c = 0; c < sums.length; c++) {
+			assertEquals(sums[c], Matrix.sumColumn(Af, c), TOLERANCE);
+		}
+	}
+	
+	// ---------------------------------------------------------
+	
+	@Test	// book example (see Appendix B.8.1)
+	public void testMatrixSolve() {
+		double[][] A = {
+				{2, 3, -2},
+				{-1, 7, 6},
+				{4, -3, -5}};
+		double[] b = {1, -2, 1};
+		double[] x = {-0.3698, 0.1780, -0.6027};
+		assertArrayEquals(x, Matrix.solve(A, b), 1e-4);
+		
+		assertArrayEquals(new double[] {-3, 14, -10}, Matrix.solve(Ad, b), 1e-4);
+		
+		double[][] As = {	// singular matrix has no solution
+				{1, 2, 3},
+				{1, 2, 3},
+				{4, -3, -5}};	
+		Assert.assertNull(Matrix.solve(As, b));
+	}
+	
+	@Test(expected = NonsquareMatrixException.class)
+	public void testMatrixSolveFail1() {
+		double[] b = {1, -2, 1};
+		Matrix.solve(Bd, b);
+	}
+	
+	@Test(expected = IncompatibleDimensionsException.class)
+	public void testMatrixSolveFail2() {
+		double[] b = {1, -2, 1, 5};
+		Matrix.solve(Ad, b);
+	}
 }

@@ -933,6 +933,19 @@ public abstract class Matrix {
 		}
 		return sum;
 	}
+	
+	/**
+	 * Calculates and returns the L1 norm of the given vector.
+	 * @param x a vector
+	 * @return the L1 norm of the vector
+	 */
+	public static float normL1(final float[] x) {
+		double sum = 0;
+		for (double val : x) {
+			sum = sum + Math.abs(val);
+		}
+		return (float) sum;
+	}
 
 	/**
 	 * Calculates and returns the L2 norm of the given vector.
@@ -953,22 +966,9 @@ public abstract class Matrix {
 	public static double normL2squared(final double[] x) {
 		double sum = 0;
 		for (double val : x) {
-			sum = sum + (val * val);
+			sum = sum + sqr(val);
 		}
 		return sum;
-	}
-	
-	/**
-	 * Calculates and returns the L1 norm of the given vector.
-	 * @param x a vector
-	 * @return the L1 norm of the vector
-	 */
-	public static float normL1(final float[] x) {
-		double sum = 0;
-		for (double val : x) {
-			sum = sum + Math.abs(val);
-		}
-		return (float) sum;
 	}
 
 	/**
@@ -990,7 +990,7 @@ public abstract class Matrix {
 	public static float normL2squared(final float[] x) {
 		double sum = 0;
 		for (double val : x) {
-			sum = sum + (val * val);
+			sum = sum + sqr(val);
 		}
 		return (float) sum;
 	}
@@ -1078,7 +1078,7 @@ public abstract class Matrix {
 		double s = 0;
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				s = s + A[i][j] * A[i][j];
+				s = s + sqr(A[i][j]);
 			}
 		}
 		return Math.sqrt(s);
@@ -1695,20 +1695,6 @@ public abstract class Matrix {
 		return isZero(x, Arithmetic.EPSILON_FLOAT);
 	}
 	
-	// Sorting vectors (non-destructively)  ------------------------------
-	
-	public static double[] sort(double[] x) {
-		double[] y = Arrays.copyOf(x, x.length);
-		Arrays.sort(y);
-		return y;
-	}
-	
-	public static float[] sort(float[] x) {
-		float[] y = Arrays.copyOf(x, x.length);
-		Arrays.sort(y);
-		return y;
-	}
-	
 	// Checking matrices for all zero values  ------------------------------
 	
 	public static boolean isZero(double[][] A, double tolerance) {
@@ -1722,6 +1708,20 @@ public abstract class Matrix {
 	
 	public static boolean isZero(double[][] A) {
 		return isZero(A, Arithmetic.EPSILON_DOUBLE);
+	}
+	
+	// Sorting vectors (non-destructively)  ------------------------------
+	
+	public static double[] sort(double[] x) {
+		double[] y = Arrays.copyOf(x, x.length);
+		Arrays.sort(y);
+		return y;
+	}
+	
+	public static float[] sort(float[] x) {
+		float[] y = Arrays.copyOf(x, x.length);
+		Arrays.sort(y);
+		return y;
 	}
 	
 	// Matrix inversion ---------------------------------------
@@ -1761,7 +1761,7 @@ public abstract class Matrix {
 	 * A * x = b. Returns the solution vector x or {@code null}
 	 * if the supplied matrix is ill-conditioned (i.e., singular).
 	 * Exceptions are thrown if A is not square or dimensions are incompatible.
-	 * Uses {@link LUDecomposition} from the Apache Commons Math library.
+	 * Calls {@link #solve(RealMatrix, RealVector)}.
 	 * 
 	 * @param A a square matrix of size n x n
 	 * @param b a vector of length n
@@ -1770,15 +1770,7 @@ public abstract class Matrix {
 	
 	public static double[] solve(final double[][] A, double[] b) {
 		RealVector x = solve(MatrixUtils.createRealMatrix(A), MatrixUtils.createRealVector(b));
-		if (!Matrix.isSquare(A)) {
-			throw new RuntimeException("matrix A must be square");
-		}
-		if (x == null) {
-			return null;
-		}
-		else {
-			return x.toArray();
-		}
+		return (x == null) ? null : x.toArray();
 	}
 	
 	/**
@@ -1786,8 +1778,7 @@ public abstract class Matrix {
 	 * A * x = b. Returns the solution vector x or {@code null}
 	 * if the supplied matrix is ill-conditioned (i.e., singular).
 	 * Exceptions are thrown if A is not square or dimensions are incompatible.
-	 * Uses {@link LUDecomposition} from the Apache Commons Math library
-	 * (with singularity threshold set to zero).
+	 * Uses {@link LUDecomposition} from the Apache Commons Math library.
 	 * 
 	 * @param A a square matrix of size n x n
 	 * @param b a vector of length n
@@ -1795,12 +1786,13 @@ public abstract class Matrix {
 	 */
 	public static RealVector solve(RealMatrix A, RealVector b) {
 		if (!A.isSquare()) {
-			throw new RuntimeException("matrix A must be square");
+			throw new NonsquareMatrixException();
 		}
 		if (A.getRowDimension() != b.getDimension()) {
 			throw new IncompatibleDimensionsException();
 		}
-		DecompositionSolver solver = new LUDecomposition(A, 0.0).getSolver();
+//		DecompositionSolver solver = new LUDecomposition(A, 0.0).getSolver();
+		DecompositionSolver solver = new LUDecomposition(A).getSolver();
 		RealVector x = null;
 		try {
 			x = solver.solve(b);
