@@ -41,10 +41,10 @@ import imagingbook.common.math.exception.DivideByZeroException;
  * <p>Methods named with a trailing 'D' (e.g., {@link #multiplyD(double, double[])}) 
  * operate destructively, i.e., modify one of the passed arguments.</p>
  * 
- * <p>Most methods are self-explanatory and are therefore left undocumented.</p>
+ * <p>Some methods are self-explanatory and are therefore left undocumented.</p>
  * 
  * @author W. Burger
- * @version 2022/06/21
+ * @version 2022/08/29
  */
 public abstract class Matrix {
 	
@@ -165,7 +165,7 @@ public abstract class Matrix {
 	 * Returns the values of the specified matrix as a {@code float[]}
 	 * with elements arranged in row-major order.
 	 * The matrix must be fully rectangular (all rows of same length).
-	 * See also {@link #makeFloatMatrix(int, int, double...)}.
+	 * See also {@link #makeFloatMatrix(int, int, float...)}.
 	 *  
 	 * @param A a matrix
 	 * @return a {@code float[]} with the matrix elements
@@ -463,6 +463,7 @@ public abstract class Matrix {
 	 * Checks is the given square matrix is symmetric
 	 * using the specified relative tolerance.
 	 * @param A a square matrix
+	 * @param relTolerance relative symmetry tolerance
 	 * @return true if the matrix is symmetric
 	 */
 	public static boolean isSymmetric(RealMatrix A, double relTolerance) {
@@ -470,8 +471,8 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Checks is the given square matrix is symmetric
-	 * (using {@link DefaultSymmetryTolerance}).
+	 * Checks is the given square matrix is symmetric,
+	 * using the default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
 	 * @param A a square matrix
 	 * @return true if the matrix is symmetric
 	 */
@@ -483,6 +484,7 @@ public abstract class Matrix {
 	 * Checks is the given square matrix is symmetric
 	 * using the specified relative tolerance.
 	 * @param A a square matrix
+	 * @param relTolerance relative symmetry tolerance
 	 * @return true if the matrix is symmetric
 	 */
 	public static boolean isSymmetric(double[][] A, double relTolerance) {
@@ -490,8 +492,8 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Checks is the given square matrix is symmetric
-	 * (using {@link DefaultSymmetryTolerance}).
+	 * Checks is the given square matrix is symmetric,
+	 * using the default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
 	 * @param A a square matrix
 	 * @return true if the matrix is symmetric
 	 */
@@ -500,13 +502,14 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Checks is the given square matrix is positive definite.
-	 * TODO: split tolerance in two parameters
+	 * Checks is the given square matrix is positive definite,
+	 * using the specified symmetry tolerance value.
+	 * 
 	 * @param A a square matrix
 	 * @param tolerance the absolute positivity and relative symmetry tolerance
 	 * @return true if the matrix is positive definite
 	 */
-	public static boolean isPositiveDefinite(RealMatrix A, double tolerance) {
+	public static boolean isPositiveDefinite(RealMatrix A, double tolerance) { //TODO: split tolerance in two parameters
 		try {
 			new CholeskyDecomposition(A, tolerance, tolerance);
 			return true;
@@ -658,7 +661,7 @@ public abstract class Matrix {
 	
 	/**
 	 * Fills the given {@code double} matrix with the specified value (destructively).
-	 * @param x a matrix (which is modified)
+	 * @param A a matrix (which is modified)
 	 * @param val the fill value
 	 */
 	public static void fillD(final double[][] A, double val) {
@@ -669,7 +672,7 @@ public abstract class Matrix {
 	
 	/**
 	 * Fills the given {@code float} matrix with the specified value (destructively).
-	 * @param x a matrix (which is modified)
+	 * @param A a matrix (which is modified)
 	 * @param val the fill value
 	 */
 	public static void fillD(final float[][] A, float val) {
@@ -921,7 +924,7 @@ public abstract class Matrix {
 	// matrix-vector multiplications ----------------------------------------
 
 	/**
-	 * Multiplies a vector x with a matrix A from the right, i.e., y = x * A,
+	 * Multiplies a vector x with a matrix A "from the left", i.e., y = x * A,
 	 * where x is treated as a row vector and the result y is also a row vector.
 	 * @param x a (row) vector of length m
 	 * @param A a matrix of size (m,n)
@@ -956,7 +959,7 @@ public abstract class Matrix {
 	}
 
 	/**
-	 * Multiplies a matrix A with a vector x from the right, i.e., y = A * x,
+	 * Multiplies a matrix A with a vector x "from the right", i.e., y = A * x,
 	 * where x is treated as a column vector and the result y is also a column vector.
 	 * @param x a (column) vector of length n
 	 * @param A a matrix of size (m,n)
@@ -1468,7 +1471,6 @@ public abstract class Matrix {
 	 * 
 	 * @param x a vector
 	 * @return the index of the smallest value
-	 * @throws ZeroLengthVectorException
 	 */
 	public static int idxMin(double[] x) {
 		if (x.length == 0)
@@ -1492,7 +1494,6 @@ public abstract class Matrix {
 	 * 
 	 * @param x a vector
 	 * @return the index of the smallest value
-	 * @throws ZeroLengthVectorException
 	 */
 	public static int idxMin(float[] x) {
 		if (x.length == 0)
@@ -1517,7 +1518,6 @@ public abstract class Matrix {
 	 * 
 	 * @param x a vector
 	 * @return the index of the largest value
-	 * @throws ZeroLengthVectorException
 	 */
 	public static int idxMax(double[] x) {
 		if (x.length == 0)
@@ -1541,7 +1541,6 @@ public abstract class Matrix {
 	 * 
 	 * @param x a vector
 	 * @return the index of the largest value
-	 * @throws ZeroLengthVectorException
 	 */
 	public static int idxMax(float[] x) {
 		if (x.length == 0)
@@ -1564,9 +1563,8 @@ public abstract class Matrix {
 	 * An exception is thrown if the vector has zero length.
 	 * @param x a vector
 	 * @return the largest value
-	 * @throws ZeroLengthVectorException
 	 */
-	public static float min(final float[] x) throws ZeroLengthVectorException {
+	public static float min(final float[] x) {
 		if (x.length == 0)
 			throw new ZeroLengthVectorException();
 		float minval = Float.POSITIVE_INFINITY;
@@ -1584,9 +1582,8 @@ public abstract class Matrix {
 	 * An exception is thrown if the vector has zero length.
 	 * @param x a vector
 	 * @return the largest value
-	 * @throws ZeroLengthVectorException
 	 */
-	public static double min(final double[] x) throws ZeroLengthVectorException {
+	public static double min(final double[] x) {
 		if (x.length == 0)
 			throw new ZeroLengthVectorException();
 		double minval = Double.POSITIVE_INFINITY;
@@ -1605,9 +1602,8 @@ public abstract class Matrix {
 	 * An exception is thrown if the vector has zero length.
 	 * @param x a vector
 	 * @return the largest value
-	 * @throws ZeroLengthVectorException
 	 */
-	public static float max(final float[] x) throws ZeroLengthVectorException {
+	public static float max(final float[] x) {
 		if (x.length == 0)
 			throw new ZeroLengthVectorException();
 		float maxval = Float.NEGATIVE_INFINITY;
@@ -1625,9 +1621,8 @@ public abstract class Matrix {
 	 * An exception is thrown if the vector has zero length.
 	 * @param x a vector
 	 * @return the largest value
-	 * @throws ZeroLengthVectorException
 	 */
-	public static double max(final double[] x) throws ZeroLengthVectorException {
+	public static double max(final double[] x) {
 		if (x.length == 0)
 			throw new ZeroLengthVectorException();
 		double maxval = Double.NEGATIVE_INFINITY;
@@ -1748,7 +1743,9 @@ public abstract class Matrix {
 	
 	/**
 	 * Converts a Cartesian vector to an equivalent homogeneous
-	 * vector, which contains an additional 1-element.
+	 * vector by attaching an additional 1-element.
+	 * The resulting homogeneous vector is one element longer than the 
+	 * specified Cartesian vector.
 	 * See also {@link #toCartesian(double[])}.
 	 * @param xc a Cartesian vector
 	 * @return an equivalent homogeneous vector
@@ -1782,31 +1779,64 @@ public abstract class Matrix {
 	
 	// Determinants --------------------------------------------
 	
-	public static float determinant2x2(final float[][] A) throws IncompatibleDimensionsException {
+	/**
+	 * Calculates and returns the determinant of the given {@link RealMatrix}.
+	 * Throws an exception if the matrix is non-square.
+	 * @param A a square matrix
+	 * @return the determinant
+	 */
+	public static double determinant(RealMatrix A) {
+		if (!A.isSquare())
+			throw new NonsquareMatrixException();
+		return new LUDecomposition(A).getDeterminant();
+	}
+	
+	/**
+	 * Calculates and returns the determinant of the given {@code double[][]} matrix.
+	 * Throws an exception if the matrix is non-square.
+	 * @param A a square matrix
+	 * @return the determinant
+	 */
+	public static double determinant(final double[][] A) {
+		return determinant(MatrixUtils.createRealMatrix(A));
+	}
+	
+	/**
+	 * Calculates and returns the determinant of the given 2x2 {@code double[][]} matrix.
+	 * This method is hard-coded for the specific matrix size for better performance
+	 * than the general method ({@link #determinant(double[][])}).
+	 * Throws an exception if the matrix is not 2x2.
+	 * @param A a 2x2 matrix
+	 * @return the determinant
+	 */
+	public static double determinant2x2(final double[][] A) {
 		if (A.length != 2 || A[0].length != 2)
 			throw new IncompatibleDimensionsException();
 		return A[0][0] * A[1][1] - A[0][1] * A[1][0];
 	}
 	
-	public static double determinant2x2(final double[][] A) throws IncompatibleDimensionsException {
+	/**
+	 * Calculates and returns the determinant of the given 2x2 {@code float[][]} matrix.
+	 * Throws an exception if the matrix is not 2x2.
+	 * @param A a 2x2 matrix
+	 * @return the determinant
+	 */
+	public static float determinant2x2(final float[][] A) {
 		if (A.length != 2 || A[0].length != 2)
 			throw new IncompatibleDimensionsException();
 		return A[0][0] * A[1][1] - A[0][1] * A[1][0];
 	}
 	
-	public static float determinant3x3(final float[][] A) throws IncompatibleDimensionsException {
-		if (A.length != 3 || A[0].length != 3)
-			throw new IncompatibleDimensionsException();
-		return
-			A[0][0] * A[1][1] * A[2][2] +
-			A[0][1] * A[1][2] * A[2][0] +
-			A[0][2] * A[1][0] * A[2][1] -
-			A[2][0] * A[1][1] * A[0][2] -
-			A[2][1] * A[1][2] * A[0][0] -
-			A[2][2] * A[1][0] * A[0][1] ;
-	}
 
-	public static double determinant3x3(final double[][] A) throws IncompatibleDimensionsException {
+	/**
+	 * Calculates and returns the determinant of the given 3x3 {@code double[][]} matrix.
+	 * This method is hard-coded for the specific matrix size for better performance
+	 * than the general method ({@link #determinant(double[][])}).
+	 * Throws an exception if the matrix is not 3x3.
+	 * @param A a 3x3 matrix
+	 * @return the determinant
+	 */
+	public static double determinant3x3(final double[][] A) {
 		if (A.length != 3 || A[0].length != 3)
 			throw new IncompatibleDimensionsException();
 		return 
@@ -1818,19 +1848,35 @@ public abstract class Matrix {
 			A[2][2] * A[1][0] * A[0][1] ;
 	}
 	
-	public static double determinant(RealMatrix A) throws NonsquareMatrixException {
-		if (!A.isSquare())
-			throw new NonsquareMatrixException();
-		return new LUDecomposition(A).getDeterminant();
+	/**
+	 * Calculates and returns the determinant of the given 3x3 {@code float[][]} matrix.
+	 * Throws an exception if the matrix is not 3x3.
+	 * @param A a 3x3 matrix
+	 * @return the determinant
+	 */
+	public static float determinant3x3(final float[][] A) {
+		if (A.length != 3 || A[0].length != 3)
+			throw new IncompatibleDimensionsException();
+		return
+			A[0][0] * A[1][1] * A[2][2] +
+			A[0][1] * A[1][2] * A[2][0] +
+			A[0][2] * A[1][0] * A[2][1] -
+			A[2][0] * A[1][1] * A[0][2] -
+			A[2][1] * A[1][2] * A[0][0] -
+			A[2][2] * A[1][0] * A[0][1] ;
 	}
-	
-	public static double determinant(final double[][] A) throws NonsquareMatrixException {
-		return determinant(MatrixUtils.createRealMatrix(A));
-	}
+
+
 	
 	// Matrix trace ---------------------------------------
 	
-	public static double trace(final double[][] A) throws NonsquareMatrixException {
+	/**
+	 * Calculates and returns the trace of the given {@code double[][]} matrix.
+	 * Throws an exception if the matrix is non-square.
+	 * @param A a square matrix
+	 * @return the trace 
+	 */
+	public static double trace(final double[][] A) {
 		final int m = getNumberOfRows(A);
 		final int n = getNumberOfColumns(A);
 		if (m != n) 
@@ -1842,7 +1888,13 @@ public abstract class Matrix {
 		return s;
 	}
 	
-	public static float trace(final float[][] A) throws NonsquareMatrixException {
+	/**
+	 * Calculates and returns the trace of the given {@code float[][]} matrix.
+	 * Throws an exception if the matrix is non-square.
+	 * @param A a square matrix
+	 * @return the trace 
+	 */
+	public static float trace(final float[][] A) {
 		final int m = getNumberOfRows(A);
 		final int n = getNumberOfColumns(A);
 		if (m != n) 
@@ -1856,18 +1908,12 @@ public abstract class Matrix {
 	
 	// Matrix transposition ---------------------------------------
 	
-	public static float[][] transpose(float[][] A) {
-		final int m = getNumberOfRows(A);
-		final int n = getNumberOfColumns(A);
-		float[][] At = new float[n][m];
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				At[j][i] = A[i][j];
-			}
-		}
-		return At;
-	}
-	
+	/**
+	 * Returns the transpose of the given {@code double[][]} matrix.
+	 * The original matrix is not modified.
+	 * @param A a matrix
+	 * @return the transpose of the matrix
+	 */
 	public static double[][] transpose(double[][] A) {
 		final int m = getNumberOfRows(A);
 		final int n = getNumberOfColumns(A);
@@ -1880,8 +1926,34 @@ public abstract class Matrix {
 		return At;
 	}
 	
+	/**
+	 * Returns the transpose of the given {@code float[][]} matrix.
+	 * The original matrix is not modified.
+	 * @param A a matrix
+	 * @return the transpose of the matrix
+	 */
+	public static float[][] transpose(float[][] A) {
+		final int m = getNumberOfRows(A);
+		final int n = getNumberOfColumns(A);
+		float[][] At = new float[n][m];
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				At[j][i] = A[i][j];
+			}
+		}
+		return At;
+	}
+	
+	
 	// Checking vectors for all zero values  ------------------------------
 	
+	/**
+	 * Checks if all elements of the specified {@code double[]} vector are zero
+	 * using the specified tolerance value.
+	 * @param x a vector
+	 * @param tolerance the tolerance value
+	 * @return true if all vector elements are smaller than the tolerance
+	 */
 	public static boolean isZero(double[] x, double tolerance) {
 		for (int i = 0; i < x.length; i++) {
 			if (!Arithmetic.isZero(x[i], tolerance)) {
@@ -1891,10 +1963,23 @@ public abstract class Matrix {
 		return true;
 	}
 	
+	/**
+	 * Checks if all elements of the specified {@code double[]} vector are zero
+	 * using the default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
+	 * @param x a vector
+	 * @return true if all vector elements are smaller than the tolerance
+	 */
 	public static boolean isZero(double[] x) {
 		return isZero(x, Arithmetic.EPSILON_DOUBLE);
 	}
 	
+	/**
+	 * Checks if all elements of the specified {@code float[]} vector are zero
+	 * using the specified tolerance value.
+	 * @param x a vector
+	 * @param tolerance the tolerance value
+	 * @return true if all vector elements are smaller than the tolerance
+	 */
 	public static boolean isZero(float[] x, float tolerance) {
 		for (int i = 0; i < x.length; i++) {
 			if (!Arithmetic.isZero(x[i], tolerance)) {
@@ -1904,12 +1989,25 @@ public abstract class Matrix {
 		return true;
 	}
 	
+	/**
+	 * Checks if all elements of the specified {@code float[]} vector are zero
+	 * using the default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
+	 * @param x a vector
+	 * @return true if all vector elements are smaller than the tolerance
+	 */
 	public static boolean isZero(float[] x) {
 		return isZero(x, Arithmetic.EPSILON_FLOAT);
 	}
 	
 	// Checking matrices for all zero values  ------------------------------
 	
+	/**
+	 * Checks if all elements of the specified {@code double[][]} matrix are zero
+	 * using the specified tolerance value.
+	 * @param A a matrix
+	 * @param tolerance the tolerance value
+	 * @return true if all matrix elements are smaller than the tolerance
+	 */
 	public static boolean isZero(double[][] A, double tolerance) {
 		for (int i = 0; i < A.length; i++) {	// for each matrix row i
 			if (!Matrix.isZero(A[i], tolerance)) {
@@ -1919,6 +2017,12 @@ public abstract class Matrix {
 		return true;
 	}
 	
+	/**
+	 * Checks if all elements of the specified {@code double[][]} matrix are zero
+	 * using default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
+	 * @param A a matrix
+	 * @return true if all matrix elements are smaller than the tolerance
+	 */
 	public static boolean isZero(double[][] A) {
 		return isZero(A, Arithmetic.EPSILON_DOUBLE);
 	}
