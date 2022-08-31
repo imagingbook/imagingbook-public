@@ -299,7 +299,7 @@ public class EigenDecompositionJamaTest {
 			}
 			
 			double[] eigenvals = solver.getRealEigenvalues();
-			
+			double[][] V = solver.getV().getData();
 			
 			for (int k = 0; k < eigenvals.length; k++) {
 				if (Double.isNaN(eigenvals[k])) {
@@ -308,6 +308,10 @@ public class EigenDecompositionJamaTest {
 				//System.out.println("testing " + eigenvals[k]);
 				double lambda = eigenvals[k];
 				double[] x = solver.getEigenvector(k).toArray();
+				
+				// the k-th eigenvector is the k-th column of V
+				assertArrayEquals(x, Matrix.getColumn(V, k), 1E-6);	
+				
 				// check: M * x_k = λ_k * x_k
 				double[] LH = Matrix.multiply(M, x);
 				double[] RH = Matrix.multiply(lambda, x);

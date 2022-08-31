@@ -185,7 +185,7 @@ public class Eigensolver2x2 implements RealEigenDecomposition { // to check: htt
 	}
 	
 	@Override
-	public RealMatrix getV() { // TODO: needs to be tested!
+	public RealMatrix getV() {
 		return MatrixUtils.createRealMatrix(Matrix.transpose(eVecs));
 	}
 	

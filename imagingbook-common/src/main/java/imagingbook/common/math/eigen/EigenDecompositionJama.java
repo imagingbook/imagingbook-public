@@ -569,7 +569,7 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 		}
 	}
 
-//	// Complex scalar division.	// TODO: change to tuple return!
+//	// Complex scalar division (old)
 //	private transient double cdivr, cdivi;
 //
 //	@Deprecated
