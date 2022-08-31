@@ -11,22 +11,14 @@ package imagingbook.common.color.colorspace;
 import static imagingbook.common.math.Arithmetic.max;
 import static imagingbook.common.math.Arithmetic.min;
 
-import java.util.Arrays;
-import java.util.Random;
-
 /**
  * Methods for converting between RGB and HLS color spaces.
  * @author W. Burger
- * @version 2021/09/24
+ * @version 2022/09/01
 */
 public class HlsConverter {
 	
 	public HlsConverter() {	
-	}
-
-	@Deprecated
-	public float[] RGBtoHLS (int[] RGB) {
-		return fromRGB(RGB);
 	}
 	
 	public float[] fromRGB (int[] RGB) {
@@ -65,11 +57,6 @@ public class HlsConverter {
 		return new float[] {H, L, S};
 	}
 	
-	@Deprecated
-	public int[] HLStoRGB (float[] HLS) {
-		return toRGB(HLS);
-	}
-	
 	public int[] toRGB (float[] HLS) {
 		final float H = HLS[0], L = HLS[1], S = HLS[2]; // H,L,S in [0,1]
 		float r = 0, g = 0, b = 0; 	
@@ -93,41 +80,13 @@ public class HlsConverter {
 				case 3: r = x; g = y; b = w; break;
 				case 4: r = z; g = x; b = w; break;
 				case 5: r = w; g = x; b = y; break;
+				default: // this should not happen
 			}			
 		}	// r, g, b in [0,1]
 		int R = min(Math.round(r * 255), 255);
 		int G = min(Math.round(g * 255), 255);
 		int B = min(Math.round(b * 255), 255);
 		return new int[] {R, G, B};
-	}
-	
-	public static void main(String[] args) {	// TODO: move to unit tests!
-		doCheck(new int[] {0, 0, 0});
-		doCheck(new int[] {255, 255, 255});
-		doCheck(new int[] {177, 0, 0});
-		doCheck(new int[] {0, 177, 0});
-		doCheck(new int[] {0, 0, 177});
-		doCheck(new int[] {19, 3, 174});
-		Random rd = new Random();
-		for (int i = 0; i < 10000; i++) {
-			int r = rd.nextInt(256);
-			int g = rd.nextInt(256);
-			int b = rd.nextInt(256);
-			doCheck(new int[] {r, g, b});
-		}
-	}
-	
-	private static void doCheck(int[] rgb1) {
-		HlsConverter hlsC = new HlsConverter();
-//		System.out.println();
-//		System.out.println("rgb1 = " + Arrays.toString(rgb1));
-		float[] hsv = hlsC.RGBtoHLS(rgb1);
-//		System.out.println("hsv = " + Arrays.toString(hsv));
-		int[] rgb2 = hlsC.HLStoRGB(hsv);
-//		System.out.println("rgb2 = " + Arrays.toString(rgb2));
-		if (rgb1[0] != rgb2[0] || rgb1[1] != rgb2[1] || rgb1[1] != rgb2[1]) {
-			System.out.println("** problem with " + Arrays.toString(rgb1) + " -> " + Arrays.toString(rgb2));
-		}
 	}
 
 }

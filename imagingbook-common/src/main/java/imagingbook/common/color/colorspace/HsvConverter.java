@@ -14,16 +14,11 @@ import static imagingbook.common.math.Arithmetic.min;
 /**
  * Methods for converting between RGB and HLS color spaces.
  * @author W. Burger
- * @version 2021/09/24
+ * @version 2022/09/01
 */
 public class HsvConverter {
 	
 	public HsvConverter() {	
-	}
-	
-	@Deprecated
-	public float[] RGBtoHSV1 (int[] RGB) {
-		return fromRGB(RGB);
 	}
 
 	public float[] fromRGB (int[] RGB) {
@@ -60,11 +55,6 @@ public class HsvConverter {
 		return new float[] {H, S, V};
 	}
 	
-	@Deprecated
-	public int[] HSVtoRGB (float[] HSV) {
-		return toRGB(HSV);
-	}
-	
 	public int[] toRGB (float[] HSV) {
 		final float H = HSV[0], S = HSV[1], V = HSV[2];  // H,S,V in [0,1]
 		final float hh = (6 * H) % 6;                 
@@ -81,42 +71,12 @@ public class HsvConverter {
 			case 3: r = x; g = y; b = V; break;
 			case 4: r = z; g = x; b = V; break;
 			case 5: r = V; g = x; b = y; break;
+			default: // this should not happen
 		}
 		int R = min(Math.round(r * 255), 255);
 		int G = min(Math.round(g * 255), 255);
 		int B = min(Math.round(b * 255), 255);
 		return new int[] {R, G, B};
 	}
-	
-	// -------------------------------------------------------------
-	
-//	public static void main(String[] args) {		// TODO: move to unit tests!
-//		doCheck(new int[] {0, 0, 0});
-//		doCheck(new int[] {255, 255, 255});
-//		doCheck(new int[] {177, 0, 0});
-//		doCheck(new int[] {0, 177, 0});
-//		doCheck(new int[] {0, 0, 177});
-//		doCheck(new int[] {19, 3, 174});
-//		Random rd = new Random();
-//		for (int i = 0; i < 10000; i++) {
-//			int r = rd.nextInt(256);
-//			int g = rd.nextInt(256);
-//			int b = rd.nextInt(256);
-//			doCheck(new int[] {r, g, b});
-//		}
-//	}
-//	
-//	private static void doCheck(int[] rgb1) {
-//		HsvConverter hsvC = new HsvConverter();
-////		System.out.println();
-////		System.out.println("rgb1 = " + Arrays.toString(rgb1));
-//		float[] hsv = hsvC.toHSV(rgb1);
-////		System.out.println("hsv = " + Arrays.toString(hsv));
-//		int[] rgb2 = hsvC.toRGB(hsv);
-////		System.out.println("rgb2 = " + Arrays.toString(rgb2));
-//		if (rgb1[0] != rgb2[0] || rgb1[1] != rgb2[1] || rgb1[1] != rgb2[1]) {
-//			System.out.println("** problem with " + Arrays.toString(rgb1) + " -> " + Arrays.toString(rgb2));
-//		}
-//	}
 
 }

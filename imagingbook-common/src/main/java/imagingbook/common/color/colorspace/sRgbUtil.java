@@ -10,22 +10,24 @@
 package imagingbook.common.color.colorspace;
 
 /**
- * This is a utility class with static methods for gamma correction
- * used by LabColorSpace and LuvColorSpace color spaces.
- * Implemented with double values for better accuracy.
- * Should be modified to implement a a subclass of ColorSpace.
- * TODO: duplicate in lib.color? add JavaDoc!
+ * This class defines static methods for gamma correction for sRGB which are
+ * used, e.g., by {@link LabColorSpace} and {@link LuvColorSpace} color spaces.
+ * Implemented with {@code double} variables for better accuracy.
+ * 
+ * @author WB
+ * @version 2022/09/01
  */
 public abstract class sRgbUtil {
 	
 	private sRgbUtil() {}
 	
 	// specs according to official sRGB standard:
-	private static final double s = 12.92;
-	private static final double a0 = 0.0031308;
-	private static final double b0 = s * a0;	// 0.040449936
-	private static final double d = 0.055;
-	private static final double gamma = 2.4;
+	private static final double S = 12.92;
+	private static final double A0 = 0.0031308;
+	private static final double B0 = S * A0;	// 0.040449936
+	private static final double D = 0.055;
+	private static final double GAMMA = 2.4;
+	private static final double iGAMMA = 1.0 / GAMMA;
 	
 	/**
 	 * Forward Gamma correction (from linear to non-linear component values) for sRGB.
@@ -34,21 +36,21 @@ public abstract class sRgbUtil {
 	 * @return gamma-corrected (non-linear) component value
 	 */
     public static double gammaFwd(double lc) {
-		return (lc <= a0) ?
-			(lc * s) :
-			((1 + d) * Math.pow(lc, 1 / gamma) - d);
+		return (lc <= A0) ?
+			(lc * S) :
+			((1 + D) * Math.pow(lc, iGAMMA) - D);
     }
     
     /**
 	 * Inverse Gamma correction (from non-linear to linear component values) for sRGB.
 	 * 
-	 * @param nc non-linear (Gamma-corrected) component value in [0,1]
+	 * @param nlc non-linear (Gamma-corrected) component value in [0,1]
 	 * @return linear component value
 	 */
-    public static double gammaInv(double nc) {
-    	return (nc <= b0) ?
-    		(nc / s) :
-			Math.pow((nc + d) / (1 + d), gamma);
+    public static double gammaInv(double nlc) {
+    	return (nlc <= B0) ?
+    		(nlc / S) :
+			Math.pow((nlc + D) / (1 + D), GAMMA);
     }
     
 	public static float[] sRgbToRgb(float[] srgb) { // all components in [0,1]
@@ -64,18 +66,5 @@ public abstract class sRgbUtil {
 		float sB = (float) sRgbUtil.gammaFwd(rgb[2]);
 		return new float[] { sR, sG, sB };
 	}
-    
-    // -------------------------------------------------------------------------
-	
-//	public static void main(String[] args) {
-//		Random rg = new Random();
-//		for (int i = 0; i < 20; i++) {
-//			double lc = rg.nextDouble();
-//			double nc = gammaFwd(lc);
-//			System.out.format(Locale.US, "lc = %.8f,  nc = %.8f, check = %.8f\n", lc, nc, lc-gammaInv(nc));
-//		}
-//		System.out.println("" + (s * a0));
-//
-//	}
     
 }

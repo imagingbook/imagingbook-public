@@ -9,11 +9,20 @@
 
 package imagingbook.common.color.colorspace;
 
+/**
+ * Interface specifying a chromatic adaptation transform.
+ * @author WB
+ *
+ */
 public interface ChromaticAdaptation {
 
-	// actual transformation of color coordinates.
-	// XYZ1 are interpreted relative to white point W1.
-	// Returns a new color adapted to white point W2.
+	/**
+	 * Actual transformation of color coordinates.
+	 * XYZ1 are interpreted relative to (source) white point W1.
+	 * Returns a new color adapted to (target) white point W2.
+	 * @param XYZ1 the original color point w.r.t. W1
+	 * @return the associated color w.r.t. W2
+	 */
 	public float[] applyTo(float[] XYZ1);
 
 }
