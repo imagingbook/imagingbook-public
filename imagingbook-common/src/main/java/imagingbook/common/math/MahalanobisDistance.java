@@ -27,7 +27,7 @@ import org.apache.commons.math3.stat.correlation.Covariance;
  * 
  * @author WB
  */
-public class MahalanobisDistance { 	//TODO: Check/reuse methods for covariance matrix etc in class 'Statistics'!
+public class MahalanobisDistance {
 
 	/** The default minimum diagonal value used to condition the covariance matrix. */
 	public static final double DefaultMinimumDiagonalValue = 1.0E-15;
