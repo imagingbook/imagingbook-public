@@ -596,24 +596,30 @@ public class MatrixTest {
 	public void testMatrixNormL1Double() {
 		double[] x = {5, 3, -1, 7};
 		double[] y = {6};
+		double[] z = {0};
 		assertEquals(16.0, Matrix.normL1(x), TOLERANCE);
 		assertEquals(6.0, Matrix.normL1(y), TOLERANCE);
+		assertEquals(0.0, Matrix.normL1(z), TOLERANCE);
 	}
 	
 	@Test
 	public void testMatrixNormL1Float() {
 		float[] x = {5, 3, -1, 7};
 		float[] y = {6};
+		float[] z = {0};
 		assertEquals(16.0, Matrix.normL1(x), TOLERANCE);
 		assertEquals(6.0, Matrix.normL1(y), TOLERANCE);
+		assertEquals(0.0, Matrix.normL1(z), TOLERANCE);
 	}
 	
 	@Test
 	public void testMatrixNormL2Double() {
 		double[] x = {5, 3, -1, 7};
 		double[] y = {6};
+		double[] z = {0};
 		assertEquals(9.16515138991168, Matrix.normL2(x), TOLERANCE);
 		assertEquals(6.0, Matrix.normL2(y), TOLERANCE);
+		assertEquals(0.0, Matrix.normL2(z), TOLERANCE);
 		
 		assertEquals(sqr(Matrix.normL2(x)), Matrix.normL2squared(x), TOLERANCE);
 		assertEquals(sqr(Matrix.normL2(y)), Matrix.normL2squared(y), TOLERANCE);
@@ -623,8 +629,10 @@ public class MatrixTest {
 	public void testMatrixNormL2Float() {
 		float[] x = {5, 3, -1, 7};
 		float[] y = {6};
+		float[] z = {0};
 		assertEquals(9.16515138991168, Matrix.normL2(x), TOLERANCE);
 		assertEquals(6.0, Matrix.normL2(y), TOLERANCE);
+		assertEquals(0.0, Matrix.normL2(z), TOLERANCE);
 		
 		assertEquals(sqr(Matrix.normL2(x)), Matrix.normL2squared(x), TOLERANCE);
 		assertEquals(sqr(Matrix.normL2(y)), Matrix.normL2squared(y), TOLERANCE);
@@ -641,27 +649,56 @@ public class MatrixTest {
 	// ---------------------------------------------------------
 	
 	@Test
+	public void testMatrixNormalize() {
+		double[] xd = {5, 3, -1, 7};
+		double[] yd = {6};
+		assertEquals(1.0, Matrix.normL2(Matrix.normalize(xd)), TOLERANCE);
+		assertEquals(1.0, Matrix.normL2(Matrix.normalize(yd)), TOLERANCE);
+		
+		float[] xf = {5, 3, -1, 7};
+		float[] yf = {6};
+		assertEquals(1.0, Matrix.normL2(Matrix.normalize(xf)), TOLERANCE);
+		assertEquals(1.0, Matrix.normL2(Matrix.normalize(yf)), TOLERANCE);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testMatrixNormalizeFailDouble() {
+		double[] x = {0, 0, 0, 0};
+		assertEquals(1.0, Matrix.normL2(Matrix.normalize(x)), TOLERANCE);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testMatrixNormalizeFailFloat() {
+		float[] x = {0, 0, 0, 0};
+		assertEquals(1.0, Matrix.normL2(Matrix.normalize(x)), TOLERANCE);
+	}
+	
+	// ---------------------------------------------------------
+	
+	@Test
 	public void testMatrixSumDouble() {
 		double[] x = {5, 3, -1, 7};
 		double[] y = {6};
+		double[] z = {0};
 		assertEquals(14.0, Matrix.sum(x), TOLERANCE);
 		assertEquals(6.0, Matrix.sum(y), TOLERANCE);
+		assertEquals(0.0, Matrix.sum(z), TOLERANCE);
 		
 		assertEquals(43.0, Matrix.sum(Ad), TOLERANCE);
 		assertEquals(19.0, Matrix.sum(Bd), TOLERANCE);
-		
 	}
 	
 	@Test
 	public void testMatrixSumFloat() {
 		float[] x = {5, 3, -1, 7};
 		float[] y = {6};
+		float[] z = {0};
 		assertEquals(14.0, Matrix.sum(x), TOLERANCE);
 		assertEquals(6.0, Matrix.sum(y), TOLERANCE);
+		assertEquals(0.0, Matrix.sum(z), TOLERANCE);
 		
 		assertEquals(43.0, Matrix.sum(Af), TOLERANCE);
-		assertEquals(19.0, Matrix.sum(Bf), TOLERANCE);
-		
+		assertEquals(19.0, Matrix.sum(Bf), TOLERANCE);	
 	}
 	
 	// ---------------------------------------------------------

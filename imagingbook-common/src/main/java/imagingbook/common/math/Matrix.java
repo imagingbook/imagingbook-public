@@ -1168,9 +1168,13 @@ public abstract class Matrix {
 	 * @return the matrix product A * B
 	 */
 	public static double[][] multiply(final double[][] A, final double[][] B) {
-		int m = getNumberOfRows(A);
-		int q = getNumberOfColumns(B);
-		double[][] C = makeDoubleMatrix(m, q);
+		final int nA = getNumberOfColumns(A);
+		final int mB = getNumberOfRows(B);
+		if (nA != mB)
+			throw new IncompatibleDimensionsException();	// check size of A, B
+		int ma = getNumberOfRows(A);
+		int nb = getNumberOfColumns(B);
+		double[][] C = makeDoubleMatrix(ma, nb);
 		multiplyD(A, B, C);
 		return C;
 	}
@@ -1220,7 +1224,10 @@ public abstract class Matrix {
 	 * @return the matrix product A * B
 	 */
 	public static float[][] multiply(final float[][] A, final float[][] B) {
-		// TODO: also check nA = mB
+		final int nA = getNumberOfColumns(A);
+		final int mB = getNumberOfRows(B);
+		if (nA != mB)
+			throw new IncompatibleDimensionsException();	// check size of A, B
 		final int mA = getNumberOfRows(A);
 		final int nB = getNumberOfColumns(B);
 		float[][] C = makeFloatMatrix(mA, nB);
@@ -1247,7 +1254,9 @@ public abstract class Matrix {
 		final int mB = getNumberOfRows(B);
 		final int nB = getNumberOfColumns(B);
 		if (nA != mB)
-			throw new IncompatibleDimensionsException();	// TODO: check size of C
+			throw new IncompatibleDimensionsException();	// check size of A,B
+		if (mA != getNumberOfRows(C) || nB != getNumberOfColumns(C))
+			throw new IncompatibleDimensionsException();	// check size of C
 		for (int i = 0; i < mA; i++) {
 			for (int j = 0; j < nB; j++) {
 				float s = 0;
@@ -1369,12 +1378,12 @@ public abstract class Matrix {
 	 * @param x a vector
 	 * @return the squared L2 norm of the vector
 	 */
-	public static float normL2squared(final float[] x) {
+	public static double normL2squared(final float[] x) {
 		double sum = 0;
 		for (double val : x) {
 			sum = sum + sqr(val);
 		}
-		return (float) sum;
+		return sum;
 	}
 	
 	// Normalize vectors
@@ -1397,8 +1406,34 @@ public abstract class Matrix {
 	 * @param x a vector
 	 */
 	public static void normalizeD(final double[] x) {
-		//TODO: check for zero norm!
-		multiplyD(1.0 / normL2(x), x);
+		double normx = normL2(x);
+		if (Arithmetic.isZero(normx))
+			throw new IllegalArgumentException("cannot normalize zero-norm vector");
+		multiplyD(1.0 / normx, x);
+	}
+	
+	/**
+	 * Normalizes the specified {@code float[]} vector to unit
+	 * (L2) norm and returns the result as a new {@code float[]} vector.
+	 * @param x a vector
+	 * @return the normalized vector
+	 */
+	public static float[] normalize(final float[] x) {
+		float[] xx = duplicate(x);
+		normalizeD(xx);
+		return xx;
+	}
+	
+	/**
+	 * Normalizes the specified {@code float[]} vector to unit
+	 * (L2) norm. The vector is modified (destructively).
+	 * @param x a vector
+	 */
+	public static void normalizeD(final float[] x) {
+		double normx = normL2(x);
+		if (Arithmetic.isZero(normx))
+			throw new IllegalArgumentException("cannot normalize zero-norm vector");
+		multiplyD((float) (1.0 / normx), x);
 	}
 	
 	// Distance between vectors ---------------------------------------
