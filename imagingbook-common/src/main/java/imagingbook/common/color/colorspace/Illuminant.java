@@ -56,7 +56,7 @@ public enum Illuminant {
 
 	/**
 	 * Returns the illuminant's X-coordinate in CIE-XYZ color space.
-	 * @return
+	 * @return the X-coordinate
 	 */
 	public double getX() {
 		return X;
@@ -64,7 +64,7 @@ public enum Illuminant {
 
 	/**
 	 * Returns the illuminant's Y-coordinate in CIE-XYZ color space.
-	 * @return
+	 * @return the Y-coordinate
 	 */
 	public double getY() {
 		return Y;
@@ -72,7 +72,7 @@ public enum Illuminant {
 
 	/**
 	 * Returns the illuminant's Z-coordinate in CIE-XYZ color space.
-	 * @return
+	 * @return the Z-coordinate
 	 */
 	public double getZ() {
 		return Z;
@@ -80,7 +80,7 @@ public enum Illuminant {
 
 	/**
 	 * Returns the illuminant's coordinate in CIE-XYZ color space.
-	 * @return
+	 * @return the XYZ-coordinate
 	 */
 	public double[] getXYZ() {
 		return new double[] {X, Y, Z};

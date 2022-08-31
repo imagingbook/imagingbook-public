@@ -37,7 +37,7 @@
 <span class="sourceLineNo">027</span><a id="line.27"> * </a>
 <span class="sourceLineNo">028</span><a id="line.28"> * @author WB</a>
 <span class="sourceLineNo">029</span><a id="line.29"> */</a>
-<span class="sourceLineNo">030</span><a id="line.30">public class MahalanobisDistance {      //TODO: Check/reuse methods for covariance matrix etc in class 'Statistics'!</a>
+<span class="sourceLineNo">030</span><a id="line.30">public class MahalanobisDistance {</a>
 <span class="sourceLineNo">031</span><a id="line.31"></a>
 <span class="sourceLineNo">032</span><a id="line.32">        /** The default minimum diagonal value used to condition the covariance matrix. */</a>
 <span class="sourceLineNo">033</span><a id="line.33">        public static final double DefaultMinimumDiagonalValue = 1.0E-15;</a>
@@ -233,66 +233,76 @@
 <span class="sourceLineNo">223</span><a id="line.223"></a>
 <span class="sourceLineNo">224</span><a id="line.224">        /**</a>
 <span class="sourceLineNo">225</span><a id="line.225">         * Returns the Mahalanobis distance between the given points.</a>
-<span class="sourceLineNo">226</span><a id="line.226">         * @param X first point</a>
-<span class="sourceLineNo">227</span><a id="line.227">         * @param Y second point</a>
+<span class="sourceLineNo">226</span><a id="line.226">         * @param a first point</a>
+<span class="sourceLineNo">227</span><a id="line.227">         * @param b second point</a>
 <span class="sourceLineNo">228</span><a id="line.228">         * @return the Mahalanobis distance</a>
 <span class="sourceLineNo">229</span><a id="line.229">         */</a>
-<span class="sourceLineNo">230</span><a id="line.230">        public double distance(double[] X, double[] Y) {</a>
-<span class="sourceLineNo">231</span><a id="line.231">                return Math.sqrt(distance2(X, Y));</a>
+<span class="sourceLineNo">230</span><a id="line.230">        public double distance(double[] a, double[] b) {</a>
+<span class="sourceLineNo">231</span><a id="line.231">                return Math.sqrt(distance2(a, b));</a>
 <span class="sourceLineNo">232</span><a id="line.232">        }</a>
 <span class="sourceLineNo">233</span><a id="line.233"></a>
 <span class="sourceLineNo">234</span><a id="line.234">        /**</a>
-<span class="sourceLineNo">235</span><a id="line.235">         * Returns the squared Mahalanobis distance between the given points.</a>
-<span class="sourceLineNo">236</span><a id="line.236">         * @param X first point</a>
-<span class="sourceLineNo">237</span><a id="line.237">         * @param Y second point</a>
-<span class="sourceLineNo">238</span><a id="line.238">         * @return the squared Mahalanobis distance</a>
-<span class="sourceLineNo">239</span><a id="line.239">         */</a>
-<span class="sourceLineNo">240</span><a id="line.240">        public double distance2(double[] X, double[] Y) {</a>
-<span class="sourceLineNo">241</span><a id="line.241">                if (X.length != m || Y.length != m) {</a>
-<span class="sourceLineNo">242</span><a id="line.242">                        throw new IllegalArgumentException("vectors must be of length " + m);</a>
-<span class="sourceLineNo">243</span><a id="line.243">                }</a>
-<span class="sourceLineNo">244</span><a id="line.244">                // TODO: implement with methods from Matrix class</a>
-<span class="sourceLineNo">245</span><a id="line.245">                // d^2(X,Y) = (X-Y)^T . S^{-1} . (X-Y)</a>
-<span class="sourceLineNo">246</span><a id="line.246">                double[] dXY = new double[m]; // = (X-Y)</a>
-<span class="sourceLineNo">247</span><a id="line.247">                for (int k = 0; k &lt; m; k++) {</a>
-<span class="sourceLineNo">248</span><a id="line.248">                        dXY[k] = X[k] - Y[k];</a>
-<span class="sourceLineNo">249</span><a id="line.249">                }</a>
-<span class="sourceLineNo">250</span><a id="line.250">                double[] iSdXY = new double[m]; // = S^{-1} . (X-Y)</a>
-<span class="sourceLineNo">251</span><a id="line.251">                for (int k = 0; k &lt; m; k++) {</a>
-<span class="sourceLineNo">252</span><a id="line.252">                        for (int i = 0; i &lt; m; i++) {</a>
-<span class="sourceLineNo">253</span><a id="line.253">                                iSdXY[k] += icov[i][k] * dXY[i];</a>
-<span class="sourceLineNo">254</span><a id="line.254">                        }</a>
-<span class="sourceLineNo">255</span><a id="line.255">                }</a>
-<span class="sourceLineNo">256</span><a id="line.256">                double d2 = 0;  // final sum</a>
-<span class="sourceLineNo">257</span><a id="line.257">                for (int k = 0; k &lt; m; k++) {</a>
-<span class="sourceLineNo">258</span><a id="line.258">                        d2 += dXY[k] * iSdXY[k];</a>
-<span class="sourceLineNo">259</span><a id="line.259">                }                                               // d = (X-Y)^T . S^{-1} . (X-Y)</a>
-<span class="sourceLineNo">260</span><a id="line.260">                return d2;</a>
-<span class="sourceLineNo">261</span><a id="line.261">        }</a>
-<span class="sourceLineNo">262</span><a id="line.262"></a>
-<span class="sourceLineNo">263</span><a id="line.263">        /**</a>
-<span class="sourceLineNo">264</span><a id="line.264">         * Calculates the Mahalanobis distance between point x and</a>
-<span class="sourceLineNo">265</span><a id="line.265">         * the mean of the reference distribution.</a>
-<span class="sourceLineNo">266</span><a id="line.266">         * @param x an arbitrary m-dimensional vector</a>
-<span class="sourceLineNo">267</span><a id="line.267">         * @return the Mahalanobis distance between the point x and</a>
-<span class="sourceLineNo">268</span><a id="line.268">         *                      the mean of the reference distribution</a>
-<span class="sourceLineNo">269</span><a id="line.269">         */</a>
-<span class="sourceLineNo">270</span><a id="line.270">        public double distance(double[] x) {</a>
-<span class="sourceLineNo">271</span><a id="line.271">                return distance(x, mean);</a>
-<span class="sourceLineNo">272</span><a id="line.272">        }</a>
-<span class="sourceLineNo">273</span><a id="line.273"></a>
-<span class="sourceLineNo">274</span><a id="line.274">        /**</a>
-<span class="sourceLineNo">275</span><a id="line.275">         * Calculates the sqared Mahalanobis distance between point x and</a>
-<span class="sourceLineNo">276</span><a id="line.276">         * the mean of the reference distribution.</a>
-<span class="sourceLineNo">277</span><a id="line.277">         * @param x an arbitrary m-dimensional vector</a>
-<span class="sourceLineNo">278</span><a id="line.278">         * @return the squared Mahalanobis distance between the point x and</a>
-<span class="sourceLineNo">279</span><a id="line.279">         *                      the mean of the reference distribution</a>
-<span class="sourceLineNo">280</span><a id="line.280">         */</a>
-<span class="sourceLineNo">281</span><a id="line.281">        public double distance2(double[] x) {</a>
-<span class="sourceLineNo">282</span><a id="line.282">                return distance2(x, mean);</a>
-<span class="sourceLineNo">283</span><a id="line.283">        }</a>
-<span class="sourceLineNo">284</span><a id="line.284"></a>
-<span class="sourceLineNo">285</span><a id="line.285">}</a>
+<span class="sourceLineNo">235</span><a id="line.235">         * Returns the squared Mahalanobis distance between the given points a, b:</a>
+<span class="sourceLineNo">236</span><a id="line.236">         * d^2(a,b) = (a-b)^T . S^{-1} . (a-b)</a>
+<span class="sourceLineNo">237</span><a id="line.237">         * @param a first point</a>
+<span class="sourceLineNo">238</span><a id="line.238">         * @param b second point</a>
+<span class="sourceLineNo">239</span><a id="line.239">         * @return the squared Mahalanobis distance</a>
+<span class="sourceLineNo">240</span><a id="line.240">         */</a>
+<span class="sourceLineNo">241</span><a id="line.241">        public double distance2(double[] a, double[] b) {</a>
+<span class="sourceLineNo">242</span><a id="line.242">                if (a.length != m || b.length != m) {</a>
+<span class="sourceLineNo">243</span><a id="line.243">                        throw new IllegalArgumentException("vectors a, b must be of length " + m);</a>
+<span class="sourceLineNo">244</span><a id="line.244">                }       </a>
+<span class="sourceLineNo">245</span><a id="line.245">                double[] amb = Matrix.subtract(a, b);   // amb = a - b</a>
+<span class="sourceLineNo">246</span><a id="line.246">                return Matrix.dotProduct(Matrix.multiply(amb, icov), amb);</a>
+<span class="sourceLineNo">247</span><a id="line.247">                </a>
+<span class="sourceLineNo">248</span><a id="line.248">        }</a>
+<span class="sourceLineNo">249</span><a id="line.249">        </a>
+<span class="sourceLineNo">250</span><a id="line.250">        // original version</a>
+<span class="sourceLineNo">251</span><a id="line.251">//      public double distance2(double[] X, double[] Y) {</a>
+<span class="sourceLineNo">252</span><a id="line.252">//              if (X.length != m || Y.length != m) {</a>
+<span class="sourceLineNo">253</span><a id="line.253">//                      throw new IllegalArgumentException("vectors must be of length " + m);</a>
+<span class="sourceLineNo">254</span><a id="line.254">//              }</a>
+<span class="sourceLineNo">255</span><a id="line.255">//              // d^2(X,Y) = (X-Y)^T . S^{-1} . (X-Y)</a>
+<span class="sourceLineNo">256</span><a id="line.256">//              double[] dXY = new double[m]; // = (X-Y)</a>
+<span class="sourceLineNo">257</span><a id="line.257">//              for (int k = 0; k &lt; m; k++) {</a>
+<span class="sourceLineNo">258</span><a id="line.258">//                      dXY[k] = X[k] - Y[k];</a>
+<span class="sourceLineNo">259</span><a id="line.259">//              }</a>
+<span class="sourceLineNo">260</span><a id="line.260">//              double[] iSdXY = new double[m]; // = S^{-1} . (X-Y)</a>
+<span class="sourceLineNo">261</span><a id="line.261">//              for (int k = 0; k &lt; m; k++) {</a>
+<span class="sourceLineNo">262</span><a id="line.262">//                      for (int i = 0; i &lt; m; i++) {</a>
+<span class="sourceLineNo">263</span><a id="line.263">//                              iSdXY[k] += icov[i][k] * dXY[i];</a>
+<span class="sourceLineNo">264</span><a id="line.264">//                      }</a>
+<span class="sourceLineNo">265</span><a id="line.265">//              }</a>
+<span class="sourceLineNo">266</span><a id="line.266">//              double d2 = 0;  // final sum</a>
+<span class="sourceLineNo">267</span><a id="line.267">//              for (int k = 0; k &lt; m; k++) {</a>
+<span class="sourceLineNo">268</span><a id="line.268">//                      d2 += dXY[k] * iSdXY[k];</a>
+<span class="sourceLineNo">269</span><a id="line.269">//              }                                               // d = (X-Y)^T . S^{-1} . (X-Y)</a>
+<span class="sourceLineNo">270</span><a id="line.270">//              return d2;</a>
+<span class="sourceLineNo">271</span><a id="line.271">//      }</a>
+<span class="sourceLineNo">272</span><a id="line.272"></a>
+<span class="sourceLineNo">273</span><a id="line.273">        /**</a>
+<span class="sourceLineNo">274</span><a id="line.274">         * Calculates the Mahalanobis distance between point x and</a>
+<span class="sourceLineNo">275</span><a id="line.275">         * the mean of the reference distribution.</a>
+<span class="sourceLineNo">276</span><a id="line.276">         * @param x an arbitrary m-dimensional vector</a>
+<span class="sourceLineNo">277</span><a id="line.277">         * @return the Mahalanobis distance between the point x and</a>
+<span class="sourceLineNo">278</span><a id="line.278">         *                      the mean of the reference distribution</a>
+<span class="sourceLineNo">279</span><a id="line.279">         */</a>
+<span class="sourceLineNo">280</span><a id="line.280">        public double distance(double[] x) {</a>
+<span class="sourceLineNo">281</span><a id="line.281">                return distance(x, mean);</a>
+<span class="sourceLineNo">282</span><a id="line.282">        }</a>
+<span class="sourceLineNo">283</span><a id="line.283"></a>
+<span class="sourceLineNo">284</span><a id="line.284">        /**</a>
+<span class="sourceLineNo">285</span><a id="line.285">         * Calculates the sqared Mahalanobis distance between point x and</a>
+<span class="sourceLineNo">286</span><a id="line.286">         * the mean of the reference distribution.</a>
+<span class="sourceLineNo">287</span><a id="line.287">         * @param x an arbitrary m-dimensional vector</a>
+<span class="sourceLineNo">288</span><a id="line.288">         * @return the squared Mahalanobis distance between the point x and</a>
+<span class="sourceLineNo">289</span><a id="line.289">         *                      the mean of the reference distribution</a>
+<span class="sourceLineNo">290</span><a id="line.290">         */</a>
+<span class="sourceLineNo">291</span><a id="line.291">        public double distance2(double[] x) {</a>
+<span class="sourceLineNo">292</span><a id="line.292">                return distance2(x, mean);</a>
+<span class="sourceLineNo">293</span><a id="line.293">        }</a>
+<span class="sourceLineNo">294</span><a id="line.294"></a>
+<span class="sourceLineNo">295</span><a id="line.295">}</a>
 
 
 

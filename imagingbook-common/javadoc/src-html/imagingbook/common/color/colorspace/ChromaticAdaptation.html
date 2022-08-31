@@ -19,14 +19,23 @@
 <span class="sourceLineNo">009</span><a id="line.9"></a>
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.common.color.colorspace;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
-<span class="sourceLineNo">012</span><a id="line.12">public interface ChromaticAdaptation {</a>
-<span class="sourceLineNo">013</span><a id="line.13"></a>
-<span class="sourceLineNo">014</span><a id="line.14">        // actual transformation of color coordinates.</a>
-<span class="sourceLineNo">015</span><a id="line.15">        // XYZ1 are interpreted relative to white point W1.</a>
-<span class="sourceLineNo">016</span><a id="line.16">        // Returns a new color adapted to white point W2.</a>
-<span class="sourceLineNo">017</span><a id="line.17">        public float[] applyTo(float[] XYZ1);</a>
+<span class="sourceLineNo">012</span><a id="line.12">/**</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * Interface specifying a chromatic adaptation transform.</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * @author WB</a>
+<span class="sourceLineNo">015</span><a id="line.15"> *</a>
+<span class="sourceLineNo">016</span><a id="line.16"> */</a>
+<span class="sourceLineNo">017</span><a id="line.17">public interface ChromaticAdaptation {</a>
 <span class="sourceLineNo">018</span><a id="line.18"></a>
-<span class="sourceLineNo">019</span><a id="line.19">}</a>
+<span class="sourceLineNo">019</span><a id="line.19">        /**</a>
+<span class="sourceLineNo">020</span><a id="line.20">         * Actual transformation of color coordinates.</a>
+<span class="sourceLineNo">021</span><a id="line.21">         * XYZ1 are interpreted relative to (source) white point W1.</a>
+<span class="sourceLineNo">022</span><a id="line.22">         * Returns a new color adapted to (target) white point W2.</a>
+<span class="sourceLineNo">023</span><a id="line.23">         * @param XYZ1 the original color point w.r.t. W1</a>
+<span class="sourceLineNo">024</span><a id="line.24">         * @return the associated color w.r.t. W2</a>
+<span class="sourceLineNo">025</span><a id="line.25">         */</a>
+<span class="sourceLineNo">026</span><a id="line.26">        public float[] applyTo(float[] XYZ1);</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">}</a>
 
 
 
