@@ -65,10 +65,17 @@ public abstract class Matrix {
 	// ----  Matrix creation -----------------------------
 	
 	/**
-	 * Creates and returns a {@code double[][]} matrix containing the specified values.
+	 * <p>Creates and returns a {@code double[][]} matrix containing the specified values.
 	 * Throws an {@link IllegalArgumentException} if the number of supplied values does
-	 * not exactly match the matrix size.
+	 * not exactly match the matrix size. Example for creating a 2x3 matrix:
+	 * </p>
+	 * <pre>
+	 * double[][] A = makeDoubleMatrix(2, 3, 
+	 * 		1.0, 2.0, 3.0,
+	 * 		4.0, 5.0, 6.0 );</pre>
+	 * <p>
 	 * See also {@link #flatten(double[][])}.
+	 * </p>
 	 * 
 	 * @param rows the number of matrix rows
 	 * @param cols the number of matrix columns
@@ -95,10 +102,18 @@ public abstract class Matrix {
 	}
 	
 	/**
+	 * <p>
 	 * Creates and returns a {@code float[][]} matrix containing the specified values.
 	 * Throws an {@link IllegalArgumentException} if the number of supplied values does
-	 * not exactly match the matrix size.
-	 * See also {@link #flatten(float[][])}.
+	 * not exactly match the matrix size. Example for creating a 2x3 matrix:
+	 * </p>
+	 * <pre>
+	 * float[][] A = makeFloatMatrix(2, 3, 
+	 * 		1.0f, 2.0f, 3.0f,
+	 * 		4.0f, 5.0f, 6.0f );</pre>
+	 * <p>
+	 * See also {@link #flatten(double[][])}.
+	 * </p>
 	 * 
 	 * @param rows the number of matrix rows
 	 * @param cols the number of matrix columns
@@ -125,9 +140,17 @@ public abstract class Matrix {
 	}
 	
 	/**
+	 * <p>
 	 * Creates and returns a {@link RealMatrix} containing the specified {@code double} values.
 	 * Calls {@link #makeDoubleMatrix(int, int, double...)}.
-	 * 
+	 * </p>
+	 * <pre>
+	 * RealMatrix A = makeRealMatrix(2, 3, 
+	 * 		1.0, 2.0, 3.0,
+	 * 		4.0, 5.0, 6.0 );</pre>
+	 * <p>
+	 * See also {@link #flatten(RealMatrix)}.
+	 * </p>
 	 * @param rows the number of matrix rows
 	 * @param cols the number of matrix columns
 	 * @param values the matrix values in row-major order (may also be passed as a {@code double[]})
@@ -182,6 +205,18 @@ public abstract class Matrix {
 			}
 		}
 		return vals;
+	}
+	
+	/**
+	 * Returns the values of the specified matrix as a {@code double[]}
+	 * with elements arranged in row-major order.
+	 * See also {@link #makeRealMatrix(int, int, double...)}.
+	 *  
+	 * @param A a matrix
+	 * @return a {@code double[]} with the matrix elements
+	 */
+	public static double[] flatten(RealMatrix A) {
+		return flatten(A.getData());
 	}
 	
 	// --------------------------------------------------------------------------
@@ -263,6 +298,7 @@ public abstract class Matrix {
 		return A.length;
 	}
 	
+	
 	/**
 	 * Returns the number of columns of the specified {@code double} matrix.
 	 * @param A a {@code double[][]} matrix
@@ -288,6 +324,24 @@ public abstract class Matrix {
 	 */
 	public static int getNumberOfColumns(float[][] A) {
 		return A[0].length;
+	}
+	
+	/**
+	 * Returns the number of rows of the specified {@link RealMatrix}.
+	 * @param A a {@link RealMatrix}
+	 * @return the number of rows
+	 */
+	public static int getNumberOfRows(RealMatrix A) {
+		return A.getRowDimension();
+	}
+	
+	/**
+	 * Returns the number of columns of the specified {@link RealMatrix}.
+	 * @param A a {@link RealMatrix}
+	 * @return the number of columns
+	 */
+	public static int getNumberOfColumns(RealMatrix A) {
+		return A.getColumnDimension();
 	}
 	
 	// Extract rows or columns

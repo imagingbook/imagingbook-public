@@ -49,13 +49,19 @@ public class MatrixTest {
 	public void testMatrixNumberOfRowsAndColumns() {
 		assertEquals(3, Matrix.getNumberOfRows(Af));
 		assertEquals(3, Matrix.getNumberOfColumns(Af));
-		assertEquals(6.0, Af[1][2], 1E-6);
+		assertEquals(6.0, Af[1][2], TOLERANCE);
+		assertEquals(2.0, Af[0][1], TOLERANCE);
 		
 		assertEquals(2, Matrix.getNumberOfRows(Bd));
 		assertEquals(3, Matrix.getNumberOfColumns(Bd));
 		assertEquals(6.0, Bd[1][2], TOLERANCE);
+		assertEquals(2.0, Bd[0][1], TOLERANCE);
 		
-		assertEquals(2.0, Af[0][1], TOLERANCE);
+		RealMatrix Br = MatrixUtils.createRealMatrix(Bd);
+		assertEquals(2, Matrix.getNumberOfRows(Br));
+		assertEquals(3, Matrix.getNumberOfColumns(Br));
+		assertEquals(6.0, Br.getEntry(1, 2), TOLERANCE);
+		assertEquals(2.0, Br.getEntry(0, 1), TOLERANCE);
 	}
 	
 	@Test
@@ -67,10 +73,12 @@ public class MatrixTest {
 		NumericTestUtils.assertArrayEquals(Bf, Matrix.makeFloatMatrix(2, 3, new float[] {-1, 2, 3, 4, 5, 6}), TOLERANCE);
 		
 		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeRealMatrix(2, 3, -1, 2, 3, 4, 5, 6).getData(), TOLERANCE);
+		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeRealMatrix(2, 3, new double[] {-1, 2, 3, 4, 5, 6}).getData(), TOLERANCE);
 	}
 	
 	@Test
 	public void testMatrixFlatten() {
+		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeRealMatrix(2, 3, Matrix.flatten(MatrixUtils.createRealMatrix(Bd))).getData(), TOLERANCE);
 		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeDoubleMatrix(2, 3, Matrix.flatten(Bd)), TOLERANCE);
 		NumericTestUtils.assertArrayEquals(Bf, Matrix.makeFloatMatrix(2, 3, Matrix.flatten(Bf)), TOLERANCE);
 		
@@ -79,6 +87,9 @@ public class MatrixTest {
 		
 		assertArrayEquals(new float[] {7, 8, 9}, Matrix.flatten(Matrix.makeFloatMatrix(1, 3, 7, 8, 9)), TOLERANCE);
 		assertArrayEquals(new float[] {7, 8, 9}, Matrix.flatten(Matrix.makeFloatMatrix(3, 1, 7, 8, 9)), TOLERANCE);
+		
+		assertArrayEquals(new double[] {7, 8, 9}, Matrix.flatten(Matrix.makeRealMatrix(1, 3, 7, 8, 9)), TOLERANCE);
+		assertArrayEquals(new double[] {7, 8, 9}, Matrix.flatten(Matrix.makeRealMatrix(3, 1, 7, 8, 9)), TOLERANCE);
 		
 	}
 	
