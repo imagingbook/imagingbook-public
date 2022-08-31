@@ -90,7 +90,6 @@ public class MatrixTest {
 		
 		assertArrayEquals(new double[] {7, 8, 9}, Matrix.flatten(Matrix.makeRealMatrix(1, 3, 7, 8, 9)), TOLERANCE);
 		assertArrayEquals(new double[] {7, 8, 9}, Matrix.flatten(Matrix.makeRealMatrix(3, 1, 7, 8, 9)), TOLERANCE);
-		
 	}
 	
 	@Test

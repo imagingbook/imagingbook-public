@@ -79,7 +79,7 @@ public abstract class Matrix {
 	 * 
 	 * @param rows the number of matrix rows
 	 * @param cols the number of matrix columns
-	 * @param values the matrix values in row-major order (may also be passed as a {@code double[]})
+	 * @param values a sequence of matrix values in row-major order (may also be passed as a {@code double[]})
 	 * @return a {@code double[][]} matrix
 	 */
 	public static double[][] makeDoubleMatrix(final int rows, final int cols, final double... values) {
@@ -112,12 +112,12 @@ public abstract class Matrix {
 	 * 		1.0f, 2.0f, 3.0f,
 	 * 		4.0f, 5.0f, 6.0f );</pre>
 	 * <p>
-	 * See also {@link #flatten(double[][])}.
+	 * See also {@link #flatten(float[][])}.
 	 * </p>
 	 * 
 	 * @param rows the number of matrix rows
 	 * @param cols the number of matrix columns
-	 * @param values the matrix values in row-major order (may also be passed as a {@code float[]})
+	 * @param values a sequence of matrix values in row-major order (may also be passed as a {@code float[]})
 	 * @return a {@code float[][]} matrix
 	 */
 	public static float[][] makeFloatMatrix(final int rows, final int cols, final float... values) {
@@ -142,7 +142,7 @@ public abstract class Matrix {
 	/**
 	 * <p>
 	 * Creates and returns a {@link RealMatrix} containing the specified {@code double} values.
-	 * Calls {@link #makeDoubleMatrix(int, int, double...)}.
+	 * Calls {@link #makeDoubleMatrix(int, int, double...)}. Example for creating a 2x3 matrix:
 	 * </p>
 	 * <pre>
 	 * RealMatrix A = makeRealMatrix(2, 3, 
@@ -153,7 +153,7 @@ public abstract class Matrix {
 	 * </p>
 	 * @param rows the number of matrix rows
 	 * @param cols the number of matrix columns
-	 * @param values the matrix values in row-major order (may also be passed as a {@code double[]})
+	 * @param values a sequence of matrix values in row-major order (may also be passed as a {@code double[]})
 	 * @return a {@link RealMatrix} 
 	 */
 	public static RealMatrix makeRealMatrix(final int rows, final int cols, final double... values) {
@@ -225,7 +225,7 @@ public abstract class Matrix {
 	 * Creates and returns a {@code double[]} vector from the
 	 * specified values.
 	 * 
-	 * @param values the vector values (may also be passed as a single {@code double[]})
+	 * @param values a sequence of vector values (may also be passed as a single {@code double[]})
 	 * @return a {@code double[]}
 	 */
 	public static double[] makeDoubleVector(double... values) {
@@ -236,7 +236,7 @@ public abstract class Matrix {
 	 * Creates and returns a {@code float[]} vector from the
 	 * specified values.
 	 * 
-	 * @param values the vector values (may also be passed as a single {@code float[]})
+	 * @param values a sequence of vector values (may also be passed as a single {@code float[]})
 	 * @return a {@code float[]}
 	 */
 	public static float[] makeFloatVector(float... values) {
@@ -247,7 +247,7 @@ public abstract class Matrix {
 	 * Creates and returns a {@link RealVector} from the
 	 * specified {@code double} values.
 	 * 
-	 * @param values the vector values (may also be passed as a single {@code double[]})
+	 * @param values a sequence of vector values (may also be passed as a single {@code double[]})
 	 * @return a {@link RealVector} 
 	 */
 	public static RealVector makeRealVector(double... values) {
@@ -262,7 +262,7 @@ public abstract class Matrix {
 	 * specified length.
 	 * Throws an exception if the length is less than 1.
 	 * @param length the length of the vector
-	 * @return a vector with zero values
+	 * @return a {@code double[]} with zero values
 	 */
 	public static double[] zeroVector(int length) {
 		if (length < 1)
