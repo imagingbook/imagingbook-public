@@ -223,42 +223,52 @@ public class MahalanobisDistance { 	//TODO: Check/reuse methods for covariance m
 
 	/**
 	 * Returns the Mahalanobis distance between the given points.
-	 * @param X first point
-	 * @param Y second point
+	 * @param a first point
+	 * @param b second point
 	 * @return the Mahalanobis distance
 	 */
-	public double distance(double[] X, double[] Y) {
-		return Math.sqrt(distance2(X, Y));
+	public double distance(double[] a, double[] b) {
+		return Math.sqrt(distance2(a, b));
 	}
 
 	/**
-	 * Returns the squared Mahalanobis distance between the given points.
-	 * @param X first point
-	 * @param Y second point
+	 * Returns the squared Mahalanobis distance between the given points a, b:
+	 * d^2(a,b) = (a-b)^T . S^{-1} . (a-b)
+	 * @param a first point
+	 * @param b second point
 	 * @return the squared Mahalanobis distance
 	 */
-	public double distance2(double[] X, double[] Y) {
-		if (X.length != m || Y.length != m) {
-			throw new IllegalArgumentException("vectors must be of length " + m);
-		}
-		// TODO: implement with methods from Matrix class
-		// d^2(X,Y) = (X-Y)^T . S^{-1} . (X-Y)
-		double[] dXY = new double[m]; // = (X-Y)
-		for (int k = 0; k < m; k++) {
-			dXY[k] = X[k] - Y[k];
-		}
-		double[] iSdXY = new double[m]; // = S^{-1} . (X-Y)
-		for (int k = 0; k < m; k++) {
-			for (int i = 0; i < m; i++) {
-				iSdXY[k] += icov[i][k] * dXY[i];
-			}
-		}
-		double d2 = 0;	// final sum
-		for (int k = 0; k < m; k++) {
-			d2 += dXY[k] * iSdXY[k];
-		}						// d = (X-Y)^T . S^{-1} . (X-Y)
-		return d2;
+	public double distance2(double[] a, double[] b) {
+		if (a.length != m || b.length != m) {
+			throw new IllegalArgumentException("vectors a, b must be of length " + m);
+		}	
+		double[] amb = Matrix.subtract(a, b);	// amb = a - b
+		return Matrix.dotProduct(Matrix.multiply(amb, icov), amb);
+		
 	}
+	
+	// original version
+//	public double distance2(double[] X, double[] Y) {
+//		if (X.length != m || Y.length != m) {
+//			throw new IllegalArgumentException("vectors must be of length " + m);
+//		}
+//		// d^2(X,Y) = (X-Y)^T . S^{-1} . (X-Y)
+//		double[] dXY = new double[m]; // = (X-Y)
+//		for (int k = 0; k < m; k++) {
+//			dXY[k] = X[k] - Y[k];
+//		}
+//		double[] iSdXY = new double[m]; // = S^{-1} . (X-Y)
+//		for (int k = 0; k < m; k++) {
+//			for (int i = 0; i < m; i++) {
+//				iSdXY[k] += icov[i][k] * dXY[i];
+//			}
+//		}
+//		double d2 = 0;	// final sum
+//		for (int k = 0; k < m; k++) {
+//			d2 += dXY[k] * iSdXY[k];
+//		}						// d = (X-Y)^T . S^{-1} . (X-Y)
+//		return d2;
+//	}
 
 	/**
 	 * Calculates the Mahalanobis distance between point x and
