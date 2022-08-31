@@ -15,8 +15,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.NonSymmetricMatrixException;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -125,6 +123,8 @@ public class MatrixTest {
 		assertFalse(Matrix.sameSize(Af, Bf));
 	}
 	
+	// --------------------------------------------------------------------
+	
 	@Test
 	public void testMatrixIsRectangularDouble() {
 		double[][] X =
@@ -184,6 +184,74 @@ public class MatrixTest {
 	@Test
 	public void testMatrixTraceFloat() {
 		assertEquals(13.0, (double) Matrix.trace(Af), TOLERANCE);
+	}
+	
+	// --------------------------------------------------------------------
+	
+	@Test
+	public void testMatrixMultiplyValVec() {
+		double[] x = {7, -5, 2};
+		double s = Math.PI; 
+		
+		assertArrayEquals(Matrix.multiply(s, x), MatrixUtils.createRealVector(x).mapMultiply(s).toArray(), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixMultiplyValMat() {
+		double s = Math.PI; 
+		RealMatrix Ar = MatrixUtils.createRealMatrix(Ad);
+		RealMatrix Br = MatrixUtils.createRealMatrix(Bd);
+		
+		assertArrayEquals(Matrix.multiply(s, Ad), Ar.scalarMultiply(s).getData());
+		assertArrayEquals(Matrix.multiply(s, Bd), Br.scalarMultiply(s).getData());
+	}
+	
+	@Test
+	public void testMatrixMultiplyMatMat() {
+		double[][] Id2 = Matrix.idMatrix(2);
+		double[][] Id3 = Matrix.idMatrix(3);
+		
+		RealMatrix Ar = MatrixUtils.createRealMatrix(Ad);
+		RealMatrix Br = MatrixUtils.createRealMatrix(Bd);
+		
+		assertArrayEquals(Matrix.multiply(Ad, Id3), Ad);
+		assertArrayEquals(Matrix.multiply(Id3, Ad), Ad);
+		
+		assertArrayEquals(Matrix.multiply(Bd, Id3), Bd);
+		assertArrayEquals(Matrix.multiply(Id2, Bd), Bd);
+		
+		assertArrayEquals(Matrix.multiply(Ad, Ad), Ar.multiply(Ar).getData());
+		
+		assertArrayEquals(Matrix.multiply(Bd, Matrix.transpose(Bd)), Br.multiply(Br.transpose()).getData());
+		assertArrayEquals(Matrix.multiply(Matrix.transpose(Bd), Bd), Br.transpose().multiply(Br).getData());
+		
+		assertArrayEquals(Matrix.multiply(Bd, Ad), Br.multiply(Ar).getData());
+		assertArrayEquals(Matrix.multiply(Ad, Matrix.transpose(Bd)), Ar.multiply(Br.transpose()).getData());
+	}
+	
+	@Test
+	public void testMatrixMultiplyMatVec() {
+		double[] x = {7, -5, 2};
+		RealMatrix Ar = MatrixUtils.createRealMatrix(Ad);
+		RealMatrix Br = MatrixUtils.createRealMatrix(Bd);
+		
+		assertArrayEquals(Matrix.multiply(Matrix.idMatrix(3), x), x, TOLERANCE);
+		
+		assertArrayEquals(Matrix.multiply(Ad, x), Ar.operate(x), TOLERANCE);
+		assertArrayEquals(Matrix.multiply(Bd, x), Br.operate(x), TOLERANCE);
+		assertArrayEquals(Matrix.multiply(Matrix.transpose(Ad), x), Ar.transpose().operate(x), TOLERANCE);
+	}
+	
+	@Test
+	public void testMatrixMultiplyVecMat() {
+		double[] x = {7, -5, 2};
+		RealMatrix Ar = MatrixUtils.createRealMatrix(Ad);
+		RealMatrix Br = MatrixUtils.createRealMatrix(Bd);
+		
+		assertArrayEquals(Matrix.multiply(x, Matrix.idMatrix(3)), x, TOLERANCE);
+		
+		assertArrayEquals(Matrix.multiply(x, Ad), Ar.preMultiply(x), TOLERANCE);
+		assertArrayEquals(Matrix.multiply(x, Matrix.transpose(Bd)), Br.transpose().preMultiply(x), TOLERANCE);
 	}
 	
 	// --------------------------------------------------------------------
@@ -462,6 +530,8 @@ public class MatrixTest {
 			 {3, 2, -1}};
 		assertTrue(Matrix.isSingular(X));
 		assertTrue(Matrix.isSingular(Y));
+		assertTrue(Matrix.isSingular(Z));
+		
 		assertFalse(Matrix.isSingular(Ad));
 		assertFalse(Matrix.isSingular(new double[][] {{3, 2}, {1, -2}}));	
 	}

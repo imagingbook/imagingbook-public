@@ -1195,7 +1195,10 @@ public abstract class Matrix {
 		final int mB = getNumberOfRows(B);
 		final int nB = getNumberOfColumns(B);
 		if (nA != mB)
-			throw new IncompatibleDimensionsException();	// TODO: check size of C
+			throw new IncompatibleDimensionsException();	// check size of A, B
+		if (mA != getNumberOfRows(C) || nB != getNumberOfColumns(C))
+			throw new IncompatibleDimensionsException();	// check size of C
+		
 		for (int i = 0; i < mA; i++) {
 			for (int j = 0; j < nB; j++) {
 				double s = 0;
