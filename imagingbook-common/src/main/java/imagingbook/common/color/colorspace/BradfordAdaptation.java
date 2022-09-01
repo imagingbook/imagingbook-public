@@ -68,11 +68,11 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	
 	// transformation of color coordinates
 	@Override
-	public float[] applyTo(float[] XYZ1) {
+	public float[] applyTo(float[] xyz) {
 		// XYZ2 = Mcat . XYZ1
 		float[] XYZ2 = new float[3];
 		for (int i = 0; i < 3; i++) {
-			XYZ2[i] = (float) (Mcat[i][0] * XYZ1[0] + Mcat[i][1] * XYZ1[1] + Mcat[i][2] * XYZ1[2]);
+			XYZ2[i] = (float) (Mcat[i][0] * xyz[0] + Mcat[i][1] * xyz[1] + Mcat[i][2] * xyz[2]);
 		}
 		return XYZ2;
 	}

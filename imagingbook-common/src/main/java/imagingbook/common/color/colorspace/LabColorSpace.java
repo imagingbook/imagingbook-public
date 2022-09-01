@@ -47,12 +47,12 @@ public class LabColorSpace extends ColorSpace {
 
 	// XYZ50 -> CIELab: returns Lab values from XYZ (relative to D50)
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Note: This implementation (required by {@link ColorSpace}) assumes that 
+	 * Converts color points in D50-based XYZ space to CIELab coordinates.
+	 * This method implements {@link ColorSpace#fromCIEXYZ(float[])}), assuming that 
 	 * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).
 	 * See also {@link #fromCIEXYZ65(float[])} for a D65-based version.
-	 * </p>
+	 * @param XYZ50 a color in D50-based XYZ space (components in [0,1])
+	 * @return the associated CIELab color
 	 */
 	@Override
 	public float[] fromCIEXYZ(float[] XYZ50) {	
@@ -77,14 +77,14 @@ public class LabColorSpace extends ColorSpace {
 		return new float[] {L, a, b};
 	}
 
-	// CIELab -> XYZ50: returns XYZ values (relative to D50) from Lab
+	// CIELab -> XYZ50: returns XYZ values (relative to D50) from Lab //{@inheritDoc}
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Note: This implementation (required by {@link ColorSpace}) converts a
-	 * CIELab color to a color coordinate in D50-based XYZ space.
+	 * Converts the specified CIELab color to D50-based XYZ coordinates.
+	 * This method implements {@link ColorSpace#toCIEXYZ(float[])}) assuming that
+	 * the XYZ color coordinate is D50-based.
 	 * See also {@link #toCIEXYZ65(float[])} for a D65-based version.
-	 * </p>
+	 * @param Lab CIELab color
+	 * @return XYZ coordinates (D50-based)
 	 */
 	@Override
 	public float[] toCIEXYZ(float[] Lab) {
@@ -96,7 +96,7 @@ public class LabColorSpace extends ColorSpace {
 	/**
 	 * Converts the specified CIELab color to D65-based XYZ coordinates.
 	 * @param Lab CIELab color
-	 * @return D65-based XYZ coordinates
+	 * @return XYZ coordinates (D65-based)
 	 */
 	public float[] toCIEXYZ65(float[] Lab) {
 		double ll = ( Lab[0] + 16.0 ) / 116.0;
@@ -108,12 +108,11 @@ public class LabColorSpace extends ColorSpace {
 
 	//sRGB -> CIELab (direct, without adaptation to D50)
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Note: This implementation (required by {@link ColorSpace}) converts a
-	 * D65-based sRGB color coordinate assumed to the associated
-	 * CIELab color.
-	 * </p>
+	 * Transforms a sRGB color value to a CIELab color.
+	 * This method implements {@link ColorSpace#fromRGB(float[])} assuming
+	 * D65-based sRGB color coordinates.
+	 * @param srgb a sRGB color (D65-based)
+	 * @return the associated CIELab color
 	 */
 	@Override
 	public float[] fromRGB(float[] srgb) {
@@ -123,11 +122,11 @@ public class LabColorSpace extends ColorSpace {
 
 	//CIELab -> sRGB (direct, without adaptation to D50)
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Note: This implementation (required by {@link ColorSpace}) converts a
-	 * CIELab color to a D65-based sRGB color coordinate.
-	 * </p>
+	 * Transforms a CIELab color value to a sRGB color
+	 * This method implements {@link ColorSpace#toRGB(float[])} assuming 
+	 * D65-based sRGB color coordinates.
+	 * @param Lab a CIELab color
+	 * @return sRGB coordinates (D65-based)
 	 */
 	@Override
 	public float[] toRGB(float[] Lab) {

@@ -18,11 +18,11 @@ public interface ChromaticAdaptation {
 
 	/**
 	 * Actual transformation of color coordinates.
-	 * XYZ1 are interpreted relative to (source) white point W1.
+	 * The specified color coordinates are interpreted relative to (source) white point (W1).
 	 * Returns a new color adapted to (target) white point W2.
-	 * @param XYZ1 the original color point w.r.t. W1
-	 * @return the associated color w.r.t. W2
+	 * @param xyz the original color point w.r.t. W1
+	 * @return the associated color w.r.t. the target white point (W2).
 	 */
-	public float[] applyTo(float[] XYZ1);
+	public float[] applyTo(float[] xyz);
 
 }
