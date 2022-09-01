@@ -150,7 +150,7 @@
 					<version>3.0.0-M5</version>
 					<configuration>
 						<goals>deploy</goals>
-						<autoversionsubmodules>true</autoversionsubmodules>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
 					</configuration>
 				</plugin>
 				
