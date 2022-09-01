@@ -1,10 +1,10 @@
 /*******************************************************************************
  * This software is provided as a supplement to the authors' textbooks on digital
- *  image processing published by Springer-Verlag in various languages and editions.
+ * image processing published by Springer-Verlag in various languages and editions.
  * Permission to use and distribute this software is granted under the BSD 2-Clause 
  * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). 
- * Copyright (c) 2006-2020 Wilhelm Burger, Mark J. Burge. All rights reserved. 
- * Visit http://imagingbook.com for additional details.
+ * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
+ * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
 package imagingbook.common.ij;
@@ -158,7 +158,7 @@ public class GuiTools {
 	 * remains always unchanged.
 	 * <br>
 	 * Adapted from https://albert.rierol.net/plugins/Zoom_Exact.java
-	 * Copyright Albert Cardona @ 2006
+	 * by Albert Cardona @ 2006
 	 * General Public License applies.
 	 * <br>
 	 * TODO: Check calculation of source rectangle, final magnification may not always be exact!

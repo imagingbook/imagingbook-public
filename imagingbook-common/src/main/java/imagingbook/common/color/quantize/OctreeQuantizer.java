@@ -1,10 +1,10 @@
 /*******************************************************************************
  * This software is provided as a supplement to the authors' textbooks on digital
- *  image processing published by Springer-Verlag in various languages and editions.
+ * image processing published by Springer-Verlag in various languages and editions.
  * Permission to use and distribute this software is granted under the BSD 2-Clause 
  * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). 
- * Copyright (c) 2006-2020 Wilhelm Burger, Mark J. Burge. All rights reserved. 
- * Visit http://imagingbook.com for additional details.
+ * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
+ * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
 package imagingbook.common.color.quantize;
@@ -28,7 +28,7 @@ import imagingbook.common.color.RgbUtils;
  * <a href="http://www.imagemagick.org/">ImageMagick</a>.
  * The associated source code can be found 
  * <a href="https://github.com/ImageMagick/ImageMagick/blob/main/MagickCore/quantize.c">
- * here</a>, the original copyright note is provided at the bottom of this source file.
+ * here</a>, the original license note is provided at the bottom of this source file.
  * 
  * This implementation is similar but not identical to the original octree quantization
  * algorithm described in

@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * This software is provided as a supplement to the authors' textbooks on digital
+ * image processing published by Springer-Verlag in various languages and editions.
+ * Permission to use and distribute this software is granted under the BSD 2-Clause 
+ * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). 
+ * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
+ * All rights reserved. Visit https://imagingbook.com for additional details.
+ *******************************************************************************/
+
 package imagingbook.common.math.jama;
 
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -7,30 +16,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 
-/**
- * Cholesky Decomposition adapted from (back-factored to) JAMA implementation 
- * (see https://math.nist.gov/javanumerics/jama/).
- * 
- * This implementation is less sensitive than the Apache Commons implementation
- * regarding rank-deficient matrices. I.e., it can also decompose matrices that
- * are not of full rank (see the example below).
- * <p>
- * For a symmetric, positive definite matrix A, the Cholesky decomposition is a
- * lower triangular matrix L so that A = L*L'.
- * </p>
- * <p>
- * If the matrix is not symmetric or positive definite, the constructor returns
- * a partial decomposition and sets an internal flag that may be queried by the
- * {@link #isPositiveDefinite()} method.
- * </p>
- * 
- * <blockquote>
- * Original Copyright Notice: This software is a cooperative product of The MathWorks and the National Institute
- * of Standards and Technology (NIST) which has been released to the public domain. Neither The MathWorks
- * nor NIST assumes any responsibility whatsoever for its use by other parties, and makes no guarantees,
- * expressed or implied, about its quality, reliability, or any other characteristic.
- * </blockquote>
- */
+
 @Deprecated 
 public class CholeskyDecomposition {
 
