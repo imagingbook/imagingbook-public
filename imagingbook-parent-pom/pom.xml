@@ -15,7 +15,7 @@
 		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
 	</description>
 	<inceptionYear>2006</inceptionYear>
-	<url>http://www.imagingbook.com</url>
+	<url>https://imagingbook.com</url>
 
 	<developers>
 		<developer>
@@ -344,7 +344,7 @@
 					<!-- <top>The ImagingBook TOP text</top> -->
 					<bottom>
 	        		<![CDATA[Copyright &#169; {inceptionYear}&#x2013;{currentYear}, 
-	        		<a href="http://www.imagingbook.com" target="new">
+	        		<a href="https://imagingbook.com" target="new">
 	        		Wilhelm Burger, Mark J. Burge</a>
 	        		<a href="http://opensource.org/licenses/BSD-2-Clause" target="new">
 	        		(BSD 2-Clause Simplified License)</a>]]>
