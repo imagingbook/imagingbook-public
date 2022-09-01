@@ -14,7 +14,7 @@
 <span class="sourceLineNo">004</span><a id="line.4"> * Permission to use and distribute this software is granted under the BSD 2-Clause </a>
 <span class="sourceLineNo">005</span><a id="line.5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). </a>
 <span class="sourceLineNo">006</span><a id="line.6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. </a>
-<span class="sourceLineNo">007</span><a id="line.7"> * All rights reserved. Visit http://www.imagingbook.com for additional details.</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * All rights reserved. Visit https://imagingbook.com for additional details.</a>
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9"></a>
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.common.color.colorspace;</a>
@@ -49,12 +49,12 @@
 <span class="sourceLineNo">039</span><a id="line.39">        }</a>
 <span class="sourceLineNo">040</span><a id="line.40">        </a>
 <span class="sourceLineNo">041</span><a id="line.41">        /**</a>
-<span class="sourceLineNo">042</span><a id="line.42">         * Constructor accepting two {@link Illuminant} instances for</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * Constructor accepting two {@link StandardIlluminant} instances for</a>
 <span class="sourceLineNo">043</span><a id="line.43">         * specifying the source and target white points.</a>
 <span class="sourceLineNo">044</span><a id="line.44">         * @param illum1 source illuminant</a>
 <span class="sourceLineNo">045</span><a id="line.45">         * @param illum2 target illuminant</a>
 <span class="sourceLineNo">046</span><a id="line.46">         */</a>
-<span class="sourceLineNo">047</span><a id="line.47">        public XYZscalingAdaptation(Illuminant illum1, Illuminant illum2) {</a>
+<span class="sourceLineNo">047</span><a id="line.47">        public XYZscalingAdaptation(StandardIlluminant illum1, StandardIlluminant illum2) {</a>
 <span class="sourceLineNo">048</span><a id="line.48">                this(illum1.getXYZ(), illum2.getXYZ());</a>
 <span class="sourceLineNo">049</span><a id="line.49">        }</a>
 <span class="sourceLineNo">050</span><a id="line.50"></a>

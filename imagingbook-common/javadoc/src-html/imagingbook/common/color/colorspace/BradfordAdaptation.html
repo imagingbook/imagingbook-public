@@ -14,7 +14,7 @@
 <span class="sourceLineNo">004</span><a id="line.4"> * Permission to use and distribute this software is granted under the BSD 2-Clause </a>
 <span class="sourceLineNo">005</span><a id="line.5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). </a>
 <span class="sourceLineNo">006</span><a id="line.6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. </a>
-<span class="sourceLineNo">007</span><a id="line.7"> * All rights reserved. Visit http://www.imagingbook.com for additional details.</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * All rights reserved. Visit https://imagingbook.com for additional details.</a>
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9"></a>
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.common.color.colorspace;</a>
@@ -67,22 +67,22 @@
 <span class="sourceLineNo">057</span><a id="line.57">        }</a>
 <span class="sourceLineNo">058</span><a id="line.58">        </a>
 <span class="sourceLineNo">059</span><a id="line.59">        /**</a>
-<span class="sourceLineNo">060</span><a id="line.60">         * Constructor accepting two {@link Illuminant} instances for</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * Constructor accepting two {@link StandardIlluminant} instances for</a>
 <span class="sourceLineNo">061</span><a id="line.61">         * specifying the source and target white points.</a>
 <span class="sourceLineNo">062</span><a id="line.62">         * @param illum1 source illuminant</a>
 <span class="sourceLineNo">063</span><a id="line.63">         * @param illum2 target illuminant</a>
 <span class="sourceLineNo">064</span><a id="line.64">         */</a>
-<span class="sourceLineNo">065</span><a id="line.65">        public BradfordAdaptation(Illuminant illum1, Illuminant illum2) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">        public BradfordAdaptation(StandardIlluminant illum1, StandardIlluminant illum2) {</a>
 <span class="sourceLineNo">066</span><a id="line.66">                this(illum1.getXYZ(), illum2.getXYZ());</a>
 <span class="sourceLineNo">067</span><a id="line.67">        }</a>
 <span class="sourceLineNo">068</span><a id="line.68">        </a>
 <span class="sourceLineNo">069</span><a id="line.69">        // transformation of color coordinates</a>
 <span class="sourceLineNo">070</span><a id="line.70">        @Override</a>
-<span class="sourceLineNo">071</span><a id="line.71">        public float[] applyTo(float[] XYZ1) {</a>
+<span class="sourceLineNo">071</span><a id="line.71">        public float[] applyTo(float[] xyz) {</a>
 <span class="sourceLineNo">072</span><a id="line.72">                // XYZ2 = Mcat . XYZ1</a>
 <span class="sourceLineNo">073</span><a id="line.73">                float[] XYZ2 = new float[3];</a>
 <span class="sourceLineNo">074</span><a id="line.74">                for (int i = 0; i &lt; 3; i++) {</a>
-<span class="sourceLineNo">075</span><a id="line.75">                        XYZ2[i] = (float) (Mcat[i][0] * XYZ1[0] + Mcat[i][1] * XYZ1[1] + Mcat[i][2] * XYZ1[2]);</a>
+<span class="sourceLineNo">075</span><a id="line.75">                        XYZ2[i] = (float) (Mcat[i][0] * xyz[0] + Mcat[i][1] * xyz[1] + Mcat[i][2] * xyz[2]);</a>
 <span class="sourceLineNo">076</span><a id="line.76">                }</a>
 <span class="sourceLineNo">077</span><a id="line.77">                return XYZ2;</a>
 <span class="sourceLineNo">078</span><a id="line.78">        }</a>
