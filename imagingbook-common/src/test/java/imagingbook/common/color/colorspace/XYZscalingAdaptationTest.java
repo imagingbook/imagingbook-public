@@ -47,8 +47,8 @@ public class XYZscalingAdaptationTest {
 	
 	private static void doCheck(ColorSpace cs, int[] srgb) {
 		float[] srgb1 = {srgb[0]/255f, srgb[1]/255f, srgb[2]/255f};		
-		ChromaticAdaptation adapt65to50 = new XYZscalingAdaptation(Illuminant.D65, Illuminant.D50);	// adapts from D65 -> D50
-		ChromaticAdaptation adapt50to65 = new XYZscalingAdaptation(Illuminant.D50, Illuminant.D65);	// adapts from D50 -> D65
+		ChromaticAdaptation adapt65to50 = new XYZscalingAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
+		ChromaticAdaptation adapt50to65 = new XYZscalingAdaptation(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
 		
 		float[] XYZ65a = cs.toCIEXYZ(srgb1);
 		float[] XYZ50 = adapt65to50.applyTo(XYZ65a);

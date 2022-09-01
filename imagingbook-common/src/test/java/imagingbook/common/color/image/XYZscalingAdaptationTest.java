@@ -8,8 +8,8 @@
  *******************************************************************************/
 package imagingbook.common.color.image;
 
-import static imagingbook.common.color.colorspace.Illuminant.D50;
-import static imagingbook.common.color.colorspace.Illuminant.D65;
+import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
+import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.awt.color.ColorSpace;

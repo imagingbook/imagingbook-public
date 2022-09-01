@@ -9,7 +9,7 @@
 
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.colorspace.Illuminant.D65;
+import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 
 import java.awt.color.ColorSpace;
 
@@ -28,16 +28,17 @@ import java.awt.color.ColorSpace;
 public class LuvColorSpace extends ColorSpace {
 		
 	// D65 reference white point:
-	private static final double Xref = D65.getX(); 	// 0.950456
-	private static final double Yref = D65.getY(); 	// 1.000000
-	private static final double Zref = D65.getZ();	// 1.088754
+//	private static final double Xref = D65.getX(); 	// 0.950456
+//	private static final double Yref = D65.getY(); 	// 1.000000
+//	private static final double Zref = D65.getZ();	// 1.088754
+	private static final double[] XYZref = D65.getXYZ();
 	
-	private static final double uuref = fu(Xref, Yref, Zref); // u'_n
-	private static final double vvref = fv(Xref, Yref, Zref); // v'_n
+	private static final double uuref = fu(XYZref[0], XYZref[1], XYZref[2]); // u'_n
+	private static final double vvref = fv(XYZref[0], XYZref[1], XYZref[2]); // v'_n
 	
 	// chromatic adaptation objects:
-	private static final ChromaticAdaptation catD65toD50 = new BradfordAdaptation(Illuminant.D65, Illuminant.D50);
-	private static final ChromaticAdaptation catD50toD65 = new BradfordAdaptation(Illuminant.D50, Illuminant.D65);
+	private static final ChromaticAdaptation catD65toD50 = new BradfordAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);
+	private static final ChromaticAdaptation catD50toD65 = new BradfordAdaptation(StandardIlluminant.D50, StandardIlluminant.D65);
 	
 	/**
 	 * Constructor.
@@ -72,7 +73,7 @@ public class LuvColorSpace extends ColorSpace {
 		double X = XYZ65[0];
 		double Y = XYZ65[1];	
 		double Z = XYZ65[2];
-		double YY = f1(Y / Yref);  	// Y'
+		double YY = f1(Y / XYZref[1]);  	// Y'
 		double uu = fu(X,Y,Z); 		// u'
 		double vv = fv(X,Y,Z); 		// v'
 		float L = (float)(116.0 * YY - 16.0); 		//L*
@@ -105,7 +106,7 @@ public class LuvColorSpace extends ColorSpace {
 		double L = Luv[0];
 		double u = Luv[1];
 		double v = Luv[2];
-		float Y = (float) (Yref * f2((L + 16) / 116.0));
+		float Y = (float) (XYZref[1] * f2((L + 16) / 116.0));
 		double uu = (L < 0.00001) ? uuref : u / (13 * L) + uuref; // u'
 		double vv = (L < 0.00001) ? vvref : v / (13 * L) + vvref; // v'
 		float X = (float) (Y * ((9*uu)/(4*vv)));

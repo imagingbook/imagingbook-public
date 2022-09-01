@@ -57,12 +57,12 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	}
 	
 	/**
-	 * Constructor accepting two {@link Illuminant} instances for
+	 * Constructor accepting two {@link StandardIlluminant} instances for
 	 * specifying the source and target white points.
 	 * @param illum1 source illuminant
 	 * @param illum2 target illuminant
 	 */
-	public BradfordAdaptation(Illuminant illum1, Illuminant illum2) {
+	public BradfordAdaptation(StandardIlluminant illum1, StandardIlluminant illum2) {
 		this(illum1.getXYZ(), illum2.getXYZ());
 	}
 	

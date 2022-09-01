@@ -9,8 +9,8 @@
 
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.colorspace.Illuminant.D50;
-import static imagingbook.common.color.colorspace.Illuminant.D65;
+import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
+import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 
 import java.awt.color.ColorSpace;
 
@@ -29,9 +29,10 @@ import java.awt.color.ColorSpace;
 public class LabColorSpace extends ColorSpace {
 
 	// D65 reference white point:
-	private static final double Xref = D65.getX(); 	// 0.950456
-	private static final double Yref = D65.getY(); 	// 1.000000
-	private static final double Zref = D65.getZ();	// 1.088754
+//	private static final double Xref = D65.getX(); 	// 0.950456
+//	private static final double Yref = D65.getY(); 	// 1.000000
+//	private static final double Zref = D65.getZ();	// 1.088754
+	private static final double[] XYZref = D65.getXYZ();
 
 	// chromatic adaptation objects:
 	private static final ChromaticAdaptation catD65toD50 = new BradfordAdaptation(D65, D50);
@@ -68,16 +69,16 @@ public class LabColorSpace extends ColorSpace {
 	 * @return the associated CIELab color
 	 */
 	public float[] fromCIEXYZ65(float[] XYZ65) {
-		double xx = f1(XYZ65[0] / Xref);	
-		double yy = f1(XYZ65[1] / Yref);
-		double zz = f1(XYZ65[2] / Zref);
+		double xx = f1(XYZ65[0] / XYZref[0]);	
+		double yy = f1(XYZ65[1] / XYZref[1]);
+		double zz = f1(XYZ65[2] / XYZref[2]);
 		float L = (float)(116.0 * yy - 16.0);
 		float a = (float)(500.0 * (xx - yy));
 		float b = (float)(200.0 * (yy - zz));
 		return new float[] {L, a, b};
 	}
 
-	// CIELab -> XYZ50: returns XYZ values (relative to D50) from Lab //{@inheritDoc}
+	// CIELab -> XYZ50: returns XYZ values (relative to D50) from Lab
 	/**
 	 * Converts the specified CIELab color to D50-based XYZ coordinates.
 	 * This method implements {@link ColorSpace#toCIEXYZ(float[])}) assuming that
@@ -100,9 +101,9 @@ public class LabColorSpace extends ColorSpace {
 	 */
 	public float[] toCIEXYZ65(float[] Lab) {
 		double ll = ( Lab[0] + 16.0 ) / 116.0;
-		float Y65 = (float) (Yref * f2(ll));
-		float X65 = (float) (Xref * f2(ll + Lab[1] / 500.0));
-		float Z65 = (float) (Zref * f2(ll - Lab[2] / 200.0));
+		float Y65 = (float) (XYZref[1] * f2(ll));
+		float X65 = (float) (XYZref[0] * f2(ll + Lab[1] / 500.0));
+		float Z65 = (float) (XYZref[2] * f2(ll - Lab[2] / 200.0));
 		return new float[] {X65, Y65, Z65};
 	}
 

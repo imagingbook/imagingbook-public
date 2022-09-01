@@ -14,7 +14,7 @@ import imagingbook.common.math.Matrix;
 public class CieUtilTest {
 
 	@Test
-	public void test1a() {
+	public void test1() {
 		ColorSpace cs = new sRgb65ColorSpace();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
@@ -52,11 +52,11 @@ public class CieUtilTest {
 		float[] srgb1 = {srgb[0]/255f, srgb[1]/255f, srgb[2]/255f};		
 		
 		float[] XYZa = cs.toCIEXYZ(srgb1);
-		double[] xy = CieUtil.xyzToXy(Matrix.toDouble(XYZa));
+		double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZa));
 		assertTrue(Double.isFinite(xy[0]));
 		assertTrue(Double.isFinite(xy[1]));
 		
-		float[] XYZb = Matrix.toFloat(CieUtil.xyToXyz(xy[0], xy[1], XYZa[1]));
+		float[] XYZb = Matrix.toFloat(CieUtil.xyToXYZ(xy[0], xy[1], XYZa[1]));
 		
 		assertArrayEquals("CieUtil problem for srgb=" + Arrays.toString(srgb), XYZa, XYZb, 1e-6f);
 	}

@@ -27,7 +27,7 @@ public abstract class CieUtil {
 	 * @param y y-coordinate (in the 2D xy-diagram)
 	 * @return the associated XYZ coordinate
 	 */
-	public static double[] xyToXyz(double x, double y) {
+	public static double[] xyToXYZ(double x, double y) {
 		if (Arithmetic.isZero(y)) {
 			return new double[] {0, 0, 0};
 		}
@@ -48,7 +48,7 @@ public abstract class CieUtil {
 	 * @param Y the Y-coordinate (in 3D color space)
 	 * @return the associated XYZ coordinate
 	 */
-	public static double[] xyToXyz(double x, double y, double Y) {
+	public static double[] xyToXYZ(double x, double y, double Y) {
 		if (Arithmetic.isZero(Y)) {
 			return new double[] {0, 0, 0};
 		}
@@ -69,7 +69,7 @@ public abstract class CieUtil {
 	 * @param XYZ the XYZ coordinate (3D)
 	 * @return the xy-coordinate (2D)
 	 */
-	public static double[] xyzToXy(double[] XYZ) {
+	public static double[] XYZToXy(double[] XYZ) {
 		double X = XYZ[0];
 		double Y = XYZ[1];
 		double Z = XYZ[2];
