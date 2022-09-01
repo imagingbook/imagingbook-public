@@ -1,0 +1,31 @@
+package imagingbook.common.color.colorspace;
+
+import static java.lang.Double.isFinite;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+public class StandardIlluminantTest {
+
+	@Test
+	public void test1() {
+		for (StandardIlluminant ill : StandardIlluminant.values()) {
+			double[] XYZ = ill.getXYZ();
+//			System.out.println(ill.toString() + ": " + Arrays.toString(XYZ));
+			assertTrue("XYZ component < 0 in " + ill.toString(), XYZ[0] > 0 && XYZ[1] > 0 && XYZ[2] > 0);
+			assertTrue("XYZ component infinite or NaN in " + ill.toString(), isFinite(XYZ[0]) && isFinite(XYZ[1]) && isFinite(XYZ[2]));
+		}
+	}
+	
+	@Test
+	public void test2() {
+		for (StandardIlluminant ill : StandardIlluminant.values()) {
+			double[] xy = CieUtil.XYZToXy(ill.getXYZ());
+//			System.out.println(ill.toString() + ": " + Arrays.toString(xy));
+			assertTrue("xy component < 0 in " + ill.toString(), xy[0] > 0 && xy[1] > 0);
+			assertTrue("xy component > 1 in " + ill.toString(), xy[0] <= 1 && xy[1] <= 1);
+			assertTrue("xy component infinite or NaN in " + ill.toString(), isFinite(xy[0]) && isFinite(xy[1]));
+		}
+	}
+
+}
