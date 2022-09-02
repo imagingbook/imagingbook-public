@@ -16,20 +16,23 @@ import ij.process.FloatProcessor;
 
 import java.awt.color.ColorSpace;
 
+
+// TODO: add unit tests
+
 /**
- * This class contains only static methods for handling color images represented as 
+ * This class defines static methods for handling color images represented as 
  * multi-plane image stacks.
- * The 3 components in all these images are assumed to be in [0,1].
+ * The component values in all these images are assumed to be in [0,1].
  */
-public abstract class ColorStack { //extends ImageStack {
+public abstract class ColorStack { //TODO: extends ImageStack {
 	
 	public enum ColorStackType {
 		RGB("R", "G", "B"), 
 		sRGB("sR", "sG", "sB"), 
 		Lab("L", "a", "b"), 
 		Luv("L", "u", "v"),
-//		XYZ("X", "Y", "Z"), 		// not currently implemented
-//		YCbCr("Y", "Cb", "Cr"), 	// not currently implemented
+//		XYZ("X", "Y", "Z"), 		// TODO: not currently implemented
+//		YCbCr("Y", "Cb", "Cr"), 	// TODO: not currently implemented
 		;
 
 		protected final String[] componentLabels;
@@ -43,13 +46,14 @@ public abstract class ColorStack { //extends ImageStack {
 	
 	/**
 	 *This static method creates a 3-slice float-stack from a RGB image
-	 * @param imp the source (RGB) image.
+	 * @param im the source (RGB) image.
 	 * @return an image stack consisting of 3 slices of type float.
 	 */
-	public static ImagePlus createFrom(ImagePlus imp) {
-		if (imp.getType() != ImagePlus.COLOR_RGB)
-			return null;
-		ColorProcessor cp = (ColorProcessor) imp.getProcessor();
+	public static ImagePlus createFrom(ImagePlus im) {
+		if (im.getType() != ImagePlus.COLOR_RGB) {
+			throw new RuntimeException("cannot create ColorStack from ImagePlus of type " + im.getType());
+		}
+		ColorProcessor cp = (ColorProcessor) im.getProcessor();
 		int width = cp.getWidth();
 		int height = cp.getHeight();
 		ImageStack stack = new ImageStack(width, height);
@@ -74,7 +78,7 @@ public abstract class ColorStack { //extends ImageStack {
 		stack.addSlice(rp);
 		stack.addSlice(gp);
 		stack.addSlice(bp);
-    	ImagePlus cimp = new ImagePlus(imp.getTitle(), stack);
+    	ImagePlus cimp = new ImagePlus(im.getTitle(), stack);
     	//cimp.setProperty(ColorStackType.class.getSimpleName(), ColorStackType.sRGB);
     	setType(cimp, ColorStackType.sRGB);
 		return cimp;
@@ -179,9 +183,8 @@ public abstract class ColorStack { //extends ImageStack {
 		for (int k = 1; k <= 3; k++) {
 			float[] pixels = (float[]) stack.getPixels(k);		
 			for (int i=0; i<pixels.length; i++) {
-				float p = pixels[i];
-				if (p < 0) p = 0f; else if (p > 1) p = 1f;
-				pixels[i] = gammaInv(p);
+				float p = clipTo01(pixels[i]);
+				pixels[i] = (float) sRgbUtil.gammaInv(p); // gammaInv(p);
 			}
 		}
 		//srgbImg.setProperty(ColorStackTypeName, ColorStackType.RGB);
@@ -194,9 +197,8 @@ public abstract class ColorStack { //extends ImageStack {
 		for (int k = 1; k <= 3; k++) {
 			float[] pixels = (float[]) stack.getPixels(k);		
 			for (int i=0; i<pixels.length; i++) {
-				float p = pixels[i];
-				if (p < 0) p = 0f; else if (p > 1) p = 1f;
-				pixels[i] = gammaFwd(p);
+				float p = clipTo01(pixels[i]);
+				pixels[i] = (float) sRgbUtil.gammaFwd(p); // gammaFwd(p);
 			}
 		}
 		//rgbImg.setProperty(ColorStackTypeName, ColorStackType.sRGB);
@@ -236,56 +238,45 @@ public abstract class ColorStack { //extends ImageStack {
 		return rp;
 	}
 	
-	public static FloatProcessor magL2(ImagePlus rgbImg) { 
-		assert isColorStack(rgbImg);
-		//final double scale = 1/Math.sqrt(3);
-		ImageStack stack = rgbImg.getImageStack();
-		FloatProcessor rp = (FloatProcessor) stack.getProcessor(1).duplicate();
-		float[] rpix = (float[]) rp.getPixels();	
-		float[] pixels1 = (float[]) stack.getPixels(1);
-		float[] pixels2 = (float[]) stack.getPixels(2);
-		float[] pixels3 = (float[]) stack.getPixels(3);
-		
-		for (int i=0; i<pixels1.length; i++) {
-			double p1 = pixels1[i];
-			double p2 = pixels2[i];
-			double p3 = pixels3[i];
-			//rpix[i] = (float) (scale * Math.sqrt(p1*p1 + p2*p2 + p3*p3));
-			rpix[i] = (float) Math.sqrt(p1*p1 + p2*p2 + p3*p3);
-		}
-		return rp;
-	}
+//	public static FloatProcessor magL2(ImagePlus rgbImg) { 
+//		assert isColorStack(rgbImg);
+//		//final double scale = 1/Math.sqrt(3);
+//		ImageStack stack = rgbImg.getImageStack();
+//		FloatProcessor rp = (FloatProcessor) stack.getProcessor(1).duplicate();
+//		float[] rpix = (float[]) rp.getPixels();	
+//		float[] pixels1 = (float[]) stack.getPixels(1);
+//		float[] pixels2 = (float[]) stack.getPixels(2);
+//		float[] pixels3 = (float[]) stack.getPixels(3);
+//		
+//		for (int i=0; i<pixels1.length; i++) {
+//			double p1 = pixels1[i];
+//			double p2 = pixels2[i];
+//			double p3 = pixels3[i];
+//			//rpix[i] = (float) (scale * Math.sqrt(p1*p1 + p2*p2 + p3*p3));
+//			rpix[i] = (float) Math.sqrt(p1*p1 + p2*p2 + p3*p3);
+//		}
+//		return rp;
+//	}
 	
-	public static FloatProcessor magL1(ImagePlus rgbImg) { 
-		assert isColorStack(rgbImg);
-		//final float scale = 1;
-		ImageStack stack = rgbImg.getImageStack();
-		FloatProcessor rp = (FloatProcessor) stack.getProcessor(1).duplicate();
-		float[] rpix = (float[]) rp.getPixels();	
-		float[] pixels1 = (float[]) stack.getPixels(1);
-		float[] pixels2 = (float[]) stack.getPixels(2);
-		float[] pixels3 = (float[]) stack.getPixels(3);
-		
-		for (int i = 0; i < pixels1.length; i++) {
-			double p1 = pixels1[i];
-			double p2 = pixels2[i];
-			double p3 = pixels3[i];
-			rpix[i] = (float) (Math.abs(p1) + Math.abs(p2) + Math.abs(p3));
-		}
-		return rp;
-	}
+//	public static FloatProcessor magL1(ImagePlus rgbImg) { 
+//		assert isColorStack(rgbImg);
+//		//final float scale = 1;
+//		ImageStack stack = rgbImg.getImageStack();
+//		FloatProcessor rp = (FloatProcessor) stack.getProcessor(1).duplicate();
+//		float[] rpix = (float[]) rp.getPixels();	
+//		float[] pixels1 = (float[]) stack.getPixels(1);
+//		float[] pixels2 = (float[]) stack.getPixels(2);
+//		float[] pixels3 = (float[]) stack.getPixels(3);
+//		
+//		for (int i = 0; i < pixels1.length; i++) {
+//			double p1 = pixels1[i];
+//			double p2 = pixels2[i];
+//			double p3 = pixels3[i];
+//			rpix[i] = (float) (Math.abs(p1) + Math.abs(p2) + Math.abs(p3));
+//		}
+//		return rp;
+//	}
 	
-    static float gammaFwd(float lc) {	// input: linear component value
-		return (lc > 0.0031308) ?
-			(float) (1.055 * Math.pow(lc, 1/2.4f) - 0.055) :
-			(lc * 12.92f);
-    }
-    
-    static float gammaInv(float nc) {	// input: nonlinear component value
-    	return (nc > 0.03928) ?
-			(float) Math.pow((nc + 0.055)/1.055, 2.4) :
-			(nc / 12.92f);
-    }
     
     // sRGB <-> Lab -----------------------------------------------------
     
@@ -303,9 +294,9 @@ public abstract class ColorStack { //extends ImageStack {
 			float rp = rPix[i];
 			float gp = gPix[i];
 			float bp = bPix[i];
-			if (rp < 0) rp = 0; else if (rp > 1) rp = 1;
-			if (gp < 0) gp = 0; else if (gp > 1) gp = 1;
-			if (bp < 0) bp = 0; else if (bp > 1) bp = 1;
+			rp = clipTo01(rp); 	// if (rp < 0) rp = 0; else if (rp > 1) rp = 1;
+			gp = clipTo01(gp);	// if (gp < 0) gp = 0; else if (gp > 1) gp = 1;
+			bp = clipTo01(bp);	// if (bp < 0) bp = 0; else if (bp > 1) bp = 1;
 			srgb[0] = rp; srgb[1] = gp; srgb[2] = bp; 
 			float[] lab = lcs.fromRGB(srgb);
 			rPix[i] = lab[0];
@@ -331,9 +322,9 @@ public abstract class ColorStack { //extends ImageStack {
 			float rp = srgb[0];
 			float gp = srgb[1];
 			float bp = srgb[2];
-			if (rp < 0) rp = 0; else if (rp > 1) rp = 1;
-			if (gp < 0) gp = 0; else if (gp > 1) gp = 1;
-			if (bp < 0) bp = 0; else if (bp > 1) bp = 1;
+			rp = clipTo01(rp); 	// if (rp < 0) rp = 0; else if (rp > 1) rp = 1;
+			gp = clipTo01(gp);	// if (gp < 0) gp = 0; else if (gp > 1) gp = 1;
+			bp = clipTo01(bp);	// if (bp < 0) bp = 0; else if (bp > 1) bp = 1;
 			lPix[i] = rp; // R
 			aPix[i] = gp; // G
 			bPix[i] = bp; // B
@@ -357,9 +348,9 @@ public abstract class ColorStack { //extends ImageStack {
 			float rp = rPix[i];
 			float gp = gPix[i];
 			float bp = bPix[i];
-			if (rp < 0) rp = 0; else if (rp > 1) rp = 1;
-			if (gp < 0) gp = 0; else if (gp > 1) gp = 1;
-			if (bp < 0) bp = 0; else if (bp > 1) bp = 1;
+			rp = clipTo01(rp); 	// if (rp < 0) rp = 0; else if (rp > 1) rp = 1;
+			gp = clipTo01(gp);	// if (gp < 0) gp = 0; else if (gp > 1) gp = 1;
+			bp = clipTo01(bp);	// if (bp < 0) bp = 0; else if (bp > 1) bp = 1;
 			srgb[0] = rp; srgb[1] = gp; srgb[2] = bp; 
 			float[] lab = lcs.fromRGB(srgb);
 			rPix[i] = lab[0];
@@ -385,14 +376,20 @@ public abstract class ColorStack { //extends ImageStack {
 			float rp = srgb[0];
 			float gp = srgb[1];
 			float bp = srgb[2];
-			if (rp < 0) rp = 0; else if (rp > 1) rp = 1;
-			if (gp < 0) gp = 0; else if (gp > 1) gp = 1;
-			if (bp < 0) bp = 0; else if (bp > 1) bp = 1;
+			rp = clipTo01(rp); 	// if (rp < 0) rp = 0; else if (rp > 1) rp = 1;
+			gp = clipTo01(gp);	// if (gp < 0) gp = 0; else if (gp > 1) gp = 1;
+			bp = clipTo01(bp);	// if (bp < 0) bp = 0; else if (bp > 1) bp = 1;
 			lPix[i] = rp; // R
 			aPix[i] = gp; // G
 			bPix[i] = bp; // B
 		}
 		setType(luvImg, ColorStackType.sRGB);
+	}
+	
+	private static float clipTo01(float val) {
+		if (val < 0) return 0f;
+		if (val > 1) return 1f;
+		return val;
 	}
     
 }
