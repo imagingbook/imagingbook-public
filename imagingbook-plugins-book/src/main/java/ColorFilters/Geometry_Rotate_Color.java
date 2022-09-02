@@ -14,10 +14,10 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.colorspace.ColorStack;
-import imagingbook.common.color.colorspace.ColorStack.ColorStackType;
 import imagingbook.common.geometry.mappings.linear.Rotation2D;
+import imagingbook.common.image.ColorStack;
 import imagingbook.common.image.ImageMapper;
+import imagingbook.common.image.ColorStack.ColorStackType;
 import imagingbook.common.interpolation.InterpolationMethod;
 
 /**

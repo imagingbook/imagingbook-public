@@ -14,10 +14,10 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.colorspace.ColorStack;
-import imagingbook.common.color.colorspace.ColorStack.ColorStackType;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
+import imagingbook.common.image.ColorStack;
+import imagingbook.common.image.ColorStack.ColorStackType;
 
 /**
  * This plugin performs a Gaussian filter in a user-selectable color space.

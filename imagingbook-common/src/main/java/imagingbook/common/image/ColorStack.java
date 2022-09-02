@@ -7,12 +7,16 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.colorspace;
+package imagingbook.common.image;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
+import imagingbook.common.color.colorspace.LabColorSpace;
+import imagingbook.common.color.colorspace.LuvColorSpace;
+import imagingbook.common.color.colorspace.sRgbUtil;
 
 import java.awt.color.ColorSpace;
 
