@@ -16,15 +16,16 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.colorspace.ColorStack;
 import imagingbook.common.color.colorspace.ColorStack.ColorStackType;
-import imagingbook.common.filter.linear.GaussianFilter;
-import imagingbook.common.util.Enums;
+import imagingbook.common.filter.generic.GenericFilter;
+import imagingbook.common.filter.linear.GaussianFilterSeparable;
 
 /**
  * This plugin performs a Gaussian filter in a user-selectable color space.
- * Demonstrates the use of a generic LinearFilter for Gaussian blurring 
- * (brute force, not separated).
+ * Demonstrates the use of {@link ColorStack} and {@link GenericFilter}
+ * and {@link GaussianFilterSeparable} (using a x/y-separable 2D kernel).
+ * 
  * @author W. Burger
- * @version 2013/05/30
+ * @version 2022/09/02
  */
 public class Gaussian_Filter_Color implements PlugInFilter {
 	
@@ -42,7 +43,9 @@ public class Gaussian_Filter_Color implements PlugInFilter {
     public void run(ImageProcessor ip) {
     	if (!getParameters()) 
     		return;
+    	
     	ImagePlus colStack = ColorStack.createFrom(imp);
+    	
     	switch (csType) {
 	    	case Lab : 	ColorStack.srgbToLab(colStack); break;
 			case Luv: 	ColorStack.srgbToLuv(colStack); break;
@@ -54,31 +57,32 @@ public class Gaussian_Filter_Color implements PlugInFilter {
     	}
     	
     	FloatProcessor[] processors = ColorStack.getProcessors(colStack);
+    	GenericFilter filter = new GaussianFilterSeparable(sigma); // non-separable: GaussianFilter(sigma)
     	
        	for (int k = 0; k < nIterations; k++) {
        		for (FloatProcessor fp : processors) {
-       			new GaussianFilter(sigma).applyTo(fp);
-       			
+       			filter.applyTo(fp);
        		}
     	}
        	
-       	ColorStack.toSrgb(colStack);
+       	ColorStack.toSrgb(colStack);	// convert back to sRGB
        	colStack.setTitle(imp.getShortTitle() + "-filtered-" + csType.name());
        	ImagePlus result = ColorStack.toColorImage(colStack);
        	result.show();
     }
     
     boolean getParameters() {
-    	String[] colorChoices = Enums.getEnumNames(ColorStackType.class);
 		GenericDialog gd = new GenericDialog("Gaussian Filter");
-		gd.addChoice("Color space", colorChoices, csType.name());
+		gd.addEnumChoice("Color space", csType);
 		gd.addNumericField("sigma", sigma, 1);
 		gd.addNumericField("iterations", nIterations, 0);
+		
 		gd.showDialog();
 		if(gd.wasCanceled())
 			return false;
+		
+		csType = gd.getNextEnumChoice(ColorStackType.class);
 		sigma = gd.getNextNumber();
-		csType = ColorStackType.valueOf(gd.getNextChoice());
 		nIterations = (int)gd.getNextNumber();
 		if (nIterations < 1) nIterations = 1;
 		return true;

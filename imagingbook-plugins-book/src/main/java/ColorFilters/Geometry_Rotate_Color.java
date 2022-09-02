@@ -19,7 +19,6 @@ import imagingbook.common.color.colorspace.ColorStack.ColorStackType;
 import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.interpolation.InterpolationMethod;
-import imagingbook.common.util.Enums;
 
 /**
  * This plugin rotates the input image. This operation
@@ -29,24 +28,26 @@ import imagingbook.common.util.Enums;
  * used to avoid negative component values.
  * 
  * @author W. Burger
- * @version 2013/05/30
+ * @version 2022/09/02
  */
 public class Geometry_Rotate_Color implements PlugInFilter {
 	
-	static double angle = 15; // rotation angle (in degrees)
-	static ColorStackType csType = ColorStackType.sRGB;
+	static double angle = 15; 							// rotation angle (in degrees)
+	static ColorStackType csType = ColorStackType.sRGB;	// color space to use
 	
-	ImagePlus imp = null;
+	ImagePlus im = null;
 	
     public int setup(String arg, ImagePlus imp) {
-    	this.imp = imp;
+    	this.im = imp;
         return DOES_RGB + NO_CHANGES;
     }
 
     public void run(ImageProcessor ip) {
     	if (!getParameters()) 
     		return;
-    	ImagePlus colStack = ColorStack.createFrom(imp);
+    	
+    	ImagePlus colStack = ColorStack.createFrom(im);
+    	
     	switch (csType) {
 	    	case Lab : 	ColorStack.srgbToLab(colStack); break;
 			case Luv: 	ColorStack.srgbToLuv(colStack); break;
@@ -67,23 +68,22 @@ public class Geometry_Rotate_Color implements PlugInFilter {
    		}
        	
        	ColorStack.toSrgb(colStack);
-       	colStack.setTitle(imp.getShortTitle() + "-rotated-" + csType.name());
+       	colStack.setTitle(im.getShortTitle() + "-rotated-" + csType.name());
        	ImagePlus result = ColorStack.toColorImage(colStack);
        	result.show();
     }
     
     boolean getParameters() {
-    	String[] colorChoices = Enums.getEnumNames(ColorStackType.class);
-		GenericDialog gd = new GenericDialog("Gaussian Filter");
-		gd.addChoice("Color space", colorChoices, csType.name());
-	
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addEnumChoice("Color space", csType);
 		gd.addNumericField("rotation angle", angle, 0);
+		
 		gd.showDialog();
 		if(gd.wasCanceled())
 			return false;
-		csType = ColorStackType.valueOf(gd.getNextChoice());
+		
+		csType = gd.getNextEnumChoice(ColorStackType.class);
 		angle = gd.getNextNumber();
-
 		return true;
     }
 
