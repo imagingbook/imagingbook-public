@@ -12,6 +12,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
+import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
@@ -44,19 +45,19 @@ public class Gaussian_Filter_Color implements PlugInFilter {
     	if (!getParameters()) 
     		return;
     	
-    	ImagePlus colStack = ColorStack.createFrom(imp);
+    	ColorStack colStack = new ColorStack((ColorProcessor) ip);
     	
     	switch (csType) {
-	    	case Lab : 	ColorStack.srgbToLab(colStack); break;
-			case Luv: 	ColorStack.srgbToLuv(colStack); break;
-			case RGB: 	ColorStack.srgbToRgb(colStack); break;
+	    	case Lab : 	colStack.convertToLab(); break;
+			case Luv: 	colStack.convertToLuv(); break;
+			case LinearRGB: 	colStack.convertToLinearRgb(); break;
 			case sRGB: 	break;
 		default:
 			IJ.error("Color space " + csType.name() + " not implemented!"); 
 			return;
     	}
     	
-    	FloatProcessor[] processors = ColorStack.getProcessors(colStack);
+    	FloatProcessor[] processors = colStack.getProcessors();
     	GenericFilter filter = new GaussianFilterSeparable(sigma); // non-separable: GaussianFilter(sigma)
     	
        	for (int k = 0; k < nIterations; k++) {
@@ -65,9 +66,10 @@ public class Gaussian_Filter_Color implements PlugInFilter {
        		}
     	}
        	
-       	ColorStack.toSrgb(colStack);	// convert back to sRGB
-       	colStack.setTitle(imp.getShortTitle() + "-filtered-" + csType.name());
-       	ImagePlus result = ColorStack.toColorImage(colStack);
+       	colStack.convertToSrgb();	// convert back to sRGB
+       	ColorProcessor cp = colStack.toColorProcessor();
+       	String title = imp.getShortTitle() + "-filtered-" + csType.name();
+       	ImagePlus result = new ImagePlus(title, cp);
        	result.show();
     }
     

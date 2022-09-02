@@ -12,6 +12,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
+import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.mappings.linear.Rotation2D;
@@ -46,20 +47,20 @@ public class Geometry_Rotate_Color implements PlugInFilter {
     	if (!getParameters()) 
     		return;
     	
-    	ImagePlus colStack = ColorStack.createFrom(im);
+    	ColorStack colStack = new ColorStack((ColorProcessor) ip);
     	
     	switch (csType) {
-	    	case Lab : 	ColorStack.srgbToLab(colStack); break;
-			case Luv: 	ColorStack.srgbToLuv(colStack); break;
-			case RGB: 	ColorStack.srgbToRgb(colStack); break;
-			case sRGB: 	break;
-		default:
-			IJ.error("Color space " + csType.name() + " not implemented!"); 
-			return;
-    	}
+    	case Lab : 	colStack.convertToLab(); break;
+		case Luv: 	colStack.convertToLuv(); break;
+		case LinearRGB: 	colStack.convertToLinearRgb(); break;
+		case sRGB: 	break;
+	default:
+		IJ.error("Color space " + csType.name() + " not implemented!"); 
+		return;
+	}
     	
     	Rotation2D imap = new Rotation2D(-2 * Math.PI * angle / 360);	// inverse mapping (target to source)
-    	FloatProcessor[] processors = ColorStack.getProcessors(colStack);
+    	FloatProcessor[] processors = colStack.getProcessors();
   
     	ImageMapper mapper = new ImageMapper(imap, null, InterpolationMethod.Bilinear);
    		for (FloatProcessor fp : processors) {
@@ -67,9 +68,10 @@ public class Geometry_Rotate_Color implements PlugInFilter {
    			mapper.map(fp);
    		}
        	
-       	ColorStack.toSrgb(colStack);
-       	colStack.setTitle(im.getShortTitle() + "-rotated-" + csType.name());
-       	ImagePlus result = ColorStack.toColorImage(colStack);
+   		colStack.convertToSrgb();
+   		ColorProcessor cp = colStack.toColorProcessor();
+       	String title = im.getShortTitle() + "-rotated-" + csType.name();
+       	ImagePlus result = new ImagePlus(title, cp);
        	result.show();
     }
     
