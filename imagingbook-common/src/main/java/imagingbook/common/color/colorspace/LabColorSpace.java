@@ -27,6 +27,12 @@ import java.awt.color.ColorSpace;
  */
 @SuppressWarnings("serial")
 public class LabColorSpace extends ColorSpace {
+	
+	private static final LabColorSpace instance = new LabColorSpace();
+	
+	public static LabColorSpace getInstance() {
+		return instance;
+	}
 
 	// D65 reference white point:
 //	private static final double Xref = D65.getX(); 	// 0.950456
@@ -42,7 +48,7 @@ public class LabColorSpace extends ColorSpace {
 	/**
 	 * Constructor.
 	 */
-	public LabColorSpace() {
+	private LabColorSpace() {
 		super(TYPE_Lab, 3);
 	}
 
@@ -52,6 +58,9 @@ public class LabColorSpace extends ColorSpace {
 	 * This method implements {@link ColorSpace#fromCIEXYZ(float[])}), assuming that 
 	 * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).
 	 * See also {@link #fromCIEXYZ65(float[])} for a D65-based version.
+	 * This is a singleton class with no public constructors.
+	 * Use {@link #getInstance()} to obtain the single instance.
+	 * 
 	 * @param XYZ50 a color in D50-based XYZ space (components in [0,1])
 	 * @return the associated CIELab color
 	 */

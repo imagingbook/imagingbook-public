@@ -21,7 +21,7 @@ public class LabColorSpaceTest {
 	@Test
 	public void testRgbLab() {
 		Random rg = new Random(17);
-		LabColorSpace cs = new LabColorSpace();
+		LabColorSpace cs = LabColorSpace.getInstance();
 		for (int i = 0; i < 1000; i++) {
 		   	int sr = rg.nextInt(256);
 	    	int sg = rg.nextInt(256);

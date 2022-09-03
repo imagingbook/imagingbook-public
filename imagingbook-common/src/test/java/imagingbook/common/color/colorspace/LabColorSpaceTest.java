@@ -20,7 +20,7 @@ public class LabColorSpaceTest {
 
 	@Test
 	public void test1a() {
-		LabColorSpace lcs = new LabColorSpace();
+		LabColorSpace lcs = LabColorSpace.getInstance();
 		doCheck65(lcs, new int[] {0, 0, 0});
 		doCheck65(lcs, new int[] {255, 255, 255});
 		doCheck65(lcs, new int[] {177, 0, 0});
@@ -31,7 +31,7 @@ public class LabColorSpaceTest {
 	
 	@Test
 	public void test1b() {
-		LabColorSpace lcs = new LabColorSpace();
+		LabColorSpace lcs = LabColorSpace.getInstance();
 		doCheck50(lcs, new int[] {0, 0, 0});
 		doCheck50(lcs, new int[] {255, 255, 255});
 		doCheck50(lcs, new int[] {177, 0, 0});
@@ -42,7 +42,7 @@ public class LabColorSpaceTest {
 	
 	@Test
 	public void test2() {
-		LabColorSpace lcs = new LabColorSpace();
+		LabColorSpace lcs = LabColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
