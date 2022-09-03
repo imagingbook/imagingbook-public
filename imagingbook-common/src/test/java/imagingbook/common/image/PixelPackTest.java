@@ -23,51 +23,54 @@ import imagingbook.testutils.ImageTestUtils;
 
 public class PixelPackTest {
 	
+	static double TOL = 1e-4;
+	
 	ImageResource res1 = GeneralTestImage.MonasterySmall;
 	ImageResource res2 = GeneralTestImage.Clown;
+	double scale = Math.PI;		// just to check pixel value scaling
 
 	@Test
-	public void testByteImage() {
+	public void testByteImage() {		
 		ImageProcessor ip1 = res1.getImage().getProcessor();
 		assertTrue(ip1 instanceof ByteProcessor);
-    	PixelPack pack = new PixelPack(ip1);
+    	PixelPack pack = new PixelPack(ip1, scale, null);
 //    	ImageProcessor ip2 = ip1.duplicate();
 //    	pack.copyToImageProcessor(ip2);
-    	ImageProcessor ip2 = pack.toByteProcessor();
-    	assertTrue(ImageTestUtils.match(ip1, ip2, 1E-6));
+    	ImageProcessor ip2 = pack.toByteProcessor(1/scale);
+    	assertTrue(ImageTestUtils.match(ip1, ip2, TOL));
 	}
 	
 	@Test
 	public void testShortImage() {
 		ImageProcessor ip1 = res1.getImage().getProcessor().convertToShortProcessor();
 		assertTrue(ip1 instanceof ShortProcessor);
-		PixelPack pack = new PixelPack(ip1);
+		PixelPack pack = new PixelPack(ip1, scale, null);
 //    	ImageProcessor ip2 = ip1.duplicate();
 //    	pack.copyToImageProcessor(ip2);
-    	ImageProcessor ip2 = pack.toShortProcessor();
-    	assertTrue(ImageTestUtils.match(ip1, ip2, 1E-6));
+    	ImageProcessor ip2 = pack.toShortProcessor(1/scale);
+    	assertTrue(ImageTestUtils.match(ip1, ip2, TOL));
 	}
 	
 	@Test
 	public void testFloatImage() {
 		ImageProcessor ip1 = res1.getImage().getProcessor().convertToFloatProcessor();
 		assertTrue(ip1 instanceof FloatProcessor);
-		PixelPack pack = new PixelPack(ip1);
+		PixelPack pack = new PixelPack(ip1, scale, null);
 //    	ImageProcessor ip2 = ip1.duplicate();
 //    	pack.copyToImageProcessor(ip2);
-    	ImageProcessor ip2 = pack.toFloatProcessor();
-    	assertTrue(ImageTestUtils.match(ip1, ip2, 1E-6));
+    	ImageProcessor ip2 = pack.toFloatProcessor(1/scale);
+    	assertTrue(ImageTestUtils.match(ip1, ip2, TOL));
 	}
 	
 	@Test
 	public void testColorImage() {
 		ImageProcessor ip1 = res2.getImage().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
-		PixelPack pack = new PixelPack(ip1);
+		PixelPack pack = new PixelPack(ip1, scale, null);
 //    	ImageProcessor ip2 = ip1.duplicate();
 //    	pack.copyToImageProcessor(ip2);
-    	ImageProcessor ip2 = pack.toColorProcessor();
-    	assertTrue(ImageTestUtils.match(ip1, ip2, 1E-6));
+    	ImageProcessor ip2 = pack.toColorProcessor(1/scale);
+    	assertTrue(ImageTestUtils.match(ip1, ip2, TOL));
 	}
 
 }

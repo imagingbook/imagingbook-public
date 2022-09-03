@@ -186,7 +186,7 @@ public abstract class GenericFilter implements ProgressReporter {
 	 * @param obs the out-of-bounds strategy to be used
 	 */
 	public void applyTo(ImageProcessor ip, OutOfBoundsStrategy obs) {
-		PixelPack pp = new PixelPack(ip, obs);
+		PixelPack pp = new PixelPack(ip, 1.0, obs);
 		applyTo(pp);
 		pp.copyToImageProcessor(ip);	// copy data back to ip
 	}
