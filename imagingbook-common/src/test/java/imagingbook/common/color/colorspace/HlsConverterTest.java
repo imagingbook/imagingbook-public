@@ -18,7 +18,7 @@ public class HlsConverterTest {
 
 	@Test
 	public void test1() {
-		HlsConverter hlsC = new HlsConverter();
+		HlsConverter hlsC = HlsConverter.getInstance();
 		doCheck(hlsC, new int[] {0, 0, 0});
 		doCheck(hlsC, new int[] {255, 255, 255});
 		doCheck(hlsC, new int[] {177, 0, 0});
@@ -29,7 +29,7 @@ public class HlsConverterTest {
 	
 	@Test
 	public void test2() {
-		HlsConverter hlsC = new HlsConverter();
+		HlsConverter hlsC = HlsConverter.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);

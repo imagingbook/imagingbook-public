@@ -21,7 +21,7 @@ public class HlsConverterTest {
 	@Test
 	public void testFromRGBtoRGB() {  // tests all 16 mio RGB colors
 		Random rg = new Random(17);
-		HlsConverter hlsC = new HlsConverter();
+		HlsConverter hlsC = HlsConverter.getInstance();
 		int[] rgb = new int[3];
 		for (int i = 0; i < 1000; i++) {
 			rgb[0] = rg.nextInt(256);
