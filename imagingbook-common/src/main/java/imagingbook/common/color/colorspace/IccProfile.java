@@ -6,29 +6,28 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.color.image;
+package imagingbook.common.color.colorspace;
 
-import static org.junit.Assert.assertArrayEquals;
+import imagingbook.core.resource.NamedResource;
 
-import java.util.Random;
+public enum IccProfile implements NamedResource {
+	AdobeRGB1998("AdobeRGB1998.icc"),
+	CIERGB("CIERGB.icc"),
+	PAL_SECAM("PAL_SECAM.icc"),
+	SMPTE_C("SMPTE-C.icc"),
+	VideoHD("VideoHD.icc"),
+	VideoNTSC("VideoNTSC.icc"),
+	VideoPAL("VideoPAL.icc");
 
-import org.junit.Test;
+	private final String filename;
 
-import imagingbook.common.color.colorspace.HlsConverter;
-
-public class HlsConverterTest {
-
-	@Test
-	public void testFromRGBtoRGB() {  // tests all 16 mio RGB colors
-		Random rg = new Random(17);
-		HlsConverter hlsC = HlsConverter.getInstance();
-		int[] rgb = new int[3];
-		for (int i = 0; i < 1000; i++) {
-			rgb[0] = rg.nextInt(256);
-			rgb[1] = rg.nextInt(256);
-			rgb[2] = rg.nextInt(256);
-			float[] hls = hlsC.fromRGB(rgb);
-			assertArrayEquals(rgb, hlsC.toRGB(hls));
-		}
+	IccProfile(String filename) {
+		this.filename = filename;
 	}
+
+	@Override
+	public String getFileName() {
+		return filename;
+	}
+
 }

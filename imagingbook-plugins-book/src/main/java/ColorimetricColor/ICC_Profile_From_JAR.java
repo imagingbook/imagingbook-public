@@ -15,7 +15,7 @@ import java.io.IOException;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
-import imagingbook.common.color.IccProfile;
+import imagingbook.common.color.colorspace.IccProfile;
 import imagingbook.common.math.Matrix;
 
 

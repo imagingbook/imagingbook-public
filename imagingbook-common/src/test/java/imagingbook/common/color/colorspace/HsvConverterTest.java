@@ -51,6 +51,7 @@ public class HsvConverterTest {
 //		}
 //	}
 	
+	
 	private static void doCheck(HsvConverter hsvC, int[] rgb1) {
 		float[] hsv = hsvC.fromRGB(rgb1);
 		int[] rgb2 = hsvC.toRGB(hsv);
