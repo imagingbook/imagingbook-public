@@ -21,12 +21,47 @@ import imagingbook.common.image.access.GridIndexer2D;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 
 /**
+ * <p>
  * This class defines a generic data container for scalar and
  * vector-valued images, using float-values throughout.
- * Its primary use is in the {@link GenericFilter} framework. 
+ * Its primary use is in the {@link GenericFilter} framework.
+ * </p>
+ * <p>
+ * A {@link PixelPack} may represent images with an arbitrary number of
+ * components. Scalar images (such as {@link ByteProcessor}, 
+ * {@link ShortProcessor} and {@link FloatProcessor}) have 1 component,
+ * color images (such as {@link ColorProcessor}) typically have 3 components.
+ * Conversion methods to and from ImageJ's processor classes are provided.
+ * Note that pixel values are copied without any scaling.
+ * </p>
+ * <p>
+ * Internally, pixel data are stored as 1-dimensional {@code float} arrays,
+ * one array for each component.
+ * Method {@link #getData()} may be used to access the internal data directly.
+ * Individual components may be extracted as a {@link PixelSlice} using
+ * method {@link #getSlice(int)}.
+ * </p>
+ * <p>
+ * Methods {@link #getPix(int, int)} and {@link #setPix(int, int, float...)} are
+ * provided to read and write individual pixels, which are 
+ * ALWAYS of type {@code float[]} (even if the underlying image is scalar-valued).
+ * Pixel values returned for positions outside the image boundaries depend 
+ * on the {@link OutOfBoundsStrategy} specified by the constructor
+ * (e.g., {@link #PixelPack(ImageProcessor, OutOfBoundsStrategy)}).
+ * </p>
+ * <p>Here is a simple usage example:</p>
+ * <pre>
+ * ColorProcessor ip1 = ... ;	// some color image
+ * PixelPack pack = new PixelPack(ip1);
+ * // process pack:
+ * float[] val = pack.getPix(0, 0);
+ * pack.setPix(0, 0, 128, 19, 255);
+ * ...
+ * ColorProcessor ip2 = pack.toColorProcessor();
+ * </pre>
  * 
  * @author WB
- * @version 2021/01/14
+ * @version 2022/09/03
  */
 public class PixelPack {
 	
@@ -80,8 +115,10 @@ public class PixelPack {
 	}
 	
 	/**
-	 * Constructor. Duplicates an existing {@link PixelPack} without copying 
-	 * the contained pixel data.
+	 * Constructor. Creates a new {@link PixelPack} with the same dimension
+	 * as the original without copying the contained pixel data
+	 * (initialized to zero).
+	 * 
 	 * @param orig the original {@link PixelPack}
 	 */
 	public PixelPack(PixelPack orig) {
@@ -89,8 +126,11 @@ public class PixelPack {
 	}
 	
 	/**
-	 * Constructor. Duplicates an existing {@link PixelPack}, optionally copying 
-	 * the contained pixel data.
+	 * Constructor. Creates a new {@link PixelPack} with the same dimension
+	 * as the original.
+	 * Optionally the original pixel data are copied, otherwise they are initialized 
+	 * to zero values.
+	 * 
 	 * @param orig the original {@link PixelPack}
 	 * @param copyData set true to copy pixel data
 	 */
@@ -99,6 +139,23 @@ public class PixelPack {
 		if (copyData) {
 			orig.copyTo(this);
 		}
+	}
+	
+	// --------------------------------------------------------------------
+	
+	@Deprecated // use getPix(int u, int v, float[] vals)
+	public float[] getVec(int u, int v, float[] vals) {
+		return getPix(u, v, vals);
+	}
+	
+	@Deprecated	// use getPix(int u, int v)
+	public float[] getVec(int u, int v) {
+		return getPix(u, v);
+	}
+	
+	@Deprecated	// use setPix(int u, int v, float ... vals) 
+	public void setVec(int u, int v, float ... vals) {
+		setPix(u, v, vals);
 	}
 	
 	// --------------------------------------------------------------------
@@ -117,7 +174,7 @@ public class PixelPack {
 	 * @param vals a suitable 
 	 * @return the array of pixel data
 	 */
-	public float[] getVec(int u, int v, float[] vals) {
+	public float[] getPix(int u, int v, float[] vals) {
 		if (vals == null) 
 			vals = new float[depth];
 		final int i = indexer.getIndex(u, v);
@@ -133,19 +190,19 @@ public class PixelPack {
 	}
 	
 	// returns a new pixel array
-	public float[] getVec(int u, int v) {
-		return getVec(u, v, new float[depth]);
+	public float[] getPix(int u, int v) {
+		return getPix(u, v, new float[depth]);
 	}
 	
 	/**
 	 * Sets the pixel data at the specified pixel position.
-	 * The length of the value array corresponds to the number of slices in this
-	 * pixel pack.
+	 * The length of the value array corresponds to the number of slices 
+	 * (components) in this pixel pack.
 	 * @param u the x-position
 	 * @param v the y-position
-	 * @param vals a float vector with the values for this pixel
+	 * @param vals the pixel's component values (may also be a {@code float[])
 	 */
-	public void setVec(int u, int v, float ... vals) {
+	public void setPix(int u, int v, float ... vals) {
 		final int i = indexer.getIndex(u, v);
 		if (i >= 0) {
 			for (int k = 0; k < depth && k < vals.length; k++) {
@@ -223,11 +280,11 @@ public class PixelPack {
 	/**
 	 * Returns a reference to this {@link PixelPack}'s internal data
 	 * array, which is always two-dimensional:
-	 * dimension 1 is the slice index,
+	 * dimension 1 is the slice (component) index,
 	 * dimension 2 is the pixel index (each slice is a 1D array).
 	 * @return the pixel pack's data array
 	 */
-	public float[][] getArrays() {
+	public float[][] getData() {
 		return data;
 	}
 	
@@ -292,7 +349,7 @@ public class PixelPack {
 			int u = uc - 1 + i;
 			for (int j = 0; j < 3; j++) {
 				int v = vc - 1 + j;
-				nh[i][j] = getVec(u, v);
+				nh[i][j] = getPix(u, v);
 			}
 		}
 		return nh;
@@ -311,7 +368,7 @@ public class PixelPack {
 	// -------------------------------------------------------------------
 	
 	/**
-	 * Inner class representing a single (scalar-valued) pixel slice of a 
+	 * Inner class representing a single (scalar-valued) component of a 
 	 * (vector-valued) {@link PixelPack}.
 	 *
 	 */
