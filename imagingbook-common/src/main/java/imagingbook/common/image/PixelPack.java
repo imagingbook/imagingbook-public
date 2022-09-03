@@ -33,6 +33,7 @@ public class PixelPack {
 	/** The default out-of-bounds strategy (see {@link OutOfBoundsStrategy}). */
 	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.NearestBorder;
 
+	private final int width, height;
 	private final int depth;
 	private final float[][] data;
 	private final int length;
@@ -48,6 +49,8 @@ public class PixelPack {
 	 * @param obs the strategy to be used when reading from out-of-bounds coordinates
 	 */
 	public PixelPack(int width, int height, int depth, OutOfBoundsStrategy obs) {
+		this.width = width;
+		this.height = height;
 		this.depth = depth;
 		this.length = width * height;
 		this.data = new float[depth][length];
@@ -233,7 +236,8 @@ public class PixelPack {
 	 * @return the image width
 	 */
 	public int getWidth() {
-		return this.indexer.getWidth();
+//		return this.indexer.getWidth();
+		return this.width;
 	}
 	
 	/**
@@ -241,7 +245,8 @@ public class PixelPack {
 	 * @return the image height
 	 */
 	public int getHeight() {
-		return this.indexer.getHeight();
+//		return this.indexer.getHeight();
+		return this.height;
 	}
 	
 	/**
@@ -293,15 +298,15 @@ public class PixelPack {
 		return nh;
 	}
 	
-	/**
-	 * Copies the contents of this pixel pack to the supplied {@link ImageProcessor}
-	 * instance, if compatible. Otherwise an exception is thrown.
-	 * 
-	 * @param ip the target image processor
-	 */
-	public void copyToImageProcessor(ImageProcessor ip) {
-		copyToImageProcessor(this, ip);
-	}
+//	/**
+//	 * Copies the contents of this pixel pack to the supplied {@link ImageProcessor}
+//	 * instance, if compatible. Otherwise an exception is thrown.
+//	 * 
+//	 * @param ip the target image processor
+//	 */
+//	public void copyToImageProcessor(ImageProcessor ip) {
+//		copyToImageProcessor(this, ip);
+//	}
 	
 	// -------------------------------------------------------------------
 	
@@ -503,74 +508,132 @@ public class PixelPack {
 	// --------------------------------------------------------------------
 	
 	/**
+	 * Converts this {@link PixelPack} to a new {@link ByteProcessor} instance.
+	 * An exception is thrown if the depth of the pack is not equal 1.
+	 * @return a new {@link ByteProcessor} instance
+	 */
+	public ByteProcessor toByteProcessor() {
+		if (depth != 1) {
+			throw new UnsupportedOperationException("cannot convert to ByteProcessor, depth = " + depth);
+		}
+		ByteProcessor ip = new ByteProcessor(width, height);
+		copyToByteProcessor(ip);
+		return ip;
+	}
+	
+	/**
+	 * Converts this {@link PixelPack} to a new {@link ShortProcessor} instance.
+	 * An exception is thrown if the depth of the pack is not equal 1.
+	 * @return a new {@link ShortProcessor} instance
+	 */
+	public ShortProcessor toShortProcessor() {
+		if (depth != 1) {
+			throw new UnsupportedOperationException("cannot convert to ShortProcessor, depth = " + depth);
+		}
+		ShortProcessor ip = new ShortProcessor(width, height);
+		copyToShortProcessor(ip);
+		return ip;
+	}
+	
+	/**
+	 * Converts this {@link PixelPack} to a new {@link FloatProcessor} instance.
+	 * An exception is thrown if the depth of the pack is not equal 1.
+	 * @return a new {@link FloatProcessor} instance
+	 */
+	public FloatProcessor toFloatProcessor() {
+		if (depth != 1) {
+			throw new UnsupportedOperationException("cannot convert to FloatProcessor, depth = " + depth);
+		}
+		FloatProcessor ip = new FloatProcessor(width, height);
+		copyToFloatProcessor(ip);
+		return ip;
+	}
+	
+	/**
+	 * Converts this {@link PixelPack} to a new {@link ColorProcessor} instance.
+	 * An exception is thrown if the depth of the pack is not equal 3.
+	 * @return a new {@link ColorProcessor} instance
+	 */
+	public ColorProcessor toColorProcessor() {
+		if (depth != 3) {
+			throw new UnsupportedOperationException("cannot convert to ColorProcessor, depth = " + depth);
+		}
+		ColorProcessor ip = new ColorProcessor(width, height);
+		copyToColorProcessor(ip);
+		return ip;
+	}
+	
+	// --------------------------------------------------------------------
+	
+	/**
 	 * Copies the contents of a pixel pack to an existing
 	 * image processor. They must be compatible w.r.t. size and depth.
 	 * 
 	 * @param pack the source pixel pack
 	 * @param ip the receiving image processor
 	 */
-	public static void copyToImageProcessor(PixelPack pack, ImageProcessor ip) {
-		if (!pack.isCompatibleTo(ip) ){
+	public void copyToImageProcessor(ImageProcessor ip) {
+		if (!this.isCompatibleTo(ip) ){
 			throw new IllegalArgumentException("copyToImageProcessor(): incompatible ImageProcessor/PixelPack)");
 		}
 		if (ip instanceof ByteProcessor)
-			copyToByteProcessor(pack, (ByteProcessor)ip);
+			copyToByteProcessor((ByteProcessor)ip);
 		else if (ip instanceof ShortProcessor)
-			copyToShortProcessor(pack, (ShortProcessor)ip);
+			copyToShortProcessor((ShortProcessor)ip);
 		else if (ip instanceof FloatProcessor)
-			copyToFloatProcessor(pack, (FloatProcessor)ip);
+			copyToFloatProcessor((FloatProcessor)ip);
 		else if (ip instanceof ColorProcessor)
-			copyToColorProcessor(pack, (ColorProcessor)ip);
+			copyToColorProcessor((ColorProcessor)ip);
 		else
 			throw new IllegalArgumentException("unknown processor type " + ip.getClass().getSimpleName());
 	}
 	
-	private static void copyToByteProcessor(PixelPack pack, ByteProcessor ip) {
+	private void copyToByteProcessor(ByteProcessor ip) {
 		byte[] pixels = (byte[]) ip.getPixels();
-		float[] P = pack.data[0];
+		float[] P = this.data[0];
 		for (int i = 0; i < pixels.length; i++) {
-			int val = clampByte(Math.round(P[i]));
+			int val = clipByte(Math.round(P[i]));
 			pixels[i] = (byte) val;
 		}
 	}
 	
-	private static void copyToShortProcessor(PixelPack pack, ShortProcessor ip) {
+	private void copyToShortProcessor(ShortProcessor ip) {
 		short[] pixels = (short[]) ip.getPixels();
-		float[] P = pack.data[0];
+		float[] P = this.data[0];
 		for (int i = 0; i < pixels.length; i++) {
-			int val = clampShort(Math.round(P[i]));
+			int val = clipShort(Math.round(P[i]));
 			pixels[i] = (short) val;
 		}
 	}
 	
-	private static void copyToFloatProcessor(PixelPack pack, FloatProcessor ip) {
+	private void copyToFloatProcessor(FloatProcessor ip) {
 		float[] pixels = (float[]) ip.getPixels();
-		float[] P = pack.data[0];
+		float[] P = this.data[0];
 		System.arraycopy(P, 0, pixels, 0, P.length);
 	}
 	
-	private static void copyToColorProcessor(PixelPack pack, ColorProcessor ip) {
+	private void copyToColorProcessor(ColorProcessor ip) {
 		int[] pixels = (int[]) ip.getPixels();
-		float[] R = pack.data[0];
-		float[] G = pack.data[1];
-		float[] B = pack.data[2];
+		float[] R = this.data[0];
+		float[] G = this.data[1];
+		float[] B = this.data[2];
 		for (int i = 0; i < pixels.length; i++) {
-			int r = clampByte(Math.round(R[i]));
-			int g = clampByte(Math.round(G[i]));
-			int b = clampByte(Math.round(B[i]));
+			int r = clipByte(Math.round(R[i]));
+			int g = clipByte(Math.round(G[i]));
+			int b = clipByte(Math.round(B[i]));
 			pixels[i] = RgbUtils.rgbToInt(r, g, b);
 		}
 	}
 	
 	// --------------------------------------------------------------------------
 	
-	private static int clampByte(int val) {
+	private int clipByte(int val) {
 		if (val < 0) return 0;
 		if (val > 255) return 255;
 		return val;
 	}
 	
-	private static int clampShort(int val) {
+	private int clipShort(int val) {
 		if (val < 0) return 0;
 		if (val > 65535) return 65535;
 		return val;
