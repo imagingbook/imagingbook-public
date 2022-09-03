@@ -18,7 +18,7 @@ public class HsvConverterTest {
 
 	@Test
 	public void test1() {
-		HsvConverter hsvC = new HsvConverter();
+		HsvConverter hsvC = HsvConverter.getInstance();
 		doCheck(hsvC, new int[] {0, 0, 0});
 		doCheck(hsvC, new int[] {255, 255, 255});
 		doCheck(hsvC, new int[] {177, 0, 0});
@@ -29,7 +29,7 @@ public class HsvConverterTest {
 	
 	@Test
 	public void test2() {
-		HsvConverter hsvC = new HsvConverter();
+		HsvConverter hsvC = HsvConverter.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);

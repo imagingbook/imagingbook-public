@@ -40,7 +40,7 @@ public class Hsv_Show_Hue_Only implements PlugInFilter {
 		ColorProcessor result = new ColorProcessor(w, h);
 
 		// Create Cos/Sin images from the hue angle:
-		HsvConverter cc = new HsvConverter();
+		HsvConverter cc = HsvConverter.getInstance();
 		final int[] RGB = new int[3];
 		
 		for (int v = 0; v < h; v++) {

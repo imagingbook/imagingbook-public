@@ -13,12 +13,21 @@ import static imagingbook.common.math.Arithmetic.min;
 
 /**
  * Methods for converting between RGB and HLS color spaces.
+ * This is a singleton class with no public constructors,
+ * use {@link #getInstance()} to obtain the single instance.
+ * 
  * @author W. Burger
- * @version 2022/09/01
+ * @version 2022/09/03
 */
 public class HsvConverter {
 	
-	public HsvConverter() {	
+	private static final HsvConverter instance = new HsvConverter();
+	
+	public static HsvConverter getInstance() {
+		return instance;
+	}
+	
+	private HsvConverter() {	
 	}
 
 	public float[] fromRGB (int[] RGB) {

@@ -31,7 +31,7 @@ public class HsvConverterTest {
 	@Test
 	public void testFromRGBtoRGB() {  // tests all 16 mio RGB colors
 		Random rg = new Random(17);
-		HsvConverter hsvC = new HsvConverter();
+		HsvConverter hsvC = HsvConverter.getInstance();
 		
 		int[] rgb = new int[3];
 		for (int i = 0; i < 1000; i++) {

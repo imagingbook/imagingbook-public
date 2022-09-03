@@ -51,7 +51,7 @@ public class Hsv_Filter_With_SaturationWeight implements PlugInFilter {
 		}
 		
 		// Create Cos/Sin images from the hue angle:
-		HsvConverter cc = new HsvConverter();
+		HsvConverter cc = HsvConverter.getInstance();
 		final int[] RGB = new int[3];
 		FloatProcessor fHsin = new FloatProcessor(w, h);
 		FloatProcessor fHcos = new FloatProcessor(w, h);
@@ -133,7 +133,7 @@ public class Hsv_Filter_With_SaturationWeight implements PlugInFilter {
 		final int w = fH.getWidth();
 		final int h = fH.getHeight();
 		ColorProcessor cp = new ColorProcessor(w, h);
-		HsvConverter cc = new HsvConverter();
+		HsvConverter cc = HsvConverter.getInstance();
 		
 		for (int v = 0; v < h; v++) {
 			for (int u = 0; u < w; u++) {

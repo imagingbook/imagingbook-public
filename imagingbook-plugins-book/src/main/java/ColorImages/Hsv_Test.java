@@ -27,7 +27,7 @@ public class Hsv_Test implements PlugInFilter {
 		ColorProcessor cp = (ColorProcessor) ip;
 		final int[] RGB = new int[3];
 		
-		HsvConverter cc = new HsvConverter();
+		HsvConverter cc = HsvConverter.getInstance();
 		
 		for (int v = 0; v < cp.getHeight(); v++) {
 			for (int u = 0; u < cp.getWidth(); u++) {
