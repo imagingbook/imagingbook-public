@@ -21,7 +21,7 @@ public class LuvColorSpaceTest {
 	@Test
 	public void testRgbLuv() {
 		Random rg = new Random(17);
-		LuvColorSpace cs = new LuvColorSpace();
+		LuvColorSpace cs = LuvColorSpace.getInstance();
 		for (int i = 0; i < 1000; i++) {
 		   	int sr = rg.nextInt(256);
 	    	int sg = rg.nextInt(256);

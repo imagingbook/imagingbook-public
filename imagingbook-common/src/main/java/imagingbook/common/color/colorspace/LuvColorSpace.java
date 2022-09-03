@@ -20,12 +20,20 @@ import java.awt.color.ColorSpace;
  * coordinates, i.e., without chromatic adaptation to Java's D50-based profile 
  * connection space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ 
  * coordinates in Java's profile connection space.
+ * This is a singleton class with no public constructors,
+ * use {@link #getInstance()} to obtain the single instance.
  * 
  * @author W. Burger
  * @version 2022/01/28
  */
 @SuppressWarnings("serial")
 public class LuvColorSpace extends ColorSpace {
+	
+	private static final LuvColorSpace instance = new LuvColorSpace();
+	
+	public static LuvColorSpace getInstance() {
+		return instance;
+	}
 		
 	// D65 reference white point:
 //	private static final double Xref = D65.getX(); 	// 0.950456
@@ -43,7 +51,7 @@ public class LuvColorSpace extends ColorSpace {
 	/**
 	 * Constructor.
 	 */
-	public LuvColorSpace() {
+	private LuvColorSpace() {
 		super(TYPE_Lab,3);
 	}
 	

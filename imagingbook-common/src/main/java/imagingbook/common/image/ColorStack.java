@@ -129,7 +129,7 @@ public class ColorStack extends PixelPack {
 			throw new IllegalStateException("color stack is not of type sRGB");
 		}
 				
-		final LuvColorSpace lcs = new LuvColorSpace();
+		final LuvColorSpace lcs = LuvColorSpace.getInstance();
 		final float[] SRGB = new float[3];
 		
 		for (int i = 0; i < length; i++) {
@@ -201,7 +201,7 @@ public class ColorStack extends PixelPack {
 		if (this.colorspace != ColorStackType.Luv) {
 			throw new IllegalStateException("color stack is not of type Luv");
 		}
-		final ColorSpace lcs = new LuvColorSpace();
+		final ColorSpace lcs = LuvColorSpace.getInstance();
 		
 		final float[] LUV = new float[3];
 		for (int i = 0; i < length; i++) {

@@ -21,6 +21,8 @@ import java.awt.color.ColorSpace;
  * coordinates, i.e., without conversion to Java's D50-based profile 
  * connection space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ 
  * coordinates in Java's profile connection space.
+ * This is a singleton class with no public constructors,
+ * use {@link #getInstance()} to obtain the single instance.
  * 
  * @author W. Burger
  * @version 2022/09/01
@@ -58,8 +60,6 @@ public class LabColorSpace extends ColorSpace {
 	 * This method implements {@link ColorSpace#fromCIEXYZ(float[])}), assuming that 
 	 * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).
 	 * See also {@link #fromCIEXYZ65(float[])} for a D65-based version.
-	 * This is a singleton class with no public constructors.
-	 * Use {@link #getInstance()} to obtain the single instance.
 	 * 
 	 * @param XYZ50 a color in D50-based XYZ space (components in [0,1])
 	 * @return the associated CIELab color
