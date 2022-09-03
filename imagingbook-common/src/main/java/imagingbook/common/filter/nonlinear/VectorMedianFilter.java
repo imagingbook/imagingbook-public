@@ -45,7 +45,7 @@ public class VectorMedianFilter extends GenericFilterVector {
 	final int xc, yc;
 	private final float[][] supportRegion;		// supportRegion[i][c] with index i, color component c
 	private final VectorNorm vNorm;
-	private final float[] pTmp = new float[3];	// check, adapt to depth
+	private final float[] vals = new float[3];	// check, adapt to depth
 	private final float[] modColor;
 	
 	public int modifiedCount = 0; // for debugging only
@@ -116,7 +116,8 @@ public class VectorMedianFilter extends GenericFilterVector {
 			for (int j = 0; j < maskArray[0].length; j++) {
 				if (maskArray[i][j] > 0) {
 					int vj = v + j - yc;
-					copyPixel(src.getPix(ui, vj, pTmp), supportRegion[k]);
+					src.getPix(ui, vj, vals);
+					copyPixel(vals, supportRegion[k]);
 					k = k + 1;
 				}
 			}

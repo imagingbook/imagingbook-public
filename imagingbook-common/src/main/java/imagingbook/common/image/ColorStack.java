@@ -9,13 +9,10 @@
 
 package imagingbook.common.image;
 
-import static java.lang.Math.round;
-
 import java.awt.color.ColorSpace;
 
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
-import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.colorspace.LabColorSpace;
 import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.color.colorspace.sRgbUtil;
@@ -24,12 +21,15 @@ import imagingbook.common.color.colorspace.sRgbUtil;
 // TODO: add JavaDoc, unit tests
 
 /**
- * This class defines static methods for handling color images represented as 
- * multi-plane image stacks.
- * The component values in all these images are assumed to be in [0,1].
- * Used for experimenting with different color spaces.
+ * This class defines a "color stack" as a subtype of {@link PixelPack}
+ * with exactly 3 components (slices) and all values in [0,1].
+ * It allows simple conversion between various colorimetric color 
+ * spaces (currently implemented are sRGB, LinearRGB, CIELab and CIELuv).
+ * A {@link ColorStack} may be created from an existing
+ * {@link ColorProcessor} instance whose pixels are assumed to be in sRGB
+ * color space.
  */
-public class ColorStack {
+public class ColorStack extends PixelPack {
 	
 	public enum ColorStackType {
 		sRGB("sR", "sG", "sB"),
@@ -48,9 +48,6 @@ public class ColorStack {
 	}
 	
 	private ColorStackType colorspace;
-	private final int width, height;
-	private final FloatProcessor[] processors;
-	private final float[][] pixelMatrix;
 	
 	// ---------------------------------------------------------------------
 	
@@ -59,75 +56,26 @@ public class ColorStack {
 	 * @param cp a color image assumed to be in sRGB
 	 */
 	public ColorStack(ColorProcessor cp) {
-		this.width = cp.getWidth();
-		this.height = cp.getHeight();
-		this.processors = makeProcessors(cp);
-		this.pixelMatrix = makePixelMatrix();
+		super(cp, 1.0/255, null);
 		setColorSpace(ColorStackType.sRGB);
-	}
-	
-	private FloatProcessor[] makeProcessors(ColorProcessor cp) {		
-		final int[] rgbPix = (int[]) cp.getPixels();
-		
-		FloatProcessor proc0 = new FloatProcessor(width, height);
-		FloatProcessor proc1 = new FloatProcessor(width, height);
-		FloatProcessor proc2 = new FloatProcessor(width, height);
-		
-		final float[] rPix = (float[]) proc0.getPixels();
-		final float[] gPix = (float[]) proc1.getPixels();
-		final float[] bPix = (float[]) proc2.getPixels();
-		
-		final int[] RGB = new int[3];
-		for (int i = 0; i < rgbPix.length; i++) {
-			RgbUtils.intToRgb(rgbPix[i], RGB);
-    		rPix[i] = RGB[0] / 255f;
-    		gPix[i] = RGB[1] / 255f;
-    		bPix[i] = RGB[2] / 255f;
-    	}
-
-		return new FloatProcessor[] {proc0, proc1, proc2};
-	}
-	
-	private float[][] makePixelMatrix() {
-		return new float[][] {
-			(float[]) this.processors[0].getPixels(),
-			(float[]) this.processors[1].getPixels(),
-			(float[]) this.processors[2].getPixels()};
-	}
-	
-	private void setColorSpace(ColorStackType newtype) {
-		this.colorspace = newtype;
-	}
-	
-	private float[] getPixel(int idx) {
-		return new float[] {
-				pixelMatrix[0][idx], 
-				pixelMatrix[1][idx], 
-				pixelMatrix[2][idx]};
-	}
-	
-	private void setPixel(int idx, float[] vals) {
-		pixelMatrix[0][idx] = vals[0];
-		pixelMatrix[1][idx] = vals[1];
-		pixelMatrix[2][idx] = vals[2];
 	}
 	
 	// -----------------------------------------------------------------
 	
 	public FloatProcessor[] getProcessors() {
-		return this.processors;
+		FloatProcessor[] processors = new FloatProcessor[3];
+		for (int k = 0; k < 3; k++) {
+			processors[k] = new FloatProcessor(width, height, data[k]);
+		}
+		return processors;
 	}
 	
 	public ColorStackType getColorspace() {
 		return this.colorspace;
 	}
 	
-	public int getWidth() {
-		return this.width;
-	}
-	
-	public int getHeight() {
-		return this.height;
+	private void setColorSpace(ColorStackType newtype) {
+		this.colorspace = newtype;
 	}
 
 	// -----------------------------------------------------------------
@@ -148,25 +96,15 @@ public class ColorStack {
 		if (this.colorspace != ColorStackType.sRGB) {
 			throw new IllegalStateException("color stack is not of type sRGB");
 		}
-//		final float[] pix0 = (float[]) this.processors[0].getPixels();	// red
-//		final float[] pix1 = (float[]) this.processors[1].getPixels();	// green
-//		final float[] pix2 = (float[]) this.processors[2].getPixels();	// blue
 
-		
 		final ColorSpace lcs = new LabColorSpace();
-//		final float[] SRGB = new float[3];
+		final float[] SRGB = new float[3];
 		
-		for (int i = 0; i < width * height; i++) {	// better than width * height?
-			float[] SRGB = getPixel(i);
-//			SRGB[0] = clipTo01(pix0[i]); 
-//			SRGB[1] = clipTo01(pix1[i]); 
-//			SRGB[2] = clipTo01(pix2[i]);
+		for (int i = 0; i < length; i++) {
+			getPix(i, SRGB);
 			clipTo01(SRGB);
-			final float[] lab = lcs.fromRGB(SRGB);
-//			pix0[i] = lab[0];
-//			pix1[i] = lab[1];
-//			pix2[i] = lab[2];
-			setPixel(i, lab);
+			float[] lab = lcs.fromRGB(SRGB);
+			setPix(i, lab);
 		}
 		
 		setColorSpace(ColorStackType.Lab);
@@ -190,22 +128,14 @@ public class ColorStack {
 		if (this.colorspace != ColorStackType.sRGB) {
 			throw new IllegalStateException("color stack is not of type sRGB");
 		}
-		
-		final float[] pix0 = (float[]) processors[0].getPixels();
-		final float[] pix1 = (float[]) processors[1].getPixels();
-		final float[] pix2 = (float[]) processors[2].getPixels();	
 				
 		final LuvColorSpace lcs = new LuvColorSpace();
 		final float[] SRGB = new float[3];
 		
-		for (int i = 0; i < pix0.length; i++) {
-			SRGB[0] = clipTo01(pix0[i]); 
-			SRGB[1] = clipTo01(pix1[i]); 
-			SRGB[2] = clipTo01(pix2[i]);
-			final float[] luv = lcs.fromRGB(SRGB);
-			pix0[i] = luv[0];
-			pix1[i] = luv[1];
-			pix2[i] = luv[2];
+		for (int i = 0; i < length; i++) {
+			getPix(i, SRGB);
+			float[] luv = lcs.fromRGB(SRGB);
+			setPix(i, luv);
 		}
 		
 		setColorSpace(ColorStackType.Luv);
@@ -231,9 +161,8 @@ public class ColorStack {
 		}
 
 		for (int k = 0; k < 3; k++) {
-			final float[] pixels = (float[]) processors[k].getPixels();
-			for (int i = 0; i < pixels.length; i++) {
-				pixels[i] = (float) sRgbUtil.gammaInv(clipTo01(pixels[i]));
+			for (int i = 0; i < length; i++) {
+				data[k][i] = (float) sRgbUtil.gammaInv(clipTo01(data[k][i]));
 			}
 		}
 
@@ -257,20 +186,12 @@ public class ColorStack {
 			throw new IllegalStateException("color stack is not of type Lab");
 		}
 		final LabColorSpace lcs = new LabColorSpace();
-		
-		final float[] pix0 = (float[]) (float[]) processors[0].getPixels();
-		final float[] pix1 = (float[]) (float[]) processors[1].getPixels();
-		final float[] pix2 = (float[]) (float[]) processors[2].getPixels();
-		
 		final float[] LAB = new float[3];
-		for (int i = 0; i < pix0.length; i++) {
-			LAB[0] = pix0[i];
-			LAB[1] = pix1[i];
-			LAB[2] = pix2[i];
-			final float[] srgb = lcs.toRGB(LAB);
-			pix0[i] = clipTo01(srgb[0]);
-			pix1[i] = clipTo01(srgb[1]);
-			pix2[i] = clipTo01(srgb[2]);
+		
+		for (int i = 0; i < length; i++) {
+			getPix(i, LAB);
+			float[] srgb = lcs.toRGB(LAB);
+			setPix(i, srgb);
 		}
 
 		setColorSpace(ColorStackType.sRGB);
@@ -282,19 +203,11 @@ public class ColorStack {
 		}
 		final ColorSpace lcs = new LuvColorSpace();
 		
-		final float[] pix0 = (float[]) processors[0].getPixels();
-		final float[] pix1 = (float[]) processors[1].getPixels();
-		final float[] pix2 = (float[]) processors[2].getPixels();
-		
 		final float[] LUV = new float[3];
-		for (int i = 0; i < pix0.length; i++) {
-			LUV[0] = pix0[i];
-			LUV[1] = pix1[i];
-			LUV[2] = pix2[i]; 
+		for (int i = 0; i < length; i++) {
+			getPix(i, LUV);
 			final float[] srgb = lcs.toRGB(LUV);
-			pix0[i] = clipTo01(srgb[0]);
-			pix1[i] = clipTo01(srgb[1]);
-			pix2[i] = clipTo01(srgb[2]);
+			setPix(i, srgb);
 		}
 
 		setColorSpace(ColorStackType.sRGB);
@@ -306,9 +219,8 @@ public class ColorStack {
 		}
 
 		for (int k = 0; k < 3; k++) {
-			final float[] pixels = (float[]) processors[k].getPixels();		
-			for (int i = 0; i <pixels.length; i++) {
-				pixels[i] = (float) sRgbUtil.gammaFwd(clipTo01(pixels[i]));
+			for (int i = 0; i < length; i++) {
+				data[k][i] = (float) sRgbUtil.gammaFwd(clipTo01(data[k][i]));
 			}
 		}
 
@@ -317,56 +229,17 @@ public class ColorStack {
 	
 	// ---------------------------------------------------------------
 	
+	@Override
 	public ColorProcessor toColorProcessor() {
 		if (this.colorspace != ColorStackType.sRGB) {
 			throw new IllegalStateException("color stack must be of type sRGB to comvert to ColorProcessor");
 		}
-		final float[] pix0 = (float[]) processors[0].getPixels();
-		final float[] pix1 = (float[]) processors[1].getPixels();
-		final float[] pix2 = (float[]) processors[2].getPixels();
-		
-		ColorProcessor cp = new ColorProcessor(this.getWidth(), this.getHeight());
-		final int[] srgbPix = (int[]) cp.getPixels();
-		
-		for (int i = 0; i < srgbPix.length; i++) {
-            int r = clipTo255(round(pix0[i] * 255));
-    		int g = clipTo255(round(pix1[i] * 255));
-    		int b = clipTo255(round(pix2[i] * 255));
-//    		if (r < 0) r = 0; else if (r > 255) r = 255;
-//    		if (g < 0) g = 0; else if (g > 255) g = 255;
-//    		if (b < 0) b = 0; else if (b > 255) b = 255;	
-    		//srgbPix[i] = ((r & 0xff)<<16) | ((g & 0xff)<<8) | b & 0xff;
-    		srgbPix[i] = RgbUtils.rgbToInt(r, g, b);
-    	}
-		return cp;
+		return super.toColorProcessor(255);
 	}
 	
-	// ---------------- numeric operations ---------------------------
-	
-	public void multiply(double value) {
-		for (int k = 0; k < 3; k++)  {
-			this.processors[k].multiply(value);
-		}
-	}
-	
-	public void convolve(float[] kernel, int w, int h) {
-		for (int k = 0; k < 3; k++)  {
-			this.processors[k].convolve(kernel, w, h);
-		}
-	}
-	
-	public FloatProcessor max() { 
-		FloatProcessor rp = (FloatProcessor) this.processors[0].duplicate();
-		float[] rpix = (float[]) rp.getPixels();
-		for (int k = 1; k < 3; k++) {
-			float[] pixels = (float[]) this.processors[0].getPixels();
-			for (int i = 0; i < pixels.length; i++) {
-				float p = pixels[i];
-				if (p > rpix[i])
-					rpix[i] = p;
-			}
-		}
-		return rp;
+	@Override	// arbitrary scaling is inhibited
+	public ColorProcessor toColorProcessor(double scale) {
+		throw new UnsupportedOperationException();
 	}
 	
 	// ------------------------------------------------------------------
@@ -381,12 +254,6 @@ public class ColorStack {
 		for (int i = 0; i < vals.length; i++) {
 			vals[i] = clipTo01(vals[i]);
 		}
-	}
-	
-	private int clipTo255(int val) {
-		if (val < 0) return 0;
-		if (val > 255) return 255;
-		return val;
 	}
     
 }

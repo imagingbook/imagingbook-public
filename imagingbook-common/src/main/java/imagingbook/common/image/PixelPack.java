@@ -68,10 +68,11 @@ public class PixelPack {
 	/** The default out-of-bounds strategy (see {@link OutOfBoundsStrategy}). */
 	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.NearestBorder;
 
-	private final int width, height;
-	private final int depth;
-	private final float[][] data;
-	private final int length;
+	protected final int width;
+	protected final int height;
+	protected final int depth;
+	protected final float[][] data;
+	protected final int length;
 	private final GridIndexer2D indexer;
 	
 	// --------------------------------------------------------------------
@@ -147,7 +148,8 @@ public class PixelPack {
 	
 	@Deprecated // use getPix(int u, int v, float[] vals)
 	public float[] getVec(int u, int v, float[] vals) {
-		return getPix(u, v, vals);
+		getPix(u, v, vals);
+		return vals;
 	}
 	
 	@Deprecated	// use getPix(int u, int v)
@@ -163,38 +165,77 @@ public class PixelPack {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Returns the pixel data at the specified position as a float-vector.
-	 * If the supplied array is non-null, it is filled in and returned,
-	 * otherwise a new array is returned.
-	 * The length of this array corresponds to the number of slices in this
+	 * Reads the pixel data at the specified image position.
+	 * The supplied array is filled.
+	 * The length of this array must match corresponds the number of slices in this
 	 * pixel pack.
-	 * The values returned at out-of-bounds positions depends on this
+	 * The values returned for out-of-bounds positions depend on this
 	 * pixel-pack's out-of-bounds strategy.
 	 * 
 	 * @param u the x-position
 	 * @param v the y-position
-	 * @param vals a suitable 
-	 * @return the array of pixel data
+	 * @param vals a suitable array of pixel data
 	 */
-	public float[] getPix(int u, int v, float[] vals) {
+	public void getPix(int u, int v, float[] vals) {
 		if (vals == null) 
 			vals = new float[depth];
-		final int i = indexer.getIndex(u, v);
-		if (i < 0) {	// i = -1 --> default value (zero)
+		final int idx = indexer.getIndex(u, v);
+		if (idx < 0) {	// i = -1 --> default value (zero)
 			Arrays.fill(vals, 0);
 		}
 		else {	
-			for (int k = 0; k < depth; k++) {
-				vals[k] = data[k][i];
-			}
+//			for (int k = 0; k < depth; k++) {
+//				vals[k] = data[k][i];
+//			}
+			getPix(idx, vals);
 		}
+	}
+	
+	/**
+	 * Returns the pixel data at the specified position as a {@code float[]}.
+	 * The values returned for out-of-bounds positions depend on this
+	 * pixel-pack's out-of-bounds strategy.
+	 * 
+	 * @param u the x-position
+	 * @param v the y-position
+	 * @return the array of pixel component values
+	 */
+	public float[] getPix(int u, int v) {
+		float[] vals = new float[depth];
+		getPix(u, v, vals);
 		return vals;
 	}
 	
-	// returns a new pixel array
-	public float[] getPix(int u, int v) {
-		return getPix(u, v, new float[depth]);
+	/**
+	 * Reads the pixel data at the specified 1D index.
+	 * The supplied array is filled.
+	 * The length of this array must match corresponds the number of slices in this
+	 * pixel pack.
+	 * The index is not checked, the corresponding pixel must always be inside
+	 * the image bounds, otherwise an exception will be thrown.
+	 * 
+	 * @param idx a valid 1D pixel index (in row-major order)
+	 * @param vals a suitable array of pixel data
+	 */
+	public void getPix(int idx, float[] vals) {
+		for (int k = 0; k < depth; k++) {
+			vals[k] = data[k][idx];
+		}
 	}
+	
+	/**
+	 * Returns the pixel data at the specified position as a {@code float[]}.
+	 * The index is not checked, the corresponding pixel must always be inside
+	 * the image bounds, otherwise an exception will be thrown.
+	 * @param idx a valid 1D pixel index (in row-major order)
+	 * @return the array of pixel component values
+	 */
+	public float[] getPix(int idx) {
+		float[] vals = new float[depth];
+		getPix(idx, vals);
+		return vals;
+	}
+
 	
 	/**
 	 * Sets the pixel data at the specified pixel position.
@@ -205,11 +246,18 @@ public class PixelPack {
 	 * @param vals the pixel's component values (may also be a {@code float[])
 	 */
 	public void setPix(int u, int v, float ... vals) {
-		final int i = indexer.getIndex(u, v);
-		if (i >= 0) {
-			for (int k = 0; k < depth && k < vals.length; k++) {
-				data[k][i] = vals[k];
-			}
+		final int idx = indexer.getIndex(u, v);
+		if (idx >= 0) {
+//			for (int k = 0; k < depth && k < vals.length; k++) {
+//				data[k][i] = vals[k];
+//			}
+			setPix(idx, vals);
+		}
+	}
+	
+	public void setPix(int idx, float ... vals) {
+		for (int k = 0; k < depth && k < vals.length; k++) {
+			data[k][idx] = vals[k];
 		}
 	}
 	
