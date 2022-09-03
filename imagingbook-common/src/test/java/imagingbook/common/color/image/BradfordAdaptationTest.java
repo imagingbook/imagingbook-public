@@ -28,7 +28,7 @@ public class BradfordAdaptationTest {
 		ChromaticAdaptation adapt65_50 = new BradfordAdaptation(D65, D50);	// adapts from D65 -> D50
 		ChromaticAdaptation adapt50_65 = new BradfordAdaptation(D50, D65);	// adapts from D50 -> D65
 		
-		ColorSpace cs = new sRgb65ColorSpace();
+		ColorSpace cs = sRgb65ColorSpace.getInstance();
 		Random rg = new Random(17);
 		float[] rgb = new float[3];
 		

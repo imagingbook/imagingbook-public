@@ -23,7 +23,7 @@ public class CieUtilTest {
 
 	@Test
 	public void test1() {
-		ColorSpace cs = new sRgb65ColorSpace();
+		ColorSpace cs = sRgb65ColorSpace.getInstance();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
 		doCheck(cs, new int[] {177, 0, 0});
@@ -34,7 +34,7 @@ public class CieUtilTest {
 	
 	@Test
 	public void test2() {
-		ColorSpace cs = new sRgb65ColorSpace();
+		ColorSpace cs = sRgb65ColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);

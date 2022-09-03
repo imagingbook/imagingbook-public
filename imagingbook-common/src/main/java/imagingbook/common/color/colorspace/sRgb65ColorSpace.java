@@ -18,10 +18,18 @@ import imagingbook.common.math.Matrix;
  * chromatic adaptation between D50 and D65, as required by Java's profile 
  * connection space. Everything is D65, components of all {@code float[]} colors
  * are supposed to be in [0,1].
+ * This is a singleton class with no public constructors,
+ * use {@link #getInstance()} to obtain the single instance.
  * 
  */
 @SuppressWarnings("serial")
 public class sRgb65ColorSpace extends ColorSpace {
+	
+	private static final sRgb65ColorSpace instance = new sRgb65ColorSpace();
+	
+	public static sRgb65ColorSpace getInstance() {
+		return instance;
+	}
 	
 	/** Matrix for conversion from linear RGB to XYZ. */
 	public static final double[][] Mrgb =    // (R,G,B) = Mrgb * (X,Y,Z)   // Poynton (ITU 709) 
@@ -42,7 +50,7 @@ public class sRgb65ColorSpace extends ColorSpace {
 	/**
 	 * Constructor.
 	 */
-	public sRgb65ColorSpace() {
+	private sRgb65ColorSpace() {
 		super(ColorSpace.TYPE_RGB, 3);
 	}
 

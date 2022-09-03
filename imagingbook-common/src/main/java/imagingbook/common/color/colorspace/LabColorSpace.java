@@ -126,7 +126,7 @@ public class LabColorSpace extends ColorSpace {
 	 */
 	@Override
 	public float[] fromRGB(float[] srgb) {
-		float[] XYZ65 = new sRgb65ColorSpace().toCIEXYZ(srgb);	// TODO: use sRgb65ColorSpace singleton
+		float[] XYZ65 = sRgb65ColorSpace.getInstance().toCIEXYZ(srgb);	// TODO: use sRgb65ColorSpace singleton
 		return fromCIEXYZ65(XYZ65);
 	}
 
@@ -141,7 +141,7 @@ public class LabColorSpace extends ColorSpace {
 	@Override
 	public float[] toRGB(float[] Lab) {
 		float[] XYZ65 = toCIEXYZ65(Lab);
-		float[] srgb = new sRgb65ColorSpace().fromCIEXYZ(XYZ65); // TODO: use sRgb65ColorSpace singleton
+		float[] srgb = sRgb65ColorSpace.getInstance().fromCIEXYZ(XYZ65); // TODO: use sRgb65ColorSpace singleton
 		return srgb;
 	}
 

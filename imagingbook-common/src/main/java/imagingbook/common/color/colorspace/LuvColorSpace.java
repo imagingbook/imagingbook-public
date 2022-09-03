@@ -133,7 +133,7 @@ public class LuvColorSpace extends ColorSpace {
 	 */
 	@Override
 	public float[] fromRGB(float[] srgb) {
-		float[] XYZ65 = new sRgb65ColorSpace().toCIEXYZ(srgb);
+		float[] XYZ65 = sRgb65ColorSpace.getInstance().toCIEXYZ(srgb);
 		return fromCIEXYZ65(XYZ65);
 	}
 	
@@ -148,7 +148,7 @@ public class LuvColorSpace extends ColorSpace {
 	@Override
 	public float[] toRGB(float[] Luv) {
 		float[] XYZ65 = toCIEXYZ65(Luv);
-		float[] srgb = new sRgb65ColorSpace().fromCIEXYZ(XYZ65);
+		float[] srgb = sRgb65ColorSpace.getInstance().fromCIEXYZ(XYZ65);
 		return srgb;
 	}
 	
