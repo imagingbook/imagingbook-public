@@ -55,11 +55,11 @@ public class BilateralFilterVector extends GenericFilterVector {
 	protected float[] doPixel(PixelPack pack, int u, int v) {
 		float[] S = new float[3]; 	// sum of weighted RGB values
 		float W = 0;				// sum of weights
-		float[] a = pack.getVec(u, v);			// value of the current center pixel
+		float[] a = pack.getPix(u, v);			// value of the current center pixel
 		
 		for (int m = -K; m <= K; m++) {
 			for (int n = -K; n <= K; n++) {
-				float[] b = pack.getVec(u + m, v + n);
+				float[] b = pack.getPix(u + m, v + n);
 				float wd = Hd[m + K][n + K];				// domain weight
 				float wr = similarityGauss(a, b);			// range weight
 				float w = wd * wr;

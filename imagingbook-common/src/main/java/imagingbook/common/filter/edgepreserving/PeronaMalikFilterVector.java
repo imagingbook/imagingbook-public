@@ -60,12 +60,12 @@ public class PeronaMalikFilterVector extends GenericFilterVector implements Pero
 		 *      p2              1
 		 */
 		float[][] A = new float[4][];	// p[i][k]: 4 pixel colors from the 3x3 neigborhood
-		float[] Ac =  pack.getVec(u, v);
+		float[] Ac =  pack.getPix(u, v);
 //		A[0] = pack.getVec(u, v);
-		A[0] = pack.getVec(u + 1, v);
-		A[1] = pack.getVec(u, v - 1);
-		A[2] = pack.getVec(u - 1, v);
-		A[3] = pack.getVec(u, v + 1);
+		A[0] = pack.getPix(u + 1, v);
+		A[1] = pack.getPix(u, v - 1);
+		A[2] = pack.getPix(u - 1, v);
+		A[3] = pack.getPix(u, v + 1);
 		
 		float[] result = Ac.clone(); //A[0].clone();
 		

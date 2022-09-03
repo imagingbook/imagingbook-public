@@ -114,8 +114,8 @@ public class TschumperleDericheFilter extends GenericFilter implements Tschumper
 	private void makeStructureMatrix() {	// make M
 		for (int u = 0; u < M; u++) {
 			for (int v = 0; v < N; v++) {
-				final float[] dx = Dx.getVec(u, v);
-				final float[] dy = Dy.getVec(u, v);
+				final float[] dx = Dx.getPix(u, v);
+				final float[] dy = Dy.getPix(u, v);
 				float g0 = 0; float g2 = 0; float g1 = 0;
 				for (int k = 0; k < K; k++) {
 					final float fx = dx[k];
@@ -124,7 +124,7 @@ public class TschumperleDericheFilter extends GenericFilter implements Tschumper
 					g1 += fy * fy;
 					g2 += fx * fy;
 				}
-				G.setVec(u, v, g0, g2, g1);
+				G.setPix(u, v, g0, g2, g1);
 			}
 		}
 		structureBlurFilter.applyTo(G);
@@ -136,7 +136,7 @@ public class TschumperleDericheFilter extends GenericFilter implements Tschumper
 			for (int v = 0; v < N; v++) {
 				// calculate the local geometry matrix A(u,v), which has only 3 distinct elements
 				float[] A = getGeometryMatrix(u, v);
-				float[] p = source.getVec(u, v);
+				float[] p = source.getPix(u, v);
 				for (int k = 0; k < K; k++) {
 					float[] H = getHessianMatrix(k, u, v); // local Hessian for channel k at pos u,v (3 elements)
 					float beta = A[0] * H[0] + 2 * A[1] * H[1] + A[2] * H[2]; // = trace (A*H)
@@ -144,14 +144,14 @@ public class TschumperleDericheFilter extends GenericFilter implements Tschumper
 					// update the image (result goes to target)
 					p[k] = p[k] + alpha * beta;	// we use alpha from the previous pass!
 				}
-				target.setVec(u, v, p);
+				target.setPix(u, v, p);
 			}
 		}
 		return betaMax;
 	}
 	
 	private float[] getGeometryMatrix(int u, int v) {
-		float[] Guv = G.getVec(u, v); // 3 elements of local geometry matrix (2x2)
+		float[] Guv = G.getPix(u, v); // 3 elements of local geometry matrix (2x2)
 		
 		// calculate the 2 eigenvalues lambda1, lambda2 and the greater eigenvector e1
 		Eigensolver2x2 solver = new Eigensolver2x2(Guv[0], Guv[1], Guv[1], Guv[2]);

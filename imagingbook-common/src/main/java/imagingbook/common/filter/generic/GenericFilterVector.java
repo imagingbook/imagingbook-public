@@ -39,7 +39,7 @@ public abstract class GenericFilterVector extends GenericFilter {
 		iter = 0;
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
-				targetPack.setVec(u, v, doPixel(sourcePack, u, v)); // single pixel operation
+				targetPack.setPix(u, v, doPixel(sourcePack, u, v)); // single pixel operation
 				iter++;
 			}
 		}
@@ -51,7 +51,7 @@ public abstract class GenericFilterVector extends GenericFilter {
 	 * must be implemented by any concrete sub-class.
 	 * The source data are passed as a {@link PixelPack} container, which
 	 * holds the pixel values of all image components.
-	 * The method {@link PixelPack#getVec(int, int)} should be used to read
+	 * The method {@link PixelPack#getPix(int, int)} should be used to read
 	 * individual pixel vectors. These data should not be modified but
 	 * the (float[]) result of the single-pixel calculation must be returned.
 	 * Implementations are free to return the same float-array at each invocation,

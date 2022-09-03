@@ -70,7 +70,7 @@ public class KuwaharaFilterVector extends GenericFilterVector implements Kuwahar
 		final float[] S2 = new float[3];	// sum of squared pixel values
 		for (int j = dm; j <= dp; j++) {
 			for (int i = dm; i <= dp; i++) {		
-				float[] cp = source.getVec(u + i, v + j);
+				float[] cp = source.getPix(u + i, v + j);
 
 				S1[0] = S1[0] + cp[0];
 				S1[1] = S1[1] + cp[1];

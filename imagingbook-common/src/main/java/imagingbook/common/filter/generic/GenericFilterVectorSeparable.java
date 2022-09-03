@@ -39,7 +39,7 @@ public abstract class GenericFilterVectorSeparable extends GenericFilter { // Ge
 		//IJ.log("X-part +++++++++++++++++++++++++++++++++");
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
-				target.setVec(u, v, doPixelX(source, u, v)); // single pixel operation
+				target.setPix(u, v, doPixelX(source, u, v)); // single pixel operation
 				iter++;
 			}
 		}
@@ -50,7 +50,7 @@ public abstract class GenericFilterVectorSeparable extends GenericFilter { // Ge
 		//IJ.log("Y-part +++++++++++++++++++++++++++++++++");
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
-				target.setVec(u, v, doPixelY(source, u, v)); // single pixel operation
+				target.setPix(u, v, doPixelY(source, u, v)); // single pixel operation
 				iter++;
 			}
 		}
@@ -65,7 +65,7 @@ public abstract class GenericFilterVectorSeparable extends GenericFilter { // Ge
 	 * This method is invoked before {@link #doPixelY(PixelPack, int, int)}.
 	 * The source data are passed as a {@link PixelPack} container, which
 	 * holds the vector values of all image components.
-	 * The method {@link PixelPack#getVec(int, int)} should be used to read
+	 * The method {@link PixelPack#getPix(int, int)} should be used to read
 	 * individual pixel vectors. These data should not be modified but
 	 * the (float[]) result of the single-pixel calculation must be returned.
 	 * Implementations are free to return the same float-array at each invocation,
@@ -84,7 +84,7 @@ public abstract class GenericFilterVectorSeparable extends GenericFilter { // Ge
 	 * This method is invoked after {@link #doPixelX(PixelPack, int, int)}.
 	 * The source data are passed as a {@link PixelPack} container, which
 	 * holds the vector values of all image components.
-	 * The method {@link PixelPack#getVec(int, int)} should be used to read
+	 * The method {@link PixelPack#getPix(int, int)} should be used to read
 	 * individual pixel vectors. These data should not be modified but
 	 * the (float[]) result of the single-pixel calculation must be returned.
 	 * Implementations are free to return the same float-array at each invocation,

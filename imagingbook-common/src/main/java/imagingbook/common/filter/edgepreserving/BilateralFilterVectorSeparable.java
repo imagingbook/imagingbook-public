@@ -65,9 +65,9 @@ public class BilateralFilterVectorSeparable extends GenericFilterVectorSeparable
 	private float[] filterPixelXY(PixelPack source, int u, int v, boolean isX) {
 		float[] S = new float[3]; 	// sum of weighted RGB (initialized to zero)
 		float W = 0;						// sum of weights
-		float[] a = source.getVec(u, v);
+		float[] a = source.getPix(u, v);
 		for (int m = -K; m <= K; m++) {
-			final float[] b = (isX) ? source.getVec(u + m, v) : source.getVec(u, v + m);
+			final float[] b = (isX) ? source.getPix(u + m, v) : source.getPix(u, v + m);
 			float wd = Hd[m + K];												// domain weight
 			float wr = similarityGauss(a, b);
 			float w = wd * wr;

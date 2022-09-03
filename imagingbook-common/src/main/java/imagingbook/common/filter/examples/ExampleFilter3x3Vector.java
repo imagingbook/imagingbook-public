@@ -32,7 +32,7 @@ public class ExampleFilter3x3Vector extends GenericFilterVector {
 			int vj = v + j - yc;
 			for (int i = 0; i < width; i++) {
 				int ui = u + i - xc;
-				float[] p = pack.getVec(ui, vj);
+				float[] p = pack.getPix(ui, vj);
 				for (int k = 0; k < depth; k++) {
 					sum[k] = sum[k] + (p[k] * H[i][j]) / s;
 				}

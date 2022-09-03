@@ -59,7 +59,7 @@ public class NagaoMatsuyamaFilterVector extends GenericFilterVector implements N
 		final float[] S2 = new float[3];	// sum of squared pixel values
 		int n = 0;
 		for (int[] p : R) {
-			final float[] cp = ia.getVec(u + p[0], v + p[1]);
+			final float[] cp = ia.getPix(u + p[0], v + p[1]);
 			
 			S1[0] = S1[0] + cp[0];
 			S1[1] = S1[1] + cp[1];
