@@ -19,9 +19,11 @@ import imagingbook.common.util.ParameterBundle;
 /**
  * Monochromatic color edge detector, as described in UTICS Vol. 3, Alg. 4.1.
  * @author W. Burger
+ * 
  * @version 2014/02/16
+ * @version 2022/09/04 converted to implement interface
  */
-public class MonochromaticEdgeDetector extends ColorEdgeDetector {
+public class MonochromaticEdgeDetector implements ColorEdgeDetector {
 	
 
 	final ColorProcessor I;
@@ -78,8 +80,8 @@ public class MonochromaticEdgeDetector extends ColorEdgeDetector {
 
 	void findEdges() {
 		for (int c = R; c <= B; c++) {
-			Ix[c] =  getRgbFloatChannel(I, c);
-			Iy[c] =  getRgbFloatChannel(I, c);
+			Ix[c] =  ColorEdgeDetector.getRgbFloatChannel(I, c);
+			Iy[c] =  ColorEdgeDetector.getRgbFloatChannel(I, c);
 			Ix[c].convolve(HxS, 3, 3);
 			Iy[c].convolve(HyS, 3, 3);
 		}
@@ -130,10 +132,12 @@ public class MonochromaticEdgeDetector extends ColorEdgeDetector {
 //		return (float) dist;
 //	}
 	
+	@Override
 	public FloatProcessor getEdgeMagnitude() {
 		return Emag;
 	}
 
+	@Override
 	public FloatProcessor getEdgeOrientation() {
 		return Eort;
 	}

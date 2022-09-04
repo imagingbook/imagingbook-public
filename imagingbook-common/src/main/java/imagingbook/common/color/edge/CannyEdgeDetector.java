@@ -11,7 +11,6 @@ package imagingbook.common.color.edge;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -34,8 +33,9 @@ import imagingbook.common.util.ParameterBundle;
  * @author W. Burger
  * @version 2021/11/26
  * @version 2022/03/22 added parameter annotations for dialogs
+ * @version 2022/09/04 converted to implement interface
  */
-public class CannyEdgeDetector extends ColorEdgeDetector {
+public class CannyEdgeDetector implements ColorEdgeDetector {
 	
 	// TODO: Document methods, use arrays instead of image processors.
 	
@@ -332,10 +332,12 @@ public class CannyEdgeDetector extends ColorEdgeDetector {
 		return s_theta;
 	}
 	
+	@Override
 	public FloatProcessor getEdgeMagnitude() {
 		return Emag;
 	}
 
+	@Override
 	public FloatProcessor getEdgeOrientation() {
 		FloatProcessor E_theta = new FloatProcessor(M, N);
 		for (int u = 0; u < M; u++) {
@@ -361,18 +363,6 @@ public class CannyEdgeDetector extends ColorEdgeDetector {
 			detectAndTraceEdges();
 		}
 		return edgeTraces;
-	}
-	
-	@Deprecated		// will disappear in the future, use #getTraces() instead
-	public List<List<Point>> getEdgeTraces() {
-		if (edgeTraces == null) {
-			detectAndTraceEdges();
-		}
-		List<List<Point>> traceListAwt = new ArrayList<>();
-		for (EdgeTrace trace : edgeTraces) {
-			traceListAwt.add(trace.getAwtPoints());
-		}
-		return traceListAwt;
 	}
 	
 	//---------------------------------------------------------------------------

@@ -14,16 +14,19 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 
 /**
- * This is the common super-class for all color edge detectors.
+ * This is the common interface for all color edge detectors.
+ * 
  * @author W. Burger
  * @version 2013/05/30
+ * @version 2022/09/04 converted to interface
  */
-public abstract class ColorEdgeDetector {
+public interface ColorEdgeDetector {
 	
-	public abstract FloatProcessor getEdgeMagnitude();
-	public abstract FloatProcessor getEdgeOrientation();
+	public FloatProcessor getEdgeMagnitude();
+	public FloatProcessor getEdgeOrientation();
 	
-	FloatProcessor getRgbFloatChannel(ColorProcessor cp, int c) {	// c = 0,1,2
+	// TODO: move elsewhere or replace?
+	static FloatProcessor getRgbFloatChannel(ColorProcessor cp, int c) {	// c = 0,1,2
 		int w = cp.getWidth();
 		int h = cp.getHeight();
 		ByteProcessor bp = new ByteProcessor(w, h, cp.getChannel(c + 1)); // numbered from 1,...,3!

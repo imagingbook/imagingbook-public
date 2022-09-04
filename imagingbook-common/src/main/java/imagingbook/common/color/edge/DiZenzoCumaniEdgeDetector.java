@@ -9,6 +9,9 @@
 
 package imagingbook.common.color.edge;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.sqrt;
+
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.math.Matrix;
@@ -16,10 +19,12 @@ import imagingbook.common.util.ParameterBundle;
 
 /**
  * Multi-Gradient ("DiZenzo/Cumani-style") color edge detector, as described in UTICS Vol. 3, Alg. 4.2.
+ * 
  * @author W. Burger
  * @version 2013/05/30
+ * @version 2022/09/04 converted to implement interface
  */
-public class DiZenzoCumaniEdgeDetector extends ColorEdgeDetector {
+public class DiZenzoCumaniEdgeDetector implements ColorEdgeDetector {
 	
 	/**
 	 * Currently unused, no parameters to set
@@ -77,8 +82,8 @@ public class DiZenzoCumaniEdgeDetector extends ColorEdgeDetector {
 
 	void findEdges() {
 		for (int c = R; c <= B; c++) {
-			Ix[c] =  getRgbFloatChannel(I, c);
-			Iy[c] =  getRgbFloatChannel(I, c);
+			Ix[c] =  ColorEdgeDetector.getRgbFloatChannel(I, c);
+			Iy[c] =  ColorEdgeDetector.getRgbFloatChannel(I, c);
 			Ix[c].convolve(HxS, 3, 3);
 			Iy[c].convolve(HyS, 3, 3);
 		}
@@ -93,7 +98,7 @@ public class DiZenzoCumaniEdgeDetector extends ColorEdgeDetector {
 				float B = ry*ry + gy*gy + by*by;
 				float C = rx*ry + gx*gy + bx*by;
 				
-				float lambda0 = 0.5f * (A + B + (float) Math.sqrt(sqr(A-B) + 4 * sqr(C)));
+				float lambda0 = 0.5f * (A + B + (float) sqrt(sqr(A-B) + 4 * sqr(C)));
 				float theta0 =  0.5f * (float) Math.atan2(2 * C, A - B);
 
 				E_mag.setf(u, v, (float) Math.sqrt(lambda0));
@@ -105,15 +110,14 @@ public class DiZenzoCumaniEdgeDetector extends ColorEdgeDetector {
 		}
 	}
 	
+	@Override
 	public FloatProcessor getEdgeMagnitude() {
 		return E_mag;
 	}
 
+	@Override
 	public FloatProcessor getEdgeOrientation() {
 		return E_ort;
 	}
 	
-	float sqr(float x) {
-		return x * x;
-	}
 }

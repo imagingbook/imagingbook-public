@@ -18,10 +18,12 @@ import imagingbook.common.util.ParameterBundle;
 /**
  * Simple grayscale edge detector for color images. The color image
  * is converted to grayscale for edge detection.
+ * 
  * @author W. Burger
  * @version 2014/02/17
+ * @version 2022/09/04 converted to implement interface
  */
-public class GrayscaleEdgeDetector extends ColorEdgeDetector {
+public class GrayscaleEdgeDetector implements ColorEdgeDetector {
 	
 
 	final ImageProcessor I;
@@ -103,10 +105,12 @@ public class GrayscaleEdgeDetector extends ColorEdgeDetector {
 		}
 	}
 	
+	@Override
 	public FloatProcessor getEdgeMagnitude() {
 		return Emag;
 	}
 
+	@Override
 	public FloatProcessor getEdgeOrientation() {
 		return Eort;
 	}
