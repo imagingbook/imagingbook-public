@@ -14,6 +14,8 @@ import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 
 import java.awt.color.ColorSpace;
 
+import imagingbook.common.color.RgbUtils;
+
 
 /**
  * <p>
@@ -128,6 +130,8 @@ public class LabColorSpace extends ColorSpace {
 	 * Transforms a sRGB color value to a CIELab color.
 	 * This method implements {@link ColorSpace#fromRGB(float[])} assuming
 	 * D65-based sRGB color coordinates.
+	 * Note that sRGB values are assumed to be in [0,1] (see
+	 * {@link RgbUtils#normalize(int...)} for conversion from [0,255] int-values).
 	 * @param srgb a sRGB color (D65-based)
 	 * @return the associated CIELab color
 	 */
@@ -142,6 +146,8 @@ public class LabColorSpace extends ColorSpace {
 	 * Transforms a CIELab color value to a sRGB color
 	 * This method implements {@link ColorSpace#toRGB(float[])} assuming 
 	 * D65-based sRGB color coordinates.
+	 * Note that the returned RGB values are in [0,1] (see
+	 * {@link RgbUtils#unnormalize(float[])} for conversion to [0,255] int-values).
 	 * @param Lab a CIELab color
 	 * @return sRGB coordinates (D65-based)
 	 */

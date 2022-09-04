@@ -13,6 +13,8 @@ import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 
 import java.awt.color.ColorSpace;
 
+import imagingbook.common.color.RgbUtils;
+
 
 /**
  * <p>
@@ -132,11 +134,13 @@ public class LuvColorSpace extends ColorSpace {
 	
 	//sRGB->CIELuv
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Note: This implementation (required by {@link ColorSpace}) converts a
-	 * D65-based sRGB color coordinate assumed to the associated CIELuv color.
-	 * </p>
+	 * Transforms a sRGB color value to a CIELuv color.
+	 * This method implements {@link ColorSpace#fromRGB(float[])} assuming
+	 * D65-based sRGB color coordinates.
+	 * Note that sRGB values are assumed to be in [0,1] (see
+	 * {@link RgbUtils#normalize(int...)} for conversion from [0,255] int-values).
+	 * @param srgb a sRGB color (D65-based)
+	 * @return the associated CIELuv color
 	 */
 	@Override
 	public float[] fromRGB(float[] srgb) {
@@ -146,11 +150,13 @@ public class LuvColorSpace extends ColorSpace {
 	
 	//CIELuv->sRGB
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Note: This implementation (required by {@link ColorSpace}) converts a
-	 * CIELuv color to a D65-based sRGB color coordinate.
-	 * </p>
+	 * Transforms a CIELuv color value to a sRGB color
+	 * This method implements {@link ColorSpace#toRGB(float[])} assuming 
+	 * D65-based sRGB color coordinates.
+	 * Note that the returned RGB values are in [0,1] (see
+	 * {@link RgbUtils#unnormalize(float[])} for conversion to [0,255] int-values).
+	 * @param Luv a CIELuv color
+	 * @return sRGB coordinates (D65-based)
 	 */
 	@Override
 	public float[] toRGB(float[] Luv) {
