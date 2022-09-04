@@ -15,7 +15,8 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.colorspace.HsvConverter;
+import imagingbook.common.color.RgbUtils;
+import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.math.Arithmetic;
 
 /**
@@ -32,7 +33,7 @@ public class Hsv_Filter implements PlugInFilter {
 	static boolean SHOW_ORIGINAL_HSV = true;
 
 	public int setup(String arg, ImagePlus imp) {
-		return DOES_RGB;
+		return DOES_RGB + NO_CHANGES;
 	}
 
 	public void run(ImageProcessor ip) {
@@ -51,18 +52,18 @@ public class Hsv_Filter implements PlugInFilter {
 		}
 		
 		// Create Cos/Sin images from the hue angle:
-		HsvConverter cc = HsvConverter.getInstance();
+		HsvColorSpace cc = HsvColorSpace.getInstance();
 		final int[] RGB = new int[3];
 		FloatProcessor fHcos = new FloatProcessor(w, h);
 		FloatProcessor fHsin = new FloatProcessor(w, h);
 		for (int v = 0; v < h; v++) {
 			for (int u = 0; u < w; u++) {
 				cp.getPixel(u, v, RGB);
-				float[] HSV = cc.fromRGB (RGB); 	// all HSV components are in [0,1]
-				fH.setf(u, v, HSV[0]);
-				fS.setf(u, v, HSV[1]);
-				fV.setf(u, v, HSV[2]);
-				double angle = 2 * Math.PI * HSV[0];
+				float[] hsv = cc.fromRGB (RgbUtils.normalize(RGB)); 	// all HSV components are in [0,1]
+				fH.setf(u, v, hsv[0]);
+				fS.setf(u, v, hsv[1]);
+				fV.setf(u, v, hsv[2]);
+				double angle = 2 * Math.PI * hsv[0];
 				fHcos.setf(u, v, (float) Math.cos(angle));
 				fHsin.setf(u, v, (float) Math.sin(angle));
 			}
@@ -132,14 +133,14 @@ public class Hsv_Filter implements PlugInFilter {
 		final int w = fH.getWidth();
 		final int h = fH.getHeight();
 		ColorProcessor cp = new ColorProcessor(w, h);
-		HsvConverter cc = HsvConverter.getInstance();
+		HsvColorSpace cc = HsvColorSpace.getInstance();
 		
 		for (int v = 0; v < h; v++) {
 			for (int u = 0; u < w; u++) {
 				float H = fH.getf(u, v);
 				float S = fS.getf(u, v);
 				float V = fV.getf(u, v);
-				int[] RGB2 = cc.toRGB(new float[] {H, S, V});
+				int[] RGB2 = RgbUtils.unnormalize(cc.toRGB(new float[] {H, S, V}));
 				cp.putPixel(u, v, RGB2);
 			}
 		}

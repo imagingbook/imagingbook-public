@@ -15,6 +15,8 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.RgbUtils;
+import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.color.colorspace.HsvConverter;
 import imagingbook.common.math.Arithmetic;
 
@@ -51,14 +53,14 @@ public class Hsv_Filter_With_SaturationWeight implements PlugInFilter {
 		}
 		
 		// Create Cos/Sin images from the hue angle:
-		HsvConverter cc = HsvConverter.getInstance();
+		HsvColorSpace cc = HsvColorSpace.getInstance();
 		final int[] RGB = new int[3];
 		FloatProcessor fHsin = new FloatProcessor(w, h);
 		FloatProcessor fHcos = new FloatProcessor(w, h);
 		for (int v = 0; v < h; v++) {
 			for (int u = 0; u < w; u++) {
 				cp.getPixel(u, v, RGB);
-				float[] HSV = cc.fromRGB (RGB); 	// all HSV components are in [0,1]
+				float[] HSV = cc.fromRGB (RgbUtils.normalize(RGB)); 	// all HSV components are in [0,1]
 				double theta = 2 * Math.PI * HSV[0];
 				float s = HSV[1];
 				fHsin.setf(u, v, (float) Math.sin(theta) * s);
@@ -133,14 +135,14 @@ public class Hsv_Filter_With_SaturationWeight implements PlugInFilter {
 		final int w = fH.getWidth();
 		final int h = fH.getHeight();
 		ColorProcessor cp = new ColorProcessor(w, h);
-		HsvConverter cc = HsvConverter.getInstance();
+		HsvColorSpace cc = HsvColorSpace.getInstance();
 		
 		for (int v = 0; v < h; v++) {
 			for (int u = 0; u < w; u++) {
 				float H = fH.getf(u, v);
 				float S = fS.getf(u, v);
 				float V = fV.getf(u, v);
-				int[] RGB2 = cc.toRGB(new float[] {H, S, V});
+				int[] RGB2 = RgbUtils.unnormalize(cc.toRGB(new float[] {H, S, V}));
 				cp.putPixel(u, v, RGB2);
 			}
 		}

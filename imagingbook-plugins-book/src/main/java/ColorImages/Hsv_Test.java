@@ -13,7 +13,8 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.colorspace.HsvConverter;
+import imagingbook.common.color.RgbUtils;
+import imagingbook.common.color.colorspace.HsvColorSpace;
 
 /* This plugin rotates the color hue by 120 degrees */
 
@@ -27,15 +28,15 @@ public class Hsv_Test implements PlugInFilter {
 		ColorProcessor cp = (ColorProcessor) ip;
 		final int[] RGB = new int[3];
 		
-		HsvConverter cc = HsvConverter.getInstance();
+		HsvColorSpace cc = HsvColorSpace.getInstance();
 		
 		for (int v = 0; v < cp.getHeight(); v++) {
 			for (int u = 0; u < cp.getWidth(); u++) {
 				cp.getPixel(u, v, RGB);
 
-				float[] HSV = cc.fromRGB (RGB); 	// all HSV components are in [0,1]
+				float[] HSV = cc.fromRGB (RgbUtils.normalize(RGB)); 	// all HSV components are in [0,1]
 				HSV[0] = (HSV[0] + 1.0f/3) % 1.0f;	// shift hue by 120 degrees
-				int[] RGBnew = cc.toRGB(HSV);
+				int[] RGBnew = RgbUtils.unnormalize(cc.toRGB(HSV));
 
 				cp.putPixel(u, v, RGBnew);
 			}
