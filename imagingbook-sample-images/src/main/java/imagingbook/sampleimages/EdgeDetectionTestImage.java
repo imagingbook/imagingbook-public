@@ -19,14 +19,19 @@ import imagingbook.core.resource.ImageResource;
  */
 public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600color("balloons-600.png"),
+	Balloons600gray("balloons-600-gray.png"),
+	
 	Balloons600colorCannyEdgeMagnitude("balloons-600-CannyEdgeMagnitude.tif"),
 	Balloons600colorCannyEdgeOrientation("balloons-600-CannyEdgeOrientation.tif"),
 	Balloons600colorCannyBinaryEdges("balloons-600-CannyBinaryEdges.png"),
 	
-	Balloons600gray("balloons-600-gray.png"),
 	Balloons600grayCannyEdgeMagnitude("balloons-600-gray-CannyEdgeMagnitude.tif"),
 	Balloons600grayCannyEdgeOrientation("balloons-600-gray-CannyEdgeOrientation.tif"),
 	Balloons600grayCannyBinaryEdges("balloons-600-gray-CannyBinaryEdges.png"),
+	
+	Balloons600colorDiZenzoEdgeMagnitude("balloons-600-DiZenzoEdgeMagnitude.tif"),
+	Balloons600colorDiZenzoEdgeOrientation("balloons-600-DiZenzoEdgeOrientation.tif"),
+//	Balloons600colorDiZenzoBinaryEdges("balloons-600-DiZenzoBinaryEdges.png"),
 	;
 	
 	private final String filename;
