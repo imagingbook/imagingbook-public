@@ -31,6 +31,42 @@ public abstract class RgbUtils {
 	public static int rgbToInt(int red, int grn, int blu) {
 		return ((red & 0xff)<<16) | ((grn & 0xff)<<8) | blu & 0xff;
 	}
+	
+	// -------------------------------------------------------------
+	
+	/**
+	 * Converts integer RGB values (assumed to be in [0,255])
+	 * to float values in [0,1].
+	 * 
+	 * @param RGB a sequence of R,G,B values or {@code int[]}
+	 * @return the RGB values normalized to [0,1]
+	 */
+	public static float[] normalize(int... RGB) {
+		float[] rgb = {RGB[0]/255f, RGB[1]/255f, RGB[2]/255f};
+		return rgb;
+	}
+	
+	/**
+	 * Converts float RGB values (assumed to be in [0,1]) to integer values
+	 * in [0,255].
+	 * 
+	 * @param rgb RGB float values in [0,1]
+	 * @return RGB integer values in [0,255]
+	 */
+	public static int[] unnormalize(float[] rgb) {
+		int[] RGB = new int[3];
+		for (int i = 0; i < 3; i++) {			
+			RGB[i] = Math.round(rgb[i] * 255f);
+			if (RGB[i] < 0)
+				RGB[i] = 0;
+			else if (RGB[i] > 255)
+				RGB[i] = 255;
+		}
+		return RGB;
+	}
+	
+	
+	// -------------------------------------------------------------
 
 	/**
 	 * Interpolates linearly between two specified colors.
