@@ -65,11 +65,11 @@
 <span class="sourceLineNo">055</span><a id="line.55">        protected float[] doPixel(PixelPack pack, int u, int v) {</a>
 <span class="sourceLineNo">056</span><a id="line.56">                float[] S = new float[3];       // sum of weighted RGB values</a>
 <span class="sourceLineNo">057</span><a id="line.57">                float W = 0;                            // sum of weights</a>
-<span class="sourceLineNo">058</span><a id="line.58">                float[] a = pack.getVec(u, v);                  // value of the current center pixel</a>
+<span class="sourceLineNo">058</span><a id="line.58">                float[] a = pack.getPix(u, v);                  // value of the current center pixel</a>
 <span class="sourceLineNo">059</span><a id="line.59">                </a>
 <span class="sourceLineNo">060</span><a id="line.60">                for (int m = -K; m &lt;= K; m++) {</a>
 <span class="sourceLineNo">061</span><a id="line.61">                        for (int n = -K; n &lt;= K; n++) {</a>
-<span class="sourceLineNo">062</span><a id="line.62">                                float[] b = pack.getVec(u + m, v + n);</a>
+<span class="sourceLineNo">062</span><a id="line.62">                                float[] b = pack.getPix(u + m, v + n);</a>
 <span class="sourceLineNo">063</span><a id="line.63">                                float wd = Hd[m + K][n + K];                            // domain weight</a>
 <span class="sourceLineNo">064</span><a id="line.64">                                float wr = similarityGauss(a, b);                       // range weight</a>
 <span class="sourceLineNo">065</span><a id="line.65">                                float w = wd * wr;</a>

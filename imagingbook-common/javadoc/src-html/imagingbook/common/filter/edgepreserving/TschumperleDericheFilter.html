@@ -124,8 +124,8 @@
 <span class="sourceLineNo">114</span><a id="line.114">        private void makeStructureMatrix() {    // make M</a>
 <span class="sourceLineNo">115</span><a id="line.115">                for (int u = 0; u &lt; M; u++) {</a>
 <span class="sourceLineNo">116</span><a id="line.116">                        for (int v = 0; v &lt; N; v++) {</a>
-<span class="sourceLineNo">117</span><a id="line.117">                                final float[] dx = Dx.getVec(u, v);</a>
-<span class="sourceLineNo">118</span><a id="line.118">                                final float[] dy = Dy.getVec(u, v);</a>
+<span class="sourceLineNo">117</span><a id="line.117">                                final float[] dx = Dx.getPix(u, v);</a>
+<span class="sourceLineNo">118</span><a id="line.118">                                final float[] dy = Dy.getPix(u, v);</a>
 <span class="sourceLineNo">119</span><a id="line.119">                                float g0 = 0; float g2 = 0; float g1 = 0;</a>
 <span class="sourceLineNo">120</span><a id="line.120">                                for (int k = 0; k &lt; K; k++) {</a>
 <span class="sourceLineNo">121</span><a id="line.121">                                        final float fx = dx[k];</a>
@@ -134,7 +134,7 @@
 <span class="sourceLineNo">124</span><a id="line.124">                                        g1 += fy * fy;</a>
 <span class="sourceLineNo">125</span><a id="line.125">                                        g2 += fx * fy;</a>
 <span class="sourceLineNo">126</span><a id="line.126">                                }</a>
-<span class="sourceLineNo">127</span><a id="line.127">                                G.setVec(u, v, g0, g2, g1);</a>
+<span class="sourceLineNo">127</span><a id="line.127">                                G.setPix(u, v, g0, g2, g1);</a>
 <span class="sourceLineNo">128</span><a id="line.128">                        }</a>
 <span class="sourceLineNo">129</span><a id="line.129">                }</a>
 <span class="sourceLineNo">130</span><a id="line.130">                structureBlurFilter.applyTo(G);</a>
@@ -146,7 +146,7 @@
 <span class="sourceLineNo">136</span><a id="line.136">                        for (int v = 0; v &lt; N; v++) {</a>
 <span class="sourceLineNo">137</span><a id="line.137">                                // calculate the local geometry matrix A(u,v), which has only 3 distinct elements</a>
 <span class="sourceLineNo">138</span><a id="line.138">                                float[] A = getGeometryMatrix(u, v);</a>
-<span class="sourceLineNo">139</span><a id="line.139">                                float[] p = source.getVec(u, v);</a>
+<span class="sourceLineNo">139</span><a id="line.139">                                float[] p = source.getPix(u, v);</a>
 <span class="sourceLineNo">140</span><a id="line.140">                                for (int k = 0; k &lt; K; k++) {</a>
 <span class="sourceLineNo">141</span><a id="line.141">                                        float[] H = getHessianMatrix(k, u, v); // local Hessian for channel k at pos u,v (3 elements)</a>
 <span class="sourceLineNo">142</span><a id="line.142">                                        float beta = A[0] * H[0] + 2 * A[1] * H[1] + A[2] * H[2]; // = trace (A*H)</a>
@@ -154,14 +154,14 @@
 <span class="sourceLineNo">144</span><a id="line.144">                                        // update the image (result goes to target)</a>
 <span class="sourceLineNo">145</span><a id="line.145">                                        p[k] = p[k] + alpha * beta;     // we use alpha from the previous pass!</a>
 <span class="sourceLineNo">146</span><a id="line.146">                                }</a>
-<span class="sourceLineNo">147</span><a id="line.147">                                target.setVec(u, v, p);</a>
+<span class="sourceLineNo">147</span><a id="line.147">                                target.setPix(u, v, p);</a>
 <span class="sourceLineNo">148</span><a id="line.148">                        }</a>
 <span class="sourceLineNo">149</span><a id="line.149">                }</a>
 <span class="sourceLineNo">150</span><a id="line.150">                return betaMax;</a>
 <span class="sourceLineNo">151</span><a id="line.151">        }</a>
 <span class="sourceLineNo">152</span><a id="line.152">        </a>
 <span class="sourceLineNo">153</span><a id="line.153">        private float[] getGeometryMatrix(int u, int v) {</a>
-<span class="sourceLineNo">154</span><a id="line.154">                float[] Guv = G.getVec(u, v); // 3 elements of local geometry matrix (2x2)</a>
+<span class="sourceLineNo">154</span><a id="line.154">                float[] Guv = G.getPix(u, v); // 3 elements of local geometry matrix (2x2)</a>
 <span class="sourceLineNo">155</span><a id="line.155">                </a>
 <span class="sourceLineNo">156</span><a id="line.156">                // calculate the 2 eigenvalues lambda1, lambda2 and the greater eigenvector e1</a>
 <span class="sourceLineNo">157</span><a id="line.157">                Eigensolver2x2 solver = new Eigensolver2x2(Guv[0], Guv[1], Guv[1], Guv[2]);</a>

@@ -12,30 +12,61 @@ import java.awt.Color;
 
 import imagingbook.common.math.Matrix;
 
+/**
+ * This class defines static methods for manipulating and converting RGB colors.
+ * @author WB
+ *
+ */
 public abstract class RgbUtils {
 	
 	private RgbUtils() {}
 
-	public static int[] intToRgb(int p) {
+	/**
+	 * Converts the given integer-encoded 8-bit RGB color
+	 * to a 3-element {@code int[]} with components red, green and blue.
+	 * 
+	 * @param argb integer-encoded 8-bit RGB color in ARGB format
+	 * @return {@code int[]} with R, G, B components
+	 */
+	public static int[] intToRgb(int argb) {
 		int[] RGB = new int[3];
-		intToRgb(p, RGB);
+		intToRgb(argb, RGB);
 		return RGB;
 	}
 	
-	public static void intToRgb(int p, int[] RGB) {
-		RGB[0] = ((p >> 16) & 0xFF);
-		RGB[1] = ((p >> 8) & 0xFF);
-		RGB[2] = (p & 0xFF);
+	/**
+	 * Converts the given integer-encoded 8-bit RGB color
+	 * to a 3-element {@code int[]} with components red, green and blue.
+	 * Fills the specified {@code int[]}, nothing is returned.
+	 * 
+	 * @param argb integer-encoded 8-bit RGB color in ARGB format
+	 * @param RGB {@code int[]} with R, G, B components
+	 */
+	public static void intToRgb(int argb, int[] RGB) {
+		RGB[0] = ((argb >> 16) & 0xFF);
+		RGB[1] = ((argb >> 8) & 0xFF);
+		RGB[2] = (argb & 0xFF);
 	}
 
-	public static int rgbToInt(int red, int grn, int blu) {
-		return ((red & 0xff)<<16) | ((grn & 0xff)<<8) | blu & 0xff;
+	/**
+	 * Encodes the given RGB component values into a single 32-bit
+	 * {@code int} value in ARGB format (with transparency A set to zero).
+	 * @param RGB {@code int[]} with R, G, B components
+	 * @return integer-encoded 8-bit RGB color in ARGB format
+	 */
+	public static int rgbToInt(int... RGB) {
+		return ((RGB[0] & 0xff)<<16) | ((RGB[1] & 0xff)<<8) | RGB[2] & 0xff;
 	}
+	
+//	public static int rgbToInt(int red, int grn, int blu) {
+//		return ((red & 0xff)<<16) | ((grn & 0xff)<<8) | blu & 0xff;
+//	}
+	
 	
 	// -------------------------------------------------------------
 	
 	/**
-	 * Converts integer RGB values (assumed to be in [0,255])
+	 * Converts integer RGB values (with components assumed to be in [0,255])
 	 * to float values in [0,1].
 	 * 
 	 * @param RGB a sequence of R,G,B values or {@code int[]}
@@ -47,7 +78,7 @@ public abstract class RgbUtils {
 	}
 	
 	/**
-	 * Converts float RGB values (assumed to be in [0,1]) to integer values
+	 * Converts float RGB values (with components assumed to be in [0,1]) to integer values
 	 * in [0,255].
 	 * 
 	 * @param rgb RGB float values in [0,1]
@@ -64,8 +95,7 @@ public abstract class RgbUtils {
 		}
 		return RGB;
 	}
-	
-	
+		
 	// -------------------------------------------------------------
 
 	/**

@@ -75,9 +75,9 @@
 <span class="sourceLineNo">065</span><a id="line.65">        private float[] filterPixelXY(PixelPack source, int u, int v, boolean isX) {</a>
 <span class="sourceLineNo">066</span><a id="line.66">                float[] S = new float[3];       // sum of weighted RGB (initialized to zero)</a>
 <span class="sourceLineNo">067</span><a id="line.67">                float W = 0;                                            // sum of weights</a>
-<span class="sourceLineNo">068</span><a id="line.68">                float[] a = source.getVec(u, v);</a>
+<span class="sourceLineNo">068</span><a id="line.68">                float[] a = source.getPix(u, v);</a>
 <span class="sourceLineNo">069</span><a id="line.69">                for (int m = -K; m &lt;= K; m++) {</a>
-<span class="sourceLineNo">070</span><a id="line.70">                        final float[] b = (isX) ? source.getVec(u + m, v) : source.getVec(u, v + m);</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        final float[] b = (isX) ? source.getPix(u + m, v) : source.getPix(u, v + m);</a>
 <span class="sourceLineNo">071</span><a id="line.71">                        float wd = Hd[m + K];                                                                                           // domain weight</a>
 <span class="sourceLineNo">072</span><a id="line.72">                        float wr = similarityGauss(a, b);</a>
 <span class="sourceLineNo">073</span><a id="line.73">                        float w = wd * wr;</a>

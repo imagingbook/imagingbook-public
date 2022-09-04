@@ -17,7 +17,7 @@ package imagingbook.common.color.colorspace;
 public interface ChromaticAdaptation {
 
 	/**
-	 * Actual transformation of color coordinates.
+	 * Transforms the specified XYZ source color coordinates to target coordinates.
 	 * The specified color coordinates are interpreted relative to (source) white point (W1).
 	 * Returns a new color adapted to (target) white point W2.
 	 * @param xyz the original color point w.r.t. W1

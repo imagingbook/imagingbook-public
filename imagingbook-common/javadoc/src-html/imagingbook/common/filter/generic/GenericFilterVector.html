@@ -49,7 +49,7 @@
 <span class="sourceLineNo">039</span><a id="line.39">                iter = 0;</a>
 <span class="sourceLineNo">040</span><a id="line.40">                for (int v = 0; v &lt; height; v++) {</a>
 <span class="sourceLineNo">041</span><a id="line.41">                        for (int u = 0; u &lt; width; u++) {</a>
-<span class="sourceLineNo">042</span><a id="line.42">                                targetPack.setVec(u, v, doPixel(sourcePack, u, v)); // single pixel operation</a>
+<span class="sourceLineNo">042</span><a id="line.42">                                targetPack.setPix(u, v, doPixel(sourcePack, u, v)); // single pixel operation</a>
 <span class="sourceLineNo">043</span><a id="line.43">                                iter++;</a>
 <span class="sourceLineNo">044</span><a id="line.44">                        }</a>
 <span class="sourceLineNo">045</span><a id="line.45">                }</a>
@@ -61,7 +61,7 @@
 <span class="sourceLineNo">051</span><a id="line.51">         * must be implemented by any concrete sub-class.</a>
 <span class="sourceLineNo">052</span><a id="line.52">         * The source data are passed as a {@link PixelPack} container, which</a>
 <span class="sourceLineNo">053</span><a id="line.53">         * holds the pixel values of all image components.</a>
-<span class="sourceLineNo">054</span><a id="line.54">         * The method {@link PixelPack#getVec(int, int)} should be used to read</a>
+<span class="sourceLineNo">054</span><a id="line.54">         * The method {@link PixelPack#getPix(int, int)} should be used to read</a>
 <span class="sourceLineNo">055</span><a id="line.55">         * individual pixel vectors. These data should not be modified but</a>
 <span class="sourceLineNo">056</span><a id="line.56">         * the (float[]) result of the single-pixel calculation must be returned.</a>
 <span class="sourceLineNo">057</span><a id="line.57">         * Implementations are free to return the same float-array at each invocation,</a>

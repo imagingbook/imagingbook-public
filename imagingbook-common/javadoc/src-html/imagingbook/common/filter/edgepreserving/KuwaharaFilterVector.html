@@ -80,7 +80,7 @@
 <span class="sourceLineNo">070</span><a id="line.70">                final float[] S2 = new float[3];        // sum of squared pixel values</a>
 <span class="sourceLineNo">071</span><a id="line.71">                for (int j = dm; j &lt;= dp; j++) {</a>
 <span class="sourceLineNo">072</span><a id="line.72">                        for (int i = dm; i &lt;= dp; i++) {                </a>
-<span class="sourceLineNo">073</span><a id="line.73">                                float[] cp = source.getVec(u + i, v + j);</a>
+<span class="sourceLineNo">073</span><a id="line.73">                                float[] cp = source.getPix(u + i, v + j);</a>
 <span class="sourceLineNo">074</span><a id="line.74"></a>
 <span class="sourceLineNo">075</span><a id="line.75">                                S1[0] = S1[0] + cp[0];</a>
 <span class="sourceLineNo">076</span><a id="line.76">                                S1[1] = S1[1] + cp[1];</a>

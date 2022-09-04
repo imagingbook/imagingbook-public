@@ -47,7 +47,7 @@ import imagingbook.common.image.access.OutOfBoundsStrategy;
  * ALWAYS of type {@code float[]} (even if the underlying image is scalar-valued).
  * Pixel values returned for positions outside the image boundaries depend 
  * on the {@link OutOfBoundsStrategy} specified by the constructor
- * (e.g., {@link #PixelPack(ImageProcessor, float, OutOfBoundsStrategy)}).
+ * (e.g., {@link #PixelPack(ImageProcessor, double, OutOfBoundsStrategy)}).
  * </p>
  * <p>Here is a simple usage example:</p>
  * <pre>
@@ -243,7 +243,7 @@ public class PixelPack {
 	 * (components) in this pixel pack.
 	 * @param u the x-position
 	 * @param v the y-position
-	 * @param vals the pixel's component values (may also be a {@code float[])
+	 * @param vals the pixel's component values (may also be a {@code float[]})
 	 */
 	public void setPix(int u, int v, float ... vals) {
 		final int idx = indexer.getIndex(u, v);

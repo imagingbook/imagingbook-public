@@ -42,7 +42,7 @@
 <span class="sourceLineNo">032</span><a id="line.32">                        int vj = v + j - yc;</a>
 <span class="sourceLineNo">033</span><a id="line.33">                        for (int i = 0; i &lt; width; i++) {</a>
 <span class="sourceLineNo">034</span><a id="line.34">                                int ui = u + i - xc;</a>
-<span class="sourceLineNo">035</span><a id="line.35">                                float[] p = pack.getVec(ui, vj);</a>
+<span class="sourceLineNo">035</span><a id="line.35">                                float[] p = pack.getPix(ui, vj);</a>
 <span class="sourceLineNo">036</span><a id="line.36">                                for (int k = 0; k &lt; depth; k++) {</a>
 <span class="sourceLineNo">037</span><a id="line.37">                                        sum[k] = sum[k] + (p[k] * H[i][j]) / s;</a>
 <span class="sourceLineNo">038</span><a id="line.38">                                }</a>

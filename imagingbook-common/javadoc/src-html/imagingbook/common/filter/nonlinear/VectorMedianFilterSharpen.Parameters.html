@@ -57,7 +57,7 @@
 <span class="sourceLineNo">047</span><a id="line.47">        private final VectorNorm vNorm;</a>
 <span class="sourceLineNo">048</span><a id="line.48">        private final int a;                                            // a = 2,...,n</a>
 <span class="sourceLineNo">049</span><a id="line.49">        private final float[] modColor;</a>
-<span class="sourceLineNo">050</span><a id="line.50">        private final float[] pTmp = new float[3];      // check, adapt to depth</a>
+<span class="sourceLineNo">050</span><a id="line.50">        private final float[] vals = new float[3];      // check, adapt to depth</a>
 <span class="sourceLineNo">051</span><a id="line.51">        </a>
 <span class="sourceLineNo">052</span><a id="line.52">        /** For testing only */</a>
 <span class="sourceLineNo">053</span><a id="line.53">        public int modifiedCount = 0;</a>
@@ -83,7 +83,7 @@
 <span class="sourceLineNo">073</span><a id="line.73">        </a>
 <span class="sourceLineNo">074</span><a id="line.74">        @Override</a>
 <span class="sourceLineNo">075</span><a id="line.75">        protected float[] doPixel(PixelPack pack, int u, int v) {</a>
-<span class="sourceLineNo">076</span><a id="line.76">                float[] pCtr = pack.getVec(u, v);</a>
+<span class="sourceLineNo">076</span><a id="line.76">                float[] pCtr = pack.getPix(u, v);</a>
 <span class="sourceLineNo">077</span><a id="line.77">                getSupportRegion(pack, u, v);</a>
 <span class="sourceLineNo">078</span><a id="line.78">                double dCtr = trimmedAggregateDistance(pCtr, a); </a>
 <span class="sourceLineNo">079</span><a id="line.79">                double dMin = Double.MAX_VALUE;</a>
@@ -125,8 +125,8 @@
 <span class="sourceLineNo">115</span><a id="line.115">                        for (int j = 0; j &lt; maskArray[0].length; j++) {</a>
 <span class="sourceLineNo">116</span><a id="line.116">                                if (maskArray[i][j] &gt; 0) {</a>
 <span class="sourceLineNo">117</span><a id="line.117">                                        int vj = v + j - yc;</a>
-<span class="sourceLineNo">118</span><a id="line.118">                                        float[] p = src.getVec(ui, vj, pTmp);</a>
-<span class="sourceLineNo">119</span><a id="line.119">                                        copyPixel(p, supportRegion[k]);</a>
+<span class="sourceLineNo">118</span><a id="line.118">                                        src.getPix(ui, vj, vals);</a>
+<span class="sourceLineNo">119</span><a id="line.119">                                        copyPixel(vals, supportRegion[k]);</a>
 <span class="sourceLineNo">120</span><a id="line.120">                                        k = k + 1;</a>
 <span class="sourceLineNo">121</span><a id="line.121">                                }</a>
 <span class="sourceLineNo">122</span><a id="line.122">                        }</a>

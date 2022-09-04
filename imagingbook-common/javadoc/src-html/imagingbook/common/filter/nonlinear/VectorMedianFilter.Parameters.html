@@ -55,7 +55,7 @@
 <span class="sourceLineNo">045</span><a id="line.45">        final int xc, yc;</a>
 <span class="sourceLineNo">046</span><a id="line.46">        private final float[][] supportRegion;          // supportRegion[i][c] with index i, color component c</a>
 <span class="sourceLineNo">047</span><a id="line.47">        private final VectorNorm vNorm;</a>
-<span class="sourceLineNo">048</span><a id="line.48">        private final float[] pTmp = new float[3];      // check, adapt to depth</a>
+<span class="sourceLineNo">048</span><a id="line.48">        private final float[] vals = new float[3];      // check, adapt to depth</a>
 <span class="sourceLineNo">049</span><a id="line.49">        private final float[] modColor;</a>
 <span class="sourceLineNo">050</span><a id="line.50">        </a>
 <span class="sourceLineNo">051</span><a id="line.51">        public int modifiedCount = 0; // for debugging only</a>
@@ -85,7 +85,7 @@
 <span class="sourceLineNo">075</span><a id="line.75">        </a>
 <span class="sourceLineNo">076</span><a id="line.76">        @Override</a>
 <span class="sourceLineNo">077</span><a id="line.77">        protected float[] doPixel(PixelPack pack, int u, int v) {</a>
-<span class="sourceLineNo">078</span><a id="line.78">                final float[] pCtr = pack.getVec(u, v);</a>
+<span class="sourceLineNo">078</span><a id="line.78">                final float[] pCtr = pack.getPix(u, v);</a>
 <span class="sourceLineNo">079</span><a id="line.79">                getSupportRegion(pack, u, v);</a>
 <span class="sourceLineNo">080</span><a id="line.80">                double dCtr = aggregateDistance(pCtr); </a>
 <span class="sourceLineNo">081</span><a id="line.81">                double dMin = Double.MAX_VALUE;</a>
@@ -126,23 +126,24 @@
 <span class="sourceLineNo">116</span><a id="line.116">                        for (int j = 0; j &lt; maskArray[0].length; j++) {</a>
 <span class="sourceLineNo">117</span><a id="line.117">                                if (maskArray[i][j] &gt; 0) {</a>
 <span class="sourceLineNo">118</span><a id="line.118">                                        int vj = v + j - yc;</a>
-<span class="sourceLineNo">119</span><a id="line.119">                                        copyPixel(src.getVec(ui, vj, pTmp), supportRegion[k]);</a>
-<span class="sourceLineNo">120</span><a id="line.120">                                        k = k + 1;</a>
-<span class="sourceLineNo">121</span><a id="line.121">                                }</a>
-<span class="sourceLineNo">122</span><a id="line.122">                        }</a>
-<span class="sourceLineNo">123</span><a id="line.123">                }</a>
-<span class="sourceLineNo">124</span><a id="line.124">        }</a>
-<span class="sourceLineNo">125</span><a id="line.125">        </a>
-<span class="sourceLineNo">126</span><a id="line.126">        // find the color with the smallest summed distance to all others.</a>
-<span class="sourceLineNo">127</span><a id="line.127">        // brute force and thus slow</a>
-<span class="sourceLineNo">128</span><a id="line.128">        private double aggregateDistance(float[] p) {</a>
-<span class="sourceLineNo">129</span><a id="line.129">                double d = 0;</a>
-<span class="sourceLineNo">130</span><a id="line.130">                for (int i = 0; i &lt; supportRegion.length; i++) {</a>
-<span class="sourceLineNo">131</span><a id="line.131">                        d = d + vNorm.distance(p, supportRegion[i]);</a>
-<span class="sourceLineNo">132</span><a id="line.132">                }</a>
-<span class="sourceLineNo">133</span><a id="line.133">                return d;</a>
-<span class="sourceLineNo">134</span><a id="line.134">        }</a>
-<span class="sourceLineNo">135</span><a id="line.135">}</a>
+<span class="sourceLineNo">119</span><a id="line.119">                                        src.getPix(ui, vj, vals);</a>
+<span class="sourceLineNo">120</span><a id="line.120">                                        copyPixel(vals, supportRegion[k]);</a>
+<span class="sourceLineNo">121</span><a id="line.121">                                        k = k + 1;</a>
+<span class="sourceLineNo">122</span><a id="line.122">                                }</a>
+<span class="sourceLineNo">123</span><a id="line.123">                        }</a>
+<span class="sourceLineNo">124</span><a id="line.124">                }</a>
+<span class="sourceLineNo">125</span><a id="line.125">        }</a>
+<span class="sourceLineNo">126</span><a id="line.126">        </a>
+<span class="sourceLineNo">127</span><a id="line.127">        // find the color with the smallest summed distance to all others.</a>
+<span class="sourceLineNo">128</span><a id="line.128">        // brute force and thus slow</a>
+<span class="sourceLineNo">129</span><a id="line.129">        private double aggregateDistance(float[] p) {</a>
+<span class="sourceLineNo">130</span><a id="line.130">                double d = 0;</a>
+<span class="sourceLineNo">131</span><a id="line.131">                for (int i = 0; i &lt; supportRegion.length; i++) {</a>
+<span class="sourceLineNo">132</span><a id="line.132">                        d = d + vNorm.distance(p, supportRegion[i]);</a>
+<span class="sourceLineNo">133</span><a id="line.133">                }</a>
+<span class="sourceLineNo">134</span><a id="line.134">                return d;</a>
+<span class="sourceLineNo">135</span><a id="line.135">        }</a>
+<span class="sourceLineNo">136</span><a id="line.136">}</a>
 
 
 
