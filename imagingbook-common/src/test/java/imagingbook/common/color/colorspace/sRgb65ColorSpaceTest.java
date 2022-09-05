@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.color.colorspace;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -58,6 +58,7 @@ public class sRgb65ColorSpaceTest {
 		float[] srgb1 = {srgb[0]/255f, srgb[1]/255f, srgb[2]/255f};
 		float[] xyz = cs.toCIEXYZ(srgb1);
 		float[] srgb2 = cs.fromCIEXYZ(xyz);
+		
 		assertArrayEquals("sRGB conversion problem for srgb=" + Arrays.toString(srgb), srgb1, srgb2, 1e-5f);
 	}
 
