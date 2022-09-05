@@ -103,7 +103,6 @@ public abstract class GradientCornerDetector {
 		this.maxLocator = (params.maxLocatorMethod == Method.None) ? null : 
 			SubpixelMaxInterpolator.getInstance(params.maxLocatorMethod);
 		this.Q = makeCornerScores(ip);
-//		this.corners = makeCorners();
 	}
 	
 	/**
