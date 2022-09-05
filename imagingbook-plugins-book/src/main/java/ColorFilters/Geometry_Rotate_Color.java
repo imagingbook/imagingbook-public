@@ -8,6 +8,8 @@
  *******************************************************************************/
 package ColorFilters;
 
+import java.awt.color.ColorSpace;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -15,10 +17,12 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.colorspace.LabColorSpace;
+import imagingbook.common.color.colorspace.LinearRgbColorSpace;
+import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.image.ColorStack;
 import imagingbook.common.image.ImageMapper;
-import imagingbook.common.image.ColorStack.ColorStackType;
 import imagingbook.common.interpolation.InterpolationMethod;
 
 /**
@@ -32,6 +36,10 @@ import imagingbook.common.interpolation.InterpolationMethod;
  * @version 2022/09/02
  */
 public class Geometry_Rotate_Color implements PlugInFilter {
+	
+	enum ColorStackType {
+		Lab, Luv, LinearRGB, sRGB;
+	}
 	
 	static double angle = 15; 							// rotation angle (in degrees)
 	static ColorStackType csType = ColorStackType.sRGB;	// color space to use
@@ -48,16 +56,21 @@ public class Geometry_Rotate_Color implements PlugInFilter {
     		return;
     	
     	ColorStack colStack = new ColorStack((ColorProcessor) ip);
+    	ColorSpace cs = null;
     	
     	switch (csType) {
-    	case Lab : 	colStack.convertToLab(); break;
-		case Luv: 	colStack.convertToLuv(); break;
-		case LinearRGB: 	colStack.convertToLinearRgb(); break;
-		case sRGB: 	break;
-	default:
-		IJ.error("Color space " + csType.name() + " not implemented!"); 
-		return;
-	}
+	    	case Lab : 		cs = LabColorSpace.getInstance(); break;
+			case Luv: 		cs = LuvColorSpace.getInstance(); break;
+			case LinearRGB: cs = LinearRgbColorSpace.getInstance(); break;
+			case sRGB: 		cs = null; break;
+			default:
+				IJ.error("Color space " + csType.name() + " not implemented!"); 
+				return;
+    	}
+    	
+    	if (cs != null) {
+    		colStack.convertFromSrgbTo(cs);
+    	}
     	
     	Rotation2D imap = new Rotation2D(-2 * Math.PI * angle / 360);	// inverse mapping (target to source)
     	FloatProcessor[] processors = colStack.getProcessors();

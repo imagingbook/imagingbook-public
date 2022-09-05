@@ -13,41 +13,28 @@ import java.awt.color.ColorSpace;
 
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
-import imagingbook.common.color.colorspace.LabColorSpace;
-import imagingbook.common.color.colorspace.LuvColorSpace;
-import imagingbook.common.color.colorspace.sRgbUtil;
-
-
-// TODO: add JavaDoc, unit tests
+import imagingbook.common.color.colorspace.sRgb65ColorSpace;
 
 /**
  * This class defines a "color stack" as a subtype of {@link PixelPack}
- * with exactly 3 components (slices) and all values in [0,1].
- * It allows simple conversion between various colorimetric color 
- * spaces (currently implemented are sRGB, LinearRGB, CIELab and CIELuv).
- * A {@link ColorStack} may be created from an existing
- * {@link ColorProcessor} instance whose pixels are assumed to be in sRGB
+ * with exactly 3 components (slices), representing a color image
+ * in a specific color space (default is {@link sRgb65ColorSpace}).
+ * It allows simple conversion to other color 
+ * spaces (see {@link #convertFromSrgbTo(ColorSpace)}).
+ * All conversions are 'destructive', i.e., the affected color stack
+ * is modified.
+ * Pixel values are typically in [0,1], depending on the associated
  * color space.
+ * A {@link ColorStack} may be created from an existing
+ * {@link ColorProcessor} whose pixels are assumed to be in sRGB
+ * color space (see {@link #ColorStack(ColorProcessor)}).
+ * To be converted back to a {@link ColorProcessor}, the {@link ColorStack}
+ * must be in sRGB color space (see {@link #convertToSrgb()}).
  */
 public class ColorStack extends PixelPack {
 	
-	public enum ColorStackType {
-		sRGB("sR", "sG", "sB"),
-		LinearRGB("R", "G", "B"), 
-		Lab("L", "a", "b"), 
-		Luv("L", "u", "v"),
-//		XYZ("X", "Y", "Z"), 		// TODO: to be implemented
-//		YCbCr("Y", "Cb", "Cr"), 	// TODO: to be implemented
-		;
-
-		protected final String[] componentLabels;
-
-		ColorStackType(String... labels) {
-			this.componentLabels = labels;
-		}
-	}
-	
-	private ColorStackType colorspace;
+	// the current color space of this color stack
+	private ColorSpace colorspace = null;
 	
 	// ---------------------------------------------------------------------
 	
@@ -57,11 +44,15 @@ public class ColorStack extends PixelPack {
 	 */
 	public ColorStack(ColorProcessor cp) {
 		super(cp, 1.0/255, null);
-		setColorSpace(ColorStackType.sRGB);
+		setColorSpace(sRgb65ColorSpace.getInstance());
 	}
 	
 	// -----------------------------------------------------------------
 	
+	/**
+	 * Returns the 3 color components as an array of {@link FloatProcessor}.
+	 * @return a {@link FloatProcessor} array
+	 */
 	public FloatProcessor[] getProcessors() {
 		FloatProcessor[] processors = new FloatProcessor[3];
 		for (int k = 0; k < 3; k++) {
@@ -70,169 +61,78 @@ public class ColorStack extends PixelPack {
 		return processors;
 	}
 	
-	public ColorStackType getColorspace() {
+	/**
+	 * Returns the current color space instance of this {@link ColorStack}.
+	 * @return the current color space
+	 */
+	public ColorSpace getColorspace() {
 		return this.colorspace;
 	}
 	
-	private void setColorSpace(ColorStackType newtype) {
-		this.colorspace = newtype;
+	private void setColorSpace(ColorSpace colorspace) {
+		this.colorspace = colorspace;
 	}
-
+	
 	// -----------------------------------------------------------------
 	
-	public void convertToLab() {
-		if (this.colorspace == ColorStackType.Lab) {
-			return; // nothing to do
+	/**
+	 * Converts the pixel values of this {@link ColorStack} to the specified
+	 * color space. The color stack must be in sRGB space.
+	 * Exceptions are thrown if the color stack is not in sRGB color space
+	 * or the target color space is sRGB.
+	 * 
+	 * @param targetColorspace the new color space
+	 */
+	public void convertFromSrgbTo(final ColorSpace targetColorspace) {
+		if (!(colorspace instanceof sRgb65ColorSpace)) {
+			throw new IllegalStateException("color stack must be in sRGB");
 		}
-		if (this.colorspace == ColorStackType.sRGB) {
-			sRgbToLab();
+		
+		if (targetColorspace instanceof sRgb65ColorSpace) {
+			throw new IllegalArgumentException("cannot convert color stack from sRGB to sRGB");
 		}
-		else {
-			throw new IllegalStateException("cannot convert ColorStack to LAB from " + this.colorspace);
-		}
-	}
-	
-	private void sRgbToLab() {
-		if (this.colorspace != ColorStackType.sRGB) {
-			throw new IllegalStateException("color stack is not of type sRGB");
-		}
-
-		final ColorSpace lcs = LabColorSpace.getInstance();
-		final float[] SRGB = new float[3];
+		
+		final float[] srgb = new float[3];
 		
 		for (int i = 0; i < length; i++) {
-			getPix(i, SRGB);
-			clipTo01(SRGB);
-			float[] lab = lcs.fromRGB(SRGB);
-			setPix(i, lab);
+			getPix(i, srgb);
+			clipTo01(srgb);
+			float[] c = targetColorspace.fromRGB(srgb);
+			setPix(i, c);
 		}
 		
-		setColorSpace(ColorStackType.Lab);
+		setColorSpace(targetColorspace);
 	}
 	
 	// -----------------------------------------------------------------
-	
-	public void convertToLuv() {
-		if (this.colorspace == ColorStackType.Luv) {
-			return; // nothing to do
-		}
-		if (this.colorspace == ColorStackType.sRGB) {
-			sRgbToLuv();
-		}
-		else {
-			throw new IllegalStateException("cannot convert ColorStack to LUV from " + this.colorspace);
-		}
-	}
-	
-	private void sRgbToLuv() {
-		if (this.colorspace != ColorStackType.sRGB) {
-			throw new IllegalStateException("color stack is not of type sRGB");
-		}
-				
-		final LuvColorSpace lcs = LuvColorSpace.getInstance();
-		final float[] SRGB = new float[3];
-		
-		for (int i = 0; i < length; i++) {
-			getPix(i, SRGB);
-			float[] luv = lcs.fromRGB(SRGB);
-			setPix(i, luv);
-		}
-		
-		setColorSpace(ColorStackType.Luv);
-	}
-	
-	// -----------------------------------------------------------------
-	
-	public void convertToLinearRgb() {
-		if (this.colorspace == ColorStackType.LinearRGB) {
-			return; // nothing to do
-		}
-		if (this.colorspace == ColorStackType.sRGB) {
-			sRgbToLinearRgb();
-		}
-		else {
-			throw new IllegalStateException("cannot convert ColorStack to LinearRGB from " + this.colorspace);
-		}
-	}
-	
-	private void sRgbToLinearRgb() {
-		if (this.colorspace != ColorStackType.sRGB) {
-			throw new IllegalStateException("color stack is not of type sRGB");
-		}
 
-		for (int k = 0; k < 3; k++) {
-			for (int i = 0; i < length; i++) {
-				data[k][i] = (float) sRgbUtil.gammaInv(clipTo01(data[k][i]));
-			}
-		}
-
-		setColorSpace(ColorStackType.LinearRGB);
-	}
-	
-	// -----------------------------------------------------------------
-	
+	/**
+	 * Converts this {@link ColorStack} to sRGB space.
+	 * An exceptions is thrown if the color stack is in sRGB color space
+	 * already.
+	 */
 	public void convertToSrgb() {
-		 switch (this.colorspace) {
-		 	case Lab : 	this.labToSrgb(); break;
-		 	case Luv: 	this.luvToSrgb(); break;
-			case LinearRGB: 	this.LinearRgbToSrgb(); break;
-			case sRGB: 	break;	// already in sRGB, nothing to do
-			default: throw new IllegalStateException("unknown color space: " + this.colorspace);
-		 }
-	}
-	
-	private void labToSrgb() {
-		if (this.colorspace != ColorStackType.Lab) {
-			throw new IllegalStateException("color stack is not of type Lab");
+		if (colorspace instanceof sRgb65ColorSpace) {
+			throw new IllegalStateException("color stack is in sRGB already");
 		}
-		final LabColorSpace lcs = LabColorSpace.getInstance();
-		final float[] LAB = new float[3];
+		
+		final float[] c = new float[3];
 		
 		for (int i = 0; i < length; i++) {
-			getPix(i, LAB);
-			float[] srgb = lcs.toRGB(LAB);
+			getPix(i, c);
+			float[] srgb = colorspace.toRGB(c);
 			setPix(i, srgb);
 		}
 
-		setColorSpace(ColorStackType.sRGB);
-	}
-	
-	private void luvToSrgb() {
-		if (this.colorspace != ColorStackType.Luv) {
-			throw new IllegalStateException("color stack is not of type Luv");
-		}
-		final ColorSpace lcs = LuvColorSpace.getInstance();
-		
-		final float[] LUV = new float[3];
-		for (int i = 0; i < length; i++) {
-			getPix(i, LUV);
-			final float[] srgb = lcs.toRGB(LUV);
-			setPix(i, srgb);
-		}
-
-		setColorSpace(ColorStackType.sRGB);
-	}
-	
-	private void LinearRgbToSrgb() {
-		if (this.colorspace != ColorStackType.LinearRGB) {
-			throw new IllegalStateException("color stack is not of type RGB");
-		}
-
-		for (int k = 0; k < 3; k++) {
-			for (int i = 0; i < length; i++) {
-				data[k][i] = (float) sRgbUtil.gammaFwd(clipTo01(data[k][i]));
-			}
-		}
-
-		setColorSpace(ColorStackType.sRGB);
+		setColorSpace(sRgb65ColorSpace.getInstance());
 	}
 	
 	// ---------------------------------------------------------------
 	
 	@Override
 	public ColorProcessor toColorProcessor() {
-		if (this.colorspace != ColorStackType.sRGB) {
-			throw new IllegalStateException("color stack must be of type sRGB to comvert to ColorProcessor");
+		if (!(colorspace instanceof sRgb65ColorSpace)) {
+			throw new IllegalStateException("color stack must be in sRGB to convert to ColorProcessor");
 		}
 		return super.toColorProcessor(255);
 	}

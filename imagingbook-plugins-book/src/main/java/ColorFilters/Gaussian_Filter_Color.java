@@ -8,6 +8,8 @@
  *******************************************************************************/
 package ColorFilters;
 
+import java.awt.color.ColorSpace;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -15,10 +17,12 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.colorspace.LabColorSpace;
+import imagingbook.common.color.colorspace.LinearRgbColorSpace;
+import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.image.ColorStack;
-import imagingbook.common.image.ColorStack.ColorStackType;
 
 /**
  * This plugin performs a Gaussian filter in a user-selectable color space.
@@ -29,6 +33,10 @@ import imagingbook.common.image.ColorStack.ColorStackType;
  * @version 2022/09/02
  */
 public class Gaussian_Filter_Color implements PlugInFilter {
+	
+	enum ColorStackType {
+		Lab, Luv, LinearRGB, sRGB;
+	}
 	
 	static double sigma = 3.0;
 	static int nIterations = 1;
@@ -46,15 +54,20 @@ public class Gaussian_Filter_Color implements PlugInFilter {
     		return;
     	
     	ColorStack colStack = new ColorStack((ColorProcessor) ip);
+    	ColorSpace cs = null;
     	
     	switch (csType) {
-	    	case Lab : 	colStack.convertToLab(); break;
-			case Luv: 	colStack.convertToLuv(); break;
-			case LinearRGB: 	colStack.convertToLinearRgb(); break;
-			case sRGB: 	break;
+	    	case Lab : 		cs = LabColorSpace.getInstance(); break;
+			case Luv: 		cs = LuvColorSpace.getInstance(); break;
+			case LinearRGB: cs = LinearRgbColorSpace.getInstance(); break;
+			case sRGB: 		cs = null; break;
 		default:
 			IJ.error("Color space " + csType.name() + " not implemented!"); 
 			return;
+    	}
+    	
+    	if (cs != null) {
+    		colStack.convertFromSrgbTo(cs);
     	}
     	
     	FloatProcessor[] processors = colStack.getProcessors();
