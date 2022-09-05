@@ -8,8 +8,10 @@
  *******************************************************************************/
 package imagingbook.common.filter.examples;
 
+//import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.PixelPack;
+//import imagingbook.common.util.progress.ProgressMonitor;
 
 // a custom filter that provides its own progress data
 public class FilterShowProgressExample extends GenericFilterVector {
@@ -51,6 +53,8 @@ public class FilterShowProgressExample extends GenericFilterVector {
 	protected double reportProgress() {
 		return (double) this.cnt / this.maxCnt;
 	}
+	
+	// TODO: fix this:
 	
 //	public static void main(String[] args) {
 //		GenericFilter filter = new FilterShowProgressExample();
