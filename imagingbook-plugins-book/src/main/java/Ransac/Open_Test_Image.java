@@ -11,7 +11,8 @@ package Ransac;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
-import imagingbook.sampleimages.RansacTestImage;
+
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * Select and open a local RANSAC-related test image.
@@ -20,7 +21,7 @@ import imagingbook.sampleimages.RansacTestImage;
  */
 public class Open_Test_Image implements PlugIn {
 	
-	static RansacTestImage selection = RansacTestImage.NoisyCircles;
+	static GeneralSampleImage selection = GeneralSampleImage.NoisyCircles;
 
 	@Override
 	public void run(String arg) {
@@ -32,7 +33,7 @@ public class Open_Test_Image implements PlugIn {
 		if (gd.wasCanceled())
 			return;
 		
-		selection = gd.getNextEnumChoice(RansacTestImage.class);
+		selection = gd.getNextEnumChoice(GeneralSampleImage.class);
 		
 		ImagePlus im = selection.getImage();
 		im.show();

@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import ij.process.ImageProcessor;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 
 public class GaussianFilterTest {
@@ -22,11 +22,11 @@ public class GaussianFilterTest {
 	static double SIGMA = 3.0;
 	static float TOL = 1f;	// deviations +/-1 are possible due to rounding to integer images
 
-	ImageResource res1A = GeneralTestImage.MonasterySmall;
-	ImageResource res1B = GeneralTestImage.MonasterySmallGauss3;
+	ImageResource res1A = GeneralSampleImage.MonasterySmall;
+	ImageResource res1B = GeneralSampleImage.MonasterySmallGauss3;
 	
-	ImageResource res2A = GeneralTestImage.Clown;
-	ImageResource res2B = GeneralTestImage.ClownGauss3;
+	ImageResource res2A = GeneralSampleImage.Clown;
+	ImageResource res2B = GeneralSampleImage.ClownGauss3;
 	
 	// -----------------------------------------------------------------------
 	

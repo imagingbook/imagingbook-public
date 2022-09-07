@@ -24,7 +24,7 @@ import imagingbook.common.regions.segment.RecursiveSegmentation;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 import imagingbook.common.regions.segment.SequentialSegmentation;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * Segmentation test on a medium-sized image which cannot be handled by 
@@ -37,7 +37,7 @@ public class BinaryRegionSegmentation4_Test {
 	private static int RegionCount_N4 = 6;
 	private static int RegionCount_N8 = 3;
 	
-	private ImageResource path = GeneralTestImage.SimpleTestGridImg;
+	private ImageResource path = GeneralSampleImage.SimpleTestGridImg;
 	private ByteProcessor bp = (ByteProcessor) path.getImage().getProcessor();
 
 	@Test

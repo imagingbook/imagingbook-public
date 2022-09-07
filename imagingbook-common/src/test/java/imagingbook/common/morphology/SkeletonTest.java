@@ -17,7 +17,8 @@ import org.junit.Test;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testimages.BinaryTestImage;
 
 public class SkeletonTest {
 	
@@ -25,8 +26,8 @@ public class SkeletonTest {
 	@Test
 	public void test1() {
 	
-		ImageResource origRes = GeneralTestImage.Cat;
-		ImageResource resultRes = GeneralTestImage.CatSkeleton;
+		ImageResource origRes = GeneralSampleImage.Cat;
+		ImageResource resultRes = BinaryTestImage.CatSkeleton;
 		
 		ImageProcessor origIp = origRes.getImage().getProcessor();
 		ImageProcessor resultIp = resultRes.getImage().getProcessor();

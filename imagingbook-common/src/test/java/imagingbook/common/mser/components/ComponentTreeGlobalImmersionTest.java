@@ -8,20 +8,20 @@
  *******************************************************************************/
 package imagingbook.common.mser.components;
 
-import static imagingbook.sampleimages.MserTestImage.AllBlack;
-import static imagingbook.sampleimages.MserTestImage.AllWhite;
-import static imagingbook.sampleimages.MserTestImage.Blob1;
-import static imagingbook.sampleimages.MserTestImage.Blob2;
-import static imagingbook.sampleimages.MserTestImage.Blob3;
-import static imagingbook.sampleimages.MserTestImage.BlobLevelTest;
-import static imagingbook.sampleimages.MserTestImage.BlobLevelTestNoise;
-import static imagingbook.sampleimages.MserTestImage.BlobOriented;
-import static imagingbook.sampleimages.MserTestImage.BlobsInWhite;
-import static imagingbook.sampleimages.MserTestImage.BoatsTiny;
-import static imagingbook.sampleimages.MserTestImage.BoatsTinyB;
-import static imagingbook.sampleimages.MserTestImage.BoatsTinyBW;
-import static imagingbook.sampleimages.MserTestImage.BoatsTinyW;
-import static imagingbook.sampleimages.MserTestImage.BoatsTinyW2;
+import static imagingbook.testimages.MserTestImage.AllBlack;
+import static imagingbook.testimages.MserTestImage.AllWhite;
+import static imagingbook.testimages.MserTestImage.Blob1;
+import static imagingbook.testimages.MserTestImage.Blob2;
+import static imagingbook.testimages.MserTestImage.Blob3;
+import static imagingbook.testimages.MserTestImage.BlobLevelTest;
+import static imagingbook.testimages.MserTestImage.BlobLevelTestNoise;
+import static imagingbook.testimages.MserTestImage.BlobOriented;
+import static imagingbook.testimages.MserTestImage.BlobsInWhite;
+import static imagingbook.testimages.MserTestImage.BoatsTiny;
+import static imagingbook.testimages.MserTestImage.BoatsTinyB;
+import static imagingbook.testimages.MserTestImage.BoatsTinyBW;
+import static imagingbook.testimages.MserTestImage.BoatsTinyW;
+import static imagingbook.testimages.MserTestImage.BoatsTinyW2;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

@@ -36,7 +36,7 @@
  * @see NamedResource
  * @see ImageResource
  */
-package imagingbook.sampleimages;
+package imagingbook.testimages;
 
 import imagingbook.core.resource.ImageResource;
 import imagingbook.core.resource.NamedResource;

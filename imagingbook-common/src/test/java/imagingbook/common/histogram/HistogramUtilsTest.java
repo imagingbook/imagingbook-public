@@ -15,13 +15,13 @@ import org.junit.Test;
 import ij.process.ImageProcessor;
 import imagingbook.common.math.Matrix;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 public class HistogramUtilsTest {
 
 	@Test
 	public void test1() {
-		ImageResource ir = GeneralTestImage.Boats;
+		ImageResource ir = GeneralSampleImage.Boats;
 		
 		ImageProcessor ip = ir.getImage().getProcessor();
 		int[] h = ip.getHistogram();

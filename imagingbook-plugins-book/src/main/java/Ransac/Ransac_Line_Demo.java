@@ -9,7 +9,7 @@
 package Ransac;
 
 import imagingbook.common.ij.IjUtils;
-import imagingbook.sampleimages.RansacTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
 
@@ -22,7 +22,7 @@ import ij.plugin.PlugIn;
  */
 public class Ransac_Line_Demo implements PlugIn {
 	
-	private static RansacTestImage resource = RansacTestImage.NoisyLines;
+	private static GeneralSampleImage resource = GeneralSampleImage.NoisyLines;
 
 	@Override
 	public void run(String arg) {

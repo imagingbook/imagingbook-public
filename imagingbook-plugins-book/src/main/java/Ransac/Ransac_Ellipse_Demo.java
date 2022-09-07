@@ -11,7 +11,8 @@ package Ransac;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
 import imagingbook.common.ij.IjUtils;
-import imagingbook.sampleimages.RansacTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
+
 
 /**
  * RANSAC ellipse detection demo. Opens a local sample image and then runs
@@ -22,7 +23,7 @@ import imagingbook.sampleimages.RansacTestImage;
  */
 public class Ransac_Ellipse_Demo implements PlugIn {
 	
-	private static RansacTestImage resource = RansacTestImage.NoisyEllipses;
+	private static GeneralSampleImage resource = GeneralSampleImage.NoisyEllipses;
 
 	@Override
 	public void run(String arg) {

@@ -19,7 +19,7 @@ import imagingbook.common.mser.MserDetector.Parameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.MserTestImage;
+import imagingbook.testimages.MserTestImage;
 
 public class MserDetectorTest {
 

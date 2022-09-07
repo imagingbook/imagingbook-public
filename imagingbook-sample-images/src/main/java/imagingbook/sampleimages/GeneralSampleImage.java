@@ -27,7 +27,7 @@ import imagingbook.core.resource.ImageResource;
  * @see ImageResource
  *
  */
-public enum GeneralTestImage implements ImageResource {	// TODO: make ImageResource abstract class?
+public enum GeneralSampleImage implements ImageResource {	// TODO: make ImageResource abstract class?
 		/** Original: https://imagej.nih.gov/ij/images/blobs.gif */
 		Blobs("blobs.png"),
 		/** Original: https://imagej.nih.gov/ij/images/boats.gif */
@@ -37,7 +37,6 @@ public enum GeneralTestImage implements ImageResource {	// TODO: make ImageResou
 		BoatsFilter3x3("boats-filter3x3.png"),
 		/** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */
 		DotBlot("Dot_Blot.png"),
-		CatSkeleton("cat-skeleton.png"),
 		Cat("cat.png"),
 		ClownFilter3x3("clown-filter3x3.png"),
 		ClownGauss3("clown-gauss3.png"),
@@ -48,14 +47,20 @@ public enum GeneralTestImage implements ImageResource {	// TODO: make ImageResou
 		MonasterySmallGauss3("monastery-small-gauss3.png"),
 		MonasterySmall("monastery-small.png"),
 		RhinoBigCrop("rhino-big-crop.png"),
+		
 		SegmentationMed("segmentation-med.png"),
 		SegmentationSmall("segmentation-small.png"),
 		SimpleTestGridImg("simple-test-grid-img.png"),
-		SimpleTestGridImg2("simple-test-grid-img2.png");
+		SimpleTestGridImg2("simple-test-grid-img2.png"),
+	
+		NoisyLines("noisy-lines.png"), 
+		NoisyCircles("noisy-circles.png"), 
+		NoisyEllipses("noisy-ellipses.png"),
+	;
 
 	private final String filename;
 	
-	GeneralTestImage(String filename) {
+	GeneralSampleImage(String filename) {
 		this.filename = filename;
 	}
 	

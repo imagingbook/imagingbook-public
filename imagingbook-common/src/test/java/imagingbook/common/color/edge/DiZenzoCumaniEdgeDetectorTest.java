@@ -8,7 +8,7 @@ import org.junit.Test;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.sampleimages.EdgeDetectionTestImage;
+import imagingbook.testimages.EdgeDetectionTestImage;
 import imagingbook.testutils.ImageTestUtils;
 
 

@@ -4,19 +4,13 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Random;
 
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 public class ZipCompressorTest {
 
@@ -39,7 +33,7 @@ public class ZipCompressorTest {
 	
 	@Test	// byte[] data from ByteProcessor pixels
 	public void test2() {
-		ImageProcessor ip = GeneralTestImage.MonasterySmall.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
 		assertTrue(ip instanceof ByteProcessor);
 		
 		ZipCompressor compr = new ZipCompressor();

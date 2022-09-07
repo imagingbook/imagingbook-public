@@ -6,16 +6,20 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.sampleimages;
+package imagingbook.testimages;
+
+import org.junit.Test;
 
 import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testutils.ResourceTestUtils;
 
 /**
  * Enumeration defining a set of {@link ImageResource} objects for testing 
  * edge detection methods.
  * 
  * @see ImageResource
- * @see GeneralTestImage
+ * @see GeneralSampleImage
  */
 public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600color("balloons-600.png"),
@@ -43,5 +47,12 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	@Override
 	public String getFileName() {
 		return filename;
+	}
+	
+	public static class SelfTest {		
+		@Test
+		public void testMe() {
+			ResourceTestUtils.checkImageResource(this);
+		}
 	}
 }

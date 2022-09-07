@@ -6,43 +6,53 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.sampleimages;
+package imagingbook.testimages;
+
+import org.junit.Test;
 
 import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testutils.ResourceTestUtils;
 
 /**
  * Enumeration defining a set of {@link ImageResource} objects associated
- * with test images for automatic thresholding.
+ * with SIFT test images.
  * @see ImageResource
- * @see GeneralTestImage
+ * @see GeneralSampleImage
  */
-public enum ThresholdTestImage implements ImageResource {
-	/** Original gray scan from Kepler manuscript. */
-	kepler("kepler.png"),
-	/** Binary Kepler image with values 17 and 18 only. */
-	keplerBin_17_18("keplerBin-17-18.png"),
-	/** Binary Kepler image darkened by 100 units. */
-	keplerBinMinus100("keplerBinMinus100.png"),
-	/** Binary Kepler image brightened by 100 units. */
-	keplerBinPlus100("keplerBinPlus100.png"),
-	/** Binary Kepler image with values 0 and 255. */
-	keplerBin("keplerBin.png"),
-	/** Flat image with 0 values only. */
-	flat000("flat000.png"),
-	/** Flat image with 31 values only. */
-	flat031("flat031.png"),
-	/** Flat image with 255 values only. */
-	flat255("flat255.png"),
+public enum SiftTestImage implements ImageResource {
+	Box00("box00.png"),
+	Box15("box15.png"),
+	Box30("box30.png"),
+	Box45("box45.png"),
+	Box60("box60.png"),
+	Box75("box75.png"),
+	Box90("box90.png"),
+	HalfDiskH("halfdiskH.png"),
+	HalfDiskV("halfdiskV.png"),
+	Ireland02tiny("ireland02tiny.png"),
+	RectangleH("rectangleH.png"),
+	RectangleV("rectangleV.png"),
+	Stars("stars.png"),
+	StarsH("starsH.png"),
+	StarsV("starsV.png"),
 	;
 	
 private final String filename;
 	
-	ThresholdTestImage(String filename) {
+	SiftTestImage(String filename) {
 		this.filename = filename;
 	}
 	
 	@Override
 	public String getFileName() {
 		return filename;
+	}
+	
+	public static class SelfTest {		
+		@Test
+		public void testMe() {
+			ResourceTestUtils.checkImageResource(this);
+		}
 	}
 }

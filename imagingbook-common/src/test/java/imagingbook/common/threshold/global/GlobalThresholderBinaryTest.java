@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.ThresholdTestImage;
+import imagingbook.testimages.ThresholdTestImage;
 
 public class GlobalThresholderBinaryTest {
 	

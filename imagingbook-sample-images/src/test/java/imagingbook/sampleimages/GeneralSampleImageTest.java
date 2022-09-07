@@ -17,18 +17,19 @@ import java.io.InputStream;
 import org.junit.Test;
 
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.lib.TestUtils;
+import imagingbook.sampleimages.testutils.ResourceTestUtils;
 
-public class GeneralTestImageTest {
+
+public class GeneralSampleImageTest {
 	
 	@Test
 	public void test1() {
-		TestUtils.testImageResource(GeneralTestImage.class);
+		ResourceTestUtils.testImageResource(GeneralSampleImage.class);
 	}
 	
 	@Test
 	public void test2() throws IOException {
-		for (ImageResource res : GeneralTestImage.values()) {
+		for (ImageResource res : GeneralSampleImage.values()) {
 			try (InputStream strm = res.getStream()) {
 				assertNotNull("could not obtain InputStream for resource " + res.toString(), strm);
 				byte[] bytes = strm.readAllBytes();

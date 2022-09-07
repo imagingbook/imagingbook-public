@@ -8,10 +8,11 @@
  *******************************************************************************/
 package HoughTransform;
 
-import imagingbook.common.ij.IjUtils;
-import imagingbook.sampleimages.RansacTestImage;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
+import imagingbook.common.ij.IjUtils;
+import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * Hough line detection demo. Opens a local sample image and then runs
@@ -22,7 +23,7 @@ import ij.plugin.PlugIn;
  */
 public class Hough_Lines_Demo implements PlugIn {
 	
-	private static RansacTestImage resource = RansacTestImage.NoisyLines;
+	private static ImageResource resource = GeneralSampleImage.NoisyLines;
 
 	@Override
 	public void run(String arg) {

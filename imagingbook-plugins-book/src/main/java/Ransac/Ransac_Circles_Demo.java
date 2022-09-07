@@ -9,7 +9,8 @@
 package Ransac;
 
 import imagingbook.common.ij.IjUtils;
-import imagingbook.sampleimages.RansacTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
+
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
 
@@ -22,7 +23,7 @@ import ij.plugin.PlugIn;
  */
 public class Ransac_Circles_Demo implements PlugIn {
 
-	private static RansacTestImage resource = RansacTestImage.NoisyCircles;
+	private static GeneralSampleImage resource = GeneralSampleImage.NoisyCircles;
 	
 	@Override
 	public void run(String arg) {

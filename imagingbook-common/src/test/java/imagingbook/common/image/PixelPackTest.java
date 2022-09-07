@@ -18,15 +18,15 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 
 public class PixelPackTest {
 	
 	static double TOL = 1e-4;
 	
-	ImageResource res1 = GeneralTestImage.MonasterySmall;
-	ImageResource res2 = GeneralTestImage.Clown;
+	ImageResource res1 = GeneralSampleImage.MonasterySmall;
+	ImageResource res2 = GeneralSampleImage.Clown;
 	double scale = Math.PI;		// just to check pixel value scaling
 
 	@Test

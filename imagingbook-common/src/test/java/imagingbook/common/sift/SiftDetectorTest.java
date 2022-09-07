@@ -18,8 +18,8 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.sift.SiftDetector.NeighborhoodType3D;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
-import imagingbook.sampleimages.SiftTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testimages.SiftTestImage;
 
 
 public class SiftDetectorTest {
@@ -50,7 +50,7 @@ public class SiftDetectorTest {
 		params.tFclip = 0.2;
 		params.sFscale = 512.0;
 
-		runSift(GeneralTestImage.MonasterySmall, 291);
+		runSift(GeneralSampleImage.MonasterySmall, 291);
 		runSift(SiftTestImage.Box00, 38);
 		runSift(SiftTestImage.HalfDiskH, 8);
 		runSift(SiftTestImage.HalfDiskV, 8);

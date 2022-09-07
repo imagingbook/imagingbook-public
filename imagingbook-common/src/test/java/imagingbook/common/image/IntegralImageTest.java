@@ -16,12 +16,12 @@ import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 // TODO: Complete tests!
 public class IntegralImageTest {
 	
-	private static ImageResource ir = GeneralTestImage.Boats;
+	private static ImageResource ir = GeneralSampleImage.Boats;
 
 	@Test
 	public void test1() {

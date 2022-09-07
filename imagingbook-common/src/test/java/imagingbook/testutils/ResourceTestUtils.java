@@ -6,15 +6,17 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.sampleimages.lib;
+package imagingbook.testutils;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
 import imagingbook.core.resource.ImageResource;
 import imagingbook.core.resource.NamedResource;
 
-public abstract class TestUtils {
+public abstract class ResourceTestUtils {
 	
 	/**
 	 * Scans all resources defined by enumClass, validates that they exist.
@@ -42,10 +44,23 @@ public abstract class TestUtils {
 			for (E c : enumClass.getEnumConstants()) {
 //				System.out.println(c.toString());
 				ImageResource ir = (ImageResource) c;
-				assertNotNull("could not find resource " + c.toString(), ir.getURL());
+				File file = new File(ir.getRelativePath());
+//				System.out.println(file.getAbsolutePath());
+				assertNotNull("could not find file " + file.getAbsolutePath(), ir.getURL());
 				assertNotNull("could not open image for resource " + ir,  ir.getImage());
 			}
 		}
+	}
+	
+
+	/**
+	 * This must be called from on an instance of a class nested inside an ImageResource enum type.
+	 * TODO: there should be a better way to do this ...
+	 * @param nestedItem
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void checkImageResource(Object nestedItem) {
+		ResourceTestUtils.testImageResource((Class)nestedItem.getClass().getEnclosingClass());
 	}
 
 }

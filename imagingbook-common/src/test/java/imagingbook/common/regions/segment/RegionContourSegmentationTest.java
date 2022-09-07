@@ -21,7 +21,7 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 public class RegionContourSegmentationTest {
 	
@@ -29,7 +29,7 @@ public class RegionContourSegmentationTest {
 	public void testSimpleN4() {
 		TestCase tc = new TestCase();
 		// -----------------------------------------------------------------
-		tc.imgResource =  GeneralTestImage.SimpleTestGridImg;
+		tc.imgResource =  GeneralSampleImage.SimpleTestGridImg;
 		tc.NHT = N4;
 		tc.RegionCount = 6;
 		tc.LargestRegionSize = 64;
@@ -44,7 +44,7 @@ public class RegionContourSegmentationTest {
 	public void testSimpleN8() {
 		TestCase tc = new TestCase();
 		// -----------------------------------------------------------------
-		tc.imgResource =  GeneralTestImage.SimpleTestGridImg;
+		tc.imgResource =  GeneralSampleImage.SimpleTestGridImg;
 		tc.NHT = N8;
 		tc.RegionCount = 3;
 		tc.LargestRegionSize = 75;
@@ -61,7 +61,7 @@ public class RegionContourSegmentationTest {
 	public void testSmallN4() {
 		TestCase tc = new TestCase();
 		// -----------------------------------------------------------------
-		tc.imgResource =  GeneralTestImage.SegmentationSmall;
+		tc.imgResource =  GeneralSampleImage.SegmentationSmall;
 		tc.NHT = N4;
 		tc.RegionCount = 26;
 		tc.LargestRegionSize = 1000;
@@ -76,7 +76,7 @@ public class RegionContourSegmentationTest {
 	public void testSmallN8() {
 		TestCase tc = new TestCase();
 		// -----------------------------------------------------------------
-		tc.imgResource =  GeneralTestImage.SegmentationSmall;
+		tc.imgResource =  GeneralSampleImage.SegmentationSmall;
 		tc.NHT = N8;
 		tc.RegionCount = 9;
 		tc.LargestRegionSize = 1000;
@@ -93,7 +93,7 @@ public class RegionContourSegmentationTest {
 	public void testMedN4() {
 		TestCase tc = new TestCase();
 		// -----------------------------------------------------------------
-		tc.imgResource =  GeneralTestImage.SegmentationMed;
+		tc.imgResource =  GeneralSampleImage.SegmentationMed;
 		tc.NHT = N4;
 		tc.RegionCount = 88;
 		tc.LargestRegionSize = 16352;
@@ -108,7 +108,7 @@ public class RegionContourSegmentationTest {
 	public void testMedN8() {
 		TestCase tc = new TestCase();
 		// -----------------------------------------------------------------
-		tc.imgResource =  GeneralTestImage.SegmentationMed;
+		tc.imgResource =  GeneralSampleImage.SegmentationMed;
 		tc.NHT = N8;
 		tc.RegionCount = 9;
 		tc.LargestRegionSize = 16352;
@@ -125,7 +125,7 @@ public class RegionContourSegmentationTest {
 	public void testBigN4() {
 		TestCase tc = new TestCase();
 		// -----------------------------------------------------------------
-		tc.imgResource =  GeneralTestImage.RhinoBigCrop;
+		tc.imgResource =  GeneralSampleImage.RhinoBigCrop;
 		tc.NHT = N4;
 		tc.RegionCount = 10254;
 		tc.LargestRegionSize = 562365;
@@ -140,7 +140,7 @@ public class RegionContourSegmentationTest {
 	public void testBigN8() {
 		TestCase tc = new TestCase();
 		// -----------------------------------------------------------------
-		tc.imgResource =  GeneralTestImage.RhinoBigCrop;
+		tc.imgResource =  GeneralSampleImage.RhinoBigCrop;
 		tc.NHT = N8;
 		tc.RegionCount = 9382;
 		tc.LargestRegionSize = 564659;

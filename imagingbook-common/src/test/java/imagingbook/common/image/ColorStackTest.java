@@ -14,14 +14,14 @@ import imagingbook.common.color.colorspace.LabColorSpace;
 import imagingbook.common.color.colorspace.LinearRgbColorSpace;
 import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 
 public class ColorStackTest {
 	
 	static double TOL = 1e-4;
 	
-	ImageResource clown = GeneralTestImage.Clown;
+	ImageResource clown = GeneralSampleImage.Clown;
 
 	@Test
 	public void testBasicConversion() {	// conversion ColorProcessor/ColorStack

@@ -14,14 +14,14 @@ import org.junit.Test;
 
 import ij.process.ImageProcessor;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 
 // TODO: these tests are incomplete
 public class ImageMathTest {
 	
-	static ImageResource ir1 = GeneralTestImage.Clown;
-	static ImageResource ir2 = GeneralTestImage.Boats;
+	static ImageResource ir1 = GeneralSampleImage.Clown;
+	static ImageResource ir2 = GeneralSampleImage.Boats;
 	
 	static ImageProcessor[] images = {
 			ir1.getImage().getProcessor(),							// ColorProcessor

@@ -6,37 +6,28 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.sampleimages;
+package imagingbook.testimages;
+
+import org.junit.Test;
 
 import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testutils.ResourceTestUtils;
 
 /**
- * Enumeration defining a set of {@link ImageResource} objects associated
- * with SIFT test images.
+ * Enumeration defining a set of {@link ImageResource} objects for testing 
+ * edge detection methods.
+ * 
  * @see ImageResource
- * @see GeneralTestImage
+ * @see GeneralSampleImage
  */
-public enum SiftTestImage implements ImageResource {
-	Box00("box00.png"),
-	Box15("box15.png"),
-	Box30("box30.png"),
-	Box45("box45.png"),
-	Box60("box60.png"),
-	Box75("box75.png"),
-	Box90("box90.png"),
-	HalfDiskH("halfdiskH.png"),
-	HalfDiskV("halfdiskV.png"),
-	Ireland02tiny("ireland02tiny.png"),
-	RectangleH("rectangleH.png"),
-	RectangleV("rectangleV.png"),
-	Stars("stars.png"),
-	StarsH("starsH.png"),
-	StarsV("starsV.png"),
+public enum BinaryTestImage implements ImageResource {
+	CatSkeleton("cat-skeleton.png"),
 	;
 	
-private final String filename;
+	private final String filename;
 	
-	SiftTestImage(String filename) {
+	BinaryTestImage(String filename) {
 		this.filename = filename;
 	}
 	
@@ -44,4 +35,12 @@ private final String filename;
 	public String getFileName() {
 		return filename;
 	}
+		
+	public static class SelfTest {		
+		@Test
+		public void testMe() {
+			ResourceTestUtils.checkImageResource(this);
+		}
+	}
+	
 }

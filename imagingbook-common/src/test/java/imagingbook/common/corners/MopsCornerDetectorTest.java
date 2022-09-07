@@ -11,7 +11,7 @@ import org.junit.Test;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.corners.subpixel.SubpixelMaxInterpolator.Method;
-import imagingbook.sampleimages.GeneralTestImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 public class MopsCornerDetectorTest {
 	
@@ -26,7 +26,7 @@ public class MopsCornerDetectorTest {
 		params.scoreThreshold = 100;
 	}
 	
-	ImageProcessor ip = GeneralTestImage.MonasterySmall.getImage().getProcessor();
+	ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
 
 	@Test
 	public void testNoCornerRefinement() {
