@@ -57,27 +57,27 @@ public class ZipCompressorTest {
 		assertArrayEquals(input, decompressed);
 	}
 	
-	@Test	// byte[] by reading bytes from PNG file
-	public void test3() throws URISyntaxException, IOException {
-		ZipCompressor compr = new ZipCompressor();
-		
-//		InputStream is = GeneralTestImage.MonasterySmall.getStream();
-		URL url = GeneralTestImage.Boats.getURL();
-		Path path = Paths.get(url.toURI());
-//		File file = path.toFile();
-		
-		byte[] input = Files.readAllBytes(path);
-		System.out.println("input length = " + input.length);
-		
-		byte[] compressed = compr.compressByteArray(input);
-		System.out.println("compressed length = " + compressed.length);
-		
-		byte[] decompressed = compr.decompressByteArray(compressed);
-		System.out.println("decompressed length = " + decompressed.length);
-		
-		assertEquals(input.length, decompressed.length);
-		assertArrayEquals(input, decompressed);
-	}
+//	@Test	// byte[] by reading bytes from PNG file
+//	public void test3() throws URISyntaxException, IOException {
+//		ZipCompressor compr = new ZipCompressor();
+//		
+////		InputStream is = GeneralTestImage.MonasterySmall.getStream();
+//		URL url = GeneralTestImage.Boats.getURL();
+//		Path path = Paths.get(url.toURI());
+////		File file = path.toFile();
+//		
+//		byte[] input = Files.readAllBytes(path);
+//		System.out.println("input length = " + input.length);
+//		
+//		byte[] compressed = compr.compressByteArray(input);
+//		System.out.println("compressed length = " + compressed.length);
+//		
+//		byte[] decompressed = compr.decompressByteArray(compressed);
+//		System.out.println("decompressed length = " + decompressed.length);
+//		
+//		assertEquals(input.length, decompressed.length);
+//		assertArrayEquals(input, decompressed);
+//	}
 		
 	// --------------------------------------------
 	
