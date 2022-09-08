@@ -88,7 +88,6 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 
 	// Creates a diagonal matrix with the ratios of the rgb components
 	// obtained by transforming the two white points
-	// TODO: no deed to create a matrix!!
 	private double[][] rgbMatrix(double[] rgb1, double[] rgb2) {
 		if (rgb1.length != rgb2.length)
 			throw new IllegalArgumentException();
