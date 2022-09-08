@@ -81,6 +81,7 @@ public class DiZenzoCumaniEdgeDetector implements ColorEdgeDetector {
 	}
 
 	void findEdges() {
+		// TODO: convert to PixelPack!
 		for (int c = R; c <= B; c++) {
 			Ix[c] =  ColorEdgeDetector.getRgbFloatChannel(I, c);
 			Iy[c] =  ColorEdgeDetector.getRgbFloatChannel(I, c);

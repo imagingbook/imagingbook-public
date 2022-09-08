@@ -28,7 +28,7 @@ import imagingbook.common.util.ParameterBundle;
  * This class implements a Canny edge detector for grayscale and RGB images.
  * The edge detector is "lazy" in the sense that it performs local non-
  * maximum suppression and edge tracing only when the results are explicitly 
- * queried (by the methods {@link #getEdgeBinary()} and {@link #getTraces()}).
+ * queried (by the methods {@link #getEdgeBinary()} and {@link #getEdgeTraces()}).
  * 
  * @author W. Burger
  * @version 2021/11/26
@@ -37,7 +37,7 @@ import imagingbook.common.util.ParameterBundle;
  */
 public class CannyEdgeDetector implements ColorEdgeDetector {
 	
-	// TODO: Document methods, use arrays instead of image processors.
+	// TODO: Document methods, consider using arrays instead of image processors.
 	
 	public static class Parameters implements ParameterBundle {
 		
@@ -76,18 +76,25 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 	private List<EdgeTrace> edgeTraces = null;		// list of edge traces
 	
 	
-	// Constructor with default parameters:
+	/**
+	 * Constructor using default parameters.
+	 * @param ip the image to be processed
+	 */
 	public CannyEdgeDetector(ImageProcessor ip) {
 		this(ip, new Parameters());
 	}
 	
-	// Constructor with parameter object:
-	public CannyEdgeDetector(ImageProcessor I, Parameters params) {
+	/**
+	 * Constructor using specific parameters.
+	 * @param ip the image to be processed
+	 * @param params a {@link CannyEdgeDetector.Parameters} object
+	 */
+	public CannyEdgeDetector(ImageProcessor ip, Parameters params) {
 		if (!params.validate()) throw new IllegalArgumentException();
 		this.params = params;
-		M = I.getWidth();
-		N = I.getHeight();
-		makeGradientsAndMagnitude(I);
+		M = ip.getWidth();
+		N = ip.getHeight();
+		makeGradientsAndMagnitude(ip);
 	}
 
 	//---------------------------------------------------------------------------
@@ -139,6 +146,7 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 	}
 	
 	private void makeGradientsAndMagnitudeColor(ColorProcessor I) {
+		// TODO: convert to PixelPack!
 		FloatProcessor[] Irgb = rgbToFloatChannels(I);
 		FloatProcessor[] Ixrgb = new FloatProcessor[3];
 		FloatProcessor[] Iyrgb = new FloatProcessor[3];
@@ -228,8 +236,10 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {
 				if (Enms.getf(u, v) >= params.hiThr && Ebin.get(u, v) == 0) { // unmarked edge point
-					EdgeTrace trace = traceAndThreshold(u, v, (float) params.loThr, color);
-					edgeTraces.add(trace);
+					List<PntInt> pnts = traceAndThreshold(u, v, (float) params.loThr, color);
+					if (!pnts.isEmpty()) {
+						edgeTraces.add(new EdgeTrace(pnts));
+					}
 				}
 			}
 		}
@@ -275,17 +285,18 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 	 * @param markVal value used for marking pixels on an edge trace
 	 * @return a list of Point objects.
 	 */
-	private EdgeTrace traceAndThreshold(int u0, int v0, float loThr, int markVal) {
+	private List<PntInt> traceAndThreshold(int u0, int v0, float loThr, int markVal) {
 		//IJ.log("  working point " + u + " " + v);
 		Stack<PntInt> pointStack = new Stack<>();
-		EdgeTrace trace = new EdgeTrace();
+//		EdgeTrace trace = new EdgeTrace();
+		List<PntInt> trace = new ArrayList<>();
 		pointStack.push(PntInt.from(u0, v0));
 		while (!pointStack.isEmpty()) {
 			PntInt p = pointStack.pop();
 			int up = p.x;
 			int vp = p.y;
 			Ebin.putPixel(up, vp, markVal);	// mark this edge point
-			trace.addPoint(p);
+			trace.add(p);
 				
 			int uL = Math.max(up - 1, 0); 		// (up > 0) ? up-1 : 0;
 			int uR = Math.min(up + 1, M - 1); 	// (up < M-1) ? up+1 : M-1;
@@ -302,8 +313,6 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		}
 		return trace;
 	}
-	
-
 	
 	// returns the quantized orientation sector for vector (dx, dy)
 	private int getOrientationSector(float dx, float dy) {
@@ -351,6 +360,12 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		return E_theta;
 	}
 	
+	/**
+	 * Returns a binary edge image, obtained by rendering the
+	 * detected edge traces.
+	 * See also {@link #getEdgeTraces()}
+	 * @return
+	 */
 	public ByteProcessor getEdgeBinary() {
 		if (Ebin == null) {
 			detectAndTraceEdges();
@@ -358,11 +373,21 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		return Ebin;
 	}
 	
-	public List<EdgeTrace> getTraces() {
+	
+	/**
+	 * Returns a list of detected {@link EdgeTrace} instances.
+	 * @return a list of {@link EdgeTrace} instances
+	 */
+	public List<EdgeTrace> getEdgeTraces() {
 		if (edgeTraces == null) {
 			detectAndTraceEdges();
 		}
 		return edgeTraces;
+	}
+	
+	@Deprecated
+	public List<EdgeTrace> getTraces() {
+		return getEdgeTraces();
 	}
 	
 	//---------------------------------------------------------------------------

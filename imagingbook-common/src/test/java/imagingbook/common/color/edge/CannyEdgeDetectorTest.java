@@ -12,6 +12,7 @@ import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.testimages.EdgeDetectionTestImage;
 import imagingbook.testutils.ImageTestUtils;
 
@@ -50,9 +51,17 @@ public class CannyEdgeDetectorTest {
 		assertNotNull(eBin);
 		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyBinaryEdges.getImage().getProcessor(), eBin, TOL));
 		
-		List<EdgeTrace> traces = detector.getTraces();
+		List<EdgeTrace> traces = detector.getEdgeTraces();
 		assertNotNull(traces);
 		assertEquals(138, traces.size());
+		
+		for (EdgeTrace trace : traces) {	// just testing the trace iterator
+			int n = 0;
+			for (@SuppressWarnings("unused") PntInt p : trace) {
+				n = n + 1;
+			}
+			assertEquals(trace.size(), n);
+		}
 	}
 
 	@Test
@@ -74,9 +83,17 @@ public class CannyEdgeDetectorTest {
 		assertNotNull(eBin);
 		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyBinaryEdges.getImage().getProcessor(), eBin, TOL));
 		
-		List<EdgeTrace> traces = detector.getTraces();
+		List<EdgeTrace> traces = detector.getEdgeTraces();
 		assertNotNull(traces);
 		assertEquals(203, traces.size());
+		
+		for (EdgeTrace trace : traces) {	// just testing the trace iterator
+			int n = 0;
+			for (@SuppressWarnings("unused") PntInt p : trace) {
+				n = n + 1;
+			}
+			assertEquals(trace.size(), n);
+		}
 		
 	}
 }

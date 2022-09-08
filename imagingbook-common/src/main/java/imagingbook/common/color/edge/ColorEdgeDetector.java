@@ -22,10 +22,24 @@ import ij.process.FloatProcessor;
  */
 public interface ColorEdgeDetector {
 	
+	/**
+	 * Returns the calculated edge magnitude for each pixel
+	 * as a {@link FloatProcessor}.
+	 * 
+	 * @return the edge magnitude map
+	 */
 	public FloatProcessor getEdgeMagnitude();
+	
+	/**
+	 * Returns the calculated edge orientation for each pixel
+	 * as a {@link FloatProcessor}.
+	 * 
+	 * @return the edge orientation map
+	 */
 	public FloatProcessor getEdgeOrientation();
 	
-	// TODO: move elsewhere or replace?
+	// TODO: move elsewhere or replace by PixelPack?
+	@Deprecated 
 	static FloatProcessor getRgbFloatChannel(ColorProcessor cp, int c) {	// c = 0,1,2
 		int w = cp.getWidth();
 		int h = cp.getHeight();
