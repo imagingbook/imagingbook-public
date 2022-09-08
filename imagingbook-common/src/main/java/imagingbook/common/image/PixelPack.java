@@ -670,7 +670,7 @@ public class PixelPack {
 		final int[] pixels = (int[]) ip.getPixels();
 		final int[] rgb = new int[3];
 		for (int i = 0; i < pixels.length; i++) {
-			RgbUtils.intToRgb(pixels[i], rgb);
+			RgbUtils.decodeIntToRgb(pixels[i], rgb);
 			data[0][i] = scale * rgb[0];
 			data[1][i] = scale * rgb[1];
 			data[2][i] = scale * rgb[2];
@@ -863,7 +863,7 @@ public class PixelPack {
 			int r = clipByte(Math.round(scale * R[i]));
 			int g = clipByte(Math.round(scale * G[i]));
 			int b = clipByte(Math.round(scale * B[i]));
-			pixels[i] = RgbUtils.rgbToInt(r, g, b);
+			pixels[i] = RgbUtils.encodeRgbToInt(r, g, b);
 		}
 	}
 	

@@ -26,6 +26,10 @@ public abstract class RgbUtils {
 	
 	/** ITU BR.709 weights for RGB to Y (luma) conversion. */
 	public static final double[] ITU709RgbWeights = {0.2126, 0.7152, 0.0722}; 
+	
+	public static double[] getDefaultWeights() {
+		return ITU709RgbWeights.clone();
+	}
 
 	/**
 	 * Converts the given integer-encoded 8-bit RGB color
@@ -36,7 +40,7 @@ public abstract class RgbUtils {
 	 */
 	public static int[] intToRgb(int argb) {
 		int[] RGB = new int[3];
-		intToRgb(argb, RGB);
+		decodeIntToRgb(argb, RGB);
 		return RGB;
 	}
 	
@@ -48,7 +52,7 @@ public abstract class RgbUtils {
 	 * @param argb integer-encoded 8-bit RGB color in ARGB format
 	 * @param RGB {@code int[]} with R, G, B components
 	 */
-	public static void intToRgb(int argb, int[] RGB) {
+	public static void decodeIntToRgb(int argb, int[] RGB) {
 		RGB[0] = ((argb >> 16) & 0xFF);
 		RGB[1] = ((argb >> 8) & 0xFF);
 		RGB[2] = (argb & 0xFF);
@@ -60,15 +64,38 @@ public abstract class RgbUtils {
 	 * @param RGB {@code int[]} with R, G, B components
 	 * @return integer-encoded 8-bit RGB color in ARGB format
 	 */
-	public static int rgbToInt(int... RGB) {
+	public static int encodeRgbToInt(int... RGB) {
 		return ((RGB[0] & 0xff)<<16) | ((RGB[1] & 0xff)<<8) | RGB[2] & 0xff;
 	}
 	
-//	public static int rgbToInt(int red, int grn, int blu) {
-//		return ((red & 0xff)<<16) | ((grn & 0xff)<<8) | blu & 0xff;
-//	}
+	/**
+	 * Converts the RGB components to Y (luma) using specified component weights.
+	 * 
+	 * @param RGB color components in RGB (int)
+	 * @param weights color component weights (may be {@code null})
+	 * @return the resulting luma value
+	 */
+	public static float rgbToFloat(int[] RGB, double[] weights) {
+		if (weights == null) {
+			weights = ITU709RgbWeights;
+		}
+		return (float) (RGB[0] * weights[0] + RGB[1] * weights[1] + RGB[2] * weights[2]);
+	}
+	
+	public static float rgbToFloat(int[] RGB) {
+		return rgbToFloat(RGB, null);
+	}
 	
 	
+	public static int rgbToInt(int[] RGB, double[] weights) {
+//		return Math.round(rgbToFloat(RGB, weights));
+		// this is what TypeConverter.convertRGBToByte() does:
+		return (int) (RGB[0] * weights[0] + RGB[1] * weights[1] + RGB[2] * weights[2] + 0.5); 
+	}
+	
+	public static float rgbToInt(int[] RGB) {
+		return rgbToInt(RGB, null);
+	}
 	// -------------------------------------------------------------
 	
 	/**
