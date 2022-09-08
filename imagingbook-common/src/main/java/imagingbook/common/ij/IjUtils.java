@@ -31,6 +31,7 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
+import imagingbook.common.color.RgbUtils;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.util.bits.BitMap;
@@ -292,6 +293,106 @@ public abstract class IjUtils {
 			}
 		}
 		return A;
+	}
+	
+	/**
+	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
+	 * {@link ByteProcessor}, using clearly specified RGB component weights.
+	 * The processor's individual RGB component weights are used if they have
+	 * been set (not null), otherwise ITU709 weights (see {@link RgbUtils#ITU709RgbWeights}) 
+	 * are applied.
+	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
+	 * on a variety of factors (including current user settings).
+	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
+	 * {@link ImageProcessor#convertToByteProcessor()}.
+	 * 
+	 * @param cp a {@link ColorProcessor}
+	 * @return the resulting {@link ByteProcessor}
+	 * @see #toByteProcessor(ColorProcessor, double[])
+	 */
+	public static ByteProcessor toByteProcessor(ColorProcessor cp) {
+		if (cp.getRGBWeights() == null) {	// no weights are set
+			return toByteProcessor(cp, RgbUtils.ITU709RgbWeights);
+		}
+		else {	// use the FloatProcessor's individual weights
+			return cp.convertToByteProcessor();
+		}
+	}
+	
+	/**
+	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
+	 * {@link ByteProcessor}, applying the specified set of RGB component weights.
+	 * The processor's individual weights (if set) are ignored.
+	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
+	 * on a variety of factors (including current user settings).
+	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
+	 * {@link ImageProcessor#convertToByteProcessor()}.
+	 * 
+	 * @param cp a {@link ColorProcessor}
+	 * @param rgbWeights a 3-vector of RGB component weights (must sum to 1)
+	 * @return the resulting {@link ByteProcessor}
+	 * @see RgbUtils#ITU601RgbWeights
+	 * @see RgbUtils#ITU709RgbWeights
+	 */
+	public static ByteProcessor toByteProcessor(ColorProcessor cp, double[] rgbWeights) {
+		if (rgbWeights.length != 3) {
+			throw new IllegalArgumentException("rgbWeights must be of length 3");
+		}
+		double[] oldweights = cp.getRGBWeights();
+		cp.setRGBWeights(rgbWeights);
+		ByteProcessor bp = cp.convertToByteProcessor();
+		((ColorProcessor) cp).setRGBWeights(oldweights);
+		return bp;
+	}
+	
+	/**
+	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
+	 * {@link FloatProcessor}, using clearly specified RGB component weights.
+	 * The processor's individual RGB component weights are used if they have
+	 * been set (not null), otherwise ITU709 weights (see {@link RgbUtils#ITU709RgbWeights}) 
+	 * are applied.
+	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
+	 * on a variety of factors (including current user settings).
+	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
+	 * {@link ImageProcessor#convertToFloatProcessor()}.
+	 * 
+	 * @param cp a {@link ColorProcessor}
+	 * @return the resulting {@link FloatProcessor}
+	 * @see #toFloatProcessor(ColorProcessor, double[])
+	 */
+	public static FloatProcessor toFloatProcessor(ColorProcessor cp) {
+		if (cp.getRGBWeights() == null) {	// no weights are set
+			return toFloatProcessor(cp, RgbUtils.ITU709RgbWeights);
+		}
+		else {	// use the FloatProcessor's individual weights
+			return cp.convertToFloatProcessor();
+		}
+	}
+	
+	/**
+	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
+	 * {@link FloatProcessor}, applying the specified set of RGB component weights.
+	 * The processor's individual weights (if set) are ignored.
+	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
+	 * on a variety of factors (including current user settings).
+	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
+	 * {@link ImageProcessor#convertToFloatProcessor()}.
+	 * 
+	 * @param cp a {@link ColorProcessor}
+	 * @param rgbWeights a 3-vector of RGB component weights (must sum to 1)
+	 * @return the resulting {@link FloatProcessor}
+	 * @see RgbUtils#ITU601RgbWeights
+	 * @see RgbUtils#ITU709RgbWeights
+	 */
+	public static FloatProcessor toFloatProcessor(ColorProcessor cp, double[] rgbWeights) {
+		if (rgbWeights.length != 3) {
+			throw new IllegalArgumentException("rgbWeights must be of length 3");
+		}
+		double[] oldweights = cp.getRGBWeights();
+		cp.setRGBWeights(rgbWeights);
+		FloatProcessor fp = cp.convertToFloatProcessor();
+		((ColorProcessor) cp).setRGBWeights(oldweights);
+		return fp;
 	}
 	
 	/**
