@@ -33,9 +33,14 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600grayCannyEdgeOrientation("balloons-600-gray-CannyEdgeOrientation.tif"),
 	Balloons600grayCannyBinaryEdges("balloons-600-gray-CannyBinaryEdges.png"),
 	
-	Balloons600colorDiZenzoEdgeMagnitude("balloons-600-DiZenzoEdgeMagnitude.tif"),
-	Balloons600colorDiZenzoEdgeOrientation("balloons-600-DiZenzoEdgeOrientation.tif"),
-//	Balloons600colorDiZenzoBinaryEdges("balloons-600-DiZenzoBinaryEdges.png"),
+	Balloons600colorMultigradientEdgeMagnitude("balloons-600-MultigradientEdgeMagnitude.tif"),
+	Balloons600colorMultigradientEdgeOrientation("balloons-600-MultigradientEdgeOrientation.tif"),
+	
+	Balloons600colorMonochromaticEdgeMagnitude("balloons-600-MonochromaticEdgeMagnitude.tif"),
+	Balloons600colorMonochromaticEdgeOrientation("balloons-600-MonochromaticEdgeOrientation.tif"),
+	
+	Balloons600colorGrayscaleEdgeMagnitude("balloons-600-GrayscaleEdgeMagnitude.tif"),
+	Balloons600colorGrayscaleEdgeOrientation("balloons-600-GrayscaleEdgeOrientation.tif"),
 	;
 
 	// ---------------------------------------------------

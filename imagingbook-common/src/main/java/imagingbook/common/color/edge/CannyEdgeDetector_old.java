@@ -22,27 +22,22 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.linear.GaussianKernel1D;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.image.PixelPack;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * <p>
  * This class implements a Canny edge detector for grayscale and RGB images.
- * See Sec. 16.3 of [1] for additional details (Alg. 16.3).
  * The edge detector is "lazy" in the sense that it performs local non-
  * maximum suppression and edge tracing only when the results are explicitly 
  * queried (by the methods {@link #getEdgeBinary()} and {@link #getEdgeTraces()}).
- * </p>
- * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
- * </p>
  * 
  * @author W. Burger
  * @version 2021/11/26
  * @version 2022/03/22 added parameter annotations for dialogs
- * @version 2022/09/04 converted to implement interface, use {@link PixelPack}
+ * @version 2022/09/04 converted to implement interface
  */
-public class CannyEdgeDetector implements ColorEdgeDetector {
+public class CannyEdgeDetector_old implements ColorEdgeDetector {
+	
+	// TODO: Document methods, consider using arrays instead of image processors.
 	
 	public static class Parameters implements ParameterBundle {
 		
@@ -85,16 +80,16 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 	 * Constructor using default parameters.
 	 * @param ip the image to be processed
 	 */
-	public CannyEdgeDetector(ImageProcessor ip) {
+	public CannyEdgeDetector_old(ImageProcessor ip) {
 		this(ip, new Parameters());
 	}
 	
 	/**
 	 * Constructor using specific parameters.
 	 * @param ip the image to be processed
-	 * @param params a {@link CannyEdgeDetector.Parameters} object
+	 * @param params a {@link CannyEdgeDetector_old.Parameters} object
 	 */
-	public CannyEdgeDetector(ImageProcessor ip, Parameters params) {
+	public CannyEdgeDetector_old(ImageProcessor ip, Parameters params) {
 		if (!params.validate()) throw new IllegalArgumentException();
 		this.params = params;
 		M = ip.getWidth();
@@ -114,19 +109,19 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		//detectAndTraceEdges();
 	}
 
-	private void makeGradientsAndMagnitudeGray(ImageProcessor ip) {		
-		FloatProcessor cp = ip.convertToFloatProcessor();	// always makes a copy
-
-		// pre-smoothe the image with a separable Gaussian filter
+	private void makeGradientsAndMagnitudeGray(ImageProcessor I) {		
+		FloatProcessor If = I.convertToFloatProcessor();	// always makes a copy
+				
+		// apply a separable Gaussian filter to I
 		float[] gaussKernel = GaussianKernel1D.makeGaussKernel1D(params.gSigma);
 		Convolver conv = new Convolver();
 		conv.setNormalize(true);
-		conv.convolve(cp, gaussKernel, gaussKernel.length, 1);
-		conv.convolve(cp, gaussKernel, 1, gaussKernel.length);
+		conv.convolve(If, gaussKernel, gaussKernel.length, 1);
+		conv.convolve(If, gaussKernel, 1, gaussKernel.length);
 		
 		// calculate the gradients in X- and Y-direction
-		Ex = cp;
-		Ey = (FloatProcessor) cp.duplicate();
+		Ex = If;
+		Ey = (FloatProcessor) If.duplicate();
 		float[] gradKernel = {-0.5f, 0, 0.5f};
 		conv.setNormalize(false);
 		conv.convolve(Ex, gradKernel, gradKernel.length, 1);
@@ -150,30 +145,32 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 			Emag.multiply(100.0/emax);
 	}
 	
-	private void makeGradientsAndMagnitudeColor(ColorProcessor cp) {
-		FloatProcessor[] I = new PixelPack(cp).getFloatProcessors();
+	private void makeGradientsAndMagnitudeColor(ColorProcessor I) {
+		// TODO: convert to PixelPack!
+		FloatProcessor[] Irgb = rgbToFloatChannels(I);
+		FloatProcessor[] Ixrgb = new FloatProcessor[3];
+		FloatProcessor[] Iyrgb = new FloatProcessor[3];
 		
-		// pre-smooth the image with a separable Gaussian filter (on each RGB channel)
+		// apply a separable Gaussian filter to each RGB channel
 		float[] gaussKernel = GaussianKernel1D.makeGaussKernel1D(params.gSigma);
 		Convolver conv = new Convolver();
 		conv.setNormalize(true);
-		for (int k = 0; k < I.length; k++) {
-			//FloatProcessor If = Irgb[i];
-			conv.convolve(I[k], gaussKernel, gaussKernel.length, 1);
-			conv.convolve(I[k], gaussKernel, 1, gaussKernel.length);
-			
+		for (int i=0; i < Irgb.length; i++) {
+			FloatProcessor If = Irgb[i];
+			conv.convolve(If, gaussKernel, gaussKernel.length, 1);
+			conv.convolve(If, gaussKernel, 1, gaussKernel.length);
+			Ixrgb[i] = If;
+			Iyrgb[i] = (FloatProcessor) If.duplicate();
 		}
 		
 		// calculate the gradients in X- and Y-direction for each RGB channel
-		FloatProcessor[] Ix = new FloatProcessor[3];
-		FloatProcessor[] Iy = new FloatProcessor[3];
 		float[] gradKernel = {-0.5f, 0, 0.5f};
 		conv.setNormalize(false);
-		for (int k = 0; k < I.length; k++) {
-			Ix[k] = I[k];
-			Iy[k] = (FloatProcessor) I[k].duplicate();
-			conv.convolve(Ix[k], gradKernel, gradKernel.length, 1);
-			conv.convolve(Iy[k], gradKernel, 1, gradKernel.length);
+		for (int i = 0; i < Irgb.length; i++) {
+			FloatProcessor Ix = Ixrgb[i];
+			FloatProcessor Iy = Iyrgb[i];
+			conv.convolve(Ix, gradKernel, gradKernel.length, 1);
+			conv.convolve(Iy, gradKernel, 1, gradKernel.length);
 		}
 
 		// calculate gradient magnitude
@@ -184,9 +181,9 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		float emax = 0;
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {
-				float rx = Ix[0].getf(u,v), ry = Iy[0].getf(u,v);
-				float gx = Ix[1].getf(u,v), gy = Iy[1].getf(u,v);
-				float bx = Ix[2].getf(u,v), by = Iy[2].getf(u,v);
+				float rx = Ixrgb[0].getf(u,v), ry = Iyrgb[0].getf(u,v);
+				float gx = Ixrgb[1].getf(u,v), gy = Iyrgb[1].getf(u,v);
+				float bx = Ixrgb[2].getf(u,v), by = Iyrgb[2].getf(u,v);
 				float A = rx*rx + gx*gx + bx*bx;
 				float B = ry*ry + gy*gy + by*by;
 				float C = rx*ry + gx*gy + bx*by;
@@ -391,6 +388,28 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 	@Deprecated
 	public List<EdgeTrace> getTraces() {
 		return getEdgeTraces();
+	}
+	
+	//---------------------------------------------------------------------------
+	
+	// extract RGB channels of 'cp' as 3 float processors
+	private FloatProcessor[] rgbToFloatChannels(ColorProcessor cp) {
+		int w = cp.getWidth();
+		int h = cp.getHeight();
+		FloatProcessor rp = new FloatProcessor(w, h);
+		FloatProcessor gp = new FloatProcessor(w, h);
+		FloatProcessor bp = new FloatProcessor(w, h);
+		int[] pixels = (int[]) cp.getPixels(); 
+		float[] rpix = (float[]) rp.getPixels();
+		float[] gpix = (float[]) gp.getPixels();
+		float[] bpix = (float[]) bp.getPixels();
+		for (int i = 0; i < pixels.length; i++) {
+			int c = pixels[i];
+			rpix[i] = (c & 0xff0000) >> 16;
+			gpix[i] = (c & 0xff00) >> 8;
+			bpix[i] = c & 0xff;
+		}
+    	return new FloatProcessor[] {rp, gp, bp};
 	}
 	
 }

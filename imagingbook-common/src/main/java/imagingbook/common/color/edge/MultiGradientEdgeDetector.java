@@ -10,73 +10,77 @@
 package imagingbook.common.color.edge;
 
 import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.sqrt;
 
 import ij.plugin.filter.Convolver;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
- * Monochromatic color edge detector.
- * See Sec. 16.2 of [1] for additional details (Alg. 16.1).
+ * Multi-Gradient ("DiZenzo/Cumani-style") color edge detector.
+ * See Sec. 16.2 of [1] for additional details (Alg. 16.2).
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author W. Burger
- * @version 2014/02/16
- * @version 2022/09/04 converted to implement interface
+ * @version 2013/05/30
+ * @version 2022/09/07 implement interface, use PixelPack, renamed to MultiGradientEdgeDetector
  */
-public class MonochromaticEdgeDetector implements ColorEdgeDetector {
+public class MultiGradientEdgeDetector implements ColorEdgeDetector {
 	
+	/**
+	 * Parameters for {@link MultiGradientEdgeDetector} (currently unused, no parameters to set).
+	 */
 	public static class Parameters implements ParameterBundle {
-		/** Specify which color distance to use */
-		public NormType norm = NormType.L2;
 	}
-
+	
 	@SuppressWarnings("unused")
 	private final Parameters params;
 	private final int M;	// image width
 	private final int N;	// image height
-	private final FloatProcessor Emag;	// edge magnitude map
-	private final FloatProcessor Eort;	// edge orientation map
+	private final FloatProcessor E_mag;	// edge magnitude map
+	private final FloatProcessor E_ort;	// edge orientation map
 
 	// Sobel-kernels for x/y-derivatives:
-	private static final float[] HxS = Matrix.multiply(1.0f/8, new float[] {
+	private final float[] HxS = Matrix.multiply(1.0f/8, 
+        new float[] {
 			-1, 0, 1,
 		    -2, 0, 2,
 		    -1, 0, 1
 		    });
     
-	private static final float[] HyS = Matrix.multiply(1.0f/8, new float[] {
+	private final float[] HyS = Matrix.multiply(1.0f/8, 
+		 new float[] {
 			-1, -2, -1,
 			 0,  0,  0,
 			 1,  2,  1
 			 });
-
-	public MonochromaticEdgeDetector(ColorProcessor cp) {
+    
+	public MultiGradientEdgeDetector(ColorProcessor cp) {
 		this(cp, new Parameters());
 	}
 	
-	public MonochromaticEdgeDetector(ColorProcessor cp, Parameters params) {
+	public MultiGradientEdgeDetector(ColorProcessor cp, Parameters params) {
 		this.params = params;
 		this.M = cp.getWidth();
 		this.N = cp.getHeight();
-		this.Emag = new FloatProcessor(M, N);
-		this.Eort = new FloatProcessor(M, N);
+		this.E_mag = new FloatProcessor(M, N);
+		this.E_ort = new FloatProcessor(M, N);
 		findEdges(cp);
 	}
-	
+
 	private void findEdges(ColorProcessor cp) {
 		FloatProcessor[] I = new PixelPack(cp).getFloatProcessors();
+		
+		// calculate image derivatives in x/y for all color channels:
 	    FloatProcessor[] Ix = new FloatProcessor[3];
 	    FloatProcessor[] Iy = new FloatProcessor[3];
-	    
 	    Convolver conv = new Convolver();
 		conv.setNormalize(false);
 		for (int k = 0; k < 3; k++) {
@@ -86,44 +90,34 @@ public class MonochromaticEdgeDetector implements ColorEdgeDetector {
 			conv.convolve(Iy[k], HyS, 3, 3);
 		}
 		
+		// calculate color edge magnitude and orientation:
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {
-				// extract the gradients of the R, G, B channels:
 				double rx = Ix[0].getf(u, v), ry = Iy[0].getf(u, v);
 				double gx = Ix[1].getf(u, v), gy = Iy[1].getf(u, v);
 				double bx = Ix[2].getf(u, v), by = Iy[2].getf(u, v);
 				
-				double er2 = sqr(rx) + sqr(ry);
-				double eg2 = sqr(gx) + sqr(gy);
-				double eb2 = sqr(bx) + sqr(by);
+				double A = rx*rx + gx*gx + bx*bx;
+				double B = ry*ry + gy*gy + by*by;
+				double C = rx*ry + gx*gy + bx*by;
 				
-				// assign local edge magnitude:
-				Emag.setf(u, v, (float) Math.sqrt(er2 + eg2 + eb2));
-				
-				// find the maximum gradient channel:
-				double e2max = er2, cx = rx, cy = ry;	// assume red is the max channel
-				
-				if (eg2 > e2max) {
-					e2max = eg2; cx = gx; cy = gy;		// green is the max channel
-				}
-				if (eb2 > e2max) {
-					e2max = eb2; cx = bx; cy = by;		// blue is the max channel
-				}
-				
-				// calculate edge orientation for the maximum channel:
-				Eort.setf(u, v, (float) Math.atan2(cy, cx));
+				double lambda0 = 0.5 * (A + B + sqrt(sqr(A - B) + 4 * sqr(C)));
+				double theta0 =  0.5 * Math.atan2(2 * C, A - B);
+
+				E_mag.setf(u, v, (float) sqrt(lambda0));
+				E_ort.setf(u, v, (float) theta0);
 			}
 		}
 	}
 	
 	@Override
 	public FloatProcessor getEdgeMagnitude() {
-		return Emag;
+		return E_mag;
 	}
 
 	@Override
 	public FloatProcessor getEdgeOrientation() {
-		return Eort;
+		return E_ort;
 	}
 	
 }

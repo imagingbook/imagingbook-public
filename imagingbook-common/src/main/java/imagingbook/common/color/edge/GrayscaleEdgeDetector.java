@@ -9,6 +9,11 @@
 
 package imagingbook.common.color.edge;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.atan2;
+import static java.lang.Math.sqrt;
+
+import ij.plugin.filter.Convolver;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
@@ -24,17 +29,6 @@ import imagingbook.common.util.ParameterBundle;
  * @version 2022/09/04 converted to implement interface
  */
 public class GrayscaleEdgeDetector implements ColorEdgeDetector {
-	
-
-	final ImageProcessor I;
-	final int M;	// image width
-	final int N;	// image height
-	final Parameters params;
-	
-	final FloatProcessor Emag;	// edge magnitude map
-	final FloatProcessor Eort;	// edge orientation map
-	
-	double wr = 0.2126, wg = 0.7152, wb = 0.0722;	// ITU BR.709 luma weights
 
 	/**
 	 * Currently unused, no parameters to set
@@ -42,65 +36,66 @@ public class GrayscaleEdgeDetector implements ColorEdgeDetector {
 	public static class Parameters implements ParameterBundle {
 	}
 	
+	@SuppressWarnings("unused")
+	private final Parameters params;
+	private final int M;	// image width
+	private final int N;	// image height
+	private final FloatProcessor Emag;	// edge magnitude map
+	private final FloatProcessor Eort;	// edge orientation map
+	
+	private static final double[] ITU709weights = {0.2126, 0.7152, 0.0722}; // ITU BR.709 luma weights
+	
 	// Sobel-kernels for x/y-derivatives:
-    final float[] HxS = Matrix.multiply(1.0f/8, new float[] {
+    private static final float[] HxS = Matrix.multiply(1.0f/8, new float[] {
 			-1, 0, 1,
 		    -2, 0, 2,
 		    -1, 0, 1
 		    });
     
-    final float[] HyS = Matrix.multiply(1.0f/8, new float[] {
+    private static final float[] HyS = Matrix.multiply(1.0f/8, new float[] {
 			-1, -2, -1,
 			 0,  0,  0,
 			 1,  2,  1
 			 });
     
-    final int R = 0, G = 1, B = 2;		// RGB channel indexes
-	
-    private FloatProcessor Ix;
-    private FloatProcessor Iy;
- 
 	public GrayscaleEdgeDetector(ImageProcessor I) {
 		this(I, new Parameters());
 	}
 	
-	public GrayscaleEdgeDetector(ImageProcessor I, Parameters params) {
+	public GrayscaleEdgeDetector(ImageProcessor ip, Parameters params) {
 		this.params = params;
-		this.I = I;
-		this.M = this.I.getWidth();
-		this.N = this.I.getHeight();
+		this.M = ip.getWidth();
+		this.N = ip.getHeight();
 		Emag = new FloatProcessor(M, N);
 		Eort = new FloatProcessor(M, N);
-		setup();
-		findEdges();
-	}
-	
-	protected void setup() {
-		// convert to a grayscale (float) image with specified RGB weights:
-		if (I instanceof ColorProcessor) {
-			((ColorProcessor)I).setRGBWeights(wr, wg, wb);
-		}
-		Ix = I.convertToFloatProcessor();
-		Iy = (FloatProcessor) Ix.duplicate();
+		findEdges(ip);
 	}
 
-	void findEdges() {
-		Ix.convolve(HxS, 3, 3);
-		Iy.convolve(HyS, 3, 3);
+	void findEdges(ImageProcessor ip) {
+		double[] oldweights = ColorProcessor.getWeightingFactors();
+		ColorProcessor.setWeightingFactors(ITU709weights[0], ITU709weights[1], ITU709weights[2]);
+		FloatProcessor I = ip.convertToFloatProcessor();
+		ColorProcessor.setWeightingFactors(oldweights[0], oldweights[1], oldweights[2]);
+		
+	    FloatProcessor Ix = I;
+	    FloatProcessor Iy = (FloatProcessor) Ix.duplicate();
+	    
+	    Convolver conv = new Convolver();
+		conv.setNormalize(false);
+		conv.convolve(Ix, HxS, 3, 3);
+		conv.convolve(Iy, HyS, 3, 3);
 		
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {
 				// extract the gradients of the R, G, B channels:
-				final float dx = Ix.getf(u, v);	
-				final float dy = Iy.getf(u, v);		
+				double dx = Ix.getf(u, v);	
+				double dy = Iy.getf(u, v);		
 				
 				// calculate local edge magnitude:
-				final float eMag = (float) Math.sqrt(dx * dx + dy * dy);
-				Emag.setf(u, v, eMag);	
+				Emag.setf(u, v, (float) sqrt(sqr(dx) + sqr(dy)));	
 				
 				// calculate edge orientation for the maximum channel:
-				float eOrt = (float) Math.atan2(dy, dx);
-				Eort.setf(u, v, eOrt);
+				Eort.setf(u, v, (float) atan2(dy, dx));
 			}
 		}
 	}

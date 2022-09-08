@@ -15,7 +15,7 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.edge.ColorEdgeDetector;
-import imagingbook.common.color.edge.DiZenzoCumaniEdgeDetector;
+import imagingbook.common.color.edge.MultiGradientEdgeDetector;
 import imagingbook.core.FileUtils;
 
 
@@ -44,7 +44,7 @@ public class Color_Edges_DiZenzo implements PlugInFilter {
     	if (!setParameters()) return;
     	
     	ColorProcessor cp = (ColorProcessor) ip;
-    	ColorEdgeDetector ced = new DiZenzoCumaniEdgeDetector(cp);
+    	ColorEdgeDetector ced = new MultiGradientEdgeDetector(cp);
     	
     	if (showEdgeMagnitude) {
     		FloatProcessor edgeMagnitude = ced.getEdgeMagnitude();
