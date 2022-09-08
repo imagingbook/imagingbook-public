@@ -15,7 +15,11 @@ import java.util.Random;
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
+import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
+import imagingbook.common.color.RgbUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 
 public class IjUtilsTest {
@@ -50,8 +54,83 @@ public class IjUtilsTest {
 		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-6));
 	}
 	
-	// ----------------------------------------------------------------
+	@Test
+	public void testDoubleArrayReadWrite() {
+		FloatProcessor fp1 = makeRandomFloatProcessor(W, H);
+		double[][] A = IjUtils.toDoubleArray(fp1);
 		
+		FloatProcessor fp2 = IjUtils.toFloatProcessor(A);
+		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-6));
+	}
+	
+	// ----------------------------------------------------------------
+	
+	@Test	// convert using default weights
+	public void testToByteProcessorColorProcessor() {
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip instanceof ColorProcessor);
+		ByteProcessor fp1 = IjUtils.toByteProcessor((ColorProcessor) ip, null);
+		ByteProcessor fp2 = makeLumaByte((ColorProcessor) ip, RgbUtils.getDefaultWeights());	// see below
+		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-3));
+	}
+
+	@Test	// convert using default weights
+	public void testToByteProcessorColorProcessorWeights1() {
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip instanceof ColorProcessor);
+		ByteProcessor fp1 = IjUtils.toByteProcessor((ColorProcessor) ip, null);
+		ByteProcessor fp2 = makeLumaByte((ColorProcessor) ip, RgbUtils.getDefaultWeights());	// see below
+		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-3));
+	}
+	
+	@Test	// default conversion must honor the processor's weights (if set)
+	public void testToByteProcessorColorProcessorWeights2() {
+		double[] weights = {0.3, 0.5, 0.2};	// special weights!
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip instanceof ColorProcessor);
+		((ColorProcessor) ip).setRGBWeights(weights);
+		
+		ByteProcessor fp1 = IjUtils.toByteProcessor((ColorProcessor) ip);
+		ByteProcessor fp2 = makeLumaByte((ColorProcessor) ip, weights);	// see below
+		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-3));
+	}
+	
+	// ----------------------------------------------------------------
+
+	@Test	// convert using default weights
+	public void testToFloatProcessorColorProcessor() {
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip instanceof ColorProcessor);
+		FloatProcessor fp1 = IjUtils.toFloatProcessor((ColorProcessor) ip, null);
+		FloatProcessor fp2 = makeLumaFloat((ColorProcessor) ip, RgbUtils.getDefaultWeights());	// see below
+		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-3));
+	}
+
+	@Test	// convert using specific weights
+	public void testToFloatProcessorColorProcessorWeights1() {
+		double[] weights = RgbUtils.ITU601RgbWeights;
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip instanceof ColorProcessor);
+		FloatProcessor fp1 = IjUtils.toFloatProcessor((ColorProcessor) ip, weights);
+		FloatProcessor fp2 = makeLumaFloat((ColorProcessor) ip, weights);	// see below
+		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-3));
+	}
+	
+	@Test	// default conversion must honor the processor's weights (if set)
+	public void testToFloatProcessorColorProcessorWeights2() {
+		double[] weights = {0.3, 0.5, 0.2};	// special weights!
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip instanceof ColorProcessor);
+		((ColorProcessor) ip).setRGBWeights(weights);	
+		
+		FloatProcessor fp1 = IjUtils.toFloatProcessor((ColorProcessor) ip);
+		FloatProcessor fp2 = makeLumaFloat((ColorProcessor) ip, weights);	// see below
+		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-3));
+	}
+	
+	// ----------------------------------------------------------------
+	// ----------------------------------------------------------------
+	
 	private ByteProcessor makeRandomByteProcessor(int w, int h) {
 		Random rg = new Random(17);
 		ByteProcessor bp = new ByteProcessor(w, h);
@@ -72,6 +151,36 @@ public class IjUtilsTest {
 			}
 		}
 		return fp;
+	}
+	
+	// ------------------------------------------------------------------------
+	
+	private FloatProcessor makeLumaFloat(ColorProcessor cp, double[] weights) {
+		int width = cp.getWidth();
+		int height = cp.getHeight();
+		FloatProcessor fp = new FloatProcessor(width, height);
+		int[] rgb = new int[3];
+		for (int u = 0; u < width; u++) {
+			for (int v = 0; v < height; v++) {
+				cp.getPixel(u, v, rgb);
+				fp.setf(u, v, RgbUtils.rgbToFloat(rgb, weights));
+			}
+		}
+		return fp;
+	}
+	
+	private ByteProcessor makeLumaByte(ColorProcessor cp, double[] weights) {
+		int width = cp.getWidth();
+		int height = cp.getHeight();
+		ByteProcessor bp = new ByteProcessor(width, height);
+		int[] rgb = new int[3];
+		for (int u = 0; u < width; u++) {
+			for (int v = 0; v < height; v++) {
+				cp.getPixel(u, v, rgb);
+				bp.set(u, v, RgbUtils.rgbToInt(rgb, weights));
+			}
+		}
+		return bp;
 	}
 
 }

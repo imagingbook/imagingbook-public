@@ -250,7 +250,8 @@ public abstract class IjUtils {
 	
 	/**
 	 * Creates a new {@link FloatProcessor} instance of size width x height
-	 * from the given 2D array with dimensions [x = 0..width-1][y = 0..height-1].
+	 * from the given {@code double[][]} with dimensions 
+	 * [x = 0..width-1][y = 0..height-1].
 	 * 
 	 * @param A a 2D {@code double} array
 	 * @return a new {@link FloatProcessor} instance
@@ -269,30 +270,45 @@ public abstract class IjUtils {
 		return new FloatProcessor(width, height, fPixels);
 	}
 	
+	/**
+	 * Creates a new {@link FloatProcessor} instance of size width x height
+	 * from the given {@code float[][]} with dimensions 
+	 * [x = 0..width-1][y = 0..height-1].
+	 * 
+	 * @param A a 2D {@code float} array
+	 * @return a new {@link FloatProcessor} instance
+	 */
 	public static FloatProcessor toFloatProcessor(float[][] A) {
-		final int width = A.length;
-		final int height = A[0].length;
-		float[] fPixels = new float[width * height];
-		int i = 0;
-		for (int v = 0; v < height; v++) {
-			for (int u = 0; u < width; u++) {
-				fPixels[i] = A[u][v];
-				i++;
-			}
-		}
-		return new FloatProcessor(width, height, fPixels);
+//		final int width = A.length;
+//		final int height = A[0].length;
+//		float[] fPixels = new float[width * height];
+//		int i = 0;
+//		for (int v = 0; v < height; v++) {
+//			for (int u = 0; u < width; u++) {
+//				fPixels[i] = A[u][v];
+//				i++;
+//			}
+//		}
+//		return new FloatProcessor(width, height, fPixels);
+		return new FloatProcessor(A);
 	}
 	
+	/**
+	 * 
+	 * @param fp
+	 * @return
+	 */
 	public static float[][] toFloatArray(FloatProcessor fp) {
-		final int w = fp.getWidth();
-		final int h = fp.getHeight();
-		float[][] A = new float[w][h];
-		for (int v = 0; v < h; v++) {
-			for (int u = 0; u < w; u++) {
-				A[u][v] =  fp.getf(u, v);
-			}
-		}
-		return A;
+//		final int w = fp.getWidth();
+//		final int h = fp.getHeight();
+//		float[][] A = new float[w][h];
+//		for (int v = 0; v < h; v++) {
+//			for (int u = 0; u < w; u++) {
+//				A[u][v] =  fp.getf(u, v);
+//			}
+//		}
+//		return A;
+		return fp.getFloatArray();
 	}
 	
 	/**
@@ -312,7 +328,7 @@ public abstract class IjUtils {
 	 */
 	public static ByteProcessor toByteProcessor(ColorProcessor cp) {
 		if (cp.getRGBWeights() == null) {	// no weights are set
-			return toByteProcessor(cp, RgbUtils.ITU709RgbWeights);
+			return toByteProcessor(cp, null);
 		}
 		else {	// use the FloatProcessor's individual weights
 			return cp.convertToByteProcessor();
@@ -335,6 +351,9 @@ public abstract class IjUtils {
 	 * @see RgbUtils#ITU709RgbWeights
 	 */
 	public static ByteProcessor toByteProcessor(ColorProcessor cp, double[] rgbWeights) {
+		if (rgbWeights == null) {
+			rgbWeights = RgbUtils.getDefaultWeights();
+		}
 		if (rgbWeights.length != 3) {
 			throw new IllegalArgumentException("rgbWeights must be of length 3");
 		}
@@ -348,10 +367,9 @@ public abstract class IjUtils {
 	/**
 	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
 	 * {@link FloatProcessor}, using clearly specified RGB component weights.
-	 * The processor's individual RGB component weights are used if they have
-	 * been set (not null), otherwise ITU709 weights (see {@link RgbUtils#ITU709RgbWeights}) 
-	 * are applied.
-	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
+	 * The processor's individual RGB component weights are used if 
+	 * set, otherweise default weights are used (see {@link RgbUtils#getDefaultWeights()}).
+	 * This should avoid problems with standard conversion methods in ImageJ, which depend 
 	 * on a variety of factors (including current user settings).
 	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
 	 * {@link ImageProcessor#convertToFloatProcessor()}.
@@ -362,7 +380,7 @@ public abstract class IjUtils {
 	 */
 	public static FloatProcessor toFloatProcessor(ColorProcessor cp) {
 		if (cp.getRGBWeights() == null) {	// no weights are set
-			return toFloatProcessor(cp, RgbUtils.ITU709RgbWeights);
+			return toFloatProcessor(cp, null);
 		}
 		else {	// use the FloatProcessor's individual weights
 			return cp.convertToFloatProcessor();
@@ -372,8 +390,10 @@ public abstract class IjUtils {
 	/**
 	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
 	 * {@link FloatProcessor}, applying the specified set of RGB component weights.
-	 * The processor's individual weights (if set) are ignored.
-	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
+	 * If {@code null} is passed for the weights, default weights are used
+	 * (see {@link RgbUtils#getDefaultWeights()}).
+	 * The processor's individual weights (if set at all) are ignored.
+	 * This should avoid problems with standard conversion methods in ImageJ, which depend 
 	 * on a variety of factors (including current user settings).
 	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
 	 * {@link ImageProcessor#convertToFloatProcessor()}.
@@ -385,6 +405,9 @@ public abstract class IjUtils {
 	 * @see RgbUtils#ITU709RgbWeights
 	 */
 	public static FloatProcessor toFloatProcessor(ColorProcessor cp, double[] rgbWeights) {
+		if (rgbWeights == null) {
+			rgbWeights = RgbUtils.getDefaultWeights();
+		}
 		if (rgbWeights.length != 3) {
 			throw new IllegalArgumentException("rgbWeights must be of length 3");
 		}
