@@ -20,6 +20,12 @@ import imagingbook.common.math.Matrix;
 public abstract class RgbUtils {
 	
 	private RgbUtils() {}
+	
+	/** ITU BR.601 weights for RGB to Y (luma) conversion. */
+	public static final double[] ITU601RgbWeights = {0.299, 0.587, 0.114}; 
+	
+	/** ITU BR.709 weights for RGB to Y (luma) conversion. */
+	public static final double[] ITU709RgbWeights = {0.2126, 0.7152, 0.0722}; 
 
 	/**
 	 * Converts the given integer-encoded 8-bit RGB color
