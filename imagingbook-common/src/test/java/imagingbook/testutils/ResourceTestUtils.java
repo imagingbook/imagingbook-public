@@ -53,19 +53,6 @@ public abstract class ResourceTestUtils {
 	}
 	
 
-	/**
-	 * This must be called from on an instance of a class nested inside an ImageResource enum type.
-	 * TODO: there may be a more elegant way to do this ...
-	 * @param nestedItem
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void checkImageResource(Object nestedItem) {
-		Class clazz = nestedItem.getClass().getEnclosingClass();
-		if (clazz == null) {
-			throw new RuntimeException(clazz + " has no enclosing class");
-		}
-		ResourceTestUtils.testImageResource(clazz);
-//		ResourceTestUtils.testImageResource((Class)nestedItem.getClass().getEnclosingClass());
-	}
+
 
 }
