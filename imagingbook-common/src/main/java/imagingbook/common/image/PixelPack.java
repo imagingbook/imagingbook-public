@@ -306,10 +306,10 @@ public class PixelPack {
 	}
 	
 	/**
-	 * Returns a reference to the specified {@link PixelSlice}.
+	 * Returns the kth {@link PixelSlice}.
 	 * An exception is thrown if the specified slice does not exist.
 	 * @param k the slice index (0,...,K-1)
-	 * @return a reference to the pixel slice
+	 * @return the kth {@link PixelSlice}
 	 */
 	public PixelSlice getSlice(int k) throws IllegalArgumentException {
 		if (k < 0 || k >= depth) {
@@ -325,6 +325,45 @@ public class PixelPack {
 	 */
 	public PixelSlice getEmptySlice() {
 		return new PixelSlice();
+	}
+	
+	/**
+	 * Returns an array of {@link PixelSlice} instances
+	 * for this {@link PixelPack}. All pixel data are shared.
+	 * 
+	 * @return an array of {@link PixelSlice}
+	 */
+	public PixelSlice[] getSlices() {
+		PixelSlice[] slices = new PixelSlice[depth];
+		for (int k = 0; k < depth; k++) {
+			slices[k] = getSlice(k);
+		}
+		return slices;
+	}
+	
+	/**
+	 * Returns the {@link FloatProcessor} for the kth pixel slice.
+	 * An exception is thrown if the specified slice does not exist.
+	 * @param k the slice index (0,...,K-1)
+	 * @return the kth {@link FloatProcessor}
+	 */
+	public FloatProcessor getFloatProcessor(int k) {
+		return getSlice(k).getFloatProcessor();
+	}
+	
+	
+	/**
+	 * Returns an array of {@link PFloatProcessor} instances
+	 * for this {@link PixelPack}. All pixel data are shared.
+	 * 
+	 * @return an array of {@link FloatProcessor}
+	 */
+	public FloatProcessor[] getFloatProcessors() {
+		FloatProcessor[] processors = new FloatProcessor[depth];
+		for (int k = 0; k < depth; k++) {
+			processors[k] = getFloatProcessor(k);
+		}
+		return processors;
 	}
 	
 	/**
@@ -485,6 +524,16 @@ public class PixelPack {
 		 */
 		public float[] getArray() {
 			return vals;
+		}
+		
+		/**
+		 * Returns a {@link FloatProcessor} for this {@link PixelSlice} 
+		 * sharing the internal pixel data (nothing is copied).
+		 * 
+		 * @return a {@link FloatProcessor}
+		 */
+		public FloatProcessor getFloatProcessor() {
+			return new FloatProcessor(getWidth(), getHeight(), vals);
 		}
 		
 		/**
