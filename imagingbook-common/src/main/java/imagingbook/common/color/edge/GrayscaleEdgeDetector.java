@@ -17,6 +17,7 @@ import ij.plugin.filter.Convolver;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.util.ParameterBundle;
 
@@ -42,8 +43,6 @@ public class GrayscaleEdgeDetector implements ColorEdgeDetector {
 	private final int N;	// image height
 	private final FloatProcessor Emag;	// edge magnitude map
 	private final FloatProcessor Eort;	// edge orientation map
-	
-	private static final double[] ITU709weights = {0.2126, 0.7152, 0.0722}; // ITU BR.709 luma weights
 	
 	// Sobel-kernels for x/y-derivatives:
     private static final float[] HxS = Matrix.multiply(1.0f/8, new float[] {
@@ -71,11 +70,10 @@ public class GrayscaleEdgeDetector implements ColorEdgeDetector {
 		findEdges(ip);
 	}
 
-	void findEdges(ImageProcessor ip) {
-		double[] oldweights = ColorProcessor.getWeightingFactors();
-		ColorProcessor.setWeightingFactors(ITU709weights[0], ITU709weights[1], ITU709weights[2]);
-		FloatProcessor I = ip.convertToFloatProcessor();
-		ColorProcessor.setWeightingFactors(oldweights[0], oldweights[1], oldweights[2]);
+	private void findEdges(ImageProcessor ip) {
+		FloatProcessor I = (ip instanceof ColorProcessor) ?
+				IjUtils.toFloatProcessor((ColorProcessor) ip) :
+				ip.convertToFloatProcessor();
 		
 	    FloatProcessor Ix = I;
 	    FloatProcessor Iy = (FloatProcessor) Ix.duplicate();
