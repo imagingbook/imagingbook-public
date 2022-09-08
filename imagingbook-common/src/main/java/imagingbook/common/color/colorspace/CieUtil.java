@@ -23,6 +23,7 @@ public abstract class CieUtil {
 	/**
 	 * Calculates the XYZ coordinates for a given point (x,y) in the CIE
 	 * xy-color diagram. XYZ is located on the 3D plane X + Y + Z = 1.
+	 * Returns (0,0,0) for y = 0;
 	 * @param x x-coordinate (in the 2D xy-diagram)
 	 * @param y y-coordinate (in the 2D xy-diagram)
 	 * @return the associated XYZ coordinate
@@ -33,8 +34,8 @@ public abstract class CieUtil {
 		}
 		else {
 			double Y = 1;
-			double X = x * Y / y;				// TODO: check for y == 0
-			double Z = (1 - x - y) * Y / y;		// TODO: check for y == 0
+			double X = x * Y / y;
+			double Z = (1 - x - y) * Y / y;
 			double mag = X + Y + Z;
 			return new double[] {X/mag, Y/mag, Z/mag};
 		}
