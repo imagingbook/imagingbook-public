@@ -493,6 +493,16 @@ public abstract class Matrix {
 		return MatrixUtils.createRealVector(getDiagonal(A.getData()));
 	}
 	
+	/**
+	 * Creates and returns a diagonal matrix from the specified 
+	 * vector. See also {@link #getDiagonal(double[][])}.
+	 * 
+	 * @param d vector of diagonal matrix elements
+	 * @return a diagonal matrix
+	 */
+	public double[][] diagMatrix(double[] d) {
+		return MatrixUtils.createRealDiagonalMatrix(d).getData();
+	}
 	
 	/**
 	 * Checks is the given square {@code double[][]} matrix is non-singular.
