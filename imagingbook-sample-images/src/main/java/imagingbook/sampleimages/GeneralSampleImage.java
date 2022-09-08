@@ -27,35 +27,35 @@ import imagingbook.core.resource.ImageResource;
  * @see ImageResource
  *
  */
-public enum GeneralSampleImage implements ImageResource {	// TODO: make ImageResource abstract class?
+public enum GeneralSampleImage implements ImageResource {
+	
 		/** Original: https://imagej.nih.gov/ij/images/blobs.gif */
 		Blobs("blobs.png"),
+		
 		/** Original: https://imagej.nih.gov/ij/images/boats.gif */
 		Boats("boats.png"),
+		
+		/** A simple binary shape image with 0/255 values. */
+		Cat("cat.png"),
+		
 		/** Original: https://imagej.nih.gov/ij/images/clown.png */
 		Clown("clown.png"),
-		BoatsFilter3x3("boats-filter3x3.png"),
+		
 		/** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */
 		DotBlot("Dot_Blot.png"),
-		Cat("cat.png"),
-		ClownFilter3x3("clown-filter3x3.png"),
-		ClownGauss3("clown-gauss3.png"),
-		ClownMedianScalar3("clown-median-scalar-3.png"),
-		ClownMedianVector3L1("clown-median-vector-3-L1.png"),
-		ClownMedianVectorsharpen3L1("clown-median-vectorsharpen-3-L1.png"),
-		MonasterySmallFilter3x3("monastery-small-filter3x3.png"),
-		MonasterySmallGauss3("monastery-small-gauss3.png"),
-		MonasterySmall("monastery-small.png"),
-		RhinoBigCrop("rhino-big-crop.png"),
 		
-		SegmentationMed("segmentation-med.png"),
-		SegmentationSmall("segmentation-small.png"),
-		SimpleTestGridImg("simple-test-grid-img.png"),
-		SimpleTestGridImg2("simple-test-grid-img2.png"),
+		/** Original gray scan from Kepler manuscript. */
+		kepler("kepler.png"),
+		
+		/** A small grayscale image. */
+		MonasterySmall("monastery-small.png"),
 	
 		NoisyLines("noisy-lines.png"), 
 		NoisyCircles("noisy-circles.png"), 
 		NoisyEllipses("noisy-ellipses.png"),
+		
+		/** A fairly large binary image with 0/1 values. */
+		RhinoBigCrop("rhino-big-crop.png"),
 	;
 
 	private final String filename;

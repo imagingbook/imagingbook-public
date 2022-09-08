@@ -19,17 +19,17 @@ import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testimages.FilterTestImage;
 import imagingbook.testutils.ImageTestUtils;
 
 public class ColorMedianFilterTest {
 	
-	ImageResource resA = GeneralSampleImage.Clown;
+	ImageResource resA = FilterTestImage.Clown;
 	
 	@Test
 	public void testScalarMedianFilter() {
 		
-		ImageResource resB = GeneralSampleImage.ClownMedianScalar3;
+		ImageResource resB = FilterTestImage.ClownMedianScalar3;
 		
 		ImageProcessor ipA = resA.getImage().getProcessor();
 		ImageProcessor ipB = resB.getImage().getProcessor();
@@ -45,7 +45,7 @@ public class ColorMedianFilterTest {
 	
 	@Test
 	public void testVectorMedianFilter() {
-		ImageResource resB = GeneralSampleImage.ClownMedianVector3L1;
+		ImageResource resB = FilterTestImage.ClownMedianVector3L1;
 		ImageProcessor ipA = resA.getImage().getProcessor();
 		ImageProcessor ipB = resB.getImage().getProcessor();
 		
@@ -61,7 +61,7 @@ public class ColorMedianFilterTest {
 	
 	@Test
 	public void testVectorMedianFilterSharpen() {
-		ImageResource resB = GeneralSampleImage.ClownMedianVectorsharpen3L1;
+		ImageResource resB = FilterTestImage.ClownMedianVectorsharpen3L1;
 		ImageProcessor ipA = resA.getImage().getProcessor();
 		ImageProcessor ipB = resB.getImage().getProcessor();
 		

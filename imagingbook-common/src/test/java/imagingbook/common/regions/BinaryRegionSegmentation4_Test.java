@@ -24,11 +24,10 @@ import imagingbook.common.regions.segment.RecursiveSegmentation;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 import imagingbook.common.regions.segment.SequentialSegmentation;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testimages.BinaryTestImage;
 
 /**
- * Segmentation test on a medium-sized image which cannot be handled by 
- * the recursive method.
+ * Segmentation test on a very small image that can be handled by recursive method too.
  * 
  * @author WB
  */
@@ -37,8 +36,8 @@ public class BinaryRegionSegmentation4_Test {
 	private static int RegionCount_N4 = 6;
 	private static int RegionCount_N8 = 3;
 	
-	private ImageResource path = GeneralSampleImage.SimpleTestGridImg;
-	private ByteProcessor bp = (ByteProcessor) path.getImage().getProcessor();
+	private ImageResource ir = BinaryTestImage.SimpleTestGridImg;
+	private ByteProcessor bp = (ByteProcessor) ir.getImage().getProcessor();
 
 	@Test
 	public void testSegmentationBreadthFirst() {

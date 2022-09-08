@@ -19,13 +19,13 @@ public class ZipCompressorTest {
 		ZipCompressor compr = new ZipCompressor();
 		
 		byte[] input = makeRandomByteArray(100000);
-		System.out.println("input length = " + input.length);
+//		System.out.println("input length = " + input.length);
 		
 		byte[] compressed = compr.compressByteArray(input);
-		System.out.println("compressed length = " + compressed.length);
+//		System.out.println("compressed length = " + compressed.length);
 		
 		byte[] decompressed = compr.decompressByteArray(compressed);
-		System.out.println("decompressed length = " + decompressed.length);
+//		System.out.println("decompressed length = " + decompressed.length);
 		
 		assertEquals(input.length, decompressed.length);
 		assertArrayEquals(input, decompressed);
@@ -39,13 +39,13 @@ public class ZipCompressorTest {
 		ZipCompressor compr = new ZipCompressor();
 		
 		byte[] input = (byte[]) ip.getPixels();
-		System.out.println("input length = " + input.length);
+//		System.out.println("input length = " + input.length);
 		
 		byte[] compressed = compr.compressByteArray(input);
-		System.out.println("compressed length = " + compressed.length);
+//		System.out.println("compressed length = " + compressed.length);
 		
 		byte[] decompressed = compr.decompressByteArray(compressed);
-		System.out.println("decompressed length = " + decompressed.length);
+//		System.out.println("decompressed length = " + decompressed.length);
 		
 		assertEquals(input.length, decompressed.length);
 		assertArrayEquals(input, decompressed);

@@ -24,8 +24,11 @@ public enum RansacTestImage implements ImageResource {
 	
 	NoisyLines("noisy-lines.png"), 
 	NoisyCircles("noisy-circles.png"), 
-	NoisyEllipses("noisy-ellipses.png");
+	NoisyEllipses("noisy-ellipses.png")
+	;
 	
+	// ---------------------------------------------------
+		
 	private final String filename;
 	
 	RansacTestImage(String filename) {
@@ -37,10 +40,13 @@ public enum RansacTestImage implements ImageResource {
 		return filename;
 	}
 	
+	// ---------------------------------------------------
+	
 	public static class SelfTest {		
 		@Test
 		public void testMe() {
 			ResourceTestUtils.checkImageResource(this);
 		}
 	}
+	
 }

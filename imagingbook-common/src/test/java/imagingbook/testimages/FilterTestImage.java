@@ -15,34 +15,33 @@ import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ResourceTestUtils;
 
 /**
- * Enumeration defining a set of {@link ImageResource} objects associated
- * with SIFT test images.
+ * Enumeration defining a set of {@link ImageResource} objects for testing 
+ * linear and nonlinear filters.
+ * 
  * @see ImageResource
  * @see GeneralSampleImage
  */
-public enum SiftTestImage implements ImageResource {
-	Box00("box00.png"),
-	Box15("box15.png"),
-	Box30("box30.png"),
-	Box45("box45.png"),
-	Box60("box60.png"),
-	Box75("box75.png"),
-	Box90("box90.png"),
-	HalfDiskH("halfdiskH.png"),
-	HalfDiskV("halfdiskV.png"),
-	Ireland02tiny("ireland02tiny.png"),
-	RectangleH("rectangleH.png"),
-	RectangleV("rectangleV.png"),
-	Stars("stars.png"),
-	StarsH("starsH.png"),
-	StarsV("starsV.png"),
+public enum FilterTestImage implements ImageResource {
+	BoatsFilter3x3("boats-filter3x3.png"),
+	
+	Clown("clown.png"),
+	ClownFilter3x3("clown-filter3x3.png"),
+	ClownGauss3("clown-gauss3.png"),
+	ClownMedianScalar3("clown-median-scalar-3.png"),
+	ClownMedianVector3L1("clown-median-vector-3-L1.png"),
+	ClownMedianVectorsharpen3L1("clown-median-vectorsharpen-3-L1.png"),
+	
+	MonasterySmall("monastery-small.png"),
+	MonasterySmallFilter3x3("monastery-small-filter3x3.png"),
+	MonasterySmallGauss3("monastery-small-gauss3.png"),
+	
 	;
 	
 	// ---------------------------------------------------
 	
 	private final String filename;
 	
-	SiftTestImage(String filename) {
+	FilterTestImage(String filename) {
 		this.filename = filename;
 	}
 	
@@ -52,7 +51,7 @@ public enum SiftTestImage implements ImageResource {
 	}
 	
 	// ---------------------------------------------------
-	
+		
 	public static class SelfTest {		
 		@Test
 		public void testMe() {

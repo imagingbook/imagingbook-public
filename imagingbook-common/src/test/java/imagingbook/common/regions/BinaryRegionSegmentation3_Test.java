@@ -23,7 +23,7 @@ import imagingbook.common.regions.segment.DepthFirstSegmentation;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 import imagingbook.common.regions.segment.SequentialSegmentation;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testimages.BinaryTestImage;
 
 /**
  * Segmentation test on a medium-sized image which cannot be handled by 
@@ -36,7 +36,7 @@ public class BinaryRegionSegmentation3_Test {
 	private static int RegionCount_N4 = 88;
 	private static int RegionCount_N8 = 9;
 	
-	private ImageResource path = GeneralSampleImage.SegmentationMed;
+	private ImageResource path = BinaryTestImage.SegmentationMed;
 	private ByteProcessor bp = (ByteProcessor) path.getImage().getProcessor();
 
 

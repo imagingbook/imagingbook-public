@@ -16,14 +16,22 @@ import imagingbook.testutils.ResourceTestUtils;
 
 /**
  * Enumeration defining a set of {@link ImageResource} objects for testing 
- * edge detection methods.
+ * binary segmentation and morphology detection methods.
  * 
  * @see ImageResource
  * @see GeneralSampleImage
  */
 public enum BinaryTestImage implements ImageResource {
+	Cat("cat.png"),
 	CatSkeleton("cat-skeleton.png"),
+	
+	SegmentationMed("segmentation-med.png"),
+	SegmentationSmall("segmentation-small.png"),
+	
+	SimpleTestGridImg("simple-test-grid-img.png"),
 	;
+	
+	// ---------------------------------------------------
 	
 	private final String filename;
 	
@@ -35,6 +43,8 @@ public enum BinaryTestImage implements ImageResource {
 	public String getFileName() {
 		return filename;
 	}
+	
+	// ---------------------------------------------------
 		
 	public static class SelfTest {		
 		@Test

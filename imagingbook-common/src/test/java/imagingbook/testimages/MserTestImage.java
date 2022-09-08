@@ -35,6 +35,8 @@ public enum MserTestImage implements ImageResource {
 	BoatsTiny("boats-tiny.png"),      
 	BoatsTinyBW("boats-tiny-bw.png"),  
 	BoatsTinyW2("boats-tiny-w2.png");
+
+	// ---------------------------------------------------
 	
 	private final String filename;
 	
@@ -47,10 +49,13 @@ public enum MserTestImage implements ImageResource {
 		return filename;
 	}
 	
+	// ---------------------------------------------------
+	
 	public static class SelfTest {		
 		@Test
 		public void testMe() {
 			ResourceTestUtils.checkImageResource(this);
 		}
 	}
+	
 }

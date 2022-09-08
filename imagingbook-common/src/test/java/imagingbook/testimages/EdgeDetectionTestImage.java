@@ -37,6 +37,8 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600colorDiZenzoEdgeOrientation("balloons-600-DiZenzoEdgeOrientation.tif"),
 //	Balloons600colorDiZenzoBinaryEdges("balloons-600-DiZenzoBinaryEdges.png"),
 	;
+
+	// ---------------------------------------------------
 	
 	private final String filename;
 	
@@ -49,10 +51,13 @@ public enum EdgeDetectionTestImage implements ImageResource {
 		return filename;
 	}
 	
+	// ---------------------------------------------------
+	
 	public static class SelfTest {		
 		@Test
 		public void testMe() {
 			ResourceTestUtils.checkImageResource(this);
 		}
 	}
+	
 }

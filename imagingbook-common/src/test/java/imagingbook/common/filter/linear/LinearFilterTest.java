@@ -15,7 +15,7 @@ import org.junit.Test;
 import ij.process.ImageProcessor;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testimages.FilterTestImage;
 import imagingbook.testutils.ImageTestUtils;
 
 public class LinearFilterTest {
@@ -33,11 +33,11 @@ public class LinearFilterTest {
 			{1, 2, 1}};
 	
 	
-	ImageResource res1A = GeneralSampleImage.MonasterySmall;
-	ImageResource res1B = GeneralSampleImage.MonasterySmallFilter3x3;
+	ImageResource res1A = FilterTestImage.MonasterySmall;
+	ImageResource res1B = FilterTestImage.MonasterySmallFilter3x3;
 	
-	ImageResource res2A = GeneralSampleImage.Clown;
-	ImageResource res2B = GeneralSampleImage.ClownFilter3x3;
+	ImageResource res2A = FilterTestImage.Clown;
+	ImageResource res2B = FilterTestImage.ClownFilter3x3;
 	
 	@Test
 	public void testLinearFilterUnitKernel() {
