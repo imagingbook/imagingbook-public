@@ -9,8 +9,6 @@
 
 package imagingbook.common.color.edge;
 
-import ij.process.ByteProcessor;
-import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 
 /**
@@ -38,12 +36,4 @@ public interface ColorEdgeDetector {
 	 */
 	public FloatProcessor getEdgeOrientation();
 	
-	// TODO: move elsewhere or replace by PixelPack?
-	@Deprecated 
-	static FloatProcessor getRgbFloatChannel(ColorProcessor cp, int c) {	// c = 0,1,2
-		int w = cp.getWidth();
-		int h = cp.getHeight();
-		ByteProcessor bp = new ByteProcessor(w, h, cp.getChannel(c + 1)); // numbered from 1,...,3!
-		return bp.convertToFloatProcessor();
-	}
 }
