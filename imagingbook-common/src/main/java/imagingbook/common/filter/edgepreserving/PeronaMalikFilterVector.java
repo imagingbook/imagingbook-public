@@ -16,15 +16,21 @@ import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
 
 /**
- * Vector simplified version with greatly reduced memory requirements.
+ * <p>
+ * Vector version (simplified ) with greatly reduced memory requirements.
  * This code is based on the Anisotropic Diffusion filter proposed by Perona and Malik,
- * as proposed in Pietro Perona and Jitendra Malik, "Scale-space and edge detection 
+ * as proposed in [1]. See Sec. 17.3.2 of [2] for additional details.
+ * The filter operates on all types of grayscale (scalar) and RGB color images.
+ * Consult the source code of the related ImageJ plugins for examples.
+ * </p>
+ * <p>
+ * [1] Pietro Perona and Jitendra Malik, "Scale-space and edge detection 
  * using anisotropic diffusion", IEEE Transactions on Pattern Analysis 
  * and Machine Intelligence, vol. 12, no. 4, pp. 629-639 (July 1990).
- * 
- * The filter operates on all types of grayscale (scalar) and RGB color images.
- * This class is based on the ImageJ API and intended to be used in ImageJ plugins.
- * How to use: consult the source code of the related ImageJ plugins for examples.
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author W. Burger
  * @version 2021/01/04
@@ -32,7 +38,7 @@ import imagingbook.common.math.Matrix;
 public class PeronaMalikFilterVector extends GenericFilterVector implements PeronaMalikF {
 	
 	private final float alpha;
-	private final int T; 		// number of iterations
+	private final int iterations; 		// number of iterations
 	private final ConductanceFunction g;
 	private ColorMode colorMode;
 	
@@ -43,7 +49,7 @@ public class PeronaMalikFilterVector extends GenericFilterVector implements Pero
 	
 	// constructor - use this version to set all parameters
 	public PeronaMalikFilterVector (Parameters params) {
-		this.T = params.iterations;
+		this.iterations = params.iterations;
 		this.alpha = (float) params.alpha;
 		this.g = ConductanceFunction.get(params.conductanceFunType, (float)params.kappa);
 		this.colorMode = params.colorMode;
@@ -90,7 +96,7 @@ public class PeronaMalikFilterVector extends GenericFilterVector implements Pero
 			}
 			break;
 		default:
-			throw new RuntimeException("color mode option " + colorMode.name() +
+			throw new UnsupportedOperationException("color mode option " + colorMode.name() +
 					" not implemented in class " + this.getClass().getSimpleName());
 		}
 		
@@ -99,7 +105,7 @@ public class PeronaMalikFilterVector extends GenericFilterVector implements Pero
 
 	@Override
 	protected final int passesRequired() {
-		return T;	// this filter needs T passes
+		return iterations;	// this filter needs T passes
 	}
 	
 	private final float getBrightness(float[] p) {

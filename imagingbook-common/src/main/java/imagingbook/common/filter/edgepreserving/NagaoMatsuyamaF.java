@@ -8,18 +8,23 @@
  *******************************************************************************/
 package imagingbook.common.filter.edgepreserving;
 
-import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.util.ParameterBundle;
 
+/**
+ * Common interface for Nagao-Matsuyama filter implementations.
+ * 
+ * @author WB
+ */
 public interface NagaoMatsuyamaF {
-
+	
+	/**
+	 * Parameter bundle for Nagao-Matsuyama filters (implementations of {@link NagaoMatsuyamaF}).
+	 */
 	public static class Parameters implements ParameterBundle {
 
 		@DialogLabel("Variance threshold (0,..,10)")
 		public double varThreshold = 0.0;
 
-		@DialogLabel("Out-of-bounds strategy")
-		public OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;
 	}
 	
 	abstract class Constants {
@@ -27,8 +32,6 @@ public interface NagaoMatsuyamaF {
 			{{-1,-1}, {0,-1}, {1,-1},
 			 {-1, 0}, {0, 0}, {1, 0},
 			 {-1, 1}, {0, 1}, {1, 1}};
-			
-			// -------------------
 			
 		protected static final int[][] R1 =
 			{{-2,-1}, {-1,-1},
@@ -69,8 +72,6 @@ public interface NagaoMatsuyamaF {
 			{        {-1,0}, {0,0},
 			 {-2,1}, {-1,1}, {0,1},
 			 {-2,2}, {-1,2}};
-			
-			// -------------------
 			
 		protected static final int[][][] SubRegions = {R1, R2, R3, R4, R5, R6, R7, R8};
 	}

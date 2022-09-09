@@ -8,12 +8,12 @@
  *******************************************************************************/
 package imagingbook.common.filter.edgepreserving;
 
-import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Common interface for all bilateral filter implementations.
+ * Common interface for all Bilateral filter implementations.
+ * 
  * @author WB
  *
  */
@@ -33,8 +33,6 @@ public interface BilateralF {
 		@DialogLabel("Color distance norm")
 		public NormType colorNormType = NormType.L2;
 
-		@DialogLabel("Out-of-bounds strategy")
-		public OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;
 	}
 
 }

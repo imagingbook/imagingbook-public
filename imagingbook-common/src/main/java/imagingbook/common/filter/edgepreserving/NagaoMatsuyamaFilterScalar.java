@@ -13,10 +13,18 @@ import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
- * Scalar version.
- * This class implements a 5x5 Nagao-Matsuyama filter, as described in
- * NagaoMatsuyama (1979).
- * 
+ * <p>
+ * Scalar version of the Nagao-Matsuyama filter.
+ * This class implements a 5x5 Nagao-Matsuyama filter, as described in [1].
+ * See Sec. 17.1 of [2] for additional details.
+ * </p>
+ * <p>
+ * [1] M. Nagao and T. Matsuyama. Edge preserving smoothing. Computer
+ * Graphics and Image Processing 9(4), 394–407 (1979).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * @author W. Burger
  * @version 2021/01/02
  */

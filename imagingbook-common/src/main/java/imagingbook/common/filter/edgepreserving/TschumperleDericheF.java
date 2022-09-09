@@ -11,8 +11,17 @@ package imagingbook.common.filter.edgepreserving;
 import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.util.ParameterBundle;
 
-public interface TschumperleDericheF {
 
+/**
+ * Common interface for Tschumperle-Deriche filter implementations.
+ * 
+ * @author WB
+ */
+public interface TschumperleDericheF {
+	
+	/**
+	 * Parameter bundle for Tschumperle-Deriche filters (implementations of {@link TschumperleDericheF}).
+	 */
 	public static class Parameters implements ParameterBundle {
 		
 		@DialogLabel("Number of iterations")

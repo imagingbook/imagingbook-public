@@ -19,13 +19,20 @@ import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
 
 /**
- * Vector version, for RGB images only (accepts {@link ColorProcessor} only).
- * This class implements a bilateral filter as proposed in
- * C. Tomasi and R. Manduchi, "Bilateral Filtering for Gray and Color Images",
+ * <p>
+ * Vector (non-separable) version of the Bilateral filter as proposed in [1], 
+ * for RGB images ({@link ColorProcessor}) only.
+ * The filter uses Gaussian domain and range kernels and can be applied to all 
+ * image types. See Sec. 17.2 of [2] for additional details.
+ * </p>
+ * <p>
+ * [1] C. Tomasi and R. Manduchi, "Bilateral Filtering for Gray and Color Images",
  * Proceedings of the 1998 IEEE International Conference on Computer Vision,
  * Bombay, India.
- * The filter uses Gaussian domain and range kernels and can be applied to all 
- * image types.
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author W. Burger
  * @version 2021/01/01

@@ -1418,7 +1418,7 @@ public abstract class Matrix {
 	public static void normalizeD(final double[] x) {
 		double normx = normL2(x);
 		if (Arithmetic.isZero(normx))
-			throw new IllegalArgumentException("cannot normalize zero-norm vector");
+			throw new IllegalArgumentException("cannot normalize zero-norm vector " + Matrix.toString(x));
 		multiplyD(1.0 / normx, x);
 	}
 	

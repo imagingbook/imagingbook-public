@@ -15,11 +15,21 @@ import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.PixelPack;
 
 /**
- * Vector version (applicable to ColorProcessor only).
- * This class implements a Kuwahara-type filter, similar to the filter suggested in 
- * Tomita and Tsuji (1977). It structures the filter region into five overlapping, 
+ * <p>
+ * Vector version (applicable to ColorProcessor only) of a Kuwahara-type filter, 
+ * similar to the filter described in [1]. 
+ * It structures the filter region into five overlapping, 
  * square subregions (including a center region) of size (r+1) x (r+1). 
- * See algorithm 5.2 in Utics Vol. 3.
+ * See Sec. 17.1 of [2] for additional details.
+ * </p>
+ * <p>
+ * [1] F. Tomita and S. Tsuji. Extraction of multiple regions by smoothing
+ * in selected neighborhoods. IEEE Transactions on Systems, Man,
+ * and Cybernetics 7, 394–407 (1977).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author W. Burger
  * @version 2021/01/02

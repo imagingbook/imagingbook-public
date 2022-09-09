@@ -20,27 +20,45 @@ import imagingbook.testutils.ImageResourceSelfTest;
  * @see GeneralSampleImage
  */
 public enum FilterTestImage implements ImageResource {
-	BoatsFilter3x3("boats-filter3x3.png"),
-	
+	MonasterySmall("monastery-small.png"),
 	Clown("clown.png"),
+	
+	BoatsFilter3x3("boats-filter3x3.png"),
+	MonasterySmallFilter3x3("monastery-small-filter3x3.png"),
 	ClownFilter3x3("clown-filter3x3.png"),
+	
+	MonasterySmallGauss3("monastery-small-gauss3.png"),
 	ClownGauss3("clown-gauss3.png"),
+	
 	ClownMedianScalar3("clown-median-scalar-3.png"),
 	ClownMedianVector3L1("clown-median-vector-3-L1.png"),
 	ClownMedianVectorsharpen3L1("clown-median-vectorsharpen-3-L1.png"),
 	
+	MonasterySmallBilateralNonsep("monastery-small-bilateral-nonsep.png"),
+	MonasterySmallBilateralSep("monastery-small-bilateral-sep.png"),
 	ClownBilateralNonsepScalar("clown-bilateral-nonsep-scalar.png"),
 	ClownBilateralNonsepVector("clown-bilateral-nonsep-vector.png"),
 	ClownBilateralSepScalar("clown-bilateral-sep-scalar.png"),
 	ClownBilateralSepVector("clown-bilateral-sep-vector.png"),
 	
-	MonasterySmall("monastery-small.png"),
-	MonasterySmallFilter3x3("monastery-small-filter3x3.png"),
-	MonasterySmallGauss3("monastery-small-gauss3.png"),
+	MonasterySmallKuwahara("monastery-small-kuwahara.png"),
+	ClownKuwaharaScalar("clown-kuwahara-scalar.png"),
+	ClownKuwaharaVector("clown-kuwahara-vector.png"),
 	
-	MonasterySmallBilateralNonsep("monastery-small-bilateral-nonsep.png"),
-	MonasterySmallBilateralSep("monastery-small-bilateral-sep.png"),
+	MonasterySmallNagaoMatsuyama("monastery-nagaomatsuyama.png"),
+	ClownNagaoMatsuyamaScalar("clown-nagaomatsuyama-scalar.png"),
+	ClownNagaoMatsuyamaVector("clown-nagaomatsuyama-vector.png"),
 	
+	MonasterySmallPeronaMalikG1("monastery-small-peronamalik-g1.png"),
+	MonasterySmallPeronaMalikG2("monastery-small-peronamalik-g2.png"),
+	MonasterySmallPeronaMalikG3("monastery-small-peronamalik-g3.png"),
+	MonasterySmallPeronaMalikG4("monastery-small-peronamalik-g4.png"),
+	ClownPeronaMalikSeparateChannels("clown-peronamalik-separatechannels.png"),
+	ClownPeronaMalikBrightnessGradient("clown-peronamalik-brightnessgradient.png"),
+	ClownPeronaMalikColorGradient("clown-peronamalik-colorgradient.png"),
+	
+	MonasterySmallTschumperleIter5("monastery-small-tschumperle-iter5.png"),
+	ClownSmallTschumperleIter5("clown-tschumperle-iter5.png"),
 	;
 	
 	// ---------------------------------------------------

@@ -14,23 +14,28 @@ import imagingbook.common.image.PixelPack.PixelSlice;
 
 
 /**
- * Scalar version, without gradient array.
- * 
+ * <p>
+ * Scalar version of the Perona-Malik filter, without gradient array.
  * This code is based on the Anisotropic Diffusion filter proposed by Perona and Malik,
- * as proposed in Pietro Perona and Jitendra Malik, "Scale-space and edge detection 
+ * as proposed in [1]. See Sec. 17.3.2 of [2] for additional details.
+ * The filter operates on all types of grayscale (scalar) and RGB color images.
+ * Consult the source code of the related ImageJ plugins for examples.
+ * </p>
+ * <p>
+ * [1] Pietro Perona and Jitendra Malik, "Scale-space and edge detection 
  * using anisotropic diffusion", IEEE Transactions on Pattern Analysis 
  * and Machine Intelligence, vol. 12, no. 4, pp. 629-639 (July 1990).
- * 
- * The filter operates on all types of grayscale (scalar) and RGB color images.
- * This class is based on the ImageJ API and intended to be used in ImageJ plugins.
- * How to use: consult the source code of the related ImageJ plugins for examples.
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author W. Burger
  * @version 2021/01/02
  */
 public class PeronaMalikFilterScalar extends GenericFilterScalar implements PeronaMalikF {
 	
-	private final int T; 		// number of iterations
+	private final int iterations; 		// number of iterations
 	private final float alpha;
 	private final ConductanceFunction g;
 	private final float[] A = new float[4];			// tmp array for neighbor values
@@ -42,7 +47,7 @@ public class PeronaMalikFilterScalar extends GenericFilterScalar implements Pero
 	
 	// constructor - use this version to set all parameters
 	public PeronaMalikFilterScalar (Parameters params) {
-		this.T = params.iterations;
+		this.iterations = params.iterations;
 		this.alpha = (float)params.alpha;
 		this.g = ConductanceFunction.get(params.conductanceFunType, (float)params.kappa);
 	}
@@ -99,7 +104,7 @@ public class PeronaMalikFilterScalar extends GenericFilterScalar implements Pero
 
 	@Override
 	protected final int passesRequired() {
-		return T;	// this filter needs T passes
+		return iterations;	// this filter needs T passes
 	}
 
 }

@@ -17,6 +17,8 @@ import imagingbook.testutils.ImageTestUtils;
 public class BilateralFilterTest {
 	
 	private static final double TOL = 1E-6;
+	private static final OutOfBoundsStrategy OBS = OutOfBoundsStrategy.NearestBorder;
+	
 	private final ImageProcessor monastery, clown;
 	private final BilateralF.Parameters params;
 	
@@ -32,14 +34,13 @@ public class BilateralFilterTest {
 		params.sigmaD = 2; 		
 		params.sigmaR = 50;
 		params.colorNormType = NormType.L2;
-		params.obs = OutOfBoundsStrategy.NearestBorder;
 	}
 	
 	@Test
 	public void testGrayScalarNonsep() {
 		ImageProcessor ipA = monastery.duplicate();
 		GenericFilter filter = new BilateralFilterScalar(params);
-		filter.applyTo(ipA);
+		filter.applyTo(ipA, OBS);
 		ImageProcessor ipB = FilterTestImage.MonasterySmallBilateralNonsep.getImage().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
@@ -49,7 +50,7 @@ public class BilateralFilterTest {
 	public void testGrayScalarSep() {
 		ImageProcessor ipA = monastery.duplicate();
 		GenericFilter filter = new BilateralFilterScalarSeparable(params);
-		filter.applyTo(ipA);
+		filter.applyTo(ipA, OBS);
 		ImageProcessor ipB = FilterTestImage.MonasterySmallBilateralSep.getImage().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
@@ -61,7 +62,7 @@ public class BilateralFilterTest {
 	public void testColorScalarNonsep() {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new BilateralFilterScalar(params);
-		filter.applyTo(ipA);
+		filter.applyTo(ipA, OBS);
 		ImageProcessor ipB = FilterTestImage.ClownBilateralNonsepScalar.getImage().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
@@ -71,7 +72,7 @@ public class BilateralFilterTest {
 	public void testColorScalarSep() {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new BilateralFilterScalarSeparable(params);
-		filter.applyTo(ipA);
+		filter.applyTo(ipA, OBS);
 		ImageProcessor ipB = FilterTestImage.ClownBilateralSepScalar.getImage().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
@@ -81,7 +82,7 @@ public class BilateralFilterTest {
 	public void testColorVectorNonsep() {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new BilateralFilterVector(params);
-		filter.applyTo(ipA);
+		filter.applyTo(ipA, OBS);
 		ImageProcessor ipB = FilterTestImage.ClownBilateralNonsepVector.getImage().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
@@ -91,7 +92,7 @@ public class BilateralFilterTest {
 	public void testColorVectorSep() {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new BilateralFilterVectorSeparable(params);
-		filter.applyTo(ipA);
+		filter.applyTo(ipA, OBS);
 		ImageProcessor ipB = FilterTestImage.ClownBilateralSepVector.getImage().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));

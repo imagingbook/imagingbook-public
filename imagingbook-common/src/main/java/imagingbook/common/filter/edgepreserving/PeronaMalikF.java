@@ -10,7 +10,6 @@ package imagingbook.common.filter.edgepreserving;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.util.ParameterBundle;
 
 /**
@@ -20,6 +19,9 @@ import imagingbook.common.util.ParameterBundle;
  */
 public interface PeronaMalikF {
 	
+	/**
+	 * Parameter bundle for Perona-Malik filters (implementations of {@link PeronaMalikF}).
+	 */
 	public static class Parameters implements ParameterBundle {
 
 		@DialogLabel("Number of iterations")
@@ -36,9 +38,7 @@ public interface PeronaMalikF {
 		
 		@DialogLabel("Color mode")
 		public ColorMode colorMode = ColorMode.SeparateChannels;
-		
-		@DialogLabel("Out-of-bounds strategy")
-		public OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;
+
 	}
 	
 	public enum ColorMode  {
