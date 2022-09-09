@@ -11,7 +11,7 @@ package imagingbook.common.color.sets;
 import java.awt.Color;
 
 /**
- * Enum-types for the pre-defined AWT colors.
+ * {@link ColorEnumeration} defining a set of selected AWT colors.
  * 
  * @author WB
  *
