@@ -348,11 +348,23 @@ public interface ParameterBundle {
 		return true;
 	}
 	
+	// static methods for making shallow copies -----------------------------
+	
+	/**
+	 * Returns a shallow copy of the specified {@link ParameterBundle}
+	 * instance.
+	 * 
+	 * @param <T> generic type
+	 * @param params a {@link ParameterBundle} instance
+	 * @return a copy with the same type, fields and values as the original instance
+	 */
+	public static <T extends ParameterBundle> T duplicate(T params) {
+	    return CopyObjects.copy(params);
+	}
+
 	// ----------------------------------------------------------------------
 	
-//	enum MyEnum {
-//		A, B, Cee
-//	}
+
 //
 //	/**
 //	 * Example parameter bundle
