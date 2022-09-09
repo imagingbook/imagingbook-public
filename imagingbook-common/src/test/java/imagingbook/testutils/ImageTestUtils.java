@@ -56,19 +56,6 @@ public class ImageTestUtils {
 			}
 		}
 		
-//		else 
-//			if (ip1 instanceof ByteProcessor || ip1 instanceof ShortProcessor) {
-//			for (int v = 0; v < height; v++) {
-//				for (int u = 0; u < width; u++) {
-//					int v1 = ip1.get(u, v);
-//					int v2 = ip2.get(u, v);
-//					if (v1 != v2) {
-//						fail(msgInt(u, v, v1, v2));
-//					}
-//				}
-//			}
-//		}
-		
 		else if (ip1 instanceof ByteProcessor || ip1 instanceof ShortProcessor || ip1 instanceof FloatProcessor) {
 			final float toleranceF = (float) tolerance;
 			for (int v = 0; v < height; v++) {
