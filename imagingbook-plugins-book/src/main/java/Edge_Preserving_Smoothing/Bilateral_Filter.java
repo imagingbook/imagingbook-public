@@ -35,6 +35,7 @@ import imagingbook.common.util.progress.ij.ProgressBarMonitor;
 public class Bilateral_Filter implements PlugInFilter {
 	
 	private static Parameters params = new Parameters();
+	
 	private static boolean UseSeparableFilter = false;
 	private static boolean UseScalarFilter = false;
 	

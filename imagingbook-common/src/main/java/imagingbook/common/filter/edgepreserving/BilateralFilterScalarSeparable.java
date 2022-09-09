@@ -9,7 +9,6 @@
 
 package imagingbook.common.filter.edgepreserving;
 
-import static imagingbook.common.filter.edgepreserving.BilateralF.gauss;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import imagingbook.common.filter.generic.GenericFilterScalarSeparable;
@@ -74,6 +73,10 @@ public class BilateralFilterScalarSeparable extends GenericFilterScalarSeparable
 			W = W + w;
 		}
 		return S / W;
+	}
+	
+	private float gauss(double x, double sigma2) {
+		return (float) Math.exp(-(x * x) / (2 * sigma2));
 	}
 	
 }

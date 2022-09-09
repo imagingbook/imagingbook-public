@@ -29,9 +29,17 @@ public enum FilterTestImage implements ImageResource {
 	ClownMedianVector3L1("clown-median-vector-3-L1.png"),
 	ClownMedianVectorsharpen3L1("clown-median-vectorsharpen-3-L1.png"),
 	
+	ClownBilateralNonsepScalar("clown-bilateral-nonsep-scalar.png"),
+	ClownBilateralNonsepVector("clown-bilateral-nonsep-vector.png"),
+	ClownBilateralSepScalar("clown-bilateral-sep-scalar.png"),
+	ClownBilateralSepVector("clown-bilateral-sep-vector.png"),
+	
 	MonasterySmall("monastery-small.png"),
 	MonasterySmallFilter3x3("monastery-small-filter3x3.png"),
 	MonasterySmallGauss3("monastery-small-gauss3.png"),
+	
+	MonasterySmallBilateralNonsep("monastery-small-bilateral-nonsep.png"),
+	MonasterySmallBilateralSep("monastery-small-bilateral-sep.png"),
 	
 	;
 	

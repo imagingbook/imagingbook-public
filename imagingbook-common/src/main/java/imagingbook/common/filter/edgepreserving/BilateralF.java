@@ -12,8 +12,16 @@ import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.common.util.ParameterBundle;
 
+/**
+ * Common interface for all bilateral filter implementations.
+ * @author WB
+ *
+ */
 public interface BilateralF {
 	
+	/**
+	 * Parameter bundle for bilateral filters (implementations of {@link BilateralF}).
+	 */
 	public static class Parameters implements ParameterBundle {
 
 		@DialogLabel("Sigma (domain)")
@@ -28,32 +36,5 @@ public interface BilateralF {
 		@DialogLabel("Out-of-bounds strategy")
 		public OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;
 	}
-	
-	// ------------------------------------------------------
-	
-	// TODO: this should be non-public (implement with Java9)
-	static float gauss(double d, double sigmaR2) {
-		return (float) Math.exp(-(d * d) / (2 * sigmaR2));
-	}
-	
-	// This returns the weights for a Gaussian range kernel (scalar version):
-//	protected static float similarityGauss(float a, float b, double sigmaR2) {
-//		//double dI = a - b;
-//		return gauss(a - b, sigmaR2);
-//		//return (float) Math.exp(-(dI * dI) / (2 * sigmaR2));
-//	}
-	
-//	@SuppressWarnings("unused")
-//	// for better efficiency: pre-tabulated version of the range kernel - CHECK!
-//	private float[] makeRangeKernel(double sigma, int K) {
-//		int size = K + 1 + K;
-//		float[] rangeKernel = new float[size]; //center cell = kernel[K]
-//		double sigma2 = sigma * sigma;
-//		for (int i = 0; i < size; i++) {
-//			double x = K - i;
-//			rangeKernel[i] =  (float) Math.exp(-0.5 * (x*x) / sigma2);
-//		}
-//		return rangeKernel;
-//	}
 
 }
