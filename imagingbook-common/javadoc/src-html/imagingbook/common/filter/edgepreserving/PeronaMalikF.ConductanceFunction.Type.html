@@ -20,35 +20,35 @@
 <span class="sourceLineNo">010</span><a id="line.10"></a>
 <span class="sourceLineNo">011</span><a id="line.11">import static imagingbook.common.math.Arithmetic.sqr;</a>
 <span class="sourceLineNo">012</span><a id="line.12"></a>
-<span class="sourceLineNo">013</span><a id="line.13">import imagingbook.common.image.access.OutOfBoundsStrategy;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import imagingbook.common.util.ParameterBundle;</a>
-<span class="sourceLineNo">015</span><a id="line.15"></a>
-<span class="sourceLineNo">016</span><a id="line.16">/**</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * Common interface for Perona-Malik filter implementations.</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * </a>
-<span class="sourceLineNo">019</span><a id="line.19"> * @author WB</a>
-<span class="sourceLineNo">020</span><a id="line.20"> */</a>
-<span class="sourceLineNo">021</span><a id="line.21">public interface PeronaMalikF {</a>
-<span class="sourceLineNo">022</span><a id="line.22">        </a>
-<span class="sourceLineNo">023</span><a id="line.23">        public static class Parameters implements ParameterBundle {</a>
-<span class="sourceLineNo">024</span><a id="line.24"></a>
-<span class="sourceLineNo">025</span><a id="line.25">                @DialogLabel("Number of iterations")</a>
-<span class="sourceLineNo">026</span><a id="line.26">                public int iterations = 10;</a>
-<span class="sourceLineNo">027</span><a id="line.27">                </a>
-<span class="sourceLineNo">028</span><a id="line.28">                @DialogLabel("Update rate (\u03B1 = 0,..,0.25)")@DialogDigits(2)</a>
-<span class="sourceLineNo">029</span><a id="line.29">                public double alpha = 0.20;     </a>
-<span class="sourceLineNo">030</span><a id="line.30">                </a>
-<span class="sourceLineNo">031</span><a id="line.31">                @DialogLabel("Smoothness parameter (\u03BA)")@DialogDigits(1)</a>
-<span class="sourceLineNo">032</span><a id="line.32">                public double kappa = 25;</a>
-<span class="sourceLineNo">033</span><a id="line.33">                </a>
-<span class="sourceLineNo">034</span><a id="line.34">                @DialogLabel("Conductance function g(d)")</a>
-<span class="sourceLineNo">035</span><a id="line.35">                public ConductanceFunction.Type conductanceFunType = ConductanceFunction.Type.g1;</a>
-<span class="sourceLineNo">036</span><a id="line.36">                </a>
-<span class="sourceLineNo">037</span><a id="line.37">                @DialogLabel("Color mode")</a>
-<span class="sourceLineNo">038</span><a id="line.38">                public ColorMode colorMode = ColorMode.SeparateChannels;</a>
-<span class="sourceLineNo">039</span><a id="line.39">                </a>
-<span class="sourceLineNo">040</span><a id="line.40">                @DialogLabel("Out-of-bounds strategy")</a>
-<span class="sourceLineNo">041</span><a id="line.41">                public OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import imagingbook.common.util.ParameterBundle;</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">/**</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * Common interface for Perona-Malik filter implementations.</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * </a>
+<span class="sourceLineNo">018</span><a id="line.18"> * @author WB</a>
+<span class="sourceLineNo">019</span><a id="line.19"> */</a>
+<span class="sourceLineNo">020</span><a id="line.20">public interface PeronaMalikF {</a>
+<span class="sourceLineNo">021</span><a id="line.21">        </a>
+<span class="sourceLineNo">022</span><a id="line.22">        /**</a>
+<span class="sourceLineNo">023</span><a id="line.23">         * Parameter bundle for Perona-Malik filters (implementations of {@link PeronaMalikF}).</a>
+<span class="sourceLineNo">024</span><a id="line.24">         */</a>
+<span class="sourceLineNo">025</span><a id="line.25">        public static class Parameters implements ParameterBundle {</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">                @DialogLabel("Number of iterations")</a>
+<span class="sourceLineNo">028</span><a id="line.28">                public int iterations = 10;</a>
+<span class="sourceLineNo">029</span><a id="line.29">                </a>
+<span class="sourceLineNo">030</span><a id="line.30">                @DialogLabel("Update rate (\u03B1 = 0,..,0.25)")@DialogDigits(2)</a>
+<span class="sourceLineNo">031</span><a id="line.31">                public double alpha = 0.20;     </a>
+<span class="sourceLineNo">032</span><a id="line.32">                </a>
+<span class="sourceLineNo">033</span><a id="line.33">                @DialogLabel("Smoothness parameter (\u03BA)")@DialogDigits(1)</a>
+<span class="sourceLineNo">034</span><a id="line.34">                public double kappa = 25;</a>
+<span class="sourceLineNo">035</span><a id="line.35">                </a>
+<span class="sourceLineNo">036</span><a id="line.36">                @DialogLabel("Conductance function g(d)")</a>
+<span class="sourceLineNo">037</span><a id="line.37">                public ConductanceFunction.Type conductanceFunType = ConductanceFunction.Type.g1;</a>
+<span class="sourceLineNo">038</span><a id="line.38">                </a>
+<span class="sourceLineNo">039</span><a id="line.39">                @DialogLabel("Color mode")</a>
+<span class="sourceLineNo">040</span><a id="line.40">                public ColorMode colorMode = ColorMode.SeparateChannels;</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
 <span class="sourceLineNo">042</span><a id="line.42">        }</a>
 <span class="sourceLineNo">043</span><a id="line.43">        </a>
 <span class="sourceLineNo">044</span><a id="line.44">        public enum ColorMode  {</a>

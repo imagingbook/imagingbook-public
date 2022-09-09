@@ -367,7 +367,7 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 	 * Returns a binary edge image, obtained by rendering the
 	 * detected edge traces.
 	 * See also {@link #getEdgeTraces()}
-	 * @return
+	 * @return a binary image ({@link ByteProcessor})
 	 */
 	public ByteProcessor getEdgeBinary() {
 		if (Ebin == null) {

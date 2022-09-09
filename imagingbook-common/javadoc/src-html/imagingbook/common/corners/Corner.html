@@ -21,84 +21,78 @@
 <span class="sourceLineNo">011</span><a id="line.11"></a>
 <span class="sourceLineNo">012</span><a id="line.12">import java.awt.Shape;</a>
 <span class="sourceLineNo">013</span><a id="line.13">import java.awt.geom.Path2D;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import java.util.Arrays;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import java.util.Locale;</a>
-<span class="sourceLineNo">016</span><a id="line.16"></a>
-<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.Locale;</a>
+<span class="sourceLineNo">015</span><a id="line.15"></a>
+<span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
 <span class="sourceLineNo">018</span><a id="line.18"></a>
-<span class="sourceLineNo">019</span><a id="line.19"></a>
-<span class="sourceLineNo">020</span><a id="line.20">/**</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * This class represents a 2D corner.</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * A corner is essentially a {@link Pnt2d} plus a scalar quantity</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * {@link #q} for the corner strength.</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * </a>
-<span class="sourceLineNo">025</span><a id="line.25"> * @version 2020/10/02</a>
-<span class="sourceLineNo">026</span><a id="line.26"> */</a>
-<span class="sourceLineNo">027</span><a id="line.27">public class Corner implements Pnt2d, Comparable&lt;Corner&gt; {</a>
-<span class="sourceLineNo">028</span><a id="line.28">        </a>
-<span class="sourceLineNo">029</span><a id="line.29">        private final float x, y;</a>
-<span class="sourceLineNo">030</span><a id="line.30">        private final float q;</a>
-<span class="sourceLineNo">031</span><a id="line.31"></a>
-<span class="sourceLineNo">032</span><a id="line.32">        public Corner(float x, float y, float q) {</a>
-<span class="sourceLineNo">033</span><a id="line.33">                this.x = x;</a>
-<span class="sourceLineNo">034</span><a id="line.34">                this.y = y;</a>
-<span class="sourceLineNo">035</span><a id="line.35">                this.q = q;</a>
-<span class="sourceLineNo">036</span><a id="line.36">        }</a>
-<span class="sourceLineNo">037</span><a id="line.37">        </a>
-<span class="sourceLineNo">038</span><a id="line.38">        @Override</a>
-<span class="sourceLineNo">039</span><a id="line.39">        public double getX() {</a>
-<span class="sourceLineNo">040</span><a id="line.40">                return x;</a>
+<span class="sourceLineNo">019</span><a id="line.19">/**</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * This class represents a 2D corner.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * A corner is essentially a {@link Pnt2d} plus a scalar quantity</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * {@link #q} for the corner strength.</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * </a>
+<span class="sourceLineNo">024</span><a id="line.24"> * @version 2022/09/05</a>
+<span class="sourceLineNo">025</span><a id="line.25"> */</a>
+<span class="sourceLineNo">026</span><a id="line.26">public class Corner implements Pnt2d, Comparable&lt;Corner&gt; {</a>
+<span class="sourceLineNo">027</span><a id="line.27">        </a>
+<span class="sourceLineNo">028</span><a id="line.28">        private final float x, y;</a>
+<span class="sourceLineNo">029</span><a id="line.29">        private final float q;</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">        /**</a>
+<span class="sourceLineNo">032</span><a id="line.32">         * Constructor.</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * @param x horizontal position</a>
+<span class="sourceLineNo">034</span><a id="line.34">         * @param y vertical position</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * @param q corner score value</a>
+<span class="sourceLineNo">036</span><a id="line.36">         */</a>
+<span class="sourceLineNo">037</span><a id="line.37">        public Corner(float x, float y, float q) {</a>
+<span class="sourceLineNo">038</span><a id="line.38">                this.x = x;</a>
+<span class="sourceLineNo">039</span><a id="line.39">                this.y = y;</a>
+<span class="sourceLineNo">040</span><a id="line.40">                this.q = q;</a>
 <span class="sourceLineNo">041</span><a id="line.41">        }</a>
-<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">042</span><a id="line.42">        </a>
 <span class="sourceLineNo">043</span><a id="line.43">        @Override</a>
-<span class="sourceLineNo">044</span><a id="line.44">        public double getY() {</a>
-<span class="sourceLineNo">045</span><a id="line.45">                return y;</a>
+<span class="sourceLineNo">044</span><a id="line.44">        public double getX() {</a>
+<span class="sourceLineNo">045</span><a id="line.45">                return x;</a>
 <span class="sourceLineNo">046</span><a id="line.46">        }</a>
 <span class="sourceLineNo">047</span><a id="line.47"></a>
-<span class="sourceLineNo">048</span><a id="line.48">        public double getQ() {</a>
-<span class="sourceLineNo">049</span><a id="line.49">                return q;</a>
-<span class="sourceLineNo">050</span><a id="line.50">        }</a>
-<span class="sourceLineNo">051</span><a id="line.51"></a>
-<span class="sourceLineNo">052</span><a id="line.52">        // used for sorting corners by corner strength q</a>
-<span class="sourceLineNo">053</span><a id="line.53">        @Override</a>
-<span class="sourceLineNo">054</span><a id="line.54">        public int compareTo(Corner other) {</a>
-<span class="sourceLineNo">055</span><a id="line.55">                return Float.compare(other.q, this.q);</a>
-<span class="sourceLineNo">056</span><a id="line.56">        }</a>
-<span class="sourceLineNo">057</span><a id="line.57">        </a>
-<span class="sourceLineNo">058</span><a id="line.58">        // ----------------------------------------------------------------</a>
-<span class="sourceLineNo">059</span><a id="line.59">        </a>
-<span class="sourceLineNo">060</span><a id="line.60">        @Override</a>
-<span class="sourceLineNo">061</span><a id="line.61">        public String toString() {</a>
-<span class="sourceLineNo">062</span><a id="line.62">                return String.format(Locale.US, "Corner &lt;%.3f, %.3f, %.3f&gt;", x, y, q);</a>
-<span class="sourceLineNo">063</span><a id="line.63">        }</a>
-<span class="sourceLineNo">064</span><a id="line.64">        </a>
-<span class="sourceLineNo">065</span><a id="line.65">        </a>
-<span class="sourceLineNo">066</span><a id="line.66">        @Override</a>
-<span class="sourceLineNo">067</span><a id="line.67">        public Shape getShape(double size) {</a>
-<span class="sourceLineNo">068</span><a id="line.68">                Path2D path = new Path2D.Double();</a>
-<span class="sourceLineNo">069</span><a id="line.69">                path.moveTo(x - size, y);</a>
-<span class="sourceLineNo">070</span><a id="line.70">                path.lineTo(x + size, y);</a>
-<span class="sourceLineNo">071</span><a id="line.71">                path.moveTo(x, y - size);</a>
-<span class="sourceLineNo">072</span><a id="line.72">                path.lineTo(x, y + size);</a>
-<span class="sourceLineNo">073</span><a id="line.73">                return path;</a>
-<span class="sourceLineNo">074</span><a id="line.74">        }</a>
-<span class="sourceLineNo">075</span><a id="line.75">        </a>
-<span class="sourceLineNo">076</span><a id="line.76">        // ----------------------------------------------------------------</a>
-<span class="sourceLineNo">077</span><a id="line.77"></a>
-<span class="sourceLineNo">078</span><a id="line.78">        public static void main(String[] args) {</a>
-<span class="sourceLineNo">079</span><a id="line.79">                Corner c1 = new Corner(1,0,1);</a>
-<span class="sourceLineNo">080</span><a id="line.80">                Corner c2 = new Corner(2,0,2);</a>
-<span class="sourceLineNo">081</span><a id="line.81">                Corner c3 = new Corner(3,0,3);</a>
-<span class="sourceLineNo">082</span><a id="line.82">                Corner c4 = new Corner(4,0,2);</a>
-<span class="sourceLineNo">083</span><a id="line.83">                </a>
-<span class="sourceLineNo">084</span><a id="line.84">                Corner[] corners = {c1, c2, c3, c4};</a>
-<span class="sourceLineNo">085</span><a id="line.85">                System.out.println("corners orig =   " + Arrays.toString(corners));</a>
-<span class="sourceLineNo">086</span><a id="line.86">                </a>
-<span class="sourceLineNo">087</span><a id="line.87">                Arrays.sort(corners);</a>
-<span class="sourceLineNo">088</span><a id="line.88">                System.out.println("corners sorted = " + Arrays.toString(corners));</a>
-<span class="sourceLineNo">089</span><a id="line.89">        }</a>
-<span class="sourceLineNo">090</span><a id="line.90">}</a>
-<span class="sourceLineNo">091</span><a id="line.91"></a>
+<span class="sourceLineNo">048</span><a id="line.48">        @Override</a>
+<span class="sourceLineNo">049</span><a id="line.49">        public double getY() {</a>
+<span class="sourceLineNo">050</span><a id="line.50">                return y;</a>
+<span class="sourceLineNo">051</span><a id="line.51">        }</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">        /**</a>
+<span class="sourceLineNo">054</span><a id="line.54">         * Returns this corner's score value.</a>
+<span class="sourceLineNo">055</span><a id="line.55">         * @return score value</a>
+<span class="sourceLineNo">056</span><a id="line.56">         */</a>
+<span class="sourceLineNo">057</span><a id="line.57">        public double getQ() {</a>
+<span class="sourceLineNo">058</span><a id="line.58">                return q;</a>
+<span class="sourceLineNo">059</span><a id="line.59">        }</a>
+<span class="sourceLineNo">060</span><a id="line.60"></a>
+<span class="sourceLineNo">061</span><a id="line.61">        // used for sorting corners by corner strength q (strong corners first)</a>
+<span class="sourceLineNo">062</span><a id="line.62">        @Override</a>
+<span class="sourceLineNo">063</span><a id="line.63">        public int compareTo(Corner other) {</a>
+<span class="sourceLineNo">064</span><a id="line.64">                return Float.compare(other.q, this.q);</a>
+<span class="sourceLineNo">065</span><a id="line.65">        }</a>
+<span class="sourceLineNo">066</span><a id="line.66">        </a>
+<span class="sourceLineNo">067</span><a id="line.67">        // ----------------------------------------------------------------</a>
+<span class="sourceLineNo">068</span><a id="line.68">        </a>
+<span class="sourceLineNo">069</span><a id="line.69">        @Override</a>
+<span class="sourceLineNo">070</span><a id="line.70">        public String toString() {</a>
+<span class="sourceLineNo">071</span><a id="line.71">                return String.format(Locale.US, "Corner &lt;%.3f, %.3f, %.3f&gt;", x, y, q);</a>
+<span class="sourceLineNo">072</span><a id="line.72">        }</a>
+<span class="sourceLineNo">073</span><a id="line.73">        </a>
+<span class="sourceLineNo">074</span><a id="line.74">        @Override</a>
+<span class="sourceLineNo">075</span><a id="line.75">        public Shape getShape(double size) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                Path2D path = new Path2D.Double();</a>
+<span class="sourceLineNo">077</span><a id="line.77">                path.moveTo(x - size, y);</a>
+<span class="sourceLineNo">078</span><a id="line.78">                path.lineTo(x + size, y);</a>
+<span class="sourceLineNo">079</span><a id="line.79">                path.moveTo(x, y - size);</a>
+<span class="sourceLineNo">080</span><a id="line.80">                path.lineTo(x, y + size);</a>
+<span class="sourceLineNo">081</span><a id="line.81">                return path;</a>
+<span class="sourceLineNo">082</span><a id="line.82">        }</a>
+<span class="sourceLineNo">083</span><a id="line.83">        </a>
+<span class="sourceLineNo">084</span><a id="line.84">}</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
 
 
 

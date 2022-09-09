@@ -353,7 +353,7 @@ public class PixelPack {
 	
 	
 	/**
-	 * Returns an array of {@link PFloatProcessor} instances
+	 * Returns an array of {@link FloatProcessor} instances
 	 * for this {@link PixelPack}. All pixel data are shared.
 	 * 
 	 * @return an array of {@link FloatProcessor}

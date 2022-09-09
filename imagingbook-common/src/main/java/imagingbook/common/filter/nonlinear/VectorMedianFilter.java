@@ -41,14 +41,12 @@ public class VectorMedianFilter extends GenericFilterVector {
 	private final Parameters params;
 	private final CircularMask mask;
 	private final int maskCount;
-	final int[][] maskArray;
-	final int xc, yc;
+	private final int[][] maskArray;
+	private final int xc, yc;
 	private final float[][] supportRegion;		// supportRegion[i][c] with index i, color component c
 	private final VectorNorm vNorm;
 	private final float[] vals = new float[3];	// check, adapt to depth
 	private final float[] modColor;
-	
-	public int modifiedCount = 0; // for debugging only
 	
 	//-------------------------------------------------------------------------------------
 	
@@ -96,7 +94,6 @@ public class VectorMedianFilter extends GenericFilterVector {
 		if (dMin < dCtr) {	// modify this pixel
 			if (params.markModifiedPixels) {
 				copyPixel(modColor, pF);
-				modifiedCount++;
 			}
 			else {
 				copyPixel(pmin, pF);

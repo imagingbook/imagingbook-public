@@ -294,9 +294,9 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * 
-	 * @param fp
-	 * @return
+	 * Converts a {@link FloatProcessor} to a {@code float[][]}.
+	 * @param fp a {@link FloatProcessor}
+	 * @return the resulting {@code float[][]}
 	 */
 	public static float[][] toFloatArray(FloatProcessor fp) {
 //		final int w = fp.getWidth();
@@ -319,7 +319,7 @@ public abstract class IjUtils {
 	 * are applied.
 	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
 	 * on a variety of factors (including current user settings).
-	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
+	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights(double[])},
 	 * {@link ImageProcessor#convertToByteProcessor()}.
 	 * 
 	 * @param cp a {@link ColorProcessor}
@@ -341,7 +341,7 @@ public abstract class IjUtils {
 	 * The processor's individual weights (if set) are ignored.
 	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
 	 * on a variety of factors (including current user settings).
-	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
+	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights(double[])},
 	 * {@link ImageProcessor#convertToByteProcessor()}.
 	 * 
 	 * @param cp a {@link ColorProcessor}
@@ -371,7 +371,7 @@ public abstract class IjUtils {
 	 * set, otherweise default weights are used (see {@link RgbUtils#getDefaultWeights()}).
 	 * This should avoid problems with standard conversion methods in ImageJ, which depend 
 	 * on a variety of factors (including current user settings).
-	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
+	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights(double[])},
 	 * {@link ImageProcessor#convertToFloatProcessor()}.
 	 * 
 	 * @param cp a {@link ColorProcessor}
@@ -395,7 +395,7 @@ public abstract class IjUtils {
 	 * The processor's individual weights (if set at all) are ignored.
 	 * This should avoid problems with standard conversion methods in ImageJ, which depend 
 	 * on a variety of factors (including current user settings).
-	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights()},
+	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights(double[])},
 	 * {@link ImageProcessor#convertToFloatProcessor()}.
 	 * 
 	 * @param cp a {@link ColorProcessor}

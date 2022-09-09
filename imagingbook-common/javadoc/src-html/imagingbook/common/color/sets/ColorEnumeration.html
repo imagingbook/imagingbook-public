@@ -19,51 +19,60 @@
 <span class="sourceLineNo">009</span><a id="line.9">package imagingbook.common.color.sets;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
 <span class="sourceLineNo">011</span><a id="line.11">import java.awt.Color;</a>
-<span class="sourceLineNo">012</span><a id="line.12"></a>
-<span class="sourceLineNo">013</span><a id="line.13">/**</a>
-<span class="sourceLineNo">014</span><a id="line.14"> * Used for color enum types. This means that every enum class (item) implements this interface.</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * @author WB</a>
-<span class="sourceLineNo">016</span><a id="line.16"> *</a>
-<span class="sourceLineNo">017</span><a id="line.17"> */</a>
-<span class="sourceLineNo">018</span><a id="line.18">public interface ColorEnumeration {</a>
-<span class="sourceLineNo">019</span><a id="line.19">        </a>
-<span class="sourceLineNo">020</span><a id="line.20">        public Color getColor();</a>
-<span class="sourceLineNo">021</span><a id="line.21">        </a>
-<span class="sourceLineNo">022</span><a id="line.22">        public default int getRGB() {</a>
-<span class="sourceLineNo">023</span><a id="line.23">                return getColor().getRGB();</a>
-<span class="sourceLineNo">024</span><a id="line.24">        }</a>
-<span class="sourceLineNo">025</span><a id="line.25"></a>
-<span class="sourceLineNo">026</span><a id="line.26">        public static Color[] getColors(Class&lt;? extends ColorEnumeration&gt; clazz) {</a>
-<span class="sourceLineNo">027</span><a id="line.27">                ColorEnumeration[] cols = clazz.getEnumConstants(); </a>
-<span class="sourceLineNo">028</span><a id="line.28">                if (cols == null) {</a>
-<span class="sourceLineNo">029</span><a id="line.29">                        throw new RuntimeException(ColorEnumeration.class.getSimpleName() + " may only be implemented by enum types!");</a>
-<span class="sourceLineNo">030</span><a id="line.30">                }</a>
-<span class="sourceLineNo">031</span><a id="line.31">//              Color[] colors = new Color[cols.length];</a>
-<span class="sourceLineNo">032</span><a id="line.32">//              for (int i = 0; i &lt; cols.length; i++) {</a>
-<span class="sourceLineNo">033</span><a id="line.33">//                      colors[i] = cols[i].getColor();</a>
-<span class="sourceLineNo">034</span><a id="line.34">//              }</a>
-<span class="sourceLineNo">035</span><a id="line.35">//              return colors;</a>
-<span class="sourceLineNo">036</span><a id="line.36">                return getColors(cols);</a>
-<span class="sourceLineNo">037</span><a id="line.37">        }</a>
-<span class="sourceLineNo">038</span><a id="line.38">        </a>
-<span class="sourceLineNo">039</span><a id="line.39">        public static Color[] getColors(ColorEnumeration... cols) {</a>
-<span class="sourceLineNo">040</span><a id="line.40">                Color[] colors = new Color[cols.length];</a>
-<span class="sourceLineNo">041</span><a id="line.41">                for (int i = 0; i &lt; cols.length; i++) {</a>
-<span class="sourceLineNo">042</span><a id="line.42">                        colors[i] = cols[i].getColor();</a>
-<span class="sourceLineNo">043</span><a id="line.43">                }</a>
-<span class="sourceLineNo">044</span><a id="line.44">                return colors;</a>
-<span class="sourceLineNo">045</span><a id="line.45">        }</a>
-<span class="sourceLineNo">046</span><a id="line.46">        </a>
-<span class="sourceLineNo">047</span><a id="line.47">        </a>
-<span class="sourceLineNo">048</span><a id="line.48">        public static void main(String[] args) {</a>
-<span class="sourceLineNo">049</span><a id="line.49">                </a>
-<span class="sourceLineNo">050</span><a id="line.50">                Color[] colors = ColorEnumeration.getColors(BasicAwtColor.class);</a>
-<span class="sourceLineNo">051</span><a id="line.51">                for (Color c : colors) {</a>
-<span class="sourceLineNo">052</span><a id="line.52">                        System.out.println(c.toString());</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.util.Objects;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">/**</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Interface used for color enum types.</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * @author WB</a>
+<span class="sourceLineNo">017</span><a id="line.17"> *</a>
+<span class="sourceLineNo">018</span><a id="line.18"> */</a>
+<span class="sourceLineNo">019</span><a id="line.19">public interface ColorEnumeration {</a>
+<span class="sourceLineNo">020</span><a id="line.20">        </a>
+<span class="sourceLineNo">021</span><a id="line.21">        /**</a>
+<span class="sourceLineNo">022</span><a id="line.22">         * Returns the enum item's {@link Color}.</a>
+<span class="sourceLineNo">023</span><a id="line.23">         * @return the item's AWT {@link Color}</a>
+<span class="sourceLineNo">024</span><a id="line.24">         */</a>
+<span class="sourceLineNo">025</span><a id="line.25">        public Color getColor();</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">        /**</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * Returns an array of colors defined by the specified</a>
+<span class="sourceLineNo">029</span><a id="line.29">         * {@link ColorEnumeration} enum class.</a>
+<span class="sourceLineNo">030</span><a id="line.30">         * @param clazz a {@link ColorEnumeration} enum class</a>
+<span class="sourceLineNo">031</span><a id="line.31">         * @return a {@link Color} array</a>
+<span class="sourceLineNo">032</span><a id="line.32">         */</a>
+<span class="sourceLineNo">033</span><a id="line.33">        public static Color[] getColors(Class&lt;? extends ColorEnumeration&gt; clazz) {</a>
+<span class="sourceLineNo">034</span><a id="line.34">                if (!clazz.isEnum()) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">                        throw new RuntimeException(ColorEnumeration.class.getSimpleName() + </a>
+<span class="sourceLineNo">036</span><a id="line.36">                                        " may only be implemented by enum types!");</a>
+<span class="sourceLineNo">037</span><a id="line.37">                }</a>
+<span class="sourceLineNo">038</span><a id="line.38">                ColorEnumeration[] colorItems = clazz.getEnumConstants(); </a>
+<span class="sourceLineNo">039</span><a id="line.39">                Objects.requireNonNull(colorItems);</a>
+<span class="sourceLineNo">040</span><a id="line.40">                return getColors(colorItems);</a>
+<span class="sourceLineNo">041</span><a id="line.41">        }</a>
+<span class="sourceLineNo">042</span><a id="line.42">        </a>
+<span class="sourceLineNo">043</span><a id="line.43">        /**</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * Returns an array of colors for the specified </a>
+<span class="sourceLineNo">045</span><a id="line.45">         * {@link ColorEnumeration} items.</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * @param cols a sequence of {@link ColorEnumeration} items</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * @return a {@link Color} array</a>
+<span class="sourceLineNo">048</span><a id="line.48">         */</a>
+<span class="sourceLineNo">049</span><a id="line.49">        public static Color[] getColors(ColorEnumeration... cols) {</a>
+<span class="sourceLineNo">050</span><a id="line.50">                Color[] colors = new Color[cols.length];</a>
+<span class="sourceLineNo">051</span><a id="line.51">                for (int i = 0; i &lt; cols.length; i++) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">                        colors[i] = cols[i].getColor();</a>
 <span class="sourceLineNo">053</span><a id="line.53">                }</a>
-<span class="sourceLineNo">054</span><a id="line.54">        }</a>
-<span class="sourceLineNo">055</span><a id="line.55">        </a>
-<span class="sourceLineNo">056</span><a id="line.56">}</a>
+<span class="sourceLineNo">054</span><a id="line.54">                return colors;</a>
+<span class="sourceLineNo">055</span><a id="line.55">        }</a>
+<span class="sourceLineNo">056</span><a id="line.56">        </a>
+<span class="sourceLineNo">057</span><a id="line.57">//      public static void main(String[] args) {</a>
+<span class="sourceLineNo">058</span><a id="line.58">//              Color[] colors = ColorEnumeration.getColors(BasicAwtColor.class);</a>
+<span class="sourceLineNo">059</span><a id="line.59">//              </a>
+<span class="sourceLineNo">060</span><a id="line.60">//              for (Color c : colors) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">//                      System.out.println(c.toString());</a>
+<span class="sourceLineNo">062</span><a id="line.62">//              }</a>
+<span class="sourceLineNo">063</span><a id="line.63">//      }</a>
+<span class="sourceLineNo">064</span><a id="line.64">        </a>
+<span class="sourceLineNo">065</span><a id="line.65">}</a>
 
 
 

@@ -49,9 +49,6 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 	private final float[] modColor;
 	private final float[] vals = new float[3];	// check, adapt to depth
 	
-	/** For testing only */
-	public int modifiedCount = 0;
-	
 	public VectorMedianFilterSharpen() {	
 		this(new Parameters());
 	}
@@ -94,7 +91,6 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 		if (dCtr - dMin > params.threshold * a) {	// modify this pixel
 			if (params.markModifiedPixels) {
 				copyPixel(modColor, pF);
-				modifiedCount++;
 			}
 			else {
 				copyPixel(pmin, pF);

@@ -20,7 +20,7 @@ public interface ColorEnumeration {
 	
 	/**
 	 * Returns the enum item's {@link Color}.
-	 * @return
+	 * @return the item's AWT {@link Color}
 	 */
 	public Color getColor();
 

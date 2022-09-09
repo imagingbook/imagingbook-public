@@ -18,74 +18,75 @@
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9">package imagingbook.common.filter.edgepreserving;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
-<span class="sourceLineNo">011</span><a id="line.11">import imagingbook.common.image.access.OutOfBoundsStrategy;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.util.ParameterBundle;</a>
-<span class="sourceLineNo">013</span><a id="line.13"></a>
-<span class="sourceLineNo">014</span><a id="line.14">public interface NagaoMatsuyamaF {</a>
-<span class="sourceLineNo">015</span><a id="line.15"></a>
-<span class="sourceLineNo">016</span><a id="line.16">        public static class Parameters implements ParameterBundle {</a>
-<span class="sourceLineNo">017</span><a id="line.17"></a>
-<span class="sourceLineNo">018</span><a id="line.18">                @DialogLabel("Variance threshold (0,..,10)")</a>
-<span class="sourceLineNo">019</span><a id="line.19">                public double varThreshold = 0.0;</a>
-<span class="sourceLineNo">020</span><a id="line.20"></a>
-<span class="sourceLineNo">021</span><a id="line.21">                @DialogLabel("Out-of-bounds strategy")</a>
-<span class="sourceLineNo">022</span><a id="line.22">                public OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;</a>
-<span class="sourceLineNo">023</span><a id="line.23">        }</a>
-<span class="sourceLineNo">024</span><a id="line.24">        </a>
-<span class="sourceLineNo">025</span><a id="line.25">        abstract class Constants {</a>
-<span class="sourceLineNo">026</span><a id="line.26">                protected static final int[][] R0 =</a>
-<span class="sourceLineNo">027</span><a id="line.27">                        {{-1,-1}, {0,-1}, {1,-1},</a>
-<span class="sourceLineNo">028</span><a id="line.28">                         {-1, 0}, {0, 0}, {1, 0},</a>
-<span class="sourceLineNo">029</span><a id="line.29">                         {-1, 1}, {0, 1}, {1, 1}};</a>
-<span class="sourceLineNo">030</span><a id="line.30">                        </a>
-<span class="sourceLineNo">031</span><a id="line.31">                        // -------------------</a>
-<span class="sourceLineNo">032</span><a id="line.32">                        </a>
-<span class="sourceLineNo">033</span><a id="line.33">                protected static final int[][] R1 =</a>
-<span class="sourceLineNo">034</span><a id="line.34">                        {{-2,-1}, {-1,-1},</a>
-<span class="sourceLineNo">035</span><a id="line.35">                         {-2, 0}, {-1, 0}, {0, 0},</a>
-<span class="sourceLineNo">036</span><a id="line.36">                         {-2, 1}, {-1, 1}};</a>
-<span class="sourceLineNo">037</span><a id="line.37">                        </a>
-<span class="sourceLineNo">038</span><a id="line.38">                protected static final int[][] R2 =</a>
-<span class="sourceLineNo">039</span><a id="line.39">                        {{-2,-2}, {-1,-2},</a>
-<span class="sourceLineNo">040</span><a id="line.40">                         {-2,-1}, {-1,-1}, {0,-1},</a>
-<span class="sourceLineNo">041</span><a id="line.41">                                  {-1, 0}, {0, 0}};</a>
-<span class="sourceLineNo">042</span><a id="line.42">                        </a>
-<span class="sourceLineNo">043</span><a id="line.43">                protected static final int[][] R3 =</a>
-<span class="sourceLineNo">044</span><a id="line.44">                        {{-1,-2}, {0,-2}, {1,-2}, </a>
-<span class="sourceLineNo">045</span><a id="line.45">                         {-1,-1}, {0,-1}, {1,-1},</a>
-<span class="sourceLineNo">046</span><a id="line.46">                                  {0, 0}};</a>
-<span class="sourceLineNo">047</span><a id="line.47"></a>
-<span class="sourceLineNo">048</span><a id="line.48">                protected static final int[][] R4 =</a>
-<span class="sourceLineNo">049</span><a id="line.49">                        {        {1,-2}, {2,-2},</a>
-<span class="sourceLineNo">050</span><a id="line.50">                         {0,-1}, {1,-1}, {2,-1},</a>
-<span class="sourceLineNo">051</span><a id="line.51">                         {0, 0}, {1, 0}};</a>
-<span class="sourceLineNo">052</span><a id="line.52">                        </a>
-<span class="sourceLineNo">053</span><a id="line.53">                protected static final int[][] R5 =</a>
-<span class="sourceLineNo">054</span><a id="line.54">                        {        {1,-1}, {2,-1},</a>
-<span class="sourceLineNo">055</span><a id="line.55">                         {0, 0}, {1, 0}, {2, 0},</a>
-<span class="sourceLineNo">056</span><a id="line.56">                                 {1, 1}, {2, 1}};</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        </a>
-<span class="sourceLineNo">058</span><a id="line.58">                protected static final int[][] R6 =</a>
-<span class="sourceLineNo">059</span><a id="line.59">                        {{0,0}, {1,0},</a>
-<span class="sourceLineNo">060</span><a id="line.60">                         {0,1}, {1,1}, {2,1},</a>
-<span class="sourceLineNo">061</span><a id="line.61">                                {1,2}, {2,2}};</a>
-<span class="sourceLineNo">062</span><a id="line.62"></a>
-<span class="sourceLineNo">063</span><a id="line.63">                protected static final int[][] R7 =</a>
-<span class="sourceLineNo">064</span><a id="line.64">                        {        {0,0},</a>
-<span class="sourceLineNo">065</span><a id="line.65">                         {-1,1}, {0,1}, {1,1},</a>
-<span class="sourceLineNo">066</span><a id="line.66">                         {-1,2}, {0,2}, {1,2}};</a>
-<span class="sourceLineNo">067</span><a id="line.67">                        </a>
-<span class="sourceLineNo">068</span><a id="line.68">                protected static final int[][] R8 =</a>
-<span class="sourceLineNo">069</span><a id="line.69">                        {        {-1,0}, {0,0},</a>
-<span class="sourceLineNo">070</span><a id="line.70">                         {-2,1}, {-1,1}, {0,1},</a>
-<span class="sourceLineNo">071</span><a id="line.71">                         {-2,2}, {-1,2}};</a>
-<span class="sourceLineNo">072</span><a id="line.72">                        </a>
-<span class="sourceLineNo">073</span><a id="line.73">                        // -------------------</a>
-<span class="sourceLineNo">074</span><a id="line.74">                        </a>
-<span class="sourceLineNo">075</span><a id="line.75">                protected static final int[][][] SubRegions = {R1, R2, R3, R4, R5, R6, R7, R8};</a>
-<span class="sourceLineNo">076</span><a id="line.76">        }</a>
-<span class="sourceLineNo">077</span><a id="line.77">        </a>
-<span class="sourceLineNo">078</span><a id="line.78">}</a>
+<span class="sourceLineNo">011</span><a id="line.11">import imagingbook.common.util.ParameterBundle;</a>
+<span class="sourceLineNo">012</span><a id="line.12"></a>
+<span class="sourceLineNo">013</span><a id="line.13">/**</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Common interface for Nagao-Matsuyama filter implementations.</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * </a>
+<span class="sourceLineNo">016</span><a id="line.16"> * @author WB</a>
+<span class="sourceLineNo">017</span><a id="line.17"> */</a>
+<span class="sourceLineNo">018</span><a id="line.18">public interface NagaoMatsuyamaF {</a>
+<span class="sourceLineNo">019</span><a id="line.19">        </a>
+<span class="sourceLineNo">020</span><a id="line.20">        /**</a>
+<span class="sourceLineNo">021</span><a id="line.21">         * Parameter bundle for Nagao-Matsuyama filters (implementations of {@link NagaoMatsuyamaF}).</a>
+<span class="sourceLineNo">022</span><a id="line.22">         */</a>
+<span class="sourceLineNo">023</span><a id="line.23">        public static class Parameters implements ParameterBundle {</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">                @DialogLabel("Variance threshold (0,..,10)")</a>
+<span class="sourceLineNo">026</span><a id="line.26">                public double varThreshold = 0.0;</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">        }</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">        abstract class Constants {</a>
+<span class="sourceLineNo">031</span><a id="line.31">                protected static final int[][] R0 =</a>
+<span class="sourceLineNo">032</span><a id="line.32">                        {{-1,-1}, {0,-1}, {1,-1},</a>
+<span class="sourceLineNo">033</span><a id="line.33">                         {-1, 0}, {0, 0}, {1, 0},</a>
+<span class="sourceLineNo">034</span><a id="line.34">                         {-1, 1}, {0, 1}, {1, 1}};</a>
+<span class="sourceLineNo">035</span><a id="line.35">                        </a>
+<span class="sourceLineNo">036</span><a id="line.36">                protected static final int[][] R1 =</a>
+<span class="sourceLineNo">037</span><a id="line.37">                        {{-2,-1}, {-1,-1},</a>
+<span class="sourceLineNo">038</span><a id="line.38">                         {-2, 0}, {-1, 0}, {0, 0},</a>
+<span class="sourceLineNo">039</span><a id="line.39">                         {-2, 1}, {-1, 1}};</a>
+<span class="sourceLineNo">040</span><a id="line.40">                        </a>
+<span class="sourceLineNo">041</span><a id="line.41">                protected static final int[][] R2 =</a>
+<span class="sourceLineNo">042</span><a id="line.42">                        {{-2,-2}, {-1,-2},</a>
+<span class="sourceLineNo">043</span><a id="line.43">                         {-2,-1}, {-1,-1}, {0,-1},</a>
+<span class="sourceLineNo">044</span><a id="line.44">                                  {-1, 0}, {0, 0}};</a>
+<span class="sourceLineNo">045</span><a id="line.45">                        </a>
+<span class="sourceLineNo">046</span><a id="line.46">                protected static final int[][] R3 =</a>
+<span class="sourceLineNo">047</span><a id="line.47">                        {{-1,-2}, {0,-2}, {1,-2}, </a>
+<span class="sourceLineNo">048</span><a id="line.48">                         {-1,-1}, {0,-1}, {1,-1},</a>
+<span class="sourceLineNo">049</span><a id="line.49">                                  {0, 0}};</a>
+<span class="sourceLineNo">050</span><a id="line.50"></a>
+<span class="sourceLineNo">051</span><a id="line.51">                protected static final int[][] R4 =</a>
+<span class="sourceLineNo">052</span><a id="line.52">                        {        {1,-2}, {2,-2},</a>
+<span class="sourceLineNo">053</span><a id="line.53">                         {0,-1}, {1,-1}, {2,-1},</a>
+<span class="sourceLineNo">054</span><a id="line.54">                         {0, 0}, {1, 0}};</a>
+<span class="sourceLineNo">055</span><a id="line.55">                        </a>
+<span class="sourceLineNo">056</span><a id="line.56">                protected static final int[][] R5 =</a>
+<span class="sourceLineNo">057</span><a id="line.57">                        {        {1,-1}, {2,-1},</a>
+<span class="sourceLineNo">058</span><a id="line.58">                         {0, 0}, {1, 0}, {2, 0},</a>
+<span class="sourceLineNo">059</span><a id="line.59">                                 {1, 1}, {2, 1}};</a>
+<span class="sourceLineNo">060</span><a id="line.60">                        </a>
+<span class="sourceLineNo">061</span><a id="line.61">                protected static final int[][] R6 =</a>
+<span class="sourceLineNo">062</span><a id="line.62">                        {{0,0}, {1,0},</a>
+<span class="sourceLineNo">063</span><a id="line.63">                         {0,1}, {1,1}, {2,1},</a>
+<span class="sourceLineNo">064</span><a id="line.64">                                {1,2}, {2,2}};</a>
+<span class="sourceLineNo">065</span><a id="line.65"></a>
+<span class="sourceLineNo">066</span><a id="line.66">                protected static final int[][] R7 =</a>
+<span class="sourceLineNo">067</span><a id="line.67">                        {        {0,0},</a>
+<span class="sourceLineNo">068</span><a id="line.68">                         {-1,1}, {0,1}, {1,1},</a>
+<span class="sourceLineNo">069</span><a id="line.69">                         {-1,2}, {0,2}, {1,2}};</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        </a>
+<span class="sourceLineNo">071</span><a id="line.71">                protected static final int[][] R8 =</a>
+<span class="sourceLineNo">072</span><a id="line.72">                        {        {-1,0}, {0,0},</a>
+<span class="sourceLineNo">073</span><a id="line.73">                         {-2,1}, {-1,1}, {0,1},</a>
+<span class="sourceLineNo">074</span><a id="line.74">                         {-2,2}, {-1,2}};</a>
+<span class="sourceLineNo">075</span><a id="line.75">                        </a>
+<span class="sourceLineNo">076</span><a id="line.76">                protected static final int[][][] SubRegions = {R1, R2, R3, R4, R5, R6, R7, R8};</a>
+<span class="sourceLineNo">077</span><a id="line.77">        }</a>
+<span class="sourceLineNo">078</span><a id="line.78">        </a>
+<span class="sourceLineNo">079</span><a id="line.79">}</a>
 
 
 

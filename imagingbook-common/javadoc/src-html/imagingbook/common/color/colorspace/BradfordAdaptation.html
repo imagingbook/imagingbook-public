@@ -98,56 +98,55 @@
 <span class="sourceLineNo">088</span><a id="line.88"></a>
 <span class="sourceLineNo">089</span><a id="line.89">        // Creates a diagonal matrix with the ratios of the rgb components</a>
 <span class="sourceLineNo">090</span><a id="line.90">        // obtained by transforming the two white points</a>
-<span class="sourceLineNo">091</span><a id="line.91">        // TODO: no deed to create a matrix!!</a>
-<span class="sourceLineNo">092</span><a id="line.92">        private double[][] rgbMatrix(double[] rgb1, double[] rgb2) {</a>
-<span class="sourceLineNo">093</span><a id="line.93">                if (rgb1.length != rgb2.length)</a>
-<span class="sourceLineNo">094</span><a id="line.94">                        throw new IllegalArgumentException();</a>
-<span class="sourceLineNo">095</span><a id="line.95">                int n = rgb1.length;</a>
-<span class="sourceLineNo">096</span><a id="line.96">                double[][] Madapt = new double[n][n];</a>
-<span class="sourceLineNo">097</span><a id="line.97">                for (int i = 0; i &lt; n; i++) {</a>
-<span class="sourceLineNo">098</span><a id="line.98">                        Madapt[i][i] = rgb2[i] / rgb1[i];</a>
-<span class="sourceLineNo">099</span><a id="line.99">                }</a>
-<span class="sourceLineNo">100</span><a id="line.100">                return Madapt;</a>
-<span class="sourceLineNo">101</span><a id="line.101">        }</a>
-<span class="sourceLineNo">102</span><a id="line.102">        </a>
-<span class="sourceLineNo">103</span><a id="line.103">        // ------------------------------------------------------------------------------</a>
-<span class="sourceLineNo">104</span><a id="line.104">        </a>
-<span class="sourceLineNo">105</span><a id="line.105">//      public static void main(String[] args) {</a>
-<span class="sourceLineNo">106</span><a id="line.106">//              </a>
-<span class="sourceLineNo">107</span><a id="line.107">//              BradfordAdaptation adapt = new BradfordAdaptation(Illuminant.D65, Illuminant.D50);      // adapts from D65 -&gt; D50</a>
-<span class="sourceLineNo">108</span><a id="line.108">//              </a>
-<span class="sourceLineNo">109</span><a id="line.109">//              System.out.println("Mcat = \n" + Matrix.toString(adapt.getMcat()));</a>
-<span class="sourceLineNo">110</span><a id="line.110">//              System.out.println();</a>
+<span class="sourceLineNo">091</span><a id="line.91">        private double[][] rgbMatrix(double[] rgb1, double[] rgb2) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">                if (rgb1.length != rgb2.length)</a>
+<span class="sourceLineNo">093</span><a id="line.93">                        throw new IllegalArgumentException();</a>
+<span class="sourceLineNo">094</span><a id="line.94">                int n = rgb1.length;</a>
+<span class="sourceLineNo">095</span><a id="line.95">                double[][] Madapt = new double[n][n];</a>
+<span class="sourceLineNo">096</span><a id="line.96">                for (int i = 0; i &lt; n; i++) {</a>
+<span class="sourceLineNo">097</span><a id="line.97">                        Madapt[i][i] = rgb2[i] / rgb1[i];</a>
+<span class="sourceLineNo">098</span><a id="line.98">                }</a>
+<span class="sourceLineNo">099</span><a id="line.99">                return Madapt;</a>
+<span class="sourceLineNo">100</span><a id="line.100">        }</a>
+<span class="sourceLineNo">101</span><a id="line.101">        </a>
+<span class="sourceLineNo">102</span><a id="line.102">        // ------------------------------------------------------------------------------</a>
+<span class="sourceLineNo">103</span><a id="line.103">        </a>
+<span class="sourceLineNo">104</span><a id="line.104">//      public static void main(String[] args) {</a>
+<span class="sourceLineNo">105</span><a id="line.105">//              </a>
+<span class="sourceLineNo">106</span><a id="line.106">//              BradfordAdaptation adapt = new BradfordAdaptation(Illuminant.D65, Illuminant.D50);      // adapts from D65 -&gt; D50</a>
+<span class="sourceLineNo">107</span><a id="line.107">//              </a>
+<span class="sourceLineNo">108</span><a id="line.108">//              System.out.println("Mcat = \n" + Matrix.toString(adapt.getMcat()));</a>
+<span class="sourceLineNo">109</span><a id="line.109">//              System.out.println();</a>
+<span class="sourceLineNo">110</span><a id="line.110">//              </a>
 <span class="sourceLineNo">111</span><a id="line.111">//              </a>
-<span class="sourceLineNo">112</span><a id="line.112">//              </a>
-<span class="sourceLineNo">113</span><a id="line.113">//              PrintPrecision.set(4);</a>
-<span class="sourceLineNo">114</span><a id="line.114">//              ColorSpace cs = new sRgb65ColorSpace();</a>
-<span class="sourceLineNo">115</span><a id="line.115">//              float[] red = {1, 0, 0};</a>
-<span class="sourceLineNo">116</span><a id="line.116">//              float[] grn = {0, 1, 0};</a>
-<span class="sourceLineNo">117</span><a id="line.117">//              float[] blu = {0, 0, 1};</a>
-<span class="sourceLineNo">118</span><a id="line.118">//              </a>
-<span class="sourceLineNo">119</span><a id="line.119">//              float[] rgb1 = blu;</a>
-<span class="sourceLineNo">120</span><a id="line.120">//              </a>
-<span class="sourceLineNo">121</span><a id="line.121">//              System.out.println("rgb1 = " + Matrix.toString(rgb1));</a>
-<span class="sourceLineNo">122</span><a id="line.122">//              float[] XYZ65 = cs.toCIEXYZ(rgb1);</a>
-<span class="sourceLineNo">123</span><a id="line.123">//              System.out.println("XYZ65 = " + Matrix.toString(XYZ65));</a>
-<span class="sourceLineNo">124</span><a id="line.124">//              </a>
-<span class="sourceLineNo">125</span><a id="line.125">//              float[] xy65 = CieUtil.xyzToxy(XYZ65);</a>
-<span class="sourceLineNo">126</span><a id="line.126">//              System.out.println("xy65 = " + Matrix.toString(xy65));</a>
-<span class="sourceLineNo">127</span><a id="line.127">//              </a>
-<span class="sourceLineNo">128</span><a id="line.128">//              float[] XYZ50 = adapt.applyTo(XYZ65);</a>
-<span class="sourceLineNo">129</span><a id="line.129">//              System.out.println("XYZ50 = " + Matrix.toString(XYZ50));</a>
-<span class="sourceLineNo">130</span><a id="line.130">//              </a>
-<span class="sourceLineNo">131</span><a id="line.131">//              float[] xy50 = CieUtil.xyzToxy(XYZ50);</a>
-<span class="sourceLineNo">132</span><a id="line.132">//              System.out.println("xy50 = " + Matrix.toString(xy50));</a>
-<span class="sourceLineNo">133</span><a id="line.133">//              </a>
-<span class="sourceLineNo">134</span><a id="line.134">//              float[] rgb2 = cs.fromCIEXYZ(XYZ65);</a>
-<span class="sourceLineNo">135</span><a id="line.135">//              System.out.println("rgb2 = " + Matrix.toString(rgb2));</a>
-<span class="sourceLineNo">136</span><a id="line.136">//              </a>
-<span class="sourceLineNo">137</span><a id="line.137">//      }</a>
-<span class="sourceLineNo">138</span><a id="line.138">//      </a>
-<span class="sourceLineNo">139</span><a id="line.139">        </a>
-<span class="sourceLineNo">140</span><a id="line.140">}</a>
+<span class="sourceLineNo">112</span><a id="line.112">//              PrintPrecision.set(4);</a>
+<span class="sourceLineNo">113</span><a id="line.113">//              ColorSpace cs = new sRgb65ColorSpace();</a>
+<span class="sourceLineNo">114</span><a id="line.114">//              float[] red = {1, 0, 0};</a>
+<span class="sourceLineNo">115</span><a id="line.115">//              float[] grn = {0, 1, 0};</a>
+<span class="sourceLineNo">116</span><a id="line.116">//              float[] blu = {0, 0, 1};</a>
+<span class="sourceLineNo">117</span><a id="line.117">//              </a>
+<span class="sourceLineNo">118</span><a id="line.118">//              float[] rgb1 = blu;</a>
+<span class="sourceLineNo">119</span><a id="line.119">//              </a>
+<span class="sourceLineNo">120</span><a id="line.120">//              System.out.println("rgb1 = " + Matrix.toString(rgb1));</a>
+<span class="sourceLineNo">121</span><a id="line.121">//              float[] XYZ65 = cs.toCIEXYZ(rgb1);</a>
+<span class="sourceLineNo">122</span><a id="line.122">//              System.out.println("XYZ65 = " + Matrix.toString(XYZ65));</a>
+<span class="sourceLineNo">123</span><a id="line.123">//              </a>
+<span class="sourceLineNo">124</span><a id="line.124">//              float[] xy65 = CieUtil.xyzToxy(XYZ65);</a>
+<span class="sourceLineNo">125</span><a id="line.125">//              System.out.println("xy65 = " + Matrix.toString(xy65));</a>
+<span class="sourceLineNo">126</span><a id="line.126">//              </a>
+<span class="sourceLineNo">127</span><a id="line.127">//              float[] XYZ50 = adapt.applyTo(XYZ65);</a>
+<span class="sourceLineNo">128</span><a id="line.128">//              System.out.println("XYZ50 = " + Matrix.toString(XYZ50));</a>
+<span class="sourceLineNo">129</span><a id="line.129">//              </a>
+<span class="sourceLineNo">130</span><a id="line.130">//              float[] xy50 = CieUtil.xyzToxy(XYZ50);</a>
+<span class="sourceLineNo">131</span><a id="line.131">//              System.out.println("xy50 = " + Matrix.toString(xy50));</a>
+<span class="sourceLineNo">132</span><a id="line.132">//              </a>
+<span class="sourceLineNo">133</span><a id="line.133">//              float[] rgb2 = cs.fromCIEXYZ(XYZ65);</a>
+<span class="sourceLineNo">134</span><a id="line.134">//              System.out.println("rgb2 = " + Matrix.toString(rgb2));</a>
+<span class="sourceLineNo">135</span><a id="line.135">//              </a>
+<span class="sourceLineNo">136</span><a id="line.136">//      }</a>
+<span class="sourceLineNo">137</span><a id="line.137">//      </a>
+<span class="sourceLineNo">138</span><a id="line.138">        </a>
+<span class="sourceLineNo">139</span><a id="line.139">}</a>
 
 
 

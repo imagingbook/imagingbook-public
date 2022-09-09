@@ -15,6 +15,7 @@ import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.PixelPack;
 
 /**
+ * <p>
  * Vector version of the Nagao-Matsuyama filter.
  * This class implements a 5x5 Nagao-Matsuyama filter, as described in [1].
  * See Sec. 17.1 of [2] for additional details.

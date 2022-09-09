@@ -11,11 +11,9 @@ package imagingbook.common.filter.nonlinear;
 
 import java.util.Arrays;
 
-import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.image.PixelPack.PixelSlice;
-import imagingbook.common.image.access.OutOfBoundsStrategy;
 
 /**
  * Ordinary (scalar) median filter for color images implemented
@@ -27,34 +25,29 @@ import imagingbook.common.image.access.OutOfBoundsStrategy;
  */
 public class ScalarMedianFilter extends GenericFilterScalar {
 	
-	final Parameters params;
-	final CircularMask mask;
-	final int maskCount;
-	final int xc, yc;
-	final int[][] maskArray;
-	final float[] supportRegion;
-	final int medianIndex;
+	public static class Parameters {
+		/** Filter radius */
+		public double radius = 3.0;
+	}
 	
+	private final CircularMask mask;
+	private final int maskCount;
+	private final int xc, yc;
+	private final int[][] maskArray;
+	private final float[] supportRegion;
+	private final int medianIndex;
 	
-	public ScalarMedianFilter(ImageProcessor ip) {
+	public ScalarMedianFilter() {
 		this(new Parameters());
 	}
 	
 	public ScalarMedianFilter(Parameters params) {
-		this.params = params;
 		this.mask = new CircularMask(params.radius);
 		this.maskCount = mask.getCount();
 		this.xc = this.yc = mask.getCenter();
 		this.maskArray = mask.getMask();
 		this.supportRegion = new float[maskCount];
 		this.medianIndex = maskCount/2;
-	}
-
-	public static class Parameters {
-		/** Filter radius */
-		public double radius = 3.0;
-		/** Out-of-bounds strategy */
-		public OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;
 	}
 
 	//-------------------------------------------------------------------------------------
