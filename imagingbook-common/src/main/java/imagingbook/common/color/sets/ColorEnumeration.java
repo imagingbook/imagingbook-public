@@ -9,33 +9,43 @@
 package imagingbook.common.color.sets;
 
 import java.awt.Color;
+import java.util.Objects;
 
 /**
- * Used for color enum types. This means that every enum class (item) implements this interface.
+ * Interface used for color enum types.
  * @author WB
  *
  */
 public interface ColorEnumeration {
 	
+	/**
+	 * Returns the enum item's {@link Color}.
+	 * @return
+	 */
 	public Color getColor();
-	
-	public default int getRGB() {
-		return getColor().getRGB();
-	}
 
+	/**
+	 * Returns an array of colors defined by the specified
+	 * {@link ColorEnumeration} enum class.
+	 * @param clazz a {@link ColorEnumeration} enum class
+	 * @return a {@link Color} array
+	 */
 	public static Color[] getColors(Class<? extends ColorEnumeration> clazz) {
-		ColorEnumeration[] cols = clazz.getEnumConstants(); 
-		if (cols == null) {
-			throw new RuntimeException(ColorEnumeration.class.getSimpleName() + " may only be implemented by enum types!");
+		if (!clazz.isEnum()) {
+			throw new RuntimeException(ColorEnumeration.class.getSimpleName() + 
+					" may only be implemented by enum types!");
 		}
-//		Color[] colors = new Color[cols.length];
-//		for (int i = 0; i < cols.length; i++) {
-//			colors[i] = cols[i].getColor();
-//		}
-//		return colors;
-		return getColors(cols);
+		ColorEnumeration[] colorItems = clazz.getEnumConstants(); 
+		Objects.requireNonNull(colorItems);
+		return getColors(colorItems);
 	}
 	
+	/**
+	 * Returns an array of colors for the specified 
+	 * {@link ColorEnumeration} items.
+	 * @param cols a sequence of {@link ColorEnumeration} items
+	 * @return a {@link Color} array
+	 */
 	public static Color[] getColors(ColorEnumeration... cols) {
 		Color[] colors = new Color[cols.length];
 		for (int i = 0; i < cols.length; i++) {
@@ -44,13 +54,12 @@ public interface ColorEnumeration {
 		return colors;
 	}
 	
-	
-	public static void main(String[] args) {
-		
-		Color[] colors = ColorEnumeration.getColors(BasicAwtColor.class);
-		for (Color c : colors) {
-			System.out.println(c.toString());
-		}
-	}
+//	public static void main(String[] args) {
+//		Color[] colors = ColorEnumeration.getColors(BasicAwtColor.class);
+//		
+//		for (Color c : colors) {
+//			System.out.println(c.toString());
+//		}
+//	}
 	
 }
