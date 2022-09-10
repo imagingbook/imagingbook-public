@@ -24,6 +24,7 @@ import ij.gui.GenericDialog;
 import ij.io.OpenDialog;
 import ij.io.Opener;
 import ij.plugin.PlugIn;
+import ij.plugin.filter.Convolver;
 import ij.plugin.filter.PlugInFilter;
 import ij.plugin.filter.PlugInFilterRunner;
 import ij.process.ByteProcessor;
@@ -786,6 +787,57 @@ public abstract class IjUtils {
 			throw new RuntimeException(e.getMessage());	// should never happen
 		}
 		return run(thePlugIn, arg);
+	}
+
+	
+	//  static methods for filtering images using ImageJ's {@link Convolver} class. 
+
+	/**
+	 * Applies a one-dimensional convolution kernel to the given image,
+	 * which is modified. The 1D kernel is applied in horizontal direction only.#
+	 * The supplied filter kernel is not normalized.
+	 * 
+	 * @param fp the image to be filtered (modified)
+	 * @param h the filter kernel
+	 * @see Convolver
+	 */
+	public static void convolveX (ImageProcessor fp, float[] h) { // TODO: unit test missing
+		Convolver conv = new Convolver();
+		conv.setNormalize(false);
+		conv.convolve(fp, h, h.length, 1);
+	}
+
+	/**
+	 * Applies a one-dimensional convolution kernel to the given image,
+	 * which is modified. The 1D kernel is applied in vertical direction only.
+	 * The supplied filter kernel is not normalized.
+	 * 
+	 * @param fp the image to be filtered (modified)
+	 * @param h the filter kernel
+	 * @see Convolver
+	 */
+	public static void convolveY (ImageProcessor fp, float[] h) { // TODO: unit test missing
+		Convolver conv = new Convolver();
+		conv.setNormalize(false);
+		conv.convolve(fp, h, 1, h.length);
+	}
+
+	/**
+	 * Applies a one-dimensional convolution kernel to the given image,
+	 * which is modified.
+	 * The 1D kernel is applied twice, once in horizontal and once in
+	 * vertical direction.
+	 * The supplied filter kernel is not normalized.
+	 * 
+	 * @param fp the image to be filtered (modified)
+	 * @param h the filter kernel
+	 * @see Convolver
+	 */
+	public static void convolveXY (ImageProcessor fp, float[] h) { // TODO: unit test missing
+		Convolver conv = new Convolver();
+		conv.setNormalize(false);
+		conv.convolve(fp, h, h.length, 1);
+		conv.convolve(fp, h, 1, h.length);
 	}
 
 }
