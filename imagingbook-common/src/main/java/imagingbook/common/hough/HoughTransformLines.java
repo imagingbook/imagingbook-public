@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ij.IJ;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
@@ -26,29 +25,21 @@ import imagingbook.common.util.progress.ProgressReporter;
  * to a single accumulator cell but gets distributed over two neighboring
  * (radial) cells to reduce aliasing effects. Thus we accumulate non-integer
  * values and therefore the various accumulators are of type {@code float[][]}.
- *
- * TODO: revise constructors and parameters (remove IJ progress reporting)
- * TODO: add bias correction
  * 
  * @author W. Burger
  * @version 2022/04/01
+ * @version 2022/09/10	removed ImageJ progress reporting
  */
 public class HoughTransformLines implements ProgressReporter {
+	
+	// TODO: revise constructors and parameters, add bias correction
 
-	public static class Parameters implements ParameterBundle {
-		
+	public static class Parameters implements ParameterBundle {	
 		/** Number of angular steps over [0, pi] */
-		public int nAng = 256;
-		
+		public int nAng = 256;		
 		/** Number of radial steps in each pos/neg direction (accum. size = 2 * nRad + 1) */
 		public int nRad = 128;
-		
-		public boolean showProgress = true;
-		public boolean showCheckImage = true;
-		public boolean debug = false;
 	}
-
-	private final Parameters params;
 
 	private final int nAng; // number of angular steps over [0, pi]
 	private final int nRad; // number of radial steps in each pos/neg direction
@@ -72,7 +63,7 @@ public class HoughTransformLines implements ProgressReporter {
 	// -------------- public constructor(s) ------------------------
 
 	/**
-	 * Creates a new Hough transform from the binary image I.
+	 * Constructor. Creates a new Hough transform from the binary image.
 	 * 
 	 * @param I      input image, relevant (edge) points have pixel values greater 0.
 	 * @param params parameter object.
@@ -87,7 +78,7 @@ public class HoughTransformLines implements ProgressReporter {
 	}
 
 	/**
-	 * Creates a new Hough transform from a sequence of 2D points. Parameters M, N
+	 * Constructor. Creates a new Hough transform from a sequence of 2D points. Parameters M, N
 	 * are only used to specify the reference point (usually at the center of the
 	 * image). Use this constructor if the relevant image points are collected
 	 * separately.
@@ -105,7 +96,8 @@ public class HoughTransformLines implements ProgressReporter {
 	// Non-public constructor used by public constructors (to initialize all final
 	// members variables).
 	private HoughTransformLines(int width, int height, Parameters params) {
-		this.params = (params == null) ? new Parameters() : params;
+		if (params == null) 
+			params = new Parameters();
 		this.width = width;
 		this.height = height;
 		this.xRef = width / 2; // integer value
@@ -274,34 +266,22 @@ public class HoughTransformLines implements ProgressReporter {
 	}
 
 	private void process(ByteProcessor ip, float[][] acc) {
-		if (params.showProgress)
-			IJ.showStatus("filling accumulator ...");
 		for (int v = 0; v < height; v++) {
-			if (params.showProgress)
-				IJ.showProgress(v, height);
 			for (int u = 0; u < width; u++) {
 				if (ip.get(u, v) != 0) { // this is a foreground (edge) pixel - use ImageAccessor??
 					processPoint(u, v, acc);
 				}
 			}
 		}
-		if (params.showProgress)
-			IJ.showProgress(1, 1);
 	}
 
 	private void process(Pnt2d[] points, float[][] acc) {
-		if (params.showProgress)
-			IJ.showStatus("filling accumulator ...");
 		for (int i = 0; i < points.length; i++) {
-			if (params.showProgress && i % 50 == 0)
-				IJ.showProgress(i, points.length);
 			Pnt2d p = points[i];
 			if (p != null) {
 				processPoint(p.getX(), p.getY(), acc);
 			}
 		}
-		if (params.showProgress)
-			IJ.showProgress(1, 1);
 	}
 
 	private void processPoint(double u, double v, float[][] acc) {
@@ -328,9 +308,6 @@ public class HoughTransformLines implements ProgressReporter {
 	 * positions in 'accumulatorMax'.
 	 */
 	private void findLocalMaxima() {
-		if (params.showProgress)
-			IJ.showStatus("finding local maxima");
-		int count = 0;
 		for (int ai = 1; ai <= accWidth; ai++) {	// note the range!
 			for (int ri = 1; ri < accHeight - 1; ri++) {
 				float vC = accumulatorExt[ai][ri];	// center value
@@ -348,20 +325,15 @@ public class HoughTransformLines implements ProgressReporter {
 						accumulatorMax[ai % accWidth][ri] = vC;	// take care of ai == accWidth
 					else
 						accumulatorMax[ai % accWidth][accHeight - ri - 1] = vC;
-					count++;
 				}
 			}
 		}
-		if (params.debug)
-			IJ.log("found maxima: " + count);
 	}
 	
 	/**
 	 * Creates the extended 2D accumulator array 
 	 */
 	private void makeAccumulatorExt() {
-		if (params.showProgress)
-			IJ.showStatus("making extended accumulator");
 		for (int ai = 0; ai < accWidth; ai++) {
 			for (int ri = 0; ri < accHeight; ri++) {
 				// insert original accumulator into the left side
@@ -375,7 +347,7 @@ public class HoughTransformLines implements ProgressReporter {
 	@Override
 	public double getProgress() {
 		// TODO report progress state
-		return 0;
+		return 1;
 	}
 	
 }
