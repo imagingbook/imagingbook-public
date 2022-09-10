@@ -13,14 +13,16 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import ij.process.ImageProcessor;
+import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.testimages.FilterTestImage;
 import imagingbook.testutils.ImageTestUtils;
 
 public class GaussianFilterTest {
 	
-	static double SIGMA = 3.0;
-	static float TOL = 1f;	// deviations +/-1 are possible due to rounding to integer images
+	private static double SIGMA = 3.0;
+	private static float TOL = 1f;	// deviations +/-1 are possible due to rounding to integer images
+	private static final OutOfBoundsStrategy OBS = OutOfBoundsStrategy.NearestBorder;
 
 	ImageResource res1A = FilterTestImage.MonasterySmall;
 	ImageResource res1B = FilterTestImage.MonasterySmallGauss3;
@@ -36,7 +38,7 @@ public class GaussianFilterTest {
 		ImageProcessor ipB = res1B.getImage().getProcessor();
 		
 		//new GaussianFilter(ipA, SIGMA).apply();
-		new GaussianFilter(SIGMA).applyTo(ipA);
+		new GaussianFilter(SIGMA).applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
 	
@@ -45,7 +47,7 @@ public class GaussianFilterTest {
 		ImageProcessor ipA = res2A.getImage().getProcessor();
 		ImageProcessor ipB = res2B.getImage().getProcessor();
 		
-		new GaussianFilter(SIGMA).applyTo(ipA);
+		new GaussianFilter(SIGMA).applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
 	
@@ -56,7 +58,7 @@ public class GaussianFilterTest {
 		ImageProcessor ipA = res1A.getImage().getProcessor();
 		ImageProcessor ipB = res1B.getImage().getProcessor();
 		
-		new GaussianFilter(SIGMA).applyTo(ipA);
+		new GaussianFilter(SIGMA).applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
 
@@ -65,7 +67,7 @@ public class GaussianFilterTest {
 		ImageProcessor ipA = res2A.getImage().getProcessor();
 		ImageProcessor ipB = res2B.getImage().getProcessor();
 		
-		new GaussianFilter(SIGMA).applyTo(ipA);
+		new GaussianFilter(SIGMA).applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
 }

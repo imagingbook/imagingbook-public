@@ -20,14 +20,14 @@ import imagingbook.testutils.ImageTestUtils;
 
 public class LinearFilterTest {
 	
-	static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.NearestBorder;
+	private static final OutOfBoundsStrategy OBS = OutOfBoundsStrategy.NearestBorder;
 	
-	static float[][] H1 = {
+	private static final float[][] H1 = {
 			{0, 0, 0},
 			{0, 1, 0},
 			{0, 0, 0}};
 	
-	static float[][] H2 = {
+	private static final float[][] H2 = {
 			{1, 2, 1},
 			{2, 4, 2},
 			{1, 2, 1}};

@@ -14,14 +14,23 @@ import static imagingbook.common.math.Arithmetic.sqr;
  * This class represents a 2D filter kernel.
  * 
  * @author WB
- * @version 2020/12/29
+ * @version 2022/09/10
  */
 public class GaussianKernel2D extends Kernel2D {
 	
+	/**
+	 * Constructor with individual sigmas for x/y.
+	 * @param sigmaX sigma for X
+	 * @param sigmaY sigma for Y
+	 */
 	public GaussianKernel2D(double sigmaX, double sigmaY) {
 		super(makeGaussKernel2D(sigmaX, sigmaY));
 	}
 	
+	/**
+	 * Constructor with common sigma for x/y.
+	 * @param sigma common sigma for X/Y
+	 */
 	public GaussianKernel2D(double sigma) {
 		super(makeGaussKernel2D(sigma, sigma));
 	}
@@ -36,7 +45,22 @@ public class GaussianKernel2D extends Kernel2D {
 	 * @param sigmaY the width (standard deviation) of the Gaussian in y-direction
 	 * @return the Gaussian filter kernel
 	 */
-	public static float[][] makeGaussKernel2D(double sigmaX, double sigmaY){
+	public static float[][] makeGaussKernel2D(double sigmaX, double sigmaY) {
+		return makeGaussKernel2D(sigmaX, sigmaY, true);
+	}
+	
+	/**
+	 * Creates and returns a 2D Gaussian filter kernel large enough
+	 * to avoid truncation effects. The associated array is odd-sized in
+	 * both dimensions.
+	 * The returned kernel is optionally normalized.
+	 * 
+	 * @param sigmaX the width (standard deviation) of the Gaussian in x-direction
+	 * @param sigmaY the width (standard deviation) of the Gaussian in y-direction
+	 * @param normalize set true to normalize the kernel
+	 * @return the Gaussian filter kernel
+	 */
+	public static float[][] makeGaussKernel2D(double sigmaX, double sigmaY, boolean normalize) {
 		final int radX = (int) Math.ceil(GaussianKernel1D.SIZE_FACTOR * sigmaX);
 		final int radY = (int) Math.ceil(GaussianKernel1D.SIZE_FACTOR * sigmaY);
 		final int sizeX = radX + radX + 1;
@@ -54,6 +78,6 @@ public class GaussianKernel2D extends Kernel2D {
 				kernel[i][j] = (float) g;
 			}
 		}
-		return normalize(kernel);	// we normalize just in case
+		return (normalize) ? normalize(kernel) : kernel;
 	}
 }

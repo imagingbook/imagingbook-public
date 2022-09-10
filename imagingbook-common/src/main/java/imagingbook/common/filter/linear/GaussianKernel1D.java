@@ -28,13 +28,26 @@ public class GaussianKernel1D extends Kernel1D {
 	
 	/**
 	 * Creates and returns a 1D Gaussian filter kernel large enough
-	 * to avoid truncation effects. The resulting array is odd-sized.
+	 * to avoid truncation effects. The length of the resulting array is odd.
 	 * The returned kernel is normalized.
 	 * 
 	 * @param sigma the width (standard deviation) of the Gaussian
 	 * @return the Gaussian filter kernel
 	 */
 	public static float[] makeGaussKernel1D(double sigma) {
+		return makeGaussKernel1D(sigma, true);
+	}
+	
+	/**
+	 * Creates and returns a 1D Gaussian filter kernel large enough
+	 * to avoid truncation effects. The length of the resulting array is odd.
+	 * The returned kernel is optionally normalized.
+	 * 
+	 * @param sigma the width (standard deviation) of the Gaussian
+	 * @param normalize set true to normalize the kernel
+	 * @return the Gaussian filter kernel
+	 */
+	public static float[] makeGaussKernel1D(double sigma, boolean normalize) {
 		if (sigma < 0) {
 			throw new IllegalArgumentException("positive sigma required for Gaussian kernel");
 		}
@@ -46,8 +59,8 @@ public class GaussianKernel1D extends Kernel1D {
 		for (int i = 0; i < kernel.length; i++) {
 			kernel[i] = (float) Math.exp(-0.5 * sqr(rad - i) / sigma2);
 		}
-	
-		return normalize(kernel);
+		
+		return (normalize) ? normalize(kernel) : kernel;
 	}
 	
 }

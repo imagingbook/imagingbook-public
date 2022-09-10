@@ -53,7 +53,7 @@ public class TschumperleDericheFilterTest {
 	public void testGray() {
 		ImageProcessor ipA = monastery.duplicate();
 		GenericFilter filter = new TschumperleDericheFilter(params);
-		filter.applyTo(ipA);
+		filter.applyTo(ipA, OBS);
 		ImageProcessor ipB = FilterTestImage.MonasterySmallTschumperleIter5.getImage().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
@@ -65,7 +65,7 @@ public class TschumperleDericheFilterTest {
 	public void testColor() {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new TschumperleDericheFilter(params);
-		filter.applyTo(ipA);
+		filter.applyTo(ipA, OBS);
 		ImageProcessor ipB = FilterTestImage.ClownSmallTschumperleIter5.getImage().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));

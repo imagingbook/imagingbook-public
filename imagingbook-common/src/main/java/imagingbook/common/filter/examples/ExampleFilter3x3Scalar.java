@@ -31,6 +31,13 @@ import imagingbook.common.math.Matrix;
  * GenericFilter filter = new ExampleFilter3x3Scalar();
  * filter.applyTo(ip);		// modifies ip
  * </pre>
+ * <p>
+ * Note: This is merely a linear filter with a custom kernel to demonstrate
+ * the concept of a generic filter.
+ * In practice (depending on the type of kernel) this would be implemented
+ * as a sub-class of {@link LinearFilter} or {@link LinearFilterSeparable},
+ * which is much more efficient.
+ * </p>
  * 
  * @author WB
  * @see LinearFilter
@@ -40,17 +47,17 @@ import imagingbook.common.math.Matrix;
  */
 public class ExampleFilter3x3Scalar extends GenericFilterScalar {
 	
-	// custom convolution kernel
+	// custom (nonsymmetric) convolution kernel
 	private final static float[][] H = {
-			{1, 2, 1},
-			{2, 4, 2},
-			{1, 2, 1}};
+			{0, 1, 2},
+			{7, 8, 3},
+			{6, 5, 4}};
 	
 	private final static int width = H[0].length;			// = 3
 	private final static int height = H.length;				// = 3
 	private final static int xc = width / 2;				// = 1
 	private final static int yc = height / 2;				// = 1
-	private final static float s = (float) Matrix.sum(H);	// = 16
+	private final static float s = (float) Matrix.sum(H);
 	
 	@Override
 	protected float doPixel(PixelSlice slice, int u, int v) {	// return scalar value

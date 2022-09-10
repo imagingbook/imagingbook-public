@@ -30,7 +30,7 @@ public class LinearFilter extends GenericFilterScalar {
 	private final int xc, yc;			// 'hot spot' coordinates
 	
 	/**
-	 * Constructor. Only the 2D filter kernel (see {@link Kernel2D}) needs to be specified.
+	 * Constructor, only the 2D filter kernel needs to be specified.
 	 * 
 	 * @param kernel the 2D filter kernel
 	 */

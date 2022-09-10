@@ -30,8 +30,8 @@ public class LinearFilterSeparable extends GenericFilterScalarSeparable {
 	private float[] hY = null;			// the vertical kernel array
 	private int width = 0;				// width of the effective kernel
 	private int height = 0;				// height of the effective kernel
-	private int xc = 0;						// 'hot spot' x-position
-	private int yc = 0;						// 'hot spot' y-position
+	private int xc = 0;					// 'hot spot' x-position
+	private int yc = 0;					// 'hot spot' y-position
 	
 	/**
 	 * Constructor, takes a 1D convolution kernel to be applied both

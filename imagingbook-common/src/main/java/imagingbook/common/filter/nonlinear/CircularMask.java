@@ -16,7 +16,7 @@ import imagingbook.common.ij.GuiTools;
 
 public class CircularMask {
 	
-	private final int center;			// mask center position
+	private final int center;			// mask center position (x/y)
 	private final int count;			// number of nonzero mask elements
 	private final int[][] mask;			// mask[x][y]  specifies the support region
 		

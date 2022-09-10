@@ -23,9 +23,9 @@ public class Kernel1D {
 	private final int width;
 	
 	/**
-	 * Convenience constructor.
-	 * Assumes that the kernel's hot spot is at its center,
-	 * does normalization by default.
+	 * Constructor.
+	 * The kernel's hot spot is at its center.
+	 * The kernel is normalized.
 	 * 
 	 * @param h the 1D kernel array
 	 */
@@ -34,7 +34,9 @@ public class Kernel1D {
 	}
 	
 	/**
-	 * Full constructor.
+	 * Constructor.
+	 * The hot spot index must be specified.
+	 * The kernel is optionally normalized.
 	 * 
 	 * @param h the 1D kernel array
 	 * @param xc the x-coordinate of the kernel's hot spot, default is (width-1)/2

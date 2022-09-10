@@ -30,6 +30,9 @@ public enum FilterTestImage implements ImageResource {
 	MonasterySmallGauss3("monastery-small-gauss3.png"),
 	ClownGauss3("clown-gauss3.png"),
 	
+	ClownExampleFilter3x3Scalar("clown-examplefilter3x3scalar.png"),
+	ClownExampleFilter3x3Vector("clown-examplefilter3x3vector.png"),
+	
 	ClownMedianScalar3("clown-median-scalar-3.png"),
 	ClownMedianVector3L1("clown-median-vector-3-L1.png"),
 	ClownMedianVectorsharpen3L1("clown-median-vectorsharpen-3-L1.png"),

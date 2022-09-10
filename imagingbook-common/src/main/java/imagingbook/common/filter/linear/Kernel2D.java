@@ -23,9 +23,10 @@ public class Kernel2D {
 	private final int width, height;
 	
 	/**
-	 * Convenience constructor.
-	 * Assumes that the kernel's hot spot is at its center,
-	 * does normalization by default.
+	 * Constructor.
+	 * Assumes that the kernel's structure is H[y][x] (i.e., vertical coordinate first)
+	 * and the hot spot is at its center.
+	 * The kernel is normalized by default.
 	 * 
 	 * @param H the 2D kernel array
 	 */
@@ -35,6 +36,9 @@ public class Kernel2D {
 	
 	/**
 	 * Full constructor.
+	 * Assumes that the kernel's structure is H[y][x] (i.e., vertical coordinate first),
+	 * the hot spot position must be specified. 
+	 * The kernel is optionally normalized.
 	 * 
 	 * @param H the 2D kernel array
 	 * @param xc the x-coordinate of the kernel's hot spot, default is (width-1)/2
