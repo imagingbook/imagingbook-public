@@ -13,29 +13,33 @@ import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.common.util.progress.ProgressReporter;
 
 /**
+ * Implementation of {@link ProgressMonitor} which sends the current
+ * completion state to ImageJ's progress bar (if ImageJ is running).
  * An instance of this class monitors the progress of another object (task)
  * by querying its status periodically.
- * TODO: Make the associated action more generic (currently progress information is 
- * used to update ImageJ's peogress bar.
+ * 
  * @author WB
+ * @see ProgressReporter
+ * @see ProgressMonitor
  *
  */
-public class ProgressBarMonitor extends ProgressMonitor {
+public class IjProgressBarMonitor extends ProgressMonitor {
 	
-	private final boolean ijRunning;
-	private boolean ijUpdateProgressBar = true;
-	
-	public ProgressBarMonitor(ProgressReporter target) {
+	public IjProgressBarMonitor(ProgressReporter target) {
 		super(target);
-		this.ijRunning = (IJ.getInstance() != null);
 	}
 
 	@Override
 	public void handleProgress(double progress, long nanoTime) {
-		if (ijRunning && ijUpdateProgressBar) {
+		if (IJ.getInstance() != null) {
 			IJ.showProgress(progress);
 		}
-		
+	}
+	
+	@Override
+	public void close() {
+		super.close();
+		IJ.showProgress(1);
 	}
 
 }

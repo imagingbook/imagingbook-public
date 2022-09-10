@@ -19,7 +19,7 @@ import imagingbook.common.filter.edgepreserving.PeronaMalikF.ColorMode;
 import imagingbook.common.filter.edgepreserving.PeronaMalikF.Parameters;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.util.progress.ProgressMonitor;
-import imagingbook.common.util.progress.ij.ProgressBarMonitor;
+import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * This plugin demonstrates the use of the PeronaMalikFilter class.
@@ -54,7 +54,7 @@ public class Perona_Malik_Filter implements PlugInFilter {
 			filter = new PeronaMalikFilterScalar(params);
 		}
 		
-		try (ProgressMonitor m = new ProgressBarMonitor(filter)) {
+		try (ProgressMonitor m = new IjProgressBarMonitor(filter)) {
 			filter.applyTo(ip);
 		}
 	}

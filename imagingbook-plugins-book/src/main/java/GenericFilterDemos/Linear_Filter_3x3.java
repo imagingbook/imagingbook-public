@@ -15,13 +15,13 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.filter.linear.LinearFilter;
 import imagingbook.common.util.progress.ProgressMonitor;
-import imagingbook.common.util.progress.ij.ProgressBarMonitor;
+import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * This ImageJ plugin shows how to construct a generic linear filter
  * using the classes {@link LinearFilter} and {@link Kernel2D}.
  * It also shows the use of classes {@link ProgressMonitor} and
- * {@link ProgressBarMonitor}
+ * {@link IjProgressBarMonitor}
  * This plugin works for all types of images.
  * On RGB color images, the filter is applied independently
  * to the three color channels.
@@ -50,7 +50,7 @@ public class Linear_Filter_3x3 implements PlugInFilter {
 
     public void run(ImageProcessor ip) {
     	GenericFilter filter = new LinearFilter(new Kernel2D(H));
-    	try (ProgressMonitor m = new ProgressBarMonitor(filter)) {
+    	try (ProgressMonitor m = new IjProgressBarMonitor(filter)) {
     		m.setWaitTime(100);	// 100ms (default is 250ms)
     		filter.applyTo(ip);
     	}

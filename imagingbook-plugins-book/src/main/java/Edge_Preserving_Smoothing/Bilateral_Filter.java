@@ -20,7 +20,7 @@ import imagingbook.common.filter.edgepreserving.BilateralFilterVectorSeparable;
 import imagingbook.common.filter.edgepreserving.BilateralF.Parameters;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.util.progress.ProgressMonitor;
-import imagingbook.common.util.progress.ij.ProgressBarMonitor;
+import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * This plugin demonstrates the use of the (full) BilateralFilter class.
@@ -62,7 +62,7 @@ public class Bilateral_Filter implements PlugInFilter {
 					new BilateralFilterScalar(params);
 		}
 		
-		try (ProgressMonitor m = new ProgressBarMonitor(filter)) {
+		try (ProgressMonitor m = new IjProgressBarMonitor(filter)) {
 			filter.applyTo(ip);
 		}
 	}

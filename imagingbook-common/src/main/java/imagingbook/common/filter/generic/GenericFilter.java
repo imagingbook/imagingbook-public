@@ -11,14 +11,14 @@ package imagingbook.common.filter.generic;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.examples.ExampleFilter3x3Scalar;
 import imagingbook.common.filter.examples.ExampleFilter3x3Vector;
-import imagingbook.common.filter.examples.FilterShowProgressExample;
+import imagingbook.common.filter.examples.FilterProgressExample;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.image.PixelPack.PixelSlice;
 import imagingbook.common.image.access.GridIndexer2D;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.common.util.progress.ProgressReporter;
-import imagingbook.common.util.progress.ij.ProgressBarMonitor;
+import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * <p>This is the (abstract) root class of the generic filter hierarchy.
@@ -74,7 +74,7 @@ import imagingbook.common.util.progress.ij.ProgressBarMonitor;
  *     filter.applyTo(ip);
  * }</pre>
  * <p>
- * During execution of the filter, the {@link ProgressBarMonitor} instance queries the filter
+ * During execution of the filter, the {@link IjProgressBarMonitor} instance queries the filter
  * periodically (in a separate thread) for its progress status and updates ImageJ's progress
  * bar.
  * </p>
@@ -281,7 +281,7 @@ public abstract class GenericFilter implements ProgressReporter {
 	 * Normally this is not necessary, since the intermediate classes
 	 * return their own progress state (for the less granular tasks) anyways.
 	 * The default implementations returns 0 (progress).
-	 * See {@link FilterShowProgressExample} for an example.
+	 * See {@link FilterProgressExample} for an example.
 	 * @return the degree of completion (0,...,1)
 	 */
 	protected double reportProgress() {

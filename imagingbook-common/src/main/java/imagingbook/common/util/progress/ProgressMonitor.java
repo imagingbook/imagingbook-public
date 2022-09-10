@@ -9,7 +9,7 @@
 package imagingbook.common.util.progress;
 
 import imagingbook.common.filter.generic.GenericFilter;
-import imagingbook.common.util.progress.ij.ProgressBarMonitor;
+import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * This class represents a "progress monitor". This is a simple
@@ -27,7 +27,7 @@ import imagingbook.common.util.progress.ij.ProgressBarMonitor;
  * Otherwise, if not used in a auto-start/close mode, the methods {@link #start()} 
  * and {@link #close()} should be used to "manually" start and terminate
  * monitoring.
- * See {@link GenericFilter} and {@link ProgressBarMonitor} for an example.
+ * See {@link GenericFilter} and {@link IjProgressBarMonitor} for an example.
  */
 public abstract class ProgressMonitor extends Thread implements AutoCloseable {
 	
@@ -82,12 +82,12 @@ public abstract class ProgressMonitor extends Thread implements AutoCloseable {
 	/**
 	 * Abstract method to be implemented by concrete sub-classes.
 	 * It is called by the {@link ProgressMonitor} thread in regular intervals.
-	 * Current progress data are passed.
+	 * Current progress (degree of completion) value is passed.
 	 * It is up to the implementation what action should be performed,
 	 * e.g., display the current progress graphically 
-	 * (see e.g. {@link ProgressBarMonitor}).
+	 * (see e.g. {@link IjProgressBarMonitor}).
 	 * 
-	 * @param progress the current progress value [0,1)
+	 * @param progress the current progress (degree of completion) value in [0,1)
 	 * @param elapsedNanoTime the time elapsed since the progress monitor was started (in nanoseconds)
 	 */
 	public abstract void handleProgress(double progress, long elapsedNanoTime);
@@ -122,10 +122,10 @@ public abstract class ProgressMonitor extends Thread implements AutoCloseable {
 	 */
 	public double getElapsedTime() { // result is in seconds
 		if (running) {
-			return  (System.nanoTime() - startTime) / 1E9d;
+			return  (System.nanoTime() - startTime) / 1.0e9d;
 		}
 		else {
-			return (endTime - startTime) / 1E9d;
+			return (endTime - startTime) / 1.0e9d;
 		}
 	}
 

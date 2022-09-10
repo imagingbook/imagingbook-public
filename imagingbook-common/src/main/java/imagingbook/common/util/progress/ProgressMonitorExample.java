@@ -9,29 +9,17 @@
 package imagingbook.common.util.progress;
 
 /**
- * A simple example for how to use {@link ProgressReporter} and
- * {@link ProgressMonitor}.
+ * A simple example for how to use {@link ProgressReporter} and {@link ProgressMonitor}.
  *
+ * @see ProgressReporter
+ * @see ProgressMonitor
  */
-public class ProgressMonitorExample {
-	
-	public static void main(String[] args) {
-		SlowProcess process = new SlowProcess();
-		try (ProgressMonitor monitor = new MyProcessMonitor(process)) {	// uses autoStart
-			monitor.setWaitTime(200); 	// monitor progress every 200 ms
-			process.run();				// the task to be monitored
-		}
-		System.out.println("done.");
-
-	}
-	
-	// --------------------------------------------------------------
+public abstract class ProgressMonitorExample {
 	
 	/**
-	 * The task to be monitored (slow process).
+	 * The task to be monitored (some slow process).
 	 */
-	static class SlowProcess implements ProgressReporter {
-		
+	public static class SlowProcess implements ProgressReporter {		
 		int iter = 0;
 		int iterMax = 100;
 		
@@ -40,7 +28,7 @@ public class ProgressMonitorExample {
 			return (double) iter / iterMax;
 		}
 		
-		protected void run() {
+		public void run() {
 			for (iter = 0; iter < iterMax; iter++) {
 				try {
 					Thread.sleep(100);
@@ -52,20 +40,16 @@ public class ProgressMonitorExample {
 	// --------------------------------------------------------------
 	
 	/**
-	 * A simple progress monitor that only prints query results
-	 * to the console.
+	 * Main method for demonstration.
+	 * @param args ignored
 	 */
-	static class MyProcessMonitor extends ProgressMonitor {
-		
-		public MyProcessMonitor(ProgressReporter target) {
-			super(target);
+	public static void main(String[] args) {
+		SlowProcess process = new SlowProcess();
+		try (ProgressMonitor monitor = new ConsoleProgressMonitor(process)) {	// uses autoStart
+			monitor.setWaitTime(200); 	// check progress every 200 ms
+			process.run();				// the task to be monitored
 		}
 
-		@Override
-		public void handleProgress(double progress, long elapsedNanoTime) {
-			System.out.format("progress = %.3f elapsed = %.2fs\n", progress, elapsedNanoTime / 1E9D);
-		}
 	}
-
-
+	
 }

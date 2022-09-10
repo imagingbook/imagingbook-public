@@ -18,7 +18,7 @@ import imagingbook.common.filter.edgepreserving.TschumperleDericheF.Parameters;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.util.progress.ProgressMonitor;
-import imagingbook.common.util.progress.ij.ProgressBarMonitor;
+import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * This ImageJ plugin demonstrates the use of the Anisotropic Diffusion filter proposed 
@@ -52,7 +52,7 @@ public class Tschumperle_Deriche_Filter implements PlugInFilter {
 		
 		GenericFilter filter = new TschumperleDericheFilter(params);
 		
-		try (ProgressMonitor m = new ProgressBarMonitor(filter)) {
+		try (ProgressMonitor m = new IjProgressBarMonitor(filter)) {
 			filter.applyTo(ip);
 		}
 	}
