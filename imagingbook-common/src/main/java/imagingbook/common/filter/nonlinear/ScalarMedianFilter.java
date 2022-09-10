@@ -33,7 +33,7 @@ public class ScalarMedianFilter extends GenericFilterScalar {
 	private final CircularMask mask;
 	private final int maskCount;
 	private final int xc, yc;
-	private final int[][] maskArray;
+	private final byte[][] maskArray;
 	private final float[] supportRegion;
 	private final int medianIndex;
 	
@@ -43,10 +43,10 @@ public class ScalarMedianFilter extends GenericFilterScalar {
 	
 	public ScalarMedianFilter(Parameters params) {
 		this.mask = new CircularMask(params.radius);
-		this.maskCount = mask.getCount();
+		this.maskCount = mask.getElementCount();
 		this.xc = mask.getCenterX();
 		this.yc = mask.getCenterY();
-		this.maskArray = mask.getMask();
+		this.maskArray = mask.getByteArray();
 		this.supportRegion = new float[maskCount];
 		this.medianIndex = maskCount/2;
 	}
@@ -59,7 +59,7 @@ public class ScalarMedianFilter extends GenericFilterScalar {
 		for (int i = 0; i < maskArray.length; i++) {
 			int ui = u + i - xc;
 			for (int j = 0; j < maskArray[0].length; j++) {
-				if (maskArray[i][j] > 0) {
+				if (maskArray[i][j] != 0) {
 					int vj = v + j - yc;
 					supportRegion[k] = plane.getVal(ui, vj);
 					k = k + 1;

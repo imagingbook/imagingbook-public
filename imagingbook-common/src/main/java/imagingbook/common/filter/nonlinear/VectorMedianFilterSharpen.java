@@ -41,7 +41,7 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 	private final Parameters params;
 	private final CircularMask mask;
 	private final int maskCount;
-	private final int[][] maskArray;
+	private final byte[][] maskArray;
 	private final int xc, yc;
 	private final float[][] supportRegion;		// supportRegion[i][c] with index i, color component c
 	private final VectorNorm vNorm;
@@ -56,8 +56,8 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 	public VectorMedianFilterSharpen(Parameters params) {
 		this.params = params;
 		this.mask = new CircularMask(params.radius);
-		this.maskCount = mask.getCount();
-		this.maskArray = mask.getMask();
+		this.maskCount = mask.getElementCount();
+		this.maskArray = mask.getByteArray();
 		this.xc = mask.getCenterX();
 		this.yc = mask.getCenterY();
 		this.supportRegion = new float[maskCount][3];
@@ -110,7 +110,7 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 		for (int i = 0; i < maskArray.length; i++) {
 			int ui = u + i - xc;
 			for (int j = 0; j < maskArray[0].length; j++) {
-				if (maskArray[i][j] > 0) {
+				if (maskArray[i][j] != 0) {
 					int vj = v + j - yc;
 					src.getPix(ui, vj, vals);
 					copyPixel(vals, supportRegion[k]);
