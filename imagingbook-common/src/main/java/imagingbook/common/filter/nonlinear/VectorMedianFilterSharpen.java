@@ -9,23 +9,20 @@
 
 package imagingbook.common.filter.nonlinear;
 
-import java.awt.Color;
 import java.util.Arrays;
 
-import ij.ImagePlus;
-import ij.process.ByteProcessor;
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.filter.mask.CircularMask;
-import imagingbook.common.ij.GuiTools;
-import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
 
 /**
  * Sharpening vector median filter for color images implemented
  * by extending the {@link GenericFilterVector} class.
+ * 
  * @author W. Burger
  * @version 2020/12/31
+ * @version 2022/09/10 removed debugging code
  */
 public class VectorMedianFilterSharpen extends GenericFilterVector {
 	
@@ -34,13 +31,6 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 		public double sharpen = 0.5;
 		/** Threshold for replacing the current center pixel */
 		public double threshold = 0.0;	
-		
-		/** For testing only */
-		public boolean showMask = false;
-		/** For testing only */
-		public boolean markModifiedPixels = false;
-		/** For testing only */
-		public Color modifiedColor = Color.black;
 	}
 	
 	private final Parameters params;
@@ -51,7 +41,6 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 	private final float[][] supportRegion;		// supportRegion[i][c] with index i, color component c
 	private final VectorNorm vNorm;
 	private final int a;						// a = 2,...,n
-	private final float[] modColor;
 	private final float[] vals = new float[3];	// check, adapt to depth
 	
 	public VectorMedianFilterSharpen() {	
@@ -68,16 +57,6 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 		this.supportRegion = new float[maskCount][3];
 		this.a = (int) Math.round(maskCount - params.sharpen * (maskCount - 2));
 		this.vNorm = params.distanceNorm.create();
-		
-		this.modColor = params.modifiedColor.getRGBColorComponents(null);
-
-		if (params.showMask) {	// TODO: this should not be here!
-			ByteProcessor bp = IjUtils.toByteProcessor(this.maskArray);
-			bp.threshold(0);
-			ImagePlus im = new ImagePlus("Mask-" + this.getClass().getSimpleName(), bp);
-			im.show();
-			GuiTools.zoomExact(im, 32);
-		}
 	}
 	
 	@Override
@@ -101,12 +80,7 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 		// than the aggregate distance of the original center pixel:
 		float[] pF = new float[3];			// the returned color tupel
 		if (dCtr - dMin > params.threshold * a) {	// modify this pixel
-			if (params.markModifiedPixels) {
-				copyPixel(modColor, pF);
-			}
-			else {
-				copyPixel(pmin, pF);
-			}
+			copyPixel(pmin, pF);
 		}
 		else {	// keep the original pixel value
 			copyPixel(pCtr, pF);
@@ -115,7 +89,6 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 	}
 	
 	private void getSupportRegion(PixelPack src, int u, int v) {
-		//final int[] p = new int[3];
 		// fill 'supportRegion' for current mask position
 		int k = 0;
 		for (int i = 0; i < maskArray.length; i++) {

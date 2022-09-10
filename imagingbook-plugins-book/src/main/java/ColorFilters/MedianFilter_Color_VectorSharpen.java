@@ -20,7 +20,9 @@ import imagingbook.common.util.Enums;
 /**
  * This plugin applies a sharpening vector median filter to a RGB color image.
  * @author W. Burger
+ * 
  * @version 2013/05/30
+ * @version 2022/09/10 removed debugging code
  */
 public class MedianFilter_Color_VectorSharpen implements PlugInFilter {
 	
@@ -49,8 +51,8 @@ public class MedianFilter_Color_VectorSharpen implements PlugInFilter {
 		gd.addNumericField("Threshold", params.threshold, 1);
 		String[] normChoices = Enums.getEnumNames(NormType.class);
 		gd.addChoice("Distance norm", normChoices, params.distanceNorm.name());
-		gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);
-		gd.addCheckbox("Show mask", params.showMask);
+//		gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);
+//		gd.addCheckbox("Show mask", params.showMask);
 		
 		gd.showDialog();
 		if(gd.wasCanceled()) return false;
@@ -58,8 +60,8 @@ public class MedianFilter_Color_VectorSharpen implements PlugInFilter {
 		params.sharpen = gd.getNextNumber();
 		params.threshold = gd.getNextNumber();
 		params.distanceNorm = NormType.valueOf(gd.getNextChoice());
-		params.markModifiedPixels = gd.getNextBoolean();
-		params.showMask = gd.getNextBoolean();
+//		params.markModifiedPixels = gd.getNextBoolean();
+//		params.showMask = gd.getNextBoolean();
 		return true;
     }
 }

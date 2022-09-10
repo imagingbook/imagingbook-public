@@ -62,7 +62,8 @@ public abstract class BinaryMorphologyFilter implements BinaryMorphologyOperator
 		return H;
 	}
 	
-	public static byte[][] makeDiskKernel(double radius){
+	// TODO: compare to CircularMask (filters), define BinaryKernel class?
+	public static byte[][] makeDiskKernel(double radius) {
 		int r = (int) Math.rint(radius);	// size of kernel (use ceil?)
 		if (r < 1) r = 1;
 		int N = r + r + 1;

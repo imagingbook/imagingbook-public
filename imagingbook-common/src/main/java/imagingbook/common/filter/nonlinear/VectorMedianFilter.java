@@ -9,14 +9,8 @@
 
 package imagingbook.common.filter.nonlinear;
 
-import java.awt.Color;
-
-import ij.ImagePlus;
-import ij.process.ByteProcessor;
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.filter.mask.CircularMask;
-import imagingbook.common.ij.GuiTools;
-import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
 import imagingbook.common.math.VectorNorm.NormType;
@@ -27,23 +21,15 @@ import imagingbook.common.math.VectorNorm.NormType;
  * 
  * @author W. Burger
  * @version 2020/12/31
+ * @version 2022/09/10 removed debugging code
  */
 public class VectorMedianFilter extends GenericFilterVector {
 	
 	public static class Parameters extends ScalarMedianFilter.Parameters {
 		/** Distance norm to use */
-		public NormType distanceNorm = NormType.L1;
-		
-		/** For testing only */
-		public boolean showMask = false;
-		/** For testing only */
-		public boolean markModifiedPixels = false;
-		/** For testing only */
-		public Color modifiedColor = Color.black;
-		
+		public NormType distanceNorm = NormType.L1;	
 	}
 	
-	private final Parameters params;
 	private final CircularMask mask;
 	private final int maskCount;
 	private final byte[][] maskArray;
@@ -51,7 +37,6 @@ public class VectorMedianFilter extends GenericFilterVector {
 	private final float[][] supportRegion;		// supportRegion[i][c] with index i, color component c
 	private final VectorNorm vNorm;
 	private final float[] vals = new float[3];	// check, adapt to depth
-	private final float[] modColor;
 	
 	//-------------------------------------------------------------------------------------
 	
@@ -60,7 +45,6 @@ public class VectorMedianFilter extends GenericFilterVector {
 	}
 	
 	public VectorMedianFilter(Parameters params) {
-		this.params = params;
 		this.mask = new CircularMask(params.radius);
 		this.maskCount = mask.getElementCount();
 		this.maskArray = mask.getByteArray();
@@ -68,16 +52,6 @@ public class VectorMedianFilter extends GenericFilterVector {
 		this.yc = mask.getCenterY();
 		this.supportRegion = new float[maskCount][3];
 		this.vNorm = params.distanceNorm.create();
-		
-		this.modColor = params.modifiedColor.getRGBColorComponents(null);
-
-		if (params.showMask) {	// TODO: this should not be here!
-			ByteProcessor bp = IjUtils.toByteProcessor(this.maskArray);
-			bp.threshold(0);
-			ImagePlus im = new ImagePlus("Mask-" + this.getClass().getSimpleName(), bp);
-			im.show();
-			GuiTools.zoomExact(im, 32);
-		}
 	}
 	
 	//-------------------------------------------------------------------------------------
@@ -103,12 +77,7 @@ public class VectorMedianFilter extends GenericFilterVector {
 		// than the aggregate distance of the original center pixel:
 		final float[] pF = new float[3];	// the returned color tupel
 		if (dMin < dCtr) {	// modify this pixel
-			if (params.markModifiedPixels) {
-				copyPixel(modColor, pF);
-			}
-			else {
-				copyPixel(pmin, pF);
-			}
+			copyPixel(pmin, pF);
 		}
 		else {	// keep the original pixel value
 			copyPixel(pCtr, pF);

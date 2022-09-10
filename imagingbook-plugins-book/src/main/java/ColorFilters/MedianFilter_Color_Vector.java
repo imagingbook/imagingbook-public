@@ -46,16 +46,16 @@ public class MedianFilter_Color_Vector implements PlugInFilter {
 		gd.addNumericField("Radius", params.radius, 1);
 		String[] normChoices = Enums.getEnumNames(NormType.class);
 		gd.addChoice("Distance norm", normChoices, params.distanceNorm.name());
-		gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);
-		gd.addCheckbox("Show mask", params.showMask);
+//		gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);
+//		gd.addCheckbox("Show mask", params.showMask);
 		
 		gd.showDialog();
 		if(gd.wasCanceled()) return false;
 		
 		params.radius = Math.max(gd.getNextNumber(),0.5);
 		params.distanceNorm = NormType.valueOf(gd.getNextChoice());
-		params.markModifiedPixels = gd.getNextBoolean();
-		params.showMask = gd.getNextBoolean();
+//		params.markModifiedPixels = gd.getNextBoolean();
+//		params.showMask = gd.getNextBoolean();
 		return true;
     }
 }
