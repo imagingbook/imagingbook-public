@@ -54,7 +54,7 @@ public class TschumperleDericheFilter extends GenericFilter implements Tschumper
 	private GenericFilter gradientBlurFilter;
 	private GenericFilter structureBlurFilter;
 	
-	private int T;		// number of iterations
+	private int iterations;		// number of iterations
 	private float alpha;
 	private double a0, a1;
 	private PixelPack source, target;
@@ -77,7 +77,7 @@ public class TschumperleDericheFilter extends GenericFilter implements Tschumper
 		this.N = source.getHeight(); 
 		this.K = source.getDepth();
 		
-		this.T = params.iterations;
+		this.iterations = params.iterations;
 		this.alpha = params.alpha0;
 		this.a0 = params.a0;
 		this.a1 = params.a1;
@@ -220,7 +220,7 @@ public class TschumperleDericheFilter extends GenericFilter implements Tschumper
 	
 	@Override
 	protected final int passesRequired() {
-		return T;	// this filter needs T passes
+		return iterations;	// this filter needs T passes
 	}
 	
 	@Override
