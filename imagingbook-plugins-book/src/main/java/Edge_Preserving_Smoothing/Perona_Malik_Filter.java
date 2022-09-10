@@ -18,8 +18,8 @@ import imagingbook.common.filter.edgepreserving.PeronaMalikFilterVector;
 import imagingbook.common.filter.edgepreserving.PeronaMalikF.ColorMode;
 import imagingbook.common.filter.edgepreserving.PeronaMalikF.Parameters;
 import imagingbook.common.filter.generic.GenericFilter;
+import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
-import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * This plugin demonstrates the use of the PeronaMalikFilter class.

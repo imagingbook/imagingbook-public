@@ -9,7 +9,7 @@
 package imagingbook.common.util.progress;
 
 import imagingbook.common.filter.generic.GenericFilter;
-import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
+import imagingbook.common.ij.IjProgressBarMonitor;
 
 /**
  * This class represents a "progress monitor". This is a simple

@@ -14,8 +14,8 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.filter.linear.LinearFilter;
+import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
-import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * This ImageJ plugin shows how to construct a generic linear filter

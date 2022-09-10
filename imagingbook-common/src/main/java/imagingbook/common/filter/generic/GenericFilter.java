@@ -12,13 +12,13 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.examples.ExampleFilter3x3Scalar;
 import imagingbook.common.filter.examples.ExampleFilter3x3Vector;
 import imagingbook.common.filter.examples.FilterProgressExample;
+import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.image.PixelPack.PixelSlice;
 import imagingbook.common.image.access.GridIndexer2D;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.common.util.progress.ProgressReporter;
-import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * <p>This is the (abstract) root class of the generic filter hierarchy.

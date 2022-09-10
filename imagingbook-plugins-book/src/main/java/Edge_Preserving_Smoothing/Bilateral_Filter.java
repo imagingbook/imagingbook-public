@@ -19,8 +19,8 @@ import imagingbook.common.filter.edgepreserving.BilateralFilterVector;
 import imagingbook.common.filter.edgepreserving.BilateralFilterVectorSeparable;
 import imagingbook.common.filter.edgepreserving.BilateralF.Parameters;
 import imagingbook.common.filter.generic.GenericFilter;
+import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
-import imagingbook.common.util.progress.ij.IjProgressBarMonitor;
 
 /**
  * This plugin demonstrates the use of the (full) BilateralFilter class.
