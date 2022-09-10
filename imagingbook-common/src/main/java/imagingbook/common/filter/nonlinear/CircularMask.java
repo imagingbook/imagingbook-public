@@ -40,7 +40,11 @@ public class CircularMask {
 		count = cnt;
 	}
 	
-	public int getCenter() {
+	public int getCenterX() {
+		return center;
+	}
+	
+	public int getCenterY() {
 		return center;
 	}
 	

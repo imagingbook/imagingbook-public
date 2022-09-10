@@ -44,7 +44,8 @@ public class ScalarMedianFilter extends GenericFilterScalar {
 	public ScalarMedianFilter(Parameters params) {
 		this.mask = new CircularMask(params.radius);
 		this.maskCount = mask.getCount();
-		this.xc = this.yc = mask.getCenter();
+		this.xc = mask.getCenterX();
+		this.yc = mask.getCenterY();
 		this.maskArray = mask.getMask();
 		this.supportRegion = new float[maskCount];
 		this.medianIndex = maskCount/2;
