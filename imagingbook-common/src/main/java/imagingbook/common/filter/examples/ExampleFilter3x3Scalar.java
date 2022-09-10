@@ -8,30 +8,59 @@
  *******************************************************************************/
 package imagingbook.common.filter.examples;
 
+import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterScalar;
+import imagingbook.common.filter.linear.LinearFilter;
+import imagingbook.common.filter.linear.LinearFilterSeparable;
 import imagingbook.common.image.PixelPack.PixelSlice;
+import imagingbook.common.math.Matrix;
 
+/**
+ * <p>
+ * Example filter based on {@link GenericFilterScalar} performing
+ * linear convolution with a custom 3x3 filter kernel.
+ * This filter may be applied to any image. 
+ * On vector-valued images (e.g., RGB images) the filter is applied
+ * independently to each component.
+ * </p>
+ * <p>
+ * Usage:
+ * </p>
+ * <pre>
+ * ImageProcessor ip = ... 	// any image
+ * GenericFilter filter = new ExampleFilter3x3Scalar();
+ * filter.applyTo(ip);		// modifies ip
+ * </pre>
+ * 
+ * @author WB
+ * @see LinearFilter
+ * @see LinearFilterSeparable
+ * @see GenericFilter#applyTo(ij.process.ImageProcessor)
+ * @see GenericFilter#applyTo(ij.process.ImageProcessor, imagingbook.common.image.access.OutOfBoundsStrategy)
+ */
 public class ExampleFilter3x3Scalar extends GenericFilterScalar {
 	
+	// custom convolution kernel
 	private final static float[][] H = {
 			{1, 2, 1},
 			{2, 4, 2},
 			{1, 2, 1}};
 	
-	private final static int width = 3;
-	private final static int height = 3;
-	private final static int xc = 1;
-	private final static int yc = 1;
-	private final static float s = 16;
+	private final static int width = H[0].length;			// = 3
+	private final static int height = H.length;				// = 3
+	private final static int xc = width / 2;				// = 1
+	private final static int yc = height / 2;				// = 1
+	private final static float s = (float) Matrix.sum(H);	// = 16
 	
 	@Override
-	protected float doPixel(PixelSlice plane, int u, int v) {
+	protected float doPixel(PixelSlice slice, int u, int v) {	// return scalar value
 		float sum = 0;
 		for (int j = 0; j < height; j++) {
 			int vj = v + j - yc;
 			for (int i = 0; i < width; i++) {
 				int ui = u + i - xc;
-				sum = sum + plane.getVal(ui, vj) * H[i][j];
+				float p = slice.getVal(ui, vj);		// read scalar pixel value
+				sum = sum + p * H[i][j];
 			}
 		}
 		return sum / s;

@@ -8,9 +8,34 @@
  *******************************************************************************/
 package imagingbook.common.filter.examples;
 
+import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterVector;
+import imagingbook.common.filter.linear.LinearFilter;
+import imagingbook.common.filter.linear.LinearFilterSeparable;
 import imagingbook.common.image.PixelPack;
+import imagingbook.common.math.Matrix;
 
+/**
+ * <p>Example filter based on {@link GenericFilterVector} performing
+ * linear convolution with a custom 3x3 filter kernel.
+ * Typically used on RGB color images (with 3-element pixel vectors).
+ * Pixels in scalar-valued images are treated as 1-element vectors.
+ * </p>
+ * <p>
+ * Usage:
+ * </p>
+ * <pre>
+ * ImageProcessor ip = ... 	// any image but typically a RGB color image
+ * GenericFilter filter = new ExampleFilter3x3Vector();
+ * filter.applyTo(ip);		// modifies ip
+ * </pre>
+ * 
+ * @author WB
+ * @see LinearFilter
+ * @see LinearFilterSeparable
+ * @see GenericFilter#applyTo(ij.process.ImageProcessor)
+ * @see GenericFilter#applyTo(ij.process.ImageProcessor, imagingbook.common.image.access.OutOfBoundsStrategy)
+ */
 public class ExampleFilter3x3Vector extends GenericFilterVector {
 
 	private final static float[][] H = {
@@ -18,21 +43,21 @@ public class ExampleFilter3x3Vector extends GenericFilterVector {
 			{2, 4, 2},
 			{1, 2, 1}};
 	
-	private final static int width = 3;
-	private final static int height = 3;
-	private final static int xc = 1;
-	private final static int yc = 1;
-	private final static float s = 16;
+	private final static int width = H[0].length;			// = 3
+	private final static int height = H.length;				// = 3
+	private final static int xc = width / 2;				// = 1
+	private final static int yc = height / 2;				// = 1
+	private final static float s = (float) Matrix.sum(H);	// = 16
 	
 	@Override
-	protected float[] doPixel(PixelPack pack, int u, int v) {
+	protected float[] doPixel(PixelPack pack, int u, int v) { // returns float[] pixel value
 		int depth = pack.getDepth();
 		float[] sum = new float[depth];
 		for (int j = 0; j < height; j++) {
 			int vj = v + j - yc;
 			for (int i = 0; i < width; i++) {
 				int ui = u + i - xc;
-				float[] p = pack.getPix(ui, vj);
+				float[] p = pack.getPix(ui, vj);	// read float[] pixel value
 				for (int k = 0; k < depth; k++) {
 					sum[k] = sum[k] + (p[k] * H[i][j]) / s;
 				}
