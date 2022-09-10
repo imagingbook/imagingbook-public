@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.filter.nonlinear;
+package imagingbook.common.filter.mask;
 
 /**
  * Defines a circular mask with the specified radius.

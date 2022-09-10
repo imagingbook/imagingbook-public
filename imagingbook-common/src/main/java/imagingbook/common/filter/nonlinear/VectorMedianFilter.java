@@ -14,6 +14,7 @@ import java.awt.Color;
 import ij.ImagePlus;
 import ij.process.ByteProcessor;
 import imagingbook.common.filter.generic.GenericFilterVector;
+import imagingbook.common.filter.mask.CircularMask;
 import imagingbook.common.ij.GuiTools;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;

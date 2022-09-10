@@ -13,6 +13,7 @@ import java.util.Arrays;
 
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterScalar;
+import imagingbook.common.filter.mask.CircularMask;
 import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**

@@ -1,4 +1,4 @@
-package imagingbook.common.filter.nonlinear;
+package imagingbook.common.filter.mask;
 
 /**
  * This class defines a binary mask, as used in filters, for example.
