@@ -12,7 +12,11 @@ package imagingbook.common.filter.nonlinear;
 import java.awt.Color;
 import java.util.Arrays;
 
+import ij.ImagePlus;
+import ij.process.ByteProcessor;
 import imagingbook.common.filter.generic.GenericFilterVector;
+import imagingbook.common.ij.GuiTools;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
 
@@ -65,8 +69,14 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 		this.vNorm = params.distanceNorm.create();
 		
 		this.modColor = params.modifiedColor.getRGBColorComponents(null);
-		if (params.showMask) 
-			mask.show("Mask-" + this.getClass().getSimpleName());
+
+		if (params.showMask) {	// TODO: this should not be here!
+			ByteProcessor bp = IjUtils.toByteProcessor(this.maskArray);
+			bp.threshold(0);
+			ImagePlus im = new ImagePlus("Mask-" + this.getClass().getSimpleName(), bp);
+			im.show();
+			GuiTools.zoomExact(im, 32);
+		}
 	}
 	
 	@Override

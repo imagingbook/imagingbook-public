@@ -9,68 +9,40 @@
 
 package imagingbook.common.filter.nonlinear;
 
-import ij.ImagePlus;
-import ij.process.ByteProcessor;
-import imagingbook.common.ij.GuiTools;
-import imagingbook.common.ij.IjUtils;
-
-public class CircularMask {
+/**
+ * Defines a circular mask with the specified radius.
+ * Mask values are 1 inside the radius, 0 outside.
+ * Mask dimensions are square and odd,
+ * the reference point is as the center. 
+ * 
+ * @author WB
+ *
+ */
+public class CircularMask extends BinaryMask {
 	
-	private final int center;			// mask center position (x/y)
-	private final int count;			// number of nonzero mask elements
-	private final byte[][] mask;		// mask[x][y]  specifies the support region
-		
+	/**
+	 * Constructor.
+	 * @param radius the mask radius
+	 */
 	public CircularMask(double radius) {
-		center = Math.max((int) Math.ceil(radius), 1);
-		//IJ.log("mask radius = " + center);
-		int mWidth = 2 * center + 1;		// width/height of mask array
-		mask = new byte[mWidth][mWidth];	// initialized to zero
-		int cnt = 0;
+		super(makeMask(radius));
+	}
+	
+	private static byte[][] makeMask(double radius) {
+		int center = Math.max((int) Math.ceil(radius), 1);
+		int width = 2 * center + 1;		// width/height of mask array
+		byte[][] mask = new byte[width][width];	// initialized to zero
 		double r2 = radius * radius + 1; 	// add 1 to get mask shape similar to ImageJ
-		for (int u = 0; u < mWidth; u++) {
-			int x = u - center;
-			for (int v = 0; v < mWidth; v++) {
-				int y = v - center;
+		for (int i = 0; i < width; i++) {
+			int x = i - center;
+			for (int j = 0; j < width; j++) {
+				int y = j - center;
 				if (x*x + y*y <= r2) {
-					mask[u][v] = 1;
-					cnt = cnt + 1;
+					mask[i][j] = 1;
 				}
 			}
 		}
-		count = cnt;
-	}
-	
-	public int getCenterX() {
-		return center;
-	}
-	
-	public int getCenterY() {
-		return center;
-	}
-	
-	/**
-	 * Returns the number of inside-mask elements.
-	 * @return the number of inside-mask elements
-	 */
-	public int getElementCount() {
-		return count;
-	}
-	
-	/**
-	 * Returns a {@code byte[x][y]} with inside-mask elements
-	 * set to 1, outside mask set to 0. 
-	 * @return the mask as a {@code byte[][]}
-	 */
-	public byte[][] getByteArray() {
 		return mask;
-	}
-	
-	public void show(String title) {
-		ByteProcessor bp = IjUtils.toByteProcessor(mask);
-		bp.threshold(0);
-		ImagePlus im = new ImagePlus(title, bp);
-		im.show();
-		GuiTools.zoomExact(im, 32);
 	}
 
 }
