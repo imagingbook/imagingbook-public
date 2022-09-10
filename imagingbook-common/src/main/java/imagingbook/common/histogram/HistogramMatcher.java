@@ -9,6 +9,8 @@
 
 package imagingbook.common.histogram;
 
+// TODO: add unit test, JavaDoc
+
 public class HistogramMatcher {
 	
 	public HistogramMatcher() {
