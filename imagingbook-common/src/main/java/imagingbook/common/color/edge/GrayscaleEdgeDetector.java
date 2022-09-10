@@ -82,6 +82,8 @@ public class GrayscaleEdgeDetector implements ColorEdgeDetector {
 		conv.setNormalize(false);
 		conv.convolve(Ix, HxS, 3, 3);
 		conv.convolve(Iy, HyS, 3, 3);
+//		IjUtils.convolveXY(Ix, HxS);
+//		IjUtils.convolveXY(Iy, HyS);
 		
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {

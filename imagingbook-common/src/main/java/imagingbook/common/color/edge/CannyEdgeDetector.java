@@ -22,7 +22,9 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.linear.GaussianKernel1D;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
+import imagingbook.common.math.Matrix;
 import imagingbook.common.util.ParameterBundle;
 
 /**
@@ -155,10 +157,13 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		
 		// pre-smooth the image with a separable Gaussian filter (on each RGB channel)
 		float[] gaussKernel = GaussianKernel1D.makeGaussKernel1D(params.gSigma);
+		System.out.println("sum kernel = " + Matrix.sum(gaussKernel));
 		Convolver conv = new Convolver();
 		conv.setNormalize(true);
 		for (int k = 0; k < I.length; k++) {
 			//FloatProcessor If = Irgb[i];
+//			IjUtils.convolveX(I[k], gaussKernel);	// TODO: check for differences!
+//			IjUtils.convolveY(I[k], gaussKernel);
 			conv.convolve(I[k], gaussKernel, gaussKernel.length, 1);
 			conv.convolve(I[k], gaussKernel, 1, gaussKernel.length);
 			

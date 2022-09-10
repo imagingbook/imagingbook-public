@@ -9,6 +9,8 @@
 
 package imagingbook.common.corners;
 
+import static imagingbook.common.ij.IjUtils.convolveX;
+import static imagingbook.common.ij.IjUtils.convolveY;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import imagingbook.common.corners.subpixel.SubpixelMaxInterpolator;
 import imagingbook.common.corners.subpixel.SubpixelMaxInterpolator.Method;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.filter.linear.LinearFilterSeparable;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMath;
 import imagingbook.common.util.ParameterBundle;
 
@@ -132,17 +135,12 @@ public abstract class GradientCornerDetector {
 		
 		// nothing really but a Sobel-type gradient:
 		if (params.doPreFilter) {
-//			Filter.convolveY(Ix, hp);			// pre-filter Ix vertically
-//			Filter.convolveX(Iy, hp);			// pre-filter Iy horizontally
-			conv.convolve(Ix, hp, 1, hp.length);	// pre-filter Ix vertically
-			conv.convolve(Iy, hp, hp.length, 1);	// pre-filter Iy horizontally
-
+			convolveY(Ix, hp);			// pre-filter Ix vertically
+			convolveX(Iy, hp);			// pre-filter Iy horizontally
 		}
 		
-//		Filter.convolveX(Ix, hd);				// get first derivative in x
-//		Filter.convolveY(Iy, hd);				// get first derivative in y
-		conv.convolve(Ix, hd, hd.length, 1);	// get first derivative in x
-		conv.convolve(Iy, hd, 1, hd.length);	// get first derivative in y
+		convolveX(Ix, hd);				// get first derivative in x
+		convolveY(Iy, hd);				// get first derivative in y
 		
 		// gradient products:
 		A = ImageMath.sqr(Ix);				// A(u,v) = Ixx(u,v) = (Ix(u,v))^2
