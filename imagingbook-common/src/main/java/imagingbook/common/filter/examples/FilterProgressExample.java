@@ -83,8 +83,8 @@ public class FilterProgressExample extends GenericFilterVector {
 	 * <p>
 	 * Note: This method returns the filter's progress (degree of completion) for 
 	 * the current pixel (see {@link #doPixel(PixelPack, int, int)}).
-	 * If this fine granularity is not relevant
-	 * the method should return 1 or not be overridden at all.
+	 * Typically this fine granularity is not relevant and
+	 * the method should either return 1 or not be overridden at all (removed).
 	 * </p>
 	 */
 	@Override
@@ -99,12 +99,12 @@ public class FilterProgressExample extends GenericFilterVector {
 	 * @param args ignored
 	 */
 	public static void main(String[] args) {
-		PixelPack pp = new PixelPack(400, 300, 3, null);		// dummy data to pass to the filter
+		PixelPack pp = new PixelPack(400, 300, 3, null);		// dummy data for the filter to process
 		GenericFilter filter = new FilterProgressExample();
-		ProgressMonitor mon = new ConsoleProgressMonitor(filter); // starts monitoring immediately
-		mon.setWaitTime(500);	
-		filter.applyTo(pp);
-		mon.close();
+		try (ProgressMonitor monitor = new ConsoleProgressMonitor(filter)) { // starts monitoring immediately
+			monitor.setWaitTime(500);	
+			filter.applyTo(pp);
+		}	// closed automatically
 	}
 
 }
