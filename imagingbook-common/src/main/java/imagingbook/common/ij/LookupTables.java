@@ -28,6 +28,8 @@ import java.awt.image.IndexColorModel;
  */
 public abstract class LookupTables {
 	
+	// TODO: convert to enum type
+	
 	private LookupTables() {}
 	
 	/**
