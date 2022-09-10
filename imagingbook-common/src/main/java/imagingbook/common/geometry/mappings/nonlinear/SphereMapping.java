@@ -22,7 +22,7 @@ import imagingbook.common.geometry.mappings.Mapping2D;
  * 
  * @author WB
  */
-@Deprecated
+@Deprecated		// moved to demo plugins
 public class SphereMapping implements Mapping2D {
 	
 	static double DefaultRefIdx = 1.8;

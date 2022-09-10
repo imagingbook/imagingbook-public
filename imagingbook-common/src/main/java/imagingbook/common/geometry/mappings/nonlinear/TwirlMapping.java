@@ -17,7 +17,7 @@ import imagingbook.common.geometry.mappings.Mapping2D;
  * Note: This class has been deprecated and substituted by an ImageJ plugin
  * ("Geometric_Operations.Map_Twirl" in "imagingbook-plugins-book").
  */
-@Deprecated
+@Deprecated 	// moved to demo plugins
 public class TwirlMapping implements Mapping2D {
 	
 	private final double xc, yc, angle, rad;
