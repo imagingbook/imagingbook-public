@@ -17,14 +17,15 @@ import ij.process.ImageProcessor;
 import imagingbook.common.color.edge.ColorEdgeDetector;
 import imagingbook.common.color.edge.MonochromaticEdgeDetector;
 import imagingbook.common.color.edge.MonochromaticEdgeDetector.Parameters;
-import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.common.util.Enums;
 import imagingbook.core.FileUtils;
 
 /**
  * This is a simple color edge detector based on monochromatic techniques.
- * @author W. Burger
+ * May be applied to color images only.
+ * 
+ * @author WB
  * @version 2013/05/30
+ * @version 2022/09/11 removed color norm option (not available for this detector)
  */
 public class Color_Edges_Mono implements PlugInFilter {
 	
@@ -43,31 +44,31 @@ public class Color_Edges_Mono implements PlugInFilter {
     	title = FileUtils.stripFileExtension(title);
     	Parameters params = new Parameters();
     	
-    	if (!setParameters(params)) return;
+    	if (!setParameters(params)) 
+    		return;
     	
-    	ColorProcessor cp = (ColorProcessor) ip;
-    	ColorEdgeDetector ced = new MonochromaticEdgeDetector(cp, params);
+    	ColorEdgeDetector ced = new MonochromaticEdgeDetector((ColorProcessor) ip, params);
     	   	
     	if (showEdgeMagnitude) {
     		FloatProcessor edgeMagnitude = ced.getEdgeMagnitude();
-    		(new ImagePlus("Edge Magnitude (Mono) " + params.norm.name(), edgeMagnitude)).show();
+    		(new ImagePlus("Edge Magnitude (Mono)", edgeMagnitude)).show();
     	}
     		
 		if (showEdgeOrientation) {
 			FloatProcessor edgeOrientation = ced.getEdgeOrientation();
-			(new ImagePlus("Edge Orientation (Mono) " + params.norm.name(), edgeOrientation)).show();
+			(new ImagePlus("Edge Orientation (Mono)", edgeOrientation)).show();
 		}
     }
     
     boolean setParameters(Parameters params) {
 		GenericDialog gd = new GenericDialog("Monochromatic Color Edges");
-		gd.addChoice("Color norm", Enums.getEnumNames(NormType.class), params.norm.name());
 		gd.addCheckbox("Show edge magnitude", showEdgeMagnitude);
 		gd.addCheckbox("Show edge orientation", showEdgeOrientation);
+		
 		gd.showDialog();
 		if(gd.wasCanceled()) 
 			return false;
-		params.norm = NormType.valueOf(gd.getNextChoice());
+		
 		showEdgeMagnitude = gd.getNextBoolean();
 		showEdgeOrientation =  gd.getNextBoolean();
 		return true;

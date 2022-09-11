@@ -11,7 +11,6 @@ package ColorEdges;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
-import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.edge.ColorEdgeDetector;
@@ -33,18 +32,18 @@ public class Color_Edges_Gray implements PlugInFilter {
 
     public int setup(String arg, ImagePlus imp) {
     	this.imp = imp;
-        return DOES_RGB + NO_CHANGES;
+        return DOES_ALL + NO_CHANGES;
     }
 
     public void run(ImageProcessor ip) {
     	String title = imp.getTitle();
     	title = FileUtils.stripFileExtension(title);
-    	imagingbook.common.color.edge.GrayscaleEdgeDetector.Parameters params = new Parameters();
+    	GrayscaleEdgeDetector.Parameters params = new Parameters();
     	
-    	if (!setParameters(params)) return;
+    	if (!setParameters(params)) 
+    		return;
     	
-    	ColorProcessor cp = (ColorProcessor) ip;
-    	ColorEdgeDetector ced = new GrayscaleEdgeDetector(cp, params);
+    	ColorEdgeDetector ced = new GrayscaleEdgeDetector(ip, params);
     	   	
     	if (showEdgeMagnitude) {
     		FloatProcessor edgeMagnitude = ced.getEdgeMagnitude();
@@ -58,14 +57,16 @@ public class Color_Edges_Gray implements PlugInFilter {
     }
     
     boolean setParameters(Parameters params) {
-		GenericDialog gd = new GenericDialog("Monochromatic Color Edges");
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addCheckbox("Show edge magnitude", showEdgeMagnitude);
 		gd.addCheckbox("Show edge orientation", showEdgeOrientation);
+		
 		gd.showDialog();
 		if(gd.wasCanceled()) 
 			return false;
+		
 		showEdgeMagnitude = gd.getNextBoolean();
-		showEdgeOrientation =  gd.getNextBoolean();
+		showEdgeOrientation = gd.getNextBoolean();
 		return true;
     }
       
