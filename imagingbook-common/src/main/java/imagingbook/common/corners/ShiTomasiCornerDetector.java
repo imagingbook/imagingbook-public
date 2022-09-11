@@ -16,30 +16,23 @@ import ij.process.ImageProcessor;
 
 
 /**
+ * <p>
  * This is an implementation of the Shi-Tomasi corner detector, as 
- * described in
- * <blockquote>
- *  J. Shi and C. Tomasi. Good features to track. In Proceedings
- *  of IEEE Conference on Computer Vision and Pattern Recognition,
- *  CVPR’94, pp. 593–600, Seattle, WA, USA (1994).
- * </blockquote>
+ * described in [1].
  * This class extends {@link GradientCornerDetector} (where most
  * of the work is done) by defining a specific corner score function
  * and associated threshold.
+ * </p>
+ * <p>
+ * [1] J. Shi and C. Tomasi. Good features to track. In Proceedings
+ *  of IEEE Conference on Computer Vision and Pattern Recognition,
+ *  CVPR’94, pp. 593–600, Seattle, WA, USA (1994).
+ * </p>
  * 
  * @author W. Burger
  * @version 2022/03/30
  */
 public class ShiTomasiCornerDetector extends GradientCornerDetector {
-	
-//	public static double DEFAULT_THRESHOLD = 100;
-//	
-//	public static class Parameters extends GradientCornerDetector.Parameters {
-//		
-//		public Parameters() {
-//			scoreThreshold = DEFAULT_THRESHOLD;	// individual default threshold
-//		}
-//	}
 	
 	public ShiTomasiCornerDetector(ImageProcessor ip, GradientCornerDetector.Parameters params) {
 		super(ip, params);

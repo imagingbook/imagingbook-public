@@ -17,14 +17,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ij.plugin.filter.Convolver;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.corners.subpixel.SubpixelMaxInterpolator;
 import imagingbook.common.corners.subpixel.SubpixelMaxInterpolator.Method;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.filter.linear.LinearFilterSeparable;
-import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMath;
 import imagingbook.common.util.ParameterBundle;
 
@@ -35,8 +33,6 @@ import imagingbook.common.util.ParameterBundle;
  * {@link HarrisCornerDetector},
  * {@link ShiTomasiCornerDetector},
  * {@link MopsCornerDetector}.
- * 
- * TODO: replace 'border' by ROI rectangle
  * 
  * @author W. Burger
  * @version 2022/03/30
@@ -58,7 +54,7 @@ public abstract class GradientCornerDetector {
 		public double sigma = 1.275;
 		
 		@DialogLabel("Border margins")
-		public int border = 20;
+		public int border = 20;	// TODO: replace 'border' by ROI rectangle
 		
 		@DialogLabel("Clean up corners")
 		public boolean doCleanUp = true;
@@ -128,12 +124,9 @@ public abstract class GradientCornerDetector {
 	
 	private FloatProcessor makeCornerScores(ImageProcessor I) {
 		FloatProcessor Ix = I.convertToFloatProcessor(); 
-		FloatProcessor Iy = I.convertToFloatProcessor();
+		FloatProcessor Iy = (FloatProcessor) Ix.duplicate();
 		
-		Convolver conv = new Convolver();
-		conv.setNormalize(false);
-		
-		// nothing really but a Sobel-type gradient:
+		// nothing really but a Sobel-type gradient:	TODO: replace by LinearFilter
 		if (params.doPreFilter) {
 			convolveY(Ix, hp);			// pre-filter Ix vertically
 			convolveX(Iy, hp);			// pre-filter Iy horizontally

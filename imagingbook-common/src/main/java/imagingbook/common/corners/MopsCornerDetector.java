@@ -15,17 +15,19 @@ import ij.process.ImageProcessor;
 
 
 /**
- * This is an implementation of the corner detector described in
- * <blockquote>
- * M. Brown, R. Szeliski, and S. Winder, Multi-image matching using multi-scale oriented
- * patches, in Proc. of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition
- * (CVPR'05), 2005, pp. 510–517.
- * </blockquote>
+ * <p>
+ * This is an implementation of the corner detector described in [1].
  * This class extends {@link GradientCornerDetector} (where most
  * of the work is done) by defining a specific corner score function
  * and associated threshold.
  * The corner score is defined as the harmonic mean of the local structure tensor's eigenvalues 
  * lambda_1, lambda_2.
+ * </p>
+ * <p>
+ * [1] M. Brown, R. Szeliski, and S. Winder, Multi-image matching using multi-scale oriented
+ * patches, in Proc. of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition
+ * (CVPR'05), 2005, pp. 510–517.
+ * </p>
  * 
  * @author W. Burger
  * @version 2022/03/30
