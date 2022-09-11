@@ -51,7 +51,7 @@ public class VectorMedianFilter extends GenericFilterVector {
 		this.xc = mask.getCenterX();
 		this.yc = mask.getCenterY();
 		this.supportRegion = new float[maskCount][3];
-		this.vNorm = params.distanceNorm.create();
+		this.vNorm = params.distanceNorm.getInstance();
 	}
 	
 	//-------------------------------------------------------------------------------------

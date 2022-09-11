@@ -41,7 +41,7 @@ public class SiftMatcher {
 	public SiftMatcher(List<SiftDescriptor> sfA, Parameters params) {
 		this.fA = sfA.toArray(new SiftDescriptor[0]);
 		this.params = params;
-		am = params.norm.create();
+		am = params.norm.getInstance();
 	}
 	
 	public List<SiftMatch> matchDescriptors(List<SiftDescriptor> sfB) {

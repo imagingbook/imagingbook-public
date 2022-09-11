@@ -9,6 +9,10 @@
 
 package imagingbook.common.math;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+
+import java.lang.reflect.Array;
+
 /**
  * This class defines various vector norms for calculating
  * magnitude and distance.
@@ -17,32 +21,77 @@ package imagingbook.common.math;
  * @version 2022/09/11
  */
 public abstract class VectorNorm {
-
-	public abstract double magnitude(double[] x);
-	public abstract double magnitude(float[] x);
-	public abstract double magnitude(int[] x);
+	
+	private VectorNorm() {}
 
 	/**
-	 * Calculates and returns the distance between two vectors.
-	 * 
+	 * Returns the magnitude of the specified {@code double[]} vector under this norm.
+	 * @param a a vector
+	 * @return the magnitude of the vector
+	 */
+	public abstract double magnitude(double[] a);
+	
+	/**
+	 * Returns the magnitude of the specified {@code float[]} vector under this norm.
+	 * @param a a vector
+	 * @return the magnitude of the vector
+	 */
+	public abstract double magnitude(float[] a);
+	
+	/**
+	 * Returns the magnitude of the specified {@code int[]} vector under this norm.
+	 * @param a a vector
+	 * @return the magnitude of the vector
+	 */
+	public abstract double magnitude(int[] a);
+
+	/**
+	 * Returns the distance between two {@code double[]} vectors under this norm.
 	 * @param a first vector
 	 * @param b second vector
 	 * @return the distance between vectors a and b
 	 */
 	public abstract double distance(double[] a, double[] b);
+	
+	/**
+	 * Returns the distance between two {@code float[]} vectors under this norm.
+	 * @param a first vector
+	 * @param b second vector
+	 * @return the distance between vectors a and b
+	 */
 	public abstract double distance(float[] a, float[] b);
+	
+	/**
+	 * Returns the distance between two {@code int[]} vectors under this norm.
+	 * @param a first vector
+	 * @param b second vector
+	 * @return the distance between vectors a and b
+	 */
 	public abstract double distance(int[] a, int[] b);
 
 	/**
-	 * 
+	 * Returns the squared distance between two {@code double[]} vectors under this norm.
 	 * @param a first vector
 	 * @param b second vector
-	 * @return the squared distance between vectors a and b
+	 * @return the distance between vectors a and b
 	 */
 	public abstract double distance2(double[] a, double[] b);
+	
+	/**
+	 * Returns the squared distance between two {@code float[]} vectors under this norm.
+	 * @param a first vector
+	 * @param b second vector
+	 * @return the distance between vectors a and b
+	 */
 	public abstract double distance2(float[] a, float[] b);
+	
+	/**
+	 * Returns the squared distance between two {@code int[]} vectors under this norm.
+	 * @param a first vector
+	 * @param b second vector
+	 * @return the distance between vectors a and b
+	 */
 	public abstract double distance2(int[] a, int[] b);
-
 
 	/**
 	 * Returns a factor to scale magnitude and distance values 
@@ -54,74 +103,119 @@ public abstract class VectorNorm {
 	 * @param n dimensionality
 	 * @return scale factor
 	 */
-	@Deprecated
 	public abstract double getScale(int n);
 
-
+	/**
+	 * Enumeration type for {@link VectorNorm} to be used as
+	 * parameter choice.
+	 */
 	public enum NormType {
-		L1 	 {public VectorNorm create() {return new VectorNorm.L1();}},
-		L2 	 {public VectorNorm create() {return new VectorNorm.L2();}}, 
-		Linf {public VectorNorm create() {return new VectorNorm.Linf();}
-		};
+		L1(VectorNorm.L1.getInstance()),
+		L2(VectorNorm.L2.getInstance()),
+		Linf(VectorNorm.Linf.getInstance());
+				
+		private final VectorNorm inst;
 		
-		public abstract VectorNorm create();
+		private NormType(VectorNorm instance) {
+			this.inst = instance;
+		}
+		
+		/**
+		 * Returns the {@link VectorNorm} instance associated with this
+		 * enum item.
+		 * @return the {@link VectorNorm} instance
+		 */
+		public VectorNorm getInstance() {
+			return this.inst;
+		}
 	}
-
-	private static String wrongLengthMessage = "feature vectors must be of same length";
 	
-	// make singleton instances!!
+	// ---------------------------------------------------------------------------
+	
+	private static void checkLengths(Object a, Object b) {
+		if (Array.getLength(a) != Array.getLength(b)) {
+			throw new IllegalArgumentException("vectors a, b must be of same length");
+		}
+	}
+		
+//	private static void checkLengths(double[] a, double[] b) {
+//		if (a.length != b.length) {
+//			throw new IllegalArgumentException("vectors must be of same length");
+//		}	
+//	}
+	
+//	private static void checkLengths(float[] a, float[] b) {
+//		if (a.length != b.length) {
+//			throw new IllegalArgumentException("vectors must be of same length");
+//		}	
+//	}
+	
+//	private static void checkLengths(int[] a, int[] b) {
+//		if (a.length != b.length) {
+//			throw new IllegalArgumentException("vectors must be of same length");
+//		}	
+//	}
 
 	//  concrete classes -----------------------------------------------
 
 	public static class L1 extends VectorNorm {
+		
+		private static final L1 instance = new L1();
+		private L1() {}
+		
+		public static L1 getInstance() {
+			return L1.instance;
+		}
 
-		public double magnitude(double[] X) {
+		@Override
+		public double magnitude(double[] a) {
 			double sum = 0.0;
-			for (int i = 0; i < X.length; i++) {
-				sum = sum + Math.abs(X[i]);
+			for (int i = 0; i < a.length; i++) {
+				sum = sum + Math.abs(a[i]);
 			}
 			return sum;
 		}
 		
-		public double magnitude(float[] X) {
+		@Override
+		public double magnitude(float[] a) {
 			double sum = 0.0;
-			for (int i = 0; i < X.length; i++) {
-				sum = sum + Math.abs(X[i]);
+			for (int i = 0; i < a.length; i++) {
+				sum = sum + Math.abs(a[i]);
 			}
 			return sum;
 		}
 
-		public double magnitude(int[] X) {
+		@Override
+		public double magnitude(int[] a) {
 			long sum = 0;
-			for (int i = 0; i < X.length; i++) {
-				sum = sum + Math.abs(X[i]);
+			for (int i = 0; i < a.length; i++) {
+				sum = sum + Math.abs(a[i]);
 			}
 			return sum;
 		}
 
-		public double distance(final double[] X, final double[] Y) {
-			if (X.length != Y.length) {
-				throw new IllegalArgumentException(wrongLengthMessage);
-			}
+		@Override
+		public double distance(final double[] a, final double[] b) {
+			checkLengths(a, b);
 			double sum = 0.0;
-			for (int i = 0; i < X.length; i++) {
-				double d = X[i] - Y[i];
+			for (int i = 0; i < a.length; i++) {
+				double d = a[i] - b[i];
 				sum = sum + Math.abs(d);
 			}
 			return sum;
 		}
 
-		public double distance(final int[] X, final int[] Y) {
-			if (X.length != Y.length) {
-				throw new IllegalArgumentException(wrongLengthMessage);
-			}
+		@Override
+		public double distance(final int[] a, final int[] b) {
+			checkLengths(a, b);
 			int sum = 0;
-			for (int i = 0; i < X.length; i++) {
-				sum = sum + Math.abs(X[i] - Y[i]);
+			for (int i = 0; i < a.length; i++) {
+				sum = sum + Math.abs(a[i] - b[i]);
 			}
 			return sum;
 		}
 
+		@Override
 		public double distance2(double[] a, double[] b) {
 			double d = distance(a, b);
 			return d * d;
@@ -132,10 +226,6 @@ public abstract class VectorNorm {
 			return d * d;
 		}
 
-		public double getScale(int n) {
-			return 1.0 / n;
-		}
-
 		@Override
 		public double distance2(float[] a, float[] b) {
 			double d = distance(a, b);
@@ -143,80 +233,90 @@ public abstract class VectorNorm {
 		}
 
 		@Override
-		public double distance(float[] X, float[] Y) {
-			if (X.length != Y.length) {
-				throw new IllegalArgumentException(wrongLengthMessage);
-			}
+		public double distance(float[] a, float[] b) {
+			checkLengths(a, b);
 			double sum = 0;
-			for (int i = 0; i < X.length; i++) {
-				sum = sum + Math.abs(X[i] - Y[i]);
+			for (int i = 0; i < a.length; i++) {
+				sum = sum + Math.abs(a[i] - b[i]);
 			}
 			return sum;
 		}
+		
+		@Override
+		public double getScale(int n) {
+			return 1.0 / n;
+		}
+
 	}
 
 	// ------------------------------------------------------------------------------
 
 	public static class L2 extends VectorNorm {
+		
+		private static final L2 instance = new L2();
+		private L2() {}
+		
+		public static L2 getInstance() {
+			return L2.instance;
+		}
 
-		public double magnitude(double[] X) {
+		@Override
+		public double magnitude(double[] a) {
 			double sum = 0.0;
-			for (int i = 0; i < X.length; i++) {
-				sum = sum + X[i] * X[i];
+			for (int i = 0; i < a.length; i++) {
+				sum = sum + a[i] * a[i];
 			}
 			return Math.sqrt(sum);
 		}
 		
-		public double magnitude(float[] X) {
+		@Override
+		public double magnitude(float[] a) {
 			double sum = 0.0;
-			for (int i = 0; i < X.length; i++) {
-				sum = sum + Arithmetic.sqr((double) X[i]);
+			for (int i = 0; i < a.length; i++) {
+				sum = sum + Arithmetic.sqr((double) a[i]);
 			}
 			return Math.sqrt(sum);
 		}
 
-		public double magnitude(int[] X) {
+		@Override
+		public double magnitude(int[] a) {
 			long sum = 0;
-			for (int i = 0; i < X.length; i++) {
-				sum = sum + X[i] * X[i];
+			for (int i = 0; i < a.length; i++) {
+				sum = sum + a[i] * a[i];
 			}
 			return Math.sqrt(sum);
 		}
 
+		@Override
 		public double distance(double[] a, double[] b) {
 			return Math.sqrt(distance2(a, b));
 		}
 
-		public double distance2(final double[] X, final double[] Y) {
-			if (X.length != Y.length) {
-				throw new IllegalArgumentException(wrongLengthMessage);
-			}
+		@Override
+		public double distance2(final double[] a, final double[] b) {
+			checkLengths(a, b);
 			double sum = 0.0;
-			for (int i = 0; i < X.length; i++) {
-				double d = X[i] - Y[i];
+			for (int i = 0; i < a.length; i++) {
+				double d = a[i] - b[i];
 				sum = sum + d * d;
 			}
 			return sum;
 		}
 
+		@Override
 		public double distance(int[] a, int[] b) {
 			return Math.sqrt(distance2(a, b));
 		}
 
-		public double distance2(final int[] X, final int[] Y) {
-			if (X.length != Y.length) {
-				throw new IllegalArgumentException(wrongLengthMessage);
-			}
+		@Override
+		public double distance2(final int[] a, final int[] b) {
+			checkLengths(a, b);
 			int sum = 0;
-			for (int i = 0; i < X.length; i++) {
-				int d = X[i] - Y[i];
+			for (int i = 0; i < a.length; i++) {
+				int d = a[i] - b[i];
 				sum = sum + d * d;
 			}
 			return sum;
-		}
-
-		public double getScale(int n) {
-			return Math.sqrt(1.0 / n);
 		}
 
 		@Override
@@ -225,103 +325,115 @@ public abstract class VectorNorm {
 		}
 		
 		@Override
-		public double distance2(float[] X, float[] Y) {
-			if (X.length != Y.length) {
-				throw new IllegalArgumentException(wrongLengthMessage);
-			}
+		public double distance2(float[] a, float[] b) {
+			checkLengths(a, b);
 			double sum = 0.0;
-			for (int i = 0; i < X.length; i++) {
-				double d = X[i] - Y[i];
+			for (int i = 0; i < a.length; i++) {
+				double d = a[i] - b[i];
 				sum = sum + d * d;
 			}
 			return sum;
 		}
+		
+		@Override
+		public double getScale(int n) {
+			return Math.sqrt(1.0 / n);
+		}
+
 	}
 
 	// ------------------------------------------------------------------------------
 
 	public static class Linf extends VectorNorm {
+		
+		private static final Linf instance = new Linf();
+		private Linf() {}
+		
+		public static Linf getInstance() {
+			return Linf.instance;
+		}
 
-		public double magnitude(double[] X) {
+		@Override
+		public double magnitude(double[] a) {
 			double dmax = 0.0;
-			for (int i = 0; i < X.length; i++) {
-				dmax = Math.max(dmax, Math.abs(X[i]));
+			for (int i = 0; i < a.length; i++) {
+				dmax = Math.max(dmax, Math.abs(a[i]));
 			}
 			return dmax;
 		}
 		
-		public double magnitude(float[] X) {
+		@Override
+		public double magnitude(float[] a) {
 			float dmax = 0.0f;
-			for (int i = 0; i < X.length; i++) {
-				dmax = Math.max(dmax, Math.abs(X[i]));
+			for (int i = 0; i < a.length; i++) {
+				dmax = Math.max(dmax, Math.abs(a[i]));
 			}
 			return dmax;
 		}
 
-		public double magnitude(int[] X) {
+		@Override
+		public double magnitude(int[] a) {
 			int dmax = 0;
-			for (int i = 0; i < X.length; i++) {
-				dmax = Math.max(dmax, Math.abs(X[i]));
+			for (int i = 0; i < a.length; i++) {
+				dmax = Math.max(dmax, Math.abs(a[i]));
 			}
 			return dmax;
 		}
 
-		public double distance(final double[] X, final double[] Y) {
-			if (X.length != Y.length) {
-				throw new IllegalArgumentException(wrongLengthMessage);
-			}
+		@Override
+		public double distance(double[] a, final double[] b) {
+			checkLengths(a, b);
 			double dmax = 0.0;
-			for (int i = 0; i < X.length; i++) {
-				double d = X[i] - Y[i];
+			for (int i = 0; i < a.length; i++) {
+				double d = a[i] - b[i];
 				dmax = Math.max(dmax, Math.abs(d));
 			}
 			return dmax;
 		}
+		
+		@Override
+		public double distance2(double[] a, double[] b) {
+			return sqr(distance(a, b));
+		}
 
-		public double distance(final int[] X, final int[] Y) {
-			if (X.length != Y.length) {
-				throw new IllegalArgumentException(wrongLengthMessage);
-			}
+		@Override
+		public double distance(int[] a, final int[] b) {
+			checkLengths(a, b);
 			int dmax = 0;
-			for (int i = 0; i < X.length; i++) {
-				int d = Math.abs(X[i] - Y[i]);
+			for (int i = 0; i < a.length; i++) {
+				int d = Math.abs(a[i] - b[i]);
 				dmax = Math.max(dmax, d);
 			}
 			return dmax;
 		}
-
-		public double distance2(double[] a, double[] b) {
-			double d = distance(a, b);
-			return d * d;
-		}
-
+		
+		@Override
 		public double distance2(int[] a, int[] b) {
 			double d = distance(a, b);
 			return d * d;
 		}
 
-		public double getScale(int n) {
-			return 1.0;
-		}
-
 		@Override
 		public double distance2(float[] a, float[] b) {
-			double d = distance(a, b);
-			return d * d;
+			return sqr(distance(a, b));
 		}
 
 		@Override
-		public double distance(float[] X, float[] Y) {
-			if (X.length != Y.length) {
-				throw new IllegalArgumentException(wrongLengthMessage);
-			}
+		public double distance(float[] a, float[] b) {
+			checkLengths(a, b);
 			float dmax = 0;
-			for (int i = 0; i < X.length; i++) {
-				float d = Math.abs(X[i] - Y[i]);
+			for (int i = 0; i < a.length; i++) {
+				float d = Math.abs(a[i] - b[i]);
 				dmax = Math.max(dmax, d);
 			}
 			return dmax;
 		}
+		
+		@Override
+		public double getScale(int n) {
+			return 1.0;
+		}
+
 	}
 
 }

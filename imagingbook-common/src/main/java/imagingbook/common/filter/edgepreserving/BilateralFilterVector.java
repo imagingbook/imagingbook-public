@@ -54,7 +54,7 @@ public class BilateralFilterVector extends GenericFilterVector {
 		this.Hd = kernel.getH();
 		this.K = kernel.getXc();
 		this.sigmaR2 = sqr(params.sigmaR);
-		this.colorNorm = params.colorNormType.create();
+		this.colorNorm = params.colorNormType.getInstance();
 		this.colorScale2 = sqr(colorNorm.getScale(3));
 	}
 	

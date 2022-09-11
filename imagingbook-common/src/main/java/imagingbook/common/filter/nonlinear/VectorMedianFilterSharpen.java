@@ -56,7 +56,7 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 		this.yc = mask.getCenterY();
 		this.supportRegion = new float[maskCount][3];
 		this.a = (int) Math.round(maskCount - params.sharpen * (maskCount - 2));
-		this.vNorm = params.distanceNorm.create();
+		this.vNorm = params.distanceNorm.getInstance();
 	}
 	
 	@Override
