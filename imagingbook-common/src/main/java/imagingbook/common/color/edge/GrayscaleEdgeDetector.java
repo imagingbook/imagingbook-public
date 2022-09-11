@@ -13,7 +13,6 @@ import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.atan2;
 import static java.lang.Math.sqrt;
 
-import ij.plugin.filter.Convolver;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
@@ -22,17 +21,25 @@ import imagingbook.common.math.Matrix;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Simple grayscale edge detector for color images. The color image
- * is converted to grayscale for edge detection.
+ * <p>
+ * Simple grayscale edge detector for all types of images.
+ * Color images are converted to grayscale before edge detection.
+ * See Sec. 5.3 of [1] for a detailed description.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author W. Burger
  * @version 2014/02/17
  * @version 2022/09/04 converted to implement interface
+ * @version 2022/09/11 changed to 2D kernel arrays using IjUtils
  */
 public class GrayscaleEdgeDetector implements ColorEdgeDetector {
 
 	/**
-	 * Currently unused, no parameters to set
+	 * Parameters for {@link GrayscaleEdgeDetector} (currently none defined).
 	 */
 	public static class Parameters implements ParameterBundle {
 	}
@@ -45,17 +52,15 @@ public class GrayscaleEdgeDetector implements ColorEdgeDetector {
 	private final FloatProcessor Eort;	// edge orientation map
 	
 	// Sobel-kernels for x/y-derivatives:
-    private static final float[] HxS = Matrix.multiply(1.0f/8, new float[] {
-			-1, 0, 1,
-		    -2, 0, 2,
-		    -1, 0, 1
-		    });
-    
-    private static final float[] HyS = Matrix.multiply(1.0f/8, new float[] {
-			-1, -2, -1,
-			 0,  0,  0,
-			 1,  2,  1
-			 });
+    private static final float[][] HxS = Matrix.multiply(1.0f/8, new float[][] {
+			{-1, 0, 1},
+		    {-2, 0, 2},
+		    {-1, 0, 1}});
+
+    private static final float[][] HyS = Matrix.multiply(1.0f/8, new float[][] {
+			{-1, -2, -1},
+			{ 0,  0,  0},
+			{ 1,  2,  1}});
     
 	public GrayscaleEdgeDetector(ImageProcessor I) {
 		this(I, new Parameters());
@@ -77,13 +82,9 @@ public class GrayscaleEdgeDetector implements ColorEdgeDetector {
 		
 	    FloatProcessor Ix = I;
 	    FloatProcessor Iy = (FloatProcessor) Ix.duplicate();
-	    
-	    Convolver conv = new Convolver();
-		conv.setNormalize(false);
-		conv.convolve(Ix, HxS, 3, 3);
-		conv.convolve(Iy, HyS, 3, 3);
-//		IjUtils.convolveXY(Ix, HxS);
-//		IjUtils.convolveXY(Iy, HyS);
+
+		IjUtils.convolve(Ix, HxS);
+		IjUtils.convolve(Iy, HyS);
 		
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {
