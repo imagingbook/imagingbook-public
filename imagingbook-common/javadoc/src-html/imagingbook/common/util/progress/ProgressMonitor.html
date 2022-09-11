@@ -19,7 +19,7 @@
 <span class="sourceLineNo">009</span><a id="line.9">package imagingbook.common.util.progress;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
 <span class="sourceLineNo">011</span><a id="line.11">import imagingbook.common.filter.generic.GenericFilter;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.util.progress.ij.ProgressBarMonitor;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.ij.IjProgressBarMonitor;</a>
 <span class="sourceLineNo">013</span><a id="line.13"></a>
 <span class="sourceLineNo">014</span><a id="line.14">/**</a>
 <span class="sourceLineNo">015</span><a id="line.15"> * This class represents a "progress monitor". This is a simple</a>
@@ -37,7 +37,7 @@
 <span class="sourceLineNo">027</span><a id="line.27"> * Otherwise, if not used in a auto-start/close mode, the methods {@link #start()} </a>
 <span class="sourceLineNo">028</span><a id="line.28"> * and {@link #close()} should be used to "manually" start and terminate</a>
 <span class="sourceLineNo">029</span><a id="line.29"> * monitoring.</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * See {@link GenericFilter} and {@link ProgressBarMonitor} for an example.</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * See {@link GenericFilter} and {@link IjProgressBarMonitor} for an example.</a>
 <span class="sourceLineNo">031</span><a id="line.31"> */</a>
 <span class="sourceLineNo">032</span><a id="line.32">public abstract class ProgressMonitor extends Thread implements AutoCloseable {</a>
 <span class="sourceLineNo">033</span><a id="line.33">        </a>
@@ -92,12 +92,12 @@
 <span class="sourceLineNo">082</span><a id="line.82">        /**</a>
 <span class="sourceLineNo">083</span><a id="line.83">         * Abstract method to be implemented by concrete sub-classes.</a>
 <span class="sourceLineNo">084</span><a id="line.84">         * It is called by the {@link ProgressMonitor} thread in regular intervals.</a>
-<span class="sourceLineNo">085</span><a id="line.85">         * Current progress data are passed.</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * Current progress (degree of completion) value is passed.</a>
 <span class="sourceLineNo">086</span><a id="line.86">         * It is up to the implementation what action should be performed,</a>
 <span class="sourceLineNo">087</span><a id="line.87">         * e.g., display the current progress graphically </a>
-<span class="sourceLineNo">088</span><a id="line.88">         * (see e.g. {@link ProgressBarMonitor}).</a>
+<span class="sourceLineNo">088</span><a id="line.88">         * (see e.g. {@link IjProgressBarMonitor}).</a>
 <span class="sourceLineNo">089</span><a id="line.89">         * </a>
-<span class="sourceLineNo">090</span><a id="line.90">         * @param progress the current progress value [0,1)</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * @param progress the current progress (degree of completion) value in [0,1)</a>
 <span class="sourceLineNo">091</span><a id="line.91">         * @param elapsedNanoTime the time elapsed since the progress monitor was started (in nanoseconds)</a>
 <span class="sourceLineNo">092</span><a id="line.92">         */</a>
 <span class="sourceLineNo">093</span><a id="line.93">        public abstract void handleProgress(double progress, long elapsedNanoTime);</a>
@@ -132,10 +132,10 @@
 <span class="sourceLineNo">122</span><a id="line.122">         */</a>
 <span class="sourceLineNo">123</span><a id="line.123">        public double getElapsedTime() { // result is in seconds</a>
 <span class="sourceLineNo">124</span><a id="line.124">                if (running) {</a>
-<span class="sourceLineNo">125</span><a id="line.125">                        return  (System.nanoTime() - startTime) / 1E9d;</a>
+<span class="sourceLineNo">125</span><a id="line.125">                        return  (System.nanoTime() - startTime) / 1.0e9d;</a>
 <span class="sourceLineNo">126</span><a id="line.126">                }</a>
 <span class="sourceLineNo">127</span><a id="line.127">                else {</a>
-<span class="sourceLineNo">128</span><a id="line.128">                        return (endTime - startTime) / 1E9d;</a>
+<span class="sourceLineNo">128</span><a id="line.128">                        return (endTime - startTime) / 1.0e9d;</a>
 <span class="sourceLineNo">129</span><a id="line.129">                }</a>
 <span class="sourceLineNo">130</span><a id="line.130">        }</a>
 <span class="sourceLineNo">131</span><a id="line.131"></a>

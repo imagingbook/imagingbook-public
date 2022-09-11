@@ -38,29 +38,42 @@
 <span class="sourceLineNo">028</span><a id="line.28">        </a>
 <span class="sourceLineNo">029</span><a id="line.29">        /**</a>
 <span class="sourceLineNo">030</span><a id="line.30">         * Creates and returns a 1D Gaussian filter kernel large enough</a>
-<span class="sourceLineNo">031</span><a id="line.31">         * to avoid truncation effects. The resulting array is odd-sized.</a>
+<span class="sourceLineNo">031</span><a id="line.31">         * to avoid truncation effects. The length of the resulting array is odd.</a>
 <span class="sourceLineNo">032</span><a id="line.32">         * The returned kernel is normalized.</a>
 <span class="sourceLineNo">033</span><a id="line.33">         * </a>
 <span class="sourceLineNo">034</span><a id="line.34">         * @param sigma the width (standard deviation) of the Gaussian</a>
 <span class="sourceLineNo">035</span><a id="line.35">         * @return the Gaussian filter kernel</a>
 <span class="sourceLineNo">036</span><a id="line.36">         */</a>
 <span class="sourceLineNo">037</span><a id="line.37">        public static float[] makeGaussKernel1D(double sigma) {</a>
-<span class="sourceLineNo">038</span><a id="line.38">                if (sigma &lt; 0) {</a>
-<span class="sourceLineNo">039</span><a id="line.39">                        throw new IllegalArgumentException("positive sigma required for Gaussian kernel");</a>
-<span class="sourceLineNo">040</span><a id="line.40">                }</a>
-<span class="sourceLineNo">041</span><a id="line.41">                final int rad = (int) Math.ceil(SIZE_FACTOR * sigma);</a>
-<span class="sourceLineNo">042</span><a id="line.42">                final int size = rad + rad + 1;</a>
-<span class="sourceLineNo">043</span><a id="line.43">                final float[] kernel = new float[size]; // odd size, center cell = kernel[rad]</a>
-<span class="sourceLineNo">044</span><a id="line.44">                final double sigma2 = sqr(sigma);</a>
-<span class="sourceLineNo">045</span><a id="line.45">                </a>
-<span class="sourceLineNo">046</span><a id="line.46">                for (int i = 0; i &lt; kernel.length; i++) {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                        kernel[i] = (float) Math.exp(-0.5 * sqr(rad - i) / sigma2);</a>
-<span class="sourceLineNo">048</span><a id="line.48">                }</a>
-<span class="sourceLineNo">049</span><a id="line.49">        </a>
-<span class="sourceLineNo">050</span><a id="line.50">                return normalize(kernel);</a>
-<span class="sourceLineNo">051</span><a id="line.51">        }</a>
-<span class="sourceLineNo">052</span><a id="line.52">        </a>
-<span class="sourceLineNo">053</span><a id="line.53">}</a>
+<span class="sourceLineNo">038</span><a id="line.38">                return makeGaussKernel1D(sigma, true);</a>
+<span class="sourceLineNo">039</span><a id="line.39">        }</a>
+<span class="sourceLineNo">040</span><a id="line.40">        </a>
+<span class="sourceLineNo">041</span><a id="line.41">        /**</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * Creates and returns a 1D Gaussian filter kernel large enough</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * to avoid truncation effects. The length of the resulting array is odd.</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * The returned kernel is optionally normalized.</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * </a>
+<span class="sourceLineNo">046</span><a id="line.46">         * @param sigma the width (standard deviation) of the Gaussian</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * @param normalize set true to normalize the kernel</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @return the Gaussian filter kernel</a>
+<span class="sourceLineNo">049</span><a id="line.49">         */</a>
+<span class="sourceLineNo">050</span><a id="line.50">        public static float[] makeGaussKernel1D(double sigma, boolean normalize) {</a>
+<span class="sourceLineNo">051</span><a id="line.51">                if (sigma &lt; 0) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">                        throw new IllegalArgumentException("positive sigma required for Gaussian kernel");</a>
+<span class="sourceLineNo">053</span><a id="line.53">                }</a>
+<span class="sourceLineNo">054</span><a id="line.54">                final int rad = (int) Math.ceil(SIZE_FACTOR * sigma);</a>
+<span class="sourceLineNo">055</span><a id="line.55">                final int size = rad + rad + 1;</a>
+<span class="sourceLineNo">056</span><a id="line.56">                final float[] kernel = new float[size]; // odd size, center cell = kernel[rad]</a>
+<span class="sourceLineNo">057</span><a id="line.57">                final double sigma2 = sqr(sigma);</a>
+<span class="sourceLineNo">058</span><a id="line.58">                </a>
+<span class="sourceLineNo">059</span><a id="line.59">                for (int i = 0; i &lt; kernel.length; i++) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                        kernel[i] = (float) Math.exp(-0.5 * sqr(rad - i) / sigma2);</a>
+<span class="sourceLineNo">061</span><a id="line.61">                }</a>
+<span class="sourceLineNo">062</span><a id="line.62">                </a>
+<span class="sourceLineNo">063</span><a id="line.63">                return (normalize) ? normalize(kernel) : kernel;</a>
+<span class="sourceLineNo">064</span><a id="line.64">        }</a>
+<span class="sourceLineNo">065</span><a id="line.65">        </a>
+<span class="sourceLineNo">066</span><a id="line.66">}</a>
 
 
 

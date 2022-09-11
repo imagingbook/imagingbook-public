@@ -64,7 +64,7 @@
 <span class="sourceLineNo">054</span><a id="line.54">        private GenericFilter gradientBlurFilter;</a>
 <span class="sourceLineNo">055</span><a id="line.55">        private GenericFilter structureBlurFilter;</a>
 <span class="sourceLineNo">056</span><a id="line.56">        </a>
-<span class="sourceLineNo">057</span><a id="line.57">        private int T;          // number of iterations</a>
+<span class="sourceLineNo">057</span><a id="line.57">        private int iterations;         // number of iterations</a>
 <span class="sourceLineNo">058</span><a id="line.58">        private float alpha;</a>
 <span class="sourceLineNo">059</span><a id="line.59">        private double a0, a1;</a>
 <span class="sourceLineNo">060</span><a id="line.60">        private PixelPack source, target;</a>
@@ -87,7 +87,7 @@
 <span class="sourceLineNo">077</span><a id="line.77">                this.N = source.getHeight(); </a>
 <span class="sourceLineNo">078</span><a id="line.78">                this.K = source.getDepth();</a>
 <span class="sourceLineNo">079</span><a id="line.79">                </a>
-<span class="sourceLineNo">080</span><a id="line.80">                this.T = params.iterations;</a>
+<span class="sourceLineNo">080</span><a id="line.80">                this.iterations = params.iterations;</a>
 <span class="sourceLineNo">081</span><a id="line.81">                this.alpha = params.alpha0;</a>
 <span class="sourceLineNo">082</span><a id="line.82">                this.a0 = params.a0;</a>
 <span class="sourceLineNo">083</span><a id="line.83">                this.a1 = params.a1;</a>
@@ -230,7 +230,7 @@
 <span class="sourceLineNo">220</span><a id="line.220">        </a>
 <span class="sourceLineNo">221</span><a id="line.221">        @Override</a>
 <span class="sourceLineNo">222</span><a id="line.222">        protected final int passesRequired() {</a>
-<span class="sourceLineNo">223</span><a id="line.223">                return T;       // this filter needs T passes</a>
+<span class="sourceLineNo">223</span><a id="line.223">                return iterations;      // this filter needs T passes</a>
 <span class="sourceLineNo">224</span><a id="line.224">        }</a>
 <span class="sourceLineNo">225</span><a id="line.225">        </a>
 <span class="sourceLineNo">226</span><a id="line.226">        @Override</a>

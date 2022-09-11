@@ -20,7 +20,7 @@ import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
- * Monochromatic edge detector, applicable to color images ({@link COlorProcessor}) only.
+ * Monochromatic edge detector, applicable to color images ({@link ColorProcessor}) only.
  * See Sec. 16.2 (Alg. 16.1) of [1] for additional details.
  * </p>
  * <p>

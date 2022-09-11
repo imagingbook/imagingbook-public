@@ -58,7 +58,7 @@ public class BinaryMask {
 	
 	/**
 	 * Returns the x-coordinate of the mask's reference point.
-	 * @return
+	 * @return the x-coordinate of the mask's reference point
 	 */
 	public int getCenterX() {
 		return centerX;
@@ -66,7 +66,7 @@ public class BinaryMask {
 	
 	/**
 	 * Returns the y-coordinate of the mask's reference point.
-	 * @return
+	 * @return the y-coordinate of the mask's reference point
 	 */
 	public int getCenterY() {
 		return centerY;

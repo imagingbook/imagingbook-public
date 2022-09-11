@@ -1571,12 +1571,12 @@
 <span class="sourceLineNo">1561</span><a id="line.1561">         * @param x a vector</a>
 <span class="sourceLineNo">1562</span><a id="line.1562">         * @return the sum of vector elements</a>
 <span class="sourceLineNo">1563</span><a id="line.1563">         */</a>
-<span class="sourceLineNo">1564</span><a id="line.1564">        public static float sum(final float[] x) {</a>
+<span class="sourceLineNo">1564</span><a id="line.1564">        public static double sum(final float[] x) {</a>
 <span class="sourceLineNo">1565</span><a id="line.1565">                double sum = 0;</a>
 <span class="sourceLineNo">1566</span><a id="line.1566">                for (int i = 0; i &lt; x.length; i++) {</a>
 <span class="sourceLineNo">1567</span><a id="line.1567">                        sum = sum + x[i];</a>
 <span class="sourceLineNo">1568</span><a id="line.1568">                }</a>
-<span class="sourceLineNo">1569</span><a id="line.1569">                return (float) sum;</a>
+<span class="sourceLineNo">1569</span><a id="line.1569">                return sum;</a>
 <span class="sourceLineNo">1570</span><a id="line.1570">        }</a>
 <span class="sourceLineNo">1571</span><a id="line.1571">        </a>
 <span class="sourceLineNo">1572</span><a id="line.1572">        /**</a>
@@ -1613,7 +1613,7 @@
 <span class="sourceLineNo">1603</span><a id="line.1603">         * @param row the row index</a>
 <span class="sourceLineNo">1604</span><a id="line.1604">         * @return the sum of the row's elements</a>
 <span class="sourceLineNo">1605</span><a id="line.1605">         */</a>
-<span class="sourceLineNo">1606</span><a id="line.1606">        public static float sumRow(final float[][] A, final int row) {</a>
+<span class="sourceLineNo">1606</span><a id="line.1606">        public static double sumRow(final float[][] A, final int row) {</a>
 <span class="sourceLineNo">1607</span><a id="line.1607">                return sum(A[row]);</a>
 <span class="sourceLineNo">1608</span><a id="line.1608">        }</a>
 <span class="sourceLineNo">1609</span><a id="line.1609">        </a>
@@ -1638,12 +1638,12 @@
 <span class="sourceLineNo">1628</span><a id="line.1628">         * @param col the column index</a>
 <span class="sourceLineNo">1629</span><a id="line.1629">         * @return the sum of the column's elements</a>
 <span class="sourceLineNo">1630</span><a id="line.1630">         */</a>
-<span class="sourceLineNo">1631</span><a id="line.1631">        public static float sumColumn(final float[][] A, final int col) {</a>
+<span class="sourceLineNo">1631</span><a id="line.1631">        public static double sumColumn(final float[][] A, final int col) {</a>
 <span class="sourceLineNo">1632</span><a id="line.1632">                double sum = 0;</a>
 <span class="sourceLineNo">1633</span><a id="line.1633">                for (int r = 0; r &lt; A.length; r++) {</a>
 <span class="sourceLineNo">1634</span><a id="line.1634">                        sum = sum + A[r][col];</a>
 <span class="sourceLineNo">1635</span><a id="line.1635">                }</a>
-<span class="sourceLineNo">1636</span><a id="line.1636">                return (float) sum;</a>
+<span class="sourceLineNo">1636</span><a id="line.1636">                return sum;</a>
 <span class="sourceLineNo">1637</span><a id="line.1637">        }</a>
 <span class="sourceLineNo">1638</span><a id="line.1638">        </a>
 <span class="sourceLineNo">1639</span><a id="line.1639">        /**</a>
