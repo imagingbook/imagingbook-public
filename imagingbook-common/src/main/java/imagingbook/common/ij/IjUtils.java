@@ -35,6 +35,7 @@ import ij.process.ShortProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.math.Matrix;
 import imagingbook.common.util.bits.BitMap;
 
 
@@ -797,14 +798,14 @@ public abstract class IjUtils {
 	 * which is modified. The 1D kernel is applied in horizontal direction only.#
 	 * The supplied filter kernel is not normalized.
 	 * 
-	 * @param fp the image to be filtered (modified)
+	 * @param ip the image to be filtered (modified)
 	 * @param h the filter kernel
 	 * @see Convolver
 	 */
-	public static void convolveX (ImageProcessor fp, float[] h) { // TODO: unit test missing
+	public static void convolveX (ImageProcessor ip, float[] h) { // TODO: unit test missing
 		Convolver conv = new Convolver();
 		conv.setNormalize(false);
-		conv.convolve(fp, h, h.length, 1);
+		conv.convolve(ip, h, h.length, 1);
 	}
 
 	/**
@@ -812,14 +813,14 @@ public abstract class IjUtils {
 	 * which is modified. The 1D kernel is applied in vertical direction only.
 	 * The supplied filter kernel is not normalized.
 	 * 
-	 * @param fp the image to be filtered (modified)
+	 * @param ip the image to be filtered (modified)
 	 * @param h the filter kernel
 	 * @see Convolver
 	 */
-	public static void convolveY (ImageProcessor fp, float[] h) { // TODO: unit test missing
+	public static void convolveY (ImageProcessor ip, float[] h) { // TODO: unit test missing
 		Convolver conv = new Convolver();
 		conv.setNormalize(false);
-		conv.convolve(fp, h, 1, h.length);
+		conv.convolve(ip, h, 1, h.length);
 	}
 
 	/**
@@ -829,15 +830,30 @@ public abstract class IjUtils {
 	 * vertical direction.
 	 * The supplied filter kernel is not normalized.
 	 * 
-	 * @param fp the image to be filtered (modified)
+	 * @param ip the image to be filtered (modified)
 	 * @param h the filter kernel
 	 * @see Convolver
 	 */
-	public static void convolveXY (ImageProcessor fp, float[] h) { // TODO: unit test missing
+	public static void convolveXY (ImageProcessor ip, float[] h) { // TODO: unit test missing
 		Convolver conv = new Convolver();
 		conv.setNormalize(false);
-		conv.convolve(fp, h, h.length, 1);
-		conv.convolve(fp, h, 1, h.length);
+		conv.convolve(ip, h, h.length, 1);
+		conv.convolve(ip, h, 1, h.length);
+	}
+	
+	/**
+	 * Applies a two-dimensional convolution kernel to the given image,
+	 * which is modified. The supplied kernel {@code float[x][y]} must be 
+	 * rectangular; it is not normalized.
+	 * 
+	 * @param ip the image to be filtered (modified)
+	 * @param H the filter kernel
+	 */
+	public static void convolve(ImageProcessor ip, float[][] H) { // TODO: unit test missing
+		float[] h = Matrix.flatten(H);	// TODO: right order? transpose?
+		Convolver conv = new Convolver();
+		conv.setNormalize(false);
+		conv.convolve(ip, h, H[0].length, H.length);
 	}
 
 }
