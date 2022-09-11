@@ -23,6 +23,7 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600color("balloons-600.png"),
 	Balloons600gray("balloons-600-gray.png"),
 	
+	// CannyEdgeDetector
 	Balloons600colorCannyEdgeMagnitude("balloons-600-CannyEdgeMagnitude.tif"),
 	Balloons600colorCannyEdgeOrientation("balloons-600-CannyEdgeOrientation.tif"),
 	Balloons600colorCannyBinaryEdges("balloons-600-CannyBinaryEdges.png"),
@@ -31,14 +32,20 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600grayCannyEdgeOrientation("balloons-600-gray-CannyEdgeOrientation.tif"),
 	Balloons600grayCannyBinaryEdges("balloons-600-gray-CannyBinaryEdges.png"),
 	
+	// MultiGradientEdgeDetector
 	Balloons600colorMultigradientEdgeMagnitude("balloons-600-MultigradientEdgeMagnitude.tif"),
 	Balloons600colorMultigradientEdgeOrientation("balloons-600-MultigradientEdgeOrientation.tif"),
 	
-	Balloons600colorMonochromaticEdgeMagnitude("balloons-600-MonochromaticEdgeMagnitude.tif"),
-	Balloons600colorMonochromaticEdgeOrientation("balloons-600-MonochromaticEdgeOrientation.tif"),
+	// MonochromaticEdgeDetector (color only)
+	Balloons600colorMonochromaticEdgeMagnitudeL2("balloons-600-MonochromaticEdgeMagnitudeL2.tif"),
+	Balloons600colorMonochromaticEdgeOrientationL2("balloons-600-MonochromaticEdgeOrientationL2.tif"),
 	
+	// GrayscaleEdgeDetector
 	Balloons600colorGrayscaleEdgeMagnitude("balloons-600-GrayscaleEdgeMagnitude.tif"),
 	Balloons600colorGrayscaleEdgeOrientation("balloons-600-GrayscaleEdgeOrientation.tif"),
+	
+	Balloons600grayGrayscaleEdgeMagnitude("balloons-600-gray-GrayscaleEdgeMagnitude.tif"),
+	Balloons600grayGrayscaleEdgeOrientation("balloons-600-gray-GrayscaleEdgeOrientation.tif"),
 	;
 
 	// ---------------------------------------------------
