@@ -44,6 +44,8 @@ import imagingbook.common.util.ParameterBundle;
  */
 public class CannyEdgeDetector implements ColorEdgeDetector {
 	
+	// TODO: implement convolutions with GenericFilter
+	
 	public static class Parameters implements ParameterBundle {
 		
 		/** Gaussian sigma (scale, default = 2) */
@@ -110,6 +112,7 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 			makeGradientsAndMagnitudeColor((ColorProcessor) I);
 		else
 			makeGradientsAndMagnitudeGray(I);
+		// this is done "on demand":
 		//nonMaxSuppression();
 		//detectAndTraceEdges();
 	}
@@ -124,6 +127,7 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		// calculate the gradients in X- and Y-direction
 		Ex = fp;
 		Ey = (FloatProcessor) fp.duplicate();
+		
 		float[] gradKernel = {-0.5f, 0, 0.5f};
 		IjUtils.convolveX(Ex, gradKernel);
 		IjUtils.convolveY(Ey, gradKernel);
@@ -132,33 +136,31 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		float emax = 0;
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {
-				float dx = Ex.getf(u,v);
-				float dy = Ey.getf(u,v);
-				float mag = (float) Math.hypot(dx, dy);	// = (float) Math.sqrt(dx*dx + dy*dy);
+				double dx = Ex.getf(u,v);
+				double dy = Ey.getf(u,v);
+				float mag = (float) Math.hypot(dx, dy);
 				if (mag > emax) 
 					emax = mag;
 				Emag.setf(u, v, mag);
 			}
 		}
 		
-		// normalize gradient magnitude 
-		if (params.normGradMag && emax > 0.001) 
+		// normalize gradient magnitude (to max. value 100):
+		if (params.normGradMag && emax > 0.001f) {
 			Emag.multiply(100.0/emax);
+		}
 	}
 	
 	private void makeGradientsAndMagnitudeColor(ColorProcessor cp) {
 		FloatProcessor[] I = new PixelPack(cp).getFloatProcessors();	
-		// pre-smooth the image with a separable Gaussian filter (on each RGB channel)
+		// pre-smooth the image with a separable Gaussian filter (on each RGB channel):
 		float[] gaussKernel = GaussianKernel1D.makeGaussKernel1D(params.gSigma, true);
 		for (int k = 0; k < I.length; k++) {
-			//FloatProcessor If = Irgb[i];
-//			conv.convolve(I[k], gaussKernel, gaussKernel.length, 1);
-//			conv.convolve(I[k], gaussKernel, 1, gaussKernel.length);
-			IjUtils.convolveX(I[k], gaussKernel);	// TODO: check for differences!
+			IjUtils.convolveX(I[k], gaussKernel);
 			IjUtils.convolveY(I[k], gaussKernel);
 		}
 		
-		// calculate the gradients in X- and Y-direction for each RGB channel
+		// calculate the gradients in X- and Y-direction for each RGB channel:
 		FloatProcessor[] Ix = new FloatProcessor[3];
 		FloatProcessor[] Iy = new FloatProcessor[3];
 		float[] gradKernel = {-0.5f, 0, 0.5f};
@@ -169,7 +171,7 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 			IjUtils.convolveY(Iy[k], gradKernel);
 		}
 
-		// calculate gradient magnitude
+		// calculate color gradient magnitude:
 		Ex = new FloatProcessor(M, N);
 		Ey = new FloatProcessor(M, N);
 		Emag = new FloatProcessor(M, N);
@@ -177,12 +179,12 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		float emax = 0;
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {
-				float rx = Ix[0].getf(u,v), ry = Iy[0].getf(u,v);
-				float gx = Ix[1].getf(u,v), gy = Iy[1].getf(u,v);
-				float bx = Ix[2].getf(u,v), by = Iy[2].getf(u,v);
-				float A = rx*rx + gx*gx + bx*bx;
-				float B = ry*ry + gy*gy + by*by;
-				float C = rx*ry + gx*gy + bx*by;
+				double rx = Ix[0].getf(u,v), ry = Iy[0].getf(u,v);
+				double gx = Ix[1].getf(u,v), gy = Iy[1].getf(u,v);
+				double bx = Ix[2].getf(u,v), by = Iy[2].getf(u,v);
+				double A = rx*rx + gx*gx + bx*bx;
+				double B = ry*ry + gy*gy + by*by;
+				double C = rx*ry + gx*gy + bx*by;
 				
 //				Eigensolver2x2 es = new Eigensolver2x2(A, C, C, B);
 //				if (!es.isReal()) {
@@ -195,11 +197,11 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 //				Ex.setf(u, v, (float) eVec0[0]);
 //				Ey.setf(u, v, (float) eVec0[1]);
 				
-				float D = (float) Math.sqrt(sqr(A - B) + 4 * sqr(C));	
-				float lambda0 = (A + B + D) / 2;						// eigenvalue \lambda_0
+				double D = (float) Math.sqrt(sqr(A - B) + 4 * sqr(C));	
+				double lambda0 = (A + B + D) / 2;						// eigenvalue lambda_0
 				Emag.setf(u, v, (float) Math.sqrt(lambda0));
-				Ex.setf(u, v, A - B + D);								// eigenvector x_0
-				Ey.setf(u, v, 2 * C);									// eigenvector y_0
+				Ex.setf(u, v, (float) (A - B + D));						// eigenvector x_0
+				Ey.setf(u, v, (float) (2 * C));							// eigenvector y_0
 			}
 		}
 		// normalize gradient magnitude 
@@ -369,7 +371,6 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		return Ebin;
 	}
 	
-	
 	/**
 	 * Returns a list of detected {@link EdgeTrace} instances.
 	 * @return a list of {@link EdgeTrace} instances
@@ -380,10 +381,5 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 		}
 		return edgeTraces;
 	}
-	
-	@Deprecated
-	public List<EdgeTrace> getTraces() {
-		return getEdgeTraces();
-	}
-	
+
 }
