@@ -9,13 +9,21 @@
 
 package imagingbook.common.math;
 
+/**
+ * This class defines various vector norms for calculating
+ * magnitude and distance.
+ * 
+ * @author WB
+ * @version 2022/09/11
+ */
 public abstract class VectorNorm {
 
 	public abstract double magnitude(double[] x);
+	public abstract double magnitude(float[] x);
 	public abstract double magnitude(int[] x);
 
 	/**
-	 * Calculates the distance between two vectors.
+	 * Calculates and returns the distance between two vectors.
 	 * 
 	 * @param a first vector
 	 * @param b second vector
@@ -46,26 +54,36 @@ public abstract class VectorNorm {
 	 * @param n dimensionality
 	 * @return scale factor
 	 */
+	@Deprecated
 	public abstract double getScale(int n);
 
-	private interface Creator {
-		public VectorNorm create();
-	}
 
-	public enum NormType implements Creator {
+	public enum NormType {
 		L1 	 {public VectorNorm create() {return new VectorNorm.L1();}},
 		L2 	 {public VectorNorm create() {return new VectorNorm.L2();}}, 
 		Linf {public VectorNorm create() {return new VectorNorm.Linf();}
 		};
+		
+		public abstract VectorNorm create();
 	}
 
 	private static String wrongLengthMessage = "feature vectors must be of same length";
+	
+	// make singleton instances!!
 
 	//  concrete classes -----------------------------------------------
 
 	public static class L1 extends VectorNorm {
 
 		public double magnitude(double[] X) {
+			double sum = 0.0;
+			for (int i = 0; i < X.length; i++) {
+				sum = sum + Math.abs(X[i]);
+			}
+			return sum;
+		}
+		
+		public double magnitude(float[] X) {
 			double sum = 0.0;
 			for (int i = 0; i < X.length; i++) {
 				sum = sum + Math.abs(X[i]);
@@ -148,6 +166,14 @@ public abstract class VectorNorm {
 			}
 			return Math.sqrt(sum);
 		}
+		
+		public double magnitude(float[] X) {
+			double sum = 0.0;
+			for (int i = 0; i < X.length; i++) {
+				sum = sum + Arithmetic.sqr((double) X[i]);
+			}
+			return Math.sqrt(sum);
+		}
 
 		public double magnitude(int[] X) {
 			long sum = 0;
@@ -218,6 +244,14 @@ public abstract class VectorNorm {
 
 		public double magnitude(double[] X) {
 			double dmax = 0.0;
+			for (int i = 0; i < X.length; i++) {
+				dmax = Math.max(dmax, Math.abs(X[i]));
+			}
+			return dmax;
+		}
+		
+		public double magnitude(float[] X) {
+			float dmax = 0.0f;
 			for (int i = 0; i < X.length; i++) {
 				dmax = Math.max(dmax, Math.abs(X[i]));
 			}
