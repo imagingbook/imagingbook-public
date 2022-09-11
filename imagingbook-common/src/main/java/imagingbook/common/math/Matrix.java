@@ -1561,12 +1561,12 @@ public abstract class Matrix {
 	 * @param x a vector
 	 * @return the sum of vector elements
 	 */
-	public static float sum(final float[] x) {
+	public static double sum(final float[] x) {
 		double sum = 0;
 		for (int i = 0; i < x.length; i++) {
 			sum = sum + x[i];
 		}
-		return (float) sum;
+		return sum;
 	}
 	
 	/**
@@ -1603,7 +1603,7 @@ public abstract class Matrix {
 	 * @param row the row index
 	 * @return the sum of the row's elements
 	 */
-	public static float sumRow(final float[][] A, final int row) {
+	public static double sumRow(final float[][] A, final int row) {
 		return sum(A[row]);
 	}
 	
@@ -1628,12 +1628,12 @@ public abstract class Matrix {
 	 * @param col the column index
 	 * @return the sum of the column's elements
 	 */
-	public static float sumColumn(final float[][] A, final int col) {
+	public static double sumColumn(final float[][] A, final int col) {
 		double sum = 0;
 		for (int r = 0; r < A.length; r++) {
 			sum = sum + A[r][col];
 		}
-		return (float) sum;
+		return sum;
 	}
 	
 	/**
