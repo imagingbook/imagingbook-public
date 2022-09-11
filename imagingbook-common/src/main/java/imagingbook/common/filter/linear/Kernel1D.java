@@ -83,10 +83,13 @@ public class Kernel1D {
 	 * @return the normalized array
 	 */
 	public static float[] normalize(float[] A) throws ArithmeticException {
-		float s = (float) (1.0 / Matrix.sum(A));
-		if (!Double.isFinite(s))	// isZero(s)
+		double scale = 1.0 / Matrix.sum(A);
+		if (!Double.isFinite(scale))	// isZero(s)
 			throw new ArithmeticException("zero kernel sum, cannot normalize");
-		return Matrix.multiply(s, A);
+		for (int i = 0; i < A.length; i++) {
+			A[i] = (float) (A[i] * scale);
+		}
+		return A; 	//Matrix.multiply((float)scale, A);
 	}
 
 }
