@@ -19,12 +19,12 @@ import imagingbook.testutils.ImageTestUtils;
 
 public class CannyEdgeDetectorTest {
 	
-	static double TOL = 1e-3;
+	private static final  double TOL = 0.01;
 	
 //	static ImageResource ballonsColor = EdgeDetectionTestImage.Balloons600color;
 //	static ImageResource ballonsGray = EdgeDetectionTestImage.Balloons600gray;
 	
-	static CannyEdgeDetector.Parameters params = new CannyEdgeDetector.Parameters();
+	private static final CannyEdgeDetector.Parameters params = new CannyEdgeDetector.Parameters();
 	static {	// default parameters used to produce Canny test images
 		params.gSigma = 2.0f;
 		params.hiThr  = 20.0f;
@@ -35,7 +35,7 @@ public class CannyEdgeDetectorTest {
 	@Test
 	public void testCannyColor() {
 		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImage().getProcessor();
-		assertTrue("must be a ColorProcessor", ip instanceof ColorProcessor);
+		assertTrue(ip instanceof ColorProcessor);
 		
 		CannyEdgeDetector detector = new CannyEdgeDetector(ip, params);
 		
@@ -67,7 +67,7 @@ public class CannyEdgeDetectorTest {
 	@Test
 	public void testCannyGray() {
 		ImageProcessor ip = EdgeDetectionTestImage.Balloons600gray.getImage().getProcessor();
-		assertTrue("must be a ByteProcessor", ip instanceof ByteProcessor);
+		assertTrue(ip instanceof ByteProcessor);
 		
 		CannyEdgeDetector detector = new CannyEdgeDetector(ip, params);
 		

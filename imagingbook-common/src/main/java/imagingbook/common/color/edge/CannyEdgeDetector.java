@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import ij.plugin.filter.Convolver;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
@@ -24,13 +23,12 @@ import imagingbook.common.filter.linear.GaussianKernel1D;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
-import imagingbook.common.math.Matrix;
 import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
  * This class implements a Canny edge detector for grayscale and RGB images.
- * See Sec. 16.3 of [1] for additional details (Alg. 16.3).
+ * See Sec. 16.3 (Alg. 16.3) of [1] for more detail.
  * The edge detector is "lazy" in the sense that it performs local non-
  * maximum suppression and edge tracing only when the results are explicitly 
  * queried (by the methods {@link #getEdgeBinary()} and {@link #getEdgeTraces()}).
@@ -117,22 +115,18 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 	}
 
 	private void makeGradientsAndMagnitudeGray(ImageProcessor ip) {		
-		FloatProcessor cp = ip.convertToFloatProcessor();	// always makes a copy
-
-		// pre-smoothe the image with a separable Gaussian filter
-		float[] gaussKernel = GaussianKernel1D.makeGaussKernel1D(params.gSigma);
-		Convolver conv = new Convolver();
-		conv.setNormalize(true);
-		conv.convolve(cp, gaussKernel, gaussKernel.length, 1);
-		conv.convolve(cp, gaussKernel, 1, gaussKernel.length);
+		FloatProcessor fp = ip.convertToFloatProcessor();	// always makes a copy
+		// pre-smooth the image with a separable Gaussian filter
+		float[] gaussKernel = GaussianKernel1D.makeGaussKernel1D(params.gSigma, true);
+		IjUtils.convolveX(fp, gaussKernel);
+		IjUtils.convolveY(fp, gaussKernel);
 		
 		// calculate the gradients in X- and Y-direction
-		Ex = cp;
-		Ey = (FloatProcessor) cp.duplicate();
+		Ex = fp;
+		Ey = (FloatProcessor) fp.duplicate();
 		float[] gradKernel = {-0.5f, 0, 0.5f};
-		conv.setNormalize(false);
-		conv.convolve(Ex, gradKernel, gradKernel.length, 1);
-		conv.convolve(Ey, gradKernel, 1, gradKernel.length);
+		IjUtils.convolveX(Ex, gradKernel);
+		IjUtils.convolveY(Ey, gradKernel);
 		
 		Emag = new FloatProcessor(M, N);
 		float emax = 0;
@@ -153,32 +147,26 @@ public class CannyEdgeDetector implements ColorEdgeDetector {
 	}
 	
 	private void makeGradientsAndMagnitudeColor(ColorProcessor cp) {
-		FloatProcessor[] I = new PixelPack(cp).getFloatProcessors();
-		
+		FloatProcessor[] I = new PixelPack(cp).getFloatProcessors();	
 		// pre-smooth the image with a separable Gaussian filter (on each RGB channel)
-		float[] gaussKernel = GaussianKernel1D.makeGaussKernel1D(params.gSigma);
-		System.out.println("sum kernel = " + Matrix.sum(gaussKernel));
-		Convolver conv = new Convolver();
-		conv.setNormalize(true);
+		float[] gaussKernel = GaussianKernel1D.makeGaussKernel1D(params.gSigma, true);
 		for (int k = 0; k < I.length; k++) {
 			//FloatProcessor If = Irgb[i];
-//			IjUtils.convolveX(I[k], gaussKernel);	// TODO: check for differences!
-//			IjUtils.convolveY(I[k], gaussKernel);
-			conv.convolve(I[k], gaussKernel, gaussKernel.length, 1);
-			conv.convolve(I[k], gaussKernel, 1, gaussKernel.length);
-			
+//			conv.convolve(I[k], gaussKernel, gaussKernel.length, 1);
+//			conv.convolve(I[k], gaussKernel, 1, gaussKernel.length);
+			IjUtils.convolveX(I[k], gaussKernel);	// TODO: check for differences!
+			IjUtils.convolveY(I[k], gaussKernel);
 		}
 		
 		// calculate the gradients in X- and Y-direction for each RGB channel
 		FloatProcessor[] Ix = new FloatProcessor[3];
 		FloatProcessor[] Iy = new FloatProcessor[3];
 		float[] gradKernel = {-0.5f, 0, 0.5f};
-		conv.setNormalize(false);
 		for (int k = 0; k < I.length; k++) {
 			Ix[k] = I[k];
 			Iy[k] = (FloatProcessor) I[k].duplicate();
-			conv.convolve(Ix[k], gradKernel, gradKernel.length, 1);
-			conv.convolve(Iy[k], gradKernel, 1, gradKernel.length);
+			IjUtils.convolveX(Ix[k], gradKernel);
+			IjUtils.convolveY(Iy[k], gradKernel);
 		}
 
 		// calculate gradient magnitude
