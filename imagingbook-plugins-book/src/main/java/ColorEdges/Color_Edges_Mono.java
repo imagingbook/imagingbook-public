@@ -14,9 +14,9 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.edge.ColorEdgeDetector;
-import imagingbook.common.color.edge.MonochromaticEdgeDetector;
-import imagingbook.common.color.edge.MonochromaticEdgeDetector.Parameters;
+import imagingbook.common.edges.EdgeDetector;
+import imagingbook.common.edges.MonochromaticEdgeDetector;
+import imagingbook.common.edges.MonochromaticEdgeDetector.Parameters;
 import imagingbook.core.FileUtils;
 
 /**
@@ -47,7 +47,7 @@ public class Color_Edges_Mono implements PlugInFilter {
     	if (!setParameters(params)) 
     		return;
     	
-    	ColorEdgeDetector ced = new MonochromaticEdgeDetector((ColorProcessor) ip, params);
+    	EdgeDetector ced = new MonochromaticEdgeDetector((ColorProcessor) ip, params);
     	   	
     	if (showEdgeMagnitude) {
     		FloatProcessor edgeMagnitude = ced.getEdgeMagnitude();

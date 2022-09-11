@@ -13,9 +13,9 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.edge.ColorEdgeDetector;
-import imagingbook.common.color.edge.GrayscaleEdgeDetector;
-import imagingbook.common.color.edge.GrayscaleEdgeDetector.Parameters;
+import imagingbook.common.edges.EdgeDetector;
+import imagingbook.common.edges.GrayscaleEdgeDetector;
+import imagingbook.common.edges.GrayscaleEdgeDetector.Parameters;
 import imagingbook.core.FileUtils;
 
 /**
@@ -43,7 +43,7 @@ public class Color_Edges_Gray implements PlugInFilter {
     	if (!setParameters(params)) 
     		return;
     	
-    	ColorEdgeDetector ced = new GrayscaleEdgeDetector(ip, params);
+    	EdgeDetector ced = new GrayscaleEdgeDetector(ip, params);
     	   	
     	if (showEdgeMagnitude) {
     		FloatProcessor edgeMagnitude = ced.getEdgeMagnitude();

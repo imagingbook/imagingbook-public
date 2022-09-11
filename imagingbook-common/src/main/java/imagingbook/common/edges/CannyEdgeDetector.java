@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.edge;
+package imagingbook.common.edges;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
@@ -42,7 +42,7 @@ import imagingbook.common.util.ParameterBundle;
  * @version 2022/03/22 added parameter annotations for dialogs
  * @version 2022/09/04 converted to implement interface, use {@link PixelPack}
  */
-public class CannyEdgeDetector implements ColorEdgeDetector {
+public class CannyEdgeDetector implements EdgeDetector {
 	
 	// TODO: implement convolutions with GenericFilter
 	

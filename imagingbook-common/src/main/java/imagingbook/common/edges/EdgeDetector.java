@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.edge;
+package imagingbook.common.edges;
 
 import ij.process.FloatProcessor;
 
@@ -18,7 +18,7 @@ import ij.process.FloatProcessor;
  * @version 2013/05/30
  * @version 2022/09/04 converted to interface
  */
-public interface ColorEdgeDetector {
+public interface EdgeDetector {
 	
 	/**
 	 * Returns the calculated edge magnitude for each pixel

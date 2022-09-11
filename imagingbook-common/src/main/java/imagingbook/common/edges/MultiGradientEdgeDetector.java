@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.edge;
+package imagingbook.common.edges;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
@@ -15,6 +15,7 @@ import static java.lang.Math.sqrt;
 import ij.plugin.filter.Convolver;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.util.ParameterBundle;
@@ -22,6 +23,7 @@ import imagingbook.common.util.ParameterBundle;
 /**
  * <p>
  * Multi-Gradient ("DiZenzo/Cumani-style") color edge detector.
+ * Applicable to color images ({@link ColorProcessor}) only.
  * See Sec. 16.2 of [1] for additional details (Alg. 16.2).
  * </p>
  * <p>
@@ -31,8 +33,9 @@ import imagingbook.common.util.ParameterBundle;
  * @author W. Burger
  * @version 2013/05/30
  * @version 2022/09/07 implement interface, use PixelPack, renamed to MultiGradientEdgeDetector
+ * @version 2022/09/11 convolutions implemented with IjUtils
  */
-public class MultiGradientEdgeDetector implements ColorEdgeDetector {
+public class MultiGradientEdgeDetector implements EdgeDetector {
 	
 	/**
 	 * Parameters for {@link MultiGradientEdgeDetector} (currently unused, no parameters to set).
@@ -48,19 +51,15 @@ public class MultiGradientEdgeDetector implements ColorEdgeDetector {
 	private final FloatProcessor E_ort;	// edge orientation map
 
 	// Sobel-kernels for x/y-derivatives:
-	private final float[] HxS = Matrix.multiply(1.0f/8, 
-        new float[] {
-			-1, 0, 1,
-		    -2, 0, 2,
-		    -1, 0, 1
-		    });
-    
-	private final float[] HyS = Matrix.multiply(1.0f/8, 
-		 new float[] {
-			-1, -2, -1,
-			 0,  0,  0,
-			 1,  2,  1
-			 });
+    private static final float[][] HxS = Matrix.multiply(1.0f/8, new float[][] {
+			{-1, 0, 1},
+		    {-2, 0, 2},
+		    {-1, 0, 1}});
+
+    private static final float[][] HyS = Matrix.multiply(1.0f/8, new float[][] {
+			{-1, -2, -1},
+			{ 0,  0,  0},
+			{ 1,  2,  1}});
     
 	public MultiGradientEdgeDetector(ColorProcessor cp) {
 		this(cp, new Parameters());
@@ -86,8 +85,8 @@ public class MultiGradientEdgeDetector implements ColorEdgeDetector {
 		for (int k = 0; k < 3; k++) {
 			Ix[k] = I[k];
 			Iy[k] = (FloatProcessor) Ix[k].duplicate();
-			conv.convolve(Ix[k], HxS, 3, 3);
-			conv.convolve(Iy[k], HyS, 3, 3);
+			IjUtils.convolve(Ix[k], HxS);
+			IjUtils.convolve(Iy[k], HyS);
 		}
 		
 		// calculate color edge magnitude and orientation:

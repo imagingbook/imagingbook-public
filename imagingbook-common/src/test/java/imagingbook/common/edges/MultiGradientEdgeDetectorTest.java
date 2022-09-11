@@ -1,4 +1,4 @@
-package imagingbook.common.color.edge;
+package imagingbook.common.edges;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

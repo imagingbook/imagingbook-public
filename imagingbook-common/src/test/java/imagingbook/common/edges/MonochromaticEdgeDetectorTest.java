@@ -1,4 +1,4 @@
-package imagingbook.common.color.edge;
+package imagingbook.common.edges;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -8,7 +8,6 @@ import org.junit.Test;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.testimages.EdgeDetectionTestImage;
 import imagingbook.testutils.ImageTestUtils;
 
