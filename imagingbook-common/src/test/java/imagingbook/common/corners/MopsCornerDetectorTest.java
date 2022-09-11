@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.corners.subpixel.SubpixelMaxInterpolator.Method;
+import imagingbook.common.corners.SubpixelMaxInterpolator.Method;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 public class MopsCornerDetectorTest {

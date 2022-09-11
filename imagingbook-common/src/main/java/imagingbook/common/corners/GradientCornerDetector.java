@@ -19,8 +19,7 @@ import java.util.List;
 
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.corners.subpixel.SubpixelMaxInterpolator;
-import imagingbook.common.corners.subpixel.SubpixelMaxInterpolator.Method;
+import imagingbook.common.corners.SubpixelMaxInterpolator.Method;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.filter.linear.LinearFilterSeparable;
 import imagingbook.common.image.ImageMath;
@@ -99,8 +98,9 @@ public abstract class GradientCornerDetector {
 		this.M = ip.getWidth();
 		this.N = ip.getHeight();
 		this.params = params;
-		this.maxLocator = (params.maxLocatorMethod == Method.None) ? null : 
-			SubpixelMaxInterpolator.getInstance(params.maxLocatorMethod);
+		this.maxLocator = params.maxLocatorMethod.getInstance();
+		//(params.maxLocatorMethod == Method.None) ? null : 
+			//SubpixelMaxInterpolator.getInstance(params.maxLocatorMethod);
 		this.Q = makeCornerScores(ip);
 	}
 	

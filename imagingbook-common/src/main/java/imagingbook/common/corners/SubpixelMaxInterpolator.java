@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.corners.subpixel;
+package imagingbook.common.corners;
 
 import static imagingbook.common.math.Arithmetic.EPSILON_DOUBLE;
 import static imagingbook.common.math.Arithmetic.isZero;
@@ -26,8 +26,11 @@ import imagingbook.common.util.Enums.Description;
  * @see Quartic
  * @author WB
  * @version 2021/01/19
+ * @version 2022/09/11 revised instance creation
  */
 public abstract class SubpixelMaxInterpolator {
+	
+	private SubpixelMaxInterpolator() {}
 	
 	/**
 	 * Tries to locate the sub-pixel maximum from the 9 discrete sample values
@@ -39,7 +42,8 @@ public abstract class SubpixelMaxInterpolator {
 	 * </pre>
 	 * The center value (s0) is assumed to be at position (0,0).
 	 * @param s a vector containing 9 sample values in the order described above
-	 * @return a 3-element array [x,y,z], with the estimated maximum position (x,y) and the associated max. value (z). 
+	 * @return a 3-element array [x,y,z], with the estimated maximum position (x,y) 
+	 * and the associated max. value (z). 
 	 * The position is relative to the center coordinate (0,0).
 	 * {@code null} is returned if the maximum position could not be located.
 	 */
@@ -49,26 +53,27 @@ public abstract class SubpixelMaxInterpolator {
 	 * Enumeration of keys for {@link SubpixelMaxInterpolator} methods.
 	 */
 	public enum Method {
-		@Description("Quadratic Taylor Interpolation") QuadraticTaylor,
-		@Description("Quadratic Least-Squares Interpolation") QuadraticLeastSquares,
-		@Description("Quartic Interpolation") Quartic,
-		@Description("No Interpolation") None;
-	}
-	
-	/**
-	 * Creates a specific {@link SubpixelMaxInterpolator} instance based on the supplied
-	 * {@link Method} key.
-	 * @param m the method
-	 * @return a new {@link SubpixelMaxInterpolator} instance
-	 */
-	public static SubpixelMaxInterpolator getInstance(Method m) {
-		switch(m) {
-		case QuadraticTaylor: return new QuadraticTaylor();
-		case QuadraticLeastSquares: return new QuadraticLeastSquares();
-		case Quartic: return new Quartic();
-		case None: return null;
+		@Description("Quadratic Taylor Interpolation") 
+		QuadraticTaylor(new QuadraticTaylor()),
+		
+		@Description("Quadratic Least-Squares Interpolation") 
+		QuadraticLeastSquares(new QuadraticLeastSquares()),
+		
+		@Description("Quartic Interpolation") 
+		Quartic(new Quartic()),
+		
+		@Description("No Interpolation") 
+		None(null);
+		
+		private final SubpixelMaxInterpolator instance;
+		
+		private Method(SubpixelMaxInterpolator instance) {
+			this.instance = instance;
 		}
-		return null;
+		
+		public SubpixelMaxInterpolator getInstance() {
+			return this.instance;
+		}
 	}
 	
 	// ------------------------------------------------------------------------------
@@ -197,9 +202,9 @@ public abstract class SubpixelMaxInterpolator {
 	 * @see SubpixelMaxInterpolator#getMax(float[])
 	 */
 	public static class Quartic extends SubpixelMaxInterpolator {
-		static int DefaultMaxIterations = 20;	// iteration limit
-		static double DefaulMaxDelta = 1e-6;	// smallest x/y move to continue search 
-		static double DefaultMaxRad = 1.0;		// x/y search boundary (-xyLimit, +xyLimit)
+		public static final int DefaultMaxIterations = 20;	// iteration limit
+		public static final double DefaulMaxDelta = 1e-6;	// smallest x/y move to continue search 
+		public static final double DefaultMaxRad = 1.0;		// x/y search boundary (-xyLimit, +xyLimit)
 		
 		private final int maxIterations;
 		private final double maxDelta;
@@ -244,7 +249,8 @@ public abstract class SubpixelMaxInterpolator {
 				H01 = H[0][1];
 				d = H00 * H11 - sqr(H01);
 				if (isZero(d)) {
-					throw new RuntimeException(Quartic.class.getSimpleName() + ": zero determinant");
+//					throw new RuntimeException(Quartic.class.getSimpleName() + ": zero determinant");
+					return null;
 				}
 				double[][] Hi = {			// inverse Hessian
 						{ H11 / d, -H01 / d}, 
