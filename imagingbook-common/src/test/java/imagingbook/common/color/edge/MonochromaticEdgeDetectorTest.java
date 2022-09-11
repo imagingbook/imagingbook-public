@@ -8,21 +8,20 @@ import org.junit.Test;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.testimages.EdgeDetectionTestImage;
 import imagingbook.testutils.ImageTestUtils;
 
 
 public class MonochromaticEdgeDetectorTest {
 	
-	static double TOL = 1e-3;
+	private static final double TOL = 1e-3;
 	
-	static MonochromaticEdgeDetector.Parameters params = new MonochromaticEdgeDetector.Parameters();
-	static {	// default parameters used to produce test images
-		// no parameters to set
-	}
-	
+	// default parameters used to produce test images
+	private static final MonochromaticEdgeDetector.Parameters params = new MonochromaticEdgeDetector.Parameters();
+
 	@Test
-	public void testMultigradientColor() {
+	public void testColor() {
 		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImage().getProcessor();
 		assertTrue("must be a ColorProcessor", ip instanceof ColorProcessor);
 		
@@ -30,11 +29,11 @@ public class MonochromaticEdgeDetectorTest {
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeMagnitude.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeMagnitudeL2.getImage().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeOrientation.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeOrientationL2.getImage().getProcessor(), eOrt, TOL));
 	}
 
 }

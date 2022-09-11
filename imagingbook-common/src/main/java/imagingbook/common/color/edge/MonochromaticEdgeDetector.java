@@ -11,32 +11,34 @@ package imagingbook.common.color.edge;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import ij.plugin.filter.Convolver;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
- * Monochromatic color edge detector.
- * See Sec. 16.2 of [1] for additional details (Alg. 16.1).
+ * Monochromatic edge detector for color images (only).
+ * See Sec. 16.2 (Alg. 16.1) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
  * </p>
  * 
  * @author W. Burger
  * @version 2014/02/16
  * @version 2022/09/04 converted to implement interface
+ * @version 2022/09/11 changed to 2D kernel arrays using IjUtils
  */
 public class MonochromaticEdgeDetector implements ColorEdgeDetector {
 	
+	/**
+	 * Parameters for {@link MonochromaticEdgeDetector} (currently none defined).
+	 */
 	public static class Parameters implements ParameterBundle {
-		/** Specify which color distance to use */
-		public NormType norm = NormType.L2;
 	}
 
 	@SuppressWarnings("unused")
@@ -47,18 +49,16 @@ public class MonochromaticEdgeDetector implements ColorEdgeDetector {
 	private final FloatProcessor Eort;	// edge orientation map
 
 	// Sobel-kernels for x/y-derivatives:
-	private static final float[] HxS = Matrix.multiply(1.0f/8, new float[] {
-			-1, 0, 1,
-		    -2, 0, 2,
-		    -1, 0, 1
-		    });
-    
-	private static final float[] HyS = Matrix.multiply(1.0f/8, new float[] {
-			-1, -2, -1,
-			 0,  0,  0,
-			 1,  2,  1
-			 });
+    private static final float[][] HxS = Matrix.multiply(1.0f/8, new float[][] {
+			{-1, 0, 1},
+		    {-2, 0, 2},
+		    {-1, 0, 1}});
 
+    private static final float[][] HyS = Matrix.multiply(1.0f/8, new float[][] {
+			{-1, -2, -1},
+			{ 0,  0,  0},
+			{ 1,  2,  1}});
+    
 	public MonochromaticEdgeDetector(ColorProcessor cp) {
 		this(cp, new Parameters());
 	}
@@ -77,15 +77,13 @@ public class MonochromaticEdgeDetector implements ColorEdgeDetector {
 	    FloatProcessor[] Ix = new FloatProcessor[3];
 	    FloatProcessor[] Iy = new FloatProcessor[3];
 	    
-	    Convolver conv = new Convolver();
-		conv.setNormalize(false);
 		for (int k = 0; k < 3; k++) {
 			Ix[k] = I[k];
 			Iy[k] = (FloatProcessor) Ix[k].duplicate();
-			conv.convolve(Ix[k], HxS, 3, 3);
-			conv.convolve(Iy[k], HyS, 3, 3);
+			IjUtils.convolve(Ix[k], HxS);
+			IjUtils.convolve(Iy[k], HyS);
 		}
-		
+
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {
 				// extract the gradients of the R, G, B channels:
@@ -101,8 +99,7 @@ public class MonochromaticEdgeDetector implements ColorEdgeDetector {
 				Emag.setf(u, v, (float) Math.sqrt(er2 + eg2 + eb2));
 				
 				// find the maximum gradient channel:
-				double e2max = er2, cx = rx, cy = ry;	// assume red is the max channel
-				
+				double e2max = er2, cx = rx, cy = ry;	// assume red is the max channel			
 				if (eg2 > e2max) {
 					e2max = eg2; cx = gx; cy = gy;		// green is the max channel
 				}
@@ -110,7 +107,7 @@ public class MonochromaticEdgeDetector implements ColorEdgeDetector {
 					e2max = eb2; cx = bx; cy = by;		// blue is the max channel
 				}
 				
-				// calculate edge orientation for the maximum channel:
+				// calculate edge orientation angle for the maximum channel:
 				Eort.setf(u, v, (float) Math.atan2(cy, cx));
 			}
 		}
