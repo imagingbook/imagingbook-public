@@ -17,12 +17,12 @@ import static java.lang.Math.sqrt;
 
 import java.awt.Shape;
 import java.awt.geom.Path2D;
-import java.util.Arrays;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.shape.ShapeProducer;
+import imagingbook.common.util.ArrayIterator;
 
 /**
  * Represents a major axis-aligned bounding box of a 2D point set.
@@ -52,9 +52,9 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 			AlgebraicLine.from(boundingbox[3], boundingbox[0])};
 	}
 	
-	// TODO: test!
 	public AxisAlignedBoundingBox(Pnt2d[] points) {
-		this(() -> Arrays.stream(points).iterator());	// https://stackoverflow.com/questions/10335662/convert-java-array-to-iterable
+//		this(() -> Arrays.stream(points).iterator());	// https://stackoverflow.com/questions/10335662/convert-java-array-to-iterable
+		this(() -> ArrayIterator.from(points));
 	}
 	
 	public Pnt2d getCentroid() {

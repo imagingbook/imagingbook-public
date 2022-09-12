@@ -85,7 +85,8 @@ public class LinearContainer<T> implements Iterable<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		return new ArrayIterator<T>(data);
+		//return new ArrayIterator<T>(data);
+		return ArrayIterator.from(data);
 	}
 
 }

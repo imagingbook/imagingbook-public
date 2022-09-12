@@ -69,7 +69,7 @@ public class EdgeTrace implements Iterable<PntInt> {
 
 	@Override
 	public Iterator<PntInt> iterator() {
-		return new ArrayIterator<>(edgePoints);
+		return ArrayIterator.from(edgePoints);
 	}
 	
 	@Override

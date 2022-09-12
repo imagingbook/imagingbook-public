@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
@@ -19,19 +20,24 @@ import org.junit.Test;
 import imagingbook.common.geometry.basic.Pnt2d;
 
 public class AxisAlignedBoundingBoxTest {
+	
+	private static final Pnt2d[] pointArray = {
+			Pnt2d.from(2, 5),
+			Pnt2d.from(5, 4),
+			Pnt2d.from(5, 7),
+			Pnt2d.from(7, 6),
+			Pnt2d.from(9, 9),
+			Pnt2d.from(6, 2)
+	};
 
 	@Test
-	public void test1() {
-		Pnt2d[] points = {
-				Pnt2d.from(2, 5),
-				Pnt2d.from(5, 4),
-				Pnt2d.from(5, 7),
-				Pnt2d.from(7, 6),
-				Pnt2d.from(9, 9),
-				Pnt2d.from(6, 2)
-		};
-		
-		runPointTest(points);
+	public void test1A() {	
+		runPointTest(pointArray, new AxisAlignedBoundingBox(pointArray));
+	}
+	
+	@Test
+	public void test1B() {
+		runPointTest(pointArray, new AxisAlignedBoundingBox(Arrays.asList(pointArray)));
 	}
 	
 	@Test
@@ -45,12 +51,11 @@ public class AxisAlignedBoundingBoxTest {
 			for (int i = 0; i < N; i++) {
 				pointArray[i] = Pnt2d.from(100 * rg.nextDouble(), 100 * rg.nextDouble());
 			}
-			runPointTest(pointArray);
+			runPointTest(pointArray, new AxisAlignedBoundingBox(pointArray));
 		}
 	}
 	
-	private static void runPointTest(Pnt2d[] points) {
-		AxisAlignedBoundingBox box = new AxisAlignedBoundingBox(points);
+	private static void runPointTest(Pnt2d[] points, AxisAlignedBoundingBox box) {
 		
 		Pnt2d[] corners = box.getCornerPoints();
 		assertNotNull(corners);

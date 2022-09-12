@@ -9,47 +9,26 @@
 
 package imagingbook.common.util;
 
-
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
- * This class implements a simple iterator for arbitrary arrays.
- * Does not care about array elements being null.
- * 
- * TODO: skip null elements
+ * This class defines static methods returning to array iterators.
  */
-public class ArrayIterator<T> implements Iterator<T> {
-
-	private final T[] data;
-	private int next;
-
+public abstract class ArrayIterator {
+	
+	private ArrayIterator() {}
+	
 	/**
-	 * Constructor.
-	 * @param data the array to be iterated
+	 * Returns an iterator for the specified (non-primitive) array.
+	 * See // https://stackoverflow.com/questions/10335662/convert-java-array-to-iterable.
+	 * 
+	 * @param <T> the generic element type
+	 * @param array a non-primitive array 
+	 * @return the associated iterator
 	 */
-	public ArrayIterator(T[] data) {
-		this.data = data;
-		next = 0;
+	public static <T> Iterator<T> from(T[] array) {
+		return Arrays.stream(array).iterator();
 	}
 
-	@Override
-	public boolean hasNext() {
-		return next < data.length;
-	}
-
-	@Override
-	public T next() {
-		if (hasNext()) {
-			return data[next++];
-		}
-		else {
-			throw new NoSuchElementException();
-		}
-	}
-
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
-	}
 }
