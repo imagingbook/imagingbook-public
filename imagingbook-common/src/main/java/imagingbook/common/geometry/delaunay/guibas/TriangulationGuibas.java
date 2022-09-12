@@ -200,7 +200,7 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	/**
 	 * Returns the neighboring triangle of the specified triangle sharing the same edge
 	 * as specified. If no neighbor sharing the same edge exists {@code null} is returned.
-	 * TODO: searching over ALL triangles seems to be unnecessarily expensive
+	 * NOTE: Searching over ALL triangles seems to be unnecessarily expensive!
 	 * 
 	 * @param tri1 the triangle
 	 * @param edge the edge
