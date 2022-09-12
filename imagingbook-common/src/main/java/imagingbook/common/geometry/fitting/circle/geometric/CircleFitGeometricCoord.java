@@ -32,6 +32,7 @@ import org.apache.commons.math3.util.Pair;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
+import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 
 /**
@@ -133,7 +134,10 @@ public class CircleFitGeometricCoord implements CircleFitGeometric {
 				final double ri =  sqrt(ri2);			// r_i
 				final double ri3 = ri2 * ri;			// r_i^3
 				
-				// values: // TODO: check for ri == 0
+				if (Arithmetic.isZero(ri)) {
+					throw new ArithmeticException("zero radius ri encountered");
+				}
+
 				V[2*i]   = xc + dx * r / ri;
 				V[2*i+1] = yc + dy * r / ri;
 				
