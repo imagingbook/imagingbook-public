@@ -20,8 +20,8 @@ import ij.io.SaveDialog;
 import ij.plugin.PlugIn;
 import imagingbook.core.FileUtils;
 import imagingbook.pdf.PdfExporter;
-import imagingbook.pdf.Utils;
 import imagingbook.pdf.PdfExporter.Parameters;
+import imagingbook.pdf.Utils;
 
 
 /**

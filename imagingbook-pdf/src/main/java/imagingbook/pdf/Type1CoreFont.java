@@ -15,6 +15,7 @@ import com.lowagie.text.pdf.BaseFont;
 
 import imagingbook.core.resource.NamedResource;
 
+
 /**
  * This class collects the set of 14 Type-1 standard fonts that every
  * PS/PDF reader is supposed to have available by default.
