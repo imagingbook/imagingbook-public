@@ -13,6 +13,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.PixelPack;
+import imagingbook.common.math.Matrix;
 
 /**
  * <p>
@@ -56,7 +57,7 @@ public class NagaoMatsuyamaFilterVector extends GenericFilterVector implements N
 		for (int[][] Rk : Constants.SubRegions) {
 			evalSubregionColor(pack, Rk, u, v);
 		}
-		this.copyPixel(minMean, rgb);
+		Matrix.copy(minMean, rgb);
  		return rgb;
  	}
 	

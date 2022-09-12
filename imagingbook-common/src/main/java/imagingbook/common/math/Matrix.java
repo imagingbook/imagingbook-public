@@ -668,6 +668,16 @@ public abstract class Matrix {
 		return B;
 	}
 	
+	// vector copying ------------------------------
+	
+	public static void copy(float[] source, float[] target) {
+		System.arraycopy(source, 0, target, 0, source.length);
+	}
+	
+	public static void copy(double[] source, double[] target) {
+		System.arraycopy(source, 0, target, 0, source.length);
+	}
+	
 	// ----- double <-> float conversions -----------------
 	
 	public static float[] toFloat(final double[] x) {

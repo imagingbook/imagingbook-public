@@ -13,6 +13,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.PixelPack;
+import imagingbook.common.math.Matrix;
 
 /**
  * <p>
@@ -70,7 +71,7 @@ public class KuwaharaFilterVector extends GenericFilterVector implements Kuwahar
 		evalSubregion(pack, u + dm, v + dp);
 		evalSubregion(pack, u + dp, v + dm);
 		evalSubregion(pack, u + dp, v + dp);
-		this.copyPixel(Amin, rgb);
+		Matrix.copy(Amin, rgb);
  		return rgb;
  	} 
 	

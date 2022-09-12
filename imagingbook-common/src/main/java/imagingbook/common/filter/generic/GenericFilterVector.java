@@ -66,11 +66,6 @@ public abstract class GenericFilterVector extends GenericFilter {
 	
 	// -----------------------------------------------------------------
 	
-	// helper method for copying vector pixels, TODO: should move to Utils or so
-	public void copyPixel(float[] source, float[] target) {
-		System.arraycopy(source, 0, target, 0, source.length);
-	}
-	
 	@Override
 	protected final double reportProgress(double subProgress) {
 		double localProgress = (double) iter /iterMax;

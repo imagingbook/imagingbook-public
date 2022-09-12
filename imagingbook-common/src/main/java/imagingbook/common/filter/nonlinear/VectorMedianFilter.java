@@ -12,6 +12,7 @@ package imagingbook.common.filter.nonlinear;
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.filter.mask.CircularMask;
 import imagingbook.common.image.PixelPack;
+import imagingbook.common.math.Matrix;
 import imagingbook.common.math.VectorNorm;
 import imagingbook.common.math.VectorNorm.NormType;
 
@@ -77,10 +78,10 @@ public class VectorMedianFilter extends GenericFilterVector {
 		// than the aggregate distance of the original center pixel:
 		final float[] pF = new float[3];	// the returned color tupel
 		if (dMin < dCtr) {	// modify this pixel
-			copyPixel(pmin, pF);
+			Matrix.copy(pmin, pF);
 		}
 		else {	// keep the original pixel value
-			copyPixel(pCtr, pF);
+			Matrix.copy(pCtr, pF);
 		}
 		return pF;
 	}
@@ -94,7 +95,7 @@ public class VectorMedianFilter extends GenericFilterVector {
 				if (maskArray[i][j] != 0) {
 					int vj = v + j - yc;
 					src.getPix(ui, vj, vals);
-					copyPixel(vals, supportRegion[k]);
+					Matrix.copy(vals, supportRegion[k]);
 					k = k + 1;
 				}
 			}
