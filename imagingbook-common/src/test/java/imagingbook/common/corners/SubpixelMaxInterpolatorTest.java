@@ -13,6 +13,10 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+import imagingbook.common.corners.SubpixelMaxInterpolator.QuadraticLeastSquares;
+import imagingbook.common.corners.SubpixelMaxInterpolator.QuadraticTaylor;
+import imagingbook.common.corners.SubpixelMaxInterpolator.Quartic;
+
 public class SubpixelMaxInterpolatorTest {
 	
 	private static final float TOL = 1E-6f;
@@ -23,26 +27,30 @@ public class SubpixelMaxInterpolatorTest {
 	private static final float[] samples1 = {16,9,7,11,8,15,14,12,10}; // = s_0,...,s_8
 	private static final float[] samples2 = {2,1,1,1,1,1,1,1,1};
 	private static final float[] samples3 = {1,1,1,1,1,1,1,1,1};
+	
+	private static final SubpixelMaxInterpolator QTLR = QuadraticTaylor.getInstance();
+	private static final SubpixelMaxInterpolator QLSQ = QuadraticLeastSquares.getInstance();
+	private static final SubpixelMaxInterpolator QART = Quartic.getInstance(DefaultMaxIterations, DefaulMaxDelta, DefaultMaxRad);
 
 	// ------------------------------------------------------------------------
 	
 	@Test
 	public void testQuadraticTaylor1() {
-		SubpixelMaxInterpolator interp = new SubpixelMaxInterpolator.QuadraticTaylor();
+		SubpixelMaxInterpolator interp = QTLR;
 		float[] expected = {-0.38320211f, 0.08748906f, 16.59667587f};
 		assertArrayEquals(expected, interp.getMax(samples1), TOL);
 	}
 	
 	@Test
 	public void testQuadraticLeastSquares1() {
-		SubpixelMaxInterpolator interp = new SubpixelMaxInterpolator.QuadraticLeastSquares();
+		SubpixelMaxInterpolator interp = QLSQ;
 		float[] expected = {-0.41613588f, 0.32979476f, 15.65628719f};
 		assertArrayEquals(expected, interp.getMax(samples1), TOL);
 	}
 	
 	@Test
 	public void testQuartic1() {
-		SubpixelMaxInterpolator interp = new SubpixelMaxInterpolator.Quartic(DefaultMaxIterations, DefaulMaxDelta, DefaultMaxRad);
+		SubpixelMaxInterpolator interp = QART;
 		float[] expected = {-0.40573445f, 0.11285823f, 16.62036324f};
 		assertArrayEquals(expected, interp.getMax(samples1), TOL);
 	}
@@ -51,21 +59,21 @@ public class SubpixelMaxInterpolatorTest {
 	
 	@Test
 	public void testQuadraticTaylor2() {
-		SubpixelMaxInterpolator interp = new SubpixelMaxInterpolator.QuadraticTaylor();
+		SubpixelMaxInterpolator interp = QTLR;
 		float[] expected = {0.00000000f, 0.00000000f, 2.00000000f};
 		assertArrayEquals(expected, interp.getMax(samples2), TOL);
 	}
 	
 	@Test
 	public void testQuadraticLeastSquares2() {
-		SubpixelMaxInterpolator interp = new SubpixelMaxInterpolator.QuadraticLeastSquares();
+		SubpixelMaxInterpolator interp = QLSQ;
 		float[] expected = {0.00000000f, 0.00000000f, 1.55555558f};
 		assertArrayEquals(expected, interp.getMax(samples2), TOL);
 	}
 	
 	@Test
 	public void testQuartic2() {
-		SubpixelMaxInterpolator interp = new SubpixelMaxInterpolator.Quartic(DefaultMaxIterations, DefaulMaxDelta, DefaultMaxRad);
+		SubpixelMaxInterpolator interp = QART;
 		float[] expected = {0.00000000f, 0.00000000f, 2.00000000f};
 		assertArrayEquals(expected, interp.getMax(samples2), TOL);
 	}
@@ -74,19 +82,19 @@ public class SubpixelMaxInterpolatorTest {
 	
 		@Test
 		public void testQuadraticTaylor3() {
-			SubpixelMaxInterpolator interp = new SubpixelMaxInterpolator.QuadraticTaylor();
+			SubpixelMaxInterpolator interp = QTLR;
 			assertNull(interp.getMax(samples3));
 		}
 		
 		@Test
 		public void testQuadraticLeastSquares3() {
-			SubpixelMaxInterpolator interp = new SubpixelMaxInterpolator.QuadraticLeastSquares();
+			SubpixelMaxInterpolator interp = QLSQ;
 			assertNull(interp.getMax(samples3));
 		}
 		
 		@Test
 		public void testQuartic3() {
-			SubpixelMaxInterpolator interp = new SubpixelMaxInterpolator.Quartic(DefaultMaxIterations, DefaulMaxDelta, DefaultMaxRad);
+			SubpixelMaxInterpolator interp = QART;
 			assertNull(interp.getMax(samples3));
 		}
 }

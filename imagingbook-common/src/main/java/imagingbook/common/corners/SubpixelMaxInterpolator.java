@@ -20,7 +20,11 @@ import static imagingbook.common.math.Matrix.normL2;
 import imagingbook.common.util.Enums.Description;
 
 /**
- * The common interface for all sub-pixel locator classes.
+ * Common interface for all sub-pixel maximum locator implementations.
+ * A  sub-pixel maximum locator tries to interpolate the continuous position
+ * and value of a local maximum for a discrete 3x3 neighborhood.
+ * The center value in the discrete neighborhood is assumed to be a local maximum.
+ * 
  * @see QuadraticTaylor
  * @see QuadraticLeastSquares
  * @see Quartic
@@ -40,7 +44,8 @@ public abstract class SubpixelMaxInterpolator {
 	 * s5 s0 s1
 	 * s6 s7 s8
 	 * </pre>
-	 * The center value (s0) is assumed to be at position (0,0).
+	 * The center value (s0) is associated with position (0,0).
+	 * 
 	 * @param s a vector containing 9 sample values in the order described above
 	 * @return a 3-element array [x,y,z], with the estimated maximum position (x,y) 
 	 * and the associated max. value (z). 
@@ -50,29 +55,29 @@ public abstract class SubpixelMaxInterpolator {
 	public abstract float[] getMax(float[] s);
 	
 	/**
-	 * Enumeration of keys for {@link SubpixelMaxInterpolator} methods.
+	 * Enumeration of different {@link SubpixelMaxInterpolator} methods.
 	 */
 	public enum Method {
 		@Description("Quadratic Taylor Interpolation") 
-		QuadraticTaylor(new QuadraticTaylor()),
+		QuadraticTaylor(SubpixelMaxInterpolator.QuadraticTaylor.getInstance()),
 		
 		@Description("Quadratic Least-Squares Interpolation") 
-		QuadraticLeastSquares(new QuadraticLeastSquares()),
+		QuadraticLeastSquares(SubpixelMaxInterpolator.QuadraticLeastSquares.getInstance()),
 		
 		@Description("Quartic Interpolation") 
-		Quartic(new Quartic()),
+		Quartic(SubpixelMaxInterpolator.Quartic.getInstance()),
 		
 		@Description("No Interpolation") 
 		None(null);
 		
-		private final SubpixelMaxInterpolator instance;
+		private final SubpixelMaxInterpolator inst;
 		
 		private Method(SubpixelMaxInterpolator instance) {
-			this.instance = instance;
+			this.inst = instance;
 		}
 		
 		public SubpixelMaxInterpolator getInstance() {
-			return this.instance;
+			return this.inst;
 		}
 	}
 	
@@ -88,6 +93,12 @@ public abstract class SubpixelMaxInterpolator {
 	 * Book version (Alg. 'FindMaxQuadraticTaylor').
 	 */
 	public static class QuadraticTaylor extends SubpixelMaxInterpolator {
+		
+		private static final QuadraticTaylor instance = new QuadraticTaylor();
+		private QuadraticTaylor() {};
+		public static QuadraticTaylor getInstance() {
+			return instance;
+		}
 		
 		private final double[] c = new double[6];	// polynomial coefficients
 
@@ -126,6 +137,12 @@ public abstract class SubpixelMaxInterpolator {
 	 */
 	@SuppressWarnings("unused")
 	private static class QuadraticTaylorAlt extends SubpixelMaxInterpolator {
+		
+		private static final QuadraticTaylorAlt instance = new QuadraticTaylorAlt();
+		private QuadraticTaylorAlt() {};
+		public static QuadraticTaylorAlt getInstance() {
+			return instance;
+		}
 
 		@Override
 		public float[] getMax(float[] s) {
@@ -162,6 +179,12 @@ public abstract class SubpixelMaxInterpolator {
 	 * Book Alg. 'FindMaxQuadraticLeastSquares'.
 	 */
 	public static class QuadraticLeastSquares extends SubpixelMaxInterpolator {
+		
+		private static final QuadraticLeastSquares instance = new QuadraticLeastSquares();
+		private QuadraticLeastSquares() {};
+		public static QuadraticLeastSquares getInstance() {
+			return instance;
+		}
 		
 		private final double[] c = new double[6];	// polynomial coefficients
 
@@ -212,17 +235,27 @@ public abstract class SubpixelMaxInterpolator {
 		
 		private final double[] c = new double[9];	// polynomial coefficients
 		
-		// -----------------------------------------------------------
+		private static final Quartic instance = new Quartic();
 		
-		public Quartic() {
+		private Quartic() {
 			this(DefaultMaxIterations, DefaulMaxDelta, DefaultMaxRad);
 		}
-				
-		public Quartic(int maxIterations, double maxDelta, double maxRad) {
+		
+		private Quartic(int maxIterations, double maxDelta, double maxRad) {
 			this.maxIterations = maxIterations;
 			this.maxDelta = maxDelta;
 			this.maxRad = maxRad;
 		}
+		
+		public static Quartic getInstance() {
+			return instance;
+		}
+		
+		public static Quartic getInstance(int maxIterations, double maxDelta, double maxRad) {
+			return new Quartic(maxIterations, maxDelta, maxRad);
+		}
+		
+		// -----------------------------------------------------------
 		
 		@Override
 		public float[] getMax(float[] s) {
