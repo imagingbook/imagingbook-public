@@ -71,7 +71,7 @@ public class KuwaharaFilterVector extends GenericFilterVector implements Kuwahar
 		evalSubregion(pack, u + dm, v + dp);
 		evalSubregion(pack, u + dp, v + dm);
 		evalSubregion(pack, u + dp, v + dp);
-		Matrix.copy(Amin, rgb);
+		Matrix.copyD(Amin, rgb);
  		return rgb;
  	} 
 	

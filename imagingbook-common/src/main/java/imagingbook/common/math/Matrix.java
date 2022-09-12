@@ -642,12 +642,12 @@ public abstract class Matrix {
 	// Matrix and vector duplication ------------------------------
 
 	
-	public static double[] duplicate(final double[] x) {
-		return x.clone();
+	public static double[] duplicate(final double[] a) {
+		return a.clone();
 	}
 	
-	public static float[] duplicate(final float[] x) {
-		return x.clone();
+	public static float[] duplicate(final float[] a) {
+		return a.clone();
 	}
 
 	public static double[][] duplicate(final double[][] A) {
@@ -670,25 +670,47 @@ public abstract class Matrix {
 	
 	// vector copying ------------------------------
 	
-	public static void copy(float[] source, float[] target) {
+	/**
+	 * Copy data from one {@code float[]} vector to another.
+	 * The two vectors must have the same length (not checked).
+	 * @param source the source vector (unmodified)
+	 * @param target the target vector (modified)
+	 */
+	public static void copyD(float[] source, float[] target) {
 		System.arraycopy(source, 0, target, 0, source.length);
 	}
 	
-	public static void copy(double[] source, double[] target) {
+	/**
+	 * Copy data from one {@code double[]} vector to another.
+	 * The two vectors must have the same length (not checked).
+	 * @param source the source vector (unmodified)
+	 * @param target the target vector (modified)
+	 */
+	public static void copyD(double[] source, double[] target) {
 		System.arraycopy(source, 0, target, 0, source.length);
 	}
 	
 	// ----- double <-> float conversions -----------------
 	
-	public static float[] toFloat(final double[] x) {
-		final int m = x.length;
-		final float[] B = new float[m];
+	/**
+	 * Converts a {@code double[]} to a {@code float[]}.
+	 * @param a the original {@code double[]} array
+	 * @return a copy of the array of type {@code float[]}
+	 */
+	public static float[] toFloat(final double[] a) {
+		final int m = a.length;
+		final float[] b = new float[m];
 		for (int i = 0; i < m; i++) {
-			B[i] = (float) x[i];
+			b[i] = (float) a[i];
 		}
-		return B;
+		return b;
 	}
 	
+	/**
+	 * Converts a {@code double[][]} to a {@code float[][]}.
+	 * @param A the original {@code double[][]} array
+	 * @return a copy of the array of type {@code float[][]}
+	 */
 	public static float[][] toFloat(final double[][] A) {
 		final int m = A.length;
 		final int n = A[0].length;
@@ -701,15 +723,26 @@ public abstract class Matrix {
 		return B;
 	}
 	
-	public static double[] toDouble(final float[] x) {
-		final int m = x.length;
+	/**
+	 * /**
+	 * Converts a {@code float[]} to a {@code double[]}.
+	 * @param a the original {@code float[]} array
+	 * @return a copy of the array of type {@code double[]}
+	 */
+	public static double[] toDouble(final float[] a) {
+		final int m = a.length;
 		final double[] B = new double[m];
 		for (int i = 0; i < m; i++) {
-			B[i] = x[i];
+			B[i] = a[i];
 		}
 		return B;
 	}
 	
+	/**
+	 * Converts a {@code float[][]} to a {@code double[][]}.
+	 * @param A the original {@code float[][]} array
+	 * @return a copy of the array of type {@code double[][]}
+	 */
 	public static double[][] toDouble(final float[][] A) {
 		final int m = A.length;
 		final int n = A[0].length;
@@ -970,7 +1003,6 @@ public abstract class Matrix {
 		}
 	}
 	
-
 	// non-destructive
 	/**
 	 * Multiplies a {@code double[][]} matrix by a scalar and returns a new
@@ -1175,7 +1207,6 @@ public abstract class Matrix {
 	}
 	
 
-	
 	// Matrix-matrix products ---------------------------------------
 	
 	// returns A * B (non-destructive)

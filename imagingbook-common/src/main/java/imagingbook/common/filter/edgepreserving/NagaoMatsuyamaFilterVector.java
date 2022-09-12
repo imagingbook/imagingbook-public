@@ -57,7 +57,7 @@ public class NagaoMatsuyamaFilterVector extends GenericFilterVector implements N
 		for (int[][] Rk : Constants.SubRegions) {
 			evalSubregionColor(pack, Rk, u, v);
 		}
-		Matrix.copy(minMean, rgb);
+		Matrix.copyD(minMean, rgb);
  		return rgb;
  	}
 	

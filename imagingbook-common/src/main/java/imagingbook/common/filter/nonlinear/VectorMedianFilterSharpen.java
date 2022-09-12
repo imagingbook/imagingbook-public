@@ -81,10 +81,10 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 		// than the aggregate distance of the original center pixel:
 		float[] pF = new float[3];			// the returned color tupel
 		if (dCtr - dMin > params.threshold * a) {	// modify this pixel
-			Matrix.copy(pmin, pF);
+			Matrix.copyD(pmin, pF);
 		}
 		else {	// keep the original pixel value
-			Matrix.copy(pCtr, pF);
+			Matrix.copyD(pCtr, pF);
 		}
 		return pF;
 	}
@@ -98,7 +98,7 @@ public class VectorMedianFilterSharpen extends GenericFilterVector {
 				if (maskArray[i][j] != 0) {
 					int vj = v + j - yc;
 					src.getPix(ui, vj, vals);
-					Matrix.copy(vals, supportRegion[k]);
+					Matrix.copyD(vals, supportRegion[k]);
 					k = k + 1;
 				}
 			}
