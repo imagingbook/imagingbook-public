@@ -110,12 +110,16 @@ public abstract class VectorNorm {
 	 * parameter choice.
 	 */
 	public enum NormType {
+//		L1 {public VectorNorm.L1 getInstance() {return VectorNorm.L1.instance;}},
 		L1(VectorNorm.L1.getInstance()),
 		L2(VectorNorm.L2.getInstance()),
 		Linf(VectorNorm.Linf.getInstance());
 				
 		private final VectorNorm inst;
 		
+		private NormType() {
+			this.inst = null;
+		}
 		private NormType(VectorNorm instance) {
 			this.inst = instance;
 		}
