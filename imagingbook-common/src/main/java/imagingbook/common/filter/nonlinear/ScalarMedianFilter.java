@@ -21,7 +21,7 @@ import imagingbook.common.image.PixelPack.PixelSlice;
  * by extending the {@link GenericFilter} class.
  * Color images are filtered individually in all channels.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2020/12/31
  */
 public class ScalarMedianFilter extends GenericFilterScalar {

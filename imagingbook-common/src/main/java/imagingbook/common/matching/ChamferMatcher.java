@@ -14,7 +14,7 @@ import imagingbook.common.matching.DistanceTransform.Norm;
 
 /**
  * This class performs chamfer matching on binary images.
- * @author W. Burger
+ * @author WB
  * @version 2021/11/26
  */
 public class ChamferMatcher {

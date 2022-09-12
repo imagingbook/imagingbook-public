@@ -12,7 +12,7 @@ package imagingbook.common.matching;
 import ij.process.FloatProcessor;
 
 /**
- * @author W. Burger
+ * @author WB
  * @version 2022/02/10
  */
 public class CorrCoeffMatcher {

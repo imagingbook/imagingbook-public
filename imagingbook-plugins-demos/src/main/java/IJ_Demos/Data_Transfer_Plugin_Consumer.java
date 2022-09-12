@@ -22,7 +22,7 @@ import ij.process.ImageProcessor;
  * Note that the stored data should contain no instances of self-defined
  * classes, since these may be re-loaded when performing compile-and-run.
  * 
- * @author W. Burger
+ * @author WB
  *
  */
 public class Data_Transfer_Plugin_Consumer implements PlugInFilter {

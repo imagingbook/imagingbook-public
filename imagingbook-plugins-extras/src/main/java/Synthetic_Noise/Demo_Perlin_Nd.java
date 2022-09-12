@@ -24,7 +24,7 @@ import imagingbook.common.noise.perlin.PerlinNoiseGenNd;
  * 
  * TODO: NOT WORKING! Needs to be fixed, results are not plausible!
  * 
- * @author W. Burger
+ * @author WB
  * @version 2013/05/28
  */
 

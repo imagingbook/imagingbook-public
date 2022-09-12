@@ -22,7 +22,7 @@ import imagingbook.common.filter.generic.GenericFilter;
  * Minimal plugin to demonstrate the use of the PeronaMalikFilter class.
  * This plugin works for all types of images and stacks.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/03/30
  * 
  * @see PeronaMalikFilterScalar

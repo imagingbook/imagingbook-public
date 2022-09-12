@@ -32,7 +32,7 @@ import imagingbook.common.interpolation.InterpolationMethod;
  * when applied in different color spaces. Bilinear interpolation is 
  * used to avoid negative component values.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/09/02
  */
 public class Geometry_Rotate_Color implements PlugInFilter {

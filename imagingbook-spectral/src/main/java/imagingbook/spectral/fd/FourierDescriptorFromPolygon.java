@@ -29,7 +29,7 @@ import imagingbook.common.math.Complex;
  * Subclass of {@link FourierDescriptor} whose constructors assume
  * that input polygons are non-uniformly sampled.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2020/04/01
  */
 public class FourierDescriptorFromPolygon extends FourierDescriptor {

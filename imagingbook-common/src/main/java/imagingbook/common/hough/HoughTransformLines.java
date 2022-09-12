@@ -26,7 +26,7 @@ import imagingbook.common.util.progress.ProgressReporter;
  * (radial) cells to reduce aliasing effects. Thus we accumulate non-integer
  * values and therefore the various accumulators are of type {@code float[][]}.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/04/01
  * @version 2022/09/10	removed ImageJ progress reporting
  */

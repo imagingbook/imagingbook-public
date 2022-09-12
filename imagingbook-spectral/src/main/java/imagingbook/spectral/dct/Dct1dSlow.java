@@ -15,7 +15,7 @@ import imagingbook.common.math.Matrix;
  * This class calculates the 1D DFT.
  * Direct (slow) version for that does NOT use pre-calculated cosine tables.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2019-12-26
  *
  */

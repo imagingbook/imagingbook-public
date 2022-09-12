@@ -21,7 +21,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
  * Added magnitude field and Comparable interface for easy sorting.
  * 2020/10/04: Added scale level for display reasons.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2020/10/04
  */
 public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {

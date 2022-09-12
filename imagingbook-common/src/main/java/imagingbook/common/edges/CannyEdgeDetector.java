@@ -34,10 +34,11 @@ import imagingbook.common.util.ParameterBundle;
  * queried (by the methods {@link #getEdgeBinary()} and {@link #getEdgeTraces()}).
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2021/11/26
  * @version 2022/03/22 added parameter annotations for dialogs
  * @version 2022/09/04 converted to implement interface, use {@link PixelPack}

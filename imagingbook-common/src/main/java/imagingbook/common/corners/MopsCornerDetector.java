@@ -22,14 +22,18 @@ import ij.process.ImageProcessor;
  * and associated threshold.
  * The corner score is defined as the harmonic mean of the local structure tensor's eigenvalues 
  * lambda_1, lambda_2.
+ * See Sec. 6.3.2 of [2] for additional details.
  * </p>
  * <p>
  * [1] M. Brown, R. Szeliski, and S. Winder, Multi-image matching using multi-scale oriented
  * patches, in Proc. of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition
  * (CVPR'05), 2005, pp. 510–517.
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/03/30
  */
 public class MopsCornerDetector extends GradientCornerDetector {

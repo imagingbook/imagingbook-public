@@ -19,7 +19,7 @@ import imagingbook.common.util.Enums;
 
 /**
  * This plugin applies a sharpening vector median filter to a RGB color image.
- * @author W. Burger
+ * @author WB
  * 
  * @version 2013/05/30
  * @version 2022/09/10 removed debugging code

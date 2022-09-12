@@ -25,7 +25,7 @@ import imagingbook.common.util.progress.ProgressMonitor;
  * This plugin demonstrates the use of the PeronaMalikFilter class.
  * This plugin works for all types of images and stacks.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2021/01/05
  */
 public class Perona_Malik_Filter implements PlugInFilter {

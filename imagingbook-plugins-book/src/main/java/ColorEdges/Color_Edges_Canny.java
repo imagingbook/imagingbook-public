@@ -22,7 +22,7 @@ import imagingbook.common.edges.CannyEdgeDetector.Parameters;
 
 /**
  * This plugin implements the Canny edge detector for all types of images.
- * @author W. Burger
+ * @author WB
  * @version 2021/11/26
  * @version 2022/03/22 revised dialog
  */

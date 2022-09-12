@@ -43,7 +43,7 @@ import imagingbook.common.math.exception.DivideByZeroException;
  * Some methods are self-explanatory and are therefore left undocumented.
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/08/29
  */
 public abstract class Matrix {

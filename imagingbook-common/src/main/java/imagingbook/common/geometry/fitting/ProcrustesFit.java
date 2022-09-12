@@ -42,7 +42,7 @@ import imagingbook.common.math.PrintPrecision;
  * RealMatrix A = pf.getTransformationMatrix();
  * </pre>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2021/11/27
  */
 public class ProcrustesFit implements LinearFit2D {

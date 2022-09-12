@@ -14,7 +14,7 @@ import ij.process.ImageProcessor;
  * Objects of this class calculate an approximate distance transform of a given
  * image which is assumed to be binary (pixel value 0 = background, foreground otherwise).
  * 
- * @author W. Burger
+ * @author WB
  * @version 2014-04-20
  */
 public class DistanceTransform {

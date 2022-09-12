@@ -13,18 +13,23 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import ij.process.ImageProcessor;
 
-
 /**
- * This is an implementation of the Harris corner detector, as described in
- * <blockquote>
- *  C. G. Harris and M. Stephens. A combined corner and edge
- *  detector. In C. J. Taylor, editor, 4th Alvey Vision Conference,
- *  pp. 147–151, Manchester (1988).
- *  </blockquote>
+ * <p>
+ * This is an implementation of the Harris/Stephens corner detector, as described in [1].
+ * See Sec. 6.2 of [2] for additional details.
  * This class extends {@link GradientCornerDetector} (where most
  * of the work is done) by defining a specific corner score function.
+ * </p>
+ * <p>
+ * [1] C. G. Harris and M. Stephens. A combined corner and edge
+ * detector. In C. J. Taylor, editor, 4th Alvey Vision Conference,
+ * pp. 147–151, Manchester (1988).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  *
- * @author W. Burger
+ * @author WB
  * @version 2022/03/30
  */
 public class HarrisCornerDetector extends GradientCornerDetector {

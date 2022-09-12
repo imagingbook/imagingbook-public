@@ -20,7 +20,7 @@ import imagingbook.common.math.Complex;
  * Subclass of FourierDescriptor whose constructors assume
  * that input polygons are uniformly sampled.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2020/04/01
  */
 public class FourierDescriptorUniform extends FourierDescriptor {

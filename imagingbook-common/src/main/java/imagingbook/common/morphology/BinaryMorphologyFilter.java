@@ -15,7 +15,7 @@ import java.util.Arrays;
 /**
  * This class implements binary morphological filters.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/01/24 
  */
 public abstract class BinaryMorphologyFilter implements BinaryMorphologyOperator {

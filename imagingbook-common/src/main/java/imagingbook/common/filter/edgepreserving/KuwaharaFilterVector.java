@@ -31,7 +31,7 @@ import imagingbook.common.image.PixelPack;
  * 3rd ed, Springer (2022).
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2021/01/02
  */
 public class KuwaharaFilterVector extends GenericFilterVector implements KuwaharaF {

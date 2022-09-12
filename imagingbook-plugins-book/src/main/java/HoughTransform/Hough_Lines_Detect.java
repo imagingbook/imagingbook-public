@@ -32,7 +32,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * pixels with values &gt; 0.
  * A vector overlay is used to display the detected lines.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/04/01
  */
 public class Hough_Lines_Detect implements PlugInFilter {

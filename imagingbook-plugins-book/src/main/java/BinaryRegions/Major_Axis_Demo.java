@@ -33,7 +33,7 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * 
  * TODO: convert to overlay display
  * 
- * @author W. Burger
+ * @author WB
  * @version 2020/12/17
  */
 public class Major_Axis_Demo implements PlugInFilter {

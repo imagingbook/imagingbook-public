@@ -32,7 +32,7 @@ import imagingbook.common.geometry.shape.ShapeProducer;
  * Apache Commons Math library, in particular classes 
  * {@link ConvexHull2D} and {@link MonotoneChain}.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/06/24
  */
 public class ConvexHull implements ShapeProducer {

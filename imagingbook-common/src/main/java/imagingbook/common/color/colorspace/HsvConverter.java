@@ -19,7 +19,7 @@ import static imagingbook.common.math.Arithmetic.min;
  * Note: This class is obsolete and has been replaced by {@link HsvColorSpace}.
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/09/03
 */
 @Deprecated

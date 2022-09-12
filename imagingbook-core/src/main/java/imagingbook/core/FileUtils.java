@@ -29,7 +29,7 @@ import javax.swing.UIManager;
  * This class defines various static methods for managing
  * file-based resources and JAR manifest files.
  * 
- * @author W. Burger
+ * @author WB
  */
 public abstract class FileUtils {
 

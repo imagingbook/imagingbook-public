@@ -30,7 +30,7 @@ import imagingbook.common.image.PixelPack.PixelSlice;
  * 3rd ed, Springer (2022).
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2021/01/02
  */
 public class PeronaMalikFilterScalar extends GenericFilterScalar implements PeronaMalikF {

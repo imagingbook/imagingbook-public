@@ -24,13 +24,14 @@ import imagingbook.common.util.ParameterBundle;
  * <p>
  * Multi-Gradient ("DiZenzo/Cumani-style") color edge detector.
  * Applicable to color images ({@link ColorProcessor}) only.
- * See Sec. 16.2 of [1] for additional details (Alg. 16.2).
+ * See Sec. 16.2 (Alg. 16.2) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2013/05/30
  * @version 2022/09/07 implement interface, use PixelPack, renamed to MultiGradientEdgeDetector
  * @version 2022/09/11 convolutions implemented with IjUtils

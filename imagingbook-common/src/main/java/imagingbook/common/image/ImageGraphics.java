@@ -93,7 +93,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * 
  * TODO: Add text drawing, merge with {@link ColoredStroke}.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2020-01-07
  * 
  * @see ShapeOverlayAdapter

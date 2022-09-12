@@ -33,7 +33,7 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * Requires a binary image.
  * 
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/06/24
  * 
  */

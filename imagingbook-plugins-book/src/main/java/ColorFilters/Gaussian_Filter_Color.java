@@ -29,7 +29,7 @@ import imagingbook.common.image.ColorStack;
  * Demonstrates the use of {@link ColorStack} and {@link GenericFilter}
  * and {@link GaussianFilterSeparable} (using a x/y-separable 2D kernel).
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/09/02
  */
 public class Gaussian_Filter_Color implements PlugInFilter {

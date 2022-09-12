@@ -33,7 +33,7 @@ import imagingbook.common.sift.SiftDetector.Parameters;
  * image and displays them as M-shaped markers.
  * List of keypoints (if selected) is sorted by descending magnitude.
  *  
- * @author W. Burger
+ * @author WB
  * @version 2022/04/01
  * 
  * @see SiftDetector

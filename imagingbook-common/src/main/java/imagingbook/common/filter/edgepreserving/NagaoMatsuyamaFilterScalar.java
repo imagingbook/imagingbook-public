@@ -25,7 +25,7 @@ import imagingbook.common.image.PixelPack.PixelSlice;
  * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
- * @author W. Burger
+ * @author WB
  * @version 2021/01/02
  */
 

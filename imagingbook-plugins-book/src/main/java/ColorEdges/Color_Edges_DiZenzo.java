@@ -22,7 +22,7 @@ import imagingbook.core.FileUtils;
 /**
  * This plugin implements a multi-gradient (DiZenzo/Cumani-style) color 
  * edge detector.
- * @author W. Burger
+ * @author WB
  * @version 2013/05/30
  */
 public class Color_Edges_DiZenzo implements PlugInFilter {

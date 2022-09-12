@@ -16,7 +16,7 @@ import imagingbook.common.math.Matrix;
  * This version is considerably faster than the naive version without tables.
  * Other optimizations are possible.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2019-12-26
  */
 public abstract class Dct1dDirect {

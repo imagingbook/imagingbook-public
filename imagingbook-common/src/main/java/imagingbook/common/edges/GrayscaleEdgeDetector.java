@@ -31,7 +31,7 @@ import imagingbook.common.util.ParameterBundle;
  * 3rd ed, Springer (2022).
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2014/02/17
  * @version 2022/09/04 converted to implement interface
  * @version 2022/09/11 changed to 2D kernel arrays using IjUtils

@@ -56,7 +56,7 @@ import imagingbook.common.math.Matrix;
  * [1] Blinn, Jim: "Jim Blinn's Corner: Notation, Notation, Notation", Morgan Kaufmann (2002).
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/02/18
  * 
  */

@@ -23,7 +23,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
  * Arithmetic operations are generally more precise than with the
  * Apache implementation.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/07/05
  */
 public class Complex {

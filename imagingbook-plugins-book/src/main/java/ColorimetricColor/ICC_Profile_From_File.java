@@ -25,7 +25,7 @@ import imagingbook.common.math.PrintPrecision;
  * to the console.
  * TODO: add illustrative application of color profile
  * 
- * @author W. Burger
+ * @author WB
  *
  */
 public class ICC_Profile_From_File implements PlugIn {

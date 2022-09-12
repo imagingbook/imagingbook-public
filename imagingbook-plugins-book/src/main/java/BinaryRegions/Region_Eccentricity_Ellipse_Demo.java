@@ -48,7 +48,7 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * This plugin expects a binary (black and white) image with background = 0 and 
  * foreground &gt; 0.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2021/04/18
  */
 public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {

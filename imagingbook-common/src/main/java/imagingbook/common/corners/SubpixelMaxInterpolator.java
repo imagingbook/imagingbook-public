@@ -20,10 +20,17 @@ import static imagingbook.common.math.Matrix.normL2;
 import imagingbook.common.util.Enums.Description;
 
 /**
+ * <p>
  * Common interface for all sub-pixel maximum locator implementations.
  * A  sub-pixel maximum locator tries to interpolate the continuous position
  * and value of a local maximum for a discrete 3x3 neighborhood.
  * The center value in the discrete neighborhood is assumed to be a local maximum.
+ * See Sec. 6.5 and Appendix E of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @see QuadraticTaylor
  * @see QuadraticLeastSquares
@@ -84,13 +91,20 @@ public abstract class SubpixelMaxInterpolator {
 	// ------------------------------------------------------------------------------
 	
 	/**
+	 * <p>
 	 * 2D interpolator using second-order Taylor expansion to find the coefficients
 	 * of the quadratic interpolating polynomial 
 	 * <pre>f(x,y) = c_0 + c_1 x + c_2 y + c_3 x^2 + c_4 y^2  + c_5 xy</pre>
 	 * The resulting function fits exactly the 5 on-axis samples 
 	 * (s[0], s[1], s[3], s[5], s[7]) but in general does not pass
 	 * through the outer diagonal samples (s[2], s[4], s[6], s[8]).
-	 * Book version (Alg. 'FindMaxQuadraticTaylor').
+	 * See Appendix E.2.2 (Alg. E.1, 'FindMaxQuadraticTaylor') of [1] for 
+	 * additional details.
+	 * </p>
+	 * <p>
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+	 * 3rd ed, Springer (2022).
+	 * </p>
 	 */
 	public static class QuadraticTaylor extends SubpixelMaxInterpolator {
 		
@@ -173,10 +187,17 @@ public abstract class SubpixelMaxInterpolator {
 	// ------------------------------------------------------------------------------
 	
 	/**
+	 * <p>
 	 * 2D interpolator based on least-squares fitting a quadratic polynomial 
 	 * <pre>f(x,y) = c_0 + c_1 x + c_2 y + c_3 x^2 + c_4 y^2  + c_5 xy</pre>
 	 * to the supplied sample values.
-	 * Book Alg. 'FindMaxQuadraticLeastSquares'.
+	 * See Sec. E.2.3 (Alg. E2, 'FindMaxQuadraticLeastSquares') of [1] for
+	 * additional details.
+	 * </p>
+	 * <p>
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+	 * 3rd ed, Springer (2022).
+	 * </p>
 	 */
 	public static class QuadraticLeastSquares extends SubpixelMaxInterpolator {
 		
@@ -215,14 +236,19 @@ public abstract class SubpixelMaxInterpolator {
 	// ------------------------------------------------------------------------------
 	
 	/**
-	 * 2D interpolator based on fitting a 'quartic' (i.e., 4th-order) polynomial
-	 * <br>
-	 * f(x,y) = c_0 + c_1 x + c_2 y + c_3 x^2 + c_4 y^2 + c_5 x y + c_6 x^2 y + c_7 x y^2 + c_8 x^2 y^2  
-	 * <br>
+	 * <p>2D interpolator based on fitting a 'quartic' (i.e., 4th-order) polynomial
+	 * <pre>
+	 * f(x,y) = c_0 + c_1 x + c_2 y + c_3 x^2 + c_4 y^2 + c_5 x y + c_6 x^2 y + c_7 x y^2 + c_8 x^2 y^2</pre>
 	 * to the supplied sample values. The interpolation function passes through
 	 * all sample values. The local maximum cannot be found in closed form but 
 	 * is found iteratively, which is not guaranteed to succeed.
-	 * @see SubpixelMaxInterpolator#getMax(float[])
+	 * See Appendix E.2.4 (Alg. E.3, 'FindMaxQuartic') of [1] for 
+	 * additional details.
+	 * </p>
+	 * <p>
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+	 * 3rd ed, Springer (2022).
+	 * </p>
 	 */
 	public static class Quartic extends SubpixelMaxInterpolator {
 		public static final int DefaultMaxIterations = 20;	// iteration limit

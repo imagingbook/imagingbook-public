@@ -19,7 +19,7 @@ import imagingbook.common.util.Enums;
 
 /**
  * This plugin applies a vector median filter to a RGB color image.
- * @author W. Burger
+ * @author WB
  * @version 2013/05/30
  */
 public class MedianFilter_Color_Vector implements PlugInFilter {

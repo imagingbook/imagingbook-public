@@ -32,7 +32,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * applies Delaunay triangulation to the N strongest corners and displays
  * the result as a vector overlay in a new image.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/06/25
  * @see HarrisCornerDetector
  * @see DelaunayTriangulation

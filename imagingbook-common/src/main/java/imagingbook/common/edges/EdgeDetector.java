@@ -14,7 +14,7 @@ import ij.process.FloatProcessor;
 /**
  * This is the common interface for all color edge detectors.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2013/05/30
  * @version 2022/09/04 converted to interface
  */

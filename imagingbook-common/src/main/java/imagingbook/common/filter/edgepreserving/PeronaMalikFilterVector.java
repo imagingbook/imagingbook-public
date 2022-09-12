@@ -32,7 +32,7 @@ import imagingbook.common.math.Matrix;
  * 3rd ed, Springer (2022).
  * </p>
  * 
- * @author W. Burger
+ * @author WB
  * @version 2021/01/04
  */	
 public class PeronaMalikFilterVector extends GenericFilterVector implements PeronaMalikF {

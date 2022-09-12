@@ -40,7 +40,7 @@ import imagingbook.common.sift.SiftMatcher;
  * in a combined image and the best-matching features are connected.
  * Vector overlays are used to draw the results on top of the images.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2016/01/05
  */
 public class Sift_Matching_Demo implements PlugInFilter {

@@ -42,7 +42,7 @@ import imagingbook.spectral.fd.FourierDescriptorUniform;
  * Note: This plugin only works with BYTE (grayscale) images, pixel values &gt; 0 are assumed to be 
  * foreground. Lookup-tables are ignored.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2020/04/01
  */
 

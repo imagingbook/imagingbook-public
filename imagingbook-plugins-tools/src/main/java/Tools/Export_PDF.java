@@ -31,7 +31,7 @@ import imagingbook.pdf.PdfExporter.Parameters;
  * (see <a href="https://github.com/LibrePDF/OpenPDF">
  * https://github.com/LibrePDF/OpenPDF</a>).
  * 
- * @author W. Burger
+ * @author WB
  * @version 2021/04/05 (migrated to OpenPDF, added image properties)
  * @version 2021/04/06 (added automatic image upscaling, open PFD after export)
  * @version 2021/04/21 (converted from PlugInFilter to PlugIn)

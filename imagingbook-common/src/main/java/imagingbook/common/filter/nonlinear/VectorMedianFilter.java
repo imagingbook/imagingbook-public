@@ -19,7 +19,7 @@ import imagingbook.common.math.VectorNorm.NormType;
  * Basic vector median filter for color images implemented
  * by extending the {@link GenericFilterVector} class.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2020/12/31
  * @version 2022/09/10 removed debugging code
  */

@@ -27,7 +27,7 @@ import imagingbook.common.math.Complex;
 /**
  * This is the abstract super-class for Fourier descriptors. It cannot
  * be instantiated.
- * @author W. Burger
+ * @author WB
  * @version 2020/04/01
  */
 public abstract class FourierDescriptor implements Cloneable {

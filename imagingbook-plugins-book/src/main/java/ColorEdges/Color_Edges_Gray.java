@@ -20,7 +20,7 @@ import imagingbook.core.FileUtils;
 
 /**
  * TThis is a simple grayscale edge detector for RGB color images.
- * @author W. Burger
+ * @author WB
  * @version 2014/02/17
  */
 public class Color_Edges_Gray implements PlugInFilter {

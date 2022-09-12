@@ -18,7 +18,7 @@ import imagingbook.common.filter.nonlinear.ScalarMedianFilter.Parameters;
 /**
  * This plugin applies a scalar median filter to all three planes
  * of a RGB color image.
- * @author W. Burger
+ * @author WB
  * @version 2013/05/30
  */
 public class MedianFilter_Color_Scalar implements PlugInFilter {

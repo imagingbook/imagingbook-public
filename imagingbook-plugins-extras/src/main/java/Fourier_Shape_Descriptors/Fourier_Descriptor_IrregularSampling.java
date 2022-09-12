@@ -35,7 +35,7 @@ import imagingbook.spectral.fd.FourierDescriptorFromPolygon;
  * 
  * TODO: Explain prerequisites!
  * 
- * @author W. Burger
+ * @author WB
  * @version 2020/04/01
  */
 

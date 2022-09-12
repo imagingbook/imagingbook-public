@@ -33,7 +33,7 @@ import imagingbook.common.util.ParameterBundle;
  * {@link ShiTomasiCornerDetector},
  * {@link MopsCornerDetector}.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2022/03/30
  * 
  * @see HarrisCornerDetector

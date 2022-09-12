@@ -24,7 +24,7 @@ import imagingbook.common.math.Matrix;
  * from a Java resource.
  * TODO: add illustrative application of color profile
  * 
- * @author W. Burger
+ * @author WB
  *
  */
 public class ICC_Profile_From_JAR implements PlugIn {

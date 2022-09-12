@@ -13,7 +13,7 @@ package imagingbook.spectral.dct;
  * This class provides the functionality for calculating the DCT in 2D.
  * TODO: use generic types?
  * 
- * @author W. Burger
+ * @author WB
  * @version 2019-12-26
  */
 public abstract class Dct2d {

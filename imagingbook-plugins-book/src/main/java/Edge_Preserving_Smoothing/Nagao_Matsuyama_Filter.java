@@ -20,7 +20,7 @@ import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaF.Parameters;
 /**
  * This plugin demonstrates the 5x5 Nagao-Matsuyama filter, as described in
  * NagaoMatsuyama (1979). This plugin works for all types of images and stacks.
- * @author W. Burger
+ * @author WB
  * @version 2014/03/16
  */
 public class Nagao_Matsuyama_Filter implements PlugInFilter {

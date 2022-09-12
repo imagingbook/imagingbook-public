@@ -25,7 +25,7 @@ import imagingbook.common.noise.perlin.PerlinNoiseGen2d;
  * 
  * TODO: add dialog to set size and other parameters
  * 
- * @author W. Burger
+ * @author WB
  * @version 2013/05/28
  */
 

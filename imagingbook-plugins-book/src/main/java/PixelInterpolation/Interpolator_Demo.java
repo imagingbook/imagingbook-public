@@ -25,7 +25,7 @@ import imagingbook.common.util.Enums;
  * {@link ImageAccessor} class which gives uniform access
  * to all types of images.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2015/12/17
  * 
  * @see InterpolationMethod

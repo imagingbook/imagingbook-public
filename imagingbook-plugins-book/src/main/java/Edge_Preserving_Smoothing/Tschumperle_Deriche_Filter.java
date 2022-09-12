@@ -26,7 +26,7 @@ import imagingbook.common.util.progress.ProgressMonitor;
  * vector-valued images}", IEEE Signal Processing Magazine, vol. 19, no. 5, pp. 16-25 
  * (Sep. 2002). This plugin works for all types of images and stacks.
  * 
- * @author W. Burger
+ * @author WB
  * @version 2021/01/06
  */
 
