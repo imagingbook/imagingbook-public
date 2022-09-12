@@ -91,9 +91,12 @@ public class Kernel2D {
 	}
 	
 	private void validate() {
-		if (!Matrix.isRectangular(H))
-			throw new IllegalArgumentException("non-rectangular filter kernel");
-		// TODO: should we check if xc/yc is inside the kernel? does it matter?
+		if (xc < 0 || yc < 0 || xc >= width || yc >= height) {
+			throw new IllegalArgumentException("xc/yc is outside the filter kernel");
+		}
+		if (!Matrix.isRectangular(H)) {
+			throw new IllegalArgumentException("filter kernel is not rectangular");
+		}
 	}
 	
 	/**
