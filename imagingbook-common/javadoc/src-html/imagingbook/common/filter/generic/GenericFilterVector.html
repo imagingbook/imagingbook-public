@@ -76,19 +76,14 @@
 <span class="sourceLineNo">066</span><a id="line.66">        </a>
 <span class="sourceLineNo">067</span><a id="line.67">        // -----------------------------------------------------------------</a>
 <span class="sourceLineNo">068</span><a id="line.68">        </a>
-<span class="sourceLineNo">069</span><a id="line.69">        // helper method for copying vector pixels, TODO: should move to Utils or so</a>
-<span class="sourceLineNo">070</span><a id="line.70">        public void copyPixel(float[] source, float[] target) {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                System.arraycopy(source, 0, target, 0, source.length);</a>
-<span class="sourceLineNo">072</span><a id="line.72">        }</a>
-<span class="sourceLineNo">073</span><a id="line.73">        </a>
-<span class="sourceLineNo">074</span><a id="line.74">        @Override</a>
-<span class="sourceLineNo">075</span><a id="line.75">        protected final double reportProgress(double subProgress) {</a>
-<span class="sourceLineNo">076</span><a id="line.76">                double localProgress = (double) iter /iterMax;</a>
-<span class="sourceLineNo">077</span><a id="line.77">                //System.out.println("GenericFilterVector: reportProgress() - returning " + localProgress);</a>
-<span class="sourceLineNo">078</span><a id="line.78">                return super.reportProgress(localProgress);</a>
-<span class="sourceLineNo">079</span><a id="line.79">        }</a>
-<span class="sourceLineNo">080</span><a id="line.80"></a>
-<span class="sourceLineNo">081</span><a id="line.81">}</a>
+<span class="sourceLineNo">069</span><a id="line.69">        @Override</a>
+<span class="sourceLineNo">070</span><a id="line.70">        protected final double reportProgress(double subProgress) {</a>
+<span class="sourceLineNo">071</span><a id="line.71">                double localProgress = (double) iter /iterMax;</a>
+<span class="sourceLineNo">072</span><a id="line.72">                //System.out.println("GenericFilterVector: reportProgress() - returning " + localProgress);</a>
+<span class="sourceLineNo">073</span><a id="line.73">                return super.reportProgress(localProgress);</a>
+<span class="sourceLineNo">074</span><a id="line.74">        }</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">}</a>
 
 
 

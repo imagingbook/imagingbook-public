@@ -6,7 +6,6 @@ imagingbook.common.color.quantize
 imagingbook.common.color.sets
 imagingbook.common.color.statistics
 imagingbook.common.corners
-imagingbook.common.corners.subpixel
 imagingbook.common.edges
 imagingbook.common.filter.edgepreserving
 imagingbook.common.filter.examples

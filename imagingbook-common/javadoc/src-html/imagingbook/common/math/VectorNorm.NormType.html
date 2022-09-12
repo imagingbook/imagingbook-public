@@ -120,334 +120,338 @@
 <span class="sourceLineNo">110</span><a id="line.110">         * parameter choice.</a>
 <span class="sourceLineNo">111</span><a id="line.111">         */</a>
 <span class="sourceLineNo">112</span><a id="line.112">        public enum NormType {</a>
-<span class="sourceLineNo">113</span><a id="line.113">                L1(VectorNorm.L1.getInstance()),</a>
-<span class="sourceLineNo">114</span><a id="line.114">                L2(VectorNorm.L2.getInstance()),</a>
-<span class="sourceLineNo">115</span><a id="line.115">                Linf(VectorNorm.Linf.getInstance());</a>
-<span class="sourceLineNo">116</span><a id="line.116">                                </a>
-<span class="sourceLineNo">117</span><a id="line.117">                private final VectorNorm inst;</a>
-<span class="sourceLineNo">118</span><a id="line.118">                </a>
-<span class="sourceLineNo">119</span><a id="line.119">                private NormType(VectorNorm instance) {</a>
-<span class="sourceLineNo">120</span><a id="line.120">                        this.inst = instance;</a>
-<span class="sourceLineNo">121</span><a id="line.121">                }</a>
-<span class="sourceLineNo">122</span><a id="line.122">                </a>
-<span class="sourceLineNo">123</span><a id="line.123">                /**</a>
-<span class="sourceLineNo">124</span><a id="line.124">                 * Returns the {@link VectorNorm} instance associated with this</a>
-<span class="sourceLineNo">125</span><a id="line.125">                 * enum item.</a>
-<span class="sourceLineNo">126</span><a id="line.126">                 * @return the {@link VectorNorm} instance</a>
-<span class="sourceLineNo">127</span><a id="line.127">                 */</a>
-<span class="sourceLineNo">128</span><a id="line.128">                public VectorNorm getInstance() {</a>
-<span class="sourceLineNo">129</span><a id="line.129">                        return this.inst;</a>
-<span class="sourceLineNo">130</span><a id="line.130">                }</a>
-<span class="sourceLineNo">131</span><a id="line.131">        }</a>
-<span class="sourceLineNo">132</span><a id="line.132">        </a>
-<span class="sourceLineNo">133</span><a id="line.133">        // ---------------------------------------------------------------------------</a>
-<span class="sourceLineNo">134</span><a id="line.134">        </a>
-<span class="sourceLineNo">135</span><a id="line.135">        private static void checkLengths(Object a, Object b) {</a>
-<span class="sourceLineNo">136</span><a id="line.136">                if (Array.getLength(a) != Array.getLength(b)) {</a>
-<span class="sourceLineNo">137</span><a id="line.137">                        throw new IllegalArgumentException("vectors a, b must be of same length");</a>
-<span class="sourceLineNo">138</span><a id="line.138">                }</a>
-<span class="sourceLineNo">139</span><a id="line.139">        }</a>
-<span class="sourceLineNo">140</span><a id="line.140">                </a>
-<span class="sourceLineNo">141</span><a id="line.141">//      private static void checkLengths(double[] a, double[] b) {</a>
-<span class="sourceLineNo">142</span><a id="line.142">//              if (a.length != b.length) {</a>
-<span class="sourceLineNo">143</span><a id="line.143">//                      throw new IllegalArgumentException("vectors must be of same length");</a>
-<span class="sourceLineNo">144</span><a id="line.144">//              }       </a>
-<span class="sourceLineNo">145</span><a id="line.145">//      }</a>
-<span class="sourceLineNo">146</span><a id="line.146">        </a>
-<span class="sourceLineNo">147</span><a id="line.147">//      private static void checkLengths(float[] a, float[] b) {</a>
-<span class="sourceLineNo">148</span><a id="line.148">//              if (a.length != b.length) {</a>
-<span class="sourceLineNo">149</span><a id="line.149">//                      throw new IllegalArgumentException("vectors must be of same length");</a>
-<span class="sourceLineNo">150</span><a id="line.150">//              }       </a>
-<span class="sourceLineNo">151</span><a id="line.151">//      }</a>
-<span class="sourceLineNo">152</span><a id="line.152">        </a>
-<span class="sourceLineNo">153</span><a id="line.153">//      private static void checkLengths(int[] a, int[] b) {</a>
-<span class="sourceLineNo">154</span><a id="line.154">//              if (a.length != b.length) {</a>
-<span class="sourceLineNo">155</span><a id="line.155">//                      throw new IllegalArgumentException("vectors must be of same length");</a>
-<span class="sourceLineNo">156</span><a id="line.156">//              }       </a>
-<span class="sourceLineNo">157</span><a id="line.157">//      }</a>
-<span class="sourceLineNo">158</span><a id="line.158"></a>
-<span class="sourceLineNo">159</span><a id="line.159">        //  concrete classes -----------------------------------------------</a>
-<span class="sourceLineNo">160</span><a id="line.160"></a>
-<span class="sourceLineNo">161</span><a id="line.161">        public static class L1 extends VectorNorm {</a>
-<span class="sourceLineNo">162</span><a id="line.162">                </a>
-<span class="sourceLineNo">163</span><a id="line.163">                private static final L1 instance = new L1();</a>
-<span class="sourceLineNo">164</span><a id="line.164">                private L1() {}</a>
-<span class="sourceLineNo">165</span><a id="line.165">                </a>
-<span class="sourceLineNo">166</span><a id="line.166">                public static L1 getInstance() {</a>
-<span class="sourceLineNo">167</span><a id="line.167">                        return L1.instance;</a>
-<span class="sourceLineNo">168</span><a id="line.168">                }</a>
-<span class="sourceLineNo">169</span><a id="line.169"></a>
-<span class="sourceLineNo">170</span><a id="line.170">                @Override</a>
-<span class="sourceLineNo">171</span><a id="line.171">                public double magnitude(double[] a) {</a>
-<span class="sourceLineNo">172</span><a id="line.172">                        double sum = 0.0;</a>
-<span class="sourceLineNo">173</span><a id="line.173">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">174</span><a id="line.174">                                sum = sum + Math.abs(a[i]);</a>
-<span class="sourceLineNo">175</span><a id="line.175">                        }</a>
-<span class="sourceLineNo">176</span><a id="line.176">                        return sum;</a>
-<span class="sourceLineNo">177</span><a id="line.177">                }</a>
-<span class="sourceLineNo">178</span><a id="line.178">                </a>
-<span class="sourceLineNo">179</span><a id="line.179">                @Override</a>
-<span class="sourceLineNo">180</span><a id="line.180">                public double magnitude(float[] a) {</a>
-<span class="sourceLineNo">181</span><a id="line.181">                        double sum = 0.0;</a>
-<span class="sourceLineNo">182</span><a id="line.182">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">183</span><a id="line.183">                                sum = sum + Math.abs(a[i]);</a>
-<span class="sourceLineNo">184</span><a id="line.184">                        }</a>
-<span class="sourceLineNo">185</span><a id="line.185">                        return sum;</a>
-<span class="sourceLineNo">186</span><a id="line.186">                }</a>
-<span class="sourceLineNo">187</span><a id="line.187"></a>
-<span class="sourceLineNo">188</span><a id="line.188">                @Override</a>
-<span class="sourceLineNo">189</span><a id="line.189">                public double magnitude(int[] a) {</a>
-<span class="sourceLineNo">190</span><a id="line.190">                        long sum = 0;</a>
-<span class="sourceLineNo">191</span><a id="line.191">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">192</span><a id="line.192">                                sum = sum + Math.abs(a[i]);</a>
-<span class="sourceLineNo">193</span><a id="line.193">                        }</a>
-<span class="sourceLineNo">194</span><a id="line.194">                        return sum;</a>
-<span class="sourceLineNo">195</span><a id="line.195">                }</a>
-<span class="sourceLineNo">196</span><a id="line.196"></a>
-<span class="sourceLineNo">197</span><a id="line.197">                @Override</a>
-<span class="sourceLineNo">198</span><a id="line.198">                public double distance(final double[] a, final double[] b) {</a>
-<span class="sourceLineNo">199</span><a id="line.199">                        checkLengths(a, b);</a>
-<span class="sourceLineNo">200</span><a id="line.200">                        double sum = 0.0;</a>
-<span class="sourceLineNo">201</span><a id="line.201">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">202</span><a id="line.202">                                double d = a[i] - b[i];</a>
-<span class="sourceLineNo">203</span><a id="line.203">                                sum = sum + Math.abs(d);</a>
-<span class="sourceLineNo">204</span><a id="line.204">                        }</a>
-<span class="sourceLineNo">205</span><a id="line.205">                        return sum;</a>
-<span class="sourceLineNo">206</span><a id="line.206">                }</a>
-<span class="sourceLineNo">207</span><a id="line.207"></a>
-<span class="sourceLineNo">208</span><a id="line.208">                @Override</a>
-<span class="sourceLineNo">209</span><a id="line.209">                public double distance(final int[] a, final int[] b) {</a>
-<span class="sourceLineNo">210</span><a id="line.210">                        checkLengths(a, b);</a>
-<span class="sourceLineNo">211</span><a id="line.211">                        int sum = 0;</a>
-<span class="sourceLineNo">212</span><a id="line.212">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">213</span><a id="line.213">                                sum = sum + Math.abs(a[i] - b[i]);</a>
-<span class="sourceLineNo">214</span><a id="line.214">                        }</a>
-<span class="sourceLineNo">215</span><a id="line.215">                        return sum;</a>
-<span class="sourceLineNo">216</span><a id="line.216">                }</a>
-<span class="sourceLineNo">217</span><a id="line.217"></a>
-<span class="sourceLineNo">218</span><a id="line.218">                @Override</a>
-<span class="sourceLineNo">219</span><a id="line.219">                public double distance2(double[] a, double[] b) {</a>
-<span class="sourceLineNo">220</span><a id="line.220">                        double d = distance(a, b);</a>
-<span class="sourceLineNo">221</span><a id="line.221">                        return d * d;</a>
-<span class="sourceLineNo">222</span><a id="line.222">                }</a>
-<span class="sourceLineNo">223</span><a id="line.223"></a>
-<span class="sourceLineNo">224</span><a id="line.224">                public double distance2(int[] a, int[] b) {</a>
-<span class="sourceLineNo">225</span><a id="line.225">                        double d = distance(a, b);</a>
-<span class="sourceLineNo">226</span><a id="line.226">                        return d * d;</a>
-<span class="sourceLineNo">227</span><a id="line.227">                }</a>
-<span class="sourceLineNo">228</span><a id="line.228"></a>
-<span class="sourceLineNo">229</span><a id="line.229">                @Override</a>
-<span class="sourceLineNo">230</span><a id="line.230">                public double distance2(float[] a, float[] b) {</a>
-<span class="sourceLineNo">231</span><a id="line.231">                        double d = distance(a, b);</a>
-<span class="sourceLineNo">232</span><a id="line.232">                        return d * d;</a>
-<span class="sourceLineNo">233</span><a id="line.233">                }</a>
-<span class="sourceLineNo">234</span><a id="line.234"></a>
-<span class="sourceLineNo">235</span><a id="line.235">                @Override</a>
-<span class="sourceLineNo">236</span><a id="line.236">                public double distance(float[] a, float[] b) {</a>
-<span class="sourceLineNo">237</span><a id="line.237">                        checkLengths(a, b);</a>
-<span class="sourceLineNo">238</span><a id="line.238">                        double sum = 0;</a>
-<span class="sourceLineNo">239</span><a id="line.239">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">240</span><a id="line.240">                                sum = sum + Math.abs(a[i] - b[i]);</a>
-<span class="sourceLineNo">241</span><a id="line.241">                        }</a>
-<span class="sourceLineNo">242</span><a id="line.242">                        return sum;</a>
-<span class="sourceLineNo">243</span><a id="line.243">                }</a>
-<span class="sourceLineNo">244</span><a id="line.244">                </a>
-<span class="sourceLineNo">245</span><a id="line.245">                @Override</a>
-<span class="sourceLineNo">246</span><a id="line.246">                public double getScale(int n) {</a>
-<span class="sourceLineNo">247</span><a id="line.247">                        return 1.0 / n;</a>
-<span class="sourceLineNo">248</span><a id="line.248">                }</a>
-<span class="sourceLineNo">249</span><a id="line.249"></a>
-<span class="sourceLineNo">250</span><a id="line.250">        }</a>
-<span class="sourceLineNo">251</span><a id="line.251"></a>
-<span class="sourceLineNo">252</span><a id="line.252">        // ------------------------------------------------------------------------------</a>
+<span class="sourceLineNo">113</span><a id="line.113">//              L1 {public VectorNorm.L1 getInstance() {return VectorNorm.L1.instance;}},</a>
+<span class="sourceLineNo">114</span><a id="line.114">                L1(VectorNorm.L1.getInstance()),</a>
+<span class="sourceLineNo">115</span><a id="line.115">                L2(VectorNorm.L2.getInstance()),</a>
+<span class="sourceLineNo">116</span><a id="line.116">                Linf(VectorNorm.Linf.getInstance());</a>
+<span class="sourceLineNo">117</span><a id="line.117">                                </a>
+<span class="sourceLineNo">118</span><a id="line.118">                private final VectorNorm inst;</a>
+<span class="sourceLineNo">119</span><a id="line.119">                </a>
+<span class="sourceLineNo">120</span><a id="line.120">                private NormType() {</a>
+<span class="sourceLineNo">121</span><a id="line.121">                        this.inst = null;</a>
+<span class="sourceLineNo">122</span><a id="line.122">                }</a>
+<span class="sourceLineNo">123</span><a id="line.123">                private NormType(VectorNorm instance) {</a>
+<span class="sourceLineNo">124</span><a id="line.124">                        this.inst = instance;</a>
+<span class="sourceLineNo">125</span><a id="line.125">                }</a>
+<span class="sourceLineNo">126</span><a id="line.126">                </a>
+<span class="sourceLineNo">127</span><a id="line.127">                /**</a>
+<span class="sourceLineNo">128</span><a id="line.128">                 * Returns the {@link VectorNorm} instance associated with this</a>
+<span class="sourceLineNo">129</span><a id="line.129">                 * enum item.</a>
+<span class="sourceLineNo">130</span><a id="line.130">                 * @return the {@link VectorNorm} instance</a>
+<span class="sourceLineNo">131</span><a id="line.131">                 */</a>
+<span class="sourceLineNo">132</span><a id="line.132">                public VectorNorm getInstance() {</a>
+<span class="sourceLineNo">133</span><a id="line.133">                        return this.inst;</a>
+<span class="sourceLineNo">134</span><a id="line.134">                }</a>
+<span class="sourceLineNo">135</span><a id="line.135">        }</a>
+<span class="sourceLineNo">136</span><a id="line.136">        </a>
+<span class="sourceLineNo">137</span><a id="line.137">        // ---------------------------------------------------------------------------</a>
+<span class="sourceLineNo">138</span><a id="line.138">        </a>
+<span class="sourceLineNo">139</span><a id="line.139">        private static void checkLengths(Object a, Object b) {</a>
+<span class="sourceLineNo">140</span><a id="line.140">                if (Array.getLength(a) != Array.getLength(b)) {</a>
+<span class="sourceLineNo">141</span><a id="line.141">                        throw new IllegalArgumentException("vectors a, b must be of same length");</a>
+<span class="sourceLineNo">142</span><a id="line.142">                }</a>
+<span class="sourceLineNo">143</span><a id="line.143">        }</a>
+<span class="sourceLineNo">144</span><a id="line.144">                </a>
+<span class="sourceLineNo">145</span><a id="line.145">//      private static void checkLengths(double[] a, double[] b) {</a>
+<span class="sourceLineNo">146</span><a id="line.146">//              if (a.length != b.length) {</a>
+<span class="sourceLineNo">147</span><a id="line.147">//                      throw new IllegalArgumentException("vectors must be of same length");</a>
+<span class="sourceLineNo">148</span><a id="line.148">//              }       </a>
+<span class="sourceLineNo">149</span><a id="line.149">//      }</a>
+<span class="sourceLineNo">150</span><a id="line.150">        </a>
+<span class="sourceLineNo">151</span><a id="line.151">//      private static void checkLengths(float[] a, float[] b) {</a>
+<span class="sourceLineNo">152</span><a id="line.152">//              if (a.length != b.length) {</a>
+<span class="sourceLineNo">153</span><a id="line.153">//                      throw new IllegalArgumentException("vectors must be of same length");</a>
+<span class="sourceLineNo">154</span><a id="line.154">//              }       </a>
+<span class="sourceLineNo">155</span><a id="line.155">//      }</a>
+<span class="sourceLineNo">156</span><a id="line.156">        </a>
+<span class="sourceLineNo">157</span><a id="line.157">//      private static void checkLengths(int[] a, int[] b) {</a>
+<span class="sourceLineNo">158</span><a id="line.158">//              if (a.length != b.length) {</a>
+<span class="sourceLineNo">159</span><a id="line.159">//                      throw new IllegalArgumentException("vectors must be of same length");</a>
+<span class="sourceLineNo">160</span><a id="line.160">//              }       </a>
+<span class="sourceLineNo">161</span><a id="line.161">//      }</a>
+<span class="sourceLineNo">162</span><a id="line.162"></a>
+<span class="sourceLineNo">163</span><a id="line.163">        //  concrete classes -----------------------------------------------</a>
+<span class="sourceLineNo">164</span><a id="line.164"></a>
+<span class="sourceLineNo">165</span><a id="line.165">        public static class L1 extends VectorNorm {</a>
+<span class="sourceLineNo">166</span><a id="line.166">                </a>
+<span class="sourceLineNo">167</span><a id="line.167">                private static final L1 instance = new L1();</a>
+<span class="sourceLineNo">168</span><a id="line.168">                private L1() {}</a>
+<span class="sourceLineNo">169</span><a id="line.169">                </a>
+<span class="sourceLineNo">170</span><a id="line.170">                public static L1 getInstance() {</a>
+<span class="sourceLineNo">171</span><a id="line.171">                        return L1.instance;</a>
+<span class="sourceLineNo">172</span><a id="line.172">                }</a>
+<span class="sourceLineNo">173</span><a id="line.173"></a>
+<span class="sourceLineNo">174</span><a id="line.174">                @Override</a>
+<span class="sourceLineNo">175</span><a id="line.175">                public double magnitude(double[] a) {</a>
+<span class="sourceLineNo">176</span><a id="line.176">                        double sum = 0.0;</a>
+<span class="sourceLineNo">177</span><a id="line.177">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">178</span><a id="line.178">                                sum = sum + Math.abs(a[i]);</a>
+<span class="sourceLineNo">179</span><a id="line.179">                        }</a>
+<span class="sourceLineNo">180</span><a id="line.180">                        return sum;</a>
+<span class="sourceLineNo">181</span><a id="line.181">                }</a>
+<span class="sourceLineNo">182</span><a id="line.182">                </a>
+<span class="sourceLineNo">183</span><a id="line.183">                @Override</a>
+<span class="sourceLineNo">184</span><a id="line.184">                public double magnitude(float[] a) {</a>
+<span class="sourceLineNo">185</span><a id="line.185">                        double sum = 0.0;</a>
+<span class="sourceLineNo">186</span><a id="line.186">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">187</span><a id="line.187">                                sum = sum + Math.abs(a[i]);</a>
+<span class="sourceLineNo">188</span><a id="line.188">                        }</a>
+<span class="sourceLineNo">189</span><a id="line.189">                        return sum;</a>
+<span class="sourceLineNo">190</span><a id="line.190">                }</a>
+<span class="sourceLineNo">191</span><a id="line.191"></a>
+<span class="sourceLineNo">192</span><a id="line.192">                @Override</a>
+<span class="sourceLineNo">193</span><a id="line.193">                public double magnitude(int[] a) {</a>
+<span class="sourceLineNo">194</span><a id="line.194">                        long sum = 0;</a>
+<span class="sourceLineNo">195</span><a id="line.195">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">196</span><a id="line.196">                                sum = sum + Math.abs(a[i]);</a>
+<span class="sourceLineNo">197</span><a id="line.197">                        }</a>
+<span class="sourceLineNo">198</span><a id="line.198">                        return sum;</a>
+<span class="sourceLineNo">199</span><a id="line.199">                }</a>
+<span class="sourceLineNo">200</span><a id="line.200"></a>
+<span class="sourceLineNo">201</span><a id="line.201">                @Override</a>
+<span class="sourceLineNo">202</span><a id="line.202">                public double distance(final double[] a, final double[] b) {</a>
+<span class="sourceLineNo">203</span><a id="line.203">                        checkLengths(a, b);</a>
+<span class="sourceLineNo">204</span><a id="line.204">                        double sum = 0.0;</a>
+<span class="sourceLineNo">205</span><a id="line.205">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">206</span><a id="line.206">                                double d = a[i] - b[i];</a>
+<span class="sourceLineNo">207</span><a id="line.207">                                sum = sum + Math.abs(d);</a>
+<span class="sourceLineNo">208</span><a id="line.208">                        }</a>
+<span class="sourceLineNo">209</span><a id="line.209">                        return sum;</a>
+<span class="sourceLineNo">210</span><a id="line.210">                }</a>
+<span class="sourceLineNo">211</span><a id="line.211"></a>
+<span class="sourceLineNo">212</span><a id="line.212">                @Override</a>
+<span class="sourceLineNo">213</span><a id="line.213">                public double distance(final int[] a, final int[] b) {</a>
+<span class="sourceLineNo">214</span><a id="line.214">                        checkLengths(a, b);</a>
+<span class="sourceLineNo">215</span><a id="line.215">                        int sum = 0;</a>
+<span class="sourceLineNo">216</span><a id="line.216">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">217</span><a id="line.217">                                sum = sum + Math.abs(a[i] - b[i]);</a>
+<span class="sourceLineNo">218</span><a id="line.218">                        }</a>
+<span class="sourceLineNo">219</span><a id="line.219">                        return sum;</a>
+<span class="sourceLineNo">220</span><a id="line.220">                }</a>
+<span class="sourceLineNo">221</span><a id="line.221"></a>
+<span class="sourceLineNo">222</span><a id="line.222">                @Override</a>
+<span class="sourceLineNo">223</span><a id="line.223">                public double distance2(double[] a, double[] b) {</a>
+<span class="sourceLineNo">224</span><a id="line.224">                        double d = distance(a, b);</a>
+<span class="sourceLineNo">225</span><a id="line.225">                        return d * d;</a>
+<span class="sourceLineNo">226</span><a id="line.226">                }</a>
+<span class="sourceLineNo">227</span><a id="line.227"></a>
+<span class="sourceLineNo">228</span><a id="line.228">                public double distance2(int[] a, int[] b) {</a>
+<span class="sourceLineNo">229</span><a id="line.229">                        double d = distance(a, b);</a>
+<span class="sourceLineNo">230</span><a id="line.230">                        return d * d;</a>
+<span class="sourceLineNo">231</span><a id="line.231">                }</a>
+<span class="sourceLineNo">232</span><a id="line.232"></a>
+<span class="sourceLineNo">233</span><a id="line.233">                @Override</a>
+<span class="sourceLineNo">234</span><a id="line.234">                public double distance2(float[] a, float[] b) {</a>
+<span class="sourceLineNo">235</span><a id="line.235">                        double d = distance(a, b);</a>
+<span class="sourceLineNo">236</span><a id="line.236">                        return d * d;</a>
+<span class="sourceLineNo">237</span><a id="line.237">                }</a>
+<span class="sourceLineNo">238</span><a id="line.238"></a>
+<span class="sourceLineNo">239</span><a id="line.239">                @Override</a>
+<span class="sourceLineNo">240</span><a id="line.240">                public double distance(float[] a, float[] b) {</a>
+<span class="sourceLineNo">241</span><a id="line.241">                        checkLengths(a, b);</a>
+<span class="sourceLineNo">242</span><a id="line.242">                        double sum = 0;</a>
+<span class="sourceLineNo">243</span><a id="line.243">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">244</span><a id="line.244">                                sum = sum + Math.abs(a[i] - b[i]);</a>
+<span class="sourceLineNo">245</span><a id="line.245">                        }</a>
+<span class="sourceLineNo">246</span><a id="line.246">                        return sum;</a>
+<span class="sourceLineNo">247</span><a id="line.247">                }</a>
+<span class="sourceLineNo">248</span><a id="line.248">                </a>
+<span class="sourceLineNo">249</span><a id="line.249">                @Override</a>
+<span class="sourceLineNo">250</span><a id="line.250">                public double getScale(int n) {</a>
+<span class="sourceLineNo">251</span><a id="line.251">                        return 1.0 / n;</a>
+<span class="sourceLineNo">252</span><a id="line.252">                }</a>
 <span class="sourceLineNo">253</span><a id="line.253"></a>
-<span class="sourceLineNo">254</span><a id="line.254">        public static class L2 extends VectorNorm {</a>
-<span class="sourceLineNo">255</span><a id="line.255">                </a>
-<span class="sourceLineNo">256</span><a id="line.256">                private static final L2 instance = new L2();</a>
-<span class="sourceLineNo">257</span><a id="line.257">                private L2() {}</a>
-<span class="sourceLineNo">258</span><a id="line.258">                </a>
-<span class="sourceLineNo">259</span><a id="line.259">                public static L2 getInstance() {</a>
-<span class="sourceLineNo">260</span><a id="line.260">                        return L2.instance;</a>
-<span class="sourceLineNo">261</span><a id="line.261">                }</a>
-<span class="sourceLineNo">262</span><a id="line.262"></a>
-<span class="sourceLineNo">263</span><a id="line.263">                @Override</a>
-<span class="sourceLineNo">264</span><a id="line.264">                public double magnitude(double[] a) {</a>
-<span class="sourceLineNo">265</span><a id="line.265">                        double sum = 0.0;</a>
-<span class="sourceLineNo">266</span><a id="line.266">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">267</span><a id="line.267">                                sum = sum + a[i] * a[i];</a>
-<span class="sourceLineNo">268</span><a id="line.268">                        }</a>
-<span class="sourceLineNo">269</span><a id="line.269">                        return Math.sqrt(sum);</a>
-<span class="sourceLineNo">270</span><a id="line.270">                }</a>
-<span class="sourceLineNo">271</span><a id="line.271">                </a>
-<span class="sourceLineNo">272</span><a id="line.272">                @Override</a>
-<span class="sourceLineNo">273</span><a id="line.273">                public double magnitude(float[] a) {</a>
-<span class="sourceLineNo">274</span><a id="line.274">                        double sum = 0.0;</a>
-<span class="sourceLineNo">275</span><a id="line.275">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">276</span><a id="line.276">                                sum = sum + Arithmetic.sqr((double) a[i]);</a>
-<span class="sourceLineNo">277</span><a id="line.277">                        }</a>
-<span class="sourceLineNo">278</span><a id="line.278">                        return Math.sqrt(sum);</a>
-<span class="sourceLineNo">279</span><a id="line.279">                }</a>
-<span class="sourceLineNo">280</span><a id="line.280"></a>
-<span class="sourceLineNo">281</span><a id="line.281">                @Override</a>
-<span class="sourceLineNo">282</span><a id="line.282">                public double magnitude(int[] a) {</a>
-<span class="sourceLineNo">283</span><a id="line.283">                        long sum = 0;</a>
-<span class="sourceLineNo">284</span><a id="line.284">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">285</span><a id="line.285">                                sum = sum + a[i] * a[i];</a>
-<span class="sourceLineNo">286</span><a id="line.286">                        }</a>
-<span class="sourceLineNo">287</span><a id="line.287">                        return Math.sqrt(sum);</a>
-<span class="sourceLineNo">288</span><a id="line.288">                }</a>
-<span class="sourceLineNo">289</span><a id="line.289"></a>
-<span class="sourceLineNo">290</span><a id="line.290">                @Override</a>
-<span class="sourceLineNo">291</span><a id="line.291">                public double distance(double[] a, double[] b) {</a>
-<span class="sourceLineNo">292</span><a id="line.292">                        return Math.sqrt(distance2(a, b));</a>
-<span class="sourceLineNo">293</span><a id="line.293">                }</a>
-<span class="sourceLineNo">294</span><a id="line.294"></a>
-<span class="sourceLineNo">295</span><a id="line.295">                @Override</a>
-<span class="sourceLineNo">296</span><a id="line.296">                public double distance2(final double[] a, final double[] b) {</a>
-<span class="sourceLineNo">297</span><a id="line.297">                        checkLengths(a, b);</a>
-<span class="sourceLineNo">298</span><a id="line.298">                        double sum = 0.0;</a>
-<span class="sourceLineNo">299</span><a id="line.299">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">300</span><a id="line.300">                                double d = a[i] - b[i];</a>
-<span class="sourceLineNo">301</span><a id="line.301">                                sum = sum + d * d;</a>
-<span class="sourceLineNo">302</span><a id="line.302">                        }</a>
-<span class="sourceLineNo">303</span><a id="line.303">                        return sum;</a>
-<span class="sourceLineNo">304</span><a id="line.304">                }</a>
-<span class="sourceLineNo">305</span><a id="line.305"></a>
-<span class="sourceLineNo">306</span><a id="line.306">                @Override</a>
-<span class="sourceLineNo">307</span><a id="line.307">                public double distance(int[] a, int[] b) {</a>
-<span class="sourceLineNo">308</span><a id="line.308">                        return Math.sqrt(distance2(a, b));</a>
-<span class="sourceLineNo">309</span><a id="line.309">                }</a>
-<span class="sourceLineNo">310</span><a id="line.310"></a>
-<span class="sourceLineNo">311</span><a id="line.311">                @Override</a>
-<span class="sourceLineNo">312</span><a id="line.312">                public double distance2(final int[] a, final int[] b) {</a>
-<span class="sourceLineNo">313</span><a id="line.313">                        checkLengths(a, b);</a>
-<span class="sourceLineNo">314</span><a id="line.314">                        int sum = 0;</a>
-<span class="sourceLineNo">315</span><a id="line.315">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">316</span><a id="line.316">                                int d = a[i] - b[i];</a>
-<span class="sourceLineNo">317</span><a id="line.317">                                sum = sum + d * d;</a>
-<span class="sourceLineNo">318</span><a id="line.318">                        }</a>
-<span class="sourceLineNo">319</span><a id="line.319">                        return sum;</a>
-<span class="sourceLineNo">320</span><a id="line.320">                }</a>
-<span class="sourceLineNo">321</span><a id="line.321"></a>
-<span class="sourceLineNo">322</span><a id="line.322">                @Override</a>
-<span class="sourceLineNo">323</span><a id="line.323">                public double distance(float[] a, float[] b) {</a>
-<span class="sourceLineNo">324</span><a id="line.324">                        return Math.sqrt(distance2(a, b));</a>
-<span class="sourceLineNo">325</span><a id="line.325">                }</a>
-<span class="sourceLineNo">326</span><a id="line.326">                </a>
-<span class="sourceLineNo">327</span><a id="line.327">                @Override</a>
-<span class="sourceLineNo">328</span><a id="line.328">                public double distance2(float[] a, float[] b) {</a>
-<span class="sourceLineNo">329</span><a id="line.329">                        checkLengths(a, b);</a>
-<span class="sourceLineNo">330</span><a id="line.330">                        double sum = 0.0;</a>
-<span class="sourceLineNo">331</span><a id="line.331">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">332</span><a id="line.332">                                double d = a[i] - b[i];</a>
-<span class="sourceLineNo">333</span><a id="line.333">                                sum = sum + d * d;</a>
-<span class="sourceLineNo">334</span><a id="line.334">                        }</a>
-<span class="sourceLineNo">335</span><a id="line.335">                        return sum;</a>
-<span class="sourceLineNo">336</span><a id="line.336">                }</a>
-<span class="sourceLineNo">337</span><a id="line.337">                </a>
-<span class="sourceLineNo">338</span><a id="line.338">                @Override</a>
-<span class="sourceLineNo">339</span><a id="line.339">                public double getScale(int n) {</a>
-<span class="sourceLineNo">340</span><a id="line.340">                        return Math.sqrt(1.0 / n);</a>
-<span class="sourceLineNo">341</span><a id="line.341">                }</a>
-<span class="sourceLineNo">342</span><a id="line.342"></a>
-<span class="sourceLineNo">343</span><a id="line.343">        }</a>
-<span class="sourceLineNo">344</span><a id="line.344"></a>
-<span class="sourceLineNo">345</span><a id="line.345">        // ------------------------------------------------------------------------------</a>
+<span class="sourceLineNo">254</span><a id="line.254">        }</a>
+<span class="sourceLineNo">255</span><a id="line.255"></a>
+<span class="sourceLineNo">256</span><a id="line.256">        // ------------------------------------------------------------------------------</a>
+<span class="sourceLineNo">257</span><a id="line.257"></a>
+<span class="sourceLineNo">258</span><a id="line.258">        public static class L2 extends VectorNorm {</a>
+<span class="sourceLineNo">259</span><a id="line.259">                </a>
+<span class="sourceLineNo">260</span><a id="line.260">                private static final L2 instance = new L2();</a>
+<span class="sourceLineNo">261</span><a id="line.261">                private L2() {}</a>
+<span class="sourceLineNo">262</span><a id="line.262">                </a>
+<span class="sourceLineNo">263</span><a id="line.263">                public static L2 getInstance() {</a>
+<span class="sourceLineNo">264</span><a id="line.264">                        return L2.instance;</a>
+<span class="sourceLineNo">265</span><a id="line.265">                }</a>
+<span class="sourceLineNo">266</span><a id="line.266"></a>
+<span class="sourceLineNo">267</span><a id="line.267">                @Override</a>
+<span class="sourceLineNo">268</span><a id="line.268">                public double magnitude(double[] a) {</a>
+<span class="sourceLineNo">269</span><a id="line.269">                        double sum = 0.0;</a>
+<span class="sourceLineNo">270</span><a id="line.270">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">271</span><a id="line.271">                                sum = sum + a[i] * a[i];</a>
+<span class="sourceLineNo">272</span><a id="line.272">                        }</a>
+<span class="sourceLineNo">273</span><a id="line.273">                        return Math.sqrt(sum);</a>
+<span class="sourceLineNo">274</span><a id="line.274">                }</a>
+<span class="sourceLineNo">275</span><a id="line.275">                </a>
+<span class="sourceLineNo">276</span><a id="line.276">                @Override</a>
+<span class="sourceLineNo">277</span><a id="line.277">                public double magnitude(float[] a) {</a>
+<span class="sourceLineNo">278</span><a id="line.278">                        double sum = 0.0;</a>
+<span class="sourceLineNo">279</span><a id="line.279">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">280</span><a id="line.280">                                sum = sum + Arithmetic.sqr((double) a[i]);</a>
+<span class="sourceLineNo">281</span><a id="line.281">                        }</a>
+<span class="sourceLineNo">282</span><a id="line.282">                        return Math.sqrt(sum);</a>
+<span class="sourceLineNo">283</span><a id="line.283">                }</a>
+<span class="sourceLineNo">284</span><a id="line.284"></a>
+<span class="sourceLineNo">285</span><a id="line.285">                @Override</a>
+<span class="sourceLineNo">286</span><a id="line.286">                public double magnitude(int[] a) {</a>
+<span class="sourceLineNo">287</span><a id="line.287">                        long sum = 0;</a>
+<span class="sourceLineNo">288</span><a id="line.288">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">289</span><a id="line.289">                                sum = sum + a[i] * a[i];</a>
+<span class="sourceLineNo">290</span><a id="line.290">                        }</a>
+<span class="sourceLineNo">291</span><a id="line.291">                        return Math.sqrt(sum);</a>
+<span class="sourceLineNo">292</span><a id="line.292">                }</a>
+<span class="sourceLineNo">293</span><a id="line.293"></a>
+<span class="sourceLineNo">294</span><a id="line.294">                @Override</a>
+<span class="sourceLineNo">295</span><a id="line.295">                public double distance(double[] a, double[] b) {</a>
+<span class="sourceLineNo">296</span><a id="line.296">                        return Math.sqrt(distance2(a, b));</a>
+<span class="sourceLineNo">297</span><a id="line.297">                }</a>
+<span class="sourceLineNo">298</span><a id="line.298"></a>
+<span class="sourceLineNo">299</span><a id="line.299">                @Override</a>
+<span class="sourceLineNo">300</span><a id="line.300">                public double distance2(final double[] a, final double[] b) {</a>
+<span class="sourceLineNo">301</span><a id="line.301">                        checkLengths(a, b);</a>
+<span class="sourceLineNo">302</span><a id="line.302">                        double sum = 0.0;</a>
+<span class="sourceLineNo">303</span><a id="line.303">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">304</span><a id="line.304">                                double d = a[i] - b[i];</a>
+<span class="sourceLineNo">305</span><a id="line.305">                                sum = sum + d * d;</a>
+<span class="sourceLineNo">306</span><a id="line.306">                        }</a>
+<span class="sourceLineNo">307</span><a id="line.307">                        return sum;</a>
+<span class="sourceLineNo">308</span><a id="line.308">                }</a>
+<span class="sourceLineNo">309</span><a id="line.309"></a>
+<span class="sourceLineNo">310</span><a id="line.310">                @Override</a>
+<span class="sourceLineNo">311</span><a id="line.311">                public double distance(int[] a, int[] b) {</a>
+<span class="sourceLineNo">312</span><a id="line.312">                        return Math.sqrt(distance2(a, b));</a>
+<span class="sourceLineNo">313</span><a id="line.313">                }</a>
+<span class="sourceLineNo">314</span><a id="line.314"></a>
+<span class="sourceLineNo">315</span><a id="line.315">                @Override</a>
+<span class="sourceLineNo">316</span><a id="line.316">                public double distance2(final int[] a, final int[] b) {</a>
+<span class="sourceLineNo">317</span><a id="line.317">                        checkLengths(a, b);</a>
+<span class="sourceLineNo">318</span><a id="line.318">                        int sum = 0;</a>
+<span class="sourceLineNo">319</span><a id="line.319">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">320</span><a id="line.320">                                int d = a[i] - b[i];</a>
+<span class="sourceLineNo">321</span><a id="line.321">                                sum = sum + d * d;</a>
+<span class="sourceLineNo">322</span><a id="line.322">                        }</a>
+<span class="sourceLineNo">323</span><a id="line.323">                        return sum;</a>
+<span class="sourceLineNo">324</span><a id="line.324">                }</a>
+<span class="sourceLineNo">325</span><a id="line.325"></a>
+<span class="sourceLineNo">326</span><a id="line.326">                @Override</a>
+<span class="sourceLineNo">327</span><a id="line.327">                public double distance(float[] a, float[] b) {</a>
+<span class="sourceLineNo">328</span><a id="line.328">                        return Math.sqrt(distance2(a, b));</a>
+<span class="sourceLineNo">329</span><a id="line.329">                }</a>
+<span class="sourceLineNo">330</span><a id="line.330">                </a>
+<span class="sourceLineNo">331</span><a id="line.331">                @Override</a>
+<span class="sourceLineNo">332</span><a id="line.332">                public double distance2(float[] a, float[] b) {</a>
+<span class="sourceLineNo">333</span><a id="line.333">                        checkLengths(a, b);</a>
+<span class="sourceLineNo">334</span><a id="line.334">                        double sum = 0.0;</a>
+<span class="sourceLineNo">335</span><a id="line.335">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">336</span><a id="line.336">                                double d = a[i] - b[i];</a>
+<span class="sourceLineNo">337</span><a id="line.337">                                sum = sum + d * d;</a>
+<span class="sourceLineNo">338</span><a id="line.338">                        }</a>
+<span class="sourceLineNo">339</span><a id="line.339">                        return sum;</a>
+<span class="sourceLineNo">340</span><a id="line.340">                }</a>
+<span class="sourceLineNo">341</span><a id="line.341">                </a>
+<span class="sourceLineNo">342</span><a id="line.342">                @Override</a>
+<span class="sourceLineNo">343</span><a id="line.343">                public double getScale(int n) {</a>
+<span class="sourceLineNo">344</span><a id="line.344">                        return Math.sqrt(1.0 / n);</a>
+<span class="sourceLineNo">345</span><a id="line.345">                }</a>
 <span class="sourceLineNo">346</span><a id="line.346"></a>
-<span class="sourceLineNo">347</span><a id="line.347">        public static class Linf extends VectorNorm {</a>
-<span class="sourceLineNo">348</span><a id="line.348">                </a>
-<span class="sourceLineNo">349</span><a id="line.349">                private static final Linf instance = new Linf();</a>
-<span class="sourceLineNo">350</span><a id="line.350">                private Linf() {}</a>
-<span class="sourceLineNo">351</span><a id="line.351">                </a>
-<span class="sourceLineNo">352</span><a id="line.352">                public static Linf getInstance() {</a>
-<span class="sourceLineNo">353</span><a id="line.353">                        return Linf.instance;</a>
-<span class="sourceLineNo">354</span><a id="line.354">                }</a>
-<span class="sourceLineNo">355</span><a id="line.355"></a>
-<span class="sourceLineNo">356</span><a id="line.356">                @Override</a>
-<span class="sourceLineNo">357</span><a id="line.357">                public double magnitude(double[] a) {</a>
-<span class="sourceLineNo">358</span><a id="line.358">                        double dmax = 0.0;</a>
-<span class="sourceLineNo">359</span><a id="line.359">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">360</span><a id="line.360">                                dmax = Math.max(dmax, Math.abs(a[i]));</a>
-<span class="sourceLineNo">361</span><a id="line.361">                        }</a>
-<span class="sourceLineNo">362</span><a id="line.362">                        return dmax;</a>
-<span class="sourceLineNo">363</span><a id="line.363">                }</a>
-<span class="sourceLineNo">364</span><a id="line.364">                </a>
-<span class="sourceLineNo">365</span><a id="line.365">                @Override</a>
-<span class="sourceLineNo">366</span><a id="line.366">                public double magnitude(float[] a) {</a>
-<span class="sourceLineNo">367</span><a id="line.367">                        float dmax = 0.0f;</a>
-<span class="sourceLineNo">368</span><a id="line.368">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">369</span><a id="line.369">                                dmax = Math.max(dmax, Math.abs(a[i]));</a>
-<span class="sourceLineNo">370</span><a id="line.370">                        }</a>
-<span class="sourceLineNo">371</span><a id="line.371">                        return dmax;</a>
-<span class="sourceLineNo">372</span><a id="line.372">                }</a>
-<span class="sourceLineNo">373</span><a id="line.373"></a>
-<span class="sourceLineNo">374</span><a id="line.374">                @Override</a>
-<span class="sourceLineNo">375</span><a id="line.375">                public double magnitude(int[] a) {</a>
-<span class="sourceLineNo">376</span><a id="line.376">                        int dmax = 0;</a>
-<span class="sourceLineNo">377</span><a id="line.377">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">378</span><a id="line.378">                                dmax = Math.max(dmax, Math.abs(a[i]));</a>
-<span class="sourceLineNo">379</span><a id="line.379">                        }</a>
-<span class="sourceLineNo">380</span><a id="line.380">                        return dmax;</a>
-<span class="sourceLineNo">381</span><a id="line.381">                }</a>
-<span class="sourceLineNo">382</span><a id="line.382"></a>
-<span class="sourceLineNo">383</span><a id="line.383">                @Override</a>
-<span class="sourceLineNo">384</span><a id="line.384">                public double distance(double[] a, final double[] b) {</a>
-<span class="sourceLineNo">385</span><a id="line.385">                        checkLengths(a, b);</a>
-<span class="sourceLineNo">386</span><a id="line.386">                        double dmax = 0.0;</a>
-<span class="sourceLineNo">387</span><a id="line.387">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">388</span><a id="line.388">                                double d = a[i] - b[i];</a>
-<span class="sourceLineNo">389</span><a id="line.389">                                dmax = Math.max(dmax, Math.abs(d));</a>
-<span class="sourceLineNo">390</span><a id="line.390">                        }</a>
-<span class="sourceLineNo">391</span><a id="line.391">                        return dmax;</a>
-<span class="sourceLineNo">392</span><a id="line.392">                }</a>
-<span class="sourceLineNo">393</span><a id="line.393">                </a>
-<span class="sourceLineNo">394</span><a id="line.394">                @Override</a>
-<span class="sourceLineNo">395</span><a id="line.395">                public double distance2(double[] a, double[] b) {</a>
-<span class="sourceLineNo">396</span><a id="line.396">                        return sqr(distance(a, b));</a>
-<span class="sourceLineNo">397</span><a id="line.397">                }</a>
-<span class="sourceLineNo">398</span><a id="line.398"></a>
-<span class="sourceLineNo">399</span><a id="line.399">                @Override</a>
-<span class="sourceLineNo">400</span><a id="line.400">                public double distance(int[] a, final int[] b) {</a>
-<span class="sourceLineNo">401</span><a id="line.401">                        checkLengths(a, b);</a>
-<span class="sourceLineNo">402</span><a id="line.402">                        int dmax = 0;</a>
-<span class="sourceLineNo">403</span><a id="line.403">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">404</span><a id="line.404">                                int d = Math.abs(a[i] - b[i]);</a>
-<span class="sourceLineNo">405</span><a id="line.405">                                dmax = Math.max(dmax, d);</a>
-<span class="sourceLineNo">406</span><a id="line.406">                        }</a>
-<span class="sourceLineNo">407</span><a id="line.407">                        return dmax;</a>
-<span class="sourceLineNo">408</span><a id="line.408">                }</a>
-<span class="sourceLineNo">409</span><a id="line.409">                </a>
-<span class="sourceLineNo">410</span><a id="line.410">                @Override</a>
-<span class="sourceLineNo">411</span><a id="line.411">                public double distance2(int[] a, int[] b) {</a>
-<span class="sourceLineNo">412</span><a id="line.412">                        double d = distance(a, b);</a>
-<span class="sourceLineNo">413</span><a id="line.413">                        return d * d;</a>
-<span class="sourceLineNo">414</span><a id="line.414">                }</a>
-<span class="sourceLineNo">415</span><a id="line.415"></a>
-<span class="sourceLineNo">416</span><a id="line.416">                @Override</a>
-<span class="sourceLineNo">417</span><a id="line.417">                public double distance2(float[] a, float[] b) {</a>
-<span class="sourceLineNo">418</span><a id="line.418">                        return sqr(distance(a, b));</a>
-<span class="sourceLineNo">419</span><a id="line.419">                }</a>
-<span class="sourceLineNo">420</span><a id="line.420"></a>
-<span class="sourceLineNo">421</span><a id="line.421">                @Override</a>
-<span class="sourceLineNo">422</span><a id="line.422">                public double distance(float[] a, float[] b) {</a>
-<span class="sourceLineNo">423</span><a id="line.423">                        checkLengths(a, b);</a>
-<span class="sourceLineNo">424</span><a id="line.424">                        float dmax = 0;</a>
-<span class="sourceLineNo">425</span><a id="line.425">                        for (int i = 0; i &lt; a.length; i++) {</a>
-<span class="sourceLineNo">426</span><a id="line.426">                                float d = Math.abs(a[i] - b[i]);</a>
-<span class="sourceLineNo">427</span><a id="line.427">                                dmax = Math.max(dmax, d);</a>
-<span class="sourceLineNo">428</span><a id="line.428">                        }</a>
-<span class="sourceLineNo">429</span><a id="line.429">                        return dmax;</a>
-<span class="sourceLineNo">430</span><a id="line.430">                }</a>
-<span class="sourceLineNo">431</span><a id="line.431">                </a>
-<span class="sourceLineNo">432</span><a id="line.432">                @Override</a>
-<span class="sourceLineNo">433</span><a id="line.433">                public double getScale(int n) {</a>
-<span class="sourceLineNo">434</span><a id="line.434">                        return 1.0;</a>
-<span class="sourceLineNo">435</span><a id="line.435">                }</a>
-<span class="sourceLineNo">436</span><a id="line.436"></a>
-<span class="sourceLineNo">437</span><a id="line.437">        }</a>
-<span class="sourceLineNo">438</span><a id="line.438"></a>
-<span class="sourceLineNo">439</span><a id="line.439">}</a>
+<span class="sourceLineNo">347</span><a id="line.347">        }</a>
+<span class="sourceLineNo">348</span><a id="line.348"></a>
+<span class="sourceLineNo">349</span><a id="line.349">        // ------------------------------------------------------------------------------</a>
+<span class="sourceLineNo">350</span><a id="line.350"></a>
+<span class="sourceLineNo">351</span><a id="line.351">        public static class Linf extends VectorNorm {</a>
+<span class="sourceLineNo">352</span><a id="line.352">                </a>
+<span class="sourceLineNo">353</span><a id="line.353">                private static final Linf instance = new Linf();</a>
+<span class="sourceLineNo">354</span><a id="line.354">                private Linf() {}</a>
+<span class="sourceLineNo">355</span><a id="line.355">                </a>
+<span class="sourceLineNo">356</span><a id="line.356">                public static Linf getInstance() {</a>
+<span class="sourceLineNo">357</span><a id="line.357">                        return Linf.instance;</a>
+<span class="sourceLineNo">358</span><a id="line.358">                }</a>
+<span class="sourceLineNo">359</span><a id="line.359"></a>
+<span class="sourceLineNo">360</span><a id="line.360">                @Override</a>
+<span class="sourceLineNo">361</span><a id="line.361">                public double magnitude(double[] a) {</a>
+<span class="sourceLineNo">362</span><a id="line.362">                        double dmax = 0.0;</a>
+<span class="sourceLineNo">363</span><a id="line.363">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">364</span><a id="line.364">                                dmax = Math.max(dmax, Math.abs(a[i]));</a>
+<span class="sourceLineNo">365</span><a id="line.365">                        }</a>
+<span class="sourceLineNo">366</span><a id="line.366">                        return dmax;</a>
+<span class="sourceLineNo">367</span><a id="line.367">                }</a>
+<span class="sourceLineNo">368</span><a id="line.368">                </a>
+<span class="sourceLineNo">369</span><a id="line.369">                @Override</a>
+<span class="sourceLineNo">370</span><a id="line.370">                public double magnitude(float[] a) {</a>
+<span class="sourceLineNo">371</span><a id="line.371">                        float dmax = 0.0f;</a>
+<span class="sourceLineNo">372</span><a id="line.372">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">373</span><a id="line.373">                                dmax = Math.max(dmax, Math.abs(a[i]));</a>
+<span class="sourceLineNo">374</span><a id="line.374">                        }</a>
+<span class="sourceLineNo">375</span><a id="line.375">                        return dmax;</a>
+<span class="sourceLineNo">376</span><a id="line.376">                }</a>
+<span class="sourceLineNo">377</span><a id="line.377"></a>
+<span class="sourceLineNo">378</span><a id="line.378">                @Override</a>
+<span class="sourceLineNo">379</span><a id="line.379">                public double magnitude(int[] a) {</a>
+<span class="sourceLineNo">380</span><a id="line.380">                        int dmax = 0;</a>
+<span class="sourceLineNo">381</span><a id="line.381">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">382</span><a id="line.382">                                dmax = Math.max(dmax, Math.abs(a[i]));</a>
+<span class="sourceLineNo">383</span><a id="line.383">                        }</a>
+<span class="sourceLineNo">384</span><a id="line.384">                        return dmax;</a>
+<span class="sourceLineNo">385</span><a id="line.385">                }</a>
+<span class="sourceLineNo">386</span><a id="line.386"></a>
+<span class="sourceLineNo">387</span><a id="line.387">                @Override</a>
+<span class="sourceLineNo">388</span><a id="line.388">                public double distance(double[] a, final double[] b) {</a>
+<span class="sourceLineNo">389</span><a id="line.389">                        checkLengths(a, b);</a>
+<span class="sourceLineNo">390</span><a id="line.390">                        double dmax = 0.0;</a>
+<span class="sourceLineNo">391</span><a id="line.391">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">392</span><a id="line.392">                                double d = a[i] - b[i];</a>
+<span class="sourceLineNo">393</span><a id="line.393">                                dmax = Math.max(dmax, Math.abs(d));</a>
+<span class="sourceLineNo">394</span><a id="line.394">                        }</a>
+<span class="sourceLineNo">395</span><a id="line.395">                        return dmax;</a>
+<span class="sourceLineNo">396</span><a id="line.396">                }</a>
+<span class="sourceLineNo">397</span><a id="line.397">                </a>
+<span class="sourceLineNo">398</span><a id="line.398">                @Override</a>
+<span class="sourceLineNo">399</span><a id="line.399">                public double distance2(double[] a, double[] b) {</a>
+<span class="sourceLineNo">400</span><a id="line.400">                        return sqr(distance(a, b));</a>
+<span class="sourceLineNo">401</span><a id="line.401">                }</a>
+<span class="sourceLineNo">402</span><a id="line.402"></a>
+<span class="sourceLineNo">403</span><a id="line.403">                @Override</a>
+<span class="sourceLineNo">404</span><a id="line.404">                public double distance(int[] a, final int[] b) {</a>
+<span class="sourceLineNo">405</span><a id="line.405">                        checkLengths(a, b);</a>
+<span class="sourceLineNo">406</span><a id="line.406">                        int dmax = 0;</a>
+<span class="sourceLineNo">407</span><a id="line.407">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">408</span><a id="line.408">                                int d = Math.abs(a[i] - b[i]);</a>
+<span class="sourceLineNo">409</span><a id="line.409">                                dmax = Math.max(dmax, d);</a>
+<span class="sourceLineNo">410</span><a id="line.410">                        }</a>
+<span class="sourceLineNo">411</span><a id="line.411">                        return dmax;</a>
+<span class="sourceLineNo">412</span><a id="line.412">                }</a>
+<span class="sourceLineNo">413</span><a id="line.413">                </a>
+<span class="sourceLineNo">414</span><a id="line.414">                @Override</a>
+<span class="sourceLineNo">415</span><a id="line.415">                public double distance2(int[] a, int[] b) {</a>
+<span class="sourceLineNo">416</span><a id="line.416">                        double d = distance(a, b);</a>
+<span class="sourceLineNo">417</span><a id="line.417">                        return d * d;</a>
+<span class="sourceLineNo">418</span><a id="line.418">                }</a>
+<span class="sourceLineNo">419</span><a id="line.419"></a>
+<span class="sourceLineNo">420</span><a id="line.420">                @Override</a>
+<span class="sourceLineNo">421</span><a id="line.421">                public double distance2(float[] a, float[] b) {</a>
+<span class="sourceLineNo">422</span><a id="line.422">                        return sqr(distance(a, b));</a>
+<span class="sourceLineNo">423</span><a id="line.423">                }</a>
+<span class="sourceLineNo">424</span><a id="line.424"></a>
+<span class="sourceLineNo">425</span><a id="line.425">                @Override</a>
+<span class="sourceLineNo">426</span><a id="line.426">                public double distance(float[] a, float[] b) {</a>
+<span class="sourceLineNo">427</span><a id="line.427">                        checkLengths(a, b);</a>
+<span class="sourceLineNo">428</span><a id="line.428">                        float dmax = 0;</a>
+<span class="sourceLineNo">429</span><a id="line.429">                        for (int i = 0; i &lt; a.length; i++) {</a>
+<span class="sourceLineNo">430</span><a id="line.430">                                float d = Math.abs(a[i] - b[i]);</a>
+<span class="sourceLineNo">431</span><a id="line.431">                                dmax = Math.max(dmax, d);</a>
+<span class="sourceLineNo">432</span><a id="line.432">                        }</a>
+<span class="sourceLineNo">433</span><a id="line.433">                        return dmax;</a>
+<span class="sourceLineNo">434</span><a id="line.434">                }</a>
+<span class="sourceLineNo">435</span><a id="line.435">                </a>
+<span class="sourceLineNo">436</span><a id="line.436">                @Override</a>
+<span class="sourceLineNo">437</span><a id="line.437">                public double getScale(int n) {</a>
+<span class="sourceLineNo">438</span><a id="line.438">                        return 1.0;</a>
+<span class="sourceLineNo">439</span><a id="line.439">                }</a>
 <span class="sourceLineNo">440</span><a id="line.440"></a>
+<span class="sourceLineNo">441</span><a id="line.441">        }</a>
+<span class="sourceLineNo">442</span><a id="line.442"></a>
+<span class="sourceLineNo">443</span><a id="line.443">}</a>
+<span class="sourceLineNo">444</span><a id="line.444"></a>
 
 
 

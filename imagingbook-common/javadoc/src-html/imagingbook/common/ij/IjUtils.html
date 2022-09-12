@@ -821,13 +821,13 @@
 <span class="sourceLineNo">811</span><a id="line.811">        /**</a>
 <span class="sourceLineNo">812</span><a id="line.812">         * Applies a one-dimensional convolution kernel to the given image,</a>
 <span class="sourceLineNo">813</span><a id="line.813">         * which is modified. The 1D kernel is applied in vertical direction only.</a>
-<span class="sourceLineNo">814</span><a id="line.814">         * The supplied filter kernel is not normalized.</a>
+<span class="sourceLineNo">814</span><a id="line.814">         * The supplied filter kernel must be odd-sized. It is not normalized.</a>
 <span class="sourceLineNo">815</span><a id="line.815">         * </a>
 <span class="sourceLineNo">816</span><a id="line.816">         * @param ip the image to be filtered (modified)</a>
 <span class="sourceLineNo">817</span><a id="line.817">         * @param h the filter kernel</a>
 <span class="sourceLineNo">818</span><a id="line.818">         * @see Convolver</a>
 <span class="sourceLineNo">819</span><a id="line.819">         */</a>
-<span class="sourceLineNo">820</span><a id="line.820">        public static void convolveY (ImageProcessor ip, float[] h) { // TODO: unit test missing</a>
+<span class="sourceLineNo">820</span><a id="line.820">        public static void convolveY (ImageProcessor ip, float[] h) {</a>
 <span class="sourceLineNo">821</span><a id="line.821">                Convolver conv = new Convolver();</a>
 <span class="sourceLineNo">822</span><a id="line.822">                conv.setNormalize(false);</a>
 <span class="sourceLineNo">823</span><a id="line.823">                conv.convolve(ip, h, 1, h.length);</a>
@@ -836,15 +836,15 @@
 <span class="sourceLineNo">826</span><a id="line.826">        /**</a>
 <span class="sourceLineNo">827</span><a id="line.827">         * Applies a one-dimensional convolution kernel to the given image,</a>
 <span class="sourceLineNo">828</span><a id="line.828">         * which is modified.</a>
-<span class="sourceLineNo">829</span><a id="line.829">         * The 1D kernel is applied twice, once in horizontal and once in</a>
+<span class="sourceLineNo">829</span><a id="line.829">         * The same 1D kernel is applied twice, once in horizontal and once in</a>
 <span class="sourceLineNo">830</span><a id="line.830">         * vertical direction.</a>
-<span class="sourceLineNo">831</span><a id="line.831">         * The supplied filter kernel is not normalized.</a>
+<span class="sourceLineNo">831</span><a id="line.831">         * The supplied filter kernel must be odd-sized. It is not normalized.</a>
 <span class="sourceLineNo">832</span><a id="line.832">         * </a>
 <span class="sourceLineNo">833</span><a id="line.833">         * @param ip the image to be filtered (modified)</a>
 <span class="sourceLineNo">834</span><a id="line.834">         * @param h the filter kernel</a>
 <span class="sourceLineNo">835</span><a id="line.835">         * @see Convolver</a>
 <span class="sourceLineNo">836</span><a id="line.836">         */</a>
-<span class="sourceLineNo">837</span><a id="line.837">        public static void convolveXY (ImageProcessor ip, float[] h) { // TODO: unit test missing</a>
+<span class="sourceLineNo">837</span><a id="line.837">        public static void convolveXY (ImageProcessor ip, float[] h) {</a>
 <span class="sourceLineNo">838</span><a id="line.838">                Convolver conv = new Convolver();</a>
 <span class="sourceLineNo">839</span><a id="line.839">                conv.setNormalize(false);</a>
 <span class="sourceLineNo">840</span><a id="line.840">                conv.convolve(ip, h, h.length, 1);</a>
@@ -854,12 +854,12 @@
 <span class="sourceLineNo">844</span><a id="line.844">        /**</a>
 <span class="sourceLineNo">845</span><a id="line.845">         * Applies a two-dimensional convolution kernel to the given image,</a>
 <span class="sourceLineNo">846</span><a id="line.846">         * which is modified. The supplied kernel {@code float[x][y]} must be </a>
-<span class="sourceLineNo">847</span><a id="line.847">         * rectangular; it is not normalized.</a>
+<span class="sourceLineNo">847</span><a id="line.847">         * rectangular and odd-sized. It is not normalized.</a>
 <span class="sourceLineNo">848</span><a id="line.848">         * </a>
 <span class="sourceLineNo">849</span><a id="line.849">         * @param ip the image to be filtered (modified)</a>
 <span class="sourceLineNo">850</span><a id="line.850">         * @param H the filter kernel</a>
 <span class="sourceLineNo">851</span><a id="line.851">         */</a>
-<span class="sourceLineNo">852</span><a id="line.852">        public static void convolve(ImageProcessor ip, float[][] H) { // TODO: unit test missing</a>
+<span class="sourceLineNo">852</span><a id="line.852">        public static void convolve(ImageProcessor ip, float[][] H) {</a>
 <span class="sourceLineNo">853</span><a id="line.853">                float[] h = Matrix.flatten(H);  // TODO: right order? transpose?</a>
 <span class="sourceLineNo">854</span><a id="line.854">                Convolver conv = new Convolver();</a>
 <span class="sourceLineNo">855</span><a id="line.855">                conv.setNormalize(false);</a>
