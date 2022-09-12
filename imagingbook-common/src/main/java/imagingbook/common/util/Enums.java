@@ -18,9 +18,6 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import imagingbook.common.corners.SubpixelMaxInterpolator;
-import imagingbook.common.util.Enums.Description;
-
 /**
  * This class defines static methods for handling enum types.
  * @author WB
