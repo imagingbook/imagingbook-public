@@ -130,7 +130,7 @@ public class ProjectiveMapping2D extends LinearMapping2D {
 //	/**
 //	 * Maps between n &gt; 4 point pairs, finds a least-squares solution
 //	 * for the homography parameters.
-//	 * TODO: this is UNFINISHED code! check against DLT estimation of homography
+//	 * NOTE: this is UNFINISHED code! check against DLT estimation of homography
 //	 * @param P sequence of points (source)
 //	 * @param Q sequence of points (target)
 //	 * @return a new projective mapping
