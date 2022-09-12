@@ -811,13 +811,13 @@ public abstract class IjUtils {
 	/**
 	 * Applies a one-dimensional convolution kernel to the given image,
 	 * which is modified. The 1D kernel is applied in vertical direction only.
-	 * The supplied filter kernel is not normalized.
+	 * The supplied filter kernel must be odd-sized. It is not normalized.
 	 * 
 	 * @param ip the image to be filtered (modified)
 	 * @param h the filter kernel
 	 * @see Convolver
 	 */
-	public static void convolveY (ImageProcessor ip, float[] h) { // TODO: unit test missing
+	public static void convolveY (ImageProcessor ip, float[] h) {
 		Convolver conv = new Convolver();
 		conv.setNormalize(false);
 		conv.convolve(ip, h, 1, h.length);
@@ -826,15 +826,15 @@ public abstract class IjUtils {
 	/**
 	 * Applies a one-dimensional convolution kernel to the given image,
 	 * which is modified.
-	 * The 1D kernel is applied twice, once in horizontal and once in
+	 * The same 1D kernel is applied twice, once in horizontal and once in
 	 * vertical direction.
-	 * The supplied filter kernel is not normalized.
+	 * The supplied filter kernel must be odd-sized. It is not normalized.
 	 * 
 	 * @param ip the image to be filtered (modified)
 	 * @param h the filter kernel
 	 * @see Convolver
 	 */
-	public static void convolveXY (ImageProcessor ip, float[] h) { // TODO: unit test missing
+	public static void convolveXY (ImageProcessor ip, float[] h) {
 		Convolver conv = new Convolver();
 		conv.setNormalize(false);
 		conv.convolve(ip, h, h.length, 1);
@@ -844,12 +844,12 @@ public abstract class IjUtils {
 	/**
 	 * Applies a two-dimensional convolution kernel to the given image,
 	 * which is modified. The supplied kernel {@code float[x][y]} must be 
-	 * rectangular; it is not normalized.
+	 * rectangular and odd-sized. It is not normalized.
 	 * 
 	 * @param ip the image to be filtered (modified)
 	 * @param H the filter kernel
 	 */
-	public static void convolve(ImageProcessor ip, float[][] H) { // TODO: unit test missing
+	public static void convolve(ImageProcessor ip, float[][] H) {
 		float[] h = Matrix.flatten(H);	// TODO: right order? transpose?
 		Convolver conv = new Convolver();
 		conv.setNormalize(false);

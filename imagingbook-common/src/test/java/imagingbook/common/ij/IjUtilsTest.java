@@ -19,6 +19,7 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
+import imagingbook.common.math.Matrix;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 
@@ -127,6 +128,52 @@ public class IjUtilsTest {
 		FloatProcessor fp2 = makeLumaFloat((ColorProcessor) ip, weights);	// see below
 		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-3));
 	}
+	
+	// ----------------------------------------------------------------
+	
+	@Test
+	public void testConvolve() {
+		float[][] H = {
+				{1, 2, 3},
+				{5, 6, 4},
+				{2, 1, 0}};
+		Matrix.multiplyD((float)(1/Matrix.sum(H)), H);
+
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		IjUtils.convolve(ip, H);
+		// TODO: unfinished, checks missing!
+	}
+	
+	@Test
+	public void testConvolveX() {
+		float[] h = {1, 3, 2, 0, -1};
+		Matrix.multiplyD((float)(1/Matrix.sum(h)), h);
+
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		IjUtils.convolveX(ip, h);
+		// TODO: unfinished, checks missing!
+	}
+	
+	@Test
+	public void testConvolveY() {
+		float[] h = {1, 3, 2, 0, -1};
+		Matrix.multiplyD((float)(1/Matrix.sum(h)), h);
+
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		IjUtils.convolveY(ip, h);
+		// TODO: unfinished, checks missing!
+	}
+	
+	@Test
+	public void testConvolveXY() {
+		float[] h = {1, 3, 2, 0, -1};
+		Matrix.multiplyD((float)(1/Matrix.sum(h)), h);
+
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		IjUtils.convolveXY(ip, h);
+		// TODO: unfinished, checks missing!
+	}
+	
 	
 	// ----------------------------------------------------------------
 	// ----------------------------------------------------------------
