@@ -8,7 +8,10 @@
  *******************************************************************************/
 package imagingbook.common.geometry.delaunay.guibas;
 
+import static imagingbook.common.math.Arithmetic.isZero;
+
 import imagingbook.common.geometry.basic.Pnt2d;
+
 
 /**
  * This class represents a 2D edge (line segment), specified
@@ -43,7 +46,11 @@ public class Edge2D {
 	 */
 	private Pnt2d getClosestPoint(Pnt2d point) {
 		Pnt2d ab = b.minus(a);
-		double t = point.minus(a).dot(ab) / ab.dot(ab); // TODO: check for zero denominator?
+		double denom = ab.dot(ab);
+		if (isZero(denom)) {	// avoid zero denominator (this should not happen ever)
+			throw new ArithmeticException("zero dot product ab . ab");
+		}
+		double t = point.minus(a).dot(ab) / denom;
 		if (t < 0.0) {
 			t = 0.0;
 		} else if (t > 1.0) {
