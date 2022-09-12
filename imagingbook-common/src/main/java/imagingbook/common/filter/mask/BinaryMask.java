@@ -12,6 +12,7 @@ import imagingbook.common.ij.IjUtils;
  * @version 2022/09/10
  */
 public class BinaryMask {
+	// TODO: check against structuring elements for binary morphology
 	
 	private final int width;			// mask center position (x)
 	private final int height;			// mask center position (y)
