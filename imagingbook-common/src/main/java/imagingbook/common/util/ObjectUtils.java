@@ -7,12 +7,13 @@ import java.util.List;
 
 /**
  * Defines static methods for making a shallow copy of any object.
+ * 
  * @author WB
- *
+ * @version 2022/09/11
  */
-public abstract class CopyObjects {
+public abstract class ObjectUtils {
 	
-	private CopyObjects() {
+	private ObjectUtils() {
 	}
 	
 	// https://stackoverflow.com/a/26000025

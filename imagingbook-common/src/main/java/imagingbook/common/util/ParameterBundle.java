@@ -359,7 +359,7 @@ public interface ParameterBundle {
 	 * @return a copy with the same type, fields and values as the original instance
 	 */
 	public static <T extends ParameterBundle> T duplicate(T params) {
-	    return CopyObjects.copy(params);
+	    return ObjectUtils.copy(params);
 	}
 
 	// ----------------------------------------------------------------------
