@@ -16,8 +16,8 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
  * least 8 bits per element).
  * 
  * @author WB
- * @version 2021/01/30
  * @version 2022/09/13
+ * @see BitVector
  */
 public class BitMap {
 	
@@ -26,7 +26,8 @@ public class BitMap {
 	private final BitVector bitvec;
 	
 	/**
-	 * Constructor.
+	 * Constructor, creates an empty bitmap (with all elements set to 0).
+	 * Both dimensions must be at least 1.
 	 * @param width the width of the new bitmap
 	 * @param height the height of the new bitmap
 	 */
@@ -35,18 +36,35 @@ public class BitMap {
 	}
 	
 	/**
-	 * Constructor.
-	 * @param width width the width of the new bitmap
-	 * @param height height the height of the new bitmap
-	 * @param bytes a byte array, zero values map to 0, anything else to 1
+	 * Constructor, creates a bitmap from a one-dimensional byte array.
+	 * Elements of the specified byte array are assumed in row-major order,
+	 * zero values map to 0, anything else to 1.
+	 * Passing {@code null} for the byte array creates an empty
+	 * bitmap (with all elements set to 0).
+	 * Both dimensions must be at least 1.
+	 * 
+	 * @param width the width of the new bitmap
+	 * @param height the height of the new bitmap
+	 * @param bytes a byte array ({@code null} is allowed) 
 	 */
 	public BitMap(int width, int height, byte[] bytes) {
+		if (width <= 0) {
+			throw new IllegalArgumentException("width of bitmap must be at least 1: " + width);
+		}
+		if (height <= 0) {
+			throw new IllegalArgumentException("height of bitmap must be at least 1: " + height);
+		}
+		if (bytes != null && width * height != bytes.length) {
+			throw new IllegalArgumentException("width/height do not match byte[] length: " + bytes.length);
+		}
 		this.width = width;
 		this.height = height;
 		this.bitvec = (bytes != null) ? 
 				BitVector.from(bytes) : 
 				BitVector.create(width * height);
 	}
+	
+	// ---------------------------------------------------------
 	
 	/**
 	 * Returns the width of this {@link BitMap}.
@@ -169,7 +187,7 @@ public class BitMap {
 	
 	/**
 	 * Returns the contents of this bitmap as a one-dimensional
-	 * {@code byte} array.
+	 * {@code byte} array, with elements in row-major order.
 	 * Bit-value 0 maps to byte value 0, value 1 maps to 1.
 	 * @return a one-dimensional {@code byte} array
 	 */

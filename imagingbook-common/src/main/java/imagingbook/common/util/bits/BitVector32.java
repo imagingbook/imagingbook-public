@@ -105,24 +105,24 @@ public class BitVector32 implements BitVector {
 		return buf.toString();
 	}
 	
-	//----------------------------------------------------------------------------------
-	
-	public static void main(String[] args) {
-		int K = 99;
-		BitVector32 b = new BitVector32(K);
-		
-		System.out.println(b.toString());
-		b.setAll();
-		System.out.println(b.toString());
-		b.unsetAll();
-		System.out.println(b.toString());
-		System.out.println();
-		
-		for (int i = 0; i < b.length; i++) {
-			b.set(i);
-			System.out.println(b.toString());
-			b.unset(i);
-		}
-	}
+//	//----------------------------------------------------------------------------------
+//	
+//	public static void main(String[] args) {
+//		int K = 99;
+//		BitVector32 b = new BitVector32(K);
+//		
+//		System.out.println(b.toString());
+//		b.setAll();
+//		System.out.println(b.toString());
+//		b.unsetAll();
+//		System.out.println(b.toString());
+//		System.out.println();
+//		
+//		for (int i = 0; i < b.length; i++) {
+//			b.set(i);
+//			System.out.println(b.toString());
+//			b.unset(i);
+//		}
+//	}
 
 }

@@ -667,11 +667,31 @@ public abstract class IjUtils {
 	 * with all zero values set to 0 and non-zero values set to 1.
 	 * @param bp a {@link ByteProcessor}
 	 * @return the corresponding {@link BitMap}
+	 * @see #convertToByteProcessor(BitMap)
 	 */
 	public static BitMap convertToBitMap(ByteProcessor bp) {
 		return new BitMap(bp.getWidth(), bp.getHeight(), (byte[]) bp.getPixels());
 	}
 
+	/**
+	 * <p>
+	 * Converts the specified {@link BitMap} to a {@link ByteProcessor}
+	 * of the same size,
+	 * with all zero values set to 0 and non-zero values set to 1.
+	 * The resulting image should be multiplied by 255 to achieve full
+	 * contrast, e.g.:
+	 * </p>
+	 * <pre>
+	 * ByteProcessor bp1 = ... // some ByteProcessor
+	 * BitMap bm = IjUtils.convertToBitMap(bp);
+	 * ByteProcessor bp2 = IjUtils.convertToByteProcessor(bm);
+	 * bp2.multiply(255);
+	 * ... </pre>
+	 * 
+	 * @param bitmap a {@link BitMap}
+	 * @return the corresponding {@link ByteProcessor}
+	 * @see #convertToBitMap(ByteProcessor)
+	 */
 	public static ByteProcessor convertToByteProcessor(BitMap bitmap) {
 		byte[] pixels = bitmap.getBitVector().toByteArray();
 		return new ByteProcessor(bitmap.getWidth(), bitmap.getHeight(), pixels);
