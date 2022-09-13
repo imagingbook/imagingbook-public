@@ -13,15 +13,16 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * This class defines static methods returning to array iterators.
+ * This class defines static methods for creating array iterators.
  */
 public abstract class ArrayIterator {
 	
 	private ArrayIterator() {}
 	
+	// https://stackoverflow.com/questions/10335662/convert-java-array-to-iterable.
 	/**
 	 * Returns an iterator for the specified (non-primitive) array.
-	 * See // https://stackoverflow.com/questions/10335662/convert-java-array-to-iterable.
+	 * The resulting iterator does not implement {@link Iterator#remove()}.
 	 * 
 	 * @param <T> the generic element type
 	 * @param array a non-primitive array 
