@@ -23,7 +23,7 @@ import imagingbook.common.corners.SubpixelMaxInterpolator.Method;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.filter.linear.LinearFilterSeparable;
 import imagingbook.common.image.ImageMath;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 /**
  * Abstract super class for all corner detectors based on local 
@@ -45,7 +45,7 @@ public abstract class GradientCornerDetector {
 	/** For testing/example calculations only! */
 	public static boolean RETAIN_TEMPORARY_DATA = false;
 	
-	public static class Parameters implements DialogParameters {
+	public static class Parameters implements DialogParameterBundle {
 		@DialogLabel("Apply pre-filter")
 		public boolean doPreFilter = true;
 		

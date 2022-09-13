@@ -24,7 +24,7 @@ import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 /**
  * Samples points on a perfect circle and creates a new 8-bit image with
@@ -49,7 +49,7 @@ public class Circle_Sample_To_Image implements PlugIn {
 	private static double StrokeWidth = 1.0;
 	private static Color RealCurveColor = 		new Color(0,176,80);
 	
-	public static class Parameters implements DialogParameters {
+	public static class Parameters implements DialogParameterBundle {
 		
 		@DialogLabel("number of points")
 		public int N = 100;

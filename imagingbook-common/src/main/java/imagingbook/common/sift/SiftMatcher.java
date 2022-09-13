@@ -15,11 +15,11 @@ import java.util.List;
 
 import imagingbook.common.math.VectorNorm;
 import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 public class SiftMatcher {
 	
-	public static class Parameters implements DialogParameters {
+	public static class Parameters implements DialogParameterBundle {
 		/** Specify type of distance norm */
 		public NormType norm = NormType.L2;
 		/** Max. ratio between best and second-best match */

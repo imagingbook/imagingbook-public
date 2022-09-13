@@ -11,7 +11,7 @@ package imagingbook.common.threshold.adaptive;
 
 import ij.process.ByteProcessor;
 import imagingbook.common.threshold.global.OtsuThresholder;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 /**
  * <p>
@@ -32,7 +32,7 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 	/**
 	 * Parameters for class {@link InterpolatingThresholder}.
 	 */
-	public static class Parameters implements DialogParameters {
+	public static class Parameters implements DialogParameterBundle {
 		@DialogLabel("Tile size")
 		public int tileSize = 32;
 		

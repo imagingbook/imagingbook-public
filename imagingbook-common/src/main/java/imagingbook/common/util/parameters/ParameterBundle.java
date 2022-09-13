@@ -12,6 +12,10 @@ import imagingbook.common.util.ObjectUtils;
  * Interface to be implemented by local 'Parameters' classes. This is part of
  * the 'simple parameter object' scheme, working with public fields. Only
  * non-static, non-final, public fields are accepted as parameters.
+ * 
+ * @author WB
+ * @version 2022/02/02
+ * @version 2022/09/13 moved dialog-related methods to {@link DialogParameterBundle}
  */
 public interface ParameterBundle {
 	
@@ -31,9 +35,9 @@ public interface ParameterBundle {
 		Field[] fields = clazz.getFields();		// gets only public fields
 //		strm.println(clazz.getCanonicalName());
 		for (Field field : fields) {
-			if (!isValidParameterItem(field)) {
-				continue;
-			}
+//			if (!isValidParameterItem(field)) {
+//				continue;
+//			}
 			strm.print(field.getType().getSimpleName() + " ");
 			strm.print(field.getName() + " = ");
 			try {
@@ -59,18 +63,7 @@ public interface ParameterBundle {
 		return true;
 	}
 	
-	static boolean isValidParameterItem(Field f) {
-		int mod = f.getModifiers();
-		if (Modifier.isPrivate(mod) || Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
-			return false;
-		}
-		Class<?> clazz = f.getType();
-		if (clazz == boolean.class || clazz == int.class || clazz == float.class || clazz == double.class || 
-			clazz == String.class || clazz.isEnum())
-			return true;
-		else
-			return false;
-	}
+
 
 //	static void printModifiers(Field f) {
 //		int mod = f.getModifiers();
@@ -91,14 +84,14 @@ public interface ParameterBundle {
 
 	
 	/**
-	 * Returns a shallow copy of the specified {@link DialogParameters}
+	 * Returns a shallow copy of the specified {@link DialogParameterBundle}
 	 * instance.
 	 * 
 	 * @param <T> generic type
-	 * @param params a {@link DialogParameters} instance
+	 * @param params a {@link DialogParameterBundle} instance
 	 * @return a copy with the same type, fields and values as the original instance
 	 */
-	public static <T extends DialogParameters> T duplicate(T params) {
+	public static <T extends DialogParameterBundle> T duplicate(T params) {
 	    return ObjectUtils.copy(params);
 	}
 
@@ -109,7 +102,7 @@ public interface ParameterBundle {
 //	/**
 //	 * Example parameter bundle
 //	 */
-//	static class DemoParameters implements DialogParameters {
+//	static class DemoParameters implements ParameterBundle {
 //		public static int staticInt = 44;	// currently static members are listed too!
 //		
 //		@DialogLabel("Make a decision:")
@@ -126,24 +119,6 @@ public interface ParameterBundle {
 //		public MyEnum someEnum = MyEnum.B;
 //	}
 //	
-//	public static void main(String[] args) {
-//		
-//		ParameterBundle params = new DemoParameters();
-//		System.out.println("p1 = \n" + params.printToString());
-//		
-//		GenericDialog gd = new GenericDialog(ParameterBundle.class.getSimpleName());
-//		gd.addNumericField("some single int", 123, 0);
-//		params.addToDialog(gd);
-//		
-//		gd.showDialog();
-//		if (gd.wasCanceled())
-//			return;
-//		
-//		@SuppressWarnings("unused")
-//		int singleInt = (int) gd.getNextNumber();
-//		boolean success = params.getFromDialog(gd);
-//		System.out.println("success = " + success);
-//		System.out.println("p2 = \n" + params.printToString());
-//	}
+
 	
 }

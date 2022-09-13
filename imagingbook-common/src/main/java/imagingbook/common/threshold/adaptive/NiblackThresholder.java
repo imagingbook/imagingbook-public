@@ -14,7 +14,7 @@ import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 /**
  * <p>
@@ -44,7 +44,7 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	/**
 	 * Parameters for class {@link NiblackThresholder}.
 	 */
-	public static class Parameters implements DialogParameters {
+	public static class Parameters implements DialogParameterBundle {
 		
 		@DialogLabel("Radius")
 		public int radius = 15;

@@ -79,14 +79,14 @@
 <span class="sourceLineNo">069</span><a id="line.69">        </a>
 <span class="sourceLineNo">070</span><a id="line.70">        /**</a>
 <span class="sourceLineNo">071</span><a id="line.71">         * Returns the contents of this bit vector as a {@code byte} array.</a>
-<span class="sourceLineNo">072</span><a id="line.72">         * Bit-value 0 maps to byte value 0x00, value 1 maps to 0xFF.</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * Bit-value 0 maps to byte value 0, value 1 maps to 1.</a>
 <span class="sourceLineNo">073</span><a id="line.73">         * @return a {@code byte} array</a>
 <span class="sourceLineNo">074</span><a id="line.74">         */</a>
 <span class="sourceLineNo">075</span><a id="line.75">        public default byte[] toByteArray() {</a>
 <span class="sourceLineNo">076</span><a id="line.76">                byte[] bytes = new byte[this.getLength()];</a>
 <span class="sourceLineNo">077</span><a id="line.77">                for (int i = 0; i &lt; bytes.length; i++) {</a>
 <span class="sourceLineNo">078</span><a id="line.78">                        if (get(i)) {</a>
-<span class="sourceLineNo">079</span><a id="line.79">                                bytes[i] = (byte) 0xFF;</a>
+<span class="sourceLineNo">079</span><a id="line.79">                                bytes[i] = 1;</a>
 <span class="sourceLineNo">080</span><a id="line.80">                        }</a>
 <span class="sourceLineNo">081</span><a id="line.81">                }</a>
 <span class="sourceLineNo">082</span><a id="line.82">                return bytes;</a>
@@ -143,8 +143,26 @@
 <span class="sourceLineNo">133</span><a id="line.133">        public static BitVector create(int length) {</a>
 <span class="sourceLineNo">134</span><a id="line.134">                return new BitVector64(length);</a>
 <span class="sourceLineNo">135</span><a id="line.135">        }</a>
-<span class="sourceLineNo">136</span><a id="line.136"></a>
-<span class="sourceLineNo">137</span><a id="line.137">}</a>
+<span class="sourceLineNo">136</span><a id="line.136">        </a>
+<span class="sourceLineNo">137</span><a id="line.137">        /**</a>
+<span class="sourceLineNo">138</span><a id="line.138">         * Binarizes the specified {@code byte[]} by replacing</a>
+<span class="sourceLineNo">139</span><a id="line.139">         * all non-zero values by 1.</a>
+<span class="sourceLineNo">140</span><a id="line.140">         * Returns a new array, the original array is not modified.</a>
+<span class="sourceLineNo">141</span><a id="line.141">         * </a>
+<span class="sourceLineNo">142</span><a id="line.142">         * @param b a {@code byte[]}</a>
+<span class="sourceLineNo">143</span><a id="line.143">         * @return a new {@code byte[]} with values 0/1 only</a>
+<span class="sourceLineNo">144</span><a id="line.144">         */</a>
+<span class="sourceLineNo">145</span><a id="line.145">        public static byte[] binarize(byte[] b) {</a>
+<span class="sourceLineNo">146</span><a id="line.146">                byte[] b2 = b.clone();</a>
+<span class="sourceLineNo">147</span><a id="line.147">                for (int i = 0; i &lt; b2.length; i++) {</a>
+<span class="sourceLineNo">148</span><a id="line.148">                        if (b2[i] != 0) {</a>
+<span class="sourceLineNo">149</span><a id="line.149">                                b2[i] = 1;</a>
+<span class="sourceLineNo">150</span><a id="line.150">                        }</a>
+<span class="sourceLineNo">151</span><a id="line.151">                }</a>
+<span class="sourceLineNo">152</span><a id="line.152">                return b2;</a>
+<span class="sourceLineNo">153</span><a id="line.153">        }</a>
+<span class="sourceLineNo">154</span><a id="line.154"></a>
+<span class="sourceLineNo">155</span><a id="line.155">}</a>
 
 
 

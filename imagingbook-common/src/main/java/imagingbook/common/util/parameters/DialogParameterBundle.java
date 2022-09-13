@@ -13,18 +13,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import ij.gui.GenericDialog;
 
-
 /**
  * <p>
- * Interface to be implemented by local 'Parameters' classes. This is part of
- * the 'simple parameter object' scheme, working with public fields. Only
- * non-static, non-final, public fields are accepted as parameters.
- * Current features: 
- * </p>
- * <p>
+ * This interface adds functionality to {@link ParameterBundle} to
+ * interact with ImageJ's {@link GenericDialog}.
+ * Current features include: 
+ * <br>
  * (a) Makes parameter bundles printable by listing all
  * eligible fields.
  * <br>
@@ -33,6 +31,7 @@ import ij.gui.GenericDialog;
  * {@link #addToDialog(GenericDialog)} and
  * {@link #getFromDialog(GenericDialog)}).
  * </p>
+ * <p>
  * See the example in {@code DemoParameters} below. Other functionality may be
  * added in the future.
  * </p>
@@ -41,7 +40,7 @@ import ij.gui.GenericDialog;
  * 
  * enum MyEnum { A, B, Cee };
  * 
- * static class DemoParameters implements ParameterBundle {
+ * static class DemoParameters implements DialogParameterBundle {
  * 	public static int staticInt = 44; // currently static members are listed too!
  * 
  * 	&#64;DialogLabel("Make a decision:")
@@ -60,7 +59,7 @@ import ij.gui.GenericDialog;
  * }
  * 
  * public static void main(String[] args) {
- * 	ParameterBundle params = new DemoParameters();
+ * 	DialogParameterBundle params = new DemoParameters();
  * 	System.out.println("p1 = \n" + params.printToString());
  * 
  * 	GenericDialog gd = new GenericDialog(ParameterBundle.class.getSimpleName());
@@ -80,18 +79,16 @@ import ij.gui.GenericDialog;
  * 
  * @author WB
  * @version 2022/02/02
+ * @version 2022/09/13 split from {@link ParameterBundle}
  * 
  * @see DialogDigits
  * @see DialogLabel
  * @see DialogHide
  */
-public interface DialogParameters extends ParameterBundle {
-	
-	
+public interface DialogParameterBundle extends ParameterBundle {
 	
 	// ---- Dialog-related annotations to be used on individual parameter fields ------
-	
-	
+		
 	/**
 	 * Annotation to specify a specific 'label' (value) to be shown for following
 	 * parameter fields. Default label is the variable name.
@@ -124,7 +121,7 @@ public interface DialogParameters extends ParameterBundle {
 	// ------------ ImageJ dialog-related (TODO: move to another interface?) ------------------
 	
 	/**
-	 * Adds all qualified fields of this parameter bundle to the specified
+	 * Adds all qualified fields of this {@link DialogParameterBundle} to the specified
 	 * {@link GenericDialog} instance, in the order of their definition.
 	 * Qualified means that the field is of suitable type and no 
 	 * {@link DialogHide} annotation is present.
@@ -132,10 +129,10 @@ public interface DialogParameters extends ParameterBundle {
 	 * @param gd a generic dialog
 	 */
 	public default void addToDialog(GenericDialog gd) {
-		Class<? extends DialogParameters> clazz = this.getClass();
+		Class<? extends DialogParameterBundle> clazz = this.getClass();
 		Field[] fields = clazz.getFields();		// gets only public fields
 		for (Field f : fields) {
-			if (!ParameterBundle.isValidParameterItem(f) || f.isAnnotationPresent(DialogHide.class)) {
+			if (!isValidParameterItem(f) || f.isAnnotationPresent(DialogHide.class)) {
 				continue;
 			}
 			try {
@@ -146,12 +143,20 @@ public interface DialogParameters extends ParameterBundle {
 		}
 	}
 	
+	/**
+	 * Retrieves and sets all fields of this {@link DialogParameterBundle}
+	 * by reading the associated values from the specified {@link GenericDialog} instance.
+	 * Throws an exception if anything goes wrong.
+	 * 
+	 * @param gd a {@link GenericDialog} instance
+	 * @return true if all fields were successfully read
+	 */
 	public default boolean getFromDialog(GenericDialog gd) {
-		Class<? extends DialogParameters> clazz = this.getClass();
+		Class<? extends DialogParameterBundle> clazz = this.getClass();
 		Field[] fields = clazz.getFields();		// gets only public fields
 		int errorCount = 0;
 		for (Field f : fields) {
-			if (!ParameterBundle.isValidParameterItem(f) || f.isAnnotationPresent(DialogHide.class)) {
+			if (!isValidParameterItem(f) || f.isAnnotationPresent(DialogHide.class)) {
 				continue;
 			}
 			try {
@@ -165,13 +170,33 @@ public interface DialogParameters extends ParameterBundle {
 		return (errorCount == 0);
 	}
 	
+	/**
+	 * Checks if the specified parameter field is of a valid type
+	 * to be added to a {@link GenericDialog}.
+	 * The only permissible types are {@code boolean}, {@code int},
+	 * {@code float}, {@code double}, {@link String}, and {@code enum}.
+	 * @param f
+	 * @return
+	 */
+	static boolean isValidParameterItem(Field f) {
+		int mod = f.getModifiers();
+		if (Modifier.isPrivate(mod) || Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
+			return false;
+		}
+		Class<?> clazz = f.getType();
+		if (clazz == boolean.class || clazz == int.class || clazz == float.class || clazz == double.class || 
+			clazz == String.class || clazz.isEnum())
+			return true;
+		else
+			return false;
+	}
 
 	
 	/**
 	 * Adds the specified {@link Field} of this object as new item to 
 	 * the {@link GenericDialog} instance.
 	 * The name of the field is used as the 'label' of the dialog item.
-	 * TODO: this method should be private (possible in Java9)!
+	 * TODO: this method should not be public (possible in Java9)!
 	 * 
 	 * @param field some field
 	 * @param dialog the dialog
@@ -277,6 +302,5 @@ public interface DialogParameters extends ParameterBundle {
 		}
 		return true;
 	}
-	
 
 }

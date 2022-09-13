@@ -33,7 +33,7 @@
 <span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.filter.linear.GaussianFilterSeparable;</a>
 <span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.filter.linear.LinearFilterSeparable;</a>
 <span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.image.ImageMath;</a>
-<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.util.ParameterBundle;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.util.parameters.DialogParameterBundle;</a>
 <span class="sourceLineNo">027</span><a id="line.27"></a>
 <span class="sourceLineNo">028</span><a id="line.28">/**</a>
 <span class="sourceLineNo">029</span><a id="line.29"> * Abstract super class for all corner detectors based on local </a>
@@ -55,7 +55,7 @@
 <span class="sourceLineNo">045</span><a id="line.45">        /** For testing/example calculations only! */</a>
 <span class="sourceLineNo">046</span><a id="line.46">        public static boolean RETAIN_TEMPORARY_DATA = false;</a>
 <span class="sourceLineNo">047</span><a id="line.47">        </a>
-<span class="sourceLineNo">048</span><a id="line.48">        public static class Parameters implements ParameterBundle {</a>
+<span class="sourceLineNo">048</span><a id="line.48">        public static class Parameters implements DialogParameterBundle {</a>
 <span class="sourceLineNo">049</span><a id="line.49">                @DialogLabel("Apply pre-filter")</a>
 <span class="sourceLineNo">050</span><a id="line.50">                public boolean doPreFilter = true;</a>
 <span class="sourceLineNo">051</span><a id="line.51">                </a>

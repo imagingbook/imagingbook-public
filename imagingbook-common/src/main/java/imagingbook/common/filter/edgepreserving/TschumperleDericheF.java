@@ -9,7 +9,7 @@
 package imagingbook.common.filter.edgepreserving;
 
 import imagingbook.common.filter.linear.Kernel2D;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 
 /**
@@ -22,7 +22,7 @@ public interface TschumperleDericheF {
 	/**
 	 * Parameter bundle for Tschumperle-Deriche filters (implementations of {@link TschumperleDericheF}).
 	 */
-	public static class Parameters implements DialogParameters {
+	public static class Parameters implements DialogParameterBundle {
 		
 		@DialogLabel("Number of iterations")
 		public int iterations = 20;	

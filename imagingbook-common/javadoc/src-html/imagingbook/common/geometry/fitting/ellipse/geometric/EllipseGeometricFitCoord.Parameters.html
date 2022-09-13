@@ -47,7 +47,7 @@
 <span class="sourceLineNo">037</span><a id="line.37">import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;</a>
 <span class="sourceLineNo">038</span><a id="line.38">import imagingbook.common.math.Matrix;</a>
 <span class="sourceLineNo">039</span><a id="line.39">import imagingbook.common.math.PrintPrecision;</a>
-<span class="sourceLineNo">040</span><a id="line.40">import imagingbook.common.util.ParameterBundle;</a>
+<span class="sourceLineNo">040</span><a id="line.40">import imagingbook.common.util.parameters.DialogParameterBundle;</a>
 <span class="sourceLineNo">041</span><a id="line.41"></a>
 <span class="sourceLineNo">042</span><a id="line.42">/**</a>
 <span class="sourceLineNo">043</span><a id="line.43"> * "Coordinate-based" geometric ellipse fitter using iterative minimization with</a>
@@ -282,7 +282,7 @@
 <span class="sourceLineNo">272</span><a id="line.272">        // -------------------------------------------------------------------</a>
 <span class="sourceLineNo">273</span><a id="line.273">        // -------------------------------------------------------------------</a>
 <span class="sourceLineNo">274</span><a id="line.274">        </a>
-<span class="sourceLineNo">275</span><a id="line.275">        public static class Parameters implements ParameterBundle {</a>
+<span class="sourceLineNo">275</span><a id="line.275">        public static class Parameters implements DialogParameterBundle {</a>
 <span class="sourceLineNo">276</span><a id="line.276">                </a>
 <span class="sourceLineNo">277</span><a id="line.277">                @DialogLabel("number of points")</a>
 <span class="sourceLineNo">278</span><a id="line.278">                public int n = 20;</a>

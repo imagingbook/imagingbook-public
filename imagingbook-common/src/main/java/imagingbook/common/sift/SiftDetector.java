@@ -23,7 +23,7 @@ import imagingbook.common.sift.scalespace.DogScaleSpace;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
 import imagingbook.common.sift.scalespace.ScaleLevel;
 import imagingbook.common.sift.scalespace.ScaleOctave;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 /**
  * This class implements the detection of SIFT features from images.
@@ -39,7 +39,7 @@ public class SiftDetector {
 	 * Default parameters; a (usually modified) instance of this class
 	 * may be passed to constructor of {@link SiftDetector}.
 	 */
-	public static class Parameters implements DialogParameters {	// TODO: add dialog annotations
+	public static class Parameters implements DialogParameterBundle {	// TODO: add dialog annotations
 		/** Set true to output debug information */
 		public boolean DEBUG = false;
 		/** Type of neigborhood used for peak detection in 3D scale space */

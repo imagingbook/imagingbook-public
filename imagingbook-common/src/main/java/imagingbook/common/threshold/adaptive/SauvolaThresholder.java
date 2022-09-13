@@ -12,7 +12,7 @@ package imagingbook.common.threshold.adaptive;
 import ij.plugin.filter.RankFilters;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class SauvolaThresholder implements AdaptiveThresholder {
 	/**
 	 * Parameters for class {@link SauvolaThresholder}.
 	 */
-	public static class Parameters implements DialogParameters {
+	public static class Parameters implements DialogParameterBundle {
 		
 		@DialogLabel("Radius")
 		public int radius = 15;

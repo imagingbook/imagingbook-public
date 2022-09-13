@@ -671,202 +671,228 @@
 <span class="sourceLineNo">661</span><a id="line.661">        }</a>
 <span class="sourceLineNo">662</span><a id="line.662">        </a>
 <span class="sourceLineNo">663</span><a id="line.663">        // BitMap from/to ByteProcessor conversion</a>
-<span class="sourceLineNo">664</span><a id="line.664">        </a>
-<span class="sourceLineNo">665</span><a id="line.665">        public static BitMap convertToBitMap(ByteProcessor bp) {</a>
-<span class="sourceLineNo">666</span><a id="line.666">                return new BitMap(bp.getWidth(), bp.getHeight(), (byte[]) bp.getPixels());</a>
-<span class="sourceLineNo">667</span><a id="line.667">        }</a>
-<span class="sourceLineNo">668</span><a id="line.668"></a>
-<span class="sourceLineNo">669</span><a id="line.669">        public static ByteProcessor convertToByteProcessor(BitMap bitmap) {</a>
-<span class="sourceLineNo">670</span><a id="line.670">                byte[] pixels = bitmap.getBitVector().toByteArray();</a>
-<span class="sourceLineNo">671</span><a id="line.671">                return new ByteProcessor(bitmap.getWidth(), bitmap.getHeight(), pixels);</a>
-<span class="sourceLineNo">672</span><a id="line.672">        }</a>
-<span class="sourceLineNo">673</span><a id="line.673">        </a>
-<span class="sourceLineNo">674</span><a id="line.674">        public static void drawPoints(ImageProcessor ip, Pnt2d[] points, int value) {</a>
-<span class="sourceLineNo">675</span><a id="line.675">                for (int i = 0; i &lt; points.length; i++) {</a>
-<span class="sourceLineNo">676</span><a id="line.676">                        Pnt2d p = points[i];</a>
-<span class="sourceLineNo">677</span><a id="line.677">                        if (p != null) {</a>
-<span class="sourceLineNo">678</span><a id="line.678">                                int u = p.getXint();</a>
-<span class="sourceLineNo">679</span><a id="line.679">                                int v = p.getYint();</a>
-<span class="sourceLineNo">680</span><a id="line.680">                                ip.putPixel(u, v, value);</a>
-<span class="sourceLineNo">681</span><a id="line.681">                        }</a>
-<span class="sourceLineNo">682</span><a id="line.682">                }</a>
-<span class="sourceLineNo">683</span><a id="line.683">        }</a>
-<span class="sourceLineNo">684</span><a id="line.684">        </a>
-<span class="sourceLineNo">685</span><a id="line.685">        // -------------------------------------------------------------------------</a>
-<span class="sourceLineNo">686</span><a id="line.686">        </a>
-<span class="sourceLineNo">687</span><a id="line.687">        /**</a>
-<span class="sourceLineNo">688</span><a id="line.688">         * Runs the given {@link PlugInFilter} instance with empty argument string.</a>
-<span class="sourceLineNo">689</span><a id="line.689">         * @param pluginfilter an instance of {@link PlugInFilter} </a>
-<span class="sourceLineNo">690</span><a id="line.690">         * @return true if no exception was thrown</a>
-<span class="sourceLineNo">691</span><a id="line.691">         */</a>
-<span class="sourceLineNo">692</span><a id="line.692">        public static boolean run(PlugInFilter pluginfilter) {</a>
-<span class="sourceLineNo">693</span><a id="line.693">                return run(pluginfilter, "");</a>
-<span class="sourceLineNo">694</span><a id="line.694">        }</a>
-<span class="sourceLineNo">695</span><a id="line.695">        </a>
-<span class="sourceLineNo">696</span><a id="line.696">        /**</a>
-<span class="sourceLineNo">697</span><a id="line.697">         * Runs the given {@link PlugInFilter} instance.</a>
-<span class="sourceLineNo">698</span><a id="line.698">         * @param pluginfilter an instance of {@link PlugInFilter} </a>
-<span class="sourceLineNo">699</span><a id="line.699">         * @param arg argument passed to {@link PlugInFilter#setup(String, ImagePlus)}</a>
-<span class="sourceLineNo">700</span><a id="line.700">         * @return true if no exception was thrown</a>
-<span class="sourceLineNo">701</span><a id="line.701">         */</a>
-<span class="sourceLineNo">702</span><a id="line.702">        public static boolean run(PlugInFilter pluginfilter, String arg) {</a>
-<span class="sourceLineNo">703</span><a id="line.703">                try {</a>
-<span class="sourceLineNo">704</span><a id="line.704">                        new PlugInFilterRunner(pluginfilter, pluginfilter.getClass().getSimpleName(), arg);</a>
-<span class="sourceLineNo">705</span><a id="line.705">                } catch (Exception e) {</a>
-<span class="sourceLineNo">706</span><a id="line.706">                        return false;</a>
-<span class="sourceLineNo">707</span><a id="line.707">                }</a>
-<span class="sourceLineNo">708</span><a id="line.708">                return true;</a>
+<span class="sourceLineNo">664</span><a id="line.664">        /**</a>
+<span class="sourceLineNo">665</span><a id="line.665">         * Converts the specified {@link ByteProcessor} to a {@link BitMap}</a>
+<span class="sourceLineNo">666</span><a id="line.666">         * of the same size,</a>
+<span class="sourceLineNo">667</span><a id="line.667">         * with all zero values set to 0 and non-zero values set to 1.</a>
+<span class="sourceLineNo">668</span><a id="line.668">         * @param bp a {@link ByteProcessor}</a>
+<span class="sourceLineNo">669</span><a id="line.669">         * @return the corresponding {@link BitMap}</a>
+<span class="sourceLineNo">670</span><a id="line.670">         * @see #convertToByteProcessor(BitMap)</a>
+<span class="sourceLineNo">671</span><a id="line.671">         */</a>
+<span class="sourceLineNo">672</span><a id="line.672">        public static BitMap convertToBitMap(ByteProcessor bp) {</a>
+<span class="sourceLineNo">673</span><a id="line.673">                return new BitMap(bp.getWidth(), bp.getHeight(), (byte[]) bp.getPixels());</a>
+<span class="sourceLineNo">674</span><a id="line.674">        }</a>
+<span class="sourceLineNo">675</span><a id="line.675"></a>
+<span class="sourceLineNo">676</span><a id="line.676">        /**</a>
+<span class="sourceLineNo">677</span><a id="line.677">         * &lt;p&gt;</a>
+<span class="sourceLineNo">678</span><a id="line.678">         * Converts the specified {@link BitMap} to a {@link ByteProcessor}</a>
+<span class="sourceLineNo">679</span><a id="line.679">         * of the same size,</a>
+<span class="sourceLineNo">680</span><a id="line.680">         * with all zero values set to 0 and non-zero values set to 1.</a>
+<span class="sourceLineNo">681</span><a id="line.681">         * The resulting image should be multiplied by 255 to achieve full</a>
+<span class="sourceLineNo">682</span><a id="line.682">         * contrast, e.g.:</a>
+<span class="sourceLineNo">683</span><a id="line.683">         * &lt;/p&gt;</a>
+<span class="sourceLineNo">684</span><a id="line.684">         * &lt;pre&gt;</a>
+<span class="sourceLineNo">685</span><a id="line.685">         * ByteProcessor bp1 = ... // some ByteProcessor</a>
+<span class="sourceLineNo">686</span><a id="line.686">         * BitMap bm = IjUtils.convertToBitMap(bp);</a>
+<span class="sourceLineNo">687</span><a id="line.687">         * ByteProcessor bp2 = IjUtils.convertToByteProcessor(bm);</a>
+<span class="sourceLineNo">688</span><a id="line.688">         * bp2.multiply(255);</a>
+<span class="sourceLineNo">689</span><a id="line.689">         * ... &lt;/pre&gt;</a>
+<span class="sourceLineNo">690</span><a id="line.690">         * </a>
+<span class="sourceLineNo">691</span><a id="line.691">         * @param bitmap a {@link BitMap}</a>
+<span class="sourceLineNo">692</span><a id="line.692">         * @return the corresponding {@link ByteProcessor}</a>
+<span class="sourceLineNo">693</span><a id="line.693">         * @see #convertToBitMap(ByteProcessor)</a>
+<span class="sourceLineNo">694</span><a id="line.694">         */</a>
+<span class="sourceLineNo">695</span><a id="line.695">        public static ByteProcessor convertToByteProcessor(BitMap bitmap) {</a>
+<span class="sourceLineNo">696</span><a id="line.696">                byte[] pixels = bitmap.getBitVector().toByteArray();</a>
+<span class="sourceLineNo">697</span><a id="line.697">                return new ByteProcessor(bitmap.getWidth(), bitmap.getHeight(), pixels);</a>
+<span class="sourceLineNo">698</span><a id="line.698">        }</a>
+<span class="sourceLineNo">699</span><a id="line.699">        </a>
+<span class="sourceLineNo">700</span><a id="line.700">        public static void drawPoints(ImageProcessor ip, Pnt2d[] points, int value) {</a>
+<span class="sourceLineNo">701</span><a id="line.701">                for (int i = 0; i &lt; points.length; i++) {</a>
+<span class="sourceLineNo">702</span><a id="line.702">                        Pnt2d p = points[i];</a>
+<span class="sourceLineNo">703</span><a id="line.703">                        if (p != null) {</a>
+<span class="sourceLineNo">704</span><a id="line.704">                                int u = p.getXint();</a>
+<span class="sourceLineNo">705</span><a id="line.705">                                int v = p.getYint();</a>
+<span class="sourceLineNo">706</span><a id="line.706">                                ip.putPixel(u, v, value);</a>
+<span class="sourceLineNo">707</span><a id="line.707">                        }</a>
+<span class="sourceLineNo">708</span><a id="line.708">                }</a>
 <span class="sourceLineNo">709</span><a id="line.709">        }</a>
 <span class="sourceLineNo">710</span><a id="line.710">        </a>
-<span class="sourceLineNo">711</span><a id="line.711">        /**</a>
-<span class="sourceLineNo">712</span><a id="line.712">         * Runs the given {@link PlugIn} instance with empty argument string.</a>
-<span class="sourceLineNo">713</span><a id="line.713">         * @param plugin an instance of {@link PlugIn}</a>
-<span class="sourceLineNo">714</span><a id="line.714">         * @return true if no exception was thrown</a>
-<span class="sourceLineNo">715</span><a id="line.715">         */</a>
-<span class="sourceLineNo">716</span><a id="line.716">        public static boolean run(PlugIn plugin) {</a>
-<span class="sourceLineNo">717</span><a id="line.717">                return run(plugin, "");</a>
-<span class="sourceLineNo">718</span><a id="line.718">        }</a>
-<span class="sourceLineNo">719</span><a id="line.719">        </a>
-<span class="sourceLineNo">720</span><a id="line.720">        /**</a>
-<span class="sourceLineNo">721</span><a id="line.721">         * Runs the given {@link PlugIn} instance.</a>
-<span class="sourceLineNo">722</span><a id="line.722">         * @param plugin an instance of {@link PlugIn}</a>
-<span class="sourceLineNo">723</span><a id="line.723">         * @param arg argument passed to {@link PlugIn#run(String)}</a>
-<span class="sourceLineNo">724</span><a id="line.724">         * @return true if no exception was thrown</a>
-<span class="sourceLineNo">725</span><a id="line.725">         */</a>
-<span class="sourceLineNo">726</span><a id="line.726">        public static boolean run(PlugIn plugin, String arg) {</a>
-<span class="sourceLineNo">727</span><a id="line.727">                try {</a>
-<span class="sourceLineNo">728</span><a id="line.728">                        plugin.run(arg);</a>
-<span class="sourceLineNo">729</span><a id="line.729">                } catch (Exception e) {</a>
-<span class="sourceLineNo">730</span><a id="line.730">                        return false;</a>
-<span class="sourceLineNo">731</span><a id="line.731">                }</a>
-<span class="sourceLineNo">732</span><a id="line.732">                return true;</a>
-<span class="sourceLineNo">733</span><a id="line.733">        }</a>
-<span class="sourceLineNo">734</span><a id="line.734">        </a>
-<span class="sourceLineNo">735</span><a id="line.735">        // ------------------------------------------------------------------</a>
+<span class="sourceLineNo">711</span><a id="line.711">        // -------------------------------------------------------------------------</a>
+<span class="sourceLineNo">712</span><a id="line.712">        </a>
+<span class="sourceLineNo">713</span><a id="line.713">        /**</a>
+<span class="sourceLineNo">714</span><a id="line.714">         * Runs the given {@link PlugInFilter} instance with empty argument string.</a>
+<span class="sourceLineNo">715</span><a id="line.715">         * @param pluginfilter an instance of {@link PlugInFilter} </a>
+<span class="sourceLineNo">716</span><a id="line.716">         * @return true if no exception was thrown</a>
+<span class="sourceLineNo">717</span><a id="line.717">         */</a>
+<span class="sourceLineNo">718</span><a id="line.718">        public static boolean run(PlugInFilter pluginfilter) {</a>
+<span class="sourceLineNo">719</span><a id="line.719">                return run(pluginfilter, "");</a>
+<span class="sourceLineNo">720</span><a id="line.720">        }</a>
+<span class="sourceLineNo">721</span><a id="line.721">        </a>
+<span class="sourceLineNo">722</span><a id="line.722">        /**</a>
+<span class="sourceLineNo">723</span><a id="line.723">         * Runs the given {@link PlugInFilter} instance.</a>
+<span class="sourceLineNo">724</span><a id="line.724">         * @param pluginfilter an instance of {@link PlugInFilter} </a>
+<span class="sourceLineNo">725</span><a id="line.725">         * @param arg argument passed to {@link PlugInFilter#setup(String, ImagePlus)}</a>
+<span class="sourceLineNo">726</span><a id="line.726">         * @return true if no exception was thrown</a>
+<span class="sourceLineNo">727</span><a id="line.727">         */</a>
+<span class="sourceLineNo">728</span><a id="line.728">        public static boolean run(PlugInFilter pluginfilter, String arg) {</a>
+<span class="sourceLineNo">729</span><a id="line.729">                try {</a>
+<span class="sourceLineNo">730</span><a id="line.730">                        new PlugInFilterRunner(pluginfilter, pluginfilter.getClass().getSimpleName(), arg);</a>
+<span class="sourceLineNo">731</span><a id="line.731">                } catch (Exception e) {</a>
+<span class="sourceLineNo">732</span><a id="line.732">                        return false;</a>
+<span class="sourceLineNo">733</span><a id="line.733">                }</a>
+<span class="sourceLineNo">734</span><a id="line.734">                return true;</a>
+<span class="sourceLineNo">735</span><a id="line.735">        }</a>
 <span class="sourceLineNo">736</span><a id="line.736">        </a>
 <span class="sourceLineNo">737</span><a id="line.737">        /**</a>
-<span class="sourceLineNo">738</span><a id="line.738">         * Run a {@link PlugInFilter} from the associated class with empty argument string.</a>
-<span class="sourceLineNo">739</span><a id="line.739">         * If the plugin's constructor is available, use method {@link #run(PlugInFilter)} instead.</a>
-<span class="sourceLineNo">740</span><a id="line.740">         * @param clazz class of the pluginfilter</a>
-<span class="sourceLineNo">741</span><a id="line.741">         * @return true if no exception was thrown</a>
-<span class="sourceLineNo">742</span><a id="line.742">         */</a>
-<span class="sourceLineNo">743</span><a id="line.743">        public static boolean runPlugInFilter(Class&lt;? extends PlugInFilter&gt; clazz) {</a>
-<span class="sourceLineNo">744</span><a id="line.744">                return runPlugInFilter(clazz, "");</a>
-<span class="sourceLineNo">745</span><a id="line.745">        }</a>
-<span class="sourceLineNo">746</span><a id="line.746">        </a>
-<span class="sourceLineNo">747</span><a id="line.747">        /**</a>
-<span class="sourceLineNo">748</span><a id="line.748">         * Run a {@link PlugInFilter} from the associated class.</a>
-<span class="sourceLineNo">749</span><a id="line.749">         * If the plugin's constructor is available, use method {@link #run(PlugInFilter, String)} instead.</a>
-<span class="sourceLineNo">750</span><a id="line.750">         * @param clazz class of the plugin</a>
-<span class="sourceLineNo">751</span><a id="line.751">         * @param arg argument string</a>
-<span class="sourceLineNo">752</span><a id="line.752">         * @return true if no exception was thrown</a>
-<span class="sourceLineNo">753</span><a id="line.753">         */</a>
-<span class="sourceLineNo">754</span><a id="line.754">        public static boolean runPlugInFilter(Class&lt;? extends PlugInFilter&gt; clazz, String arg) {</a>
-<span class="sourceLineNo">755</span><a id="line.755">                PlugInFilter thePlugIn = null;</a>
-<span class="sourceLineNo">756</span><a id="line.756">                try {</a>
-<span class="sourceLineNo">757</span><a id="line.757">                        thePlugIn = clazz.getDeclaredConstructor().newInstance();</a>
-<span class="sourceLineNo">758</span><a id="line.758">                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException</a>
-<span class="sourceLineNo">759</span><a id="line.759">                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {</a>
-<span class="sourceLineNo">760</span><a id="line.760">                        throw new RuntimeException(e.getMessage());     // should never happen</a>
-<span class="sourceLineNo">761</span><a id="line.761">                }</a>
-<span class="sourceLineNo">762</span><a id="line.762">                return run(thePlugIn, arg);</a>
-<span class="sourceLineNo">763</span><a id="line.763">        }</a>
-<span class="sourceLineNo">764</span><a id="line.764">        </a>
-<span class="sourceLineNo">765</span><a id="line.765">        /**</a>
-<span class="sourceLineNo">766</span><a id="line.766">         * Run a {@link PlugIn} from the associated class with empty argument string.</a>
-<span class="sourceLineNo">767</span><a id="line.767">         * If the plugin's constructor is available, use method {@link #run(PlugIn)} instead.</a>
-<span class="sourceLineNo">768</span><a id="line.768">         * @param clazz class of the plugin</a>
-<span class="sourceLineNo">769</span><a id="line.769">         * @return true if no exception was thrown</a>
-<span class="sourceLineNo">770</span><a id="line.770">         */</a>
-<span class="sourceLineNo">771</span><a id="line.771">        public static boolean runPlugIn(Class&lt;? extends PlugIn&gt; clazz) {</a>
-<span class="sourceLineNo">772</span><a id="line.772">                return runPlugIn(clazz, "");</a>
-<span class="sourceLineNo">773</span><a id="line.773">        }</a>
-<span class="sourceLineNo">774</span><a id="line.774">        </a>
-<span class="sourceLineNo">775</span><a id="line.775">        /**</a>
-<span class="sourceLineNo">776</span><a id="line.776">         * Run a {@link PlugIn} from the associated class.</a>
-<span class="sourceLineNo">777</span><a id="line.777">         * If the plugin's constructor is available, use method {@link #run(PlugIn, String)} instead.</a>
-<span class="sourceLineNo">778</span><a id="line.778">         * @param clazz class of the plugin</a>
-<span class="sourceLineNo">779</span><a id="line.779">         * @param arg argument string</a>
-<span class="sourceLineNo">780</span><a id="line.780">         * @return true if no exception was thrown</a>
-<span class="sourceLineNo">781</span><a id="line.781">         */</a>
-<span class="sourceLineNo">782</span><a id="line.782">        public static boolean runPlugIn(Class&lt;? extends PlugIn&gt; clazz, String arg) {</a>
-<span class="sourceLineNo">783</span><a id="line.783">                PlugIn thePlugIn = null;</a>
-<span class="sourceLineNo">784</span><a id="line.784">                try {</a>
-<span class="sourceLineNo">785</span><a id="line.785">                        thePlugIn = clazz.getDeclaredConstructor().newInstance();</a>
-<span class="sourceLineNo">786</span><a id="line.786">                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException</a>
-<span class="sourceLineNo">787</span><a id="line.787">                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {</a>
-<span class="sourceLineNo">788</span><a id="line.788">                        throw new RuntimeException(e.getMessage());     // should never happen</a>
-<span class="sourceLineNo">789</span><a id="line.789">                }</a>
-<span class="sourceLineNo">790</span><a id="line.790">                return run(thePlugIn, arg);</a>
-<span class="sourceLineNo">791</span><a id="line.791">        }</a>
-<span class="sourceLineNo">792</span><a id="line.792"></a>
-<span class="sourceLineNo">793</span><a id="line.793">        </a>
-<span class="sourceLineNo">794</span><a id="line.794">        //  static methods for filtering images using ImageJ's {@link Convolver} class. </a>
-<span class="sourceLineNo">795</span><a id="line.795"></a>
-<span class="sourceLineNo">796</span><a id="line.796">        /**</a>
-<span class="sourceLineNo">797</span><a id="line.797">         * Applies a one-dimensional convolution kernel to the given image,</a>
-<span class="sourceLineNo">798</span><a id="line.798">         * which is modified. The 1D kernel is applied in horizontal direction only.#</a>
-<span class="sourceLineNo">799</span><a id="line.799">         * The supplied filter kernel is not normalized.</a>
-<span class="sourceLineNo">800</span><a id="line.800">         * </a>
-<span class="sourceLineNo">801</span><a id="line.801">         * @param ip the image to be filtered (modified)</a>
-<span class="sourceLineNo">802</span><a id="line.802">         * @param h the filter kernel</a>
-<span class="sourceLineNo">803</span><a id="line.803">         * @see Convolver</a>
-<span class="sourceLineNo">804</span><a id="line.804">         */</a>
-<span class="sourceLineNo">805</span><a id="line.805">        public static void convolveX (ImageProcessor ip, float[] h) { // TODO: unit test missing</a>
-<span class="sourceLineNo">806</span><a id="line.806">                Convolver conv = new Convolver();</a>
-<span class="sourceLineNo">807</span><a id="line.807">                conv.setNormalize(false);</a>
-<span class="sourceLineNo">808</span><a id="line.808">                conv.convolve(ip, h, h.length, 1);</a>
-<span class="sourceLineNo">809</span><a id="line.809">        }</a>
-<span class="sourceLineNo">810</span><a id="line.810"></a>
-<span class="sourceLineNo">811</span><a id="line.811">        /**</a>
-<span class="sourceLineNo">812</span><a id="line.812">         * Applies a one-dimensional convolution kernel to the given image,</a>
-<span class="sourceLineNo">813</span><a id="line.813">         * which is modified. The 1D kernel is applied in vertical direction only.</a>
-<span class="sourceLineNo">814</span><a id="line.814">         * The supplied filter kernel must be odd-sized. It is not normalized.</a>
-<span class="sourceLineNo">815</span><a id="line.815">         * </a>
-<span class="sourceLineNo">816</span><a id="line.816">         * @param ip the image to be filtered (modified)</a>
-<span class="sourceLineNo">817</span><a id="line.817">         * @param h the filter kernel</a>
-<span class="sourceLineNo">818</span><a id="line.818">         * @see Convolver</a>
-<span class="sourceLineNo">819</span><a id="line.819">         */</a>
-<span class="sourceLineNo">820</span><a id="line.820">        public static void convolveY (ImageProcessor ip, float[] h) {</a>
-<span class="sourceLineNo">821</span><a id="line.821">                Convolver conv = new Convolver();</a>
-<span class="sourceLineNo">822</span><a id="line.822">                conv.setNormalize(false);</a>
-<span class="sourceLineNo">823</span><a id="line.823">                conv.convolve(ip, h, 1, h.length);</a>
-<span class="sourceLineNo">824</span><a id="line.824">        }</a>
-<span class="sourceLineNo">825</span><a id="line.825"></a>
-<span class="sourceLineNo">826</span><a id="line.826">        /**</a>
-<span class="sourceLineNo">827</span><a id="line.827">         * Applies a one-dimensional convolution kernel to the given image,</a>
-<span class="sourceLineNo">828</span><a id="line.828">         * which is modified.</a>
-<span class="sourceLineNo">829</span><a id="line.829">         * The same 1D kernel is applied twice, once in horizontal and once in</a>
-<span class="sourceLineNo">830</span><a id="line.830">         * vertical direction.</a>
-<span class="sourceLineNo">831</span><a id="line.831">         * The supplied filter kernel must be odd-sized. It is not normalized.</a>
-<span class="sourceLineNo">832</span><a id="line.832">         * </a>
-<span class="sourceLineNo">833</span><a id="line.833">         * @param ip the image to be filtered (modified)</a>
-<span class="sourceLineNo">834</span><a id="line.834">         * @param h the filter kernel</a>
-<span class="sourceLineNo">835</span><a id="line.835">         * @see Convolver</a>
-<span class="sourceLineNo">836</span><a id="line.836">         */</a>
-<span class="sourceLineNo">837</span><a id="line.837">        public static void convolveXY (ImageProcessor ip, float[] h) {</a>
-<span class="sourceLineNo">838</span><a id="line.838">                Convolver conv = new Convolver();</a>
-<span class="sourceLineNo">839</span><a id="line.839">                conv.setNormalize(false);</a>
-<span class="sourceLineNo">840</span><a id="line.840">                conv.convolve(ip, h, h.length, 1);</a>
-<span class="sourceLineNo">841</span><a id="line.841">                conv.convolve(ip, h, 1, h.length);</a>
-<span class="sourceLineNo">842</span><a id="line.842">        }</a>
-<span class="sourceLineNo">843</span><a id="line.843">        </a>
-<span class="sourceLineNo">844</span><a id="line.844">        /**</a>
-<span class="sourceLineNo">845</span><a id="line.845">         * Applies a two-dimensional convolution kernel to the given image,</a>
-<span class="sourceLineNo">846</span><a id="line.846">         * which is modified. The supplied kernel {@code float[x][y]} must be </a>
-<span class="sourceLineNo">847</span><a id="line.847">         * rectangular and odd-sized. It is not normalized.</a>
-<span class="sourceLineNo">848</span><a id="line.848">         * </a>
-<span class="sourceLineNo">849</span><a id="line.849">         * @param ip the image to be filtered (modified)</a>
-<span class="sourceLineNo">850</span><a id="line.850">         * @param H the filter kernel</a>
-<span class="sourceLineNo">851</span><a id="line.851">         */</a>
-<span class="sourceLineNo">852</span><a id="line.852">        public static void convolve(ImageProcessor ip, float[][] H) {</a>
-<span class="sourceLineNo">853</span><a id="line.853">                float[] h = Matrix.flatten(H);  // TODO: right order? transpose?</a>
-<span class="sourceLineNo">854</span><a id="line.854">                Convolver conv = new Convolver();</a>
-<span class="sourceLineNo">855</span><a id="line.855">                conv.setNormalize(false);</a>
-<span class="sourceLineNo">856</span><a id="line.856">                conv.convolve(ip, h, H[0].length, H.length);</a>
-<span class="sourceLineNo">857</span><a id="line.857">        }</a>
-<span class="sourceLineNo">858</span><a id="line.858"></a>
-<span class="sourceLineNo">859</span><a id="line.859">}</a>
+<span class="sourceLineNo">738</span><a id="line.738">         * Runs the given {@link PlugIn} instance with empty argument string.</a>
+<span class="sourceLineNo">739</span><a id="line.739">         * @param plugin an instance of {@link PlugIn}</a>
+<span class="sourceLineNo">740</span><a id="line.740">         * @return true if no exception was thrown</a>
+<span class="sourceLineNo">741</span><a id="line.741">         */</a>
+<span class="sourceLineNo">742</span><a id="line.742">        public static boolean run(PlugIn plugin) {</a>
+<span class="sourceLineNo">743</span><a id="line.743">                return run(plugin, "");</a>
+<span class="sourceLineNo">744</span><a id="line.744">        }</a>
+<span class="sourceLineNo">745</span><a id="line.745">        </a>
+<span class="sourceLineNo">746</span><a id="line.746">        /**</a>
+<span class="sourceLineNo">747</span><a id="line.747">         * Runs the given {@link PlugIn} instance.</a>
+<span class="sourceLineNo">748</span><a id="line.748">         * @param plugin an instance of {@link PlugIn}</a>
+<span class="sourceLineNo">749</span><a id="line.749">         * @param arg argument passed to {@link PlugIn#run(String)}</a>
+<span class="sourceLineNo">750</span><a id="line.750">         * @return true if no exception was thrown</a>
+<span class="sourceLineNo">751</span><a id="line.751">         */</a>
+<span class="sourceLineNo">752</span><a id="line.752">        public static boolean run(PlugIn plugin, String arg) {</a>
+<span class="sourceLineNo">753</span><a id="line.753">                try {</a>
+<span class="sourceLineNo">754</span><a id="line.754">                        plugin.run(arg);</a>
+<span class="sourceLineNo">755</span><a id="line.755">                } catch (Exception e) {</a>
+<span class="sourceLineNo">756</span><a id="line.756">                        return false;</a>
+<span class="sourceLineNo">757</span><a id="line.757">                }</a>
+<span class="sourceLineNo">758</span><a id="line.758">                return true;</a>
+<span class="sourceLineNo">759</span><a id="line.759">        }</a>
+<span class="sourceLineNo">760</span><a id="line.760">        </a>
+<span class="sourceLineNo">761</span><a id="line.761">        // ------------------------------------------------------------------</a>
+<span class="sourceLineNo">762</span><a id="line.762">        </a>
+<span class="sourceLineNo">763</span><a id="line.763">        /**</a>
+<span class="sourceLineNo">764</span><a id="line.764">         * Run a {@link PlugInFilter} from the associated class with empty argument string.</a>
+<span class="sourceLineNo">765</span><a id="line.765">         * If the plugin's constructor is available, use method {@link #run(PlugInFilter)} instead.</a>
+<span class="sourceLineNo">766</span><a id="line.766">         * @param clazz class of the pluginfilter</a>
+<span class="sourceLineNo">767</span><a id="line.767">         * @return true if no exception was thrown</a>
+<span class="sourceLineNo">768</span><a id="line.768">         */</a>
+<span class="sourceLineNo">769</span><a id="line.769">        public static boolean runPlugInFilter(Class&lt;? extends PlugInFilter&gt; clazz) {</a>
+<span class="sourceLineNo">770</span><a id="line.770">                return runPlugInFilter(clazz, "");</a>
+<span class="sourceLineNo">771</span><a id="line.771">        }</a>
+<span class="sourceLineNo">772</span><a id="line.772">        </a>
+<span class="sourceLineNo">773</span><a id="line.773">        /**</a>
+<span class="sourceLineNo">774</span><a id="line.774">         * Run a {@link PlugInFilter} from the associated class.</a>
+<span class="sourceLineNo">775</span><a id="line.775">         * If the plugin's constructor is available, use method {@link #run(PlugInFilter, String)} instead.</a>
+<span class="sourceLineNo">776</span><a id="line.776">         * @param clazz class of the plugin</a>
+<span class="sourceLineNo">777</span><a id="line.777">         * @param arg argument string</a>
+<span class="sourceLineNo">778</span><a id="line.778">         * @return true if no exception was thrown</a>
+<span class="sourceLineNo">779</span><a id="line.779">         */</a>
+<span class="sourceLineNo">780</span><a id="line.780">        public static boolean runPlugInFilter(Class&lt;? extends PlugInFilter&gt; clazz, String arg) {</a>
+<span class="sourceLineNo">781</span><a id="line.781">                PlugInFilter thePlugIn = null;</a>
+<span class="sourceLineNo">782</span><a id="line.782">                try {</a>
+<span class="sourceLineNo">783</span><a id="line.783">                        thePlugIn = clazz.getDeclaredConstructor().newInstance();</a>
+<span class="sourceLineNo">784</span><a id="line.784">                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException</a>
+<span class="sourceLineNo">785</span><a id="line.785">                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {</a>
+<span class="sourceLineNo">786</span><a id="line.786">                        throw new RuntimeException(e.getMessage());     // should never happen</a>
+<span class="sourceLineNo">787</span><a id="line.787">                }</a>
+<span class="sourceLineNo">788</span><a id="line.788">                return run(thePlugIn, arg);</a>
+<span class="sourceLineNo">789</span><a id="line.789">        }</a>
+<span class="sourceLineNo">790</span><a id="line.790">        </a>
+<span class="sourceLineNo">791</span><a id="line.791">        /**</a>
+<span class="sourceLineNo">792</span><a id="line.792">         * Run a {@link PlugIn} from the associated class with empty argument string.</a>
+<span class="sourceLineNo">793</span><a id="line.793">         * If the plugin's constructor is available, use method {@link #run(PlugIn)} instead.</a>
+<span class="sourceLineNo">794</span><a id="line.794">         * @param clazz class of the plugin</a>
+<span class="sourceLineNo">795</span><a id="line.795">         * @return true if no exception was thrown</a>
+<span class="sourceLineNo">796</span><a id="line.796">         */</a>
+<span class="sourceLineNo">797</span><a id="line.797">        public static boolean runPlugIn(Class&lt;? extends PlugIn&gt; clazz) {</a>
+<span class="sourceLineNo">798</span><a id="line.798">                return runPlugIn(clazz, "");</a>
+<span class="sourceLineNo">799</span><a id="line.799">        }</a>
+<span class="sourceLineNo">800</span><a id="line.800">        </a>
+<span class="sourceLineNo">801</span><a id="line.801">        /**</a>
+<span class="sourceLineNo">802</span><a id="line.802">         * Run a {@link PlugIn} from the associated class.</a>
+<span class="sourceLineNo">803</span><a id="line.803">         * If the plugin's constructor is available, use method {@link #run(PlugIn, String)} instead.</a>
+<span class="sourceLineNo">804</span><a id="line.804">         * @param clazz class of the plugin</a>
+<span class="sourceLineNo">805</span><a id="line.805">         * @param arg argument string</a>
+<span class="sourceLineNo">806</span><a id="line.806">         * @return true if no exception was thrown</a>
+<span class="sourceLineNo">807</span><a id="line.807">         */</a>
+<span class="sourceLineNo">808</span><a id="line.808">        public static boolean runPlugIn(Class&lt;? extends PlugIn&gt; clazz, String arg) {</a>
+<span class="sourceLineNo">809</span><a id="line.809">                PlugIn thePlugIn = null;</a>
+<span class="sourceLineNo">810</span><a id="line.810">                try {</a>
+<span class="sourceLineNo">811</span><a id="line.811">                        thePlugIn = clazz.getDeclaredConstructor().newInstance();</a>
+<span class="sourceLineNo">812</span><a id="line.812">                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException</a>
+<span class="sourceLineNo">813</span><a id="line.813">                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {</a>
+<span class="sourceLineNo">814</span><a id="line.814">                        throw new RuntimeException(e.getMessage());     // should never happen</a>
+<span class="sourceLineNo">815</span><a id="line.815">                }</a>
+<span class="sourceLineNo">816</span><a id="line.816">                return run(thePlugIn, arg);</a>
+<span class="sourceLineNo">817</span><a id="line.817">        }</a>
+<span class="sourceLineNo">818</span><a id="line.818"></a>
+<span class="sourceLineNo">819</span><a id="line.819">        </a>
+<span class="sourceLineNo">820</span><a id="line.820">        //  static methods for filtering images using ImageJ's {@link Convolver} class. </a>
+<span class="sourceLineNo">821</span><a id="line.821"></a>
+<span class="sourceLineNo">822</span><a id="line.822">        /**</a>
+<span class="sourceLineNo">823</span><a id="line.823">         * Applies a one-dimensional convolution kernel to the given image,</a>
+<span class="sourceLineNo">824</span><a id="line.824">         * which is modified. The 1D kernel is applied in horizontal direction only.#</a>
+<span class="sourceLineNo">825</span><a id="line.825">         * The supplied filter kernel is not normalized.</a>
+<span class="sourceLineNo">826</span><a id="line.826">         * </a>
+<span class="sourceLineNo">827</span><a id="line.827">         * @param ip the image to be filtered (modified)</a>
+<span class="sourceLineNo">828</span><a id="line.828">         * @param h the filter kernel</a>
+<span class="sourceLineNo">829</span><a id="line.829">         * @see Convolver</a>
+<span class="sourceLineNo">830</span><a id="line.830">         */</a>
+<span class="sourceLineNo">831</span><a id="line.831">        public static void convolveX (ImageProcessor ip, float[] h) { // TODO: unit test missing</a>
+<span class="sourceLineNo">832</span><a id="line.832">                Convolver conv = new Convolver();</a>
+<span class="sourceLineNo">833</span><a id="line.833">                conv.setNormalize(false);</a>
+<span class="sourceLineNo">834</span><a id="line.834">                conv.convolve(ip, h, h.length, 1);</a>
+<span class="sourceLineNo">835</span><a id="line.835">        }</a>
+<span class="sourceLineNo">836</span><a id="line.836"></a>
+<span class="sourceLineNo">837</span><a id="line.837">        /**</a>
+<span class="sourceLineNo">838</span><a id="line.838">         * Applies a one-dimensional convolution kernel to the given image,</a>
+<span class="sourceLineNo">839</span><a id="line.839">         * which is modified. The 1D kernel is applied in vertical direction only.</a>
+<span class="sourceLineNo">840</span><a id="line.840">         * The supplied filter kernel must be odd-sized. It is not normalized.</a>
+<span class="sourceLineNo">841</span><a id="line.841">         * </a>
+<span class="sourceLineNo">842</span><a id="line.842">         * @param ip the image to be filtered (modified)</a>
+<span class="sourceLineNo">843</span><a id="line.843">         * @param h the filter kernel</a>
+<span class="sourceLineNo">844</span><a id="line.844">         * @see Convolver</a>
+<span class="sourceLineNo">845</span><a id="line.845">         */</a>
+<span class="sourceLineNo">846</span><a id="line.846">        public static void convolveY (ImageProcessor ip, float[] h) {</a>
+<span class="sourceLineNo">847</span><a id="line.847">                Convolver conv = new Convolver();</a>
+<span class="sourceLineNo">848</span><a id="line.848">                conv.setNormalize(false);</a>
+<span class="sourceLineNo">849</span><a id="line.849">                conv.convolve(ip, h, 1, h.length);</a>
+<span class="sourceLineNo">850</span><a id="line.850">        }</a>
+<span class="sourceLineNo">851</span><a id="line.851"></a>
+<span class="sourceLineNo">852</span><a id="line.852">        /**</a>
+<span class="sourceLineNo">853</span><a id="line.853">         * Applies a one-dimensional convolution kernel to the given image,</a>
+<span class="sourceLineNo">854</span><a id="line.854">         * which is modified.</a>
+<span class="sourceLineNo">855</span><a id="line.855">         * The same 1D kernel is applied twice, once in horizontal and once in</a>
+<span class="sourceLineNo">856</span><a id="line.856">         * vertical direction.</a>
+<span class="sourceLineNo">857</span><a id="line.857">         * The supplied filter kernel must be odd-sized. It is not normalized.</a>
+<span class="sourceLineNo">858</span><a id="line.858">         * </a>
+<span class="sourceLineNo">859</span><a id="line.859">         * @param ip the image to be filtered (modified)</a>
+<span class="sourceLineNo">860</span><a id="line.860">         * @param h the filter kernel</a>
+<span class="sourceLineNo">861</span><a id="line.861">         * @see Convolver</a>
+<span class="sourceLineNo">862</span><a id="line.862">         */</a>
+<span class="sourceLineNo">863</span><a id="line.863">        public static void convolveXY (ImageProcessor ip, float[] h) {</a>
+<span class="sourceLineNo">864</span><a id="line.864">                Convolver conv = new Convolver();</a>
+<span class="sourceLineNo">865</span><a id="line.865">                conv.setNormalize(false);</a>
+<span class="sourceLineNo">866</span><a id="line.866">                conv.convolve(ip, h, h.length, 1);</a>
+<span class="sourceLineNo">867</span><a id="line.867">                conv.convolve(ip, h, 1, h.length);</a>
+<span class="sourceLineNo">868</span><a id="line.868">        }</a>
+<span class="sourceLineNo">869</span><a id="line.869">        </a>
+<span class="sourceLineNo">870</span><a id="line.870">        /**</a>
+<span class="sourceLineNo">871</span><a id="line.871">         * Applies a two-dimensional convolution kernel to the given image,</a>
+<span class="sourceLineNo">872</span><a id="line.872">         * which is modified. The supplied kernel {@code float[x][y]} must be </a>
+<span class="sourceLineNo">873</span><a id="line.873">         * rectangular and odd-sized. It is not normalized.</a>
+<span class="sourceLineNo">874</span><a id="line.874">         * </a>
+<span class="sourceLineNo">875</span><a id="line.875">         * @param ip the image to be filtered (modified)</a>
+<span class="sourceLineNo">876</span><a id="line.876">         * @param H the filter kernel</a>
+<span class="sourceLineNo">877</span><a id="line.877">         */</a>
+<span class="sourceLineNo">878</span><a id="line.878">        public static void convolve(ImageProcessor ip, float[][] H) {</a>
+<span class="sourceLineNo">879</span><a id="line.879">                float[] h = Matrix.flatten(H);  // TODO: right order? transpose?</a>
+<span class="sourceLineNo">880</span><a id="line.880">                Convolver conv = new Convolver();</a>
+<span class="sourceLineNo">881</span><a id="line.881">                conv.setNormalize(false);</a>
+<span class="sourceLineNo">882</span><a id="line.882">                conv.convolve(ip, h, H[0].length, H.length);</a>
+<span class="sourceLineNo">883</span><a id="line.883">        }</a>
+<span class="sourceLineNo">884</span><a id="line.884"></a>
+<span class="sourceLineNo">885</span><a id="line.885">}</a>
 
 
 

@@ -17,7 +17,7 @@ import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree;
 import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 /**
  * <p>
@@ -39,7 +39,7 @@ public class MserDetector {
 	/**
 	 * Inner class defining parameters for MSER detection.
 	 */
-	public static class Parameters implements DialogParameters {
+	public static class Parameters implements DialogParameterBundle {
 		
 		@DialogLabel("Component tree method")
 		public Method method = Method.LinearTime;

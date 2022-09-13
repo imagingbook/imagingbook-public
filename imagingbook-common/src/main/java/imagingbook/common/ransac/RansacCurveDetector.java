@@ -14,7 +14,7 @@ import java.util.Random;
 
 import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 /**
  * Generic RANSAC detector for 2D curves. This abstract class defines the core RANSAC
@@ -34,7 +34,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	/**
 	 * Parameters used by all RANSAC types.
 	 */
-	public static class RansacParameters implements DialogParameters {
+	public static class RansacParameters implements DialogParameterBundle {
 			
 		/** The maximum number of iterations (random draws) to use.*/
 		@DialogLabel("Max. iterations") 

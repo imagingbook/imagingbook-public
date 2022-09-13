@@ -24,7 +24,7 @@
 <span class="sourceLineNo">014</span><a id="line.14"></a>
 <span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.geometry.basic.Curve2d;</a>
 <span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.util.ParameterBundle;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.util.parameters.DialogParameterBundle;</a>
 <span class="sourceLineNo">018</span><a id="line.18"></a>
 <span class="sourceLineNo">019</span><a id="line.19">/**</a>
 <span class="sourceLineNo">020</span><a id="line.20"> * Generic RANSAC detector for 2D curves. This abstract class defines the core RANSAC</a>
@@ -44,7 +44,7 @@
 <span class="sourceLineNo">034</span><a id="line.34">        /**</a>
 <span class="sourceLineNo">035</span><a id="line.35">         * Parameters used by all RANSAC types.</a>
 <span class="sourceLineNo">036</span><a id="line.36">         */</a>
-<span class="sourceLineNo">037</span><a id="line.37">        public static class RansacParameters implements ParameterBundle {</a>
+<span class="sourceLineNo">037</span><a id="line.37">        public static class RansacParameters implements DialogParameterBundle {</a>
 <span class="sourceLineNo">038</span><a id="line.38">                        </a>
 <span class="sourceLineNo">039</span><a id="line.39">                /** The maximum number of iterations (random draws) to use.*/</a>
 <span class="sourceLineNo">040</span><a id="line.40">                @DialogLabel("Max. iterations") </a>

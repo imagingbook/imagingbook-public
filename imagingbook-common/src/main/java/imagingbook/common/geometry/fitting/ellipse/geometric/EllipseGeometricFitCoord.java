@@ -37,7 +37,7 @@ import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbo
 import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.util.parameters.DialogParameters;
+import imagingbook.common.util.parameters.DialogParameterBundle;
 
 /**
  * "Coordinate-based" geometric ellipse fitter using iterative minimization with
@@ -272,7 +272,7 @@ public class EllipseGeometricFitCoord extends EllipseFitGeometric {
 	// -------------------------------------------------------------------
 	// -------------------------------------------------------------------
 	
-	public static class Parameters implements DialogParameters {
+	public static class Parameters implements DialogParameterBundle {
 		
 		@DialogLabel("number of points")
 		public int n = 20;
