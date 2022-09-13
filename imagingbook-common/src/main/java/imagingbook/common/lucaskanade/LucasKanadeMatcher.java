@@ -16,7 +16,7 @@ import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.geometry.mappings.linear.ProjectiveMapping2D;
 import imagingbook.common.geometry.mappings.linear.Translation2D;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.util.ParameterBundle;
+import imagingbook.common.util.parameters.DialogParameters;
 
 
 /**
@@ -32,7 +32,7 @@ public abstract class LucasKanadeMatcher {
 	 * a (usually modified) instance of this class is passed to the constructor 
 	 * of a non-abstract sub-class.
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements DialogParameters {
 		/** Convergence limit */
 		public double tolerance = 0.00001;
 		/** Maximum number of iterations */

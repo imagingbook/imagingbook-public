@@ -10,7 +10,7 @@ package imagingbook.common.filter.edgepreserving;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import imagingbook.common.util.ParameterBundle;
+import imagingbook.common.util.parameters.DialogParameters;
 
 /**
  * Common interface for Perona-Malik filter implementations.
@@ -22,7 +22,7 @@ public interface PeronaMalikF {
 	/**
 	 * Parameter bundle for Perona-Malik filters (implementations of {@link PeronaMalikF}).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements DialogParameters {
 
 		@DialogLabel("Number of iterations")
 		public int iterations = 10;

@@ -22,7 +22,7 @@ import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.util.ParameterBundle;
+import imagingbook.common.util.parameters.DialogParameters;
 
 /**
  * Samples points on a given (ideal) circle and creates a new image with 
@@ -43,7 +43,7 @@ public class Ellipse_Sample_To_Roi implements PlugIn {
 	private static double StrokeWidth = 1.0;
 	private static BasicAwtColor StrokeColor = BasicAwtColor.Green;
 	
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements DialogParameters {
 		
 		@DialogLabel("number of points")
 		public int n = 20;

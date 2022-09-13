@@ -11,7 +11,7 @@ package imagingbook.common.threshold.adaptive;
 
 import ij.plugin.filter.RankFilters;
 import ij.process.ByteProcessor;
-import imagingbook.common.util.ParameterBundle;
+import imagingbook.common.util.parameters.DialogParameters;
 
 /**
  * <p>
@@ -35,7 +35,7 @@ public class BernsenThresholder implements AdaptiveThresholder {
 	/**
 	 * Parameters for class {@link BernsenThresholder}.
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements DialogParameters {
 		@DialogLabel("Radius")
 		public int radius = 15;
 		

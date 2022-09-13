@@ -18,7 +18,7 @@ import ij.process.FloatProcessor;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.util.ParameterBundle;
+import imagingbook.common.util.parameters.DialogParameters;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ public class MultiGradientEdgeDetector implements EdgeDetector {
 	/**
 	 * Parameters for {@link MultiGradientEdgeDetector} (currently unused, no parameters to set).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements DialogParameters {
 	}
 	
 	@SuppressWarnings("unused")

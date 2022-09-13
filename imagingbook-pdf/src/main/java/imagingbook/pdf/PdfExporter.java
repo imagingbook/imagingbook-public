@@ -28,7 +28,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import ij.ImagePlus;
 import ij.gui.Overlay;
 import ij.gui.Roi;
-import imagingbook.common.util.ParameterBundle;
+import imagingbook.common.util.parameters.DialogParameters;
 import imagingbook.core.Info;
 
 /**
@@ -53,7 +53,7 @@ public class PdfExporter {
 	 * Annotations are used for inserting the complete parameter bundle in
 	 * ImageJ's {@code GenericDialog}.
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements DialogParameters {
 
 		@DialogLabel("Author:")
 		public String author = System.getProperty("user.name");

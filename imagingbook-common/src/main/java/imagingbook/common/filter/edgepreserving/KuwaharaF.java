@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.filter.edgepreserving;
 
-import imagingbook.common.util.ParameterBundle;
+import imagingbook.common.util.parameters.DialogParameters;
 
 /**
  * Common interface for Kuwahara filter implementations.
@@ -20,7 +20,7 @@ public interface KuwaharaF {
 	/**
 	 * Parameter bundle for Kuwahara filters (implementations of {@link KuwaharaF}).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements DialogParameters {
 		
 		/** Radius of the filter (should be even) */
 		@DialogLabel("Radius of the filter (>1)")
