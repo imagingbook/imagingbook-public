@@ -69,14 +69,14 @@ public interface BitVector {
 	
 	/**
 	 * Returns the contents of this bit vector as a {@code byte} array.
-	 * Bit-value 0 maps to byte value 0x00, value 1 maps to 0xFF.
+	 * Bit-value 0 maps to byte value 0, value 1 maps to 1.
 	 * @return a {@code byte} array
 	 */
 	public default byte[] toByteArray() {
 		byte[] bytes = new byte[this.getLength()];
 		for (int i = 0; i < bytes.length; i++) {
 			if (get(i)) {
-				bytes[i] = (byte) 0xFF;
+				bytes[i] = 1;
 			}
 		}
 		return bytes;
@@ -132,6 +132,24 @@ public interface BitVector {
 	 */
 	public static BitVector create(int length) {
 		return new BitVector64(length);
+	}
+	
+	/**
+	 * Binarizes the specified {@code byte[]} by replacing
+	 * all non-zero values by 1.
+	 * Returns a new array, the original array is not modified.
+	 * 
+	 * @param b a {@code byte[]}
+	 * @return a new {@code byte[]} with values 0/1 only
+	 */
+	public static byte[] binarize(byte[] b) {
+		byte[] b2 = b.clone();
+		for (int i = 0; i < b2.length; i++) {
+			if (b2[i] != 0) {
+				b2[i] = 1;
+			}
+		}
+		return b2;
 	}
 
 }

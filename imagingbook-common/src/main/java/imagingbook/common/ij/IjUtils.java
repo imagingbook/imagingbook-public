@@ -661,7 +661,13 @@ public abstract class IjUtils {
 	}
 	
 	// BitMap from/to ByteProcessor conversion
-	
+	/**
+	 * Converts the specified {@link ByteProcessor} to a {@link BitMap}
+	 * of the same size,
+	 * with all zero values set to 0 and non-zero values set to 1.
+	 * @param bp a {@link ByteProcessor}
+	 * @return the corresponding {@link BitMap}
+	 */
 	public static BitMap convertToBitMap(ByteProcessor bp) {
 		return new BitMap(bp.getWidth(), bp.getHeight(), (byte[]) bp.getPixels());
 	}

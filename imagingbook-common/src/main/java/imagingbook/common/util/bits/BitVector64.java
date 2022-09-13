@@ -21,6 +21,9 @@ public class BitVector64 implements BitVector {
 	private final int length;
 	
 	public BitVector64(int length) {
+		if (length <= 0) {
+			throw new IllegalArgumentException("bit vector length must be at least 1");
+		}
 		this.length = length;
 		int n = (length % WL == 0) ? length / WL : length / WL + 1;	// word count
 		this.data = new long[n];
@@ -116,25 +119,25 @@ public class BitVector64 implements BitVector {
 	
 	//----------------------------------------------------------------------------------
 	
-	public static void main(String[] args) {
-		int K = 99;
-		BitVector64 b = new BitVector64(K);
-		
-		System.out.println(b.toString());
-		b.setAll();
-		System.out.println(b.toString());
-		b.unsetAll();
-		System.out.println(b.toString());
-		
-//		System.out.println(b.toHexString());
-		
-		System.out.println();
-		
-		for (int i = 0; i < b.length; i++) {
-			b.set(i);
-			System.out.println(b.toString());
-			b.unset(i);
-		}
-	}
+//	public static void main(String[] args) {
+//		int K = 99;
+//		BitVector64 b = new BitVector64(K);
+//		
+//		System.out.println(b.toString());
+//		b.setAll();
+//		System.out.println(b.toString());
+//		b.unsetAll();
+//		System.out.println(b.toString());
+//		
+////		System.out.println(b.toHexString());
+//		
+//		System.out.println();
+//		
+//		for (int i = 0; i < b.length; i++) {
+//			b.set(i);
+//			System.out.println(b.toString());
+//			b.unset(i);
+//		}
+//	}
 
 }

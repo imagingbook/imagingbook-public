@@ -17,14 +17,12 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
  * 
  * @author WB
  * @version 2021/01/30
+ * @version 2022/09/13
  */
 public class BitMap {
 	
-	/** the width of this bitmap */
 	private final int width;
-	/** the height of this bitmap */
 	private final int height;
-	
 	private final BitVector bitvec;
 	
 	/**
@@ -40,18 +38,28 @@ public class BitMap {
 	 * Constructor.
 	 * @param width width the width of the new bitmap
 	 * @param height height the height of the new bitmap
-	 * @param bytes a byte array, 0 maps to false, anything else to true
+	 * @param bytes a byte array, zero values map to 0, anything else to 1
 	 */
 	public BitMap(int width, int height, byte[] bytes) {
 		this.width = width;
 		this.height = height;
-		this.bitvec = (bytes != null) ? BitVector.from(bytes) : BitVector.create(width * height);
+		this.bitvec = (bytes != null) ? 
+				BitVector.from(bytes) : 
+				BitVector.create(width * height);
 	}
 	
+	/**
+	 * Returns the width of this {@link BitMap}.
+	 * @return the width
+	 */
 	public int getWidth() {
 		return this.width;
 	}
 	
+	/**
+	 * Returns the height of this {@link BitMap}.
+	 * @return the height
+	 */
 	public int getHeight() {
 		return this.height;
 	}
@@ -157,6 +165,16 @@ public class BitMap {
 	 */
 	public BitVector getBitVector() {
 		return this.bitvec;
+	}
+	
+	/**
+	 * Returns the contents of this bitmap as a one-dimensional
+	 * {@code byte} array.
+	 * Bit-value 0 maps to byte value 0, value 1 maps to 1.
+	 * @return a one-dimensional {@code byte} array
+	 */
+	public byte[] toByteArray() {
+		return this.bitvec.toByteArray();
 	}
 	
 	// static methods --------------------------------------------------
