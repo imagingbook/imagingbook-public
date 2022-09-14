@@ -19,8 +19,8 @@ public abstract class EnumUtils {
 	private EnumUtils() {}
 	
 	/**
-	 * This static method returns an array of all constant names (strings) 
-	 * for a given enumeration class. 
+	 * Returns an array of all constant names (strings) 
+	 * for the given enumeration class. 
 	 * Names are arranged in the same order as the enum constant definitions.
 	 * Assume the enum definition: 
 	 * <pre>enum MyEnum {A, B, C};</pre>
