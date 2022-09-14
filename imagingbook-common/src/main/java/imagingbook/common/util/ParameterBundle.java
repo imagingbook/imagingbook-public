@@ -22,17 +22,15 @@ import imagingbook.common.ij.DialogUtils;
  * Interface to be implemented by local 'Parameters' classes. This is part of
  * the 'simple parameter object' scheme, working with public fields. Only
  * non-static, non-final, public fields are accepted as parameters.
- * Current features: 
- * </p>
- * <p>
- * (a) Makes parameter bundles printable by listing all
- * eligible fields.
+ * Current features include: 
+ * <br>
+ * (a) Makes parameter bundles printable by listing all eligible fields.
  * <br>
  * (b) Parameter bundles can be added/modified as a whole by ImageJ's
  * {@link GenericDialog}, supported by specific annotations (use methods
- * {@link #addToDialog(GenericDialog)} and
- * {@link #getFromDialog(GenericDialog)}).
- * </p>
+ * {@link DialogUtils#addToDialog(ParameterBundle, GenericDialog)} and
+ * {@link DialogUtils#getFromDialog(ParameterBundle, GenericDialog)}).
+ * <br>
  * See the example in {@code DemoParameters} below. Other functionality may be
  * added in the future.
  * </p>
@@ -80,13 +78,13 @@ import imagingbook.common.ij.DialogUtils;
  * 
  * @author WB
  * @version 2022/02/02
+ * @version 2022/09/14 moved annotations and methods for {@link GenericDialog} to {@link DialogUtils}
  * 
  * @see DialogUtils.DialogDigits
  * @see DialogUtils.DialogLabel
  * @see DialogUtils.DialogHide
  */
 public interface ParameterBundle {
-	
 	
 	default String printToString() {
 		ByteArrayOutputStream bas = new ByteArrayOutputStream();

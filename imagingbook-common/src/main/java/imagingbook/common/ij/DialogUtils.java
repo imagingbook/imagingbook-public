@@ -95,6 +95,8 @@ public abstract class DialogUtils {
 	 * {@link GenericDialog} instance, in the exact order of their definition.
 	 * Qualified means that the field is of suitable type and no 
 	 * {@link DialogUtils.DialogHide} annotation is present.
+	 * Allowed field types are {@code boolean}, {@code int}, {@code float},
+	 * {@code double}, {@code enum}, and {@code String}.
 	 * 
 	 * @param params a {@link ParameterBundle} instance
 	 * @param gd a generic dialog
@@ -148,6 +150,8 @@ public abstract class DialogUtils {
 	 * the {@link GenericDialog} instance.
 	 * The name of the field is used as the 'label' of the dialog item
 	 * unless a {@link DialogLabel} annotation is present.
+	 * Allowed field types are {@code boolean}, {@code int}, {@code float},
+	 * {@code double}, {@code enum}, and {@code String}.
 	 * 
 	 * @param params a {@link ParameterBundle} instance
 	 * @param field some field
