@@ -18,11 +18,18 @@ import java.lang.reflect.Modifier;
 import ij.gui.GenericDialog;
 import imagingbook.common.util.ParameterBundle;
 
+/**
+ * Utility methods and annotations related to ImageJ's {@link GenericDialog} class.
+ * 
+ * @author WB
+ * @version 2022/09/14 transfered annotations and dialog-related methods from {@link ParameterBundle}
+ */
 public abstract class DialogUtils {
 	
 	/**
 	 * Annotation to specify a specific 'label' (value) to be shown for following
 	 * parameter fields. Default label is the variable name.
+	 * Intended to be used on {@link ParameterBundle} fields.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
@@ -30,11 +37,11 @@ public abstract class DialogUtils {
 		public String value();
 	}
 
-
 	/**
 	 * Annotation to specify the number of digits (value) displayed when showing
 	 * numeric values in dialogs.
 	 * This annotation has no effect on non-floating-point fields.
+	 * Intended to be used on {@link ParameterBundle} fields.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
@@ -45,6 +52,7 @@ public abstract class DialogUtils {
 
 	/**
 	 * Annotation to hide the following parameter field in dialogs.
+	 * Intended to be used on {@link ParameterBundle} fields.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
@@ -80,14 +88,15 @@ public abstract class DialogUtils {
 		return String.join("\n", lines);
 	}
 	
-	// ------------ ImageJ dialog-related (TODO: move to another interface?) ------------------
+	// ------------ Methods related to ParameterBundle  ------------------
 	
 	/**
-	 * Adds all qualified fields of this parameter bundle to the specified
-	 * {@link GenericDialog} instance, in the order of their definition.
+	 * Adds all qualified fields of the given {@link ParameterBundle} to the specified
+	 * {@link GenericDialog} instance, in the exact order of their definition.
 	 * Qualified means that the field is of suitable type and no 
 	 * {@link DialogUtils.DialogHide} annotation is present.
 	 * 
+	 * @param params a {@link ParameterBundle} instance
 	 * @param gd a generic dialog
 	 */
 	public static void addToDialog(ParameterBundle params, GenericDialog gd) {
@@ -105,6 +114,16 @@ public abstract class DialogUtils {
 		}
 	}
 	
+	/**
+	 * Retrieves the field values of the specified {@link ParameterBundle} from
+	 * the {@link GenericDialog} instance.
+	 * The {@link ParameterBundle} is modified. 
+	 * Throws an exception if anything goes wrong.
+	 * 
+	 * @param params a {@link ParameterBundle} instance
+	 * @param gd a generic dialog
+	 * @return true if successful
+	 */
 	public static boolean getFromDialog(ParameterBundle params, GenericDialog gd) {
 		Class<? extends ParameterBundle> clazz = params.getClass();
 		Field[] fields = clazz.getFields();		// gets only public fields
@@ -127,9 +146,10 @@ public abstract class DialogUtils {
 	/**
 	 * Adds the specified {@link Field} of this object as new item to 
 	 * the {@link GenericDialog} instance.
-	 * The name of the field is used as the 'label' of the dialog item.
-	 * TODO: this method should be private (possible in Java9)!
+	 * The name of the field is used as the 'label' of the dialog item
+	 * unless a {@link DialogLabel} annotation is present.
 	 * 
+	 * @param params a {@link ParameterBundle} instance
 	 * @param field some field
 	 * @param dialog the dialog
 	 * @throws IllegalAccessException when field is accessed illegally
@@ -177,8 +197,8 @@ public abstract class DialogUtils {
 	/**
 	 * Modifies the specified {@link Field} of this object by reading the next item
 	 * from the {@link GenericDialog} instance.
-	 * TODO: this method should be private (possible in Java9)!
 	 * 
+	 * @param params a {@link ParameterBundle} instance
 	 * @param field	a publicly accessible {@link Field} of this object 
 	 * @param gd a {@link GenericDialog} instance
 	 * @return true if successful
@@ -251,20 +271,20 @@ public abstract class DialogUtils {
 	
 	// ----------------------------------------------------
 	
-	public static void main(String[] args) {
-		String html = makeHtmlString(
-	            "Get busy living or",
-	            "get busy dying.",
-	            "--Stephen King");
-		System.out.println(html);
-		
-		System.out.println();
-		
-		String lines = makeLineSeparatedString(
-	            "Get busy living or",
-	            "get busy dying.",
-	            "--Stephen King");
-		System.out.println(lines);
-	}
+//	public static void main(String[] args) {
+//		String html = makeHtmlString(
+//	            "Get busy living or",
+//	            "get busy dying.",
+//	            "--Stephen King");
+//		System.out.println(html);
+//		
+//		System.out.println();
+//		
+//		String lines = makeLineSeparatedString(
+//	            "Get busy living or",
+//	            "get busy dying.",
+//	            "--Stephen King");
+//		System.out.println(lines);
+//	}
 
 }
