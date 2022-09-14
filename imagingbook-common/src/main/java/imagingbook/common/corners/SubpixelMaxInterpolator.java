@@ -17,8 +17,6 @@ import static imagingbook.common.math.Matrix.dotProduct;
 import static imagingbook.common.math.Matrix.multiply;
 import static imagingbook.common.math.Matrix.normL2;
 
-import imagingbook.common.util.Enums.Description;
-
 /**
  * <p>
  * Common interface for all sub-pixel maximum locator implementations.
@@ -65,16 +63,16 @@ public abstract class SubpixelMaxInterpolator {
 	 * Enumeration of different {@link SubpixelMaxInterpolator} methods.
 	 */
 	public enum Method {
-		@Description("Quadratic Taylor Interpolation") 
+		/** Second-order (quadratic) Taylor interpolation */
 		QuadraticTaylor(SubpixelMaxInterpolator.QuadraticTaylor.getInstance()),
 		
-		@Description("Quadratic Least-Squares Interpolation") 
+		/** Second-order (quadratic) least-squares interpolation" */
 		QuadraticLeastSquares(SubpixelMaxInterpolator.QuadraticLeastSquares.getInstance()),
 		
-		@Description("Quartic Interpolation") 
+		/** Quartic interpolation */ 
 		Quartic(SubpixelMaxInterpolator.Quartic.getInstance()),
 		
-		@Description("No Interpolation") 
+		/** No interpolation */
 		None(null);
 		
 		private final SubpixelMaxInterpolator inst;

@@ -20,7 +20,7 @@ import imagingbook.common.morphology.BinaryDilation;
 import imagingbook.common.morphology.BinaryErosion;
 import imagingbook.common.morphology.BinaryMorphologyFilter;
 import imagingbook.common.morphology.BinaryOpening;
-import imagingbook.common.util.Enums;
+import imagingbook.common.util.EnumUtils;
 
 /**
  * This plugin implements a binary morphology filter using an arbitrary
@@ -87,7 +87,7 @@ public class Bin_Morphology_Free implements PlugInFilter {
 		String[] labels = makeFilterLabels();
 
 		gd.addCheckboxGroup(W, W, labels, freeStructure);
-		String[] ops = Enums.getEnumNames(OpType.class);
+		String[] ops = EnumUtils.getEnumNames(OpType.class);
 		gd.addChoice("Operation", ops, op.name());
 		gd.addCheckbox("Show structuring element", showElement);
 		gd.showDialog();

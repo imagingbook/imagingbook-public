@@ -19,7 +19,7 @@ import imagingbook.common.color.quantize.ColorQuantizer;
 import imagingbook.common.color.quantize.KMeansClusteringQuantizer;
 import imagingbook.common.color.quantize.KMeansClusteringQuantizer.Parameters;
 import imagingbook.common.color.quantize.KMeansClusteringQuantizer.SamplingMethod;
-import imagingbook.common.util.Enums;
+import imagingbook.common.util.EnumUtils;
 
 
 /**
@@ -78,7 +78,7 @@ public class KMeans_Quantization implements PlugInFilter {
 		gd.addNumericField("No. of colors (2,..,256)", params.maxColors, 0);
 		gd.addNumericField("Max. iterations", params.maxIterations, 0);
 		
-		String[] mNames = Enums.getEnumNames(SamplingMethod.class);
+		String[] mNames = EnumUtils.getEnumNames(SamplingMethod.class);
 		gd.addChoice("Sampling method", mNames, params.samplMethod.name());
 		
 		gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);

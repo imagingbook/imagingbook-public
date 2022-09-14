@@ -15,7 +15,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.nonlinear.VectorMedianFilter;
 import imagingbook.common.filter.nonlinear.VectorMedianFilter.Parameters;
 import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.common.util.Enums;
+import imagingbook.common.util.EnumUtils;
 
 /**
  * This plugin applies a vector median filter to a RGB color image.
@@ -44,7 +44,7 @@ public class MedianFilter_Color_Vector implements PlugInFilter {
     boolean setParameters(Parameters params) {
 		GenericDialog gd = new GenericDialog("Median Filter");
 		gd.addNumericField("Radius", params.radius, 1);
-		String[] normChoices = Enums.getEnumNames(NormType.class);
+		String[] normChoices = EnumUtils.getEnumNames(NormType.class);
 		gd.addChoice("Distance norm", normChoices, params.distanceNorm.name());
 //		gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);
 //		gd.addCheckbox("Show mask", params.showMask);
