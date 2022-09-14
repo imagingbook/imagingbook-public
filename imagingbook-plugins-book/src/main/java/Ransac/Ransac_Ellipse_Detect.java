@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Ransac;
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,7 +143,7 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		gd.addNumericField("Max. number of ellipses", MaxEllipseCount);
 		gd.addNumericField("Random seed", RandomSeed);
 		
@@ -150,7 +153,7 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 		if (gd.wasCanceled())
 			return false;
 		
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		MaxEllipseCount = (int) gd.getNextNumber();
 		RandomSeed = (int) gd.getNextNumber();
 		title = gd.getNextString();

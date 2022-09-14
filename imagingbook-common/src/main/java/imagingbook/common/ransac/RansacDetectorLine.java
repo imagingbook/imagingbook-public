@@ -14,6 +14,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fitting.line.LineFit;
 import imagingbook.common.geometry.fitting.line.OrthogonalLineFitEigen;
 import imagingbook.common.geometry.line.AlgebraicLine;
+import imagingbook.common.ij.DialogUtils;
 
 /**
  * RANSAC detector for straight lines.
@@ -35,7 +36,7 @@ public class RansacDetectorLine extends RansacCurveDetector<AlgebraicLine>{
 	public static class Parameters extends RansacCurveDetector.RansacParameters {
 		
 		/** The minimum distance between two random sample points. */
-		@DialogLabel("Min. distance between sample points")
+		@DialogUtils.DialogLabel("Min. distance between sample points")
 		public int minPairDistance;
 		
 		/**

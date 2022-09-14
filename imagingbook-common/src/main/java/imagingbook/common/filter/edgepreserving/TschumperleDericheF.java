@@ -9,7 +9,8 @@
 package imagingbook.common.filter.edgepreserving;
 
 import imagingbook.common.filter.linear.Kernel2D;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.util.ParameterBundle;
 
 
 /**
@@ -22,28 +23,28 @@ public interface TschumperleDericheF {
 	/**
 	 * Parameter bundle for Tschumperle-Deriche filters (implementations of {@link TschumperleDericheF}).
 	 */
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 		
-		@DialogLabel("Number of iterations")
+		@DialogUtils.DialogLabel("Number of iterations")
 		public int iterations = 20;	
 		
-		@DialogLabel("dt (Time step)")
+		@DialogUtils.DialogLabel("dt (Time step)")
 		public double dt = 20.0;  		
 		
-		@DialogLabel("Gradient smoothing (sigmaD)")
+		@DialogUtils.DialogLabel("Gradient smoothing (sigmaD)")
 		public double sigmaD  = 0.5;
 		
-		@DialogLabel("Structure tensor smoothing (sigmaM)")
+		@DialogUtils.DialogLabel("Structure tensor smoothing (sigmaM)")
 		public double sigmaM  = 0.5;
 		
-		@DialogLabel("Diffusion limiter along minimal variations (a0)")	//small value = strong smoothing
+		@DialogUtils.DialogLabel("Diffusion limiter along minimal variations (a0)")	//small value = strong smoothing
 		public float a0 = 0.25f;  	
 		
-		@DialogLabel("Diffusion limiter along maximal variations (a1)")	//small value = strong smoothing
+		@DialogUtils.DialogLabel("Diffusion limiter along maximal variations (a1)")	//small value = strong smoothing
 		public float a1 = 0.90f;
 		
 		/** The alpha value applied in the first pass. */
-		@DialogHide
+		@DialogUtils.DialogHide
 		public float alpha0 = 0.5f;
 	}
 	

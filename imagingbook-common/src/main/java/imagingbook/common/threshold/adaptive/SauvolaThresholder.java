@@ -12,7 +12,8 @@ package imagingbook.common.threshold.adaptive;
 import ij.plugin.filter.RankFilters;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * 
@@ -36,18 +37,18 @@ public class SauvolaThresholder implements AdaptiveThresholder {
 	/**
 	 * Parameters for class {@link SauvolaThresholder}.
 	 */
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 		
-		@DialogLabel("Radius")
+		@DialogUtils.DialogLabel("Radius")
 		public int radius = 15;
 		
-		@DialogLabel("kappa")
+		@DialogUtils.DialogLabel("kappa")
 		public double kappa =  0.5;
 		
-		@DialogLabel("sigma_max")
+		@DialogUtils.DialogLabel("sigma_max")
 		public double sigmaMax =  128;
 		
-		@DialogLabel("Background mode")
+		@DialogUtils.DialogLabel("Background mode")
 		public BackgroundMode bgMode = BackgroundMode.DARK;
 	}
 		

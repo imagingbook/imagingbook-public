@@ -8,6 +8,9 @@
  *******************************************************************************/
 package CornerDetection;
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import java.util.List;
 
 import ij.IJ;
@@ -63,7 +66,7 @@ public class Find_Corners implements PlugInFilter {
 	@Override
     public void run(ImageProcessor ip) {
     	
-		if (!showDialog()) {
+		if (!showDialog(Params)) {
 			return;
 		}
 		
@@ -100,11 +103,11 @@ public class Find_Corners implements PlugInFilter {
 		// (new ImagePlus("Corner Score", detector.getQ())).show();
     }
     
-	private boolean showDialog() {
+	private boolean showDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		
 		gd.addEnumChoice("Detector type", Algorithm);
-		Params.addToDialog(gd);
+		addToDialog(params, gd);
 		gd.addNumericField("Corners to show (0 = show all)", MaxCornerCount, 0);
 		gd.addNumericField("Corners display size", CornerMarkSize, 1);
 		gd.addEnumChoice("Corner color", CornerMarkColor);
@@ -114,12 +117,12 @@ public class Find_Corners implements PlugInFilter {
 			return false;
 		
 		Algorithm = gd.getNextEnumChoice(DetectorType.class);
-		Params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		MaxCornerCount = (int) gd.getNextNumber();
 		CornerMarkSize = gd.getNextNumber();
 		CornerMarkColor = gd.getNextEnumChoice(BasicAwtColor.class);
 		
-		if(gd.invalidNumber() || !Params.validate()) {
+		if(gd.invalidNumber() || !params.validate()) {
 			IJ.error("Input Error", "Invalid input");
 			return false;
 		}	

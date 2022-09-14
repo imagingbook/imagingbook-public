@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Mser;
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
@@ -224,7 +227,7 @@ public class MSER_Detect implements PlugInFilter {
 //		gd.addNumericField("Min abs. area (pixel)", params.minAbsComponentArea, 0);
 //		gd.addNumericField("Min region compactness (%)", params.minCompactness * 100, 0);
 //		gd.addCheckbox("Constrain ellipse size", params.constrainEllipseSize);
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		
 		gd.addCheckbox("BLACK -> WHITE", BlackToWhite);
 		gd.addCheckbox("WHITE -> BLACK", WhiteToBlack);
@@ -257,7 +260,7 @@ public class MSER_Detect implements PlugInFilter {
 //		params.minAbsComponentArea = (int) gd.getNextNumber();
 //		params.minCompactness = gd.getNextNumber() / 100;
 //		params.constrainEllipseSize = gd.getNextBoolean();	
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		
 		BlackToWhite = gd.getNextBoolean();
 		WhiteToBlack = gd.getNextBoolean();

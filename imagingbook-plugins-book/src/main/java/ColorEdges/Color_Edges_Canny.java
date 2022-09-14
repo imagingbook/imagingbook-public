@@ -9,6 +9,9 @@
 package ColorEdges;
 
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import java.util.List;
 
 import ij.IJ;
@@ -76,7 +79,7 @@ public class Color_Edges_Canny implements PlugInFilter {
 	private boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		// Canny parameters:
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		// plugin parameters:
 		gd.addMessage("Plugin parameters:");
 		gd.addCheckbox("Show edge magnitude", showEdgeMagnitude);
@@ -89,7 +92,7 @@ public class Color_Edges_Canny implements PlugInFilter {
 			return false;
 		}	
 		// update Canny parameters:
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		if (params.gSigma < 0.5f) params.gSigma = 0.5f;
 		if (params.gSigma > 20) params.gSigma = 20;
 		

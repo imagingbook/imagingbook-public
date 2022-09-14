@@ -18,7 +18,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ public class GrayscaleEdgeDetector implements EdgeDetector {
 	/**
 	 * Parameters for {@link GrayscaleEdgeDetector} (currently none defined).
 	 */
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 	}
 	
 	@SuppressWarnings("unused")

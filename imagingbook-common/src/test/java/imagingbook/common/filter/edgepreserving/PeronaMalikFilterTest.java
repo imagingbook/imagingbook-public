@@ -22,7 +22,7 @@ import imagingbook.common.filter.edgepreserving.PeronaMalikF.ConductanceFunction
 import imagingbook.common.filter.edgepreserving.PeronaMalikF.Parameters;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
-import imagingbook.common.util.parameters.ParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 import imagingbook.testimages.FilterTestImage;
 import imagingbook.testutils.ImageTestUtils;
 

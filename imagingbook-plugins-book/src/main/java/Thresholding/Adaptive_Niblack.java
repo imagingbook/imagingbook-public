@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Thresholding;
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -47,7 +50,7 @@ public class Adaptive_Niblack implements PlugInFilter {
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addEnumChoice("Region type", regType);
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
@@ -55,7 +58,7 @@ public class Adaptive_Niblack implements PlugInFilter {
 		}
 		
 		regType = gd.getNextEnumChoice(RegionType.class);
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		return true;
 	}
 }

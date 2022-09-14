@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Edge_Preserving_Smoothing;
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -52,7 +55,7 @@ public class Kuwahara_Filter implements PlugInFilter {
 
 	private boolean getParameters() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		if (isColor)
 			gd.addCheckbox("Use vector filter (color only)", UseVectorFilter);
 		
@@ -60,7 +63,7 @@ public class Kuwahara_Filter implements PlugInFilter {
 		if(gd.wasCanceled()) 
 			return false;
 		
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		if (isColor)
 			UseVectorFilter = gd.getNextBoolean();
 		

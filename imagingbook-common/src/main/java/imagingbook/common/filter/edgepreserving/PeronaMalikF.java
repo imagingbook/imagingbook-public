@@ -10,7 +10,8 @@ package imagingbook.common.filter.edgepreserving;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * Common interface for Perona-Malik filter implementations.
@@ -22,21 +23,21 @@ public interface PeronaMalikF {
 	/**
 	 * Parameter bundle for Perona-Malik filters (implementations of {@link PeronaMalikF}).
 	 */
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 
-		@DialogLabel("Number of iterations")
+		@DialogUtils.DialogLabel("Number of iterations")
 		public int iterations = 10;
 		
-		@DialogLabel("Update rate (\u03B1 = 0,..,0.25)")@DialogDigits(2)
+		@DialogUtils.DialogLabel("Update rate (\u03B1 = 0,..,0.25)")@DialogUtils.DialogDigits(2)
 		public double alpha = 0.20; 	
 		
-		@DialogLabel("Smoothness parameter (\u03BA)")@DialogDigits(1)
+		@DialogUtils.DialogLabel("Smoothness parameter (\u03BA)")@DialogUtils.DialogDigits(1)
 		public double kappa = 25;
 		
-		@DialogLabel("Conductance function g(d)")
+		@DialogUtils.DialogLabel("Conductance function g(d)")
 		public ConductanceFunction.Type conductanceFunType = ConductanceFunction.Type.g1;
 		
-		@DialogLabel("Color mode")
+		@DialogUtils.DialogLabel("Color mode")
 		public ColorMode colorMode = ColorMode.SeparateChannels;
 
 	}

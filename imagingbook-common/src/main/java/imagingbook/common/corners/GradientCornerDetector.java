@@ -22,8 +22,9 @@ import ij.process.ImageProcessor;
 import imagingbook.common.corners.SubpixelMaxInterpolator.Method;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.filter.linear.LinearFilterSeparable;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ImageMath;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * Abstract super class for all corner detectors based on local 
@@ -45,26 +46,26 @@ public abstract class GradientCornerDetector {
 	/** For testing/example calculations only! */
 	public static boolean RETAIN_TEMPORARY_DATA = false;
 	
-	public static class Parameters implements DialogParameterBundle {
-		@DialogLabel("Apply pre-filter")
+	public static class Parameters implements ParameterBundle {
+		@DialogUtils.DialogLabel("Apply pre-filter")
 		public boolean doPreFilter = true;
 		
-		@DialogLabel("Gaussian smoothing radius (\u03C3)")@DialogDigits(3)
+		@DialogUtils.DialogLabel("Gaussian smoothing radius (\u03C3)")@DialogUtils.DialogDigits(3)
 		public double sigma = 1.275;
 		
-		@DialogLabel("Border margins")
+		@DialogUtils.DialogLabel("Border margins")
 		public int border = 20;	// TODO: replace 'border' by ROI rectangle
 		
-		@DialogLabel("Clean up corners")
+		@DialogUtils.DialogLabel("Clean up corners")
 		public boolean doCleanUp = true;
 		
-		@DialogLabel("Min. distance between final corners")@DialogDigits(1)
+		@DialogUtils.DialogLabel("Min. distance between final corners")@DialogUtils.DialogDigits(1)
 		public double dmin = 10;
 		
-		@DialogLabel("Subpixel localization method")
+		@DialogUtils.DialogLabel("Subpixel localization method")
 		public Method maxLocatorMethod = Method.None;
 		
-		@DialogLabel("Corner response threshold (th)")@DialogDigits(1)
+		@DialogUtils.DialogLabel("Corner response threshold (th)")@DialogUtils.DialogDigits(1)
 		public double scoreThreshold = 100;
 		
 		@Override

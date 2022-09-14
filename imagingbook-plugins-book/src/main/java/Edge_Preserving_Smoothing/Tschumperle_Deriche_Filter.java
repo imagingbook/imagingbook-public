@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Edge_Preserving_Smoothing;
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.io.LogStream;
@@ -59,12 +62,12 @@ public class Tschumperle_Deriche_Filter implements PlugInFilter {
 
 	private boolean getParameters() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) return false;
 
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		return params.validate();
 	}
 	

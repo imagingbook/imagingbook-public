@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Tools;
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import java.awt.Desktop;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -133,7 +136,7 @@ public class Export_PDF implements PlugIn {
 	private boolean getUserInput(Parameters params) {
 		GenericDialog gd = new GenericDialog("Export PDF");
 		
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		gd.addCheckbox("Open PDF after export", OpenPdfAfterExport);
 		
 		gd.showDialog();
@@ -142,7 +145,7 @@ public class Export_PDF implements PlugIn {
 			return false;
 		}
 		
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		OpenPdfAfterExport = gd.getNextBoolean();
 		return params.validate();
 	}

@@ -14,7 +14,8 @@ import java.util.Random;
 
 import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * Generic RANSAC detector for 2D curves. This abstract class defines the core RANSAC
@@ -34,18 +35,18 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	/**
 	 * Parameters used by all RANSAC types.
 	 */
-	public static class RansacParameters implements DialogParameterBundle {
+	public static class RansacParameters implements ParameterBundle {
 			
 		/** The maximum number of iterations (random draws) to use.*/
-		@DialogLabel("Max. iterations") 
+		@DialogUtils.DialogLabel("Max. iterations") 
 		public int maxIterations = 1000;
 		
 		/** The maximum distance of any point from the curve to be considered an "inlier".*/
-		@DialogLabel("Max. inlier distance") 
+		@DialogUtils.DialogLabel("Max. inlier distance") 
 		public double maxInlierDistance = 2.0;
 		
 		/** The minimum number of inliers required for successful detection.*/
-		@DialogLabel("Min. inlier count") 
+		@DialogUtils.DialogLabel("Min. inlier count") 
 		public int minInlierCount = 100;
 	}
 	

@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Thresholding;
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -43,14 +46,14 @@ public class Adaptive_Bernsen implements PlugInFilter {
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
 			return false;
 		}	
 		
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		return true;
 	}
 }
