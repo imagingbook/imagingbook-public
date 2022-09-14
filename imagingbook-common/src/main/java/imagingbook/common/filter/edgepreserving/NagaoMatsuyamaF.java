@@ -8,7 +8,8 @@
  *******************************************************************************/
 package imagingbook.common.filter.edgepreserving;
 
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.ij.DialogUtils.DialogLabel;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * Common interface for Nagao-Matsuyama filter implementations.
@@ -20,7 +21,7 @@ public interface NagaoMatsuyamaF {
 	/**
 	 * Parameter bundle for Nagao-Matsuyama filters (implementations of {@link NagaoMatsuyamaF}).
 	 */
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 
 		@DialogLabel("Variance threshold (0,..,10)")
 		public double varThreshold = 0.0;

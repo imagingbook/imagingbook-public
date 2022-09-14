@@ -21,9 +21,12 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.linear.GaussianKernel1D;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.ij.DialogUtils.DialogDigits;
+import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
+
 
 /**
  * <p>
@@ -47,7 +50,7 @@ public class CannyEdgeDetector implements EdgeDetector {
 	
 	// TODO: implement convolutions with GenericFilter
 	
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 		
 		/** Gaussian sigma (scale, default = 2) */
 		@DialogLabel("Gaussian sigma (scale)")@DialogDigits(1)

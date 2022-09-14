@@ -38,9 +38,10 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic;
 import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbonStable;
 import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;
+import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 
 
 /**
@@ -271,7 +272,7 @@ public class EllipseGeometricFitDist extends EllipseFitGeometric {
 	// -------------------------------------------------------------------
 	// -------------------------------------------------------------------
 	
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 		
 		@DialogLabel("number of points")
 		public int n = 20;

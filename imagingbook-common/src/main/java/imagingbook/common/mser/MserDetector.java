@@ -13,11 +13,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ij.process.ByteProcessor;
+import imagingbook.common.ij.DialogUtils.DialogHide;
+import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree;
 import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
@@ -39,7 +41,7 @@ public class MserDetector {
 	/**
 	 * Inner class defining parameters for MSER detection.
 	 */
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 		
 		@DialogLabel("Component tree method")
 		public Method method = Method.LinearTime;

@@ -16,7 +16,7 @@ import ij.process.FloatProcessor;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
@@ -38,7 +38,7 @@ public class MonochromaticEdgeDetector implements EdgeDetector {
 	/**
 	 * Parameters for {@link MonochromaticEdgeDetector} (currently none defined).
 	 */
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 	}
 
 	@SuppressWarnings("unused")

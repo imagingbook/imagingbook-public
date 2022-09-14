@@ -8,8 +8,9 @@
  *******************************************************************************/
 package imagingbook.common.filter.edgepreserving;
 
+import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * Common interface for all Bilateral filter implementations.
@@ -22,7 +23,7 @@ public interface BilateralF {
 	/**
 	 * Parameter bundle for bilateral filters (implementations of {@link BilateralF}).
 	 */
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 
 		@DialogLabel("Sigma (domain)")
 		public double sigmaD = 2; 		

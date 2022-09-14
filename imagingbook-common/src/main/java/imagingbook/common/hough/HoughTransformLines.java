@@ -15,7 +15,7 @@ import java.util.List;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 import imagingbook.common.util.progress.ProgressReporter;
 
 /**
@@ -34,7 +34,7 @@ public class HoughTransformLines implements ProgressReporter {
 	
 	// TODO: revise constructors and parameters, add bias correction
 
-	public static class Parameters implements DialogParameterBundle {	
+	public static class Parameters implements ParameterBundle {	
 		/** Number of angular steps over [0, pi] */
 		public int nAng = 256;		
 		/** Number of radial steps in each pos/neg direction (accum. size = 2 * nRad + 1) */

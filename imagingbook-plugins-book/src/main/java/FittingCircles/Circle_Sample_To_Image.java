@@ -9,6 +9,9 @@
 package FittingCircles;
 
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import java.awt.Color;
 
 import ij.ImagePlus;
@@ -21,10 +24,11 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;
+import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * Samples points on a perfect circle and creates a new 8-bit image with
@@ -49,7 +53,7 @@ public class Circle_Sample_To_Image implements PlugIn {
 	private static double StrokeWidth = 1.0;
 	private static Color RealCurveColor = 		new Color(0,176,80);
 	
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 		
 		@DialogLabel("number of points")
 		public int N = 100;
@@ -117,7 +121,7 @@ public class Circle_Sample_To_Image implements PlugIn {
 		gd.addNumericField("image width", W, 0);
 		gd.addNumericField("image height", W, 0);
 		
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		gd.addCheckbox("show real circle", ShowRealCircle);
 
 		gd.showDialog();
@@ -128,7 +132,7 @@ public class Circle_Sample_To_Image implements PlugIn {
 		W = (int) gd.getNextNumber();
 		H = (int) gd.getNextNumber();
 		
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		ShowRealCircle = gd.getNextBoolean();
 
 		return params.validate();

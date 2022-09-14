@@ -9,6 +9,9 @@
 package FittingEllipses;
 
 
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.NewImage;
@@ -19,10 +22,11 @@ import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;
+import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.util.parameters.DialogParameterBundle;
+import imagingbook.common.util.ParameterBundle;
 
 /**
  * Samples points on a given (ideal) circle and creates a new image with 
@@ -43,7 +47,7 @@ public class Ellipse_Sample_To_Roi implements PlugIn {
 	private static double StrokeWidth = 1.0;
 	private static BasicAwtColor StrokeColor = BasicAwtColor.Green;
 	
-	public static class Parameters implements DialogParameterBundle {
+	public static class Parameters implements ParameterBundle {
 		
 		@DialogLabel("number of points")
 		public int n = 20;
@@ -110,7 +114,7 @@ public class Ellipse_Sample_To_Roi implements PlugIn {
 		gd.addStringField("Title", title, 12);
 		gd.addNumericField("image width", W, 0);
 		gd.addNumericField("image height", W, 0);	
-		params.addToDialog(gd);
+		addToDialog(params, gd);
 		gd.addCheckbox("show real circle", ShowRealCircle);
 		gd.addEnumChoice("circle color", StrokeColor);
 
@@ -121,7 +125,7 @@ public class Ellipse_Sample_To_Roi implements PlugIn {
 		title = gd.getNextString();
 		W = (int) gd.getNextNumber();
 		H = (int) gd.getNextNumber();
-		params.getFromDialog(gd);
+		getFromDialog(params, gd);
 		ShowRealCircle = gd.getNextBoolean();
 		StrokeColor = gd.getNextEnumChoice(BasicAwtColor.class);
 
