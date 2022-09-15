@@ -39,10 +39,10 @@ public class ImageExtractor {
 	/**
 	 * Sets the interpolation method to be used for extracting sub-images
 	 * (defined by ImageJ's {@link ImageProcessor}):
-	 * {@link ImageProcessor.BILINEAR} (default),
-	 * {@link ImageProcessor.NEAREST_NEIGHBOR},
-	 * {@link ImageProcessor.BICUBIC},
-	 * {@link ImageProcessor.NONE}.
+	 * {@code ImageProcessor.BILINEAR} (default),
+	 * {@code NEAREST_NEIGHBOR},
+	 * {@code BICUBIC} or
+	 * {@code NONE}.
 	 * 
 	 * @param method the interpolation method to use
 	 */

@@ -42,7 +42,7 @@ public abstract class GuiTools {
 	 *  
 	 * @param title name of the dialog window (if null, {@link #DEFAULT_DIALOG_TITLE} is used)
 	 * @param exclude image to exclude from being selected (typically the current image)
-	 * @return a reference to the chosen image (ImagePlus) or null, if the dialog was cancelled
+	 * @return a reference to the chosen image ({@link ImagePlus}) or null, if the dialog was cancelled
 	 */
     public static ImagePlus chooseOpenImage(String title, ImagePlus exclude) {
 		if (title == null) {
@@ -87,7 +87,7 @@ public abstract class GuiTools {
 	 * Queries the user to select one of the currently open images.
 	 *  
 	 * @param title name of the dialog window (if null, {@link #DEFAULT_DIALOG_TITLE} is used)
-	 * @return a reference to the chosen image (ImagePlus) or null, if the dialog was cancelled
+	 * @return a reference to the chosen image ({@link ImagePlus}) or null, if the dialog was cancelled
 	 */
 	public static ImagePlus chooseOpenImage(String title) {
 		return chooseOpenImage(title, null);
@@ -95,9 +95,8 @@ public abstract class GuiTools {
 	
 	/**
 	 * Queries the user to select one of the currently open images.
-	 *  
-	 * @param title name of the dialog window (if null, {@link #DEFAULT_DIALOG_TITLE} is used)
-	 * @return a reference to the chosen image (ImagePlus) or null, if the dialog was cancelled
+	 *
+	 * @return a reference to the chosen image ({@link ImagePlus}) or null, if the dialog was cancelled
 	 */
     public static ImagePlus chooseOpenImage() {
     	return chooseOpenImage(null, null);
