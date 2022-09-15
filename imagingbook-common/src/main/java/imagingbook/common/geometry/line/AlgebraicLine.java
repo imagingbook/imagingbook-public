@@ -197,6 +197,14 @@ public class AlgebraicLine implements ShapeProducer, Curve2d {
 		return (A * (x - this.getXref()) + B * (y - this.getYref()) + C);
 	}
 	
+	/**
+	 * Returns the orthogonal (signed) distance between this line and the specified point.
+	 * The result may be positive or negative, depending on which side of the line
+	 * (the point is located. It is assumed that the line is normalized, i.e.,
+	 * ||(A,B)|| = 1.
+	 * @param p a 2D point
+	 * @return The perpendicular distance between this line and the point
+	 */
 	public double getSignedDistance(Pnt2d p) {
 		return getSignedDistance(p.getX(), p.getY());
 	}
@@ -320,8 +328,7 @@ public class AlgebraicLine implements ShapeProducer, Curve2d {
 	
 	// TODO: this should be easier to do if parameters are normalized
 	/**
-	 * Evaluates if this {@link AlgebraicLine} is equal to another {@link AlgebraicLine}.
-	 * 
+	 * Checks if this {@link AlgebraicLine} is equal to another {@link AlgebraicLine}.
 	 * 
 	 * @param other another {@link AlgebraicLine}
 	 * @param tolerance the maximum deviation

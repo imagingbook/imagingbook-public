@@ -24,7 +24,11 @@ public interface Thresholder {
 	 * Enum type to discriminate if the image background is assumed to be
 	 * bright or dark.
 	 */
-	public enum BackgroundMode {BRIGHT, DARK}
+	public enum BackgroundMode {
+		/** bright background */
+		BRIGHT,
+		/** dark background */
+		DARK}
 			
 	/**
 	 * Thresholds the specified {@link ByteProcessor} (8-bit image),

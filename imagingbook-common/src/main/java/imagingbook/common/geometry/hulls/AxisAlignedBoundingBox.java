@@ -34,15 +34,18 @@ import imagingbook.common.util.ArrayIterator;
 public class AxisAlignedBoundingBox implements ShapeProducer {
 	
 	private final Iterable<Pnt2d> points;
-	private final PntDouble centroid;
+	private final PntDouble centroid;			// centroid of the point set
 	private final double[] orientationVector;
 	private final Pnt2d[] boundingbox;
 	private final AlgebraicLine[] boundinglines;
 
-	
+	/**
+	 * Constructor. 
+	 * @param points an iterator over 2D points
+	 */
 	public AxisAlignedBoundingBox(Iterable<Pnt2d> points) {
 		this.points = points;
-		this.centroid = makeCentroid();
+		this.centroid = makeCentroid();		
 		this.orientationVector = makeOrientationVector();
 		this.boundingbox = makeBox();
 		this.boundinglines = new AlgebraicLine[] {
@@ -52,14 +55,17 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 			AlgebraicLine.from(boundingbox[3], boundingbox[0])};
 	}
 	
+	/**
+	 * Constructor.
+	 * @param points an array of 2D points
+	 */
 	public AxisAlignedBoundingBox(Pnt2d[] points) {
-//		this(() -> Arrays.stream(points).iterator());	// https://stackoverflow.com/questions/10335662/convert-java-array-to-iterable
 		this(() -> ArrayIterator.from(points));
 	}
 	
-	public Pnt2d getCentroid() {
-		return centroid;
-	}
+//	public Pnt2d getCentroid() {
+//		return centroid;
+//	}
 	
 	public double[] getOrientationVector() {
 		return orientationVector;
@@ -182,7 +188,7 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	public Shape[] getShapes(double scale) {
 		return new Shape[] { 
 				getShape(scale), 				// primary shape element
-				getCentroid().getShape(scale) 	// additional shape elements
+				this.centroid.getShape(scale) 	// additional shape elements
 				};
 	}
 	

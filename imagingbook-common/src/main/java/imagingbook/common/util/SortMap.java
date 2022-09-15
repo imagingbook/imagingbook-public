@@ -20,18 +20,18 @@ import java.util.stream.IntStream;
  * </p>
  * 
  * <p>
- * Usage example: Get the second-smallest element in some array
- * {@code double[] A}:
+ * Usage example - get the second-smallest element of a {@code double} array:
  * </p>
  * <pre>
- * int k = SortMap.getNthSmallestIndex(A, 1);
- * double x = A[k];</pre>
- * <p>or, directly,</p>
+ * double[] a = ... 	// some array
+ * int k = SortMap.getNthSmallestIndex(a, 1);	// index of second-smallest element
+ * double x = a[k];</pre>
+ * <p>Alternatively,</p>
  * <pre>
- * double x = getNthSmallestValue(A, 1);</pre>
+ * double x = getNthSmallestValue(a, 1);</pre>
  * 
  * @author WB
- *
+ * @version 2022/09/15
  */
 public class SortMap {
 	
@@ -77,14 +77,14 @@ public class SortMap {
 	 * points to the second-smallest element, etc.
 	 * For example, if the original number sequence (passed to the constructor) is
 	 * <pre>
-	 * double[] A = {50.0, 20.0, 100.0, 120.0, 40.0, -10.0};</pre>
+	 * double[] a = {50.0, 20.0, 100.0, 120.0, 40.0, -10.0};</pre>
 	 * then the index array produced by 
-	 * <pre>int[] perm = new SortMap(A).getPermutation();</pre> contains
+	 * <pre>int[] perm = new SortMap(a).getPermutation();</pre> contains
 	 * {@code (5, 1, 4, 0, 2, 3)}.
 	 * This means that 
-	 * <pre>A[perm[i]] &le; A[perm[i+1]]</pre>
+	 * <pre>a[perm[i]] &le; a[perm[i+1]]</pre>
 	 * and thus the sequence
-	 * <pre>{A[perm[0]], A[perm[1]],..., A[perm[N-1]]}</pre>
+	 * <pre>{a[perm[0]], A[perm[1]],..., A[perm[N-1]]}</pre>
 	 * is sorted.
 	 * 
 	 * @return the sorting map (permutation)
@@ -111,49 +111,93 @@ public class SortMap {
 	// --------------------------------------------------
 	
 	/**
-	 * Returns the nth smallest element of the specified  {@code double[]},
-	 * starting with {@code n = 0}, which returns the smallest element of {@code numbers}.
+	 * Returns the nth smallest element of the specified array,
+	 * starting with n = 0, which returns the smallest 
+	 * element of the array.
 	 * 
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
-	 * @return the n-th smallest element of {@code numbers}
+	 * @return the n-th smallest element
 	 */
 	public static double getNthSmallestValue(double[] numbers, int n) {
 		return numbers[getNthSmallestIndex(numbers, n)];
 	}
 	
+	/**
+	 * Returns the index of the nth smallest element of the specified array,
+	 * starting with n = 0, which returns the smallest element of 
+	 * the array.
+	 * 
+	 * @param numbers sequence of unsorted values
+	 * @param n the index
+	 * @return the index of the n-th smallest element
+	 */
 	public static int getNthSmallestIndex(double[] numbers, int n) {
 		return new SortMap(numbers).getIndex(n);
 	}
 	
+	/**
+	 * Returns the largest element of the specified array.
+	 * 
+	 * @param numbers sequence of unsorted values
+	 * @return the largest element
+	 */
 	public static double getLargestValue(double[] numbers) {
 		return numbers[getLargestIndex(numbers)];
 	}
 	
+	/**
+	 * Returns the index of the largest element of the specified array.
+	 * 
+	 * @param numbers sequence of unsorted values
+	 * @return the index of the largest element
+	 */
 	public static int getLargestIndex(double[] numbers) {
 		return getNthSmallestIndex(numbers, numbers.length - 1);
 	}
 	
 	/**
-	 * Returns the nth smallest element of the specified {@code float[]},
-	 * starting with {@code n = 0}, which returns the smallest element of {@code numbers}.
+	 * Returns the nth smallest element of the specified array,
+	 * starting with n = 0, which returns the smallest element of 
+	 * the array.
 	 * 
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
-	 * @return the n-th smallest element of {@code numbers}
+	 * @return the n-th smallest element
 	 */
 	public static float getNthSmallestValue(float[] numbers, int n) {
 		return numbers[getNthSmallestIndex(numbers, n)];
 	}
 	
+	/**
+	 * Returns the index of the nth smallest element of the specified array,
+	 * starting with n = 0, which returns the smallest element of 
+	 * the array.
+	 * 
+	 * @param numbers sequence of unsorted values
+	 * @param n the index
+	 * @return the index of the n-th smallest element
+	 */
 	public static int getNthSmallestIndex(float[] numbers, int n) {
 		return new SortMap(numbers).getIndex(n);
 	}
 	
+	/**
+	 * Returns the largest element of the specified array.
+	 * 
+	 * @param numbers sequence of unsorted values
+	 * @return the largest element
+	 */
 	public static float getLargestValue(float[] numbers) {
 		return numbers[getLargestIndex(numbers)];
 	}
 	
+	/**
+	 * Returns the index of the largest element of the specified array.
+	 * 
+	 * @param numbers sequence of unsorted values
+	 * @return the index of the largest element
+	 */
 	public static int getLargestIndex(float[] numbers) {
 		return getNthSmallestIndex(numbers, numbers.length - 1);
 	}
@@ -170,14 +214,35 @@ public class SortMap {
 		return numbers[getNthSmallestIndex(numbers, n)];
 	}
 	
+	/**
+	 * Returns the index of the nth smallest element of the specified array,
+	 * starting with n = 0, which returns the smallest element of 
+	 * the array.
+	 * 
+	 * @param numbers sequence of unsorted values
+	 * @param n the index
+	 * @return the index of the n-th smallest element
+	 */
 	public static int getNthSmallestIndex(int[] numbers, int n) {
 		return new SortMap(numbers).getIndex(n);
 	}
 	
+	/**
+	 * Returns the largest element of the specified array.
+	 * 
+	 * @param numbers sequence of unsorted values
+	 * @return the largest element
+	 */
 	public static float getLargestValue(int[] numbers) {
 		return numbers[getLargestIndex(numbers)];
 	}
 	
+	/**
+	 * Returns the index of the largest element of the specified array.
+	 * 
+	 * @param numbers sequence of unsorted values
+	 * @return the index of the largest element
+	 */
 	public static int getLargestIndex(int[] numbers) {
 		return getNthSmallestIndex(numbers, numbers.length - 1);
 	}

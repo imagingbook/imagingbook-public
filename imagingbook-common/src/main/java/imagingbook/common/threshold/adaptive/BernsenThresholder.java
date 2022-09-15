@@ -25,7 +25,8 @@ import imagingbook.common.util.ParameterBundle;
  * of the International Conference on Pattern Recognition (ICPR)”,
  * pp. 1251–1255, Paris (October 1986). IEEE Computer Society.
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
@@ -37,22 +38,34 @@ public class BernsenThresholder implements AdaptiveThresholder {
 	 * Parameters for class {@link BernsenThresholder}.
 	 */
 	public static class Parameters implements ParameterBundle {
+		/** Radius of circular support region */ 
 		@DialogLabel("Radius")
 		public int radius = 15;
 		
-		@DialogLabel("c_min")
+		/** Minimum contrast */ 
+		@DialogLabel("Min. contrast")
 		public int cmin = 15;
 		
+		/** Background type (see {@link BackgroundMode}) */
 		@DialogLabel("Background mode")
 		public BackgroundMode bgMode = BackgroundMode.DARK;
 	}
 	
+	// --------------------------------------------
+	
 	private final Parameters params;
 	
+	/**
+	 * Constructor using default parameters.
+	 */
 	public BernsenThresholder() {
 		this.params = new Parameters();
 	}
 	
+	/**
+	 * Constructor using specified parameters.
+	 * @param params an instance of {@link Parameters}
+	 */
 	public BernsenThresholder(Parameters params) {
 		this.params = params;
 	}
