@@ -20,6 +20,9 @@ public interface ColorEnumeration {
 	
 	/**
 	 * Returns the enum item's {@link Color}.
+	 * Example:
+	 * <pre>
+	 * Color c = BasicAwtColor.Blue.getColor();</pre>
 	 * @return the item's AWT {@link Color}
 	 */
 	public Color getColor();
@@ -27,6 +30,8 @@ public interface ColorEnumeration {
 	/**
 	 * Returns an array of colors defined by the specified
 	 * {@link ColorEnumeration} enum class.
+	 * <pre>
+	 * Color[] colors = ColorEnumeration.getColors(BasicAwtColor.class);</pre>
 	 * @param clazz a {@link ColorEnumeration} enum class
 	 * @return a {@link Color} array
 	 */
@@ -42,7 +47,9 @@ public interface ColorEnumeration {
 	
 	/**
 	 * Returns an array of colors for the specified 
-	 * {@link ColorEnumeration} items.
+	 * {@link ColorEnumeration} items. Example:
+	 * <pre>
+	 * Color[] colors = ColorEnumeration.getColors(BasicAwtColor.Blue, BasicAwtColor.Green);</pre>
 	 * @param cols a sequence of {@link ColorEnumeration} items
 	 * @return a {@link Color} array
 	 */
@@ -54,10 +61,22 @@ public interface ColorEnumeration {
 		return colors;
 	}
 	
+	
+	// ----------------------------------------------------------------------
+	
 //	public static void main(String[] args) {
-//		Color[] colors = ColorEnumeration.getColors(BasicAwtColor.class);
+//		Color col = BasicAwtColor.Blue.getColor();
+//		System.out.println(col.toString());
+//				
+//		Color[] colors1 = ColorEnumeration.getColors(BasicAwtColor.class);
 //		
-//		for (Color c : colors) {
+//		for (Color c : colors1) {
+//			System.out.println(c.toString());
+//		}
+//		
+//		Color[] colors2 = ColorEnumeration.getColors(BasicAwtColor.Blue, BasicAwtColor.Green);
+//		
+//		for (Color c : colors2) {
 //			System.out.println(c.toString());
 //		}
 //	}

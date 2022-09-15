@@ -59,7 +59,8 @@ public class FiniteLinearColorSequencer implements ColorSequencer {
 	}
 
 	public FiniteLinearColorSequencer(Class<? extends ColorEnumeration> clazz) {
-		this.colorArray = ColorEnumeration.getColors(clazz);
+//		this.colorArray = ColorEnumeration.getColors(clazz);
+		this(ColorEnumeration.getColors(clazz));
 	}
 	
 	// -------------------------------------------------------
@@ -112,7 +113,9 @@ public class FiniteLinearColorSequencer implements ColorSequencer {
 			// use color c
 			System.out.println(c.toString());
 		}
+		
 		System.out.println();
+		
 		FiniteLinearColorSequencer iter2 = new FiniteLinearColorSequencer(BasicAwtColor.class);
 		iter2.reset(5);
 		for (int i = 0; i < 10; i++) {
