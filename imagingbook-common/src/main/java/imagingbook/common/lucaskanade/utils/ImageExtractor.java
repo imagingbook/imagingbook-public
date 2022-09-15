@@ -20,16 +20,9 @@ import imagingbook.common.image.access.ImageAccessor;
  * Use to extract warped images for testing the Lucas-Kanade matcher.
  * 
  * @author WB
- *
+ * @version 2022/09/14
  */
 public class ImageExtractor {
-	
-	
-//	public static ImageProcessor extract(ImageProcessor source, int width, int height, LinearMapping T) {
-//		ImageExtractor ie = new ImageExtractor(source);
-//		return ie.extractImage(width, height, T);
-//	}
-	
 		
 	private int interpolationMethod = ImageProcessor.BILINEAR;
 	private final ImageProcessor I;
@@ -42,19 +35,31 @@ public class ImageExtractor {
 		this.I = I;
 	}
 	
-	public void setInterpolationMethod(int interpolationMethod) {
-		this.interpolationMethod = interpolationMethod;
+	/**
+	 * Sets the interpolation method to be used for extracting sub-images
+	 * (defined by ImageJ's {@link ImageProcessor}):
+	 * {@link ImageProcessor.BILINEAR} (default),
+	 * {@link ImageProcessor.NEAREST_NEIGHBOR},
+	 * {@link ImageProcessor.BICUBIC},
+	 * {@link ImageProcessor.NONE}.
+	 * 
+	 * @param method the interpolation method to use
+	 */
+	public void setInterpolationMethod(int method) {
+		this.interpolationMethod = method;
 	}
 	
 	/**
-	 * Extracts an image {@code R} of size {@code width} x {@code height} from the source image 
-	 * {@code I} (referenced by {@code this} object).
+	 * Extracts a sub-image of size {@code width} x {@code height} from the source image 
+	 * {@code I} (referenced by {@code this} {@link ImageExtractor}),
+	 * using the specified transformation.
 	 * The image {@code R} is extracted from a quadrilateral patch of the source image,
 	 * defined by the transformation of the boundary of {@code R} by {@code T(x)}.
-	 * @param width the width of the target image {@code R}.
-	 * @param height the height of the target image {@code R}.
-	 * @param T a {@link LinearMapping2D} object.
-	 * @return the extracted image {@code R}, which is of the same type as the source image.
+	 * 
+	 * @param width the width of the extracted image
+	 * @param height the height of the extracted image
+	 * @param T a {@link LinearMapping2D} instance
+	 * @return the extracted image, which is of the same type as the source image.
 	 */	
 
 	public ImageProcessor extractImage(int width, int height, LinearMapping2D T) {
@@ -63,12 +68,12 @@ public class ImageExtractor {
 		return R;
 	}
 	
-	public ImageProcessor extractImage(int width, int height, Pnt2d[] sourcePnts) {
-		ImageProcessor R = I.createProcessor(width, height);
-		ProjectiveMapping2D T = getMapping(width, height, sourcePnts);
-		extractImage(R, T);
-		return R;
-	}
+//	public ImageProcessor extractImage(int width, int height, Pnt2d[] sourcePnts) {
+//		ImageProcessor R = I.createProcessor(width, height);
+//		ProjectiveMapping2D T = getMapping(width, height, sourcePnts);
+//		extractImage(R, T);
+//		return R;
+//	}
 	
 	/**
 	 * Fills the image {@code R} from the source image 
@@ -124,7 +129,7 @@ public class ImageExtractor {
 		switch (sourcePnts.length) {
 		case (3) : T = AffineMapping2D.fromPoints(targetPnts, sourcePnts); break;
 		case (4) : T = ProjectiveMapping2D.fromPoints(targetPnts, sourcePnts); break;
-		default : throw new IllegalArgumentException("wrong number of source points");
+		default : throw new IllegalArgumentException("wrong number of source points (3 or 4 required)");
 		}
 		return T;
 	}
