@@ -34,7 +34,12 @@ public class AlgebraicEllipse {
 	/**
 	 * Ellipse parameters.
 	 */
-	public final double A, B, C, D, E, F;
+	final double A;
+	final double B;
+	final double C;
+	final double D;
+	final double E;
+	final double F;
 	
 	/**
 	 * Constructor.
