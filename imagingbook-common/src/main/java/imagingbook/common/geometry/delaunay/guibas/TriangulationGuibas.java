@@ -18,7 +18,6 @@ import java.util.List;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.delaunay.DelaunayTriangulation;
 import imagingbook.common.geometry.delaunay.Triangle;
-import imagingbook.common.geometry.delaunay.Utils;
 
 /**
  * This is an implementation of the triangulation algorithm described in
@@ -49,7 +48,7 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 		if (shuffle) {
 			Collections.shuffle(this.points);
 		}
-		this.outerTriangle = new Triangle2D(Utils.makeOuterTriangle(points));
+		this.outerTriangle = new Triangle2D(DelaunayTriangulation.makeOuterTriangle(points));
 		this.triangles = new ArrayList<>();
 		triangulate();
 	}
