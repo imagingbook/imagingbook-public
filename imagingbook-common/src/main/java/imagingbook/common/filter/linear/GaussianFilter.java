@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.filter.linear;
 
-import imagingbook.common.image.access.OutOfBoundsStrategy;
+import imagingbook.common.image.OutOfBoundsStrategy;
 
 /**
  * This class implements a 2D Gaussian filter by extending

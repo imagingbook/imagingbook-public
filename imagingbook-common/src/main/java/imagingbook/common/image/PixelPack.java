@@ -19,7 +19,6 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.image.access.GridIndexer2D;
 import imagingbook.common.image.access.ImageAccessor;
-import imagingbook.common.image.access.OutOfBoundsStrategy;
 
 /**
  * <p>

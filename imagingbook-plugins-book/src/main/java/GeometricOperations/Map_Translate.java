@@ -13,7 +13,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.mappings.linear.Translation2D;
 import imagingbook.common.image.ImageMapper;
-import imagingbook.common.image.access.OutOfBoundsStrategy;
+import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.interpolation.InterpolationMethod;
 
 public class Map_Translate implements PlugInFilter {

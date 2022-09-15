@@ -12,6 +12,7 @@ import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
+import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.interpolation.InterpolationMethod;
 import imagingbook.common.interpolation.PixelInterpolator;
 

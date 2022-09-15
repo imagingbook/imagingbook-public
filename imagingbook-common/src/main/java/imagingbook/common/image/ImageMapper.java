@@ -13,7 +13,6 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.image.access.ImageAccessor;
-import imagingbook.common.image.access.OutOfBoundsStrategy;
 import imagingbook.common.interpolation.InterpolationMethod;
 
 /**

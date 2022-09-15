@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
-import imagingbook.common.image.access.OutOfBoundsStrategy;
+import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.testimages.FilterTestImage;
 import imagingbook.testutils.ImageTestUtils;

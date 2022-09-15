@@ -11,6 +11,8 @@ package imagingbook.common.image.access;
 import org.junit.Assert;
 import org.junit.Test;
 
+import imagingbook.common.image.OutOfBoundsStrategy;
+
 public class PixelIndexerTest {
 	
 	static int W = 300;

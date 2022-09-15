@@ -16,7 +16,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.image.ImageMapper;
-import imagingbook.common.image.access.OutOfBoundsStrategy;
+import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.interpolation.InterpolationMethod;
 import imagingbook.common.math.Matrix;
 

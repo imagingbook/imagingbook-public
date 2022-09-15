@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.image.ImageMapper;
-import imagingbook.common.image.access.OutOfBoundsStrategy;
+import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.interpolation.InterpolationMethod;
 
 public class Map_Spherical implements PlugInFilter {

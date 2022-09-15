@@ -16,6 +16,7 @@ import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
+import imagingbook.common.image.OutOfBoundsStrategy;
 
 /**
  * Test default values (reading from coordinates outside the image boundaries)

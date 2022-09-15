@@ -9,6 +9,7 @@
 
 package imagingbook.common.image.access;
 
+import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.PixelPack;
 
 /**

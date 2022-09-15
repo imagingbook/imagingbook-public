@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.image.access;
+package imagingbook.common.image;
 
 /**
  * Enumeration type representing the available strategies

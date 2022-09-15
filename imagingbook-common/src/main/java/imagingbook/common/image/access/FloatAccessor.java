@@ -10,6 +10,7 @@ package imagingbook.common.image.access;
 
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.interpolation.InterpolationMethod;
 
 /**
