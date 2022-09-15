@@ -57,8 +57,10 @@ import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
  */
 public abstract class ImageAccessor {
 	
-	static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.ZeroValues;
-	static final InterpolationMethod DefaultInterpolationMethod = InterpolationMethod.Bilinear;
+	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.ZeroValues;
+	public static final InterpolationMethod DefaultInterpolationMethod = InterpolationMethod.Bilinear;
+	
+	protected final float defaultValue = 0.0f;
 	
 	protected final ImageProcessor ip;
 	protected final int width;

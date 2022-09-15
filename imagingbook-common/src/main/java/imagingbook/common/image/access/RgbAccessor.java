@@ -20,7 +20,12 @@ public class RgbAccessor extends VectorAccessor {
 	
 	private final int[] pixels;
 
-	
+	/**
+	 * Constructor.
+	 * @param ip the associated image
+	 * @param obs the out-of-bounds strategy to be used
+	 * @param ipm the interpolation method to be used
+	 */
 	public RgbAccessor(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
 		super(ip, 3, obs, ipm);
 		this.pixels = (int[]) this.ip.getPixels();
@@ -31,7 +36,12 @@ public class RgbAccessor extends VectorAccessor {
 		return new ComponentAccessor((ColorProcessor)ip, outOfBoundsStrategy, interpolationMethod, k);
 	}
 	
+	public static RgbAccessor create(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+		return new RgbAccessor(ip, obs, ipm);
+	}
+	
 	// ---------------------------------------------------------------------
+
 
 	@Override
 	public float[] getPix(int u, int v) { // returns an RGB value packed into a float[]
@@ -54,6 +64,11 @@ public class RgbAccessor extends VectorAccessor {
 		for (int k = 0; k < 3; k++) {
 			componentAccessors[k].setVal(u, v, valf[k]);
 		}
+	}
+	
+	@Override
+	public ColorProcessor getProcessor() {
+		return (ColorProcessor) this.ip;
 	}
 	
 	// ----------------------------------------------------------------
@@ -104,6 +119,7 @@ public class RgbAccessor extends VectorAccessor {
 			super(ip, obs, ipm);
 			this.k = k;
 		}
+		
 
 		@Override
 		public float getVal(int u, int v) {

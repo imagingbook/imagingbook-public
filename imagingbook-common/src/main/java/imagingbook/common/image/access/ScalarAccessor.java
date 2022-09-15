@@ -24,8 +24,13 @@ import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
  * data.
  */
 public abstract class ScalarAccessor extends ImageAccessor {
-	
-	float defaultValue = 0f;
+
+	private final PixelInterpolator interpolator; // performs interpolation
+
+	ScalarAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+		super(ip, obs, ipm);
+		this.interpolator = PixelInterpolator.create(interpolationMethod);
+	}
 
 	/**
 	 * Creates a new image accessor of general type {@link ScalarAccessor}. The conrete type
@@ -50,6 +55,9 @@ public abstract class ScalarAccessor extends ImageAccessor {
 		throw new IllegalArgumentException(
 				"cannot create " + ScalarAccessor.class.getSimpleName() + " for " + ip.getClass().getSimpleName());
 	}
+	
+	
+	
 	
 	@Override
 	public int getDepth() {
@@ -117,13 +125,6 @@ public abstract class ScalarAccessor extends ImageAccessor {
 		else {
 			throw new IllegalArgumentException("invalid component index " + k);
 		}
-	}
-
-	final PixelInterpolator interpolator; // performs interpolation
-
-	ScalarAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		super(ip, obs, ipm);
-		this.interpolator = PixelInterpolator.create(interpolationMethod);
 	}
 
 	@Override
