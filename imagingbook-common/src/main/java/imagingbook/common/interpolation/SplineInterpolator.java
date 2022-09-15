@@ -11,21 +11,33 @@ package imagingbook.common.interpolation;
 
 import imagingbook.common.image.access.ScalarAccessor;
 
+/**
+ * <p>
+ * A {@link PixelInterpolator} implementing spline interpolation in 2D.
+ * See Sec. 22.4 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @see CatmullRomInterpolator
+ */
 public class SplineInterpolator implements PixelInterpolator {
 	private final double a;	
 	private final double b;
 
-	
-	public SplineInterpolator(ScalarAccessor ia) {
-		this(0.5, 0.0); // default is a Catmull-Rom spline
-	}
-	
+	/**
+	 * Constructor for creating a custom spline interpolator.
+	 * @param a spline control parameter
+	 * @param b spline control parameter
+	 */
 	public SplineInterpolator(double a, double b) {
 		super();
 		this.a = a;
 		this.b = b;
 	}
-	
 	
 	@Override
 	public float getInterpolatedValue(ScalarAccessor ia, double x, double y) {

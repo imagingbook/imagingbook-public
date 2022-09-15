@@ -13,17 +13,41 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import imagingbook.common.image.access.ScalarAccessor;
 
-
+/**
+ * <p>
+ * A {@link PixelInterpolator} implementing Lanczos interpolation in 2D.
+ * See Sec. 22.5.4 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
 public class LanczosInterpolator implements PixelInterpolator {
 	
 	private final int n;	// order (tap count) of this interpolator
+	private final int d; 	// kernel width
 	
-	public LanczosInterpolator(ScalarAccessor ia) {
+	/**
+	 * Constructor creating a Lanczos interpolator of order n = 2.
+	 */
+	public LanczosInterpolator() {
 		this(2);
 	}
 	
+	/**
+	 * Constructor creating a Lanczos interpolator of arbitrary oder n &ge; 2.
+	 * @param n
+	 */
 	public LanczosInterpolator(int n) {
+		if (n < 2) {
+			throw new IllegalArgumentException("Lanczos order must be >= 2");
+		}
 		this.n = n; // order >= 2
+		this.d = 2 * n - 1;
 	}
 	
 	@Override
@@ -31,10 +55,10 @@ public class LanczosInterpolator implements PixelInterpolator {
 		final int u0 = (int) Math.floor(x); // use floor to handle negative coordinates too
 		final int v0 = (int) Math.floor(y);
 		double q = 0;
-		for (int j = 0; j <= 2 * n - 1; j++) {
+		for (int j = 0; j <= d; j++) {
 			int v = v0 + j - n + 1;
 			double p = 0;
-			for (int i = 0; i <= 2 * n - 1; i++) {
+			for (int i = 0; i <= d; i++) {
 				int u = u0 + i - n + 1;
 				p = p + wLn(x - u) * ia.getVal(u, v);
 			}
@@ -44,16 +68,18 @@ public class LanczosInterpolator implements PixelInterpolator {
 	}
 	
 	
-	static final double pi = Math.PI;
-	static final double pi2 = sqr(pi);
+	private static final double pi = Math.PI;
+	private static final double pi2 = sqr(pi);
 	
 	private double wLn(double x) { // 1D Lanczos interpolator of order n
-		double r = Math.abs(x);
-		if (r < 0.001) return 1.0;
+		final double r = Math.abs(x);
+		if (r < 0.001) 
+			return 1.0;
 		if (r < n) {
 			return n * (Math.sin(pi * r / n) * Math.sin(pi * r)) / (pi2 * sqr(r));
 		}
-		else return 0.0;
+		else 
+			return 0.0;
 	}
 
 

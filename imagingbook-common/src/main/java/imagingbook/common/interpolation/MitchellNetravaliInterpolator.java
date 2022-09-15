@@ -8,13 +8,11 @@
  *******************************************************************************/
 
 package imagingbook.common.interpolation;
-import imagingbook.common.image.access.ScalarAccessor;
-
 
 /**
  * <p>
- * A {@link PixelInterpolator} implementing nearest-neighbor interpolation in 2D.
- * See Sec. 22.5.1 of [1] for additional details.
+ * A {@link PixelInterpolator} implementing Mitchell-Netravali interpolation in 2D
+ * See Sec.22.4.3 of [1] for additional details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
@@ -22,21 +20,15 @@ import imagingbook.common.image.access.ScalarAccessor;
  * </p>
  * 
  * @author WB
- *
+ * @see SplineInterpolator
  */
-public class NearestNeighborInterpolator implements PixelInterpolator {
-	
+public class MitchellNetravaliInterpolator extends SplineInterpolator {
+
 	/**
 	 * Constructor.
 	 */
-	public NearestNeighborInterpolator() {
-	}
-	
-	@Override
-	public float getInterpolatedValue(ScalarAccessor ia, double x, double y) {
-		final int u = (int) Math.rint(x);
-		final int v = (int) Math.rint(y);
-		return ia.getVal(u, v);
-	}
-	
+	public MitchellNetravaliInterpolator() {
+		super(1.0/3, 1.0/3);
+	}	
+
 }

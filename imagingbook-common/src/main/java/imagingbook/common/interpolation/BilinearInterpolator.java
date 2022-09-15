@@ -10,8 +10,24 @@
 package imagingbook.common.interpolation;
 import imagingbook.common.image.access.ScalarAccessor;
 
+/**
+ * <p>
+ * A {@link PixelInterpolator} implementing bilinear interpolation in 2D.
+ * See Sec. 22.5.2 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
 public class BilinearInterpolator implements PixelInterpolator {
 	
+	/**
+	 * Constructor.
+	 */
 	public BilinearInterpolator() {
 	}
 

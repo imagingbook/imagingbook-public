@@ -11,14 +11,34 @@ package imagingbook.common.interpolation;
 
 import imagingbook.common.image.access.ScalarAccessor;
 
+/**
+ * <p>
+ * A {@link PixelInterpolator} implementing bicubic interpolation in 2D.
+ * See Sec. 22.5.3 (Alg. 22.1) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
 public class BicubicInterpolator implements PixelInterpolator {
 	
 	private final double a;		// sharpness factor
 	
+	/**
+	 * Constructor using default sharpness factor a = 0.5;.
+	 */
 	public BicubicInterpolator() {
 		this(0.5);
 	}
 	
+	/**
+	 * Constructor accepting a default sharpness factor a.
+	 * @param a sharpness factor
+	 */
 	public BicubicInterpolator(double a) {
 		this.a = a;
 	}
@@ -33,14 +53,15 @@ public class BicubicInterpolator implements PixelInterpolator {
 			double p = 0;
 			for (int i = 0, u = u0 - 1; i <= 3; i++, u++) {
 //				int u = u0 - 1 + i;
-				p = p + w_cub(x - u, a) * ia.getVal(u, v);
+				p = p + w_cub(x - u) * ia.getVal(u, v);
 			}
-			q = q + w_cub(y - v, a) * p;
+			q = q + w_cub(y - v) * p;
 		}
 		return (float) q;
 	}
 	
-	private final double w_cub(double x, double a) {
+	// 1D cubic interpolation
+	private final double w_cub(double x) {
 		x = Math.abs(x);
 		double z = 0;
 		if (x < 1)
