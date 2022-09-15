@@ -35,7 +35,7 @@ public interface DelaunayTriangulation {
 	public List<Triangle> getTriangles();
 	
 	/**
-	 * Returns a list of 2D vertices (implementing the {@link Pnt2d} interface)
+	 * Returns a list of 2D vertices
 	 * contained in this triangulation. The list does not contain the
 	 * vertices of the initial (outer) triangle.
 	 * @return a list of points
@@ -116,7 +116,7 @@ public interface DelaunayTriangulation {
 		return DelaunayTriangulation.from(points, false);
 	}
 	
-	// static coonstruction methods: -----------------------------------
+	// static construction methods: -----------------------------------
 	
 	/**
 	 * Performs Delaunay triangulation on the specified points with
