@@ -23,8 +23,10 @@ import imagingbook.common.interpolation.InterpolationMethod;
  * The specified geometric mapping is supposed to be INVERTED, i.e. transforming
  * <strong>target to source</strong> coordinates!
  * 
+ * @author WB
  * @version 2021/08/27
- *
+ * @see ImageAccessor
+ * @see Mapping2D
  */
 public class ImageMapper {
 	
@@ -91,7 +93,7 @@ public class ImageMapper {
 	 */
 	public void map(ImageProcessor source, ImageProcessor target) {
 		if (target == source) {
-			throw new IllegalArgumentException("Source and target image must not be the same!");
+			throw new IllegalArgumentException("source and target image must not be the same!");
 		}
 		ImageAccessor sourceAcc = ImageAccessor.create(source, obs, ipm);
 		ImageAccessor targetAcc = ImageAccessor.create(target);
@@ -105,12 +107,12 @@ public class ImageMapper {
 	 * Transforms the source image to the target image using this geometric
 	 * mapping and the specified pixel interpolation method.
 	 * The two images are passed as instances of {@link ImageAccessor}.
-	 * Note that source and target reference different images!
+	 * Note that source and target must be different images!
 	 * The geometric mapping is supposed to be INVERTED, i.e. transforming
 	 * target to source image coordinates!
 	 * 
-	 * @param sourceAcc accessor to the source image
-	 * @param targetAcc accessor to the target image
+	 * @param sourceAcc {@link ImageAccessor} for the source image
+	 * @param targetAcc {@link ImageAccessor} for the target image
 	 */
 	public void map(ImageAccessor sourceAcc, ImageAccessor targetAcc) {
 		if (targetAcc.getProcessor() == sourceAcc.getProcessor()) {
