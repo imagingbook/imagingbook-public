@@ -27,7 +27,6 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
-import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 /**
@@ -68,7 +67,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * {@link AutoCloseable} interface).
  * The {@link #getGraphics2D()} method exposes the underlying 
  * {@link Graphics2D} instance of the {@link ImageGraphics} object, which can then be used to
- * perform arbitrary graphic operations.
+ * perform arbitrary AWT graphic operations.
  * Thus, the above example could <strong>alternatively</strong> be implemented as follows:
  * <pre>
  * ImageProcessor ip = ... ;   // some ByteProcessor, ShortProcessor or ColorProcessor
@@ -86,12 +85,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * setting colors and stroke parameters.
  * If intermediate updates are needed (e.g., for animations), the {@code update()} method
  * can be invoked any time.
- * The plugin {@code Geometric_Operations.Draw_Test_Grid} in the
- * <a href="https://github.com/imagingbook/imagingbook-plugins-all/tree/master">
- * imagingbook-plugins-all</a> repository shows a complete example.
  * </p>
- * 
- * TODO: Add text drawing, merge with {@link ColoredStroke}.
  * 
  * @author WB
  * @version 2020-01-07
@@ -99,6 +93,8 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * @see ShapeOverlayAdapter
  */
 public class ImageGraphics implements AutoCloseable {
+	
+	// TODO: Add text drawing, merge with {@link ColoredStroke}.
 	
 	private static BasicStroke DEFAULT_STROKE = new BasicStroke();
 	private static Color DEFAULT_COLOR = Color.white;
@@ -151,10 +147,17 @@ public class ImageGraphics implements AutoCloseable {
 		this.setAntialiasing(DEFAULT_ANTIALIASING);
 	}
 	
-	public void setAntialiasing(boolean on) {
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, on ? 
+	/**
+	 * Turn anti-aliasing on/off for this {@link ImageGraphics} instance
+	 * (turned on by default). The new setting will only affect
+	 * subsequent graphics operations.
+	 * 
+	 * @param onoff set true to turn on
+	 */
+	public void setAntialiasing(boolean onoff) {
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, onoff ? 
 				RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, on ?
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, onoff ?
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 	}
 	
@@ -236,8 +239,8 @@ public class ImageGraphics implements AutoCloseable {
 	// -----------------------------------------------------------
 	
 	/**
-	 * Convenience method. Draws a straight line segment specified with
-	 * {@code double} coordinate values.
+	 * Draws a straight line segment specified with
+	 * {@code double} coordinate values (convenience method).
 	 * @param x1 x-coordinate of start point
 	 * @param y1 y-coordinate of start point
 	 * @param x2 x-coordinate of end point
@@ -249,8 +252,8 @@ public class ImageGraphics implements AutoCloseable {
 	}
 	
 	/**
-	 * Convenience method. Draws an ellipse specified with
-	 * {@code double} coordinate values.
+	 * Draws an ellipse specified with
+	 * {@code double} coordinate values (convenience method).
 	 * @param x x-coordinate of the upper-left corner of the framing rectangle
 	 * @param y y-coordinate of the upper-left corner of the framing rectangle
 	 * @param w width
@@ -262,8 +265,8 @@ public class ImageGraphics implements AutoCloseable {
 	}
 	
 	/**
-	 * Convenience method. Draws a rectangle specified with
-	 * {@code double} coordinate values.
+	 * Draws a rectangle specified with
+	 * {@code double} coordinate values (convenience method).
 	 * @param x x-coordinate of the upper-left corner
 	 * @param y y-coordinate of the upper-left corner
 	 * @param w width
@@ -275,8 +278,9 @@ public class ImageGraphics implements AutoCloseable {
 	}
 	
 	/**
-	 * Convenience method. Draws a closed polygon specified by a 
-	 * sequence of {@link Point2D} objects (with arbitrary coordinate values).
+	 * Draws a closed polygon specified by a 
+	 * sequence of {@link Point2D} objects with arbitrary coordinate values
+	 * (convenience method).
 	 * Note that the the polygon is automatically closed, i.e.,
 	 * N+1 segments are drawn if the number of given points is N.
 	 * @param points a sequence of 2D points
