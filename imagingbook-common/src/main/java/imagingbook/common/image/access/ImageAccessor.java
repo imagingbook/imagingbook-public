@@ -11,6 +11,7 @@ package imagingbook.common.image.access;
 
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.image.PixelPack;
 import imagingbook.common.interpolation.InterpolationMethod;
 
 /**
@@ -41,9 +42,17 @@ import imagingbook.common.interpolation.InterpolationMethod;
  * The methods {@link #getPix(double, double)} and {@link ScalarAccessor#getVal(double, double)} perform interpolation at non-integer coordinates
  * using the specified {@link InterpolationMethod}.
  * </p>
+ * <p>
+ * A related concept for providing unified access to images is {@link PixelPack},
+ * which copies all pixel data to internal {@code float} arrays.
+ * In contrast to {@link PixelPack}, {@link ImageAccessor} does not duplicate
+ * any data but reads and writes the original {@link ImageProcessor} pixel data
+ * directly.
+ * </p>
  * 
  * @author WB
  * @version 2020/12/27
+ * @see PixelPack
  */
 public abstract class ImageAccessor {
 	

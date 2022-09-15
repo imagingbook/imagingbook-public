@@ -18,6 +18,7 @@ import ij.process.ShortProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.image.access.GridIndexer2D;
+import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.access.OutOfBoundsStrategy;
 
 /**
@@ -59,9 +60,16 @@ import imagingbook.common.image.access.OutOfBoundsStrategy;
  * ...
  * ColorProcessor ip2 = pack.toColorProcessor();
  * </pre>
+ * <p>
+ * A related concept for providing unified access to images is {@link ImageAccessor}.
+ * In contrast to {@link PixelPack}, {@link ImageAccessor} does not duplicate
+ * any data but reads and writes the original {@link ImageProcessor} pixel data
+ * directly.
+ * </p>
  * 
  * @author WB
  * @version 2022/09/03
+ * @see ImageAccessor
  */
 public class PixelPack {
 	
