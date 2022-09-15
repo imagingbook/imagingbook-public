@@ -8,6 +8,12 @@
  *******************************************************************************/
 package LucasKanade;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Random;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Overlay;
@@ -26,12 +32,6 @@ import imagingbook.common.lucaskanade.LucasKanadeMatcher;
 import imagingbook.common.lucaskanade.utils.ImageExtractor;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Random;
 
 
 /**

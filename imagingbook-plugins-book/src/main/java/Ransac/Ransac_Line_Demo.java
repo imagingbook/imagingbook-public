@@ -8,10 +8,10 @@
  *******************************************************************************/
 package Ransac;
 
-import imagingbook.common.ij.IjUtils;
-import imagingbook.sampleimages.GeneralSampleImage;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
+import imagingbook.common.ij.IjUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * RANSAC line detection demo. Opens a local sample image and then runs

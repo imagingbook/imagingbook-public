@@ -28,8 +28,8 @@ import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.ransac.RansacDetectorCircle;
 import imagingbook.common.ransac.RansacCurveResult;
+import imagingbook.common.ransac.RansacDetectorCircle;
 
 /**
  * RANSAC circle detection implemented with imagingbook library class

@@ -8,9 +8,9 @@
  *******************************************************************************/
 package Filters;
 
-import ij.*;
+import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
-import ij.process.*;
+import ij.process.ImageProcessor;
 
 /**
  * A hand-crafted linear filter for demo purposes only.

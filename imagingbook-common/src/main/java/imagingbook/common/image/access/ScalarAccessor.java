@@ -13,8 +13,8 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.interpolation.InterpolationMethod;
 import imagingbook.common.interpolation.PixelInterpolator;
+import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
 
 /**
  * The common (abstract) super-class for all image accessors to scalar-valued

@@ -8,14 +8,14 @@
  *******************************************************************************/
 package EdgeFilters;
 
+import java.awt.Color;
+
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.Blitter;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-
-import java.awt.Color;
 
 public class Sobel_Edges_Colored implements PlugInFilter {
     static float[] sobelX = {

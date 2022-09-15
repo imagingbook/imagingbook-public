@@ -9,16 +9,16 @@
 
 package imagingbook.common.regions.utils;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Shape;
+import java.util.List;
+
 import ij.gui.Overlay;
 import ij.gui.Roi;
 import ij.gui.ShapeRoi;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.ContourTracer;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Shape;
-import java.util.List;
 
 /**
  * A special overlay for showing binary region contours.

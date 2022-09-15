@@ -17,7 +17,6 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.colorspace.HsvColorSpace;
-import imagingbook.common.color.colorspace.HsvConverter;
 import imagingbook.common.math.Arithmetic;
 
 /**

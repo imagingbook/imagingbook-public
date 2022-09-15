@@ -8,13 +8,13 @@
  *******************************************************************************/
 package ColorImages;
 
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-
-import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
 
 public class Brighten_Index_Image implements PlugInFilter {
 	

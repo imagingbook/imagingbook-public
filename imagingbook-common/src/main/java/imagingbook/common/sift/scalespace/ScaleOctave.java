@@ -9,13 +9,13 @@
 
 package imagingbook.common.sift.scalespace;
 
+import java.io.PrintStream;
+import java.util.Locale;
+
 import ij.ImagePlus;
 import ij.ImageStack;
 import imagingbook.common.util.LinearContainer;
 import imagingbook.common.util.PrintsToStream;
-
-import java.io.PrintStream;
-import java.util.Locale;
 
 /**
  * Represents a stack of scale levels within an octave. Basically this is 

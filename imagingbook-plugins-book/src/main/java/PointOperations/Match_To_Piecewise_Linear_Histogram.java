@@ -13,8 +13,8 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramMatcher;
 import imagingbook.common.histogram.HistogramPlot;
-import imagingbook.common.histogram.PiecewiseLinearCdf;
 import imagingbook.common.histogram.HistogramUtils;
+import imagingbook.common.histogram.PiecewiseLinearCdf;
 
 /**
  * Adapts image intensities to match a piecewise-linear histogram.

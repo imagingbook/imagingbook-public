@@ -17,7 +17,7 @@ import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.geometry.mappings.nonlinear.BilinearMapping2D;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.interpolation.InterpolationMethod;
+import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
 
 /**
  * Demo plugin showing how to specify a bilinear transformation from

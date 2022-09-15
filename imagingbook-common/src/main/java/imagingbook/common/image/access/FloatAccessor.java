@@ -11,7 +11,7 @@ package imagingbook.common.image.access;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.interpolation.InterpolationMethod;
+import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
 
 /**
  * Image accessor for scalar images with 32-bit (float) values.

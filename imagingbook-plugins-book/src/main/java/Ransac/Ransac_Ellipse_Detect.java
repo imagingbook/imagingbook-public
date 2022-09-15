@@ -28,9 +28,9 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.common.ransac.RansacCurveResult;
 import imagingbook.common.ransac.RansacDetectorCircle;
 import imagingbook.common.ransac.RansacDetectorEllipse;
-import imagingbook.common.ransac.RansacCurveResult;
 
 /**
  * RANSAC ellipse detection implemented with imagingbook library class

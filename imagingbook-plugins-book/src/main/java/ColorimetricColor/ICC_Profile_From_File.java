@@ -8,8 +8,8 @@
  *******************************************************************************/
 package ColorimetricColor;
 
-import java.awt.color.ICC_Profile;
 import java.awt.color.ICC_ColorSpace;
+import java.awt.color.ICC_Profile;
 import java.awt.color.ICC_ProfileRGB;
 import java.io.IOException;
 

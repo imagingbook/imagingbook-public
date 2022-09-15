@@ -11,7 +11,6 @@ package Ransac;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
-
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**

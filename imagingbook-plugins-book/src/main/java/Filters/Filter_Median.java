@@ -8,11 +8,11 @@
  *******************************************************************************/
 package Filters;
 
+import java.util.Arrays;
+
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-
-import java.util.Arrays;
 
 /** 
  * A hand-crafted median filter for 8-bit grayscale images.

@@ -11,7 +11,7 @@ package imagingbook.common.image.access;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.interpolation.InterpolationMethod;
+import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
 
 /**
  * Image accessor for scalar images with 16-bit (short) values.

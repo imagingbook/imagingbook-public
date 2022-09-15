@@ -8,14 +8,14 @@
  *******************************************************************************/
 
 package imagingbook.common.color.statistics;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ColorStatistics {
 	

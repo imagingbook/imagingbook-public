@@ -8,9 +8,9 @@
  *******************************************************************************/
 package Filters;
 
-import ij.*;
+import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
-import ij.process.*;
+import ij.process.ImageProcessor;
 
 public class Filter_Smooth_3x3 implements PlugInFilter {
 

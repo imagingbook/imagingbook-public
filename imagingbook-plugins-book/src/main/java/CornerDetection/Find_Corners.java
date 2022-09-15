@@ -22,10 +22,10 @@ import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.corners.Corner;
 import imagingbook.common.corners.GradientCornerDetector;
+import imagingbook.common.corners.GradientCornerDetector.Parameters;
 import imagingbook.common.corners.HarrisCornerDetector;
 import imagingbook.common.corners.MopsCornerDetector;
 import imagingbook.common.corners.ShiTomasiCornerDetector;
-import imagingbook.common.corners.GradientCornerDetector.Parameters;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 

@@ -27,8 +27,8 @@ import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.ransac.RansacDetectorLine;
 import imagingbook.common.ransac.RansacCurveResult;
+import imagingbook.common.ransac.RansacDetectorLine;
 
 /**
  * RANSAC line detection using imagingbook library class {@link RansacDetectorLine}.

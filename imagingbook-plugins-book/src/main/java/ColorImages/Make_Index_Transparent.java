@@ -8,16 +8,16 @@
  *******************************************************************************/
 package ColorImages;
 
+import java.awt.Point;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.PointRoi;
 import ij.gui.Roi;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-
-import java.awt.Point;
-import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
 
 /**
  * Makes a specific color of the current (index) color image 

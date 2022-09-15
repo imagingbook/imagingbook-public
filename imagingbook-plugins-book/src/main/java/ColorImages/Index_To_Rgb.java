@@ -8,14 +8,14 @@
  *******************************************************************************/
 package ColorImages;
 
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-
-import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
 
 public class Index_To_Rgb implements PlugInFilter {
 	static final int R = 0, G = 1, B = 2;

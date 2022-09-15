@@ -21,6 +21,23 @@ import imagingbook.common.image.access.ScalarAccessor;
 public interface PixelInterpolator {
 	
 	/**
+	 * Enumeration type listing the most common interpolation methods.
+	 */
+	public enum InterpolationMethod {
+		NearestNeighbor,
+		Bilinear,
+		Bicubic,
+		BicubicSmooth,
+		BicubicSharp,
+		CatmullRom,
+		CubicBSpline,
+		MitchellNetravali,
+		Lanzcos2,
+		Lanzcos3,
+		Lanzcos4;
+	}
+	
+	/**
 	 * Returns a {@link PixelInterpolator} instance for the specififed
 	 * {@link InterpolationMethod}.
 	 * 

@@ -14,7 +14,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
-import imagingbook.common.interpolation.InterpolationMethod;
+import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
 import imagingbook.common.util.EnumUtils;
 
 /**

@@ -13,7 +13,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.image.access.ImageAccessor;
-import imagingbook.common.interpolation.InterpolationMethod;
+import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
 
 /**
  * This class defines methods to perform arbitrary geometric transformations

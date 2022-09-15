@@ -10,7 +10,7 @@ package imagingbook.common.image.access;
 
 import ij.process.ImageProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.interpolation.InterpolationMethod;
+import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
 
 /** 
  * Accessor for vector-valued images with arbitrary depth 

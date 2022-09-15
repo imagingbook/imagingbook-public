@@ -13,9 +13,9 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaF.Parameters;
 import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaFilterScalar;
 import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaFilterVector;
-import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaF.Parameters;
 
 /**
  * This plugin demonstrates the 5x5 Nagao-Matsuyama filter, as described in
