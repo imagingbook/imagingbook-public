@@ -13,39 +13,44 @@ import imagingbook.common.image.access.ScalarAccessor;
 
 
 /**
- * This is the common (abstract) superclass to all pixel interpolators
+ * This interface defines the behavior of 2D pixel interpolators
  * for scalar-valued images.
+ * 
  * @author WB
- *
  */
 public interface PixelInterpolator {
 	
-	public static PixelInterpolator create(ScalarAccessor ia) {
-		return create(ia.getInterpolationMethod());
-	}
-	
+	/**
+	 * Returns a {@link PixelInterpolator} instance for the specififed
+	 * {@link InterpolationMethod}.
+	 * 
+	 * @param method the interpolation method
+	 * @return
+	 */
 	public static PixelInterpolator create(InterpolationMethod method) {
 		switch (method) {
-		case NearestNeighbor : 	return new NearestNeighborInterpolator(); 
+		case NearestNeighbor : 	return new NearestNeighborInterpolator();
 		case Bilinear : 		return new BilinearInterpolator();
 		case Bicubic : 			return new BicubicInterpolator(1.00);
 		case BicubicSmooth : 	return new BicubicInterpolator(0.25);
 		case BicubicSharp : 	return new BicubicInterpolator(1.75);
-		case CatmullRom: 		return new SplineInterpolator(0.5, 0.0);
-		case CubicBSpline: 		return new SplineInterpolator(0.0, 1.0);
-		case MitchellNetravali: return new SplineInterpolator(1.0/3, 1.0/3);
+		case CatmullRom: 		return new CatmullRomInterpolator();
+		case CubicBSpline: 		return new CubicBSplineInterpolator();
+		case MitchellNetravali: return new MitchellNetravaliInterpolator();
 		case Lanzcos2 : 		return new LanczosInterpolator(2);
 		case Lanzcos3 : 		return new LanczosInterpolator(3);
 		case Lanzcos4 : 		return new LanczosInterpolator(4);
-		default : throw new IllegalArgumentException("unhandled interpolator method: " + method);
+		//default : throw new IllegalArgumentException("unhandled interpolation method: " + method);
 		}
+		return null;
 	}
 	
 	/**
-	 * All interpolator classes must implement this method. 
-	 * @param ia Accessor to the interpolated image.
-	 * @param x Continuous interpolation position (horiz.)  
-	 * @param y Continuous interpolation position (vert.)  
+	 * Returns the interpolated pixel value for the specified position. 
+	 * 
+	 * @param ia a {@link ScalarAccessor} to the interpolated image
+	 * @param x continuous interpolation position (horiz.)  
+	 * @param y continuous interpolation position (vert.)  
 	 * @return The interpolated pixel value at position (x,y).
 	 */
 	public abstract float getInterpolatedValue(ScalarAccessor ia, double x, double y);

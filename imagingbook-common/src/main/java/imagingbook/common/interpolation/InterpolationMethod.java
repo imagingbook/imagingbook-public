@@ -8,6 +8,13 @@
  *******************************************************************************/
 package imagingbook.common.interpolation;
 
+/**
+ * Enumeration type listing the most common interpolation methods.
+ * 
+ * @author WB
+ * @see PixelInterpolator
+ * @see PixelInterpolator#create(InterpolationMethod)
+ */
 public enum InterpolationMethod {
 	NearestNeighbor,
 	Bilinear,
