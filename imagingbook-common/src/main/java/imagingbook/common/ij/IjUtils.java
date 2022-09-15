@@ -421,7 +421,7 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Creates and returns a new {@code ByteProcessor} from
+	 * Creates and returns a new {@link ByteProcessor} from
 	 * the specified 2D {@code byte} array, assumed to be
 	 * arranged in the form {@code A[x][y]}, i.e.,
 	 * the first coordinate is horizontal, the second vertical.
@@ -429,7 +429,7 @@ public abstract class IjUtils {
 	 * the height of the resulting image.
 	 * 
 	 * @param A a 2D {@code byte} array
-	 * @return a new {@code ByteProcessor} of size {@code A.length} x {@code A[0].length}
+	 * @return a new {@link ByteProcessor} of size {@code A.length} x {@code A[0].length}
 	 */
 	public static ByteProcessor toByteProcessor(byte[][] A) {
 		final int w = A.length;
@@ -443,6 +443,17 @@ public abstract class IjUtils {
 		return bp;
 	}
 	
+	/**
+	 * Creates and returns a new {@code byte[][]} from
+	 * the specified {@link ByteProcessor}.
+	 * The resulting array is arranged in the form {@code A[x][y]},
+	 * i.e., the first coordinate is horizontal, the second vertical.
+	 * Thus {@code A.length} is the width and {@code A[0].length}
+	 * the height of the image.
+	 * 
+	 * @param bp a {@link ByteProcessor}
+	 * @return a 2D {@code byte} array
+	 */
 	public static byte[][] toByteArray(ByteProcessor bp) {
 		final int w = bp.getWidth();
 		final int h = bp.getHeight();
@@ -455,6 +466,18 @@ public abstract class IjUtils {
 		return A;
 	}
 	
+	/**
+	 * Creates and returns a new {@link ByteProcessor} from
+	 * the specified 2D {@code int} array, assumed to be
+	 * arranged in the form {@code A[x][y]}, i.e.,
+	 * the first coordinate is horizontal, the second vertical.
+	 * Thus {@code A.length} is the width and {@code A[0].length}
+	 * the height of the resulting image.
+	 * Pixel values are clamped to [0, 255].
+	 * 
+	 * @param A a 2D {@code int} array
+	 * @return a new {@link ByteProcessor} of size {@code A.length} x {@code A[0].length}
+	 */
 	public static ByteProcessor toByteProcessor(int[][] A) {
 		final int w = A.length;
 		final int h = A[0].length;
@@ -470,6 +493,21 @@ public abstract class IjUtils {
 			}
 		}
 		return bp;
+	}
+	
+	/**
+	 * Creates and returns a new {@code int[][]} from
+	 * the specified {@link ByteProcessor}.
+	 * The resulting array is arranged in the form {@code A[x][y]},
+	 * i.e., the first coordinate is horizontal, the second vertical.
+	 * Thus {@code A.length} is the width and {@code A[0].length}
+	 * the height of the image.
+	 * 
+	 * @param bp a {@link ByteProcessor}
+	 * @return a 2D {@code int} array
+	 */
+	public static int[][] toIntArray(ByteProcessor bp) {
+		return bp.getIntArray();
 	}
 	
 	/**
@@ -697,6 +735,14 @@ public abstract class IjUtils {
 		return new ByteProcessor(bitmap.getWidth(), bitmap.getHeight(), pixels);
 	}
 	
+	/**
+	 * Draws the given set of points onto the specified image
+	 * (by setting the corresponding pixels).
+	 * 
+	 * @param ip the image to draw to
+	 * @param points the 2D points
+	 * @param value the pixel value to use
+	 */
 	public static void drawPoints(ImageProcessor ip, Pnt2d[] points, int value) {
 		for (int i = 0; i < points.length; i++) {
 			Pnt2d p = points[i];

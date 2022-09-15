@@ -25,28 +25,31 @@ import ij.gui.ImageWindow;
 import ij.plugin.ScreenGrabber;
 
 /**
+ * Defines static utility methods related to ImageJ's GUI.
  * 
  * @author WB
  * @version 2020/10/09
- *
+ * @version 2022/09/15
  */
-public class GuiTools {
+public abstract class GuiTools {
 	
-	public static String DEFAULT_DIALOG_TITLE = "Choose image";
+	private GuiTools() {}
+	
+	public static final String DEFAULT_DIALOG_TITLE = "Choose image";
 	
 	/**
 	 * Queries the user to select one of the currently open images.
 	 *  
-	 * @param title name of the dialog window (if null, the default title is used)
-	 * @param excludeIm image to exclude from being selected (typically the current image)
+	 * @param title name of the dialog window (if null, {@link #DEFAULT_DIALOG_TITLE} is used)
+	 * @param exclude image to exclude from being selected (typically the current image)
 	 * @return a reference to the chosen image (ImagePlus) or null, if the dialog was cancelled
 	 */
-    public static ImagePlus chooseOpenImage(String title, ImagePlus excludeIm) {
+    public static ImagePlus chooseOpenImage(String title, ImagePlus exclude) {
 		if (title == null) {
 			title = DEFAULT_DIALOG_TITLE;
 		}
 		int[] imgIdsAll = WindowManager.getIDList();
-		if (imgIdsAll==null) {
+		if (imgIdsAll == null) {
 			IJ.error("No images are open.");
 			return null;
 		}
@@ -56,7 +59,7 @@ public class GuiTools {
 		
 		for (int id : imgIdsAll) {
 			ImagePlus img = WindowManager.getImage(id);
-			if (img!=null && img != excludeIm && img.isProcessor()) {
+			if (img!=null && img != exclude && img.isProcessor()) {
 				imgIdList.add(id);
 				imgNameList.add(img.getShortTitle());
 			}
@@ -80,10 +83,22 @@ public class GuiTools {
 		}
     }
     
+    /**
+	 * Queries the user to select one of the currently open images.
+	 *  
+	 * @param title name of the dialog window (if null, {@link #DEFAULT_DIALOG_TITLE} is used)
+	 * @return a reference to the chosen image (ImagePlus) or null, if the dialog was cancelled
+	 */
 	public static ImagePlus chooseOpenImage(String title) {
 		return chooseOpenImage(title, null);
 	}
 	
+	/**
+	 * Queries the user to select one of the currently open images.
+	 *  
+	 * @param title name of the dialog window (if null, {@link #DEFAULT_DIALOG_TITLE} is used)
+	 * @return a reference to the chosen image (ImagePlus) or null, if the dialog was cancelled
+	 */
     public static ImagePlus chooseOpenImage() {
     	return chooseOpenImage(null, null);
     }
@@ -219,13 +234,18 @@ public class GuiTools {
 	// -----------------------------------------------------------------------
 	
 	/**
-	 * Retrieves the current magnification (zoom) factor for the given
-	 * image window.
+	 * Returns the current magnification (zoom) factor for the specified
+	 * {@link ImagePlus} instance.
+	 * Throws an exception if the image is currently not displayed.
 	 * 
 	 * @param im the image, which must be currently open (displayed)
 	 * @return the magnification factor
 	 */
 	public static double getMagnification(ImagePlus im) {
+		ImageWindow win = im.getWindow();
+		if (win == null) {
+			throw new IllegalArgumentException("cannot get magnification for non-displayed image");
+		}
 		return im.getWindow().getCanvas().getMagnification();
 	}
 

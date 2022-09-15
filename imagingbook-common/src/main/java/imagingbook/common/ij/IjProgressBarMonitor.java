@@ -13,18 +13,23 @@ import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.common.util.progress.ProgressReporter;
 
 /**
- * Implementation of {@link ProgressMonitor} which sends the current
- * completion state to ImageJ's progress bar (if ImageJ is running).
- * An instance of this class monitors the progress of another object (task)
- * by querying its status periodically.
+ * Implementation of {@link ProgressMonitor} which periodically polls the 
+ * completion state of the associated target task
+ * ({@link ProgressReporter}) and sends this information
+ * to ImageJ's progress bar (if ImageJ is running).
  * 
  * @author WB
+ * @version 2022/09/07
  * @see ProgressReporter
  * @see ProgressMonitor
  *
  */
 public class IjProgressBarMonitor extends ProgressMonitor {
 	
+	/**
+	 * Constructor.
+	 * @param target the target task ({@link ProgressReporter}) to be monitored 
+	 */
 	public IjProgressBarMonitor(ProgressReporter target) {
 		super(target);
 	}

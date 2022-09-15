@@ -31,7 +31,8 @@ import imagingbook.common.ij.IjProgressBarMonitor;
  */
 public abstract class ProgressMonitor extends Thread implements AutoCloseable {
 	
-	public static int DefaultWaitTime = 250; // ms
+	/** The default wait time between successive progress queries. */
+	public static final int DefaultWaitTime = 250; // ms
 	
 	private int waitTime = DefaultWaitTime;
 	private final ProgressReporter target;
@@ -80,15 +81,14 @@ public abstract class ProgressMonitor extends Thread implements AutoCloseable {
 	}
 	
 	/**
-	 * Abstract method to be implemented by concrete sub-classes.
-	 * It is called by the {@link ProgressMonitor} thread in regular intervals.
-	 * Current progress (degree of completion) value is passed.
+	 * Called periodically by the {@link ProgressMonitor} thread
+	 * supplying the current progress value (degree of completion).
 	 * It is up to the implementation what action should be performed,
 	 * e.g., display the current progress graphically 
 	 * (see e.g. {@link IjProgressBarMonitor}).
 	 * 
-	 * @param progress the current progress (degree of completion) value in [0,1)
-	 * @param elapsedNanoTime the time elapsed since the progress monitor was started (in nanoseconds)
+	 * @param progress the current progress value (degree of completion) in [0,1)
+	 * @param elapsedNanoTime the time elapsed since this progress monitor was started (in nanoseconds)
 	 */
 	public abstract void handleProgress(double progress, long elapsedNanoTime);
 	

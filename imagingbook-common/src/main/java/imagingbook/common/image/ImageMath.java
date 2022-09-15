@@ -23,6 +23,14 @@ public abstract class ImageMath {
 	
 	private ImageMath() {}
 	
+	/**
+	 * Calculates the absolute pixel values of the specified image
+	 * and returns a new image of the same type.
+	 *  
+	 * @param <T> the type of {@link ImageProcessor}
+	 * @param ip the input image
+	 * @return the resulting image
+	 */
 	public static <T extends ImageProcessor> T abs(T ip) {
 		@SuppressWarnings("unchecked")
 		T ip2 = (T) ip.duplicate();
@@ -30,6 +38,14 @@ public abstract class ImageMath {
 		return ip2;
 	}
 	
+	/**
+	 * Calculates the squared pixel values of the specified image
+	 * and returns a new image of the same type.
+	 *  
+	 * @param <T> the type of {@link ImageProcessor}
+	 * @param ip the input image
+	 * @return the resulting image
+	 */
 	public static <T extends ImageProcessor> T sqr(T ip) {
 		@SuppressWarnings("unchecked")
 		T ip2 = (T) ip.duplicate();
@@ -37,6 +53,14 @@ public abstract class ImageMath {
 		return ip2;
 	}
 	
+	/**
+	 * Calculates the square root of the pixel values of the specified image
+	 * and returns a new image of the same type.
+	 *  
+	 * @param <T> the type of {@link ImageProcessor}
+	 * @param ip the input image
+	 * @return the resulting image
+	 */
 	public static <T extends ImageProcessor> T sqrt(T ip) {
 		@SuppressWarnings("unchecked")
 		T ip2 = (T) ip.duplicate();
@@ -44,14 +68,38 @@ public abstract class ImageMath {
 		return ip2;
 	}
 	
+	/**
+	 * Adds the pixel values of the specified images
+	 * and returns a new image of the same type
+	 * as the first image.
+	 *  
+	 * @param <T> the type of {@link ImageProcessor}
+	 * @param ip the input image
+	 * @return the resulting image
+	 */
 	public static<T extends ImageProcessor> T add(T ip1, T ip2) {
+		if (!ip1.getClass().equals(ip2.getClass())) {
+			throw new IllegalArgumentException("input images must be of the same type");
+		}
 		@SuppressWarnings("unchecked")
 		T ip3 = (T) ip1.duplicate();
 		ip3.copyBits(ip2, 0, 0, Blitter.ADD);
 		return ip3;
 	}
 	
+	/**
+	 * Multiplies the pixel values of the specified images
+	 * and returns a new image of the same type
+	 * as the first image.
+	 *  
+	 * @param <T> the type of {@link ImageProcessor}
+	 * @param ip the input image
+	 * @return the resulting image
+	 */
 	public static<T extends ImageProcessor> T mult(T ip1, T ip2) {
+		if (!ip1.getClass().equals(ip2.getClass())) {
+			throw new IllegalArgumentException("input images must be of the same type");
+		}
 		@SuppressWarnings("unchecked")
 		T ip3 = (T) ip1.duplicate();
 		ip3.copyBits(ip2, 0, 0, Blitter.MULTIPLY);

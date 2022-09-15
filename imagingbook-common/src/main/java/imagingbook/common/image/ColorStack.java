@@ -30,6 +30,9 @@ import imagingbook.common.color.colorspace.sRgb65ColorSpace;
  * color space (see {@link #ColorStack(ColorProcessor)}).
  * To be converted back to a {@link ColorProcessor}, the {@link ColorStack}
  * must be in sRGB color space (see {@link #convertToSrgb()}).
+ * 
+ * @author WB
+ * @version 2022/09/10
  */
 public class ColorStack extends PixelPack {
 	
