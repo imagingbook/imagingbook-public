@@ -40,133 +40,136 @@
 <span class="sourceLineNo">030</span><a id="line.30"> * color space (see {@link #ColorStack(ColorProcessor)}).</a>
 <span class="sourceLineNo">031</span><a id="line.31"> * To be converted back to a {@link ColorProcessor}, the {@link ColorStack}</a>
 <span class="sourceLineNo">032</span><a id="line.32"> * must be in sRGB color space (see {@link #convertToSrgb()}).</a>
-<span class="sourceLineNo">033</span><a id="line.33"> */</a>
-<span class="sourceLineNo">034</span><a id="line.34">public class ColorStack extends PixelPack {</a>
-<span class="sourceLineNo">035</span><a id="line.35">        </a>
-<span class="sourceLineNo">036</span><a id="line.36">        // the current color space of this color stack</a>
-<span class="sourceLineNo">037</span><a id="line.37">        private ColorSpace colorspace = null;</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * </a>
+<span class="sourceLineNo">034</span><a id="line.34"> * @author WB</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * @version 2022/09/10</a>
+<span class="sourceLineNo">036</span><a id="line.36"> */</a>
+<span class="sourceLineNo">037</span><a id="line.37">public class ColorStack extends PixelPack {</a>
 <span class="sourceLineNo">038</span><a id="line.38">        </a>
-<span class="sourceLineNo">039</span><a id="line.39">        // ---------------------------------------------------------------------</a>
-<span class="sourceLineNo">040</span><a id="line.40">        </a>
-<span class="sourceLineNo">041</span><a id="line.41">        /**</a>
-<span class="sourceLineNo">042</span><a id="line.42">         * Constructor.</a>
-<span class="sourceLineNo">043</span><a id="line.43">         * @param cp a color image assumed to be in sRGB</a>
-<span class="sourceLineNo">044</span><a id="line.44">         */</a>
-<span class="sourceLineNo">045</span><a id="line.45">        public ColorStack(ColorProcessor cp) {</a>
-<span class="sourceLineNo">046</span><a id="line.46">                super(cp, 1.0/255, null);</a>
-<span class="sourceLineNo">047</span><a id="line.47">                setColorSpace(sRgb65ColorSpace.getInstance());</a>
-<span class="sourceLineNo">048</span><a id="line.48">        }</a>
-<span class="sourceLineNo">049</span><a id="line.49">        </a>
-<span class="sourceLineNo">050</span><a id="line.50">        // -----------------------------------------------------------------</a>
-<span class="sourceLineNo">051</span><a id="line.51">        </a>
-<span class="sourceLineNo">052</span><a id="line.52">        /**</a>
-<span class="sourceLineNo">053</span><a id="line.53">         * Returns the 3 color components as an array of {@link FloatProcessor}.</a>
-<span class="sourceLineNo">054</span><a id="line.54">         * @return a {@link FloatProcessor} array</a>
-<span class="sourceLineNo">055</span><a id="line.55">         */</a>
-<span class="sourceLineNo">056</span><a id="line.56">        public FloatProcessor[] getProcessors() {</a>
-<span class="sourceLineNo">057</span><a id="line.57">                FloatProcessor[] processors = new FloatProcessor[3];</a>
-<span class="sourceLineNo">058</span><a id="line.58">                for (int k = 0; k &lt; 3; k++) {</a>
-<span class="sourceLineNo">059</span><a id="line.59">                        processors[k] = new FloatProcessor(width, height, data[k]);</a>
-<span class="sourceLineNo">060</span><a id="line.60">                }</a>
-<span class="sourceLineNo">061</span><a id="line.61">                return processors;</a>
-<span class="sourceLineNo">062</span><a id="line.62">        }</a>
-<span class="sourceLineNo">063</span><a id="line.63">        </a>
-<span class="sourceLineNo">064</span><a id="line.64">        /**</a>
-<span class="sourceLineNo">065</span><a id="line.65">         * Returns the current color space instance of this {@link ColorStack}.</a>
-<span class="sourceLineNo">066</span><a id="line.66">         * @return the current color space</a>
-<span class="sourceLineNo">067</span><a id="line.67">         */</a>
-<span class="sourceLineNo">068</span><a id="line.68">        public ColorSpace getColorspace() {</a>
-<span class="sourceLineNo">069</span><a id="line.69">                return this.colorspace;</a>
-<span class="sourceLineNo">070</span><a id="line.70">        }</a>
-<span class="sourceLineNo">071</span><a id="line.71">        </a>
-<span class="sourceLineNo">072</span><a id="line.72">        private void setColorSpace(ColorSpace colorspace) {</a>
-<span class="sourceLineNo">073</span><a id="line.73">                this.colorspace = colorspace;</a>
-<span class="sourceLineNo">074</span><a id="line.74">        }</a>
-<span class="sourceLineNo">075</span><a id="line.75">        </a>
-<span class="sourceLineNo">076</span><a id="line.76">        // -----------------------------------------------------------------</a>
-<span class="sourceLineNo">077</span><a id="line.77">        </a>
-<span class="sourceLineNo">078</span><a id="line.78">        /**</a>
-<span class="sourceLineNo">079</span><a id="line.79">         * Converts the pixel values of this {@link ColorStack} to the specified</a>
-<span class="sourceLineNo">080</span><a id="line.80">         * color space. The color stack must be in sRGB space.</a>
-<span class="sourceLineNo">081</span><a id="line.81">         * Exceptions are thrown if the color stack is not in sRGB color space</a>
-<span class="sourceLineNo">082</span><a id="line.82">         * or the target color space is sRGB.</a>
-<span class="sourceLineNo">083</span><a id="line.83">         * </a>
-<span class="sourceLineNo">084</span><a id="line.84">         * @param targetColorspace the new color space</a>
-<span class="sourceLineNo">085</span><a id="line.85">         */</a>
-<span class="sourceLineNo">086</span><a id="line.86">        public void convertFromSrgbTo(final ColorSpace targetColorspace) {</a>
-<span class="sourceLineNo">087</span><a id="line.87">                if (!(colorspace instanceof sRgb65ColorSpace)) {</a>
-<span class="sourceLineNo">088</span><a id="line.88">                        throw new IllegalStateException("color stack must be in sRGB");</a>
-<span class="sourceLineNo">089</span><a id="line.89">                }</a>
-<span class="sourceLineNo">090</span><a id="line.90">                </a>
-<span class="sourceLineNo">091</span><a id="line.91">                if (targetColorspace instanceof sRgb65ColorSpace) {</a>
-<span class="sourceLineNo">092</span><a id="line.92">                        throw new IllegalArgumentException("cannot convert color stack from sRGB to sRGB");</a>
-<span class="sourceLineNo">093</span><a id="line.93">                }</a>
-<span class="sourceLineNo">094</span><a id="line.94">                </a>
-<span class="sourceLineNo">095</span><a id="line.95">                final float[] srgb = new float[3];</a>
-<span class="sourceLineNo">096</span><a id="line.96">                </a>
-<span class="sourceLineNo">097</span><a id="line.97">                for (int i = 0; i &lt; length; i++) {</a>
-<span class="sourceLineNo">098</span><a id="line.98">                        getPix(i, srgb);</a>
-<span class="sourceLineNo">099</span><a id="line.99">                        clipTo01(srgb);</a>
-<span class="sourceLineNo">100</span><a id="line.100">                        float[] c = targetColorspace.fromRGB(srgb);</a>
-<span class="sourceLineNo">101</span><a id="line.101">                        setPix(i, c);</a>
-<span class="sourceLineNo">102</span><a id="line.102">                }</a>
-<span class="sourceLineNo">103</span><a id="line.103">                </a>
-<span class="sourceLineNo">104</span><a id="line.104">                setColorSpace(targetColorspace);</a>
-<span class="sourceLineNo">105</span><a id="line.105">        }</a>
-<span class="sourceLineNo">106</span><a id="line.106">        </a>
-<span class="sourceLineNo">107</span><a id="line.107">        // -----------------------------------------------------------------</a>
-<span class="sourceLineNo">108</span><a id="line.108"></a>
-<span class="sourceLineNo">109</span><a id="line.109">        /**</a>
-<span class="sourceLineNo">110</span><a id="line.110">         * Converts this {@link ColorStack} to sRGB space.</a>
-<span class="sourceLineNo">111</span><a id="line.111">         * An exceptions is thrown if the color stack is in sRGB color space</a>
-<span class="sourceLineNo">112</span><a id="line.112">         * already.</a>
-<span class="sourceLineNo">113</span><a id="line.113">         */</a>
-<span class="sourceLineNo">114</span><a id="line.114">        public void convertToSrgb() {</a>
-<span class="sourceLineNo">115</span><a id="line.115">                if (colorspace instanceof sRgb65ColorSpace) {</a>
-<span class="sourceLineNo">116</span><a id="line.116">                        throw new IllegalStateException("color stack is in sRGB already");</a>
-<span class="sourceLineNo">117</span><a id="line.117">                }</a>
-<span class="sourceLineNo">118</span><a id="line.118">                </a>
-<span class="sourceLineNo">119</span><a id="line.119">                final float[] c = new float[3];</a>
-<span class="sourceLineNo">120</span><a id="line.120">                </a>
-<span class="sourceLineNo">121</span><a id="line.121">                for (int i = 0; i &lt; length; i++) {</a>
-<span class="sourceLineNo">122</span><a id="line.122">                        getPix(i, c);</a>
-<span class="sourceLineNo">123</span><a id="line.123">                        float[] srgb = colorspace.toRGB(c);</a>
-<span class="sourceLineNo">124</span><a id="line.124">                        setPix(i, srgb);</a>
-<span class="sourceLineNo">125</span><a id="line.125">                }</a>
-<span class="sourceLineNo">126</span><a id="line.126"></a>
-<span class="sourceLineNo">127</span><a id="line.127">                setColorSpace(sRgb65ColorSpace.getInstance());</a>
-<span class="sourceLineNo">128</span><a id="line.128">        }</a>
-<span class="sourceLineNo">129</span><a id="line.129">        </a>
-<span class="sourceLineNo">130</span><a id="line.130">        // ---------------------------------------------------------------</a>
-<span class="sourceLineNo">131</span><a id="line.131">        </a>
-<span class="sourceLineNo">132</span><a id="line.132">        @Override</a>
-<span class="sourceLineNo">133</span><a id="line.133">        public ColorProcessor toColorProcessor() {</a>
-<span class="sourceLineNo">134</span><a id="line.134">                if (!(colorspace instanceof sRgb65ColorSpace)) {</a>
-<span class="sourceLineNo">135</span><a id="line.135">                        throw new IllegalStateException("color stack must be in sRGB to convert to ColorProcessor");</a>
-<span class="sourceLineNo">136</span><a id="line.136">                }</a>
-<span class="sourceLineNo">137</span><a id="line.137">                return super.toColorProcessor(255);</a>
-<span class="sourceLineNo">138</span><a id="line.138">        }</a>
-<span class="sourceLineNo">139</span><a id="line.139">        </a>
-<span class="sourceLineNo">140</span><a id="line.140">        @Override       // arbitrary scaling is inhibited</a>
-<span class="sourceLineNo">141</span><a id="line.141">        public ColorProcessor toColorProcessor(double scale) {</a>
-<span class="sourceLineNo">142</span><a id="line.142">                throw new UnsupportedOperationException();</a>
-<span class="sourceLineNo">143</span><a id="line.143">        }</a>
-<span class="sourceLineNo">144</span><a id="line.144">        </a>
-<span class="sourceLineNo">145</span><a id="line.145">        // ------------------------------------------------------------------</a>
-<span class="sourceLineNo">146</span><a id="line.146">        </a>
-<span class="sourceLineNo">147</span><a id="line.147">        private float clipTo01(float val) {</a>
-<span class="sourceLineNo">148</span><a id="line.148">                if (val &lt; 0) return 0f;</a>
-<span class="sourceLineNo">149</span><a id="line.149">                if (val &gt; 1) return 1f;</a>
-<span class="sourceLineNo">150</span><a id="line.150">                return val;</a>
-<span class="sourceLineNo">151</span><a id="line.151">        }</a>
-<span class="sourceLineNo">152</span><a id="line.152">        </a>
-<span class="sourceLineNo">153</span><a id="line.153">        private void clipTo01(float[] vals) {</a>
-<span class="sourceLineNo">154</span><a id="line.154">                for (int i = 0; i &lt; vals.length; i++) {</a>
-<span class="sourceLineNo">155</span><a id="line.155">                        vals[i] = clipTo01(vals[i]);</a>
-<span class="sourceLineNo">156</span><a id="line.156">                }</a>
-<span class="sourceLineNo">157</span><a id="line.157">        }</a>
-<span class="sourceLineNo">158</span><a id="line.158">    </a>
-<span class="sourceLineNo">159</span><a id="line.159">}</a>
+<span class="sourceLineNo">039</span><a id="line.39">        // the current color space of this color stack</a>
+<span class="sourceLineNo">040</span><a id="line.40">        private ColorSpace colorspace = null;</a>
+<span class="sourceLineNo">041</span><a id="line.41">        </a>
+<span class="sourceLineNo">042</span><a id="line.42">        // ---------------------------------------------------------------------</a>
+<span class="sourceLineNo">043</span><a id="line.43">        </a>
+<span class="sourceLineNo">044</span><a id="line.44">        /**</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * Constructor.</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * @param cp a color image assumed to be in sRGB</a>
+<span class="sourceLineNo">047</span><a id="line.47">         */</a>
+<span class="sourceLineNo">048</span><a id="line.48">        public ColorStack(ColorProcessor cp) {</a>
+<span class="sourceLineNo">049</span><a id="line.49">                super(cp, 1.0/255, null);</a>
+<span class="sourceLineNo">050</span><a id="line.50">                setColorSpace(sRgb65ColorSpace.getInstance());</a>
+<span class="sourceLineNo">051</span><a id="line.51">        }</a>
+<span class="sourceLineNo">052</span><a id="line.52">        </a>
+<span class="sourceLineNo">053</span><a id="line.53">        // -----------------------------------------------------------------</a>
+<span class="sourceLineNo">054</span><a id="line.54">        </a>
+<span class="sourceLineNo">055</span><a id="line.55">        /**</a>
+<span class="sourceLineNo">056</span><a id="line.56">         * Returns the 3 color components as an array of {@link FloatProcessor}.</a>
+<span class="sourceLineNo">057</span><a id="line.57">         * @return a {@link FloatProcessor} array</a>
+<span class="sourceLineNo">058</span><a id="line.58">         */</a>
+<span class="sourceLineNo">059</span><a id="line.59">        public FloatProcessor[] getProcessors() {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                FloatProcessor[] processors = new FloatProcessor[3];</a>
+<span class="sourceLineNo">061</span><a id="line.61">                for (int k = 0; k &lt; 3; k++) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">                        processors[k] = new FloatProcessor(width, height, data[k]);</a>
+<span class="sourceLineNo">063</span><a id="line.63">                }</a>
+<span class="sourceLineNo">064</span><a id="line.64">                return processors;</a>
+<span class="sourceLineNo">065</span><a id="line.65">        }</a>
+<span class="sourceLineNo">066</span><a id="line.66">        </a>
+<span class="sourceLineNo">067</span><a id="line.67">        /**</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * Returns the current color space instance of this {@link ColorStack}.</a>
+<span class="sourceLineNo">069</span><a id="line.69">         * @return the current color space</a>
+<span class="sourceLineNo">070</span><a id="line.70">         */</a>
+<span class="sourceLineNo">071</span><a id="line.71">        public ColorSpace getColorspace() {</a>
+<span class="sourceLineNo">072</span><a id="line.72">                return this.colorspace;</a>
+<span class="sourceLineNo">073</span><a id="line.73">        }</a>
+<span class="sourceLineNo">074</span><a id="line.74">        </a>
+<span class="sourceLineNo">075</span><a id="line.75">        private void setColorSpace(ColorSpace colorspace) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                this.colorspace = colorspace;</a>
+<span class="sourceLineNo">077</span><a id="line.77">        }</a>
+<span class="sourceLineNo">078</span><a id="line.78">        </a>
+<span class="sourceLineNo">079</span><a id="line.79">        // -----------------------------------------------------------------</a>
+<span class="sourceLineNo">080</span><a id="line.80">        </a>
+<span class="sourceLineNo">081</span><a id="line.81">        /**</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * Converts the pixel values of this {@link ColorStack} to the specified</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * color space. The color stack must be in sRGB space.</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * Exceptions are thrown if the color stack is not in sRGB color space</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * or the target color space is sRGB.</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * </a>
+<span class="sourceLineNo">087</span><a id="line.87">         * @param targetColorspace the new color space</a>
+<span class="sourceLineNo">088</span><a id="line.88">         */</a>
+<span class="sourceLineNo">089</span><a id="line.89">        public void convertFromSrgbTo(final ColorSpace targetColorspace) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">                if (!(colorspace instanceof sRgb65ColorSpace)) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">                        throw new IllegalStateException("color stack must be in sRGB");</a>
+<span class="sourceLineNo">092</span><a id="line.92">                }</a>
+<span class="sourceLineNo">093</span><a id="line.93">                </a>
+<span class="sourceLineNo">094</span><a id="line.94">                if (targetColorspace instanceof sRgb65ColorSpace) {</a>
+<span class="sourceLineNo">095</span><a id="line.95">                        throw new IllegalArgumentException("cannot convert color stack from sRGB to sRGB");</a>
+<span class="sourceLineNo">096</span><a id="line.96">                }</a>
+<span class="sourceLineNo">097</span><a id="line.97">                </a>
+<span class="sourceLineNo">098</span><a id="line.98">                final float[] srgb = new float[3];</a>
+<span class="sourceLineNo">099</span><a id="line.99">                </a>
+<span class="sourceLineNo">100</span><a id="line.100">                for (int i = 0; i &lt; length; i++) {</a>
+<span class="sourceLineNo">101</span><a id="line.101">                        getPix(i, srgb);</a>
+<span class="sourceLineNo">102</span><a id="line.102">                        clipTo01(srgb);</a>
+<span class="sourceLineNo">103</span><a id="line.103">                        float[] c = targetColorspace.fromRGB(srgb);</a>
+<span class="sourceLineNo">104</span><a id="line.104">                        setPix(i, c);</a>
+<span class="sourceLineNo">105</span><a id="line.105">                }</a>
+<span class="sourceLineNo">106</span><a id="line.106">                </a>
+<span class="sourceLineNo">107</span><a id="line.107">                setColorSpace(targetColorspace);</a>
+<span class="sourceLineNo">108</span><a id="line.108">        }</a>
+<span class="sourceLineNo">109</span><a id="line.109">        </a>
+<span class="sourceLineNo">110</span><a id="line.110">        // -----------------------------------------------------------------</a>
+<span class="sourceLineNo">111</span><a id="line.111"></a>
+<span class="sourceLineNo">112</span><a id="line.112">        /**</a>
+<span class="sourceLineNo">113</span><a id="line.113">         * Converts this {@link ColorStack} to sRGB space.</a>
+<span class="sourceLineNo">114</span><a id="line.114">         * An exceptions is thrown if the color stack is in sRGB color space</a>
+<span class="sourceLineNo">115</span><a id="line.115">         * already.</a>
+<span class="sourceLineNo">116</span><a id="line.116">         */</a>
+<span class="sourceLineNo">117</span><a id="line.117">        public void convertToSrgb() {</a>
+<span class="sourceLineNo">118</span><a id="line.118">                if (colorspace instanceof sRgb65ColorSpace) {</a>
+<span class="sourceLineNo">119</span><a id="line.119">                        throw new IllegalStateException("color stack is in sRGB already");</a>
+<span class="sourceLineNo">120</span><a id="line.120">                }</a>
+<span class="sourceLineNo">121</span><a id="line.121">                </a>
+<span class="sourceLineNo">122</span><a id="line.122">                final float[] c = new float[3];</a>
+<span class="sourceLineNo">123</span><a id="line.123">                </a>
+<span class="sourceLineNo">124</span><a id="line.124">                for (int i = 0; i &lt; length; i++) {</a>
+<span class="sourceLineNo">125</span><a id="line.125">                        getPix(i, c);</a>
+<span class="sourceLineNo">126</span><a id="line.126">                        float[] srgb = colorspace.toRGB(c);</a>
+<span class="sourceLineNo">127</span><a id="line.127">                        setPix(i, srgb);</a>
+<span class="sourceLineNo">128</span><a id="line.128">                }</a>
+<span class="sourceLineNo">129</span><a id="line.129"></a>
+<span class="sourceLineNo">130</span><a id="line.130">                setColorSpace(sRgb65ColorSpace.getInstance());</a>
+<span class="sourceLineNo">131</span><a id="line.131">        }</a>
+<span class="sourceLineNo">132</span><a id="line.132">        </a>
+<span class="sourceLineNo">133</span><a id="line.133">        // ---------------------------------------------------------------</a>
+<span class="sourceLineNo">134</span><a id="line.134">        </a>
+<span class="sourceLineNo">135</span><a id="line.135">        @Override</a>
+<span class="sourceLineNo">136</span><a id="line.136">        public ColorProcessor toColorProcessor() {</a>
+<span class="sourceLineNo">137</span><a id="line.137">                if (!(colorspace instanceof sRgb65ColorSpace)) {</a>
+<span class="sourceLineNo">138</span><a id="line.138">                        throw new IllegalStateException("color stack must be in sRGB to convert to ColorProcessor");</a>
+<span class="sourceLineNo">139</span><a id="line.139">                }</a>
+<span class="sourceLineNo">140</span><a id="line.140">                return super.toColorProcessor(255);</a>
+<span class="sourceLineNo">141</span><a id="line.141">        }</a>
+<span class="sourceLineNo">142</span><a id="line.142">        </a>
+<span class="sourceLineNo">143</span><a id="line.143">        @Override       // arbitrary scaling is inhibited</a>
+<span class="sourceLineNo">144</span><a id="line.144">        public ColorProcessor toColorProcessor(double scale) {</a>
+<span class="sourceLineNo">145</span><a id="line.145">                throw new UnsupportedOperationException();</a>
+<span class="sourceLineNo">146</span><a id="line.146">        }</a>
+<span class="sourceLineNo">147</span><a id="line.147">        </a>
+<span class="sourceLineNo">148</span><a id="line.148">        // ------------------------------------------------------------------</a>
+<span class="sourceLineNo">149</span><a id="line.149">        </a>
+<span class="sourceLineNo">150</span><a id="line.150">        private float clipTo01(float val) {</a>
+<span class="sourceLineNo">151</span><a id="line.151">                if (val &lt; 0) return 0f;</a>
+<span class="sourceLineNo">152</span><a id="line.152">                if (val &gt; 1) return 1f;</a>
+<span class="sourceLineNo">153</span><a id="line.153">                return val;</a>
+<span class="sourceLineNo">154</span><a id="line.154">        }</a>
+<span class="sourceLineNo">155</span><a id="line.155">        </a>
+<span class="sourceLineNo">156</span><a id="line.156">        private void clipTo01(float[] vals) {</a>
+<span class="sourceLineNo">157</span><a id="line.157">                for (int i = 0; i &lt; vals.length; i++) {</a>
+<span class="sourceLineNo">158</span><a id="line.158">                        vals[i] = clipTo01(vals[i]);</a>
+<span class="sourceLineNo">159</span><a id="line.159">                }</a>
+<span class="sourceLineNo">160</span><a id="line.160">        }</a>
+<span class="sourceLineNo">161</span><a id="line.161">    </a>
+<span class="sourceLineNo">162</span><a id="line.162">}</a>
 
 
 

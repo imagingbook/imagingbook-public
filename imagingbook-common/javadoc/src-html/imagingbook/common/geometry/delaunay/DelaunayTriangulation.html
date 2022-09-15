@@ -45,38 +45,102 @@
 <span class="sourceLineNo">035</span><a id="line.35">        public List&lt;Triangle&gt; getTriangles();</a>
 <span class="sourceLineNo">036</span><a id="line.36">        </a>
 <span class="sourceLineNo">037</span><a id="line.37">        /**</a>
-<span class="sourceLineNo">038</span><a id="line.38">         * Returns a list of 2D vertices (implementing the {@link Pnt2d} interface)</a>
+<span class="sourceLineNo">038</span><a id="line.38">         * Returns a list of 2D vertices</a>
 <span class="sourceLineNo">039</span><a id="line.39">         * contained in this triangulation. The list does not contain the</a>
 <span class="sourceLineNo">040</span><a id="line.40">         * vertices of the initial (outer) triangle.</a>
 <span class="sourceLineNo">041</span><a id="line.41">         * @return a list of points</a>
 <span class="sourceLineNo">042</span><a id="line.42">         */</a>
 <span class="sourceLineNo">043</span><a id="line.43">        public List&lt;Pnt2d&gt; getPoints();</a>
 <span class="sourceLineNo">044</span><a id="line.44">        </a>
-<span class="sourceLineNo">045</span><a id="line.45">        /**</a>
-<span class="sourceLineNo">046</span><a id="line.46">         * Performs Delaunay triangulation on the specified points.</a>
-<span class="sourceLineNo">047</span><a id="line.47">         * Supplied points are inserted without shuffling, i.e.,</a>
-<span class="sourceLineNo">048</span><a id="line.48">         * in their original order.</a>
-<span class="sourceLineNo">049</span><a id="line.49">         * </a>
-<span class="sourceLineNo">050</span><a id="line.50">         * @param points the point set to be triangulated</a>
-<span class="sourceLineNo">051</span><a id="line.51">         * @return a {@link DelaunayTriangulation} instance</a>
-<span class="sourceLineNo">052</span><a id="line.52">         */</a>
-<span class="sourceLineNo">053</span><a id="line.53">        public static DelaunayTriangulation from(Collection&lt;? extends Pnt2d&gt; points) {</a>
-<span class="sourceLineNo">054</span><a id="line.54">                return DelaunayTriangulation.from(points, false);</a>
-<span class="sourceLineNo">055</span><a id="line.55">        }</a>
-<span class="sourceLineNo">056</span><a id="line.56">        </a>
-<span class="sourceLineNo">057</span><a id="line.57">        /**</a>
-<span class="sourceLineNo">058</span><a id="line.58">         * Performs Delaunay triangulation on the specified points with</a>
-<span class="sourceLineNo">059</span><a id="line.59">         * (optional) random insertion order.</a>
-<span class="sourceLineNo">060</span><a id="line.60">         * </a>
-<span class="sourceLineNo">061</span><a id="line.61">         * @param points the point set to be triangulated</a>
-<span class="sourceLineNo">062</span><a id="line.62">         * @param shuffle set {@code true} to randomly shuffle the input points</a>
-<span class="sourceLineNo">063</span><a id="line.63">         * @return a {@link DelaunayTriangulation} instance</a>
-<span class="sourceLineNo">064</span><a id="line.64">         */</a>
-<span class="sourceLineNo">065</span><a id="line.65">        public static DelaunayTriangulation from(Collection&lt;? extends Pnt2d&gt; points, boolean shuffle) {</a>
-<span class="sourceLineNo">066</span><a id="line.66">                return new TriangulationGuibas(points, shuffle);</a>
-<span class="sourceLineNo">067</span><a id="line.67">        }</a>
-<span class="sourceLineNo">068</span><a id="line.68"></a>
-<span class="sourceLineNo">069</span><a id="line.69">}</a>
+<span class="sourceLineNo">045</span><a id="line.45">        // utility methods: ----------------------------------------</a>
+<span class="sourceLineNo">046</span><a id="line.46">        </a>
+<span class="sourceLineNo">047</span><a id="line.47">        /**</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * Creates a 2D triangle that is sufficiently large to be used as </a>
+<span class="sourceLineNo">049</span><a id="line.49">         * an outer triangle for the Delaunay triangulation of the given</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * point set.</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @param points the 2D point set</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * @return a triangle as an array of 3 points</a>
+<span class="sourceLineNo">053</span><a id="line.53">         */</a>
+<span class="sourceLineNo">054</span><a id="line.54">        public static Pnt2d[] makeOuterTriangle(Collection&lt;? extends Pnt2d&gt; points) {</a>
+<span class="sourceLineNo">055</span><a id="line.55">                double xmin = Double.POSITIVE_INFINITY;</a>
+<span class="sourceLineNo">056</span><a id="line.56">                double xmax = Double.NEGATIVE_INFINITY;</a>
+<span class="sourceLineNo">057</span><a id="line.57">                double ymin = xmin;</a>
+<span class="sourceLineNo">058</span><a id="line.58">                double ymax = xmax;</a>
+<span class="sourceLineNo">059</span><a id="line.59">                </a>
+<span class="sourceLineNo">060</span><a id="line.60">                for (Pnt2d p : points) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                        double x = p.getX();</a>
+<span class="sourceLineNo">062</span><a id="line.62">                        double y = p.getY();</a>
+<span class="sourceLineNo">063</span><a id="line.63">                        xmin = Math.min(x, xmin);</a>
+<span class="sourceLineNo">064</span><a id="line.64">                        xmax = Math.max(x, xmax);</a>
+<span class="sourceLineNo">065</span><a id="line.65">                        ymin = Math.min(y, ymin);</a>
+<span class="sourceLineNo">066</span><a id="line.66">                        ymax = Math.max(y, ymax);</a>
+<span class="sourceLineNo">067</span><a id="line.67">                }</a>
+<span class="sourceLineNo">068</span><a id="line.68">                return makeOuterTriangle(xmin, xmax, ymin, ymax);</a>
+<span class="sourceLineNo">069</span><a id="line.69">        }</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">        /**</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * Creates a 2D triangle that is sufficiently large to be used as </a>
+<span class="sourceLineNo">073</span><a id="line.73">         * an outer triangle for the Delaunay triangulation of points </a>
+<span class="sourceLineNo">074</span><a id="line.74">         * inside the given bounding rectangle.</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * @param xmin minimum x-coordinate of the bounding rectangle</a>
+<span class="sourceLineNo">076</span><a id="line.76">         * @param xmax maximum x-coordinate of the bounding rectangle</a>
+<span class="sourceLineNo">077</span><a id="line.77">         * @param ymin minimum y-coordinate of the bounding rectangle</a>
+<span class="sourceLineNo">078</span><a id="line.78">         * @param ymax maximum y-coordinate of the bounding rectangle</a>
+<span class="sourceLineNo">079</span><a id="line.79">         * @return a triangle as an array of 3 points</a>
+<span class="sourceLineNo">080</span><a id="line.80">         */</a>
+<span class="sourceLineNo">081</span><a id="line.81">        public static Pnt2d[] makeOuterTriangle(double xmin, double xmax, double ymin, double ymax) {</a>
+<span class="sourceLineNo">082</span><a id="line.82">                double width = xmax - xmin;</a>
+<span class="sourceLineNo">083</span><a id="line.83">                double height = ymax - ymin;</a>
+<span class="sourceLineNo">084</span><a id="line.84">                double diam = Math.max(width,  height);</a>
+<span class="sourceLineNo">085</span><a id="line.85">                double xc = xmin + width / 2;</a>
+<span class="sourceLineNo">086</span><a id="line.86">                double yc = ymin + height / 2;</a>
+<span class="sourceLineNo">087</span><a id="line.87">                double s = 50;</a>
+<span class="sourceLineNo">088</span><a id="line.88">                return new Pnt2d[] {</a>
+<span class="sourceLineNo">089</span><a id="line.89">                                Pnt2d.PntDouble.from(xc, yc + s * diam),</a>
+<span class="sourceLineNo">090</span><a id="line.90">                                Pnt2d.PntDouble.from(xc + s * diam, yc),</a>
+<span class="sourceLineNo">091</span><a id="line.91">                                Pnt2d.PntDouble.from(xc - s * diam, yc - s * diam)</a>
+<span class="sourceLineNo">092</span><a id="line.92">                };</a>
+<span class="sourceLineNo">093</span><a id="line.93">        }</a>
+<span class="sourceLineNo">094</span><a id="line.94"></a>
+<span class="sourceLineNo">095</span><a id="line.95">        /**</a>
+<span class="sourceLineNo">096</span><a id="line.96">         * Creates a 2D triangle that is sufficiently large to be used as </a>
+<span class="sourceLineNo">097</span><a id="line.97">         * an outer triangle for the Delaunay triangulation of points </a>
+<span class="sourceLineNo">098</span><a id="line.98">         * inside the given bounding rectangle, anchored at (0,0).</a>
+<span class="sourceLineNo">099</span><a id="line.99">         * @param width the width of the bounding rectangle</a>
+<span class="sourceLineNo">100</span><a id="line.100">         * @param height the height of the bounding rectangle</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * @return a triangle as an array of 3 points</a>
+<span class="sourceLineNo">102</span><a id="line.102">         */</a>
+<span class="sourceLineNo">103</span><a id="line.103">        public static Pnt2d[] makeOuterTriangle(double width, double height) {</a>
+<span class="sourceLineNo">104</span><a id="line.104">                return makeOuterTriangle(0, width, 0, height);</a>
+<span class="sourceLineNo">105</span><a id="line.105">        }</a>
+<span class="sourceLineNo">106</span><a id="line.106"></a>
+<span class="sourceLineNo">107</span><a id="line.107">        /**</a>
+<span class="sourceLineNo">108</span><a id="line.108">         * Performs Delaunay triangulation on the specified points.</a>
+<span class="sourceLineNo">109</span><a id="line.109">         * Supplied points are inserted without shuffling, i.e.,</a>
+<span class="sourceLineNo">110</span><a id="line.110">         * in their original order.</a>
+<span class="sourceLineNo">111</span><a id="line.111">         * </a>
+<span class="sourceLineNo">112</span><a id="line.112">         * @param points the point set to be triangulated</a>
+<span class="sourceLineNo">113</span><a id="line.113">         * @return a {@link DelaunayTriangulation} instance</a>
+<span class="sourceLineNo">114</span><a id="line.114">         */</a>
+<span class="sourceLineNo">115</span><a id="line.115">        public static DelaunayTriangulation from(Collection&lt;? extends Pnt2d&gt; points) {</a>
+<span class="sourceLineNo">116</span><a id="line.116">                return DelaunayTriangulation.from(points, false);</a>
+<span class="sourceLineNo">117</span><a id="line.117">        }</a>
+<span class="sourceLineNo">118</span><a id="line.118">        </a>
+<span class="sourceLineNo">119</span><a id="line.119">        // static construction methods: -----------------------------------</a>
+<span class="sourceLineNo">120</span><a id="line.120">        </a>
+<span class="sourceLineNo">121</span><a id="line.121">        /**</a>
+<span class="sourceLineNo">122</span><a id="line.122">         * Performs Delaunay triangulation on the specified points with</a>
+<span class="sourceLineNo">123</span><a id="line.123">         * (optional) random insertion order.</a>
+<span class="sourceLineNo">124</span><a id="line.124">         * </a>
+<span class="sourceLineNo">125</span><a id="line.125">         * @param points the point set to be triangulated</a>
+<span class="sourceLineNo">126</span><a id="line.126">         * @param shuffle set {@code true} to randomly shuffle the input points</a>
+<span class="sourceLineNo">127</span><a id="line.127">         * @return a {@link DelaunayTriangulation} instance</a>
+<span class="sourceLineNo">128</span><a id="line.128">         */</a>
+<span class="sourceLineNo">129</span><a id="line.129">        public static DelaunayTriangulation from(Collection&lt;? extends Pnt2d&gt; points, boolean shuffle) {</a>
+<span class="sourceLineNo">130</span><a id="line.130">                return new TriangulationGuibas(points, shuffle);</a>
+<span class="sourceLineNo">131</span><a id="line.131">        }</a>
+<span class="sourceLineNo">132</span><a id="line.132"></a>
+<span class="sourceLineNo">133</span><a id="line.133">}</a>
 
 
 
