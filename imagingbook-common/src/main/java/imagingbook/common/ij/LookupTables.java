@@ -9,31 +9,49 @@
 
 package imagingbook.common.ij;
 
-import ij.IJ;
-import ij.process.ImageProcessor;
-import ij.process.LUT;
-
 import java.awt.Color;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 
+import ij.IJ;
+import ij.process.ImageProcessor;
+import ij.process.LUT;
+
 
 /**
- * This class defines utility methods for lookup-tables and implementations
- * of various standard ImageJ lookup tables (originally defined in class
- * {@link ij.plugin.LutLoader}.
+ * This enum type wraps a selection of ImageJ's lookup tables (originally defined in class
+ * {@link ij.plugin.LutLoader}).
  * 
  * @author WB
  * @version 2016/12/19
+ * @version 2022/09/15 converted to enum type
  */
-public abstract class LookupTables {
+public enum LookupTables {
 	
-	// TODO: convert to enum type
+	Fire(fire()),
+	Grays(grays()),
+	Ice(ice()),
+	RedGreen(redgreen()),
+	Rgb332(rgb332()),
+	Spectrum(spectrum());
 	
-	private LookupTables() {}
+	// ------------------------------------------------------
+
+	private final LUT lut;
+	
+	private LookupTables(LUT lut) {
+		this.lut = lut;
+	}
+	
+	public LUT getLUT() {
+		return this.lut;
+	}
+	
+	// ------------------------------------------------------
 	
 	/**
 	 * Create a new lookup-table from three RGB arrays of length 256.
+	 * 
 	 * @param r Red component values.
 	 * @param g Green component values.
 	 * @param b Blue component values.
@@ -45,13 +63,15 @@ public abstract class LookupTables {
 		}
 		return new LUT(r, g, b);
 	}
+	
+	// ------------------------------------------------------
 
 
 	/**
 	 * ImageJ's 'fire' LUT, as originally defined in class {@link ij.plugin.LutLoader}.
 	 * @return A new instance of type {@link ij.process.LUT}.
 	 */
-	public static LUT fire() {
+	private static LUT fire() {
 		int[] r = { 0, 0, 1, 25, 49, 73, 98, 122, 146, 162, 173, 184, 195, 207, 217, 229, 240, 252,
 				255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 };
 		int[] g = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 35, 57, 79, 101, 117, 133, 147, 161,
@@ -67,7 +87,7 @@ public abstract class LookupTables {
 	 * ImageJ's 'grays' LUT, as originally defined in class {@link ij.plugin.LutLoader}.
 	 * @return A new instance of type {@link ij.process.LUT}.
 	 */
-	public static LUT grays() {
+	private static LUT grays() {
 		byte[] r = new byte[256];
 		byte[] g = new byte[256];
 		byte[] b = new byte[256];
@@ -83,7 +103,7 @@ public abstract class LookupTables {
 	 * ImageJ's 'ice' LUT, as originally defined in class {@link ij.plugin.LutLoader}.
 	 * @return A new instance of type {@link ij.process.LUT}.
 	 */
-	public static LUT ice() {
+	private static LUT ice() {
 		int[] r = { 0, 0, 0, 0, 0, 0, 19, 29, 50, 48, 79, 112, 134, 158, 186, 201, 217, 229, 242, 250, 250, 250, 250,
 				251, 250, 250, 250, 250, 251, 251, 243, 230 };
 		int[] g = { 156, 165, 176, 184, 190, 196, 193, 184, 171, 162, 146, 125, 107, 93, 81, 87, 92, 97, 95, 93, 93, 90,
@@ -98,7 +118,7 @@ public abstract class LookupTables {
 	 * ImageJ's 'spectrum' LUT, as originally defined in class {@link ij.plugin.LutLoader}.
 	 * @return A new instance of type {@link ij.process.LUT}.
 	 */
-	public static LUT spectrum() {
+	private static LUT spectrum() {
 		byte[] r = new byte[256];
 		byte[] g = new byte[256];
 		byte[] b = new byte[256];
@@ -115,7 +135,7 @@ public abstract class LookupTables {
 	 * ImageJ's 'rgb332' LUT, as originally defined in class {@link ij.plugin.LutLoader}.
 	 * @return A new instance of type {@link ij.process.LUT}.
 	 */
-	public static LUT rgb332() {
+	private static LUT rgb332() {
 		byte[] r = new byte[256];
 		byte[] g = new byte[256];
 		byte[] b = new byte[256];
@@ -131,7 +151,7 @@ public abstract class LookupTables {
 	 * ImageJ's 'redgreen' LUT, as originally defined in class {@link ij.plugin.LutLoader}.
 	 * @return A new instance of type {@link ij.process.LUT}.
 	 */
-	public static LUT redgreen() {
+	private static LUT redgreen() {
 		byte[] r = new byte[256];
 		byte[] g = new byte[256];
 		byte[] b = new byte[256];
@@ -179,7 +199,7 @@ public abstract class LookupTables {
 	 * Lists the contents of the lookup-table currently associated
 	 * with the specified image.
 	 * 
-	 * @param ip The image.
+	 * @param ip the image.
 	 */
 	public static void listCurrentLut(ImageProcessor ip) {
 		ColorModel cm = ip.getCurrentColorModel();
@@ -202,8 +222,8 @@ public abstract class LookupTables {
 	 * in the range minGray ... 255. Does nothing if ip is of type
 	 * ColorProcessor.
 	 * 
-	 * @param ip The target image.
-	 * @param minGray Minimum gray value.
+	 * @param ip the target image.
+	 * @param minGray minimum gray value.
 	 */
 	public static void brightLut(ImageProcessor ip, int minGray) {
 		if (minGray < 0 || minGray >= 255)
