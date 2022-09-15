@@ -53,5 +53,23 @@ public class ImageMathTest {
 		}
 	}
 	
-
+	@Test
+	public void testAdd1() {
+		// TODO: test missing!
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFail1() {
+		ImageMath.add(images[0], images[1]);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFail2() {
+		ImageMath.add(images[0], images[2]);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFail3() {
+		ImageMath.add(images[1], images[2]);
+	}
 }

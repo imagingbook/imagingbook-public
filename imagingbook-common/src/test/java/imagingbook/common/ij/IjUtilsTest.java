@@ -9,6 +9,7 @@
 package imagingbook.common.ij;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
@@ -25,13 +26,15 @@ import imagingbook.testutils.ImageTestUtils;
 
 public class IjUtilsTest {
 
-	private static int W = 97;
-	private static int H = 51;
+	private static final int W = 97;
+	private static final int H = 51;
 	
 	@Test
 	public void testByteArrayReadWrite() {
 		ByteProcessor bp1 = makeRandomByteProcessor(W, H);
 		byte[][] A = IjUtils.toByteArray(bp1);
+		assertEquals(W, A.length);
+		assertEquals(H, A[0].length);
 		
 		ByteProcessor bp2 = IjUtils.toByteProcessor(A);
 		assertTrue(ImageTestUtils.match(bp1, bp2));
@@ -40,16 +43,22 @@ public class IjUtilsTest {
 	@Test
 	public void testIntArrayReadWrite() {
 		ByteProcessor bp1 = makeRandomByteProcessor(W, H);
-		int[][] A = bp1.getIntArray();
+		int[][] A = IjUtils.toIntArray(bp1);
+		assertEquals(W, A.length);
+		assertEquals(H, A[0].length);
 		
 		ByteProcessor bp2 = IjUtils.toByteProcessor(A);
 		assertTrue(ImageTestUtils.match(bp1, bp2));
+		
+		
 	}
 	
 	@Test
 	public void testFloatArrayReadWrite() {
 		FloatProcessor fp1 = makeRandomFloatProcessor(W, H);
 		float[][] A = IjUtils.toFloatArray(fp1);
+		assertEquals(W, A.length);
+		assertEquals(H, A[0].length);
 		
 		FloatProcessor fp2 = IjUtils.toFloatProcessor(A);
 		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-6));
@@ -59,6 +68,8 @@ public class IjUtilsTest {
 	public void testDoubleArrayReadWrite() {
 		FloatProcessor fp1 = makeRandomFloatProcessor(W, H);
 		double[][] A = IjUtils.toDoubleArray(fp1);
+		assertEquals(W, A.length);
+		assertEquals(H, A[0].length);
 		
 		FloatProcessor fp2 = IjUtils.toFloatProcessor(A);
 		assertTrue(ImageTestUtils.match(fp1, fp2, 1e-6));
