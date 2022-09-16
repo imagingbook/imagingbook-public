@@ -22,7 +22,7 @@ import imagingbook.common.image.access.ImageAccessor;
  * @author WB
  * @version 2022/09/16 made non-public
  */
-class ImageExtractor {
+public class ImageExtractor {
 	// TODO: replace by ImageMapper
 	
 	private int interpolationMethod = ImageProcessor.BILINEAR;
