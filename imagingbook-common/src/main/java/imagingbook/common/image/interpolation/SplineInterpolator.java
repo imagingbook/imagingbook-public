@@ -22,7 +22,11 @@ import imagingbook.common.image.access.ScalarAccessor;
  * </p>
  * 
  * @author WB
+ * @version 2022/09/16
+ * 
  * @see CatmullRomInterpolator
+ * @see CubicBSplineInterpolator
+ * @see MitchellNetravaliInterpolator
  */
 public class SplineInterpolator implements PixelInterpolator {
 	private final double a;	
