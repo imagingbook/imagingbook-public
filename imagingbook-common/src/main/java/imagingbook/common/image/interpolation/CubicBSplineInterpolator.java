@@ -7,12 +7,12 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.interpolation;
+package imagingbook.common.image.interpolation;
 
 /**
  * <p>
- * A {@link PixelInterpolator} implementing Mitchell-Netravali interpolation in 2D
- * See Sec.22.4.3 of [1] for additional details.
+ * A {@link PixelInterpolator} implementing cubic B-spline interpolation in 2D
+ * See Sec.22.4.2 of [1] for additional details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
@@ -22,13 +22,13 @@ package imagingbook.common.interpolation;
  * @author WB
  * @see SplineInterpolator
  */
-public class MitchellNetravaliInterpolator extends SplineInterpolator {
+public class CubicBSplineInterpolator extends SplineInterpolator {
 
 	/**
 	 * Constructor.
 	 */
-	public MitchellNetravaliInterpolator() {
-		super(1.0/3, 1.0/3);
+	public CubicBSplineInterpolator() {
+		super(0.0, 1.0);
 	}	
 
 }

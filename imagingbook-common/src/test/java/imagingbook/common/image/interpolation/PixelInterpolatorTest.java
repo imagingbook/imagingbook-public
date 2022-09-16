@@ -1,4 +1,4 @@
-package imagingbook.common.interpolation;
+package imagingbook.common.image.interpolation;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,7 +9,7 @@ import ij.process.ColorProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.RgbAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
-import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
+import imagingbook.common.image.interpolation.PixelInterpolator.InterpolationMethod;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 

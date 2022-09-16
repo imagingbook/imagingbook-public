@@ -18,7 +18,7 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.geometry.mappings.linear.Translation2D;
 import imagingbook.common.image.ImageMapper;
-import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
+import imagingbook.common.image.interpolation.PixelInterpolator.InterpolationMethod;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.mser.components.Component;
 

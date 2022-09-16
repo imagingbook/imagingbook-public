@@ -15,7 +15,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
+import imagingbook.common.image.interpolation.PixelInterpolator.InterpolationMethod;
 
 public class Map_Twirl implements PlugInFilter {
 	

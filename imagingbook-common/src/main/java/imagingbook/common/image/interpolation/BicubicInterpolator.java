@@ -7,14 +7,14 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.interpolation;
+package imagingbook.common.image.interpolation;
 
 import imagingbook.common.image.access.ScalarAccessor;
 
 /**
  * <p>
- * A {@link PixelInterpolator} implementing spline interpolation in 2D.
- * See Sec. 22.4 of [1] for additional details.
+ * A {@link PixelInterpolator} implementing bicubic interpolation in 2D.
+ * See Sec. 22.5.3 (Alg. 22.1) of [1] for additional details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
@@ -22,53 +22,59 @@ import imagingbook.common.image.access.ScalarAccessor;
  * </p>
  * 
  * @author WB
- * @see CatmullRomInterpolator
+ *
  */
-public class SplineInterpolator implements PixelInterpolator {
-	private final double a;	
-	private final double b;
-
+public class BicubicInterpolator implements PixelInterpolator {
+	
+	private final double a;		// sharpness factor
+	
 	/**
-	 * Constructor for creating a custom spline interpolator.
-	 * @param a spline control parameter
-	 * @param b spline control parameter
+	 * Constructor using default sharpness factor a = 0.5;.
 	 */
-	public SplineInterpolator(double a, double b) {
-		super();
+	public BicubicInterpolator() {
+		this(0.5);
+	}
+	
+	/**
+	 * Constructor accepting a default sharpness factor a.
+	 * @param a sharpness factor
+	 */
+	public BicubicInterpolator(double a) {
 		this.a = a;
-		this.b = b;
 	}
 	
 	@Override
 	public float getInterpolatedValue(ScalarAccessor ia, double x, double y) {
-		final int u0 = (int) Math.floor(x);	//use floor to handle negative coordinates too
+		final int u0 = (int) Math.floor(x);
 		final int v0 = (int) Math.floor(y);
 		double q = 0;
 		for (int j = 0, v = v0 - 1; j <= 3; j++, v++) {
-//			int v = v0 + j - 1;
+//			int v = v0 - 1 + j;
 			double p = 0;
 			for (int i = 0, u = u0 - 1; i <= 3; i++, u++) {
-//				int u = u0 + i - 1;
-				p = p + w_cs(x - u) * ia.getVal(u, v);
+//				int u = u0 - 1 + i;
+				p = p + w_cub(x - u) * ia.getVal(u, v);
 			}
-			q = q + w_cs(y - v) * p;
+			q = q + w_cub(y - v) * p;
 		}
 		return (float) q;
-	}	
-	
-	private double w_cs(double x) {
-		x = Math.abs(x);
-		double w = 0;
-		if (x < 1) 
-			w = (-6*a - 9*b + 12) * x*x*x + (6*a + 12*b - 18) * x*x - 2*b + 6;
-		else if (x < 2) 
-			w = (-6*a - b) * x*x*x + (30*a + 6*b) * x*x + (-48*a - 12*b) * x + 24*a + 8*b;
-		return w/6;
 	}
 	
+	// 1D cubic interpolation
+	private final double w_cub(double x) {
+		x = Math.abs(x);
+		double z = 0;
+		if (x < 1)
+			z = (-a + 2) * x * x * x + (a - 3) * x * x + 1;
+		else if (x < 2)
+			z = -a * x * x * x + 5 * a * x * x - 8 * a * x + 4 * a;
+		return z;
+	}
+
 	@Override
 	public double getWeight(double x) {
-		return w_cs(x);
+		return w_cub(x);
 	}
+
 
 }

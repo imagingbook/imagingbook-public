@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.interpolation;
+package imagingbook.common.image.interpolation;
 
 import imagingbook.common.image.access.ScalarAccessor;
 

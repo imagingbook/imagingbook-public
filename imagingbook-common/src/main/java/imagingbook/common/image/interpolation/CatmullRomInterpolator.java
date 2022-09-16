@@ -7,14 +7,12 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.interpolation;
-import imagingbook.common.image.access.ScalarAccessor;
-
+package imagingbook.common.image.interpolation;
 
 /**
  * <p>
- * A {@link PixelInterpolator} implementing nearest-neighbor interpolation in 2D.
- * See Sec. 22.5.1 of [1] for additional details.
+ * A {@link PixelInterpolator} implementing Catmull-Rom interpolation in 2D
+ * See Sec. 22.4.1 of [1] for additional details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
@@ -22,33 +20,15 @@ import imagingbook.common.image.access.ScalarAccessor;
  * </p>
  * 
  * @author WB
- *
+ * @see SplineInterpolator
  */
-public class NearestNeighborInterpolator implements PixelInterpolator {
-	
+public class CatmullRomInterpolator extends SplineInterpolator {
+
 	/**
 	 * Constructor.
 	 */
-	public NearestNeighborInterpolator() {
-	}
-	
-	@Override
-	public float getInterpolatedValue(ScalarAccessor ia, double x, double y) {
-		final int u = (int) Math.rint(x);
-		final int v = (int) Math.rint(y);
-		return ia.getVal(u, v);
-	}
+	public CatmullRomInterpolator() {
+		super(0.5, 0.0);
+	}	
 
-	/**
-	 * Corresponds to function w_nn(x), see Eqn. 22.10 in [1].
-	 * TODO: test, not used currently.
-	 */
-	@Override
-	public double getWeight(double x) {
-		if (-0.5 <= x && x < 0.5)
-			return 1;
-		else
-			return 0;
-	}
-	
 }

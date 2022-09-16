@@ -1,4 +1,4 @@
-package imagingbook.common.interpolation;
+package imagingbook.common.image.interpolation;
 
 import static org.junit.Assert.assertEquals;
 
