@@ -75,7 +75,7 @@ public abstract class ImageMath {
 	 *  
 	 * @param <T> the type of {@link ImageProcessor}
 	 * @param ip1 first input image
-	 * @param ip1 second input image
+	 * @param ip2 second input image
 	 * @return the resulting image
 	 */
 	public static<T extends ImageProcessor> T add(T ip1, T ip2) {
@@ -95,7 +95,7 @@ public abstract class ImageMath {
 	 *  
 	 * @param <T> the type of {@link ImageProcessor}
 	 * @param ip1 first input image
-	 * @param ip1 second input image
+	 * @param ip2 second input image
 	 * @return the resulting image
 	 */
 	public static<T extends ImageProcessor> T mult(T ip1, T ip2) {

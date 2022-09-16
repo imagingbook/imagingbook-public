@@ -31,7 +31,7 @@ public interface PixelInterpolator {
 	 * {@link InterpolationMethod}.
 	 * 
 	 * @param method the interpolation method
-	 * @return
+	 * @return an instance of {@link PixelInterpolator}
 	 */
 	public static PixelInterpolator create(InterpolationMethod method) {
 		switch (method) {

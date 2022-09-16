@@ -39,8 +39,8 @@ public class LanczosInterpolator implements PixelInterpolator {
 	}
 	
 	/**
-	 * Constructor creating a Lanczos interpolator of arbitrary oder n &ge; 2.
-	 * @param n
+	 * Constructor creating a Lanczos interpolator of arbitrary order n &ge; 2.
+	 * @param n order of the interpolator
 	 */
 	public LanczosInterpolator(int n) {
 		if (n < 2) {
