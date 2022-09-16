@@ -18,13 +18,17 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 /**
  * This class defines methods to perform arbitrary geometric transformations
  * on images. The geometric transformation (mapping) must be specified at
- * construction, optionally a pixel interpolation method can be specified.
- * 
+ * construction.
  * The specified geometric mapping is supposed to be INVERTED, i.e. transforming
  * <strong>target to source</strong> coordinates!
+ * For reading pixel values (from the source image) the out-of-bounds strategy and
+ * pixel interpolation method can be specified.
+ * All methods work for both scalar-valued and color images.
  * 
  * @author WB
  * @version 2021/08/27
+ * @version 2022/09/16 revised
+ * 
  * @see ImageAccessor
  * @see Mapping2D
  */
@@ -41,19 +45,21 @@ public class ImageMapper {
 	private final Mapping2D mapping;
 	
 	/**
-	 * Creates a new instance with the specified geometric mapping.
+	 * Constructor - creates a new {@link ImageMapper} with the specified geometric mapping.
 	 * The default pixel interpolation method is used
 	 * (see {@link DefaultInterpolationMethod}).
-	 * @param targetToSourceMapping the geometric mapping
+	 * 
+	 * @param targetToSourceMapping the geometric (target to source) transformation
 	 */
 	public ImageMapper(Mapping2D targetToSourceMapping) {
 		this(targetToSourceMapping, DefaultOutOfBoundsStrategy, DefaultInterpolationMethod);
 	}
 
 	/**
-	 * Creates a new instance with the specified geometric mapping
-	 * and pixel interpolation method.
-	 * @param targetToSourceMapping the geometric mapping
+	 * Constructor - creates a new {@link ImageMapper} with the specified geometric mapping,
+	 * out-of-bounds strategy and pixel interpolation method.
+	 * 
+	 * @param targetToSourceMapping the geometric (target to source) transformation
 	 * @param obs the out-of-bounds strategy (affects source image only)
 	 * @param ipm the pixel interpolation method
 	 */
@@ -100,7 +106,6 @@ public class ImageMapper {
 		map(sourceAcc, targetAcc);
 	}
 
-	
 	// ---------------------------------------------------------------------
 
 	/**
@@ -109,7 +114,10 @@ public class ImageMapper {
 	 * The two images are passed as instances of {@link ImageAccessor}.
 	 * Note that source and target must be different images!
 	 * The geometric mapping is supposed to be INVERTED, i.e. transforming
-	 * target to source image coordinates!
+	 * target to source image coordinates.
+	 * Access to source pixels is controlled by the out-of-bounds strategy and pixel
+	 * interpolation method settings of the source {@link ImageAccessor}
+	 * (the corresponding settings of this {@link ImageAccessor} are ignored).
 	 * 
 	 * @param sourceAcc {@link ImageAccessor} for the source image
 	 * @param targetAcc {@link ImageAccessor} for the target image
@@ -118,13 +126,12 @@ public class ImageMapper {
 		if (targetAcc.getProcessor() == sourceAcc.getProcessor()) {
 			throw new IllegalArgumentException("Source and target image must not be the same!");
 		}
-		Mapping2D invMap = mapping; 		// this always IS an inverse mapping!!
 		ImageProcessor target = targetAcc.getProcessor();
 		final int w = target.getWidth();
 		final int h = target.getHeight();
 		for (int v = 0; v < h; v++) {
 			for (int u = 0; u < w; u++) {
-				Pnt2d sourcePt = invMap.applyTo(PntInt.from(u, v));
+				Pnt2d sourcePt = this.mapping.applyTo(PntInt.from(u, v));
 				float[] val = sourceAcc.getPix(sourcePt.getX(), sourcePt.getY());
 				targetAcc.setPix(u, v, val);
 			}
