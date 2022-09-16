@@ -11,30 +11,51 @@ package imagingbook.common.matching;
 import ij.process.ImageProcessor;
 
 /**
- * Objects of this class calculate an approximate distance transform of a given
- * image which is assumed to be binary (pixel value 0 = background, foreground otherwise).
+ * <p>
+ * Instances of this class calculate an approximate distance transform of a given
+ * image which is assumed to be binary (pixel value 0 = background, non-zero = foreground).
+ * For the L2 norm, the resulting distances are only an approximation.
+ * See Sec. 23.2.2 (Alg. 23.2) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2014-04-20
+ * @version 2022/09/16 revised
  */
 public class DistanceTransform {
 	
-	public enum Norm {L1, L2}
-	private final float[][] D;
-	
-	// default constructor (using L2 norm)
-	public DistanceTransform(ImageProcessor I) {
-		 this(I, Norm.L2);
+	/** Enum type for different distance norms. */
+	public enum DistanceNorm {
+		/** L1 distance (Manhattan distance) */ L1, 
+		/** L2 distance (Euclidean distance) */ L2;
 	}
 	
-	// alternate constructor (L1 or L2 norm)
-	public DistanceTransform(ImageProcessor I, Norm norm) {
+	private final float[][] D;
+	
+	/**
+	 * Constructor using the default distance norm (L2).
+	 * @param I the input image
+	 */
+	public DistanceTransform(ImageProcessor I) {
+		 this(I, DistanceNorm.L2);
+	}
+	
+	/**
+	 * Constructor using the specified distance norm.
+	 * @param I the input image
+	 * @param norm the distance norm
+	 */
+	public DistanceTransform(ImageProcessor I, DistanceNorm norm) {
 		D = makeDistanceMap(I, norm);
 	}
 	
 	// -----------------------------------------------------------------
 	
-	private float[][] makeDistanceMap(ImageProcessor I, Norm norm) {
+	private float[][] makeDistanceMap(ImageProcessor I, DistanceNorm norm) {
 		float m1, m2;
 		switch (norm) {
 		case L1:
@@ -42,7 +63,7 @@ public class DistanceTransform {
 		case L2:
 			m1 = 1; m2 = (float) Math.sqrt(2); break;
 		default:
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("unhandled norm " + norm);
 		}
 		
 		final int M = I.getWidth();
@@ -70,7 +91,6 @@ public class DistanceTransform {
 							d3 = m2 + D[u + 1][v - 1];
 						}
 					}
-					// at this point D[u][v] == POSITIVE_INFINITY
 					D[u][v] = min(d0, d1, d2, d3);	
 				}
 			}

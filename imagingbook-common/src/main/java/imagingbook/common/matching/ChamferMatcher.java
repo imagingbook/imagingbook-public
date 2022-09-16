@@ -10,29 +10,58 @@
 package imagingbook.common.matching;
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.matching.DistanceTransform.Norm;
+import imagingbook.common.matching.DistanceTransform.DistanceNorm;
 
 /**
- * This class performs chamfer matching on binary images.
+ * <p>
+ * Instances of this class perform "chamfer" matching on binary images.
+ * The "search" image I (to be searched for matches of the "reference" image R) is
+ * initially associated with the {@link ChamferMatcher}.
+ * The assumption is, that the search image I is fixed and the {@link ChamferMatcher}
+ * tries to match multiple reference images R.
+ * All images are considered binary, with non-zero values taken as foreground
+ * pixels.
+ * See Sec. 23.2.3 (Alg. 23.3) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
  * @author WB
  * @version 2021/11/26
+ * @version 2022/09/16 revised
  */
 public class ChamferMatcher {
 	
-	private final int MI, NI;
-	private final float[][] D;				// distance transform of I
-	private int MR, NR;
+	private final int MI, NI;		// dimensions of the search image
+	private final float[][] D;		// distance transform of I
+	private int MR, NR;				// dimensions of the reference image (temp.)
 	
+	/**
+	 * Constructor using the default distance norm (L2).
+	 * @param I the "search" image (to be searched for matches of the "reference" image)
+	 */
 	public ChamferMatcher(ByteProcessor I) {
-		this(I, Norm.L2);
+		this(I, DistanceNorm.L2);
 	}
 	
-	public ChamferMatcher(ByteProcessor I, Norm norm) {
+	/**
+	 * Constructor using the specified distance norm.
+	 * @param I the reference image (to be matched to)
+	 * @param norm the distance norm
+	 */
+	public ChamferMatcher(ByteProcessor I, DistanceNorm norm) {
 		this.MI = I.getWidth();
 		this.NI = I.getHeight();
 		this.D = (new DistanceTransform(I, norm)).getDistanceMap();
 	}
 	
+	/**
+	 * Matches the specified reference image R to the (fixed) search image I.
+	 * @param R some binary reference image
+	 * @return a 2D array Q[r][s] of match scores
+	 */
 	public float[][] getMatch(ByteProcessor R) {
 		this.MR = R.getWidth();
 		this.NR = R.getHeight();
@@ -71,8 +100,16 @@ public class ChamferMatcher {
 		return q;
 	}  	
 	
-	// unused?:
-	
+	/**
+	 * Matches the specified point set to the (fixed) search image I.
+	 * The points represent the foreground pixels of a virtual reference image (R)
+	 * with the specified width and height.
+	 * 
+	 * @param points a set of foreground points
+	 * @param width the width of the virtual reference image
+	 * @param height the height of the virtual reference image
+	 * @return a 2D array Q[r][s] of match scores of size width x height
+	 */
 	public float[][] getMatch(PntInt[] points, int width, int height) {
 		float[][] Q = new float[width][height];
 		for (int r = 0; r <= width; r++) {

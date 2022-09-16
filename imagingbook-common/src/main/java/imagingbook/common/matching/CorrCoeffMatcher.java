@@ -12,25 +12,50 @@ package imagingbook.common.matching;
 import ij.process.FloatProcessor;
 
 /**
+ * <p>
+ * Instances of this class perform matching on scalar-valued images
+ * based on the correlation coefficient.
+ * The "search" image I (to be searched for matches of the "reference" image R) is
+ * initially associated with the {@link CorrCoeffMatcher}.
+ * The assumption is, that the search image I is fixed and the matcher
+ * tries to match multiple reference images R.
+ * See Sec. 23.1.1 (Alg. 23.1) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
  * @author WB
  * @version 2022/02/10
+ * @version 2022/09/16 revised
  */
 public class CorrCoeffMatcher {
+	
 	private final FloatProcessor I; // search image
 	private final int MI, NI; 		// width/height of image
 
 	private FloatProcessor R; 		// reference image
 	private int MR, NR; 			// width/height of reference
 	private int K;
-	private double meanR; 			// mean value of template
-	private double varR;  			// square root of template variance
+	private double meanR; 			// mean value of reference
+	private double varR;  			// square root of reference variance
 
+	/**
+	 * Constructor.
+	 * @param I the reference image (to be matched to)
+	 */
 	public CorrCoeffMatcher(FloatProcessor I) {
 		this.I = I;
 		this.MI = this.I.getWidth();
 		this.NI = this.I.getHeight();
 	}
 	
+	/**
+	 * Matches the specified reference image R to the (fixed) search image I.
+	 * @param R some scalar-valued reference image
+	 * @return a 2D array Q[r][s] of match scores
+	 */
 	public float[][] getMatch(FloatProcessor R) {
 		this.R = R;
 		this.MR = R.getWidth();

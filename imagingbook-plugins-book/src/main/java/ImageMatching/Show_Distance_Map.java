@@ -14,7 +14,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.matching.DistanceTransform;
-import imagingbook.common.matching.DistanceTransform.Norm;
+import imagingbook.common.matching.DistanceTransform.DistanceNorm;
 
 /**
  * Demonstrates the use of the {@link DistanceTransform} class.
@@ -25,7 +25,7 @@ import imagingbook.common.matching.DistanceTransform.Norm;
  */
 public class Show_Distance_Map implements PlugInFilter {
 	
-	private static Norm distanceNorm = Norm.L1;
+	private static DistanceNorm distanceNorm = DistanceNorm.L1;
 	
 	private ImagePlus im;
 	
@@ -52,7 +52,7 @@ public class Show_Distance_Map implements PlugInFilter {
 		if (gd.wasCanceled())
 			return false;
 		
-		distanceNorm = gd.getNextEnumChoice(Norm.class);
+		distanceNorm = gd.getNextEnumChoice(DistanceNorm.class);
 		return true;
 	}
 		

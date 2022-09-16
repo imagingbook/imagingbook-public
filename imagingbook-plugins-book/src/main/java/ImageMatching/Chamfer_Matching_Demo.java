@@ -17,7 +17,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.matching.ChamferMatcher;
-import imagingbook.common.matching.DistanceTransform.Norm;
+import imagingbook.common.matching.DistanceTransform.DistanceNorm;
 
 
 /**
@@ -47,7 +47,7 @@ public class Chamfer_Matching_Demo implements PlugInFilter {
     	ByteProcessor R = imgR.getProcessor().convertToByteProcessor(); // reference image R
     	
     	// TODO: better initialize matcher with reference image R?
-    	ChamferMatcher matcher = new ChamferMatcher(I, Norm.L2);
+    	ChamferMatcher matcher = new ChamferMatcher(I, DistanceNorm.L2);
     	float[][] Qa = matcher.getMatch(R);
     	
     	FloatProcessor Q = new FloatProcessor(Qa);
