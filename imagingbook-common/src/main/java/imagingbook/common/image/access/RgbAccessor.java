@@ -10,7 +10,7 @@ package imagingbook.common.image.access;
 
 import ij.process.ColorProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.image.interpolation.PixelInterpolator.InterpolationMethod;
+import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
  * A specific vector-valued image accessor for RGB images

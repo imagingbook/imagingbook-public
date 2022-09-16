@@ -9,7 +9,6 @@ import ij.process.ColorProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.RgbAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
-import imagingbook.common.image.interpolation.PixelInterpolator.InterpolationMethod;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 

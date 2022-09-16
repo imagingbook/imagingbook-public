@@ -23,7 +23,7 @@ import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.image.ColorStack;
 import imagingbook.common.image.ImageMapper;
-import imagingbook.common.image.interpolation.PixelInterpolator.InterpolationMethod;
+import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
  * This plugin rotates the input image. This operation

@@ -13,7 +13,7 @@ import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.PixelPack;
-import imagingbook.common.image.interpolation.PixelInterpolator.InterpolationMethod;
+import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
  * <p>
