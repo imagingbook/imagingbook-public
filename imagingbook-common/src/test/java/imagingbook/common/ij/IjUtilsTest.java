@@ -346,6 +346,8 @@ public class IjUtilsTest {
 		IjUtils.crop(ip1, 2, 3, 15, 0);
 	}
 	
+	// ----------------------------------------------------------------
+	
 	@Test
 	public void testSaveAndReadImageColor() {
 		// make a small truly random image:
@@ -355,6 +357,7 @@ public class IjUtilsTest {
         String filename = FileUtils.getTempDirectory() + this.getClass().getSimpleName() + "-color.png";
 		String absPath = IjUtils.save(ip2, filename);
 		assertNotNull(absPath);
+//		System.out.println(absPath);
 		
 		// read that file again and compare:
 		ImagePlus im = IjUtils.openImage(absPath);
@@ -370,7 +373,7 @@ public class IjUtilsTest {
 		ByteProcessor ip2 =  ImageTestUtils.makeRandomByteProcessor(107, 37, 0);
 		
 		// save it to a file
-        String filename = FileUtils.getTempDirectory() + this.getClass().getSimpleName() + "-gray.tif";
+        String filename = FileUtils.getTempDirectory() + this.getClass().getSimpleName() + "-gray.png";
 		String absPath = IjUtils.save(ip2, filename);
 		assertNotNull(absPath);
 		
@@ -379,6 +382,24 @@ public class IjUtilsTest {
 		assertNotNull(im);
 		ImageProcessor ip3 = im.getProcessor();
 		assertTrue(ip3 instanceof ByteProcessor);
+		assertTrue(ImageTestUtils.match(ip2, ip3, 1e-3));
+	}
+	
+	@Test
+	public void testSaveAndReadImageFloat() {
+		// make a small truly random image:
+		FloatProcessor ip2 =  ImageTestUtils.makeRandomByteProcessor(107, 37, 0).convertToFloatProcessor();
+		
+		// save it to a file
+        String filename = FileUtils.getTempDirectory() + this.getClass().getSimpleName() + "-float.tif";
+		String absPath = IjUtils.save(ip2, filename);
+		assertNotNull(absPath);
+		
+		// read that file again and compare:
+		ImagePlus im = IjUtils.openImage(absPath);
+		assertNotNull(im);
+		ImageProcessor ip3 = im.getProcessor();
+		assertTrue(ip3 instanceof FloatProcessor);
 		assertTrue(ImageTestUtils.match(ip2, ip3, 1e-3));
 	}
 	
