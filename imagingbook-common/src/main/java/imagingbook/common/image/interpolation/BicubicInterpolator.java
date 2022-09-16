@@ -36,7 +36,7 @@ public class BicubicInterpolator implements PixelInterpolator {
 	}
 	
 	/**
-	 * Constructor accepting a default sharpness factor a.
+	 * Constructor accepting a specific sharpness factor a.
 	 * @param a sharpness factor
 	 */
 	public BicubicInterpolator(double a) {
