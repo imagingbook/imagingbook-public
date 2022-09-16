@@ -26,10 +26,10 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.mappings.linear.ProjectiveMapping2D;
-import imagingbook.common.lucaskanade.LucasKanadeForwardMatcher;
-import imagingbook.common.lucaskanade.LucasKanadeInverseMatcher;
-import imagingbook.common.lucaskanade.LucasKanadeMatcher;
-import imagingbook.common.lucaskanade.utils.ImageExtractor;
+import imagingbook.common.matching.lucaskanade.ImageExtractor;
+import imagingbook.common.matching.lucaskanade.LucasKanadeForwardMatcher;
+import imagingbook.common.matching.lucaskanade.LucasKanadeInverseMatcher;
+import imagingbook.common.matching.lucaskanade.LucasKanadeMatcher;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
