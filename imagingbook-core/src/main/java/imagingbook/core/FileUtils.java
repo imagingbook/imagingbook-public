@@ -312,6 +312,15 @@ public abstract class FileUtils {
 		return DirectoryKey + "#" + clazz.getCanonicalName();
 	}
 	
+	
+	public static String getTempDirectory() {
+		String tempDir = System.getProperty("java.io.tmpdir");
+		if (tempDir == null) {
+			throw new RuntimeException("temporary user directory is undefined");
+		}
+		return tempDir;
+	}
+	
 	// -----------------------------------------------------------------
 			
 //	public static void main(String[] args) {
