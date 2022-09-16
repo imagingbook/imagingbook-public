@@ -10,8 +10,10 @@
 package imagingbook.common.ij;
 
 import java.awt.Rectangle;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -19,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
@@ -559,11 +562,22 @@ public abstract class IjUtils {
 	 * as a {@link ImagePlus} instance.
 	 * 
 	 * @param uri the URI leading to the image (including extension)
-	 * @return A new {@link ImagePlus} instance or {@code null} if not found
+	 * @return a new {@link ImagePlus} instance or {@code null} if unable to open
 	 */
 	public static ImagePlus openImage(URI uri) {
 		Objects.requireNonNull(uri);
 		return new Opener().openImage(uri.toString());
+	}
+	
+	/**
+	 * Opens the image from the specified filename and returns it
+	 * as a {@link ImagePlus} instance.
+	 * 
+	 * @param filename the path and filename to be opened
+	 * @return a new {@link ImagePlus} instance or {@code null} if unable to open
+	 */
+	public static ImagePlus openImage(String filename) {
+		return openImage(new File(filename).toURI());
 	}
 	
 	
@@ -971,5 +985,31 @@ public abstract class IjUtils {
 		conv.setNormalize(false);
 		conv.convolve(ip, h, H[0].length, H.length);
 	}
+	
+	// ---------------------------------------------------------------
+	
+	/**
+	 * Saves the given {@link ImageProcessor} using the specified
+	 * path. The image file type is inferred from the file extension.
+	 * TIFF is used if no file extension is given.
+	 * This method simply invokes {@link IJ#save(ImagePlus, String)},
+	 * creating a temporary and titleless {@link ImagePlus} instance.
+	 * Existing files with the same path are overwritten.
+	 * 
+	 * @param ip a {@link ImageProcessor}
+	 * @param filepath the path where to save the image, e.g. {@code "C:/tmp/MyImage.png"}
+	 * @return the absolute file path
+	 */
+	public static String save(ImageProcessor ip, String filepath) {
+		// TODO: check if the file was actually written or not
+		File file = Paths.get(filepath).toFile();
+		String absPath = file.getAbsolutePath();
+		IJ.save(new ImagePlus("", ip), absPath);
+		return absPath;
+	}
+	
+	
+	
+
 
 }

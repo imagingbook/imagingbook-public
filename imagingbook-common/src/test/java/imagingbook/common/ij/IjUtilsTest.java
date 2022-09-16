@@ -8,20 +8,23 @@
  *******************************************************************************/
 package imagingbook.common.ij;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
 import org.junit.Test;
 
+import ij.ImagePlus;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.math.Matrix;
+import imagingbook.core.FileUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 
@@ -343,6 +346,42 @@ public class IjUtilsTest {
 		IjUtils.crop(ip1, 2, 3, 15, 0);
 	}
 	
+	@Test
+	public void testSaveAndReadImageColor() {
+		// make a small truly random image:
+		ColorProcessor ip2 =  ImageTestUtils.makeRandomColorProcessor(51, 43, 0);
+		
+		// save it to a file
+        String filename = FileUtils.getTempDirectory() + this.getClass().getSimpleName() + "-color.png";
+		String absPath = IjUtils.save(ip2, filename);
+		assertNotNull(absPath);
+		
+		// read that file again and compare:
+		ImagePlus im = IjUtils.openImage(absPath);
+		assertNotNull(im);
+		ImageProcessor ip3 = im.getProcessor();
+		assertTrue(ip3 instanceof ColorProcessor);
+		assertTrue(ImageTestUtils.match(ip2, ip3, 1e-3));
+	}
+	
+	@Test
+	public void testSaveAndReadImageGray() {
+		// make a small truly random image:
+		ByteProcessor ip2 =  ImageTestUtils.makeRandomByteProcessor(107, 37, 0);
+		
+		// save it to a file
+        String filename = FileUtils.getTempDirectory() + this.getClass().getSimpleName() + "-gray.tif";
+		String absPath = IjUtils.save(ip2, filename);
+		assertNotNull(absPath);
+		
+		// read that file again and compare:
+		ImagePlus im = IjUtils.openImage(absPath);
+		assertNotNull(im);
+		ImageProcessor ip3 = im.getProcessor();
+		assertTrue(ip3 instanceof ByteProcessor);
+		assertTrue(ImageTestUtils.match(ip2, ip3, 1e-3));
+	}
+	
 	// ----------------------------------------------------------------
 	// ----------------------------------------------------------------
 	
@@ -399,6 +438,4 @@ public class IjUtilsTest {
 	}
 
 
-	
-	
 }
