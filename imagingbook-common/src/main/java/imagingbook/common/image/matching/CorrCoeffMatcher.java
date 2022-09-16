@@ -9,6 +9,9 @@
 
 package imagingbook.common.image.matching;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.sqrt;
+
 import ij.process.FloatProcessor;
 
 /**
@@ -62,25 +65,24 @@ public class CorrCoeffMatcher {
 		this.NR = R.getHeight();
 		this.K = MR * NR;
 
-		// calculate the mean and variance of template
+		// calculate the mean and variance of R
 		double sumR = 0;
 		double sumR2 = 0;
 		for (int j = 0; j < NR; j++) {
 			for (int i = 0; i < MR; i++) {
-				float b = R.getf(i,j);
+				double b = R.getf(i, j);
 				sumR  += b;
-				sumR2 += b * b;
+				sumR2 += sqr(b);
 			}
 		}
 		
 		this.meanR = sumR / K;
-		this.varR = Math.sqrt(sumR2 - K * meanR * meanR);
+		this.varR = sqrt(sumR2 - K * sqr(meanR));
 		
 		float[][] C = new float[MI - MR + 1][NI - NR + 1];
-		for (int r = 0; r <= MI - MR; r++) {
-			for (int s = 0; s <= NI - NR; s++) {
-				float d = (float) getMatchValue(r, s);
-				C[r][s] = d;
+		for (int r = 0; r < C.length; r++) {
+			for (int s = 0; s < C[r].length; s++) {
+				C[r][s] = (float) getMatchValue(r, s);
 			}	
 		}
 		this.R = null;
@@ -91,17 +93,17 @@ public class CorrCoeffMatcher {
 		double sumI = 0, sumI2 = 0, sumIR = 0;
 		for (int j = 0; j < NR; j++) {
 			for (int i = 0; i < MR; i++) {
-				float a = I.getf(r + i, s + j);
-				float b = R.getf(i, j);
+				double a = I.getf(r + i, s + j);
+				double b = R.getf(i, j);
 				sumI  += a;
-				sumI2 += a * a;
+				sumI2 += sqr(a);
 				sumIR += a * b;
 			}
 		}
 		double meanI = sumI / K;
 		return (sumIR - K * meanI * meanR) / 
-			   (1 + Math.sqrt(sumI2 - K * meanI * meanI) * varR);
-				// WB: added 1 in denominator to handle flat image regions (w. zero variance)
+			   (1 + sqrt(sumI2 - K * sqr(meanI)) * varR);
+			// added 1 in denominator to handle flat image regions (w. zero variance)
 	}  
 	
 }
