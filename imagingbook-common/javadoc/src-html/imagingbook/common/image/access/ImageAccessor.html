@@ -23,7 +23,7 @@
 <span class="sourceLineNo">013</span><a id="line.13">import ij.process.ImageProcessor;</a>
 <span class="sourceLineNo">014</span><a id="line.14">import imagingbook.common.image.OutOfBoundsStrategy;</a>
 <span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.image.PixelPack;</a>
-<span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.image.interpolation.InterpolationMethod;</a>
 <span class="sourceLineNo">017</span><a id="line.17"></a>
 <span class="sourceLineNo">018</span><a id="line.18">/**</a>
 <span class="sourceLineNo">019</span><a id="line.19"> * &lt;p&gt;</a>
@@ -67,197 +67,199 @@
 <span class="sourceLineNo">057</span><a id="line.57"> */</a>
 <span class="sourceLineNo">058</span><a id="line.58">public abstract class ImageAccessor {</a>
 <span class="sourceLineNo">059</span><a id="line.59">        </a>
-<span class="sourceLineNo">060</span><a id="line.60">        static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.ZeroValues;</a>
-<span class="sourceLineNo">061</span><a id="line.61">        static final InterpolationMethod DefaultInterpolationMethod = InterpolationMethod.Bilinear;</a>
+<span class="sourceLineNo">060</span><a id="line.60">        public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.ZeroValues;</a>
+<span class="sourceLineNo">061</span><a id="line.61">        public static final InterpolationMethod DefaultInterpolationMethod = InterpolationMethod.Bilinear;</a>
 <span class="sourceLineNo">062</span><a id="line.62">        </a>
-<span class="sourceLineNo">063</span><a id="line.63">        protected final ImageProcessor ip;</a>
-<span class="sourceLineNo">064</span><a id="line.64">        protected final int width;</a>
-<span class="sourceLineNo">065</span><a id="line.65">        protected final int height;</a>
-<span class="sourceLineNo">066</span><a id="line.66">        protected final GridIndexer2D indexer;          // implements the specified OutOfBoundsStrategy</a>
-<span class="sourceLineNo">067</span><a id="line.67">        protected final OutOfBoundsStrategy outOfBoundsStrategy;</a>
-<span class="sourceLineNo">068</span><a id="line.68">        protected final InterpolationMethod interpolationMethod;</a>
-<span class="sourceLineNo">069</span><a id="line.69">        </a>
-<span class="sourceLineNo">070</span><a id="line.70">        /**</a>
-<span class="sourceLineNo">071</span><a id="line.71">         * Creates a new {@code ImageAccessor} instance for the given image,</a>
-<span class="sourceLineNo">072</span><a id="line.72">         * using the default out-of-bounds strategy and interpolation method.</a>
-<span class="sourceLineNo">073</span><a id="line.73">         * The concrete type of the returned instance depends on the specified image.</a>
-<span class="sourceLineNo">074</span><a id="line.74">         * </a>
-<span class="sourceLineNo">075</span><a id="line.75">         * @param ip the source image</a>
-<span class="sourceLineNo">076</span><a id="line.76">         * @return a new {@code ImageAccessor} instance</a>
-<span class="sourceLineNo">077</span><a id="line.77">         */</a>
-<span class="sourceLineNo">078</span><a id="line.78">        public static final ImageAccessor create(ImageProcessor ip) {</a>
-<span class="sourceLineNo">079</span><a id="line.79">                return create(ip, DefaultOutOfBoundsStrategy, DefaultInterpolationMethod);</a>
-<span class="sourceLineNo">080</span><a id="line.80">        }</a>
-<span class="sourceLineNo">081</span><a id="line.81">        </a>
-<span class="sourceLineNo">082</span><a id="line.82">        /**</a>
-<span class="sourceLineNo">083</span><a id="line.83">         * Creates a new {@code ImageAccessor} instance for the given image,</a>
-<span class="sourceLineNo">084</span><a id="line.84">         * using the specified out-of-bounds strategy and interpolation method.</a>
-<span class="sourceLineNo">085</span><a id="line.85">         * The concrete type of the returned instance depends on the specified image.</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * </a>
-<span class="sourceLineNo">087</span><a id="line.87">         * @param ip the source image</a>
-<span class="sourceLineNo">088</span><a id="line.88">         * @param obs the out-of-bounds strategy (use {@code null} for default settings)</a>
-<span class="sourceLineNo">089</span><a id="line.89">         * @param ipm the interpolation method (use {@code null} for default settings)</a>
-<span class="sourceLineNo">090</span><a id="line.90">         * @return a new {@code ImageAccessor} instance</a>
-<span class="sourceLineNo">091</span><a id="line.91">         */</a>
-<span class="sourceLineNo">092</span><a id="line.92">        public static ImageAccessor create(ImageProcessor ip,  OutOfBoundsStrategy obs, InterpolationMethod ipm) {</a>
-<span class="sourceLineNo">093</span><a id="line.93">                if (ip instanceof ColorProcessor) {</a>
-<span class="sourceLineNo">094</span><a id="line.94">                        return new RgbAccessor((ColorProcessor)ip, obs, ipm);</a>
-<span class="sourceLineNo">095</span><a id="line.95">                }</a>
-<span class="sourceLineNo">096</span><a id="line.96">                else {</a>
-<span class="sourceLineNo">097</span><a id="line.97">                        return ScalarAccessor.create(ip, obs, ipm);</a>
-<span class="sourceLineNo">098</span><a id="line.98">                }</a>
-<span class="sourceLineNo">099</span><a id="line.99">        }</a>
-<span class="sourceLineNo">100</span><a id="line.100">        </a>
-<span class="sourceLineNo">101</span><a id="line.101">        // constructor (used by all subtypes)</a>
-<span class="sourceLineNo">102</span><a id="line.102">        ImageAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {</a>
-<span class="sourceLineNo">103</span><a id="line.103">                this.ip = ip;</a>
-<span class="sourceLineNo">104</span><a id="line.104">                this.width  = ip.getWidth();</a>
-<span class="sourceLineNo">105</span><a id="line.105">                this.height = ip.getHeight();</a>
-<span class="sourceLineNo">106</span><a id="line.106">                this.outOfBoundsStrategy = (obs != null) ? obs : DefaultOutOfBoundsStrategy;</a>
-<span class="sourceLineNo">107</span><a id="line.107">                this.interpolationMethod = (ipm != null) ? ipm : DefaultInterpolationMethod;</a>
-<span class="sourceLineNo">108</span><a id="line.108">                this.indexer = GridIndexer2D.create(width, height, this.outOfBoundsStrategy);</a>
-<span class="sourceLineNo">109</span><a id="line.109">        }</a>
-<span class="sourceLineNo">110</span><a id="line.110">        </a>
-<span class="sourceLineNo">111</span><a id="line.111">        /**</a>
-<span class="sourceLineNo">112</span><a id="line.112">         * Returns the width of the associated image.</a>
-<span class="sourceLineNo">113</span><a id="line.113">         * @return the image width.</a>
-<span class="sourceLineNo">114</span><a id="line.114">         */</a>
-<span class="sourceLineNo">115</span><a id="line.115">        public int getWidth() {</a>
-<span class="sourceLineNo">116</span><a id="line.116">                return this.width;</a>
-<span class="sourceLineNo">117</span><a id="line.117">        }</a>
-<span class="sourceLineNo">118</span><a id="line.118">        </a>
-<span class="sourceLineNo">119</span><a id="line.119">        /**</a>
-<span class="sourceLineNo">120</span><a id="line.120">         * Returns the height of the associated image.</a>
-<span class="sourceLineNo">121</span><a id="line.121">         * @return the image height.</a>
-<span class="sourceLineNo">122</span><a id="line.122">         */</a>
-<span class="sourceLineNo">123</span><a id="line.123">        public int getHeight() {</a>
-<span class="sourceLineNo">124</span><a id="line.124">                return this.height;</a>
-<span class="sourceLineNo">125</span><a id="line.125">        }</a>
-<span class="sourceLineNo">126</span><a id="line.126">        </a>
-<span class="sourceLineNo">127</span><a id="line.127">        /**</a>
-<span class="sourceLineNo">128</span><a id="line.128">         * Returns the source {@link ImageProcessor} associated with this</a>
-<span class="sourceLineNo">129</span><a id="line.129">         * {@link ImageAccessor}.</a>
-<span class="sourceLineNo">130</span><a id="line.130">         * </a>
-<span class="sourceLineNo">131</span><a id="line.131">         * @return the image processor</a>
-<span class="sourceLineNo">132</span><a id="line.132">         */</a>
-<span class="sourceLineNo">133</span><a id="line.133">        public ImageProcessor getProcessor() {</a>
-<span class="sourceLineNo">134</span><a id="line.134">                return this.ip;</a>
-<span class="sourceLineNo">135</span><a id="line.135">        }</a>
-<span class="sourceLineNo">136</span><a id="line.136">        </a>
-<span class="sourceLineNo">137</span><a id="line.137">        /**</a>
-<span class="sourceLineNo">138</span><a id="line.138">         * Returns the depth (number of components) of this image</a>
-<span class="sourceLineNo">139</span><a id="line.139">         * accessor. 1 is returned if the image is scalar-valued.</a>
-<span class="sourceLineNo">140</span><a id="line.140">         * </a>
-<span class="sourceLineNo">141</span><a id="line.141">         * @return the image depth.</a>
-<span class="sourceLineNo">142</span><a id="line.142">         */</a>
-<span class="sourceLineNo">143</span><a id="line.143">        public abstract int getDepth();</a>
-<span class="sourceLineNo">144</span><a id="line.144">        </a>
-<span class="sourceLineNo">145</span><a id="line.145">        /**</a>
-<span class="sourceLineNo">146</span><a id="line.146">         * Returns the {@link OutOfBoundsStrategy} specified for this</a>
-<span class="sourceLineNo">147</span><a id="line.147">         * {@link ImageAccessor}.</a>
-<span class="sourceLineNo">148</span><a id="line.148">         * </a>
-<span class="sourceLineNo">149</span><a id="line.149">         * @return the out-of-bounds strategy</a>
-<span class="sourceLineNo">150</span><a id="line.150">         */</a>
-<span class="sourceLineNo">151</span><a id="line.151">        public OutOfBoundsStrategy getOutOfBoundsStrategy() {</a>
-<span class="sourceLineNo">152</span><a id="line.152">                return outOfBoundsStrategy;</a>
-<span class="sourceLineNo">153</span><a id="line.153">        }</a>
-<span class="sourceLineNo">154</span><a id="line.154"></a>
-<span class="sourceLineNo">155</span><a id="line.155">        /**</a>
-<span class="sourceLineNo">156</span><a id="line.156">         * Returns the {@link InterpolationMethod} specified for this</a>
-<span class="sourceLineNo">157</span><a id="line.157">         * {@link ImageAccessor}.</a>
-<span class="sourceLineNo">158</span><a id="line.158">         * </a>
-<span class="sourceLineNo">159</span><a id="line.159">         * @return the interpolation method</a>
-<span class="sourceLineNo">160</span><a id="line.160">         */</a>
-<span class="sourceLineNo">161</span><a id="line.161">        public InterpolationMethod getInterpolationMethod() {</a>
-<span class="sourceLineNo">162</span><a id="line.162">                return interpolationMethod;</a>
-<span class="sourceLineNo">163</span><a id="line.163">        }</a>
-<span class="sourceLineNo">164</span><a id="line.164">        </a>
-<span class="sourceLineNo">165</span><a id="line.165">        /**</a>
-<span class="sourceLineNo">166</span><a id="line.166">         * Returns the pixel value for the specified floating-point </a>
-<span class="sourceLineNo">167</span><a id="line.167">         * position as a {@code float[]} with either 1 element for scalar-valued images</a>
-<span class="sourceLineNo">168</span><a id="line.168">         * and or more elements (e.g., 3 for for RGB images).</a>
-<span class="sourceLineNo">169</span><a id="line.169">         * </a>
-<span class="sourceLineNo">170</span><a id="line.170">         * @param u the x-coordinate</a>
-<span class="sourceLineNo">171</span><a id="line.171">         * @param v the y-coordinate</a>
-<span class="sourceLineNo">172</span><a id="line.172">         * @return the pixel value ({@code float[]})</a>
-<span class="sourceLineNo">173</span><a id="line.173">         */</a>
-<span class="sourceLineNo">174</span><a id="line.174">        public abstract float[] getPix(int u, int v);</a>
-<span class="sourceLineNo">175</span><a id="line.175">        </a>
-<span class="sourceLineNo">176</span><a id="line.176">        /**</a>
-<span class="sourceLineNo">177</span><a id="line.177">         * Returns the interpolated pixel value for the specified floating-point </a>
-<span class="sourceLineNo">178</span><a id="line.178">         * position as a {@code float[]} with either 1 element for scalar-valued images</a>
-<span class="sourceLineNo">179</span><a id="line.179">         * and or more elements (e.g., 3 for for RGB images).</a>
-<span class="sourceLineNo">180</span><a id="line.180">         * Interpolation is used non-integer coordinates.</a>
-<span class="sourceLineNo">181</span><a id="line.181">         * </a>
-<span class="sourceLineNo">182</span><a id="line.182">         * @param x the x-coordinate</a>
-<span class="sourceLineNo">183</span><a id="line.183">         * @param y the y-coordinate</a>
-<span class="sourceLineNo">184</span><a id="line.184">         * @return the interpolated pixel value ({@code float[]})</a>
-<span class="sourceLineNo">185</span><a id="line.185">         */</a>
-<span class="sourceLineNo">186</span><a id="line.186">        public abstract float[] getPix(double x, double y);             // returns interpolated pixel value at real position (x, y)</a>
-<span class="sourceLineNo">187</span><a id="line.187">        </a>
-<span class="sourceLineNo">188</span><a id="line.188">        /**</a>
-<span class="sourceLineNo">189</span><a id="line.189">         * Sets the pixel value at the specified integer position.</a>
-<span class="sourceLineNo">190</span><a id="line.190">         * The new value must be provided as {@code float[]} with </a>
-<span class="sourceLineNo">191</span><a id="line.191">         * 1 element for scalar-valued images or 3 elements for RGB images.</a>
-<span class="sourceLineNo">192</span><a id="line.192">         * @param u the x-coordinate</a>
-<span class="sourceLineNo">193</span><a id="line.193">         * @param v the y-coordinate</a>
-<span class="sourceLineNo">194</span><a id="line.194">         * @param val the new pixel value ({@code float[]})</a>
-<span class="sourceLineNo">195</span><a id="line.195">         */</a>
-<span class="sourceLineNo">196</span><a id="line.196">        public abstract void setPix(int u, int v, float[] val);</a>
-<span class="sourceLineNo">197</span><a id="line.197">        </a>
-<span class="sourceLineNo">198</span><a id="line.198">        /**</a>
-<span class="sourceLineNo">199</span><a id="line.199">         * Returns the value of the pixel's k-th component at the</a>
-<span class="sourceLineNo">200</span><a id="line.200">         * specified position. If the associated image is scalar-valued,</a>
-<span class="sourceLineNo">201</span><a id="line.201">         * this is equivalent to component 0.</a>
-<span class="sourceLineNo">202</span><a id="line.202">         * See also {@link #getDepth()}.</a>
-<span class="sourceLineNo">203</span><a id="line.203">         * </a>
-<span class="sourceLineNo">204</span><a id="line.204">         * @param u the x-coordinate</a>
-<span class="sourceLineNo">205</span><a id="line.205">         * @param v the y-coordinate</a>
-<span class="sourceLineNo">206</span><a id="line.206">         * @param k the component index</a>
-<span class="sourceLineNo">207</span><a id="line.207">         * @return the component value ({@code float})</a>
-<span class="sourceLineNo">208</span><a id="line.208">         */</a>
-<span class="sourceLineNo">209</span><a id="line.209">        public abstract float getVal(int u, int v, int k);</a>
-<span class="sourceLineNo">210</span><a id="line.210">        </a>
-<span class="sourceLineNo">211</span><a id="line.211">        </a>
-<span class="sourceLineNo">212</span><a id="line.212">        /**</a>
-<span class="sourceLineNo">213</span><a id="line.213">         * Returns the interpolated value of the pixel's k-th component at the</a>
-<span class="sourceLineNo">214</span><a id="line.214">         * specified position. If the associated image is scalar-valued,</a>
-<span class="sourceLineNo">215</span><a id="line.215">         * this is equivalent to component 0.</a>
-<span class="sourceLineNo">216</span><a id="line.216">         * See also {@link #getDepth()}.</a>
-<span class="sourceLineNo">217</span><a id="line.217">         * </a>
-<span class="sourceLineNo">218</span><a id="line.218">         * @param x the x-coordinate</a>
-<span class="sourceLineNo">219</span><a id="line.219">         * @param y the y-coordinate</a>
-<span class="sourceLineNo">220</span><a id="line.220">         * @param k the component index</a>
-<span class="sourceLineNo">221</span><a id="line.221">         * @return the interpolated component value ({@code float[]})</a>
-<span class="sourceLineNo">222</span><a id="line.222">         */</a>
-<span class="sourceLineNo">223</span><a id="line.223">        public abstract float getVal(double x, double y, int k);</a>
-<span class="sourceLineNo">224</span><a id="line.224">        </a>
-<span class="sourceLineNo">225</span><a id="line.225">        /**</a>
-<span class="sourceLineNo">226</span><a id="line.226">         * Sets the value of the pixel's k-th component at the</a>
-<span class="sourceLineNo">227</span><a id="line.227">         * specified position. If the associated image is scalar-valued,</a>
-<span class="sourceLineNo">228</span><a id="line.228">         * this is equivalent to component 0.</a>
-<span class="sourceLineNo">229</span><a id="line.229">         * See also {@link #getDepth()}.</a>
-<span class="sourceLineNo">230</span><a id="line.230">         * </a>
-<span class="sourceLineNo">231</span><a id="line.231">         * @param u the x-coordinate</a>
-<span class="sourceLineNo">232</span><a id="line.232">         * @param v the y-coordinate</a>
-<span class="sourceLineNo">233</span><a id="line.233">         * @param k the component index</a>
-<span class="sourceLineNo">234</span><a id="line.234">         * @param val the new component value</a>
-<span class="sourceLineNo">235</span><a id="line.235">         */</a>
-<span class="sourceLineNo">236</span><a id="line.236">        public abstract void setVal(int u, int v, int k, float val);</a>
-<span class="sourceLineNo">237</span><a id="line.237">        </a>
-<span class="sourceLineNo">238</span><a id="line.238">        /**</a>
-<span class="sourceLineNo">239</span><a id="line.239">         * Returns the {@link ImageAccessor} for the k-th component;</a>
-<span class="sourceLineNo">240</span><a id="line.240">         * the result is a sub-type of {@link ScalarAccessor}.</a>
-<span class="sourceLineNo">241</span><a id="line.241">         * In the case of a scalar-valued image, THIS object is returned.</a>
-<span class="sourceLineNo">242</span><a id="line.242">         * </a>
-<span class="sourceLineNo">243</span><a id="line.243">         * @param k the component index</a>
-<span class="sourceLineNo">244</span><a id="line.244">         * @return the component accessor.</a>
-<span class="sourceLineNo">245</span><a id="line.245">         */</a>
-<span class="sourceLineNo">246</span><a id="line.246">        public abstract ScalarAccessor getComponentAccessor(int k);</a>
-<span class="sourceLineNo">247</span><a id="line.247">        </a>
-<span class="sourceLineNo">248</span><a id="line.248">        abstract void checkComponentIndex(int k);</a>
-<span class="sourceLineNo">249</span><a id="line.249">                </a>
-<span class="sourceLineNo">250</span><a id="line.250">}</a>
+<span class="sourceLineNo">063</span><a id="line.63">        protected final float defaultValue = 0.0f;</a>
+<span class="sourceLineNo">064</span><a id="line.64">        </a>
+<span class="sourceLineNo">065</span><a id="line.65">        protected final ImageProcessor ip;</a>
+<span class="sourceLineNo">066</span><a id="line.66">        protected final int width;</a>
+<span class="sourceLineNo">067</span><a id="line.67">        protected final int height;</a>
+<span class="sourceLineNo">068</span><a id="line.68">        protected final GridIndexer2D indexer;          // implements the specified OutOfBoundsStrategy</a>
+<span class="sourceLineNo">069</span><a id="line.69">        protected final OutOfBoundsStrategy outOfBoundsStrategy;</a>
+<span class="sourceLineNo">070</span><a id="line.70">        protected final InterpolationMethod interpolationMethod;</a>
+<span class="sourceLineNo">071</span><a id="line.71">        </a>
+<span class="sourceLineNo">072</span><a id="line.72">        /**</a>
+<span class="sourceLineNo">073</span><a id="line.73">         * Creates a new {@code ImageAccessor} instance for the given image,</a>
+<span class="sourceLineNo">074</span><a id="line.74">         * using the default out-of-bounds strategy and interpolation method.</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * The concrete type of the returned instance depends on the specified image.</a>
+<span class="sourceLineNo">076</span><a id="line.76">         * </a>
+<span class="sourceLineNo">077</span><a id="line.77">         * @param ip the source image</a>
+<span class="sourceLineNo">078</span><a id="line.78">         * @return a new {@code ImageAccessor} instance</a>
+<span class="sourceLineNo">079</span><a id="line.79">         */</a>
+<span class="sourceLineNo">080</span><a id="line.80">        public static final ImageAccessor create(ImageProcessor ip) {</a>
+<span class="sourceLineNo">081</span><a id="line.81">                return create(ip, DefaultOutOfBoundsStrategy, DefaultInterpolationMethod);</a>
+<span class="sourceLineNo">082</span><a id="line.82">        }</a>
+<span class="sourceLineNo">083</span><a id="line.83">        </a>
+<span class="sourceLineNo">084</span><a id="line.84">        /**</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * Creates a new {@code ImageAccessor} instance for the given image,</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * using the specified out-of-bounds strategy and interpolation method.</a>
+<span class="sourceLineNo">087</span><a id="line.87">         * The concrete type of the returned instance depends on the specified image.</a>
+<span class="sourceLineNo">088</span><a id="line.88">         * </a>
+<span class="sourceLineNo">089</span><a id="line.89">         * @param ip the source image</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * @param obs the out-of-bounds strategy (use {@code null} for default settings)</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * @param ipm the interpolation method (use {@code null} for default settings)</a>
+<span class="sourceLineNo">092</span><a id="line.92">         * @return a new {@code ImageAccessor} instance</a>
+<span class="sourceLineNo">093</span><a id="line.93">         */</a>
+<span class="sourceLineNo">094</span><a id="line.94">        public static ImageAccessor create(ImageProcessor ip,  OutOfBoundsStrategy obs, InterpolationMethod ipm) {</a>
+<span class="sourceLineNo">095</span><a id="line.95">                if (ip instanceof ColorProcessor) {</a>
+<span class="sourceLineNo">096</span><a id="line.96">                        return new RgbAccessor((ColorProcessor)ip, obs, ipm);</a>
+<span class="sourceLineNo">097</span><a id="line.97">                }</a>
+<span class="sourceLineNo">098</span><a id="line.98">                else {</a>
+<span class="sourceLineNo">099</span><a id="line.99">                        return ScalarAccessor.create(ip, obs, ipm);</a>
+<span class="sourceLineNo">100</span><a id="line.100">                }</a>
+<span class="sourceLineNo">101</span><a id="line.101">        }</a>
+<span class="sourceLineNo">102</span><a id="line.102">        </a>
+<span class="sourceLineNo">103</span><a id="line.103">        // constructor (used by all subtypes)</a>
+<span class="sourceLineNo">104</span><a id="line.104">        ImageAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {</a>
+<span class="sourceLineNo">105</span><a id="line.105">                this.ip = ip;</a>
+<span class="sourceLineNo">106</span><a id="line.106">                this.width  = ip.getWidth();</a>
+<span class="sourceLineNo">107</span><a id="line.107">                this.height = ip.getHeight();</a>
+<span class="sourceLineNo">108</span><a id="line.108">                this.outOfBoundsStrategy = (obs != null) ? obs : DefaultOutOfBoundsStrategy;</a>
+<span class="sourceLineNo">109</span><a id="line.109">                this.interpolationMethod = (ipm != null) ? ipm : DefaultInterpolationMethod;</a>
+<span class="sourceLineNo">110</span><a id="line.110">                this.indexer = GridIndexer2D.create(width, height, this.outOfBoundsStrategy);</a>
+<span class="sourceLineNo">111</span><a id="line.111">        }</a>
+<span class="sourceLineNo">112</span><a id="line.112">        </a>
+<span class="sourceLineNo">113</span><a id="line.113">        /**</a>
+<span class="sourceLineNo">114</span><a id="line.114">         * Returns the width of the associated image.</a>
+<span class="sourceLineNo">115</span><a id="line.115">         * @return the image width.</a>
+<span class="sourceLineNo">116</span><a id="line.116">         */</a>
+<span class="sourceLineNo">117</span><a id="line.117">        public int getWidth() {</a>
+<span class="sourceLineNo">118</span><a id="line.118">                return this.width;</a>
+<span class="sourceLineNo">119</span><a id="line.119">        }</a>
+<span class="sourceLineNo">120</span><a id="line.120">        </a>
+<span class="sourceLineNo">121</span><a id="line.121">        /**</a>
+<span class="sourceLineNo">122</span><a id="line.122">         * Returns the height of the associated image.</a>
+<span class="sourceLineNo">123</span><a id="line.123">         * @return the image height.</a>
+<span class="sourceLineNo">124</span><a id="line.124">         */</a>
+<span class="sourceLineNo">125</span><a id="line.125">        public int getHeight() {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                return this.height;</a>
+<span class="sourceLineNo">127</span><a id="line.127">        }</a>
+<span class="sourceLineNo">128</span><a id="line.128">        </a>
+<span class="sourceLineNo">129</span><a id="line.129">        /**</a>
+<span class="sourceLineNo">130</span><a id="line.130">         * Returns the source {@link ImageProcessor} associated with this</a>
+<span class="sourceLineNo">131</span><a id="line.131">         * {@link ImageAccessor}.</a>
+<span class="sourceLineNo">132</span><a id="line.132">         * </a>
+<span class="sourceLineNo">133</span><a id="line.133">         * @return the image processor</a>
+<span class="sourceLineNo">134</span><a id="line.134">         */</a>
+<span class="sourceLineNo">135</span><a id="line.135">        public ImageProcessor getProcessor() {</a>
+<span class="sourceLineNo">136</span><a id="line.136">                return this.ip;</a>
+<span class="sourceLineNo">137</span><a id="line.137">        }</a>
+<span class="sourceLineNo">138</span><a id="line.138">        </a>
+<span class="sourceLineNo">139</span><a id="line.139">        /**</a>
+<span class="sourceLineNo">140</span><a id="line.140">         * Returns the depth (number of components) of this image</a>
+<span class="sourceLineNo">141</span><a id="line.141">         * accessor. 1 is returned if the image is scalar-valued.</a>
+<span class="sourceLineNo">142</span><a id="line.142">         * </a>
+<span class="sourceLineNo">143</span><a id="line.143">         * @return the image depth.</a>
+<span class="sourceLineNo">144</span><a id="line.144">         */</a>
+<span class="sourceLineNo">145</span><a id="line.145">        public abstract int getDepth();</a>
+<span class="sourceLineNo">146</span><a id="line.146">        </a>
+<span class="sourceLineNo">147</span><a id="line.147">        /**</a>
+<span class="sourceLineNo">148</span><a id="line.148">         * Returns the {@link OutOfBoundsStrategy} specified for this</a>
+<span class="sourceLineNo">149</span><a id="line.149">         * {@link ImageAccessor}.</a>
+<span class="sourceLineNo">150</span><a id="line.150">         * </a>
+<span class="sourceLineNo">151</span><a id="line.151">         * @return the out-of-bounds strategy</a>
+<span class="sourceLineNo">152</span><a id="line.152">         */</a>
+<span class="sourceLineNo">153</span><a id="line.153">        public OutOfBoundsStrategy getOutOfBoundsStrategy() {</a>
+<span class="sourceLineNo">154</span><a id="line.154">                return outOfBoundsStrategy;</a>
+<span class="sourceLineNo">155</span><a id="line.155">        }</a>
+<span class="sourceLineNo">156</span><a id="line.156"></a>
+<span class="sourceLineNo">157</span><a id="line.157">        /**</a>
+<span class="sourceLineNo">158</span><a id="line.158">         * Returns the {@link InterpolationMethod} specified for this</a>
+<span class="sourceLineNo">159</span><a id="line.159">         * {@link ImageAccessor}.</a>
+<span class="sourceLineNo">160</span><a id="line.160">         * </a>
+<span class="sourceLineNo">161</span><a id="line.161">         * @return the interpolation method</a>
+<span class="sourceLineNo">162</span><a id="line.162">         */</a>
+<span class="sourceLineNo">163</span><a id="line.163">        public InterpolationMethod getInterpolationMethod() {</a>
+<span class="sourceLineNo">164</span><a id="line.164">                return interpolationMethod;</a>
+<span class="sourceLineNo">165</span><a id="line.165">        }</a>
+<span class="sourceLineNo">166</span><a id="line.166">        </a>
+<span class="sourceLineNo">167</span><a id="line.167">        /**</a>
+<span class="sourceLineNo">168</span><a id="line.168">         * Returns the pixel value for the specified floating-point </a>
+<span class="sourceLineNo">169</span><a id="line.169">         * position as a {@code float[]} with either 1 element for scalar-valued images</a>
+<span class="sourceLineNo">170</span><a id="line.170">         * and or more elements (e.g., 3 for for RGB images).</a>
+<span class="sourceLineNo">171</span><a id="line.171">         * </a>
+<span class="sourceLineNo">172</span><a id="line.172">         * @param u the x-coordinate</a>
+<span class="sourceLineNo">173</span><a id="line.173">         * @param v the y-coordinate</a>
+<span class="sourceLineNo">174</span><a id="line.174">         * @return the pixel value ({@code float[]})</a>
+<span class="sourceLineNo">175</span><a id="line.175">         */</a>
+<span class="sourceLineNo">176</span><a id="line.176">        public abstract float[] getPix(int u, int v);</a>
+<span class="sourceLineNo">177</span><a id="line.177">        </a>
+<span class="sourceLineNo">178</span><a id="line.178">        /**</a>
+<span class="sourceLineNo">179</span><a id="line.179">         * Returns the interpolated pixel value for the specified floating-point </a>
+<span class="sourceLineNo">180</span><a id="line.180">         * position as a {@code float[]} with either 1 element for scalar-valued images</a>
+<span class="sourceLineNo">181</span><a id="line.181">         * and or more elements (e.g., 3 for for RGB images).</a>
+<span class="sourceLineNo">182</span><a id="line.182">         * Interpolation is used non-integer coordinates.</a>
+<span class="sourceLineNo">183</span><a id="line.183">         * </a>
+<span class="sourceLineNo">184</span><a id="line.184">         * @param x the x-coordinate</a>
+<span class="sourceLineNo">185</span><a id="line.185">         * @param y the y-coordinate</a>
+<span class="sourceLineNo">186</span><a id="line.186">         * @return the interpolated pixel value ({@code float[]})</a>
+<span class="sourceLineNo">187</span><a id="line.187">         */</a>
+<span class="sourceLineNo">188</span><a id="line.188">        public abstract float[] getPix(double x, double y);             // returns interpolated pixel value at real position (x, y)</a>
+<span class="sourceLineNo">189</span><a id="line.189">        </a>
+<span class="sourceLineNo">190</span><a id="line.190">        /**</a>
+<span class="sourceLineNo">191</span><a id="line.191">         * Sets the pixel value at the specified integer position.</a>
+<span class="sourceLineNo">192</span><a id="line.192">         * The new value must be provided as {@code float[]} with </a>
+<span class="sourceLineNo">193</span><a id="line.193">         * 1 element for scalar-valued images or 3 elements for RGB images.</a>
+<span class="sourceLineNo">194</span><a id="line.194">         * @param u the x-coordinate</a>
+<span class="sourceLineNo">195</span><a id="line.195">         * @param v the y-coordinate</a>
+<span class="sourceLineNo">196</span><a id="line.196">         * @param val the new pixel value ({@code float[]})</a>
+<span class="sourceLineNo">197</span><a id="line.197">         */</a>
+<span class="sourceLineNo">198</span><a id="line.198">        public abstract void setPix(int u, int v, float[] val);</a>
+<span class="sourceLineNo">199</span><a id="line.199">        </a>
+<span class="sourceLineNo">200</span><a id="line.200">        /**</a>
+<span class="sourceLineNo">201</span><a id="line.201">         * Returns the value of the pixel's k-th component at the</a>
+<span class="sourceLineNo">202</span><a id="line.202">         * specified position. If the associated image is scalar-valued,</a>
+<span class="sourceLineNo">203</span><a id="line.203">         * this is equivalent to component 0.</a>
+<span class="sourceLineNo">204</span><a id="line.204">         * See also {@link #getDepth()}.</a>
+<span class="sourceLineNo">205</span><a id="line.205">         * </a>
+<span class="sourceLineNo">206</span><a id="line.206">         * @param u the x-coordinate</a>
+<span class="sourceLineNo">207</span><a id="line.207">         * @param v the y-coordinate</a>
+<span class="sourceLineNo">208</span><a id="line.208">         * @param k the component index</a>
+<span class="sourceLineNo">209</span><a id="line.209">         * @return the component value ({@code float})</a>
+<span class="sourceLineNo">210</span><a id="line.210">         */</a>
+<span class="sourceLineNo">211</span><a id="line.211">        public abstract float getVal(int u, int v, int k);</a>
+<span class="sourceLineNo">212</span><a id="line.212">        </a>
+<span class="sourceLineNo">213</span><a id="line.213">        </a>
+<span class="sourceLineNo">214</span><a id="line.214">        /**</a>
+<span class="sourceLineNo">215</span><a id="line.215">         * Returns the interpolated value of the pixel's k-th component at the</a>
+<span class="sourceLineNo">216</span><a id="line.216">         * specified position. If the associated image is scalar-valued,</a>
+<span class="sourceLineNo">217</span><a id="line.217">         * this is equivalent to component 0.</a>
+<span class="sourceLineNo">218</span><a id="line.218">         * See also {@link #getDepth()}.</a>
+<span class="sourceLineNo">219</span><a id="line.219">         * </a>
+<span class="sourceLineNo">220</span><a id="line.220">         * @param x the x-coordinate</a>
+<span class="sourceLineNo">221</span><a id="line.221">         * @param y the y-coordinate</a>
+<span class="sourceLineNo">222</span><a id="line.222">         * @param k the component index</a>
+<span class="sourceLineNo">223</span><a id="line.223">         * @return the interpolated component value ({@code float[]})</a>
+<span class="sourceLineNo">224</span><a id="line.224">         */</a>
+<span class="sourceLineNo">225</span><a id="line.225">        public abstract float getVal(double x, double y, int k);</a>
+<span class="sourceLineNo">226</span><a id="line.226">        </a>
+<span class="sourceLineNo">227</span><a id="line.227">        /**</a>
+<span class="sourceLineNo">228</span><a id="line.228">         * Sets the value of the pixel's k-th component at the</a>
+<span class="sourceLineNo">229</span><a id="line.229">         * specified position. If the associated image is scalar-valued,</a>
+<span class="sourceLineNo">230</span><a id="line.230">         * this is equivalent to component 0.</a>
+<span class="sourceLineNo">231</span><a id="line.231">         * See also {@link #getDepth()}.</a>
+<span class="sourceLineNo">232</span><a id="line.232">         * </a>
+<span class="sourceLineNo">233</span><a id="line.233">         * @param u the x-coordinate</a>
+<span class="sourceLineNo">234</span><a id="line.234">         * @param v the y-coordinate</a>
+<span class="sourceLineNo">235</span><a id="line.235">         * @param k the component index</a>
+<span class="sourceLineNo">236</span><a id="line.236">         * @param val the new component value</a>
+<span class="sourceLineNo">237</span><a id="line.237">         */</a>
+<span class="sourceLineNo">238</span><a id="line.238">        public abstract void setVal(int u, int v, int k, float val);</a>
+<span class="sourceLineNo">239</span><a id="line.239">        </a>
+<span class="sourceLineNo">240</span><a id="line.240">        /**</a>
+<span class="sourceLineNo">241</span><a id="line.241">         * Returns the {@link ImageAccessor} for the k-th component;</a>
+<span class="sourceLineNo">242</span><a id="line.242">         * the result is a sub-type of {@link ScalarAccessor}.</a>
+<span class="sourceLineNo">243</span><a id="line.243">         * In the case of a scalar-valued image, THIS object is returned.</a>
+<span class="sourceLineNo">244</span><a id="line.244">         * </a>
+<span class="sourceLineNo">245</span><a id="line.245">         * @param k the component index</a>
+<span class="sourceLineNo">246</span><a id="line.246">         * @return the component accessor.</a>
+<span class="sourceLineNo">247</span><a id="line.247">         */</a>
+<span class="sourceLineNo">248</span><a id="line.248">        public abstract ScalarAccessor getComponentAccessor(int k);</a>
+<span class="sourceLineNo">249</span><a id="line.249">        </a>
+<span class="sourceLineNo">250</span><a id="line.250">        abstract void checkComponentIndex(int k);</a>
+<span class="sourceLineNo">251</span><a id="line.251">                </a>
+<span class="sourceLineNo">252</span><a id="line.252">}</a>
 
 
 

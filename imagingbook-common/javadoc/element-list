@@ -40,10 +40,9 @@ imagingbook.common.ij
 imagingbook.common.ij.overlay
 imagingbook.common.image
 imagingbook.common.image.access
-imagingbook.common.interpolation
-imagingbook.common.lucaskanade
-imagingbook.common.lucaskanade.utils
-imagingbook.common.matching
+imagingbook.common.image.interpolation
+imagingbook.common.image.matching
+imagingbook.common.image.matching.lucaskanade
 imagingbook.common.math
 imagingbook.common.math.eigen
 imagingbook.common.math.eigen.eispack
