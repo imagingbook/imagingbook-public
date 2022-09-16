@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.matching.lucaskanade;
+package imagingbook.common.image.matching.lucaskanade;
 
 import ij.process.FloatProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;

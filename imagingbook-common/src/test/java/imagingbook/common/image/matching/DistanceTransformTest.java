@@ -6,13 +6,12 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.matching;
+package imagingbook.common.image.matching;
 
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.matching.DistanceTransform.DistanceNorm;
 import imagingbook.testutils.NumericTestUtils;
 
 public class DistanceTransformTest {

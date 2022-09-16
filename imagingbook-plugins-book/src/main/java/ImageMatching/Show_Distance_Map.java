@@ -13,8 +13,8 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.matching.DistanceTransform;
-import imagingbook.common.matching.DistanceTransform.DistanceNorm;
+import imagingbook.common.image.matching.DistanceNorm;
+import imagingbook.common.image.matching.DistanceTransform;
 
 /**
  * Demonstrates the use of the {@link DistanceTransform} class.

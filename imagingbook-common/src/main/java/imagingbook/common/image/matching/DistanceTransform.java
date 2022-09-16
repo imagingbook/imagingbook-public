@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.matching;
+package imagingbook.common.image.matching;
 
 import ij.process.ImageProcessor;
 
@@ -27,12 +27,6 @@ import ij.process.ImageProcessor;
  * @version 2022/09/16 revised
  */
 public class DistanceTransform {
-	
-	/** Enum type for different distance norms. */
-	public enum DistanceNorm {
-		/** L1 distance (Manhattan distance) */ L1, 
-		/** L2 distance (Euclidean distance) */ L2;
-	}
 	
 	private final float[][] D;
 	

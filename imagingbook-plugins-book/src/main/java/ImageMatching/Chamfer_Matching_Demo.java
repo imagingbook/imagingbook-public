@@ -16,8 +16,8 @@ import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
-import imagingbook.common.matching.ChamferMatcher;
-import imagingbook.common.matching.DistanceTransform.DistanceNorm;
+import imagingbook.common.image.matching.ChamferMatcher;
+import imagingbook.common.image.matching.DistanceNorm;
 
 
 /**

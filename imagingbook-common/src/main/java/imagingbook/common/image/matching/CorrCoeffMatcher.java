@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.matching;
+package imagingbook.common.image.matching;
 
 import ij.process.FloatProcessor;
 

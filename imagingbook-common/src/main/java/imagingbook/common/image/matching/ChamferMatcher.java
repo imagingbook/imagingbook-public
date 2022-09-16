@@ -7,10 +7,9 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.matching;
+package imagingbook.common.image.matching;
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.matching.DistanceTransform.DistanceNorm;
 
 /**
  * <p>
