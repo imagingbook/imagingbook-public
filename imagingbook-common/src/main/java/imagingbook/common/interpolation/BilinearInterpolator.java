@@ -14,6 +14,7 @@ import imagingbook.common.image.access.ScalarAccessor;
  * <p>
  * A {@link PixelInterpolator} implementing bilinear interpolation in 2D.
  * See Sec. 22.5.2 of [1] for additional details.
+ * 
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
@@ -49,6 +50,16 @@ public class BilinearInterpolator implements PixelInterpolator {
 		final double G = E + b * (F - E);
 		
 		return (float) G;
+	}
+
+	/**
+	 * Corresponds to function w_lin(x), see Eqn. 22.11 in [1].
+	 * TODO: test, not used currently.
+	 */
+	@Override
+	public double getWeight(double x) {
+		x = Math.abs(x);
+		return (x < 1) ? (1.0 - x) : 0.0;
 	}
 	
 }

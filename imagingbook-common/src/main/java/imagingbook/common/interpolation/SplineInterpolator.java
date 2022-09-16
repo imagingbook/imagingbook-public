@@ -65,5 +65,10 @@ public class SplineInterpolator implements PixelInterpolator {
 			w = (-6*a - b) * x*x*x + (30*a + 6*b) * x*x + (-48*a - 12*b) * x + 24*a + 8*b;
 		return w/6;
 	}
+	
+	@Override
+	public double getWeight(double x) {
+		return w_cs(x);
+	}
 
 }

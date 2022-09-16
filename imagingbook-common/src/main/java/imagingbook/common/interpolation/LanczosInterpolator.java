@@ -82,5 +82,10 @@ public class LanczosInterpolator implements PixelInterpolator {
 			return 0.0;
 	}
 
+	@Override
+	public double getWeight(double x) {
+		return wLn(x);
+	}
+
 
 }

@@ -71,5 +71,10 @@ public class BicubicInterpolator implements PixelInterpolator {
 		return z;
 	}
 
+	@Override
+	public double getWeight(double x) {
+		return w_cub(x);
+	}
+
 
 }

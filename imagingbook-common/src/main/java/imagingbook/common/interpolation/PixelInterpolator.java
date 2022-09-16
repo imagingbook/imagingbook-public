@@ -13,8 +13,14 @@ import imagingbook.common.image.access.ScalarAccessor;
 
 
 /**
+ * <p>
  * This interface defines the behavior of 2D pixel interpolators
- * for scalar-valued images.
+ * for scalar-valued images. See Ch. 22 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  */
@@ -38,7 +44,7 @@ public interface PixelInterpolator {
 	}
 	
 	/**
-	 * Returns a {@link PixelInterpolator} instance for the specififed
+	 * Returns a {@link PixelInterpolator} instance for the specified
 	 * {@link InterpolationMethod}.
 	 * 
 	 * @param method the interpolation method
@@ -70,6 +76,31 @@ public interface PixelInterpolator {
 	 * @param y continuous interpolation position (vert.)  
 	 * @return The interpolated pixel value at position (x,y).
 	 */
-	public abstract float getInterpolatedValue(ScalarAccessor ia, double x, double y);
+	public float getInterpolatedValue(ScalarAccessor ia, double x, double y);
+	
+	/**
+	 * Returns the value of the one-dimensional weight function w(x), that is
+	 * the weight given to some pixel at distance x from the current interpolation
+	 * point. This method is primarily used for testing.
+	 * 
+	 * @param x the position relative to the interpolation point
+	 * @return the weight for this position
+	 */
+	public double getWeight(double x);
+	
+	/**
+	 * Returns the value of the two-dimensional weight function W(x,y), that is
+	 * the weight given to some pixel at distance (x,y) relative to the current interpolation
+	 * point. This method is primarily used for testing.
+	 * 
+	 * @param x the x-position relative to the interpolation point
+	 * @param y the y-position relative to the interpolation point
+	 * @return the weight for this position
+	 */
+	public default double getWeight(double x, double y) {
+		return getWeight(x) * getWeight(y);
+	}
+	
+	
 	
 }

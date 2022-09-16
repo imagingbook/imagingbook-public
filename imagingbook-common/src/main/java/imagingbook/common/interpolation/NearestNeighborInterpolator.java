@@ -38,5 +38,17 @@ public class NearestNeighborInterpolator implements PixelInterpolator {
 		final int v = (int) Math.rint(y);
 		return ia.getVal(u, v);
 	}
+
+	/**
+	 * Corresponds to function w_nn(x), see Eqn. 22.10 in [1].
+	 * TODO: test, not used currently.
+	 */
+	@Override
+	public double getWeight(double x) {
+		if (-0.5 <= x && x < 0.5)
+			return 1;
+		else
+			return 0;
+	}
 	
 }

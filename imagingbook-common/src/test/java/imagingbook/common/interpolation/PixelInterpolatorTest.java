@@ -11,6 +11,7 @@ import imagingbook.common.image.access.RgbAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
 import imagingbook.common.interpolation.PixelInterpolator.InterpolationMethod;
 import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testutils.ImageTestUtils;
 
 public class PixelInterpolatorTest {
 	
@@ -22,58 +23,90 @@ public class PixelInterpolatorTest {
 
 	@Test
 	public void testScalarA() {
-		checkIntegerCoordinatesScalar(ip1, InterpolationMethod.NearestNeighbor);
-		checkIntegerCoordinatesScalar(ip1, InterpolationMethod.Bicubic);
-		checkIntegerCoordinatesScalar(ip1, InterpolationMethod.Bilinear);
-		checkIntegerCoordinatesScalar(ip1, InterpolationMethod.CatmullRom);
-		checkIntegerCoordinatesScalar(ip1, InterpolationMethod.CubicBSpline);
-		checkIntegerCoordinatesScalar(ip1, InterpolationMethod.MitchellNetravali);
-		checkIntegerCoordinatesScalar(ip1, InterpolationMethod.Lanzcos2);
-		checkIntegerCoordinatesScalar(ip1, InterpolationMethod.Lanzcos3);
+		ByteProcessor bp = ImageTestUtils.makeRandomByteProcessor(37, 19, 17);
+		checkIntegerCoordinatesScalar(bp, InterpolationMethod.NearestNeighbor);
+		checkIntegerCoordinatesScalar(bp, InterpolationMethod.Bicubic);
+		checkIntegerCoordinatesScalar(bp, InterpolationMethod.Bilinear);
+		checkIntegerCoordinatesScalar(bp, InterpolationMethod.CatmullRom);
+		checkIntegerCoordinatesScalar(bp, InterpolationMethod.Lanzcos2);
+		checkIntegerCoordinatesScalar(bp, InterpolationMethod.Lanzcos3);
+//		checkIntegerCoordinatesScalar(bp, InterpolationMethod.CubicBSpline);		// this does not work for approxiators!
+//		checkIntegerCoordinatesScalar(bp, InterpolationMethod.MitchellNetravali);	// this does not work for approxiators!
 	}
 	
 	@Test
 	public void testVectorA() {
-		checkIntegerCoordinatesRgb(ip2, InterpolationMethod.NearestNeighbor);
-		checkIntegerCoordinatesRgb(ip2, InterpolationMethod.Bicubic);
-		checkIntegerCoordinatesRgb(ip2, InterpolationMethod.Bilinear);
-		checkIntegerCoordinatesRgb(ip2, InterpolationMethod.CatmullRom);
-		checkIntegerCoordinatesRgb(ip2, InterpolationMethod.CubicBSpline);
-		checkIntegerCoordinatesRgb(ip2, InterpolationMethod.MitchellNetravali);
-		checkIntegerCoordinatesRgb(ip2, InterpolationMethod.Lanzcos2);
-		checkIntegerCoordinatesRgb(ip2, InterpolationMethod.Lanzcos3);
+		ColorProcessor cp = ImageTestUtils.makeRandomColorProcessor(37, 19, 17);
+		checkIntegerCoordinatesRgb(cp, InterpolationMethod.NearestNeighbor);
+		checkIntegerCoordinatesRgb(cp, InterpolationMethod.Bicubic);
+		checkIntegerCoordinatesRgb(cp, InterpolationMethod.Bilinear);
+		checkIntegerCoordinatesRgb(cp, InterpolationMethod.CatmullRom);
+		checkIntegerCoordinatesRgb(cp, InterpolationMethod.Lanzcos2);
+		checkIntegerCoordinatesRgb(cp, InterpolationMethod.Lanzcos3);
+//		checkIntegerCoordinatesRgb(cp, InterpolationMethod.CubicBSpline);			// this does not work for approxiators!
+//		checkIntegerCoordinatesRgb(cp, InterpolationMethod.MitchellNetravali);		// this does not work for approxiators!
 	}
 	
 	@Test
 	public void testScalarB() {
 		ScalarAccessor ia;
+		double x = 3.7;
+		double y = 7.1;
 		
 		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Bicubic);
-		assertEquals(223.98138f, ia.getVal(3.7, 7.1), TOL);
+		assertEquals(223.98138f, ia.getVal(x, y), TOL);
+		
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.BicubicSharp);
+		assertEquals(224.00769f, ia.getVal(x, y), TOL);
+		
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.BicubicSmooth);
+		assertEquals(223.97272f, ia.getVal(x, y), TOL);
 		
 		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Bilinear);
-		assertEquals(224.5500030517578f, ia.getVal(3.7, 7.1), TOL);
+		assertEquals(224.5500030517578f, ia.getVal(x, y), TOL);
 		
 		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.CatmullRom);
-		assertEquals(223.97365f, ia.getVal(3.7, 7.1), TOL);
+		assertEquals(223.97365f, ia.getVal(x, y), TOL);
 		
-		// TODO: complete
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.CubicBSpline);
+		assertEquals(225.39142f, ia.getVal(x, y), TOL);
+		
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Lanzcos2);
+		assertEquals(227.37834f, ia.getVal(x, y), TOL);
+		
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Lanzcos3);
+		assertEquals(222.8695f, ia.getVal(x, y), TOL);
+		
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Lanzcos4);
+		assertEquals(224.20848f, ia.getVal(x, y), TOL);
+		
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.MitchellNetravali);
+		assertEquals(224.50372f, ia.getVal(x, y), TOL);
+		
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.NearestNeighbor);
+		assertEquals(223.0f, ia.getVal(x, y), TOL);
+		
 	}
 	
+
+
+
 	
 	// --------------------------------------------------------------------
 	
+	// check if interpolated pixel values at discrete grid points are the same as the original pixels
 	private void checkIntegerCoordinatesScalar(ByteProcessor ip, InterpolationMethod ipm) {
 		ScalarAccessor ia = ScalarAccessor.create(ip, obs, ipm);
 		int w = ia.getWidth();
 		int h = ia.getHeight();
 		for (int u = 1; u < w - 1; u++) {
 			for (int v = 1; v < h - 1; v++) {
-				assertEquals(ip.get(u, v), ia.getVal(u, v), TOL);
+				assertEquals(ip.get(u, v), ia.getVal((double)u, (double)v), TOL);
 			}
 		}
 	}
 	
+	// check if interpolated pixel values at discrete grid points are the same as the original pixels
 	private void checkIntegerCoordinatesRgb(ColorProcessor ip, InterpolationMethod ipm) {
 		RgbAccessor ia = RgbAccessor.create((ColorProcessor)ip, obs, ipm);
 		int w = ia.getWidth();
@@ -82,7 +115,7 @@ public class PixelInterpolatorTest {
 			for (int v = 1; v < h - 1; v++) {
 				int[] rgb = ip.getPixel(u, v, null);
 				for (int k = 0; k < 3; k++) {
-					assertEquals(rgb[k], ia.getVal(u, v, k), TOL);
+					assertEquals(rgb[k], ia.getVal((double)u, (double)v, k), TOL);
 				}
 			}
 		}

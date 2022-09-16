@@ -13,6 +13,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Random;
 
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
@@ -87,6 +88,30 @@ public class ImageTestUtils {
 	
 	private static String msgFloat(int u, int v, float v1, float v2) {
 		return String.format(Locale.US, "different pixel values at pos. (%d, %d) : %.3f vs. %.3f", u, v, v1, v2);
+	}
+	
+	// ---------------------------------------------------------------------
+	
+	public static ByteProcessor makeRandomByteProcessor(int width, int height, long seed) {
+		Random rg = (seed == 0) ? new Random() : new Random(seed);
+		ByteProcessor bp = new ByteProcessor(width, height);
+		for (int v = 0; v < height; v++) {
+			for (int u = 0; u < width; u++) {
+				bp.set(u, v, rg.nextInt(256));
+			}
+		}
+		return bp;
+	}
+	
+	public static ColorProcessor makeRandomColorProcessor(int width, int height, long seed) {
+		Random rg = (seed == 0) ? new Random() : new Random(seed);
+		ColorProcessor cp = new ColorProcessor(width, height);
+		for (int v = 0; v < height; v++) {
+			for (int u = 0; u < width; u++) {
+				cp.set(u, v, rg.nextInt(0xFFFFFF));
+			}
+		}
+		return cp;
 	}
 	
 }
