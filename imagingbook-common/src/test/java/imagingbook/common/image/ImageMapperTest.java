@@ -90,7 +90,7 @@ public class ImageMapperTest {
 		ImageMapper mapper = new ImageMapper(mapping, OBS, IPM);
 		mapper.map(source, target);
 		
-		IjUtils.save(target, "D:/tmp/ClownRot15.png");
+//		IjUtils.save(target, "D:/tmp/ClownRot15.png");
 		ColorProcessor ip2 = (ColorProcessor) MappingTestImage.ClownRot15.getImage().getProcessor();
 		assertTrue(ImageTestUtils.match(ip2, target, TOL));
 	}
