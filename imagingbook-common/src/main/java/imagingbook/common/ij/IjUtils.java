@@ -9,6 +9,7 @@
 
 package imagingbook.common.ij;
 
+import java.awt.Rectangle;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -225,6 +226,49 @@ public abstract class IjUtils {
 		if (ip instanceof ColorProcessor) {
 			((ColorProcessor) ip).setRGBWeights(wr, wg, wb);
 		}
+	}
+	
+	// -------------------------------------------------------------------
+	
+	/**
+	 * Extracts (crops) a rectangular region from the given image
+	 * and returns it as a new image (of the same sub-type of {@link ImageProcessor}).
+	 * If the specified rectangle extends outside the source image,
+	 * only the overlapping region is cropped.
+	 * Thus the returned image may have smaller size than the specified rectangle.
+	 * An exception is thrown if the specified width or height is less than 1.
+	 * {@code null} is returned if the rectangle does not overlap the image at all.
+	 * 
+	 * @param <T> the generic image type
+	 * @param ip the image to be cropped
+	 * @param x the left corner coordinate of the cropping rectangle
+	 * @param y the top corner coordinate of the cropping rectangle
+	 * @param width the width of the cropping rectangle
+	 * @param height the height of the cropping rectangle
+	 * @return the cropped image
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends ImageProcessor> T crop(T ip, int x, int y, int width, int height) {
+//		if (x < 0 || x >= ip.getWidth() || y < 0 || y >= ip.getHeight()) {
+//			throw new IllegalArgumentException("(x,y) must be inside the image");
+//		}
+		if (width < 1 || height < 1) {
+			throw new IllegalArgumentException("width/height must be at least 1");
+		}
+//		if (x + width > ip.getWidth() || y + height > ip.getHeight()) {
+//			throw new IllegalArgumentException("crop rectangle must be inside the image");
+//		}
+		T ipc = null;
+		synchronized (ip) {
+			Rectangle roiOrig = ip.getRoi();
+			ip.setRoi(x, y, width, height);
+			Rectangle roiTmp = ip.getRoi();
+			if (roiTmp.width > 0 && roiTmp.height > 0) {
+				ipc = (T) ip.crop();
+			}
+			ip.setRoi(roiOrig);
+		}
+		return ipc;
 	}
 	
 	// -------------------------------------------------------------------

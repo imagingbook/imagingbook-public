@@ -10,6 +10,7 @@ package imagingbook.common.ij;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Random;
 
@@ -49,8 +50,6 @@ public class IjUtilsTest {
 		
 		ByteProcessor bp2 = IjUtils.toByteProcessor(A);
 		assertTrue(ImageTestUtils.match(bp1, bp2));
-		
-		
 	}
 	
 	@Test
@@ -185,6 +184,164 @@ public class IjUtilsTest {
 		// TODO: unfinished, checks missing!
 	}
 	
+	// ------------------------------------------------------------------------
+	
+	@Test
+	public void testCrop1A() {
+		ImageProcessor ip1 = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		assertTrue(ip1 instanceof ByteProcessor);
+		ImageProcessor ip2 = IjUtils.crop(ip1, 0, 0, ip1.getWidth(), ip1.getHeight());
+		assertTrue(ip2 instanceof ByteProcessor);
+		assertTrue(ImageTestUtils.match(ip1, ip2, 1e-3));
+	}
+	
+	@Test
+	public void testCrop1B() {
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip1 instanceof ColorProcessor);
+		ImageProcessor ip2 = IjUtils.crop(ip1, 0, 0, ip1.getWidth(), ip1.getHeight());
+		assertTrue(ip2 instanceof ColorProcessor);
+		assertTrue(ImageTestUtils.match(ip1, ip2, 1e-3));
+	}
+	
+	@Test
+	public void testCrop1C() {
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor().convertToFloatProcessor();
+		assertTrue(ip1 instanceof FloatProcessor);
+		ImageProcessor ip2 = IjUtils.crop(ip1, 0, 0, ip1.getWidth(), ip1.getHeight());
+		assertTrue(ip2 instanceof FloatProcessor);
+		assertTrue(ImageTestUtils.match(ip1, ip2, 1e-3));
+	}
+	
+	@Test
+	public void testCrop2A() {
+		ImageProcessor ip1 = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		assertTrue(ip1 instanceof ByteProcessor);
+		int x = ip1.getWidth() / 5;
+		int y = ip1.getHeight() / 3;
+		int w = ip1.getWidth() / 2;
+		int h = ip1.getHeight() / 3;
+		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
+		assertTrue(ip2 instanceof ByteProcessor);
+		assertEquals(w, ip2.getWidth());
+		assertEquals(h, ip2.getHeight());
+	}
+	
+	@Test
+	public void testCrop2B() {
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip1 instanceof ColorProcessor);
+		int x = ip1.getWidth() / 5;
+		int y = ip1.getHeight() / 3;
+		int w = ip1.getWidth() / 2;
+		int h = ip1.getHeight() / 3;
+		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
+		assertTrue(ip2 instanceof ColorProcessor);
+		assertEquals(w, ip2.getWidth());
+		assertEquals(h, ip2.getHeight());
+	}
+	
+	@Test
+	public void testCrop3A() {
+		ImageProcessor ip1 = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		assertTrue(ip1 instanceof ByteProcessor);
+		int dx = 10;
+		int dy = 7;
+		int x = ip1.getWidth() - dx;
+		int y = ip1.getHeight() - dy;
+		int w = ip1.getWidth();
+		int h = ip1.getHeight();
+		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
+		assertTrue(ip2 instanceof ByteProcessor);
+		assertEquals(dx, ip2.getWidth());
+		assertEquals(dy, ip2.getHeight());
+	}
+	
+	@Test
+	public void testCrop3B() {
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip1 instanceof ColorProcessor);
+		int dx = 10;
+		int dy = 7;
+		int x = ip1.getWidth() - dx;
+		int y = ip1.getHeight() - dy;
+		int w = ip1.getWidth();
+		int h = ip1.getHeight();
+		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
+		assertTrue(ip2 instanceof ColorProcessor);
+		assertEquals(dx, ip2.getWidth());
+		assertEquals(dy, ip2.getHeight());
+	}
+	
+	@Test
+	public void testCrop4A() {
+		ImageProcessor ip1 = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		assertTrue(ip1 instanceof ByteProcessor);
+		int dx = 10;
+		int dy = 7;
+		int x = - dx;
+		int y = - dy;
+		int w = ip1.getWidth();
+		int h = ip1.getHeight();
+		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
+		assertTrue(ip2 instanceof ByteProcessor);
+		assertEquals(w - dx, ip2.getWidth());
+		assertEquals(h - dy, ip2.getHeight());
+	}
+	
+	@Test
+	public void testCrop4B() {
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip1 instanceof ColorProcessor);
+		int dx = 10;
+		int dy = 7;
+		int x = - dx;
+		int y = - dy;
+		int w = ip1.getWidth();
+		int h = ip1.getHeight();
+		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
+		assertTrue(ip2 instanceof ColorProcessor);
+		assertEquals(w - dx, ip2.getWidth());
+		assertEquals(h - dy, ip2.getHeight());
+	}
+	
+	@Test
+	public void testCrop5A() {
+		ImageProcessor ip1 = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		assertTrue(ip1 instanceof ByteProcessor);
+		int x = ip1.getWidth();
+		int y = ip1.getHeight();
+		int w = ip1.getWidth();
+		int h = ip1.getHeight();
+		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
+		assertNull(ip2);
+	}
+	
+	@Test
+	public void testCrop5B() {
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip1 instanceof ColorProcessor);
+		int x = ip1.getWidth();
+		int y = ip1.getHeight();
+		int w = ip1.getWidth();
+		int h = ip1.getHeight();
+		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
+		assertNull(ip2);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testCrop6A() {
+		ImageProcessor ip1 = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		assertTrue(ip1 instanceof ByteProcessor);
+		IjUtils.crop(ip1, 0, 0, 0, -1);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testCrop6B() {
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
+		assertTrue(ip1 instanceof ColorProcessor);
+		IjUtils.crop(ip1, 2, 3, 15, 0);
+	}
 	
 	// ----------------------------------------------------------------
 	// ----------------------------------------------------------------
@@ -241,4 +398,7 @@ public class IjUtilsTest {
 		return bp;
 	}
 
+
+	
+	
 }
