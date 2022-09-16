@@ -1,5 +1,6 @@
 package imagingbook.common.image.interpolation;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -9,16 +10,17 @@ import ij.process.ColorProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.RgbAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
+import imagingbook.common.math.PrintPrecision;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 
 public class PixelInterpolatorTest {
 	
-	static float TOL = 1e-6f;
-	static OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;
+	private static final float TOL = 1e-6f;
+	private static final OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;
 	
-	static final ByteProcessor ip1 = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImage().getProcessor();
-	static final ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.Clown.getImage().getProcessor();
+	private static final ByteProcessor ip1 = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+	private static final ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.Clown.getImage().getProcessor();
 
 	@Test
 	public void testScalarA() {
@@ -84,12 +86,49 @@ public class PixelInterpolatorTest {
 		
 		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.NearestNeighbor);
 		assertEquals(223.0f, ia.getVal(x, y), TOL);
-		
 	}
 	
-
-
-
+	@Test
+	public void testVectorB() {
+		RgbAccessor ia;
+		double x = 3.7;
+		double y = 7.1;
+		
+		PrintPrecision.set(6);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Bicubic);
+		assertArrayEquals(new float[] {204.618500f, 122.229645f, 15.735641f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.BicubicSharp);
+		assertArrayEquals(new float[] {202.433472f, 119.938141f, 14.170171f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.BicubicSmooth);
+		assertArrayEquals(new float[] {206.879440f, 124.602806f, 17.350653f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Bilinear);
+		assertArrayEquals(new float[] {207.470001f, 125.099998f, 17.900000f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.CatmullRom);
+		assertArrayEquals(new float[] {206.117355f, 123.802681f, 16.806810f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.CubicBSpline);
+		assertArrayEquals(new float[] {209.850037f, 127.415482f, 19.893757f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Lanzcos2);
+		assertArrayEquals(new float[] {208.926010f, 125.351692f, 16.897646f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Lanzcos3);
+		assertArrayEquals(new float[] {204.818008f, 122.880867f, 16.386700f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Lanzcos4);
+		assertArrayEquals(new float[] {206.367844f, 123.866913f, 16.870707f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.MitchellNetravali);
+		assertArrayEquals(new float[] {207.441498f, 125.072327f, 17.883879f}, ia.getPix(x, y), TOL);
+		
+		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.NearestNeighbor);
+		assertArrayEquals(new float[] {209, 127, 19}, ia.getPix(x, y), TOL);
+	}
 	
 	// --------------------------------------------------------------------
 	
