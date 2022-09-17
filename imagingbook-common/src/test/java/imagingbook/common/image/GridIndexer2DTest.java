@@ -39,7 +39,7 @@ public class GridIndexer2DTest {
 	}
 
 	@Test
-	public void testMirrorImage() {
+	public void testMirrorImage() {		// TODO: test far-off coordinates!
 		OutOfBoundsStrategy strategy = OutOfBoundsStrategy.MirrorImage;
 		GridIndexer2D pi = GridIndexer2D.create(W, H, strategy);
 		Assert.assertEquals(15070, pi.getIndex(70, 50));
@@ -48,6 +48,8 @@ public class GridIndexer2DTest {
 		Assert.assertEquals(70, pi.getIndex(70, H));
 		Assert.assertEquals(70, pi.getIndex(70, -1000));
 	}
+	
+	// ------------------------------------------------------------
 	
 	@Test
 	public void testException1() {
