@@ -28,7 +28,7 @@ public abstract class Statistics {
 	 * The data element samples[i][j] refers to the j-th component
 	 * of sample i. No statistical bias correction is applied.
 	 * @param samples Array of m-dimensional vectors (double[n][m]).
-	 * @return The covariance matrix (of dimension double{m][m]).
+	 * @return The covariance matrix (of dimension m x m).
 	 */
 	public static double[][] covarianceMatrix(double[][] samples) {
 		return covarianceMatrix(samples, false);
@@ -41,7 +41,7 @@ public abstract class Statistics {
 	 * of sample i. No statistical bias correction is applied.
 	 * @param samples Array of m-dimensional vectors (double[n][m]).
 	 * @param biasCorrect If {@code true}, statistical bias correction is applied.
-	 * @return The covariance matrix (of dimension double{m][m]).
+	 * @return The covariance matrix (of dimension m x m).
 	 */
 	public static double[][] covarianceMatrix(double[][] samples, boolean biasCorrect) {
 		Covariance cov = new Covariance(samples, biasCorrect);

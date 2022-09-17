@@ -19,45 +19,72 @@
 <span class="sourceLineNo">009</span><a id="line.9">package imagingbook.common.math;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
 <span class="sourceLineNo">011</span><a id="line.11">/**</a>
-<span class="sourceLineNo">012</span><a id="line.12"> * This class holds various settings for the imagingbook library.</a>
-<span class="sourceLineNo">013</span><a id="line.13"> * @author wilbur</a>
-<span class="sourceLineNo">014</span><a id="line.14"> *</a>
-<span class="sourceLineNo">015</span><a id="line.15"> */</a>
-<span class="sourceLineNo">016</span><a id="line.16">public abstract class PrintPrecision {</a>
-<span class="sourceLineNo">017</span><a id="line.17">        </a>
-<span class="sourceLineNo">018</span><a id="line.18">        private PrintPrecision() {}</a>
-<span class="sourceLineNo">019</span><a id="line.19">        </a>
-<span class="sourceLineNo">020</span><a id="line.20">        private static int defaultPrecision = 3;</a>
-<span class="sourceLineNo">021</span><a id="line.21">        private static int precision = defaultPrecision;</a>
-<span class="sourceLineNo">022</span><a id="line.22">        private static String formatStringFloat;</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * This class holds settings to control the precision when printing floating-point numbers,</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * used in particular by various {@code toString()} methods </a>
+<span class="sourceLineNo">014</span><a id="line.14"> * for vectors and matrices defined in</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * class {@link Matrix} (mainly for debugging).</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * </a>
+<span class="sourceLineNo">017</span><a id="line.17"> * @author WB</a>
+<span class="sourceLineNo">018</span><a id="line.18"> *</a>
+<span class="sourceLineNo">019</span><a id="line.19"> */</a>
+<span class="sourceLineNo">020</span><a id="line.20">public abstract class PrintPrecision {</a>
+<span class="sourceLineNo">021</span><a id="line.21">        </a>
+<span class="sourceLineNo">022</span><a id="line.22">        private PrintPrecision() {}</a>
 <span class="sourceLineNo">023</span><a id="line.23">        </a>
-<span class="sourceLineNo">024</span><a id="line.24">        static {</a>
-<span class="sourceLineNo">025</span><a id="line.25">                 reset();</a>
-<span class="sourceLineNo">026</span><a id="line.26">        }</a>
-<span class="sourceLineNo">027</span><a id="line.27">        </a>
-<span class="sourceLineNo">028</span><a id="line.28">        public static void reset() {</a>
-<span class="sourceLineNo">029</span><a id="line.29">                set(defaultPrecision);</a>
-<span class="sourceLineNo">030</span><a id="line.30">        }</a>
-<span class="sourceLineNo">031</span><a id="line.31">        </a>
-<span class="sourceLineNo">032</span><a id="line.32">        public static void set(int nDigits) {</a>
-<span class="sourceLineNo">033</span><a id="line.33">                precision = Math.max(nDigits, 0);</a>
-<span class="sourceLineNo">034</span><a id="line.34">                if (nDigits &gt; 0) {</a>
-<span class="sourceLineNo">035</span><a id="line.35">                        formatStringFloat = "%." + precision + "f"; // e.g. "%.5f"</a>
-<span class="sourceLineNo">036</span><a id="line.36">                }</a>
-<span class="sourceLineNo">037</span><a id="line.37">                else {</a>
-<span class="sourceLineNo">038</span><a id="line.38">                        formatStringFloat = "%e";       // use scientific format - OK?</a>
-<span class="sourceLineNo">039</span><a id="line.39">                }</a>
+<span class="sourceLineNo">024</span><a id="line.24">        /** The default precision (number of digits). */</a>
+<span class="sourceLineNo">025</span><a id="line.25">        public static final int DefaultPrecision = 3;</a>
+<span class="sourceLineNo">026</span><a id="line.26">        </a>
+<span class="sourceLineNo">027</span><a id="line.27">        private static int precision = DefaultPrecision;</a>
+<span class="sourceLineNo">028</span><a id="line.28">        private static String formatString;</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">        static {</a>
+<span class="sourceLineNo">031</span><a id="line.31">                reset();        // to properly set the formatString</a>
+<span class="sourceLineNo">032</span><a id="line.32">        }</a>
+<span class="sourceLineNo">033</span><a id="line.33">        </a>
+<span class="sourceLineNo">034</span><a id="line.34">        /**</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * Reset print precision to the default value</a>
+<span class="sourceLineNo">036</span><a id="line.36">         * ({@link #DefaultPrecision}).</a>
+<span class="sourceLineNo">037</span><a id="line.37">         */</a>
+<span class="sourceLineNo">038</span><a id="line.38">        public static void reset() {</a>
+<span class="sourceLineNo">039</span><a id="line.39">                set(DefaultPrecision);</a>
 <span class="sourceLineNo">040</span><a id="line.40">        }</a>
 <span class="sourceLineNo">041</span><a id="line.41">        </a>
-<span class="sourceLineNo">042</span><a id="line.42">        public static String getFormatStringFloat() {</a>
-<span class="sourceLineNo">043</span><a id="line.43">                return formatStringFloat;</a>
-<span class="sourceLineNo">044</span><a id="line.44">        }</a>
-<span class="sourceLineNo">045</span><a id="line.45">        </a>
-<span class="sourceLineNo">046</span><a id="line.46">        public static int get() {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                return precision;</a>
-<span class="sourceLineNo">048</span><a id="line.48">        }</a>
-<span class="sourceLineNo">049</span><a id="line.49"></a>
-<span class="sourceLineNo">050</span><a id="line.50">}</a>
+<span class="sourceLineNo">042</span><a id="line.42">        /**</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * Set print precision to the specified number of digits.</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * For example, with {@code nDigits = 5} the resulting element format string</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * is {@code "%.5f"}.</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * If a value &amp;le;0 is specified, the scientific float format </a>
+<span class="sourceLineNo">047</span><a id="line.47">         * string {@code "%e"} is used.</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * </a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @param nDigits the number of digits to be used</a>
+<span class="sourceLineNo">050</span><a id="line.50">         */</a>
+<span class="sourceLineNo">051</span><a id="line.51">        public static void set(int nDigits) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">                precision = Math.max(nDigits, 0);</a>
+<span class="sourceLineNo">053</span><a id="line.53">                if (nDigits &gt; 0) {</a>
+<span class="sourceLineNo">054</span><a id="line.54">                        formatString = "%." + precision + "f"; // e.g. "%.5f"</a>
+<span class="sourceLineNo">055</span><a id="line.55">                }</a>
+<span class="sourceLineNo">056</span><a id="line.56">                else {</a>
+<span class="sourceLineNo">057</span><a id="line.57">                        formatString = "%e";    // use scientific format - OK?</a>
+<span class="sourceLineNo">058</span><a id="line.58">                }</a>
+<span class="sourceLineNo">059</span><a id="line.59">        }</a>
+<span class="sourceLineNo">060</span><a id="line.60">        </a>
+<span class="sourceLineNo">061</span><a id="line.61">        /**</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * Returns the current print precision (number of digits).</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * @return the current number of digits</a>
+<span class="sourceLineNo">064</span><a id="line.64">         */</a>
+<span class="sourceLineNo">065</span><a id="line.65">        public static int get() {</a>
+<span class="sourceLineNo">066</span><a id="line.66">                return precision;</a>
+<span class="sourceLineNo">067</span><a id="line.67">        }</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">        /**</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * Returns the current float format string (to be used</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * in {@link String#format(String, Object...)}, for example.</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * @return the format string</a>
+<span class="sourceLineNo">073</span><a id="line.73">         */</a>
+<span class="sourceLineNo">074</span><a id="line.74">        public static String getFormatStringFloat() {</a>
+<span class="sourceLineNo">075</span><a id="line.75">                return formatString;</a>
+<span class="sourceLineNo">076</span><a id="line.76">        }</a>
+<span class="sourceLineNo">077</span><a id="line.77">}</a>
 
 
 

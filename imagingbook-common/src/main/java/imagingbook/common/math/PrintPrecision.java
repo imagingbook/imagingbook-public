@@ -46,7 +46,7 @@ public abstract class PrintPrecision {
 	 * If a value &le;0 is specified, the scientific float format 
 	 * string {@code "%e"} is used.
 	 * 
-	 * @param nDigits 
+	 * @param nDigits the number of digits to be used
 	 */
 	public static void set(int nDigits) {
 		precision = Math.max(nDigits, 0);

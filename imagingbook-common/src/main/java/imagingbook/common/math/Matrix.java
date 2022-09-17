@@ -663,7 +663,7 @@ public abstract class Matrix {
 
 	/**
 	 * Returns a copy of the given {@code double[][]} matrix. 
-	 * @param a a {@code double[][]} matrix
+	 * @param A a {@code double[][]} matrix
 	 * @return a copy of the matrix
 	 */
 	public static double[][] duplicate(final double[][] A) {
@@ -677,7 +677,7 @@ public abstract class Matrix {
 	
 	/**
 	 * Returns a copy of the given {@code float[][]} matrix. 
-	 * @param a a {@code float[][]} matrix
+	 * @param A a {@code float[][]} matrix
 	 * @return a copy of the matrix
 	 */
 	public static float[][] duplicate(final float[][] A) {

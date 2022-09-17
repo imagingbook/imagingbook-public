@@ -255,7 +255,7 @@ public class Complex {
 	/**
 	 * Checks if the given complex quantity is equal to
 	 * this {@link Complex} quantity, using the default tolerance
-	 * ({@link Arithmetic.EPSILON_DOUBLE}).
+	 * ({@link Arithmetic#EPSILON_DOUBLE}).
 	 * 
 	 * @param re real part of other complex quantity
 	 * @param im imaginary part of other complex quantity

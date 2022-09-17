@@ -24,17 +24,19 @@
 <span class="sourceLineNo">014</span><a id="line.14"> * for accessing pixel locations outside the image bounds.</a>
 <span class="sourceLineNo">015</span><a id="line.15"> * </a>
 <span class="sourceLineNo">016</span><a id="line.16"> * @author WB</a>
-<span class="sourceLineNo">017</span><a id="line.17"> */</a>
-<span class="sourceLineNo">018</span><a id="line.18">public enum OutOfBoundsStrategy {</a>
-<span class="sourceLineNo">019</span><a id="line.19">        /** Insert zero values. */</a>
-<span class="sourceLineNo">020</span><a id="line.20">        ZeroValues,</a>
-<span class="sourceLineNo">021</span><a id="line.21">        /** Insert the value of the nearest border pixel. */</a>
-<span class="sourceLineNo">022</span><a id="line.22">        NearestBorder,</a>
-<span class="sourceLineNo">023</span><a id="line.23">        /** Replicate the image by mirroring at its borders. */</a>
-<span class="sourceLineNo">024</span><a id="line.24">        MirrorImage,</a>
-<span class="sourceLineNo">025</span><a id="line.25">        /** Throws an exception when out-of-boundary coordinates are accessed. */</a>
-<span class="sourceLineNo">026</span><a id="line.26">        ThrowException;</a>
-<span class="sourceLineNo">027</span><a id="line.27">}</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * </a>
+<span class="sourceLineNo">018</span><a id="line.18"> * @see GridIndexer2D</a>
+<span class="sourceLineNo">019</span><a id="line.19"> */</a>
+<span class="sourceLineNo">020</span><a id="line.20">public enum OutOfBoundsStrategy {</a>
+<span class="sourceLineNo">021</span><a id="line.21">        /** Insert zero values. */</a>
+<span class="sourceLineNo">022</span><a id="line.22">        ZeroValues,</a>
+<span class="sourceLineNo">023</span><a id="line.23">        /** Insert the value of the nearest border pixel. */</a>
+<span class="sourceLineNo">024</span><a id="line.24">        NearestBorder,</a>
+<span class="sourceLineNo">025</span><a id="line.25">        /** Replicate the image by mirroring at its borders. */</a>
+<span class="sourceLineNo">026</span><a id="line.26">        MirrorImage,</a>
+<span class="sourceLineNo">027</span><a id="line.27">        /** Throws an exception when out-of-boundary coordinates are accessed. */</a>
+<span class="sourceLineNo">028</span><a id="line.28">        ThrowException;</a>
+<span class="sourceLineNo">029</span><a id="line.29">}</a>
 
 
 
