@@ -8,6 +8,13 @@
  *******************************************************************************/
 package imagingbook.common.math.exception;
 
+/**
+ * Exception indicating a floating-point division by zero (or some
+ * denominator too small to yield a finite result).
+ *  
+ * @author WB
+ *
+ */
 public class DivideByZeroException extends ArithmeticException {
 	private static final long serialVersionUID = 1L;
 	private static String DefaultMessage = "zero denominator in division";

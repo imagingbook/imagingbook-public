@@ -15,7 +15,7 @@ import java.lang.reflect.Array;
 
 /**
  * This class defines various vector norms for calculating
- * magnitude and distance.
+ * the magnitude of a vector and the distance between vectors.
  * 
  * @author WB
  * @version 2022/09/11
@@ -167,6 +167,10 @@ public abstract class VectorNorm {
 		private static final L1 instance = new L1();
 		private L1() {}
 		
+		/**
+		 * Returns an instance of this specific {@link VectorNorm} type.
+		 * @return a {@link VectorNorm} instance
+		 */
 		public static L1 getInstance() {
 			return L1.instance;
 		}
@@ -260,6 +264,10 @@ public abstract class VectorNorm {
 		private static final L2 instance = new L2();
 		private L2() {}
 		
+		/**
+		 * Returns an instance of this specific {@link VectorNorm} type.
+		 * @return a {@link VectorNorm} instance
+		 */
 		public static L2 getInstance() {
 			return L2.instance;
 		}
@@ -353,6 +361,10 @@ public abstract class VectorNorm {
 		private static final Linf instance = new Linf();
 		private Linf() {}
 		
+		/**
+		 * Returns an instance of this specific {@link VectorNorm} type.
+		 * @return a {@link VectorNorm} instance
+		 */
 		public static Linf getInstance() {
 			return Linf.instance;
 		}

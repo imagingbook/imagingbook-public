@@ -36,11 +36,11 @@ import imagingbook.common.math.exception.DivideByZeroException;
  * and c is the column index (as common in linear algebra). This means that
  * matrices are really vectors of row vectors.
  * Only arrays of type {@code float} and {@code double} are supported.
- * All matrices are assumed to be rectangular (i.e., all rows are of equal length).</p>
- * 
- * <p>Methods named with a trailing 'D' (e.g., {@link #multiplyD(double, double[])}) 
+ * All matrices are assumed to be rectangular (i.e., all rows are of equal length).
+ * </p>
+ * <p>
+ * Note: Methods named with a trailing 'D' (e.g., {@link #multiplyD(double, double[])}) 
  * operate destructively, i.e., modify one of the passed arguments.
- * Some methods are self-explanatory and are therefore left undocumented.
  * </p>
  * 
  * @author WB
@@ -49,6 +49,8 @@ import imagingbook.common.math.exception.DivideByZeroException;
 public abstract class Matrix {
 	
 	private Matrix() {}
+	
+	// TODO: check if these variables should be public and non-final
 	
 	/** Locale used for printing decimal numbers by {@code toString()} methods. */
 	public static Locale PrintLocale = Locale.US;
@@ -641,15 +643,29 @@ public abstract class Matrix {
 
 	// Matrix and vector duplication ------------------------------
 
-	
+	/**
+	 * Returns a copy of the given {@code double[]} vector. 
+	 * @param a a {@code double[]} vector
+	 * @return a copy of the vector
+	 */
 	public static double[] duplicate(final double[] a) {
 		return a.clone();
 	}
 	
+	/**
+	 * Returns a copy of the given {@code float[]} vector. 
+	 * @param a a {@code float[]} vector
+	 * @return a copy of the vector
+	 */
 	public static float[] duplicate(final float[] a) {
 		return a.clone();
 	}
 
+	/**
+	 * Returns a copy of the given {@code double[][]} matrix. 
+	 * @param a a {@code double[][]} matrix
+	 * @return a copy of the matrix
+	 */
 	public static double[][] duplicate(final double[][] A) {
 		final int m = A.length;
 		final double[][] B = new double[m][];
@@ -659,6 +675,11 @@ public abstract class Matrix {
 		return B;
 	}
 	
+	/**
+	 * Returns a copy of the given {@code float[][]} matrix. 
+	 * @param a a {@code float[][]} matrix
+	 * @return a copy of the matrix
+	 */
 	public static float[][] duplicate(final float[][] A) {
 		final int m = A.length;
 		float[][] B = new float[m][];
@@ -724,7 +745,6 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * /**
 	 * Converts a {@code float[]} to a {@code double[]}.
 	 * @param a the original {@code float[]} array
 	 * @return a copy of the array of type {@code double[]}
@@ -2324,12 +2344,26 @@ public abstract class Matrix {
 	
 	// Sorting vectors (non-destructively)  ------------------------------
 	
+	/**
+	 * Returns a sorted copy of the given {@code double[]} vector.
+	 * Elements are sorted by increasing value (smallest first).
+	 * 
+	 * @param x a {@code double[]} vector
+	 * @return a sorted copy of the vector
+	 */
 	public static double[] sort(double[] x) {
 		double[] y = Arrays.copyOf(x, x.length);
 		Arrays.sort(y);
 		return y;
 	}
 	
+	/**
+	 * Returns a sorted copy of the given {@code float[]} vector.
+	 * Elements are sorted by increasing value (smallest first).
+	 * 
+	 * @param x a {@code float[]} vector
+	 * @return a sorted copy of the vector
+	 */
 	public static float[] sort(float[] x) {
 		float[] y = Arrays.copyOf(x, x.length);
 		Arrays.sort(y);
@@ -2414,26 +2448,55 @@ public abstract class Matrix {
 	
 	// Output to strings and streams ------------------------------------------
 	
-	public static String toString(double[] x) {
-		if (x == null) {
-			return String.valueOf(x);
+	/**
+	 * Returns a string representation of the specified vector.
+	 * @param a a vector
+	 * @return the string representation
+	 */
+	public static String toString(double[] a) {
+		if (a == null) {
+			return String.valueOf(a);
 		}
 		ByteArrayOutputStream bas = new ByteArrayOutputStream();
 		PrintStream strm = new PrintStream(bas);
-		printToStream(x, strm);
+		printToStream(a, strm);
 		return bas.toString();
 	}
 	
-	public static String toString(float[] x) {
-		if (x == null) {
-			return String.valueOf(x);
+	/**
+	 * Returns a string representation of the specified vector.
+	 * @param a a vector
+	 * @return the string representation
+	 */
+	public static String toString(float[] a) {
+		if (a == null) {
+			return String.valueOf(a);
 		}
 		ByteArrayOutputStream bas = new ByteArrayOutputStream();
 		PrintStream strm = new PrintStream(bas);
-		printToStream(x, strm);
+		printToStream(a, strm);
 		return bas.toString();
 	}
 	
+	/**
+	 * Returns a string representation of the specified vector.
+	 * @param a a vector
+	 * @return the string representation
+	 */
+	public static String toString(RealVector a) {
+		if (a == null) {
+			return String.valueOf(a);
+		}
+		else {
+			return toString(a.toArray());
+		}
+	}
+	
+	/**
+	 * Returns a string representation of the specified matrix.
+	 * @param A a matrix
+	 * @return the string representation
+	 */
 	public static String toString(double[][] A) {
 		if (A == null) {
 			return String.valueOf(A);
@@ -2444,6 +2507,11 @@ public abstract class Matrix {
 		return bas.toString();
 	}
 	
+	/**
+	 * Returns a string representation of the specified matrix.
+	 * @param A a matrix
+	 * @return the string representation
+	 */
 	public static String toString(float[][] A) {
 		if (A == null) {
 			return String.valueOf(A);
@@ -2454,15 +2522,11 @@ public abstract class Matrix {
 		return bas.toString();
 	}
 	
-	public static String toString(RealVector x) {
-		if (x == null) {
-			return String.valueOf(x);
-		}
-		else {
-			return toString(x.toArray());
-		}
-	}
-	
+	/**
+	 * Returns a string representation of the specified matrix.
+	 * @param A a matrix
+	 * @return the string representation
+	 */
 	public static String toString(RealMatrix A) {
 		if (A == null) {
 			return String.valueOf(A);
@@ -2474,18 +2538,32 @@ public abstract class Matrix {
 	
 	// --------------------
 	
-	public static void printToStream(double[] x, PrintStream strm) {
+	/**
+	 * Outputs a string representation of the given vector to
+	 * the specified output stream.
+	 * @param a the vector
+	 * @param strm the output stream
+	 * @see #toString(double[])
+	 */
+	public static void printToStream(double[] a, PrintStream strm) {
 		String fStr = PrintPrecision.getFormatStringFloat();
 		strm.format("%c", LeftDelimitChar);
-		for (int i = 0; i < x.length; i++) {
+		for (int i = 0; i < a.length; i++) {
 			if (i > 0)
 				strm.format("%c ", SeparationChar);
-			strm.format(PrintLocale, fStr, x[i]);
+			strm.format(PrintLocale, fStr, a[i]);
 		}
 		strm.format("%c", RightDelimitChar);
 		strm.flush();
 	}
 	
+	/**
+	 * Outputs a string representation of the given matrix to
+	 * the specified output stream.
+	 * @param A the matrix
+	 * @param strm the output stream
+	 * @see #toString(double[][])
+	 */
 	public static void printToStream(double[][] A, PrintStream strm) {
 		String fStr = PrintPrecision.getFormatStringFloat();
 		strm.format("%c", LeftDelimitChar);
@@ -2506,18 +2584,32 @@ public abstract class Matrix {
 		strm.flush();
 	}
 	
-	public static void printToStream(float[] A, PrintStream strm) {
+	/**
+	 * Outputs a string representation of the given vector to
+	 * the specified output stream.
+	 * @param a the vector
+	 * @param strm the output stream
+	 * @see #toString(float[])
+	 */
+	public static void printToStream(float[] a, PrintStream strm) {
 		String fStr = PrintPrecision.getFormatStringFloat();
 		strm.format("%c", LeftDelimitChar);
-		for (int i = 0; i < A.length; i++) {
+		for (int i = 0; i < a.length; i++) {
 			if (i > 0)
 				strm.format("%c ", SeparationChar);
-			strm.format(PrintLocale, fStr, A[i]);
+			strm.format(PrintLocale, fStr, a[i]);
 		}
 		strm.format("%c", RightDelimitChar);
 		strm.flush();
 	}
 	
+	/**
+	 * Outputs a string representation of the given matrix to
+	 * the specified output stream.
+	 * @param A the matrix
+	 * @param strm the output stream
+	 * @see #toString(float[][])
+	 */
 	public static void printToStream(float[][] A, PrintStream strm) {
 		String fStr = PrintPrecision.getFormatStringFloat();
 		strm.format("%c", LeftDelimitChar);

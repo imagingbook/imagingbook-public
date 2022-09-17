@@ -16,7 +16,7 @@ import java.util.Locale;
 import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
- * This class represents complex numbers. Instances are immutable.
+ * This class represents complex numbers. All instances are immutable.
  * Methods are mostly defined to be compatible with 
  * org.apache.commons.math3.complex.Complex and (newer)
  * org.apache.commons.numbers.complex.Complex.
@@ -28,16 +28,16 @@ import imagingbook.common.geometry.basic.Pnt2d;
  */
 public class Complex {
 	
-	/** Real unit value (z = 1 + i 0). */
+	/** Constant - real unit value (z = 1 + i 0). */
 	public static final Complex ONE = new Complex(1, 0);
-	/** Complex zero value (z = 0 + i 0). */
+	/** Constant - complex zero value (z = 0 + i 0). */
 	public static final Complex ZERO = new Complex(0, 0);
-	/** Imaginary unit value (z = 0 + i 1). */
+	/** Constant -  imaginary unit value (z = 0 + i 1). */
 	public static final Complex I = new Complex(0, 1);
 
-	/** The real part of this complex number */
+	/** The real part of this complex number (publicly accessible but read-only). */
 	public final double re;
-	/** The imaginary part of this complex number */
+	/** The imaginary part of this complex number (publicly accessible but read-only). */
 	public final double im;
 
 	/**
@@ -51,7 +51,7 @@ public class Complex {
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * @param z complex quantity, which is duplicated
 	 */
 	public Complex(Complex z) {
@@ -60,16 +60,22 @@ public class Complex {
 	}
 
 	/**
-	 * Create a complex quantity on the unit circle with angle 'phi':
-	 * e^{\i \phi} = \cos(\phi) + \i \cdot \sin(\phi)
-	 * @param phi angle
+	 * Constructor. Creates a complex quantity on the unit circle with angle {@code phi}:
+	 * {@code e^(i * phi) = cos(phi) + i * sin(phi)}.
+	 * @param phi the angle
+	 * @see #arg()
 	 */
 	public Complex(double phi) {
 		this.re = Math.cos(phi);
 		this.im = Math.sin(phi);
 	}
 	
-	
+	/**
+	 * Constructor. The x/y coordinates of the specified point are used
+	 * as re/im values.
+	 * 
+	 * @param pnt a {@link Pnt2d} instance
+	 */
 	public Complex(Pnt2d pnt) {
 		this.re = pnt.getX();
 		this.im = pnt.getY();
@@ -97,7 +103,7 @@ public class Complex {
 
 	/**
 	 * Returns the 'argument' of this complex number, i.e.,
-	 * its angle relative to the real axis. 
+	 * its angle w.r.t. to the real axis. 
 	 * @return the argument (in radians)
 	 */
 	public double arg() {
@@ -124,8 +130,8 @@ public class Complex {
 	}
 
 	/**
-	 * Rotates this complex number by the angle {@code phi} and returns
-	 * a new complex number.
+	 * Rotates this complex number by angle {@code phi} and returns
+	 * the resulting complex number.
 	 * @param phi the angle (in radians)
 	 * @return the rotated complex value
 	 */
@@ -163,17 +169,18 @@ public class Complex {
 		return this.im;
 	}
 
+	// -------------------------------------------------------
+	
 	/**
-	 * Multiplies this complex number with another complex quantity {@code z2} and returns
+	 * Multiplies this complex number with another complex quantity and returns
 	 * a new complex number.
-	 * @param z2 a complex quantity
-	 * @return this complex number multiplied by {@code z2}
+	 * @param z a complex quantity
+	 * @return this complex number multiplied by {@code z}
 	 */
-	public Complex multiply(Complex z2) {
+	public Complex multiply(Complex z) {
 		// (x1 + i y1)(x2 + i y2) = (x1 x2 + y1 y2) + i (x1 y2 + y1 x2)
-		Complex z1 = this;
-		double x = z1.re * z2.re - z1.im * z2.im;
-		double y = z1.re * z2.im + z1.im * z2.re;
+		final double x = this.re * z.re - this.im * z.im;
+		final double y = this.re * z.im + this.im * z.re;
 		return new Complex(x, y);
 	}
 	
@@ -188,8 +195,9 @@ public class Complex {
 	}
 	
 	 /**
-     * Returns of value of this complex number raised to the power of {@code k}.
-     * @param k the exponent
+     * Returns of value of this complex number ({@code z}) raised to the power {@code k}
+     * (integer).
+     * @param k the integer exponent (&ge; 0)
      * @return {@code z^k}
      */
 	public Complex pow(int k) {
@@ -210,32 +218,66 @@ public class Complex {
 		return new double[] {this.re, this.im};
 	}
 	
+
+
+	/**
+	 * Checks if the given {@link Object} is equal to
+	 * this {@link Complex} quantity.
+	 * Calls {@link #equals(Complex, double)} if the argument is
+	 * of type {@link Complex}, otherwise {@code null} is returned.
+	 */
 	@Override
 	public boolean equals(Object other) {
         if (other == this) {
             return true;
         }       
         if (other instanceof Complex) {
-	        final Complex z = (Complex) other;
+//	        final Complex z = (Complex) other;
 //	        return Double.compare(this.re, z.re) == 0 && Double.compare(this.im, z.im) == 0;
-	        return this.equals(z, Arithmetic.EPSILON_DOUBLE);
+	        return this.equals((Complex) other, Arithmetic.EPSILON_DOUBLE);
         }
         return false;
 	}
 	
+	/**
+	 * Checks if the given {@link Complex} quantity is equal to
+	 * this {@link Complex} quantity.
+	 * 
+	 * @param z another {@link Complex} quantity
+	 * @param tolerance the maximum difference of real and imaginary parts
+	 * @return true if the two complex quantities are sufficiently close, false otherwise
+	 */
 	public boolean equals(Complex z, double tolerance) {
 		return isZero(this.re - z.re, tolerance) 
 				&& isZero(this.im - z.im, tolerance);
 	}
 	
-	public boolean equals(double a, double b) {
-		//return Double.compare(this.re, a) == 0 && Double.compare(this.im, b) == 0;
-		return this.equals(a, b, Arithmetic.EPSILON_DOUBLE);
+	/**
+	 * Checks if the given complex quantity is equal to
+	 * this {@link Complex} quantity, using the default tolerance
+	 * ({@link Arithmetic.EPSILON_DOUBLE}).
+	 * 
+	 * @param re real part of other complex quantity
+	 * @param im imaginary part of other complex quantity
+	 * @return true if the two complex quantities are sufficiently close, false otherwise
+	 */
+	public boolean equals(double re, double im) {
+		//return Double.compare(this.re, re) == 0 && Double.compare(this.im, im) == 0;
+		return this.equals(re, im, Arithmetic.EPSILON_DOUBLE);
 	}
 	
-	public boolean equals(double a, double b, double tolerance) {
-		return isZero(this.re - a, tolerance) 
-				&& isZero(this.im - b, tolerance);
+	/**
+	 * Checks if the given complex quantity is equal to
+	 * this {@link Complex} quantity, using the specified tolerance.
+	 * 
+	 * @param re real part of other complex quantity
+	 * @param im imaginary part of other complex quantity
+	 * @param tolerance the maximum difference of real and imaginary parts
+	 * @return true if the two complex quantities are sufficiently close, false otherwise
+	 */
+	public boolean equals(double re, double im, double tolerance) {
+		return isZero(this.re - re, tolerance) 
+				&& isZero(this.im - im, tolerance);
 	}
 
 }

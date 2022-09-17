@@ -15,12 +15,11 @@ import org.apache.commons.math3.linear.RealVector;
 /**
  * Common interface for eigendecompositions capable of
  * delivering solutions when all eigenvalues are real.
- * TODO: add 'ComplexEigenDecomposition' interface and implementations
  *  
  * @author WB
  * @version 2022/07/08
  */
-public interface RealEigenDecomposition {
+public interface RealEigenDecomposition {	// TODO: add 'ComplexEigenDecomposition' interface and implementations
 	
 	/**
      * Returns whether the calculated eigenvalues are complex or real.

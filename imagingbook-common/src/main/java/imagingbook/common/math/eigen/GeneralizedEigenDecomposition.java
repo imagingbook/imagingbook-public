@@ -25,9 +25,9 @@ import imagingbook.common.math.Matrix;
  * <p>
  * This implementation was ported from original EISPACK code [1] using
  * a finite state machine concept [2] to untangle Fortran's GOTO
- * statements (which are not available in Java), with some inspirations from
+ * statements (which are not available in Java), with some inspirations from this
  * <a href="https://github.com/accord-net/framework/blob/development/Sources/Accord.Math/Decompositions/GeneralizedEigenvalueDecomposition.cs">
- * this implementation</a>.
+ * C# implementation</a>.
  * See 
  * <a href="https://mipav.cit.nih.gov/">mipav.cit.nih.gov</a> 
  * (file {@code gov.nih.mipav.model.structures.jama.GeneralizedEigenvalue.java}) 
@@ -39,8 +39,6 @@ import imagingbook.common.math.Matrix;
  * accurate, but the remaining ones are not. 
  * If matrices A, B are symmetric and B is positive definite, better use 
  * {@link GeneralizedSymmetricEigenDecomposition} instead, which is more accurate.
- * 
- * TODO: Check complex-valued eigenvectors.
  * </p>
  * 
  * <p>
@@ -53,6 +51,7 @@ import imagingbook.common.math.Matrix;
  * @see GeneralizedSymmetricEigenDecomposition
  */
 public class GeneralizedEigenDecomposition implements RealEigenDecomposition {
+	// TODO: Check complex-valued eigenvectors.
 	
 	static boolean VERBOSE = false;
 

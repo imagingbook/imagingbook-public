@@ -8,6 +8,12 @@
  *******************************************************************************/
 package imagingbook.common.math.exception;
 
+/**
+ * Exception indicating that some predefined number of iterations was exceeded.
+ * 
+ * @author WB
+ *
+ */
 public class MaxIterationsExceededException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

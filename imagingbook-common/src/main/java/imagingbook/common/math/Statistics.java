@@ -13,7 +13,8 @@ package imagingbook.common.math;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
 /**
- * Utility class defines a few statistical methods.
+ * This class defines a selected statistical methods.
+ * 
  * @author WB
  *
  */

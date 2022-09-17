@@ -19,9 +19,9 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.RandomMatrixGenerator;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
 import imagingbook.testutils.NumericTestUtils;
+import imagingbook.testutils.RandomMatrixGenerator;
 
 public class EigenDecompositionJamaTest {
 	

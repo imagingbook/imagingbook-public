@@ -7,15 +7,12 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import ij.IJ;
-import ij.ImagePlus;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.geometry.mappings.linear.Translation2D;
-import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testimages.MappingTestImage;

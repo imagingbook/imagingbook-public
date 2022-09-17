@@ -14,7 +14,8 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
  * A specific vector-valued image accessor for RGB images
- * (direct subclass of {@link VectorAccessor}).
+ * (direct subclass of {@link VectorAccessor}) with 
+ * depth = 3 color components.
  */
 public class RgbAccessor extends VectorAccessor {
 	

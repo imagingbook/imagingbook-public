@@ -16,7 +16,16 @@ import org.apache.commons.math3.linear.RealMatrix;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 
-
+/**
+ * <p>
+ * Cholesky matrix decomposition based on the implementation in JAMA
+ * (https://math.nist.gov/javanumerics/jama/).
+ * <br>
+ * Deprecated, use org.apache.commons.math3.linear.CholeskyDecomposition instead.
+ * </p>
+ * 
+ * @author WB
+ */
 @Deprecated 
 public class CholeskyDecomposition {
 

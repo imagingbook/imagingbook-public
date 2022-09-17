@@ -112,6 +112,9 @@ public abstract class GridIndexer2D implements Cloneable {
 	/** 
 	 * This indexer returns the closest border pixel for coordinates
 	 * outside the image bounds. This is the most common method.
+	 * There is no public constructor. To instantiate use method 
+	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)}
+	 * with {@link OutOfBoundsStrategy#NearestBorder}.
 	 */
 	public static class NearestBorderIndexer extends GridIndexer2D {
 		
@@ -139,7 +142,10 @@ public abstract class GridIndexer2D implements Cloneable {
 	
 	/** 
 	 * This indexer returns mirrored image values for coordinates
-	 * outside the image bounds. 
+	 * outside the image bounds.
+	 * There is no public constructor. To instantiate use method 
+	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)}
+	 * with {@link OutOfBoundsStrategy#MirrorImage}.
 	 */
 	public static class MirrorImageIndexer extends GridIndexer2D {
 		
@@ -165,6 +171,9 @@ public abstract class GridIndexer2D implements Cloneable {
 	/** 
 	 * This indexer returns -1 for coordinates outside the image
 	 * bounds, indicating that a (predefined) default value should be used.
+	 * There is no public constructor. To instantiate use method 
+	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)}
+	 * with {@link OutOfBoundsStrategy#ZeroValues}.
 	 */
 	public static class ZeroValueIndexer extends GridIndexer2D {
 		
@@ -186,6 +195,9 @@ public abstract class GridIndexer2D implements Cloneable {
 	/**
 	 * This indexer throws an exception if coordinates outside
 	 * image bounds are accessed.
+	 * There is no public constructor. To instantiate use method 
+	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)}
+	 * with {@link OutOfBoundsStrategy#ThrowException}.
 	 */
 	public static class ExceptionIndexer extends GridIndexer2D {
 		
