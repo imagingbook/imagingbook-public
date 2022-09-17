@@ -6,12 +6,14 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.math;
+package imagingbook.testutils;
 
 import java.util.Random;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
+
+import imagingbook.common.math.Matrix;
 
 public class RandomMatrixGenerator {
 	
