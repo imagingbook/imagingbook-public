@@ -32,15 +32,16 @@ import imagingbook.common.math.exception.DivideByZeroException;
  * <p>This class defines a set of static methods for calculations
  * with vectors and matrices using native Java arrays without any enclosing 
  * object structures. 
- * Matrices are simple two-dimensional arrays A[r][c], where r is the row index
- * and c is the column index (as common in linear algebra). This means that
- * matrices are really vectors of row vectors.
+ * Matrices are simple two-dimensional arrays {@code A[r][c]}, where {@code r} is the 
+ * (vertical) <strong>row</strong> index
+ * and {@code c} is the (horizontal) <strong>column</strong> index (as common in linear algebra). 
+ * This means that matrices are really vectors of row vectors.
  * Only arrays of type {@code float} and {@code double} are supported.
  * All matrices are assumed to be rectangular (i.e., all rows are of equal length).
  * </p>
  * <p>
- * Note: Methods named with a trailing 'D' (e.g., {@link #multiplyD(double, double[])}) 
- * operate destructively, i.e., modify one of the passed arguments.
+ * Note: Methods named with a trailing '{@code D}' (e.g., {@link #multiplyD(double, double[])}) 
+ * operate destructively, i.e., modify one of the supplied arguments.
  * </p>
  * 
  * @author WB

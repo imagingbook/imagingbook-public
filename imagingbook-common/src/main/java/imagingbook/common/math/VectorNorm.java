@@ -110,9 +110,11 @@ public abstract class VectorNorm {
 	 * parameter choice.
 	 */
 	public enum NormType {
-//		L1 {public VectorNorm.L1 getInstance() {return VectorNorm.L1.instance;}},
+		/** L1 (Manhattan) norm/distance. */
 		L1(VectorNorm.L1.getInstance()),
+		/** L2 (Euclidean) norm/distance. */
 		L2(VectorNorm.L2.getInstance()),
+		/** L-infinity (maximum) norm/distance. */
 		Linf(VectorNorm.Linf.getInstance());
 				
 		private final VectorNorm inst;
@@ -125,8 +127,8 @@ public abstract class VectorNorm {
 		}
 		
 		/**
-		 * Returns the {@link VectorNorm} instance associated with this
-		 * enum item.
+		 * Returns the (singleton) {@link VectorNorm} instance associated with this
+		 * {@link NormType}
 		 * @return the {@link VectorNorm} instance
 		 */
 		public VectorNorm getInstance() {
@@ -162,6 +164,12 @@ public abstract class VectorNorm {
 
 	//  concrete classes -----------------------------------------------
 
+	/**
+	 * Implementation of the L1 vector norm (Manhattan norm/distance).
+	 * This class defines no public constructor, use methods
+	 * {@link L1#getInstance()} or {@link NormType#L1#getInstance()} to
+	 * retrieve the associated (singleton) instance.
+	 */
 	public static class L1 extends VectorNorm {
 		
 		private static final L1 instance = new L1();
@@ -259,6 +267,12 @@ public abstract class VectorNorm {
 
 	// ------------------------------------------------------------------------------
 
+	/**
+	 * Implementation of the L2 vector norm (Euclidean norm/distance).
+	 * This class defines no public constructor, use methods
+	 * {@link L2#getInstance()} or {@link NormType#L2#getInstance()} to
+	 * retrieve the associated (singleton) instance.
+	 */
 	public static class L2 extends VectorNorm {
 		
 		private static final L2 instance = new L2();
@@ -356,6 +370,12 @@ public abstract class VectorNorm {
 
 	// ------------------------------------------------------------------------------
 
+	/**
+	 * Implementation of the L-infinity vector norm (maximum norm/distance).
+	 * This class defines no public constructor, use methods
+	 * {@link Linf#getInstance()} or {@link NormType#Linf#getInstance()} to
+	 * retrieve the associated (singleton) instance.
+	 */
 	public static class Linf extends VectorNorm {
 		
 		private static final Linf instance = new Linf();
