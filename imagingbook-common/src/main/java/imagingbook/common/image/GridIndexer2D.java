@@ -7,10 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.image.access;
-
-import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.image.PixelPack;
+package imagingbook.common.image;
 
 /**
  * <p>
@@ -30,6 +27,11 @@ import imagingbook.common.image.PixelPack;
  * {@link NearestBorderIndexer}. They exhibit different behaviors when accessing
  * out-of-image coordinates (see {@link OutOfBoundsStrategy}).
  * </p>
+ * 
+ * @author WB
+ * @version 2022/09/17
+ * 
+ * @see OutOfBoundsStrategy
  */
 public abstract class GridIndexer2D implements Cloneable {
 	

@@ -14,6 +14,8 @@ package imagingbook.common.image;
  * for accessing pixel locations outside the image bounds.
  * 
  * @author WB
+ * 
+ * @see GridIndexer2D
  */
 public enum OutOfBoundsStrategy {
 	/** Insert zero values. */

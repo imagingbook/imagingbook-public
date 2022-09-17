@@ -14,7 +14,7 @@ import ij.process.ImageProcessor;
 /**
  * This class defines static methods for non-destructive, arithmetic operations on ImageJ's 
  * {@link ImageProcessor} objects.
- * Unlike the built-in {@link ImageProcessor} methods, the methods below
+ * Unlike the built-in {@link ImageProcessor} methods, the methods below always
  * return new images and keep the original images unmodified.
  * 
  * @version 2013/08/23: static methods converted to use generics.

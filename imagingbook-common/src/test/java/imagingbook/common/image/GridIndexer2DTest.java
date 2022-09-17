@@ -6,14 +6,12 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.image.access;
+package imagingbook.common.image;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import imagingbook.common.image.OutOfBoundsStrategy;
-
-public class PixelIndexerTest {
+public class GridIndexer2DTest {
 	
 	static int W = 300;
 	static int H = 200;

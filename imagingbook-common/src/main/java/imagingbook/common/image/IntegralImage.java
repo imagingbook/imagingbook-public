@@ -73,16 +73,16 @@ public class IntegralImage {
 	// -------------------------------------------------------
 	
 	/**
-	 * Returns the summed area table of pixel values (Sigma_1).
-	 * @return array of Sigma_1 values
+	 * Returns the summed area table of pixel values (&Sigma;<sub>1</sub>).
+	 * @return array of &Sigma;<sub>1</sub> values
 	 */
 	public long[][] getS1() {
 		return S1;
 	}
 	
 	/**
-	 * Returns the summed area table of squared pixel values (Sigma_2).
-	 * @return array of Sigma_2 values
+	 * Returns the summed area table of squared pixel values (&Sigma;<sub>2</sub>).
+	 * @return array of &Sigma;<sub>2</sub> values
 	 */
 	public long[][] getS2() {
 		return S2;
@@ -93,7 +93,6 @@ public class IntegralImage {
 	/**
 	 * Calculates the sum of the pixel values in the rectangle
 	 * R, specified by the corner points a = (ua, va) and b = (ub, vb).
-	 * TODO: allow coordinates outside image boundaries
 	 * 
 	 * @param ua leftmost position in R
 	 * @param va top position in R
@@ -103,7 +102,7 @@ public class IntegralImage {
 	 * or zero if the rectangle is empty.
 	 * 
 	 */
-	public long getBlockSum1(int ua, int va, int ub, int vb) {
+	public long getBlockSum1(int ua, int va, int ub, int vb) {	// TODO: allow coordinates outside image boundaries
 		if (ub < ua || vb < va) {
 			return 0;
 		}
@@ -117,7 +116,6 @@ public class IntegralImage {
 	/**
 	 * Calculates the sum of the squared pixel values in the rectangle
 	 * R, specified by the corner points a = (ua, va) and b = (ub, vb).
-	 * TODO: allow coordinates outside image boundaries
 	 * 
 	 * @param ua leftmost position in R
 	 * @param va top position in R
@@ -126,7 +124,7 @@ public class IntegralImage {
 	 * @return the second-order block sum (S2(R)) inside the specified rectangle
 	 * or zero if the rectangle is empty.
 	 */
-	public long getBlockSum2(int ua, int va, int ub, int vb) {
+	public long getBlockSum2(int ua, int va, int ub, int vb) {	// TODO: allow coordinates outside image boundaries
 		if (ub < ua || vb < va) {
 			return 0;
 		}

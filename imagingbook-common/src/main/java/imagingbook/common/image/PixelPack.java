@@ -17,7 +17,6 @@ import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.filter.generic.GenericFilter;
-import imagingbook.common.image.access.GridIndexer2D;
 import imagingbook.common.image.access.ImageAccessor;
 
 /**
@@ -25,8 +24,6 @@ import imagingbook.common.image.access.ImageAccessor;
  * This class defines a generic data container for scalar and
  * vector-valued images, using float-values throughout.
  * Its primary use is in the {@link GenericFilter} framework.
- * </p>
- * <p>
  * A {@link PixelPack} may represent images with an arbitrary number of
  * components. Scalar images (such as {@link ByteProcessor}, 
  * {@link ShortProcessor} and {@link FloatProcessor}) have 1 component,
