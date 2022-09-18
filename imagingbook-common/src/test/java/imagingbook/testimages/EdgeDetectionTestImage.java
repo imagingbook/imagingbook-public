@@ -20,17 +20,17 @@ import imagingbook.testutils.ImageResourceSelfTest;
  * @see GeneralSampleImage
  */
 public enum EdgeDetectionTestImage implements ImageResource {
-	Balloons600color("balloons-600.png"),
-	Balloons600gray("balloons-600-gray.png"),
+	Balloons600color,
+	Balloons600gray,
 	
 	// CannyEdgeDetector
-	Balloons600colorCannyEdgeMagnitude("balloons-600-CannyEdgeMagnitude.tif"),
-	Balloons600colorCannyEdgeOrientation("balloons-600-CannyEdgeOrientation.tif"),
-	Balloons600colorCannyBinaryEdges("balloons-600-CannyBinaryEdges.png"),
+	Balloons600colorCannyEdgeMagnitude("Balloons600colorCannyEdgeMagnitude.tif"),
+	Balloons600colorCannyEdgeOrientation("Balloons600colorCannyEdgeOrientation.tif"),
+	Balloons600colorCannyBinaryEdges,
 	
-	Balloons600grayCannyEdgeMagnitude("balloons-600-gray-CannyEdgeMagnitude.tif"),
-	Balloons600grayCannyEdgeOrientation("balloons-600-gray-CannyEdgeOrientation.tif"),
-	Balloons600grayCannyBinaryEdges("balloons-600-gray-CannyBinaryEdges.png"),
+	Balloons600grayCannyEdgeMagnitude("Balloons600grayCannyEdgeMagnitude.tif"),
+	Balloons600grayCannyEdgeOrientation("Balloons600grayCannyEdgeOrientation.tif"),
+	Balloons600grayCannyBinaryEdges,
 	
 	// MultiGradientEdgeDetector
 	Balloons600colorMultigradientEdgeMagnitude("balloons-600-MultigradientEdgeMagnitude.tif"),
@@ -54,6 +54,10 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	
 	EdgeDetectionTestImage(String filename) {
 		this.filename = filename;
+	}
+	
+	EdgeDetectionTestImage() {
+		this.filename = autoName();
 	}
 	
 	@Override
