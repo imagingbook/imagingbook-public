@@ -55,27 +55,45 @@ public class VectorNormTest {
 	public void testDistL1() {
 		VectorNorm norm = NormType.L1.getInstance();
 		double dist = 20;
+		assertEquals(0, norm.distance(x1d, x1d), TOL);
+		assertEquals(0, norm.distance(x1f, x1f), TOL);
+		assertEquals(0, norm.distance(x1i, x1i), TOL);
 		assertEquals(dist, norm.distance(x1d, x2d), TOL);
+		assertEquals(dist, norm.distance(x2d, x1d), TOL);
 		assertEquals(dist, norm.distance(x1f, x2f), TOL);
+		assertEquals(dist, norm.distance(x2f, x1f), TOL);
 		assertEquals(dist, norm.distance(x1i, x2i), TOL);
+		assertEquals(dist, norm.distance(x2i, x1i), TOL);
 	}
 	
 	@Test
 	public void testDistL2() {
 		VectorNorm norm = NormType.L2.getInstance();
 		double dist = 10.488088481701515;
+		assertEquals(0, norm.distance(x1d, x1d), TOL);
+		assertEquals(0, norm.distance(x1f, x1f), TOL);
+		assertEquals(0, norm.distance(x1i, x1i), TOL);
 		assertEquals(dist, norm.distance(x1d, x2d), TOL);
+		assertEquals(dist, norm.distance(x2d, x1d), TOL);
 		assertEquals(dist, norm.distance(x1f, x2f), TOL);
+		assertEquals(dist, norm.distance(x2f, x1f), TOL);
 		assertEquals(dist, norm.distance(x1i, x2i), TOL);
+		assertEquals(dist, norm.distance(x2i, x1i), TOL);
 	}
 	
 	@Test
 	public void testDistLinf() {
 		VectorNorm norm = NormType.Linf.getInstance();
 		double dist = 7;
+		assertEquals(0, norm.distance(x1d, x1d), TOL);
+		assertEquals(0, norm.distance(x1f, x1f), TOL);
+		assertEquals(0, norm.distance(x1i, x1i), TOL);
 		assertEquals(dist, norm.distance(x1d, x2d), TOL);
+		assertEquals(dist, norm.distance(x2d, x1d), TOL);
 		assertEquals(dist, norm.distance(x1f, x2f), TOL);
+		assertEquals(dist, norm.distance(x2f, x1f), TOL);
 		assertEquals(dist, norm.distance(x1i, x2i), TOL);
+		assertEquals(dist, norm.distance(x2i, x1i), TOL);
 	}
 	
 	// -------------------------------------------------

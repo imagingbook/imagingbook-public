@@ -115,7 +115,7 @@ public abstract class VectorNorm {
 		/** L2 (Euclidean) norm/distance (see {@link VectorNorm.L2}). */
 		L2 {@Override public VectorNorm getInstance() {return VectorNorm.L2.getInstance();}},		//(VectorNorm.L2.getInstance()),
 		/** L-infinity (maximum) norm/distance (see {@link VectorNorm.Linf}). */
-		Linf {@Override public VectorNorm getInstance() {return VectorNorm.Linf.getInstance();}};		//(VectorNorm.Linf.getInstance());
+		Linf {@Override public VectorNorm getInstance() {return VectorNorm.Linf.getInstance();}};	//(VectorNorm.Linf.getInstance());
 				
 		/**
 		 * Returns the (singleton) {@link VectorNorm} instance associated with 
