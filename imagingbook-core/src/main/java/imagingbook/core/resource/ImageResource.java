@@ -45,7 +45,22 @@ public interface ImageResource extends NamedResource {
 	 * @return a default image filename ({@code enumconstantname + ".png"})
 	 */
 	public default String autoName() {
-		return this.toString() + ".png";
+		String itemname = this.toString();
+		int k = itemname.lastIndexOf('_');
+		if (k >= 0) {
+//			System.out.println(itemname + ": found _ at " + k);
+			String filename = itemname.substring(0, k);
+			String extension  = itemname.substring(k + 1);
+//			System.out.println(filename + "." + extension);
+			return filename + "." + extension;
+		}
+		else {
+			return itemname + ".png";
+		}
 	}
+	
+//	public default String autoName() {
+//		return this.toString() + ".png";
+//	}
 
 }

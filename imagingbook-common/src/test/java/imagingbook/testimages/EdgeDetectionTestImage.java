@@ -24,28 +24,29 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600gray,
 	
 	// CannyEdgeDetector
-	Balloons600colorCannyEdgeMagnitude("Balloons600colorCannyEdgeMagnitude.tif"),
-	Balloons600colorCannyEdgeOrientation("Balloons600colorCannyEdgeOrientation.tif"),
+	Balloons600colorCannyEdgeMagnitude_tif, //("Balloons600colorCannyEdgeMagnitude.tif"),
+	Balloons600colorCannyEdgeOrientation_tif, //("Balloons600colorCannyEdgeOrientation.tif"),
 	Balloons600colorCannyBinaryEdges,
 	
-	Balloons600grayCannyEdgeMagnitude("Balloons600grayCannyEdgeMagnitude.tif"),
-	Balloons600grayCannyEdgeOrientation("Balloons600grayCannyEdgeOrientation.tif"),
+	Balloons600grayCannyEdgeMagnitude_tif, //("Balloons600grayCannyEdgeMagnitude.tif"),
+	Balloons600grayCannyEdgeOrientation_tif, //("Balloons600grayCannyEdgeOrientation.tif"),
 	Balloons600grayCannyBinaryEdges,
 	
 	// MultiGradientEdgeDetector
-	Balloons600colorMultigradientEdgeMagnitude("Balloons600colorMultigradientEdgeMagnitude.tif"),
-	Balloons600colorMultigradientEdgeOrientation("Balloons600colorMultigradientEdgeOrientation.tif"),
+	Balloons600colorMultigradientEdgeMagnitude_tif,	//("Balloons600colorMultigradientEdgeMagnitude.tif"),
+	Balloons600colorMultigradientEdgeOrientation_tif,	//("Balloons600colorMultigradientEdgeOrientation.tif"),
 	
 	// MonochromaticEdgeDetector (color only)
-	Balloons600colorMonochromaticEdgeMagnitudeL2("Balloons600colorMonochromaticEdgeMagnitudeL2.tif"),
-	Balloons600colorMonochromaticEdgeOrientationL2("Balloons600colorMonochromaticEdgeOrientationL2.tif"),
+	Balloons600colorMonochromaticEdgeMagnitudeL2_tif,	//("Balloons600colorMonochromaticEdgeMagnitudeL2.tif"),
+	Balloons600colorMonochromaticEdgeOrientationL2_tif,	//("Balloons600colorMonochromaticEdgeOrientationL2.tif"),
 	
 	// GrayscaleEdgeDetector
-	Balloons600colorGrayscaleEdgeMagnitude("Balloons600colorGrayscaleEdgeMagnitude.tif"),
-	Balloons600colorGrayscaleEdgeOrientation("Balloons600colorGrayscaleEdgeOrientation.tif"),
+	Balloons600colorGrayscaleEdgeMagnitude_tif,	//("Balloons600colorGrayscaleEdgeMagnitude.tif"),
+	Balloons600colorGrayscaleEdgeOrientation_tif,	//("Balloons600colorGrayscaleEdgeOrientation.tif"),
 	
-	Balloons600grayGrayscaleEdgeMagnitude("Balloons600grayGrayscaleEdgeMagnitude.tif"),
-	Balloons600grayGrayscaleEdgeOrientation("Balloons600grayGrayscaleEdgeOrientation.tif"),
+	Balloons600grayGrayscaleEdgeMagnitude_tif,	//("Balloons600grayGrayscaleEdgeMagnitude.tif"),
+	Balloons600grayGrayscaleEdgeOrientation_tif,	//("Balloons600grayGrayscaleEdgeOrientation.tif"),
+
 	;
 
 	//java.lang.AssertionError: could not find file C:\_GITHUB\imagingbook-super\imagingbook-public\imagingbook-common\EdgeDetectionTestImage\Balloons600grayCannyEdgeMagnitude.tif
