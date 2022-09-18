@@ -59,9 +59,9 @@ public enum BinaryTestImage implements ImageResource {
 	
 	private final String filename;
 	
-	BinaryTestImage(String filename) {
-		this.filename = filename;
-	}
+//	BinaryTestImage(String filename) {
+//		this.filename = filename;
+//	}
 	
 	BinaryTestImage() {
 		this.filename = autoName();

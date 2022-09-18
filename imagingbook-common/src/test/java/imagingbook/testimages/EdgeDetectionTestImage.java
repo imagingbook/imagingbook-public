@@ -48,6 +48,9 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600grayGrayscaleEdgeOrientation("balloons-600-gray-GrayscaleEdgeOrientation.tif"),
 	;
 
+	//java.lang.AssertionError: could not find file C:\_GITHUB\imagingbook-super\imagingbook-public\imagingbook-common\EdgeDetectionTestImage\Balloons600grayCannyEdgeMagnitude.tif
+	
+
 	// ---------------------------------------------------
 	
 	private final String filename;
