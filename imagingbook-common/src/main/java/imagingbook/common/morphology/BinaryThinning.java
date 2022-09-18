@@ -339,7 +339,7 @@ public class BinaryThinning implements BinaryMorphologyOperator {
 	 * Returns {@code true} if thinning has successfully completed,
 	 * {@code false} otherwise.
 	 * 
-	 * @return {@code true} if thinning has successfully completed
+	 * @return {@code true} if successfully completed
 	 */
 	public boolean isComplete() {
 		return this.complete;
