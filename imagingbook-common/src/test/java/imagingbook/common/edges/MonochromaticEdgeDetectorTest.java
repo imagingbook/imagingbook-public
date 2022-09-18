@@ -28,11 +28,11 @@ public class MonochromaticEdgeDetectorTest {
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeMagnitudeL2.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeMagnitudeL2_tif.getImage().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeOrientationL2.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeOrientationL2_tif.getImage().getProcessor(), eOrt, TOL));
 	}
 
 }

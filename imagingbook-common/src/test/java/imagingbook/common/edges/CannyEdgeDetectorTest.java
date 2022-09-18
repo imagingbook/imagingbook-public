@@ -41,11 +41,11 @@ public class CannyEdgeDetectorTest {
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyEdgeMagnitude.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyEdgeMagnitude_tif.getImage().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyEdgeOrientation.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyEdgeOrientation_tif.getImage().getProcessor(), eOrt, TOL));
 
 		ByteProcessor eBin = detector.getEdgeBinary();
 		assertNotNull(eBin);
@@ -73,11 +73,11 @@ public class CannyEdgeDetectorTest {
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyEdgeMagnitude.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyEdgeMagnitude_tif.getImage().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyEdgeOrientation.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyEdgeOrientation_tif.getImage().getProcessor(), eOrt, TOL));
 
 		ByteProcessor eBin = detector.getEdgeBinary();
 		assertNotNull(eBin);

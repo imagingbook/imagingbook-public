@@ -30,11 +30,11 @@ public class MultiGradientEdgeDetectorTest {
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMultigradientEdgeMagnitude.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMultigradientEdgeMagnitude_tif.getImage().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMultigradientEdgeOrientation.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMultigradientEdgeOrientation_tif.getImage().getProcessor(), eOrt, TOL));
 	}
 
 }

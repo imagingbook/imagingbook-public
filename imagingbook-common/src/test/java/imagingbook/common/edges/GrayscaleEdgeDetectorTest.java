@@ -31,11 +31,11 @@ public class GrayscaleEdgeDetectorTest {
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorGrayscaleEdgeMagnitude.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorGrayscaleEdgeMagnitude_tif.getImage().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorGrayscaleEdgeOrientation.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorGrayscaleEdgeOrientation_tif.getImage().getProcessor(), eOrt, TOL));
 	}
 	
 	@Test		// run test on gray image
@@ -47,11 +47,11 @@ public class GrayscaleEdgeDetectorTest {
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayGrayscaleEdgeMagnitude.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayGrayscaleEdgeMagnitude_tif.getImage().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayGrayscaleEdgeOrientation.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayGrayscaleEdgeOrientation_tif.getImage().getProcessor(), eOrt, TOL));
 	}
 
 }
