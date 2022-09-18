@@ -33,8 +33,8 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600grayCannyBinaryEdges,
 	
 	// MultiGradientEdgeDetector
-	Balloons600colorMultigradientEdgeMagnitude("balloons-600-MultigradientEdgeMagnitude.tif"),
-	Balloons600colorMultigradientEdgeOrientation("balloons-600-MultigradientEdgeOrientation.tif"),
+	Balloons600colorMultigradientEdgeMagnitude("Balloons600colorMultigradientEdgeMagnitude.tif"),
+	Balloons600colorMultigradientEdgeOrientation("Balloons600colorMultigradientEdgeOrientation.tif"),
 	
 	// MonochromaticEdgeDetector (color only)
 	Balloons600colorMonochromaticEdgeMagnitudeL2("balloons-600-MonochromaticEdgeMagnitudeL2.tif"),
