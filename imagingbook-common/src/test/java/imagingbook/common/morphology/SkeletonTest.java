@@ -22,22 +22,20 @@ import imagingbook.testimages.BinaryTestImage;
 
 public class SkeletonTest {
 	
-
 	@Test
 	public void test1() {
 	
 		ImageResource origRes = GeneralSampleImage.Cat;
-		ImageResource resultRes = BinaryTestImage.CatSkeleton;
+		ImageResource thinRes = BinaryTestImage.CatSkeleton;
 		
 		ImageProcessor origIp = origRes.getImage().getProcessor();
-		ImageProcessor resultIp = resultRes.getImage().getProcessor();
+		ImageProcessor thinIp = thinRes.getImage().getProcessor();
 		
 		BinaryThinning thinning = new BinaryThinning();
 		thinning.applyTo((ByteProcessor)origIp);
 		
-		int k = thinning.getIterations();
-		assertEquals("thinning iterations expected", 12, k);
-		assertTrue("results must match", match(origIp, resultIp));
+		assertEquals(12, thinning.getIterations());
+		assertTrue(match(origIp, thinIp));
 	}
 
 }

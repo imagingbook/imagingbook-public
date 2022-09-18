@@ -11,25 +11,45 @@ package imagingbook.common.morphology;
 import ij.IJ;
 import ij.process.Blitter;
 import ij.process.ByteProcessor;
-import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * Implements a binary morphological dilation operation.
+ * See Sec. 7.2.3 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/09/18
+ */
 public class BinaryDilation extends BinaryMorphologyFilter {
 	
+	/**
+	 * Constructor, creates a {@link BinaryDilation} with a 3x3 box structuring element by default.
+	 */
 	public BinaryDilation() {
 		super();
 	}
-			
+	
+	/**
+	 * Constructor, creates a {@link BinaryDilation} with the specified structuring element.
+	 * @param H the structuring element
+	 */
 	public BinaryDilation(byte[][] H) {
 		super(H);
 	}
 	
-	public void applyTo(ByteProcessor ip) {
+	@Override
+	public void applyTo(ByteProcessor bp) {
 		//assume that the hot spot of H is at its center (ic,jc)
 		int xc = (H[0].length - 1) / 2;
 		int yc = (H.length - 1) / 2;
 		int N = H.length * H[0].length;
 		
-		ImageProcessor tmp = ip.createProcessor(ip.getWidth(), ip.getHeight());
+		ByteProcessor tmp = (ByteProcessor) bp.createProcessor(bp.getWidth(), bp.getHeight());
 		
 		int k = 0;
 		IJ.showProgress(k, N);
@@ -37,12 +57,12 @@ public class BinaryDilation extends BinaryMorphologyFilter {
 			for (int i = 0; i < H[j].length; i++) {
 				if (H[j][i] > 0) { // this element is set
 					// copy image into position (u-ch,v-cv)
-					tmp.copyBits(ip, i - xc, j - yc, Blitter.MAX);
+					tmp.copyBits(bp, i - xc, j - yc, Blitter.MAX);
 				}
 				IJ.showProgress(k++, N);
 			}
 		}
-		ip.copyBits(tmp, 0, 0, Blitter.COPY);
+		bp.copyBits(tmp, 0, 0, Blitter.COPY);
 	}
 
 }

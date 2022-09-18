@@ -44,8 +44,8 @@ public class Thinning_Demo implements PlugInFilter {
 			return;
 		}
 		
-		BinaryThinning thin = new BinaryThinning();
-		thin.applyTo((ByteProcessor) ip, maxIterations);
+		BinaryThinning thin = new BinaryThinning(maxIterations);
+		thin.applyTo((ByteProcessor) ip);
 		IJ.log("Iterations performed: " + thin.getIterations());
 	}
 	

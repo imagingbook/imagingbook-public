@@ -14,6 +14,23 @@ import java.util.List;
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
+/**
+ * <p>
+ * Implements a binary morphological thinning or "skeletonization" operation,
+ * based on the algorithm by Zhang and Suen [1].
+ * See Sec. 7.4 (Alg. 7.2-7.3) of [2] for additional details.
+ * </p>
+ * <p>
+ * [1] T. Y. Zhang and C. Y. Suen. A fast parallel algorithm for thinning
+ * digital patterns. Communications of the ACM 27(3), 236–239 (1984).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/09/18
+ */
 public class BinaryThinning implements BinaryMorphologyOperator {
 	
 	private static final byte B0 = (byte) 0;
@@ -280,31 +297,37 @@ public class BinaryThinning implements BinaryMorphologyOperator {
 			{F, F}  // 255
 	};
 	
-//	private final boolean[][] Q; 
-	private int iterations = -1;	// iterations performed in last applyTo()
+	private final int maxIterations; // set to <=0 to calculate dynamically
 	
+	private boolean complete;		// flag indicating if thinning actually completed
+	private int iterations;			// number of iterations performed during last applyTo() or reset()
+	
+	/**
+	 * Constructor, creates a {@link BinaryThinning} operator
+	 * with the maximum number of iterations to be calculated dynamically 
+	 * from the size of the processed image.
+	 */
 	public BinaryThinning() {
-//		this.Q = makeDeletionCodeTable();
+		this(0);
+	}
+	
+	/**
+	 * Constructor, creates a {@link BinaryThinning} operator
+	 * with the specified maximum number of iterations.
+	 * 
+	 * @param maxIterations the maximum number of iterations
+	 */
+	public BinaryThinning(int maxIterations) {
+		this.maxIterations = maxIterations;
 	}
 	
 	// ----------------------------------------------------------------------------
 	
-	@Override
-	public void applyTo(ByteProcessor ip) {
-		int iMax = ip.getWidth() + ip.getHeight();
-		applyTo(ip, iMax);
-	}
-	
-	public void applyTo(ByteProcessor ip, int iMax) {
-		int nd;
-		int iter = 0;
-		do {
-			nd = thinOnce(ip);
-			iter++;
-		} while (nd > 0 && iter <  iMax);
-		this.iterations = iter;
-	}
-	
+	/**
+	 * Returns the number of iterations performed since the last invocation of
+	 * {@link #applyTo(ByteProcessor)} or {@link #reset()}.
+	 * @return the number of iterations
+	 */
 	public int getIterations() {
 		if (iterations < 0) {
 			throw new IllegalStateException("no iteration count available, call applyTo() first");
@@ -312,12 +335,51 @@ public class BinaryThinning implements BinaryMorphologyOperator {
 		return iterations;
 	}
 	
+	/**
+	 * Returns {@code true} if thinning has successfully completed,
+	 * {@code false} otherwise.
+	 * 
+	 * @return {@code true} if thinning has successfully completed
+	 */
+	public boolean isComplete() {
+		return this.complete;
+	}
+	
+	/**
+	 * Resets the internal iteration counter and completion flag.
+	 * Provided for debugging or animation only.
+	 */
+	public void reset() {
+		iterations = 0;
+		complete = false;
+	}
+	
+	// ----------------------------------------------------------------------------
+	
+	@Override
+	public void applyTo(ByteProcessor bp) {
+		int iMax = (maxIterations > 0) ? maxIterations : bp.getWidth() + bp.getHeight();
+		reset();
+		do {
+			thinOnce(bp);
+		} while (!complete && iterations < iMax);
+	}
+	
 	// ----------------------------------------------------------------------------
 	
 	// Single thinning iteration. Returns the number of deletions performed (for debugging only).
-	public int thinOnce(ByteProcessor ip) {
-		final int M = ip.getWidth();
-		final int N = ip.getHeight();
+	/**
+	 * Performs a single thinning iteration and returns the number of pixel deletions.
+	 * Updates the internal iteration counter and completion flag.
+	 * This method is iteratively called by {@link #applyTo(ByteProcessor)}.
+	 * It is public only for debugging and animation.
+	 * 
+	 * @param bp the image to be thinned
+	 * @return the number of pixel deletions
+	 */
+	public int thinOnce(ByteProcessor bp) {
+		final int M = bp.getWidth();
+		final int N = bp.getHeight();
 		final List<PntInt> D = new ArrayList<>();
 //		final byte[] NH = new byte[8];
 		int n = 0;
@@ -325,10 +387,10 @@ public class BinaryThinning implements BinaryMorphologyOperator {
 			D.clear();
 			for (int u = 0; u < M; u++) {
 				for (int v = 0; v < N; v++) {
-					if (ip.get(u, v) > 0) {
+					if (bp.get(u, v) > 0) {
 //						get8Neighborhood(ip, u, v, NH);
 //						int c = get8NeighborhoodIndex(NH);
-						int c = get8NeighborhoodIndex(ip, u, v);
+						int c = get8NeighborhoodIndex(bp, u, v);
 						if (Q[c][pass]) {
 							D.add(PntInt.from(u, v));
 							n = n + 1;
@@ -337,10 +399,11 @@ public class BinaryThinning implements BinaryMorphologyOperator {
 				}
 			}			
 			for (PntInt p : D) {
-				ip.putPixel(p.x, p.y, 0);
+				bp.putPixel(p.x, p.y, 0);
 			}
-
 		}
+		this.complete = (n == 0);
+		this.iterations++;
 		return n;
 	}
 	

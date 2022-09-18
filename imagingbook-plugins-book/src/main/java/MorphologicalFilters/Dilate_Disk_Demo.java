@@ -14,6 +14,7 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.morphology.BinaryDilation;
 import imagingbook.common.morphology.BinaryMorphologyFilter;
+import imagingbook.common.morphology.StructuringElements;
 
 /**
  * This plugin implements a binary dilation using a disk-shaped
@@ -33,7 +34,7 @@ public class Dilate_Disk_Demo implements PlugInFilter {
 
 	@Override
 	public void run(ImageProcessor ip) {
-		byte[][] H = BinaryMorphologyFilter.makeDiskKernel(radius);
+		byte[][] H = StructuringElements.makeDiskKernel(radius);
 		BinaryMorphologyFilter filter = new BinaryDilation(H);
 		
 		filter.applyTo((ByteProcessor) ip);

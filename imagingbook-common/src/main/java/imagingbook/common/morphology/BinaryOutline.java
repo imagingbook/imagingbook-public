@@ -12,6 +12,19 @@ import ij.process.Blitter;
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 
+/**
+ * <p>
+ * Implements a binary morphological dilation operation.
+ * See Sec. 7.2.7 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/09/18
+ */
 public class BinaryOutline implements BinaryMorphologyOperator {
 	
 	private static final byte[][] H4 = { 
@@ -26,10 +39,20 @@ public class BinaryOutline implements BinaryMorphologyOperator {
 	
 	private final NeighborhoodType2D nh;
 	
+	/**
+	 * Constructor, creates a {@link BinaryOutline} operator using
+	 * a 4-neighborhood by default ({@link NeighborhoodType2D#N4}).
+	 */
 	public BinaryOutline() {
 		this.nh = NeighborhoodType2D.N4;
 	}
 	
+	/**
+	 * Constructor, creates a {@link BinaryOutline} operator using
+	 * a the specified neighborhood type ({@link NeighborhoodType2D}).
+	 * 
+	 * @param nh neighborhood type ({@link NeighborhoodType2D})
+	 */
 	public BinaryOutline(NeighborhoodType2D nh) {
 		this.nh = nh;
 	}

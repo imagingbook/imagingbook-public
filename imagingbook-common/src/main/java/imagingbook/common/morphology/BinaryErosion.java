@@ -8,24 +8,46 @@
  *******************************************************************************/
 package imagingbook.common.morphology;
 
+import static imagingbook.common.morphology.StructuringElements.reflect;
+
 import ij.process.ByteProcessor;
 
+/**
+ * <p>
+ * Implements a binary morphological erosion operation.
+ * See Sec. 7.2.4 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/09/18
+ */
 public class BinaryErosion extends BinaryMorphologyFilter {
 	
+	/**
+	 * Constructor, creates a {@link BinaryErosion} with a 3x3 box structuring element by default.
+	 */
 	public BinaryErosion() {
 		super();
 	}
 	
+	/**
+	 * Constructor, creates a {@link BinaryErosion} with the specified structuring element.
+	 * @param H the structuring element
+	 */
 	public BinaryErosion(byte[][] H) {
 		super(H);
 	}
 
 	@Override
-	public void applyTo(ByteProcessor ip) {
+	public void applyTo(ByteProcessor bp) {
 		// dilates the background
-		ip.invert();
-		new BinaryDilation(reflect(H)).applyTo(ip); //dilate(ip, reflect(H));
-		ip.invert();
+		bp.invert();
+		new BinaryDilation(reflect(H)).applyTo(bp); //dilate(ip, reflect(H));
+		bp.invert();
 	}
 
 }

@@ -8,6 +8,13 @@
  *******************************************************************************/
 package imagingbook.common.geometry.basic;
 
+/**
+ * Enum type for different pixel neighborhood types to be used for parameter selection.
+ * 
+ * @author WB
+ *
+ */
 public enum NeighborhoodType2D {
-	N4, N8;
+	/** 4-neighborhood type. */ N4, 
+	/** 8-neighborhood type. */N8;
 }

@@ -10,20 +10,40 @@ package imagingbook.common.morphology;
 
 import ij.process.ByteProcessor;
 
+/**
+ * <p>
+ * Implements a binary morphological opening operation.
+ * See Sec. 7.3.1 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/09/18
+ */
 public class BinaryOpening extends BinaryMorphologyFilter {
 	
+	/**
+	 * Constructor, creates a {@link BinaryOpening} with a 3x3 box structuring element by default.
+	 */
 	public BinaryOpening() {
 		super();
 	}
 	
+	/**
+	 * Constructor, creates a {@link BinaryOpening} with the specified structuring element.
+	 * @param H the structuring element
+	 */
 	public BinaryOpening(byte[][] H) {
 		super(H);
 	}
 
 	@Override
-	public void applyTo(ByteProcessor ip) {
-		new BinaryErosion(H).applyTo(ip);	// erode(ip, H);
-		new BinaryDilation(H).applyTo(ip);	//dilate(ip, H);
+	public void applyTo(ByteProcessor bp) {
+		new BinaryErosion(H).applyTo(bp);	// erode(ip, H);
+		new BinaryDilation(H).applyTo(bp);	//dilate(ip, H);
 	}
 
 }

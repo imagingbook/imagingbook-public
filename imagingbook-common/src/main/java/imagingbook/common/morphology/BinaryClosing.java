@@ -10,20 +10,40 @@ package imagingbook.common.morphology;
 
 import ij.process.ByteProcessor;
 
+/**
+ * <p>
+ * Implements a binary morphological closing operation.
+ * See Sec. 7.3.2 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/09/18
+ */
 public class BinaryClosing extends BinaryMorphologyFilter {
 	
+	/**
+	 * Constructor, creates a {@link BinaryClosing} with a 3x3 box structuring element by default.
+	 */
 	public BinaryClosing() {
 		super();
 	}
-			
+	
+	/**
+	 * Constructor, creates a {@link BinaryClosing} with the specified structuring element.
+	 * @param H the structuring element
+	 */
 	public BinaryClosing(byte[][] H) {
 		super(H);
 	}
 
 	@Override
-	public void applyTo(ByteProcessor ip) {
-		new BinaryDilation(H).applyTo(ip);	//dilate(ip, H);
-		new BinaryErosion(H).applyTo(ip);	// erode(ip, H);
+	public void applyTo(ByteProcessor bp) {
+		new BinaryDilation(H).applyTo(bp);	//dilate(ip, H);
+		new BinaryErosion(H).applyTo(bp);	// erode(ip, H);
 	}
 
 }

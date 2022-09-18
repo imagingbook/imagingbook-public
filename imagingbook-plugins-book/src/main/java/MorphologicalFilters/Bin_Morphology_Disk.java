@@ -20,6 +20,7 @@ import imagingbook.common.morphology.BinaryDilation;
 import imagingbook.common.morphology.BinaryErosion;
 import imagingbook.common.morphology.BinaryMorphologyFilter;
 import imagingbook.common.morphology.BinaryOpening;
+import imagingbook.common.morphology.StructuringElements;
 
 /**
  * This plugin implements a binary morphology filter using a disk-shaped
@@ -50,7 +51,7 @@ public class Bin_Morphology_Disk implements PlugInFilter {
 		}
 		
 		ByteProcessor bp = (ByteProcessor) ip;
-		byte[][] H = BinaryMorphologyFilter.makeDiskKernel(radius);
+		byte[][] H = StructuringElements.makeDiskKernel(radius);
 		
 		BinaryMorphologyFilter filter = null; // new BinaryMorphologyFilter.Disk(radius);
 		switch(op) {
