@@ -20,13 +20,39 @@ import imagingbook.testutils.ImageResourceSelfTest;
  * @see GeneralSampleImage
  */
 public enum BinaryTestImage implements ImageResource {
-	Cat("cat.png"),
-	CatSkeleton("cat-skeleton.png"),
 	
-	SegmentationMed("segmentation-med.png"),
-	SegmentationSmall("segmentation-small.png"),
+	BinaryTest,
 	
-	SimpleTestGridImg("simple-test-grid-img.png"),
+	BinaryTestDilation1,
+	BinaryTestDilation2,
+	
+	BinaryTestErosion1,
+	BinaryTestErosion2,
+	
+	BinaryTestClosing1,
+	BinaryTestClosing2,
+	
+	BinaryTestOpening1,
+	BinaryTestOpening2,
+	
+	BinaryTestOutlineNH4,
+	BinaryTestOutlineNH8,
+	
+	BinaryTestThinning,
+	
+	Cat,
+	CatThinning,
+	CatDilation3,
+	CatErosion3,
+	CatClosing3,
+	CatOpening3,
+	CatOutlineNH4,
+	CatOutlineNH8,
+	
+	SegmentationMed,
+	SegmentationSmall,
+	
+	SimpleTestGridImg,
 	;
 	
 	// ---------------------------------------------------
@@ -35,6 +61,10 @@ public enum BinaryTestImage implements ImageResource {
 	
 	BinaryTestImage(String filename) {
 		this.filename = filename;
+	}
+	
+	BinaryTestImage() {
+		this.filename = autoName();
 	}
 	
 	@Override

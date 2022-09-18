@@ -44,7 +44,7 @@ public class BinaryOutline implements BinaryMorphologyOperator {
 	 * a 4-neighborhood by default ({@link NeighborhoodType2D#N4}).
 	 */
 	public BinaryOutline() {
-		this.nh = NeighborhoodType2D.N4;
+		this(NeighborhoodType2D.N4);
 	}
 	
 	/**

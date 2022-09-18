@@ -12,7 +12,7 @@ import imagingbook.testimages.BinaryTestImage;
 public class ChamferMatcherTest {
 	
 	static float TOL = 1e-6f;
-	static ByteProcessor I = (ByteProcessor) BinaryTestImage.CatSkeleton.getImage().getProcessor();
+	static ByteProcessor I = (ByteProcessor) BinaryTestImage.CatThinning.getImage().getProcessor();
 	static int MI = I.getWidth();
 	static int NI = I.getHeight();
 

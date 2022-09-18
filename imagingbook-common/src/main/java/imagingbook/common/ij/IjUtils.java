@@ -696,19 +696,20 @@ public abstract class IjUtils {
 	
 	/**
 	 * Checks if two images have the same type, size and content (using 
-	 * {@link #DefaultMatchTolerance}).
+	 * {@link #DefaultMatchTolerance} for float images).
 	 * 
 	 * @param ip1 the first image
 	 * @param ip2 the second image
 	 * @return true if both images have the same type and content
 	 */
 	public static boolean match(ImageProcessor ip1, ImageProcessor ip2) {
+		// TODO: check redundancy with ImageTestUtils.match() - same names but slightly differently implemented!
 		return match(ip1, ip2, DefaultMatchTolerance);
 	}
 	
 	/**
-	 * Checks if two images have the same type, size and content (using 
-	 * the specified tolerance). 
+	 * Checks if two images have the same type, size and values (using 
+	 * the specified tolerance for float images). 
 	 * 
 	 * @param ip1 the first image
 	 * @param ip2 the second image
@@ -724,26 +725,20 @@ public abstract class IjUtils {
 		}
 		
 		if (ip1 instanceof ByteProcessor) {
-			byte[] p1 = (byte[]) ip1.getPixels();
-			byte[] p2 = (byte[]) ip2.getPixels();
-			return Arrays.equals(p1, p2);
+			return Arrays.equals((byte[]) ip1.getPixels(), (byte[]) ip2.getPixels());
 		}
 		else if (ip1 instanceof ShortProcessor) {
-			short[] p1 = (short[]) ip1.getPixels();
-			short[] p2 = (short[]) ip2.getPixels();
-			return Arrays.equals(p1, p2);
+			return Arrays.equals((short[]) ip1.getPixels(), (short[]) ip2.getPixels());
 		}
 		else if (ip1 instanceof ColorProcessor) {
-			int[] p1 = (int[]) ip1.getPixels();
-			int[] p2 = (int[]) ip2.getPixels();
-			return Arrays.equals(p1, p2);
+			return Arrays.equals((int[]) ip1.getPixels(), (int[]) ip2.getPixels());
 		}
 		
 		else if (ip1 instanceof FloatProcessor) {
-			float[] p1 = (float[]) ip1.getPixels();
-			float[] p2 = (float[]) ip2.getPixels();
-			boolean same = true;
+			final float[] p1 = (float[]) ip1.getPixels();
+			final float[] p2 = (float[]) ip2.getPixels();
 			final float toleranceF = (float) tolerance;
+			boolean same = true;
 			for (int i = 0; i < p1.length; i++) {
 				if (Math.abs(p1[i] - p2[i]) > toleranceF) {
 					same = false;
@@ -1001,6 +996,7 @@ public abstract class IjUtils {
 	 * @return the absolute file path
 	 */
 	public static String save(ImageProcessor ip, String filepath) {
+		Objects.requireNonNull(filepath);
 		// TODO: check if the file was actually written or not
 		File file = Paths.get(filepath).toFile();
 		String absPath = file.getAbsolutePath();

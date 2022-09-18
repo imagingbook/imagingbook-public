@@ -34,5 +34,18 @@ public interface ImageResource extends NamedResource {
 	public default ImagePlus getImage() {
 		return IJ.openImage(getURL().toString());
 	}
+	
+	/**
+	 * Returns a default image ".png" filename for this resource,
+	 * to be used in parameterless enum constructors.
+	 * In this case the file name is identical to the name
+	 * of the enum constant and no separate file name needs to be
+	 * specified.
+	 * 
+	 * @return a default image filename ({@code enumconstantname + ".png"})
+	 */
+	public default String autoName() {
+		return this.toString() + ".png";
+	}
 
 }

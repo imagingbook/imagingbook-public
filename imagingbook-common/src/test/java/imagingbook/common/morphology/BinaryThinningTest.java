@@ -8,34 +8,44 @@
  *******************************************************************************/
 package imagingbook.common.morphology;
 
-import static imagingbook.common.ij.IjUtils.match;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
-import ij.process.ImageProcessor;
-import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testimages.BinaryTestImage;
+import imagingbook.testutils.ImageTestUtils;
 
-public class SkeletonTest {
+public class BinaryThinningTest {
 	
 	@Test
 	public void test1() {
-	
-		ImageResource origRes = GeneralSampleImage.Cat;
-		ImageResource thinRes = BinaryTestImage.CatSkeleton;
-		
-		ImageProcessor origIp = origRes.getImage().getProcessor();
-		ImageProcessor thinIp = thinRes.getImage().getProcessor();
+		ByteProcessor bp = (ByteProcessor) BinaryTestImage.Cat.getImage().getProcessor();
 		
 		BinaryThinning thinning = new BinaryThinning();
-		thinning.applyTo((ByteProcessor)origIp);
+		thinning.applyTo(bp);
 		
+		assertTrue(thinning.isComplete());
 		assertEquals(12, thinning.getIterations());
-		assertTrue(match(origIp, thinIp));
+		
+		ByteProcessor bp2 = (ByteProcessor) BinaryTestImage.CatThinning.getImage().getProcessor();
+		assertTrue(ImageTestUtils.match(bp2, bp));
 	}
+	
+	@Test
+	public void test2() {
+		ByteProcessor bp = (ByteProcessor) BinaryTestImage.BinaryTest.getImage().getProcessor();
+
+		BinaryThinning thinning = new BinaryThinning();
+		thinning.applyTo(bp);
+		
+//		String tmpdir = FileUtils.getTempDirectory();
+//		System.out.println(IjUtils.save(bp, tmpdir + "BinaryTestThinning.png"));
+		
+		ByteProcessor bp2 = (ByteProcessor) BinaryTestImage.BinaryTestThinning.getImage().getProcessor();
+		assertTrue(ImageTestUtils.match(bp2, bp));
+	}
+
 
 }
