@@ -82,7 +82,40 @@ public interface NamedResource {
 	 * 
 	 * @return the name of the resource file
 	 */
-	public String getFileName();
+	public default String getFileName() {
+		return this.autoName();
+	}
+	
+	/**
+	 * Derives and returns a filename for this resource item
+	 * to be used in parameterless enum constructors.
+	 * In this case the file name is identical to the name
+	 * of the enum constant and no separate file name needs to be
+	 * specified.
+	 * The last underscore (_) character in the name, if any is contained,
+	 * is replaced by a '.' character such that the remaining characters
+	 * are interpreted as a file extension. 
+	 * If no underscore is found, "png" is taken as the default file extension. 
+	 * For example,
+	 * <pre>
+	 * "foo_tif"      --&gt; "foo.tif"
+	 * "The_File_jpg" --&gt; "The_File.fpg"
+	 * "foo"          --&gt; "foo.png"
+	 * 
+	 * @return the derived image filename
+	 */
+	public default String autoName() {
+		String itemname = this.toString();
+		int k = itemname.lastIndexOf('_');
+		if (k >= 0) {
+			String filename = itemname.substring(0, k);
+			String extension  = itemname.substring(k + 1);
+			return filename + "." + extension;
+		}
+		else {
+			return itemname + ".png";
+		}
+	}
 	
 	/**
 	 * Returns the path to the associated resource relative to the
