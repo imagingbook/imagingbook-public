@@ -41,8 +41,8 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	Balloons600colorMonochromaticEdgeOrientationL2("Balloons600colorMonochromaticEdgeOrientationL2.tif"),
 	
 	// GrayscaleEdgeDetector
-	Balloons600colorGrayscaleEdgeMagnitude("balloons-600-GrayscaleEdgeMagnitude.tif"),
-	Balloons600colorGrayscaleEdgeOrientation("balloons-600-GrayscaleEdgeOrientation.tif"),
+	Balloons600colorGrayscaleEdgeMagnitude("Balloons600colorGrayscaleEdgeMagnitude.tif"),
+	Balloons600colorGrayscaleEdgeOrientation("Balloons600colorGrayscaleEdgeOrientation.tif"),
 	
 	Balloons600grayGrayscaleEdgeMagnitude("balloons-600-gray-GrayscaleEdgeMagnitude.tif"),
 	Balloons600grayGrayscaleEdgeOrientation("balloons-600-gray-GrayscaleEdgeOrientation.tif"),
