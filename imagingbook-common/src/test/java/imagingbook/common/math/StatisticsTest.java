@@ -16,9 +16,11 @@ import imagingbook.testutils.NumericTestUtils;
 
 public class StatisticsTest {
 	
+	private static final double TOL = 1E-3;
+	
 	// example: n = 4 samples of dimension m = 3:
 	// samples[i][j], i = column (sample index), j = row (dimension index).
-	private static double[][] samples = { 
+	private static final double[][] samples = { 
 			{75, 37, 12},	// i = 0
 			{41, 27, 20},	// i = 1
 			{93, 81, 11},	// i = 2
@@ -35,7 +37,7 @@ public class StatisticsTest {
 				{-470.4375, -53.1875, 278.1875}};
 		
 		double[][] cov = covarianceMatrix(samples, BIAS_CORRECT);
-		NumericTestUtils.assertArrayEquals(covExpected, cov, 1E-3);
+		NumericTestUtils.assertArrayEquals(covExpected, cov, TOL);
 	}
 	
 	@Test
@@ -48,7 +50,7 @@ public class StatisticsTest {
 				{-627.250, -70.917, 370.917}};
 		
 		double[][] cov = covarianceMatrix(samples, BIAS_CORRECT);
-		NumericTestUtils.assertArrayEquals(covExpected, cov, 1E-3);
+		NumericTestUtils.assertArrayEquals(covExpected, cov, TOL);
 	}
 
 }

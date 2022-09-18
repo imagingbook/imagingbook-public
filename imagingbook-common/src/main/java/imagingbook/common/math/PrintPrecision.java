@@ -21,7 +21,7 @@ public abstract class PrintPrecision {
 	
 	private PrintPrecision() {}
 	
-	/** The default precision (number of digits). */
+	/** The default precision (number of digits = 3). */
 	public static final int DefaultPrecision = 3;
 	
 	private static int precision = DefaultPrecision;

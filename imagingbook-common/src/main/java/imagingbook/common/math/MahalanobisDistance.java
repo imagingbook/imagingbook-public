@@ -45,7 +45,7 @@ public class MahalanobisDistance {
 	private final double absolutePositivityThreshold;
 
 	private final int m;					// feature dimension (length of sample vectors)
-	private final double[] mean;			// the distribution's mean vector (\mu)
+	private final double[] mean;			// the distribution's mean vector (mu)
 	private final double[][] cov;			// covariance matrix of size n x n
 	private final double[][] icov;			// inverse covariance matrix of size n x n
 
@@ -193,7 +193,11 @@ public class MahalanobisDistance {
 		return icov;
 	}
 
-
+	/**
+	 * Returns the sample mean vector of dimension m
+	 * (see {@link #getDimension()}).
+	 * @return the sample mean vector
+	 */
 	public double[] getMeanVector() {
 		return mean;
 	}

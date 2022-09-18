@@ -47,6 +47,7 @@ import imagingbook.common.math.exception.DivideByZeroException;
  * @author WB
  * @version 2022/08/29
  */
+@SuppressWarnings("serial")
 public abstract class Matrix {
 	
 	private Matrix() {}
@@ -1346,37 +1347,37 @@ public abstract class Matrix {
 	 * Calculates and returns the dot (inner or scalar) product of two vectors,
 	 * which must have the same length.
 	 * Throws an exceptions if vector dimensions do not match.
-	 * @param x first vector
-	 * @param y second vector
+	 * @param a first vector
+	 * @param b second vector
 	 * @return the dot product
 	 */
-	public static double dotProduct(final double[] x, final double[] y) {
-		if (!sameSize(x, y))
+	public static double dotProduct(final double[] a, final double[] b) {
+		if (!sameSize(a, b))
 			throw new IncompatibleDimensionsException();
 		double sum = 0;
-		for (int i = 0; i < x.length; i++) {
-			sum = sum + x[i] * y[i];
+		for (int i = 0; i < a.length; i++) {
+			sum = sum + a[i] * b[i];
 		}
 		return sum;
 	}
 	
-	// A is considered a column vector, B is a row vector, of length m, n, resp.
+	// a is considered a column vector, b is a row vector, of length m, n, resp.
 	// returns a matrix M of size (m,n).
 	/**
 	 * Calculates and returns the outer product of two vectors, which is a
 	 * matrix of size (m,n), where m is the length of the first vector and
 	 * m is the length of the second vector.
-	 * @param x first vector (of length m)
-	 * @param y second vector (of length n)
+	 * @param a first (column) vector (of length m)
+	 * @param b second (row) vector (of length n)
 	 * @return the outer product (matrix)
 	 */
-	public static double[][] outerProduct(final double[] x, final double[] y) {
-		final int m = x.length;
-		final int n = y.length;
+	public static double[][] outerProduct(final double[] a, final double[] b) {
+		final int m = a.length;
+		final int n = b.length;
 		final double[][] M = new double[m][n];
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				M[i][j] = x[i] * y[j];
+				M[i][j] = a[i] * b[j];
 			}
 		}
 		return M;
@@ -1386,12 +1387,12 @@ public abstract class Matrix {
 
 	/**
 	 * Calculates and returns the L1 norm of the given vector.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the L1 norm of the vector
 	 */
-	public static double normL1(final double[] x) {
+	public static double normL1(final double[] a) {
 		double sum = 0;
-		for (double val : x) {
+		for (double val : a) {
 			sum = sum + Math.abs(val);
 		}
 		return sum;
@@ -1399,12 +1400,12 @@ public abstract class Matrix {
 	
 	/**
 	 * Calculates and returns the L1 norm of the given vector.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the L1 norm of the vector
 	 */
-	public static float normL1(final float[] x) {
+	public static float normL1(final float[] a) {
 		double sum = 0;
-		for (double val : x) {
+		for (double val : a) {
 			sum = sum + Math.abs(val);
 		}
 		return (float) sum;
@@ -1412,23 +1413,23 @@ public abstract class Matrix {
 
 	/**
 	 * Calculates and returns the L2 norm of the given vector.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the L2 norm of the vector
 	 */
-	public static double normL2(final double[] x) {
-		return Math.sqrt(normL2squared(x));
+	public static double normL2(final double[] a) {
+		return Math.sqrt(normL2squared(a));
 	}
 
 	/**
 	 * Calculates and returns the squared L2 norm of the given vector.
 	 * The squared norm is less costly to calculate (no square root
 	 * needed) than the L2 norm and is thus often used for efficiency. 
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the squared L2 norm of the vector
 	 */
-	public static double normL2squared(final double[] x) {
+	public static double normL2squared(final double[] a) {
 		double sum = 0;
-		for (double val : x) {
+		for (double val : a) {
 			sum = sum + sqr(val);
 		}
 		return sum;
@@ -1447,12 +1448,12 @@ public abstract class Matrix {
 	 * Calculates and returns the squared L2 norm of the given vector.
 	 * The squared norm is less costly to calculate (no square root
 	 * needed) than the L2 norm and is thus often used for efficiency. 
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the squared L2 norm of the vector
 	 */
-	public static double normL2squared(final float[] x) {
+	public static double normL2squared(final float[] a) {
 		double sum = 0;
-		for (double val : x) {
+		for (double val : a) {
 			sum = sum + sqr(val);
 		}
 		return sum;
@@ -1463,11 +1464,11 @@ public abstract class Matrix {
 	/**
 	 * Normalizes the specified {@code double[]} vector to unit
 	 * (L2) norm and returns the result as a new {@code double[]} vector.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the normalized vector
 	 */
-	public static double[] normalize(final double[] x) {
-		double[] xx = duplicate(x);
+	public static double[] normalize(final double[] a) {
+		double[] xx = duplicate(a);
 		normalizeD(xx);
 		return xx;
 	}
@@ -1475,23 +1476,23 @@ public abstract class Matrix {
 	/**
 	 * Normalizes the specified {@code double[]} vector to unit
 	 * (L2) norm. The vector is modified (destructively).
-	 * @param x a vector
+	 * @param a a vector
 	 */
-	public static void normalizeD(final double[] x) {
-		double normx = normL2(x);
+	public static void normalizeD(final double[] a) {
+		double normx = normL2(a);
 		if (Arithmetic.isZero(normx))
-			throw new IllegalArgumentException("cannot normalize zero-norm vector " + Matrix.toString(x));
-		multiplyD(1.0 / normx, x);
+			throw new IllegalArgumentException("cannot normalize zero-norm vector " + Matrix.toString(a));
+		multiplyD(1.0 / normx, a);
 	}
 	
 	/**
 	 * Normalizes the specified {@code float[]} vector to unit
 	 * (L2) norm and returns the result as a new {@code float[]} vector.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the normalized vector
 	 */
-	public static float[] normalize(final float[] x) {
-		float[] xx = duplicate(x);
+	public static float[] normalize(final float[] a) {
+		float[] xx = duplicate(a);
 		normalizeD(xx);
 		return xx;
 	}
@@ -1499,13 +1500,13 @@ public abstract class Matrix {
 	/**
 	 * Normalizes the specified {@code float[]} vector to unit
 	 * (L2) norm. The vector is modified (destructively).
-	 * @param x a vector
+	 * @param a a vector
 	 */
-	public static void normalizeD(final float[] x) {
-		double normx = normL2(x);
+	public static void normalizeD(final float[] a) {
+		double normx = normL2(a);
 		if (Arithmetic.isZero(normx))
 			throw new IllegalArgumentException("cannot normalize zero-norm vector");
-		multiplyD((float) (1.0 / normx), x);
+		multiplyD((float) (1.0 / normx), a);
 	}
 	
 	// Distance between vectors ---------------------------------------
@@ -1514,26 +1515,26 @@ public abstract class Matrix {
 	 * Calculates the L2 distance between two vectors (points)
 	 * in n-dimensional space. Both vectors must have the same 
 	 * number of elements.
-	 * @param x first vector
-	 * @param y second vector
+	 * @param a first vector
+	 * @param b second vector
 	 * @return the distance
 	 */
-	public static double distL2(double[] x, double[] y) {
-		return Math.sqrt(distL2squared(x, y));
+	public static double distL2(double[] a, double[] b) {
+		return Math.sqrt(distL2squared(a, b));
 	}
 	
 	/** 
 	 * Calculates the squared L2 distance between two vectors (points)
 	 * in n-dimensional space. Both vectors must have the same 
 	 * number of elements.
-	 * @param x first vector
-	 * @param y second vector
+	 * @param a first vector
+	 * @param b second vector
 	 * @return the squared distance
 	 */
-	public static double distL2squared(double[] x, double[] y) {
+	public static double distL2squared(double[] a, double[] b) {
 		double sum = 0;
-		for  (int i = 0; i < x.length; i++) {
-			sum = sum + sqr(x[i] - y[i]);
+		for  (int i = 0; i < a.length; i++) {
+			sum = sum + sqr(a[i] - b[i]);
 		}
 		return sum;
 	}
@@ -1542,26 +1543,26 @@ public abstract class Matrix {
 	 * Calculates the L2 distance between two vectors (points)
 	 * in n-dimensional space. Both vectors must have the same 
 	 * number of elements.
-	 * @param x first vector
-	 * @param y second vector
+	 * @param a first vector
+	 * @param b second vector
 	 * @return the distance
 	 */
-	public static float distL2(float[] x, float[] y) {
-		return (float) Math.sqrt(distL2squared(x, y));
+	public static float distL2(float[] a, float[] b) {
+		return (float) Math.sqrt(distL2squared(a, b));
 	}
 	
 	/** 
 	 * Calculates the squared L2 distance between two vectors (points)
 	 * in n-dimensional space. Both vectors must have the same 
 	 * number of elements.
-	 * @param x first vector
-	 * @param y second vector
+	 * @param a first vector
+	 * @param b second vector
 	 * @return the squared distance
 	 */
-	public static float distL2squared(float[] x, float[] y) {
+	public static float distL2squared(float[] a, float[] b) {
 		double sum = 0;
-		for  (int i = 0; i < x.length; i++) {
-			sum = sum + sqr(x[i] - y[i]);
+		for  (int i = 0; i < a.length; i++) {
+			sum = sum + sqr(a[i] - b[i]);
 		}
 		return (float) sum;
 	}
@@ -1590,13 +1591,13 @@ public abstract class Matrix {
 	/**
 	 * Calculates and returns the sum of the elements in the specified 
 	 * {@code double[]} vector.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the sum of vector elements
 	 */
-	public static double sum(final double[] x) {
+	public static double sum(final double[] a) {
 		double sum = 0;
-		for (int i = 0; i < x.length; i++) {
-			sum = sum + x[i];
+		for (int i = 0; i < a.length; i++) {
+			sum = sum + a[i];
 		}
 		return sum;
 	}
@@ -1620,13 +1621,13 @@ public abstract class Matrix {
 	/**
 	 * Calculates and returns the sum of the elements in the specified 
 	 * {@code float[]} vector.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the sum of vector elements
 	 */
-	public static double sum(final float[] x) {
+	public static double sum(final float[] a) {
 		double sum = 0;
-		for (int i = 0; i < x.length; i++) {
-			sum = sum + x[i];
+		for (int i = 0; i < a.length; i++) {
+			sum = sum + a[i];
 		}
 		return sum;
 	}
@@ -1778,17 +1779,17 @@ public abstract class Matrix {
 	 * not unique, the lowest index is returned.
 	 * An exception is thrown if the vector has zero length.
 	 * 
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the index of the smallest value
 	 */
-	public static int idxMin(double[] x) {
-		if (x.length == 0)
+	public static int idxMin(double[] a) {
+		if (a.length == 0)
 			throw new ZeroLengthVectorException();
-		double minval = x[0];
+		double minval = a[0];
 		int minidx = 0;
-		for (int i = 1; i < x.length; i++) {
-			if (x[i] < minval) {
-				minval = x[i];
+		for (int i = 1; i < a.length; i++) {
+			if (a[i] < minval) {
+				minval = a[i];
 				minidx = i;
 			}
 		}
@@ -1801,17 +1802,17 @@ public abstract class Matrix {
 	 * not unique, the lowest index is returned.
 	 * An exception is thrown if the vector has zero length.
 	 * 
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the index of the smallest value
 	 */
-	public static int idxMin(float[] x) {
-		if (x.length == 0)
+	public static int idxMin(float[] a) {
+		if (a.length == 0)
 			throw new ZeroLengthVectorException();
-		float minval = x[0];
+		float minval = a[0];
 		int minidx = 0;
-		for (int i = 1; i < x.length; i++) {
-			if (x[i] < minval) {
-				minval = x[i];
+		for (int i = 1; i < a.length; i++) {
+			if (a[i] < minval) {
+				minval = a[i];
 				minidx = i;
 			}
 		}
@@ -1825,17 +1826,17 @@ public abstract class Matrix {
 	 * not unique, the lowest index is returned.
 	 * An exception is thrown if the vector has zero length.
 	 * 
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the index of the largest value
 	 */
-	public static int idxMax(double[] x) {
-		if (x.length == 0)
+	public static int idxMax(double[] a) {
+		if (a.length == 0)
 			throw new ZeroLengthVectorException();
-		double maxval = x[0];
+		double maxval = a[0];
 		int maxidx = 0;
-		for (int i = 1; i < x.length; i++) {
-			if (x[i] > maxval) {
-				maxval = x[i];
+		for (int i = 1; i < a.length; i++) {
+			if (a[i] > maxval) {
+				maxval = a[i];
 				maxidx = i;
 			}
 		}
@@ -1848,17 +1849,17 @@ public abstract class Matrix {
 	 * not unique, the lowest index is returned.
 	 * An exception is thrown if the vector has zero length.
 	 * 
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the index of the largest value
 	 */
-	public static int idxMax(float[] x) {
-		if (x.length == 0)
+	public static int idxMax(float[] a) {
+		if (a.length == 0)
 			throw new ZeroLengthVectorException();
-		float maxval = x[0];
+		float maxval = a[0];
 		int maxidx = 0;
-		for (int i = 1; i < x.length; i++) {
-			if (x[i] > maxval) {
-				maxval = x[i];
+		for (int i = 1; i < a.length; i++) {
+			if (a[i] > maxval) {
+				maxval = a[i];
 				maxidx = i;
 			}
 		}
@@ -1870,14 +1871,14 @@ public abstract class Matrix {
 	 * Returns the smallest value in the
 	 * specified vector. 
 	 * An exception is thrown if the vector has zero length.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the largest value
 	 */
-	public static float min(final float[] x) {
-		if (x.length == 0)
+	public static float min(final float[] a) {
+		if (a.length == 0)
 			throw new ZeroLengthVectorException();
 		float minval = Float.POSITIVE_INFINITY;
-		for (float val : x) {
+		for (float val : a) {
 			if (val < minval) {
 				minval = val;
 			}
@@ -1889,14 +1890,14 @@ public abstract class Matrix {
 	 * Returns the smallest value in the
 	 * specified vector. 
 	 * An exception is thrown if the vector has zero length.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the largest value
 	 */
-	public static double min(final double[] x) {
-		if (x.length == 0)
+	public static double min(final double[] a) {
+		if (a.length == 0)
 			throw new ZeroLengthVectorException();
 		double minval = Double.POSITIVE_INFINITY;
-		for (double val : x) {
+		for (double val : a) {
 			if (val < minval) {
 				minval = val;
 			}
@@ -1907,14 +1908,14 @@ public abstract class Matrix {
 	/**
 	 * Returns the largest value in the specified {@code double[]} vector. 
 	 * An exception is thrown if the vector has zero length.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the largest value
 	 */
-	public static double max(final double[] x) {
-		if (x.length == 0)
+	public static double max(final double[] a) {
+		if (a.length == 0)
 			throw new ZeroLengthVectorException();
 		double maxval = Double.NEGATIVE_INFINITY;
-		for (double val : x) {
+		for (double val : a) {
 			if (val > maxval) {
 				maxval = val;
 			}
@@ -1925,14 +1926,14 @@ public abstract class Matrix {
 	/**
 	 * Returns the largest value in the specified {@code float[]} vector. 
 	 * An exception is thrown if the vector has zero length.
-	 * @param x a vector
+	 * @param a a vector
 	 * @return the largest value
 	 */
-	public static float max(final float[] x) {
-		if (x.length == 0)
+	public static float max(final float[] a) {
+		if (a.length == 0)
 			throw new ZeroLengthVectorException();
 		float maxval = Float.NEGATIVE_INFINITY;
-		for (float val : x) {
+		for (float val : a) {
 			if (val > maxval) {
 				maxval = val;
 			}
@@ -1978,17 +1979,17 @@ public abstract class Matrix {
 	
 	/**
 	 * Joins (concatenates) a sequence of vectors into a single vector.
-	 * @param xs a sequence of vectors (at least one vector)
+	 * @param as a sequence of vectors (at least one vector)
 	 * @return a vector containing all elements of the input vectors
 	 */
-	public static float[] join(float[]... xs) {
+	public static float[] join(float[]... as) {
 		int n = 0;
-		for (float[] x : xs) {
+		for (float[] x : as) {
 			n = n + x.length;
 		}
 		float[] va = new float[n];
 		int j = 0;
-		for (float[] x : xs) {
+		for (float[] x : as) {
 			for (int i = 0; i < x.length; i++) {
 				va[j] = x[i];
 				j++;
@@ -1999,17 +2000,17 @@ public abstract class Matrix {
 
 	/**
 	 * Joins (concatenates) a sequence of vectors into a single vector.
-	 * @param xs a sequence of vectors (at least one vector)
+	 * @param as a sequence of vectors (at least one vector)
 	 * @return a vector containing all elements of the input vectors
 	 */
-	public static double[] join(double[]... xs) {
+	public static double[] join(double[]... as) {
 		int n = 0;
-		for (double[] x : xs) {
+		for (double[] x : as) {
 			n = n + x.length;
 		}
 		double[] va = new double[n];	
 		int j = 0;
-		for (double[] x : xs) {
+		for (double[] x : as) {
 			for (int i = 0; i < x.length; i++) {
 				va[j] = x[i];
 				j++;
@@ -2063,13 +2064,13 @@ public abstract class Matrix {
 	 * The resulting homogeneous vector is one element longer than the 
 	 * specified Cartesian vector.
 	 * See also {@link #toCartesian(double[])}.
-	 * @param xc a Cartesian vector
+	 * @param ac a Cartesian vector
 	 * @return an equivalent homogeneous vector
 	 */
-	public static double[] toHomogeneous(double[] xc) {
-		double[] xh = new double[xc.length + 1];
-		for (int i = 0; i < xc.length; i++) {
-			xh[i] = xc[i];
+	public static double[] toHomogeneous(double[] ac) {
+		double[] xh = new double[ac.length + 1];
+		for (int i = 0; i < ac.length; i++) {
+			xh[i] = ac[i];
 			xh[xh.length - 1] = 1;
 		}
 		return xh;
@@ -2079,16 +2080,16 @@ public abstract class Matrix {
 	 * Converts a homogeneous vector to its equivalent Cartesian
 	 * vector, which is one element shorter.
 	 * See also {@link #toHomogeneous(double[])}.
-	 * @param xh a homogeneous vector
+	 * @param ah a homogeneous vector
 	 * @return the equivalent Cartesian vector
 	 */
-	public static double[] toCartesian(double[] xh) throws DivideByZeroException {
-		double[] xc = new double[xh.length - 1];
-		final double s = 1 / xh[xh.length - 1];
+	public static double[] toCartesian(double[] ah) throws DivideByZeroException {
+		double[] xc = new double[ah.length - 1];
+		final double s = 1 / ah[ah.length - 1];
 		if (!Double.isFinite(s))	// isZero(s)
 			throw new DivideByZeroException();
-		for (int i = 0; i < xh.length - 1; i++) {
-			xc[i] = s * xh[i];
+		for (int i = 0; i < ah.length - 1; i++) {
+			xc[i] = s * ah[i];
 		}
 		return xc;
 	}
@@ -2266,13 +2267,13 @@ public abstract class Matrix {
 	/**
 	 * Checks if all elements of the specified {@code double[]} vector are zero
 	 * using the specified tolerance value.
-	 * @param x a vector
+	 * @param a a vector
 	 * @param tolerance the tolerance value
 	 * @return true if all vector elements are smaller than the tolerance
 	 */
-	public static boolean isZero(double[] x, double tolerance) {
-		for (int i = 0; i < x.length; i++) {
-			if (!Arithmetic.isZero(x[i], tolerance)) {
+	public static boolean isZero(double[] a, double tolerance) {
+		for (int i = 0; i < a.length; i++) {
+			if (!Arithmetic.isZero(a[i], tolerance)) {
 				return false;
 			}
 		}
@@ -2282,23 +2283,23 @@ public abstract class Matrix {
 	/**
 	 * Checks if all elements of the specified {@code double[]} vector are zero
 	 * using the default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
-	 * @param x a vector
+	 * @param a a vector
 	 * @return true if all vector elements are smaller than the tolerance
 	 */
-	public static boolean isZero(double[] x) {
-		return isZero(x, Arithmetic.EPSILON_DOUBLE);
+	public static boolean isZero(double[] a) {
+		return isZero(a, Arithmetic.EPSILON_DOUBLE);
 	}
 	
 	/**
 	 * Checks if all elements of the specified {@code float[]} vector are zero
 	 * using the specified tolerance value.
-	 * @param x a vector
+	 * @param a a vector
 	 * @param tolerance the tolerance value
 	 * @return true if all vector elements are smaller than the tolerance
 	 */
-	public static boolean isZero(float[] x, float tolerance) {
-		for (int i = 0; i < x.length; i++) {
-			if (!Arithmetic.isZero(x[i], tolerance)) {
+	public static boolean isZero(float[] a, float tolerance) {
+		for (int i = 0; i < a.length; i++) {
+			if (!Arithmetic.isZero(a[i], tolerance)) {
 				return false;
 			}
 		}
@@ -2308,11 +2309,11 @@ public abstract class Matrix {
 	/**
 	 * Checks if all elements of the specified {@code float[]} vector are zero
 	 * using the default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
-	 * @param x a vector
+	 * @param a a vector
 	 * @return true if all vector elements are smaller than the tolerance
 	 */
-	public static boolean isZero(float[] x) {
-		return isZero(x, Arithmetic.EPSILON_FLOAT);
+	public static boolean isZero(float[] a) {
+		return isZero(a, Arithmetic.EPSILON_FLOAT);
 	}
 	
 	// Checking matrices for all zero values  ------------------------------
@@ -2349,11 +2350,11 @@ public abstract class Matrix {
 	 * Returns a sorted copy of the given {@code double[]} vector.
 	 * Elements are sorted by increasing value (smallest first).
 	 * 
-	 * @param x a {@code double[]} vector
+	 * @param a a {@code double[]} vector
 	 * @return a sorted copy of the vector
 	 */
-	public static double[] sort(double[] x) {
-		double[] y = Arrays.copyOf(x, x.length);
+	public static double[] sort(double[] a) {
+		double[] y = Arrays.copyOf(a, a.length);
 		Arrays.sort(y);
 		return y;
 	}
@@ -2362,11 +2363,11 @@ public abstract class Matrix {
 	 * Returns a sorted copy of the given {@code float[]} vector.
 	 * Elements are sorted by increasing value (smallest first).
 	 * 
-	 * @param x a {@code float[]} vector
+	 * @param a a {@code float[]} vector
 	 * @return a sorted copy of the vector
 	 */
-	public static float[] sort(float[] x) {
-		float[] y = Arrays.copyOf(x, x.length);
+	public static float[] sort(float[] a) {
+		float[] y = Arrays.copyOf(a, a.length);
 		Arrays.sort(y);
 		return y;
 	}
@@ -2633,35 +2634,43 @@ public abstract class Matrix {
 
 	// Exceptions ----------------------------------------------------------------
 	
-	public static class IncompatibleDimensionsException extends RuntimeException {
-		private static final long serialVersionUID = 1L;
-		
+	/** Thrown when the dimensions of matrix/vector arguments do not match. */
+	public static class IncompatibleDimensionsException extends RuntimeException {		
 		public IncompatibleDimensionsException() {
 			super("incompatible matrix-vector dimensions");
 		}
+		public IncompatibleDimensionsException(String msg) {
+			super(msg);
+		}
 	}
 	
+	/** Thrown when a non-square matrix is encountered where a square matrix is assumed. */
 	public static class NonsquareMatrixException extends RuntimeException {
-		private static final long serialVersionUID = 1L;
-		
 		public NonsquareMatrixException() {
 			super("square matrix expected");
 		}
-	}
-	
-	public static class SameSourceTargetException extends RuntimeException {
-		private static final long serialVersionUID = 1L;
-		
-		public SameSourceTargetException() {
-			super("source and target must not be the same");
+		public NonsquareMatrixException(String msg) {
+			super(msg);
 		}
 	}
 	
-	public static class ZeroLengthVectorException extends RuntimeException {
-		private static final long serialVersionUID = 1L;
-		
+	/** Thrown when source and target objects are identical but shouldn't. */
+	public static class SameSourceTargetException extends RuntimeException {
+		public SameSourceTargetException() {
+			super("source and target must not be the same");
+		}
+		public SameSourceTargetException(String msg) {
+			super(msg);
+		}
+	}
+	
+	/** Thrown when the length of some vector is zero. */
+	public static class ZeroLengthVectorException extends RuntimeException {	
 		public ZeroLengthVectorException() {
-			super("vector length must be greater that 0");
+			super("vector length must be at least 1");
+		}
+		public ZeroLengthVectorException(String msg) {
+			super(msg);
 		}
 	}
 	
