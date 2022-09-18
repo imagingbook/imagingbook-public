@@ -28,7 +28,7 @@ import ij.ImagePlus;
  * 
  * @author WB
  */
-public interface ImageResource extends NamedResource {	// TODO: do away with explicit file names, use autoName() only?
+public interface ImageResource extends NamedResource {
 	
 	public default ImagePlus getImage() {
 		return IJ.openImage(getURL().toString());

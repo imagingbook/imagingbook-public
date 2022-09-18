@@ -20,54 +20,36 @@ import imagingbook.testutils.ImageResourceSelfTest;
  * @see GeneralSampleImage
  */
 public enum EdgeDetectionTestImage implements ImageResource {
+	
+	// test images
 	Balloons600color,
 	Balloons600gray,
 	
 	// CannyEdgeDetector
-	Balloons600colorCannyEdgeMagnitude_tif, //("Balloons600colorCannyEdgeMagnitude.tif"),
-	Balloons600colorCannyEdgeOrientation_tif, //("Balloons600colorCannyEdgeOrientation.tif"),
+	Balloons600colorCannyEdgeMagnitude_tif,
+	Balloons600colorCannyEdgeOrientation_tif,
 	Balloons600colorCannyBinaryEdges,
 	
-	Balloons600grayCannyEdgeMagnitude_tif, //("Balloons600grayCannyEdgeMagnitude.tif"),
-	Balloons600grayCannyEdgeOrientation_tif, //("Balloons600grayCannyEdgeOrientation.tif"),
+	Balloons600grayCannyEdgeMagnitude_tif,
+	Balloons600grayCannyEdgeOrientation_tif,
 	Balloons600grayCannyBinaryEdges,
 	
 	// MultiGradientEdgeDetector
-	Balloons600colorMultigradientEdgeMagnitude_tif,	//("Balloons600colorMultigradientEdgeMagnitude.tif"),
-	Balloons600colorMultigradientEdgeOrientation_tif,	//("Balloons600colorMultigradientEdgeOrientation.tif"),
+	Balloons600colorMultigradientEdgeMagnitude_tif,
+	Balloons600colorMultigradientEdgeOrientation_tif,
 	
 	// MonochromaticEdgeDetector (color only)
-	Balloons600colorMonochromaticEdgeMagnitudeL2_tif,	//("Balloons600colorMonochromaticEdgeMagnitudeL2.tif"),
-	Balloons600colorMonochromaticEdgeOrientationL2_tif,	//("Balloons600colorMonochromaticEdgeOrientationL2.tif"),
+	Balloons600colorMonochromaticEdgeMagnitudeL2_tif,
+	Balloons600colorMonochromaticEdgeOrientationL2_tif,
 	
 	// GrayscaleEdgeDetector
-	Balloons600colorGrayscaleEdgeMagnitude_tif,	//("Balloons600colorGrayscaleEdgeMagnitude.tif"),
-	Balloons600colorGrayscaleEdgeOrientation_tif,	//("Balloons600colorGrayscaleEdgeOrientation.tif"),
+	Balloons600colorGrayscaleEdgeMagnitude_tif,
+	Balloons600colorGrayscaleEdgeOrientation_tif,
 	
-	Balloons600grayGrayscaleEdgeMagnitude_tif,	//("Balloons600grayGrayscaleEdgeMagnitude.tif"),
-	Balloons600grayGrayscaleEdgeOrientation_tif,	//("Balloons600grayGrayscaleEdgeOrientation.tif"),
+	Balloons600grayGrayscaleEdgeMagnitude_tif,
+	Balloons600grayGrayscaleEdgeOrientation_tif,
 
 	;
-
-	//java.lang.AssertionError: could not find file C:\_GITHUB\imagingbook-super\imagingbook-public\imagingbook-common\EdgeDetectionTestImage\Balloons600grayCannyEdgeMagnitude.tif
-	
-
-	// ---------------------------------------------------
-	
-	private final String filename;
-	
-	EdgeDetectionTestImage(String filename) {
-		this.filename = filename;
-	}
-	
-	EdgeDetectionTestImage() {
-		this.filename = autoName();
-	}
-	
-	@Override
-	public String getFileName() {
-		return filename;
-	}
 	
 	// ---------------------------------------------------
 	
@@ -75,7 +57,6 @@ public enum EdgeDetectionTestImage implements ImageResource {
 	 * This definition causes this ImageResource to be tested automatically.
 	 * The class must be public and static, the name is arbitrary.
 	 */
-	public static class SelfTest extends ImageResourceSelfTest {
-	}
+	public static class SelfTest extends ImageResourceSelfTest {}
 	
 }

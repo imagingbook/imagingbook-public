@@ -56,29 +56,11 @@ public enum BinaryTestImage implements ImageResource {
 	;
 	
 	// ---------------------------------------------------
-	
-	private final String filename;
-	
-//	BinaryTestImage(String filename) {
-//		this.filename = filename;
-//	}
-	
-	BinaryTestImage() {
-		this.filename = autoName();
-	}
-	
-	@Override
-	public String getFileName() {
-		return filename;
-	}
-	
-	// ---------------------------------------------------
 		
 	/**
 	 * This definition causes this ImageResource to be tested automatically.
 	 * The class must be public and static, the name is arbitrary.
 	 */
-	public static class SelfTest extends ImageResourceSelfTest {
-	}
+	public static class SelfTest extends ImageResourceSelfTest {}
 	
 }
