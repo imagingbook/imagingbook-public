@@ -78,7 +78,7 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 		List<ImagePlus> resultImages = new ArrayList<>();
 		int cnt = 0;
 
-		RansacCurveResult<GeometricEllipse> sol = detector.findNext(points);
+		RansacCurveResult<GeometricEllipse> sol = detector.detectNext(points);
 		while (sol != null && cnt < MaxEllipseCount) {
 			ellipses.add(sol);
 			cnt = cnt + 1;
@@ -117,7 +117,7 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 			}
 			
 			resultImages.add(imSnap);
-			sol = detector.findNext(points);
+			sol = detector.detectNext(points);
 		}
 
 		// combine all result images to a stack:

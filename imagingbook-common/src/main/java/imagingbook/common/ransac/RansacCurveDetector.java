@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.util.ParameterBundle;
 
@@ -86,15 +88,44 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	
 	// ----------------------------------------------------------
 	
-	public List<RansacCurveResult<T>> findAll(Pnt2d[] points, int maxCount) {
+	/**
+	 * Performs iterative RANSAC steps on the supplied image,
+	 * which is assumed to be binary (all nonzero pixels are considered
+	 * input points).
+	 * Extracts the point set from the image and calls {@link #detectAll(Pnt2d[], int)}.
+	 * 
+	 * @param bp a binary image (nonzero pixels are considered points)
+	 * @param maxCount the maximum number of primitives to detect
+	 * @return the list of detected primitives
+	 */
+	public List<RansacCurveResult<T>> detectAll(ByteProcessor bp, int maxCount) {
+		Pnt2d[] points = IjUtils.collectNonzeroPoints(bp);
+		if (points.length == 0) {
+			throw new IllegalArgumentException("empty point set");
+		}
+		return detectAll(points, maxCount);
+	}
+	
+	/**
+	 * Performs iterative RANSAC steps on the supplied point set until
+	 * either no more primitive was detected or the maximum number
+	 * of primitives was reached.
+	 * Iteratively calls {@link #detectNext(Pnt2d[])} on the specified
+	 * point set.
+	 * 
+	 * @param points the original point set
+	 * @param maxCount the maximum number of primitives to detect
+	 * @return the list of detected primitives
+	 */
+	public List<RansacCurveResult<T>> detectAll(Pnt2d[] points, int maxCount) {
 		List<RansacCurveResult<T>> primitives = new ArrayList<>();
 		int cnt = 0;
 		
-		RansacCurveResult<T> sol = findNext(points);
+		RansacCurveResult<T> sol = detectNext(points);
 		while (sol != null && cnt < maxCount) {
 			primitives.add(sol);
 			cnt = cnt + 1;
-			sol = findNext(points);
+			sol = detectNext(points);
 		}
 		return primitives;
 	}
@@ -108,7 +139,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	 * @param points an array of {@link Pnt2d} instances (modified)
 	 * @return the detected primitive (of generic type T) or {@code null} if unsuccessful
 	 */
-	public RansacCurveResult<T> findNext(Pnt2d[] points) {
+	public RansacCurveResult<T> detectNext(Pnt2d[] points) {
 		Pnt2d[] drawInit = null;
 		double scoreInit = -1;
 		T primitiveInit = null;

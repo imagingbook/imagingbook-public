@@ -15,8 +15,7 @@ import imagingbook.testimages.RansacTestImage;
 public class RansacLineDetectorTest {
 
 	@Test
-	public void test1() {
-		
+	public void test1() {	
 		ByteProcessor bp = (ByteProcessor) RansacTestImage.NoisyLines.getImage().getProcessor();
 		Pnt2d[] points = IjUtils.collectNonzeroPoints(bp);
 		
@@ -28,11 +27,10 @@ public class RansacLineDetectorTest {
 		params.removeInliers = true;
 		params.randomSeed = 17;
 		
-		int maxLineCount = 6;
+		int maxCount = 6;
 		
-		RansacLineDetector detector = new RansacLineDetector(params);
-		
-		List<RansacCurveResult<AlgebraicLine>> lines = detector.findAll(points, maxLineCount);
+		RansacLineDetector detector = new RansacLineDetector(params);	
+		List<RansacCurveResult<AlgebraicLine>> lines = detector.detectAll(points, maxCount);
 		
 		assertEquals(6, lines.size());
 	}

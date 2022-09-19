@@ -77,7 +77,7 @@ public class Ransac_Line_Detect implements PlugInFilter, Settings {
 		List<ImagePlus> resultImages = new ArrayList<>();
 		int cnt = 0;
 		
-		RansacCurveResult<AlgebraicLine> sol = detector.findNext(points);
+		RansacCurveResult<AlgebraicLine> sol = detector.detectNext(points);
 		while (sol != null && cnt < MaxLineCount) {
 			lines.add(sol);
 			cnt = cnt + 1;
@@ -116,7 +116,7 @@ public class Ransac_Line_Detect implements PlugInFilter, Settings {
 			}
 			
 			resultImages.add(imSnap);
-			sol = detector.findNext(points);
+			sol = detector.detectNext(points);
 		}
 
 		// combine all result images to a stack:
