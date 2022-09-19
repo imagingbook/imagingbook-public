@@ -36,7 +36,7 @@ import imagingbook.common.mser.components.Component;
  * @see AffineMapping2D
  * @see ImageMapper
  */
-public class LocalAffineFrameExtractor {
+public class LocalAffineFrameExtractor {	// TODO: needs testing!
 	
 	private static InterpolationMethod interpolMethod = InterpolationMethod.Bilinear;
 	

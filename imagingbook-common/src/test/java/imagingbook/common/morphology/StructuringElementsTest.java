@@ -3,8 +3,6 @@ package imagingbook.common.morphology;
 import static imagingbook.common.math.Arithmetic.sqr;
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
 import imagingbook.common.testutils.NumericTestUtils;
