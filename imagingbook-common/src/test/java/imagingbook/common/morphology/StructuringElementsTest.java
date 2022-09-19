@@ -108,28 +108,11 @@ public class StructuringElementsTest {
 		return cnt;
 	}
 
-	private void print(byte[][] maskArray) {
-		for (int i = 0; i < maskArray.length; i++) {
-			System.out.println(Arrays.toString(maskArray[i]));
-		}
-	}
+//	private void print(byte[][] maskArray) {
+//		for (int i = 0; i < maskArray.length; i++) {
+//			System.out.println(Arrays.toString(maskArray[i]));
+//		}
+//	}
 	
-	// -----------------------------------------------------------
-	
-	private static byte[][] makeMask(double radius) {
-		int center = Math.max((int) Math.ceil(radius), 1);
-		int width = 2 * center + 1;		// width/height of mask array
-		byte[][] mask = new byte[width][width];	// initialized to zero
-		double r2 = radius * radius + 1; 	// add 1 to get mask shape similar to ImageJ
-		for (int i = 0; i < width; i++) {
-			int x = i - center;
-			for (int j = 0; j < width; j++) {
-				int y = j - center;
-				if (x*x + y*y <= r2) {
-					mask[i][j] = 1;
-				}
-			}
-		}
-		return mask;
-	}
+
 }
