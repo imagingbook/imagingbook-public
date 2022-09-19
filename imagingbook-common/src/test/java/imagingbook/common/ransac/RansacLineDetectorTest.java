@@ -7,9 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
-import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.line.AlgebraicLine;
-import imagingbook.common.ij.IjUtils;
 import imagingbook.testimages.RansacTestImage;
 
 public class RansacLineDetectorTest {
@@ -17,7 +15,6 @@ public class RansacLineDetectorTest {
 	@Test
 	public void test1() {	
 		ByteProcessor bp = (ByteProcessor) RansacTestImage.NoisyLines.getImage().getProcessor();
-		Pnt2d[] points = IjUtils.collectNonzeroPoints(bp);
 		
 		RansacLineDetector.Parameters params = new RansacLineDetector.Parameters();
 		params.randomPointDraws = 1000;
@@ -30,7 +27,7 @@ public class RansacLineDetectorTest {
 		int maxCount = 6;
 		
 		RansacLineDetector detector = new RansacLineDetector(params);	
-		List<RansacResult<AlgebraicLine>> lines = detector.detectAll(points, maxCount);
+		List<RansacResult<AlgebraicLine>> lines = detector.detectAll(bp, maxCount);
 		
 		assertEquals(6, lines.size());
 	}

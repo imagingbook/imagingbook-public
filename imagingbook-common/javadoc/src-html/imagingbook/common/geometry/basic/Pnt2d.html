@@ -51,7 +51,7 @@
 <span class="sourceLineNo">041</span><a id="line.41"> * to instantiate such point objects.</a>
 <span class="sourceLineNo">042</span><a id="line.42"> * </a>
 <span class="sourceLineNo">043</span><a id="line.43"> */</a>
-<span class="sourceLineNo">044</span><a id="line.44">public interface Pnt2d extends ShapeProducer, Curve2d {</a>
+<span class="sourceLineNo">044</span><a id="line.44">public interface Pnt2d extends ShapeProducer, Primitive2d {</a>
 <span class="sourceLineNo">045</span><a id="line.45"></a>
 <span class="sourceLineNo">046</span><a id="line.46">        /**</a>
 <span class="sourceLineNo">047</span><a id="line.47">         * The default tolerance for matching coordinates (1E-6).</a>
@@ -330,7 +330,7 @@
 <span class="sourceLineNo">320</span><a id="line.320"></a>
 <span class="sourceLineNo">321</span><a id="line.321"></a>
 <span class="sourceLineNo">322</span><a id="line.322">        /**</a>
-<span class="sourceLineNo">323</span><a id="line.323">         * Implementation required by {@link Curve2d} interface.</a>
+<span class="sourceLineNo">323</span><a id="line.323">         * Implementation required by {@link Primitive2d} interface.</a>
 <span class="sourceLineNo">324</span><a id="line.324">         */</a>
 <span class="sourceLineNo">325</span><a id="line.325">        @Override</a>
 <span class="sourceLineNo">326</span><a id="line.326">        public default double getDistance(Pnt2d other) {</a>

@@ -18,19 +18,19 @@
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9">package imagingbook.common.ransac;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
-<span class="sourceLineNo">011</span><a id="line.11">import imagingbook.common.geometry.basic.Curve2d;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import imagingbook.common.geometry.basic.Primitive2d;</a>
 <span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.geometry.basic.Pnt2d;</a>
 <span class="sourceLineNo">013</span><a id="line.13"></a>
 <span class="sourceLineNo">014</span><a id="line.14"></a>
 <span class="sourceLineNo">015</span><a id="line.15">/**</a>
 <span class="sourceLineNo">016</span><a id="line.16"> * Represents a single detection result returned by an implementation of </a>
-<span class="sourceLineNo">017</span><a id="line.17"> * {@link RansacCurveDetector}.</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * {@link RansacDetector}.</a>
 <span class="sourceLineNo">018</span><a id="line.18"> * </a>
 <span class="sourceLineNo">019</span><a id="line.19"> * @author WB</a>
 <span class="sourceLineNo">020</span><a id="line.20"> *</a>
 <span class="sourceLineNo">021</span><a id="line.21"> * @param &lt;T&gt; generic primitive type</a>
 <span class="sourceLineNo">022</span><a id="line.22"> */</a>
-<span class="sourceLineNo">023</span><a id="line.23">public class RansacCurveResult&lt;T extends Curve2d&gt; {</a>
+<span class="sourceLineNo">023</span><a id="line.23">public class RansacResult&lt;T extends Primitive2d&gt; {</a>
 <span class="sourceLineNo">024</span><a id="line.24">        </a>
 <span class="sourceLineNo">025</span><a id="line.25">        private final T primitiveInit;</a>
 <span class="sourceLineNo">026</span><a id="line.26">        private final T primitiveFinal;</a>
@@ -39,7 +39,7 @@
 <span class="sourceLineNo">029</span><a id="line.29">        private final Pnt2d[] inliers;</a>
 <span class="sourceLineNo">030</span><a id="line.30">        </a>
 <span class="sourceLineNo">031</span><a id="line.31">        // full constructor (initially inliers = null)</a>
-<span class="sourceLineNo">032</span><a id="line.32">        public RansacCurveResult(Pnt2d[] draw, T primitiveInit, T primitiveFinal, double score, Pnt2d[] inliers) {</a>
+<span class="sourceLineNo">032</span><a id="line.32">        public RansacResult(Pnt2d[] draw, T primitiveInit, T primitiveFinal, double score, Pnt2d[] inliers) {</a>
 <span class="sourceLineNo">033</span><a id="line.33">                this.primitiveInit = primitiveInit;</a>
 <span class="sourceLineNo">034</span><a id="line.34">                this.primitiveFinal = primitiveFinal;</a>
 <span class="sourceLineNo">035</span><a id="line.35">                this.score = score;</a>
@@ -90,14 +90,11 @@
 <span class="sourceLineNo">080</span><a id="line.80">        </a>
 <span class="sourceLineNo">081</span><a id="line.81">        // ---------------------------------------------------------------------------</a>
 <span class="sourceLineNo">082</span><a id="line.82">        </a>
-<span class="sourceLineNo">083</span><a id="line.83"></a>
-<span class="sourceLineNo">084</span><a id="line.84">        </a>
-<span class="sourceLineNo">085</span><a id="line.85">        </a>
-<span class="sourceLineNo">086</span><a id="line.86">        public int compareTo(RansacCurveResult&lt;T&gt; other) {</a>
-<span class="sourceLineNo">087</span><a id="line.87">                return Double.compare(other.score, this.score);</a>
-<span class="sourceLineNo">088</span><a id="line.88">        }</a>
-<span class="sourceLineNo">089</span><a id="line.89"></a>
-<span class="sourceLineNo">090</span><a id="line.90">}</a>
+<span class="sourceLineNo">083</span><a id="line.83">        public int compareTo(RansacResult&lt;T&gt; other) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">                return Double.compare(other.score, this.score);</a>
+<span class="sourceLineNo">085</span><a id="line.85">        }</a>
+<span class="sourceLineNo">086</span><a id="line.86"></a>
+<span class="sourceLineNo">087</span><a id="line.87">}</a>
 
 
 
