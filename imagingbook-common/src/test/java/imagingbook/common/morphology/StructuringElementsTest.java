@@ -85,9 +85,9 @@ public class StructuringElementsTest {
 	@Test
 	public void testReflect() {
 		byte[][] H = {
-				{0, 1, 0, 0, 1 },
-				{1, 0, 1, 1, 0 },
-				{0, 0, 1, 0, 1 }};
+				{0, 1, 0, 0, 1, 1 },
+				{1, 0, 1, 1, 0, 0 },
+				{0, 0, 1, 0, 1, 0 }};
 		
 		byte[][] Hr = StructuringElements.reflect(H);
 		assertEquals(H.length, Hr.length);
