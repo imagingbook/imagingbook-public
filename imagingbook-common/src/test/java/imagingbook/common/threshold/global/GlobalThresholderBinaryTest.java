@@ -24,7 +24,7 @@ public class GlobalThresholderBinaryTest {
 		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 127);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 77);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 177);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class GlobalThresholderBinaryTest {
 		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
 	}
 	
 	@Test
@@ -42,7 +42,7 @@ public class GlobalThresholderBinaryTest {
 		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 203);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 123);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 223);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ public class GlobalThresholderBinaryTest {
 		checkThreshold(thresholder, ThresholdTestImage.keplerBin, -1);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, -1);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, -1);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, -1);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, -1);
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ public class GlobalThresholderBinaryTest {
 		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
 	}
 	
 	@Test
@@ -69,7 +69,7 @@ public class GlobalThresholderBinaryTest {
 		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 127);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 77);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 177);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
 	}
 	
 	@Test
@@ -78,7 +78,7 @@ public class GlobalThresholderBinaryTest {
 		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class GlobalThresholderBinaryTest {
 		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0);
 		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_17_18, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
 	}
 
 	// ----------------------------------------------------

@@ -20,34 +20,23 @@ import imagingbook.testutils.ImageResourceSelfTest;
  */
 public enum ThresholdTestImage implements ImageResource {
 	/** Original gray scan from Kepler manuscript. */
-	kepler("kepler.png"),
+	kepler,
 	/** Binary Kepler image with values 17 and 18 only. */
-	keplerBin_17_18("keplerBin-17-18.png"),
+	keplerBin1718,
 	/** Binary Kepler image darkened by 100 units. */
-	keplerBinMinus100("keplerBinMinus100.png"),
+	keplerBinMinus100,
 	/** Binary Kepler image brightened by 100 units. */
-	keplerBinPlus100("keplerBinPlus100.png"),
+	keplerBinPlus100,
 	/** Binary Kepler image with values 0 and 255. */
-	keplerBin("keplerBin.png"),
+	keplerBin,
 	/** Flat image with 0 values only. */
-	flat000("flat000.png"),
+	flat000,
 	/** Flat image with 31 values only. */
-	flat031("flat031.png"),
+	flat031,
 	/** Flat image with 255 values only. */
-	flat255("flat255.png"),
+	flat255,	
 	;
-	
-private final String filename;
-	
-	ThresholdTestImage(String filename) {
-		this.filename = filename;
-	}
-	
-	@Override
-	public String getFileName() {
-		return filename;
-	}
-	
+		
 	// -----------------------------------------------------------------
 	
 	/**
