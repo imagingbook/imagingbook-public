@@ -20,7 +20,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
  *
  * @param <T> generic primitive type
  */
-public class RansacCurveResult<T extends Curve2d> {
+public class RansacResult<T extends Curve2d> {
 	
 	private final T primitiveInit;
 	private final T primitiveFinal;
@@ -29,7 +29,7 @@ public class RansacCurveResult<T extends Curve2d> {
 	private final Pnt2d[] inliers;
 	
 	// full constructor (initially inliers = null)
-	public RansacCurveResult(Pnt2d[] draw, T primitiveInit, T primitiveFinal, double score, Pnt2d[] inliers) {
+	public RansacResult(Pnt2d[] draw, T primitiveInit, T primitiveFinal, double score, Pnt2d[] inliers) {
 		this.primitiveInit = primitiveInit;
 		this.primitiveFinal = primitiveFinal;
 		this.score = score;
@@ -80,10 +80,7 @@ public class RansacCurveResult<T extends Curve2d> {
 	
 	// ---------------------------------------------------------------------------
 	
-
-	
-	
-	public int compareTo(RansacCurveResult<T> other) {
+	public int compareTo(RansacResult<T> other) {
 		return Double.compare(other.score, this.score);
 	}
 

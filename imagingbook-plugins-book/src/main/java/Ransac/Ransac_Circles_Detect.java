@@ -28,7 +28,7 @@ import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.ransac.RansacCurveResult;
+import imagingbook.common.ransac.RansacResult;
 import imagingbook.common.ransac.RansacCircleDetector;
 
 /**
@@ -68,7 +68,7 @@ public class Ransac_Circles_Detect implements PlugInFilter, Settings {
 		}
 	
 		Pnt2d[] points = IjUtils.collectNonzeroPoints(ip);
-		List<RansacCurveResult<GeometricCircle>> circles = new ArrayList<>();
+		List<RansacResult<GeometricCircle>> circles = new ArrayList<>();
 
 		// ---------------------------------------------------------------------
 		RansacCircleDetector detector = new RansacCircleDetector(params);
@@ -77,7 +77,7 @@ public class Ransac_Circles_Detect implements PlugInFilter, Settings {
 		List<ImagePlus> resultImages = new ArrayList<>();
 		int cnt = 0;
 
-		RansacCurveResult<GeometricCircle> sol = detector.detectNext(points);
+		RansacResult<GeometricCircle> sol = detector.detectNext(points);
 		while (sol != null && cnt < MaxCircleCount) {
 			circles.add(sol);
 			cnt = cnt + 1;

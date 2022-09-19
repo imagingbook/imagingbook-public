@@ -30,7 +30,7 @@ public class RansacLineDetectorTest {
 		int maxCount = 6;
 		
 		RansacLineDetector detector = new RansacLineDetector(params);	
-		List<RansacCurveResult<AlgebraicLine>> lines = detector.detectAll(points, maxCount);
+		List<RansacResult<AlgebraicLine>> lines = detector.detectAll(points, maxCount);
 		
 		assertEquals(6, lines.size());
 	}

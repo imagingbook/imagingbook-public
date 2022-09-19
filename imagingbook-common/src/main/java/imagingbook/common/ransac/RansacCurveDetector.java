@@ -98,7 +98,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	 * @param maxCount the maximum number of primitives to detect
 	 * @return the list of detected primitives
 	 */
-	public List<RansacCurveResult<T>> detectAll(ByteProcessor bp, int maxCount) {
+	public List<RansacResult<T>> detectAll(ByteProcessor bp, int maxCount) {
 		Pnt2d[] points = IjUtils.collectNonzeroPoints(bp);
 		if (points.length == 0) {
 			throw new IllegalArgumentException("empty point set");
@@ -117,11 +117,11 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	 * @param maxCount the maximum number of primitives to detect
 	 * @return the list of detected primitives
 	 */
-	public List<RansacCurveResult<T>> detectAll(Pnt2d[] points, int maxCount) {
-		List<RansacCurveResult<T>> primitives = new ArrayList<>();
+	public List<RansacResult<T>> detectAll(Pnt2d[] points, int maxCount) {
+		List<RansacResult<T>> primitives = new ArrayList<>();
 		int cnt = 0;
 		
-		RansacCurveResult<T> sol = detectNext(points);
+		RansacResult<T> sol = detectNext(points);
 		while (sol != null && cnt < maxCount) {
 			primitives.add(sol);
 			cnt = cnt + 1;
@@ -139,7 +139,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	 * @param points an array of {@link Pnt2d} instances (modified)
 	 * @return the detected primitive (of generic type T) or {@code null} if unsuccessful
 	 */
-	public RansacCurveResult<T> detectNext(Pnt2d[] points) {
+	public RansacResult<T> detectNext(Pnt2d[] points) {
 		Pnt2d[] drawInit = null;
 		double scoreInit = -1;
 		T primitiveInit = null;
@@ -166,7 +166,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 			Pnt2d[] inliers = collectInliers(primitiveInit, points);
 			T primitiveFinal = fitFinal(inliers);	
 			if (primitiveFinal != null)
-				return new RansacCurveResult<T>(drawInit, primitiveInit, primitiveFinal, scoreInit, inliers);
+				return new RansacResult<T>(drawInit, primitiveInit, primitiveFinal, scoreInit, inliers);
 			else
 				throw new RuntimeException("final fit failed!");
 		}
