@@ -22,18 +22,18 @@ import imagingbook.common.ij.DialogUtils;
  * @author WB
  * 
  * @see AlgebraicLine
- * @see RansacCurveDetector
+ * @see RansacDetector
  *
  */
-public class RansacLineDetector extends RansacCurveDetector<AlgebraicLine>{
+public class RansacLineDetector extends RansacDetector<AlgebraicLine>{
 	
 	private final Parameters params;
 	
 	/**
-	 * Nested class extending {@link RansacCurveDetector.RansacParameters} 
+	 * Nested class extending {@link RansacDetector.RansacParameters} 
 	 * to specify additional RANSAC parameters.
 	 */
-	public static class Parameters extends RansacCurveDetector.RansacParameters {
+	public static class Parameters extends RansacDetector.RansacParameters {
 		
 		/** The minimum distance between two random sample points. */
 		@DialogUtils.DialogLabel("Min. distance between sample points")

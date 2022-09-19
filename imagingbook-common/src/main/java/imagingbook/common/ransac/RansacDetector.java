@@ -32,7 +32,7 @@ import imagingbook.common.util.ParameterBundle;
  *
  * @param <T> generic type extending {@link Curve2d}
  */
-public abstract class RansacCurveDetector<T extends Curve2d> {
+public abstract class RansacDetector<T extends Curve2d> {
 	
 	/**
 	 * Parameters used by all RANSAC types.
@@ -67,7 +67,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	private final Random rand;					// random number generator
 	private final RandomDraw<Pnt2d> randomDraw;	// 
 	
-	protected RansacCurveDetector(int K, RansacParameters params) {
+	protected RansacDetector(int K, RansacParameters params) {
 		this.K = K;
 		this.params = params;
 		this.rand = (params.randomSeed == 0) ? new Random() : new Random(params.randomSeed);

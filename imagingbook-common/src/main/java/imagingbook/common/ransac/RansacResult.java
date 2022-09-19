@@ -14,7 +14,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
  * Represents a single detection result returned by an implementation of 
- * {@link RansacCurveDetector}.
+ * {@link RansacDetector}.
  * 
  * @author WB
  *

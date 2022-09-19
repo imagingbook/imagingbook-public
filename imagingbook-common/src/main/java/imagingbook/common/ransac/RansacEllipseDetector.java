@@ -21,15 +21,15 @@ import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbo
  * @author WB
  * 
  * @see GeometricEllipse
- * @see RansacCurveDetector
+ * @see RansacDetector
  */
-public class RansacEllipseDetector extends RansacCurveDetector<GeometricEllipse> {
+public class RansacEllipseDetector extends RansacDetector<GeometricEllipse> {
 	
 	/**
-	 * Nested class extending {@link RansacCurveDetector.RansacParameters} 
+	 * Nested class extending {@link RansacDetector.RansacParameters} 
 	 * to specify additional RANSAC parameters.
 	 */
-	public static class Parameters extends RansacCurveDetector.RansacParameters {
+	public static class Parameters extends RansacDetector.RansacParameters {
 		
 		/**
 		 * Constructor used to define default parameter values.

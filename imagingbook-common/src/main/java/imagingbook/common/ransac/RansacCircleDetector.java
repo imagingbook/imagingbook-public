@@ -20,15 +20,15 @@ import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitHyperSimple
  * @author WB
  * 
  * @see GeometricCircle
- * @see RansacCurveDetector
+ * @see RansacDetector
  */
-public class RansacCircleDetector extends RansacCurveDetector<GeometricCircle>{
+public class RansacCircleDetector extends RansacDetector<GeometricCircle>{
 	
 	/**
-	 * Nested class extending {@link RansacCurveDetector.RansacParameters} 
+	 * Nested class extending {@link RansacDetector.RansacParameters} 
 	 * to specify additional RANSAC parameters.
 	 */
-	public static class Parameters extends RansacCurveDetector.RansacParameters {
+	public static class Parameters extends RansacDetector.RansacParameters {
 		
 		/**
 		 * Constructor used to define default parameter values.
