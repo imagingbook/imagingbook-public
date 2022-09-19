@@ -22,8 +22,8 @@ public class GlobalThresholderGrayTest {
 	@Test
 	public void testIsodataThresholder() {
 		GlobalThresholder thresholder = new IsodataThresholder();
-		checkThreshold(thresholder, GeneralSampleImage.Blobs, 125);
-		checkThreshold(thresholder, GeneralSampleImage.Boats, 93);
+		checkThreshold(thresholder, GeneralSampleImage.blobs, 125);
+		checkThreshold(thresholder, GeneralSampleImage.boats, 93);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 128);
 		// flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1);
@@ -34,8 +34,8 @@ public class GlobalThresholderGrayTest {
 	@Test
 	public void testMaxEntropyThresholder() {
 		GlobalThresholder thresholder = new MaxEntropyThresholder();
-		checkThreshold(thresholder, GeneralSampleImage.Blobs, 112);
-		checkThreshold(thresholder, GeneralSampleImage.Boats, 111);
+		checkThreshold(thresholder, GeneralSampleImage.blobs, 112);
+		checkThreshold(thresholder, GeneralSampleImage.boats, 111);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 133);
 		// flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1);
@@ -46,8 +46,8 @@ public class GlobalThresholderGrayTest {
 	@Test
 	public void testMaxMeanThresholder() {
 		GlobalThresholder thresholder = new MeanThresholder();
-		checkThreshold(thresholder, GeneralSampleImage.Blobs, 103);
-		checkThreshold(thresholder, GeneralSampleImage.Boats, 120);
+		checkThreshold(thresholder, GeneralSampleImage.blobs, 103);
+		checkThreshold(thresholder, GeneralSampleImage.boats, 120);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 158);
 		// flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1);
@@ -58,8 +58,8 @@ public class GlobalThresholderGrayTest {
 	@Test
 	public void testMaxMedianThresholder() {
 		GlobalThresholder thresholder = new MedianThresholder();
-		checkThreshold(thresholder, GeneralSampleImage.Blobs, 64);
-		checkThreshold(thresholder, GeneralSampleImage.Boats, 138);
+		checkThreshold(thresholder, GeneralSampleImage.blobs, 64);
+		checkThreshold(thresholder, GeneralSampleImage.boats, 138);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 179);
 		// flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1);
@@ -70,8 +70,8 @@ public class GlobalThresholderGrayTest {
 	@Test
 	public void testMinErrorThresholder() {
 		GlobalThresholder thresholder = new MinErrorThresholder();
-		checkThreshold(thresholder, GeneralSampleImage.Blobs, 80);
-		checkThreshold(thresholder, GeneralSampleImage.Boats, 78);
+		checkThreshold(thresholder, GeneralSampleImage.blobs, 80);
+		checkThreshold(thresholder, GeneralSampleImage.boats, 78);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 161);
 		// flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1);
@@ -82,8 +82,8 @@ public class GlobalThresholderGrayTest {
 	@Test
 	public void testMinMaxThresholder() {
 		GlobalThresholder thresholder = new MinMaxThresholder();
-		checkThreshold(thresholder, GeneralSampleImage.Blobs, 128);
-		checkThreshold(thresholder, GeneralSampleImage.Boats, 111);
+		checkThreshold(thresholder, GeneralSampleImage.blobs, 128);
+		checkThreshold(thresholder, GeneralSampleImage.boats, 111);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 115);
 		// flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1);
@@ -94,8 +94,8 @@ public class GlobalThresholderGrayTest {
 	@Test
 	public void testOtsuThresholder() {
 		GlobalThresholder thresholder = new OtsuThresholder();
-		checkThreshold(thresholder, GeneralSampleImage.Blobs, 120);
-		checkThreshold(thresholder, GeneralSampleImage.Boats, 92);
+		checkThreshold(thresholder, GeneralSampleImage.blobs, 120);
+		checkThreshold(thresholder, GeneralSampleImage.boats, 92);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 128);
 		// flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1);
@@ -106,8 +106,8 @@ public class GlobalThresholderGrayTest {
 	@Test
 	public void testQuantileThresholder() {
 		GlobalThresholder thresholder = new QuantileThresholder(0.25);
-		checkThreshold(thresholder, GeneralSampleImage.Blobs, 48);
-		checkThreshold(thresholder, GeneralSampleImage.Boats, 98);
+		checkThreshold(thresholder, GeneralSampleImage.blobs, 48);
+		checkThreshold(thresholder, GeneralSampleImage.boats, 98);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 151);
 		// flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1);

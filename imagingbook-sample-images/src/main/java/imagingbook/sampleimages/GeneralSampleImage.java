@@ -10,6 +10,8 @@ package imagingbook.sampleimages;
 
 import imagingbook.core.resource.ImageResource;
 
+
+
 /**
  * <p>
  * Enumeration defining a set of {@link ImageResource} objects for some general test images.
@@ -30,42 +32,38 @@ import imagingbook.core.resource.ImageResource;
 public enum GeneralSampleImage implements ImageResource {
 	
 		/** Original: https://imagej.nih.gov/ij/images/blobs.gif */
-		Blobs("blobs.png"),
+		blobs,
 		
 		/** Original: https://imagej.nih.gov/ij/images/boats.gif */
-		Boats("boats.png"),
+		boats,
 		
 		/** A simple binary shape image with 0/255 values. */
-		Cat("cat.png"),
+		cat,
 		
 		/** Original: https://imagej.nih.gov/ij/images/clown.png */
-		Clown("clown.png"),
+		clown,
 		
 		/** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */
-		DotBlot("Dot_Blot.png"),
+		DotBlot,
 		
 		/** Original gray scan from Kepler manuscript. */
-		kepler("kepler.png"),
+		Kepler,
 		
 		/** A small grayscale image. */
-		MonasterySmall("monastery-small.png"),
+		MonasterySmall,
 	
-		NoisyLines("noisy-lines.png"), 
-		NoisyCircles("noisy-circles.png"), 
-		NoisyEllipses("noisy-ellipses.png"),
+		NoisyLines,
+		NoisyCircles,
+		NoisyEllipses,
 		
 		/** A fairly large binary image with 0/1 values. */
-		RhinoBigCrop("rhino-big-crop.png"),
+		RhinoBigCrop,
 	;
+	
+	/**
+//	 * This definition causes this ImageResource to be tested automatically.
+//	 * The class must be public and static, the name is arbitrary.
+//	 */
+//	public static class SelfTest extends ImageResourceSelfTest {}
 
-	private final String filename;
-	
-	GeneralSampleImage(String filename) {
-		this.filename = filename;
-	}
-	
-	@Override
-	public String getFileName() {
-		return filename;
-	}
 }

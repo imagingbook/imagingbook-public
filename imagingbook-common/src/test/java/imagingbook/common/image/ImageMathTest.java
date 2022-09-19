@@ -20,8 +20,8 @@ import imagingbook.testutils.ImageTestUtils;
 // TODO: these tests are incomplete
 public class ImageMathTest {
 	
-	static ImageResource ir1 = GeneralSampleImage.Clown;
-	static ImageResource ir2 = GeneralSampleImage.Boats;
+	static ImageResource ir1 = GeneralSampleImage.clown;
+	static ImageResource ir2 = GeneralSampleImage.boats;
 	
 	static ImageProcessor[] images = {
 			ir1.getImage().getProcessor(),							// ColorProcessor

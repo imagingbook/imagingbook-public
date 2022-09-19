@@ -20,7 +20,7 @@ public class PixelInterpolatorTest {
 	private static final OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;
 	
 	private static final ByteProcessor ip1 = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImage().getProcessor();
-	private static final ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.Clown.getImage().getProcessor();
+	private static final ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.clown.getImage().getProcessor();
 
 	@Test
 	public void testScalarA() {
