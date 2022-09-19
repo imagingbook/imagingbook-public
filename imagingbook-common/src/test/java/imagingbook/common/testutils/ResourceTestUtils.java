@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.testutils;
+package imagingbook.common.testutils;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

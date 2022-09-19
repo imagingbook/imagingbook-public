@@ -13,7 +13,7 @@ import java.util.Random;
 import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
-import imagingbook.testutils.NumericTestUtils;
+import imagingbook.common.testutils.NumericTestUtils;
 
 public class Rotation2DTest {
 

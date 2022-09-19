@@ -11,8 +11,8 @@ import imagingbook.common.filter.edgepreserving.BilateralF.Parameters;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.math.VectorNorm.NormType;
+import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.testimages.FilterTestImage;
-import imagingbook.testutils.ImageTestUtils;
 
 public class BilateralFilterTest {
 	

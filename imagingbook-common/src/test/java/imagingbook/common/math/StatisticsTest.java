@@ -12,7 +12,7 @@ import static imagingbook.common.math.Statistics.covarianceMatrix;
 
 import org.junit.Test;
 
-import imagingbook.testutils.NumericTestUtils;
+import imagingbook.common.testutils.NumericTestUtils;
 
 public class StatisticsTest {
 	

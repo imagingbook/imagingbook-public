@@ -1,4 +1,4 @@
-package imagingbook.testutils;
+package imagingbook.common.testutils;
 
 import org.junit.Test;
 

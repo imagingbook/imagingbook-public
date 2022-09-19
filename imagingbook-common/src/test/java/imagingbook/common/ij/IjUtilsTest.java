@@ -24,9 +24,9 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.core.FileUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
-import imagingbook.testutils.ImageTestUtils;
 
 public class IjUtilsTest {
 

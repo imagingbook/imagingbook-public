@@ -17,9 +17,9 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
+import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
-import imagingbook.testutils.ImageTestUtils;
 
 public class PixelPackTest {
 	

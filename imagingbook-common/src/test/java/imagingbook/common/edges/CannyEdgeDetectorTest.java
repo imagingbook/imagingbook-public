@@ -13,8 +13,8 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.testimages.EdgeDetectionTestImage;
-import imagingbook.testutils.ImageTestUtils;
 
 
 public class CannyEdgeDetectorTest {

@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.testutils.NumericTestUtils;
+import imagingbook.common.testutils.NumericTestUtils;
 
 public class DistanceTransformTest {
 	

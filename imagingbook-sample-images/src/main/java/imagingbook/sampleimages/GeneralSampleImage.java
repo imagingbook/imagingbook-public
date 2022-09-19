@@ -38,7 +38,7 @@ public enum GeneralSampleImage implements ImageResource {
 		boats,
 		
 		/** A simple binary shape image with 0/255 values. */
-		cat,
+		Cat,
 		
 		/** Original: https://imagej.nih.gov/ij/images/clown.png */
 		clown,
@@ -52,8 +52,11 @@ public enum GeneralSampleImage implements ImageResource {
 		/** A small grayscale image. */
 		MonasterySmall,
 	
+		/** Binary image with straight lines embedded in noise. */
 		NoisyLines,
+		/** Binary image with circles embedded in noise. */
 		NoisyCircles,
+		/** Binary image with ellipses embedded in noise. */
 		NoisyEllipses,
 		
 		/** A fairly large binary image with 0/1 values. */

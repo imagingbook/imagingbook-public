@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
+import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.testimages.BinaryTestImage;
-import imagingbook.testutils.ImageTestUtils;
 
 public class BinaryOpeningTest {
 

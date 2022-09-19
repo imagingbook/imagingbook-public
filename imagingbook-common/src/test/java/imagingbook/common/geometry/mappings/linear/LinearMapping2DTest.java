@@ -12,7 +12,7 @@ package imagingbook.common.geometry.mappings.linear;
 import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
-import imagingbook.testutils.NumericTestUtils;
+import imagingbook.common.testutils.NumericTestUtils;
 
 public class LinearMapping2DTest {
 	

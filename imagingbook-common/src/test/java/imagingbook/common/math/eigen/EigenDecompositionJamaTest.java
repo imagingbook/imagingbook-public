@@ -20,8 +20,8 @@ import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
-import imagingbook.testutils.NumericTestUtils;
-import imagingbook.testutils.RandomMatrixGenerator;
+import imagingbook.common.testutils.NumericTestUtils;
+import imagingbook.common.testutils.RandomMatrixGenerator;
 
 public class EigenDecompositionJamaTest {
 	
