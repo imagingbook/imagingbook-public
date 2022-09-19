@@ -19,33 +19,22 @@ import imagingbook.testutils.ImageResourceSelfTest;
  * @see GeneralSampleImage
  */
 public enum MserTestImage implements ImageResource {
-	AllBlack("all-black.png"),
-	AllWhite("all-white.png"),  
-	Blob1("blob1.png"),
-	Blob2("blob2.png"),
-	Blob3("blob3.png"),          
-	BlobLevelTestNoise("blob-level-test-noise.png"),
-	BlobsInWhite("blobs-in-white.png"),  
-	BoatsTinyB("boats-tiny-b.png"),   
-	BoatsTinyW("boats-tiny-w.png"),
-	BlobLevelTest("blob-level-test.png"),  
-	BlobOriented("blob-oriented.png"),          
-	BoatsTiny("boats-tiny.png"),      
-	BoatsTinyBW("boats-tiny-bw.png"),  
-	BoatsTinyW2("boats-tiny-w2.png");
-
-	// ---------------------------------------------------
 	
-	private final String filename;
-	
-	MserTestImage(String filename) {
-		this.filename = filename;
-	}
-	
-	@Override
-	public String getFileName() {
-		return filename;
-	}
+	AllBlack,
+	AllWhite,  
+	Blob1,
+	Blob2,
+	Blob3,         
+	BlobLevelTestNoise,
+	BlobsInWhite,  
+	BoatsTinyB,  
+	BoatsTinyW,
+	BlobLevelTest,  
+	BlobOriented,       
+	BoatsTiny,    
+	BoatsTinyBW, 
+	BoatsTinyW2,
+	;
 	
 	// ---------------------------------------------------
 	

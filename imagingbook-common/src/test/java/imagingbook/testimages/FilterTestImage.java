@@ -65,26 +65,6 @@ public enum FilterTestImage implements ImageResource {
 	;
 	
 	// ---------------------------------------------------
-	
-	private final String filename;
-	
-	FilterTestImage() {
-		filename = null;
-	}
-	
-	FilterTestImage(String filename) {
-		this.filename = filename;
-	}
-	
-	@Override
-	public String getFileName() {
-		if (filename != null)
-			return filename;
-		else 
-			return this.autoName();
-	}
-	
-	// ---------------------------------------------------
 		
 	/**
 	 * This definition causes this ImageResource to be tested automatically.

@@ -21,22 +21,9 @@ import imagingbook.testutils.ImageResourceSelfTest;
  */
 public enum MappingTestImage implements ImageResource {
 	
-	MonasterySmallRot15("MonasterySmallRot15.png"),
-	ClownRot15("ClownRot15.png")
+	MonasterySmallRot15,
+	ClownRot15,
 	;
-	
-	// ---------------------------------------------------
-	
-	private final String filename;
-	
-	MappingTestImage(String filename) {
-		this.filename = filename;
-	}
-	
-	@Override
-	public String getFileName() {
-		return filename;
-	}
 	
 	// ---------------------------------------------------
 		
