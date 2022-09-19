@@ -20,24 +20,11 @@ import imagingbook.testutils.ImageResourceSelfTest;
  */
 public enum RansacTestImage implements ImageResource {
 	
-	NoisyLines("noisy-lines.png"), 
-	NoisyCircles("noisy-circles.png"), 
-	NoisyEllipses("noisy-ellipses.png")
+	NoisyLines,
+	NoisyCircles,
+	NoisyEllipses,
 	;
-	
-	// ---------------------------------------------------
 		
-	private final String filename;
-	
-	RansacTestImage(String filename) {
-		this.filename = filename;
-	}
-	
-	@Override
-	public String getFileName() {
-		return filename;
-	}
-	
 	// ---------------------------------------------------
 	
 	/**
