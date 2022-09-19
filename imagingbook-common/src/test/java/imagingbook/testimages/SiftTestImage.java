@@ -19,36 +19,24 @@ import imagingbook.testutils.ImageResourceSelfTest;
  * @see GeneralSampleImage
  */
 public enum SiftTestImage implements ImageResource {
-	Box00("box00.png"),
-	Box15("box15.png"),
-	Box30("box30.png"),
-	Box45("box45.png"),
-	Box60("box60.png"),
-	Box75("box75.png"),
-	Box90("box90.png"),
-	HalfDiskH("halfdiskH.png"),
-	HalfDiskV("halfdiskV.png"),
-	Ireland02tiny("ireland02tiny.png"),
-	RectangleH("rectangleH.png"),
-	RectangleV("rectangleV.png"),
-	Stars("stars.png"),
-	StarsH("starsH.png"),
-	StarsV("starsV.png"),
+	
+	Box00,
+	Box15,
+	Box30,
+	Box45,
+	Box60,
+	Box75,
+	Box90,
+	HalfDiskH,
+	HalfDiskV,
+	Ireland02tiny,
+	RectangleH,
+	RectangleV,
+	Stars,
+	StarsH,
+	StarsV,
 	;
-	
-	// ---------------------------------------------------
-	
-	private final String filename;
-	
-	SiftTestImage(String filename) {
-		this.filename = filename;
-	}
-	
-	@Override
-	public String getFileName() {
-		return filename;
-	}
-	
+
 	// ---------------------------------------------------
 	
 	/**
