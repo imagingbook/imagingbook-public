@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class NamedResourceTest {
+public class ImageResourceTest {
 	
-	private enum DummyNamedResource implements NamedResource {
+	private enum DummyNamedResource implements ImageResource {
 		a,
 		A_png,
 		foo_tif,
