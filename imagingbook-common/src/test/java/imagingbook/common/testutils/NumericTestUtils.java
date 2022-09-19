@@ -43,6 +43,20 @@ public abstract class NumericTestUtils {
 		}
 	}
 	
+	public static void assertArrayEquals(int[][] expecteds, int[][] actuals) {
+		Assert.assertEquals(expecteds.length, actuals.length);
+		for (int i = 0; i < expecteds.length; i++) {
+			Assert.assertArrayEquals(expecteds[i], actuals[i]);
+		}
+	}
+	
+	public static void assertArrayEquals(byte[][] expecteds, byte[][] actuals) {
+		Assert.assertEquals(expecteds.length, actuals.length);
+		for (int i = 0; i < expecteds.length; i++) {
+			Assert.assertArrayEquals(expecteds[i], actuals[i]);
+		}
+	}
+	
 	// comparison by relative magnitude -------------------------------------------------------
 	
 	public static void assertEqualsRelative(double expected, double actual, double relDelta) {
