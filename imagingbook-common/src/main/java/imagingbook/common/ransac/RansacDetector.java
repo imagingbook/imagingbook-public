@@ -20,7 +20,7 @@ import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Generic RANSAC detector for 2D curves. This abstract class defines the core RANSAC
+ * Generic RANSAC detector for 2D primitives. This abstract class defines the core RANSAC
  * functionality used by all derived (concrete) classes.
  * 
  * @author WB
@@ -64,13 +64,12 @@ public abstract class RansacDetector<T extends Primitive2d> {
 	
 	private final RansacParameters params;
 	private final int K;						// number of points to draw
-	private final Random rand;					// random number generator
 	private final RandomDraw<Pnt2d> randomDraw;	// 
 	
-	protected RansacDetector(int K, RansacParameters params) {
+	RansacDetector(int K, RansacParameters params) {
 		this.K = K;
 		this.params = params;
-		this.rand = (params.randomSeed == 0) ? new Random() : new Random(params.randomSeed);
+		Random rand = (params.randomSeed == 0) ? null : new Random(params.randomSeed);
 		this.randomDraw = new RandomDraw<>(rand);
 	}
 	
@@ -180,11 +179,11 @@ public abstract class RansacDetector<T extends Primitive2d> {
 	 * @param points an array of {@link Pnt2d} instances
 	 * @return an array of {@link #K} unique points
 	 */
-	protected Pnt2d[] drawRandomPoints(Pnt2d[] points) {	
+	Pnt2d[] drawRandomPoints(Pnt2d[] points) {	
 		return randomDraw.drawFrom(points, K);
 	}
 	
-	protected int countInliers(T curve, Pnt2d[] points) {
+	private int countInliers(T curve, Pnt2d[] points) {
 		int count = 0;
 		for (Pnt2d p : points) {
 			if (p != null) {
@@ -208,7 +207,7 @@ public abstract class RansacDetector<T extends Primitive2d> {
 	 * @param points
 	 * @return
 	 */
-	protected Pnt2d[] collectInliers(Primitive2d curve, Pnt2d[] points) {
+	private Pnt2d[] collectInliers(Primitive2d curve, Pnt2d[] points) {
 		List<Pnt2d> pList = new ArrayList<>();
 		for (int i = 0; i < points.length; i++) {
 			Pnt2d p = points[i];
@@ -235,7 +234,7 @@ public abstract class RansacDetector<T extends Primitive2d> {
 	 * @param draw an array of exactly {@link #K} points
 	 * @return a new primitive of type T
 	 */
-	protected abstract T fitInitial(Pnt2d[] draw);
+	abstract T fitInitial(Pnt2d[] draw);
 	
 	/**
 	 * Fits a primitive to the specified points.
@@ -244,6 +243,6 @@ public abstract class RansacDetector<T extends Primitive2d> {
 	 * @param inliers an array of at least {@link #K} points
 	 * @return a new primitive of type T.
 	 */
-	protected abstract T fitFinal(Pnt2d[] inliers);
+	abstract T fitFinal(Pnt2d[] inliers);
 	
 }

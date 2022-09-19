@@ -29,7 +29,6 @@ public class RansacCircleDetector extends RansacDetector<GeometricCircle>{
 	 * to specify additional RANSAC parameters.
 	 */
 	public static class Parameters extends RansacDetector.RansacParameters {
-		
 		/**
 		 * Constructor used to define default parameter values.
 		 */
@@ -60,13 +59,13 @@ public class RansacCircleDetector extends RansacDetector<GeometricCircle>{
 	// ----------------------------------------------------------------
 
 	@Override
-	protected GeometricCircle fitInitial(Pnt2d[] points) {
+	GeometricCircle fitInitial(Pnt2d[] points) {
 		CircleFitAlgebraic fit = new CircleFit3Points(points);
 		return fit.getGeometricCircle();
 	}
 	
 	@Override
-	protected GeometricCircle fitFinal(Pnt2d[] inliers) {
+	GeometricCircle fitFinal(Pnt2d[] inliers) {
 //		CircleFitAlgebraic fit2 = new CircleFitPratt(inliers);	// TODO: fails, check why
 		CircleFitAlgebraic fit2 = new CircleFitHyperSimple(inliers);
 		if (fit2.getParameters() == null) 

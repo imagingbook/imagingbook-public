@@ -71,7 +71,7 @@ public class RansacLineDetector extends RansacDetector<AlgebraicLine>{
 	// ----------------------------------------------------------------
 	
 	@Override // override default method to check for min pair distance
-	protected Pnt2d[] drawRandomPoints(Pnt2d[] points) {
+	Pnt2d[] drawRandomPoints(Pnt2d[] points) {
 		final int MaxTries = 20;
 		int i = 0;
 		Pnt2d[] draw = super.drawRandomPoints(points);
@@ -83,12 +83,12 @@ public class RansacLineDetector extends RansacDetector<AlgebraicLine>{
 	}
 
 	@Override
-	protected AlgebraicLine fitInitial(Pnt2d[] points) {
+	AlgebraicLine fitInitial(Pnt2d[] points) {
 		return AlgebraicLine.from(points[0], points[1]);
 	}
 	
 	@Override
-	protected AlgebraicLine fitFinal(Pnt2d[] inliers) {
+	AlgebraicLine fitFinal(Pnt2d[] inliers) {
 		LineFit fit = new OrthogonalLineFitEigen(inliers);
 		return fit.getLine();
 	}

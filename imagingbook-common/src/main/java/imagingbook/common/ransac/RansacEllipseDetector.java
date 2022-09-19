@@ -61,14 +61,14 @@ public class RansacEllipseDetector extends RansacDetector<GeometricEllipse> {
 	// ----------------------------------------------------------------
 
 	@Override
-	protected GeometricEllipse fitInitial(Pnt2d[] points) {
+	GeometricEllipse fitInitial(Pnt2d[] points) {
 		EllipseFitAlgebraic fit = new EllipseFit5Points(points);
 		AlgebraicEllipse ellipse = fit.getEllipse();
 		return (ellipse == null) ?  null : new GeometricEllipse(ellipse);
 	}
 	
 	@Override
-	protected GeometricEllipse fitFinal(Pnt2d[] inliers) {
+	GeometricEllipse fitFinal(Pnt2d[] inliers) {
 		EllipseFitAlgebraic fit2 = new EllipseFitFitzgibbonStable(inliers);
 		AlgebraicEllipse ellipse = fit2.getEllipse();
 		return (ellipse == null) ?  null : new GeometricEllipse(ellipse);
