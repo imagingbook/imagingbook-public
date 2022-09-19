@@ -10,17 +10,17 @@ package imagingbook.common.geometry.shape;
 
 import java.awt.Shape;
 
-import imagingbook.common.geometry.basic.Curve2d;
+import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
  * Used to check if AWT shapes produced by {@link ShapeProducer#getShape()}
- * match the underlying curve ({@link Curve2d}).
+ * match the underlying curve ({@link Primitive2d}).
  * This is mainly used to test if generated shapes (to be drawn
  * to the screen) are sufficiently accurate.
  * 
  * @see ShapeProducer
- * @see Curve2d
+ * @see Primitive2d
  */
 public class ShapeChecker {
 
@@ -44,7 +44,7 @@ public class ShapeChecker {
 	
 	/**
 	 * Checks if all points of the specified AWT {@link Shape} are sufficiently
-	 * close to the {@link Curve2d} instance specified in the constructor.
+	 * close to the {@link Primitive2d} instance specified in the constructor.
 	 * This is typically used to test if a shape produced
 	 * by {@link ShapeProducer#getShape()} coincides with this curve.
 	 * Only the discrete sample points produced by {@link ShapePointIterator}
@@ -55,11 +55,11 @@ public class ShapeChecker {
 	 * Shape shape = circle.getShape();
 	 * boolean ok = new ShapeChecker().checkShape(circle, shape);</pre>
 	 * 
-	 * @param curve a {@link Curve2d} instance
+	 * @param curve a {@link Primitive2d} instance
 	 * @param shape the AWT shape to check
 	 * @return true if all points of the shape are closer to the curve than tolerance
 	 */
-	public boolean check(Curve2d curve, Shape shape) {
+	public boolean check(Primitive2d curve, Shape shape) {
 		ShapePointIterator iter = new ShapePointIterator(shape, 0.5 * tolerance);
 		boolean result = true;
 		while(iter.hasNext()) {

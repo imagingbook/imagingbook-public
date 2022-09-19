@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import ij.process.ByteProcessor;
-import imagingbook.common.geometry.basic.Curve2d;
+import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
@@ -28,11 +28,11 @@ import imagingbook.common.util.ParameterBundle;
  * @see RansacLineDetector
  * @see RansacCircleDetector
  * @see RansacEllipseDetector
- * @see Curve2d
+ * @see Primitive2d
  *
- * @param <T> generic type extending {@link Curve2d}
+ * @param <T> generic type extending {@link Primitive2d}
  */
-public abstract class RansacDetector<T extends Curve2d> {
+public abstract class RansacDetector<T extends Primitive2d> {
 	
 	/**
 	 * Parameters used by all RANSAC types.
@@ -208,7 +208,7 @@ public abstract class RansacDetector<T extends Curve2d> {
 	 * @param points
 	 * @return
 	 */
-	protected Pnt2d[] collectInliers(Curve2d curve, Pnt2d[] points) {
+	protected Pnt2d[] collectInliers(Primitive2d curve, Pnt2d[] points) {
 		List<Pnt2d> pList = new ArrayList<>();
 		for (int i = 0; i < points.length; i++) {
 			Pnt2d p = points[i];

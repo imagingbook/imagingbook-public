@@ -41,7 +41,7 @@ import imagingbook.common.geometry.shape.ShapeProducer;
  * to instantiate such point objects.
  * 
  */
-public interface Pnt2d extends ShapeProducer, Curve2d {
+public interface Pnt2d extends ShapeProducer, Primitive2d {
 
 	/**
 	 * The default tolerance for matching coordinates (1E-6).
@@ -320,7 +320,7 @@ public interface Pnt2d extends ShapeProducer, Curve2d {
 
 
 	/**
-	 * Implementation required by {@link Curve2d} interface.
+	 * Implementation required by {@link Primitive2d} interface.
 	 */
 	@Override
 	public default double getDistance(Pnt2d other) {

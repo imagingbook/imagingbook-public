@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.ransac;
 
-import imagingbook.common.geometry.basic.Curve2d;
+import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 
 
@@ -20,7 +20,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
  *
  * @param <T> generic primitive type
  */
-public class RansacResult<T extends Curve2d> {
+public class RansacResult<T extends Primitive2d> {
 	
 	private final T primitiveInit;
 	private final T primitiveFinal;

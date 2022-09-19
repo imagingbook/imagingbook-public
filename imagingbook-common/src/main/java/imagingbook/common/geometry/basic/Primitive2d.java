@@ -15,7 +15,7 @@ package imagingbook.common.geometry.basic;
  * @author WB
  *
  */
-public interface Curve2d {
+public interface Primitive2d {
 	
 	/**
 	 * Returns the minimum absolute distance from the specified point to this curve.
