@@ -9,21 +9,20 @@
 package imagingbook.common.ransac;
 
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.ellipse.AlgebraicEllipse;
-import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFit5Points;
-import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic;
-import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbonStable;
+import imagingbook.common.geometry.circle.GeometricCircle;
+import imagingbook.common.geometry.fitting.circle.algebraic.CircleFit3Points;
+import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic;
+import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitHyperSimple;
 
 /**
- * RANSAC detector for ellipses.
+ * RANSAC detector for circles.
  * 
  * @author WB
  * 
- * @see GeometricEllipse
+ * @see GeometricCircle
  * @see RansacCurveDetector
  */
-public class RansacDetectorEllipse extends RansacCurveDetector<GeometricEllipse> {
+public class RansacCircleDetector extends RansacCurveDetector<GeometricCircle>{
 	
 	/**
 	 * Nested class extending {@link RansacCurveDetector.RansacParameters} 
@@ -37,41 +36,41 @@ public class RansacDetectorEllipse extends RansacCurveDetector<GeometricEllipse>
 		public Parameters() {
 			this.maxIterations = 1000;
 			this.maxInlierDistance = 2.0;
-			this.minInlierCount = 100;
+			this.minInlierCount = 70;
 		}
 	}
 	
 	// constructors ------------------------------------
-	
+
 	/**
 	 * Constructor using specific parameters.
 	 * @param params RANSAC parameters
 	 */
-	public RansacDetectorEllipse(Parameters params) {
-		super(5, params);
+	public RansacCircleDetector(Parameters params) {
+		super(3, params);
 	}
 	
 	/**
 	 * Constructor using default parameters.
 	 */
-	public RansacDetectorEllipse() {
+	public RansacCircleDetector() {
 		this(new Parameters());
 	}
 	
 	// ----------------------------------------------------------------
 
 	@Override
-	protected GeometricEllipse fitInitial(Pnt2d[] points) {
-		EllipseFitAlgebraic fit = new EllipseFit5Points(points);
-		AlgebraicEllipse ellipse = fit.getEllipse();
-		return (ellipse == null) ?  null : new GeometricEllipse(ellipse);
+	protected GeometricCircle fitInitial(Pnt2d[] points) {
+		CircleFitAlgebraic fit = new CircleFit3Points(points);
+		return fit.getGeometricCircle();
 	}
 	
 	@Override
-	protected GeometricEllipse fitFinal(Pnt2d[] inliers) {
-		EllipseFitAlgebraic fit2 = new EllipseFitFitzgibbonStable(inliers);
-		AlgebraicEllipse ellipse = fit2.getEllipse();
-		return (ellipse == null) ?  null : new GeometricEllipse(ellipse);
+	protected GeometricCircle fitFinal(Pnt2d[] inliers) {
+//		CircleFitAlgebraic fit2 = new CircleFitPratt(inliers);	// TODO: fails, check why
+		CircleFitAlgebraic fit2 = new CircleFitHyperSimple(inliers);
+		if (fit2.getParameters() == null) 
+			throw new RuntimeException("circle fitFinal() failed!");
+		return fit2.getGeometricCircle();
 	}
-
 }

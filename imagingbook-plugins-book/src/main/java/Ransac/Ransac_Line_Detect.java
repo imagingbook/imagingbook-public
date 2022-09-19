@@ -28,17 +28,17 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.ransac.RansacCurveResult;
-import imagingbook.common.ransac.RansacDetectorLine;
+import imagingbook.common.ransac.RansacLineDetector;
 
 /**
- * RANSAC line detection using imagingbook library class {@link RansacDetectorLine}.
+ * RANSAC line detection using imagingbook library class {@link RansacLineDetector}.
  * 
  * @author WB
  *
  */
 public class Ransac_Line_Detect implements PlugInFilter, Settings {
 	
-	private static RansacDetectorLine.Parameters params = new RansacDetectorLine.Parameters();
+	private static RansacLineDetector.Parameters params = new RansacLineDetector.Parameters();
 	private static int MaxLineCount = 6;
 	private static int RandomSeed = 17;
 	
@@ -68,7 +68,7 @@ public class Ransac_Line_Detect implements PlugInFilter, Settings {
 		List<RansacCurveResult<AlgebraicLine>> lines = new ArrayList<>();
 
 		// ---------------------------------------------------------------
-		RansacDetectorLine detector = new RansacDetectorLine();
+		RansacLineDetector detector = new RansacLineDetector();
 		// ---------------------------------------------------------------
 
 		if (RandomSeed > 0) {

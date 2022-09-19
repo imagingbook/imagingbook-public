@@ -29,18 +29,18 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.ransac.RansacCurveResult;
-import imagingbook.common.ransac.RansacDetectorCircle;
+import imagingbook.common.ransac.RansacCircleDetector;
 
 /**
  * RANSAC circle detection implemented with imagingbook library class
- * {@link RansacDetectorCircle}.
+ * {@link RansacCircleDetector}.
  * 
  * @author WB
  *
  */
 public class Ransac_Circles_Detect implements PlugInFilter, Settings {
 
-	private static RansacDetectorCircle.Parameters params = new RansacDetectorCircle.Parameters();
+	private static RansacCircleDetector.Parameters params = new RansacCircleDetector.Parameters();
 	private static int MaxCircleCount = 3;
 	private static int RandomSeed = 17;
 	
@@ -68,7 +68,7 @@ public class Ransac_Circles_Detect implements PlugInFilter, Settings {
 		List<RansacCurveResult<GeometricCircle>> circles = new ArrayList<>();
 
 		// ---------------------------------------------------------------------
-		RansacDetectorCircle detector = new RansacDetectorCircle(params);
+		RansacCircleDetector detector = new RansacCircleDetector(params);
 		// ---------------------------------------------------------------------
 		
 		if (RandomSeed > 0) {

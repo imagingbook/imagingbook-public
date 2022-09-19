@@ -23,9 +23,9 @@ import imagingbook.common.util.ParameterBundle;
  * 
  * @author WB
  * 
- * @see RansacDetectorLine
- * @see RansacDetectorCircle
- * @see RansacDetectorEllipse
+ * @see RansacLineDetector
+ * @see RansacCircleDetector
+ * @see RansacEllipseDetector
  * @see Curve2d
  *
  * @param <T> generic type extending {@link Curve2d}
@@ -166,7 +166,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	/**
 	 * Randomly selects {@link #K} unique points from the supplied {@link Pnt2d} array.
 	 * Inheriting classes may override this method to enforce specific constraints 
-	 * on the selected points (e.g., see {@link RansacDetectorLine}).
+	 * on the selected points (e.g., see {@link RansacLineDetector}).
 	 * 
 	 * @param points an array of {@link Pnt2d} instances
 	 * @return an array of {@link #K} unique points

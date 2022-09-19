@@ -25,7 +25,7 @@ import imagingbook.common.ij.DialogUtils;
  * @see RansacCurveDetector
  *
  */
-public class RansacDetectorLine extends RansacCurveDetector<AlgebraicLine>{
+public class RansacLineDetector extends RansacCurveDetector<AlgebraicLine>{
 	
 	private final Parameters params;
 	
@@ -56,7 +56,7 @@ public class RansacDetectorLine extends RansacCurveDetector<AlgebraicLine>{
 	 * Constructor using specific parameters.
 	 * @param params RANSAC parameters
 	 */
-	public RansacDetectorLine(Parameters params) {
+	public RansacLineDetector(Parameters params) {
 		super(2, params);
 		this.params = params;
 	}
@@ -64,7 +64,7 @@ public class RansacDetectorLine extends RansacCurveDetector<AlgebraicLine>{
 	/**
 	 * Constructor using default parameters.
 	 */
-	public RansacDetectorLine() {
+	public RansacLineDetector() {
 		this(new Parameters());
 	}
 	

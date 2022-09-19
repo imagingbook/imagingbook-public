@@ -29,19 +29,19 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.ransac.RansacCurveResult;
-import imagingbook.common.ransac.RansacDetectorCircle;
-import imagingbook.common.ransac.RansacDetectorEllipse;
+import imagingbook.common.ransac.RansacCircleDetector;
+import imagingbook.common.ransac.RansacEllipseDetector;
 
 /**
  * RANSAC ellipse detection implemented with imagingbook library class
- * {@link RansacDetectorCircle}.
+ * {@link RansacCircleDetector}.
  * 
  * @author WB
  *
  */
 public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 
-	private static RansacDetectorEllipse.Parameters params = new RansacDetectorEllipse.Parameters();
+	private static RansacEllipseDetector.Parameters params = new RansacEllipseDetector.Parameters();
 	private static int MaxEllipseCount = 3;
 	private static int RandomSeed = 17;
 	
@@ -69,7 +69,7 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 		List<RansacCurveResult<GeometricEllipse>> ellipses = new ArrayList<>();
 
 		// ---------------------------------------------------------------------
-		RansacDetectorEllipse detector = new RansacDetectorEllipse(params);
+		RansacEllipseDetector detector = new RansacEllipseDetector(params);
 		// ---------------------------------------------------------------------
 		
 		if (RandomSeed > 0) {
