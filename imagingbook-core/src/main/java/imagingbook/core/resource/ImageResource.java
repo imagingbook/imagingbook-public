@@ -54,6 +54,7 @@ public interface ImageResource extends NamedResource {
 		return this.autoName();
 	}
 	
+	
 	/**
 	 * Derives and returns a filename for this resource item
 	 * to be used in parameterless enum constructors.

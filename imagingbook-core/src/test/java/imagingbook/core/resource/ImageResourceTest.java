@@ -23,5 +23,11 @@ public class ImageResourceTest {
 		assertEquals("The_File.jpg", DummyNamedResource.The_File_jpg.getFileName());
 		assertEquals("_Some____File.txt", DummyNamedResource._Some____File_txt.getFileName());	
 	}
+	
+//	public static void main(String[] args) {
+//		for (ImageResource item : DummyNamedResource.values()) {
+//			System.out.println(item + " --> " + item.getFileName());
+//		}
+//	}
 
 }
