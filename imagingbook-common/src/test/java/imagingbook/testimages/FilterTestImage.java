@@ -23,7 +23,6 @@ public enum FilterTestImage implements ImageResource {
 	MonasterySmall,
 	Clown,
 	
-	BoatsFilter3x3,
 	MonasterySmallFilter3x3,
 	ClownFilter3x3,
 	
