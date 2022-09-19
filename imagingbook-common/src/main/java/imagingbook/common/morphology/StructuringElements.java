@@ -40,10 +40,10 @@ public abstract class StructuringElements {
 	 * @return a square binary box kernel
 	 */
 	public static byte[][] makeBoxKernel(int radius) {
-		int r = (int) Math.rint(radius);
-		if (r <= 1)
-			r = 1;
-		int n = r + r + 1;
+		if (radius < 0) {
+			throw new IllegalArgumentException("radius must be >= 0");
+		}
+		int n = radius + radius + 1;
 		byte[][] H = new byte[n][n];
 		for (int v = 0; v < H.length; v++) {
 			for (int u = 0; u < H[v].length; u++) {
@@ -63,11 +63,13 @@ public abstract class StructuringElements {
 	 * @return a square binary disk kernel
 	 */
 	public static byte[][] makeDiskKernel(double radius) {
-		int r = (int) Math.rint(radius);	// size of kernel (use ceil?)
-		if (r < 1) r = 1;
+		if (radius < 0) {
+			throw new IllegalArgumentException("radius must be >= 0");
+		}
+		int r = (int) Math.floor(radius);
 		int n = r + r + 1;
 		byte[][] kernel = new byte[n][n];
-		double r2 = sqr(radius);
+		double r2 = sqr(radius) + 0.5;
 		for (int v = -r; v <= r; v++) {
 			for (int u = -r; u <= r; u++) {
 				if (sqr(u) + sqr(v) <= r2)
