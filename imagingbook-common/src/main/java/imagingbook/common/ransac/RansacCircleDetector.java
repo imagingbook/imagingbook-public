@@ -34,7 +34,7 @@ public class RansacCircleDetector extends RansacCurveDetector<GeometricCircle>{
 		 * Constructor used to define default parameter values.
 		 */
 		public Parameters() {
-			this.maxIterations = 1000;
+			this.randomPointDraws = 1000;
 			this.maxInlierDistance = 2.0;
 			this.minInlierCount = 70;
 		}

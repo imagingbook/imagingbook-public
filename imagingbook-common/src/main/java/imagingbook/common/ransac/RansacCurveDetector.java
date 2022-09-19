@@ -14,7 +14,7 @@ import java.util.Random;
 
 import imagingbook.common.geometry.basic.Curve2d;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.util.ParameterBundle;
 
 /**
@@ -37,17 +37,25 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	 */
 	public static class RansacParameters implements ParameterBundle {
 			
-		/** The maximum number of iterations (random draws) to use.*/
-		@DialogUtils.DialogLabel("Max. iterations") 
-		public int maxIterations = 1000;
+		/** The number of iterations (random point draws) to use in each detection cycle.*/
+		@DialogLabel("Number of random draws") 
+		public int randomPointDraws = 1000;
 		
 		/** The maximum distance of any point from the curve to be considered an "inlier".*/
-		@DialogUtils.DialogLabel("Max. inlier distance") 
+		@DialogLabel("Max. inlier distance") 
 		public double maxInlierDistance = 2.0;
 		
 		/** The minimum number of inliers required for successful detection.*/
-		@DialogUtils.DialogLabel("Min. inlier count") 
+		@DialogLabel("Min. inlier count") 
 		public int minInlierCount = 100;
+		
+		/** Set true to remove inlier points after each detection.*/
+		@DialogLabel("Remove inliers") 
+		public boolean removeInliers = true;
+		
+		/** Random seed used initialization (0 = no seed).*/
+		@DialogLabel("Random seed (0 = no seed)") 
+		public long randomSeed = 0;
 	}
 	
 	// -----------------------------------------------------------
@@ -60,82 +68,52 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	protected RansacCurveDetector(int K, RansacParameters params) {
 		this.K = K;
 		this.params = params;
-		this.rand = new Random();
+		this.rand = (params.randomSeed == 0) ? new Random() : new Random(params.randomSeed);
 		this.randomDraw = new RandomDraw<>(rand);
 	}
 	
 	// -----------------------------------------------------------
 	
-	/**
-	 * Returns this detector's random generator. This can be used, e.g.,
-	 * to set its seed (by {@link Random#setSeed(long)}).
-	 * 
-	 * @return the random generator
-	 */
-	public Random getRandom() {
-		return this.rand;
-	}
+//	/**
+//	 * Returns this detector's random generator. This can be used, e.g.,
+//	 * to set its seed (by {@link Random#setSeed(long)}).
+//	 * 
+//	 * @return the random generator
+//	 */
+//	public Random getRandom() {
+//		return this.rand;
+//	}
 	
 	// ----------------------------------------------------------
 	
-	protected int countInliers(T curve, Pnt2d[] points) {
-		int count = 0;
-		for (Pnt2d p : points) {
-			if (p != null) {
-				double d = curve.getDistance(p);
-				if (d < params.maxInlierDistance) {
-					count++;
-				}
-			}
+	public List<RansacCurveResult<T>> findAll(Pnt2d[] points, int maxCount) {
+		List<RansacCurveResult<T>> primitives = new ArrayList<>();
+		int cnt = 0;
+		
+		RansacCurveResult<T> sol = findNext(points);
+		while (sol != null && cnt < maxCount) {
+			primitives.add(sol);
+			cnt = cnt + 1;
+			sol = findNext(points);
 		}
-		return count;
-	}
-	
-	protected Pnt2d[] collectInliers(Curve2d curve, Pnt2d[] points, boolean removeInliers) {
-		List<Pnt2d> pList = new ArrayList<>();
-		for (int i = 0; i < points.length; i++) {
-			Pnt2d p = points[i];
-			if (p != null) {
-				double d = curve.getDistance(p);
-				if (d < params.maxInlierDistance) {
-					pList.add(p);
-					if (removeInliers) {
-						points[i] = null;
-					}
-				}
-			}
-		}
-		return pList.toArray(new Pnt2d[0]);
+		return primitives;
 	}
 	
 	/**
-	 * Performs a single RANSAC step on the supplied point set and removes
-	 * all associated inlier points.
+	 * Performs a single RANSAC step on the supplied point set. 
+	 * If {@link RansacParameters#removeInliers} is set true, 
+	 * all associated inlier points are removed from the point set (by setting
+	 * array elements to {@code null}).
 	 * 
 	 * @param points an array of {@link Pnt2d} instances (modified)
 	 * @return the detected primitive (of generic type T) or {@code null} if unsuccessful
-	 * 
-	 * @see #findNext(Pnt2d[], boolean)
 	 */
 	public RansacCurveResult<T> findNext(Pnt2d[] points) {
-		return findNext(points, true);
-	}
-	
-	/**
-	 * Performs a single RANSAC step on the supplied point set. Optionally,
-	 * all associated inlier points are removed from the point set by setting
-	 * array elements to {@code null}.
-	 * 
-	 * @param points an array of {@link Pnt2d} instances (modified)
-	 * @param removeInliers set true to remove inliers are from the point set
-	 * @return the detected primitive (of generic type T) or {@code null} if unsuccessful
-	 */
-	public RansacCurveResult<T> findNext(Pnt2d[] points, boolean removeInliers) {
 		Pnt2d[] drawInit = null;
 		double scoreInit = -1;
 		T primitiveInit = null;
 		
-		for (int i = 0; i < params.maxIterations; i++) {
+		for (int i = 0; i < params.randomPointDraws; i++) {
 			Pnt2d[] draw = drawRandomPoints(points);
 			T primitive = fitInitial(draw);
 			if (primitive == null) {
@@ -154,7 +132,7 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 		}
 		else {
 			// refit the primitive to all inliers:
-			Pnt2d[] inliers = collectInliers(primitiveInit, points, removeInliers);
+			Pnt2d[] inliers = collectInliers(primitiveInit, points);
 			T primitiveFinal = fitFinal(inliers);	
 			if (primitiveFinal != null)
 				return new RansacCurveResult<T>(drawInit, primitiveInit, primitiveFinal, scoreInit, inliers);
@@ -173,6 +151,47 @@ public abstract class RansacCurveDetector<T extends Curve2d> {
 	 */
 	protected Pnt2d[] drawRandomPoints(Pnt2d[] points) {	
 		return randomDraw.drawFrom(points, K);
+	}
+	
+	protected int countInliers(T curve, Pnt2d[] points) {
+		int count = 0;
+		for (Pnt2d p : points) {
+			if (p != null) {
+				double d = curve.getDistance(p);
+				if (d < params.maxInlierDistance) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	/**
+	 * Find all points that are considered inliers with respect to the
+	 * specified curve and the value of {@link RansacParameters#maxInlierDistance}.
+	 * If {@link RansacParameters#removeInliers} is set true, these
+	 * points are also removed from the original point set, otherwise
+	 * they remain.
+	 * 
+	 * @param curve
+	 * @param points
+	 * @return
+	 */
+	protected Pnt2d[] collectInliers(Curve2d curve, Pnt2d[] points) {
+		List<Pnt2d> pList = new ArrayList<>();
+		for (int i = 0; i < points.length; i++) {
+			Pnt2d p = points[i];
+			if (p != null) {
+				double d = curve.getDistance(p);
+				if (d < params.maxInlierDistance) {
+					pList.add(p);
+					if (params.removeInliers) {
+						points[i] = null;
+					}
+				}
+			}
+		}
+		return pList.toArray(new Pnt2d[0]);
 	}
 	
 	// abstract methods to be implemented by specific sub-classes: -----------------------

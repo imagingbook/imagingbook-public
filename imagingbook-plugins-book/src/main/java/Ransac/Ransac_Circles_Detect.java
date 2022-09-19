@@ -41,8 +41,11 @@ import imagingbook.common.ransac.RansacCircleDetector;
 public class Ransac_Circles_Detect implements PlugInFilter, Settings {
 
 	private static RansacCircleDetector.Parameters params = new RansacCircleDetector.Parameters();
+	static {
+		params.randomSeed = 17;
+	}
+	
 	private static int MaxCircleCount = 3;
-	private static int RandomSeed = 17;
 	
 	private int W, H;
 	private ImagePlus im;
@@ -70,10 +73,6 @@ public class Ransac_Circles_Detect implements PlugInFilter, Settings {
 		// ---------------------------------------------------------------------
 		RansacCircleDetector detector = new RansacCircleDetector(params);
 		// ---------------------------------------------------------------------
-		
-		if (RandomSeed > 0) {
-			detector.getRandom().setSeed(RandomSeed);
-		}
 		
 		List<ImagePlus> resultImages = new ArrayList<>();
 		int cnt = 0;
@@ -146,7 +145,6 @@ public class Ransac_Circles_Detect implements PlugInFilter, Settings {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
 		gd.addNumericField("Max. number of circles", MaxCircleCount);
-		gd.addNumericField("Random seed", RandomSeed);
 		
 		gd.addStringField("Output title", title, 16);
 		
@@ -156,7 +154,6 @@ public class Ransac_Circles_Detect implements PlugInFilter, Settings {
 		
 		getFromDialog(params, gd);
 		MaxCircleCount = (int) gd.getNextNumber();
-		RandomSeed = (int) gd.getNextNumber();
 		title = gd.getNextString();
 		
 		return params.validate();

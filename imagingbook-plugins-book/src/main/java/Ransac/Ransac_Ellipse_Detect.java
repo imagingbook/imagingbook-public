@@ -42,8 +42,11 @@ import imagingbook.common.ransac.RansacEllipseDetector;
 public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 
 	private static RansacEllipseDetector.Parameters params = new RansacEllipseDetector.Parameters();
+	static {
+		params.randomSeed = 17;
+	}
+	
 	private static int MaxEllipseCount = 3;
-	private static int RandomSeed = 17;
 	
 	private int W, H;
 	private ImagePlus im;
@@ -71,10 +74,6 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 		// ---------------------------------------------------------------------
 		RansacEllipseDetector detector = new RansacEllipseDetector(params);
 		// ---------------------------------------------------------------------
-		
-		if (RandomSeed > 0) {
-			detector.getRandom().setSeed(RandomSeed);
-		}
 		
 		List<ImagePlus> resultImages = new ArrayList<>();
 		int cnt = 0;
@@ -145,7 +144,6 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
 		gd.addNumericField("Max. number of ellipses", MaxEllipseCount);
-		gd.addNumericField("Random seed", RandomSeed);
 		
 		gd.addStringField("Output title", title, 16);
 		
@@ -155,7 +153,6 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 		
 		getFromDialog(params, gd);
 		MaxEllipseCount = (int) gd.getNextNumber();
-		RandomSeed = (int) gd.getNextNumber();
 		title = gd.getNextString();
 		
 		return params.validate();

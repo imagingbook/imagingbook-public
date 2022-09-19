@@ -39,8 +39,11 @@ import imagingbook.common.ransac.RansacLineDetector;
 public class Ransac_Line_Detect implements PlugInFilter, Settings {
 	
 	private static RansacLineDetector.Parameters params = new RansacLineDetector.Parameters();
+	static {
+		params.randomSeed = 17;
+	}
+	
 	private static int MaxLineCount = 6;
-	private static int RandomSeed = 17;
 	
 	// --------------------
 	
@@ -70,10 +73,6 @@ public class Ransac_Line_Detect implements PlugInFilter, Settings {
 		// ---------------------------------------------------------------
 		RansacLineDetector detector = new RansacLineDetector();
 		// ---------------------------------------------------------------
-
-		if (RandomSeed > 0) {
-			detector.getRandom().setSeed(RandomSeed);
-		}
 		
 		List<ImagePlus> resultImages = new ArrayList<>();
 		int cnt = 0;
@@ -143,7 +142,6 @@ public class Ransac_Line_Detect implements PlugInFilter, Settings {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
 		gd.addNumericField("Max. number of lines", MaxLineCount);
-		gd.addNumericField("Random seed", RandomSeed);
 		
 		gd.addStringField("Output title", title, 16);
 		
@@ -153,7 +151,6 @@ public class Ransac_Line_Detect implements PlugInFilter, Settings {
 		
 		getFromDialog(params, gd);
 		MaxLineCount = (int) gd.getNextNumber();
-		RandomSeed = (int) gd.getNextNumber();
 		title = gd.getNextString();
 		
 		return params.validate();
