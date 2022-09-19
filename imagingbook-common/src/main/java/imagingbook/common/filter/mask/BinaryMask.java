@@ -39,7 +39,7 @@ public class BinaryMask {
 		int cnt = 0;
 		for (int x = 0; x < width; x++) {
 			if (maskArray[x].length != height) {
-				throw new IllegalArgumentException("mask array is not rectanglar");
+				throw new IllegalArgumentException("mask array is not rectangular");
 			}
 			for (int y = 0; y < height; y++) {
 				if (maskArray[x][y] != 0)
