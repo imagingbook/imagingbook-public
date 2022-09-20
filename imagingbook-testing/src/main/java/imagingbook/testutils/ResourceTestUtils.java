@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.sampleimages.testutils;
+package imagingbook.testutils;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -32,8 +32,11 @@ public abstract class ResourceTestUtils {
 		assertTrue("enum must implement NamedResource", NamedResource.class.isAssignableFrom(enumClass));
 		if (NamedResource.class.isAssignableFrom(enumClass)) {
 			for (E item : enumClass.getEnumConstants()) {
-				NamedResource nr = (NamedResource) item;
-				assertNotNull("could not find resource " + item.toString(), nr.getURL());
+				NamedResource res = (NamedResource) item;
+				assertNotNull(res.getRelativePath());
+				assertNotNull(new File(res.getRelativePath()));
+				assertNotNull(res.getURL());
+				assertNotNull("could not find resource " + item.toString(), res.getURL());
 			}
 				
 		}
@@ -47,12 +50,13 @@ public abstract class ResourceTestUtils {
 		assertTrue("enum must implement ImageResource", ImageResource.class.isAssignableFrom(enumClass));
 		if (ImageResource.class.isAssignableFrom(enumClass)) {
 			for (E item : enumClass.getEnumConstants()) {
-				ImageResource ir = (ImageResource) item;
-				File file = new File(ir.getRelativePath());
+				ImageResource res = (ImageResource) item;
+				assertNotNull(res.getRelativePath());
+				File file = new File(res.getRelativePath());
 				assertNotNull(file);
-				assertNotNull(ir.getURL());
-				assertNotNull("could not find file " + file.getAbsolutePath(), ir.getURL());
-				assertNotNull("could not open image for resource " + ir,  ir.getImage());
+				assertNotNull(res.getURL());
+				assertNotNull("could not find file " + file.getAbsolutePath(), res.getURL());
+				assertNotNull("could not open image for resource " + res,  res.getImage());
 			}
 		}
 	}
