@@ -9,6 +9,7 @@
 package imagingbook.sampleimages;
 
 import imagingbook.core.resource.ImageResource;
+import imagingbook.testutils.ImageResourceSelfTest;
 
 
 
@@ -67,6 +68,6 @@ public enum GeneralSampleImage implements ImageResource {
 //	 * This definition causes this ImageResource to be tested automatically.
 //	 * The class must be public and static, the name is arbitrary.
 //	 */
-//	public static class SelfTest extends ImageResourceSelfTest {}
+	public static class SelfTest extends ImageResourceSelfTest {}
 
 }

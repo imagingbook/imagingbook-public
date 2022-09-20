@@ -17,9 +17,10 @@ import org.junit.Test;
 import ij.IJ;
 import ij.ImagePlus;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.testutils.ResourceTestUtils;
+//import imagingbook.sampleimages.testutils.ResourceTestUtils;
+import imagingbook.testutils.ResourceTestUtils;
 
-
+@Deprecated
 public class GeneralSampleImageTest {
 	
 	@Test
