@@ -13,9 +13,9 @@ import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.color.colorspace.LabColorSpace;
 import imagingbook.common.color.colorspace.LinearRgbColorSpace;
 import imagingbook.common.color.colorspace.LuvColorSpace;
-import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testutils.ImageTestUtils;
 
 public class ColorStackTest {
 	

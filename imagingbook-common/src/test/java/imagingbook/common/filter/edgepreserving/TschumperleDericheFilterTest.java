@@ -18,8 +18,8 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.edgepreserving.TschumperleDericheF.Parameters;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.testimages.FilterTestImage;
+import imagingbook.testutils.ImageTestUtils;
 
 public class TschumperleDericheFilterTest {
 	

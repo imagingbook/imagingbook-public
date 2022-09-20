@@ -7,9 +7,9 @@ import org.junit.Test;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.image.OutOfBoundsStrategy;
-import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.testimages.FilterTestImage;
+import imagingbook.testutils.ImageTestUtils;
 
 public class ExampleFilter3x3ScalarTest {
 	

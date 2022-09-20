@@ -18,7 +18,3 @@
  * @see ImageResource
  */
 package imagingbook.testimages;
-
-import imagingbook.core.resource.ImageResource;
-import imagingbook.core.resource.NamedResource;
-

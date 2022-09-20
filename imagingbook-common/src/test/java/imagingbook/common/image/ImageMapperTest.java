@@ -14,9 +14,9 @@ import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.geometry.mappings.linear.Translation2D;
 import imagingbook.common.image.interpolation.InterpolationMethod;
-import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testimages.MappingTestImage;
+import imagingbook.testutils.ImageTestUtils;
 
 public class ImageMapperTest {
 	

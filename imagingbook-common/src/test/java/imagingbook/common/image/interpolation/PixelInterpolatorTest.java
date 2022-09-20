@@ -11,8 +11,8 @@ import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.RgbAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testutils.ImageTestUtils;
 
 public class PixelInterpolatorTest {
 	

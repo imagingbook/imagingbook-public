@@ -8,9 +8,9 @@
  *******************************************************************************/
 package imagingbook.testimages;
 
-import imagingbook.common.testutils.ImageResourceSelfTest;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testutils.ImageResourceSelfTest;
 
 /**
  * Enumeration defining a set of {@link ImageResource} objects associated

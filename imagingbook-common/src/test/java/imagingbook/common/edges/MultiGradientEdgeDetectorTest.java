@@ -8,8 +8,8 @@ import org.junit.Test;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.testimages.EdgeDetectionTestImage;
+import imagingbook.testutils.ImageTestUtils;
 
 
 public class MultiGradientEdgeDetectorTest {

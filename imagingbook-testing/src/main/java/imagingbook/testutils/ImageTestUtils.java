@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.testutils;
+package imagingbook.testutils;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -20,7 +20,6 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
-import imagingbook.common.ij.IjUtils;
 
 
 public class ImageTestUtils {
@@ -32,8 +31,8 @@ public class ImageTestUtils {
 	}
 	
 	public static boolean match(ImageProcessor ip1, ImageProcessor ip2, double tolerance) {
-		assertTrue("images ip1, ip2 must be of same type", IjUtils.sameType(ip1, ip2));
-		assertTrue("images ip1, ip2 must be of same size", IjUtils.sameSize(ip1, ip2));
+		assertTrue("images ip1, ip2 must be of same type", sameType(ip1, ip2));
+		assertTrue("images ip1, ip2 must be of same size", sameSize(ip1, ip2));
 		int width = ip1.getWidth();
 		int height = ip1.getHeight();
 		
@@ -114,4 +113,27 @@ public class ImageTestUtils {
 		return cp;
 	}
 	
+	// ---------------------------------------------------------------------------
+	
+	/**
+	 * Checks if two images are of the same type.
+	 * 
+	 * @param ip1 the first image
+	 * @param ip2 the second image
+	 * @return true if both images have the same type
+	 */
+	public static boolean sameType(ImageProcessor ip1, ImageProcessor ip2) {
+		return ip1.getClass().equals(ip2.getClass());
+	}
+	
+	/**
+	 * Checks if two images have the same size.
+	 * 
+	 * @param ip1 the first image
+	 * @param ip2 the second image
+	 * @return true if both images have the same size
+	 */
+	public static boolean sameSize(ImageProcessor ip1, ImageProcessor ip2) {
+		return ip1.getWidth() == ip2.getWidth() && ip1.getHeight() == ip2.getHeight();
+	}
 }

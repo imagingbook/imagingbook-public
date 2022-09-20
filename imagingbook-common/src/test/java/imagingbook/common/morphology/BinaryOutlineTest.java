@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
-import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.testimages.BinaryTestImage;
+import imagingbook.testutils.ImageTestUtils;
 
 public class BinaryOutlineTest {
 

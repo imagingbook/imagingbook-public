@@ -6,14 +6,9 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.testutils;
+package imagingbook.testutils;
 
 import java.util.Random;
-
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-
-import imagingbook.common.math.Matrix;
 
 public class RandomMatrixGenerator {
 	
@@ -107,25 +102,25 @@ public class RandomMatrixGenerator {
 	
 	// --------------------------------------------------------------------
 	
-	public static void main(String[] args) {
-		RandomMatrixGenerator rg = new RandomMatrixGenerator(17);
-//		RealMatrix M = MatrixUtils.createRealMatrix(rg.makeRandomSymmetricMatrix(3));
-		RealMatrix M = MatrixUtils.createRealMatrix(rg.makeRandomMatrix(3 , 5,  1));
-		System.out.println("M = \n" + Matrix.toString(M));
-		System.out.println("M symmetric = " + MatrixUtils.isSymmetric(M, 1e-6));
-		
-		
-		
-		
-		RealMatrix Z = MatrixUtils.createRealMatrix(new double[][]
-				{{-640324.756071648600000, -13455.063269205853000, -271133.849253710070000, -22199.258754168728000}, 
-			{-13455.063269205852000, 565371.765546445600000, -16613.193426604714000, 58.180548072531145}, 
-			{-271133.849253710070000, -16613.193426604714000, 74939.976000059920000, 1080.126330774859300}, 
-			{-22199.258754168724000, 58.180548072531160, 1080.126330774859000, 13.014525143606523}}
-		);
-		
-		System.out.println("Z symmetric = " + Matrix.isSymmetric(Z, 1e-12));
-		
-	}
+//	public static void main(String[] args) {
+//		RandomMatrixGenerator rg = new RandomMatrixGenerator(17);
+////		RealMatrix M = MatrixUtils.createRealMatrix(rg.makeRandomSymmetricMatrix(3));
+//		RealMatrix M = MatrixUtils.createRealMatrix(rg.makeRandomMatrix(3 , 5,  1));
+//		System.out.println("M = \n" + Matrix.toString(M));
+//		System.out.println("M symmetric = " + MatrixUtils.isSymmetric(M, 1e-6));
+//		
+//		
+//		
+//		
+//		RealMatrix Z = MatrixUtils.createRealMatrix(new double[][]
+//				{{-640324.756071648600000, -13455.063269205853000, -271133.849253710070000, -22199.258754168728000}, 
+//			{-13455.063269205852000, 565371.765546445600000, -16613.193426604714000, 58.180548072531145}, 
+//			{-271133.849253710070000, -16613.193426604714000, 74939.976000059920000, 1080.126330774859300}, 
+//			{-22199.258754168724000, 58.180548072531160, 1080.126330774859000, 13.014525143606523}}
+//		);
+//		
+//		System.out.println("Z symmetric = " + Matrix.isSymmetric(Z, 1e-12));
+//		
+//	}
 
 }

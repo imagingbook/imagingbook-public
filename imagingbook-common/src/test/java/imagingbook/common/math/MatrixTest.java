@@ -9,7 +9,7 @@
 package imagingbook.common.math;
 
 import static imagingbook.common.math.Arithmetic.sqr;
-import static imagingbook.common.testutils.NumericTestUtils.TOLERANCE;
+import static imagingbook.testutils.NumericTestUtils.TOLERANCE;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -25,7 +25,7 @@ import imagingbook.common.math.Matrix.IncompatibleDimensionsException;
 import imagingbook.common.math.Matrix.NonsquareMatrixException;
 import imagingbook.common.math.Matrix.ZeroLengthVectorException;
 import imagingbook.common.math.exception.DivideByZeroException;
-import imagingbook.common.testutils.NumericTestUtils;
+import imagingbook.testutils.NumericTestUtils;
 
 
 public class MatrixTest {

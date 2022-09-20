@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.math;
 
-import static imagingbook.common.testutils.NumericTestUtils.assertArrayEquals;
+import static imagingbook.testutils.NumericTestUtils.assertArrayEquals;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 

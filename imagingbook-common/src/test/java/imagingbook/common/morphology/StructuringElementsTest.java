@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import imagingbook.common.testutils.NumericTestUtils;
+import imagingbook.testutils.NumericTestUtils;
 
 
 public class StructuringElementsTest {

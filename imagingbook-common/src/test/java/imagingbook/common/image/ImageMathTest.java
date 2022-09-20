@@ -13,9 +13,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import ij.process.ImageProcessor;
-import imagingbook.common.testutils.ImageTestUtils;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.testutils.ImageTestUtils;
 
 // TODO: these tests are incomplete
 public class ImageMathTest {
