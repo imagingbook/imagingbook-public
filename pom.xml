@@ -24,6 +24,7 @@
 		<module>imagingbook-plugins-extras</module>
 		<module>imagingbook-plugins-tools</module>
 		<module>imagingbook-sample-images</module>
+		<module>imagingbook-testing</module>
 	</modules>
 	
 	<build>
