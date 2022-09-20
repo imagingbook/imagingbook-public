@@ -46,11 +46,11 @@ import java.net.URL;
  * By default, resource files are assumed to be placed in a folder
  * with the same name as the resource class (i.e., "MyImages") relative
  * to the location of the class.
- * Resources may then only be referenced by their enum-name, for example,
+ * Resources may then be simply referenced by their enum-name, for example,
  * </p>
  * <pre>
- * URI uri = MyImages.image1.getURI();
- * ImagePlus im = IJ.openImage(uri.toString());
+ * URL url = MyImages.image1.getURL();
+ * ImagePlus im = IJ.openImage(url.toString());
  * </pre>
  * <p>
  * The benefit of using a named resource (over specifying resources by path strings) 

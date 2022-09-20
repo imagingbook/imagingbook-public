@@ -8,8 +8,15 @@
  *******************************************************************************/
 package imagingbook.sampleimages;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.net.URL;
+
 import org.junit.Test;
 
+import ij.IJ;
+import ij.ImagePlus;
+import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.testutils.ResourceTestUtils;
 
 
@@ -18,6 +25,15 @@ public class GeneralSampleImageTest {
 	@Test
 	public void test1() {
 		ResourceTestUtils.testImageResource(GeneralSampleImage.class);
+	}
+	
+	@Test
+	public void test2() {
+		for (ImageResource ir : GeneralSampleImage.values()) {
+			URL url = ir.getURL();
+			ImagePlus im = IJ.openImage(url.toString());
+			assertNotNull(im);
+		}
 	}
 	
 //	@Test

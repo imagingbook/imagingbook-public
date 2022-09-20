@@ -33,6 +33,9 @@ public abstract class ResourceTestUtils {
 		if (NamedResource.class.isAssignableFrom(enumClass)) {
 			for (E item : enumClass.getEnumConstants()) {
 				NamedResource nr = (NamedResource) item;
+				File file = new File(nr.getRelativePath());
+				assertNotNull(file);
+				assertNotNull(nr.getURL());
 				assertNotNull("could not find resource " + item.toString(), nr.getURL());
 			}	
 		}
@@ -48,6 +51,8 @@ public abstract class ResourceTestUtils {
 			for (E item : enumClass.getEnumConstants()) {
 				ImageResource ir = (ImageResource) item;
 				File file = new File(ir.getRelativePath());
+				assertNotNull(file);
+				assertNotNull(ir.getURL());
 				assertNotNull("could not find file " + file.getAbsolutePath(), ir.getURL());
 				assertNotNull("could not open image for resource " + ir,  ir.getImage());
 			}

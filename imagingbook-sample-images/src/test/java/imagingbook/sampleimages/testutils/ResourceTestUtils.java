@@ -49,6 +49,8 @@ public abstract class ResourceTestUtils {
 			for (E item : enumClass.getEnumConstants()) {
 				ImageResource ir = (ImageResource) item;
 				File file = new File(ir.getRelativePath());
+				assertNotNull(file);
+				assertNotNull(ir.getURL());
 				assertNotNull("could not find file " + file.getAbsolutePath(), ir.getURL());
 				assertNotNull("could not open image for resource " + ir,  ir.getImage());
 			}
