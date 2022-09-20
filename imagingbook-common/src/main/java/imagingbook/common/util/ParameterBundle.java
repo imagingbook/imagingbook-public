@@ -12,6 +12,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 import ij.gui.GenericDialog;
 import imagingbook.common.ij.DialogUtils;
@@ -86,6 +88,17 @@ import imagingbook.common.ij.DialogUtils;
  */
 public interface ParameterBundle {
 	
+	default Field[] getValidParameterFields() {
+		Class<? extends ParameterBundle> clazz = this.getClass();
+		List<Field> validFields = new ArrayList<>();
+		for (Field f : clazz.getFields()) {
+			if (isValidParameterItem(f)) {
+				validFields.add(f);
+			}
+		}
+		return validFields.toArray(new Field[0]);
+	}
+	
 	default String printToString() {
 		ByteArrayOutputStream bas = new ByteArrayOutputStream();
 		try (PrintStream strm = new PrintStream(bas)) {
@@ -130,18 +143,21 @@ public interface ParameterBundle {
 		return true;
 	}
 	
-//	static boolean isValidParameterItem(Field f) {
-//		int mod = f.getModifiers();
-//		if (Modifier.isPrivate(mod) || Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
-//			return false;
-//		}
+	static boolean isValidParameterItem(Field f) {
+		int mod = f.getModifiers();
+		if (Modifier.isPrivate(mod) || Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
+			return false;
+		}
+		else {
+			return true;
+		}
 //		Class<?> clazz = f.getType();
-//		if (clazz == boolean.class || clazz == int.class || clazz == float.class || clazz == double.class || 
+//		if (clazz == boolean.class || clazz == int.class || clazz == long.class || clazz == float.class || clazz == double.class || 
 //			clazz == String.class || clazz.isEnum())
 //			return true;
 //		else
 //			return false;
-//	}
+	}
 
 //	static void printModifiers(Field f) {
 //		int mod = f.getModifiers();

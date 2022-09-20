@@ -60,6 +60,7 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, Settings {
 
 	@Override
 	public void run(ImageProcessor ip) {
+		
 		title = "Ellipses from " + im.getTitle();
 		W = ip.getWidth();
 		H = ip.getHeight();	

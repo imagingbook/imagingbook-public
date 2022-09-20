@@ -12,6 +12,8 @@ import imagingbook.testimages.RansacTestImage;
 
 public class RansacLineDetectorTest {
 
+	static double TOL = 1e-3;
+	
 	@Test
 	public void test1() {	
 		ByteProcessor bp = (ByteProcessor) RansacTestImage.NoisyLines.getImage().getProcessor();
@@ -29,7 +31,10 @@ public class RansacLineDetectorTest {
 		RansacLineDetector detector = new RansacLineDetector(params);	
 		List<RansacResult<AlgebraicLine>> lines = detector.detectAll(bp, maxCount);
 		
-		assertEquals(6, lines.size());
+		assertEquals(maxCount, lines.size());
+		assertEquals(536, lines.get(0).getScore(), TOL);
+		assertEquals(506, lines.get(1).getScore(), TOL);
+		assertEquals(384, lines.get(2).getScore(), TOL);
 	}
 
 }

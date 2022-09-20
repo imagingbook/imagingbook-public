@@ -13,7 +13,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 import ij.gui.GenericDialog;
 import imagingbook.common.util.ParameterBundle;
@@ -90,24 +91,31 @@ public abstract class DialogUtils {
 	
 	// ------------ Methods related to ParameterBundle  ------------------
 	
+	static Field[] getDialogFields(ParameterBundle params) {
+		Class<? extends ParameterBundle> clazz = params.getClass();
+		List<Field> dialogFields = new ArrayList<>();
+		for (Field f : clazz.getFields()) {
+			if (isValidDialogField(f)) {
+				dialogFields.add(f);
+			}
+		}
+		return dialogFields.toArray(new Field[0]);
+	}
+	
 	/**
 	 * Adds all qualified fields of the given {@link ParameterBundle} to the specified
 	 * {@link GenericDialog} instance, in the exact order of their definition.
 	 * Qualified means that the field is of suitable type and no 
 	 * {@link DialogUtils.DialogHide} annotation is present.
-	 * Allowed field types are {@code boolean}, {@code int}, {@code float},
+	 * Allowed field types are {@code boolean}, {@code int}, {@code long}, {@code float},
 	 * {@code double}, {@code enum}, and {@code String}.
 	 * 
 	 * @param params a {@link ParameterBundle} instance
 	 * @param gd a generic dialog
 	 */
 	public static void addToDialog(ParameterBundle params, GenericDialog gd) {
-		Class<? extends ParameterBundle> clazz = params.getClass();
-		Field[] fields = clazz.getFields();		// gets only public fields
-		for (Field f : fields) {
-			if (!isValidParameterItem(f) || f.isAnnotationPresent(DialogUtils.DialogHide.class)) {
-				continue;
-			}
+		Field[] dialogFields = getDialogFields(params);		// gets only public fields
+		for (Field f : dialogFields) {
 			try {
 				addFieldToDialog(params, f, gd);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -115,6 +123,21 @@ public abstract class DialogUtils {
 			}
 		}
 	}
+	
+//	public static void addToDialog(ParameterBundle params, GenericDialog gd) {
+//		Class<? extends ParameterBundle> clazz = params.getClass();
+//		Field[] fields = clazz.getFields();		// gets only public fields
+//		for (Field f : fields) {
+//			if (!isValidDialogField(f) || f.isAnnotationPresent(DialogUtils.DialogHide.class)) {
+//				continue;
+//			}
+//			try {
+//				addFieldToDialog(params, f, gd);
+//			} catch (IllegalArgumentException | IllegalAccessException e) {
+//				throw new RuntimeException(e.getMessage());	// TODO: refine exception handling!
+//			}
+//		}
+//	}
 	
 	/**
 	 * Retrieves the field values of the specified {@link ParameterBundle} from
@@ -131,7 +154,7 @@ public abstract class DialogUtils {
 		Field[] fields = clazz.getFields();		// gets only public fields
 		int errorCount = 0;
 		for (Field f : fields) {
-			if (!isValidParameterItem(f) || f.isAnnotationPresent(DialogUtils.DialogHide.class)) {
+			if (!isValidDialogField(f) || f.isAnnotationPresent(DialogUtils.DialogHide.class)) {
 				continue;
 			}
 			try {
@@ -179,6 +202,9 @@ public abstract class DialogUtils {
 		else if (clazz.equals(int.class)) {
 			dialog.addNumericField(name, field.getInt(params), 0);
 		}
+		else if (clazz.equals(long.class)) {
+			dialog.addNumericField(name, field.getLong(params), 0);
+		}
 		else if (clazz.equals(float.class)) {
 			dialog.addNumericField(name, field.getFloat(params), digits);
 		}
@@ -222,6 +248,13 @@ public abstract class DialogUtils {
 			}
 			field.setInt(params, (int) val);
 		}
+		else if (clazz.equals(long.class)) {
+			double val = gd.getNextNumber();
+			if (Double.isNaN(val)) {
+				return false;
+			}
+			field.setLong(params, (long) val);
+		}
 		else if (clazz.equals(float.class)) {
 			double val = gd.getNextNumber();
 			if (Double.isNaN(val)) {
@@ -259,17 +292,18 @@ public abstract class DialogUtils {
 		return true;
 	}
 	
-	private static boolean isValidParameterItem(Field f) {
-		int mod = f.getModifiers();
-		if (Modifier.isPrivate(mod) || Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
+	private static boolean isValidDialogField(Field f) {
+		if (!ParameterBundle.isValidParameterItem(f)) {
 			return false;
 		}
+//		int mod = f.getModifiers();
+//		if (Modifier.isPrivate(mod) || Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
+//			return false;
+//		}
+		// accept only certain field types in dialogs:
 		Class<?> clazz = f.getType();
-		if (clazz == boolean.class || clazz == int.class || clazz == float.class || clazz == double.class || 
-			clazz == String.class || clazz.isEnum())
-			return true;
-		else
-			return false;
+		return (clazz == boolean.class || clazz == int.class || clazz == long.class || clazz == float.class || clazz == double.class || 
+			clazz == String.class || clazz.isEnum());
 	}
 
 	

@@ -57,7 +57,7 @@ public abstract class RansacDetector<T extends Primitive2d> {
 		
 		/** Random seed used initialization (0 = no seed).*/
 		@DialogLabel("Random seed (0 = no seed)") 
-		public long randomSeed = 0;
+		public int randomSeed = 0;
 	}
 	
 	// -----------------------------------------------------------
