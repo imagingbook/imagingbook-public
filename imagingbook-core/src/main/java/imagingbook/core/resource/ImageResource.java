@@ -8,6 +8,9 @@
  *******************************************************************************/
 package imagingbook.core.resource;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import ij.IJ;
 import ij.ImagePlus;
 
@@ -55,21 +58,44 @@ public interface ImageResource extends NamedResource {
 	}
 	
 	
+	static final HashSet<String> ValidImageExtensions = 
+			new HashSet<>(Arrays.asList("png", "tif", "tiff", "jpg", "jpeg"));
+	
 	/**
-	 * Derives and returns a filename for this resource item
-	 * to be used in parameterless enum constructors.
-	 * In this case the file name is identical to the name
-	 * of the enum constant and no separate file name needs to be
-	 * specified.
-	 * The last underscore (_) character in the name, if any is contained,
-	 * is replaced by a '.' character such that the remaining characters
-	 * are interpreted as a file extension. 
-	 * If no underscore is found, "png" is taken as the default file extension. 
-	 * For example,
+	 * <p>
+	 * Derives and returns a filename for this resource item to be used in
+	 * parameterless enum constructors. By default the file name is identical to the
+	 * name of the enum constant supplemented with a ".png" extension. No separate
+	 * file name needs to be supplied. A different file extension may be specified
+	 * by having the enum name end with an underscore followed by a valid image file
+	 * extension, that is, "png", "tif", "tiff", "jpg", or "jpeg". In this case, the
+	 * last underscore of the enum name is replaced by a '.' character to form the
+	 * file name. (Note that '.' is no legal character in a Java identifier, thus
+	 * cannot be used for the enum name directly.) If the last underscore is not
+	 * followed by a valid extension, the default case is assumed ("png").
+	 * </p>
+	 * <p>
+	 * Examples:
+	 * </p>
 	 * <pre>
-	 * "foo_tif"      --&gt; "foo.tif"
-	 * "The_File_jpg" --&gt; "The_File.jpg"
-	 * "foo"          --&gt; "foo.png"
+	 * enum DummyNamedResource implements ImageResource {
+	 *	a,
+	 *	A_png,
+	 *	foo_tif,
+	 *	foo_tiff,
+	 *	The_File_jpg,
+	 *	The_File_jpeg,
+	 *	_Some____File_bla;
+	 * }
+	 * </pre>
+	 * <p>results in the following 
+	 * a --> a.png A_png --> A.png 
+	 * foo_tif --> foo.tif 
+	 * foo_tiff --> foo.tiff
+	 * The_File_jpg --> The_File.jpg 
+	 * The_File_jpeg --> The_File.jpeg
+	 * _Some____File_bla --> _Some____File_bla.png
+	 * </pre>
 	 * 
 	 * @return the derived image filename
 	 */
@@ -79,12 +105,14 @@ public interface ImageResource extends NamedResource {
 		if (k >= 0) {
 			String filename = itemname.substring(0, k);
 			String extension  = itemname.substring(k + 1);
-			return filename + "." + extension;
+			if (ValidImageExtensions.contains(extension)) {
+				return filename + "." + extension;
+			}
 		}
-		else {
-			return itemname + ".png";
-		}
+		return itemname + ".png";
 	}
+	
+
 
 
 }

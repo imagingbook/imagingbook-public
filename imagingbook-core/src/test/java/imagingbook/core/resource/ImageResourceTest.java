@@ -10,8 +10,10 @@ public class ImageResourceTest {
 		a,
 		A_png,
 		foo_tif,
+		foo_tiff,
 		The_File_jpg,
-		_Some____File_txt,
+		The_File_jpeg,
+		_Some____File_bla,
 		;
 	}
 
@@ -20,14 +22,16 @@ public class ImageResourceTest {
 		assertEquals("a.png", DummyNamedResource.a.getFileName());
 		assertEquals("A.png", DummyNamedResource.A_png.getFileName());
 		assertEquals("foo.tif", DummyNamedResource.foo_tif.getFileName());
+		assertEquals("foo.tiff", DummyNamedResource.foo_tiff.getFileName());
 		assertEquals("The_File.jpg", DummyNamedResource.The_File_jpg.getFileName());
-		assertEquals("_Some____File.txt", DummyNamedResource._Some____File_txt.getFileName());	
+		assertEquals("The_File.jpeg", DummyNamedResource.The_File_jpeg.getFileName());
+		assertEquals("_Some____File_bla.png", DummyNamedResource._Some____File_bla.getFileName());	
 	}
 	
-//	public static void main(String[] args) {
-//		for (ImageResource item : DummyNamedResource.values()) {
-//			System.out.println(item + " --> " + item.getFileName());
-//		}
-//	}
+	public static void main(String[] args) {
+		for (ImageResource item : DummyNamedResource.values()) {
+			System.out.println(item + " --> " + item.getFileName());
+		}
+	}
 
 }
