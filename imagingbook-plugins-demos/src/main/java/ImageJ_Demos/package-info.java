@@ -9,7 +9,7 @@
 /**
  * 
  */
-@IjPluginPath("B&B>Demos")
+@IjPluginPath("B&B>Demos>ImageJ Demos")
 package ImageJ_Demos;
 
 import imagingbook.core.plugin.IjPluginPath;
