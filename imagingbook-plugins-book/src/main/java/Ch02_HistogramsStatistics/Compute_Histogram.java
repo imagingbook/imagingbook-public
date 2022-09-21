@@ -8,19 +8,40 @@
  *******************************************************************************/
 package Ch02_HistogramsStatistics;
 
+import Ch03_PointOperations.Equalize_Histogram;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * ImageJ plugin which calculates (and lists) the histogram of
+ * a 8-bit grayscale image. Alternatively the histogram could be 
+ * obtained with ImageJs built-in method (see also {@link Equalize_Histogram}):
+ * </p>
+ * <pre>
+ * int[] h = ip.getHistogram();</pre>
+ * <p>
+ * See Sec. 2.3 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ */
 public class Compute_Histogram implements PlugInFilter {
 
-	public int setup(String arg, ImagePlus img) {
+	@Override
+	public int setup(String arg, ImagePlus im) {
 		return DOES_8G + NO_CHANGES; 
 	}
     
+	@Override
 	public void run(ImageProcessor ip) {
-		int[] h = new int[256]; // histogram array
+		int[] h = new int[256]; 	// histogram array (initialized to zero values)
 		final int M  = ip.getWidth();
 		final int N = ip.getHeight();
 
@@ -30,8 +51,16 @@ public class Compute_Histogram implements PlugInFilter {
 				h[i] = h[i] + 1;
 			}
 		}
+		
+		// alternative to the above:
+		// int[] h = ip.getHistogram();
 
-		// ... histogram h[] can now be used
-		IJ.showMessage("This plugin only calculates the histogram but does not show anything");
+		// ... histogram h[] may now be used
+		
+		// listing histogram values:
+		IJ.log("  i       h[i]");
+		for (int i = 0; i < h.length; i++) {
+			IJ.log(String.format("%3d: %8d", i, h[i]));
+		}
 	}
 }

@@ -33,8 +33,7 @@ public class Show_ComponentTree_Stack implements PlugInFilter {
 	static Method method = Method.LinearTime;
 
 	@Override
-	public int setup(String arg0, ImagePlus img) {
-		//this.img = img;
+	public int setup(String arg0, ImagePlus im) {
 		return DOES_8G + NO_CHANGES;
 	}
 	

@@ -19,22 +19,32 @@ import ij.process.ImageProcessor;
 import imagingbook.common.image.IntegralImage;
 
 /**
- * This ImageJ plugin first calculates the integral image for the current
+ * <p>This ImageJ plugin first calculates the integral image for the current
  * image (8 bit grayscale only) and uses it to find the mean and variance
  * inside the specified rectangle (ROI).
+ * Requires a rectangular ROI to be selected.
+ * See Sec. 2.8 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
  *
  * @author WB
- *
+ * @see imagingbook.common.image.IntegralImage
  */
 public class Integral_Image_GetRoiStatistics implements PlugInFilter {
 	
 	private ImagePlus im = null;
 
+	@Override
 	public int setup(String arg0, ImagePlus im) {
 		this.im = im;
 		return DOES_8G + ROI_REQUIRED + NO_CHANGES;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		Roi roi = im.getRoi();
 		if (roi.getType() != Roi.RECTANGLE) {
@@ -42,34 +52,21 @@ public class Integral_Image_GetRoiStatistics implements PlugInFilter {
 			return;
 		}
 		
-		Rectangle rect = roi.getBounds();
-		
+		Rectangle rect = roi.getBounds();	
 		int u0 = rect.x;
 		int v0 = rect.y;
 		int u1 = u0 + rect.width - 1;
 		int v1 = v0 + rect.height - 1;
 		
-		IJ.log("rect = " + rect);
-				
 		IntegralImage iI = new IntegralImage((ByteProcessor) ip);
 		double mean = iI.getMean(u0, v0, u1, v1);
 		double var = iI.getVariance(u0, v0, u1, v1);
 		
+		IJ.log("ROI rectangle = " + rect);
 		IJ.log("ROI area = " + rect.width * rect.height);
 		IJ.log("ROI mean = " + String.format("%.3f", mean));
 		IJ.log("ROI variance = " + String.format("%.3f", var));
 		IJ.log("ROI stddev = " + String.format("%.3f", Math.sqrt(var)));
 
 	}
-	
-//	private float[][] toFloatArray(long[][] A) {
-//		float[][] B = new float[A.length][A[0].length];
-//		for (int i = 0; i < A.length; i++) {
-//			for (int j = 0; j < A[0].length; j++) {
-//				B[i][j] = (float) A[i][j];
-//			}
-//		}
-//		return B;
-//	}
-
 }

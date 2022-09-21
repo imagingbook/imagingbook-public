@@ -12,10 +12,24 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * This ImageJ plugin increases the contrast of the selected
+ * grayscale image by 50%. The image is modified.
+ * See Sec. 3.1.1 (Prog. 3.1) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
 public class Raise_Contrast implements PlugInFilter {
 
 	@Override
-	public int setup(String arg, ImagePlus img) {
+	public int setup(String arg, ImagePlus im) {
 		return DOES_8G;
 	}
     
@@ -27,9 +41,9 @@ public class Raise_Contrast implements PlugInFilter {
 		for (int v = 0; v < h; v++) {
 			for (int u = 0; u < w; u++) {
 				int a = ip.get(u, v);
-				int b = (int) (a * 1.5 + 0.5);
+				int b = (int) (a * 1.5 + 0.5);	// safe form of rounding since a >= 0
 				if (b > 255)
-					b = 255; 	// clamp to maximum value
+					b = 255; 					// clamp to the maximum value
 				ip.set(u, v, b);
 			}
 		}

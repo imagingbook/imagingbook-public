@@ -24,7 +24,6 @@ import imagingbook.common.histogram.HistogramUtils;
  * 
  * @see HistogramMatcher
  * @see HistogramPlot
- * @see HistogramUtils#makeGaussianHistogram(double, double)
  *
  */
 public class Match_To_Gaussian_Histogram implements PlugInFilter {

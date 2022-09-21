@@ -32,18 +32,18 @@ public class Show_Threshold_Projection implements PlugInFilter {
 	
 	static int threshold = 100;
 	
-	private ImagePlus img;
+	private ImagePlus im;
 	
 	@Override
-	public int setup(String arg0, ImagePlus img) {
-		this.img = img;
+	public int setup(String arg0, ImagePlus im) {
+		this.im = im;
 		return DOES_8G + ROI_REQUIRED; // | NO_CHANGES;
 	}
 	
 	@Override
 	public void run(ImageProcessor ip) {
 		
-		Roi roi = img.getRoi();
+		Roi roi = im.getRoi();
 		int y = roi.getBounds().y;
 		
 		int width = ip.getWidth();
@@ -105,7 +105,7 @@ public class Show_Threshold_Projection implements PlugInFilter {
 			
 		}
 
-		new ImagePlus(img.getShortTitle()+ "-threshold-" + threshold, stack).show();
+		new ImagePlus(im.getShortTitle()+ "-threshold-" + threshold, stack).show();
 
 	}
 	

@@ -16,11 +16,24 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
 
 /**
- * This plugin demonstrates alpha blending between two images:
- * imBG: the background image (passed to and modified by the run method),
- * imFG: the foreground image (selected in a user dialog).
- * New (simpler) version using the {@code imagingbook.lib.ij.IjUtils.getOpenImages} library method.
- * 
+ * <p>
+ * This plugin demonstrates linear (alpha) blending between two images:
+ * <br>
+ * {@code imBG}: the background image (the current active image),
+ * <br>
+ * {@code imFG}: the foreground image (selected in a user dialog).
+ * </p>
+ * <p>
+ * Both images must be open when the plugin is started. The images 
+ * may be of different size.
+ * The transparency of the foreground image is initially set to &alpha; = 0.5
+ * but may be adjusted in the user dialog.
+ * See Sec. 3.8.5 (Prog. 3.5) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * @author WB
  * @version 2022/04/01
  */
@@ -46,7 +59,7 @@ public class Linear_Blending implements PlugInFilter {
 		ipBG.copyBits(ipFG, 0, 0, Blitter.ADD);
 	}	
 
-	boolean runDialog() {
+	private boolean runDialog() {
 		// get list of open images and their titles:
 		ImagePlus[] images = IjUtils.getOpenImages(true);
 		String[] titles = new String[images.length];
@@ -56,9 +69,9 @@ public class Linear_Blending implements PlugInFilter {
 		// create the dialog and show:
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addChoice("Foreground image:", titles, titles[0]);
-		gd.addNumericField("Alpha value (0,..,1)", alpha, 2);
+		gd.addNumericField("Alpha value (0,..,1)", alpha, 2);	
+		gd.showDialog();
 		
-		gd.showDialog(); 
 		if (gd.wasCanceled()) {
 			return false;
 		}

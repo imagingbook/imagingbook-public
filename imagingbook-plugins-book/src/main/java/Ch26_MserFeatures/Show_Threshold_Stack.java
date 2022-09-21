@@ -16,20 +16,18 @@ import ij.process.ImageProcessor;
 
 public class Show_Threshold_Stack implements PlugInFilter {
 	
-	private ImagePlus img;
+	private ImagePlus im;
 	
 	@Override
-	public int setup(String arg0, ImagePlus img) {
-		this.img = img;
+	public int setup(String arg0, ImagePlus im) {
+		this.im = im;
 		return DOES_8G; // | NO_CHANGES;
 	}
 	
 	@Override
 	public void run(ImageProcessor ip) {
-
 		ImageStack stack = makeThresholdStack((ByteProcessor)ip);
-		new ImagePlus("ThresholdStack of " + img.getShortTitle(), stack).show();
-
+		new ImagePlus("ThresholdStack of " + im.getShortTitle(), stack).show();
 	}
 	
 	/**

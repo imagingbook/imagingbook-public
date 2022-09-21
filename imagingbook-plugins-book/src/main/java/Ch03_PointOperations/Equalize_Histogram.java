@@ -12,10 +12,23 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * This ImageJ plugin performs linear histogram equalization on the
+ * selected grayscale image, which is modified.
+ * See Sec. 3.5 (Prog. 3.2) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ */
 public class Equalize_Histogram implements PlugInFilter {
 
 	@Override
-	public int setup(String arg, ImagePlus img) {
+	public int setup(String arg, ImagePlus im) {
 		return DOES_8G;
 	}
     
@@ -25,7 +38,7 @@ public class Equalize_Histogram implements PlugInFilter {
 		int N = ip.getHeight();
 		int K = 256; // number of intensity values
 
-		// compute the cumulative histogram:
+		// compute the cumulative histogram H:
 		int[] H = ip.getHistogram();
 		for (int j = 1; j < H.length; j++) {
 			H[j] = H[j - 1] + H[j];

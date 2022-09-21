@@ -13,15 +13,23 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
 /**
- * Does the same as {@link Raise_Contrast} but uses the one-dimensional
- * pixel array to read and writes pixel values. Should be fast.
+ * <p>
+ * This ImageJ plugin does the same as the {@link Raise_Contrast} plugin but uses 
+ * the one-dimensional pixel array to read and writes pixel values without calling
+ * any intermediate access methods, which is obviously more efficient.
+ * See Sec. 3.1.1 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  */
 public class Raise_Contrast_Fast implements PlugInFilter {
 
 	@Override
-	public int setup(String arg, ImagePlus img) {
+	public int setup(String arg, ImagePlus im) {
 		return DOES_8G;
 	}
 	

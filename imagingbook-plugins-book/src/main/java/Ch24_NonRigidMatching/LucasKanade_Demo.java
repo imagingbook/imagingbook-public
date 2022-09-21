@@ -74,16 +74,16 @@ public class LucasKanade_Demo implements PlugInFilter {
 	
 	static {PrintPrecision.set(6);}
 	
-	ImagePlus img = null;
+	ImagePlus im = null;
 	Overlay oly = null;
 
-	public int setup(String args, ImagePlus img) {
-		this.img = img;
+	public int setup(String args, ImagePlus im) {
+		this.im = im;
 		return DOES_8G + ROI_REQUIRED;
 	}
 
 	public void run(ImageProcessor ip) {		
-		Roi roi = img.getRoi();
+		Roi roi = im.getRoi();
 		if (roi != null && roi.getType() != Roi.RECTANGLE) {
 			IJ.error("Rectangular selection required!)");
 			return;
@@ -165,13 +165,13 @@ public class LucasKanade_Demo implements PlugInFilter {
 			
 			if (drawBoundaries) {
 				oly = new Overlay();
-				img.setOverlay(null);
-				img.setOverlay(oly);
+				im.setOverlay(null);
+				im.setOverlay(oly);
 				
 				oly.add(makePolygon(Q, 0.2, Color.green));
 				oly.add(makePolygon(QQ, 0.5, Color.blue));
 				oly.add(makePolygon(ptsFinal, 0.2, Color.red));
-				img.updateAndDraw();
+				im.updateAndDraw();
 			}
 		}
 	}

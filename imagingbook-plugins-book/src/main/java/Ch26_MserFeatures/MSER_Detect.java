@@ -70,7 +70,7 @@ public class MSER_Detect implements PlugInFilter {
 	private static Parameters params = new Parameters();	// MSER parameters
 	
 
-	ImagePlus img = null;
+	ImagePlus im = null;
 	
 	private Color[] colors = null;
 	
@@ -87,14 +87,14 @@ public class MSER_Detect implements PlugInFilter {
 	Overlay oly = null;
 	
 	@Override
-	public int setup(String arg0, ImagePlus img) {
-		this.img = img;
+	public int setup(String arg0, ImagePlus im) {
+		this.im = im;
 		return DOES_8G + NO_CHANGES;
 	}
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		roi = img.getRoi();
+		roi = im.getRoi();
 		ellipseStrokeWidth = Math.max(0.25, ip.getWidth() * 0.1 / 100);
 		labelFontSize = Math.max(3, (int) Math.round(ip.getWidth() / 100.0));	
 				
@@ -105,7 +105,7 @@ public class MSER_Detect implements PlugInFilter {
 		bp = ip.convertToByteProcessor();
 		cp = (MarkMserPixels) ? ip.convertToColorProcessor() : ip.convertToByteProcessor();
 		oly = new Overlay();
-		String title = img.getShortTitle() + "-MSER";
+		String title = im.getShortTitle() + "-MSER";
 		
 		if (BlackToWhite || WhiteToBlack) title = title + "-";
 		if (BlackToWhite)  title = title + "B";
