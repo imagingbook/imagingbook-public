@@ -15,20 +15,11 @@ import imagingbook.testutils.ImageResourceSelfTest;
 
 /**
  * <p>
- * Enumeration defining a set of {@link ImageResource} objects for some general test images.
- * Usage example:
+ * Enumeration of resources for images used in Chapter 1 of [1].
+ * <br>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
  * </p>
- * <pre>
- * import ij.process.ImageProcessor;
- * import imagingbook.core.resource.ImageResource;
- * import imagingbook.sampleimages.GeneralTestImage;
- * 
- * ImageResource ir = GeneralTestImage.Clown;
- * ImageProcessor ip = ir.getImage().getProcessor();
- * // process ip ...
- * </pre>
- * @see ImageResource
- *
  */
 public enum BookImageCh01 implements ImageResource {
 	Fig_01_01a,
@@ -55,19 +46,8 @@ public enum BookImageCh01 implements ImageResource {
 	;
 	
 	/**
-//	 * This definition causes this ImageResource to be tested automatically.
-//	 * The class must be public and static, the name is arbitrary.
-//	 */
+	 * Automatic JUnit self-test.
+	 */
 	public static class SelfTest extends ImageResourceSelfTest {}
 
-//	public static void main(String[] args) {
-//		System.out.println(BookImageCh01.Fig_01_01a.autoName());
-//		System.out.println(BookImageCh01.Fig_01_01a.getFileName());
-//		System.out.println(BookImageCh01.Fig_01_01a.getRelativeDirectory());
-//		System.out.println(BookImageCh01.Fig_01_01a.getRelativePath());
-//		System.out.println(BookImageCh01.Fig_01_01a.getURL());
-//		
-//		System.out.println(BookImageCh01.Fig0101b.getURL());
-//		System.out.println(GeneralSampleImage.Kepler.getURL());
-//	}
 }

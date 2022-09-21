@@ -80,21 +80,13 @@ public interface ImageResource extends NamedResource {
 	 * <pre>
 	 * enum DummyNamedResource implements ImageResource {
 	 *	a,
-	 *	A_png,
-	 *	foo_tif,
-	 *	foo_tiff,
-	 *	The_File_jpg,
-	 *	The_File_jpeg,
-	 *	_Some____File_bla;
+	 *	A_png,				// A.png
+	 *	foo_tif,			// foo.tif
+	 *	foo_tiff,			// foo.tiff
+	 *	The_File_jpg,		// The_File.jpg
+	 *	The_File_jpeg,		// The_File.jpeg
+	 *	_Some____File_bla;	// _Some____File_bla.png
 	 * }
-	 * </pre>
-	 * <p>results in the following 
-	 * a --> a.png A_png --> A.png 
-	 * foo_tif --> foo.tif 
-	 * foo_tiff --> foo.tiff
-	 * The_File_jpg --> The_File.jpg 
-	 * The_File_jpeg --> The_File.jpeg
-	 * _Some____File_bla --> _Some____File_bla.png
 	 * </pre>
 	 * 
 	 * @return the derived image filename
