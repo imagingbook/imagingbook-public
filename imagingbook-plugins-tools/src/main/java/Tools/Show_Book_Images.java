@@ -14,10 +14,10 @@ import java.awt.Font;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
+import imagingbook.bookimages.BookImageCh01;
+import imagingbook.bookimages.BookImageCh02;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.BookImageCh01;
-import imagingbook.sampleimages.BookImageCh02;
 
 /**
  * Open one of the listed book images
