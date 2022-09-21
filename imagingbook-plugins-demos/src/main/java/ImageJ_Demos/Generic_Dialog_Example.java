@@ -6,31 +6,34 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package IJ_Demos;
+package ImageJ_Demos;
 
-import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
+import ij.gui.NewImage;
 import ij.plugin.PlugIn;
-import ij.process.ByteProcessor;
-import ij.process.ImageConverter;
 
-/**
- * This ImageJ plugin shows how to change the type of the current
- * image 'in place', i.e., without copying the image.
- * 
- * @author WB
- * @version 2020/12/17
- */
-public class Convert_ImagePlus_To_Gray implements PlugIn {
+public class Generic_Dialog_Example implements PlugIn {
+	static String title = "Untitled";
+	static int width = 512;
+	static int height = 512;
 
-	@Override
 	public void run(String arg) {
-		ImagePlus im = IJ.getImage();	// im can be of any type
 		
-		ImageConverter iConv = new ImageConverter(im);
-		iConv.convertToGray8();
+		GenericDialog gd = new GenericDialog("New Image");
+		gd.addStringField("Title:", title);
+		gd.addNumericField("Width:", width, 0);
+		gd.addNumericField("Height:", height, 0);
+		gd.showDialog();
 		
-		ByteProcessor ip = (ByteProcessor) im.getProcessor();	// bp is of type ByteProcessor
-		ip.sharpen(); // process the grayscale image ...
+		if (gd.wasCanceled())
+			return;
+		
+		title = gd.getNextString();
+		width = (int) gd.getNextNumber();
+		height = (int) gd.getNextNumber();
+
+		ImagePlus imp = NewImage.createByteImage(title, width, height, 1, NewImage.FILL_WHITE);
+		imp.show();
 	}
 }

@@ -27,7 +27,7 @@ import imagingbook.common.color.quantize.KMeansClusteringQuantizerApache.Paramet
  * @author WB
  * @version 2017/01/03
  */
-public class KMeans_Quantization_Apache implements PlugInFilter {
+public class Quantize_KMeans_Apache implements PlugInFilter {
 	
 	private static boolean CREATE_INDEXED_IMAGE = true; 
 	private static boolean CREATE_RGB_IMAGE = false;
@@ -73,7 +73,7 @@ public class KMeans_Quantization_Apache implements PlugInFilter {
 	}
 	
 	private boolean showDialog(Parameters params) {
-		GenericDialog gd = new GenericDialog(KMeans_Quantization_Apache.class.getSimpleName());
+		GenericDialog gd = new GenericDialog(Quantize_KMeans_Apache.class.getSimpleName());
 		gd.addNumericField("No. of colors (2,..,256)", params.maxColors, 0);
 		gd.addNumericField("Max. iterations", params.maxIterations, 0);
 		

@@ -6,23 +6,38 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package IJ_Demos;
+package ImageJ_Demos;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.plugin.PlugIn;
+import ij.plugin.filter.PlugInFilter;
+import ij.process.ImageProcessor;
 
 /**
- * This plugin demonstrates how to run another ImageJ "command" (plugin)
- * from our own PlugIn using the IJ.run() method.
+ * This ImageJ plugin modifies and re-displays the current image 
+ * repeatedly.
  * 
  * @author WB
+ *
  */
-public class Run_Command_From_PlugIn implements PlugIn {
+public class UpdateAndDraw_Demo implements PlugInFilter {
 	
-    public void run(String args) {
-    	ImagePlus im = IJ.getImage();
-    	IJ.run(im, "Invert", "");	// run the "Invert" command on im
-    	// IJ.run("Invert");		// alternatively, run "Invert" on the current image
-    }
+	ImagePlus im;
+
+	public int setup(String arg, ImagePlus im) {
+		this.im = im;		// keep reference to associated ImagePlus
+		return DOES_ALL; 	// this plugin accepts any image
+	}
+
+	public void run(ImageProcessor ip) {
+		for (int i = 0; i < 10; i++) {
+			// modify this image:
+			ip.smooth();
+			ip.rotate(30);
+			// redisplay this image:
+			im.updateAndDraw();
+			// sleep so user can watch this:
+			IJ.wait(100);
+		}
+	}
 }

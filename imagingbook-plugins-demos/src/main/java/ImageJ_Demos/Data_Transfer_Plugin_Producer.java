@@ -6,46 +6,39 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package IJ_Demos;
+package ImageJ_Demos;
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
 /**
  * This ImageJ plugin shows how data can be communicated from one
- * plugin to another. In this example, ANOTHER plugin ({@link Data_Transfer_Plugin_Producer})
- * calculates a histogram that is subsequently retrieved by THIS
- * plugin {@link Data_Transfer_Plugin_Consumer}. Data are stored as a property of the associated
- * image (of type {@link ImagePlus}).
+ * plugin to another. In this example, THIS plugin ({@link Data_Transfer_Plugin_Producer})
+ * calculates a histogram that is subsequently retrieved by ANOTHER
+ * plugin {@link Data_Transfer_Plugin_Consumer}. 
+ * Data are stored as a <strong>property</strong> of the associated image (of type {@link ImagePlus}).
  * Note that the stored data should contain no instances of self-defined
  * classes, since these may be re-loaded when performing compile-and-run.
  * 
  * @author WB
  *
  */
-public class Data_Transfer_Plugin_Consumer implements PlugInFilter {
+public class Data_Transfer_Plugin_Producer implements PlugInFilter {
+	
+	// Create a unique (publicly visible) property key:
+	public static final String HistKey = 
+			Data_Transfer_Plugin_Producer.class.getCanonicalName() + "histogram";
+	
 	ImagePlus im;
 	
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
-		return DOES_ALL;}
-
+		return DOES_ALL + NO_CHANGES;}
+		
 	public void run(ImageProcessor ip) {
-		String key = Data_Transfer_Plugin_Producer.HistKey;	// property key from the producer plugin class
-		Object prop = im.getProperty(key);
-		if (prop == null) {
-			IJ.error("found no histogram for image " + im.getTitle());	
-		}
-		else {
-			int[] hist = (int[]) prop;
-			IJ.log("found histogram of length " + hist.length);
-			// process the histogram ...
-		}
-		
-		// delete the stored data if not needed any longer:
-		// im.setProperty(key, null);
-		
+		int[] hist = ip.getHistogram();
+		// add histogram to image properties:
+		im.setProperty(HistKey, hist);
 	}
 }

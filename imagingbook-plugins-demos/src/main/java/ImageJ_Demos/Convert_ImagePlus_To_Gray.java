@@ -6,38 +6,31 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package IJ_Demos;
+package ImageJ_Demos;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.plugin.filter.PlugInFilter;
-import ij.process.ImageProcessor;
+import ij.plugin.PlugIn;
+import ij.process.ByteProcessor;
+import ij.process.ImageConverter;
 
 /**
- * This ImageJ plugin modifies and re-displays the current image 
- * repeatedly.
+ * This ImageJ plugin shows how to change the type of the current
+ * image 'in place', i.e., without copying the image.
  * 
  * @author WB
- *
+ * @version 2020/12/17
  */
-public class UpdateAndDraw_Demo implements PlugInFilter {
-	
-	ImagePlus im;
+public class Convert_ImagePlus_To_Gray implements PlugIn {
 
-	public int setup(String arg, ImagePlus im) {
-		this.im = im;		// keep reference to associated ImagePlus
-		return DOES_ALL; 	// this plugin accepts any image
-	}
-
-	public void run(ImageProcessor ip) {
-		for (int i = 0; i < 10; i++) {
-			// modify this image:
-			ip.smooth();
-			ip.rotate(30);
-			// redisplay this image:
-			im.updateAndDraw();
-			// sleep so user can watch this:
-			IJ.wait(100);
-		}
+	@Override
+	public void run(String arg) {
+		ImagePlus im = IJ.getImage();	// im can be of any type
+		
+		ImageConverter iConv = new ImageConverter(im);
+		iConv.convertToGray8();
+		
+		ByteProcessor ip = (ByteProcessor) im.getProcessor();	// bp is of type ByteProcessor
+		ip.sharpen(); // process the grayscale image ...
 	}
 }

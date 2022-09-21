@@ -10,6 +10,6 @@
  * 
  */
 @IjPluginPath("B&B>Demos")
-package IJ_Demos;
+package ImageJ_Demos;
 
 import imagingbook.core.plugin.IjPluginPath;

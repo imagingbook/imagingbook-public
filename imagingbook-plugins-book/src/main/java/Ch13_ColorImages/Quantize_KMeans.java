@@ -6,9 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-
 package Ch13_ColorImages;
-
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -17,74 +15,72 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.quantize.OctreeQuantizer;
-
+import imagingbook.common.color.quantize.ColorQuantizer;
+import imagingbook.common.color.quantize.KMeansClusteringQuantizer;
+import imagingbook.common.color.quantize.KMeansClusteringQuantizer.Parameters;
+import imagingbook.common.color.quantize.KMeansClusteringQuantizer.SamplingMethod;
+import imagingbook.common.util.EnumUtils;
 
 
 /**
- * ImageJ plugin demonstrating the use of the {@link OctreeQuantizer} class.
+ * ImageJ plugin demonstrating the use of the {@link KMeansClusteringQuantizer} class.
  * 
  * @author WB
- * @version 2022/02/25
+ * @version 2017/01/03
  */
-public class Octree_Quantization implements PlugInFilter {
-	
-	private static int K = 16;
-	private static boolean QUICK = false;
+public class Quantize_KMeans implements PlugInFilter {
 	
 	private static boolean CREATE_INDEXED_IMAGE = true; 
 	private static boolean CREATE_RGB_IMAGE = false;
 	private static boolean LIST_COLOR_TABLE = false;
-
+	
 	static {
 		LogStream.redirectSystem();
 	}
 	
-	String title;
-
 	public int setup(String arg, ImagePlus imp) {
-		this.title = imp.getShortTitle();
 		return DOES_RGB + NO_CHANGES;
 	}
-
+	
 	public void run(ImageProcessor ip) {
-				
-		if (!showDialog())
+		Parameters params = new Parameters();
+	
+		if (!showDialog(params))
 			return;
-
+		
 		ColorProcessor cp = (ColorProcessor) ip;
 		int[] pixels = (int[]) cp.getPixels();
-
-		OctreeQuantizer quantizer = new OctreeQuantizer(pixels, K);
-		quantizer.setQuickQuantization(QUICK);
 		
+		// create a quantizer object
+		ColorQuantizer quantizer = new KMeansClusteringQuantizer(pixels, params);
 		int nCols = quantizer.getColorMap().length;
-		
-		String qck = QUICK ? " quick" : "";
-		
-		if (LIST_COLOR_TABLE) {
-			quantizer.listColorMap();
-		}
 		
 		if (CREATE_INDEXED_IMAGE) {
 			// quantize to an indexed color image
-			ByteProcessor qip = quantizer.quantize(cp);
-			(new ImagePlus(title + "Octree" + nCols + qck, qip)).show();
+			ByteProcessor idxIp = quantizer.quantize(cp);
+			(new ImagePlus("Quantized Index Color Image (" + nCols + " colors)", idxIp)).show();
 		}
 		
 //		if (CREATE_RGB_IMAGE) {
 //			// quantize to a full-color RGB image
-//			int[] rgbPix = quantizer.quantize((int[]) pixels);
+//			int[] rgbPix = quantizer.quantize(pixels);
 //			ColorProcessor rgbIp = new ColorProcessor(cp.getWidth(), cp.getHeight(), rgbPix);
-//			(new ImagePlus("Quantized RGB Image (" + nCols + " colors)" + qck, rgbIp)).show();
+//			(new ImagePlus("Quantized RGB Image (" + nCols + " colors)" , rgbIp)).show();
 //		}
 		
+		if (LIST_COLOR_TABLE) {
+			quantizer.listColorMap();
+		}
 	}
 	
-	private boolean showDialog() {
-		GenericDialog gd = new GenericDialog(Median_Cut_Quantization.class.getSimpleName());
-		gd.addNumericField("No. of colors (2,..,256)", K, 0);
-		gd.addCheckbox("Use quick quantization", QUICK);
+	private boolean showDialog(Parameters params) {
+		GenericDialog gd = new GenericDialog(Quantize_KMeans.class.getSimpleName());
+		gd.addNumericField("No. of colors (2,..,256)", params.maxColors, 0);
+		gd.addNumericField("Max. iterations", params.maxIterations, 0);
+		
+		String[] mNames = EnumUtils.getEnumNames(SamplingMethod.class);
+		gd.addChoice("Sampling method", mNames, params.samplMethod.name());
+		
 		gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);
 		gd.addCheckbox("Create quantized RGB image", CREATE_RGB_IMAGE);
 		gd.addCheckbox("List quantized color table", LIST_COLOR_TABLE);
@@ -96,25 +92,14 @@ public class Octree_Quantization implements PlugInFilter {
 		int nc = (int) gd.getNextNumber();
 		nc = Math.min(nc, 255);
 		nc = Math.max(2, nc);
-		
-		K = nc;
-		QUICK = gd.getNextBoolean();
+
+		params.maxColors = nc;
+		params.maxIterations = (int) gd.getNextNumber();
+		params.samplMethod = SamplingMethod.valueOf(gd.getNextChoice());
 		
 		CREATE_INDEXED_IMAGE = gd.getNextBoolean();
 		CREATE_RGB_IMAGE = gd.getNextBoolean();
 		LIST_COLOR_TABLE = gd.getNextBoolean();
 		return true;
 	}
-
-//	private void shuffleArray(int[] ar) {
-//		Random rnd = ThreadLocalRandom.current();
-//		for (int i = ar.length - 1; i > 0; i--) {
-//			int index = rnd.nextInt(i + 1);
-//			// Simple swap
-//			int a = ar[index];
-//			ar[index] = ar[i];
-//			ar[i] = a;
-//		}
-//	}
-
 }

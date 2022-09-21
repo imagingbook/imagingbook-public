@@ -6,36 +6,34 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package IJ_Demos;
+package ImageJ_Demos;
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
 /**
- * This plugin demonstrates how to run another ImageJ command (plugin)
- * from our own PlugInFilter using the IJ.run() method.
- * Note that PlugInFilter locks the current image until is is finished,
- * thus we need to unlock() it before running the other command.
- * 
+ * This is a minimal ImageJ plugin (PlugInFilter) that inverts an
+ * 8-bit grayscale (byte) image.
  * @author WB
  */
-public class Run_Command_From_PlugInFilter implements PlugInFilter {
-	
-	ImagePlus im;
+public class My_Inverter_A implements PlugInFilter {
 
 	public int setup(String args, ImagePlus im) {
-		this.im = im;
-		return DOES_ALL;
-	}
-	
-	public void run(ImageProcessor ip) {
-		im.unlock();					// unlock the image to run other commands
-		IJ.run(im, "Invert", "");		// run another command
-		im.lock();						// lock the image again (just to be sure)
-		// ... continue with this plugin
+		return DOES_8G; // this plugin accepts 8-bit grayscale images 
 	}
 
+	public void run(ImageProcessor ip) {
+		int M = ip.getWidth();
+		int N = ip.getHeight();
+
+		// iterate over all image coordinates
+		for (int u = 0; u < M; u++) {
+			for (int v = 0; v < N; v++) {
+				int p = ip.getPixel(u, v);
+				ip.putPixel(u, v, 255 - p);
+			}
+		}
+	}
 
 }

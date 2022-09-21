@@ -6,42 +6,36 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package IJ_Demos;
+package ImageJ_Demos;
 
-import java.awt.Point;
-
+import ij.IJ;
 import ij.ImagePlus;
-import ij.gui.Roi;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
 /**
- * This ImageJ plugin shows processing the inside of 
- * the currently selected region of interest (ROI)
- * using the {@link Point} iterator of {@link Roi}. 
- * The plugin works for RGB color images and merely inverts the
- * each pixel contained in the ROI.
+ * This plugin demonstrates how to run another ImageJ command (plugin)
+ * from our own PlugInFilter using the IJ.run() method.
+ * Note that PlugInFilter locks the current image until is is finished,
+ * thus we need to unlock() it before running the other command.
  * 
  * @author WB
- * @version 2022/04/01
  */
-public class Roi_Processing_Demo2 implements PlugInFilter {
+public class Run_Command_From_PlugInFilter implements PlugInFilter {
+	
+	ImagePlus im;
 
-	private ImagePlus im;
-
-	public int setup(String arg, ImagePlus im) {
+	public int setup(String args, ImagePlus im) {
 		this.im = im;
-		return DOES_8G + ROI_REQUIRED;
+		return DOES_ALL;
 	}
-
+	
 	public void run(ImageProcessor ip) {
-		Roi roi = im.getRoi();
-		
-		// Use Roi's Point iterator to visit all contained pixels:
-		for (Point pnt : roi) {
-			int p = ip.getPixel(pnt.x, pnt.y);
-			ip.putPixel(pnt.x, pnt.y, ~p);	// invert color values
-		}
-
+		im.unlock();					// unlock the image to run other commands
+		IJ.run(im, "Invert", "");		// run another command
+		im.lock();						// lock the image again (just to be sure)
+		// ... continue with this plugin
 	}
+
+
 }

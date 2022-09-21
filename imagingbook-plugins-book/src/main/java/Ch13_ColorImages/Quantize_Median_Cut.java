@@ -25,7 +25,7 @@ import imagingbook.common.color.quantize.MedianCutQuantizer;
  * @author WB
  * @version 2017/01/03
  */
-public class Median_Cut_Quantization implements PlugInFilter {
+public class Quantize_Median_Cut implements PlugInFilter {
 	
 	private static int NCOLORS = 16;
 	private static boolean CREATE_INDEXED_IMAGE = true; 
@@ -76,7 +76,7 @@ public class Median_Cut_Quantization implements PlugInFilter {
 	}
 	
 	private boolean showDialog() {
-		GenericDialog gd = new GenericDialog(Median_Cut_Quantization.class.getSimpleName());
+		GenericDialog gd = new GenericDialog(Quantize_Median_Cut.class.getSimpleName());
 		gd.addNumericField("No. of colors (2,..,256)", NCOLORS, 0);
 		gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);
 		gd.addCheckbox("Create quantized RGB image", CREATE_RGB_IMAGE);
