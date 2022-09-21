@@ -302,8 +302,9 @@ public abstract class DialogUtils {
 //		}
 		// accept only certain field types in dialogs:
 		Class<?> clazz = f.getType();
-		return (clazz == boolean.class || clazz == int.class || clazz == long.class || clazz == float.class || clazz == double.class || 
-			clazz == String.class || clazz.isEnum());
+		return (clazz == boolean.class || clazz == int.class || clazz == long.class || 
+				clazz == float.class || clazz == double.class || 
+				clazz == String.class || clazz.isEnum());
 	}
 
 	
