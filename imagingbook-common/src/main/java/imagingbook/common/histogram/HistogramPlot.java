@@ -13,54 +13,58 @@ import ij.ImagePlus;
 import ij.gui.NewImage;
 import ij.process.ImageProcessor;
 
-public class HistogramPlot {
-	// TODO: make HistogramPlot extend ImagePlus
+/**
+ * Defines a simple image window to display histograms.
+ * This is a sub-class of {@link ImagePlus} (similar to 
+ * {@code ij.gui.HistogramPlot}).
+ * 
+ * @author WB
+ * @version 2022/09/22 revised to extend ImagePlus
+ */
+public class HistogramPlot extends ImagePlus {
 	
-	static final int BACKGROUND = 255;
+	static final int BACKGROUND = NewImage.FILL_WHITE;
 
-    int width =  256;
-    int height = 128;
-    int base = height-1;
-    int paintValue = 0;
-	ImagePlus hist_img;
-	ImageProcessor ip;
-	int[] H = new int[256];
+    private final int width =  256;
+    private final int height = 128;
+    private final int base = height - 1;
+    private final int paintValue = 0;
+	private final int[] H = new int[256];
 	
-	public HistogramPlot(int[] h, String title) {
-		this(HistogramUtils.normalizeMax(h), title);
-	}
-	
+	/**
+	 * Constructor for a normalized discrete distribution.
+	 * @param nH a normalized discrete distribution with values in [0,1]
+	 * @param title the window title to be displayed 
+	 */
 	public HistogramPlot(double[] nH, String title) {
-		createHistogramImage(title);
+		setImage(NewImage.createByteImage(title, width, height, 1, BACKGROUND));
 		// nH must be a normalized histogram of length 256
 		for (int i = 0; i < nH.length; i++) {
 			H[i] = (int) Math.round(height * nH[i]);
 		}
-		draw();
-		//show();
+		drawHist();
 	}
 	
+	/**
+	 * Constructor for a discrete distribution.
+	 * @param h a discrete distribution (histogram) with arbitrary values
+	 * @param title the window title to be displayed 
+	 */
+	public HistogramPlot(int[] h, String title) {
+		this(HistogramUtils.normalizeMax(h), title);
+	}
+	
+	/**
+	 * Constructor for a piecewise linear cumulative distribution.
+	 * @param cdf a piecewise linear cumulative distribution function
+	 * @param title the window title to be displayed 
+	 */
 	public HistogramPlot(PiecewiseLinearCdf cdf, String title) {
-		// TODO: needed?
-		createHistogramImage(title);
-		// nH must be a normalized histogram of length 256
-		for (int i = 0; i < 256; i++) {
-			H[i] = (int) Math.round(height * cdf.getCdf(i));
-		}
-		draw();
-		//show();
+		this(cdf.getCdf(), title);
 	}
 	
-	void createHistogramImage(String title) {
-		if (title == null)
-			title = "Histogram Plot";
-		hist_img = NewImage.createByteImage(title, width, height, 1, 0);
-		ip = hist_img.getProcessor();
-		ip.setValue(BACKGROUND);
-		ip.fill();
-	}
-	
-	void draw() {
+	private void drawHist() {
+		ImageProcessor ip = this.getProcessor();
 		ip.setValue(0);
 		ip.drawLine(0, base, width - 1, base);
 		ip.setValue(paintValue);
@@ -74,39 +78,4 @@ public class HistogramPlot {
 		}
 	}
 	
-	void update() {
-		hist_img.updateAndDraw();
-	}
-	
-	public void show() {
-		hist_img.show();
-        update();
-	}
-	
-	void makeRamp() {
-		for (int i = 0; i < H.length; i++) {
-			H[i] = i;
-		}
-	}
-	
-	void makeRandom() {
-		for (int i = 0; i < H.length; i++) {
-			H[i] = (int)(Math.random() * height);
-		}
-	}
-	
-    //----- static methods ----------------------
-	
-//    public static void showHistogram(ImageProcessor ip, String title) {
-//		int[] Ha = ip.getHistogram();
-//		HistogramPlot hp = new HistogramPlot(Util.normalizeHistogram(Ha), title);
-//		hp.show();
-//	}
-
-//	public static void showCumHistogram(ImageProcessor ip, String title) {
-//		int[] Ha = ip.getHistogram();
-//		HistogramPlot hp = new HistogramPlot(Util.Cdf(Ha), title);
-//		hp.show();
-//	}
-
 }
