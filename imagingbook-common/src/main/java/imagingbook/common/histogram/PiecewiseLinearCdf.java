@@ -12,6 +12,7 @@ package imagingbook.common.histogram;
 /**
  * This class represents a discrete "cumulative distribution function" 
  * that is piecewise linear.
+ * 
  * @author WB
  *
  */

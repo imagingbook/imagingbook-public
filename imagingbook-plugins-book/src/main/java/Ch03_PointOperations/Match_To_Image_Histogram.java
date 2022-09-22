@@ -8,17 +8,24 @@
  *******************************************************************************/
 package Ch03_PointOperations;
 
-import ij.IJ;
 import ij.ImagePlus;
-import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
+import imagingbook.common.ij.IjUtils;
 
 /**
- * Adapts image intensities to match the histogram of another image.
+ * <p>
+ * ImageJ plugin, adapts image intensities to match the histogram of another image
+ * selected by the user.
+ * See Sec. 3.6.4 (Fig. 3.16) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * 
@@ -64,31 +71,22 @@ public class Match_To_Image_Histogram implements PlugInFilter {
 
 	boolean runDialog() {
 		// get list of open images
-		// TODO: use IjUtils.getOpenImages (as in Linear_Blending)
-		int[] windowList = WindowManager.getIDList();
-		if(windowList==null){
-			IJ.noImage();
-			return false;
+		
+		ImagePlus[] images = IjUtils.getOpenImages(true);
+		String[] titles = new String[images.length];
+		for (int i = 0; i < images.length; i++) {
+			titles[i] = images[i].getShortTitle();
 		}
-		// get image titles
-		String[] windowTitles = new String[windowList.length];
-		for (int i = 0; i < windowList.length; i++) {
-			ImagePlus imp = WindowManager.getImage(windowList[i]);
-			if (imp != null)
-				windowTitles[i] = imp.getShortTitle();
-			else
-				windowTitles[i] = "untitled";
-		}
+		
 		// create dialog and show
 		GenericDialog gd = new GenericDialog("Select Reference Image");
-		gd.addChoice("Reference Image:", windowTitles, windowTitles[0]);
+		gd.addChoice("Reference Image:", titles, titles[0]);
 		
 		gd.showDialog(); 
 		if (gd.wasCanceled()) 
 			return false;
 		
-		int img2Index = gd.getNextChoiceIndex();
-		imB = WindowManager.getImage(windowList[img2Index]);
+		imB = images[gd.getNextChoiceIndex()];
 		return true;
 	}
 

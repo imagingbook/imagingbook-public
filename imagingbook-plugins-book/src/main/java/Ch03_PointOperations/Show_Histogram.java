@@ -14,6 +14,15 @@ import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
 
+/**
+ * ImageJ plugin, simply displays the histogram and cumulative histogram
+ * of a grayscale image in two new windows.
+ * The input image is not modified.
+ * 
+ * @author WB
+ * @see HistogramUtils
+ * @see HistogramPlot
+ */
 public class Show_Histogram implements PlugInFilter { 
 	
 	private ImagePlus im;
@@ -28,7 +37,7 @@ public class Show_Histogram implements PlugInFilter {
 	public void run(ImageProcessor ip) {
 		int[] h = ip.getHistogram();
 		String title = im.getShortTitle();
-		(new HistogramPlot(h, "Histogram2 of " + title)).show();
+		(new HistogramPlot(h, "Histogram of " + title)).show();
 		(new HistogramPlot(HistogramUtils.cdf(h), "Cum. Histogram of " + title)).show();
 	}
 	

@@ -16,8 +16,14 @@ import imagingbook.common.histogram.HistogramUtils;
 import imagingbook.common.histogram.PiecewiseLinearCdf;
 
 /**
- * Adapts image intensities to match a piecewise-linear histogram.
- * 
+ * <p>
+ * Adapts image intensities to match a reference histogram that is piecewise-linear.
+ * See Sec. 3.6.4 (Fig. 3.14) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * @author WB
  * 
  * @see HistogramUtils
@@ -25,6 +31,9 @@ import imagingbook.common.histogram.PiecewiseLinearCdf;
  * @see PiecewiseLinearCdf
  */
 public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter { 
+	
+	static int[]    a = {28, 75, 150, 210};			// a_k (brightness values)
+	static double[] P = {.05, .25, .75, .95};		// P_k (cum. probabilities)
 	
 	@Override
 	public int setup(String arg0, ImagePlus im) {
@@ -40,23 +49,22 @@ public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
 		(new HistogramPlot(HistogramUtils.cdf(hA), "Cumulative Histogram A")).show();
 		
 		// -------------------------
-		int[] ik = {28, 75, 150, 210};
-		double[] Pk = {.05, .25, .75, .95};
-		PiecewiseLinearCdf pLCdf = new PiecewiseLinearCdf(256, ik, Pk);
+		PiecewiseLinearCdf cdf = new PiecewiseLinearCdf(256, a, P);
 		// -------------------------
 		
-		double[] nhB = pLCdf.getPdf();
+		double[] nhB = cdf.getPdf();
 		nhB = HistogramUtils.normalizeMax(nhB);
 		(new HistogramPlot(nhB, "Piecewise Linear")).show();
-		(new HistogramPlot(pLCdf, "Piecewise Linear Cumulative")).show();
+		(new HistogramPlot(cdf, "Piecewise Linear Cumulative")).show();
 		
-		int[] F = HistogramUtils.matchHistograms(hA, pLCdf);
+		int[] F = HistogramUtils.matchHistograms(hA, cdf);
 		
 //		for (int i = 0; i < F.length; i++) {
 //			IJ.log(i + " -> " + F[i]);
 //		}
 		
 		ipA.applyTable(F);
+		
 		int[] hAm = ipA.getHistogram();
 		(new HistogramPlot(hAm, "Histogram A (mod)")).show();
 		(new HistogramPlot(HistogramUtils.cdf(hAm), "Cumulative Histogram A (mod)")).show();
