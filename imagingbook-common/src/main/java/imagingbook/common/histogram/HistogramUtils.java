@@ -12,7 +12,7 @@ package imagingbook.common.histogram;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
- * This class defines a set of simple static methods for processing histograms.
+ * This class defines static methods related to histograms.
  * 
  * @author WB
  * @version 2022/08/24
@@ -327,38 +327,54 @@ public abstract class HistogramUtils {
 	// -----------------------------------------------------------------
 	
 	/**
-	 * @param hA histogram of target image
-	 * @param hR reference histogram
-	 * @return the mapping function fhs() to be applied to the target image as an int table.
+	 * Histogram matching. Given are two histograms: the histogram hA of the target
+	 * image IA and a reference histogram hR, both of size K. The result is a
+	 * discrete mapping f which, when applied to the target image, produces a new
+	 * image with a distribution function similar to the reference histogram.
+	 * 
+	 * @param hA histogram of the target image
+	 * @param hR reference histogram (the same size as hA)
+	 * @return a discrete mapping f to be applied to the values of a target image
 	 */
 	public static int[] matchHistograms (int[] hA, int[] hR) {
 		int K = hA.length;
 		double[] PA = HistogramUtils.cdf(hA); // get CDF of histogram hA
 		double[] PR = HistogramUtils.cdf(hR); // get CDF of histogram hR
-		int[] fhs = new int[K]; // pixel mapping function f()
+		int[] f = new int[K]; // pixel mapping function f()
 
 		// compute pixel mapping function f():
 		for (int a = 0; a < K; a++) {
 			int j = K - 1;
 			do {
-				fhs[a] = j;
+				f[a] = j;
 				j--;
 			} while (j >= 0 && PA[a] <= PR[j]);
 		}
-		return fhs;
+		return f;
 	}
 	
+	/**
+	 * Histogram matching to a reference cumulative distribution
+	 * function that is piecewise linear.
+	 * 
+	 * @param hA histogram of the target image
+	 * @param PR a piecewise linear reference cumulative distribution function ({@link PiecewiseLinearCdf})
+	 * @return a discrete mapping f to be applied to the values of a target image
+	 * 
+	 * @see PiecewiseLinearCdf
+	 * @see #matchHistograms(int[], int[])
+	 */
 	public static int[] matchHistograms(int[] hA, PiecewiseLinearCdf PR) {
 		int K = hA.length;
 		double[] PA = HistogramUtils.cdf(hA); // get p.d.f. of histogram Ha
-		int[] F = new int[K]; 		// pixel mapping function f()
+		int[] f = new int[K]; 					// pixel mapping function f()
 
 		// compute pixel mapping function f():
 		for (int a = 0; a < K; a++) {
 			double b = PA[a];
-			F[a] = PR.getInverseCdf(b);
+			f[a] = (int) Math.round(PR.getInverseCdf(b));
 		}
-		return F;
+		return f;
 	}
 	
 }

@@ -48,6 +48,15 @@ public class HistogramUtilsTest {
 		assertEquals("wrong median", 138, HistogramUtils.median(h));
 	}
 
+	@Test
+	public void testMatchHistograms() {
+		System.out.println("*** test missing: testMatchHistograms");
+	}
+	
+	@Test
+	public void testMatchPiecewiseLinearHistograms() {
+		System.out.println("*** test missing: testMatchPiecewiseLinearHistograms");
+	}
 }
 
 

@@ -10,39 +10,58 @@
 package imagingbook.common.histogram;
 
 /**
- * Represents a "cumulative distribution function" that is piecewise linear.
+ * This class represents a discrete "cumulative distribution function" 
+ * that is piecewise linear.
  * @author WB
  *
  */
 public class PiecewiseLinearCdf {
-	private int K;
-	private int[] iArr;
-	private double[] pArr;
+	
+	private final int K;
+	private final int[] iArr;
+	private final double[] pArr;
 	
 	/**
 	 * Constructor creating a {@link PiecewiseLinearCdf} from a sequence of 
-	 * brightness / probability pairs.
+	 * brightness / cumulative probability pairs.
+	 * See Sec. 3.6.3 (Fig. 3.12) of [1] for additional details.
+	 * Usage example:
+	 * </p>
+	 * <pre>
+	 * int[] ik = {28, 75, 150, 210};
+	 * double[] Pk = {.05, .25, .75, .95};
+	 * PiecewiseLinearCdf pLCdf = new PiecewiseLinearCdf(256, ik, Pk);</pre>
+	 * <p>
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+	 * 3rd ed, Springer (2022).
+	 * </p>
 	 * 
 	 * @param K number of brightness values (typ. 256)
-	 * @param ik a sequence of brightness values serving as control points
-	 * @param Pk a sequence of probability values, one for each control point
+	 * @param a a sequence of brightness values serving as control points
+	 * @param b a sequence of cumulative probability values in [0,1], one for each control point
 	 */
-	public PiecewiseLinearCdf(int K, int[] ik, double[] Pk) {
+	public PiecewiseLinearCdf(int K, int[] a, double[] b) {
 		this.K = K; // number of intensity values (typ. 256)
-		int N = ik.length;
+		int N = a.length;
 		iArr = new int[N + 2];		// array of intensity values
 		pArr = new double[N + 2];	// array of cum. distribution values
 		iArr[0] = -1; 
 		pArr[0] = 0;
 		for (int i = 0; i < N; i++) {
-			iArr[i + 1] = ik[i];
-			pArr[i + 1] = Pk[i];
+			iArr[i + 1] = a[i];
+			pArr[i + 1] = b[i];
 		}
 		iArr[N + 1] = K - 1;
 		pArr[N + 1] = 1;
 	}
 	
-	double getCdf(int i) {
+	/**
+	 * Returns the cumulative probability for the specified intensity value.
+	 * 
+	 * @param i the intensity value
+	 * @return the associated cumulative probability
+	 */
+	public double getCdf(int i) {
 		if (i < 0)
 			return 0;
 		else if (i >= K - 1)
@@ -60,25 +79,50 @@ public class PiecewiseLinearCdf {
 		}
 	}
 	
-	int getInverseCdf(double z) {
-		if (z < getCdf(0))
+	/**
+	 * Returns the cumulative probabilities for the intensity values
+	 * 0 to 255 as a {@code double[]}.
+	 * 
+	 * @return the array of cumulative probabilities
+	 */
+	public double[] getCdf() {
+		double[] P = new double[256];
+		for (int i = 0; i < 256; i++) {
+			P[i] = this.getCdf(i);
+		}
+		return P;
+	}
+	
+	/**
+	 * Returns the inverse cumulative probability function a = P<sup>-1</sup>(a), that is,
+	 * the intensity value a associated with a given cum. probability P.
+	 * 
+	 * @param P a cumulative probability
+	 * @return the associated intensity
+	 */
+	public double getInverseCdf(double P) {
+		if (P < getCdf(0))
 			return 0;
-		else if (z >= 1)
+		else if (P >= 1)
 			return K - 1;
 		else {
 			int r = 0, N = iArr.length - 1;
 			for (int j = 0; j <= N; j++) { // find r (segment index)
-				if (pArr[j] <= z)
+				if (pArr[j] <= P)
 					r = j;
 				else
 					break;
 			}
-			return (int) Math.round(iArr[r] + (z - pArr[r])
-					* ((iArr[r + 1] - iArr[r]) / (pArr[r + 1] - pArr[r])));
+			return iArr[r] + (P - pArr[r]) * ((iArr[r + 1] - iArr[r]) / (pArr[r + 1] - pArr[r]));
 		}
 	}
 	
-	// for testing only:
+	/**
+	 * Returns the probability function for this distribution
+	 * as a discrete array of probabilities.
+	 * 
+	 * @return the probability array
+	 */
 	public double[] getPdf() {	
 		double[] prob = new double[K];
 		prob[0] =  getCdf(0);

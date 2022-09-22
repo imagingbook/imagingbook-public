@@ -13,7 +13,6 @@ import static imagingbook.common.math.Arithmetic.sqr;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.common.histogram.HistogramMatcher;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
 
@@ -21,6 +20,8 @@ import imagingbook.common.histogram.HistogramUtils;
  * <p>
  * ImageJ plugin, adapts image intensities to match a Gaussian distribution
  * with specified parameters &mu;, &sigma; ({@link #Mean}, {@link #StdDev}).
+ * The current active image is modified, the histogram and cumulative histogram
+ * of the resulting image are displayed.
  * See Sec. 3.6.4 (Fig. 3.15) of [1] for additional details.
  * </p>
  * <p>
@@ -61,8 +62,6 @@ public class Match_To_Gaussian_Histogram implements PlugInFilter {
     	(new HistogramPlot(chG, "Gaussian Hist. cumulative")).show();
 		
     	int[] F = HistogramUtils.matchHistograms(hi, hG);
-//		HistogramMatcher m = new HistogramMatcher();	
-//		int[] F = m.matchHistograms(hi, hG);
 		
 //		for (int i = 0; i < F.length; i++) {
 //			IJ.log(i + " -> " + F[i]);
