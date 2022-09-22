@@ -21,7 +21,7 @@ import imagingbook.common.histogram.PiecewiseLinearCdf;
  * 
  * @author WB
  * 
- * @see HistogramMatcher
+ * @see HistogramUtils
  * @see HistogramPlot
  * @see PiecewiseLinearCdf
  */
@@ -51,8 +51,7 @@ public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
 		(new HistogramPlot(nhB, "Piecewise Linear")).show();
 		(new HistogramPlot(pLCdf, "Piecewise Linear Cumulative")).show();
 		
-		HistogramMatcher m = new HistogramMatcher();
-		int[] F = m.matchHistograms(hA, pLCdf);
+		int[] F = HistogramUtils.matchHistograms(hA, pLCdf);
 		
 //		for (int i = 0; i < F.length; i++) {
 //			IJ.log(i + " -> " + F[i]);

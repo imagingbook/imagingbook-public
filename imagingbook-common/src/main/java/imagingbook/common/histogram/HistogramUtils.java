@@ -324,4 +324,41 @@ public abstract class HistogramUtils {
 		return hn;
 	}
 	
+	// -----------------------------------------------------------------
+	
+	/**
+	 * @param hA histogram of target image
+	 * @param hR reference histogram
+	 * @return the mapping function fhs() to be applied to the target image as an int table.
+	 */
+	public static int[] matchHistograms (int[] hA, int[] hR) {
+		int K = hA.length;
+		double[] PA = HistogramUtils.cdf(hA); // get CDF of histogram hA
+		double[] PR = HistogramUtils.cdf(hR); // get CDF of histogram hR
+		int[] fhs = new int[K]; // pixel mapping function f()
+
+		// compute pixel mapping function f():
+		for (int a = 0; a < K; a++) {
+			int j = K - 1;
+			do {
+				fhs[a] = j;
+				j--;
+			} while (j >= 0 && PA[a] <= PR[j]);
+		}
+		return fhs;
+	}
+	
+	public static int[] matchHistograms(int[] hA, PiecewiseLinearCdf PR) {
+		int K = hA.length;
+		double[] PA = HistogramUtils.cdf(hA); // get p.d.f. of histogram Ha
+		int[] F = new int[K]; 		// pixel mapping function f()
+
+		// compute pixel mapping function f():
+		for (int a = 0; a < K; a++) {
+			double b = PA[a];
+			F[a] = PR.getInverseCdf(b);
+		}
+		return F;
+	}
+	
 }

@@ -23,8 +23,8 @@ import imagingbook.common.histogram.HistogramUtils;
  * 
  * @author WB
  * 
- * @see HistogramMatcher
  * @see HistogramPlot
+ * @see HistogramUtils
  *
  */
 public class Match_To_Image_Histogram implements PlugInFilter { 
@@ -51,8 +51,7 @@ public class Match_To_Image_Histogram implements PlugInFilter {
 		(new HistogramPlot(HistogramUtils.cdf(hA), "Cumulative Histogram A")).show();
 		(new HistogramPlot(HistogramUtils.cdf(hB), "Cumulative Histogram B")).show();
 		
-		HistogramMatcher m = new HistogramMatcher();
-		int[] F = m.matchHistograms(hA, hB);
+		int[] F = HistogramUtils.matchHistograms(hA, hB);
 		
 //		for (int i = 0; i < F.length; i++) {
 //			IJ.log(i + " -> " + F[i]);
