@@ -25,6 +25,7 @@ import imagingbook.common.image.PixelPack;
  * 
  * @author WB
  * @version 2021/01/12
+ * @see GenericFilter
  */
 public class Jitter_Filter_GenericFilter implements PlugInFilter {
 	

@@ -15,7 +15,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
 /** 
- * A hand-crafted median filter for 8-bit grayscale images.
+ * A median filter for 8-bit grayscale images.
  * 
  * @author WB
  *
