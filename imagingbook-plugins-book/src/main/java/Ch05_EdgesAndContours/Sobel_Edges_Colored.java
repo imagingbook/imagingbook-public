@@ -25,7 +25,7 @@ import ij.process.ImageProcessor;
  * The plugin displays the two derivative images ("Ix", "Iy"),
  * edge magnitude and orientation ("E", "phi") and
  * color-coded edge magnitude ("E colors", hue controlled by edge orientation).
- * Edge magnitude is &ge; 0, orientation is in [&minus;&pi;,&plus;&pi;].
+ * Edge magnitude is &ge; 0, orientation is in [&minus;&pi;,+&pi;].
  * See Sec. 5.3.1 of [1] for additional details.
  * </p>
  * <p>

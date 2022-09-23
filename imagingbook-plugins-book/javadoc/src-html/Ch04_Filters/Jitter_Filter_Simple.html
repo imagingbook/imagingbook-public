@@ -24,43 +24,55 @@
 <span class="sourceLineNo">014</span><a id="line.14">import ij.process.ImageProcessor;</a>
 <span class="sourceLineNo">015</span><a id="line.15"></a>
 <span class="sourceLineNo">016</span><a id="line.16">/**</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * Simple version of the Jitter filter. Works for all image types</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * but does not handle image borders.</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * The input image is destructively modified.</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * </a>
-<span class="sourceLineNo">021</span><a id="line.21"> * @author wilbur</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * @version 2016/11/01</a>
-<span class="sourceLineNo">023</span><a id="line.23"> */</a>
-<span class="sourceLineNo">024</span><a id="line.24">public class Jitter_Filter_Simple implements PlugInFilter {</a>
-<span class="sourceLineNo">025</span><a id="line.25">        </a>
-<span class="sourceLineNo">026</span><a id="line.26">        int rad = 3;    // the radius (should be user-specified)</a>
-<span class="sourceLineNo">027</span><a id="line.27">                </a>
-<span class="sourceLineNo">028</span><a id="line.28">        public int setup(String arg, ImagePlus im) {</a>
-<span class="sourceLineNo">029</span><a id="line.29">                return DOES_ALL;</a>
-<span class="sourceLineNo">030</span><a id="line.30">        }</a>
-<span class="sourceLineNo">031</span><a id="line.31"></a>
-<span class="sourceLineNo">032</span><a id="line.32">        public void run(ImageProcessor ip1) {</a>
-<span class="sourceLineNo">033</span><a id="line.33">                final int w = ip1.getWidth();</a>
-<span class="sourceLineNo">034</span><a id="line.34">                final int h = ip1.getHeight();</a>
-<span class="sourceLineNo">035</span><a id="line.35">                </a>
-<span class="sourceLineNo">036</span><a id="line.36">                Random rnd = new Random();</a>
-<span class="sourceLineNo">037</span><a id="line.37">                ImageProcessor ip2 = ip1.duplicate();</a>
-<span class="sourceLineNo">038</span><a id="line.38">                </a>
-<span class="sourceLineNo">039</span><a id="line.39">                final int d = 2 * rad + 1;      // width/height of the "kernel"</a>
-<span class="sourceLineNo">040</span><a id="line.40">                </a>
-<span class="sourceLineNo">041</span><a id="line.41">                for (int u = 0; u &lt; w; u++) {</a>
-<span class="sourceLineNo">042</span><a id="line.42">                        for (int v = 0; v &lt; h; v++) {</a>
-<span class="sourceLineNo">043</span><a id="line.43">                                int rx = rnd.nextInt(d) - rad;</a>
-<span class="sourceLineNo">044</span><a id="line.44">                                int ry = rnd.nextInt(d) - rad;</a>
-<span class="sourceLineNo">045</span><a id="line.45">                                // pick a random position inside the current support region</a>
-<span class="sourceLineNo">046</span><a id="line.46">                                int p = ip2.getPixel(u + rx, v + ry);</a>
-<span class="sourceLineNo">047</span><a id="line.47">                                // replace the current center pixel</a>
-<span class="sourceLineNo">048</span><a id="line.48">                                ip1.putPixel(u, v, p);</a>
-<span class="sourceLineNo">049</span><a id="line.49">                        }</a>
-<span class="sourceLineNo">050</span><a id="line.50">                }</a>
-<span class="sourceLineNo">051</span><a id="line.51">        }</a>
-<span class="sourceLineNo">052</span><a id="line.52">        </a>
-<span class="sourceLineNo">053</span><a id="line.53">}</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * &lt;p&gt;</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * ImageJ plugin - Simple version of the Jitter filter, using</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * ImageJ functionality only.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * Works for all image types but does not handle image borders</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * (pixels outside the image are assumed to be black).</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * The input image is destructively modified.</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * See Sec. 4.7 (Exercise 4.14) of [1] for additional details.</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * &lt;p&gt;</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing - An Algorithmic</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * Approach&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * </a>
+<span class="sourceLineNo">030</span><a id="line.30"> * @author WB</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * @version 2016/11/01</a>
+<span class="sourceLineNo">032</span><a id="line.32"> */</a>
+<span class="sourceLineNo">033</span><a id="line.33">public class Jitter_Filter_Simple implements PlugInFilter {</a>
+<span class="sourceLineNo">034</span><a id="line.34">        </a>
+<span class="sourceLineNo">035</span><a id="line.35">        /** The filter radius. */</a>
+<span class="sourceLineNo">036</span><a id="line.36">        public static int R = 3;</a>
+<span class="sourceLineNo">037</span><a id="line.37">                </a>
+<span class="sourceLineNo">038</span><a id="line.38">        @Override</a>
+<span class="sourceLineNo">039</span><a id="line.39">        public int setup(String arg, ImagePlus im) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">                return DOES_ALL;</a>
+<span class="sourceLineNo">041</span><a id="line.41">        }</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">        @Override</a>
+<span class="sourceLineNo">044</span><a id="line.44">        public void run(ImageProcessor ip1) {</a>
+<span class="sourceLineNo">045</span><a id="line.45">                final int w = ip1.getWidth();</a>
+<span class="sourceLineNo">046</span><a id="line.46">                final int h = ip1.getHeight();</a>
+<span class="sourceLineNo">047</span><a id="line.47">                </a>
+<span class="sourceLineNo">048</span><a id="line.48">                Random rnd = new Random();</a>
+<span class="sourceLineNo">049</span><a id="line.49">                ImageProcessor ip2 = ip1.duplicate();</a>
+<span class="sourceLineNo">050</span><a id="line.50">                </a>
+<span class="sourceLineNo">051</span><a id="line.51">                final int d = 2 * R + 1;        // width/height of the "kernel"</a>
+<span class="sourceLineNo">052</span><a id="line.52">                </a>
+<span class="sourceLineNo">053</span><a id="line.53">                for (int u = 0; u &lt; w; u++) {</a>
+<span class="sourceLineNo">054</span><a id="line.54">                        for (int v = 0; v &lt; h; v++) {</a>
+<span class="sourceLineNo">055</span><a id="line.55">                                int rx = rnd.nextInt(d) - R;</a>
+<span class="sourceLineNo">056</span><a id="line.56">                                int ry = rnd.nextInt(d) - R;</a>
+<span class="sourceLineNo">057</span><a id="line.57">                                // pick a random position inside the current support region</a>
+<span class="sourceLineNo">058</span><a id="line.58">                                int p = ip2.getPixel(u + rx, v + ry);</a>
+<span class="sourceLineNo">059</span><a id="line.59">                                // replace the current center pixel</a>
+<span class="sourceLineNo">060</span><a id="line.60">                                ip1.putPixel(u, v, p);</a>
+<span class="sourceLineNo">061</span><a id="line.61">                        }</a>
+<span class="sourceLineNo">062</span><a id="line.62">                }</a>
+<span class="sourceLineNo">063</span><a id="line.63">        }</a>
+<span class="sourceLineNo">064</span><a id="line.64">        </a>
+<span class="sourceLineNo">065</span><a id="line.65">}</a>
 
 
 
