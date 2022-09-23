@@ -38,10 +38,12 @@ public class Filter_Median implements PlugInFilter {
 	/** Filter radius. */
 	public static int R = 3; // the size of the filter is (2R+1)x(2R+1)
 
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_8G;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		int M = ip.getWidth();
 		int N = ip.getHeight();

@@ -15,7 +15,8 @@ import ij.process.ImageProcessor;
 
 /**
  * <p>
- * ImageJ plugin - Simple version of the Jitter filter.
+ * ImageJ plugin - Simple version of the Jitter filter, using
+ * ImageJ functionality only.
  * Works for all image types but does not handle image borders
  * (pixels outside the image are assumed to be black).
  * The input image is destructively modified.
@@ -34,10 +35,12 @@ public class Jitter_Filter_Simple implements PlugInFilter {
 	/** The filter radius. */
 	public static int R = 3;
 		
+	@Override
 	public int setup(String arg, ImagePlus im) {
 		return DOES_ALL;
 	}
 
+	@Override
 	public void run(ImageProcessor ip1) {
 		final int w = ip1.getWidth();
 		final int h = ip1.getHeight();
