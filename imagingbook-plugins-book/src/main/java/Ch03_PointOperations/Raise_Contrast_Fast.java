@@ -27,6 +27,9 @@ import ij.process.ImageProcessor;
  * @author WB
  */
 public class Raise_Contrast_Fast implements PlugInFilter {
+	
+	/** Contrast scale factor. */
+	public static double S = 1.5;
 
 	@Override
 	public int setup(String arg, ImagePlus im) {
@@ -39,7 +42,7 @@ public class Raise_Contrast_Fast implements PlugInFilter {
 		byte[] pixels = (byte[]) ip.getPixels();
 		for (int i = 0; i < pixels.length; i++) {
 			int a = 0xFF & pixels[i];
-			int b = (int) (a * 1.5 + 0.5);
+			int b = (int) (a * S + 0.5);
 			if (b > 255)
 				b = 255;
 			pixels[i] = (byte) (0xFF & b);

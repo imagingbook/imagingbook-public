@@ -12,6 +12,25 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * ImageJ plugin for a simple 3×3 linear smoothing filter. The filter
+ * kernel is defined as a 2D array of type {@code double}. The coordinate
+ * origin of the filter is assumed at the center of the matrix (i.e., at
+ * array position [1, 1]), which is accounted for by an offset of 1 for the
+ * i, j coordinates in inner filter loop. The results are rounded and stored in
+ * the original image (ip).
+ * Note that the border pixels are not modified. 
+ * See Sec. 4.2 (Prog. 4.2) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
 public class Filter_Smooth_3x3 implements PlugInFilter {
 
     public int setup(String arg, ImagePlus imp) {

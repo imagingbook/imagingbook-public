@@ -14,15 +14,29 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
-/** 
- * A median filter for 8-bit grayscale images.
+/**
+ * <p>
+ * ImageJ plugin for a median filter of arbitrary size. 
+ * An array {@code A} of type {@code int} is defined to hold the region’s pixel 
+ * values for each filter position (u, v). 
+ * This array is sorted by using the standard Java method
+ * {@link Arrays#sort(int[])}. 
+ * The center element of the sorted vector ({@code A[n]}) is
+ * taken as the median value and stored in the original image {@code ip}.
+ * See Sec. 4.1.2 (Prog. 4.5) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  *
  */
 public class Filter_Median implements PlugInFilter {
 
-	final int r = 3; // the size of the filter is (2r+1)x(2r+1)
+	/** Filter radius. */
+	public static int R = 3; // the size of the filter is (2R+1)x(2R+1)
 
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_8G;
@@ -33,18 +47,18 @@ public class Filter_Median implements PlugInFilter {
 		int N = ip.getHeight();
 		ImageProcessor copy = ip.duplicate();
 
-		// vector to hold pixels from (2K+1)x(2K+1) neighborhood:
-		int[] A = new int[(2 * r + 1) * (2 * r + 1)];
+		// vector to hold pixels from (2R+1)x(2R+1) neighborhood:
+		int[] A = new int[(2 * R + 1) * (2 * R + 1)];
 		
-		// index of center vector element:
-		int n = 2 * (r * r + r);
+		// index of center vector element n = 2(R^2 + R):
+		int n = 2 * (R * R + R);
 		
-		for (int u = r; u <= M - r - 2; u++) {
-			for (int v = r; v <= N - r - 2; v++) {
+		for (int u = R; u <= M - R - 2; u++) {
+			for (int v = R; v <= N - R - 2; v++) {
 				// fill the pixel vector A for filter position (u,v):
 				int k = 0;
-				for (int i = -r; i <= r; i++) {
-					for (int j = -r; j <= r; j++) {
+				for (int i = -R; i <= R; i++) {
+					for (int j = -R; j <= R; j++) {
 						A[k] = copy.getPixel(u + i, v + j);
 						k++;
 					}

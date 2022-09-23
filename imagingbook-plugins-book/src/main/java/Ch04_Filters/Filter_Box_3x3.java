@@ -12,6 +12,24 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * ImageJ plugin for a linear 3×3 "box" filter. 
+ * First a duplicate (copy) of the original image (orig) is created,
+ * which is used as the source image in the subsequent filter computation. 
+ * The resulting value q is placed in the original image. Notice that the
+ * border pixels remain unchanged because they are not reached by the iteration
+ * over (u,v).
+ * See Sec. 4.2 (Prog. 4.1) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
 public class Filter_Box_3x3 implements PlugInFilter {
 
     public int setup(String arg, ImagePlus imp) {

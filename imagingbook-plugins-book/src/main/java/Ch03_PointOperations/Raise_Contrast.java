@@ -27,6 +27,9 @@ import ij.process.ImageProcessor;
  *
  */
 public class Raise_Contrast implements PlugInFilter {
+	
+	/** Contrast scale factor. */
+	public static double S = 1.5;
 
 	@Override
 	public int setup(String arg, ImagePlus im) {
