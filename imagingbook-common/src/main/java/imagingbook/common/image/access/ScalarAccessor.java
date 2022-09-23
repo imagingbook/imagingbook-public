@@ -56,9 +56,6 @@ public abstract class ScalarAccessor extends ImageAccessor {
 				"cannot create " + ScalarAccessor.class.getSimpleName() + " for " + ip.getClass().getSimpleName());
 	}
 	
-	
-	
-	
 	@Override
 	public int getDepth() {
 		return 1;
@@ -108,9 +105,8 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	}
 
 	/**
-	 * Writes a scalar pixel value to the given image position. What happens for
-	 * coordinates outside the image boundaries depends on the
-	 * {@link OutOfBoundsStrategy} specified for this {@link ImageAccessor}.
+	 * Writes a scalar pixel value to the given image position. 
+	 * An exception is thrown if u, v coordinates are outside the image.
 	 * 
 	 * @param u   the x-coordinate
 	 * @param v   the y-coordinate

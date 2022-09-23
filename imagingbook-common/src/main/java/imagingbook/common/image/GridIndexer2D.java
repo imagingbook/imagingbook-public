@@ -71,6 +71,11 @@ public abstract class GridIndexer2D implements Cloneable {
 	
 	/**
 	 * Returns the 1D array index for a given pair of image coordinates.
+	 * For u, v coordinates outside the image, the returned index depends
+	 * on the concrete sub-class of {@link GridIndexer2D}.
+	 * As a general rule, this method either returns a valid 1D array
+	 * index or throws an exception.
+	 * 
 	 * Subclasses implement (override) this method.
 	 * @param u x-coordinate
 	 * @param v y-coordinate
@@ -78,6 +83,14 @@ public abstract class GridIndexer2D implements Cloneable {
 	 */
 	public abstract int getIndex(int u, int v);
 	
+	/**
+	 * Returns the 1D array index assuming that the
+	 * specified coordinates are inside the image.
+	 * 
+	 * @param u x-coordinate
+	 * @param v y-coordinate
+	 * @return the associated 1D index
+	 */
 	private int getWithinBoundsIndex(int u, int v) {
 		return width * v + u;
 	}
