@@ -18,41 +18,58 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.linear.GaussianKernel1D;
 
 /**
+ * <p>
  * This plugin implements an Unsharp Masking filter similar to Photoshop 
  * without thresholds, using a "clean" (sufficiently large) Gaussian filter.
- * @version 2014-03-16
+ * This implementation uses built-in ImageJ functionality only.
+ * The original image is modified.
+ * See Sec. 5.6.2 (Prog. 5.1) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2014/03/16
+ * @version 2022/09/23 revised
+ * 
+ * @see GaussianKernel1D#makeGaussKernel1D(double)
  */
 
 public class Unsharp_Masking_Filter implements PlugInFilter {
+	
+	/** Filter radius (sigma of Gaussian). */
+	public static double Radius = 1.0;
+	/** Amount of sharpening (1.0 = 100%). */
+	public static double Amount = 1.0; 
 
-	private static double radius = 1.0;	// radius (sigma of Gaussian)
-	private static double amount = 1.0; // amount of sharpening (1 = 100%)
-
-	public int setup(String arg, ImagePlus imp) {
-		if (!getParameters()) 
-			return DONE;
-		else 
-			return DOES_8G + DOES_STACKS; 
+	@Override
+	public int setup(String arg, ImagePlus im) {
+		return DOES_8G + DOES_STACKS; 
 	}
 	
+	@Override
 	public void run(ImageProcessor ip) {
+		if (!getParameters()) {
+			return;
+		}
+			
 		FloatProcessor I = ip.convertToFloatProcessor();
 		
 		//create a blurred version of the original
 		ImageProcessor J = I.duplicate();
-		float[] H = GaussianKernel1D.makeGaussKernel1D(radius);
+		float[] H = GaussianKernel1D.makeGaussKernel1D(Radius);
 		Convolver cv = new Convolver();
 		cv.setNormalize(true);
 		cv.convolve(J, H, 1, H.length);
 		cv.convolve(J, H, H.length, 1);
 
-		double a = amount;
-		// multiply the original image by (1+a)
-		I.multiply(1 + a);
-		// multiply the mask image by a
-		J.multiply(a);
-		// subtract the weighted mask from the original
-		I.copyBits(J, 0, 0, Blitter.SUBTRACT);
+		double a = Amount;
+		
+		I.multiply(1 + a);						// multiply the original image by (1+a)
+		J.multiply(a);							// multiply the mask image by a
+		I.copyBits(J, 0, 0, Blitter.SUBTRACT);	// subtract the weighted mask from the original
 
 		//copy result back into original byte image
 		ip.insert(I.convertToByte(false), 0, 0);
@@ -60,19 +77,21 @@ public class Unsharp_Masking_Filter implements PlugInFilter {
 	
 	private boolean getParameters() {
 		GenericDialog gd = new GenericDialog("Unsharp Mask");
-		gd.addNumericField("Radius = Sigma (0.1-20)", radius, 1);
-		gd.addNumericField("Amount (1-500%)", amount * 100, 0);
+		gd.addNumericField("Radius (\u03C3 = 0.1 ... 20)", Radius, 1);
+		gd.addNumericField("Amount (a = 1 ... 500%)", Amount * 100, 0);
+		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
 			return false;
 		}
+		
 		//same limits as in Photoshop:
-		radius = gd.getNextNumber();
-		if (radius > 20) radius = 20;
-		if (radius < 0.1) radius = 0.1;
-		amount = gd.getNextNumber() / 100;
-		if (amount > 5.0) amount = 5.0;
-		if (amount < 0.01) amount = 0.01;
+		Radius = gd.getNextNumber();
+		if (Radius > 20) Radius = 20;
+		if (Radius < 0.1) Radius = 0.1;
+		Amount = gd.getNextNumber() / 100;
+		if (Amount > 5.0) Amount = 5.0;
+		if (Amount < 0.01) Amount = 0.01;
 		return true;
 	}
 

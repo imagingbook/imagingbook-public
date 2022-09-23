@@ -1,4 +1,5 @@
 /*******************************************************************************
+
  * This software is provided as a supplement to the authors' textbooks on digital
  * image processing published by Springer-Verlag in various languages and editions.
  * Permission to use and distribute this software is granted under the BSD 2-Clause 
@@ -17,21 +18,44 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * ImageJ plugin implementing a simple Sobel-type edge operator.
+ * This implementation uses built-in ImageJ functionality only.
+ * The plugin displays the two derivative images ("Ix", "Iy"),
+ * edge magnitude and orientation ("E", "phi") and
+ * color-coded edge magnitude ("E colors", hue controlled by edge orientation).
+ * Edge magnitude is &ge; 0, orientation is in [&minus;&pi;,&plus;&pi;].
+ * See Sec. 5.3.1 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * @author WB
+ *
+ */
 public class Sobel_Edges_Colored implements PlugInFilter {
-    static float[] sobelX = {
+	
+	/** The 2D Sobel kernel for the derivative filter in x-direction. */
+    public static final float[] sobelX = {
     		-1, 0, 1,
             -2, 0, 2,
             -1, 0, 1 };
-    static float[] sobelY = {
+    
+    /** The 2D Sobel kernel for the derivative filter in y-direction. */
+    public static final float[] sobelY = {
 			-1, -2, -1,
 			 0,  0,  0,
 			 1,  2,  1 };
 
-    public int setup(String arg, ImagePlus I) {
+    @Override
+	public int setup(String arg, ImagePlus I) {
         return DOES_8G + PlugInFilter.NO_CHANGES;
     }
 
-    public void run(ImageProcessor ip) {
+    @Override
+	public void run(ImageProcessor ip) {
         FloatProcessor Ix = (FloatProcessor) ip.convertToFloat();
         FloatProcessor Iy = (FloatProcessor) Ix.duplicate();
         Ix.convolve(sobelX, 3, 3);
@@ -69,15 +93,14 @@ public class Sobel_Edges_Colored implements PlugInFilter {
     }
     
     ColorProcessor makeColorEdges(FloatProcessor mag, FloatProcessor ort) {
-    	// mag is all positive
-    	// ort is in -pi ... +pi
+    	// edge magnitude is all positive, orientation is in -pi ... +pi
     	int w = mag.getWidth();
     	int h = mag.getHeight();
     	int M = mag.getPixelCount();
     	mag.resetMinAndMax();
     	ort.resetMinAndMax();
     	double maxMag = mag.getMax();
-    	//IJ.log("Max:"+maxMag);
+
     	int[] colorPixels = new int[M];
     	for (int i=0; i<M; i++) {
     		float m = mag.getf(i);
