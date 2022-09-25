@@ -23,21 +23,36 @@ import imagingbook.common.morphology.BinaryOpening;
 import imagingbook.common.morphology.StructuringElements;
 
 /**
- * This plugin implements a binary morphology filter using a disk-shaped
+ * <p>
+ * This plugin implements a binary morphology filter (dilation, erosion, 
+ * opening, or closing) using a disk-shaped
  * structuring element whose radius can be specified.
- * 
+ * See Sec. 7.2 of [1] for additional details.
+ * This plugin works on 8-bit grayscale images only.
+ * Zero-value pixels are considered background, all other pixels
+ * are foreground. Different to ImageJ's built-in morphological
+ * operators, this implementation does not incorporate the current display 
+ * lookup-table (LUT).
+ * </p> 
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * @author WB
  * @version 2022/01/24
  */
 public class Bin_Morphology_Disk implements PlugInFilter {
 	
-	private enum OpType {
+	public enum OpType {
 		Dilate, Erode, Open, Close;
 	}
 
-	private static OpType op = OpType.Dilate;
-	private static double radius = 1.0;
-	private static boolean showStructuringElement = false;
+	/** Operation type (dilation, erosion, opening, closing). */
+	public static OpType Operation = OpType.Dilate;
+	/** Radius of the structuring element. */
+	public static double Radius = 1.0;
+	/** Display the structuring element as a binary image. */
+	public static boolean ShowStructuringElement = false;
 
 	@Override
 	public int setup(String arg, ImagePlus imp) {
@@ -51,10 +66,10 @@ public class Bin_Morphology_Disk implements PlugInFilter {
 		}
 		
 		ByteProcessor bp = (ByteProcessor) ip;
-		byte[][] H = StructuringElements.makeDiskKernel(radius);
+		byte[][] H = StructuringElements.makeDiskKernel(Radius);
 		
-		BinaryMorphologyFilter filter = null; // new BinaryMorphologyFilter.Disk(radius);
-		switch(op) {
+		BinaryMorphologyFilter filter = null;
+		switch(Operation) {
 		case Close:
 			filter = new BinaryClosing(H); break;
 		case Dilate:
@@ -67,7 +82,7 @@ public class Bin_Morphology_Disk implements PlugInFilter {
 		
 		filter.applyTo(bp);
 		
-		if (showStructuringElement) {
+		if (ShowStructuringElement) {
 			ByteProcessor pH = IjUtils.toByteProcessor(H);
 			pH.invertLut();
 			pH.setMinAndMax(0, 1);
@@ -80,16 +95,16 @@ public class Bin_Morphology_Disk implements PlugInFilter {
 	private boolean showDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addNumericField("Radius (filters only)", 1.0, 1, 5, "pixels");
-		gd.addEnumChoice("Operation", OpType.Dilate);
-		gd.addCheckbox("Show structuring element", showStructuringElement);
+		gd.addEnumChoice("Operation", Operation);
+		gd.addCheckbox("Show structuring element", ShowStructuringElement);
 
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
 		
-		radius = gd.getNextNumber();
-		op = gd.getNextEnumChoice(OpType.class);
-		showStructuringElement = gd.getNextBoolean();
+		Radius = gd.getNextNumber();
+		Operation = gd.getNextEnumChoice(OpType.class);
+		ShowStructuringElement = gd.getNextBoolean();
 		return true;
 	}
 	

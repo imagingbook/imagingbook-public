@@ -19,18 +19,27 @@ import imagingbook.common.morphology.BinaryMorphologyOperator;
 import imagingbook.common.morphology.BinaryOutline;
 
 /**
- * This ImageJ plugin demonstrates morphological outline calculation
- * on binary images. Pixels with value 0 are considered
- * background, values &gt; 0 are foreground. The plugin 
- * modifies the supplied image.
- * 
+ * <p>
+ * ImageJ plugin implementing a binary 'outline' operation using either
+ * a 4- or 8-neighborhood.
+ * See Sec. 7.2.7 of [1] for additional details. This plugin works on 8-bit 
+ * grayscale images only, the original image is modified.
+ * Zero-value pixels are considered background, all other pixels
+ * are foreground. Different to ImageJ's built-in morphological
+ * operators, this implementation does not incorporate the current display 
+ * lookup-table (LUT).
+ * </p> 
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * @author WB
  * @version 2022/01/24
  *
  */
 public class Outline_Demo implements PlugInFilter {
 	
-	private static NeighborhoodType2D nh = NeighborhoodType2D.N4;
+	public static NeighborhoodType2D Neigborhood = NeighborhoodType2D.N4;
 	
 	@Override
 	public int setup(String arg, ImagePlus imp) {
@@ -44,19 +53,19 @@ public class Outline_Demo implements PlugInFilter {
 			return;
 		}
 		
-		BinaryMorphologyOperator outline = new BinaryOutline(nh);
+		BinaryMorphologyOperator outline = new BinaryOutline(Neigborhood);
 		outline.applyTo((ByteProcessor) ip);
 	}
 	
 	private boolean showDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addEnumChoice("Neighborhood type", nh);
+		gd.addEnumChoice("Neighborhood type", Neigborhood);
 
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
 		
-		nh = gd.getNextEnumChoice(NeighborhoodType2D.class);
+		Neigborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);
 		return true;
 	}
 	

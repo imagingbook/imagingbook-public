@@ -32,7 +32,8 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 /**
  * <p> 
  * ImageJ plugin which demonstrates the use of gradient corner detectors
- * (Harris, MOPS, Sho-Tomasi). See Ch. 6 of [1] for additional details.
+ * (Harris, MOPS, Sho-Tomasi), optionally using sub-pixel positioning.
+ * See Ch. 6 of [1] for additional details.
  * Detected corners are shown as a vector overlay on top of the 
  * original image.
  * </p> 
@@ -66,7 +67,7 @@ public class Find_Corners implements PlugInFilter {
 	/** Color used for graphic corner marks. */
 	public static BasicAwtColor CornerMarkColor = BasicAwtColor.Green;
 	
-	private static Parameters Params = new Parameters();
+	private static Parameters params = new Parameters();
 	
 	private ImagePlus im;
 	
@@ -79,20 +80,20 @@ public class Find_Corners implements PlugInFilter {
 	@Override
     public void run(ImageProcessor ip) {
     	
-		if (!showDialog(Params)) {
+		if (!showDialog(params)) {
 			return;
 		}
 		
 		GradientCornerDetector detector = null;	
 		switch (Algorithm) {
 		case Harris:
-			detector = new HarrisCornerDetector(ip, Params);
+			detector = new HarrisCornerDetector(ip, params);
 			break;
 		case Mops:
-			detector = new MopsCornerDetector(ip, Params);
+			detector = new MopsCornerDetector(ip, params);
 			break;
 		case ShiThomasi:
-			detector = new ShiTomasiCornerDetector(ip, Params);
+			detector = new ShiTomasiCornerDetector(ip, params);
 			break;
 		}
 		

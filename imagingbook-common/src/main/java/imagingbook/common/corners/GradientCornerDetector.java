@@ -62,7 +62,7 @@ public abstract class GradientCornerDetector {
 		@DialogUtils.DialogLabel("Min. distance between final corners")@DialogUtils.DialogDigits(1)
 		public double dmin = 10;
 		
-		@DialogUtils.DialogLabel("Subpixel localization method")
+		@DialogUtils.DialogLabel("Subpixel positioning method")
 		public Method maxLocatorMethod = Method.None;
 		
 		@DialogUtils.DialogLabel("Corner response threshold (th)")@DialogUtils.DialogDigits(1)

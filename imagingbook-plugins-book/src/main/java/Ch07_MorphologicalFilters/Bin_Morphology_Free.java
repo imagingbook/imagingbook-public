@@ -20,28 +20,41 @@ import imagingbook.common.morphology.BinaryDilation;
 import imagingbook.common.morphology.BinaryErosion;
 import imagingbook.common.morphology.BinaryMorphologyFilter;
 import imagingbook.common.morphology.BinaryOpening;
-import imagingbook.common.util.EnumUtils;
 
 /**
- * This plugin implements a binary morphology filter using an arbitrary
+ * <p>
+ * ImageJ plugin implementing a binary morphology filter with an arbitrary
  * structuring element that can be interactively specified by the user.
- * 
+ * See Sec. 7.2 of [1] for additional details.
+ * This plugin works on 8-bit grayscale images only.
+ * Zero-value pixels are considered background, all other pixels
+ * are foreground. Different to ImageJ's built-in morphological
+ * operators, this implementation does not incorporate the current display 
+ * lookup-table (LUT).
+ * </p> 
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * @author WB
  * @version 2022/01/24
  */
 public class Bin_Morphology_Free implements PlugInFilter {
 	
-	private static enum OpType {
+	public static enum OpType {
 		Dilate, Erode, Open, Close;
 	}
 
-	static final int W = 9;	// width and height of the structuring element
-	static boolean[] freeStructure = new boolean[W * W];
-	static boolean showElement = false;
-	static OpType op = OpType.Dilate;
-
+	/** Operation type (dilation, erosion, opening, closing). */
+	public static OpType Operation = OpType.Dilate;
+	/** Width and height of the structuring element. */
+	public static final int Size = 4;
+	/** Display the structuring element as a binary image. */
+	public static boolean ShowStructuringElement = false;
+	
+	private static boolean[] freeStructure = new boolean[Size * Size];
 	static { // initially set the center element
-		freeStructure[(W * W) / 2] = true;
+		freeStructure[(Size * Size) / 2] = true;
 	}
 
 	@Override
@@ -59,7 +72,7 @@ public class Bin_Morphology_Free implements PlugInFilter {
 		ByteProcessor bp = (ByteProcessor) orig;
 		
 		BinaryMorphologyFilter filter = null;
-		switch(op) {
+		switch(Operation) {
 		case Close:	
 			filter = new BinaryClosing(H); break;
 		case Dilate:
@@ -72,7 +85,7 @@ public class Bin_Morphology_Free implements PlugInFilter {
 		
 		filter.applyTo(bp);
 		
-		if (showElement) {
+		if (ShowStructuringElement) {
 			ByteProcessor pH = IjUtils.toByteProcessor(H);
 			pH.invertLut();
 			pH.setMinAndMax(0, 1);
@@ -86,28 +99,26 @@ public class Bin_Morphology_Free implements PlugInFilter {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		String[] labels = makeFilterLabels();
 
-		gd.addCheckboxGroup(W, W, labels, freeStructure);
-		String[] ops = EnumUtils.getEnumNames(OpType.class);
-		gd.addChoice("Operation", ops, op.name());
-		gd.addCheckbox("Show structuring element", showElement);
+		gd.addCheckboxGroup(Size, Size, labels, freeStructure);
+		gd.addEnumChoice("Operation", Operation);
+		gd.addCheckbox("Show structuring element", ShowStructuringElement);
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
 
-		for (int i = 0; i < W * W; i++) {
+		for (int i = 0; i < Size * Size; i++) {
 			freeStructure[i] = gd.getNextBoolean();
 		}
-		
-		showElement = gd.getNextBoolean();
-		op = OpType.valueOf(gd.getNextChoice());
+		Operation = gd.getNextEnumChoice(OpType.class);
+		ShowStructuringElement = gd.getNextBoolean();
 		return true;
 	}
 
 	private byte[][] makeStructureElement(boolean[] structure) {
-		byte[][] kernel = new byte[W][W];
+		byte[][] kernel = new byte[Size][Size];
 		int i = 0;
-		for (int v = 0; v < W; v++) {
-			for (int u = 0; u < W; u++) {
+		for (int v = 0; v < Size; v++) {
+			for (int u = 0; u < Size; u++) {
 				if (structure[i])
 					kernel[v][u] = 1;
 				else
@@ -119,11 +130,11 @@ public class Bin_Morphology_Free implements PlugInFilter {
 	}
 
 	private String[] makeFilterLabels() {
-		String[] labels = new String[W * W];
+		String[] labels = new String[Size * Size];
 		for (int i = 0; i < labels.length; i++) {
 			labels[i] = " ";
 		}
-		labels[(W * W) / 2] = "x";
+		labels[(Size * Size) / 2] = "x";
 		return labels;
 	}
 

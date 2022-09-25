@@ -18,10 +18,20 @@ import ij.process.ImageProcessor;
 import imagingbook.common.morphology.BinaryThinning;
 
 /**
- * This ImageJ plugin demonstrates morphological thinning
- * on binary images. Pixels with value 0 are considered
- * background, values &gt; 0 are foreground. The plugin 
- * modifies the supplied image.
+ * <p>This ImageJ plugin demonstrates morphological thinning
+ * on binary images. See Sec. 7.2 of [1] for additional details. 
+ * This plugin works on 8-bit grayscale images only, the original
+ * image is modified. The maximum number of thinning iterations
+ * can be specified.
+ * Zero-value pixels are considered background, all other pixels
+ * are foreground. Different to ImageJ's built-in morphological
+ * operators, this implementation does not incorporate the current display 
+ * lookup-table (LUT).
+ * </p> 
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/01/24
