@@ -26,30 +26,47 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 
 /**
- * Shows each region's major axis as a vector scaled by the region's eccentricity.
- * Also demonstrates the use of the region property scheme, i.e., how
- * to assign numeric properties to regions and retrieve them afterwards.
- * Requires a binary (segmented) image.
- * 
- * TODO: convert to overlay display
+ * ImageJ plugin, shows each region's major axis as a vector scaled by the
+ * region's eccentricity. See Sec. 8.6 of [1] for additional details. Also
+ * demonstrates the use of the region property scheme, i.e., how to assign
+ * numeric properties to regions and retrieve them afterwards. Requires a binary
+ * image. Zero-value pixels are considered background, all other pixels are
+ * foreground.
+ * </p>
+ * <p>
+ * Note that (different to ImageJ's built-in morphological operators) this
+ * implementation does not incorporate the current display lookup-table (LUT).
+ * Results are drawn into a new image (pixel graphics), the original image is
+ * not modified.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2020/12/17
  */
-public class Major_Axis_Demo implements PlugInFilter {
+public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overlay display
 	
-	static double AxisLength = 50;
-	static Color CenterColor = Color.blue;
-	static Color MajorAxisColor = CenterColor;
-	static int LineWidth = 1;
+	/** Scale of the axis length. */
+	public static double AxisLength = 50;
+	/** Color used to draw regions' centroids. */
+	public static Color CenterColor = Color.blue;
+	/** Color used to draw regions' major axes. */
+	public static Color MajorAxisColor = CenterColor;
+	/** Line width used to draw regions' major axes. */
+	public static int LineWidth = 1;
 	
 	private ImagePlus im;
 	
+	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
 		return DOES_8G + NO_CHANGES; 
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		
 		if (!IjUtils.isBinary(ip)) {
@@ -71,7 +88,6 @@ public class Major_Axis_Demo implements PlugInFilter {
 		cp.add(210);
 		
 		// draw major axis vectors (scaled by eccentricity): 
-		
 		for (BinaryRegion r : regions) {
 			if (r.getSize() > 10) {
 				Pnt2d xc = r.getCenter();

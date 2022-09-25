@@ -27,27 +27,44 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
 
 /**
- * This plugin creates a binary region segmentation, calculates 
- * the center and major axis and subsequently the major axis-aligned
- * bounding box for each region.
- * Requires a binary image.
+ * <p>
+ * This ImageJ plugin creates a binary region segmentation, calculates the
+ * center and major axis and subsequently the major axis-aligned bounding box
+ * for each binary region (connected component). See Sec. 8.6.4 of [1] for
+ * additional details. Requires a binary image. Zero-value pixels are considered
+ * background, all other pixels are foreground. The resulting bounding box is
+ * shown as a vector overlay on top of a new image, the original image is not
+ * modified.
+ * </p>
+ * <p>
+ * Note that (different to ImageJ's built-in morphological operators) this
+ * implementation does not incorporate the current display lookup-table (LUT).
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/06/23
  */
 @IjPluginName("Axis-Aligned Bounding Box")
-public class AxisAligned_Bounding_Box_Demo implements PlugInFilter {
+public class AxisAligned_Bounding_Box implements PlugInFilter {
 	
-	static Color CenterColor = Color.magenta;
-	static Color BoundingBoxColor = Color.blue;
+	/** Color of the bounding-box center. */
+	public static Color CenterColor = Color.magenta;
+	/** Color of the bounding-box outline. */
+	public static Color BoundingBoxColor = Color.blue;
 
 	private ImagePlus im;
 	
+	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
 		return DOES_8G + NO_CHANGES; 
 	}
 	
+	@Override
 	public void run(ImageProcessor ip) {
 		
 		if (!IjUtils.isBinary(ip)) {

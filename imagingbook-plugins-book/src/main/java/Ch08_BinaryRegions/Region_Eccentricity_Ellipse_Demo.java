@@ -35,54 +35,60 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 
 /**
- * Performs binary region segmentation, then
- * displays each region's major axis (scaled by eccentricity)
- * and equivalent ellipse as a vector overlay.
- * Eccentricity values are limited to {@link #MaxEccentricity},
- * axes are marked red if exceeded.
- * Axes for regions with {@code NaN} eccentricity value (single-pixel regions) 
- * are not displayed.
- * Axis and ellipse parameters are calculated from the region's central
- * moments.
+ * <p>
+ * Performs binary region segmentation, then displays each region's major axis
+ * (scaled by eccentricity) and equivalent ellipse as a vector overlay. See Sec.
+ * 8.6.2 and 8.6.3 of [1] for additional details. Eccentricity values are
+ * limited to {@link #MaxEccentricity}, axes are marked red if exceeded. Axes
+ * for regions with {@code NaN} eccentricity value (single-pixel regions) are
+ * not displayed. Axis and ellipse parameters are calculated from the region's
+ * central moments. 
  * <br>
- * This plugin expects a binary (black and white) image with background = 0 and 
+ * This plugin expects a binary (black and white) image with background = 0 and
  * foreground &gt; 0.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2021/04/18
  */
-public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
+public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {	// TODO: convert to ShapeOverlayAdapter
 	
 	static {
 		Locale.setDefault(Locale.US);
 	}
 	
-	private static NeighborhoodType2D NhT = NeighborhoodType2D.N4;
+	public static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N4;
 	
-	private static double 	AxisScale = 1.0;
-	private static int 		MinRegionSize = 10;
-	private static double 	MaxEccentricity = 100;
+	public static double 	AxisScale = 1.0;
+	public static int 		MinRegionSize = 10;
+	public static double 	MaxEccentricity = 100;
 	
-	private static Color 	AxisColor = Color.magenta;
-	private static Color 	AxisColorVoid = Color.red;
-	private static Color	MarkerColor = Color.orange;
-	private static Color	EllipseColor = Color.green;
+	public static Color 	AxisColor = Color.magenta;
+	public static Color 	AxisColorVoid = Color.red;
+	public static Color		MarkerColor = Color.orange;
+	public static Color		EllipseColor = Color.green;
 	
-	private static double 	AxisLineWidth = 1.5;
-	private static double 	MarkerRadius = 3;
-	private static double 	MarkerLineWidth = 0.75;
+	public static double 	AxisLineWidth = 1.5;
+	public static double 	MarkerRadius = 3;
+	public static double 	MarkerLineWidth = 0.75;
 	
-	private static boolean 	ShowCenterMark = true;
-	private static boolean 	ShowMajorAxis = true;
-	private static boolean 	ShowEllipse = true;
+	public static boolean 	ShowCenterMark = true;
+	public static boolean 	ShowMajorAxis = true;
+	public static boolean 	ShowEllipse = true;
 	
 	private ImagePlus im = null;
 
+	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
 		return DOES_8G;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		
 		if (!IjUtils.isBinary(ip)) {
@@ -90,7 +96,7 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 			return;
 		}
 		
-		if (!getUserInput()) {
+		if (!runDialog()) {
 			return;
 		}
 		
@@ -101,7 +107,7 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 		Overlay oly = new Overlay();
 		
 		// perform region segmentation:
-		RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip, NhT);
+		RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip, Neighborhood);
 		List<BinaryRegion> regions = segmenter.getRegions();
 
 		for (BinaryRegion r : regions) {
@@ -128,12 +134,13 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 			
 			double theta = 0.5 * Math.atan2(2 * mu11, mu20 - mu02);	// axis angle	
 				
+			// calculate eccentricity from 2nd-order region moments:
 			double A = mu20 + mu02;
 			double B = sqr(mu20 - mu02) + 4 * sqr(mu11);
 			if (B < 0) {
 				throw new RuntimeException("negative B: " + B); // this should never happen
 			}		
-			double a1 = A + sqrt(B);		// see book eq. 10.34
+			double a1 = A + sqrt(B);		// see book 2nd ed, eq. 10.34
 			double a2 = A - sqrt(B);
 			double ecc = a1 / a2;			// = (A + sqrt(B)) / (A - sqrt(B))				
 			
@@ -195,9 +202,9 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 	
 	// -----------------------------------------------------------------
 	
-	private boolean getUserInput() {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addEnumChoice("Neighborhood type", NhT);
+		gd.addEnumChoice("Neighborhood type", Neighborhood);
 		gd.addNumericField("Min. region size", MinRegionSize, 0);
 		gd.addNumericField("Max. eccentricity", MaxEccentricity, 0);
 		gd.addNumericField("Axis scale", AxisScale, 1);
@@ -209,7 +216,7 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 		if (gd.wasCanceled())
 			return false;
 
-		NhT = gd.getNextEnumChoice(NeighborhoodType2D.class);
+		Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);
 		MinRegionSize = (int) gd.getNextNumber();
 		MaxEccentricity = gd.getNextNumber();
 		AxisScale = gd.getNextNumber();

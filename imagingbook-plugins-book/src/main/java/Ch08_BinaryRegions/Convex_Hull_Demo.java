@@ -26,11 +26,23 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 
 /**
- * This ImageJ plugin demonstrates the use of the {@link ConvexHull} class.
- * It performs region segmentation, calculates the convex hull
- * for each region found and then draws the result into a new color
- * image.
- * Requires a binary image.
+ * <p>
+ * This ImageJ plugin demonstrates the use of the {@link ConvexHull} class. See
+ * Sec. 8.4.2 of [1] for additional details. It performs region segmentation,
+ * calculates the convex hull for each region found and then displays the result
+ * in a new image. Requires a binary image. Zero-value pixels are considered
+ * background, all other pixels are foreground. The resulting convex hull is
+ * shown as a vector overlay on top of a new image, the original image is not
+ * modified.
+ * </p>
+ * <p>
+ * Note that (different to ImageJ's built-in morphological operators) this
+ * implementation does not incorporate the current display lookup-table (LUT).
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * 
  * @author WB
@@ -39,15 +51,18 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  */
 public class Convex_Hull_Demo implements PlugInFilter {
 	
-	static Color ConvexHullColor = Color.blue;
+	/** Color of the convex hull outline. */
+	public static Color ConvexHullColor = Color.blue;
 	
 	private ImagePlus im = null;
 	
+	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
 		return DOES_8G + NO_CHANGES; 
 	}
 	
+	@Override
 	public void run(ImageProcessor ip) {
 		
 		if (!IjUtils.isBinary(ip)) {
@@ -56,7 +71,6 @@ public class Convex_Hull_Demo implements PlugInFilter {
 		}
 		
 		RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);
-//		RegionLabeling segmenter = new DepthFirstLabeling((ByteProcessor) ip);
 		
 		List<BinaryRegion> regions = segmenter.getRegions();
 		if (regions.isEmpty()) {

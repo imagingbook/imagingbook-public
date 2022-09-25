@@ -25,25 +25,40 @@ import imagingbook.common.regions.utils.ContourOverlay;
 import imagingbook.common.regions.utils.Display;
 
 /**
- * This ImageJ plugin demonstrates the use of the class {@link RegionContourSegmentation}
- * to perform both region labeling and contour tracing simultaneously.
- * The resulting contours are displayed as a non-destructive vector overlay.
+ * This ImageJ plugin demonstrates the use of the class
+ * {@link RegionContourSegmentation} to perform both region labeling and contour
+ * tracing simultaneously. See Sec. 8.2.2 of [1] for additional details.
+ * Requires a binary image. Zero-value pixels are considered background, all
+ * other pixels are foreground. The resulting contours are displayed as a
+ * non-destructive vector overlay, the original image is not modified.
+ * </p>
+ * <p>
+ * Note that (different to ImageJ's built-in morphological operators) this
+ * implementation does not incorporate the current display lookup-table (LUT).
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2020/12/20
  */
 public class Region_Contours_Demo implements PlugInFilter {
 	
-	static NeighborhoodType2D NT = NeighborhoodType2D.N8;
+	/** Neighborhood type (4- or 8-neighborhood). */
+	public static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N8;
+	/** Set true to list detected regions to the text console. */
+	public static boolean ListRegions = false;
+	/** Set true to show detected regions in a separate image. */
+	public static boolean ShowContours = true;
 	
-	static boolean ListRegions = true;
-//	static boolean ListContours = true;
-	static boolean ShowContours = true;
-	
+	@Override
 	public int setup(String arg, ImagePlus im) { 
 		return DOES_8G + NO_CHANGES; 
 	}
 	
+	@Override
 	public void run(ImageProcessor ip) {
 		
 	   	if (!IjUtils.isBinary(ip)) {
@@ -51,14 +66,14 @@ public class Region_Contours_Demo implements PlugInFilter {
 				return;
 		}
 	   	
-	   	if (!getUserInput())
+	   	if (!runDialog())
     		return;
 	   	
 	   	// Make sure we have a proper byte image:
 	   	ByteProcessor I = ip.convertToByteProcessor();
 	   	
 	   	// Create the region segmenter / contour tracer:
-		RegionContourSegmentation seg = new RegionContourSegmentation(I, NT);
+		RegionContourSegmentation seg = new RegionContourSegmentation(I, Neighborhood);
 		
 		// Get a list of detected regions (sorted by size):
 		List<BinaryRegion> regions = seg.getRegions(true);
@@ -74,32 +89,6 @@ public class Region_Contours_Demo implements PlugInFilter {
 			}
 		}
 		
-		// Get the largest region:
-//		BinaryRegion Rmax = regions.get(0);
-		
-//		// Get the outer contour of the largest region:
-//		Contour oc =  Rmax.getOuterContour();
-//		IJ.log("Points on outer contour of largest region:");
-//		for (Pnt2d p : oc) {
-//			IJ.log("Point " + p);
-//		}
-	
-//		// Get all inner contours of the largest region:
-//		if (ListContours) {
-//			IJ.log("\nCountours:");
-//			for (BinaryRegion R : regions) {
-//				IJ.log("   " + R.toString());
-//				IJ.log("       " + oc);
-//				
-//				List<Contour> ics = R.getInnerContours();
-//				if (ics != null && !ics.isEmpty()) {
-//					for(Contour ic : R.getInnerContours()) {
-//						IJ.log("       " + ic);
-//					}
-//				}
-//			}
-//		}
-		
 		// Display the contours if desired:
 		if (ShowContours) {
 			ImageProcessor lip = Display.makeLabelImage(seg, false);
@@ -112,19 +101,17 @@ public class Region_Contours_Demo implements PlugInFilter {
 	
 	// --------------------------------------------------------------------------
 	
-	private boolean getUserInput() {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());
-		gd.addEnumChoice("Neighborhood type", NT);
+		gd.addEnumChoice("Neighborhood type", Neighborhood);
 		gd.addCheckbox("List regions", ListRegions);
-//		gd.addCheckbox("List contours", ListContours);
 		gd.addCheckbox("Show contours", ShowContours);
 		gd.showDialog();
 		if (gd.wasCanceled()) {
 			return false;
 		}
-		NT = gd.getNextEnumChoice(NeighborhoodType2D.class);
+		Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);
 		ListRegions  = gd.getNextBoolean();
-//		ListContours = gd.getNextBoolean();
 		ShowContours = gd.getNextBoolean();
 		return true;
 	}

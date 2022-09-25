@@ -14,26 +14,38 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 
 /**
- * This ImageJ plugin demonstrates the calculation of horizontal and
- * vertical projections on a grayscale image.
+ * <p>
+ * This ImageJ plugin demonstrates the calculation of horizontal and vertical
+ * projections on a grayscale image. See Sec. 8.7 of [1] for additional details.
+ * The resulting projections are shown as separate images, the original image is
+ * not modified.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2020/12/17
  */
 public class Make_Projections implements PlugInFilter {
 	
-	static boolean verbose = true;
-	static final int PSIZE = 150;	// size of projection bars
+	/** Size of horizontal/vertical projection bars. */
+	static final int PSIZE = 150;
+	/** Foreground value for drawing (black). */
 	static final int FOREGROUND = 0;
+	/** Background value for drawing (white). */
 	static final int BACKGROUND = 255;
 	
-	ImagePlus origImage = null;
+	ImagePlus im = null;
 	
+	@Override
 	public int setup(String arg, ImagePlus im) { 
-		origImage = im;
+		this.im = im;
 		return DOES_8G + NO_CHANGES; 
 	}
 	
+	@Override
 	public void run(ImageProcessor I) {
 		int M = I.getWidth();
 		int N = I.getHeight();
@@ -59,7 +71,7 @@ public class Make_Projections implements PlugInFilter {
 				hP.drawLine(0, row, k, row);
 			}
 		}
-		(new ImagePlus("Horiz. Proj", hP)).show();
+		(new ImagePlus("Horizontal projection", hP)).show();
 				
 		// make the vertical projection:
 		ByteProcessor vP = new ByteProcessor(M,PSIZE);
@@ -73,7 +85,7 @@ public class Make_Projections implements PlugInFilter {
 				vP.drawLine(col, 0, col, k);
 			}
 		}
-		(new ImagePlus("Vert. Proj", vP)).show();
+		(new ImagePlus("Vertical projection", vP)).show();
 	}
 
 }

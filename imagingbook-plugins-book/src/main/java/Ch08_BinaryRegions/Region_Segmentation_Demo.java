@@ -51,7 +51,7 @@ import imagingbook.common.regions.utils.Display;
  */
 public class Region_Segmentation_Demo implements PlugInFilter {
 	
-	private enum LabelingMethod {
+	public enum LabelingMethod {
 		BreadthFirst, 
 		DepthFirst, 
 		Sequential,
@@ -59,17 +59,19 @@ public class Region_Segmentation_Demo implements PlugInFilter {
 		Recursive
 	}
 
-	static LabelingMethod Method = LabelingMethod.BreadthFirst;
-	static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N8;
+	public static LabelingMethod Method = LabelingMethod.BreadthFirst;
+	public static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N8;
 	
-	static boolean ColorRegions = false;
-	static boolean ListRegions = false;
+	public static boolean ColorRegions = false;
+	public static boolean ListRegions = false;
 	
-    public int setup(String arg, ImagePlus im) {
+    @Override
+	public int setup(String arg, ImagePlus im) {
 		return DOES_8G + NO_CHANGES;
     }
 	
-    public void run(ImageProcessor ip) {
+    @Override
+	public void run(ImageProcessor ip) {
     	
 		if (!IjUtils.isBinary(ip)) {
 			IJ.showMessage("Plugin requires a binary image!");
