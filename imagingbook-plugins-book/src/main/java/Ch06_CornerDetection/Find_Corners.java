@@ -30,30 +30,43 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 /**
- * This plugin demonstrates the use of gradient corner detectors.
- * It calculates the corner positions and shows them as a vector overlay
- * on top of the source image.
+ * <p> 
+ * ImageJ plugin which demonstrates the use of gradient corner detectors
+ * (Harris, MOPS, Sho-Tomasi). See Ch. 6 of [1] for additional details.
+ * Detected corners are shown as a vector overlay on top of the 
+ * original image.
+ * </p> 
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @see HarrisCornerDetector
  * @see MopsCornerDetector
  * @see ShiTomasiCornerDetector
+ * @see ShapeOverlayAdapter
  * 
  * @author WB
  * @version 2022/03/30
  */
 public class Find_Corners implements PlugInFilter {
 	
-	private enum DetectorType {
-		Harris, MOPS, ShiThomasi;
+	public enum DetectorType {
+		Harris, Mops, ShiThomasi;
 	}
 	
-	private static DetectorType Algorithm = DetectorType.Harris;
-	private static int MaxCornerCount = 0;				// number of corners to show (0 = all)
+	/** Detection algorithm to use. */
+	public static DetectorType Algorithm = DetectorType.Harris;
+	/** Number of corners to show (0 = all). */
+	public static int MaxCornerCount = 0;	
+	/** Size of the graphic corner marks. */
+	public static double CornerMarkSize = 1.0;
+	/** Stroke width used for graphic corner marks. */
+	public static double CornerMarkStrokeWidth = 0.25;
+	/** Color used for graphic corner marks. */
+	public static BasicAwtColor CornerMarkColor = BasicAwtColor.Green;
+	
 	private static Parameters Params = new Parameters();
-
-	private static double CornerMarkSize = 1.0;
-	private static double CornerMarkStrokeWidth = 0.25;
-	private static BasicAwtColor CornerMarkColor = BasicAwtColor.Green;
 	
 	private ImagePlus im;
 	
@@ -75,7 +88,7 @@ public class Find_Corners implements PlugInFilter {
 		case Harris:
 			detector = new HarrisCornerDetector(ip, Params);
 			break;
-		case MOPS:
+		case Mops:
 			detector = new MopsCornerDetector(ip, Params);
 			break;
 		case ShiThomasi:
@@ -100,7 +113,7 @@ public class Find_Corners implements PlugInFilter {
 		
 		im.setOverlay(oly);
 		
-		// (new ImagePlus("Corner Score", detector.getQ())).show();
+		// (new ImagePlus("Corner Score", detector.getQ())).show();	// optionally show corner score image
     }
     
 	private boolean showDialog(Parameters params) {
