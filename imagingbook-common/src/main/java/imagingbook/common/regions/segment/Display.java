@@ -6,13 +6,12 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.regions.utils;
+package imagingbook.common.regions.segment;
 
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import imagingbook.common.color.iterate.RandomHueGenerator;
-import imagingbook.common.regions.segment.BinaryRegionSegmentation;
 
 /**
  * Defines static methods for displaying binary segmentations.
@@ -29,7 +28,7 @@ public abstract class Display {
 	 * @return an image of the label array.
 	 */
 	public static ImageProcessor makeLabelImage(BinaryRegionSegmentation labeling, boolean color) {
-		return (color) ?  makeLabelImageColor(labeling) : makeLabelImageGray(labeling);
+		return (color) ? makeLabelImageColor(labeling) : makeLabelImageGray(labeling);
 	}
 
 	private static ColorProcessor makeLabelImageColor(BinaryRegionSegmentation segmentation) {

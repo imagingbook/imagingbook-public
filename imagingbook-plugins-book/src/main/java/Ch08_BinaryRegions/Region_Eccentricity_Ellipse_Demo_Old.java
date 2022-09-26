@@ -12,7 +12,6 @@ import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
 
 import java.awt.Color;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
@@ -31,7 +30,6 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
@@ -57,7 +55,7 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * @author WB
  * @version 2021/04/18
  */
-public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {	// TODO: convert to ShapeOverlayAdapter
+public class Region_Eccentricity_Ellipse_Demo_Old implements PlugInFilter {	// TODO: convert to ShapeOverlayAdapter
 	
 	static {
 		Locale.setDefault(Locale.US);
@@ -163,14 +161,9 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {	// TODO:
 			}
 			
 			if (ShowEllipse) {
-				GeometricEllipse ellipse = r.getEquivalentEllipse();
-				Shape es = ellipse.getShape();
-				
-				
-//				double ra = sqrt(2 * a1 / n);
-//				double rb = sqrt(2 * a2 / n);
-//				Roi roi = makeEllipse(xc, yc, ra, rb, theta);
-				Roi roi = new ShapeRoi(es);
+				double ra = sqrt(2 * a1 / n);
+				double rb = sqrt(2 * a2 / n);
+				Roi roi = makeEllipse(xc, yc, ra, rb, theta);
 				roi.setStrokeWidth(AxisLineWidth);
 				roi.setStrokeColor(EllipseColor);
 				oly.add(roi);

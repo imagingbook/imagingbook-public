@@ -22,11 +22,11 @@ import imagingbook.common.regions.ContourTracer;
 
 /**
  * A special overlay for showing binary region contours.
- * TODO: convert to CustomOverlay
  * 
  * @version 2020/04/01
  */
-public class ContourOverlay extends Overlay {
+@Deprecated			// TODO: convert to CustomOverlay or remove (only used in one plugin!)
+public class ContourOverlay extends Overlay {	
 
 	static float defaultStrokeWidth = 1.0f; //0.2f;
 	static Color defaultOuterColor = Color.red;

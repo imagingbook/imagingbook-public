@@ -23,10 +23,10 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.BinaryRegionSegmentation;
 import imagingbook.common.regions.segment.BreadthFirstSegmentation;
 import imagingbook.common.regions.segment.DepthFirstSegmentation;
+import imagingbook.common.regions.segment.Display;
 import imagingbook.common.regions.segment.RecursiveSegmentation;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 import imagingbook.common.regions.segment.SequentialSegmentation;
-import imagingbook.common.regions.utils.Display;
 
 /**
  * <p>

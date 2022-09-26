@@ -20,9 +20,9 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.regions.BinaryRegion;
+import imagingbook.common.regions.segment.Display;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 import imagingbook.common.regions.utils.ContourOverlay;
-import imagingbook.common.regions.utils.Display;
 
 /**
  * This ImageJ plugin demonstrates the use of the class

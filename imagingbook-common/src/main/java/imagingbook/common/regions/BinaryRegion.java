@@ -8,6 +8,9 @@
  *******************************************************************************/
 package imagingbook.common.regions;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.sqrt;
+
 import java.awt.Rectangle;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -18,13 +21,12 @@ import java.util.Map;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.math.eigen.Eigensolver2x2;
 
 /**
  * <p>
- * This class represents a connected component or binary region. 
- * Instances of this class support iteration over the contained pixel
- * coordinates of type {@link Pnt2d}, e.g., by
+ * This class represents a connected component or binary region. See Sec. 8.4 of
+ * [1] for additional details. Instances of this class support iteration over
+ * the contained pixel coordinates of type {@link Pnt2d}, e.g., by
  * </p>
  * <pre>
  * import imagingbook.pub.geometry.basic.Pnt2d;
@@ -32,10 +34,15 @@ import imagingbook.common.math.eigen.Eigensolver2x2;
  * BinaryRegion R = ...;
  * for (Pnt2d p : R) {
  *    // process point p ...
- * }</pre>
+ * }
+ * </pre>
  * <p>
- * The advantage of providing iteration only is that it avoids the
- * creation of (possibly large) arrays of pixel coordinates.
+ * The advantage of providing iteration only is that it avoids the creation of
+ * (possibly large) arrays of pixel coordinates.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
  * </p>
  */
 public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d> {
@@ -113,8 +120,8 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	 * Returns the 2x2 covariance matrix for the pixel coordinates
 	 * contained in this region:
 	 * <pre>
-	 * | &sigma;_20 &sigma;_11 | 
-	 * | &sigma;_11 &sigma;_02 | 
+	 * | &sigma;<sub>20</sub> &sigma;<sub>11</sub> | 
+	 * | &sigma;<sub>11</sub> &sigma;<sub>02</sub> | 
 	 * </pre>
 	 * @return the covariance matrix
 	 */
@@ -155,8 +162,16 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	}
 
 	/**
-	 * Calculates and returns this region's equivalent ellipse.
-	 * @return the equivalent elipse
+	 * <p>
+	 * Calculates and returns this region's equivalent ellipse (see Sec. 8.6.3 of
+	 * [1] for details).
+	 * </p>
+	 * <p>
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+	 * Approach</em>, 3rd ed, Springer (2022).
+	 * </p>
+	 * 
+	 * @return the equivalent ellipse (instance of {@link GeometricEllipse})
 	 */
 	public GeometricEllipse getEquivalentEllipse() {
 		final double n = this.getSize();
@@ -166,11 +181,25 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 		final double mu02 = moments[1];
 		final double mu11 = moments[2];
 		
-		Eigensolver2x2 solver = new Eigensolver2x2(mu20, mu11, mu11, mu02);
-		double ra = 2 * Math.sqrt(solver.getRealEigenvalue(0) / n);
-		double rb = 2 * Math.sqrt(solver.getRealEigenvalue(1) / n);
-		double[] e0 = solver.getEigenvector(0).toArray();
-		double theta = Math.atan2(e0[1], e0[0]);
+		// direct calculation (without explicit Eigensolver): 
+		final double theta = 0.5 * Math.atan2(2 * mu11, mu20 - mu02);	// see [1], eq. 8.28
+		final double A = mu20 + mu02;
+		final double B = sqr(mu20 - mu02) + 4 * sqr(mu11);
+		if (B < 0) {
+			throw new RuntimeException("negative B: " + B); // this should never happen
+		}		
+		final double a1 = A + sqrt(B);		// see [1], eq. 8.38
+		final double a2 = A - sqrt(B);
+		final double ra = sqrt(2 * a1 / n);	// see [1], eq. 8.40
+		final double rb = sqrt(2 * a2 / n);
+		
+		// same calculation using Eigensolver:
+//		Eigensolver2x2 solver = new Eigensolver2x2(mu20, mu11, mu11, mu02);
+//		double ra = 2 * Math.sqrt(solver.getRealEigenvalue(0) / n);
+//		double rb = 2 * Math.sqrt(solver.getRealEigenvalue(1) / n);
+//		double[] e0 = solver.getEigenvector(0).toArray();
+//		double theta = Math.atan2(e0[1], e0[0]);
+		
 		return new GeometricEllipse(ra, rb, xc.getX(), xc.getY(), theta);
 	}
 	
