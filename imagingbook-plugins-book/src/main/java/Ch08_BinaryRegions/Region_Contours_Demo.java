@@ -26,6 +26,7 @@ import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 
 /**
+ * <p>
  * This ImageJ plugin demonstrates the use of the class
  * {@link RegionContourSegmentation} to perform both region labeling and contour
  * tracing simultaneously. See Sec. 8.2.2 of [1] for additional details.

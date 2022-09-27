@@ -18,127 +18,143 @@
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9">package Ch08_BinaryRegions;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
-<span class="sourceLineNo">011</span><a id="line.11">import java.util.List;</a>
-<span class="sourceLineNo">012</span><a id="line.12"></a>
-<span class="sourceLineNo">013</span><a id="line.13">import ij.IJ;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import ij.ImagePlus;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import ij.gui.GenericDialog;</a>
-<span class="sourceLineNo">016</span><a id="line.16">import ij.gui.Overlay;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.awt.Color;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.util.List;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import ij.IJ;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import ij.ImagePlus;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import ij.gui.GenericDialog;</a>
 <span class="sourceLineNo">017</span><a id="line.17">import ij.plugin.filter.PlugInFilter;</a>
 <span class="sourceLineNo">018</span><a id="line.18">import ij.process.ByteProcessor;</a>
 <span class="sourceLineNo">019</span><a id="line.19">import ij.process.ImageProcessor;</a>
 <span class="sourceLineNo">020</span><a id="line.20">import imagingbook.common.geometry.basic.NeighborhoodType2D;</a>
 <span class="sourceLineNo">021</span><a id="line.21">import imagingbook.common.ij.IjUtils;</a>
-<span class="sourceLineNo">022</span><a id="line.22">import imagingbook.common.regions.BinaryRegion;</a>
-<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.regions.segment.RegionContourSegmentation;</a>
-<span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.regions.utils.ContourOverlay;</a>
-<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.regions.utils.Display;</a>
-<span class="sourceLineNo">026</span><a id="line.26"></a>
-<span class="sourceLineNo">027</span><a id="line.27">/**</a>
-<span class="sourceLineNo">028</span><a id="line.28"> * This ImageJ plugin demonstrates the use of the class {@link RegionContourSegmentation}</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * to perform both region labeling and contour tracing simultaneously.</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * The resulting contours are displayed as a non-destructive vector overlay.</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * </a>
-<span class="sourceLineNo">032</span><a id="line.32"> * @author WB</a>
-<span class="sourceLineNo">033</span><a id="line.33"> * @version 2020/12/20</a>
-<span class="sourceLineNo">034</span><a id="line.34"> */</a>
-<span class="sourceLineNo">035</span><a id="line.35">public class Region_Contours_Demo implements PlugInFilter {</a>
-<span class="sourceLineNo">036</span><a id="line.36">        </a>
-<span class="sourceLineNo">037</span><a id="line.37">        static NeighborhoodType2D NT = NeighborhoodType2D.N8;</a>
-<span class="sourceLineNo">038</span><a id="line.38">        </a>
-<span class="sourceLineNo">039</span><a id="line.39">        static boolean ListRegions = true;</a>
-<span class="sourceLineNo">040</span><a id="line.40">//      static boolean ListContours = true;</a>
-<span class="sourceLineNo">041</span><a id="line.41">        static boolean ShowContours = true;</a>
-<span class="sourceLineNo">042</span><a id="line.42">        </a>
-<span class="sourceLineNo">043</span><a id="line.43">        public int setup(String arg, ImagePlus im) { </a>
-<span class="sourceLineNo">044</span><a id="line.44">                return DOES_8G + NO_CHANGES; </a>
-<span class="sourceLineNo">045</span><a id="line.45">        }</a>
-<span class="sourceLineNo">046</span><a id="line.46">        </a>
-<span class="sourceLineNo">047</span><a id="line.47">        public void run(ImageProcessor ip) {</a>
-<span class="sourceLineNo">048</span><a id="line.48">                </a>
-<span class="sourceLineNo">049</span><a id="line.49">                if (!IjUtils.isBinary(ip)) {</a>
-<span class="sourceLineNo">050</span><a id="line.50">                                IJ.showMessage("Plugin requires a binary image!");</a>
-<span class="sourceLineNo">051</span><a id="line.51">                                return;</a>
-<span class="sourceLineNo">052</span><a id="line.52">                }</a>
-<span class="sourceLineNo">053</span><a id="line.53">                </a>
-<span class="sourceLineNo">054</span><a id="line.54">                if (!getUserInput())</a>
-<span class="sourceLineNo">055</span><a id="line.55">                return;</a>
-<span class="sourceLineNo">056</span><a id="line.56">                </a>
-<span class="sourceLineNo">057</span><a id="line.57">                // Make sure we have a proper byte image:</a>
-<span class="sourceLineNo">058</span><a id="line.58">                ByteProcessor I = ip.convertToByteProcessor();</a>
-<span class="sourceLineNo">059</span><a id="line.59">                </a>
-<span class="sourceLineNo">060</span><a id="line.60">                // Create the region segmenter / contour tracer:</a>
-<span class="sourceLineNo">061</span><a id="line.61">                RegionContourSegmentation seg = new RegionContourSegmentation(I, NT);</a>
-<span class="sourceLineNo">062</span><a id="line.62">                </a>
-<span class="sourceLineNo">063</span><a id="line.63">                // Get a list of detected regions (sorted by size):</a>
-<span class="sourceLineNo">064</span><a id="line.64">                List&lt;BinaryRegion&gt; regions = seg.getRegions(true);</a>
-<span class="sourceLineNo">065</span><a id="line.65">                if (regions == null || regions.isEmpty()) {</a>
-<span class="sourceLineNo">066</span><a id="line.66">                        IJ.showMessage("No regions detected!");</a>
-<span class="sourceLineNo">067</span><a id="line.67">                        return;</a>
-<span class="sourceLineNo">068</span><a id="line.68">                }</a>
-<span class="sourceLineNo">069</span><a id="line.69"></a>
-<span class="sourceLineNo">070</span><a id="line.70">                if (ListRegions) {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                        IJ.log("\nDetected regions: " + regions.size());</a>
-<span class="sourceLineNo">072</span><a id="line.72">                        for (BinaryRegion R : regions) {</a>
-<span class="sourceLineNo">073</span><a id="line.73">                                IJ.log(R.toString());</a>
-<span class="sourceLineNo">074</span><a id="line.74">                        }</a>
-<span class="sourceLineNo">075</span><a id="line.75">                }</a>
-<span class="sourceLineNo">076</span><a id="line.76">                </a>
-<span class="sourceLineNo">077</span><a id="line.77">                // Get the largest region:</a>
-<span class="sourceLineNo">078</span><a id="line.78">//              BinaryRegion Rmax = regions.get(0);</a>
-<span class="sourceLineNo">079</span><a id="line.79">                </a>
-<span class="sourceLineNo">080</span><a id="line.80">//              // Get the outer contour of the largest region:</a>
-<span class="sourceLineNo">081</span><a id="line.81">//              Contour oc =  Rmax.getOuterContour();</a>
-<span class="sourceLineNo">082</span><a id="line.82">//              IJ.log("Points on outer contour of largest region:");</a>
-<span class="sourceLineNo">083</span><a id="line.83">//              for (Pnt2d p : oc) {</a>
-<span class="sourceLineNo">084</span><a id="line.84">//                      IJ.log("Point " + p);</a>
-<span class="sourceLineNo">085</span><a id="line.85">//              }</a>
-<span class="sourceLineNo">086</span><a id="line.86">        </a>
-<span class="sourceLineNo">087</span><a id="line.87">//              // Get all inner contours of the largest region:</a>
-<span class="sourceLineNo">088</span><a id="line.88">//              if (ListContours) {</a>
-<span class="sourceLineNo">089</span><a id="line.89">//                      IJ.log("\nCountours:");</a>
-<span class="sourceLineNo">090</span><a id="line.90">//                      for (BinaryRegion R : regions) {</a>
-<span class="sourceLineNo">091</span><a id="line.91">//                              IJ.log("   " + R.toString());</a>
-<span class="sourceLineNo">092</span><a id="line.92">//                              IJ.log("       " + oc);</a>
-<span class="sourceLineNo">093</span><a id="line.93">//                              </a>
-<span class="sourceLineNo">094</span><a id="line.94">//                              List&lt;Contour&gt; ics = R.getInnerContours();</a>
-<span class="sourceLineNo">095</span><a id="line.95">//                              if (ics != null &amp;&amp; !ics.isEmpty()) {</a>
-<span class="sourceLineNo">096</span><a id="line.96">//                                      for(Contour ic : R.getInnerContours()) {</a>
-<span class="sourceLineNo">097</span><a id="line.97">//                                              IJ.log("       " + ic);</a>
-<span class="sourceLineNo">098</span><a id="line.98">//                                      }</a>
-<span class="sourceLineNo">099</span><a id="line.99">//                              }</a>
-<span class="sourceLineNo">100</span><a id="line.100">//                      }</a>
-<span class="sourceLineNo">101</span><a id="line.101">//              }</a>
-<span class="sourceLineNo">102</span><a id="line.102">                </a>
-<span class="sourceLineNo">103</span><a id="line.103">                // Display the contours if desired:</a>
-<span class="sourceLineNo">104</span><a id="line.104">                if (ShowContours) {</a>
-<span class="sourceLineNo">105</span><a id="line.105">                        ImageProcessor lip = Display.makeLabelImage(seg, false);</a>
-<span class="sourceLineNo">106</span><a id="line.106">                        ImagePlus lim = new ImagePlus("Region labels and contours", lip);</a>
-<span class="sourceLineNo">107</span><a id="line.107">                        Overlay oly = new ContourOverlay(seg);</a>
-<span class="sourceLineNo">108</span><a id="line.108">                        lim.setOverlay(oly);</a>
-<span class="sourceLineNo">109</span><a id="line.109">                        lim.show();</a>
-<span class="sourceLineNo">110</span><a id="line.110">                }</a>
-<span class="sourceLineNo">111</span><a id="line.111">        }</a>
-<span class="sourceLineNo">112</span><a id="line.112">        </a>
-<span class="sourceLineNo">113</span><a id="line.113">        // --------------------------------------------------------------------------</a>
-<span class="sourceLineNo">114</span><a id="line.114">        </a>
-<span class="sourceLineNo">115</span><a id="line.115">        private boolean getUserInput() {</a>
-<span class="sourceLineNo">116</span><a id="line.116">                GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());</a>
-<span class="sourceLineNo">117</span><a id="line.117">                gd.addEnumChoice("Neighborhood type", NT);</a>
-<span class="sourceLineNo">118</span><a id="line.118">                gd.addCheckbox("List regions", ListRegions);</a>
-<span class="sourceLineNo">119</span><a id="line.119">//              gd.addCheckbox("List contours", ListContours);</a>
-<span class="sourceLineNo">120</span><a id="line.120">                gd.addCheckbox("Show contours", ShowContours);</a>
-<span class="sourceLineNo">121</span><a id="line.121">                gd.showDialog();</a>
-<span class="sourceLineNo">122</span><a id="line.122">                if (gd.wasCanceled()) {</a>
-<span class="sourceLineNo">123</span><a id="line.123">                        return false;</a>
-<span class="sourceLineNo">124</span><a id="line.124">                }</a>
-<span class="sourceLineNo">125</span><a id="line.125">                NT = gd.getNextEnumChoice(NeighborhoodType2D.class);</a>
-<span class="sourceLineNo">126</span><a id="line.126">                ListRegions  = gd.getNextBoolean();</a>
-<span class="sourceLineNo">127</span><a id="line.127">//              ListContours = gd.getNextBoolean();</a>
-<span class="sourceLineNo">128</span><a id="line.128">                ShowContours = gd.getNextBoolean();</a>
-<span class="sourceLineNo">129</span><a id="line.129">                return true;</a>
-<span class="sourceLineNo">130</span><a id="line.130">        }</a>
-<span class="sourceLineNo">131</span><a id="line.131">}</a>
+<span class="sourceLineNo">022</span><a id="line.22">import imagingbook.common.ij.overlay.ColoredStroke;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.regions.BinaryRegion;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.regions.Contour;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.regions.segment.RegionContourSegmentation;</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">/**</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * &lt;p&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * This ImageJ plugin demonstrates the use of the class</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * {@link RegionContourSegmentation} to perform both region labeling and contour</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * tracing simultaneously. See Sec. 8.2.2 of [1] for additional details.</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * Requires a binary image. Zero-value pixels are considered background, all</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * other pixels are foreground. </a>
+<span class="sourceLineNo">035</span><a id="line.35"> * The resulting contours are displayed as a</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * non-destructive vector overlay on the original image.</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * Outer contours of single-pixel regions are marked by an "X".</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * &lt;p&gt;</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * Note that (different to ImageJ's built-in morphological operators) this</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * implementation does not incorporate the current display lookup-table (LUT).</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * &lt;p&gt; </a>
+<span class="sourceLineNo">044</span><a id="line.44"> * This plugin also demonstrates the use of the {@link ShapeOverlayAdapter} </a>
+<span class="sourceLineNo">045</span><a id="line.45"> * (provided by the imagingbook library) which handles 0.5 pixel offsets </a>
+<span class="sourceLineNo">046</span><a id="line.46"> * for vector graphics transparently.</a>
+<span class="sourceLineNo">047</span><a id="line.47"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * &lt;p&gt;</a>
+<span class="sourceLineNo">049</span><a id="line.49"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing - An Algorithmic</a>
+<span class="sourceLineNo">050</span><a id="line.50"> * Approach&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">051</span><a id="line.51"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">052</span><a id="line.52"> * </a>
+<span class="sourceLineNo">053</span><a id="line.53"> * @author WB</a>
+<span class="sourceLineNo">054</span><a id="line.54"> * @version 2020/12/20</a>
+<span class="sourceLineNo">055</span><a id="line.55"> * @version 2022/09/27 revised overlay generation</a>
+<span class="sourceLineNo">056</span><a id="line.56"> * </a>
+<span class="sourceLineNo">057</span><a id="line.57"> * @see RegionContourSegmentation</a>
+<span class="sourceLineNo">058</span><a id="line.58"> */</a>
+<span class="sourceLineNo">059</span><a id="line.59">public class Region_Contours_Demo implements PlugInFilter {</a>
+<span class="sourceLineNo">060</span><a id="line.60">        </a>
+<span class="sourceLineNo">061</span><a id="line.61">        /** Neighborhood type used for region segmentation (4- or 8-neighborhood). */</a>
+<span class="sourceLineNo">062</span><a id="line.62">        public static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N8;</a>
+<span class="sourceLineNo">063</span><a id="line.63">        </a>
+<span class="sourceLineNo">064</span><a id="line.64">        /** Stroke width used for drawing contours. */</a>
+<span class="sourceLineNo">065</span><a id="line.65">        public static double ContourStrokeWidth = 0.25;</a>
+<span class="sourceLineNo">066</span><a id="line.66">        /** Color used for drawing outer contours. */</a>
+<span class="sourceLineNo">067</span><a id="line.67">        public static Color OuterContourColor = Color.red;</a>
+<span class="sourceLineNo">068</span><a id="line.68">        /** Color used for drawing inner contours. */</a>
+<span class="sourceLineNo">069</span><a id="line.69">        public static Color InnerContourColor = Color.green;</a>
+<span class="sourceLineNo">070</span><a id="line.70">        </a>
+<span class="sourceLineNo">071</span><a id="line.71">        /** Set true to list detected regions to the text console. */</a>
+<span class="sourceLineNo">072</span><a id="line.72">        public static boolean ListRegions = false;</a>
+<span class="sourceLineNo">073</span><a id="line.73">        </a>
+<span class="sourceLineNo">074</span><a id="line.74">        private ImagePlus im = null;</a>
+<span class="sourceLineNo">075</span><a id="line.75">        </a>
+<span class="sourceLineNo">076</span><a id="line.76">        @Override</a>
+<span class="sourceLineNo">077</span><a id="line.77">        public int setup(String arg, ImagePlus im) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">                this.im = im;</a>
+<span class="sourceLineNo">079</span><a id="line.79">                return DOES_8G; </a>
+<span class="sourceLineNo">080</span><a id="line.80">        }</a>
+<span class="sourceLineNo">081</span><a id="line.81">        </a>
+<span class="sourceLineNo">082</span><a id="line.82">        @Override</a>
+<span class="sourceLineNo">083</span><a id="line.83">        public void run(ImageProcessor ip) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">                </a>
+<span class="sourceLineNo">085</span><a id="line.85">                if (!IjUtils.isBinary(ip)) {</a>
+<span class="sourceLineNo">086</span><a id="line.86">                                IJ.showMessage("Plugin requires a binary image!");</a>
+<span class="sourceLineNo">087</span><a id="line.87">                                return;</a>
+<span class="sourceLineNo">088</span><a id="line.88">                }</a>
+<span class="sourceLineNo">089</span><a id="line.89">                </a>
+<span class="sourceLineNo">090</span><a id="line.90">                if (!runDialog())</a>
+<span class="sourceLineNo">091</span><a id="line.91">                return;</a>
+<span class="sourceLineNo">092</span><a id="line.92">                </a>
+<span class="sourceLineNo">093</span><a id="line.93">                // Make sure we have a proper byte image:</a>
+<span class="sourceLineNo">094</span><a id="line.94">                ByteProcessor bp = ip.convertToByteProcessor();</a>
+<span class="sourceLineNo">095</span><a id="line.95">                </a>
+<span class="sourceLineNo">096</span><a id="line.96">                // Create the region segmenter / contour tracer:</a>
+<span class="sourceLineNo">097</span><a id="line.97">                RegionContourSegmentation seg = new RegionContourSegmentation(bp, Neighborhood);</a>
+<span class="sourceLineNo">098</span><a id="line.98">                </a>
+<span class="sourceLineNo">099</span><a id="line.99">                // Get a list of detected regions (sorted by size):</a>
+<span class="sourceLineNo">100</span><a id="line.100">                List&lt;BinaryRegion&gt; regions = seg.getRegions(true);</a>
+<span class="sourceLineNo">101</span><a id="line.101">                if (regions.isEmpty()) {</a>
+<span class="sourceLineNo">102</span><a id="line.102">                        IJ.showMessage("No regions detected!");</a>
+<span class="sourceLineNo">103</span><a id="line.103">                        return;</a>
+<span class="sourceLineNo">104</span><a id="line.104">                }</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">                // Draw outer and inner contours for each detected region:</a>
+<span class="sourceLineNo">107</span><a id="line.107">                ShapeOverlayAdapter ola = new ShapeOverlayAdapter();</a>
+<span class="sourceLineNo">108</span><a id="line.108">                ColoredStroke outerStroke = new ColoredStroke(ContourStrokeWidth, OuterContourColor);</a>
+<span class="sourceLineNo">109</span><a id="line.109">                ColoredStroke innerStroke = new ColoredStroke(ContourStrokeWidth, InnerContourColor);</a>
+<span class="sourceLineNo">110</span><a id="line.110">                </a>
+<span class="sourceLineNo">111</span><a id="line.111">                for (BinaryRegion r : seg.getRegions()) {</a>
+<span class="sourceLineNo">112</span><a id="line.112">                        Contour oc = r.getOuterContour();</a>
+<span class="sourceLineNo">113</span><a id="line.113">                        ola.addShape(oc.getPolygonPath(), outerStroke);</a>
+<span class="sourceLineNo">114</span><a id="line.114">                        for (Contour ic : r.getInnerContours()) {</a>
+<span class="sourceLineNo">115</span><a id="line.115">                                ola.addShape(ic.getPolygonPath(), innerStroke);</a>
+<span class="sourceLineNo">116</span><a id="line.116">                        }</a>
+<span class="sourceLineNo">117</span><a id="line.117">                }</a>
+<span class="sourceLineNo">118</span><a id="line.118">                </a>
+<span class="sourceLineNo">119</span><a id="line.119">                im.setOverlay(ola.getOverlay());</a>
+<span class="sourceLineNo">120</span><a id="line.120">                </a>
+<span class="sourceLineNo">121</span><a id="line.121">                // Optionally list regions to console:</a>
+<span class="sourceLineNo">122</span><a id="line.122">                if (ListRegions) {</a>
+<span class="sourceLineNo">123</span><a id="line.123">                        IJ.log("\nDetected regions: " + regions.size());</a>
+<span class="sourceLineNo">124</span><a id="line.124">                        for (BinaryRegion R : regions) {</a>
+<span class="sourceLineNo">125</span><a id="line.125">                                IJ.log(R.toString());</a>
+<span class="sourceLineNo">126</span><a id="line.126">                        }</a>
+<span class="sourceLineNo">127</span><a id="line.127">                }</a>
+<span class="sourceLineNo">128</span><a id="line.128">                </a>
+<span class="sourceLineNo">129</span><a id="line.129">        }</a>
+<span class="sourceLineNo">130</span><a id="line.130">        </a>
+<span class="sourceLineNo">131</span><a id="line.131">        // --------------------------------------------------------------------------</a>
+<span class="sourceLineNo">132</span><a id="line.132">        </a>
+<span class="sourceLineNo">133</span><a id="line.133">        private boolean runDialog() {</a>
+<span class="sourceLineNo">134</span><a id="line.134">                GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());</a>
+<span class="sourceLineNo">135</span><a id="line.135">                gd.addEnumChoice("Neighborhood type", Neighborhood);</a>
+<span class="sourceLineNo">136</span><a id="line.136">                gd.addCheckbox("List regions", ListRegions);</a>
+<span class="sourceLineNo">137</span><a id="line.137">                </a>
+<span class="sourceLineNo">138</span><a id="line.138">                gd.showDialog();</a>
+<span class="sourceLineNo">139</span><a id="line.139">                if (gd.wasCanceled()) {</a>
+<span class="sourceLineNo">140</span><a id="line.140">                        return false;</a>
+<span class="sourceLineNo">141</span><a id="line.141">                }</a>
+<span class="sourceLineNo">142</span><a id="line.142">                </a>
+<span class="sourceLineNo">143</span><a id="line.143">                Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);</a>
+<span class="sourceLineNo">144</span><a id="line.144">                ListRegions  = gd.getNextBoolean();</a>
+<span class="sourceLineNo">145</span><a id="line.145">                return true;</a>
+<span class="sourceLineNo">146</span><a id="line.146">        }</a>
+<span class="sourceLineNo">147</span><a id="line.147">}</a>
 
 
 

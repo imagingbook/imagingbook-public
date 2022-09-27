@@ -26,6 +26,7 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 
 /**
+ * <p>
  * ImageJ plugin, shows each region's major axis as a vector scaled by the
  * region's eccentricity. See Sec. 8.6 of [1] for additional details. Also
  * demonstrates the use of the region property scheme, i.e., how to assign

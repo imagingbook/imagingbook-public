@@ -17,6 +17,7 @@ import imagingbook.common.morphology.BinaryMorphologyFilter;
 import imagingbook.common.morphology.StructuringElements;
 
 /**
+ * <p>
  * ImageJ plugin implementing a binary dilation by a disk-shaped
  * structuring element with a fixed radius.
  * See Sec. 7.2 of [1] for additional details. This plugin works on 8-bit 
