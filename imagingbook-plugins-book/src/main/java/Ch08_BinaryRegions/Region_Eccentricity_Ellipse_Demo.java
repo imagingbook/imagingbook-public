@@ -3,7 +3,7 @@
  * image processing published by Springer-Verlag in various languages and editions.
  * Permission to use and distribute this software is granted under the BSD 2-Clause 
  * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). 
- * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
+ * Copyright (c) 2006-2022 Wilhelm Burger (WB), Mark J. Burge (MJB). 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 package Ch08_BinaryRegions;
@@ -18,14 +18,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.List;
-import java.util.Locale;
 
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.gui.Overlay;
-import ij.gui.Roi;
-import ij.gui.ShapeRoi;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
@@ -33,6 +29,8 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.common.ij.overlay.ColoredStroke;
+import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
 
@@ -56,30 +54,40 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * 
  * @author WB
  * @version 2021/04/18
+ * @version 2022/09/27 revised ellipse generation, overlay
  */
-public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {	// TODO: convert to ShapeOverlayAdapter
+public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 	
-	static {
-		Locale.setDefault(Locale.US);
-	}
-	
+	/** Neighborhood type used for region segmentation (4- or 8-neighborhood). */
 	public static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N4;
 	
-	public static double 	AxisScale = 1.0;
+	/** Eccentricity scale factor applied to the length of the region's major axis. */
+	public static double 	AxisEccentricityScale = 1.0;
+	/** Minimum region size, smaller regions are ignored. */
 	public static int 		MinRegionSize = 10;
+	/** Maximum eccentricity, greater eccentricity values are clipped. */
 	public static double 	MaxEccentricity = 100;
 	
+	/** Color used for drawing the major axis. */
 	public static Color 	AxisColor = Color.magenta;
-	public static Color 	AxisColorVoid = Color.red;
-	public static Color		MarkerColor = Color.orange;
+	/** Color used for drawing the major axis if maximum eccentricity exceeded. */
+	public static Color 	AxisColorCLipped = Color.red;
+	/** Color used for drawing the region's center. */
+	public static Color		CenterColor = Color.orange;
+	/** Color used for drawing the region's equivalent ellipse. */
 	public static Color		EllipseColor = Color.green;
-	
+	/** Line width used for drawing the region's axes. */
 	public static double 	AxisLineWidth = 1.5;
-	public static double 	MarkerRadius = 3;
-	public static double 	MarkerLineWidth = 0.75;
+	/** Size (radius) of the region's center mark. */
+	public static double 	CenterMarkSize = 3;
+	/** Line width used for drawing the region's center. */
+	public static double 	CenterLineWidth = 0.75;
 	
+	/** Set true to show the regions's centroid. */
 	public static boolean 	ShowCenterMark = true;
+	/** Set true to show the region's major axis (length scaled by eccentricity). */
 	public static boolean 	ShowMajorAxis = true;
+	/** Set true to show the region's equivalent ellipse. */
 	public static boolean 	ShowEllipse = true;
 	
 	private ImagePlus im = null;
@@ -104,9 +112,9 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {	// TODO:
 		
 		int w = ip.getWidth();
 		int h = ip.getHeight();
-		double unitLength = sqrt(w * h) * 0.005 * AxisScale;
-				
-		Overlay oly = new Overlay();
+		double unitLength = sqrt(w * h) * 0.005 * AxisEccentricityScale;			
+
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 		
 		// perform region segmentation:
 		RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip, Neighborhood);
@@ -119,14 +127,12 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {	// TODO:
 			}
 			
 			Pnt2d ctr = r.getCenter();
-			double xc = ctr.getX() + 0.5;
-			double yc = ctr.getY() + 0.5;
+			final double xc = ctr.getX();
+			final double yc = ctr.getY();
 			
 			if (ShowCenterMark) {
-				Roi marker = makeCenterMark(xc, yc, MarkerRadius);
-				marker.setStrokeColor(MarkerColor);
-				marker.setStrokeWidth(MarkerLineWidth);
-				oly.add(marker);
+				ola.setStroke(new ColoredStroke(CenterLineWidth, CenterColor));
+				ola.addShape(makeCenterMark(xc, yc));
 			}
 			
 			double[] mu = r.getCentralMoments();	// = (mu10, mu01, mu20, mu02, mu11)
@@ -140,71 +146,54 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {	// TODO:
 			double A = mu20 + mu02;
 			double B = sqr(mu20 - mu02) + 4 * sqr(mu11);
 			if (B < 0) {
-				throw new RuntimeException("negative B: " + B); // this should never happen
+				throw new RuntimeException("negative value in eccentricity calculation: B = " + B); // this should never happen
 			}		
 			double a1 = A + sqrt(B);		// see book 2nd ed, eq. 10.34
 			double a2 = A - sqrt(B);
-			double ecc = a1 / a2;			// = (A + sqrt(B)) / (A - sqrt(B))				
+			double ecc = a1 / a2;		
 			
 			if (ShowMajorAxis && !Double.isNaN(ecc)) {
-				// ignore single pixel regions: A + sqrt(B) == A - sqrt(B) == 0
 				Color axisCol = AxisColor;			// default color
 				if (ecc > MaxEccentricity) {		// limit eccentricity (may be infinite)
 					ecc = MaxEccentricity;
-					axisCol = AxisColorVoid;		// mark as beyond maximum
+					axisCol = AxisColorCLipped;		// mark as beyond maximum
 				}
 				double len = ecc * unitLength;
 				double dx = Math.cos(theta) * len;
-				double dy = Math.sin(theta) * len;
-				Roi roi = new ShapeRoi(new Line2D.Double(xc, yc, xc + dx, yc + dy));
-				roi.setStrokeWidth(AxisLineWidth);
-				roi.setStrokeColor(axisCol);
-				oly.add(roi);
+				double dy = Math.sin(theta) * len;;
+				ola.setStroke(new ColoredStroke(AxisLineWidth, axisCol));
+				ola.addShape(new Line2D.Double(xc, yc, xc + dx, yc + dy));
 			}
 			
 			if (ShowEllipse) {
 				GeometricEllipse ellipse = r.getEquivalentEllipse();
-				Shape es = ellipse.getShape();
-				
-				
-//				double ra = sqrt(2 * a1 / n);
-//				double rb = sqrt(2 * a2 / n);
-//				Roi roi = makeEllipse(xc, yc, ra, rb, theta);
-				Roi roi = new ShapeRoi(es);
-				roi.setStrokeWidth(AxisLineWidth);
-				roi.setStrokeColor(EllipseColor);
-				oly.add(roi);
-				
-//				// same result via Eigenvalues:
-//				Eigensolver2x2 es = new Eigensolver2x2(mu20, mu11, mu11, mu02);
-//				double lambda0 = es.getEigenvalue(0);
-//				double lambda1 = es.getEigenvalue(1);
-//				double ra2 = 2 * sqrt(lambda0 / n);
-//				double rb2 = 2 * sqrt(lambda1 / n);
-//				IJ.log(String.format("V1: ra=%.2f rb=%.2f", ra, rb));
-//				IJ.log(String.format("V2: ra=%.2f rb=%.2f", ra2, rb2));
-//				IJ.log("");
+				if (ellipse != null) {
+					ola.setStroke(new ColoredStroke(AxisLineWidth, EllipseColor));
+					ola.addShape(ellipse.getShape());
+				}
 			}	
 		}
 		
-		im.setOverlay(oly);
+		im.setOverlay(ola.getOverlay());
 	}
 	
-	public Roi makeEllipse(double xc, double yc, double ra, double rb, double theta) {
+	@SuppressWarnings("unused")
+	private Shape makeEllipse(double xc, double yc, double ra, double rb, double theta) {
 		Ellipse2D e = new Ellipse2D.Double(-ra, -rb, 2 * ra, 2 * rb);
 		AffineTransform t = new AffineTransform();
 		t.translate(xc, yc);
 		t.rotate(theta);
-		return new ShapeRoi(t.createTransformedShape(e));
+		return t.createTransformedShape(e);
 	}
 	
-	private Roi makeCenterMark(double x, double y, double r) {
-		Path2D.Double m = new Path2D.Double();
-		m.moveTo(x - r, y - r);
-		m.lineTo(x + r, y + r);
-		m.moveTo(x + r, y - r);
-		m.lineTo(x - r, y + r);
-		return new ShapeRoi(m);
+	private Shape makeCenterMark(double x, double y) {
+		double r = CenterMarkSize;
+		Path2D.Double path = new Path2D.Double();
+		path.moveTo(x - r, y - r);
+		path.lineTo(x + r, y + r);
+		path.moveTo(x + r, y - r);
+		path.lineTo(x - r, y + r);
+		return path;
 	}
 	
 	// -----------------------------------------------------------------
@@ -212,9 +201,9 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {	// TODO:
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addEnumChoice("Neighborhood type", Neighborhood);
-		gd.addNumericField("Min. region size", MinRegionSize, 0);
+		gd.addNumericField("Min. region size (pixels)", MinRegionSize, 0);
 		gd.addNumericField("Max. eccentricity", MaxEccentricity, 0);
-		gd.addNumericField("Axis scale", AxisScale, 1);
+		gd.addNumericField("Axis scale", AxisEccentricityScale, 1);
 		gd.addCheckbox("Show center marks", ShowCenterMark);
 		gd.addCheckbox("Show major axes", ShowMajorAxis);
 		gd.addCheckbox("Show ellipses", ShowEllipse);
@@ -226,7 +215,7 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {	// TODO:
 		Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);
 		MinRegionSize = (int) gd.getNextNumber();
 		MaxEccentricity = gd.getNextNumber();
-		AxisScale = gd.getNextNumber();
+		AxisEccentricityScale = gd.getNextNumber();
 		
 		ShowCenterMark = gd.getNextBoolean();
 		ShowMajorAxis = gd.getNextBoolean();

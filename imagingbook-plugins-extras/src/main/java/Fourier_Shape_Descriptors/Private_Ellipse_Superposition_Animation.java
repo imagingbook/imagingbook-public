@@ -78,6 +78,7 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 	String origTitle = null;
 	static boolean verbose = true;
 	
+	@Override
 	public int setup(String arg, ImagePlus im) { 
     	origImage = im;
 		origTitle = im.getShortTitle();
@@ -85,6 +86,7 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 		return DOES_8G + NO_CHANGES; 
 	}
 	
+	@Override
 	public void run(ImageProcessor ip1) {
 		
 		GenericDialog dlg = new GenericDialog("Fourier Shape Composition Parameters");
@@ -107,7 +109,7 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 		ByteProcessor ip = (ByteProcessor) ip1.duplicate();
 		
 		//  label regions and trace contours
-		RegionContourSegmentation tracer = new RegionContourSegmentation((ByteProcessor)ip);
+		RegionContourSegmentation tracer = new RegionContourSegmentation(ip);
 		//IJ.log("tracing done");
 		
 		// extract contours and regions
@@ -251,7 +253,7 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 		 float scale = (255 - minGray) / 255f;
 		 int[] table = new int[256];
 		 for (int i=0; i<256; i++) {
-			 table[i] = (int) Math.round(minGray + scale * i);
+			 table[i] = Math.round(minGray + scale * i);
 			 
 		 }
 		 ip.applyTable(table);
@@ -261,7 +263,7 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 		 float scale = maxGray / 255f;
 		 int[] table = new int[256];
 		 for (int i=0; i<256; i++) {
-			 table[i] = (int) Math.round(scale * i);
+			 table[i] = Math.round(scale * i);
 			 
 		 }
 		 ip.applyTable(table);
@@ -287,7 +289,7 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 	}
 	
 	ShapeRoi makeCentroidShape(Contour contr) { // draw the original contour ------------------------------------
-		Path2D path = contr.getPolygonPath();
+		Path2D path = contr.getPolygonPath(0.5, 0.5);
 		path.transform(CtrShift);
 		ShapeRoi roi = new ShapeRoi(path);
 		roi.setStrokeColor(ContourColor);

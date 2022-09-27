@@ -8,33 +8,41 @@
  *******************************************************************************/
 package Ch08_BinaryRegions;
 
+import java.awt.Color;
 import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.common.ij.overlay.ColoredStroke;
+import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
-import imagingbook.common.regions.segment.Display;
+import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
-import imagingbook.common.regions.utils.ContourOverlay;
 
 /**
  * This ImageJ plugin demonstrates the use of the class
  * {@link RegionContourSegmentation} to perform both region labeling and contour
  * tracing simultaneously. See Sec. 8.2.2 of [1] for additional details.
  * Requires a binary image. Zero-value pixels are considered background, all
- * other pixels are foreground. The resulting contours are displayed as a
- * non-destructive vector overlay, the original image is not modified.
+ * other pixels are foreground. 
+ * The resulting contours are displayed as a
+ * non-destructive vector overlay on the original image.
+ * Outer contours of single-pixel regions are marked by an "X".
  * </p>
  * <p>
  * Note that (different to ImageJ's built-in morphological operators) this
  * implementation does not incorporate the current display lookup-table (LUT).
+ * </p>
+ * <p> 
+ * This plugin also demonstrates the use of the {@link ShapeOverlayAdapter} 
+ * (provided by the imagingbook library) which handles 0.5 pixel offsets 
+ * for vector graphics transparently.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
@@ -43,19 +51,31 @@ import imagingbook.common.regions.utils.ContourOverlay;
  * 
  * @author WB
  * @version 2020/12/20
+ * @version 2022/09/27 revised overlay generation
+ * 
+ * @see RegionContourSegmentation
  */
 public class Region_Contours_Demo implements PlugInFilter {
 	
-	/** Neighborhood type (4- or 8-neighborhood). */
+	/** Neighborhood type used for region segmentation (4- or 8-neighborhood). */
 	public static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N8;
+	
+	/** Stroke width used for drawing contours. */
+	public static double ContourStrokeWidth = 0.25;
+	/** Color used for drawing outer contours. */
+	public static Color OuterContourColor = Color.red;
+	/** Color used for drawing inner contours. */
+	public static Color InnerContourColor = Color.green;
+	
 	/** Set true to list detected regions to the text console. */
 	public static boolean ListRegions = false;
-	/** Set true to show detected regions in a separate image. */
-	public static boolean ShowContours = true;
+	
+	private ImagePlus im = null;
 	
 	@Override
-	public int setup(String arg, ImagePlus im) { 
-		return DOES_8G + NO_CHANGES; 
+	public int setup(String arg, ImagePlus im) {
+		this.im = im;
+		return DOES_8G; 
 	}
 	
 	@Override
@@ -70,18 +90,34 @@ public class Region_Contours_Demo implements PlugInFilter {
     		return;
 	   	
 	   	// Make sure we have a proper byte image:
-	   	ByteProcessor I = ip.convertToByteProcessor();
+	   	ByteProcessor bp = ip.convertToByteProcessor();
 	   	
 	   	// Create the region segmenter / contour tracer:
-		RegionContourSegmentation seg = new RegionContourSegmentation(I, Neighborhood);
+		RegionContourSegmentation seg = new RegionContourSegmentation(bp, Neighborhood);
 		
 		// Get a list of detected regions (sorted by size):
 		List<BinaryRegion> regions = seg.getRegions(true);
-		if (regions == null || regions.isEmpty()) {
+		if (regions.isEmpty()) {
 			IJ.showMessage("No regions detected!");
 			return;
 		}
 
+		// Draw outer and inner contours for each detected region:
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
+		ColoredStroke outerStroke = new ColoredStroke(ContourStrokeWidth, OuterContourColor);
+		ColoredStroke innerStroke = new ColoredStroke(ContourStrokeWidth, InnerContourColor);
+		
+		for (BinaryRegion r : seg.getRegions()) {
+			Contour oc = r.getOuterContour();
+			ola.addShape(oc.getPolygonPath(), outerStroke);
+			for (Contour ic : r.getInnerContours()) {
+				ola.addShape(ic.getPolygonPath(), innerStroke);
+			}
+		}
+		
+		im.setOverlay(ola.getOverlay());
+		
+		// Optionally list regions to console:
 		if (ListRegions) {
 			IJ.log("\nDetected regions: " + regions.size());
 			for (BinaryRegion R : regions) {
@@ -89,14 +125,6 @@ public class Region_Contours_Demo implements PlugInFilter {
 			}
 		}
 		
-		// Display the contours if desired:
-		if (ShowContours) {
-			ImageProcessor lip = Display.makeLabelImage(seg, false);
-			ImagePlus lim = new ImagePlus("Region labels and contours", lip);
-			Overlay oly = new ContourOverlay(seg);
-			lim.setOverlay(oly);
-			lim.show();
-		}
 	}
 	
 	// --------------------------------------------------------------------------
@@ -105,14 +133,14 @@ public class Region_Contours_Demo implements PlugInFilter {
 		GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());
 		gd.addEnumChoice("Neighborhood type", Neighborhood);
 		gd.addCheckbox("List regions", ListRegions);
-		gd.addCheckbox("Show contours", ShowContours);
+		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
 			return false;
 		}
+		
 		Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);
 		ListRegions  = gd.getNextBoolean();
-		ShowContours = gd.getNextBoolean();
 		return true;
 	}
 }

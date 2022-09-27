@@ -115,16 +115,17 @@ public abstract class BinaryRegionSegmentation {
 	 * Returns an unsorted list of all regions associated with this region labeling.
 	 * The returned list is empty if no regions were detected.
 	 * See also {@link #getRegions(boolean)}.
-	 * @return the list of detected regions or {@code null} if the segmentation has failed.
+	 * 
+	 * @return a (possibly empty) list of detected regions
 	 */
 	public List<BinaryRegion> getRegions() {
 		return getRegions(false);	// unsorted
-//		return new ArrayList<>(regions.values());
 	}
 	
 	/**
 	 * Returns a (optionally sorted) list of all regions associated with this region labeling.
 	 * The returned list is empty if no regions were detected.
+	 * 
 	 * @param sort set {@code true} to sort regions by size (largest regions first).
 	 * @return the list of detected regions or {@code null} if the segmentation has failed.
 	 */

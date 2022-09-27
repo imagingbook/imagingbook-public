@@ -102,13 +102,13 @@ public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {
 	 * @return the polygon.
 	 */
 	public Path2D getPolygonPath() {
-		return getPolygonPath(0.5, 0.5);	// offset by 0.5 to pass through pixel centers
+		return getPolygonPath(0.0, 0.0);
 	}
 	
 	/**
 	 * Get the polygon for this contour (for subsequent drawing).
 	 * An offset can be specified for shifting the contour positions
-	 * at pixel centers (set to 0.5/0.5).
+	 * to pixel centers (by passing 0.5, 0.5).
 	 * 
 	 * @param xOffset the horizontal offset.
 	 * @param yOffset the vertical offset.
@@ -117,14 +117,14 @@ public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {
 	public Path2D getPolygonPath(double xOffset, double yOffset) {
 		Path2D path = new Path2D.Float();
 		Pnt2d[] pnts = this.getPointArray();
-		if (pnts.length > 1){
+		if (pnts.length > 1) {
 			path.moveTo(pnts[0].getX() + xOffset, pnts[0].getY() + yOffset);
 			for (int i = 1; i < pnts.length; i++) {
 				path.lineTo(pnts[i].getX() + xOffset,  pnts[i].getY() + yOffset);
 			}
 			path.closePath();
 		}
-		else {	// mark single pixel region "X"
+		else {	// special case: mark a single pixel region "X"
 			double x = pnts[0].getX();
 			double y = pnts[0].getY();
 			path.moveTo(x + xOffset - 0.5, y + yOffset - 0.5);
