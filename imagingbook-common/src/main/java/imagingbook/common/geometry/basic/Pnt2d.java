@@ -654,13 +654,17 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		}
 
 		// addition -----------------------------------
+		
+		public PntInt plus(int dx, int dy) {
+			return new PntInt(this.x + dx, this.y + dy);
+		}
 
 		public PntInt plus(PntInt p) {
 			return this.plus(p.x, p.y);
 		}
-
-		public PntInt plus(int dx, int dy) {
-			return new PntInt(this.x + dx, this.y + dy);
+		
+		public PntInt plus(int[] dxy) {
+			return this.plus(dxy[0], dxy[1]);
 		}
 
 		@Override

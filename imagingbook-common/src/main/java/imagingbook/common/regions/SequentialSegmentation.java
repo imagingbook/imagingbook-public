@@ -60,7 +60,7 @@ public class SequentialSegmentation extends BinaryRegionSegmentation {
 	}
 
 	@Override
-	boolean applySegmentation() {
+	boolean applySegmentation(ByteProcessor ip) {
 		collisions = new HashSet<>();
 		int[] nh = null;
 		
@@ -70,13 +70,13 @@ public class SequentialSegmentation extends BinaryRegionSegmentation {
 				if (getLabel(u, v) == FOREGROUND) {
 					nh = getNeighborhood(nh, u, v);
 					int a = max(nh);
-					if (!isLabel(a)) { // a = 0 or 1,  i.e., (u,v) is isolated and not connected to any labeled pixel
+					if (!isRegionLabel(a)) { // a = 0 or 1,  i.e., (u,v) is isolated and not connected to any labeled pixel
 						setLabel(u, v, getNextLabel()); // new region with a new label
 					}
 					else {					// at least one label in nh[] is an assigned label		
 						setLabel(u, v, a);	// connect to the existing region with the largest label among neighbors
 						for (int b : nh) {	// register label collisions between a and all b
-							if (isLabel(b) && a != b) {
+							if (isRegionLabel(b) && a != b) {
 								registerCollision(a, b);	// we know that a <= b
 							}
 						}

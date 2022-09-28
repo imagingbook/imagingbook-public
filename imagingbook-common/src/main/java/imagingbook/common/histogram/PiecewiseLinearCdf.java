@@ -23,7 +23,8 @@ public class PiecewiseLinearCdf {
 	private final double[] pArr;
 	
 	/**
-	 * Constructor creating a {@link PiecewiseLinearCdf} from a sequence of 
+	 * <p>
+	 * Constructor, creates a {@link PiecewiseLinearCdf} from a sequence of 
 	 * brightness / cumulative probability pairs.
 	 * See Sec. 3.6.3 (Fig. 3.12) of [1] for additional details.
 	 * Usage example:

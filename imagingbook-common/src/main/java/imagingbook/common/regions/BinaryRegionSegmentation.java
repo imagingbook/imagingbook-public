@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import ij.process.ByteProcessor;
-import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 
 /**
@@ -36,12 +35,13 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
  */
 public abstract class BinaryRegionSegmentation {
 	
+	/** The default neighborhood type. */
 	public static final NeighborhoodType2D DEFAULT_NEIGHBORHOOD = N4;
 	
 	static final int BACKGROUND = 0;
 	static final int FOREGROUND = 1;
 	
-	ImageProcessor ip = null;
+//	final ImageProcessor ip;
 	final int width;
 	final int height;	
 	final NeighborhoodType2D NT;
@@ -62,16 +62,16 @@ public abstract class BinaryRegionSegmentation {
 	// -------------------------------------------------------------------------
 	
 	BinaryRegionSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {
-		this.ip = ip;
+//		this.ip = ip;
 		this.NT = nh;
 		this.width  = ip.getWidth();
 		this.height = ip.getHeight();
-		this.labelArray = makeLabelArray();
-		this.isSegmented = applySegmentation();
+		this.labelArray = makeLabelArray(ip);
+		this.isSegmented = applySegmentation(ip);
 		this.regions = (isSegmented) ? collectRegions() : Collections.emptyMap();
 	}
 	
-	int[][] makeLabelArray() {
+	int[][] makeLabelArray(ByteProcessor ip) {
 		int[][] lA = new int[width][height];	// label array
 		// set all pixels to either FOREGROUND or BACKGROUND (by thresholding)
 		for (int v = 0; v < height; v++) {
@@ -86,10 +86,11 @@ public abstract class BinaryRegionSegmentation {
 	
 	/**
 	 * This method must be implemented by all concrete sub-classes.
+	 * @param ip TODO
 	 * 
 	 * @return true if segmentation was successful
 	 */
-	abstract boolean applySegmentation();
+	abstract boolean applySegmentation(ByteProcessor ip);
 	
 	/**
 	 * Returns the width of the segmented image. 
@@ -197,10 +198,12 @@ public abstract class BinaryRegionSegmentation {
 	}
 	
 	/**
-	 * Get the label number for the specified image coordinate.
+	 * Returns the label number for the specified image coordinate.
+	 * -1 is returned for out-of-image coordinates.
+	 * 
 	 * @param u the horizontal coordinate.
 	 * @param v the vertical coordinate.
-	 * @return the label number for the given position.
+	 * @return the label number for the given position or -1 if outside the image
 	 */
 	public int getLabel(int u, int v) {
 		return (u >= 0 && u < width && v >= 0 && v < height) ? labelArray[u][v] : -1;
@@ -217,28 +220,32 @@ public abstract class BinaryRegionSegmentation {
 		return currentLabel;
 	}
 	
-	boolean isLabel(int i) {
+	boolean isRegionLabel(int i) {
 		return (i >= minLabel);
 	}
 
 	// --------------------------------------------------
 
 	/**
-	 * Finds the region associated to the given label.
-	 * @param label the region's label number.
+	 * Finds the region associated to the specified label
+	 * or {@code null} if no region for that label exists.
+	 * 
+	 * @param label the region's label number
 	 * @return the region object associated with the given label
-	 * 		or {@code null} if it does not exist.
+	 * 		or {@code null} if it does not exist
 	 */
 	public SegmentationBackedRegion getRegion(int label) {
 		return (label < minLabel || label > maxLabel) ? null : regions.get(label);
 	}
 	
 	/**
-	 * Finds the {@link BinaryRegion} instance associated with
-	 * the given image position.
+	 * Returns the {@link BinaryRegion} instance associated with
+	 * the given image position or {@code null} if the segmentation
+	 * contains no region covering the given position.
+	 * 
 	 * @param u the horizontal position.
 	 * @param v the vertical position.
-	 * @return The associated {@link BinaryRegion} object or null if
+	 * @return The associated {@link BinaryRegion} object or {@code null} if
 	 * 		this {@link BinaryRegionSegmentation} has no region at the given position.
 	 */
 	public SegmentationBackedRegion getRegion(int u, int v) {

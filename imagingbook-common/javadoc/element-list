@@ -57,8 +57,6 @@ imagingbook.common.noise.hashing
 imagingbook.common.noise.perlin
 imagingbook.common.ransac
 imagingbook.common.regions
-imagingbook.common.regions.segment
-imagingbook.common.regions.utils
 imagingbook.common.sift
 imagingbook.common.sift.scalespace
 imagingbook.common.sift.util

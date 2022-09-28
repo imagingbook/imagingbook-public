@@ -44,6 +44,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	
 	static private final int VISITED = -1;
 	
+	private ByteProcessor ip;	// only used temporarily   
 	private List<Contour.Outer> outerContours;
 	private List<Contour.Inner> innerContours;
 	
@@ -105,20 +106,21 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	// non-public methods ------------------------------------------------------------------
 	
 	@Override
-	int[][] makeLabelArray() {
+	int[][] makeLabelArray(ByteProcessor ip) {
 		// Create a label array which is "padded" by 1 pixel, i.e., 
 		// 2 rows and 2 columns larger than the image:
 		return new int[width + 2][height + 2];	// label array, initialized to zero
 	}
 	
 	@Override
-	boolean applySegmentation() {
+	boolean applySegmentation(ByteProcessor ip) {
+		this.ip = ip;	// temp. reference to ip
 		outerContours = new ArrayList<>();
 		innerContours = new ArrayList<>();
 		for (int v = 0; v < height; v++) {	// scan top to bottom, left to right
 			int label = 0;					// reset label, scan through horiz. row:
 			for (int u = 0; u < width; u++) {
-				if (ip.getPixel(u, v) > 0) {	// hit an unlabeled FOREGROUND pixel
+				if (ip.get(u, v) > 0) {	// hit an unlabeled FOREGROUND pixel
 					if (label != 0) { // keep using the same label
 						setLabel(u, v, label);
 					}
@@ -147,6 +149,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 				}
 			}
 		}
+		this.ip = null;
 		return true;
 	}
 	
@@ -187,16 +190,16 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	// Starts at point X0 in direction d0, returns a tuple holding
 	// the next point and the direction in which it was found if successful.
 	// Returns null if no successor point is found.
-	private Tuple2<PntInt, Integer> findNextContourPoint(final PntInt x0, final int d0) {
+	private Tuple2<PntInt, Integer> findNextContourPoint(PntInt x0, int d0) {
 		final int step = (NT == N4) ? 2 : 1;
-		PntInt x = null;
+		PntInt xn = null;
 		int d = d0;
 		int i = 0;
 		boolean done = false;
 		while (i < 7 && !done) {	// N4: i = 0,2,4,6  N8: i = 0,1,2,3,4,5,6
-			x = x0.plus(delta[d][0], delta[d][1]);
-			if (ip.getPixel(x.x, x.y) == BACKGROUND) {
-				setLabel(x, VISITED);	// mark this background pixel not to be visited again
+			xn = x0.plus(delta[d]);
+			if (!isInsideImage(xn) ||  ip.get(xn.x, xn.y) == BACKGROUND) {
+				setLabel(xn, VISITED);	// mark this background pixel not to be visited again
 				d = (d + step) % 8;
 			} 
 			else {	// found a non-background pixel (next pixel to follow)
@@ -205,7 +208,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 			i = i + step;
 		}
 		return (done) ? 
-				Tuple2.from(x, d) : 
+				Tuple2.from(xn, d) : 
 				Tuple2.from(x0, d0);	// no successor found
 	}
 	
@@ -255,6 +258,14 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	
 	private void setLabel(PntInt p, int label) { // (u,v) are image coordinates
 		setLabel(p.x, p.y, label);
+	}
+	
+	private boolean isInsideImage(int u, int v) {
+		return (0 <= u && u < width && 0 <= v && v < height);
+	}
+	
+	private boolean isInsideImage(PntInt p) {
+		return isInsideImage(p.x, p.y);
 	}
 	
 }

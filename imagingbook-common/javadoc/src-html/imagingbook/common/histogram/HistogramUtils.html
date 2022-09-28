@@ -22,7 +22,7 @@
 <span class="sourceLineNo">012</span><a id="line.12">import static imagingbook.common.math.Arithmetic.sqr;</a>
 <span class="sourceLineNo">013</span><a id="line.13"></a>
 <span class="sourceLineNo">014</span><a id="line.14">/**</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * This class defines a set of simple static methods for processing histograms.</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * This class defines static methods related to histograms.</a>
 <span class="sourceLineNo">016</span><a id="line.16"> * </a>
 <span class="sourceLineNo">017</span><a id="line.17"> * @author WB</a>
 <span class="sourceLineNo">018</span><a id="line.18"> * @version 2022/08/24</a>
@@ -334,7 +334,60 @@
 <span class="sourceLineNo">324</span><a id="line.324">                return hn;</a>
 <span class="sourceLineNo">325</span><a id="line.325">        }</a>
 <span class="sourceLineNo">326</span><a id="line.326">        </a>
-<span class="sourceLineNo">327</span><a id="line.327">}</a>
+<span class="sourceLineNo">327</span><a id="line.327">        // -----------------------------------------------------------------</a>
+<span class="sourceLineNo">328</span><a id="line.328">        </a>
+<span class="sourceLineNo">329</span><a id="line.329">        /**</a>
+<span class="sourceLineNo">330</span><a id="line.330">         * Histogram matching. Given are two histograms: the histogram hA of the target</a>
+<span class="sourceLineNo">331</span><a id="line.331">         * image IA and a reference histogram hR, both of size K. The result is a</a>
+<span class="sourceLineNo">332</span><a id="line.332">         * discrete mapping f which, when applied to the target image, produces a new</a>
+<span class="sourceLineNo">333</span><a id="line.333">         * image with a distribution function similar to the reference histogram.</a>
+<span class="sourceLineNo">334</span><a id="line.334">         * </a>
+<span class="sourceLineNo">335</span><a id="line.335">         * @param hA histogram of the target image</a>
+<span class="sourceLineNo">336</span><a id="line.336">         * @param hR reference histogram (the same size as hA)</a>
+<span class="sourceLineNo">337</span><a id="line.337">         * @return a discrete mapping f to be applied to the values of a target image</a>
+<span class="sourceLineNo">338</span><a id="line.338">         */</a>
+<span class="sourceLineNo">339</span><a id="line.339">        public static int[] matchHistograms (int[] hA, int[] hR) {</a>
+<span class="sourceLineNo">340</span><a id="line.340">                int K = hA.length;</a>
+<span class="sourceLineNo">341</span><a id="line.341">                double[] PA = HistogramUtils.cdf(hA); // get CDF of histogram hA</a>
+<span class="sourceLineNo">342</span><a id="line.342">                double[] PR = HistogramUtils.cdf(hR); // get CDF of histogram hR</a>
+<span class="sourceLineNo">343</span><a id="line.343">                int[] f = new int[K]; // pixel mapping function f()</a>
+<span class="sourceLineNo">344</span><a id="line.344"></a>
+<span class="sourceLineNo">345</span><a id="line.345">                // compute pixel mapping function f():</a>
+<span class="sourceLineNo">346</span><a id="line.346">                for (int a = 0; a &lt; K; a++) {</a>
+<span class="sourceLineNo">347</span><a id="line.347">                        int j = K - 1;</a>
+<span class="sourceLineNo">348</span><a id="line.348">                        do {</a>
+<span class="sourceLineNo">349</span><a id="line.349">                                f[a] = j;</a>
+<span class="sourceLineNo">350</span><a id="line.350">                                j--;</a>
+<span class="sourceLineNo">351</span><a id="line.351">                        } while (j &gt;= 0 &amp;&amp; PA[a] &lt;= PR[j]);</a>
+<span class="sourceLineNo">352</span><a id="line.352">                }</a>
+<span class="sourceLineNo">353</span><a id="line.353">                return f;</a>
+<span class="sourceLineNo">354</span><a id="line.354">        }</a>
+<span class="sourceLineNo">355</span><a id="line.355">        </a>
+<span class="sourceLineNo">356</span><a id="line.356">        /**</a>
+<span class="sourceLineNo">357</span><a id="line.357">         * Histogram matching to a reference cumulative distribution</a>
+<span class="sourceLineNo">358</span><a id="line.358">         * function that is piecewise linear.</a>
+<span class="sourceLineNo">359</span><a id="line.359">         * </a>
+<span class="sourceLineNo">360</span><a id="line.360">         * @param hA histogram of the target image</a>
+<span class="sourceLineNo">361</span><a id="line.361">         * @param PR a piecewise linear reference cumulative distribution function ({@link PiecewiseLinearCdf})</a>
+<span class="sourceLineNo">362</span><a id="line.362">         * @return a discrete mapping f to be applied to the values of a target image</a>
+<span class="sourceLineNo">363</span><a id="line.363">         * </a>
+<span class="sourceLineNo">364</span><a id="line.364">         * @see PiecewiseLinearCdf</a>
+<span class="sourceLineNo">365</span><a id="line.365">         * @see #matchHistograms(int[], int[])</a>
+<span class="sourceLineNo">366</span><a id="line.366">         */</a>
+<span class="sourceLineNo">367</span><a id="line.367">        public static int[] matchHistograms(int[] hA, PiecewiseLinearCdf PR) {</a>
+<span class="sourceLineNo">368</span><a id="line.368">                int K = hA.length;</a>
+<span class="sourceLineNo">369</span><a id="line.369">                double[] PA = HistogramUtils.cdf(hA); // get p.d.f. of histogram Ha</a>
+<span class="sourceLineNo">370</span><a id="line.370">                int[] f = new int[K];                                   // pixel mapping function f()</a>
+<span class="sourceLineNo">371</span><a id="line.371"></a>
+<span class="sourceLineNo">372</span><a id="line.372">                // compute pixel mapping function f():</a>
+<span class="sourceLineNo">373</span><a id="line.373">                for (int a = 0; a &lt; K; a++) {</a>
+<span class="sourceLineNo">374</span><a id="line.374">                        double b = PA[a];</a>
+<span class="sourceLineNo">375</span><a id="line.375">                        f[a] = (int) Math.round(PR.getInverseCdf(b));</a>
+<span class="sourceLineNo">376</span><a id="line.376">                }</a>
+<span class="sourceLineNo">377</span><a id="line.377">                return f;</a>
+<span class="sourceLineNo">378</span><a id="line.378">        }</a>
+<span class="sourceLineNo">379</span><a id="line.379">        </a>
+<span class="sourceLineNo">380</span><a id="line.380">}</a>
 
 
 

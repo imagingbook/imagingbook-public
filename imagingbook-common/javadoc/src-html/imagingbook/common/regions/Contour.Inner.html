@@ -112,13 +112,13 @@
 <span class="sourceLineNo">102</span><a id="line.102">         * @return the polygon.</a>
 <span class="sourceLineNo">103</span><a id="line.103">         */</a>
 <span class="sourceLineNo">104</span><a id="line.104">        public Path2D getPolygonPath() {</a>
-<span class="sourceLineNo">105</span><a id="line.105">                return getPolygonPath(0.5, 0.5);        // offset by 0.5 to pass through pixel centers</a>
+<span class="sourceLineNo">105</span><a id="line.105">                return getPolygonPath(0.0, 0.0);</a>
 <span class="sourceLineNo">106</span><a id="line.106">        }</a>
 <span class="sourceLineNo">107</span><a id="line.107">        </a>
 <span class="sourceLineNo">108</span><a id="line.108">        /**</a>
 <span class="sourceLineNo">109</span><a id="line.109">         * Get the polygon for this contour (for subsequent drawing).</a>
 <span class="sourceLineNo">110</span><a id="line.110">         * An offset can be specified for shifting the contour positions</a>
-<span class="sourceLineNo">111</span><a id="line.111">         * at pixel centers (set to 0.5/0.5).</a>
+<span class="sourceLineNo">111</span><a id="line.111">         * to pixel centers (by passing 0.5, 0.5).</a>
 <span class="sourceLineNo">112</span><a id="line.112">         * </a>
 <span class="sourceLineNo">113</span><a id="line.113">         * @param xOffset the horizontal offset.</a>
 <span class="sourceLineNo">114</span><a id="line.114">         * @param yOffset the vertical offset.</a>
@@ -127,14 +127,14 @@
 <span class="sourceLineNo">117</span><a id="line.117">        public Path2D getPolygonPath(double xOffset, double yOffset) {</a>
 <span class="sourceLineNo">118</span><a id="line.118">                Path2D path = new Path2D.Float();</a>
 <span class="sourceLineNo">119</span><a id="line.119">                Pnt2d[] pnts = this.getPointArray();</a>
-<span class="sourceLineNo">120</span><a id="line.120">                if (pnts.length &gt; 1){</a>
+<span class="sourceLineNo">120</span><a id="line.120">                if (pnts.length &gt; 1) {</a>
 <span class="sourceLineNo">121</span><a id="line.121">                        path.moveTo(pnts[0].getX() + xOffset, pnts[0].getY() + yOffset);</a>
 <span class="sourceLineNo">122</span><a id="line.122">                        for (int i = 1; i &lt; pnts.length; i++) {</a>
 <span class="sourceLineNo">123</span><a id="line.123">                                path.lineTo(pnts[i].getX() + xOffset,  pnts[i].getY() + yOffset);</a>
 <span class="sourceLineNo">124</span><a id="line.124">                        }</a>
 <span class="sourceLineNo">125</span><a id="line.125">                        path.closePath();</a>
 <span class="sourceLineNo">126</span><a id="line.126">                }</a>
-<span class="sourceLineNo">127</span><a id="line.127">                else {  // mark single pixel region "X"</a>
+<span class="sourceLineNo">127</span><a id="line.127">                else {  // special case: mark a single pixel region "X"</a>
 <span class="sourceLineNo">128</span><a id="line.128">                        double x = pnts[0].getX();</a>
 <span class="sourceLineNo">129</span><a id="line.129">                        double y = pnts[0].getY();</a>
 <span class="sourceLineNo">130</span><a id="line.130">                        path.moveTo(x + xOffset - 0.5, y + yOffset - 0.5);</a>

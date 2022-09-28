@@ -58,7 +58,7 @@ public class BreadthFirstSegmentation extends BinaryRegionSegmentation {
 	}
 	
 	@Override
-	boolean applySegmentation() {
+	boolean applySegmentation(ByteProcessor ip) {
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
 				if (getLabel(u, v) == FOREGROUND) {

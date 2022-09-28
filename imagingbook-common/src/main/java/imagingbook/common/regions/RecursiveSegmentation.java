@@ -56,7 +56,7 @@ public class RecursiveSegmentation extends BinaryRegionSegmentation {
 	}
 	
 	@Override
-	boolean applySegmentation() {
+	boolean applySegmentation(ByteProcessor ip) {
 		try{
 			for (int v = 0; v < height; v++) {
 				for (int u = 0; u < width; u++) {

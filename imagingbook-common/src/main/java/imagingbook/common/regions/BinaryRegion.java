@@ -117,12 +117,13 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	}
 
 	/**
-	 * Returns the 2x2 covariance matrix for the pixel coordinates
-	 * contained in this region:
-	 * <pre>
-	 * | &sigma;<sub>20</sub> &sigma;<sub>11</sub> | 
-	 * | &sigma;<sub>11</sub> &sigma;<sub>02</sub> | 
-	 * </pre>
+	 * <p>
+	 * Returns the 2x2 covariance matrix for the pixel coordinates contained in this
+	 * region: <br>
+	 * | &sigma;<sub>20</sub> &sigma;<sub>11</sub> | <br>
+	 * | &sigma;<sub>11</sub> &sigma;<sub>02</sub> |
+	 * </p>
+	 * 
 	 * @return the covariance matrix
 	 */
 	public double[][] getCovarianceMatrix() {
