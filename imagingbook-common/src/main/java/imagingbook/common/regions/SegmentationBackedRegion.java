@@ -18,10 +18,10 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 /**
- * Binary region backed by the label array of a region segmentation. A
- * {@link SegmentationBackedRegion} instance does not have its own list or array
- * of contained pixel coordinates but refers to the label array of the associated
- * {@link BinaryRegionSegmentation} instance.
+ * Defines a binary region that is backed by the label array of a region
+ * segmentation. A {@link SegmentationBackedRegion} instance does not have its
+ * own list or array of contained pixel coordinates but refers to the label
+ * array of the associated {@link BinaryRegionSegmentation} instance.
  */
 public class SegmentationBackedRegion extends BinaryRegion {
 
@@ -137,7 +137,7 @@ public class SegmentationBackedRegion extends BinaryRegion {
 	}
 
 	@Override
-	public Contour getOuterContour() {
+	public Contour getOuterContour() {	// TODO: invoke some contour tracer if contour not available?
 		return outerContour;
 	}
 
@@ -171,20 +171,6 @@ public class SegmentationBackedRegion extends BinaryRegion {
 		return segmentation.getLabel(u, v) == this.label;
 	}
 	
-//	@Override
-//	public String toString() {
-//		Formatter fm = new Formatter(new StringBuilder(), Locale.US);
-//		fm.format("Region %d", label);
-//		fm.format(", area = %d", size);
-//		fm.format(", bounding box = (%d, %d, %d, %d)", left, top, right, bottom );
-//		fm.format(", centroid = (%.2f, %.2f)", xc, yc);
-//		if (innerContours != null)
-//			fm.format(", holes = %d", innerContours.size());
-//		String s = fm.toString();
-//		fm.close();
-//		return s;
-//	}
-
 	// --------------------------------------------------------------------------------
 
 	/**

@@ -20,6 +20,7 @@ import java.util.Map;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 /**
@@ -46,6 +47,10 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
  * </p>
  */
 public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d> {
+	
+	// Constructor, to be used by package-local sub-classes only.
+	BinaryRegion() {
+	}
 
 	/**
 	 * Returns the sum of the x-coordinates of the points
@@ -134,7 +139,6 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 				{mu[2]/n, mu[1]/n}};
 		return S;
 	}
-
 
 	/**
 	 * Get the size of this region.
@@ -237,6 +241,16 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	 * @return true if (u,v) is contained in this region
 	 */
 	public abstract boolean contains(int u, int v);
+	
+	/**
+	 * Checks if the given pixel position is contained in this
+	 * {@link BinaryRegion} instance.
+	 * @param p the pixel coordinate
+	 * @return true if the position is contained in this region
+	 */
+	public boolean contains (PntInt p) {
+		return this.contains(p.x, p.y);
+	}
 
 	// ------------------------------------------------------------
 	// ------------------------------------------------------------
@@ -252,7 +266,6 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	 * and subsequently
 	 *    double theta = r.getProperty("angle");
 	 */
-
 	private Map<Object, Double> properties = null;
 
 	/**
@@ -295,6 +308,8 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	public void clearProperties() {
 		properties.clear();
 	}
+	
+	// ---------------------------------------------------------------------
 	
 	@Override
 	public String toString() {
