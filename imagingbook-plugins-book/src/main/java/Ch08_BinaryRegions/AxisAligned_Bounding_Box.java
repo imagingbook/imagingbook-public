@@ -32,13 +32,9 @@ import imagingbook.core.plugin.IjPluginName;
  * center and major axis and subsequently the major axis-aligned bounding box
  * for each binary region (connected component). See Sec. 8.6.4 of [1] for
  * additional details. Requires a binary image. Zero-value pixels are considered
- * background, all other pixels are foreground. The resulting bounding box is
- * shown as a vector overlay on top of a new image, the original image is not
- * modified.
- * </p>
- * <p>
- * Note that (different to ImageJ's built-in morphological operators) this
- * implementation does not incorporate the current display lookup-table (LUT).
+ * background, all other pixels are foreground. Display lookup tables (LUTs) are
+ * not considered. The resulting bounding box is shown as a vector overlay on
+ * top of a new image, the original image is not modified.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic

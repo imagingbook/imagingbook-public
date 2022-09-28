@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.IjPluginName;
 
 /**
  * <p>
@@ -28,6 +29,7 @@ import ij.process.ImageProcessor;
  * @author WB
  * @version 2020/12/17
  */
+@IjPluginName("Make Projections")
 public class Make_Projections implements PlugInFilter {
 	
 	/** Size of horizontal/vertical projection bars. */

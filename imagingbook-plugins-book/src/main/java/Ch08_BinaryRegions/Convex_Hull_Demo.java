@@ -24,6 +24,7 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
+import imagingbook.core.plugin.IjPluginName;
 
 /**
  * <p>
@@ -31,13 +32,9 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * Sec. 8.4.2 of [1] for additional details. It performs region segmentation,
  * calculates the convex hull for each region found and then displays the result
  * in a new image. Requires a binary image. Zero-value pixels are considered
- * background, all other pixels are foreground. The resulting convex hull is
- * shown as a vector overlay on top of a new image, the original image is not
- * modified.
- * </p>
- * <p>
- * Note that (different to ImageJ's built-in morphological operators) this
- * implementation does not incorporate the current display lookup-table (LUT).
+ * background, all other pixels are foreground. Display lookup tables (LUTs) are
+ * not considered. The resulting convex hull is shown as a vector overlay on top
+ * of a new image, the original image is not modified.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
@@ -49,6 +46,7 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * @version 2022/06/24
  * 
  */
+@IjPluginName("Convex Hull Demo")
 public class Convex_Hull_Demo implements PlugInFilter {
 	
 	/** Color of the convex hull outline. */

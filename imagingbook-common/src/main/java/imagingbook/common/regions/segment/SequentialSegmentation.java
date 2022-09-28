@@ -17,31 +17,50 @@ import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 
 /**
- * Binary region labeler based on a sequential labeling
- * algorithm. 
+ * <p>
+ * Binary region segmentation based on a two-pass sequential labeling
+ * algorithm. See Sec. 8.1.2 (Alg. 8.3) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2020/12/20
+ * @version 2022/09/28 revised
  */
 public class SequentialSegmentation extends BinaryRegionSegmentation {
 
 	private HashSet<LabelCollision> collisions;
 
 	/**
-	 * Constructor. Creates a new sequential binary region segmenter.
-	 * @param ip a binary image with 0 values for background pixels and values &gt; 0
-	 * for foreground pixels.
+	 * Constructor. Creates a new region segmentation from the specified image,
+	 * which is not modified. The input image is considered binary, with 0 values
+	 * for background pixels and values &ne; 0 for foreground pixels.
+	 * The 4-neighborhood is used by default ({@link DEFAULT_NEIGHBORHOOD}).
+	 * 
+	 * @param ip the binary input image to be segmented
 	 */
 	public SequentialSegmentation(ByteProcessor ip) {
 		this(ip, DEFAULT_NEIGHBORHOOD);
 	}
 	
+	/**
+	 * Constructor. Creates a new region segmentation from the specified image and
+	 * neighborhood type (4- or 8-neighborhood). The input image is considered
+	 * binary, with 0 values for background pixels and values &ne; 0 for foreground
+	 * pixels.
+	 * 
+	 * @param ip the binary input image to be segmented
+	 * @param nh the neighborhood type (4- or 8-neighborhood)
+	 */
 	public SequentialSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {
 		super(ip, nh);
 	}
 
 	@Override
-	protected boolean applySegmentation() {
+	boolean applySegmentation() {
 		collisions = new HashSet<>();
 		int[] nh = null;
 		

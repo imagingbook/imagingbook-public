@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ij.IJ;
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
@@ -25,15 +24,24 @@ import imagingbook.common.regions.ContourTracer;
 import imagingbook.common.util.tuples.Tuple2;
 
 /**
+ * <p>
  * Binary region segmenter based on a combined region labeling
- * and contour tracing algorithm:
- * F. Chang, C. J. Chen, and C. J. Lu. A linear-time component labeling
+ * and contour tracing algorithm as described in [1].
+ * Detected regions and contours are 4- or 8-connected.
+ * See Sec. 8.2.2 of [2] for additional details.
+ * </p>
+ * <p>
+ * [1] F. Chang, C. J. Chen, and C. J. Lu. A linear-time component labeling
  * algorithm using contour tracing technique. Computer Vision, Graphics,
  * and Image Processing: Image Understanding 93(2), 206-220 (2004).
- * Detected regions are 8-connected. 
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2020/04/01
+ * @version 2022/09/28 revised
  */
 public class RegionContourSegmentation extends BinaryRegionSegmentation implements ContourTracer { 
 	
@@ -43,21 +51,31 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	private List<Contour.Inner> innerContours;
 	
 	/**
-	 * Constructor. Creates a combined region and contour segmenter.
-	 * @param ip A binary image with 0 values for background pixels and values &gt; 0
-	 * for foreground pixels.
+	 * Constructor. Creates a combined region and contour segmenter from the
+	 * specified image, which is not modified. The input image is considered binary,
+	 * with 0 values for background pixels and values &ne; 0 for foreground pixels.
+	 * The 4-neighborhood is used by default ({@link DEFAULT_NEIGHBORHOOD}).
+	 * 
+	 * @param ip the binary input image to be segmented
 	 */
 	public RegionContourSegmentation(ByteProcessor ip) {
 		this(ip, DEFAULT_NEIGHBORHOOD);
 	}
 	
+	/**
+	 * Constructor. Creates a combined region and contour segmenter from the
+	 * specified image and neighborhood type (4- or 8-neighborhood). The input image
+	 * is considered binary, with 0 values for background pixels and values &ne; 0
+	 * for foreground pixels.
+	 * 
+	 * @param ip the binary input image to be segmented
+	 * @param nh the neighborhood type (4- or 8-neighborhood)
+	 */
 	public RegionContourSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {
 		super(ip, nh);
 		attachOuterContours();	// attach the outer contour to the corresponding region
 		attachInnerContours();	// attach all inner contours to the corresponding region
 	}
-	
-	// public methods required by interface ContourTracer (others are in inherited from super-class):
 	
 	@Override
 	public List<Contour.Outer> getOuterContours() {
@@ -90,19 +108,18 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	// non-public methods ------------------------------------------------------------------
 	
 	@Override
-	protected int[][] makeLabelArray() {
+	int[][] makeLabelArray() {
 		// Create a label array which is "padded" by 1 pixel, i.e., 
 		// 2 rows and 2 columns larger than the image:
-		int[][] lA = new int[width+2][height+2];	// label array, initialized to zero
-		outerContours = new ArrayList<>();
-		innerContours = new ArrayList<>();
-		return lA;
+		return new int[width + 2][height + 2];	// label array, initialized to zero
 	}
 	
 	@Override
-	protected boolean applySegmentation() {
+	boolean applySegmentation() {
+		outerContours = new ArrayList<>();
+		innerContours = new ArrayList<>();
 		for (int v = 0; v < height; v++) {	// scan top to bottom, left to right
-			int label = 0;	// reset label, scan through horiz. line:
+			int label = 0;					// reset label, scan through horiz. row:
 			for (int u = 0; u < width; u++) {
 				if (ip.getPixel(u, v) > 0) {	// hit an unlabeled FOREGROUND pixel
 					if (label != 0) { // keep using the same label
@@ -202,7 +219,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 			int label = c.getLabel();
 			BinaryRegion reg = getRegion(label);
 			if (reg == null) {
-				IJ.log("Error: Could not associate outer contour with label " + label);
+				throw new RuntimeException("could not associate outer contour with label " + label);
 			}
 			else {
 				reg.setOuterContour(c);
@@ -215,7 +232,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 			int label = c.getLabel();
 			SegmentationBackedRegion reg = getRegion(label);
 			if (reg == null) {
-				IJ.log("Error: Could not associate inner contour with label " + label);
+				throw new RuntimeException("could not associate inner contour with label " + label);
 			}
 			else {
 				reg.addInnerContour(c);
@@ -223,37 +240,24 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 		}
 	}
 
-	// access methods to the label array (which is padded!)
+	// access methods to the (padded) label array
 	@Override
 	public int getLabel(int u, int v) {	// (u,v) are image coordinates
 		if (u >= -1 && u <= width && v >= -1 && v <= height)
 			return labelArray[u + 1][v + 1]; 	// label array is padded (offset = 1)
 		else
 			return BACKGROUND;
-		//return labelArray[u + 1][v + 1];	// original version
 	}
 	
 	@Override
-	protected void setLabel(int u, int v, int label) { // (u,v) are image coordinates
+	void setLabel(int u, int v, int label) { // (u,v) are image coordinates
 		if (u >= -1 && u <= width && v >= -1 && v <= height) {
 			labelArray[u + 1][v + 1] = label;
 		}
 	}
 	
-	protected void setLabel(PntInt p, int label) { // (u,v) are image coordinates
+	private void setLabel(PntInt p, int label) { // (u,v) are image coordinates
 		setLabel(p.x, p.y, label);
 	}
-	
-//	private List<Contour> copyContours(List<Contour> cntrs, boolean sort) {
-//		if (cntrs == null)
-//			return Collections.emptyList(); 
-//		else {
-//			List<Contour> cc = new ArrayList<Contour>(cntrs);
-//			if (sort) {
-//				Collections.sort(cc);
-//			}
-//			return cc;
-//		}
-//	}
 	
 }

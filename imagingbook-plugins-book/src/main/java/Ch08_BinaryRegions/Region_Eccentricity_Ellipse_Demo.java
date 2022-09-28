@@ -33,19 +33,18 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
+import imagingbook.core.plugin.IjPluginName;
 
 /**
  * <p>
  * Performs binary region segmentation, then displays each region's major axis
  * (scaled by eccentricity) and equivalent ellipse as a vector overlay. See Sec.
- * 8.6.2 and 8.6.3 of [1] for additional details. Eccentricity values are
- * limited to {@link #MaxEccentricity}, axes are marked red if exceeded. Axes
- * for regions with {@code NaN} eccentricity value (single-pixel regions) are
- * not displayed. Axis and ellipse parameters are calculated from the region's
- * central moments. 
- * <br>
- * This plugin expects a binary (black and white) image with background = 0 and
- * foreground &gt; 0.
+ * 8.6.2 and 8.6.3 of [1] for additional details. This plugin expects a binary
+ * (black and white) image with background = 0 and foreground &gt; 0. Display
+ * lookup tables (LUTs) are not considered. Eccentricity values are limited to
+ * {@link #MaxEccentricity}, axes are marked red if exceeded. Axes for regions
+ * with {@code NaN} eccentricity value (single-pixel regions) are not displayed.
+ * Axis and ellipse parameters are calculated from the region's central moments.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
@@ -56,6 +55,7 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * @version 2021/04/18
  * @version 2022/09/27 revised ellipse generation, overlay
  */
+@IjPluginName("Region Eccentricity/Ellipse Demo")
 public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 	
 	/** Neighborhood type used for region segmentation (4- or 8-neighborhood). */

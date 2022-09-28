@@ -17,30 +17,48 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 /**
- * Binary region labeler based on a depth-first flood filling
- * algorithm (using a queue).
+ * <p> 
+ * Binary region segmentation based on a depth-first flood filling algorithm
+ * using a stack. See Sec. 8.1.1 (Alg. 8.2) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2020/04/01
+ * @version 2022/09/28 revised
  */
 public class DepthFirstSegmentation extends BinaryRegionSegmentation {
 	
 	/**
-	 * Constructor. Creates a new depth-first binary region segmenter.
+	 * Constructor. Creates a new region segmentation from the specified image,
+	 * which is not modified. The input image is considered binary, with 0 values
+	 * for background pixels and values &ne; 0 for foreground pixels.
+	 * The 4-neighborhood is used by default ({@link DEFAULT_NEIGHBORHOOD}).
 	 * 
-	 * @param ip A binary input image with 0 values for background pixels and values &gt; 0
-	 * for foreground pixels.
+	 * @param ip the binary input image to be segmented
 	 */
 	public DepthFirstSegmentation(ByteProcessor ip) {
 		this(ip, DEFAULT_NEIGHBORHOOD);
 	}
 	
+	/**
+	 * Constructor. Creates a new region segmentation from the specified image and
+	 * neighborhood type (4- or 8-neighborhood). The input image is considered
+	 * binary, with 0 values for background pixels and values &ne; 0 for foreground
+	 * pixels.
+	 * 
+	 * @param ip the binary input image to be segmented
+	 * @param nh the neighborhood type (4- or 8-neighborhood)
+	 */
 	public DepthFirstSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {
 		super(ip, nh);
 	}
 	
 	@Override
-	protected boolean applySegmentation() {
+	boolean applySegmentation() {
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
 				if (getLabel(u, v) == FOREGROUND) {

@@ -12,6 +12,7 @@ package imagingbook.common.regions.segment;
 import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,19 +23,15 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.regions.BinaryRegion;
 
 /**
- * Performs region segmentation on a given binary image.
- * This class is abstract, since the implementation depends
- * on the concrete region segmentation algorithm being used.
- * Concrete implementations (subclasses of this class) are 
- * {@link BreadthFirstSegmentation},
- * {@link DepthFirstSegmentation},
- * {@link RecursiveSegmentation},
- * {@link SequentialSegmentation},
+ * Performs region segmentation on a given binary image. This class is abstract,
+ * since the implementation depends on the concrete region segmentation
+ * algorithm being used. Concrete implementations (subclasses of this class) are
+ * {@link BreadthFirstSegmentation}, {@link DepthFirstSegmentation},
+ * {@link RecursiveSegmentation}, {@link SequentialSegmentation},
  * {@link RegionContourSegmentation}.
  * 
- * Practically all work is done by the constructor(s).
- * If the segmentation has failed for some reason
- * {@link #getRegions()} returns {@code null}.
+ * Most of the work is done by the constructor(s). If the segmentation has
+ * failed for some reason {@link #getRegions()} returns {@code null}.
  * 
  * @version 2021/12/22
  */
@@ -42,15 +39,15 @@ public abstract class BinaryRegionSegmentation {
 	
 	public static final NeighborhoodType2D DEFAULT_NEIGHBORHOOD = N4;
 	
-	public static final int BACKGROUND = 0;
-	public static final int FOREGROUND = 1;
+	static final int BACKGROUND = 0;
+	static final int FOREGROUND = 1;
 	
-	protected ImageProcessor ip = null;
-	protected final int width;
-	protected final int height;	
-	protected final NeighborhoodType2D NT;
+	ImageProcessor ip = null;
+	final int width;
+	final int height;	
+	final NeighborhoodType2D NT;
 	
-	protected final int[][] labelArray;
+	final int[][] labelArray;
 	// label values in labelArray can be:
 	//  0 ... unlabeled
 	// -1 ... previously visited background pixel
@@ -65,23 +62,22 @@ public abstract class BinaryRegionSegmentation {
 	
 	// -------------------------------------------------------------------------
 	
-	protected BinaryRegionSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {
+	BinaryRegionSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {
 		this.ip = ip;
 		this.NT = nh;
 		this.width  = ip.getWidth();
 		this.height = ip.getHeight();
 		this.labelArray = makeLabelArray();
 		this.isSegmented = applySegmentation();
-		this.regions = (isSegmented) ? collectRegions() : null;
-		this.ip = null;	// release image
+		this.regions = (isSegmented) ? collectRegions() : Collections.emptyMap();
 	}
 	
-	protected int[][] makeLabelArray() {
+	int[][] makeLabelArray() {
 		int[][] lA = new int[width][height];	// label array
 		// set all pixels to either FOREGROUND or BACKGROUND (by thresholding)
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
-				lA[u][v] = (ip.getPixel(u, v) > 0) ? FOREGROUND : BACKGROUND;
+				lA[u][v] = (ip.get(u, v) != 0) ? FOREGROUND : BACKGROUND;
 			}
 		}
 		return lA;
@@ -90,25 +86,52 @@ public abstract class BinaryRegionSegmentation {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * This method must be implemented by any concrete sub-class.
-	 * @return true if successful.
+	 * This method must be implemented by all concrete sub-classes.
+	 * 
+	 * @return true if segmentation was successful
 	 */
-	protected abstract boolean applySegmentation();
+	abstract boolean applySegmentation();
 	
+	/**
+	 * Returns the width of the segmented image. 
+	 * @return the width of the segmented image
+	 */
 	public int getWidth() {
 		return this.width;
 	}
 	
+	/**
+	 * Returns the height of the segmented image. 
+	 * @return the height of the segmented image
+	 */
 	public int getHeight() {
 		return this.height;
 	}
 	
+	/**
+	 * Returns the minimum label assigned by this segmentation.
+	 * @return the minimum label
+	 */
 	public int getMinLabel() {
 		return minLabel;
 	}
 	
+	/**
+	 * Returns the maximum label assigned by this segmentation.
+	 * @return the maximum label
+	 */
 	public int getMaxLabel() {
 		return maxLabel;
+	}
+	
+	/**
+	 * Returns true if the segmentation did complete successfully,
+	 * false otherwise.
+	 * 
+	 * @return true if segmentation was successful
+	 */
+	public boolean isSegmented() {
+		return isSegmented;
 	}
 	
 	/**
@@ -131,9 +154,8 @@ public abstract class BinaryRegionSegmentation {
 	 */
 	public List<BinaryRegion> getRegions(boolean sort) {
 		if (regions == null) {
-			throw new RuntimeException("regions is null, this should not happen");
+			throw new RuntimeException("regions is null, this should never happen");
 		}
-
 		BinaryRegion[] ra = regions.values().toArray(new BinaryRegion[0]);
 		if (sort) {
 			Arrays.sort(ra);
@@ -151,7 +173,7 @@ public abstract class BinaryRegionSegmentation {
 	 * Region label numbers serve as map keys.
 	 * @return a map of {@link BinaryRegion} instances.
 	 */
-	protected Map<Integer, SegmentationBackedRegion> collectRegions() {
+	Map<Integer, SegmentationBackedRegion> collectRegions() {
 		SegmentationBackedRegion[] regionArray = new SegmentationBackedRegion[maxLabel + 1];
 		for (int label = minLabel; label <= maxLabel; label++) {
 			regionArray[label] = new SegmentationBackedRegion(label, this);
@@ -185,18 +207,18 @@ public abstract class BinaryRegionSegmentation {
 		return (u >= 0 && u < width && v >= 0 && v < height) ? labelArray[u][v] : -1;
 	}
 	
-	protected void setLabel(int u, int v, int label) {
+	void setLabel(int u, int v, int label) {
 		if (u >= 0 && u < width && v >= 0 && v < height)
 			labelArray[u][v] = label;
 	}
 	
-	protected int getNextLabel() {
+	int getNextLabel() {
 		currentLabel = (currentLabel < 1) ? minLabel : currentLabel + 1;
 		maxLabel = currentLabel;
 		return currentLabel;
 	}
 	
-	protected boolean isLabel(int i) {
+	boolean isLabel(int i) {
 		return (i >= minLabel);
 	}
 

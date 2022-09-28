@@ -21,15 +21,16 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 
 /**
- * Binary region backed by the label array of a region segmenter.
- * A {@link SegmentationBackedRegion} instance does not have its own list or array of 
- * contained pixel coordinates but refers to the label array of the
- * enclosing {@link BinaryRegionSegmentation} instance.
+ * Binary region backed by the label array of a region segmentation. A
+ * {@link SegmentationBackedRegion} instance does not have its own list or array
+ * of contained pixel coordinates but refers to the label array of the associated
+ * {@link BinaryRegionSegmentation} instance.
  */
 public class SegmentationBackedRegion extends BinaryRegion {
 
 	private final int label;									// the label of this region
 	private final BinaryRegionSegmentation segmentation;		// the segmentation backing this region
+	
 	private int size = 0;
 	private int left = Integer.MAX_VALUE;
 	private int right = -1;
@@ -48,6 +49,11 @@ public class SegmentationBackedRegion extends BinaryRegion {
 
 	// ------- constructor --------------------------
 
+	/**
+	 * Constructor.
+	 * @param label the label (number) assigned to this region
+	 * @param seg the backing region segmentation
+	 */
 	SegmentationBackedRegion(int label, BinaryRegionSegmentation seg) {
 		this.label = label;
 		this.segmentation = seg;
@@ -55,7 +61,11 @@ public class SegmentationBackedRegion extends BinaryRegion {
 
 	// ------- public methods --------------------------
 
-	protected int getLabel() {
+	/**
+	 * Returns the label (number) of this region.
+	 * @return the region label
+	 */
+	public int getLabel() {
 		return this.label;
 	}
 
@@ -89,11 +99,6 @@ public class SegmentationBackedRegion extends BinaryRegion {
 		return xySum;
 	}
 
-	/**
-	 * Get the x/y axes-parallel bounding box as a rectangle
-	 * (including the extremal coordinates).
-	 * @return the bounding box rectangle.
-	 */
 	@Override
 	public Rectangle getBoundingBox() {
 		if (right < 0)
@@ -114,7 +119,7 @@ public class SegmentationBackedRegion extends BinaryRegion {
 	 * @param u x-position
 	 * @param v y-position
 	 */
-	protected void addPixel(int u, int v) {
+	void addPixel(int u, int v) {
 		size = size + 1;
 		x1Sum = x1Sum + u;
 		y1Sum = y1Sum + v;
@@ -131,16 +136,9 @@ public class SegmentationBackedRegion extends BinaryRegion {
 	 * Updates the region's statistics. 
 	 * Does nothing but may be overridden by inheriting classes.
 	 */
-	protected void update() {
+	void update() {
 	}
 
-	/**
-	 * Get the (single) outer contour of this region.
-	 * Points on an outer contour are arranged in clockwise
-	 * order.
-	 * 
-	 * @return the outer contour
-	 */
 	@Override
 	public Contour getOuterContour() {
 		return outerContour;

@@ -24,6 +24,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
+import imagingbook.core.plugin.IjPluginName;
 
 /**
  * <p>
@@ -32,13 +33,8 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * demonstrates the use of the region property scheme, i.e., how to assign
  * numeric properties to regions and retrieve them afterwards. Requires a binary
  * image. Zero-value pixels are considered background, all other pixels are
- * foreground.
- * </p>
- * <p>
- * Note that (different to ImageJ's built-in morphological operators) this
- * implementation does not incorporate the current display lookup-table (LUT).
- * Results are drawn into a new image (pixel graphics), the original image is
- * not modified.
+ * foreground. Display lookup tables (LUTs) are not considered. Results are
+ * drawn into a new image (pixel graphics), the original image is not modified.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
@@ -48,6 +44,7 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * @author WB
  * @version 2020/12/17
  */
+@IjPluginName("Major Axis Demo")
 public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overlay display
 	
 	/** Scale of the axis length. */

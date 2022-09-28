@@ -24,6 +24,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.segment.RegionContourSegmentation;
+import imagingbook.core.plugin.IjPluginName;
 
 /**
  * <p>
@@ -31,19 +32,15 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * {@link RegionContourSegmentation} to perform both region labeling and contour
  * tracing simultaneously. See Sec. 8.2.2 of [1] for additional details.
  * Requires a binary image. Zero-value pixels are considered background, all
- * other pixels are foreground. 
- * The resulting contours are displayed as a
- * non-destructive vector overlay on the original image.
- * Outer contours of single-pixel regions are marked by an "X".
+ * other pixels are foreground. Display lookup tables (LUTs) are not considered.
+ * The resulting contours are displayed as a non-destructive vector overlay on
+ * the original image. Outer contours of single-pixel regions are marked by an
+ * "X".
  * </p>
  * <p>
- * Note that (different to ImageJ's built-in morphological operators) this
- * implementation does not incorporate the current display lookup-table (LUT).
- * </p>
- * <p> 
- * This plugin also demonstrates the use of the {@link ShapeOverlayAdapter} 
- * (provided by the imagingbook library) which handles 0.5 pixel offsets 
- * for vector graphics transparently.
+ * This plugin also demonstrates the use of the {@link ShapeOverlayAdapter}
+ * (provided by the imagingbook library) which handles 0.5 pixel offsets for
+ * vector graphics transparently.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
@@ -56,6 +53,7 @@ import imagingbook.common.regions.segment.RegionContourSegmentation;
  * 
  * @see RegionContourSegmentation
  */
+@IjPluginName("Region Contours Demo")
 public class Region_Contours_Demo implements PlugInFilter {
 	
 	/** Neighborhood type used for region segmentation (4- or 8-neighborhood). */
