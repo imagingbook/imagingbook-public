@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * This interface defines the functionality of region segmenters
+ * This interface defines the functionality of region segmentations
  * that perform contour extraction.
  * 
  * @version 2020/04/01

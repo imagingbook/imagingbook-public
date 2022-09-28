@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.regions.segment;
+package imagingbook.common.regions;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -18,8 +18,8 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 /**
  * <p> 
- * Binary region segmentation based on a depth-first flood filling algorithm
- * using a stack. See Sec. 8.1.1 (Alg. 8.2) of [1] for additional details.
+ * Binary region segmentation based on a breadth-first flood filling algorithm
+ * using a queue. See Sec. 8.1.1 (Alg. 8.2) of [1] for additional details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
@@ -30,7 +30,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
  * @version 2020/04/01
  * @version 2022/09/28 revised
  */
-public class DepthFirstSegmentation extends BinaryRegionSegmentation {
+public class BreadthFirstSegmentation extends BinaryRegionSegmentation {
 	
 	/**
 	 * Constructor. Creates a new region segmentation from the specified image,
@@ -40,7 +40,7 @@ public class DepthFirstSegmentation extends BinaryRegionSegmentation {
 	 * 
 	 * @param ip the binary input image to be segmented
 	 */
-	public DepthFirstSegmentation(ByteProcessor ip) {
+	public BreadthFirstSegmentation(ByteProcessor ip) {
 		this(ip, DEFAULT_NEIGHBORHOOD);
 	}
 	
@@ -53,7 +53,7 @@ public class DepthFirstSegmentation extends BinaryRegionSegmentation {
 	 * @param ip the binary input image to be segmented
 	 * @param nh the neighborhood type (4- or 8-neighborhood)
 	 */
-	public DepthFirstSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {
+	public BreadthFirstSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {
 		super(ip, nh);
 	}
 	
@@ -73,23 +73,23 @@ public class DepthFirstSegmentation extends BinaryRegionSegmentation {
 	}
 
 	private void floodFill(int u, int v, int label) {
-		Deque<PntInt> S = new LinkedList<>();	//stack contains pixel coordinates
-		S.push(PntInt.from(u, v));
-		while (!S.isEmpty()){
-			PntInt p = S.pop();
+		Deque<PntInt> Q = new LinkedList<>();	//queue contains pixel coordinates
+		Q.addLast(PntInt.from(u, v));
+		while (!Q.isEmpty()) {
+			PntInt p = Q.removeFirst();	// get the next point to process
 			int x = p.x;
 			int y = p.y;
-			if ((x >= 0) && (x < width) && (y >= 0) && (y < height)	&& getLabel(x, y) == FOREGROUND) {
+			if ((x >= 0) && (x < width) && (y >= 0) && (y < height) && getLabel(x, y) == FOREGROUND) {
 				setLabel(x, y, label);
-				S.push(PntInt.from(x + 1, y));
-				S.push(PntInt.from(x, y + 1));
-				S.push(PntInt.from(x, y - 1));
-				S.push(PntInt.from(x - 1, y));
+				Q.addLast(PntInt.from(x + 1, y));
+				Q.addLast(PntInt.from(x, y + 1));
+				Q.addLast(PntInt.from(x, y - 1));
+				Q.addLast(PntInt.from(x - 1, y));
 				if (NT == NeighborhoodType2D.N8) {
-					S.push(PntInt.from(x + 1, y + 1));
-					S.push(PntInt.from(x - 1, y + 1));
-					S.push(PntInt.from(x + 1, y - 1));
-					S.push(PntInt.from(x - 1, y - 1));
+					Q.addLast(PntInt.from(x + 1, y + 1));
+					Q.addLast(PntInt.from(x - 1, y + 1));
+					Q.addLast(PntInt.from(x + 1, y - 1));
+					Q.addLast(PntInt.from(x - 1, y - 1));
 				}
 			}
 		}

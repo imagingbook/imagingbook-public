@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.regions.segment;
+package imagingbook.common.regions;
 
 import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
 import static imagingbook.common.geometry.basic.NeighborhoodType2D.N8;
@@ -18,8 +18,6 @@ import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
-import imagingbook.common.regions.BinaryRegion;
-import imagingbook.common.regions.Contour;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testimages.BinaryTestImage;

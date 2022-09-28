@@ -203,22 +203,24 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 		return new GeometricEllipse(ra, rb, xc.getX(), xc.getY(), theta);
 	}
 	
-	public abstract void setOuterContour(Contour.Outer contr);
+	abstract void setOuterContour(Contour.Outer contr);
 
 	/**
-	 * Get the (single) outer contour of this region.
-	 * Points on an outer contour are arranged in clockwise
-	 * order.
-	 * @return the outer contour.
+	 * Returns the (single) outer contour of this region if available, null
+	 * otherwise. Points on an outer contour are arranged in clockwise order.
+	 * 
+	 * @return the outer contour or {@code null} if not available
 	 */
 	public abstract Contour getOuterContour();
 
 	/**
-	 * Get all inner contours of this region.
-	 * Points on inner contours are arranged in counter-clockwise order.
-	 * @return the list of inner contours.
+	 * Get all inner contours of this region if available, null otherwise. Points on
+	 * inner contours are arranged in counter-clockwise order.
+	 * 
+	 * @return the (possibly empty) list of inner contours or {@code null} if not
+	 *         available
 	 */
-	public abstract List<Contour> getInnerContours();	// sort!!!
+	public abstract List<Contour> getInnerContours();
 
 	// Compare method for sorting by region size (larger regions at front)
 	@Override

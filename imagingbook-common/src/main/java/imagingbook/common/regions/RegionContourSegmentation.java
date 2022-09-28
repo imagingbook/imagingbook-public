@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.regions.segment;
+package imagingbook.common.regions;
 
 import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
 
@@ -18,14 +18,11 @@ import java.util.List;
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.regions.BinaryRegion;
-import imagingbook.common.regions.Contour;
-import imagingbook.common.regions.ContourTracer;
 import imagingbook.common.util.tuples.Tuple2;
 
 /**
  * <p>
- * Binary region segmenter based on a combined region labeling
+ * Binary region segmentation based on a combined region labeling
  * and contour tracing algorithm as described in [1].
  * Detected regions and contours are 4- or 8-connected.
  * See Sec. 8.2.2 of [2] for additional details.
@@ -51,7 +48,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	private List<Contour.Inner> innerContours;
 	
 	/**
-	 * Constructor. Creates a combined region and contour segmenter from the
+	 * Constructor. Creates a combined region and contour segmentation from the
 	 * specified image, which is not modified. The input image is considered binary,
 	 * with 0 values for background pixels and values &ne; 0 for foreground pixels.
 	 * The 4-neighborhood is used by default ({@link DEFAULT_NEIGHBORHOOD}).
@@ -63,7 +60,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	}
 	
 	/**
-	 * Constructor. Creates a combined region and contour segmenter from the
+	 * Constructor. Creates a combined region and contour segmentation from the
 	 * specified image and neighborhood type (4- or 8-neighborhood). The input image
 	 * is considered binary, with 0 values for background pixels and values &ne; 0
 	 * for foreground pixels.
@@ -219,7 +216,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 			int label = c.getLabel();
 			BinaryRegion reg = getRegion(label);
 			if (reg == null) {
-				throw new RuntimeException("could not associate outer contour with label " + label);
+				throw new RuntimeException("could not attach outer contour to region with label " + label);
 			}
 			else {
 				reg.setOuterContour(c);
@@ -232,7 +229,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 			int label = c.getLabel();
 			SegmentationBackedRegion reg = getRegion(label);
 			if (reg == null) {
-				throw new RuntimeException("could not associate inner contour with label " + label);
+				throw new RuntimeException("could not attach inner contour to region with label " + label);
 			}
 			else {
 				reg.addInnerContour(c);

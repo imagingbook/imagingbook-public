@@ -17,12 +17,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
-import imagingbook.common.regions.segment.BinaryRegionSegmentation;
-import imagingbook.common.regions.segment.BreadthFirstSegmentation;
-import imagingbook.common.regions.segment.DepthFirstSegmentation;
-import imagingbook.common.regions.segment.RecursiveSegmentation;
-import imagingbook.common.regions.segment.RegionContourSegmentation;
-import imagingbook.common.regions.segment.SequentialSegmentation;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.testimages.BinaryTestImage;
 

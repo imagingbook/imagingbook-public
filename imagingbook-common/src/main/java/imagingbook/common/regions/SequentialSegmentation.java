@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.regions.segment;
+package imagingbook.common.regions;
 
 import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
 

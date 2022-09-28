@@ -22,12 +22,12 @@ import ij.process.ShortProcessor;
 import imagingbook.common.color.iterate.RandomHueGenerator;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.regions.BinaryRegion;
-import imagingbook.common.regions.segment.BinaryRegionSegmentation;
-import imagingbook.common.regions.segment.BreadthFirstSegmentation;
-import imagingbook.common.regions.segment.DepthFirstSegmentation;
-import imagingbook.common.regions.segment.RecursiveSegmentation;
-import imagingbook.common.regions.segment.RegionContourSegmentation;
-import imagingbook.common.regions.segment.SequentialSegmentation;
+import imagingbook.common.regions.BinaryRegionSegmentation;
+import imagingbook.common.regions.BreadthFirstSegmentation;
+import imagingbook.common.regions.DepthFirstSegmentation;
+import imagingbook.common.regions.RecursiveSegmentation;
+import imagingbook.common.regions.RegionContourSegmentation;
+import imagingbook.common.regions.SequentialSegmentation;
 import imagingbook.core.plugin.IjPluginName;
 
 /**

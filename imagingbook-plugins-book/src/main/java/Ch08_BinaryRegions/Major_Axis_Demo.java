@@ -23,7 +23,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.regions.BinaryRegion;
-import imagingbook.common.regions.segment.RegionContourSegmentation;
+import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
 
 /**

@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.regions.segment;
+package imagingbook.common.regions;
 
 import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
 
@@ -20,7 +20,6 @@ import java.util.Map;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
-import imagingbook.common.regions.BinaryRegion;
 
 /**
  * Performs region segmentation on a given binary image. This class is abstract,

@@ -6,10 +6,9 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.regions.segment;
+package imagingbook.common.regions;
 
 import java.awt.Rectangle;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.NoSuchElementException;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.regions.BinaryRegion;
-import imagingbook.common.regions.Contour;
 
 /**
  * Binary region backed by the label array of a region segmentation. A
@@ -145,21 +142,17 @@ public class SegmentationBackedRegion extends BinaryRegion {
 	}
 
 	@Override
-	public void setOuterContour(Contour.Outer contr) {
+	void setOuterContour(Contour.Outer contr) {
 		outerContour = contr;
 	}
 
-	/**
-	 * Get a (possibly empty) list with all inner contours of this region.
-	 * Points on inner contours are arranged in counter-clockwise order.
-	 * @return the list of inner contours (which may be empty)
-	 */
 	@Override
-	public List<Contour> getInnerContours() {	// sort!!!
-		return (innerContours != null) ? innerContours : Collections.emptyList();
+	public List<Contour> getInnerContours() {
+//		return (innerContours != null) ? innerContours : Collections.emptyList();
+		return innerContours;
 	}
 
-	public void addInnerContour(Contour.Inner contr) {
+	void addInnerContour(Contour.Inner contr) {
 		if (innerContours == null) {
 			innerContours = new LinkedList<>();
 		}
