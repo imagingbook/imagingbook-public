@@ -25,344 +25,347 @@
 <span class="sourceLineNo">015</span><a id="line.15">import java.awt.geom.Path2D;</a>
 <span class="sourceLineNo">016</span><a id="line.16">import java.util.Locale;</a>
 <span class="sourceLineNo">017</span><a id="line.17"></a>
-<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.geometry.basic.Primitive2d;</a>
-<span class="sourceLineNo">019</span><a id="line.19">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">020</span><a id="line.20">import imagingbook.common.geometry.basic.Pnt2d.PntDouble;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import imagingbook.common.geometry.basic.Pnt2d.PntDouble;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import imagingbook.common.geometry.basic.Primitive2d;</a>
 <span class="sourceLineNo">021</span><a id="line.21">import imagingbook.common.geometry.shape.ShapeProducer;</a>
 <span class="sourceLineNo">022</span><a id="line.22">import imagingbook.common.hough.HoughLine;</a>
 <span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.math.Arithmetic;</a>
-<span class="sourceLineNo">024</span><a id="line.24"></a>
-<span class="sourceLineNo">025</span><a id="line.25">/**</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * This class represents an algebraic line of the form A x + B y + C = 0.</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * Instances are immutable and normalized such that ||(A,B)|| = 1.</a>
-<span class="sourceLineNo">028</span><a id="line.28"> * </a>
-<span class="sourceLineNo">029</span><a id="line.29"> * @author WB</a>
-<span class="sourceLineNo">030</span><a id="line.30"> *</a>
-<span class="sourceLineNo">031</span><a id="line.31"> */</a>
-<span class="sourceLineNo">032</span><a id="line.32">public class AlgebraicLine implements ShapeProducer, Primitive2d {</a>
-<span class="sourceLineNo">033</span><a id="line.33">        </a>
-<span class="sourceLineNo">034</span><a id="line.34">        public final double A, B, C;</a>
-<span class="sourceLineNo">035</span><a id="line.35">        </a>
-<span class="sourceLineNo">036</span><a id="line.36">        // constructors --------------------------------------------------</a>
-<span class="sourceLineNo">037</span><a id="line.37"></a>
-<span class="sourceLineNo">038</span><a id="line.38">        /**</a>
-<span class="sourceLineNo">039</span><a id="line.39">         * Constructor. Creates a {@link AlgebraicLine} instance with parameters A, B, C.</a>
-<span class="sourceLineNo">040</span><a id="line.40">         * @param A line parameter A</a>
-<span class="sourceLineNo">041</span><a id="line.41">         * @param B line parameter B</a>
-<span class="sourceLineNo">042</span><a id="line.42">         * @param C line parameter C</a>
-<span class="sourceLineNo">043</span><a id="line.43">         */</a>
-<span class="sourceLineNo">044</span><a id="line.44">        public AlgebraicLine(double A, double B, double C) {</a>
-<span class="sourceLineNo">045</span><a id="line.45">                double norm = Math.sqrt(sqr(A) + sqr(B));</a>
-<span class="sourceLineNo">046</span><a id="line.46">                if (isZero(norm)) {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                        throw new IllegalArgumentException("A and B may not both be zero");</a>
-<span class="sourceLineNo">048</span><a id="line.48">                }</a>
-<span class="sourceLineNo">049</span><a id="line.49">                this.A = A / norm;      // don't switch sign here since this messes up signed point distance calculation</a>
-<span class="sourceLineNo">050</span><a id="line.50">                this.B = B / norm;</a>
-<span class="sourceLineNo">051</span><a id="line.51">                this.C = C / norm;</a>
-<span class="sourceLineNo">052</span><a id="line.52">        }</a>
-<span class="sourceLineNo">053</span><a id="line.53">        </a>
-<span class="sourceLineNo">054</span><a id="line.54">        /**</a>
-<span class="sourceLineNo">055</span><a id="line.55">         * Constructor.  Creates a {@link AlgebraicLine} instance from a </a>
-<span class="sourceLineNo">056</span><a id="line.56">         * parameter vector [A, B, C].</a>
-<span class="sourceLineNo">057</span><a id="line.57">         * @param p parameter vector [A, B, C]</a>
-<span class="sourceLineNo">058</span><a id="line.58">         */</a>
-<span class="sourceLineNo">059</span><a id="line.59">        public AlgebraicLine(double[] p) {</a>
-<span class="sourceLineNo">060</span><a id="line.60">                this(p[0], p[1], p[2]);</a>
-<span class="sourceLineNo">061</span><a id="line.61">        }</a>
-<span class="sourceLineNo">062</span><a id="line.62">        </a>
+<span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.math.PrintPrecision;</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">/**</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * This class represents an algebraic line of the form A x + B y + C = 0.</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * Instances are immutable and normalized such that ||(A,B)|| = 1.</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * </a>
+<span class="sourceLineNo">030</span><a id="line.30"> * @author WB</a>
+<span class="sourceLineNo">031</span><a id="line.31"> *</a>
+<span class="sourceLineNo">032</span><a id="line.32"> */</a>
+<span class="sourceLineNo">033</span><a id="line.33">public class AlgebraicLine implements ShapeProducer, Primitive2d {</a>
+<span class="sourceLineNo">034</span><a id="line.34">        </a>
+<span class="sourceLineNo">035</span><a id="line.35">        public final double A, B, C;</a>
+<span class="sourceLineNo">036</span><a id="line.36">        </a>
+<span class="sourceLineNo">037</span><a id="line.37">        // constructors --------------------------------------------------</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">        /**</a>
+<span class="sourceLineNo">040</span><a id="line.40">         * Constructor. Creates a {@link AlgebraicLine} instance with parameters A, B, C.</a>
+<span class="sourceLineNo">041</span><a id="line.41">         * @param A line parameter A</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * @param B line parameter B</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * @param C line parameter C</a>
+<span class="sourceLineNo">044</span><a id="line.44">         */</a>
+<span class="sourceLineNo">045</span><a id="line.45">        public AlgebraicLine(double A, double B, double C) {</a>
+<span class="sourceLineNo">046</span><a id="line.46">                double norm = Math.sqrt(sqr(A) + sqr(B));</a>
+<span class="sourceLineNo">047</span><a id="line.47">                if (isZero(norm)) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">                        throw new IllegalArgumentException("A and B may not both be zero");</a>
+<span class="sourceLineNo">049</span><a id="line.49">                }</a>
+<span class="sourceLineNo">050</span><a id="line.50">                this.A = A / norm;      // don't switch sign here since this messes up signed point distance calculation</a>
+<span class="sourceLineNo">051</span><a id="line.51">                this.B = B / norm;</a>
+<span class="sourceLineNo">052</span><a id="line.52">                this.C = C / norm;</a>
+<span class="sourceLineNo">053</span><a id="line.53">        }</a>
+<span class="sourceLineNo">054</span><a id="line.54">        </a>
+<span class="sourceLineNo">055</span><a id="line.55">        /**</a>
+<span class="sourceLineNo">056</span><a id="line.56">         * Constructor.  Creates a {@link AlgebraicLine} instance from a </a>
+<span class="sourceLineNo">057</span><a id="line.57">         * parameter vector [A, B, C].</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * @param p parameter vector [A, B, C]</a>
+<span class="sourceLineNo">059</span><a id="line.59">         */</a>
+<span class="sourceLineNo">060</span><a id="line.60">        public AlgebraicLine(double[] p) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                this(p[0], p[1], p[2]);</a>
+<span class="sourceLineNo">062</span><a id="line.62">        }</a>
 <span class="sourceLineNo">063</span><a id="line.63">        </a>
-<span class="sourceLineNo">064</span><a id="line.64">        // static factory methods ----------------------------------------</a>
-<span class="sourceLineNo">065</span><a id="line.65">        </a>
-<span class="sourceLineNo">066</span><a id="line.66">        /**</a>
-<span class="sourceLineNo">067</span><a id="line.67">         * Creates a new {@link AlgebraicLine} instance from a given</a>
-<span class="sourceLineNo">068</span><a id="line.68">         * start point and orientation vector.</a>
-<span class="sourceLineNo">069</span><a id="line.69">         * For a point on the left side of the line (looking along the direction</a>
-<span class="sourceLineNo">070</span><a id="line.70">         * vector), the value returned by {@link #getSignedDistance(Pnt2d)} is positive</a>
-<span class="sourceLineNo">071</span><a id="line.71">         * and negative for points on the right side.</a>
-<span class="sourceLineNo">072</span><a id="line.72">         * </a>
-<span class="sourceLineNo">073</span><a id="line.73">         * @param s start point</a>
-<span class="sourceLineNo">074</span><a id="line.74">         * @param v orientation vector</a>
-<span class="sourceLineNo">075</span><a id="line.75">         * @return a new {@link AlgebraicLine} instance</a>
-<span class="sourceLineNo">076</span><a id="line.76">         */</a>
-<span class="sourceLineNo">077</span><a id="line.77">        public static AlgebraicLine from(double[] s, double[] v) {</a>
-<span class="sourceLineNo">078</span><a id="line.78">                double a = -v[1];</a>
-<span class="sourceLineNo">079</span><a id="line.79">                double b = v[0];</a>
-<span class="sourceLineNo">080</span><a id="line.80">                double c = v[1] * s[0] - v[0] * s[1];</a>
-<span class="sourceLineNo">081</span><a id="line.81">                return new AlgebraicLine(a, b, c);</a>
-<span class="sourceLineNo">082</span><a id="line.82">        }</a>
-<span class="sourceLineNo">083</span><a id="line.83">        </a>
-<span class="sourceLineNo">084</span><a id="line.84">        /**</a>
-<span class="sourceLineNo">085</span><a id="line.85">         * Creates a new {@link AlgebraicLine} instance from a given</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * {@link ParametricLine}.</a>
-<span class="sourceLineNo">087</span><a id="line.87">         * </a>
-<span class="sourceLineNo">088</span><a id="line.88">         * @param pl a {@link ParametricLine}</a>
-<span class="sourceLineNo">089</span><a id="line.89">         * @return a new {@link AlgebraicLine} instance</a>
-<span class="sourceLineNo">090</span><a id="line.90">         */</a>
-<span class="sourceLineNo">091</span><a id="line.91">        public static AlgebraicLine from(ParametricLine pl) {</a>
-<span class="sourceLineNo">092</span><a id="line.92">                return AlgebraicLine.from(pl.getS(), pl.getV());</a>
-<span class="sourceLineNo">093</span><a id="line.93">        }</a>
-<span class="sourceLineNo">094</span><a id="line.94">        </a>
-<span class="sourceLineNo">095</span><a id="line.95">        /**</a>
-<span class="sourceLineNo">096</span><a id="line.96">         * Creates a new {@link AlgebraicLine} instance from two given</a>
-<span class="sourceLineNo">097</span><a id="line.97">         * points. The direction of the line is from the first</a>
-<span class="sourceLineNo">098</span><a id="line.98">         * to the second point.</a>
-<span class="sourceLineNo">099</span><a id="line.99">         * </a>
-<span class="sourceLineNo">100</span><a id="line.100">         * @param p0 first point</a>
-<span class="sourceLineNo">101</span><a id="line.101">         * @param p1 second point</a>
-<span class="sourceLineNo">102</span><a id="line.102">         * @return a new {@link AlgebraicLine} instance</a>
-<span class="sourceLineNo">103</span><a id="line.103">         */</a>
-<span class="sourceLineNo">104</span><a id="line.104">        public static AlgebraicLine from(Pnt2d p0, Pnt2d p1) {</a>
-<span class="sourceLineNo">105</span><a id="line.105">                double[] s = p0.toDoubleArray();</a>
-<span class="sourceLineNo">106</span><a id="line.106">                double[] v = p1.minus(p0).toDoubleArray();</a>
-<span class="sourceLineNo">107</span><a id="line.107">                return AlgebraicLine.from(s, v);</a>
-<span class="sourceLineNo">108</span><a id="line.108">        }</a>
-<span class="sourceLineNo">109</span><a id="line.109">        </a>
-<span class="sourceLineNo">110</span><a id="line.110">        /**</a>
-<span class="sourceLineNo">111</span><a id="line.111">         * Creates a new {@link AlgebraicLine} instance from a given</a>
-<span class="sourceLineNo">112</span><a id="line.112">         * {@link SlopeInterceptLine}.</a>
-<span class="sourceLineNo">113</span><a id="line.113">         * Note: This is trivial, since {@link SlopeInterceptLine} is </a>
-<span class="sourceLineNo">114</span><a id="line.114">         * a (restricted) {@link AlgebraicLine} itself.</a>
-<span class="sourceLineNo">115</span><a id="line.115">         * </a>
-<span class="sourceLineNo">116</span><a id="line.116">         * @param sil a {@link SlopeInterceptLine}</a>
-<span class="sourceLineNo">117</span><a id="line.117">         * @return a new {@link AlgebraicLine} instance</a>
-<span class="sourceLineNo">118</span><a id="line.118">         */</a>
-<span class="sourceLineNo">119</span><a id="line.119">        public static AlgebraicLine from(SlopeInterceptLine sil) {</a>
-<span class="sourceLineNo">120</span><a id="line.120">//              double a = sil.getK();</a>
-<span class="sourceLineNo">121</span><a id="line.121">//              double c = sil.getD();</a>
-<span class="sourceLineNo">122</span><a id="line.122">//              return new AlgebraicLine(a, -1, c);     </a>
-<span class="sourceLineNo">123</span><a id="line.123">                return new AlgebraicLine(sil.A, sil.B, sil.C);  </a>
-<span class="sourceLineNo">124</span><a id="line.124">        }</a>
-<span class="sourceLineNo">125</span><a id="line.125">        </a>
-<span class="sourceLineNo">126</span><a id="line.126">        // getter/setter methods ------------------------------------------</a>
-<span class="sourceLineNo">127</span><a id="line.127">        </a>
-<span class="sourceLineNo">128</span><a id="line.128">        /**</a>
-<span class="sourceLineNo">129</span><a id="line.129">         * Returns the algebraic line parameters [A, B, C].</a>
-<span class="sourceLineNo">130</span><a id="line.130">         * @return algebraic line parameters</a>
-<span class="sourceLineNo">131</span><a id="line.131">         */</a>
-<span class="sourceLineNo">132</span><a id="line.132">        public final double[] getParameters() {</a>
-<span class="sourceLineNo">133</span><a id="line.133">                return new double[] {A, B, C};</a>
-<span class="sourceLineNo">134</span><a id="line.134">        }</a>
-<span class="sourceLineNo">135</span><a id="line.135">        </a>
-<span class="sourceLineNo">136</span><a id="line.136">        /**</a>
-<span class="sourceLineNo">137</span><a id="line.137">         * Returns the x-coordinate of the reference point.</a>
-<span class="sourceLineNo">138</span><a id="line.138">         * For a {@link AlgebraicLine}, the result is always zero.</a>
-<span class="sourceLineNo">139</span><a id="line.139">         * Inheriting classes (like {@link HoughLine}) override this method.</a>
-<span class="sourceLineNo">140</span><a id="line.140">         * </a>
-<span class="sourceLineNo">141</span><a id="line.141">         * @return the x-coordinate reference</a>
-<span class="sourceLineNo">142</span><a id="line.142">         */</a>
-<span class="sourceLineNo">143</span><a id="line.143">        public double getXref() {</a>
-<span class="sourceLineNo">144</span><a id="line.144">                return 0.0;</a>
-<span class="sourceLineNo">145</span><a id="line.145">        }</a>
-<span class="sourceLineNo">146</span><a id="line.146">        </a>
-<span class="sourceLineNo">147</span><a id="line.147">        /**</a>
-<span class="sourceLineNo">148</span><a id="line.148">         * Returns the y-coordinate of the reference point.</a>
-<span class="sourceLineNo">149</span><a id="line.149">         * For a {@link AlgebraicLine}, the result is always zero.</a>
-<span class="sourceLineNo">150</span><a id="line.150">         * Inheriting classes (like {@link HoughLine}) override this method.</a>
-<span class="sourceLineNo">151</span><a id="line.151">         * </a>
-<span class="sourceLineNo">152</span><a id="line.152">         * @return the y-coordinate reference</a>
-<span class="sourceLineNo">153</span><a id="line.153">         */</a>
-<span class="sourceLineNo">154</span><a id="line.154">        public double getYref() {</a>
-<span class="sourceLineNo">155</span><a id="line.155">                return 0.0;</a>
-<span class="sourceLineNo">156</span><a id="line.156">        }</a>
-<span class="sourceLineNo">157</span><a id="line.157">        </a>
-<span class="sourceLineNo">158</span><a id="line.158">        // other methods ------------------------------------------</a>
-<span class="sourceLineNo">159</span><a id="line.159">        </a>
-<span class="sourceLineNo">160</span><a id="line.160">        /**</a>
-<span class="sourceLineNo">161</span><a id="line.161">         * Returns the orthogonal distance between this line and the point (x, y).</a>
-<span class="sourceLineNo">162</span><a id="line.162">         * The result may be positive or negative, depending on which side of the line</a>
-<span class="sourceLineNo">163</span><a id="line.163">         * (x, y) is located. It is assumed that the line is normalized, i.e.,</a>
-<span class="sourceLineNo">164</span><a id="line.164">         * ||(a,b)|| = 1.</a>
-<span class="sourceLineNo">165</span><a id="line.165">         * </a>
-<span class="sourceLineNo">166</span><a id="line.166">         * @param x x-coordinate of point position.</a>
-<span class="sourceLineNo">167</span><a id="line.167">         * @param y y-coordinate of point position.</a>
-<span class="sourceLineNo">168</span><a id="line.168">         * @return The perpendicular distance between this line and the point (x, y).</a>
-<span class="sourceLineNo">169</span><a id="line.169">         */</a>
-<span class="sourceLineNo">170</span><a id="line.170">        public double getDistance(double x, double y) {</a>
-<span class="sourceLineNo">171</span><a id="line.171">                return Math.abs(getSignedDistance(x, y));</a>
-<span class="sourceLineNo">172</span><a id="line.172">        }</a>
-<span class="sourceLineNo">173</span><a id="line.173">        </a>
-<span class="sourceLineNo">174</span><a id="line.174">        /**</a>
-<span class="sourceLineNo">175</span><a id="line.175">         * Returns the orthogonal (unsigned) distance between this line and the point p. The</a>
-<span class="sourceLineNo">176</span><a id="line.176">         * result is always non-negative.</a>
-<span class="sourceLineNo">177</span><a id="line.177">         * </a>
-<span class="sourceLineNo">178</span><a id="line.178">         * @param p point position.</a>
-<span class="sourceLineNo">179</span><a id="line.179">         * @return The perpendicular distance between this line and the point p.</a>
-<span class="sourceLineNo">180</span><a id="line.180">         */</a>
-<span class="sourceLineNo">181</span><a id="line.181">        @Override</a>
-<span class="sourceLineNo">182</span><a id="line.182">        public double getDistance(Pnt2d p) {</a>
-<span class="sourceLineNo">183</span><a id="line.183">                return Math.abs(getSignedDistance(p));</a>
-<span class="sourceLineNo">184</span><a id="line.184">        }</a>
-<span class="sourceLineNo">185</span><a id="line.185">        </a>
-<span class="sourceLineNo">186</span><a id="line.186">        /**</a>
-<span class="sourceLineNo">187</span><a id="line.187">         * Returns the orthogonal (signed) distance between this line and the point (x, y).</a>
-<span class="sourceLineNo">188</span><a id="line.188">         * The result may be positive or negative, depending on which side of the line</a>
-<span class="sourceLineNo">189</span><a id="line.189">         * (x, y) is located. It is assumed that the line is normalized, i.e.,</a>
-<span class="sourceLineNo">190</span><a id="line.190">         * ||(A,B)|| = 1.</a>
-<span class="sourceLineNo">191</span><a id="line.191">         * </a>
-<span class="sourceLineNo">192</span><a id="line.192">         * @param x x-coordinate of point position.</a>
-<span class="sourceLineNo">193</span><a id="line.193">         * @param y y-coordinate of point position.</a>
-<span class="sourceLineNo">194</span><a id="line.194">         * @return The perpendicular distance between this line and the point (x, y).</a>
-<span class="sourceLineNo">195</span><a id="line.195">         */</a>
-<span class="sourceLineNo">196</span><a id="line.196">        public double getSignedDistance(double x, double y) {</a>
-<span class="sourceLineNo">197</span><a id="line.197">                return (A * (x - this.getXref()) + B * (y - this.getYref()) + C);</a>
-<span class="sourceLineNo">198</span><a id="line.198">        }</a>
-<span class="sourceLineNo">199</span><a id="line.199">        </a>
-<span class="sourceLineNo">200</span><a id="line.200">        /**</a>
-<span class="sourceLineNo">201</span><a id="line.201">         * Returns the orthogonal (signed) distance between this line and the specified point.</a>
-<span class="sourceLineNo">202</span><a id="line.202">         * The result may be positive or negative, depending on which side of the line</a>
-<span class="sourceLineNo">203</span><a id="line.203">         * (the point is located. It is assumed that the line is normalized, i.e.,</a>
-<span class="sourceLineNo">204</span><a id="line.204">         * ||(A,B)|| = 1.</a>
-<span class="sourceLineNo">205</span><a id="line.205">         * @param p a 2D point</a>
-<span class="sourceLineNo">206</span><a id="line.206">         * @return The perpendicular distance between this line and the point</a>
-<span class="sourceLineNo">207</span><a id="line.207">         */</a>
-<span class="sourceLineNo">208</span><a id="line.208">        public double getSignedDistance(Pnt2d p) {</a>
-<span class="sourceLineNo">209</span><a id="line.209">                return getSignedDistance(p.getX(), p.getY());</a>
-<span class="sourceLineNo">210</span><a id="line.210">        }</a>
-<span class="sourceLineNo">211</span><a id="line.211">        </a>
+<span class="sourceLineNo">064</span><a id="line.64">        </a>
+<span class="sourceLineNo">065</span><a id="line.65">        // static factory methods ----------------------------------------</a>
+<span class="sourceLineNo">066</span><a id="line.66">        </a>
+<span class="sourceLineNo">067</span><a id="line.67">        /**</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * Creates a new {@link AlgebraicLine} instance from a given</a>
+<span class="sourceLineNo">069</span><a id="line.69">         * start point and orientation vector.</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * For a point on the left side of the line (looking along the direction</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * vector), the value returned by {@link #getSignedDistance(Pnt2d)} is positive</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * and negative for points on the right side.</a>
+<span class="sourceLineNo">073</span><a id="line.73">         * </a>
+<span class="sourceLineNo">074</span><a id="line.74">         * @param s start point</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * @param v orientation vector</a>
+<span class="sourceLineNo">076</span><a id="line.76">         * @return a new {@link AlgebraicLine} instance</a>
+<span class="sourceLineNo">077</span><a id="line.77">         */</a>
+<span class="sourceLineNo">078</span><a id="line.78">        public static AlgebraicLine from(double[] s, double[] v) {</a>
+<span class="sourceLineNo">079</span><a id="line.79">                double a = -v[1];</a>
+<span class="sourceLineNo">080</span><a id="line.80">                double b = v[0];</a>
+<span class="sourceLineNo">081</span><a id="line.81">                double c = v[1] * s[0] - v[0] * s[1];</a>
+<span class="sourceLineNo">082</span><a id="line.82">                return new AlgebraicLine(a, b, c);</a>
+<span class="sourceLineNo">083</span><a id="line.83">        }</a>
+<span class="sourceLineNo">084</span><a id="line.84">        </a>
+<span class="sourceLineNo">085</span><a id="line.85">        /**</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * Creates a new {@link AlgebraicLine} instance from a given</a>
+<span class="sourceLineNo">087</span><a id="line.87">         * {@link ParametricLine}.</a>
+<span class="sourceLineNo">088</span><a id="line.88">         * </a>
+<span class="sourceLineNo">089</span><a id="line.89">         * @param pl a {@link ParametricLine}</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * @return a new {@link AlgebraicLine} instance</a>
+<span class="sourceLineNo">091</span><a id="line.91">         */</a>
+<span class="sourceLineNo">092</span><a id="line.92">        public static AlgebraicLine from(ParametricLine pl) {</a>
+<span class="sourceLineNo">093</span><a id="line.93">                return AlgebraicLine.from(pl.getS(), pl.getV());</a>
+<span class="sourceLineNo">094</span><a id="line.94">        }</a>
+<span class="sourceLineNo">095</span><a id="line.95">        </a>
+<span class="sourceLineNo">096</span><a id="line.96">        /**</a>
+<span class="sourceLineNo">097</span><a id="line.97">         * Creates a new {@link AlgebraicLine} instance from two given</a>
+<span class="sourceLineNo">098</span><a id="line.98">         * points. The direction of the line is from the first</a>
+<span class="sourceLineNo">099</span><a id="line.99">         * to the second point.</a>
+<span class="sourceLineNo">100</span><a id="line.100">         * </a>
+<span class="sourceLineNo">101</span><a id="line.101">         * @param p0 first point</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * @param p1 second point</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * @return a new {@link AlgebraicLine} instance</a>
+<span class="sourceLineNo">104</span><a id="line.104">         */</a>
+<span class="sourceLineNo">105</span><a id="line.105">        public static AlgebraicLine from(Pnt2d p0, Pnt2d p1) {</a>
+<span class="sourceLineNo">106</span><a id="line.106">                double[] s = p0.toDoubleArray();</a>
+<span class="sourceLineNo">107</span><a id="line.107">                double[] v = p1.minus(p0).toDoubleArray();</a>
+<span class="sourceLineNo">108</span><a id="line.108">                return AlgebraicLine.from(s, v);</a>
+<span class="sourceLineNo">109</span><a id="line.109">        }</a>
+<span class="sourceLineNo">110</span><a id="line.110">        </a>
+<span class="sourceLineNo">111</span><a id="line.111">        /**</a>
+<span class="sourceLineNo">112</span><a id="line.112">         * Creates a new {@link AlgebraicLine} instance from a given</a>
+<span class="sourceLineNo">113</span><a id="line.113">         * {@link SlopeInterceptLine}.</a>
+<span class="sourceLineNo">114</span><a id="line.114">         * Note: This is trivial, since {@link SlopeInterceptLine} is </a>
+<span class="sourceLineNo">115</span><a id="line.115">         * a (restricted) {@link AlgebraicLine} itself.</a>
+<span class="sourceLineNo">116</span><a id="line.116">         * </a>
+<span class="sourceLineNo">117</span><a id="line.117">         * @param sil a {@link SlopeInterceptLine}</a>
+<span class="sourceLineNo">118</span><a id="line.118">         * @return a new {@link AlgebraicLine} instance</a>
+<span class="sourceLineNo">119</span><a id="line.119">         */</a>
+<span class="sourceLineNo">120</span><a id="line.120">        public static AlgebraicLine from(SlopeInterceptLine sil) {</a>
+<span class="sourceLineNo">121</span><a id="line.121">//              double a = sil.getK();</a>
+<span class="sourceLineNo">122</span><a id="line.122">//              double c = sil.getD();</a>
+<span class="sourceLineNo">123</span><a id="line.123">//              return new AlgebraicLine(a, -1, c);     </a>
+<span class="sourceLineNo">124</span><a id="line.124">                return new AlgebraicLine(sil.A, sil.B, sil.C);  </a>
+<span class="sourceLineNo">125</span><a id="line.125">        }</a>
+<span class="sourceLineNo">126</span><a id="line.126">        </a>
+<span class="sourceLineNo">127</span><a id="line.127">        // getter/setter methods ------------------------------------------</a>
+<span class="sourceLineNo">128</span><a id="line.128">        </a>
+<span class="sourceLineNo">129</span><a id="line.129">        /**</a>
+<span class="sourceLineNo">130</span><a id="line.130">         * Returns the algebraic line parameters [A, B, C].</a>
+<span class="sourceLineNo">131</span><a id="line.131">         * @return algebraic line parameters</a>
+<span class="sourceLineNo">132</span><a id="line.132">         */</a>
+<span class="sourceLineNo">133</span><a id="line.133">        public final double[] getParameters() {</a>
+<span class="sourceLineNo">134</span><a id="line.134">                return new double[] {A, B, C};</a>
+<span class="sourceLineNo">135</span><a id="line.135">        }</a>
+<span class="sourceLineNo">136</span><a id="line.136">        </a>
+<span class="sourceLineNo">137</span><a id="line.137">        /**</a>
+<span class="sourceLineNo">138</span><a id="line.138">         * Returns the x-coordinate of the reference point.</a>
+<span class="sourceLineNo">139</span><a id="line.139">         * For a {@link AlgebraicLine}, the result is always zero.</a>
+<span class="sourceLineNo">140</span><a id="line.140">         * Inheriting classes (like {@link HoughLine}) override this method.</a>
+<span class="sourceLineNo">141</span><a id="line.141">         * </a>
+<span class="sourceLineNo">142</span><a id="line.142">         * @return the x-coordinate reference</a>
+<span class="sourceLineNo">143</span><a id="line.143">         */</a>
+<span class="sourceLineNo">144</span><a id="line.144">        public double getXref() {</a>
+<span class="sourceLineNo">145</span><a id="line.145">                return 0.0;</a>
+<span class="sourceLineNo">146</span><a id="line.146">        }</a>
+<span class="sourceLineNo">147</span><a id="line.147">        </a>
+<span class="sourceLineNo">148</span><a id="line.148">        /**</a>
+<span class="sourceLineNo">149</span><a id="line.149">         * Returns the y-coordinate of the reference point.</a>
+<span class="sourceLineNo">150</span><a id="line.150">         * For a {@link AlgebraicLine}, the result is always zero.</a>
+<span class="sourceLineNo">151</span><a id="line.151">         * Inheriting classes (like {@link HoughLine}) override this method.</a>
+<span class="sourceLineNo">152</span><a id="line.152">         * </a>
+<span class="sourceLineNo">153</span><a id="line.153">         * @return the y-coordinate reference</a>
+<span class="sourceLineNo">154</span><a id="line.154">         */</a>
+<span class="sourceLineNo">155</span><a id="line.155">        public double getYref() {</a>
+<span class="sourceLineNo">156</span><a id="line.156">                return 0.0;</a>
+<span class="sourceLineNo">157</span><a id="line.157">        }</a>
+<span class="sourceLineNo">158</span><a id="line.158">        </a>
+<span class="sourceLineNo">159</span><a id="line.159">        // other methods ------------------------------------------</a>
+<span class="sourceLineNo">160</span><a id="line.160">        </a>
+<span class="sourceLineNo">161</span><a id="line.161">        /**</a>
+<span class="sourceLineNo">162</span><a id="line.162">         * Returns the orthogonal distance between this line and the point (x, y).</a>
+<span class="sourceLineNo">163</span><a id="line.163">         * The result may be positive or negative, depending on which side of the line</a>
+<span class="sourceLineNo">164</span><a id="line.164">         * (x, y) is located. It is assumed that the line is normalized, i.e.,</a>
+<span class="sourceLineNo">165</span><a id="line.165">         * ||(a,b)|| = 1.</a>
+<span class="sourceLineNo">166</span><a id="line.166">         * </a>
+<span class="sourceLineNo">167</span><a id="line.167">         * @param x x-coordinate of point position.</a>
+<span class="sourceLineNo">168</span><a id="line.168">         * @param y y-coordinate of point position.</a>
+<span class="sourceLineNo">169</span><a id="line.169">         * @return The perpendicular distance between this line and the point (x, y).</a>
+<span class="sourceLineNo">170</span><a id="line.170">         */</a>
+<span class="sourceLineNo">171</span><a id="line.171">        public double getDistance(double x, double y) {</a>
+<span class="sourceLineNo">172</span><a id="line.172">                return Math.abs(getSignedDistance(x, y));</a>
+<span class="sourceLineNo">173</span><a id="line.173">        }</a>
+<span class="sourceLineNo">174</span><a id="line.174">        </a>
+<span class="sourceLineNo">175</span><a id="line.175">        /**</a>
+<span class="sourceLineNo">176</span><a id="line.176">         * Returns the orthogonal (unsigned) distance between this line and the point p. The</a>
+<span class="sourceLineNo">177</span><a id="line.177">         * result is always non-negative.</a>
+<span class="sourceLineNo">178</span><a id="line.178">         * </a>
+<span class="sourceLineNo">179</span><a id="line.179">         * @param p point position.</a>
+<span class="sourceLineNo">180</span><a id="line.180">         * @return The perpendicular distance between this line and the point p.</a>
+<span class="sourceLineNo">181</span><a id="line.181">         */</a>
+<span class="sourceLineNo">182</span><a id="line.182">        @Override</a>
+<span class="sourceLineNo">183</span><a id="line.183">        public double getDistance(Pnt2d p) {</a>
+<span class="sourceLineNo">184</span><a id="line.184">                return Math.abs(getSignedDistance(p));</a>
+<span class="sourceLineNo">185</span><a id="line.185">        }</a>
+<span class="sourceLineNo">186</span><a id="line.186">        </a>
+<span class="sourceLineNo">187</span><a id="line.187">        /**</a>
+<span class="sourceLineNo">188</span><a id="line.188">         * Returns the orthogonal (signed) distance between this line and the point (x, y).</a>
+<span class="sourceLineNo">189</span><a id="line.189">         * The result may be positive or negative, depending on which side of the line</a>
+<span class="sourceLineNo">190</span><a id="line.190">         * (x, y) is located. It is assumed that the line is normalized, i.e.,</a>
+<span class="sourceLineNo">191</span><a id="line.191">         * ||(A,B)|| = 1.</a>
+<span class="sourceLineNo">192</span><a id="line.192">         * </a>
+<span class="sourceLineNo">193</span><a id="line.193">         * @param x x-coordinate of point position.</a>
+<span class="sourceLineNo">194</span><a id="line.194">         * @param y y-coordinate of point position.</a>
+<span class="sourceLineNo">195</span><a id="line.195">         * @return The perpendicular distance between this line and the point (x, y).</a>
+<span class="sourceLineNo">196</span><a id="line.196">         */</a>
+<span class="sourceLineNo">197</span><a id="line.197">        public double getSignedDistance(double x, double y) {</a>
+<span class="sourceLineNo">198</span><a id="line.198">                return (A * (x - this.getXref()) + B * (y - this.getYref()) + C);</a>
+<span class="sourceLineNo">199</span><a id="line.199">        }</a>
+<span class="sourceLineNo">200</span><a id="line.200">        </a>
+<span class="sourceLineNo">201</span><a id="line.201">        /**</a>
+<span class="sourceLineNo">202</span><a id="line.202">         * Returns the orthogonal (signed) distance between this line and the specified point.</a>
+<span class="sourceLineNo">203</span><a id="line.203">         * The result may be positive or negative, depending on which side of the line</a>
+<span class="sourceLineNo">204</span><a id="line.204">         * (the point is located. It is assumed that the line is normalized, i.e.,</a>
+<span class="sourceLineNo">205</span><a id="line.205">         * ||(A,B)|| = 1.</a>
+<span class="sourceLineNo">206</span><a id="line.206">         * @param p a 2D point</a>
+<span class="sourceLineNo">207</span><a id="line.207">         * @return The perpendicular distance between this line and the point</a>
+<span class="sourceLineNo">208</span><a id="line.208">         */</a>
+<span class="sourceLineNo">209</span><a id="line.209">        public double getSignedDistance(Pnt2d p) {</a>
+<span class="sourceLineNo">210</span><a id="line.210">                return getSignedDistance(p.getX(), p.getY());</a>
+<span class="sourceLineNo">211</span><a id="line.211">        }</a>
 <span class="sourceLineNo">212</span><a id="line.212">        </a>
-<span class="sourceLineNo">213</span><a id="line.213">        /**</a>
-<span class="sourceLineNo">214</span><a id="line.214">         * Returns the point on the line that is closest to the specified</a>
-<span class="sourceLineNo">215</span><a id="line.215">         * 2D point. The line is assumed to be normalized.</a>
-<span class="sourceLineNo">216</span><a id="line.216">         * </a>
-<span class="sourceLineNo">217</span><a id="line.217">         * @param p an arbitrary 2D point</a>
-<span class="sourceLineNo">218</span><a id="line.218">         * @return the closest line point</a>
-<span class="sourceLineNo">219</span><a id="line.219">         */</a>
-<span class="sourceLineNo">220</span><a id="line.220">        public Pnt2d getClosestLinePoint(Pnt2d p) {</a>
-<span class="sourceLineNo">221</span><a id="line.221">                final double s = 1.0; // 1.0 / (sqr(a) + sqr(b)); // assumed to be normalized</a>
-<span class="sourceLineNo">222</span><a id="line.222">                final double xr = this.getXref();</a>
-<span class="sourceLineNo">223</span><a id="line.223">                final double yr = this.getYref();</a>
-<span class="sourceLineNo">224</span><a id="line.224">                double xx = p.getX() - xr;</a>
-<span class="sourceLineNo">225</span><a id="line.225">                double yy = p.getY() - yr;</a>
-<span class="sourceLineNo">226</span><a id="line.226">                double x0 = xr + s * (sqr(B) * xx - A * B * yy - A * C);</a>
-<span class="sourceLineNo">227</span><a id="line.227">                double y0 = yr + s * (sqr(A) * yy - A * B * xx - B * C);</a>
-<span class="sourceLineNo">228</span><a id="line.228">                return PntDouble.from(x0, y0);</a>
-<span class="sourceLineNo">229</span><a id="line.229">        }       </a>
-<span class="sourceLineNo">230</span><a id="line.230"></a>
-<span class="sourceLineNo">231</span><a id="line.231">        /**</a>
-<span class="sourceLineNo">232</span><a id="line.232">         * Calculates the sum of squared distances between this line</a>
-<span class="sourceLineNo">233</span><a id="line.233">         * and a given array of 2D points.</a>
-<span class="sourceLineNo">234</span><a id="line.234">         * </a>
-<span class="sourceLineNo">235</span><a id="line.235">         * @param points an array of points</a>
-<span class="sourceLineNo">236</span><a id="line.236">         * @return the sum of squared distances</a>
-<span class="sourceLineNo">237</span><a id="line.237">         */</a>
-<span class="sourceLineNo">238</span><a id="line.238">        public double getSquareError(Pnt2d[] points) {</a>
-<span class="sourceLineNo">239</span><a id="line.239">                double sum2 = 0;</a>
-<span class="sourceLineNo">240</span><a id="line.240">                for (Pnt2d p : points) {</a>
-<span class="sourceLineNo">241</span><a id="line.241">                        sum2 = sum2 + sqr(getDistance(p));</a>
-<span class="sourceLineNo">242</span><a id="line.242">                }</a>
-<span class="sourceLineNo">243</span><a id="line.243">                return sum2;</a>
-<span class="sourceLineNo">244</span><a id="line.244">        }</a>
-<span class="sourceLineNo">245</span><a id="line.245">        </a>
-<span class="sourceLineNo">246</span><a id="line.246">        /**</a>
-<span class="sourceLineNo">247</span><a id="line.247">         * Finds the intersection point between this line and</a>
-<span class="sourceLineNo">248</span><a id="line.248">         * another {@link AlgebraicLine}. Returns {@code null} </a>
-<span class="sourceLineNo">249</span><a id="line.249">         * if the two lines are parallel.</a>
-<span class="sourceLineNo">250</span><a id="line.250">         * </a>
-<span class="sourceLineNo">251</span><a id="line.251">         * @param l2 another {@link AlgebraicLine}</a>
-<span class="sourceLineNo">252</span><a id="line.252">         * @return the intersection point or {@code null} if lines are parallel</a>
-<span class="sourceLineNo">253</span><a id="line.253">         */</a>
-<span class="sourceLineNo">254</span><a id="line.254">        public Pnt2d intersect(AlgebraicLine l2) {</a>
-<span class="sourceLineNo">255</span><a id="line.255">                AlgebraicLine l1 = this;        </a>
-<span class="sourceLineNo">256</span><a id="line.256">                double det = l1.A * l2.B - l2.A * l1.B;</a>
-<span class="sourceLineNo">257</span><a id="line.257">                if (isZero(det)) {</a>
-<span class="sourceLineNo">258</span><a id="line.258">                        return null;</a>
-<span class="sourceLineNo">259</span><a id="line.259">                }</a>
-<span class="sourceLineNo">260</span><a id="line.260">                else {</a>
-<span class="sourceLineNo">261</span><a id="line.261">                        double x = (l1.B * l2.C - l2.B * l1.C) / det;</a>
-<span class="sourceLineNo">262</span><a id="line.262">                        double y = (l2.A * l1.C - l1.A * l2.C) / det;</a>
-<span class="sourceLineNo">263</span><a id="line.263">                        return Pnt2d.from(x, y);</a>
-<span class="sourceLineNo">264</span><a id="line.264">                }</a>
-<span class="sourceLineNo">265</span><a id="line.265">        }</a>
-<span class="sourceLineNo">266</span><a id="line.266">        </a>
-<span class="sourceLineNo">267</span><a id="line.267">        // -------------------------------------------------------------------</a>
-<span class="sourceLineNo">268</span><a id="line.268">        </a>
-<span class="sourceLineNo">269</span><a id="line.269">        @Override</a>
-<span class="sourceLineNo">270</span><a id="line.270">        public Shape getShape(double length) {</a>
-<span class="sourceLineNo">271</span><a id="line.271">                double xRef = this.getXref();</a>
-<span class="sourceLineNo">272</span><a id="line.272">                double yRef = this.getYref();</a>
-<span class="sourceLineNo">273</span><a id="line.273">//              double angle = Math.atan2(this.B, this.A);      //this.getAngle();</a>
-<span class="sourceLineNo">274</span><a id="line.274">                double radius = -this.C;                                        //this.getRadius();</a>
-<span class="sourceLineNo">275</span><a id="line.275">                // unit vector perpendicular to the line</a>
-<span class="sourceLineNo">276</span><a id="line.276">                double dx = this.A;                                             // Math.cos(angle);     </a>
-<span class="sourceLineNo">277</span><a id="line.277">                double dy = this.B;                                                     // Math.sin(angle);</a>
-<span class="sourceLineNo">278</span><a id="line.278">                // calculate the line's center point (closest to the reference point)</a>
-<span class="sourceLineNo">279</span><a id="line.279">                double x0 = xRef + radius * dx;</a>
-<span class="sourceLineNo">280</span><a id="line.280">                double y0 = yRef + radius * dy;</a>
-<span class="sourceLineNo">281</span><a id="line.281">                // calculate the line end points (using normal vectors)</a>
-<span class="sourceLineNo">282</span><a id="line.282">                double x1 = x0 + dy * length;</a>
-<span class="sourceLineNo">283</span><a id="line.283">                double y1 = y0 - dx * length;</a>
-<span class="sourceLineNo">284</span><a id="line.284">                double x2 = x0 - dy * length;</a>
-<span class="sourceLineNo">285</span><a id="line.285">                double y2 = y0 + dx * length;</a>
-<span class="sourceLineNo">286</span><a id="line.286">                Path2D path = new Path2D.Double();</a>
-<span class="sourceLineNo">287</span><a id="line.287">                path.moveTo(x1, y1);</a>
-<span class="sourceLineNo">288</span><a id="line.288">                path.lineTo(x2, y2);</a>
-<span class="sourceLineNo">289</span><a id="line.289">                return path;</a>
-<span class="sourceLineNo">290</span><a id="line.290">        }</a>
-<span class="sourceLineNo">291</span><a id="line.291">        </a>
-<span class="sourceLineNo">292</span><a id="line.292">        /**</a>
-<span class="sourceLineNo">293</span><a id="line.293">         * Returns a {@link Shape} for this line to be drawn in a canvas of the</a>
-<span class="sourceLineNo">294</span><a id="line.294">         * specified size. Since an algebraic line is of infinite extent, we need</a>
-<span class="sourceLineNo">295</span><a id="line.295">         * to know the drawing size. The returned line segment is sufficiently long </a>
-<span class="sourceLineNo">296</span><a id="line.296">         * to cover the entire canvas, i.e., both end points are outside the</a>
-<span class="sourceLineNo">297</span><a id="line.297">         * canvas.</a>
-<span class="sourceLineNo">298</span><a id="line.298">         *</a>
-<span class="sourceLineNo">299</span><a id="line.299">         * @param width the width of the drawing canvas</a>
-<span class="sourceLineNo">300</span><a id="line.300">         * @param height the height of the drawing canvas</a>
-<span class="sourceLineNo">301</span><a id="line.301">         * @return a {@link Shape} instance for this line</a>
-<span class="sourceLineNo">302</span><a id="line.302">         */</a>
-<span class="sourceLineNo">303</span><a id="line.303">        public Shape getShape(int width, int height) {</a>
-<span class="sourceLineNo">304</span><a id="line.304">                double length = Math.sqrt(sqr(width) + sqr(height));</a>
-<span class="sourceLineNo">305</span><a id="line.305">                return this.getShape(length);</a>
-<span class="sourceLineNo">306</span><a id="line.306">        }</a>
-<span class="sourceLineNo">307</span><a id="line.307">        </a>
-<span class="sourceLineNo">308</span><a id="line.308">//      public Shape getShape(int width, int height) {</a>
-<span class="sourceLineNo">309</span><a id="line.309">//              HoughLine hl = new HoughLine(this, 0.5 * width, 0.5 * height, 0);</a>
-<span class="sourceLineNo">310</span><a id="line.310">//              return hl.getShape(width, height);</a>
-<span class="sourceLineNo">311</span><a id="line.311">//              </a>
-<span class="sourceLineNo">312</span><a id="line.312">//      }</a>
-<span class="sourceLineNo">313</span><a id="line.313">        </a>
-<span class="sourceLineNo">314</span><a id="line.314">        // -------------------------------------------------------------------</a>
-<span class="sourceLineNo">315</span><a id="line.315">        </a>
-<span class="sourceLineNo">316</span><a id="line.316">        @Override</a>
-<span class="sourceLineNo">317</span><a id="line.317">        public boolean equals(Object other) {</a>
-<span class="sourceLineNo">318</span><a id="line.318">                if (this == other) {</a>
-<span class="sourceLineNo">319</span><a id="line.319">                        return true;</a>
-<span class="sourceLineNo">320</span><a id="line.320">                }</a>
-<span class="sourceLineNo">321</span><a id="line.321">                if (other instanceof AlgebraicLine) {</a>
-<span class="sourceLineNo">322</span><a id="line.322">                        return this.equals((AlgebraicLine) other, Arithmetic.EPSILON_DOUBLE);</a>
-<span class="sourceLineNo">323</span><a id="line.323">                }</a>
-<span class="sourceLineNo">324</span><a id="line.324">                else {</a>
-<span class="sourceLineNo">325</span><a id="line.325">                        return false;</a>
-<span class="sourceLineNo">326</span><a id="line.326">                }</a>
-<span class="sourceLineNo">327</span><a id="line.327">        }</a>
-<span class="sourceLineNo">328</span><a id="line.328">        </a>
-<span class="sourceLineNo">329</span><a id="line.329">        // TODO: this should be easier to do if parameters are normalized</a>
-<span class="sourceLineNo">330</span><a id="line.330">        /**</a>
-<span class="sourceLineNo">331</span><a id="line.331">         * Checks if this {@link AlgebraicLine} is equal to another {@link AlgebraicLine}.</a>
-<span class="sourceLineNo">332</span><a id="line.332">         * </a>
-<span class="sourceLineNo">333</span><a id="line.333">         * @param other another {@link AlgebraicLine}</a>
-<span class="sourceLineNo">334</span><a id="line.334">         * @param tolerance the maximum deviation</a>
-<span class="sourceLineNo">335</span><a id="line.335">         * @return true if both lines are equal</a>
-<span class="sourceLineNo">336</span><a id="line.336">         */</a>
-<span class="sourceLineNo">337</span><a id="line.337">        public boolean equals(AlgebraicLine other, double tolerance) {</a>
-<span class="sourceLineNo">338</span><a id="line.338">                AlgebraicLine L1 = this;</a>
-<span class="sourceLineNo">339</span><a id="line.339">                AlgebraicLine L2 = (AlgebraicLine) other;</a>
-<span class="sourceLineNo">340</span><a id="line.340">                // get two different points on L1:</a>
-<span class="sourceLineNo">341</span><a id="line.341">                Pnt2d xA = L1.getClosestLinePoint(PntDouble.ZERO);</a>
-<span class="sourceLineNo">342</span><a id="line.342">                Pnt2d xB = PntDouble.from(xA.getX() - L1.B, xA.getY() + L1.A);</a>
-<span class="sourceLineNo">343</span><a id="line.343">                // check if both points are on L2 too:</a>
-<span class="sourceLineNo">344</span><a id="line.344">                return (isZero(L2.getDistance(xA), tolerance) &amp;&amp; isZero(L2.getDistance(xB), tolerance));</a>
-<span class="sourceLineNo">345</span><a id="line.345">        }</a>
-<span class="sourceLineNo">346</span><a id="line.346">        </a>
-<span class="sourceLineNo">347</span><a id="line.347">        @Override</a>
-<span class="sourceLineNo">348</span><a id="line.348">        public String toString() {</a>
-<span class="sourceLineNo">349</span><a id="line.349">                return String.format(Locale.US, "%s &lt;a=%.3f, b=%.3f, c=%.3f&gt;",</a>
-<span class="sourceLineNo">350</span><a id="line.350">                                this.getClass().getSimpleName(), A, B, C);</a>
-<span class="sourceLineNo">351</span><a id="line.351">        }</a>
-<span class="sourceLineNo">352</span><a id="line.352"></a>
-<span class="sourceLineNo">353</span><a id="line.353">}</a>
-<span class="sourceLineNo">354</span><a id="line.354"></a>
+<span class="sourceLineNo">213</span><a id="line.213">        </a>
+<span class="sourceLineNo">214</span><a id="line.214">        /**</a>
+<span class="sourceLineNo">215</span><a id="line.215">         * Returns the point on the line that is closest to the specified</a>
+<span class="sourceLineNo">216</span><a id="line.216">         * 2D point. The line is assumed to be normalized.</a>
+<span class="sourceLineNo">217</span><a id="line.217">         * </a>
+<span class="sourceLineNo">218</span><a id="line.218">         * @param p an arbitrary 2D point</a>
+<span class="sourceLineNo">219</span><a id="line.219">         * @return the closest line point</a>
+<span class="sourceLineNo">220</span><a id="line.220">         */</a>
+<span class="sourceLineNo">221</span><a id="line.221">        public Pnt2d getClosestLinePoint(Pnt2d p) {</a>
+<span class="sourceLineNo">222</span><a id="line.222">                final double s = 1.0; // 1.0 / (sqr(a) + sqr(b)); // assumed to be normalized</a>
+<span class="sourceLineNo">223</span><a id="line.223">                final double xr = this.getXref();</a>
+<span class="sourceLineNo">224</span><a id="line.224">                final double yr = this.getYref();</a>
+<span class="sourceLineNo">225</span><a id="line.225">                double xx = p.getX() - xr;</a>
+<span class="sourceLineNo">226</span><a id="line.226">                double yy = p.getY() - yr;</a>
+<span class="sourceLineNo">227</span><a id="line.227">                double x0 = xr + s * (sqr(B) * xx - A * B * yy - A * C);</a>
+<span class="sourceLineNo">228</span><a id="line.228">                double y0 = yr + s * (sqr(A) * yy - A * B * xx - B * C);</a>
+<span class="sourceLineNo">229</span><a id="line.229">                return PntDouble.from(x0, y0);</a>
+<span class="sourceLineNo">230</span><a id="line.230">        }       </a>
+<span class="sourceLineNo">231</span><a id="line.231"></a>
+<span class="sourceLineNo">232</span><a id="line.232">        /**</a>
+<span class="sourceLineNo">233</span><a id="line.233">         * Calculates the sum of squared distances between this line</a>
+<span class="sourceLineNo">234</span><a id="line.234">         * and a given array of 2D points.</a>
+<span class="sourceLineNo">235</span><a id="line.235">         * </a>
+<span class="sourceLineNo">236</span><a id="line.236">         * @param points an array of points</a>
+<span class="sourceLineNo">237</span><a id="line.237">         * @return the sum of squared distances</a>
+<span class="sourceLineNo">238</span><a id="line.238">         */</a>
+<span class="sourceLineNo">239</span><a id="line.239">        public double getSquareError(Pnt2d[] points) {</a>
+<span class="sourceLineNo">240</span><a id="line.240">                double sum2 = 0;</a>
+<span class="sourceLineNo">241</span><a id="line.241">                for (Pnt2d p : points) {</a>
+<span class="sourceLineNo">242</span><a id="line.242">                        sum2 = sum2 + sqr(getDistance(p));</a>
+<span class="sourceLineNo">243</span><a id="line.243">                }</a>
+<span class="sourceLineNo">244</span><a id="line.244">                return sum2;</a>
+<span class="sourceLineNo">245</span><a id="line.245">        }</a>
+<span class="sourceLineNo">246</span><a id="line.246">        </a>
+<span class="sourceLineNo">247</span><a id="line.247">        /**</a>
+<span class="sourceLineNo">248</span><a id="line.248">         * Finds the intersection point between this line and</a>
+<span class="sourceLineNo">249</span><a id="line.249">         * another {@link AlgebraicLine}. Returns {@code null} </a>
+<span class="sourceLineNo">250</span><a id="line.250">         * if the two lines are parallel.</a>
+<span class="sourceLineNo">251</span><a id="line.251">         * </a>
+<span class="sourceLineNo">252</span><a id="line.252">         * @param l2 another {@link AlgebraicLine}</a>
+<span class="sourceLineNo">253</span><a id="line.253">         * @return the intersection point or {@code null} if lines are parallel</a>
+<span class="sourceLineNo">254</span><a id="line.254">         */</a>
+<span class="sourceLineNo">255</span><a id="line.255">        public Pnt2d intersect(AlgebraicLine l2) {</a>
+<span class="sourceLineNo">256</span><a id="line.256">                AlgebraicLine l1 = this;        </a>
+<span class="sourceLineNo">257</span><a id="line.257">                double det = l1.A * l2.B - l2.A * l1.B;</a>
+<span class="sourceLineNo">258</span><a id="line.258">                if (isZero(det)) {</a>
+<span class="sourceLineNo">259</span><a id="line.259">                        return null;</a>
+<span class="sourceLineNo">260</span><a id="line.260">                }</a>
+<span class="sourceLineNo">261</span><a id="line.261">                else {</a>
+<span class="sourceLineNo">262</span><a id="line.262">                        double x = (l1.B * l2.C - l2.B * l1.C) / det;</a>
+<span class="sourceLineNo">263</span><a id="line.263">                        double y = (l2.A * l1.C - l1.A * l2.C) / det;</a>
+<span class="sourceLineNo">264</span><a id="line.264">                        return Pnt2d.from(x, y);</a>
+<span class="sourceLineNo">265</span><a id="line.265">                }</a>
+<span class="sourceLineNo">266</span><a id="line.266">        }</a>
+<span class="sourceLineNo">267</span><a id="line.267">        </a>
+<span class="sourceLineNo">268</span><a id="line.268">        // -------------------------------------------------------------------</a>
+<span class="sourceLineNo">269</span><a id="line.269">        </a>
+<span class="sourceLineNo">270</span><a id="line.270">        @Override</a>
+<span class="sourceLineNo">271</span><a id="line.271">        public Shape getShape(double length) {</a>
+<span class="sourceLineNo">272</span><a id="line.272">                double xRef = this.getXref();</a>
+<span class="sourceLineNo">273</span><a id="line.273">                double yRef = this.getYref();</a>
+<span class="sourceLineNo">274</span><a id="line.274">//              double angle = Math.atan2(this.B, this.A);      //this.getAngle();</a>
+<span class="sourceLineNo">275</span><a id="line.275">                double radius = -this.C;                                        //this.getRadius();</a>
+<span class="sourceLineNo">276</span><a id="line.276">                // unit vector perpendicular to the line</a>
+<span class="sourceLineNo">277</span><a id="line.277">                double dx = this.A;                                             // Math.cos(angle);     </a>
+<span class="sourceLineNo">278</span><a id="line.278">                double dy = this.B;                                                     // Math.sin(angle);</a>
+<span class="sourceLineNo">279</span><a id="line.279">                // calculate the line's center point (closest to the reference point)</a>
+<span class="sourceLineNo">280</span><a id="line.280">                double x0 = xRef + radius * dx;</a>
+<span class="sourceLineNo">281</span><a id="line.281">                double y0 = yRef + radius * dy;</a>
+<span class="sourceLineNo">282</span><a id="line.282">                // calculate the line end points (using normal vectors)</a>
+<span class="sourceLineNo">283</span><a id="line.283">                double x1 = x0 + dy * length;</a>
+<span class="sourceLineNo">284</span><a id="line.284">                double y1 = y0 - dx * length;</a>
+<span class="sourceLineNo">285</span><a id="line.285">                double x2 = x0 - dy * length;</a>
+<span class="sourceLineNo">286</span><a id="line.286">                double y2 = y0 + dx * length;</a>
+<span class="sourceLineNo">287</span><a id="line.287">                Path2D path = new Path2D.Double();</a>
+<span class="sourceLineNo">288</span><a id="line.288">                path.moveTo(x1, y1);</a>
+<span class="sourceLineNo">289</span><a id="line.289">                path.lineTo(x2, y2);</a>
+<span class="sourceLineNo">290</span><a id="line.290">                return path;</a>
+<span class="sourceLineNo">291</span><a id="line.291">        }</a>
+<span class="sourceLineNo">292</span><a id="line.292">        </a>
+<span class="sourceLineNo">293</span><a id="line.293">        /**</a>
+<span class="sourceLineNo">294</span><a id="line.294">         * Returns a {@link Shape} for this line to be drawn in a canvas of the</a>
+<span class="sourceLineNo">295</span><a id="line.295">         * specified size. Since an algebraic line is of infinite extent, we need</a>
+<span class="sourceLineNo">296</span><a id="line.296">         * to know the drawing size. The returned line segment is sufficiently long </a>
+<span class="sourceLineNo">297</span><a id="line.297">         * to cover the entire canvas, i.e., both end points are outside the</a>
+<span class="sourceLineNo">298</span><a id="line.298">         * canvas.</a>
+<span class="sourceLineNo">299</span><a id="line.299">         *</a>
+<span class="sourceLineNo">300</span><a id="line.300">         * @param width the width of the drawing canvas</a>
+<span class="sourceLineNo">301</span><a id="line.301">         * @param height the height of the drawing canvas</a>
+<span class="sourceLineNo">302</span><a id="line.302">         * @return a {@link Shape} instance for this line</a>
+<span class="sourceLineNo">303</span><a id="line.303">         */</a>
+<span class="sourceLineNo">304</span><a id="line.304">        public Shape getShape(int width, int height) {</a>
+<span class="sourceLineNo">305</span><a id="line.305">                double length = Math.sqrt(sqr(width) + sqr(height));</a>
+<span class="sourceLineNo">306</span><a id="line.306">                return this.getShape(length);</a>
+<span class="sourceLineNo">307</span><a id="line.307">        }</a>
+<span class="sourceLineNo">308</span><a id="line.308">        </a>
+<span class="sourceLineNo">309</span><a id="line.309">//      public Shape getShape(int width, int height) {</a>
+<span class="sourceLineNo">310</span><a id="line.310">//              HoughLine hl = new HoughLine(this, 0.5 * width, 0.5 * height, 0);</a>
+<span class="sourceLineNo">311</span><a id="line.311">//              return hl.getShape(width, height);</a>
+<span class="sourceLineNo">312</span><a id="line.312">//              </a>
+<span class="sourceLineNo">313</span><a id="line.313">//      }</a>
+<span class="sourceLineNo">314</span><a id="line.314">        </a>
+<span class="sourceLineNo">315</span><a id="line.315">        // -------------------------------------------------------------------</a>
+<span class="sourceLineNo">316</span><a id="line.316">        </a>
+<span class="sourceLineNo">317</span><a id="line.317">        @Override</a>
+<span class="sourceLineNo">318</span><a id="line.318">        public boolean equals(Object other) {</a>
+<span class="sourceLineNo">319</span><a id="line.319">                if (this == other) {</a>
+<span class="sourceLineNo">320</span><a id="line.320">                        return true;</a>
+<span class="sourceLineNo">321</span><a id="line.321">                }</a>
+<span class="sourceLineNo">322</span><a id="line.322">                if (other instanceof AlgebraicLine) {</a>
+<span class="sourceLineNo">323</span><a id="line.323">                        return this.equals((AlgebraicLine) other, Arithmetic.EPSILON_DOUBLE);</a>
+<span class="sourceLineNo">324</span><a id="line.324">                }</a>
+<span class="sourceLineNo">325</span><a id="line.325">                else {</a>
+<span class="sourceLineNo">326</span><a id="line.326">                        return false;</a>
+<span class="sourceLineNo">327</span><a id="line.327">                }</a>
+<span class="sourceLineNo">328</span><a id="line.328">        }</a>
+<span class="sourceLineNo">329</span><a id="line.329">        </a>
+<span class="sourceLineNo">330</span><a id="line.330">        // TODO: this should be easier to do if parameters are normalized</a>
+<span class="sourceLineNo">331</span><a id="line.331">        /**</a>
+<span class="sourceLineNo">332</span><a id="line.332">         * Checks if this {@link AlgebraicLine} is equal to another {@link AlgebraicLine}.</a>
+<span class="sourceLineNo">333</span><a id="line.333">         * </a>
+<span class="sourceLineNo">334</span><a id="line.334">         * @param other another {@link AlgebraicLine}</a>
+<span class="sourceLineNo">335</span><a id="line.335">         * @param tolerance the maximum deviation</a>
+<span class="sourceLineNo">336</span><a id="line.336">         * @return true if both lines are equal</a>
+<span class="sourceLineNo">337</span><a id="line.337">         */</a>
+<span class="sourceLineNo">338</span><a id="line.338">        public boolean equals(AlgebraicLine other, double tolerance) {</a>
+<span class="sourceLineNo">339</span><a id="line.339">                AlgebraicLine L1 = this;</a>
+<span class="sourceLineNo">340</span><a id="line.340">                AlgebraicLine L2 = other;</a>
+<span class="sourceLineNo">341</span><a id="line.341">                // get two different points on L1:</a>
+<span class="sourceLineNo">342</span><a id="line.342">                Pnt2d xA = L1.getClosestLinePoint(PntDouble.ZERO);</a>
+<span class="sourceLineNo">343</span><a id="line.343">                Pnt2d xB = PntDouble.from(xA.getX() - L1.B, xA.getY() + L1.A);</a>
+<span class="sourceLineNo">344</span><a id="line.344">                // check if both points are on L2 too:</a>
+<span class="sourceLineNo">345</span><a id="line.345">                return (isZero(L2.getDistance(xA), tolerance) &amp;&amp; isZero(L2.getDistance(xB), tolerance));</a>
+<span class="sourceLineNo">346</span><a id="line.346">        }</a>
+<span class="sourceLineNo">347</span><a id="line.347">        </a>
+<span class="sourceLineNo">348</span><a id="line.348">        @Override</a>
+<span class="sourceLineNo">349</span><a id="line.349">        public String toString() {</a>
+<span class="sourceLineNo">350</span><a id="line.350">                String fStr = PrintPrecision.getFormatStringFloat();</a>
+<span class="sourceLineNo">351</span><a id="line.351">//              return String.format(Locale.US, "%s &lt;a=%.3f, b=%.3f, c=%.3f&gt;",</a>
+<span class="sourceLineNo">352</span><a id="line.352">                return String.format(Locale.US, "%s&lt;" + fStr + ", " + fStr + ", " + fStr + "&gt;",</a>
+<span class="sourceLineNo">353</span><a id="line.353">                                this.getClass().getSimpleName(), A, B, C);</a>
+<span class="sourceLineNo">354</span><a id="line.354">        }</a>
 <span class="sourceLineNo">355</span><a id="line.355"></a>
+<span class="sourceLineNo">356</span><a id="line.356">}</a>
+<span class="sourceLineNo">357</span><a id="line.357"></a>
+<span class="sourceLineNo">358</span><a id="line.358"></a>
 
 
 

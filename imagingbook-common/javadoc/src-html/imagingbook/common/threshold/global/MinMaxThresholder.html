@@ -26,45 +26,46 @@
 <span class="sourceLineNo">016</span><a id="line.16"> * See Sec. 9.1.2 of [1] for additional details (Eq. 9.12).</a>
 <span class="sourceLineNo">017</span><a id="line.17"> * &lt;/p&gt;</a>
 <span class="sourceLineNo">018</span><a id="line.18"> * &lt;p&gt;</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing - An Algorithmic Approach&lt;/em&gt;, 3rd ed, Springer (2022).</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * </a>
-<span class="sourceLineNo">022</span><a id="line.22"> * @author WB</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * @version 2022/08/23</a>
-<span class="sourceLineNo">024</span><a id="line.24"> *</a>
-<span class="sourceLineNo">025</span><a id="line.25"> */</a>
-<span class="sourceLineNo">026</span><a id="line.26">public class MinMaxThresholder implements GlobalThresholder {</a>
-<span class="sourceLineNo">027</span><a id="line.27">        </a>
-<span class="sourceLineNo">028</span><a id="line.28">        public MinMaxThresholder() {</a>
-<span class="sourceLineNo">029</span><a id="line.29">                super();</a>
-<span class="sourceLineNo">030</span><a id="line.30">        }</a>
-<span class="sourceLineNo">031</span><a id="line.31"></a>
-<span class="sourceLineNo">032</span><a id="line.32">        @Override</a>
-<span class="sourceLineNo">033</span><a id="line.33">        public int getThreshold(int[] h) {</a>
-<span class="sourceLineNo">034</span><a id="line.34">                // calculate mean of entire image:</a>
-<span class="sourceLineNo">035</span><a id="line.35">                int K = h.length;</a>
-<span class="sourceLineNo">036</span><a id="line.36">                int minVal, maxVal;</a>
-<span class="sourceLineNo">037</span><a id="line.37">                </a>
-<span class="sourceLineNo">038</span><a id="line.38">                // find the min. pixel value</a>
-<span class="sourceLineNo">039</span><a id="line.39">                for (minVal = 0; minVal &lt; K; minVal++) {</a>
-<span class="sourceLineNo">040</span><a id="line.40">                        if (h[minVal] &gt; 0) {</a>
-<span class="sourceLineNo">041</span><a id="line.41">                                break;</a>
-<span class="sourceLineNo">042</span><a id="line.42">                        }</a>
-<span class="sourceLineNo">043</span><a id="line.43">                }</a>
-<span class="sourceLineNo">044</span><a id="line.44">                </a>
-<span class="sourceLineNo">045</span><a id="line.45">                // find the max. pixel value</a>
-<span class="sourceLineNo">046</span><a id="line.46">                for (maxVal = K - 1; maxVal &gt;= 0; maxVal--) {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                        if (h[maxVal] &gt; 0) {</a>
-<span class="sourceLineNo">048</span><a id="line.48">                                break;</a>
-<span class="sourceLineNo">049</span><a id="line.49">                        }</a>
-<span class="sourceLineNo">050</span><a id="line.50">                }</a>
-<span class="sourceLineNo">051</span><a id="line.51">                </a>
-<span class="sourceLineNo">052</span><a id="line.52">                int q = (minVal &lt; maxVal) ? </a>
-<span class="sourceLineNo">053</span><a id="line.53">                                (int) Math.floor((minVal + maxVal) / 2.0) : -1;</a>
-<span class="sourceLineNo">054</span><a id="line.54">                </a>
-<span class="sourceLineNo">055</span><a id="line.55">                return q;</a>
-<span class="sourceLineNo">056</span><a id="line.56">        }</a>
-<span class="sourceLineNo">057</span><a id="line.57">}</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing - An Algorithmic Approach&lt;/em&gt;,</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * </a>
+<span class="sourceLineNo">023</span><a id="line.23"> * @author WB</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * @version 2022/08/23</a>
+<span class="sourceLineNo">025</span><a id="line.25"> *</a>
+<span class="sourceLineNo">026</span><a id="line.26"> */</a>
+<span class="sourceLineNo">027</span><a id="line.27">public class MinMaxThresholder implements GlobalThresholder {</a>
+<span class="sourceLineNo">028</span><a id="line.28">        </a>
+<span class="sourceLineNo">029</span><a id="line.29">        public MinMaxThresholder() {</a>
+<span class="sourceLineNo">030</span><a id="line.30">                super();</a>
+<span class="sourceLineNo">031</span><a id="line.31">        }</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">        @Override</a>
+<span class="sourceLineNo">034</span><a id="line.34">        public int getThreshold(int[] h) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">                // calculate mean of entire image:</a>
+<span class="sourceLineNo">036</span><a id="line.36">                int K = h.length;</a>
+<span class="sourceLineNo">037</span><a id="line.37">                int minVal, maxVal;</a>
+<span class="sourceLineNo">038</span><a id="line.38">                </a>
+<span class="sourceLineNo">039</span><a id="line.39">                // find the min. pixel value</a>
+<span class="sourceLineNo">040</span><a id="line.40">                for (minVal = 0; minVal &lt; K; minVal++) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">                        if (h[minVal] &gt; 0) {</a>
+<span class="sourceLineNo">042</span><a id="line.42">                                break;</a>
+<span class="sourceLineNo">043</span><a id="line.43">                        }</a>
+<span class="sourceLineNo">044</span><a id="line.44">                }</a>
+<span class="sourceLineNo">045</span><a id="line.45">                </a>
+<span class="sourceLineNo">046</span><a id="line.46">                // find the max. pixel value</a>
+<span class="sourceLineNo">047</span><a id="line.47">                for (maxVal = K - 1; maxVal &gt;= 0; maxVal--) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">                        if (h[maxVal] &gt; 0) {</a>
+<span class="sourceLineNo">049</span><a id="line.49">                                break;</a>
+<span class="sourceLineNo">050</span><a id="line.50">                        }</a>
+<span class="sourceLineNo">051</span><a id="line.51">                }</a>
+<span class="sourceLineNo">052</span><a id="line.52">                </a>
+<span class="sourceLineNo">053</span><a id="line.53">                int q = (minVal &lt; maxVal) ? </a>
+<span class="sourceLineNo">054</span><a id="line.54">                                (int) Math.floor((minVal + maxVal) / 2.0) : -1;</a>
+<span class="sourceLineNo">055</span><a id="line.55">                </a>
+<span class="sourceLineNo">056</span><a id="line.56">                return q;</a>
+<span class="sourceLineNo">057</span><a id="line.57">        }</a>
+<span class="sourceLineNo">058</span><a id="line.58">}</a>
 
 
 
