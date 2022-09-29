@@ -11,6 +11,12 @@ package imagingbook.common.geometry.fitting.line;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.line.AlgebraicLine;
 
+/**
+ * Interface to be implemented by all 2D line fits.
+ * 
+ * @author WB
+ * @version 2022/09/22
+ */
 public interface LineFit {
 	
 	public abstract int getSize();

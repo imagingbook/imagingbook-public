@@ -12,7 +12,6 @@ import java.awt.Color;
 
 import ij.ImagePlus;
 import ij.gui.Overlay;
-import ij.io.LogStream;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
@@ -27,7 +26,6 @@ import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.geometry.mappings.linear.Translation2D;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.math.PrintPrecision;
 
 public class Example_Fit_Rotated_Points implements PlugIn {
 
@@ -52,11 +50,6 @@ public class Example_Fit_Rotated_Points implements PlugIn {
 	private static boolean DrawOrthogalFit = true;
 	private static boolean DrawRegressionFit = true;
 	private static boolean DrawCentroid = true;
-
-	static {
-		LogStream.redirectSystem();
-		PrintPrecision.set(6);
-	}
 
 	@Override
 	public void run(String arg) {

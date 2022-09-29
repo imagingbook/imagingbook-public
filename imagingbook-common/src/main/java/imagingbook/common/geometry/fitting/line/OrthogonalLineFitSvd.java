@@ -14,14 +14,36 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
-import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.math.Matrix;
 
+/**
+ * <p>
+ * This class implements line fitting by orthogonal regression to a set of 2D
+ * points using singular-value decomposition (SVD). See Sec. 10.2.2 (Alg. 10.2)
+ * of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/09/29
+ * 
+ * @see OrthogonalLineFitEigen
+ * @see OrthogonalLineFitHomogeneous
+ */
 public class OrthogonalLineFitSvd implements LineFit {
 	
 	private final int n;
-	private final double[] p;	// line parameters A,B,C
+	private final double[] p;	// algebraic line parameters A,B,C
 	
+	/**
+	 * Constructor, performs a linear regression fit to the specified points.
+	 * At least two different points are required.
+	 * 
+	 * @param points an array with at least 2 points
+	 */
 	public OrthogonalLineFitSvd(Pnt2d[] points) {
 		if (points.length < 2) {
 			throw new IllegalArgumentException("line fit requires at least 2 points");
@@ -64,25 +86,5 @@ public class OrthogonalLineFitSvd implements LineFit {
 		double C = -A * xc - B * yc;
 		return new double[] {A,B,C};
 	}
-	
-	// -------------------------------------------------------------------
-	
-//	static double[][] X = {{ 10, 6 }, { 4, 3 }, { 18, 2 }, { 7, 1 }, { 5, 6 }};
-//	static double[][] X = {{ 10, 6 }, { 4, 3 }};
-//	static double[][] X = {{ 1, 1 }, { 3, 3 },  { 13, 13 }};
-	static double[][] X = {{1, 8}, {4, 5}, {4, 7}, {6, 4}, {9, 4}}; // book example
-	
-	public static void main(String[] args) {
-		Pnt2d[] pts = PntUtils.fromDoubleArray(X);
-		LineFit fit = new OrthogonalLineFitSvd(pts);
-		System.out.println(fit.getClass());
-		AlgebraicLine line = fit.getLine();
-		System.out.println("line = " + line);
-		System.out.println("avg error = " + fit.getSquaredOrthogonalError(pts) / X.length);
-	}
-	
-//	class Fitting_Lines.lib.OrthogonalLineFitSvd
-//	line = AlgebraicLine <a=0.497, b=0.868, c=-7.245>
-//	avg error = 0.5329166870097324
 	
 }

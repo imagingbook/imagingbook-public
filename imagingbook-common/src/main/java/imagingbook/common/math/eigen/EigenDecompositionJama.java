@@ -18,15 +18,15 @@ import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
 
 /**
- * Eigenvalues and eigenvectors of a real matrix.
- * This code has been ported from https://math.nist.gov/javanumerics/jama/ (Version 1.0.3), with the
- * public API (and some internals) adapted to Apache Commons Math.
- * Most comments below were taken from the original sources.
+ * Eigenvalues and eigenvectors of a real matrix. This code has been ported from
+ * https://math.nist.gov/javanumerics/jama/ (Version 1.0.3), with the public API
+ * (and some internals) adapted to Apache Commons Math. Most comments below were
+ * taken from the original sources.
  * <p>
- * This is intended as a temporary substitute for Apache Commons Math's 
+ * This is intended as a temporary substitute for Apache Commons Math's
  * implementation ({@link org.apache.commons.math3.linear.EigenDecomposition},
- * whose symmetry tolerance appears to be too low and thus 
- * returns complex eigenvalues for close-to-symmetric matrices although solutions with real
+ * whose symmetry tolerance appears to be too low and thus returns complex
+ * eigenvalues for close-to-symmetric matrices although solutions with real
  * eigenvalues exist.
  * </p>
  * <p>
@@ -43,7 +43,6 @@ import imagingbook.common.math.exception.MaxIterationsExceededException;
  * V.times(D). The matrix V may be badly conditioned, or even singular, so the
  * validity of the equation A = V*D*inverse(V) depends upon V.cond().
  * </p>
- * 
  * 
  * @version 2022/06/19
  */

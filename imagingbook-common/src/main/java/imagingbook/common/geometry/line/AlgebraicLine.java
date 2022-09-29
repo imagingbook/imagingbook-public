@@ -15,12 +15,13 @@ import java.awt.Shape;
 import java.awt.geom.Path2D;
 import java.util.Locale;
 
-import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.hough.HoughLine;
 import imagingbook.common.math.Arithmetic;
+import imagingbook.common.math.PrintPrecision;
 
 /**
  * This class represents an algebraic line of the form A x + B y + C = 0.
@@ -336,7 +337,7 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	 */
 	public boolean equals(AlgebraicLine other, double tolerance) {
 		AlgebraicLine L1 = this;
-		AlgebraicLine L2 = (AlgebraicLine) other;
+		AlgebraicLine L2 = other;
 		// get two different points on L1:
 		Pnt2d xA = L1.getClosestLinePoint(PntDouble.ZERO);
 		Pnt2d xB = PntDouble.from(xA.getX() - L1.B, xA.getY() + L1.A);
@@ -346,7 +347,9 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	
 	@Override
 	public String toString() {
-		return String.format(Locale.US, "%s <a=%.3f, b=%.3f, c=%.3f>",
+		String fStr = PrintPrecision.getFormatStringFloat();
+//		return String.format(Locale.US, "%s <a=%.3f, b=%.3f, c=%.3f>",
+		return String.format(Locale.US, "%s<" + fStr + ", " + fStr + ", " + fStr + ">",
 				this.getClass().getSimpleName(), A, B, C);
 	}
 
