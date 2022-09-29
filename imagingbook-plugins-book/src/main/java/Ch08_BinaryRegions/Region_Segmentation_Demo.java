@@ -44,13 +44,13 @@ import imagingbook.core.plugin.IjPluginName;
  * </ul>
  * <p>
  * See Sec. 8.1 of [1] for additional details. One of four labeling types can be
- * selected (see the {@link #run(ImageProcessor)} method). All methods should produce
- * the same results (except {@link RegionContourSegmentation}, which may run out
- * of memory easily). Requires a binary image. Zero-value pixels are considered
- * background, all other pixels are foreground. Display lookup tables (LUTs) are not
- * considered.
- * The plugin creates a new image with connected components either randomly-colored or
- * region labels shown as gray values. The original image is not modified.
+ * selected (see the {@link #run(ImageProcessor)} method). All methods should
+ * produce the same results (except {@link RegionContourSegmentation}, which may
+ * run out of memory easily). Requires a binary image. Zero-value pixels are
+ * considered background, all other pixels are foreground. Display lookup tables
+ * (LUTs) are not considered. The plugin creates a new image with connected
+ * components either randomly-colored or region labels shown as gray values. The
+ * original image is not modified.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic

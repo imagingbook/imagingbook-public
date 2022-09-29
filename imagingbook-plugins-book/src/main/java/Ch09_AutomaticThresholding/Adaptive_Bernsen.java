@@ -21,7 +21,9 @@ import imagingbook.common.threshold.adaptive.BernsenThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder.Parameters;
 
 /**
- * Demo plugin showing the use of the {@link BernsenThresholder} class.
+ * ImageJ demo plugin showing the use of the {@link BernsenThresholder} class.
+ * This plugin works on 8-bit grayscale images only. The original image
+ * is modified to a binary image.
  * 
  * @author WB
  * @version 2022/04/01
@@ -30,10 +32,12 @@ public class Adaptive_Bernsen implements PlugInFilter {
 	
 	private static Parameters params = new Parameters();
 	
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_8G;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		if (!runDialog(params))
 			return;

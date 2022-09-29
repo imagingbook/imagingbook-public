@@ -15,10 +15,23 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
 
 /**
- * Demo plugin making available a selection of adaptive thresholders.
+ * <p>
+ * ImageJ demo plugin making available a selection of adaptive thresholders. See
+ * Sec. 9.2 of [1] for additional details. This plugin works on 8-bit grayscale
+ * images only. The original image is modified to a binary image.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/01
+ * 
+ * @see Adaptive_Bernsen
+ * @see Adaptive_Interpolating
+ * @see Adaptive_Niblack
+ * @see Adaptive_Sauvola
  */
 public class Adaptive_All implements PlugInFilter {
 	
@@ -36,11 +49,11 @@ public class Adaptive_All implements PlugInFilter {
 	}
 	
 	private static Algorithm algo = Algorithm.Bernsen;
-	private ImagePlus imp = null;
+	private ImagePlus im = null;
 	
 	@Override
-	public int setup(String arg, ImagePlus imp) {
-		this.imp = imp;
+	public int setup(String arg, ImagePlus im) {
+		this.im = im;
 		return DOES_8G;
 	}
 
@@ -53,7 +66,7 @@ public class Adaptive_All implements PlugInFilter {
 		if (gd.wasCanceled())
 			return;
 		
-		imp.unlock();
+		im.unlock();
 		
 		algo = gd.getNextEnumChoice(Algorithm.class);
 		IjUtils.runPlugInFilter(algo.pluginClass);
