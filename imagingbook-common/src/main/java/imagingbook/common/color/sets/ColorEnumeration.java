@@ -46,7 +46,7 @@ public interface ColorEnumeration {
 	}
 	
 	/**
-	 * Returns an array of colors for the specified 
+	 * Returns a color subset as an array of colors for the specified 
 	 * {@link ColorEnumeration} items. Example:
 	 * <pre>
 	 * Color[] colors = ColorEnumeration.getColors(BasicAwtColor.Blue, BasicAwtColor.Green);</pre>
@@ -61,6 +61,24 @@ public interface ColorEnumeration {
 		return colors;
 	}
 	
+	/**
+	 * Searches for the specified AWT {@link Color} in the given
+	 * {@link ColorEnumeration}. If a matching color is found,
+	 * the associated enum item is return, {@code null} otherwise.
+	 * 
+	 * @param col some AWT {@link Color}
+	 * @param clazz a {@link ColorEnumeration} enum class
+	 * @return
+	 */
+	public static ColorEnumeration findColor(Color col, Class<? extends ColorEnumeration> clazz) {
+		ColorEnumeration[] colorItems = clazz.getEnumConstants();
+		for (ColorEnumeration ce : colorItems) {
+			if (col.equals(ce.getColor())) {
+				return ce;
+			}
+		}
+		return null;
+	}
 	
 	// ----------------------------------------------------------------------
 	
