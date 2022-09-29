@@ -17,10 +17,18 @@ import imagingbook.common.threshold.global.GlobalThresholder;
 import imagingbook.common.threshold.global.MedianThresholder;
 
 /**
- * Demo plugin showing the use of the {@link MedianThresholder} class.
+ * <p>
+ * ImageJ plugin showing the use of the {@link MedianThresholder} class.
+ * See Sec. 9.1 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/02
+ * @see imagingbook.common.threshold.global.MedianThresholder
  */
 public class Global_Median implements PlugInFilter {
 

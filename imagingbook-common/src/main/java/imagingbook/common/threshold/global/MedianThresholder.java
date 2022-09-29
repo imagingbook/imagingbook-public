@@ -12,10 +12,11 @@ package imagingbook.common.threshold.global;
 /**
  * <p>
  * This is a special case of a {@link QuantileThresholder} with quantile b = 0.5.
- * Sec. 9.1 (Alg. 9.1) of [1].
+ * See Sec. 9.1 (Alg. 9.1) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
  * </p>
  
  * @author WB

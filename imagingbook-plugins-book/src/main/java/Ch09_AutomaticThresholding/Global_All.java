@@ -15,10 +15,25 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
 
 /**
- * Demo plugin making available a selection of global thresholders.
+ * <p>
+ * ImageJ plugin making available a selection of global thresholders.
+ * See Sec. 9.1 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/02
+ * 
+ * @see Global_Isodata
+ * @see Global_MaxEntropy
+ * @see Global_Mean
+ * @see Global_Median
+ * @see Global_MinError
+ * @see Global_MinMax
+ * @see Global_Otsu
  */
 public class Global_All implements PlugInFilter {
 	

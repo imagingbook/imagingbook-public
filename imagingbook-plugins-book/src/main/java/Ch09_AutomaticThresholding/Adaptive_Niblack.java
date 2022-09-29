@@ -21,10 +21,13 @@ import imagingbook.common.threshold.adaptive.NiblackThresholder.Parameters;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.RegionType;
 
 /**
- * Demo plugin showing the use of the {@link NiblackThresholder} class.
+ * <p>
+ * ImageJ plugin demonstrating the use of the {@link NiblackThresholder} class.
+ * See Sec. 9.2.2 of [1] for additional details.
  * 
  * @author WB
  * @version 2022/04/01
+ * @see imagingbook.common.threshold.adaptive.NiblackThresholder
  */
 public class Adaptive_Niblack implements PlugInFilter {
 	
@@ -33,10 +36,12 @@ public class Adaptive_Niblack implements PlugInFilter {
 	private static RegionType regType = RegionType.Box;
 	private static Parameters params = new Parameters();
 
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_8G;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		if (!runDialog(params))
 			return;

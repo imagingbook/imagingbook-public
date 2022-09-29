@@ -16,10 +16,18 @@ import ij.process.ImageProcessor;
 import imagingbook.common.threshold.global.OtsuThresholder;
 
 /**
- * Demo plugin showing the use of the {@link OtsuThresholder} class.
+ * <p>
+ * ImageJ plugin showing the use of the {@link OtsuThresholder} class.
+ * See Sec. 9.1.4 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/02
+ * @see imagingbook.common.threshold.global.OtsuThresholder
  */
 public class Global_Otsu implements PlugInFilter {
 	

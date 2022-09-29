@@ -21,12 +21,20 @@ import imagingbook.common.threshold.adaptive.BernsenThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder.Parameters;
 
 /**
- * ImageJ demo plugin showing the use of the {@link BernsenThresholder} class.
+ * </p>
+ * ImageJ plugin showing the use of the {@link BernsenThresholder} class
+ * (see Sec. 9.2.1 of [1] for additional details).
  * This plugin works on 8-bit grayscale images only. The original image
  * is modified to a binary image.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/01
+ * @see imagingbook.common.threshold.adaptive.BernsenThresholder
  */
 public class Adaptive_Bernsen implements PlugInFilter {
 	

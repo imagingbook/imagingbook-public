@@ -20,20 +20,29 @@ import imagingbook.common.threshold.adaptive.SauvolaThresholder;
 import imagingbook.common.threshold.adaptive.SauvolaThresholder.Parameters;
 
 /**
- * Demo plugin showing the use of the {@link SauvolaThresholder} class.
+ * <p>
+ * ImageJ plugin demonstrating the use of the {@link SauvolaThresholder} class.
+ * See Sec. 9.2 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  *
  * @author WB
  * @version 2022/04/01
+ * @see imagingbook.common.threshold.adaptive.SauvolaThresholder
  */
 public class Adaptive_Sauvola implements PlugInFilter {
 	
 	private static Parameters params = new Parameters();
 	private static boolean showThresholdImage = false;
 	
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_8G;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		
 		if (!runDialog(params))

@@ -20,7 +20,8 @@ import imagingbook.common.histogram.HistogramUtils;
  * b-fraction of pixels (but not all pixels) in the background.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

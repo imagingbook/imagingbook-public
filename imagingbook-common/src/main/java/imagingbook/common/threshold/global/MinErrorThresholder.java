@@ -20,7 +20,8 @@ package imagingbook.common.threshold.global;
  * [1] J. Illingworth and J. Kittler. "Minimum error thresholding". 
  * Pattern Recognition 19(1), 41–47 (1986).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
@@ -78,7 +79,7 @@ public class MinErrorThresholder implements GlobalThresholder {
 			A0 = A0 + h[q] * ql;
 			B0 = B0 + h[q] * ql*ql;
 			S2_0[q] = (n0 > 0) ? 
-					unitVar + ((double)B0 - (double)A0*A0/n0)/n0 : 0;	
+					unitVar + (B0 - (double)A0*A0/n0)/n0 : 0;	
 		}
 		
 		N = n0;
@@ -93,7 +94,7 @@ public class MinErrorThresholder implements GlobalThresholder {
 			A1 = A1 + h[q+1] * qp1;
 			B1 = B1 + h[q+1] * qp1*qp1;
 			S2_1[q] = (n1 > 0) ? 
-					unitVar + ((double)B1 - (double)A1*A1/n1)/n1 : 0;
+					unitVar + (B1 - (double)A1*A1/n1)/n1 : 0;
 		}
 	}
 	

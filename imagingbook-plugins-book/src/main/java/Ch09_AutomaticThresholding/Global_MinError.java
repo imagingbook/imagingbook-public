@@ -17,7 +17,14 @@ import imagingbook.common.threshold.global.GlobalThresholder;
 import imagingbook.common.threshold.global.MinErrorThresholder;
 
 /**
- * Demo plugin showing the use of the {@link MinErrorThresholder} class.
+ * <p>
+ * ImageJ plugin showing the use of the {@link MinErrorThresholder} class.
+ * See Sec. 9.1.6 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/02

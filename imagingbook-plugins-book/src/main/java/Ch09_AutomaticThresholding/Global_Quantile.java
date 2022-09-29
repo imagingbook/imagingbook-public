@@ -17,10 +17,18 @@ import imagingbook.common.threshold.global.GlobalThresholder;
 import imagingbook.common.threshold.global.QuantileThresholder;
 
 /**
- * Demo plugin showing the use of the {@link QuantileThresholder} class.
+ * <p>
+ * ImageJ plugin showing the use of the {@link QuantileThresholder} class.
+ * See Sec. 9.1 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/02
+ * @see imagingbook.common.threshold.global.QuantileThresholder
  */
 public class Global_Quantile implements PlugInFilter {
 	

@@ -17,10 +17,17 @@ import imagingbook.common.threshold.global.GlobalThresholder;
 import imagingbook.common.threshold.global.MinMaxThresholder;
 
 /**
- * Demo plugin showing the use of the {@link MinMaxThresholder} class.
+ * ImageJ plugin showing the use of the {@link MinMaxThresholder} class.
+ * See Sec. 9.1.2 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/02
+ * @see imagingbook.common.threshold.global.MinMaxThresholder
  */
 public class Global_MinMax implements PlugInFilter {
 	

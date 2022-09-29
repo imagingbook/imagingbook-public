@@ -17,10 +17,18 @@ import imagingbook.common.threshold.global.GlobalThresholder;
 import imagingbook.common.threshold.global.IsodataThresholder;
 
 /**
- * Demo plugin showing the use of the {@link IsodataThresholder} class.
+ * <p>
+ * ImageJ plugin demonstrating the use of the {@link IsodataThresholder} class.
+ * See Sec. 9.1.3 of [1] for more details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/02
+ * @see imagingbook.common.threshold.global.IsodataThresholder
  */
 public class Global_Isodata implements PlugInFilter {
 
