@@ -22,17 +22,17 @@ import imagingbook.common.util.SortMap;
 /**
  * <p>
  * This class implements incremental orthogonal line fitting to a set of 2D
- * points using using eigendecomposition (see {@link OrthogonalLineFitEigen} for
+ * points using eigendecomposition (see {@link OrthogonalLineFitEigen} for
  * a non-incremental version). See Sec. 10.3 (Alg. 10.4) of [1] for additional
  * details.
  * </p>
  * <p>
  * This fitter behaves like a queue: sample points may be added and removed
- * freely both at its front and its end, while the ordering of the remaining
- * points is maintained. This is to simplify back-tracking, for example for
+ * freely either at its front or its end, while the ordering of the remaining
+ * points remains unchanged. This is to simplify back-tracking, for example for
  * incremental contour fitting. Whenever a point is added or removed, the
  * internal statistics (scatter matrix) are updated. The current line fit can be
- * queried any time as long as there are more than two points in the set
+ * queried any time as long as there are more than two points in the point set
  * (otherwise an exception is thrown).
  * </p>
  * <p>

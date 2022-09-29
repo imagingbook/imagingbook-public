@@ -19,6 +19,10 @@ import imagingbook.common.geometry.line.AlgebraicLine;
  */
 public interface LineFit {
 	
+	/**
+	 * Returns the size of the point set used for calculating this line fit.
+	 * @return the number of sample points used for fitting
+	 */
 	public abstract int getSize();
 	
 	/**
