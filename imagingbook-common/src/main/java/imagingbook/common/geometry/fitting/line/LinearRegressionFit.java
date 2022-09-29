@@ -57,10 +57,20 @@ public class LinearRegressionFit implements LineFit {
 		return p;
 	}
 	
+	/**
+	 * Returns the slope parameter k for the fitted line
+	 * y = k * x + d.
+	 * @return line parameter k
+	 */
 	public double getK() {
 		return k;
 	}
 	
+	/**
+	 * Returns the intercept parameter d for the fitted line
+	 * y = k * x + d.
+	 * @return line parameter d
+	 */
 	public double getD() {
 		return d;
 	}

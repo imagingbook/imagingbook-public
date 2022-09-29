@@ -118,43 +118,82 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 	
 	// --------------------------------------------------------
 	
+	/**
+	 * Returns the current point sequence of this fit as an array.
+	 * @return an array of points
+	 */
 	public Pnt2d[] getPoints() {
 		return points.toArray(new Pnt2d[0]);
 	}
 	
 	// delegate methods matching those of Deque interface
 	
+	/**
+	 * Adds a new sample points to the end of the point sequence
+	 * (same as {@link #addLast(Pnt2d)}).
+	 * @param pnt the point to be added
+	 * @return true (always, to be compatible with {@link Deque}) 
+	 */
 	public boolean add(Pnt2d pnt) {
 		addLast(pnt);
 		return true;
 	}
 	
+	/**
+	 * Adds a new sample points to the front of the point sequence.
+	 * @param pnt the point to be added
+	 */
 	public void addFirst(Pnt2d pnt) {
 		points.addFirst(pnt);
 		addSamplePoint(pnt);
 	}
 	
+	/**
+	 * Adds a new sample points to the end of the point sequence
+	 * (same as {@link #addLast(Pnt2d)}).
+	 * @param pnt the point to be added
+	 */
 	public void addLast(Pnt2d pnt) {
 		points.addLast(pnt);
 		addSamplePoint(pnt);
 	}
 	
+	/**
+	 * Retrieves and removes the first point from the front of the point sequence.
+	 * @return the removed point
+	 */
 	public Pnt2d removeFirst() {
 		Pnt2d pnt = points.removeFirst();
 		removeSamplePoint(pnt);
 		return pnt;
 	}
 	
+	/**
+	 * Retrieves and removes the last point from the end of the point sequence.
+	 * @return the removed point
+	 */
 	public Pnt2d removeLast() {
 		Pnt2d pnt = points.removeLast();
 		removeSamplePoint(pnt);
 		return pnt;
 	}
 	
+	/**
+	 * Returns (but does not remove) the point positioned at the front of the point
+	 * sequence.
+	 * 
+	 * @return the first point
+	 */
 	public Pnt2d peekFirst() {
 		return points.peekFirst();
 	}
 	
+	/**
+	 * Returns (but does not remove) the point positioned at the end of the point
+	 * sequence.
+	 * 
+	 * @return the last point
+	 */
 	public Pnt2d peekLast() {
 		return points.peekLast();
 	}

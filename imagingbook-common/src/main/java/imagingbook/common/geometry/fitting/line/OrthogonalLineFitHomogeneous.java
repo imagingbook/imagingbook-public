@@ -41,6 +41,12 @@ public class OrthogonalLineFitHomogeneous implements LineFit {
 	private final Pnt2d[] points;
 	private final double[] p;	// algebraic line parameters A,B,C
 	
+	/**
+	 * Constructor, performs a orthogonal regression fit to the specified points.
+	 * At least two different points are required.
+	 * 
+	 * @param points an array with at least 2 points
+	 */
 	public OrthogonalLineFitHomogeneous(Pnt2d[] points) {
 		if (points.length < 2) {
 			throw new IllegalArgumentException("line fit requires at least 2 points");
