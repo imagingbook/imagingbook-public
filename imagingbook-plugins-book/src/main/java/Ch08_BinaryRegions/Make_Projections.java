@@ -64,7 +64,7 @@ public class Make_Projections implements PlugInFilter {
 	/** Plot the relative amount of white (false) or black (true). */
 	public static boolean ShowAmountOfBlack = false;
 	
-	ImagePlus im = null;
+	private ImagePlus im = null;
 	
 	@Override
 	public int setup(String arg, ImagePlus im) { 
