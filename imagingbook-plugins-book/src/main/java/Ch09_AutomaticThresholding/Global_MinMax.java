@@ -17,6 +17,7 @@ import imagingbook.common.threshold.global.GlobalThresholder;
 import imagingbook.common.threshold.global.MinMaxThresholder;
 
 /**
+ * <p>
  * ImageJ plugin showing the use of the {@link MinMaxThresholder} class.
  * See Sec. 9.1.2 of [1] for additional details.
  * </p>

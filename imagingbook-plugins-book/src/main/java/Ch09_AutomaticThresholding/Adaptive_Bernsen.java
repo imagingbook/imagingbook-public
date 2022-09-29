@@ -21,7 +21,7 @@ import imagingbook.common.threshold.adaptive.BernsenThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder.Parameters;
 
 /**
- * </p>
+ * <p>
  * ImageJ plugin showing the use of the {@link BernsenThresholder} class
  * (see Sec. 9.2.1 of [1] for additional details).
  * This plugin works on 8-bit grayscale images only. The original image
