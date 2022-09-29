@@ -68,7 +68,7 @@ public interface ColorEnumeration {
 	 * 
 	 * @param col some AWT {@link Color}
 	 * @param clazz a {@link ColorEnumeration} enum class
-	 * @return
+	 * @return a {@link ColorEnumeration} instance or {@code null}
 	 */
 	public static ColorEnumeration findColor(Color col, Class<? extends ColorEnumeration> clazz) {
 		ColorEnumeration[] colorItems = clazz.getEnumConstants();
