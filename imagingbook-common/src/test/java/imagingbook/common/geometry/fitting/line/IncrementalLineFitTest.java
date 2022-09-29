@@ -35,6 +35,7 @@ public class IncrementalLineFitTest {
 		
 		Pnt2d[] pts = PntUtils.fromDoubleArray(X);
 		LineFit fit = new IncrementalLineFit(pts);
+		
 		AlgebraicLine line = fit.getLine();
 		assertNotNull(line);
 		assertTrue(refLine.equals(line, TOL));	
@@ -63,7 +64,7 @@ public class IncrementalLineFitTest {
 		IncrementalLineFit fit = new IncrementalLineFit();
 		fit.add(pts[0]);
 		
-		// Adding points -------------------------- 
+		// Adding points to end -------------------------- 
 		fit.add(pts[1]);
 		checkFit(fit, 2, new AlgebraicLine(-0.707107, -0.707107, 6.363961), 0.0);
 		
@@ -99,27 +100,35 @@ public class IncrementalLineFitTest {
 		
 		// Removing points from front -------------------------- 
 		fit.removeFirst();
-//		System.out.println(fit.getLine().toString() + " " + fit.getSquaredOrthogonalError());
 		checkFit(fit, 4, new AlgebraicLine(-0.442139, -0.896947, 7.027032), 2.549433445948077);
 		
 		fit.removeFirst();
-//		System.out.println(fit.getLine().toString() + " " + fit.getSquaredOrthogonalError());
 		checkFit(fit, 3, new AlgebraicLine(-0.533885, -0.845557, 7.609057), 1.5801977669246623);
 		
 		fit.removeFirst();
-		System.out.println(fit.getLine().toString() + " " + fit.getSquaredOrthogonalError());
 		checkFit(fit, 2, new AlgebraicLine(0.000000, 1.000000, -4.000000), 0.0);
 	}
 	
 	
-	
+	// ----------------------------------------------------------
 	
 	private void checkFit(IncrementalLineFit fit, int size, AlgebraicLine refLine, double error) {
 		assertEquals(size, fit.getSize());
 		AlgebraicLine line = fit.getLine();
 		assertNotNull(line);
-		assertTrue(refLine.equals(line, 1e-2));
+		assertTrue(refLine.equals(line, 1e-3));
 		assertEquals(error, fit.getSquaredOrthogonalError(), TOL);
 	}
 
+//	private void listPoints(IncrementalLineFit fit) {
+//		for (Pnt2d p : fit) {
+//			System.out.println(p.toString());
+//		}
+//	}
+//	
+//	private void listPoints(Pnt2d[] pnts) {
+//		for (Pnt2d p : pnts) {
+//			System.out.println(p.toString());
+//		}
+//	}
 }

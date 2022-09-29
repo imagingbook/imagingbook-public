@@ -11,7 +11,6 @@ package imagingbook.common.geometry.fitting.line;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Deque;
 
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -22,18 +21,19 @@ import imagingbook.common.util.SortMap;
 
 /**
  * <p>
- * This class implements incremental orthogonal line fitting to a
- * set of 2D points using using eigendecomposition (see {@link OrthogonalLineFitEigen}
- * for a non-incremental version). See Sec. 10.3 (Alg. 10.4) of [1] for
- * additional details.
+ * This class implements incremental orthogonal line fitting to a set of 2D
+ * points using using eigendecomposition (see {@link OrthogonalLineFitEigen} for
+ * a non-incremental version). See Sec. 10.3 (Alg. 10.4) of [1] for additional
+ * details.
  * </p>
  * <p>
- * This fitter behaves like a queue: sample points may be added and removed freely
- * both at its front and its end, while the ordering of the remaining points is maintained.
- * Whenever a point is added or removed, the internal statistics (scatter matrix)
- * are updated. 
- * The current line fit can be queried any time as long as there are more than two
- * points in the set (otherwise an exception is thrown).
+ * This fitter behaves like a queue: sample points may be added and removed
+ * freely both at its front and its end, while the ordering of the remaining
+ * points is maintained. This is to simplify back-tracking, for example for
+ * incremental contour fitting. Whenever a point is added or removed, the
+ * internal statistics (scatter matrix) are updated. The current line fit can be
+ * queried any time as long as there are more than two points in the set
+ * (otherwise an exception is thrown).
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
@@ -41,17 +41,15 @@ import imagingbook.common.util.SortMap;
  * </p>
  * 
  * @author WB
- * @version 2022/09/29
+ * @version 2022/09/29 revised
  * @see OrthogonalLineFitEigen
+ * @see Deque
  */
 public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d> 
 	
-	public static boolean VERBOSE = false;
-	
-	private double[] p = null;	// line parameters A,B,C
-	
-	private Deque<Pnt2d> points;
-	private double Sx = 0, Sy = 0, Sxx = 0, Syy = 0, Sxy = 0;
+	private final Deque<Pnt2d> points;
+	private double[] p;									// current line parameters A,B,C
+	private double Sx, Sy, Sxx, Syy, Sxy;	// current scatter statistics
 	
 	/**
 	 * Constructor creating a fitter with an empty set of points.
@@ -67,12 +65,20 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 	 * 
 	 * @param initPnts an array of initial points
 	 */
-	public IncrementalLineFit(Pnt2d[] initPnts) {
+	public IncrementalLineFit(Pnt2d[] initPnts) {	
 		points = new ArrayDeque<>();
-		if (initPnts != null) {
-			points.addAll(Arrays.asList(initPnts));
+		p = null;
+		Sx = 0;
+		Sy = 0;
+		Sxx = 0;
+		Syy = 0;
+		Sxy = 0;
+		if (initPnts == null) {
+			return;
 		}
-		init();
+		for (Pnt2d p : initPnts) {
+			this.add(p);
+		}
 	}
 	
 	/**
@@ -86,16 +92,9 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 		return getSquaredOrthogonalError(this.getPoints());
 	}
 	
-	// --------------------------------------------------------
+	// update statistics at point addition/removal --------------------- 
 	
-	private void init() {
-		Sx = 0; Sy = 0; Sxx = 0; Syy = 0; Sxy = 0;
-		for (Pnt2d p : points) {
-			addPoint(p);
-		}
-	}
-	
-	private void addPoint(Pnt2d pnt) {
+	private void addSamplePoint(Pnt2d pnt) {
 		final double x = pnt.getX();
 		final double y = pnt.getY();
 		Sx += x;
@@ -103,10 +102,10 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 		Sxx += sqr(x);
 		Syy += sqr(y);
 		Sxy += x * y;
-		this.p = null;
+		this.p = null;	// invalidate previous line parameters
 	}
 	
-	private void removePoint(Pnt2d pnt) {
+	private void removeSamplePoint(Pnt2d pnt) {
 		final double x = pnt.getX();
 		final double y = pnt.getY();
 		Sx -= x;
@@ -114,7 +113,7 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 		Sxx -= sqr(x);
 		Syy -= sqr(y);
 		Sxy -= x * y;
-		this.p = null;
+		this.p = null;	// invalidate previous line parameters
 	}
 	
 	// --------------------------------------------------------
@@ -123,45 +122,41 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 		return points.toArray(new Pnt2d[0]);
 	}
 	
-
-	public void add(Pnt2d pnt) {
+	// delegate methods matching those of Deque interface
+	
+	public boolean add(Pnt2d pnt) {
 		addLast(pnt);
+		return true;
 	}
 	
-
 	public void addFirst(Pnt2d pnt) {
 		points.addFirst(pnt);
-		addPoint(pnt);
+		addSamplePoint(pnt);
 	}
 	
-
 	public void addLast(Pnt2d pnt) {
 		points.addLast(pnt);
-		addPoint(pnt);
+		addSamplePoint(pnt);
 	}
 	
-
 	public Pnt2d removeFirst() {
 		Pnt2d pnt = points.removeFirst();
-		removePoint(pnt);
+		removeSamplePoint(pnt);
 		return pnt;
 	}
 	
-
 	public Pnt2d removeLast() {
 		Pnt2d pnt = points.removeLast();
-		removePoint(pnt);
+		removeSamplePoint(pnt);
 		return pnt;
 	}
 	
-
-	public Pnt2d getFirst() {
-		return points.getFirst();
+	public Pnt2d peekFirst() {
+		return points.peekFirst();
 	}
 	
-
-	public Pnt2d getLast() {
-		return points.getLast();
+	public Pnt2d peekLast() {
+		return points.peekLast();
 	}
 	
 	// --------------------------------------------------------
