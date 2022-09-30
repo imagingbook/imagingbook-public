@@ -29,12 +29,11 @@ public class RoiUtils {
 	private RoiUtils() {}
 	
 	/**
-	 * Retrieves the outline of the specified ROI as an
-	 * array of {@link Pnt2d} points with {@code int}
-	 * coordinates. Note that unless the ROI is of type
-	 * {@link PolygonRoi} or {@link PointRoi} only the corner points of the
-	 * bounding box are returned.
-	 * Interpolated contour points are returned for a instance of {@link OvalRoi}.
+	 * Retrieves the outline of the specified ROI as an array of {@link Pnt2d}
+	 * points with {@code int} coordinates. Note that unless the ROI is of type
+	 * {@link PolygonRoi} or {@link PointRoi} only the corner points of the bounding
+	 * box are returned. Interpolated contour points are returned for a instance of
+	 * {@link OvalRoi}.
 	 * 
 	 * @param roi the ROI
 	 * @return the ROI's polygon coordinates
@@ -49,12 +48,11 @@ public class RoiUtils {
 	}
 	
 	/**
-	 * Retrieves the outline of the specified ROI as an
-	 * array of {@link Pnt2d} points with {@code int}
-	 * coordinates. Note that unless the ROI is of type
-	 * {@link PolygonRoi} or {@link PointRoi} only the corner points of the
-	 * bounding box are returned.
-	 * Interpolated contour points are returned for a instance of {@link OvalRoi}.
+	 * Retrieves the outline of the specified ROI as an array of {@link Pnt2d}
+	 * points with {@code int} coordinates. Note that unless the ROI is of type
+	 * {@link PolygonRoi} or {@link PointRoi} only the corner points of the bounding
+	 * box are returned. Interpolated contour points are returned for a instance of
+	 * {@link OvalRoi}.
 	 * 
 	 * @param roi the ROI
 	 * @return the ROI's polygon coordinates
@@ -68,6 +66,13 @@ public class RoiUtils {
 		return pts;
 	}
 	
+	/**
+	 * Converts an array of 2D points (of type {@link Pnt2d}) to
+	 * a {@link PointRoi} instance.
+	 * 
+	 * @param points v
+	 * @return a {@link PointRoi} instance
+	 */
 	public static PointRoi toPointRoi(Pnt2d[] points) {
 		PointRoi roi = new PointRoi();
 		for (Pnt2d p : points) {
