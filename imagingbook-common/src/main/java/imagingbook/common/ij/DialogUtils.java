@@ -49,6 +49,18 @@ public abstract class DialogUtils {
 	public static @interface DialogDigits {
 		public int value();
 	}
+	
+	/**
+	 * Annotation to specify the number of "columns" (value) displayed when showing
+	 * string items in dialogs.
+	 * This annotation has no effect on non-string fields.
+	 * Intended to be used on {@link ParameterBundle} fields.
+	 */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ElementType.FIELD})
+	public static @interface DialogStringColumns {
+		public int value();
+	}
 
 
 	/**
@@ -185,14 +197,20 @@ public abstract class DialogUtils {
 			throws IllegalAccessException {
 		
 		String name = field.getName();
-		if (field.isAnnotationPresent(DialogUtils.DialogLabel.class)) {
-			name = field.getAnnotation(DialogUtils.DialogLabel.class).value();
+		if (field.isAnnotationPresent(DialogLabel.class)) {
+			name = field.getAnnotation(DialogLabel.class).value();
 		}
 		
 		int digits = 2; // DefaultDialogDigits;
-		if (field.isAnnotationPresent(DialogUtils.DialogDigits.class)) {
-			digits = field.getAnnotation(DialogUtils.DialogDigits.class).value();
+		if (field.isAnnotationPresent(DialogDigits.class)) {
+			digits = field.getAnnotation(DialogDigits.class).value();
 			digits = Math.max(0,  digits);
+		}
+		
+		int stringColumns = 8;
+		if (field.isAnnotationPresent(DialogStringColumns.class)) {
+			stringColumns = 
+					Math.max(stringColumns, field.getAnnotation(DialogStringColumns.class).value());
 		}
 		
 		Class<?> clazz = field.getType();
@@ -213,7 +231,7 @@ public abstract class DialogUtils {
 		}
 		else if (clazz.equals(String.class)) {
 			String str = (String) field.get(params);
-			dialog.addStringField(name, str);
+			dialog.addStringField(name, str, stringColumns);
 		}
 		else if (clazz.isEnum()) {
 			dialog.addEnumChoice(name, (Enum<?>) field.get(params));
