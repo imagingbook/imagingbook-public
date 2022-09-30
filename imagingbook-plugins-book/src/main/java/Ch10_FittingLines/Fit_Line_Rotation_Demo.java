@@ -9,9 +9,11 @@
 package Ch10_FittingLines;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import ij.ImagePlus;
-import ij.gui.Overlay;
+import ij.plugin.ImagesToStack;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
@@ -27,88 +29,112 @@ import imagingbook.common.geometry.mappings.linear.Translation2D;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
-public class Example_Fit_Rotated_Points implements PlugIn {
+/**
+ * <p>
+ * ImageJ demo plugin, performs line fitting to a randomly sampled point set
+ * that is rotated in uniform steps. The result is shown as a stack of images
+ * with graphic overlays.
+ * </p>
+ * <p>
+ * Two fitting methods are employed: (a) linear regression fitting, (b)
+ * orthogonal regression fitting. The result of the first varies with rotation,
+ * while orthogonal fitting is rotation-invariant. See Sec. 10.2 (Fig. 10.4) of
+ * [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/09/30
+ * @see imagingbook.common.geometry.fitting.line.LinearRegressionFit
+ * @see imagingbook.common.geometry.fitting.line.OrthogonalLineFitEigen
+ */
+public class Fit_Line_Rotation_Demo implements PlugIn {
 
-	private static int W = 400;
-	private static int H = 400;
+	public static int W = 400;
+	public static int H = 400;
 	
-	private static final double StrokeWidth = 1.0;
-	private static double DashLength = 10;
+	public static final double StrokeWidth = 1.0;
+	public static double DashLength = 10;
 	
-	private static final Color CentroidColor = 		new Color(0,176,80);
-	private static final Color RegressionFitColor = 	new Color(255,0,0);
-	private static final Color OrthogonalFitColor = 	new Color(0,112,192);
-	private static final Color PointColor = Color.blue;
-	private static double PointRadius = 2;
+	public static final Color CentroidColor = 		new Color(0,176,80);
+	public static final Color RegressionFitColor = 	new Color(255,0,0);
+	public static final Color OrthogonalFitColor = 	new Color(0,112,192);
+	public static final Color PointColor = Color.blue;
+	public static double PointRadius = 2;
 
-	private static Pnt2d p1 = Pnt2d.from(50, 0.5*H);
-	private static Pnt2d p2 = Pnt2d.from(W-50, 0.5*H);
-	private static int n = 100;
-	private static double sigma = 15.0;
+	public static Pnt2d P1 = Pnt2d.from(50, 0.5*H);
+	public static Pnt2d P2 = Pnt2d.from(W-50, 0.5*H);
+	public static int N = 100;
+	public static double Sigma = 15.0;
 
-	private static boolean DrawSamplePoints = true;
-	private static boolean DrawOrthogalFit = true;
-	private static boolean DrawRegressionFit = true;
-	private static boolean DrawCentroid = true;
+	public static boolean DrawSamplePoints = true;
+	public static boolean DrawOrthogalFit = true;
+	public static boolean DrawRegressionFit = true;
+	public static boolean DrawCentroid = true;
 
 	@Override
 	public void run(String arg) {
-		LineSampler sampler = new LineSampler(p1, p2);
-		Pnt2d[] pts0 = sampler.getPoints(n, sigma);
-		
-		Translation2D t1 = new Translation2D(-0.5*W, -0.5*H);
+		Pnt2d[] pts0 = new LineSampler(P1, P2).getPoints(N, Sigma);	
+		Translation2D t1 = new Translation2D(-0.5 * W, -0.5 * H);
 		Translation2D t2 = t1.getInverse();
+		
+		List<ImagePlus> imageList = new ArrayList<>();
+		
+		ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, PointColor, 0);
+		pointStroke.setFillColor(PointColor);
+		ColoredStroke strokeOrth = new ColoredStroke(StrokeWidth, OrthogonalFitColor, 0);
+		ColoredStroke strokeReg = new ColoredStroke(StrokeWidth, RegressionFitColor, DashLength);
+		ColoredStroke strokeCtr = new ColoredStroke(StrokeWidth, CentroidColor, 0);
 
-		for (int theta = 0; theta < 120; theta += 20) {		// step-wise rotation (in degrees)
+		// step-wise rotation about the image center (in degrees):
+		for (int theta = 0; theta < 120; theta += 20) {		
 			Rotation2D rot = new Rotation2D(Math.toRadians(theta));
 			AffineMapping2D map = t1.concat(rot).concat(t2);
 			Pnt2d[] pts = map.applyTo(pts0);
 
-			LineFit fitO = new OrthogonalLineFitEigen(pts);
-			AlgebraicLine lineO = fitO.getLine();
+			LineFit fitOrth = new OrthogonalLineFitEigen(pts);
+			AlgebraicLine lineOrth = fitOrth.getLine();
 
-			LineFit fitR = new LinearRegressionFit(pts);
-			AlgebraicLine lineR = fitR.getLine();
+			LineFit fitReg = new LinearRegressionFit(pts);
+			AlgebraicLine lineReg = fitReg.getLine();
 
 			ByteProcessor ip = new ByteProcessor(W, H);
 			ip.setColor(255);
 			ip.fill();
 
-			Overlay oly = new Overlay();
-			ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 
-			// ----- draw sample points ----------------------------------
-			if (DrawSamplePoints) {
-				ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, PointColor, 0);
-				pointStroke.setFillColor(PointColor);
+			if (DrawSamplePoints) {				
 				for (Pnt2d p : pts) {
 					ola.addShape(p.getShape(PointRadius), pointStroke);
 				}
 			}
 
 			if (DrawOrthogalFit) {
-				ColoredStroke stroke = new ColoredStroke(StrokeWidth, OrthogonalFitColor, 0);
-				ola.addShape(lineO.getShape(W, H), stroke);
+				ola.addShape(lineOrth.getShape(W, H), strokeOrth);
 			}
 
 			if (DrawRegressionFit) {
-				ColoredStroke stroke = new ColoredStroke(StrokeWidth, RegressionFitColor, DashLength);
-				ola.addShape(lineR.getShape(W, H), stroke);
+				ola.addShape(lineReg.getShape(W, H), strokeReg);
 			}
 			
 			if (DrawCentroid) {
-				Pnt2d ctr = PntUtils.centroid(pts);
-				ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, CentroidColor, 0);
-				pointStroke.setFillColor(null);
-				ola.addShape(ctr.getShape(PointRadius*2), pointStroke);
+				Pnt2d ctr = PntUtils.centroid(pts);			
+				ola.addShape(ctr.getShape(PointRadius*2), strokeCtr);
 			}
 
 			String title = String.format("line-%03d", theta);
 			ImagePlus im = new ImagePlus(title, ip);
-			im.setOverlay(oly);
-			im.show();
+			im.setOverlay(ola.getOverlay());
+			imageList.add(im);
 		}
+		
+		ImagePlus stackIm = ImagesToStack.run(imageList.toArray(new ImagePlus[0]));
+		stackIm.setTitle(this.getClass().getSimpleName());
+		stackIm.show();
 	}
-
 
 }

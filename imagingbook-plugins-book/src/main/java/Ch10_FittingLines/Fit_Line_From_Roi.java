@@ -8,9 +8,6 @@
  *******************************************************************************/
 package Ch10_FittingLines;
 
-import static imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType.Pratt;
-import static imagingbook.common.geometry.fitting.circle.geometric.CircleFitGeometric.FitType.DistanceBased;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Overlay;
@@ -19,8 +16,6 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic;
-import imagingbook.common.geometry.fitting.circle.geometric.CircleFitGeometric;
 import imagingbook.common.geometry.fitting.line.LineFit;
 import imagingbook.common.geometry.fitting.line.LinearRegressionFit;
 import imagingbook.common.geometry.fitting.line.OrthogonalLineFitEigen;
@@ -32,19 +27,28 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 
 /**
- * Performs line fitting on the point set specified by the current ROI.
+ * <p>
+ * Performs line fitting on the point set specified by the current ROI. Two
+ * fitting methods are employed: (a) linear regression fitting, (b) orthogonal
+ * regression fitting. The result of the first varies with rotation, while
+ * orthogonal fitting is rotation-invariant. See Sec. 10.2 (Fig. 10.4) of [1]
+ * for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2022/09/30
+ * @see Sample_Line_To_Roi
  */
-public class Line_Fitting_Roi_Demo implements PlugInFilter {
+public class Fit_Line_From_Roi implements PlugInFilter { // TODO: activate dialog
 	
-	static CircleFitAlgebraic.FitType AlgebraicFitMethod = Pratt;
-	static CircleFitGeometric.FitType GeometricFitMethod = DistanceBased;
-	
-	private static BasicAwtColor RegressionFitColor = BasicAwtColor.Red;
-	private static BasicAwtColor OrthogonalFitColor = BasicAwtColor.Blue;
-	private static double StrokeWidth = 0.5;
+	public boolean ShowLog = true;
+	public static BasicAwtColor RegressionFitColor = BasicAwtColor.Red;
+	public static BasicAwtColor OrthogonalFitColor = BasicAwtColor.Blue;
+	public static double StrokeWidth = 0.5;
 	
 	private ImagePlus im;
 	
@@ -85,14 +89,13 @@ public class Line_Fitting_Roi_Demo implements PlugInFilter {
 		// ------------------------------------------------------------------------
 		
 		if (lineO == null) {
-			IJ.log("Orthogonal line fit: no result!");
+			IJ.log("Orthogonal line fit failed!");
 			return;
 		}
 		
-		
-		IJ.log("Orthogonal line fit:");
-		IJ.log("  line: " + lineO.toString());
-//		IJ.log(String.format(Locale.US, "  error = %.3f", initCircle.getMeanSquareError(points)));
+		if (ShowLog) {
+			IJ.log("Orthogonal line fit: " + lineO.toString());
+		}
 		
 		ColoredStroke orthogonalStroke = new ColoredStroke(StrokeWidth, OrthogonalFitColor.getColor());
 		ola.addShape(new HoughLine(lineO).getShape(width, height), orthogonalStroke);
@@ -103,14 +106,13 @@ public class Line_Fitting_Roi_Demo implements PlugInFilter {
 		// ------------------------------------------------------------------------
 		
 		if (lineR == null) {
-			IJ.log("Regression fit: no result!");
+			IJ.log("Regression fit failed!");
 			return;
 		}
 		
-		IJ.log("Regression line fit:");
-		IJ.log("  line: " + lineR.toString());
-//		IJ.log(String.format(Locale.US, "  error = %.3f", finalCircle.getMeanSquareError(points)));
-
+		if (ShowLog) {
+			IJ.log("Regression line fit: " + lineR.toString());
+		}
 
 		ColoredStroke regressionStroke = new ColoredStroke(StrokeWidth, RegressionFitColor.getColor());
 		ola.addShape(new HoughLine(lineR).getShape(width, height), regressionStroke);
@@ -121,25 +123,7 @@ public class Line_Fitting_Roi_Demo implements PlugInFilter {
 	
 	private boolean runDialog() {
 //		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-//		gd.addEnumChoice("algebraic fit method", AlgebraicFitMethod);
-//		gd.addEnumChoice("algebraic ellipse color", AlgebraicFitColor);
-//		
-//		gd.addEnumChoice("geometric fit method", GeometricFitMethod);
-//		gd.addEnumChoice("geometric ellipse color", GeometricFitColor);
-//		
-//		gd.showDialog();
-//		if (gd.wasCanceled())
-//			return false;
-//		
-//		AlgebraicFitMethod = gd.getNextEnumChoice(CircleFitAlgebraic.FitType.class);
-//		AlgebraicFitColor = gd.getNextEnumChoice(BasicAwtColor.class);
-//		
-//		GeometricFitMethod = gd.getNextEnumChoice(CircleFitGeometric.FitType.class);
-//		GeometricFitColor = gd.getNextEnumChoice(BasicAwtColor.class);
-//		
 		return true;
 	}
-
-
 
 }
