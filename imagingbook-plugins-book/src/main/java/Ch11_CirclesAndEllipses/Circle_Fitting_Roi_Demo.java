@@ -33,11 +33,10 @@ import imagingbook.common.math.PrintPrecision;
 
 
 /**
- * Performs algebraic ellipse fitting on the current ROI
- * to find an initial ellipse, followed by geometric fitting.
- * Algebraic and geometric fit methods can be selected.
- * If successful, the resulting ellipses are displayed as a vector overlay
- * (color can be chosen).
+ * ImageJ plugin, performs algebraic circle fitting on the current ROI to find
+ * an initial circle, followed by geometric fitting. Algebraic and geometric fit
+ * methods can be selected. If successful, the resulting ellipses are displayed
+ * as a vector overlay (color can be chosen).
  * 
  * @author WB
  *

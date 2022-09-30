@@ -19,8 +19,15 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType;
+import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;
 import imagingbook.common.math.PrintPrecision;
 
+/**
+ * Not sure what this does, no image involved!!
+ * @author WB
+ *
+ */
+@Deprecated
 public class Circle_Fit_Algebraic implements PlugIn {
 	
 	static {
@@ -55,7 +62,7 @@ public class Circle_Fit_Algebraic implements PlugIn {
 		GeometricCircle realCircle = new GeometricCircle(XC, YC, R);
 		IJ.log(" real: " + realCircle.toString());
 		
-		Pnt2d[] points = new imagingbook.common.geometry.fitting.circle.utils.CircleSampler(realCircle).getPoints(N, Angle0, Angle1, SigmaNoise);
+		Pnt2d[] points = new CircleSampler(realCircle).getPoints(N, Angle0, Angle1, SigmaNoise);
 		
 		// ------------------------------------------------------------------------
 		CircleFitAlgebraic fitter = CircleFitAlgebraic.getFit(algType, points);

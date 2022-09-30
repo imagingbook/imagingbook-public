@@ -29,7 +29,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 /**
  * <p>
- * This plugin creates an ellipse and a set of random points.
+ * This plugin creates a new image with an ellipse and a set of random points.
  * For each point, the closest (contact) point on the ellipse is
  * calculated and a connecting line is drawn to a vector overlay.
  * Two closest-point algorithms are available:

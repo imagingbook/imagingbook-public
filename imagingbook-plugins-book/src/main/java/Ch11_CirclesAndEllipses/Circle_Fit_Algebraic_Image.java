@@ -13,7 +13,6 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Overlay;
-import ij.io.LogStream;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
@@ -24,19 +23,22 @@ import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.F
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.math.PrintPrecision;
 
+/**
+ * ImageJ plugin, collects all non-zero pixels (at least 3) in the current image
+ * and performs an algebraic circle fit on their coordinates. 
+ * The algebraic circle fit method can be selected.
+ * 
+ * @author WB
+ * @version 2022/09/30
+ */
 public class Circle_Fit_Algebraic_Image implements PlugInFilter {
 	
-	static {
-		LogStream.redirectSystem();
-		PrintPrecision.set(6);
-	}
-	
-	private static CircleFitAlgebraic.FitType algType = FitType.Pratt;
-	private static boolean ShowFittedCircle = true;
-	private static BasicAwtColor CircleColor = BasicAwtColor.Red;
-	private static double StrokeWidth = 1.0;
+	public static boolean ShowLog = true;
+	public static CircleFitAlgebraic.FitType algType = FitType.Pratt;
+	public static boolean ShowFittedCircle = true;
+	public static BasicAwtColor CircleColor = BasicAwtColor.Red;
+	public static double StrokeWidth = 1.0;
 	
 	private ImagePlus im;
 	
@@ -54,10 +56,13 @@ public class Circle_Fit_Algebraic_Image implements PlugInFilter {
 		}
 		
 		Pnt2d[] points = IjUtils.collectNonzeroPoints(ip);
+		if (ShowLog) {
+			IJ.log("Found points " + points.length);
+		}
 		
-		IJ.log("Found points " + points.length);
 		if (points.length < 3) {
 			IJ.error("At least 3 points are required, found only " + points.length);
+			return;
 		}
 		
 		// ------------------------------------------------------------------------
@@ -66,10 +71,13 @@ public class Circle_Fit_Algebraic_Image implements PlugInFilter {
 		
 		GeometricCircle fitCircle = fitter.getGeometricCircle();
 		if (fitCircle == null) {
-			IJ.log("Algebraic fit: no result!");
+			IJ.log("Algebraic fit failed!");
 			return;
 		}
-		IJ.log("  fit: " + fitCircle);
+		
+		if (ShowLog) {
+			IJ.log("  fit: " + fitCircle);
+		}
 		
 //		IJ.log(String.format(Locale.US, "  error real = %.3f", realCircle.getMeanSquareError(points)));
 //		IJ.log(String.format(Locale.US, "  error fit  = %.3f", fitCircle.getMeanSquareError(points)));
@@ -86,6 +94,7 @@ public class Circle_Fit_Algebraic_Image implements PlugInFilter {
 			ColoredStroke outerStroke = new ColoredStroke(StrokeWidth, CircleColor.getColor());
 			ola.addShapes(fitCircle.getShapes(3), outerStroke);
 		}
+		
 		im.show();
 	}
 
