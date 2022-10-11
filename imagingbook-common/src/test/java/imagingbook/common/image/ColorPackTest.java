@@ -1,11 +1,14 @@
 package imagingbook.common.image;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.color.ColorSpace;
 
 import org.junit.Test;
 
+import ij.ImageStack;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.colorspace.HlsColorSpace;
@@ -17,7 +20,7 @@ import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testutils.ImageTestUtils;
 
-public class ColorStackTest {
+public class ColorPackTest {
 	
 	static double TOL = 1e-4;
 	
@@ -27,7 +30,7 @@ public class ColorStackTest {
 	public void testBasicConversion() {	// conversion ColorProcessor/ColorStack
 		ImageProcessor ip1 = clown.getImage().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
-		ColorStack cstack = new ColorStack((ColorProcessor)ip1);
+		ColorPack cstack = new ColorPack((ColorProcessor)ip1);
 		ImageProcessor ip2 = cstack.toColorProcessor();
 		assertTrue(ImageTestUtils.match(ip1, ip2, TOL));
 	}
@@ -61,10 +64,35 @@ public class ColorStackTest {
 	
 	private void testColorStackConversion(ColorSpace cs) {
 		ImageProcessor ip1 = clown.getImage().getProcessor();
-
-		ColorStack cstack = new ColorStack((ColorProcessor)ip1);
+		assertTrue(ip1 instanceof ColorProcessor);
+		
+		ColorPack cstack = new ColorPack((ColorProcessor)ip1);
 		cstack.convertFromSrgbTo(cs);
 		cstack.convertToSrgb();
+		
+		ImageProcessor ip2 = cstack.toColorProcessor();
+		assertTrue(ImageTestUtils.match(ip1, ip2, TOL));
+	}
+	
+	// ------------------------------------------------------------
+	
+	@Test
+	public void testImageStack() {
+		ImageProcessor ip1 = clown.getImage().getProcessor();
+		assertTrue(ip1 instanceof ColorProcessor);
+		
+		ColorPack cstack = new ColorPack((ColorProcessor)ip1);
+		
+		ImageStack istack = cstack.toImageStack();
+		assertEquals(3, istack.getSize());
+		
+		for (int k = 0; k < cstack.getDepth(); k++) {
+			ImageProcessor fp1 = cstack.getFloatProcessor(k);
+			assertNotNull(fp1);
+			ImageProcessor fp2 = istack.getProcessor(k + 1);
+			assertNotNull(fp2);
+			assertTrue(ImageTestUtils.match(fp1, fp2, TOL));
+		}
 		
 		ImageProcessor ip2 = cstack.toColorProcessor();
 		assertTrue(ImageTestUtils.match(ip1, ip2, TOL));

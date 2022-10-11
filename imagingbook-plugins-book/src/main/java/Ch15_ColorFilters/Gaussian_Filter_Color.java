@@ -22,11 +22,11 @@ import imagingbook.common.color.colorspace.LinearRgbColorSpace;
 import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
-import imagingbook.common.image.ColorStack;
+import imagingbook.common.image.ColorPack;
 
 /**
  * This plugin performs a Gaussian filter in a user-selectable color space.
- * Demonstrates the use of {@link ColorStack} and {@link GenericFilter}
+ * Demonstrates the use of {@link ColorPack} and {@link GenericFilter}
  * and {@link GaussianFilterSeparable} (using a x/y-separable 2D kernel).
  * 
  * @author WB
@@ -53,7 +53,7 @@ public class Gaussian_Filter_Color implements PlugInFilter {
     	if (!getParameters()) 
     		return;
     	
-    	ColorStack colStack = new ColorStack((ColorProcessor) ip);
+    	ColorPack colStack = new ColorPack((ColorProcessor) ip);
     	ColorSpace cs = null;
     	
     	switch (csType) {
