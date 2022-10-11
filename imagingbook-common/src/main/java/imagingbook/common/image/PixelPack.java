@@ -10,6 +10,7 @@ package imagingbook.common.image;
 
 import java.util.Arrays;
 
+import ij.ImageStack;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
@@ -541,6 +542,16 @@ public class PixelPack {
 		}
 		
 		/**
+		 * Returns a {@link FloatProcessor} for this {@link PixelSlice} 
+		 * by copying the internal pixel data.
+		 * 
+		 * @return a {@link FloatProcessor}
+		 */
+		public FloatProcessor getFloatProcessorCopy() {
+			return new FloatProcessor(getWidth(), getHeight(), Arrays.copyOf(vals, vals.length));
+		}
+		
+		/**
 		 * Returns the length (number of pixels) of the associated 1D pixel array.
 		 * @return the length of the image array
 		 */
@@ -791,6 +802,24 @@ public class PixelPack {
 		ColorProcessor ip = new ColorProcessor(width, height);
 		copyToColorProcessor(ip, (float)scale);
 		return ip;
+	}
+	
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Converts this {@link PixelPack} to a new {@link ImageStack} with the same
+	 * number of slices (see {@link #getDepth()}). The stack images are of type
+	 * {@link FloatProcessor}. The resulting {@link ImageStack} does not share any
+	 * pixel data with this {@link PixelPack}.
+	 * 
+	 * @return a new {@link ImageStack} instance
+	 */
+	public ImageStack toImageStack() {
+		ImageStack stack = new ImageStack(width, height);
+		for (int k = 0; k < depth; k++) {
+			stack.addSlice(getSlice(k).getFloatProcessorCopy());
+		}
+		return stack;
 	}
 	
 	// --------------------------------------------------------------------
