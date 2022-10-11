@@ -16,25 +16,22 @@ import ij.process.FloatProcessor;
 import imagingbook.common.color.colorspace.sRgb65ColorSpace;
 
 /**
- * This class defines a "color stack" as a subtype of {@link PixelPack}
- * with exactly 3 components (slices), representing a color image
- * in a specific color space (default is {@link sRgb65ColorSpace}).
- * It allows simple conversion to other color 
- * spaces (see {@link #convertFromSrgbTo(ColorSpace)}).
- * All conversions are 'destructive', i.e., the affected color stack
- * is modified.
- * Pixel values are typically in [0,1], depending on the associated
- * color space.
- * A {@link ColorStack} may be created from an existing
- * {@link ColorProcessor} whose pixels are assumed to be in sRGB
- * color space (see {@link #ColorStack(ColorProcessor)}).
- * To be converted back to a {@link ColorProcessor}, the {@link ColorStack}
- * must be in sRGB color space (see {@link #convertToSrgb()}).
+ * This class defines a "color stack" as a subtype of {@link PixelPack} with
+ * exactly 3 components (slices), representing a color image in a specific color
+ * space (default is {@link sRgb65ColorSpace}). It allows simple conversion to
+ * other color spaces (see {@link #convertFromSrgbTo(ColorSpace)}). All
+ * conversions are 'destructive', i.e., the affected color stack is modified.
+ * Pixel values are typically in [0,1], depending on the associated color space.
+ * A {@link ColorPack} may be created from an existing {@link ColorProcessor}
+ * whose pixels are assumed to be in sRGB color space (see
+ * {@link #ColorStack(ColorProcessor)}). To be converted back to a
+ * {@link ColorProcessor}, the {@link ColorPack} must be in sRGB color space
+ * (see {@link #convertToSrgb()}).
  * 
  * @author WB
  * @version 2022/09/10
  */
-public class ColorStack extends PixelPack {
+public class ColorPack extends PixelPack {
 	
 	// the current color space of this color stack
 	private ColorSpace colorspace = null;
@@ -45,7 +42,7 @@ public class ColorStack extends PixelPack {
 	 * Constructor.
 	 * @param cp a color image assumed to be in sRGB
 	 */
-	public ColorStack(ColorProcessor cp) {
+	public ColorPack(ColorProcessor cp) {
 		super(cp, 1.0/255, null);
 		setColorSpace(sRgb65ColorSpace.getInstance());
 	}
@@ -65,7 +62,7 @@ public class ColorStack extends PixelPack {
 	}
 	
 	/**
-	 * Returns the current color space instance of this {@link ColorStack}.
+	 * Returns the current color space instance of this {@link ColorPack}.
 	 * @return the current color space
 	 */
 	public ColorSpace getColorspace() {
@@ -79,14 +76,14 @@ public class ColorStack extends PixelPack {
 	// -----------------------------------------------------------------
 	
 	/**
-	 * Converts the pixel values of this {@link ColorStack} to the specified
+	 * Converts the pixel values of this {@link ColorPack} to the specified
 	 * color space. The color stack must be in sRGB space.
 	 * Exceptions are thrown if the color stack is not in sRGB color space
 	 * or the target color space is sRGB.
 	 * 
 	 * @param targetColorspace the new color space
 	 */
-	public void convertFromSrgbTo(final ColorSpace targetColorspace) {
+	public void convertFromSrgbTo(ColorSpace targetColorspace) {
 		if (!(colorspace instanceof sRgb65ColorSpace)) {
 			throw new IllegalStateException("color stack must be in sRGB");
 		}
@@ -110,7 +107,7 @@ public class ColorStack extends PixelPack {
 	// -----------------------------------------------------------------
 
 	/**
-	 * Converts this {@link ColorStack} to sRGB space.
+	 * Converts this {@link ColorPack} to sRGB space.
 	 * An exceptions is thrown if the color stack is in sRGB color space
 	 * already.
 	 */
