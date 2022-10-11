@@ -22,7 +22,7 @@ import imagingbook.common.math.Matrix;
 /**
  * This plugin lists the contents of a user-selected ICC profile that is retrieved
  * from a Java resource.
- * TODO: add illustrative application of color profile
+ * TODO: needs revision, add illustrative application of color profile
  * 
  * @author WB
  *
@@ -31,9 +31,10 @@ public class ICC_Profile_From_JAR implements PlugIn {
 
 	private static IccProfile theChoice = IccProfile.AdobeRGB1998;
 	
+	@Override
 	public void run(String arg) {
 		
-		if (!showDialog())
+		if (!runDialog())
 			return;
 		
 		IJ.log("Selected ICC profile: " + theChoice);
@@ -81,20 +82,28 @@ public class ICC_Profile_From_JAR implements PlugIn {
 		deviceColor = iccColorSpace.fromCIEXYZ(XYZColor);
 		IJ.log("device color via XYZ (check) = " + Matrix.toString(deviceColor));
 		
-		// list sRGB Values:
+		IJ.log("");
+		// list sRGB Values (components in [0,1])
 		for (int ri = 0; ri <= 10; ri++) {
 			for (int gi = 0; gi <= 10; gi++) {
 				for (int bi = 0; bi <= 10; bi++) {
-					float[] devCol = {ri * 0.1f, gi * 0.1f, bi * 0.1f};
-					float[] sRGB = iccColorSpace.toRGB(devCol);
-					float[] devColCheck = iccColorSpace.fromRGB(sRGB);
-					IJ.log(Matrix.toString(devCol) + " -> " + Matrix.toString(sRGB) + " -> " 
-							+ Matrix.toString(devColCheck) + warning(devCol, devColCheck));
+					float[] devCol1 = {ri * 0.1f, gi * 0.1f, bi * 0.1f};
+					float[] sRGB = iccColorSpace.toRGB(devCol1);
+					float[] devCol2 = iccColorSpace.fromRGB(sRGB);
+					IJ.log(Matrix.toString(devCol1) + " -> " + Matrix.toString(sRGB) + " -> " 
+							+ Matrix.toString(devCol2) + warning(devCol1, devCol2));
 				}
 			}
 		}
 	}
 	
+	/**
+	 * Checks if any component of the specified pair of colors deviates by
+	 * more than 0.05 and returns a warning string if this is the case.
+	 * @param col1 first color
+	 * @param col2 second color
+	 * @return a warning string
+	 */
 	private String warning(float[] col1, float[] col2) {
 		float t = 0.05f;
 		for (int i = 0; i < col1.length; i++) {
@@ -107,15 +116,16 @@ public class ICC_Profile_From_JAR implements PlugIn {
 	// -----------------------------------------------------------
 	
 	
-	private boolean showDialog() {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(ICC_Profile_From_JAR.class.getSimpleName());
 		gd.addMessage("Select an ICC profile:");
 		//gd.addChoice("Profile:", choices, choices[0]);
 		gd.addEnumChoice("Profile", theChoice);
 
 		gd.showDialog();
-		if (gd.wasCanceled())
+		if (gd.wasCanceled()) {
 			return false;
+		}
 		
 		theChoice = gd.getNextEnumChoice(IccProfile.class);
 		return true;
