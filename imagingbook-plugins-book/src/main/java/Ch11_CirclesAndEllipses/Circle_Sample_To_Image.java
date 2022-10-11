@@ -17,7 +17,6 @@ import java.awt.Color;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Overlay;
-import ij.io.LogStream;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
@@ -27,7 +26,6 @@ import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.util.ParameterBundle;
 
 /**
@@ -39,11 +37,6 @@ import imagingbook.common.util.ParameterBundle;
  *
  */
 public class Circle_Sample_To_Image implements PlugIn {
-	
-	static {
-		LogStream.redirectSystem();
-		PrintPrecision.set(6);
-	}
 	
 	private static String title = Circle_Sample_To_Image.class.getSimpleName();
 	private static int W = 400;

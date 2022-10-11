@@ -18,7 +18,6 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Overlay;
 import ij.gui.Roi;
-import ij.io.LogStream;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
@@ -30,7 +29,6 @@ import imagingbook.common.geometry.fitting.ellipse.geometric.EllipseFitGeometric
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.math.PrintPrecision;
 
 /**
  * Performs algebraic ellipse fitting on the current ROI
@@ -43,11 +41,6 @@ import imagingbook.common.math.PrintPrecision;
  *
  */
 public class Ellipse_Fitting_Roi_Demo implements PlugInFilter {
-	
-	static {
-		LogStream.redirectSystem();
-		PrintPrecision.set(3);
-	}
 	
 	static EllipseFitAlgebraic.FitType AlgebraicFitMethod = FitzgibbonStable;
 	static EllipseFitGeometric.FitType GeometricFitMethod = DistanceBased;

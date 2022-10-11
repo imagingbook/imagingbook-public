@@ -20,6 +20,7 @@ import imagingbook.common.geometry.circle.GeometricCircle;
 
 /**
  * Common interface for all algebraic circle fits.
+ * 
  * @author WB
  *
  */
@@ -35,13 +36,23 @@ public interface CircleFitAlgebraic {
 		HyperStable
 	}
 	
+	/**
+	 * Creates and returns a new circle fit instance of the specified
+	 * type for the given sample points.
+	 * 
+	 * @param type the circle fit type
+	 * @param points an array of 2D sample points
+	 * @return a new circle fit instance
+	 * 
+	 * @see FitType
+	 */
 	public static CircleFitAlgebraic getFit(FitType type, Pnt2d[] points) {
 		switch (type) {
-		case KasaA: 	return new CircleFitKasaA(points);
-		case KasaB: 	return new CircleFitKasaB(points);
-		case KasaC: 	return new CircleFitKasaC(points);
-		case Pratt: 	return new CircleFitPratt(points);
-		case Taubin: 	return new CircleFitTaubin(points);
+		case KasaA: 		return new CircleFitKasaA(points);
+		case KasaB: 		return new CircleFitKasaB(points);
+		case KasaC: 		return new CircleFitKasaC(points);
+		case Pratt: 		return new CircleFitPratt(points);
+		case Taubin: 		return new CircleFitTaubin(points);
 		case HyperSimple: 	return new CircleFitHyperSimple(points);
 		case HyperStable: 	return new CircleFitHyperStable(points);
 		}

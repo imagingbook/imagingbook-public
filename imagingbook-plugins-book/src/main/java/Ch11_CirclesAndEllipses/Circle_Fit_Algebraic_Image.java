@@ -8,7 +8,6 @@
  *******************************************************************************/
 package Ch11_CirclesAndEllipses;
 
-//import Fitting.Display;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
