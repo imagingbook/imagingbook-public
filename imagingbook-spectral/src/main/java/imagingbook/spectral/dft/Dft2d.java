@@ -8,41 +8,60 @@
  *******************************************************************************/
 package imagingbook.spectral.dft;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
 
-import ij.process.FloatProcessor;
-import ij.process.ImageProcessor;
 import imagingbook.common.math.Matrix;
 
 /**
- * Two-dimensional DFT implementation.
+ * Abstract super-class of all two-dimensional DFT/FFT implementations.
+ * 
  * @author WB
- *
+ * @version 2022/10/21
  */
 public abstract class Dft2d {
 	
-	final ScalingMode sm;
-	boolean useFastMode = true;
-	
-	public void useFastMode(boolean yesOrNo) {
-		this.useFastMode = yesOrNo;
-	}
+	ScalingMode scalingMode = ScalingMode.DEFAULT;
+	boolean fastMode = true;
 	
 	private Dft2d() {
-		this(ScalingMode.DEFAULT);
 	}
 	
-	private Dft2d(ScalingMode sm) {
-		this.sm = sm;
+	/**
+	 * Sets the scaling mode to be used by this DFT/FFT implementation.
+	 * @param scalingMode the scaling mode
+	 */
+	public void setScalingMode(ScalingMode scalingMode) {
+		this.scalingMode = scalingMode;	
+	}
+	
+	/**
+	 * Sets a boolean flag to use the FFT (true) or a direct DFT implementation (false).
+	 * @param fastMode set true to use the FFT
+	 */
+	public void setFastMode(boolean fastMode) {
+		this.fastMode = fastMode;
 	}
 	
 	// -----------------------------------------------------------------------
 	
+	/**
+	 * Implementation of the 2D DFT/FFT using {@code float} data.
+	 */
 	public static class Float extends Dft2d {
 		
 		/**
-		 * Performs an "in-place" 2D DFT forward transformation on the supplied data.
+		 * Constructor.
+		 */
+		public Float() {
+			super();
+		}
+		
+		/**
+		 * Performs an "in-place" forward DFT or FFT on the supplied 2D data.
 		 * The input signal is replaced by the associated DFT spectrum.
+		 * 
 		 * @param gRe real part of the signal (modified)
 		 * @param gIm imaginary part of the signal (modified)
 		 */
@@ -52,8 +71,9 @@ public abstract class Dft2d {
 		}
 		
 		/**
-		 * Performs an "in-place" 2D DFT inverse transformation on the supplied spectrum.
+		 * Performs an "in-place" inverse DFT or FFT on the supplied 2D spectrum.
 		 * The input spectrum is replaced by the associated signal.
+		 * 
 		 * @param GRe real part of the spectrum (modified)
 		 * @param GIm imaginary part of the spectrum (modified)
 		 */
@@ -64,7 +84,7 @@ public abstract class Dft2d {
 		
 		/**
 		 * Transforms the given 2D arrays 'in-place'. Separate arrays of identical size
-		 * must be supplied for the real and imaginary parts of the signal (forward) 
+		 * must be supplied for the real and imaginary parts of the signal (forward)
 		 * or spectrum (inverse), neither of which may be null.
 		 * 
 		 * @param inRe real part of the input signal or spectrum (modified)
@@ -72,14 +92,17 @@ public abstract class Dft2d {
 		 * @param forward forward transformation if {@code true}, inverse transformation if {@code false}
 		 */
 		void transform(float[][] inRe, float[][] inIm, boolean forward) {
+			requireNonNull(inRe);
+			requireNonNull(inIm);
 			final int width = inRe.length;
 			final int height = inRe[0].length;
 
 			// transform each row (in place):
 			final float[] rowRe = new float[width];
 			final float[] rowIm = new float[width];
-			Dft1d.Float dftRow = 
-					useFastMode ? new Dft1dFast.Float(width, sm) : new Dft1dDirect.Float(width, sm);
+			Dft1d.Float dftRow = fastMode ? 
+					new Dft1dFast.Float(width, scalingMode) : 
+					new Dft1dDirect.Float(width, scalingMode);
 			for (int v = 0; v < height; v++) {
 				extractRow(inRe, v, rowRe);
 				extractRow(inIm, v, rowIm);
@@ -91,8 +114,9 @@ public abstract class Dft2d {
 			// transform each column (in place):
 			final float[] colRe = new float[height];
 			final float[] colIm = new float[height];
-			Dft1d.Float dftCol = 
-					useFastMode ? new Dft1dFast.Float(height, sm) : new Dft1dDirect.Float(height, sm);
+			Dft1d.Float dftCol = fastMode ? 
+					new Dft1dFast.Float(height, scalingMode) : 
+					new Dft1dDirect.Float(height, scalingMode);
 			for (int u = 0; u < width; u++) {
 				extractCol(inRe, u, colRe);
 				extractCol(inIm, u, colIm);
@@ -170,14 +194,37 @@ public abstract class Dft2d {
 	
 	// -----------------------------------------------------------------------
 	
+	/**
+	 * Implementation of the 2D DFT/FFT using {@code double} data.
+	 */
 	public static class Double extends Dft2d {
 		
+		/**
+		 * Constructor.
+		 */
+		public Double() {
+			super();
+		}
 
+		/**
+		 * Performs an "in-place" forward DFT or FFT on the supplied 2D data.
+		 * The input signal is replaced by the associated DFT spectrum.
+		 * 
+		 * @param gRe real part of the signal (modified)
+		 * @param gIm imaginary part of the signal (modified)
+		 */
 		public void forward(double[][] gRe, double[][] gIm) {
 			checkSize(gRe, gIm);
 			transform(gRe, gIm, true);
 		}
 		
+		/**
+		 * Performs an "in-place" inverse DFT or FFT on the supplied 2D spectrum.
+		 * The input spectrum is replaced by the associated signal.
+		 * 
+		 * @param GRe real part of the spectrum (modified)
+		 * @param GIm imaginary part of the spectrum (modified)
+		 */
 		public void inverse(double[][] GRe, double[][] GIm) {
 			checkSize(GRe, GIm);
 			transform(GRe, GIm, false);
@@ -191,15 +238,16 @@ public abstract class Dft2d {
 		 * @param gIm
 		 * @param forward
 		 */
-		void transform(double[][] gRe, double[][] gIm, boolean forward) {
+		private void transform(double[][] gRe, double[][] gIm, boolean forward) {
 			final int width = gRe.length;
 			final int height = gRe[0].length;
 
 			// transform each row (in place):
 			final double[] rowRe = new double[width];
 			final double[] rowIm = new double[width];
-			Dft1d.Double dftRow = 
-					useFastMode ? new Dft1dFast.Double(width, sm) : new Dft1dDirect.Double(width, sm);
+			Dft1d.Double dftRow = fastMode ? 
+					new Dft1dFast.Double(width, scalingMode) : 
+					new Dft1dDirect.Double(width, scalingMode);
 			for (int v = 0; v < height; v++) {
 				extractRow(gRe, v, rowRe);
 				extractRow(gIm, v, rowIm);
@@ -211,8 +259,9 @@ public abstract class Dft2d {
 			// transform each column (in place):
 			final double[] colRe = new double[height];
 			final double[] colIm = new double[height];
-			Dft1d.Double dftCol = 
-					useFastMode ? new Dft1dFast.Double(height, sm) : new Dft1dDirect.Double(height, sm);
+			Dft1d.Double dftCol = fastMode ? 
+					new Dft1dFast.Double(height, scalingMode) : 
+					new Dft1dDirect.Double(height, scalingMode);
 			for (int u = 0; u < width; u++) {
 				extractCol(gRe, u, colRe);
 				extractCol(gIm, u, colIm);
@@ -284,43 +333,8 @@ public abstract class Dft2d {
 		private void checkSize(double[][] re, double[][] im) {
 			if (!Matrix.sameSize(re, im))
 				throw new IllegalArgumentException("arrays for real/imagingary parts must be of same size");
-		}
-		
+		}		
 	}
 	
-	/**
-	 * Static utility method for centering a 2D DFT spectrum.
-	 * Modifies the given image by moving the origin of the image to its center
-	 * (circularly).
-	 * TODO: Check for possible bug when applied to a {@link FloatProcessor}!
-	 * 
-	 * @param ip an {@link ImageProcessor} instance
-	 */
-	public static void swapQuadrants(ImageProcessor ip) {
-		// swap quadrants Q1 <-> Q3, Q2 <-> Q4
-		// Q2 Q1
-		// Q3 Q4
-		ImageProcessor t1, t2;
-		int w = ip.getWidth();
-		int h = ip.getHeight();
-		int wc = w / 2;
-		int hc = h / 2;
-
-		ip.setRoi(wc, 0, w - wc, hc); // Q1
-		t1 = ip.crop();
-		ip.setRoi(0, hc, wc, h - hc); // Q3
-		t2 = ip.crop();
-
-		ip.insert(t1, 0, hc); // swap Q1 <-> Q3
-		ip.insert(t2, wc, 0);
-
-		ip.setRoi(0, 0, wc, hc); // Q2
-		t1 = ip.crop();
-		ip.setRoi(wc, hc, w - wc, h - hc); // Q4
-		t2 = ip.crop();
-
-		ip.insert(t1, wc, hc);
-		ip.insert(t2, 0, 0);
-	}
 
 }

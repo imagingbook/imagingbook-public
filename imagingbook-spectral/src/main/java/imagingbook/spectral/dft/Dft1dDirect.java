@@ -17,7 +17,7 @@ import imagingbook.common.math.Matrix;
  */
 public abstract class Dft1dDirect {
 	
-	final int M;			// size (length) of the signal or spectrum
+	final int M;	// size (length) of the signal or spectrum
 	final ScalingMode sm;	
 	final double[] cosTable;
 	final double[] sinTable;
@@ -57,12 +57,21 @@ public abstract class Dft1dDirect {
 		private final float[] outRe;
 		private final float[] outIm;
 		
+		/**
+		 * Constructor using a specific scaling mode.
+		 * @param M the size of the data vectors
+		 * @param sm the scaling mode
+		 */
 		public Float(int M, ScalingMode sm) {
 			super(M, sm);
 			this.outRe = new float[M];
 			this.outIm = new float[M];
 		}
 		
+		/**
+		 * Constructor using the default scaling mode.
+		 * @param M the size of the data vectors
+		 */
 		public Float(int M) {
 			this(M, ScalingMode.DEFAULT);
 		}
@@ -79,6 +88,7 @@ public abstract class Dft1dDirect {
 			transform(GRe, GIm, false);
 		}
 		
+		@Override
 		public void transform(float[] inRe, float[] inIm, boolean forward) {
 			checkSize(inRe, inIm, M);
 			final double scale = sm.getScale(M, forward);
@@ -113,12 +123,21 @@ public abstract class Dft1dDirect {
 		private final double[] outRe;
 		private final double[] outIm;
 		
+		/**
+		 * Constructor using a specific scaling mode.
+		 * @param M the size of the data vectors
+		 * @param sm the scaling mode
+		 */
 		public Double(int M, ScalingMode sm) {
 			super(M, sm);
 			this.outRe = new double[M];
 			this.outIm = new double[M];
 		}
 		
+		/**
+		 * Constructor using the default scaling mode.
+		 * @param M the size of the data vectors
+		 */
 		public Double(int M) {
 			this(M, ScalingMode.DEFAULT);
 		}
@@ -135,6 +154,7 @@ public abstract class Dft1dDirect {
 			transform(GRe, GIm, false);
 		}
 		
+		@Override
 		public void transform(double[] inRe, double[] inIm, boolean forward) {
 			checkSize(inRe, inIm, M);
 			final double scale = sm.getScale(M, forward);

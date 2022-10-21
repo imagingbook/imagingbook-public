@@ -9,13 +9,13 @@
 package imagingbook.spectral.dft;
 
 /**
- * Interface specifying all one-dimensional DFT/FFT implementations.
+ * Interface to be implemented by all one-dimensional DFT/FFT implementations.
  */
 public interface Dft1d {
 	
 	public interface Float extends Dft1d {
 		/**
-		 * Performs an "in-place" 1D DFT forward transformation on the supplied data.
+		 * Performs an "in-place" DFT forward transformation on the supplied 1D data.
 		 * The input signal is replaced by the associated DFT spectrum.
 		 * @param gRe real part of the signal (modified)
 		 * @param gIm imaginary part of the signal (modified)
@@ -23,7 +23,7 @@ public interface Dft1d {
 		void forward(float[] gRe, float[] gIm);
 		
 		/**
-		 * Performs an "in-place" 1D DFT inverse transformation on the supplied spectrum.
+		 * Performs an "in-place" DFT inverse transformation on the supplied 1D spectrum.
 		 * The input spectrum is replaced by the associated signal.
 		 * @param GRe real part of the spectrum (modified)
 		 * @param GIm imaginary part of the spectrum (modified)
@@ -123,7 +123,7 @@ public interface Dft1d {
 			for (int i = 0; i < n; i++) {
 				double a = re[i];
 				double b = im[i];
-				mag[i] = (double) Math.sqrt(a*a + b*b);
+				mag[i] = Math.sqrt(a*a + b*b);
 			}
 			return mag;
 		}
