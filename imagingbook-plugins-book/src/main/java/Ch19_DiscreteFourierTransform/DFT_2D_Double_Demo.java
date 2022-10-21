@@ -15,6 +15,8 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.math.Matrix;
 import imagingbook.spectral.dft.Dft2d;
+import imagingbook.spectral.dft.Dft2dDirect;
+import imagingbook.spectral.dft.Dft2dFast;
 import imagingbook.spectral.dft.ScalingMode;
 
 /** 
@@ -56,9 +58,13 @@ public class DFT_2D_Double_Demo implements PlugInFilter {
 		double[][] re = Matrix.toDouble(fp.getFloatArray());
 		double[][] im = new double[fp.getWidth()][fp.getHeight()];
 		
-		Dft2d.Double dft2 = new Dft2d.Double();
-		dft2.setScalingMode(ScalingMode.DEFAULT);
-		dft2.setFastMode(UseFastMode);
+//		Dft2d.Double dft2 = new Dft2d.Double();
+//		dft2.setScalingMode(ScalingMode.DEFAULT);
+//		dft2.setFastMode(UseFastMode);
+		
+		Dft2d.Double dft2 = (UseFastMode) ? 
+				new Dft2dFast.Double(ScalingMode.DEFAULT) :
+				new Dft2dDirect.Double(ScalingMode.DEFAULT);
 		
 		dft2.forward(re, im);
 		

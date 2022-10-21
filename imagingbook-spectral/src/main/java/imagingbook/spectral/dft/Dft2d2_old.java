@@ -29,86 +29,42 @@ import imagingbook.common.math.Matrix;
  * @version 2022/10/21
  * @see Dft1d
  */
-public interface Dft2d {
+public abstract class Dft2d2_old {
 	
-	// -------------------------------------------------------------
+	ScalingMode scalingMode = ScalingMode.DEFAULT;
+	boolean fastMode = true;
 	
-	public interface Float extends Dft2d {
+	private Dft2d2_old() {
+	}
+	
+	/**
+	 * Sets the scaling mode to be used by this DFT/FFT implementation.
+	 * @param scalingMode the scaling mode
+	 */
+	public void setScalingMode(ScalingMode scalingMode) {
+		this.scalingMode = scalingMode;	
+	}
+	
+	/**
+	 * Sets a boolean flag to use the FFT (true) or a direct DFT implementation (false).
+	 * @param fastMode set true to use the FFT
+	 */
+	public void setFastMode(boolean fastMode) {
+		this.fastMode = fastMode;
+	}
+	
+	// -----------------------------------------------------------------------
+	
+	/**
+	 * Implementation of the 2D DFT/FFT using {@code float} data.
+	 */
+	public static class Float extends Dft2d2_old {
 		
 		/**
-		 * Transforms the given 2D arrays 'in-place'. Separate arrays of identical size
-		 * must be supplied for the real and imaginary parts of the signal (forward)
-		 * or spectrum (inverse), neither of which may be null.
-		 * 
-		 * @param inRe real part of the input signal or spectrum (modified)
-		 * @param inIm imaginary part of the input signal or spectrum (modified)
-		 * @param forward forward transformation if {@code true}, inverse transformation if {@code false}
+		 * Constructor.
 		 */
-		public default void transform(float[][] inRe, float[][] inIm, boolean forward) {
-			requireNonNull(inRe);
-			requireNonNull(inIm);
-			final int width = inRe.length;
-			final int height = inRe[0].length;
-
-			// transform each row (in place):
-			final float[] rowRe = new float[width];
-			final float[] rowIm = new float[width];
-			Dft1d.Float dftRow = get1dDft(width);
-			for (int v = 0; v < height; v++) {
-				extractRow(inRe, v, rowRe);
-				extractRow(inIm, v, rowIm);
-				dftRow.transform(rowRe, rowIm, forward);
-				insertRow(inRe, v, rowRe);
-				insertRow(inIm, v, rowIm);
-			}
-
-			// transform each column (in place):
-			final float[] colRe = new float[height];
-			final float[] colIm = new float[height];
-			Dft1d.Float dftCol = get1dDft(height);
-			for (int u = 0; u < width; u++) {
-				extractCol(inRe, u, colRe);
-				extractCol(inIm, u, colIm);
-				dftCol.transform(colRe, colIm, forward);
-				insertCol(inRe, u, colRe);
-				insertCol(inIm, u, colIm);
-			}
-		}
-		
-		public Dft1d.Float get1dDft(int size);
-		
-		public default void extractRow(float[][] g, int v, float[] row) {
-			if (g == null) {			// TODO: check if needed
-				Arrays.fill(row, 0);
-			}
-			else {
-				for (int u = 0; u < row.length; u++) {
-					row[u] = g[u][v];
-				}
-			}
-		}
-		
-		public default void insertRow(float[][] g, int v, float[] row) {
-			for (int u = 0; u < row.length; u++) {
-				g[u][v] = row[u];
-			}
-		}
-			
-		public default void extractCol(float[][] g, int u, float[] col) {
-			if (g == null) {			// TODO: check if needed
-				Arrays.fill(col, 0);
-			}
-			else {
-				for (int v = 0; v < col.length; v++) {
-					col[v] = g[u][v];
-				}
-			}
-		}
-		
-		public default void insertCol(float[][] g, final int u, float[] col) {
-			for (int v = 0; v < col.length; v++) {
-				g[u][v] = col[v];
-			}
+		public Float() {
+			super();
 		}
 		
 		/**
@@ -119,7 +75,7 @@ public interface Dft2d {
 		 * @param gIm imaginary part of the signal (modified)
 		 * @see #transform(float[][], float[][], boolean)
 		 */
-		public default void forward(float[][] gRe, float[][] gIm) {
+		public void forward(float[][] gRe, float[][] gIm) {
 			checkSize(gRe, gIm);
 			transform(gRe, gIm, true);
 		}
@@ -132,14 +88,91 @@ public interface Dft2d {
 		 * @param GIm imaginary part of the spectrum (modified)
 		 * @see #transform(float[][], float[][], boolean)
 		 */
-		public default void inverse(float[][] GRe, float[][] GIm) {
+		public void inverse(float[][] GRe, float[][] GIm) {
 			checkSize(GRe, GIm);
 			transform(GRe, GIm, false);
 		}
 		
-		public default void checkSize(float[][] re, float[][] im) {
-			if (!Matrix.sameSize(re, im))
-				throw new IllegalArgumentException("arrays for real/imagingary parts must be of same size");
+		/**
+		 * Transforms the given 2D arrays 'in-place'. Separate arrays of identical size
+		 * must be supplied for the real and imaginary parts of the signal (forward)
+		 * or spectrum (inverse), neither of which may be null.
+		 * 
+		 * @param inRe real part of the input signal or spectrum (modified)
+		 * @param inIm imaginary part of the input signal or spectrum (modified)
+		 * @param forward forward transformation if {@code true}, inverse transformation if {@code false}
+		 */
+		public void transform(float[][] inRe, float[][] inIm, boolean forward) {
+			requireNonNull(inRe);
+			requireNonNull(inIm);
+			final int width = inRe.length;
+			final int height = inRe[0].length;
+
+			// transform each row (in place):
+			final float[] rowRe = new float[width];
+			final float[] rowIm = new float[width];
+			Dft1d.Float dftRow = fastMode ? 
+					new Dft1dFast.Float(width, scalingMode) : 
+					new Dft1dDirect.Float(width, scalingMode);
+			for (int v = 0; v < height; v++) {
+				extractRow(inRe, v, rowRe);
+				extractRow(inIm, v, rowIm);
+				dftRow.transform(rowRe, rowIm, forward);
+				insertRow(inRe, v, rowRe);
+				insertRow(inIm, v, rowIm);
+			}
+
+			// transform each column (in place):
+			final float[] colRe = new float[height];
+			final float[] colIm = new float[height];
+			Dft1d.Float dftCol = fastMode ? 
+					new Dft1dFast.Float(height, scalingMode) : 
+					new Dft1dDirect.Float(height, scalingMode);
+			for (int u = 0; u < width; u++) {
+				extractCol(inRe, u, colRe);
+				extractCol(inIm, u, colIm);
+				dftCol.transform(colRe, colIm, forward);
+				insertCol(inRe, u, colRe);
+				insertCol(inIm, u, colIm);
+			}
+		}
+		
+		// extract the values of row 'v' of 'g' into 'row'
+		private void extractRow(float[][] g, int v, float[] row) {
+			if (g == null) {			// TODO: check if needed
+				Arrays.fill(row, 0);
+			}
+			else {
+				for (int u = 0; u < row.length; u++) {
+					row[u] = g[u][v];
+				}
+			}
+		}
+
+		// insert 'row' into row 'v' of 'g'
+		private void insertRow(float[][] g, int v, float[] row) {
+			for (int u = 0; u < row.length; u++) {
+				g[u][v] = row[u];
+			}
+		}
+
+		// extract the values of column 'u' of 'g' into 'cols'
+		private void extractCol(float[][] g, int u, float[] col) {
+			if (g == null) {			// TODO: check if needed
+				Arrays.fill(col, 0);
+			}
+			else {
+				for (int v = 0; v < col.length; v++) {
+					col[v] = g[u][v];
+				}
+			}
+		}
+
+		// insert 'col' into column 'u' of 'g'
+		private void insertCol(float[][] g, final int u, float[] col) {
+			for (int v = 0; v < col.length; v++) {
+				g[u][v] = col[v];
+			}
 		}
 		
 		/**
@@ -148,7 +181,7 @@ public interface Dft2d {
 		 * @param im the imaginary part of the data
 		 * @return a 2D array of magnitude values
 		 */
-		public default  float[][] getMagnitude(float[][] re, float[][] im) {
+		public float[][] getMagnitude(float[][] re, float[][] im) {
 			checkSize(re, im);
 			final int width = re.length;
 			final int height = re[0].length;
@@ -162,22 +195,63 @@ public interface Dft2d {
 			}
 			return mag;
 		}
+		
+		private void checkSize(float[][] re, float[][] im) {
+			if (!Matrix.sameSize(re, im))
+				throw new IllegalArgumentException("arrays for real/imagingary parts must be of same size");
+		}
+		
 	}
 	
-	// -------------------------------------------------------------
+	// -----------------------------------------------------------------------
 	
-	public interface Double extends Dft2d {
+	/**
+	 * Implementation of the 2D DFT/FFT using {@code double} data.
+	 */
+	public static class Double extends Dft2d2_old {
 		
 		/**
-		 * Transforms the given 2D arrays 'in-place'. Separate arrays of identical size
-		 * must be supplied for the real and imaginary parts of the signal (forward)
-		 * or spectrum (inverse), neither of which may be null.
-		 * 
-		 * @param inRe real part of the input signal or spectrum (modified)
-		 * @param inIm imaginary part of the input signal or spectrum (modified)
-		 * @param forward forward transformation if {@code true}, inverse transformation if {@code false}
+		 * Constructor.
 		 */
-		public default void transform(double[][] gRe, double[][] gIm, boolean forward) {
+		public Double() {
+			super();
+		}
+
+		/**
+		 * Performs an "in-place" forward DFT or FFT on the supplied 2D data.
+		 * The input signal is replaced by the associated DFT spectrum.
+		 * 
+		 * @param gRe real part of the signal (modified)
+		 * @param gIm imaginary part of the signal (modified)
+		 * @see #transform(double[][], double[][], boolean)
+		 */
+		public void forward(double[][] gRe, double[][] gIm) {
+			checkSize(gRe, gIm);
+			transform(gRe, gIm, true);
+		}
+		
+		/**
+		 * Performs an "in-place" inverse DFT or FFT on the supplied 2D spectrum.
+		 * The input spectrum is replaced by the associated signal.
+		 * 
+		 * @param GRe real part of the spectrum (modified)
+		 * @param GIm imaginary part of the spectrum (modified)
+		 * @see #transform(double[][], double[][], boolean)
+		 */
+		public void inverse(double[][] GRe, double[][] GIm) {
+			checkSize(GRe, GIm);
+			transform(GRe, GIm, false);
+		}
+		
+		/**
+		 * Transforms the given 2D arrays 'in-place', i.e., real and imaginary
+		 * arrays of identical size must be supplied, neither may be null.
+		 * 
+		 * @param gRe
+		 * @param gIm
+		 * @param forward
+		 */
+		public void transform(double[][] gRe, double[][] gIm, boolean forward) {
 			requireNonNull(gRe);
 			requireNonNull(gIm);
 			final int width = gRe.length;
@@ -186,7 +260,9 @@ public interface Dft2d {
 			// transform each row (in place):
 			final double[] rowRe = new double[width];
 			final double[] rowIm = new double[width];
-			Dft1d.Double dftRow = get1dDft(width);
+			Dft1d.Double dftRow = fastMode ? 
+					new Dft1dFast.Double(width, scalingMode) : 
+					new Dft1dDirect.Double(width, scalingMode);
 			for (int v = 0; v < height; v++) {
 				extractRow(gRe, v, rowRe);
 				extractRow(gIm, v, rowIm);
@@ -198,7 +274,9 @@ public interface Dft2d {
 			// transform each column (in place):
 			final double[] colRe = new double[height];
 			final double[] colIm = new double[height];
-			Dft1d.Double dftCol = get1dDft(width);
+			Dft1d.Double dftCol = fastMode ? 
+					new Dft1dFast.Double(height, scalingMode) : 
+					new Dft1dDirect.Double(height, scalingMode);
 			for (int u = 0; u < width; u++) {
 				extractCol(gRe, u, colRe);
 				extractCol(gIm, u, colIm);
@@ -208,9 +286,8 @@ public interface Dft2d {
 			}
 		}
 		
-		public Dft1d.Double get1dDft(int size);
-		
-		public default void extractRow(double[][] g, int v, double[] row) {
+		// extract the values of row 'v' of 'g' into 'row'
+		private void extractRow(double[][] g, int v, double[] row) {
 			if (g == null) {			// TODO: check if needed
 				Arrays.fill(row, 0);
 			}
@@ -220,14 +297,16 @@ public interface Dft2d {
 				}
 			}
 		}
-		
-		public default void insertRow(double[][] g, int v, double[] row) {
+
+		// insert 'row' into row 'v' of 'g'
+		private void insertRow(double[][] g, int v, double[] row) {
 			for (int u = 0; u < row.length; u++) {
 				g[u][v] = row[u];
 			}
 		}
-		
-		public default void extractCol(double[][] g, int u, double[] col) {
+
+		// extract the values of column 'u' of 'g' into 'cols'
+		private void extractCol(double[][] g, int u, double[] col) {
 			if (g == null) {			// TODO: check if needed
 				Arrays.fill(col, 0);
 			}
@@ -237,37 +316,12 @@ public interface Dft2d {
 				}
 			}
 		}
-		
-		public default void insertCol(double[][] g, final int u, double[] col) {
+
+		// insert 'col' into column 'u' of 'g'
+		private void insertCol(double[][] g, final int u, double[] col) {
 			for (int v = 0; v < col.length; v++) {
 				g[u][v] = col[v];
 			}
-		}
-		
-		/**
-		 * Performs an "in-place" forward DFT or FFT on the supplied 2D data.
-		 * The input signal is replaced by the associated DFT spectrum.
-		 * 
-		 * @param gRe real part of the signal (modified)
-		 * @param gIm imaginary part of the signal (modified)
-		 * @see #transform(float[][], float[][], boolean)
-		 */
-		public default void forward(double[][] gRe, double[][] gIm) {
-			checkSize(gRe, gIm);
-			transform(gRe, gIm, true);
-		}
-		
-		/**
-		 * Performs an "in-place" inverse DFT or FFT on the supplied 2D spectrum.
-		 * The input spectrum is replaced by the associated signal.
-		 * 
-		 * @param GRe real part of the spectrum (modified)
-		 * @param GIm imaginary part of the spectrum (modified)
-		 * @see #transform(float[][], float[][], boolean)
-		 */
-		public default void inverse(double[][] GRe, double[][] GIm) {
-			checkSize(GRe, GIm);
-			transform(GRe, GIm, false);
 		}
 		
 		/**
@@ -277,7 +331,7 @@ public interface Dft2d {
 		 * @param im the imaginary part of the data
 		 * @return a 2D array of magnitude values
 		 */
-		public default double[][] getMagnitude(double[][] re, double[][] im) {
+		public double[][] getMagnitude(double[][] re, double[][] im) {
 			checkSize(re, im);
 			final int width = re.length;
 			final int height = re[0].length;
@@ -292,10 +346,12 @@ public interface Dft2d {
 			return mag;
 		}
 		
-		public default void checkSize(double[][] re, double[][] im) {
+		private void checkSize(double[][] re, double[][] im) {
+			requireNonNull(re);
+			requireNonNull(im);
 			if (!Matrix.sameSize(re, im))
 				throw new IllegalArgumentException("arrays for real/imagingary parts must be of same size");
-		}
+		}		
 	}
 	
 }
