@@ -9,9 +9,11 @@ import imagingbook.core.resource.ImageResource;
  * inside a {@link ImageResource} enum type.
  * If so defined, the {@link ImageResource} will be tested automatically.
  * See {@link BinaryTestImage}, for example.
+ * Unused!
  * 
  * @author WB
  */
+@Deprecated		// This introduces a transitive dependency on JUnit in non-test scope (avoid)!
 public abstract class ImageResourceSelfTest {
 	
 	/**

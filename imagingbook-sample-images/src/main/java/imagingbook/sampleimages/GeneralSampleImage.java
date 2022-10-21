@@ -9,19 +9,16 @@
 package imagingbook.sampleimages;
 
 import imagingbook.core.resource.ImageResource;
-import imagingbook.testutils.ImageResourceSelfTest;
-
-
 
 /**
  * <p>
- * Enumeration defining a set of {@link ImageResource} objects for some general test images.
+ * Enumeration defining a set of {@link ImageResource} objects for selected sample images.
  * Usage example:
  * </p>
  * <pre>
  * import ij.process.ImageProcessor;
  * import imagingbook.core.resource.ImageResource;
- * import imagingbook.sampleimages.GeneralTestImage;
+ * import imagingbook.sampleimages.GeneralSampleImage;
  * 
  * ImageResource ir = GeneralTestImage.Clown;
  * ImageProcessor ip = ir.getImage().getProcessor();
@@ -63,11 +60,5 @@ public enum GeneralSampleImage implements ImageResource {
 		/** A fairly large binary image with 0/1 values. */
 		RhinoBigCrop,
 	;
-	
-	/**
-//	 * This definition causes this ImageResource to be tested automatically.
-//	 * The class must be public and static, the name is arbitrary.
-//	 */
-	public static class SelfTest extends ImageResourceSelfTest {}
 
 }

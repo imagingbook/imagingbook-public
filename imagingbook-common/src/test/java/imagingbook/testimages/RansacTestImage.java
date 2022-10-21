@@ -8,9 +8,11 @@
  *******************************************************************************/
 package imagingbook.testimages;
 
+import org.junit.Test;
+
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
-import imagingbook.testutils.ImageResourceSelfTest;
+import imagingbook.testutils.ResourceTestUtils;
 
 /**
  * Enumeration defining a set of {@link ImageResource} objects associated
@@ -27,11 +29,11 @@ public enum RansacTestImage implements ImageResource {
 		
 	// ---------------------------------------------------
 	
-	/**
-	 * This definition causes this ImageResource to be tested automatically.
-	 * The class must be public and static, the name is arbitrary.
-	 */
-	public static class SelfTest extends ImageResourceSelfTest {
+	public static class SelfTest {
+		@Test
+		public void test() {
+			ResourceTestUtils.testImageResource(RansacTestImage.class);
+		}
 	}
 	
 }

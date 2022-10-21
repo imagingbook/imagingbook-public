@@ -9,7 +9,6 @@
 package imagingbook.bookimages;
 
 import imagingbook.core.resource.ImageResource;
-import imagingbook.testutils.ImageResourceSelfTest;
 
 
 
@@ -45,9 +44,9 @@ public enum BookImageCh01 implements ImageResource {
 	Fig_01_10,
 	;
 	
-	/**
-	 * Automatic JUnit self-test.
-	 */
-	public static class SelfTest extends ImageResourceSelfTest {}
+//	/**
+//	 * Automatic JUnit self-test.
+//	 */
+//	public static class SelfTest extends ImageResourceSelfTest {}
 
 }

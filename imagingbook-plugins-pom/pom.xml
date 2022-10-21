@@ -155,6 +155,7 @@
 										</artifactItem>
 									</artifactItems>
 									<overWriteSnapshots>true</overWriteSnapshots>
+									<excludeScope>test</excludeScope>
 								</configuration>
 							</execution>
 							

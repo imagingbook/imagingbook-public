@@ -26,39 +26,54 @@ import imagingbook.core.resource.NamedResource;
 public abstract class ResourceTestUtils {
 	
 	/**
-	 * Scans all resources defined by some {@link NamedResource} class, validates that they exist.
+	 * Scans all resources defined by the specified {@link NamedResource} class and
+	 * validates that they exist.
+	 * 
+	 * @param <E> generic type
+	 * @param enumClass enum class implementing {@link NamedResource}
+	 * @return the number of validated resources
 	 */
-	public static <E extends Enum<E>> void testNamedResource(Class<E> enumClass) {
-		assertTrue("enum must implement NamedResource", NamedResource.class.isAssignableFrom(enumClass));
-		if (NamedResource.class.isAssignableFrom(enumClass)) {
-			for (E item : enumClass.getEnumConstants()) {
-				NamedResource res = (NamedResource) item;
-				assertNotNull(res.getRelativePath());
-				assertNotNull(new File(res.getRelativePath()));
-				assertNotNull(res.getURL());
-				assertNotNull("could not find resource " + item.toString(), res.getURL());
-			}
-				
+	public static <E extends Enum<E>> int testNamedResource(Class<E> enumClass) {
+		assertTrue("enum must implement " + NamedResource.class, 
+				NamedResource.class.isAssignableFrom(enumClass));
+		int n = 0;
+		for (E item : enumClass.getEnumConstants()) {
+			NamedResource res = (NamedResource) item;
+			assertNotNull(res.getRelativePath());
+			assertNotNull(new File(res.getRelativePath()));
+			assertNotNull(res.getURL());
+			assertNotNull("could not find resource " + item.toString(), res.getURL());
+			n++;
 		}
+		return n;
 	}
 	
 	/**
 	 * Scans all resources defined by some {@link ImageResource} class, validates that they can be opened
 	 * as images.
 	 */
-	public static <E extends Enum<E>> void testImageResource(Class<E> enumClass) {
-		assertTrue("enum must implement ImageResource", ImageResource.class.isAssignableFrom(enumClass));
-		if (ImageResource.class.isAssignableFrom(enumClass)) {
-			for (E item : enumClass.getEnumConstants()) {
-				ImageResource res = (ImageResource) item;
-				assertNotNull(res.getRelativePath());
-				File file = new File(res.getRelativePath());
-				assertNotNull(file);
-				assertNotNull(res.getURL());
-				assertNotNull("could not find file " + file.getAbsolutePath(), res.getURL());
-				assertNotNull("could not open image for resource " + res,  res.getImage());
-			}
+	/**
+	 * Scans all resources defined by some {@link ImageResource} class and
+	 * validates that they can be opened as images.
+	 * @param <E> generic type
+	 * @param enumClass enumClass enum class implementing {@link ImageResource}
+	 * @return the number of validated image resources
+	 */
+	public static <E extends Enum<E>> int testImageResource(Class<E> enumClass) {
+		assertTrue("enum must implement " + ImageResource.class, 
+				ImageResource.class.isAssignableFrom(enumClass));
+		int n = 0;
+		for (E item : enumClass.getEnumConstants()) {
+			ImageResource res = (ImageResource) item;
+			assertNotNull(res.getRelativePath());
+			File file = new File(res.getRelativePath());
+			assertNotNull(file);
+			assertNotNull(res.getURL());
+			assertNotNull("could not find file " + file.getAbsolutePath(), res.getURL());
+			assertNotNull("could not open image for resource " + res,  res.getImage());
+			n++;
 		}
+		return n;
 	}
 
 }
