@@ -12,9 +12,16 @@ import org.jtransforms.fft.DoubleFFT_1D;
 import org.jtransforms.fft.FloatFFT_1D;
 
 /**
+ * <p>
  * FFT (fast) implementation of the DFT, based on the JTransforms package
  * by Piotr Wendykier (see <a href="https://github.com/wendykierp/JTransforms">
  * https://github.com/wendykierp/JTransforms</a>).
+ * See Sec. 18.4.2 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  */
 public abstract class Dft1dFast {
 	
@@ -29,7 +36,7 @@ public abstract class Dft1dFast {
 	// ----------------------------------------------------------------------
 	
 	/**
-	 * One-dimensional FFT implementation using single precision (float) data. 
+	 * One-dimensional FFT implementation using {@code float} data. 
 	 */
 	public static class Float extends Dft1dFast implements Dft1d.Float {
 	
@@ -99,9 +106,9 @@ public abstract class Dft1dFast {
 	// ----------------------------------------------------------------------
 	
 	/**
-	 * One-dimensional FFT implementation using double precision data. 
+	 * One-dimensional FFT implementation using {@code double} data. 
 	 */
-	public static class Double extends Dft1dFast implements Dft1d.Double{
+	public static class Double extends Dft1dFast implements Dft1d.Double {
 	
 		private final double[] A;		// temporary array for FFT composed of re/im values
 		private final DoubleFFT_1D fft;

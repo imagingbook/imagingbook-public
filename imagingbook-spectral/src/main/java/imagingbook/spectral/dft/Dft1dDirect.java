@@ -8,11 +8,17 @@
  *******************************************************************************/
 package imagingbook.spectral.dft;
 
-import imagingbook.common.math.Matrix;
-
 /**
+ * <p>
  * Direct (slow) implementation of the 1-dimensional DFT
  * using tabulated sine and cosine values.
+ * See Sec. 18.4.1 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
+ * 
  * @author WB
  */
 public abstract class Dft1dDirect {
@@ -50,7 +56,7 @@ public abstract class Dft1dDirect {
 	// ----------------------------------------------------------------------
 	
 	/**
-	 * One-dimensional DFT implementation using single precision (float) data. 
+	 * One-dimensional DFT implementation using {@code float} data. 
 	 */
 	public static class Float extends Dft1dDirect implements Dft1d.Float {
 		
@@ -59,6 +65,7 @@ public abstract class Dft1dDirect {
 		
 		/**
 		 * Constructor using a specific scaling mode.
+		 * 
 		 * @param M the size of the data vectors
 		 * @param sm the scaling mode
 		 */
@@ -70,6 +77,7 @@ public abstract class Dft1dDirect {
 		
 		/**
 		 * Constructor using the default scaling mode.
+		 * 
 		 * @param M the size of the data vectors
 		 */
 		public Float(int M) {
@@ -116,7 +124,7 @@ public abstract class Dft1dDirect {
 	// ----------------------------------------------------------------------
 	
 	/**
-	 * One-dimensional DFT implementation using double precision data. 
+	 * One-dimensional DFT implementation using {@code double} data. 
 	 */
 	public static class Double extends Dft1dDirect implements Dft1d.Double {
 		
@@ -125,6 +133,7 @@ public abstract class Dft1dDirect {
 		
 		/**
 		 * Constructor using a specific scaling mode.
+		 * 
 		 * @param M the size of the data vectors
 		 * @param sm the scaling mode
 		 */
@@ -136,6 +145,7 @@ public abstract class Dft1dDirect {
 		
 		/**
 		 * Constructor using the default scaling mode.
+		 * 
 		 * @param M the size of the data vectors
 		 */
 		public Double(int M) {
@@ -196,58 +206,58 @@ public abstract class Dft1dDirect {
 		-1.41421 - 3.41421 i}
 	 */
 
-	//test example
-	public static void main(String[] args) {
-
-		System.out.println("******************** Float test (DFT) ********************");
-		{
-			float[] re = { 1, 2, 3, 4, 5, 6, 7, 8 };
-			float[] im = new float[re.length];
-
-			System.out.println("original signal:");
-			System.out.println("gRe = " + Matrix.toString(re));
-			System.out.println("gIm = " + Matrix.toString(im));
-
-			Dft1d.Float dft = new Dft1dDirect.Float(re.length);
-			dft.forward(re, im);
-//			float[] GRe = dft.getRe();
-//			float[] GIm = dft.getIm();
-
-			System.out.println("DFT spectrum:");
-			System.out.println("GRe = " + Matrix.toString(re));
-			System.out.println("GIm = " + Matrix.toString(im));
-
-			dft.inverse(re, im);
-
-			System.out.println("reconstructed signal:");
-			System.out.println("gRe' = " + Matrix.toString(re));
-			System.out.println("gIm' = " + Matrix.toString(im));
-		}
-		
-		System.out.println();
-		System.out.println("******************** Double test (DFT) ********************");
-
-		{
-			double[] re = { 1, 2, 3, 4, 5, 6, 7, 8 };
-			double[] im = new double[re.length];
-
-			System.out.println("original signal:");
-			System.out.println("gRe = " + Matrix.toString(re));
-			System.out.println("gIm = " + Matrix.toString(im));
-
-			Dft1d.Double dft = new Dft1dDirect.Double(re.length);
-			dft.forward(re, im);
-
-			System.out.println("DFT spectrum:");
-			System.out.println("GRe = " + Matrix.toString(re));
-			System.out.println("GIm = " + Matrix.toString(im));
-
-			dft.inverse(re, im);
-
-			System.out.println("reconstructed signal:");
-			System.out.println("gRe' = " + Matrix.toString(re));
-			System.out.println("gIm' = " + Matrix.toString(im));
-		}
-	}
+//	//test example
+//	public static void main(String[] args) {
+//
+//		System.out.println("******************** Float test (DFT) ********************");
+//		{
+//			float[] re = { 1, 2, 3, 4, 5, 6, 7, 8 };
+//			float[] im = new float[re.length];
+//
+//			System.out.println("original signal:");
+//			System.out.println("gRe = " + Matrix.toString(re));
+//			System.out.println("gIm = " + Matrix.toString(im));
+//
+//			Dft1d.Float dft = new Dft1dDirect.Float(re.length);
+//			dft.forward(re, im);
+////			float[] GRe = dft.getRe();
+////			float[] GIm = dft.getIm();
+//
+//			System.out.println("DFT spectrum:");
+//			System.out.println("GRe = " + Matrix.toString(re));
+//			System.out.println("GIm = " + Matrix.toString(im));
+//
+//			dft.inverse(re, im);
+//
+//			System.out.println("reconstructed signal:");
+//			System.out.println("gRe' = " + Matrix.toString(re));
+//			System.out.println("gIm' = " + Matrix.toString(im));
+//		}
+//		
+//		System.out.println();
+//		System.out.println("******************** Double test (DFT) ********************");
+//
+//		{
+//			double[] re = { 1, 2, 3, 4, 5, 6, 7, 8 };
+//			double[] im = new double[re.length];
+//
+//			System.out.println("original signal:");
+//			System.out.println("gRe = " + Matrix.toString(re));
+//			System.out.println("gIm = " + Matrix.toString(im));
+//
+//			Dft1d.Double dft = new Dft1dDirect.Double(re.length);
+//			dft.forward(re, im);
+//
+//			System.out.println("DFT spectrum:");
+//			System.out.println("GRe = " + Matrix.toString(re));
+//			System.out.println("GIm = " + Matrix.toString(im));
+//
+//			dft.inverse(re, im);
+//
+//			System.out.println("reconstructed signal:");
+//			System.out.println("gRe' = " + Matrix.toString(re));
+//			System.out.println("gIm' = " + Matrix.toString(im));
+//		}
+//	}
 
 }

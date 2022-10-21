@@ -16,7 +16,7 @@ import imagingbook.common.math.Matrix;
  * Direct (slow) version for that does NOT use pre-calculated cosine tables.
  * 
  * @author WB
- * @version 2019-12-26
+ * @version 2019/12/26
  *
  */
 public class Dct1dSlow implements Dct1d.Double {

@@ -15,10 +15,19 @@ import java.util.Arrays;
 import imagingbook.common.math.Matrix;
 
 /**
+ * <p>
  * Abstract super-class of all two-dimensional DFT/FFT implementations.
+ * Based on associated one-dimensional DFT/FFT methods (see {@link Dft1d}).
+ * See Ch. 19 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/10/21
+ * @see Dft1d
  */
 public abstract class Dft2d {
 	
@@ -64,6 +73,7 @@ public abstract class Dft2d {
 		 * 
 		 * @param gRe real part of the signal (modified)
 		 * @param gIm imaginary part of the signal (modified)
+		 * @see #transform(float[][], float[][], boolean)
 		 */
 		public void forward(float[][] gRe, float[][] gIm) {
 			checkSize(gRe, gIm);
@@ -76,6 +86,7 @@ public abstract class Dft2d {
 		 * 
 		 * @param GRe real part of the spectrum (modified)
 		 * @param GIm imaginary part of the spectrum (modified)
+		 * @see #transform(float[][], float[][], boolean)
 		 */
 		public void inverse(float[][] GRe, float[][] GIm) {
 			checkSize(GRe, GIm);
@@ -91,7 +102,7 @@ public abstract class Dft2d {
 		 * @param inIm imaginary part of the input signal or spectrum (modified)
 		 * @param forward forward transformation if {@code true}, inverse transformation if {@code false}
 		 */
-		void transform(float[][] inRe, float[][] inIm, boolean forward) {
+		public void transform(float[][] inRe, float[][] inIm, boolean forward) {
 			requireNonNull(inRe);
 			requireNonNull(inIm);
 			final int width = inRe.length;
@@ -179,7 +190,7 @@ public abstract class Dft2d {
 				for (int v = 0; v < height; v++) {
 					float a = re[u][v];
 					float b = im[u][v];
-					mag[u][v] = (float) Math.sqrt(a*a + b*b);
+					mag[u][v] = (float) Math.hypot(a, b);
 				}
 			}
 			return mag;
@@ -212,6 +223,7 @@ public abstract class Dft2d {
 		 * 
 		 * @param gRe real part of the signal (modified)
 		 * @param gIm imaginary part of the signal (modified)
+		 * @see #transform(double[][], double[][], boolean)
 		 */
 		public void forward(double[][] gRe, double[][] gIm) {
 			checkSize(gRe, gIm);
@@ -224,6 +236,7 @@ public abstract class Dft2d {
 		 * 
 		 * @param GRe real part of the spectrum (modified)
 		 * @param GIm imaginary part of the spectrum (modified)
+		 * @see #transform(double[][], double[][], boolean)
 		 */
 		public void inverse(double[][] GRe, double[][] GIm) {
 			checkSize(GRe, GIm);
@@ -238,7 +251,9 @@ public abstract class Dft2d {
 		 * @param gIm
 		 * @param forward
 		 */
-		private void transform(double[][] gRe, double[][] gIm, boolean forward) {
+		public void transform(double[][] gRe, double[][] gIm, boolean forward) {
+			requireNonNull(gRe);
+			requireNonNull(gIm);
 			final int width = gRe.length;
 			final int height = gRe[0].length;
 
@@ -311,6 +326,7 @@ public abstract class Dft2d {
 		
 		/**
 		 * Calculates and returns the magnitude of the supplied complex-valued 2D data.
+		 * 
 		 * @param re the real part of the data
 		 * @param im the imaginary part of the data
 		 * @return a 2D array of magnitude values
@@ -324,17 +340,18 @@ public abstract class Dft2d {
 				for (int v = 0; v < height; v++) {
 					double a = re[u][v];
 					double b = im[u][v];
-					mag[u][v] = Math.sqrt(a*a + b*b);
+					mag[u][v] = Math.hypot(a, b);
 				}
 			}
 			return mag;
 		}
 		
 		private void checkSize(double[][] re, double[][] im) {
+			requireNonNull(re);
+			requireNonNull(im);
 			if (!Matrix.sameSize(re, im))
 				throw new IllegalArgumentException("arrays for real/imagingary parts must be of same size");
 		}		
 	}
 	
-
 }
