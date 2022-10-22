@@ -17,6 +17,8 @@ public abstract class Dft2dDirect extends Dft2dImp {
 		 * Constructor using a specific scaling mode.
 		 * 
 		 * @param sm the scaling mode
+		 * @param width width of the data array (dimension 0)
+		 * @param height height of the data array (dimension 1)
 		 */
 		public Float(int width, int height, ScalingMode sm) {
 			super(width, height, sm);
@@ -24,6 +26,9 @@ public abstract class Dft2dDirect extends Dft2dImp {
 		
 		/**
 		 * Constructor using the default scaling mode.
+		 * 
+		 * @param width width of the data array (dimension 0)
+		 * @param height height of the data array (dimension 1)
 		 */
 		public Float(int width, int height) {
 			this(width, height, ScalingMode.DEFAULT);
@@ -48,6 +53,8 @@ public abstract class Dft2dDirect extends Dft2dImp {
 		/**
 		 * Constructor using a specific scaling mode.
 		 * 
+		 * @param width width of the data array (dimension 0)
+		 * @param height height of the data array (dimension 1)
 		 * @param sm the scaling mode
 		 */
 		public Double(int width, int height, ScalingMode sm) {
@@ -56,6 +63,9 @@ public abstract class Dft2dDirect extends Dft2dImp {
 		
 		/**
 		 * Constructor using the default scaling mode.
+		 * 
+		 * @param width width of the data array (dimension 0)
+		 * @param height height of the data array (dimension 1)
 		 */
 		public Double(int width, int height) {
 			this(width, height, ScalingMode.DEFAULT);

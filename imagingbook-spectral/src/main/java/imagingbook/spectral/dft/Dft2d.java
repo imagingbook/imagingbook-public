@@ -36,7 +36,7 @@ public interface Dft2d {
 	public interface Float extends Dft2d {
 		
 		/**
-		 * Returns a suitable 1D DFT of the specified size ({@code float)).
+		 * Returns a suitable 1D DFT of the specified size ({@code float}).
 		 * @param size the size of the DFT
 		 * @return a {@link Dft1d.Float} instance
 		 */
@@ -169,7 +169,7 @@ public interface Dft2d {
 	public interface Double extends Dft2d {
 		
 		/**
-		 * Returns a suitable 1D DFT of the specified size ({@code double)).
+		 * Returns a suitable 1D DFT of the specified size ({@code double}).
 		 * @param size the size of the DFT
 		 * @return a {@link Dft1d.Double} instance
 		 */
@@ -180,8 +180,8 @@ public interface Dft2d {
 		 * must be supplied for the real and imaginary parts of the signal (forward)
 		 * or spectrum (inverse), neither of which may be null.
 		 * 
-		 * @param inRe real part of the input signal or spectrum (modified)
-		 * @param inIm imaginary part of the input signal or spectrum (modified)
+		 * @param gRe real part of the input signal or spectrum (modified)
+		 * @param gIm imaginary part of the input signal or spectrum (modified)
 		 * @param forward forward transformation if {@code true}, inverse transformation if {@code false}
 		 */
 		public default void transform(double[][] gRe, double[][] gIm, boolean forward) {
@@ -255,7 +255,7 @@ public interface Dft2d {
 		 * 
 		 * @param gRe real part of the signal (modified)
 		 * @param gIm imaginary part of the signal (modified)
-		 * @see #transform(float[][], float[][], boolean)
+		 * @see #transform(double[][], double[][], boolean)
 		 */
 		public default void forward(double[][] gRe, double[][] gIm) {
 			transform(gRe, gIm, true);
@@ -267,7 +267,7 @@ public interface Dft2d {
 		 * 
 		 * @param GRe real part of the spectrum (modified)
 		 * @param GIm imaginary part of the spectrum (modified)
-		 * @see #transform(float[][], float[][], boolean)
+		 * @see #transform(double[][], double[][], boolean)
 		 */
 		public default void inverse(double[][] GRe, double[][] GIm) {
 			transform(GRe, GIm, false);

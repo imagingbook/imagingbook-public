@@ -13,14 +13,16 @@ import org.jtransforms.fft.FloatFFT_1D;
 
 /**
  * <p>
- * FFT (fast) implementation of the DFT, based on the JTransforms package
- * by Piotr Wendykier (see <a href="https://github.com/wendykierp/JTransforms">
- * https://github.com/wendykierp/JTransforms</a>).
- * See Sec. 18.4.2 of [1] for additional details.
+ * FFT (fast) implementation of the DFT, based on the JTransforms package by
+ * Piotr Wendykier (see <a href="https://github.com/wendykierp/JTransforms">
+ * https://github.com/wendykierp/JTransforms</a>). Note that this class has no
+ * public constructor - instantiate sub-class {@link Dft1dFast.Float} or
+ * {@link Dft1dFast.Double} instead. See Sec. 18.4.2 of [1] for additional
+ * details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
  * </p>
  */
 public abstract class Dft1dFast extends Dft1dImp {

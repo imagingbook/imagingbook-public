@@ -10,13 +10,14 @@ package imagingbook.spectral.dft;
 
 /**
  * <p>
- * Direct (slow) implementation of the 1-dimensional DFT
- * using tabulated sine and cosine values.
+ * Direct (slow) implementation of the 1-dimensional DFT using tabulated sine
+ * and cosine values. Note that this class has no public constructor - instantiate
+ * sub-class {@link Dft1dDirect.Float} or {@link Dft1dDirect.Double} instead.
  * See Sec. 18.4.1 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
