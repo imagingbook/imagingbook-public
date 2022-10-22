@@ -42,5 +42,12 @@ public enum ScalingMode {
 		}
 	};
 	
+	/**
+	 * Returns the DFT scale factor for the specified data size and transformation
+	 * direction.
+	 * @param M the data size
+	 * @param forward {@code true} for a forward, {@code false} for a inverse transform
+	 * @return the scale factor
+	 */
 	public abstract double getScale(int M, boolean forward);
 }
