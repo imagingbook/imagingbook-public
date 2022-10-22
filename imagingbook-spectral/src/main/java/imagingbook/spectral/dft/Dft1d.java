@@ -24,7 +24,13 @@ import java.util.Objects;
  */
 public interface Dft1d {
 	
+	public int getSize();
+	public ScalingMode getScalingMode();
+	
+	// ---------------------------------------------------------------------------------
+	
 	public interface Float extends Dft1d {
+		
 		/**
 		 * Performs an "in-place" DFT forward transformation on the supplied 1D {@code float} data.
 		 * The input signal is replaced by the associated DFT spectrum.

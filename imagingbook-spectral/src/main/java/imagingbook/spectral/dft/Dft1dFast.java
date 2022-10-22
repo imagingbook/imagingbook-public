@@ -23,14 +23,10 @@ import org.jtransforms.fft.FloatFFT_1D;
  * 3rd ed, Springer (2022).
  * </p>
  */
-public abstract class Dft1dFast {
+public abstract class Dft1dFast extends Dft1dImp {
 	
-	final int M;	// size (length) of the signal or spectrum
-	final ScalingMode scalingMode;	
-	
-	private Dft1dFast(int M, ScalingMode sm) {
-		this.M = M;
-		this.scalingMode = sm;
+	private Dft1dFast(int size, ScalingMode sm) {
+		super(size, sm);
 	}
 	
 	// ----------------------------------------------------------------------
@@ -77,7 +73,7 @@ public abstract class Dft1dFast {
 		@Override
 		public void transform(float[] inRe, float[] inIm, boolean forward) {
 			checkSize(inRe, inIm, M);
-			final float scale = (float) scalingMode.getScale(M, forward);
+			final float scale = (float) sm.getScale(M, forward);
 			composeA(inRe, inIm, A);	
 			if (forward)
 				fft.complexForward(A);
@@ -147,7 +143,7 @@ public abstract class Dft1dFast {
 		@Override
 		public void transform(double[] inRe, double[] inIm, boolean forward) {
 			checkSize(inRe, inIm, M);
-			final double scale = scalingMode.getScale(M, forward);
+			final double scale = sm.getScale(M, forward);
 			composeA(inRe, inIm, A);	
 			if (forward)
 				fft.complexForward(A);

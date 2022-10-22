@@ -21,34 +21,29 @@ package imagingbook.spectral.dft;
  * 
  * @author WB
  */
-public abstract class Dft1dDirect {
+public abstract class Dft1dDirect extends Dft1dImp {
 	
-	final int M;	// size (length) of the signal or spectrum
-	final ScalingMode sm;	
-	final double[] cosTable;
-	final double[] sinTable;
+	final double[] WC;	// table of cosine values, WC(k) = cos(2 pi k / M)
+	final double[] WS;	// table of sine values,   WC(k) = sin(2 pi k / M)
 	
-	private Dft1dDirect(int M, ScalingMode sm) {
-		this.M = M;
-		this.sm = sm;
-		this.cosTable = makeCosTable();
-		this.sinTable = makeSinTable();
+	private Dft1dDirect(int size, ScalingMode sm) {
+		super(size, sm);	// sets M
+		this.WC = makeCosTable();
+		this.WS = makeSinTable();
 	}
 	
 	private double[] makeCosTable() {
-		double[] cosTable = new double[M];
-		double theta = 2 * Math.PI / M;
-		for (int i = 0; i < M; i++) {
-			cosTable[i] = Math.cos(theta * i);
+		final double[] cosTable = new double[M];
+		for (int k = 0; k < M; k++) {
+			cosTable[k] = Math.cos(2 * Math.PI * k / M);
 		}
 		return cosTable;
 	}
 
 	private double[] makeSinTable() {
-		double[] sinTable = new double[M];
-		double theta = 2 * Math.PI / M;
-		for (int i = 0; i < M; i++) {
-			sinTable[i] = Math.sin(theta * i);
+		final double[] sinTable = new double[M];
+		for (int k = 0; k < M; k++) {
+			sinTable[k] = Math.sin(2 * Math.PI * k / M);
 		}
 		return sinTable;
 	}
@@ -107,8 +102,8 @@ public abstract class Dft1dDirect {
 					final double re = inRe[m];
 					final double im = inIm[m];
 					final int k = (u * m) % M;
-					final double cosPhi = cosTable[k];
-					final double sinPhi = (forward) ? -sinTable[k] : sinTable[k];
+					final double cosPhi = WC[k];
+					final double sinPhi = (forward) ? -WS[k] : WS[k];
 					// complex multiplication: (gRe + i gIm) * (cosPhi + i sinPhi)
 					sumRe += re * cosPhi - im * sinPhi;
 					sumIm += re * sinPhi + im * cosPhi;
@@ -175,8 +170,8 @@ public abstract class Dft1dDirect {
 					final double re = inRe[m];
 					final double im = inIm[m];
 					final int k = (u * m) % M;
-					final double cosPhi = cosTable[k];
-					final double sinPhi = (forward) ? -sinTable[k] : sinTable[k];
+					final double cosPhi = WC[k];
+					final double sinPhi = (forward) ? -WS[k] : WS[k];
 					// complex multiplication: (gRe + i gIm) * (cosPhi + i sinPhi)
 					sumRe += re * cosPhi - im * sinPhi;
 					sumIm += re * sinPhi + im * cosPhi;
