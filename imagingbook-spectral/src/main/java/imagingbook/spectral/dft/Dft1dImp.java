@@ -7,7 +7,7 @@ package imagingbook.spectral.dft;
  * @author WB
  *
  */
-public abstract class Dft1dImp implements Dft1d {
+abstract class Dft1dImp implements Dft1d {
 	
 	final int M;		// data size
 	final ScalingMode sm;

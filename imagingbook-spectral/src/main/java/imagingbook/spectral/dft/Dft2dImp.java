@@ -7,7 +7,7 @@ package imagingbook.spectral.dft;
  * @author WB
  *
  */
-public abstract class Dft2dImp implements Dft2d {
+abstract class Dft2dImp implements Dft2d {
 	
 	final int M, N;		// width (M) and height (N) of the data array
 	final ScalingMode sm;
