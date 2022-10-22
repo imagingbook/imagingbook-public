@@ -8,11 +8,7 @@
  *******************************************************************************/
 package imagingbook.spectral.dft;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Arrays;
-
-import imagingbook.common.math.Matrix;
 
 /**
  * <p>
@@ -31,9 +27,20 @@ import imagingbook.common.math.Matrix;
  */
 public interface Dft2d {
 	
+	public int getWidth();
+	public int getHeight();
+	public ScalingMode getScalingMode();
+	
 	// -------------------------------------------------------------
 	
 	public interface Float extends Dft2d {
+		
+		/**
+		 * Returns a suitable 1D DFT of the specified size ({@code float)).
+		 * @param size the size of the DFT
+		 * @return a {@link Dft1d.Float} instance
+		 */
+		public Dft1d.Float get1dDft(int size);
 		
 		/**
 		 * Transforms the given 2D arrays 'in-place'. Separate arrays of identical size
@@ -45,10 +52,10 @@ public interface Dft2d {
 		 * @param forward forward transformation if {@code true}, inverse transformation if {@code false}
 		 */
 		public default void transform(float[][] inRe, float[][] inIm, boolean forward) {
-			requireNonNull(inRe);
-			requireNonNull(inIm);
-			final int width = inRe.length;
-			final int height = inRe[0].length;
+			checkSize(inRe);
+			checkSize(inIm);
+			final int width = this.getWidth();
+			final int height = this.getHeight();
 
 			// transform each row (in place):
 			final float[] rowRe = new float[width];
@@ -75,7 +82,7 @@ public interface Dft2d {
 			}
 		}
 		
-		public Dft1d.Float get1dDft(int size);
+		
 		
 		public default void extractRow(float[][] g, int v, float[] row) {
 			for (int u = 0; u < row.length; u++) {
@@ -110,7 +117,6 @@ public interface Dft2d {
 		 * @see #transform(float[][], float[][], boolean)
 		 */
 		public default void forward(float[][] gRe, float[][] gIm) {
-			checkSize(gRe, gIm);
 			transform(gRe, gIm, true);
 		}
 		
@@ -123,13 +129,16 @@ public interface Dft2d {
 		 * @see #transform(float[][], float[][], boolean)
 		 */
 		public default void inverse(float[][] GRe, float[][] GIm) {
-			checkSize(GRe, GIm);
 			transform(GRe, GIm, false);
 		}
 		
-		public default void checkSize(float[][] re, float[][] im) {
-			if (!Matrix.sameSize(re, im))
-				throw new IllegalArgumentException("arrays for real/imagingary parts must be of same size");
+		public default void checkSize(float[][] A) {
+			if (A.length != this.getWidth()) 
+				throw new IllegalArgumentException(
+						String.format("wrong 2D array width %d (expected %d)", A.length, this.getWidth()));
+			if (A[0].length != this.getHeight()) 
+				throw new IllegalArgumentException(
+						String.format("wrong 2D array height %d (expected %d)", A[0].length, this.getHeight()));
 		}
 		
 		/**
@@ -138,8 +147,9 @@ public interface Dft2d {
 		 * @param im the imaginary part of the data
 		 * @return a 2D array of magnitude values
 		 */
-		public default  float[][] getMagnitude(float[][] re, float[][] im) {
-			checkSize(re, im);
+		public default float[][] getMagnitude(float[][] re, float[][] im) {
+			checkSize(re);
+			checkSize(im);
 			final int width = re.length;
 			final int height = re[0].length;
 			float[][] mag = new float[width][height];
@@ -159,6 +169,13 @@ public interface Dft2d {
 	public interface Double extends Dft2d {
 		
 		/**
+		 * Returns a suitable 1D DFT of the specified size ({@code double)).
+		 * @param size the size of the DFT
+		 * @return a {@link Dft1d.Double} instance
+		 */
+		public Dft1d.Double get1dDft(int size);
+		
+		/**
 		 * Transforms the given 2D arrays 'in-place'. Separate arrays of identical size
 		 * must be supplied for the real and imaginary parts of the signal (forward)
 		 * or spectrum (inverse), neither of which may be null.
@@ -168,10 +185,10 @@ public interface Dft2d {
 		 * @param forward forward transformation if {@code true}, inverse transformation if {@code false}
 		 */
 		public default void transform(double[][] gRe, double[][] gIm, boolean forward) {
-			requireNonNull(gRe);
-			requireNonNull(gIm);
-			final int width = gRe.length;
-			final int height = gRe[0].length;
+			checkSize(gRe);
+			checkSize(gIm);
+			final int width = this.getWidth();
+			final int height = this.getHeight();
 
 			// transform each row (in place):
 			final double[] rowRe = new double[width];
@@ -197,8 +214,6 @@ public interface Dft2d {
 				insertCol(gIm, u, colIm);
 			}
 		}
-		
-		public Dft1d.Double get1dDft(int size);
 		
 		public default void extractRow(double[][] g, int v, double[] row) {
 			if (g == null) {			// TODO: check if needed
@@ -243,7 +258,6 @@ public interface Dft2d {
 		 * @see #transform(float[][], float[][], boolean)
 		 */
 		public default void forward(double[][] gRe, double[][] gIm) {
-			checkSize(gRe, gIm);
 			transform(gRe, gIm, true);
 		}
 		
@@ -256,7 +270,6 @@ public interface Dft2d {
 		 * @see #transform(float[][], float[][], boolean)
 		 */
 		public default void inverse(double[][] GRe, double[][] GIm) {
-			checkSize(GRe, GIm);
 			transform(GRe, GIm, false);
 		}
 		
@@ -268,7 +281,8 @@ public interface Dft2d {
 		 * @return a 2D array of magnitude values
 		 */
 		public default double[][] getMagnitude(double[][] re, double[][] im) {
-			checkSize(re, im);
+			checkSize(re);
+			checkSize(im);
 			final int width = re.length;
 			final int height = re[0].length;
 			double[][] mag = new double[width][height];
@@ -282,9 +296,13 @@ public interface Dft2d {
 			return mag;
 		}
 		
-		public default void checkSize(double[][] re, double[][] im) {
-			if (!Matrix.sameSize(re, im))
-				throw new IllegalArgumentException("arrays for real/imagingary parts must be of same size");
+		public default void checkSize(double[][] A) {
+			if (A.length != this.getWidth()) 
+				throw new IllegalArgumentException(
+						String.format("wrong 2D array width %d (expected %d)", A.length, this.getWidth()));
+			if (A[0].length != this.getHeight()) 
+				throw new IllegalArgumentException(
+						String.format("wrong 2D array height %d (expected %d)", A[0].length, this.getHeight()));
 		}
 	}
 	

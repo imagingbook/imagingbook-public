@@ -52,19 +52,21 @@ public class DFT_2D_Double_Demo implements PlugInFilter {
 		if (!runDialog()) 
 			return;
 		
+		int w = ip.getWidth();
+		int h = ip.getHeight();
 		FloatProcessor fp = ip.convertToFloatProcessor();
 		String name = imp.getShortTitle();
 		
 		double[][] re = Matrix.toDouble(fp.getFloatArray());
-		double[][] im = new double[fp.getWidth()][fp.getHeight()];
+		double[][] im = new double[w][h];
 		
 //		Dft2d.Double dft2 = new Dft2d.Double();
 //		dft2.setScalingMode(ScalingMode.DEFAULT);
 //		dft2.setFastMode(UseFastMode);
 		
 		Dft2d.Double dft2 = (UseFastMode) ? 
-				new Dft2dFast.Double(ScalingMode.DEFAULT) :
-				new Dft2dDirect.Double(ScalingMode.DEFAULT);
+				new Dft2dFast.Double(w, h, ScalingMode.DEFAULT) :
+				new Dft2dDirect.Double(w, h, ScalingMode.DEFAULT);
 		
 		dft2.forward(re, im);
 		

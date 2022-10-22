@@ -24,13 +24,13 @@ public class Dft2dTest {
 			// direct DFT:
 			float[][] reD = Matrix.duplicate(reOrig);
 			float[][] imD = Matrix.duplicate(imOrig);
-			Dft2d.Float dftD = new Dft2dDirect.Float();
+			Dft2d.Float dftD = new Dft2dDirect.Float(width, height);
 			dftD.forward(reD, imD);
 			
 			// fast DFT (FFT):
 			float[][] reF = Matrix.duplicate(reOrig);
 			float[][] imF = Matrix.duplicate(imOrig);
-			Dft2d.Float dftF = new Dft2dFast.Float();
+			Dft2d.Float dftF = new Dft2dFast.Float(width, height);
 			dftF.forward(reF, imF);
 
 			NumericTestUtils.assertArrayEquals(reD, reF, TOL);
@@ -56,13 +56,13 @@ public class Dft2dTest {
 			// direct DFT:
 			double[][] reD = Matrix.duplicate(reOrig);
 			double[][] imD = Matrix.duplicate(imOrig);
-			Dft2d.Double dftD = new Dft2dDirect.Double();
+			Dft2d.Double dftD = new Dft2dDirect.Double(width, height);
 			dftD.forward(reD, imD);
 			
 			// fast DFT (FFT):
 			double[][] reF = Matrix.duplicate(reOrig);
 			double[][] imF = Matrix.duplicate(imOrig);
-			Dft2d.Double dftF = new Dft2dFast.Double();
+			Dft2d.Double dftF = new Dft2dFast.Double(width, height);
 			dftF.forward(reF, imF);
 
 			NumericTestUtils.assertArrayEquals(reD, reF, TOL);

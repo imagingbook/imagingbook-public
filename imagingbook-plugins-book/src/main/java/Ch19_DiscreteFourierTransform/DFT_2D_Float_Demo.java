@@ -50,19 +50,21 @@ public class DFT_2D_Float_Demo implements PlugInFilter {
 		if (!runDialog()) 
 			return;
 		
+		int w = ip.getWidth();
+		int h = ip.getHeight();
 		FloatProcessor fp = ip.convertToFloatProcessor();
 		String name = imp.getShortTitle();
 		
 		float[][] re = fp.getFloatArray();
-		float[][] im = new float[fp.getWidth()][fp.getHeight()];
+		float[][] im = new float[w][h];
 		
 //		Dft2d.Float dft2 = new Dft2d.Float();
 //		dft2.setScalingMode(ScalingMode.DEFAULT);
 //		dft2.setFastMode(UseFastMode);
 		
 		Dft2d.Float dft2 = (UseFastMode) ? 
-				new Dft2dFast.Float(ScalingMode.DEFAULT) :
-				new Dft2dDirect.Float(ScalingMode.DEFAULT);
+				new Dft2dFast.Float(w, h, ScalingMode.DEFAULT) :
+				new Dft2dDirect.Float(w, h, ScalingMode.DEFAULT);
 		
 		dft2.forward(re, im);
 		

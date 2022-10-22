@@ -1,11 +1,9 @@
 package imagingbook.spectral.dft;
 
-public abstract class Dft2dFast {
+public abstract class Dft2dFast extends Dft2dImp {
 	
-	final ScalingMode sm;
-	
-	private Dft2dFast(ScalingMode sm) {
-		this.sm = sm;
+	private Dft2dFast(int width, int height, ScalingMode sm) {
+		super(width, height, sm);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -20,15 +18,15 @@ public abstract class Dft2dFast {
 		 * 
 		 * @param sm the scaling mode
 		 */
-		public Float(ScalingMode sm) {
-			super(sm);
+		public Float(int width, int height, ScalingMode sm) {
+			super(width, height, sm);
 		}
 		
 		/**
 		 * Constructor using the default scaling mode.
 		 */
-		public Float() {
-			this(ScalingMode.DEFAULT);
+		public Float(int width, int height) {
+			this(width, height, ScalingMode.DEFAULT);
 		}
 		
 		// -------------------
@@ -52,15 +50,15 @@ public abstract class Dft2dFast {
 		 * 
 		 * @param sm the scaling mode
 		 */
-		public Double(ScalingMode sm) {
-			super(sm);
+		public Double(int width, int height, ScalingMode sm) {
+			super(width, height, sm);
 		}
 		
 		/**
 		 * Constructor using the default scaling mode.
 		 */
-		public Double() {
-			this(ScalingMode.DEFAULT);
+		public Double(int width, int height) {
+			this(width, height, ScalingMode.DEFAULT);
 		}
 		
 		// -------------------
