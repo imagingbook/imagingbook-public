@@ -19,18 +19,25 @@ import imagingbook.spectral.dft.Dft2dFast;
 import imagingbook.spectral.dft.ScalingMode;
 
 
-/** 
- * This ImageJ plugin computes the 2-dimensional DFT (magnitude spectrum) from an image
- * of arbitrary size using {@code float} arrays.
- * Optionally, either a direct DFT or a fast FFT implementation is used.
+/**
+ * <p>
+ * This ImageJ plugin computes the 2-dimensional DFT (magnitude spectrum) from
+ * an image of arbitrary size using {@code float} data. Optionally, either a
+ * direct DFT or a fast FFT implementation is used. See Chapters 18-19 of [1]
+ * for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  *
  * @author WB
  * @version 2022/04/01
  * 
  * @see Dft2d.Float
- * @see DFT_2D_Double_Demo
+ * @see DFT_2D_Demo_Double
  */
-public class DFT_2D_Float_Demo implements PlugInFilter {
+public class DFT_2D_Demo_Float implements PlugInFilter {
 	
 	private static boolean ShowLogSpectrum = true;
 	private static boolean UseFastMode = true;
