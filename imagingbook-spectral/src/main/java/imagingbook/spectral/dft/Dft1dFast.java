@@ -60,19 +60,17 @@ public abstract class Dft1dFast extends Dft1dImp {
 		
 		@Override
 		public void forward(float[] gRe, float[] gIm) {
-			checkSize(gRe, gIm, M);
 			transform(gRe, gIm, true);
 		}
 		
 		@Override
 		public void inverse(float[] GRe, float[] GIm) {
-			checkSize(GRe, GIm, M);
 			transform(GRe, GIm, false);
 		}
 		
 		@Override
 		public void transform(float[] inRe, float[] inIm, boolean forward) {
-			checkSize(inRe, inIm, M);
+			checkSize(inRe, inIm);
 			final float scale = (float) sm.getScale(M, forward);
 			composeA(inRe, inIm, A);	
 			if (forward)
@@ -130,19 +128,17 @@ public abstract class Dft1dFast extends Dft1dImp {
 		
 		@Override
 		public void forward(double[] gRe, double[] gIm) {
-			checkSize(gRe, gIm, M);
 			transform(gRe, gIm, true);
 		}
 		
 		@Override
 		public void inverse(double[] GRe, double[] GIm) {
-			checkSize(GRe, GIm, M);
 			transform(GRe, GIm, false);
 		}
 		
 		@Override
 		public void transform(double[] inRe, double[] inIm, boolean forward) {
-			checkSize(inRe, inIm, M);
+			checkSize(inRe, inIm);
 			final double scale = sm.getScale(M, forward);
 			composeA(inRe, inIm, A);	
 			if (forward)

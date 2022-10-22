@@ -8,8 +8,6 @@
  *******************************************************************************/
 package imagingbook.spectral.dft;
 
-import java.util.Objects;
-
 /**
  * <p>
  * Interface to be implemented by all one-dimensional DFT/FFT implementations.
@@ -58,11 +56,14 @@ public interface Dft1d {
 		 */
 		public void transform(float[] inRe, float[] inIm, boolean forward);
 		
-		default void checkSize(float[] re, float[] im, int n) {
-			Objects.requireNonNull(re);
-			Objects.requireNonNull(im);
-			if (re.length != n || im.length != n)
-				throw new IllegalArgumentException("arrays for real/imagingary parts must be of size " + n);
+		default void checkSize(float[] re, float[] im) {
+			if (re.length != this.getSize())
+				throw new IllegalArgumentException(
+					String.format("re: wrong 1D array size %d (expected %d)", re.length, this.getSize()));
+			
+			if (im.length != this.getSize())
+				throw new IllegalArgumentException(
+					String.format("im: wrong 1D array size %d (expected %d)", im.length, this.getSize()));
 		}
 		
 	}
@@ -100,11 +101,14 @@ public interface Dft1d {
 		 */
 		public void transform(double[] inRe, double[] inIm, boolean forward);
 		
-		default void checkSize(double[] re, double[] im, int n) {
-			Objects.requireNonNull(re);
-			Objects.requireNonNull(im);
-			if (re.length != n || im.length != n)
-				throw new IllegalArgumentException("arrays for real/imagingary parts must be of size " + n);
+		default void checkSize(double[] re, double[] im) {
+			if (re.length != this.getSize())
+				throw new IllegalArgumentException(
+					String.format("re: wrong 1D array size %d (expected %d)", re.length, this.getSize()));
+			
+			if (im.length != this.getSize())
+				throw new IllegalArgumentException(
+					String.format("im: wrong 1D array size %d (expected %d)", im.length, this.getSize()));
 		}
 		
 	}
