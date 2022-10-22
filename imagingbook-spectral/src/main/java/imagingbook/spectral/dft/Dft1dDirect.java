@@ -105,7 +105,7 @@ public abstract class Dft1dDirect {
 				double sumIm = 0;
 				for (int m = 0; m < M; m++) {
 					final double re = inRe[m];
-					final double im = (inIm == null) ? 0 : inIm[m];
+					final double im = inIm[m];
 					final int k = (u * m) % M;
 					final double cosPhi = cosTable[k];
 					final double sinPhi = (forward) ? -sinTable[k] : sinTable[k];
@@ -173,7 +173,7 @@ public abstract class Dft1dDirect {
 				double sumIm = 0;
 				for (int m = 0; m < M; m++) {
 					final double re = inRe[m];
-					final double im = (inIm == null) ? 0 : inIm[m];
+					final double im = inIm[m];
 					final int k = (u * m) % M;
 					final double cosPhi = cosTable[k];
 					final double sinPhi = (forward) ? -sinTable[k] : sinTable[k];

@@ -78,13 +78,8 @@ public interface Dft2d {
 		public Dft1d.Float get1dDft(int size);
 		
 		public default void extractRow(float[][] g, int v, float[] row) {
-			if (g == null) {			// TODO: check if needed
-				Arrays.fill(row, 0);
-			}
-			else {
-				for (int u = 0; u < row.length; u++) {
-					row[u] = g[u][v];
-				}
+			for (int u = 0; u < row.length; u++) {
+				row[u] = g[u][v];
 			}
 		}
 		
@@ -95,13 +90,8 @@ public interface Dft2d {
 		}
 			
 		public default void extractCol(float[][] g, int u, float[] col) {
-			if (g == null) {			// TODO: check if needed
-				Arrays.fill(col, 0);
-			}
-			else {
-				for (int v = 0; v < col.length; v++) {
-					col[v] = g[u][v];
-				}
+			for (int v = 0; v < col.length; v++) {
+				col[v] = g[u][v];
 			}
 		}
 		
@@ -198,7 +188,7 @@ public interface Dft2d {
 			// transform each column (in place):
 			final double[] colRe = new double[height];
 			final double[] colIm = new double[height];
-			Dft1d.Double dftCol = get1dDft(width);
+			Dft1d.Double dftCol = get1dDft(height);
 			for (int u = 0; u < width; u++) {
 				extractCol(gRe, u, colRe);
 				extractCol(gIm, u, colIm);

@@ -1,5 +1,7 @@
 package imagingbook.spectral.dft;
 
+import static imagingbook.spectral.dft.Dft1dTest.makeRandomVectorDouble;
+import static imagingbook.spectral.dft.Dft1dTest.makeRandomVectorFloat;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Random;
@@ -32,8 +34,8 @@ public class Dft1dDirectTest {
 		float TOL = 1E-6f;
 		int n = 1;
 		for (int i = 0; i < 100; i++) {
-			float[] re = makeRandomvectorFloat(n, rg);
-			float[] im = makeRandomvectorFloat(n, rg);
+			float[] re = makeRandomVectorFloat(n, rg);
+			float[] im = makeRandomVectorFloat(n, rg);
 			runTestFloat(re, im, TOL);
 			n++;
 		}
@@ -45,8 +47,8 @@ public class Dft1dDirectTest {
 		double TOL = 1E-12;
 		int n = 1;
 		for (int i = 0; i < 100; i++) {
-			double[] re = makeRandomvectorDouble(n, rg);
-			double[] im = makeRandomvectorDouble(n, rg);
+			double[] re = makeRandomVectorDouble(n, rg);
+			double[] im = makeRandomVectorDouble(n, rg);
 			runTestDouble(re, im, TOL);
 			n++;
 		}
@@ -59,8 +61,8 @@ public class Dft1dDirectTest {
 		Random rg = new Random(17);
 		float TOL = 1E-6f;
 		int n = 10177;
-		float[] re = makeRandomvectorFloat(n, rg);
-		float[] im = makeRandomvectorFloat(n, rg);
+		float[] re = makeRandomVectorFloat(n, rg);
+		float[] im = makeRandomVectorFloat(n, rg);
 		runTestFloat(re, im, TOL);
 	}
 	
@@ -69,8 +71,8 @@ public class Dft1dDirectTest {
 		Random rg = new Random(17);
 		double TOL = 1E-12;
 		int n = 10177;
-		double[] re = makeRandomvectorDouble(n, rg);
-		double[] im = makeRandomvectorDouble(n, rg);
+		double[] re = makeRandomVectorDouble(n, rg);
+		double[] im = makeRandomVectorDouble(n, rg);
 		runTestDouble(re, im, TOL);
 	}
 	
@@ -95,24 +97,4 @@ public class Dft1dDirectTest {
 		assertArrayEquals(reOrig, re, TOL);
 		assertArrayEquals(imOrig, im, TOL);
 	}
-	
-	// ---------------------------------------------------------
-	
-	private float[] makeRandomvectorFloat(int n, Random rg) {
-		float[] a = new float[n];
-		for (int i = 0; i < n; i++) {
-			a[i] = 2 * rg.nextFloat() - 1;
-		}
-		return a;
-	}
-	
-	private double[] makeRandomvectorDouble(int n, Random rg) {
-		double[] a = new double[n];
-		for (int i = 0; i < n; i++) {
-			a[i] = 2 * rg.nextDouble() - 1;
-		}
-		return a;
-	}
-	
-	
 }
