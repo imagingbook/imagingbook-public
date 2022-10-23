@@ -21,6 +21,7 @@ package imagingbook.spectral.dft;
  * </p>
  * 
  * @author WB
+ * @version 2022/10/23
  */
 public abstract class Dft1dDirect extends Dft1dImp {
 	

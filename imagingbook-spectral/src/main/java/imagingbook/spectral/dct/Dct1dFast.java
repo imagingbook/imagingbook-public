@@ -13,15 +13,28 @@ package imagingbook.spectral.dct;
 import org.jtransforms.dct.DoubleDCT_1D;
 import org.jtransforms.dct.FloatDCT_1D;
 
-import imagingbook.common.math.Matrix;
-
 /**
- * Fast implementation of the DCT, based on the JTransforms package
- * by Piotr Wendykier (see <a href="https://github.com/wendykierp/JTransforms">
- * https://github.com/wendykierp/JTransforms</a>).
+ * <p>
+ * This is fast implementation of the DCT, based on the JTransforms package by
+ * Piotr Wendykier (<a href="https://github.com/wendykierp/JTransforms">
+ * https://github.com/wendykierp/JTransforms</a>). See Sec. 20.1 of [1] for
+ * additional details.
+ * </p>
+ * <p>
+ * Usage example (for {@code float} data):
+ * <pre>
+ * float[] data = {1, 2, 3, 4, 5, 3, 0};
+ * Dct1d.Float dct = new Dct1dFast.Float(data.length);
+ * dct.forward(data);
+ * dct.inverse(data);
+ * ... </pre>
+ * <p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  */
-public abstract class Dct1dFast {
-
+public abstract class Dct1dFast implements Dct1d {
 
 	final int M;				// size of the input vector
 	final double s; 			// common scale factor
@@ -31,12 +44,24 @@ public abstract class Dct1dFast {
 		this.s = Math.sqrt(2.0 / M); 
 	}
 	
+	@Override
+	public int getSize() {
+		return this.M;
+	}
+	
 	// ------------------------------------------------------------------------------
 	
+	/**
+	 * One-dimensional DCT implementation using {@code float} data. 
+	 */
 	public static class Float extends Dct1dFast implements Dct1d.Float {
 		
 		private final FloatDCT_1D fct;
 		
+		/**
+		 * Constructor.
+		 * @param M the data size
+		 */
 		public Float(int M) {
 			super(M);
 			this.fct = new FloatDCT_1D(M);
@@ -44,13 +69,13 @@ public abstract class Dct1dFast {
 
 		@Override
 		public void forward(float[] g) {
-			checkLength(g, M);
+			checkSize(g);
 			fct.forward(g, true);
 		}
 
 		@Override
 		public void inverse(float[] G) {
-			checkLength(G, M);
+			checkSize(G);
 			fct.inverse(G, true);
 		} 
 		
@@ -58,10 +83,17 @@ public abstract class Dct1dFast {
 
 	// ------------------------------------------------------------------------------
 	
+	/**
+	 * One-dimensional DCT implementation using {@code double} data. 
+	 */
 	public static class Double extends Dct1dFast implements Dct1d.Double {
 		
 		private final DoubleDCT_1D fct;
 		
+		/**
+		 * Constructor.
+		 * @param M the data size
+		 */
 		public Double(int M) {
 			super(M);
 			this.fct = new DoubleDCT_1D(M);
@@ -69,52 +101,15 @@ public abstract class Dct1dFast {
 
 		@Override
 		public void forward(double[] g) {
-			checkLength(g, M);
+			checkSize(g);
 			fct.forward(g, true);
 		}
 
 		@Override
 		public void inverse(double[] G) {
-			checkLength(G, M);
+			checkSize(G);
 			fct.inverse(G, true);
 		}
 	}
-
-	// -----------------------------------------------------------------------------
-
-	// test example
-	public static void main(String[] args) {
-		{
-			System.out.println("FLOAT (fast DCT) test:");
-			float[] data = {1,2,3,4,5,3,0};
-			System.out.println("Original data:      " + Matrix.toString(data));
-	
-			Dct1d.Float dct = new Dct1dFast.Float(data.length);
-			dct.forward(data);
-			System.out.println("DCT spectrum:       " + Matrix.toString(data));
-	
-			dct.inverse(data);
-			System.out.println("Reconstructed data: " + Matrix.toString(data));
-			System.out.println();
-		}
-		{
-			System.out.println("DOUBLE (fast DCT) test:");
-			double[] data = {1,2,3,4,5,3,0};
-			System.out.println("Original data:      " + Matrix.toString(data));
-	
-			Dct1d.Double dct = new Dct1dFast.Double(data.length);
-			dct.forward(data);
-			System.out.println("DCT spectrum:       " + Matrix.toString(data));
-	
-			dct.inverse(data);
-			System.out.println("Reconstructed data: " + Matrix.toString(data));
-			System.out.println();
-		}
-	}
-
-	//	Original data:      {1.000, 2.000, 3.000, 4.000, 5.000, 3.000, 0.000}
-	//	DCT of data:        {6.803, -0.361, -3.728, 1.692, -0.888, -0.083, 0.167}
-	//	Reconstructed data: {1.000, 2.000, 3.000, 4.000, 5.000, 3.000, -0.000}
-
 
 }

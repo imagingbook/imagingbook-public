@@ -9,17 +9,35 @@
 
 package imagingbook.spectral.dct;
 
-import imagingbook.common.math.Matrix;
-
 /**
- * This class calculates the 1D DFT using tabulated cosine values.
- * This version is considerably faster than the naive version without tables.
- * Other optimizations are possible.
+ * <p>
+ * Calculates the 1D DFT using tabulated cosine values
+ * for {@code float} or {@code double} data (see sub-classes
+ * {@link Dct1dDirect.Float} and {@link Dct1dDirect.Double}, respectively).
+ * This implementation is
+ * considerably faster than the naive version without cosine tables (see
+ * {@link Dct1dSlow}). Other optimizations are possible. See Sec. 20.1 of [1]
+ * for additional details.
+ * </p>
+ * <p>
+ * Usage example (for {@code float} data):
+ * <pre>
+ * float[] data = {1, 2, 3, 4, 5, 3, 0};
+ * Dct1d.Float dct = new Dct1dDirect.Float(data.length);
+ * dct.forward(data);
+ * dct.inverse(data);
+ * ... </pre>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2019-12-26
+ * @version 2022/10/23
+ * @see Dct1dSlow
+ * @see Dct1dFast
  */
-public abstract class Dct1dDirect {
+public abstract class Dct1dDirect implements Dct1d {
 
 	final double CM0 = 1.0 / Math.sqrt(2);
 	final int M;				// size of the input vector
@@ -44,12 +62,24 @@ public abstract class Dct1dDirect {
 		return table;
 	}
 	
+	@Override
+	public int getSize() {
+		return this.M;
+	}
+	
 	// ------------------------------------------------------------------------------
 	
+	/**
+	 * One-dimensional DCT implementation using {@code float} data. 
+	 */
 	public static class Float extends Dct1dDirect implements Dct1d.Float {
 		
 		private final float[] tmp;		// array to hold temporary data
 		
+		/**
+		 * Constructor.
+		 * @param M the data size
+		 */
 		public Float(int M) {
 			super(M);
 			this.tmp = new float[M];
@@ -57,7 +87,7 @@ public abstract class Dct1dDirect {
 
 		@Override
 		public void forward(float[] g) {
-			checkLength(g, M);
+			checkSize(g);
 			if (g.length != M)
 				throw new IllegalArgumentException();
 			float[] G = tmp;
@@ -74,7 +104,7 @@ public abstract class Dct1dDirect {
 
 		@Override
 		public void inverse(float[] G) {
-			checkLength(G, M);
+			checkSize(G);
 			if (G.length != M)
 				throw new IllegalArgumentException();
 			float[] g = tmp;
@@ -93,10 +123,17 @@ public abstract class Dct1dDirect {
 
 	// ------------------------------------------------------------------------------
 	
+	/**
+	 * One-dimensional DCT implementation using {@code double} data. 
+	 */
 	public static class Double extends Dct1dDirect implements Dct1d.Double {
 		
 		private final double[] tmp;		// array to hold temporary data
 		
+		/**
+		 * Constructor.
+		 * @param M the data size
+		 */
 		public Double(int M) {
 			super(M);
 			this.tmp = new double[M];
@@ -104,7 +141,7 @@ public abstract class Dct1dDirect {
 
 		@Override
 		public void forward(double[] g) {
-			checkLength(g, M);
+			checkSize(g);
 			if (g.length != M)
 				throw new IllegalArgumentException();
 			double[] G = tmp;
@@ -121,7 +158,7 @@ public abstract class Dct1dDirect {
 
 		@Override
 		public void inverse(double[] G) {
-			checkLength(G, M);
+			checkSize(G);
 			if (G.length != M)
 				throw new IllegalArgumentException();
 			double[] g = tmp;
@@ -136,42 +173,5 @@ public abstract class Dct1dDirect {
 			System.arraycopy(g, 0, G, 0, M); // copy g -> G
 		}
 	}
-
-	// -----------------------------------------------------------------------------
-
-	// test example
-	public static void main(String[] args) {
-		{
-			System.out.println("FLOAT test:");
-			float[] data = {1,2,3,4,5,3,0};
-			System.out.println("Original data:      " + Matrix.toString(data));
-	
-			Dct1d.Float dct = new Dct1dDirect.Float(data.length);
-			dct.forward(data);
-			System.out.println("DCT spectrum:       " + Matrix.toString(data));
-	
-			dct.inverse(data);
-			System.out.println("Reconstructed data: " + Matrix.toString(data));
-			System.out.println();
-		}
-		{
-			System.out.println("DOUBLE test:");
-			double[] data = {1,2,3,4,5,3,0};
-			System.out.println("Original data:      " + Matrix.toString(data));
-	
-			Dct1d.Double dct = new Dct1dDirect.Double(data.length);
-			dct.forward(data);
-			System.out.println("DCT spectrum:       " + Matrix.toString(data));
-	
-			dct.inverse(data);
-			System.out.println("Reconstructed data: " + Matrix.toString(data));
-			System.out.println();
-		}
-	}
-
-	//	Original data:      {1.000, 2.000, 3.000, 4.000, 5.000, 3.000, 0.000}
-	//	DCT of data:        {6.803, -0.361, -3.728, 1.692, -0.888, -0.083, 0.167}
-	//	Reconstructed data: {1.000, 2.000, 3.000, 4.000, 5.000, 3.000, -0.000}
-
 
 }

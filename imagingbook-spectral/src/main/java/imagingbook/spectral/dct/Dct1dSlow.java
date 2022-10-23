@@ -9,31 +9,57 @@
 
 package imagingbook.spectral.dct;
 
-import imagingbook.common.math.Matrix;
-
 /**
- * This class calculates the 1D DFT.
- * Direct (slow) version for that does NOT use pre-calculated cosine tables.
+ * <p>
+ * Calculates the 1D discrete cosine transform (DFT) on {@code double} data.
+ * This is a naive implementation which calculates cosines repeatedly (i.e., does
+ * NOT use pre-calculated cosine tables), intended for demonstration purposes
+ * only. See Sec. 20.1 (Prog. 20.1) of [1] for additional details.
+ * </p>
+ * <p>
+ * Usage example:
+ * <pre>
+ * double[] data = {1, 2, 3, 4, 5, 3, 0};
+ * Dct1d.Double dct = new Dct1dSlow(data.length);
+ * dct.forward(data);
+ * dct.inverse(data);
+ * ... </pre>
+ * <p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2019/12/26
- *
+ * @version 2022/10/23
+ * @see Dct1dDirect
+ * @see Dct1dFast
  */
 public class Dct1dSlow implements Dct1d.Double {
 
-	final double CM0 = 1.0 / Math.sqrt(2);
-	final int M;
-	final private double[] tmp;
+	private final double CM0 = 1.0 / Math.sqrt(2);
+	private final int M;
+	private final double[] tmp;
 
+	/**
+	 * Constructor.
+	 * @param M the data size
+	 */
 	public Dct1dSlow(int M) {
 		this.M = M;
 		this.tmp = new double[M];
 	}
+	
+	@Override
+	public int getSize() {
+		return this.M;
+	}
+	
+	// ----------------------------------------------------------------------------
 
 	@Override
 	public void forward(double[] g) {
-		if (g.length != M)
-			throw new IllegalArgumentException();
+		checkSize(g);
 		final double s = Math.sqrt(2.0 / M);
 		double[] G = tmp;
 		for (int m = 0; m < M; m++) {
@@ -50,8 +76,7 @@ public class Dct1dSlow implements Dct1d.Double {
 
 	@Override
 	public void inverse(double[] G) {
-		if (G.length != M)
-			throw new IllegalArgumentException();
+		checkSize(G);
 		final double s = Math.sqrt(2.0 / M); //common scale factor
 		double[] g = tmp;
 		for (int u = 0; u < M; u++) {
@@ -66,21 +91,19 @@ public class Dct1dSlow implements Dct1d.Double {
 		System.arraycopy(g, 0, G, 0, M); // copy g -> G
 	}
 
-	// ------------------------------------------------------------------------------------------------
-
 	// test example
-	public static void main(String[] args) {
-
-		double[] data = {1,2,3,4,5,3,0};
-		System.out.println("Original data:      " + Matrix.toString(data));
-
-		Dct1d.Double dct = new Dct1dSlow(data.length);
-		dct.forward(data);
-		System.out.println("DCT spectrum:       " + Matrix.toString(data));
-
-		dct.inverse(data);
-		System.out.println("Reconstructed data: " + Matrix.toString(data));
-	}
+//	public static void main(String[] args) {
+//		PrintPrecision.set(6);
+//		double[] data = {1,2,3,4,5,3,0};
+//		System.out.println("Original data:      " + Matrix.toString(data));
+//
+//		Dct1d.Double dct = new Dct1dSlow(data.length);
+//		dct.forward(data);
+//		System.out.println("DCT spectrum:       " + Matrix.toString(data));
+//
+//		dct.inverse(data);
+//		System.out.println("Reconstructed data: " + Matrix.toString(data));
+//	}
 
 	//	Original data:      {1.000, 2.000, 3.000, 4.000, 5.000, 3.000, 0.000}
 	//	DCT of data:        {6.803, -0.361, -3.728, 1.692, -0.888, -0.083, 0.167}

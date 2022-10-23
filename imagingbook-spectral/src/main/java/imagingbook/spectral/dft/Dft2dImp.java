@@ -1,7 +1,7 @@
 package imagingbook.spectral.dft;
 
 /**
- * Abstract super class for all 2D DFT implementations.
+ * Abstract super class common to all 2D DFT implementations.
  * Holds information about data size and scaling mode.
  * 
  * @author WB

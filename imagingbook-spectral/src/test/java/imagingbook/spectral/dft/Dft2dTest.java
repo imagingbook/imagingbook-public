@@ -5,6 +5,7 @@ import java.util.Random;
 import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
+import imagingbook.spectral.TestUtils;
 import imagingbook.testutils.NumericTestUtils;
 
 public class Dft2dTest {
@@ -18,8 +19,8 @@ public class Dft2dTest {
 		int height = n;
 		for (int i = 0; i < n; i++) {
 //			System.out.println("w = " + width + " h = " + height);
-			float[][] reOrig = makeRandomArrayFloat(width, height, rg);
-			float[][] imOrig = makeRandomArrayFloat(width, height, rg);
+			float[][] reOrig = TestUtils.makeRandomArrayFloat(width, height, rg);
+			float[][] imOrig = TestUtils.makeRandomArrayFloat(width, height, rg);
 			
 			// direct DFT:
 			float[][] reD = Matrix.duplicate(reOrig);
@@ -50,8 +51,8 @@ public class Dft2dTest {
 		int height = n;
 		for (int i = 0; i < n; i++) {
 //			System.out.println("w = " + width + " h = " + height);
-			double[][] reOrig = makeRandomArrayDouble(width, height, rg);
-			double[][] imOrig = makeRandomArrayDouble(width, height, rg);
+			double[][] reOrig = TestUtils.makeRandomArrayDouble(width, height, rg);
+			double[][] imOrig = TestUtils.makeRandomArrayDouble(width, height, rg);
 			
 			// direct DFT:
 			double[][] reD = Matrix.duplicate(reOrig);
@@ -73,26 +74,4 @@ public class Dft2dTest {
 		}
 	}
 	
-	// ------------------------------------------------------------------
-
-	static float[][] makeRandomArrayFloat(int n0, int n1, Random rg) {
-		float[][] a = new float[n0][n1];
-		for (int i = 0; i < n0; i++) {
-			for (int j = 0; j < n1; j++) {
-				a[i][j] = 2 * rg.nextFloat() - 1;
-			}
-		}
-		return a;
-	}
-	
-	static double[][] makeRandomArrayDouble(int n0, int n1, Random rg) {
-		double[][] a = new double[n0][n1];
-		for (int i = 0; i < n0; i++) {
-			for (int j = 0; j < n1; j++) {
-				a[i][j] = 2 * rg.nextDouble() - 1;
-			}
-		}
-		return a;
-	}
-
 }

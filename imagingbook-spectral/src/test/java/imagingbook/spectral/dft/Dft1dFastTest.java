@@ -1,12 +1,12 @@
 package imagingbook.spectral.dft;
 
-import static imagingbook.spectral.dft.Dft1dTest.makeRandomVectorDouble;
-import static imagingbook.spectral.dft.Dft1dTest.makeRandomVectorFloat;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Random;
 
 import org.junit.Test;
+
+import imagingbook.spectral.TestUtils;
 
 public class Dft1dFastTest {
 
@@ -34,8 +34,8 @@ public class Dft1dFastTest {
 		float TOL = 1E-6f;
 		int n = 1;
 		for (int i = 0; i < 100; i++) {
-			float[] re = makeRandomVectorFloat(n, rg);
-			float[] im = makeRandomVectorFloat(n, rg);
+			float[] re = TestUtils.makeRandomVectorFloat(n, rg);
+			float[] im = TestUtils.makeRandomVectorFloat(n, rg);
 			runTestFloat(re, im, TOL);
 			n++;
 		}
@@ -47,8 +47,8 @@ public class Dft1dFastTest {
 		double TOL = 1E-12;
 		int n = 1;
 		for (int i = 0; i < 100; i++) {
-			double[] re = makeRandomVectorDouble(n, rg);
-			double[] im = makeRandomVectorDouble(n, rg);
+			double[] re = TestUtils.makeRandomVectorDouble(n, rg);
+			double[] im = TestUtils.makeRandomVectorDouble(n, rg);
 			runTestDouble(re, im, TOL);
 			n++;
 		}
@@ -61,8 +61,8 @@ public class Dft1dFastTest {
 		Random rg = new Random(17);
 		float TOL = 1E-6f;
 		int n = 10177;
-		float[] re = makeRandomVectorFloat(n, rg);
-		float[] im = makeRandomVectorFloat(n, rg);
+		float[] re = TestUtils.makeRandomVectorFloat(n, rg);
+		float[] im = TestUtils.makeRandomVectorFloat(n, rg);
 		runTestFloat(re, im, TOL);
 	}
 	
@@ -71,8 +71,8 @@ public class Dft1dFastTest {
 		Random rg = new Random(17);
 		double TOL = 1E-12;
 		int n = 10177;
-		double[] re = makeRandomVectorDouble(n, rg);
-		double[] im = makeRandomVectorDouble(n, rg);
+		double[] re = TestUtils.makeRandomVectorDouble(n, rg);
+		double[] im = TestUtils.makeRandomVectorDouble(n, rg);
 		runTestDouble(re, im, TOL);
 	}
 	

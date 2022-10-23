@@ -27,6 +27,9 @@ public interface Dft1d {
 	
 	// ---------------------------------------------------------------------------------
 	
+	/**
+	 * Sub-interface for DFT implementations on {@code float} data.
+	 */
 	public interface Float extends Dft1d {
 		
 		/**
@@ -70,6 +73,9 @@ public interface Dft1d {
 	
 	// -------------------------------------------------------------------
 	
+	/**
+	 * Sub-interface for DFT implementations on {@code double} data.
+	 */
 	public interface Double extends Dft1d {
 		
 		/**

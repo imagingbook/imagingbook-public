@@ -7,6 +7,7 @@ import java.util.Random;
 import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
+import imagingbook.spectral.TestUtils;
 
 public class Dft1dTest {
 
@@ -19,8 +20,8 @@ public class Dft1dTest {
 		int width  = 1;
 		for (int i = 0; i < n; i++) {
 //			System.out.println("w = " + width);
-			float[] reOrig = makeRandomVectorFloat(width, rg);
-			float[] imOrig = makeRandomVectorFloat(width, rg);
+			float[] reOrig = TestUtils.makeRandomVectorFloat(width, rg);
+			float[] imOrig = TestUtils.makeRandomVectorFloat(width, rg);
 			
 			// direct DFT:
 			float[] reD = Matrix.duplicate(reOrig);
@@ -49,8 +50,8 @@ public class Dft1dTest {
 		int width  = 1;
 		for (int i = 0; i < n; i++) {
 //			System.out.println("w = " + width);
-			double[] reOrig = makeRandomVectorDouble(width, rg);
-			double[] imOrig = makeRandomVectorDouble(width, rg);
+			double[] reOrig = TestUtils.makeRandomVectorDouble(width, rg);
+			double[] imOrig = TestUtils.makeRandomVectorDouble(width, rg);
 			
 			// direct DFT:
 			double[] reD = Matrix.duplicate(reOrig);
@@ -70,22 +71,5 @@ public class Dft1dTest {
 			width++;
 		}
 	}
-	
-	// ------------------------------------------------------------------
-	
-	static float[] makeRandomVectorFloat(int n, Random rg) {
-		float[] a = new float[n];
-		for (int i = 0; i < n; i++) {
-			a[i] = 2 * rg.nextFloat() - 1;
-		}
-		return a;
-	}
-	
-	static double[] makeRandomVectorDouble(int n, Random rg) {
-		double[] a = new double[n];
-		for (int i = 0; i < n; i++) {
-			a[i] = 2 * rg.nextDouble() - 1;
-		}
-		return a;
-	}
+
 }

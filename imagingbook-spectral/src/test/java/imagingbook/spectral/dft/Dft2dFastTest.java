@@ -2,14 +2,12 @@ package imagingbook.spectral.dft;
 
 
 
-import static imagingbook.spectral.dft.Dft2dTest.makeRandomArrayDouble;
-import static imagingbook.spectral.dft.Dft2dTest.makeRandomArrayFloat;
-
 import java.util.Random;
 
 import org.junit.Test;
 
 import imagingbook.common.math.Matrix;
+import imagingbook.spectral.TestUtils;
 import imagingbook.testutils.NumericTestUtils;
 
 public class Dft2dFastTest {
@@ -41,8 +39,8 @@ public class Dft2dFastTest {
 		int height = n;
 		for (int i = 0; i < n; i++) {
 //			System.out.println("w = " + width + " h = " + height);
-			float[][] re = makeRandomArrayFloat(width, height, rg);
-			float[][] im = makeRandomArrayFloat(width, height, rg);
+			float[][] re = TestUtils.makeRandomArrayFloat(width, height, rg);
+			float[][] im = TestUtils.makeRandomArrayFloat(width, height, rg);
 			runTestFloat(re, im, TOL);
 			width++;
 			height--;
@@ -58,8 +56,8 @@ public class Dft2dFastTest {
 		int height = n;
 		for (int i = 0; i < n; i++) {
 //			System.out.println("w = " + width + " h = " + height);
-			double[][] re = makeRandomArrayDouble(width, height, rg);
-			double[][] im = makeRandomArrayDouble(width, height, rg);
+			double[][] re = TestUtils.makeRandomArrayDouble(width, height, rg);
+			double[][] im = TestUtils.makeRandomArrayDouble(width, height, rg);
 			runTestDouble(re, im, TOL);
 			width++;
 			height--;

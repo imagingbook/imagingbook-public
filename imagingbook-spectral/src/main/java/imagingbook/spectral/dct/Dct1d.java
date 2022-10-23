@@ -9,19 +9,29 @@
 package imagingbook.spectral.dct;
 
 /**
- * Interface specifying all one-dimensional DCT implementations.
- * The definition used is the one adopted by MATLAB
- * (see https://www.mathworks.com/help/signal/ref/dct.html), called 
- * "DCT-II" on Wikipedia  (https://en.wikipedia.org/wiki/Discrete_cosine_transform).
+ * Interface specifying all one-dimensional DCT implementations. The definition
+ * used is the one adopted by MATLAB (<a href=
+ * "https://www.mathworks.com/help/signal/ref/dct.html">https://www.mathworks.com/help/signal/ref/dct.html</a>),
+ * called "DCT-II" on Wikipedia
+ * (<a href="https://en.wikipedia.org/wiki/Discrete_cosine_transform">
+ * https://en.wikipedia.org/wiki/Discrete_cosine_transform</a>).
  * 
+ * @author WB
+ * @version 2022/10/23
  */
 public interface Dct1d {
 	
+	public int getSize();
+	
+	/**
+	 * Sub-interface for DCT implementations on {@code float} data.
+	 */
 	public interface Float extends Dct1d {
 		
 		/**
 		 * Performs an "in-place" 1D DCT forward transformation on the supplied data.
 		 * The input signal is replaced by the associated DFT spectrum.
+		 * 
 		 * @param g the signal to be transformed (modified)
 		 */
 		void forward(float[] g);
@@ -29,22 +39,28 @@ public interface Dct1d {
 		/**
 		 * Performs an "in-place" 1D DCT inverse transformation on the supplied spectrum.
 		 * The input spectrum is replaced by the associated signal.
+		 * 
 		 * @param G the spectrum to be transformed (modified)
 		 */
 		void inverse(float[] G);
 		
-		default void checkLength(float[] a, int n) {
-			if (a.length != n)
-				throw new IllegalArgumentException("data array must be of length " + n);
+		default void checkSize(float[] a) {
+			if (a.length != getSize())
+				throw new IllegalArgumentException(
+					String.format("wrong 1D array size %d (expected %d)", a.length, getSize()));
 		}
 		
 	}
 	
+	/**
+	 * Sub-interface for DCT implementations on {@code double} data.
+	 */
 	public interface Double extends Dct1d {
 		
 		/**
 		 * Performs an "in-place" 1D DCT forward transformation on the supplied data.
 		 * The input signal is replaced by the associated DFT spectrum.
+		 * 
 		 * @param g the signal to be transformed (modified)
 		 */
 		void forward(double[] g);
@@ -52,13 +68,15 @@ public interface Dct1d {
 		/**
 		 * Performs an "in-place" 1D DCT inverse transformation on the supplied spectrum.
 		 * The input spectrum is replaced by the associated signal.
+		 * 
 		 * @param G the spectrum to be transformed (modified)
 		 */
 		void inverse(double[] G);
 		
-		default void checkLength(double[] a, int n) {
-			if (a.length != n)
-				throw new IllegalArgumentException("data array must be of length " + n);
+		default void checkSize(double[] a) {
+			if (a.length != getSize())
+				throw new IllegalArgumentException(
+					String.format("wrong 1D array size %d (expected %d)", a.length, getSize()));
 		}
 		
 	}

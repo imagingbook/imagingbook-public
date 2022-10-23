@@ -82,8 +82,6 @@ public interface Dft2d {
 			}
 		}
 		
-		
-		
 		public default void extractRow(float[][] g, int v, float[] row) {
 			for (int u = 0; u < row.length; u++) {
 				row[u] = g[u][v];
