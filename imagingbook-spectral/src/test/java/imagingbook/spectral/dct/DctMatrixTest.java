@@ -13,10 +13,10 @@ import imagingbook.common.math.PrintPrecision;
 
 public class DctMatrixTest {
 
-
 	/**
 	 * Test method.
 	 * @param args command arguments
+	 * TODO: convert to JUnit test!
 	 */
 	public static void main(String[] args) {
 		PrintPrecision.set(5);
@@ -42,7 +42,7 @@ public class DctMatrixTest {
 		System.out.println("---------- DCT with transformation methods -----------");
 		
 		float[][] G1 = Matrix.duplicate(g);
-		Dct2d.Float dct = new Dct2d.Float();
+		Dct2d.Float dct = new Dct2dFast.Float(G1.length, G1[0].length);
 		dct.forward(G1);
 		System.out.println("G1 = " + Matrix.toString(G1));
 		System.out.println();

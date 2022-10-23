@@ -38,7 +38,6 @@ public class Dft2dDirectTest {
 		int width  = 1;
 		int height = n;
 		for (int i = 0; i < n; i++) {
-//			System.out.println("w = " + width + " h = " + height);
 			float[][] re = TestUtils.makeRandomArrayFloat(width, height, rg);
 			float[][] im = TestUtils.makeRandomArrayFloat(width, height, rg);
 			runTestFloat(re, im, TOL);
@@ -55,7 +54,6 @@ public class Dft2dDirectTest {
 		int width  = 1;
 		int height = n;
 		for (int i = 0; i < n; i++) {
-//			System.out.println("w = " + width + " h = " + height);
 			double[][] re = TestUtils.makeRandomArrayDouble(width, height, rg);
 			double[][] im = TestUtils.makeRandomArrayDouble(width, height, rg);
 			runTestDouble(re, im, TOL);
@@ -63,7 +61,6 @@ public class Dft2dDirectTest {
 			height--;
 		}
 	}
-	
 	
 	// --------------------------------------------------------------
 	

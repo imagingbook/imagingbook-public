@@ -37,16 +37,15 @@ package imagingbook.spectral.dct;
  * @see Dct1dSlow
  * @see Dct1dFast
  */
-public abstract class Dct1dDirect implements Dct1d {
+public abstract class Dct1dDirect extends Dct1dImp {
 
 	final double CM0 = 1.0 / Math.sqrt(2);
-	final int M;				// size of the input vector
 	final int M4;				// = 4*M
 	final double s; 			// common scale factor
 	final double[] cosTable;	// pre-calculated table of cosines
 
 	private Dct1dDirect(int M) {
-		this.M = M;
+		super(M);
 		this.M4 = 4 * M;
 		this.s = Math.sqrt(2.0 / M); 
 		this.cosTable = makeCosineTable();
@@ -60,11 +59,6 @@ public abstract class Dct1dDirect implements Dct1d {
 			table[j] = Math.cos(phi);
 		}
 		return table;
-	}
-	
-	@Override
-	public int getSize() {
-		return this.M;
 	}
 	
 	// ------------------------------------------------------------------------------

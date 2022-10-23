@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 /**
  * <p>
- * Abstract super-class of all two-dimensional DFT/FFT implementations.
+ * Common interface for all two-dimensional DFT/FFT implementations.
  * Based on associated one-dimensional DFT/FFT methods (see {@link Dft1d}).
  * See Ch. 19 of [1] for additional details.
  * </p>

@@ -29,24 +29,17 @@ import org.jtransforms.dct.FloatDCT_1D;
  * dct.inverse(data);
  * ... </pre>
  * <p>
- * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
  * Approach</em>, 3rd ed, Springer (2022).
  * </p>
  */
-public abstract class Dct1dFast implements Dct1d {
+public abstract class Dct1dFast extends Dct1dImp {
 
-	final int M;				// size of the input vector
 	final double s; 			// common scale factor
 
 	private Dct1dFast(int M) {
-		this.M = M;
+		super(M);
 		this.s = Math.sqrt(2.0 / M); 
-	}
-	
-	@Override
-	public int getSize() {
-		return this.M;
 	}
 	
 	// ------------------------------------------------------------------------------

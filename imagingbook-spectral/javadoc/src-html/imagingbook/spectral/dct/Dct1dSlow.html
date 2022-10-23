@@ -19,84 +19,106 @@
 <span class="sourceLineNo">009</span><a id="line.9"></a>
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.spectral.dct;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
-<span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.math.Matrix;</a>
-<span class="sourceLineNo">013</span><a id="line.13"></a>
-<span class="sourceLineNo">014</span><a id="line.14">/**</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * This class calculates the 1D DFT.</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * Direct (slow) version for that does NOT use pre-calculated cosine tables.</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * </a>
-<span class="sourceLineNo">018</span><a id="line.18"> * @author WB</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * @version 2019/12/26</a>
-<span class="sourceLineNo">020</span><a id="line.20"> *</a>
-<span class="sourceLineNo">021</span><a id="line.21"> */</a>
-<span class="sourceLineNo">022</span><a id="line.22">public class Dct1dSlow implements Dct1d.Double {</a>
-<span class="sourceLineNo">023</span><a id="line.23"></a>
-<span class="sourceLineNo">024</span><a id="line.24">        final double CM0 = 1.0 / Math.sqrt(2);</a>
-<span class="sourceLineNo">025</span><a id="line.25">        final int M;</a>
-<span class="sourceLineNo">026</span><a id="line.26">        final private double[] tmp;</a>
-<span class="sourceLineNo">027</span><a id="line.27"></a>
-<span class="sourceLineNo">028</span><a id="line.28">        public Dct1dSlow(int M) {</a>
-<span class="sourceLineNo">029</span><a id="line.29">                this.M = M;</a>
-<span class="sourceLineNo">030</span><a id="line.30">                this.tmp = new double[M];</a>
-<span class="sourceLineNo">031</span><a id="line.31">        }</a>
-<span class="sourceLineNo">032</span><a id="line.32"></a>
-<span class="sourceLineNo">033</span><a id="line.33">        @Override</a>
-<span class="sourceLineNo">034</span><a id="line.34">        public void forward(double[] g) {</a>
-<span class="sourceLineNo">035</span><a id="line.35">                if (g.length != M)</a>
-<span class="sourceLineNo">036</span><a id="line.36">                        throw new IllegalArgumentException();</a>
-<span class="sourceLineNo">037</span><a id="line.37">                final double s = Math.sqrt(2.0 / M);</a>
-<span class="sourceLineNo">038</span><a id="line.38">                double[] G = tmp;</a>
-<span class="sourceLineNo">039</span><a id="line.39">                for (int m = 0; m &lt; M; m++) {</a>
-<span class="sourceLineNo">040</span><a id="line.40">                        double cm = (m == 0) ? CM0 : 1.0;</a>
-<span class="sourceLineNo">041</span><a id="line.41">                        double sum = 0;</a>
-<span class="sourceLineNo">042</span><a id="line.42">                        for (int u = 0; u &lt; M; u++) {</a>
-<span class="sourceLineNo">043</span><a id="line.43">                                double Phi = Math.PI * m * (2 * u + 1) / (2 * M);</a>
-<span class="sourceLineNo">044</span><a id="line.44">                                sum += g[u] * cm * Math.cos(Phi);</a>
-<span class="sourceLineNo">045</span><a id="line.45">                        }</a>
-<span class="sourceLineNo">046</span><a id="line.46">                        G[m] = s * sum;</a>
-<span class="sourceLineNo">047</span><a id="line.47">                }</a>
-<span class="sourceLineNo">048</span><a id="line.48">                System.arraycopy(G, 0, g, 0, M); // copy G -&gt; g</a>
-<span class="sourceLineNo">049</span><a id="line.49">        }</a>
-<span class="sourceLineNo">050</span><a id="line.50"></a>
-<span class="sourceLineNo">051</span><a id="line.51">        @Override</a>
-<span class="sourceLineNo">052</span><a id="line.52">        public void inverse(double[] G) {</a>
-<span class="sourceLineNo">053</span><a id="line.53">                if (G.length != M)</a>
-<span class="sourceLineNo">054</span><a id="line.54">                        throw new IllegalArgumentException();</a>
-<span class="sourceLineNo">055</span><a id="line.55">                final double s = Math.sqrt(2.0 / M); //common scale factor</a>
-<span class="sourceLineNo">056</span><a id="line.56">                double[] g = tmp;</a>
-<span class="sourceLineNo">057</span><a id="line.57">                for (int u = 0; u &lt; M; u++) {</a>
-<span class="sourceLineNo">058</span><a id="line.58">                        double sum = 0;</a>
-<span class="sourceLineNo">059</span><a id="line.59">                        for (int m = 0; m &lt; M; m++) {</a>
-<span class="sourceLineNo">060</span><a id="line.60">                                double cm = (m == 0) ? CM0 : 1.0;</a>
-<span class="sourceLineNo">061</span><a id="line.61">                                double Phi = Math.PI * m * (2 * u + 1) / (2 * M);</a>
-<span class="sourceLineNo">062</span><a id="line.62">                                sum += G[m] * cm * Math.cos(Phi);</a>
-<span class="sourceLineNo">063</span><a id="line.63">                        }</a>
-<span class="sourceLineNo">064</span><a id="line.64">                        g[u] = s * sum;</a>
-<span class="sourceLineNo">065</span><a id="line.65">                }</a>
-<span class="sourceLineNo">066</span><a id="line.66">                System.arraycopy(g, 0, G, 0, M); // copy g -&gt; G</a>
-<span class="sourceLineNo">067</span><a id="line.67">        }</a>
-<span class="sourceLineNo">068</span><a id="line.68"></a>
-<span class="sourceLineNo">069</span><a id="line.69">        // ------------------------------------------------------------------------------------------------</a>
-<span class="sourceLineNo">070</span><a id="line.70"></a>
-<span class="sourceLineNo">071</span><a id="line.71">        // test example</a>
-<span class="sourceLineNo">072</span><a id="line.72">        public static void main(String[] args) {</a>
-<span class="sourceLineNo">073</span><a id="line.73"></a>
-<span class="sourceLineNo">074</span><a id="line.74">                double[] data = {1,2,3,4,5,3,0};</a>
-<span class="sourceLineNo">075</span><a id="line.75">                System.out.println("Original data:      " + Matrix.toString(data));</a>
-<span class="sourceLineNo">076</span><a id="line.76"></a>
-<span class="sourceLineNo">077</span><a id="line.77">                Dct1d.Double dct = new Dct1dSlow(data.length);</a>
-<span class="sourceLineNo">078</span><a id="line.78">                dct.forward(data);</a>
-<span class="sourceLineNo">079</span><a id="line.79">                System.out.println("DCT spectrum:       " + Matrix.toString(data));</a>
-<span class="sourceLineNo">080</span><a id="line.80"></a>
-<span class="sourceLineNo">081</span><a id="line.81">                dct.inverse(data);</a>
-<span class="sourceLineNo">082</span><a id="line.82">                System.out.println("Reconstructed data: " + Matrix.toString(data));</a>
-<span class="sourceLineNo">083</span><a id="line.83">        }</a>
-<span class="sourceLineNo">084</span><a id="line.84"></a>
-<span class="sourceLineNo">085</span><a id="line.85">        //      Original data:      {1.000, 2.000, 3.000, 4.000, 5.000, 3.000, 0.000}</a>
-<span class="sourceLineNo">086</span><a id="line.86">        //      DCT of data:        {6.803, -0.361, -3.728, 1.692, -0.888, -0.083, 0.167}</a>
-<span class="sourceLineNo">087</span><a id="line.87">        //      Reconstructed data: {1.000, 2.000, 3.000, 4.000, 5.000, 3.000, -0.000}</a>
-<span class="sourceLineNo">088</span><a id="line.88"></a>
-<span class="sourceLineNo">089</span><a id="line.89">}</a>
+<span class="sourceLineNo">012</span><a id="line.12">/**</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * &lt;p&gt;</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Calculates the 1D discrete cosine transform (DFT) on {@code double} data.</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * This is a naive implementation which calculates cosines repeatedly (i.e., does</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * NOT use pre-calculated cosine tables), intended for demonstration purposes</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * only. See Sec. 20.1 (Prog. 20.1) of [1] for additional details.</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * &lt;p&gt;</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * Usage example:</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * &lt;pre&gt;</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * double[] data = {1, 2, 3, 4, 5, 3, 0};</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * Dct1d.Double dct = new Dct1dSlow(data.length);</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * dct.forward(data);</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * dct.inverse(data);</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * ... &lt;/pre&gt;</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * &lt;p&gt;</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing - An Algorithmic</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * Approach&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * </a>
+<span class="sourceLineNo">032</span><a id="line.32"> * @author WB</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * @version 2022/10/23</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * @see Dct1dDirect</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * @see Dct1dFast</a>
+<span class="sourceLineNo">036</span><a id="line.36"> */</a>
+<span class="sourceLineNo">037</span><a id="line.37">public class Dct1dSlow implements Dct1d.Double {</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">        private final double CM0 = 1.0 / Math.sqrt(2);</a>
+<span class="sourceLineNo">040</span><a id="line.40">        private final int M;</a>
+<span class="sourceLineNo">041</span><a id="line.41">        private final double[] tmp;</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">        /**</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * Constructor.</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * @param M the data size</a>
+<span class="sourceLineNo">046</span><a id="line.46">         */</a>
+<span class="sourceLineNo">047</span><a id="line.47">        public Dct1dSlow(int M) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">                this.M = M;</a>
+<span class="sourceLineNo">049</span><a id="line.49">                this.tmp = new double[M];</a>
+<span class="sourceLineNo">050</span><a id="line.50">        }</a>
+<span class="sourceLineNo">051</span><a id="line.51">        </a>
+<span class="sourceLineNo">052</span><a id="line.52">        @Override</a>
+<span class="sourceLineNo">053</span><a id="line.53">        public int getSize() {</a>
+<span class="sourceLineNo">054</span><a id="line.54">                return this.M;</a>
+<span class="sourceLineNo">055</span><a id="line.55">        }</a>
+<span class="sourceLineNo">056</span><a id="line.56">        </a>
+<span class="sourceLineNo">057</span><a id="line.57">        // ----------------------------------------------------------------------------</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">        @Override</a>
+<span class="sourceLineNo">060</span><a id="line.60">        public void forward(double[] g) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                checkSize(g);</a>
+<span class="sourceLineNo">062</span><a id="line.62">                final double s = Math.sqrt(2.0 / M);</a>
+<span class="sourceLineNo">063</span><a id="line.63">                double[] G = tmp;</a>
+<span class="sourceLineNo">064</span><a id="line.64">                for (int m = 0; m &lt; M; m++) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                        double cm = (m == 0) ? CM0 : 1.0;</a>
+<span class="sourceLineNo">066</span><a id="line.66">                        double sum = 0;</a>
+<span class="sourceLineNo">067</span><a id="line.67">                        for (int u = 0; u &lt; M; u++) {</a>
+<span class="sourceLineNo">068</span><a id="line.68">                                double Phi = Math.PI * m * (2 * u + 1) / (2 * M);</a>
+<span class="sourceLineNo">069</span><a id="line.69">                                sum += g[u] * cm * Math.cos(Phi);</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        }</a>
+<span class="sourceLineNo">071</span><a id="line.71">                        G[m] = s * sum;</a>
+<span class="sourceLineNo">072</span><a id="line.72">                }</a>
+<span class="sourceLineNo">073</span><a id="line.73">                System.arraycopy(G, 0, g, 0, M); // copy G -&gt; g</a>
+<span class="sourceLineNo">074</span><a id="line.74">        }</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">        @Override</a>
+<span class="sourceLineNo">077</span><a id="line.77">        public void inverse(double[] G) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">                checkSize(G);</a>
+<span class="sourceLineNo">079</span><a id="line.79">                final double s = Math.sqrt(2.0 / M); //common scale factor</a>
+<span class="sourceLineNo">080</span><a id="line.80">                double[] g = tmp;</a>
+<span class="sourceLineNo">081</span><a id="line.81">                for (int u = 0; u &lt; M; u++) {</a>
+<span class="sourceLineNo">082</span><a id="line.82">                        double sum = 0;</a>
+<span class="sourceLineNo">083</span><a id="line.83">                        for (int m = 0; m &lt; M; m++) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">                                double cm = (m == 0) ? CM0 : 1.0;</a>
+<span class="sourceLineNo">085</span><a id="line.85">                                double Phi = Math.PI * m * (2 * u + 1) / (2 * M);</a>
+<span class="sourceLineNo">086</span><a id="line.86">                                sum += G[m] * cm * Math.cos(Phi);</a>
+<span class="sourceLineNo">087</span><a id="line.87">                        }</a>
+<span class="sourceLineNo">088</span><a id="line.88">                        g[u] = s * sum;</a>
+<span class="sourceLineNo">089</span><a id="line.89">                }</a>
+<span class="sourceLineNo">090</span><a id="line.90">                System.arraycopy(g, 0, G, 0, M); // copy g -&gt; G</a>
+<span class="sourceLineNo">091</span><a id="line.91">        }</a>
+<span class="sourceLineNo">092</span><a id="line.92"></a>
+<span class="sourceLineNo">093</span><a id="line.93">        // test example</a>
+<span class="sourceLineNo">094</span><a id="line.94">//      public static void main(String[] args) {</a>
+<span class="sourceLineNo">095</span><a id="line.95">//              PrintPrecision.set(6);</a>
+<span class="sourceLineNo">096</span><a id="line.96">//              double[] data = {1,2,3,4,5,3,0};</a>
+<span class="sourceLineNo">097</span><a id="line.97">//              System.out.println("Original data:      " + Matrix.toString(data));</a>
+<span class="sourceLineNo">098</span><a id="line.98">//</a>
+<span class="sourceLineNo">099</span><a id="line.99">//              Dct1d.Double dct = new Dct1dSlow(data.length);</a>
+<span class="sourceLineNo">100</span><a id="line.100">//              dct.forward(data);</a>
+<span class="sourceLineNo">101</span><a id="line.101">//              System.out.println("DCT spectrum:       " + Matrix.toString(data));</a>
+<span class="sourceLineNo">102</span><a id="line.102">//</a>
+<span class="sourceLineNo">103</span><a id="line.103">//              dct.inverse(data);</a>
+<span class="sourceLineNo">104</span><a id="line.104">//              System.out.println("Reconstructed data: " + Matrix.toString(data));</a>
+<span class="sourceLineNo">105</span><a id="line.105">//      }</a>
+<span class="sourceLineNo">106</span><a id="line.106"></a>
+<span class="sourceLineNo">107</span><a id="line.107">        //      Original data:      {1.000, 2.000, 3.000, 4.000, 5.000, 3.000, 0.000}</a>
+<span class="sourceLineNo">108</span><a id="line.108">        //      DCT of data:        {6.803, -0.361, -3.728, 1.692, -0.888, -0.083, 0.167}</a>
+<span class="sourceLineNo">109</span><a id="line.109">        //      Reconstructed data: {1.000, 2.000, 3.000, 4.000, 5.000, 3.000, -0.000}</a>
+<span class="sourceLineNo">110</span><a id="line.110"></a>
+<span class="sourceLineNo">111</span><a id="line.111">}</a>
 
 
 
