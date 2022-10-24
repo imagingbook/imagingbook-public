@@ -9,8 +9,7 @@
 
 /**
  * <p>
- * Library code related to spectral image processing (Fourier transforms etc.),
- * separated from the main {@literal imagingbook} library to minimize third-party dependencies.
+ * This package defines 1D and 2D implementations of the Discrete Fourier Transform.
  * </p>
  * <p>
  * This code is part of the {@literal imagingbook}
@@ -18,4 +17,4 @@
  * (see <a href="https://imagingbook.com">https://imagingbook.com</a>).
  * </p>
  */
-package imagingbook.spectral;
+package imagingbook.spectral.dft;
