@@ -33,7 +33,6 @@ import imagingbook.common.math.Complex;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
-import imagingbook.spectral.fd.Colors;
 import imagingbook.spectral.fd.FourierDescriptor;
 import imagingbook.spectral.fd.FourierDescriptorUniform;
 import imagingbook.spectral.fd.PolygonSampler;
@@ -58,15 +57,15 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 	static boolean MarkContourCentroid = true;
 	
 	
-	static Color 	SampleColor = Colors.Magenta;
+	static Color 	SampleColor = new Color(255, 0, 200);	// Colors.Magenta;
 	static double 	SampleStrokeWidth = 1.0;
 	static double 	SampleRadius = 2.5; //1.5;
 	
-	static Color 	ContourColor = Colors.Blue;
+	static Color 	ContourColor = new Color(0, 60, 255);	// Colors.Blue;
 	static double 	ContourStrokeWidth = 0.25;
 	
 	static double   ReconstructionRadius = 1.0;
-	static Color 	ReconstructionColor = Colors.Green;
+	static Color 	ReconstructionColor = new Color(0, 185, 15);	//Colors.Green;
 	static double 	ReconstructionStrokeWidth = 0.5; //0.75;
 	
 	//static Font font = new Font("Serif", Font.PLAIN, 10);
