@@ -16,7 +16,7 @@
  * <p>
  * This code is part of the {@literal imagingbook}
  * software suite supporting the Digital Image Processing books by Wilhelm Burger and Mark J Burge 
- * (see <a href="https://www.imagingbook.com">https://www.imagingbook.com</a>).
+ * (see <a href="https://imagingbook.com">https://imagingbook.com</a>).
  * </p>
  */
 package imagingbook.common;

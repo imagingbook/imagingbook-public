@@ -21,7 +21,7 @@ import imagingbook.common.noise.perlin.PerlinNoiseGen2d;
  * generator. Several parameters can be adjusted. For details see
  * Ch. 8 of W. Burger and M. J. Burge. "Principles of Digital Image Processing -
  * Advanced Methods" (Vol. 3). Undergraduate Topics in Computer Science.
- * Springer-Verlag, London (2013). https://www.imagingbook.com
+ * Springer-Verlag, London (2013). https://imagingbook.com
  * 
  * TODO: add dialog to set size and other parameters
  * 
