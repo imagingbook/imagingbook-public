@@ -8,10 +8,7 @@
  *******************************************************************************/
 package imagingbook.spectral.fd;
 
-import java.util.Arrays;
-
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Complex;
 
@@ -21,32 +18,38 @@ import imagingbook.common.math.Complex;
  * that input polygons are uniformly sampled.
  * 
  * @author WB
- * @version 2020/04/01
+ * @version 2022/10/24
  */
 public class FourierDescriptorUniform extends FourierDescriptor {
 	
 	/**
 	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
 	 * with the maximum number of Fourier coefficient pairs.
+	 * The length of the resulting DFT spectrum equals V.length.
 	 * 
 	 * @param V polygon
 	 */
 	public FourierDescriptorUniform(Pnt2d[] V) {
-		g = makeComplex(V);
-		G = DFT(g);
+		this.g = toComplexArray(V);
+		this.G = DFT(this.g);
 	}
 	
 	
 	/**
 	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
 	 * with Mp coefficient pairs.
+	 * The length of the resulting DFT spectrum is 2 * Mp + 1, i.e.,
+	 * it must be assured that Mp < (V.length - 1) &divide; 2.
 	 * 
 	 * @param V polygon
 	 * @param Mp number of coefficient pairs
 	 */
 	public FourierDescriptorUniform(Pnt2d[] V, int Mp) {
-		g = makeComplex(V);
-		G = DFT(g, 2 * Mp + 1);
+		if (Mp > (V.length - 1) / 2) {
+			throw new IllegalArgumentException("number of Fourier pairs (Mp) may not be gpreater than " + ((V.length - 1) / 2));
+		}
+		this.g = toComplexArray(V);
+		this.G = DFT(this.g, 2 * Mp + 1);
 	}
 	
 	// -------------------------------------------------------------------
@@ -62,7 +65,7 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	private Complex[] DFT(Complex[] g) {
 		int M = g.length;
 //		double[] cosTable = makeCosTable(M);	// cosTable[m] == cos(2*pi*m/M)
-//		double[] sinTable = makeSinTable(M);
+//		double[] sinTable = makeSinTable(M);	// sinTable[m] == sin(2*pi*m/M)
 		Complex[] G = new Complex[M];
 		double s = 1.0 / M; //common scale factor (fwd/inverse differ!)
 		for (int m = 0; m < M; m++) {
@@ -84,21 +87,22 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	
 
 	/**
-	 * As above, but the length P of the resulting spectrum (signal, if inverse) 
+	 * As {@link #DFT(Complex[])}, with the length of the resulting spectrum (signal, if inverse) 
 	 * is explicitly specified.
+	 * 
 	 * @param g signal vector
-	 * @param MM length of the resulting  DFT spectrum
+	 * @param MM length of the resulting DFT spectrum
 	 * @return DFT spectrum
 	 */
 	private Complex[] DFT(Complex[] g, int MM) {
 		int M = g.length;
 		if (MM > M) {
-			throw new IllegalArgumentException("truncated spectrum must be shorter than original MM=" + MM);
+			throw new IllegalArgumentException("truncated spectrum must be shorter than original MM = " + MM);
 		}
 //		double[] cosTable = makeCosTable(M);	// cosTable[m] == cos(2*pi*m/M)
-//		double[] sinTable = makeSinTable(M);
+//		double[] sinTable = makeSinTable(M);	// sinTable[m] == sin(2*pi*m/M)
 		Complex[] G = new Complex[MM];
-		double s = 1.0/M; //common scale factor (fwd/inverse differ!)
+		double s = 1.0 / M; //common scale factor (fwd/inverse differ!)
 		
 //		for (int j = Mp/2-Mp+1; j <= Mp/2; j++) {
 		for (int j = -MM/2; j <= (MM-1)/2; j++) {
@@ -135,21 +139,4 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 //		return sinTab;
 //	}
 	
-	// ------------------------------------------------------------------------------------
-	
-	public static void main(String[] args) {
-		double[][] points = {{3,2}, {5,4}, {7,10}, {6,11}, {4, 7}};
-
-		Pnt2d[] V = PntUtils.fromDoubleArray(points);
-		
-		FourierDescriptorUniform fd1 = new FourierDescriptorUniform(V); 
-		System.out.println(Arrays.toString(fd1.getCoefficients()));
-		
-		FourierDescriptorUniform fd2 = new FourierDescriptorUniform(V, 2); 
-		System.out.println(Arrays.toString(fd2.getCoefficients()));
-		
-		
-	}
-	
-
 }

@@ -13,8 +13,6 @@ import static imagingbook.common.math.Arithmetic.isZero;
 
 import java.util.Locale;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-
 /**
  * This class represents complex numbers. All instances are immutable.
  * Methods are mostly defined to be compatible with 
@@ -68,17 +66,6 @@ public class Complex {
 	public Complex(double phi) {
 		this.re = Math.cos(phi);
 		this.im = Math.sin(phi);
-	}
-	
-	/**
-	 * Constructor. The x/y coordinates of the specified point are used
-	 * as re/im values.
-	 * 
-	 * @param pnt a {@link Pnt2d} instance
-	 */
-	public Complex(Pnt2d pnt) {
-		this.re = pnt.getX();
-		this.im = pnt.getY();
 	}
 	
 	// -------------------------------------------------------------------
@@ -217,8 +204,6 @@ public class Complex {
 	public double[] toArray() {
 		return new double[] {this.re, this.im};
 	}
-	
-
 
 	/**
 	 * Checks if the given {@link Object} is equal to
@@ -279,5 +264,7 @@ public class Complex {
 		return isZero(this.re - re, tolerance) 
 				&& isZero(this.im - im, tolerance);
 	}
-
+	
+	// -------------------------------------------------------------------
+	
 }

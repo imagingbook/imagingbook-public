@@ -8,9 +8,7 @@
  *******************************************************************************/
 package Fourier_Shape_Descriptors;
 
-import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +18,8 @@ import ij.gui.Roi;
 import ij.gui.ShapeRoi;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.math.Complex;
 import imagingbook.spectral.fd.FourierDescriptor;
 import imagingbook.spectral.fd.FourierDescriptorFromPolygon;
@@ -43,11 +43,13 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 			
 	private ImagePlus img;
 
+	@Override
 	public int setup(String arg, ImagePlus img) { 
     	this.img = img;
 		return DOES_8G + ROI_REQUIRED + NO_CHANGES;
 	}
 	
+	@Override
 	public void run(ImageProcessor ip) {
 		if (!setParameters()) 
 			return;
@@ -56,7 +58,7 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 		
 		// create the Fourier descriptor for 'anyRoi' with Mp coefficient pairs:
 		int Mp = FourierDescriptorPairs;
-		FourierDescriptor fd = new FourierDescriptorFromPolygon(anyRoi, Mp);
+		FourierDescriptor fd = new FourierDescriptorFromPolygon(toPointArray(anyRoi), Mp);
 
 		// reconstruct the corresponding shape with 100 contour points:
 		Complex[] R = fd.getReconstruction(ShapeReconstructionPoints);
@@ -130,17 +132,17 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 	
 	// helper methods ------------------------------------------------------
 	
-	Point2D[] getRoiPoints(Roi roi) {
+	private Pnt2d[] toPointArray(Roi roi) {
 		Polygon poly = roi.getPolygon();
 		int[] xp = poly.xpoints;
 		int[] yp = poly.ypoints;
 		// copy vertices for all non-zero-length polygon segments:
-		List<Point> points = new ArrayList<Point>(xp.length);
-		points.add(new Point(xp[0], yp[0]));
+		List<Pnt2d> points = new ArrayList<>(xp.length);
+		points.add(PntInt.from(xp[0], yp[0]));
 		int last = 0;
 		for (int i = 1; i < xp.length; i++) {
 			if (xp[last] != xp[i] || yp[last] != yp[i]) {
-				points.add(new Point(xp[i], yp[i]));
+				points.add(PntInt.from(xp[i], yp[i]));
 				last = i;
 			}
 		}
@@ -148,7 +150,7 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 		if (xp[last] == xp[0] && yp[last] == yp[0]) {
 			points.remove(last);
 		}
-		return points.toArray(new Point2D[0]);
+		return points.toArray(new Pnt2d[0]);
 	}
 	
 }

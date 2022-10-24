@@ -25,18 +25,35 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Complex;
 
 /**
- * This is the abstract super-class for Fourier descriptors. It cannot
- * be instantiated.
+ * <p>
+ * This is the common (abstract) super-class for all Fourier descriptors. 
+ * See Ch.26 of [1] for additional details.
+ * Note that this class has no public constructor (see concrete sub-classes {@link FourierDescriptorUniform} and
+ * {@link FourierDescriptorFromPolygon}).
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction Using Java</em>,
+ * 2nd ed, Springer (2016).
+ * </p>
+ * 
  * @author WB
- * @version 2020/04/01
+ * @version 2022/10/24
+ * 
+ * @see FourierDescriptorUniform
+ * @see FourierDescriptorFromPolygon
  */
 public abstract class FourierDescriptor implements Cloneable {
 
-	static int minReconstructionSamples = 50;
+	public static final int MinReconstructionSamples = 50;
 
-	protected Complex[] g;	// complex-valued samples (used only for display purposes)
-	protected Complex[] G;	// complex-valued DFT spectrum
-	protected double reconstructionScale = 1.0;		// remembers original scale after normalization
+	Complex[] g;	// complex-valued samples (used only for display purposes)
+	Complex[] G;	// complex-valued DFT spectrum
+	double reconstructionScale = 1.0;		// remembers original scale after normalization
+	
+	/**
+	 * Package-private constructor.
+	 */
+	FourierDescriptor() {}
 
 	// ----------------------------------------------------------------
 
@@ -45,13 +62,17 @@ public abstract class FourierDescriptor implements Cloneable {
 	}
 
 	/**
-	 * Truncates this Fourier descriptor to the {@code Mp} lowest-frequency coefficients.
-	 * For example, the original Fourier descriptor with 10 coefficients a,b,...,j
+	 * <p>
+	 * Truncates this Fourier descriptor to the {@code Mp} lowest-frequency (positive/negative) coefficients.
+	 * For example, the original Fourier descriptor with 10 coefficients G[m] = a,b,...,j,
+	 * </p>
 	 * <pre>
 	 * m    = 0 1 2 3 4 5 6 7 8 9
 	 * G[m] = a b c d e f g h i j
 	 * </pre>
+	 * <p>
 	 * becomes (with {@code P} = 3)
+	 * </p>
 	 * <pre>
 	 * m    = 0 1 2 3 4 5 6
 	 * G[m] = a b c d h i j
@@ -79,6 +100,7 @@ public abstract class FourierDescriptor implements Cloneable {
 		}
 	}
 
+	@Override
 	public FourierDescriptor clone() {
 		FourierDescriptor fd2 = null;
 		try {
@@ -90,14 +112,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		fd2.G = duplicate(this.G);
 		return fd2;
 	}
-
-//	public int getMaxNegHarmonic() {
-//		return -(G.length - 1)/2;
-//	}
-//
-//	public int getMaxPosHarmonic() {
-//		return G.length/2;
-//	}
 
 	
 	public int getMaxNegHarmonic() {
@@ -115,7 +129,7 @@ public abstract class FourierDescriptor implements Cloneable {
 
 	// ----------------------------------------------------------------
 
-	protected static Complex[] makeComplex(Pnt2d[] points) {
+	static Complex[] toComplexArray(Pnt2d[] points) {
 		int N = points.length;
 		Complex[] samples = new Complex[N];
 		for (int i = 0; i < N; i++) {
@@ -125,10 +139,10 @@ public abstract class FourierDescriptor implements Cloneable {
 	}
 	
 
-	public static Complex[] duplicate(Complex[] g1) {
+	private Complex[] duplicate(Complex[] g1) {
 		Complex[] g2 = new Complex[g1.length];
 		for (int i = 0; i < g1.length; i++) {
-			g2[i] = new Complex(g1[i].re, g1[i].im);
+			g2[i] = new Complex(g1[i]);
 		}
 		return g2;
 	}
@@ -147,23 +161,18 @@ public abstract class FourierDescriptor implements Cloneable {
 		return G.length;	// = M
 	}
 
-	public int getCoefficientIndex(int m) {
-		return Arithmetic.mod(m, G.length);
-	}
+//	public int getCoefficientIndex(int m) {
+//		return Arithmetic.mod(m, G.length);
+//	}
 
 	public Complex getCoefficient(int m) {
 		int mm = Arithmetic.mod(m, G.length);
 		return new Complex(G[mm]);
 	}
 
-	public void setCoefficient(int m, Complex z) {
+	void setCoefficient(int m, Complex z) {
 		int mm = Arithmetic.mod(m, G.length);
 		G[mm] = new Complex(z);
-	}
-
-	public void setCoefficient(int m, double a, double b) {
-		int mm = Arithmetic.mod(m, G.length);
-		G[mm] = new Complex(a, b);
 	}
 
 	// ------------------------------------------------------------------
@@ -183,7 +192,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		return S;
 	}
 
-
 	/**
 	 * Calculate a reconstruction from the partial DFT spectrum with N sample
 	 * points and using Mp coefficient pairs.
@@ -202,7 +210,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		return S;
 	}
 
-
 	/**
 	 * Reconstructs a single spatial point from the complete FD
 	 * at the fractional path position t in [0,1].
@@ -219,7 +226,6 @@ public abstract class FourierDescriptor implements Cloneable {
 	public Complex getReconstructionPoint(double t, int Mp) {
 		return getReconstructionPoint(t, -Mp, Mp);
 	}
-
 
 	/**
 	 * Reconstructs a single spatial point from this FD using
@@ -250,10 +256,10 @@ public abstract class FourierDescriptor implements Cloneable {
 
 	// -----------------------------------------------------------------------
 
-
+	// TODO: Use actual ellipse shape, check offsets!
 	public Path2D makeEllipse(Complex G1, Complex G2, int m, double xOffset, double yOffset) {
 		Path2D path = new Path2D.Float();
-		int recPoints = Math.max(minReconstructionSamples, G.length * 3);
+		int recPoints = Math.max(MinReconstructionSamples, G.length * 3);
 		for (int i = 0; i < recPoints; i++) {
 			double t = (double) i / recPoints;
 			Complex p1 = this.getEllipsePoint(G1, G2, m, t);
@@ -270,7 +276,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		return path;
 	}
 
-
 	/**
 	 * Get the reconstructed point for two DFT coefficients G1, G2 at a given
 	 * position t.
@@ -285,7 +290,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		Complex p2 = getReconstructionPoint(G2, m, t);
 		return p1.add(p2);
 	}
-
 
 	/**
 	 * Returns the spatial point reconstructed from a single
@@ -308,7 +312,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		return new Complex(xt, yt);
 	}
 
-
 	/**
 	 * Reconstructs the shape using all FD pairs.
 	 * 
@@ -328,7 +331,7 @@ public abstract class FourierDescriptor implements Cloneable {
 	public Path2D makeFourierPairsReconstruction(int Mp) {
 		int M = G.length;
 		Mp = Math.min(Mp, M/2);
-		int recPoints = Math.max(minReconstructionSamples, G.length * 3);
+		int recPoints = Math.max(MinReconstructionSamples, G.length * 3);
 		Path2D path = new Path2D.Float();
 		for (int i = 0; i < recPoints; i++) {
 			double t = (double) i / recPoints;
@@ -350,7 +353,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		path.closePath();
 		return path;
 	}
-
 
 	public int getMaxDftMagnitudeIndex() {
 		double maxMag = -1;
@@ -409,7 +411,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		G[0] = new Complex(0,0);
 	}
 
-
 	/**
 	 * Normalizes this descriptor destructively to the L2 norm of G, 
 	 * keeps G_0 untouched.
@@ -430,7 +431,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		}
 		return scale;
 	}
-
 
 	/**
 	 * Normalizes the L2 norm of the sub-vector (G_{-Mp}, ..., G_{Mp}),
@@ -455,8 +455,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		return scale;
 	}
 
-	
-	
 	public double makeRotationInvariant() {	// works destructively.
 		int Mp = getMaxCoefficientPairs();
 		return makeRotationInvariant(Mp);
@@ -516,7 +514,6 @@ public abstract class FourierDescriptor implements Cloneable {
 		}
 	}
 
-
 	/**
 	 * Calculates the 'canonical' start point. This version uses 
 	 * (a) a coarse search for a global maximum of fp() and subsequently 
@@ -574,6 +571,7 @@ public abstract class FourierDescriptor implements Cloneable {
 		 * with all coefficients rotated to the given start point phase phi.
 		 * TODO: This could be made a lot more efficient!
 		 */
+		@Override
 		public double value(double phi) {
 			double sum = 0;
 			for (int m = 1; m <= Mp; m++) {
@@ -589,11 +587,9 @@ public abstract class FourierDescriptor implements Cloneable {
 		return c1.re * c2.im - c1.im * c2.re;
 	}
 
-
 	public double distanceComplex(FourierDescriptor fd2) {
 		return distanceComplex(fd2, G.length/2);
 	}
-
 
 	public double distanceComplex(FourierDescriptor fd2, int Mp) {
 		FourierDescriptor fd1 = this;
@@ -611,12 +607,10 @@ public abstract class FourierDescriptor implements Cloneable {
 		return Math.sqrt(sum);
 	}
 
-
 	public double distanceMagnitude(FourierDescriptor fd2) {
 		int Mp = getMaxCoefficientPairs();
 		return distanceMagnitude(fd2, Mp);
 	}
-
 
 	public double distanceMagnitude(FourierDescriptor fd2, int Mp) {
 		FourierDescriptor fd1 = this;

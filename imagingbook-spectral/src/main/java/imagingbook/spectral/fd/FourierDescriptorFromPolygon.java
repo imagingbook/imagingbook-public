@@ -14,13 +14,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
-import java.awt.Polygon;
-import java.util.ArrayList;
-import java.util.List;
-
-import ij.gui.Roi;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Complex;
 
@@ -30,30 +24,23 @@ import imagingbook.common.math.Complex;
  * that input polygons are non-uniformly sampled.
  * 
  * @author WB
- * @version 2020/04/01
+ * @version 2022/10/24
  */
 public class FourierDescriptorFromPolygon extends FourierDescriptor {
 
 	/**
+	 * Constructor, creates a {@link FourierDescriptor} directly from
+	 * the vertices of a closed polygon (without interpolation).
 	 * 
-	 * @param V sequences of 2D points describing an arbitrary, closed polygon.
-	 * @param Mp the number of Fourier coefficient pairs (M = 2 * Mp + 1).
+	 * @param V sequence of 2D points representing a closed polygon
+	 * @param Mp the number of Fourier coefficient pairs (M = 2 * Mp + 1)
 	 */
 	public FourierDescriptorFromPolygon(Pnt2d[] V, int Mp) {
-		g = makeComplex(V);
+		g = toComplexArray(V);
 		makeDftSpectrumTrigonometric(Mp);
 	}
 	
-	/**
-	 * 
-	 * @param roi: a region of interest (ImageJ), not necessarily a polyline.
-	 * @param Mp:  the number of Fourier coefficient pairs (M = 2 * Mp + 1)
-	 */
-	public FourierDescriptorFromPolygon(Roi roi, int Mp) {
-		this(getRoiPoints(roi), Mp);
-	}
-	
-	void makeDftSpectrumTrigonometric(int Mp) {
+	private void makeDftSpectrumTrigonometric(int Mp) {
 		final int N = g.length;				// number of polygon vertices
 		final int M = 2 * Mp + 1;			// number of Fourier coefficients
         double[] dx = new double[N];		// dx[k] is the delta-x for polygon segment <k,k+1>
@@ -67,9 +54,9 @@ public class FourierDescriptorFromPolygon extends FourierDescriptor {
         for (int i = 0; i < N; i++) {	// compute Dx, Dy, Dt and t tables
             dx[i] = g[(i + 1) % N].re - g[i].re;
             dy[i] = g[(i + 1) % N].im - g[i].im;
-            lambda[i] = sqrt(sqr(dx[i]) + sqr(dy[i])); 
+            lambda[i] = sqrt(sqr(dx[i]) + sqr(dy[i]));	// TODO: use hypot()
             if (Arithmetic.isZero(lambda[i])) {
-        		throw new Error("Zero-length polygon segment!");
+        		throw new Error("zero-length polygon segment!");
         	}
             L[i+1] = L[i] + lambda[i];
         }
@@ -111,25 +98,5 @@ public class FourierDescriptorFromPolygon extends FourierDescriptor {
             this.setCoefficient(-m, new Complex(s * (a - d), s * (b + c)));
         }
 	}
-	
-	static Pnt2d[] getRoiPoints(Roi roi) {
-		Polygon poly = roi.getPolygon();
-		int[] xp = poly.xpoints;
-		int[] yp = poly.ypoints;
-		// copy vertices for all non-zero-length polygon segments:
-		List<Pnt2d> points = new ArrayList<>(xp.length);
-		points.add(PntInt.from(xp[0], yp[0]));
-		int last = 0;
-		for (int i = 1; i < xp.length; i++) {
-			if (xp[last] != xp[i] || yp[last] != yp[i]) {
-				points.add(PntInt.from(xp[i], yp[i]));
-				last = i;
-			}
-		}
-		// remove last point if the closing segment has zero length:
-		if (xp[last] == xp[0] && yp[last] == yp[0]) {
-			points.remove(last);
-		}
-		return points.toArray(new Pnt2d[0]);
-	}
+
 }
