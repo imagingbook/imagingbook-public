@@ -8,25 +8,19 @@
  *******************************************************************************/
 package imagingbook.spectral.dct;
 
+import org.junit.Test;
+
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
+import imagingbook.testutils.NumericTestUtils;
 
+// works for square data arrays only
 public class DctMatrixTest {
-
-	/**
-	 * Test method.
-	 * @param args command arguments
-	 * TODO: convert to JUnit test!
-	 */
-	public static void main(String[] args) {
-		PrintPrecision.set(5);
-		float[][] A = makeDctMatrix(4, 4);
-		System.out.println("A = " + Matrix.toString(A));
-		System.out.println();
-
+	
+	@Test
+	public void testFloat() {
+		float TOL = 1E-6f;
+		float[][] A = makeDctMatrixFloat(4, 4);
 		float[][] At = Matrix.transpose(A);
-		System.out.println("At = " + Matrix.toString(At));
-		System.out.println();
 		
 		float[][] g = {
 				{1,2,3,4},
@@ -34,54 +28,79 @@ public class DctMatrixTest {
 				{6,5,2,5},
 				{0,9,8,1}};
 		
-		System.out.println("---------- original 2D signal -----------");
-		System.out.println("g = " + Matrix.toString(g));
-		System.out.println();
-		
-		
-		System.out.println("---------- DCT with transformation methods -----------");
-		
+		// forward DCT by standard transformation methods:
 		float[][] G1 = Matrix.duplicate(g);
 		Dct2d.Float dct = new Dct2dFast.Float(G1.length, G1[0].length);
 		dct.forward(G1);
-		System.out.println("G1 = " + Matrix.toString(G1));
-		System.out.println();
 		
-		// inverse  DFT with transformation methods
-		float[][] g1r = Matrix.duplicate(G1);
-		dct.inverse(g1r);
-		System.out.println("g1r = " + Matrix.toString(g1r));
-		
-		System.out.println();
-		System.out.println("---------- DCT by matrix multiplication -----------");
-		
+		// forward DCT by matrix multiplication:
 		float[][] g2 = Matrix.duplicate(g);
 		float[][] G2 = Matrix.multiply(A, Matrix.multiply(g2, At));
-		System.out.println("G2 = " + Matrix.toString(G2));
-		System.out.println();
 		
+		NumericTestUtils.assertArrayEquals(G1, G2, TOL);
+		
+		// inverse DCT by standard transformation methods:
+		dct.inverse(G1);
+		NumericTestUtils.assertArrayEquals(G1, g, TOL);
+		
+		// inverse DCT by matrix multiplication:
 		float[][] g2r = Matrix.multiply(At, Matrix.multiply(G2, A));
-		System.out.println("g2r = " + Matrix.toString(g2r));
-		
-//		float[][] I1 = Matrix.multiply(At, A);
-//		System.out.println("I1 = " + Matrix.toString(I1));
-//		
-//		float[][] I2 = Matrix.multiply(A, At);
-//		System.out.println("I2 = " + Matrix.toString(I2));
+		NumericTestUtils.assertArrayEquals(g2r, g, TOL);
 	}
 	
-	static float[][] makeDctMatrix(int M, int N) {
+	@Test
+	public void testDouble() {
+		double TOL = 1E-12;
+		double[][] A = makeDctMatrixDouble(4, 4);
+		double[][] At = Matrix.transpose(A);
+		
+		double[][] g = {
+				{1,2,3,4},
+				{7,2,0,9},
+				{6,5,2,5},
+				{0,9,8,1}};
+		
+		// forward DCT by standard transformation methods:
+		double[][] G1 = Matrix.duplicate(g);
+		Dct2d.Double dct = new Dct2dFast.Double(G1.length, G1[0].length);
+		dct.forward(G1);
+		
+		// forward DCT by matrix multiplication:
+		double[][] g2 = Matrix.duplicate(g);
+		double[][] G2 = Matrix.multiply(A, Matrix.multiply(g2, At));
+		
+		NumericTestUtils.assertArrayEquals(G1, G2, TOL);
+		
+		// inverse DCT by standard transformation methods:
+		dct.inverse(G1);
+		NumericTestUtils.assertArrayEquals(G1, g, TOL);
+		
+		// inverse DCT by matrix multiplication:
+		double[][] g2r = Matrix.multiply(At, Matrix.multiply(G2, A));
+		NumericTestUtils.assertArrayEquals(g2r, g, TOL);
+	}
+
+	// --------------------------------------------------------------
+	
+	private float[][] makeDctMatrixFloat(int M, int N) {
 		float[][] A = new float[M][N];
 		for (int i = 0; i < M; i++) {
 			double c_i = (i == 0) ? 1.0 / Math.sqrt(2) : 1;
 			for (int j = 0; j < N; j++) {
-				A[i][j] = (float)
-//						\sqrt{\tfrac{2}{N}} \cdot c_i \cdot 
-//						\cos\Bigl(\frac{\pi \cdot (2j + 1) \cdot i}{2M}\Bigr) ,
-					(Math.sqrt(2.0/N) * c_i * Math.cos(Math.PI * (2*j + 1) * i / (2.0 * M)) );
+				A[i][j] = (float) (Math.sqrt(2.0/N) * c_i * Math.cos(Math.PI * (2*j + 1) * i / (2.0 * M)));
 			}
 		}
-		
+		return A;
+	}
+	
+	private double[][] makeDctMatrixDouble(int M, int N) {
+		double[][] A = new double[M][N];
+		for (int i = 0; i < M; i++) {
+			double c_i = (i == 0) ? 1.0 / Math.sqrt(2) : 1;
+			for (int j = 0; j < N; j++) {
+				A[i][j] = Math.sqrt(2.0/N) * c_i * Math.cos(Math.PI * (2*j + 1) * i / (2.0 * M));
+			}
+		}
 		return A;
 	}
 
