@@ -21,11 +21,11 @@ import imagingbook.common.util.ParameterBundle;
  * See Sec. 9.2.1 of [2] for a detailed description.
  * </p>
  * <p>
- * [1] J. Bernsen. Dynamic thresholding of grey-level images. In “Proceedings
- * of the International Conference on Pattern Recognition (ICPR)”,
+ * [1] J. Bernsen. Dynamic thresholding of grey-level images. In "Proceedings
+ * of the International Conference on Pattern Recognition (ICPR)",
  * pp. 1251–1255, Paris (October 1986). IEEE Computer Society.
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

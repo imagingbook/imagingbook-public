@@ -33,7 +33,7 @@ import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
  * edge and range image segmentation", IEEE Transactions on Pattern Analysis and
  * Machine Intelligence 13(11), 1115–1138 (1991).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <eDigital Image Processing &ndash; An Algorithmicic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

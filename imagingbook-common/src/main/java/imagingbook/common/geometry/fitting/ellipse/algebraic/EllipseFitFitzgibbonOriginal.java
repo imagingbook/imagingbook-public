@@ -44,7 +44,7 @@ import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
  * Conference in Central Europe on Computer Graphics and Visualization
  * (WSCG’98)", pp. 125-132, Plzeň, CZ (February 1998).
  * <br>
- * [3] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * [3] W. Burger, M.J. Burge,Digital Image Processing &ndash; An Algorithmicthmic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * @author WB

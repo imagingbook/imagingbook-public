@@ -26,7 +26,7 @@ import imagingbook.common.util.ParameterBundle;
  * "Adaptive document image binarization", Pattern Recognition 33(2), 
  * 1135-1143 (2000).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <eDigital Image Processing &ndash; An Algorithmicic Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

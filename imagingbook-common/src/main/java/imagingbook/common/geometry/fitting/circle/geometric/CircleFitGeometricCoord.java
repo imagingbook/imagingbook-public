@@ -42,7 +42,7 @@ import imagingbook.common.math.Matrix;
  * See [1, Sec. 11.1.3] for a detailed description (Alg. 11.4).
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

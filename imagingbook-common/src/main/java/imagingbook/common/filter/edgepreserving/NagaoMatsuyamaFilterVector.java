@@ -25,7 +25,7 @@ import imagingbook.common.math.Matrix;
  * [1] M. Nagao and T. Matsuyama. Edge preserving smoothing. Computer
  * Graphics and Image Processing 9(4), 394–407 (1979).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <eDigital Image Processing &ndash; An Algorithmicic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  */

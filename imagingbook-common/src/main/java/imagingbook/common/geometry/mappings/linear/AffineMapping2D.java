@@ -54,7 +54,7 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	 * The solution is found in closed form (see [1], Sec. 21.1.3, eq. 21.31).
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 3rd ed, Springer (2022).
 	 * </p>
 	 * 
 	 * @param p0 point 1 of source triangle A

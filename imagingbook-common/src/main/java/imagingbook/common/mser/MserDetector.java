@@ -30,7 +30,7 @@ import imagingbook.common.util.ParameterBundle;
  * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline
  * stereo from maximally stable extremal regions. Image and Vision Computing 22(10), 761–767 (2004).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <eDigital Image Processing &ndash; An Algorithmicic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

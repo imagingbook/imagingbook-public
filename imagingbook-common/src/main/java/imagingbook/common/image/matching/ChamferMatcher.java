@@ -23,7 +23,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
  * See Sec. 23.2.3 (Alg. 23.3) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
  * 3rd ed, Springer (2022).
  * </p>
  * 

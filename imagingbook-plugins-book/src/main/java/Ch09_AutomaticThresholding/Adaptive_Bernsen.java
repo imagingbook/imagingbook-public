@@ -28,7 +28,7 @@ import imagingbook.common.threshold.adaptive.BernsenThresholder.Parameters;
  * is modified to a binary image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
  * Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 

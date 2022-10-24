@@ -24,7 +24,7 @@ import ij.process.ImageProcessor;
  * See Sec. 4.2 (Prog. 4.3) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * [1] W. Burger, M.J. Burge, <em>DDigital Image Processing &ndash; An Algorithmic
  * Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 

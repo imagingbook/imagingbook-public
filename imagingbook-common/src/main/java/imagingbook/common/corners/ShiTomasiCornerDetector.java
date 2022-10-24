@@ -29,7 +29,7 @@ import ij.process.ImageProcessor;
  *  of IEEE Conference on Computer Vision and Pattern Recognition,
  *  CVPR’94, pp. 593–600, Seattle, WA, USA (1994).
  *  <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+ * [2] W. Burger, M.J. Burge, Digital Image Processing &ndash; An Algorithmichmic Approach</em>,
  * 3rd ed, Springer (2022).
  * </p>
  * 

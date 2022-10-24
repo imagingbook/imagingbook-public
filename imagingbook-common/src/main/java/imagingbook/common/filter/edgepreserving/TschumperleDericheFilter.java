@@ -29,7 +29,7 @@ import imagingbook.common.math.eigen.Eigensolver2x2;
  * [1] D. Tschumperle and R. Deriche, "Diffusion PDEs on vector-valued images", 
  * IEEE Signal Processing Magazine, vol. 19, no. 5, pp. 16-25 (Sep. 2002).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

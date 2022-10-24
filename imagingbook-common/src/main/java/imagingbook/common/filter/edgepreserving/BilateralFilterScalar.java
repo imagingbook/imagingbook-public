@@ -27,7 +27,7 @@ import imagingbook.common.image.PixelPack.PixelSlice;
  * Proceedings of the 1998 IEEE International Conference on Computer Vision,
  * Bombay, India.
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

@@ -34,7 +34,7 @@ public class PiecewiseLinearCdf {
 	 * double[] Pk = {.05, .25, .75, .95};
 	 * PiecewiseLinearCdf pLCdf = new PiecewiseLinearCdf(256, ik, Pk);</pre>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
 	 * 3rd ed, Springer (2022).
 	 * </p>
 	 * 

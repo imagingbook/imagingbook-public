@@ -24,7 +24,7 @@ import imagingbook.common.image.PixelPack.PixelSlice;
  * in selected neighborhoods. IEEE Transactions on Systems, Man,
  * and Cybernetics 7, 394–407 (1977).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <eDigital Image Processing &ndash; An Algorithmicic Approach</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

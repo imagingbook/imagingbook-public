@@ -17,7 +17,7 @@ import imagingbook.common.histogram.HistogramUtils;
  * background and foreground means in every iteration. See [1], Alg. 9.2.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

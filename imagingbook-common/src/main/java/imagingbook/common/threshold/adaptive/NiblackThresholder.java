@@ -32,7 +32,8 @@ import imagingbook.common.util.ParameterBundle;
  * <p>
  * [1] W. Niblack. “An Introduction to Digital Image Processing”. Prentice-Hall (1986).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
+ * 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

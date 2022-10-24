@@ -32,7 +32,7 @@ import imagingbook.common.util.tuples.Tuple2;
  * algorithm using contour tracing technique. Computer Vision, Graphics,
  * and Image Processing: Image Understanding 93(2), 206-220 (2004).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
  * Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 
