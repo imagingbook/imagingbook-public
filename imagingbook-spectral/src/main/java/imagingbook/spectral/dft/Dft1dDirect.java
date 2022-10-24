@@ -11,10 +11,21 @@ package imagingbook.spectral.dft;
 /**
  * <p>
  * Direct (slow) implementation of the 1-dimensional DFT using tabulated sine
- * and cosine values. Note that this class has no public constructor - instantiate
- * sub-class {@link Dft1dDirect.Float} or {@link Dft1dDirect.Double} instead.
- * See Sec. 18.4.1 of [1] for additional details.
+ * and cosine values. Note that this class has no public constructor -
+ * instantiate sub-class {@link Dft1dDirect.Float} or {@link Dft1dDirect.Double}
+ * instead, as shown below. See Sec. 18.4.1 of [1] for additional details.
  * </p>
+ * <p>
+ * Usage example (for {@code float} data):
+ * </p>
+ * <pre>
+ * float[] re = {1, 2, 3, 4, 5, 3, 0};
+ * float[] im = {0, 0, 0, 0, 0, 0, 0};
+ * Dft1d.Float dft = new Dft1dDirect.Float(re.length);
+ * dct.forward(re, im);  // re/im now is the DFT spectrum
+ * dct.inverse(re, im);  // re/im now is the original signal 
+ * ...
+ * </pre>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
  * Approach</em>, 3rd ed, Springer (2022).

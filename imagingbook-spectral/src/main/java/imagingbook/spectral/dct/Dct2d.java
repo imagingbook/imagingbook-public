@@ -11,13 +11,14 @@ package imagingbook.spectral.dct;
 
 /**
  * <p>
- * Common interface for all two-dimensional DCT implementations.
- * Based on associated one-dimensional DCT methods (see {@link Dct1d}).
- * See Ch. 20 of [1] for additional details.
+ * Common interface for all 2D DCT implementations. Based on associated
+ * one-dimensional DCT methods (see {@link Dct1d}). Data arrays are indexed as
+ * {@code data[x][y]}, with 0 &le; x &lt; width and 0 &le; y &lt; height. See Ch.
+ * 20 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
@@ -26,11 +27,27 @@ package imagingbook.spectral.dct;
  */
 public interface Dct2d {
 	
+	/**
+	 * Returns the 'width' of the 2D data array (length of dimension 0).
+	 * Data arrays are indexed as {@code data[x][y]}, with 
+	 * 0 &le; x &lt; width and 0 &le; y &lt; height.
+	 * @return the width of the 2D data array
+	 */
 	public int getWidth();
+	
+	/**
+	 * Returns the 'height' of the 2D data array (length of dimension 1).
+	 * Data arrays are indexed as {@code data[x][y]}, with 
+	 * 0 &le; x &lt; width and 0 &le; y &lt; height.
+	 * @return the height of the 2D data array
+	 */
 	public int getHeight();
 	
 	// ---------------------------------------------------------------------------------------
 
+	/**
+	 * Sub-interface for 2D DCT implementations operating on {@code float} data.
+	 */
 	public interface Float extends Dct2d {
 		
 		/**
@@ -133,6 +150,9 @@ public interface Dct2d {
 		
 	}
 	
+	/**
+	 * Sub-interface for 2D DCT implementations operating on {@code double} data.
+	 */
 	public interface Double extends Dct2d {
 		
 		/**

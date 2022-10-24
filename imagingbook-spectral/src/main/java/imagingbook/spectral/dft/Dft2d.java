@@ -12,13 +12,14 @@ import java.util.Arrays;
 
 /**
  * <p>
- * Common interface for all two-dimensional DFT/FFT implementations.
- * Based on associated one-dimensional DFT/FFT methods (see {@link Dft1d}).
- * See Ch. 19 of [1] for additional details.
+ * Common interface for all 2D DFT/FFT implementations. Data arrays are indexed
+ * as {@code data[x][y]}, with 0 &le; x &lt; width and 0 &le; y &lt; height.
+ * Based on associated one-dimensional DFT/FFT methods (see {@link Dft1d}). See
+ * Ch. 19 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic Approach</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
@@ -27,12 +28,33 @@ import java.util.Arrays;
  */
 public interface Dft2d {
 	
+	/**
+	 * Returns the 'width' of the 2D data array (length of dimension 0).
+	 * Data arrays are indexed as {@code data[x][y]}, with 
+	 * 0 &le; x &lt; width and 0 &le; y &lt; height.
+	 * @return the width of the 2D data array
+	 */
 	public int getWidth();
+	
+	/**
+	 * Returns the 'height' of the 2D data array (length of dimension 1).
+	 * Data arrays are indexed as {@code data[x][y]}, with 
+	 * 0 &le; x &lt; width and 0 &le; y &lt; height.
+	 * @return the height of the 2D data array
+	 */
 	public int getHeight();
+	
+	/**
+	 * Returns the scaling mode of this DFT (see {@link ScalingMode}).
+	 * @return the scaling mode of this DFT.
+	 */
 	public ScalingMode getScalingMode();
 	
 	// -------------------------------------------------------------
 	
+	/**
+	 * Sub-interface for 2D DFT implementations operating on {@code float} data.
+	 */
 	public interface Float extends Dft2d {
 		
 		/**
@@ -164,6 +186,9 @@ public interface Dft2d {
 	
 	// -------------------------------------------------------------
 	
+	/**
+	 * Sub-interface for 2D DFT implementations operating on {@code double} data.
+	 */
 	public interface Double extends Dft2d {
 		
 		/**

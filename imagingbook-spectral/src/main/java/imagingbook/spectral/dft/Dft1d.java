@@ -22,13 +22,22 @@ package imagingbook.spectral.dft;
  */
 public interface Dft1d {
 	
+	/**
+	 * Returns the size of this DFT (length of data vectors).
+	 * @return the size of this DFT
+	 */
 	public int getSize();
+	
+	/**
+	 * Returns the scaling mode of this DFT (see {@link ScalingMode}).
+	 * @return the scaling mode of this DFT.
+	 */
 	public ScalingMode getScalingMode();
 	
 	// ---------------------------------------------------------------------------------
 	
 	/**
-	 * Sub-interface for DFT implementations on {@code float} data.
+	 * Sub-interface for 1D DFT implementations operating on {@code float} data.
 	 */
 	public interface Float extends Dft1d {
 		
@@ -74,7 +83,7 @@ public interface Dft1d {
 	// -------------------------------------------------------------------
 	
 	/**
-	 * Sub-interface for DFT implementations on {@code double} data.
+	 * Sub-interface for 1D DFT implementations operating on {@code double} data.
 	 */
 	public interface Double extends Dft1d {
 		

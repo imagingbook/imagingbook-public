@@ -11,22 +11,25 @@ package imagingbook.spectral.dct;
 
 /**
  * <p>
- * Calculates the 1D DFT using tabulated cosine values
- * for {@code float} or {@code double} data (see sub-classes
- * {@link Dct1dDirect.Float} and {@link Dct1dDirect.Double}, respectively).
- * This implementation is
+ * Calculates the 1D DFT using tabulated cosine values for {@code float} or
+ * {@code double} data (see sub-classes {@link Dct1dDirect.Float} and
+ * {@link Dct1dDirect.Double}, respectively). This implementation is
  * considerably faster than the naive version without cosine tables (see
- * {@link Dct1dSlow}). Other optimizations are possible. See Sec. 20.1 of [1]
+ * {@link Dct1dSlow}). Other optimizations are possible. Note that this class
+ * has no public constructor - instantiate sub-class {@link Dct1dDirect.Float}
+ * or {@link Dct1dDirect.Double} instead, as shown below. See Sec. 20.1 of [1]
  * for additional details.
  * </p>
  * <p>
  * Usage example (for {@code float} data):
+ * </p>
  * <pre>
  * float[] data = {1, 2, 3, 4, 5, 3, 0};
  * Dct1d.Float dct = new Dct1dDirect.Float(data.length);
  * dct.forward(data);
  * dct.inverse(data);
- * ... </pre>
+ * ...
+ * </pre>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
  * Approach</em>, 3rd ed, Springer (2022).

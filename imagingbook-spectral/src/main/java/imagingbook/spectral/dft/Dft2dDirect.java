@@ -1,5 +1,32 @@
 package imagingbook.spectral.dft;
 
+/**
+ * <p>
+ * Direct (slow) implementation of the 2-dimensional DFT using tabulated sine
+ * and cosine values. Note that this class has no public constructor -
+ * instantiate sub-class {@link Dft2dDirect.Float} or {@link Dft2dDirect.Double}
+ * instead, as shown below. See Ch. 19 of [1] for additional details.
+ * </p>
+ * <p>
+ * Usage example (for {@code float} data):
+ * </p>
+ * <pre>
+ * float[][] re = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {-2, -1, 0}};
+ * float[][] im = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+ * int w = re.length;       // w = 4
+ * int h = re[0].length;    // h = 3
+ * Dft2d.Float dft = new Dft2dDirect.Float(w, h);
+ * dct.forward(re, im);  // re/im now is the 2D DFT spectrum
+ * dct.inverse(re, im);  // re/im now is the original 2D signal 
+ * ...</pre>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @see Dft1dDirect
+ */
 public abstract class Dft2dDirect extends Dft2dImp {
 	
 	private Dft2dDirect(int width, int height, ScalingMode sm) {

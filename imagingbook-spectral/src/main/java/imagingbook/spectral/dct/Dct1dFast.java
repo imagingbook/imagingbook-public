@@ -17,17 +17,21 @@ import org.jtransforms.dct.FloatDCT_1D;
  * <p>
  * This is fast implementation of the DCT, based on the JTransforms package by
  * Piotr Wendykier (<a href="https://github.com/wendykierp/JTransforms">
- * https://github.com/wendykierp/JTransforms</a>). See Sec. 20.1 of [1] for
+ * https://github.com/wendykierp/JTransforms</a>). Note that this class has no
+ * public constructor - instantiate sub-class {@link Dct1dFast.Float} or
+ * {@link Dct1dFast.Double} instead, as shown below. See Sec. 20.1 of [1] for
  * additional details.
  * </p>
  * <p>
  * Usage example (for {@code float} data):
+ * </p>
  * <pre>
  * float[] data = {1, 2, 3, 4, 5, 3, 0};
  * Dct1d.Float dct = new Dct1dFast.Float(data.length);
  * dct.forward(data);
  * dct.inverse(data);
- * ... </pre>
+ * ...
+ * </pre>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
  * Approach</em>, 3rd ed, Springer (2022).

@@ -9,22 +9,36 @@
 package imagingbook.spectral.dct;
 
 /**
+ * <p>
  * Interface specifying all one-dimensional DCT implementations. The definition
  * used is the one adopted by MATLAB (<a href=
  * "https://www.mathworks.com/help/signal/ref/dct.html">https://www.mathworks.com/help/signal/ref/dct.html</a>),
  * called "DCT-II" on Wikipedia
  * (<a href="https://en.wikipedia.org/wiki/Discrete_cosine_transform">
- * https://en.wikipedia.org/wiki/Discrete_cosine_transform</a>).
+ * https://en.wikipedia.org/wiki/Discrete_cosine_transform</a>). See Ch. 20 of
+ * [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing - An Algorithmic
+ * Approach</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @see Dct1dDirect
+ * @see Dct1dFast
  * 
  * @author WB
  * @version 2022/10/23
  */
 public interface Dct1d {
 	
+	/**
+	 * Returns the size of this DCT (length of data vectors).
+	 * @return the size of this DCT
+	 */
 	public int getSize();
 	
 	/**
-	 * Sub-interface for DCT implementations on {@code float} data.
+	 * Sub-interface for 1D DCT implementations operating on {@code float} data.
 	 */
 	public interface Float extends Dct1d {
 		
@@ -53,7 +67,7 @@ public interface Dct1d {
 	}
 	
 	/**
-	 * Sub-interface for DCT implementations on {@code double} data.
+	 * Sub-interface for 1D DCT implementations operating on {@code double} data.
 	 */
 	public interface Double extends Dct1d {
 		

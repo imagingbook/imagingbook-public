@@ -11,7 +11,7 @@ import imagingbook.spectral.TestUtils;
 import imagingbook.testutils.NumericTestUtils;
 
 public class Dft2dDirectTest {
-
+	
 	@Test
 	public void testFloat1() {
 		float TOL = 1E-6f;
