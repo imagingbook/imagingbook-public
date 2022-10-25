@@ -9,12 +9,17 @@
 package imagingbook.common.geometry.basic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
+
+import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 public class PntUtilsTest {
 
@@ -80,5 +85,36 @@ public class PntUtilsTest {
 			assertEquals(points1[i], points2[i]);
 		}
 	}
+	
+	@Test
+	public void testMakeIntPoints1() {
+		Pnt2d[] pts = PntUtils.makeIntPoints();
+		assertEquals(0, pts.length);
+		
+		pts = PntUtils.makeIntPoints(1, 2, 3, 4, 5, 6);
+		System.out.println(Arrays.toString(pts));
+		assertEquals(3, pts.length);
+		assertTrue(pts[0] instanceof PntInt);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testMakeIntPoints2() {
+		PntUtils.makeIntPoints(17, 18, 19);
+	}
+	
+	@Test
+	public void testMakeDoublePoints1() {
+		Pnt2d[] pts = PntUtils.makeDoublePoints();
+		assertEquals(0, pts.length);
+		
+		pts = PntUtils.makeDoublePoints(1.0, 2, 3, 4, 5, 6);
+		System.out.println(Arrays.toString(pts));
+		assertEquals(3, pts.length);
+		assertTrue(pts[0] instanceof PntDouble);
+	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void testMakeDoublePoints2() {
+		PntUtils.makeDoublePoints(17, 18, 19);
+	}
 }

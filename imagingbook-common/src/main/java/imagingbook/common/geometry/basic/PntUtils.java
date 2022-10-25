@@ -10,6 +10,9 @@ package imagingbook.common.geometry.basic;
 
 import java.util.Arrays;
 
+import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+
 public abstract class PntUtils {
 	
 	private PntUtils() {}
@@ -47,7 +50,6 @@ public abstract class PntUtils {
 	
 	// -------------------------------------------------------------------
 	
-	
 	/**
 	 * Converts a given point array {@code Pnt2d[n]} to a 2D double array {@code double[n][2]},
 	 * with x-coordinates in column 0 and y-coordinates in column 1.
@@ -75,6 +77,58 @@ public abstract class PntUtils {
 		Pnt2d[] pts = new Pnt2d[n];
 		for (int i = 0; i < n; i++) {
 			pts[i] = Pnt2d.from(da[i]);
+		}
+		return pts;
+	}
+	
+	// -------------------------------------------------------------------
+	
+	/**
+	 * Creates and returns an array of {@link Pnt2d.PntInt} points from the
+	 * given sequence of {@code int} coordinate values, interpreted as x/y
+	 * pairs. Throws an exception if the length of the coordinate sequence
+	 * is not even. Usage example:
+	 * <pre>
+	 * Pnt2d[] pts = PntUtils.makeIntPoints(1, 2, 3, 4, 5, 6);
+	 * // -> [PntInt(1, 2), PntInt(3, 4), PntInt(5, 6)]
+	 * </pre>
+	 * 
+	 * @param xy an even-numbered sequence of point coordinates
+	 * @return an array of {@link Pnt2d.PntInt} points
+	 */
+	public static Pnt2d[] makeIntPoints(int... xy) {
+		if (xy.length % 2 != 0) {
+			throw new IllegalArgumentException("even number of point coordinates required");
+		}
+		final int n = xy.length/2;
+		Pnt2d[] pts = new Pnt2d[n];
+		for (int i = 0, j = 0; i < n; i++, j += 2) {
+			pts[i] = new PntInt(xy[j], xy[j + 1]);
+		}
+		return pts;
+	}
+	
+	/**
+	 * Creates and returns an array of {@link Pnt2d.PntDouble} points from the
+	 * given sequence of {@code double} coordinate values, interpreted as x/y
+	 * pairs. Throws an exception if the length of the coordinate sequence
+	 * is not even. Usage example:
+	 * <pre>
+	 * Pnt2d[] pts = PntUtils.makeDoublePoints(1, 2, 3, 4, 5, 6);
+	 * // -> [PntDouble(1.0, 2.0), PntDouble(3.0, 4.0), PntDouble(5.0, 6.0)]
+	 * </pre>
+	 * 
+	 * @param xy an even-numbered sequence of point coordinates
+	 * @return an array of {@link Pnt2d.PntDouble} points
+	 */
+	public static Pnt2d[] makeDoublePoints(double... xy) {
+		if (xy.length % 2 != 0) {
+			throw new IllegalArgumentException("even number of point coordinates required");
+		}
+		final int n = xy.length/2;
+		Pnt2d[] pts = new Pnt2d[n];
+		for (int i = 0, j = 0; i < n; i++, j += 2) {
+			pts[i] = new PntDouble(xy[j], xy[j + 1]);
 		}
 		return pts;
 	}

@@ -516,7 +516,7 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 
 		@Override
 		public String toString() {
-			return String.format(Locale.US, "%s[%.3f, %.3f]", 
+			return String.format(Locale.US, "%s(%.3f, %.3f)", 
 					getClass().getSimpleName(), x, y);
 		}
 
@@ -742,7 +742,7 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 
 		@Override
 		public String toString() {
-			return String.format(Locale.US, "%s[%d, %d]", 
+			return String.format(Locale.US, "%s(%d, %d)", 
 					getClass().getSimpleName(), x, y);
 		}
 
