@@ -76,7 +76,8 @@ public class Fourier_Descriptor_RegularSampling extends CommonSetup implements P
 		
 		// create the Fourier descriptor for 'V' with Mp coefficient pairs:
 		int Mp = FourierDescriptorPairs;
-		FourierDescriptor fd = new FourierDescriptorUniform(V, Mp);
+		FourierDescriptor fd = FourierDescriptorUniform.from(V, Mp);
+//		FourierDescriptor fd = new FourierDescriptorUniform(V, Mp);
 		
 		// reconstruct the corresponding shape with 100 contour points:
 		Complex[] R = fd.getReconstruction(ShapeReconstructionPoints);

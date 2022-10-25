@@ -24,18 +24,18 @@ public class FourierDescriptorUniformTest {
 				new Complex(0.109673444, -0.154620264), 
 				new Complex(-0.259022635, -2.010265635)};
 		
-		FourierDescriptor fd1 = new FourierDescriptorUniform(V); 
+		FourierDescriptor fd1 = FourierDescriptorUniform.from(V); 
 //		System.out.println(Arrays.toString(fd1.getCoefficients()));
 		assertEquals(5, fd1.size());
 		TestUtils.assertArrayEquals(c1, fd1.getCoefficients(), TOL);
 		
-		FourierDescriptor fd2 = new FourierDescriptorUniform(V, 2); 
+		FourierDescriptor fd2 = FourierDescriptorUniform.from(V, 2); 
 //		System.out.println(Arrays.toString(fd2.getCoefficients()));
 		assertEquals(5, fd2.size());
 		Complex[] c2 = c1;
 		TestUtils.assertArrayEquals(c2, fd2.getCoefficients(), TOL);
 		
-		FourierDescriptor fd3 = new FourierDescriptorUniform(V, 1); 
+		FourierDescriptor fd3 = FourierDescriptorUniform.from(V, 1); 
 //		System.out.println(Arrays.toString(fd3.getCoefficients()));
 		assertEquals(3, fd3.size());
 		Complex[] c3 = {c1[0], c1[1], c1[4]};

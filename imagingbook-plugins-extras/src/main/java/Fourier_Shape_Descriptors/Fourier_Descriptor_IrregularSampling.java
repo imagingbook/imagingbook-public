@@ -22,7 +22,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.math.Complex;
 import imagingbook.spectral.fd.FourierDescriptor;
-import imagingbook.spectral.fd.FourierDescriptorFromPolygon;
+import imagingbook.spectral.fd.FourierDescriptorTrigonometric;
 
 /**
  * This plugin demonstrates the use of the trigonometric method for calculating
@@ -61,7 +61,8 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 		Pnt2d[] V = toPointArray(anyRoi);
 		Complex[] samples = FourierDescriptor.toComplexArray(V);
 		
-		FourierDescriptor fd = new FourierDescriptorFromPolygon(V, Mp);
+		FourierDescriptor fd = FourierDescriptorTrigonometric.from(V, Mp);
+//		FourierDescriptor fd = new FourierDescriptorFromPolygon(V, Mp);
 
 		// reconstruct the corresponding shape with 100 contour points:
 		Complex[] R = fd.getReconstruction(ShapeReconstructionPoints);

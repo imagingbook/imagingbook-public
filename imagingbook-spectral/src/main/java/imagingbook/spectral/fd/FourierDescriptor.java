@@ -29,7 +29,7 @@ import imagingbook.common.math.Complex;
  * This is the common (abstract) super-class for all Fourier descriptors. See
  * Ch.26 of [1] for additional details. Note that this class has no public
  * constructor (see concrete sub-classes {@link FourierDescriptorUniform} and
- * {@link FourierDescriptorFromPolygon}).
+ * {@link FourierDescriptorTrigonometric}).
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -40,7 +40,7 @@ import imagingbook.common.math.Complex;
  * @version 2022/10/24
  * 
  * @see FourierDescriptorUniform
- * @see FourierDescriptorFromPolygon
+ * @see FourierDescriptorTrigonometric
  */
 public class FourierDescriptor {
 
@@ -104,34 +104,6 @@ public class FourierDescriptor {
 		}
 	}
 
-//	private void truncateSelf(int Mp) {
-//		int M = G.length;
-//		if (Mp > 0 && Mp < M) {
-//			Complex[] Gnew = new Complex[Mp];
-//			for (int m = 0; m < Mp; m++) {
-//				if (m <= Mp / 2)
-//					Gnew[m] = G[m];
-//				else
-//					Gnew[m] = G[M - Mp + m];
-//			}
-//			G = Gnew;
-//		}
-//	}
-
-//	@Override
-//	public FourierDescriptor clone() {
-//		FourierDescriptor fd2 = null;
-//		try {
-//			fd2 = (FourierDescriptor) super.clone();
-//		} catch (CloneNotSupportedException e) {
-//			e.printStackTrace();
-//		}
-////		fd2.g = duplicate(this.g);
-//		fd2.G = duplicate(this.G);
-//		return fd2;
-//	}
-
-	
 	public int getMaxNegHarmonic() {
 		return -G.length/2;			// = -M/2
 	}
@@ -140,7 +112,6 @@ public class FourierDescriptor {
 		return (G.length - 1)/2;		// (M-1)/2
 	}
 
-	
 	public int getMaxCoefficientPairs() {
 		return G.length / 2; // was (G.length - 1)/2;!!
 	}
@@ -166,10 +137,6 @@ public class FourierDescriptor {
 	}
 
 	// ------------------------------------------------------------------
-
-//	public Complex[] getSamples() {
-//		return g;
-//	}
 
 	public Complex[] getCoefficients() {
 		return G;

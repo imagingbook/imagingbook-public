@@ -139,7 +139,8 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 		Pnt2d[] polygon = new PolygonSampler().samplePolygonUniformly(contr.getPointArray(), NumberOfContourSamples);
 		Complex[] samples = FourierDescriptor.toComplexArray(polygon);
 		
-		FourierDescriptor fd = new FourierDescriptorUniform(polygon);
+		FourierDescriptor fd = FourierDescriptorUniform.from(polygon);
+//		FourierDescriptor fd = new FourierDescriptorUniform(polygon);
 		//fd.print();
 
 		String title = origTitle + String.format("-coeff%03d",NumberOfFourierDescriptorPairs);

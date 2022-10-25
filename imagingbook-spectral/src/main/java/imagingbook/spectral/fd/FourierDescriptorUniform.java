@@ -12,27 +12,30 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Complex;
 
-
 /**
- * Subclass of FourierDescriptor whose constructors assume
- * that input polygons are uniformly sampled.
+ * Subclass of {@link FourierDescriptor} whose instances are created
+ * from polygons assumed to be uniformly sampled.
  * 
  * @author WB
  * @version 2022/10/24
  */
 public class FourierDescriptorUniform extends FourierDescriptor {
 	
+	// this constructor is hidden
+	private FourierDescriptorUniform(Complex[] G) {
+		super(G);
+	}
+	
 	/**
 	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
 	 * with the maximum number of Fourier coefficient pairs.
 	 * The length of the resulting DFT spectrum equals V.length.
 	 * 
-	 * @param V polygon
+	 * @param V a polygon
+	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
-	public FourierDescriptorUniform(Pnt2d[] V) {
-//		this.g = toComplexArray(V);
-//		this.G = DFT(toComplexArray(V));
-		super(DFT(toComplexArray(V)));
+	public static FourierDescriptorUniform from(Pnt2d[] V) {
+		return new FourierDescriptorUniform(DFT(toComplexArray(V)));
 	}
 	
 	/**
@@ -41,19 +44,19 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	 * The length of the resulting DFT spectrum is 2 * Mp + 1, i.e.,
 	 * it must be assured that Mp < (V.length - 1) &divide; 2.
 	 * 
-	 * @param V polygon
+	 * @param V a polygon
 	 * @param Mp number of coefficient pairs
+	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
-	public FourierDescriptorUniform(Pnt2d[] V, int Mp) {
-//		if (Mp > (V.length - 1) / 2) {
-//			throw new IllegalArgumentException("number of Fourier pairs (Mp) may not be gpreater than " + ((V.length - 1) / 2));
-//		}
-//		this.G = DFT(toComplexArray(V), 2 * Mp + 1);
-		super(DFT(toComplexArray(V), 2 * Mp + 1));
+	public static FourierDescriptorUniform from(Pnt2d[] V, int Mp) {
+		if (Mp > (V.length - 1) / 2) {
+			throw new IllegalArgumentException("number of Fourier pairs (Mp) may not be greater than " + ((V.length - 1) / 2));
+		}
+		Complex[] G = DFT(toComplexArray(V), 2 * Mp + 1);
+		return new FourierDescriptorUniform(G);
 	}
 	
 	// -------------------------------------------------------------------
-	
 
 	/**
 	 * DFT with the resulting spectrum (signal, if inverse) of the same length
