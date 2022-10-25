@@ -26,14 +26,14 @@ import imagingbook.common.math.Complex;
 
 /**
  * <p>
- * This is the common (abstract) super-class for all Fourier descriptors. 
- * See Ch.26 of [1] for additional details.
- * Note that this class has no public constructor (see concrete sub-classes {@link FourierDescriptorUniform} and
+ * This is the common (abstract) super-class for all Fourier descriptors. See
+ * Ch.26 of [1] for additional details. Note that this class has no public
+ * constructor (see concrete sub-classes {@link FourierDescriptorUniform} and
  * {@link FourierDescriptorFromPolygon}).
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction Using Java</em>,
- * 2nd ed, Springer (2016).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
  * </p>
  * 
  * @author WB
