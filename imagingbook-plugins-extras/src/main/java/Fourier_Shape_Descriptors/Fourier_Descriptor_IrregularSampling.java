@@ -58,7 +58,10 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 		
 		// create the Fourier descriptor for 'anyRoi' with Mp coefficient pairs:
 		int Mp = FourierDescriptorPairs;
-		FourierDescriptor fd = new FourierDescriptorFromPolygon(toPointArray(anyRoi), Mp);
+		Pnt2d[] V = toPointArray(anyRoi);
+		Complex[] samples = FourierDescriptor.toComplexArray(V);
+		
+		FourierDescriptor fd = new FourierDescriptorFromPolygon(V, Mp);
 
 		// reconstruct the corresponding shape with 100 contour points:
 		Complex[] R = fd.getReconstruction(ShapeReconstructionPoints);
@@ -75,14 +78,15 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 		Overlay oly = new Overlay();
 		
 		if (DrawOriginalContour) {
-			Roi roi = makeClosedPathShape(fd.getSamples(), 0.5, 0.5);
+			Roi roi = makeClosedPathShape(samples, 0.5, 0.5);
+//			Roi roi = makeClosedPathShape(fd.getSamples(), 0.5, 0.5);
 			roi.setStrokeColor(ContourColor);
 			roi.setStrokeWidth(ContourStrokeWidth);
 			oly.add(roi);
 		}
 		
 		if (DrawOriginalSamplePoints) {
-			for (Complex c : fd.getSamples()) {
+			for (Complex c : samples) {	// fd.getSamples()
 				ShapeRoi roi = makeCircleShape(c, SampleRadius, 0.5, 0.5);
 				roi.setStrokeColor(SampleStrokeColor);
 				roi.setStrokeWidth(SampleStrokeWidth);

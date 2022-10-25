@@ -36,11 +36,10 @@ public class FourierDescriptorFromPolygon extends FourierDescriptor {
 	 * @param Mp the number of Fourier coefficient pairs (M = 2 * Mp + 1)
 	 */
 	public FourierDescriptorFromPolygon(Pnt2d[] V, int Mp) {
-		g = toComplexArray(V);
-		makeDftSpectrumTrigonometric(Mp);
+		super(makeDftSpectrumTrigonometric(Mp, toComplexArray(V)));
 	}
 	
-	private void makeDftSpectrumTrigonometric(int Mp) {
+	private static Complex[] makeDftSpectrumTrigonometric(int Mp, Complex[] g) {
 		final int N = g.length;				// number of polygon vertices
 		final int M = 2 * Mp + 1;			// number of Fourier coefficients
         double[] dx = new double[N];		// dx[k] is the delta-x for polygon segment <k,k+1>
@@ -48,7 +47,7 @@ public class FourierDescriptorFromPolygon extends FourierDescriptor {
         double[] lambda = new double[N];	// lambda[k] is the length of the polygon segment <k,k+1>
         double[] L  = new double[N + 1]; 	// T[k] is the cumulated path length at polygon vertex k in [0,K]
         
-        G = new Complex[M];
+        Complex[] G = new Complex[M];
         
         L[0] = 0;
         for (int i = 0; i < N; i++) {	// compute Dx, Dy, Dt and t tables
@@ -76,7 +75,8 @@ public class FourierDescriptorFromPolygon extends FourierDescriptor {
         	c0 = c0 + s * dy[i] + (yi - y0) * lambda[i];
         }
         //G[0] = new Complex(x0 + a0/Ln, y0 + c0/Ln);
-        this.setCoefficient(0, new Complex(x0 + a0/Ln, y0 + c0/Ln));
+        setCoefficient(G, 0, new Complex(x0 + a0/Ln, y0 + c0/Ln));
+//      this.setCoefficient(0, new Complex(x0 + a0/Ln, y0 + c0/Ln));
         
         // calculate remaining FD pairs G[-m], G[+m] for m = 1,...,Mp
         for (int m = 1; m <= Mp; m++) {	// for each FD pair
@@ -94,9 +94,18 @@ public class FourierDescriptorFromPolygon extends FourierDescriptor {
                 d = d + dSin * (dy[i] / lambda[i]);
             }
             double s = Ln / sqr(2 * PI * m);
-            this.setCoefficient(+m, new Complex(s * (a + d), s * (c - b)));
-            this.setCoefficient(-m, new Complex(s * (a - d), s * (b + c)));
+            setCoefficient(G, +m, new Complex(s * (a + d), s * (c - b)));
+            setCoefficient(G, -m, new Complex(s * (a - d), s * (b + c)));
+//            this.setCoefficient(+m, new Complex(s * (a + d), s * (c - b)));
+//            this.setCoefficient(-m, new Complex(s * (a - d), s * (b + c)));
         }
+        
+        return G;
+	}
+	
+	private static void setCoefficient(Complex[] G, int m, Complex z) {
+		int mm = Arithmetic.mod(m, G.length);
+		G[mm] = new Complex(z);
 	}
 
 }

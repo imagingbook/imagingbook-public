@@ -31,7 +31,7 @@ import imagingbook.spectral.fd.FourierDescriptorUniform;
  * section (Program 6.1 in UtICS Vol. 3).
  * The input image ip is assumed to contain a binary image. The class 'RegionContourLabeling'
  * is used to find connected regions. Then the list of outer contours is retrieved and the 
- * longest contour is assigned to 'V' as an array of type 'Point2D'. Then the contour 'V' is 
+ * longest contour is assigned to 'V' as an array of type {@link Pnt2d}. Then the contour 'V' is 
  * used to create a Fourier descriptor with 15 coefficient pairs. Alternatively, we could have 
  * created a Fourier descriptor of the same length (number of coefficients) as the contour and 
  * then truncated it (using the'truncate()' method) to the specified number of coefficient 
@@ -50,11 +50,13 @@ public class Fourier_Descriptor_RegularSampling extends CommonSetup implements P
 		
 	private ImagePlus img;
 
+	@Override
 	public int setup(String arg, ImagePlus img) { 
     	this.img = img;
 		return DOES_8G + NO_CHANGES; 
 	}
 	
+	@Override
 	public void run(ImageProcessor ip) {
 		if (!setParameters()) 
 			return;
@@ -70,6 +72,7 @@ public class Fourier_Descriptor_RegularSampling extends CommonSetup implements P
 		}
 		Contour contr = outerContours.get(0);	// select the longest contour
 		Pnt2d[] V = contr.getPointArray();
+		Complex[] samples = FourierDescriptor.toComplexArray(V);
 		
 		// create the Fourier descriptor for 'V' with Mp coefficient pairs:
 		int Mp = FourierDescriptorPairs;
@@ -90,14 +93,14 @@ public class Fourier_Descriptor_RegularSampling extends CommonSetup implements P
 		Overlay oly = new Overlay();
 		
 		if (DrawOriginalContour) {
-			Roi roi = makeClosedPathShape(fd.getSamples(), 0.5, 0.5);
+			Roi roi = makeClosedPathShape(samples, 0.5, 0.5);
 			roi.setStrokeColor(ContourColor);
 			roi.setStrokeWidth(ContourStrokeWidth);
 			oly.add(roi);
 		}
 		
 		if (DrawOriginalSamplePoints) {
-			for (Complex c : fd.getSamples()) {
+			for (Complex c : samples) {
 				ShapeRoi roi = makeCircleShape(c, SampleRadius, 0.5, 0.5);
 				roi.setStrokeColor(SampleStrokeColor);
 				roi.setStrokeWidth(SampleStrokeWidth);

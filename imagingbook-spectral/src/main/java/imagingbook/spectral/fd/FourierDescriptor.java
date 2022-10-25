@@ -42,18 +42,25 @@ import imagingbook.common.math.Complex;
  * @see FourierDescriptorUniform
  * @see FourierDescriptorFromPolygon
  */
-public abstract class FourierDescriptor implements Cloneable {
+public class FourierDescriptor {
 
 	public static final int MinReconstructionSamples = 50;
 
-	Complex[] g;	// complex-valued samples (used only for display purposes)
-	Complex[] G;	// complex-valued DFT spectrum
-	double reconstructionScale = 1.0;		// remembers original scale after normalization
+	final Complex[] G;	// complex-valued DFT spectrum
+	double reconstructionScale = 1.0;		// remembers original scale after normalization, TODO: where is this used?
 	
 	/**
-	 * Package-private constructor.
+	 * Constructor.
+	 * 
+	 * @param G a complex-valued DFT spectrum
 	 */
-	FourierDescriptor() {}
+	FourierDescriptor(Complex[] G) {
+		this.G = G;
+	}
+	
+	FourierDescriptor(FourierDescriptor fd) {
+		this(duplicate(fd.G));
+	}
 
 	// ----------------------------------------------------------------
 
@@ -81,12 +88,6 @@ public abstract class FourierDescriptor implements Cloneable {
 	 * @return a new (truncated) instance of {@link FourierDescriptor}
 	 */
 	public FourierDescriptor truncate(int Mp) {
-		FourierDescriptor fd = this.clone();
-		fd.truncateSelf(Mp);
-		return fd;
-	}
-
-	private void truncateSelf(int Mp) {
 		int M = G.length;
 		if (Mp > 0 && Mp < M) {
 			Complex[] Gnew = new Complex[Mp];
@@ -96,22 +97,39 @@ public abstract class FourierDescriptor implements Cloneable {
 				else
 					Gnew[m] = G[M - Mp + m];
 			}
-			G = Gnew;
+			return new FourierDescriptor(Gnew);
+		}
+		else {
+			return new FourierDescriptor(this);	// just duplicate
 		}
 	}
 
-	@Override
-	public FourierDescriptor clone() {
-		FourierDescriptor fd2 = null;
-		try {
-			fd2 = (FourierDescriptor) super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		fd2.g = duplicate(this.g);
-		fd2.G = duplicate(this.G);
-		return fd2;
-	}
+//	private void truncateSelf(int Mp) {
+//		int M = G.length;
+//		if (Mp > 0 && Mp < M) {
+//			Complex[] Gnew = new Complex[Mp];
+//			for (int m = 0; m < Mp; m++) {
+//				if (m <= Mp / 2)
+//					Gnew[m] = G[m];
+//				else
+//					Gnew[m] = G[M - Mp + m];
+//			}
+//			G = Gnew;
+//		}
+//	}
+
+//	@Override
+//	public FourierDescriptor clone() {
+//		FourierDescriptor fd2 = null;
+//		try {
+//			fd2 = (FourierDescriptor) super.clone();
+//		} catch (CloneNotSupportedException e) {
+//			e.printStackTrace();
+//		}
+////		fd2.g = duplicate(this.g);
+//		fd2.G = duplicate(this.G);
+//		return fd2;
+//	}
 
 	
 	public int getMaxNegHarmonic() {
@@ -129,7 +147,7 @@ public abstract class FourierDescriptor implements Cloneable {
 
 	// ----------------------------------------------------------------
 
-	static Complex[] toComplexArray(Pnt2d[] points) {
+	public static Complex[] toComplexArray(Pnt2d[] points) {
 		int N = points.length;
 		Complex[] samples = new Complex[N];
 		for (int i = 0; i < N; i++) {
@@ -139,7 +157,7 @@ public abstract class FourierDescriptor implements Cloneable {
 	}
 	
 
-	private Complex[] duplicate(Complex[] g1) {
+	private static Complex[] duplicate(Complex[] g1) {
 		Complex[] g2 = new Complex[g1.length];
 		for (int i = 0; i < g1.length; i++) {
 			g2[i] = new Complex(g1[i]);
@@ -149,9 +167,9 @@ public abstract class FourierDescriptor implements Cloneable {
 
 	// ------------------------------------------------------------------
 
-	public Complex[] getSamples() {
-		return g;
-	}
+//	public Complex[] getSamples() {
+//		return g;
+//	}
 
 	public Complex[] getCoefficients() {
 		return G;
@@ -395,8 +413,8 @@ public abstract class FourierDescriptor implements Cloneable {
 	private FourierDescriptor[] makeStartPointInvariant(int Mp) {
 		double phiA = getStartPointPhase(Mp);
 		double phiB = phiA + Math.PI;
-		FourierDescriptor fdA = clone();
-		FourierDescriptor fdB = clone();
+		FourierDescriptor fdA = new FourierDescriptor(this);
+		FourierDescriptor fdB = new FourierDescriptor(this);
 		fdA.shiftStartPointPhase(phiA, Mp);
 		fdB.shiftStartPointPhase(phiB, Mp);
 		return new FourierDescriptor[] {fdA, fdB};

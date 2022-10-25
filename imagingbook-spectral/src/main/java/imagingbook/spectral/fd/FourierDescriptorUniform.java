@@ -30,8 +30,9 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	 * @param V polygon
 	 */
 	public FourierDescriptorUniform(Pnt2d[] V) {
-		this.g = toComplexArray(V);
-		this.G = DFT(this.g);
+//		this.g = toComplexArray(V);
+//		this.G = DFT(toComplexArray(V));
+		super(DFT(toComplexArray(V)));
 	}
 	
 	/**
@@ -44,11 +45,11 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	 * @param Mp number of coefficient pairs
 	 */
 	public FourierDescriptorUniform(Pnt2d[] V, int Mp) {
-		if (Mp > (V.length - 1) / 2) {
-			throw new IllegalArgumentException("number of Fourier pairs (Mp) may not be gpreater than " + ((V.length - 1) / 2));
-		}
-		this.g = toComplexArray(V);
-		this.G = DFT(this.g, 2 * Mp + 1);
+//		if (Mp > (V.length - 1) / 2) {
+//			throw new IllegalArgumentException("number of Fourier pairs (Mp) may not be gpreater than " + ((V.length - 1) / 2));
+//		}
+//		this.G = DFT(toComplexArray(V), 2 * Mp + 1);
+		super(DFT(toComplexArray(V), 2 * Mp + 1));
 	}
 	
 	// -------------------------------------------------------------------
@@ -61,7 +62,7 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	 * @param g signal vector
 	 * @return DFT spectrum
 	 */
-	private Complex[] DFT(Complex[] g) {
+	private static Complex[] DFT(Complex[] g) {
 		int M = g.length;
 //		double[] cosTable = makeCosTable(M);	// cosTable[m] == cos(2*pi*m/M)
 //		double[] sinTable = makeSinTable(M);	// sinTable[m] == sin(2*pi*m/M)
@@ -93,7 +94,7 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	 * @param MM length of the resulting DFT spectrum
 	 * @return DFT spectrum
 	 */
-	private Complex[] DFT(Complex[] g, int MM) {
+	private static Complex[] DFT(Complex[] g, int MM) {
 		int M = g.length;
 		if (MM > M) {
 			throw new IllegalArgumentException("truncated spectrum must be shorter than original MM = " + MM);

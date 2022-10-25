@@ -137,6 +137,8 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 
 		Contour contr = outerContours.get(0);	// contour of largest region
 		Pnt2d[] polygon = new PolygonSampler().samplePolygonUniformly(contr.getPointArray(), NumberOfContourSamples);
+		Complex[] samples = FourierDescriptor.toComplexArray(polygon);
+		
 		FourierDescriptor fd = new FourierDescriptorUniform(polygon);
 		//fd.print();
 
@@ -176,7 +178,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 			}
 
 			if (ShowContourSamples) { // draw the contour sample points ------------------------------
-				drawSamples(oly, fd.getSamples(), 0.5, 0.5);
+				drawSamples(oly, samples, 0.5, 0.5);
 			}
 
 			if (MarkContourCentroid) { // mark the center ---------------------------------------------
