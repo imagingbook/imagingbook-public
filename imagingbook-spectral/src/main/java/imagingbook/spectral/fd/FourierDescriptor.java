@@ -46,27 +46,32 @@ public class FourierDescriptor {
 
 	public static final int MinReconstructionSamples = 50;
 
-	final Complex[] G;	// complex-valued DFT spectrum
-	double reconstructionScale = 1.0;		// remembers original scale after normalization, TODO: where is this used?
+	private final Complex[] G;		// complex-valued DFT spectrum
+	private double scale;		// remembers original scale after normalization, TODO: where is this used?
 	
 	/**
-	 * Constructor.
-	 * 
+	 * Constructor using the default scale.
 	 * @param G a complex-valued DFT spectrum
 	 */
 	FourierDescriptor(Complex[] G) {
+		this(G, 1.0);
+	}
+	
+	/**
+	 * Constructor using a specific scale.
+	 * @param G a complex-valued DFT spectrum
+	 * @param scale the reconstruction scale
+	 */
+	FourierDescriptor(Complex[] G, double scale) {
 		this.G = G;
+		this.scale = scale;
 	}
 	
 	FourierDescriptor(FourierDescriptor fd) {
-		this(duplicate(fd.G));
+		this(duplicate(fd.G), fd.scale);
 	}
 
 	// ----------------------------------------------------------------
-
-	public double getReconstructionScale() {
-		return reconstructionScale;
-	}
 
 	/**
 	 * <p>
@@ -141,6 +146,10 @@ public class FourierDescriptor {
 	public Complex[] getCoefficients() {
 		return G;
 	}
+	
+	public double getScale() {
+		return scale;
+	}
 
 	public int size() {
 		return G.length;	// = M
@@ -155,7 +164,13 @@ public class FourierDescriptor {
 		return new Complex(G[mm]);
 	}
 
+	@Deprecated
 	void setCoefficient(int m, Complex z) {
+		int mm = Arithmetic.mod(m, G.length);
+		G[mm] = new Complex(z);
+	}
+	
+	static void setCoefficient(Complex[] G, int m, Complex z) {
 		int mm = Arithmetic.mod(m, G.length);
 		G[mm] = new Complex(z);
 	}
@@ -227,8 +242,8 @@ public class FourierDescriptor {
 		for (int m = mm; m <= mp; m++) {
 			if (m != 0) {
 				Complex Gm = getCoefficient(m);
-				double A = reconstructionScale * Gm.re;
-				double B = reconstructionScale * Gm.im;
+				double A = scale * Gm.re;
+				double B = scale * Gm.im;
 				double phi = 2 * Math.PI * m * t;
 				double sinPhi = Math.sin(phi);
 				double cosPhi = Math.cos(phi);
@@ -324,7 +339,7 @@ public class FourierDescriptor {
 			// calculate a particular reconstruction point 
 			for (int m = 1; m <= Mp; m++) {
 				Complex ep = getEllipsePoint(getCoefficient(-m), getCoefficient(m), m, t);
-				pt = pt.add(ep.multiply(reconstructionScale));
+				pt = pt.add(ep.multiply(scale));
 			}
 			double xt = pt.re; 
 			double yt = pt.im; 
@@ -366,6 +381,8 @@ public class FourierDescriptor {
 
 	public FourierDescriptor[] makeInvariant(int Mp) {
 		makeScaleInvariant(Mp);
+		// new:
+		FourierDescriptor fd1 = this.makeScaleInvariant_NEW(Mp);
 		FourierDescriptor[] fdAB = makeStartPointInvariant(Mp);	// = [fdA, fdB]
 		fdAB[0].makeRotationInvariant(Mp);	// works destructively!
 		fdAB[1].makeRotationInvariant(Mp);
@@ -409,7 +426,7 @@ public class FourierDescriptor {
 		}
 		// scale coefficients
 		double norm = Math.sqrt(s);
-		reconstructionScale = norm;		// keep for later reconstruction
+		scale = norm;		// keep for later reconstruction
 		double scale = 1 / norm;
 		for (int m = 1; m < G.length; m++) {
 			G[m] =  G[m].multiply(scale);
@@ -418,12 +435,30 @@ public class FourierDescriptor {
 	}
 
 	/**
-	 * Normalizes the L2 norm of the sub-vector (G_{-Mp}, ..., G_{Mp}),
-	 * keeps G_0 untouched.
+	 * Normalizes the L2 norm of the sub-vector (G_{-Mp}, ..., G_{Mp})
+	 * keeping G_0 unmodified.
 	 * 
 	 * @param Mp most positive/negative frequency index
-	 * @return normalized coefficient sub-vector
+	 * @return the scale-normalized Fourier descriptor
 	 */
+	public FourierDescriptor makeScaleInvariant_NEW(int Mp) {
+		double s = 0;
+		for (int m = 1; m <= Mp; m++) {
+			s = s + this.getCoefficient(-m).abs2() + this.getCoefficient(m).abs2();
+		}
+		// scale Fourier coefficients:
+		double norm = Math.sqrt(s);
+		scale = norm;		// keep for later reconstruction
+		double scale = 1 / norm;
+		Complex[] G = new Complex[2 * Mp + 1];
+		setCoefficient(G, 0, this.getCoefficient(0));
+		for (int m = 1; m <= Mp; m++) {
+			setCoefficient(G, -m, this.getCoefficient(-m).multiply(scale));
+			setCoefficient(G, +m, this.getCoefficient( m).multiply(scale));
+		}
+		return new FourierDescriptor(G, scale);
+	}
+	
 	private double makeScaleInvariant(int Mp) {
 		double s = 0;
 		for (int m = 1; m <= Mp; m++) {
@@ -431,7 +466,7 @@ public class FourierDescriptor {
 		}
 		// scale Fourier coefficients:
 		double norm = Math.sqrt(s);
-		reconstructionScale = norm;		// keep for later reconstruction
+		scale = norm;		// keep for later reconstruction
 		double scale = 1 / norm;
 		for (int m = 1; m <= Mp; m++) {
 			setCoefficient(-m, getCoefficient(-m).multiply(scale));
