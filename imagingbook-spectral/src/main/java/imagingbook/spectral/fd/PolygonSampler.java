@@ -34,7 +34,7 @@ public class PolygonSampler {	// TODO: move to geometry package!
 		double Delta = pathLength(V) / M;	// constant segment length in Q
 		// distribute N points along polygon path P
 		Pnt2d[] S = new Pnt2d[M];
-//		S[0] = (Point) V[0].clone();	// q_0 = p_0 (duplicate p_0)
+//		S[0] = (Point) V[0].clone();		// q_0 = p_0 (duplicate p_0)
 		S[0] = PntDouble.from(V[0]);		// q_0 = p_0 (duplicate p_0)
 		int i = 0;			// lower index of segment (i,i+1) in P
 		int j = 1;			// index of next point to be added to Q
@@ -59,7 +59,7 @@ public class PolygonSampler {	// TODO: move to geometry package!
 	}
 	
 	/**
-	 * This is for testing: allows to choose an arbitrary start point by
+	 * For testing only: allows to choose an arbitrary start point by
 	 * setting 'startFrac' in [0,1].
 	 * @param V the vertices of the (closed) polygon.
 	 * @param M the number of sample points.
