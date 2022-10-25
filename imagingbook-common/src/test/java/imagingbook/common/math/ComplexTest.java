@@ -26,9 +26,19 @@ public class ComplexTest {
 	public void testComplexEquals() {
 		assertTrue(z1.equals(z1));
 		assertTrue(z2.equals(z2));
+		
 		assertFalse(z1.equals(z2));
 		assertFalse(z2.equals(z1));
 		assertFalse(z1.equals(Double.valueOf(0.3)));
+		
+		assertTrue(z1.equals(new Complex(z1)));
+		assertTrue(z2.equals(new Complex(z2)));
+		
+		assertTrue(z1.equals(new Complex(z1.re, z1.im)));
+		assertTrue(z2.equals(new Complex(z2.re, z2.im)));
+		
+		assertTrue(z1.equals(new Complex(z1.toArray())));
+		assertTrue(z2.equals(new Complex(z2.toArray())));
 	}
 	
 	@Test

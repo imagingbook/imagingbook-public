@@ -47,6 +47,14 @@ public class Complex {
 		this.re = re;
 		this.im = im;
 	}
+	
+	/**
+	 * Constructor.
+	 * @param z a two-element {@code double} array with real and imaginary part
+	 */
+	public Complex(double[] z) {
+		this(z[0], z[1]);
+	}
 
 	/**
 	 * Constructor.
@@ -58,7 +66,7 @@ public class Complex {
 	}
 
 	/**
-	 * Constructor. Creates a complex quantity on the unit circle with angle {@code phi}:
+	 * Constructor, creates a complex quantity on the unit circle with angle {@code phi}:
 	 * {@code e^(i * phi) = cos(phi) + i * sin(phi)}.
 	 * @param phi the angle
 	 * @see #arg()
