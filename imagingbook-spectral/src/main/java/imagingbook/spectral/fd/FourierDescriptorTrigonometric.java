@@ -9,6 +9,7 @@
 package imagingbook.spectral.fd;
 
 import static imagingbook.common.math.Arithmetic.sqr;
+import static imagingbook.spectral.fd.FourierDescriptor.setCoefficient;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -112,9 +113,9 @@ public class FourierDescriptorTrigonometric extends FourierDescriptor {
         return G;
 	}
 	
-	private static void setCoefficient(Complex[] G, int m, Complex z) {
-		int mm = Arithmetic.mod(m, G.length);
-		G[mm] = new Complex(z);
-	}
+//	private static void setCoefficient(Complex[] G, int m, Complex z) {
+//		int mm = Arithmetic.mod(m, G.length);
+//		G[mm] = new Complex(z);
+//	}
 
 }
