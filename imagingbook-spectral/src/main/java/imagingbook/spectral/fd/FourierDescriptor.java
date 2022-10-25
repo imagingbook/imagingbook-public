@@ -46,7 +46,8 @@ public class FourierDescriptor {
 
 	public static final int MinReconstructionSamples = 50;
 
-	private final Complex[] G;		// complex-valued DFT spectrum
+	private final Complex[] G;	// complex-valued DFT spectrum (always odd-sized)
+	private final int mp;
 	private double scale;		// remembers original scale after normalization, TODO: where is this used?
 	
 	/**
@@ -63,7 +64,8 @@ public class FourierDescriptor {
 	 * @param scale the reconstruction scale
 	 */
 	FourierDescriptor(Complex[] G, double scale) {
-		this.G = G;
+		this.mp = (G.length - 1) / 2;
+		this.G = truncate(G, this.mp);
 		this.scale = scale;
 	}
 	
@@ -73,52 +75,118 @@ public class FourierDescriptor {
 
 	// ----------------------------------------------------------------
 
+//	/**
+//	 * <p>
+//	 * Truncates this Fourier descriptor to the {@code Mp} lowest-frequency (positive/negative) coefficients.
+//	 * For example, the original Fourier descriptor with 10 coefficients G[m] = a,b,...,j,
+//	 * </p>
+//	 * <pre>
+//	 * m    = 0 1 2 3 4 5 6 7 8 9
+//	 * G[m] = a b c d e f g h i j
+//	 * </pre>
+//	 * <p>
+//	 * becomes (with {@code P} = 3)
+//	 * </p>
+//	 * <pre>
+//	 * m    = 0 1 2 3 4 5 6
+//	 * G[m] = a b c d h i j
+//	 * </pre>
+//	 * @param Mnew number of coefficients to remain
+//	 * @return a new (truncated) instance of {@link FourierDescriptor}
+//	 */
+//	@Deprecated
+//	public FourierDescriptor truncate(int Mnew) {
+//		int M = G.length;
+//		if (Mnew > 0 && Mnew < M) {
+//			Complex[] Gnew = new Complex[Mnew];	// TODO: something wrong here!
+//			for (int m = 0; m < Mnew; m++) {
+//				if (m <= Mnew / 2)
+//					Gnew[m] = G[m];
+//				else
+//					Gnew[m] = G[M - Mnew + m];
+//			}
+//			return new FourierDescriptor(Gnew);
+//		}
+//		else {
+//			return new FourierDescriptor(this);	// just duplicate
+//		}
+//	}
+	
 	/**
 	 * <p>
-	 * Truncates this Fourier descriptor to the {@code Mp} lowest-frequency (positive/negative) coefficients.
-	 * For example, the original Fourier descriptor with 10 coefficients G[m] = a,b,...,j,
+	 * Truncate the given DFT spectrum to the specified number of coefficient pairs.
+	 * Truncation removes the highest-frequency coefficients. The resulting spectrum
+	 * is always odd-sized. If the number of coefficient pairs is zero, only
+	 * coefficient 0 remains, i.e., the new spectrum has length 1. An exception is
+	 * thrown if the original spectrum has fewer coefficient pairs than needed.
+	 * For example, for an even-sized spectrum with 10 coefficients G[m] = a,b,...,j,
 	 * </p>
 	 * <pre>
 	 * m    = 0 1 2 3 4 5 6 7 8 9
-	 * G[m] = a b c d e f g h i j
-	 * </pre>
+	 * G[m] = a b c d e f g h i j </pre>
 	 * <p>
-	 * becomes (with {@code P} = 3)
+	 * the truncated spectrum for mp = 3 is
 	 * </p>
 	 * <pre>
-	 * m    = 0 1 2 3 4 5 6
-	 * G[m] = a b c d h i j
-	 * </pre>
-	 * @param Mp number of coefficients to remain
-	 * @return a new (truncated) instance of {@link FourierDescriptor}
+	 * m'    = 0 1 2 3 4 5 6
+	 * G[m'] = a b c d h i j </pre>
+	 * <p>
+	 * I.e., the highest frequency coefficients (e, f, g) of the original spectrum are 
+	 * removed.
+	 * 
+	 * @param G  the original DFT spectrum (with length greater than 2 * mp + 1)
+	 * @param mp the number of remaining coefficient pairs.
+	 * @return the truncated spectrum (always odd-sized)
 	 */
-	public FourierDescriptor truncate(int Mp) {
+	public static Complex[] truncate(Complex[] G, int mp) {
+		if (mp < 0) {
+			throw new IllegalArgumentException("number of coefficient pairs must be >= 0 but is " + mp);
+		}
 		int M = G.length;
-		if (Mp > 0 && Mp < M) {
-			Complex[] Gnew = new Complex[Mp];
-			for (int m = 0; m < Mp; m++) {
-				if (m <= Mp / 2)
-					Gnew[m] = G[m];
-				else
-					Gnew[m] = G[M - Mp + m];
-			}
-			return new FourierDescriptor(Gnew);
+		int Mnew = 2 * mp + 1;
+		if (Mnew > M) {
+			throw new IllegalArgumentException("spectrum has fewer coefficient pairs than needed");
 		}
-		else {
-			return new FourierDescriptor(this);	// just duplicate
+		Complex[] Gnew = new Complex[Mnew];
+		// fill the new spectrum:
+		for (int m = 0; m < Mnew; m++) {
+			if (m <= Mnew / 2)
+				Gnew[m] = G[m];
+			else
+				Gnew[m] = G[M - Mnew + m];
 		}
+		return Gnew;
+	}
+	
+	/**
+	 * Truncates the given DFT spectrum to the maximum number of coefficient pairs.
+	 * The resulting spectrum is always odd-sized. If the original spectrum is
+	 * odd-sized, the same spectrum is return, otherwise the single
+	 * highest-frequency coefficient is removed.
+	 * 
+	 * @param G the original DFT spectrum
+	 * @return the truncated spectrum (always odd-sized)
+	 * @see #truncate(Complex[], int)
+	 */
+	public static Complex[] truncate(Complex[] G) {
+		return truncate(G, (G.length - 1) / 2);
 	}
 
 	public int getMaxNegHarmonic() {
-		return -G.length/2;			// = -M/2
+		//return -G.length/2;			// = -M/2
+		return -this.mp;
 	}
 
 	public int getMaxPosHarmonic() {
 		return (G.length - 1)/2;		// (M-1)/2
 	}
 
-	public int getMaxCoefficientPairs() {
-		return G.length / 2; // was (G.length - 1)/2;!!
+	/**
+	 * Returns the number of Fourier coefficient pairs for this descriptor.
+	 * @return
+	 */
+	public int getMp() {
+		return this.mp;	// G.length / 2; // was (G.length - 1)/2;!!
 	}
 
 	// ----------------------------------------------------------------
@@ -197,15 +265,15 @@ public class FourierDescriptor {
 	 * points and using Mp coefficient pairs.
 	 * 
 	 * @param N number of samples
-	 * @param Mp number of coefficient pairs
+	 * @param pairs number of coefficient pairs
 	 * @return reconstructed contour points
 	 */
-	public Complex[] getReconstruction(int N, int Mp) {
+	public Complex[] getReconstruction(int N, int pairs) {
 		Complex[] S = new Complex[N];
-		Mp = Math.min(Mp, -getMaxNegHarmonic());
+		pairs = Math.min(pairs, -getMaxNegHarmonic());
 		for (int i = 0; i < N; i++) {
 			double t = (double) i / N;
-			S[i] = getReconstructionPoint(t, -Mp, +Mp);
+			S[i] = getReconstructionPoint(t, -pairs, +pairs);
 		}
 		return S;
 	}
@@ -375,7 +443,7 @@ public class FourierDescriptor {
 	// Invariance -----------------------------------------------------
 
 	public FourierDescriptor[] makeInvariant() {
-		int Mp = getMaxCoefficientPairs();
+		int Mp = getMp();
 		return makeInvariant(Mp);
 	}
 
@@ -383,6 +451,7 @@ public class FourierDescriptor {
 		makeScaleInvariant(Mp);
 		// new:
 		FourierDescriptor fd1 = this.makeScaleInvariant_NEW(Mp);
+		
 		FourierDescriptor[] fdAB = makeStartPointInvariant(Mp);	// = [fdA, fdB]
 		fdAB[0].makeRotationInvariant(Mp);	// works destructively!
 		fdAB[1].makeRotationInvariant(Mp);
@@ -390,7 +459,7 @@ public class FourierDescriptor {
 	}
 
 	public FourierDescriptor[] makeStartPointInvariant() {
-		int Mp = getMaxCoefficientPairs();
+		int Mp = getMp();
 		return makeStartPointInvariant(Mp);
 	}
 
@@ -476,7 +545,7 @@ public class FourierDescriptor {
 	}
 
 	public double makeRotationInvariant() {	// works destructively.
-		int Mp = getMaxCoefficientPairs();
+		int Mp = getMp();
 		return makeRotationInvariant(Mp);
 	}
 
@@ -608,14 +677,14 @@ public class FourierDescriptor {
 	}
 
 	public double distanceComplex(FourierDescriptor fd2) {
-		return distanceComplex(fd2, G.length/2);
+		return distanceComplex(fd2, this.mp);
 	}
 
-	public double distanceComplex(FourierDescriptor fd2, int Mp) {
+	public double distanceComplex(FourierDescriptor fd2, int pairs) {
 		FourierDescriptor fd1 = this;
-		Mp = Math.min(Mp, G.length/2);
+		pairs = Math.min(pairs, this.mp);
 		double sum = 0;
-		for (int m = -Mp; m <= Mp; m++) {
+		for (int m = -pairs; m <= pairs; m++) {
 			if (m != 0) {
 				Complex G1m = fd1.getCoefficient(m);
 				Complex G2m = fd2.getCoefficient(m);
@@ -628,15 +697,15 @@ public class FourierDescriptor {
 	}
 
 	public double distanceMagnitude(FourierDescriptor fd2) {
-		int Mp = getMaxCoefficientPairs();
-		return distanceMagnitude(fd2, Mp);
+//		int Mp = getMp();
+		return distanceMagnitude(fd2, this.mp);
 	}
 
-	public double distanceMagnitude(FourierDescriptor fd2, int Mp) {
+	public double distanceMagnitude(FourierDescriptor fd2, int pairs) {
 		FourierDescriptor fd1 = this;
-		Mp = Math.min(Mp, G.length/2);
+		pairs = Math.min(pairs, this.mp);
 		double sum = 0;
-		for (int m = -Mp; m <= Mp; m++) {
+		for (int m = -pairs; m <= pairs; m++) {
 			if (m != 0) {
 				double mag1 = fd1.getCoefficient(m).abs();
 				double mag2 = fd2.getCoefficient(m).abs();

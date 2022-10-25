@@ -17,7 +17,7 @@ public class FourierDescriptorUniformTest {
 	public void test1() {	
 		Pnt2d[] V = PntUtils.makeDoublePoints(3,2, 5,4, 7,10, 6,11, 4,7);
 		
-		Complex[] c1 = {	// DFT coefficients
+		Complex[] G1 = {	// DFT coefficients
 				new Complex(5.000000000, 6.800000000), 
 				new Complex(-1.635404556, -2.625802342), 
 				new Complex(-0.215246253, -0.009311758), 
@@ -27,19 +27,19 @@ public class FourierDescriptorUniformTest {
 		FourierDescriptor fd1 = FourierDescriptorUniform.from(V); 
 //		System.out.println(Arrays.toString(fd1.getCoefficients()));
 		assertEquals(5, fd1.size());
-		TestUtils.assertArrayEquals(c1, fd1.getCoefficients(), TOL);
+		TestUtils.assertArrayEquals(G1, fd1.getCoefficients(), TOL);
 		
 		FourierDescriptor fd2 = FourierDescriptorUniform.from(V, 2); 
 //		System.out.println(Arrays.toString(fd2.getCoefficients()));
 		assertEquals(5, fd2.size());
-		Complex[] c2 = c1;
-		TestUtils.assertArrayEquals(c2, fd2.getCoefficients(), TOL);
+		Complex[] G2 = G1;
+		TestUtils.assertArrayEquals(G2, fd2.getCoefficients(), TOL);
 		
 		FourierDescriptor fd3 = FourierDescriptorUniform.from(V, 1); 
 //		System.out.println(Arrays.toString(fd3.getCoefficients()));
 		assertEquals(3, fd3.size());
-		Complex[] c3 = {c1[0], c1[1], c1[4]};
-		TestUtils.assertArrayEquals(c3, fd3.getCoefficients(), TOL);
+		Complex[] G3 = {G1[0], G1[1], G1[4]};
+		TestUtils.assertArrayEquals(G3, fd3.getCoefficients(), TOL);
 	}
 	
 }
