@@ -10,7 +10,6 @@ package imagingbook.testutils;
 
 import static org.junit.Assert.assertEquals;
 
-
 import org.junit.Assert;
 
 public abstract class NumericTestUtils {
