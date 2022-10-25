@@ -25,13 +25,13 @@ import imagingbook.spectral.fd.FourierDescriptor;
 import imagingbook.spectral.fd.FourierDescriptorFromPolygon;
 
 /**
- * This plugin demonstrates the use of the trigonometric method for calculating Fourier
- * descriptors. The input image is assumed to contain a ROI whose (polygon) vertices are used 
- * to calculate the Fourier descriptor, The actual image content is ignored, thus the 
- * image type is irrelevant.
- * A partial reconstruction of the contour (with 100 sample points) is calculated 
- * from the Fourier descriptor 'fd'. Finally, a pair of invariant descriptors (contained in the 
- * array 'fdAB') is calculated.
+ * This plugin demonstrates the use of the trigonometric method for calculating
+ * Fourier descriptors. The input image is assumed to contain a ROI whose
+ * (polygon) vertices are used to calculate the Fourier descriptor, The actual
+ * image content is ignored, thus the image type is irrelevant. A partial
+ * reconstruction of the contour (with 100 sample points) is calculated from the
+ * Fourier descriptor 'fd'. Finally, a pair of invariant descriptors (contained
+ * in the array 'fdAB') is calculated.
  * 
  * TODO: Explain prerequisites!
  * 
