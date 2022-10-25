@@ -10,6 +10,7 @@
 package imagingbook.common.math;
 
 import static imagingbook.common.math.Arithmetic.isZero;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 import java.util.Locale;
 
@@ -84,7 +85,7 @@ public class Complex {
 	 * @return the absolute value
 	 */
 	public double abs() {
-		return Math.sqrt(this.abs2());
+		return Math.hypot(re, im);
 	}
 
 	/**
@@ -93,7 +94,7 @@ public class Complex {
 	 * @return the squared absolute value
 	 */
 	public double abs2() {
-		return re * re + im * im;
+		return sqr(re) + sqr(im);
 	}
 
 	/**
