@@ -34,7 +34,6 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 		this.G = DFT(this.g);
 	}
 	
-	
 	/**
 	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
 	 * with Mp coefficient pairs.
@@ -87,10 +86,10 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	
 
 	/**
-	 * As {@link #DFT(Complex[])}, with the length of the resulting spectrum (signal, if inverse) 
-	 * is explicitly specified.
+	 * As {@link #DFT(Complex[])}, with the length of the resulting spectrum
+	 * (or signal, if inverse) explicitly specified.
 	 * 
-	 * @param g signal vector
+	 * @param g  signal vector
 	 * @param MM length of the resulting DFT spectrum
 	 * @return DFT spectrum
 	 */
