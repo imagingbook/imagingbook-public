@@ -29,13 +29,13 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.iterate.CssColorSequencer;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.misc.PolygonSampler;
 import imagingbook.common.math.Complex;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.spectral.fd.FourierDescriptor;
 import imagingbook.spectral.fd.FourierDescriptorUniform;
-import imagingbook.spectral.fd.PolygonSampler;
 import imagingbook.spectral.fd.Utils;
 
 /**
@@ -120,7 +120,7 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 		}
 		
 		Contour contr = outerContours.get(0);	// contour of largest region
-		Pnt2d[] polygon = new PolygonSampler().samplePolygonUniformly(contr.getPointArray(), NumberOfContourSamples);
+		Pnt2d[] polygon = PolygonSampler.getInstance().samplePolygonUniformly(contr.getPointArray(), NumberOfContourSamples);
 		Complex[] samples = Utils.toComplexArray(polygon);
 		
 		FourierDescriptor fd = FourierDescriptorUniform.from(polygon);

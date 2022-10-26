@@ -7,24 +7,31 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.spectral.fd;
+package imagingbook.common.geometry.misc;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 
 /**
- * @version 2020/04/01
- * @author WB
- *
+ * This (singleton) class is used to re-sample 2D polygons by interpolation.
+ * 
+ *  @author WB
+ *  @version 2022/10/26
  */
-public class PolygonSampler {	// TODO: move to geometry package!
+public class PolygonSampler {
 	
-	public PolygonSampler() {
+	private static final PolygonSampler instance = new PolygonSampler();
+	
+	private PolygonSampler() {}
+	
+	public static PolygonSampler getInstance() {
+		return instance;
 	}
 	
 	/**
 	 * Samples the closed polygon path specified by V at M
-	 * equi-distant positions. 
+	 * equi-distant positions.
+	 * 
 	 * @param V the vertices of the (closed) polygon.
 	 * @param M the number of sample points.
 	 * @return the sample points as an array of Point objects.
@@ -83,7 +90,7 @@ public class PolygonSampler {	// TODO: move to geometry package!
 	}
 	
 	
-	protected double pathLength(Pnt2d[] V) {
+	private double pathLength(Pnt2d[] V) {
 		double L = 0;
 		final int N = V.length;
 		for (int i = 0; i < N; i++) {
@@ -94,7 +101,7 @@ public class PolygonSampler {	// TODO: move to geometry package!
 		return L;
 	}
 	
-	protected Pnt2d interpolate(Pnt2d p0, Pnt2d p1, double alpha) {
+	private Pnt2d interpolate(Pnt2d p0, Pnt2d p1, double alpha) {
 		// alpha is in [0,1]
 		double x = p0.getX() + alpha * (p1.getX() - p0.getX());
 		double y = p0.getY() + alpha * (p1.getY() - p0.getY());
