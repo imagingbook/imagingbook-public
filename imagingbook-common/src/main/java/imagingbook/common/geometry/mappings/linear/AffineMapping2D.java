@@ -10,6 +10,7 @@
 package imagingbook.common.geometry.mappings.linear;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.fitting.AffineFit2D;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
@@ -181,6 +182,15 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	public AffineMapping2D concat(AffineMapping2D B) {	// use some super method instead?
 		double[][] C = Matrix.multiply(B.getTransformationMatrix(), this.getTransformationMatrix());
 		return new AffineMapping2D(C[0][0], C[0][1], C[0][2], C[1][0], C[1][1], C[1][2]);
+	}
+	
+	@Override	// more efficient than generic version
+	public Pnt2d applyTo(Pnt2d pnt) {
+		final double x = pnt.getX();
+		final double y = pnt.getY();
+		double x1 = (a00 * x + a01 * y + a02);
+		double y1 = (a10 * x + a11 * y + a12);
+		return PntDouble.from(x1, y1);
 	}
 
 	/**
