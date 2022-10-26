@@ -125,7 +125,7 @@ public class LinearMapping2D implements Mapping2D {
 	public Pnt2d applyTo(Pnt2d pnt) {
 		final double x = pnt.getX();
 		final double y = pnt.getY();
-		double h =  (a20 * x + a21 * y + a22);
+		final double h =  (a20 * x + a21 * y + a22);
 		double x1 = (a00 * x + a01 * y + a02) / h;
 		double y1 = (a10 * x + a11 * y + a12) / h;
 		return PntDouble.from(x1, y1);
