@@ -1,6 +1,10 @@
 package imagingbook.spectral.fd;
 
+import static imagingbook.spectral.fd.FourierDescriptor.rotateShape;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -96,4 +100,102 @@ public class FourierDescriptorTest {
 		FourierDescriptor.truncate(G, -1);
 	}
 
+	// ---------------------------------------------------------------------------------------
+	
+	@Test
+	public void testConstructor1() {
+		FourierDescriptor fd = new FourierDescriptor(Go);
+		assertEquals(2, fd.getMp());
+		assertEquals(Go.length, fd.size());
+		assertEquals(1.0, fd.getScale(), 0.0);
+	}
+	
+	@Test
+	public void testConstructor2() {
+		FourierDescriptor fd = new FourierDescriptor(Go, Math.PI);
+		assertEquals(2, fd.getMp());
+		assertEquals(Go.length, fd.size());
+		assertEquals(Math.PI, fd.getScale(), 0.0);
+	}
+	
+	// ---------------------------------------------------------------------------------------
+	
+	@Test
+	public void testScaleInvariance1() {
+		FourierDescriptor fd1 = new FourierDescriptor(Go);
+		FourierDescriptor fd2 = fd1.makeScaleInvariant();
+		assertEquals(fd1.getMp(), fd2.getMp());
+		assertEquals(fd1.size(), fd2.size());
+		assertEquals(3.7094473979783538, fd2.getScale(), 1e-6);
+		assertTrue(fd1.getCoefficient(0).equals(fd2.getCoefficient(0)));
+		
+		int mp = fd2.getMp();
+		
+		// check if all coefficient pairs are properly scaled
+		double scale = fd2.getScale();
+		for (int m = -mp; m <= +mp; m++) {
+			if (m != 0) {
+				assertTrue(fd1.getCoefficient(m).equals(fd2.getCoefficient(m).multiply(scale), 1e-6));
+			}
+		}
+		
+		// check if norm of coefficient pairs is 1
+		double sum = 0;
+		for (int m = -mp; m <= +mp; m++) {
+			if (m != 0) {
+				sum += fd2.getCoefficient(m).abs2();
+			}
+		}
+		assertEquals(1.0, sum, 1e-6);
+	}
+	
+	@Test
+	public void testRotationInvariance1() {
+		FourierDescriptor fd1 = new FourierDescriptor(Go);
+		FourierDescriptor fd2 = fd1.makeRotationInvariant();
+		
+		assertEquals(fd1.getMp(), fd2.getMp());
+		assertEquals(fd1.size(), fd2.size());
+		assertEquals(fd1.getScale(), fd2.getScale(), 1e-6);
+		
+		int mp = fd2.getMp();
+		
+		// check if the weighted sum of rotated coefficient pairs is real:
+		Complex z = new Complex(0,0);
+		for (int m = 1; m <= mp; m++) {
+			final double w = 1.0 / m;
+			z = z.add(fd2.getCoefficient(-m).multiply(w));
+			z = z.add(fd2.getCoefficient(+m).multiply(w));
+		}
+		assertEquals(0.0, z.arg(), 1e-6);	// z must be real
+		
+		// check if the magnitude of all coefficient pairs is unchanged:
+		for (int m = 1; m <= mp; m++) {
+			assertEquals(fd1.getCoefficient(-m).abs(), fd2.getCoefficient(-m).abs(), 1e-6);
+			assertEquals(fd1.getCoefficient(+m).abs(), fd2.getCoefficient(+m).abs(), 1e-6);
+		}
+	}
+	
+	@Test
+	public void testRotationInvariance2() {	// TODO: this is confused
+		Random rg = new Random(17);
+		
+		FourierDescriptor fd1 = new FourierDescriptor(Go);
+		FourierDescriptor fd1r = fd1.makeRotationInvariant();
+		
+		// check if rotated versions of the shape normalize to the same FD
+		for (int k = 0; k < 100; k++) {
+			double phi = (rg.nextDouble() - 0.5) * 2 * Math.PI;
+			FourierDescriptor fd2 = new FourierDescriptor(rotateShape(Go, phi));
+			FourierDescriptor fd2r = fd2.makeRotationInvariant();
+			assertEquals(0.0, fd1r.distanceComplex(fd2r), 1e-6);	// fd1r == fd2r ?
+		}
+	}
+	
+	@Test
+	public void testStartPointInvariance1() {
+		
+	}
 }
+
+// System.out.println(z);

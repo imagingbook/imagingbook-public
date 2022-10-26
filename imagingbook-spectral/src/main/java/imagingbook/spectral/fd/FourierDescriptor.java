@@ -9,7 +9,11 @@
 
 package imagingbook.spectral.fd;
 
+import static imagingbook.common.math.Arithmetic.mod;
+import static imagingbook.common.math.Arithmetic.sqr;
+
 import java.awt.geom.Path2D;
+import java.util.Locale;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.optim.MaxEval;
@@ -20,16 +24,12 @@ import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
 import org.apache.commons.math3.optim.univariate.UnivariateOptimizer;
 import org.apache.commons.math3.optim.univariate.UnivariatePointValuePair;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Complex;
 
 /**
  * <p>
- * This is the common (abstract) super-class for all Fourier descriptors. See
- * Ch.26 of [1] for additional details. Note that this class has no public
- * constructor (see concrete sub-classes {@link FourierDescriptorUniform} and
- * {@link FourierDescriptorTrigonometric}).
+ * This class represents elliptic Fourier descriptors. See
+ * Ch.26 of [1] for additional details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -46,15 +46,15 @@ public class FourierDescriptor {
 
 	public static final int MinReconstructionSamples = 50;
 
-	private final Complex[] G;	// complex-valued DFT spectrum (always odd-sized)
-	private final int mp;
-	private double scale;		// remembers original scale after normalization, TODO: where is this used?
+	private final int mp;		// number of Fourier pairs
+	private final Complex[] G;	// complex-valued DFT spectrum (of length 2 * mp + 1)
+	private final double scale;	// scale factor to apply for reconstructing original (sample) size
 	
 	/**
-	 * Constructor using the default scale.
+	 * Constructor using the default scale (1).
 	 * @param G a complex-valued DFT spectrum
 	 */
-	FourierDescriptor(Complex[] G) {
+	public FourierDescriptor(Complex[] G) {
 		this(G, 1.0);
 	}
 	
@@ -63,55 +63,22 @@ public class FourierDescriptor {
 	 * @param G a complex-valued DFT spectrum
 	 * @param scale the reconstruction scale
 	 */
-	FourierDescriptor(Complex[] G, double scale) {
+	public FourierDescriptor(Complex[] G, double scale) {
 		this.mp = (G.length - 1) / 2;
-		this.G = truncate(G, this.mp);
+		this.G = truncate(G, this.mp);	// always make G odd-sized
 		this.scale = scale;
 	}
 	
-	FourierDescriptor(FourierDescriptor fd) {
-		this(duplicate(fd.G), fd.scale);
+	/**
+	 * Constructor for cloning Fourier descriptors.
+	 * @param fd an existing instance
+	 */
+	public FourierDescriptor(FourierDescriptor fd) {
+		this(fd.G.clone(), fd.scale);
 	}
 
 	// ----------------------------------------------------------------
 
-//	/**
-//	 * <p>
-//	 * Truncates this Fourier descriptor to the {@code Mp} lowest-frequency (positive/negative) coefficients.
-//	 * For example, the original Fourier descriptor with 10 coefficients G[m] = a,b,...,j,
-//	 * </p>
-//	 * <pre>
-//	 * m    = 0 1 2 3 4 5 6 7 8 9
-//	 * G[m] = a b c d e f g h i j
-//	 * </pre>
-//	 * <p>
-//	 * becomes (with {@code P} = 3)
-//	 * </p>
-//	 * <pre>
-//	 * m    = 0 1 2 3 4 5 6
-//	 * G[m] = a b c d h i j
-//	 * </pre>
-//	 * @param Mnew number of coefficients to remain
-//	 * @return a new (truncated) instance of {@link FourierDescriptor}
-//	 */
-//	@Deprecated
-//	public FourierDescriptor truncate(int Mnew) {
-//		int M = G.length;
-//		if (Mnew > 0 && Mnew < M) {
-//			Complex[] Gnew = new Complex[Mnew];	// TODO: something wrong here!
-//			for (int m = 0; m < Mnew; m++) {
-//				if (m <= Mnew / 2)
-//					Gnew[m] = G[m];
-//				else
-//					Gnew[m] = G[M - Mnew + m];
-//			}
-//			return new FourierDescriptor(Gnew);
-//		}
-//		else {
-//			return new FourierDescriptor(this);	// just duplicate
-//		}
-//	}
-	
 	/**
 	 * <p>
 	 * Truncate the given DFT spectrum to the specified number of coefficient pairs.
@@ -172,92 +139,266 @@ public class FourierDescriptor {
 		return truncate(G, (G.length - 1) / 2);
 	}
 
-	public int getMaxNegHarmonic() {
-		//return -G.length/2;			// = -M/2
-		return -this.mp;
-	}
-
-	public int getMaxPosHarmonic() {
-		return (G.length - 1)/2;		// (M-1)/2
-	}
-
-	/**
-	 * Returns the number of Fourier coefficient pairs for this descriptor.
-	 * @return
-	 */
-	public int getMp() {
-		return this.mp;	// G.length / 2; // was (G.length - 1)/2;!!
-	}
-
 	// ----------------------------------------------------------------
 
-	public static Complex[] toComplexArray(Pnt2d[] points) {
-		int N = points.length;
-		Complex[] samples = new Complex[N];
-		for (int i = 0; i < N; i++) {
-			samples[i] = new Complex(points[i].getX(), points[i].getY());
-		}
-		return samples;
+	/**
+	 * Returns the size (length) of this Fourier descriptor's array of
+	 * DFT coefficients G. The resulting value is always odd.
+	 * @return the size of the DFT coefficient array (M)
+	 */
+	public int size() {
+		return G.length;
 	}
 	
-
-	private static Complex[] duplicate(Complex[] g1) {
-		Complex[] g2 = new Complex[g1.length];
-		for (int i = 0; i < g1.length; i++) {
-			g2[i] = new Complex(g1[i]);
-		}
-		return g2;
+	/**
+	 * Returns the scale of this Fourier descriptor, that is, the
+	 * factor required to scale it to its original (sample) size.
+	 * 
+	 * @return the scale factor
+	 */
+	public double getScale() {
+		return scale;
 	}
-
-	// ------------------------------------------------------------------
-
+	
+	/**
+	 * Returns the number of Fourier coefficient pairs for this descriptor.
+	 * The result is (M-1)/2, M being the size of the DFT coefficient array G.
+	 * @return the number of Fourier coefficient pairs
+	 */
+	public int getMp() {
+		return this.mp;
+	}
+	
+	/**
+	 * Returns the array G = {G[0], ..., G[M-1]} of complex-valued DFT coefficients. 
+	 * @return the array of DFT coefficients
+	 */
 	public Complex[] getCoefficients() {
 		return G;
 	}
 	
-	public double getScale() {
-		return scale;
-	}
-
-	public int size() {
-		return G.length;	// = M
-	}
-
-//	public int getCoefficientIndex(int m) {
-//		return Arithmetic.mod(m, G.length);
-//	}
-
+	/**
+	 * Returns the complex-valued DFT coefficient with the specified
+	 * frequency index m. The returned coefficient is G[m mod G.length].
+	 * Unique coefficients are returned for m = 0, ..., M-1,
+	 * where M is the size of the DFT coefficient array, or
+	 * m = -mp, ..., +mp where mp is the number of coefficient pairs.
+	 * 
+	 * @param m frequency index (positive or negative)
+	 * @return the associated DFT coefficient
+	 */
 	public Complex getCoefficient(int m) {
-		int mm = Arithmetic.mod(m, G.length);
-		return new Complex(G[mm]);
+		return new Complex(G[getCoefficientIndex(m)]);
 	}
 
-	@Deprecated
-	void setCoefficient(int m, Complex z) {
-		int mm = Arithmetic.mod(m, G.length);
-		G[mm] = new Complex(z);
+	/**
+	 * Returns the coefficient array index for the specified frequency index,
+	 * which may be positive or negative.
+	 * 
+	 * @param m frequency index (positive or negative)
+	 * @return the coefficient array index
+	 */
+	public int getCoefficientIndex(int m) {
+		return mod(m, G.length);
+	}
+
+	// ----------------------------------------------------------------
+	// Invariance-related methods
+	// ----------------------------------------------------------------
+	
+	/**
+	 * Makes this Fourier descriptor invariant to scale, start-point and
+	 * rotation. The descriptors center position (coefficient 0) is preserved.
+	 * Returns multiple candidate descriptors, since start-point invariance
+	 * is not unique. The original (this) descriptor is not modified.
+	 * 
+	 * @return an array of modified Fourier descriptors
+	 */
+	public FourierDescriptor[] makeInvariant() {
+		// Step 1: make scale invariant
+		FourierDescriptor fdS = this.makeScaleInvariant();
+
+		// Step 2: make start-point invariant (not unique, produces 2 versions)
+		FourierDescriptor[] fdAB = fdS.makeStartPointInvariant();
+
+		// Step 3: make all versions rotation invariant
+		for (int i = 0; i < fdAB.length; i++) {
+			fdAB[i] = fdAB[i].makeRotationInvariant();
+		}
+
+		return fdAB;
 	}
 	
-	static void setCoefficient(Complex[] G, int m, Complex z) {
-		int mm = Arithmetic.mod(m, G.length);
-		G[mm] = new Complex(z);
+	// ----------------------------------------------------------------
+	
+	/**
+	 * Returns a new scale invariant Fourier descriptor by normalizing the L2 norm
+	 * of the sub-vector {G[-mp], ..., G[-1], G[1], ..., G[mp]}. Coefficient G_0
+	 * remains unmodified. The original Fourier descriptor is not modified.
+	 * 
+	 * @return a new scale-normalized Fourier descriptor
+	 */
+	public FourierDescriptor makeScaleInvariant() {
+		double sum = 0;
+		for (int i = 1; i < G.length; i++) {
+			sum = sum + G[i].abs2();
+		}
+		double scale = Math.sqrt(sum);	// = L2 norm
+		double s = 1 / scale;
+		
+		Complex[] G2 = new Complex[G.length];
+		G2[0] = G[0];
+		for (int i = 1; i < G2.length; i++) {
+			G2[i] = G[i].multiply(s);
+		}
+		return new FourierDescriptor(G2, scale);
 	}
 
+	/**
+	 * Returns a pair of start-point normalized Fourier descriptors.
+	 * The original Fourier descriptor is not modified.
+	 * 
+	 * @return a pair of start-point normalized Fourier descriptors
+	 */
+	public FourierDescriptor[] makeStartPointInvariant() {
+		double phi = getStartPointPhase();
+
+		Complex[] Ga = shiftStartPointPhase(phi);
+		Complex[] Gb = shiftStartPointPhase(phi + Math.PI);
+		
+		return new FourierDescriptor[] {
+				new FourierDescriptor(Ga, this.scale), 
+				new FourierDescriptor(Gb, this.scale)};
+	}
+	
+	private Complex[] shiftStartPointPhase(double phi) {
+		Complex[] Gnew = G.clone();
+		for (int m = -mp; m <= mp; m++) {
+			if (m != 0) {
+				int k = getCoefficientIndex(m);
+				Gnew[k] = Gnew[k].rotate(m * phi);
+			}
+		}
+		return Gnew;
+	}
+	
+	/**
+	 * Calculates the 'canonical' start point. This version uses 
+	 * (a) a coarse search for a global maximum of fp() and subsequently 
+	 * (b) a numerical optimization using Brent's method
+	 * (implemented with Apache Commons Math).
+	 * 
+	 * @param mp number of Fourier coefficient pairs
+	 * @return the "canonical" start point phase
+	 */
+	private double getStartPointPhase() {
+		
+		// the 1-dimensional target function to be optimized:
+		UnivariateFunction fp = new UnivariateFunction() {	// function to be maximized
+			/** 
+			 * The value returned is the sum of the cross products of the FD pairs,
+			 * with all coefficients rotated to the given start point phase phi.
+			 * TODO: This could be made a lot more efficient!
+			 */
+			@Override
+			public double value(double phi) {
+				double sum = 0;
+				for (int m = 1; m <= mp; m++) {
+					Complex Gm = getCoefficient(-m).rotate(-m * phi);
+					Complex Gp = getCoefficient( m).rotate( m * phi);
+					sum = sum + Gp.re * Gm.im - Gp.im * Gm.re;	// "cross product" Gp x Gm
+				}
+				return sum;
+			}
+		};
+		
+		// search for the global maximum in coarse steps
+		double cmax = Double.NEGATIVE_INFINITY;
+		int kmax = -1;
+		int K = 25;	// number of steps over 180 degrees
+		for (int k = 0; k < K; k++) {
+			final double phi = Math.PI * k / K; 	// phase to evaluate
+			final double c = fp.value(phi);
+			if (c > cmax) {
+				cmax = c;
+				kmax = k;
+			}
+		}
+		// optimize using previous and next point as the bracket.
+		double minPhi = Math.PI * (kmax - 1) / K;
+		double maxPhi = Math.PI * (kmax + 1) / K;	
+
+		UnivariateOptimizer optimizer = new BrentOptimizer(1E-4, 1E-6);
+		int maxIter = 20;
+		UnivariatePointValuePair result = optimizer.optimize(
+				new MaxEval(maxIter),
+				new UnivariateObjectiveFunction(fp),
+				GoalType.MAXIMIZE,
+				new SearchInterval(minPhi, maxPhi)
+				);
+		double phi0 = result.getPoint();
+		return phi0;	// the canonical start point phase
+	}
+	
+	/**
+	 * Returns a new rotation invariant Fourier descriptor by
+	 * applying complex rotation to all coefficients (except coefficient 0).
+	 * The original Fourier descriptor is not modified.
+	 * 
+	 * @return a new rotation-normalized Fourier descriptor
+	 */
+	public FourierDescriptor makeRotationInvariant() {
+		Complex z = new Complex(0,0);
+		for (int m = 1; m <= mp; m++) {
+			final double w = 1.0 / m;	// weighting factor emphasizing low-frequency components
+			z = z.add(getCoefficient(-m).multiply(w));
+			z = z.add(getCoefficient(+m).multiply(w));
+		}
+		double beta = z.arg();
+		Complex[] G2 = G.clone();
+		for (int i = 1; i < G2.length; i++) {
+			G2[i] = G[i].rotate(-beta);
+		}
+		
+		return new FourierDescriptor(G2, this.scale);
+	}
+
+	// -----------------------------------------------------------------
+
+	/**
+	 * Returns a new translation invariant Fourier descriptor by
+	 * setting coefficient 0 to zero.
+	 * The original Fourier descriptor is not modified.
+	 * This method is not used for shape invariance calculation,
+	 * since position is not shape-relevant.
+	 * 
+	 * @return a new translation-normalized Fourier descriptor
+	 */
+	public FourierDescriptor makeTranslationInvariant() {
+		Complex[] G2 = G.clone();
+		G2[0] = Complex.ZERO;
+		return new FourierDescriptor(G2, this.scale);
+	}
+	
+	// ------------------------------------------------------------------
+	// Reconstruction-related methods:
 	// ------------------------------------------------------------------
 
 	/**
-	 * Calculates a reconstruction from the full DFT spectrum with N samples.
+	 * Calculates and returns a reconstruction of the associated
+	 * 2D shape with N sample points using the full DFT spectrum.
 	 * 
 	 * @param N number of samples
-	 * @return reconstructed contour points
+	 * @return reconstructed shape points
 	 */
 	public Complex[] getReconstruction(int N) {
-		Complex[] S = new Complex[N];
-		for (int i = 0; i < N; i++) {
-			double t = (double) i / N;
-			S[i] = getReconstructionPoint(t);
-		}
-		return S;
+		return getReconstruction(N, mp);
+//		Complex[] S = new Complex[N];
+//		for (int i = 0; i < N; i++) {
+//			double t = (double) i / N;
+//			S[i] = getReconstructionPoint(t);
+//		}
+//		return S;
 	}
 
 	/**
@@ -265,15 +406,15 @@ public class FourierDescriptor {
 	 * points and using Mp coefficient pairs.
 	 * 
 	 * @param N number of samples
-	 * @param pairs number of coefficient pairs
-	 * @return reconstructed contour points
+	 * @param p number of coefficient pairs
+	 * @return reconstructed shape points
 	 */
-	public Complex[] getReconstruction(int N, int pairs) {
+	public Complex[] getReconstruction(int N, int p) {
+		p = Math.min(p, this.mp);
 		Complex[] S = new Complex[N];
-		pairs = Math.min(pairs, -getMaxNegHarmonic());
 		for (int i = 0; i < N; i++) {
 			double t = (double) i / N;
-			S[i] = getReconstructionPoint(t, -pairs, +pairs);
+			S[i] = getReconstructionPoint(t, p);
 		}
 		return S;
 	}
@@ -286,28 +427,14 @@ public class FourierDescriptor {
 	 * @return single contour point
 	 */
 	public Complex getReconstructionPoint(double t) {
-		int mm = getMaxNegHarmonic();
-		int mp = getMaxPosHarmonic();
-		return getReconstructionPoint(t, mm, mp);
+		return getReconstructionPoint(t, mp);
 	}
 
-	public Complex getReconstructionPoint(double t, int Mp) {
-		return getReconstructionPoint(t, -Mp, Mp);
-	}
-
-	/**
-	 * Reconstructs a single spatial point from this FD using
-	 * coefficients [mm,...,mp] = [m-,...,m+] at the fractional path position t in [0,1].
-	 * 
-	 * @param t path position
-	 * @param mm most negative frequency index
-	 * @param mp most positive frequency index
-	 * @return single contour point
-	 */
-	private Complex getReconstructionPoint(double t, int mm, int mp) {
+	public Complex getReconstructionPoint(double t, int p) {
+		p = Math.min(p, mp);
 		double x = G[0].re;
 		double y = G[0].im;
-		for (int m = mm; m <= mp; m++) {
+		for (int m = -p; m <= +p; m++) {
 			if (m != 0) {
 				Complex Gm = getCoefficient(m);
 				double A = scale * Gm.re;
@@ -322,6 +449,35 @@ public class FourierDescriptor {
 		return new Complex(x, y);
 	}
 
+//	/**
+//	 * Reconstructs a single spatial point from this FD using
+//	 * coefficients [mm,...,mp] = [m-,...,m+] at the fractional path position t in [0,1].
+//	 * 
+//	 * @param t path position
+//	 * @param mmin most negative frequency index
+//	 * @param mmax most positive frequency index
+//	 * @return single contour point
+//	 */
+//	private Complex getReconstructionPoint(double t, int mmin, int mmax) {
+//		double x = G[0].re;
+//		double y = G[0].im;
+//		for (int m = mmin; m <= mmax; m++) {
+//			if (m != 0) {
+//				Complex Gm = getCoefficient(m);
+//				double A = scale * Gm.re;
+//				double B = scale * Gm.im;
+//				double phi = 2 * Math.PI * m * t;
+//				double sinPhi = Math.sin(phi);
+//				double cosPhi = Math.cos(phi);
+//				x = x + A * cosPhi - B * sinPhi;
+//				y = y + A * sinPhi + B * cosPhi;
+//			}
+//		}
+//		return new Complex(x, y);
+//	}
+
+	// -----------------------------------------------------------------------
+	// Ellipse path-related methods:
 	// -----------------------------------------------------------------------
 
 	// TODO: Use actual ellipse shape, check offsets!
@@ -386,26 +542,24 @@ public class FourierDescriptor {
 	 * @return reconstructed shape
 	 */
 	public Path2D makeFourierPairsReconstruction() {
-		int M = G.length;
-		return  makeFourierPairsReconstruction(M/2);
+		return  makeFourierPairsReconstruction(mp);
 	}
 
 	/**
 	 * Reconstructs the shape obtained from FD-pairs 0,...,Mp as a polygon (path).
 	 * 
-	 * @param Mp number of Fourier coefficient pairs
+	 * @param pairs number of Fourier coefficient pairs
 	 * @return reconstructed shape
 	 */
-	public Path2D makeFourierPairsReconstruction(int Mp) {
-		int M = G.length;
-		Mp = Math.min(Mp, M/2);
+	public Path2D makeFourierPairsReconstruction(int pairs) {
+		pairs = Math.min(pairs, mp);
 		int recPoints = Math.max(MinReconstructionSamples, G.length * 3);
 		Path2D path = new Path2D.Float();
 		for (int i = 0; i < recPoints; i++) {
 			double t = (double) i / recPoints;
 			Complex pt = new Complex(getCoefficient(0));	// assumes that coefficient 0 is never scaled
 			// calculate a particular reconstruction point 
-			for (int m = 1; m <= Mp; m++) {
+			for (int m = 1; m <= pairs; m++) {
 				Complex ep = getEllipsePoint(getCoefficient(-m), getCoefficient(m), m, t);
 				pt = pt.add(ep.multiply(scale));
 			}
@@ -422,288 +576,85 @@ public class FourierDescriptor {
 		return path;
 	}
 
-	public int getMaxDftMagnitudeIndex() {
-		double maxMag = -1;
-		int maxIdx = -1;
-		for (int i=0; i<G.length; i++) {
-			double mag = G[i].abs();
-			if (mag > maxMag) {
-				maxMag = mag;
-				maxIdx = i;
-			}
-		}
-		return maxIdx;
-	}
 
-	public double getMaxDftMagnitude() {
-		int maxIdx = getMaxDftMagnitudeIndex();
-		return G[maxIdx].abs();
-	}
-
-	// Invariance -----------------------------------------------------
-
-	public FourierDescriptor[] makeInvariant() {
-		int Mp = getMp();
-		return makeInvariant(Mp);
-	}
-
-	public FourierDescriptor[] makeInvariant(int Mp) {
-		makeScaleInvariant(Mp);
-		// new:
-		FourierDescriptor fd1 = this.makeScaleInvariant_NEW(Mp);
-		
-		FourierDescriptor[] fdAB = makeStartPointInvariant(Mp);	// = [fdA, fdB]
-		fdAB[0].makeRotationInvariant(Mp);	// works destructively!
-		fdAB[1].makeRotationInvariant(Mp);
-		return fdAB;
-	}
-
-	public FourierDescriptor[] makeStartPointInvariant() {
-		int Mp = getMp();
-		return makeStartPointInvariant(Mp);
-	}
-
-	private FourierDescriptor[] makeStartPointInvariant(int Mp) {
-		double phiA = getStartPointPhase(Mp);
-		double phiB = phiA + Math.PI;
-		FourierDescriptor fdA = new FourierDescriptor(this);
-		FourierDescriptor fdB = new FourierDescriptor(this);
-		fdA.shiftStartPointPhase(phiA, Mp);
-		fdB.shiftStartPointPhase(phiB, Mp);
-		return new FourierDescriptor[] {fdA, fdB};
-	}
-
+	
+	// -----------------------------------------------------------------
 	// -----------------------------------------------------------------
 
-	/**
-	 * Sets the zero (DC) coefficient to zero.
-	 */
-	public void makeTranslationInvariant() {
-		G[0] = new Complex(0,0);
-	}
-
-	/**
-	 * Normalizes this descriptor destructively to the L2 norm of G, 
-	 * keeps G_0 untouched.
-	 * 
-	 * @return the scale factor used for normalization
-	 */
-	public double makeScaleInvariant() {
-		double s = 0;
-		for (int m = 1; m < G.length; m++) {
-			s = s + G[m].abs2();
-		}
-		// scale coefficients
-		double norm = Math.sqrt(s);
-		scale = norm;		// keep for later reconstruction
-		double scale = 1 / norm;
-		for (int m = 1; m < G.length; m++) {
-			G[m] =  G[m].multiply(scale);
-		}
-		return scale;
-	}
-
-	/**
-	 * Normalizes the L2 norm of the sub-vector (G_{-Mp}, ..., G_{Mp})
-	 * keeping G_0 unmodified.
-	 * 
-	 * @param Mp most positive/negative frequency index
-	 * @return the scale-normalized Fourier descriptor
-	 */
-	public FourierDescriptor makeScaleInvariant_NEW(int Mp) {
-		double s = 0;
-		for (int m = 1; m <= Mp; m++) {
-			s = s + this.getCoefficient(-m).abs2() + this.getCoefficient(m).abs2();
-		}
-		// scale Fourier coefficients:
-		double norm = Math.sqrt(s);
-		scale = norm;		// keep for later reconstruction
-		double scale = 1 / norm;
-		Complex[] G = new Complex[2 * Mp + 1];
-		setCoefficient(G, 0, this.getCoefficient(0));
-		for (int m = 1; m <= Mp; m++) {
-			setCoefficient(G, -m, this.getCoefficient(-m).multiply(scale));
-			setCoefficient(G, +m, this.getCoefficient( m).multiply(scale));
-		}
-		return new FourierDescriptor(G, scale);
-	}
-	
-	private double makeScaleInvariant(int Mp) {
-		double s = 0;
-		for (int m = 1; m <= Mp; m++) {
-			s = s + getCoefficient(-m).abs2() + getCoefficient(m).abs2();
-		}
-		// scale Fourier coefficients:
-		double norm = Math.sqrt(s);
-		scale = norm;		// keep for later reconstruction
-		double scale = 1 / norm;
-		for (int m = 1; m <= Mp; m++) {
-			setCoefficient(-m, getCoefficient(-m).multiply(scale));
-			setCoefficient( m, getCoefficient( m).multiply(scale));
-		}
-		return scale;
-	}
-
-	public double makeRotationInvariant() {	// works destructively.
-		int Mp = getMp();
-		return makeRotationInvariant(Mp);
-	}
-
-	private double makeRotationInvariant(int Mp) {
-		Complex z = new Complex(0,0);
-		for (int m = 1; m <= Mp; m++) {
-			Complex Gm = getCoefficient(-m);
-			Complex Gp = getCoefficient(+m);
-			double w = 1.0 / m;
-			z = z.add(Gm.multiply(w));
-			z = z.add(Gp.multiply(w));
-		}
-		double beta = z.arg();
-		for (int m = 1; m <= Mp; m++) {
-			setCoefficient(-m, getCoefficient(-m).rotate(-beta));
-			setCoefficient( m, getCoefficient( m).rotate(-beta));
-		}
-		return beta;
-	}
+//	/**
+//	 * For testing: apply shape rotation to this FourierDescriptor (phi in radians)
+//	 * 
+//	 * @param phi rotation angle
+//	 */
+//	public void rotate(double phi) {
+//		rotate(G, phi);
+//	}
 
 	/**
 	 * For testing: apply shape rotation to this FourierDescriptor (phi in radians)
 	 * 
-	 * @param phi rotation angle
-	 */
-	public void rotate(double phi) {
-		rotate(G, phi);
-	}
-
-	/**
-	 * For testing: apply shape rotation to this FourierDescriptor (phi in radians)
-	 * 
-	 * @param C complex point
+	 * @param shape complex point
 	 * @param phi angle
 	 */
-	private void rotate(Complex[] C, double phi) {
+	public static Complex[] rotateShape(Complex[] shapeOrig, double phi) {
+		Complex[] shape = shapeOrig.clone();
 		Complex rot = new Complex(phi);
-		for (int m = 1; m < G.length; m++) {
-			C[m] = C[m].multiply(rot);
+		for (int m = 0; m < shape.length; m++) {
+			shape[m] = shape[m].multiply(rot);
 		}
-	}
-
-	/**
-	 * Apply a particular start-point phase shift
-	 * 
-	 * @param phi start point phase
-	 * @param Mp most positive/negative frequency index
-	 */
-	private void shiftStartPointPhase(double phi, int Mp) {
-		Mp = Math.min(Mp, G.length/2);
-		for (int m = -Mp; m <= Mp; m++) {
-			if (m != 0) {
-				setCoefficient(m, getCoefficient(m).rotate(m * phi));
-			}
-		}
-	}
-
-	/**
-	 * Calculates the 'canonical' start point. This version uses 
-	 * (a) a coarse search for a global maximum of fp() and subsequently 
-	 * (b) a numerical optimization using Brent's method
-	 * (implemented with Apache Commons Math).
-	 * 
-	 * @param Mp number of Fourier coefficient pairs
-	 * @return start point phase
-	 */
-	public double getStartPointPhase(int Mp) {
-		Mp = Math.min(Mp, (G.length-1)/2);
-		UnivariateFunction fp =  new TargetFunction(Mp);
-		// search for the global maximum in coarse steps
-		double cmax = Double.NEGATIVE_INFINITY;
-		int kmax = -1;
-		int K = 25;	// number of steps over 180 degrees
-		for (int k = 0; k < K; k++) {
-			final double phi = Math.PI * k / K; 	// phase to evaluate
-			final double c = fp.value(phi);
-			if (c > cmax) {
-				cmax = c;
-				kmax = k;
-			}
-		}
-		// optimize using previous and next point as the bracket.
-		double minPhi = Math.PI * (kmax - 1) / K;
-		double maxPhi = Math.PI * (kmax + 1) / K;	
-
-		UnivariateOptimizer optimizer = new BrentOptimizer(1E-4, 1E-6);
-		int maxIter = 20;
-		UnivariatePointValuePair result = optimizer.optimize(
-				new MaxEval(maxIter),
-				new UnivariateObjectiveFunction(fp),
-				GoalType.MAXIMIZE,
-				new SearchInterval(minPhi, maxPhi)
-				);
-		double phi0 = result.getPoint();
-		return phi0;	// the canonical start point phase
-	}
-
-	/**
-	 * This inner class defines the target function for calculating the
-	 * canonical start point phase. {@link UnivariateFunction} is defined in the
-	 * Apache Common Maths framework.
-	 */
-	private class TargetFunction implements UnivariateFunction {
-		final int Mp;
-
-		TargetFunction(int Mp) {
-			this.Mp = Mp;
-		}
-
-		/** 
-		 * The value returned is the sum of the cross products of the FD pairs,
-		 * with all coefficients rotated to the given start point phase phi.
-		 * TODO: This could be made a lot more efficient!
-		 */
-		@Override
-		public double value(double phi) {
-			double sum = 0;
-			for (int m = 1; m <= Mp; m++) {
-				Complex Gm = getCoefficient(-m).rotate(-m * phi);
-				Complex Gp = getCoefficient( m).rotate( m * phi);
-				sum = sum + crossProduct(Gp, Gm);
-			}
-			return sum;
-		}
+		return shape;
 	}
 	
-	private double crossProduct(Complex c1, Complex c2) {
-		return c1.re * c2.im - c1.im * c2.re;
-	}
+//	public static Complex[] scaleShape(Complex[] shapeOrig, double scale) {
+//		Complex[] shape = shapeOrig.clone();
+//		for (int m = 1; m < shape.length; m++) {
+//			shape[m] = shape[m].multiply(rot);
+//		}
+//		return shape;
+//	}
 
+//	/**
+//	 * Apply a particular start-point phase shift
+//	 * 
+//	 * @param phi start point phase
+//	 * @param mp most positive/negative frequency index
+//	 */
+//	private void shiftStartPointPhase(double phi) {
+//		for (int m = -mp; m <= mp; m++) {
+//			if (m != 0) {
+//				setCoefficient(m, getCoefficient(m).rotate(m * phi));
+//			}
+//		}
+//	}
+	
+
+
+	
 	public double distanceComplex(FourierDescriptor fd2) {
-		return distanceComplex(fd2, this.mp);
+		return distanceComplex(fd2, mp);
 	}
 
-	public double distanceComplex(FourierDescriptor fd2, int pairs) {
+	public double distanceComplex(FourierDescriptor fd2, int p) {
 		FourierDescriptor fd1 = this;
-		pairs = Math.min(pairs, this.mp);
+		p = Math.min(p, mp);
 		double sum = 0;
-		for (int m = -pairs; m <= pairs; m++) {
+		for (int m = -p; m <= p; m++) {
 			if (m != 0) {
 				Complex G1m = fd1.getCoefficient(m);
 				Complex G2m = fd2.getCoefficient(m);
-				double dRe = G1m.re - G2m.re;
-				double dIm = G1m.im - G2m.im;
-				sum = sum + dRe * dRe + dIm * dIm;
+				sum = sum + sqr(G1m.re - G2m.re) + sqr(G1m.im - G2m.im);
 			}
 		}
 		return Math.sqrt(sum);
 	}
 
 	public double distanceMagnitude(FourierDescriptor fd2) {
-//		int Mp = getMp();
-		return distanceMagnitude(fd2, this.mp);
+		return distanceMagnitude(fd2, mp);
 	}
 
 	public double distanceMagnitude(FourierDescriptor fd2, int pairs) {
 		FourierDescriptor fd1 = this;
-		pairs = Math.min(pairs, this.mp);
+		pairs = Math.min(pairs, mp);
 		double sum = 0;
 		for (int m = -pairs; m <= pairs; m++) {
 			if (m != 0) {
@@ -714,6 +665,13 @@ public class FourierDescriptor {
 			}
 		}
 		return Math.sqrt(sum);
+	}
+	
+	// ---------------------------------------------------------------------
+	
+	@Override
+	public String toString() {
+		return String.format(Locale.US, "%s: mp=%d scale=%.3f", this.getClass().getSimpleName(), mp, scale);
 	}
 
 }

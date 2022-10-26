@@ -13,18 +13,19 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Complex;
 
 /**
- * Subclass of {@link FourierDescriptor} whose instances are created
- * from polygons assumed to be uniformly sampled.
+ * Abstract factory class defining static methods to produce 
+ * Fourier descriptors from polygons assumed to be uniformly sampled.
  * 
  * @author WB
  * @version 2022/10/24
  */
-public class FourierDescriptorUniform extends FourierDescriptor {
+public abstract class FourierDescriptorUniform {
 	
-	// this constructor is hidden
-	private FourierDescriptorUniform(Complex[] G) {
-		super(G);
-	}
+	private FourierDescriptorUniform() {}
+//	// this constructor is hidden
+//	private FourierDescriptorUniform(Complex[] G) {
+//		super(G);
+//	}
 	
 	/**
 	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
@@ -34,8 +35,8 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	 * @param V a polygon
 	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
-	public static FourierDescriptorUniform from(Pnt2d[] V) {
-		return new FourierDescriptorUniform(DFT(toComplexArray(V)));
+	public static FourierDescriptor from(Pnt2d[] V) {
+		return new FourierDescriptor(DFT(Utils.toComplexArray(V)));
 	}
 	
 	/**
@@ -48,12 +49,12 @@ public class FourierDescriptorUniform extends FourierDescriptor {
 	 * @param Mp number of coefficient pairs
 	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
-	public static FourierDescriptorUniform from(Pnt2d[] V, int Mp) {
+	public static FourierDescriptor from(Pnt2d[] V, int Mp) {
 		if (Mp > (V.length - 1) / 2) {
 			throw new IllegalArgumentException("number of Fourier pairs (Mp) may not be greater than " + ((V.length - 1) / 2));
 		}
-		Complex[] G = DFT(toComplexArray(V), 2 * Mp + 1);
-		return new FourierDescriptorUniform(G);
+		Complex[] G = DFT(Utils.toComplexArray(V), 2 * Mp + 1);
+		return new FourierDescriptor(G);
 	}
 	
 	// -------------------------------------------------------------------

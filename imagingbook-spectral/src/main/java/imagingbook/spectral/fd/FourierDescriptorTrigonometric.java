@@ -8,8 +8,8 @@
  *******************************************************************************/
 package imagingbook.spectral.fd;
 
+import static imagingbook.common.math.Arithmetic.mod;
 import static imagingbook.common.math.Arithmetic.sqr;
-import static imagingbook.spectral.fd.FourierDescriptor.setCoefficient;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -21,19 +21,21 @@ import imagingbook.common.math.Complex;
 
 
 /**
- * Subclass of {@link FourierDescriptor} whose instances are
- * created directly from non-uniformly spaced 2D polygons
+ * Abstract factory class defining static methods to produce 
+ * Fourier descriptors directly from non-uniformly spaced 2D polygons
  * without re-sampling or interpolation.
  * 
  * @author WB
  * @version 2022/10/24
  */
-public class FourierDescriptorTrigonometric extends FourierDescriptor {
+public abstract class FourierDescriptorTrigonometric {
 	
-	// this constructor is hidden
-	private FourierDescriptorTrigonometric(Complex[] G) {
-		super(G);
-	}
+	private FourierDescriptorTrigonometric() {}
+	
+//	// this constructor is hidden
+//	private FourierDescriptorTrigonometric(Complex[] G) {
+//		super(G);
+//	}
 	
 	/**
 	 * Creates a {@link FourierDescriptor} directly from
@@ -45,16 +47,16 @@ public class FourierDescriptorTrigonometric extends FourierDescriptor {
 	 * @param Mp the number of Fourier coefficient pairs
 	 * @return a new {@link FourierDescriptorTrigonometric} instance
 	 */
-	public static FourierDescriptorTrigonometric from(Pnt2d[] V, int Mp) {
-		Complex[] G = makeDftSpectrumTrigonometric(toComplexArray(V), Mp);
-		return new FourierDescriptorTrigonometric(G);
+	public static FourierDescriptor from(Pnt2d[] V, int Mp) {
+		Complex[] G = makeDftSpectrumTrigonometric(Utils.toComplexArray(V), Mp);
+		return new FourierDescriptor(G);
 	}
 
 	// ---------------------------------------------------------------------------
 	
 	private static Complex[] makeDftSpectrumTrigonometric(Complex[] g, int Mp) {
 		final int N = g.length;				// number of polygon vertices
-		final int M = 2 * Mp + 1;			// number of Fourier coefficients
+		final int M = 2 * Mp + 1;			// number of Fourier coefficients (always odd)
 		final double[] dx = new double[N];		// dx[k] is the delta-x for polygon segment <k,k+1>
 		final double[] dy = new double[N];		// dy[k] is the delta-y for polygon segment <k,k+1>
 		final double[] lambda = new double[N];	// lambda[k] is the length of the polygon segment <k,k+1>
@@ -113,6 +115,9 @@ public class FourierDescriptorTrigonometric extends FourierDescriptor {
         return G;
 	}
 	
+	private static void setCoefficient(Complex[] C, int m, Complex z) {
+		C[mod(m, C.length)] = z;
+	}
 //	private static void setCoefficient(Complex[] G, int m, Complex z) {
 //		int mm = Arithmetic.mod(m, G.length);
 //		G[mm] = new Complex(z);
