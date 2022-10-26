@@ -24,6 +24,7 @@ import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.spectral.fd.FourierDescriptor;
 import imagingbook.spectral.fd.FourierDescriptorUniform;
+import imagingbook.spectral.fd.Utils;
 
 
 /**
@@ -72,7 +73,7 @@ public class Fourier_Descriptor_RegularSampling extends CommonSetup implements P
 		}
 		Contour contr = outerContours.get(0);	// select the longest contour
 		Pnt2d[] V = contr.getPointArray();
-		Complex[] samples = FourierDescriptor.toComplexArray(V);
+		Complex[] samples = Utils.toComplexArray(V);
 		
 		// create the Fourier descriptor for 'V' with Mp coefficient pairs:
 		int Mp = FourierDescriptorPairs;
@@ -86,6 +87,9 @@ public class Fourier_Descriptor_RegularSampling extends CommonSetup implements P
 		FourierDescriptor[] fdAB = fd.makeInvariant();
 		FourierDescriptor fdA = fdAB[0];	// = G^A
 		FourierDescriptor fdB = fdAB[1];	// = G^B
+		
+//		IJ.log("fdA = " + Arrays.toString(fdA.getCoefficients()));
+//		IJ.log("fdB = " + Arrays.toString(fdB.getCoefficients()));
 
 		// ----------------------------------------------------------------
 		// show various reconstructions (as a vector overlay)

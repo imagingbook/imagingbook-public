@@ -23,6 +23,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.math.Complex;
 import imagingbook.spectral.fd.FourierDescriptor;
 import imagingbook.spectral.fd.FourierDescriptorTrigonometric;
+import imagingbook.spectral.fd.Utils;
 
 /**
  * This plugin demonstrates the use of the trigonometric method for calculating
@@ -59,7 +60,7 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 		// create the Fourier descriptor for 'anyRoi' with Mp coefficient pairs:
 		int Mp = FourierDescriptorPairs;
 		Pnt2d[] V = toPointArray(anyRoi);
-		Complex[] samples = FourierDescriptor.toComplexArray(V);
+		Complex[] samples = Utils.toComplexArray(V);
 		
 		FourierDescriptor fd = FourierDescriptorTrigonometric.from(V, Mp);
 //		FourierDescriptor fd = new FourierDescriptorFromPolygon(V, Mp);

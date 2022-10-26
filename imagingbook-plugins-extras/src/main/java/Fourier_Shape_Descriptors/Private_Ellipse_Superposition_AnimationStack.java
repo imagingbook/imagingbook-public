@@ -37,6 +37,7 @@ import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.spectral.fd.FourierDescriptor;
 import imagingbook.spectral.fd.FourierDescriptorUniform;
 import imagingbook.spectral.fd.PolygonSampler;
+import imagingbook.spectral.fd.Utils;
 
 /**
  * @version 2020/04/01
@@ -137,7 +138,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 
 		Contour contr = outerContours.get(0);	// contour of largest region
 		Pnt2d[] polygon = new PolygonSampler().samplePolygonUniformly(contr.getPointArray(), NumberOfContourSamples);
-		Complex[] samples = FourierDescriptor.toComplexArray(polygon);
+		Complex[] samples = Utils.toComplexArray(polygon);
 		
 		FourierDescriptor fd = FourierDescriptorUniform.from(polygon);
 //		FourierDescriptor fd = new FourierDescriptorUniform(polygon);
