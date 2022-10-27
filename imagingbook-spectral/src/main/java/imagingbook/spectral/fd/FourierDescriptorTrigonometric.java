@@ -21,9 +21,8 @@ import imagingbook.common.math.Complex;
 
 
 /**
- * Abstract factory class defining static methods to produce 
- * Fourier descriptors directly from non-uniformly spaced 2D polygons
- * without re-sampling or interpolation.
+ * Defines static methods to create Fourier descriptors
+ * directly from 2D polygons without re-sampling or interpolation.
  * 
  * @author WB
  * @version 2022/10/24
@@ -32,31 +31,26 @@ public abstract class FourierDescriptorTrigonometric {
 	
 	private FourierDescriptorTrigonometric() {}
 	
-//	// this constructor is hidden
-//	private FourierDescriptorTrigonometric(Complex[] G) {
-//		super(G);
-//	}
-	
 	/**
 	 * Creates a {@link FourierDescriptor} directly from
 	 * the vertices of a closed polygon (without interpolation).
-	 * For a given number Mp of Fourier coefficient pairs,
-	 * the resulting number of Fourier coefficients is M = 2 * Mp + 1.
+	 * For a given number (mp) of Fourier coefficient pairs,
+	 * the resulting number of Fourier coefficients is M = 2 * mp + 1.
 	 * 
 	 * @param V sequence of 2D points representing a closed polygon
-	 * @param Mp the number of Fourier coefficient pairs
+	 * @param mp the number of Fourier coefficient pairs (arbitrary)
 	 * @return a new {@link FourierDescriptorTrigonometric} instance
 	 */
-	public static FourierDescriptor from(Pnt2d[] V, int Mp) {
-		Complex[] G = makeDftSpectrumTrigonometric(Utils.toComplexArray(V), Mp);
+	public static FourierDescriptor from(Pnt2d[] V, int mp) {
+		Complex[] G = makeDftSpectrumTrigonometric(Utils.toComplexArray(V), mp);
 		return new FourierDescriptor(G);
 	}
 
 	// ---------------------------------------------------------------------------
 	
-	private static Complex[] makeDftSpectrumTrigonometric(Complex[] g, int Mp) {
+	private static Complex[] makeDftSpectrumTrigonometric(Complex[] g, int mp) {
 		final int N = g.length;				// number of polygon vertices
-		final int M = 2 * Mp + 1;			// number of Fourier coefficients (always odd)
+		final int M = 2 * mp + 1;			// number of Fourier coefficients (always odd)
 		final double[] dx = new double[N];		// dx[k] is the delta-x for polygon segment <k,k+1>
 		final double[] dy = new double[N];		// dy[k] is the delta-y for polygon segment <k,k+1>
 		final double[] lambda = new double[N];	// lambda[k] is the length of the polygon segment <k,k+1>
@@ -93,7 +87,7 @@ public abstract class FourierDescriptorTrigonometric {
         setCoefficient(G, 0, new Complex(x0 + a0/Ln, y0 + c0/Ln));
         
         // calculate remaining FD pairs G[-m], G[+m] for m = 1,...,Mp
-        for (int m = 1; m <= Mp; m++) {	// for each FD pair
+        for (int m = 1; m <= mp; m++) {	// for each FD pair
         	double w = 2 * PI * m / Ln;
         	double a = 0, c = 0;
         	double b = 0, d = 0;

@@ -210,16 +210,18 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 				//IJ.log("drawing ellipse " + m);
 				//				Color color = rcg.nextColor(); //makeRandomColor();
 				Color color = csq.next();
-				Complex c1 = fd.getCoefficient(-m);
-				Complex c2 = fd.getCoefficient(m);
-				Path2D path = fd.makeEllipse(c1, c2, m, cc.re + 0.5, cc.im + 0.5);
+//				Complex c1 = fd.getCoefficient(-m);
+//				Complex c2 = fd.getCoefficient(m);
+				Path2D path = fd.getShapePair(m, cc.re + 0.5, cc.im + 0.5);
+//				Path2D path = fd.makeEllipse(c1, c2, m, cc.re + 0.5, cc.im + 0.5);
 				ShapeRoi rpoly = new ShapeRoi(path);
 				rpoly.setStrokeColor(color);
 				rpoly.setStrokeWidth(ReconstructionStrokeWidth/2);
 				oly.add(rpoly);
 
 				// mark the path position for t
-				Complex c12 = fd.getEllipsePoint(c1, c2, m, t);
+				Complex c12 = fd.getShapePointPair(m, t);
+//				Complex c12 = fd.getEllipsePoint(c1, c2, m, t);
 				//IJ.log("re: " + c12.re + " im: " + c12.im);
 				double rad = ReconstructionRadius;
 				Ellipse2D oval = 

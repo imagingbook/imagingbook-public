@@ -208,12 +208,30 @@ public class FourierDescriptor {
 	// ----------------------------------------------------------------
 	
 	/**
-	 * Makes this Fourier descriptor invariant to scale, start-point and
-	 * rotation. The descriptors center position (coefficient 0) is preserved.
-	 * Returns multiple candidate descriptors, since start-point invariance
-	 * is not unique. The original (this) descriptor is not modified.
+	 * <p>
+	 * Makes this Fourier descriptor invariant to scale, start-point and rotation.
+	 * The descriptors center position (coefficient 0) is preserved. Performs the
+	 * following normalization steps in sequence:
+	 * </p>
+	 * <ol>
+	 * <li>scale invariance,</li>
+	 * <li>start-point invariance,</li>
+	 * <li>rotation invariance.</li>
+	 * </ol>
+	 * <p>
+	 * Multiple candidate descriptors are returned, since start-point invariance is
+	 * not unique. See Sec. 26.5 (Alg. 26.2) of [1] for additional details. The
+	 * original (this) descriptor is not modified.
+	 * </p>
+	 * <p>
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+	 * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+	 * </p>
 	 * 
 	 * @return an array of modified Fourier descriptors
+	 * @see #makeScaleInvariant()
+	 * @see #makeStartPointInvariant()
+	 * @see #makeRotationInvariant()
 	 */
 	public FourierDescriptor[] makeInvariant() {
 		// Step 1: make scale invariant
@@ -386,52 +404,58 @@ public class FourierDescriptor {
 	// ------------------------------------------------------------------
 
 	/**
-	 * Calculates and returns a reconstruction of the associated
-	 * 2D shape with N sample points using the full DFT spectrum.
+	 * Reconstructs the associated 2D shape (closed contour) with N sample points,
+	 * using all of the Fourier descriptor's coefficient pairs. The result is
+	 * returned as an array of {@link Complex} values.
 	 * 
-	 * @param N number of samples
+	 * @param n number of shape points
 	 * @return reconstructed shape points
 	 */
-	public Complex[] getReconstruction(int N) {
-		return getReconstruction(N, mp);
-//		Complex[] S = new Complex[N];
-//		for (int i = 0; i < N; i++) {
-//			double t = (double) i / N;
-//			S[i] = getReconstructionPoint(t);
-//		}
-//		return S;
+	public Complex[] getShapeFull(int n) {
+		return getShapePartial(n, mp);
 	}
 
 	/**
-	 * Calculate a reconstruction from the partial DFT spectrum with N sample
-	 * points and using Mp coefficient pairs.
+	 * Reconstructs the associated 2D shape (closed contour) with N sample points,
+	 * using only a subset of the Fourier descriptor's coefficient pairs. The result
+	 * is returned as an array of {@link Complex} values.
 	 * 
-	 * @param N number of samples
-	 * @param p number of coefficient pairs
-	 * @return reconstructed shape points
+	 * @param n number of shape points
+	 * @param p the number of (low frequency) coefficient pairs to be used
+	 * @return the reconstructed shape points
 	 */
-	public Complex[] getReconstruction(int N, int p) {
+	public Complex[] getShapePartial(int n, int p) {
 		p = Math.min(p, this.mp);
-		Complex[] S = new Complex[N];
-		for (int i = 0; i < N; i++) {
-			double t = (double) i / N;
-			S[i] = getReconstructionPoint(t, p);
+		Complex[] S = new Complex[n];
+		for (int i = 0; i < n; i++) {
+			double t = (double) i / n;
+			S[i] = getShapePointPartial(t, p);
 		}
 		return S;
 	}
 
 	/**
-	 * Reconstructs a single spatial point from the complete FD
-	 * at the fractional path position t in [0,1].
+	 * Reconstructs a single space point of the associated shape (closed contour) at
+	 * the fractional path position t &isin; [0,1], using all of the Fourier
+	 * descriptor's coefficient pairs.
 	 * 
 	 * @param t path position
-	 * @return single contour point
+	 * @return the reconstructed shape point
 	 */
-	public Complex getReconstructionPoint(double t) {
-		return getReconstructionPoint(t, mp);
+	public Complex getShapePointFull(double t) {
+		return getShapePointPartial(t, mp);
 	}
 
-	public Complex getReconstructionPoint(double t, int p) {
+	/**
+	 * Reconstructs a single space point of the associated shape (closed contour) at
+	 * the fractional path position t &isin; [0,1], using only a subset of the
+	 * Fourier descriptor's coefficient pairs.
+	 * 
+	 * @param t path position &isin; [0,1]
+	 * @param p the number of (low frequency) coefficient pairs to be used
+	 * @return the reconstructed shape point
+	 */
+	public Complex getShapePointPartial(double t, int p) {
 		p = Math.min(p, mp);
 		double x = G[0].re;
 		double y = G[0].im;
@@ -450,44 +474,46 @@ public class FourierDescriptor {
 		return new Complex(x, y);
 	}
 
-//	/**
-//	 * Reconstructs a single spatial point from this FD using
-//	 * coefficients [mm,...,mp] = [m-,...,m+] at the fractional path position t in [0,1].
-//	 * 
-//	 * @param t path position
-//	 * @param mmin most negative frequency index
-//	 * @param mmax most positive frequency index
-//	 * @return single contour point
-//	 */
-//	private Complex getReconstructionPoint(double t, int mmin, int mmax) {
-//		double x = G[0].re;
-//		double y = G[0].im;
-//		for (int m = mmin; m <= mmax; m++) {
-//			if (m != 0) {
-//				Complex Gm = getCoefficient(m);
-//				double A = scale * Gm.re;
-//				double B = scale * Gm.im;
-//				double phi = 2 * Math.PI * m * t;
-//				double sinPhi = Math.sin(phi);
-//				double cosPhi = Math.cos(phi);
-//				x = x + A * cosPhi - B * sinPhi;
-//				y = y + A * sinPhi + B * cosPhi;
-//			}
-//		}
-//		return new Complex(x, y);
-//	}
-
 	// -----------------------------------------------------------------------
 	// Ellipse path-related methods:
 	// -----------------------------------------------------------------------
 
 	// TODO: Use actual ellipse shape, check offsets!
-	public Path2D makeEllipse(Complex G1, Complex G2, int m, double xOffset, double yOffset) {
+//	@Deprecated
+//	public Path2D makeEllipse(Complex G1, Complex G2, int m, double xOffset, double yOffset) {
+//		Path2D path = new Path2D.Float();
+//		int recPoints = Math.max(MinReconstructionSamples, G.length * 3);
+//		for (int i = 0; i < recPoints; i++) {
+//			double t = (double) i / recPoints;
+//			Complex p1 = this.getEllipsePoint(G1, G2, m, t);
+//			double xt = p1.re;
+//			double yt = p1.im;
+//			if (i == 0) {
+//				path.moveTo(xt + xOffset, yt + yOffset);
+//			}
+//			else {
+//				path.lineTo(xt + xOffset, yt + yOffset);
+//			}
+//		}
+//		path.closePath();
+//		return path;
+//	}
+	
+	/**
+	 * Returns the spatial point reconstructed from a DFT coefficient pair 
+	 * G[-m], G[+m] at position t &isin; [0,1].
+	 * Varying t creates points on an ellipse. 
+	 * 
+	 * @param m frequency index (coefficient pair number)
+	 * @return reconstructed shape point
+	 */
+	public Path2D getShapePair(int m, double xOffset, double yOffset) {
 		Path2D path = new Path2D.Float();
 		int recPoints = Math.max(MinReconstructionSamples, G.length * 3);
 		for (int i = 0; i < recPoints; i++) {
 			double t = (double) i / recPoints;
-			Complex p1 = this.getEllipsePoint(G1, G2, m, t);
+//			Complex p1 = this.getEllipsePoint(G1, G2, m, t);
+			Complex p1 = this.getShapePointPair(m, t);
 			double xt = p1.re;
 			double yt = p1.im;
 			if (i == 0) {
@@ -501,32 +527,73 @@ public class FourierDescriptor {
 		return path;
 	}
 
+//	/**
+//	 * Get the reconstructed point for two DFT coefficients G1, G2 at a given
+//	 * position t.
+//	 * @param G1 first coefficient
+//	 * @param G2 second coefficient
+//	 * @param m frequency number
+//	 * @param t contour position
+//	 * @return reconstructed point
+//	 */
+//	@Deprecated
+//	public Complex getEllipsePoint(Complex G1, Complex G2, int m, double t) {
+//		Complex p1 = getReconstructionPoint(-m, t);
+//		Complex p2 = getReconstructionPoint(+m, t);
+////		Complex p1 = getReconstructionPoint(G1, -m, t);
+////		Complex p2 = getReconstructionPoint(G2, m, t);
+//		return p1.add(p2);
+//	}
+	
 	/**
-	 * Get the reconstructed point for two DFT coefficients G1, G2 at a given
-	 * position t.
-	 * @param G1 first coefficient
-	 * @param G2 second coefficient
-	 * @param m frequency number
-	 * @param t contour position
-	 * @return reconstructed point
+	 * Returns the spatial point reconstructed from a DFT coefficient pair 
+	 * G[-m], G[+m] at position t &isin; [0,1].
+	 * Varying t creates points on an ellipse. 
+	 * 
+	 * @param m frequency index (coefficient pair number)
+	 * @param t contour position &isin; [0,1]
+	 * @return reconstructed shape point
 	 */
-	public Complex getEllipsePoint(Complex G1, Complex G2, int m, double t) {
-		Complex p1 = getReconstructionPoint(G1, -m, t);
-		Complex p2 = getReconstructionPoint(G2, m, t);
+	public Complex getShapePointPair(int m, double t) {
+		Complex p1 = getShapePointSingle(-m, t);
+		Complex p2 = getShapePointSingle(+m, t);
 		return p1.add(p2);
 	}
 
+//	/**
+//	 * Returns the spatial point reconstructed from a single
+//	 * DFT coefficient 'Gm' with frequency 'm' at 
+//	 * position 't' in [0,1].
+//	 * 
+//	 * @param Gm single DFT coefficient
+//	 * @param m frequency index
+//	 * @param t contour position
+//	 * @return reconstructed point
+//	 */
+//	@Deprecated
+//	private Complex getReconstructionPoint(Complex Gm, int m, double t) {
+//		double wm = 2 * Math.PI * m;
+//		double Am = Gm.re;
+//		double Bm = Gm.im;
+//		double cost = Math.cos(wm * t);
+//		double sint = Math.sin(wm * t);
+//		double xt = Am * cost - Bm * sint;
+//		double yt = Bm * cost + Am * sint;
+//		return new Complex(xt, yt);
+//	}
+	
 	/**
 	 * Returns the spatial point reconstructed from a single
-	 * DFT coefficient 'Gm' with frequency 'm' at 
-	 * position 't' in [0,1].
+	 * DFT coefficient G[m] with frequency index m at 
+	 * position t &isin; [0,1].
+	 * Varying t creates points on a circle.
 	 * 
-	 * @param Gm single DFT coefficient
-	 * @param m frequency index
-	 * @param t contour position
-	 * @return reconstructed point
+	 * @param m frequency index (pos/neg, 0 &le; m &le; this.mp)
+	 * @param t contour position &isin; [0,1]
+	 * @return reconstructed shape point
 	 */
-	private Complex getReconstructionPoint(Complex Gm, int m, double t) {
+	private Complex getShapePointSingle(int m, double t) {
+		Complex Gm = this.getCoefficient(m);
 		double wm = 2 * Math.PI * m;
 		double Am = Gm.re;
 		double Bm = Gm.im;
@@ -561,7 +628,8 @@ public class FourierDescriptor {
 			Complex pt = new Complex(getCoefficient(0));	// assumes that coefficient 0 is never scaled
 			// calculate a particular reconstruction point 
 			for (int m = 1; m <= pairs; m++) {
-				Complex ep = getEllipsePoint(getCoefficient(-m), getCoefficient(m), m, t);
+//				Complex ep = getEllipsePoint(getCoefficient(-m), getCoefficient(m), m, t);
+				Complex ep = getShapePointPair(m, t);
 				pt = pt.add(ep.multiply(scale));
 			}
 			double xt = pt.re; 

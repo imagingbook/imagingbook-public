@@ -13,8 +13,8 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Complex;
 
 /**
- * Abstract factory class defining static methods to produce 
- * Fourier descriptors from polygons assumed to be uniformly sampled.
+ * Defines static methods to create Fourier descriptors from uniformly sampled
+ * point sequences.
  * 
  * @author WB
  * @version 2022/10/24
@@ -22,10 +22,6 @@ import imagingbook.common.math.Complex;
 public abstract class FourierDescriptorUniform {
 	
 	private FourierDescriptorUniform() {}
-//	// this constructor is hidden
-//	private FourierDescriptorUniform(Complex[] G) {
-//		super(G);
-//	}
 	
 	/**
 	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
@@ -46,14 +42,14 @@ public abstract class FourierDescriptorUniform {
 	 * it must be assured that Mp < (V.length - 1) &divide; 2.
 	 * 
 	 * @param V a polygon
-	 * @param Mp number of coefficient pairs
+	 * @param mp number of coefficient pairs
 	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
-	public static FourierDescriptor from(Pnt2d[] V, int Mp) {
-		if (Mp > (V.length - 1) / 2) {
+	public static FourierDescriptor from(Pnt2d[] V, int mp) {
+		if (mp > (V.length - 1) / 2) {
 			throw new IllegalArgumentException("number of Fourier pairs (Mp) may not be greater than " + ((V.length - 1) / 2));
 		}
-		Complex[] G = DFT(Utils.toComplexArray(V), 2 * Mp + 1);
+		Complex[] G = DFT(Utils.toComplexArray(V), 2 * mp + 1);
 		return new FourierDescriptor(G);
 	}
 	

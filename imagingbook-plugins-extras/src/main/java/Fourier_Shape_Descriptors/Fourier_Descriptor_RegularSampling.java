@@ -81,7 +81,7 @@ public class Fourier_Descriptor_RegularSampling extends CommonSetup implements P
 //		FourierDescriptor fd = new FourierDescriptorUniform(V, Mp);
 		
 		// reconstruct the corresponding shape with 100 contour points:
-		Complex[] R = fd.getReconstruction(ShapeReconstructionPoints);
+		Complex[] R = fd.getShapeFull(ShapeReconstructionPoints);
 		
 		// create a pair of invariant descriptors (G^A, G^B):
 		FourierDescriptor[] fdAB = fd.makeInvariant();
@@ -131,11 +131,11 @@ public class Fourier_Descriptor_RegularSampling extends CommonSetup implements P
 		}
 		
 		if (DrawNormalizedShapes) {
-			ShapeRoi roiA = makeClosedPathShape(fdA.getReconstruction(ShapeReconstructionPoints), 0.5, 0.5);
+			ShapeRoi roiA = makeClosedPathShape(fdA.getShapeFull(ShapeReconstructionPoints), 0.5, 0.5);
 			roiA.setStrokeColor(CanonicalShapeAColor);
 			roiA.setStrokeWidth(ReconstructionStrokeWidth);
 			oly.add(roiA);
-			ShapeRoi roiB = makeClosedPathShape(fdB.getReconstruction(ShapeReconstructionPoints), 0.5, 0.5);
+			ShapeRoi roiB = makeClosedPathShape(fdB.getShapeFull(ShapeReconstructionPoints), 0.5, 0.5);
 			roiB.setStrokeColor(CanonicalShapeBColor);
 			roiB.setStrokeWidth(ReconstructionStrokeWidth);
 			oly.add(roiB);
