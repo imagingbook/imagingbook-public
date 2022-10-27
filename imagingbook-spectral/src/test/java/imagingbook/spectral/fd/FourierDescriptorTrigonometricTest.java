@@ -15,7 +15,7 @@ import imagingbook.common.math.Complex;
 import imagingbook.common.util.random.RandomAngle;
 import imagingbook.spectral.TestUtils;
 
-public class FourierDescriptorUniformTest {
+public class FourierDescriptorTrigonometricTest {
 
 	static double TOL = 1e-6;
 	
@@ -23,63 +23,64 @@ public class FourierDescriptorUniformTest {
 	public void testConstructors() {	
 		Pnt2d[] V = PntUtils.makeDoublePoints(3,2, 5,4, 7,10, 6,11, 4,7);
 		
-		Complex[] G = {	// DFT spectrum for V1
-				new Complex(5.000000000, 6.800000000), 
-				new Complex(-1.635404556, -2.625802342), 
-				new Complex(-0.215246253, -0.009311758), 
-				new Complex(0.109673444, -0.154620264), 
-				new Complex(-0.259022635, -2.010265635)};
+		Complex[] c1 = {	// DFT coefficients
+				new Complex(4.899143645, 6.495130576), 
+				new Complex(-0.932154980, -2.315184973), 
+				new Complex(0.001385310, 0.033226034), 
+				new Complex(-0.030610108, -0.033017669), 
+				new Complex(-0.470565980, -1.415652554)};
 		
-		FourierDescriptor fd = FourierDescriptorUniform.from(V); 
+		FourierDescriptor fd1 = FourierDescriptorTrigonometric.from(V, 2);
 //		System.out.println(Arrays.toString(fd1.getCoefficients()));
-		assertEquals(5, fd.size());
-		TestUtils.assertArrayEquals(G, fd.getCoefficients(), TOL);
+		assertEquals(5, fd1.size());
+		TestUtils.assertArrayEquals(c1, fd1.getCoefficients(), TOL);
 		
-		FourierDescriptor fdB = FourierDescriptorUniform.from(V, 2); 
+		FourierDescriptor fd2 = FourierDescriptorTrigonometric.from(V, 2);
 //		System.out.println(Arrays.toString(fd2.getCoefficients()));
-		assertEquals(5, fdB.size());
-		Complex[] GB = G;
-		TestUtils.assertArrayEquals(GB, fdB.getCoefficients(), TOL);
+		assertEquals(5, fd2.size());
+		Complex[] c2 = c1;
+		TestUtils.assertArrayEquals(c2, fd2.getCoefficients(), TOL);
 		
-		FourierDescriptor fdC = FourierDescriptorUniform.from(V, 1); 
+		FourierDescriptor fd3 = FourierDescriptorTrigonometric.from(V, 1); 
 //		System.out.println(Arrays.toString(fd3.getCoefficients()));
-		assertEquals(3, fdC.size());
-		Complex[] GC = {G[0], G[1], G[4]};
-		TestUtils.assertArrayEquals(GC, fdC.getCoefficients(), TOL);
+		assertEquals(3, fd3.size());
+		Complex[] c3 = {c1[0], c1[1], c1[4]};
+		TestUtils.assertArrayEquals(c3, fd3.getCoefficients(), TOL);
 	}
 	
 	@Test	// check scale invariance of FDs of scaled point sets
-	public void testScaleInvariance() {	
+	public void testScaleInvariance() {
+		int mp = 2;
 		Pnt2d[] V = PntUtils.makeDoublePoints(3,2, 5,4, 7,10, 6,11, 4,7);
 		
-		FourierDescriptor fd = FourierDescriptorUniform.from(V);
+		FourierDescriptor fd = FourierDescriptorTrigonometric.from(V, mp);
 		FourierDescriptor fdi = fd.makeScaleInvariant();	// reference FD
 		
 		Random rg = new Random(17);
 		for (int i = 0; i < 100; i++) {
 			double scale = 0.1 + 30 * rg.nextDouble();
 			AffineMapping2D map = new Scaling2D(scale);
-			FourierDescriptor fd2 = FourierDescriptorUniform.from(map.applyTo(V));
+			FourierDescriptor fd2 = FourierDescriptorTrigonometric.from(map.applyTo(V), mp);
 			FourierDescriptor fd2i = fd2.makeScaleInvariant();
 			assertEquals(0.0, fdi.distanceComplex(fd2i), 1e-6);	// fdi == fd2i ?
 		}
 	}
 	
 	@Test	// check rotation invariance of FDs of rotated point sets
-	public void testRotationInvariance() {	
+	public void testRotationInvariance() {
+		int mp = 2;
 		Pnt2d[] V = PntUtils.makeDoublePoints(3,2, 5,4, 7,10, 6,11, 4,7);
 		
-		FourierDescriptor fd = FourierDescriptorUniform.from(V);
+		FourierDescriptor fd = FourierDescriptorTrigonometric.from(V, mp);
 		FourierDescriptor fdi = fd.makeRotationInvariant();	// reference FD
 		
 		RandomAngle rg = new RandomAngle(17);
 		for (int i = 0; i < 100; i++) {
 			double phi = rg.nextAngle();	
 			AffineMapping2D map = new Rotation2D(phi);
-			FourierDescriptor fd2 = FourierDescriptorUniform.from(map.applyTo(V));
+			FourierDescriptor fd2 = FourierDescriptorTrigonometric.from(map.applyTo(V), mp);
 			FourierDescriptor fd2i = fd2.makeRotationInvariant();
 			assertEquals(0.0, fdi.distanceComplex(fd2i), 1e-6);	// fdi == fd2i ?
 		}		
 	}
-	
 }
