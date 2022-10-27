@@ -204,6 +204,7 @@ public class FourierDescriptor {
 	 * ...</pre>
 	 * @param m frequency index (positive or negative)
 	 * @return the associated DFT coefficient
+	 * @see #getCoefficientIndex(int)
 	 */
 	public Complex getCoefficient(int m) {
 		return new Complex(G[getCoefficientIndex(m)]);
@@ -215,6 +216,7 @@ public class FourierDescriptor {
 	 * 
 	 * @param m frequency index (positive or negative)
 	 * @return the coefficient array index
+	 * @see #getCoefficient(int)
 	 */
 	public int getCoefficientIndex(int m) {
 		return mod(m, G.length);
