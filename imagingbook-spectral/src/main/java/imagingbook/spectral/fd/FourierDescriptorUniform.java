@@ -39,7 +39,7 @@ public abstract class FourierDescriptorUniform {
 	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
 	 * with Mp coefficient pairs.
 	 * The length of the resulting DFT spectrum is 2 * Mp + 1, i.e.,
-	 * it must be assured that Mp < (V.length - 1) &divide; 2.
+	 * it must be assured that Mp &lt; (V.length - 1) &divide; 2.
 	 * 
 	 * @param V a polygon
 	 * @param mp number of coefficient pairs
