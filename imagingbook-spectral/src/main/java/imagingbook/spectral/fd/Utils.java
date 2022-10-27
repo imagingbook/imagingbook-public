@@ -1,5 +1,7 @@
 package imagingbook.spectral.fd;
 
+import java.awt.geom.Path2D;
+
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Complex;
 
@@ -17,5 +19,15 @@ public abstract class Utils {
 		}
 		return samples;
 	}
-
+	
+	public static Path2D toPath(Complex[] C) {
+		Path2D path = new Path2D.Float();
+		path.moveTo(C[0].re, C[0].im);
+		for (int i = 1; i < C.length; i++) {
+			path.lineTo(C[i].re, C[i].im);
+		}
+		path.closePath();
+		return path;
+	}
+	
 }

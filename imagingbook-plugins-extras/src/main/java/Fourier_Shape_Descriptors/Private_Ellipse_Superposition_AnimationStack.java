@@ -75,7 +75,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 	
 	static boolean AntialiasGraphics = true;
 
-	static AffineTransform CtrShift = new AffineTransform(1, 0, 0, 1, 0.5, 0.5);	// shift by (0.5,0.5) to move to pixel centers
+	static AffineTransform PixelShift = new AffineTransform(1, 0, 0, 1, 0.5, 0.5);	// shift by (0.5,0.5) to move to pixel centers
 
 	ImagePlus origImage = null;
 	String origTitle = null;
@@ -191,8 +191,9 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 
 			{ // draw the reconstructed shape from FD-pairs 0,...,mMax -------
 				int mMax = NumberOfFourierDescriptorPairs;
-				Path2D path = fd.makeFourierPairsReconstruction(mMax);
-				path.transform(CtrShift);
+//				Path2D path = fd.makeFourierPairsReconstructionPartial(mMax);
+				Path2D path = Utils.toPath(fd.getShapePartial(50, mMax));
+				path.transform(PixelShift);
 				ShapeRoi roi = new ShapeRoi(path);
 				roi.setStrokeColor(ReconstructionColor);
 				roi.setStrokeWidth(ReconstructionStrokeWidth);
@@ -212,8 +213,12 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 				Color color = csq.next();
 //				Complex c1 = fd.getCoefficient(-m);
 //				Complex c2 = fd.getCoefficient(m);
-				Path2D path = fd.getShapePair(m, cc.re + 0.5, cc.im + 0.5);
+				
 //				Path2D path = fd.makeEllipse(c1, c2, m, cc.re + 0.5, cc.im + 0.5);
+//				Path2D path = fd.getPathPair(m, cc.re + 0.5, cc.im + 0.5);
+				Path2D path = Utils.toPath(fd.getShapePair(50, m));
+				path.transform(AffineTransform.getTranslateInstance(cc.re + 0.5, cc.im + 0.5));	// move to current center cc
+				
 				ShapeRoi rpoly = new ShapeRoi(path);
 				rpoly.setStrokeColor(color);
 				rpoly.setStrokeWidth(ReconstructionStrokeWidth/2);
@@ -224,7 +229,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 //				Complex c12 = fd.getEllipsePoint(c1, c2, m, t);
 				//IJ.log("re: " + c12.re + " im: " + c12.im);
 				double rad = ReconstructionRadius;
-				Ellipse2D oval = 
+				Ellipse2D oval =  // mark te current point by a small circle
 						new Ellipse2D.Double(c12.re + cc.re - rad + 0.5, c12.im + cc.im - rad + 0.5, 2 * rad, 2 * rad);
 				Roi roi = new ShapeRoi(oval);
 				roi.setFillColor(color);
@@ -308,7 +313,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 		path.lineTo(xc+crossSize, yc);
 		path.moveTo(xc, yc-crossSize);
 		path.lineTo(xc, yc+crossSize);
-		path.transform(CtrShift);
+		path.transform(PixelShift);
 		ShapeRoi roi = new ShapeRoi(path);
 		roi.setStrokeColor(ReconstructionColor);
 		roi.setStrokeWidth(ReconstructionStrokeWidth);
@@ -317,7 +322,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 
 	ShapeRoi makeCentroidShape(Contour contr) { // draw the original contour ------------------------------------
 		Path2D path = contr.getPolygonPath(0.5, 0.5);
-		path.transform(CtrShift);
+		path.transform(PixelShift);
 		ShapeRoi roi = new ShapeRoi(path);
 		roi.setStrokeColor(ContourColor);
 		roi.setStrokeWidth(ContourStrokeWidth);

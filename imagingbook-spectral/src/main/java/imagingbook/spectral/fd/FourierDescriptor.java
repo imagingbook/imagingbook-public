@@ -12,7 +12,6 @@ package imagingbook.spectral.fd;
 import static imagingbook.common.math.Arithmetic.mod;
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import java.awt.geom.Path2D;
 import java.util.Locale;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
@@ -179,12 +178,30 @@ public class FourierDescriptor {
 	}
 	
 	/**
+	 * <p>
 	 * Returns the complex-valued DFT coefficient with the specified
-	 * frequency index m. The returned coefficient is G[m mod G.length].
+	 * frequency index m. The returned coefficient is G[k] with k = (m mod G.length).
 	 * Unique coefficients are returned for m = 0, ..., M-1,
 	 * where M is the size of the DFT coefficient array, or
 	 * m = -mp, ..., +mp where mp is the number of coefficient pairs.
-	 * 
+	 * For example, given a Fourier descriptor with a 9-element spectrum,
+	 * </p>
+	 * <pre>
+	 * k    = 0 1 2 3 4 5 6 7 8
+	 * G[k] = a b c d e f g h i </pre>
+	 * <p>
+	 * the following values are returned:
+	 * </p>
+	 * <pre>
+	 * getCoefficient(0)  &rarr; G[0] = a
+	 * getCoefficient(1)  &rarr; G[1] = b
+	 * ...
+	 * getCoefficient(4)  &rarr; G[4] = e
+	 * getCoefficient(-1) &rarr; G[8] = i
+	 * ...
+	 * getCoefficient(-4) &rarr; G[5] = f
+	 * getCoefficient(-5) &rarr; G[4] = e
+	 * ...</pre>
 	 * @param m frequency index (positive or negative)
 	 * @return the associated DFT coefficient
 	 */
@@ -429,7 +446,7 @@ public class FourierDescriptor {
 		Complex[] S = new Complex[n];
 		for (int i = 0; i < n; i++) {
 			double t = (double) i / n;
-			S[i] = getShapePointPartial(t, p);
+			S[i] = getShapePointPartial(p, t);
 		}
 		return S;
 	}
@@ -443,19 +460,19 @@ public class FourierDescriptor {
 	 * @return the reconstructed shape point
 	 */
 	public Complex getShapePointFull(double t) {
-		return getShapePointPartial(t, mp);
+		return getShapePointPartial(mp, t);
 	}
 
 	/**
 	 * Reconstructs a single space point of the associated shape (closed contour) at
 	 * the fractional path position t &isin; [0,1], using only a subset of the
 	 * Fourier descriptor's coefficient pairs.
-	 * 
-	 * @param t path position &isin; [0,1]
 	 * @param p the number of (low frequency) coefficient pairs to be used
+	 * @param t path position &isin; [0,1]
+	 * 
 	 * @return the reconstructed shape point
 	 */
-	public Complex getShapePointPartial(double t, int p) {
+	public Complex getShapePointPartial(int p, double t) {
 		p = Math.min(p, mp);
 		double x = G[0].re;
 		double y = G[0].im;
@@ -473,83 +490,30 @@ public class FourierDescriptor {
 		}
 		return new Complex(x, y);
 	}
-
-	// -----------------------------------------------------------------------
-	// Ellipse path-related methods:
-	// -----------------------------------------------------------------------
-
-	// TODO: Use actual ellipse shape, check offsets!
-//	@Deprecated
-//	public Path2D makeEllipse(Complex G1, Complex G2, int m, double xOffset, double yOffset) {
-//		Path2D path = new Path2D.Float();
-//		int recPoints = Math.max(MinReconstructionSamples, G.length * 3);
-//		for (int i = 0; i < recPoints; i++) {
-//			double t = (double) i / recPoints;
-//			Complex p1 = this.getEllipsePoint(G1, G2, m, t);
-//			double xt = p1.re;
-//			double yt = p1.im;
-//			if (i == 0) {
-//				path.moveTo(xt + xOffset, yt + yOffset);
-//			}
-//			else {
-//				path.lineTo(xt + xOffset, yt + yOffset);
-//			}
-//		}
-//		path.closePath();
-//		return path;
-//	}
 	
 	/**
-	 * Returns the spatial point reconstructed from a DFT coefficient pair 
-	 * G[-m], G[+m] at position t &isin; [0,1].
-	 * Varying t creates points on an ellipse. 
+	 * Reconstructs the associated 2D shape (closed contour) with N sample points,
+	 * using only a single coefficient pairs. The result
+	 * is returned as an array of {@link Complex} values.
 	 * 
-	 * @param m frequency index (coefficient pair number)
-	 * @return reconstructed shape point
+	 * @param n number of shape points
+	 * @param m the frequency index of the coefficient pair
+	 * @return the reconstructed shape points
 	 */
-	public Path2D getShapePair(int m, double xOffset, double yOffset) {
-		Path2D path = new Path2D.Float();
-		int recPoints = Math.max(MinReconstructionSamples, G.length * 3);
-		for (int i = 0; i < recPoints; i++) {
-			double t = (double) i / recPoints;
-//			Complex p1 = this.getEllipsePoint(G1, G2, m, t);
-			Complex p1 = this.getShapePointPair(m, t);
-			double xt = p1.re;
-			double yt = p1.im;
-			if (i == 0) {
-				path.moveTo(xt + xOffset, yt + yOffset);
-			}
-			else {
-				path.lineTo(xt + xOffset, yt + yOffset);
-			}
+	public Complex[] getShapePair(int n, int m) {
+		m = Math.min(m, this.mp);
+		Complex[] S = new Complex[n];
+		for (int i = 0; i < n; i++) {
+			double t = (double) i / n;
+			S[i] = getShapePointPair(m, t);
 		}
-		path.closePath();
-		return path;
+		return S;
 	}
-
-//	/**
-//	 * Get the reconstructed point for two DFT coefficients G1, G2 at a given
-//	 * position t.
-//	 * @param G1 first coefficient
-//	 * @param G2 second coefficient
-//	 * @param m frequency number
-//	 * @param t contour position
-//	 * @return reconstructed point
-//	 */
-//	@Deprecated
-//	public Complex getEllipsePoint(Complex G1, Complex G2, int m, double t) {
-//		Complex p1 = getReconstructionPoint(-m, t);
-//		Complex p2 = getReconstructionPoint(+m, t);
-////		Complex p1 = getReconstructionPoint(G1, -m, t);
-////		Complex p2 = getReconstructionPoint(G2, m, t);
-//		return p1.add(p2);
-//	}
 	
 	/**
-	 * Returns the spatial point reconstructed from a DFT coefficient pair 
-	 * G[-m], G[+m] at position t &isin; [0,1].
-	 * Varying t creates points on an ellipse. 
-	 * 
+	 * Returns the spatial point reconstructed from a single DFT coefficient pair
+	 * G[-m], G[+m] at position t &isin; [0,1]. Varying t creates points on an
+	 * ellipse.
 	 * @param m frequency index (coefficient pair number)
 	 * @param t contour position &isin; [0,1]
 	 * @return reconstructed shape point
@@ -560,34 +524,11 @@ public class FourierDescriptor {
 		return p1.add(p2);
 	}
 
-//	/**
-//	 * Returns the spatial point reconstructed from a single
-//	 * DFT coefficient 'Gm' with frequency 'm' at 
-//	 * position 't' in [0,1].
-//	 * 
-//	 * @param Gm single DFT coefficient
-//	 * @param m frequency index
-//	 * @param t contour position
-//	 * @return reconstructed point
-//	 */
-//	@Deprecated
-//	private Complex getReconstructionPoint(Complex Gm, int m, double t) {
-//		double wm = 2 * Math.PI * m;
-//		double Am = Gm.re;
-//		double Bm = Gm.im;
-//		double cost = Math.cos(wm * t);
-//		double sint = Math.sin(wm * t);
-//		double xt = Am * cost - Bm * sint;
-//		double yt = Bm * cost + Am * sint;
-//		return new Complex(xt, yt);
-//	}
 	
 	/**
-	 * Returns the spatial point reconstructed from a single
-	 * DFT coefficient G[m] with frequency index m at 
-	 * position t &isin; [0,1].
-	 * Varying t creates points on a circle.
-	 * 
+	 * Returns the spatial point reconstructed from a single DFT coefficient G[m]
+	 * with frequency index m at position t &isin; [0,1]. Varying t creates points
+	 * on a circle.
 	 * @param m frequency index (pos/neg, 0 &le; m &le; this.mp)
 	 * @param t contour position &isin; [0,1]
 	 * @return reconstructed shape point
@@ -603,48 +544,93 @@ public class FourierDescriptor {
 		double yt = Bm * cost + Am * sint;
 		return new Complex(xt, yt);
 	}
-
+	
+	// ------------------------------------------------------------------
+	// Distance methods for matching Fourier descriptors:
+	// ------------------------------------------------------------------	
+	
 	/**
-	 * Reconstructs the shape using all FD pairs.
+	 * Returns a L2-type distance between this and another {@link FourierDescriptor}
+	 * instance comparing the real and imaginary parts of all coefficient pairs.
+	 * The zero-frequency coefficients are ignored.
 	 * 
-	 * @return reconstructed shape
+	 * @param fd2 another Fourier descriptor
+	 * @return the resulting distance
 	 */
-	public Path2D makeFourierPairsReconstruction() {
-		return  makeFourierPairsReconstruction(mp);
+	public double distanceComplex(FourierDescriptor fd2) {
+		return distanceComplex(fd2, mp);
 	}
 
 	/**
-	 * Reconstructs the shape obtained from FD-pairs 0,...,Mp as a polygon (path).
+	 * Returns a L2-type distance between this and another {@link FourierDescriptor}
+	 * instance comparing the real and imaginary parts of a limited range of
+	 * (low-frequency) coefficient pairs. The zero-frequency coefficients are
+	 * ignored.
 	 * 
-	 * @param pairs number of Fourier coefficient pairs
-	 * @return reconstructed shape
+	 * @param fd2 another Fourier descriptor
+	 * @param p the number of (low-frequency) coefficient pairs to evaluate
+	 * @return the resulting distance
 	 */
-	public Path2D makeFourierPairsReconstruction(int pairs) {
-		pairs = Math.min(pairs, mp);
-		int recPoints = Math.max(MinReconstructionSamples, G.length * 3);
-		Path2D path = new Path2D.Float();
-		for (int i = 0; i < recPoints; i++) {
-			double t = (double) i / recPoints;
-			Complex pt = new Complex(getCoefficient(0));	// assumes that coefficient 0 is never scaled
-			// calculate a particular reconstruction point 
-			for (int m = 1; m <= pairs; m++) {
-//				Complex ep = getEllipsePoint(getCoefficient(-m), getCoefficient(m), m, t);
-				Complex ep = getShapePointPair(m, t);
-				pt = pt.add(ep.multiply(scale));
-			}
-			double xt = pt.re; 
-			double yt = pt.im; 
-			if (i == 0) {
-				path.moveTo(xt, yt);
-			}
-			else {
-				path.lineTo(xt, yt);
+	public double distanceComplex(FourierDescriptor fd2, final int p) {
+		if (this.mp < p || fd2.mp < p) {
+			throw new IllegalArgumentException("insufficient number of Fourier coefficients");
+		}
+		FourierDescriptor fd1 = this;
+		double sum = 0;
+		for (int m = -p; m <= p; m++) {
+			if (m != 0) {
+				Complex G1m = fd1.getCoefficient(m);
+				Complex G2m = fd2.getCoefficient(m);
+				sum = sum + sqr(G1m.re - G2m.re) + sqr(G1m.im - G2m.im);
 			}
 		}
-		path.closePath();
-		return path;
+		return Math.sqrt(sum);
 	}
 
+	/**
+	 * Returns a L2-type distance between this and another {@link FourierDescriptor}
+	 * instance comparing the magnitudes of all coefficient pairs. The
+	 * zero-frequency coefficients are ignored.
+	 * 
+	 * @param fd2 another Fourier descriptor
+	 * @return the resulting distance
+	 */
+	public double distanceMagnitude(FourierDescriptor fd2) {
+		return distanceMagnitude(fd2, mp);
+	}
+
+	/**
+	 * Returns a L2-type distance between this and another {@link FourierDescriptor}
+	 * instance comparing the magnitudes of a limited range of (low-frequency)
+	 * coefficient pairs. The zero-frequency coefficients are ignored.
+	 * 
+	 * @param fd2 another Fourier descriptor
+	 * @param p the number of (low-frequency) coefficient pairs to evaluate
+	 * @return the resulting distance
+	 */
+	public double distanceMagnitude(FourierDescriptor fd2, final int p) {
+		if (this.mp < p || fd2.mp < p) {
+			throw new IllegalArgumentException("insufficient number of Fourier coefficients");
+		}
+		FourierDescriptor fd1 = this;
+		double sum = 0;
+		for (int m = -p; m <= p; m++) {
+			if (m != 0) {
+				double mag1 = fd1.getCoefficient(m).abs();
+				double mag2 = fd2.getCoefficient(m).abs();
+				sum = sum + sqr(mag2 - mag1);
+			}
+		}
+		return Math.sqrt(sum);
+	}
+	
+	// ---------------------------------------------------------------------
+	
+	@Override
+	public String toString() {
+		return String.format(Locale.US, "%s: mp=%d scale=%.3f", this.getClass().getSimpleName(), mp, scale);
+	}
+	
 	// -----------------------------------------------------------------
 	// -----------------------------------------------------------------
 
@@ -657,20 +643,20 @@ public class FourierDescriptor {
 //		rotate(G, phi);
 //	}
 
-	/**
-	 * For testing: apply shape rotation to this FourierDescriptor (phi in radians)
-	 * 
-	 * @param shape complex point
-	 * @param phi angle
-	 */
-	public static Complex[] rotateShape(Complex[] shapeOrig, double phi) {
-		Complex[] shape = shapeOrig.clone();
-		Complex rot = new Complex(phi);
-		for (int m = 0; m < shape.length; m++) {
-			shape[m] = shape[m].multiply(rot);
-		}
-		return shape;
-	}
+//	/**
+//	 * For testing: apply shape rotation to this FourierDescriptor (phi in radians)
+//	 * 
+//	 * @param shape complex point
+//	 * @param phi angle
+//	 */
+//	public static Complex[] rotateShape(Complex[] shapeOrig, double phi) {
+//		Complex[] shape = shapeOrig.clone();
+//		Complex rot = new Complex(phi);
+//		for (int m = 0; m < shape.length; m++) {
+//			shape[m] = shape[m].multiply(rot);
+//		}
+//		return shape;
+//	}
 	
 //	public static Complex[] scaleShape(Complex[] shapeOrig, double scale) {
 //		Complex[] shape = shapeOrig.clone();
@@ -693,50 +679,5 @@ public class FourierDescriptor {
 //			}
 //		}
 //	}
-	
-	
-	public double distanceComplex(FourierDescriptor fd2) {
-		return distanceComplex(fd2, mp);
-	}
-
-	public double distanceComplex(FourierDescriptor fd2, int p) {
-		FourierDescriptor fd1 = this;
-		p = Math.min(p, mp);
-		double sum = 0;
-		for (int m = -p; m <= p; m++) {
-			if (m != 0) {
-				Complex G1m = fd1.getCoefficient(m);
-				Complex G2m = fd2.getCoefficient(m);
-				sum = sum + sqr(G1m.re - G2m.re) + sqr(G1m.im - G2m.im);
-			}
-		}
-		return Math.sqrt(sum);
-	}
-
-	public double distanceMagnitude(FourierDescriptor fd2) {
-		return distanceMagnitude(fd2, mp);
-	}
-
-	public double distanceMagnitude(FourierDescriptor fd2, int pairs) {
-		FourierDescriptor fd1 = this;
-		pairs = Math.min(pairs, mp);
-		double sum = 0;
-		for (int m = -pairs; m <= pairs; m++) {
-			if (m != 0) {
-				double mag1 = fd1.getCoefficient(m).abs();
-				double mag2 = fd2.getCoefficient(m).abs();
-				double dmag = mag2 - mag1;
-				sum = sum + (dmag * dmag);
-			}
-		}
-		return Math.sqrt(sum);
-	}
-	
-	// ---------------------------------------------------------------------
-	
-	@Override
-	public String toString() {
-		return String.format(Locale.US, "%s: mp=%d scale=%.3f", this.getClass().getSimpleName(), mp, scale);
-	}
 
 }

@@ -1,13 +1,11 @@
 package imagingbook.spectral.fd;
 
-import static imagingbook.spectral.fd.FourierDescriptor.rotateShape;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import imagingbook.common.math.Complex;
-import imagingbook.common.util.random.RandomAngle;
 import imagingbook.spectral.TestUtils;
 
 public class FourierDescriptorTest {
@@ -175,21 +173,21 @@ public class FourierDescriptorTest {
 		}
 	}
 	
-	@Test
-	public void testRotationInvariance2() {	// TODO: this is confused
-		RandomAngle rg = new RandomAngle(17);
-		
-		FourierDescriptor fd1 = new FourierDescriptor(Go);
-		FourierDescriptor fd1r = fd1.makeRotationInvariant();
-		
-		// check if rotated versions of the shape normalize to the same FD
-		for (int k = 0; k < 100; k++) {
-			double phi = rg.nextAngle();
-			FourierDescriptor fd2 = new FourierDescriptor(rotateShape(Go, phi));
-			FourierDescriptor fd2r = fd2.makeRotationInvariant();
-			assertEquals(0.0, fd1r.distanceComplex(fd2r), 1e-6);	// fd1r == fd2r ?
-		}
-	}
+//	@Test
+//	public void testRotationInvariance2() {	// TODO: this is confused
+//		RandomAngle rg = new RandomAngle(17);
+//		
+//		FourierDescriptor fd1 = new FourierDescriptor(Go);
+//		FourierDescriptor fd1r = fd1.makeRotationInvariant();
+//		
+//		// check if rotated versions of the shape normalize to the same FD
+//		for (int k = 0; k < 100; k++) {
+//			double phi = rg.nextAngle();
+//			FourierDescriptor fd2 = new FourierDescriptor(rotateShape(Go, phi));
+//			FourierDescriptor fd2r = fd2.makeRotationInvariant();
+//			assertEquals(0.0, fd1r.distanceComplex(fd2r), 1e-6);	// fd1r == fd2r ?
+//		}
+//	}
 	
 	@Test
 	public void testStartPointInvariance1() {
