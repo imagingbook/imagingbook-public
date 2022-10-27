@@ -26,6 +26,7 @@ import imagingbook.common.math.Complex;
  * @author WB
  * @version 2022/10/24
  */
+@Deprecated
 public class FourierDescriptorFromPolygon extends FourierDescriptor {
 
 	/**

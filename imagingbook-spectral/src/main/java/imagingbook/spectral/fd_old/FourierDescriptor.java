@@ -42,6 +42,7 @@ import imagingbook.common.math.Complex;
  * @see FourierDescriptorUniform
  * @see FourierDescriptorFromPolygon
  */
+@Deprecated
 public abstract class FourierDescriptor implements Cloneable {
 
 	public static final int MinReconstructionSamples = 50;

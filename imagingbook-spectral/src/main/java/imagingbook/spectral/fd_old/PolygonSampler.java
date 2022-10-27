@@ -17,6 +17,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
  * @author WB
  *
  */
+@Deprecated
 public class PolygonSampler {	// TODO: move to geometry package!
 	
 	public PolygonSampler() {
