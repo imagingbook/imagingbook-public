@@ -25,7 +25,7 @@ import ij.process.ImageProcessor;
  * detector. In C. J. Taylor, editor, 4th Alvey Vision Conference,
  * pp. 147–151, Manchester (1988).
  * <br>
- * [2] W. Burger, M.J. Burge, <eDigital Image Processing &ndash; An Algorithmicic Approach</em>,
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
  * 3rd ed, Springer (2022).
  * </p>
  *

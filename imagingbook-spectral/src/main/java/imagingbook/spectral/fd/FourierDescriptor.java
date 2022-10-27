@@ -29,7 +29,8 @@ import imagingbook.common.math.Complex;
 /**
  * <p>
  * This class represents elliptic Fourier descriptors. See
- * Ch.26 of [1] for additional details.
+ * Ch.26 of [1] for additional details including invariance
+ * calculations.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -315,8 +316,8 @@ public class FourierDescriptor {
 		// search for the global maximum in coarse steps
 		double cmax = Double.NEGATIVE_INFINITY;
 		int kmax = -1;
-		int K = 25;	// number of steps over 180 degrees
-		for (int k = 0; k < K; k++) {
+		int K = 25;									// do K search steps over 0,...,PI
+		for (int k = 0; k < K; k++) {	 			// find opt. phi by maximizing fp(phi)
 			final double phi = Math.PI * k / K; 	// phase to evaluate
 			final double c = fp.value(phi);
 			if (c > cmax) {
@@ -324,10 +325,10 @@ public class FourierDescriptor {
 				kmax = k;
 			}
 		}
-		// optimize using previous and next point as the bracket.
+		
+		// final optimize using a BrentOptimizer and previous/next point as the bracket:
 		double minPhi = Math.PI * (kmax - 1) / K;
 		double maxPhi = Math.PI * (kmax + 1) / K;	
-
 		UnivariateOptimizer optimizer = new BrentOptimizer(1E-4, 1E-6);
 		int maxIter = 20;
 		UnivariatePointValuePair result = optimizer.optimize(
@@ -576,8 +577,6 @@ public class FourierDescriptor {
 		return path;
 	}
 
-
-	
 	// -----------------------------------------------------------------
 	// -----------------------------------------------------------------
 
@@ -627,8 +626,6 @@ public class FourierDescriptor {
 //		}
 //	}
 	
-
-
 	
 	public double distanceComplex(FourierDescriptor fd2) {
 		return distanceComplex(fd2, mp);
