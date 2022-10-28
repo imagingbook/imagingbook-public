@@ -214,7 +214,18 @@ public class FourierDescriptor {
 	 * @see #getCoefficientIndex(int)
 	 */
 	public Complex getCoefficient(int m) {
-		return new Complex(G[getCoefficientIndex(m)]);
+		return G[getCoefficientIndex(m)];
+	}
+	
+	/**
+	 * Returns the Fourier coefficient pair (G[-m], G[+m]) as a
+	 * {@link Complex} valued array.
+	 *  
+	 * @param m frequency index
+	 * @return the DFT coefficient pair
+	 */
+	public Complex[] getCoefficientPair(int m) {
+		return new Complex[] {G[getCoefficientIndex(-m)], G[getCoefficientIndex(+m)]};
 	}
 
 	/**
