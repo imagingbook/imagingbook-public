@@ -164,7 +164,7 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 				}
 
 				if (ShowOriginalContour) { // draw the original contour ------------------------------------
-					oly.add(makeCentroidShape(contr));
+					oly.add(makeContourShape(contr));
 				}
 
 				if (ShowContourSamples) { // draw the contour sample points ------------------------------
@@ -306,7 +306,7 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 		return roi;
 	}
 	
-	ShapeRoi makeCentroidShape(Contour contr) { // draw the original contour ------------------------------------
+	ShapeRoi makeContourShape(Contour contr) { // draw the original contour ------------------------------------
 		Path2D path = contr.getPolygonPath(0.5, 0.5);
 		path.transform(PixelOffset);
 		ShapeRoi roi = new ShapeRoi(path);
