@@ -13,7 +13,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 import java.awt.Point;
 import java.awt.Shape;
-import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.Locale;
 
@@ -360,12 +360,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	@Override
 	public default Shape getShape(double scale) {
 		double rad = scale * DefaultDotRadius;
-		Shape circ= new Arc2D.Double(
-				this.getX() - rad, 
-				this.getY() - rad, 
-				2 * rad, 2 * rad,
-				0, 360, Arc2D.CHORD);
-		return circ;
+//		return new Arc2D.Double(getX() - rad, getY() - rad, 2 * rad, 2 * rad, 0, 360, Arc2D.CHORD);
+		return new Ellipse2D.Double(getX() - rad, getY() - rad, 2 * rad, 2 * rad);
 	}
 
 	// ----------------------------------------------------------
