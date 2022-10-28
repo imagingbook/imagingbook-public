@@ -1,4 +1,4 @@
-package imagingbook.spectral.fd;
+package imagingbook.common.geometry.fd;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,7 +13,6 @@ import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.geometry.mappings.linear.Scaling2D;
 import imagingbook.common.math.Complex;
 import imagingbook.common.util.random.RandomAngle;
-import imagingbook.spectral.TestUtils;
 
 public class FourierDescriptorUniformTest {
 

@@ -20,10 +20,10 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.geometry.fd.FourierDescriptor;
+import imagingbook.common.geometry.fd.FourierDescriptorTrigonometric;
+import imagingbook.common.geometry.fd.Utils;
 import imagingbook.common.math.Complex;
-import imagingbook.spectral.fd.FourierDescriptor;
-import imagingbook.spectral.fd.FourierDescriptorTrigonometric;
-import imagingbook.spectral.fd.Utils;
 
 /**
  * This plugin demonstrates the use of the trigonometric method for calculating

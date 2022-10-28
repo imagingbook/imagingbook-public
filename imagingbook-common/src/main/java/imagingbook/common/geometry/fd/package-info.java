@@ -17,4 +17,4 @@
  * (see <a href="https://imagingbook.com">https://imagingbook.com</a>).
  * </p>
  */
-package imagingbook.spectral.fd;
+package imagingbook.common.geometry.fd;

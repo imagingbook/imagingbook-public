@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.spectral.fd;
+package imagingbook.common.geometry.fd;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;

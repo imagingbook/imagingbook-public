@@ -1,4 +1,4 @@
-package imagingbook.spectral.fd;
+package imagingbook.common.geometry.fd;
 
 import java.awt.geom.Path2D;
 

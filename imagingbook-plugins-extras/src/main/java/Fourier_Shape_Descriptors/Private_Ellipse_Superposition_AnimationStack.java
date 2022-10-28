@@ -30,14 +30,14 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.iterate.CssColorSequencer;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.fd.FourierDescriptor;
+import imagingbook.common.geometry.fd.FourierDescriptorUniform;
+import imagingbook.common.geometry.fd.Utils;
 import imagingbook.common.geometry.misc.PolygonSampler;
 import imagingbook.common.math.Complex;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
-import imagingbook.spectral.fd.FourierDescriptor;
-import imagingbook.spectral.fd.FourierDescriptorUniform;
-import imagingbook.spectral.fd.Utils;
 
 /**
  * @version 2020/04/01
