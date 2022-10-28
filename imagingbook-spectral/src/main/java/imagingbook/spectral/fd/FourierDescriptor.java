@@ -12,6 +12,9 @@ package imagingbook.spectral.fd;
 import static imagingbook.common.math.Arithmetic.mod;
 import static imagingbook.common.math.Arithmetic.sqr;
 
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.util.Locale;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
@@ -28,7 +31,7 @@ import imagingbook.common.math.Complex;
 /**
  * <p>
  * This class represents elliptic Fourier descriptors. See
- * Ch.26 of [1] for additional details including invariance
+ * Ch. 26 of [1] for additional details including invariance
  * calculations.
  * </p>
  * <p>
@@ -536,7 +539,7 @@ public class FourierDescriptor {
 	 * @return reconstructed shape point
 	 */
 	private Complex getShapePointSingle(int m, double t) {
-		Complex Gm = this.getCoefficient(m);
+		Complex Gm = getCoefficient(m);
 		double wm = 2 * Math.PI * m;
 		double Am = Gm.re;
 		double Bm = Gm.im;
@@ -546,6 +549,55 @@ public class FourierDescriptor {
 		double yt = Bm * cost + Am * sint;
 		return new Complex(xt, yt);
 	}
+	
+	
+	
+	/**
+	 * <p>
+	 * Returns the parameters of the geometric ellipse associated with a single
+	 * Fourier coefficient pair (G[-m], G[+m]). See Sec. 26.3.5 of [1] for details.
+	 * The result is in the form (ra, rb, xc, yc, theta).
+	 * </p>
+	 * <p>
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+	 * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+	 * </p>
+	 * 
+	 * @param m the frequency index of the Fourier coefficient pair
+	 * @return the ellipse parameters (ra, rb, xc, yc, theta)
+	 */
+	public double[] getEllipseParameters(int m) {
+		Complex Gmm = getCoefficient(-m);
+		Complex Gpm = getCoefficient(+m);
+		// see [1], Eqns. (26.50 - 52):
+		double ra = Gmm.abs() + Gpm.abs();				// = a_m
+		double rb = Math.abs(Gmm.abs() - Gpm.abs());	// = b_m
+		double theta = 0.5 * (Gmm.arg() + Gpm.arg());	// = alpha_m
+		
+		return new double[] {ra, rb, 0, 0, theta};
+	}
+	
+	/**
+	 * <p>
+	 * Returns the ellipse associated with a single Fourier coefficient pair (G[-m],
+	 * G[+m]) as a (AWT) {@link Shape} object. The resulting ellipse is centered at
+	 * (0,0). {@link AffineTransform} may be used to shift the ellipse to any other
+	 * position.
+	 * </p>
+	 * 
+	 * @param m the frequency index of the Fourier coefficient pair
+	 * @return the ellipse ({@link Shape})
+	 * @see #getEllipseParameters(int)
+	 */
+	public Shape getEllipse(int m) {
+		double[] ep = this.getEllipseParameters(m);	// = (ra, rb, 0, 0, theta)
+		double ra = ep[0]; 
+		double rb = ep[1]; 
+		double theta = ep[4];
+		AffineTransform rot = AffineTransform.getRotateInstance(theta);
+		return rot.createTransformedShape(new Ellipse2D.Double(-ra, -rb, 2 * ra, 2 * rb));
+	}
+
 	
 	// ------------------------------------------------------------------
 	// Distance methods for matching Fourier descriptors:

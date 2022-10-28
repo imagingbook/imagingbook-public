@@ -11,6 +11,7 @@ package Fourier_Shape_Descriptors;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
@@ -201,12 +202,20 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 //					Complex c1 = fd.getCoefficient(-m);
 //					Complex c2 = fd.getCoefficient(m);
 					
-//					Path2D path = fd.makeEllipse(c1, c2, m, cc.re + 0.5, cc.im + 0.5);
-//					Path2D path = fd.getPathPair(m, cc.re + 0.5, cc.im + 0.5);
-					Path2D path = Utils.toPath(fd.getShapePair(50, m));
-					path.transform(AffineTransform.getTranslateInstance(cc.re + 0.5, cc.im + 0.5));	// move to current center cc
+					// get ellipse for FD pair m:
+//					//Path2D path = fd.makeEllipse(c1, c2, m, cc.re + 0.5, cc.im + 0.5);
+//					//Path2D path = fd.getPathPair(m, cc.re + 0.5, cc.im + 0.5);
 					
-					ShapeRoi rpoly = new ShapeRoi(path);
+//					Path2D path = Utils.toPath(fd.getShapePair(50, m));
+//					path.transform(AffineTransform.getTranslateInstance(cc.re + 0.5, cc.im + 0.5));	// move to current center cc
+//					Shape shape = path; 
+					
+					// draw the ellipse corresponding to FD pair m:
+					Shape ellipse = fd.getEllipse(m);			
+					AffineTransform trans = AffineTransform.getTranslateInstance(cc.re + 0.5, cc.im + 0.5);
+					Shape shape = trans.createTransformedShape(ellipse);
+					
+					ShapeRoi rpoly = new ShapeRoi(shape);
 					rpoly.setStrokeColor(color);
 					rpoly.setStrokeWidth(ReconstructionStrokeWidth/2);
 					oly.add(rpoly);
@@ -239,7 +248,6 @@ public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 		}
 	}
 
-	
 	
 	void drawSamples(Overlay oly, Complex[] samples, double dx, double dy) {
 		double rad = SampleRadius;
