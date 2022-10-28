@@ -108,7 +108,7 @@ public class FourierDescriptor {
 	 * @param mp the number of remaining coefficient pairs.
 	 * @return the truncated spectrum (always odd-sized)
 	 */
-	public static Complex[] truncate(Complex[] G, int mp) {
+	private static Complex[] truncate(Complex[] G, int mp) {
 		if (mp < 0) {
 			throw new IllegalArgumentException("number of coefficient pairs must be >= 0 but is " + mp);
 		}
@@ -138,7 +138,7 @@ public class FourierDescriptor {
 	 * @return the truncated spectrum (always odd-sized)
 	 * @see #truncate(Complex[], int)
 	 */
-	public static Complex[] truncate(Complex[] G) {
+	private static Complex[] truncate(Complex[] G) {
 		return truncate(G, (G.length - 1) / 2);
 	}
 
@@ -147,6 +147,7 @@ public class FourierDescriptor {
 	/**
 	 * Returns the size (length) of this Fourier descriptor's array of
 	 * DFT coefficients G. The resulting value is always odd.
+	 * 
 	 * @return the size of the DFT coefficient array (M)
 	 */
 	public int size() {
@@ -156,6 +157,8 @@ public class FourierDescriptor {
 	/**
 	 * Returns the scale of this Fourier descriptor, that is, the
 	 * factor required to scale it to its original (sample) size.
+	 * The scale factor is changed in the process of making descriptors
+	 * scale-invariant.
 	 * 
 	 * @return the scale factor
 	 */
@@ -166,6 +169,7 @@ public class FourierDescriptor {
 	/**
 	 * Returns the number of Fourier coefficient pairs for this descriptor.
 	 * The result is (M-1)/2, M being the size of the DFT coefficient array G.
+	 * 
 	 * @return the number of Fourier coefficient pairs
 	 */
 	public int getMp() {
@@ -275,7 +279,8 @@ public class FourierDescriptor {
 	/**
 	 * Returns a new scale invariant Fourier descriptor by normalizing the L2 norm
 	 * of the sub-vector {G[-mp], ..., G[-1], G[1], ..., G[mp]}. Coefficient G_0
-	 * remains unmodified. The original Fourier descriptor is not modified.
+	 * remains unmodified. The new Fourier descriptor carries the associated scale
+	 * (see {@link #getScale()}). The original Fourier descriptor is not modified.
 	 * 
 	 * @return a new scale-normalized Fourier descriptor
 	 */
