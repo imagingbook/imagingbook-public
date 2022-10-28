@@ -32,13 +32,13 @@ public abstract class FourierDescriptorUniform {
 	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
 	public static FourierDescriptor from(Pnt2d[] V) {
-		return new FourierDescriptor(DFT(Utils.toComplexArray(V)));
+		return from(Utils.toComplexArray(V));
 	}
 	
 	/**
 	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
 	 * with Mp coefficient pairs.
-	 * The length of the resulting DFT spectrum is 2 * Mp + 1, i.e.,
+	 * The length of the resulting DFT spectrum is 2 * mp + 1, i.e.,
 	 * it must be assured that Mp &lt; (V.length - 1) &divide; 2.
 	 * 
 	 * @param V a polygon
@@ -46,11 +46,40 @@ public abstract class FourierDescriptorUniform {
 	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
 	public static FourierDescriptor from(Pnt2d[] V, int mp) {
+		return from(Utils.toComplexArray(V), mp);
+	}
+	
+	
+	// -------------------------------------------------------------------
+	
+	/**
+	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
+	 * with the maximum number of Fourier coefficient pairs.
+	 * The length of the resulting DFT spectrum equals V.length.
+	 * 
+	 * @param V a polygon
+	 * @return a new {@link FourierDescriptorUniform} instance
+	 */
+	public static FourierDescriptor from(Complex[] V) {
+		return new FourierDescriptor(DFT(V));
+	}
+	
+	/**
+	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
+	 * with Mp coefficient pairs.
+	 * The length of the resulting DFT spectrum is 2 * mp + 1, i.e.,
+	 * it must be assured that Mp &lt; (V.length - 1) &divide; 2.
+	 * 
+	 * @param V a sequence of uniformly-spaced 2D sample points
+	 * @param mp number of coefficient pairs
+	 * @return a new {@link FourierDescriptorUniform} instance
+	 */
+	public static FourierDescriptor from(Complex[] V, int mp) {
 		if (mp > (V.length - 1) / 2) {
-			throw new IllegalArgumentException("number of Fourier pairs (Mp) may not be greater than " + ((V.length - 1) / 2));
+			throw new IllegalArgumentException("number of Fourier pairs (mp) may not be greater than " 
+							+ ((V.length - 1) / 2));
 		}
-		Complex[] G = DFT(Utils.toComplexArray(V), 2 * mp + 1);
-		return new FourierDescriptor(G);
+		return new FourierDescriptor(DFT(V, 2 * mp + 1));
 	}
 	
 	// -------------------------------------------------------------------
