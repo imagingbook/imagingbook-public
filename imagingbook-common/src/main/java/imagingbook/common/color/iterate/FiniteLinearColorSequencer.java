@@ -10,7 +10,6 @@ package imagingbook.common.color.iterate;
 
 import java.awt.Color;
 
-import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.color.sets.ColorEnumeration;
 
 /**
@@ -55,7 +54,7 @@ public class FiniteLinearColorSequencer implements ColorSequencer {
 		if (colors.length == 0) {
 			throw new IllegalArgumentException("color set may not be empty!");
 		}
-		this.colorArray = colors;
+		this.colorArray = colors.clone();
 	}
 
 	public FiniteLinearColorSequencer(Class<? extends ColorEnumeration> clazz) {
@@ -80,8 +79,8 @@ public class FiniteLinearColorSequencer implements ColorSequencer {
 	// --- iteration stuff -----------------------------------
 
 	/**
-	 * Reset the iterator, such that the next color returned by {@link #next()} has
-	 * index 0.
+	 * Reset the iterator, such that the color returned by the following call to
+	 * {@link #next()} has index 0.
 	 */
 	public void reset() {
 		reset(0);
@@ -91,38 +90,17 @@ public class FiniteLinearColorSequencer implements ColorSequencer {
 	 * Reset the iterator such that the index of the item returned by the following
 	 * call to {@link #next()} has the specified start index.
 	 * 
-	 * @param start the new start index
+	 * @param offset the new start index
 	 */
-	public void reset(int start) {
-		this.next = Math.floorMod(start - 1, colorArray.length);
+	public void reset(int offset) {
+		this.next = Math.floorMod(offset, colorArray.length);
 	}
 
 	@Override
 	public Color next() {
+		Color nc = colorArray[next];
 		next = (next + 1) % colorArray.length;
-		return colorArray[next];
-	}
-
-	// ------------------------------------------------------
-
-	public static void main(String[] args) {
-
-		ColorSequencer iter1 = new FiniteLinearColorSequencer(Color.blue, Color.green, Color.red);
-		for (int i = 0; i < 10; i++) {
-			Color c = iter1.next();
-			// use color c
-			System.out.println(c.toString());
-		}
-		
-		System.out.println();
-		
-		FiniteLinearColorSequencer iter2 = new FiniteLinearColorSequencer(BasicAwtColor.class);
-		iter2.reset(5);
-		for (int i = 0; i < 10; i++) {
-			Color c = iter2.next();
-			// use color c
-			System.out.println(c.toString());
-		}
+		return nc;
 	}
 
 }

@@ -279,7 +279,7 @@ public enum RalColor implements ColorEnumeration {
 		return rgbColors;
 	}
 	
-	public static final Color[] PreferredColors =
+	public static final Color[] SelectColors =
 			getColors(
 					RAL1004, 
 					RAL1026, 

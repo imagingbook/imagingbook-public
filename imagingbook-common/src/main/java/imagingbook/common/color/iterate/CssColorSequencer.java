@@ -14,7 +14,7 @@ import imagingbook.common.color.sets.CssColor;
 public class CssColorSequencer extends FiniteRandomColorSequencer {
 	
 	public CssColorSequencer() {
-		super(CssColor.PreferredColors);
+		super(CssColor.SelectColors);
 	}
 	
 }

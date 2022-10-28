@@ -36,6 +36,14 @@ public class FiniteRandomColorSequencer extends FiniteLinearColorSequencer {
 		rg.setSeed(seed);
 	}
 	
+//	@Override
+//	public Color next() {
+//		Color cn = colorArray[next];
+//		int step = rg.nextInt(Math.max(1, colorArray.length - 1)); // works for a single color too
+//		next = (next + 1 + step) % colorArray.length;
+//		return cn;
+//	}
+
 	@Override
 	public Color next() {
 		int step = rg.nextInt(Math.max(1, colorArray.length - 1)); // works for a single color too

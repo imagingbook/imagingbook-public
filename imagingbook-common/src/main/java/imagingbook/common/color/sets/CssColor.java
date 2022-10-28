@@ -188,7 +188,7 @@ public enum CssColor implements ColorEnumeration {
 		return rgbColors;
 	}
 	
-	public static final Color[] PreferredColors =
+	public static final Color[] SelectColors =
 			getColors(
 					MediumBlue,
 					Crimson,

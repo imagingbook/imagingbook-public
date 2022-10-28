@@ -19,14 +19,20 @@ public class ColorEnumerationTest {
 	public void test2() {
 		Color[] colors = ColorEnumeration.getColors(BasicAwtColor.Blue, CssColor.Aqua, RalColor.RAL1012);
 		assertEquals(3, colors.length);
+		
+		assertEquals(colors[0], BasicAwtColor.Blue.getColor());
+		assertEquals(colors[1], CssColor.Aqua.getColor());
+		assertEquals(colors[2], RalColor.RAL1012.getColor());
 	}
 	
 	@Test
 	public void test3() {
-		ColorEnumeration ce = BasicAwtColor.Blue;
-		Color col = ce.getColor();
+		ColorEnumeration ce1 = BasicAwtColor.Blue;
+		Color col = ce1.getColor();
 		assertNotNull(col);
-		assertEquals(ce, ColorEnumeration.findColor(col, BasicAwtColor.class));
+		ColorEnumeration ce2 = ColorEnumeration.findColor(col, BasicAwtColor.class);
+		assertNotNull(ce2);
+		assertEquals(ce1, ce2);
 	}
 
 }

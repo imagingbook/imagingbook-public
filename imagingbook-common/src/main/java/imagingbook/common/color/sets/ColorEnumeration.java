@@ -64,7 +64,7 @@ public interface ColorEnumeration {
 	/**
 	 * Searches for the specified AWT {@link Color} in the given
 	 * {@link ColorEnumeration}. If a matching color is found,
-	 * the associated enum item is return, {@code null} otherwise.
+	 * the associated enum item is returned, {@code null} otherwise.
 	 * 
 	 * @param col some AWT {@link Color}
 	 * @param clazz a {@link ColorEnumeration} enum class
@@ -79,24 +79,5 @@ public interface ColorEnumeration {
 		}
 		return null;
 	}
-	
-	// ----------------------------------------------------------------------
-	
-//	public static void main(String[] args) {
-//		Color col = BasicAwtColor.Blue.getColor();
-//		System.out.println(col.toString());
-//				
-//		Color[] colors1 = ColorEnumeration.getColors(BasicAwtColor.class);
-//		
-//		for (Color c : colors1) {
-//			System.out.println(c.toString());
-//		}
-//		
-//		Color[] colors2 = ColorEnumeration.getColors(BasicAwtColor.Blue, BasicAwtColor.Green);
-//		
-//		for (Color c : colors2) {
-//			System.out.println(c.toString());
-//		}
-//	}
 	
 }
