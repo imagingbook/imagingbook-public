@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package Fourier_Shape_Descriptors;
+package More_;
 
 import java.awt.Color;
 import java.awt.Font;

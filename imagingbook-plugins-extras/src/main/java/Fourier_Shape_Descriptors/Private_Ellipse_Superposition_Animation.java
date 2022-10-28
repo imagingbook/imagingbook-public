@@ -44,6 +44,7 @@ import imagingbook.common.regions.RegionContourSegmentation;
  * @author WB
  *
  */
+@Deprecated
 public class Private_Ellipse_Superposition_Animation implements PlugInFilter {
 	
 	static int StepsPerFullRevolution = 500;
