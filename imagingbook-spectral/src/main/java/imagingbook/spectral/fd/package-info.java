@@ -9,7 +9,7 @@
 
 /**
  * <p>
- * This package defines Fourier descriptors for 2D shape representation and matching.
+ * Defines Fourier descriptors for 2D shape representation and matching.
  * </p>
  * <p>
  * This code is part of the {@literal imagingbook}

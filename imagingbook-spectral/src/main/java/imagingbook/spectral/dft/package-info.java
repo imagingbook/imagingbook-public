@@ -9,7 +9,7 @@
 
 /**
  * <p>
- * This package defines 1D and 2D implementations of the Discrete Fourier Transform.
+ * Defines 1D and 2D implementations of the Discrete Fourier Transform.
  * </p>
  * <p>
  * This code is part of the {@literal imagingbook}
