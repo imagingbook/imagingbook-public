@@ -71,10 +71,10 @@ public class FD_Ellipse_Superposition_Demo implements PlugInFilter {
 	private static boolean ShowEllipseTree = true;
 	private static boolean ShowPathParameter = true;
 	
+	private static int ReconstructionPoints = 100;
+	
 	private static Color ContourColor = new Color(0, 60, 255);
 	private static double ContourStrokeWidth = 0.25;
-	
-	private static int ReconstructionPoints = 100;
 	private static double ReconstructionMarkerRadius = 3.0;
 	private static Color ReconstructionColor = new Color(0, 185, 15);
 	private static double ReconstructionStrokeWidth = 0.5;
@@ -98,8 +98,6 @@ public class FD_Ellipse_Superposition_Demo implements PlugInFilter {
 		if (!runDialog()) {
 			return;
 		}
-		
-		
 		
 		ByteProcessor bp = (ByteProcessor) ip;
 		Pnt2d[] contr = getLargestRegionContour(bp);
@@ -226,19 +224,34 @@ public class FD_Ellipse_Superposition_Demo implements PlugInFilter {
 	
 	private boolean runDialog() {
 		GenericDialog dlg = new GenericDialog(this.getClass().getSimpleName());
-		dlg.addMessage("Fourier decomposition parameters");
+		dlg.addMessage("Fourier decomposition parameters:");
 		dlg.addNumericField("Number of FD pairs (min. 1)", FourierCoefficientPairs, 0);
-		dlg.addMessage("Animation parameters");
-		dlg.addNumericField("Angular steps per revolution", StepsPerFullRevolution, 0);
-		dlg.addNumericField("Steps per second", StepsPerSecond, 0);
-		dlg.showDialog();
+		dlg.addNumericField("Reconstruction Points", ReconstructionPoints, 0);
 		
+		dlg.addMessage("Animation parameters:");
+		dlg.addNumericField("Steps per full revolution", StepsPerFullRevolution, 0);
+		dlg.addNumericField("Steps per second", StepsPerSecond, 0);
+		
+		dlg.addCheckbox("Show Original Contour", ShowOriginalContour);
+		dlg.addCheckbox("Show Full Reconstruction", ShowFullReconstruction);
+		dlg.addCheckbox("Show Ellipse Tree", ShowEllipseTree);
+		dlg.addCheckbox("Show Path Parameter (t)", ShowPathParameter);
+		
+		dlg.showDialog();
 		if(dlg.wasCanceled()) 
 			return false;
 		
 		FourierCoefficientPairs = Math.max(1, (int) dlg.getNextNumber());
+		ReconstructionPoints = (int) dlg.getNextNumber();
+		
 		StepsPerFullRevolution = (int) dlg.getNextNumber();
 		StepsPerSecond = (int) dlg.getNextNumber();
+		
+		ShowOriginalContour = dlg.getNextBoolean();
+		ShowFullReconstruction = dlg.getNextBoolean();
+		ShowEllipseTree = dlg.getNextBoolean();
+		ShowPathParameter = dlg.getNextBoolean();
+		
 		dlg.addMessage("Press ESC or close window to stop animation.");
 		return true;
 	}
