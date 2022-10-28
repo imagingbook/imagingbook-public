@@ -108,7 +108,7 @@ public class FourierDescriptor {
 	 * @param mp the number of remaining coefficient pairs.
 	 * @return the truncated spectrum (always odd-sized)
 	 */
-	private static Complex[] truncate(Complex[] G, int mp) {
+	static Complex[] truncate(Complex[] G, int mp) {
 		if (mp < 0) {
 			throw new IllegalArgumentException("number of coefficient pairs must be >= 0 but is " + mp);
 		}
@@ -138,7 +138,7 @@ public class FourierDescriptor {
 	 * @return the truncated spectrum (always odd-sized)
 	 * @see #truncate(Complex[], int)
 	 */
-	private static Complex[] truncate(Complex[] G) {
+	static Complex[] truncate(Complex[] G) {
 		return truncate(G, (G.length - 1) / 2);
 	}
 
