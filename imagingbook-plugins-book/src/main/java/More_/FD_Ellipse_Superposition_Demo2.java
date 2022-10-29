@@ -17,12 +17,13 @@ import java.awt.geom.Path2D;
 import java.util.List;
 import java.util.Locale;
 
+import More_.lib.YesNoDialog;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.WindowManager;
 import ij.gui.GenericDialog;
-import ij.plugin.filter.PlugInFilter;
+import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
-import ij.process.ImageProcessor;
 import imagingbook.common.color.iterate.CssColorSequencer;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fd.FourierDescriptor;
@@ -34,6 +35,8 @@ import imagingbook.common.math.Complex;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.ContourTracer;
 import imagingbook.common.regions.RegionContourSegmentation;
+import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -58,7 +61,9 @@ import imagingbook.common.regions.RegionContourSegmentation;
  * @author WB
  * @version 2022/10/28
  */
-public class FD_Ellipse_Superposition_Demo implements PlugInFilter {
+public class FD_Ellipse_Superposition_Demo2 implements PlugIn {
+	
+	private static ImageResource sampleImage = GeneralSampleImage.MapleLeafSmall;
 	
 	private static int FourierCoefficientPairs = 3;
 	
@@ -80,28 +85,33 @@ public class FD_Ellipse_Superposition_Demo implements PlugInFilter {
 	private static double ReconstructionStrokeWidth = 0.5;
 	
 	private static Font PathParameterFont = new Font(Font.MONOSPACED, Font.PLAIN, 10);
-	
-	private ImagePlus im = null;
-	
-	@Override
-	public int setup(String arg, ImagePlus im) { 
-    	this.im = im;
-		return DOES_8G + NO_CHANGES; 
-	}
+
 	
 	@Override
-	public void run(ImageProcessor ip) {
+	public void run(String arg) {
+		
+		ImagePlus im = WindowManager.getCurrentImage();
+		if (im == null || im.getType() != ImagePlus.GRAY8) {
+			YesNoDialog bd = new YesNoDialog(getClass().getSimpleName(), 
+					"No suitable image.", "Open sample image", "Quit");
+			if (!bd.yesPressed()) {
+				return;
+			}
+			im = sampleImage.getImage();
+			im.show();	
+		}
+		
 		
 		if (!runDialog()) {
 			return;
 		}
 		
-		ByteProcessor bp = (ByteProcessor) ip;
+		ByteProcessor bp = (ByteProcessor) im.getProcessor();
 		Pnt2d[] contr = getLargestRegionContour(bp);
 		FourierDescriptor fd = FourierDescriptorUniform.from(Utils.toComplexArray(contr), FourierCoefficientPairs);
 		Complex ctr = fd.getCoefficient(0);
 		
-		ImagePlus imA = makeBackgroundImage();	
+		ImagePlus imA = makeBackgroundImage(im);	
 		imA.show();
 		
 		ColoredStroke contourStroke = new ColoredStroke(ContourStrokeWidth, ContourColor);
@@ -198,7 +208,7 @@ public class FD_Ellipse_Superposition_Demo implements PlugInFilter {
 		return outerContours.get(0).getPointArray();	// contour of largest region
 	}
 	
-	private ImagePlus makeBackgroundImage() {
+	private ImagePlus makeBackgroundImage(ImagePlus im) {
 		ByteProcessor bp = im.getProcessor().convertToByteProcessor();
 		String title = String.format("%s-partial-%03d", im.getShortTitle(), FourierCoefficientPairs);
 		
