@@ -20,27 +20,4 @@ public class GeneralSampleImageTest {
 		ResourceTestUtils.testImageResource(GeneralSampleImage.class);
 	}
 	
-//	@Test
-//	public void test2() {
-//		for (ImageResource ir : GeneralSampleImage.values()) {
-//			URL url = ir.getURL();
-//			ImagePlus im = IJ.openImage(url.toString());
-//			assertNotNull(im);
-//		}
-//	}
-	
-//	@Test
-//	public void test2() throws IOException {
-//		for (ImageResource res : GeneralSampleImage.values()) {
-//			try (InputStream strm = res.getStream()) {
-//				assertNotNull("could not obtain InputStream for resource " + res.toString(), strm);
-//				byte[] bytes = strm.readAllBytes();
-//				assertNotNull("could read all bytes from InputStream for resource " + res.toString(), bytes);
-////				System.out.println("read bytes " + bytes.length);
-//				assertTrue("empty input from stream for resource " + res.toString(), bytes.length > 0);
-//			}
-//		}
-//	}
-
-
 }

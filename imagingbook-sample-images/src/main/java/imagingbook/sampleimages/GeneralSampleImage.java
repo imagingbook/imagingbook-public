@@ -47,6 +47,9 @@ public enum GeneralSampleImage implements ImageResource {
 		/** Original gray scan from Kepler manuscript. */
 		Kepler,
 		
+		/** A binary image with a single connected component. */
+		MapleLeafSmall,
+		
 		/** A small grayscale image. */
 		MonasterySmall,
 	
