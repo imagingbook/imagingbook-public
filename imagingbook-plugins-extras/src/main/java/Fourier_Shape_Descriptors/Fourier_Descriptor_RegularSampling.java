@@ -59,7 +59,7 @@ public class Fourier_Descriptor_RegularSampling extends CommonSetup implements P
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		if (!setParameters()) 
+		if (!runDialog()) 
 			return;
 		
 		ByteProcessor bp = (ByteProcessor) ip;

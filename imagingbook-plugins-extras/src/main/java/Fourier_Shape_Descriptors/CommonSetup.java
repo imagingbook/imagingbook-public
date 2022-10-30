@@ -43,7 +43,7 @@ abstract class CommonSetup {
 	static Color 	CanonicalShapeAColor = Color.blue.brighter();
 	static Color 	CanonicalShapeBColor = new Color(128, 66, 36); // brown
 
-	protected boolean setParameters() {
+	protected boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addNumericField("Fourier coefficient pairs", FourierDescriptorPairs, 0);
 		gd.addNumericField("Shape reconstruction points", ShapeReconstructionPoints, 0);

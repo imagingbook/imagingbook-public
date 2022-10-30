@@ -52,7 +52,7 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		if (!setParameters()) 
+		if (!runDialog()) 
 			return;
 		
 		Roi anyRoi = img.getRoi();

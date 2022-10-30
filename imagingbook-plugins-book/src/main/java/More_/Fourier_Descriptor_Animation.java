@@ -62,7 +62,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @author WB
  * @version 2022/10/28
  */
-public class FD_Ellipse_Superposition_Demo implements PlugInFilter {
+public class Fourier_Descriptor_Animation implements PlugInFilter {
 	
 	private static int FourierCoefficientPairs = 3;
 	
@@ -89,7 +89,7 @@ public class FD_Ellipse_Superposition_Demo implements PlugInFilter {
 	
 	// ----------------------------------------------------------------
 	
-	public FD_Ellipse_Superposition_Demo() {
+	public Fourier_Descriptor_Animation() {
 		if (noCurrentImage()) {
 			requestSampleImage(GeneralSampleImage.MapleLeafSmall);
 		}
