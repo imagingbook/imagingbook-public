@@ -9,6 +9,9 @@
 
 package More_;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Shape;
@@ -34,6 +37,7 @@ import imagingbook.common.math.Complex;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.ContourTracer;
 import imagingbook.common.regions.RegionContourSegmentation;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -81,7 +85,17 @@ public class FD_Ellipse_Superposition_Demo implements PlugInFilter {
 	
 	private static Font PathParameterFont = new Font(Font.MONOSPACED, Font.PLAIN, 10);
 	
-	private ImagePlus im = null;
+	private ImagePlus im;
+	
+	// ----------------------------------------------------------------
+	
+	public FD_Ellipse_Superposition_Demo() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.MapleLeafSmall);
+		}
+	}
+	
+	// ----------------------------------------------------------------
 	
 	@Override
 	public int setup(String arg, ImagePlus im) { 
