@@ -62,6 +62,9 @@ public enum GeneralSampleImage implements ImageResource {
 		
 		/** A fairly large binary image with 0/1 values. */
 		RhinoBigCrop,
+		
+		/** Used for trigonometric Fourier descriptors. */
+		HouseRoi_tif
 	;
 
 }
