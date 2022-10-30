@@ -52,16 +52,40 @@ public class RoiUtils {
 	 * points with {@code int} coordinates. Note that unless the ROI is of type
 	 * {@link PolygonRoi} or {@link PointRoi} only the corner points of the bounding
 	 * box are returned. Interpolated contour points are returned for a instance of
-	 * {@link OvalRoi}.
+	 * {@link OvalRoi}. Returned coordinates are measured w.r.t. to the upper left-hand
+	 * pixel corner.
 	 * 
 	 * @param roi the ROI
 	 * @return the ROI's polygon coordinates
 	 */
 	public static Pnt2d[] getOutlinePointsFloat(Roi roi) {
+//		FloatPolygon pgn = roi.getFloatPolygon();
+//		Pnt2d[] pts = new Pnt2d[pgn.npoints];
+//		for (int i = 0; i < pgn.npoints; i++) {
+//			pts[i] = Pnt2d.PntDouble.from(pgn.xpoints[i], pgn.ypoints[i]);
+//		}
+//		return pts;
+		return getOutlinePointsFloat(roi, false);
+	}
+	
+	/**
+	 * Retrieves the outline of the specified ROI as an array of {@link Pnt2d}
+	 * points with {@code int} coordinates. Note that unless the ROI is of type
+	 * {@link PolygonRoi} or {@link PointRoi} only the corner points of the bounding
+	 * box are returned. Interpolated contour points are returned for a instance of
+	 * {@link OvalRoi}. A boolean flag is provided to reference coordinate to
+	 * pixel centers.
+	 * 
+	 * @param roi the ROI
+	 * @param pixelOffset set true to reference coordinates to pixel centers (reduce x/y by 0.5)
+	 * @return
+	 */
+	public static Pnt2d[] getOutlinePointsFloat(Roi roi, boolean pixelOffset) {
+		final double offset = (pixelOffset) ? 0.5 : 0.0;
 		FloatPolygon pgn = roi.getFloatPolygon();
 		Pnt2d[] pts = new Pnt2d[pgn.npoints];
 		for (int i = 0; i < pgn.npoints; i++) {
-			pts[i] = Pnt2d.PntDouble.from(pgn.xpoints[i], pgn.ypoints[i]);
+			pts[i] = Pnt2d.PntDouble.from(pgn.xpoints[i] - offset, pgn.ypoints[i] - offset);
 		}
 		return pts;
 	}
