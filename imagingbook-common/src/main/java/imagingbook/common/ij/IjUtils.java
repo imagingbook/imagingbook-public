@@ -41,6 +41,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.util.bits.BitMap;
+import imagingbook.core.resource.ImageResource;
 
 
 /**
@@ -125,7 +126,8 @@ public abstract class IjUtils {
         ImagePlus[] impArr = imgList.toArray(new ImagePlus[0]);
         if (sortByTitle) {
         	Comparator<ImagePlus> cmp = new Comparator<ImagePlus>() {
-        		public int compare(ImagePlus impA, ImagePlus impB) {
+        		@Override
+				public int compare(ImagePlus impA, ImagePlus impB) {
         			return impA.getTitle().compareTo(impB.getTitle());
         		}
         	};
@@ -409,7 +411,7 @@ public abstract class IjUtils {
 		double[] oldweights = cp.getRGBWeights();
 		cp.setRGBWeights(rgbWeights);
 		ByteProcessor bp = cp.convertToByteProcessor();
-		((ColorProcessor) cp).setRGBWeights(oldweights);
+		cp.setRGBWeights(oldweights);
 		return bp;
 	}
 	
@@ -463,7 +465,7 @@ public abstract class IjUtils {
 		double[] oldweights = cp.getRGBWeights();
 		cp.setRGBWeights(rgbWeights);
 		FloatProcessor fp = cp.convertToFloatProcessor();
-		((ColorProcessor) cp).setRGBWeights(oldweights);
+		cp.setRGBWeights(oldweights);
 		return fp;
 	}
 	
@@ -1005,7 +1007,104 @@ public abstract class IjUtils {
 	}
 	
 	
+	// ---------------------------------------------------------------
 	
-
+	/**
+	 * Returns true if no image is currently open in ImageJ.
+	 * 
+	 * @return true if no image is open
+	 */
+	public static boolean noCurrentImage() {
+		return (WindowManager.getCurrentImage() == null);
+	}
+	
+	/**
+	 * <p>
+	 * Returns true if the current (active) image is compatible
+	 * with the specified flags (as specified by {@link PlugInFilter},
+	 * typically used to compose the return value of {@link PlugInFilter#setup(String, ImagePlus)}).
+	 * This method emulates the compatibility check performed by ImageJ's built-in
+	 * {@link PlugInFilterRunner} before a {@link PlugInFilter} is executed.
+	 * It may be used, e.g., in the (normally empty) constructor of a class
+	 * implementing {@link PlugInFilter}.
+	 * </p>
+	 * <p>
+	 * Example, checking if the current image is either 8-bit or 32-bit gray:</p>
+	 * <pre>
+	 * if (checkCurrentImage(PlugInFilter.DOES_8G + PlugInFilter.DOES_32)) {
+	 * 	// some action ...
+	 * }</pre>
+	 * 
+	 * @param flags int-encoded binary flags
+	 * @return true if the current image is compatible
+	 * @see PlugInFilter
+	 * @see #checkImage(ImagePlus, int)
+	 */
+	public static boolean checkCurrentImage(int flags) {
+		return checkImage(WindowManager.getCurrentImage(), flags);
+	}
+	
+	/**
+	 * <p>
+	 * Returns true if the given image is compatible with the specified flags (as
+	 * specified by {@link PlugInFilter}, typically used to compose the return value
+	 * of {@link PlugInFilter#setup(String, ImagePlus)}). Usage example:
+	 * </p>
+	 * <pre>
+	 * ImagePlus im = WindowManager.getCurrentImage(); // may be null
+	 * if (checkImage(im, PlugInFilter.DOES_8G + PlugInFilter.DOES_RGB)) {
+	 * 	// some action
+	 * }</pre>
+	 * 
+	 * @param im    a {@link ImagePlus} or {@code null}
+	 * @param flags int-encoded binary flags
+	 * @return true if the image is compatible
+	 * @see PlugInFilter
+	 */
+	public static boolean checkImage(ImagePlus im, int flags) {
+		if ((flags & PlugInFilter.NO_IMAGE_REQUIRED) != 0) {
+			return true;
+		}
+		if (im == null || im.getProcessor() == null) {
+			return false;
+		}
+		switch (im.getType()) {
+		case ImagePlus.GRAY8:
+			return ((flags & PlugInFilter.DOES_8G) != 0);
+		case ImagePlus.COLOR_256:
+			return ((flags & PlugInFilter.DOES_8C) != 0);
+		case ImagePlus.GRAY16:
+			return ((flags & PlugInFilter.DOES_16) != 0);
+		case ImagePlus.GRAY32:
+			return ((flags & PlugInFilter.DOES_32) != 0);		
+		case ImagePlus.COLOR_RGB:
+			return ((flags & PlugInFilter.DOES_RGB) != 0);
+		default:
+			return false;
+		}
+	}
+	
+	/**
+	 * Opens a dialog asking if the specified sample image (resource) should be
+	 * opened and made the active image. This if typically used in demo plugins in
+	 * the case that no (or no suitable) image is currently open.
+	 * 
+	 * @param resource an image resource
+	 */
+	public static void requestSampleImage(ImageResource resource) {	// TODO: allow a selection of sample images
+		GenericDialog gd = new GenericDialog("Request sample image");
+		gd.addMessage("Open sample image\n" + resource + "?");
+//		gd.enableYesNoCancel();
+//		gd.hideCancelButton();
+		gd.setOKLabel("Yes");
+//		gd.setCancelLabel("Quit");
+		gd.showDialog();
+		if (gd.wasCanceled()) {
+			return;
+		}
+		ImagePlus im = resource.getImage();
+		im.show();
+		WindowManager.setCurrentWindow(im.getWindow());
+	}
 
 }
