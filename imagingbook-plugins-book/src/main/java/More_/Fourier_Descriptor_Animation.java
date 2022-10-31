@@ -89,6 +89,10 @@ public class Fourier_Descriptor_Animation implements PlugInFilter {
 	
 	// ----------------------------------------------------------------
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
 	public Fourier_Descriptor_Animation() {
 		if (noCurrentImage()) {
 			requestSampleImage(GeneralSampleImage.MapleLeafSmall);

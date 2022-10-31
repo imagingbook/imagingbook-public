@@ -17,13 +17,8 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 /**
  * This is for testing placement or ROI points.
  * 
- * Line:     + (referenced to pixel centers)
- * PointRoi: + (referenced to pixel centers)
- * 
- * PointRoi: - (referenced to pixel corners)
- * OvalRoi:  - (referenced to pixel corners)
- * Roi (rect) - (referenced to pixel corners)
- * FreehandRoi: - (referenced to pixel corners)
+ * - Line, FreehandLine, SegmentLine, Point, MultiPoint: no offset (OK)
+ * - Elliptic, Oval, Polygon, Rectangle, RotRectangle: 0.5 pix offset too much
  * 
  * Damn - this is confusing: Polygons and FreehandRois behave differently
  * depending on which menu is used to draw them!!
@@ -31,7 +26,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * @author WB
  *
  */
-public class Print_Roi_Info implements PlugInFilter {
+public class Roi_Print_Info implements PlugInFilter {
 
 	ImagePlus im;
 	
@@ -44,7 +39,7 @@ public class Print_Roi_Info implements PlugInFilter {
 	@Override
 	public void run(ImageProcessor ip) {
 		Roi roi = im.getRoi();
-		IJ.log("roi = " + roi.getClass());
+		IJ.log("roi = " + roi.getClass() + " type = " + roi.getType() + " = " + roi.getTypeAsString());
 		
 		Pnt2d[] V = RoiUtils.getOutlinePointsFloat(roi);
 		IJ.log("V=" + Arrays.toString(V));

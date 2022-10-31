@@ -9,6 +9,9 @@
 
 package More_;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
+
 import java.awt.Color;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
@@ -23,33 +26,28 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fd.FourierDescriptor;
 import imagingbook.common.geometry.fd.FourierDescriptorTrigonometric;
-import imagingbook.common.geometry.fd.FourierDescriptorUniform;
 import imagingbook.common.geometry.fd.Utils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.Complex;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * This ImageJ plugin visualizes the composition of 2D shapes by superposition
- * of nested ellipses, corresponding to complex coefficient pairs of elliptic
- * Fourier descriptors.
- * </p>
- * <p>
- * The plugin assumes that the input image is binary (of type
- * {@link ByteProcessor}). It is segmented and the outer contour of the largest
- * connected component is used to calculate a Fourier descriptor (of type
- * {@link FourierDescriptorUniform}) with a user-defined number of coefficient
- * pairs. The plugin then displays a sequence of frames illustrating the
- * reconstruction of the shape by superposition of nested ellipses as the path
- * parameter (t) runs from 0 to 1. See Sec. 26.3.6 (esp. Fig. 26.12) of [1] for
- * details.
+ * This ImageJ plugin demonstrates the "trigonometric" construction of elliptic
+ * Fourier descriptors. See Sec. 26.3.7 of [1] for details. The input is a
+ * user-defined polygon selection (ROI). The number of Fourier coefficient pairs
+ * can be specified in the user dialog. The plugin then displays the original polygon
+ * and the approximate contour reconstruction from the Fourier descriptor using
+ * all specified coefficient pairs. Increasing the number of coefficient pairs
+ * improves the reconstruction.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
  * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
  * </p>
+ * 
  * @author WB
  * @version 2022/10/28
  */
@@ -71,11 +69,11 @@ public class Fourier_Descriptor_Trigonometic implements PlugInFilter {
 	
 	// ----------------------------------------------------------------
 	
-//	public Fourier_Descriptor_Trigonometic() {
-//		if (noCurrentImage()) {
-//			requestSampleImage(GeneralSampleImage.MapleLeafSmall);
-//		}
-//	}
+	public Fourier_Descriptor_Trigonometic() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.HouseRoi_tif);
+		}
+	}
 	
 	// ----------------------------------------------------------------
 	
