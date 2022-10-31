@@ -31,47 +31,52 @@
 <span class="sourceLineNo">021</span><a id="line.21">import imagingbook.common.threshold.adaptive.NiblackThresholder.RegionType;</a>
 <span class="sourceLineNo">022</span><a id="line.22"></a>
 <span class="sourceLineNo">023</span><a id="line.23">/**</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * Demo plugin showing the use of the {@link NiblackThresholder} class.</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * </a>
-<span class="sourceLineNo">026</span><a id="line.26"> * @author WB</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * @version 2022/04/01</a>
-<span class="sourceLineNo">028</span><a id="line.28"> */</a>
-<span class="sourceLineNo">029</span><a id="line.29">public class Adaptive_Niblack implements PlugInFilter {</a>
-<span class="sourceLineNo">030</span><a id="line.30">        </a>
-<span class="sourceLineNo">031</span><a id="line.31">//      enum RegionType { Box, Disk, Gaussian }</a>
-<span class="sourceLineNo">032</span><a id="line.32">        </a>
-<span class="sourceLineNo">033</span><a id="line.33">        private static RegionType regType = RegionType.Box;</a>
-<span class="sourceLineNo">034</span><a id="line.34">        private static Parameters params = new Parameters();</a>
-<span class="sourceLineNo">035</span><a id="line.35"></a>
-<span class="sourceLineNo">036</span><a id="line.36">        public int setup(String arg, ImagePlus imp) {</a>
-<span class="sourceLineNo">037</span><a id="line.37">                return DOES_8G;</a>
-<span class="sourceLineNo">038</span><a id="line.38">        }</a>
-<span class="sourceLineNo">039</span><a id="line.39"></a>
-<span class="sourceLineNo">040</span><a id="line.40">        public void run(ImageProcessor ip) {</a>
-<span class="sourceLineNo">041</span><a id="line.41">                if (!runDialog(params))</a>
-<span class="sourceLineNo">042</span><a id="line.42">                        return;</a>
-<span class="sourceLineNo">043</span><a id="line.43">                </a>
-<span class="sourceLineNo">044</span><a id="line.44">                ByteProcessor I = (ByteProcessor) ip;</a>
-<span class="sourceLineNo">045</span><a id="line.45">                NiblackThresholder thr = NiblackThresholder.create(regType, params);</a>
-<span class="sourceLineNo">046</span><a id="line.46">                ByteProcessor Q = thr.getThreshold(I);</a>
-<span class="sourceLineNo">047</span><a id="line.47">                thr.threshold(I, Q);</a>
-<span class="sourceLineNo">048</span><a id="line.48">        }</a>
-<span class="sourceLineNo">049</span><a id="line.49">        </a>
-<span class="sourceLineNo">050</span><a id="line.50">        boolean runDialog(Parameters params) {</a>
-<span class="sourceLineNo">051</span><a id="line.51">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</a>
-<span class="sourceLineNo">052</span><a id="line.52">                gd.addEnumChoice("Region type", regType);</a>
-<span class="sourceLineNo">053</span><a id="line.53">                addToDialog(params, gd);</a>
-<span class="sourceLineNo">054</span><a id="line.54">                </a>
-<span class="sourceLineNo">055</span><a id="line.55">                gd.showDialog();</a>
-<span class="sourceLineNo">056</span><a id="line.56">                if (gd.wasCanceled()) {</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        return false;</a>
-<span class="sourceLineNo">058</span><a id="line.58">                }</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * &lt;p&gt;</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * ImageJ plugin demonstrating the use of the {@link NiblackThresholder} class.</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * See Sec. 9.2.2 of [1] for additional details.</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * </a>
+<span class="sourceLineNo">028</span><a id="line.28"> * @author WB</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * @version 2022/04/01</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * @see imagingbook.common.threshold.adaptive.NiblackThresholder</a>
+<span class="sourceLineNo">031</span><a id="line.31"> */</a>
+<span class="sourceLineNo">032</span><a id="line.32">public class Adaptive_Niblack implements PlugInFilter {</a>
+<span class="sourceLineNo">033</span><a id="line.33">        </a>
+<span class="sourceLineNo">034</span><a id="line.34">//      enum RegionType { Box, Disk, Gaussian }</a>
+<span class="sourceLineNo">035</span><a id="line.35">        </a>
+<span class="sourceLineNo">036</span><a id="line.36">        private static RegionType regType = RegionType.Box;</a>
+<span class="sourceLineNo">037</span><a id="line.37">        private static Parameters params = new Parameters();</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">        @Override</a>
+<span class="sourceLineNo">040</span><a id="line.40">        public int setup(String arg, ImagePlus imp) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">                return DOES_8G;</a>
+<span class="sourceLineNo">042</span><a id="line.42">        }</a>
+<span class="sourceLineNo">043</span><a id="line.43"></a>
+<span class="sourceLineNo">044</span><a id="line.44">        @Override</a>
+<span class="sourceLineNo">045</span><a id="line.45">        public void run(ImageProcessor ip) {</a>
+<span class="sourceLineNo">046</span><a id="line.46">                if (!runDialog(params))</a>
+<span class="sourceLineNo">047</span><a id="line.47">                        return;</a>
+<span class="sourceLineNo">048</span><a id="line.48">                </a>
+<span class="sourceLineNo">049</span><a id="line.49">                ByteProcessor I = (ByteProcessor) ip;</a>
+<span class="sourceLineNo">050</span><a id="line.50">                NiblackThresholder thr = NiblackThresholder.create(regType, params);</a>
+<span class="sourceLineNo">051</span><a id="line.51">                ByteProcessor Q = thr.getThreshold(I);</a>
+<span class="sourceLineNo">052</span><a id="line.52">                thr.threshold(I, Q);</a>
+<span class="sourceLineNo">053</span><a id="line.53">        }</a>
+<span class="sourceLineNo">054</span><a id="line.54">        </a>
+<span class="sourceLineNo">055</span><a id="line.55">        boolean runDialog(Parameters params) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</a>
+<span class="sourceLineNo">057</span><a id="line.57">                gd.addEnumChoice("Region type", regType);</a>
+<span class="sourceLineNo">058</span><a id="line.58">                addToDialog(params, gd);</a>
 <span class="sourceLineNo">059</span><a id="line.59">                </a>
-<span class="sourceLineNo">060</span><a id="line.60">                regType = gd.getNextEnumChoice(RegionType.class);</a>
-<span class="sourceLineNo">061</span><a id="line.61">                getFromDialog(params, gd);</a>
-<span class="sourceLineNo">062</span><a id="line.62">                return true;</a>
-<span class="sourceLineNo">063</span><a id="line.63">        }</a>
-<span class="sourceLineNo">064</span><a id="line.64">}</a>
+<span class="sourceLineNo">060</span><a id="line.60">                gd.showDialog();</a>
+<span class="sourceLineNo">061</span><a id="line.61">                if (gd.wasCanceled()) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">                        return false;</a>
+<span class="sourceLineNo">063</span><a id="line.63">                }</a>
+<span class="sourceLineNo">064</span><a id="line.64">                </a>
+<span class="sourceLineNo">065</span><a id="line.65">                regType = gd.getNextEnumChoice(RegionType.class);</a>
+<span class="sourceLineNo">066</span><a id="line.66">                getFromDialog(params, gd);</a>
+<span class="sourceLineNo">067</span><a id="line.67">                return true;</a>
+<span class="sourceLineNo">068</span><a id="line.68">        }</a>
+<span class="sourceLineNo">069</span><a id="line.69">}</a>
 
 
 

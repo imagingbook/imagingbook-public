@@ -19,86 +19,139 @@
 <span class="sourceLineNo">009</span><a id="line.9">package Ch08_BinaryRegions;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
 <span class="sourceLineNo">011</span><a id="line.11">import ij.ImagePlus;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import ij.plugin.filter.PlugInFilter;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import ij.process.ByteProcessor;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import ij.process.ImageProcessor;</a>
-<span class="sourceLineNo">015</span><a id="line.15"></a>
-<span class="sourceLineNo">016</span><a id="line.16">/**</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * &lt;p&gt;</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * This ImageJ plugin demonstrates the calculation of horizontal and vertical</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * projections on a grayscale image. See Sec. 8.7 of [1] for additional details.</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * The resulting projections are shown as separate images, the original image is</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * not modified.</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * &lt;p&gt;</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing - An Algorithmic</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * Approach&lt;/em&gt;, 3rd ed, Springer (2022).</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * </a>
-<span class="sourceLineNo">028</span><a id="line.28"> * @author WB</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * @version 2020/12/17</a>
-<span class="sourceLineNo">030</span><a id="line.30"> */</a>
-<span class="sourceLineNo">031</span><a id="line.31">public class Make_Projections implements PlugInFilter {</a>
-<span class="sourceLineNo">032</span><a id="line.32">        </a>
-<span class="sourceLineNo">033</span><a id="line.33">        /** Size of horizontal/vertical projection bars. */</a>
-<span class="sourceLineNo">034</span><a id="line.34">        static final int PSIZE = 150;</a>
-<span class="sourceLineNo">035</span><a id="line.35">        /** Foreground value for drawing (black). */</a>
-<span class="sourceLineNo">036</span><a id="line.36">        static final int FOREGROUND = 0;</a>
-<span class="sourceLineNo">037</span><a id="line.37">        /** Background value for drawing (white). */</a>
-<span class="sourceLineNo">038</span><a id="line.38">        static final int BACKGROUND = 255;</a>
-<span class="sourceLineNo">039</span><a id="line.39">        </a>
-<span class="sourceLineNo">040</span><a id="line.40">        ImagePlus im = null;</a>
-<span class="sourceLineNo">041</span><a id="line.41">        </a>
-<span class="sourceLineNo">042</span><a id="line.42">        @Override</a>
-<span class="sourceLineNo">043</span><a id="line.43">        public int setup(String arg, ImagePlus im) { </a>
-<span class="sourceLineNo">044</span><a id="line.44">                this.im = im;</a>
-<span class="sourceLineNo">045</span><a id="line.45">                return DOES_8G + NO_CHANGES; </a>
-<span class="sourceLineNo">046</span><a id="line.46">        }</a>
-<span class="sourceLineNo">047</span><a id="line.47">        </a>
-<span class="sourceLineNo">048</span><a id="line.48">        @Override</a>
-<span class="sourceLineNo">049</span><a id="line.49">        public void run(ImageProcessor I) {</a>
-<span class="sourceLineNo">050</span><a id="line.50">                int M = I.getWidth();</a>
-<span class="sourceLineNo">051</span><a id="line.51">                int N = I.getHeight();</a>
-<span class="sourceLineNo">052</span><a id="line.52">                int[] pHor = new int[N];</a>
-<span class="sourceLineNo">053</span><a id="line.53">                int[] pVer = new int[M];</a>
-<span class="sourceLineNo">054</span><a id="line.54">                for (int v = 0; v &lt; N; v++) {</a>
-<span class="sourceLineNo">055</span><a id="line.55">                        for (int u = 0; u &lt; M; u++) {</a>
-<span class="sourceLineNo">056</span><a id="line.56">                                int p = I.getPixel(u, v);</a>
-<span class="sourceLineNo">057</span><a id="line.57">                                pHor[v] +=  p;</a>
-<span class="sourceLineNo">058</span><a id="line.58">                                pVer[u] +=  p;</a>
-<span class="sourceLineNo">059</span><a id="line.59">                        }</a>
-<span class="sourceLineNo">060</span><a id="line.60">                }</a>
-<span class="sourceLineNo">061</span><a id="line.61">                </a>
-<span class="sourceLineNo">062</span><a id="line.62">                // make the horizontal projection:</a>
-<span class="sourceLineNo">063</span><a id="line.63">                ByteProcessor hP = new ByteProcessor(PSIZE,N);</a>
-<span class="sourceLineNo">064</span><a id="line.64">                hP.setValue(BACKGROUND); hP.fill();</a>
-<span class="sourceLineNo">065</span><a id="line.65">                hP.setValue(FOREGROUND);</a>
-<span class="sourceLineNo">066</span><a id="line.66">                double maxWhite = M * 255;</a>
-<span class="sourceLineNo">067</span><a id="line.67">                for (int row = 0; row &lt; N; row++) {</a>
-<span class="sourceLineNo">068</span><a id="line.68">                        double black = (1 - pHor[row] / maxWhite);      // percentage of black in line 'row'</a>
-<span class="sourceLineNo">069</span><a id="line.69">                        int k = (int) (black * PSIZE);</a>
-<span class="sourceLineNo">070</span><a id="line.70">                        if (k &gt; 0) {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                                hP.drawLine(0, row, k, row);</a>
-<span class="sourceLineNo">072</span><a id="line.72">                        }</a>
-<span class="sourceLineNo">073</span><a id="line.73">                }</a>
-<span class="sourceLineNo">074</span><a id="line.74">                (new ImagePlus("Horizontal projection", hP)).show();</a>
-<span class="sourceLineNo">075</span><a id="line.75">                                </a>
-<span class="sourceLineNo">076</span><a id="line.76">                // make the vertical projection:</a>
-<span class="sourceLineNo">077</span><a id="line.77">                ByteProcessor vP = new ByteProcessor(M,PSIZE);</a>
-<span class="sourceLineNo">078</span><a id="line.78">                vP.setValue(BACKGROUND); vP.fill();</a>
-<span class="sourceLineNo">079</span><a id="line.79">                vP.setValue(FOREGROUND);</a>
-<span class="sourceLineNo">080</span><a id="line.80">                maxWhite = N * 255;</a>
-<span class="sourceLineNo">081</span><a id="line.81">                for (int col = 0; col &lt; M; col++) {</a>
-<span class="sourceLineNo">082</span><a id="line.82">                        double black = (1 - pVer[col] / maxWhite);      // percentage of black in column 'col'</a>
-<span class="sourceLineNo">083</span><a id="line.83">                        int k = (int) (black * PSIZE);</a>
-<span class="sourceLineNo">084</span><a id="line.84">                        if (k &gt; 0) {</a>
-<span class="sourceLineNo">085</span><a id="line.85">                                vP.drawLine(col, 0, col, k);</a>
-<span class="sourceLineNo">086</span><a id="line.86">                        }</a>
-<span class="sourceLineNo">087</span><a id="line.87">                }</a>
-<span class="sourceLineNo">088</span><a id="line.88">                (new ImagePlus("Vertical projection", vP)).show();</a>
-<span class="sourceLineNo">089</span><a id="line.89">        }</a>
-<span class="sourceLineNo">090</span><a id="line.90"></a>
-<span class="sourceLineNo">091</span><a id="line.91">}</a>
+<span class="sourceLineNo">012</span><a id="line.12">import ij.gui.GenericDialog;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import ij.plugin.filter.PlugInFilter;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import ij.process.ColorProcessor;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import ij.process.ImageProcessor;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.color.sets.BasicAwtColor;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.image.Projection;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.core.plugin.IjPluginName;</a>
+<span class="sourceLineNo">019</span><a id="line.19"></a>
+<span class="sourceLineNo">020</span><a id="line.20">/**</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * &lt;p&gt;</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * This ImageJ plugin demonstrates the calculation of horizontal and vertical</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * projections from a grayscale image. See Sec. 8.7 of [1] for additional</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * details. The input image is not assumed binary, i.e., gray values are simply</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * added up without thresholding. This plugin only works for 8-bit grayscale</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * images, the original image is not modified. The resulting projections are</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * shown as separate diagrams, which either show the relative amount of white</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * (default) or black, selectable in the user dialog:</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * &lt;ul&gt;</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * &lt;li&gt;The &lt;em&gt;horizontal&lt;/em&gt; projection diagram has the same height as the</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * original image and user-adjustable width, with diagram bars being drawn from</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * left to right.&lt;/li&gt;</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * &lt;li&gt;The &lt;em&gt;vertical&lt;/em&gt; projection diagram has the same width as the</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * original image and user-adjustable height, with diagram bars being drawn from</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * top to bottom.&lt;/li&gt;</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * &lt;/ul&gt;</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * &lt;p&gt;</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * </a>
+<span class="sourceLineNo">043</span><a id="line.43"> * @author WB</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * @version 2020/12/17</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * @version 2022/09/29 revised to match book examples</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * </a>
+<span class="sourceLineNo">047</span><a id="line.47"> * @see imagingbook.common.image.Projection</a>
+<span class="sourceLineNo">048</span><a id="line.48"> */</a>
+<span class="sourceLineNo">049</span><a id="line.49">@IjPluginName("Make Projections")</a>
+<span class="sourceLineNo">050</span><a id="line.50">public class Make_Projections implements PlugInFilter {</a>
+<span class="sourceLineNo">051</span><a id="line.51">        </a>
+<span class="sourceLineNo">052</span><a id="line.52">        /** Size of horizontal/vertical projection bars. */</a>
+<span class="sourceLineNo">053</span><a id="line.53">        public static int ProjectionSize = 150;</a>
+<span class="sourceLineNo">054</span><a id="line.54">        </a>
+<span class="sourceLineNo">055</span><a id="line.55">        /** Background color for projection diagrams. */</a>
+<span class="sourceLineNo">056</span><a id="line.56">        public static BasicAwtColor BackgroundColor = BasicAwtColor.White;</a>
+<span class="sourceLineNo">057</span><a id="line.57">        </a>
+<span class="sourceLineNo">058</span><a id="line.58">        /** Foreground value for horizontal projection. */</a>
+<span class="sourceLineNo">059</span><a id="line.59">        public static BasicAwtColor PlotColorH = BasicAwtColor.Green;</a>
+<span class="sourceLineNo">060</span><a id="line.60">        </a>
+<span class="sourceLineNo">061</span><a id="line.61">        /** Foreground value for vertical projection. */</a>
+<span class="sourceLineNo">062</span><a id="line.62">        public static BasicAwtColor PlotColorV = BasicAwtColor.Magenta;</a>
+<span class="sourceLineNo">063</span><a id="line.63">        </a>
+<span class="sourceLineNo">064</span><a id="line.64">        /** Plot the relative amount of white (false) or black (true). */</a>
+<span class="sourceLineNo">065</span><a id="line.65">        public static boolean ShowAmountOfBlack = false;</a>
+<span class="sourceLineNo">066</span><a id="line.66">        </a>
+<span class="sourceLineNo">067</span><a id="line.67">        private ImagePlus im = null;</a>
+<span class="sourceLineNo">068</span><a id="line.68">        </a>
+<span class="sourceLineNo">069</span><a id="line.69">        @Override</a>
+<span class="sourceLineNo">070</span><a id="line.70">        public int setup(String arg, ImagePlus im) { </a>
+<span class="sourceLineNo">071</span><a id="line.71">                this.im = im;</a>
+<span class="sourceLineNo">072</span><a id="line.72">                return DOES_8G + NO_CHANGES; </a>
+<span class="sourceLineNo">073</span><a id="line.73">        }</a>
+<span class="sourceLineNo">074</span><a id="line.74">        </a>
+<span class="sourceLineNo">075</span><a id="line.75">        @Override</a>
+<span class="sourceLineNo">076</span><a id="line.76">        public void run(ImageProcessor ip) {</a>
+<span class="sourceLineNo">077</span><a id="line.77">                </a>
+<span class="sourceLineNo">078</span><a id="line.78">                if (!runDialog()) {</a>
+<span class="sourceLineNo">079</span><a id="line.79">                        return;</a>
+<span class="sourceLineNo">080</span><a id="line.80">                }</a>
+<span class="sourceLineNo">081</span><a id="line.81">                </a>
+<span class="sourceLineNo">082</span><a id="line.82">                String title = im.getShortTitle();</a>
+<span class="sourceLineNo">083</span><a id="line.83">                int M = ip.getWidth();</a>
+<span class="sourceLineNo">084</span><a id="line.84">                int N = ip.getHeight();</a>
+<span class="sourceLineNo">085</span><a id="line.85">                </a>
+<span class="sourceLineNo">086</span><a id="line.86">                Projection proj = new Projection(ip);</a>
+<span class="sourceLineNo">087</span><a id="line.87">                </a>
+<span class="sourceLineNo">088</span><a id="line.88">                // draw the horizontal projection diagram:</a>
+<span class="sourceLineNo">089</span><a id="line.89">                double[] pHor = proj.getHorizontal();   // pHor[v] = sum of pixel values in row v</a>
+<span class="sourceLineNo">090</span><a id="line.90">                ColorProcessor hP = new ColorProcessor(ProjectionSize, N);</a>
+<span class="sourceLineNo">091</span><a id="line.91">                hP.setColor(BackgroundColor.getColor());</a>
+<span class="sourceLineNo">092</span><a id="line.92">                hP.fill();</a>
+<span class="sourceLineNo">093</span><a id="line.93">                hP.setColor(PlotColorH.getColor());</a>
+<span class="sourceLineNo">094</span><a id="line.94">                double maxWhite = M * 255;</a>
+<span class="sourceLineNo">095</span><a id="line.95">                for (int v = 0; v &lt; N; v++) {</a>
+<span class="sourceLineNo">096</span><a id="line.96">                        double amount = (ShowAmountOfBlack) ?</a>
+<span class="sourceLineNo">097</span><a id="line.97">                                        1 - pHor[v] / maxWhite :        // amount of black in line 'v'</a>
+<span class="sourceLineNo">098</span><a id="line.98">                                        pHor[v] / maxWhite;                     // amount of white in line 'v'</a>
+<span class="sourceLineNo">099</span><a id="line.99">                        int k = (int) Math.round(amount * ProjectionSize);</a>
+<span class="sourceLineNo">100</span><a id="line.100">                        if (k &gt; 0) {</a>
+<span class="sourceLineNo">101</span><a id="line.101">                                hP.drawLine(0, v, k, v);</a>
+<span class="sourceLineNo">102</span><a id="line.102">                        }</a>
+<span class="sourceLineNo">103</span><a id="line.103">                }       </a>
+<span class="sourceLineNo">104</span><a id="line.104">                (new ImagePlus(title + "-horizontal-proj", hP)).show();</a>
+<span class="sourceLineNo">105</span><a id="line.105">                                </a>
+<span class="sourceLineNo">106</span><a id="line.106">                // draw the vertical projection diagram:</a>
+<span class="sourceLineNo">107</span><a id="line.107">                double[] pVer = proj.getVertical();             // pVer[u] = sum of pixel values in column u</a>
+<span class="sourceLineNo">108</span><a id="line.108">                ColorProcessor vP = new ColorProcessor(M, ProjectionSize);</a>
+<span class="sourceLineNo">109</span><a id="line.109">                vP.setColor(BackgroundColor.getColor()); </a>
+<span class="sourceLineNo">110</span><a id="line.110">                vP.fill();</a>
+<span class="sourceLineNo">111</span><a id="line.111">                vP.setColor(PlotColorV.getColor());</a>
+<span class="sourceLineNo">112</span><a id="line.112">                maxWhite = N * 255;</a>
+<span class="sourceLineNo">113</span><a id="line.113">                for (int u = 0; u &lt; M; u++) {</a>
+<span class="sourceLineNo">114</span><a id="line.114">                        double amount = (ShowAmountOfBlack) ?</a>
+<span class="sourceLineNo">115</span><a id="line.115">                                        1 - pVer[u] / maxWhite :        // amount of black in column 'u'</a>
+<span class="sourceLineNo">116</span><a id="line.116">                                        pVer[u] / maxWhite;                     // amount of white in column 'u'</a>
+<span class="sourceLineNo">117</span><a id="line.117">                        int k = (int) (amount * ProjectionSize);</a>
+<span class="sourceLineNo">118</span><a id="line.118">                        if (k &gt; 0) {</a>
+<span class="sourceLineNo">119</span><a id="line.119">                                vP.drawLine(u, 0, u, k);</a>
+<span class="sourceLineNo">120</span><a id="line.120">                        }</a>
+<span class="sourceLineNo">121</span><a id="line.121">                }</a>
+<span class="sourceLineNo">122</span><a id="line.122">                (new ImagePlus(title + "-vertical-proj", vP)).show();</a>
+<span class="sourceLineNo">123</span><a id="line.123">        }</a>
+<span class="sourceLineNo">124</span><a id="line.124"></a>
+<span class="sourceLineNo">125</span><a id="line.125">        private boolean runDialog() {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</a>
+<span class="sourceLineNo">127</span><a id="line.127">                gd.addNumericField("Size of projection plots", ProjectionSize, 0);</a>
+<span class="sourceLineNo">128</span><a id="line.128">                gd.addCheckbox("Show amount of black", ShowAmountOfBlack);</a>
+<span class="sourceLineNo">129</span><a id="line.129">                gd.addEnumChoice("Horizontal plot color", PlotColorH);</a>
+<span class="sourceLineNo">130</span><a id="line.130">                gd.addEnumChoice("Vertical plot color", PlotColorV);</a>
+<span class="sourceLineNo">131</span><a id="line.131">                gd.addEnumChoice("Plot background color", BackgroundColor);</a>
+<span class="sourceLineNo">132</span><a id="line.132">                </a>
+<span class="sourceLineNo">133</span><a id="line.133">                gd.showDialog();</a>
+<span class="sourceLineNo">134</span><a id="line.134">                if (gd.wasCanceled())</a>
+<span class="sourceLineNo">135</span><a id="line.135">                        return false;</a>
+<span class="sourceLineNo">136</span><a id="line.136">                </a>
+<span class="sourceLineNo">137</span><a id="line.137">                ProjectionSize = (int) gd.getNextNumber();</a>
+<span class="sourceLineNo">138</span><a id="line.138">                ShowAmountOfBlack = gd.getNextBoolean();</a>
+<span class="sourceLineNo">139</span><a id="line.139">                PlotColorH = gd.getNextEnumChoice(BasicAwtColor.class);</a>
+<span class="sourceLineNo">140</span><a id="line.140">                PlotColorV = gd.getNextEnumChoice(BasicAwtColor.class);</a>
+<span class="sourceLineNo">141</span><a id="line.141">                BackgroundColor = gd.getNextEnumChoice(BasicAwtColor.class);</a>
+<span class="sourceLineNo">142</span><a id="line.142">                return true;</a>
+<span class="sourceLineNo">143</span><a id="line.143">        }</a>
+<span class="sourceLineNo">144</span><a id="line.144">}</a>
 
 
 
