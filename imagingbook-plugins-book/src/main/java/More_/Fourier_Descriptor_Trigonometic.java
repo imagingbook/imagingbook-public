@@ -69,6 +69,10 @@ public class Fourier_Descriptor_Trigonometic implements PlugInFilter {
 	
 	// ----------------------------------------------------------------
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
 	public Fourier_Descriptor_Trigonometic() {
 		if (noCurrentImage()) {
 			requestSampleImage(GeneralSampleImage.HouseRoi_tif);

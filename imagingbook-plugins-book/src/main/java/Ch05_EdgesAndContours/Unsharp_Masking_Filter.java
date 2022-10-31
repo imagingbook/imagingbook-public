@@ -27,7 +27,7 @@ import imagingbook.common.filter.linear.GaussianKernel1D;
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Approach</em>, 3rd ed, Springer (2022).
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

@@ -42,6 +42,7 @@ public class Roi_Print_Info implements PlugInFilter {
 		IJ.log("roi = " + roi.getClass() + " type = " + roi.getType() + " = " + roi.getTypeAsString());
 		
 		Pnt2d[] V = RoiUtils.getOutlinePointsFloat(roi);
+		IJ.log("points = " + V.length);
 		IJ.log("V=" + Arrays.toString(V));
 		
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
