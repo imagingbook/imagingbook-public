@@ -10,10 +10,12 @@ package imagingbook.common.ij;
 
 import java.awt.Polygon;
 
+import ij.gui.EllipseRoi;
 import ij.gui.OvalRoi;
 import ij.gui.PointRoi;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
+import ij.gui.RotatedRectRoi;
 import ij.process.FloatPolygon;
 import imagingbook.common.geometry.basic.Pnt2d;
 
@@ -49,45 +51,45 @@ public class RoiUtils {
 	
 	/**
 	 * Retrieves the outline of the specified ROI as an array of {@link Pnt2d}
-	 * points with {@code int} coordinates. Note that unless the ROI is of type
-	 * {@link PolygonRoi} or {@link PointRoi} only the corner points of the bounding
-	 * box are returned. Interpolated contour points are returned for a instance of
-	 * {@link OvalRoi}. Returned coordinates are measured w.r.t. to the upper left-hand
-	 * pixel corner.
+	 * points with {@code double} coordinates. Returned coordinates are measured
+	 * relative to the pixel center, e.g., (5.0, 3.0) is assumed to be in the middle
+	 * of pixel (5, 3). This method retrieves ROI points with
+	 * {@link Roi#getFloatPolygon()} but applies type-dependent correction for
+	 * consistent point rendering.
 	 * 
-	 * @param roi the ROI
-	 * @return the ROI's polygon coordinates
+	 * @param roi the {@link Roi}
+	 * @return the ROI's outline coordinates
 	 */
 	public static Pnt2d[] getOutlinePointsFloat(Roi roi) {
-//		FloatPolygon pgn = roi.getFloatPolygon();
-//		Pnt2d[] pts = new Pnt2d[pgn.npoints];
-//		for (int i = 0; i < pgn.npoints; i++) {
-//			pts[i] = Pnt2d.PntDouble.from(pgn.xpoints[i], pgn.ypoints[i]);
-//		}
-//		return pts;
-		return getOutlinePointsFloat(roi, false);
-	}
-	
-	/**
-	 * Retrieves the outline of the specified ROI as an array of {@link Pnt2d}
-	 * points with {@code int} coordinates. Note that unless the ROI is of type
-	 * {@link PolygonRoi} or {@link PointRoi} only the corner points of the bounding
-	 * box are returned. Interpolated contour points are returned for a instance of
-	 * {@link OvalRoi}. A boolean flag is provided to reference coordinate to
-	 * pixel centers.
-	 * 
-	 * @param roi the ROI
-	 * @param pixelOffset set true to reference coordinates to pixel centers (reduce x/y by 0.5)
-	 * @return
-	 */
-	public static Pnt2d[] getOutlinePointsFloat(Roi roi, boolean pixelOffset) {
-		final double offset = (pixelOffset) ? 0.5 : 0.0;
+		final double offset = (needsOffset(roi)) ? -0.5 : 0.0;
 		FloatPolygon pgn = roi.getFloatPolygon();
 		Pnt2d[] pts = new Pnt2d[pgn.npoints];
 		for (int i = 0; i < pgn.npoints; i++) {
-			pts[i] = Pnt2d.PntDouble.from(pgn.xpoints[i] - offset, pgn.ypoints[i] - offset);
+			pts[i] = Pnt2d.PntDouble.from(pgn.xpoints[i] + offset, pgn.ypoints[i] + offset);
 		}
 		return pts;
+	}
+	
+	/**
+	 * Returns true if the given {@link Roi} instance requires a half-pixel
+	 * offset applied to the points returned {@code Roi#getFloatPolygon()}
+	 * for proper rendering. This fixes a problem (bug) in ImageJ to make
+	 * sure that all ROI types render consistently. This is the situation
+	 * (as of IJ 1.53u):
+	 * - Line, FreehandLine, SegmentLine, Point, MultiPoint: no offset needed (OK),
+	 * - Elliptic, Oval, Polygon, Rectangle, RotRectangle: 0.5 pix offset needed.
+	 * 
+	 * @param roi a ROI instance
+	 * @return true if offset needed
+	 */
+	private static boolean needsOffset(Roi roi) {
+		int type = roi.getType();
+		if (roi instanceof EllipseRoi) return true;
+		if (roi instanceof OvalRoi) return true;
+		if (roi instanceof PolygonRoi && type == Roi.POLYGON) return true;
+		if (roi instanceof Roi && type == Roi.RECTANGLE) return true;
+		if (roi instanceof RotatedRectRoi) return true;
+		return false;
 	}
 	
 	/**
