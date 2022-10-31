@@ -18,7 +18,7 @@ import imagingbook.common.threshold.Thresholder;
  * See Sec. 9.2 of [1] for an overview.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

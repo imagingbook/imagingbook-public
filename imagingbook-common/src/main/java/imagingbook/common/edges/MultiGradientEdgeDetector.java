@@ -27,7 +27,7 @@ import imagingbook.common.util.ParameterBundle;
  * See Sec. 16.2 (Alg. 16.2) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
  * 3rd ed, Springer (2022).
  * </p>
  * 

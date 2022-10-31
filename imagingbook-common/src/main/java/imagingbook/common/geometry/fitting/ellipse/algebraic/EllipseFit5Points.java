@@ -29,7 +29,7 @@ import imagingbook.common.math.PrintPrecision;
  * If the fit is unsuccessful, {@link #getParameters()} returns {@code null}.
  * The underlying algorithm is described in [1, Section F.3.3].
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * @author WB
  *

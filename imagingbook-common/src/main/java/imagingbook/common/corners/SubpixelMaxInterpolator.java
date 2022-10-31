@@ -26,7 +26,7 @@ import static imagingbook.common.math.Matrix.normL2;
  * See Sec. 6.5 and Appendix E of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
  * 3rd ed, Springer (2022).
  * </p>
  * 
@@ -102,7 +102,7 @@ public abstract class SubpixelMaxInterpolator {
 	 * additional details.
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
 	 * 3rd ed, Springer (2022).
 	 * </p>
 	 */
@@ -196,7 +196,7 @@ public abstract class SubpixelMaxInterpolator {
 	 * additional details.
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
 	 * 3rd ed, Springer (2022).
 	 * </p>
 	 */
@@ -250,7 +250,7 @@ public abstract class SubpixelMaxInterpolator {
 	 * additional details.
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
 	 * 3rd ed, Springer (2022).
 	 * </p>
 	 */

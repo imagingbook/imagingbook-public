@@ -33,7 +33,7 @@ import imagingbook.common.util.tuples.Tuple2;
  * and Image Processing: Image Understanding 93(2), 206-220 (2004).
  * <br>
  * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Approach</em>, 3rd ed, Springer (2022).
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

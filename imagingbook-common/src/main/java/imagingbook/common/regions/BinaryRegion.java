@@ -43,7 +43,7 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Approach</em>, 3rd ed, Springer (2022).
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  */
 public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d> {
@@ -173,7 +173,7 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	 * </p>
 	 * <p>
 	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
-	 * Approach</em>, 3rd ed, Springer (2022).
+	 * Introduction</em>, 3rd ed, Springer (2022).
 	 * </p>
 	 * 
 	 * @return the equivalent ellipse (instance of {@link GeometricEllipse})

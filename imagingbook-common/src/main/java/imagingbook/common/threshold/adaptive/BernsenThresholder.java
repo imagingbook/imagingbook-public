@@ -25,7 +25,7 @@ import imagingbook.common.util.ParameterBundle;
  * of the International Conference on Pattern Recognition (ICPR)",
  * pp. 1251–1255, Paris (October 1986). IEEE Computer Society.
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

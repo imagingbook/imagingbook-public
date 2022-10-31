@@ -26,7 +26,7 @@ import imagingbook.common.image.PixelPack.PixelSlice;
  * using anisotropic diffusion", IEEE Transactions on Pattern Analysis 
  * and Machine Intelligence, vol. 12, no. 4, pp. 629-639 (July 1990).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

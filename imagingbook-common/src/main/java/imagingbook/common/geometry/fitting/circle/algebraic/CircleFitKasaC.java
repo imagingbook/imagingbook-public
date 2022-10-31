@@ -40,7 +40,7 @@ import imagingbook.common.geometry.basic.PntUtils;
  * Lines by Least Squares". Monographs on Statistics and Applied Probability.
  * Taylor &amp; Francis (2011).
  * <br>
- * [3] W. Burger, M.J. Burge, Digital Image Processing &ndash; An Algorithmichmic Approach</em>, 3rd ed, Springer (2022).
+ * [3] W. Burger, M.J. Burge, Digital Image Processing &ndash; An Algorithmichmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

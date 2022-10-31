@@ -37,7 +37,7 @@ import imagingbook.common.math.eigen.EigenDecompositionJama;
  * squares fitting of ellipses. IEEE Transactions on Pattern Analysis
  * and Machine Intelligence 21(5), 476-480 (1999).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

@@ -22,7 +22,7 @@ import org.apache.commons.math3.stat.correlation.Covariance;
  * See the Appendix G (Sections G.2-G.3) of [1] for additional details and examples.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

@@ -27,7 +27,7 @@ import imagingbook.common.math.Matrix;
  * [1] W. Gander, M. J. Gander, and F. Kwok. "Scientific Computing – An
  * Introduction using Maple and MATLAB". Springer (2014). <br>
  * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Approach</em>, 3rd ed, Springer (2022).
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

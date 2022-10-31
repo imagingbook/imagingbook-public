@@ -28,7 +28,7 @@ import imagingbook.common.util.bits.BitMap;
  * [1] D. Nister and H. Stewenius, "Linear Time Maximally Stable Extremal Regions", 
  * Computer Vision - ECCV 2008. pp. 183-196, Springer Berlin/Heidelberg (2008).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

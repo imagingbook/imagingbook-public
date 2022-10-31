@@ -16,7 +16,7 @@ import imagingbook.core.resource.ImageResource;
  * <p>
  * Enumeration of resources for images used in Chapter 1 of [1].
  * <br>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
  * 3rd ed, Springer (2022).
  * </p>
  */

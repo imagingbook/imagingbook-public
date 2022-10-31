@@ -38,7 +38,7 @@ import imagingbook.common.geometry.circle.GeometricCircle;
  * See [1, Sec. 11.1.3] for a detailed description (Alg. 11.3).
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 
