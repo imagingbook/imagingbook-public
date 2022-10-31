@@ -21,7 +21,7 @@ import imagingbook.common.histogram.HistogramUtils;
  * method for gray-level picture thresholding using the entropy of the
  * histogram. Computer Vision, Graphics, and Image Processing 29, 273–285 (1985).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

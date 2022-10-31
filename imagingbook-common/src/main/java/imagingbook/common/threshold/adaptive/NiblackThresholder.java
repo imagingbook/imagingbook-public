@@ -30,9 +30,9 @@ import imagingbook.common.util.ParameterBundle;
  * </ul>
  * Note that {@link NiblackThresholder} itself is abstract and thus cannot be instantiated.
  * <p>
- * [1] W. Niblack. “An Introduction to Digital Image Processing”. Prentice-Hall (1986).
+ * [1] W. Niblack. "An Introduction to Digital Image Processing". Prentice-Hall (1986).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>, 
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
  * 3rd ed, Springer (2022).
  * </p>
  * 

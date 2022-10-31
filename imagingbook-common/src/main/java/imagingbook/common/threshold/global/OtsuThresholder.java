@@ -21,7 +21,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
  * [1] N. Otsu, "A threshold selection method from gray-level histograms",
  * IEEE Transactions on Systems, Man, and Cybernetics 9(1), 62-66 (1979).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
  * 3rd ed, Springer (2022).
  * </p>
  * @author WB

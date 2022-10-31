@@ -20,7 +20,7 @@ package imagingbook.common.threshold.global;
  * [1] J. Illingworth and J. Kittler. "Minimum error thresholding". 
  * Pattern Recognition 19(1), 41–47 (1986).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Approach</em>,
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
  * 3rd ed, Springer (2022).
  * </p>
  * 

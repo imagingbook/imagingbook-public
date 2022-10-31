@@ -34,7 +34,7 @@ import org.jtransforms.dct.FloatDCT_1D;
  * </pre>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Approach</em>, 3rd ed, Springer (2022).
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  */
 public abstract class Dct1dFast extends Dct1dImp {
