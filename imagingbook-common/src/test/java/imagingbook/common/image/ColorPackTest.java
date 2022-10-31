@@ -24,7 +24,7 @@ public class ColorPackTest {
 	
 	static double TOL = 1e-4;
 	
-	ImageResource clown = GeneralSampleImage.clown;
+	ImageResource clown = GeneralSampleImage.Clown;
 
 	@Test
 	public void testBasicConversion() {	// conversion ColorProcessor/ColorStack

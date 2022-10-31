@@ -21,7 +21,7 @@ public class HistogramUtilsTest {
 
 	@Test
 	public void test1() {
-		ImageResource ir = GeneralSampleImage.boats;
+		ImageResource ir = GeneralSampleImage.Boats;
 		
 		ImageProcessor ip = ir.getImage().getProcessor();
 		int[] h = ip.getHistogram();

@@ -30,16 +30,16 @@ import imagingbook.core.resource.ImageResource;
 public enum GeneralSampleImage implements ImageResource {
 	
 		/** Original: https://imagej.nih.gov/ij/images/blobs.gif */
-		blobs,
+		Blobs,
 		
 		/** Original: https://imagej.nih.gov/ij/images/boats.gif */
-		boats,
+		Boats,
 		
 		/** A simple binary shape image with 0/255 values. */
 		Cat,
 		
 		/** Original: https://imagej.nih.gov/ij/images/clown.png */
-		clown,
+		Clown,
 		
 		/** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */
 		DotBlot,

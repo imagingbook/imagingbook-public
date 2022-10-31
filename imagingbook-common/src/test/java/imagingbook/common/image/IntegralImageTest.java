@@ -21,7 +21,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
 // TODO: Complete tests!
 public class IntegralImageTest {
 	
-	private static ImageResource ir = GeneralSampleImage.boats;
+	private static ImageResource ir = GeneralSampleImage.Boats;
 
 	@Test
 	public void test1() {

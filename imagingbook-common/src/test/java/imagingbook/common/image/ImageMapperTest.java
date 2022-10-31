@@ -22,7 +22,7 @@ public class ImageMapperTest {
 	
 	static float TOL = 1e-3f;
 	static ByteProcessor ip1 = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImage().getProcessor();
-	static ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.clown.getImage().getProcessor();
+	static ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.Clown.getImage().getProcessor();
 	
 	static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.ZeroValues;
 	static InterpolationMethod IPM = InterpolationMethod.Bilinear;

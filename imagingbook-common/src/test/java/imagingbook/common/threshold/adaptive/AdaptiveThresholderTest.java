@@ -21,43 +21,43 @@ public class AdaptiveThresholderTest {
 	@Test
 	public void testBernsenThresholder() {
 		AdaptiveThresholder thresholder = new BernsenThresholder();
-		runThreshold(thresholder, GeneralSampleImage.blobs, 43574);
-		runThreshold(thresholder, GeneralSampleImage.boats, 147239);	
+		runThreshold(thresholder, GeneralSampleImage.Blobs, 43574);
+		runThreshold(thresholder, GeneralSampleImage.Boats, 147239);	
 	}
 	
 	@Test
 	public void testInterpolatingThresholder() {
 		AdaptiveThresholder thresholder = new InterpolatingThresholder();
-		runThreshold(thresholder, GeneralSampleImage.blobs, 42354);
-		runThreshold(thresholder, GeneralSampleImage.boats, 164349);	
+		runThreshold(thresholder, GeneralSampleImage.Blobs, 42354);
+		runThreshold(thresholder, GeneralSampleImage.Boats, 164349);	
 	}
 	
 	@Test
 	public void testNiblackThresholderBox() {
 		AdaptiveThresholder thresholder = new NiblackThresholder.Box();
-		runThreshold(thresholder, GeneralSampleImage.blobs, 44121);
-		runThreshold(thresholder, GeneralSampleImage.boats, 323029);	
+		runThreshold(thresholder, GeneralSampleImage.Blobs, 44121);
+		runThreshold(thresholder, GeneralSampleImage.Boats, 323029);	
 	}
 	
 	@Test
 	public void testNiblackThresholderDisk() {
 		AdaptiveThresholder thresholder = new NiblackThresholder.Disk();
-		runThreshold(thresholder, GeneralSampleImage.blobs, 44571);
-		runThreshold(thresholder, GeneralSampleImage.boats, 328857);	
+		runThreshold(thresholder, GeneralSampleImage.Blobs, 44571);
+		runThreshold(thresholder, GeneralSampleImage.Boats, 328857);	
 	}
 	
 	@Test
 	public void testNiblackThresholderGauss() {
 		AdaptiveThresholder thresholder = new NiblackThresholder.Gauss();
-		runThreshold(thresholder, GeneralSampleImage.blobs, 44358);
-		runThreshold(thresholder, GeneralSampleImage.boats, 328838);	
+		runThreshold(thresholder, GeneralSampleImage.Blobs, 44358);
+		runThreshold(thresholder, GeneralSampleImage.Boats, 328838);	
 	}
 	
 	@Test
 	public void testSauvolaThresholder() {
 		AdaptiveThresholder thresholder = new SauvolaThresholder();
-		runThreshold(thresholder, GeneralSampleImage.blobs, 45399);
-		runThreshold(thresholder, GeneralSampleImage.boats, 387246);	
+		runThreshold(thresholder, GeneralSampleImage.Blobs, 45399);
+		runThreshold(thresholder, GeneralSampleImage.Boats, 387246);	
 	}
 	
 	// ------------------------

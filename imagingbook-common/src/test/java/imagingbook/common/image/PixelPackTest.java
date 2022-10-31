@@ -29,7 +29,7 @@ public class PixelPackTest {
 	static double TOL = 1e-4;
 	
 	ImageResource res1 = GeneralSampleImage.MonasterySmall;
-	ImageResource res2 = GeneralSampleImage.clown;
+	ImageResource res2 = GeneralSampleImage.Clown;
 	double scale = Math.PI;		// just to check pixel value scaling
 
 	@Test

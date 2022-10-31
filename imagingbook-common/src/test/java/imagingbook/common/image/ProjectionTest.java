@@ -16,7 +16,7 @@ public class ProjectionTest {
 	
 	static double TOL = 1e-6;
 	
-	static ImageResource ir = GeneralSampleImage.boats;
+	static ImageResource ir = GeneralSampleImage.Boats;
 	static double pH1 = 57489;
 	static double pH2 = 98093;
 	static double pV1 = 7944;

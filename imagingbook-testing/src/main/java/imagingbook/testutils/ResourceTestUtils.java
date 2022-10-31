@@ -51,6 +51,8 @@ public abstract class ResourceTestUtils {
 	/**
 	 * Scans all resources defined by some {@link ImageResource} class, validates that they can be opened
 	 * as images.
+	 * TODO: currently we cannot validate the existence of the resource in a case-sensitive manner,
+	 * but this is IMPORTANT when loading resources from a JAR file later.
 	 */
 	/**
 	 * Scans all resources defined by some {@link ImageResource} class and
@@ -64,12 +66,19 @@ public abstract class ResourceTestUtils {
 				ImageResource.class.isAssignableFrom(enumClass));
 		int n = 0;
 		for (E item : enumClass.getEnumConstants()) {
+//			System.out.println("testing " + item);
 			ImageResource res = (ImageResource) item;
 			assertNotNull(res.getRelativePath());
+			
 			File file = new File(res.getRelativePath());
-			assertNotNull(file);
-			assertNotNull(res.getURL());
-			assertNotNull("could not find file " + file.getAbsolutePath(), res.getURL());
+//			assertNotNull(file);
+//			System.out.println("file can read = " + file.canRead());
+			
+//			System.out.println("URL = " + res.getURL());
+//			System.out.println("expected name " + res.getFileName());
+//			System.out.println("   is in Jar: " + res.isInsideJar());
+		
+			assertNotNull("could not find resource " + file.getAbsolutePath(), res.getURL());	
 			assertNotNull("could not open image for resource " + res,  res.getImage());
 			n++;
 		}

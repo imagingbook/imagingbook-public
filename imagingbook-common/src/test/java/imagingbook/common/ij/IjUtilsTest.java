@@ -84,7 +84,7 @@ public class IjUtilsTest {
 	
 	@Test	// convert using default weights
 	public void testToByteProcessorColorProcessor() {
-		ImageProcessor ip = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip instanceof ColorProcessor);
 		ByteProcessor fp1 = IjUtils.toByteProcessor((ColorProcessor) ip, null);
 		ByteProcessor fp2 = makeLumaByte((ColorProcessor) ip, RgbUtils.getDefaultWeights());	// see below
@@ -93,7 +93,7 @@ public class IjUtilsTest {
 
 	@Test	// convert using default weights
 	public void testToByteProcessorColorProcessorWeights1() {
-		ImageProcessor ip = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip instanceof ColorProcessor);
 		ByteProcessor fp1 = IjUtils.toByteProcessor((ColorProcessor) ip, null);
 		ByteProcessor fp2 = makeLumaByte((ColorProcessor) ip, RgbUtils.getDefaultWeights());	// see below
@@ -103,7 +103,7 @@ public class IjUtilsTest {
 	@Test	// default conversion must honor the processor's weights (if set)
 	public void testToByteProcessorColorProcessorWeights2() {
 		double[] weights = {0.3, 0.5, 0.2};	// special weights!
-		ImageProcessor ip = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip instanceof ColorProcessor);
 		((ColorProcessor) ip).setRGBWeights(weights);
 		
@@ -116,7 +116,7 @@ public class IjUtilsTest {
 
 	@Test	// convert using default weights
 	public void testToFloatProcessorColorProcessor() {
-		ImageProcessor ip = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip instanceof ColorProcessor);
 		FloatProcessor fp1 = IjUtils.toFloatProcessor((ColorProcessor) ip, null);
 		FloatProcessor fp2 = makeLumaFloat((ColorProcessor) ip, RgbUtils.getDefaultWeights());	// see below
@@ -126,7 +126,7 @@ public class IjUtilsTest {
 	@Test	// convert using specific weights
 	public void testToFloatProcessorColorProcessorWeights1() {
 		double[] weights = RgbUtils.ITU601RgbWeights;
-		ImageProcessor ip = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip instanceof ColorProcessor);
 		FloatProcessor fp1 = IjUtils.toFloatProcessor((ColorProcessor) ip, weights);
 		FloatProcessor fp2 = makeLumaFloat((ColorProcessor) ip, weights);	// see below
@@ -136,7 +136,7 @@ public class IjUtilsTest {
 	@Test	// default conversion must honor the processor's weights (if set)
 	public void testToFloatProcessorColorProcessorWeights2() {
 		double[] weights = {0.3, 0.5, 0.2};	// special weights!
-		ImageProcessor ip = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip instanceof ColorProcessor);
 		((ColorProcessor) ip).setRGBWeights(weights);	
 		
@@ -203,7 +203,7 @@ public class IjUtilsTest {
 	
 	@Test
 	public void testCrop1B() {
-		ImageProcessor ip1 = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		ImageProcessor ip2 = IjUtils.crop(ip1, 0, 0, ip1.getWidth(), ip1.getHeight());
 		assertTrue(ip2 instanceof ColorProcessor);
@@ -212,7 +212,7 @@ public class IjUtilsTest {
 	
 	@Test
 	public void testCrop1C() {
-		ImageProcessor ip1 = GeneralSampleImage.clown.getImage().getProcessor().convertToFloatProcessor();
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor().convertToFloatProcessor();
 		assertTrue(ip1 instanceof FloatProcessor);
 		ImageProcessor ip2 = IjUtils.crop(ip1, 0, 0, ip1.getWidth(), ip1.getHeight());
 		assertTrue(ip2 instanceof FloatProcessor);
@@ -235,7 +235,7 @@ public class IjUtilsTest {
 	
 	@Test
 	public void testCrop2B() {
-		ImageProcessor ip1 = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		int x = ip1.getWidth() / 5;
 		int y = ip1.getHeight() / 3;
@@ -265,7 +265,7 @@ public class IjUtilsTest {
 	
 	@Test
 	public void testCrop3B() {
-		ImageProcessor ip1 = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		int dx = 10;
 		int dy = 7;
@@ -297,7 +297,7 @@ public class IjUtilsTest {
 	
 	@Test
 	public void testCrop4B() {
-		ImageProcessor ip1 = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		int dx = 10;
 		int dy = 7;
@@ -325,7 +325,7 @@ public class IjUtilsTest {
 	
 	@Test
 	public void testCrop5B() {
-		ImageProcessor ip1 = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		int x = ip1.getWidth();
 		int y = ip1.getHeight();
@@ -344,7 +344,7 @@ public class IjUtilsTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testCrop6B() {
-		ImageProcessor ip1 = GeneralSampleImage.clown.getImage().getProcessor();
+		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		IjUtils.crop(ip1, 2, 3, 15, 0);
 	}
