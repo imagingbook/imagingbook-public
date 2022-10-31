@@ -24,7 +24,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
  * [1] T. Y. Zhang and C. Y. Suen. A fast parallel algorithm for thinning
  * digital patterns. Communications of the ACM 27(3), 236–239 (1984).
  * <br>
- * [2] W. Burger, M.J. Burge<em>Digital Image Processing &ndash; An Algorithmic Introduction</em>m>,
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
  * 3rd ed, Springer (2022).
  * </p>
  * 

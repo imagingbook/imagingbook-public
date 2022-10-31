@@ -34,10 +34,10 @@
 <span class="sourceLineNo">024</span><a id="line.24"> * 10.2.2 (Alg. 10.2) of [2] for additional details.</a>
 <span class="sourceLineNo">025</span><a id="line.25"> * &lt;/p&gt;</a>
 <span class="sourceLineNo">026</span><a id="line.26"> * &lt;p&gt;</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * [1] W. Gander, M. J. Gander, and F. Kwok. “Scientific Computing – An</a>
-<span class="sourceLineNo">028</span><a id="line.28"> * Introduction using Maple and MATLAB”. Springer (2014). &lt;br&gt;</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing - An Algorithmic</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * Approach&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * [1] W. Gander, M. J. Gander, and F. Kwok. "Scientific Computing – An</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * Introduction using Maple and MATLAB". Springer (2014). &lt;br&gt;</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
 <span class="sourceLineNo">031</span><a id="line.31"> * &lt;/p&gt;</a>
 <span class="sourceLineNo">032</span><a id="line.32"> * </a>
 <span class="sourceLineNo">033</span><a id="line.33"> * @author WB</a>
@@ -51,63 +51,69 @@
 <span class="sourceLineNo">041</span><a id="line.41">        private final Pnt2d[] points;</a>
 <span class="sourceLineNo">042</span><a id="line.42">        private final double[] p;       // algebraic line parameters A,B,C</a>
 <span class="sourceLineNo">043</span><a id="line.43">        </a>
-<span class="sourceLineNo">044</span><a id="line.44">        public OrthogonalLineFitHomogeneous(Pnt2d[] points) {</a>
-<span class="sourceLineNo">045</span><a id="line.45">                if (points.length &lt; 2) {</a>
-<span class="sourceLineNo">046</span><a id="line.46">                        throw new IllegalArgumentException("line fit requires at least 2 points");</a>
-<span class="sourceLineNo">047</span><a id="line.47">                }</a>
-<span class="sourceLineNo">048</span><a id="line.48">                this.points = points;</a>
-<span class="sourceLineNo">049</span><a id="line.49">                this.p = fit();</a>
-<span class="sourceLineNo">050</span><a id="line.50">        }</a>
-<span class="sourceLineNo">051</span><a id="line.51">        </a>
-<span class="sourceLineNo">052</span><a id="line.52">        @Override</a>
-<span class="sourceLineNo">053</span><a id="line.53">        public int getSize() {</a>
-<span class="sourceLineNo">054</span><a id="line.54">                return points.length;</a>
-<span class="sourceLineNo">055</span><a id="line.55">        }</a>
-<span class="sourceLineNo">056</span><a id="line.56">        </a>
-<span class="sourceLineNo">057</span><a id="line.57">        @Override</a>
-<span class="sourceLineNo">058</span><a id="line.58">        public double[] getLineParameters() {</a>
-<span class="sourceLineNo">059</span><a id="line.59">                return p;</a>
-<span class="sourceLineNo">060</span><a id="line.60">        }</a>
-<span class="sourceLineNo">061</span><a id="line.61">        </a>
-<span class="sourceLineNo">062</span><a id="line.62">        private double[] fit() {</a>
-<span class="sourceLineNo">063</span><a id="line.63">                final int n = points.length; //.max(3, pts.length);</a>
-<span class="sourceLineNo">064</span><a id="line.64">                final double[][] X = new double[n][3];</a>
-<span class="sourceLineNo">065</span><a id="line.65">                </a>
-<span class="sourceLineNo">066</span><a id="line.66">                for (int i = 0; i &lt; points.length; i++) {</a>
-<span class="sourceLineNo">067</span><a id="line.67">                        X[i][0] = 1;</a>
-<span class="sourceLineNo">068</span><a id="line.68">                        X[i][1] = points[i].getX();</a>
-<span class="sourceLineNo">069</span><a id="line.69">                        X[i][2] = points[i].getY();</a>
-<span class="sourceLineNo">070</span><a id="line.70">                }</a>
+<span class="sourceLineNo">044</span><a id="line.44">        /**</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * Constructor, performs a orthogonal regression fit to the specified points.</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * At least two different points are required.</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * </a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @param points an array with at least 2 points</a>
+<span class="sourceLineNo">049</span><a id="line.49">         */</a>
+<span class="sourceLineNo">050</span><a id="line.50">        public OrthogonalLineFitHomogeneous(Pnt2d[] points) {</a>
+<span class="sourceLineNo">051</span><a id="line.51">                if (points.length &lt; 2) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">                        throw new IllegalArgumentException("line fit requires at least 2 points");</a>
+<span class="sourceLineNo">053</span><a id="line.53">                }</a>
+<span class="sourceLineNo">054</span><a id="line.54">                this.points = points;</a>
+<span class="sourceLineNo">055</span><a id="line.55">                this.p = fit();</a>
+<span class="sourceLineNo">056</span><a id="line.56">        }</a>
+<span class="sourceLineNo">057</span><a id="line.57">        </a>
+<span class="sourceLineNo">058</span><a id="line.58">        @Override</a>
+<span class="sourceLineNo">059</span><a id="line.59">        public int getSize() {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                return points.length;</a>
+<span class="sourceLineNo">061</span><a id="line.61">        }</a>
+<span class="sourceLineNo">062</span><a id="line.62">        </a>
+<span class="sourceLineNo">063</span><a id="line.63">        @Override</a>
+<span class="sourceLineNo">064</span><a id="line.64">        public double[] getLineParameters() {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                return p;</a>
+<span class="sourceLineNo">066</span><a id="line.66">        }</a>
+<span class="sourceLineNo">067</span><a id="line.67">        </a>
+<span class="sourceLineNo">068</span><a id="line.68">        private double[] fit() {</a>
+<span class="sourceLineNo">069</span><a id="line.69">                final int n = points.length; //.max(3, pts.length);</a>
+<span class="sourceLineNo">070</span><a id="line.70">                final double[][] X = new double[n][3];</a>
 <span class="sourceLineNo">071</span><a id="line.71">                </a>
-<span class="sourceLineNo">072</span><a id="line.72">                QRDecomposition qr = new QRDecomposition(MatrixUtils.createRealMatrix(X));</a>
-<span class="sourceLineNo">073</span><a id="line.73">                RealMatrix R = qr.getR();</a>
-<span class="sourceLineNo">074</span><a id="line.74">                </a>
-<span class="sourceLineNo">075</span><a id="line.75">//              RealMatrix RR = R.getSubMatrix(1, 2, 1, 2);</a>
-<span class="sourceLineNo">076</span><a id="line.76">                RealMatrix RR = new Array2DRowRealMatrix(2,2);</a>
-<span class="sourceLineNo">077</span><a id="line.77">                RR.setEntry(0, 0, R.getEntry(1, 1));</a>
-<span class="sourceLineNo">078</span><a id="line.78">                RR.setEntry(0, 1, R.getEntry(1, 2));</a>
-<span class="sourceLineNo">079</span><a id="line.79">                if (R.getRowDimension() &gt;= 3) {</a>
-<span class="sourceLineNo">080</span><a id="line.80">                        RR.setEntry(1, 1, R.getEntry(2, 2));</a>
-<span class="sourceLineNo">081</span><a id="line.81">                }</a>
-<span class="sourceLineNo">082</span><a id="line.82">        </a>
-<span class="sourceLineNo">083</span><a id="line.83">                SingularValueDecomposition svd = new SingularValueDecomposition(RR);</a>
-<span class="sourceLineNo">084</span><a id="line.84">                </a>
-<span class="sourceLineNo">085</span><a id="line.85">                RealMatrix V = svd.getV();</a>
-<span class="sourceLineNo">086</span><a id="line.86">                double[] s = svd.getSingularValues();</a>
-<span class="sourceLineNo">087</span><a id="line.87">                int k = Matrix.idxMin(s);</a>
-<span class="sourceLineNo">088</span><a id="line.88">                double[] e = V.getColumn(k);</a>
-<span class="sourceLineNo">089</span><a id="line.89">                </a>
-<span class="sourceLineNo">090</span><a id="line.90">                double R01 = R.getEntry(0, 1);</a>
-<span class="sourceLineNo">091</span><a id="line.91">                double R02 = R.getEntry(0, 2);</a>
-<span class="sourceLineNo">092</span><a id="line.92">                double R00 = R.getEntry(0, 0);</a>
-<span class="sourceLineNo">093</span><a id="line.93"></a>
-<span class="sourceLineNo">094</span><a id="line.94">                double A = e[0];</a>
-<span class="sourceLineNo">095</span><a id="line.95">                double B = e[1];</a>
-<span class="sourceLineNo">096</span><a id="line.96">                double C = ( -A * R01 - B * R02) / R00;</a>
-<span class="sourceLineNo">097</span><a id="line.97">                return new double[] {A,B,C};</a>
-<span class="sourceLineNo">098</span><a id="line.98">        }</a>
+<span class="sourceLineNo">072</span><a id="line.72">                for (int i = 0; i &lt; points.length; i++) {</a>
+<span class="sourceLineNo">073</span><a id="line.73">                        X[i][0] = 1;</a>
+<span class="sourceLineNo">074</span><a id="line.74">                        X[i][1] = points[i].getX();</a>
+<span class="sourceLineNo">075</span><a id="line.75">                        X[i][2] = points[i].getY();</a>
+<span class="sourceLineNo">076</span><a id="line.76">                }</a>
+<span class="sourceLineNo">077</span><a id="line.77">                </a>
+<span class="sourceLineNo">078</span><a id="line.78">                QRDecomposition qr = new QRDecomposition(MatrixUtils.createRealMatrix(X));</a>
+<span class="sourceLineNo">079</span><a id="line.79">                RealMatrix R = qr.getR();</a>
+<span class="sourceLineNo">080</span><a id="line.80">                </a>
+<span class="sourceLineNo">081</span><a id="line.81">//              RealMatrix RR = R.getSubMatrix(1, 2, 1, 2);</a>
+<span class="sourceLineNo">082</span><a id="line.82">                RealMatrix RR = new Array2DRowRealMatrix(2,2);</a>
+<span class="sourceLineNo">083</span><a id="line.83">                RR.setEntry(0, 0, R.getEntry(1, 1));</a>
+<span class="sourceLineNo">084</span><a id="line.84">                RR.setEntry(0, 1, R.getEntry(1, 2));</a>
+<span class="sourceLineNo">085</span><a id="line.85">                if (R.getRowDimension() &gt;= 3) {</a>
+<span class="sourceLineNo">086</span><a id="line.86">                        RR.setEntry(1, 1, R.getEntry(2, 2));</a>
+<span class="sourceLineNo">087</span><a id="line.87">                }</a>
+<span class="sourceLineNo">088</span><a id="line.88">        </a>
+<span class="sourceLineNo">089</span><a id="line.89">                SingularValueDecomposition svd = new SingularValueDecomposition(RR);</a>
+<span class="sourceLineNo">090</span><a id="line.90">                </a>
+<span class="sourceLineNo">091</span><a id="line.91">                RealMatrix V = svd.getV();</a>
+<span class="sourceLineNo">092</span><a id="line.92">                double[] s = svd.getSingularValues();</a>
+<span class="sourceLineNo">093</span><a id="line.93">                int k = Matrix.idxMin(s);</a>
+<span class="sourceLineNo">094</span><a id="line.94">                double[] e = V.getColumn(k);</a>
+<span class="sourceLineNo">095</span><a id="line.95">                </a>
+<span class="sourceLineNo">096</span><a id="line.96">                double R01 = R.getEntry(0, 1);</a>
+<span class="sourceLineNo">097</span><a id="line.97">                double R02 = R.getEntry(0, 2);</a>
+<span class="sourceLineNo">098</span><a id="line.98">                double R00 = R.getEntry(0, 0);</a>
 <span class="sourceLineNo">099</span><a id="line.99"></a>
-<span class="sourceLineNo">100</span><a id="line.100">}</a>
+<span class="sourceLineNo">100</span><a id="line.100">                double A = e[0];</a>
+<span class="sourceLineNo">101</span><a id="line.101">                double B = e[1];</a>
+<span class="sourceLineNo">102</span><a id="line.102">                double C = ( -A * R01 - B * R02) / R00;</a>
+<span class="sourceLineNo">103</span><a id="line.103">                return new double[] {A,B,C};</a>
+<span class="sourceLineNo">104</span><a id="line.104">        }</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">}</a>
 
 
 

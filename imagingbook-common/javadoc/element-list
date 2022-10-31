@@ -19,6 +19,7 @@ imagingbook.common.geometry.delaunay
 imagingbook.common.geometry.delaunay.guibas
 imagingbook.common.geometry.ellipse
 imagingbook.common.geometry.ellipse.project
+imagingbook.common.geometry.fd
 imagingbook.common.geometry.fitting
 imagingbook.common.geometry.fitting.circle.algebraic
 imagingbook.common.geometry.fitting.circle.geometric
@@ -32,6 +33,7 @@ imagingbook.common.geometry.line
 imagingbook.common.geometry.mappings
 imagingbook.common.geometry.mappings.linear
 imagingbook.common.geometry.mappings.nonlinear
+imagingbook.common.geometry.misc
 imagingbook.common.geometry.moments
 imagingbook.common.geometry.shape
 imagingbook.common.histogram
@@ -66,4 +68,5 @@ imagingbook.common.threshold.global
 imagingbook.common.util
 imagingbook.common.util.bits
 imagingbook.common.util.progress
+imagingbook.common.util.random
 imagingbook.common.util.tuples

@@ -19,7 +19,8 @@ import ij.process.ByteProcessor;
  * </p>
  * <p>
  * [1] F. C. Crow. Summed-area tables for texture mapping. SIGGRAPH, Computer Graphics 18(3), 207–212 (1984).<br>
- * [2] W. Burger, M.J. Burge<em>Digital Image Processing &ndash; An Algorithmic Introduction</em>m>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
+ * 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

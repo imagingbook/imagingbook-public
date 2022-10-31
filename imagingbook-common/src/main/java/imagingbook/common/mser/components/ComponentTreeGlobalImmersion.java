@@ -30,7 +30,8 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
  * algorithm based on immersion simulations", IEEE Transactions on 
  * Pattern Analysis and Machine Intelligence 13(6), 583–598 (1991).
  * <br>
- * [2] W. Burger, M.J. Burge<em>Digital Image Processing &ndash; An Algorithmic Introduction</em>m>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
+ * 3rd ed, Springer (2022).
  * <br>
  * [3] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline
  * stereo from maximally stable extremal regions. Image and Vision Computing 22(10), 

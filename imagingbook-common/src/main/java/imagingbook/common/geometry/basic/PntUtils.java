@@ -90,7 +90,7 @@ public abstract class PntUtils {
 	 * is not even. Usage example:
 	 * <pre>
 	 * Pnt2d[] pts = PntUtils.makeIntPoints(1, 2, 3, 4, 5, 6);
-	 * // -> [PntInt(1, 2), PntInt(3, 4), PntInt(5, 6)]
+	 *    // gives [PntInt(1, 2), PntInt(3, 4), PntInt(5, 6)]
 	 * </pre>
 	 * 
 	 * @param xy an even-numbered sequence of point coordinates
@@ -115,7 +115,7 @@ public abstract class PntUtils {
 	 * is not even. Usage example:
 	 * <pre>
 	 * Pnt2d[] pts = PntUtils.makeDoublePoints(1, 2, 3, 4, 5, 6);
-	 * // -> [PntDouble(1.0, 2.0), PntDouble(3.0, 4.0), PntDouble(5.0, 6.0)]
+	 * // gives [PntDouble(1.0, 2.0), PntDouble(3.0, 4.0), PntDouble(5.0, 6.0)]
 	 * </pre>
 	 * 
 	 * @param xy an even-numbered sequence of point coordinates

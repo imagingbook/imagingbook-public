@@ -135,7 +135,7 @@
 <span class="sourceLineNo">125</span><a id="line.125">        public Pnt2d applyTo(Pnt2d pnt) {</a>
 <span class="sourceLineNo">126</span><a id="line.126">                final double x = pnt.getX();</a>
 <span class="sourceLineNo">127</span><a id="line.127">                final double y = pnt.getY();</a>
-<span class="sourceLineNo">128</span><a id="line.128">                double h =  (a20 * x + a21 * y + a22);</a>
+<span class="sourceLineNo">128</span><a id="line.128">                final double h =  (a20 * x + a21 * y + a22);</a>
 <span class="sourceLineNo">129</span><a id="line.129">                double x1 = (a00 * x + a01 * y + a02) / h;</a>
 <span class="sourceLineNo">130</span><a id="line.130">                double y1 = (a10 * x + a11 * y + a12) / h;</a>
 <span class="sourceLineNo">131</span><a id="line.131">                return PntDouble.from(x1, y1);</a>

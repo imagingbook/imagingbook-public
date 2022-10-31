@@ -24,7 +24,7 @@ import imagingbook.common.color.colorspace.sRgb65ColorSpace;
  * Pixel values are typically in [0,1], depending on the associated color space.
  * A {@link ColorPack} may be created from an existing {@link ColorProcessor}
  * whose pixels are assumed to be in sRGB color space (see
- * {@link #ColorStack(ColorProcessor)}). To be converted back to a
+ * {@link #ColorPack(ColorProcessor)}). To be converted back to a
  * {@link ColorProcessor}, the {@link ColorPack} must be in sRGB color space
  * (see {@link #convertToSrgb()}).
  * 
