@@ -64,7 +64,10 @@ public enum GeneralSampleImage implements ImageResource {
 		RhinoBigCrop,
 		
 		/** Used for trigonometric Fourier descriptors. */
-		HouseRoi_tif
+		HouseRoi_tif,
+		
+		ToolsSmall,
+		
 	;
 
 }
