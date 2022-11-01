@@ -7,6 +7,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * Allows the user to select and open one of the internal sample images.
+ * The image is loaded from the associated JAR file.
  * 
  * @author WB
  */
