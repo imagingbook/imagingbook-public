@@ -82,8 +82,6 @@ public class ConvexHull implements ShapeProducer {
 		return vecs;
 	}
 	
-	// public methods ------------------------
-	
 	/**
 	 * Returns a sequence of 2D points on the convex hull
 	 * (in counter-clockwise order).

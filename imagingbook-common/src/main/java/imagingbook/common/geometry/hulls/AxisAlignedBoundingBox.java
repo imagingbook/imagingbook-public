@@ -91,7 +91,7 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	 * coincide with the outline of the bounding box. The lines can be used to determine
 	 * if a given point is inside the box or not (see {@link #contains(Pnt2d, double)}).
 	 * 
-	 * @return
+	 * @return an array of bounding lines
 	 */
 	public AlgebraicLine[] getBoundingLines() {
 		return this.boundinglines;

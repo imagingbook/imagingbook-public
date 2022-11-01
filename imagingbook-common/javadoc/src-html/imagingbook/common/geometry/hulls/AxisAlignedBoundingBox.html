@@ -22,212 +22,243 @@
 <span class="sourceLineNo">012</span><a id="line.12">import static imagingbook.common.math.Arithmetic.radius;</a>
 <span class="sourceLineNo">013</span><a id="line.13">import static imagingbook.common.math.Arithmetic.sqr;</a>
 <span class="sourceLineNo">014</span><a id="line.14">import static imagingbook.common.math.Matrix.add;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import static imagingbook.common.math.Matrix.multiply;</a>
-<span class="sourceLineNo">016</span><a id="line.16">import static java.lang.Math.sqrt;</a>
-<span class="sourceLineNo">017</span><a id="line.17"></a>
-<span class="sourceLineNo">018</span><a id="line.18">import java.awt.Shape;</a>
-<span class="sourceLineNo">019</span><a id="line.19">import java.awt.geom.Path2D;</a>
-<span class="sourceLineNo">020</span><a id="line.20"></a>
-<span class="sourceLineNo">021</span><a id="line.21">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">022</span><a id="line.22">import imagingbook.common.geometry.basic.Pnt2d.PntDouble;</a>
-<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.geometry.line.AlgebraicLine;</a>
-<span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.geometry.shape.ShapeProducer;</a>
-<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.util.ArrayIterator;</a>
-<span class="sourceLineNo">026</span><a id="line.26"></a>
-<span class="sourceLineNo">027</span><a id="line.27">/**</a>
-<span class="sourceLineNo">028</span><a id="line.28"> * Represents a major axis-aligned bounding box of a 2D point set.</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * </a>
-<span class="sourceLineNo">030</span><a id="line.30"> * @author WB</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * @version 2022/06/23</a>
-<span class="sourceLineNo">032</span><a id="line.32"> * </a>
-<span class="sourceLineNo">033</span><a id="line.33"> */</a>
-<span class="sourceLineNo">034</span><a id="line.34">public class AxisAlignedBoundingBox implements ShapeProducer {</a>
-<span class="sourceLineNo">035</span><a id="line.35">        </a>
-<span class="sourceLineNo">036</span><a id="line.36">        private final Iterable&lt;Pnt2d&gt; points;</a>
-<span class="sourceLineNo">037</span><a id="line.37">        private final PntDouble centroid;                       // centroid of the point set</a>
-<span class="sourceLineNo">038</span><a id="line.38">        private final double[] orientationVector;</a>
-<span class="sourceLineNo">039</span><a id="line.39">        private final Pnt2d[] boundingbox;</a>
-<span class="sourceLineNo">040</span><a id="line.40">        private final AlgebraicLine[] boundinglines;</a>
-<span class="sourceLineNo">041</span><a id="line.41"></a>
-<span class="sourceLineNo">042</span><a id="line.42">        /**</a>
-<span class="sourceLineNo">043</span><a id="line.43">         * Constructor. </a>
-<span class="sourceLineNo">044</span><a id="line.44">         * @param points an iterator over 2D points</a>
-<span class="sourceLineNo">045</span><a id="line.45">         */</a>
-<span class="sourceLineNo">046</span><a id="line.46">        public AxisAlignedBoundingBox(Iterable&lt;Pnt2d&gt; points) {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                this.points = points;</a>
-<span class="sourceLineNo">048</span><a id="line.48">                this.centroid = makeCentroid();         </a>
-<span class="sourceLineNo">049</span><a id="line.49">                this.orientationVector = makeOrientationVector();</a>
-<span class="sourceLineNo">050</span><a id="line.50">                this.boundingbox = makeBox();</a>
-<span class="sourceLineNo">051</span><a id="line.51">                this.boundinglines = new AlgebraicLine[] {</a>
-<span class="sourceLineNo">052</span><a id="line.52">                        AlgebraicLine.from(boundingbox[0], boundingbox[1]),</a>
-<span class="sourceLineNo">053</span><a id="line.53">                        AlgebraicLine.from(boundingbox[1], boundingbox[2]),</a>
-<span class="sourceLineNo">054</span><a id="line.54">                        AlgebraicLine.from(boundingbox[2], boundingbox[3]),</a>
-<span class="sourceLineNo">055</span><a id="line.55">                        AlgebraicLine.from(boundingbox[3], boundingbox[0])};</a>
-<span class="sourceLineNo">056</span><a id="line.56">        }</a>
-<span class="sourceLineNo">057</span><a id="line.57">        </a>
-<span class="sourceLineNo">058</span><a id="line.58">        /**</a>
-<span class="sourceLineNo">059</span><a id="line.59">         * Constructor.</a>
-<span class="sourceLineNo">060</span><a id="line.60">         * @param points an array of 2D points</a>
-<span class="sourceLineNo">061</span><a id="line.61">         */</a>
-<span class="sourceLineNo">062</span><a id="line.62">        public AxisAlignedBoundingBox(Pnt2d[] points) {</a>
-<span class="sourceLineNo">063</span><a id="line.63">                this(() -&gt; ArrayIterator.from(points));</a>
-<span class="sourceLineNo">064</span><a id="line.64">        }</a>
-<span class="sourceLineNo">065</span><a id="line.65">        </a>
-<span class="sourceLineNo">066</span><a id="line.66">//      public Pnt2d getCentroid() {</a>
-<span class="sourceLineNo">067</span><a id="line.67">//              return centroid;</a>
-<span class="sourceLineNo">068</span><a id="line.68">//      }</a>
-<span class="sourceLineNo">069</span><a id="line.69">        </a>
-<span class="sourceLineNo">070</span><a id="line.70">        public double[] getOrientationVector() {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                return orientationVector;</a>
-<span class="sourceLineNo">072</span><a id="line.72">        }</a>
-<span class="sourceLineNo">073</span><a id="line.73">        </a>
-<span class="sourceLineNo">074</span><a id="line.74">        /**</a>
-<span class="sourceLineNo">075</span><a id="line.75">         * Returns an array holding the 4 corner points of the bounding box or </a>
-<span class="sourceLineNo">076</span><a id="line.76">         * {@code null} if the orientation of the point set is undefined.</a>
-<span class="sourceLineNo">077</span><a id="line.77">         * @return as described above</a>
-<span class="sourceLineNo">078</span><a id="line.78">         */</a>
-<span class="sourceLineNo">079</span><a id="line.79">        public Pnt2d[] getCornerPoints() {</a>
-<span class="sourceLineNo">080</span><a id="line.80">                return (boundingbox == null) ? null : boundingbox;</a>
-<span class="sourceLineNo">081</span><a id="line.81">        }</a>
-<span class="sourceLineNo">082</span><a id="line.82">                </a>
-<span class="sourceLineNo">083</span><a id="line.83">        /**</a>
-<span class="sourceLineNo">084</span><a id="line.84">         * Calculates the major axis-aligned bounding box of </a>
-<span class="sourceLineNo">085</span><a id="line.85">         * the supplied region, as a sequence of four point</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * coordinates (p0, p1, p2, p3).</a>
-<span class="sourceLineNo">087</span><a id="line.87">         * </a>
-<span class="sourceLineNo">088</span><a id="line.88">         * @param points binary region</a>
-<span class="sourceLineNo">089</span><a id="line.89">         * @return the region's bounding box as a sequence of 4 coordinates (p0, p1, p2, p3)</a>
-<span class="sourceLineNo">090</span><a id="line.90">         */</a>
-<span class="sourceLineNo">091</span><a id="line.91">        private Pnt2d[] makeBox() {</a>
-<span class="sourceLineNo">092</span><a id="line.92">                //double theta = getOrientationAngle(points);</a>
-<span class="sourceLineNo">093</span><a id="line.93">                </a>
-<span class="sourceLineNo">094</span><a id="line.94">                double[] xy = this.orientationVector;</a>
-<span class="sourceLineNo">095</span><a id="line.95">                if (xy == null) {       // regin's orientation is undefined</a>
-<span class="sourceLineNo">096</span><a id="line.96">                        return null;</a>
-<span class="sourceLineNo">097</span><a id="line.97">                }</a>
-<span class="sourceLineNo">098</span><a id="line.98">                        </a>
-<span class="sourceLineNo">099</span><a id="line.99">                double xa = xy[0]; // = Math.cos(theta);</a>
-<span class="sourceLineNo">100</span><a id="line.100">                double ya = xy[1]; // = Math.sin(theta);</a>
-<span class="sourceLineNo">101</span><a id="line.101">                double[] ea = {xa,  ya};</a>
-<span class="sourceLineNo">102</span><a id="line.102">                double[] eb = {ya, -xa};</a>
-<span class="sourceLineNo">103</span><a id="line.103">                </a>
-<span class="sourceLineNo">104</span><a id="line.104">                double amin = Double.POSITIVE_INFINITY;</a>
-<span class="sourceLineNo">105</span><a id="line.105">                double amax = Double.NEGATIVE_INFINITY;</a>
-<span class="sourceLineNo">106</span><a id="line.106">                double bmin = Double.POSITIVE_INFINITY;</a>
-<span class="sourceLineNo">107</span><a id="line.107">                double bmax = Double.NEGATIVE_INFINITY;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import static imagingbook.common.math.Matrix.makeDoubleVector;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import static imagingbook.common.math.Matrix.multiply;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import static java.lang.Math.sqrt;</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">import java.awt.Shape;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import java.awt.geom.Path2D;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import java.util.Arrays;</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.geometry.basic.Pnt2d.PntDouble;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.geometry.basic.PntUtils;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.geometry.line.AlgebraicLine;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import imagingbook.common.geometry.shape.ShapeProducer;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import imagingbook.common.util.ArrayIterator;</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">/**</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * &lt;p&gt;</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * Represents a major axis-aligned bounding box of a 2D point set. At least one</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * point is required to set up a bounding box. If the direction vector is</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * undefined (e.g., in the case of a single input point), the unit vector in</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * x-direction is assumed. See Sec. 8.6.4 (Alg. 8.6) of [1] for details.</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * &lt;p&gt;</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * </a>
+<span class="sourceLineNo">042</span><a id="line.42"> * </a>
+<span class="sourceLineNo">043</span><a id="line.43"> * @author WB</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * @version 2022/11/01</a>
+<span class="sourceLineNo">045</span><a id="line.45"> */</a>
+<span class="sourceLineNo">046</span><a id="line.46">public class AxisAlignedBoundingBox implements ShapeProducer {</a>
+<span class="sourceLineNo">047</span><a id="line.47">        </a>
+<span class="sourceLineNo">048</span><a id="line.48">        private final Pnt2d centroid;   // centroid of the point set</a>
+<span class="sourceLineNo">049</span><a id="line.49">        private final double[] dir;             // orientation vector</a>
+<span class="sourceLineNo">050</span><a id="line.50">        private final Pnt2d[] corners;  // corner points of the bounding box</a>
+<span class="sourceLineNo">051</span><a id="line.51">        private final AlgebraicLine[] boundinglines;</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">        /**</a>
+<span class="sourceLineNo">054</span><a id="line.54">         * Constructor, creates a {@link AxisAlignedBoundingBox} instance from</a>
+<span class="sourceLineNo">055</span><a id="line.55">         * an {@link Iterable} over {@link Pnt2d}. At least one distinct point is required.</a>
+<span class="sourceLineNo">056</span><a id="line.56">         * </a>
+<span class="sourceLineNo">057</span><a id="line.57">         * @param points an iterator over 2D points</a>
+<span class="sourceLineNo">058</span><a id="line.58">         */</a>
+<span class="sourceLineNo">059</span><a id="line.59">        public AxisAlignedBoundingBox(Iterable&lt;Pnt2d&gt; points) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                if (!points.iterator().hasNext()) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                        throw new IllegalArgumentException("empty point sequence, at least one input point required");</a>
+<span class="sourceLineNo">062</span><a id="line.62">                }</a>
+<span class="sourceLineNo">063</span><a id="line.63">                this.centroid = PntUtils.centroid(points); //makeCentroid();    </a>
+<span class="sourceLineNo">064</span><a id="line.64">                this.dir = makeOrientationVector(points);</a>
+<span class="sourceLineNo">065</span><a id="line.65">                this.corners = makeBox(points);</a>
+<span class="sourceLineNo">066</span><a id="line.66">                this.boundinglines = makeBoundingLines();</a>
+<span class="sourceLineNo">067</span><a id="line.67">        }</a>
+<span class="sourceLineNo">068</span><a id="line.68">        </a>
+<span class="sourceLineNo">069</span><a id="line.69">        /**</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * Constructor, creates a {@link AxisAlignedBoundingBox} instance from</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * an array of {@link Pnt2d} points. At least one distinct point is required.</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * </a>
+<span class="sourceLineNo">073</span><a id="line.73">         * @param points an array of 2D points</a>
+<span class="sourceLineNo">074</span><a id="line.74">         */</a>
+<span class="sourceLineNo">075</span><a id="line.75">        public AxisAlignedBoundingBox(Pnt2d[] points) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                this(() -&gt; ArrayIterator.from(points));</a>
+<span class="sourceLineNo">077</span><a id="line.77">        }</a>
+<span class="sourceLineNo">078</span><a id="line.78">        </a>
+<span class="sourceLineNo">079</span><a id="line.79">        /**</a>
+<span class="sourceLineNo">080</span><a id="line.80">         * Returns the orientation vector of this bounding box (pointing in the</a>
+<span class="sourceLineNo">081</span><a id="line.81">         * direction of its major axis).</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * </a>
+<span class="sourceLineNo">083</span><a id="line.83">         * @return the orientation vector of this bounding box</a>
+<span class="sourceLineNo">084</span><a id="line.84">         */</a>
+<span class="sourceLineNo">085</span><a id="line.85">        public double[] getOrientationVector() {</a>
+<span class="sourceLineNo">086</span><a id="line.86">                return dir;</a>
+<span class="sourceLineNo">087</span><a id="line.87">        }</a>
+<span class="sourceLineNo">088</span><a id="line.88">        </a>
+<span class="sourceLineNo">089</span><a id="line.89">        /**</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * Returns an array of four {@link AlgebraicLine} instances which</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * coincide with the outline of the bounding box. The lines can be used to determine</a>
+<span class="sourceLineNo">092</span><a id="line.92">         * if a given point is inside the box or not (see {@link #contains(Pnt2d, double)}).</a>
+<span class="sourceLineNo">093</span><a id="line.93">         * </a>
+<span class="sourceLineNo">094</span><a id="line.94">         * @return an array of bounding lines</a>
+<span class="sourceLineNo">095</span><a id="line.95">         */</a>
+<span class="sourceLineNo">096</span><a id="line.96">        public AlgebraicLine[] getBoundingLines() {</a>
+<span class="sourceLineNo">097</span><a id="line.97">                return this.boundinglines;</a>
+<span class="sourceLineNo">098</span><a id="line.98">        }</a>
+<span class="sourceLineNo">099</span><a id="line.99">        </a>
+<span class="sourceLineNo">100</span><a id="line.100">        /**</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * Returns an array holding the 4 corner points of the bounding box.</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * </a>
+<span class="sourceLineNo">103</span><a id="line.103">         * @return as described above</a>
+<span class="sourceLineNo">104</span><a id="line.104">         */</a>
+<span class="sourceLineNo">105</span><a id="line.105">        public Pnt2d[] getVertices() {</a>
+<span class="sourceLineNo">106</span><a id="line.106">                return this.corners;</a>
+<span class="sourceLineNo">107</span><a id="line.107">        }</a>
 <span class="sourceLineNo">108</span><a id="line.108">                </a>
-<span class="sourceLineNo">109</span><a id="line.109">                for (Pnt2d p : points) {</a>
-<span class="sourceLineNo">110</span><a id="line.110">                        double u = p.getX();</a>
-<span class="sourceLineNo">111</span><a id="line.111">                        double v = p.getY();</a>
-<span class="sourceLineNo">112</span><a id="line.112">                        double a = u * xa + v * ya;     // project (u,v) on the major axis vector</a>
-<span class="sourceLineNo">113</span><a id="line.113">                        double b = u * ya - v * xa;     // project (u,v) on perpendicular vector</a>
-<span class="sourceLineNo">114</span><a id="line.114">                        amin = Math.min(a, amin);</a>
-<span class="sourceLineNo">115</span><a id="line.115">                        amax = Math.max(a, amax);</a>
-<span class="sourceLineNo">116</span><a id="line.116">                        bmin = Math.min(b, bmin);</a>
-<span class="sourceLineNo">117</span><a id="line.117">                        bmax = Math.max(b, bmax);</a>
-<span class="sourceLineNo">118</span><a id="line.118">                }</a>
-<span class="sourceLineNo">119</span><a id="line.119">                </a>
-<span class="sourceLineNo">120</span><a id="line.120">//              double delta = 1e-6;</a>
-<span class="sourceLineNo">121</span><a id="line.121">//              amin -= delta;</a>
-<span class="sourceLineNo">122</span><a id="line.122">//              bmin -= delta;</a>
-<span class="sourceLineNo">123</span><a id="line.123">//              amax += delta;</a>
-<span class="sourceLineNo">124</span><a id="line.124">//              bmax += delta;</a>
-<span class="sourceLineNo">125</span><a id="line.125">                </a>
-<span class="sourceLineNo">126</span><a id="line.126">                Pnt2d[] corners = new Pnt2d[4];</a>
-<span class="sourceLineNo">127</span><a id="line.127">                corners[0] = PntDouble.from(add(multiply(amin, ea), multiply(bmin, eb)));</a>
-<span class="sourceLineNo">128</span><a id="line.128">                corners[1] = PntDouble.from(add(multiply(amin, ea), multiply(bmax, eb)));</a>
-<span class="sourceLineNo">129</span><a id="line.129">                corners[2] = PntDouble.from(add(multiply(amax, ea), multiply(bmax, eb)));</a>
-<span class="sourceLineNo">130</span><a id="line.130">                corners[3] = PntDouble.from(add(multiply(amax, ea), multiply(bmin, eb)));</a>
-<span class="sourceLineNo">131</span><a id="line.131">                return corners;</a>
-<span class="sourceLineNo">132</span><a id="line.132">        }</a>
-<span class="sourceLineNo">133</span><a id="line.133"></a>
-<span class="sourceLineNo">134</span><a id="line.134">        public double[] makeOrientationVector() {</a>
-<span class="sourceLineNo">135</span><a id="line.135">                double mu20 = 0;</a>
-<span class="sourceLineNo">136</span><a id="line.136">                double mu02 = 0;</a>
-<span class="sourceLineNo">137</span><a id="line.137">                double mu11 = 0;</a>
-<span class="sourceLineNo">138</span><a id="line.138"></a>
-<span class="sourceLineNo">139</span><a id="line.139">                for (Pnt2d p : points) {</a>
-<span class="sourceLineNo">140</span><a id="line.140">                        double dx = (p.getX() - centroid.x);</a>
-<span class="sourceLineNo">141</span><a id="line.141">                        double dy = (p.getY() - centroid.y);</a>
-<span class="sourceLineNo">142</span><a id="line.142">                        mu20 = mu20 + dx * dx;</a>
-<span class="sourceLineNo">143</span><a id="line.143">                        mu02 = mu02 + dy * dy;</a>
-<span class="sourceLineNo">144</span><a id="line.144">                        mu11 = mu11 + dx * dy;</a>
-<span class="sourceLineNo">145</span><a id="line.145">                }</a>
-<span class="sourceLineNo">146</span><a id="line.146">                </a>
-<span class="sourceLineNo">147</span><a id="line.147">                double A = 2 * mu11;</a>
-<span class="sourceLineNo">148</span><a id="line.148">                double B = mu20 - mu02;</a>
-<span class="sourceLineNo">149</span><a id="line.149">                </a>
-<span class="sourceLineNo">150</span><a id="line.150">                double xTheta = B + sqrt(sqr(A) + sqr(B));</a>
-<span class="sourceLineNo">151</span><a id="line.151">                double yTheta = A;</a>
-<span class="sourceLineNo">152</span><a id="line.152">                double d = radius(xTheta, yTheta);</a>
-<span class="sourceLineNo">153</span><a id="line.153">                </a>
-<span class="sourceLineNo">154</span><a id="line.154">                return (isZero(d)) ? null : new double[] {xTheta / d, yTheta / d};</a>
-<span class="sourceLineNo">155</span><a id="line.155">        }</a>
-<span class="sourceLineNo">156</span><a id="line.156">        </a>
-<span class="sourceLineNo">157</span><a id="line.157">        private PntDouble makeCentroid() {</a>
-<span class="sourceLineNo">158</span><a id="line.158">                int n = 0;</a>
-<span class="sourceLineNo">159</span><a id="line.159">                double su = 0;</a>
-<span class="sourceLineNo">160</span><a id="line.160">                double sv = 0;</a>
-<span class="sourceLineNo">161</span><a id="line.161">                for (Pnt2d p : points) {</a>
-<span class="sourceLineNo">162</span><a id="line.162">                        su += p.getX();</a>
-<span class="sourceLineNo">163</span><a id="line.163">                        sv += p.getY();</a>
-<span class="sourceLineNo">164</span><a id="line.164">                        n++;</a>
-<span class="sourceLineNo">165</span><a id="line.165">                }</a>
-<span class="sourceLineNo">166</span><a id="line.166">                if (n == 0) {</a>
-<span class="sourceLineNo">167</span><a id="line.167">                        throw new IllegalArgumentException("empty point sequence!");</a>
-<span class="sourceLineNo">168</span><a id="line.168">                }</a>
-<span class="sourceLineNo">169</span><a id="line.169">                return PntDouble.from(su/n, sv/n);</a>
-<span class="sourceLineNo">170</span><a id="line.170">        }</a>
-<span class="sourceLineNo">171</span><a id="line.171"></a>
-<span class="sourceLineNo">172</span><a id="line.172"></a>
-<span class="sourceLineNo">173</span><a id="line.173">        // shape-related methods:</a>
-<span class="sourceLineNo">174</span><a id="line.174">        </a>
-<span class="sourceLineNo">175</span><a id="line.175">        @Override</a>
-<span class="sourceLineNo">176</span><a id="line.176">        public Path2D getShape(double scale) {</a>
-<span class="sourceLineNo">177</span><a id="line.177">                // shape of the actual bounding box</a>
-<span class="sourceLineNo">178</span><a id="line.178">                Path2D p = new Path2D.Double(Path2D.WIND_NON_ZERO, 4);</a>
-<span class="sourceLineNo">179</span><a id="line.179">                p.moveTo(boundingbox[0].getX(), boundingbox[0].getY());</a>
-<span class="sourceLineNo">180</span><a id="line.180">                p.lineTo(boundingbox[1].getX(), boundingbox[1].getY());</a>
-<span class="sourceLineNo">181</span><a id="line.181">                p.lineTo(boundingbox[2].getX(), boundingbox[2].getY());</a>
-<span class="sourceLineNo">182</span><a id="line.182">                p.lineTo(boundingbox[3].getX(), boundingbox[3].getY());</a>
-<span class="sourceLineNo">183</span><a id="line.183">                p.closePath();</a>
-<span class="sourceLineNo">184</span><a id="line.184">                return p;</a>
-<span class="sourceLineNo">185</span><a id="line.185">        }</a>
-<span class="sourceLineNo">186</span><a id="line.186">        </a>
-<span class="sourceLineNo">187</span><a id="line.187">        @Override</a>
-<span class="sourceLineNo">188</span><a id="line.188">        public Shape[] getShapes(double scale) {</a>
-<span class="sourceLineNo">189</span><a id="line.189">                return new Shape[] { </a>
-<span class="sourceLineNo">190</span><a id="line.190">                                getShape(scale),                                // primary shape element</a>
-<span class="sourceLineNo">191</span><a id="line.191">                                this.centroid.getShape(scale)   // additional shape elements</a>
-<span class="sourceLineNo">192</span><a id="line.192">                                };</a>
-<span class="sourceLineNo">193</span><a id="line.193">        }</a>
-<span class="sourceLineNo">194</span><a id="line.194">        </a>
-<span class="sourceLineNo">195</span><a id="line.195">        public static final double DefaultContainsTolerance = 1e-12;</a>
-<span class="sourceLineNo">196</span><a id="line.196">        </a>
-<span class="sourceLineNo">197</span><a id="line.197">        public boolean contains(Pnt2d p) {</a>
-<span class="sourceLineNo">198</span><a id="line.198">                return contains(p, DefaultContainsTolerance);</a>
-<span class="sourceLineNo">199</span><a id="line.199">        }</a>
-<span class="sourceLineNo">200</span><a id="line.200">        </a>
-<span class="sourceLineNo">201</span><a id="line.201">        /**</a>
-<span class="sourceLineNo">202</span><a id="line.202">         * Checks if this bounding box contains the specified point.</a>
-<span class="sourceLineNo">203</span><a id="line.203">         * This method is used instead of {@link Path2D#contains(double, double)}</a>
-<span class="sourceLineNo">204</span><a id="line.204">         * to avoid false results due to roundoff errors.</a>
-<span class="sourceLineNo">205</span><a id="line.205">         * </a>
-<span class="sourceLineNo">206</span><a id="line.206">         * @param p some 2D point</a>
-<span class="sourceLineNo">207</span><a id="line.207">         * @param tolerance positive quantity for being outside</a>
-<span class="sourceLineNo">208</span><a id="line.208">         * @return true if the point is inside the bounding box</a>
-<span class="sourceLineNo">209</span><a id="line.209">         */</a>
-<span class="sourceLineNo">210</span><a id="line.210">        public boolean contains(Pnt2d p, double tolerance) {</a>
-<span class="sourceLineNo">211</span><a id="line.211">                for (int i = 0; i &lt; 4; i++) {</a>
-<span class="sourceLineNo">212</span><a id="line.212">                        double dist = boundinglines[0].getSignedDistance(p);</a>
-<span class="sourceLineNo">213</span><a id="line.213">                        // positive signed distance means that the point is to the left</a>
-<span class="sourceLineNo">214</span><a id="line.214">                        if (dist + tolerance &lt; 0) {</a>
-<span class="sourceLineNo">215</span><a id="line.215">                                return false;</a>
-<span class="sourceLineNo">216</span><a id="line.216">                        }</a>
-<span class="sourceLineNo">217</span><a id="line.217">                }</a>
-<span class="sourceLineNo">218</span><a id="line.218">                return true;</a>
-<span class="sourceLineNo">219</span><a id="line.219">        }</a>
-<span class="sourceLineNo">220</span><a id="line.220">}</a>
+<span class="sourceLineNo">109</span><a id="line.109">        /**</a>
+<span class="sourceLineNo">110</span><a id="line.110">         * Calculates the major axis-aligned bounding box of the supplied region, as a</a>
+<span class="sourceLineNo">111</span><a id="line.111">         * sequence of four point coordinates (p0, p1, p2, p3).</a>
+<span class="sourceLineNo">112</span><a id="line.112">         * </a>
+<span class="sourceLineNo">113</span><a id="line.113">         * @return the region's bounding box as a sequence of the 4 corner coordinates</a>
+<span class="sourceLineNo">114</span><a id="line.114">         *         (p0, p1, p2, p3)</a>
+<span class="sourceLineNo">115</span><a id="line.115">         */</a>
+<span class="sourceLineNo">116</span><a id="line.116">        private Pnt2d[] makeBox(Iterable&lt;Pnt2d&gt; points) {</a>
+<span class="sourceLineNo">117</span><a id="line.117">                //double theta = getOrientationAngle(points);</a>
+<span class="sourceLineNo">118</span><a id="line.118">                </a>
+<span class="sourceLineNo">119</span><a id="line.119">                double[] xy = this.dir;</a>
+<span class="sourceLineNo">120</span><a id="line.120">                if (xy == null) {       // regin's orientation is undefined</a>
+<span class="sourceLineNo">121</span><a id="line.121">                        return null;</a>
+<span class="sourceLineNo">122</span><a id="line.122">                }</a>
+<span class="sourceLineNo">123</span><a id="line.123">                        </a>
+<span class="sourceLineNo">124</span><a id="line.124">                double xa = xy[0]; // = Math.cos(theta);</a>
+<span class="sourceLineNo">125</span><a id="line.125">                double ya = xy[1]; // = Math.sin(theta);</a>
+<span class="sourceLineNo">126</span><a id="line.126">                double[] ea = {xa,  ya};</a>
+<span class="sourceLineNo">127</span><a id="line.127">                double[] eb = {ya, -xa};</a>
+<span class="sourceLineNo">128</span><a id="line.128">                </a>
+<span class="sourceLineNo">129</span><a id="line.129">                double amin = Double.POSITIVE_INFINITY;</a>
+<span class="sourceLineNo">130</span><a id="line.130">                double amax = Double.NEGATIVE_INFINITY;</a>
+<span class="sourceLineNo">131</span><a id="line.131">                double bmin = Double.POSITIVE_INFINITY;</a>
+<span class="sourceLineNo">132</span><a id="line.132">                double bmax = Double.NEGATIVE_INFINITY;</a>
+<span class="sourceLineNo">133</span><a id="line.133">                </a>
+<span class="sourceLineNo">134</span><a id="line.134">                for (Pnt2d p : points) {</a>
+<span class="sourceLineNo">135</span><a id="line.135">                        double u = p.getX();</a>
+<span class="sourceLineNo">136</span><a id="line.136">                        double v = p.getY();</a>
+<span class="sourceLineNo">137</span><a id="line.137">                        double a = u * xa + v * ya;     // project (u,v) on the major axis vector</a>
+<span class="sourceLineNo">138</span><a id="line.138">                        double b = u * ya - v * xa;     // project (u,v) on perpendicular vector</a>
+<span class="sourceLineNo">139</span><a id="line.139">                        amin = Math.min(a, amin);</a>
+<span class="sourceLineNo">140</span><a id="line.140">                        amax = Math.max(a, amax);</a>
+<span class="sourceLineNo">141</span><a id="line.141">                        bmin = Math.min(b, bmin);</a>
+<span class="sourceLineNo">142</span><a id="line.142">                        bmax = Math.max(b, bmax);</a>
+<span class="sourceLineNo">143</span><a id="line.143">                }</a>
+<span class="sourceLineNo">144</span><a id="line.144">                </a>
+<span class="sourceLineNo">145</span><a id="line.145">                Pnt2d[] corners = new Pnt2d[4];</a>
+<span class="sourceLineNo">146</span><a id="line.146">                corners[0] = PntDouble.from(add(multiply(amin, ea), multiply(bmin, eb)));</a>
+<span class="sourceLineNo">147</span><a id="line.147">                corners[1] = PntDouble.from(add(multiply(amin, ea), multiply(bmax, eb)));</a>
+<span class="sourceLineNo">148</span><a id="line.148">                corners[2] = PntDouble.from(add(multiply(amax, ea), multiply(bmax, eb)));</a>
+<span class="sourceLineNo">149</span><a id="line.149">                corners[3] = PntDouble.from(add(multiply(amax, ea), multiply(bmin, eb)));</a>
+<span class="sourceLineNo">150</span><a id="line.150">                return corners;</a>
+<span class="sourceLineNo">151</span><a id="line.151">        }</a>
+<span class="sourceLineNo">152</span><a id="line.152"></a>
+<span class="sourceLineNo">153</span><a id="line.153">        private double[] makeOrientationVector(Iterable&lt;Pnt2d&gt; points) {</a>
+<span class="sourceLineNo">154</span><a id="line.154">                double mu20 = 0;</a>
+<span class="sourceLineNo">155</span><a id="line.155">                double mu02 = 0;</a>
+<span class="sourceLineNo">156</span><a id="line.156">                double mu11 = 0;</a>
+<span class="sourceLineNo">157</span><a id="line.157">                double xc = centroid.getX();</a>
+<span class="sourceLineNo">158</span><a id="line.158">                double yc = centroid.getY();</a>
+<span class="sourceLineNo">159</span><a id="line.159">                </a>
+<span class="sourceLineNo">160</span><a id="line.160">                for (Pnt2d p : points) {</a>
+<span class="sourceLineNo">161</span><a id="line.161">                        double dx = p.getX() - xc;</a>
+<span class="sourceLineNo">162</span><a id="line.162">                        double dy = p.getY() - yc;</a>
+<span class="sourceLineNo">163</span><a id="line.163">                        mu20 = mu20 + dx * dx;</a>
+<span class="sourceLineNo">164</span><a id="line.164">                        mu02 = mu02 + dy * dy;</a>
+<span class="sourceLineNo">165</span><a id="line.165">                        mu11 = mu11 + dx * dy;</a>
+<span class="sourceLineNo">166</span><a id="line.166">                }</a>
+<span class="sourceLineNo">167</span><a id="line.167">                </a>
+<span class="sourceLineNo">168</span><a id="line.168">                double A = 2 * mu11;</a>
+<span class="sourceLineNo">169</span><a id="line.169">                double B = mu20 - mu02;</a>
+<span class="sourceLineNo">170</span><a id="line.170">                </a>
+<span class="sourceLineNo">171</span><a id="line.171">                double xTheta = B + sqrt(sqr(A) + sqr(B));</a>
+<span class="sourceLineNo">172</span><a id="line.172">                double yTheta = A;</a>
+<span class="sourceLineNo">173</span><a id="line.173">                double d = radius(xTheta, yTheta);</a>
+<span class="sourceLineNo">174</span><a id="line.174">                </a>
+<span class="sourceLineNo">175</span><a id="line.175">                return (isZero(d)) ? new double[] {1, 0} : new double[] {xTheta / d, yTheta / d};</a>
+<span class="sourceLineNo">176</span><a id="line.176">        }</a>
+<span class="sourceLineNo">177</span><a id="line.177">        </a>
+<span class="sourceLineNo">178</span><a id="line.178">        // shape-related methods:</a>
+<span class="sourceLineNo">179</span><a id="line.179">        </a>
+<span class="sourceLineNo">180</span><a id="line.180">        @Override</a>
+<span class="sourceLineNo">181</span><a id="line.181">        public Path2D getShape(double scale) {</a>
+<span class="sourceLineNo">182</span><a id="line.182">                // shape of the actual bounding box</a>
+<span class="sourceLineNo">183</span><a id="line.183">                Path2D p = new Path2D.Double(Path2D.WIND_NON_ZERO, 4);</a>
+<span class="sourceLineNo">184</span><a id="line.184">                p.moveTo(corners[0].getX(), corners[0].getY());</a>
+<span class="sourceLineNo">185</span><a id="line.185">                p.lineTo(corners[1].getX(), corners[1].getY());</a>
+<span class="sourceLineNo">186</span><a id="line.186">                p.lineTo(corners[2].getX(), corners[2].getY());</a>
+<span class="sourceLineNo">187</span><a id="line.187">                p.lineTo(corners[3].getX(), corners[3].getY());</a>
+<span class="sourceLineNo">188</span><a id="line.188">                p.closePath();</a>
+<span class="sourceLineNo">189</span><a id="line.189">                return p;</a>
+<span class="sourceLineNo">190</span><a id="line.190">        }</a>
+<span class="sourceLineNo">191</span><a id="line.191">        </a>
+<span class="sourceLineNo">192</span><a id="line.192">        @Override</a>
+<span class="sourceLineNo">193</span><a id="line.193">        public Shape[] getShapes(double scale) {</a>
+<span class="sourceLineNo">194</span><a id="line.194">                return new Shape[] { </a>
+<span class="sourceLineNo">195</span><a id="line.195">                                getShape(scale),                                // primary shape element</a>
+<span class="sourceLineNo">196</span><a id="line.196">                                this.centroid.getShape(scale)   // additional shape elements</a>
+<span class="sourceLineNo">197</span><a id="line.197">                                };</a>
+<span class="sourceLineNo">198</span><a id="line.198">        }</a>
+<span class="sourceLineNo">199</span><a id="line.199">        </a>
+<span class="sourceLineNo">200</span><a id="line.200">        private AlgebraicLine[] makeBoundingLines() {</a>
+<span class="sourceLineNo">201</span><a id="line.201">                double dx = dir[0];</a>
+<span class="sourceLineNo">202</span><a id="line.202">                double dy = dir[1];</a>
+<span class="sourceLineNo">203</span><a id="line.203">                return new AlgebraicLine[] {</a>
+<span class="sourceLineNo">204</span><a id="line.204">                                AlgebraicLine.from(corners[0].toDoubleArray(), makeDoubleVector( dy, -dx)),             // 0 -&gt; 1</a>
+<span class="sourceLineNo">205</span><a id="line.205">                                AlgebraicLine.from(corners[1].toDoubleArray(), makeDoubleVector( dx,  dy)),             // 1 -&gt; 2</a>
+<span class="sourceLineNo">206</span><a id="line.206">                                AlgebraicLine.from(corners[2].toDoubleArray(), makeDoubleVector(-dy,  dx)),             // 2 -&gt; 3</a>
+<span class="sourceLineNo">207</span><a id="line.207">                                AlgebraicLine.from(corners[3].toDoubleArray(), makeDoubleVector(-dx, -dy))</a>
+<span class="sourceLineNo">208</span><a id="line.208">                                };      // 3 -&gt; 0</a>
+<span class="sourceLineNo">209</span><a id="line.209">        }</a>
+<span class="sourceLineNo">210</span><a id="line.210">        </a>
+<span class="sourceLineNo">211</span><a id="line.211">        public static final double DefaultContainsTolerance = 1e-12;</a>
+<span class="sourceLineNo">212</span><a id="line.212">        </a>
+<span class="sourceLineNo">213</span><a id="line.213">        </a>
+<span class="sourceLineNo">214</span><a id="line.214">        /**</a>
+<span class="sourceLineNo">215</span><a id="line.215">         * Checks if this bounding box contains the specified point</a>
+<span class="sourceLineNo">216</span><a id="line.216">         * using the default tolerance.</a>
+<span class="sourceLineNo">217</span><a id="line.217">         * This method is used instead of {@link Path2D#contains(double, double)}</a>
+<span class="sourceLineNo">218</span><a id="line.218">         * to avoid false results due to roundoff errors.</a>
+<span class="sourceLineNo">219</span><a id="line.219">         * </a>
+<span class="sourceLineNo">220</span><a id="line.220">         * @param p some 2D point</a>
+<span class="sourceLineNo">221</span><a id="line.221">         * @return true if the point is inside the bounding box</a>
+<span class="sourceLineNo">222</span><a id="line.222">         */</a>
+<span class="sourceLineNo">223</span><a id="line.223">        public boolean contains(Pnt2d p) {</a>
+<span class="sourceLineNo">224</span><a id="line.224">                return contains(p, DefaultContainsTolerance);</a>
+<span class="sourceLineNo">225</span><a id="line.225">        }</a>
+<span class="sourceLineNo">226</span><a id="line.226">        </a>
+<span class="sourceLineNo">227</span><a id="line.227">        /**</a>
+<span class="sourceLineNo">228</span><a id="line.228">         * Checks if this bounding box contains the specified point using the specified tolerance.</a>
+<span class="sourceLineNo">229</span><a id="line.229">         * This method is used instead of {@link Path2D#contains(double, double)}</a>
+<span class="sourceLineNo">230</span><a id="line.230">         * to avoid false results due to roundoff errors.</a>
+<span class="sourceLineNo">231</span><a id="line.231">         * </a>
+<span class="sourceLineNo">232</span><a id="line.232">         * @param p some 2D point</a>
+<span class="sourceLineNo">233</span><a id="line.233">         * @param tolerance positive quantity for being outside</a>
+<span class="sourceLineNo">234</span><a id="line.234">         * @return true if the point is inside the bounding box</a>
+<span class="sourceLineNo">235</span><a id="line.235">         */</a>
+<span class="sourceLineNo">236</span><a id="line.236">        public boolean contains(Pnt2d p, double tolerance) {</a>
+<span class="sourceLineNo">237</span><a id="line.237">                for (int i = 0; i &lt; 4; i++) {</a>
+<span class="sourceLineNo">238</span><a id="line.238">                        double dist = boundinglines[i].getSignedDistance(p);</a>
+<span class="sourceLineNo">239</span><a id="line.239">                        // positive signed distance means that the point is to the left</a>
+<span class="sourceLineNo">240</span><a id="line.240">                        if (dist + tolerance &lt; 0) {</a>
+<span class="sourceLineNo">241</span><a id="line.241">                                return false;</a>
+<span class="sourceLineNo">242</span><a id="line.242">                        }</a>
+<span class="sourceLineNo">243</span><a id="line.243">                }</a>
+<span class="sourceLineNo">244</span><a id="line.244">                return true;</a>
+<span class="sourceLineNo">245</span><a id="line.245">        }</a>
+<span class="sourceLineNo">246</span><a id="line.246">        </a>
+<span class="sourceLineNo">247</span><a id="line.247">        @Override</a>
+<span class="sourceLineNo">248</span><a id="line.248">        public String toString() {</a>
+<span class="sourceLineNo">249</span><a id="line.249">                return String.format("%s: %s", this.getClass().getSimpleName(), Arrays.toString(this.corners));</a>
+<span class="sourceLineNo">250</span><a id="line.250">        }</a>
+<span class="sourceLineNo">251</span><a id="line.251">}</a>
 
 
 
