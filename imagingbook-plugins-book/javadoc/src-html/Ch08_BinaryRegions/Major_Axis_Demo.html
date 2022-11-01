@@ -18,154 +18,167 @@
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9">package Ch08_BinaryRegions;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
-<span class="sourceLineNo">011</span><a id="line.11">import static imagingbook.common.math.Arithmetic.sqr;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import static java.lang.Math.sqrt;</a>
-<span class="sourceLineNo">013</span><a id="line.13"></a>
-<span class="sourceLineNo">014</span><a id="line.14">import java.awt.Color;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import java.util.List;</a>
-<span class="sourceLineNo">016</span><a id="line.16"></a>
-<span class="sourceLineNo">017</span><a id="line.17">import ij.IJ;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import ij.ImagePlus;</a>
-<span class="sourceLineNo">019</span><a id="line.19">import ij.plugin.filter.PlugInFilter;</a>
-<span class="sourceLineNo">020</span><a id="line.20">import ij.process.ByteProcessor;</a>
-<span class="sourceLineNo">021</span><a id="line.21">import ij.process.ColorProcessor;</a>
-<span class="sourceLineNo">022</span><a id="line.22">import ij.process.ImageProcessor;</a>
-<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.ij.IjUtils;</a>
-<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.regions.BinaryRegion;</a>
-<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.regions.RegionContourSegmentation;</a>
-<span class="sourceLineNo">027</span><a id="line.27">import imagingbook.core.plugin.IjPluginName;</a>
-<span class="sourceLineNo">028</span><a id="line.28"></a>
-<span class="sourceLineNo">029</span><a id="line.29">/**</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * &lt;p&gt;</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * ImageJ plugin, shows each region's major axis as a vector scaled by the</a>
-<span class="sourceLineNo">032</span><a id="line.32"> * region's eccentricity. See Sec. 8.6 of [1] for additional details. Also</a>
-<span class="sourceLineNo">033</span><a id="line.33"> * demonstrates the use of the region property scheme, i.e., how to assign</a>
-<span class="sourceLineNo">034</span><a id="line.34"> * numeric properties to regions and retrieve them afterwards. Requires a binary</a>
-<span class="sourceLineNo">035</span><a id="line.35"> * image. Zero-value pixels are considered background, all other pixels are</a>
-<span class="sourceLineNo">036</span><a id="line.36"> * foreground. Display lookup tables (LUTs) are not considered. Results are</a>
-<span class="sourceLineNo">037</span><a id="line.37"> * drawn into a new image (pixel graphics), the original image is not modified.</a>
-<span class="sourceLineNo">038</span><a id="line.38"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">039</span><a id="line.39"> * &lt;p&gt;</a>
-<span class="sourceLineNo">040</span><a id="line.40"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic</a>
-<span class="sourceLineNo">041</span><a id="line.41"> * Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
-<span class="sourceLineNo">042</span><a id="line.42"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">043</span><a id="line.43"> * </a>
-<span class="sourceLineNo">044</span><a id="line.44"> * @author WB</a>
-<span class="sourceLineNo">045</span><a id="line.45"> * @version 2020/12/17</a>
-<span class="sourceLineNo">046</span><a id="line.46"> */</a>
-<span class="sourceLineNo">047</span><a id="line.47">@IjPluginName("Major Axis Demo")</a>
-<span class="sourceLineNo">048</span><a id="line.48">public class Major_Axis_Demo implements PlugInFilter {  // TODO: convert to overlay display</a>
-<span class="sourceLineNo">049</span><a id="line.49">        </a>
-<span class="sourceLineNo">050</span><a id="line.50">        /** Scale of the axis length. */</a>
-<span class="sourceLineNo">051</span><a id="line.51">        public static double AxisLength = 50;</a>
-<span class="sourceLineNo">052</span><a id="line.52">        /** Color used to draw regions' centroids. */</a>
-<span class="sourceLineNo">053</span><a id="line.53">        public static Color CenterColor = Color.blue;</a>
-<span class="sourceLineNo">054</span><a id="line.54">        /** Color used to draw regions' major axes. */</a>
-<span class="sourceLineNo">055</span><a id="line.55">        public static Color MajorAxisColor = CenterColor;</a>
-<span class="sourceLineNo">056</span><a id="line.56">        /** Line width used to draw regions' major axes. */</a>
-<span class="sourceLineNo">057</span><a id="line.57">        public static int LineWidth = 1;</a>
-<span class="sourceLineNo">058</span><a id="line.58">        </a>
-<span class="sourceLineNo">059</span><a id="line.59">        private ImagePlus im;</a>
-<span class="sourceLineNo">060</span><a id="line.60">        </a>
-<span class="sourceLineNo">061</span><a id="line.61">        @Override</a>
-<span class="sourceLineNo">062</span><a id="line.62">        public int setup(String arg, ImagePlus im) {</a>
-<span class="sourceLineNo">063</span><a id="line.63">                this.im = im;</a>
-<span class="sourceLineNo">064</span><a id="line.64">                return DOES_8G + NO_CHANGES; </a>
-<span class="sourceLineNo">065</span><a id="line.65">        }</a>
-<span class="sourceLineNo">066</span><a id="line.66"></a>
-<span class="sourceLineNo">067</span><a id="line.67">        @Override</a>
-<span class="sourceLineNo">068</span><a id="line.68">        public void run(ImageProcessor ip) {</a>
-<span class="sourceLineNo">069</span><a id="line.69">                </a>
-<span class="sourceLineNo">070</span><a id="line.70">                if (!IjUtils.isBinary(ip)) {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                        IJ.showMessage("Plugin requires a binary image!");</a>
-<span class="sourceLineNo">072</span><a id="line.72">                        return;</a>
-<span class="sourceLineNo">073</span><a id="line.73">                }</a>
-<span class="sourceLineNo">074</span><a id="line.74">                </a>
-<span class="sourceLineNo">075</span><a id="line.75">                // perform region segmentation:</a>
-<span class="sourceLineNo">076</span><a id="line.76">                RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);</a>
-<span class="sourceLineNo">077</span><a id="line.77">                List&lt;BinaryRegion&gt; regions = segmenter.getRegions(true);</a>
-<span class="sourceLineNo">078</span><a id="line.78"></a>
-<span class="sourceLineNo">079</span><a id="line.79">                // calculate and register certain region properties:</a>
-<span class="sourceLineNo">080</span><a id="line.80">                for (BinaryRegion r : regions) {</a>
-<span class="sourceLineNo">081</span><a id="line.81">                        calculateRegionProperties(r);</a>
-<span class="sourceLineNo">082</span><a id="line.82">                }</a>
-<span class="sourceLineNo">083</span><a id="line.83">                </a>
-<span class="sourceLineNo">084</span><a id="line.84">                // create the output (color) image:</a>
-<span class="sourceLineNo">085</span><a id="line.85">                ColorProcessor cp = ip.convertToColorProcessor();</a>
-<span class="sourceLineNo">086</span><a id="line.86">                cp.add(210);</a>
+<span class="sourceLineNo">011</span><a id="line.11">import static imagingbook.common.ij.IjUtils.noCurrentImage;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import static imagingbook.common.ij.IjUtils.requestSampleImage;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import static imagingbook.common.math.Arithmetic.sqr;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import static java.lang.Math.sqrt;</a>
+<span class="sourceLineNo">015</span><a id="line.15"></a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.awt.Color;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import java.util.List;</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">import ij.IJ;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import ij.ImagePlus;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import ij.plugin.filter.PlugInFilter;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import ij.process.ByteProcessor;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import ij.process.ColorProcessor;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import ij.process.ImageProcessor;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.ij.IjUtils;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import imagingbook.common.regions.BinaryRegion;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import imagingbook.common.regions.RegionContourSegmentation;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import imagingbook.core.plugin.IjPluginName;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import imagingbook.sampleimages.GeneralSampleImage;</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">/**</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * &lt;p&gt;</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * ImageJ plugin, shows each region's major axis as a vector scaled by the</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * region's eccentricity. See Sec. 8.6 of [1] for additional details. Also</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * demonstrates the use of the region property scheme, i.e., how to assign</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * numeric properties to regions and retrieve them afterwards. Requires a binary</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * image. Zero-value pixels are considered background, all other pixels are</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * foreground. Display lookup tables (LUTs) are not considered. Results are</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * drawn into a new image (pixel graphics), the original image is not modified.</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * &lt;p&gt;</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * </a>
+<span class="sourceLineNo">047</span><a id="line.47"> * @author WB</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * @version 2020/12/17</a>
+<span class="sourceLineNo">049</span><a id="line.49"> */</a>
+<span class="sourceLineNo">050</span><a id="line.50">@IjPluginName("Major Axis Demo")</a>
+<span class="sourceLineNo">051</span><a id="line.51">public class Major_Axis_Demo implements PlugInFilter {  // TODO: convert to overlay display</a>
+<span class="sourceLineNo">052</span><a id="line.52">        </a>
+<span class="sourceLineNo">053</span><a id="line.53">        /** Scale of the axis length. */</a>
+<span class="sourceLineNo">054</span><a id="line.54">        public static double AxisLength = 50;</a>
+<span class="sourceLineNo">055</span><a id="line.55">        /** Color used to draw regions' centroids. */</a>
+<span class="sourceLineNo">056</span><a id="line.56">        public static Color CenterColor = Color.blue;</a>
+<span class="sourceLineNo">057</span><a id="line.57">        /** Color used to draw regions' major axes. */</a>
+<span class="sourceLineNo">058</span><a id="line.58">        public static Color MajorAxisColor = CenterColor;</a>
+<span class="sourceLineNo">059</span><a id="line.59">        /** Line width used to draw regions' major axes. */</a>
+<span class="sourceLineNo">060</span><a id="line.60">        public static int LineWidth = 1;</a>
+<span class="sourceLineNo">061</span><a id="line.61">        </a>
+<span class="sourceLineNo">062</span><a id="line.62">        private ImagePlus im;</a>
+<span class="sourceLineNo">063</span><a id="line.63">        </a>
+<span class="sourceLineNo">064</span><a id="line.64">        /**</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * Constructor, asks to open a predefined sample image if no other image</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * is currently open.</a>
+<span class="sourceLineNo">067</span><a id="line.67">         */</a>
+<span class="sourceLineNo">068</span><a id="line.68">        public Major_Axis_Demo() {</a>
+<span class="sourceLineNo">069</span><a id="line.69">                if (noCurrentImage()) {</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        requestSampleImage(GeneralSampleImage.ToolsSmall);</a>
+<span class="sourceLineNo">071</span><a id="line.71">                }</a>
+<span class="sourceLineNo">072</span><a id="line.72">        }</a>
+<span class="sourceLineNo">073</span><a id="line.73">        </a>
+<span class="sourceLineNo">074</span><a id="line.74">        @Override</a>
+<span class="sourceLineNo">075</span><a id="line.75">        public int setup(String arg, ImagePlus im) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                this.im = im;</a>
+<span class="sourceLineNo">077</span><a id="line.77">                return DOES_8G + NO_CHANGES; </a>
+<span class="sourceLineNo">078</span><a id="line.78">        }</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">        @Override</a>
+<span class="sourceLineNo">081</span><a id="line.81">        public void run(ImageProcessor ip) {</a>
+<span class="sourceLineNo">082</span><a id="line.82">                </a>
+<span class="sourceLineNo">083</span><a id="line.83">                if (!IjUtils.isBinary(ip)) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">                        IJ.showMessage("Plugin requires a binary image!");</a>
+<span class="sourceLineNo">085</span><a id="line.85">                        return;</a>
+<span class="sourceLineNo">086</span><a id="line.86">                }</a>
 <span class="sourceLineNo">087</span><a id="line.87">                </a>
-<span class="sourceLineNo">088</span><a id="line.88">                // draw major axis vectors (scaled by eccentricity): </a>
-<span class="sourceLineNo">089</span><a id="line.89">                for (BinaryRegion r : regions) {</a>
-<span class="sourceLineNo">090</span><a id="line.90">                        if (r.getSize() &gt; 10) {</a>
-<span class="sourceLineNo">091</span><a id="line.91">                                Pnt2d xc = r.getCenter();</a>
-<span class="sourceLineNo">092</span><a id="line.92">                                int u0 = (int) Math.round(xc.getX());</a>
-<span class="sourceLineNo">093</span><a id="line.93">                                int v0 = (int) Math.round(xc.getY());</a>
-<span class="sourceLineNo">094</span><a id="line.94">                                </a>
-<span class="sourceLineNo">095</span><a id="line.95">                                double dx = r.getProperty("dx");</a>
-<span class="sourceLineNo">096</span><a id="line.96">                                double dy = r.getProperty("dy");</a>
-<span class="sourceLineNo">097</span><a id="line.97">                                int u1 = (int) Math.round(xc.getX() + AxisLength * dx);</a>
-<span class="sourceLineNo">098</span><a id="line.98">                                int v1 = (int) Math.round(xc.getY() + AxisLength * dy);</a>
-<span class="sourceLineNo">099</span><a id="line.99">                                </a>
-<span class="sourceLineNo">100</span><a id="line.100">                                drawCenter(cp,  u0,  v0);</a>
-<span class="sourceLineNo">101</span><a id="line.101">                                drawAxis(cp, u0, v0, u1, v1);</a>
-<span class="sourceLineNo">102</span><a id="line.102">                        }</a>
-<span class="sourceLineNo">103</span><a id="line.103">                }</a>
-<span class="sourceLineNo">104</span><a id="line.104">                </a>
-<span class="sourceLineNo">105</span><a id="line.105">                // display the output image</a>
-<span class="sourceLineNo">106</span><a id="line.106">                new ImagePlus(im.getShortTitle() + "-major-axis", cp).show();</a>
-<span class="sourceLineNo">107</span><a id="line.107">        }</a>
-<span class="sourceLineNo">108</span><a id="line.108">        </a>
-<span class="sourceLineNo">109</span><a id="line.109">        private void calculateRegionProperties(BinaryRegion r) {</a>
-<span class="sourceLineNo">110</span><a id="line.110">                // calculate central moment mu11, mu20, mu02:</a>
-<span class="sourceLineNo">111</span><a id="line.111">                Pnt2d xctr = r.getCenter();</a>
-<span class="sourceLineNo">112</span><a id="line.112">                double xc = xctr.getX();</a>
-<span class="sourceLineNo">113</span><a id="line.113">                double yc = xctr.getY();</a>
-<span class="sourceLineNo">114</span><a id="line.114">                double mu11 = 0;</a>
-<span class="sourceLineNo">115</span><a id="line.115">                double mu20 = 0;</a>
-<span class="sourceLineNo">116</span><a id="line.116">                double mu02 = 0;</a>
-<span class="sourceLineNo">117</span><a id="line.117">                for (Pnt2d p : r) {</a>
-<span class="sourceLineNo">118</span><a id="line.118">                        double dx = (p.getX() - xc);</a>
-<span class="sourceLineNo">119</span><a id="line.119">                        double dy = (p.getY() - yc);</a>
-<span class="sourceLineNo">120</span><a id="line.120">                        mu11 = mu11 + dx * dy;</a>
-<span class="sourceLineNo">121</span><a id="line.121">                        mu20 = mu20 + dx * dx;</a>
-<span class="sourceLineNo">122</span><a id="line.122">                        mu02 = mu02 + dy * dy;</a>
-<span class="sourceLineNo">123</span><a id="line.123">                }</a>
-<span class="sourceLineNo">124</span><a id="line.124">                </a>
-<span class="sourceLineNo">125</span><a id="line.125">                double A = 2 * mu11;</a>
-<span class="sourceLineNo">126</span><a id="line.126">                double B = mu20 - mu02;</a>
-<span class="sourceLineNo">127</span><a id="line.127">                </a>
-<span class="sourceLineNo">128</span><a id="line.128">                double normAB = Math.sqrt(sqr(A) + sqr(B));</a>
-<span class="sourceLineNo">129</span><a id="line.129">                double scale = sqrt(2 * (sqr(A) + sqr(B) + B * sqrt(sqr(A) + sqr(B))));</a>
-<span class="sourceLineNo">130</span><a id="line.130">                </a>
-<span class="sourceLineNo">131</span><a id="line.131">                double dx = B + normAB;</a>
-<span class="sourceLineNo">132</span><a id="line.132">                double dy = A;</a>
-<span class="sourceLineNo">133</span><a id="line.133">                </a>
-<span class="sourceLineNo">134</span><a id="line.134">                r.setProperty("dx", dx / scale);</a>
-<span class="sourceLineNo">135</span><a id="line.135">                r.setProperty("dy", dy / scale);</a>
-<span class="sourceLineNo">136</span><a id="line.136">                </a>
-<span class="sourceLineNo">137</span><a id="line.137">                // --------------------------------------------------</a>
-<span class="sourceLineNo">138</span><a id="line.138">                </a>
-<span class="sourceLineNo">139</span><a id="line.139">                // calculate 2 versions of eccentricity:</a>
-<span class="sourceLineNo">140</span><a id="line.140">                double a = mu20 + mu02;</a>
-<span class="sourceLineNo">141</span><a id="line.141">                double b = Math.sqrt(Math.pow(mu20 - mu02, 2) + 4 * mu11 * mu11);</a>
-<span class="sourceLineNo">142</span><a id="line.142">                r.setProperty("ecc1", (a + b) / (a - b));</a>
-<span class="sourceLineNo">143</span><a id="line.143">                r.setProperty("ecc2", (Math.pow(mu20 - mu02,  2) + 4 * mu11 * mu11) / Math.pow(mu20 + mu02, 2));</a>
-<span class="sourceLineNo">144</span><a id="line.144">        }</a>
-<span class="sourceLineNo">145</span><a id="line.145">        </a>
-<span class="sourceLineNo">146</span><a id="line.146">        private void drawCenter(ImageProcessor ip, int uc, int vc) {</a>
-<span class="sourceLineNo">147</span><a id="line.147">                ip.setColor(CenterColor);</a>
-<span class="sourceLineNo">148</span><a id="line.148">                ip.setLineWidth(LineWidth);</a>
-<span class="sourceLineNo">149</span><a id="line.149">                ip.drawRect(uc - 2, vc - 2, 5, 5);</a>
-<span class="sourceLineNo">150</span><a id="line.150">        }</a>
-<span class="sourceLineNo">151</span><a id="line.151">        </a>
-<span class="sourceLineNo">152</span><a id="line.152">        private void drawAxis(ImageProcessor ip, int u0, int v0, int u1, int v1) {</a>
-<span class="sourceLineNo">153</span><a id="line.153">                ip.setColor(MajorAxisColor);</a>
-<span class="sourceLineNo">154</span><a id="line.154">                ip.setLineWidth(LineWidth);</a>
-<span class="sourceLineNo">155</span><a id="line.155">                ip.drawLine(u0, v0, u1, v1);</a>
-<span class="sourceLineNo">156</span><a id="line.156">        }</a>
-<span class="sourceLineNo">157</span><a id="line.157"></a>
-<span class="sourceLineNo">158</span><a id="line.158">}</a>
+<span class="sourceLineNo">088</span><a id="line.88">                // perform region segmentation:</a>
+<span class="sourceLineNo">089</span><a id="line.89">                RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);</a>
+<span class="sourceLineNo">090</span><a id="line.90">                List&lt;BinaryRegion&gt; regions = segmenter.getRegions(true);</a>
+<span class="sourceLineNo">091</span><a id="line.91"></a>
+<span class="sourceLineNo">092</span><a id="line.92">                // calculate and register certain region properties:</a>
+<span class="sourceLineNo">093</span><a id="line.93">                for (BinaryRegion r : regions) {</a>
+<span class="sourceLineNo">094</span><a id="line.94">                        calculateRegionProperties(r);</a>
+<span class="sourceLineNo">095</span><a id="line.95">                }</a>
+<span class="sourceLineNo">096</span><a id="line.96">                </a>
+<span class="sourceLineNo">097</span><a id="line.97">                // create the output (color) image:</a>
+<span class="sourceLineNo">098</span><a id="line.98">                ColorProcessor cp = ip.convertToColorProcessor();</a>
+<span class="sourceLineNo">099</span><a id="line.99">                cp.add(200);    // brighten</a>
+<span class="sourceLineNo">100</span><a id="line.100">                </a>
+<span class="sourceLineNo">101</span><a id="line.101">                // draw major axis vectors (scaled by eccentricity): </a>
+<span class="sourceLineNo">102</span><a id="line.102">                for (BinaryRegion r : regions) {</a>
+<span class="sourceLineNo">103</span><a id="line.103">                        if (r.getSize() &gt; 10) {</a>
+<span class="sourceLineNo">104</span><a id="line.104">                                Pnt2d xc = r.getCenter();</a>
+<span class="sourceLineNo">105</span><a id="line.105">                                int u0 = (int) Math.round(xc.getX());</a>
+<span class="sourceLineNo">106</span><a id="line.106">                                int v0 = (int) Math.round(xc.getY());</a>
+<span class="sourceLineNo">107</span><a id="line.107">                                </a>
+<span class="sourceLineNo">108</span><a id="line.108">                                double dx = r.getProperty("dx");</a>
+<span class="sourceLineNo">109</span><a id="line.109">                                double dy = r.getProperty("dy");</a>
+<span class="sourceLineNo">110</span><a id="line.110">                                int u1 = (int) Math.round(xc.getX() + AxisLength * dx);</a>
+<span class="sourceLineNo">111</span><a id="line.111">                                int v1 = (int) Math.round(xc.getY() + AxisLength * dy);</a>
+<span class="sourceLineNo">112</span><a id="line.112">                                </a>
+<span class="sourceLineNo">113</span><a id="line.113">                                drawCenter(cp,  u0,  v0);</a>
+<span class="sourceLineNo">114</span><a id="line.114">                                drawAxis(cp, u0, v0, u1, v1);</a>
+<span class="sourceLineNo">115</span><a id="line.115">                        }</a>
+<span class="sourceLineNo">116</span><a id="line.116">                }</a>
+<span class="sourceLineNo">117</span><a id="line.117">                </a>
+<span class="sourceLineNo">118</span><a id="line.118">                // display the output image</a>
+<span class="sourceLineNo">119</span><a id="line.119">                new ImagePlus(im.getShortTitle() + "-major-axis", cp).show();</a>
+<span class="sourceLineNo">120</span><a id="line.120">        }</a>
+<span class="sourceLineNo">121</span><a id="line.121">        </a>
+<span class="sourceLineNo">122</span><a id="line.122">        private void calculateRegionProperties(BinaryRegion r) {</a>
+<span class="sourceLineNo">123</span><a id="line.123">                // calculate central moment mu11, mu20, mu02:</a>
+<span class="sourceLineNo">124</span><a id="line.124">                Pnt2d xctr = r.getCenter();</a>
+<span class="sourceLineNo">125</span><a id="line.125">                double xc = xctr.getX();</a>
+<span class="sourceLineNo">126</span><a id="line.126">                double yc = xctr.getY();</a>
+<span class="sourceLineNo">127</span><a id="line.127">                double mu11 = 0;</a>
+<span class="sourceLineNo">128</span><a id="line.128">                double mu20 = 0;</a>
+<span class="sourceLineNo">129</span><a id="line.129">                double mu02 = 0;</a>
+<span class="sourceLineNo">130</span><a id="line.130">                for (Pnt2d p : r) {</a>
+<span class="sourceLineNo">131</span><a id="line.131">                        double dx = (p.getX() - xc);</a>
+<span class="sourceLineNo">132</span><a id="line.132">                        double dy = (p.getY() - yc);</a>
+<span class="sourceLineNo">133</span><a id="line.133">                        mu11 = mu11 + dx * dy;</a>
+<span class="sourceLineNo">134</span><a id="line.134">                        mu20 = mu20 + dx * dx;</a>
+<span class="sourceLineNo">135</span><a id="line.135">                        mu02 = mu02 + dy * dy;</a>
+<span class="sourceLineNo">136</span><a id="line.136">                }</a>
+<span class="sourceLineNo">137</span><a id="line.137">                </a>
+<span class="sourceLineNo">138</span><a id="line.138">                double A = 2 * mu11;</a>
+<span class="sourceLineNo">139</span><a id="line.139">                double B = mu20 - mu02;</a>
+<span class="sourceLineNo">140</span><a id="line.140">                </a>
+<span class="sourceLineNo">141</span><a id="line.141">                double normAB = Math.sqrt(sqr(A) + sqr(B));</a>
+<span class="sourceLineNo">142</span><a id="line.142">                double scale = sqrt(2 * (sqr(A) + sqr(B) + B * sqrt(sqr(A) + sqr(B))));</a>
+<span class="sourceLineNo">143</span><a id="line.143">                </a>
+<span class="sourceLineNo">144</span><a id="line.144">                double dx = B + normAB;</a>
+<span class="sourceLineNo">145</span><a id="line.145">                double dy = A;</a>
+<span class="sourceLineNo">146</span><a id="line.146">                </a>
+<span class="sourceLineNo">147</span><a id="line.147">                r.setProperty("dx", dx / scale);</a>
+<span class="sourceLineNo">148</span><a id="line.148">                r.setProperty("dy", dy / scale);</a>
+<span class="sourceLineNo">149</span><a id="line.149">                </a>
+<span class="sourceLineNo">150</span><a id="line.150">                // --------------------------------------------------</a>
+<span class="sourceLineNo">151</span><a id="line.151">                </a>
+<span class="sourceLineNo">152</span><a id="line.152">                // calculate 2 versions of eccentricity:</a>
+<span class="sourceLineNo">153</span><a id="line.153">                double a = mu20 + mu02;</a>
+<span class="sourceLineNo">154</span><a id="line.154">                double b = Math.sqrt(Math.pow(mu20 - mu02, 2) + 4 * mu11 * mu11);</a>
+<span class="sourceLineNo">155</span><a id="line.155">                r.setProperty("ecc1", (a + b) / (a - b));</a>
+<span class="sourceLineNo">156</span><a id="line.156">                r.setProperty("ecc2", (Math.pow(mu20 - mu02,  2) + 4 * mu11 * mu11) / Math.pow(mu20 + mu02, 2));</a>
+<span class="sourceLineNo">157</span><a id="line.157">        }</a>
+<span class="sourceLineNo">158</span><a id="line.158">        </a>
+<span class="sourceLineNo">159</span><a id="line.159">        private void drawCenter(ImageProcessor ip, int uc, int vc) {</a>
+<span class="sourceLineNo">160</span><a id="line.160">                ip.setColor(CenterColor);</a>
+<span class="sourceLineNo">161</span><a id="line.161">                ip.setLineWidth(LineWidth);</a>
+<span class="sourceLineNo">162</span><a id="line.162">                ip.drawRect(uc - 2, vc - 2, 5, 5);</a>
+<span class="sourceLineNo">163</span><a id="line.163">        }</a>
+<span class="sourceLineNo">164</span><a id="line.164">        </a>
+<span class="sourceLineNo">165</span><a id="line.165">        private void drawAxis(ImageProcessor ip, int u0, int v0, int u1, int v1) {</a>
+<span class="sourceLineNo">166</span><a id="line.166">                ip.setColor(MajorAxisColor);</a>
+<span class="sourceLineNo">167</span><a id="line.167">                ip.setLineWidth(LineWidth);</a>
+<span class="sourceLineNo">168</span><a id="line.168">                ip.drawLine(u0, v0, u1, v1);</a>
+<span class="sourceLineNo">169</span><a id="line.169">        }</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">}</a>
 
 
 
