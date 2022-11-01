@@ -131,11 +131,12 @@ public interface NamedResource {
 	}
 	
 	/**
-	 * Returns the names of all files contained in the associated resource directory of
+	 * Returns the names of the actual files contained in the associated resource directory of
 	 * the specified class, which must implement the {@link NamedResource} interface.
 	 * This can be used to check if a given named resource has a matching file in a 
 	 * case-sensitive way. 
 	 * 
+	 * @param clazz the resource class
 	 * @return an array of strings
 	 */
 	public static String[] getResourceFileNames(Class<? extends NamedResource> clazz) {

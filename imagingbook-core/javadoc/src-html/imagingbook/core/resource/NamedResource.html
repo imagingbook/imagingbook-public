@@ -18,229 +18,142 @@
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9">package imagingbook.core.resource;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
-<span class="sourceLineNo">011</span><a id="line.11">import java.io.File;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import java.io.InputStream;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import java.net.URL;</a>
-<span class="sourceLineNo">014</span><a id="line.14"></a>
-<span class="sourceLineNo">015</span><a id="line.15">/**</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * &lt;p&gt;</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * This interface is supposed to be implemented by some enum class that</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * specifies the root of a resource tree. The following example defines</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * such an enum type that refers to three images. The path relative </a>
-<span class="sourceLineNo">020</span><a id="line.20"> * to the location of the enum class itself must be specified</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * and images must be stored there.</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * The enum type must define an appropriate constructor and implement</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * method {@link #getFileName()}:</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">025</span><a id="line.25"></a>
-<span class="sourceLineNo">026</span><a id="line.26"> * &lt;pre&gt;</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * public enum MyImages implements NamedResource {</a>
-<span class="sourceLineNo">028</span><a id="line.28"> *      image1("image1.tif"),</a>
-<span class="sourceLineNo">029</span><a id="line.29"> *      image2("image2.png"),</a>
-<span class="sourceLineNo">030</span><a id="line.30"> *      image3("jpegs/image3.jpg");</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * </a>
-<span class="sourceLineNo">032</span><a id="line.32"> *      // field to associate the resource's file name</a>
-<span class="sourceLineNo">033</span><a id="line.33"> *      private final String filename;</a>
-<span class="sourceLineNo">034</span><a id="line.34"> * </a>
-<span class="sourceLineNo">035</span><a id="line.35"> *      &amp;#64;Override</a>
-<span class="sourceLineNo">036</span><a id="line.36"> *      public String getFileName() {</a>
-<span class="sourceLineNo">037</span><a id="line.37"> *              return filename;</a>
-<span class="sourceLineNo">038</span><a id="line.38"> *      }</a>
-<span class="sourceLineNo">039</span><a id="line.39"> * </a>
-<span class="sourceLineNo">040</span><a id="line.40"> *      // constructor</a>
-<span class="sourceLineNo">041</span><a id="line.41"> *      MyImages(String filename) {</a>
-<span class="sourceLineNo">042</span><a id="line.42"> *              this.filename = filename;</a>
-<span class="sourceLineNo">043</span><a id="line.43"> *      }</a>
-<span class="sourceLineNo">044</span><a id="line.44"> * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">045</span><a id="line.45"> * &lt;p&gt;</a>
-<span class="sourceLineNo">046</span><a id="line.46"> * By default, resource files are assumed to be placed in a folder</a>
-<span class="sourceLineNo">047</span><a id="line.47"> * with the same name as the resource class (i.e., "MyImages") relative</a>
-<span class="sourceLineNo">048</span><a id="line.48"> * to the location of the class.</a>
-<span class="sourceLineNo">049</span><a id="line.49"> * Resources may then be simply referenced by their enum-name, for example,</a>
-<span class="sourceLineNo">050</span><a id="line.50"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">051</span><a id="line.51"> * &lt;pre&gt;</a>
-<span class="sourceLineNo">052</span><a id="line.52"> * URL url = MyImages.image1.getURL();</a>
-<span class="sourceLineNo">053</span><a id="line.53"> * ImagePlus im = IJ.openImage(url.toString());</a>
-<span class="sourceLineNo">054</span><a id="line.54"> * &lt;/pre&gt;</a>
-<span class="sourceLineNo">055</span><a id="line.55"> * &lt;p&gt;</a>
-<span class="sourceLineNo">056</span><a id="line.56"> * The benefit of using a named resource (over specifying resources by path strings) </a>
-<span class="sourceLineNo">057</span><a id="line.57"> * is that the resource is guaranteed to exist at compile time (this is assured</a>
-<span class="sourceLineNo">058</span><a id="line.58"> * by validating the existence of all named resources in the test phase) and can be retrieved</a>
-<span class="sourceLineNo">059</span><a id="line.59"> * even if located inside a JAR file.</a>
-<span class="sourceLineNo">060</span><a id="line.60"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">061</span><a id="line.61"> * @see ImageResource</a>
-<span class="sourceLineNo">062</span><a id="line.62"> * @author WB</a>
-<span class="sourceLineNo">063</span><a id="line.63"> * @version 2022/08/23</a>
-<span class="sourceLineNo">064</span><a id="line.64"> */</a>
-<span class="sourceLineNo">065</span><a id="line.65">public interface NamedResource {</a>
-<span class="sourceLineNo">066</span><a id="line.66">        </a>
-<span class="sourceLineNo">067</span><a id="line.67">        /**</a>
-<span class="sourceLineNo">068</span><a id="line.68">         * Returns the resource directory relative to the implementing class.</a>
-<span class="sourceLineNo">069</span><a id="line.69">         * The default implementations assumes that this is a single-level directory</a>
-<span class="sourceLineNo">070</span><a id="line.70">         * with exactly the same name as the implementing class.</a>
-<span class="sourceLineNo">071</span><a id="line.71">         * Implementations may override this definition to return some other </a>
-<span class="sourceLineNo">072</span><a id="line.72">         * relative directory.</a>
-<span class="sourceLineNo">073</span><a id="line.73">         * </a>
-<span class="sourceLineNo">074</span><a id="line.74">         * @return the relative resource directory for the associated resource</a>
-<span class="sourceLineNo">075</span><a id="line.75">         */</a>
-<span class="sourceLineNo">076</span><a id="line.76">        public default String getRelativeDirectory() {</a>
-<span class="sourceLineNo">077</span><a id="line.77">                return this.getClass().getSimpleName();</a>
-<span class="sourceLineNo">078</span><a id="line.78">        }</a>
-<span class="sourceLineNo">079</span><a id="line.79">        </a>
-<span class="sourceLineNo">080</span><a id="line.80"></a>
-<span class="sourceLineNo">081</span><a id="line.81">        </a>
-<span class="sourceLineNo">082</span><a id="line.82">        /**</a>
-<span class="sourceLineNo">083</span><a id="line.83">         * Returns the path to the associated resource relative to the</a>
-<span class="sourceLineNo">084</span><a id="line.84">         * location of the implementing class.</a>
-<span class="sourceLineNo">085</span><a id="line.85">         * This method is not supposed to be overridden.</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * </a>
-<span class="sourceLineNo">087</span><a id="line.87">         * @return the relative path to the associated resource</a>
-<span class="sourceLineNo">088</span><a id="line.88">         */</a>
-<span class="sourceLineNo">089</span><a id="line.89">        public default String getRelativePath() {</a>
-<span class="sourceLineNo">090</span><a id="line.90">                return getRelativeDirectory() + "/" + getFileName();</a>
-<span class="sourceLineNo">091</span><a id="line.91">        }</a>
-<span class="sourceLineNo">092</span><a id="line.92">        </a>
-<span class="sourceLineNo">093</span><a id="line.93">        /**</a>
-<span class="sourceLineNo">094</span><a id="line.94">         * Returns the file name for the associated resource.</a>
-<span class="sourceLineNo">095</span><a id="line.95">         * </a>
-<span class="sourceLineNo">096</span><a id="line.96">         * @return the name of the resource file</a>
-<span class="sourceLineNo">097</span><a id="line.97">         */</a>
-<span class="sourceLineNo">098</span><a id="line.98">        public String getFileName();</a>
-<span class="sourceLineNo">099</span><a id="line.99">        </a>
-<span class="sourceLineNo">100</span><a id="line.100">        /**</a>
-<span class="sourceLineNo">101</span><a id="line.101">         * Returns the URL to the associated resource.</a>
-<span class="sourceLineNo">102</span><a id="line.102">         * This method is not supposed to be overridden.</a>
-<span class="sourceLineNo">103</span><a id="line.103">         * </a>
-<span class="sourceLineNo">104</span><a id="line.104">         * @return the URL to the associated resource</a>
-<span class="sourceLineNo">105</span><a id="line.105">         */</a>
-<span class="sourceLineNo">106</span><a id="line.106">        public default URL getURL() {</a>
-<span class="sourceLineNo">107</span><a id="line.107">                Class&lt;?&gt; clazz = this.getClass();</a>
-<span class="sourceLineNo">108</span><a id="line.108">                return clazz.getResource(this.getRelativePath());</a>
-<span class="sourceLineNo">109</span><a id="line.109">        }</a>
-<span class="sourceLineNo">110</span><a id="line.110">        </a>
-<span class="sourceLineNo">111</span><a id="line.111">//      @Deprecated</a>
-<span class="sourceLineNo">112</span><a id="line.112">//      public default URI getURI() {</a>
-<span class="sourceLineNo">113</span><a id="line.113">//              try {</a>
-<span class="sourceLineNo">114</span><a id="line.114">//                      return getURL().toURI();</a>
-<span class="sourceLineNo">115</span><a id="line.115">//              } catch (URISyntaxException e) {</a>
-<span class="sourceLineNo">116</span><a id="line.116">//                      return null;</a>
-<span class="sourceLineNo">117</span><a id="line.117">//              }</a>
-<span class="sourceLineNo">118</span><a id="line.118">//      }</a>
-<span class="sourceLineNo">119</span><a id="line.119">        </a>
-<span class="sourceLineNo">120</span><a id="line.120">//      /**</a>
-<span class="sourceLineNo">121</span><a id="line.121">//       * Returns the {@link Path} to the associated resource object.</a>
-<span class="sourceLineNo">122</span><a id="line.122">//       * @return the resource's {@link Path} </a>
-<span class="sourceLineNo">123</span><a id="line.123">//       */</a>
-<span class="sourceLineNo">124</span><a id="line.124">//      @Deprecated</a>
-<span class="sourceLineNo">125</span><a id="line.125">//      public default Path getPath() {</a>
-<span class="sourceLineNo">126</span><a id="line.126">//              //return toPath(this.getURI());</a>
-<span class="sourceLineNo">127</span><a id="line.127">//              return Paths.get(getURI());</a>
-<span class="sourceLineNo">128</span><a id="line.128">//      }</a>
-<span class="sourceLineNo">129</span><a id="line.129">        </a>
-<span class="sourceLineNo">130</span><a id="line.130">//      public default URI getURI() {</a>
-<span class="sourceLineNo">131</span><a id="line.131">//              Class&lt;?&gt; clazz = this.getClass();</a>
-<span class="sourceLineNo">132</span><a id="line.132">//              String resourceName = getRelativePath();</a>
-<span class="sourceLineNo">133</span><a id="line.133">//              Objects.requireNonNull(resourceName);</a>
-<span class="sourceLineNo">134</span><a id="line.134">//              URI uri = null;</a>
-<span class="sourceLineNo">135</span><a id="line.135">//              if (this.isInsideJar()) {       // (classInsideJar(clazz))</a>
-<span class="sourceLineNo">136</span><a id="line.136">//                      String classPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();</a>
-<span class="sourceLineNo">137</span><a id="line.137">//                      //String packagePath = clazz.getPackage().getName().replace('.', File.separatorChar);</a>
-<span class="sourceLineNo">138</span><a id="line.138">//                      String packagePath = clazz.getPackage().getName().replace('.', '/');</a>
-<span class="sourceLineNo">139</span><a id="line.139">//                      String compPath = "jar:file:" + classPath + "!/" + packagePath + "/" + resourceName;</a>
-<span class="sourceLineNo">140</span><a id="line.140">//                      try {</a>
-<span class="sourceLineNo">141</span><a id="line.141">//                              uri = new URI(compPath);</a>
-<span class="sourceLineNo">142</span><a id="line.142">//                      } catch (URISyntaxException e) {</a>
-<span class="sourceLineNo">143</span><a id="line.143">//                              throw new RuntimeException(e.toString());</a>
-<span class="sourceLineNo">144</span><a id="line.144">//                      }       </a>
-<span class="sourceLineNo">145</span><a id="line.145">//              }</a>
-<span class="sourceLineNo">146</span><a id="line.146">//              else {  // regular file path</a>
-<span class="sourceLineNo">147</span><a id="line.147">//                      try {</a>
-<span class="sourceLineNo">148</span><a id="line.148">//                              URL url = clazz.getResource(resourceName);</a>
-<span class="sourceLineNo">149</span><a id="line.149">//                              if (url != null) {</a>
-<span class="sourceLineNo">150</span><a id="line.150">//                                      uri = url.toURI();</a>
-<span class="sourceLineNo">151</span><a id="line.151">//                              }</a>
-<span class="sourceLineNo">152</span><a id="line.152">//                      } catch (URISyntaxException e) {</a>
-<span class="sourceLineNo">153</span><a id="line.153">//                              //do nothing, just return null</a>
-<span class="sourceLineNo">154</span><a id="line.154">//                      }</a>
-<span class="sourceLineNo">155</span><a id="line.155">//              }</a>
-<span class="sourceLineNo">156</span><a id="line.156">//              return uri;</a>
-<span class="sourceLineNo">157</span><a id="line.157">//      }</a>
-<span class="sourceLineNo">158</span><a id="line.158">        </a>
-<span class="sourceLineNo">159</span><a id="line.159">//      /**</a>
-<span class="sourceLineNo">160</span><a id="line.160">//       * Converts an {@link URI} to a {@link Path} for objects that are either</a>
-<span class="sourceLineNo">161</span><a id="line.161">//       * in the file system or inside a JAR file.</a>
-<span class="sourceLineNo">162</span><a id="line.162">//       * </a>
-<span class="sourceLineNo">163</span><a id="line.163">//       * @param uri the specified {@link URI}</a>
-<span class="sourceLineNo">164</span><a id="line.164">//       * @return the associated {@link Path}</a>
-<span class="sourceLineNo">165</span><a id="line.165">//       */</a>
-<span class="sourceLineNo">166</span><a id="line.166">//      public static Path toPath(URI uri) {</a>
-<span class="sourceLineNo">167</span><a id="line.167">//              Path path = null;</a>
-<span class="sourceLineNo">168</span><a id="line.168">//              String scheme = uri.getScheme();</a>
-<span class="sourceLineNo">169</span><a id="line.169">//              switch (scheme) {</a>
-<span class="sourceLineNo">170</span><a id="line.170">//              case "jar":     {       // resource inside JAR file</a>
-<span class="sourceLineNo">171</span><a id="line.171">//                      FileSystem fs = null;</a>
-<span class="sourceLineNo">172</span><a id="line.172">//                      try { // check if this FileSystem already exists </a>
-<span class="sourceLineNo">173</span><a id="line.173">//                              fs = FileSystems.getFileSystem(uri);</a>
-<span class="sourceLineNo">174</span><a id="line.174">//                      } catch (FileSystemNotFoundException e) {</a>
-<span class="sourceLineNo">175</span><a id="line.175">//                              // that's OK to happen, the file system is not created automatically</a>
-<span class="sourceLineNo">176</span><a id="line.176">//                      }</a>
-<span class="sourceLineNo">177</span><a id="line.177">//                      </a>
-<span class="sourceLineNo">178</span><a id="line.178">//                      if (fs == null) {       // must not create the file system twice</a>
-<span class="sourceLineNo">179</span><a id="line.179">//                              try {</a>
-<span class="sourceLineNo">180</span><a id="line.180">//                                      Map&lt;String, Object&gt; map = Collections.emptyMap();</a>
-<span class="sourceLineNo">181</span><a id="line.181">//                                      fs = FileSystems.newFileSystem(uri, map);       // FileSystems.newFileSystem(uri, Collections.&lt;String, Object&gt;emptyMap());</a>
-<span class="sourceLineNo">182</span><a id="line.182">//                              } catch (IOException e) {</a>
-<span class="sourceLineNo">183</span><a id="line.183">//                                      throw new RuntimeException(e.toString());</a>
-<span class="sourceLineNo">184</span><a id="line.184">//                              }</a>
-<span class="sourceLineNo">185</span><a id="line.185">//                      }</a>
-<span class="sourceLineNo">186</span><a id="line.186">//                      </a>
-<span class="sourceLineNo">187</span><a id="line.187">//                      String ssp = uri.getSchemeSpecificPart();</a>
-<span class="sourceLineNo">188</span><a id="line.188">//                      int startIdx = ssp.lastIndexOf('!');</a>
-<span class="sourceLineNo">189</span><a id="line.189">//                      String inJarPath = ssp.substring(startIdx + 1);  // in-Jar path (after the last '!')</a>
-<span class="sourceLineNo">190</span><a id="line.190">//                      path = fs.getPath(inJarPath);</a>
-<span class="sourceLineNo">191</span><a id="line.191">//                      break;</a>
-<span class="sourceLineNo">192</span><a id="line.192">//              }</a>
-<span class="sourceLineNo">193</span><a id="line.193">//              case "file": {  // resource in ordinary file system</a>
-<span class="sourceLineNo">194</span><a id="line.194">//                      path = Paths.get(uri);</a>
-<span class="sourceLineNo">195</span><a id="line.195">//                      break;</a>
-<span class="sourceLineNo">196</span><a id="line.196">//              }</a>
-<span class="sourceLineNo">197</span><a id="line.197">//              default:</a>
-<span class="sourceLineNo">198</span><a id="line.198">//                      throw new IllegalArgumentException("Cannot handle this URI type: " + scheme);</a>
-<span class="sourceLineNo">199</span><a id="line.199">//              }</a>
-<span class="sourceLineNo">200</span><a id="line.200">//              return path;</a>
-<span class="sourceLineNo">201</span><a id="line.201">//      }</a>
-<span class="sourceLineNo">202</span><a id="line.202">        </a>
-<span class="sourceLineNo">203</span><a id="line.203">        /**</a>
-<span class="sourceLineNo">204</span><a id="line.204">         * Returns true if the associated resource (class) is located inside a JAR file.</a>
-<span class="sourceLineNo">205</span><a id="line.205">         * </a>
-<span class="sourceLineNo">206</span><a id="line.206">         * @return true if inside a JAR file</a>
-<span class="sourceLineNo">207</span><a id="line.207">         */</a>
-<span class="sourceLineNo">208</span><a id="line.208">        public default boolean isInsideJar() {</a>
-<span class="sourceLineNo">209</span><a id="line.209">                URL url = getClass().getProtectionDomain().getCodeSource().getLocation();</a>
-<span class="sourceLineNo">210</span><a id="line.210">                String path = url.getPath();</a>
-<span class="sourceLineNo">211</span><a id="line.211">                File file = new File(path);</a>
-<span class="sourceLineNo">212</span><a id="line.212">                return file.isFile();</a>
-<span class="sourceLineNo">213</span><a id="line.213">        }</a>
-<span class="sourceLineNo">214</span><a id="line.214"></a>
-<span class="sourceLineNo">215</span><a id="line.215">//      static boolean classInsideJar(Class&lt;?&gt; clazz) {</a>
-<span class="sourceLineNo">216</span><a id="line.216">//      URL url = clazz.getProtectionDomain().getCodeSource().getLocation();</a>
-<span class="sourceLineNo">217</span><a id="line.217">//      String path = url.getPath();</a>
-<span class="sourceLineNo">218</span><a id="line.218">//      File file = new File(path);</a>
-<span class="sourceLineNo">219</span><a id="line.219">//      return file.isFile();</a>
-<span class="sourceLineNo">220</span><a id="line.220">//}</a>
-<span class="sourceLineNo">221</span><a id="line.221">        </a>
-<span class="sourceLineNo">222</span><a id="line.222">        /**</a>
-<span class="sourceLineNo">223</span><a id="line.223">         * Returns an {@link InputStream} for reading from this resource.</a>
-<span class="sourceLineNo">224</span><a id="line.224">         * See also {@link Class#getResourceAsStream(String)}.</a>
-<span class="sourceLineNo">225</span><a id="line.225">         * This method is not supposed to be overridden.</a>
-<span class="sourceLineNo">226</span><a id="line.226">         * </a>
-<span class="sourceLineNo">227</span><a id="line.227">         * @return an {@link InputStream} for the associated resource</a>
-<span class="sourceLineNo">228</span><a id="line.228">         */</a>
-<span class="sourceLineNo">229</span><a id="line.229">        public default InputStream getStream() {</a>
-<span class="sourceLineNo">230</span><a id="line.230">                return getClass().getResourceAsStream(getRelativePath());</a>
-<span class="sourceLineNo">231</span><a id="line.231">        }</a>
-<span class="sourceLineNo">232</span><a id="line.232"></a>
-<span class="sourceLineNo">233</span><a id="line.233">}</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.io.InputStream;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.net.URL;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">/**</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * &lt;p&gt;</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * This interface is supposed to be implemented by some enum class that</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * specifies the root of a resource tree. The following example defines</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * such an enum type that refers to three images. The path relative </a>
+<span class="sourceLineNo">019</span><a id="line.19"> * to the location of the enum class itself must be specified</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * and images must be stored there.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * The enum type must define an appropriate constructor and implement</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * method {@link #getFileName()}:</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25"> * &lt;pre&gt;</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * public enum MyImages implements NamedResource {</a>
+<span class="sourceLineNo">027</span><a id="line.27"> *      image1("image1.tif"),</a>
+<span class="sourceLineNo">028</span><a id="line.28"> *      image2("image2.png"),</a>
+<span class="sourceLineNo">029</span><a id="line.29"> *      image3("jpegs/image3.jpg");</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * </a>
+<span class="sourceLineNo">031</span><a id="line.31"> *      // field to associate the resource's file name</a>
+<span class="sourceLineNo">032</span><a id="line.32"> *      private final String filename;</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * </a>
+<span class="sourceLineNo">034</span><a id="line.34"> *      &amp;#64;Override</a>
+<span class="sourceLineNo">035</span><a id="line.35"> *      public String getFileName() {</a>
+<span class="sourceLineNo">036</span><a id="line.36"> *              return filename;</a>
+<span class="sourceLineNo">037</span><a id="line.37"> *      }</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * </a>
+<span class="sourceLineNo">039</span><a id="line.39"> *      // constructor</a>
+<span class="sourceLineNo">040</span><a id="line.40"> *      MyImages(String filename) {</a>
+<span class="sourceLineNo">041</span><a id="line.41"> *              this.filename = filename;</a>
+<span class="sourceLineNo">042</span><a id="line.42"> *      }</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * &lt;p&gt;</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * By default, resource files are assumed to be placed in a folder</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * with the same name as the resource class (i.e., "MyImages") relative</a>
+<span class="sourceLineNo">047</span><a id="line.47"> * to the location of the class.</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * Resources may then be simply referenced by their enum-name, for example,</a>
+<span class="sourceLineNo">049</span><a id="line.49"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">050</span><a id="line.50"> * &lt;pre&gt;</a>
+<span class="sourceLineNo">051</span><a id="line.51"> * URL url = MyImages.image1.getURL();</a>
+<span class="sourceLineNo">052</span><a id="line.52"> * ImagePlus im = IJ.openImage(url.toString());</a>
+<span class="sourceLineNo">053</span><a id="line.53"> * &lt;/pre&gt;</a>
+<span class="sourceLineNo">054</span><a id="line.54"> * &lt;p&gt;</a>
+<span class="sourceLineNo">055</span><a id="line.55"> * The benefit of using a named resource (over specifying resources by path strings) </a>
+<span class="sourceLineNo">056</span><a id="line.56"> * is that the resource is guaranteed to exist at compile time (this is assured</a>
+<span class="sourceLineNo">057</span><a id="line.57"> * by validating the existence of all named resources in the test phase) and can be retrieved</a>
+<span class="sourceLineNo">058</span><a id="line.58"> * even if located inside a JAR file.</a>
+<span class="sourceLineNo">059</span><a id="line.59"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">060</span><a id="line.60"> * @see ImageResource</a>
+<span class="sourceLineNo">061</span><a id="line.61"> * @author WB</a>
+<span class="sourceLineNo">062</span><a id="line.62"> * @version 2022/08/23</a>
+<span class="sourceLineNo">063</span><a id="line.63"> */</a>
+<span class="sourceLineNo">064</span><a id="line.64">public interface NamedResource {</a>
+<span class="sourceLineNo">065</span><a id="line.65">        </a>
+<span class="sourceLineNo">066</span><a id="line.66">        /**</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * Returns the resource directory relative to the implementing class.</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * The default implementations assumes that this is a single-level directory</a>
+<span class="sourceLineNo">069</span><a id="line.69">         * with exactly the same name as the implementing class.</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * Implementations may override this definition to return some other </a>
+<span class="sourceLineNo">071</span><a id="line.71">         * relative directory.</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * </a>
+<span class="sourceLineNo">073</span><a id="line.73">         * @return the relative resource directory for the associated resource</a>
+<span class="sourceLineNo">074</span><a id="line.74">         */</a>
+<span class="sourceLineNo">075</span><a id="line.75">        public default String getRelativeDirectory() {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                return getClass().getSimpleName();</a>
+<span class="sourceLineNo">077</span><a id="line.77">        }</a>
+<span class="sourceLineNo">078</span><a id="line.78">        </a>
+<span class="sourceLineNo">079</span><a id="line.79">        /**</a>
+<span class="sourceLineNo">080</span><a id="line.80">         * Returns the path to the associated resource relative to the</a>
+<span class="sourceLineNo">081</span><a id="line.81">         * location of the implementing class.</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * This method is not supposed to be overridden.</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * </a>
+<span class="sourceLineNo">084</span><a id="line.84">         * @return the relative path to the associated resource</a>
+<span class="sourceLineNo">085</span><a id="line.85">         */</a>
+<span class="sourceLineNo">086</span><a id="line.86">        public default String getRelativePath() {</a>
+<span class="sourceLineNo">087</span><a id="line.87">                return getRelativeDirectory() + "/" + getFileName();</a>
+<span class="sourceLineNo">088</span><a id="line.88">        }</a>
+<span class="sourceLineNo">089</span><a id="line.89">        </a>
+<span class="sourceLineNo">090</span><a id="line.90">        /**</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * Returns the file name for the associated resource (to be implemented by</a>
+<span class="sourceLineNo">092</span><a id="line.92">         * concrete classes).</a>
+<span class="sourceLineNo">093</span><a id="line.93">         * </a>
+<span class="sourceLineNo">094</span><a id="line.94">         * @return the name of the resource file</a>
+<span class="sourceLineNo">095</span><a id="line.95">         */</a>
+<span class="sourceLineNo">096</span><a id="line.96">        public String getFileName();</a>
+<span class="sourceLineNo">097</span><a id="line.97">        </a>
+<span class="sourceLineNo">098</span><a id="line.98">        /**</a>
+<span class="sourceLineNo">099</span><a id="line.99">         * Returns the URL to the associated resource. This method is not supposed to be</a>
+<span class="sourceLineNo">100</span><a id="line.100">         * overridden.</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * </a>
+<span class="sourceLineNo">102</span><a id="line.102">         * @return the URL to the associated resource</a>
+<span class="sourceLineNo">103</span><a id="line.103">         */</a>
+<span class="sourceLineNo">104</span><a id="line.104">        public default URL getURL() {</a>
+<span class="sourceLineNo">105</span><a id="line.105">                Class&lt;?&gt; clazz = this.getClass();</a>
+<span class="sourceLineNo">106</span><a id="line.106">                return clazz.getResource(this.getRelativePath());</a>
+<span class="sourceLineNo">107</span><a id="line.107">        }</a>
+<span class="sourceLineNo">108</span><a id="line.108">        </a>
+<span class="sourceLineNo">109</span><a id="line.109">        /**</a>
+<span class="sourceLineNo">110</span><a id="line.110">         * Returns true if the associated resource (class) was loaded from a JAR file.</a>
+<span class="sourceLineNo">111</span><a id="line.111">         * </a>
+<span class="sourceLineNo">112</span><a id="line.112">         * @return true if inside a JAR file</a>
+<span class="sourceLineNo">113</span><a id="line.113">         */</a>
+<span class="sourceLineNo">114</span><a id="line.114">        public default boolean isInsideJar() {</a>
+<span class="sourceLineNo">115</span><a id="line.115">                return ResourceUtils.isInsideJar(getClass());</a>
+<span class="sourceLineNo">116</span><a id="line.116">//              URL url = getClass().getProtectionDomain().getCodeSource().getLocation();</a>
+<span class="sourceLineNo">117</span><a id="line.117">//              String path = url.getPath();</a>
+<span class="sourceLineNo">118</span><a id="line.118">//              File file = new File(path);</a>
+<span class="sourceLineNo">119</span><a id="line.119">//              return file.isFile();</a>
+<span class="sourceLineNo">120</span><a id="line.120">        }</a>
+<span class="sourceLineNo">121</span><a id="line.121">        </a>
+<span class="sourceLineNo">122</span><a id="line.122">        /**</a>
+<span class="sourceLineNo">123</span><a id="line.123">         * Returns an {@link InputStream} for reading from this resource.</a>
+<span class="sourceLineNo">124</span><a id="line.124">         * See also {@link Class#getResourceAsStream(String)}.</a>
+<span class="sourceLineNo">125</span><a id="line.125">         * This method is not supposed to be overridden.</a>
+<span class="sourceLineNo">126</span><a id="line.126">         * </a>
+<span class="sourceLineNo">127</span><a id="line.127">         * @return an {@link InputStream} for the associated resource</a>
+<span class="sourceLineNo">128</span><a id="line.128">         */</a>
+<span class="sourceLineNo">129</span><a id="line.129">        public default InputStream getStream() {</a>
+<span class="sourceLineNo">130</span><a id="line.130">                return getClass().getResourceAsStream(getRelativePath());</a>
+<span class="sourceLineNo">131</span><a id="line.131">        }</a>
+<span class="sourceLineNo">132</span><a id="line.132">        </a>
+<span class="sourceLineNo">133</span><a id="line.133">        /**</a>
+<span class="sourceLineNo">134</span><a id="line.134">         * Returns the names of the actual files contained in the associated resource directory of</a>
+<span class="sourceLineNo">135</span><a id="line.135">         * the specified class, which must implement the {@link NamedResource} interface.</a>
+<span class="sourceLineNo">136</span><a id="line.136">         * This can be used to check if a given named resource has a matching file in a </a>
+<span class="sourceLineNo">137</span><a id="line.137">         * case-sensitive way. </a>
+<span class="sourceLineNo">138</span><a id="line.138">         * </a>
+<span class="sourceLineNo">139</span><a id="line.139">         * @param clazz the resource class</a>
+<span class="sourceLineNo">140</span><a id="line.140">         * @return an array of strings</a>
+<span class="sourceLineNo">141</span><a id="line.141">         */</a>
+<span class="sourceLineNo">142</span><a id="line.142">        public static String[] getResourceFileNames(Class&lt;? extends NamedResource&gt; clazz) {</a>
+<span class="sourceLineNo">143</span><a id="line.143">                return ResourceUtils.getResourceFileNames(clazz, clazz.getSimpleName());</a>
+<span class="sourceLineNo">144</span><a id="line.144">        }</a>
+<span class="sourceLineNo">145</span><a id="line.145"></a>
+<span class="sourceLineNo">146</span><a id="line.146">}</a>
 
 
 
