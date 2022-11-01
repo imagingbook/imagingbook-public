@@ -9,12 +9,14 @@
 
 package Ch08_BinaryRegions;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
+
 import java.awt.Color;
 import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
@@ -25,6 +27,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -45,7 +48,7 @@ import imagingbook.core.plugin.IjPluginName;
  * @version 2022/06/23
  */
 @IjPluginName("Axis-Aligned Bounding Box")
-public class AxisAligned_Bounding_Box implements PlugInFilter {
+public class Axis_Aligned_Bounding_Box implements PlugInFilter {
 	
 	/** Color of the bounding-box center. */
 	public static Color CenterColor = Color.magenta;
@@ -54,10 +57,22 @@ public class AxisAligned_Bounding_Box implements PlugInFilter {
 
 	private ImagePlus im;
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Axis_Aligned_Bounding_Box() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.ToolsSmall);
+		}
+	}
+	
+	// ----------------------------------------------------------------
+	
 	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
-		return DOES_8G + NO_CHANGES; 
+		return DOES_8G; 
 	}
 	
 	@Override
@@ -79,18 +94,20 @@ public class AxisAligned_Bounding_Box implements PlugInFilter {
 		ip2.add(128);	// brighten
 		
 		// draw bounding boxes as vector overlay
-		Overlay oly = new Overlay();
-		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 		ola.setStroke(new ColoredStroke(0.5, BoundingBoxColor));
 		
 		for (BinaryRegion r: regions) {
-			AxisAlignedBoundingBox box = new AxisAlignedBoundingBox(r);
-			ola.addShapes(box.getShapes());
+			if (r.getSize() > 5) {
+				AxisAlignedBoundingBox box = new AxisAlignedBoundingBox(r);
+				ola.addShapes(box.getShapes());
+			}
 		}
 		
-		ImagePlus im2 = new ImagePlus(im.getShortTitle() + "-aligned-bb", ip2);
-		im2.setOverlay(oly);
-		im2.show();
+//		ImagePlus im2 = new ImagePlus(im.getShortTitle() + "-aligned-bb", ip2);
+		im.setOverlay(ola.getOverlay());
+//		im2.show();
 	}
 	
 }

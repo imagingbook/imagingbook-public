@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Ch08_BinaryRegions;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -25,6 +28,7 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -70,6 +74,16 @@ public class Region_Contours_Demo implements PlugInFilter {
 	public static boolean ListRegions = false;
 	
 	private ImagePlus im = null;
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Region_Contours_Demo() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.ToolsSmall);
+		}
+	}
 	
 	@Override
 	public int setup(String arg, ImagePlus im) {

@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Ch08_BinaryRegions;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
+
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -16,6 +19,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.image.Projection;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -65,6 +69,17 @@ public class Make_Projections implements PlugInFilter {
 	public static boolean ShowAmountOfBlack = false;
 	
 	private ImagePlus im = null;
+	
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Make_Projections() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.Cat);
+		}
+	}
 	
 	@Override
 	public int setup(String arg, ImagePlus im) { 

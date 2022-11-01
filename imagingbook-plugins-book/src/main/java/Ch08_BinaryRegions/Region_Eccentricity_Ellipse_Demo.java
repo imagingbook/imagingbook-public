@@ -8,6 +8,8 @@
  *******************************************************************************/
 package Ch08_BinaryRegions;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
 
@@ -34,6 +36,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -91,6 +94,16 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 	public static boolean 	ShowEllipse = true;
 	
 	private ImagePlus im = null;
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Region_Eccentricity_Ellipse_Demo() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.ToolsSmall);
+		}
+	}
 
 	@Override
 	public int setup(String arg, ImagePlus im) {

@@ -8,6 +8,8 @@
  *******************************************************************************/
 package Ch08_BinaryRegions;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
 
@@ -25,6 +27,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -58,6 +61,16 @@ public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overl
 	
 	private ImagePlus im;
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Major_Axis_Demo() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.ToolsSmall);
+		}
+	}
+	
 	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
@@ -83,7 +96,7 @@ public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overl
 		
 		// create the output (color) image:
 		ColorProcessor cp = ip.convertToColorProcessor();
-		cp.add(210);
+		cp.add(200);	// brighten
 		
 		// draw major axis vectors (scaled by eccentricity): 
 		for (BinaryRegion r : regions) {

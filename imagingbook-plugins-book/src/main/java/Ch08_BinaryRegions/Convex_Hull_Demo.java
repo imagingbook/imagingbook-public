@@ -9,12 +9,14 @@
 
 package Ch08_BinaryRegions;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
+
 import java.awt.Color;
 import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
@@ -25,6 +27,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -52,13 +55,24 @@ public class Convex_Hull_Demo implements PlugInFilter {
 	/** Color of the convex hull outline. */
 	public static Color ConvexHullColor = Color.blue;
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Convex_Hull_Demo() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.ToolsSmall);
+		}
+	}
+	
 	private ImagePlus im = null;
 	
 	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
-		return DOES_8G + NO_CHANGES; 
+		return DOES_8G; 
 	}
+	
 	
 	@Override
 	public void run(ImageProcessor ip) {
@@ -80,8 +94,7 @@ public class Convex_Hull_Demo implements PlugInFilter {
 		ip2.add(128);
 		
 		// draw convex hulls as vector overlay
-		Overlay oly = new Overlay();
-		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 		ola.setStroke(new ColoredStroke(0.5, ConvexHullColor));
 		
 		for (BinaryRegion r: regions) {
@@ -90,8 +103,6 @@ public class Convex_Hull_Demo implements PlugInFilter {
 			ola.addShapes(hull.getShapes());
 		}
 
-		ImagePlus im2 = new ImagePlus(im.getShortTitle() + "-convex-hulls", ip2);
-		im2.setOverlay(oly);
-		im2.show();
+		im.setOverlay(ola.getOverlay());
 	}
 }

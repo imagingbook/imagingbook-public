@@ -9,6 +9,9 @@
 package Ch08_BinaryRegions;
 
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
+
 import java.util.List;
 
 import ij.IJ;
@@ -29,6 +32,7 @@ import imagingbook.common.regions.RecursiveSegmentation;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.common.regions.SequentialSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -65,7 +69,7 @@ import imagingbook.core.plugin.IjPluginName;
 public class Region_Segmentation_Demo implements PlugInFilter {
 	
 	/** Enum type for various region labeling methods. */
-	public enum SegmentationMethod {
+	protected enum SegmentationMethod {
 		Recursive,
 		DepthFirst, 
 		BreadthFirst,
@@ -85,6 +89,16 @@ public class Region_Segmentation_Demo implements PlugInFilter {
 	
 	private ImagePlus im;
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Region_Segmentation_Demo() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.ToolsSmall);
+		}
+	}
+	
     @Override
 	public int setup(String arg, ImagePlus im) {
     	this.im = im;
@@ -98,7 +112,8 @@ public class Region_Segmentation_Demo implements PlugInFilter {
     		return;
     	
     	if (Method == SegmentationMethod.Recursive && 
-    			!IJ.showMessageWithCancel("Recursive labeling", "This may run out of stack memory!\n" + "Continue?")) {
+    			!IJ.showMessageWithCancel("Recursive labeling", 
+    					"This may run out of stack memory!\n" + "Continue?")) {
 			return;
     	}
 
