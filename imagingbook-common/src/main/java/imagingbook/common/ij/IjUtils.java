@@ -1085,26 +1085,29 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Opens a dialog asking if the specified sample image (resource) should be
-	 * opened and made the active image. This if typically used in demo plugins in
-	 * the case that no (or no suitable) image is currently open.
+	 * Opens a dialog asking if the suggested sample image (resource) should be
+	 * opened and made the active image. Alternatively (if answer is NO) the user is
+	 * asked to select another image to be opened. Nothing happens if the dialog is
+	 * canceled. This if typically used in the (otherwise empty) constructor of demo
+	 * plugins when no (or no suitable) image is currently open.
 	 * 
-	 * @param resource an image resource
+	 * @param suggested a sample image (resource)
 	 */
-	public static void requestSampleImage(ImageResource resource) {	// TODO: allow a selection of sample images
+	public static void requestSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
 		GenericDialog gd = new GenericDialog("Request sample image");
-		gd.addMessage("Open sample image\n" + resource + "?");
-//		gd.enableYesNoCancel();
-//		gd.hideCancelButton();
-		gd.setOKLabel("Yes");
-//		gd.setCancelLabel("Quit");
+		gd.addMessage("Open sample image\n" + suggested + "?");
+		gd.enableYesNoCancel("Yes", "Open other");
 		gd.showDialog();
 		if (gd.wasCanceled()) {
 			return;
 		}
-		ImagePlus im = resource.getImage();
-		im.show();
-		WindowManager.setCurrentWindow(im.getWindow());
+		if (gd.wasOKed()) {
+			ImagePlus im = suggested.getImage();
+			im.show();
+			WindowManager.setCurrentWindow(im.getWindow());
+		}
+		else {	// select other image
+			IJ.open(null);
+		}
 	}
-
 }
