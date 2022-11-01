@@ -5,12 +5,18 @@ import ij.plugin.PlugIn;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
+/**
+ * Allows the user to select and open one of the internal sample images.
+ * 
+ * @author WB
+ */
 public class Open_Sample_Image implements PlugIn {
 
 	@Override
 	public void run(String arg) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addEnumChoice("Select", GeneralSampleImage.MapleLeafSmall);
+		GeneralSampleImage init = GeneralSampleImage.values()[0];
+		gd.addEnumChoice("Select", init);
 		
 		gd.showDialog();
 		if(gd.wasCanceled()) 
