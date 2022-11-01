@@ -8,7 +8,6 @@
  *******************************************************************************/
 package imagingbook.core.resource;
 
-import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -74,10 +73,8 @@ public interface NamedResource {
 	 * @return the relative resource directory for the associated resource
 	 */
 	public default String getRelativeDirectory() {
-		return this.getClass().getSimpleName();
+		return getClass().getSimpleName();
 	}
-	
-
 	
 	/**
 	 * Returns the path to the associated resource relative to the
@@ -91,15 +88,16 @@ public interface NamedResource {
 	}
 	
 	/**
-	 * Returns the file name for the associated resource.
+	 * Returns the file name for the associated resource (to be implemented by
+	 * concrete classes).
 	 * 
 	 * @return the name of the resource file
 	 */
 	public String getFileName();
 	
 	/**
-	 * Returns the URL to the associated resource.
-	 * This method is not supposed to be overridden.
+	 * Returns the URL to the associated resource. This method is not supposed to be
+	 * overridden.
 	 * 
 	 * @return the URL to the associated resource
 	 */
@@ -108,116 +106,18 @@ public interface NamedResource {
 		return clazz.getResource(this.getRelativePath());
 	}
 	
-//	@Deprecated
-//	public default URI getURI() {
-//		try {
-//			return getURL().toURI();
-//		} catch (URISyntaxException e) {
-//			return null;
-//		}
-//	}
-	
-//	/**
-//	 * Returns the {@link Path} to the associated resource object.
-//	 * @return the resource's {@link Path} 
-//	 */
-//	@Deprecated
-//	public default Path getPath() {
-//		//return toPath(this.getURI());
-//		return Paths.get(getURI());
-//	}
-	
-//	public default URI getURI() {
-//		Class<?> clazz = this.getClass();
-//		String resourceName = getRelativePath();
-//		Objects.requireNonNull(resourceName);
-//		URI uri = null;
-//		if (this.isInsideJar()) {	// (classInsideJar(clazz))
-//			String classPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
-//			//String packagePath = clazz.getPackage().getName().replace('.', File.separatorChar);
-//			String packagePath = clazz.getPackage().getName().replace('.', '/');
-//			String compPath = "jar:file:" + classPath + "!/" + packagePath + "/" + resourceName;
-//			try {
-//				uri = new URI(compPath);
-//			} catch (URISyntaxException e) {
-//				throw new RuntimeException(e.toString());
-//			}	
-//		}
-//		else {	// regular file path
-//			try {
-//				URL url = clazz.getResource(resourceName);
-//				if (url != null) {
-//					uri = url.toURI();
-//				}
-//			} catch (URISyntaxException e) {
-//				//do nothing, just return null
-//			}
-//		}
-//		return uri;
-//	}
-	
-//	/**
-//	 * Converts an {@link URI} to a {@link Path} for objects that are either
-//	 * in the file system or inside a JAR file.
-//	 * 
-//	 * @param uri the specified {@link URI}
-//	 * @return the associated {@link Path}
-//	 */
-//	public static Path toPath(URI uri) {
-//		Path path = null;
-//		String scheme = uri.getScheme();
-//		switch (scheme) {
-//		case "jar":	{	// resource inside JAR file
-//			FileSystem fs = null;
-//			try { // check if this FileSystem already exists 
-//				fs = FileSystems.getFileSystem(uri);
-//			} catch (FileSystemNotFoundException e) {
-//				// that's OK to happen, the file system is not created automatically
-//			}
-//			
-//			if (fs == null) {	// must not create the file system twice
-//				try {
-//					Map<String, Object> map = Collections.emptyMap();
-//					fs = FileSystems.newFileSystem(uri, map);	// FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
-//				} catch (IOException e) {
-//					throw new RuntimeException(e.toString());
-//				}
-//			}
-//			
-//			String ssp = uri.getSchemeSpecificPart();
-//			int startIdx = ssp.lastIndexOf('!');
-//			String inJarPath = ssp.substring(startIdx + 1);  // in-Jar path (after the last '!')
-//			path = fs.getPath(inJarPath);
-//			break;
-//		}
-//		case "file": {	// resource in ordinary file system
-//			path = Paths.get(uri);
-//			break;
-//		}
-//		default:
-//			throw new IllegalArgumentException("Cannot handle this URI type: " + scheme);
-//		}
-//		return path;
-//	}
-	
 	/**
-	 * Returns true if the associated resource (class) is located inside a JAR file.
+	 * Returns true if the associated resource (class) was loaded from a JAR file.
 	 * 
 	 * @return true if inside a JAR file
 	 */
 	public default boolean isInsideJar() {
-		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
-		String path = url.getPath();
-		File file = new File(path);
-		return file.isFile();
+		return ResourceUtils.isInsideJar(getClass());
+//		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+//		String path = url.getPath();
+//		File file = new File(path);
+//		return file.isFile();
 	}
-
-//	static boolean classInsideJar(Class<?> clazz) {
-//	URL url = clazz.getProtectionDomain().getCodeSource().getLocation();
-//	String path = url.getPath();
-//	File file = new File(path);
-//	return file.isFile();
-//}
 	
 	/**
 	 * Returns an {@link InputStream} for reading from this resource.
@@ -228,6 +128,18 @@ public interface NamedResource {
 	 */
 	public default InputStream getStream() {
 		return getClass().getResourceAsStream(getRelativePath());
+	}
+	
+	/**
+	 * Returns the names of all files contained in the associated resource directory of
+	 * the specified class, which must implement the {@link NamedResource} interface.
+	 * This can be used to check if a given named resource has a matching file in a 
+	 * case-sensitive way. 
+	 * 
+	 * @return an array of strings
+	 */
+	public static String[] getResourceFileNames(Class<? extends NamedResource> clazz) {
+		return ResourceUtils.getResourceFileNames(clazz, clazz.getSimpleName());
 	}
 
 }

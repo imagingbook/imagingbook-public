@@ -48,6 +48,12 @@ import ij.ImagePlus;
  */
 public interface ImageResource extends NamedResource {
 	
+	/**
+	 * Opens end returns a {@link ImagePlus} instance for this
+	 * {@link ImageResource}.
+	 * 
+	 * @return a {@link ImagePlus} instance
+	 */
 	public default ImagePlus getImage() {
 		return IJ.openImage(getURL().toString());
 	}
@@ -57,7 +63,9 @@ public interface ImageResource extends NamedResource {
 		return this.autoName();
 	}
 	
-	
+	/**
+	 * The set of image file extensions supported in {@link #autoName()}.
+	 */
 	static final HashSet<String> ValidImageExtensions = 
 			new HashSet<>(Arrays.asList("png", "tif", "tiff", "jpg", "jpeg"));
 	
@@ -104,7 +112,16 @@ public interface ImageResource extends NamedResource {
 		return itemname + ".png";
 	}
 	
-
-
+	/**
+	 * Returns the names of all files contained in the associated resource directory of
+	 * the specified class, which must implement the {@link ImageResource} interface.
+	 * This can be used to check if a given named resource has a matching file in a 
+	 * case-sensitive way.
+	 * 
+	 * @return an array of strings
+	 */
+	public static String[] getResourceFileNames(Class<? extends ImageResource> clazz) {
+		return ResourceUtils.getResourceFileNames(clazz, clazz.getSimpleName());
+	}
 
 }
