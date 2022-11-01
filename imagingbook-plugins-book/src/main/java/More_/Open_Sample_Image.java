@@ -10,6 +10,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * The image is loaded from the associated JAR file.
  * 
  * @author WB
+ * @see GeneralSampleImage
  */
 public class Open_Sample_Image implements PlugIn {
 
