@@ -55,6 +55,8 @@ public class Convex_Hull_Demo implements PlugInFilter {
 	/** Color of the convex hull outline. */
 	public static Color ConvexHullColor = Color.blue;
 	
+	private ImagePlus im = null;
+	
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
@@ -65,14 +67,11 @@ public class Convex_Hull_Demo implements PlugInFilter {
 		}
 	}
 	
-	private ImagePlus im = null;
-	
 	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
 		return DOES_8G; 
 	}
-	
 	
 	@Override
 	public void run(ImageProcessor ip) {

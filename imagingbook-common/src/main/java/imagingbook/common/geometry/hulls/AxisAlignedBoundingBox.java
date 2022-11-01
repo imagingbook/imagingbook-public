@@ -98,20 +98,20 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	}
 	
 	/**
-	 * Returns an array holding the 4 corner points of the bounding box or 
-	 * {@code null} if the orientation of the point set is undefined.
+	 * Returns an array holding the 4 corner points of the bounding box.
+	 * 
 	 * @return as described above
 	 */
-	public Pnt2d[] getCornerPoints() {
+	public Pnt2d[] getVertices() {
 		return this.corners;
 	}
 		
 	/**
-	 * Calculates the major axis-aligned bounding box of 
-	 * the supplied region, as a sequence of four point
-	 * coordinates (p0, p1, p2, p3).
+	 * Calculates the major axis-aligned bounding box of the supplied region, as a
+	 * sequence of four point coordinates (p0, p1, p2, p3).
 	 * 
-	 * @return the region's bounding box as a sequence of the 4 corner coordinates (p0, p1, p2, p3)
+	 * @return the region's bounding box as a sequence of the 4 corner coordinates
+	 *         (p0, p1, p2, p3)
 	 */
 	private Pnt2d[] makeBox(Iterable<Pnt2d> points) {
 		//double theta = getOrientationAngle(points);

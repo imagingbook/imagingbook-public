@@ -75,7 +75,7 @@ public class AxisAlignedBoundingBoxTest {
 	// -------------------------------------------------------------------
 	
 	private static void runPointTest(Pnt2d[] points, AxisAlignedBoundingBox box) {
-		Pnt2d[] corners = box.getCornerPoints();
+		Pnt2d[] corners = box.getVertices();
 		assertNotNull(corners);
 		assertEquals(4, corners.length);
 		

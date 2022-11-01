@@ -55,7 +55,7 @@ public class ConvexHullTest {
 	}
 	
 	@Test
-	public void test3() {	// single point only!
+	public void testSinglePoint() {
 		List<Pnt2d> points = Arrays.asList(
 				Pnt2d.from(2, 5)
 				);
@@ -64,7 +64,11 @@ public class ConvexHullTest {
 		assertNotNull(vertices);
 		assertEquals(1, vertices.length);
 	}
-
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testEmptyPoint() {
+		new ConvexHull(new Pnt2d[0]);
+	}
 	
 	@Test
 	public void test4() {

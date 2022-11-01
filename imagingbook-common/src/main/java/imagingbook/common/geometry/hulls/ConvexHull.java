@@ -9,13 +9,11 @@
 package imagingbook.common.geometry.hulls;
 
 import java.awt.Shape;
-import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Segment;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHull2D;
 import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;
@@ -26,11 +24,18 @@ import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.shape.ShapeProducer;
 
 /**
- * This class serves to calculate the convex hull of a binary region
- * or a closed contour, given as a sequence of point coordinates.
- * It is based on the convex hull implementation provided by the
- * Apache Commons Math library, in particular classes 
- * {@link ConvexHull2D} and {@link MonotoneChain}.
+ * <p>
+ * This class calculate the convex hull of a 2D point set. It is based on the
+ * convex hull implementation provided by the Apache Commons Math library, in
+ * particular classes {@link ConvexHull2D} and {@link MonotoneChain} [1]. See
+ * Sec. 8.4.2 of [2] for additional details.
+ * </p>
+ * <p>
+ * [1] <a href="https://commons.apache.org/proper/commons-math/index.html">
+ * https://commons.apache.org/proper/commons-math/index.html</a> <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/06/24
@@ -41,15 +46,16 @@ public class ConvexHull implements ShapeProducer {
 	private final Pnt2d[] vertices;
 	
 	/**
-	 * Constructor.
+	 * Constructor, creates a {@link ConvexHull} instance from an {@link Iterable}
+	 * over {@link Pnt2d}. At least one distinct point is required.
 	 * 
-	 * @param points a (iterable) set of 2D sample points
+	 * @param points an iterator over 2D points
 	 */
 	public ConvexHull(Iterable<Pnt2d> points) {
-		List<Vector2D> pts = convertToVector2D(points);
-		if (pts.size() < 1) {
-			throw new IllegalArgumentException("at least 1 point required for convex hull");
+		if (!points.iterator().hasNext()) {
+			throw new IllegalArgumentException("empty point sequence, at least one input point required");
 		}
+		List<Vector2D> pts = toVector2D(points);
 		this.hull = new MonotoneChain().generate(pts);
 		Vector2D[] vecs = hull.getVertices();
 		this.vertices = new Pnt2d[vecs.length];
@@ -59,12 +65,21 @@ public class ConvexHull implements ShapeProducer {
 	}
 	
 	/**
-	 * Constructor.
+	 * Constructor, creates a {@link AxisAlignedBoundingBox} instance from
+	 * an array of {@link Pnt2d} points. At least one distinct point is required.
 	 * 
-	 * @param points an array of 2D sample points
+	 * @param points an array of 2D points
 	 */
 	public ConvexHull(Pnt2d[] points) {
 		this(() -> Arrays.stream(points).iterator());
+	}
+	
+	private static List<Vector2D> toVector2D(Iterable<Pnt2d> points) {
+		List<Vector2D> vecs = new ArrayList<Vector2D>();
+		for (Pnt2d p : points) {
+			vecs.add(new Vector2D(p.getX(), p.getY()));
+		}
+		return vecs;
 	}
 	
 	// public methods ------------------------
@@ -79,28 +94,22 @@ public class ConvexHull implements ShapeProducer {
 		return this.vertices;
 	}
 	
-	@Deprecated
-	public Line2D[] getSegments() {
-		Segment[] origSegments = hull.getLineSegments();
-		Line2D[] newSegments = new Line2D.Double[origSegments.length];
-		for (int i = 0; i < origSegments.length; i++) {
-			Segment seg = origSegments[i];
-			Vector2D start = seg.getStart();
-			Vector2D end = seg.getEnd();
-			newSegments[i] = new Line2D.Double(start.getX(), start.getY(), end.getX(), end.getY());
-		}
-		return newSegments;
-	}
+//	@Deprecated
+//	public Line2D[] getSegments() {
+//		Segment[] origSegments = hull.getLineSegments();
+//		Line2D[] newSegments = new Line2D.Double[origSegments.length];
+//		for (int i = 0; i < origSegments.length; i++) {
+//			Segment seg = origSegments[i];
+//			Vector2D start = seg.getStart();
+//			Vector2D end = seg.getEnd();
+//			newSegments[i] = new Line2D.Double(start.getX(), start.getY(), end.getX(), end.getY());
+//		}
+//		return newSegments;
+//	}
 	
 	// --------------------------------------------------------------------
 	
-	private static List<Vector2D> convertToVector2D(Iterable<Pnt2d> points) {
-		List<Vector2D> vecs = new ArrayList<Vector2D>();
-		for (Pnt2d p : points) {
-			vecs.add(new Vector2D(p.getX(), p.getY()));
-		}
-		return vecs;
-	}
+
 
 	@Override
 	public Shape getShape(double scale) {
