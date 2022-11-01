@@ -9,6 +9,7 @@
 package imagingbook.common.regions;
 
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -148,8 +149,8 @@ public class SegmentationBackedRegion extends BinaryRegion {
 
 	@Override
 	public List<Contour> getInnerContours() {
-//		return (innerContours != null) ? innerContours : Collections.emptyList();
-		return innerContours;
+		return (innerContours != null) ? innerContours : Collections.emptyList();
+//		return innerContours;
 	}
 
 	void addInnerContour(Contour.Inner contr) {
