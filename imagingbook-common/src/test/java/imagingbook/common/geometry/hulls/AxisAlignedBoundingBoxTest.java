@@ -55,14 +55,33 @@ public class AxisAlignedBoundingBoxTest {
 		}
 	}
 	
+	@Test
+	public void testSinglePoint() {
+		Pnt2d[] pnts = { Pnt2d.from(2, 5),  Pnt2d.from(2, 5)};
+		runPointTest(pnts, new AxisAlignedBoundingBox(Arrays.asList(pnts)));
+	}
+	
+	@Test
+	public void testTwoPoints() {
+		Pnt2d[] pnts = { Pnt2d.from(2, 5), Pnt2d.from(5, 4)};
+		runPointTest(pnts, new AxisAlignedBoundingBox(Arrays.asList(pnts)));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testEmptyPoints() {
+		new AxisAlignedBoundingBox(new Pnt2d[0]);
+	}
+	
+	// -------------------------------------------------------------------
+	
 	private static void runPointTest(Pnt2d[] points, AxisAlignedBoundingBox box) {
-		
 		Pnt2d[] corners = box.getCornerPoints();
 		assertNotNull(corners);
 		assertEquals(4, corners.length);
 		
 		// check if all sample points are inside the bounding box
 		for (Pnt2d p : points) {
+//			System.out.println("Point " + p);
 			assertTrue("point not contained in bounding box: " + p, box.contains(p));
 		}
 	}

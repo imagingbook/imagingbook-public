@@ -12,63 +12,89 @@ import static imagingbook.common.math.Arithmetic.isZero;
 import static imagingbook.common.math.Arithmetic.radius;
 import static imagingbook.common.math.Arithmetic.sqr;
 import static imagingbook.common.math.Matrix.add;
+import static imagingbook.common.math.Matrix.makeDoubleVector;
 import static imagingbook.common.math.Matrix.multiply;
 import static java.lang.Math.sqrt;
 
 import java.awt.Shape;
 import java.awt.geom.Path2D;
+import java.util.Arrays;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.util.ArrayIterator;
 
 /**
- * Represents a major axis-aligned bounding box of a 2D point set.
+ * <p>
+ * Represents a major axis-aligned bounding box of a 2D point set. At least one
+ * point is required to set up a bounding box. If the direction vector is
+ * undefined (e.g., in the case of a single input point), the unit vector in
+ * x-direction is assumed. See Sec. 8.6.4 (Alg. 8.6) of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
  * 
  * @author WB
- * @version 2022/06/23
- * 
+ * @version 2022/11/01
  */
 public class AxisAlignedBoundingBox implements ShapeProducer {
 	
-	private final Iterable<Pnt2d> points;
-	private final PntDouble centroid;			// centroid of the point set
-	private final double[] orientationVector;
-	private final Pnt2d[] boundingbox;
+	private final Pnt2d centroid;	// centroid of the point set
+	private final double[] dir;		// orientation vector
+	private final Pnt2d[] corners;	// corner points of the bounding box
 	private final AlgebraicLine[] boundinglines;
 
 	/**
-	 * Constructor. 
+	 * Constructor, creates a {@link AxisAlignedBoundingBox} instance from
+	 * an {@link Iterable} over {@link Pnt2d}. At least one distinct point is required.
+	 * 
 	 * @param points an iterator over 2D points
 	 */
 	public AxisAlignedBoundingBox(Iterable<Pnt2d> points) {
-		this.points = points;
-		this.centroid = makeCentroid();		
-		this.orientationVector = makeOrientationVector();
-		this.boundingbox = makeBox();
-		this.boundinglines = new AlgebraicLine[] {
-			AlgebraicLine.from(boundingbox[0], boundingbox[1]),
-			AlgebraicLine.from(boundingbox[1], boundingbox[2]),
-			AlgebraicLine.from(boundingbox[2], boundingbox[3]),
-			AlgebraicLine.from(boundingbox[3], boundingbox[0])};
+		if (!points.iterator().hasNext()) {
+			throw new IllegalArgumentException("empty point sequence, at least one input point required");
+		}
+		this.centroid = PntUtils.centroid(points); //makeCentroid();	
+		this.dir = makeOrientationVector(points);
+		this.corners = makeBox(points);
+		this.boundinglines = makeBoundingLines();
 	}
 	
 	/**
-	 * Constructor.
+	 * Constructor, creates a {@link AxisAlignedBoundingBox} instance from
+	 * an array of {@link Pnt2d} points. At least one distinct point is required.
+	 * 
 	 * @param points an array of 2D points
 	 */
 	public AxisAlignedBoundingBox(Pnt2d[] points) {
 		this(() -> ArrayIterator.from(points));
 	}
 	
-//	public Pnt2d getCentroid() {
-//		return centroid;
-//	}
-	
+	/**
+	 * Returns the orientation vector of this bounding box (pointing in the
+	 * direction of its major axis).
+	 * 
+	 * @return the orientation vector of this bounding box
+	 */
 	public double[] getOrientationVector() {
-		return orientationVector;
+		return dir;
+	}
+	
+	/**
+	 * Returns an array of four {@link AlgebraicLine} instances which
+	 * coincide with the outline of the bounding box. The lines can be used to determine
+	 * if a given point is inside the box or not (see {@link #contains(Pnt2d, double)}).
+	 * 
+	 * @return
+	 */
+	public AlgebraicLine[] getBoundingLines() {
+		return this.boundinglines;
 	}
 	
 	/**
@@ -77,7 +103,7 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	 * @return as described above
 	 */
 	public Pnt2d[] getCornerPoints() {
-		return (boundingbox == null) ? null : boundingbox;
+		return this.corners;
 	}
 		
 	/**
@@ -85,13 +111,12 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	 * the supplied region, as a sequence of four point
 	 * coordinates (p0, p1, p2, p3).
 	 * 
-	 * @param points binary region
-	 * @return the region's bounding box as a sequence of 4 coordinates (p0, p1, p2, p3)
+	 * @return the region's bounding box as a sequence of the 4 corner coordinates (p0, p1, p2, p3)
 	 */
-	private Pnt2d[] makeBox() {
+	private Pnt2d[] makeBox(Iterable<Pnt2d> points) {
 		//double theta = getOrientationAngle(points);
 		
-		double[] xy = this.orientationVector;
+		double[] xy = this.dir;
 		if (xy == null) {	// regin's orientation is undefined
 			return null;
 		}
@@ -117,12 +142,6 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 			bmax = Math.max(b, bmax);
 		}
 		
-//		double delta = 1e-6;
-//		amin -= delta;
-//		bmin -= delta;
-//		amax += delta;
-//		bmax += delta;
-		
 		Pnt2d[] corners = new Pnt2d[4];
 		corners[0] = PntDouble.from(add(multiply(amin, ea), multiply(bmin, eb)));
 		corners[1] = PntDouble.from(add(multiply(amin, ea), multiply(bmax, eb)));
@@ -131,14 +150,16 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 		return corners;
 	}
 
-	public double[] makeOrientationVector() {
+	private double[] makeOrientationVector(Iterable<Pnt2d> points) {
 		double mu20 = 0;
 		double mu02 = 0;
 		double mu11 = 0;
-
+		double xc = centroid.getX();
+		double yc = centroid.getY();
+		
 		for (Pnt2d p : points) {
-			double dx = (p.getX() - centroid.x);
-			double dy = (p.getY() - centroid.y);
+			double dx = p.getX() - xc;
+			double dy = p.getY() - yc;
 			mu20 = mu20 + dx * dx;
 			mu02 = mu02 + dy * dy;
 			mu11 = mu11 + dx * dy;
@@ -151,35 +172,19 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 		double yTheta = A;
 		double d = radius(xTheta, yTheta);
 		
-		return (isZero(d)) ? null : new double[] {xTheta / d, yTheta / d};
+		return (isZero(d)) ? new double[] {1, 0} : new double[] {xTheta / d, yTheta / d};
 	}
 	
-	private PntDouble makeCentroid() {
-		int n = 0;
-		double su = 0;
-		double sv = 0;
-		for (Pnt2d p : points) {
-			su += p.getX();
-			sv += p.getY();
-			n++;
-		}
-		if (n == 0) {
-			throw new IllegalArgumentException("empty point sequence!");
-		}
-		return PntDouble.from(su/n, sv/n);
-	}
-
-
 	// shape-related methods:
 	
 	@Override
 	public Path2D getShape(double scale) {
 		// shape of the actual bounding box
 		Path2D p = new Path2D.Double(Path2D.WIND_NON_ZERO, 4);
-		p.moveTo(boundingbox[0].getX(), boundingbox[0].getY());
-		p.lineTo(boundingbox[1].getX(), boundingbox[1].getY());
-		p.lineTo(boundingbox[2].getX(), boundingbox[2].getY());
-		p.lineTo(boundingbox[3].getX(), boundingbox[3].getY());
+		p.moveTo(corners[0].getX(), corners[0].getY());
+		p.lineTo(corners[1].getX(), corners[1].getY());
+		p.lineTo(corners[2].getX(), corners[2].getY());
+		p.lineTo(corners[3].getX(), corners[3].getY());
 		p.closePath();
 		return p;
 	}
@@ -192,14 +197,35 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 				};
 	}
 	
+	private AlgebraicLine[] makeBoundingLines() {
+		double dx = dir[0];
+		double dy = dir[1];
+		return new AlgebraicLine[] {
+				AlgebraicLine.from(corners[0].toDoubleArray(), makeDoubleVector( dy, -dx)),		// 0 -> 1
+				AlgebraicLine.from(corners[1].toDoubleArray(), makeDoubleVector( dx,  dy)),		// 1 -> 2
+				AlgebraicLine.from(corners[2].toDoubleArray(), makeDoubleVector(-dy,  dx)),		// 2 -> 3
+				AlgebraicLine.from(corners[3].toDoubleArray(), makeDoubleVector(-dx, -dy))
+				};	// 3 -> 0
+	}
+	
 	public static final double DefaultContainsTolerance = 1e-12;
 	
+	
+	/**
+	 * Checks if this bounding box contains the specified point
+	 * using the default tolerance.
+	 * This method is used instead of {@link Path2D#contains(double, double)}
+	 * to avoid false results due to roundoff errors.
+	 * 
+	 * @param p some 2D point
+	 * @return true if the point is inside the bounding box
+	 */
 	public boolean contains(Pnt2d p) {
 		return contains(p, DefaultContainsTolerance);
 	}
 	
 	/**
-	 * Checks if this bounding box contains the specified point.
+	 * Checks if this bounding box contains the specified point using the specified tolerance.
 	 * This method is used instead of {@link Path2D#contains(double, double)}
 	 * to avoid false results due to roundoff errors.
 	 * 
@@ -209,12 +235,17 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	 */
 	public boolean contains(Pnt2d p, double tolerance) {
 		for (int i = 0; i < 4; i++) {
-			double dist = boundinglines[0].getSignedDistance(p);
+			double dist = boundinglines[i].getSignedDistance(p);
 			// positive signed distance means that the point is to the left
 			if (dist + tolerance < 0) {
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s: %s", this.getClass().getSimpleName(), Arrays.toString(this.corners));
 	}
 }
