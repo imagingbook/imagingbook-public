@@ -10,7 +10,6 @@ package Ch08_BinaryRegions;
 
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import java.util.List;
 
@@ -24,6 +23,7 @@ import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
 import imagingbook.common.color.iterate.RandomHueGenerator;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.BinaryRegionSegmentation;
 import imagingbook.common.regions.BreadthFirstSegmentation;
@@ -95,7 +95,7 @@ public class Region_Segmentation_Demo implements PlugInFilter {
 	 */
 	public Region_Segmentation_Demo() {
 		if (noCurrentImage()) {
-			askForSampleImage(GeneralSampleImage.ToolsSmall);
+			DialogUtils.askForSampleImage(GeneralSampleImage.ToolsSmall);
 		}
 	}
 	

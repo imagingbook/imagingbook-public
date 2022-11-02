@@ -1,12 +1,12 @@
 package ImageJ_Demos;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 
@@ -29,7 +29,7 @@ public class Open_Sample_Image_For_PlugInFilter implements PlugInFilter {
 	 */
 	public Open_Sample_Image_For_PlugInFilter() {
 		if (noCurrentImage()) {
-			askForSampleImage(GeneralSampleImage.MapleLeafSmall);
+			DialogUtils.askForSampleImage(GeneralSampleImage.MapleLeafSmall);
 		}
 	}
 	

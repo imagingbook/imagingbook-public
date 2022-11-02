@@ -9,7 +9,6 @@
 package Ch08_BinaryRegions;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import java.awt.Color;
 import java.util.List;
@@ -21,6 +20,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
@@ -81,7 +81,7 @@ public class Region_Contours_Demo implements PlugInFilter {
 	 */
 	public Region_Contours_Demo() {
 		if (noCurrentImage()) {
-			askForSampleImage(GeneralSampleImage.ToolsSmall);
+			DialogUtils.askForSampleImage(GeneralSampleImage.ToolsSmall);
 		}
 	}
 	

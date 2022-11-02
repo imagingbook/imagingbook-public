@@ -10,7 +10,6 @@
 package More_;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import java.awt.Color;
 import java.awt.geom.Path2D;
@@ -27,6 +26,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fd.FourierDescriptor;
 import imagingbook.common.geometry.fd.FourierDescriptorTrigonometric;
 import imagingbook.common.geometry.fd.Utils;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
@@ -75,7 +75,7 @@ public class Fourier_Descriptor_Trigonometic implements PlugInFilter {
 	 */
 	public Fourier_Descriptor_Trigonometic() {
 		if (noCurrentImage()) {
-			askForSampleImage(GeneralSampleImage.HouseRoi_tif);
+			DialogUtils.askForSampleImage(GeneralSampleImage.HouseRoi_tif);
 		}
 	}
 	

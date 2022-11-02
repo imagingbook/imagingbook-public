@@ -41,7 +41,6 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.util.bits.BitMap;
-import imagingbook.core.resource.ImageResource;
 
 
 /**
@@ -1085,30 +1084,4 @@ public abstract class IjUtils {
 		}
 	}
 	
-	/**
-	 * Opens a dialog asking if the suggested sample image (resource) should be
-	 * opened and made the active image. Alternatively (if answer is NO) the user is
-	 * asked to select another image to be opened. Nothing happens if the dialog is
-	 * canceled. This if typically used in the (otherwise empty) constructor of demo
-	 * plugins when no (or no suitable) image is currently open.
-	 * 
-	 * @param suggested a sample image (resource)
-	 */
-	public static void askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
-		GenericDialog gd = new GenericDialog("No image open");
-		gd.addMessage("Open sample image\n" + suggested + "?");
-		gd.enableYesNoCancel("Yes", "Open other");
-		gd.showDialog();
-		if (gd.wasCanceled()) {
-			return;
-		}
-		if (gd.wasOKed()) {
-			ImagePlus im = suggested.getImage();
-			im.show();
-			WindowManager.setCurrentWindow(im.getWindow());
-		}
-		else {	// select other image
-			IJ.open(null);
-		}
-	}
 }

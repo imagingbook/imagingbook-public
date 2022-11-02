@@ -9,7 +9,6 @@
 package Ch08_BinaryRegions;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.askForSampleImage;
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
 
@@ -23,6 +22,7 @@ import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
@@ -67,7 +67,7 @@ public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overl
 	 */
 	public Major_Axis_Demo() {
 		if (noCurrentImage()) {
-			askForSampleImage(GeneralSampleImage.ToolsSmall);
+			DialogUtils.askForSampleImage(GeneralSampleImage.ToolsSmall);
 		}
 	}
 	

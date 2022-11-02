@@ -9,7 +9,6 @@
 package Ch08_BinaryRegions;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -17,6 +16,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.Projection;
 import imagingbook.core.plugin.IjPluginName;
 import imagingbook.sampleimages.GeneralSampleImage;
@@ -77,7 +77,7 @@ public class Make_Projections implements PlugInFilter {
 	 */
 	public Make_Projections() {
 		if (noCurrentImage()) {
-			askForSampleImage(GeneralSampleImage.Cat);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Cat);
 		}
 	}
 	

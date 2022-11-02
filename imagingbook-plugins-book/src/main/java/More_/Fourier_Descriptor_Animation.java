@@ -10,7 +10,6 @@
 package More_;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -31,6 +30,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fd.FourierDescriptor;
 import imagingbook.common.geometry.fd.FourierDescriptorUniform;
 import imagingbook.common.geometry.fd.Utils;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.Complex;
@@ -95,7 +95,7 @@ public class Fourier_Descriptor_Animation implements PlugInFilter {
 	 */
 	public Fourier_Descriptor_Animation() {
 		if (noCurrentImage()) {
-			askForSampleImage(GeneralSampleImage.MapleLeafSmall);
+			DialogUtils.askForSampleImage(GeneralSampleImage.MapleLeafSmall);
 		}
 	}
 	

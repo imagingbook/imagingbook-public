@@ -8,8 +8,8 @@
  *******************************************************************************/
 package Ch09_AutomaticThresholding;
 
+import static imagingbook.common.ij.DialogUtils.askForSampleImage;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import ij.IJ;
 import ij.ImagePlus;

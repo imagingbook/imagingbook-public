@@ -8,6 +8,10 @@
  *******************************************************************************/
 package Ch10_FittingLines;
 
+import static imagingbook.common.ij.DialogUtils.askYesOrCancel;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.runPlugIn;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Overlay;
@@ -52,11 +56,17 @@ public class Fit_Line_From_Roi implements PlugInFilter { // TODO: activate dialo
 	
 	private ImagePlus im;
 	
-	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
 	public Fit_Line_From_Roi() {
-		
+		if (noCurrentImage()) {
+			if (askYesOrCancel("Create sample image", "No image is currently open.\nCreate a sample image?")) {
+				runPlugIn(Sample_Line_To_Roi.class);
+			}			
+		}
 	}
-	
 	
 	@Override
 	public int setup(String arg, ImagePlus im) {

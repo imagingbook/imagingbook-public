@@ -16,8 +16,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import ij.ImagePlus;
+import ij.WindowManager;
 import ij.gui.GenericDialog;
 import imagingbook.common.util.ParameterBundle;
+import imagingbook.core.resource.ImageResource;
 
 /**
  * Utility methods and annotations related to ImageJ's {@link GenericDialog} class.
@@ -324,6 +327,80 @@ public abstract class DialogUtils {
 				clazz == float.class || clazz == double.class || 
 				clazz == String.class || clazz.isEnum());
 	}
+	
+	// various static methods for simple dialogs -------------------------------
+	
+//	/**
+//	 * Values that may be returned by dialog methods, to be used in
+//	 * switch clauses.
+//	 */
+//	public enum DialogResponse {
+//		Yes, No, Cancel;
+//	}
+//	
+//	public static boolean isYes(DialogResponse response) {
+//		return response.equals(DialogResponse.Yes);
+//	}
+	
+	/**
+	 * Opens a simple dialog with the specified title and message that allows
+	 * only a "Yes" or "Cancel" response.
+	 * 
+	 * @param title the text displayed in the dialog's title bar
+	 * @param message the dialog message (may be multiple lines separated by newlines)
+	 * @return true if "yes" was selected, false otherwise 
+	 */
+	public static boolean askYesOrCancel(String title, String message) {
+		GenericDialog gd = new GenericDialog(title);
+		gd.addMessage(message);
+		gd.enableYesNoCancel("Yes", "Cancel");
+		gd.hideCancelButton();
+		gd.showDialog();
+		if (gd.wasCanceled()) {
+			return false;
+		}
+		return gd.wasOKed();
+	}
+
+	/**
+	 * Opens a very specific dialog asking if the suggested sample image (resource)
+	 * should be opened and made the active image. Alternatively (if answer is NO)
+	 * the user is asked to select another image to be opened. Nothing happens if
+	 * the dialog is canceled. This if typically used in the (otherwise empty)
+	 * constructor of demo plugins when no (or no suitable) image is currently open.
+	 * 
+	 * @param suggested a sample image (resource)
+	 */
+	public static void askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
+		boolean ok = askYesOrCancel(
+				"Open sample image", 
+				"No image is currently open.\nUse sample image\n" + suggested + "?");
+		if (ok) {
+			ImagePlus im = suggested.getImage();
+			im.show();
+			WindowManager.setCurrentWindow(im.getWindow());
+		}
+	}
+	
+//	public static void askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
+//		GenericDialog gd = new GenericDialog("No image open");
+//		gd.addMessage("Open sample image\n" + suggested + "?");
+//		gd.enableYesNoCancel("Yes", "Open other");
+//		gd.showDialog();
+//		if (gd.wasCanceled()) {
+//			return;
+//		}
+//		if (gd.wasOKed()) {
+//			ImagePlus im = suggested.getImage();
+//			im.show();
+//			WindowManager.setCurrentWindow(im.getWindow());
+//		}
+//		else {	// select other image
+//			IJ.open(null);
+//		}
+//	}
+
+
 
 	
 	// ----------------------------------------------------
