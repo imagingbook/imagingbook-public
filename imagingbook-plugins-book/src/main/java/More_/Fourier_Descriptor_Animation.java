@@ -10,7 +10,7 @@
 package More_;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.requestSampleImage;
+import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -95,7 +95,7 @@ public class Fourier_Descriptor_Animation implements PlugInFilter {
 	 */
 	public Fourier_Descriptor_Animation() {
 		if (noCurrentImage()) {
-			requestSampleImage(GeneralSampleImage.MapleLeafSmall);
+			askForSampleImage(GeneralSampleImage.MapleLeafSmall);
 		}
 	}
 	

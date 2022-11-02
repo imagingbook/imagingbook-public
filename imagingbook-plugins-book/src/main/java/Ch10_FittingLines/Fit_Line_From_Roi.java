@@ -52,6 +52,12 @@ public class Fit_Line_From_Roi implements PlugInFilter { // TODO: activate dialo
 	
 	private ImagePlus im;
 	
+	
+	public Fit_Line_From_Roi() {
+		
+	}
+	
+	
 	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;

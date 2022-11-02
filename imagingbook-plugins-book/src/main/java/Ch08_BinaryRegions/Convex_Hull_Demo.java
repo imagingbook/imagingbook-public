@@ -10,7 +10,7 @@
 package Ch08_BinaryRegions;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.requestSampleImage;
+import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import java.awt.Color;
 import java.util.List;
@@ -63,7 +63,7 @@ public class Convex_Hull_Demo implements PlugInFilter {
 	 */
 	public Convex_Hull_Demo() {
 		if (noCurrentImage()) {
-			requestSampleImage(GeneralSampleImage.ToolsSmall);
+			askForSampleImage(GeneralSampleImage.ToolsSmall);
 		}
 	}
 	

@@ -137,11 +137,13 @@ public abstract class IjUtils {
 	
 
 	/**
-	 *  Queries the user for an arbitrary file to be opened.
+	 * Queries the user for an arbitrary file to be opened.
+	 * Deprecated: replace by IJ.open()
 	 *  
 	 * @param title string to be shown in the interaction window.
 	 * @return path of the selected resource.
 	 */
+	@Deprecated
 	public static String askForOpenPath(String title) {
 		OpenDialog od = new OpenDialog(title, "");
 		String dir = od.getDirectory();
@@ -1092,8 +1094,8 @@ public abstract class IjUtils {
 	 * 
 	 * @param suggested a sample image (resource)
 	 */
-	public static void requestSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
-		GenericDialog gd = new GenericDialog("Request sample image");
+	public static void askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
+		GenericDialog gd = new GenericDialog("No image open");
 		gd.addMessage("Open sample image\n" + suggested + "?");
 		gd.enableYesNoCancel("Yes", "Open other");
 		gd.showDialog();

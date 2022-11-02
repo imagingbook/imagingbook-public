@@ -9,7 +9,7 @@
 package Ch09_AutomaticThresholding;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.requestSampleImage;
+import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -61,7 +61,7 @@ public class Adaptive_All implements PlugInFilter {
 	 */
 	public Adaptive_All() {
 		if (noCurrentImage()) {
-			requestSampleImage(GeneralSampleImage.Kepler);
+			askForSampleImage(GeneralSampleImage.Kepler);
 		}
 	}
 	

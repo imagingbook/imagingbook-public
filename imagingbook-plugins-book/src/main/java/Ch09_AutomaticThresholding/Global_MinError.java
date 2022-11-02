@@ -9,7 +9,7 @@
 package Ch09_AutomaticThresholding;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.requestSampleImage;
+import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -41,7 +41,7 @@ public class Global_MinError implements PlugInFilter {
 	 */
 	public Global_MinError() {
 		if (noCurrentImage()) {
-			requestSampleImage(GeneralSampleImage.Kepler);
+			askForSampleImage(GeneralSampleImage.Kepler);
 		}
 	}
 	

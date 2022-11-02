@@ -11,7 +11,7 @@ package Ch09_AutomaticThresholding;
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.requestSampleImage;
+import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -45,7 +45,7 @@ public class Adaptive_Niblack implements PlugInFilter {
 	 */
 	public Adaptive_Niblack() {
 		if (noCurrentImage()) {
-			requestSampleImage(GeneralSampleImage.Kepler);
+			askForSampleImage(GeneralSampleImage.Kepler);
 		}
 	}
 	

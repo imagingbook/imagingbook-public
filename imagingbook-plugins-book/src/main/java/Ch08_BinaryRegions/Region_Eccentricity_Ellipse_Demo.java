@@ -9,7 +9,7 @@
 package Ch08_BinaryRegions;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.requestSampleImage;
+import static imagingbook.common.ij.IjUtils.askForSampleImage;
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
 
@@ -101,7 +101,7 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 	 */
 	public Region_Eccentricity_Ellipse_Demo() {
 		if (noCurrentImage()) {
-			requestSampleImage(GeneralSampleImage.ToolsSmall);
+			askForSampleImage(GeneralSampleImage.ToolsSmall);
 		}
 	}
 

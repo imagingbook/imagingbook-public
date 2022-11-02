@@ -14,8 +14,8 @@ import java.awt.color.ICC_ProfileRGB;
 import java.io.IOException;
 
 import ij.IJ;
+import ij.io.OpenDialog;
 import ij.plugin.PlugIn;
-import imagingbook.common.ij.IjUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
@@ -30,9 +30,11 @@ import imagingbook.common.math.PrintPrecision;
  */
 public class ICC_Profile_From_File implements PlugIn {
 
+	@Override
 	public void run(String arg0) {
 		
-		String path = IjUtils.askForOpenPath("Select an ICC profile file (.icc or .icm)");
+		String path = askForOpenPath("Select an ICC profile file (.icc or .icm)");
+//		String path = IjUtils.askForOpenPath("Select an ICC profile file (.icc or .icm)");
 		if (path == null) return;
 		
 		IJ.log("path = " + path);
@@ -89,8 +91,28 @@ public class ICC_Profile_From_File implements PlugIn {
 				}
 			}
 		}
-		
-		
+	}
+	
+	/**
+	 * Queries the user for an arbitrary file to be opened.
+	 * TODO: replace by IJ.open()?
+	 *  
+	 * @param title string to be shown in the interaction window.
+	 * @return path of the selected resource.
+	 */
+	private String askForOpenPath(String title) {
+		OpenDialog od = new OpenDialog(title, "");
+		String dir = od.getDirectory();
+		String name = od.getFileName();
+		if (name == null)
+			return null;
+		return encodeURL(dir + name);
+	}
+	
+	private static String encodeURL(String url) {
+		//url = url.replaceAll(" ","%20");	// this doesn't work with spaces
+		url = url.replace('\\','/');
+		return url;
 	}
 
 }

@@ -9,7 +9,7 @@
 package Ch08_BinaryRegions;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.requestSampleImage;
+import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -77,7 +77,7 @@ public class Make_Projections implements PlugInFilter {
 	 */
 	public Make_Projections() {
 		if (noCurrentImage()) {
-			requestSampleImage(GeneralSampleImage.Cat);
+			askForSampleImage(GeneralSampleImage.Cat);
 		}
 	}
 	

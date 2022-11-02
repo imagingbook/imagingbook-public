@@ -10,7 +10,7 @@
 package More_;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.requestSampleImage;
+import static imagingbook.common.ij.IjUtils.askForSampleImage;
 
 import java.awt.Color;
 import java.awt.geom.Path2D;
@@ -75,7 +75,7 @@ public class Fourier_Descriptor_Trigonometic implements PlugInFilter {
 	 */
 	public Fourier_Descriptor_Trigonometic() {
 		if (noCurrentImage()) {
-			requestSampleImage(GeneralSampleImage.HouseRoi_tif);
+			askForSampleImage(GeneralSampleImage.HouseRoi_tif);
 		}
 	}
 	
