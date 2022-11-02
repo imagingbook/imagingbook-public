@@ -10,6 +10,9 @@ package Ch11_CirclesAndEllipses;
 
 import static imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType.Pratt;
 import static imagingbook.common.geometry.fitting.circle.geometric.CircleFitGeometric.FitType.DistanceBased;
+import static imagingbook.common.ij.DialogUtils.askYesOrCancel;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.runPlugIn;
 
 import java.util.Locale;
 
@@ -25,6 +28,8 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic;
 import imagingbook.common.geometry.fitting.circle.geometric.CircleFitGeometric;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
@@ -35,14 +40,19 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * an initial circle, followed by geometric fitting. Algebraic and geometric fit
  * methods can be selected. If successful, the resulting ellipses are displayed
  * as a vector overlay (color can be chosen).
+ * Sample points are either collected from the ROI (if available) or collected
+ * as foreground pixels (values > 0) from the image.
+ * If no image is currently open, the user is asked to create a suitable sample
+ * image.
  * 
  * @author WB
  *
  */
-public class Circle_Fitting_Roi_Demo implements PlugInFilter {
+public class Circle_Fitting implements PlugInFilter {
 	
 	static CircleFitAlgebraic.FitType AlgebraicFitMethod = Pratt;
 	static CircleFitGeometric.FitType GeometricFitMethod = DistanceBased;
+	static boolean UsePointsFromRoi = false;
 	
 	private static BasicAwtColor AlgebraicFitColor = BasicAwtColor.Red;
 	private static BasicAwtColor GeometricFitColor = BasicAwtColor.Blue;
@@ -50,21 +60,37 @@ public class Circle_Fitting_Roi_Demo implements PlugInFilter {
 	
 	private ImagePlus im;
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Circle_Fitting() {
+		if (noCurrentImage()) {
+			if (askYesOrCancel("Create sample image", "No image is currently open.\nCreate a sample image?")) {
+				runPlugIn(Circle_Make_Random.class);
+			}			
+		}
+	}
+	
 	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
-		return DOES_ALL + ROI_REQUIRED;
+		return DOES_ALL;
 	}
 
 	@Override
 	public void run(ImageProcessor ip) {
 		Roi roi = im.getRoi();
+		UsePointsFromRoi = (roi != null);
 		
 		if (!runDialog()) {
 			return;
 		}
 		
-		Pnt2d[] points = RoiUtils.getOutlinePointsFloat(roi);
+		Pnt2d[] points = (UsePointsFromRoi) ?
+				RoiUtils.getOutlinePointsFloat(roi) :
+				IjUtils.collectNonzeroPoints(ip);
+		
 		IJ.log("Found points " + points.length);
 		if (points.length < 3) {
 			IJ.error("At least 3 points are required, but found only " + points.length);
@@ -121,19 +147,26 @@ public class Circle_Fitting_Roi_Demo implements PlugInFilter {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addEnumChoice("algebraic fit method", AlgebraicFitMethod);
-		gd.addEnumChoice("algebraic ellipse color", AlgebraicFitColor);
 		
-		gd.addEnumChoice("geometric fit method", GeometricFitMethod);
-		gd.addEnumChoice("geometric ellipse color", GeometricFitColor);
+		gd.addMessage(DialogUtils.makeLineSeparatedString(
+				"This plugin performs algebraic + geometric circle fitting,",
+				"either to ROI points (if available) or foreground points",
+				"collected from the pixel image."
+				));
+		
+		gd.addCheckbox("Use ROI (float) points", UsePointsFromRoi);
+		gd.addEnumChoice("Algebraic fit method", AlgebraicFitMethod);
+		gd.addEnumChoice("Algebraic ellipse color", AlgebraicFitColor);
+		gd.addEnumChoice("Geometric fit method", GeometricFitMethod);
+		gd.addEnumChoice("Geometric ellipse color", GeometricFitColor);
 		
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
 		
+		UsePointsFromRoi = gd.getNextBoolean();
 		AlgebraicFitMethod = gd.getNextEnumChoice(CircleFitAlgebraic.FitType.class);
 		AlgebraicFitColor = gd.getNextEnumChoice(BasicAwtColor.class);
-		
 		GeometricFitMethod = gd.getNextEnumChoice(CircleFitGeometric.FitType.class);
 		GeometricFitColor = gd.getNextEnumChoice(BasicAwtColor.class);
 		

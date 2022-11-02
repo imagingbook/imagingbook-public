@@ -17,13 +17,13 @@ import java.util.Random;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.NewImage;
-import ij.gui.Overlay;
 import ij.plugin.PlugIn;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.geometry.ellipse.project.ConfocalConicEllipseProjector;
 import imagingbook.common.geometry.ellipse.project.EllipseProjector;
 import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
@@ -32,17 +32,25 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * This plugin creates a new image with an ellipse and a set of random points.
  * For each point, the closest (contact) point on the ellipse is
  * calculated and a connecting line is drawn to a vector overlay.
- * Two closest-point algorithms are available:
+ * Two closest-point algorithms are available (see Secs. 11.2.2 and 11.2.3 of [1] 
+ * for additional details):
  * </p>
  * <ol>
  * <li> orthogonal, exact closest point (iterative) and </li>
  * <li> approximate confocal conic closest point estimation (non-iterative).</li>
  * </ol>
+ * <p>
+ * The random seed may be specified for repeatability of experiments.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
+ * Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  *
  */
-public class Ellipse_Closest_Points implements PlugIn {
+public class Ellipse_Closest_Points_Demo implements PlugIn {
 	
 	private static int W = 400;
 	private static int H = 400;
@@ -71,8 +79,7 @@ public class Ellipse_Closest_Points implements PlugIn {
 		String title = this.getClass().getSimpleName() + " (" + Algorithm.toString() + ")";
 		ImagePlus im = NewImage.createByteImage(title, W, H, 1, NewImage.FILL_WHITE);
 		
-		Overlay oly = new Overlay();
-		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 		
 		ColoredStroke ellipseStroke = new ColoredStroke(StrokeWidth, EllipseColor);
 		ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, PointColor);
@@ -88,7 +95,7 @@ public class Ellipse_Closest_Points implements PlugIn {
 			break;
 		}
 		
-		Random rd = new Random(Seed);
+		Random rd = (Seed == 0) ? new Random() : new Random(Seed);
 
 		for (int i = 0; i < N; i++) {
 			Pnt2d p = Pnt2d.from(W * rd.nextDouble(), H* rd.nextDouble());
@@ -102,15 +109,23 @@ public class Ellipse_Closest_Points implements PlugIn {
 			ola.addShape(p.getShape(), pointStroke);
 		}
 		
-		im.setOverlay(oly);
+		im.setOverlay(ola.getOverlay());
 		im.show();
 	}
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addNumericField("number of random points", N, 0);
-		gd.addNumericField("random seed", Seed, 0);
-		gd.addEnumChoice("closest-point method", Algorithm);
+		
+		gd.addMessage(DialogUtils.makeLineSeparatedString(
+				"This plugin creates a new image with an ellipse and a",
+				"set of random points. For each point, the closest (contact)",
+				"point on the ellipse is calculated and a connecting line",
+				"is drawn to a vector overlay."
+				));
+		
+		gd.addNumericField("Number of random points", N, 0);
+		gd.addNumericField("Random seed (0 = none)", Seed, 0);
+		gd.addEnumChoice("Closest-point method", Algorithm);
 		
 		gd.showDialog();
 		if (gd.wasCanceled())

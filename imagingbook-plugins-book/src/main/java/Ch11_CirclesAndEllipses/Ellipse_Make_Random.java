@@ -18,6 +18,7 @@ import ij.gui.NewImage;
 import ij.gui.Overlay;
 import ij.gui.PointRoi;
 import ij.plugin.PlugIn;
+import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
@@ -30,16 +31,18 @@ import imagingbook.common.util.ParameterBundle;
 
 /**
  * Samples points on a given (ideal) circle and creates a new image with 
- * the sample points contained in a {@link PointRoi}.
- * Image size, circle parameters and noise can be specified.
+ * the sample points marked and also contained in a {@link PointRoi}.
+ * Image size, ellipse parameters and noise can be specified.
  * The result can be used as a test image for circle fitting.
+ * Note that the resulting image has an inverted LUT, i.e.,
+ * the background value is 0 and marked points have value 255.
  * 
  * @author WB
  *
  */
-public class Ellipse_Sample_To_Roi implements PlugIn {
+public class Ellipse_Make_Random implements PlugIn {
 	
-	private static String title = Ellipse_Sample_To_Roi.class.getSimpleName();
+	private static String title = Ellipse_Make_Random.class.getSimpleName();
 	private static int W = 400;
 	private static int H = 400;
 	private static boolean ShowRealCircle = true;
@@ -90,10 +93,17 @@ public class Ellipse_Sample_To_Roi implements PlugIn {
 				Math.toRadians(params.theta));
 		Pnt2d[] points = new EllipseSampler(realEllipse).getPoints(params.n, 
 				Math.toRadians(params.angle0), Math.toRadians(params.angle1), params.sigma);
-		PointRoi roi = RoiUtils.toPointRoi(points);
 		
-		ImagePlus im = NewImage.createByteImage(title, W, H, 1, NewImage.FILL_WHITE);  //new ImagePlus(title, ip);
-		im.setRoi(roi);
+		ImagePlus im = NewImage.createByteImage(title, W, H, 1, NewImage.FILL_BLACK);
+		im.setRoi(RoiUtils.toPointRoi(points));
+		
+		ImageProcessor ip = im.getProcessor();
+		for (Pnt2d p : points) {
+			int u = (int) Math.rint(p.getX());
+			int v = (int) Math.rint(p.getY());
+			ip.putPixel(u, v, 255);
+		}
+		ip.invertLut();
 		
 		if (ShowRealCircle) {
 			Overlay oly = new Overlay();

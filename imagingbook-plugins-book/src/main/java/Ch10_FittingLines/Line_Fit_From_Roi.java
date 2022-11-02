@@ -45,9 +45,9 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * 
  * @author WB
  * @version 2022/09/30
- * @see Sample_Line_To_Roi
+ * @see Line_Sample_To_Roi
  */
-public class Fit_Line_From_Roi implements PlugInFilter { // TODO: activate dialog
+public class Line_Fit_From_Roi implements PlugInFilter { // TODO: activate dialog
 	
 	public boolean ShowLog = true;
 	public static BasicAwtColor RegressionFitColor = BasicAwtColor.Red;
@@ -60,10 +60,10 @@ public class Fit_Line_From_Roi implements PlugInFilter { // TODO: activate dialo
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
 	 */
-	public Fit_Line_From_Roi() {
+	public Line_Fit_From_Roi() {
 		if (noCurrentImage()) {
 			if (askYesOrCancel("Create sample image", "No image is currently open.\nCreate a sample image?")) {
-				runPlugIn(Sample_Line_To_Roi.class);
+				runPlugIn(Line_Sample_To_Roi.class);
 			}			
 		}
 	}

@@ -38,13 +38,13 @@ import imagingbook.common.util.ParameterBundle;
  * 
  * @author WB
  * @version 2022/09/30
- * @see Fit_Line_From_Roi
+ * @see Line_Fit_From_Roi
  */
-public class Sample_Line_To_Roi implements PlugIn {
+public class Line_Sample_To_Roi implements PlugIn {
 	
 	public static class Parameters implements ParameterBundle {		
 		@DialogLabel("title")@DialogStringColumns(12)
-		public String Title = Sample_Line_To_Roi.class.getSimpleName();
+		public String Title = Line_Sample_To_Roi.class.getSimpleName();
 		
 		@DialogLabel("image width")
 		public int W = 400;

@@ -6,8 +6,11 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch11_CirclesAndEllipses;
+package Ch11_CirclesAndEllipses.obsolete;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+
+import Ch11_CirclesAndEllipses.Circle_Make_Random;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -19,6 +22,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
@@ -40,6 +44,18 @@ public class Circle_Fit_Algebraic_Image implements PlugInFilter {
 	public static double StrokeWidth = 1.0;
 	
 	private ImagePlus im;
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Circle_Fit_Algebraic_Image() {
+		if (noCurrentImage()) {
+			if (DialogUtils.askYesOrCancel("Create sample image", "No image is currently open.\nCreate a sample image?")) {
+				IjUtils.runPlugIn(Circle_Make_Random.class);
+			}			
+		}
+	}
 	
 	@Override
 	public int setup(String arg, ImagePlus im) {

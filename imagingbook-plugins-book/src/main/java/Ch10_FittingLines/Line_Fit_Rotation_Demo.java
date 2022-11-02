@@ -51,7 +51,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * @see imagingbook.common.geometry.fitting.line.LinearRegressionFit
  * @see imagingbook.common.geometry.fitting.line.OrthogonalLineFitEigen
  */
-public class Fit_Line_Rotation_Demo implements PlugIn {
+public class Line_Fit_Rotation_Demo implements PlugIn {
 
 	public static int W = 400;
 	public static int H = 400;

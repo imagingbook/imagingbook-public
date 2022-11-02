@@ -1,4 +1,4 @@
-package Ch11_CirclesAndEllipses;
+package Ch11_CirclesAndEllipses.obsolete;
 
 import java.awt.Color;
 
@@ -12,6 +12,7 @@ import imagingbook.common.geometry.circle.GeometricCircle;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType;
 import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
@@ -24,7 +25,8 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * @author WB
  *
  */
-public class Circle_Fit_Algebraic implements PlugIn {
+@Deprecated
+public class Circle_Fit_Algebraic_Demo implements PlugIn {
 
 	public static int W = 400;
 	public static int H = 400;
@@ -118,11 +120,15 @@ public class Circle_Fit_Algebraic implements PlugIn {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addMessage(DialogUtils.makeLineSeparatedString(
+				"This plugin generates a test image and",
+				"then performs algebraic circle fitting."
+				));
 		
-		gd.addEnumChoice("fit method", algType);
-		gd.addCheckbox("DrawPoints", DrawPoints);
-		gd.addCheckbox("DrawRealCircle", DrawRealCircle);
-		gd.addCheckbox("DrawFitCircle", DrawFitCircle);
+		gd.addEnumChoice("Fit method", algType);
+		gd.addCheckbox("Draw points", DrawPoints);
+		gd.addCheckbox("Draw real circle", DrawRealCircle);
+		gd.addCheckbox("Draw fit circle", DrawFitCircle);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
