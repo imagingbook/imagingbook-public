@@ -18,6 +18,7 @@ import ij.gui.Roi;
 import ij.gui.RotatedRectRoi;
 import ij.process.FloatPolygon;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 
 /**
  * This class defines static ROI-related utility methods
@@ -65,7 +66,7 @@ public class RoiUtils {
 		FloatPolygon pgn = roi.getFloatPolygon();
 		Pnt2d[] pts = new Pnt2d[pgn.npoints];
 		for (int i = 0; i < pgn.npoints; i++) {
-			pts[i] = Pnt2d.PntDouble.from(pgn.xpoints[i] + offset, pgn.ypoints[i] + offset);
+			pts[i] = PntDouble.from(pgn.xpoints[i] + offset, pgn.ypoints[i] + offset);
 		}
 		return pts;
 	}

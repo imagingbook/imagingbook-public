@@ -64,7 +64,6 @@ public abstract class IjUtils {
 		return getOpenImages(sortByTitle, null);
 	}
 	
-
 	/**
 	 * Returns an array of strings containing the short titles
 	 * of the images supplied.
