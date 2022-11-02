@@ -10,6 +10,8 @@ package Ch09_AutomaticThresholding;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -19,6 +21,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.AdaptiveThresholder;
 import imagingbook.common.threshold.adaptive.InterpolatingThresholder;
 import imagingbook.common.threshold.adaptive.InterpolatingThresholder.Parameters;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -38,6 +41,16 @@ public class Adaptive_Interpolating implements PlugInFilter {
 	
 	private static Parameters params = new Parameters();
 
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Adaptive_Interpolating() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.Kepler);
+		}
+	}
+	
 	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_8G;

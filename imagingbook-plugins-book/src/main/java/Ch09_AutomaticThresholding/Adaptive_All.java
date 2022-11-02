@@ -8,11 +8,15 @@
  *******************************************************************************/
 package Ch09_AutomaticThresholding;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
+
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -50,6 +54,16 @@ public class Adaptive_All implements PlugInFilter {
 	
 	private static Algorithm algo = Algorithm.Bernsen;
 	private ImagePlus im = null;
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Adaptive_All() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.Kepler);
+		}
+	}
 	
 	@Override
 	public int setup(String arg, ImagePlus im) {

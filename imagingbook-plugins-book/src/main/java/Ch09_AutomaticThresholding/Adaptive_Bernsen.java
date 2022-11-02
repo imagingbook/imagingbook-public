@@ -10,6 +10,8 @@ package Ch09_AutomaticThresholding;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -19,6 +21,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.AdaptiveThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder.Parameters;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -39,6 +42,16 @@ import imagingbook.common.threshold.adaptive.BernsenThresholder.Parameters;
 public class Adaptive_Bernsen implements PlugInFilter {
 	
 	private static Parameters params = new Parameters();
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Adaptive_Bernsen() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.Kepler);
+		}
+	}
 	
 	@Override
 	public int setup(String arg, ImagePlus imp) {

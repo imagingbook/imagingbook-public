@@ -8,6 +8,9 @@
  *******************************************************************************/
 package Ch09_AutomaticThresholding;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.ij.IjUtils.requestSampleImage;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
@@ -15,6 +18,7 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.global.GlobalThresholder;
 import imagingbook.common.threshold.global.MinErrorThresholder;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -30,6 +34,16 @@ import imagingbook.common.threshold.global.MinErrorThresholder;
  * @version 2022/04/02
  */
 public class Global_MinError implements PlugInFilter {
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Global_MinError() {
+		if (noCurrentImage()) {
+			requestSampleImage(GeneralSampleImage.Kepler);
+		}
+	}
 	
 	@Override
 	public int setup(String arg, ImagePlus imp) {
