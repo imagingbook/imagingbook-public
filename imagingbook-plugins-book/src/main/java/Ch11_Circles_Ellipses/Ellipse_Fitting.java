@@ -35,6 +35,7 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 /**
+ * <p>
  * ImageJ plugin, performs algebraic ellipse fitting on the current ROI to find
  * an initial ellipse, followed by geometric fitting. Algebraic and geometric
  * fit methods can be selected (see Sec. 11.2 of [1] for details). If

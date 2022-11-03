@@ -30,12 +30,18 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
+ * <p>
  * This ImageJ plugin demonstrates the use of the {@link HoughTransformLines}
- * class for detecting straight lines in images. It expects a binary input image
- * with background = 0 and foreground (contour) pixels with values &gt; 0. A
- * vector overlay is used to display the detected lines.
- * If no image is currently open, the plugin optionally loads a suitable
- * sample image.
+ * class for detecting straight lines in images (see Sec. 12.2 of [1] for
+ * details). It expects a binary input image with background = 0 and foreground
+ * (contour) pixels with values &gt; 0. A vector overlay is used to display the
+ * detected lines. If no image is currently open, the plugin optionally loads a
+ * suitable sample image.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/10/03

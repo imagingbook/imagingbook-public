@@ -35,9 +35,15 @@ import imagingbook.common.ransac.RansacResult;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
- * RANSAC line detection using imagingbook library class {@link RansacLineDetector}.
- * If no image is currently open, the plugin optionally loads a suitable
- * sample image.
+ * <p>
+ * RANSAC line detection using imagingbook library class
+ * {@link RansacLineDetector} (see Sec. 12.1.2 of [1] for details). If no image
+ * is currently open, the plugin optionally loads a suitable sample image.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/10/03
