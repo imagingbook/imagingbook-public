@@ -30,12 +30,11 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Samples points on a given (ideal) circle and creates a new image with 
- * the sample points marked and also contained in a {@link PointRoi}.
- * Image size, circle parameters and noise can be specified.
- * The result can be used as a test image for circle fitting.
- * Note that the resulting image has an inverted LUT, i.e.,
- * the background value is 0 and marked points have value 255.
+ * Samples points on a given (ideal) circle and creates a new image with the
+ * sample points marked and also contained in a {@link PointRoi}. Image size,
+ * circle parameters and noise can be specified. The result can be used as a
+ * test image for circle fitting. Note that the resulting image has an inverted
+ * LUT, i.e., the background value is 0 and marked points have value 255.
  * 
  * @author WB
  * @version 2022/10/03
