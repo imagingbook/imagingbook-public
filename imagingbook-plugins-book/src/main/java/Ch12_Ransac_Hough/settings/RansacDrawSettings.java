@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch12_RansacAndHough;
+package Ch12_Ransac_Hough.settings;
 
 import java.awt.Color;
 
@@ -16,7 +16,7 @@ import java.awt.Color;
  * @author WB
  *
  */
-interface RansacDrawSettings {	
+public interface RansacDrawSettings {	
 	static double LineStrokeWidth = 0.75;
 	static Color InitialFitColor = Color.red;
 	static Color FinalFitColor = Color.blue;	

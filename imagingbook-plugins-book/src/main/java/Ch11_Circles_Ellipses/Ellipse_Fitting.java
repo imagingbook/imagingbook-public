@@ -6,13 +6,12 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch11_CirclesAndEllipses;
+package Ch11_Circles_Ellipses;
 
 import static imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic.FitType.FitzgibbonStable;
 import static imagingbook.common.geometry.fitting.ellipse.geometric.EllipseFitGeometric.FitType.DistanceBased;
 import static imagingbook.common.ij.DialogUtils.askYesOrCancel;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.runPlugIn;
 
 import java.util.Locale;
 
@@ -69,7 +68,7 @@ public class Ellipse_Fitting implements PlugInFilter {
 	public Ellipse_Fitting() {
 		if (noCurrentImage()) {
 			if (askYesOrCancel("Create sample image", "No image is currently open.\nCreate a sample image?")) {
-				runPlugIn(Ellipse_Make_Random.class);
+				IjUtils.run(new Ellipse_Make_Random()); //runPlugIn(Ellipse_Make_Random.class);
 			}			
 		}
 	}

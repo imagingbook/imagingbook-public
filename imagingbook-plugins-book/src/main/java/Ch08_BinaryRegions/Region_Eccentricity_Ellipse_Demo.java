@@ -48,6 +48,8 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * {@link #MaxEccentricity}, axes are marked red if exceeded. Axes for regions
  * with {@code NaN} eccentricity value (single-pixel regions) are not displayed.
  * Axis and ellipse parameters are calculated from the region's central moments.
+ * If no image is currently open, the plugin optionally loads a suitable
+ * sample image.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic

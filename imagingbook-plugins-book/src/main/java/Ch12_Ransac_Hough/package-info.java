@@ -6,32 +6,10 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch12_RansacAndHough;
-
-import ij.ImagePlus;
-import ij.plugin.PlugIn;
-import imagingbook.common.ij.IjUtils;
-import imagingbook.sampleimages.GeneralSampleImage;
-
 /**
- * RANSAC circle detection demo. Opens a local sample image and then runs
- * plugin {@link Ransac_Circles_Detect}.
  * 
- * @author WB
- *
  */
-public class Ransac_Circles_Demo implements PlugIn {
+@IjPluginPath("B&B>Book>Ch12 RANSAC/Hough")
+package Ch12_Ransac_Hough;
 
-	private static GeneralSampleImage resource = GeneralSampleImage.NoisyCircles;
-	
-	@Override
-	public void run(String arg) {
-		
-		ImagePlus im = resource.getImage();
-		im.show();
-		
-		IjUtils.run(new Ransac_Circles_Detect());
-		im.close();
-	}
-
-}
+import imagingbook.core.plugin.IjPluginPath;

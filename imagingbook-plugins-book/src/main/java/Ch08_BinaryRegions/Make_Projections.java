@@ -27,7 +27,10 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * projections from a grayscale image. See Sec. 8.7 of [1] for additional
  * details. The input image is not assumed binary, i.e., gray values are simply
  * added up without thresholding. This plugin only works for 8-bit grayscale
- * images, the original image is not modified. The resulting projections are
+ * images, the original image is not modified. 
+ * If no image is currently open, the plugin optionally loads a suitable
+ * sample image.
+ * The resulting projections are
  * shown as separate diagrams, which either show the relative amount of white
  * (default) or black, selectable in the user dialog:
  * </p>

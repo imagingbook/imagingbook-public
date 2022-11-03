@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch11_CirclesAndEllipses;
+package Ch11_Circles_Ellipses;
 
 import static java.lang.Math.PI;
 

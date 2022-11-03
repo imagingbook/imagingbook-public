@@ -39,7 +39,8 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * other pixels are foreground. Display lookup tables (LUTs) are not considered.
  * The resulting contours are displayed as a non-destructive vector overlay on
  * the original image. Outer contours of single-pixel regions are marked by an
- * "X".
+ * "X". If no image is currently open, the plugin optionally loads a suitable
+ * sample image.
  * </p>
  * <p>
  * This plugin also demonstrates the use of the {@link ShapeOverlayAdapter}

@@ -6,14 +6,16 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch12_RansacAndHough;
+package Ch12_Ransac_Hough;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Ch12_Ransac_Hough.settings.RansacDrawSettings;
 import ij.IJ;
 //import ij.IJ;
 import ij.ImagePlus;
@@ -25,20 +27,24 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.ransac.RansacResult;
 import imagingbook.common.ransac.RansacCircleDetector;
+import imagingbook.common.ransac.RansacResult;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * RANSAC circle detection implemented with imagingbook library class
  * {@link RansacCircleDetector}.
+ * If no image is currently open, the plugin optionally loads a suitable
+ * sample image.
  * 
  * @author WB
- *
+ * @version 2022/10/03
  */
-public class Ransac_Circles_Detect implements PlugInFilter, RansacDrawSettings {
+public class Ransac_Circle_Detect implements PlugInFilter, RansacDrawSettings {
 
 	private static RansacCircleDetector.Parameters params = new RansacCircleDetector.Parameters();
 	static {
@@ -51,6 +57,19 @@ public class Ransac_Circles_Detect implements PlugInFilter, RansacDrawSettings {
 	private ImagePlus im;
 	private String title;
 
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Ransac_Circle_Detect() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.NoisyCircles);
+		}
+	}
+	
+	// -------------------------------------------------------------------------
+
+	
 	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;

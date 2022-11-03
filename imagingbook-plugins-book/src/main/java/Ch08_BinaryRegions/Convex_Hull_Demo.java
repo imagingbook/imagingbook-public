@@ -38,6 +38,8 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * background, all other pixels are foreground. Display lookup tables (LUTs) are
  * not considered. The resulting convex hull is shown as a vector overlay on top
  * of a new image, the original image is not modified.
+ * If no image is currently open, the plugin optionally loads a suitable
+ * sample image.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic

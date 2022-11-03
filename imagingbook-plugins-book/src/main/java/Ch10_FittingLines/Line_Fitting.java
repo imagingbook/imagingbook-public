@@ -10,7 +10,6 @@ package Ch10_FittingLines;
 
 import static imagingbook.common.ij.DialogUtils.askYesOrCancel;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.ij.IjUtils.runPlugIn;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -71,9 +70,9 @@ public class Line_Fitting implements PlugInFilter { // TODO: activate dialog
 	public Line_Fitting() {
 		if (noCurrentImage()) {
 			if (askYesOrCancel("Create sample image", "No image is currently open.\nCreate a sample image?")) {
-				runPlugIn(Line_Make_Random.class);
+				IjUtils.run(new Line_Make_Random()); //runPlugIn(Line_Make_Random.class);
 			}			
-		}
+		}	
 	}
 	
 	// ------------------------------------------------------------------------------------
