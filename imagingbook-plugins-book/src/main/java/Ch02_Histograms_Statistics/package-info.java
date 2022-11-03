@@ -10,6 +10,6 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch02 Histograms/Statistics")
-package Ch02_HistogramsStatistics;
+package Ch02_Histograms_Statistics;
 
 import imagingbook.core.plugin.IjPluginPath;

@@ -7,7 +7,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch05_EdgesAndContours;
+package Ch05_Edges_Contours;
 
 import java.awt.Color;
 

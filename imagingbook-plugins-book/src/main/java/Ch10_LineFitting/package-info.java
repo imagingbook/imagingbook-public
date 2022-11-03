@@ -10,6 +10,6 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch10 Fitting Straight Lines")
-package Ch10_FittingLines;
+package Ch10_LineFitting;
 
 import imagingbook.core.plugin.IjPluginPath;

@@ -11,6 +11,6 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch05 Edges & Contours")
-package Ch05_EdgesAndContours;
+package Ch05_Edges_Contours;
 
 import imagingbook.core.plugin.IjPluginPath;

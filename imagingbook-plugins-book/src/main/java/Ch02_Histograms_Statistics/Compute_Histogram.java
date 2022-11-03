@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch02_HistogramsStatistics;
+package Ch02_Histograms_Statistics;
 
 import Ch03_PointOperations.Equalize_Histogram;
 import ij.IJ;

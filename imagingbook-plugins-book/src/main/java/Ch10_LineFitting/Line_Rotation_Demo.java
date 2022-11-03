@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch10_FittingLines;
+package Ch10_LineFitting;
 
 import java.awt.Color;
 import java.util.ArrayList;
