@@ -10,10 +10,10 @@
 package imagingbook.common.color.quantize;
 
 
-import java.util.AbstractSet;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import ij.IJ;
@@ -25,25 +25,32 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.statistics.ColorHistogram;
 
 /**
- * This is an implementation of Heckbert's median-cut color quantization algorithm 
- * (Heckbert P., "Color Image Quantization for Frame Buffer Display", ACM Transactions
- * on Computer Graphics (SIGGRAPH), pp. 297-307, 1982).
- * Unlike in the original algorithm, no initial uniform (scalar) quantization is used to
- * for reducing the number of image colors. Instead, all colors contained in the original
- * image are considered in the quantization process. After the set of representative
- * colors has been found, each image color is mapped to the closest representative
- * in RGB color space using the Euclidean distance.
- * The quantization process has two steps: first a ColorQuantizer object is created from
- * a given image using one of the constructor methods provided. Then this ColorQuantizer
- * can be used to quantize the original image or any other image using the same set of 
- * representative colors (color table).
+ * <p>
+ * This is an implementation of Heckbert's median-cut color quantization
+ * algorithm [1]. Unlike in the original algorithm, no initial uniform (scalar)
+ * quantization is used to for reducing the number of image colors. Instead, all
+ * colors contained in the original image are considered in the quantization
+ * process. After the set of representative colors has been found, each image
+ * color is mapped to the closest representative in RGB color space using the
+ * Euclidean distance. See Sec. 13.4.2 (Algs. 13.1-3) of [2] for details.
+ * </p>
+ * <p>
+ * The quantization process has two steps: first a {@link ColorQuantizer}
+ * instance is created from a given image using one of the constructor methods
+ * provided. This quantizer can then be used to quantize the original image or
+ * any other image using the same set of representative colors (color table).
+ * </p>
+ * <p>
+ * [1] Heckbert P., "Color Image Quantization for Frame Buffer Display", ACM
+ * Transactions on Computer Graphics (SIGGRAPH), pp. 297-307 (1982). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2017/01/03
- * 
- * TODO: needs revision!
  */
-public class MedianCutQuantizer implements ColorQuantizer {
+public class MedianCutQuantizer implements ColorQuantizer { // TODO: needs revision!
 	
 	private final ColorNode[] allColors;	// a vector of color nodes (used by inner classes)
 	private final Set<ColorBox> quantColors;
@@ -56,7 +63,7 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	}
 		 
 	public MedianCutQuantizer(int[] pixels, int K) {
-		allColors = getAllColors(pixels);
+		this.allColors = getAllColors(pixels);
 		if (allColors.length <= K) {		// not enough colors, nothing to quantize
 			quantColors = null;
 			return;
@@ -68,19 +75,14 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	
 	// -------------------------------------------------------------------------------
 	
-//	void listColors(ColorNode[] colors) {
-//		for (ColorNode nd : colors) {
-//			IJ.log(nd.toString());
-//		}
-//	}
-	
 	private ColorNode[] getAllColors(int[] pixels) {
-		ColorHistogram colorHist = new ColorHistogram(pixels);
-		final int nc = colorHist.getNumberOfColors();
+		ColorHistogram ch = new ColorHistogram(pixels, true);
+		final int nc = ch.getNumberOfColors();
+		System.out.println("getAllColors: nc = " + nc);
 		ColorNode[] colors = new ColorNode[nc];
 		for (int i = 0; i < nc; i++) {
-			int rgb = colorHist.getColor(i);
-			int cnt = colorHist.getCount(i);
+			int rgb = ch.getColor(i);
+			int cnt = ch.getCount(i);
 			colors[i] = new ColorNode(rgb, cnt);
 		}
 		return colors;
@@ -88,9 +90,9 @@ public class MedianCutQuantizer implements ColorQuantizer {
 
 	private Set<ColorBox> findReferenceColors(int K) {
 		final int n = allColors.length;
-
+		System.out.println("findReferenceColors: n = " + n);
 		ColorBox cb0 = new ColorBox(0, n - 1, 0);
-		AbstractSet<ColorBox> B = new HashSet<ColorBox>();
+		Set<ColorBox> B = new HashSet<>();
 		B.add(cb0);
 		
 		int k = 1;						// number of quantized color (color boxes)
@@ -98,6 +100,7 @@ public class MedianCutQuantizer implements ColorQuantizer {
 		
 		while (k < K && !done) {
 			ColorBox cb = findBoxToSplit(B);
+			System.out.println("   box to split at " + k + ": " + cb);
 			if (cb != null) {
 				ColorBox[] boxes = cb.splitBox();
 				B.remove(cb);
@@ -116,7 +119,9 @@ public class MedianCutQuantizer implements ColorQuantizer {
 		int n = quantColors.size();
 		float[][] map = new float[n][];
 		int i = 0;
+		System.out.println("makeColorMap:");
 		for (ColorBox cb : quantColors) {
+			System.out.println("   adding: " + cb);
 			map[i] = cb.getAvgColor();
 			i++;
 		}
@@ -185,6 +190,7 @@ public class MedianCutQuantizer implements ColorQuantizer {
 			this.cnt = cnt;
 		}
 		
+		@Override
 		public String toString() {
 			String s = ColorNode.class.getSimpleName();
 			s = s + " red=" + red + " green=" + grn + " blue=" + blu + " count=" + cnt;
@@ -215,6 +221,11 @@ public class MedianCutQuantizer implements ColorQuantizer {
 			this.upper = upper;
 			this.level = level;
 			this.trim();
+		}
+		
+		@Override
+		public int hashCode() {	// this is important!!
+			return (17 + lower) * 31 + upper;	
 		}
 		
 		/**
@@ -332,14 +343,18 @@ public class MedianCutQuantizer implements ColorQuantizer {
 
 		@Override
 		public String toString() {
-			String s = this.getClass().getSimpleName();
-			s = s + " lower=" + lower + " upper=" + upper;
-			s = s + " count=" + count + " level=" + level;
-			s = s + " rmin=" + rmin + " rmax=" + rmax;
-			s = s + " gmin=" + gmin + " gmax=" + gmax;
-			s = s + " bmin=" + bmin + " bmax=" + bmax;
-			s = s + " bmin=" + bmin + " bmax=" + bmax;
-			return s;
+//			String s = this.getClass().getSimpleName();
+//			s = s + " lower=" + lower + " upper=" + upper;
+//			s = s + " count=" + count + " level=" + level;
+//			s = s + " rmin=" + rmin + " rmax=" + rmax;
+//			s = s + " gmin=" + gmin + " gmax=" + gmax;
+//			s = s + " bmin=" + bmin + " bmax=" + bmax;
+//			s = s + " bmin=" + bmin + " bmax=" + bmax;
+//			return s;
+			return String.format(Locale.US, 
+					"%s[lower=%d upper=%d count=%d level=%d R={%.1f, %.1f} G={%.1f, %.1f} B={%.1f, %.1f}]", 
+					getClass().getSimpleName(), lower, upper, count, level,
+					rmin, rmax, gmin, gmax, bmin, bmax);
 		}
 	}
 		
@@ -377,8 +392,8 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	// ----------------------------------------------------------------------
 	
 	public static void main(String[] args) {
-//		String path = "D:/svn-book/Book/img/ch-color-images/alps-01s.png";
-		String path = "D:/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg";
+		String path = "D:/svn-book/Book/img/ch-color-images/alps-01s.png";
+//		String path = "D:/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg";
 //		String path = "D:/svn-book/Book/img/ch-color-images/single-color.png";
 //		String path = "D:/svn-book/Book/img/ch-color-images/two-colors.png";
 //		String path = "D:/svn-book/Book/img/ch-color-images/random-colors.png";
@@ -403,7 +418,7 @@ public class MedianCutQuantizer implements ColorQuantizer {
 		System.out.println("quantizing image");
 		ByteProcessor qi = quantizer.quantize(cp);
 		System.out.println("showing image");
-		(new ImagePlus("quantizez", qi)).show();
+		new ImagePlus("quantized", qi).show();
 		
 	}
 	
