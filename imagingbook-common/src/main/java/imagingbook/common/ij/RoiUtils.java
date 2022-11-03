@@ -62,7 +62,7 @@ public class RoiUtils {
 	 * @return the ROI's outline coordinates
 	 */
 	public static Pnt2d[] getOutlinePointsFloat(Roi roi) {
-		final double offset = (needsOffset(roi)) ? -0.5 : 0.0;
+		final double offset = (isAreaRoi(roi)) ? -0.5 : 0.0;
 		FloatPolygon pgn = roi.getFloatPolygon();
 		Pnt2d[] pts = new Pnt2d[pgn.npoints];
 		for (int i = 0; i < pgn.npoints; i++) {
@@ -72,18 +72,23 @@ public class RoiUtils {
 	}
 	
 	/**
-	 * Returns true if the given {@link Roi} instance requires a half-pixel
-	 * offset applied to the points returned {@code Roi#getFloatPolygon()}
-	 * for proper rendering. This fixes a problem (bug) in ImageJ to make
-	 * sure that all ROI types render consistently. This is the situation
-	 * (as of IJ 1.53u):
-	 * - Line, FreehandLine, SegmentLine, Point, MultiPoint: no offset needed (OK),
-	 * - Elliptic, Oval, Polygon, Rectangle, RotRectangle: 0.5 pix offset needed.
+	 * <p>
+	 * Returns true if the given {@link Roi} is an "area ROI", that is, coordinates
+	 * returned by returned {@code Roi#getFloatPolygon()} are referenced to the
+	 * top-left corner of pixels. In contrast, integer coordinates of "line ROIs"
+	 * are positioned at pixel centers.
+	 * </p>
+	 * <p>
+	 * Area selections: EllipseRoi, OvalRoi, polygon
+	 * (PolygonRoi with type = Roi.POLYGON), rectangle (Roi with
+	 * type = Roi.RECTANGLE), RotRectangle.<br>
+	 * Line selections: Line, FreehandLine, SegmentLine, Point, MultiPoint.
+	 * </p>
 	 * 
 	 * @param roi a ROI instance
-	 * @return true if offset needed
+	 * @return true if the ROI is an area selection
 	 */
-	private static boolean needsOffset(Roi roi) {
+	public static boolean isAreaRoi(Roi roi) {
 		int type = roi.getType();
 		if (roi instanceof EllipseRoi) return true;
 		if (roi instanceof OvalRoi) return true;

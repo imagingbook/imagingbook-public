@@ -9,20 +9,20 @@
 package Ch10_FittingLines;
 
 
-import static ij.gui.NewImage.FILL_WHITE;
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.NewImage;
-import ij.gui.Overlay;
 import ij.gui.PointRoi;
 import ij.plugin.PlugIn;
+import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fitting.line.LineSampler;
 import imagingbook.common.geometry.line.AlgebraicLine;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.ij.DialogUtils.DialogStringColumns;
 import imagingbook.common.ij.RoiUtils;
@@ -37,14 +37,14 @@ import imagingbook.common.util.ParameterBundle;
  * The result can be used as a test image for line fitting.
  * 
  * @author WB
- * @version 2022/09/30
- * @see Line_Fit_From_Roi
+ * @version 2022/10/03
  */
-public class Line_Sample_To_Roi implements PlugIn {
+public class Line_Make_Random implements PlugIn {
 	
 	public static class Parameters implements ParameterBundle {		
-		@DialogLabel("title")@DialogStringColumns(12)
-		public String Title = Line_Sample_To_Roi.class.getSimpleName();
+		
+		@DialogLabel("image title")@DialogStringColumns(12)
+		public String Title = "RandomLine"; // Line_Make_Random.class.getSimpleName();
 		
 		@DialogLabel("image width")
 		public int W = 400;
@@ -67,9 +67,9 @@ public class Line_Sample_To_Roi implements PlugIn {
 		public double sigma = 5.0;
 		
 		@DialogLabel("show real line")
-		public boolean ShowRealLine = true;
+		public boolean ShowRealCurve = true;
 		@DialogLabel("line color")
-		public BasicAwtColor LineColor = BasicAwtColor.Green;
+		public BasicAwtColor StrokeColor = BasicAwtColor.Green;
 		@DialogLabel("stroke width")
 		public double StrokeWidth = 1.0;
 	};
@@ -90,17 +90,24 @@ public class Line_Sample_To_Roi implements PlugIn {
 		
 		LineSampler ls = new LineSampler(pStart, pEnd);
 		Pnt2d[] points = ls.getPoints(params.n, params.sigma);	
-		PointRoi roi = RoiUtils.toPointRoi(points);
 		
-		ImagePlus im = NewImage.createByteImage(params.Title, params.W, params.H, 1, FILL_WHITE);
-		im.setRoi(roi);
+		ImagePlus im = NewImage.createByteImage(params.Title, params.W, params.H, 1, NewImage.FILL_BLACK);
+		im.setRoi(RoiUtils.toPointRoi(points));
 		
-		if (params.ShowRealLine) {
-			Overlay oly = new Overlay();
-			ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
-			ColoredStroke lineStroke = new ColoredStroke(params.StrokeWidth, params.LineColor.getColor());
+		ImageProcessor ip = im.getProcessor();
+		for (Pnt2d p : points) {
+			int u = (int) Math.rint(p.getX());
+			int v = (int) Math.rint(p.getY());
+			ip.putPixel(u, v, 255);
+		}
+		ip.invertLut();
+		
+		
+		if (params.ShowRealCurve) {
+			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
+			ColoredStroke lineStroke = new ColoredStroke(params.StrokeWidth, params.StrokeColor.getColor());
 			ola.addShape(realLine.getShape(params.W, params.H), lineStroke);
-			im.setOverlay(oly);
+			im.setOverlay(ola.getOverlay());
 		}
 		
 		im.show();
@@ -110,6 +117,12 @@ public class Line_Sample_To_Roi implements PlugIn {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addMessage(DialogUtils.makeLineSeparatedString(
+				"This plugin samples points on a given (ideal) line and",
+				"creates a new image with the sample points marked and also",
+				"contained in a ROI (float coordinates)."
+				));
+		
 		addToDialog(params, gd);
 
 		gd.showDialog();

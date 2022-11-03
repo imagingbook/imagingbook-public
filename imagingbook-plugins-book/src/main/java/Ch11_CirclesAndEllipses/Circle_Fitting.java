@@ -46,7 +46,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * image.
  * 
  * @author WB
- *
+ * @version 2022/10/03
  */
 public class Circle_Fitting implements PlugInFilter {
 	
@@ -101,8 +101,7 @@ public class Circle_Fitting implements PlugInFilter {
 		if (oly == null) {
 			oly = new Overlay();
 			im.setOverlay(oly);
-		}
-		
+		}	
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);	
 		
 		// ------------------------------------------------------------------------

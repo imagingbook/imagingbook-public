@@ -15,7 +15,6 @@ import static imagingbook.common.ij.DialogUtils.getFromDialog;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.NewImage;
-import ij.gui.Overlay;
 import ij.gui.PointRoi;
 import ij.plugin.PlugIn;
 import ij.process.ImageProcessor;
@@ -23,7 +22,9 @@ import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
+import imagingbook.common.ij.DialogUtils.DialogStringColumns;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
@@ -38,19 +39,19 @@ import imagingbook.common.util.ParameterBundle;
  * the background value is 0 and marked points have value 255.
  * 
  * @author WB
- *
+ * @version 2022/10/03
  */
 public class Ellipse_Make_Random implements PlugIn {
 	
-	private static String title = Ellipse_Make_Random.class.getSimpleName();
-	private static int W = 400;
-	private static int H = 400;
-	private static boolean ShowRealCircle = true;
-	
-	private static double StrokeWidth = 1.0;
-	private static BasicAwtColor StrokeColor = BasicAwtColor.Green;
-	
 	public static class Parameters implements ParameterBundle {
+		
+		@DialogLabel("image title")@DialogStringColumns(12)
+		public String Title = "RandomEllipse"; // Ellipse_Make_Random.class.getSimpleName();
+		
+		@DialogLabel("image width")
+		public int W = 400;
+		@DialogLabel("image height")
+		public int H = 400;
 		
 		@DialogLabel("number of points")
 		public int n = 20;
@@ -78,6 +79,13 @@ public class Ellipse_Make_Random implements PlugIn {
 		
 		@DialogLabel("x/y noise (sigma)")
 		public double sigma = 5.0; //2.0;
+		
+		@DialogLabel("show real ellipse")
+		public boolean ShowRealCurve = true;
+		@DialogLabel("ellipse color")
+		public BasicAwtColor StrokeColor = BasicAwtColor.Green;
+		@DialogLabel("stroke width")
+		public double StrokeWidth = 1.0;
 	};
 	
 	
@@ -94,7 +102,7 @@ public class Ellipse_Make_Random implements PlugIn {
 		Pnt2d[] points = new EllipseSampler(realEllipse).getPoints(params.n, 
 				Math.toRadians(params.angle0), Math.toRadians(params.angle1), params.sigma);
 		
-		ImagePlus im = NewImage.createByteImage(title, W, H, 1, NewImage.FILL_BLACK);
+		ImagePlus im = NewImage.createByteImage(params.Title, params.W, params.H, 1, NewImage.FILL_BLACK);
 		im.setRoi(RoiUtils.toPointRoi(points));
 		
 		ImageProcessor ip = im.getProcessor();
@@ -105,12 +113,11 @@ public class Ellipse_Make_Random implements PlugIn {
 		}
 		ip.invertLut();
 		
-		if (ShowRealCircle) {
-			Overlay oly = new Overlay();
-			ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
-			ColoredStroke circleStroke = new ColoredStroke(StrokeWidth, StrokeColor.getColor());
+		if (params.ShowRealCurve) {
+			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
+			ColoredStroke circleStroke = new ColoredStroke(params.StrokeWidth, params.StrokeColor.getColor());
 			ola.addShapes(realEllipse.getShapes(3), circleStroke);
-			im.setOverlay(oly);
+			im.setOverlay(ola.getOverlay());
 		}
 		
 		im.show();
@@ -120,24 +127,19 @@ public class Ellipse_Make_Random implements PlugIn {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addMessage(DialogUtils.makeLineSeparatedString(
+				"This plugin samples points on a given (ideal) ellipse and",
+				"creates a new image with the sample points marked and also",
+				"contained in a ROI (float coordinates)."
+				));
 		
-		gd.addStringField("Title", title, 12);
-		gd.addNumericField("image width", W, 0);
-		gd.addNumericField("image height", W, 0);	
 		addToDialog(params, gd);
-		gd.addCheckbox("show real circle", ShowRealCircle);
-		gd.addEnumChoice("circle color", StrokeColor);
 
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
-		
-		title = gd.getNextString();
-		W = (int) gd.getNextNumber();
-		H = (int) gd.getNextNumber();
+
 		getFromDialog(params, gd);
-		ShowRealCircle = gd.getNextBoolean();
-		StrokeColor = gd.getNextEnumChoice(BasicAwtColor.class);
 
 		return params.validate();
 	}

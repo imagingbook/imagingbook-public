@@ -47,6 +47,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * image.
  * 
  * @author WB
+ * @version 2022/10/03
  *
  */
 public class Ellipse_Fitting implements PlugInFilter {
@@ -103,8 +104,8 @@ public class Ellipse_Fitting implements PlugInFilter {
 			oly = new Overlay();
 			im.setOverlay(oly);
 		}
-		
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);	
+		
 		Pnt2d xref = Pnt2d.from(ip.getWidth()/2, ip.getHeight()/2);	// reference point for ellipse fitting
 		
 		// ------------------------------------------------------------------------

@@ -14,6 +14,7 @@ import static imagingbook.common.ij.IjUtils.runPlugIn;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
 import ij.gui.Overlay;
 import ij.gui.Roi;
 import ij.plugin.filter.PlugInFilter;
@@ -25,6 +26,8 @@ import imagingbook.common.geometry.fitting.line.LinearRegressionFit;
 import imagingbook.common.geometry.fitting.line.OrthogonalLineFitEigen;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.hough.HoughLine;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
@@ -37,6 +40,10 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * regression fitting. The result of the first varies with rotation, while
  * orthogonal fitting is rotation-invariant. See Sec. 10.2 (Fig. 10.4) of [1]
  * for additional details.
+ * Sample points are either collected from the ROI (if available) or collected
+ * as foreground pixels (values > 0) from the image.
+ * If no image is currently open, the user is asked to create a suitable sample
+ * image.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
@@ -44,14 +51,15 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * </p>
  * 
  * @author WB
- * @version 2022/09/30
- * @see Line_Sample_To_Roi
+ * @version 2022/10/03
  */
-public class Line_Fit_From_Roi implements PlugInFilter { // TODO: activate dialog
+public class Line_Fitting implements PlugInFilter { // TODO: activate dialog
 	
-	public boolean ShowLog = true;
 	public static BasicAwtColor RegressionFitColor = BasicAwtColor.Red;
 	public static BasicAwtColor OrthogonalFitColor = BasicAwtColor.Blue;
+	static boolean UsePointsFromRoi = false;
+	public boolean ShowLog = true;
+	
 	public static double StrokeWidth = 0.5;
 	
 	private ImagePlus im;
@@ -60,31 +68,38 @@ public class Line_Fit_From_Roi implements PlugInFilter { // TODO: activate dialo
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
 	 */
-	public Line_Fit_From_Roi() {
+	public Line_Fitting() {
 		if (noCurrentImage()) {
 			if (askYesOrCancel("Create sample image", "No image is currently open.\nCreate a sample image?")) {
-				runPlugIn(Line_Sample_To_Roi.class);
+				runPlugIn(Line_Make_Random.class);
 			}			
 		}
 	}
 	
+	// ------------------------------------------------------------------------------------
+	
 	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
-		return DOES_ALL + ROI_REQUIRED;
+		return DOES_ALL;
 	}
 
 	@Override
 	public void run(ImageProcessor ip) {
-		Roi roi = im.getRoi();
 		int width = ip.getWidth();
 		int height = ip.getHeight();
+		
+		Roi roi = im.getRoi();
+		UsePointsFromRoi = (roi != null);
 		
 		if (!runDialog()) {
 			return;
 		}
 		
-		Pnt2d[] points = RoiUtils.getOutlinePointsFloat(roi);
+		Pnt2d[] points = (UsePointsFromRoi) ?
+				RoiUtils.getOutlinePointsFloat(roi) :
+				IjUtils.collectNonzeroPoints(ip);
+		
 		IJ.log("Found points " + points.length);
 		if (points.length < 2) {
 			IJ.error("At least 2 points are required, but found only " + points.length);
@@ -96,7 +111,6 @@ public class Line_Fit_From_Roi implements PlugInFilter { // TODO: activate dialo
 			oly = new Overlay();
 			im.setOverlay(oly);
 		}
-		
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
 		
 		// ------------------------------------------------------------------------
@@ -132,14 +146,31 @@ public class Line_Fit_From_Roi implements PlugInFilter { // TODO: activate dialo
 
 		ColoredStroke regressionStroke = new ColoredStroke(StrokeWidth, RegressionFitColor.getColor());
 		ola.addShape(new HoughLine(lineR).getShape(width, height), regressionStroke);
-
 	}
 
 	// ------------------------------------------
 	
 	private boolean runDialog() {
-//		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		
+		gd.addMessage(DialogUtils.makeLineSeparatedString(
+				"This plugin performs algebraic + geometric circle fitting,",
+				"either to ROI points (if available) or foreground points",
+				"collected from the pixel image."
+				));
+		
+		gd.addCheckbox("Use ROI (float) points", UsePointsFromRoi);
+		gd.addEnumChoice("Regression fit color", RegressionFitColor);
+		gd.addEnumChoice("Orthogonal fit color", OrthogonalFitColor);
+		
+		gd.showDialog();
+		if (gd.wasCanceled())
+			return false;
+		
+		UsePointsFromRoi = gd.getNextBoolean();
+		RegressionFitColor = gd.getNextEnumChoice(BasicAwtColor.class);
+		OrthogonalFitColor = gd.getNextEnumChoice(BasicAwtColor.class);
+		
 		return true;
 	}
-
 }
