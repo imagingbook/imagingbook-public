@@ -16,22 +16,41 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * ImageJ plugin, increases the brightness of an indexed color image by 10 units
+ * (each color component). See Sec. 13.1 (Prog. 13.3) of [1] for details. Note
+ * that only the color model (RGB lookup table) of the image is changed while the
+ * actual pixel values are not modified.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
 public class Brighten_Index_Image implements PlugInFilter {
 	
+	private static int INCREASE = 10;	// increase by 10 units
+	
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_8G + DOES_8C;	// this plugin works on indexed color images 
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		ColorModel cm =  ip.getColorModel();
+//		IJ.log("Color Model=" + cm + " " + ip.isColorLut());
+		
 		if (!(cm instanceof IndexColorModel)) {
 			IJ.error("Color model not of type IndexedColorModel");
 			return;
 		}
-		
 		IndexColorModel icm = (IndexColorModel) cm; 
-		//IJ.write("Color Model=" + ip.getColorModel() + " " + ip.isColorLut());
-	
+		
 		int pixBits = icm.getPixelSize(); 
 		int nColors = icm.getMapSize(); 
 		
@@ -44,14 +63,14 @@ public class Brighten_Index_Image implements PlugInFilter {
 		icm.getGreens(gMap);
 		icm.getBlues(bMap);  
 		
-		//modify the lookup tables	
+		// modify the lookup tables	
 		for (int idx = 0; idx < nColors; idx++){ 
 			int r = 0xff & rMap[idx];	//mask to treat as unsigned byte 
 			int g = 0xff & gMap[idx];
 			int b = 0xff & bMap[idx];   
-			rMap[idx] = (byte) Math.min(r + 10, 255); 
-			gMap[idx] = (byte) Math.min(g + 10, 255);
-			bMap[idx] = (byte) Math.min(b + 10, 255); 
+			rMap[idx] = (byte) Math.min(r + INCREASE, 255); 
+			gMap[idx] = (byte) Math.min(g + INCREASE, 255);
+			bMap[idx] = (byte) Math.min(b + INCREASE, 255);
 		}
 		
 		//create a new color model and apply to the image

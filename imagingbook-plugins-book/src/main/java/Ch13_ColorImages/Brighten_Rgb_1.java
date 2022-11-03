@@ -12,8 +12,30 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * ImageJ plugin, increases the brightness of a RGB color image by 10 units
+ * (each color component) using bit operations (Version 1). See Sec. 13.1 (Prog.
+ * 13.1) of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
 public class Brighten_Rgb_1 implements PlugInFilter {
+	
+	private static int INCREASE = 10;	// increase by 10 units
+	
+	@Override
+	public int setup(String arg, ImagePlus imp) {
+		return DOES_RGB;	// this plugin works on RGB images 
+	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		int[] pixels = (int[]) ip.getPixels();  
 
@@ -24,15 +46,12 @@ public class Brighten_Rgb_1 implements PlugInFilter {
 			int g = (c & 0x00ff00) >> 8; 
 			int b = (c & 0x0000ff);
 			// modify colors
-			r = r + 10; if (r > 255) r = 255;  
-			g = g + 10; if (g > 255) g = 255;
-			b = b + 10; if (b > 255) b = 255;
+			r = r + INCREASE; if (r > 255) r = 255;  
+			g = g + INCREASE; if (g > 255) g = 255;
+			b = b + INCREASE; if (b > 255) b = 255;
 			// reassemble color pixel and insert into pixel array
 			pixels[i] = ((r & 0xff)<<16) | ((g & 0xff)<<8) | b & 0xff; 
 		}
 	}
 
-	public int setup(String arg, ImagePlus imp) {
-		return DOES_RGB;	// this plugin works on RGB images 
-	}
 }

@@ -40,7 +40,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * orthogonal fitting is rotation-invariant. See Sec. 10.2 (Fig. 10.4) of [1]
  * for additional details.
  * Sample points are either collected from the ROI (if available) or collected
- * as foreground pixels (values > 0) from the image.
+ * as foreground pixels (values &gt; 0) from the image.
  * If no image is currently open, the user is asked to create a suitable sample
  * image.
  * </p>

@@ -15,26 +15,34 @@ import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 
 /**
- * This ImageJ plugin converts an RGB color image to a grayscale image
- * using a specific set of component weights for caclulating the 
- * luminance (luma) values.
- * @author Wilbur
- * @version 2013-12-02
+ * <p>
+ * ImageJ plugin, converts an RGB color image to a grayscale image using a
+ * specific set of component weights (ITU BR.709) for calculating luminance
+ * (luma) values. See Sec.13.2.1 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2013/12/02
  */
 public class Convert_Rgb_To_Gray implements PlugInFilter {
 		
-	ImagePlus imp;
+	ImagePlus im;
 	
-	public int setup(String arg, ImagePlus imp) {
-		this.imp = imp;
-		return DOES_RGB + NO_CHANGES;	
+	@Override
+	public int setup(String arg, ImagePlus im) {
+		this.im = im;
+		return DOES_RGB + NO_CHANGES;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
-		
 		ColorProcessor cp = (ColorProcessor) ip;
-		cp.setRGBWeights(0.2126, 0.7152, 0.0722); // ITU BR.709 luma weights
+		cp.setRGBWeights(0.2126, 0.7152, 0.0722); // use ITU BR.709 luma weights
 		ByteProcessor bp = cp.convertToByteProcessor();
-		(new ImagePlus(imp.getShortTitle() + " (gray)", bp)).show();
+		new ImagePlus(im.getShortTitle() + " (gray)", bp).show();
 	}
 }
