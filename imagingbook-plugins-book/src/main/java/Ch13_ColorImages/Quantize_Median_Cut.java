@@ -20,7 +20,15 @@ import imagingbook.common.color.quantize.ColorQuantizer;
 import imagingbook.common.color.quantize.MedianCutQuantizer;
 
 /**
- * ImageJ plugin demonstrating the use of the {@link MedianCutQuantizer} class.
+ * <p>
+ * ImageJ plugin, performs Median Cut color quantization using
+ * {@link MedianCutQuantizer}. See Sec. 13.4.2 (Algs. 13.1-3) of [1] for
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2017/01/03
@@ -38,11 +46,13 @@ public class Quantize_Median_Cut implements PlugInFilter {
 	
 	String title;
 	
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		this.title = imp.getShortTitle();
 		return DOES_RGB + NO_CHANGES;
 	}
 	
+	@Override
 	public void run(ImageProcessor ip) {
 		//Parameters params = new Parameters();
 		

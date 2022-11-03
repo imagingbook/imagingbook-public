@@ -12,17 +12,35 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
+/**
+ * <p>
+ * ImageJ plugin, continuously desaturates the current RGB color
+ * image. See Sec. 13.2.2 (Prog. 13.5) of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ */
 public class Desaturate_Rgb implements PlugInFilter {
-	static double sat = 0.3; // color saturation factor
+	
+	static double S = 0.3; // color saturation value
 
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_RGB;
 	}
 	
+	@Override
 	public void run(ImageProcessor ip) { 
+		final int w = ip.getWidth();
+		final int h = ip.getHeight();
+		
 		//iterate over all pixels
-		for (int v = 0; v < ip.getHeight(); v++) {
-			for (int u = 0; u < ip.getWidth(); u++) {
+		for (int v = 0; v < h; v++) {
+			for (int u = 0; u < w; u++) {
 
 				//get int-packed color pixel
 				int c = ip.get(u, v);
@@ -36,9 +54,9 @@ public class Desaturate_Rgb implements PlugInFilter {
 				double y = 0.299 * r + 0.587 * g + 0.114 * b;
 
 				// linearly interpolate $(yyy) --> (rgb)
-				r = (int) (y + sat * (r - y));
-				g = (int) (y + sat * (g - y));
-				b = (int) (y + sat * (b - y));
+				r = (int) (y + S * (r - y));
+				g = (int) (y + S * (g - y));
+				b = (int) (y + S * (b - y));
 
 				// reassemble color pixel
 				c = ((r & 0xff)<<16) | ((g & 0xff)<<8) | b & 0xff; 

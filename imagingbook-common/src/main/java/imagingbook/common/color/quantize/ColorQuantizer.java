@@ -11,6 +11,7 @@ package imagingbook.common.color.quantize;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import java.awt.image.IndexColorModel;
+import java.util.Locale;
 
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
@@ -149,7 +150,7 @@ public interface ColorQuantizer {
 			float red = colormap[i][0];
 			float grn = colormap[i][1];
 			float blu = colormap[i][2];
-			System.out.println(String.format("i=%3d: r=%6.1f g=%6.1f b=%6.1f", i, red, grn, blu));
+			System.out.format(Locale.US, "i=%3d: r=%6.1f g=%6.1f b=%6.1f\n", i, red, grn, blu);
 		}
 	}
 	

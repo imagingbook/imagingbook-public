@@ -17,16 +17,33 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 
+
+/**
+ * <p>
+ * ImageJ plugin, converts an indexed color image to a full-color RGB image.
+ * Creates a new image, the original image is not modififed. See Sec. 13.1
+ * (Prog. 13.3) of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
 public class Index_To_Rgb implements PlugInFilter {
-	static final int R = 0, G = 1, B = 2;
+	private static final int R = 0, G = 1, B = 2;
 	
-	ImagePlus imp;
+	private ImagePlus im;
 	
-	public int setup(String arg, ImagePlus imp) {
-		this.imp = imp;
-		return DOES_8C + NO_CHANGES; // does not alter original image	
+	@Override
+	public int setup(String arg, ImagePlus im) {
+		this.im = im;
+		return DOES_8C + NO_CHANGES;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		ColorModel cm =  ip.getColorModel();
 		if (!(cm instanceof IndexColorModel)) {
@@ -59,8 +76,7 @@ public class Index_To_Rgb implements PlugInFilter {
 				cp.putPixel(u, v, RGB); 
 			}
 		}
-		ImagePlus cwin = new ImagePlus(imp.getShortTitle() + " (RGB)", cp);
-		cwin.show();
+		new ImagePlus(im.getShortTitle() + " (RGB)", cp).show();
 	}
 }
 

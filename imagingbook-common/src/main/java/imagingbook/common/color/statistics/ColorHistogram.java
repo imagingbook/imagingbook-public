@@ -12,11 +12,12 @@ package imagingbook.common.color.statistics;
 import java.util.Arrays;
 
 /**
- * This class calculates a color histogram of a set of colors (i.e., a color image).
- * Only the unique colors are accounted for. Colors are supplied as ARGB-encoded
- * integers (A = alpha values being ignored).
- * Colors are internally sorted by their frequency (in descending order).
- *  
+ * This class calculates a color histogram of a set of colors (i.e., a color
+ * image). Only the unique colors are accounted for. Colors are supplied as
+ * ARGB-encoded integers (A = alpha values being ignored). Colors are internally
+ * sorted by their frequency (in descending order).
+ * Used mainly for color quantization.
+ * 
  * @author WB
  * @version 2017/01/04
  */
@@ -24,6 +25,13 @@ public class ColorHistogram {
 	
 	private final ColorNode[] colornodes;
 	
+	/**
+	 * Creates a color histogram instance from the supplied sequence
+	 * of color pixel values (assumed to be ARGB-encoded integers).
+	 * The original pixel values are not modified.
+	 * 
+	 * @param pixelsOrig
+	 */
 	public ColorHistogram(int[] pixelsOrig) {
 		this(pixelsOrig, false);
 	}
@@ -33,8 +41,8 @@ public class ColorHistogram {
 	 * of color pixel values (assumed to be ARGB-encoded integers).
 	 * The original pixel values are not modified.
 	 * 
-	 * @param pixelsOrig Original pixel values (not modified).
-	 * @param sortByFrequency Pass true to sort the final colors by descending frequency.
+	 * @param pixelsOrig original pixel values (not modified)
+	 * @param sortByFrequency set true to sort the final colors by descending frequency
 	 */
 	public ColorHistogram(int[] pixelsOrig, boolean sortByFrequency) {
 		int[] pixels = new int[pixelsOrig.length];
@@ -86,6 +94,7 @@ public class ColorHistogram {
 	/**
 	 * Returns the unique color with the given index.
 	 * Colors are sorted by (decreasing) frequency.
+	 * 
 	 * @param index The color index.
 	 * @return	The color, encoded as an ARGB integer (A is zero).
 	 */
@@ -128,6 +137,7 @@ public class ColorHistogram {
 			count = count + n;	
 		}
 		
+		@Override
 		public String toString() {
 			return String.format(ColorNode.class.getSimpleName() + " rgb=%d count=%d", rgb, count);
 		}

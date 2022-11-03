@@ -15,15 +15,33 @@ import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.colorspace.HsvColorSpace;
+import imagingbook.common.math.Arithmetic;
 
-/* This plugin rotates the color hue by 120 degrees */
+/**
+ * <p>
+ * ImageJ plugin, "rotates" the hue (H) of colors in HSV space by 120 degrees.
+ * Saturation (S) and value (V) remains unchanged. The input image is modified.
+ * Applying the plugin 3 times to the same image should reproduce the original
+ * image. See Sec. 13.2.3 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ *
+ */
+public class Hsv_Rotate_Hue implements PlugInFilter {
+	
+	private static double ROT = 120.0 / 360;	// shift hue by 1/3 of full circle (120 degrees)
 
-public class Hsv_Test implements PlugInFilter {
-
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_RGB;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		ColorProcessor cp = (ColorProcessor) ip;
 		final int[] RGB = new int[3];
@@ -34,8 +52,9 @@ public class Hsv_Test implements PlugInFilter {
 			for (int u = 0; u < cp.getWidth(); u++) {
 				cp.getPixel(u, v, RGB);
 
-				float[] HSV = cc.fromRGB (RgbUtils.normalize(RGB)); 	// all HSV components are in [0,1]
-				HSV[0] = (HSV[0] + 1.0f/3) % 1.0f;	// shift hue by 120 degrees
+				float[] HSV = cc.fromRGB(RgbUtils.normalize(RGB)); 	// all HSV components are in [0,1]
+//				HSV[0] = (HSV[0] + ROT) % 1.0f;							// works for positive ROT only
+				HSV[0] = (float) Arithmetic.mod(HSV[0] + ROT, 1.0);		// ROT may be pos. or negative
 				int[] RGBnew = RgbUtils.unnormalize(cc.toRGB(HSV));
 
 				cp.putPixel(u, v, RGBnew);

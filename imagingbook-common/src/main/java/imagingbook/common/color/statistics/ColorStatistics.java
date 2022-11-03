@@ -34,12 +34,12 @@ public abstract class ColorStatistics {
 		int[] pixels = (int[]) cp.getPixelsCopy();
 		Arrays.sort(pixels);  
 		
-		int n = 1;	// image contains at least one color
+		int k = 1;	// image contains at least one color
 		for (int i = 0; i < pixels.length - 1; i++) {
 			if (pixels[i] != pixels[i + 1])
-				n = n + 1;
+				k = k + 1;
 		}
-		return n;
+		return k;
 	}
 
 }

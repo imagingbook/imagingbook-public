@@ -17,7 +17,14 @@ import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 
 /**
- * Counts the distinct colors in the current color image.
+ * <p>
+ * ImageJ plugin, counts the distinct colors in the current color image.
+ * See Sec. 13.3 (Prog. 13.10) of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @see imagingbook.common.color.statistics.ColorStatistics
@@ -35,17 +42,25 @@ public class Count_Colors implements PlugInFilter {
 		IJ.log("This image has " + n + " different colors.");
 	}
 	
+	/**
+	 * Determines how many different colors are contained in the specified
+	 * 24 bit full-color RGB image.
+	 * Replicated from {@link imagingbook.common.color.statistics.ColorStatistics}.
+	 * 
+	 * @param cp a RGB image
+	 * @return the number of distinct colors
+	 */
 	private int countColors (ColorProcessor cp) { 
 		// duplicate pixel array and sort
 		int[] pixels = (int[]) cp.getPixelsCopy();
 		Arrays.sort(pixels);  
 		
-		int n = 1;	// image contains at least one color
+		int k = 1;	// image contains at least one color
 		for (int i = 0; i < pixels.length - 1; i++) {
 			if (pixels[i] != pixels[i + 1])
-				n = n + 1;
+				k = k + 1;
 		}
-		return n;
+		return k;
 	}
 
 }
