@@ -62,7 +62,8 @@ public class RoiUtils {
 	 * @return the ROI's outline coordinates
 	 */
 	public static Pnt2d[] getOutlinePointsFloat(Roi roi) {
-		final double offset = (isAreaRoi(roi)) ? -0.5 : 0.0;
+		final double offset = (isAreaRoi(roi)) ? -0.5 : 0.0; // TODO: replace by Roi.isLineOrPoint() when available
+//		final double offset = (roi.isLineOrPoint()) ? 0.0 : -0.5;
 		FloatPolygon pgn = roi.getFloatPolygon();
 		Pnt2d[] pts = new Pnt2d[pgn.npoints];
 		for (int i = 0; i < pgn.npoints; i++) {
@@ -88,7 +89,7 @@ public class RoiUtils {
 	 * @param roi a ROI instance
 	 * @return true if the ROI is an area selection
 	 */
-	public static boolean isAreaRoi(Roi roi) {
+	public static boolean isAreaRoi(Roi roi) {	// TODO: replace by Roi.isLineOrPoint() when available
 		int type = roi.getType();
 		if (roi instanceof EllipseRoi) return true;
 		if (roi instanceof OvalRoi) return true;
