@@ -99,7 +99,7 @@ public class MedianCutQuantizer implements ColorQuantizer {
 		
 		while (B.size() < K && !done) {	// (k < K && !done)
 			listColorBoxes(B);
-			ColorBox cb = B.remove(); // remove the first box // findBoxToSplit(B);
+			ColorBox cb = B.remove(); // take the first box from the queue // findBoxToSplit(B);
 			k = k - 1;
 			System.out.println(" split " + cb);
 			if (cb != null) {
@@ -168,9 +168,6 @@ public class MedianCutQuantizer implements ColorQuantizer {
 		}
 		return map;
 	}
-	
-	
-	// ------- methods required by abstract super class -----------------------
 	
 	@Override
 	public float[][] getColorMap() {
