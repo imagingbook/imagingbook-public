@@ -205,27 +205,29 @@ public class MedianCutQuantizer implements ColorQuantizer { // TODO: needs revis
 	 * which is implemented as a contiguous range of elements in array
 	 * {@link MedianCutQuantizer#allColors}. Instances of {@link ColorBox} reference
 	 * this array directly (this is why this class is non-static).
+	 * Instances of this class are immutable.
 	 */
-	private class ColorBox { 
-		final int lower; 		// lower index into 'imageColors'
-		final int upper; 		// upper index into 'imageColors'
+	private class ColorBox implements Comparable<ColorBox> { 
+		final int loIdx; 		// lower index into 'imageColors'
+		final int hiIdx; 		// upper index into 'imageColors'
 		final int level; 		// split level of this color box
 		
-		int count = 0; 	// number of pixels represented by this color box
+		final int count; 	// number of pixels represented by this color box
 		float rmin, rmax;	// range of contained colors in red dimension
 		float gmin, gmax;	// range of contained colors in green dimension
 		float bmin, bmax;	// range of contained colors in blue dimension
 		
-		ColorBox(int lower, int upper, int level) {
-			this.lower = lower;
-			this.upper = upper;
+		
+		ColorBox(int loIdx, int hiIdx, int level) {
+			this.loIdx = loIdx;
+			this.hiIdx = hiIdx;
 			this.level = level;
-			this.trim();
+			this.count = trim();
 		}
 		
 		@Override
-		public int hashCode() {	// this is important!!
-			return (17 + lower) * 31 + upper;	
+		public int hashCode() {	// this is important for HashSet!!
+			return (17 + loIdx) * 31 + hiIdx;	
 		}
 		
 		/**
@@ -233,17 +235,17 @@ public class MedianCutQuantizer implements ColorQuantizer { // TODO: needs revis
 		 * @return the number of different colors
 		 */
 		int colorCount() {
-			return upper - lower;
+			return hiIdx - loIdx;
 		}
 		
 		/**
 		 * Recalculates the boundaries and population of this color box.
 		 */
-		private void trim() {
+		private int trim() {
 			int n = 0;	
 			rmin = gmin = bmin = MAX_RGB;
 			rmax = gmax = bmax = 0;
-			for (int i = lower; i <= upper; i++) {
+			for (int i = loIdx; i <= hiIdx; i++) {
 				ColorNode color = allColors[i];
 				n = n + color.cnt;
 				rmax = Math.max(color.red, rmax);
@@ -253,14 +255,14 @@ public class MedianCutQuantizer implements ColorQuantizer { // TODO: needs revis
 				bmax = Math.max(color.blu, bmax);
 				bmin = Math.min(color.blu, bmin);
 			}
-			count = n;
+			return n;
 		}
 		
 		/**
-		 * Splits this color box at the median point along its 
-		 * longest color dimension. Modifies the original color
-		 * box and creates a new one, which is returned.
-		 * @return A new box.
+		 * Splits this color box at the median point along its longest color dimension.
+		 * Modifies the original color box and creates a new one, which is returned.
+		 * 
+		 * @return A new color box.
 		 */
 		ColorBox[] splitBox() {	
 			if (this.colorCount() < 2)	// this box cannot be split
@@ -268,13 +270,13 @@ public class MedianCutQuantizer implements ColorQuantizer { // TODO: needs revis
 			else {
 				int m = this.level;
 				// find longest dimension of this box:
-				ColorDimension d = this.getMaxBoxDimension();
+				ColorDimension dim = this.getMaxBoxDimension();
 				// find median along dimension d
-				int med = this.findMedian(d);
+				int medIdx = this.findMedian(dim);
 				// now split this box at the median return the resulting new box
-				ColorBox b1 = new ColorBox(lower, med, m + 1);
-				ColorBox b2 = new ColorBox(med + 1, upper, m + 1);
-				return new ColorBox[] {b1, b2};
+				ColorBox cb1 = new ColorBox(loIdx, medIdx, m + 1);
+				ColorBox cb2 = new ColorBox(medIdx + 1, hiIdx, m + 1);
+				return new ColorBox[] {cb1, cb2};
 			}
 		}
 		
@@ -302,11 +304,11 @@ public class MedianCutQuantizer implements ColorQuantizer { // TODO: needs revis
 		 */
 		int findMedian(ColorDimension dim) {
 			// sort color in this box along dimension dim:
-			Arrays.sort(allColors, lower, upper + 1, dim.comparator);
+			Arrays.sort(allColors, loIdx, hiIdx + 1, dim.comparator);
 			// find the median point:
 			int half = count / 2;
 			int k, pixCnt;
-			for (k = lower, pixCnt = 0; k < upper; k++) {
+			for (k = loIdx, pixCnt = 0; k < hiIdx; k++) {
 				pixCnt = pixCnt + allColors[k].cnt;
 				if (pixCnt >= half)
 					break;
@@ -327,7 +329,7 @@ public class MedianCutQuantizer implements ColorQuantizer { // TODO: needs revis
 			double gSum = 0;
 			double bSum = 0;
 			int n = 0;
-			for (int i = lower; i <= upper; i++) {
+			for (int i = loIdx; i <= hiIdx; i++) {
 				ColorNode cn = allColors[i];
 				int cnt = cn.cnt;
 				rSum = rSum + cnt * cn.red;
@@ -343,18 +345,15 @@ public class MedianCutQuantizer implements ColorQuantizer { // TODO: needs revis
 
 		@Override
 		public String toString() {
-//			String s = this.getClass().getSimpleName();
-//			s = s + " lower=" + lower + " upper=" + upper;
-//			s = s + " count=" + count + " level=" + level;
-//			s = s + " rmin=" + rmin + " rmax=" + rmax;
-//			s = s + " gmin=" + gmin + " gmax=" + gmax;
-//			s = s + " bmin=" + bmin + " bmax=" + bmax;
-//			s = s + " bmin=" + bmin + " bmax=" + bmax;
-//			return s;
 			return String.format(Locale.US, 
 					"%s[lower=%d upper=%d count=%d level=%d R={%.1f, %.1f} G={%.1f, %.1f} B={%.1f, %.1f}]", 
-					getClass().getSimpleName(), lower, upper, count, level,
+					getClass().getSimpleName(), loIdx, hiIdx, count, level,
 					rmin, rmax, gmin, gmax, bmin, bmax);
+		}
+
+		@Override
+		public int compareTo(ColorBox other) {
+			return Integer.compare(this.level, other.level);
 		}
 	}
 		
