@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -92,7 +91,6 @@ public class PntUtilsTest {
 		assertEquals(0, pts.length);
 		
 		pts = PntUtils.makeIntPoints(1, 2, 3, 4, 5, 6);
-		System.out.println(Arrays.toString(pts));
 		assertEquals(3, pts.length);
 		assertTrue(pts[0] instanceof PntInt);
 	}
@@ -108,7 +106,6 @@ public class PntUtilsTest {
 		assertEquals(0, pts.length);
 		
 		pts = PntUtils.makeDoublePoints(1.0, 2, 3, 4, 5, 6);
-		System.out.println(Arrays.toString(pts));
 		assertEquals(3, pts.length);
 		assertTrue(pts[0] instanceof PntDouble);
 	}
