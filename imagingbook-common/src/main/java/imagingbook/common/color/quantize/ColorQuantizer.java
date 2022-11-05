@@ -33,6 +33,16 @@ public interface ColorQuantizer {
 	// ---------------------------------------------------------------
 	
 	/**
+	 * Returns the number of quantized colors.
+	 * 
+	 * @return the number of quantized colors
+	 */
+	public default int getColorCount() {
+		return getColorMap().length;
+	}
+	
+	
+	/**
 	 * Performs color quantization on the given full-color RGB image
 	 * and creates an indexed color image.
 	 * 
