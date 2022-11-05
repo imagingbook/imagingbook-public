@@ -64,38 +64,22 @@ public abstract class RgbUtils {
 	 * @param RGB {@code int[]} with R, G, B components
 	 * @return integer-encoded 8-bit RGB color in ARGB format
 	 */
-	public static int encodeRgbToInt(int... RGB) {
-		return ((RGB[0] & 0xff)<<16) | ((RGB[1] & 0xff)<<8) | RGB[2] & 0xff;
+	public static int encodeRgbToInt(int[] RGB) {
+		return encodeRgbToInt(RGB[0], RGB[1], RGB[2]);
 	}
 	
 	/**
-	 * Converts the RGB components to Y (luma) using specified component weights.
-	 * 
-	 * @param RGB color components in RGB (int)
-	 * @param weights color component weights (may be {@code null})
-	 * @return the resulting luma value
+	 * Encodes the given r, g, b component values into a single 32-bit
+	 * {@code int} value in ARGB format (with transparency A set to zero).
+	 * @param r red component value
+	 * @param g breen component value
+	 * @param b blue component value
+	 * @return integer-encoded 8-bit RGB color in ARGB format
 	 */
-	public static float rgbToFloat(int[] RGB, double[] weights) {
-		if (weights == null) {
-			weights = ITU709RgbWeights;
-		}
-		return (float) (RGB[0] * weights[0] + RGB[1] * weights[1] + RGB[2] * weights[2]);
+	public static int encodeRgbToInt(int r, int g, int b) {
+		return ((r & 0xff)<<16) | ((g & 0xff)<<8) | b & 0xff;
 	}
 	
-	public static float rgbToFloat(int[] RGB) {
-		return rgbToFloat(RGB, null);
-	}
-	
-	
-	public static int rgbToInt(int[] RGB, double[] weights) {
-//		return Math.round(rgbToFloat(RGB, weights));
-		// this is what TypeConverter.convertRGBToByte() does:
-		return (int) (RGB[0] * weights[0] + RGB[1] * weights[1] + RGB[2] * weights[2] + 0.5); 
-	}
-	
-	public static float rgbToInt(int[] RGB) {
-		return rgbToInt(RGB, null);
-	}
 	// -------------------------------------------------------------
 	
 	/**
@@ -105,7 +89,7 @@ public abstract class RgbUtils {
 	 * @param RGB a sequence of R,G,B values or {@code int[]}
 	 * @return the RGB values normalized to [0,1]
 	 */
-	public static float[] normalize(int... RGB) {
+	public static float[] normalize(int[] RGB) {
 		float[] rgb = {RGB[0]/255f, RGB[1]/255f, RGB[2]/255f};
 		return rgb;
 	}

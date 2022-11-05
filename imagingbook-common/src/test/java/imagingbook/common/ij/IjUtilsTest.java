@@ -498,7 +498,8 @@ public class IjUtilsTest {
 		for (int u = 0; u < width; u++) {
 			for (int v = 0; v < height; v++) {
 				cp.getPixel(u, v, rgb);
-				fp.setf(u, v, RgbUtils.rgbToFloat(rgb, weights));
+				float luma = (float) (rgb[0] * weights[0] + rgb[1] * weights[1] + rgb[2] * weights[2]);
+				fp.setf(u, v, luma);
 			}
 		}
 		return fp;
@@ -512,11 +513,11 @@ public class IjUtilsTest {
 		for (int u = 0; u < width; u++) {
 			for (int v = 0; v < height; v++) {
 				cp.getPixel(u, v, rgb);
-				bp.set(u, v, RgbUtils.rgbToInt(rgb, weights));
+				int luma = (int) (rgb[0] * weights[0] + rgb[1] * weights[1] + rgb[2] * weights[2] + 0.5);
+				bp.set(u, v, luma);
 			}
 		}
 		return bp;
 	}
-
 
 }

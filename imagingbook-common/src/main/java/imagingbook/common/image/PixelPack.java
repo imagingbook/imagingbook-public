@@ -892,11 +892,12 @@ public class PixelPack {
 		float[] R = this.data[0];
 		float[] G = this.data[1];
 		float[] B = this.data[2];
+		int[] rgb = new int[3];
 		for (int i = 0; i < pixels.length; i++) {
-			int r = clipByte(Math.round(scale * R[i]));
-			int g = clipByte(Math.round(scale * G[i]));
-			int b = clipByte(Math.round(scale * B[i]));
-			pixels[i] = RgbUtils.encodeRgbToInt(r, g, b);
+			rgb[0] = clipByte(Math.round(scale * R[i]));
+			rgb[1] = clipByte(Math.round(scale * G[i]));
+			rgb[2] = clipByte(Math.round(scale * B[i]));
+			pixels[i] = RgbUtils.encodeRgbToInt(rgb);
 		}
 	}
 	
