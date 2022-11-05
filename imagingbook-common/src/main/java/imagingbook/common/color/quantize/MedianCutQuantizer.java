@@ -106,7 +106,7 @@ public class MedianCutQuantizer implements ColorQuantizer {
 		ColorBin[] colors = new ColorBin[nc];
 		for (int i = 0; i < nc; i++) {
 			int rgb = ch.getColor(i);
-			int cnt = ch.getCount(i);
+			int cnt = ch.getFrequency(i);
 			colors[i] = new ColorBin(cnt, rgb);
 		}
 		return colors;
