@@ -16,11 +16,7 @@ import java.util.Comparator;
 import java.util.Locale;
 import java.util.PriorityQueue;
 
-import ij.IJ;
-import ij.ImagePlus;
-import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
-import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.statistics.ColorHistogram;
 
@@ -59,10 +55,26 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	
 	// -------------------------------------------------------------------------------
 	
+	/**
+	 * Constructor for {@link ColorProcessor}. Creates a new
+	 * {@link MedianCutQuantizer} with up to K colors, but never more than the
+	 * number of colors found in the supplied image.
+	 * 
+	 * @param ip an image of type {@link ColorProcessor}
+	 * @param K  the desired number of colors (1 or more)
+	 */
 	public MedianCutQuantizer(ColorProcessor ip, int K) {
 		this((int[]) ip.getPixels(), K);
 	}
-		 
+	
+	/**
+	 * Constructor for {@code int} pixel values. Creates a new
+	 * {@link MedianCutQuantizer} with up to K colors, but never more than the
+	 * number of colors found in the supplied image.
+	 * 
+	 * @param pixels an image as a aRGB-encoded int array
+	 * @param K      the desired number of colors (1 or more)
+	 */
 	public MedianCutQuantizer(int[] pixels, int K) {
 		if (K < 1) 
 			throw new IllegalArgumentException("K must be at least 1");
@@ -101,22 +113,21 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	}
 
 	/**
-	 * Performs the actual quantization and returns the calculated
-	 * reference colors as an array of {@link #K} {@link ColorBox} instances.
-	 * Color boxes are maintained in a sorted list (of type {@link PriorityQueue}) B
-	 * whose sorting order is determined by 
-	 * the {@link ColorBox#compareTo(ColorBox)}.
-	 * Boxes are iteratively split until the specified number of quantized colors is reached.
-	 * In each step, the first color box (head element) of the sorted list is removed and
-	 * two new boxes (the result of splitting) are added.
-	 * Thus each step increases the size of list B by 1.
+	 * Performs the actual quantization and returns the calculated reference colors
+	 * as an array of {@link #K} {@link ColorBox} instances. Color boxes are
+	 * maintained in a sorted list (of type {@link PriorityQueue}) B whose sorting
+	 * order is determined by the {@link ColorBox#compareTo(ColorBox)}. Boxes are
+	 * iteratively split until the specified number of quantized colors is reached.
+	 * In each step, the first color box (head element) of the sorted list is
+	 * removed and two new boxes (the result of splitting) are added. Thus each step
+	 * increases the size of list B by 1.
 	 * 
 	 * @return an array of reference colors
 	 */
 	private ColorBox[] findReferenceColors(int K) {
 		final int n = origColors.length;
 		ColorBox cb0 = new ColorBox(0, n - 1, 0);
-		AbstractQueue<ColorBox> B = new PriorityQueue<>(); // new HashSet<>();
+		AbstractQueue<ColorBox> B = new PriorityQueue<>();	// the (ordered) set of quantized colors
 		
 		B.add(cb0);	
 		int k = 1;						// number of quantized color (color boxes)
@@ -208,7 +219,7 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	/**
 	 * Represents a 'color box' holding a set of colors (of type {@link ColorBin}),
 	 * which is implemented as a contiguous range of elements in array
-	 * {@link MedianCutQuantizer2#origColors}. Instances of {@link ColorBox} reference
+	 * {@link MedianCutQuantizer#origColors}. Instances of {@link ColorBox} reference
 	 * this array directly (this is why this class is non-static).
 	 * Instances of this class are immutable.
 	 */
@@ -399,76 +410,5 @@ public class MedianCutQuantizer implements ColorQuantizer {
 		}
 	}
 	
-	// ----------------------------------------------------------------------
-	
-	public static void main(String[] args) {
-		String path = "D:/svn-book/Book/img/ch-color-images/alps-01s.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg";
-//		String path = "D:/svn-book/Book/img/ch-color-images/single-color.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/two-colors.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/random-colors.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/ramp-fire.png";
-		
-		int K = 16; 
-		System.out.println("image = " + path);
-		System.out.println("K = " + K);
-
-		ImagePlus im = IJ.openImage(path);
-		if (im == null) {
-			System.out.println("could not open: " + path);
-			return;
-		}
-		im.show();
-		
-		ImageProcessor ip = im.getProcessor();
-		ColorProcessor cp = ip.convertToColorProcessor();
-		
-		MedianCutQuantizer quantizer = new MedianCutQuantizer(cp, K);
-		ByteProcessor qi = quantizer.quantize(cp);
-		new ImagePlus("quantized", qi).show();
-		
-	}
-	
-} 
-
-/*
-image = D:/svn-book/Book/img/ch-color-images/random-colors.png
-K = 16
-i=  0: r= 74 g=116 b= 22
-i=  1: r= 24 g=226 b= 22
-i=  2: r=207 g= 31 b= 22
-i=  3: r=104 g=226 b= 22
-i=  4: r= 70 g=147 b= 63
-i=  5: r= 45 g=226 b= 61
-i=  6: r=207 g= 31 b= 89
-i=  7: r=134 g=226 b= 62
-i=  8: r= 68 g=178 b= 23
-i=  9: r= 65 g=227 b= 21
-i= 10: r=189 g=127 b= 23
-i= 11: r=163 g=225 b= 21
-i= 12: r= 68 g=148 b=114
-i= 13: r= 46 g=226 b=114
-i= 14: r=189 g=133 b= 87
-i= 15: r=133 g=227 b=114
-
-image = D:/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg
-K = 16
-i=  0: r= 69 g= 42 b= 44
-i=  1: r= 69 g= 65 b= 94
-i=  2: r=220 g= 87 b= 14
-i=  3: r=171 g= 73 b=102
-i=  4: r= 37 g=108 b= 38
-i=  5: r= 44 g=119 b=162
-i=  6: r=226 g=180 b=  3
-i=  7: r=191 g=133 b=139
-i=  8: r=153 g= 32 b= 45
-i=  9: r= 61 g= 84 b=131
-i= 10: r=226 g=134 b=  7
-i= 11: r=237 g= 84 b=130
-i= 12: r=145 g= 98 b= 24
-i= 13: r= 37 g=148 b=202
-i= 14: r=244 g=209 b=  1
-i= 15: r=209 g=203 b=209
-
-*/
+}
 
