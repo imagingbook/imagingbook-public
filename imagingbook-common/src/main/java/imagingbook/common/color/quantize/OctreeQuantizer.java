@@ -72,23 +72,38 @@ public class OctreeQuantizer implements ColorQuantizer {
 	 * Constructor for {@link ColorProcessor}. Creates a new
 	 * {@link OctreeQuantizer} with up to K colors, but never more than the
 	 * number of colors found in the supplied image.
+	 * Quick quantization is turned off by default.
 	 * 
 	 * @param ip an image of type {@link ColorProcessor}
-	 * @param K  the desired number of colors (1 or more)
+	 * @param K the desired number of colors (1 or more)
+	 * @see #setQuickQuantization(boolean)
 	 */
 	public OctreeQuantizer(ColorProcessor ip, int K) {
-		this((int[]) ip.getPixels(), K);
+		this(ip, K, false);
+	}
+	
+	/**
+	 * 
+	 * @param ip an image of type {@link ColorProcessor}
+	 * @param K the desired number of colors (1 or more)
+	 * @param quick turns "quick quantization" on or off
+	 * @see #setQuickQuantization(boolean)
+	 */
+	public OctreeQuantizer(ColorProcessor ip, int K, boolean quick) {
+		this((int[]) ip.getPixels(), K, quick);
 	}
 	
 	/**
 	 * Constructor for {@code int} pixel values. Creates a new
 	 * {@link OctreeQuantizer} with up to K colors, but never more than the
 	 * number of colors found in the supplied image.
-	 * 
+	 * @param quick turns "quick quantization" on or off
 	 * @param pixels an image as a aRGB-encoded int array
-	 * @param K      the desired number of colors (1 or more)
+	 * @param K the desired number of colors (1 or more)
+	 * 
+	 * @see #setQuickQuantization(boolean)
 	 */
-	public OctreeQuantizer(int[] pixels, int K) {
+	public OctreeQuantizer(int[] pixels, int K, boolean quick) {
 		this.maxColors = K;
 		this.root = new TreeNode(null, 0);
 		this.depth = Math.min(Math.max(log2(maxColors) - 1, 2), MAX_TREE_DEPTH);// 2 <= depth <= maxTreeDepth
@@ -97,6 +112,7 @@ public class OctreeQuantizer implements ColorQuantizer {
 		
 		this.nColors = reduceTree(initColorCnt, pixels.length);
 		this.colorMap = makeColorMap();
+		this.quickQuantization = quick;
 	}
 	
 	/**
