@@ -13,11 +13,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import ij.IJ;
-import ij.ImagePlus;
-import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
-import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
 
 /**
@@ -429,42 +425,7 @@ public class OctreeQuantizer implements ColorQuantizer {
 		if(n <= 0) throw new IllegalArgumentException();
 		return 31 - Integer.numberOfLeadingZeros(n);
 	}
-	
-	// -----------------------------------------------------------------------------------
 
-	public static void main(String[] args) {
-//		String path = "D:/svn-book/Book/img/ch-color-images/alps-01s.png";
-		String path = "D:/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg";
-//		String path = "D:/svn-book/Book/img/ch-color-images/single-color.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/two-colors.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/random-colors.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/ramp-fire.png";
-		
-		int K = 16; 
-		System.out.println("image = " + path);
-		System.out.println("K = " + K);
-
-		ImagePlus im = IJ.openImage(path);
-		if (im == null) {
-			System.out.println("could not open: " + path);
-			return;
-		}
-		
-		ImageProcessor ip = im.getProcessor();
-		ColorProcessor cp = ip.convertToColorProcessor();
-		
-		// MedianCutQuantizer quantizer = new MedianCutQuantizer(cp, K);
-
-		OctreeQuantizer quantizer = new OctreeQuantizer(cp, K);
-		quantizer.setQuickQuantization(false);
-		quantizer.listColorMap();
-		
-		System.out.println("quantizing image");
-		ByteProcessor qi = quantizer.quantize(cp);
-		System.out.println("showing image");
-		(new ImagePlus("quantized", qi)).show();
-		
-	}
 }
 
 /*
