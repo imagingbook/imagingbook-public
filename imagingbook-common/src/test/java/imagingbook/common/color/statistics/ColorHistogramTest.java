@@ -46,13 +46,13 @@ public class ColorHistogramTest {
 		for (int i = 0; i < 10; i++) {
 			int k = rg.nextInt(n);
 			int col = ch.getColor(k);
-			assertEquals("color " + col, countPixels(pixels, col), ch.getCount(k));
+			assertEquals("color " + col, countPixels(pixels, col), ch.getFrequency(k));
 		}
 		
 		// check if the size of all color bins adds up to number of pixels
 		int totalCnt = 0;
 		for (int k = 0; k < n; k++) {
-			totalCnt = totalCnt + ch.getCount(k);
+			totalCnt = totalCnt + ch.getFrequency(k);
 		}
 		assertEquals(pixels.length, totalCnt);
 	}

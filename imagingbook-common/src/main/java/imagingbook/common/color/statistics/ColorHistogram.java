@@ -19,11 +19,11 @@ import java.util.Arrays;
  * Used mainly for color quantization.
  * 
  * @author WB
- * @version 2017/01/04
+ * @version 2022/11/05
  */
 public class ColorHistogram {
 	
-	private final ColorNode[] colornodes;
+	private final ColorBin[] colorBins;
 	
 	/**
 	 * Creates a color histogram instance from the supplied sequence
@@ -63,7 +63,7 @@ public class ColorHistogram {
 		}
 		int nUnique = k + 1;	// number of unique colors
 		
-		colornodes = new ColorNode[nUnique];
+		colorBins = new ColorBin[nUnique];
 		
 		// tabulate and find frequency of unique colors:
 		k = -1;	// current color index
@@ -72,15 +72,15 @@ public class ColorHistogram {
 			if (pixels[i] != curColor) {	// found a new color
 				k++;
 				curColor = pixels[i];
-				colornodes[k] = new ColorNode(curColor);
+				colorBins[k] = new ColorBin(curColor);
 			}
 			else {							// still with the previous color
-				colornodes[k].add(1);
+				colorBins[k].add(1);
 			}
 		}
 		
 		if (sortByFrequency)
-			Arrays.sort(colornodes);	// sort unique colors by descending frequency
+			Arrays.sort(colorBins);	// sort unique colors by descending frequency
 	}
 	
 	/**
@@ -88,7 +88,37 @@ public class ColorHistogram {
 	 * @return The number of unique colors.
 	 */
 	public int getNumberOfColors() {
-		return colornodes.length;
+		return colorBins.length;
+	}
+	
+	/**
+	 * Returns an array with all (distinct) colors of this histogram as sRGB
+	 * int-encoded values. Values are in no particular order but in the same order
+	 * as the array returned by {@link #getFrequencies()}.
+	 * 
+	 * @return an array of all distinct colors
+	 */
+	public int[] getColors() {
+		int[] colors = new int[colorBins.length];
+		for (int i = 0; i < colorBins.length; i++) {
+			colors[i] = colorBins[i].rgb;
+		}
+		return colors;
+	}
+	
+	/**
+	 * Returns an array with the frequencies of all (distinct) colors of this
+	 * histogram. Values are in no particular order but in the same order as the
+	 * array returned by {@link #getColors()}.
+	 * 
+	 * @return an array of all distinct color frequencies
+	 */
+	public int[] getFrequencies() {
+		int[] frequencies = new int[colorBins.length];
+		for (int i = 0; i < colorBins.length; i++) {
+			frequencies[i] = colorBins[i].count;
+		}
+		return frequencies;
 	}
 	
 	/**
@@ -99,7 +129,7 @@ public class ColorHistogram {
 	 * @return	The color, encoded as an ARGB integer (A is zero).
 	 */
 	public int getColor(int index) {
-		return colornodes[index].rgb;
+		return colorBins[index].rgb;
 	}
 	
 	/**
@@ -108,8 +138,8 @@ public class ColorHistogram {
 	 * @param index The color index.
 	 * @return	The frequency of the color.
 	 */
-	public int getCount(int index) {
-		return colornodes[index].count;
+	public int getFrequency(int index) {
+		return colorBins[index].count;
 	}
 	
 	/**
@@ -117,37 +147,43 @@ public class ColorHistogram {
 	 * debugging only).
 	 */
 	public void listUniqueColors() {
-		for (ColorNode cn : colornodes) {
+		for (ColorBin cn : colorBins) {
 			System.out.println(cn.toString());
 		}
 	}
 	
 	// --------------------------------------------------------------------------------
 	
-	private class ColorNode implements Comparable<ColorNode> {
-		private final int rgb;
-		private int count;
+	/**
+	 * Represents a set of pixels with the same color.
+	 */
+	private static class ColorBin implements Comparable<ColorBin> {
+		private final int rgb;	// the pixel color (aRGB-encoded int)
+		private int count;		// the size of the set
 
-		ColorNode(int rgb) {
+		private ColorBin(int rgb) {
 			this.rgb = rgb;
 			this.count = 1;
 		}
 
-		void add(int n) {
+		/**
+		 * Add n pixels to this bin.
+		 * @param n the number of pixels to add
+		 */
+		private void add(int n) {
 			count = count + n;	
 		}
 		
 		@Override
 		public String toString() {
-			return String.format(ColorNode.class.getSimpleName() + " rgb=%d count=%d", rgb, count);
+			return String.format(ColorBin.class.getSimpleName() + " rgb=%d count=%d", rgb, count);
 		}
 
 		@Override
-		public int compareTo(ColorNode c2) {	// to sort by count (high counts first)
-			if (this.count > c2.count) return -1;
-			if (this.count < c2.count) return 1;
-			else return 0;
+		public int compareTo(ColorBin other) {	// to sort by count (high counts first)
+			return Integer.compare(other.count, this.count);
 		}
+
 	}
-	
+
 }
