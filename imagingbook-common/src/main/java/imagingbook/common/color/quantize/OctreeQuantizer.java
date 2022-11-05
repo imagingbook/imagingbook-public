@@ -21,30 +21,35 @@ import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
 
 /**
+ * <p>
  * This class implements color quantization based on the octree method. It is a
- * re-factored version of an implementation ({@code OctTreeOpImage.java}) used in Sun's JAI 
- * (Java Advanced Imaging) framework, which &ndash; in turn &ndash; is based on a 
- * C implementation ({@code quantize.c}) by John Cristy in 1992 as part of 
- * <a href="http://www.imagemagick.org/">ImageMagick</a>.
- * The associated source code can be found 
- * <a href="https://github.com/ImageMagick/ImageMagick/blob/main/MagickCore/quantize.c">
- * here</a>, the original license note is provided at the bottom of this source file.
- * 
- * This implementation is similar but not identical to the original octree quantization
- * algorithm described in
- * <blockquote>
- * M. Gervautz and W. Purgathofer, "A simple method for color
- * quantization: octree quantization", in A. Glassner (editor), Graphics Gems I, 
- * pp. 287–293. Academic Press, New York (1990).
- * </blockquote>
- * This implementation uses a modified strategy for pruning the octree for better efficiency.
- * 
- * "Quick quantization" means that original colors are mapped to their color index by simply
- * finding the containing octree node. Otherwise, the closest quantized color (in terms of 
- * Euclidean distance) is searched for, which is naturally slower.
+ * re-factored version of an implementation ({@code OctTreeOpImage.java}) used
+ * in Sun's JAI (Java Advanced Imaging) framework, which &ndash; in turn &ndash;
+ * is based on a C implementation ({@code quantize.c}) by John Cristy in 1992 as
+ * part of <a href="http://www.imagemagick.org/">ImageMagick</a>. The associated
+ * source code can be found <a href=
+ * "https://github.com/ImageMagick/ImageMagick/blob/main/MagickCore/quantize.c">
+ * here</a>, the original license note is provided at the bottom of this source
+ * file. This implementation is similar but not identical to the original octree
+ * quantization algorithm described in [1].
+ * </p>
+ * <p>
+ * This implementation uses a modified strategy for pruning the octree for
+ * better efficiency. "Quick quantization" means that original colors are mapped
+ * to their color index by simply finding the containing octree node. Otherwise,
+ * the closest quantized color (in terms of Euclidean distance) is searched for,
+ * which is naturally slower. See Sec. 13.4 of [2] for more details.
+ * </p>
+ * <p>
+ * [1] M. Gervautz and W. Purgathofer, "A simple method for color quantization:
+ * octree quantization", in A. Glassner (editor), Graphics Gems I, pp. 287–293.
+ * Academic Press, New York (1990).<br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2017/01/03
+ * @version 2022/11/05
  */
 public class OctreeQuantizer implements ColorQuantizer {
 
@@ -53,6 +58,7 @@ public class OctreeQuantizer implements ColorQuantizer {
 	private final static int MAX_TREE_DEPTH = 8;	// check, 7 enough?
 
 	private final int maxColors;	// max. number of distinct colors after quantization
+	private final float[][] colorMap;
 	
 	@SuppressWarnings("unused")
 	private final int nColors;		// final number of colors
@@ -66,10 +72,26 @@ public class OctreeQuantizer implements ColorQuantizer {
 
 	// -------------------------------------------------------------------------
 	
+	/**
+	 * Constructor for {@link ColorProcessor}. Creates a new
+	 * {@link OctreeQuantizer} with up to K colors, but never more than the
+	 * number of colors found in the supplied image.
+	 * 
+	 * @param ip an image of type {@link ColorProcessor}
+	 * @param K  the desired number of colors (1 or more)
+	 */
 	public OctreeQuantizer(ColorProcessor ip, int K) {
 		this((int[]) ip.getPixels(), K);
 	}
 	
+	/**
+	 * Constructor for {@code int} pixel values. Creates a new
+	 * {@link OctreeQuantizer} with up to K colors, but never more than the
+	 * number of colors found in the supplied image.
+	 * 
+	 * @param pixels an image as a aRGB-encoded int array
+	 * @param K      the desired number of colors (1 or more)
+	 */
 	public OctreeQuantizer(int[] pixels, int K) {
 		this.maxColors = K;
 		this.root = new TreeNode(null, 0);
@@ -78,10 +100,21 @@ public class OctreeQuantizer implements ColorQuantizer {
 		int initColorCnt = addPixels(pixels);
 		
 		this.nColors = reduceTree(initColorCnt, pixels.length);
+		this.colorMap = makeColorMap();
 	}
 	
-	public void setQuickQuantization(boolean quickQuantization) {
-		this.quickQuantization = quickQuantization;
+	/**
+	 * Turns on "quick quantization" which means that original colors are mapped to
+	 * their color index by simply finding the containing octree node. Otherwise,
+	 * the closest quantized color (in terms of Euclidean distance) is searched for,
+	 * which is naturally slower but usually gives better results. This setting only
+	 * affects the final assignment of input colors to the nearest reference colors,
+	 * the reference colors themselves are not changed.
+	 * 
+	 * @param useQuickQuantization set true to turn on quick quantization
+	 */
+	public void setQuickQuantization(boolean useQuickQuantization) {
+		this.quickQuantization = useQuickQuantization;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -122,20 +155,17 @@ public class OctreeQuantizer implements ColorQuantizer {
 	}
 
 	/**
-	 * reduceTree() repeatedly prunes the tree until the number of
-	 * nodes with unique > 0 is less than or equal to the maximum
-	 * number of colors allowed in the output image.
-	 * When a node to be pruned has offspring, the pruning
-	 * procedure invokes itself recursively in order to prune the
-	 * tree from the leaves upward.  The statistics of the node
-	 * being pruned are always added to the corresponding data in
-	 * that node's parent.  This retains the pruned node's color
-	 * characteristics for later averaging.
+	 * Repeatedly prunes the tree until the number of nodes with unique &gt; 0 is less
+	 * than or equal to the maximum number of colors allowed in the output image.
+	 * When a node to be pruned has offspring, the pruning procedure invokes itself
+	 * recursively in order to prune the tree from the leaves upward. The statistics
+	 * of the node being pruned are always added to the corresponding data in that
+	 * node's parent. This retains the pruned node's color characteristics for later
+	 * averaging.
 	 * 
-	 * @param initColorCnt 
-	 * 		The initial number of colors (leaves) in the octree.
-	 * @param nSamples 
-	 * 		The total number of color samples used for creating the tree.
+	 * @param initColorCnt The initial number of colors (leaves) in the octree.
+	 * @param nSamples     The total number of color samples used for creating the
+	 *                     tree.
 	 * @return
 	 */
 	private int reduceTree(int initColorCnt, int nSamples) {
@@ -168,26 +198,26 @@ public class OctreeQuantizer implements ColorQuantizer {
 	 * Represents a node in the octree.
 	 */
 	private class TreeNode {
-		final TreeNode parent;		// reference to the parent node (null for the root node)
-		final TreeNode[] childs;	// references to child nodes
-		final int id;			// branch index of this node at the parent node (0,...,7)
-		final int level;		// level of this node within the tree (root has level 0)
-		
-		int nChilds = 0;	// number of child nodes
-		int nPixels = 0;	// number of pixels represented by this node and all child nodes
-		int nUnique = 0;	// number of pixels represented by this node but none of the children
+		private final TreeNode parent;		// reference to the parent node (null for the root node)
+		private final TreeNode[] childs;	// references to child nodes
+		private final int id;			// branch index of this node at the parent node (0,...,7)
+		private final int level;		// level of this node within the tree (root has level 0)
 
-		final int midRed;	// RGB color midpoint (center of this node in color space)
-		final int midGrn;
-		final int midBlu;
+		private final int midRed;	// RGB color midpoint (center of this node in color space)
+		private final int midGrn;
+		private final int midBlu;
 		
-		int totalRed = 0;	// sum of all pixel component values represented by this node
-		int totalGrn = 0;
-		int totalBlu = 0;
+		private int nChilds = 0;	// number of child nodes
+		private int nPixels = 0;	// number of pixels represented by this node and all child nodes
+		private int nUnique = 0;	// number of pixels represented by this node but none of the children
+		
+		private int totalRed = 0;	// sum of all pixel component values represented by this node
+		private int totalGrn = 0;
+		private int totalBlu = 0;
 		
 		int colorIdx = -1; 	// the index of the associated color in the final color table
 
-		TreeNode(TreeNode parent, int id) {
+		private TreeNode(TreeNode parent, int id) {
 			this.parent = parent;
 			this.id = id;
 			this.childs = new TreeNode[8];
@@ -222,7 +252,7 @@ public class OctreeQuantizer implements ColorQuantizer {
 		/**
 		 * Prune all nodes at the lowest level (= depth) of the tree.
 		 */
-		void pruneTree() {
+		private void pruneTree() {
 			if (nChilds != 0) {	
 				// move recursively to the lowest level
 				for (int i = 0; i < childs.length; i++) {
@@ -246,7 +276,7 @@ public class OctreeQuantizer implements ColorQuantizer {
 		 * @param newMinPixelCnt The minimum population found so far (during recursive tree walk).
 		 * @return
 		 */
-		int reduceSparseNodes(int minPixelCount, int newMinPixelCnt) {
+		private int reduceSparseNodes(int minPixelCount, int newMinPixelCnt) {
 			// visit all child nodes first
 			if (nChilds > 0) {
 				for (TreeNode ch : childs) {
@@ -271,7 +301,7 @@ public class OctreeQuantizer implements ColorQuantizer {
 		/**
 		 * Remove this node, and push all pixel statistics to its parent.
 		 */
-		void delete() {
+		private void delete() {
 			parent.nChilds--;
 			parent.nUnique += nUnique;
 			parent.totalRed += totalRed;
@@ -289,7 +319,7 @@ public class OctreeQuantizer implements ColorQuantizer {
 		 * @param blu
 		 * @return The branch index [0,...,7].
 		 */
-		int getChildId(int[] rgb) {
+		private int getChildId(int[] rgb) {
 			int idx = 0;
 			if (rgb[0] > this.midRed) idx = idx | 0X01;
 			if (rgb[1] > this.midGrn) idx = idx | 0X02;
@@ -358,7 +388,8 @@ public class OctreeQuantizer implements ColorQuantizer {
 	
 	@Override
 	public float[][] getColorMap() {
-		return makeColorMap();
+//		return makeColorMap();
+		return this.colorMap;
 	}
 	
 	@Override
