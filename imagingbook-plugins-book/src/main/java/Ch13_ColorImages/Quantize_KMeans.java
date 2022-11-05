@@ -10,7 +10,6 @@ package Ch13_ColorImages;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.io.LogStream;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
@@ -34,14 +33,15 @@ public class Quantize_KMeans implements PlugInFilter {
 	private static boolean CREATE_RGB_IMAGE = false;
 	private static boolean LIST_COLOR_TABLE = false;
 	
-	static {
-		LogStream.redirectSystem();
-	}
+	private ImagePlus im;
 	
-	public int setup(String arg, ImagePlus imp) {
+	@Override
+	public int setup(String arg, ImagePlus im) {
+		this.im = im;
 		return DOES_RGB + NO_CHANGES;
 	}
 	
+	@Override
 	public void run(ImageProcessor ip) {
 		Parameters params = new Parameters();
 	

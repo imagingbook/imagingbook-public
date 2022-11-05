@@ -9,85 +9,85 @@
 
 package Ch13_ColorImages;
 
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.io.LogStream;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.quantize.OctreeQuantizer;
 
-
-
 /**
+ * <p>
  * ImageJ plugin demonstrating the use of the {@link OctreeQuantizer} class.
+ * See Sec. 13.4 for more details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2022/02/25
+ * @version 2022/11/05
  */
 public class Quantize_Octree implements PlugInFilter {
 	
-	private static int K = 16;
-	private static boolean QUICK = false;
-	
+	private static int NCOLORS = 16;
+	private static boolean QUICK = false;	
 	private static boolean CREATE_INDEXED_IMAGE = true; 
 	private static boolean CREATE_RGB_IMAGE = false;
-	private static boolean LIST_COLOR_TABLE = false;
-
-	static {
-		LogStream.redirectSystem();
-	}
+	private static boolean LIST_COLOR_MAP = false;
 	
-	String title;
-
-	public int setup(String arg, ImagePlus imp) {
-		this.title = imp.getShortTitle();
+	private ImagePlus im;
+	
+	@Override
+	public int setup(String arg, ImagePlus im) {
+		this.im = im;
 		return DOES_RGB + NO_CHANGES;
 	}
-
+	
+	@Override
 	public void run(ImageProcessor ip) {
-				
-		if (!showDialog())
+		
+		if (!runDialog())
 			return;
-
+		
 		ColorProcessor cp = (ColorProcessor) ip;
 		int[] pixels = (int[]) cp.getPixels();
 
-		OctreeQuantizer quantizer = new OctreeQuantizer(pixels, K);
+		OctreeQuantizer quantizer = new OctreeQuantizer(pixels, NCOLORS);
 		quantizer.setQuickQuantization(QUICK);
-		
 		int nCols = quantizer.getColorMap().length;
 		
-		String qck = QUICK ? " quick" : "";
-		
-		if (LIST_COLOR_TABLE) {
-			quantizer.listColorMap();
-		}
+		String title = im.getShortTitle() + "-Octree";
 		
 		if (CREATE_INDEXED_IMAGE) {
 			// quantize to an indexed color image
 			ByteProcessor qip = quantizer.quantize(cp);
-			(new ImagePlus(title + "Octree" + nCols + qck, qip)).show();
+			ImagePlus imp = new ImagePlus(title + "-IDX-" + nCols, qip);
+			imp.setTypeToColor256();
+			imp.show();
 		}
 		
-//		if (CREATE_RGB_IMAGE) {
-//			// quantize to a full-color RGB image
-//			int[] rgbPix = quantizer.quantize((int[]) pixels);
-//			ColorProcessor rgbIp = new ColorProcessor(cp.getWidth(), cp.getHeight(), rgbPix);
-//			(new ImagePlus("Quantized RGB Image (" + nCols + " colors)" + qck, rgbIp)).show();
-//		}
+		if (CREATE_RGB_IMAGE) {
+			// quantize to a full-color RGB image
+			int[] rgbPix = quantizer.quantize((int[])cp.getPixels());
+			ColorProcessor rgbIp = new ColorProcessor(cp.getWidth(), cp.getHeight(), rgbPix);
+			new ImagePlus(title + "-RGB-" + nCols , rgbIp).show();
+		}
 		
+		if (LIST_COLOR_MAP) {
+			quantizer.listColorMap();
+		}
 	}
 	
-	private boolean showDialog() {
-		GenericDialog gd = new GenericDialog(Quantize_Median_Cut.class.getSimpleName());
-		gd.addNumericField("No. of colors (2,..,256)", K, 0);
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addNumericField("No. of colors (1,..,256)", NCOLORS, 0);
 		gd.addCheckbox("Use quick quantization", QUICK);
 		gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);
 		gd.addCheckbox("Create quantized RGB image", CREATE_RGB_IMAGE);
-		gd.addCheckbox("List quantized color table", LIST_COLOR_TABLE);
+		gd.addCheckbox("List quantized colors", LIST_COLOR_MAP);
 		
 		gd.showDialog();
 		if (gd.wasCanceled())
@@ -96,13 +96,11 @@ public class Quantize_Octree implements PlugInFilter {
 		int nc = (int) gd.getNextNumber();
 		nc = Math.min(nc, 255);
 		nc = Math.max(2, nc);
-		
-		K = nc;
+		NCOLORS = nc;
 		QUICK = gd.getNextBoolean();
-		
 		CREATE_INDEXED_IMAGE = gd.getNextBoolean();
 		CREATE_RGB_IMAGE = gd.getNextBoolean();
-		LIST_COLOR_TABLE = gd.getNextBoolean();
+		LIST_COLOR_MAP = gd.getNextBoolean();
 		return true;
 	}
 
