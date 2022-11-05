@@ -92,44 +92,45 @@ public interface ColorQuantizer {
 		return (byte) (0xFF & xi);
 	}
 	
-//	/**
-//	 * Performs color quantization on the given sequence of
-//	 * ARGB-encoded color values and returns a new sequence 
-//	 * of quantized colors.
-//	 * 
-//	 * @param origPixels The original ARGB-encoded color values.
-//	 * @return The quantized ARGB-encoded color values.
-//	 */
-//	public int[] quantize(int[] origPixels) {
-//		int[] qantPixels = new int[origPixels.length];
-//		for (int i = 0; i < origPixels.length; i++) {
-//			qantPixels[i] = quantize(origPixels[i]);
-//		}
-//		return qantPixels;
-//	}
+	/**
+	 * Performs color quantization on the given sequence of
+	 * ARGB-encoded color values and returns a new sequence 
+	 * of quantized colors.
+	 * 
+	 * @param origPixels The original ARGB-encoded color values.
+	 * @return The quantized ARGB-encoded color values.
+	 */
+	public default int[] quantize(int[] origPixels) {
+		int[] qantPixels = new int[origPixels.length];
+		for (int i = 0; i < origPixels.length; i++) {
+			qantPixels[i] = quantize(origPixels[i]);
+		}
+		return qantPixels;
+	}
 	
-//	/**
-//	 * Performs color quantization on the given ARGB-encoded color 
-//	 * value and returns the associated quantized color. 
-//	 * @param p The original ARGB-encoded color value.
-//	 * @return The quantized ARGB-encoded color value.
-//	 */
-//	public int quantize(int p) {
-//		int[][] colormap = getColorMap();
-//		int idx = findColorIndex(p);
-//		int red = colormap[idx][0];
-//		int grn = colormap[idx][1];
-//		int blu = colormap[idx][2];
-//		return RgbUtils.rgbToInt(red, grn, blu);
-//	}
+	/**
+	 * Performs color quantization on the given ARGB-encoded color value and returns
+	 * the associated quantized color.
+	 * 
+	 * @param rgb The original ARGB-encoded color value.
+	 * @return The quantized ARGB-encoded color value.
+	 */
+	public default int quantize(int rgb) {
+		final float[][] colormap = getColorMap();
+		int idx = findColorIndex(rgb, colormap);
+		int red = (int) (colormap[idx][0] + 0.5f);
+		int grn = (int) (colormap[idx][1] + 0.5f);
+		int blu = (int) (colormap[idx][2] + 0.5f);
+		return RgbUtils.encodeRgbToInt(red, grn, blu);
+	}
 	
 	/**
 	 * Finds the color table index of the color that is "closest" to the supplied
-	 * RGB color (minimum Euclidean distance in color space). 
-	 * This method may be overridden by inheriting classes, for example, to use
-	 * quick indexing in the octree method.
-	 *  
-	 * @param p Original color, encoded as an ARGB integer.
+	 * RGB color (minimum Euclidean distance in color space). This method may be
+	 * overridden by inheriting classes, for example, to use quick indexing in the
+	 * octree method.
+	 * 
+	 * @param p        Original color, encoded as an ARGB integer.
 	 * @param colormap a color map (float)
 	 * @return The associated color table index.
 	 */

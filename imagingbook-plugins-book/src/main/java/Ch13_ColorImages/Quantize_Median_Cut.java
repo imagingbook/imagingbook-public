@@ -73,12 +73,12 @@ public class Quantize_Median_Cut implements PlugInFilter {
 			imp.show();
 		}
 		
-//		if (CREATE_RGB_IMAGE) {
-//			// quantize to a full-color RGB image
-//			int[] rgbPix = quantizer.quantize(pixels);
-//			ColorProcessor rgbIp = new ColorProcessor(cp.getWidth(), cp.getHeight(), rgbPix);
-//			(new ImagePlus("Quantized RGB Image (" + nCols + " colors)" , rgbIp)).show();
-//		}
+		if (CREATE_RGB_IMAGE) {
+			// quantize to a full-color RGB image
+			int[] rgbPix = quantizer.quantize((int[])cp.getPixels());
+			ColorProcessor rgbIp = new ColorProcessor(cp.getWidth(), cp.getHeight(), rgbPix);
+			new ImagePlus("Quantized RGB Image (" + nCols + " colors)" , rgbIp).show();
+		}
 		
 		if (LIST_COLOR_TABLE) {
 			quantizer.listColorMap();
@@ -87,7 +87,7 @@ public class Quantize_Median_Cut implements PlugInFilter {
 	
 	private boolean showDialog() {
 		GenericDialog gd = new GenericDialog(Quantize_Median_Cut.class.getSimpleName());
-		gd.addNumericField("No. of colors (2,..,256)", NCOLORS, 0);
+		gd.addNumericField("No. of colors (1,..,256)", NCOLORS, 0);
 		gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);
 		gd.addCheckbox("Create quantized RGB image", CREATE_RGB_IMAGE);
 		gd.addCheckbox("List quantized color table", LIST_COLOR_TABLE);
@@ -97,8 +97,8 @@ public class Quantize_Median_Cut implements PlugInFilter {
 			return false;
 		
 		int nc = (int) gd.getNextNumber();
-		nc = Math.min(nc, 255);
-		nc = Math.max(2, nc);
+		nc = Math.min(nc, 256);
+		nc = Math.max(1, nc);
 		
 		NCOLORS = nc;
 //		params.maxColors = nc;
