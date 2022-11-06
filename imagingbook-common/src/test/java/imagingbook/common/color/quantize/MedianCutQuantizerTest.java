@@ -348,7 +348,7 @@ public class MedianCutQuantizerTest {
 	
 	private void runTest(ImageResource ir, int K, int Kact, float[][] colormap) {
 		ColorProcessor cp = (ColorProcessor) ir.getImage().getProcessor();
-		ColorQuantizer quantizer = new MedianCutQuantizer(cp, K);
+		ColorQuantizer quantizer = new MedianCutQuantizer((int[])cp.getPixels(), K);
 		assertEquals(Kact, quantizer.getColorCount());
 		float[][] cm = quantizer.getColorMap();
 		

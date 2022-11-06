@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import ij.process.ColorProcessor;
 import imagingbook.common.color.RgbUtils;
 
 /**
@@ -69,39 +68,25 @@ public class OctreeQuantizer implements ColorQuantizer {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Constructor for {@link ColorProcessor}. Creates a new
-	 * {@link OctreeQuantizer} with up to K colors, but never more than the
-	 * number of colors found in the supplied image.
-	 * Quick quantization is turned off by default.
+	 * Constructor, creates a new {@link OctreeQuantizer} with up to K colors, but
+	 * never more than the number of colors found in the supplied image. Quick
+	 * quantization is turned off by default.
 	 * 
-	 * @param ip an image of type {@link ColorProcessor}
-	 * @param K the desired number of colors (1 or more)
-	 * @see #setQuickQuantization(boolean)
-	 */
-	public OctreeQuantizer(ColorProcessor ip, int K) {
-		this(ip, K, false);
-	}
-	
-	/**
-	 * 
-	 * @param ip an image of type {@link ColorProcessor}
-	 * @param K the desired number of colors (1 or more)
-	 * @param quick turns "quick quantization" on or off
-	 * @see #setQuickQuantization(boolean)
-	 */
-	public OctreeQuantizer(ColorProcessor ip, int K, boolean quick) {
-		this((int[]) ip.getPixels(), K, quick);
-	}
-	
-	/**
-	 * Constructor for {@code int} pixel values. Creates a new
-	 * {@link OctreeQuantizer} with up to K colors, but never more than the
-	 * number of colors found in the supplied image.
-	 * @param quick turns "quick quantization" on or off
 	 * @param pixels an image as a aRGB-encoded int array
-	 * @param K the desired number of colors (1 or more)
+	 * @param K      the desired number of colors (1 or more)
+	 */
+	public OctreeQuantizer(int[] pixels, int K) {
+		this(pixels, K, false);
+	}
+	
+	/**
+	 * Constructor, creates a new {@link OctreeQuantizer} with up to K colors, but
+	 * never more than the number of colors found in the supplied image. Quick
+	 * quantization can be selected.
 	 * 
-	 * @see #setQuickQuantization(boolean)
+	 * @param pixels an image as a aRGB-encoded int array
+	 * @param K      the desired number of colors (1 or more)
+	 * @param quick  turns "quick quantization" on or off
 	 */
 	public OctreeQuantizer(int[] pixels, int K, boolean quick) {
 		this.maxColors = K;

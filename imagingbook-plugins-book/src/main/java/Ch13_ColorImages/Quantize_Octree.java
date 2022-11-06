@@ -55,7 +55,7 @@ public class Quantize_Octree implements PlugInFilter {
 		ColorProcessor cp = (ColorProcessor) ip;
 //		int[] pixels = (int[]) cp.getPixels();
 
-		OctreeQuantizer quantizer = new OctreeQuantizer(cp, NCOLORS);
+		OctreeQuantizer quantizer = new OctreeQuantizer((int[])cp.getPixels(), NCOLORS);
 		quantizer.setQuickQuantization(QUICK);
 		int nCols = quantizer.getColorMap().length;
 		

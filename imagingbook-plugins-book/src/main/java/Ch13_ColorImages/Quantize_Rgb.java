@@ -73,11 +73,11 @@ public class Quantize_Rgb implements PlugInFilter {
 		case KMeansApache:
 			quantizer = null; break;
 		case MedianCut:
-			quantizer = new MedianCutQuantizer(cp, NCOLORS); break;
+			quantizer = new MedianCutQuantizer((int[])cp.getPixels(), NCOLORS); break;
 		case Octree:
-			quantizer = new OctreeQuantizer(cp, NCOLORS, false); break;
+			quantizer = new OctreeQuantizer((int[])cp.getPixels(), NCOLORS, false); break;
 		case OctreeQuick:
-			quantizer = new OctreeQuantizer(cp, NCOLORS, true); break;
+			quantizer = new OctreeQuantizer((int[])cp.getPixels(), NCOLORS, true); break;
 		}
 		
 		int nCols = quantizer.getColorMap().length;

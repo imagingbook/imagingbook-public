@@ -16,9 +16,7 @@ import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.quantize.ColorQuantizer;
 import imagingbook.common.color.quantize.KMeansClusteringQuantizer;
-import imagingbook.common.color.quantize.KMeansClusteringQuantizer.Parameters;
-import imagingbook.common.color.quantize.KMeansClusteringQuantizer.SamplingMethod;
-import imagingbook.common.util.EnumUtils;
+import imagingbook.common.color.quantize.KMeansClusteringQuantizer.InitialClusterMethod;
 
 
 /**
@@ -28,6 +26,10 @@ import imagingbook.common.util.EnumUtils;
  * @version 2017/01/03
  */
 public class Quantize_KMeans implements PlugInFilter {
+	
+	private static int NCOLORS = 16;
+	private static int MaxIterations = 500;
+	private static InitialClusterMethod SplMethod = InitialClusterMethod.Random;
 	
 	private static boolean CREATE_INDEXED_IMAGE = true; 
 	private static boolean CREATE_RGB_IMAGE = false;
@@ -43,17 +45,19 @@ public class Quantize_KMeans implements PlugInFilter {
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		Parameters params = new Parameters();
+//		Parameters params = new Parameters();
 	
-		if (!showDialog(params))
+		if (!runDialog())
 			return;
 		
 		ColorProcessor cp = (ColorProcessor) ip;
 		int[] pixels = (int[]) cp.getPixels();
 		
 		// create a quantizer object
-		ColorQuantizer quantizer = new KMeansClusteringQuantizer(pixels, params);
+		ColorQuantizer quantizer = new KMeansClusteringQuantizer(pixels, NCOLORS, SplMethod, MaxIterations);
 		int nCols = quantizer.getColorMap().length;
+		
+		String title = im.getShortTitle() + "-Octree";
 		
 		if (CREATE_INDEXED_IMAGE) {
 			// quantize to an indexed color image
@@ -61,26 +65,23 @@ public class Quantize_KMeans implements PlugInFilter {
 			(new ImagePlus("Quantized Index Color Image (" + nCols + " colors)", idxIp)).show();
 		}
 		
-//		if (CREATE_RGB_IMAGE) {
-//			// quantize to a full-color RGB image
-//			int[] rgbPix = quantizer.quantize(pixels);
-//			ColorProcessor rgbIp = new ColorProcessor(cp.getWidth(), cp.getHeight(), rgbPix);
-//			(new ImagePlus("Quantized RGB Image (" + nCols + " colors)" , rgbIp)).show();
-//		}
+		if (CREATE_RGB_IMAGE) {
+			// quantize to a full-color RGB image
+			int[] rgbPix = quantizer.quantize((int[])cp.getPixels());
+			ColorProcessor rgbIp = new ColorProcessor(cp.getWidth(), cp.getHeight(), rgbPix);
+			new ImagePlus(title + "-RGB-" + nCols , rgbIp).show();
+		}
 		
 		if (LIST_COLOR_TABLE) {
 			quantizer.listColorMap();
 		}
 	}
 	
-	private boolean showDialog(Parameters params) {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(Quantize_KMeans.class.getSimpleName());
-		gd.addNumericField("No. of colors (2,..,256)", params.maxColors, 0);
-		gd.addNumericField("Max. iterations", params.maxIterations, 0);
-		
-		String[] mNames = EnumUtils.getEnumNames(SamplingMethod.class);
-		gd.addChoice("Sampling method", mNames, params.samplMethod.name());
-		
+		gd.addNumericField("No. of colors (2,..,256)", NCOLORS, 0);
+		gd.addNumericField("Max. iterations", MaxIterations, 0);
+		gd.addEnumChoice("Sampling method", SplMethod);
 		gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);
 		gd.addCheckbox("Create quantized RGB image", CREATE_RGB_IMAGE);
 		gd.addCheckbox("List quantized color table", LIST_COLOR_TABLE);
@@ -93,10 +94,9 @@ public class Quantize_KMeans implements PlugInFilter {
 		nc = Math.min(nc, 255);
 		nc = Math.max(2, nc);
 
-		params.maxColors = nc;
-		params.maxIterations = (int) gd.getNextNumber();
-		params.samplMethod = SamplingMethod.valueOf(gd.getNextChoice());
-		
+		NCOLORS = nc;
+		MaxIterations = (int) gd.getNextNumber();
+		SplMethod = gd.getNextEnumChoice(InitialClusterMethod.class);
 		CREATE_INDEXED_IMAGE = gd.getNextBoolean();
 		CREATE_RGB_IMAGE = gd.getNextBoolean();
 		LIST_COLOR_TABLE = gd.getNextBoolean();

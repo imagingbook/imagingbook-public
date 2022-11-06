@@ -56,7 +56,7 @@ public class Quantize_Median_Cut implements PlugInFilter {
 		ColorProcessor cp = (ColorProcessor) ip;
 		
 		// create a quantizer object
-		ColorQuantizer quantizer = new MedianCutQuantizer(cp, NCOLORS);
+		ColorQuantizer quantizer = new MedianCutQuantizer((int[])cp.getPixels(), NCOLORS);
 		int nCols = quantizer.getColorMap().length;
 		
 		String title = im.getShortTitle() + "-MedianCut";

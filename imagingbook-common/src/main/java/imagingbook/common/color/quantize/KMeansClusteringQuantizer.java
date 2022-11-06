@@ -9,6 +9,8 @@
 
 package imagingbook.common.color.quantize;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,104 +26,86 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.statistics.ColorHistogram;
 
 /**
- * This class implements color quantization using k-means clustering
- * of image pixels in RGB color space. Two modes of selecting
- * the colors for the initial clusters are provided:
- * (a) random sampling of the input colors,
- * (b) using the most frequent colors.
+ * This class implements color quantization using k-means clustering of image
+ * pixels in RGB color space. It provides two modes for selecting initial color
+ * clusters: (a) random sampling of the input colors, (b) using the K most
+ * frequent colors.
+ * During clustering all input pixels are used, i.e., no stochastic sub-sampling
+ * is applied (which could make the process a lot more efficient).
  * 
  * @author WB
- * @version 2017/01/04
+ * @version 2022/11/06
  */
 public class KMeansClusteringQuantizer implements ColorQuantizer {
 	
-	private final Parameters params;
-	private final float[][] colormap;
+	/**
+	 * Seed for random number generation (set to a nonzero value to
+	 * obtain repeatable results for debugging and testing).
+	 */
+	public static long RandomSeed = 0;	
+	private final Random random = (RandomSeed == 0) ? new Random() : new Random(RandomSeed);
+	
 	private final ColorCluster[] clusters;
 	private final double totalError;
+	private final float[][] colormap;
 	
-	public enum SamplingMethod {
-		Random, 
-		Most_Frequent
+	
+	/** Method for choosing initial color clusters. */
+	public enum InitialClusterMethod {
+		/** Use K different random colors to initialize clusters. */
+		Random,
+		/** Use the K most frequent image colors to initialize clusters. */
+		MostFrequent
 	};
-	
-	public static class Parameters {
-		/** Maximum number of quantized colors. */
-		public int maxColors = 16;
-		/** Maximum number of clustering iterations */
-		public int maxIterations = 500;
-		/** The method used for selecting the initial color samples. */
-		public SamplingMethod samplMethod = SamplingMethod.Random;
-		
-		void check() {
-			if (maxColors < 2 || maxColors > 256 || maxIterations < 1) {
-				throw new IllegalArgumentException();
-			}
-		}
-	}
 	
 	// --------------------------------------------------------------
 	
-	public KMeansClusteringQuantizer(ColorProcessor cp, Parameters params) {
-		this((int[]) cp.getPixels(), params);
+	/**
+	 * Constructor, creates a new {@link KMeansClusteringQuantizer} with up to K colors,
+	 * using default parameters.
+	 * 
+	 * @param pixels an image as a aRGB-encoded int array
+	 * @param K  the desired number of colors (1 or more)
+	 */
+	public KMeansClusteringQuantizer(int[] pixels, int K) {
+		this(pixels, K, InitialClusterMethod.Random, 500);
 	}
 
 	/**
-	 * Creates a new quantizer instance from the supplied sequence
-	 * of color values (assumed to be ARGB-encoded integers).
+	 * Constructor, creates a new {@link KMeansClusteringQuantizer} with up to K colors,
+	 * but never more than the number of colors found in the supplied pixel data.
 	 * 
-	 * @param pixels Sequence of input color values.
-	 * @param params Parameter object.
+	 * @param pixels an image as a aRGB-encoded int array
+	 * @param K  the desired number of colors (1 or more)
+	 * @param initMethod the method to initialize color clusters ({@link InitialClusterMethod})
+	 * @param maxIterations the maximum number of clustering iterations 
 	 */
-	public KMeansClusteringQuantizer(int[] pixels, Parameters params) {
-		params.check();
-		this.params = params;
-		clusters = makeClusters(pixels);
-		totalError = cluster(pixels);
+	public KMeansClusteringQuantizer(int[] pixels, int K, InitialClusterMethod initMethod, int maxIterations) {
+		clusters = initClusters(pixels, K, initMethod);
+		totalError = doCluster(pixels, maxIterations);
 		colormap = makeColorMap();
 	}
 	
-	public KMeansClusteringQuantizer(int[] pixels) {
-		this(pixels, new Parameters());
-	}
-	
 	// --------------------------------------------------------------
 
-	private ColorCluster[] makeClusters(int[] pixels) {
-		int Kmax = Math.min(pixels.length, params.maxColors);
-		int[] samples = getColorSamples(pixels, Kmax);
-		int k = Math.min(samples.length, Kmax);
-		ColorCluster[] cls = new ColorCluster[k];	// create an array of K clusters
-		for (int i = 0; i < k; i++) {
-			cls[i] = new ColorCluster(samples[i]); // initialize cluster center
-		}
-		return cls; 
-	}
-	
-	/**
-	 * We randomly pick k distinct colors from the original image
-	 * pixels.
-	 * @param pixels
-	 * @param k
-	 * @return
-	 */
-	private int[] getColorSamples(int[] pixels, int k) {
-		switch (params.samplMethod) {
+	private ColorCluster[] initClusters(int[] pixels, int K, InitialClusterMethod method) {
+		int[] samples = null;
+		switch (method) {
 		case Random:
-			return getRandomColors(pixels, k);
-		case Most_Frequent:
-			return getMostFrequentColors(pixels, k);
-		default:
-			return null;
+			samples = getRandomColors(pixels, K);
+		case MostFrequent:
+			samples = getMostFrequentColors(pixels, K);
 		}
+		int k = Math.min(samples.length, K);
+		ColorCluster[] clstrs = new ColorCluster[k];	// create an array of k clusters
+		for (int i = 0; i < k; i++) {
+			clstrs[i] = new ColorCluster(samples[i]);	// initialize cluster center
+		}
+		return clstrs; 
 	}
 
 	/**
 	 * Returns (maximally) k colors randomly selected from the given pixel data.
-	 * 
-	 * @param pixels
-	 * @param k
-	 * @return
 	 */
 	private int[] getRandomColors(int[] pixels, int k) {
 		ColorHistogram colorHist = new ColorHistogram(pixels);
@@ -130,24 +114,21 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 			return colors;
 		}
 		else {
-			shuffle(colors);	// randomly permute colors
+			shuffle(colors, this.random);	// randomly permute colors
 			return Arrays.copyOf(colors, k);
 		}
 	}
 	
-	// see https://stackoverflow.com/questions/1519736/random-shuffling-of-an-array
-	private static void shuffle(int[] array) {
-		shuffle(array, 0);
-	}
-	
-	private static void shuffle(int[] array, long seed) {
-		int index, temp;
-		Random random = (seed == 0) ? new Random() : new Random(seed);
-		for (int i = array.length - 1; i > 0; i--) {
-			index = random.nextInt(i + 1);
-			temp = array[index];
-			array[index] = array[i];
-			array[i] = temp;
+	/**
+	 * Perform random permutation on the specified array.
+	 * https://stackoverflow.com/questions/1519736/random-shuffling-of-an-array
+	 */
+	private void shuffle(int[] arr, Random random) {
+		for (int i = arr.length - 1; i > 0; i--) {
+			int idx = random.nextInt(i + 1);
+			int tmp = arr[idx];
+			arr[idx] = arr[i];
+			arr[i] = tmp;
 		}
 	}
 	
@@ -155,10 +136,6 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 	 * Returns the (maximally) k most frequent color values in the given pixel data.
 	 * If fewer than k colors are available, these are returned, i.e., the resulting
 	 * array may have less than k elements.
-	 * 
-	 * @param pixels the pixel data (aRGB-encoded int values)
-	 * @param k the required number of most frequent colors
-	 * @return an array of the most frequent color values (aRGB-encoded int values)
 	 */
 	private int[] getMostFrequentColors(int[] pixels, int k) {
 		ColorHistogram colorHist = new ColorHistogram(pixels, true);	// sorts color bins by frequency
@@ -171,11 +148,11 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 		}
 	}
 	
-	private double cluster(int[] pixels) {
+	private double doCluster(int[] pixels, int maxIterations) {
 		int changed = Integer.MAX_VALUE;
 		double distSum = Double.POSITIVE_INFINITY;
 		int j = 0;
-		while (changed > 0 && j < params.maxIterations) {
+		while (changed > 0 && j < maxIterations) {
 			distSum = assignSamples(pixels);
 			changed = updateClusters();
 			j++;
@@ -196,7 +173,7 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 	private int updateClusters() {
 		int changed = 0;
 		for (ColorCluster c : clusters) {
-			changed = changed + c.upDate();
+			changed = changed + c.update();
 		}
 		return changed;
 	}
@@ -205,7 +182,7 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 		double minDist = Double.POSITIVE_INFINITY;
 		ColorCluster closest = null;
 		for (ColorCluster c : clusters) {
-			double d = c.getDistance(p);
+			double d = c.getSquaredDistance(p);
 			if (d < minDist) {
 				minDist = d;
 				closest = c;
@@ -244,11 +221,11 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 	}
 	
 	/**
-	 * Returns the total error of this clustering, calculated as the sum of
+	 * Returns the final clustering error, calculated as the sum of
 	 * the squared distances of the color samples to the associated cluster
-	 * center. This calculation is performed during the final iteration.
+	 * centers. This calculation is performed during the final iteration.
 	 * 
-	 * @return The sum of the squared distances between samples and cluster centers.
+	 * @return the final clustering error
 	 */
 	public double getTotalError() {
 		return totalError;
@@ -256,10 +233,12 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 
 	// ------------------------------------------------------------------------
 	
-	private class ColorCluster {
+	/**
+	 * This inner class represents a color cluster.	*/
+	private static class ColorCluster {
 		private int sR, sG, sB;				// RGB sums of contained pixels
-		private int pCounter;				// pixel counter, used during pixel assignment
-		private int population = 0;			// number of contained pixels
+		private int pcount;					// pixel counter, used during pixel assignment
+		private int population = 0;			// number of pixels contained in this cluster
 		private double cR, cG, cB;			// center of this cluster
 
 		private ColorCluster(int p) {
@@ -278,11 +257,11 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 			return (population == 0);
 		}
 
-		private void reset() {	// Used at the start of the pixel assignment.
+		private void reset() {	// reset sums, used at the start of the pixel assignment.
 			sR = 0;
 			sG = 0;
 			sB = 0;
-			pCounter = 0;
+			pcount = 0;
 		}
 		
 		private void addPixel(int p) {
@@ -290,56 +269,52 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 			sR += rgb[0];
 			sG += rgb[1];
 			sB += rgb[2];
-			pCounter = pCounter + 1;
+			pcount = pcount + 1;
 		}
 		
 		/**
-		 * This method is invoked after all samples have been assigned.
-		 * It updates the cluster's center and returns true if its
-		 * population changed from the previous clustering.
-		 * 
-		 * @return true if the population of this cluster has changed.
+		 * This method is invoked after all samples have been assigned to clusters. It
+		 * updates the cluster's center and returns by how much its population changed from
+		 * the previous clustering (absolute count).
+		 * @return the change in cluster population from the previous clustering
 		 */
-		private int upDate() {
-			if (pCounter > 0) {
-				double scale = 1.0 / pCounter;
+		private int update() {
+			if (pcount > 0) {
+				double scale = 1.0 / pcount;
 				cR = sR * scale;
 				cG = sG * scale;
 				cB = sB * scale;
 			}
-			int changed = Math.abs(pCounter - population);	// change in cluster population
-			population = pCounter;
+			int changeCount = Math.abs(pcount - population);	// change in cluster population
+			population = pcount;
 			reset();
-			return changed;	
+			return changeCount;	
 		}
 		
 		/**
 		 * Calculates and returns the squared Euclidean distance between the color p
 		 * and this cluster's center in RGB space.
 		 * @param p Color sample
-		 * @return Squared distance to the cluster center
+		 * @return squared distance to the cluster center
 		 */
-		private double getDistance(int p) {
+		private double getSquaredDistance(int p) {
 			int[] rgb = RgbUtils.intToRgb(p);
-			final double dR = rgb[0] - cR;
-			final double dG = rgb[1] - cG;
-			final double dB = rgb[2] - cB;
-			return dR * dR + dG * dG + dB * dB;
+			return sqr(rgb[0] - cR) + sqr(rgb[1] - cG) + sqr(rgb[2] - cB);
 		}
 		
 		@Override
 		public String toString() {
-			return String.format(Locale.US, ColorCluster.class.getSimpleName() +
-					": center=(%.1f,%.1f,%.1f), population=%d", cR, cG, cB, population);
+			return String.format(Locale.US, this.getClass().getSimpleName() +
+					": ctr=(%.1f,%.1f,%.1f), pop=%d", cR, cG, cB, population);
 		}
 	}
 	
 	// ----------------------------------------------------------------------
 	
 	public static void main(String[] args) {
-//		String path = "D:/svn-book/Book/img/ch-color-images/alps-01s.png";
+		String path = "D:/svn-book/Book/img/ch-color-images/alps-01s.png";
 //		String path = "D:/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg";
-		String path = "C:/_SVN/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg";
+//		String path = "C:/_SVN/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg";
 		
 //		String path = "D:/svn-book/Book/img/ch-color-images/single-color.png";
 //		String path = "D:/svn-book/Book/img/ch-color-images/two-colors.png";
@@ -359,9 +334,7 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 		ImageProcessor ip = im.getProcessor();
 		ColorProcessor cp = ip.convertToColorProcessor();
 		
-		Parameters params = new Parameters();
-		params.maxColors = K;
-		ColorQuantizer quantizer = new KMeansClusteringQuantizer(cp, params);
+		ColorQuantizer quantizer = new KMeansClusteringQuantizer((int[])cp.getPixels(), K, InitialClusterMethod.Random, 500);
 		quantizer.listColorMap();
 		
 		System.out.println("quantizing image");

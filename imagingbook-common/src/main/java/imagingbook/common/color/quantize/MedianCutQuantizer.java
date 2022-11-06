@@ -16,7 +16,6 @@ import java.util.Comparator;
 import java.util.Locale;
 import java.util.PriorityQueue;
 
-import ij.process.ColorProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.statistics.ColorHistogram;
 
@@ -56,21 +55,8 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	// -------------------------------------------------------------------------------
 	
 	/**
-	 * Constructor for {@link ColorProcessor}. Creates a new
-	 * {@link MedianCutQuantizer} with up to K colors, but never more than the
-	 * number of colors found in the supplied image.
-	 * 
-	 * @param ip an image of type {@link ColorProcessor}
-	 * @param K  the desired number of colors (1 or more)
-	 */
-	public MedianCutQuantizer(ColorProcessor ip, int K) {
-		this((int[]) ip.getPixels(), K);
-	}
-	
-	/**
-	 * Constructor for {@code int} pixel values. Creates a new
-	 * {@link MedianCutQuantizer} with up to K colors, but never more than the
-	 * number of colors found in the supplied image.
+	 * Constructor, creates a new {@link MedianCutQuantizer} with up to K colors,
+	 * but never more than the number of colors found in the supplied pixel data.
 	 * 
 	 * @param pixels an image as a aRGB-encoded int array
 	 * @param K      the desired number of colors (1 or more)

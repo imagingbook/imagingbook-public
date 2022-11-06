@@ -329,7 +329,7 @@ public class OctreeQuantizerTest {
 	
 	private void runTest(ImageResource ir, int K, int Kact, float[][] colormap) {
 		ColorProcessor cp = (ColorProcessor) ir.getImage().getProcessor();
-		ColorQuantizer quantizer = new OctreeQuantizer(cp, K);
+		ColorQuantizer quantizer = new OctreeQuantizer((int[])cp.getPixels(), K);
 		assertEquals(Kact, quantizer.getColorCount());
 		float[][] cm = quantizer.getColorMap();
 		
