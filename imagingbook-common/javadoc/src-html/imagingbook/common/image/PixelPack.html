@@ -902,29 +902,30 @@
 <span class="sourceLineNo">892</span><a id="line.892">                float[] R = this.data[0];</a>
 <span class="sourceLineNo">893</span><a id="line.893">                float[] G = this.data[1];</a>
 <span class="sourceLineNo">894</span><a id="line.894">                float[] B = this.data[2];</a>
-<span class="sourceLineNo">895</span><a id="line.895">                for (int i = 0; i &lt; pixels.length; i++) {</a>
-<span class="sourceLineNo">896</span><a id="line.896">                        int r = clipByte(Math.round(scale * R[i]));</a>
-<span class="sourceLineNo">897</span><a id="line.897">                        int g = clipByte(Math.round(scale * G[i]));</a>
-<span class="sourceLineNo">898</span><a id="line.898">                        int b = clipByte(Math.round(scale * B[i]));</a>
-<span class="sourceLineNo">899</span><a id="line.899">                        pixels[i] = RgbUtils.encodeRgbToInt(r, g, b);</a>
-<span class="sourceLineNo">900</span><a id="line.900">                }</a>
-<span class="sourceLineNo">901</span><a id="line.901">        }</a>
-<span class="sourceLineNo">902</span><a id="line.902">        </a>
-<span class="sourceLineNo">903</span><a id="line.903">        // --------------------------------------------------------------------------</a>
-<span class="sourceLineNo">904</span><a id="line.904">        </a>
-<span class="sourceLineNo">905</span><a id="line.905">        private int clipByte(int val) {</a>
-<span class="sourceLineNo">906</span><a id="line.906">                if (val &lt; 0) return 0;</a>
-<span class="sourceLineNo">907</span><a id="line.907">                if (val &gt; 255) return 255;</a>
-<span class="sourceLineNo">908</span><a id="line.908">                return val;</a>
-<span class="sourceLineNo">909</span><a id="line.909">        }</a>
-<span class="sourceLineNo">910</span><a id="line.910">        </a>
-<span class="sourceLineNo">911</span><a id="line.911">        private int clipShort(int val) {</a>
-<span class="sourceLineNo">912</span><a id="line.912">                if (val &lt; 0) return 0;</a>
-<span class="sourceLineNo">913</span><a id="line.913">                if (val &gt; 65535) return 65535;</a>
-<span class="sourceLineNo">914</span><a id="line.914">                return val;</a>
-<span class="sourceLineNo">915</span><a id="line.915">        }</a>
-<span class="sourceLineNo">916</span><a id="line.916"></a>
-<span class="sourceLineNo">917</span><a id="line.917">}</a>
+<span class="sourceLineNo">895</span><a id="line.895">                int[] rgb = new int[3];</a>
+<span class="sourceLineNo">896</span><a id="line.896">                for (int i = 0; i &lt; pixels.length; i++) {</a>
+<span class="sourceLineNo">897</span><a id="line.897">                        rgb[0] = clipByte(Math.round(scale * R[i]));</a>
+<span class="sourceLineNo">898</span><a id="line.898">                        rgb[1] = clipByte(Math.round(scale * G[i]));</a>
+<span class="sourceLineNo">899</span><a id="line.899">                        rgb[2] = clipByte(Math.round(scale * B[i]));</a>
+<span class="sourceLineNo">900</span><a id="line.900">                        pixels[i] = RgbUtils.encodeRgbToInt(rgb);</a>
+<span class="sourceLineNo">901</span><a id="line.901">                }</a>
+<span class="sourceLineNo">902</span><a id="line.902">        }</a>
+<span class="sourceLineNo">903</span><a id="line.903">        </a>
+<span class="sourceLineNo">904</span><a id="line.904">        // --------------------------------------------------------------------------</a>
+<span class="sourceLineNo">905</span><a id="line.905">        </a>
+<span class="sourceLineNo">906</span><a id="line.906">        private int clipByte(int val) {</a>
+<span class="sourceLineNo">907</span><a id="line.907">                if (val &lt; 0) return 0;</a>
+<span class="sourceLineNo">908</span><a id="line.908">                if (val &gt; 255) return 255;</a>
+<span class="sourceLineNo">909</span><a id="line.909">                return val;</a>
+<span class="sourceLineNo">910</span><a id="line.910">        }</a>
+<span class="sourceLineNo">911</span><a id="line.911">        </a>
+<span class="sourceLineNo">912</span><a id="line.912">        private int clipShort(int val) {</a>
+<span class="sourceLineNo">913</span><a id="line.913">                if (val &lt; 0) return 0;</a>
+<span class="sourceLineNo">914</span><a id="line.914">                if (val &gt; 65535) return 65535;</a>
+<span class="sourceLineNo">915</span><a id="line.915">                return val;</a>
+<span class="sourceLineNo">916</span><a id="line.916">        }</a>
+<span class="sourceLineNo">917</span><a id="line.917"></a>
+<span class="sourceLineNo">918</span><a id="line.918">}</a>
 
 
 

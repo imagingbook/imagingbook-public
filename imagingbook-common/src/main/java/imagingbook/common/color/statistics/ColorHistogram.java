@@ -27,13 +27,13 @@ public class ColorHistogram {
 	
 	/**
 	 * Creates a color histogram instance from the supplied sequence
-	 * of color pixel values (assumed to be ARGB-encoded integers).
+	 * of color pixel values (assumed to be aRGB-encoded integers).
 	 * The original pixel values are not modified.
 	 * 
-	 * @param pixelsOrig
+	 * @param pixels aRGB-encoded integer pixel data 
 	 */
-	public ColorHistogram(int[] pixelsOrig) {
-		this(pixelsOrig, false);
+	public ColorHistogram(int[] pixels) {
+		this(pixels, false);
 	}
 	
 	/**

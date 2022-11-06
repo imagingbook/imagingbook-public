@@ -22,124 +22,140 @@
 <span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.ij.IjProgressBarMonitor;</a>
 <span class="sourceLineNo">013</span><a id="line.13"></a>
 <span class="sourceLineNo">014</span><a id="line.14">/**</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * This class represents a "progress monitor". This is a simple</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * {@link Thread} that queries the attached target task </a>
-<span class="sourceLineNo">017</span><a id="line.17"> * (implementing {@link ProgressReporter}) and calls its </a>
-<span class="sourceLineNo">018</span><a id="line.18"> * {@link #handleProgress(double, long)} method at regular intervals.</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * </a>
-<span class="sourceLineNo">020</span><a id="line.20"> * {@link ProgressMonitor} implements the {@link AutoCloseable} and thus can</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * (and should) be used in a try-with-resources context, e.g.,</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * &lt;pre&gt;</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * ProgressReporter task = ....; // the task to be monitored</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * try (ProgressMonitor m = new MyProgressMonitor(task)) {</a>
-<span class="sourceLineNo">025</span><a id="line.25"> *     // run task ...</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * Otherwise, if not used in a auto-start/close mode, the methods {@link #start()} </a>
-<span class="sourceLineNo">028</span><a id="line.28"> * and {@link #close()} should be used to "manually" start and terminate</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * monitoring.</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * See {@link GenericFilter} and {@link IjProgressBarMonitor} for an example.</a>
-<span class="sourceLineNo">031</span><a id="line.31"> */</a>
-<span class="sourceLineNo">032</span><a id="line.32">public abstract class ProgressMonitor extends Thread implements AutoCloseable {</a>
-<span class="sourceLineNo">033</span><a id="line.33">        </a>
-<span class="sourceLineNo">034</span><a id="line.34">        /** The default wait time between successive progress queries. */</a>
-<span class="sourceLineNo">035</span><a id="line.35">        public static final int DefaultWaitTime = 250; // ms</a>
-<span class="sourceLineNo">036</span><a id="line.36">        </a>
-<span class="sourceLineNo">037</span><a id="line.37">        private int waitTime = DefaultWaitTime;</a>
-<span class="sourceLineNo">038</span><a id="line.38">        private final ProgressReporter target;</a>
-<span class="sourceLineNo">039</span><a id="line.39"></a>
-<span class="sourceLineNo">040</span><a id="line.40">        private boolean running;</a>
-<span class="sourceLineNo">041</span><a id="line.41">        private long startTime, endTime;</a>
-<span class="sourceLineNo">042</span><a id="line.42">        </a>
-<span class="sourceLineNo">043</span><a id="line.43">        /**</a>
-<span class="sourceLineNo">044</span><a id="line.44">         * Constructor, starts monitoring immediately.</a>
-<span class="sourceLineNo">045</span><a id="line.45">         * The target object's {@link ProgressReporter#getProgress()}</a>
-<span class="sourceLineNo">046</span><a id="line.46">         * method is called it regular intervals.</a>
-<span class="sourceLineNo">047</span><a id="line.47">         * </a>
-<span class="sourceLineNo">048</span><a id="line.48">         * @param target the object (task) to be monitored</a>
-<span class="sourceLineNo">049</span><a id="line.49">         */</a>
-<span class="sourceLineNo">050</span><a id="line.50">        public ProgressMonitor(ProgressReporter target) {</a>
-<span class="sourceLineNo">051</span><a id="line.51">                this(target, true);</a>
-<span class="sourceLineNo">052</span><a id="line.52">        }</a>
-<span class="sourceLineNo">053</span><a id="line.53">        </a>
-<span class="sourceLineNo">054</span><a id="line.54">        /**</a>
-<span class="sourceLineNo">055</span><a id="line.55">         * Constructor, optionally starts monitoring immediately or waits</a>
-<span class="sourceLineNo">056</span><a id="line.56">         * for its {@link #start()} method to be called (which starts the </a>
-<span class="sourceLineNo">057</span><a id="line.57">         * associated thread).</a>
-<span class="sourceLineNo">058</span><a id="line.58">         * The target object's {@link ProgressReporter#getProgress()}</a>
-<span class="sourceLineNo">059</span><a id="line.59">         * method is called it regular intervals.</a>
-<span class="sourceLineNo">060</span><a id="line.60">         * </a>
-<span class="sourceLineNo">061</span><a id="line.61">         * @param target the object (task) to be monitored</a>
-<span class="sourceLineNo">062</span><a id="line.62">         * @param autoStart starts immediately if true</a>
-<span class="sourceLineNo">063</span><a id="line.63">         */</a>
-<span class="sourceLineNo">064</span><a id="line.64">        public ProgressMonitor(ProgressReporter target, boolean autoStart) {</a>
-<span class="sourceLineNo">065</span><a id="line.65">                if (target == null)</a>
-<span class="sourceLineNo">066</span><a id="line.66">                        throw new IllegalArgumentException("null target instance!");</a>
-<span class="sourceLineNo">067</span><a id="line.67">                this.target = target;</a>
-<span class="sourceLineNo">068</span><a id="line.68">                if (autoStart) {</a>
-<span class="sourceLineNo">069</span><a id="line.69">                        start();</a>
-<span class="sourceLineNo">070</span><a id="line.70">                }</a>
-<span class="sourceLineNo">071</span><a id="line.71">        }</a>
-<span class="sourceLineNo">072</span><a id="line.72">        </a>
-<span class="sourceLineNo">073</span><a id="line.73">        /**</a>
-<span class="sourceLineNo">074</span><a id="line.74">         * The time interval between progress queries can be set with this method.</a>
-<span class="sourceLineNo">075</span><a id="line.75">         * See also {@link #DefaultWaitTime}.</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * &lt;p&gt;</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * This class represents a "progress monitor". This is a simple {@link Thread}</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * that queries the attached target task (implementing {@link ProgressReporter})</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * and calls its {@link #handleProgress(double, long)} method at regular</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * intervals. {@link ProgressMonitor} implements the {@link AutoCloseable} and</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * thus can (and should) be used in a try-with-resources context, e.g.,</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * </a>
+<span class="sourceLineNo">023</span><a id="line.23"> * &lt;pre&gt;</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * ProgressReporter task = ....; // the activity to be monitored</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * try (ProgressMonitor m = new ConsoleProgressMonitor(task)) {</a>
+<span class="sourceLineNo">026</span><a id="line.26"> *     // run task ...</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * }</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * &lt;/pre&gt;</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * </a>
+<span class="sourceLineNo">030</span><a id="line.30"> * &lt;p&gt;</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * Otherwise, if not used in a auto-start/close mode, the methods</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * {@link #start()} and {@link #close()} should be used to "manually" start and</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * terminate monitoring. See {@link ProgressMonitorExample},</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * {@link GenericFilter}, {@link ConsoleProgressMonitor} and {@link IjProgressBarMonitor} </a>
+<span class="sourceLineNo">035</span><a id="line.35"> * for examples.</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * </a>
+<span class="sourceLineNo">038</span><a id="line.38"> * &lt;p&gt;</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * Note that this mechanism cannot be used to monitor activities inside</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * a constructor, since no reference to the monitored instance is available</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * before the constructor is finished.</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * </a>
+<span class="sourceLineNo">044</span><a id="line.44"> * @see ProgressReporter</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * @see ProgressMonitorExample</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * @see ConsoleProgressMonitor</a>
+<span class="sourceLineNo">047</span><a id="line.47"> */</a>
+<span class="sourceLineNo">048</span><a id="line.48">public abstract class ProgressMonitor extends Thread implements AutoCloseable {</a>
+<span class="sourceLineNo">049</span><a id="line.49">        </a>
+<span class="sourceLineNo">050</span><a id="line.50">        /** The default wait time between successive progress queries. */</a>
+<span class="sourceLineNo">051</span><a id="line.51">        public static final int DefaultWaitTime = 250; // ms</a>
+<span class="sourceLineNo">052</span><a id="line.52">        </a>
+<span class="sourceLineNo">053</span><a id="line.53">        private int waitTime = DefaultWaitTime;</a>
+<span class="sourceLineNo">054</span><a id="line.54">        private final ProgressReporter target;</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">        private boolean running;</a>
+<span class="sourceLineNo">057</span><a id="line.57">        private long startTime, endTime;</a>
+<span class="sourceLineNo">058</span><a id="line.58">        </a>
+<span class="sourceLineNo">059</span><a id="line.59">        /**</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * Constructor, starts monitoring immediately.</a>
+<span class="sourceLineNo">061</span><a id="line.61">         * The target object's {@link ProgressReporter#getProgress()}</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * method is called it regular intervals.</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * </a>
+<span class="sourceLineNo">064</span><a id="line.64">         * @param target the object (task) to be monitored</a>
+<span class="sourceLineNo">065</span><a id="line.65">         */</a>
+<span class="sourceLineNo">066</span><a id="line.66">        public ProgressMonitor(ProgressReporter target) {</a>
+<span class="sourceLineNo">067</span><a id="line.67">                this(target, true);</a>
+<span class="sourceLineNo">068</span><a id="line.68">        }</a>
+<span class="sourceLineNo">069</span><a id="line.69">        </a>
+<span class="sourceLineNo">070</span><a id="line.70">        /**</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * Constructor, optionally starts monitoring immediately or waits</a>
+<span class="sourceLineNo">072</span><a id="line.72">         * for its {@link #start()} method to be called (which starts the </a>
+<span class="sourceLineNo">073</span><a id="line.73">         * associated thread).</a>
+<span class="sourceLineNo">074</span><a id="line.74">         * The target object's {@link ProgressReporter#getProgress()}</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * method is called it regular intervals.</a>
 <span class="sourceLineNo">076</span><a id="line.76">         * </a>
-<span class="sourceLineNo">077</span><a id="line.77">         * @param waitTime the time interval (in milliseconds)</a>
-<span class="sourceLineNo">078</span><a id="line.78">         */</a>
-<span class="sourceLineNo">079</span><a id="line.79">        public void setWaitTime(int waitTime) {</a>
-<span class="sourceLineNo">080</span><a id="line.80">                this.waitTime = waitTime;</a>
-<span class="sourceLineNo">081</span><a id="line.81">        }</a>
-<span class="sourceLineNo">082</span><a id="line.82">        </a>
-<span class="sourceLineNo">083</span><a id="line.83">        /**</a>
-<span class="sourceLineNo">084</span><a id="line.84">         * Called periodically by the {@link ProgressMonitor} thread</a>
-<span class="sourceLineNo">085</span><a id="line.85">         * supplying the current progress value (degree of completion).</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * It is up to the implementation what action should be performed,</a>
-<span class="sourceLineNo">087</span><a id="line.87">         * e.g., display the current progress graphically </a>
-<span class="sourceLineNo">088</span><a id="line.88">         * (see e.g. {@link IjProgressBarMonitor}).</a>
-<span class="sourceLineNo">089</span><a id="line.89">         * </a>
-<span class="sourceLineNo">090</span><a id="line.90">         * @param progress the current progress value (degree of completion) in [0,1)</a>
-<span class="sourceLineNo">091</span><a id="line.91">         * @param elapsedNanoTime the time elapsed since this progress monitor was started (in nanoseconds)</a>
-<span class="sourceLineNo">092</span><a id="line.92">         */</a>
-<span class="sourceLineNo">093</span><a id="line.93">        public abstract void handleProgress(double progress, long elapsedNanoTime);</a>
-<span class="sourceLineNo">094</span><a id="line.94">        </a>
-<span class="sourceLineNo">095</span><a id="line.95">        // --------------------------------------------------------</a>
-<span class="sourceLineNo">096</span><a id="line.96"></a>
-<span class="sourceLineNo">097</span><a id="line.97">        @Override</a>
-<span class="sourceLineNo">098</span><a id="line.98">        public void run() {</a>
-<span class="sourceLineNo">099</span><a id="line.99">                handleProgress(0, 0);</a>
-<span class="sourceLineNo">100</span><a id="line.100">                this.startTime = System.nanoTime();</a>
-<span class="sourceLineNo">101</span><a id="line.101">                running = true;</a>
-<span class="sourceLineNo">102</span><a id="line.102">                do {</a>
-<span class="sourceLineNo">103</span><a id="line.103">                        try {</a>
-<span class="sourceLineNo">104</span><a id="line.104">                                Thread.sleep(waitTime);</a>
-<span class="sourceLineNo">105</span><a id="line.105">                        } catch (InterruptedException e) {break;}</a>
-<span class="sourceLineNo">106</span><a id="line.106">                        handleProgress(target.getProgress(), System.nanoTime() - startTime);</a>
-<span class="sourceLineNo">107</span><a id="line.107">                } while(running);</a>
-<span class="sourceLineNo">108</span><a id="line.108">                this.endTime = System.nanoTime();</a>
-<span class="sourceLineNo">109</span><a id="line.109">        }</a>
+<span class="sourceLineNo">077</span><a id="line.77">         * @param target the object (task) to be monitored</a>
+<span class="sourceLineNo">078</span><a id="line.78">         * @param autoStart starts immediately if true</a>
+<span class="sourceLineNo">079</span><a id="line.79">         */</a>
+<span class="sourceLineNo">080</span><a id="line.80">        public ProgressMonitor(ProgressReporter target, boolean autoStart) {</a>
+<span class="sourceLineNo">081</span><a id="line.81">                if (target == null)</a>
+<span class="sourceLineNo">082</span><a id="line.82">                        throw new IllegalArgumentException("null target instance!");</a>
+<span class="sourceLineNo">083</span><a id="line.83">                this.target = target;</a>
+<span class="sourceLineNo">084</span><a id="line.84">                if (autoStart) {</a>
+<span class="sourceLineNo">085</span><a id="line.85">                        start();</a>
+<span class="sourceLineNo">086</span><a id="line.86">                }</a>
+<span class="sourceLineNo">087</span><a id="line.87">        }</a>
+<span class="sourceLineNo">088</span><a id="line.88">        </a>
+<span class="sourceLineNo">089</span><a id="line.89">        /**</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * The time interval between progress queries can be set with this method.</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * See also {@link #DefaultWaitTime}.</a>
+<span class="sourceLineNo">092</span><a id="line.92">         * </a>
+<span class="sourceLineNo">093</span><a id="line.93">         * @param waitTime the time interval (in milliseconds)</a>
+<span class="sourceLineNo">094</span><a id="line.94">         */</a>
+<span class="sourceLineNo">095</span><a id="line.95">        public void setWaitTime(int waitTime) {</a>
+<span class="sourceLineNo">096</span><a id="line.96">                this.waitTime = waitTime;</a>
+<span class="sourceLineNo">097</span><a id="line.97">        }</a>
+<span class="sourceLineNo">098</span><a id="line.98">        </a>
+<span class="sourceLineNo">099</span><a id="line.99">        /**</a>
+<span class="sourceLineNo">100</span><a id="line.100">         * Called periodically by the {@link ProgressMonitor} thread</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * supplying the current progress value (degree of completion).</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * It is up to the implementation what action should be performed,</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * e.g., display the current progress graphically </a>
+<span class="sourceLineNo">104</span><a id="line.104">         * (see e.g. {@link IjProgressBarMonitor}).</a>
+<span class="sourceLineNo">105</span><a id="line.105">         * </a>
+<span class="sourceLineNo">106</span><a id="line.106">         * @param progress the current progress value (degree of completion) in [0,1)</a>
+<span class="sourceLineNo">107</span><a id="line.107">         * @param elapsedNanoTime the time elapsed since this progress monitor was started (in nanoseconds)</a>
+<span class="sourceLineNo">108</span><a id="line.108">         */</a>
+<span class="sourceLineNo">109</span><a id="line.109">        public abstract void handleProgress(double progress, long elapsedNanoTime);</a>
 <span class="sourceLineNo">110</span><a id="line.110">        </a>
-<span class="sourceLineNo">111</span><a id="line.111">        @Override</a>
-<span class="sourceLineNo">112</span><a id="line.112">        public void close() {</a>
-<span class="sourceLineNo">113</span><a id="line.113">                running = false;</a>
-<span class="sourceLineNo">114</span><a id="line.114">        this.interrupt();</a>
-<span class="sourceLineNo">115</span><a id="line.115">        }</a>
-<span class="sourceLineNo">116</span><a id="line.116">        </a>
-<span class="sourceLineNo">117</span><a id="line.117">        // --------------------------------------------------------</a>
-<span class="sourceLineNo">118</span><a id="line.118">        </a>
-<span class="sourceLineNo">119</span><a id="line.119">        /**</a>
-<span class="sourceLineNo">120</span><a id="line.120">         * Returns the time elapsed since monitoring started (in seconds).</a>
-<span class="sourceLineNo">121</span><a id="line.121">         * @return the elapsed time in seconds</a>
-<span class="sourceLineNo">122</span><a id="line.122">         */</a>
-<span class="sourceLineNo">123</span><a id="line.123">        public double getElapsedTime() { // result is in seconds</a>
-<span class="sourceLineNo">124</span><a id="line.124">                if (running) {</a>
-<span class="sourceLineNo">125</span><a id="line.125">                        return  (System.nanoTime() - startTime) / 1.0e9d;</a>
-<span class="sourceLineNo">126</span><a id="line.126">                }</a>
-<span class="sourceLineNo">127</span><a id="line.127">                else {</a>
-<span class="sourceLineNo">128</span><a id="line.128">                        return (endTime - startTime) / 1.0e9d;</a>
-<span class="sourceLineNo">129</span><a id="line.129">                }</a>
-<span class="sourceLineNo">130</span><a id="line.130">        }</a>
-<span class="sourceLineNo">131</span><a id="line.131"></a>
-<span class="sourceLineNo">132</span><a id="line.132">}</a>
+<span class="sourceLineNo">111</span><a id="line.111">        // --------------------------------------------------------</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">        @Override</a>
+<span class="sourceLineNo">114</span><a id="line.114">        public void run() {</a>
+<span class="sourceLineNo">115</span><a id="line.115">                handleProgress(0, 0);</a>
+<span class="sourceLineNo">116</span><a id="line.116">                this.startTime = System.nanoTime();</a>
+<span class="sourceLineNo">117</span><a id="line.117">                running = true;</a>
+<span class="sourceLineNo">118</span><a id="line.118">                do {</a>
+<span class="sourceLineNo">119</span><a id="line.119">                        try {</a>
+<span class="sourceLineNo">120</span><a id="line.120">                                Thread.sleep(waitTime);</a>
+<span class="sourceLineNo">121</span><a id="line.121">                        } catch (InterruptedException e) {break;}</a>
+<span class="sourceLineNo">122</span><a id="line.122">                        handleProgress(target.getProgress(), System.nanoTime() - startTime);</a>
+<span class="sourceLineNo">123</span><a id="line.123">                } while(running);</a>
+<span class="sourceLineNo">124</span><a id="line.124">                this.endTime = System.nanoTime();</a>
+<span class="sourceLineNo">125</span><a id="line.125">        }</a>
+<span class="sourceLineNo">126</span><a id="line.126">        </a>
+<span class="sourceLineNo">127</span><a id="line.127">        @Override</a>
+<span class="sourceLineNo">128</span><a id="line.128">        public void close() {</a>
+<span class="sourceLineNo">129</span><a id="line.129">                running = false;</a>
+<span class="sourceLineNo">130</span><a id="line.130">        this.interrupt();</a>
+<span class="sourceLineNo">131</span><a id="line.131">        }</a>
+<span class="sourceLineNo">132</span><a id="line.132">        </a>
+<span class="sourceLineNo">133</span><a id="line.133">        // --------------------------------------------------------</a>
+<span class="sourceLineNo">134</span><a id="line.134">        </a>
+<span class="sourceLineNo">135</span><a id="line.135">        /**</a>
+<span class="sourceLineNo">136</span><a id="line.136">         * Returns the time elapsed since monitoring started (in seconds).</a>
+<span class="sourceLineNo">137</span><a id="line.137">         * @return the elapsed time in seconds</a>
+<span class="sourceLineNo">138</span><a id="line.138">         */</a>
+<span class="sourceLineNo">139</span><a id="line.139">        public double getElapsedTime() { // result is in seconds</a>
+<span class="sourceLineNo">140</span><a id="line.140">                if (running) {</a>
+<span class="sourceLineNo">141</span><a id="line.141">                        return  (System.nanoTime() - startTime) / 1.0e9d;</a>
+<span class="sourceLineNo">142</span><a id="line.142">                }</a>
+<span class="sourceLineNo">143</span><a id="line.143">                else {</a>
+<span class="sourceLineNo">144</span><a id="line.144">                        return (endTime - startTime) / 1.0e9d;</a>
+<span class="sourceLineNo">145</span><a id="line.145">                }</a>
+<span class="sourceLineNo">146</span><a id="line.146">        }</a>
+<span class="sourceLineNo">147</span><a id="line.147"></a>
+<span class="sourceLineNo">148</span><a id="line.148">}</a>
 
 
 

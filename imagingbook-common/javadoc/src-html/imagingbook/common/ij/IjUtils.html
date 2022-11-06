@@ -51,108 +51,108 @@
 <span class="sourceLineNo">041</span><a id="line.41">import imagingbook.common.geometry.basic.Pnt2d.PntInt;</a>
 <span class="sourceLineNo">042</span><a id="line.42">import imagingbook.common.math.Matrix;</a>
 <span class="sourceLineNo">043</span><a id="line.43">import imagingbook.common.util.bits.BitMap;</a>
-<span class="sourceLineNo">044</span><a id="line.44">import imagingbook.core.resource.ImageResource;</a>
+<span class="sourceLineNo">044</span><a id="line.44"></a>
 <span class="sourceLineNo">045</span><a id="line.45"></a>
-<span class="sourceLineNo">046</span><a id="line.46"></a>
-<span class="sourceLineNo">047</span><a id="line.47">/**</a>
-<span class="sourceLineNo">048</span><a id="line.48"> * This class defines static utility methods adding to ImageJs functionality.</a>
-<span class="sourceLineNo">049</span><a id="line.49"> * @author WB</a>
-<span class="sourceLineNo">050</span><a id="line.50"> *</a>
-<span class="sourceLineNo">051</span><a id="line.51"> */</a>
-<span class="sourceLineNo">052</span><a id="line.52">public abstract class IjUtils {</a>
-<span class="sourceLineNo">053</span><a id="line.53">        </a>
-<span class="sourceLineNo">054</span><a id="line.54">        private IjUtils() {}</a>
-<span class="sourceLineNo">055</span><a id="line.55">        </a>
-<span class="sourceLineNo">056</span><a id="line.56">        /**</a>
-<span class="sourceLineNo">057</span><a id="line.57">         * Returns a (possibly empty) array of ImagePlus objects that are</a>
-<span class="sourceLineNo">058</span><a id="line.58">         * sorted by their titles if the 'sortByTitle' flag is set.</a>
-<span class="sourceLineNo">059</span><a id="line.59">         * </a>
-<span class="sourceLineNo">060</span><a id="line.60">         * @param sortByTitle flag, result is sorted if true.</a>
-<span class="sourceLineNo">061</span><a id="line.61">         * @return an array of currently open images.</a>
-<span class="sourceLineNo">062</span><a id="line.62">         */</a>
-<span class="sourceLineNo">063</span><a id="line.63">        public static ImagePlus[] getOpenImages(boolean sortByTitle) {</a>
-<span class="sourceLineNo">064</span><a id="line.64">                return getOpenImages(sortByTitle, null);</a>
-<span class="sourceLineNo">065</span><a id="line.65">        }</a>
-<span class="sourceLineNo">066</span><a id="line.66">        </a>
-<span class="sourceLineNo">067</span><a id="line.67"></a>
-<span class="sourceLineNo">068</span><a id="line.68">        /**</a>
-<span class="sourceLineNo">069</span><a id="line.69">         * Returns an array of strings containing the short titles</a>
-<span class="sourceLineNo">070</span><a id="line.70">         * of the images supplied.</a>
-<span class="sourceLineNo">071</span><a id="line.71">         * </a>
-<span class="sourceLineNo">072</span><a id="line.72">         * @param images array of images.</a>
-<span class="sourceLineNo">073</span><a id="line.73">         * @return array of names.</a>
-<span class="sourceLineNo">074</span><a id="line.74">         */</a>
-<span class="sourceLineNo">075</span><a id="line.75">        public static String[] getImageShortTitles(ImagePlus[] images) {</a>
-<span class="sourceLineNo">076</span><a id="line.76">                String[] imageNames = new String[images.length];</a>
-<span class="sourceLineNo">077</span><a id="line.77">                for (int i = 0; i &lt; images.length; i++) {</a>
-<span class="sourceLineNo">078</span><a id="line.78">                        imageNames[i] = images[i].getShortTitle();</a>
-<span class="sourceLineNo">079</span><a id="line.79">                }</a>
-<span class="sourceLineNo">080</span><a id="line.80">                return imageNames;</a>
-<span class="sourceLineNo">081</span><a id="line.81">        }</a>
-<span class="sourceLineNo">082</span><a id="line.82">        </a>
-<span class="sourceLineNo">083</span><a id="line.83">        /**</a>
-<span class="sourceLineNo">084</span><a id="line.84">         * Opens a dialog to let the user select one of the currently open images.</a>
-<span class="sourceLineNo">085</span><a id="line.85">         * @param title string to show in the dialog</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * @return An ImagePlus object, use the getProcessor method to obtain the associated ImageProcessor</a>
-<span class="sourceLineNo">087</span><a id="line.87">         */</a>
-<span class="sourceLineNo">088</span><a id="line.88">        public static ImagePlus selectOpenImage(String title) {</a>
-<span class="sourceLineNo">089</span><a id="line.89">                ImagePlus[] openImages = getOpenImages(true, null);</a>
-<span class="sourceLineNo">090</span><a id="line.90">                String[] imageNames = getImageShortTitles(openImages);</a>
-<span class="sourceLineNo">091</span><a id="line.91">                if (title == null) {</a>
-<span class="sourceLineNo">092</span><a id="line.92">                        title = "image:";</a>
-<span class="sourceLineNo">093</span><a id="line.93">                }</a>
-<span class="sourceLineNo">094</span><a id="line.94">                GenericDialog gd = new GenericDialog("Select image");</a>
-<span class="sourceLineNo">095</span><a id="line.95">                gd.addChoice(title, imageNames, imageNames[0]);</a>
-<span class="sourceLineNo">096</span><a id="line.96">                gd.showDialog(); </a>
-<span class="sourceLineNo">097</span><a id="line.97">                if (gd.wasCanceled()) </a>
-<span class="sourceLineNo">098</span><a id="line.98">                        return null;</a>
-<span class="sourceLineNo">099</span><a id="line.99">                else {</a>
-<span class="sourceLineNo">100</span><a id="line.100">                        return openImages[gd.getNextChoiceIndex()];</a>
-<span class="sourceLineNo">101</span><a id="line.101">                }</a>
-<span class="sourceLineNo">102</span><a id="line.102">        }</a>
-<span class="sourceLineNo">103</span><a id="line.103">        </a>
-<span class="sourceLineNo">104</span><a id="line.104">        </a>
-<span class="sourceLineNo">105</span><a id="line.105">        /**</a>
-<span class="sourceLineNo">106</span><a id="line.106">         * Returns a (possibly empty) array of {@link ImagePlus} objects that are</a>
-<span class="sourceLineNo">107</span><a id="line.107">         * sorted by their titles if the sortByTitle flag is set.</a>
-<span class="sourceLineNo">108</span><a id="line.108">         * The image "exclude" (typically the current image) is not included </a>
-<span class="sourceLineNo">109</span><a id="line.109">         * in the returned array (pass null to exclude no image).</a>
-<span class="sourceLineNo">110</span><a id="line.110">         * </a>
-<span class="sourceLineNo">111</span><a id="line.111">         * @param sortByTitle set {@code true} to return images sorted by title</a>
-<span class="sourceLineNo">112</span><a id="line.112">         * @param exclude reference to an image to be excluded (may be {@code null})</a>
-<span class="sourceLineNo">113</span><a id="line.113">         * @return a (possibly empty) array of {@link ImagePlus} objects</a>
-<span class="sourceLineNo">114</span><a id="line.114">         */</a>
-<span class="sourceLineNo">115</span><a id="line.115">        public static ImagePlus[] getOpenImages(boolean sortByTitle, ImagePlus exclude) {</a>
-<span class="sourceLineNo">116</span><a id="line.116">                List&lt;ImagePlus&gt; imgList = new LinkedList&lt;ImagePlus&gt;();</a>
-<span class="sourceLineNo">117</span><a id="line.117">                int[] wList = WindowManager.getIDList();</a>
-<span class="sourceLineNo">118</span><a id="line.118">        if (wList != null) {</a>
-<span class="sourceLineNo">119</span><a id="line.119">                for (int i : wList) {</a>
-<span class="sourceLineNo">120</span><a id="line.120">                    ImagePlus imp = WindowManager.getImage(i);</a>
-<span class="sourceLineNo">121</span><a id="line.121">                    if (imp != null &amp;&amp; imp != exclude) {</a>
-<span class="sourceLineNo">122</span><a id="line.122">                        imgList.add(imp);</a>
-<span class="sourceLineNo">123</span><a id="line.123">                    }</a>
-<span class="sourceLineNo">124</span><a id="line.124">                }</a>
-<span class="sourceLineNo">125</span><a id="line.125">        }</a>
-<span class="sourceLineNo">126</span><a id="line.126">        ImagePlus[] impArr = imgList.toArray(new ImagePlus[0]);</a>
-<span class="sourceLineNo">127</span><a id="line.127">        if (sortByTitle) {</a>
-<span class="sourceLineNo">128</span><a id="line.128">                Comparator&lt;ImagePlus&gt; cmp = new Comparator&lt;ImagePlus&gt;() {</a>
-<span class="sourceLineNo">129</span><a id="line.129">                        @Override</a>
-<span class="sourceLineNo">130</span><a id="line.130">                                public int compare(ImagePlus impA, ImagePlus impB) {</a>
-<span class="sourceLineNo">131</span><a id="line.131">                                return impA.getTitle().compareTo(impB.getTitle());</a>
-<span class="sourceLineNo">132</span><a id="line.132">                        }</a>
-<span class="sourceLineNo">133</span><a id="line.133">                };</a>
-<span class="sourceLineNo">134</span><a id="line.134">                Arrays.sort(impArr, cmp);</a>
+<span class="sourceLineNo">046</span><a id="line.46">/**</a>
+<span class="sourceLineNo">047</span><a id="line.47"> * This class defines static utility methods adding to ImageJs functionality.</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * @author WB</a>
+<span class="sourceLineNo">049</span><a id="line.49"> *</a>
+<span class="sourceLineNo">050</span><a id="line.50"> */</a>
+<span class="sourceLineNo">051</span><a id="line.51">public abstract class IjUtils {</a>
+<span class="sourceLineNo">052</span><a id="line.52">        </a>
+<span class="sourceLineNo">053</span><a id="line.53">        private IjUtils() {}</a>
+<span class="sourceLineNo">054</span><a id="line.54">        </a>
+<span class="sourceLineNo">055</span><a id="line.55">        /**</a>
+<span class="sourceLineNo">056</span><a id="line.56">         * Returns a (possibly empty) array of ImagePlus objects that are</a>
+<span class="sourceLineNo">057</span><a id="line.57">         * sorted by their titles if the 'sortByTitle' flag is set.</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * </a>
+<span class="sourceLineNo">059</span><a id="line.59">         * @param sortByTitle flag, result is sorted if true.</a>
+<span class="sourceLineNo">060</span><a id="line.60">         * @return an array of currently open images.</a>
+<span class="sourceLineNo">061</span><a id="line.61">         */</a>
+<span class="sourceLineNo">062</span><a id="line.62">        public static ImagePlus[] getOpenImages(boolean sortByTitle) {</a>
+<span class="sourceLineNo">063</span><a id="line.63">                return getOpenImages(sortByTitle, null);</a>
+<span class="sourceLineNo">064</span><a id="line.64">        }</a>
+<span class="sourceLineNo">065</span><a id="line.65">        </a>
+<span class="sourceLineNo">066</span><a id="line.66">        /**</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * Returns an array of strings containing the short titles</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * of the images supplied.</a>
+<span class="sourceLineNo">069</span><a id="line.69">         * </a>
+<span class="sourceLineNo">070</span><a id="line.70">         * @param images array of images.</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * @return array of names.</a>
+<span class="sourceLineNo">072</span><a id="line.72">         */</a>
+<span class="sourceLineNo">073</span><a id="line.73">        public static String[] getImageShortTitles(ImagePlus[] images) {</a>
+<span class="sourceLineNo">074</span><a id="line.74">                String[] imageNames = new String[images.length];</a>
+<span class="sourceLineNo">075</span><a id="line.75">                for (int i = 0; i &lt; images.length; i++) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                        imageNames[i] = images[i].getShortTitle();</a>
+<span class="sourceLineNo">077</span><a id="line.77">                }</a>
+<span class="sourceLineNo">078</span><a id="line.78">                return imageNames;</a>
+<span class="sourceLineNo">079</span><a id="line.79">        }</a>
+<span class="sourceLineNo">080</span><a id="line.80">        </a>
+<span class="sourceLineNo">081</span><a id="line.81">        /**</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * Opens a dialog to let the user select one of the currently open images.</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * @param title string to show in the dialog</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * @return An ImagePlus object, use the getProcessor method to obtain the associated ImageProcessor</a>
+<span class="sourceLineNo">085</span><a id="line.85">         */</a>
+<span class="sourceLineNo">086</span><a id="line.86">        public static ImagePlus selectOpenImage(String title) {</a>
+<span class="sourceLineNo">087</span><a id="line.87">                ImagePlus[] openImages = getOpenImages(true, null);</a>
+<span class="sourceLineNo">088</span><a id="line.88">                String[] imageNames = getImageShortTitles(openImages);</a>
+<span class="sourceLineNo">089</span><a id="line.89">                if (title == null) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">                        title = "image:";</a>
+<span class="sourceLineNo">091</span><a id="line.91">                }</a>
+<span class="sourceLineNo">092</span><a id="line.92">                GenericDialog gd = new GenericDialog("Select image");</a>
+<span class="sourceLineNo">093</span><a id="line.93">                gd.addChoice(title, imageNames, imageNames[0]);</a>
+<span class="sourceLineNo">094</span><a id="line.94">                gd.showDialog(); </a>
+<span class="sourceLineNo">095</span><a id="line.95">                if (gd.wasCanceled()) </a>
+<span class="sourceLineNo">096</span><a id="line.96">                        return null;</a>
+<span class="sourceLineNo">097</span><a id="line.97">                else {</a>
+<span class="sourceLineNo">098</span><a id="line.98">                        return openImages[gd.getNextChoiceIndex()];</a>
+<span class="sourceLineNo">099</span><a id="line.99">                }</a>
+<span class="sourceLineNo">100</span><a id="line.100">        }</a>
+<span class="sourceLineNo">101</span><a id="line.101">        </a>
+<span class="sourceLineNo">102</span><a id="line.102">        </a>
+<span class="sourceLineNo">103</span><a id="line.103">        /**</a>
+<span class="sourceLineNo">104</span><a id="line.104">         * Returns a (possibly empty) array of {@link ImagePlus} objects that are</a>
+<span class="sourceLineNo">105</span><a id="line.105">         * sorted by their titles if the sortByTitle flag is set.</a>
+<span class="sourceLineNo">106</span><a id="line.106">         * The image "exclude" (typically the current image) is not included </a>
+<span class="sourceLineNo">107</span><a id="line.107">         * in the returned array (pass null to exclude no image).</a>
+<span class="sourceLineNo">108</span><a id="line.108">         * </a>
+<span class="sourceLineNo">109</span><a id="line.109">         * @param sortByTitle set {@code true} to return images sorted by title</a>
+<span class="sourceLineNo">110</span><a id="line.110">         * @param exclude reference to an image to be excluded (may be {@code null})</a>
+<span class="sourceLineNo">111</span><a id="line.111">         * @return a (possibly empty) array of {@link ImagePlus} objects</a>
+<span class="sourceLineNo">112</span><a id="line.112">         */</a>
+<span class="sourceLineNo">113</span><a id="line.113">        public static ImagePlus[] getOpenImages(boolean sortByTitle, ImagePlus exclude) {</a>
+<span class="sourceLineNo">114</span><a id="line.114">                List&lt;ImagePlus&gt; imgList = new LinkedList&lt;ImagePlus&gt;();</a>
+<span class="sourceLineNo">115</span><a id="line.115">                int[] wList = WindowManager.getIDList();</a>
+<span class="sourceLineNo">116</span><a id="line.116">        if (wList != null) {</a>
+<span class="sourceLineNo">117</span><a id="line.117">                for (int i : wList) {</a>
+<span class="sourceLineNo">118</span><a id="line.118">                    ImagePlus imp = WindowManager.getImage(i);</a>
+<span class="sourceLineNo">119</span><a id="line.119">                    if (imp != null &amp;&amp; imp != exclude) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">                        imgList.add(imp);</a>
+<span class="sourceLineNo">121</span><a id="line.121">                    }</a>
+<span class="sourceLineNo">122</span><a id="line.122">                }</a>
+<span class="sourceLineNo">123</span><a id="line.123">        }</a>
+<span class="sourceLineNo">124</span><a id="line.124">        ImagePlus[] impArr = imgList.toArray(new ImagePlus[0]);</a>
+<span class="sourceLineNo">125</span><a id="line.125">        if (sortByTitle) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                Comparator&lt;ImagePlus&gt; cmp = new Comparator&lt;ImagePlus&gt;() {</a>
+<span class="sourceLineNo">127</span><a id="line.127">                        @Override</a>
+<span class="sourceLineNo">128</span><a id="line.128">                                public int compare(ImagePlus impA, ImagePlus impB) {</a>
+<span class="sourceLineNo">129</span><a id="line.129">                                return impA.getTitle().compareTo(impB.getTitle());</a>
+<span class="sourceLineNo">130</span><a id="line.130">                        }</a>
+<span class="sourceLineNo">131</span><a id="line.131">                };</a>
+<span class="sourceLineNo">132</span><a id="line.132">                Arrays.sort(impArr, cmp);</a>
+<span class="sourceLineNo">133</span><a id="line.133">        }</a>
+<span class="sourceLineNo">134</span><a id="line.134">                return impArr;</a>
 <span class="sourceLineNo">135</span><a id="line.135">        }</a>
-<span class="sourceLineNo">136</span><a id="line.136">                return impArr;</a>
-<span class="sourceLineNo">137</span><a id="line.137">        }</a>
-<span class="sourceLineNo">138</span><a id="line.138">        </a>
-<span class="sourceLineNo">139</span><a id="line.139"></a>
-<span class="sourceLineNo">140</span><a id="line.140">        /**</a>
-<span class="sourceLineNo">141</span><a id="line.141">         *  Queries the user for an arbitrary file to be opened.</a>
-<span class="sourceLineNo">142</span><a id="line.142">         *  </a>
-<span class="sourceLineNo">143</span><a id="line.143">         * @param title string to be shown in the interaction window.</a>
-<span class="sourceLineNo">144</span><a id="line.144">         * @return path of the selected resource.</a>
-<span class="sourceLineNo">145</span><a id="line.145">         */</a>
+<span class="sourceLineNo">136</span><a id="line.136">        </a>
+<span class="sourceLineNo">137</span><a id="line.137"></a>
+<span class="sourceLineNo">138</span><a id="line.138">        /**</a>
+<span class="sourceLineNo">139</span><a id="line.139">         * Queries the user for an arbitrary file to be opened.</a>
+<span class="sourceLineNo">140</span><a id="line.140">         * Deprecated: replace by IJ.open()</a>
+<span class="sourceLineNo">141</span><a id="line.141">         *  </a>
+<span class="sourceLineNo">142</span><a id="line.142">         * @param title string to be shown in the interaction window.</a>
+<span class="sourceLineNo">143</span><a id="line.143">         * @return path of the selected resource.</a>
+<span class="sourceLineNo">144</span><a id="line.144">         */</a>
+<span class="sourceLineNo">145</span><a id="line.145">        @Deprecated</a>
 <span class="sourceLineNo">146</span><a id="line.146">        public static String askForOpenPath(String title) {</a>
 <span class="sourceLineNo">147</span><a id="line.147">                OpenDialog od = new OpenDialog(title, "");</a>
 <span class="sourceLineNo">148</span><a id="line.148">                String dir = od.getDirectory();</a>
@@ -1094,33 +1094,7 @@
 <span class="sourceLineNo">1084</span><a id="line.1084">                }</a>
 <span class="sourceLineNo">1085</span><a id="line.1085">        }</a>
 <span class="sourceLineNo">1086</span><a id="line.1086">        </a>
-<span class="sourceLineNo">1087</span><a id="line.1087">        /**</a>
-<span class="sourceLineNo">1088</span><a id="line.1088">         * Opens a dialog asking if the suggested sample image (resource) should be</a>
-<span class="sourceLineNo">1089</span><a id="line.1089">         * opened and made the active image. Alternatively (if answer is NO) the user is</a>
-<span class="sourceLineNo">1090</span><a id="line.1090">         * asked to select another image to be opened. Nothing happens if the dialog is</a>
-<span class="sourceLineNo">1091</span><a id="line.1091">         * canceled. This if typically used in the (otherwise empty) constructor of demo</a>
-<span class="sourceLineNo">1092</span><a id="line.1092">         * plugins when no (or no suitable) image is currently open.</a>
-<span class="sourceLineNo">1093</span><a id="line.1093">         * </a>
-<span class="sourceLineNo">1094</span><a id="line.1094">         * @param suggested a sample image (resource)</a>
-<span class="sourceLineNo">1095</span><a id="line.1095">         */</a>
-<span class="sourceLineNo">1096</span><a id="line.1096">        public static void requestSampleImage(ImageResource suggested) {        // TODO: allow multiple sample images?</a>
-<span class="sourceLineNo">1097</span><a id="line.1097">                GenericDialog gd = new GenericDialog("Request sample image");</a>
-<span class="sourceLineNo">1098</span><a id="line.1098">                gd.addMessage("Open sample image\n" + suggested + "?");</a>
-<span class="sourceLineNo">1099</span><a id="line.1099">                gd.enableYesNoCancel("Yes", "Open other");</a>
-<span class="sourceLineNo">1100</span><a id="line.1100">                gd.showDialog();</a>
-<span class="sourceLineNo">1101</span><a id="line.1101">                if (gd.wasCanceled()) {</a>
-<span class="sourceLineNo">1102</span><a id="line.1102">                        return;</a>
-<span class="sourceLineNo">1103</span><a id="line.1103">                }</a>
-<span class="sourceLineNo">1104</span><a id="line.1104">                if (gd.wasOKed()) {</a>
-<span class="sourceLineNo">1105</span><a id="line.1105">                        ImagePlus im = suggested.getImage();</a>
-<span class="sourceLineNo">1106</span><a id="line.1106">                        im.show();</a>
-<span class="sourceLineNo">1107</span><a id="line.1107">                        WindowManager.setCurrentWindow(im.getWindow());</a>
-<span class="sourceLineNo">1108</span><a id="line.1108">                }</a>
-<span class="sourceLineNo">1109</span><a id="line.1109">                else {  // select other image</a>
-<span class="sourceLineNo">1110</span><a id="line.1110">                        IJ.open(null);</a>
-<span class="sourceLineNo">1111</span><a id="line.1111">                }</a>
-<span class="sourceLineNo">1112</span><a id="line.1112">        }</a>
-<span class="sourceLineNo">1113</span><a id="line.1113">}</a>
+<span class="sourceLineNo">1087</span><a id="line.1087">}</a>
 
 
 
