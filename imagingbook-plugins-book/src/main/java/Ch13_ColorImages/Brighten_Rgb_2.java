@@ -54,6 +54,5 @@ public class Brighten_Rgb_2 implements PlugInFilter {
 			}
 		}
 	}
-
-
+	
 }
