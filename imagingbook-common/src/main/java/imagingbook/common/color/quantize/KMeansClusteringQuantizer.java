@@ -45,6 +45,8 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 	public static long RandomSeed = 0;	
 	private final Random random = (RandomSeed == 0) ? new Random() : new Random(RandomSeed);
 	
+	public static int DefaultIterations = 500;
+	
 	private final ColorCluster[] clusters;
 	private final double totalError;
 	private final float[][] colormap;
@@ -68,7 +70,7 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 	 * @param K  the desired number of colors (1 or more)
 	 */
 	public KMeansClusteringQuantizer(int[] pixels, int K) {
-		this(pixels, K, InitialClusterMethod.Random, 500);
+		this(pixels, K, InitialClusterMethod.Random, DefaultIterations);
 	}
 
 	/**
