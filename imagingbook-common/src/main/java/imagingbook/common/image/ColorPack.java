@@ -11,6 +11,7 @@ package imagingbook.common.image;
 
 import java.awt.color.ColorSpace;
 
+import ij.ImageStack;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.color.colorspace.sRgb65ColorSpace;
@@ -140,6 +141,16 @@ public class ColorPack extends PixelPack {
 	@Override	// arbitrary scaling is inhibited
 	public ColorProcessor toColorProcessor(double scale) {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public ImageStack toImageStack() {
+		ImageStack stack = super.toImageStack();
+		// set slice labels to color component names:
+		for (int k = 0; k < depth; k++) {
+			stack.setSliceLabel(colorspace.getName(k), k + 1);
+		}
+		return stack;
 	}
 	
 	// ------------------------------------------------------------------
