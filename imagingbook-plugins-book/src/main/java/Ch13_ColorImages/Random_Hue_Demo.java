@@ -22,7 +22,7 @@ import imagingbook.common.color.iterate.RandomHueGenerator;
  * @author WB
  *
  */
-public class Random_Color_Demo implements PlugIn {
+public class Random_Hue_Demo implements PlugIn {
 	
 	static int TileSize = 20;
 	static int TilesHor = 48;
