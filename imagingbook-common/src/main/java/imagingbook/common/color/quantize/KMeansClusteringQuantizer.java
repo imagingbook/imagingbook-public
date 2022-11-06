@@ -26,15 +26,23 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.statistics.ColorHistogram;
 
 /**
+ * <p>
  * This class implements color quantization using k-means clustering of image
  * pixels in RGB color space. It provides two modes for selecting initial color
  * clusters: (a) random sampling of the input colors, (b) using the K most
  * frequent colors.
- * During clustering all input pixels are used, i.e., no stochastic sub-sampling
- * is applied (which could make the process a lot more efficient).
+ * Note that this implementation is mainly to demonstrate the concept. Depending
+ * on the data size and number of quantization colors, this process may be
+ * excessively slow compared to other methods. It is usually impractical even
+ * for medium-sized images. During clustering all input pixels are used, i.e.,
+ * no stochastic sub-sampling is applied (which could make the process a lot
+ * more efficient).
+ * </p>
  * 
  * @author WB
  * @version 2022/11/06
+ * @see MedianCutQuantizer
+ * @see OctreeQuantizer
  */
 public class KMeansClusteringQuantizer implements ColorQuantizer {
 	
