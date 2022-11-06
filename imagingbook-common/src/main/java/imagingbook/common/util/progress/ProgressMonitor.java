@@ -12,22 +12,38 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.ij.IjProgressBarMonitor;
 
 /**
- * This class represents a "progress monitor". This is a simple
- * {@link Thread} that queries the attached target task 
- * (implementing {@link ProgressReporter}) and calls its 
- * {@link #handleProgress(double, long)} method at regular intervals.
+ * <p>
+ * This class represents a "progress monitor". This is a simple {@link Thread}
+ * that queries the attached target task (implementing {@link ProgressReporter})
+ * and calls its {@link #handleProgress(double, long)} method at regular
+ * intervals. {@link ProgressMonitor} implements the {@link AutoCloseable} and
+ * thus can (and should) be used in a try-with-resources context, e.g.,
+ * </p>
  * 
- * {@link ProgressMonitor} implements the {@link AutoCloseable} and thus can
- * (and should) be used in a try-with-resources context, e.g.,
  * <pre>
- * ProgressReporter task = ....; // the task to be monitored
- * try (ProgressMonitor m = new MyProgressMonitor(task)) {
+ * ProgressReporter task = ....; // the activity to be monitored
+ * try (ProgressMonitor m = new ConsoleProgressMonitor(task)) {
  *     // run task ...
- * }</pre>
- * Otherwise, if not used in a auto-start/close mode, the methods {@link #start()} 
- * and {@link #close()} should be used to "manually" start and terminate
- * monitoring.
- * See {@link GenericFilter} and {@link IjProgressBarMonitor} for an example.
+ * }
+ * </pre>
+ * 
+ * <p>
+ * Otherwise, if not used in a auto-start/close mode, the methods
+ * {@link #start()} and {@link #close()} should be used to "manually" start and
+ * terminate monitoring. See {@link ProgressMonitorExample},
+ * {@link GenericFilter}, {@link ConsoleProgressMonitor} and {@link IjProgressBarMonitor} 
+ * for examples.
+ * </p>
+ * 
+ * <p>
+ * Note that this mechanism cannot be used to monitor activities inside
+ * a constructor, since no reference to the monitored instance is available
+ * before the constructor is finished.
+ * </p>
+ * 
+ * @see ProgressReporter
+ * @see ProgressMonitorExample
+ * @see ConsoleProgressMonitor
  */
 public abstract class ProgressMonitor extends Thread implements AutoCloseable {
 	

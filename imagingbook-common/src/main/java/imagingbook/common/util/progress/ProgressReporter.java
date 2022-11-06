@@ -11,11 +11,10 @@ package imagingbook.common.util.progress;
 import imagingbook.common.filter.generic.GenericFilter;
 
 /**
- * Interface for defining tasks that may be queried (monitored) to
- * report their current progress status.
- * Monitored objects (tasks) must only implement method
- * {@link #getProgress()}, which returns the current completion status.
- * See {@link GenericFilter} for an example.
+ * Interface for defining tasks that may be queried (monitored) to report their
+ * current progress status. Monitored objects (tasks) must only implement method
+ * {@link #getProgress()}, which returns the current completion status. See
+ * {@link GenericFilter} for an example.
  * 
  * @see ProgressMonitor
  * 
