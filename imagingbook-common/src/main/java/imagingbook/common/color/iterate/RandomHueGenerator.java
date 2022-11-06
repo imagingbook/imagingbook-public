@@ -14,32 +14,43 @@ import java.util.Random;
 
 /**
  * Instances of this class create a sequence of random colors.
- * TODO: Improve randomness (currently not too good, much red ...), modify saturation?.
  * 
  * @author WB
- * @version 2022/04/06
+ * @version 2022/11/06
  *
  */
 public class RandomHueGenerator implements ColorSequencer {
-	
-	private float h = 0.0f;
-	private float s = 0.9f;
-	private float b = 0.9f;
+//	TODO: Improve randomness (currently not too good, much red ...), modify saturation?.
+	private float h = 0.0f;		// hue (changing)
+	private float s = 0.9f;		// saturation (fixed)
+	private float b = 0.9f;		// brightness (fixed)
 	private final Random rnd; 
 
 	/**
 	 * Constructor (no random seed).
 	 */
 	public RandomHueGenerator() {
-		rnd = new Random();
+		this(0);
 	}
 	
 	/**
-	 * Constructor (with specific random sees).
-	 * @param seed random seed (for repeatability)
+	 * Constructor with specific random seed (for repeatability).
+	 * @param seed random seed 
 	 */
 	public RandomHueGenerator(long seed) {
-		rnd = new Random(seed);
+		this.rnd = (seed == 0) ? new Random() : new Random(seed);
+	}
+	
+	public void setSaturation(double s) {
+		if (s < 0) s = 0;
+		if (s > 1) s = 1;
+		this.s = (float) s;
+	}
+	
+	public void setBrightness(double b) {
+		if (b < 0) b = 0;
+		if (b > 1) b = 1;
+		this.b = (float) b;
 	}
 	
 	/**
