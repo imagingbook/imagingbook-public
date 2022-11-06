@@ -61,7 +61,7 @@ public class LuvColorSpace extends ColorSpace {
 	 * Constructor.
 	 */
 	private LuvColorSpace() {
-		super(TYPE_Lab,3);
+		super(TYPE_Luv,3);
 	}
 	
 	// XYZ50->CIELuv: returns Luv values from XYZ (relative to D50)

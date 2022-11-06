@@ -64,5 +64,12 @@ public class LinearRgbColorSpace extends ColorSpace {
 	public float[] fromCIEXYZ(float[] colorvalue) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	private static final String[] ComponentNames = {"R", "G", "B"};
+	
+	@Override
+	public String getName (int idx) {
+		return ComponentNames[idx];
+	}
+	
 }

@@ -54,9 +54,9 @@ public class HlsColorSpace extends ColorSpace {
 		// Calculate hue H (same as in HSV)
 		float H = 0;	
 		if (cHi > 0 && cRng > 0) {        // a color pixel
-			float dr = (float)(cHi - r) / cRng;
-			float dg = (float)(cHi - g) / cRng;
-			float db = (float)(cHi - b) / cRng;
+			float dr = (cHi - r) / cRng;
+			float dg = (cHi - g) / cRng;
+			float db = (cHi - b) / cRng;
 			float h;
 			if (r == cHi)                      // R is largest component
 				h = db - dg;
@@ -109,6 +109,13 @@ public class HlsColorSpace extends ColorSpace {
 	@Override
 	public float[] fromCIEXYZ(float[] colorvalue) {
 		throw new UnsupportedOperationException();
+	}
+	
+	private static final String[] ComponentNames = {"H", "L", "S"};
+	
+	@Override
+	public String getName (int idx) {
+		return ComponentNames[idx];
 	}
 
 }

@@ -48,13 +48,13 @@ public class HsvColorSpace extends ColorSpace {
 		
 		// compute saturation S
 		if (cHi > 0)
-			S = (float) cRng / cHi;
+			S = cRng / cHi;
 
 		// compute hue H
 		if (cRng > 0) {	// hue is defined only for color pixels
-			float rr = (float)(cHi - R) / cRng;
-			float gg = (float)(cHi - G) / cRng;
-			float bb = (float)(cHi - B) / cRng;
+			float rr = (cHi - R) / cRng;
+			float gg = (cHi - G) / cRng;
+			float bb = (cHi - B) / cRng;
 			float hh;
 			if (R == cHi)                   // R is largest component value
 				hh = bb - gg;
@@ -99,6 +99,13 @@ public class HsvColorSpace extends ColorSpace {
 	@Override
 	public float[] fromCIEXYZ(float[] colorvalue) {
 		throw new UnsupportedOperationException();
+	}
+	
+	private static final String[] ComponentNames = {"H", "S", "V"};
+	
+	@Override
+	public String getName (int idx) {
+		return ComponentNames[idx];
 	}
 
 }

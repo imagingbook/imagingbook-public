@@ -89,5 +89,12 @@ public class sRgb65ColorSpace extends ColorSpace {
 		throw new UnsupportedOperationException();
 //		return srgb;
 	}
+	
+	private static final String[] ComponentNames = {"R", "G", "B"};
+	
+	@Override
+	public String getName (int idx) {
+		return ComponentNames[idx];
+	}
 
 }

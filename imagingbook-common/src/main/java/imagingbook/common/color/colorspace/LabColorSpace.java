@@ -19,26 +19,25 @@ import imagingbook.common.color.RgbUtils;
 
 /**
  * <p>
- * This class implements the CIELab color space.
- * See Sec. 14.2 of [1] for additional details.
- * All component values are assumed to be in [0,1].
- * Conversion from/to sRGB is implemented directly through D65-based XYZ
- * coordinates, i.e., without conversion to Java's D50-based profile 
- * connection space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ 
- * coordinates in Java's profile connection space.
- * This is a singleton class with no public constructors,
- * use {@link #getInstance()} to obtain the single instance.
+ * This class implements the CIELab color space. See Sec. 14.2 of [1] for
+ * details. All component values are assumed to be in [0,1]. Conversion from/to
+ * sRGB is implemented directly through D65-based XYZ coordinates, i.e., without
+ * conversion to Java's D50-based profile connection space. The methods
+ * fromCIEXYZ/toCIEXYZ still return D50-based XYZ coordinates in Java's profile
+ * connection space. This is a singleton class with no public constructors, use
+ * {@link #getInstance()} to obtain the single instance.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
  * @version 2022/09/01
  */
-@SuppressWarnings("serial")
 public class LabColorSpace extends ColorSpace {
-	
+	private static final long serialVersionUID = 1L;
+
 	private static final LabColorSpace instance = new LabColorSpace();
 	
 	public static LabColorSpace getInstance() {
@@ -46,9 +45,6 @@ public class LabColorSpace extends ColorSpace {
 	}
 
 	// D65 reference white point:
-//	private static final double Xref = D65.getX(); 	// 0.950456
-//	private static final double Yref = D65.getY(); 	// 1.000000
-//	private static final double Zref = D65.getZ();	// 1.088754
 	private static final double[] XYZref = D65.getXYZ();
 
 	// chromatic adaptation objects:
