@@ -48,6 +48,11 @@ public class sRgb65ColorSpace extends ColorSpace {
 		 {-0.969256, 1.875992, 0.041556},
 		 {0.055648, -0.204043, 1.057311}};
 	
+//	from sRGB specs:
+//		3.2406255 1.537208 0.4986286
+//		0.9689307 1.8757561 0.0415175
+//		0.0557101 0.2040211 1.0569959
+	
 	/** Matrix for conversion from XYZ to linear RGB (inverse of {@link #Mrgb}). 
 	 * The actual inverse is calculated here for better accuracy. 
 	 */

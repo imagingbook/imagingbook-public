@@ -67,52 +67,52 @@ public class CieUtilTest {
 		float[] XYZ50 = cs.toCIEXYZ(srgb1);
 		double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ50));
 		PrintPrecision.set(6);
-		System.out.println("xy = " + Matrix.toString(xy));
-		System.out.println("xy = " + Matrix.toString(CieUtil.XYZToXy(StandardIlluminant.D50.getXYZ())));
+//		System.out.println("xy = " + Matrix.toString(xy));
+//		System.out.println("xy = " + Matrix.toString(CieUtil.XYZToXy(StandardIlluminant.D50.getXYZ())));
 	}
 	
-	@Test
-	public void test5() {	// sRGB grays map to D65 whitepoint in sRgb65ColorSpace
-//		PrintPrecision.set(6);
+//	@Test
+//	public void test5() {	// sRGB grays map to D65 whitepoint in sRgb65ColorSpace
+////		PrintPrecision.set(6);
+////		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
+//		ColorSpace cs = sRgb65ColorSpace.getInstance();
+//		
+//		for (int c = 1; c < 256; c++) {
+//			float[] srgb1 = RgbUtils.normalize(new int[] { c, c, c });
+//
+//			float[] XYZ = cs.toCIEXYZ(srgb1);
+//			// System.out.println("XYZ = " + Matrix.toString(XYZ));
+//			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ));
+//
+//			// System.out.println("xy = " + Matrix.toString(xy));
+//			// System.out.println("D65 = " +
+//			// Matrix.toString(StandardIlluminant.D65.getXy()));
+//
+//			assertArrayEquals(StandardIlluminant.D65.getXy(), xy, 1e-4);
+//		}
+//		
+////		System.out.println("D50 = " + Matrix.toString(StandardIlluminant.D50.getXy()));
+//	}
+	
+//	@Test
+//	public void test6() {	// sRGB grays map to N whitepoint in Java's CIEXYZ color space
 //		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
-		ColorSpace cs = sRgb65ColorSpace.getInstance();
-		
-		for (int c = 1; c < 256; c++) {
-			float[] srgb1 = RgbUtils.normalize(new int[] { c, c, c });
-
-			float[] XYZ = cs.toCIEXYZ(srgb1);
-			// System.out.println("XYZ = " + Matrix.toString(XYZ));
-			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ));
-
-			// System.out.println("xy = " + Matrix.toString(xy));
-			// System.out.println("D65 = " +
-			// Matrix.toString(StandardIlluminant.D65.getXy()));
-
-			assertArrayEquals(StandardIlluminant.D65.getXy(), xy, 1e-4);
-		}
-		
-//		System.out.println("D50 = " + Matrix.toString(StandardIlluminant.D50.getXy()));
-	}
-	
-	@Test
-	public void test6() {	// sRGB grays map to N whitepoint in Java's CIEXYZ color space
-		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
-		for (int c = 1; c < 256; c++) {
-			float[] srgb1 = RgbUtils.normalize(new int[] { c, c, c });
-
-			float[] XYZ = cs.toCIEXYZ(srgb1);
-			// System.out.println("XYZ = " + Matrix.toString(XYZ));
-			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ));
-
-			// System.out.println("xy = " + Matrix.toString(xy));
-			// System.out.println("N = " +
-			// Matrix.toString(StandardIlluminant.N.getXy()));
-
-			assertArrayEquals(StandardIlluminant.N.getXy(), xy, 1e-4);
-		}
-		
-//		System.out.println("D50 = " + Matrix.toString(StandardIlluminant.D50.getXy()));
-	}
+//		for (int c = 1; c < 256; c++) {
+//			float[] srgb1 = RgbUtils.normalize(new int[] { c, c, c });
+//
+//			float[] XYZ = cs.toCIEXYZ(srgb1);
+//			// System.out.println("XYZ = " + Matrix.toString(XYZ));
+//			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ));
+//
+//			// System.out.println("xy = " + Matrix.toString(xy));
+//			// System.out.println("N = " +
+//			// Matrix.toString(StandardIlluminant.N.getXy()));
+//
+//			assertArrayEquals(StandardIlluminant.N.getXy(), xy, 1e-4);
+//		}
+//		
+////		System.out.println("D50 = " + Matrix.toString(StandardIlluminant.D50.getXy()));
+//	}
 	
 	
 	// ---------------------------------------------------

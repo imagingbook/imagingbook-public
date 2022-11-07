@@ -60,12 +60,18 @@ public class sRgbUtilTest {
 //	}
 	
 	
-
-	
 	private static void doCheck(float[] srgb1) {
-		float[] rgb = sRgbUtil.sRgbToRgb(srgb1);
-		float[] srgb2 = sRgbUtil.rgbToSrgb(rgb);
-		assertArrayEquals(srgb1, srgb2, 1e-9f);
+		{	// non-destructive
+			float[] rgb   = sRgbUtil.sRgbToRgb(srgb1);
+			float[] srgb2 = sRgbUtil.rgbToSrgb(rgb);
+			assertArrayEquals(srgb1, srgb2, 1e-9f);
+		}
+		{	// destructive
+			float[] rgb   = srgb1.clone();
+			sRgbUtil.sRgbToRgbD(rgb);
+			sRgbUtil.rgbToSrgbD(rgb);
+			assertArrayEquals(srgb1, rgb, 1e-9f);
+		}
 	}
 
 }

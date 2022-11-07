@@ -54,17 +54,36 @@ public abstract class sRgbUtil {
     }
     
 	public static float[] sRgbToRgb(float[] srgb) { // all components in [0,1]
-		float R = (float) sRgbUtil.gammaInv(srgb[0]);
-		float G = (float) sRgbUtil.gammaInv(srgb[1]);
-		float B = (float) sRgbUtil.gammaInv(srgb[2]);
-		return new float[] { R, G, B };
+		float[] rgb = srgb.clone();
+		sRgbToRgbD(rgb);
+		return rgb;
+//		float R = (float) sRgbUtil.gammaInv(srgb[0]);
+//		float G = (float) sRgbUtil.gammaInv(srgb[1]);
+//		float B = (float) sRgbUtil.gammaInv(srgb[2]);
+//		return new float[] { R, G, B };
 	}
 
 	public static float[] rgbToSrgb(float[] rgb) { // all components in [0,1]
-		float sR = (float) sRgbUtil.gammaFwd(rgb[0]);
-		float sG = (float) sRgbUtil.gammaFwd(rgb[1]);
-		float sB = (float) sRgbUtil.gammaFwd(rgb[2]);
-		return new float[] { sR, sG, sB };
+		float[] srgb = rgb.clone();
+		rgbToSrgbD(srgb);
+		return srgb;
+//		float sR = (float) sRgbUtil.gammaFwd(rgb[0]);
+//		float sG = (float) sRgbUtil.gammaFwd(rgb[1]);
+//		float sB = (float) sRgbUtil.gammaFwd(rgb[2]);
+//		return new float[] { sR, sG, sB };
 	}
-    
+	
+	// destructive versions
+	
+	public static void sRgbToRgbD(float[] srgb) { // all components in [0,1]
+		for (int i = 0; i < srgb.length; i++) {
+			srgb[i] = (float) sRgbUtil.gammaInv(srgb[i]);
+		}
+	}
+	
+	public static void rgbToSrgbD(float[] rgb) { // all components in [0,1]
+		for (int i = 0; i < rgb.length; i++) {
+			rgb[i] = (float) sRgbUtil.gammaFwd(rgb[i]);
+		}
+	}
 }
