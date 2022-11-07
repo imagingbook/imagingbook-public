@@ -16,7 +16,7 @@ public class IccProfileTest {
 	
 	@Test
 	public void test1() {
-		ResourceTestUtils.testNamedResource(IccProfile.class);
+		ResourceTestUtils.testNamedResource(IccProfiles.class);
 	}
 
 }

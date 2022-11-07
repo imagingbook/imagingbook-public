@@ -10,7 +10,7 @@ package imagingbook.common.color.colorspace;
 
 import imagingbook.core.resource.NamedResource;
 
-public enum IccProfile implements NamedResource {
+public enum IccProfiles implements NamedResource {
 	AdobeRGB1998("AdobeRGB1998.icc"),
 	CIERGB("CIERGB.icc"),
 	PAL_SECAM("PAL_SECAM.icc"),
@@ -21,7 +21,7 @@ public enum IccProfile implements NamedResource {
 
 	private final String filename;
 
-	IccProfile(String filename) {
+	IccProfiles(String filename) {
 		this.filename = filename;
 	}
 

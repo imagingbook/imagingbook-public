@@ -31,7 +31,7 @@ import imagingbook.common.image.ColorPack;
 public class Convert_To_Color_Stack implements PlugInFilter {
 	
 	private enum TargetSpaceType {
-		Lab, Luv, HLS, HSV, LinearRGB
+		Lab, Luv, HLS, HSV, LinearRGB	// TODO: add XYZ
 	}
 	
 	private static TargetSpaceType TargetSpace = TargetSpaceType.Lab;

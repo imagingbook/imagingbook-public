@@ -90,8 +90,7 @@ public abstract class RgbUtils {
 	 * @return the RGB values normalized to [0,1]
 	 */
 	public static float[] normalize(int[] RGB) {
-		float[] rgb = {RGB[0]/255f, RGB[1]/255f, RGB[2]/255f};
-		return rgb;
+		return new float[] {RGB[0]/255f, RGB[1]/255f, RGB[2]/255f};
 	}
 	
 	/**

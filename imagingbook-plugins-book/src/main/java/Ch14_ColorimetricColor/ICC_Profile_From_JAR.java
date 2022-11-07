@@ -15,7 +15,8 @@ import java.io.IOException;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
-import imagingbook.common.color.colorspace.IccProfile;
+import imagingbook.common.color.colorspace.CieUtil;
+import imagingbook.common.color.colorspace.IccProfiles;
 import imagingbook.common.math.Matrix;
 
 
@@ -29,7 +30,8 @@ import imagingbook.common.math.Matrix;
  */
 public class ICC_Profile_From_JAR implements PlugIn {
 
-	private static IccProfile theChoice = IccProfile.AdobeRGB1998;
+	private static IccProfiles TheIccProfile = IccProfiles.AdobeRGB1998;
+	private static boolean ListDeviceColorMapping = false;
 	
 	@Override
 	public void run(String arg) {
@@ -37,16 +39,16 @@ public class ICC_Profile_From_JAR implements PlugIn {
 		if (!runDialog())
 			return;
 		
-		IJ.log("Selected ICC profile: " + theChoice);
-		IJ.log("Reading from JAR: " + (theChoice.isInsideJar()));
+		IJ.log("Selected ICC profile: " + TheIccProfile);
+		IJ.log("Reading from JAR: " + (TheIccProfile.isInsideJar()));
 		
 		ICC_Profile profile = null;
 		try {
-			profile = ICC_Profile.getInstance(theChoice.getStream());
+			profile = ICC_Profile.getInstance(TheIccProfile.getStream());
 		} catch (IOException e) { }
 		
 		if (profile == null) {
-			IJ.error("Could not read ICC profile " + theChoice);
+			IJ.error("Could not read ICC profile " + TheIccProfile);
 			return;
 		}
 
@@ -64,8 +66,9 @@ public class ICC_Profile_From_JAR implements PlugIn {
 		
 		
 		// specify a device-specific color:
-		float[] deviceColor = {0.77f, 0.13f, 0.89f};
+//		float[] deviceColor = {0.77f, 0.13f, 0.89f};
 		//float[] deviceColor = {0.0f, 0.0f, 0.0f};
+		float[] deviceColor = {1, 1, 1};
 		IJ.log("device color = " + Matrix.toString(deviceColor));
 		
 		// convert to sRGB:
@@ -75,6 +78,7 @@ public class ICC_Profile_From_JAR implements PlugIn {
 		// convert to (D50-based) XYZ:
 		float[] XYZColor = iccColorSpace.toCIEXYZ(deviceColor);
 		IJ.log("XYZ = " + Matrix.toString(XYZColor));
+		IJ.log("xy (white point D50) = " + Matrix.toString(CieUtil.XYZToXy(Matrix.toDouble(XYZColor))));
 				
 		deviceColor = iccColorSpace.fromRGB(sRGBColor);
 		IJ.log("device color direct (check) = " + Matrix.toString(deviceColor));
@@ -82,16 +86,18 @@ public class ICC_Profile_From_JAR implements PlugIn {
 		deviceColor = iccColorSpace.fromCIEXYZ(XYZColor);
 		IJ.log("device color via XYZ (check) = " + Matrix.toString(deviceColor));
 		
+		if (ListDeviceColorMapping) {
 		IJ.log("");
-		// list sRGB Values (components in [0,1])
-		for (int ri = 0; ri <= 10; ri++) {
-			for (int gi = 0; gi <= 10; gi++) {
-				for (int bi = 0; bi <= 10; bi++) {
-					float[] devCol1 = {ri * 0.1f, gi * 0.1f, bi * 0.1f};
-					float[] sRGB = iccColorSpace.toRGB(devCol1);
-					float[] devCol2 = iccColorSpace.fromRGB(sRGB);
-					IJ.log(Matrix.toString(devCol1) + " -> " + Matrix.toString(sRGB) + " -> " 
-							+ Matrix.toString(devCol2) + warning(devCol1, devCol2));
+			// list sRGB Values (components in [0,1])
+			for (int ri = 0; ri <= 10; ri++) {
+				for (int gi = 0; gi <= 10; gi++) {
+					for (int bi = 0; bi <= 10; bi++) {
+						float[] devCol1 = {ri * 0.1f, gi * 0.1f, bi * 0.1f};
+						float[] sRGB = iccColorSpace.toRGB(devCol1);
+						float[] devCol2 = iccColorSpace.fromRGB(sRGB);
+						IJ.log(Matrix.toString(devCol1) + " -> " + Matrix.toString(sRGB) + " -> " 
+								+ Matrix.toString(devCol2) + warning(devCol1, devCol2));
+					}
 				}
 			}
 		}
@@ -120,14 +126,16 @@ public class ICC_Profile_From_JAR implements PlugIn {
 		GenericDialog gd = new GenericDialog(ICC_Profile_From_JAR.class.getSimpleName());
 		gd.addMessage("Select an ICC profile:");
 		//gd.addChoice("Profile:", choices, choices[0]);
-		gd.addEnumChoice("Profile", theChoice);
+		gd.addEnumChoice("Profile", TheIccProfile);
+		gd.addCheckbox("List device color mapping", ListDeviceColorMapping);
 
 		gd.showDialog();
 		if (gd.wasCanceled()) {
 			return false;
 		}
 		
-		theChoice = gd.getNextEnumChoice(IccProfile.class);
+		TheIccProfile = gd.getNextEnumChoice(IccProfiles.class);
+		ListDeviceColorMapping = gd.getNextBoolean();
 		return true;
 	}
 }

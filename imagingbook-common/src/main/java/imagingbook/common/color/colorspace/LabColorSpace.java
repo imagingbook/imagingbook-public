@@ -37,7 +37,8 @@ import imagingbook.common.color.RgbUtils;
  */
 public class LabColorSpace extends ColorSpace {
 	private static final long serialVersionUID = 1L;
-
+	private static final sRgb65ColorSpace sRGBcsp = sRgb65ColorSpace.getInstance();
+	
 	private static final LabColorSpace instance = new LabColorSpace();
 	
 	public static LabColorSpace getInstance() {
@@ -51,7 +52,7 @@ public class LabColorSpace extends ColorSpace {
 	private static final ChromaticAdaptation catD65toD50 = new BradfordAdaptation(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = new BradfordAdaptation(D50, D65);
 
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -133,7 +134,7 @@ public class LabColorSpace extends ColorSpace {
 	 */
 	@Override
 	public float[] fromRGB(float[] srgb) {
-		float[] XYZ65 = sRgb65ColorSpace.getInstance().toCIEXYZ(srgb);
+		float[] XYZ65 = sRGBcsp.toCIEXYZ(srgb);
 		return fromCIEXYZ65(XYZ65);
 	}
 
@@ -150,8 +151,7 @@ public class LabColorSpace extends ColorSpace {
 	@Override
 	public float[] toRGB(float[] Lab) {
 		float[] XYZ65 = toCIEXYZ65(Lab);
-		float[] srgb = sRgb65ColorSpace.getInstance().fromCIEXYZ(XYZ65);
-		return srgb;
+		return sRGBcsp.fromCIEXYZ(XYZ65);
 	}
 
 	//---------------------------------------------------------------------

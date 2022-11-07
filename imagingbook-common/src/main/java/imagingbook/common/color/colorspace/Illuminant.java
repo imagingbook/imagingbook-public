@@ -11,9 +11,17 @@ package imagingbook.common.color.colorspace;
 public interface Illuminant {
 	
 	/**
-	 * Returns the illuminant's coordinate in CIE-XYZ color space.
+	 * Returns the illuminant's 3D coordinate in CIE-XYZ color space.
 	 * @return the XYZ-coordinate
 	 */
 	public double[] getXYZ();
+	
+	/**
+	 * Returns the  illuminant's 2D coordinate in 2D CIE-xy space.
+	 * @return the xy-coordinate
+	 */
+	public default double[] getXy() {
+		return CieUtil.XYZToXy(getXYZ());
+	}
 
 }

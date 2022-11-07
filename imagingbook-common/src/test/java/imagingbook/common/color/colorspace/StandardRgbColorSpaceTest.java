@@ -18,36 +18,42 @@ import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
 
-public class sRgb65ColorSpaceTest {
+/**
+ * Testing Java's built-in color spaces (CS_sRGB).
+ * @author WB
+ *
+ */
+public class StandardRgbColorSpaceTest {
 	
-	static float TOL = 1e-3f;
+	static float TOL = 1e-2f;	// standard color spaces are not very accurate!
 
 	@Test
-	public void test1() {
-		sRgb65ColorSpace cs = sRgb65ColorSpace.getInstance();
-		checkToXyz(cs, new int[] {0, 0, 0});
-		checkToXyz(cs, new int[] {255, 255, 255});
-		checkToXyz(cs, new int[] {177, 0, 0});
-		checkToXyz(cs, new int[] {0, 177, 0});
-		checkToXyz(cs, new int[] {0, 0, 177});
-		checkToXyz(cs, new int[] {19, 3, 174});
+	public void test1A() {
+		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+		doCheck(cs, new int[] {0, 0, 0});
+		doCheck(cs, new int[] {255, 255, 255});
+		doCheck(cs, new int[] {177, 0, 0});
+		doCheck(cs, new int[] {0, 177, 0});
+		doCheck(cs, new int[] {0, 0, 177});
+		doCheck(cs, new int[] {19, 3, 174});
 	}
+
 	
 	@Test
 	public void test2() {
-		sRgb65ColorSpace cs = sRgb65ColorSpace.getInstance();
+		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
 			int g = rd.nextInt(256);
 			int b = rd.nextInt(256);
-			checkToXyz(cs, new int[] {r, g, b});
+			doCheck(cs, new int[] {r, g, b});
 		}
 	}
 	
 //	@Test	// tests all possible rgb combinations
 //	public void test3() {
-//		sRgb65ColorSpace cs = new sRgb65ColorSpace();
+//		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 //		for (int r = 0; r < 256; r++) {
 //			for (int g = 0; g < 256; g++) {
 //				for (int b = 0; b < 256; b++) {
@@ -59,18 +65,12 @@ public class sRgb65ColorSpaceTest {
 	
 	// ---------------------------------------------------
 	
-	private static void checkToXyz(ColorSpace cs, int[] srgb65) {
+	private static void doCheck(ColorSpace cs, int[] srgb) {
 		{
-			float[] srgbA = RgbUtils.normalize(srgb65);
+			float[] srgbA = RgbUtils.normalize(srgb);
 			float[] xyz50 = cs.toCIEXYZ(srgbA);
 			float[] srgbB = cs.fromCIEXYZ(xyz50);
-			assertArrayEquals(Arrays.toString(srgb65), srgbA, srgbB, TOL);
-		}
-		{
-			float[] srgbA = RgbUtils.normalize(srgb65);
-			float[] rgb50 = cs.toRGB(srgbA);
-			float[] srgbB = cs.fromRGB(rgb50);
-			assertArrayEquals(srgbA, srgbB, TOL);
+			assertArrayEquals(Arrays.toString(srgb), srgbA, srgbB, TOL);
 		}
 	}
 	
