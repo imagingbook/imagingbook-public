@@ -36,20 +36,6 @@ public class sRgb50ColorSpace extends ColorSpace {
 		throw new RuntimeException();
 	}
 	
-	public static double[] getPrimary(int idx) {
-		return Matrix.getColumn(Mrgb50i, idx);
-	}
-	
-	// The white point of the ICC PCS has the tristimulus values X = 0.9642, Y = 1, Z = 0.8249 (
-	public static double[] getWhiteXYZ() {
-		return Matrix.multiply(Mrgb50i, new double[] {1, 1, 1});
-		// {0.964200020, 1.000000000, 0.824900091}
-	}
-	
-	/** Constructor (non-public). */
-	private sRgb50ColorSpace() {
-		super(ColorSpace.TYPE_RGB, 3);
-	}
 
 	// D50 specs used in book, see Eq. 14.48 (p. 443)
 //	public static final double[][] Mrgb50i =    // (X,Y,Z) = Mrgbi * (R,G,B) for D50 primaries
@@ -57,7 +43,7 @@ public class sRgb50ColorSpace extends ColorSpace {
 //			 {0.222517, 0.716873, 0.060610},
 //			 {0.013931, 0.097099, 0.714075}};
 	
-	// D50 from sRGB specs (https://www.color.org/sRGB.pdf)
+	// D50 from sRGB specs, most accurate for desired tristimulus X = 0.9642, Y = 1, Z = 0.8249 (https://www.color.org/sRGB.pdf)
 	public static final double[][] Mrgb50i = 
 		{{0.436030342570117, 0.385101860087134, 0.143067806654203},
 		 {0.222438466210245, 0.716942745571917, 0.060618777416563},
@@ -73,6 +59,25 @@ public class sRgb50ColorSpace extends ColorSpace {
 	public static final double[][] Mrgb50 =
 			Matrix.inverse(Mrgb50i);
 	
+	// ----------------------------------------------------
+	
+	public static double[] getPrimary(int idx) {
+		return Matrix.getColumn(Mrgb50i, idx);
+	}
+	
+	// The white point of the ICC PCS has the tristimulus values X = 0.9642, Y = 1, Z = 0.8249 (
+	public static double[] getWhiteXYZ() {
+		return Matrix.multiply(Mrgb50i, new double[] {1, 1, 1});
+		// {0.964200020, 1.000000000, 0.824900091}
+	}
+	
+	// ----------------------------------------------------
+	
+	/** Constructor (non-public). */
+	private sRgb50ColorSpace() {
+		super(ColorSpace.TYPE_RGB, 3);
+	}
+
 	// ----------------------------------------------------
 	
 	@Override
@@ -123,13 +128,18 @@ public class sRgb50ColorSpace extends ColorSpace {
 	// ----------------------------
 	
 	public static void main(String[] args) {
-		PrintPrecision.set(6);
-//		System.out.println("Mrgb50 = " + Matrix.toString(Mrgb50));
-//		System.out.println(Arrays.toString(ComponentNames));
+		PrintPrecision.set(16);
 		
-		ColorSpace cs1 = sRgb50ColorSpace.getInstance();
-		ColorSpace cs2 = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+		double[] trist1 = Matrix.multiply(Mrgb50i, new double[] {1,1,1});
+		System.out.println("W  = " + Matrix.toString(trist1));
+		System.out.println("Xr = " + Matrix.toString(Matrix.multiply(Mrgb50i, new double[] {1,0,0})));
+		System.out.println("Xg = " + Matrix.toString(Matrix.multiply(Mrgb50i, new double[] {0,1,0})));
+		System.out.println("Xb = " + Matrix.toString(Matrix.multiply(Mrgb50i, new double[] {0,0,1})));
 		
+		
+//		ColorSpace cs1 = sRgb50ColorSpace.getInstance();
+//		ColorSpace cs2 = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+//		PrintPrecision.set(6);
 //		for(int c = 0; c < 256; c++) {
 //			int[] srgb = {c, 0, 0};
 //			float[] srgbA = RgbUtils.normalize(srgb);
@@ -140,40 +150,6 @@ public class sRgb50ColorSpace extends ColorSpace {
 //					Matrix.toString(xyz2));
 //		}
 		
-		PrintPrecision.set(16);
-		System.out.println("Mrgb50i = \n" + Matrix.toString(Mrgb50i));
-		
-		double[] trist1 = Matrix.multiply(Mrgb50i, new double[] {1,1,1});
-		System.out.println("trist1 = " + Matrix.toString(trist1));
-		System.out.println("Xr = " + Matrix.toString(Matrix.multiply(Mrgb50i, new double[] {1,0,0})));
-		System.out.println("Xg = " + Matrix.toString(Matrix.multiply(Mrgb50i, new double[] {0,1,0})));
-		System.out.println("Xb = " + Matrix.toString(Matrix.multiply(Mrgb50i, new double[] {0,0,1})));
-		
-		
-		System.out.println("--------------------------------");
-				
-		double[][] Mrgb50i2 = Matrix.multiply(1.0 / trist1[1], Mrgb50i);
-		System.out.println("Mrgb50i2 = \n" + Matrix.toString(Mrgb50i2));
-		double[] trist2 = Matrix.multiply(Mrgb50i2, new double[] {1,1,1});
-		System.out.println("trist2 = " + Matrix.toString(trist2));
-		
-		
-		System.out.println("--------------------------------");
-		
-		double[][] Mrgb50i3 = {			// http://www.brucelindbloom.com/index.html?ColorCalculator.html
-				{0.4360747,  0.3850649,  0.1430804},
-				{0.2225045,  0.7168786,  0.0606169},
-				{0.0139322,  0.0971045,  0.7141733}};
-		System.out.println("Mrgb50i3 = \n" + Matrix.toString(Mrgb50i3));
-		System.out.println("Xr = " + Matrix.toString(Matrix.multiply(Mrgb50i3, new double[] {1,0,0})));
-		System.out.println("Xg = " + Matrix.toString(Matrix.multiply(Mrgb50i3, new double[] {0,1,0})));
-		System.out.println("Xb = " + Matrix.toString(Matrix.multiply(Mrgb50i3, new double[] {0,0,1})));
-		System.out.println("W  = " + Matrix.toString(Matrix.multiply(Mrgb50i3, new double[] {1,1,1})));
-		
-		System.out.println("D50 tristimulus --------------------------------");
-		// values from https://en.wikipedia.org/wiki/Standard_illuminant#Illuminant_series_D
-		System.out.println("xy2  = " + Matrix.toString(CieUtil.xyToXYZ(0.34567, 0.35850, 1)));
-		System.out.println("xy10 = " + Matrix.toString(CieUtil.xyToXYZ(0.34773, 0.35952, 1)));
 	}
 
 

@@ -11,11 +11,8 @@ package imagingbook.common.color.colorspace;
 
 import static imagingbook.common.math.Matrix.multiply;
 
-import java.awt.color.ColorSpace;
-
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.util.ObjectUtils;
 
 /**
  * <p>
@@ -112,9 +109,9 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	
 	public static void main(String[] args) {
 		PrintPrecision.set(16);
-		System.out.println("MCATi = " + Matrix.toString(MCATi));
+		System.out.println("MCATi = \n" + Matrix.toString(MCATi));
 		double[][] X = Matrix.multiply(MCAT, MCATi);
-		System.out.println("X = " + Matrix.toString(X));
+		System.out.println("MCAT * MCATi = \n" + Matrix.toString(X));
 		
 		
 		
@@ -124,31 +121,30 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 		System.out.println();
 		
 		
+//		
+//		ColorSpace cs = sRgb65ColorSpace.getInstance();
+//		float[] red = {1, 0, 0};
+//		float[] grn = {0, 1, 0};
+//		float[] blu = {0, 0, 1};
+//		
+//		float[] rgb1 = blu;
+//		
+//		System.out.println("rgb1 = " + Matrix.toString(rgb1));
+//		float[] XYZ65 = cs.toCIEXYZ(rgb1);
+//		System.out.println("XYZ65 = " + Matrix.toString(XYZ65));
+//		
+//		double[] xy65 = CieUtil.XYZToXy(Matrix.toDouble(XYZ65));
+//		System.out.println("xy65 = " + Matrix.toString(xy65));
+//		
+//		float[] XYZ50 = adapt.applyTo(XYZ65);
+//		System.out.println("XYZ50 = " + Matrix.toString(XYZ50));
+//		
+//		double[] xy50 = CieUtil.XYZToXy(Matrix.toDouble(XYZ50));
+//		System.out.println("xy50 = " + Matrix.toString(xy50));
+//		
+//		float[] rgb2 = cs.fromCIEXYZ(XYZ65);
+//		System.out.println("rgb2 = " + Matrix.toString(rgb2));
 		
-		ColorSpace cs = sRgb65ColorSpace.getInstance();
-		float[] red = {1, 0, 0};
-		float[] grn = {0, 1, 0};
-		float[] blu = {0, 0, 1};
-		
-		float[] rgb1 = blu;
-		
-		System.out.println("rgb1 = " + Matrix.toString(rgb1));
-		float[] XYZ65 = cs.toCIEXYZ(rgb1);
-		System.out.println("XYZ65 = " + Matrix.toString(XYZ65));
-		
-		double[] xy65 = CieUtil.XYZToXy(Matrix.toDouble(XYZ65));
-		System.out.println("xy65 = " + Matrix.toString(xy65));
-		
-		float[] XYZ50 = adapt.applyTo(XYZ65);
-		System.out.println("XYZ50 = " + Matrix.toString(XYZ50));
-		
-		double[] xy50 = CieUtil.XYZToXy(Matrix.toDouble(XYZ50));
-		System.out.println("xy50 = " + Matrix.toString(xy50));
-		
-		float[] rgb2 = cs.fromCIEXYZ(XYZ65);
-		System.out.println("rgb2 = " + Matrix.toString(rgb2));
-		
-		System.out.println("\"" + ObjectUtils.encodeToString(MCATi) + "\"");
 	}
 	
 	

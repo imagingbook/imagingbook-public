@@ -17,13 +17,24 @@ import java.util.Random;
 import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
+import imagingbook.common.math.Matrix;
+import imagingbook.testutils.NumericTestUtils;
 
 public class BradfordAdaptationTest {
 	
 	static float TOL = 1e-6f;
 
 	@Test
-	public void test1a() {
+	public void test0() {	// adaptation to the same white point gives identity matrix always
+		double[][] I = Matrix.idMatrix(3);
+		for (Illuminant illum : Arrays.asList(StandardIlluminant.D65, StandardIlluminant.D50, StandardIlluminant.N)) {
+			BradfordAdaptation adapt = new BradfordAdaptation(illum, illum);
+			NumericTestUtils.assertArrayEquals(adapt.getAdaptationMatrix(), I, 1e-12);
+		}
+	}
+	
+	@Test
+	public void test1() {
 		ColorSpace cs = sRgb65ColorSpace.getInstance();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
