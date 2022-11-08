@@ -11,6 +11,12 @@ package imagingbook.common.color.colorspace;
 
 import static imagingbook.common.math.Matrix.multiply;
 
+import java.awt.color.ColorSpace;
+
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
+import imagingbook.common.util.ObjectUtils;
+
 /**
  * <p>
  * This class represents a linear chromatic adaptation transform,
@@ -18,51 +24,53 @@ import static imagingbook.common.math.Matrix.multiply;
  * to a target white point. 
  * Both white points are passed to the constructor.
  * The actual color mapping is done by method {@link #applyTo(float[])}.
- * The underlying linear transformation is specified by matrix 'Mcat',
- * which may be retrieved by {@link #getMcat()}).
+ * The underlying linear transformation is specified by a 3x3 matrix,
+ * which may be retrieved by {@link #getAdaptationMatrix()}).
  * See the Section 14.6 of [1] for additional details and examples.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; 
+ * An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  */
 public class BradfordAdaptation implements ChromaticAdaptation {
 	
-	// CAT transform matrices (forward and inverse)
-	private static double[][] Mfwd = {
+	// CAT forward transform matrix
+	private static double[][] MCAT = {
 	    { 0.8951,  0.2664, -0.1614},
 	    {-0.7502,  1.7135,  0.0367},
 	    { 0.0389, -0.0685,  1.0296}};
-	    
-	private static double[][] Minv = {	
-		{ 0.9869929055, -0.1470542564, 0.1599626517}, 
-		{ 0.4323052697,  0.5183602715, 0.0492912282},
-		{-0.0085286646,  0.0400428217, 0.9684866958}};
-	
-//	private static double[][] Minv = Matrix.inverse(Mfwd);
+	   
+	// CAT inverse transform matrix
+	private static double[][] MCATi = Matrix.inverse(MCAT);	  // we always invert for precision reasons
+//		{{ 0.9869929054667120, -0.1470542564209900, 0.1599626516637310}, 
+//		 { 0.4323052697233940,  0.5183602715367770, 0.0492912282128560}, 
+//		 {-0.0085286645751770,  0.0400428216540850, 0.9684866957875500}}
 	
 	//	the complete color adaptation transformation matrix
-	private final double[][] Mcat;
+	private final double[][] Madapt;
 	
 	/**
 	 * Constructor accepting two white points (XYZ-coordinates).
+	 * 
 	 * @param W1 source white point
 	 * @param W2 target white point
 	 */
 	public BradfordAdaptation(double[] W1, double[] W2) {
-		double[] rgb1 = multiply(Mfwd, W1);
-		double[] rgb2 = multiply(Mfwd, W2);
+		double[] rgb1 = multiply(MCAT, W1);
+		double[] rgb2 = multiply(MCAT, W2);
 		double[][] Mrgb = rgbMatrix(rgb1, rgb2);
-		Mcat = multiply(Minv, multiply(Mrgb, Mfwd));
+		Madapt = multiply(MCATi, multiply(Mrgb, MCAT));
 	}
 	
 	/**
-	 * Constructor accepting two {@link StandardIlluminant} instances for
+	 * Constructor accepting two {@link Illuminant} instances for
 	 * specifying the source and target white points.
+	 * 
 	 * @param illum1 source illuminant
 	 * @param illum2 target illuminant
 	 */
-	public BradfordAdaptation(StandardIlluminant illum1, StandardIlluminant illum2) {
+	public BradfordAdaptation(Illuminant illum1, Illuminant illum2) {
 		this(illum1.getXYZ(), illum2.getXYZ());
 	}
 	
@@ -72,68 +80,76 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 		// XYZ2 = Mcat . XYZ1
 		float[] XYZ2 = new float[3];
 		for (int i = 0; i < 3; i++) {
-			XYZ2[i] = (float) (Mcat[i][0] * xyz[0] + Mcat[i][1] * xyz[1] + Mcat[i][2] * xyz[2]);
+			XYZ2[i] = (float) (Madapt[i][0] * xyz[0] + Madapt[i][1] * xyz[1] + Madapt[i][2] * xyz[2]);
 		}
 		return XYZ2;
 	}
 	
 	/**
-	 * Returns the color adaptation transformation matrix (Mcat).
+	 * Returns the composite color adaptation transformation matrix.
 	 * @return the color adaptation transformation matrix
 	 */
-	public double[][] getMcat() {
-		return this.Mcat;
+	public double[][] getAdaptationMatrix() {
+		return this.Madapt;
 	}
 	
 
 	// Creates a diagonal matrix with the ratios of the rgb components
 	// obtained by transforming the two white points
 	private double[][] rgbMatrix(double[] rgb1, double[] rgb2) {
-		if (rgb1.length != rgb2.length)
+		if (rgb1.length != rgb2.length) {
 			throw new IllegalArgumentException();
-		int n = rgb1.length;
-		double[][] Madapt = new double[n][n];
-		for (int i = 0; i < n; i++) {
-			Madapt[i][i] = rgb2[i] / rgb1[i];
 		}
-		return Madapt;
+		final int n = rgb1.length;
+		double[][] M = new double[n][n];
+		for (int i = 0; i < n; i++) {
+			M[i][i] = rgb2[i] / rgb1[i];
+		}
+		return M;
 	}
 	
 	// ------------------------------------------------------------------------------
 	
-//	public static void main(String[] args) {
-//		
-//		BradfordAdaptation adapt = new BradfordAdaptation(Illuminant.D65, Illuminant.D50);	// adapts from D65 -> D50
-//		
-//		System.out.println("Mcat = \n" + Matrix.toString(adapt.getMcat()));
-//		System.out.println();
-//		
-//		
-//		PrintPrecision.set(4);
-//		ColorSpace cs = new sRgb65ColorSpace();
-//		float[] red = {1, 0, 0};
-//		float[] grn = {0, 1, 0};
-//		float[] blu = {0, 0, 1};
-//		
-//		float[] rgb1 = blu;
-//		
-//		System.out.println("rgb1 = " + Matrix.toString(rgb1));
-//		float[] XYZ65 = cs.toCIEXYZ(rgb1);
-//		System.out.println("XYZ65 = " + Matrix.toString(XYZ65));
-//		
-//		float[] xy65 = CieUtil.xyzToxy(XYZ65);
-//		System.out.println("xy65 = " + Matrix.toString(xy65));
-//		
-//		float[] XYZ50 = adapt.applyTo(XYZ65);
-//		System.out.println("XYZ50 = " + Matrix.toString(XYZ50));
-//		
-//		float[] xy50 = CieUtil.xyzToxy(XYZ50);
-//		System.out.println("xy50 = " + Matrix.toString(xy50));
-//		
-//		float[] rgb2 = cs.fromCIEXYZ(XYZ65);
-//		System.out.println("rgb2 = " + Matrix.toString(rgb2));
-//		
-//	}
-//	
+	public static void main(String[] args) {
+		PrintPrecision.set(16);
+		System.out.println("MCATi = " + Matrix.toString(MCATi));
+		double[][] X = Matrix.multiply(MCAT, MCATi);
+		System.out.println("X = " + Matrix.toString(X));
+		
+		
+		
+		BradfordAdaptation adapt = new BradfordAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
+		
+		System.out.println("Mcat = \n" + Matrix.toString(adapt.getAdaptationMatrix()));
+		System.out.println();
+		
+		
+		
+		ColorSpace cs = sRgb65ColorSpace.getInstance();
+		float[] red = {1, 0, 0};
+		float[] grn = {0, 1, 0};
+		float[] blu = {0, 0, 1};
+		
+		float[] rgb1 = blu;
+		
+		System.out.println("rgb1 = " + Matrix.toString(rgb1));
+		float[] XYZ65 = cs.toCIEXYZ(rgb1);
+		System.out.println("XYZ65 = " + Matrix.toString(XYZ65));
+		
+		double[] xy65 = CieUtil.XYZToXy(Matrix.toDouble(XYZ65));
+		System.out.println("xy65 = " + Matrix.toString(xy65));
+		
+		float[] XYZ50 = adapt.applyTo(XYZ65);
+		System.out.println("XYZ50 = " + Matrix.toString(XYZ50));
+		
+		double[] xy50 = CieUtil.XYZToXy(Matrix.toDouble(XYZ50));
+		System.out.println("xy50 = " + Matrix.toString(xy50));
+		
+		float[] rgb2 = cs.fromCIEXYZ(XYZ65);
+		System.out.println("rgb2 = " + Matrix.toString(rgb2));
+		
+		System.out.println("\"" + ObjectUtils.encodeToString(MCATi) + "\"");
+	}
+	
 	
 }

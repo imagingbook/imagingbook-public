@@ -16,7 +16,11 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import imagingbook.common.color.RgbUtils;
+
 public class BradfordAdaptationTest {
+	
+	static float TOL = 1e-6f;
 
 	@Test
 	public void test1a() {
@@ -54,7 +58,7 @@ public class BradfordAdaptationTest {
 //	}
 	
 	private static void doCheck(ColorSpace cs, int[] srgb) {
-		float[] srgb1 = {srgb[0]/255f, srgb[1]/255f, srgb[2]/255f};		
+		float[] srgb1 = RgbUtils.normalize(srgb);		
 		ChromaticAdaptation adapt65to50 = new BradfordAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
 		ChromaticAdaptation adapt50to65 = new BradfordAdaptation(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
 		
@@ -62,7 +66,7 @@ public class BradfordAdaptationTest {
 		float[] XYZ50 = adapt65to50.applyTo(XYZ65a);
 		float[] XYZ65b = adapt50to65.applyTo(XYZ50);
 		
-		assertArrayEquals("Bradford adapt problem for srgb=" + Arrays.toString(srgb), XYZ65a, XYZ65b, 1e-6f);
+		assertArrayEquals("Bradford adapt problem for srgb=" + Arrays.toString(srgb), XYZ65a, XYZ65b, TOL);
 	}
 
 }

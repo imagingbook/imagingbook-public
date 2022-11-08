@@ -16,6 +16,9 @@ import java.awt.color.ColorSpace;
 
 import imagingbook.common.math.Matrix;
 
+
+// D65 tristimulus: 0.9504, 1.0000, 1.0888
+
 /**
  * This class implements a D65-based sRGBcolor space without performing
  * chromatic adaptation between D50 and D65, as required by Java's profile
