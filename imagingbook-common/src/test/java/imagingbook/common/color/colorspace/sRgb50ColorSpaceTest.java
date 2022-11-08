@@ -1,6 +1,6 @@
 package imagingbook.common.color.colorspace;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 import java.awt.color.ColorSpace;
 import java.util.Arrays;
@@ -10,13 +10,12 @@ import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
 public class sRgb50ColorSpaceTest {
 	
 	static float TOL = 1e-5f;
 	
-	static ColorSpace CS = sRgb50ColorSpace.getInstance();
+	static sRgb50ColorSpace CS = sRgb50ColorSpace.getInstance();
 
 	@Test
 	public void test1() {
@@ -38,32 +37,44 @@ public class sRgb50ColorSpaceTest {
 			doCheck(CS, new int[] {r, g, b});
 		}
 	}
+
+//	@Test	// tests all possible rgb combinations (takes long!)
+//	public void test3() {
+//		for (int r = 0; r < 256; r++) {
+//			for (int g = 0; g < 256; g++) {
+//				for (int b = 0; b < 256; b++) {
+//					doCheck(CS, new int[] {r, g, b});
+//				}
+//			}
+//		}
+//	}
 	
 	@Test
-	public void test3() {
-		PrintPrecision.set(9);
-		// check primaries
+	public void testPrimaries() { // check primaries
 		for (int i = 0; i < 3; i++) {
 			float[] rgb = new float[3];
 			rgb[i] = 1;
 			float[] xyz = CS.toCIEXYZ(rgb);
-			assertArrayEquals(Matrix.toFloat(sRgb50ColorSpace.getPrimary(i)), xyz, 1e-6f);
-		}
-		{	// check black point
-			float[] rgb = {0, 0, 0};
-			float[] xyz = CS.toCIEXYZ(rgb);
-			assertArrayEquals(new float[] {0, 0, 0}, xyz, 1e-6f);
-		}
-		{	// check white point
-			float[] rgb = {1, 1, 1};
-			float[] xyz = CS.toCIEXYZ(rgb);
-//			System.out.println(Matrix.toString(xyz));
-//			System.out.println(Matrix.toString(sRgb50ColorSpace.getWhiteXYZ()));
-			float[] tristimulusD50 = {0.9642f, 1f, 0.8249f};
-			assertArrayEquals(tristimulusD50, xyz, 1e-6f);
+			assertArrayEquals(Matrix.toFloat(CS.getPrimary(i)), xyz, 1e-6f);
 		}
 	}
 	
+	@Test
+	public void testBlack() { // check black point
+		float[] rgb = {0, 0, 0};
+		float[] xyz = CS.toCIEXYZ(rgb);
+		assertArrayEquals(new float[] {0, 0, 0}, xyz, 1e-6f);
+	}
+	
+	@Test
+	public void testWhite() { // check tristimulus/white point
+		float[] wrgb = {1, 1, 1};
+		float[] wXYZ = CS.toCIEXYZ(wrgb);
+		float[] wIll = Matrix.toFloat(StandardIlluminant.D50.getXYZ()); 
+		// {0.9642f, 1f, 0.8249f};
+		assertArrayEquals(wIll, wXYZ, 1e-6f);
+		assertArrayEquals(wIll, Matrix.toFloat(CS.getWhiteXYZ()), 1e-6f);
+	}
 	
 	// ---------------------------------------------------
 	

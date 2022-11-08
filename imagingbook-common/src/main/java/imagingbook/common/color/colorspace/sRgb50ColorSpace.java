@@ -16,9 +16,11 @@ import imagingbook.common.math.PrintPrecision;
 
 /**
  * Implementation of a sRGB color space, as a substitute for Java's built-in
- * standard sRGB space (obtained by
- * {@code ColorSpace.getInstance(ColorSpace.CS_sRGB)}), with improved accuracy.
- * All XYZ-coordinates are D50-based.
+ * standard sRGB space ({@code ColorSpace.getInstance(ColorSpace.CS_sRGB)}), 
+ * with improved accuracy.
+ * The reference white point of this color space is D50, thus passing
+ * any gray color (with r = g = b) to {@link #toCIEXYZ(float[])} results in
+ * XYZ coordinates with (x,y) = (3.3457, 3.3585).
  * 
  * @author WB
  * @version 2022/11/07
@@ -61,12 +63,12 @@ public class sRgb50ColorSpace extends ColorSpace {
 	
 	// ----------------------------------------------------
 	
-	public static double[] getPrimary(int idx) {
+	public double[] getPrimary(int idx) {
 		return Matrix.getColumn(Mrgb50i, idx);
 	}
 	
 	// The white point of the ICC PCS has the tristimulus values X = 0.9642, Y = 1, Z = 0.8249 (
-	public static double[] getWhiteXYZ() {
+	public double[] getWhiteXYZ() {
 		return Matrix.multiply(Mrgb50i, new double[] {1, 1, 1});
 		// {0.964200020, 1.000000000, 0.824900091}
 	}
@@ -129,12 +131,17 @@ public class sRgb50ColorSpace extends ColorSpace {
 	
 	public static void main(String[] args) {
 		PrintPrecision.set(16);
+		sRgb50ColorSpace cs = sRgb50ColorSpace.getInstance();
 		
 		double[] trist1 = Matrix.multiply(Mrgb50i, new double[] {1,1,1});
 		System.out.println("W  = " + Matrix.toString(trist1));
 		System.out.println("Xr = " + Matrix.toString(Matrix.multiply(Mrgb50i, new double[] {1,0,0})));
 		System.out.println("Xg = " + Matrix.toString(Matrix.multiply(Mrgb50i, new double[] {0,1,0})));
 		System.out.println("Xb = " + Matrix.toString(Matrix.multiply(Mrgb50i, new double[] {0,0,1})));
+		
+		double[] whiteXYZ = cs.getWhiteXYZ();
+		System.out.println("getWhiteXYZ() = " + Matrix.toString(whiteXYZ));
+		System.out.println("          xy = " + Matrix.toString(CieUtil.XYZToXy(whiteXYZ)));	// {0.3457029085924369, 0.3585385827835399}
 		
 		
 //		ColorSpace cs1 = sRgb50ColorSpace.getInstance();

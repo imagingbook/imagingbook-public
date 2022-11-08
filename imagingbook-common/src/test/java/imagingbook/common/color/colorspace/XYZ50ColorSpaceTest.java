@@ -11,9 +11,9 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
-public class XYZ65ColorSpaceTest {
-
-	static XYZ65ColorSpace CS = XYZ65ColorSpace.getInstance();
+public class XYZ50ColorSpaceTest {
+	
+	static XYZ50ColorSpace CS = XYZ50ColorSpace.getInstance();
 	static float TOL = 1e-5f;
 
 	@Test
@@ -59,16 +59,16 @@ public class XYZ65ColorSpaceTest {
 			float[] rgb = {1, 1, 1};
 			float[] xyz = CS.fromRGB(rgb);
 			PrintPrecision.set(16);
-//			System.out.println(Matrix.toString(xyz));
-//			System.out.println(Matrix.toString(sRgb65ColorSpace.getInstance().getWhiteXYZ()));
-			float[] wXYZ = Matrix.toFloat(StandardIlluminant.D65.getXYZ());
-				//{0.9505f, 1f, 1.0888f}
-//				{0.9505f, 1f, 1.0890f};
-//				{0.9505000141764465f, 0.9999999905008820f, 1.0890001060762940f};
+			System.out.println(Matrix.toString(xyz));
+				// {0.9642000198364258, 1.0000000000000000, 0.8249000906944275}
+			System.out.println(Matrix.toString(sRgb50ColorSpace.getInstance().getWhiteXYZ()));
+				// {0.9642000093114540, 0.9999999891987249, 0.8249000794651220}
+			float[] wXYZ = Matrix.toFloat(StandardIlluminant.D50.getXYZ());
+				// {0.9642f, 1f, 0.8249f};
 			assertArrayEquals(wXYZ, xyz, 1e-6f);
 			
-//			double[] wxy = {0.3457029085924369, 0.3585385827835399};	// D65 white point
-//			assertArrayEquals(wxy, CieUtil.XYZToXy(Matrix.toDouble(xyz)), 1e-6f);
+			double[] wxy = {0.3457029085924369, 0.3585385827835399};	// D50 white point
+			assertArrayEquals(wxy, CieUtil.XYZToXy(Matrix.toDouble(xyz)), 1e-6f);
 		}
 	}
 	
@@ -89,4 +89,5 @@ public class XYZ65ColorSpaceTest {
 			assertArrayEquals(srgb, CS.toRGB(XYZ), TOL);
 		}
 	}
+
 }

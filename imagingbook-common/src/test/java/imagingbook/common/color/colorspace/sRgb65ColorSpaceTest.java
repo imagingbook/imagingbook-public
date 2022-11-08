@@ -17,31 +17,32 @@ import java.util.Random;
 import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
+import imagingbook.common.math.Matrix;
 
 public class sRgb65ColorSpaceTest {
 	
 	static float TOL = 1e-3f;
+	
+	static sRgb65ColorSpace CS = sRgb65ColorSpace.getInstance();
 
 	@Test
 	public void test1() {
-		sRgb65ColorSpace cs = sRgb65ColorSpace.getInstance();
-		doCheck(cs, new int[] {0, 0, 0});
-		doCheck(cs, new int[] {255, 255, 255});
-		doCheck(cs, new int[] {177, 0, 0});
-		doCheck(cs, new int[] {0, 177, 0});
-		doCheck(cs, new int[] {0, 0, 177});
-		doCheck(cs, new int[] {19, 3, 174});
+		doCheck(CS, new int[] {0, 0, 0});
+		doCheck(CS, new int[] {255, 255, 255});
+		doCheck(CS, new int[] {177, 0, 0});
+		doCheck(CS, new int[] {0, 177, 0});
+		doCheck(CS, new int[] {0, 0, 177});
+		doCheck(CS, new int[] {19, 3, 174});
 	}
 	
 	@Test
 	public void test2() {
-		sRgb65ColorSpace cs = sRgb65ColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
 			int g = rd.nextInt(256);
 			int b = rd.nextInt(256);
-			doCheck(cs, new int[] {r, g, b});
+			doCheck(CS, new int[] {r, g, b});
 		}
 	}
 	
@@ -57,21 +58,48 @@ public class sRgb65ColorSpaceTest {
 //		}
 //	}
 	
+	@Test
+	public void testPrimaries() { // check primaries
+		for (int i = 0; i < 3; i++) {
+			float[] rgb = new float[3];
+			rgb[i] = 1;
+			float[] xyz = CS.toCIEXYZ(rgb);
+			assertArrayEquals(Matrix.toFloat(CS.getPrimary(i)), xyz, 1e-6f);
+		}
+	}
+	
+	@Test
+	public void testBlack() { // check black point
+		float[] rgb = {0, 0, 0};
+		float[] xyz = CS.toCIEXYZ(rgb);
+		assertArrayEquals(new float[] {0, 0, 0}, xyz, 1e-6f);
+	}
+	
+	@Test
+	public void testWhite() { // check tristimulus/white point
+		float[] wrgb = {1, 1, 1};
+		float[] wXYZ = CS.toCIEXYZ(wrgb);
+		float[] wIll = Matrix.toFloat(StandardIlluminant.D65.getXYZ()); 
+		// {0.9642f, 1f, 0.8249f};
+		assertArrayEquals(wIll, wXYZ, 1e-6f);
+		assertArrayEquals(wIll, Matrix.toFloat(CS.getWhiteXYZ()), 1e-6f);
+	}
+	
 	// ---------------------------------------------------
 	
-	private static void doCheck(ColorSpace cs, int[] srgb65) {
+	private static void doCheck(ColorSpace cs, int[] srgb) {
 		{
-			float[] srgbA = RgbUtils.normalize(srgb65);
+			float[] srgbA = RgbUtils.normalize(srgb);
 			float[] xyz50 = cs.toCIEXYZ(srgbA);
 			float[] srgbB = cs.fromCIEXYZ(xyz50);
-			assertArrayEquals(Arrays.toString(srgb65), srgbA, srgbB, TOL);
+			assertArrayEquals(Arrays.toString(srgb), srgbA, srgbB, TOL);
 		}
-//		{
-//			float[] srgbA = RgbUtils.normalize(srgb65);
-//			float[] rgb50 = cs.toRGB(srgbA);
-//			float[] srgbB = cs.fromRGB(rgb50);
-//			assertArrayEquals(srgbA, srgbB, TOL);
-//		}
+		{
+			float[] srgbA = RgbUtils.normalize(srgb);
+			float[] rgb50 = cs.toRGB(srgbA);
+			float[] srgbB = cs.fromRGB(rgb50);
+			assertArrayEquals(srgbA, srgbB, TOL);
+		}
 	}
 	
 

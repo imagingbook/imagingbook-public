@@ -20,11 +20,11 @@ public enum StandardIlluminant implements Illuminant {
 	/** Equal energy illuminant, neutral point (5400K). */
 	N	(1/3.0, 1/3.0),
 	/** D50 standard illuminant (5000K). */
-	D50	(0.964296, 1.00000, 0.825100),
+	D50	(0.9642000093114540, 1.0, 0.8249000794651220), // (0.964296, 1.00000, 0.825100),
 	/** D55 standard illuminant (5500K). */
 	D55 (0.33411, 0.34877),	
 	/** D65 standard illuminant used for television and sRGB color space (6500K). */
-	D65 (0.950456, 1.00000, 1.088754),
+	D65 (0.9505000141764465, 1.0, 1.0890001060762940), //(0.950456, 1.00000, 1.088754),
 	/** D75 standard illuminant (7500K). */
 	D75 (0.29968, 0.31740),
 	/** Incandescent tungsten (2856K). */
