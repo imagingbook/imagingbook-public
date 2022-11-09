@@ -56,7 +56,7 @@ public class XYZ50ColorSpaceTest {
 	}
 	
 	@Test
-	public void testWhite() {	
+	public void testWhite() {	// external white must map to D50 in this color space
 		float[] rgb = {1, 1, 1};
 		float[] xyzTHIS = CS.fromRGB(rgb);
 
@@ -69,6 +69,17 @@ public class XYZ50ColorSpaceTest {
 		// {0.9642000198364258, 1.0000000000000000, 0.8249000906944275}
 
 		assertArrayEquals(xyzIll, xyzTHIS, 1e-6f);
+	}
+	
+	@Test
+	public void testGray() {  // any external sRGB gray must map do D50-xy in this color space
+		final double[] xy50 = StandardIlluminant.D50.getXy(); // {0.3457, 0.3585};
+		for (int c = 1; c < 256; c++) {
+			float[] rgb = {c, c, c};
+			float[] xyzTHIS = CS.fromRGB(rgb);
+			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(xyzTHIS));
+			assertArrayEquals(xy50, xy, 1e-6f);
+		}
 	}
 	
 	// ---------------------
