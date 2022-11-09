@@ -24,7 +24,7 @@ import imagingbook.common.math.PrintPrecision;
  * @author WB
  *
  */
-public class StandardCIEXYZColorSpaceTest {
+public class AwtCIEXYZColorSpaceTest {
 	
 	ColorSpace CS = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
 	static float TOL = 1e-2f;	// standard color spaces are not very accurate!

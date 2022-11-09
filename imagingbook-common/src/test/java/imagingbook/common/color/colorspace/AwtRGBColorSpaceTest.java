@@ -23,7 +23,7 @@ import imagingbook.common.math.Matrix;
  * @author WB
  *
  */
-public class StandardsRGBColorSpaceTest {
+public class AwtRGBColorSpaceTest {
 	
 	static ColorSpace CS = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 	static float TOL = 1e-2f;	// standard color spaces are not very accurate!
