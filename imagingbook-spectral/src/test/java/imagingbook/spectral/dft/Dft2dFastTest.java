@@ -74,8 +74,8 @@ public class Dft2dFastTest {
 		Dft2d.Float dft = new Dft2dFast.Float(w, h);
 		dft.forward(re, im);
 		dft.inverse(re, im);		
-		NumericTestUtils.assertArrayEquals(reOrig, re, TOL);
-		NumericTestUtils.assertArrayEquals(imOrig, im, TOL);
+		NumericTestUtils.assert2dArrayEquals(reOrig, re, TOL);
+		NumericTestUtils.assert2dArrayEquals(imOrig, im, TOL);
 	}
 	
 	private void runTestDouble(double[][] reOrig, double[][] imOrig, double TOL) {
@@ -86,8 +86,8 @@ public class Dft2dFastTest {
 		Dft2d.Double dft = new Dft2dFast.Double(w, h);
 		dft.forward(re, im);
 		dft.inverse(re, im);		
-		NumericTestUtils.assertArrayEquals(reOrig, re, TOL);
-		NumericTestUtils.assertArrayEquals(imOrig, im, TOL);
+		NumericTestUtils.assert2dArrayEquals(reOrig, re, TOL);
+		NumericTestUtils.assert2dArrayEquals(imOrig, im, TOL);
 	}
 
 }

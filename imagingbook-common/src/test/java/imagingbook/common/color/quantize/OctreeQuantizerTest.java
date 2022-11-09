@@ -338,7 +338,7 @@ public class OctreeQuantizerTest {
 			System.out.println(Matrix.toString(cm));
 			System.out.println();
 		}
-		NumericTestUtils.assertArrayEquals(colormap, cm, TOL);
+		NumericTestUtils.assert2dArrayEquals(colormap, cm, TOL);
 	}
 
 }

@@ -37,7 +37,7 @@ public class StatisticsTest {
 				{-470.4375, -53.1875, 278.1875}};
 		
 		double[][] cov = covarianceMatrix(samples, BIAS_CORRECT);
-		NumericTestUtils.assertArrayEquals(covExpected, cov, TOL);
+		NumericTestUtils.assert2dArrayEquals(covExpected, cov, TOL);
 	}
 	
 	@Test
@@ -50,7 +50,7 @@ public class StatisticsTest {
 				{-627.250, -70.917, 370.917}};
 		
 		double[][] cov = covarianceMatrix(samples, BIAS_CORRECT);
-		NumericTestUtils.assertArrayEquals(covExpected, cov, TOL);
+		NumericTestUtils.assert2dArrayEquals(covExpected, cov, TOL);
 	}
 
 }

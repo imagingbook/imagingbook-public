@@ -65,7 +65,7 @@ public class Dct2dDirectTest {
 		Dct2d.Float dct = new Dct2dDirect.Float(w, h);
 		dct.forward(re);
 		dct.inverse(re);		
-		NumericTestUtils.assertArrayEquals(reOrig, re, TOL);
+		NumericTestUtils.assert2dArrayEquals(reOrig, re, TOL);
 	}
 	
 	private void runTestDouble(double[][] reOrig, double TOL) {
@@ -75,7 +75,7 @@ public class Dct2dDirectTest {
 		Dct2d.Double dct = new Dct2dDirect.Double(w, h);
 		dct.forward(re);
 		dct.inverse(re);		
-		NumericTestUtils.assertArrayEquals(reOrig, re, TOL);
+		NumericTestUtils.assert2dArrayEquals(reOrig, re, TOL);
 	}
 
 }

@@ -20,36 +20,36 @@ public abstract class NumericTestUtils {
 	
 	// utility methods for comparing 2D arrays ---------------------------------------------------------------
 	
-	public static void assertArrayEquals(double[][] expecteds, double[][] actuals) {
-		assertArrayEquals(expecteds, actuals, TOLERANCE);
+	public static void assert2dArrayEquals(double[][] expecteds, double[][] actuals) {
+		assert2dArrayEquals(expecteds, actuals, TOLERANCE);
 	}
 
-	public static void assertArrayEquals(double[][] expecteds, double[][] actuals, double delta) {
+	public static void assert2dArrayEquals(double[][] expecteds, double[][] actuals, double delta) {
 		Assert.assertEquals(expecteds.length, actuals.length);
 		for (int i = 0; i < expecteds.length; i++) {
 			Assert.assertArrayEquals(expecteds[i], actuals[i], delta);
 		}
 	}
 	
-	public static void assertArrayEquals(float[][] expecteds, float[][] actuals) {
-		assertArrayEquals(expecteds, actuals, TOLERANCE);
+	public static void assert2dArrayEquals(float[][] expecteds, float[][] actuals) {
+		assert2dArrayEquals(expecteds, actuals, TOLERANCE);
 	}
 
-	public static void assertArrayEquals(float[][] expecteds, float[][] actuals, double delta) {
+	public static void assert2dArrayEquals(float[][] expecteds, float[][] actuals, double delta) {
 		Assert.assertEquals(expecteds.length, actuals.length);
 		for (int i = 0; i < expecteds.length; i++) {
 			Assert.assertArrayEquals(expecteds[i], actuals[i], (float) delta);
 		}
 	}
 	
-	public static void assertArrayEquals(int[][] expecteds, int[][] actuals) {
+	public static void assert2dArrayEquals(int[][] expecteds, int[][] actuals) {
 		Assert.assertEquals(expecteds.length, actuals.length);
 		for (int i = 0; i < expecteds.length; i++) {
 			Assert.assertArrayEquals(expecteds[i], actuals[i]);
 		}
 	}
 	
-	public static void assertArrayEquals(byte[][] expecteds, byte[][] actuals) {
+	public static void assert2dArrayEquals(byte[][] expecteds, byte[][] actuals) {
 		Assert.assertEquals(expecteds.length, actuals.length);
 		for (int i = 0; i < expecteds.length; i++) {
 			Assert.assertArrayEquals(expecteds[i], actuals[i]);

@@ -85,7 +85,7 @@ public class GeneralizedEigenDecompositionTest {
 //		System.out.println("AV = \n" + Matrix.toString(AV.getData()));
 		RealMatrix BVD = B.multiply(V).multiply(D);
 //		System.out.println("BVD = \n" + Matrix.toString(BVD.getData()));
-		NumericTestUtils.assertArrayEquals(AV.getData(), BVD.getData(), 1e-4);
+		NumericTestUtils.assert2dArrayEquals(AV.getData(), BVD.getData(), 1e-4);
 	}
 	
 	// ------------------------------------------------------------

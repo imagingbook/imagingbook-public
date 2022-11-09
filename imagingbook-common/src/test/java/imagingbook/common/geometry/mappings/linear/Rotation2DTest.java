@@ -28,7 +28,7 @@ public class Rotation2DTest {
 		double[][] AAi = Matrix.multiply(A, Ai);
 		
 		// A * Ai = I
-		NumericTestUtils.assertArrayEquals(Matrix.idMatrix(3), AAi); 	
+		NumericTestUtils.assert2dArrayEquals(Matrix.idMatrix(3), AAi); 	
 	}
 	
 	@Test
@@ -41,7 +41,7 @@ public class Rotation2DTest {
 	
 			Rotation2D R12 = R1.concat(R2);
 			double[][] A12 = R12.getTransformationMatrix();
-			NumericTestUtils.assertArrayEquals(Matrix.idMatrix(3), A12);
+			NumericTestUtils.assert2dArrayEquals(Matrix.idMatrix(3), A12);
 		}
 	}
 	
@@ -57,7 +57,7 @@ public class Rotation2DTest {
 		
 		double[][] A3 = R3.getTransformationMatrix();		
 		double[][] A12 = R12.getTransformationMatrix();
-		NumericTestUtils.assertArrayEquals(A3, A12);
+		NumericTestUtils.assert2dArrayEquals(A3, A12);
 	}
 	
 }

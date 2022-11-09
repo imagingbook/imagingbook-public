@@ -77,7 +77,7 @@ public class StructuringElementsTest {
 				{0, 0, 1, 0, 1 }};
 
 		StructuringElements.toByteArray(Hi);
-		NumericTestUtils.assertArrayEquals(Hb, StructuringElements.toByteArray(Hi));
+		NumericTestUtils.assert2dArrayEquals(Hb, StructuringElements.toByteArray(Hi));
 	}
 	
 	@Test
@@ -90,7 +90,7 @@ public class StructuringElementsTest {
 		byte[][] Hr = StructuringElements.reflect(H);
 		assertEquals(H.length, Hr.length);
 		assertEquals(H[0].length, Hr[0].length);
-		NumericTestUtils.assertArrayEquals(H, StructuringElements.reflect(Hr));
+		NumericTestUtils.assert2dArrayEquals(H, StructuringElements.reflect(Hr));
 	}
 	
 	// ------------------------------------------------------------

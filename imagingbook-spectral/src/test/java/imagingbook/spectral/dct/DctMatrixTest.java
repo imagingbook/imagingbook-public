@@ -37,15 +37,15 @@ public class DctMatrixTest {
 		float[][] g2 = Matrix.duplicate(g);
 		float[][] G2 = Matrix.multiply(A, Matrix.multiply(g2, At));
 		
-		NumericTestUtils.assertArrayEquals(G1, G2, TOL);
+		NumericTestUtils.assert2dArrayEquals(G1, G2, TOL);
 		
 		// inverse DCT by standard transformation methods:
 		dct.inverse(G1);
-		NumericTestUtils.assertArrayEquals(G1, g, TOL);
+		NumericTestUtils.assert2dArrayEquals(G1, g, TOL);
 		
 		// inverse DCT by matrix multiplication:
 		float[][] g2r = Matrix.multiply(At, Matrix.multiply(G2, A));
-		NumericTestUtils.assertArrayEquals(g2r, g, TOL);
+		NumericTestUtils.assert2dArrayEquals(g2r, g, TOL);
 	}
 	
 	@Test
@@ -69,15 +69,15 @@ public class DctMatrixTest {
 		double[][] g2 = Matrix.duplicate(g);
 		double[][] G2 = Matrix.multiply(A, Matrix.multiply(g2, At));
 		
-		NumericTestUtils.assertArrayEquals(G1, G2, TOL);
+		NumericTestUtils.assert2dArrayEquals(G1, G2, TOL);
 		
 		// inverse DCT by standard transformation methods:
 		dct.inverse(G1);
-		NumericTestUtils.assertArrayEquals(G1, g, TOL);
+		NumericTestUtils.assert2dArrayEquals(G1, g, TOL);
 		
 		// inverse DCT by matrix multiplication:
 		double[][] g2r = Matrix.multiply(At, Matrix.multiply(G2, A));
-		NumericTestUtils.assertArrayEquals(g2r, g, TOL);
+		NumericTestUtils.assert2dArrayEquals(g2r, g, TOL);
 	}
 
 	// --------------------------------------------------------------

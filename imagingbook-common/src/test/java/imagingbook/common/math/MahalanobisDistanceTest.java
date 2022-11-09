@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.math;
 
-import static imagingbook.testutils.NumericTestUtils.assertArrayEquals;
+import static imagingbook.testutils.NumericTestUtils.assert2dArrayEquals;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -59,7 +59,7 @@ public class MahalanobisDistanceTest {
 
 		// covariance matrix cov (3x3)
 		double[][] cov = mhd.getCovarianceMatrix();
-		assertArrayEquals(covExp, cov, 1e-6);
+		assert2dArrayEquals(covExp, cov, 1e-6);
 //		System.out.println("cov = \n" + Matrix.toString(cov));
 //		System.out.println();
 
@@ -115,7 +115,7 @@ public class MahalanobisDistanceTest {
 //		System.out.println();
 //		System.out.println("Testing pre-transformed Mahalanobis distances:");
 		double[][] U = mhd.getWhiteningTransformation();
-		assertArrayEquals(UExp, U, TOL);
+		assert2dArrayEquals(UExp, U, TOL);
 //		System.out.println("whitening transformation U = \n" + Matrix.toString(U));
 
 		// calculate whitened sample vectors
@@ -169,7 +169,7 @@ public class MahalanobisDistanceTest {
 			{{3.530730722470281, -0.273104974267673, 0.090141865415068}, 
 			{-0.273104974267673, 24.437361659979956, -1.000379795885254}, 
 			{0.090141865415068, -1.000379795885254, 9.564611057974654}};
-		assertArrayEquals(cov, covExp, TOL);
+		assert2dArrayEquals(cov, covExp, TOL);
 		
 //		System.out.println("cov = (sample covariance matrix)\n" + Matrix.toString(cov));
 //		System.out.println();
@@ -183,21 +183,21 @@ public class MahalanobisDistanceTest {
 			{{0.532470802886470, 0.005770015800939, -0.004414785291958}, 
 			{0.000000000000000, 0.202723726146212, 0.021203237492251}, 
 			{0.000000000000000, 0.000000000000000, 0.323345143830134}};
-		assertArrayEquals(UExp, U, TOL);
+		assert2dArrayEquals(UExp, U, TOL);
 //		System.out.println("U = (whitening transformation)\n" + Matrix.toString(U));
 //		System.out.println();
 		
 		// UT*U must be same as icov:
 		RealMatrix Um = MatrixUtils.createRealMatrix(U);
 		RealMatrix UTU = Um.transpose().multiply(Um);
-		assertArrayEquals(UTU.getData(), icov, TOL);
+		assert2dArrayEquals(UTU.getData(), icov, TOL);
 //		System.out.println("UT*U = (must be same as icov)\n" + Matrix.toString(UTU.getData()));
 //		System.out.println();
 		
 		// covariance matrix of whitened samples must be close to identity:
 		double[][] whitened = whiten(samples, Um);
 		double[][] covW = Statistics.covarianceMatrix(whitened, false);
-		assertArrayEquals(Matrix.idMatrix(3), covW, TOL);
+		assert2dArrayEquals(Matrix.idMatrix(3), covW, TOL);
 //		System.out.println("covW = (covariance matrix of whitened samples must be close to identity)\n" + Matrix.toString(covW));
 	}
 	

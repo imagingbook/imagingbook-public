@@ -29,7 +29,7 @@ public class BradfordAdaptationTest {
 		double[][] I = Matrix.idMatrix(3);
 		for (Illuminant illum : Arrays.asList(StandardIlluminant.D65, StandardIlluminant.D50, StandardIlluminant.N)) {
 			BradfordAdaptation adapt = new BradfordAdaptation(illum, illum);
-			NumericTestUtils.assertArrayEquals(adapt.getAdaptationMatrix(), I, 1e-12);
+			NumericTestUtils.assert2dArrayEquals(adapt.getAdaptationMatrix(), I, 1e-12);
 		}
 	}
 	

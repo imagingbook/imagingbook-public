@@ -31,7 +31,7 @@ public class Dct2dTest {
 			Dct2d.Float dctF = new Dct2dFast.Float(width, height);
 			dctF.forward(reF);
 
-			NumericTestUtils.assertArrayEquals(reD, reF, TOL);
+			NumericTestUtils.assert2dArrayEquals(reD, reF, TOL);
 			
 			width++;
 			height--;
@@ -59,7 +59,7 @@ public class Dct2dTest {
 			Dct2d.Double dctF = new Dct2dFast.Double(width, height);
 			dctF.forward(reF);
 
-			NumericTestUtils.assertArrayEquals(reD, reF, TOL);
+			NumericTestUtils.assert2dArrayEquals(reD, reF, TOL);
 			
 			width++;
 			height--;

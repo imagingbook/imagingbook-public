@@ -34,8 +34,8 @@ public class Dft2dTest {
 			Dft2d.Float dftF = new Dft2dFast.Float(width, height);
 			dftF.forward(reF, imF);
 
-			NumericTestUtils.assertArrayEquals(reD, reF, TOL);
-			NumericTestUtils.assertArrayEquals(imD, imF, TOL);
+			NumericTestUtils.assert2dArrayEquals(reD, reF, TOL);
+			NumericTestUtils.assert2dArrayEquals(imD, imF, TOL);
 			
 			width++;
 			height--;
@@ -66,8 +66,8 @@ public class Dft2dTest {
 			Dft2d.Double dftF = new Dft2dFast.Double(width, height);
 			dftF.forward(reF, imF);
 
-			NumericTestUtils.assertArrayEquals(reD, reF, TOL);
-			NumericTestUtils.assertArrayEquals(imD, imF, TOL);
+			NumericTestUtils.assert2dArrayEquals(reD, reF, TOL);
+			NumericTestUtils.assert2dArrayEquals(imD, imF, TOL);
 			
 			width++;
 			height--;

@@ -66,21 +66,21 @@ public class MatrixTest {
 	
 	@Test
 	public void testMatrixMakeMatrix() {		
-		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeDoubleMatrix(2, 3, -1, 2, 3, 4, 5, 6), TOLERANCE);
-		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeDoubleMatrix(2, 3, new double[] {-1, 2, 3, 4, 5, 6}), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(Bd, Matrix.makeDoubleMatrix(2, 3, -1, 2, 3, 4, 5, 6), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(Bd, Matrix.makeDoubleMatrix(2, 3, new double[] {-1, 2, 3, 4, 5, 6}), TOLERANCE);
 		
-		NumericTestUtils.assertArrayEquals(Bf, Matrix.makeFloatMatrix(2, 3, -1, 2, 3, 4, 5, 6), TOLERANCE);
-		NumericTestUtils.assertArrayEquals(Bf, Matrix.makeFloatMatrix(2, 3, new float[] {-1, 2, 3, 4, 5, 6}), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(Bf, Matrix.makeFloatMatrix(2, 3, -1, 2, 3, 4, 5, 6), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(Bf, Matrix.makeFloatMatrix(2, 3, new float[] {-1, 2, 3, 4, 5, 6}), TOLERANCE);
 		
-		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeRealMatrix(2, 3, -1, 2, 3, 4, 5, 6).getData(), TOLERANCE);
-		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeRealMatrix(2, 3, new double[] {-1, 2, 3, 4, 5, 6}).getData(), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(Bd, Matrix.makeRealMatrix(2, 3, -1, 2, 3, 4, 5, 6).getData(), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(Bd, Matrix.makeRealMatrix(2, 3, new double[] {-1, 2, 3, 4, 5, 6}).getData(), TOLERANCE);
 	}
 	
 	@Test
 	public void testMatrixFlatten() {
-		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeRealMatrix(2, 3, Matrix.flatten(MatrixUtils.createRealMatrix(Bd))).getData(), TOLERANCE);
-		NumericTestUtils.assertArrayEquals(Bd, Matrix.makeDoubleMatrix(2, 3, Matrix.flatten(Bd)), TOLERANCE);
-		NumericTestUtils.assertArrayEquals(Bf, Matrix.makeFloatMatrix(2, 3, Matrix.flatten(Bf)), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(Bd, Matrix.makeRealMatrix(2, 3, Matrix.flatten(MatrixUtils.createRealMatrix(Bd))).getData(), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(Bd, Matrix.makeDoubleMatrix(2, 3, Matrix.flatten(Bd)), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(Bf, Matrix.makeFloatMatrix(2, 3, Matrix.flatten(Bf)), TOLERANCE);
 		
 		assertArrayEquals(new double[] {7, 8, 9}, Matrix.flatten(Matrix.makeDoubleMatrix(1, 3, 7, 8, 9)), TOLERANCE);
 		assertArrayEquals(new double[] {7, 8, 9}, Matrix.flatten(Matrix.makeDoubleMatrix(3, 1, 7, 8, 9)), TOLERANCE);
@@ -282,14 +282,14 @@ public class MatrixTest {
 	@Test
 	public void testMatrixInverseFloat() {
 		float[][] Ai = Matrix.inverse(Af);
-		NumericTestUtils.assertArrayEquals(Af, Matrix.inverse(Ai), TOLERANCE * 10);
+		NumericTestUtils.assert2dArrayEquals(Af, Matrix.inverse(Ai), TOLERANCE * 10);
 	}
 	
 	@Test
 	public void testMatrixInverseDouble() {
 		double[][] AA = Matrix.toDouble(Af);
 		double[][] AAi = Matrix.inverse(AA);
-		NumericTestUtils.assertArrayEquals(AA, Matrix.inverse(AAi), TOLERANCE);
+		NumericTestUtils.assert2dArrayEquals(AA, Matrix.inverse(AAi), TOLERANCE);
 	}
 	
 	@Test(expected = NonsquareMatrixException.class)
@@ -772,7 +772,7 @@ public class MatrixTest {
 		long[][] ML = Matrix.toLongBits(M);
 		assertNotNull(ML);
 		double[][] M2 = Matrix.fromLongBits(ML);
-		NumericTestUtils.assertArrayEquals(M, M2, 0.0);
+		NumericTestUtils.assert2dArrayEquals(M, M2, 0.0);
 	}
 	
 	

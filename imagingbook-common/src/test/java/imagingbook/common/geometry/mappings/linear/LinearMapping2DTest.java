@@ -21,21 +21,21 @@ public class LinearMapping2DTest {
 	@Test
 	public void testConstructor1() {
 		LinearMapping2D A = new LinearMapping2D();
-		NumericTestUtils.assertArrayEquals(I, A.getTransformationMatrix());
+		NumericTestUtils.assert2dArrayEquals(I, A.getTransformationMatrix());
 	}
 	
 	@Test
 	public void testConstructor2() {
 		double[][] a = new double[0][0];	// empty matrix must work
 		LinearMapping2D A = new LinearMapping2D(a);
-		NumericTestUtils.assertArrayEquals(I, A.getTransformationMatrix());
+		NumericTestUtils.assert2dArrayEquals(I, A.getTransformationMatrix());
 	}
 	
 	@Test
 	public void testConstructor3() {
 		double[][] a = {{1, 0}, {0}};		// partial matrix must work
 		LinearMapping2D A = new LinearMapping2D(a);
-		NumericTestUtils.assertArrayEquals(I, A.getTransformationMatrix());
+		NumericTestUtils.assert2dArrayEquals(I, A.getTransformationMatrix());
 	}
 	
 	@Test
@@ -45,7 +45,7 @@ public class LinearMapping2DTest {
 			{-2.461538, 2.615385, -3.538462}, 
 			{-0.307692, 0.230769, 1.000000}};
 		LinearMapping2D A = new LinearMapping2D(a);
-		NumericTestUtils.assertArrayEquals(a, A.getTransformationMatrix());
+		NumericTestUtils.assert2dArrayEquals(a, A.getTransformationMatrix());
 	}
 	
 
@@ -60,10 +60,10 @@ public class LinearMapping2DTest {
 		LinearMapping2D Ai = A.getInverse();
 		
 		double[][] aai = A.concat(Ai).getTransformationMatrix();
-		NumericTestUtils.assertArrayEquals(I, aai);
+		NumericTestUtils.assert2dArrayEquals(I, aai);
 		
 		double[][] aia = Ai.concat(A).getTransformationMatrix();
-		NumericTestUtils.assertArrayEquals(I, aia);
+		NumericTestUtils.assert2dArrayEquals(I, aia);
 	}
 	
 	@Test
