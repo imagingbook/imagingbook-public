@@ -11,33 +11,39 @@ package imagingbook.common.color.colorspace;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.awt.color.ColorSpace;
-import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
 
+import imagingbook.common.color.RgbUtils;
+import imagingbook.common.math.Matrix;
+
 public class XYZscalingAdaptationTest {
+	
+	static ColorSpace CS = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);	// any colorspace should work
+	static ChromaticAdaptation adapt65to50 = new XYZscalingAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
+	static ChromaticAdaptation adapt50to65 = new XYZscalingAdaptation(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
 
 	@Test
-	public void test1a() {
-		ColorSpace cs = sRgb65ColorSpace.getInstance();
-		doCheck(cs, new int[] {0, 0, 0});
-		doCheck(cs, new int[] {255, 255, 255});
-		doCheck(cs, new int[] {177, 0, 0});
-		doCheck(cs, new int[] {0, 177, 0});
-		doCheck(cs, new int[] {0, 0, 177});
-		doCheck(cs, new int[] {19, 3, 174});
+	public void test1() {
+//		ColorSpace cs = sRgb65ColorSpace.getInstance();
+		doCheck(CS, new int[] {0, 0, 0});
+		doCheck(CS, new int[] {255, 255, 255});
+		doCheck(CS, new int[] {177, 0, 0});
+		doCheck(CS, new int[] {0, 177, 0});
+		doCheck(CS, new int[] {0, 0, 177});
+		doCheck(CS, new int[] {19, 3, 174});
 	}
 	
 	@Test
 	public void test2() {
-		ColorSpace cs = sRgb65ColorSpace.getInstance();
+//		ColorSpace cs = sRgb65ColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
 			int g = rd.nextInt(256);
 			int b = rd.nextInt(256);
-			doCheck(cs, new int[] {r, g, b});
+			doCheck(CS, new int[] {r, g, b});
 		}
 	}
 	
@@ -53,16 +59,27 @@ public class XYZscalingAdaptationTest {
 //		}
 //	}
 	
+	@Test
+	public void testWhites() {
+		float[] W50 = Matrix.toFloat(StandardIlluminant.D50.getXYZ());
+		float[] W65 = Matrix.toFloat(StandardIlluminant.D65.getXYZ());
+		
+		float[] convertedTo65 = adapt50to65.applyTo(Matrix.toFloat(StandardIlluminant.D50.getXYZ()));
+		assertArrayEquals(W65, convertedTo65, 1e-6f);
+		
+		float[] convertedTo50 = adapt65to50.applyTo(Matrix.toFloat(StandardIlluminant.D65.getXYZ()));
+		assertArrayEquals(W50, convertedTo50, 1e-6f);
+	}
+	
+	
 	private static void doCheck(ColorSpace cs, int[] srgb) {
-		float[] srgb1 = {srgb[0]/255f, srgb[1]/255f, srgb[2]/255f};		
-		ChromaticAdaptation adapt65to50 = new XYZscalingAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
-		ChromaticAdaptation adapt50to65 = new XYZscalingAdaptation(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
+		float[] srgb50a = RgbUtils.normalize(srgb);
+		float[] XYZ50a = cs.toCIEXYZ(srgb50a);
 		
-		float[] XYZ65a = cs.toCIEXYZ(srgb1);
-		float[] XYZ50 = adapt65to50.applyTo(XYZ65a);
-		float[] XYZ65b = adapt50to65.applyTo(XYZ50);
-		
-		assertArrayEquals("XYZscaling adapt problem for srgb=" + Arrays.toString(srgb), XYZ65a, XYZ65b, 1e-6f);
+		float[] XYZ65a = adapt50to65.applyTo(XYZ50a);
+		float[] XYZ50b = adapt65to50.applyTo(XYZ65a);
+			
+		assertArrayEquals(XYZ50a, XYZ50b, 1e-6f);
 	}
 
 }

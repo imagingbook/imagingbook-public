@@ -22,7 +22,7 @@ import imagingbook.common.math.PrintPrecision;
 public class sRgb65ColorSpaceTest {
 	
 	static sRgb65ColorSpace CS = sRgb65ColorSpace.getInstance();
-	static float TOL = 1e-4f;
+	static float TOL = 1e-5f;			
 
 	static {
 		PrintPrecision.set(15);
@@ -41,7 +41,7 @@ public class sRgb65ColorSpaceTest {
 	@Test
 	public void test2() {					// TODO: too inaccurate, FIX!!
 		Random rd = new Random(17);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
 			int g = rd.nextInt(256);
 			int b = rd.nextInt(256);
@@ -103,17 +103,17 @@ public class sRgb65ColorSpaceTest {
 		float[] srgbIN = RgbUtils.normalize(srgb);
 		float[] xyzPCS = ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN); // get some valid XYZ
 		
-		{	// check fromCIEXYZ / toCIEXYZ 				// works fine
+		{	// check fromCIEXYZ / toCIEXYZ 				
 			float[] srgbTHIS = cs.fromCIEXYZ(xyzPCS);
 			float[] xyzOUT = cs.toCIEXYZ(srgbTHIS);
-			assertArrayEquals(xyzPCS, xyzOUT, TOL);
+			assertArrayEquals(xyzPCS, xyzOUT, TOL);	// works fine
 		}
 
-		{	// check fromRGB / toRGB 					// <--- here is the problem!
+		{	// check fromRGB / toRGB 					
 			float[] srgbTHIS = cs.fromRGB(srgbIN);
 			float[] srgbOUT = cs.toRGB(srgbTHIS);
-			System.out.println("srgbIN  = " + Matrix.toString(srgbIN));
-			System.out.println("srgbOUT = " + Matrix.toString(srgbOUT));
+//			System.out.println("srgbIN  = " + Matrix.toString(srgbIN));
+//			System.out.println("srgbOUT = " + Matrix.toString(srgbOUT));
 			assertArrayEquals(srgbIN, srgbOUT, TOL);
 		}
 	}

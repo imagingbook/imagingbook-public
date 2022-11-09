@@ -19,22 +19,23 @@ package imagingbook.common.color.colorspace;
  * See the Section 14.6 of [1] for additional details and examples.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; 
+ * An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  */
 public class XYZscalingAdaptation implements ChromaticAdaptation {
 	
-	private final double[] W21;
+	private final double[] W21;		// vector with diagonal scale factors
 
 	/**
 	 * Constructor accepting two white points (XYZ-coordinates).
-	 * @param W1 source white point
-	 * @param W2 target white point
+	 * @param XYZ1 source white point
+	 * @param XYZ2 target white point
 	 */
-	public XYZscalingAdaptation(double[] W1, double[] W2) {
+	public XYZscalingAdaptation(double[] XYZ1, double[] XYZ2) {
 		W21 = new double[3];
 		for (int i = 0; i < 3; i++) {
-			W21[i] = W2[i] / W1[i];
+			W21[i] = XYZ2[i] / XYZ1[i];
 		}
 	}
 	

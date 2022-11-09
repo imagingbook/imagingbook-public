@@ -30,9 +30,7 @@ public class LinearRgbColorSpace extends ColorSpace {
 		return instance;
 	}
 	
-	/**
-	 * Constructor.
-	 */
+	/** Constructor, non-public */
 	private LinearRgbColorSpace() {
 		super(ColorSpace.TYPE_RGB, 3);
 	}

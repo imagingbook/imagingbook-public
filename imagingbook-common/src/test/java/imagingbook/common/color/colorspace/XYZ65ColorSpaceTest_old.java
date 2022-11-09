@@ -5,13 +5,11 @@ import static org.junit.Assert.assertArrayEquals;
 import java.awt.color.ColorSpace;
 import java.util.Arrays;
 
-import org.junit.Test;
-
 import imagingbook.common.color.RgbUtils;
 
 public class XYZ65ColorSpaceTest_old {
 
-	@Test
+//	@Test
 	public void test1a() {
 		XYZ65ColorSpace cs = XYZ65ColorSpace.getInstance();
 		checkRgb65(cs, new int[] {0, 0, 0});
@@ -22,7 +20,7 @@ public class XYZ65ColorSpaceTest_old {
 		checkRgb65(cs, new int[] {19, 3, 174});
 	}
 	
-	@Test
+//	@Test
 	public void test1b() {
 		XYZ65ColorSpace cs = XYZ65ColorSpace.getInstance();
 		checkXyz50(cs, new int[] {0, 0, 0});
@@ -46,7 +44,7 @@ public class XYZ65ColorSpaceTest_old {
 //		}
 //	}
 	
-	@Test
+//	@Test
 	public void test4() {	// check colors in book Table 14.3
 		checkXyz(0.00, 0.00, 0.00,   0.0000,  0.0000,  0.0000);
 		checkXyz(1.00, 0.00, 0.00,   0.4125,  0.2127,  0.0193);
