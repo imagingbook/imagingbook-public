@@ -71,19 +71,30 @@ public class StandardXyzColorSpaceTest {
 	}
 	
 	@Test
-	public void testWhite() {	
+	public void testWhite() {	// sRGB white must map do D50-XYZ in PCS 
 		float[] rgb = {1, 1, 1};
 		float[] xyzTHIS = CS.fromRGB(rgb);
 
 		PrintPrecision.set(16);
-		System.out.println("xyzTHIS = " + Matrix.toString(xyzTHIS));
+//		System.out.println("xyzTHIS = " + Matrix.toString(xyzTHIS));
 		// {0.9642028808593750, 1.0000000000000000, 0.8248901367187500}
 
 		float[] xyzIll = Matrix.toFloat(StandardIlluminant.D50.getXYZ());
-		System.out.println("xyzIll = " + Matrix.toString(xyzIll));
+//		System.out.println("xyzIll = " + Matrix.toString(xyzIll));
 		// {0.9642000198364258, 1.0000000000000000, 0.8249000906944275}
 
 		assertArrayEquals(xyzIll, xyzTHIS, 1e-4f);
+	}
+	
+	@Test
+	public void testGray() {	// any sRGB gray must map do D50-xy in PCS
+		final double[] xy50 = {0.3457, 0.3585};
+		for (int c = 1; c < 256; c++) {
+			float[] rgb = {c, c, c};
+			float[] xyzTHIS = CS.fromRGB(rgb);
+			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(xyzTHIS));
+			assertArrayEquals(xy50, xy, 1e-4f);
+		}
 	}
 	
 	// ---------------------------------------------------
