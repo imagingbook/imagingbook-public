@@ -13,6 +13,7 @@ import static imagingbook.testutils.NumericTestUtils.TOLERANCE;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -26,6 +27,7 @@ import imagingbook.common.math.Matrix.NonsquareMatrixException;
 import imagingbook.common.math.Matrix.ZeroLengthVectorException;
 import imagingbook.common.math.exception.DivideByZeroException;
 import imagingbook.testutils.NumericTestUtils;
+import imagingbook.testutils.RandomMatrixGenerator;
 
 
 public class MatrixTest {
@@ -183,7 +185,7 @@ public class MatrixTest {
 	
 	@Test
 	public void testMatrixTraceFloat() {
-		assertEquals(13.0, (double) Matrix.trace(Af), TOLERANCE);
+		assertEquals(13.0, Matrix.trace(Af), TOLERANCE);
 	}
 	
 	// --------------------------------------------------------------------
@@ -320,7 +322,7 @@ public class MatrixTest {
 	
 	@Test
 	public void testMatrixDeterminant3x3() {
-		assertEquals((double) Matrix.determinant3x3(Af), Matrix.determinant(Ad), TOLERANCE);
+		assertEquals(Matrix.determinant3x3(Af), Matrix.determinant(Ad), TOLERANCE);
 	}
 	
 	@Test(expected = IncompatibleDimensionsException.class)
@@ -332,8 +334,8 @@ public class MatrixTest {
 	public void testMatrixDeterminant2x2() {
 		double[][] Md = {{2, 7}, {-1, 5}};
 		float[][] Mf = Matrix.toFloat(Md);
-		assertEquals((double) Matrix.determinant2x2(Md), Matrix.determinant(Md), TOLERANCE);
-		assertEquals((double) Matrix.determinant2x2(Mf), Matrix.determinant(Md), TOLERANCE);
+		assertEquals(Matrix.determinant2x2(Md), Matrix.determinant(Md), TOLERANCE);
+		assertEquals(Matrix.determinant2x2(Mf), Matrix.determinant(Md), TOLERANCE);
 	}
 	
 	
@@ -762,6 +764,17 @@ public class MatrixTest {
 			assertEquals(sums[c], Matrix.sumColumn(Af, c), TOLERANCE);
 		}
 	}
+	
+	@Test
+	public void testDoubleLongConversion() {
+		RandomMatrixGenerator rg = new RandomMatrixGenerator(17);
+		double[][] M = rg.makeRandomMatrix(3, 4);
+		long[][] ML = Matrix.toLongBits(M);
+		assertNotNull(ML);
+		double[][] M2 = Matrix.fromLongBits(ML);
+		NumericTestUtils.assertArrayEquals(M, M2, 0.0);
+	}
+	
 	
 	// ---------------------------------------------------------
 	

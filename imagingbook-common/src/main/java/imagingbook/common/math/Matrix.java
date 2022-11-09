@@ -747,6 +747,55 @@ public abstract class Matrix {
 	}
 	
 	/**
+	 * Converts a {@code double[][]} to a {@code long[][]} whose elements contain
+	 * the 64-bit representation of the original {@code double} values. Its printed
+	 * representation is comparatively compact (see {@link #toString(long[][])}).
+	 * This is useful for defining literal {@code double} arrays without losing any
+	 * precision (by avoiding conversion to decimal representation). Note that the
+	 * {@code long} are bit representations and cannot be used to perform any
+	 * arithmetic calculations.
+	 * 
+	 * @param A the original {@code double} array
+	 * @return a copy of the array of type {@code float[][]}
+	 * @see #fromLongBits(long[][])
+	 * @see #toString(long[][])
+	 * @see #printToStream(long[][], PrintStream)
+	 */
+	public static long[][] toLongBits(final double[][] A) {
+		final int m = A.length;
+		final int n = A[0].length;
+		final long[][] B = new long[m][n];
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				B[i][j] = Double.doubleToLongBits(A[i][j]);
+			}
+		}
+		return B;
+	}
+	
+	/**
+	 * Converts a {@code long[][]} with 64-bit {@code double} representations to the
+	 * equivalent {@code double[][]}. This is useful for defining literal
+	 * {@code double} arrays without losing any precision (by avoiding conversion to
+	 * decimal representation).
+	 * 
+	 * @param A a {@code long} array
+	 * @return the equivalent {@code double} array
+	 * @see #toLongBits(double[][])
+	 */
+	public static double[][] fromLongBits(final long[][] A) {
+		final int m = A.length;
+		final int n = A[0].length;
+		final double[][] B = new double[m][n];
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				B[i][j] = Double.longBitsToDouble(A[i][j]);
+			}
+		}
+		return B;
+	}
+	
+	/**
 	 * Converts a {@code float[]} to a {@code double[]}.
 	 * @param a the original {@code float[]} array
 	 * @return a copy of the array of type {@code double[]}
@@ -2525,6 +2574,22 @@ public abstract class Matrix {
 	}
 	
 	/**
+	 * Returns a string representation of the specified matrix
+	 * with {@code long} elements.
+	 * @param A a matrix
+	 * @return the string representation
+	 */
+	public static String toString(long[][] A) {
+		if (A == null) {
+			return String.valueOf(A);
+		}
+		ByteArrayOutputStream bas = new ByteArrayOutputStream();
+		PrintStream strm = new PrintStream(bas);
+		printToStream(A, strm);
+		return bas.toString();
+	}
+	
+	/**
 	 * Returns a string representation of the specified matrix.
 	 * @param A a matrix
 	 * @return the string representation
@@ -2631,6 +2696,27 @@ public abstract class Matrix {
 		strm.format("%c", RightDelimitChar);
 		strm.flush();
 	}
+	
+	// --------------------------------------------------------------------------
+	
+	public static void printToStream(long[][] A, PrintStream strm) {
+		strm.format("%c", LeftDelimitChar);
+		for (int i=0; i< A.length; i++) {
+			if (i == 0)
+				strm.format("%c", LeftDelimitChar);
+			else
+				strm.format("%c \n%c", SeparationChar, LeftDelimitChar);
+			for (int j=0; j< A[i].length; j++) {
+				if (j == 0) 
+					strm.format(PrintLocale, "%dL", A[i][j]);
+				else
+					strm.format(PrintLocale, "%c %dL", SeparationChar, A[i][j]);
+			}
+			strm.format("%c", RightDelimitChar);
+		}
+		strm.format("%c", RightDelimitChar);
+		strm.flush();
+	}
 
 	// Exceptions ----------------------------------------------------------------
 	
@@ -2676,22 +2762,38 @@ public abstract class Matrix {
 	
 	// ------------------------------------------------------------------------
 	
-//	public static void main(String[] args) {
-//		double s = Double.NaN;
-//		s = -1.0 / 1E-200; // / 1E-200;
-//		System.out.println(Double.isFinite(s));
-//		System.out.println((double[]) null);
-//		
-//		double[][] A = makeDoubleMatrix(5, 4,
-//				1,2,3,4,
-//				5,6,7,8,
-//				9,10,11,12,
-//				13,14,15,16,
-//				17,18,19,20);
-//		System.out.println("A = \n" + toString(A));
-//		
+	public static void main(String[] args) {
+		double s = Double.NaN;
+		s = -1.0 / 1E-200; // / 1E-200;
+		System.out.println(Double.isFinite(s));
+		System.out.println((double[]) null);
+		
+		double[][] A = makeDoubleMatrix(5, 4,
+				-1,2,3,4,
+				5,6,7,8,
+				9,10,11,12,
+				13,14,15,16,
+				17,18,19, Double.NaN);
+		System.out.println("A = \n" + toString(A));
+		
 //		RealMatrix B = makeRealMatrix(5, 4);
 //		System.out.println("B = \n" + toString(B.getData()));
-//	}
+		
+		long[][] AL = Matrix.toLongBits(A);
+		System.out.println("AL = \n" + toString(AL));
+		
+		double[][] A2 = Matrix.fromLongBits(AL);
+		System.out.println("A2 = \n" + toString(A2));
+		
+		double[][] A3 = Matrix.fromLongBits(new long[][]
+				{{-4616189618054758400L, 4611686018427387904L, 4613937818241073152L, 4616189618054758400L}, 
+				 {4617315517961601024L, 4618441417868443648L, 4619567317775286272L, 4620693217682128896L}, 
+				 {4621256167635550208L, 4621819117588971520L, 4622382067542392832L, 4622945017495814144L}, 
+				 {4623507967449235456L, 4624070917402656768L, 4624633867356078080L, 4625196817309499392L}, 
+				 {4625478292286210048L, 4625759767262920704L, 4626041242239631360L, 9221120237041090560L}});
+		
+		System.out.println("A3 = \n" + toString(A3));
+		
+	}
 
 }
