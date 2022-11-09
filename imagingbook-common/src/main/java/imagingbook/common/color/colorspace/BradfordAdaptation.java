@@ -32,20 +32,25 @@ import imagingbook.common.math.PrintPrecision;
  */
 public class BradfordAdaptation implements ChromaticAdaptation {
 	
-	// CAT forward transform matrix
-	private static double[][] MCAT = {
+	// CAT forward transform matrix from XYZ to "virtual" RGB scaling coordinates
+	private static final double[][] MCAT = {
 	    { 0.8951,  0.2664, -0.1614},
 	    {-0.7502,  1.7135,  0.0367},
 	    { 0.0389, -0.0685,  1.0296}};
 	   
-	// CAT inverse transform matrix
-	private static double[][] MCATi = Matrix.inverse(MCAT);	  // we always invert for precision reasons
+	// CAT inverse transform matrix from "virtual" RGB scaling coordinates back to XYZ
+	private static final double[][] MCATi = Matrix.inverse(MCAT);	  // we always invert for precision reasons
 //		{{ 0.9869929054667120, -0.1470542564209900, 0.1599626516637310}, 
 //		 { 0.4323052697233940,  0.5183602715367770, 0.0492912282128560}, 
 //		 {-0.0085286645751770,  0.0400428216540850, 0.9684866957875500}}
 	
-	//	the complete color adaptation transformation matrix
+	// the complete color adaptation transformation matrix for transforming source XYZ to target XYZ,
+	// XYZ2 = Madapt * XYZ1, with
+	// Madapt = MCAT^-1 * DiagRGB * MCAT
 	private final double[][] Madapt;
+	
+	
+	// ---------------------------------------------------------------------------------
 	
 	/**
 	 * Constructor accepting two white points (XYZ-coordinates).
@@ -56,8 +61,8 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	public BradfordAdaptation(double[] W1, double[] W2) {
 		double[] rgb1 = multiply(MCAT, W1);
 		double[] rgb2 = multiply(MCAT, W2);
-		double[][] Mrgb = rgbMatrix(rgb1, rgb2);
-		Madapt = multiply(MCATi, multiply(Mrgb, MCAT));
+		double[][] Mscale = rgbMatrix(rgb1, rgb2);
+		Madapt = multiply(MCATi, multiply(Mscale, MCAT));
 	}
 	
 	/**
@@ -70,6 +75,18 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	public BradfordAdaptation(Illuminant illum1, Illuminant illum2) {
 		this(illum1.getXYZ(), illum2.getXYZ());
 	}
+	
+	// ---------------------------------------------------------------------------------
+	
+	public static double[][] getMCAT() {
+		return MCAT;
+	}
+	
+	public static double[][] getMCATi() {
+		return MCATi;
+	}
+	
+	// ---------------------------------------------------------------------------------
 	
 	// transformation of color coordinates
 	@Override

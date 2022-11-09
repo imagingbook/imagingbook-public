@@ -34,6 +34,8 @@ public class LinearRgbColorSpace extends ColorSpace {
 	private LinearRgbColorSpace() {
 		super(ColorSpace.TYPE_RGB, 3);
 	}
+	
+	// --------------------------------------------------------------------
 
 	@Override
 	public float[] fromRGB(float[] srgb) {
@@ -54,14 +56,17 @@ public class LinearRgbColorSpace extends ColorSpace {
 	}
 
 	@Override
-	public float[] toCIEXYZ(float[] colorvalue) {
+	public float[] toCIEXYZ(float[] rgb) {
 		throw new UnsupportedOperationException();
+//		double[] xyz65 = Matrix.multiply(Mrgbi, rgb);
 	}
 
 	@Override
-	public float[] fromCIEXYZ(float[] colorvalue) {
+	public float[] fromCIEXYZ(float[] xyz50) {
 		throw new UnsupportedOperationException();
 	}
+	
+	// ---------------------------------------------------------------------
 	
 	private static final String[] ComponentNames = {"R", "G", "B"};
 	

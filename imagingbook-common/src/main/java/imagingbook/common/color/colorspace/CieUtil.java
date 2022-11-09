@@ -9,7 +9,12 @@
 
 package imagingbook.common.color.colorspace;
 
+import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
+import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
+
 import imagingbook.common.math.Arithmetic;
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 
 
 /**
@@ -78,4 +83,61 @@ public abstract class CieUtil {
 		return (Arithmetic.isZero(mag)) ? new double[] {0, 0} : new double[] {X/mag, Y/mag};
 	}
 	
+	// ------------------------------------------------------------------------
+	
+
+	// Poynton (ITU 709) 
+	private static final double[][] Mrgb65i = 
+		{{0.412453, 0.357580, 0.180423},
+		 {0.212671, 0.715160, 0.072169},
+		 {0.019334, 0.119193, 0.950227}};
+	
+	
+	/** Matrix for conversion from linear RGB to XYZ. */
+	private static final double[][] Mrgb65 = Matrix.inverse(Mrgb65i);  // (R,G,B) = Mrgb * (X,Y,Z)
+	//from sRGB specs:
+//	{{3.2406255, -1.537208, -0.4986286},
+//	 {-0.9689307, 1.8757561, 0.0415175},
+//	 {0.0557101, -0.2040211, 1.0569959}};
+	
+	// Poynton (ITU 709) 
+//		{{ 3.240479, -1.537150, -0.498535},
+//		 {-0.969256, 1.875992,  0.041556},
+//		 { 0.055648, -0.204043,  1.057311}}; 
+	
+	// D50 from sRGB specs, most accurate for desired tristimulus X = 0.9642, Y = 1, Z = 0.8249 (https://www.color.org/sRGB.pdf)
+	public static final double[][] Mrgb50i = 
+		{{0.436030342570117, 0.385101860087134, 0.143067806654203},
+		 {0.222438466210245, 0.716942745571917, 0.060618777416563},
+		 {0.013897440074263, 0.097076381494207, 0.713926257896652}};
+	
+	// see book Eq. 14.49 (p. 443)
+	public static final double[][] Mrgb50 = Matrix.inverse(Mrgb50i);
+	
+	
+	// ------------------------------------------------------------------------
+	
+	public static void main(String[] args) {
+		PrintPrecision.set(15);
+		System.out.println("Mrgb50i = \n" + Matrix.toString(Mrgb50i));
+		System.out.println("Mrgb50 = \n" + Matrix.toString(Mrgb50));
+		
+		System.out.println("------------------------------------");
+		
+		System.out.println("Mrgb65i = \n" + Matrix.toString(Mrgb65i));
+		System.out.println("Mrgb65 = \n" + Matrix.toString(Mrgb65));
+		
+		System.out.println("----- Approximation of Mrgb50 by Bradford adaptation----------");
+		
+		BradfordAdaptation catD65toD50 = new BradfordAdaptation(D50, D65);
+		double[][] Madapt = catD65toD50.getAdaptationMatrix();
+		double[][] Mrgb50X = Matrix.multiply(Mrgb65, Madapt);
+		double[][] Mrgb50Xi = Matrix.inverse(Mrgb50X);
+		System.out.println("Mrgb50Xi = \n" + Matrix.toString(Mrgb50Xi));
+		System.out.println("Mrgb50X = \n" + Matrix.toString(Mrgb50X));
+		
+		System.out.println("------------------------------------");
+		double[][] Mrgb50_65 = Matrix.multiply(Mrgb65i, Mrgb50);
+		System.out.println("Mrgb50_65 = \n" + Matrix.toString(Mrgb50_65));
+	}
 }
