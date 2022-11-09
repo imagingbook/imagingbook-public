@@ -18,12 +18,12 @@ public class XYZ50ColorSpaceTest {
 
 	@Test
 	public void test1() {
-		doCheck(new int[] {0, 0, 0});
-		doCheck(new int[] {255, 255, 255});
-		doCheck(new int[] {177, 0, 0});
-		doCheck(new int[] {0, 177, 0});
-		doCheck(new int[] {0, 0, 177});
-		doCheck(new int[] {19, 3, 174});
+		doCheck(CS, new int[] {0, 0, 0});
+		doCheck(CS, new int[] {255, 255, 255});
+		doCheck(CS, new int[] {177, 0, 0});
+		doCheck(CS, new int[] {0, 177, 0});
+		doCheck(CS, new int[] {0, 0, 177});
+		doCheck(CS, new int[] {19, 3, 174});
 	}
 	
 	@Test
@@ -33,7 +33,7 @@ public class XYZ50ColorSpaceTest {
 			int r = rd.nextInt(256);
 			int g = rd.nextInt(256);
 			int b = rd.nextInt(256);
-			doCheck(new int[] {r, g, b});
+			doCheck(CS, new int[] {r, g, b});
 		}
 	}
 	
@@ -42,51 +42,51 @@ public class XYZ50ColorSpaceTest {
 //		for (int r = 0; r < 256; r++) {
 //			for (int g = 0; g < 256; g++) {
 //				for (int b = 0; b < 256; b++) {
-//					doCheck(new int[] {r, g, b});
+//					doCheck(CS, new int[] {r, g, b});
 //				}
 //			}
 //		}
 //	}
 	
 	@Test
-	public void test4() {	
-		{	// check black point
-			float[] rgb = {0, 0, 0};
-			float[] xyz = CS.toCIEXYZ(rgb);
-			assertArrayEquals(new float[] {0, 0, 0}, xyz, 1e-6f);
-		}
-		{	// check tristimulus and white point
-			float[] rgb = {1, 1, 1};
-			float[] xyz = CS.fromRGB(rgb);
-			PrintPrecision.set(16);
-			System.out.println(Matrix.toString(xyz));
-				// {0.9642000198364258, 1.0000000000000000, 0.8249000906944275}
-			System.out.println(Matrix.toString(sRgb50ColorSpace.getInstance().getWhiteXYZ()));
-				// {0.9642000093114540, 0.9999999891987249, 0.8249000794651220}
-			float[] wXYZ = Matrix.toFloat(StandardIlluminant.D50.getXYZ());
-				// {0.9642f, 1f, 0.8249f};
-			assertArrayEquals(wXYZ, xyz, 1e-6f);
-			
-			double[] wxy = {0.3457029085924369, 0.3585385827835399};	// D50 white point
-			assertArrayEquals(wxy, CieUtil.XYZToXy(Matrix.toDouble(xyz)), 1e-6f);
-		}
+	public void testBlack() { // check black point
+		float[] srgbPCS = {0, 0, 0};
+		float[] xyzTHIS = CS.fromRGB(srgbPCS);
+		assertArrayEquals(new float[] {0, 0, 0}, xyzTHIS, 1e-6f);
+	}
+	
+	@Test
+	public void testWhite() {	
+		float[] rgb = {1, 1, 1};
+		float[] xyzTHIS = CS.fromRGB(rgb);
+
+		PrintPrecision.set(16);
+//		System.out.println("xyzTHIS = " + Matrix.toString(xyzTHIS));
+		// {0.9642028808593750, 1.0000000000000000, 0.8248901367187500}
+
+		float[] xyzIll = Matrix.toFloat(StandardIlluminant.D50.getXYZ());
+//		System.out.println("xyzIll = " + Matrix.toString(xyzIll));
+		// {0.9642000198364258, 1.0000000000000000, 0.8249000906944275}
+
+		assertArrayEquals(xyzIll, xyzTHIS, 1e-6f);
 	}
 	
 	// ---------------------
 	
-	private static void doCheck(int[] sRGB) {
-		float[] srgb = RgbUtils.normalize(sRGB);
-		// check fromXYZ() and toXYZ():
-		{
-			ColorSpace srgbCS = ColorSpace.getInstance(ColorSpace.CS_sRGB);	// create some valid XYZ
-			float[] xyzStd = srgbCS.toCIEXYZ(srgb);
-			float[] XYZ = CS.fromCIEXYZ(xyzStd);	// doesn't do anything in this case
-			assertArrayEquals(xyzStd, CS.toCIEXYZ(XYZ), TOL);
-		}		
-		// check fromRGB() and toRGB():
-		{
-			float[] XYZ = CS.fromRGB(srgb);
-			assertArrayEquals(srgb, CS.toRGB(XYZ), TOL);
+	private static void doCheck(ColorSpace cs, int[] srgb) {
+		float[] srgbIN = RgbUtils.normalize(srgb);
+		float[] xyzPCS = ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN); // get some valid XYZ
+		
+		{	// check fromCIEXYZ / toCIEXYZ 
+			float[] srgbTHIS = cs.fromCIEXYZ(xyzPCS);
+			float[] xyzOUT = cs.toCIEXYZ(srgbTHIS);
+			assertArrayEquals(xyzPCS, xyzOUT, TOL);
+		}
+
+		{	// check fromRGB / toRGB 
+			float[] srgbTHIS = cs.fromRGB(srgbIN);
+			float[] srgbOUT = cs.toRGB(srgbTHIS);
+			assertArrayEquals(srgbIN, srgbOUT, TOL);
 		}
 	}
 
