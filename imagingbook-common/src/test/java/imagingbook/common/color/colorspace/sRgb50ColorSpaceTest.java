@@ -12,7 +12,7 @@ import imagingbook.common.math.Matrix;
 
 public class sRgb50ColorSpaceTest {
 	
-	static float TOL = 1e-5f;
+	static float TOL = 1e-6f;
 	
 	static sRgb50ColorSpace CS = sRgb50ColorSpace.getInstance();
 
@@ -66,22 +66,28 @@ public class sRgb50ColorSpaceTest {
 	}
 	
 	@Test
-	public void testWhite() { // check tristimulus/white point
+	public void testWhite() { //sRGB white in this color space must map do D50-XYZ in PCS
 		float[] srgbTHIS = {1, 1, 1};
-		
-		float[] wXYZ = CS.toCIEXYZ(srgbTHIS);
-		System.out.println("wXYZ = " + Matrix.toString(wXYZ));
+		float[] wXYZ = CS.toCIEXYZ(srgbTHIS);	// in PCS
+		//System.out.println("wXYZ = " + Matrix.toString(wXYZ));
 		float[] wIll = Matrix.toFloat(StandardIlluminant.D50.getXYZ()); 
-		System.out.println("wIll = " + Matrix.toString(wIll));
-		// {0.9642f, 1f, 0.8249f};
-		
+		//System.out.println("wIll = " + Matrix.toString(wIll));
 		assertArrayEquals(wIll, wXYZ, 1e-6f);
-		assertArrayEquals(wIll, Matrix.toFloat(CS.getWhiteXYZ()), 1e-6f);
+	}
+	
+	@Test
+	public void testGray() {	// any sRGB gray in this color space must map do D50-xy in PCS
+		final double[] xy50 = StandardIlluminant.D50.getXy(); //{0.3457, 0.3585};
+		for (int c = 1; c < 256; c++) {
+			float[] rgbTHIS = {c, c, c};
+			float[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
+			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(xyzPCS));
+			assertArrayEquals(xy50, xy, 1e-6f);
+		}
 	}
 	
 	// ---------------------------------------------------
-	
-	
+		
 	private static void doCheck(ColorSpace cs, int[] srgb) {
 		float[] srgbIN = RgbUtils.normalize(srgb);
 		float[] xyzPCS = ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN); // get some valid XYZ
@@ -98,22 +104,5 @@ public class sRgb50ColorSpaceTest {
 			assertArrayEquals(srgbIN, srgbOUT, TOL);
 		}
 	}
-	
-	
-//	private static void doCheck(ColorSpace cs, int[] srgb) {
-//		{
-//			float[] srgbA = RgbUtils.normalize(srgb);
-//			float[] xyz50 = cs.toCIEXYZ(srgbA);
-//			float[] srgbB = cs.fromCIEXYZ(xyz50);
-//			assertArrayEquals(Arrays.toString(srgb), srgbA, srgbB, TOL);
-//		}
-//		{
-//			float[] srgbA = RgbUtils.normalize(srgb);
-//			float[] rgb50 = cs.toRGB(srgbA);
-//			float[] srgbB = cs.fromRGB(rgb50);
-//			assertArrayEquals(srgbA, srgbB, TOL);
-//		}
-//	}
-		
 
 }
