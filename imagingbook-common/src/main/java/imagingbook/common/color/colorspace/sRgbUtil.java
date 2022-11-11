@@ -9,6 +9,8 @@
 
 package imagingbook.common.color.colorspace;
 
+import ij.process.ColorSpaceConverter;
+
 /**
  * This class defines static methods for gamma correction for sRGB which are
  * used, e.g., by {@link LabColorSpace} and {@link LuvColorSpace} color spaces.
@@ -85,5 +87,14 @@ public abstract class sRgbUtil {
 		for (int i = 0; i < rgb.length; i++) {
 			rgb[i] = (float) sRgbUtil.gammaFwd(rgb[i]);
 		}
+	}
+	
+	// -----
+	
+	public static void main(String[] args) {
+		// see ImageJ's implementation!!
+		ColorSpaceConverter csc = new ColorSpaceConverter();
+		
+		
 	}
 }
