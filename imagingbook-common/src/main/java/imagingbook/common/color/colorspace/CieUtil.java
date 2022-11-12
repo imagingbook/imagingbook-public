@@ -87,14 +87,14 @@ public abstract class CieUtil {
 	
 
 	// Poynton (ITU 709) 
-	private static final double[][] Mrgb65i = 
+	public static final double[][] Mrgb65i = 
 		{{0.412453, 0.357580, 0.180423},
 		 {0.212671, 0.715160, 0.072169},
 		 {0.019334, 0.119193, 0.950227}};
 	
 	
 	/** Matrix for conversion from linear RGB to XYZ. */
-	private static final double[][] Mrgb65 = Matrix.inverse(Mrgb65i);  // (R,G,B) = Mrgb * (X,Y,Z)
+	public static final double[][] Mrgb65 = Matrix.inverse(Mrgb65i);  // (R,G,B) = Mrgb * (X,Y,Z)
 	//from sRGB specs:
 //	{{3.2406255, -1.537208, -0.4986286},
 //	 {-0.9689307, 1.8757561, 0.0415175},
@@ -129,7 +129,7 @@ public abstract class CieUtil {
 		
 		System.out.println("----- Approximation of Mrgb50 by Bradford adaptation----------");
 		
-		BradfordAdaptation catD65toD50 = new BradfordAdaptation(D50, D65);
+		BradfordAdaptation catD65toD50 = BradfordAdaptation.getInstance(D50, D65);
 		double[][] Madapt = catD65toD50.getAdaptationMatrix();
 		double[][] Mrgb50X = Matrix.multiply(Mrgb65, Madapt);
 		double[][] Mrgb50Xi = Matrix.inverse(Mrgb50X);

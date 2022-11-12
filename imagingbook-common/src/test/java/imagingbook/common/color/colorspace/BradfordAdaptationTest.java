@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 import imagingbook.testutils.NumericTestUtils;
 
 public class BradfordAdaptationTest {
@@ -25,17 +26,39 @@ public class BradfordAdaptationTest {
 	static float TOL = 1e-6f;
 
 	@Test
-	public void test0() {	// adaptation to the same white point gives identity matrix always
+	public void test0A() {	// adaptation to the same white point gives identity matrix always
 		double[][] I = Matrix.idMatrix(3);
 		for (Illuminant illum : Arrays.asList(StandardIlluminant.D65, StandardIlluminant.D50, StandardIlluminant.N)) {
-			BradfordAdaptation adapt = new BradfordAdaptation(illum, illum);
+			BradfordAdaptation adapt = BradfordAdaptation.getInstance(illum, illum);
 			NumericTestUtils.assert2dArrayEquals(adapt.getAdaptationMatrix(), I, 1e-12);
 		}
 	}
 	
 	@Test
+	public void test0B() {	// reverse adaptation must give inverse matrix
+		double[][] I = Matrix.idMatrix(3);
+		BradfordAdaptation adapt1 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);
+		BradfordAdaptation adapt2 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);
+		double[][] Madapt1 = adapt1.getAdaptationMatrix();
+		double[][] Madapt2 = adapt2.getAdaptationMatrix();
+		double[][] Madapt12 = Matrix.multiply(Madapt1, Madapt2);
+		NumericTestUtils.assert2dArrayEquals(Madapt12, I, 1e-12);
+	}
+	
+	@Test
+	public void test0C() {	// reverse adaptation must give inverse matrix
+		double[][] I = Matrix.idMatrix(3);
+		BradfordAdaptation adapt1 = BradfordAdaptation.getInstance(StandardIlluminant.N, StandardIlluminant.D50);
+		BradfordAdaptation adapt2 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.N);
+		double[][] Madapt1 = adapt1.getAdaptationMatrix();
+		double[][] Madapt2 = adapt2.getAdaptationMatrix();
+		double[][] Madapt12 = Matrix.multiply(Madapt1, Madapt2);
+		NumericTestUtils.assert2dArrayEquals(Madapt12, I, 1e-12);
+	}
+	
+	@Test
 	public void test1() {
-		ColorSpace cs = sRgb65ColorSpace.getInstance();
+		ColorSpace cs = sRgbColorSpace.getInstance();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
 		doCheck(cs, new int[] {177, 0, 0});
@@ -46,7 +69,7 @@ public class BradfordAdaptationTest {
 	
 	@Test
 	public void test2() {
-		ColorSpace cs = sRgb65ColorSpace.getInstance();
+		ColorSpace cs = sRgbColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
@@ -68,10 +91,76 @@ public class BradfordAdaptationTest {
 //		}
 //	}
 	
+	@Test
+	public void testPrimariesD65ToD50() { // check if RGB primaries are mapped (approximately)
+		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);
+		PrintPrecision.set(6);
+		for (int i = 0; i < 3; i++) {
+			double[] primary65 =  Matrix.getColumn(CieUtil.Mrgb65i, i);
+			double[] primary50 =  Matrix.getColumn(CieUtil.Mrgb50i, i);
+			
+//			System.out.println("primary65 = " + Matrix.toString(primary65));
+//			System.out.println("primary50 = " + Matrix.toString(primary50));
+			
+			double[] primary50m = adapt.applyTo(primary65);
+//			System.out.println("primary50m = " + Matrix.toString(primary50m));
+			assertArrayEquals(primary50, primary50m, 1e-3f);
+		}
+	}
+	
+	@Test
+	public void testPrimariesD50ToD65() { // check if RGB primaries are mapped (approximately)
+		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);
+		PrintPrecision.set(6);
+		for (int i = 0; i < 3; i++) {
+			double[] primary50 =  Matrix.getColumn(CieUtil.Mrgb50i, i);
+			double[] primary65 =  Matrix.getColumn(CieUtil.Mrgb65i, i);
+			
+//			System.out.println("primary50 = " + Matrix.toString(primary50));
+//			System.out.println("primary65 = " + Matrix.toString(primary65));
+			
+			double[] primary65m = adapt.applyTo(primary50);
+//			System.out.println("primary65m = " + Matrix.toString(primary65m));
+			assertArrayEquals(primary65, primary65m, 1e-3f);
+		}
+	}
+	
+	@Test
+	public void testWhiteD65ToD50() { // check if white point is mapped (precisely)
+		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);
+		PrintPrecision.set(6);
+		
+		double[] W65 = StandardIlluminant.D65.getXYZ();
+		double[] W50 = StandardIlluminant.D50.getXYZ();
+		
+		double[] W50m = adapt.applyTo(W65);
+		System.out.println("W50  = " + Matrix.toString(W50));
+		System.out.println("W50m = " + Matrix.toString(W50m));
+			
+		assertArrayEquals(W50, W50m, 1e-12f);
+	}
+	
+	@Test
+	public void testWhiteD50ToD65() { // check if white point is mapped (precisely)
+		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);
+		PrintPrecision.set(6);
+		
+		double[] W65 = StandardIlluminant.D65.getXYZ();
+		double[] W50 = StandardIlluminant.D50.getXYZ();
+		
+		double[] W65m = adapt.applyTo(W50);
+		System.out.println("W65  = " + Matrix.toString(W65));
+		System.out.println("W65m = " + Matrix.toString(W65m));
+			
+		assertArrayEquals(W65, W65m, 1e-12f);
+	}
+	
+	// ------------------------------------------------
+	
 	private static void doCheck(ColorSpace cs, int[] srgb) {
 		float[] srgb1 = RgbUtils.normalize(srgb);		
-		ChromaticAdaptation adapt65to50 = new BradfordAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
-		ChromaticAdaptation adapt50to65 = new BradfordAdaptation(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
+		ChromaticAdaptation adapt65to50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
+		ChromaticAdaptation adapt50to65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
 		
 		float[] XYZ65a = cs.toCIEXYZ(srgb1);
 		float[] XYZ50 = adapt65to50.applyTo(XYZ65a);

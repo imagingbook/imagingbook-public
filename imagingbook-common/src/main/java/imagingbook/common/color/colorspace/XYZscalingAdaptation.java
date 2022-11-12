@@ -58,4 +58,13 @@ public class XYZscalingAdaptation implements ChromaticAdaptation {
 		return XYZ2;
 	}
 
+	@Override
+	public double[] applyTo(double[] XYZ1) {
+		final double[] XYZ2 = new double[3];
+		for (int i = 0; i < 3; i++) {
+			XYZ2[i] = XYZ1[i] * W21[i];
+		}
+		return XYZ2;
+	}
+
 }

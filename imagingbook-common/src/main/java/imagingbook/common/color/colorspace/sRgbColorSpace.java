@@ -21,69 +21,36 @@ import imagingbook.common.math.PrintPrecision;
 // D65 tristimulus: 0.9504, 1.0000, 1.0888
 
 /**
- * This class implements a D65-based sRGBcolor space without performing
- * chromatic adaptation between D50 and D65, as required by Java's profile
- * connection space. Everything is D65, components of all {@code float[]} colors
+ * This class implements the sRGBcolor space with D65 white point. 
+ * Components of all {@code float[]} colors
  * are supposed to be in [0,1]. This is a singleton class with no public
  * constructors, use {@link #getInstance()} to obtain the single instance.
  * 
  * @author WB
- * @version 2022/11/07 revised to comply with D50-based {@code CS_sRGB} and {@code CS_CIEXYZ} color spaces
+ * @version 2022/11/07
  */
-public class sRgb65ColorSpace extends ColorSpace {
+public class sRgbColorSpace extends ColorSpace {
 	private static final long serialVersionUID = 1L;
 
-	private static final sRgb65ColorSpace instance = new sRgb65ColorSpace();
-	
-	// the standard D50-based CS_sRGB
-//	private static final ColorSpace sRgb50CS = ColorSpace.getInstance(ColorSpace.CS_sRGB);
-	private static final ColorSpace sRgb50CS = sRgb50ColorSpace.getInstance();
+	private static final sRgbColorSpace instance = new sRgbColorSpace();
 	
 	// chromatic adaptation objects:
-	private static final ChromaticAdaptation catD65toD50 = new BradfordAdaptation(D65, D50);
-	private static final ChromaticAdaptation catD50toD65 = new BradfordAdaptation(D50, D65);
+	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
+	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
 	
-	public static sRgb65ColorSpace getInstance() {
+	public static sRgbColorSpace getInstance() {
 		return instance;
 	}
 	
+	/** Matrix for conversion from XYZ to linear RGB. */
+	public static final double[][] Mrgbi = CieUtil.Mrgb65i;
+	
+	/** Matrix for conversion from linear RGB to XYZ (inverse of {@link #Mrgbi}). */
+	public static final double[][] Mrgb = CieUtil.Mrgb65;
 
-	
-	/** Matrix for conversion from linear RGB to XYZ. */
-	private static final double[][] Mrgb = // Matrix.inverse(Mrgbi)  // (R,G,B) = Mrgb * (X,Y,Z)
-			//from sRGB specs:
-			{{3.2406255, -1.537208, -0.4986286},
-			 {-0.9689307, 1.8757561, 0.0415175},
-			 {0.0557101, -0.2040211, 1.0569959}};
-			
-	// Poynton (ITU 709) 
-//		{{3.240479, -1.537150, -0.498535},
-//		 {-0.969256, 1.875992, 0.041556},
-//		 {0.055648, -0.204043, 1.057311}};
-	
 
-	
-//	from http://www.brucelindbloom.com/index.html?ColorCalculator.html:
-//		3.2404542 -1.5371385 -0.4985314
-//		-0.9692660  1.8760108  0.0415560
-//		 0.0556434 -0.2040259  1.0572252
-	
-	// ------------------------------------
-	
-	/** Matrix for conversion from XYZ to linear RGB (inverse of {@link #Mrgb}). 
-	 * The actual inverse is calculated here for better accuracy. 
-	 */
-	private static final double[][] Mrgbi = Matrix.inverse(Mrgb);
-
-//	public static final double[][] Mrgbi =    // (X,Y,Z) = Mrgbi * (R,G,B)   // Poynton (ITU 709) 
-//		{{0.412453, 0.357580, 0.180423},
-//		 {0.212671, 0.715160, 0.072169},
-//		 {0.019334, 0.119193, 0.950227}};
-
-//	from http://www.brucelindbloom.com/index.html?ColorCalculator.html:
-//		 0.4124564  0.3575761  0.1804375
-//		 0.2126729  0.7151522  0.0721750
-//		 0.0193339  0.1191920  0.9503041
+//	private static final float[][] MrgbiF = Matrix.toFloat(Mrgbi);
+//	private static final float[][] MrgbF = Matrix.toFloat(Mrgb);
 	
 	// ----------------------------------------------------
 	
@@ -102,15 +69,13 @@ public class sRgb65ColorSpace extends ColorSpace {
 	/**
 	 * Constructor (not public).
 	 */
-	private sRgb65ColorSpace() {
+	private sRgbColorSpace() {
 		super(ColorSpace.TYPE_RGB, 3);
 	}
-
-	// assumes xyz50 is in D50-based CS_CIEXYZ color space
-	// TODO: check double/float mix
-	@Override
-	public float[] fromCIEXYZ(float[] xyz50PCS) {
-		float[] xyz65 = catD50toD65.applyTo(xyz50PCS);
+	
+	// direct conversion from/to D65-based XYZ space ------------------------------
+	
+	public float[] fromCIEXYZ65(float[] xyz65) {
 		double[] rgb = Matrix.multiply(Mrgb, Matrix.toDouble(xyz65));	// linear RGB
 		// perform forward gamma mapping:
 		float[] srgb = new float[3];									
@@ -119,11 +84,8 @@ public class sRgb65ColorSpace extends ColorSpace {
 		}
 		return srgb;
 	}
-
-	// returned colors are in D50-based CS_CIEXYZ color space 
-	// TODO: check double/float mix
-	@Override
-	public float[] toCIEXYZ(float[] srgbTHIS) {
+	
+	public float[] toCIEXYZ65(float[] srgbTHIS) {
 		// get linear rgb components:
 		double[] rgb = new double[3];
 		for (int i = 0; i < 3; i++) {
@@ -131,22 +93,61 @@ public class sRgb65ColorSpace extends ColorSpace {
 		}
 		// convert to D65-based XYZ (Poynton / ITU 709) 
 		double[] xyz65 = Matrix.multiply(Mrgbi, rgb);
-		float[] xyz50 = catD65toD50.applyTo(Matrix.toFloat(xyz65));	// PROBLEM: is this needed??
+		return Matrix.toFloat(xyz65);
+	}
+	
+	// Methods required ColorSpace (conversion from/to PCS space) ------------------
+
+	// assumes xyz50 is in D50-based CS_CIEXYZ color space
+	// TODO: check double/float mix
+	@Override
+	public float[] fromCIEXYZ(float[] xyz50PCS) {
+		float[] xyz65 = catD50toD65.applyTo(xyz50PCS);
+		return this.fromCIEXYZ65(xyz65);
+	}
+	
+//	public float[] fromCIEXYZ(float[] xyz50PCS) {
+//		double[] xyz65 = catD50toD65.applyTo(Matrix.toDouble(xyz50PCS));
+//		double[] rgb = Matrix.multiply(Mrgb, xyz65);	// linear RGB
+//		// perform forward gamma mapping:
+//		float[] srgb = new float[3];									
+//		for (int i = 0; i < 3; i++) {
+//			srgb[i] = (float) sRgbUtil.gammaFwd(rgb[i]);
+//		}
+//		return srgb;
+//	}
+
+	// returned colors are in D50-based CS_CIEXYZ color space 
+	// TODO: check double/float mix
+	@Override
+	public float[] toCIEXYZ(float[] srgbTHIS) {
+		float[] xyz65 = this.toCIEXYZ65(srgbTHIS);
+		float[] xyz50 = catD65toD50.applyTo(xyz65);
 		return xyz50;
 	}
 	
+//	public float[] toCIEXYZ(float[] srgbTHIS) {
+//		// get linear rgb components:
+//		double[] rgb = new double[3];
+//		for (int i = 0; i < 3; i++) {
+//			rgb[i] = sRgbUtil.gammaInv(srgbTHIS[i]);
+//		}
+//		// convert to D65-based XYZ (Poynton / ITU 709) 
+//		double[] xyz65 = Matrix.multiply(Mrgbi, rgb);
+//		double[] xyz50 = catD65toD50.applyTo(xyz65);
+//		return Matrix.toFloat(xyz50);
+//	}
+	
 	// ----------------------------------------------------
 	
-	@Override // assumes that srgb is in CS_sRGB color space
-	public float[] fromRGB(float[] srgb50) {
-		float[] xyz50 = sRgb50CS.toCIEXYZ(srgb50);
-		return this.fromCIEXYZ(xyz50);
+	@Override // no conversion needed, since this is sRGB
+	public float[] fromRGB(float[] srgb) {
+		return srgb;
 	}
 
-	@Override // returns srgb colors in CS_sRGB color space
-	public float[] toRGB(float[] srgb65) {
-		float[] xyz50 = this.toCIEXYZ(srgb65);
-		return sRgb50CS.fromCIEXYZ(xyz50);
+	@Override // no conversion needed, since this is sRGB
+	public float[] toRGB(float[] srgbTHIS) {
+		return srgbTHIS;
 	}
 	
 	// ----------------------------------------------------
@@ -161,11 +162,12 @@ public class sRgb65ColorSpace extends ColorSpace {
 	// ------------------------------------------------------------
 	
 	public static void main(String[] args) {
-		PrintPrecision.set(16);
-		sRgb65ColorSpace cs = sRgb65ColorSpace.getInstance();
+		PrintPrecision.set(15);
+		sRgbColorSpace cs = sRgbColorSpace.getInstance();
 		
-		System.out.println("Mrgb = \n" + Matrix.toString(Mrgb) + "\n");
+		
 		System.out.println("Mrgbi = \n" + Matrix.toString(Mrgbi) + "\n");
+		System.out.println("Mrgb = \n" + Matrix.toString(Mrgb) + "\n");
 		
 		double[] trist1 = Matrix.multiply(Mrgbi, new double[] {1,1,1});
 		System.out.println("W  = " + Matrix.toString(trist1));

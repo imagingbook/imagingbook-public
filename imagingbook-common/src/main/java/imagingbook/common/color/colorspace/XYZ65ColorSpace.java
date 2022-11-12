@@ -8,8 +8,8 @@ import java.awt.color.ColorSpace;
 public class XYZ65ColorSpace extends ColorSpace {
 	private static final long serialVersionUID = 1L;
 	
-	private static final ChromaticAdaptation catD65toD50 = new BradfordAdaptation(D65, D50);
-	private static final ChromaticAdaptation catD50toD65 = new BradfordAdaptation(D50, D65);
+	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
+	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
 
 	
 	private static final XYZ65ColorSpace instance = new XYZ65ColorSpace();
@@ -23,17 +23,17 @@ public class XYZ65ColorSpace extends ColorSpace {
 
 	// ----------------------------------------------------
 
-	@Override
+	@Override	// convert this D65.based XYZ to sRGB 
 	public float[] toRGB(float[] thisXYZ65) {
-		float[] XYZ50 = this.toCIEXYZ(thisXYZ65);
-		sRgb50ColorSpace srgbCS = sRgb50ColorSpace.getInstance();
+		float[] XYZ50 = this.toCIEXYZ(thisXYZ65);	// could be done directly!!
+		sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 		float[] srgb = srgbCS.fromCIEXYZ(XYZ50);
 		return srgb;
 	}
 
 	@Override
 	public float[] fromRGB(float[] srgb) {
-		sRgb50ColorSpace srgbCS = sRgb50ColorSpace.getInstance();
+		sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 		float[] XYZ50 = srgbCS.toCIEXYZ(srgb);
 		return this.fromCIEXYZ(XYZ50);
 	}

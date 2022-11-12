@@ -19,13 +19,12 @@ import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
 public class CieUtilTest {
 
 	@Test
 	public void test1() {
-		ColorSpace cs = sRgb65ColorSpace.getInstance();
+		ColorSpace cs = sRgbColorSpace.getInstance();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
 		doCheck(cs, new int[] {177, 0, 0});
@@ -36,7 +35,7 @@ public class CieUtilTest {
 	
 	@Test
 	public void test2() {
-		ColorSpace cs = sRgb65ColorSpace.getInstance();
+		ColorSpace cs = sRgbColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
@@ -58,18 +57,18 @@ public class CieUtilTest {
 //		}
 //	}
 	
-	@Test
-	public void test4() {
-		ColorSpace cs = sRgb65ColorSpace.getInstance();
-//		int[] srgb = new int[] {255, 255, 255};
-		int[] srgb = new int[] {100, 100, 100};
-		float[] srgb1 = RgbUtils.normalize(srgb);
-		float[] XYZ50 = cs.toCIEXYZ(srgb1);
-		double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ50));
-		PrintPrecision.set(6);
-//		System.out.println("xy = " + Matrix.toString(xy));
-//		System.out.println("xy = " + Matrix.toString(CieUtil.XYZToXy(StandardIlluminant.D50.getXYZ())));
-	}
+//	@Test
+//	public void test4() {
+//		ColorSpace cs = sRgbColorSpace.getInstance();
+////		int[] srgb = new int[] {255, 255, 255};
+//		int[] srgb = new int[] {100, 100, 100};
+//		float[] srgb1 = RgbUtils.normalize(srgb);
+//		float[] XYZ50 = cs.toCIEXYZ(srgb1);
+////		double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ50));
+////		PrintPrecision.set(6);
+////		System.out.println("xy = " + Matrix.toString(xy));
+////		System.out.println("xy = " + Matrix.toString(CieUtil.XYZToXy(StandardIlluminant.D50.getXYZ())));
+//	}
 	
 //	@Test
 //	public void test5() {	// sRGB grays map to D65 whitepoint in sRgb65ColorSpace

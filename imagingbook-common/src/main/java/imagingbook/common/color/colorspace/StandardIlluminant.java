@@ -18,13 +18,13 @@ import imagingbook.common.math.Arithmetic;
  */
 public enum StandardIlluminant implements Illuminant {
 	/** Equal energy illuminant, neutral point (5400K). */
-	N	(1/3.0, 1/3.0),
+	N	(1.0/3, 1.0/3),
 	/** D50 standard illuminant (5000K). */
-	D50	(0.9642000093114540, 1.0, 0.8249000794651220), // (0.964296, 1.00000, 0.825100),
+	D50	(0.9642, 1.0, 0.8249), // according to Specification ICC.1:2010 (Profile version 4.3.0.0)
 	/** D55 standard illuminant (5500K). */
 	D55 (0.33411, 0.34877),	
 	/** D65 standard illuminant used for television and sRGB color space (6500K). */
-	D65 (0.9505000141764465, 1.0, 1.0890001060762940), //(0.950456, 1.00000, 1.088754),
+	D65 (0.9505, 1.0, 1.0890), 	// according to Specification ICC.1:2010 (Profile version 4.3.0.0), was  (0.950456, 1.0, 1.088754),
 	/** D75 standard illuminant (7500K). */
 	D75 (0.29968, 0.31740),
 	/** Incandescent tungsten (2856K). */
@@ -48,15 +48,11 @@ public enum StandardIlluminant implements Illuminant {
 	
 	private StandardIlluminant(double x, double y) {
 		if (Arithmetic.isZero(y)) {
-			this.Y = 0;
-			this.X = 0; 
-			this.Z = 0;
+			throw new IllegalArgumentException("illuminant y cannot be zero");
 		}
-		else {
-			this.Y = 1.0;
-			this.X = x * this.Y / y; 
-			this.Z = (1.0 - x - y) * this.Y / y;
-		}
+		this.Y = 1.0;
+		this.X = x * this.Y / y;
+		this.Z = (1.0 - x - y) * this.Y / y;
 	}
 	
 	@Override

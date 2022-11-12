@@ -19,12 +19,17 @@ public class sRgbUtilTest {
 	
 	@Test
 	public void test0() {
-		for (int i = 0; i < 1000; i++) {
+		double TOL = 1e-15;
+		for (int i = 0; i <= 1000; i++) {
 			double lc1 = (double) i / 1000;
 			double nlc = sRgbUtil.gammaFwd(lc1);
 			double lc2 = sRgbUtil.gammaInv(nlc);
-			assertEquals("wrong gamma for lc = " + lc1, lc1, lc2, 1e-15);
-		}		
+			assertEquals(lc1, lc2, TOL);
+		}
+		assertEquals(0.0, sRgbUtil.gammaFwd(0.0), TOL);
+		assertEquals(1.0, sRgbUtil.gammaFwd(1.0), TOL);
+		assertEquals(0.0, sRgbUtil.gammaInv(0.0), TOL);
+		assertEquals(1.0, sRgbUtil.gammaInv(1.0), TOL);
 	}
 
 	@Test

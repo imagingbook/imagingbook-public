@@ -9,6 +9,8 @@
 
 package imagingbook.common.color.colorspace;
 
+import imagingbook.common.math.Matrix;
+
 /**
  * Interface specifying a chromatic adaptation transform.
  * @author WB
@@ -23,6 +25,10 @@ public interface ChromaticAdaptation {
 	 * @param xyz the original color point w.r.t. W1
 	 * @return the associated color w.r.t. the target white point (W2).
 	 */
-	public float[] applyTo(float[] xyz);
+	public default float[] applyTo(float[] xyz) {
+		return Matrix.toFloat(applyTo(Matrix.toDouble(xyz)));
+	}
+	
+	public double[] applyTo(double[] xyz);
 
 }

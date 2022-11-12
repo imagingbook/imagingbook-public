@@ -54,8 +54,8 @@ public class LuvColorSpace extends ColorSpace {
 	private static final double vvref = fv(XYZref[0], XYZref[1], XYZref[2]); // v'_n
 	
 	// chromatic adaptation objects:
-	private static final ChromaticAdaptation catD65toD50 = new BradfordAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);
-	private static final ChromaticAdaptation catD50toD65 = new BradfordAdaptation(StandardIlluminant.D50, StandardIlluminant.D65);
+	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);
+	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);
 	
 	/**
 	 * Constructor.
@@ -144,7 +144,7 @@ public class LuvColorSpace extends ColorSpace {
 	 */
 	@Override
 	public float[] fromRGB(float[] srgb) {
-		float[] XYZ65 = sRgb65ColorSpace.getInstance().toCIEXYZ(srgb);
+		float[] XYZ65 = sRgbColorSpace.getInstance().toCIEXYZ(srgb);
 		return fromCIEXYZ65(XYZ65);
 	}
 	
@@ -161,7 +161,7 @@ public class LuvColorSpace extends ColorSpace {
 	@Override
 	public float[] toRGB(float[] Luv) {
 		float[] XYZ65 = toCIEXYZ65(Luv);
-		float[] srgb = sRgb65ColorSpace.getInstance().fromCIEXYZ(XYZ65);
+		float[] srgb = sRgbColorSpace.getInstance().fromCIEXYZ(XYZ65);
 		return srgb;
 	}
 	

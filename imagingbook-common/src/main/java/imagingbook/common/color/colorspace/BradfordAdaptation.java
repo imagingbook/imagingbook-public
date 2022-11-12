@@ -48,31 +48,41 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	// XYZ2 = Madapt * XYZ1, with
 	// Madapt = MCAT^-1 * DiagRGB * MCAT
 	private final double[][] Madapt;
-	
+	private final double[][] Mdiag;
 	
 	// ---------------------------------------------------------------------------------
 	
+	// static method for future caching of instances
+	public static BradfordAdaptation getInstance(double[] W1, double[] W2) {
+		return new BradfordAdaptation(W1, W2);
+	}
+	
+	// static method for future caching of instances
+		public static BradfordAdaptation getInstance(Illuminant illum1, Illuminant illum2) {
+			return new BradfordAdaptation(illum1, illum2);
+		}
+	
 	/**
-	 * Constructor accepting two white points (XYZ-coordinates).
+	 * Constructor (non-public) accepting two white points (XYZ-coordinates).
 	 * 
 	 * @param W1 source white point
 	 * @param W2 target white point
 	 */
-	public BradfordAdaptation(double[] W1, double[] W2) {
+	private BradfordAdaptation(double[] W1, double[] W2) {
 		double[] rgb1 = multiply(MCAT, W1);
 		double[] rgb2 = multiply(MCAT, W2);
-		double[][] Mscale = rgbMatrix(rgb1, rgb2);
-		Madapt = multiply(MCATi, multiply(Mscale, MCAT));
+		this.Mdiag = getRgbWhiteRatioMatrix(rgb1, rgb2);
+		this.Madapt = multiply(MCATi, multiply(Mdiag, MCAT));
 	}
 	
 	/**
-	 * Constructor accepting two {@link Illuminant} instances for
+	 * Constructor (non-public) accepting two {@link Illuminant} instances for
 	 * specifying the source and target white points.
 	 * 
 	 * @param illum1 source illuminant
 	 * @param illum2 target illuminant
 	 */
-	public BradfordAdaptation(Illuminant illum1, Illuminant illum2) {
+	private BradfordAdaptation(Illuminant illum1, Illuminant illum2) {
 		this(illum1.getXYZ(), illum2.getXYZ());
 	}
 	
@@ -90,13 +100,23 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	
 	// transformation of color coordinates
 	@Override
-	public float[] applyTo(float[] xyz) {
-		// XYZ2 = Mcat . XYZ1
-		float[] XYZ2 = new float[3];
+	public float[] applyTo(float[] XYZA) {
+		// XYZB = Madapt . XYZA
+		float[] XYZB = new float[3];
 		for (int i = 0; i < 3; i++) {
-			XYZ2[i] = (float) (Madapt[i][0] * xyz[0] + Madapt[i][1] * xyz[1] + Madapt[i][2] * xyz[2]);
+			XYZB[i] = (float) (Madapt[i][0] * XYZA[0] + Madapt[i][1] * XYZA[1] + Madapt[i][2] * XYZA[2]);
 		}
-		return XYZ2;
+		return XYZB;
+	}
+	
+	@Override
+	public double[] applyTo(double[] XYZA) {
+		// XYZB = Madapt . XYZA
+		double[] XYZB = new double[3];
+		for (int i = 0; i < 3; i++) {
+			XYZB[i] = Madapt[i][0] * XYZA[0] + Madapt[i][1] * XYZA[1] + Madapt[i][2] * XYZA[2];
+		}
+		return XYZB;
 	}
 	
 	/**
@@ -110,14 +130,14 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 
 	// Creates a diagonal matrix with the ratios of the rgb components
 	// obtained by transforming the two white points
-	private double[][] rgbMatrix(double[] rgb1, double[] rgb2) {
-		if (rgb1.length != rgb2.length) {
+	private static double[][] getRgbWhiteRatioMatrix(double[] rgbA, double[] rgbB) {
+		if (rgbA.length != rgbB.length) {
 			throw new IllegalArgumentException();
 		}
-		final int n = rgb1.length;
+		final int n = rgbA.length;
 		double[][] M = new double[n][n];
 		for (int i = 0; i < n; i++) {
-			M[i][i] = rgb2[i] / rgb1[i];
+			M[i][i] = rgbB[i] / rgbA[i];
 		}
 		return M;
 	}
@@ -125,17 +145,19 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	// ------------------------------------------------------------------------------
 	
 	public static void main(String[] args) {
-		PrintPrecision.set(16);
-		System.out.println("MCATi = \n" + Matrix.toString(MCATi));
-		double[][] X = Matrix.multiply(MCAT, MCATi);
-		System.out.println("MCAT * MCATi = \n" + Matrix.toString(X));
+		PrintPrecision.set(8);
 		
-		
+		System.out.println("W1 (D65) = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
+		System.out.println("W2 (D50) = " + Matrix.toString(StandardIlluminant.D50.getXYZ()));
 		
 		BradfordAdaptation adapt = new BradfordAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
 		
-		System.out.println("Mcat = \n" + Matrix.toString(adapt.getAdaptationMatrix()));
+		
+		System.out.println("Mdiag = \n" + Matrix.toString(adapt.Mdiag));
+		
+		System.out.println("Madapt = \n" + Matrix.toString(adapt.getAdaptationMatrix()));
 		System.out.println();
+		
 		
 		
 //		

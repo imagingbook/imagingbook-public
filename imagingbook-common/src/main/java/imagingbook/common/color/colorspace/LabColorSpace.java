@@ -15,6 +15,8 @@ import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 import java.awt.color.ColorSpace;
 
 import imagingbook.common.color.RgbUtils;
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 
 
 /**
@@ -37,7 +39,7 @@ import imagingbook.common.color.RgbUtils;
  */
 public class LabColorSpace extends ColorSpace {
 	private static final long serialVersionUID = 1L;
-	private static final sRgb65ColorSpace sRGBcsp = sRgb65ColorSpace.getInstance();
+	private static final sRgbColorSpace sRGBcsp = sRgbColorSpace.getInstance();
 	
 	private static final LabColorSpace instance = new LabColorSpace();
 	
@@ -49,8 +51,8 @@ public class LabColorSpace extends ColorSpace {
 	private static final double[] XYZref = D65.getXYZ();
 
 	// chromatic adaptation objects:
-	private static final ChromaticAdaptation catD65toD50 = new BradfordAdaptation(D65, D50);
-	private static final ChromaticAdaptation catD50toD65 = new BradfordAdaptation(D50, D65);
+	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
+	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
 
 
 	/**
@@ -70,9 +72,9 @@ public class LabColorSpace extends ColorSpace {
 	 * @param XYZ50 a color in D50-based XYZ space (components in [0,1])
 	 * @return the associated CIELab color
 	 */
-	@Override
+	@Override  // returns Lab values from D50-based XYZ
 	public float[] fromCIEXYZ(float[] XYZ50) {	
-		float[] XYZ65 = catD50toD65.applyTo(XYZ50);	
+		float[] XYZ65 = catD50toD65.applyTo(XYZ50);
 		return fromCIEXYZ65(XYZ65);
 	}
 
@@ -102,7 +104,7 @@ public class LabColorSpace extends ColorSpace {
 	 * @param Lab CIELab color
 	 * @return XYZ coordinates (D50-based)
 	 */
-	@Override
+	@Override // returns D50-based XYZ from Lab values
 	public float[] toCIEXYZ(float[] Lab) {
 		float[] XYZ65 = toCIEXYZ65(Lab);
 		return catD65toD50.applyTo(XYZ65);
@@ -134,8 +136,11 @@ public class LabColorSpace extends ColorSpace {
 	 */
 	@Override
 	public float[] fromRGB(float[] srgb) {
-		float[] XYZ65 = sRGBcsp.toCIEXYZ(srgb);
-		return fromCIEXYZ65(XYZ65);
+//		float[] XYZ50 = sRGBcsp.toCIEXYZ(srgb);
+//		return this.fromCIEXYZ(XYZ50);
+		float[] XYZ65 = sRGBcsp.toCIEXYZ65(srgb);
+//		System.out.println("XYZ65 = " + Matrix.toString(XYZ65));
+		return this.fromCIEXYZ65(XYZ65);
 	}
 
 	//CIELab -> sRGB (direct, without adaptation to D50)
@@ -150,8 +155,10 @@ public class LabColorSpace extends ColorSpace {
 	 */
 	@Override
 	public float[] toRGB(float[] Lab) {
+//		float[] XYZ50 = toCIEXYZ(Lab);
+//		return sRGBcsp.fromCIEXYZ(XYZ50);
 		float[] XYZ65 = toCIEXYZ65(Lab);
-		return sRGBcsp.fromCIEXYZ(XYZ65);
+		return sRGBcsp.fromCIEXYZ65(XYZ65);
 	}
 
 	//---------------------------------------------------------------------
@@ -170,4 +177,15 @@ public class LabColorSpace extends ColorSpace {
 		return (c3 > epsilon) ? c3 : (c - 16.0 / 116) / kappa;
 	}
 
+	//---------------------------------------------------------------------
+	
+	public static void main(String[] args) {
+		PrintPrecision.set(6);
+		LabColorSpace cs = LabColorSpace.getInstance();
+		float[] lab = cs.fromCIEXYZ65(Matrix.toFloat(XYZref));
+		System.out.println("XYZref = " + Matrix.toString(XYZref));
+		System.out.println("Lab = " + Matrix.toString(lab));
+		float[] xyz = cs.toCIEXYZ65(lab);
+		System.out.println("XYZ = " + Matrix.toString(xyz));
+	}
 }

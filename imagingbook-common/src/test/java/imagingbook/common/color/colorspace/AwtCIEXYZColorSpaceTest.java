@@ -27,7 +27,7 @@ import imagingbook.common.math.PrintPrecision;
 public class AwtCIEXYZColorSpaceTest {
 	
 	ColorSpace CS = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
-	static float TOL = 1e-2f;	// standard color spaces are not very accurate!
+	static float TOL = 1e-2f;	// standard color space inversion is not very accurate!
 	
 
 	@Test
