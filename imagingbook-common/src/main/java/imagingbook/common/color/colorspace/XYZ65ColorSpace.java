@@ -5,7 +5,7 @@ import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 
 import java.awt.color.ColorSpace;
 
-public class XYZ65ColorSpace extends ColorSpace {
+public class XYZ65ColorSpace extends CustomColorSpace {
 	private static final long serialVersionUID = 1L;
 	
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
@@ -24,29 +24,29 @@ public class XYZ65ColorSpace extends ColorSpace {
 	// ----------------------------------------------------
 
 	@Override	// convert this D65.based XYZ to sRGB 
-	public float[] toRGB(float[] thisXYZ65) {
-		float[] XYZ50 = this.toCIEXYZ(thisXYZ65);	// could be done directly!!
+	public double[] toRGB(double[] thisXYZ65) {
+		double[] XYZ50 = this.toCIEXYZ(thisXYZ65);	// could be done directly!!
 		sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
-		float[] srgb = srgbCS.fromCIEXYZ(XYZ50);
+		double[] srgb = srgbCS.fromCIEXYZ(XYZ50);
 		return srgb;
 	}
 
 	@Override
-	public float[] fromRGB(float[] srgb) {
+	public double[] fromRGB(double[] srgb) {
 		sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
-		float[] XYZ50 = srgbCS.toCIEXYZ(srgb);
+		double[] XYZ50 = srgbCS.toCIEXYZ(srgb);
 		return this.fromCIEXYZ(XYZ50);
 	}
 	
 	// -------------------------------------------------
 	
 	@Override	// convert this CS D65 XYZ to standard D50 XYZ
-	public float[] toCIEXYZ(float[] thisXYZ65) {
+	public double[] toCIEXYZ(double[] thisXYZ65) {
 		return catD65toD50.applyTo(thisXYZ65);
 	}
 	
 	@Override	// convert standard D50 XYZ to this CS D65 XYZ
-	public float[] fromCIEXYZ(float[] XYZ50) {
+	public double[] fromCIEXYZ(double[] XYZ50) {
 		return catD50toD65.applyTo(XYZ50);
 	}
 

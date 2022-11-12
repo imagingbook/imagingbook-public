@@ -93,6 +93,10 @@ public abstract class RgbUtils {
 		return new float[] {RGB[0]/255f, RGB[1]/255f, RGB[2]/255f};
 	}
 	
+	public static double[] normalizeD(int[] RGB) {
+		return new double[] {RGB[0]/255.0, RGB[1]/255.0, RGB[2]/255.0};
+	}
+	
 	/**
 	 * Converts float RGB values (with components assumed to be in [0,1]) to integer values
 	 * in [0,255].
@@ -104,6 +108,18 @@ public abstract class RgbUtils {
 		int[] RGB = new int[3];
 		for (int i = 0; i < 3; i++) {			
 			RGB[i] = Math.round(rgb[i] * 255f);
+			if (RGB[i] < 0)
+				RGB[i] = 0;
+			else if (RGB[i] > 255)
+				RGB[i] = 255;
+		}
+		return RGB;
+	}
+	
+	public static int[] unnormalizeD(double[] rgb) {
+		int[] RGB = new int[3];
+		for (int i = 0; i < 3; i++) {			
+			RGB[i] = (int) Math.round(rgb[i] * 255);
 			if (RGB[i] < 0)
 				RGB[i] = 0;
 			else if (RGB[i] > 255)

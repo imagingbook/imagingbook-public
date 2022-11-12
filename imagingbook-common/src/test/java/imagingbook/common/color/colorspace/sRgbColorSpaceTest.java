@@ -75,29 +75,29 @@ public class sRgbColorSpaceTest {
 	
 	@Test
 	public void testBlack() { // check black point
-		float[] rgb = {0, 0, 0};
-		float[] xyz = CS.toCIEXYZ(rgb);
-		assertArrayEquals(new float[] {0, 0, 0}, xyz, 1e-6f);
+		double[] rgb = {0, 0, 0};
+		double[] xyz = CS.toCIEXYZ(rgb);
+		assertArrayEquals(new double[] {0, 0, 0}, xyz, 1e-6f);
 	}
 	
 	@Test
 	public void testWhite50() { //sRGB white in this color space must map to D50-XYZ in PCS
-		float[] srgbTHIS = {1, 1, 1};
-		float[] wXYZ50 = CS.toCIEXYZ(srgbTHIS);	// in PCS#
+		double[] srgbTHIS = {1, 1, 1};
+		double[] wXYZ50 = CS.toCIEXYZ(srgbTHIS);	// in PCS#
 		System.out.println("wD50 = " + Matrix.toString(StandardIlluminant.D50.getXYZ()));
 		System.out.println("wXYZ = " + Matrix.toString(wXYZ50));
-		float[] wIll50 = Matrix.toFloat(StandardIlluminant.D50.getXYZ()); 
+		double[] wIll50 = StandardIlluminant.D50.getXYZ(); 
 		//System.out.println("wIll = " + Matrix.toString(wIll));
 		assertArrayEquals(wIll50, wXYZ50, 1e-3f);
 	}
 	
 	@Test
 	public void testWhite65() { //sRGB white in this color space must map to D50-XYZ in PCS
-		float[] srgbTHIS = {1, 1, 1};
-		float[] wXYZ65 = CS.toCIEXYZ65(srgbTHIS);	// in PCS#
+		double[] srgbTHIS = {1, 1, 1};
+		double[] wXYZ65 = CS.toCIEXYZ65(srgbTHIS);	// in PCS#
 		System.out.println("wD65 = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
 		System.out.println("wXYZ = " + Matrix.toString(wXYZ65));
-		float[] wIll65 = Matrix.toFloat(StandardIlluminant.D65.getXYZ()); 
+		double[] wIll65 = StandardIlluminant.D65.getXYZ(); 
 		//System.out.println("wIll = " + Matrix.toString(wIll));
 		assertArrayEquals(wIll65, wXYZ65, 1e-3f);
 	}
@@ -106,9 +106,9 @@ public class sRgbColorSpaceTest {
 	public void testGray() {	// any sRGB gray in this color space must map do D50-xy in PCS
 		final double[] xy50 = StandardIlluminant.D50.getXy(); //{0.3457, 0.3585};
 		for (int c = 1; c < 256; c++) {
-			float[] rgbTHIS = {c, c, c};
-			float[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
-			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(xyzPCS));
+			double[] rgbTHIS = {c, c, c};
+			double[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
+			double[] xy = CieUtil.XYZToXy(xyzPCS);
 			assertArrayEquals(xy50, xy, 1e-4f);
 		}
 	}
@@ -136,36 +136,36 @@ public class sRgbColorSpaceTest {
 	
 	// ---------------------------------------------------
 	
-	private static void doCheck(ColorSpace cs, int[] srgb) {
+	private static void doCheck(CustomColorSpace cs, int[] srgb) {
 		float[] srgbIN = RgbUtils.normalize(srgb);
-		float[] xyzPCS = ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN); // get some valid XYZ
+		double[] xyzPCS = Matrix.toDouble(ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN)); // get some valid XYZ
 		
 		{	// check fromCIEXYZ / toCIEXYZ 				
-			float[] srgbTHIS = cs.fromCIEXYZ(xyzPCS);
-			float[] xyzOUT = cs.toCIEXYZ(srgbTHIS);
+			double[] srgbTHIS = cs.fromCIEXYZ(xyzPCS);
+			double[] xyzOUT = cs.toCIEXYZ(srgbTHIS);
 			assertArrayEquals(xyzPCS, xyzOUT, TOL);	// works fine
 		}
 
 		{	// check fromRGB / toRGB 					
-			float[] srgbTHIS = cs.fromRGB(srgbIN);
-			float[] srgbOUT = cs.toRGB(srgbTHIS);
+			double[] srgbTHIS = cs.fromRGB(Matrix.toDouble(srgbIN));
+			double[] srgbOUT = cs.toRGB(srgbTHIS);
 //			System.out.println("srgbIN  = " + Matrix.toString(srgbIN));
 //			System.out.println("srgbOUT = " + Matrix.toString(srgbOUT));
-			assertArrayEquals(srgbIN, srgbOUT, TOL);
+			assertArrayEquals(Matrix.toDouble(srgbIN), srgbOUT, TOL);
 		}
 	}
 	
 	// RGB are sRGB values
 	private static void checkXYZValues(sRgbColorSpace cs, double R, double G, double B, double X, double Y, double Z) {
-		float[] srgb1 = new float[] {(float)R, (float)G, (float)B};
+		double[] srgb1 = new double[] {R, G, B};
 		
 		// convert to XYZ (D65)
-		float[] xyz = cs.toCIEXYZ65(srgb1);
+		double[] xyz = cs.toCIEXYZ65(srgb1);
 //		System.out.println(Matrix.toString(xyz));
-		assertArrayEquals(new float[] {(float)X, (float)Y, (float)Z}, xyz, 1e-4f);
+		assertArrayEquals(new double[] {X, Y, Z}, xyz, 1e-4f);
 		
 		// back to sRGB
-		float[] srgb2 = cs.fromCIEXYZ65(xyz);
+		double[] srgb2 = cs.fromCIEXYZ65(xyz);
 		assertArrayEquals(srgb1, srgb2, 1e-4f);
 	}
 

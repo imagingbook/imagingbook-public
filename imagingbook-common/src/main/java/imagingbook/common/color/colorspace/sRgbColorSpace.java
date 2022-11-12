@@ -29,7 +29,7 @@ import imagingbook.common.math.PrintPrecision;
  * @author WB
  * @version 2022/11/07
  */
-public class sRgbColorSpace extends ColorSpace {
+public class sRgbColorSpace extends CustomColorSpace {
 	private static final long serialVersionUID = 1L;
 
 	private static final sRgbColorSpace instance = new sRgbColorSpace();
@@ -75,17 +75,17 @@ public class sRgbColorSpace extends ColorSpace {
 	
 	// direct conversion from/to D65-based XYZ space ------------------------------
 	
-	public float[] fromCIEXYZ65(float[] xyz65) {
-		double[] rgb = Matrix.multiply(Mrgb, Matrix.toDouble(xyz65));	// linear RGB
+	public double[] fromCIEXYZ65(double[] xyz65) {
+		double[] rgb = Matrix.multiply(Mrgb, xyz65);	// linear RGB
 		// perform forward gamma mapping:
-		float[] srgb = new float[3];									
+		double[] srgb = new double[3];									
 		for (int i = 0; i < 3; i++) {
-			srgb[i] = (float) sRgbUtil.gammaFwd(rgb[i]);
+			srgb[i] = sRgbUtil.gammaFwd(rgb[i]);
 		}
 		return srgb;
 	}
 	
-	public float[] toCIEXYZ65(float[] srgbTHIS) {
+	public double[] toCIEXYZ65(double[] srgbTHIS) {
 		// get linear rgb components:
 		double[] rgb = new double[3];
 		for (int i = 0; i < 3; i++) {
@@ -93,7 +93,7 @@ public class sRgbColorSpace extends ColorSpace {
 		}
 		// convert to D65-based XYZ (Poynton / ITU 709) 
 		double[] xyz65 = Matrix.multiply(Mrgbi, rgb);
-		return Matrix.toFloat(xyz65);
+		return xyz65;
 	}
 	
 	// Methods required ColorSpace (conversion from/to PCS space) ------------------
@@ -101,8 +101,8 @@ public class sRgbColorSpace extends ColorSpace {
 	// assumes xyz50 is in D50-based CS_CIEXYZ color space
 	// TODO: check double/float mix
 	@Override
-	public float[] fromCIEXYZ(float[] xyz50PCS) {
-		float[] xyz65 = catD50toD65.applyTo(xyz50PCS);
+	public double[] fromCIEXYZ(double[] xyz50PCS) {
+		double[] xyz65 = catD50toD65.applyTo(xyz50PCS);
 		return this.fromCIEXYZ65(xyz65);
 	}
 	
@@ -120,9 +120,9 @@ public class sRgbColorSpace extends ColorSpace {
 	// returned colors are in D50-based CS_CIEXYZ color space 
 	// TODO: check double/float mix
 	@Override
-	public float[] toCIEXYZ(float[] srgbTHIS) {
-		float[] xyz65 = this.toCIEXYZ65(srgbTHIS);
-		float[] xyz50 = catD65toD50.applyTo(xyz65);
+	public double[] toCIEXYZ(double[] srgbTHIS) {
+		double[] xyz65 = this.toCIEXYZ65(srgbTHIS);
+		double[] xyz50 = catD65toD50.applyTo(xyz65);
 		return xyz50;
 	}
 	
@@ -141,12 +141,12 @@ public class sRgbColorSpace extends ColorSpace {
 	// ----------------------------------------------------
 	
 	@Override // no conversion needed, since this is sRGB
-	public float[] fromRGB(float[] srgb) {
+	public double[] fromRGB(double[] srgb) {
 		return srgb;
 	}
 
 	@Override // no conversion needed, since this is sRGB
-	public float[] toRGB(float[] srgbTHIS) {
+	public double[] toRGB(double[] srgbTHIS) {
 		return srgbTHIS;
 	}
 	
