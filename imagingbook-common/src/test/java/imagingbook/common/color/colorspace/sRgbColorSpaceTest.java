@@ -22,7 +22,7 @@ import imagingbook.common.math.PrintPrecision;
 public class sRgbColorSpaceTest {
 	
 	static sRgbColorSpace CS = sRgbColorSpace.getInstance();
-	static float TOL = 1e-5f;			
+	static double TOL = 1e-6;			
 
 	static {
 		PrintPrecision.set(15);
@@ -60,46 +60,46 @@ public class sRgbColorSpaceTest {
 //		}
 //	}
 	
-//	@Test
-//	public void testPrimaries() { // check primaries
-//		for (int i = 0; i < 3; i++) {
-//			float[] rgb = new float[3];
-//			rgb[i] = 1;
-//			float[] xyz = CS.toCIEXYZ(rgb);
-//			float[] primary = Matrix.toFloat(CS.getPrimary(i));
+	@Test
+	public void testPrimaries() { // check primaries in D65
+		for (int i = 0; i < 3; i++) {
+			double[] rgb = new double[3];
+			rgb[i] = 1;
+			double[] xyz = CS.toCIEXYZ65(rgb);
+			double[] primary = CS.getPrimary(i);
 //			System.out.println("primary = " + Matrix.toString(primary));
 //			System.out.println("xyz     = " + Matrix.toString(xyz));
-//			assertArrayEquals(Matrix.toFloat(CS.getPrimary(i)), xyz, 1e-6f);
-//		}
-//	}
+			assertArrayEquals(primary, xyz, 1e-6);
+		}
+	}
 	
 	@Test
 	public void testBlack() { // check black point
 		double[] rgb = {0, 0, 0};
 		double[] xyz = CS.toCIEXYZ(rgb);
-		assertArrayEquals(new double[] {0, 0, 0}, xyz, 1e-6f);
+		assertArrayEquals(new double[] {0, 0, 0}, xyz, 1e-6);
 	}
 	
 	@Test
 	public void testWhite50() { //sRGB white in this color space must map to D50-XYZ in PCS
 		double[] srgbTHIS = {1, 1, 1};
 		double[] wXYZ50 = CS.toCIEXYZ(srgbTHIS);	// in PCS#
-		System.out.println("wD50 = " + Matrix.toString(StandardIlluminant.D50.getXYZ()));
-		System.out.println("wXYZ = " + Matrix.toString(wXYZ50));
+//		System.out.println("wD50 = " + Matrix.toString(StandardIlluminant.D50.getXYZ()));
+//		System.out.println("wXYZ = " + Matrix.toString(wXYZ50));
 		double[] wIll50 = StandardIlluminant.D50.getXYZ(); 
 		//System.out.println("wIll = " + Matrix.toString(wIll));
-		assertArrayEquals(wIll50, wXYZ50, 1e-3f);
+		assertArrayEquals(wIll50, wXYZ50, 1e-3);
 	}
 	
 	@Test
-	public void testWhite65() { //sRGB white in this color space must map to D50-XYZ in PCS
+	public void testWhite65() { //sRGB white in this color space must map to D65 XYZ with toCIEXYZ65()
 		double[] srgbTHIS = {1, 1, 1};
 		double[] wXYZ65 = CS.toCIEXYZ65(srgbTHIS);	// in PCS#
-		System.out.println("wD65 = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
-		System.out.println("wXYZ = " + Matrix.toString(wXYZ65));
+//		System.out.println("wD65 = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
+//		System.out.println("wXYZ = " + Matrix.toString(wXYZ65));
 		double[] wIll65 = StandardIlluminant.D65.getXYZ(); 
 		//System.out.println("wIll = " + Matrix.toString(wIll));
-		assertArrayEquals(wIll65, wXYZ65, 1e-3f);
+		assertArrayEquals(wIll65, wXYZ65, 1e-3);
 	}
 	
 	@Test
@@ -109,7 +109,7 @@ public class sRgbColorSpaceTest {
 			double[] rgbTHIS = {c, c, c};
 			double[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
 			double[] xy = CieUtil.XYZToXy(xyzPCS);
-			assertArrayEquals(xy50, xy, 1e-4f);
+			assertArrayEquals(xy50, xy, 1e-4);
 		}
 	}
 	
@@ -162,11 +162,11 @@ public class sRgbColorSpaceTest {
 		// convert to XYZ (D65)
 		double[] xyz = cs.toCIEXYZ65(srgb1);
 //		System.out.println(Matrix.toString(xyz));
-		assertArrayEquals(new double[] {X, Y, Z}, xyz, 1e-4f);
+		assertArrayEquals(new double[] {X, Y, Z}, xyz, 1e-4);
 		
 		// back to sRGB
 		double[] srgb2 = cs.fromCIEXYZ65(xyz);
-		assertArrayEquals(srgb1, srgb2, 1e-4f);
+		assertArrayEquals(srgb1, srgb2, 1e-4);
 	}
 
 }

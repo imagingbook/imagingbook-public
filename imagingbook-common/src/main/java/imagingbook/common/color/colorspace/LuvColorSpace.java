@@ -36,7 +36,9 @@ import imagingbook.common.color.RgbUtils;
  * @version 2022/09/01
  */
 @SuppressWarnings("serial")
-public class LuvColorSpace extends ColorSpace {
+public class LuvColorSpace extends CustomColorSpace {
+	
+	private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 	
 	private static final LuvColorSpace instance = new LuvColorSpace();
 	
@@ -74,8 +76,8 @@ public class LuvColorSpace extends ColorSpace {
 	 * </p>
 	 */
 	@Override
-	public float[] fromCIEXYZ(float[] XYZ50) {	
-		float[] XYZ65 = catD50toD65.applyTo(XYZ50);
+	public double[] fromCIEXYZ(double[] XYZ50) {	
+		double[] XYZ65 = catD50toD65.applyTo(XYZ50);
 		return fromCIEXYZ65(XYZ65);
 	}
 	
@@ -86,17 +88,17 @@ public class LuvColorSpace extends ColorSpace {
 	 * @param XYZ65 a color in D65-based XYZ space (components in [0,1])
 	 * @return the associated CIELuv color
 	 */
-	public float[] fromCIEXYZ65(float[] XYZ65) {	
+	public double[] fromCIEXYZ65(double[] XYZ65) {	
 		double X = XYZ65[0];
 		double Y = XYZ65[1];	
 		double Z = XYZ65[2];
 		double YY = f1(Y / XYZref[1]);  	// Y'
 		double uu = fu(X,Y,Z); 		// u'
 		double vv = fv(X,Y,Z); 		// v'
-		float L = (float)(116.0 * YY - 16.0); 		//L*
-		float u = (float)(13 * L * (uu - uuref));  	//u*
-		float v = (float)(13 * L * (vv - vvref));  	//v*
-		return new float[] {L, u, v};
+		double L = (116.0 * YY - 16.0); 		//L*
+		double u = (13 * L * (uu - uuref));  	//u*
+		double v = (13 * L * (vv - vvref));  	//v*
+		return new double[] {L, u, v};
 	}
 	
 	// CIELab->XYZ50: returns XYZ values (relative to D50) from Luv
@@ -109,8 +111,8 @@ public class LuvColorSpace extends ColorSpace {
 	 * </p>
 	 */
 	@Override
-	public float[] toCIEXYZ(float[] Luv) {
-		float[] XYZ65 = toCIEXYZ65(Luv);
+	public double[] toCIEXYZ(double[] Luv) {
+		double[] XYZ65 = toCIEXYZ65(Luv);
 		return catD65toD50.applyTo(XYZ65);
 	}
 	
@@ -119,16 +121,16 @@ public class LuvColorSpace extends ColorSpace {
 	 * @param Luv CIELuv color
 	 * @return the associated D65-based XYZ coordinates
 	 */
-	public float[] toCIEXYZ65(float[] Luv) {
+	public double[] toCIEXYZ65(double[] Luv) {
 		double L = Luv[0];
 		double u = Luv[1];
 		double v = Luv[2];
-		float Y = (float) (XYZref[1] * f2((L + 16) / 116.0));
+		double Y = XYZref[1] * f2((L + 16) / 116.0);
 		double uu = (L < 0.00001) ? uuref : u / (13 * L) + uuref; // u'
 		double vv = (L < 0.00001) ? vvref : v / (13 * L) + vvref; // v'
-		float X = (float) (Y * ((9*uu)/(4*vv)));
-		float Z = (float) (Y * ((12 - 3 * uu - 20 * vv) / (4 * vv)));
-		float[] XYZ65 = new float[] {X, Y, Z};
+		double X = Y * ((9*uu)/(4*vv));
+		double Z = Y * ((12 - 3 * uu - 20 * vv) / (4 * vv));
+		double[] XYZ65 = new double[] {X, Y, Z};
 		return XYZ65;
 	}
 	
@@ -143,8 +145,8 @@ public class LuvColorSpace extends ColorSpace {
 	 * @return the associated CIELuv color
 	 */
 	@Override
-	public float[] fromRGB(float[] srgb) {
-		float[] XYZ65 = sRgbColorSpace.getInstance().toCIEXYZ(srgb);
+	public double[] fromRGB(double[] srgb) {
+		double[] XYZ65 = srgbCS.toCIEXYZ65(srgb);
 		return fromCIEXYZ65(XYZ65);
 	}
 	
@@ -159,9 +161,9 @@ public class LuvColorSpace extends ColorSpace {
 	 * @return sRGB coordinates (D65-based)
 	 */
 	@Override
-	public float[] toRGB(float[] Luv) {
-		float[] XYZ65 = toCIEXYZ65(Luv);
-		float[] srgb = sRgbColorSpace.getInstance().fromCIEXYZ(XYZ65);
+	public double[] toRGB(double[] Luv) {
+		double[] XYZ65 = toCIEXYZ65(Luv);
+		double[] srgb = srgbCS.fromCIEXYZ65(XYZ65);
 		return srgb;
 	}
 	

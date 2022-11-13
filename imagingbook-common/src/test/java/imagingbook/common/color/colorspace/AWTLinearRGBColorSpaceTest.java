@@ -24,7 +24,7 @@ import imagingbook.common.math.PrintPrecision;
  * @author WB
  *
  */
-public class AwtLinearRGBColorSpaceTest {
+public class AWTLinearRGBColorSpaceTest {
 	
 	static ColorSpace CS = ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB);
 	static float TOL = 1e-2f;	// standard color spaces are not very accurate!

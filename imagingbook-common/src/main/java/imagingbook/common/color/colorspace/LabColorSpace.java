@@ -39,7 +39,7 @@ import imagingbook.common.math.PrintPrecision;
  */
 public class LabColorSpace extends CustomColorSpace {
 	private static final long serialVersionUID = 1L;
-	private static final sRgbColorSpace sRGBcsp = sRgbColorSpace.getInstance();
+	private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 	
 	private static final LabColorSpace instance = new LabColorSpace();
 	
@@ -136,11 +136,8 @@ public class LabColorSpace extends CustomColorSpace {
 	 */
 	@Override
 	public double[] fromRGB(double[] srgb) {
-//		float[] XYZ50 = sRGBcsp.toCIEXYZ(srgb);
-//		return this.fromCIEXYZ(XYZ50);
-		double[] XYZ65 = sRGBcsp.toCIEXYZ65(srgb);
-//		System.out.println("XYZ65 = " + Matrix.toString(XYZ65));
-		return this.fromCIEXYZ65(XYZ65);
+		double[] xyz65 = srgbCS.toCIEXYZ65(srgb);
+		return this.fromCIEXYZ65(xyz65);
 	}
 
 	//CIELab -> sRGB (direct, without adaptation to D50)
@@ -155,10 +152,8 @@ public class LabColorSpace extends CustomColorSpace {
 	 */
 	@Override
 	public double[] toRGB(double[] Lab) {
-//		float[] XYZ50 = toCIEXYZ(Lab);
-//		return sRGBcsp.fromCIEXYZ(XYZ50);
 		double[] XYZ65 = toCIEXYZ65(Lab);
-		return sRGBcsp.fromCIEXYZ65(XYZ65);
+		return srgbCS.fromCIEXYZ65(XYZ65);
 	}
 
 	//---------------------------------------------------------------------

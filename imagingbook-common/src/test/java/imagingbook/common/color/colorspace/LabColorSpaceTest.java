@@ -74,7 +74,7 @@ public class LabColorSpaceTest {
 		LabColorSpace cs = LabColorSpace.getInstance();
 		double[] rgb = {0, 0, 0};
 		double[] xyz = cs.fromRGB(rgb);
-		assertArrayEquals(new double[] {0, 0, 0}, xyz, 1e-6f);
+		assertArrayEquals(new double[] {0, 0, 0}, xyz, 1e-6);
 	}
 	
 	@Test
@@ -86,7 +86,7 @@ public class LabColorSpaceTest {
 		double[] wLab = cs.fromCIEXYZ65(W65);
 //		System.out.println("wD65 = " + Matrix.toString(W65));
 //		System.out.println("wLab = " + Matrix.toString(wLab));
-		assertArrayEquals(new double[] {100, 0, 0}, wLab, 1e-6f);
+		assertArrayEquals(new double[] {100, 0, 0}, wLab, 1e-6);
 	}
 	
 	@Test
@@ -94,11 +94,11 @@ public class LabColorSpaceTest {
 		PrintPrecision.set(6);
 		LabColorSpace cs = LabColorSpace.getInstance();
 		double[] rgb = {1, 1, 1};
-		double[] W65 = StandardIlluminant.D65.getXYZ();
+//		double[] W65 = StandardIlluminant.D65.getXYZ();
 		double[] wLab = cs.fromRGB(rgb);
 //		System.out.println("wD65 = " + Matrix.toString(W65));
 //		System.out.println("wLab = " + Matrix.toString(wLab));
-		assertArrayEquals(new double[] {100, 0, 0}, wLab, 1e-1f); // inaccuracies due to float conversions? NO!
+		assertArrayEquals(new double[] {100, 0, 0}, wLab, 1e-1); // inaccuracies due to float conversions? NO!
 	}
 	
 	@Test
@@ -134,10 +134,18 @@ public class LabColorSpaceTest {
 	// check XYZ to Lab conversion and back (using standard D50-based conversion space)
 	private static void checkXyzToLab(LabColorSpace lcs, int[] srgb) {
 		double[] srgb1 = RgbUtils.normalizeD(srgb);
-		double[] xyz50a = XYZ50ColorSpace.getInstance().fromRGB(srgb1);	// D50-based XYZ space
-		double[] lab = lcs.fromCIEXYZ(xyz50a);
-		double[] xyz50b = lcs.toCIEXYZ(lab);
-		assertArrayEquals(xyz50a, xyz50b, 1e-5f);
+		{	// D50
+			double[] xyz50a = XYZ50ColorSpace.getInstance().fromRGB(srgb1);	// D50-based XYZ space
+			double[] lab = lcs.fromCIEXYZ(xyz50a);
+			double[] xyz50b = lcs.toCIEXYZ(lab);
+			assertArrayEquals(xyz50a, xyz50b, 1e-5);
+		}
+		{	// D65
+			double[] xyz65a = XYZ65ColorSpace.getInstance().fromRGB(srgb1);	// D50-based XYZ space
+			double[] lab = lcs.fromCIEXYZ65(xyz65a);
+			double[] xyz65b = lcs.toCIEXYZ65(lab);
+			assertArrayEquals(xyz65a, xyz65b, 1e-5);
+		}
 	}
 	
 	// RGB are sRGB values
@@ -145,6 +153,6 @@ public class LabColorSpaceTest {
 		double[] srgb1 = new double[] {R, G, B};
 		double[] lab = lcs.fromRGB(srgb1);
 //		System.out.println(Matrix.toString(lab));
-		assertArrayEquals(new double[] {L, a, b}, lab, 0.02);	// quite inaccurate, check book values!!
+		assertArrayEquals(new double[] {L, a, b}, lab, 0.02);	// not very accurate!!
 	}
 }

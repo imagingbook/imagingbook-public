@@ -11,7 +11,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.color.colorspace.HlsColorSpace;
 import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.color.colorspace.LabColorSpace;
-import imagingbook.common.color.colorspace.LinearRgbColorSpace;
+import imagingbook.common.color.colorspace.LinearRgb65ColorSpace;
 import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.image.ColorPack;
 
@@ -25,7 +25,7 @@ import imagingbook.common.image.ColorPack;
  * @see imagingbook.common.color.colorspace.LuvColorSpace
  * @see imagingbook.common.color.colorspace.HlsColorSpace
  * @see imagingbook.common.color.colorspace.HsvColorSpace
- * @see imagingbook.common.color.colorspace.LinearRgbColorSpace
+ * @see imagingbook.common.color.colorspace.LinearRgb65ColorSpace
  * @see imagingbook.common.image.ColorPack
  */
 public class Convert_To_Color_Stack implements PlugInFilter {
@@ -60,7 +60,7 @@ public class Convert_To_Color_Stack implements PlugInFilter {
 		case Luv: csp = LuvColorSpace.getInstance(); break; 
 		case HLS: csp = HlsColorSpace.getInstance(); break;
 		case HSV: csp = HsvColorSpace.getInstance(); break;
-		case LinearRGB:	csp = LinearRgbColorSpace.getInstance(); break;
+		case LinearRGB:	csp = LinearRgb65ColorSpace.getInstance(); break;
 		}
 		
 		ColorPack cPack = new ColorPack((ColorProcessor) ip);

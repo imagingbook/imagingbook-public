@@ -10,7 +10,6 @@ package imagingbook.common.color.colorspace;
 
 import static org.junit.Assert.assertArrayEquals;
 
-import java.awt.color.ColorSpace;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -23,7 +22,7 @@ import imagingbook.testutils.NumericTestUtils;
 
 public class BradfordAdaptationTest {
 	
-	static float TOL = 1e-6f;
+	private static double TOL = 1e-6;
 
 	@Test
 	public void test0A() {	// adaptation to the same white point gives identity matrix always
@@ -58,7 +57,7 @@ public class BradfordAdaptationTest {
 	
 	@Test
 	public void test1() {
-		ColorSpace cs = sRgbColorSpace.getInstance();
+		sRgbColorSpace cs = sRgbColorSpace.getInstance();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
 		doCheck(cs, new int[] {177, 0, 0});
@@ -69,7 +68,7 @@ public class BradfordAdaptationTest {
 	
 	@Test
 	public void test2() {
-		ColorSpace cs = sRgbColorSpace.getInstance();
+		sRgbColorSpace cs = sRgbColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
@@ -104,7 +103,7 @@ public class BradfordAdaptationTest {
 			
 			double[] primary50m = adapt.applyTo(primary65);
 //			System.out.println("primary50m = " + Matrix.toString(primary50m));
-			assertArrayEquals(primary50, primary50m, 1e-3f);
+			assertArrayEquals(primary50, primary50m, 1e-3);
 		}
 	}
 	
@@ -121,7 +120,7 @@ public class BradfordAdaptationTest {
 			
 			double[] primary65m = adapt.applyTo(primary50);
 //			System.out.println("primary65m = " + Matrix.toString(primary65m));
-			assertArrayEquals(primary65, primary65m, 1e-3f);
+			assertArrayEquals(primary65, primary65m, 1e-3);
 		}
 	}
 	
@@ -134,10 +133,10 @@ public class BradfordAdaptationTest {
 		double[] W50 = StandardIlluminant.D50.getXYZ();
 		
 		double[] W50m = adapt.applyTo(W65);
-		System.out.println("W50  = " + Matrix.toString(W50));
-		System.out.println("W50m = " + Matrix.toString(W50m));
+//		System.out.println("W50  = " + Matrix.toString(W50));
+//		System.out.println("W50m = " + Matrix.toString(W50m));
 			
-		assertArrayEquals(W50, W50m, 1e-12f);
+		assertArrayEquals(W50, W50m, 1e-12);
 	}
 	
 	@Test
@@ -149,22 +148,22 @@ public class BradfordAdaptationTest {
 		double[] W50 = StandardIlluminant.D50.getXYZ();
 		
 		double[] W65m = adapt.applyTo(W50);
-		System.out.println("W65  = " + Matrix.toString(W65));
-		System.out.println("W65m = " + Matrix.toString(W65m));
+//		System.out.println("W65  = " + Matrix.toString(W65));
+//		System.out.println("W65m = " + Matrix.toString(W65m));
 			
-		assertArrayEquals(W65, W65m, 1e-12f);
+		assertArrayEquals(W65, W65m, 1e-12);
 	}
 	
 	// ------------------------------------------------
 	
-	private static void doCheck(ColorSpace cs, int[] srgb) {
-		float[] srgb1 = RgbUtils.normalize(srgb);		
+	private static void doCheck(CustomColorSpace cs, int[] srgb) {
+		double[] srgb1 = RgbUtils.normalizeD(srgb);		
 		ChromaticAdaptation adapt65to50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
 		ChromaticAdaptation adapt50to65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
 		
-		float[] XYZ65a = cs.toCIEXYZ(srgb1);
-		float[] XYZ50 = adapt65to50.applyTo(XYZ65a);
-		float[] XYZ65b = adapt50to65.applyTo(XYZ50);
+		double[] XYZ65a = cs.toCIEXYZ(srgb1);
+		double[] XYZ50 = adapt65to50.applyTo(XYZ65a);
+		double[] XYZ65b = adapt50to65.applyTo(XYZ50);
 		
 		assertArrayEquals("Bradford adapt problem for srgb=" + Arrays.toString(srgb), XYZ65a, XYZ65b, TOL);
 	}

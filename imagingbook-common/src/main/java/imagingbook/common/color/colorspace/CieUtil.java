@@ -34,17 +34,38 @@ public abstract class CieUtil {
 	 * @return the associated XYZ coordinate
 	 */
 	public static double[] xyToXYZ(double x, double y) {
-		if (Arithmetic.isZero(y)) {
-			return new double[] {0, 0, 0};
-		}
-		else {
-			double Y = 1;
-			double X = x * Y / y;
-			double Z = (1 - x - y) * Y / y;
-			double mag = X + Y + Z;
-			return new double[] {X/mag, Y/mag, Z/mag};
-		}
+		return xyToXYZ(x, y, 1.0);
 	}
+	
+//	public static double[] xyToXYZ(double x, double y) {
+//		if (Arithmetic.isZero(y)) {
+//			return new double[] {0, 0, 0};
+//		}
+//		else {
+//			double Y = 1;
+//			double X = x * Y / y;
+//			double Z = (1 - x - y) * Y / y;
+//			double mag = X + Y + Z;
+//			return new double[] {X/mag, Y/mag, Z/mag};
+//		}
+//	}
+	
+	public static float[] xyToXYZ(float x, float y) {
+		return xyToXYZ(x, y, 1.0f);
+	}
+
+//	public static float[] xyToXYZ(float x, float y) {
+//		if (Arithmetic.isZero(y)) {
+//			return new float[] {0, 0, 0};
+//		}
+//		else {
+//			double Y = 1;
+//			double X = x * Y / y;
+//			double Z = (1 - x - y) * Y / y;
+//			double mag = X + Y + Z;
+//			return new float[] {(float) (X/mag), (float) (Y/mag), (float) (Z/mag)};
+//		}
+//	}
 	
 	/**
 	 * Calculates the XYZ coordinates for a given point (x,y) in the CIE
@@ -55,18 +76,26 @@ public abstract class CieUtil {
 	 * @return the associated XYZ coordinate
 	 */
 	public static double[] xyToXYZ(double x, double y, double Y) {
-		if (Arithmetic.isZero(Y)) {
+		if (Arithmetic.isZero(y)) {
 			return new double[] {0, 0, 0};
 		}
 		else {
 			double X = x * Y / y;
 			double Z = (1 - x - y) * Y / y;
-			//double mag = X + Y + Z;
-			//return new double[] {X/mag, Y/mag, Z/mag};
 			return new double[] {X, Y, Z};
 		}
 	}
 	
+	public static float[] xyToXYZ(float x, float y, float Y) {
+		if (Arithmetic.isZero(y)) {
+			return new float[] {0, 0, 0};
+		}
+		else {
+			float X = x * Y / y;
+			float Z = (1 - x - y) * Y / y;
+			return new float[] {X, Y, Z};
+		}
+	}
 	
 	/**
 	 * Calculates the 2D (x,y) color diagram coordinates for 3D XYZ color 
@@ -80,7 +109,17 @@ public abstract class CieUtil {
 		double Y = XYZ[1];
 		double Z = XYZ[2];
 		double mag = X + Y + Z; 
-		return (Arithmetic.isZero(mag)) ? new double[] {0, 0} : new double[] {X/mag, Y/mag};
+		return (Arithmetic.isZero(mag)) ? 
+				new double[] {0, 0} : new double[] {X/mag, Y/mag};
+	}
+	
+	public static float[] XYZToXy(float[] XYZ) {
+		double X = XYZ[0];
+		double Y = XYZ[1];
+		double Z = XYZ[2];
+		double mag = X + Y + Z; 
+		return (Arithmetic.isZero(mag)) ? 
+				new float[] {0, 0} : new float[] {(float) (X/mag), (float) (Y/mag)};
 	}
 	
 	// ------------------------------------------------------------------------

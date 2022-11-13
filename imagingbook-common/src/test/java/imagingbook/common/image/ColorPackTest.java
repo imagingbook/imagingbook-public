@@ -14,7 +14,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.color.colorspace.HlsColorSpace;
 import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.color.colorspace.LabColorSpace;
-import imagingbook.common.color.colorspace.LinearRgbColorSpace;
+import imagingbook.common.color.colorspace.LinearRgb65ColorSpace;
 import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
@@ -47,7 +47,7 @@ public class ColorPackTest {
 	
 	@Test
 	public void testLinearRgb() {	// conversion from/to Lab
-		testColorStackConversion(LinearRgbColorSpace.getInstance());
+		testColorStackConversion(LinearRgb65ColorSpace.getInstance());
 	}
 	
 	@Test

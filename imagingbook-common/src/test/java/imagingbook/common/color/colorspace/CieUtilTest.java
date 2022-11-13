@@ -11,20 +11,17 @@ package imagingbook.common.color.colorspace;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.color.ColorSpace;
-import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
-import imagingbook.common.math.Matrix;
 
 public class CieUtilTest {
 
 	@Test
 	public void test1() {
-		ColorSpace cs = sRgbColorSpace.getInstance();
+		CustomColorSpace cs = sRgbColorSpace.getInstance();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
 		doCheck(cs, new int[] {177, 0, 0});
@@ -35,7 +32,7 @@ public class CieUtilTest {
 	
 	@Test
 	public void test2() {
-		ColorSpace cs = sRgbColorSpace.getInstance();
+		CustomColorSpace cs = sRgbColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
@@ -45,9 +42,9 @@ public class CieUtilTest {
 		}
 	}
 	
-//	@Test	// tests all possible rgb combinations
+//	@Test	// tests all possible rgb combinations (slow!)
 //	public void test3() {
-//		ColorSpace cs = new sRgb65ColorSpace();
+//		CustomColorSpace cs = sRgbColorSpace.getInstance();
 //		for (int r = 0; r < 256; r++) {
 //			for (int g = 0; g < 256; g++) {
 //				for (int b = 0; b < 256; b++) {
@@ -57,77 +54,42 @@ public class CieUtilTest {
 //		}
 //	}
 	
-//	@Test
-//	public void test4() {
-//		ColorSpace cs = sRgbColorSpace.getInstance();
-////		int[] srgb = new int[] {255, 255, 255};
-//		int[] srgb = new int[] {100, 100, 100};
-//		float[] srgb1 = RgbUtils.normalize(srgb);
-//		float[] XYZ50 = cs.toCIEXYZ(srgb1);
-////		double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ50));
-////		PrintPrecision.set(6);
-////		System.out.println("xy = " + Matrix.toString(xy));
-////		System.out.println("xy = " + Matrix.toString(CieUtil.XYZToXy(StandardIlluminant.D50.getXYZ())));
-//	}
-	
-//	@Test
-//	public void test5() {	// sRGB grays map to D65 whitepoint in sRgb65ColorSpace
-////		PrintPrecision.set(6);
-////		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
-//		ColorSpace cs = sRgb65ColorSpace.getInstance();
-//		
-//		for (int c = 1; c < 256; c++) {
-//			float[] srgb1 = RgbUtils.normalize(new int[] { c, c, c });
-//
-//			float[] XYZ = cs.toCIEXYZ(srgb1);
-//			// System.out.println("XYZ = " + Matrix.toString(XYZ));
-//			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ));
-//
-//			// System.out.println("xy = " + Matrix.toString(xy));
-//			// System.out.println("D65 = " +
-//			// Matrix.toString(StandardIlluminant.D65.getXy()));
-//
-//			assertArrayEquals(StandardIlluminant.D65.getXy(), xy, 1e-4);
-//		}
-//		
-////		System.out.println("D50 = " + Matrix.toString(StandardIlluminant.D50.getXy()));
-//	}
-	
-//	@Test
-//	public void test6() {	// sRGB grays map to N whitepoint in Java's CIEXYZ color space
-//		ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
-//		for (int c = 1; c < 256; c++) {
-//			float[] srgb1 = RgbUtils.normalize(new int[] { c, c, c });
-//
-//			float[] XYZ = cs.toCIEXYZ(srgb1);
-//			// System.out.println("XYZ = " + Matrix.toString(XYZ));
-//			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZ));
-//
-//			// System.out.println("xy = " + Matrix.toString(xy));
-//			// System.out.println("N = " +
-//			// Matrix.toString(StandardIlluminant.N.getXy()));
-//
-//			assertArrayEquals(StandardIlluminant.N.getXy(), xy, 1e-4);
-//		}
-//		
-////		System.out.println("D50 = " + Matrix.toString(StandardIlluminant.D50.getXy()));
-//	}
-	
-	
 	// ---------------------------------------------------
 	
 	// map XYZ to xy and back
-	private static void doCheck(ColorSpace cs, int[] srgb) {
-		float[] srgb1 = RgbUtils.normalize(srgb);
-		float[] XYZa = cs.toCIEXYZ(srgb1);
-		
-		double[] xy = CieUtil.XYZToXy(Matrix.toDouble(XYZa));
-		assertTrue(Double.isFinite(xy[0]));
-		assertTrue(Double.isFinite(xy[1]));
-		
-		float Y = XYZa[1];
-		float[] XYZb = Matrix.toFloat(CieUtil.xyToXYZ(xy[0], xy[1], Y));	
-		assertArrayEquals("CieUtil problem for srgb=" + Arrays.toString(srgb), XYZa, XYZb, 1e-6f);
+	private static void doCheck(CustomColorSpace cs, int[] srgb) {
+		{	// float version
+			float[] srgb1 = RgbUtils.normalize(srgb);
+			float[] XYZa = cs.toCIEXYZ(srgb1);
+			
+			float[] xy = CieUtil.XYZToXy(XYZa);
+			assertTrue(Double.isFinite(xy[0]));
+			assertTrue(Double.isFinite(xy[1]));
+			
+			float Y = XYZa[1];
+			float[] XYZb = CieUtil.xyToXYZ(xy[0], xy[1], Y);	
+			assertArrayEquals(XYZa, XYZb, 1e-6f);
+			
+			float[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
+			float[] xy2 = CieUtil.XYZToXy(XYZc);
+			assertArrayEquals(xy, xy2, 1e-6f);
+		}
+		{	// double version
+			double[] srgb1 = RgbUtils.normalizeD(srgb);
+			double[] XYZa = cs.toCIEXYZ(srgb1);
+			
+			double[] xy = CieUtil.XYZToXy(XYZa);
+			assertTrue(Double.isFinite(xy[0]));
+			assertTrue(Double.isFinite(xy[1]));
+			
+			double Y = XYZa[1];
+			double[] XYZb = CieUtil.xyToXYZ(xy[0], xy[1], Y);	
+			assertArrayEquals(XYZa, XYZb, 1e-6);
+			
+			double[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
+			double[] xy2 = CieUtil.XYZToXy(XYZc);
+			assertArrayEquals(xy, xy2, 1e-6);
+		}
 	}
 
 }

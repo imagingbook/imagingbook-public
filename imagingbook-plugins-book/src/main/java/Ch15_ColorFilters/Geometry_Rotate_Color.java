@@ -18,7 +18,7 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.colorspace.LabColorSpace;
-import imagingbook.common.color.colorspace.LinearRgbColorSpace;
+import imagingbook.common.color.colorspace.LinearRgb65ColorSpace;
 import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.image.ColorPack;
@@ -61,7 +61,7 @@ public class Geometry_Rotate_Color implements PlugInFilter {
     	switch (csType) {
 	    	case Lab : 		cs = LabColorSpace.getInstance(); break;
 			case Luv: 		cs = LuvColorSpace.getInstance(); break;
-			case LinearRGB: cs = LinearRgbColorSpace.getInstance(); break;
+			case LinearRGB: cs = LinearRgb65ColorSpace.getInstance(); break;
 			case sRGB: 		cs = null; break;
 			default:
 				IJ.error("Color space " + csType.name() + " not implemented!"); 
