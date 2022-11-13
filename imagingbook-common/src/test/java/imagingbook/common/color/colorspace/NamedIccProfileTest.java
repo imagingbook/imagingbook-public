@@ -8,15 +8,35 @@
  *******************************************************************************/
 package imagingbook.common.color.colorspace;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.awt.color.ICC_ColorSpace;
+import java.awt.color.ICC_Profile;
+
 import org.junit.Test;
 
 import imagingbook.testutils.ResourceTestUtils;
 
-public class IccProfileTest {
+public class NamedIccProfileTest {
 	
 	@Test
 	public void test1() {
-		ResourceTestUtils.testNamedResource(IccProfiles.class);
+		ResourceTestUtils.testNamedResource(NamedIccProfile.class);
 	}
 
+	@Test
+	public void testProfileInstantiation() {
+		for (NamedIccProfile p : NamedIccProfile.values()) {
+			ICC_Profile profile = p.getProfile();
+			assertNotNull(profile);
+		}
+	}
+	
+	@Test
+	public void testColorspaceInstantiation() {
+		for (NamedIccProfile p : NamedIccProfile.values()) {
+			ICC_ColorSpace colorspace = p.getColorSpace();
+			assertNotNull(colorspace);
+		}
+	}
 }

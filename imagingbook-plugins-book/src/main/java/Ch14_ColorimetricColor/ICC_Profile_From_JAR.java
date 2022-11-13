@@ -16,7 +16,7 @@ import ij.IJ;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import imagingbook.common.color.colorspace.CieUtil;
-import imagingbook.common.color.colorspace.IccProfiles;
+import imagingbook.common.color.colorspace.NamedIccProfile;
 import imagingbook.common.math.Matrix;
 
 
@@ -30,7 +30,7 @@ import imagingbook.common.math.Matrix;
  */
 public class ICC_Profile_From_JAR implements PlugIn {
 
-	private static IccProfiles TheIccProfile = IccProfiles.AdobeRGB1998;
+	private static NamedIccProfile TheIccProfile = NamedIccProfile.AdobeRGB1998;
 	private static boolean ListDeviceColorMapping = false;
 	
 	@Override
@@ -134,7 +134,7 @@ public class ICC_Profile_From_JAR implements PlugIn {
 			return false;
 		}
 		
-		TheIccProfile = gd.getNextEnumChoice(IccProfiles.class);
+		TheIccProfile = gd.getNextEnumChoice(NamedIccProfile.class);
 		ListDeviceColorMapping = gd.getNextBoolean();
 		return true;
 	}
