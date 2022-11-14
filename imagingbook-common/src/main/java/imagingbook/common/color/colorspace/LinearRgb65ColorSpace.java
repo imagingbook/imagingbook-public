@@ -34,6 +34,7 @@ public class LinearRgb65ColorSpace extends CustomColorSpace {
 	public static final double[][] Mrgb = CieUtil.Mrgb65;
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
+	private static final GammaMappingFunction GammaMap = GammaMappingFunction.sRGB;
 	
 	private static final LinearRgb65ColorSpace instance = new LinearRgb65ColorSpace();
 	
@@ -52,7 +53,7 @@ public class LinearRgb65ColorSpace extends CustomColorSpace {
 	public double[] fromRGB(double[] srgb) {
 		final double[] rgb = new double[3];
 		for (int k = 0; k < 3; k++) {
-			rgb[k] = sRgbUtil.gammaInv(srgb[k]);
+			rgb[k] = GammaMap.applyInv(srgb[k]);
 		}
 		return rgb;
 	}
@@ -61,7 +62,7 @@ public class LinearRgb65ColorSpace extends CustomColorSpace {
 	public double[] toRGB(double[] rgb) {
 		final double[] srgb = new double[3];
 		for (int k = 0; k < 3; k++) {
-			srgb[k] = sRgbUtil.gammaFwd(rgb[k]);
+			srgb[k] = GammaMap.applyFwd(rgb[k]);
 		}
 		return srgb;
 	}

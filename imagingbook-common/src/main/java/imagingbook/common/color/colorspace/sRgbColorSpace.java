@@ -37,6 +37,7 @@ public class sRgbColorSpace extends CustomColorSpace {
 	// chromatic adaptation objects:
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
+	private static final GammaMappingFunction GammaMap = GammaMappingFunction.sRGB;
 	
 	public static sRgbColorSpace getInstance() {
 		return instance;
@@ -80,7 +81,7 @@ public class sRgbColorSpace extends CustomColorSpace {
 		// perform forward gamma mapping:
 		double[] srgb = new double[3];									
 		for (int i = 0; i < 3; i++) {
-			srgb[i] = sRgbUtil.gammaFwd(rgb[i]);
+			srgb[i] = GammaMap.applyFwd(rgb[i]);
 		}
 		return srgb;
 	}
@@ -89,7 +90,7 @@ public class sRgbColorSpace extends CustomColorSpace {
 		// get linear rgb components:
 		double[] rgb = new double[3];
 		for (int i = 0; i < 3; i++) {
-			rgb[i] = sRgbUtil.gammaInv(srgbTHIS[i]);
+			rgb[i] = GammaMap.applyInv(srgbTHIS[i]);
 		}
 		// convert to D65-based XYZ (Poynton / ITU 709) 
 		double[] xyz65 = Matrix.multiply(Mrgbi, rgb);

@@ -9,7 +9,6 @@
 package imagingbook.common.color.colorspace;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
@@ -17,20 +16,20 @@ import org.junit.Test;
 
 public class sRgbUtilTest {
 	
-	@Test
-	public void test0() {
-		double TOL = 1e-15;
-		for (int i = 0; i <= 1000; i++) {
-			double lc1 = (double) i / 1000;
-			double nlc = sRgbUtil.gammaFwd(lc1);
-			double lc2 = sRgbUtil.gammaInv(nlc);
-			assertEquals(lc1, lc2, TOL);
-		}
-		assertEquals(0.0, sRgbUtil.gammaFwd(0.0), TOL);
-		assertEquals(1.0, sRgbUtil.gammaFwd(1.0), TOL);
-		assertEquals(0.0, sRgbUtil.gammaInv(0.0), TOL);
-		assertEquals(1.0, sRgbUtil.gammaInv(1.0), TOL);
-	}
+//	@Test
+//	public void test0() {
+//		double TOL = 1e-15;
+//		for (int i = 0; i <= 1000; i++) {
+//			double lc1 = (double) i / 1000;
+//			double nlc = sRgbUtil.gammaFwd(lc1);
+//			double lc2 = sRgbUtil.gammaInv(nlc);
+//			assertEquals(lc1, lc2, TOL);
+//		}
+//		assertEquals(0.0, sRgbUtil.gammaFwd(0.0), TOL);
+//		assertEquals(1.0, sRgbUtil.gammaFwd(1.0), TOL);
+//		assertEquals(0.0, sRgbUtil.gammaInv(0.0), TOL);
+//		assertEquals(1.0, sRgbUtil.gammaInv(1.0), TOL);
+//	}
 
 	@Test
 	public void test1() {
