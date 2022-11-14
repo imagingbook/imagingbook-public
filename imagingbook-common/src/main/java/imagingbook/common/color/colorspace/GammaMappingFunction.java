@@ -104,15 +104,6 @@ public class GammaMappingFunction {
     }
     
     /**
-     * Float version of {@link #applyFwd(double)}
-     * @param a linear component value in [0,1]
-     * @return the gamma-corrected (non-linear) component value
-     */
-    public float applyFwd(float a) {
-		return (float) applyFwd((double) a);
-    }
-    
-    /**
 	 * Inverse Gamma mapping (from non-linear to linear component values).
 	 * 
 	 * @param b non-linear (Gamma-corrected) component value in [0,1]
@@ -125,6 +116,15 @@ public class GammaMappingFunction {
     }
     
     /**
+     * Float version of {@link #applyFwd(double)}
+     * @param a linear component value in [0,1]
+     * @return the gamma-corrected (non-linear) component value
+     */
+    public float applyFwd(float a) {
+		return (float) applyFwd((double) a);
+    }
+    
+    /**
      * Float version of {@link #applyInv(double)}
      * @param b non-linear (Gamma-corrected) component value in [0,1]
      * @return the linear component value
@@ -132,5 +132,39 @@ public class GammaMappingFunction {
     public float applyInv(float b) {
     	return (float) applyInv((double) b);
     }
+    
+    // -----------------------------------------------
+    
+    /**
+	 * Forward Gamma mapping (from linear to non-linear component values).
+	 * 
+	 * @param A an array of linear component values in [0,1]
+	 * @return an array of gamma-corrected (non-linear) component values
+	 */
+    public float[] applyFwd(float A[]) {
+    	float[] B = new float[A.length];
+    	for (int i = 0; i < A.length; i++) {
+    		B[i] = applyFwd(A[i]);
+    	}
+		return B;
+    }
+    
+    /**
+	 * Inverse Gamma mapping (from non-linear to linear component values).
+	 * 
+	 * @param B an array of non-linear (Gamma-corrected) component value in [0,1]
+	 * @return an array of linear component values
+	 */
+    public float[] applyInv(float B[]) {
+    	float[] A = new float[B.length];
+    	for (int i = 0; i < B.length; i++) {
+    		A[i] = applyInv(B[i]);
+    	}
+		return A;
+    }
+    
+ // -----------------------------------------------
+    
+    
 
 }
