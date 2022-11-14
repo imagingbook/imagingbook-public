@@ -25,13 +25,23 @@ import imagingbook.common.math.Matrix;
  * This is a singleton class with no public constructors,
  * use {@link #getInstance()} to obtain the single instance.
  * 
+ * @author WB
+ * @version 2022/11/14
  */
 @SuppressWarnings("serial")
-public class LinearRgb65ColorSpace extends CustomColorSpace {
+public class LinearRgb65ColorSpace extends CustomColorSpace implements RgbColorSpace {
 	
-
-	private static final double[][] Mrgbi = CieUtil.Mrgb65i;
-	public static final double[][] Mrgb = CieUtil.Mrgb65;
+	// we use the same RGB-XYZ matrices as sRGB
+	/** Matrix for conversion from XYZ to linear RGB. Its column vectors are the 
+	 * XYZ coordinates of the RGB primaries. */
+	private static final double[][] Mrgbi = 
+		{{0.412453, 0.357580, 0.180423},
+		 {0.212671, 0.715160, 0.072169},
+		 {0.019334, 0.119193, 0.950227}};
+	
+	/** Matrix for conversion from linear RGB to XYZ (inverse of {@link #Mrgbi}). */
+	private static final double[][] Mrgb = Matrix.inverse(Mrgbi);
+	
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
 	private static final GammaMappingFunction GammaMap = GammaMappingFunction.sRGB;
@@ -45,6 +55,18 @@ public class LinearRgb65ColorSpace extends CustomColorSpace {
 	/** Constructor, non-public */
 	private LinearRgb65ColorSpace() {
 		super(ColorSpace.TYPE_RGB, 3);
+	}
+	
+	// --------------------------------------------------------------------
+
+	@Override
+	public double[] getPrimary(int idx) {
+		return Matrix.getColumn(Mrgbi, idx);
+	}
+
+	@Override
+	public double[] getWhitePoint() {
+		return D65.getXYZ();
 	}
 	
 	// --------------------------------------------------------------------

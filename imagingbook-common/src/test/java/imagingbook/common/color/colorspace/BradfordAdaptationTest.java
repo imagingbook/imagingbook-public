@@ -90,39 +90,6 @@ public class BradfordAdaptationTest {
 //		}
 //	}
 	
-	@Test
-	public void testPrimariesD65ToD50() { // check if RGB primaries are mapped (approximately)
-		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);
-		PrintPrecision.set(6);
-		for (int i = 0; i < 3; i++) {
-			double[] primary65 =  Matrix.getColumn(CieUtil.Mrgb65i, i);
-			double[] primary50 =  Matrix.getColumn(CieUtil.Mrgb50i, i);
-			
-//			System.out.println("primary65 = " + Matrix.toString(primary65));
-//			System.out.println("primary50 = " + Matrix.toString(primary50));
-			
-			double[] primary50m = adapt.applyTo(primary65);
-//			System.out.println("primary50m = " + Matrix.toString(primary50m));
-			assertArrayEquals(primary50, primary50m, 1e-3);
-		}
-	}
-	
-	@Test
-	public void testPrimariesD50ToD65() { // check if RGB primaries are mapped (approximately)
-		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);
-		PrintPrecision.set(6);
-		for (int i = 0; i < 3; i++) {
-			double[] primary50 =  Matrix.getColumn(CieUtil.Mrgb50i, i);
-			double[] primary65 =  Matrix.getColumn(CieUtil.Mrgb65i, i);
-			
-//			System.out.println("primary50 = " + Matrix.toString(primary50));
-//			System.out.println("primary65 = " + Matrix.toString(primary65));
-			
-			double[] primary65m = adapt.applyTo(primary50);
-//			System.out.println("primary65m = " + Matrix.toString(primary65m));
-			assertArrayEquals(primary65, primary65m, 1e-3);
-		}
-	}
 	
 	@Test
 	public void testWhiteD65ToD50() { // check if white point is mapped (precisely)

@@ -97,9 +97,9 @@ public class sRgbColorSpaceTest {
 		double[] wXYZ65 = CS.toCIEXYZ65(srgbTHIS);	// in PCS#
 //		System.out.println("wD65 = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
 //		System.out.println("wXYZ = " + Matrix.toString(wXYZ65));
-		double[] wIll65 = StandardIlluminant.D65.getXYZ(); 
+		double[] whitePt = CS.getWhitePoint(); 
 		//System.out.println("wIll = " + Matrix.toString(wIll));
-		assertArrayEquals(wIll65, wXYZ65, 1e-3);
+		assertArrayEquals(whitePt, wXYZ65, 1e-3);
 	}
 	
 	@Test

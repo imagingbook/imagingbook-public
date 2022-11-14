@@ -9,8 +9,6 @@
 
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
-
 import java.awt.color.ColorSpace;
 
 import imagingbook.common.color.RgbUtils;
@@ -18,18 +16,17 @@ import imagingbook.common.color.RgbUtils;
 
 /**
  * <p>
- * This class implements the CIELuv color space.
- * See Sec. 14.2 of [1] for additional details.
- * All component values are assumed to be in [0,1].
+ * This class implements the CIELuv color space. See Sec. 14.2 of [1] for
+ * additional details. All component values are assumed to be in [0,1].
  * Conversion from/to sRGB is implemented directly through D65-based XYZ
- * coordinates, i.e., without conversion to Java's D50-based profile 
- * connection space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ 
- * coordinates in Java's profile connection space.
- * This is a singleton class with no public constructors,
- * use {@link #getInstance()} to obtain the single instance.
+ * coordinates, i.e., without conversion to Java's D50-based profile connection
+ * space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ coordinates
+ * in Java's profile connection space. This is a singleton class with no public
+ * constructors, use {@link #getInstance()} to obtain the single instance.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
@@ -37,9 +34,7 @@ import imagingbook.common.color.RgbUtils;
  */
 @SuppressWarnings("serial")
 public class LuvColorSpace extends CustomColorSpace {
-	
 	private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
-	
 	private static final LuvColorSpace instance = new LuvColorSpace();
 	
 	public static LuvColorSpace getInstance() {
@@ -47,11 +42,7 @@ public class LuvColorSpace extends CustomColorSpace {
 	}
 		
 	// D65 reference white point:
-//	private static final double Xref = D65.getX(); 	// 0.950456
-//	private static final double Yref = D65.getY(); 	// 1.000000
-//	private static final double Zref = D65.getZ();	// 1.088754
-	private static final double[] XYZref = D65.getXYZ();
-	
+	private static final double[] XYZref = StandardIlluminant.D65.getXYZ();
 	private static final double uuref = fu(XYZref[0], XYZref[1], XYZref[2]); // u'_n
 	private static final double vvref = fv(XYZref[0], XYZref[1], XYZref[2]); // v'_n
 	
@@ -78,7 +69,7 @@ public class LuvColorSpace extends CustomColorSpace {
 	@Override
 	public double[] fromCIEXYZ(double[] XYZ50) {	
 		double[] XYZ65 = catD50toD65.applyTo(XYZ50);
-		return fromCIEXYZ65(XYZ65);
+		return this.fromCIEXYZ65(XYZ65);
 	}
 	
 	// XYZ65->CIELuv: returns Luv values from XYZ (relative to D65)
@@ -112,7 +103,7 @@ public class LuvColorSpace extends CustomColorSpace {
 	 */
 	@Override
 	public double[] toCIEXYZ(double[] Luv) {
-		double[] XYZ65 = toCIEXYZ65(Luv);
+		double[] XYZ65 = this.toCIEXYZ65(Luv);
 		return catD65toD50.applyTo(XYZ65);
 	}
 	
@@ -147,7 +138,7 @@ public class LuvColorSpace extends CustomColorSpace {
 	@Override
 	public double[] fromRGB(double[] srgb) {
 		double[] XYZ65 = srgbCS.toCIEXYZ65(srgb);
-		return fromCIEXYZ65(XYZ65);
+		return this.fromCIEXYZ65(XYZ65);
 	}
 	
 	//CIELuv->sRGB
@@ -162,25 +153,25 @@ public class LuvColorSpace extends CustomColorSpace {
 	 */
 	@Override
 	public double[] toRGB(double[] Luv) {
-		double[] XYZ65 = toCIEXYZ65(Luv);
+		double[] XYZ65 = this.toCIEXYZ65(Luv);
 		double[] srgb = srgbCS.fromCIEXYZ65(XYZ65);
 		return srgb;
 	}
 	
 	//---------------------------------------------------------------------
 	
-	private static final double epsilon = 216.0/24389;
-	private static final double kappa = 841.0/108;
+	private static final double Epsilon = 216.0/24389;
+	private static final double Kappa = 841.0/108;
 	
 	// Gamma correction for L* (forward)
 	private double f1 (double c) {
-		return (c > epsilon) ? Math.cbrt(c) : (kappa * c) + (16.0 / 116);
+		return (c > Epsilon) ? Math.cbrt(c) : (Kappa * c) + (16.0 / 116);
 	}
 	
 	// Gamma correction for L* (inverse)
 	private double f2 (double c) {
 		final double c3 = c * c * c; //Math.pow(c, 3.0);
-		return (c3 > epsilon) ? c3 : (c - 16.0 / 116) / kappa;
+		return (c3 > Epsilon) ? c3 : (c - 16.0 / 116) / Kappa;
 	}
 	
 	private static double fu (double X, double Y, double Z) { // X,Y,Z must be positive
