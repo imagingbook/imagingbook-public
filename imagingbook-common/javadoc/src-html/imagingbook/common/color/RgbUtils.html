@@ -100,71 +100,86 @@
 <span class="sourceLineNo">090</span><a id="line.90">         * @return the RGB values normalized to [0,1]</a>
 <span class="sourceLineNo">091</span><a id="line.91">         */</a>
 <span class="sourceLineNo">092</span><a id="line.92">        public static float[] normalize(int[] RGB) {</a>
-<span class="sourceLineNo">093</span><a id="line.93">                float[] rgb = {RGB[0]/255f, RGB[1]/255f, RGB[2]/255f};</a>
-<span class="sourceLineNo">094</span><a id="line.94">                return rgb;</a>
-<span class="sourceLineNo">095</span><a id="line.95">        }</a>
-<span class="sourceLineNo">096</span><a id="line.96">        </a>
-<span class="sourceLineNo">097</span><a id="line.97">        /**</a>
-<span class="sourceLineNo">098</span><a id="line.98">         * Converts float RGB values (with components assumed to be in [0,1]) to integer values</a>
-<span class="sourceLineNo">099</span><a id="line.99">         * in [0,255].</a>
-<span class="sourceLineNo">100</span><a id="line.100">         * </a>
-<span class="sourceLineNo">101</span><a id="line.101">         * @param rgb RGB float values in [0,1]</a>
-<span class="sourceLineNo">102</span><a id="line.102">         * @return RGB integer values in [0,255]</a>
-<span class="sourceLineNo">103</span><a id="line.103">         */</a>
-<span class="sourceLineNo">104</span><a id="line.104">        public static int[] unnormalize(float[] rgb) {</a>
-<span class="sourceLineNo">105</span><a id="line.105">                int[] RGB = new int[3];</a>
-<span class="sourceLineNo">106</span><a id="line.106">                for (int i = 0; i &lt; 3; i++) {                   </a>
-<span class="sourceLineNo">107</span><a id="line.107">                        RGB[i] = Math.round(rgb[i] * 255f);</a>
-<span class="sourceLineNo">108</span><a id="line.108">                        if (RGB[i] &lt; 0)</a>
-<span class="sourceLineNo">109</span><a id="line.109">                                RGB[i] = 0;</a>
-<span class="sourceLineNo">110</span><a id="line.110">                        else if (RGB[i] &gt; 255)</a>
-<span class="sourceLineNo">111</span><a id="line.111">                                RGB[i] = 255;</a>
-<span class="sourceLineNo">112</span><a id="line.112">                }</a>
-<span class="sourceLineNo">113</span><a id="line.113">                return RGB;</a>
-<span class="sourceLineNo">114</span><a id="line.114">        }</a>
-<span class="sourceLineNo">115</span><a id="line.115">                </a>
-<span class="sourceLineNo">116</span><a id="line.116">        // -------------------------------------------------------------</a>
-<span class="sourceLineNo">117</span><a id="line.117"></a>
-<span class="sourceLineNo">118</span><a id="line.118">        /**</a>
-<span class="sourceLineNo">119</span><a id="line.119">         * Interpolates linearly between two specified colors.</a>
-<span class="sourceLineNo">120</span><a id="line.120">         * @param ca first color (to be interpolated from)</a>
-<span class="sourceLineNo">121</span><a id="line.121">         * @param cb second color (to be interpolated to)</a>
-<span class="sourceLineNo">122</span><a id="line.122">         * @param t interpolation coefficient, must be in [0,1]</a>
-<span class="sourceLineNo">123</span><a id="line.123">         * @return the interpolated color</a>
-<span class="sourceLineNo">124</span><a id="line.124">         */</a>
-<span class="sourceLineNo">125</span><a id="line.125">        public static Color interpolate(Color ca, Color cb, double t) {</a>
-<span class="sourceLineNo">126</span><a id="line.126">                if (t &lt; 0 || t &gt; 1) {</a>
-<span class="sourceLineNo">127</span><a id="line.127">                        throw new IllegalArgumentException("interpolation coefficient must be in [0,1] but is " + t);</a>
-<span class="sourceLineNo">128</span><a id="line.128">                }</a>
-<span class="sourceLineNo">129</span><a id="line.129">                float[] a = ca.getRGBColorComponents(null);</a>
-<span class="sourceLineNo">130</span><a id="line.130">                float[] b = cb.getRGBColorComponents(null);</a>
-<span class="sourceLineNo">131</span><a id="line.131">                float[] c = Matrix.lerp(a, b, (float) t);</a>
-<span class="sourceLineNo">132</span><a id="line.132">                return new Color(c[0], c[1], c[2]);</a>
-<span class="sourceLineNo">133</span><a id="line.133">        }</a>
-<span class="sourceLineNo">134</span><a id="line.134"></a>
-<span class="sourceLineNo">135</span><a id="line.135">        /**</a>
-<span class="sourceLineNo">136</span><a id="line.136">         * Interpolates linearly between the colors in the specified color palette.</a>
-<span class="sourceLineNo">137</span><a id="line.137">         * The interpolation coefficient must be in [0,1]. If 0, the first palette color</a>
-<span class="sourceLineNo">138</span><a id="line.138">         * is returned, if 1 the last color.</a>
-<span class="sourceLineNo">139</span><a id="line.139">         * @param palette an array of colors (at least 2)</a>
-<span class="sourceLineNo">140</span><a id="line.140">         * @param t interpolation coefficient, must be in [0,1]</a>
-<span class="sourceLineNo">141</span><a id="line.141">         * @return the interpolated color</a>
-<span class="sourceLineNo">142</span><a id="line.142">         */</a>
-<span class="sourceLineNo">143</span><a id="line.143">        public static Color interpolate(Color[] palette, double t) {</a>
-<span class="sourceLineNo">144</span><a id="line.144">                if (palette.length &lt; 2) {</a>
-<span class="sourceLineNo">145</span><a id="line.145">                        throw new IllegalArgumentException("length of color palette must be at least 2 but is " + palette.length);</a>
-<span class="sourceLineNo">146</span><a id="line.146">                }</a>
-<span class="sourceLineNo">147</span><a id="line.147">                if (t &lt; 0 || t &gt; 1) {</a>
-<span class="sourceLineNo">148</span><a id="line.148">                        throw new IllegalArgumentException("interpolation coefficient must be in [0,1] but is " + t);</a>
-<span class="sourceLineNo">149</span><a id="line.149">                }</a>
-<span class="sourceLineNo">150</span><a id="line.150">                final int n = palette.length;</a>
-<span class="sourceLineNo">151</span><a id="line.151">                double x = t * (n - 1);                 // x = 0,...,n-1 (float palette index)</a>
-<span class="sourceLineNo">152</span><a id="line.152">                int lo = (int) Math.floor(x);   // lower palette color index</a>
-<span class="sourceLineNo">153</span><a id="line.153">                int hi = (int) Math.ceil(x);    // upper palette color index</a>
-<span class="sourceLineNo">154</span><a id="line.154">                return interpolate(palette[lo], palette[hi], x - lo);</a>
-<span class="sourceLineNo">155</span><a id="line.155">        }</a>
-<span class="sourceLineNo">156</span><a id="line.156"></a>
-<span class="sourceLineNo">157</span><a id="line.157">}</a>
+<span class="sourceLineNo">093</span><a id="line.93">                return new float[] {RGB[0]/255f, RGB[1]/255f, RGB[2]/255f};</a>
+<span class="sourceLineNo">094</span><a id="line.94">        }</a>
+<span class="sourceLineNo">095</span><a id="line.95">        </a>
+<span class="sourceLineNo">096</span><a id="line.96">        public static double[] normalizeD(int[] RGB) {</a>
+<span class="sourceLineNo">097</span><a id="line.97">                return new double[] {RGB[0]/255.0, RGB[1]/255.0, RGB[2]/255.0};</a>
+<span class="sourceLineNo">098</span><a id="line.98">        }</a>
+<span class="sourceLineNo">099</span><a id="line.99">        </a>
+<span class="sourceLineNo">100</span><a id="line.100">        /**</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * Converts float RGB values (with components assumed to be in [0,1]) to integer values</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * in [0,255].</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * </a>
+<span class="sourceLineNo">104</span><a id="line.104">         * @param rgb RGB float values in [0,1]</a>
+<span class="sourceLineNo">105</span><a id="line.105">         * @return RGB integer values in [0,255]</a>
+<span class="sourceLineNo">106</span><a id="line.106">         */</a>
+<span class="sourceLineNo">107</span><a id="line.107">        public static int[] unnormalize(float[] rgb) {</a>
+<span class="sourceLineNo">108</span><a id="line.108">                int[] RGB = new int[3];</a>
+<span class="sourceLineNo">109</span><a id="line.109">                for (int i = 0; i &lt; 3; i++) {                   </a>
+<span class="sourceLineNo">110</span><a id="line.110">                        RGB[i] = Math.round(rgb[i] * 255f);</a>
+<span class="sourceLineNo">111</span><a id="line.111">                        if (RGB[i] &lt; 0)</a>
+<span class="sourceLineNo">112</span><a id="line.112">                                RGB[i] = 0;</a>
+<span class="sourceLineNo">113</span><a id="line.113">                        else if (RGB[i] &gt; 255)</a>
+<span class="sourceLineNo">114</span><a id="line.114">                                RGB[i] = 255;</a>
+<span class="sourceLineNo">115</span><a id="line.115">                }</a>
+<span class="sourceLineNo">116</span><a id="line.116">                return RGB;</a>
+<span class="sourceLineNo">117</span><a id="line.117">        }</a>
+<span class="sourceLineNo">118</span><a id="line.118">        </a>
+<span class="sourceLineNo">119</span><a id="line.119">        public static int[] unnormalizeD(double[] rgb) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">                int[] RGB = new int[3];</a>
+<span class="sourceLineNo">121</span><a id="line.121">                for (int i = 0; i &lt; 3; i++) {                   </a>
+<span class="sourceLineNo">122</span><a id="line.122">                        RGB[i] = (int) Math.round(rgb[i] * 255);</a>
+<span class="sourceLineNo">123</span><a id="line.123">                        if (RGB[i] &lt; 0)</a>
+<span class="sourceLineNo">124</span><a id="line.124">                                RGB[i] = 0;</a>
+<span class="sourceLineNo">125</span><a id="line.125">                        else if (RGB[i] &gt; 255)</a>
+<span class="sourceLineNo">126</span><a id="line.126">                                RGB[i] = 255;</a>
+<span class="sourceLineNo">127</span><a id="line.127">                }</a>
+<span class="sourceLineNo">128</span><a id="line.128">                return RGB;</a>
+<span class="sourceLineNo">129</span><a id="line.129">        }</a>
+<span class="sourceLineNo">130</span><a id="line.130">                </a>
+<span class="sourceLineNo">131</span><a id="line.131">        // -------------------------------------------------------------</a>
+<span class="sourceLineNo">132</span><a id="line.132"></a>
+<span class="sourceLineNo">133</span><a id="line.133">        /**</a>
+<span class="sourceLineNo">134</span><a id="line.134">         * Interpolates linearly between two specified colors.</a>
+<span class="sourceLineNo">135</span><a id="line.135">         * @param ca first color (to be interpolated from)</a>
+<span class="sourceLineNo">136</span><a id="line.136">         * @param cb second color (to be interpolated to)</a>
+<span class="sourceLineNo">137</span><a id="line.137">         * @param t interpolation coefficient, must be in [0,1]</a>
+<span class="sourceLineNo">138</span><a id="line.138">         * @return the interpolated color</a>
+<span class="sourceLineNo">139</span><a id="line.139">         */</a>
+<span class="sourceLineNo">140</span><a id="line.140">        public static Color interpolate(Color ca, Color cb, double t) {</a>
+<span class="sourceLineNo">141</span><a id="line.141">                if (t &lt; 0 || t &gt; 1) {</a>
+<span class="sourceLineNo">142</span><a id="line.142">                        throw new IllegalArgumentException("interpolation coefficient must be in [0,1] but is " + t);</a>
+<span class="sourceLineNo">143</span><a id="line.143">                }</a>
+<span class="sourceLineNo">144</span><a id="line.144">                float[] a = ca.getRGBColorComponents(null);</a>
+<span class="sourceLineNo">145</span><a id="line.145">                float[] b = cb.getRGBColorComponents(null);</a>
+<span class="sourceLineNo">146</span><a id="line.146">                float[] c = Matrix.lerp(a, b, (float) t);</a>
+<span class="sourceLineNo">147</span><a id="line.147">                return new Color(c[0], c[1], c[2]);</a>
+<span class="sourceLineNo">148</span><a id="line.148">        }</a>
+<span class="sourceLineNo">149</span><a id="line.149"></a>
+<span class="sourceLineNo">150</span><a id="line.150">        /**</a>
+<span class="sourceLineNo">151</span><a id="line.151">         * Interpolates linearly between the colors in the specified color palette.</a>
+<span class="sourceLineNo">152</span><a id="line.152">         * The interpolation coefficient must be in [0,1]. If 0, the first palette color</a>
+<span class="sourceLineNo">153</span><a id="line.153">         * is returned, if 1 the last color.</a>
+<span class="sourceLineNo">154</span><a id="line.154">         * @param palette an array of colors (at least 2)</a>
+<span class="sourceLineNo">155</span><a id="line.155">         * @param t interpolation coefficient, must be in [0,1]</a>
+<span class="sourceLineNo">156</span><a id="line.156">         * @return the interpolated color</a>
+<span class="sourceLineNo">157</span><a id="line.157">         */</a>
+<span class="sourceLineNo">158</span><a id="line.158">        public static Color interpolate(Color[] palette, double t) {</a>
+<span class="sourceLineNo">159</span><a id="line.159">                if (palette.length &lt; 2) {</a>
+<span class="sourceLineNo">160</span><a id="line.160">                        throw new IllegalArgumentException("length of color palette must be at least 2 but is " + palette.length);</a>
+<span class="sourceLineNo">161</span><a id="line.161">                }</a>
+<span class="sourceLineNo">162</span><a id="line.162">                if (t &lt; 0 || t &gt; 1) {</a>
+<span class="sourceLineNo">163</span><a id="line.163">                        throw new IllegalArgumentException("interpolation coefficient must be in [0,1] but is " + t);</a>
+<span class="sourceLineNo">164</span><a id="line.164">                }</a>
+<span class="sourceLineNo">165</span><a id="line.165">                final int n = palette.length;</a>
+<span class="sourceLineNo">166</span><a id="line.166">                double x = t * (n - 1);                 // x = 0,...,n-1 (float palette index)</a>
+<span class="sourceLineNo">167</span><a id="line.167">                int lo = (int) Math.floor(x);   // lower palette color index</a>
+<span class="sourceLineNo">168</span><a id="line.168">                int hi = (int) Math.ceil(x);    // upper palette color index</a>
+<span class="sourceLineNo">169</span><a id="line.169">                return interpolate(palette[lo], palette[hi], x - lo);</a>
+<span class="sourceLineNo">170</span><a id="line.170">        }</a>
+<span class="sourceLineNo">171</span><a id="line.171"></a>
+<span class="sourceLineNo">172</span><a id="line.172">}</a>
 
 
 

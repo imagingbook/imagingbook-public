@@ -72,7 +72,7 @@ public class LuvColorSpace extends CustomColorSpace {
 	 * <p>
 	 * Note: This implementation (required by {@link ColorSpace}) assumes that 
 	 * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).
-	 * See also {@link #fromCIEXYZ65(float[])} for a D65-based version.
+	 * See also {@link #fromCIEXYZ65(double[])} for a D65-based version.
 	 * </p>
 	 */
 	@Override
@@ -107,7 +107,7 @@ public class LuvColorSpace extends CustomColorSpace {
 	 * <p>
 	 * Note: This implementation (required by {@link ColorSpace}) converts a
 	 * CIELuv color to a color coordinate in D50-based XYZ space.
-	 * See also {@link #toCIEXYZ65(float[])} for a D65-based version.
+	 * See also {@link #toCIEXYZ65(double[])} for a D65-based version.
 	 * </p>
 	 */
 	@Override

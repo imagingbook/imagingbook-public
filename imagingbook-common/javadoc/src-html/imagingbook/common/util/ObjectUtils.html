@@ -10,66 +10,143 @@
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span><a id="line.1">package imagingbook.common.util;</a>
 <span class="sourceLineNo">002</span><a id="line.2"></a>
-<span class="sourceLineNo">003</span><a id="line.3">import java.lang.reflect.Field;</a>
-<span class="sourceLineNo">004</span><a id="line.4">import java.lang.reflect.InvocationTargetException;</a>
-<span class="sourceLineNo">005</span><a id="line.5">import java.util.ArrayList;</a>
-<span class="sourceLineNo">006</span><a id="line.6">import java.util.List;</a>
-<span class="sourceLineNo">007</span><a id="line.7"></a>
-<span class="sourceLineNo">008</span><a id="line.8">/**</a>
-<span class="sourceLineNo">009</span><a id="line.9"> * Defines static methods for making a shallow copy of any object.</a>
-<span class="sourceLineNo">010</span><a id="line.10"> * </a>
-<span class="sourceLineNo">011</span><a id="line.11"> * @author WB</a>
-<span class="sourceLineNo">012</span><a id="line.12"> * @version 2022/09/11</a>
-<span class="sourceLineNo">013</span><a id="line.13"> */</a>
-<span class="sourceLineNo">014</span><a id="line.14">public abstract class ObjectUtils {</a>
-<span class="sourceLineNo">015</span><a id="line.15">        </a>
-<span class="sourceLineNo">016</span><a id="line.16">        private ObjectUtils() {</a>
-<span class="sourceLineNo">017</span><a id="line.17">        }</a>
-<span class="sourceLineNo">018</span><a id="line.18">        </a>
-<span class="sourceLineNo">019</span><a id="line.19">        // https://stackoverflow.com/a/26000025</a>
-<span class="sourceLineNo">020</span><a id="line.20">        </a>
-<span class="sourceLineNo">021</span><a id="line.21">        /**</a>
-<span class="sourceLineNo">022</span><a id="line.22">         * Returns a shallow copy of the given object using reflection.</a>
-<span class="sourceLineNo">023</span><a id="line.23">         * This can be used if the {@link Cloneable} interface is not </a>
-<span class="sourceLineNo">024</span><a id="line.24">         * (or cannot be) implemented.</a>
-<span class="sourceLineNo">025</span><a id="line.25">         * </a>
-<span class="sourceLineNo">026</span><a id="line.26">         * @param &lt;T&gt; generic type</a>
-<span class="sourceLineNo">027</span><a id="line.27">         * @param entity the object to be copied</a>
-<span class="sourceLineNo">028</span><a id="line.28">         * @return the object copy</a>
-<span class="sourceLineNo">029</span><a id="line.29">         */</a>
-<span class="sourceLineNo">030</span><a id="line.30">        @SuppressWarnings("unchecked")</a>
-<span class="sourceLineNo">031</span><a id="line.31">        public static &lt;T&gt; T copy(T entity) {</a>
-<span class="sourceLineNo">032</span><a id="line.32">            Class&lt;?&gt; clazz = entity.getClass();</a>
-<span class="sourceLineNo">033</span><a id="line.33">//          T newEntity = (T) entity.getClass().newInstance();</a>
-<span class="sourceLineNo">034</span><a id="line.34">            T newEntity = null;</a>
-<span class="sourceLineNo">035</span><a id="line.35">                try {</a>
-<span class="sourceLineNo">036</span><a id="line.36">                        newEntity = (T) entity.getClass().getDeclaredConstructor().newInstance();</a>
-<span class="sourceLineNo">037</span><a id="line.37">                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException</a>
-<span class="sourceLineNo">038</span><a id="line.38">                                | NoSuchMethodException | SecurityException e) { }</a>
-<span class="sourceLineNo">039</span><a id="line.39"></a>
-<span class="sourceLineNo">040</span><a id="line.40">            while (clazz != null) {</a>
-<span class="sourceLineNo">041</span><a id="line.41">                copyFields(entity, newEntity, clazz);</a>
-<span class="sourceLineNo">042</span><a id="line.42">                clazz = clazz.getSuperclass();</a>
-<span class="sourceLineNo">043</span><a id="line.43">            }</a>
-<span class="sourceLineNo">044</span><a id="line.44"></a>
-<span class="sourceLineNo">045</span><a id="line.45">            return newEntity;</a>
-<span class="sourceLineNo">046</span><a id="line.46">        }</a>
-<span class="sourceLineNo">047</span><a id="line.47"></a>
-<span class="sourceLineNo">048</span><a id="line.48">        private static &lt;T&gt; T copyFields(T entity, T newEntity, Class&lt;?&gt; clazz) {</a>
-<span class="sourceLineNo">049</span><a id="line.49">            List&lt;Field&gt; fields = new ArrayList&lt;&gt;();</a>
-<span class="sourceLineNo">050</span><a id="line.50">            for (Field field : clazz.getDeclaredFields()) {</a>
-<span class="sourceLineNo">051</span><a id="line.51">                fields.add(field);</a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.io.ByteArrayInputStream;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.io.ByteArrayOutputStream;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.io.IOException;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.io.ObjectInputStream;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.io.ObjectOutputStream;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.lang.reflect.Field;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.lang.reflect.InvocationTargetException;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.util.ArrayList;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.util.Base64;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.util.List;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import imagingbook.common.math.Matrix;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.math.PrintPrecision;</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">/**</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * Defines static methods for making a shallow copy of any object.</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * </a>
+<span class="sourceLineNo">020</span><a id="line.20"> * @author WB</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * @version 2022/09/11</a>
+<span class="sourceLineNo">022</span><a id="line.22"> */</a>
+<span class="sourceLineNo">023</span><a id="line.23">public abstract class ObjectUtils {</a>
+<span class="sourceLineNo">024</span><a id="line.24">        </a>
+<span class="sourceLineNo">025</span><a id="line.25">        private ObjectUtils() {</a>
+<span class="sourceLineNo">026</span><a id="line.26">        }</a>
+<span class="sourceLineNo">027</span><a id="line.27">        </a>
+<span class="sourceLineNo">028</span><a id="line.28">        // https://stackoverflow.com/a/26000025</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">        /**</a>
+<span class="sourceLineNo">031</span><a id="line.31">         * Returns a shallow copy of the given object using reflection.</a>
+<span class="sourceLineNo">032</span><a id="line.32">         * This can be used if the {@link Cloneable} interface is not </a>
+<span class="sourceLineNo">033</span><a id="line.33">         * (or cannot be) implemented.</a>
+<span class="sourceLineNo">034</span><a id="line.34">         * </a>
+<span class="sourceLineNo">035</span><a id="line.35">         * @param &lt;T&gt; generic type</a>
+<span class="sourceLineNo">036</span><a id="line.36">         * @param entity the object to be copied</a>
+<span class="sourceLineNo">037</span><a id="line.37">         * @return the object copy</a>
+<span class="sourceLineNo">038</span><a id="line.38">         */</a>
+<span class="sourceLineNo">039</span><a id="line.39">        @SuppressWarnings("unchecked")</a>
+<span class="sourceLineNo">040</span><a id="line.40">        public static &lt;T&gt; T copy(T entity) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">            Class&lt;?&gt; clazz = entity.getClass();</a>
+<span class="sourceLineNo">042</span><a id="line.42">//          T newEntity = (T) entity.getClass().newInstance();</a>
+<span class="sourceLineNo">043</span><a id="line.43">            T newEntity = null;</a>
+<span class="sourceLineNo">044</span><a id="line.44">                try {</a>
+<span class="sourceLineNo">045</span><a id="line.45">                        newEntity = (T) entity.getClass().getDeclaredConstructor().newInstance();</a>
+<span class="sourceLineNo">046</span><a id="line.46">                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException</a>
+<span class="sourceLineNo">047</span><a id="line.47">                                | NoSuchMethodException | SecurityException e) { }</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">            while (clazz != null) {</a>
+<span class="sourceLineNo">050</span><a id="line.50">                copyFields(entity, newEntity, clazz);</a>
+<span class="sourceLineNo">051</span><a id="line.51">                clazz = clazz.getSuperclass();</a>
 <span class="sourceLineNo">052</span><a id="line.52">            }</a>
-<span class="sourceLineNo">053</span><a id="line.53">            for (Field field : fields) {</a>
-<span class="sourceLineNo">054</span><a id="line.54">                field.setAccessible(true);</a>
-<span class="sourceLineNo">055</span><a id="line.55">                try {</a>
-<span class="sourceLineNo">056</span><a id="line.56">                                field.set(newEntity, field.get(entity));</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        } catch (IllegalArgumentException | IllegalAccessException e) { }</a>
-<span class="sourceLineNo">058</span><a id="line.58">            }</a>
-<span class="sourceLineNo">059</span><a id="line.59">            return newEntity;</a>
-<span class="sourceLineNo">060</span><a id="line.60">        }</a>
-<span class="sourceLineNo">061</span><a id="line.61"></a>
-<span class="sourceLineNo">062</span><a id="line.62">}</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">            return newEntity;</a>
+<span class="sourceLineNo">055</span><a id="line.55">        }</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
+<span class="sourceLineNo">057</span><a id="line.57">        private static &lt;T&gt; T copyFields(T entity, T newEntity, Class&lt;?&gt; clazz) {</a>
+<span class="sourceLineNo">058</span><a id="line.58">            List&lt;Field&gt; fields = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">059</span><a id="line.59">            for (Field field : clazz.getDeclaredFields()) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                fields.add(field);</a>
+<span class="sourceLineNo">061</span><a id="line.61">            }</a>
+<span class="sourceLineNo">062</span><a id="line.62">            for (Field field : fields) {</a>
+<span class="sourceLineNo">063</span><a id="line.63">                field.setAccessible(true);</a>
+<span class="sourceLineNo">064</span><a id="line.64">                try {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                                field.set(newEntity, field.get(entity));</a>
+<span class="sourceLineNo">066</span><a id="line.66">                        } catch (IllegalArgumentException | IllegalAccessException e) { }</a>
+<span class="sourceLineNo">067</span><a id="line.67">            }</a>
+<span class="sourceLineNo">068</span><a id="line.68">            return newEntity;</a>
+<span class="sourceLineNo">069</span><a id="line.69">        }</a>
+<span class="sourceLineNo">070</span><a id="line.70">        </a>
+<span class="sourceLineNo">071</span><a id="line.71">        // --------------------------------------------------------------------------------</a>
+<span class="sourceLineNo">072</span><a id="line.72">        </a>
+<span class="sourceLineNo">073</span><a id="line.73">                // adapted from https://stackoverflow.com/a/30968827</a>
+<span class="sourceLineNo">074</span><a id="line.74">                private static byte[] convertToBytes(Object object) {</a>
+<span class="sourceLineNo">075</span><a id="line.75">                        ByteArrayOutputStream bos = new ByteArrayOutputStream();</a>
+<span class="sourceLineNo">076</span><a id="line.76">                    try (ObjectOutputStream out = new ObjectOutputStream(bos)) {</a>
+<span class="sourceLineNo">077</span><a id="line.77">                        out.writeObject(object);</a>
+<span class="sourceLineNo">078</span><a id="line.78">                        return bos.toByteArray();</a>
+<span class="sourceLineNo">079</span><a id="line.79">                    } catch (IOException e) { }</a>
+<span class="sourceLineNo">080</span><a id="line.80">                    return null;</a>
+<span class="sourceLineNo">081</span><a id="line.81">                }</a>
+<span class="sourceLineNo">082</span><a id="line.82">                </a>
+<span class="sourceLineNo">083</span><a id="line.83">                private static Object convertFromBytes(byte[] bytes) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">                        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);</a>
+<span class="sourceLineNo">085</span><a id="line.85">                    try (ObjectInputStream in = new ObjectInputStream(bis)) {</a>
+<span class="sourceLineNo">086</span><a id="line.86">                        return in.readObject();</a>
+<span class="sourceLineNo">087</span><a id="line.87">                    } catch (IOException | ClassNotFoundException e) { }</a>
+<span class="sourceLineNo">088</span><a id="line.88">                    return null;</a>
+<span class="sourceLineNo">089</span><a id="line.89">                }</a>
+<span class="sourceLineNo">090</span><a id="line.90">                </a>
+<span class="sourceLineNo">091</span><a id="line.91">                </a>
+<span class="sourceLineNo">092</span><a id="line.92">                // TODO: check for null/exceptions</a>
+<span class="sourceLineNo">093</span><a id="line.93">                /**</a>
+<span class="sourceLineNo">094</span><a id="line.94">                 * Serializes and encodes an arbitrary object to a string. This is potentially</a>
+<span class="sourceLineNo">095</span><a id="line.95">                 * dangerous and only intended for local use, e.g., to define constant matrices</a>
+<span class="sourceLineNo">096</span><a id="line.96">                 * with full precision. The string encoding is 'Base64' implemented with</a>
+<span class="sourceLineNo">097</span><a id="line.97">                 * standard Java8 functionality. See {@link #decodeFromString(String)} for</a>
+<span class="sourceLineNo">098</span><a id="line.98">                 * decoding.</a>
+<span class="sourceLineNo">099</span><a id="line.99">                 * </a>
+<span class="sourceLineNo">100</span><a id="line.100">                 * @param object an arbitrary object</a>
+<span class="sourceLineNo">101</span><a id="line.101">                 * @return the Base64 string encoding of the object</a>
+<span class="sourceLineNo">102</span><a id="line.102">                 */</a>
+<span class="sourceLineNo">103</span><a id="line.103">                public static String encodeToString(Object object) {</a>
+<span class="sourceLineNo">104</span><a id="line.104">                        byte[] ba = convertToBytes(object);</a>
+<span class="sourceLineNo">105</span><a id="line.105">                        return Base64.getEncoder().encodeToString(ba);</a>
+<span class="sourceLineNo">106</span><a id="line.106">                }</a>
+<span class="sourceLineNo">107</span><a id="line.107">                </a>
+<span class="sourceLineNo">108</span><a id="line.108">                // TODO: check for null/exceptions</a>
+<span class="sourceLineNo">109</span><a id="line.109">                /**</a>
+<span class="sourceLineNo">110</span><a id="line.110">                 * Decodes and deserializes an object encoded with {@link #encodeToString(Object)}.</a>
+<span class="sourceLineNo">111</span><a id="line.111">                 * The type of the encoded object must be known.</a>
+<span class="sourceLineNo">112</span><a id="line.112">                 * </a>
+<span class="sourceLineNo">113</span><a id="line.113">                 * @param string the encoded object string</a>
+<span class="sourceLineNo">114</span><a id="line.114">                 * @return the associated object (cast to the known type)</a>
+<span class="sourceLineNo">115</span><a id="line.115">                 */</a>
+<span class="sourceLineNo">116</span><a id="line.116">                public static Object decodeFromString(String string) {</a>
+<span class="sourceLineNo">117</span><a id="line.117">                        byte[] ba = Base64.getDecoder().decode(string);</a>
+<span class="sourceLineNo">118</span><a id="line.118">                        return convertFromBytes(ba);</a>
+<span class="sourceLineNo">119</span><a id="line.119">                }</a>
+<span class="sourceLineNo">120</span><a id="line.120"></a>
+<span class="sourceLineNo">121</span><a id="line.121">                // -------------------------------------------</a>
+<span class="sourceLineNo">122</span><a id="line.122">                </a>
+<span class="sourceLineNo">123</span><a id="line.123">                public static void main(String[] args) throws IOException, ClassNotFoundException {</a>
+<span class="sourceLineNo">124</span><a id="line.124">                        PrintPrecision.set(16);</a>
+<span class="sourceLineNo">125</span><a id="line.125">                        double[][] M1 =</a>
+<span class="sourceLineNo">126</span><a id="line.126">                                {{3.240479, -1.537150, -0.498535},</a>
+<span class="sourceLineNo">127</span><a id="line.127">                                 {-0.969256, 1.875992, 0.041556},</a>
+<span class="sourceLineNo">128</span><a id="line.128">                                 {0.055648, -0.204043, 1.057311}};</a>
+<span class="sourceLineNo">129</span><a id="line.129">                        </a>
+<span class="sourceLineNo">130</span><a id="line.130">                        String encoded = encodeToString(M1);</a>
+<span class="sourceLineNo">131</span><a id="line.131">                        double[][] M2 = (double[][]) decodeFromString(encoded);</a>
+<span class="sourceLineNo">132</span><a id="line.132">                        </a>
+<span class="sourceLineNo">133</span><a id="line.133">                        System.out.println("M1 (orig) = \n" + Matrix.toString(M1));</a>
+<span class="sourceLineNo">134</span><a id="line.134">                        System.out.println("M2 (decoded) = \n" + Matrix.toString(M2));</a>
+<span class="sourceLineNo">135</span><a id="line.135">                        </a>
+<span class="sourceLineNo">136</span><a id="line.136">                        double[][] M12 = Matrix.add(M1, Matrix.multiply(-1, M2));</a>
+<span class="sourceLineNo">137</span><a id="line.137">                        System.out.println("M1 - M2 = \n" + Matrix.toString(M12));</a>
+<span class="sourceLineNo">138</span><a id="line.138">                }</a>
+<span class="sourceLineNo">139</span><a id="line.139">}</a>
 
 
 

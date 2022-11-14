@@ -67,7 +67,7 @@ public class LabColorSpace extends CustomColorSpace {
 	 * Converts color points in D50-based XYZ space to CIELab coordinates.
 	 * This method implements {@link ColorSpace#fromCIEXYZ(float[])}), assuming that 
 	 * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).
-	 * See also {@link #fromCIEXYZ65(float[])} for a D65-based version.
+	 * See also {@link #fromCIEXYZ65(double[])} for a D65-based version.
 	 * 
 	 * @param XYZ50 a color in D50-based XYZ space (components in [0,1])
 	 * @return the associated CIELab color
@@ -100,7 +100,7 @@ public class LabColorSpace extends CustomColorSpace {
 	 * Converts the specified CIELab color to D50-based XYZ coordinates.
 	 * This method implements {@link ColorSpace#toCIEXYZ(float[])}) assuming that
 	 * the XYZ color coordinate is D50-based.
-	 * See also {@link #toCIEXYZ65(float[])} for a D65-based version.
+	 * See also {@link #toCIEXYZ65(double[])} for a D65-based version.
 	 * @param Lab CIELab color
 	 * @return XYZ coordinates (D50-based)
 	 */

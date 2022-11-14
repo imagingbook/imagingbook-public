@@ -64,9 +64,9 @@
 <span class="sourceLineNo">054</span><a id="line.54">                // Calculate hue H (same as in HSV)</a>
 <span class="sourceLineNo">055</span><a id="line.55">                float H = 0;    </a>
 <span class="sourceLineNo">056</span><a id="line.56">                if (cHi &gt; 0 &amp;&amp; cRng &gt; 0) {        // a color pixel</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        float dr = (float)(cHi - r) / cRng;</a>
-<span class="sourceLineNo">058</span><a id="line.58">                        float dg = (float)(cHi - g) / cRng;</a>
-<span class="sourceLineNo">059</span><a id="line.59">                        float db = (float)(cHi - b) / cRng;</a>
+<span class="sourceLineNo">057</span><a id="line.57">                        float dr = (cHi - r) / cRng;</a>
+<span class="sourceLineNo">058</span><a id="line.58">                        float dg = (cHi - g) / cRng;</a>
+<span class="sourceLineNo">059</span><a id="line.59">                        float db = (cHi - b) / cRng;</a>
 <span class="sourceLineNo">060</span><a id="line.60">                        float h;</a>
 <span class="sourceLineNo">061</span><a id="line.61">                        if (r == cHi)                      // R is largest component</a>
 <span class="sourceLineNo">062</span><a id="line.62">                                h = db - dg;</a>
@@ -120,8 +120,15 @@
 <span class="sourceLineNo">110</span><a id="line.110">        public float[] fromCIEXYZ(float[] colorvalue) {</a>
 <span class="sourceLineNo">111</span><a id="line.111">                throw new UnsupportedOperationException();</a>
 <span class="sourceLineNo">112</span><a id="line.112">        }</a>
-<span class="sourceLineNo">113</span><a id="line.113"></a>
-<span class="sourceLineNo">114</span><a id="line.114">}</a>
+<span class="sourceLineNo">113</span><a id="line.113">        </a>
+<span class="sourceLineNo">114</span><a id="line.114">        private static final String[] ComponentNames = {"H", "L", "S"};</a>
+<span class="sourceLineNo">115</span><a id="line.115">        </a>
+<span class="sourceLineNo">116</span><a id="line.116">        @Override</a>
+<span class="sourceLineNo">117</span><a id="line.117">        public String getName (int idx) {</a>
+<span class="sourceLineNo">118</span><a id="line.118">                return ComponentNames[idx];</a>
+<span class="sourceLineNo">119</span><a id="line.119">        }</a>
+<span class="sourceLineNo">120</span><a id="line.120"></a>
+<span class="sourceLineNo">121</span><a id="line.121">}</a>
 
 
 

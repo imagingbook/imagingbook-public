@@ -25,166 +25,175 @@
 <span class="sourceLineNo">015</span><a id="line.15">import java.awt.color.ColorSpace;</a>
 <span class="sourceLineNo">016</span><a id="line.16"></a>
 <span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.color.RgbUtils;</a>
-<span class="sourceLineNo">018</span><a id="line.18"></a>
-<span class="sourceLineNo">019</span><a id="line.19"></a>
-<span class="sourceLineNo">020</span><a id="line.20">/**</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * &lt;p&gt;</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * This class implements the CIELab color space.</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * See Sec. 14.2 of [1] for additional details.</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * All component values are assumed to be in [0,1].</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * Conversion from/to sRGB is implemented directly through D65-based XYZ</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * coordinates, i.e., without conversion to Java's D50-based profile </a>
-<span class="sourceLineNo">027</span><a id="line.27"> * connection space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ </a>
-<span class="sourceLineNo">028</span><a id="line.28"> * coordinates in Java's profile connection space.</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * This is a singleton class with no public constructors,</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * use {@link #getInstance()} to obtain the single instance.</a>
+<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.math.Matrix;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import imagingbook.common.math.PrintPrecision;</a>
+<span class="sourceLineNo">020</span><a id="line.20"></a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">/**</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * &lt;p&gt;</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * This class implements the CIELab color space. See Sec. 14.2 of [1] for</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * details. All component values are assumed to be in [0,1]. Conversion from/to</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * sRGB is implemented directly through D65-based XYZ coordinates, i.e., without</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * conversion to Java's D50-based profile connection space. The methods</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * fromCIEXYZ/toCIEXYZ still return D50-based XYZ coordinates in Java's profile</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * connection space. This is a singleton class with no public constructors, use</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * {@link #getInstance()} to obtain the single instance.</a>
 <span class="sourceLineNo">031</span><a id="line.31"> * &lt;/p&gt;</a>
 <span class="sourceLineNo">032</span><a id="line.32"> * &lt;p&gt;</a>
-<span class="sourceLineNo">033</span><a id="line.33"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
-<span class="sourceLineNo">034</span><a id="line.34"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">035</span><a id="line.35"> * </a>
-<span class="sourceLineNo">036</span><a id="line.36"> * @author WB</a>
-<span class="sourceLineNo">037</span><a id="line.37"> * @version 2022/09/01</a>
-<span class="sourceLineNo">038</span><a id="line.38"> */</a>
-<span class="sourceLineNo">039</span><a id="line.39">@SuppressWarnings("serial")</a>
-<span class="sourceLineNo">040</span><a id="line.40">public class LabColorSpace extends ColorSpace {</a>
-<span class="sourceLineNo">041</span><a id="line.41">        </a>
-<span class="sourceLineNo">042</span><a id="line.42">        private static final LabColorSpace instance = new LabColorSpace();</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * </a>
+<span class="sourceLineNo">037</span><a id="line.37"> * @author WB</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * @version 2022/09/01</a>
+<span class="sourceLineNo">039</span><a id="line.39"> */</a>
+<span class="sourceLineNo">040</span><a id="line.40">public class LabColorSpace extends CustomColorSpace {</a>
+<span class="sourceLineNo">041</span><a id="line.41">        private static final long serialVersionUID = 1L;</a>
+<span class="sourceLineNo">042</span><a id="line.42">        private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();</a>
 <span class="sourceLineNo">043</span><a id="line.43">        </a>
-<span class="sourceLineNo">044</span><a id="line.44">        public static LabColorSpace getInstance() {</a>
-<span class="sourceLineNo">045</span><a id="line.45">                return instance;</a>
-<span class="sourceLineNo">046</span><a id="line.46">        }</a>
-<span class="sourceLineNo">047</span><a id="line.47"></a>
-<span class="sourceLineNo">048</span><a id="line.48">        // D65 reference white point:</a>
-<span class="sourceLineNo">049</span><a id="line.49">//      private static final double Xref = D65.getX();  // 0.950456</a>
-<span class="sourceLineNo">050</span><a id="line.50">//      private static final double Yref = D65.getY();  // 1.000000</a>
-<span class="sourceLineNo">051</span><a id="line.51">//      private static final double Zref = D65.getZ();  // 1.088754</a>
-<span class="sourceLineNo">052</span><a id="line.52">        private static final double[] XYZref = D65.getXYZ();</a>
-<span class="sourceLineNo">053</span><a id="line.53"></a>
-<span class="sourceLineNo">054</span><a id="line.54">        // chromatic adaptation objects:</a>
-<span class="sourceLineNo">055</span><a id="line.55">        private static final ChromaticAdaptation catD65toD50 = new BradfordAdaptation(D65, D50);</a>
-<span class="sourceLineNo">056</span><a id="line.56">        private static final ChromaticAdaptation catD50toD65 = new BradfordAdaptation(D50, D65);</a>
+<span class="sourceLineNo">044</span><a id="line.44">        private static final LabColorSpace instance = new LabColorSpace();</a>
+<span class="sourceLineNo">045</span><a id="line.45">        </a>
+<span class="sourceLineNo">046</span><a id="line.46">        public static LabColorSpace getInstance() {</a>
+<span class="sourceLineNo">047</span><a id="line.47">                return instance;</a>
+<span class="sourceLineNo">048</span><a id="line.48">        }</a>
+<span class="sourceLineNo">049</span><a id="line.49"></a>
+<span class="sourceLineNo">050</span><a id="line.50">        // D65 reference white point:</a>
+<span class="sourceLineNo">051</span><a id="line.51">        private static final double[] XYZref = D65.getXYZ();</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">        // chromatic adaptation objects:</a>
+<span class="sourceLineNo">054</span><a id="line.54">        private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);</a>
+<span class="sourceLineNo">055</span><a id="line.55">        private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
 <span class="sourceLineNo">057</span><a id="line.57"></a>
-<span class="sourceLineNo">058</span><a id="line.58">        </a>
-<span class="sourceLineNo">059</span><a id="line.59">        /**</a>
-<span class="sourceLineNo">060</span><a id="line.60">         * Constructor.</a>
-<span class="sourceLineNo">061</span><a id="line.61">         */</a>
-<span class="sourceLineNo">062</span><a id="line.62">        private LabColorSpace() {</a>
-<span class="sourceLineNo">063</span><a id="line.63">                super(TYPE_Lab, 3);</a>
-<span class="sourceLineNo">064</span><a id="line.64">        }</a>
-<span class="sourceLineNo">065</span><a id="line.65"></a>
-<span class="sourceLineNo">066</span><a id="line.66">        // XYZ50 -&gt; CIELab: returns Lab values from XYZ (relative to D50)</a>
-<span class="sourceLineNo">067</span><a id="line.67">        /**</a>
-<span class="sourceLineNo">068</span><a id="line.68">         * Converts color points in D50-based XYZ space to CIELab coordinates.</a>
-<span class="sourceLineNo">069</span><a id="line.69">         * This method implements {@link ColorSpace#fromCIEXYZ(float[])}), assuming that </a>
-<span class="sourceLineNo">070</span><a id="line.70">         * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).</a>
-<span class="sourceLineNo">071</span><a id="line.71">         * See also {@link #fromCIEXYZ65(float[])} for a D65-based version.</a>
-<span class="sourceLineNo">072</span><a id="line.72">         * </a>
-<span class="sourceLineNo">073</span><a id="line.73">         * @param XYZ50 a color in D50-based XYZ space (components in [0,1])</a>
-<span class="sourceLineNo">074</span><a id="line.74">         * @return the associated CIELab color</a>
-<span class="sourceLineNo">075</span><a id="line.75">         */</a>
-<span class="sourceLineNo">076</span><a id="line.76">        @Override</a>
-<span class="sourceLineNo">077</span><a id="line.77">        public float[] fromCIEXYZ(float[] XYZ50) {      </a>
-<span class="sourceLineNo">078</span><a id="line.78">                float[] XYZ65 = catD50toD65.applyTo(XYZ50);     </a>
-<span class="sourceLineNo">079</span><a id="line.79">                return fromCIEXYZ65(XYZ65);</a>
-<span class="sourceLineNo">080</span><a id="line.80">        }</a>
-<span class="sourceLineNo">081</span><a id="line.81"></a>
-<span class="sourceLineNo">082</span><a id="line.82">        // XYZ65 -&gt; CIELab: returns Lab values from XYZ (relative to D65)</a>
-<span class="sourceLineNo">083</span><a id="line.83">        /**</a>
-<span class="sourceLineNo">084</span><a id="line.84">         * Converts color points in D65-based XYZ space to CIELab coordinates.</a>
-<span class="sourceLineNo">085</span><a id="line.85">         * See also {@link #fromCIEXYZ(float[])}.</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * @param XYZ65 a color in D65-based XYZ space (components in [0,1])</a>
-<span class="sourceLineNo">087</span><a id="line.87">         * @return the associated CIELab color</a>
-<span class="sourceLineNo">088</span><a id="line.88">         */</a>
-<span class="sourceLineNo">089</span><a id="line.89">        public float[] fromCIEXYZ65(float[] XYZ65) {</a>
-<span class="sourceLineNo">090</span><a id="line.90">                double xx = f1(XYZ65[0] / XYZref[0]);   </a>
-<span class="sourceLineNo">091</span><a id="line.91">                double yy = f1(XYZ65[1] / XYZref[1]);</a>
-<span class="sourceLineNo">092</span><a id="line.92">                double zz = f1(XYZ65[2] / XYZref[2]);</a>
-<span class="sourceLineNo">093</span><a id="line.93">                float L = (float)(116.0 * yy - 16.0);</a>
-<span class="sourceLineNo">094</span><a id="line.94">                float a = (float)(500.0 * (xx - yy));</a>
-<span class="sourceLineNo">095</span><a id="line.95">                float b = (float)(200.0 * (yy - zz));</a>
-<span class="sourceLineNo">096</span><a id="line.96">                return new float[] {L, a, b};</a>
-<span class="sourceLineNo">097</span><a id="line.97">        }</a>
-<span class="sourceLineNo">098</span><a id="line.98"></a>
-<span class="sourceLineNo">099</span><a id="line.99">        // CIELab -&gt; XYZ50: returns XYZ values (relative to D50) from Lab</a>
-<span class="sourceLineNo">100</span><a id="line.100">        /**</a>
-<span class="sourceLineNo">101</span><a id="line.101">         * Converts the specified CIELab color to D50-based XYZ coordinates.</a>
-<span class="sourceLineNo">102</span><a id="line.102">         * This method implements {@link ColorSpace#toCIEXYZ(float[])}) assuming that</a>
-<span class="sourceLineNo">103</span><a id="line.103">         * the XYZ color coordinate is D50-based.</a>
-<span class="sourceLineNo">104</span><a id="line.104">         * See also {@link #toCIEXYZ65(float[])} for a D65-based version.</a>
-<span class="sourceLineNo">105</span><a id="line.105">         * @param Lab CIELab color</a>
-<span class="sourceLineNo">106</span><a id="line.106">         * @return XYZ coordinates (D50-based)</a>
-<span class="sourceLineNo">107</span><a id="line.107">         */</a>
-<span class="sourceLineNo">108</span><a id="line.108">        @Override</a>
-<span class="sourceLineNo">109</span><a id="line.109">        public float[] toCIEXYZ(float[] Lab) {</a>
-<span class="sourceLineNo">110</span><a id="line.110">                float[] XYZ65 = toCIEXYZ65(Lab);</a>
-<span class="sourceLineNo">111</span><a id="line.111">                return catD65toD50.applyTo(XYZ65);</a>
-<span class="sourceLineNo">112</span><a id="line.112">        }</a>
-<span class="sourceLineNo">113</span><a id="line.113"></a>
-<span class="sourceLineNo">114</span><a id="line.114">        // CIELab -&gt; XYZ65: returns XYZ values (relative to D65) from Lab</a>
-<span class="sourceLineNo">115</span><a id="line.115">        /**</a>
-<span class="sourceLineNo">116</span><a id="line.116">         * Converts the specified CIELab color to D65-based XYZ coordinates.</a>
-<span class="sourceLineNo">117</span><a id="line.117">         * @param Lab CIELab color</a>
-<span class="sourceLineNo">118</span><a id="line.118">         * @return XYZ coordinates (D65-based)</a>
-<span class="sourceLineNo">119</span><a id="line.119">         */</a>
-<span class="sourceLineNo">120</span><a id="line.120">        public float[] toCIEXYZ65(float[] Lab) {</a>
-<span class="sourceLineNo">121</span><a id="line.121">                double ll = ( Lab[0] + 16.0 ) / 116.0;</a>
-<span class="sourceLineNo">122</span><a id="line.122">                float Y65 = (float) (XYZref[1] * f2(ll));</a>
-<span class="sourceLineNo">123</span><a id="line.123">                float X65 = (float) (XYZref[0] * f2(ll + Lab[1] / 500.0));</a>
-<span class="sourceLineNo">124</span><a id="line.124">                float Z65 = (float) (XYZref[2] * f2(ll - Lab[2] / 200.0));</a>
-<span class="sourceLineNo">125</span><a id="line.125">                return new float[] {X65, Y65, Z65};</a>
-<span class="sourceLineNo">126</span><a id="line.126">        }</a>
-<span class="sourceLineNo">127</span><a id="line.127"></a>
-<span class="sourceLineNo">128</span><a id="line.128">        //sRGB -&gt; CIELab (direct, without adaptation to D50)</a>
-<span class="sourceLineNo">129</span><a id="line.129">        /**</a>
-<span class="sourceLineNo">130</span><a id="line.130">         * Transforms a sRGB color value to a CIELab color.</a>
-<span class="sourceLineNo">131</span><a id="line.131">         * This method implements {@link ColorSpace#fromRGB(float[])} assuming</a>
-<span class="sourceLineNo">132</span><a id="line.132">         * D65-based sRGB color coordinates.</a>
-<span class="sourceLineNo">133</span><a id="line.133">         * Note that sRGB values are assumed to be in [0,1] (see</a>
-<span class="sourceLineNo">134</span><a id="line.134">         * {@link RgbUtils#normalize(int...)} for conversion from [0,255] int-values).</a>
-<span class="sourceLineNo">135</span><a id="line.135">         * @param srgb a sRGB color (D65-based)</a>
-<span class="sourceLineNo">136</span><a id="line.136">         * @return the associated CIELab color</a>
-<span class="sourceLineNo">137</span><a id="line.137">         */</a>
-<span class="sourceLineNo">138</span><a id="line.138">        @Override</a>
-<span class="sourceLineNo">139</span><a id="line.139">        public float[] fromRGB(float[] srgb) {</a>
-<span class="sourceLineNo">140</span><a id="line.140">                float[] XYZ65 = sRgb65ColorSpace.getInstance().toCIEXYZ(srgb);</a>
-<span class="sourceLineNo">141</span><a id="line.141">                return fromCIEXYZ65(XYZ65);</a>
-<span class="sourceLineNo">142</span><a id="line.142">        }</a>
-<span class="sourceLineNo">143</span><a id="line.143"></a>
-<span class="sourceLineNo">144</span><a id="line.144">        //CIELab -&gt; sRGB (direct, without adaptation to D50)</a>
-<span class="sourceLineNo">145</span><a id="line.145">        /**</a>
-<span class="sourceLineNo">146</span><a id="line.146">         * Transforms a CIELab color value to a sRGB color</a>
-<span class="sourceLineNo">147</span><a id="line.147">         * This method implements {@link ColorSpace#toRGB(float[])} assuming </a>
-<span class="sourceLineNo">148</span><a id="line.148">         * D65-based sRGB color coordinates.</a>
-<span class="sourceLineNo">149</span><a id="line.149">         * Note that the returned RGB values are in [0,1] (see</a>
-<span class="sourceLineNo">150</span><a id="line.150">         * {@link RgbUtils#unnormalize(float[])} for conversion to [0,255] int-values).</a>
-<span class="sourceLineNo">151</span><a id="line.151">         * @param Lab a CIELab color</a>
-<span class="sourceLineNo">152</span><a id="line.152">         * @return sRGB coordinates (D65-based)</a>
-<span class="sourceLineNo">153</span><a id="line.153">         */</a>
-<span class="sourceLineNo">154</span><a id="line.154">        @Override</a>
-<span class="sourceLineNo">155</span><a id="line.155">        public float[] toRGB(float[] Lab) {</a>
-<span class="sourceLineNo">156</span><a id="line.156">                float[] XYZ65 = toCIEXYZ65(Lab);</a>
-<span class="sourceLineNo">157</span><a id="line.157">                float[] srgb = sRgb65ColorSpace.getInstance().fromCIEXYZ(XYZ65);</a>
-<span class="sourceLineNo">158</span><a id="line.158">                return srgb;</a>
-<span class="sourceLineNo">159</span><a id="line.159">        }</a>
+<span class="sourceLineNo">058</span><a id="line.58">        /**</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * Constructor.</a>
+<span class="sourceLineNo">060</span><a id="line.60">         */</a>
+<span class="sourceLineNo">061</span><a id="line.61">        private LabColorSpace() {</a>
+<span class="sourceLineNo">062</span><a id="line.62">                super(TYPE_Lab, 3);</a>
+<span class="sourceLineNo">063</span><a id="line.63">        }</a>
+<span class="sourceLineNo">064</span><a id="line.64"></a>
+<span class="sourceLineNo">065</span><a id="line.65">        // XYZ50 -&gt; CIELab: returns Lab values from XYZ (relative to D50)</a>
+<span class="sourceLineNo">066</span><a id="line.66">        /**</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * Converts color points in D50-based XYZ space to CIELab coordinates.</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * This method implements {@link ColorSpace#fromCIEXYZ(float[])}), assuming that </a>
+<span class="sourceLineNo">069</span><a id="line.69">         * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * See also {@link #fromCIEXYZ65(double[])} for a D65-based version.</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * </a>
+<span class="sourceLineNo">072</span><a id="line.72">         * @param XYZ50 a color in D50-based XYZ space (components in [0,1])</a>
+<span class="sourceLineNo">073</span><a id="line.73">         * @return the associated CIELab color</a>
+<span class="sourceLineNo">074</span><a id="line.74">         */</a>
+<span class="sourceLineNo">075</span><a id="line.75">        @Override  // returns Lab values from D50-based XYZ</a>
+<span class="sourceLineNo">076</span><a id="line.76">        public double[] fromCIEXYZ(double[] XYZ50) {    </a>
+<span class="sourceLineNo">077</span><a id="line.77">                double[] XYZ65 = catD50toD65.applyTo(XYZ50);</a>
+<span class="sourceLineNo">078</span><a id="line.78">                return fromCIEXYZ65(XYZ65);</a>
+<span class="sourceLineNo">079</span><a id="line.79">        }</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">        // XYZ65 -&gt; CIELab: returns Lab values from XYZ (relative to D65)</a>
+<span class="sourceLineNo">082</span><a id="line.82">        /**</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * Converts color points in D65-based XYZ space to CIELab coordinates.</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * See also {@link #fromCIEXYZ(float[])}.</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * @param XYZ65 a color in D65-based XYZ space (components in [0,1])</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * @return the associated CIELab color</a>
+<span class="sourceLineNo">087</span><a id="line.87">         */</a>
+<span class="sourceLineNo">088</span><a id="line.88">        public double[] fromCIEXYZ65(double[] XYZ65) {</a>
+<span class="sourceLineNo">089</span><a id="line.89">                double xx = f1(XYZ65[0] / XYZref[0]);   </a>
+<span class="sourceLineNo">090</span><a id="line.90">                double yy = f1(XYZ65[1] / XYZref[1]);</a>
+<span class="sourceLineNo">091</span><a id="line.91">                double zz = f1(XYZ65[2] / XYZref[2]);</a>
+<span class="sourceLineNo">092</span><a id="line.92">                double L = 116.0 * yy - 16.0;</a>
+<span class="sourceLineNo">093</span><a id="line.93">                double a = 500.0 * (xx - yy);</a>
+<span class="sourceLineNo">094</span><a id="line.94">                double b = 200.0 * (yy - zz);</a>
+<span class="sourceLineNo">095</span><a id="line.95">                return new double[] {L, a, b};</a>
+<span class="sourceLineNo">096</span><a id="line.96">        }</a>
+<span class="sourceLineNo">097</span><a id="line.97"></a>
+<span class="sourceLineNo">098</span><a id="line.98">        // CIELab -&gt; XYZ50: returns XYZ values (relative to D50) from Lab</a>
+<span class="sourceLineNo">099</span><a id="line.99">        /**</a>
+<span class="sourceLineNo">100</span><a id="line.100">         * Converts the specified CIELab color to D50-based XYZ coordinates.</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * This method implements {@link ColorSpace#toCIEXYZ(float[])}) assuming that</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * the XYZ color coordinate is D50-based.</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * See also {@link #toCIEXYZ65(double[])} for a D65-based version.</a>
+<span class="sourceLineNo">104</span><a id="line.104">         * @param Lab CIELab color</a>
+<span class="sourceLineNo">105</span><a id="line.105">         * @return XYZ coordinates (D50-based)</a>
+<span class="sourceLineNo">106</span><a id="line.106">         */</a>
+<span class="sourceLineNo">107</span><a id="line.107">        @Override // returns D50-based XYZ from Lab values</a>
+<span class="sourceLineNo">108</span><a id="line.108">        public double[] toCIEXYZ(double[] Lab) {</a>
+<span class="sourceLineNo">109</span><a id="line.109">                double[] XYZ65 = toCIEXYZ65(Lab);</a>
+<span class="sourceLineNo">110</span><a id="line.110">                return catD65toD50.applyTo(XYZ65);</a>
+<span class="sourceLineNo">111</span><a id="line.111">        }</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">        // CIELab -&gt; XYZ65: returns XYZ values (relative to D65) from Lab</a>
+<span class="sourceLineNo">114</span><a id="line.114">        /**</a>
+<span class="sourceLineNo">115</span><a id="line.115">         * Converts the specified CIELab color to D65-based XYZ coordinates.</a>
+<span class="sourceLineNo">116</span><a id="line.116">         * @param Lab CIELab color</a>
+<span class="sourceLineNo">117</span><a id="line.117">         * @return XYZ coordinates (D65-based)</a>
+<span class="sourceLineNo">118</span><a id="line.118">         */</a>
+<span class="sourceLineNo">119</span><a id="line.119">        public double[] toCIEXYZ65(double[] Lab) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">                double ll = ( Lab[0] + 16.0 ) / 116.0;</a>
+<span class="sourceLineNo">121</span><a id="line.121">                double Y65 = XYZref[1] * f2(ll);</a>
+<span class="sourceLineNo">122</span><a id="line.122">                double X65 = XYZref[0] * f2(ll + Lab[1] / 500.0);</a>
+<span class="sourceLineNo">123</span><a id="line.123">                double Z65 = XYZref[2] * f2(ll - Lab[2] / 200.0);</a>
+<span class="sourceLineNo">124</span><a id="line.124">                return new double[] {X65, Y65, Z65};</a>
+<span class="sourceLineNo">125</span><a id="line.125">        }</a>
+<span class="sourceLineNo">126</span><a id="line.126"></a>
+<span class="sourceLineNo">127</span><a id="line.127">        //sRGB -&gt; CIELab (direct, without adaptation to D50)</a>
+<span class="sourceLineNo">128</span><a id="line.128">        /**</a>
+<span class="sourceLineNo">129</span><a id="line.129">         * Transforms a sRGB color value to a CIELab color.</a>
+<span class="sourceLineNo">130</span><a id="line.130">         * This method implements {@link ColorSpace#fromRGB(float[])} assuming</a>
+<span class="sourceLineNo">131</span><a id="line.131">         * D65-based sRGB color coordinates.</a>
+<span class="sourceLineNo">132</span><a id="line.132">         * Note that sRGB values are assumed to be in [0,1] (see</a>
+<span class="sourceLineNo">133</span><a id="line.133">         * {@link RgbUtils#normalize(int...)} for conversion from [0,255] int-values).</a>
+<span class="sourceLineNo">134</span><a id="line.134">         * @param srgb a sRGB color (D65-based)</a>
+<span class="sourceLineNo">135</span><a id="line.135">         * @return the associated CIELab color</a>
+<span class="sourceLineNo">136</span><a id="line.136">         */</a>
+<span class="sourceLineNo">137</span><a id="line.137">        @Override</a>
+<span class="sourceLineNo">138</span><a id="line.138">        public double[] fromRGB(double[] srgb) {</a>
+<span class="sourceLineNo">139</span><a id="line.139">                double[] xyz65 = srgbCS.toCIEXYZ65(srgb);</a>
+<span class="sourceLineNo">140</span><a id="line.140">                return this.fromCIEXYZ65(xyz65);</a>
+<span class="sourceLineNo">141</span><a id="line.141">        }</a>
+<span class="sourceLineNo">142</span><a id="line.142"></a>
+<span class="sourceLineNo">143</span><a id="line.143">        //CIELab -&gt; sRGB (direct, without adaptation to D50)</a>
+<span class="sourceLineNo">144</span><a id="line.144">        /**</a>
+<span class="sourceLineNo">145</span><a id="line.145">         * Transforms a CIELab color value to a sRGB color</a>
+<span class="sourceLineNo">146</span><a id="line.146">         * This method implements {@link ColorSpace#toRGB(float[])} assuming </a>
+<span class="sourceLineNo">147</span><a id="line.147">         * D65-based sRGB color coordinates.</a>
+<span class="sourceLineNo">148</span><a id="line.148">         * Note that the returned RGB values are in [0,1] (see</a>
+<span class="sourceLineNo">149</span><a id="line.149">         * {@link RgbUtils#unnormalize(float[])} for conversion to [0,255] int-values).</a>
+<span class="sourceLineNo">150</span><a id="line.150">         * @param Lab a CIELab color</a>
+<span class="sourceLineNo">151</span><a id="line.151">         * @return sRGB coordinates (D65-based)</a>
+<span class="sourceLineNo">152</span><a id="line.152">         */</a>
+<span class="sourceLineNo">153</span><a id="line.153">        @Override</a>
+<span class="sourceLineNo">154</span><a id="line.154">        public double[] toRGB(double[] Lab) {</a>
+<span class="sourceLineNo">155</span><a id="line.155">                double[] XYZ65 = toCIEXYZ65(Lab);</a>
+<span class="sourceLineNo">156</span><a id="line.156">                return srgbCS.fromCIEXYZ65(XYZ65);</a>
+<span class="sourceLineNo">157</span><a id="line.157">        }</a>
+<span class="sourceLineNo">158</span><a id="line.158"></a>
+<span class="sourceLineNo">159</span><a id="line.159">        //---------------------------------------------------------------------</a>
 <span class="sourceLineNo">160</span><a id="line.160"></a>
-<span class="sourceLineNo">161</span><a id="line.161">        //---------------------------------------------------------------------</a>
-<span class="sourceLineNo">162</span><a id="line.162"></a>
-<span class="sourceLineNo">163</span><a id="line.163">        private static final double epsilon = 216.0/24389;</a>
-<span class="sourceLineNo">164</span><a id="line.164">        private static final double kappa = 841.0/108;</a>
-<span class="sourceLineNo">165</span><a id="line.165"></a>
-<span class="sourceLineNo">166</span><a id="line.166">        // Gamma correction for L* (forward)</a>
-<span class="sourceLineNo">167</span><a id="line.167">        private double f1 (double c) {</a>
-<span class="sourceLineNo">168</span><a id="line.168">                return (c &gt; epsilon) ? Math.cbrt(c) : (kappa * c) + (16.0 / 116);</a>
-<span class="sourceLineNo">169</span><a id="line.169">        }</a>
-<span class="sourceLineNo">170</span><a id="line.170"></a>
-<span class="sourceLineNo">171</span><a id="line.171">        // Gamma correction for L* (inverse)</a>
-<span class="sourceLineNo">172</span><a id="line.172">        private double f2 (double c) {</a>
-<span class="sourceLineNo">173</span><a id="line.173">                double c3 = c * c * c; //Math.pow(c, 3.0);</a>
-<span class="sourceLineNo">174</span><a id="line.174">                return (c3 &gt; epsilon) ? c3 : (c - 16.0 / 116) / kappa;</a>
-<span class="sourceLineNo">175</span><a id="line.175">        }</a>
-<span class="sourceLineNo">176</span><a id="line.176"></a>
-<span class="sourceLineNo">177</span><a id="line.177">}</a>
+<span class="sourceLineNo">161</span><a id="line.161">        private static final double epsilon = 216.0/24389;</a>
+<span class="sourceLineNo">162</span><a id="line.162">        private static final double kappa = 841.0/108;</a>
+<span class="sourceLineNo">163</span><a id="line.163"></a>
+<span class="sourceLineNo">164</span><a id="line.164">        // Gamma correction for L* (forward)</a>
+<span class="sourceLineNo">165</span><a id="line.165">        private double f1 (double c) {</a>
+<span class="sourceLineNo">166</span><a id="line.166">                return (c &gt; epsilon) ? Math.cbrt(c) : (kappa * c) + (16.0 / 116);</a>
+<span class="sourceLineNo">167</span><a id="line.167">        }</a>
+<span class="sourceLineNo">168</span><a id="line.168"></a>
+<span class="sourceLineNo">169</span><a id="line.169">        // Gamma correction for L* (inverse)</a>
+<span class="sourceLineNo">170</span><a id="line.170">        private double f2 (double c) {</a>
+<span class="sourceLineNo">171</span><a id="line.171">                double c3 = c * c * c; //Math.pow(c, 3.0);</a>
+<span class="sourceLineNo">172</span><a id="line.172">                return (c3 &gt; epsilon) ? c3 : (c - 16.0 / 116) / kappa;</a>
+<span class="sourceLineNo">173</span><a id="line.173">        }</a>
+<span class="sourceLineNo">174</span><a id="line.174"></a>
+<span class="sourceLineNo">175</span><a id="line.175">        //---------------------------------------------------------------------</a>
+<span class="sourceLineNo">176</span><a id="line.176">        </a>
+<span class="sourceLineNo">177</span><a id="line.177">        public static void main(String[] args) {</a>
+<span class="sourceLineNo">178</span><a id="line.178">                PrintPrecision.set(6);</a>
+<span class="sourceLineNo">179</span><a id="line.179">                LabColorSpace cs = LabColorSpace.getInstance();</a>
+<span class="sourceLineNo">180</span><a id="line.180">                double[] lab = cs.fromCIEXYZ65(XYZref);</a>
+<span class="sourceLineNo">181</span><a id="line.181">                System.out.println("XYZref = " + Matrix.toString(XYZref));</a>
+<span class="sourceLineNo">182</span><a id="line.182">                System.out.println("Lab = " + Matrix.toString(lab));</a>
+<span class="sourceLineNo">183</span><a id="line.183">                double[] xyz = cs.toCIEXYZ65(lab);</a>
+<span class="sourceLineNo">184</span><a id="line.184">                System.out.println("XYZ = " + Matrix.toString(xyz));</a>
+<span class="sourceLineNo">185</span><a id="line.185">        }</a>
+<span class="sourceLineNo">186</span><a id="line.186">}</a>
 
 
 

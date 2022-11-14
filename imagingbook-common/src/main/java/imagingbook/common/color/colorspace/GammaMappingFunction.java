@@ -4,10 +4,10 @@ package imagingbook.common.color.colorspace;
  * <p>
  * Defines the "modified gamma correction" used for converting linear to
  * non-linear color component values. The mapping function consists of a linear
- * and non-linear part. In the forward mapping {@link #applyFwd(double)}), the
+ * and non-linear part. In the forward mapping ({@link #applyFwd(double)}), the
  * linear part covers input values between a = 0,...,a0, while values a =
  * a0,...,1 are mapped non-linearly. For the inverse mapping
- * {@link #applyInv(double)}), the linear part is b = 0,...,b0, the non-linear
+ * ({@link #applyInv(double)}), the linear part is b = 0,...,b0, the non-linear
  * part is b = b0,...,1. Theoretically all mapping parameters can be derived
  * from parameters {@code gamma} and {@code a0} (the linear to non-linear
  * transition point) only. Note that {@code gamma} specifies the nominal gamma
@@ -20,14 +20,14 @@ package imagingbook.common.color.colorspace;
  * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/14
  */
 public class GammaMappingFunction {
 	
-	/** Gamma mapping function for ITU-R BT.709 (see Table 3.1 of [1]). */
+	/** Gamma mapping function instance for ITU-R BT.709 (see Table 3.1 of [1]). */
 	public static GammaMappingFunction ITU709 = new GammaMappingFunction(1/2.222, 0.018); //, 4.5, 0.099);
 	
-	/** Gamma mapping function for sRGB (see Table 3.1 of [1]). 
+	/** Gamma mapping function instance for sRGB (see Table 3.1 of [1]). 
 	 * Note that we need to specify parameters s and d too to comply 
 	 * strictly with the sRGB standard. */
 	public static GammaMappingFunction sRGB = new GammaMappingFunction(1/2.4, 0.0031308, 12.92, 0.055);
@@ -42,8 +42,8 @@ public class GammaMappingFunction {
 	/**
 	 * Constructor, derives parameters s and d from gamma and a0
 	 * (see Eq. 3.35 in [1]).
-	 * @param gamma &in; [0,1], the nominal gamma value for the forward mapping (e.g., gamma = 1/2.4 for sRGB)
-	 * @param a0 &in; [0,1], the linear to non-linear transition point (e.g., a0 = 1/2.4 for sRGB)
+	 * @param gamma in [0,1], the nominal gamma value for the forward mapping (e.g., gamma = 1/2.4 for sRGB)
+	 * @param a0 in [0,1], the linear to non-linear transition point (e.g., a0 = 1/2.4 for sRGB)
 	 */
 	public GammaMappingFunction(double gamma, double a0) {
 		this(gamma, a0, s(gamma, a0), d(gamma, a0));
@@ -53,9 +53,9 @@ public class GammaMappingFunction {
 	 * Constructor, accepts explicit parameters s and d to allow for
 	 * minor inaccuracies in published standards.
 	 * 
-	 * @param gamma &in; [0,1], the nominal gamma value for the forward mapping (e.g., gamma = 1/2.4 for sRGB)
-	 * @param a0 &in; [0,1], the linear to non-linear transition point (e.g., a0 = 1/2.4 for sRGB)
-	 * @param s &gt 0, the slope s of the linear section (e.g., s = 12.92 for sRGB)
+	 * @param gamma in [0,1], the nominal gamma value for the forward mapping (e.g., gamma = 1/2.4 for sRGB)
+	 * @param a0 in [0,1], the linear to non-linear transition point (e.g., a0 = 1/2.4 for sRGB)
+	 * @param s &gt; 0, the slope s of the linear section (e.g., s = 12.92 for sRGB)
 	 * @param d &ge; 0 the offset d of the non-linear section (e.g., s = 0.055 for sRGB)
 	 */
 	public GammaMappingFunction(double gamma, double a0, double s, double d) {
