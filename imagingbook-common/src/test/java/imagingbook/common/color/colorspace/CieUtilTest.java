@@ -67,7 +67,7 @@ public class CieUtilTest {
 			assertTrue(Double.isFinite(xy[1]));
 			
 			float Y = XYZa[1];
-			float[] XYZb = CieUtil.xyToXYZ(xy[0], xy[1], Y);	
+			float[] XYZb = CieUtil.xyYToXYZ(xy[0], xy[1], Y);	
 			assertArrayEquals(XYZa, XYZb, 1e-6f);
 			
 			float[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
@@ -83,7 +83,7 @@ public class CieUtilTest {
 			assertTrue(Double.isFinite(xy[1]));
 			
 			double Y = XYZa[1];
-			double[] XYZb = CieUtil.xyToXYZ(xy[0], xy[1], Y);	
+			double[] XYZb = CieUtil.xyYToXYZ(xy[0], xy[1], Y);	
 			assertArrayEquals(XYZa, XYZb, 1e-6);
 			
 			double[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
