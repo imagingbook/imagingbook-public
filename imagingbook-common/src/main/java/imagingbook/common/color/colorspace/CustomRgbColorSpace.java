@@ -1,6 +1,6 @@
 package imagingbook.common.color.colorspace;
 
-public interface RgbColorSpace {
+public interface CustomRgbColorSpace {
 
 //	public double[][] getRgbToXyzMatrix();
 //	public double[][] getXyzToRgbMatrix();

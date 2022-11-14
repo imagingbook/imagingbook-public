@@ -29,7 +29,7 @@ import imagingbook.common.math.Matrix;
  * @version 2022/11/14
  */
 @SuppressWarnings("serial")
-public class LinearRgb65ColorSpace extends CustomColorSpace implements RgbColorSpace {
+public class LinearRgb65ColorSpace extends CustomColorSpace implements CustomRgbColorSpace {
 	
 	// we use the same RGB-XYZ matrices as sRGB
 	/** Matrix for conversion from XYZ to linear RGB. Its column vectors are the 

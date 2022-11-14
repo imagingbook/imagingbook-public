@@ -28,7 +28,7 @@ import imagingbook.common.math.PrintPrecision;
  * @version 2022/11/14
  */
 @SuppressWarnings("serial")
-public class sRgbColorSpace extends CustomColorSpace implements RgbColorSpace {
+public class sRgbColorSpace extends CustomColorSpace implements CustomRgbColorSpace {
 	
 	// chromatic adaptation objects:
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);

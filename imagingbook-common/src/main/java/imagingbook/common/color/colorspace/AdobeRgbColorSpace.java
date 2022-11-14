@@ -14,7 +14,7 @@ import imagingbook.common.math.PrintPrecision;
  * @version 2022/11/13
  */
 @SuppressWarnings("serial")
-public class AdobeRgbColorSpace extends ICC_ColorSpace implements RgbColorSpace {
+public class AdobeRgbColorSpace extends ICC_ColorSpace implements CustomRgbColorSpace {
 	
 	private static AdobeRgbColorSpace instance = null;
 	
