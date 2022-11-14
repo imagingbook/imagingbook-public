@@ -74,6 +74,7 @@ public class sRgbColorSpace extends CustomColorSpace implements CustomRgbColorSp
 	
 	// direct conversion from/to D65-based XYZ space ------------------------------
 	
+	@Override
 	public double[] fromCIEXYZ65(double[] xyz65) {
 		double[] rgb = Matrix.multiply(Mrgb, xyz65);	// linear RGB
 		// perform forward gamma mapping:
@@ -84,6 +85,7 @@ public class sRgbColorSpace extends CustomColorSpace implements CustomRgbColorSp
 		return srgb;
 	}
 	
+	@Override
 	public double[] toCIEXYZ65(double[] srgbTHIS) {
 		// get linear rgb components:
 		double[] rgb = new double[3];

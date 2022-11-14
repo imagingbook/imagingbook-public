@@ -49,5 +49,17 @@ public class XYZ65ColorSpace extends CustomColorSpace {
 	public double[] fromCIEXYZ(double[] XYZ50) {
 		return catD50toD65.applyTo(XYZ50);
 	}
+	
+	// -------------------------------------------------
+
+	@Override
+	public double[] fromCIEXYZ65(double[] xyz65) {
+		return xyz65;
+	}
+
+	@Override
+	public double[] toCIEXYZ65(double[] xyz65) {
+		return xyz65;
+	}
 
 }

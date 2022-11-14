@@ -81,6 +81,7 @@ public class LabColorSpace extends CustomColorSpace {
 	 * @param XYZ65 a color in D65-based XYZ space (components in [0,1])
 	 * @return the associated CIELab color
 	 */
+	@Override
 	public double[] fromCIEXYZ65(double[] XYZ65) {
 		double xx = f1(XYZ65[0] / XYZref[0]);	
 		double yy = f1(XYZ65[1] / XYZref[1]);
@@ -112,6 +113,7 @@ public class LabColorSpace extends CustomColorSpace {
 	 * @param Lab CIELab color
 	 * @return XYZ coordinates (D65-based)
 	 */
+	@Override
 	public double[] toCIEXYZ65(double[] Lab) {
 		double ll = (Lab[0] + 16.0) / 116.0;
 		double Y65 = XYZref[1] * f2(ll);

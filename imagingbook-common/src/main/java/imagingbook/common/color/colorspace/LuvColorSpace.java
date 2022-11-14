@@ -79,6 +79,7 @@ public class LuvColorSpace extends CustomColorSpace {
 	 * @param XYZ65 a color in D65-based XYZ space (components in [0,1])
 	 * @return the associated CIELuv color
 	 */
+	@Override
 	public double[] fromCIEXYZ65(double[] XYZ65) {	
 		double X = XYZ65[0];
 		double Y = XYZ65[1];	
@@ -112,6 +113,7 @@ public class LuvColorSpace extends CustomColorSpace {
 	 * @param Luv CIELuv color
 	 * @return the associated D65-based XYZ coordinates
 	 */
+	@Override
 	public double[] toCIEXYZ65(double[] Luv) {
 		double L = Luv[0];
 		double u = Luv[1];

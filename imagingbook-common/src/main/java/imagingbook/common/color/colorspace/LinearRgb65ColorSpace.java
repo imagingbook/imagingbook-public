@@ -89,11 +89,6 @@ public class LinearRgb65ColorSpace extends CustomColorSpace implements CustomRgb
 		return srgb;
 	}
 	
-	public double[] toCIEXYZ65(double[] rgb) {
-		double[] xyz65 = Matrix.multiply(Mrgbi, rgb);
-		return xyz65;
-	}
-
 	@Override	// return D50-based PCS xyz
 	public double[] toCIEXYZ(double[] rgb) {
 		double[] xyz65 = this.toCIEXYZ65(rgb);
@@ -101,15 +96,23 @@ public class LinearRgb65ColorSpace extends CustomColorSpace implements CustomRgb
 		return xyz50;
 	}
 	
-	public double[] fromCIEXYZ65(double[] xyz65) {
-		double[] rgb = Matrix.multiply(Mrgb, xyz65);
-		return rgb;
-	}
+	// ---------------------------------------------------------------------
 
 	@Override
 	public double[] fromCIEXYZ(double[] xyz50) {
 		double[] xyz65 = catD50toD65.applyTo(xyz50);
 		return this.fromCIEXYZ65(xyz65);
+	}
+	
+	public double[] toCIEXYZ65(double[] rgb) {
+		double[] xyz65 = Matrix.multiply(Mrgbi, rgb);
+		return xyz65;
+	}
+	
+	@Override
+	public double[] fromCIEXYZ65(double[] xyz65) {
+		double[] rgb = Matrix.multiply(Mrgb, xyz65);
+		return rgb;
 	}
 	
 	// ---------------------------------------------------------------------
