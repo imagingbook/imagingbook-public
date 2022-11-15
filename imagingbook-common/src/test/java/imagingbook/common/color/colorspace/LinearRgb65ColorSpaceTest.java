@@ -17,6 +17,7 @@ import org.junit.Test;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.math.Matrix;
 
+
 public class LinearRgb65ColorSpaceTest {
 	
 	private static LinearRgb65ColorSpace CS = LinearRgb65ColorSpace.getInstance();
@@ -60,7 +61,7 @@ public class LinearRgb65ColorSpaceTest {
 			float[] rgb = new float[3];
 			rgb[i] = 1;
 			float[] xyz = CS.toCIEXYZ65(rgb);
-			float[] primary = srgbCS.getPrimary(i);
+			float[] primary = CS.getPrimary(i);
 //			System.out.println("primary = " + Matrix.toString(primary));
 //			System.out.println("xyz     = " + Matrix.toString(xyz));
 			assertArrayEquals(primary, xyz, 1e-6f);

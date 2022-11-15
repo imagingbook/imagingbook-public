@@ -9,10 +9,8 @@
 
 package imagingbook.common.color.colorspace;
 
+import static imagingbook.common.math.Matrix.inverse;
 import static imagingbook.common.math.Matrix.multiply;
-
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
 /**
  * <p>
@@ -39,7 +37,7 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	    { 0.0389, -0.0685,  1.0296}};
 	   
 	// CAT inverse transform matrix from "virtual" RGB scaling coordinates back to XYZ
-	private static final double[][] MCATi = Matrix.inverse(MCAT);	  // we always invert for precision reasons
+	private static final double[][] MCATi = inverse(MCAT);	  // we always invert for precision reasons
 //		{{ 0.9869929054667120, -0.1470542564209900, 0.1599626516637310}, 
 //		 { 0.4323052697233940,  0.5183602715367770, 0.0492912282128560}, 
 //		 {-0.0085286645751770,  0.0400428216540850, 0.9684866957875500}}
@@ -52,38 +50,36 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	
 	// ---------------------------------------------------------------------------------
 	
-	// static method for future caching of instances
+	/**
+	 * Returns a {@link BradfordAdaptation} instance for the specified
+	 * white point coordinates.
+	 * 
+	 * @param W1 source white point (to map from)
+	 * @param W2 target white point (to map to)
+	 * @return
+	 */
 	public static BradfordAdaptation getInstance(double[] W1, double[] W2) {
 		return new BradfordAdaptation(W1, W2);
 	}
 	
-	// static method for future caching of instances
-		public static BradfordAdaptation getInstance(Illuminant illum1, Illuminant illum2) {
-			return new BradfordAdaptation(illum1, illum2);
-		}
-	
 	/**
-	 * Constructor (non-public) accepting two white points (XYZ-coordinates).
+	 * Returns a {@link BradfordAdaptation} instance for the specified
+	 * illuminants (white points).
 	 * 
-	 * @param W1 source white point
-	 * @param W2 target white point
+	 * @param illum1 source illuminant (white point to map from)
+	 * @param illum2 target illuminant (white point to map to)
+	 * @return
 	 */
+	public static BradfordAdaptation getInstance(Illuminant illum1, Illuminant illum2) {
+		return getInstance(illum1.getXYZ(), illum2.getXYZ());
+	}
+	
+	/** Constructor (non-public) accepting two white points (XYZ-coordinates). */
 	private BradfordAdaptation(double[] W1, double[] W2) {
 		double[] rgb1 = multiply(MCAT, W1);
 		double[] rgb2 = multiply(MCAT, W2);
 		this.Mdiag = getRgbWhiteRatioMatrix(rgb1, rgb2);
 		this.Madapt = multiply(MCATi, multiply(Mdiag, MCAT));
-	}
-	
-	/**
-	 * Constructor (non-public) accepting two {@link Illuminant} instances for
-	 * specifying the source and target white points.
-	 * 
-	 * @param illum1 source illuminant
-	 * @param illum2 target illuminant
-	 */
-	private BradfordAdaptation(Illuminant illum1, Illuminant illum2) {
-		this(illum1.getXYZ(), illum2.getXYZ());
 	}
 	
 	// ---------------------------------------------------------------------------------
@@ -98,7 +94,6 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	
 	// ---------------------------------------------------------------------------------
 	
-	// transformation of color coordinates
 	@Override
 	public float[] applyTo(float[] XYZA) {
 		// XYZB = Madapt . XYZA
@@ -141,50 +136,5 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 		}
 		return M;
 	}
-	
-	// ------------------------------------------------------------------------------
-	
-	public static void main(String[] args) {
-		PrintPrecision.set(8);
 		
-		System.out.println("W1 (D65) = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
-		System.out.println("W2 (D50) = " + Matrix.toString(StandardIlluminant.D50.getXYZ()));
-		
-		BradfordAdaptation adapt = new BradfordAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
-		
-		
-		System.out.println("Mdiag = \n" + Matrix.toString(adapt.Mdiag));
-		
-		System.out.println("Madapt = \n" + Matrix.toString(adapt.getAdaptationMatrix()));
-		System.out.println();
-		
-		
-		
-//		
-//		ColorSpace cs = sRgb65ColorSpace.getInstance();
-//		float[] red = {1, 0, 0};
-//		float[] grn = {0, 1, 0};
-//		float[] blu = {0, 0, 1};
-//		
-//		float[] rgb1 = blu;
-//		
-//		System.out.println("rgb1 = " + Matrix.toString(rgb1));
-//		float[] XYZ65 = cs.toCIEXYZ(rgb1);
-//		System.out.println("XYZ65 = " + Matrix.toString(XYZ65));
-//		
-//		double[] xy65 = CieUtil.XYZToXy(Matrix.toDouble(XYZ65));
-//		System.out.println("xy65 = " + Matrix.toString(xy65));
-//		
-//		float[] XYZ50 = adapt.applyTo(XYZ65);
-//		System.out.println("XYZ50 = " + Matrix.toString(XYZ50));
-//		
-//		double[] xy50 = CieUtil.XYZToXy(Matrix.toDouble(XYZ50));
-//		System.out.println("xy50 = " + Matrix.toString(xy50));
-//		
-//		float[] rgb2 = cs.fromCIEXYZ(XYZ65);
-//		System.out.println("rgb2 = " + Matrix.toString(rgb2));
-		
-	}
-	
-	
 }

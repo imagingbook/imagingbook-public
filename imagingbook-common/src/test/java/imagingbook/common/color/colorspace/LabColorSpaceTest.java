@@ -8,6 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.color.colorspace;
 
+import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Random;
@@ -83,7 +84,7 @@ public class LabColorSpaceTest {
 		PrintPrecision.set(6);
 		LabColorSpace cs = LabColorSpace.getInstance();
 		//float[] rgb = {1, 1, 1};
-		float[] W65 =  Matrix.toFloat(StandardIlluminant.D65.getXYZ());
+		float[] W65 =  Matrix.toFloat(D65.getXYZ());
 		float[] wLab = cs.fromCIEXYZ65(W65);
 //		System.out.println("wD65 = " + Matrix.toString(W65));
 //		System.out.println("wLab = " + Matrix.toString(wLab));

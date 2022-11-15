@@ -113,7 +113,6 @@ public class sRgbColorSpaceTest {
 		}
 	}
 	
-	
 	@Test
 	public void testBookXYZValues() {	// check colors in book Table 14.3
 		PrintPrecision.set(4);

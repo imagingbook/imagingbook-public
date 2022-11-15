@@ -8,6 +8,9 @@
  *******************************************************************************/
 package imagingbook.common.color.colorspace;
 
+import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
+import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
+import static imagingbook.common.color.colorspace.StandardIlluminant.N;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Arrays;
@@ -27,7 +30,7 @@ public class BradfordAdaptationTest {
 	@Test
 	public void test0A() {	// adaptation to the same white point gives identity matrix always
 		double[][] I = Matrix.idMatrix(3);
-		for (Illuminant illum : Arrays.asList(StandardIlluminant.D65, StandardIlluminant.D50, StandardIlluminant.N)) {
+		for (Illuminant illum : Arrays.asList(D65, D50, N)) {
 			BradfordAdaptation adapt = BradfordAdaptation.getInstance(illum, illum);
 			NumericTestUtils.assert2dArrayEquals(adapt.getAdaptationMatrix(), I, 1e-12);
 		}
@@ -36,8 +39,8 @@ public class BradfordAdaptationTest {
 	@Test
 	public void test0B() {	// reverse adaptation must give inverse matrix
 		double[][] I = Matrix.idMatrix(3);
-		BradfordAdaptation adapt1 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);
-		BradfordAdaptation adapt2 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);
+		BradfordAdaptation adapt1 = BradfordAdaptation.getInstance(D65, D50);
+		BradfordAdaptation adapt2 = BradfordAdaptation.getInstance(D50, D65);
 		double[][] Madapt1 = adapt1.getAdaptationMatrix();
 		double[][] Madapt2 = adapt2.getAdaptationMatrix();
 		double[][] Madapt12 = Matrix.multiply(Madapt1, Madapt2);
@@ -47,8 +50,8 @@ public class BradfordAdaptationTest {
 	@Test
 	public void test0C() {	// reverse adaptation must give inverse matrix
 		double[][] I = Matrix.idMatrix(3);
-		BradfordAdaptation adapt1 = BradfordAdaptation.getInstance(StandardIlluminant.N, StandardIlluminant.D50);
-		BradfordAdaptation adapt2 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.N);
+		BradfordAdaptation adapt1 = BradfordAdaptation.getInstance(N, D50);
+		BradfordAdaptation adapt2 = BradfordAdaptation.getInstance(D50, N);
 		double[][] Madapt1 = adapt1.getAdaptationMatrix();
 		double[][] Madapt2 = adapt2.getAdaptationMatrix();
 		double[][] Madapt12 = Matrix.multiply(Madapt1, Madapt2);
@@ -93,11 +96,11 @@ public class BradfordAdaptationTest {
 	
 	@Test
 	public void testWhiteD65ToD50() { // check if white point is mapped (precisely)
-		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);
+		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(D65, D50);
 		PrintPrecision.set(6);
 		
-		double[] W65 = StandardIlluminant.D65.getXYZ();
-		double[] W50 = StandardIlluminant.D50.getXYZ();
+		double[] W65 = D65.getXYZ();
+		double[] W50 = D50.getXYZ();
 		
 		double[] W50m = adapt.applyTo(W65);
 //		System.out.println("W50  = " + Matrix.toString(W50));
@@ -108,11 +111,11 @@ public class BradfordAdaptationTest {
 	
 	@Test
 	public void testWhiteD50ToD65() { // check if white point is mapped (precisely)
-		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);
+		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(D50, D65);
 		PrintPrecision.set(6);
 		
-		double[] W65 = StandardIlluminant.D65.getXYZ();
-		double[] W50 = StandardIlluminant.D50.getXYZ();
+		double[] W65 = D65.getXYZ();
+		double[] W50 = D50.getXYZ();
 		
 		double[] W65m = adapt.applyTo(W50);
 //		System.out.println("W65  = " + Matrix.toString(W65));
@@ -125,8 +128,8 @@ public class BradfordAdaptationTest {
 	
 	private static void doCheck(DirectD65Conversion cs, int[] srgb) {
 		float[] srgb1 = RgbUtils.normalize(srgb);		
-		ChromaticAdaptation adapt65to50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
-		ChromaticAdaptation adapt50to65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
+		ChromaticAdaptation adapt65to50 = BradfordAdaptation.getInstance(D65, D50);	// adapts from D65 -> D50
+		ChromaticAdaptation adapt50to65 = BradfordAdaptation.getInstance(D50, D65);	// adapts from D50 -> D65
 		{	// float version
 			float[] XYZ65a =  cs.toCIEXYZ(srgb1);
 			float[] XYZ50 = adapt65to50.applyTo(XYZ65a);

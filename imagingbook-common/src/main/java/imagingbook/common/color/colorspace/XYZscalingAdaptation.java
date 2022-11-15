@@ -28,25 +28,35 @@ public class XYZscalingAdaptation implements ChromaticAdaptation {
 	private final double[] W21;		// vector with diagonal scale factors
 
 	/**
-	 * Constructor accepting two white points (XYZ-coordinates).
-	 * @param XYZ1 source white point
-	 * @param XYZ2 target white point
+	 * Returns a {@link XYZscalingAdaptation} instance for the specified
+	 * white point coordinates.
+	 * 
+	 * @param W1 source white point (to map from)
+	 * @param W2 target white point (to map to)
+	 * @return
 	 */
-	public XYZscalingAdaptation(double[] XYZ1, double[] XYZ2) {
+	public static XYZscalingAdaptation getInstance(double[] W1, double[] W2) {
+		return new XYZscalingAdaptation(W1, W2);
+	}
+	
+	/**
+	 * Returns a {@link XYZscalingAdaptation} instance for the specified
+	 * illuminants (white points).
+	 * 
+	 * @param illum1 source illuminant (white point to map from)
+	 * @param illum2 target illuminant (white point to map to)
+	 * @return
+	 */
+	public static XYZscalingAdaptation getInstance(Illuminant illum1, Illuminant illum2) {
+		return getInstance(illum1.getXYZ(), illum2.getXYZ());
+	}
+	
+	/** Constructor (non-public). */
+	private  XYZscalingAdaptation(double[] XYZ1, double[] XYZ2) {
 		W21 = new double[3];
 		for (int i = 0; i < 3; i++) {
 			W21[i] = XYZ2[i] / XYZ1[i];
 		}
-	}
-	
-	/**
-	 * Constructor accepting two {@link StandardIlluminant} instances for
-	 * specifying the source and target white points.
-	 * @param illum1 source illuminant
-	 * @param illum2 target illuminant
-	 */
-	public XYZscalingAdaptation(StandardIlluminant illum1, StandardIlluminant illum2) {
-		this(illum1.getXYZ(), illum2.getXYZ());
 	}
 
 	@Override

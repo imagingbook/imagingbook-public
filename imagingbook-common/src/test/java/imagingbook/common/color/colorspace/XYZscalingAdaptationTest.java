@@ -8,6 +8,8 @@
  *******************************************************************************/
 package imagingbook.common.color.colorspace;
 
+import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
+import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.awt.color.ColorSpace;
@@ -21,8 +23,8 @@ import imagingbook.common.math.Matrix;
 public class XYZscalingAdaptationTest {
 	
 	static ColorSpace CS = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);	// any colorspace should work
-	static ChromaticAdaptation adapt65to50 = new XYZscalingAdaptation(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
-	static ChromaticAdaptation adapt50to65 = new XYZscalingAdaptation(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
+	static ChromaticAdaptation adapt65to50 = XYZscalingAdaptation.getInstance(D65, D50);	// adapts from D65 to D50
+	static ChromaticAdaptation adapt50to65 = XYZscalingAdaptation.getInstance(D50, D65);	// adapts from D50 to D65
 
 	@Test
 	public void test1() {
@@ -61,13 +63,13 @@ public class XYZscalingAdaptationTest {
 	
 	@Test
 	public void testWhites() {
-		float[] W50 = Matrix.toFloat(StandardIlluminant.D50.getXYZ());
-		float[] W65 = Matrix.toFloat(StandardIlluminant.D65.getXYZ());
+		float[] W50 = Matrix.toFloat(D50.getXYZ());
+		float[] W65 = Matrix.toFloat(D65.getXYZ());
 		
-		float[] convertedTo65 = adapt50to65.applyTo(Matrix.toFloat(StandardIlluminant.D50.getXYZ()));
+		float[] convertedTo65 = adapt50to65.applyTo(Matrix.toFloat(D50.getXYZ()));
 		assertArrayEquals(W65, convertedTo65, 1e-6f);
 		
-		float[] convertedTo50 = adapt65to50.applyTo(Matrix.toFloat(StandardIlluminant.D65.getXYZ()));
+		float[] convertedTo50 = adapt65to50.applyTo(Matrix.toFloat(D65.getXYZ()));
 		assertArrayEquals(W50, convertedTo50, 1e-6f);
 	}
 	
@@ -81,5 +83,4 @@ public class XYZscalingAdaptationTest {
 			
 		assertArrayEquals(XYZ50a, XYZ50b, 1e-6f);
 	}
-
 }

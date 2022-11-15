@@ -15,7 +15,6 @@ import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 import java.awt.color.ColorSpace;
 
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 
 
 /**
@@ -26,6 +25,7 @@ import imagingbook.common.math.PrintPrecision;
  * 
  * @author WB
  * @version 2022/11/14
+ * @see LinearRgb65ColorSpace
  */
 @SuppressWarnings("serial")
 public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, RgbPrimaries {
@@ -62,14 +62,12 @@ public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, R
 	
 	@Override
 	public float[] getPrimary(int idx) {
-		return Matrix.getColumn(MrgbiF, idx);
+		return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));
 	}
 	
 	// ----------------------------------------------------
 	
-	/**
-	 * Constructor (not public).
-	 */
+	/** Constructor (not public). */
 	private sRgbColorSpace() {
 		super(ColorSpace.TYPE_RGB, 3);
 	}
@@ -78,44 +76,30 @@ public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, R
 	
 	@Override
 	public float[] fromCIEXYZ65(float[] xyz65) {
-		float[] rgb = Matrix.multiply(MrgbF, xyz65);	// linear RGB
-		// perform forward gamma mapping:
-//		double[] srgb = new double[3];									
-//		for (int i = 0; i < 3; i++) {
-//			srgb[i] = GammaMap.applyFwd(rgb[i]);
-//		}
-//		return srgb;
-		return GammaMap.applyFwd(rgb);
+		float[] rgb = Matrix.multiply(MrgbF, xyz65);	// to linear RGB
+		return GammaMap.applyFwd(rgb);					// to non-linear sRGB
 	}
 	
 	@Override
 	public float[] toCIEXYZ65(float[] srgbTHIS) {
-		// get linear rgb components:
-//		float[] rgb = new float[3];
-//		for (int i = 0; i < 3; i++) {
-//			rgb[i] = GammaMap.applyInv(srgbTHIS[i]);
-//		}
-		float[] rgb = GammaMap.applyInv(srgbTHIS);
-		// convert to D65-based XYZ (Poynton / ITU 709) 
-		float[] xyz65 = Matrix.multiply(MrgbiF, rgb);
-		return xyz65;
+		float[] rgb = GammaMap.applyInv(srgbTHIS);		// to linear rgb
+		return Matrix.multiply(MrgbiF, rgb);	// to XYZ (D65)
 	}
 	
-	// Methods required ColorSpace (conversion from/to PCS space) ------------------
+	// Methods required by ColorSpace (conversion from/to PCS space) ------------------
 
 	// assumes xyz50 is in D50-based CS_CIEXYZ color space
 	@Override
 	public float[] fromCIEXYZ(float[] xyz50PCS) {
-		float[] xyz65 = catD50toD65.applyTo(xyz50PCS);
-		return this.fromCIEXYZ65(xyz65);
+		float[] xyz65 = catD50toD65.applyTo(xyz50PCS);	// to XYZ (D65)
+		return this.fromCIEXYZ65(xyz65);				// to sRGB
 	}
 
 	// returned colors are in D50-based CS_CIEXYZ color space 
 	@Override
 	public float[] toCIEXYZ(float[] srgbTHIS) {
-		float[] xyz65 = this.toCIEXYZ65(srgbTHIS);
-		float[] xyz50 = catD65toD50.applyTo(xyz65);
-		return xyz50;
+		float[] xyz65 = this.toCIEXYZ65(srgbTHIS);		// to XYZ (D65)
+		return catD65toD50.applyTo(xyz65);		// to XYZ (D50)
 	}
 	
 	// ----------------------------------------------------
@@ -128,30 +112,6 @@ public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, R
 	@Override // no conversion needed, since this is sRGB
 	public float[] toRGB(float[] srgbTHIS) {
 		return srgbTHIS;
-	}
-	
-	// ----------------------------------------------------
-	
-	private static final String[] ComponentNames = {"R65", "G65", "B65"};
-	
-	@Override
-	public String getName (int idx) {
-		return ComponentNames[idx];
-	}
-	
-	
-	public static void main(String[] args) {
-		PrintPrecision.set(6);
-		sRgbColorSpace cs = sRgbColorSpace.getInstance();
-		System.out.println("w = " + Matrix.toString(cs.getWhitePoint()));
-//		System.out.println("R = " + Matrix.toString(cs.getPrimary(0)));
-//		System.out.println("G = " + Matrix.toString(cs.getPrimary(1)));
-//		System.out.println("B = " + Matrix.toString(cs.getPrimary(2)));
-		for (int i = 0; i < 3; i++) {
-			float[] p = cs.getPrimary(i);
-			float[] xy = CieUtil.XYZToXy(p);
-			System.out.println(i + " = " + Matrix.toString(p) + " xy = " + Matrix.toString(xy));
-		}
 	}
 
 }

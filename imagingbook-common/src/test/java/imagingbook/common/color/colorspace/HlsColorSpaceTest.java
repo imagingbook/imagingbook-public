@@ -10,10 +10,11 @@ package imagingbook.common.color.colorspace;
 
 import static org.junit.Assert.assertArrayEquals;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
+
+import imagingbook.common.color.RgbUtils;
 
 public class HlsColorSpaceTest {
 
@@ -53,10 +54,10 @@ public class HlsColorSpaceTest {
 //	}
 	
 	private static void doCheck(HlsColorSpace lcs, int[] srgb) {
-		float[] srgb1 = {srgb[0]/255f, srgb[1]/255f, srgb[2]/255f};
+		float[] srgb1 = RgbUtils.normalize(srgb);
 		float[] lab = lcs.fromRGB(srgb1);
 		float[] srgb2 = lcs.toRGB(lab);
-		assertArrayEquals("HLS conversion problem for srgb=" + Arrays.toString(srgb), srgb1, srgb2, 1e-5f);
+		assertArrayEquals(srgb1, srgb2, 1e-5f);
 	}
 
 

@@ -9,10 +9,11 @@ import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 
 public class AdobeRgbColorSpaceTest {
 
-	static ColorSpace CS = AdobeRgbColorSpace.getInstance();
+	static AdobeRgbColorSpace CS = AdobeRgbColorSpace.getInstance();
 	static float TOL = 1e-3f;	// a bit more accurate than standard AWT color spaces!
 
 	@Test
@@ -49,20 +50,45 @@ public class AdobeRgbColorSpaceTest {
 //	}
 	
 	@Test
+	public void testPrimaries() { // check primaries in D65
+		PrintPrecision.set(6);
+		for (int i = 0; i < 3; i++) {
+			float[] rgb = new float[3];
+			rgb[i] = 1;
+			float[] xyz = CS.toCIEXYZ65(rgb);
+			float[] primary = CS.getPrimary(i);
+			
+			System.out.println("xyz     = " + Matrix.toString(xyz));
+			System.out.println("primary = " + Matrix.toString(primary));
+			assertArrayEquals(primary, xyz, 1e-4f);	// inaccuracy due to Bradford adaptation?
+		}
+	}
+	
+	@Test
 	public void testBlack() { // check black point
 		float[] rgbTHIS = {0, 0, 0};
-		float[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
+		float[] xyzPCS = CS.toCIEXYZ65(rgbTHIS);
 		assertArrayEquals(new float[] {0, 0, 0}, xyzPCS, 1e-6f);
 	}
 	
 	@Test
 	public void testWhite() { //sRGB white in this color space must map do D50-XYZ in PCS
+		PrintPrecision.set(6);
 		float[] srgbTHIS = {1, 1, 1};
-		float[] wXYZ = CS.toCIEXYZ(srgbTHIS);	// in PCS
-		//System.out.println("wXYZ = " + Matrix.toString(wXYZ));
-		float[] wIll = Matrix.toFloat(StandardIlluminant.D50.getXYZ()); 
-		//System.out.println("wIll = " + Matrix.toString(wIll));
-		assertArrayEquals(wIll, wXYZ, 1e-5f);
+		{
+			float[] xyz50 = CS.toCIEXYZ(srgbTHIS);	// in PCS
+			float[] w50 = Matrix.toFloat(StandardIlluminant.D50.getXYZ());
+			//System.out.println("wXYZ = " + Matrix.toString(wXYZ));
+			//System.out.println("wIll = " + Matrix.toString(wIll));
+			assertArrayEquals(w50, xyz50, 1e-5f);
+		}
+		{
+			float[] xyz65 = CS.toCIEXYZ65(srgbTHIS);	// in PCS
+			float[] w65 = CS.getWhitePoint();
+			System.out.println("xyz65 = " + Matrix.toString(xyz65));
+			System.out.println("w65   = " + Matrix.toString(w65));
+			assertArrayEquals(w65, xyz65, 1e-3f);	// inaccuracy due to Bradford adaptation?
+		}
 	}
 	
 	@Test

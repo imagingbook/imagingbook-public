@@ -8,11 +8,6 @@ package imagingbook.common.color.colorspace;
  * @version 2022/11/15
  */
 public interface RgbPrimaries {
-
-//	public double[][] getRgbToXyzMatrix();
-//	public double[][] getXyzToRgbMatrix();
-//	public double[] getWhitePoint();
-//	public double[] getPrimary(int idx);
 	
 	// methods required by all implementations of ColorSpace:
 	public float[] toCIEXYZ(float[] value);
@@ -20,11 +15,22 @@ public interface RgbPrimaries {
 	public float[] toRGB(float[] value);
 	public float[] fromRGB(float[] value);
 	
-	public default float[] getWhitePoint() {
-		float[] rgb = {1, 1, 1};
-		return this.toCIEXYZ(rgb);
-	}
+	/**
+	 * Returns the XYZ coordinates of the white point
+	 * associated with this color space (typically D65 or D50).
+	 * 
+	 * @return the white point
+	 */
+	public float[] getWhitePoint();
 	
+	/**
+	 * Returns the XYZ color coordinates for the primary color with the specified
+	 * index, measured relative to the white point of this color space (see
+	 * {@link #getWhitePoint()}).
+	 * 
+	 * @param idx the color index (R = 0, G = 1, B = 2)
+	 * @return the XYZ coordinate for the primary color
+	 */
 	public default float[] getPrimary(int idx) {
 		float[] rgb = new float[3];
 		rgb[idx] = 1;

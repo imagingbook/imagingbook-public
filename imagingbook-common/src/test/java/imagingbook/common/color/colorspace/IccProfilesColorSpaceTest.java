@@ -13,6 +13,7 @@ import imagingbook.common.math.Matrix;
 
 /**
  * This is experimental and should be used with caution.
+ * Loads all named ICC profiles and runs the defined tests.
  * All ICC profiles pass the to/fromCIEXYZ inversion test,
  * but not to/fromRGB. There may be wrong assumptions regarding
  * the underlying RGB transfer space.
