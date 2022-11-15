@@ -12,7 +12,15 @@ package imagingbook.common.color.colorspace;
 import imagingbook.common.math.Arithmetic;
 
 /**
- * This class defines static methods for working with CIE-XYZ color space.
+ * <p>
+ * Defines static methods for converting between CIE-XYZ coordinates (3D)
+ * and xy chromaticity values (2D). See Sec. 14.1.2 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; 
+ * An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
  * @author WB
  */
 public abstract class CieUtil {
@@ -85,7 +93,7 @@ public abstract class CieUtil {
 	 * @param XYZ the XYZ coordinate (3D)
 	 * @return the xy-coordinate (2D)
 	 */
-	public static double[] XYZToXy(double[] XYZ) {
+	public static double[] XYZToxy(double[] XYZ) {
 		double X = XYZ[0];
 		double Y = XYZ[1];
 		double Z = XYZ[2];
@@ -95,12 +103,12 @@ public abstract class CieUtil {
 	}
 	
 	/**
-	 * Float version of {@link #XYZToXy(double[])}.
+	 * Float version of {@link #XYZToxy(double[])}.
 	 * 
 	 * @param XYZ the XYZ coordinate (3D)
 	 * @return the xy-coordinate (2D)
 	 */
-	public static float[] XYZToXy(float[] XYZ) {
+	public static float[] XYZToxy(float[] XYZ) {
 		double X = XYZ[0];
 		double Y = XYZ[1];
 		double Z = XYZ[2];

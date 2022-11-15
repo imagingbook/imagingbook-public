@@ -12,7 +12,15 @@ package imagingbook.common.color.colorspace;
 import imagingbook.common.math.Arithmetic;
 
 /**
+ * <p>
  * Enumeration of selected standard illuminants.
+ * See Sec. 14.1.3 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; 
+ * An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
  * @author WB
  *
  */

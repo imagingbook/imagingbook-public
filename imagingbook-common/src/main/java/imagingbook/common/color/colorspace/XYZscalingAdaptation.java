@@ -11,17 +11,20 @@ package imagingbook.common.color.colorspace;
 
 /**
  * <p>
- * This class represents a linear chromatic adaptation transform,
- * mapping XYZ color coordinates from a source white (reference) point
- * to a target white point. 
- * Both white points are passed to the constructor.
- * The actual color mapping is done by method {@link #applyTo(float[])}.
- * See the Section 14.6 of [1] for additional details and examples.
+ * This class represents a linear chromatic adaptation transform, mapping XYZ
+ * color coordinates from a source white (reference) point to a target white
+ * point. Both white points are passed to the constructor. The actual color
+ * mapping is done by method {@link #applyTo(float[])}. See the Section 14.6 of
+ * [1] for additional details and examples.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; 
- * An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
+ * 
+ * @author WB
+ * @version 2022/11/14
+ * @see BradfordAdaptation
  */
 public class XYZscalingAdaptation implements ChromaticAdaptation {
 	
@@ -33,7 +36,7 @@ public class XYZscalingAdaptation implements ChromaticAdaptation {
 	 * 
 	 * @param W1 source white point (to map from)
 	 * @param W2 target white point (to map to)
-	 * @return
+	 * @return a {@link XYZscalingAdaptation} instance
 	 */
 	public static XYZscalingAdaptation getInstance(double[] W1, double[] W2) {
 		return new XYZscalingAdaptation(W1, W2);
@@ -45,7 +48,7 @@ public class XYZscalingAdaptation implements ChromaticAdaptation {
 	 * 
 	 * @param illum1 source illuminant (white point to map from)
 	 * @param illum2 target illuminant (white point to map to)
-	 * @return
+	 * @return a {@link XYZscalingAdaptation} instance
 	 */
 	public static XYZscalingAdaptation getInstance(Illuminant illum1, Illuminant illum2) {
 		return getInstance(illum1.getXYZ(), illum2.getXYZ());

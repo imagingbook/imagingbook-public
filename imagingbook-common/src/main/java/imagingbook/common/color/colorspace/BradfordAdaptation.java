@@ -27,6 +27,10 @@ import static imagingbook.common.math.Matrix.multiply;
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; 
  * An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
+ * 
+ * @author WB
+ * @version 2022/11/14
+ * @see XYZscalingAdaptation
  */
 public class BradfordAdaptation implements ChromaticAdaptation {
 	
@@ -56,7 +60,7 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	 * 
 	 * @param W1 source white point (to map from)
 	 * @param W2 target white point (to map to)
-	 * @return
+	 * @return a {@link BradfordAdaptation} instance 
 	 */
 	public static BradfordAdaptation getInstance(double[] W1, double[] W2) {
 		return new BradfordAdaptation(W1, W2);
@@ -68,7 +72,7 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 	 * 
 	 * @param illum1 source illuminant (white point to map from)
 	 * @param illum2 target illuminant (white point to map to)
-	 * @return
+	 * @return a {@link BradfordAdaptation} instance
 	 */
 	public static BradfordAdaptation getInstance(Illuminant illum1, Illuminant illum2) {
 		return getInstance(illum1.getXYZ(), illum2.getXYZ());

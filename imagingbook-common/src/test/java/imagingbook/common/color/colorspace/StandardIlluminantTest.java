@@ -28,7 +28,7 @@ public class StandardIlluminantTest {
 	@Test
 	public void test2() {
 		for (StandardIlluminant ill : StandardIlluminant.values()) {
-			double[] xy = CieUtil.XYZToXy(ill.getXYZ());
+			double[] xy = CieUtil.XYZToxy(ill.getXYZ());
 //			System.out.println(ill.toString() + ": " + Arrays.toString(xy));
 			assertTrue("xy component < 0 in " + ill.toString(), xy[0] > 0 && xy[1] > 0);
 			assertTrue("xy component > 1 in " + ill.toString(), xy[0] <= 1 && xy[1] <= 1);

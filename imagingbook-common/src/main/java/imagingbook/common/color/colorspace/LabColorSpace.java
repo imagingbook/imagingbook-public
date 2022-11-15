@@ -14,8 +14,6 @@ import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 
 import java.awt.color.ColorSpace;
 
-import imagingbook.common.color.RgbUtils;
-
 
 /**
  * <p>
@@ -63,7 +61,7 @@ public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
 	 * Converts color points in D50-based XYZ space to CIELab coordinates.
 	 * This method implements {@link ColorSpace#fromCIEXYZ(float[])}), assuming that 
 	 * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).
-	 * See also {@link #fromCIEXYZ65(double[])} for a D65-based version.
+	 * See also {@link #fromCIEXYZ65(float[])} for a D65-based version.
 	 * 
 	 * @param XYZ50 a color in D50-based XYZ space (components in [0,1])
 	 * @return the associated CIELab color
@@ -75,12 +73,6 @@ public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
 	}
 
 	// XYZ65 -> CIELab: returns Lab values from XYZ (relative to D65)
-	/**
-	 * Converts color points in D65-based XYZ space to CIELab coordinates.
-	 * See also {@link #fromCIEXYZ(float[])}.
-	 * @param XYZ65 a color in D65-based XYZ space (components in [0,1])
-	 * @return the associated CIELab color
-	 */
 	@Override
 	public float[] fromCIEXYZ65(float[] XYZ65) {
 		double xx = f1(XYZ65[0] / XYZref[0]);	
@@ -93,14 +85,6 @@ public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
 	}
 
 	// CIELab -> XYZ50: returns XYZ values (relative to D50) from Lab
-	/**
-	 * Converts the specified CIELab color to D50-based XYZ coordinates.
-	 * This method implements {@link ColorSpace#toCIEXYZ(float[])}) assuming that
-	 * the XYZ color coordinate is D50-based.
-	 * See also {@link #toCIEXYZ65(double[])} for a D65-based version.
-	 * @param Lab CIELab color
-	 * @return XYZ coordinates (D50-based)
-	 */
 	@Override // returns D50-based XYZ from Lab values
 	public float[] toCIEXYZ(float[] Lab) {
 		float[] XYZ65 = this.toCIEXYZ65(Lab);
@@ -108,11 +92,6 @@ public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
 	}
 
 	// CIELab -> XYZ65: returns XYZ values (relative to D65) from Lab
-	/**
-	 * Converts the specified CIELab color to D65-based XYZ coordinates.
-	 * @param Lab CIELab color
-	 * @return XYZ coordinates (D65-based)
-	 */
 	@Override
 	public float[] toCIEXYZ65(float[] Lab) {
 		double ll = (Lab[0] + 16.0) / 116.0;
@@ -123,15 +102,6 @@ public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
 	}
 
 	//sRGB -> CIELab (direct, without adaptation to D50)
-	/**
-	 * Transforms a sRGB color value to a CIELab color.
-	 * This method implements {@link ColorSpace#fromRGB(float[])} assuming
-	 * D65-based sRGB color coordinates.
-	 * Note that sRGB values are assumed to be in [0,1] (see
-	 * {@link RgbUtils#normalize(int...)} for conversion from [0,255] int-values).
-	 * @param srgb a sRGB color (D65-based)
-	 * @return the associated CIELab color
-	 */
 	@Override
 	public float[] fromRGB(float[] srgb) {
 		float[] xyz65 = srgbCS.toCIEXYZ65(srgb);
@@ -139,15 +109,6 @@ public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
 	}
 
 	//CIELab -> sRGB (direct, without adaptation to D50)
-	/**
-	 * Transforms a CIELab color value to a sRGB color
-	 * This method implements {@link ColorSpace#toRGB(float[])} assuming 
-	 * D65-based sRGB color coordinates.
-	 * Note that the returned RGB values are in [0,1] (see
-	 * {@link RgbUtils#unnormalize(float[])} for conversion to [0,255] int-values).
-	 * @param Lab a CIELab color
-	 * @return sRGB coordinates (D65-based)
-	 */
 	@Override
 	public float[] toRGB(float[] Lab) {
 		float[] XYZ65 = this.toCIEXYZ65(Lab);

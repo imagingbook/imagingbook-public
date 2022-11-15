@@ -78,7 +78,7 @@ public class ICC_Profile_From_JAR implements PlugIn {
 		// convert to (D50-based) XYZ:
 		float[] XYZColor = iccColorSpace.toCIEXYZ(deviceColor);
 		IJ.log("XYZ = " + Matrix.toString(XYZColor));
-		IJ.log("xy (white point D50) = " + Matrix.toString(CieUtil.XYZToXy(Matrix.toDouble(XYZColor))));
+		IJ.log("xy (white point D50) = " + Matrix.toString(CieUtil.XYZToxy(Matrix.toDouble(XYZColor))));
 				
 		deviceColor = iccColorSpace.fromRGB(sRGBColor);
 		IJ.log("device color direct (check) = " + Matrix.toString(deviceColor));

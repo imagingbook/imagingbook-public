@@ -12,31 +12,61 @@
 <span class="sourceLineNo">002</span><a id="line.2"></a>
 <span class="sourceLineNo">003</span><a id="line.3">import java.awt.color.ICC_ColorSpace;</a>
 <span class="sourceLineNo">004</span><a id="line.4"></a>
-<span class="sourceLineNo">005</span><a id="line.5"></a>
-<span class="sourceLineNo">006</span><a id="line.6">/**</a>
-<span class="sourceLineNo">007</span><a id="line.7"> * This color space class is based in the "AdobeRGB1998.icc" profile. It only</a>
-<span class="sourceLineNo">008</span><a id="line.8"> * serves as an example for creating color spaces from ICC profiles.</a>
-<span class="sourceLineNo">009</span><a id="line.9"> * </a>
-<span class="sourceLineNo">010</span><a id="line.10"> * @author WB</a>
-<span class="sourceLineNo">011</span><a id="line.11"> * @version 2022/11/13</a>
-<span class="sourceLineNo">012</span><a id="line.12"> */</a>
-<span class="sourceLineNo">013</span><a id="line.13">@SuppressWarnings("serial")</a>
-<span class="sourceLineNo">014</span><a id="line.14">public class AdobeRgbColorSpace extends ICC_ColorSpace {</a>
-<span class="sourceLineNo">015</span><a id="line.15">        </a>
-<span class="sourceLineNo">016</span><a id="line.16">        private static AdobeRgbColorSpace instance = null;</a>
-<span class="sourceLineNo">017</span><a id="line.17">        </a>
-<span class="sourceLineNo">018</span><a id="line.18">        private AdobeRgbColorSpace() {</a>
-<span class="sourceLineNo">019</span><a id="line.19">                super(NamedIccProfile.AdobeRGB1998.getProfile());</a>
-<span class="sourceLineNo">020</span><a id="line.20">        }</a>
-<span class="sourceLineNo">021</span><a id="line.21"></a>
-<span class="sourceLineNo">022</span><a id="line.22">        public static AdobeRgbColorSpace getInstance() {</a>
-<span class="sourceLineNo">023</span><a id="line.23">                if (instance == null) {</a>
-<span class="sourceLineNo">024</span><a id="line.24">                        instance = new AdobeRgbColorSpace();</a>
-<span class="sourceLineNo">025</span><a id="line.25">                }</a>
-<span class="sourceLineNo">026</span><a id="line.26">                return instance;</a>
-<span class="sourceLineNo">027</span><a id="line.27">        }</a>
-<span class="sourceLineNo">028</span><a id="line.28">        </a>
-<span class="sourceLineNo">029</span><a id="line.29">}</a>
+<span class="sourceLineNo">005</span><a id="line.5">import imagingbook.common.math.Matrix;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">/**</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * &lt;p&gt;</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * This color space class is based on the "AdobeRGB1998.icc" profile. It only</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * serves as an example for creating color spaces from ICC profiles.</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * See Sec. 14.5 of [1] for details.</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * &lt;p&gt;</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; </a>
+<span class="sourceLineNo">016</span><a id="line.16"> * An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * </a>
+<span class="sourceLineNo">019</span><a id="line.19"> * @author WB</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * @version 2022/11/13</a>
+<span class="sourceLineNo">021</span><a id="line.21"> */</a>
+<span class="sourceLineNo">022</span><a id="line.22">@SuppressWarnings("serial")</a>
+<span class="sourceLineNo">023</span><a id="line.23">public class AdobeRgbColorSpace extends ICC_ColorSpace implements DirectD65Conversion, RgbPrimaries {</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">        private static AdobeRgbColorSpace instance = null;</a>
+<span class="sourceLineNo">026</span><a id="line.26">        </a>
+<span class="sourceLineNo">027</span><a id="line.27">        private AdobeRgbColorSpace() {</a>
+<span class="sourceLineNo">028</span><a id="line.28">                super(NamedIccProfile.AdobeRGB1998.getProfile());       // constructor of ICC_ColorSpace</a>
+<span class="sourceLineNo">029</span><a id="line.29">        }</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">        /**</a>
+<span class="sourceLineNo">032</span><a id="line.32">         * Returns an instance of {@link AdobeRgbColorSpace}.</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * @return an instance of {@link AdobeRgbColorSpace}</a>
+<span class="sourceLineNo">034</span><a id="line.34">         */</a>
+<span class="sourceLineNo">035</span><a id="line.35">        public static AdobeRgbColorSpace getInstance() {</a>
+<span class="sourceLineNo">036</span><a id="line.36">                if (instance == null) {</a>
+<span class="sourceLineNo">037</span><a id="line.37">                        instance = new AdobeRgbColorSpace();</a>
+<span class="sourceLineNo">038</span><a id="line.38">                }</a>
+<span class="sourceLineNo">039</span><a id="line.39">                return instance;</a>
+<span class="sourceLineNo">040</span><a id="line.40">        }</a>
+<span class="sourceLineNo">041</span><a id="line.41">        </a>
+<span class="sourceLineNo">042</span><a id="line.42">        // Taken from Adobe RGB (1998) Color Image Encoding (Version 2005-05)</a>
+<span class="sourceLineNo">043</span><a id="line.43">        private static final double[][] Mrgbi = </a>
+<span class="sourceLineNo">044</span><a id="line.44">                {{0.57667, 0.18556, 0.18823},</a>
+<span class="sourceLineNo">045</span><a id="line.45">                 {0.29734, 0.62736, 0.07529},</a>
+<span class="sourceLineNo">046</span><a id="line.46">                 {0.02703, 0.07069, 0.99134}};</a>
+<span class="sourceLineNo">047</span><a id="line.47">        </a>
+<span class="sourceLineNo">048</span><a id="line.48">        @Override</a>
+<span class="sourceLineNo">049</span><a id="line.49">        public float[] getWhitePoint() {</a>
+<span class="sourceLineNo">050</span><a id="line.50">                // (0.9505, 1.0000, 1.0891) </a>
+<span class="sourceLineNo">051</span><a id="line.51">                return Matrix.toFloat(StandardIlluminant.D65.getXYZ());</a>
+<span class="sourceLineNo">052</span><a id="line.52">        }</a>
+<span class="sourceLineNo">053</span><a id="line.53">        </a>
+<span class="sourceLineNo">054</span><a id="line.54">        @Override</a>
+<span class="sourceLineNo">055</span><a id="line.55">        public float[] getPrimary(int idx) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));</a>
+<span class="sourceLineNo">057</span><a id="line.57">        }</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">}</a>
 
 
 

@@ -19,190 +19,134 @@
 <span class="sourceLineNo">009</span><a id="line.9"></a>
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.common.color.colorspace;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
-<span class="sourceLineNo">012</span><a id="line.12">import static imagingbook.common.color.colorspace.StandardIlluminant.D65;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.awt.color.ColorSpace;</a>
 <span class="sourceLineNo">013</span><a id="line.13"></a>
-<span class="sourceLineNo">014</span><a id="line.14">import java.awt.color.ColorSpace;</a>
-<span class="sourceLineNo">015</span><a id="line.15"></a>
-<span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.color.RgbUtils;</a>
-<span class="sourceLineNo">017</span><a id="line.17"></a>
-<span class="sourceLineNo">018</span><a id="line.18"></a>
-<span class="sourceLineNo">019</span><a id="line.19">/**</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * &lt;p&gt;</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * This class implements the CIELuv color space.</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * See Sec. 14.2 of [1] for additional details.</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * All component values are assumed to be in [0,1].</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * Conversion from/to sRGB is implemented directly through D65-based XYZ</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * coordinates, i.e., without conversion to Java's D50-based profile </a>
-<span class="sourceLineNo">026</span><a id="line.26"> * connection space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ </a>
-<span class="sourceLineNo">027</span><a id="line.27"> * coordinates in Java's profile connection space.</a>
-<span class="sourceLineNo">028</span><a id="line.28"> * This is a singleton class with no public constructors,</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * use {@link #getInstance()} to obtain the single instance.</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * &lt;p&gt;</a>
-<span class="sourceLineNo">032</span><a id="line.32"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
-<span class="sourceLineNo">033</span><a id="line.33"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">034</span><a id="line.34"> * </a>
-<span class="sourceLineNo">035</span><a id="line.35"> * @author WB</a>
-<span class="sourceLineNo">036</span><a id="line.36"> * @version 2022/09/01</a>
-<span class="sourceLineNo">037</span><a id="line.37"> */</a>
-<span class="sourceLineNo">038</span><a id="line.38">@SuppressWarnings("serial")</a>
-<span class="sourceLineNo">039</span><a id="line.39">public class LuvColorSpace extends CustomColorSpace {</a>
-<span class="sourceLineNo">040</span><a id="line.40">        </a>
-<span class="sourceLineNo">041</span><a id="line.41">        private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();</a>
-<span class="sourceLineNo">042</span><a id="line.42">        </a>
-<span class="sourceLineNo">043</span><a id="line.43">        private static final LuvColorSpace instance = new LuvColorSpace();</a>
-<span class="sourceLineNo">044</span><a id="line.44">        </a>
-<span class="sourceLineNo">045</span><a id="line.45">        public static LuvColorSpace getInstance() {</a>
-<span class="sourceLineNo">046</span><a id="line.46">                return instance;</a>
-<span class="sourceLineNo">047</span><a id="line.47">        }</a>
-<span class="sourceLineNo">048</span><a id="line.48">                </a>
-<span class="sourceLineNo">049</span><a id="line.49">        // D65 reference white point:</a>
-<span class="sourceLineNo">050</span><a id="line.50">//      private static final double Xref = D65.getX();  // 0.950456</a>
-<span class="sourceLineNo">051</span><a id="line.51">//      private static final double Yref = D65.getY();  // 1.000000</a>
-<span class="sourceLineNo">052</span><a id="line.52">//      private static final double Zref = D65.getZ();  // 1.088754</a>
-<span class="sourceLineNo">053</span><a id="line.53">        private static final double[] XYZref = D65.getXYZ();</a>
-<span class="sourceLineNo">054</span><a id="line.54">        </a>
-<span class="sourceLineNo">055</span><a id="line.55">        private static final double uuref = fu(XYZref[0], XYZref[1], XYZref[2]); // u'_n</a>
-<span class="sourceLineNo">056</span><a id="line.56">        private static final double vvref = fv(XYZref[0], XYZref[1], XYZref[2]); // v'_n</a>
-<span class="sourceLineNo">057</span><a id="line.57">        </a>
-<span class="sourceLineNo">058</span><a id="line.58">        // chromatic adaptation objects:</a>
-<span class="sourceLineNo">059</span><a id="line.59">        private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);</a>
-<span class="sourceLineNo">060</span><a id="line.60">        private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);</a>
-<span class="sourceLineNo">061</span><a id="line.61">        </a>
-<span class="sourceLineNo">062</span><a id="line.62">        /**</a>
-<span class="sourceLineNo">063</span><a id="line.63">         * Constructor.</a>
-<span class="sourceLineNo">064</span><a id="line.64">         */</a>
-<span class="sourceLineNo">065</span><a id="line.65">        private LuvColorSpace() {</a>
-<span class="sourceLineNo">066</span><a id="line.66">                super(TYPE_Luv,3);</a>
-<span class="sourceLineNo">067</span><a id="line.67">        }</a>
-<span class="sourceLineNo">068</span><a id="line.68">        </a>
-<span class="sourceLineNo">069</span><a id="line.69">        // XYZ50-&gt;CIELuv: returns Luv values from XYZ (relative to D50)</a>
-<span class="sourceLineNo">070</span><a id="line.70">        /**</a>
-<span class="sourceLineNo">071</span><a id="line.71">         * {@inheritDoc}</a>
-<span class="sourceLineNo">072</span><a id="line.72">         * &lt;p&gt;</a>
-<span class="sourceLineNo">073</span><a id="line.73">         * Note: This implementation (required by {@link ColorSpace}) assumes that </a>
-<span class="sourceLineNo">074</span><a id="line.74">         * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).</a>
-<span class="sourceLineNo">075</span><a id="line.75">         * See also {@link #fromCIEXYZ65(double[])} for a D65-based version.</a>
-<span class="sourceLineNo">076</span><a id="line.76">         * &lt;/p&gt;</a>
-<span class="sourceLineNo">077</span><a id="line.77">         */</a>
-<span class="sourceLineNo">078</span><a id="line.78">        @Override</a>
-<span class="sourceLineNo">079</span><a id="line.79">        public double[] fromCIEXYZ(double[] XYZ50) {    </a>
-<span class="sourceLineNo">080</span><a id="line.80">                double[] XYZ65 = catD50toD65.applyTo(XYZ50);</a>
-<span class="sourceLineNo">081</span><a id="line.81">                return fromCIEXYZ65(XYZ65);</a>
-<span class="sourceLineNo">082</span><a id="line.82">        }</a>
-<span class="sourceLineNo">083</span><a id="line.83">        </a>
-<span class="sourceLineNo">084</span><a id="line.84">        // XYZ65-&gt;CIELuv: returns Luv values from XYZ (relative to D65)</a>
-<span class="sourceLineNo">085</span><a id="line.85">        /**</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * Converts color points in D65-based XYZ space to CIELuv coordinates.</a>
-<span class="sourceLineNo">087</span><a id="line.87">         * See also {@link #fromCIEXYZ(float[])}.</a>
-<span class="sourceLineNo">088</span><a id="line.88">         * @param XYZ65 a color in D65-based XYZ space (components in [0,1])</a>
-<span class="sourceLineNo">089</span><a id="line.89">         * @return the associated CIELuv color</a>
-<span class="sourceLineNo">090</span><a id="line.90">         */</a>
-<span class="sourceLineNo">091</span><a id="line.91">        public double[] fromCIEXYZ65(double[] XYZ65) {  </a>
-<span class="sourceLineNo">092</span><a id="line.92">                double X = XYZ65[0];</a>
-<span class="sourceLineNo">093</span><a id="line.93">                double Y = XYZ65[1];    </a>
-<span class="sourceLineNo">094</span><a id="line.94">                double Z = XYZ65[2];</a>
-<span class="sourceLineNo">095</span><a id="line.95">                double YY = f1(Y / XYZref[1]);          // Y'</a>
-<span class="sourceLineNo">096</span><a id="line.96">                double uu = fu(X,Y,Z);          // u'</a>
-<span class="sourceLineNo">097</span><a id="line.97">                double vv = fv(X,Y,Z);          // v'</a>
-<span class="sourceLineNo">098</span><a id="line.98">                double L = (116.0 * YY - 16.0);                 //L*</a>
-<span class="sourceLineNo">099</span><a id="line.99">                double u = (13 * L * (uu - uuref));     //u*</a>
-<span class="sourceLineNo">100</span><a id="line.100">                double v = (13 * L * (vv - vvref));     //v*</a>
-<span class="sourceLineNo">101</span><a id="line.101">                return new double[] {L, u, v};</a>
-<span class="sourceLineNo">102</span><a id="line.102">        }</a>
-<span class="sourceLineNo">103</span><a id="line.103">        </a>
-<span class="sourceLineNo">104</span><a id="line.104">        // CIELab-&gt;XYZ50: returns XYZ values (relative to D50) from Luv</a>
-<span class="sourceLineNo">105</span><a id="line.105">        /**</a>
-<span class="sourceLineNo">106</span><a id="line.106">         * {@inheritDoc}</a>
-<span class="sourceLineNo">107</span><a id="line.107">         * &lt;p&gt;</a>
-<span class="sourceLineNo">108</span><a id="line.108">         * Note: This implementation (required by {@link ColorSpace}) converts a</a>
-<span class="sourceLineNo">109</span><a id="line.109">         * CIELuv color to a color coordinate in D50-based XYZ space.</a>
-<span class="sourceLineNo">110</span><a id="line.110">         * See also {@link #toCIEXYZ65(double[])} for a D65-based version.</a>
-<span class="sourceLineNo">111</span><a id="line.111">         * &lt;/p&gt;</a>
-<span class="sourceLineNo">112</span><a id="line.112">         */</a>
-<span class="sourceLineNo">113</span><a id="line.113">        @Override</a>
-<span class="sourceLineNo">114</span><a id="line.114">        public double[] toCIEXYZ(double[] Luv) {</a>
-<span class="sourceLineNo">115</span><a id="line.115">                double[] XYZ65 = toCIEXYZ65(Luv);</a>
-<span class="sourceLineNo">116</span><a id="line.116">                return catD65toD50.applyTo(XYZ65);</a>
-<span class="sourceLineNo">117</span><a id="line.117">        }</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">/**</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * &lt;p&gt;</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * This class implements the CIELuv color space. See Sec. 14.2 of [1] for</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * additional details. All component values are assumed to be in [0,1].</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * Conversion from/to sRGB is implemented directly through D65-based XYZ</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * coordinates, i.e., without conversion to Java's D50-based profile connection</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ coordinates</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * in Java's profile connection space. This is a singleton class with no public</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * constructors, use {@link #getInstance()} to obtain the single instance.</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * &lt;p&gt;</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * </a>
+<span class="sourceLineNo">030</span><a id="line.30"> * @author WB</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * @version 2022/09/01</a>
+<span class="sourceLineNo">032</span><a id="line.32"> */</a>
+<span class="sourceLineNo">033</span><a id="line.33">@SuppressWarnings("serial")</a>
+<span class="sourceLineNo">034</span><a id="line.34">public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {</a>
+<span class="sourceLineNo">035</span><a id="line.35">        private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();</a>
+<span class="sourceLineNo">036</span><a id="line.36">        private static final LuvColorSpace instance = new LuvColorSpace();</a>
+<span class="sourceLineNo">037</span><a id="line.37">        </a>
+<span class="sourceLineNo">038</span><a id="line.38">        public static LuvColorSpace getInstance() {</a>
+<span class="sourceLineNo">039</span><a id="line.39">                return instance;</a>
+<span class="sourceLineNo">040</span><a id="line.40">        }</a>
+<span class="sourceLineNo">041</span><a id="line.41">                </a>
+<span class="sourceLineNo">042</span><a id="line.42">        // D65 reference white point:</a>
+<span class="sourceLineNo">043</span><a id="line.43">        private static final double[] XYZref = StandardIlluminant.D65.getXYZ();</a>
+<span class="sourceLineNo">044</span><a id="line.44">        private static final double uuref = fu(XYZref[0], XYZref[1], XYZref[2]); // u'_n</a>
+<span class="sourceLineNo">045</span><a id="line.45">        private static final double vvref = fv(XYZref[0], XYZref[1], XYZref[2]); // v'_n</a>
+<span class="sourceLineNo">046</span><a id="line.46">        </a>
+<span class="sourceLineNo">047</span><a id="line.47">        // chromatic adaptation objects:</a>
+<span class="sourceLineNo">048</span><a id="line.48">        private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);</a>
+<span class="sourceLineNo">049</span><a id="line.49">        private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);</a>
+<span class="sourceLineNo">050</span><a id="line.50">        </a>
+<span class="sourceLineNo">051</span><a id="line.51">        /** Constructor (non-public). */</a>
+<span class="sourceLineNo">052</span><a id="line.52">        private LuvColorSpace() {</a>
+<span class="sourceLineNo">053</span><a id="line.53">                super(TYPE_Luv,3);</a>
+<span class="sourceLineNo">054</span><a id="line.54">        }</a>
+<span class="sourceLineNo">055</span><a id="line.55">        </a>
+<span class="sourceLineNo">056</span><a id="line.56">        // XYZ50-&gt;CIELuv: returns Luv values from XYZ (relative to D50)</a>
+<span class="sourceLineNo">057</span><a id="line.57">        @Override</a>
+<span class="sourceLineNo">058</span><a id="line.58">        public float[] fromCIEXYZ(float[] XYZ50) {      </a>
+<span class="sourceLineNo">059</span><a id="line.59">                float[] XYZ65 = catD50toD65.applyTo(XYZ50);</a>
+<span class="sourceLineNo">060</span><a id="line.60">                return this.fromCIEXYZ65(XYZ65);</a>
+<span class="sourceLineNo">061</span><a id="line.61">        }</a>
+<span class="sourceLineNo">062</span><a id="line.62">        </a>
+<span class="sourceLineNo">063</span><a id="line.63">        // XYZ65-&gt;CIELuv: returns Luv values from XYZ (relative to D65)</a>
+<span class="sourceLineNo">064</span><a id="line.64">        @Override</a>
+<span class="sourceLineNo">065</span><a id="line.65">        public float[] fromCIEXYZ65(float[] XYZ65) {    </a>
+<span class="sourceLineNo">066</span><a id="line.66">                double X = XYZ65[0];</a>
+<span class="sourceLineNo">067</span><a id="line.67">                double Y = XYZ65[1];    </a>
+<span class="sourceLineNo">068</span><a id="line.68">                double Z = XYZ65[2];</a>
+<span class="sourceLineNo">069</span><a id="line.69">                double YY = f1(Y / XYZref[1]);          // Y'</a>
+<span class="sourceLineNo">070</span><a id="line.70">                double uu = fu(X,Y,Z);          // u'</a>
+<span class="sourceLineNo">071</span><a id="line.71">                double vv = fv(X,Y,Z);          // v'</a>
+<span class="sourceLineNo">072</span><a id="line.72">                double L = (116.0 * YY - 16.0);                 //L*</a>
+<span class="sourceLineNo">073</span><a id="line.73">                double u = (13 * L * (uu - uuref));     //u*</a>
+<span class="sourceLineNo">074</span><a id="line.74">                double v = (13 * L * (vv - vvref));     //v*</a>
+<span class="sourceLineNo">075</span><a id="line.75">                return new float[] {(float)L, (float)u, (float)v};</a>
+<span class="sourceLineNo">076</span><a id="line.76">        }</a>
+<span class="sourceLineNo">077</span><a id="line.77">        </a>
+<span class="sourceLineNo">078</span><a id="line.78">        // CIELab-&gt;XYZ50: returns XYZ values (relative to D50) from Luv</a>
+<span class="sourceLineNo">079</span><a id="line.79">        @Override</a>
+<span class="sourceLineNo">080</span><a id="line.80">        public float[] toCIEXYZ(float[] Luv) {</a>
+<span class="sourceLineNo">081</span><a id="line.81">                float[] XYZ65 = this.toCIEXYZ65(Luv);</a>
+<span class="sourceLineNo">082</span><a id="line.82">                return catD65toD50.applyTo(XYZ65);</a>
+<span class="sourceLineNo">083</span><a id="line.83">        }</a>
+<span class="sourceLineNo">084</span><a id="line.84">        </a>
+<span class="sourceLineNo">085</span><a id="line.85">        // CIELab-&gt;XYZ65</a>
+<span class="sourceLineNo">086</span><a id="line.86">        @Override</a>
+<span class="sourceLineNo">087</span><a id="line.87">        public float[] toCIEXYZ65(float[] Luv) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">                double L = Luv[0];</a>
+<span class="sourceLineNo">089</span><a id="line.89">                double u = Luv[1];</a>
+<span class="sourceLineNo">090</span><a id="line.90">                double v = Luv[2];</a>
+<span class="sourceLineNo">091</span><a id="line.91">                double Y = XYZref[1] * f2((L + 16) / 116.0);</a>
+<span class="sourceLineNo">092</span><a id="line.92">                double uu = (L &lt; 0.00001) ? uuref : u / (13 * L) + uuref; // u'</a>
+<span class="sourceLineNo">093</span><a id="line.93">                double vv = (L &lt; 0.00001) ? vvref : v / (13 * L) + vvref; // v'</a>
+<span class="sourceLineNo">094</span><a id="line.94">                double X = Y * ((9*uu)/(4*vv));</a>
+<span class="sourceLineNo">095</span><a id="line.95">                double Z = Y * ((12 - 3 * uu - 20 * vv) / (4 * vv));</a>
+<span class="sourceLineNo">096</span><a id="line.96">                return new float[] {(float)X, (float)Y, (float)Z};</a>
+<span class="sourceLineNo">097</span><a id="line.97">        }</a>
+<span class="sourceLineNo">098</span><a id="line.98">        </a>
+<span class="sourceLineNo">099</span><a id="line.99">        //sRGB -&gt; CIELuv</a>
+<span class="sourceLineNo">100</span><a id="line.100">        @Override</a>
+<span class="sourceLineNo">101</span><a id="line.101">        public float[] fromRGB(float[] srgb) {</a>
+<span class="sourceLineNo">102</span><a id="line.102">                float[] XYZ65 = srgbCS.toCIEXYZ65(srgb);</a>
+<span class="sourceLineNo">103</span><a id="line.103">                return this.fromCIEXYZ65(XYZ65);</a>
+<span class="sourceLineNo">104</span><a id="line.104">        }</a>
+<span class="sourceLineNo">105</span><a id="line.105">        </a>
+<span class="sourceLineNo">106</span><a id="line.106">        //CIELuv -&gt; sRGB</a>
+<span class="sourceLineNo">107</span><a id="line.107">        @Override</a>
+<span class="sourceLineNo">108</span><a id="line.108">        public float[] toRGB(float[] Luv) {</a>
+<span class="sourceLineNo">109</span><a id="line.109">                float[] XYZ65 = this.toCIEXYZ65(Luv);</a>
+<span class="sourceLineNo">110</span><a id="line.110">                float[] srgb = srgbCS.fromCIEXYZ65(XYZ65);</a>
+<span class="sourceLineNo">111</span><a id="line.111">                return srgb;</a>
+<span class="sourceLineNo">112</span><a id="line.112">        }</a>
+<span class="sourceLineNo">113</span><a id="line.113">        </a>
+<span class="sourceLineNo">114</span><a id="line.114">        //---------------------------------------------------------------------</a>
+<span class="sourceLineNo">115</span><a id="line.115">        </a>
+<span class="sourceLineNo">116</span><a id="line.116">        private static final double Epsilon = 216.0/24389;</a>
+<span class="sourceLineNo">117</span><a id="line.117">        private static final double Kappa = 841.0/108;</a>
 <span class="sourceLineNo">118</span><a id="line.118">        </a>
-<span class="sourceLineNo">119</span><a id="line.119">        /**</a>
-<span class="sourceLineNo">120</span><a id="line.120">         * Converts the specified CIELuv color to D65-based XYZ coordinates.</a>
-<span class="sourceLineNo">121</span><a id="line.121">         * @param Luv CIELuv color</a>
-<span class="sourceLineNo">122</span><a id="line.122">         * @return the associated D65-based XYZ coordinates</a>
-<span class="sourceLineNo">123</span><a id="line.123">         */</a>
-<span class="sourceLineNo">124</span><a id="line.124">        public double[] toCIEXYZ65(double[] Luv) {</a>
-<span class="sourceLineNo">125</span><a id="line.125">                double L = Luv[0];</a>
-<span class="sourceLineNo">126</span><a id="line.126">                double u = Luv[1];</a>
-<span class="sourceLineNo">127</span><a id="line.127">                double v = Luv[2];</a>
-<span class="sourceLineNo">128</span><a id="line.128">                double Y = XYZref[1] * f2((L + 16) / 116.0);</a>
-<span class="sourceLineNo">129</span><a id="line.129">                double uu = (L &lt; 0.00001) ? uuref : u / (13 * L) + uuref; // u'</a>
-<span class="sourceLineNo">130</span><a id="line.130">                double vv = (L &lt; 0.00001) ? vvref : v / (13 * L) + vvref; // v'</a>
-<span class="sourceLineNo">131</span><a id="line.131">                double X = Y * ((9*uu)/(4*vv));</a>
-<span class="sourceLineNo">132</span><a id="line.132">                double Z = Y * ((12 - 3 * uu - 20 * vv) / (4 * vv));</a>
-<span class="sourceLineNo">133</span><a id="line.133">                double[] XYZ65 = new double[] {X, Y, Z};</a>
-<span class="sourceLineNo">134</span><a id="line.134">                return XYZ65;</a>
-<span class="sourceLineNo">135</span><a id="line.135">        }</a>
-<span class="sourceLineNo">136</span><a id="line.136">        </a>
-<span class="sourceLineNo">137</span><a id="line.137">        //sRGB-&gt;CIELuv</a>
-<span class="sourceLineNo">138</span><a id="line.138">        /**</a>
-<span class="sourceLineNo">139</span><a id="line.139">         * Transforms a sRGB color value to a CIELuv color.</a>
-<span class="sourceLineNo">140</span><a id="line.140">         * This method implements {@link ColorSpace#fromRGB(float[])} assuming</a>
-<span class="sourceLineNo">141</span><a id="line.141">         * D65-based sRGB color coordinates.</a>
-<span class="sourceLineNo">142</span><a id="line.142">         * Note that sRGB values are assumed to be in [0,1] (see</a>
-<span class="sourceLineNo">143</span><a id="line.143">         * {@link RgbUtils#normalize(int...)} for conversion from [0,255] int-values).</a>
-<span class="sourceLineNo">144</span><a id="line.144">         * @param srgb a sRGB color (D65-based)</a>
-<span class="sourceLineNo">145</span><a id="line.145">         * @return the associated CIELuv color</a>
-<span class="sourceLineNo">146</span><a id="line.146">         */</a>
-<span class="sourceLineNo">147</span><a id="line.147">        @Override</a>
-<span class="sourceLineNo">148</span><a id="line.148">        public double[] fromRGB(double[] srgb) {</a>
-<span class="sourceLineNo">149</span><a id="line.149">                double[] XYZ65 = srgbCS.toCIEXYZ65(srgb);</a>
-<span class="sourceLineNo">150</span><a id="line.150">                return fromCIEXYZ65(XYZ65);</a>
-<span class="sourceLineNo">151</span><a id="line.151">        }</a>
-<span class="sourceLineNo">152</span><a id="line.152">        </a>
-<span class="sourceLineNo">153</span><a id="line.153">        //CIELuv-&gt;sRGB</a>
-<span class="sourceLineNo">154</span><a id="line.154">        /**</a>
-<span class="sourceLineNo">155</span><a id="line.155">         * Transforms a CIELuv color value to a sRGB color</a>
-<span class="sourceLineNo">156</span><a id="line.156">         * This method implements {@link ColorSpace#toRGB(float[])} assuming </a>
-<span class="sourceLineNo">157</span><a id="line.157">         * D65-based sRGB color coordinates.</a>
-<span class="sourceLineNo">158</span><a id="line.158">         * Note that the returned RGB values are in [0,1] (see</a>
-<span class="sourceLineNo">159</span><a id="line.159">         * {@link RgbUtils#unnormalize(float[])} for conversion to [0,255] int-values).</a>
-<span class="sourceLineNo">160</span><a id="line.160">         * @param Luv a CIELuv color</a>
-<span class="sourceLineNo">161</span><a id="line.161">         * @return sRGB coordinates (D65-based)</a>
-<span class="sourceLineNo">162</span><a id="line.162">         */</a>
-<span class="sourceLineNo">163</span><a id="line.163">        @Override</a>
-<span class="sourceLineNo">164</span><a id="line.164">        public double[] toRGB(double[] Luv) {</a>
-<span class="sourceLineNo">165</span><a id="line.165">                double[] XYZ65 = toCIEXYZ65(Luv);</a>
-<span class="sourceLineNo">166</span><a id="line.166">                double[] srgb = srgbCS.fromCIEXYZ65(XYZ65);</a>
-<span class="sourceLineNo">167</span><a id="line.167">                return srgb;</a>
-<span class="sourceLineNo">168</span><a id="line.168">        }</a>
-<span class="sourceLineNo">169</span><a id="line.169">        </a>
-<span class="sourceLineNo">170</span><a id="line.170">        //---------------------------------------------------------------------</a>
-<span class="sourceLineNo">171</span><a id="line.171">        </a>
-<span class="sourceLineNo">172</span><a id="line.172">        private static final double epsilon = 216.0/24389;</a>
-<span class="sourceLineNo">173</span><a id="line.173">        private static final double kappa = 841.0/108;</a>
-<span class="sourceLineNo">174</span><a id="line.174">        </a>
-<span class="sourceLineNo">175</span><a id="line.175">        // Gamma correction for L* (forward)</a>
-<span class="sourceLineNo">176</span><a id="line.176">        private double f1 (double c) {</a>
-<span class="sourceLineNo">177</span><a id="line.177">                return (c &gt; epsilon) ? Math.cbrt(c) : (kappa * c) + (16.0 / 116);</a>
-<span class="sourceLineNo">178</span><a id="line.178">        }</a>
-<span class="sourceLineNo">179</span><a id="line.179">        </a>
-<span class="sourceLineNo">180</span><a id="line.180">        // Gamma correction for L* (inverse)</a>
-<span class="sourceLineNo">181</span><a id="line.181">        private double f2 (double c) {</a>
-<span class="sourceLineNo">182</span><a id="line.182">                final double c3 = c * c * c; //Math.pow(c, 3.0);</a>
-<span class="sourceLineNo">183</span><a id="line.183">                return (c3 &gt; epsilon) ? c3 : (c - 16.0 / 116) / kappa;</a>
-<span class="sourceLineNo">184</span><a id="line.184">        }</a>
-<span class="sourceLineNo">185</span><a id="line.185">        </a>
-<span class="sourceLineNo">186</span><a id="line.186">        private static double fu (double X, double Y, double Z) { // X,Y,Z must be positive</a>
-<span class="sourceLineNo">187</span><a id="line.187">                // fails if 0.001 is used!</a>
-<span class="sourceLineNo">188</span><a id="line.188">                return (X &lt; 0.00001) ? 0 : (4 * X) / (X + 15 * Y + 3 * Z);</a>
-<span class="sourceLineNo">189</span><a id="line.189">        }</a>
-<span class="sourceLineNo">190</span><a id="line.190">        </a>
-<span class="sourceLineNo">191</span><a id="line.191">        private static double fv (double X, double Y, double Z) { // X,Y,Z must be positive</a>
-<span class="sourceLineNo">192</span><a id="line.192">                return (Y &lt; 0.00001) ? 0 : (9 * Y) / (X + 15 * Y + 3 * Z);</a>
-<span class="sourceLineNo">193</span><a id="line.193">        }</a>
-<span class="sourceLineNo">194</span><a id="line.194"></a>
-<span class="sourceLineNo">195</span><a id="line.195">}</a>
+<span class="sourceLineNo">119</span><a id="line.119">        // Gamma correction for L* (forward)</a>
+<span class="sourceLineNo">120</span><a id="line.120">        private double f1 (double c) {</a>
+<span class="sourceLineNo">121</span><a id="line.121">                return (c &gt; Epsilon) ? Math.cbrt(c) : (Kappa * c) + (16.0 / 116);</a>
+<span class="sourceLineNo">122</span><a id="line.122">        }</a>
+<span class="sourceLineNo">123</span><a id="line.123">        </a>
+<span class="sourceLineNo">124</span><a id="line.124">        // Gamma correction for L* (inverse)</a>
+<span class="sourceLineNo">125</span><a id="line.125">        private double f2 (double c) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                final double c3 = c * c * c; //Math.pow(c, 3.0);</a>
+<span class="sourceLineNo">127</span><a id="line.127">                return (c3 &gt; Epsilon) ? c3 : (c - 16.0 / 116) / Kappa;</a>
+<span class="sourceLineNo">128</span><a id="line.128">        }</a>
+<span class="sourceLineNo">129</span><a id="line.129">        </a>
+<span class="sourceLineNo">130</span><a id="line.130">        private static double fu (double X, double Y, double Z) { // X,Y,Z must be positive</a>
+<span class="sourceLineNo">131</span><a id="line.131">                // fails if 0.001 is used!</a>
+<span class="sourceLineNo">132</span><a id="line.132">                return (X &lt; 0.00001) ? 0 : (4 * X) / (X + 15 * Y + 3 * Z);</a>
+<span class="sourceLineNo">133</span><a id="line.133">        }</a>
+<span class="sourceLineNo">134</span><a id="line.134">        </a>
+<span class="sourceLineNo">135</span><a id="line.135">        private static double fv (double X, double Y, double Z) { // X,Y,Z must be positive</a>
+<span class="sourceLineNo">136</span><a id="line.136">                return (Y &lt; 0.00001) ? 0 : (9 * Y) / (X + 15 * Y + 3 * Z);</a>
+<span class="sourceLineNo">137</span><a id="line.137">        }</a>
+<span class="sourceLineNo">138</span><a id="line.138"></a>
+<span class="sourceLineNo">139</span><a id="line.139">}</a>
 
 
 

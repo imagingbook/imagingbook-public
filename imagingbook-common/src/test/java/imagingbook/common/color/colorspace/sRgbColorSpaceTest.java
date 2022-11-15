@@ -108,7 +108,7 @@ public class sRgbColorSpaceTest {
 		for (int c = 1; c < 256; c++) {
 			float[] rgbTHIS = {c, c, c};
 			float[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
-			float[] xy = CieUtil.XYZToXy(xyzPCS);
+			float[] xy = CieUtil.XYZToxy(xyzPCS);
 			assertArrayEquals(xy50, xy, 1e-4f);
 		}
 	}

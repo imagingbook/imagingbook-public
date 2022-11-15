@@ -84,7 +84,7 @@ public class AWTsRGBColorSpaceTest {
 		for (int c = 1; c < 256; c++) {
 			float[] rgbTHIS = {c, c, c};
 			float[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
-			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(xyzPCS));
+			double[] xy = CieUtil.XYZToxy(Matrix.toDouble(xyzPCS));
 			assertArrayEquals(xy50, xy, 1e-4f);
 		}
 	}

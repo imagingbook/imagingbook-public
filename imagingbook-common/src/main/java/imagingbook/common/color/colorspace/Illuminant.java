@@ -21,7 +21,7 @@ public interface Illuminant {
 	 * @return the xy-coordinate
 	 */
 	public default double[] getXy() {
-		return CieUtil.XYZToXy(getXYZ());
+		return CieUtil.XYZToxy(getXYZ());
 	}
 
 }

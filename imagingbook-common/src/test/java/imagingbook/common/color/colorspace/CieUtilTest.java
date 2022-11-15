@@ -63,7 +63,7 @@ public class CieUtilTest {
 		{	// float version
 			float[] XYZa = cs.toCIEXYZ(normalize(srgb));
 			
-			float[] xy = CieUtil.XYZToXy(XYZa);
+			float[] xy = CieUtil.XYZToxy(XYZa);
 			assertTrue(Double.isFinite(xy[0]));
 			assertTrue(Double.isFinite(xy[1]));
 			
@@ -72,13 +72,13 @@ public class CieUtilTest {
 			assertArrayEquals(XYZa, XYZb, 1e-6f);
 			
 			float[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
-			float[] xy2 = CieUtil.XYZToXy(XYZc);
+			float[] xy2 = CieUtil.XYZToxy(XYZc);
 			assertArrayEquals(xy, xy2, 1e-6f);
 		}
 		{	// double version
 			double[] XYZa = Matrix.toDouble(cs.toCIEXYZ(normalize(srgb)));
 			
-			double[] xy = CieUtil.XYZToXy(XYZa);
+			double[] xy = CieUtil.XYZToxy(XYZa);
 			assertTrue(Double.isFinite(xy[0]));
 			assertTrue(Double.isFinite(xy[1]));
 			
@@ -87,7 +87,7 @@ public class CieUtilTest {
 			assertArrayEquals(XYZa, XYZb, 1e-6);
 			
 			double[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
-			double[] xy2 = CieUtil.XYZToXy(XYZc);
+			double[] xy2 = CieUtil.XYZToxy(XYZc);
 			assertArrayEquals(xy, xy2, 1e-6);
 		}
 	}

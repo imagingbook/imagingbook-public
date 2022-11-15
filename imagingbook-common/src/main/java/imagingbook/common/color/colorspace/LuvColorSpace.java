@@ -11,8 +11,6 @@ package imagingbook.common.color.colorspace;
 
 import java.awt.color.ColorSpace;
 
-import imagingbook.common.color.RgbUtils;
-
 
 /**
  * <p>
@@ -50,22 +48,12 @@ public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);
 	
-	/**
-	 * Constructor.
-	 */
+	/** Constructor (non-public). */
 	private LuvColorSpace() {
 		super(TYPE_Luv,3);
 	}
 	
 	// XYZ50->CIELuv: returns Luv values from XYZ (relative to D50)
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Note: This implementation (required by {@link ColorSpace}) assumes that 
-	 * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).
-	 * See also {@link #fromCIEXYZ65(double[])} for a D65-based version.
-	 * </p>
-	 */
 	@Override
 	public float[] fromCIEXYZ(float[] XYZ50) {	
 		float[] XYZ65 = catD50toD65.applyTo(XYZ50);
@@ -73,12 +61,6 @@ public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 	}
 	
 	// XYZ65->CIELuv: returns Luv values from XYZ (relative to D65)
-	/**
-	 * Converts color points in D65-based XYZ space to CIELuv coordinates.
-	 * See also {@link #fromCIEXYZ(float[])}.
-	 * @param XYZ65 a color in D65-based XYZ space (components in [0,1])
-	 * @return the associated CIELuv color
-	 */
 	@Override
 	public float[] fromCIEXYZ65(float[] XYZ65) {	
 		double X = XYZ65[0];
@@ -94,25 +76,13 @@ public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 	}
 	
 	// CIELab->XYZ50: returns XYZ values (relative to D50) from Luv
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Note: This implementation (required by {@link ColorSpace}) converts a
-	 * CIELuv color to a color coordinate in D50-based XYZ space.
-	 * See also {@link #toCIEXYZ65(double[])} for a D65-based version.
-	 * </p>
-	 */
 	@Override
 	public float[] toCIEXYZ(float[] Luv) {
 		float[] XYZ65 = this.toCIEXYZ65(Luv);
 		return catD65toD50.applyTo(XYZ65);
 	}
 	
-	/**
-	 * Converts the specified CIELuv color to D65-based XYZ coordinates.
-	 * @param Luv CIELuv color
-	 * @return the associated D65-based XYZ coordinates
-	 */
+	// CIELab->XYZ65
 	@Override
 	public float[] toCIEXYZ65(float[] Luv) {
 		double L = Luv[0];
@@ -126,32 +96,14 @@ public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 		return new float[] {(float)X, (float)Y, (float)Z};
 	}
 	
-	//sRGB->CIELuv
-	/**
-	 * Transforms a sRGB color value to a CIELuv color.
-	 * This method implements {@link ColorSpace#fromRGB(float[])} assuming
-	 * D65-based sRGB color coordinates.
-	 * Note that sRGB values are assumed to be in [0,1] (see
-	 * {@link RgbUtils#normalize(int...)} for conversion from [0,255] int-values).
-	 * @param srgb a sRGB color (D65-based)
-	 * @return the associated CIELuv color
-	 */
+	//sRGB -> CIELuv
 	@Override
 	public float[] fromRGB(float[] srgb) {
 		float[] XYZ65 = srgbCS.toCIEXYZ65(srgb);
 		return this.fromCIEXYZ65(XYZ65);
 	}
 	
-	//CIELuv->sRGB
-	/**
-	 * Transforms a CIELuv color value to a sRGB color
-	 * This method implements {@link ColorSpace#toRGB(float[])} assuming 
-	 * D65-based sRGB color coordinates.
-	 * Note that the returned RGB values are in [0,1] (see
-	 * {@link RgbUtils#unnormalize(float[])} for conversion to [0,255] int-values).
-	 * @param Luv a CIELuv color
-	 * @return sRGB coordinates (D65-based)
-	 */
+	//CIELuv -> sRGB
 	@Override
 	public float[] toRGB(float[] Luv) {
 		float[] XYZ65 = this.toCIEXYZ65(Luv);

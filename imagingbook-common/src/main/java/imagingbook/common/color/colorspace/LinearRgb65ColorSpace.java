@@ -18,7 +18,7 @@ import imagingbook.common.math.Matrix;
 
 
 /**
- * /** Defines a linear RGB space with the same white point and primaries as
+ * Defines a linear RGB space with the same white point and primaries as
  * sRGB. Everything is D65, components of all {@code float[]} colors are
  * supposed to be in [0,1]. This is a singleton class with no public
  * constructors, use {@link #getInstance()} to obtain the single instance.

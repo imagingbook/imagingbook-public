@@ -77,7 +77,7 @@ public class XYZ65ColorSpaceTest {
 		for (int c = 1; c < 256; c++) {
 			float[] rgb = {c, c, c};
 			float[] xyzTHIS = CS.fromRGB(rgb);
-			double[] xy = CieUtil.XYZToXy(Matrix.toDouble(xyzTHIS));
+			double[] xy = CieUtil.XYZToxy(Matrix.toDouble(xyzTHIS));
 			assertArrayEquals(xy65, xy, 1e-4f);
 		}
 	}
