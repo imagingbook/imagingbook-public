@@ -66,7 +66,7 @@ public class sRgbColorSpaceTest {
 			float[] rgb = new float[3];
 			rgb[i] = 1;
 			float[] xyz = CS.toCIEXYZ65(rgb);
-			float[] primary = Matrix.toFloat(CS.getPrimary(i));
+			float[] primary = CS.getPrimary(i);
 //			System.out.println("primary = " + Matrix.toString(primary));
 //			System.out.println("xyz     = " + Matrix.toString(xyz));
 			assertArrayEquals(primary, xyz, 1e-6f);
@@ -136,7 +136,7 @@ public class sRgbColorSpaceTest {
 	
 	// ---------------------------------------------------
 	
-	private static void doCheck(CustomColorSpace cs, int[] srgb) {
+	private static void doCheck(DirectD65Conversion cs, int[] srgb) {
 		float[] srgbIN = RgbUtils.normalize(srgb);
 		float[] xyzPCS = ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN); // get some valid XYZ
 		

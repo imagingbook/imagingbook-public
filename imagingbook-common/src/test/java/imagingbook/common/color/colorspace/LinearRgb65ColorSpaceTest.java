@@ -60,7 +60,7 @@ public class LinearRgb65ColorSpaceTest {
 			float[] rgb = new float[3];
 			rgb[i] = 1;
 			float[] xyz = CS.toCIEXYZ65(rgb);
-			float[] primary =  Matrix.toFloat(srgbCS.getPrimary(i));	// TODO
+			float[] primary = srgbCS.getPrimary(i);
 //			System.out.println("primary = " + Matrix.toString(primary));
 //			System.out.println("xyz     = " + Matrix.toString(xyz));
 			assertArrayEquals(primary, xyz, 1e-6f);
@@ -109,7 +109,7 @@ public class LinearRgb65ColorSpaceTest {
 	
 	// ------------------------------------------
 	
-	private static void doCheck(CustomColorSpace cs, int[] srgb) {
+	private static void doCheck(DirectD65Conversion cs, int[] srgb) {
 		float[] srgb1 = RgbUtils.normalize(srgb);
 		float[] lab = cs.fromRGB(srgb1);
 		float[] srgb2 = cs.toRGB(lab);

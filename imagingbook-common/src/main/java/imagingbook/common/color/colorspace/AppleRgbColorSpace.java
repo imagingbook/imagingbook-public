@@ -14,7 +14,7 @@ import imagingbook.common.math.PrintPrecision;
  * @version 2022/11/13
  */
 @SuppressWarnings("serial")
-public class AppleRgbColorSpace extends ICC_ColorSpace implements CustomRgbColorSpace {
+public class AppleRgbColorSpace extends ICC_ColorSpace implements RgbPrimaries {
 	
 	private static AppleRgbColorSpace instance = null;
 	
@@ -29,19 +29,6 @@ public class AppleRgbColorSpace extends ICC_ColorSpace implements CustomRgbColor
 		return instance;
 	}
 	
-	@Override
-	public double[] getWhitePoint() {
-		float[] rgb = {1, 1, 1};
-		return Matrix.toDouble(this.toCIEXYZ(rgb));
-	}
-
-	@Override
-	public double[] getPrimary(int idx) {
-		float[] rgb = new float[3];
-		rgb[idx] = 1;
-		return Matrix.toDouble(this.toCIEXYZ(rgb));
-	}
-	
 	public static void main(String[] args) {
 		PrintPrecision.set(6);
 		AppleRgbColorSpace cs = AppleRgbColorSpace.getInstance();
@@ -50,8 +37,8 @@ public class AppleRgbColorSpace extends ICC_ColorSpace implements CustomRgbColor
 //		System.out.println("G = " + Matrix.toString(cs.getPrimary(1)));
 //		System.out.println("B = " + Matrix.toString(cs.getPrimary(2)));
 		for (int i = 0; i < 3; i++) {
-			double[] p = cs.getPrimary(i);
-			double[] xy = CieUtil.XYZToXy(p);
+			float[] p = cs.getPrimary(i);		// TODO: needs checking! D50?
+			float[] xy = CieUtil.XYZToXy(p);
 			System.out.println(i + " = " + Matrix.toString(p) + " xy = " + Matrix.toString(xy));
 		}
 

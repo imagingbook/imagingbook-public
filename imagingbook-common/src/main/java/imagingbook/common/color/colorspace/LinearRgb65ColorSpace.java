@@ -29,7 +29,7 @@ import imagingbook.common.math.Matrix;
  * @version 2022/11/14
  */
 @SuppressWarnings("serial")
-public class LinearRgb65ColorSpace extends ColorSpace implements CustomColorSpace, CustomRgbColorSpace {
+public class LinearRgb65ColorSpace extends ColorSpace implements DirectD65Conversion, RgbPrimaries {
 	
 	// we use the same RGB-XYZ matrices as sRGB
 	/** Matrix for conversion from XYZ to linear RGB. Its column vectors are the 
@@ -63,13 +63,13 @@ public class LinearRgb65ColorSpace extends ColorSpace implements CustomColorSpac
 	// --------------------------------------------------------------------
 
 	@Override
-	public double[] getPrimary(int idx) {
-		return Matrix.getColumn(Mrgbi, idx);
+	public float[] getWhitePoint() {
+		return Matrix.toFloat(D65.getXYZ());
 	}
-
+	
 	@Override
-	public double[] getWhitePoint() {
-		return D65.getXYZ();
+	public float[] getPrimary(int idx) {
+		return Matrix.getColumn(MrgbiF, idx);
 	}
 	
 	// --------------------------------------------------------------------

@@ -33,7 +33,7 @@ import imagingbook.common.color.RgbUtils;
  * @version 2022/09/01
  */
 @SuppressWarnings("serial")
-public class LuvColorSpace extends ColorSpace implements CustomColorSpace {
+public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 	private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 	private static final LuvColorSpace instance = new LuvColorSpace();
 	

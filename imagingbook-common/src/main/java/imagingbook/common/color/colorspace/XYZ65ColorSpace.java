@@ -6,7 +6,7 @@ import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 import java.awt.color.ColorSpace;
 
 @SuppressWarnings("serial")
-public class XYZ65ColorSpace extends ColorSpace implements CustomColorSpace {
+public class XYZ65ColorSpace extends ColorSpace implements DirectD65Conversion {
 	private static sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 	
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);

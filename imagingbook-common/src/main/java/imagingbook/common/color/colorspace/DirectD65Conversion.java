@@ -3,7 +3,17 @@ package imagingbook.common.color.colorspace;
 import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
 import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 
-public interface CustomColorSpace {
+/**
+ * This interface specifies methods {@link #toCIEXYZ65(float[])} and
+ * {@link #fromCIEXYZ65(float[])} for direct conversion between the color
+ * space's native color values and D65 XYZ-coordinates. This is useful for color
+ * spaces that are D65-based by avoiding additional conversions to and from
+ * D50-based PCS.
+ * 
+ * @author WB
+ * @version 2022/11/15
+ */
+public interface DirectD65Conversion {
 	
 	static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);

@@ -21,7 +21,7 @@ public class CieUtilTest {
 
 	@Test
 	public void test1() {
-		CustomColorSpace cs = sRgbColorSpace.getInstance();
+		DirectD65Conversion cs = sRgbColorSpace.getInstance();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
 		doCheck(cs, new int[] {177, 0, 0});
@@ -32,7 +32,7 @@ public class CieUtilTest {
 	
 	@Test
 	public void test2() {
-		CustomColorSpace cs = sRgbColorSpace.getInstance();
+		DirectD65Conversion cs = sRgbColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
@@ -57,7 +57,7 @@ public class CieUtilTest {
 	// ---------------------------------------------------
 	
 	// map XYZ to xy and back
-	private static void doCheck(CustomColorSpace cs, int[] srgb) {
+	private static void doCheck(DirectD65Conversion cs, int[] srgb) {
 		{	// float version
 			float[] srgb1 = RgbUtils.normalize(srgb);
 			float[] XYZa = cs.toCIEXYZ(srgb1);

@@ -123,7 +123,7 @@ public class BradfordAdaptationTest {
 	
 	// ------------------------------------------------
 	
-	private static void doCheck(CustomColorSpace cs, int[] srgb) {
+	private static void doCheck(DirectD65Conversion cs, int[] srgb) {
 		float[] srgb1 = RgbUtils.normalize(srgb);		
 		ChromaticAdaptation adapt65to50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
 		ChromaticAdaptation adapt50to65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65

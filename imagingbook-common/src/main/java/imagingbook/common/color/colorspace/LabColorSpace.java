@@ -36,7 +36,7 @@ import imagingbook.common.color.RgbUtils;
  * @version 2022/09/01
  */
 @SuppressWarnings("serial")
-public class LabColorSpace extends ColorSpace implements CustomColorSpace {
+public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
 	private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 	private static final LabColorSpace instance = new LabColorSpace();
 	

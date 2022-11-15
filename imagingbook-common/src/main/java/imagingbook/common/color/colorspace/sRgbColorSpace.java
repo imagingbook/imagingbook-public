@@ -28,7 +28,7 @@ import imagingbook.common.math.PrintPrecision;
  * @version 2022/11/14
  */
 @SuppressWarnings("serial")
-public class sRgbColorSpace extends ColorSpace implements CustomColorSpace, CustomRgbColorSpace {
+public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, RgbPrimaries {
 	
 	// chromatic adaptation objects:
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
@@ -56,13 +56,13 @@ public class sRgbColorSpace extends ColorSpace implements CustomColorSpace, Cust
 	// ----------------------------------------------------
 	
 	@Override
-	public double[] getWhitePoint() {
-		return D65.getXYZ();
+	public float[] getWhitePoint() {
+		return Matrix.toFloat(D65.getXYZ());
 	}
 	
 	@Override
-	public double[] getPrimary(int idx) {
-		return Matrix.getColumn(Mrgbi, idx);
+	public float[] getPrimary(int idx) {
+		return Matrix.getColumn(MrgbiF, idx);
 	}
 	
 	// ----------------------------------------------------
@@ -148,8 +148,8 @@ public class sRgbColorSpace extends ColorSpace implements CustomColorSpace, Cust
 //		System.out.println("G = " + Matrix.toString(cs.getPrimary(1)));
 //		System.out.println("B = " + Matrix.toString(cs.getPrimary(2)));
 		for (int i = 0; i < 3; i++) {
-			double[] p = cs.getPrimary(i);
-			double[] xy = CieUtil.XYZToXy(p);
+			float[] p = cs.getPrimary(i);
+			float[] xy = CieUtil.XYZToXy(p);
 			System.out.println(i + " = " + Matrix.toString(p) + " xy = " + Matrix.toString(xy));
 		}
 	}
