@@ -1,5 +1,4 @@
-/DEPLOY
-/target
-.project
-.classpath
-.settings
+/target/
+/.project
+/.settings
+/.classpath
