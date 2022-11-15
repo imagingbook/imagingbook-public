@@ -36,7 +36,7 @@ import imagingbook.common.color.RgbUtils;
  * @version 2022/09/01
  */
 @SuppressWarnings("serial")
-public class LabColorSpace extends CustomColorSpace {
+public class LabColorSpace extends ColorSpace implements CustomColorSpace {
 	private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 	private static final LabColorSpace instance = new LabColorSpace();
 	
@@ -69,8 +69,8 @@ public class LabColorSpace extends CustomColorSpace {
 	 * @return the associated CIELab color
 	 */
 	@Override
-	public double[] fromCIEXYZ(double[] XYZ50) {	
-		double[] XYZ65 = catD50toD65.applyTo(XYZ50);
+	public float[] fromCIEXYZ(float[] XYZ50) {	
+		float[] XYZ65 = catD50toD65.applyTo(XYZ50);
 		return this.fromCIEXYZ65(XYZ65);
 	}
 
@@ -82,14 +82,14 @@ public class LabColorSpace extends CustomColorSpace {
 	 * @return the associated CIELab color
 	 */
 	@Override
-	public double[] fromCIEXYZ65(double[] XYZ65) {
+	public float[] fromCIEXYZ65(float[] XYZ65) {
 		double xx = f1(XYZ65[0] / XYZref[0]);	
 		double yy = f1(XYZ65[1] / XYZref[1]);
 		double zz = f1(XYZ65[2] / XYZref[2]);
 		double L = 116.0 * yy - 16.0;
 		double a = 500.0 * (xx - yy);
 		double b = 200.0 * (yy - zz);
-		return new double[] {L, a, b};
+		return new float[] {(float)L, (float)a, (float)b};
 	}
 
 	// CIELab -> XYZ50: returns XYZ values (relative to D50) from Lab
@@ -102,8 +102,8 @@ public class LabColorSpace extends CustomColorSpace {
 	 * @return XYZ coordinates (D50-based)
 	 */
 	@Override // returns D50-based XYZ from Lab values
-	public double[] toCIEXYZ(double[] Lab) {
-		double[] XYZ65 = this.toCIEXYZ65(Lab);
+	public float[] toCIEXYZ(float[] Lab) {
+		float[] XYZ65 = this.toCIEXYZ65(Lab);
 		return catD65toD50.applyTo(XYZ65);
 	}
 
@@ -114,12 +114,12 @@ public class LabColorSpace extends CustomColorSpace {
 	 * @return XYZ coordinates (D65-based)
 	 */
 	@Override
-	public double[] toCIEXYZ65(double[] Lab) {
+	public float[] toCIEXYZ65(float[] Lab) {
 		double ll = (Lab[0] + 16.0) / 116.0;
 		double Y65 = XYZref[1] * f2(ll);
 		double X65 = XYZref[0] * f2(ll + Lab[1] / 500.0);
 		double Z65 = XYZref[2] * f2(ll - Lab[2] / 200.0);
-		return new double[] {X65, Y65, Z65};
+		return new float[] {(float)X65, (float)Y65, (float)Z65};
 	}
 
 	//sRGB -> CIELab (direct, without adaptation to D50)
@@ -133,8 +133,8 @@ public class LabColorSpace extends CustomColorSpace {
 	 * @return the associated CIELab color
 	 */
 	@Override
-	public double[] fromRGB(double[] srgb) {
-		double[] xyz65 = srgbCS.toCIEXYZ65(srgb);
+	public float[] fromRGB(float[] srgb) {
+		float[] xyz65 = srgbCS.toCIEXYZ65(srgb);
 		return this.fromCIEXYZ65(xyz65);
 	}
 
@@ -149,8 +149,8 @@ public class LabColorSpace extends CustomColorSpace {
 	 * @return sRGB coordinates (D65-based)
 	 */
 	@Override
-	public double[] toRGB(double[] Lab) {
-		double[] XYZ65 = this.toCIEXYZ65(Lab);
+	public float[] toRGB(float[] Lab) {
+		float[] XYZ65 = this.toCIEXYZ65(Lab);
 		return srgbCS.fromCIEXYZ65(XYZ65);
 	}
 

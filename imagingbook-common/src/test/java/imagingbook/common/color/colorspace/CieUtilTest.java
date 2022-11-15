@@ -74,22 +74,22 @@ public class CieUtilTest {
 			float[] xy2 = CieUtil.XYZToXy(XYZc);
 			assertArrayEquals(xy, xy2, 1e-6f);
 		}
-		{	// double version
-			double[] srgb1 = RgbUtils.normalizeD(srgb);
-			double[] XYZa = cs.toCIEXYZ(srgb1);
-			
-			double[] xy = CieUtil.XYZToXy(XYZa);
-			assertTrue(Double.isFinite(xy[0]));
-			assertTrue(Double.isFinite(xy[1]));
-			
-			double Y = XYZa[1];
-			double[] XYZb = CieUtil.xyYToXYZ(xy[0], xy[1], Y);	
-			assertArrayEquals(XYZa, XYZb, 1e-6);
-			
-			double[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
-			double[] xy2 = CieUtil.XYZToXy(XYZc);
-			assertArrayEquals(xy, xy2, 1e-6);
-		}
+//		{	// double version
+//			double[] srgb1 = RgbUtils.normalizeD(srgb);
+//			double[] XYZa = cs.toCIEXYZ(srgb1);
+//			
+//			double[] xy = CieUtil.XYZToXy(XYZa);
+//			assertTrue(Double.isFinite(xy[0]));
+//			assertTrue(Double.isFinite(xy[1]));
+//			
+//			double Y = XYZa[1];
+//			double[] XYZb = CieUtil.xyYToXYZ(xy[0], xy[1], Y);	
+//			assertArrayEquals(XYZa, XYZb, 1e-6);
+//			
+//			double[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
+//			double[] xy2 = CieUtil.XYZToXy(XYZc);
+//			assertArrayEquals(xy, xy2, 1e-6);
+//		}
 	}
 
 }

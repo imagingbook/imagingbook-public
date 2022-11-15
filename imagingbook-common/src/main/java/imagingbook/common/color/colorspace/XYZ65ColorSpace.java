@@ -5,8 +5,9 @@ import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
 
 import java.awt.color.ColorSpace;
 
-public class XYZ65ColorSpace extends CustomColorSpace {
-	private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public class XYZ65ColorSpace extends ColorSpace implements CustomColorSpace {
+	private static sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 	
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
@@ -24,41 +25,39 @@ public class XYZ65ColorSpace extends CustomColorSpace {
 	// ----------------------------------------------------
 
 	@Override	// convert this D65.based XYZ to sRGB 
-	public double[] toRGB(double[] thisXYZ65) {
-		double[] XYZ50 = this.toCIEXYZ(thisXYZ65);	// could be done directly!!
-		sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
-		double[] srgb = srgbCS.fromCIEXYZ(XYZ50);
+	public float[] toRGB(float[] thisXYZ65) {
+		float[] XYZ50 = this.toCIEXYZ(thisXYZ65);	// could be done directly!!
+		float[] srgb = srgbCS.fromCIEXYZ(XYZ50);
 		return srgb;
 	}
 
 	@Override
-	public double[] fromRGB(double[] srgb) {
-		sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
-		double[] XYZ50 = srgbCS.toCIEXYZ(srgb);
+	public float[] fromRGB(float[] srgb) {
+		float[] XYZ50 = srgbCS.toCIEXYZ(srgb);
 		return this.fromCIEXYZ(XYZ50);
 	}
 	
 	// -------------------------------------------------
 	
 	@Override	// convert this CS D65 XYZ to standard D50 XYZ
-	public double[] toCIEXYZ(double[] thisXYZ65) {
+	public float[] toCIEXYZ(float[] thisXYZ65) {
 		return catD65toD50.applyTo(thisXYZ65);
 	}
 	
 	@Override	// convert standard D50 XYZ to this CS D65 XYZ
-	public double[] fromCIEXYZ(double[] XYZ50) {
+	public float[] fromCIEXYZ(float[] XYZ50) {
 		return catD50toD65.applyTo(XYZ50);
 	}
 	
 	// -------------------------------------------------
 
 	@Override
-	public double[] fromCIEXYZ65(double[] xyz65) {
+	public float[] fromCIEXYZ65(float[] xyz65) {
 		return xyz65;
 	}
 
 	@Override
-	public double[] toCIEXYZ65(double[] xyz65) {
+	public float[] toCIEXYZ65(float[] xyz65) {
 		return xyz65;
 	}
 

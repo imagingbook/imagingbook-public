@@ -124,15 +124,21 @@ public class BradfordAdaptationTest {
 	// ------------------------------------------------
 	
 	private static void doCheck(CustomColorSpace cs, int[] srgb) {
-		double[] srgb1 = RgbUtils.normalizeD(srgb);		
+		float[] srgb1 = RgbUtils.normalize(srgb);		
 		ChromaticAdaptation adapt65to50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);	// adapts from D65 -> D50
 		ChromaticAdaptation adapt50to65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);	// adapts from D50 -> D65
-		
-		double[] XYZ65a = cs.toCIEXYZ(srgb1);
-		double[] XYZ50 = adapt65to50.applyTo(XYZ65a);
-		double[] XYZ65b = adapt50to65.applyTo(XYZ50);
-		
-		assertArrayEquals("Bradford adapt problem for srgb=" + Arrays.toString(srgb), XYZ65a, XYZ65b, TOL);
+		{	// float version
+			float[] XYZ65a =  cs.toCIEXYZ(srgb1);
+			float[] XYZ50 = adapt65to50.applyTo(XYZ65a);
+			float[] XYZ65b = adapt50to65.applyTo(XYZ50);
+			assertArrayEquals(XYZ65a, XYZ65b, (float)TOL);
+		}
+		{	// double version
+			double[] XYZ65a =  Matrix.toDouble(cs.toCIEXYZ(srgb1));
+			double[] XYZ50 = adapt65to50.applyTo(XYZ65a);
+			double[] XYZ65b = adapt50to65.applyTo(XYZ50);
+			assertArrayEquals(XYZ65a, XYZ65b, TOL);
+		}
 	}
 
 }

@@ -55,26 +55,26 @@ public class LuvColorSpaceTest {	//TODO: adapt to Lab test!
 	// -------------------------------------------------
 	
 	private static void doCheckRGB(LuvColorSpace lcs, int[] srgb) {
-		double[] srgb1 = RgbUtils.normalizeD(srgb);
-		double[] lab = lcs.fromRGB(srgb1);
-		double[] srgb2 = lcs.toRGB(lab);
-		assertArrayEquals(srgb1, srgb2, 1e-5);
+		float[] srgb1 = RgbUtils.normalize(srgb);
+		float[] lab = lcs.fromRGB(srgb1);
+		float[] srgb2 = lcs.toRGB(lab);
+		assertArrayEquals(srgb1, srgb2, 1e-5f);
 	}
 	
 	private static void doCheckXYZ(LuvColorSpace lcs, int[] srgb) {
-		double[] srgb1 = RgbUtils.normalizeD(srgb);
-		double[] lab = lcs.fromRGB(srgb1);
+		float[] srgb1 = RgbUtils.normalize(srgb);
+		float[] lab = lcs.fromRGB(srgb1);
 		{	// D50
-			double[] xyz50a = lcs.toCIEXYZ(lab);	// standard D50-based XYZ space
-			double[] luv = lcs.fromCIEXYZ(xyz50a);
-			double[] xyz50b = lcs.toCIEXYZ(luv);
-			assertArrayEquals(xyz50a, xyz50b, 1e-5);
+			float[] xyz50a = lcs.toCIEXYZ(lab);	// standard D50-based XYZ space
+			float[] luv = lcs.fromCIEXYZ(xyz50a);
+			float[] xyz50b = lcs.toCIEXYZ(luv);
+			assertArrayEquals(xyz50a, xyz50b, 1e-5f);
 		}
 		{	// D65
-			double[] xyz65a = lcs.toCIEXYZ65(lab);	// standard D50-based XYZ space
-			double[] luv = lcs.fromCIEXYZ65(xyz65a);
-			double[] xyz65b = lcs.toCIEXYZ65(luv);
-			assertArrayEquals(xyz65a, xyz65b, 1e-5);
+			float[] xyz65a = lcs.toCIEXYZ65(lab);	// standard D50-based XYZ space
+			float[] luv = lcs.fromCIEXYZ65(xyz65a);
+			float[] xyz65b = lcs.toCIEXYZ65(luv);
+			assertArrayEquals(xyz65a, xyz65b, 1e-5f);
 		}
 	}
 
