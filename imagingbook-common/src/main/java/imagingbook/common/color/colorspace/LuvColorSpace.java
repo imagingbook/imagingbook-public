@@ -11,6 +11,10 @@ package imagingbook.common.color.colorspace;
 
 import java.awt.color.ColorSpace;
 
+import imagingbook.common.color.adapt.BradfordAdaptation;
+import imagingbook.common.color.adapt.ChromaticAdaptation;
+import imagingbook.common.color.cie.StandardIlluminant;
+
 
 /**
  * <p>

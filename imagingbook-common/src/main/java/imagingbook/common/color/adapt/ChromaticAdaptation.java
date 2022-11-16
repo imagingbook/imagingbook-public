@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.adapt;
 
 /**
  * Interface to be implemented by chromatic adaptation transforms.

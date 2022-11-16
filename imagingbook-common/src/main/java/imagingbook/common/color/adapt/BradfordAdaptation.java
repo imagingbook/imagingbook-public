@@ -7,10 +7,12 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.adapt;
 
 import static imagingbook.common.math.Matrix.inverse;
 import static imagingbook.common.math.Matrix.multiply;
+
+import imagingbook.common.color.cie.Illuminant;
 
 /**
  * <p>

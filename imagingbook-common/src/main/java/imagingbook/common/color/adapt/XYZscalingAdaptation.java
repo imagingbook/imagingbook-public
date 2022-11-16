@@ -7,7 +7,9 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.adapt;
+
+import imagingbook.common.color.cie.Illuminant;
 
 /**
  * <p>

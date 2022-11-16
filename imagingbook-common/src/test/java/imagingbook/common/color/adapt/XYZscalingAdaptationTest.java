@@ -6,10 +6,10 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.adapt;
 
-import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
-import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
+import static imagingbook.common.color.cie.StandardIlluminant.D50;
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.awt.color.ColorSpace;

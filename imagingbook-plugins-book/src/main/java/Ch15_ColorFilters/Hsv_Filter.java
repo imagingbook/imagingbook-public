@@ -140,7 +140,7 @@ public class Hsv_Filter implements PlugInFilter {
 				float H = fH.getf(u, v);
 				float S = fS.getf(u, v);
 				float V = fV.getf(u, v);
-				int[] RGB2 = RgbUtils.unnormalize(cc.toRGB(new float[] {H, S, V}));
+				int[] RGB2 = RgbUtils.denormalize(cc.toRGB(new float[] {H, S, V}));
 				cp.putPixel(u, v, RGB2);
 			}
 		}

@@ -1,4 +1,4 @@
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.gamma;
 
 /**
  * <p>
@@ -10,9 +10,9 @@ package imagingbook.common.color.colorspace;
  * ({@link #applyInv(double)}), the linear part is b = 0,...,b0, the non-linear
  * part is b = b0,...,1. Theoretically all mapping parameters can be derived
  * from parameters {@code gamma} and {@code a0} (the linear to non-linear
- * transition point) only. Note that {@code gamma} specifies the nominal gamma
- * value for the <em>forward</em> (i.e., linear to non-linear) mapping, e.g.,
- * gamma = 1/2.4 for sRGB. See Sec.3.7.6 of [1] for more details.
+ * transition point) only. Note that {@code gamma} specifies the nominal &gamma;
+ * parameter for the <em>forward</em> (i.e., linear to non-linear) mapping, e.g.,
+ * &gamma; = 1/2.4 for sRGB. See Sec.3.7.6 of [1] for more details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -22,15 +22,15 @@ package imagingbook.common.color.colorspace;
  * @author WB
  * @version 2022/11/14
  */
-public class GammaMappingFunction {
+public class ModifiedGammaMapping implements GammaMappingFunction {
 	
 	/** Gamma mapping function instance for ITU-R BT.709 (see Table 3.1 of [1]). */
-	public static GammaMappingFunction ITU709 = new GammaMappingFunction(1/2.222, 0.018); //, 4.5, 0.099);
+	public static ModifiedGammaMapping ITU709 = new ModifiedGammaMapping(1/2.222, 0.018); //, 4.5, 0.099);
 	
 	/** Gamma mapping function instance for sRGB (see Table 3.1 of [1]). 
 	 * Note that we need to specify parameters s and d too to comply 
 	 * strictly with the sRGB standard. */
-	public static GammaMappingFunction sRGB = new GammaMappingFunction(1/2.4, 0.0031308, 12.92, 0.055);
+	public static ModifiedGammaMapping sRGB = new ModifiedGammaMapping(1/2.4, 0.0031308, 12.92, 0.055);
 	
 	private final double gamma;
 	private final double igamma;
@@ -45,7 +45,7 @@ public class GammaMappingFunction {
 	 * @param gamma in [0,1], the nominal gamma value for the forward mapping (e.g., gamma = 1/2.4 for sRGB)
 	 * @param a0 in [0,1], the linear to non-linear transition point (e.g., a0 = 1/2.4 for sRGB)
 	 */
-	public GammaMappingFunction(double gamma, double a0) {
+	public ModifiedGammaMapping(double gamma, double a0) {
 		this(gamma, a0, s(gamma, a0), d(gamma, a0));
 	}
 	
@@ -58,7 +58,7 @@ public class GammaMappingFunction {
 	 * @param s &gt; 0, the slope s of the linear section (e.g., s = 12.92 for sRGB)
 	 * @param d &ge; 0 the offset d of the non-linear section (e.g., s = 0.055 for sRGB)
 	 */
-	public GammaMappingFunction(double gamma, double a0, double s, double d) {
+	public ModifiedGammaMapping(double gamma, double a0, double s, double d) {
 		this.a0 = a0;
 		this.b0 = s * a0;
 		this.gamma = gamma;
@@ -91,45 +91,27 @@ public class GammaMappingFunction {
 		return 1.0 / (Math.pow(a0, gamma) * (gamma - 1) + 1) - 1;
 	}
 	
-	/**
-	 * Forward Gamma mapping (from linear to non-linear component values).
-	 * 
-	 * @param a linear component value in [0,1]
-	 * @return the gamma-corrected (non-linear) component value
-	 */
-    public double applyFwd(double a) {
+    @Override
+	public double applyFwd(double a) {
 		return (a <= a0) ?
 			s * a :
 			(1 + d) * Math.pow(a, gamma) - d;
     }
     
-    /**
-	 * Inverse Gamma mapping (from non-linear to linear component values).
-	 * 
-	 * @param b non-linear (Gamma-corrected) component value in [0,1]
-	 * @return the linear component value
-	 */
-    public double applyInv(double b) {
+    @Override
+	public double applyInv(double b) {
     	return (b <= b0) ?
     		(b / s) :
 			Math.pow((b + d) / (1 + d), igamma);
     }
     
-    /**
-     * Float version of {@link #applyFwd(double)}
-     * @param a linear component value in [0,1]
-     * @return the gamma-corrected (non-linear) component value
-     */
-    public float applyFwd(float a) {
+    @Override
+	public float applyFwd(float a) {
 		return (float) applyFwd((double) a);
     }
     
-    /**
-     * Float version of {@link #applyInv(double)}
-     * @param b non-linear (Gamma-corrected) component value in [0,1]
-     * @return the linear component value
-     */
-    public float applyInv(float b) {
+    @Override
+	public float applyInv(float b) {
     	return (float) applyInv((double) b);
     }
     
@@ -162,9 +144,5 @@ public class GammaMappingFunction {
     	}
 		return A;
     }
-    
- // -----------------------------------------------
-    
-    
 
 }

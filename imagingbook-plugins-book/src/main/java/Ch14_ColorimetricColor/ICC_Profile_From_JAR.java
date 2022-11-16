@@ -15,8 +15,8 @@ import java.io.IOException;
 import ij.IJ;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
-import imagingbook.common.color.colorspace.CieUtil;
-import imagingbook.common.color.colorspace.NamedIccProfile;
+import imagingbook.common.color.cie.CieUtils;
+import imagingbook.common.color.cie.NamedIccProfile;
 import imagingbook.common.math.Matrix;
 
 
@@ -78,7 +78,7 @@ public class ICC_Profile_From_JAR implements PlugIn {
 		// convert to (D50-based) XYZ:
 		float[] XYZColor = iccColorSpace.toCIEXYZ(deviceColor);
 		IJ.log("XYZ = " + Matrix.toString(XYZColor));
-		IJ.log("xy (white point D50) = " + Matrix.toString(CieUtil.XYZToxy(Matrix.toDouble(XYZColor))));
+		IJ.log("xy (white point D50) = " + Matrix.toString(CieUtils.XYZToxy(Matrix.toDouble(XYZColor))));
 				
 		deviceColor = iccColorSpace.fromRGB(sRGBColor);
 		IJ.log("device color direct (check) = " + Matrix.toString(deviceColor));

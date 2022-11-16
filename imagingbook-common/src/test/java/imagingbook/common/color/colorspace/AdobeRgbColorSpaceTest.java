@@ -8,6 +8,8 @@ import java.util.Random;
 import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
+import imagingbook.common.color.cie.CieUtils;
+import imagingbook.common.color.cie.StandardIlluminant;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
@@ -97,7 +99,7 @@ public class AdobeRgbColorSpaceTest {
 		for (int c = 1; c < 256; c++) {
 			float[] rgbTHIS = {c, c, c};
 			float[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
-			double[] xy = CieUtil.XYZToxy(Matrix.toDouble(xyzPCS));
+			double[] xy = CieUtils.XYZToxy(Matrix.toDouble(xyzPCS));
 			assertArrayEquals(xy50, xy, 1e-4f);
 		}
 	}

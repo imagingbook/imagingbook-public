@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.cie;
 
 import imagingbook.common.math.Arithmetic;
 
@@ -23,9 +23,9 @@ import imagingbook.common.math.Arithmetic;
  * 
  * @author WB
  */
-public abstract class CieUtil {
+public abstract class CieUtils {
 	
-	private CieUtil() {}
+	private CieUtils() {}
 	
 	/**
 	 * Calculates the XYZ coordinates for a given point (x,y) in the CIE

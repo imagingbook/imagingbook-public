@@ -55,7 +55,7 @@ public class Hsv_Rotate_Hue implements PlugInFilter {
 				float[] HSV = cc.fromRGB(RgbUtils.normalize(RGB)); 	// all HSV components are in [0,1]
 //				HSV[0] = (HSV[0] + ROT) % 1.0f;							// works for positive ROT only
 				HSV[0] = (float) Arithmetic.mod(HSV[0] + ROT, 1.0);		// ROT may be pos. or negative
-				int[] RGBnew = RgbUtils.unnormalize(cc.toRGB(HSV));
+				int[] RGBnew = RgbUtils.denormalize(cc.toRGB(HSV));
 
 				cp.putPixel(u, v, RGBnew);
 			}

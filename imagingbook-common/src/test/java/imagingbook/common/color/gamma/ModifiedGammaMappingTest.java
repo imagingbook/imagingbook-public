@@ -1,30 +1,30 @@
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.gamma;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class GammaMappingFunctionTest {
+public class ModifiedGammaMappingTest {
 
 	static double TOLD = 1e-15;
 	static float TOLF = 1e-6f;
 
 	@Test
 	public void testSRGB() {
-		doCheckDouble(GammaMappingFunction.sRGB);
-		doCheckFloat(GammaMappingFunction.sRGB);
+		doCheckDouble(ModifiedGammaMapping.sRGB);
+		doCheckFloat(ModifiedGammaMapping.sRGB);
 	}
 	
 	@Test
 	public void testITU709() {
-		doCheckDouble(GammaMappingFunction.ITU709);
-		doCheckFloat(GammaMappingFunction.ITU709);
+		doCheckDouble(ModifiedGammaMapping.ITU709);
+		doCheckFloat(ModifiedGammaMapping.ITU709);
 	}
 	
 	@Test
 	public void testBookExample() {
-		doCheckDouble(new GammaMappingFunction(0.5, 0.2));
-		doCheckFloat(new GammaMappingFunction(0.5, 0.2));
+		doCheckDouble(new ModifiedGammaMapping(0.5, 0.2));
+		doCheckFloat(new ModifiedGammaMapping(0.5, 0.2));
 	}
 	
 	// ----------------------------

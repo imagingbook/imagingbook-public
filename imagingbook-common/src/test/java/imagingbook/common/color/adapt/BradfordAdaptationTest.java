@@ -6,11 +6,11 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.adapt;
 
-import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
-import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
-import static imagingbook.common.color.colorspace.StandardIlluminant.N;
+import static imagingbook.common.color.cie.StandardIlluminant.D50;
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
+import static imagingbook.common.color.cie.StandardIlluminant.N;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Arrays;
@@ -19,6 +19,9 @@ import java.util.Random;
 import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
+import imagingbook.common.color.cie.Illuminant;
+import imagingbook.common.color.colorspace.DirectD65Conversion;
+import imagingbook.common.color.colorspace.sRgbColorSpace;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.testutils.NumericTestUtils;

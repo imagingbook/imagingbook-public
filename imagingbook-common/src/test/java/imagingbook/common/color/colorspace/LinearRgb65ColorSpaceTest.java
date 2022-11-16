@@ -15,13 +15,15 @@ import java.util.Random;
 import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
+import imagingbook.common.color.cie.CieUtils;
+import imagingbook.common.color.cie.StandardIlluminant;
 import imagingbook.common.math.Matrix;
 
 
 public class LinearRgb65ColorSpaceTest {
 	
 	private static LinearRgb65ColorSpace CS = LinearRgb65ColorSpace.getInstance();
-	private static sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
+//	private static sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
 
 	@Test
 	public void test1() {
@@ -103,7 +105,7 @@ public class LinearRgb65ColorSpaceTest {
 		for (int c = 1; c < 256; c++) {
 			float[] rgbTHIS = {c, c, c};
 			float[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
-			float[] xy = CieUtil.XYZToxy(xyzPCS);
+			float[] xy = CieUtils.XYZToxy(xyzPCS);
 			assertArrayEquals(xy50, xy, 1e-4f);
 		}
 	}

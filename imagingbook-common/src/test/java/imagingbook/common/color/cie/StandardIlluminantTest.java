@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.cie;
 
 import static java.lang.Double.isFinite;
 import static org.junit.Assert.assertTrue;
@@ -28,7 +28,7 @@ public class StandardIlluminantTest {
 	@Test
 	public void test2() {
 		for (StandardIlluminant ill : StandardIlluminant.values()) {
-			double[] xy = CieUtil.XYZToxy(ill.getXYZ());
+			double[] xy = CieUtils.XYZToxy(ill.getXYZ());
 //			System.out.println(ill.toString() + ": " + Arrays.toString(xy));
 			assertTrue("xy component < 0 in " + ill.toString(), xy[0] > 0 && xy[1] > 0);
 			assertTrue("xy component > 1 in " + ill.toString(), xy[0] <= 1 && xy[1] <= 1);

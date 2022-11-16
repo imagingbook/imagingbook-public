@@ -7,7 +7,7 @@ package imagingbook.common.color.colorspace;
  * @author WB
  * @version 2022/11/15
  */
-public interface RgbPrimaries {
+public interface RgbReferenceData {
 	
 	// methods required by all implementations of ColorSpace:
 	public float[] toCIEXYZ(float[] value);

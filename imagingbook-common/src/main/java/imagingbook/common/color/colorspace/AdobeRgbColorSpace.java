@@ -2,6 +2,8 @@ package imagingbook.common.color.colorspace;
 
 import java.awt.color.ICC_ColorSpace;
 
+import imagingbook.common.color.cie.NamedIccProfile;
+import imagingbook.common.color.cie.StandardIlluminant;
 import imagingbook.common.math.Matrix;
 
 
@@ -20,7 +22,7 @@ import imagingbook.common.math.Matrix;
  * @version 2022/11/13
  */
 @SuppressWarnings("serial")
-public class AdobeRgbColorSpace extends ICC_ColorSpace implements DirectD65Conversion, RgbPrimaries {
+public class AdobeRgbColorSpace extends ICC_ColorSpace implements DirectD65Conversion, RgbReferenceData {
 
 	private static AdobeRgbColorSpace instance = null;
 	

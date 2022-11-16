@@ -1,9 +1,12 @@
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
-import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
+import static imagingbook.common.color.cie.StandardIlluminant.D50;
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
 
 import java.awt.color.ColorSpace;
+
+import imagingbook.common.color.adapt.BradfordAdaptation;
+import imagingbook.common.color.adapt.ChromaticAdaptation;
 
 /**
  * <p>

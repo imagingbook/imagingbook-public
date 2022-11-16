@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.cie;
 
 import static imagingbook.common.color.RgbUtils.normalize;
 import static org.junit.Assert.assertArrayEquals;
@@ -17,6 +17,7 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import imagingbook.common.color.colorspace.sRgbColorSpace;
 import imagingbook.common.math.Matrix;
 
 public class CieUtilTest {
@@ -63,31 +64,31 @@ public class CieUtilTest {
 		{	// float version
 			float[] XYZa = cs.toCIEXYZ(normalize(srgb));
 			
-			float[] xy = CieUtil.XYZToxy(XYZa);
+			float[] xy = CieUtils.XYZToxy(XYZa);
 			assertTrue(Double.isFinite(xy[0]));
 			assertTrue(Double.isFinite(xy[1]));
 			
 			float Y = XYZa[1];
-			float[] XYZb = CieUtil.xyYToXYZ(xy[0], xy[1], Y);	
+			float[] XYZb = CieUtils.xyYToXYZ(xy[0], xy[1], Y);	
 			assertArrayEquals(XYZa, XYZb, 1e-6f);
 			
-			float[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
-			float[] xy2 = CieUtil.XYZToxy(XYZc);
+			float[] XYZc = CieUtils.xyToXYZ(xy[0], xy[1]);
+			float[] xy2 = CieUtils.XYZToxy(XYZc);
 			assertArrayEquals(xy, xy2, 1e-6f);
 		}
 		{	// double version
 			double[] XYZa = Matrix.toDouble(cs.toCIEXYZ(normalize(srgb)));
 			
-			double[] xy = CieUtil.XYZToxy(XYZa);
+			double[] xy = CieUtils.XYZToxy(XYZa);
 			assertTrue(Double.isFinite(xy[0]));
 			assertTrue(Double.isFinite(xy[1]));
 			
 			double Y = XYZa[1];
-			double[] XYZb = CieUtil.xyYToXYZ(xy[0], xy[1], Y);	
+			double[] XYZb = CieUtils.xyYToXYZ(xy[0], xy[1], Y);	
 			assertArrayEquals(XYZa, XYZb, 1e-6);
 			
-			double[] XYZc = CieUtil.xyToXYZ(xy[0], xy[1]);
-			double[] xy2 = CieUtil.XYZToxy(XYZc);
+			double[] XYZc = CieUtils.xyToXYZ(xy[0], xy[1]);
+			double[] xy2 = CieUtils.XYZToxy(XYZc);
 			assertArrayEquals(xy, xy2, 1e-6);
 		}
 	}

@@ -44,7 +44,7 @@ public class RgbUtilsTest {
 	
 	private static void doCheck(Object lcs, int[] RGB1) {
 		float[] srgb = RgbUtils.normalize(RGB1);
-		int[] RGB2 = RgbUtils.unnormalize(srgb);
+		int[] RGB2 = RgbUtils.denormalize(srgb);
 		assertArrayEquals("RgbUtils conversion problem for RGB=" + Arrays.toString(RGB1), RGB1, RGB2);
 	}
 }

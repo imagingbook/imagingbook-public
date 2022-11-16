@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.color.colorspace;
+package imagingbook.common.color.cie;
 
 public interface Illuminant {
 	
@@ -21,7 +21,7 @@ public interface Illuminant {
 	 * @return the xy-coordinate
 	 */
 	public default double[] getXy() {
-		return CieUtil.XYZToxy(getXYZ());
+		return CieUtils.XYZToxy(getXYZ());
 	}
 
 }

@@ -51,7 +51,7 @@ public class Hsv_Show_Hue_Only implements PlugInFilter {
 				hsv[1] = DEFAULT_SATURATION;
 				hsv[2] = DEFAULT_VALUE;
 				
-				result.putPixel(u, v, RgbUtils.unnormalize(cc.toRGB(hsv)));
+				result.putPixel(u, v, RgbUtils.denormalize(cc.toRGB(hsv)));
 			}
 		}
 

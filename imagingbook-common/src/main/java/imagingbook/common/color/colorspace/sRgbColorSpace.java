@@ -9,11 +9,14 @@
 
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.colorspace.StandardIlluminant.D50;
-import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
+import static imagingbook.common.color.cie.StandardIlluminant.D50;
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
 
 import java.awt.color.ColorSpace;
 
+import imagingbook.common.color.adapt.BradfordAdaptation;
+import imagingbook.common.color.adapt.ChromaticAdaptation;
+import imagingbook.common.color.gamma.ModifiedGammaMapping;
 import imagingbook.common.math.Matrix;
 
 
@@ -34,12 +37,12 @@ import imagingbook.common.math.Matrix;
  * @see LinearRgb65ColorSpace
  */
 @SuppressWarnings("serial")
-public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, RgbPrimaries {
+public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {
 	
 	// chromatic adaptation objects:
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
-	private static final GammaMappingFunction GammaMap = GammaMappingFunction.sRGB;
+	private static final ModifiedGammaMapping GammaMap = ModifiedGammaMapping.sRGB;
 	
 	private static final sRgbColorSpace instance = new sRgbColorSpace();
 	

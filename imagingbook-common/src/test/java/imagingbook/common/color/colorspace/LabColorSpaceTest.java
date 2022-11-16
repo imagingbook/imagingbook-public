@@ -8,7 +8,7 @@
  *******************************************************************************/
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.colorspace.StandardIlluminant.D65;
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Random;
