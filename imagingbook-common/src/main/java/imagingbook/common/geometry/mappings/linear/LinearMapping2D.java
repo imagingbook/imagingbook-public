@@ -11,6 +11,7 @@ package imagingbook.common.geometry.mappings.linear;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.mappings.Inversion;
 import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
@@ -19,7 +20,7 @@ import imagingbook.common.math.Matrix;
  * This class represents an arbitrary linear transformation in 2D.
  * Instances of this class and any subclass are immutable.
  */
-public class LinearMapping2D implements Mapping2D {
+public class LinearMapping2D implements Mapping2D, Inversion {
 	
 	protected final double 
 		a00, a01, a02,
@@ -195,6 +196,7 @@ public class LinearMapping2D implements Mapping2D {
 		return new LinearMapping2D(this);
 	}
 
+	@Override
 	public String toString() {
 		return Matrix.toString(getTransformationMatrix());
 	}

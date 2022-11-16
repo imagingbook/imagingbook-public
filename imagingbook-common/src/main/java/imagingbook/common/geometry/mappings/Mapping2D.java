@@ -18,36 +18,21 @@ public interface Mapping2D extends Cloneable {
 	 * @param pnt the original point
 	 * @return the transformed point
 	 */
-	Pnt2d applyTo (Pnt2d pnt);
+	public Pnt2d applyTo (Pnt2d pnt);
 	
-	default Pnt2d[] applyTo(Pnt2d[] pnts) {
+	/**
+	 * Applies this mapping to an array of 2D points and
+	 * returns a new array of points.
+	 * 
+	 * @param pnts the original points
+	 * @return the transformed points
+	 */
+	public default Pnt2d[] applyTo(Pnt2d[] pnts) {
 		Pnt2d[] outPnts = new Pnt2d[pnts.length];
 		for (int i = 0; i < pnts.length; i++) {
 			outPnts[i] = applyTo(pnts[i]);
 		}
 		return outPnts;
 	}
-	
-	/**
-	 * The inverse of this mapping is calculated (if possible)
-	 * and returned. Implementing classes are supposed to
-	 * override this default method.
-	 * 
-	 * @return the inverse mapping
-	 */
-	default Mapping2D getInverse() {
-		throw new UnsupportedOperationException("Cannot invert mapping " + this.toString());
-	}
 
-	/**
-	 * Returns the Jacobian matrix for this mapping, evaluated at
-	 * the given 2D point.
-	 * This method is only implemented for selected mappings.
-	 * 
-	 * @param pnt the 2D position to calculate the Jacobian for
-	 * @return the Jacobian matrix
-	 */
-	default double[][] getJacobian(Pnt2d pnt) {	// TODO: define in interface?
-		throw new UnsupportedOperationException("No Jacobian available for this mapping");
-	}
 }

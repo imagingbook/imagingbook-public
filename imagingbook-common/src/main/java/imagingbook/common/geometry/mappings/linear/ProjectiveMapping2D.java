@@ -12,6 +12,7 @@ package imagingbook.common.geometry.mappings.linear;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.fitting.ProjectiveFit2D;
+import imagingbook.common.geometry.mappings.Jacobian;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
@@ -23,7 +24,7 @@ import imagingbook.common.math.PrintPrecision;
  * points.
  * It can be assumed that every instance of this class is indeed a projective mapping.
  */
-public class ProjectiveMapping2D extends LinearMapping2D {
+public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 	
 	//  static methods -----------------------------------------------------
 	
@@ -258,6 +259,7 @@ public class ProjectiveMapping2D extends LinearMapping2D {
 	 * {@inheritDoc}
 	 * @return a new projective mapping
 	 */
+	@Override
 	public ProjectiveMapping2D duplicate() {
 		return new ProjectiveMapping2D(this);
 	}
@@ -269,6 +271,7 @@ public class ProjectiveMapping2D extends LinearMapping2D {
 	 * that reverses A. While A * A' = I, the result of A * A'' is a scaled identity matrix.
 	 * @return the inverse projective transformation
 	 */
+	@Override
 	public ProjectiveMapping2D getInverse() {
 		return new ProjectiveMapping2D(super.getInverse());
 	}
