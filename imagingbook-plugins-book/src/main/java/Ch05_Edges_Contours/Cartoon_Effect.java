@@ -15,7 +15,8 @@ import imagingbook.common.edges.GrayscaleEdgeDetector;
  * value of the normalized edge magnitude (as produced by an edge operator). At
  * points of maximum edge magnitude the darkening effect are strongest, while
  * pixels remain unmodified where the edge magnitude is zero. See Ch. 5
- * (Exercise 5.8) of [1] for additional details.
+ * (Exercise 5.8) of [1] for additional details. Works for RGB color images
+ * only. The input image is modified.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -27,29 +28,34 @@ import imagingbook.common.edges.GrayscaleEdgeDetector;
  */
 public class Cartoon_Effect implements PlugInFilter {
 	
-	static double strength = 1.0;
-	static double s2 = 0.5;
+	private static double A = 0.05;
+	private static double B = 0.3;
+	private static boolean ShowOriginalEdgeMagnitude = false;
+	private static boolean ShowSoftenedEdgeMagnitude = false;
 	
 	@Override
 	public int setup(String arg, ImagePlus im) {
-		return DOES_8G + DOES_RGB;
+		return DOES_RGB;	// TODO: make this work for DOES_8G
 	}
 
 	@Override
 	public void run(ImageProcessor ip) {
-		if (!getUserInput())
+		if (!getUserInput()) {
 			return;
+		}
 		
 		int w = ip.getWidth();
 		int h = ip.getHeight();
 		
-		double a = 0.05;
-		double b = 0.3;
-		
 		GrayscaleEdgeDetector ed = new GrayscaleEdgeDetector(ip);
 		FloatProcessor mag = ed.getEdgeMagnitude();
 		
-		new ImagePlus("E", mag.duplicate()).show();
+		if (ShowOriginalEdgeMagnitude) {
+			ImageProcessor mag2 = mag.duplicate();
+			mag2.invert();
+			mag2.resetMinAndMax();
+			new ImagePlus("E (inverted)", mag2).show();
+		}
 		
 		double magMax = mag.getMax();
 		
@@ -57,12 +63,15 @@ public class Cartoon_Effect implements PlugInFilter {
 		for (int u = 0; u < w; u++) {
 			for (int v = 0; v < h; v++) {
 				double s = mag.getf(u, v) / magMax;	// scale to 1.0
-				s = f(s, a, b);	// best
-				mag.setf(u, v, (float) s);
+				mag.setf(u, v, (float) f(s, A, B));
 			}
 		}
 		
-		new ImagePlus("f(E)", mag.duplicate()).show();
+		if (ShowSoftenedEdgeMagnitude) {
+			ImageProcessor mag3 = mag.duplicate();
+			mag3.resetMinAndMax();
+			new ImagePlus("f(E)", mag3).show();
+		}
 
 		// burn-in edges:
 		final int[] RGB = new int[3];
@@ -71,19 +80,17 @@ public class Cartoon_Effect implements PlugInFilter {
 			for (int v = 0; v < h; v++) {
 				cp.getPixel(u, v, RGB);
 				float s = mag.getf(u, v);
-				RGB[0] = (int) (RGB[0] * s);
-				RGB[1] = (int) (RGB[1] * s);
-				RGB[2] = (int) (RGB[2] * s);
+				// darken pixel value by factor s
+				RGB[0] = Math.round(RGB[0] * s);
+				RGB[1] = Math.round(RGB[1] * s);
+				RGB[2] = Math.round(RGB[2] * s);
 				cp.putPixel(u, v, RGB);
 			}
-		}
-		
-//		mag.resetMinAndMax();
-//		new ImagePlus("Magnitude", mag).show();		
+		}	
 	}
 	
 	// soft-threshold function
-	double f(double m, double a, double b) {
+	private double f(double m, double a, double b) {
 		if (m < a) {
 			return 1;
 		}
@@ -99,13 +106,19 @@ public class Cartoon_Effect implements PlugInFilter {
 	
 	private boolean getUserInput() {
 		GenericDialog gd = new GenericDialog(Cartoon_Effect.class.getSimpleName());
-//		gd.addNumericField("Median filter radius = (1,..,50)", rad, 1);
+		gd.addNumericField("Parameter a", A, 2);
+		gd.addNumericField("Parameter b", B, 2);
+		gd.addCheckbox("Show original edge magnitude", ShowOriginalEdgeMagnitude);
+		gd.addCheckbox("Show softened edge magnitude", ShowSoftenedEdgeMagnitude);
+		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
 			return false;
 		}
-//		rad = gd.getNextNumber();
-//		rad = Math.min(Math.max(rad, 1), 50);	// limit to 1,...,50
+		A = gd.getNextNumber();
+		B = gd.getNextNumber();
+		ShowOriginalEdgeMagnitude = gd.getNextBoolean();
+		ShowSoftenedEdgeMagnitude = gd.getNextBoolean();
 		return true;
 	}
 	
