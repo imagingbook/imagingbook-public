@@ -9,11 +9,10 @@ package imagingbook.common.color.colorspace;
  */
 public interface RgbReferenceData {
 	
-	// methods required by all implementations of ColorSpace:
-	public float[] toCIEXYZ(float[] value);
-	public float[] fromCIEXYZ(float[] value);
-	public float[] toRGB(float[] value);
-	public float[] fromRGB(float[] value);
+//	public float[] toCIEXYZ(float[] value);
+//	public float[] fromCIEXYZ(float[] value);
+//	public float[] toRGB(float[] value);
+//	public float[] fromRGB(float[] value);
 	
 	/**
 	 * Returns the XYZ coordinates of the white point
@@ -31,10 +30,6 @@ public interface RgbReferenceData {
 	 * @param idx the color index (R = 0, G = 1, B = 2)
 	 * @return the XYZ coordinate for the primary color
 	 */
-	public default float[] getPrimary(int idx) {
-		float[] rgb = new float[3];
-		rgb[idx] = 1;
-		return this.toCIEXYZ(rgb);
-	}
+	public float[] getPrimary(int idx) ;
 	
 }
