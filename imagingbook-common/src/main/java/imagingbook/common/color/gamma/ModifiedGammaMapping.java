@@ -12,7 +12,7 @@ package imagingbook.common.color.gamma;
  * from parameters {@code gamma} and {@code a0} (the linear to non-linear
  * transition point) only. Note that {@code gamma} specifies the nominal &gamma;
  * parameter for the <em>forward</em> (i.e., linear to non-linear) mapping, e.g.,
- * &gamma; = 1/2.4 for sRGB. See Sec.3.7.6 of [1] for more details.
+ * &gamma; = 1/2.4 for sRGB. See Sec. 3.7.6 of [1] for more details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An

@@ -60,8 +60,8 @@ public class AdobeRgbColorSpaceTest {
 			float[] xyz = CS.toCIEXYZ65(rgb);
 			float[] primary = CS.getPrimary(i);
 			
-			System.out.println("xyz     = " + Matrix.toString(xyz));
-			System.out.println("primary = " + Matrix.toString(primary));
+//			System.out.println("xyz     = " + Matrix.toString(xyz));
+//			System.out.println("primary = " + Matrix.toString(primary));
 			assertArrayEquals(primary, xyz, 1e-4f);	// inaccuracy due to Bradford adaptation?
 		}
 	}
@@ -87,8 +87,8 @@ public class AdobeRgbColorSpaceTest {
 		{
 			float[] xyz65 = CS.toCIEXYZ65(srgbTHIS);	// in PCS
 			float[] w65 = CS.getWhitePoint();
-			System.out.println("xyz65 = " + Matrix.toString(xyz65));
-			System.out.println("w65   = " + Matrix.toString(w65));
+//			System.out.println("xyz65 = " + Matrix.toString(xyz65));
+//			System.out.println("w65   = " + Matrix.toString(w65));
 			assertArrayEquals(w65, xyz65, 1e-3f);	// inaccuracy due to Bradford adaptation?
 		}
 	}

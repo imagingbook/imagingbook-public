@@ -6,7 +6,7 @@ package imagingbook.common.color.gamma;
  * non-linear color component values. The mapping function consists of a 
  * non-linear part only. Note that {@code gamma} specifies the nominal &gamma;
  * parameter for the <em>forward</em> (i.e., linear to non-linear) mapping, e.g.,
- * &gamma; ~ 1/2.2 for Adobe RGB. See Sec.3.7.2 of [1] for more details.
+ * &gamma; ~ 1/2.2 for Adobe RGB. See Sec. 3.7.2 of [1] for more details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
