@@ -19,118 +19,121 @@
 <span class="sourceLineNo">009</span><a id="line.9"></a>
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.common.color.colorspace;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
-<span class="sourceLineNo">012</span><a id="line.12">import static imagingbook.common.color.colorspace.StandardIlluminant.D50;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import static imagingbook.common.color.colorspace.StandardIlluminant.D65;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import static imagingbook.common.color.cie.StandardIlluminant.D50;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import static imagingbook.common.color.cie.StandardIlluminant.D65;</a>
 <span class="sourceLineNo">014</span><a id="line.14"></a>
 <span class="sourceLineNo">015</span><a id="line.15">import java.awt.color.ColorSpace;</a>
 <span class="sourceLineNo">016</span><a id="line.16"></a>
-<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.math.Matrix;</a>
-<span class="sourceLineNo">018</span><a id="line.18"></a>
-<span class="sourceLineNo">019</span><a id="line.19"></a>
-<span class="sourceLineNo">020</span><a id="line.20">/**</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * &lt;p&gt;</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * This class implements the sRGBcolor space with D65 white point. See Sec. 14.4</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * of [1] for details. Components of all {@code float[]} colors are supposed to</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * be in [0,1]. This is a singleton class with no public constructors, use</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * {@link #getInstance()} to obtain the single instance.</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * &lt;p&gt;</a>
-<span class="sourceLineNo">028</span><a id="line.28"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * </a>
-<span class="sourceLineNo">032</span><a id="line.32"> * @author WB</a>
-<span class="sourceLineNo">033</span><a id="line.33"> * @version 2022/11/14</a>
-<span class="sourceLineNo">034</span><a id="line.34"> * @see LinearRgb65ColorSpace</a>
-<span class="sourceLineNo">035</span><a id="line.35"> */</a>
-<span class="sourceLineNo">036</span><a id="line.36">@SuppressWarnings("serial")</a>
-<span class="sourceLineNo">037</span><a id="line.37">public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, RgbPrimaries {</a>
-<span class="sourceLineNo">038</span><a id="line.38">        </a>
-<span class="sourceLineNo">039</span><a id="line.39">        // chromatic adaptation objects:</a>
-<span class="sourceLineNo">040</span><a id="line.40">        private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);</a>
-<span class="sourceLineNo">041</span><a id="line.41">        private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);</a>
-<span class="sourceLineNo">042</span><a id="line.42">        private static final GammaMappingFunction GammaMap = GammaMappingFunction.sRGB;</a>
-<span class="sourceLineNo">043</span><a id="line.43">        </a>
-<span class="sourceLineNo">044</span><a id="line.44">        private static final sRgbColorSpace instance = new sRgbColorSpace();</a>
-<span class="sourceLineNo">045</span><a id="line.45">        </a>
-<span class="sourceLineNo">046</span><a id="line.46">        public static sRgbColorSpace getInstance() {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                return instance;</a>
-<span class="sourceLineNo">048</span><a id="line.48">        }</a>
-<span class="sourceLineNo">049</span><a id="line.49">        </a>
-<span class="sourceLineNo">050</span><a id="line.50">        /** Matrix for conversion from XYZ to linear RGB. Its column vectors are the </a>
-<span class="sourceLineNo">051</span><a id="line.51">         * XYZ coordinates of the RGB primaries. */</a>
-<span class="sourceLineNo">052</span><a id="line.52">        private static final double[][] Mrgbi = </a>
-<span class="sourceLineNo">053</span><a id="line.53">                {{0.412453, 0.357580, 0.180423},</a>
-<span class="sourceLineNo">054</span><a id="line.54">                 {0.212671, 0.715160, 0.072169},</a>
-<span class="sourceLineNo">055</span><a id="line.55">                 {0.019334, 0.119193, 0.950227}};</a>
-<span class="sourceLineNo">056</span><a id="line.56">        private static final float[][] MrgbiF = Matrix.toFloat(Mrgbi);</a>
-<span class="sourceLineNo">057</span><a id="line.57">        </a>
-<span class="sourceLineNo">058</span><a id="line.58">        /** Matrix for conversion from linear RGB to XYZ (inverse of {@link #Mrgbi}). */</a>
-<span class="sourceLineNo">059</span><a id="line.59">        private static final double[][] Mrgb = Matrix.inverse(Mrgbi);</a>
-<span class="sourceLineNo">060</span><a id="line.60">        private static final float[][] MrgbF = Matrix.toFloat(Mrgb);</a>
-<span class="sourceLineNo">061</span><a id="line.61">        </a>
-<span class="sourceLineNo">062</span><a id="line.62">        // ----------------------------------------------------</a>
-<span class="sourceLineNo">063</span><a id="line.63">        </a>
-<span class="sourceLineNo">064</span><a id="line.64">        @Override</a>
-<span class="sourceLineNo">065</span><a id="line.65">        public float[] getWhitePoint() {</a>
-<span class="sourceLineNo">066</span><a id="line.66">                return Matrix.toFloat(D65.getXYZ());</a>
-<span class="sourceLineNo">067</span><a id="line.67">        }</a>
-<span class="sourceLineNo">068</span><a id="line.68">        </a>
-<span class="sourceLineNo">069</span><a id="line.69">        @Override</a>
-<span class="sourceLineNo">070</span><a id="line.70">        public float[] getPrimary(int idx) {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));</a>
-<span class="sourceLineNo">072</span><a id="line.72">        }</a>
-<span class="sourceLineNo">073</span><a id="line.73">        </a>
-<span class="sourceLineNo">074</span><a id="line.74">        // ----------------------------------------------------</a>
-<span class="sourceLineNo">075</span><a id="line.75">        </a>
-<span class="sourceLineNo">076</span><a id="line.76">        /** Constructor (not public). */</a>
-<span class="sourceLineNo">077</span><a id="line.77">        private sRgbColorSpace() {</a>
-<span class="sourceLineNo">078</span><a id="line.78">                super(ColorSpace.TYPE_RGB, 3);</a>
-<span class="sourceLineNo">079</span><a id="line.79">        }</a>
-<span class="sourceLineNo">080</span><a id="line.80">        </a>
-<span class="sourceLineNo">081</span><a id="line.81">        // direct conversion from/to D65-based XYZ space ------------------------------</a>
-<span class="sourceLineNo">082</span><a id="line.82">        </a>
-<span class="sourceLineNo">083</span><a id="line.83">        @Override</a>
-<span class="sourceLineNo">084</span><a id="line.84">        public float[] fromCIEXYZ65(float[] xyz65) {</a>
-<span class="sourceLineNo">085</span><a id="line.85">                float[] rgb = Matrix.multiply(MrgbF, xyz65);    // to linear RGB</a>
-<span class="sourceLineNo">086</span><a id="line.86">                return GammaMap.applyFwd(rgb);                                  // to non-linear sRGB</a>
-<span class="sourceLineNo">087</span><a id="line.87">        }</a>
-<span class="sourceLineNo">088</span><a id="line.88">        </a>
-<span class="sourceLineNo">089</span><a id="line.89">        @Override</a>
-<span class="sourceLineNo">090</span><a id="line.90">        public float[] toCIEXYZ65(float[] srgbTHIS) {</a>
-<span class="sourceLineNo">091</span><a id="line.91">                float[] rgb = GammaMap.applyInv(srgbTHIS);              // to linear rgb</a>
-<span class="sourceLineNo">092</span><a id="line.92">                return Matrix.multiply(MrgbiF, rgb);    // to XYZ (D65)</a>
-<span class="sourceLineNo">093</span><a id="line.93">        }</a>
-<span class="sourceLineNo">094</span><a id="line.94">        </a>
-<span class="sourceLineNo">095</span><a id="line.95">        // Methods required by ColorSpace (conversion from/to PCS space) ------------------</a>
-<span class="sourceLineNo">096</span><a id="line.96"></a>
-<span class="sourceLineNo">097</span><a id="line.97">        // assumes xyz50 is in D50-based CS_CIEXYZ color space</a>
-<span class="sourceLineNo">098</span><a id="line.98">        @Override</a>
-<span class="sourceLineNo">099</span><a id="line.99">        public float[] fromCIEXYZ(float[] xyz50PCS) {</a>
-<span class="sourceLineNo">100</span><a id="line.100">                float[] xyz65 = catD50toD65.applyTo(xyz50PCS);  // to XYZ (D65)</a>
-<span class="sourceLineNo">101</span><a id="line.101">                return this.fromCIEXYZ65(xyz65);                                // to sRGB</a>
-<span class="sourceLineNo">102</span><a id="line.102">        }</a>
-<span class="sourceLineNo">103</span><a id="line.103"></a>
-<span class="sourceLineNo">104</span><a id="line.104">        // returned colors are in D50-based CS_CIEXYZ color space </a>
-<span class="sourceLineNo">105</span><a id="line.105">        @Override</a>
-<span class="sourceLineNo">106</span><a id="line.106">        public float[] toCIEXYZ(float[] srgbTHIS) {</a>
-<span class="sourceLineNo">107</span><a id="line.107">                float[] xyz65 = this.toCIEXYZ65(srgbTHIS);              // to XYZ (D65)</a>
-<span class="sourceLineNo">108</span><a id="line.108">                return catD65toD50.applyTo(xyz65);              // to XYZ (D50)</a>
-<span class="sourceLineNo">109</span><a id="line.109">        }</a>
-<span class="sourceLineNo">110</span><a id="line.110">        </a>
-<span class="sourceLineNo">111</span><a id="line.111">        // ----------------------------------------------------</a>
-<span class="sourceLineNo">112</span><a id="line.112">        </a>
-<span class="sourceLineNo">113</span><a id="line.113">        @Override // no conversion needed, since this is sRGB</a>
-<span class="sourceLineNo">114</span><a id="line.114">        public float[] fromRGB(float[] srgb) {</a>
-<span class="sourceLineNo">115</span><a id="line.115">                return srgb;</a>
-<span class="sourceLineNo">116</span><a id="line.116">        }</a>
-<span class="sourceLineNo">117</span><a id="line.117"></a>
-<span class="sourceLineNo">118</span><a id="line.118">        @Override // no conversion needed, since this is sRGB</a>
-<span class="sourceLineNo">119</span><a id="line.119">        public float[] toRGB(float[] srgbTHIS) {</a>
-<span class="sourceLineNo">120</span><a id="line.120">                return srgbTHIS;</a>
-<span class="sourceLineNo">121</span><a id="line.121">        }</a>
-<span class="sourceLineNo">122</span><a id="line.122"></a>
-<span class="sourceLineNo">123</span><a id="line.123">}</a>
+<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.color.adapt.BradfordAdaptation;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.color.adapt.ChromaticAdaptation;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import imagingbook.common.color.gamma.ModifiedGammaMapping;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import imagingbook.common.math.Matrix;</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">/**</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * &lt;p&gt;</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * This class implements the sRGBcolor space with D65 white point. See Sec. 14.4</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * of [1] for details. Components of all {@code float[]} colors are supposed to</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * be in [0,1]. This is a singleton class with no public constructors, use</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * {@link #getInstance()} to obtain the single instance.</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * &lt;p&gt;</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * </a>
+<span class="sourceLineNo">035</span><a id="line.35"> * @author WB</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * @version 2022/11/14</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * @see LinearRgb65ColorSpace</a>
+<span class="sourceLineNo">038</span><a id="line.38"> */</a>
+<span class="sourceLineNo">039</span><a id="line.39">@SuppressWarnings("serial")</a>
+<span class="sourceLineNo">040</span><a id="line.40">public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {</a>
+<span class="sourceLineNo">041</span><a id="line.41">        </a>
+<span class="sourceLineNo">042</span><a id="line.42">        // chromatic adaptation objects:</a>
+<span class="sourceLineNo">043</span><a id="line.43">        private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);</a>
+<span class="sourceLineNo">044</span><a id="line.44">        private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);</a>
+<span class="sourceLineNo">045</span><a id="line.45">        private static final ModifiedGammaMapping GammaMap = ModifiedGammaMapping.sRGB;</a>
+<span class="sourceLineNo">046</span><a id="line.46">        </a>
+<span class="sourceLineNo">047</span><a id="line.47">        private static final sRgbColorSpace instance = new sRgbColorSpace();</a>
+<span class="sourceLineNo">048</span><a id="line.48">        </a>
+<span class="sourceLineNo">049</span><a id="line.49">        public static sRgbColorSpace getInstance() {</a>
+<span class="sourceLineNo">050</span><a id="line.50">                return instance;</a>
+<span class="sourceLineNo">051</span><a id="line.51">        }</a>
+<span class="sourceLineNo">052</span><a id="line.52">        </a>
+<span class="sourceLineNo">053</span><a id="line.53">        /** Matrix for conversion from XYZ to linear RGB. Its column vectors are the </a>
+<span class="sourceLineNo">054</span><a id="line.54">         * XYZ coordinates of the RGB primaries. */</a>
+<span class="sourceLineNo">055</span><a id="line.55">        private static final double[][] Mrgbi = </a>
+<span class="sourceLineNo">056</span><a id="line.56">                {{0.412453, 0.357580, 0.180423},</a>
+<span class="sourceLineNo">057</span><a id="line.57">                 {0.212671, 0.715160, 0.072169},</a>
+<span class="sourceLineNo">058</span><a id="line.58">                 {0.019334, 0.119193, 0.950227}};</a>
+<span class="sourceLineNo">059</span><a id="line.59">        private static final float[][] MrgbiF = Matrix.toFloat(Mrgbi);</a>
+<span class="sourceLineNo">060</span><a id="line.60">        </a>
+<span class="sourceLineNo">061</span><a id="line.61">        /** Matrix for conversion from linear RGB to XYZ (inverse of {@link #Mrgbi}). */</a>
+<span class="sourceLineNo">062</span><a id="line.62">        private static final double[][] Mrgb = Matrix.inverse(Mrgbi);</a>
+<span class="sourceLineNo">063</span><a id="line.63">        private static final float[][] MrgbF = Matrix.toFloat(Mrgb);</a>
+<span class="sourceLineNo">064</span><a id="line.64">        </a>
+<span class="sourceLineNo">065</span><a id="line.65">        // ----------------------------------------------------</a>
+<span class="sourceLineNo">066</span><a id="line.66">        </a>
+<span class="sourceLineNo">067</span><a id="line.67">        @Override</a>
+<span class="sourceLineNo">068</span><a id="line.68">        public float[] getWhitePoint() {</a>
+<span class="sourceLineNo">069</span><a id="line.69">                return Matrix.toFloat(D65.getXYZ());</a>
+<span class="sourceLineNo">070</span><a id="line.70">        }</a>
+<span class="sourceLineNo">071</span><a id="line.71">        </a>
+<span class="sourceLineNo">072</span><a id="line.72">        @Override</a>
+<span class="sourceLineNo">073</span><a id="line.73">        public float[] getPrimary(int idx) {</a>
+<span class="sourceLineNo">074</span><a id="line.74">                return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));</a>
+<span class="sourceLineNo">075</span><a id="line.75">        }</a>
+<span class="sourceLineNo">076</span><a id="line.76">        </a>
+<span class="sourceLineNo">077</span><a id="line.77">        // ----------------------------------------------------</a>
+<span class="sourceLineNo">078</span><a id="line.78">        </a>
+<span class="sourceLineNo">079</span><a id="line.79">        /** Constructor (not public). */</a>
+<span class="sourceLineNo">080</span><a id="line.80">        private sRgbColorSpace() {</a>
+<span class="sourceLineNo">081</span><a id="line.81">                super(ColorSpace.TYPE_RGB, 3);</a>
+<span class="sourceLineNo">082</span><a id="line.82">        }</a>
+<span class="sourceLineNo">083</span><a id="line.83">        </a>
+<span class="sourceLineNo">084</span><a id="line.84">        // direct conversion from/to D65-based XYZ space ------------------------------</a>
+<span class="sourceLineNo">085</span><a id="line.85">        </a>
+<span class="sourceLineNo">086</span><a id="line.86">        @Override</a>
+<span class="sourceLineNo">087</span><a id="line.87">        public float[] fromCIEXYZ65(float[] xyz65) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">                float[] rgb = Matrix.multiply(MrgbF, xyz65);    // to linear RGB</a>
+<span class="sourceLineNo">089</span><a id="line.89">                return GammaMap.applyFwd(rgb);                                  // to non-linear sRGB</a>
+<span class="sourceLineNo">090</span><a id="line.90">        }</a>
+<span class="sourceLineNo">091</span><a id="line.91">        </a>
+<span class="sourceLineNo">092</span><a id="line.92">        @Override</a>
+<span class="sourceLineNo">093</span><a id="line.93">        public float[] toCIEXYZ65(float[] srgbTHIS) {</a>
+<span class="sourceLineNo">094</span><a id="line.94">                float[] rgb = GammaMap.applyInv(srgbTHIS);              // to linear rgb</a>
+<span class="sourceLineNo">095</span><a id="line.95">                return Matrix.multiply(MrgbiF, rgb);    // to XYZ (D65)</a>
+<span class="sourceLineNo">096</span><a id="line.96">        }</a>
+<span class="sourceLineNo">097</span><a id="line.97">        </a>
+<span class="sourceLineNo">098</span><a id="line.98">        // Methods required by ColorSpace (conversion from/to PCS space) ------------------</a>
+<span class="sourceLineNo">099</span><a id="line.99"></a>
+<span class="sourceLineNo">100</span><a id="line.100">        // assumes xyz50 is in D50-based CS_CIEXYZ color space</a>
+<span class="sourceLineNo">101</span><a id="line.101">        @Override</a>
+<span class="sourceLineNo">102</span><a id="line.102">        public float[] fromCIEXYZ(float[] xyz50PCS) {</a>
+<span class="sourceLineNo">103</span><a id="line.103">                float[] xyz65 = catD50toD65.applyTo(xyz50PCS);  // to XYZ (D65)</a>
+<span class="sourceLineNo">104</span><a id="line.104">                return this.fromCIEXYZ65(xyz65);                                // to sRGB</a>
+<span class="sourceLineNo">105</span><a id="line.105">        }</a>
+<span class="sourceLineNo">106</span><a id="line.106"></a>
+<span class="sourceLineNo">107</span><a id="line.107">        // returned colors are in D50-based CS_CIEXYZ color space </a>
+<span class="sourceLineNo">108</span><a id="line.108">        @Override</a>
+<span class="sourceLineNo">109</span><a id="line.109">        public float[] toCIEXYZ(float[] srgbTHIS) {</a>
+<span class="sourceLineNo">110</span><a id="line.110">                float[] xyz65 = this.toCIEXYZ65(srgbTHIS);              // to XYZ (D65)</a>
+<span class="sourceLineNo">111</span><a id="line.111">                return catD65toD50.applyTo(xyz65);              // to XYZ (D50)</a>
+<span class="sourceLineNo">112</span><a id="line.112">        }</a>
+<span class="sourceLineNo">113</span><a id="line.113">        </a>
+<span class="sourceLineNo">114</span><a id="line.114">        // ----------------------------------------------------</a>
+<span class="sourceLineNo">115</span><a id="line.115">        </a>
+<span class="sourceLineNo">116</span><a id="line.116">        @Override // no conversion needed, since this is sRGB</a>
+<span class="sourceLineNo">117</span><a id="line.117">        public float[] fromRGB(float[] srgb) {</a>
+<span class="sourceLineNo">118</span><a id="line.118">                return srgb;</a>
+<span class="sourceLineNo">119</span><a id="line.119">        }</a>
+<span class="sourceLineNo">120</span><a id="line.120"></a>
+<span class="sourceLineNo">121</span><a id="line.121">        @Override // no conversion needed, since this is sRGB</a>
+<span class="sourceLineNo">122</span><a id="line.122">        public float[] toRGB(float[] srgbTHIS) {</a>
+<span class="sourceLineNo">123</span><a id="line.123">                return srgbTHIS;</a>
+<span class="sourceLineNo">124</span><a id="line.124">        }</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">}</a>
 
 
 

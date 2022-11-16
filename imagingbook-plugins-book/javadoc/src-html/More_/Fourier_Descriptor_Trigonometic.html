@@ -20,23 +20,23 @@
 <span class="sourceLineNo">010</span><a id="line.10">package More_;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
 <span class="sourceLineNo">012</span><a id="line.12">import static imagingbook.common.ij.IjUtils.noCurrentImage;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import static imagingbook.common.ij.IjUtils.requestSampleImage;</a>
-<span class="sourceLineNo">014</span><a id="line.14"></a>
-<span class="sourceLineNo">015</span><a id="line.15">import java.awt.Color;</a>
-<span class="sourceLineNo">016</span><a id="line.16">import java.awt.geom.Path2D;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import java.util.Arrays;</a>
-<span class="sourceLineNo">018</span><a id="line.18"></a>
-<span class="sourceLineNo">019</span><a id="line.19">import ij.IJ;</a>
-<span class="sourceLineNo">020</span><a id="line.20">import ij.ImagePlus;</a>
-<span class="sourceLineNo">021</span><a id="line.21">import ij.gui.GenericDialog;</a>
-<span class="sourceLineNo">022</span><a id="line.22">import ij.gui.Roi;</a>
-<span class="sourceLineNo">023</span><a id="line.23">import ij.plugin.filter.PlugInFilter;</a>
-<span class="sourceLineNo">024</span><a id="line.24">import ij.process.ByteProcessor;</a>
-<span class="sourceLineNo">025</span><a id="line.25">import ij.process.ImageProcessor;</a>
-<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">027</span><a id="line.27">import imagingbook.common.geometry.fd.FourierDescriptor;</a>
-<span class="sourceLineNo">028</span><a id="line.28">import imagingbook.common.geometry.fd.FourierDescriptorTrigonometric;</a>
-<span class="sourceLineNo">029</span><a id="line.29">import imagingbook.common.geometry.fd.Utils;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.awt.Color;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.awt.geom.Path2D;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.util.Arrays;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">import ij.IJ;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import ij.ImagePlus;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import ij.gui.GenericDialog;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import ij.gui.Roi;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import ij.plugin.filter.PlugInFilter;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import ij.process.ByteProcessor;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import ij.process.ImageProcessor;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.geometry.fd.FourierDescriptor;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import imagingbook.common.geometry.fd.FourierDescriptorTrigonometric;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import imagingbook.common.geometry.fd.Utils;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import imagingbook.common.ij.DialogUtils;</a>
 <span class="sourceLineNo">030</span><a id="line.30">import imagingbook.common.ij.RoiUtils;</a>
 <span class="sourceLineNo">031</span><a id="line.31">import imagingbook.common.ij.overlay.ColoredStroke;</a>
 <span class="sourceLineNo">032</span><a id="line.32">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</a>
@@ -85,7 +85,7 @@
 <span class="sourceLineNo">075</span><a id="line.75">         */</a>
 <span class="sourceLineNo">076</span><a id="line.76">        public Fourier_Descriptor_Trigonometic() {</a>
 <span class="sourceLineNo">077</span><a id="line.77">                if (noCurrentImage()) {</a>
-<span class="sourceLineNo">078</span><a id="line.78">                        requestSampleImage(GeneralSampleImage.HouseRoi_tif);</a>
+<span class="sourceLineNo">078</span><a id="line.78">                        DialogUtils.askForSampleImage(GeneralSampleImage.HouseRoi_tif);</a>
 <span class="sourceLineNo">079</span><a id="line.79">                }</a>
 <span class="sourceLineNo">080</span><a id="line.80">        }</a>
 <span class="sourceLineNo">081</span><a id="line.81">        </a>

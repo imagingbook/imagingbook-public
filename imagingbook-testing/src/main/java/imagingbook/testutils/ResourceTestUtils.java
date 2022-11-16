@@ -31,7 +31,6 @@ public abstract class ResourceTestUtils {
 	 * Scans all resources defined by the specified {@link NamedResource} class and
 	 * validates that they exist.
 	 * 
-	 * @param <E> generic type
 	 * @param clazz enum class implementing {@link NamedResource}
 	 * @return the number of validated resources
 	 */
@@ -57,15 +56,9 @@ public abstract class ResourceTestUtils {
 	}
 	
 	/**
-	 * Scans all resources defined by some {@link ImageResource} class, validates that they can be opened
-	 * as images.
-	 * TODO: currently we cannot validate the existence of the resource in a case-sensitive manner,
-	 * but this is IMPORTANT when loading resources from a JAR file later.
-	 */
-	/**
 	 * Scans all resources defined by some {@link ImageResource} class and
 	 * validates that they can be opened as images.
-	 * @param <E> generic type
+	 * 
 	 * @param clazz enum class implementing {@link ImageResource}
 	 * @return the number of validated image resources
 	 */

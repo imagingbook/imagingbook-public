@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
  * <p>
  * ImageJ plugin, continuously desaturates the current image directly in RGB
  * color space (without conversion to HSV or HSB). The degree of desaturation is
- * controlled by factor S &in; [0,1]. With S = 1, the image is unchanged, with S
+ * controlled by factor S in [0,1]. With S = 1, the image is unchanged, with S
  * = 0 the resulting image is completely colorless (gray). See Sec. 13.2.2
  * (Prog. 13.5) of [1] for details.
  * </p>

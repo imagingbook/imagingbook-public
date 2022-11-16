@@ -150,7 +150,7 @@
 <span class="sourceLineNo">140</span><a id="line.140">                                float H = fH.getf(u, v);</a>
 <span class="sourceLineNo">141</span><a id="line.141">                                float S = fS.getf(u, v);</a>
 <span class="sourceLineNo">142</span><a id="line.142">                                float V = fV.getf(u, v);</a>
-<span class="sourceLineNo">143</span><a id="line.143">                                int[] RGB2 = RgbUtils.unnormalize(cc.toRGB(new float[] {H, S, V}));</a>
+<span class="sourceLineNo">143</span><a id="line.143">                                int[] RGB2 = RgbUtils.denormalize(cc.toRGB(new float[] {H, S, V}));</a>
 <span class="sourceLineNo">144</span><a id="line.144">                                cp.putPixel(u, v, RGB2);</a>
 <span class="sourceLineNo">145</span><a id="line.145">                        }</a>
 <span class="sourceLineNo">146</span><a id="line.146">                }</a>

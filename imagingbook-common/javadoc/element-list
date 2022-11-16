@@ -1,6 +1,9 @@
 imagingbook.common
 imagingbook.common.color
+imagingbook.common.color.adapt
+imagingbook.common.color.cie
 imagingbook.common.color.colorspace
+imagingbook.common.color.gamma
 imagingbook.common.color.iterate
 imagingbook.common.color.quantize
 imagingbook.common.color.sets

@@ -20,27 +20,27 @@
 <span class="sourceLineNo">010</span><a id="line.10">package More_;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
 <span class="sourceLineNo">012</span><a id="line.12">import static imagingbook.common.ij.IjUtils.noCurrentImage;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import static imagingbook.common.ij.IjUtils.requestSampleImage;</a>
-<span class="sourceLineNo">014</span><a id="line.14"></a>
-<span class="sourceLineNo">015</span><a id="line.15">import java.awt.Color;</a>
-<span class="sourceLineNo">016</span><a id="line.16">import java.awt.Font;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import java.awt.Shape;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import java.awt.geom.AffineTransform;</a>
-<span class="sourceLineNo">019</span><a id="line.19">import java.awt.geom.Path2D;</a>
-<span class="sourceLineNo">020</span><a id="line.20">import java.util.List;</a>
-<span class="sourceLineNo">021</span><a id="line.21">import java.util.Locale;</a>
-<span class="sourceLineNo">022</span><a id="line.22"></a>
-<span class="sourceLineNo">023</span><a id="line.23">import ij.IJ;</a>
-<span class="sourceLineNo">024</span><a id="line.24">import ij.ImagePlus;</a>
-<span class="sourceLineNo">025</span><a id="line.25">import ij.gui.GenericDialog;</a>
-<span class="sourceLineNo">026</span><a id="line.26">import ij.plugin.filter.PlugInFilter;</a>
-<span class="sourceLineNo">027</span><a id="line.27">import ij.process.ByteProcessor;</a>
-<span class="sourceLineNo">028</span><a id="line.28">import ij.process.ImageProcessor;</a>
-<span class="sourceLineNo">029</span><a id="line.29">import imagingbook.common.color.iterate.CssColorSequencer;</a>
-<span class="sourceLineNo">030</span><a id="line.30">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">031</span><a id="line.31">import imagingbook.common.geometry.fd.FourierDescriptor;</a>
-<span class="sourceLineNo">032</span><a id="line.32">import imagingbook.common.geometry.fd.FourierDescriptorUniform;</a>
-<span class="sourceLineNo">033</span><a id="line.33">import imagingbook.common.geometry.fd.Utils;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.awt.Color;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.awt.Font;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.awt.Shape;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import java.awt.geom.AffineTransform;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import java.awt.geom.Path2D;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import java.util.List;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import java.util.Locale;</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">import ij.IJ;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import ij.ImagePlus;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import ij.gui.GenericDialog;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import ij.plugin.filter.PlugInFilter;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import ij.process.ByteProcessor;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import ij.process.ImageProcessor;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import imagingbook.common.color.iterate.CssColorSequencer;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import imagingbook.common.geometry.fd.FourierDescriptor;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import imagingbook.common.geometry.fd.FourierDescriptorUniform;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import imagingbook.common.geometry.fd.Utils;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import imagingbook.common.ij.DialogUtils;</a>
 <span class="sourceLineNo">034</span><a id="line.34">import imagingbook.common.ij.overlay.ColoredStroke;</a>
 <span class="sourceLineNo">035</span><a id="line.35">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</a>
 <span class="sourceLineNo">036</span><a id="line.36">import imagingbook.common.math.Complex;</a>
@@ -105,7 +105,7 @@
 <span class="sourceLineNo">095</span><a id="line.95">         */</a>
 <span class="sourceLineNo">096</span><a id="line.96">        public Fourier_Descriptor_Animation() {</a>
 <span class="sourceLineNo">097</span><a id="line.97">                if (noCurrentImage()) {</a>
-<span class="sourceLineNo">098</span><a id="line.98">                        requestSampleImage(GeneralSampleImage.MapleLeafSmall);</a>
+<span class="sourceLineNo">098</span><a id="line.98">                        DialogUtils.askForSampleImage(GeneralSampleImage.MapleLeafSmall);</a>
 <span class="sourceLineNo">099</span><a id="line.99">                }</a>
 <span class="sourceLineNo">100</span><a id="line.100">        }</a>
 <span class="sourceLineNo">101</span><a id="line.101">        </a>

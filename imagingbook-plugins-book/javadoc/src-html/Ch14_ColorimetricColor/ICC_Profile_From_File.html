@@ -24,8 +24,8 @@
 <span class="sourceLineNo">014</span><a id="line.14">import java.io.IOException;</a>
 <span class="sourceLineNo">015</span><a id="line.15"></a>
 <span class="sourceLineNo">016</span><a id="line.16">import ij.IJ;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import ij.plugin.PlugIn;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.ij.IjUtils;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import ij.io.OpenDialog;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import ij.plugin.PlugIn;</a>
 <span class="sourceLineNo">019</span><a id="line.19">import imagingbook.common.math.Matrix;</a>
 <span class="sourceLineNo">020</span><a id="line.20">import imagingbook.common.math.PrintPrecision;</a>
 <span class="sourceLineNo">021</span><a id="line.21"></a>
@@ -40,70 +40,92 @@
 <span class="sourceLineNo">030</span><a id="line.30"> */</a>
 <span class="sourceLineNo">031</span><a id="line.31">public class ICC_Profile_From_File implements PlugIn {</a>
 <span class="sourceLineNo">032</span><a id="line.32"></a>
-<span class="sourceLineNo">033</span><a id="line.33">        public void run(String arg0) {</a>
-<span class="sourceLineNo">034</span><a id="line.34">                </a>
-<span class="sourceLineNo">035</span><a id="line.35">                String path = IjUtils.askForOpenPath("Select an ICC profile file (.icc or .icm)");</a>
-<span class="sourceLineNo">036</span><a id="line.36">                if (path == null) return;</a>
-<span class="sourceLineNo">037</span><a id="line.37">                </a>
-<span class="sourceLineNo">038</span><a id="line.38">                IJ.log("path = " + path);</a>
-<span class="sourceLineNo">039</span><a id="line.39">                ICC_Profile iccProfile = null;</a>
-<span class="sourceLineNo">040</span><a id="line.40">                </a>
-<span class="sourceLineNo">041</span><a id="line.41">                try {iccProfile = ICC_ProfileRGB.getInstance(path);</a>
-<span class="sourceLineNo">042</span><a id="line.42">                } catch (IOException e) {}</a>
-<span class="sourceLineNo">043</span><a id="line.43">                </a>
-<span class="sourceLineNo">044</span><a id="line.44">                if (iccProfile == null) {</a>
-<span class="sourceLineNo">045</span><a id="line.45">                        IJ.error("Could not open ICC profile file " + path);</a>
-<span class="sourceLineNo">046</span><a id="line.46">                        return;</a>
-<span class="sourceLineNo">047</span><a id="line.47">                }</a>
-<span class="sourceLineNo">048</span><a id="line.48">                </a>
-<span class="sourceLineNo">049</span><a id="line.49">                PrintPrecision.set(5);</a>
+<span class="sourceLineNo">033</span><a id="line.33">        @Override</a>
+<span class="sourceLineNo">034</span><a id="line.34">        public void run(String arg0) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">                </a>
+<span class="sourceLineNo">036</span><a id="line.36">                String path = askForOpenPath("Select an ICC profile file (.icc or .icm)");</a>
+<span class="sourceLineNo">037</span><a id="line.37">//              String path = IjUtils.askForOpenPath("Select an ICC profile file (.icc or .icm)");</a>
+<span class="sourceLineNo">038</span><a id="line.38">                if (path == null) return;</a>
+<span class="sourceLineNo">039</span><a id="line.39">                </a>
+<span class="sourceLineNo">040</span><a id="line.40">                IJ.log("path = " + path);</a>
+<span class="sourceLineNo">041</span><a id="line.41">                ICC_Profile iccProfile = null;</a>
+<span class="sourceLineNo">042</span><a id="line.42">                </a>
+<span class="sourceLineNo">043</span><a id="line.43">                try {iccProfile = ICC_ProfileRGB.getInstance(path);</a>
+<span class="sourceLineNo">044</span><a id="line.44">                } catch (IOException e) {}</a>
+<span class="sourceLineNo">045</span><a id="line.45">                </a>
+<span class="sourceLineNo">046</span><a id="line.46">                if (iccProfile == null) {</a>
+<span class="sourceLineNo">047</span><a id="line.47">                        IJ.error("Could not open ICC profile file " + path);</a>
+<span class="sourceLineNo">048</span><a id="line.48">                        return;</a>
+<span class="sourceLineNo">049</span><a id="line.49">                }</a>
 <span class="sourceLineNo">050</span><a id="line.50">                </a>
-<span class="sourceLineNo">051</span><a id="line.51">                ICC_ColorSpace iccColorSpace = new ICC_ColorSpace(iccProfile);</a>
-<span class="sourceLineNo">052</span><a id="line.52">                int nComp = iccColorSpace.getNumComponents();</a>
-<span class="sourceLineNo">053</span><a id="line.53">                if (nComp != 3) {</a>
-<span class="sourceLineNo">054</span><a id="line.54">                        IJ.error("Color space must have 3 components, this one has " + nComp);</a>
-<span class="sourceLineNo">055</span><a id="line.55">                        return;</a>
-<span class="sourceLineNo">056</span><a id="line.56">                }</a>
-<span class="sourceLineNo">057</span><a id="line.57">                </a>
-<span class="sourceLineNo">058</span><a id="line.58">                IJ.log("color space class = " + iccColorSpace.getClass().getSimpleName());</a>
-<span class="sourceLineNo">059</span><a id="line.59">                IJ.log("color space type = " + iccColorSpace.getType());</a>
-<span class="sourceLineNo">060</span><a id="line.60">                IJ.log("color space ncomp = " + iccColorSpace.getNumComponents());</a>
-<span class="sourceLineNo">061</span><a id="line.61">                </a>
-<span class="sourceLineNo">062</span><a id="line.62">        </a>
-<span class="sourceLineNo">063</span><a id="line.63">                // specify a device-specific color:</a>
-<span class="sourceLineNo">064</span><a id="line.64">                float[] deviceColor = {0.77f, 0.13f, 0.89f};</a>
-<span class="sourceLineNo">065</span><a id="line.65">                //float[] deviceColor = {0.0f, 0.0f, 0.0f};</a>
-<span class="sourceLineNo">066</span><a id="line.66">                IJ.log("device color = " + Matrix.toString(deviceColor));</a>
-<span class="sourceLineNo">067</span><a id="line.67">                </a>
-<span class="sourceLineNo">068</span><a id="line.68">                // convert to sRGB:</a>
-<span class="sourceLineNo">069</span><a id="line.69">                float[] sRGBColor = iccColorSpace.toRGB(deviceColor);</a>
-<span class="sourceLineNo">070</span><a id="line.70">                IJ.log("sRGB = " + Matrix.toString(sRGBColor));</a>
-<span class="sourceLineNo">071</span><a id="line.71">                </a>
-<span class="sourceLineNo">072</span><a id="line.72">                // convert to (D50-based) XYZ:</a>
-<span class="sourceLineNo">073</span><a id="line.73">                float[] XYZColor = iccColorSpace.toCIEXYZ(deviceColor);</a>
-<span class="sourceLineNo">074</span><a id="line.74">                IJ.log("XYZ = " + Matrix.toString(XYZColor));</a>
-<span class="sourceLineNo">075</span><a id="line.75">                </a>
-<span class="sourceLineNo">076</span><a id="line.76">                deviceColor = iccColorSpace.fromRGB(sRGBColor);</a>
-<span class="sourceLineNo">077</span><a id="line.77">                IJ.log("device color direct (check) = " + Matrix.toString(deviceColor));</a>
-<span class="sourceLineNo">078</span><a id="line.78">                </a>
-<span class="sourceLineNo">079</span><a id="line.79">                deviceColor = iccColorSpace.fromCIEXYZ(XYZColor);</a>
-<span class="sourceLineNo">080</span><a id="line.80">                IJ.log("device color via XYZ (check) = " + Matrix.toString(deviceColor));</a>
-<span class="sourceLineNo">081</span><a id="line.81">                </a>
-<span class="sourceLineNo">082</span><a id="line.82">                // list sRGB Values:</a>
-<span class="sourceLineNo">083</span><a id="line.83">                for (int ri = 0; ri &lt;= 10; ri++) {</a>
-<span class="sourceLineNo">084</span><a id="line.84">                        for (int gi = 0; gi &lt;= 10; gi++) {</a>
-<span class="sourceLineNo">085</span><a id="line.85">                                for (int bi = 0; bi &lt;= 10; bi++) {</a>
-<span class="sourceLineNo">086</span><a id="line.86">                                        float[] devCol = {ri * 0.1f, gi * 0.1f, bi * 0.1f};</a>
-<span class="sourceLineNo">087</span><a id="line.87">                                        float[] sRGB = iccColorSpace.toRGB(devCol);</a>
-<span class="sourceLineNo">088</span><a id="line.88">                                        IJ.log(Matrix.toString(devCol) + " -&gt; " + Matrix.toString(sRGB));</a>
-<span class="sourceLineNo">089</span><a id="line.89">                                }</a>
-<span class="sourceLineNo">090</span><a id="line.90">                        }</a>
-<span class="sourceLineNo">091</span><a id="line.91">                }</a>
-<span class="sourceLineNo">092</span><a id="line.92">                </a>
-<span class="sourceLineNo">093</span><a id="line.93">                </a>
+<span class="sourceLineNo">051</span><a id="line.51">                PrintPrecision.set(5);</a>
+<span class="sourceLineNo">052</span><a id="line.52">                </a>
+<span class="sourceLineNo">053</span><a id="line.53">                ICC_ColorSpace iccColorSpace = new ICC_ColorSpace(iccProfile);</a>
+<span class="sourceLineNo">054</span><a id="line.54">                int nComp = iccColorSpace.getNumComponents();</a>
+<span class="sourceLineNo">055</span><a id="line.55">                if (nComp != 3) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                        IJ.error("Color space must have 3 components, this one has " + nComp);</a>
+<span class="sourceLineNo">057</span><a id="line.57">                        return;</a>
+<span class="sourceLineNo">058</span><a id="line.58">                }</a>
+<span class="sourceLineNo">059</span><a id="line.59">                </a>
+<span class="sourceLineNo">060</span><a id="line.60">                IJ.log("color space class = " + iccColorSpace.getClass().getSimpleName());</a>
+<span class="sourceLineNo">061</span><a id="line.61">                IJ.log("color space type = " + iccColorSpace.getType());</a>
+<span class="sourceLineNo">062</span><a id="line.62">                IJ.log("color space ncomp = " + iccColorSpace.getNumComponents());</a>
+<span class="sourceLineNo">063</span><a id="line.63">                </a>
+<span class="sourceLineNo">064</span><a id="line.64">        </a>
+<span class="sourceLineNo">065</span><a id="line.65">                // specify a device-specific color:</a>
+<span class="sourceLineNo">066</span><a id="line.66">                float[] deviceColor = {0.77f, 0.13f, 0.89f};</a>
+<span class="sourceLineNo">067</span><a id="line.67">                //float[] deviceColor = {0.0f, 0.0f, 0.0f};</a>
+<span class="sourceLineNo">068</span><a id="line.68">                IJ.log("device color = " + Matrix.toString(deviceColor));</a>
+<span class="sourceLineNo">069</span><a id="line.69">                </a>
+<span class="sourceLineNo">070</span><a id="line.70">                // convert to sRGB:</a>
+<span class="sourceLineNo">071</span><a id="line.71">                float[] sRGBColor = iccColorSpace.toRGB(deviceColor);</a>
+<span class="sourceLineNo">072</span><a id="line.72">                IJ.log("sRGB = " + Matrix.toString(sRGBColor));</a>
+<span class="sourceLineNo">073</span><a id="line.73">                </a>
+<span class="sourceLineNo">074</span><a id="line.74">                // convert to (D50-based) XYZ:</a>
+<span class="sourceLineNo">075</span><a id="line.75">                float[] XYZColor = iccColorSpace.toCIEXYZ(deviceColor);</a>
+<span class="sourceLineNo">076</span><a id="line.76">                IJ.log("XYZ = " + Matrix.toString(XYZColor));</a>
+<span class="sourceLineNo">077</span><a id="line.77">                </a>
+<span class="sourceLineNo">078</span><a id="line.78">                deviceColor = iccColorSpace.fromRGB(sRGBColor);</a>
+<span class="sourceLineNo">079</span><a id="line.79">                IJ.log("device color direct (check) = " + Matrix.toString(deviceColor));</a>
+<span class="sourceLineNo">080</span><a id="line.80">                </a>
+<span class="sourceLineNo">081</span><a id="line.81">                deviceColor = iccColorSpace.fromCIEXYZ(XYZColor);</a>
+<span class="sourceLineNo">082</span><a id="line.82">                IJ.log("device color via XYZ (check) = " + Matrix.toString(deviceColor));</a>
+<span class="sourceLineNo">083</span><a id="line.83">                </a>
+<span class="sourceLineNo">084</span><a id="line.84">                // list sRGB Values:</a>
+<span class="sourceLineNo">085</span><a id="line.85">                for (int ri = 0; ri &lt;= 10; ri++) {</a>
+<span class="sourceLineNo">086</span><a id="line.86">                        for (int gi = 0; gi &lt;= 10; gi++) {</a>
+<span class="sourceLineNo">087</span><a id="line.87">                                for (int bi = 0; bi &lt;= 10; bi++) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">                                        float[] devCol = {ri * 0.1f, gi * 0.1f, bi * 0.1f};</a>
+<span class="sourceLineNo">089</span><a id="line.89">                                        float[] sRGB = iccColorSpace.toRGB(devCol);</a>
+<span class="sourceLineNo">090</span><a id="line.90">                                        IJ.log(Matrix.toString(devCol) + " -&gt; " + Matrix.toString(sRGB));</a>
+<span class="sourceLineNo">091</span><a id="line.91">                                }</a>
+<span class="sourceLineNo">092</span><a id="line.92">                        }</a>
+<span class="sourceLineNo">093</span><a id="line.93">                }</a>
 <span class="sourceLineNo">094</span><a id="line.94">        }</a>
-<span class="sourceLineNo">095</span><a id="line.95"></a>
-<span class="sourceLineNo">096</span><a id="line.96">}</a>
+<span class="sourceLineNo">095</span><a id="line.95">        </a>
+<span class="sourceLineNo">096</span><a id="line.96">        /**</a>
+<span class="sourceLineNo">097</span><a id="line.97">         * Queries the user for an arbitrary file to be opened.</a>
+<span class="sourceLineNo">098</span><a id="line.98">         * TODO: replace by IJ.open()?</a>
+<span class="sourceLineNo">099</span><a id="line.99">         *  </a>
+<span class="sourceLineNo">100</span><a id="line.100">         * @param title string to be shown in the interaction window.</a>
+<span class="sourceLineNo">101</span><a id="line.101">         * @return path of the selected resource.</a>
+<span class="sourceLineNo">102</span><a id="line.102">         */</a>
+<span class="sourceLineNo">103</span><a id="line.103">        private String askForOpenPath(String title) {</a>
+<span class="sourceLineNo">104</span><a id="line.104">                OpenDialog od = new OpenDialog(title, "");</a>
+<span class="sourceLineNo">105</span><a id="line.105">                String dir = od.getDirectory();</a>
+<span class="sourceLineNo">106</span><a id="line.106">                String name = od.getFileName();</a>
+<span class="sourceLineNo">107</span><a id="line.107">                if (name == null)</a>
+<span class="sourceLineNo">108</span><a id="line.108">                        return null;</a>
+<span class="sourceLineNo">109</span><a id="line.109">                return encodeURL(dir + name);</a>
+<span class="sourceLineNo">110</span><a id="line.110">        }</a>
+<span class="sourceLineNo">111</span><a id="line.111">        </a>
+<span class="sourceLineNo">112</span><a id="line.112">        private static String encodeURL(String url) {</a>
+<span class="sourceLineNo">113</span><a id="line.113">                //url = url.replaceAll(" ","%20");      // this doesn't work with spaces</a>
+<span class="sourceLineNo">114</span><a id="line.114">                url = url.replace('\\','/');</a>
+<span class="sourceLineNo">115</span><a id="line.115">                return url;</a>
+<span class="sourceLineNo">116</span><a id="line.116">        }</a>
+<span class="sourceLineNo">117</span><a id="line.117"></a>
+<span class="sourceLineNo">118</span><a id="line.118">}</a>
 
 
 

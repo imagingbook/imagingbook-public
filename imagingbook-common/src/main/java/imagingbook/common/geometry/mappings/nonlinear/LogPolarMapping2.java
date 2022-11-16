@@ -12,6 +12,7 @@ import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.math.Arithmetic;
 
 /**
+ * <p>
  * This class implements a 2D log-polar mapping transformation. Improved version
  * (Version 2), maps radius [rmin,rmax] to [0,nr]). See Sec. 21.1.6 (Eq 21.71 -
  * 21.74, Alg. 21.1) of [1] for additional details and examples.

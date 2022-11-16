@@ -26,51 +26,70 @@
 <span class="sourceLineNo">016</span><a id="line.16">import ij.plugin.filter.PlugInFilter;</a>
 <span class="sourceLineNo">017</span><a id="line.17">import ij.process.ImageProcessor;</a>
 <span class="sourceLineNo">018</span><a id="line.18"></a>
-<span class="sourceLineNo">019</span><a id="line.19">public class Brighten_Index_Image implements PlugInFilter {</a>
-<span class="sourceLineNo">020</span><a id="line.20">        </a>
-<span class="sourceLineNo">021</span><a id="line.21">        public int setup(String arg, ImagePlus imp) {</a>
-<span class="sourceLineNo">022</span><a id="line.22">                return DOES_8G + DOES_8C;       // this plugin works on indexed color images </a>
-<span class="sourceLineNo">023</span><a id="line.23">        }</a>
-<span class="sourceLineNo">024</span><a id="line.24"></a>
-<span class="sourceLineNo">025</span><a id="line.25">        public void run(ImageProcessor ip) {</a>
-<span class="sourceLineNo">026</span><a id="line.26">                ColorModel cm =  ip.getColorModel();</a>
-<span class="sourceLineNo">027</span><a id="line.27">                if (!(cm instanceof IndexColorModel)) {</a>
-<span class="sourceLineNo">028</span><a id="line.28">                        IJ.error("Color model not of type IndexedColorModel");</a>
-<span class="sourceLineNo">029</span><a id="line.29">                        return;</a>
-<span class="sourceLineNo">030</span><a id="line.30">                }</a>
-<span class="sourceLineNo">031</span><a id="line.31">                </a>
-<span class="sourceLineNo">032</span><a id="line.32">                IndexColorModel icm = (IndexColorModel) cm; </a>
-<span class="sourceLineNo">033</span><a id="line.33">                //IJ.write("Color Model=" + ip.getColorModel() + " " + ip.isColorLut());</a>
-<span class="sourceLineNo">034</span><a id="line.34">        </a>
-<span class="sourceLineNo">035</span><a id="line.35">                int pixBits = icm.getPixelSize(); </a>
-<span class="sourceLineNo">036</span><a id="line.36">                int nColors = icm.getMapSize(); </a>
-<span class="sourceLineNo">037</span><a id="line.37">                </a>
-<span class="sourceLineNo">038</span><a id="line.38">                //retrieve the current lookup tables (maps) for R,G,B</a>
-<span class="sourceLineNo">039</span><a id="line.39">                byte[] rMap = new byte[nColors]; </a>
-<span class="sourceLineNo">040</span><a id="line.40">                byte[] gMap = new byte[nColors]; </a>
-<span class="sourceLineNo">041</span><a id="line.41">                byte[] bMap = new byte[nColors];</a>
-<span class="sourceLineNo">042</span><a id="line.42">                </a>
-<span class="sourceLineNo">043</span><a id="line.43">                icm.getReds(rMap);  </a>
-<span class="sourceLineNo">044</span><a id="line.44">                icm.getGreens(gMap);</a>
-<span class="sourceLineNo">045</span><a id="line.45">                icm.getBlues(bMap);  </a>
-<span class="sourceLineNo">046</span><a id="line.46">                </a>
-<span class="sourceLineNo">047</span><a id="line.47">                //modify the lookup tables      </a>
-<span class="sourceLineNo">048</span><a id="line.48">                for (int idx = 0; idx &lt; nColors; idx++){ </a>
-<span class="sourceLineNo">049</span><a id="line.49">                        int r = 0xff &amp; rMap[idx];       //mask to treat as unsigned byte </a>
-<span class="sourceLineNo">050</span><a id="line.50">                        int g = 0xff &amp; gMap[idx];</a>
-<span class="sourceLineNo">051</span><a id="line.51">                        int b = 0xff &amp; bMap[idx];   </a>
-<span class="sourceLineNo">052</span><a id="line.52">                        rMap[idx] = (byte) Math.min(r + 10, 255); </a>
-<span class="sourceLineNo">053</span><a id="line.53">                        gMap[idx] = (byte) Math.min(g + 10, 255);</a>
-<span class="sourceLineNo">054</span><a id="line.54">                        bMap[idx] = (byte) Math.min(b + 10, 255); </a>
-<span class="sourceLineNo">055</span><a id="line.55">                }</a>
+<span class="sourceLineNo">019</span><a id="line.19">/**</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * &lt;p&gt;</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * ImageJ plugin, increases the brightness of an indexed color image by 10 units</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * (each color component). See Sec. 13.1 (Prog. 13.3) of [1] for details. Note</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * that only the color model (RGB lookup table) of the image is changed while the</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * actual pixel values are not modified.</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * &lt;p&gt;</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * </a>
+<span class="sourceLineNo">031</span><a id="line.31"> * @author WB</a>
+<span class="sourceLineNo">032</span><a id="line.32"> *</a>
+<span class="sourceLineNo">033</span><a id="line.33"> */</a>
+<span class="sourceLineNo">034</span><a id="line.34">public class Brighten_Index_Image implements PlugInFilter {</a>
+<span class="sourceLineNo">035</span><a id="line.35">        </a>
+<span class="sourceLineNo">036</span><a id="line.36">        private static int INCREASE = 10;       // increase by 10 units</a>
+<span class="sourceLineNo">037</span><a id="line.37">        </a>
+<span class="sourceLineNo">038</span><a id="line.38">        @Override</a>
+<span class="sourceLineNo">039</span><a id="line.39">        public int setup(String arg, ImagePlus imp) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">                return DOES_8G + DOES_8C;       // this plugin works on indexed color images </a>
+<span class="sourceLineNo">041</span><a id="line.41">        }</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">        @Override</a>
+<span class="sourceLineNo">044</span><a id="line.44">        public void run(ImageProcessor ip) {</a>
+<span class="sourceLineNo">045</span><a id="line.45">                ColorModel cm =  ip.getColorModel();</a>
+<span class="sourceLineNo">046</span><a id="line.46">//              IJ.log("Color Model=" + cm + " " + ip.isColorLut());</a>
+<span class="sourceLineNo">047</span><a id="line.47">                </a>
+<span class="sourceLineNo">048</span><a id="line.48">                if (!(cm instanceof IndexColorModel)) {</a>
+<span class="sourceLineNo">049</span><a id="line.49">                        IJ.error("Color model not of type IndexedColorModel");</a>
+<span class="sourceLineNo">050</span><a id="line.50">                        return;</a>
+<span class="sourceLineNo">051</span><a id="line.51">                }</a>
+<span class="sourceLineNo">052</span><a id="line.52">                IndexColorModel icm = (IndexColorModel) cm; </a>
+<span class="sourceLineNo">053</span><a id="line.53">                </a>
+<span class="sourceLineNo">054</span><a id="line.54">                int pixBits = icm.getPixelSize(); </a>
+<span class="sourceLineNo">055</span><a id="line.55">                int nColors = icm.getMapSize(); </a>
 <span class="sourceLineNo">056</span><a id="line.56">                </a>
-<span class="sourceLineNo">057</span><a id="line.57">                //create a new color model and apply to the image</a>
-<span class="sourceLineNo">058</span><a id="line.58">                IndexColorModel icm2 = new IndexColorModel(pixBits, nColors, rMap, gMap, bMap);  </a>
-<span class="sourceLineNo">059</span><a id="line.59">                ip.setColorModel(icm2);</a>
-<span class="sourceLineNo">060</span><a id="line.60">        }</a>
-<span class="sourceLineNo">061</span><a id="line.61"></a>
-<span class="sourceLineNo">062</span><a id="line.62">}</a>
-<span class="sourceLineNo">063</span><a id="line.63"></a>
+<span class="sourceLineNo">057</span><a id="line.57">                //retrieve the current lookup tables (maps) for R,G,B</a>
+<span class="sourceLineNo">058</span><a id="line.58">                byte[] rMap = new byte[nColors]; </a>
+<span class="sourceLineNo">059</span><a id="line.59">                byte[] gMap = new byte[nColors]; </a>
+<span class="sourceLineNo">060</span><a id="line.60">                byte[] bMap = new byte[nColors];</a>
+<span class="sourceLineNo">061</span><a id="line.61">                </a>
+<span class="sourceLineNo">062</span><a id="line.62">                icm.getReds(rMap);  </a>
+<span class="sourceLineNo">063</span><a id="line.63">                icm.getGreens(gMap);</a>
+<span class="sourceLineNo">064</span><a id="line.64">                icm.getBlues(bMap);  </a>
+<span class="sourceLineNo">065</span><a id="line.65">                </a>
+<span class="sourceLineNo">066</span><a id="line.66">                // modify the lookup tables     </a>
+<span class="sourceLineNo">067</span><a id="line.67">                for (int idx = 0; idx &lt; nColors; idx++){ </a>
+<span class="sourceLineNo">068</span><a id="line.68">                        int r = 0xff &amp; rMap[idx];       //mask to treat as unsigned byte </a>
+<span class="sourceLineNo">069</span><a id="line.69">                        int g = 0xff &amp; gMap[idx];</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        int b = 0xff &amp; bMap[idx];   </a>
+<span class="sourceLineNo">071</span><a id="line.71">                        rMap[idx] = (byte) Math.min(r + INCREASE, 255); </a>
+<span class="sourceLineNo">072</span><a id="line.72">                        gMap[idx] = (byte) Math.min(g + INCREASE, 255);</a>
+<span class="sourceLineNo">073</span><a id="line.73">                        bMap[idx] = (byte) Math.min(b + INCREASE, 255);</a>
+<span class="sourceLineNo">074</span><a id="line.74">                }</a>
+<span class="sourceLineNo">075</span><a id="line.75">                </a>
+<span class="sourceLineNo">076</span><a id="line.76">                //create a new color model and apply to the image</a>
+<span class="sourceLineNo">077</span><a id="line.77">                IndexColorModel icm2 = new IndexColorModel(pixBits, nColors, rMap, gMap, bMap);  </a>
+<span class="sourceLineNo">078</span><a id="line.78">                ip.setColorModel(icm2);</a>
+<span class="sourceLineNo">079</span><a id="line.79">        }</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">}</a>
+<span class="sourceLineNo">082</span><a id="line.82"></a>
 
 
 
