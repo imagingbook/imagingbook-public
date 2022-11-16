@@ -9,7 +9,7 @@ package imagingbook.common.color.gamma;
  * @author WB
  * @version 2022/11/16
  */
-public interface GammaMappingFunction {
+public interface GammaMapping {
 	
 	/**
 	 * Forward Gamma mapping (from linear to non-linear component values).

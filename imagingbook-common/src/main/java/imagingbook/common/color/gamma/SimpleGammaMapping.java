@@ -16,7 +16,7 @@ package imagingbook.common.color.gamma;
  * @author WB
  * @version 2022/11/14
  */
-public class SimpleGammaMapping implements GammaMappingFunction {
+public class SimpleGammaMapping implements GammaMapping {
 	
 	private final double gamma;
 	private final double igamma;

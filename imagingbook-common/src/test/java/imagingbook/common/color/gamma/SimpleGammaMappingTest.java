@@ -23,7 +23,7 @@ public class SimpleGammaMappingTest {
 	
 	// ----------------------------
 	
-	private void doCheckDouble(GammaMappingFunction mf) {	
+	private void doCheckDouble(GammaMapping mf) {	
 		for (int i = 0; i <= 1000; i++) {
 			double lc1 = (double) i / 1000;
 			double nlc = mf.applyFwd(lc1);
@@ -36,7 +36,7 @@ public class SimpleGammaMappingTest {
 		assertEquals(1.0, mf.applyInv(1.0), TOLD);
 	}
 	
-	private void doCheckFloat(GammaMappingFunction mf) {	
+	private void doCheckFloat(GammaMapping mf) {	
 		for (int i = 0; i <= 1000; i++) {
 			float lc1 = (float) i / 1000;
 			float nlc = mf.applyFwd(lc1);

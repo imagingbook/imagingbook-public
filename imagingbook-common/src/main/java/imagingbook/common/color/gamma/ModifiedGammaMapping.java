@@ -22,7 +22,7 @@ package imagingbook.common.color.gamma;
  * @author WB
  * @version 2022/11/14
  */
-public class ModifiedGammaMapping implements GammaMappingFunction {
+public class ModifiedGammaMapping implements GammaMapping {
 	
 	/** Gamma mapping function instance for ITU-R BT.709 (see Table 3.1 of [1]). */
 	public static ModifiedGammaMapping ITU709 = new ModifiedGammaMapping(1/2.222, 0.018); //, 4.5, 0.099);
