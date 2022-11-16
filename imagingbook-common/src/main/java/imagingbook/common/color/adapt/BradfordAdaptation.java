@@ -23,7 +23,7 @@ import imagingbook.common.color.cie.Illuminant;
  * The actual color mapping is done by method {@link #applyTo(float[])}.
  * The underlying linear transformation is specified by a 3x3 matrix,
  * which may be retrieved by {@link #getAdaptationMatrix()}).
- * See the Section 14.6 of [1] for additional details and examples.
+ * See Sec. 14.6 of [1] for additional details and examples.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; 

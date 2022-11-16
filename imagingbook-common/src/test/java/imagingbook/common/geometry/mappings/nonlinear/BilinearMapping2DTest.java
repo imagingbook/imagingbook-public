@@ -40,7 +40,7 @@ public class BilinearMapping2DTest {
 		for (int i = 0; i < P.length; i++) {
 			Pnt2d Qim = bmPQ.applyTo(P[i]);
 //			System.out.println(P[i].toString() + " -> " + Qim.toString());
-			assertEquals("mapping fails on point " + P[i], Q[i], Qim);
+			assertEquals(Q[i], Qim);
 		}
 		
 		// backward check Q -> P
@@ -48,7 +48,7 @@ public class BilinearMapping2DTest {
 		for (int i = 0; i < Q.length; i++) {
 			Pnt2d Pim = bmQP.applyTo(Q[i]);
 //			System.out.println(P[i].toString() + " -> " + Pim.toString());
-			assertEquals("mapping fails on point " + Q[i], P[i], Pim);
+			assertEquals(P[i], Pim);
 		}
 	}
 
