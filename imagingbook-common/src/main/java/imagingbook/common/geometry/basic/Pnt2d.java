@@ -22,6 +22,7 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
 import imagingbook.common.geometry.shape.ShapeProducer;
+import imagingbook.common.math.PrintPrecision;
 
 /** 
  * Interface specifying the behavior of simple 2D points. 
@@ -510,9 +511,16 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 
 		// misc -----------------------------------
 
-		@Override
+		/**
+		 * {@inheritDoc}
+		 * The number of output digits is specified by the current 
+		 * settings of {@link PrintPrecision}.
+		 * Use {@link PrintPrecision#set(int)} or {@link PrintPrecision#reset()} to change.
+		 */
+		@Override	
 		public String toString() {
-			return String.format(Locale.US, "%s(%.3f, %.3f)", 
+			String fStr = PrintPrecision.getFormatStringFloat();
+			return String.format(Locale.US, "%s(" + fStr + ", " + fStr + ")", 
 					getClass().getSimpleName(), x, y);
 		}
 
