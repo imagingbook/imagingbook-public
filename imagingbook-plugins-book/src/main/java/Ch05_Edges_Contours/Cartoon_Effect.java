@@ -1,5 +1,8 @@
 package Ch05_Edges_Contours;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.math.Arithmetic.clipTo;
+
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -7,6 +10,8 @@ import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.edges.GrayscaleEdgeDetector;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -24,6 +29,7 @@ import imagingbook.common.edges.GrayscaleEdgeDetector;
  * </p>
  * 
  * @author WB
+ * @version 2022/11/17
  *
  */
 public class Cartoon_Effect implements PlugInFilter {
@@ -33,9 +39,19 @@ public class Cartoon_Effect implements PlugInFilter {
 	private static boolean ShowOriginalEdgeMagnitude = false;
 	private static boolean ShowSoftenedEdgeMagnitude = false;
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Cartoon_Effect() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Clown);
+		}
+	}
+	
 	@Override
 	public int setup(String arg, ImagePlus im) {
-		return DOES_RGB;	// TODO: make this work for DOES_8G
+		return DOES_RGB;	// TODO: make work for DOES_8G
 	}
 
 	@Override
@@ -43,6 +59,9 @@ public class Cartoon_Effect implements PlugInFilter {
 		if (!getUserInput()) {
 			return;
 		}
+		
+		A = clipTo(A, 0.0, 1.0);
+		B = clipTo(B, 0.0, 1.0);
 		
 		int w = ip.getWidth();
 		int h = ip.getHeight();
@@ -101,13 +120,15 @@ public class Cartoon_Effect implements PlugInFilter {
 			return 0;
 		}
 	}
+	GenericDialog gd = null;
 	
 	// ---------------------------------------------------------------------
 	
-	private boolean getUserInput() {
-		GenericDialog gd = new GenericDialog(Cartoon_Effect.class.getSimpleName());
-		gd.addNumericField("Parameter a", A, 2);
-		gd.addNumericField("Parameter b", B, 2);
+	private boolean getUserInput() {	// TODO: add a preview button
+		gd = new GenericDialog(Cartoon_Effect.class.getSimpleName());
+		gd.addMessage("Parameters: 0 \u2264 a \u2264 b \u2264 1");
+		gd.addNumericField("a", A, 2);
+		gd.addNumericField("b", B, 2);
 		gd.addCheckbox("Show original edge magnitude", ShowOriginalEdgeMagnitude);
 		gd.addCheckbox("Show softened edge magnitude", ShowSoftenedEdgeMagnitude);
 		
