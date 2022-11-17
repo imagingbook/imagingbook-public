@@ -24,23 +24,19 @@ import org.apache.commons.math3.linear.RealVector;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.PrintPrecision;
 
-/** 
- * Interface specifying the behavior of simple 2D points. 
- * It is used to adapt to different (legacy) point implementations 
- * with a common API. 
- * To some extent this is similar to the functionality provided by
- * {@link Point2D} and {@link Point}
- * but was re-implemented to avoid dependency on AWT and for
- * more flexibility in naming and class structure.
- * Since defined as an interface, {@link Pnt2d} can be easily implemented 
- * by other point-like structures, e.g. corners 
- * (see {@link imagingbook.common.corners.Corner}).
- * <br>
- * Two concrete (nested) classes are defined for points with {@code double}
- * and {@code int} coordinates, respectively.
- * See {@link Pnt2d.PntDouble} and {@link Pnt2d.PntInt} for how
- * to instantiate such point objects.
+/**
+ * Interface specifying the behavior of simple 2D points. It is used to adapt to
+ * different (legacy) point implementations with a common API. To some extent
+ * this is similar to the functionality provided by {@link Point2D} and
+ * {@link Point} but was re-implemented to avoid dependency on AWT and for more
+ * flexibility in naming and class structure. Since defined as an interface,
+ * {@link Pnt2d} can be easily implemented by other point-like structures, e.g.
+ * corners (see {@link imagingbook.common.corners.Corner}). <br>
+ * Two concrete (nested) classes are defined for points with {@code double} and
+ * {@code int} coordinates, respectively. See {@link Pnt2d.PntDouble} and
+ * {@link Pnt2d.PntInt} for how to instantiate such point objects.
  * 
+ * @author WB
  */
 public interface Pnt2d extends ShapeProducer, Primitive2d {
 
@@ -368,17 +364,14 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	// ----------------------------------------------------------
 
 	/**
-	 * Immutable 2D point implementation with {@code double} coordinates.
-	 * This class implements the {@link Pnt2d} interface.
-	 * A public constructor ({@link #PntDouble(double, double)})
-	 * is provided but the preferred way of instantiation is
-	 * by one of the static factory methods, such as
-	 * {@link #from(double, double)},
-	 * {@link #from(double[])}, etc.
-	 * Access to the coordinate values is provided by the methods
-	 * {@link #getX()} and {@link #getY()}, but the
-	 * actual field variables {@link #x}, {@link #y} are also 
-	 * publicly accessible (for better performance and less clutter).
+	 * Immutable 2D point implementation with {@code double} coordinates. This class
+	 * implements the {@link Pnt2d} interface. A public constructor
+	 * ({@link #PntDouble(double, double)}) is provided but the preferred way of
+	 * instantiation is by one of the static factory methods, such as
+	 * {@link #from(double, double)}, {@link #from(double[])}, etc. Access to the
+	 * coordinate values is provided by the methods {@link #getX()} and
+	 * {@link #getY()}, but the actual field variables {@link #x}, {@link #y} are
+	 * also publicly accessible (for better performance and less clutter).
 	 */
 	public class PntDouble implements Pnt2d {
 
@@ -536,16 +529,13 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	// ----------------------------------------------------------
 
 	/**
-	 * Immutable 2D point implementation with {@code int} coordinates.
-	 * This class implements the {@link Pnt2d} interface.
-	 * A public constructor ({@link #PntInt(int, int)})
-	 * is provided but the preferred way of instantiation is
-	 * by one of the static factory methods, such as
-	 * {@link #from(int, int)},
-	 * {@link #from(int[])}, etc.
-	 * The {@code int} coordinates can only be retrieved via the
-	 * publicly accessible field variables {@link #x}, {@link #y},
-	 * while the methods {@link #getX()} and {@link #getY()}
+	 * Immutable 2D point implementation with {@code int} coordinates. This class
+	 * implements the {@link Pnt2d} interface. A public constructor
+	 * ({@link #PntInt(int, int)}) is provided but the preferred way of
+	 * instantiation is by one of the static factory methods, such as
+	 * {@link #from(int, int)}, {@link #from(int[])}, etc. The {@code int}
+	 * coordinates can only be retrieved via the publicly accessible field variables
+	 * {@link #x}, {@link #y}, while the methods {@link #getX()} and {@link #getY()}
 	 * return {@code double} values for compatibility reasons.
 	 */
 	public class PntInt implements Pnt2d {

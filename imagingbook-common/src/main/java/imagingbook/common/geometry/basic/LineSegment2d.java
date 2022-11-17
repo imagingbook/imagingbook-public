@@ -18,6 +18,7 @@ import imagingbook.common.geometry.shape.ShapeProducer;
 /**
  * Described a 2D line segment defined by two end points.
  * Instances are immutable.
+ * 
  * @author WB
  */
 public class LineSegment2d implements ShapeProducer {
