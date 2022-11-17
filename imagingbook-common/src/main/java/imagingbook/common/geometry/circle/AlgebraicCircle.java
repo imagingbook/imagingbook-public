@@ -17,14 +17,19 @@ import java.util.Locale;
 import imagingbook.common.math.Arithmetic;
 
 /**
- * Represents an algebraic circle with four parameters A, B, C, D in the form
- * A * (x^2 + y^2) + B * x + C * y + D = 0.
- * Parameters are normalized such that
- * B^2 + C^2 - 4 * A * D = 1 and A &ge; 0
- * Circle instances are immutable.
+ * <p>
+ * Represents an algebraic circle with four parameters A, B, C, D in the form A
+ * * (x^2 + y^2) + B * x + C * y + D = 0. Parameters are normalized such that
+ * B^2 + C^2 - 4 * A * D = 1 and A &ge; 0 Circle instances are immutable. See
+ * Secs. 11.1.1 and F.2.1 for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/17
  */
 public class AlgebraicCircle {
 

@@ -17,17 +17,23 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Path2D;
 import java.util.Locale;
 
-import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.Arithmetic;
 
 /**
+ * <p>
  * Represents a geometric circle with center point (xc, yc) and radius r.
- * Instances are immutable.
+ * Instances are immutable. See Secs. 11.1.1 and F.2.1 for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/17
  */
 public class GeometricCircle implements ShapeProducer, Primitive2d {
 	
