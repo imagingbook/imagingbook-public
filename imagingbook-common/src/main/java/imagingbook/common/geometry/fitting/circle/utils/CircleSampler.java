@@ -17,7 +17,8 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
 
 /**
- * Utility class for picking random points on a given circle. 
+ * Utility class for picking random points on a given circle.
+ * 
  * @author WB
  *
  */

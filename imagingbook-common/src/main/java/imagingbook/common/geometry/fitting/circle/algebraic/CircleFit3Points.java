@@ -16,17 +16,17 @@ import imagingbook.common.math.Arithmetic;
 
 /**
  * <p>
- * Performs an exact circle fit to 3 given (non-collinear) points.
- * If the fit is unsuccessful, {@link #getParameters()} 
- * returns {@code null}.
- * See the Appendix of [1] (Sec. F.2.2) for details.
+ * Performs an exact circle fit to 3 given (non-collinear) points. If the fit is
+ * unsuccessful, {@link #getParameters()} returns {@code null}. See the Appendix
+ * of [1] (Sec. F.2.2) for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/17
  */
 public class CircleFit3Points implements CircleFitAlgebraic {
 	
