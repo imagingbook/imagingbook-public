@@ -13,11 +13,21 @@ import static java.lang.Math.sqrt;
 
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
-
 /**
- * Finds an approximate closest point on the ellipse.
+ * <p>
+ * Calculates an approximate closest point on the ellipse for a given 2D point inside
+ * or outside the ellipse, using "confocal conic distance approximation" [1].
+ * See Sec. 11.2.3 (Alg. 11.12) and Appendix F.3.1 of [2] for details.
+ * </p>
+ * <p>
+ * [1] P. L. Rosin. Ellipse fitting using orthogonal hyperbolae and stirling’s
+ * oval. Graphical Models and Image Processing 60(3), 209–213 (1998). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
  * @author WB
- *
+ * @version 2022/11/17
  */
 public class ConfocalConicEllipseProjector extends EllipseProjector {
 	
@@ -47,32 +57,4 @@ public class ConfocalConicEllipseProjector extends EllipseProjector {
 		return new double[] {c * ra * sqrt(sa2 * (rb2 + sb2)), c * rb * sqrt(sb2 * (ra2 - sa2))};
 	}
 	
-	// -------------------------------------------------
-
-//	public static void main(String[] args) {
-//		PrintPrecision.set(8);
-//		
-////		Ellipse ell = new Ellipse(150, 80, 0, 0, 0);
-////		Pnt2d p = Pnt2d.from(100, 110);
-//		
-//		// critical case: 
-////		GeometricEllipse ell = new GeometricEllipse(353613.76725979, 987.23614032, 353503.20032614, -9010.22308359, 3.11555492);
-////		Pnt2d p = Pnt2d.from(30.000000000, 210.000000000);
-//		
-//		GeometricEllipse ell = new GeometricEllipse(6, 5, 0, 0, 0);
-//		Pnt2d p = Pnt2d.from(0.1 , 0.1);
-//		
-//		EllipseProjector projector = new ConfocalConicEllipseProjector(ell);
-//		
-//		
-//		System.out.println("p  = " + p);
-//		
-//		Pnt2d p0 = projector.project(p);
-//		System.out.println("p0 = " + p0);
-//		
-//		System.out.println("dist = " + projector.getDistance(p.toDoubleArray()));
-//
-//	}
-	
-
 }

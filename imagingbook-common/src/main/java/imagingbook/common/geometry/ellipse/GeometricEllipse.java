@@ -20,20 +20,25 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.util.Locale;
 
-import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.Arithmetic;
 
-
 /**
- * Represents an ellipse with 
- * major axis length ra, minor axis length rb, center point (xc, yc),
- * and orientation theta. Instances are immutable.
+ * <p>
+ * Represents an ellipse with major axis length ra, minor axis length rb, center
+ * point (xc, yc), and orientation theta. Instances are immutable. See Secs.
+ * 11.2.2 and F.3.1 for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/17
  */
 public class GeometricEllipse implements ShapeProducer, Primitive2d {
 	
@@ -106,8 +111,7 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 
 	/**
 	 * Calculates and returns the geometric ellipse parameters from a
-	 * given algebraic ellipse
-	 * (see Eqns. 19-23 at 
+	 * given algebraic ellipse (see Eqns. 19-23 at 
 	 * <a href="http://mathworld.wolfram.com/Ellipse.html">http://mathworld.wolfram.com/Ellipse.html</a>).
 	 * 
 	 * @param ae a {@linkplain AlgebraicEllipse} instance with parameters (A,...,F)
@@ -116,12 +120,13 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 	 */
 	public static double[] getGeometricEllipseParameters(AlgebraicEllipse ae) {
 		// see Eq. 19-23 at http://mathworld.wolfram.com/Ellipse.html
-		final double A = ae.A;
-		final double B = ae.B;
-		final double C = ae.C;
-		final double D = ae.D;
-		final double E = ae.E;
-		final double F = ae.F;		
+		double[] params = ae.getParameters(); 
+		final double A = params[0]; // ae.A;
+		final double B = params[1]; // ae.B;
+		final double C = params[2]; // ae.C;
+		final double D = params[3]; // ae.D;
+		final double E = params[4]; // ae.E;
+		final double F = params[5]; // ae.F;		
 		final double d = sqr(B) - 4*A*C;
 		
 		if (d >= 0) {
@@ -143,12 +148,10 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 	}
 	
 	// ---------------------------------------
-	
 
 	/**
-	 * Return a vector of parameters for this ellipse.
-	 * The length of the vector and the meaning of the parameters depends
-	 * on the concrete ellipse type.
+	 * Returns a vector of parameters for this ellipse. The length of the vector and
+	 * the meaning of the parameters depends on the concrete ellipse type.
 	 * 
 	 * @return a vector of parameters [ra, rb, xc, yc, theta]
 	 */

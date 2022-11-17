@@ -22,24 +22,24 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 
 /**
- * Represents an algebraic ellipse with the implicit equation
- * A x^2 + B x y + C y^2 + D x + E y + F = 0.
- * Parameters A, ..., F are normalized such that B^2 - 4 A C = -1.
- * Instances are immutable.
+ * <p>
+ * Represents an algebraic ellipse with the implicit equation A x^2 + B x y + C
+ * y^2 + D x + E y + F = 0. Parameters A, ..., F are normalized such that B^2 -
+ * 4 A C = -1. Instances are immutable. See Secs. 11.2.1 and F.3.1 for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
+ * @version 2022/11/17
+ * 
  */
 public class AlgebraicEllipse {
 	
-	/**
-	 * Ellipse parameters.
-	 */
-	final double A;
-	final double B;
-	final double C;
-	final double D;
-	final double E;
-	final double F;
+	/** Ellipse parameters. */
+	private final double A, B, C, D, E, F;
 	
 	/**
 	 * Constructor.
@@ -47,12 +47,12 @@ public class AlgebraicEllipse {
 	 * supplied parameters [A,...,F] such that d = B^2 - 4 A C = -1.
 	 * Throws an exception if d is non-negative.
 	 * 
-	 * @param A parameter A
-	 * @param B parameter B
-	 * @param C parameter C
-	 * @param D parameter D
-	 * @param E parameter E
-	 * @param F parameter F
+	 * @param A ellipse parameter A
+	 * @param B ellipse parameter B
+	 * @param C ellipse parameter C
+	 * @param D ellipse parameter D
+	 * @param E ellipse parameter E
+	 * @param F ellipse parameter F
 	 */
 	public AlgebraicEllipse(double A, double B, double C, double D, double E, double F) {
 		double d = sqr(B) - 4 * A * C;

@@ -22,10 +22,23 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 /**
- * Abstract superclass of ellipse projectors, used to find the
+ * <p>
+ * Abstract superclass for ellipse projectors, used to find the
  * closest "contact" point on an ellipse for some given target point.
- * Defines specific methods for calculating the distance only, 
- * without returning the point itself.
+ * Defines specific methods for calculating minimum distance only, 
+ * i.e., without returning the closest point itself.
+ * All calculations are performed in a "canonical" coordinate frame,
+ * with the ellipse centered at the origin and its major axis aligned
+ * to the x-axis. See Sec. 11.2.2 (Fig. 11.7) of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/17
+ * 
  */
 public abstract class EllipseProjector {
 	
@@ -111,6 +124,5 @@ public abstract class EllipseProjector {
 	protected double[] fromFirstQuadrant(double[] uv, double[] uvOrig) {
 		return new double[] {copySign(uv[0], uvOrig[0]), copySign(uv[1], uvOrig[1])};
 	}
-
 
 }

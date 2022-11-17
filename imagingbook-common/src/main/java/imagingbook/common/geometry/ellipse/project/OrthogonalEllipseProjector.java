@@ -11,27 +11,32 @@ package imagingbook.common.geometry.ellipse.project;
 import static imagingbook.common.math.Arithmetic.isZero;
 import static imagingbook.common.math.Arithmetic.sqr;
 
-import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.math.Arithmetic;
-import imagingbook.common.math.PrintPrecision;
 
 
 /**
  * <p>
- * Calculates orthogonal projections of points onto an ellipse.
- * Robust algorithm, based on
+ * Calculates the closest point on the ellipse for a given 2D point inside or
+ * outside the ellipse, using orthogonal projection of points onto the ellipse.
+ * This is a robust algorithm based on [1]. See Sec.11.2.2 (Alg. 11.9) of [2]
+ * for details. In contrast to the Newton-based algorithm (see
+ * {@link OrthogonalEllipseProjectorNewton}, this version uses the bisection
+ * method for root finding and returns valid results for points close to the x-
+ * and y-axis but requires significantly more iterations to converge.
  * </p>
- * <blockquote>
- * D. Eberly: "Distance from a point to an ellipse, an ellipsoid, or a hyperellipsoid",
- * Technical Report, Geometric Tools, www.geometrictools.com, Redmont, WA (June 2013).
- * </blockquote>
  * <p>
- * In contrast to the Newton-based algorithm, this version returns valid results for
- * points close to the x- and y-axis but requires significantly more iterations to
- * converge.
+ * [1] D. Eberly: "Distance from a point to an ellipse, an ellipsoid, or a
+ * hyperellipsoid", Technical Report, Geometric Tools, www.geometrictools.com,
+ * Redmont, WA (June 2013). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
+ * 
+ * @author WB
  * @version 2022/04/09
+ * @see OrthogonalEllipseProjectorNewton
+ * @see ConfocalConicEllipseProjector
  */
 public class OrthogonalEllipseProjector extends EllipseProjector {
 	
@@ -124,34 +129,6 @@ public class OrthogonalEllipseProjector extends EllipseProjector {
 	// for statistics only
 	public int getLastIterationCount() {
 		return this.lastIterationCount;
-	}
-	
-	// -------------------------------------------------
-
-	public static void main(String[] args) {
-		PrintPrecision.set(8);
-		
-//		Ellipse ell = new Ellipse(5, 3, 1, 1, 1.1);
-//		Pnt2d p = Pnt2d.from(6, 1);
-		
-		// critical case: 
-//		GeometricEllipse ell = new GeometricEllipse(353613.76725979, 987.23614032, 353503.20032614, -9010.22308359, 3.11555492);
-//		Pnt2d p = Pnt2d.from(30.000000000, 210.000000000);
-		
-		GeometricEllipse ell = new GeometricEllipse(6, 5, 0, 0, 0);
-//		Pnt2d p = Pnt2d.from(1, 0);
-//		Pnt2d p = Pnt2d.from(6, 0);
-		Pnt2d p = Pnt2d.from(0.1, 0.1);
-		
-		OrthogonalEllipseProjector projector = new OrthogonalEllipseProjector(ell);
-		
-		System.out.println("p  = " + p);
-		
-		Pnt2d p0 = projector.project(p);
-		System.out.println("p0 = " + p0);
-		System.out.println("iterations  = " + projector.getLastIterationCount());
-		
-//		System.out.println("dist = " + projector.getDistance(p.toDoubleArray()));
 	}
 
 }
