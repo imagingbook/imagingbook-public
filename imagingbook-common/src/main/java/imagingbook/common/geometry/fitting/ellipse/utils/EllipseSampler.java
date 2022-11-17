@@ -17,9 +17,10 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 /**
- * Utility class for picking random points on a given ellipse. 
+ * Utility class for picking random points on a given ellipse.
+ * 
  * @author WB
- *
+ * @version 2022/11/17
  */
 public class EllipseSampler {
 	
@@ -38,15 +39,14 @@ public class EllipseSampler {
 	}
 	
 	/**
-	 * Creates and returns an array of 2D points sampled on 
-	 * the ellipse associated with this {@link EllipseSampler}.
-	 * Random Gaussian noise (with standard deviation sigma)
-	 * is added to the individual x/y coordinates.
+	 * Creates and returns an array of 2D points sampled on the ellipse associated
+	 * with this {@link EllipseSampler}. Random Gaussian noise (with standard
+	 * deviation sigma) is added to the individual x/y coordinates.
 	 * 
-	 * @param n number of points
+	 * @param n          number of points
 	 * @param startAngle initial angle (radians)
-	 * @param arcAngle arc angle (radians)
-	 * @param sigma amount of random noise
+	 * @param arcAngle   arc angle (radians)
+	 * @param sigma      amount of random noise
 	 * @return an array of sample points
 	 */
 	public Pnt2d[] getPoints(int n, double startAngle, double arcAngle, double sigma) {

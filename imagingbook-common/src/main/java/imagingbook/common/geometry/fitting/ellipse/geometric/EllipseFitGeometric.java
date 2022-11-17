@@ -13,6 +13,12 @@ import java.util.List;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
+/**
+ * Interface to be implemented by all geometric ellipse fits.
+ * 
+ * @author WB
+ *
+ */
 public abstract class EllipseFitGeometric {
 	
 	public enum FitType {

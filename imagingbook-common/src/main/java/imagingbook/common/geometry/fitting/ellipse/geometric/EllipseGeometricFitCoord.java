@@ -41,11 +41,17 @@ import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.util.ParameterBundle;
 
 /**
+ * <p>
  * "Coordinate-based" geometric ellipse fitter using iterative minimization with
- * the Levenberg-Marquart method.
+ * the Levenberg-Marquart method. See Sec. 11.2.2 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/17
  */
 public class EllipseGeometricFitCoord extends EllipseFitGeometric {
 	

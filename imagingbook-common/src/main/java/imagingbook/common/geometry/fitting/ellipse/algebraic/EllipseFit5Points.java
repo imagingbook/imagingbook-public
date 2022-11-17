@@ -25,14 +25,16 @@ import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
 /**
- * Performs an exact ellipse fit to 5 given points.
- * If the fit is unsuccessful, {@link #getParameters()} returns {@code null}.
- * The underlying algorithm is described in [1, Section F.3.3].
+ * Performs an exact ellipse fit to 5 given points. If the fit is unsuccessful,
+ * {@link #getParameters()} returns {@code null}. The underlying algorithm is
+ * described in Section F.3.3 of [1].
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
+ * 
  * @author WB
- *
+ * @version 2022/11/17
  */
 public class EllipseFit5Points implements EllipseFitAlgebraic {
 	

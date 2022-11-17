@@ -24,29 +24,22 @@ import imagingbook.common.math.eigen.EigenDecompositionJama;
 
 /**
  * <p>
- * Algebraic ellipse fit based on Fitzgibbon's method [1], numerically
- * improved as suggested by Halir and Flusser [2].
- * See [3, Sec. 11.2.1] for a detailed description.
+ * Algebraic ellipse fit based on Fitzgibbon's method [1], numerically improved
+ * as suggested by Halir and Flusser [2]. See [3, Sec. 11.2.1] for a detailed
+ * description. Note: This implementation performs data centering or,
+ * alternatively, accepts a specific reference point. Capable of performing an
+ * (exact) 5-point fit!
  * </p>
- * 
  * <p>
- * Note: This implementation performs data centering or, alternatively, 
- * accepts a specific reference point. 
- * Capable of performing an (exact) 5-point fit!
- * </p>
- * 
- * <p>
- * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least-
- * squares fitting of ellipses. IEEE Transactions on Pattern Analysis
- * and Machine Intelligence 21(5), 476-480 (1999).
- * <br>
- * [2] R. Halíř and J. Flusser. Numerically stable direct least squares
- * fitting of ellipses. In "Proceedings of the 6th International
- * Conference in Central Europe on Computer Graphics and Visualization
- * (WSCG’98)", pp. 125-132, Plzeň, CZ (February 1998).
- * <br>
- * [3] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least- squares
+ * fitting of ellipses. IEEE Transactions on Pattern Analysis and Machine
+ * Intelligence 21(5), 476-480 (1999). <br>
+ * [2] R. Halíř and J. Flusser. Numerically stable direct least squares fitting
+ * of ellipses. In "Proceedings of the 6th International Conference in Central
+ * Europe on Computer Graphics and Visualization (WSCG’98)", pp. 125-132, Plzeň,
+ * CZ (February 1998). <br>
+ * [3] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

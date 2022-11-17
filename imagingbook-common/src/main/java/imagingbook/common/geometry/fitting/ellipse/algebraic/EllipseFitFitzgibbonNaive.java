@@ -19,30 +19,24 @@ import imagingbook.common.math.eigen.EigenDecompositionJama;
 
 /**
  * <p>
- * Algebraic ellipse fit using Fitzgibbon's original method [1], based on simple 
+ * Algebraic ellipse fit using Fitzgibbon's original method [1], based on simple
  * matrix inversion. See [2, Sec. 11.2.1] for a detailed description.
+ * Note: This implementation does not use data centering nor accepts a specific
+ * reference point. With exactly 5 input points (generally sufficient for
+ * ellipse fitting) the scatter matrix X is singular and in this case matrix S
+ * has no inverse. Thus at least 6 distinct input points are required (i.e., no
+ * duplicate points are allowed).
  * </p>
- * 
  * <p>
- * Note: 
- * This implementation does not use data centering nor accepts a specific reference point.
- * With exactly 5 input points (generally sufficient for ellipse fitting) the scatter matrix
- * X is singular and in this case matrix S has no inverse. 
- * Thus at least 6 distinct input points are required (i.e., no duplicate points are
- * allowed).
- * </p>
- * 
- * <p>
- * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least-
- * squares fitting of ellipses. IEEE Transactions on Pattern Analysis
- * and Machine Intelligence 21(5), 476-480 (1999).
- * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least- squares
+ * fitting of ellipses. IEEE Transactions on Pattern Analysis and Machine
+ * Intelligence 21(5), 476-480 (1999).<br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/17
  */
 public class EllipseFitFitzgibbonNaive implements EllipseFitAlgebraic {
 	

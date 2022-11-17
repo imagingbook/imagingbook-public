@@ -16,6 +16,11 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.AlgebraicEllipse;
 import imagingbook.common.math.Matrix;
 
+/**
+ * Interface for algebraic ellipse fits.
+ * 
+ * @author WB
+ */
 public interface EllipseFitAlgebraic {
 	
 	public enum FitType {
