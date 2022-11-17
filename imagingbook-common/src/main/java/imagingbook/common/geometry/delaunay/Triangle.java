@@ -15,9 +15,9 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.shape.ShapeProducer;
 
 /** 
- * Interface specifying the behavior of a 2D triangle.
+ * Interface specifying a 2D triangle.
  */
-public interface Triangle extends ShapeProducer {
+public interface Triangle extends ShapeProducer {	// TODO: better integrate with other 2D primitives
 	
 	/**
 	 * Returns an array of points used by the triangulation in the order 

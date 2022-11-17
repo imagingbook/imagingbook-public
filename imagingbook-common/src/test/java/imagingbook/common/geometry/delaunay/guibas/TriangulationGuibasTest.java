@@ -9,8 +9,8 @@
 package imagingbook.common.geometry.delaunay.guibas;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,6 @@ import java.util.List;
 import org.junit.Test;
 
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.delaunay.Triangle;
 
 public class TriangulationGuibasTest {
 
@@ -38,13 +37,13 @@ public class TriangulationGuibasTest {
 		assertEquals("triangulation: wrong number of triangles", 7, triangulation.size());
 		assertEquals("triangulation: wrong number of points", 6, triangulation.getPoints().size());
 		
-		Triangle triangle1 = triangulation.findContainingTriangle(Pnt2d.from(2, 0.5));
+		Triangle2D triangle1 = triangulation.findContainingTriangle(Pnt2d.from(2, 0.5));
 		List<Pnt2d> pts1 = Arrays.asList(triangle1.getPoints());
 		assertTrue(pts1.contains(p2));
 		assertTrue(pts1.contains(p3));
 		assertTrue(pts1.contains(p5));
 		
-		Triangle triangle2 = triangulation.findContainingTriangle(Pnt2d.from(100, 0));
+		Triangle2D triangle2 = triangulation.findContainingTriangle(Pnt2d.from(100, 0));
 		assertNull(triangle2);
 	}
 

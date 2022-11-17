@@ -15,8 +15,13 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.delaunay.guibas.TriangulationGuibas;
 
 /**
- * Interface specification for various implementations of the
- * Delaunay triangulation.
+ * <p>
+ * Interface specification for implementations of the Delaunay triangulation.
+ * see {@link TriangulationGuibas} for a concrete implementation.
+ * </p>
+ * 
+ * @author WB
+ * @see TriangulationGuibas
  */
 public interface DelaunayTriangulation {
 	

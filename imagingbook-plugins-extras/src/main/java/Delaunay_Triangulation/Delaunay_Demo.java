@@ -53,12 +53,14 @@ public class Delaunay_Demo implements PlugInFilter {
 
 	private ImagePlus im = null;
 	
-    public int setup(String arg, ImagePlus im) {
+    @Override
+	public int setup(String arg, ImagePlus im) {
     	this.im = im;
         return DOES_ALL + NO_CHANGES;
     }
     
-    public void run(ImageProcessor ip) {
+    @Override
+	public void run(ImageProcessor ip) {
     	
 		if (!showDialog()) {
 			return;

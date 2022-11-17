@@ -20,11 +20,13 @@ import imagingbook.common.geometry.delaunay.DelaunayTriangulation;
 import imagingbook.common.geometry.delaunay.Triangle;
 
 /**
- * This is an implementation of the triangulation algorithm described in
- * <blockquote>
- * L. J. Guibas, D. E. Knuth, and M. Sharir" "Randomized incremental construction of 
+ * <p>
+ * This is an implementation of the triangulation algorithm described in [1].
+ * </p>
+ * <p>
+ * [1] L. J. Guibas, D. E. Knuth, and M. Sharir" "Randomized incremental construction of 
  * Delaunay and Voronoi diagrams", Algorithmica, 7, pp. 381--413 (1992).
- * </blockquote>
+ * </p>
  * 
  * @author WB
  *
@@ -41,6 +43,7 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	 * @param shuffle set {@code true} to randomly shuffle the input points
 	 */
 	public TriangulationGuibas(Collection<? extends Pnt2d> points, boolean shuffle) {
+		// TODO: change to point array or iterable!
 		if (points == null || points.size() < 3) {
 			throw new IllegalArgumentException("Point set must contain at least 3 points.");
 		}
@@ -265,27 +268,4 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 		}
 		triangles.removeAll(trianglesToBeRemoved);
 	}
-	
-	// --------------------------------------------------------------------------------------
-	
-//	public static void main (String[] args) {
-//		List<Pnt2d> points = new ArrayList<>();
-//		points.add(Pnt2d.from(-10,10));
-//		points.add(Pnt2d.from(10,10));
-//		points.add(Pnt2d.from(0,-10));
-//		
-//		points.add(Pnt2d.from(0,0));
-//		points.add(Pnt2d.from(1,0));
-//		points.add(Pnt2d.from(0,1));
-//		
-//		TriangulationGuibas triangulation = new TriangulationGuibas(points, false);
-//		
-//		List<Triangle> triangles = triangulation.getTriangles();
-//		System.out.println("triangles: " + triangles.size());
-//		
-//		System.out.println("containing triangle: " + triangulation.findContainingTriangle(Pnt2d.from(2, 0.5)));
-//		System.out.println("containing triangle: " + triangulation.findContainingTriangle(Pnt2d.from(100, 0)));
-//	}
-
-
 }
