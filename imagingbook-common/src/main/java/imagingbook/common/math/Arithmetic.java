@@ -365,6 +365,63 @@ public abstract class Arithmetic {
 	}
 	
 	/**
+	 * Limits the first argument to the clipping interval specified by the two other
+	 * arguments ({@code double} version). The clipped value is returned. Throws an
+	 * exception if the clipping interval is empty.
+	 * 
+	 * @param x    the value to be clipped
+	 * @param low  the lower boundary of the clipping interval
+	 * @param high the upper boundary of the clipping interval
+	 * @return the clipped value
+	 */
+	public static double clipTo(double x, double low, double high) {
+		if (low > high) {
+			throw new IllegalArgumentException("clip interval low > high");
+		}
+		if (x < low) return low;
+		if (x > high) return high;
+		return x;
+	}
+	
+	/**
+	 * Limits the first argument to the clipping interval specified by the two other
+	 * arguments ({@code float} version). The clipped value is returned. Throws an
+	 * exception if the clipping interval is empty.
+	 * 
+	 * @param x    the value to be clipped
+	 * @param low  the lower boundary of the clipping interval
+	 * @param high the upper boundary of the clipping interval
+	 * @return the clipped value
+	 */
+	public static float clipTo(float x, float low, float high) {
+		if (low > high) {
+			throw new IllegalArgumentException("clip interval low > high");
+		}
+		if (x < low) return low;
+		if (x > high) return high;
+		return x;
+	}
+	
+	/**
+	 * Limits the first argument to the clipping interval specified by the two other
+	 * arguments ({@code float} version). The clipped value is returned. Throws an
+	 * exception if the clipping interval is empty.
+	 * 
+	 * @param x    the value to be clipped
+	 * @param low  the lower boundary of the clipping interval
+	 * @param high the upper boundary of the clipping interval
+	 * @return the clipped value
+	 */
+	public static int clipTo(int x, int low, int high) {
+		if (low > high) {
+			throw new IllegalArgumentException("clip interval low > high");
+		}
+		if (x < low) return low;
+		if (x > high) return high;
+		return x;
+	}
+	
+	/**
 	 * Returns the two real roots of the quadratic function
 	 * f(x) = ax^2 + bx + c.
 	 * Null is returned if roots are non-real.
