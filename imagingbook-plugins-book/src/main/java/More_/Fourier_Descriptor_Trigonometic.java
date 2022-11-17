@@ -25,7 +25,6 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fd.FourierDescriptor;
 import imagingbook.common.geometry.fd.FourierDescriptorTrigonometric;
-import imagingbook.common.geometry.fd.Utils;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
@@ -121,7 +120,7 @@ public class Fourier_Descriptor_Trigonometic implements PlugInFilter {
 		}
 
 		if (ShowFullReconstruction) { // draw the shape reconstructed from all FD-pairs
-			Path2D rec = Utils.toPath(fd.getShapeFull(ReconstructionPoints));
+			Path2D rec = FourierDescriptor.toPath(fd.getShapeFull(ReconstructionPoints));
 			ola.addShape(rec, reconstructionStroke);
 		}
 

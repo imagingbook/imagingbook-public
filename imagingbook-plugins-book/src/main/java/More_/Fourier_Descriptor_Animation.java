@@ -29,7 +29,6 @@ import imagingbook.common.color.iterate.CssColorSequencer;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fd.FourierDescriptor;
 import imagingbook.common.geometry.fd.FourierDescriptorUniform;
-import imagingbook.common.geometry.fd.Utils;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
@@ -116,7 +115,7 @@ public class Fourier_Descriptor_Animation implements PlugInFilter {
 		
 		ByteProcessor bp = (ByteProcessor) ip;
 		Pnt2d[] contr = getLargestRegionContour(bp);
-		FourierDescriptor fd = FourierDescriptorUniform.from(Utils.toComplexArray(contr), FourierCoefficientPairs);
+		FourierDescriptor fd = FourierDescriptorUniform.from(FourierDescriptor.toComplexArray(contr), FourierCoefficientPairs);
 		Complex ctr = fd.getCoefficient(0);
 		
 		ImagePlus imA = makeBackgroundImage();	
@@ -149,7 +148,7 @@ public class Fourier_Descriptor_Animation implements PlugInFilter {
 				}
 
 				if (ShowFullReconstruction) { // draw the shape reconstructed from all FD-pairs
-					Path2D rec = Utils.toPath(fd.getShapeFull(ReconstructionPoints));
+					Path2D rec = FourierDescriptor.toPath(fd.getShapeFull(ReconstructionPoints));
 					ola.addShape(rec, reconstructionStroke);
 				}
 

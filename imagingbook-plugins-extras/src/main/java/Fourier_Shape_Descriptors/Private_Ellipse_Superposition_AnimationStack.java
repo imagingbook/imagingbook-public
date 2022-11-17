@@ -32,7 +32,6 @@ import imagingbook.common.color.iterate.CssColorSequencer;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fd.FourierDescriptor;
 import imagingbook.common.geometry.fd.FourierDescriptorUniform;
-import imagingbook.common.geometry.fd.Utils;
 import imagingbook.common.geometry.misc.PolygonSampler;
 import imagingbook.common.math.Complex;
 import imagingbook.common.regions.BinaryRegion;
@@ -139,7 +138,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 
 		Contour contr = outerContours.get(0);	// contour of largest region
 		Pnt2d[] polygon = PolygonSampler.getInstance().samplePolygonUniformly(contr.getPointArray(), NumberOfContourSamples);
-		Complex[] samples = Utils.toComplexArray(polygon);
+		Complex[] samples = FourierDescriptor.toComplexArray(polygon);
 		
 		FourierDescriptor fd = FourierDescriptorUniform.from(polygon);
 //		FourierDescriptor fd = new FourierDescriptorUniform(polygon);
@@ -193,7 +192,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 			{ // draw the reconstructed shape from FD-pairs 0,...,mMax -------
 				int mMax = NumberOfFourierDescriptorPairs;
 //				Path2D path = fd.makeFourierPairsReconstructionPartial(mMax);
-				Path2D path = Utils.toPath(fd.getShapePartial(50, mMax));
+				Path2D path = FourierDescriptor.toPath(fd.getShapePartial(50, mMax));
 				path.transform(PixelShift);
 				ShapeRoi roi = new ShapeRoi(path);
 				roi.setStrokeColor(ReconstructionColor);
@@ -217,7 +216,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 				
 //				Path2D path = fd.makeEllipse(c1, c2, m, cc.re + 0.5, cc.im + 0.5);
 //				Path2D path = fd.getPathPair(m, cc.re + 0.5, cc.im + 0.5);
-				Path2D path = Utils.toPath(fd.getShapePair(50, m));
+				Path2D path = FourierDescriptor.toPath(fd.getShapePair(50, m));
 				path.transform(AffineTransform.getTranslateInstance(cc.re + 0.5, cc.im + 0.5));	// move to current center cc
 				
 				ShapeRoi rpoly = new ShapeRoi(path);

@@ -22,7 +22,6 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.fd.FourierDescriptor;
 import imagingbook.common.geometry.fd.FourierDescriptorTrigonometric;
-import imagingbook.common.geometry.fd.Utils;
 import imagingbook.common.math.Complex;
 
 /**
@@ -60,7 +59,7 @@ public class Fourier_Descriptor_IrregularSampling extends Fourier_Descriptor_Reg
 		// create the Fourier descriptor for 'anyRoi' with Mp coefficient pairs:
 		int Mp = FourierDescriptorPairs;
 		Pnt2d[] V = toPointArray(anyRoi);
-		Complex[] samples = Utils.toComplexArray(V);
+		Complex[] samples = FourierDescriptor.toComplexArray(V);
 		
 		FourierDescriptor fd = FourierDescriptorTrigonometric.from(V, Mp);
 //		FourierDescriptor fd = new FourierDescriptorFromPolygon(V, Mp);

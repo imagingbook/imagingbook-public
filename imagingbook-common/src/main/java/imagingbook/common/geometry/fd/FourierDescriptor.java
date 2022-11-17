@@ -15,6 +15,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.util.Locale;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
@@ -26,6 +27,7 @@ import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
 import org.apache.commons.math3.optim.univariate.UnivariateOptimizer;
 import org.apache.commons.math3.optim.univariate.UnivariatePointValuePair;
 
+import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Complex;
 
 /**
@@ -699,6 +701,27 @@ public class FourierDescriptor {
 	@Override
 	public String toString() {
 		return String.format(Locale.US, "%s: mp=%d scale=%.3f", this.getClass().getSimpleName(), mp, scale);
+	}
+	
+	// moved from Utils ------------------------------------
+
+	public static Path2D toPath(Complex[] C) {
+		Path2D path = new Path2D.Float();
+		path.moveTo(C[0].re, C[0].im);
+		for (int i = 1; i < C.length; i++) {
+			path.lineTo(C[i].re, C[i].im);
+		}
+		path.closePath();
+		return path;
+	}
+
+	public static Complex[] toComplexArray(Pnt2d[] points) {
+		int N = points.length;
+		Complex[] samples = new Complex[N];
+		for (int i = 0; i < N; i++) {
+			samples[i] = new Complex(points[i].getX(), points[i].getY());
+		}
+		return samples;
 	}
 	
 	// -----------------------------------------------------------------

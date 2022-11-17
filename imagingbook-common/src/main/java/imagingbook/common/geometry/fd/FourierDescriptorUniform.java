@@ -13,8 +13,14 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Complex;
 
 /**
+ * <p>
  * Defines static methods to create Fourier descriptors from uniformly sampled
- * point sequences.
+ * point sequences. See Ch. 26 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+ * </p>
  * 
  * @author WB
  * @version 2022/10/24
@@ -32,7 +38,7 @@ public abstract class FourierDescriptorUniform {
 	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
 	public static FourierDescriptor from(Pnt2d[] V) {
-		return from(Utils.toComplexArray(V));
+		return from(FourierDescriptor.toComplexArray(V));
 	}
 	
 	/**
@@ -46,7 +52,7 @@ public abstract class FourierDescriptorUniform {
 	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
 	public static FourierDescriptor from(Pnt2d[] V, int mp) {
-		return from(Utils.toComplexArray(V), mp);
+		return from(FourierDescriptor.toComplexArray(V), mp);
 	}
 	
 	

@@ -19,10 +19,16 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Complex;
 
-
 /**
- * Defines static methods to create Fourier descriptors
- * directly from 2D polygons without re-sampling or interpolation.
+ * <p>
+ * Defines static methods to create Fourier descriptors directly from 2D
+ * polygons without re-sampling or interpolation. See Ch. 26 of [1] for
+ * additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+ * </p>
  * 
  * @author WB
  * @version 2022/10/24
@@ -42,7 +48,7 @@ public abstract class FourierDescriptorTrigonometric {
 	 * @return a new {@link FourierDescriptorTrigonometric} instance
 	 */
 	public static FourierDescriptor from(Pnt2d[] V, int mp) {
-		Complex[] G = makeDftSpectrumTrigonometric(Utils.toComplexArray(V), mp);
+		Complex[] G = makeDftSpectrumTrigonometric(FourierDescriptor.toComplexArray(V), mp);
 		return new FourierDescriptor(G);
 	}
 
@@ -112,6 +118,7 @@ public abstract class FourierDescriptorTrigonometric {
 	private static void setCoefficient(Complex[] C, int m, Complex z) {
 		C[mod(m, C.length)] = z;
 	}
+	
 //	private static void setCoefficient(Complex[] G, int m, Complex z) {
 //		int mm = Arithmetic.mod(m, G.length);
 //		G[mm] = new Complex(z);
