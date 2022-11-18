@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.geometry.fitting;
+package imagingbook.common.geometry.fitting.points;
 
 import org.apache.commons.math3.linear.DecompositionSolver;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -16,7 +16,23 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 
-public class ProjectiveFit2D implements LinearFit2D {
+
+
+/**
+ * <p>
+ * This class implements 2D point fitting under projective (4-point)
+ * transformations (exact and least-squares). See Sec. 21.1.4 of [1] for
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/08/01
+ */
+public class ProjectiveFit2d implements LinearFit2d {
 	
 	private final RealMatrix A;		// the calculated transformation matrix
 	private final double err;		// the calculated error
@@ -26,10 +42,11 @@ public class ProjectiveFit2D implements LinearFit2D {
 	 * Fits two sequences of 2D points using a projective transformation model.
 	 * At least 4 point pairs are required. For 4 point pairs, the solution
 	 * is an exact fit, otherwise a least-squares fit is found.
+	 * 
 	 * @param P the source points
 	 * @param Q the target points
 	 */
-	public ProjectiveFit2D(Pnt2d[] P, Pnt2d[] Q) {
+	public ProjectiveFit2d(Pnt2d[] P, Pnt2d[] Q) {
 		checkSize(P, Q);
 		final int n = P.length;
 		
@@ -61,7 +78,7 @@ public class ProjectiveFit2D implements LinearFit2D {
 		A.setEntry(2, 1, h.getEntry(7));
 		A.setEntry(2, 2, 1.0);
 		
-		err = this.calculateError(P, Q, A);
+		err = Math.sqrt(LinearFit2d.getSquaredError(P, Q, A.getData()));
 	}
 
 	@Override
@@ -76,9 +93,9 @@ public class ProjectiveFit2D implements LinearFit2D {
 	
 	// ------------------------------------------------------------------------------
 	
-	protected static void checkSize(Pnt2d[] P, Pnt2d[] Q) {
+	private void checkSize(Pnt2d[] P, Pnt2d[] Q) {
 		if (P.length < 4 || Q.length < 4) {
-			throw new IllegalArgumentException("At least 4 point pairs are required to calculate this fit");
+			throw new IllegalArgumentException("4 or more point pairs are required to calculate this fit");
 		}
 	}
 

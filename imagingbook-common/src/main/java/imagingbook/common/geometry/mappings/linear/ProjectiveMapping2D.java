@@ -11,7 +11,7 @@ package imagingbook.common.geometry.mappings.linear;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
-import imagingbook.common.geometry.fitting.ProjectiveFit2D;
+import imagingbook.common.geometry.fitting.points.ProjectiveFit2d;
 import imagingbook.common.geometry.mappings.Jacobian;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
@@ -37,7 +37,7 @@ public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 	 * @return a new projective mapping for the two point sets
 	 */
 	public static ProjectiveMapping2D fromPoints(Pnt2d[] P, Pnt2d[] Q) {
-		ProjectiveFit2D fit = new ProjectiveFit2D(P, Q);
+		ProjectiveFit2d fit = new ProjectiveFit2d(P, Q);
 		return new ProjectiveMapping2D(fit.getTransformationMatrix());
 	}
 	

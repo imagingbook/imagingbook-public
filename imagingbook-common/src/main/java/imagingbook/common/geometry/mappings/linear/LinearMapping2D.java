@@ -47,7 +47,7 @@ public class LinearMapping2D implements Mapping2D, Inversion {
 	 * @param A a matrix of arbitrary size
 	 */
 	public LinearMapping2D(double[][] A) {
-		double[][] M = extractLinearMatrix(A);
+		double[][] M = extract3x3Matrix(A);
 		a00 = M[0][0]; a01 = M[0][1]; a02 = M[0][2];
 		a10 = M[1][0]; a11 = M[1][1]; a12 = M[1][2];
 		a20 = M[2][0]; a21 = M[2][1]; a22 = M[2][2];
@@ -56,12 +56,12 @@ public class LinearMapping2D implements Mapping2D, Inversion {
 	/**
 	 * Inserts the given matrix into a new 3x3 identity matrix,
 	 * starting at element (0,0). All elements outside
-	 * 3x3 are ignored. If the matrix is 
+	 * 3x3 are ignored. 
 	 * 
 	 * @param A the original matrix
 	 * @return a 3x3 matrix
 	 */
-	private static double[][] extractLinearMatrix(double[][] A) {
+	private static double[][] extract3x3Matrix(double[][] A) {
 		double[][] M = Matrix.idMatrix(3);
 		final int m = Math.min(3, A.length);	// max. 3 rows
 		for (int i = 0; i < m; i++) {

@@ -25,7 +25,7 @@ import imagingbook.common.math.Arithmetic;
 /**
  * <p>
  * Represents a geometric circle with center point (xc, yc) and radius r.
- * Instances are immutable. See Secs. 11.1.1 and F.2.1 for details.
+ * Instances are immutable. See Sec. 11.1.1 and Appendix F.2.1 for details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -38,23 +38,16 @@ import imagingbook.common.math.Arithmetic;
 public class GeometricCircle implements ShapeProducer, Primitive2d {
 	
 	/**
-	 * Circle parameters.
+	 * Circle parameter.
 	 */
 	public final double xc, yc, r;
 
-	@Deprecated		// use field access instead
-	public double getXc() {
-		return xc;
-	}
-	@Deprecated		// use field access instead
-	public double getYc() {
-		return yc;
-	}
-	@Deprecated		// use field access instead
-	public double getR() {
-		return r;
-	}
-
+	/**
+	 * Constructor.
+	 * @param xc center x-coordinate
+	 * @param yc center y-coordinate
+	 * @param r circle radius
+	 */
 	public GeometricCircle(double xc, double yc, double r) {
 		if (r < 0) {
 			throw new IllegalArgumentException("negative circle radius");
@@ -100,16 +93,18 @@ public class GeometricCircle implements ShapeProducer, Primitive2d {
 	// --------------------------------------------------------------------------------
 	
 	/**
-	 * Return a vector of parameters for this circle.
-	 * The length of the vector and the meaning of the parameters depends
-	 * on the concrete circle type.
+	 * Returns a vector of geometric circle parameters (xc, yc, r).
 	 * 
-	 * @return a vector of parameters
+	 * @return geometric circle parameters (xc, yc, r)
 	 */
 	public double[] getParameters() {
 		return new double[] {xc, yc, r};
 	}
 	
+	/**
+	 * Returns the center point of this circle.
+	 * @return the center point
+	 */
 	public Pnt2d getCenter() {
 		return Pnt2d.from(xc, yc);
 	}
@@ -212,7 +207,10 @@ public class GeometricCircle implements ShapeProducer, Primitive2d {
 				Arithmetic.equals(r, other.r, tolR) ;
 	}
 	
-
+	/**
+	 * Returns a copy of this circle.
+	 * @return a copy of this circle
+	 */
 	public GeometricCircle duplicate() {
 		return new GeometricCircle(this.getParameters());
 	}

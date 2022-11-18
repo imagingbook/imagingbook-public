@@ -11,7 +11,7 @@ package imagingbook.common.geometry.mappings.linear;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
-import imagingbook.common.geometry.fitting.AffineFit2D;
+import imagingbook.common.geometry.fitting.points.AffineFit2d;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 
@@ -43,7 +43,7 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 		}
 		else {
 			// minimum least-squares fit
-			AffineFit2D fit = new AffineFit2D(P, Q);
+			AffineFit2d fit = new AffineFit2d(P, Q);
 			return new AffineMapping2D(fit.getTransformationMatrix());
 		}
 	}

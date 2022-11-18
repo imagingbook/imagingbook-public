@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.geometry.fitting;
+package imagingbook.common.geometry.fitting.points;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.DecompositionSolver;
@@ -18,12 +18,20 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
- * This class implements 2D point fitting under affine transformations.
+ * <p>
+ * This class implements 2D point fitting under affine (three-point)
+ * transformations (exact and least-squares). See Sec. 21.1.3 of [1] for
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/08/01
  */
-public class AffineFit2D implements LinearFit2D {
+public class AffineFit2d implements LinearFit2d {
 	
 	private final RealMatrix A;		// the calculated transformation matrix
 	private final double err;		// the calculated error
@@ -33,10 +41,11 @@ public class AffineFit2D implements LinearFit2D {
 	 * Fits two sequences of 2D points using an affine transformation model.
 	 * At least 3 point pairs are required. For 3 point pairs, the solution
 	 * is an exact fit, otherwise a least-squares fit is found.
+	 * 
 	 * @param P the source points
 	 * @param Q the target points
 	 */
-	public AffineFit2D(Pnt2d[] P, Pnt2d[] Q) {	// 
+	public AffineFit2d(Pnt2d[] P, Pnt2d[] Q) {	// 
 		checkSize(P, Q);
 		int m = P.length;
 		
@@ -69,7 +78,7 @@ public class AffineFit2D implements LinearFit2D {
 		DecompositionSolver solver = new SingularValueDecomposition(M).getSolver();
 		RealVector a = solver.solve(b);
 		A = makeTransformationMatrix(a);
-		err = calculateError(P, Q, A);
+		err = Math.sqrt(LinearFit2d.getSquaredError(P, Q, A.getData()));
 	}
 
 	// creates a (2 x 3) transformation matrix from the elements of a

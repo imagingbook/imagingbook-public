@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package imagingbook.common.geometry.fitting;
+package imagingbook.common.geometry.fitting.points;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
@@ -25,27 +25,31 @@ import imagingbook.common.math.PrintPrecision;
 
 
 /**
- * Implements a 2-dimensional Procrustes fit, using the algorithm described in 
- * Shinji Umeyama, "Least-squares estimation of transformation parameters 
- * between two point patterns", IEEE Transactions on Pattern Analysis and 
- * Machine Intelligence 13.4 (Apr. 1991), pp. 376–380.
- * Usage example (also see the {@code main()} method of this class):
+ * <p>
+ * Implements a 2-dimensional Procrustes fit, using the algorithm described in
+ * [1]. Usage example:
+ * </p>
  * <pre>
  * Point[] P = ... // create sequence of 2D source points
  * Point[] Q = ... // create sequence of 2D target points
  * ProcrustesFit pf = new ProcrustesFit(P, Q);
- * double err = pf.getError();
- * RealMatrix R = pf.getR();
- * RealVector t = pf.getT();
+ * 
+ * RealMatrix R = pf.getRotation();
+ * RealVector t = pf.getTranslation();
  * double s = pf.getScale();
  * double err = pf.getError();
  * RealMatrix A = pf.getTransformationMatrix();
  * </pre>
+ * <p>
+ * [1] Shinji Umeyama, "Least-squares estimation of transformation parameters
+ * between two point patterns", IEEE Transactions on Pattern Analysis and
+ * Machine Intelligence, 13.4 (Apr. 1991), pp. 376–380.
+ * </p>
  * 
  * @author WB
  * @version 2021/11/27
  */
-public class ProcrustesFit implements LinearFit2D {
+public class ProcrustesFit2d implements LinearFit2d {
 	
 	private final RealMatrix R;					// orthogonal (rotation) matrix
 	private final RealVector t;					// translation vector
@@ -63,7 +67,7 @@ public class ProcrustesFit implements LinearFit2D {
 	 * @param P the source points
 	 * @param Q the target points
 	 */
-	public ProcrustesFit(Pnt2d[] P, Pnt2d[] Q) {
+	public ProcrustesFit2d(Pnt2d[] P, Pnt2d[] Q) {
 		this(P, Q, true, true, true);
 	}
 	
@@ -78,7 +82,7 @@ public class ProcrustesFit implements LinearFit2D {
 	 * @param forceRotation if {@code true}, the orthogonal part of the transformation (Q)
 	 * 		is forced to a true rotation and no reflection is allowed
 	 */
-	public ProcrustesFit(Pnt2d[] P, Pnt2d[] Q, boolean allowTranslation, boolean allowScaling, boolean forceRotation) {
+	public ProcrustesFit2d(Pnt2d[] P, Pnt2d[] Q, boolean allowTranslation, boolean allowScaling, boolean forceRotation) {
 		checkSize(P, Q);
 		
 		double[] meanP = null;
@@ -147,7 +151,7 @@ public class ProcrustesFit implements LinearFit2D {
 	 * Retrieves the estimated orthogonal (rotation) matrix.
 	 * @return The estimated rotation matrix.
 	 */
-	public double[][] getR() {
+	public double[][] getRotation() {
 		return R.getData();
 	}
 	
@@ -155,7 +159,7 @@ public class ProcrustesFit implements LinearFit2D {
 	 * Retrieves the estimated translation vector.
 	 * @return The estimated translation vector.
 	 */
-	public double[] getT() {
+	public double[] getTranslation() {
 		return t.toArray();
 	}
 	
@@ -178,6 +182,7 @@ public class ProcrustesFit implements LinearFit2D {
 	 * transformed point set X and the reference set Y.
 	 * This method is provided for testing as an alternative to
 	 * the quicker {@link getError} method.
+	 * 
 	 * @param P Sequence of n-dimensional points.
 	 * @param Q Sequence of n-dimensional points (reference).
 	 * @return The total error for the estimated fit.
@@ -192,7 +197,7 @@ public class ProcrustesFit implements LinearFit2D {
 			RealVector pp = sR.operate(p).add(t);
 			//System.out.format("p=%s, q=%s, pp=%s\n", p.toString(), q.toString(), pp.toString());
 			double e = pp.subtract(q).getNorm();
-			errSum = errSum + e * e;
+			errSum = errSum + sqr(e);
 		}
 		return Math.sqrt(errSum);	// correct!
 	}
@@ -247,13 +252,15 @@ public class ProcrustesFit implements LinearFit2D {
 		}
 	}
 
-	// --------------------------------------------------------------------------------
+	
 	
 	private static double roundToDigits(double x, int ndigits) {
 		int d = (int) Math.pow(10, ndigits);
 		return Math.rint(x * d) / d;
 	}
 
+	// --------------------------------------------------------------------------------
+	
 	public static void main(String[] args) {
 		PrintPrecision.set(6);
 		int NDIGITS = 1;
@@ -296,12 +303,12 @@ public class ProcrustesFit implements LinearFit2D {
 		
 		//P[0] = Point.create(2, 0);	// to provoke a large error
 		
-		ProcrustesFit pf = new ProcrustesFit(P, Q, allowTranslation, allowScaling, forceRotation);
+		ProcrustesFit2d pf = new ProcrustesFit2d(P, Q, allowTranslation, allowScaling, forceRotation);
 
-		double[][] R = pf.getR();
+		double[][] R = pf.getRotation();
 		System.out.format("estimated alpha: a = %.6f\n", Math.acos(R[0][0]));
 		System.out.println("estimated rotation: R = \n" + Matrix.toString(R));
-		double[] T = pf.getT();
+		double[] T = pf.getTranslation();
 		System.out.println("estimated translation: t = " + Matrix.toString(T));
 		System.out.format("estimated scale: s = %.6f\n", pf.getScale());
 		
