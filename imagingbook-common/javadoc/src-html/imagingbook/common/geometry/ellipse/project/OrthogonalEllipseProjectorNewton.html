@@ -23,119 +23,95 @@
 <span class="sourceLineNo">013</span><a id="line.13">import static java.lang.Math.max;</a>
 <span class="sourceLineNo">014</span><a id="line.14">import static java.lang.Math.pow;</a>
 <span class="sourceLineNo">015</span><a id="line.15"></a>
-<span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.geometry.ellipse.GeometricEllipse;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.math.PrintPrecision;</a>
-<span class="sourceLineNo">019</span><a id="line.19"></a>
-<span class="sourceLineNo">020</span><a id="line.20"></a>
-<span class="sourceLineNo">021</span><a id="line.21">/**</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * &lt;p&gt;</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * Calculates orthogonal projections of points onto an ellipse using</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * Newton-based iterative root finding.</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * &lt;p&gt;</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * &lt;strong&gt;NOTE:&lt;/strong&gt; This version is quick but may fail to return a valid result if the </a>
-<span class="sourceLineNo">028</span><a id="line.28"> * target point is close to the x- or y-axis.</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * See {@link OrthogonalEllipseProjector} for a robust solution</a>
-<span class="sourceLineNo">030</span><a id="line.30"> * or {@link ConfocalConicEllipseProjector} for an approximate but</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * non-iterative (i.e., fast) alternative.</a>
-<span class="sourceLineNo">032</span><a id="line.32"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">033</span><a id="line.33"> * </a>
-<span class="sourceLineNo">034</span><a id="line.34"> * @author WB</a>
-<span class="sourceLineNo">035</span><a id="line.35"> * @see OrthogonalEllipseProjector</a>
-<span class="sourceLineNo">036</span><a id="line.36"> * @see ConfocalConicEllipseProjector</a>
-<span class="sourceLineNo">037</span><a id="line.37"> */</a>
-<span class="sourceLineNo">038</span><a id="line.38">public class OrthogonalEllipseProjectorNewton extends EllipseProjector {</a>
-<span class="sourceLineNo">039</span><a id="line.39">        </a>
-<span class="sourceLineNo">040</span><a id="line.40">        private final static double NewtonMinStep = 1e-6;</a>
-<span class="sourceLineNo">041</span><a id="line.41">        private final static int MaxIterations = 100;</a>
-<span class="sourceLineNo">042</span><a id="line.42">        </a>
-<span class="sourceLineNo">043</span><a id="line.43">        private final double ra, rb, ra2, rb2;</a>
-<span class="sourceLineNo">044</span><a id="line.44">        private int lastIterationCount = 0;     // number of root-finding iterations performed in last projection</a>
-<span class="sourceLineNo">045</span><a id="line.45">        </a>
-<span class="sourceLineNo">046</span><a id="line.46">        public OrthogonalEllipseProjectorNewton(GeometricEllipse ellipse) {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                super(ellipse);</a>
-<span class="sourceLineNo">048</span><a id="line.48">                this.ra = ellipse.ra;</a>
-<span class="sourceLineNo">049</span><a id="line.49">                this.rb = ellipse.rb;</a>
-<span class="sourceLineNo">050</span><a id="line.50">                this.ra2 = sqr(ra);</a>
-<span class="sourceLineNo">051</span><a id="line.51">                this.rb2 = sqr(rb);</a>
-<span class="sourceLineNo">052</span><a id="line.52">        }</a>
-<span class="sourceLineNo">053</span><a id="line.53">        </a>
-<span class="sourceLineNo">054</span><a id="line.54">        @Override</a>
-<span class="sourceLineNo">055</span><a id="line.55">        protected double[] projectCanonical(double[] u1) {</a>
-<span class="sourceLineNo">056</span><a id="line.56">                // coordinates of p (mapped to first quadrant)</a>
-<span class="sourceLineNo">057</span><a id="line.57">                final double u = u1[0]; </a>
-<span class="sourceLineNo">058</span><a id="line.58">                final double v = u1[1]; </a>
-<span class="sourceLineNo">059</span><a id="line.59">                </a>
-<span class="sourceLineNo">060</span><a id="line.60">                double[] ub = null;     // the unknown ellipse point</a>
-<span class="sourceLineNo">061</span><a id="line.61"></a>
-<span class="sourceLineNo">062</span><a id="line.62">                if (u + v &lt; 1e-6) {     // (u,v) is very close to the ellipse center; u,v &gt;= 0</a>
-<span class="sourceLineNo">063</span><a id="line.63">                        ub = new double[] {0, rb};</a>
-<span class="sourceLineNo">064</span><a id="line.64">                }</a>
-<span class="sourceLineNo">065</span><a id="line.65">                else {                                          </a>
-<span class="sourceLineNo">066</span><a id="line.66">                        double t = max(ra * u - ra2, rb * v - rb2);</a>
-<span class="sourceLineNo">067</span><a id="line.67">                        double gprev = Double.POSITIVE_INFINITY;</a>
-<span class="sourceLineNo">068</span><a id="line.68">                        double deltaT, deltaG;</a>
-<span class="sourceLineNo">069</span><a id="line.69">                        int k = 0;</a>
-<span class="sourceLineNo">070</span><a id="line.70">                        do {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                                k = k + 1;</a>
-<span class="sourceLineNo">072</span><a id="line.72">                                double g  = sqr((ra * u) / (t + ra2)) + sqr((rb * v) / (t + rb2)) - 1;</a>
-<span class="sourceLineNo">073</span><a id="line.73">                                double dg = 2 * (sqr(ra * u) / pow(t + ra2, 3) + sqr(rb * v) / pow(t + rb2, 3));</a>
-<span class="sourceLineNo">074</span><a id="line.74">                                deltaT = g / dg;</a>
-<span class="sourceLineNo">075</span><a id="line.75">                                t = t + deltaT;                         // Newton iteration</a>
-<span class="sourceLineNo">076</span><a id="line.76">                                </a>
-<span class="sourceLineNo">077</span><a id="line.77">                                // in rare cases g(t) is very flat and checking deltaT is not enough for convergence!</a>
-<span class="sourceLineNo">078</span><a id="line.78">                                deltaG = g - gprev;                     // change of g value</a>
-<span class="sourceLineNo">079</span><a id="line.79">                                gprev = g;      </a>
+<span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.geometry.ellipse.GeometricEllipse;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">/**</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * &lt;p&gt;</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * Calculates the closest point on the ellipse for a given 2D point inside or</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * outside the ellipse, using orthogonal projection of points onto the ellipse.</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * This is a robust algorithm based on [1]. See Sec.11.2.2 (Alg. 11.9) of [2]</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * for details. This version uses the Newton-method for root finding, which is</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * quick but may fail to return a valid result if the target point is close to</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * the x- or y-axis. See {@link OrthogonalEllipseProjector} for a robust</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * solution or {@link ConfocalConicEllipseProjector} for an approximate but</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * non-iterative (i.e., fast) alternative.</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * &lt;p&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * [1] D. Eberly: "Distance from a point to an ellipse, an ellipsoid, or a</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * hyperellipsoid", Technical Report, Geometric Tools, www.geometrictools.com,</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * Redmont, WA (June 2013). &lt;br&gt;</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * </a>
+<span class="sourceLineNo">037</span><a id="line.37"> * @author WB</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * @version 2022/04/09</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * @see OrthogonalEllipseProjector</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * @see ConfocalConicEllipseProjector</a>
+<span class="sourceLineNo">041</span><a id="line.41"> */</a>
+<span class="sourceLineNo">042</span><a id="line.42">public class OrthogonalEllipseProjectorNewton extends EllipseProjector {</a>
+<span class="sourceLineNo">043</span><a id="line.43">        </a>
+<span class="sourceLineNo">044</span><a id="line.44">        private final static double NewtonMinStep = 1e-6;</a>
+<span class="sourceLineNo">045</span><a id="line.45">        private final static int MaxIterations = 100;</a>
+<span class="sourceLineNo">046</span><a id="line.46">        </a>
+<span class="sourceLineNo">047</span><a id="line.47">        private final double ra, rb, ra2, rb2;</a>
+<span class="sourceLineNo">048</span><a id="line.48">        private int lastIterationCount = 0;     // number of root-finding iterations performed in last projection</a>
+<span class="sourceLineNo">049</span><a id="line.49">        </a>
+<span class="sourceLineNo">050</span><a id="line.50">        public OrthogonalEllipseProjectorNewton(GeometricEllipse ellipse) {</a>
+<span class="sourceLineNo">051</span><a id="line.51">                super(ellipse);</a>
+<span class="sourceLineNo">052</span><a id="line.52">                this.ra = ellipse.ra;</a>
+<span class="sourceLineNo">053</span><a id="line.53">                this.rb = ellipse.rb;</a>
+<span class="sourceLineNo">054</span><a id="line.54">                this.ra2 = sqr(ra);</a>
+<span class="sourceLineNo">055</span><a id="line.55">                this.rb2 = sqr(rb);</a>
+<span class="sourceLineNo">056</span><a id="line.56">        }</a>
+<span class="sourceLineNo">057</span><a id="line.57">        </a>
+<span class="sourceLineNo">058</span><a id="line.58">        @Override</a>
+<span class="sourceLineNo">059</span><a id="line.59">        protected double[] projectCanonical(double[] u1) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                // coordinates of p (mapped to first quadrant)</a>
+<span class="sourceLineNo">061</span><a id="line.61">                final double u = u1[0]; </a>
+<span class="sourceLineNo">062</span><a id="line.62">                final double v = u1[1]; </a>
+<span class="sourceLineNo">063</span><a id="line.63">                </a>
+<span class="sourceLineNo">064</span><a id="line.64">                double[] ub = null;     // the unknown ellipse point</a>
+<span class="sourceLineNo">065</span><a id="line.65"></a>
+<span class="sourceLineNo">066</span><a id="line.66">                if (u + v &lt; 1e-6) {     // (u,v) is very close to the ellipse center; u,v &gt;= 0</a>
+<span class="sourceLineNo">067</span><a id="line.67">                        ub = new double[] {0, rb};</a>
+<span class="sourceLineNo">068</span><a id="line.68">                }</a>
+<span class="sourceLineNo">069</span><a id="line.69">                else {                                          </a>
+<span class="sourceLineNo">070</span><a id="line.70">                        double t = max(ra * u - ra2, rb * v - rb2);</a>
+<span class="sourceLineNo">071</span><a id="line.71">                        double gprev = Double.POSITIVE_INFINITY;</a>
+<span class="sourceLineNo">072</span><a id="line.72">                        double deltaT, deltaG;</a>
+<span class="sourceLineNo">073</span><a id="line.73">                        int k = 0;</a>
+<span class="sourceLineNo">074</span><a id="line.74">                        do {</a>
+<span class="sourceLineNo">075</span><a id="line.75">                                k = k + 1;</a>
+<span class="sourceLineNo">076</span><a id="line.76">                                double g  = sqr((ra * u) / (t + ra2)) + sqr((rb * v) / (t + rb2)) - 1;</a>
+<span class="sourceLineNo">077</span><a id="line.77">                                double dg = 2 * (sqr(ra * u) / pow(t + ra2, 3) + sqr(rb * v) / pow(t + rb2, 3));</a>
+<span class="sourceLineNo">078</span><a id="line.78">                                deltaT = g / dg;</a>
+<span class="sourceLineNo">079</span><a id="line.79">                                t = t + deltaT;                         // Newton iteration</a>
 <span class="sourceLineNo">080</span><a id="line.80">                                </a>
-<span class="sourceLineNo">081</span><a id="line.81">                        }  while(abs(deltaT) &gt; NewtonMinStep &amp;&amp; abs(deltaG) &gt; NewtonMinStep &amp;&amp; k &lt; MaxIterations);</a>
-<span class="sourceLineNo">082</span><a id="line.82">                        </a>
-<span class="sourceLineNo">083</span><a id="line.83">                        lastIterationCount = k;         // remember iteration count</a>
-<span class="sourceLineNo">084</span><a id="line.84">                        </a>
-<span class="sourceLineNo">085</span><a id="line.85">                        if (k &gt;= MaxIterations) {</a>
-<span class="sourceLineNo">086</span><a id="line.86">                                throw new RuntimeException("max. mumber of iterations exceeded");</a>
-<span class="sourceLineNo">087</span><a id="line.87">                        }</a>
+<span class="sourceLineNo">081</span><a id="line.81">                                // in rare cases g(t) is very flat and checking deltaT is not enough for convergence!</a>
+<span class="sourceLineNo">082</span><a id="line.82">                                deltaG = g - gprev;                     // change of g value</a>
+<span class="sourceLineNo">083</span><a id="line.83">                                gprev = g;      </a>
+<span class="sourceLineNo">084</span><a id="line.84">                                </a>
+<span class="sourceLineNo">085</span><a id="line.85">                        }  while(abs(deltaT) &gt; NewtonMinStep &amp;&amp; abs(deltaG) &gt; NewtonMinStep &amp;&amp; k &lt; MaxIterations);</a>
+<span class="sourceLineNo">086</span><a id="line.86">                        </a>
+<span class="sourceLineNo">087</span><a id="line.87">                        lastIterationCount = k;         // remember iteration count</a>
 <span class="sourceLineNo">088</span><a id="line.88">                        </a>
-<span class="sourceLineNo">089</span><a id="line.89">                        ub = new double[] {ra2 * u / (t + ra2), rb2 * v / (t + rb2)};</a>
-<span class="sourceLineNo">090</span><a id="line.90">                }</a>
-<span class="sourceLineNo">091</span><a id="line.91">                return ub;</a>
-<span class="sourceLineNo">092</span><a id="line.92">        }</a>
-<span class="sourceLineNo">093</span><a id="line.93"></a>
-<span class="sourceLineNo">094</span><a id="line.94">        // for statistics only</a>
-<span class="sourceLineNo">095</span><a id="line.95">        </a>
-<span class="sourceLineNo">096</span><a id="line.96">        public int getLastIterationCount() {</a>
-<span class="sourceLineNo">097</span><a id="line.97">                return this.lastIterationCount;</a>
-<span class="sourceLineNo">098</span><a id="line.98">        }</a>
+<span class="sourceLineNo">089</span><a id="line.89">                        if (k &gt;= MaxIterations) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">                                throw new RuntimeException("max. mumber of iterations exceeded");</a>
+<span class="sourceLineNo">091</span><a id="line.91">                        }</a>
+<span class="sourceLineNo">092</span><a id="line.92">                        </a>
+<span class="sourceLineNo">093</span><a id="line.93">                        ub = new double[] {ra2 * u / (t + ra2), rb2 * v / (t + rb2)};</a>
+<span class="sourceLineNo">094</span><a id="line.94">                }</a>
+<span class="sourceLineNo">095</span><a id="line.95">                return ub;</a>
+<span class="sourceLineNo">096</span><a id="line.96">        }</a>
+<span class="sourceLineNo">097</span><a id="line.97"></a>
+<span class="sourceLineNo">098</span><a id="line.98">        // for statistics only</a>
 <span class="sourceLineNo">099</span><a id="line.99">        </a>
-<span class="sourceLineNo">100</span><a id="line.100"></a>
-<span class="sourceLineNo">101</span><a id="line.101">        // -------------------------------------------------</a>
-<span class="sourceLineNo">102</span><a id="line.102"></a>
-<span class="sourceLineNo">103</span><a id="line.103">        public static void main(String[] args) {</a>
-<span class="sourceLineNo">104</span><a id="line.104">                PrintPrecision.set(8);</a>
-<span class="sourceLineNo">105</span><a id="line.105">                </a>
-<span class="sourceLineNo">106</span><a id="line.106">//              Ellipse ell = new Ellipse(5, 3, 1, 1, 1.1);</a>
-<span class="sourceLineNo">107</span><a id="line.107">//              Pnt2d p = Pnt2d.from(6, 1);</a>
-<span class="sourceLineNo">108</span><a id="line.108">                </a>
-<span class="sourceLineNo">109</span><a id="line.109">                // critical case: </a>
-<span class="sourceLineNo">110</span><a id="line.110">//               GeometricEllipse ell = new GeometricEllipse(353613.76725979, 987.23614032, 353503.20032614, -9010.22308359, 3.11555492);</a>
-<span class="sourceLineNo">111</span><a id="line.111">//               Pnt2d p = Pnt2d.from(30.000000000, 210.000000000);</a>
-<span class="sourceLineNo">112</span><a id="line.112">                 </a>
-<span class="sourceLineNo">113</span><a id="line.113">                        GeometricEllipse ell = new GeometricEllipse(6, 5, 0, 0, 0);</a>
-<span class="sourceLineNo">114</span><a id="line.114">//                      Pnt2d p = Pnt2d.from(1, 0);</a>
-<span class="sourceLineNo">115</span><a id="line.115">//                      Pnt2d p = Pnt2d.from(6, 0);</a>
-<span class="sourceLineNo">116</span><a id="line.116">                        Pnt2d p = Pnt2d.from(0.1, 0.1);</a>
-<span class="sourceLineNo">117</span><a id="line.117">                </a>
-<span class="sourceLineNo">118</span><a id="line.118">                 OrthogonalEllipseProjectorNewton projector = new OrthogonalEllipseProjectorNewton(ell);</a>
-<span class="sourceLineNo">119</span><a id="line.119">                </a>
-<span class="sourceLineNo">120</span><a id="line.120">                System.out.println("p  = " + p);</a>
-<span class="sourceLineNo">121</span><a id="line.121">                Pnt2d p0 = projector.project(p);</a>
-<span class="sourceLineNo">122</span><a id="line.122">                System.out.println("p0 = " + p0);</a>
-<span class="sourceLineNo">123</span><a id="line.123">                System.out.println("iterations  = " + projector.getLastIterationCount());</a>
-<span class="sourceLineNo">124</span><a id="line.124">                </a>
-<span class="sourceLineNo">125</span><a id="line.125">                System.out.println("dist = " + projector.getDistance(p.toDoubleArray()));</a>
-<span class="sourceLineNo">126</span><a id="line.126">        }</a>
-<span class="sourceLineNo">127</span><a id="line.127"></a>
-<span class="sourceLineNo">128</span><a id="line.128">}</a>
+<span class="sourceLineNo">100</span><a id="line.100">        public int getLastIterationCount() {</a>
+<span class="sourceLineNo">101</span><a id="line.101">                return this.lastIterationCount;</a>
+<span class="sourceLineNo">102</span><a id="line.102">        }</a>
+<span class="sourceLineNo">103</span><a id="line.103"></a>
+<span class="sourceLineNo">104</span><a id="line.104">}</a>
 
 
 

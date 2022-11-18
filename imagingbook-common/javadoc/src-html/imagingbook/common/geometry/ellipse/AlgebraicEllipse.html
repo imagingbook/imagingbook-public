@@ -32,24 +32,24 @@
 <span class="sourceLineNo">022</span><a id="line.22">import imagingbook.common.math.Matrix;</a>
 <span class="sourceLineNo">023</span><a id="line.23"></a>
 <span class="sourceLineNo">024</span><a id="line.24">/**</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * Represents an algebraic ellipse with the implicit equation</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * A x^2 + B x y + C y^2 + D x + E y + F = 0.</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * Parameters A, ..., F are normalized such that B^2 - 4 A C = -1.</a>
-<span class="sourceLineNo">028</span><a id="line.28"> * Instances are immutable.</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * </a>
-<span class="sourceLineNo">030</span><a id="line.30"> * @author WB</a>
-<span class="sourceLineNo">031</span><a id="line.31"> */</a>
-<span class="sourceLineNo">032</span><a id="line.32">public class AlgebraicEllipse {</a>
-<span class="sourceLineNo">033</span><a id="line.33">        </a>
-<span class="sourceLineNo">034</span><a id="line.34">        /**</a>
-<span class="sourceLineNo">035</span><a id="line.35">         * Ellipse parameters.</a>
-<span class="sourceLineNo">036</span><a id="line.36">         */</a>
-<span class="sourceLineNo">037</span><a id="line.37">        final double A;</a>
-<span class="sourceLineNo">038</span><a id="line.38">        final double B;</a>
-<span class="sourceLineNo">039</span><a id="line.39">        final double C;</a>
-<span class="sourceLineNo">040</span><a id="line.40">        final double D;</a>
-<span class="sourceLineNo">041</span><a id="line.41">        final double E;</a>
-<span class="sourceLineNo">042</span><a id="line.42">        final double F;</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * &lt;p&gt;</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * Represents an algebraic ellipse with the implicit equation A x^2 + B x y + C</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * y^2 + D x + E y + F = 0. Parameters A, ..., F are normalized such that B^2 -</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * 4 A C = -1. Instances are immutable. See Secs. 11.2.1 and F.3.1 for details.</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * &lt;p&gt;</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * </a>
+<span class="sourceLineNo">035</span><a id="line.35"> * @author WB</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * @version 2022/11/17</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * </a>
+<span class="sourceLineNo">038</span><a id="line.38"> */</a>
+<span class="sourceLineNo">039</span><a id="line.39">public class AlgebraicEllipse {</a>
+<span class="sourceLineNo">040</span><a id="line.40">        </a>
+<span class="sourceLineNo">041</span><a id="line.41">        /** Ellipse parameters. */</a>
+<span class="sourceLineNo">042</span><a id="line.42">        private final double A, B, C, D, E, F;</a>
 <span class="sourceLineNo">043</span><a id="line.43">        </a>
 <span class="sourceLineNo">044</span><a id="line.44">        /**</a>
 <span class="sourceLineNo">045</span><a id="line.45">         * Constructor.</a>
@@ -57,12 +57,12 @@
 <span class="sourceLineNo">047</span><a id="line.47">         * supplied parameters [A,...,F] such that d = B^2 - 4 A C = -1.</a>
 <span class="sourceLineNo">048</span><a id="line.48">         * Throws an exception if d is non-negative.</a>
 <span class="sourceLineNo">049</span><a id="line.49">         * </a>
-<span class="sourceLineNo">050</span><a id="line.50">         * @param A parameter A</a>
-<span class="sourceLineNo">051</span><a id="line.51">         * @param B parameter B</a>
-<span class="sourceLineNo">052</span><a id="line.52">         * @param C parameter C</a>
-<span class="sourceLineNo">053</span><a id="line.53">         * @param D parameter D</a>
-<span class="sourceLineNo">054</span><a id="line.54">         * @param E parameter E</a>
-<span class="sourceLineNo">055</span><a id="line.55">         * @param F parameter F</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @param A ellipse parameter A</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @param B ellipse parameter B</a>
+<span class="sourceLineNo">052</span><a id="line.52">         * @param C ellipse parameter C</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * @param D ellipse parameter D</a>
+<span class="sourceLineNo">054</span><a id="line.54">         * @param E ellipse parameter E</a>
+<span class="sourceLineNo">055</span><a id="line.55">         * @param F ellipse parameter F</a>
 <span class="sourceLineNo">056</span><a id="line.56">         */</a>
 <span class="sourceLineNo">057</span><a id="line.57">        public AlgebraicEllipse(double A, double B, double C, double D, double E, double F) {</a>
 <span class="sourceLineNo">058</span><a id="line.58">                double d = sqr(B) - 4 * A * C;</a>

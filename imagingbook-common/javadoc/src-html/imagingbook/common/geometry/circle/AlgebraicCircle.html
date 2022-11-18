@@ -27,125 +27,132 @@
 <span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.math.Arithmetic;</a>
 <span class="sourceLineNo">018</span><a id="line.18"></a>
 <span class="sourceLineNo">019</span><a id="line.19">/**</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * Represents an algebraic circle with four parameters A, B, C, D in the form</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * A * (x^2 + y^2) + B * x + C * y + D = 0.</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * Parameters are normalized such that</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * B^2 + C^2 - 4 * A * D = 1 and A &amp;ge; 0</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * Circle instances are immutable.</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * </a>
-<span class="sourceLineNo">026</span><a id="line.26"> * @author WB</a>
-<span class="sourceLineNo">027</span><a id="line.27"> *</a>
-<span class="sourceLineNo">028</span><a id="line.28"> */</a>
-<span class="sourceLineNo">029</span><a id="line.29">public class AlgebraicCircle {</a>
-<span class="sourceLineNo">030</span><a id="line.30"></a>
-<span class="sourceLineNo">031</span><a id="line.31">        /**</a>
-<span class="sourceLineNo">032</span><a id="line.32">         * Circle parameters.</a>
-<span class="sourceLineNo">033</span><a id="line.33">         */</a>
-<span class="sourceLineNo">034</span><a id="line.34">        public final double A, B, C, D;</a>
-<span class="sourceLineNo">035</span><a id="line.35">        </a>
+<span class="sourceLineNo">020</span><a id="line.20"> * &lt;p&gt;</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * Represents an algebraic circle with four parameters A, B, C, D in the form A</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * * (x^2 + y^2) + B * x + C * y + D = 0. Parameters are normalized such that</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * B^2 + C^2 - 4 * A * D = 1 and A &amp;ge; 0 Circle instances are immutable. See</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * Sec. 11.1.1 and Appendix F.2.1 of [1] for details.</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * &lt;p&gt;</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * </a>
+<span class="sourceLineNo">031</span><a id="line.31"> * @author WB</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * @version 2022/11/17</a>
+<span class="sourceLineNo">033</span><a id="line.33"> */</a>
+<span class="sourceLineNo">034</span><a id="line.34">public class AlgebraicCircle {</a>
+<span class="sourceLineNo">035</span><a id="line.35"></a>
 <span class="sourceLineNo">036</span><a id="line.36">        /**</a>
-<span class="sourceLineNo">037</span><a id="line.37">         * Constructor. Creates a {@link AlgebraicCircle} instance</a>
-<span class="sourceLineNo">038</span><a id="line.38">         * whose parameters A, B, C, D are normalized such that</a>
-<span class="sourceLineNo">039</span><a id="line.39">         * B^2 + C^2 - 4 * A * D = 1 and A &amp;ge; 0.</a>
-<span class="sourceLineNo">040</span><a id="line.40">         * Throws an exception if d = B^2 + C^2 - 4 * A * D (the &lt;em&gt;discriminant&lt;/em&gt;) is negative.</a>
-<span class="sourceLineNo">041</span><a id="line.41">         * </a>
-<span class="sourceLineNo">042</span><a id="line.42">         * @param A circle parameter A</a>
-<span class="sourceLineNo">043</span><a id="line.43">         * @param B circle parameter B</a>
-<span class="sourceLineNo">044</span><a id="line.44">         * @param C circle parameter C</a>
-<span class="sourceLineNo">045</span><a id="line.45">         * @param D circle parameter D</a>
-<span class="sourceLineNo">046</span><a id="line.46">         */</a>
-<span class="sourceLineNo">047</span><a id="line.47">        public AlgebraicCircle(double A, double B, double C, double D) {</a>
-<span class="sourceLineNo">048</span><a id="line.48">                // discriminant (d) must be positive!</a>
-<span class="sourceLineNo">049</span><a id="line.49">                double d = sqr(B) + sqr(C) - 4 * A * D;</a>
-<span class="sourceLineNo">050</span><a id="line.50">                if (isZero(A) || d &lt; Arithmetic.EPSILON_DOUBLE) {</a>
-<span class="sourceLineNo">051</span><a id="line.51">                        throw new IllegalArgumentException("illegal circle parameters (zero A or non-positive discriminant)");</a>
-<span class="sourceLineNo">052</span><a id="line.52">                }</a>
-<span class="sourceLineNo">053</span><a id="line.53">                // normalize parameters to (B^2 + C^2 - 4 * A * D) = 1 and A &gt;= 0</a>
-<span class="sourceLineNo">054</span><a id="line.54">                double s = 1 / sqrt(d);</a>
-<span class="sourceLineNo">055</span><a id="line.55">                if (A &gt;= 0) {</a>
-<span class="sourceLineNo">056</span><a id="line.56">                        this.A = A * s;</a>
-<span class="sourceLineNo">057</span><a id="line.57">                        this.B = B * s;</a>
-<span class="sourceLineNo">058</span><a id="line.58">                        this.C = C * s;</a>
-<span class="sourceLineNo">059</span><a id="line.59">                        this.D = D * s;</a>
-<span class="sourceLineNo">060</span><a id="line.60">                }</a>
-<span class="sourceLineNo">061</span><a id="line.61">                else {</a>
-<span class="sourceLineNo">062</span><a id="line.62">                        this.A = -A * s;</a>
-<span class="sourceLineNo">063</span><a id="line.63">                        this.B = -B * s;</a>
-<span class="sourceLineNo">064</span><a id="line.64">                        this.C = -C * s;</a>
-<span class="sourceLineNo">065</span><a id="line.65">                        this.D = -D * s;</a>
-<span class="sourceLineNo">066</span><a id="line.66">                }</a>
-<span class="sourceLineNo">067</span><a id="line.67">        }</a>
-<span class="sourceLineNo">068</span><a id="line.68">        </a>
-<span class="sourceLineNo">069</span><a id="line.69">        /**</a>
-<span class="sourceLineNo">070</span><a id="line.70">         * Constructor. Creates a {@link AlgebraicCircle} instance from the</a>
-<span class="sourceLineNo">071</span><a id="line.71">         * specified parameter vector [A, B, C, D].</a>
-<span class="sourceLineNo">072</span><a id="line.72">         * </a>
-<span class="sourceLineNo">073</span><a id="line.73">         * @param p algebraic circle parameters</a>
-<span class="sourceLineNo">074</span><a id="line.74">         */</a>
-<span class="sourceLineNo">075</span><a id="line.75">        public AlgebraicCircle(double[] p) {</a>
-<span class="sourceLineNo">076</span><a id="line.76">                this(p[0], p[1], p[2], p[3]);</a>
-<span class="sourceLineNo">077</span><a id="line.77">        }</a>
-<span class="sourceLineNo">078</span><a id="line.78">        </a>
-<span class="sourceLineNo">079</span><a id="line.79">        /**</a>
-<span class="sourceLineNo">080</span><a id="line.80">         * Constructor. Creates a {@link AlgebraicCircle} instance from</a>
-<span class="sourceLineNo">081</span><a id="line.81">         * a {@link GeometricCircle}.</a>
-<span class="sourceLineNo">082</span><a id="line.82">         * </a>
-<span class="sourceLineNo">083</span><a id="line.83">         * @param gc a {@link GeometricCircle}</a>
-<span class="sourceLineNo">084</span><a id="line.84">         */</a>
-<span class="sourceLineNo">085</span><a id="line.85">        public AlgebraicCircle(GeometricCircle gc) {</a>
-<span class="sourceLineNo">086</span><a id="line.86">                this(getAlgebraicCircleParameters(gc));</a>
-<span class="sourceLineNo">087</span><a id="line.87">        }</a>
-<span class="sourceLineNo">088</span><a id="line.88"></a>
-<span class="sourceLineNo">089</span><a id="line.89">        private static double[] getAlgebraicCircleParameters(GeometricCircle gc) {</a>
-<span class="sourceLineNo">090</span><a id="line.90">                double A = 1 / (2 * gc.r);</a>
-<span class="sourceLineNo">091</span><a id="line.91">                double B = -2 * A * gc.xc;</a>
-<span class="sourceLineNo">092</span><a id="line.92">                double C = -2 * A * gc.yc;</a>
-<span class="sourceLineNo">093</span><a id="line.93">                double D = (sqr(B) + sqr(C) - 1) / (4 * A);</a>
-<span class="sourceLineNo">094</span><a id="line.94">                return new double[] {A, B, C, D};</a>
-<span class="sourceLineNo">095</span><a id="line.95">        }</a>
-<span class="sourceLineNo">096</span><a id="line.96">        </a>
-<span class="sourceLineNo">097</span><a id="line.97">        /**</a>
-<span class="sourceLineNo">098</span><a id="line.98">         * Return a vector of parameters for this circle.</a>
-<span class="sourceLineNo">099</span><a id="line.99">         * The length of the vector and the meaning of the parameters depends</a>
-<span class="sourceLineNo">100</span><a id="line.100">         * on the concrete circle type.</a>
-<span class="sourceLineNo">101</span><a id="line.101">         * </a>
-<span class="sourceLineNo">102</span><a id="line.102">         * @return a vector of parameters</a>
-<span class="sourceLineNo">103</span><a id="line.103">         */</a>
-<span class="sourceLineNo">104</span><a id="line.104">        public double[] getParameters() {</a>
-<span class="sourceLineNo">105</span><a id="line.105">                return new double[] {A, B, C, D};</a>
-<span class="sourceLineNo">106</span><a id="line.106">        }</a>
-<span class="sourceLineNo">107</span><a id="line.107">        </a>
-<span class="sourceLineNo">108</span><a id="line.108">        @Override</a>
-<span class="sourceLineNo">109</span><a id="line.109">        public boolean equals(Object other) {</a>
-<span class="sourceLineNo">110</span><a id="line.110">                if (this == other) {</a>
-<span class="sourceLineNo">111</span><a id="line.111">                        return true;</a>
-<span class="sourceLineNo">112</span><a id="line.112">                }</a>
-<span class="sourceLineNo">113</span><a id="line.113">                if (!(other instanceof AlgebraicCircle)) {</a>
-<span class="sourceLineNo">114</span><a id="line.114">            return false;</a>
-<span class="sourceLineNo">115</span><a id="line.115">        }</a>
-<span class="sourceLineNo">116</span><a id="line.116">                return this.equals((AlgebraicCircle) other, Arithmetic.EPSILON_DOUBLE);</a>
-<span class="sourceLineNo">117</span><a id="line.117">        }</a>
-<span class="sourceLineNo">118</span><a id="line.118">        </a>
-<span class="sourceLineNo">119</span><a id="line.119">        public boolean equals(AlgebraicCircle other, double tolerance) {</a>
-<span class="sourceLineNo">120</span><a id="line.120">                return </a>
-<span class="sourceLineNo">121</span><a id="line.121">                                Arithmetic.equals(A, other.A, tolerance) &amp;&amp;</a>
-<span class="sourceLineNo">122</span><a id="line.122">                                Arithmetic.equals(B, other.B, tolerance) &amp;&amp;</a>
-<span class="sourceLineNo">123</span><a id="line.123">                                Arithmetic.equals(C, other.C, tolerance) &amp;&amp;</a>
-<span class="sourceLineNo">124</span><a id="line.124">                                Arithmetic.equals(D, other.D, tolerance) ;</a>
-<span class="sourceLineNo">125</span><a id="line.125">        }</a>
-<span class="sourceLineNo">126</span><a id="line.126">        </a>
-<span class="sourceLineNo">127</span><a id="line.127">        public AlgebraicCircle duplicate() {</a>
-<span class="sourceLineNo">128</span><a id="line.128">                return new AlgebraicCircle(this.getParameters());</a>
-<span class="sourceLineNo">129</span><a id="line.129">        }</a>
-<span class="sourceLineNo">130</span><a id="line.130">        </a>
-<span class="sourceLineNo">131</span><a id="line.131">        </a>
-<span class="sourceLineNo">132</span><a id="line.132">        @Override</a>
-<span class="sourceLineNo">133</span><a id="line.133">        public String toString() {</a>
-<span class="sourceLineNo">134</span><a id="line.134">                return String.format(Locale.US, "%s [A=%f, B=%f, C=%f, D=%f]", </a>
-<span class="sourceLineNo">135</span><a id="line.135">                                AlgebraicCircle.class.getSimpleName(), A, B, C, D);</a>
+<span class="sourceLineNo">037</span><a id="line.37">         * Circle parameter.</a>
+<span class="sourceLineNo">038</span><a id="line.38">         */</a>
+<span class="sourceLineNo">039</span><a id="line.39">        public final double A, B, C, D;</a>
+<span class="sourceLineNo">040</span><a id="line.40">        </a>
+<span class="sourceLineNo">041</span><a id="line.41">        /**</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * Constructor. Creates a {@link AlgebraicCircle} instance</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * whose parameters A, B, C, D are normalized such that</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * B^2 + C^2 - 4 * A * D = 1 and A &amp;ge; 0.</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * Throws an exception if d = B^2 + C^2 - 4 * A * D (the &lt;em&gt;discriminant&lt;/em&gt;) is negative.</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * </a>
+<span class="sourceLineNo">047</span><a id="line.47">         * @param A circle parameter A</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @param B circle parameter B</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @param C circle parameter C</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @param D circle parameter D</a>
+<span class="sourceLineNo">051</span><a id="line.51">         */</a>
+<span class="sourceLineNo">052</span><a id="line.52">        public AlgebraicCircle(double A, double B, double C, double D) {</a>
+<span class="sourceLineNo">053</span><a id="line.53">                // discriminant (d) must be positive!</a>
+<span class="sourceLineNo">054</span><a id="line.54">                double d = sqr(B) + sqr(C) - 4 * A * D;</a>
+<span class="sourceLineNo">055</span><a id="line.55">                if (isZero(A) || d &lt; Arithmetic.EPSILON_DOUBLE) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                        throw new IllegalArgumentException("illegal circle parameters (zero A or non-positive discriminant)");</a>
+<span class="sourceLineNo">057</span><a id="line.57">                }</a>
+<span class="sourceLineNo">058</span><a id="line.58">                // normalize parameters to (B^2 + C^2 - 4 * A * D) = 1 and A &gt;= 0</a>
+<span class="sourceLineNo">059</span><a id="line.59">                double s = 1 / sqrt(d);</a>
+<span class="sourceLineNo">060</span><a id="line.60">                if (A &gt;= 0) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                        this.A = A * s;</a>
+<span class="sourceLineNo">062</span><a id="line.62">                        this.B = B * s;</a>
+<span class="sourceLineNo">063</span><a id="line.63">                        this.C = C * s;</a>
+<span class="sourceLineNo">064</span><a id="line.64">                        this.D = D * s;</a>
+<span class="sourceLineNo">065</span><a id="line.65">                }</a>
+<span class="sourceLineNo">066</span><a id="line.66">                else {</a>
+<span class="sourceLineNo">067</span><a id="line.67">                        this.A = -A * s;</a>
+<span class="sourceLineNo">068</span><a id="line.68">                        this.B = -B * s;</a>
+<span class="sourceLineNo">069</span><a id="line.69">                        this.C = -C * s;</a>
+<span class="sourceLineNo">070</span><a id="line.70">                        this.D = -D * s;</a>
+<span class="sourceLineNo">071</span><a id="line.71">                }</a>
+<span class="sourceLineNo">072</span><a id="line.72">        }</a>
+<span class="sourceLineNo">073</span><a id="line.73">        </a>
+<span class="sourceLineNo">074</span><a id="line.74">        /**</a>
+<span class="sourceLineNo">075</span><a id="line.75">         * Constructor. Creates a {@link AlgebraicCircle} instance from the</a>
+<span class="sourceLineNo">076</span><a id="line.76">         * specified parameter vector [A, B, C, D].</a>
+<span class="sourceLineNo">077</span><a id="line.77">         * </a>
+<span class="sourceLineNo">078</span><a id="line.78">         * @param p algebraic circle parameters</a>
+<span class="sourceLineNo">079</span><a id="line.79">         */</a>
+<span class="sourceLineNo">080</span><a id="line.80">        public AlgebraicCircle(double[] p) {</a>
+<span class="sourceLineNo">081</span><a id="line.81">                this(p[0], p[1], p[2], p[3]);</a>
+<span class="sourceLineNo">082</span><a id="line.82">        }</a>
+<span class="sourceLineNo">083</span><a id="line.83">        </a>
+<span class="sourceLineNo">084</span><a id="line.84">        /**</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * Constructor. Creates a {@link AlgebraicCircle} instance from</a>
+<span class="sourceLineNo">086</span><a id="line.86">         * a {@link GeometricCircle}.</a>
+<span class="sourceLineNo">087</span><a id="line.87">         * </a>
+<span class="sourceLineNo">088</span><a id="line.88">         * @param gc a {@link GeometricCircle}</a>
+<span class="sourceLineNo">089</span><a id="line.89">         */</a>
+<span class="sourceLineNo">090</span><a id="line.90">        public AlgebraicCircle(GeometricCircle gc) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">                this(getAlgebraicCircleParameters(gc));</a>
+<span class="sourceLineNo">092</span><a id="line.92">        }</a>
+<span class="sourceLineNo">093</span><a id="line.93"></a>
+<span class="sourceLineNo">094</span><a id="line.94">        private static double[] getAlgebraicCircleParameters(GeometricCircle gc) {</a>
+<span class="sourceLineNo">095</span><a id="line.95">                double A = 1 / (2 * gc.r);</a>
+<span class="sourceLineNo">096</span><a id="line.96">                double B = -2 * A * gc.xc;</a>
+<span class="sourceLineNo">097</span><a id="line.97">                double C = -2 * A * gc.yc;</a>
+<span class="sourceLineNo">098</span><a id="line.98">                double D = (sqr(B) + sqr(C) - 1) / (4 * A);</a>
+<span class="sourceLineNo">099</span><a id="line.99">                return new double[] {A, B, C, D};</a>
+<span class="sourceLineNo">100</span><a id="line.100">        }</a>
+<span class="sourceLineNo">101</span><a id="line.101">        </a>
+<span class="sourceLineNo">102</span><a id="line.102">        /**</a>
+<span class="sourceLineNo">103</span><a id="line.103">         * Returns a vector of algebraic circle parameters (A, B, C, D).</a>
+<span class="sourceLineNo">104</span><a id="line.104">         * </a>
+<span class="sourceLineNo">105</span><a id="line.105">         * @return algebraic circle parameters (A, B, C, D)</a>
+<span class="sourceLineNo">106</span><a id="line.106">         */</a>
+<span class="sourceLineNo">107</span><a id="line.107">        public double[] getParameters() {</a>
+<span class="sourceLineNo">108</span><a id="line.108">                return new double[] {A, B, C, D};</a>
+<span class="sourceLineNo">109</span><a id="line.109">        }</a>
+<span class="sourceLineNo">110</span><a id="line.110">        </a>
+<span class="sourceLineNo">111</span><a id="line.111">        @Override</a>
+<span class="sourceLineNo">112</span><a id="line.112">        public boolean equals(Object other) {</a>
+<span class="sourceLineNo">113</span><a id="line.113">                if (this == other) {</a>
+<span class="sourceLineNo">114</span><a id="line.114">                        return true;</a>
+<span class="sourceLineNo">115</span><a id="line.115">                }</a>
+<span class="sourceLineNo">116</span><a id="line.116">                if (!(other instanceof AlgebraicCircle)) {</a>
+<span class="sourceLineNo">117</span><a id="line.117">            return false;</a>
+<span class="sourceLineNo">118</span><a id="line.118">        }</a>
+<span class="sourceLineNo">119</span><a id="line.119">                return this.equals((AlgebraicCircle) other, Arithmetic.EPSILON_DOUBLE);</a>
+<span class="sourceLineNo">120</span><a id="line.120">        }</a>
+<span class="sourceLineNo">121</span><a id="line.121">        </a>
+<span class="sourceLineNo">122</span><a id="line.122">        public boolean equals(AlgebraicCircle other, double tolerance) {</a>
+<span class="sourceLineNo">123</span><a id="line.123">                return </a>
+<span class="sourceLineNo">124</span><a id="line.124">                                Arithmetic.equals(A, other.A, tolerance) &amp;&amp;</a>
+<span class="sourceLineNo">125</span><a id="line.125">                                Arithmetic.equals(B, other.B, tolerance) &amp;&amp;</a>
+<span class="sourceLineNo">126</span><a id="line.126">                                Arithmetic.equals(C, other.C, tolerance) &amp;&amp;</a>
+<span class="sourceLineNo">127</span><a id="line.127">                                Arithmetic.equals(D, other.D, tolerance) ;</a>
+<span class="sourceLineNo">128</span><a id="line.128">        }</a>
+<span class="sourceLineNo">129</span><a id="line.129">        </a>
+<span class="sourceLineNo">130</span><a id="line.130">        /**</a>
+<span class="sourceLineNo">131</span><a id="line.131">         * Returns a copy of this circle.</a>
+<span class="sourceLineNo">132</span><a id="line.132">         * @return a copy of this circle</a>
+<span class="sourceLineNo">133</span><a id="line.133">         */</a>
+<span class="sourceLineNo">134</span><a id="line.134">        public AlgebraicCircle duplicate() {</a>
+<span class="sourceLineNo">135</span><a id="line.135">                return new AlgebraicCircle(this.getParameters());</a>
 <span class="sourceLineNo">136</span><a id="line.136">        }</a>
 <span class="sourceLineNo">137</span><a id="line.137">        </a>
-<span class="sourceLineNo">138</span><a id="line.138">}</a>
+<span class="sourceLineNo">138</span><a id="line.138">        </a>
+<span class="sourceLineNo">139</span><a id="line.139">        @Override</a>
+<span class="sourceLineNo">140</span><a id="line.140">        public String toString() {</a>
+<span class="sourceLineNo">141</span><a id="line.141">                return String.format(Locale.US, "%s [A=%f, B=%f, C=%f, D=%f]", </a>
+<span class="sourceLineNo">142</span><a id="line.142">                                AlgebraicCircle.class.getSimpleName(), A, B, C, D);</a>
+<span class="sourceLineNo">143</span><a id="line.143">        }</a>
+<span class="sourceLineNo">144</span><a id="line.144">        </a>
+<span class="sourceLineNo">145</span><a id="line.145">}</a>
 
 
 

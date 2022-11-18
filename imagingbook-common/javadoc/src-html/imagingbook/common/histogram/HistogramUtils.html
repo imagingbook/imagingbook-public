@@ -22,372 +22,379 @@
 <span class="sourceLineNo">012</span><a id="line.12">import static imagingbook.common.math.Arithmetic.sqr;</a>
 <span class="sourceLineNo">013</span><a id="line.13"></a>
 <span class="sourceLineNo">014</span><a id="line.14">/**</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * This class defines static methods related to histograms.</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * </a>
-<span class="sourceLineNo">017</span><a id="line.17"> * @author WB</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * @version 2022/08/24</a>
-<span class="sourceLineNo">019</span><a id="line.19"> */</a>
-<span class="sourceLineNo">020</span><a id="line.20">public abstract class HistogramUtils {</a>
-<span class="sourceLineNo">021</span><a id="line.21">        </a>
-<span class="sourceLineNo">022</span><a id="line.22">        private HistogramUtils() { }</a>
-<span class="sourceLineNo">023</span><a id="line.23">        </a>
-<span class="sourceLineNo">024</span><a id="line.24">        /**</a>
-<span class="sourceLineNo">025</span><a id="line.25">         * Calculates and returns the total population (sum of</a>
-<span class="sourceLineNo">026</span><a id="line.26">         * all bin counts) of a histogram.</a>
-<span class="sourceLineNo">027</span><a id="line.27">         * </a>
-<span class="sourceLineNo">028</span><a id="line.28">         * @param h a histogram</a>
-<span class="sourceLineNo">029</span><a id="line.29">         * @return the histogram's total count</a>
-<span class="sourceLineNo">030</span><a id="line.30">         */</a>
-<span class="sourceLineNo">031</span><a id="line.31">        public static int count(int[] h) {</a>
-<span class="sourceLineNo">032</span><a id="line.32">                return count(h, 0, h.length - 1);</a>
-<span class="sourceLineNo">033</span><a id="line.33">        }</a>
-<span class="sourceLineNo">034</span><a id="line.34"></a>
-<span class="sourceLineNo">035</span><a id="line.35">        /**</a>
-<span class="sourceLineNo">036</span><a id="line.36">         * Calculates and returns the population (sum of bin counts) of a histogram</a>
-<span class="sourceLineNo">037</span><a id="line.37">         * over the specified range of indexes.</a>
-<span class="sourceLineNo">038</span><a id="line.38">         * The range is automatically clipped. </a>
-<span class="sourceLineNo">039</span><a id="line.39">         * </a>
-<span class="sourceLineNo">040</span><a id="line.40">         * @param h a histogram</a>
-<span class="sourceLineNo">041</span><a id="line.41">         * @param lo the lower index (inclusive)</a>
-<span class="sourceLineNo">042</span><a id="line.42">         * @param hi the upper index (inclusive)</a>
-<span class="sourceLineNo">043</span><a id="line.43">         * @return the population count</a>
-<span class="sourceLineNo">044</span><a id="line.44">         */</a>
-<span class="sourceLineNo">045</span><a id="line.45">        public static int count(int[] h, int lo, int hi) {</a>
-<span class="sourceLineNo">046</span><a id="line.46">                if (lo &lt; 0) lo = 0;</a>
-<span class="sourceLineNo">047</span><a id="line.47">                if (hi &gt;= h.length) hi = h.length-1;</a>
-<span class="sourceLineNo">048</span><a id="line.48">                int cnt = 0;</a>
-<span class="sourceLineNo">049</span><a id="line.49">                for (int i = lo; i &lt;= hi; i++) {</a>
-<span class="sourceLineNo">050</span><a id="line.50">                        cnt += h[i];</a>
-<span class="sourceLineNo">051</span><a id="line.51">                }</a>
-<span class="sourceLineNo">052</span><a id="line.52">                return cnt;</a>
-<span class="sourceLineNo">053</span><a id="line.53">        }</a>
-<span class="sourceLineNo">054</span><a id="line.54">        </a>
-<span class="sourceLineNo">055</span><a id="line.55">        // -----------------------------------------------------------</a>
-<span class="sourceLineNo">056</span><a id="line.56">        </a>
-<span class="sourceLineNo">057</span><a id="line.57">        /**</a>
-<span class="sourceLineNo">058</span><a id="line.58">         * Returns the maximum bin value (count) of the given histogram.</a>
-<span class="sourceLineNo">059</span><a id="line.59">         * </a>
-<span class="sourceLineNo">060</span><a id="line.60">         * @param h a histogram</a>
-<span class="sourceLineNo">061</span><a id="line.61">         * @return the maximum bin value</a>
-<span class="sourceLineNo">062</span><a id="line.62">         */</a>
-<span class="sourceLineNo">063</span><a id="line.63">        public static int max(int[] h) {</a>
-<span class="sourceLineNo">064</span><a id="line.64">                int hmax = -1;</a>
-<span class="sourceLineNo">065</span><a id="line.65">                for (int i = 0; i &lt; h.length; i++) {</a>
-<span class="sourceLineNo">066</span><a id="line.66">                        if (h[i] &gt; hmax)</a>
-<span class="sourceLineNo">067</span><a id="line.67">                                hmax = h[i];</a>
-<span class="sourceLineNo">068</span><a id="line.68">                }</a>
-<span class="sourceLineNo">069</span><a id="line.69">                return hmax;</a>
-<span class="sourceLineNo">070</span><a id="line.70">        }</a>
-<span class="sourceLineNo">071</span><a id="line.71">        </a>
-<span class="sourceLineNo">072</span><a id="line.72">        /**</a>
-<span class="sourceLineNo">073</span><a id="line.73">         * Returns the maximum bin value (count) of the given</a>
-<span class="sourceLineNo">074</span><a id="line.74">         * frequency distribution (histogram).</a>
-<span class="sourceLineNo">075</span><a id="line.75">         * </a>
-<span class="sourceLineNo">076</span><a id="line.76">         * @param h a histogram</a>
-<span class="sourceLineNo">077</span><a id="line.77">         * @return the maximum bin value</a>
-<span class="sourceLineNo">078</span><a id="line.78">         */</a>
-<span class="sourceLineNo">079</span><a id="line.79">        public static double max(double[] h) {</a>
-<span class="sourceLineNo">080</span><a id="line.80">                double hmax = Double.NEGATIVE_INFINITY;</a>
-<span class="sourceLineNo">081</span><a id="line.81">                for (int i = 0; i &lt; h.length; i++) {</a>
-<span class="sourceLineNo">082</span><a id="line.82">                        if (h[i] &gt; hmax)</a>
-<span class="sourceLineNo">083</span><a id="line.83">                                hmax = h[i];</a>
-<span class="sourceLineNo">084</span><a id="line.84">                }</a>
-<span class="sourceLineNo">085</span><a id="line.85">                return hmax;</a>
-<span class="sourceLineNo">086</span><a id="line.86">        }</a>
-<span class="sourceLineNo">087</span><a id="line.87">        </a>
-<span class="sourceLineNo">088</span><a id="line.88">        // -----------------------------------------------------------</a>
-<span class="sourceLineNo">089</span><a id="line.89">        </a>
-<span class="sourceLineNo">090</span><a id="line.90">        /**</a>
-<span class="sourceLineNo">091</span><a id="line.91">         * Calculates and returns the cumulative histogram from</a>
-<span class="sourceLineNo">092</span><a id="line.92">         * a given histogram.</a>
-<span class="sourceLineNo">093</span><a id="line.93">         * </a>
-<span class="sourceLineNo">094</span><a id="line.94">         * @param h a histogram</a>
-<span class="sourceLineNo">095</span><a id="line.95">         * @return the cumulative histogram</a>
-<span class="sourceLineNo">096</span><a id="line.96">         */</a>
-<span class="sourceLineNo">097</span><a id="line.97">        public static int[] cumulate(int[] h) {</a>
-<span class="sourceLineNo">098</span><a id="line.98">                final int K = h.length;</a>
-<span class="sourceLineNo">099</span><a id="line.99">                int[] C = new int[K];</a>
-<span class="sourceLineNo">100</span><a id="line.100">                C[0] = h[0];</a>
-<span class="sourceLineNo">101</span><a id="line.101">                for (int i = 1; i &lt; K; i++) {</a>
-<span class="sourceLineNo">102</span><a id="line.102">                C[i] = C[i-1] + h[i];</a>
-<span class="sourceLineNo">103</span><a id="line.103">            }</a>
-<span class="sourceLineNo">104</span><a id="line.104">            return C;</a>
-<span class="sourceLineNo">105</span><a id="line.105">        }</a>
-<span class="sourceLineNo">106</span><a id="line.106">        </a>
-<span class="sourceLineNo">107</span><a id="line.107">        // -----------------------------------------------------------</a>
-<span class="sourceLineNo">108</span><a id="line.108">        </a>
-<span class="sourceLineNo">109</span><a id="line.109">        /**</a>
-<span class="sourceLineNo">110</span><a id="line.110">         * Calculates and returns the &lt;em&gt;probability distribution function&lt;/em&gt; (pdf)</a>
-<span class="sourceLineNo">111</span><a id="line.111">         * for the given histogram.</a>
-<span class="sourceLineNo">112</span><a id="line.112">         * The resulting {@code double} array has the same length as the original histogram.</a>
-<span class="sourceLineNo">113</span><a id="line.113">         * Its values sum to 1.</a>
-<span class="sourceLineNo">114</span><a id="line.114">         * </a>
-<span class="sourceLineNo">115</span><a id="line.115">         * @param h a histogram</a>
-<span class="sourceLineNo">116</span><a id="line.116">         * @return the probability distribution function </a>
-<span class="sourceLineNo">117</span><a id="line.117">         */</a>
-<span class="sourceLineNo">118</span><a id="line.118">        public static double[] pdf(int[] h) {</a>
-<span class="sourceLineNo">119</span><a id="line.119">                final int K = h.length;</a>
-<span class="sourceLineNo">120</span><a id="line.120">                final int n = count(h);                 // sum all histogram values     </a>
-<span class="sourceLineNo">121</span><a id="line.121">                double[] p = new double[K];</a>
-<span class="sourceLineNo">122</span><a id="line.122">                for (int i = 0; i &lt; h.length; i++) {</a>
-<span class="sourceLineNo">123</span><a id="line.123">                        p[i] =  (double) h[i] / n;</a>
-<span class="sourceLineNo">124</span><a id="line.124">                }</a>
-<span class="sourceLineNo">125</span><a id="line.125">                return p;</a>
-<span class="sourceLineNo">126</span><a id="line.126">        }</a>
-<span class="sourceLineNo">127</span><a id="line.127">        </a>
-<span class="sourceLineNo">128</span><a id="line.128">        /**</a>
-<span class="sourceLineNo">129</span><a id="line.129">         * Calculates and returns the &lt;em&gt;cumulative distribution function&lt;/em&gt; (cdf)</a>
-<span class="sourceLineNo">130</span><a id="line.130">         * for the given histogram.</a>
-<span class="sourceLineNo">131</span><a id="line.131">         * The resulting {@code double} array has the same length as the original histogram.</a>
-<span class="sourceLineNo">132</span><a id="line.132">         * Its maximum value is 1.</a>
-<span class="sourceLineNo">133</span><a id="line.133">         * </a>
-<span class="sourceLineNo">134</span><a id="line.134">         * @param h a histogram</a>
-<span class="sourceLineNo">135</span><a id="line.135">         * @return the cumulative distribution function</a>
-<span class="sourceLineNo">136</span><a id="line.136">         */</a>
-<span class="sourceLineNo">137</span><a id="line.137">        public static double[] cdf(int[] h) {</a>
-<span class="sourceLineNo">138</span><a id="line.138">                // returns the cumul. probability distribution function (cdf) for histogram h</a>
-<span class="sourceLineNo">139</span><a id="line.139">                final int K = h.length;</a>
-<span class="sourceLineNo">140</span><a id="line.140">                final int n = count(h);         // sum all histogram values             </a>
-<span class="sourceLineNo">141</span><a id="line.141">                double[] P = new double[K];</a>
-<span class="sourceLineNo">142</span><a id="line.142">                long c = h[0];</a>
-<span class="sourceLineNo">143</span><a id="line.143">                P[0] = (double) c / n;</a>
-<span class="sourceLineNo">144</span><a id="line.144">                for (int i = 1; i &lt; K; i++) {</a>
-<span class="sourceLineNo">145</span><a id="line.145">                c = c + h[i];</a>
-<span class="sourceLineNo">146</span><a id="line.146">                P[i] = (double) c / n;</a>
-<span class="sourceLineNo">147</span><a id="line.147">            }</a>
-<span class="sourceLineNo">148</span><a id="line.148">            return P;</a>
-<span class="sourceLineNo">149</span><a id="line.149">        }</a>
-<span class="sourceLineNo">150</span><a id="line.150">        </a>
-<span class="sourceLineNo">151</span><a id="line.151">        // -----------------------------------------------------------</a>
-<span class="sourceLineNo">152</span><a id="line.152">        </a>
-<span class="sourceLineNo">153</span><a id="line.153">        /**</a>
-<span class="sourceLineNo">154</span><a id="line.154">         * Calculates and returns the intensity mean (average) of</a>
-<span class="sourceLineNo">155</span><a id="line.155">         * the distribution represented by the given histogram.</a>
-<span class="sourceLineNo">156</span><a id="line.156">         * </a>
-<span class="sourceLineNo">157</span><a id="line.157">         * @param h a histogram</a>
-<span class="sourceLineNo">158</span><a id="line.158">         * @return the mean intensity</a>
-<span class="sourceLineNo">159</span><a id="line.159">         */</a>
-<span class="sourceLineNo">160</span><a id="line.160">        public static double mean(int[] h) {</a>
-<span class="sourceLineNo">161</span><a id="line.161">                return mean(h, 0, h.length - 1);</a>
-<span class="sourceLineNo">162</span><a id="line.162">        }</a>
-<span class="sourceLineNo">163</span><a id="line.163"></a>
-<span class="sourceLineNo">164</span><a id="line.164">        /**</a>
-<span class="sourceLineNo">165</span><a id="line.165">         * Calculates and returns the intensity mean (average) of</a>
-<span class="sourceLineNo">166</span><a id="line.166">         * the distribution represented by the given histogram,</a>
-<span class="sourceLineNo">167</span><a id="line.167">         * limited to the specified intensity range.</a>
-<span class="sourceLineNo">168</span><a id="line.168">         * The range is automatically clipped. </a>
-<span class="sourceLineNo">169</span><a id="line.169">         * </a>
-<span class="sourceLineNo">170</span><a id="line.170">         * @param h a histogram</a>
-<span class="sourceLineNo">171</span><a id="line.171">         * @param lo the lower index (inclusive)</a>
-<span class="sourceLineNo">172</span><a id="line.172">         * @param hi the upper index (inclusive)</a>
-<span class="sourceLineNo">173</span><a id="line.173">         * @return the mean intensity</a>
-<span class="sourceLineNo">174</span><a id="line.174">         */</a>
-<span class="sourceLineNo">175</span><a id="line.175">        public static double mean(int[] h, int lo, int hi) {</a>
-<span class="sourceLineNo">176</span><a id="line.176">                if (lo &lt; 0)</a>
-<span class="sourceLineNo">177</span><a id="line.177">                        lo = 0;</a>
-<span class="sourceLineNo">178</span><a id="line.178">                if (hi &gt;= h.length)</a>
-<span class="sourceLineNo">179</span><a id="line.179">                        hi = h.length - 1;</a>
-<span class="sourceLineNo">180</span><a id="line.180">                long cnt = 0;</a>
-<span class="sourceLineNo">181</span><a id="line.181">                long sum = 0;</a>
-<span class="sourceLineNo">182</span><a id="line.182">                for (int i = lo; i &lt;= hi; i++) {</a>
-<span class="sourceLineNo">183</span><a id="line.183">                        cnt = cnt + h[i];</a>
-<span class="sourceLineNo">184</span><a id="line.184">                        sum = sum + i * h[i];</a>
-<span class="sourceLineNo">185</span><a id="line.185">                }</a>
-<span class="sourceLineNo">186</span><a id="line.186">                if (cnt &gt; 0)</a>
-<span class="sourceLineNo">187</span><a id="line.187">                        return ((double) sum) / cnt;</a>
-<span class="sourceLineNo">188</span><a id="line.188">                else</a>
-<span class="sourceLineNo">189</span><a id="line.189">                        return 0;</a>
-<span class="sourceLineNo">190</span><a id="line.190">        }</a>
-<span class="sourceLineNo">191</span><a id="line.191">        </a>
-<span class="sourceLineNo">192</span><a id="line.192">        // -----------------------------------------------------------</a>
-<span class="sourceLineNo">193</span><a id="line.193">        </a>
-<span class="sourceLineNo">194</span><a id="line.194">        /**</a>
-<span class="sourceLineNo">195</span><a id="line.195">         * Calculates and returns the intensity variance (&amp;sigma;&lt;sup&gt;2&lt;/sup&gt;) of</a>
-<span class="sourceLineNo">196</span><a id="line.196">         * the distribution represented by the given histogram.</a>
-<span class="sourceLineNo">197</span><a id="line.197">         * </a>
-<span class="sourceLineNo">198</span><a id="line.198">         * @param h a histogram</a>
-<span class="sourceLineNo">199</span><a id="line.199">         * @return the intensity variance</a>
-<span class="sourceLineNo">200</span><a id="line.200">         */</a>
-<span class="sourceLineNo">201</span><a id="line.201">        public static double variance(int[] h) {</a>
-<span class="sourceLineNo">202</span><a id="line.202">                return variance(h, 0, h.length-1);</a>
-<span class="sourceLineNo">203</span><a id="line.203">        }</a>
-<span class="sourceLineNo">204</span><a id="line.204"></a>
-<span class="sourceLineNo">205</span><a id="line.205">        /**</a>
-<span class="sourceLineNo">206</span><a id="line.206">         * Calculates and returns the intensity variance (&amp;sigma;&lt;sup&gt;2&lt;/sup&gt;) of</a>
-<span class="sourceLineNo">207</span><a id="line.207">         * the distribution represented by the given histogram,</a>
-<span class="sourceLineNo">208</span><a id="line.208">         * limited to the specified intensity range (fast version).</a>
-<span class="sourceLineNo">209</span><a id="line.209">         * The range is automatically clipped. </a>
-<span class="sourceLineNo">210</span><a id="line.210">         * </a>
-<span class="sourceLineNo">211</span><a id="line.211">         * @param h a histogram</a>
-<span class="sourceLineNo">212</span><a id="line.212">         * @param lo the lower index (inclusive)</a>
-<span class="sourceLineNo">213</span><a id="line.213">         * @param hi the upper index (inclusive)</a>
-<span class="sourceLineNo">214</span><a id="line.214">         * @return the intensity variance</a>
-<span class="sourceLineNo">215</span><a id="line.215">         */</a>
-<span class="sourceLineNo">216</span><a id="line.216">        public static double variance(int[] h, int lo, int hi) {</a>
-<span class="sourceLineNo">217</span><a id="line.217">                if (lo &lt; 0)</a>
-<span class="sourceLineNo">218</span><a id="line.218">                        lo = 0;</a>
-<span class="sourceLineNo">219</span><a id="line.219">                if (hi &gt;= h.length)</a>
-<span class="sourceLineNo">220</span><a id="line.220">                        hi = h.length - 1;</a>
-<span class="sourceLineNo">221</span><a id="line.221">                long A = 0;</a>
-<span class="sourceLineNo">222</span><a id="line.222">                long B = 0;</a>
-<span class="sourceLineNo">223</span><a id="line.223">                int N = 0;</a>
-<span class="sourceLineNo">224</span><a id="line.224">                for (int i = lo; i &lt;= hi; i++) {</a>
-<span class="sourceLineNo">225</span><a id="line.225">                        int ni = h[i];</a>
-<span class="sourceLineNo">226</span><a id="line.226">                        A = A + (long) i * ni;</a>
-<span class="sourceLineNo">227</span><a id="line.227">                        B = B + (long) i * i * ni;</a>
-<span class="sourceLineNo">228</span><a id="line.228">                        N = N + ni;</a>
-<span class="sourceLineNo">229</span><a id="line.229">                }</a>
-<span class="sourceLineNo">230</span><a id="line.230">                </a>
-<span class="sourceLineNo">231</span><a id="line.231">                if (N == 0) {</a>
-<span class="sourceLineNo">232</span><a id="line.232">                        throw new IllegalArgumentException("empty histogram or range");</a>
-<span class="sourceLineNo">233</span><a id="line.233">                }</a>
-<span class="sourceLineNo">234</span><a id="line.234">                </a>
-<span class="sourceLineNo">235</span><a id="line.235">                return ((double) B - (double) (A * A) / N) / N;</a>
-<span class="sourceLineNo">236</span><a id="line.236">        }</a>
-<span class="sourceLineNo">237</span><a id="line.237">        </a>
-<span class="sourceLineNo">238</span><a id="line.238">        // This is a naive (slow) version, for testing only:</a>
-<span class="sourceLineNo">239</span><a id="line.239">        public static double varianceSlow(int[] h, int lo, int hi) {</a>
-<span class="sourceLineNo">240</span><a id="line.240">                if (lo &lt; 0)</a>
-<span class="sourceLineNo">241</span><a id="line.241">                        lo = 0;</a>
-<span class="sourceLineNo">242</span><a id="line.242">                if (hi &gt;= h.length)</a>
-<span class="sourceLineNo">243</span><a id="line.243">                        hi = h.length - 1;</a>
-<span class="sourceLineNo">244</span><a id="line.244">                final double mu = mean(h, lo, hi);</a>
-<span class="sourceLineNo">245</span><a id="line.245">                int N = 0;</a>
-<span class="sourceLineNo">246</span><a id="line.246">                double sum = 0;</a>
-<span class="sourceLineNo">247</span><a id="line.247">                for (int i = lo; i &lt;= hi; i++) {</a>
-<span class="sourceLineNo">248</span><a id="line.248">                        N = N + h[i];</a>
-<span class="sourceLineNo">249</span><a id="line.249">                        sum = sum + sqr(i - mu) * h[i];</a>
-<span class="sourceLineNo">250</span><a id="line.250">                }</a>
-<span class="sourceLineNo">251</span><a id="line.251">                </a>
-<span class="sourceLineNo">252</span><a id="line.252">                if (N == 0) {</a>
-<span class="sourceLineNo">253</span><a id="line.253">                        throw new IllegalArgumentException("empty histogram or range");</a>
-<span class="sourceLineNo">254</span><a id="line.254">                }</a>
-<span class="sourceLineNo">255</span><a id="line.255"></a>
-<span class="sourceLineNo">256</span><a id="line.256">                return (double) sum / N;</a>
-<span class="sourceLineNo">257</span><a id="line.257">        }</a>
-<span class="sourceLineNo">258</span><a id="line.258">        </a>
-<span class="sourceLineNo">259</span><a id="line.259">        // -----------------------------------------------------------</a>
-<span class="sourceLineNo">260</span><a id="line.260">        </a>
-<span class="sourceLineNo">261</span><a id="line.261">        /**</a>
-<span class="sourceLineNo">262</span><a id="line.262">         * Calculates and returns the intensity &lt;em&gt;median&lt;/em&gt; of</a>
-<span class="sourceLineNo">263</span><a id="line.263">         * the distribution represented by the given histogram.</a>
-<span class="sourceLineNo">264</span><a id="line.264">         * </a>
-<span class="sourceLineNo">265</span><a id="line.265">         * @param h a histogram</a>
-<span class="sourceLineNo">266</span><a id="line.266">         * @return the intensity median</a>
-<span class="sourceLineNo">267</span><a id="line.267">         */</a>
-<span class="sourceLineNo">268</span><a id="line.268">        public static int median(int[] h) {</a>
-<span class="sourceLineNo">269</span><a id="line.269">                final int K = h.length;</a>
-<span class="sourceLineNo">270</span><a id="line.270">                final int N = count(h);</a>
-<span class="sourceLineNo">271</span><a id="line.271">                final int m = N / 2;</a>
-<span class="sourceLineNo">272</span><a id="line.272">                int i = 0;</a>
-<span class="sourceLineNo">273</span><a id="line.273">                int sum = h[0];</a>
-<span class="sourceLineNo">274</span><a id="line.274">                while (sum &lt;= m &amp;&amp; i &lt; K) {</a>
-<span class="sourceLineNo">275</span><a id="line.275">                        i++;</a>
-<span class="sourceLineNo">276</span><a id="line.276">                        sum += h[i];</a>
-<span class="sourceLineNo">277</span><a id="line.277">                }</a>
-<span class="sourceLineNo">278</span><a id="line.278">                return i;</a>
-<span class="sourceLineNo">279</span><a id="line.279">        }</a>
-<span class="sourceLineNo">280</span><a id="line.280">        </a>
-<span class="sourceLineNo">281</span><a id="line.281">        // -----------------------------------------------------------</a>
-<span class="sourceLineNo">282</span><a id="line.282"></a>
-<span class="sourceLineNo">283</span><a id="line.283">        /**</a>
-<span class="sourceLineNo">284</span><a id="line.284">         * Returns a normalized frequency distribution for the given</a>
-<span class="sourceLineNo">285</span><a id="line.285">         * histogram whose maximum entry is 1 ({@code int} version).</a>
-<span class="sourceLineNo">286</span><a id="line.286">         * Mainly intended for displaying histograms.</a>
-<span class="sourceLineNo">287</span><a id="line.287">         * </a>
-<span class="sourceLineNo">288</span><a id="line.288">         * @param h a histogram</a>
-<span class="sourceLineNo">289</span><a id="line.289">         * @return the max-normalized frequency distribution</a>
-<span class="sourceLineNo">290</span><a id="line.290">         */</a>
-<span class="sourceLineNo">291</span><a id="line.291">        public static double[] normalizeMax(int[] h) {</a>
-<span class="sourceLineNo">292</span><a id="line.292">                // find the max histogram entry</a>
-<span class="sourceLineNo">293</span><a id="line.293">                final int max = max(h);</a>
-<span class="sourceLineNo">294</span><a id="line.294">                if (max == 0) {</a>
-<span class="sourceLineNo">295</span><a id="line.295">                        throw new IllegalArgumentException("empty histogram");</a>
-<span class="sourceLineNo">296</span><a id="line.296">                }</a>
-<span class="sourceLineNo">297</span><a id="line.297">                double[] hn = new double[h.length];</a>
-<span class="sourceLineNo">298</span><a id="line.298">                double s = 1.0 / max;</a>
-<span class="sourceLineNo">299</span><a id="line.299">                for (int i = 0; i &lt; h.length; i++) {</a>
-<span class="sourceLineNo">300</span><a id="line.300">                        hn[i] = s * h[i];</a>
-<span class="sourceLineNo">301</span><a id="line.301">                }</a>
-<span class="sourceLineNo">302</span><a id="line.302">                return hn;</a>
-<span class="sourceLineNo">303</span><a id="line.303">        }</a>
-<span class="sourceLineNo">304</span><a id="line.304">        </a>
-<span class="sourceLineNo">305</span><a id="line.305">        /**</a>
-<span class="sourceLineNo">306</span><a id="line.306">         * Returns a normalized frequency distribution for the given</a>
-<span class="sourceLineNo">307</span><a id="line.307">         * histogram whose maximum entry is 1 ({@code double} version).</a>
-<span class="sourceLineNo">308</span><a id="line.308">         * Mainly intended for displaying histograms.</a>
-<span class="sourceLineNo">309</span><a id="line.309">         * </a>
-<span class="sourceLineNo">310</span><a id="line.310">         * @param h a histogram</a>
-<span class="sourceLineNo">311</span><a id="line.311">         * @return the max-normalized frequency distribution</a>
-<span class="sourceLineNo">312</span><a id="line.312">         */</a>
-<span class="sourceLineNo">313</span><a id="line.313">        public static double[] normalizeMax(double[] h) {</a>
-<span class="sourceLineNo">314</span><a id="line.314">                // find max histogram entry</a>
-<span class="sourceLineNo">315</span><a id="line.315">                final double max = max(h);</a>
-<span class="sourceLineNo">316</span><a id="line.316">                if (max == 0) {</a>
-<span class="sourceLineNo">317</span><a id="line.317">                        throw new IllegalArgumentException("empty histogram");</a>
-<span class="sourceLineNo">318</span><a id="line.318">                }</a>
-<span class="sourceLineNo">319</span><a id="line.319">                double[] hn = new double[h.length];</a>
-<span class="sourceLineNo">320</span><a id="line.320">                double s = 1.0 / max;</a>
-<span class="sourceLineNo">321</span><a id="line.321">                for (int i = 0; i &lt; h.length; i++) {</a>
-<span class="sourceLineNo">322</span><a id="line.322">                        hn[i] = s * h[i];</a>
-<span class="sourceLineNo">323</span><a id="line.323">                }</a>
-<span class="sourceLineNo">324</span><a id="line.324">                return hn;</a>
-<span class="sourceLineNo">325</span><a id="line.325">        }</a>
-<span class="sourceLineNo">326</span><a id="line.326">        </a>
-<span class="sourceLineNo">327</span><a id="line.327">        // -----------------------------------------------------------------</a>
-<span class="sourceLineNo">328</span><a id="line.328">        </a>
-<span class="sourceLineNo">329</span><a id="line.329">        /**</a>
-<span class="sourceLineNo">330</span><a id="line.330">         * Histogram matching. Given are two histograms: the histogram hA of the target</a>
-<span class="sourceLineNo">331</span><a id="line.331">         * image IA and a reference histogram hR, both of size K. The result is a</a>
-<span class="sourceLineNo">332</span><a id="line.332">         * discrete mapping f which, when applied to the target image, produces a new</a>
-<span class="sourceLineNo">333</span><a id="line.333">         * image with a distribution function similar to the reference histogram.</a>
-<span class="sourceLineNo">334</span><a id="line.334">         * </a>
-<span class="sourceLineNo">335</span><a id="line.335">         * @param hA histogram of the target image</a>
-<span class="sourceLineNo">336</span><a id="line.336">         * @param hR reference histogram (the same size as hA)</a>
-<span class="sourceLineNo">337</span><a id="line.337">         * @return a discrete mapping f to be applied to the values of a target image</a>
-<span class="sourceLineNo">338</span><a id="line.338">         */</a>
-<span class="sourceLineNo">339</span><a id="line.339">        public static int[] matchHistograms (int[] hA, int[] hR) {</a>
-<span class="sourceLineNo">340</span><a id="line.340">                int K = hA.length;</a>
-<span class="sourceLineNo">341</span><a id="line.341">                double[] PA = HistogramUtils.cdf(hA); // get CDF of histogram hA</a>
-<span class="sourceLineNo">342</span><a id="line.342">                double[] PR = HistogramUtils.cdf(hR); // get CDF of histogram hR</a>
-<span class="sourceLineNo">343</span><a id="line.343">                int[] f = new int[K]; // pixel mapping function f()</a>
-<span class="sourceLineNo">344</span><a id="line.344"></a>
-<span class="sourceLineNo">345</span><a id="line.345">                // compute pixel mapping function f():</a>
-<span class="sourceLineNo">346</span><a id="line.346">                for (int a = 0; a &lt; K; a++) {</a>
-<span class="sourceLineNo">347</span><a id="line.347">                        int j = K - 1;</a>
-<span class="sourceLineNo">348</span><a id="line.348">                        do {</a>
-<span class="sourceLineNo">349</span><a id="line.349">                                f[a] = j;</a>
-<span class="sourceLineNo">350</span><a id="line.350">                                j--;</a>
-<span class="sourceLineNo">351</span><a id="line.351">                        } while (j &gt;= 0 &amp;&amp; PA[a] &lt;= PR[j]);</a>
-<span class="sourceLineNo">352</span><a id="line.352">                }</a>
-<span class="sourceLineNo">353</span><a id="line.353">                return f;</a>
-<span class="sourceLineNo">354</span><a id="line.354">        }</a>
-<span class="sourceLineNo">355</span><a id="line.355">        </a>
-<span class="sourceLineNo">356</span><a id="line.356">        /**</a>
-<span class="sourceLineNo">357</span><a id="line.357">         * Histogram matching to a reference cumulative distribution</a>
-<span class="sourceLineNo">358</span><a id="line.358">         * function that is piecewise linear.</a>
-<span class="sourceLineNo">359</span><a id="line.359">         * </a>
-<span class="sourceLineNo">360</span><a id="line.360">         * @param hA histogram of the target image</a>
-<span class="sourceLineNo">361</span><a id="line.361">         * @param PR a piecewise linear reference cumulative distribution function ({@link PiecewiseLinearCdf})</a>
-<span class="sourceLineNo">362</span><a id="line.362">         * @return a discrete mapping f to be applied to the values of a target image</a>
-<span class="sourceLineNo">363</span><a id="line.363">         * </a>
-<span class="sourceLineNo">364</span><a id="line.364">         * @see PiecewiseLinearCdf</a>
-<span class="sourceLineNo">365</span><a id="line.365">         * @see #matchHistograms(int[], int[])</a>
-<span class="sourceLineNo">366</span><a id="line.366">         */</a>
-<span class="sourceLineNo">367</span><a id="line.367">        public static int[] matchHistograms(int[] hA, PiecewiseLinearCdf PR) {</a>
-<span class="sourceLineNo">368</span><a id="line.368">                int K = hA.length;</a>
-<span class="sourceLineNo">369</span><a id="line.369">                double[] PA = HistogramUtils.cdf(hA); // get p.d.f. of histogram Ha</a>
-<span class="sourceLineNo">370</span><a id="line.370">                int[] f = new int[K];                                   // pixel mapping function f()</a>
-<span class="sourceLineNo">371</span><a id="line.371"></a>
-<span class="sourceLineNo">372</span><a id="line.372">                // compute pixel mapping function f():</a>
-<span class="sourceLineNo">373</span><a id="line.373">                for (int a = 0; a &lt; K; a++) {</a>
-<span class="sourceLineNo">374</span><a id="line.374">                        double b = PA[a];</a>
-<span class="sourceLineNo">375</span><a id="line.375">                        f[a] = (int) Math.round(PR.getInverseCdf(b));</a>
-<span class="sourceLineNo">376</span><a id="line.376">                }</a>
-<span class="sourceLineNo">377</span><a id="line.377">                return f;</a>
-<span class="sourceLineNo">378</span><a id="line.378">        }</a>
-<span class="sourceLineNo">379</span><a id="line.379">        </a>
-<span class="sourceLineNo">380</span><a id="line.380">}</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * &lt;p&gt;</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * This class defines static methods related to histograms. See Ch. 2 of [1] for</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * additional details.</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * &lt;p&gt;</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * </a>
+<span class="sourceLineNo">024</span><a id="line.24"> * @author WB</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * @version 2022/08/24</a>
+<span class="sourceLineNo">026</span><a id="line.26"> */</a>
+<span class="sourceLineNo">027</span><a id="line.27">public abstract class HistogramUtils {</a>
+<span class="sourceLineNo">028</span><a id="line.28">        </a>
+<span class="sourceLineNo">029</span><a id="line.29">        private HistogramUtils() { }</a>
+<span class="sourceLineNo">030</span><a id="line.30">        </a>
+<span class="sourceLineNo">031</span><a id="line.31">        /**</a>
+<span class="sourceLineNo">032</span><a id="line.32">         * Calculates and returns the total population (sum of</a>
+<span class="sourceLineNo">033</span><a id="line.33">         * all bin counts) of a histogram.</a>
+<span class="sourceLineNo">034</span><a id="line.34">         * </a>
+<span class="sourceLineNo">035</span><a id="line.35">         * @param h a histogram</a>
+<span class="sourceLineNo">036</span><a id="line.36">         * @return the histogram's total count</a>
+<span class="sourceLineNo">037</span><a id="line.37">         */</a>
+<span class="sourceLineNo">038</span><a id="line.38">        public static int count(int[] h) {</a>
+<span class="sourceLineNo">039</span><a id="line.39">                return count(h, 0, h.length - 1);</a>
+<span class="sourceLineNo">040</span><a id="line.40">        }</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">        /**</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * Calculates and returns the population (sum of bin counts) of a histogram</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * over the specified range of indexes.</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * The range is automatically clipped. </a>
+<span class="sourceLineNo">046</span><a id="line.46">         * </a>
+<span class="sourceLineNo">047</span><a id="line.47">         * @param h a histogram</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @param lo the lower index (inclusive)</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @param hi the upper index (inclusive)</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @return the population count</a>
+<span class="sourceLineNo">051</span><a id="line.51">         */</a>
+<span class="sourceLineNo">052</span><a id="line.52">        public static int count(int[] h, int lo, int hi) {</a>
+<span class="sourceLineNo">053</span><a id="line.53">                if (lo &lt; 0) lo = 0;</a>
+<span class="sourceLineNo">054</span><a id="line.54">                if (hi &gt;= h.length) hi = h.length-1;</a>
+<span class="sourceLineNo">055</span><a id="line.55">                int cnt = 0;</a>
+<span class="sourceLineNo">056</span><a id="line.56">                for (int i = lo; i &lt;= hi; i++) {</a>
+<span class="sourceLineNo">057</span><a id="line.57">                        cnt += h[i];</a>
+<span class="sourceLineNo">058</span><a id="line.58">                }</a>
+<span class="sourceLineNo">059</span><a id="line.59">                return cnt;</a>
+<span class="sourceLineNo">060</span><a id="line.60">        }</a>
+<span class="sourceLineNo">061</span><a id="line.61">        </a>
+<span class="sourceLineNo">062</span><a id="line.62">        // -----------------------------------------------------------</a>
+<span class="sourceLineNo">063</span><a id="line.63">        </a>
+<span class="sourceLineNo">064</span><a id="line.64">        /**</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * Returns the maximum bin value (count) of the given histogram.</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * </a>
+<span class="sourceLineNo">067</span><a id="line.67">         * @param h a histogram</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * @return the maximum bin value</a>
+<span class="sourceLineNo">069</span><a id="line.69">         */</a>
+<span class="sourceLineNo">070</span><a id="line.70">        public static int max(int[] h) {</a>
+<span class="sourceLineNo">071</span><a id="line.71">                int hmax = -1;</a>
+<span class="sourceLineNo">072</span><a id="line.72">                for (int i = 0; i &lt; h.length; i++) {</a>
+<span class="sourceLineNo">073</span><a id="line.73">                        if (h[i] &gt; hmax)</a>
+<span class="sourceLineNo">074</span><a id="line.74">                                hmax = h[i];</a>
+<span class="sourceLineNo">075</span><a id="line.75">                }</a>
+<span class="sourceLineNo">076</span><a id="line.76">                return hmax;</a>
+<span class="sourceLineNo">077</span><a id="line.77">        }</a>
+<span class="sourceLineNo">078</span><a id="line.78">        </a>
+<span class="sourceLineNo">079</span><a id="line.79">        /**</a>
+<span class="sourceLineNo">080</span><a id="line.80">         * Returns the maximum bin value (count) of the given</a>
+<span class="sourceLineNo">081</span><a id="line.81">         * frequency distribution (histogram).</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * </a>
+<span class="sourceLineNo">083</span><a id="line.83">         * @param h a histogram</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * @return the maximum bin value</a>
+<span class="sourceLineNo">085</span><a id="line.85">         */</a>
+<span class="sourceLineNo">086</span><a id="line.86">        public static double max(double[] h) {</a>
+<span class="sourceLineNo">087</span><a id="line.87">                double hmax = Double.NEGATIVE_INFINITY;</a>
+<span class="sourceLineNo">088</span><a id="line.88">                for (int i = 0; i &lt; h.length; i++) {</a>
+<span class="sourceLineNo">089</span><a id="line.89">                        if (h[i] &gt; hmax)</a>
+<span class="sourceLineNo">090</span><a id="line.90">                                hmax = h[i];</a>
+<span class="sourceLineNo">091</span><a id="line.91">                }</a>
+<span class="sourceLineNo">092</span><a id="line.92">                return hmax;</a>
+<span class="sourceLineNo">093</span><a id="line.93">        }</a>
+<span class="sourceLineNo">094</span><a id="line.94">        </a>
+<span class="sourceLineNo">095</span><a id="line.95">        // -----------------------------------------------------------</a>
+<span class="sourceLineNo">096</span><a id="line.96">        </a>
+<span class="sourceLineNo">097</span><a id="line.97">        /**</a>
+<span class="sourceLineNo">098</span><a id="line.98">         * Calculates and returns the cumulative histogram from</a>
+<span class="sourceLineNo">099</span><a id="line.99">         * a given histogram.</a>
+<span class="sourceLineNo">100</span><a id="line.100">         * </a>
+<span class="sourceLineNo">101</span><a id="line.101">         * @param h a histogram</a>
+<span class="sourceLineNo">102</span><a id="line.102">         * @return the cumulative histogram</a>
+<span class="sourceLineNo">103</span><a id="line.103">         */</a>
+<span class="sourceLineNo">104</span><a id="line.104">        public static int[] cumulate(int[] h) {</a>
+<span class="sourceLineNo">105</span><a id="line.105">                final int K = h.length;</a>
+<span class="sourceLineNo">106</span><a id="line.106">                int[] C = new int[K];</a>
+<span class="sourceLineNo">107</span><a id="line.107">                C[0] = h[0];</a>
+<span class="sourceLineNo">108</span><a id="line.108">                for (int i = 1; i &lt; K; i++) {</a>
+<span class="sourceLineNo">109</span><a id="line.109">                C[i] = C[i-1] + h[i];</a>
+<span class="sourceLineNo">110</span><a id="line.110">            }</a>
+<span class="sourceLineNo">111</span><a id="line.111">            return C;</a>
+<span class="sourceLineNo">112</span><a id="line.112">        }</a>
+<span class="sourceLineNo">113</span><a id="line.113">        </a>
+<span class="sourceLineNo">114</span><a id="line.114">        // -----------------------------------------------------------</a>
+<span class="sourceLineNo">115</span><a id="line.115">        </a>
+<span class="sourceLineNo">116</span><a id="line.116">        /**</a>
+<span class="sourceLineNo">117</span><a id="line.117">         * Calculates and returns the &lt;em&gt;probability distribution function&lt;/em&gt; (pdf)</a>
+<span class="sourceLineNo">118</span><a id="line.118">         * for the given histogram.</a>
+<span class="sourceLineNo">119</span><a id="line.119">         * The resulting {@code double} array has the same length as the original histogram.</a>
+<span class="sourceLineNo">120</span><a id="line.120">         * Its values sum to 1.</a>
+<span class="sourceLineNo">121</span><a id="line.121">         * </a>
+<span class="sourceLineNo">122</span><a id="line.122">         * @param h a histogram</a>
+<span class="sourceLineNo">123</span><a id="line.123">         * @return the probability distribution function </a>
+<span class="sourceLineNo">124</span><a id="line.124">         */</a>
+<span class="sourceLineNo">125</span><a id="line.125">        public static double[] pdf(int[] h) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                final int K = h.length;</a>
+<span class="sourceLineNo">127</span><a id="line.127">                final int n = count(h);                 // sum all histogram values     </a>
+<span class="sourceLineNo">128</span><a id="line.128">                double[] p = new double[K];</a>
+<span class="sourceLineNo">129</span><a id="line.129">                for (int i = 0; i &lt; h.length; i++) {</a>
+<span class="sourceLineNo">130</span><a id="line.130">                        p[i] =  (double) h[i] / n;</a>
+<span class="sourceLineNo">131</span><a id="line.131">                }</a>
+<span class="sourceLineNo">132</span><a id="line.132">                return p;</a>
+<span class="sourceLineNo">133</span><a id="line.133">        }</a>
+<span class="sourceLineNo">134</span><a id="line.134">        </a>
+<span class="sourceLineNo">135</span><a id="line.135">        /**</a>
+<span class="sourceLineNo">136</span><a id="line.136">         * Calculates and returns the &lt;em&gt;cumulative distribution function&lt;/em&gt; (cdf)</a>
+<span class="sourceLineNo">137</span><a id="line.137">         * for the given histogram.</a>
+<span class="sourceLineNo">138</span><a id="line.138">         * The resulting {@code double} array has the same length as the original histogram.</a>
+<span class="sourceLineNo">139</span><a id="line.139">         * Its maximum value is 1.</a>
+<span class="sourceLineNo">140</span><a id="line.140">         * </a>
+<span class="sourceLineNo">141</span><a id="line.141">         * @param h a histogram</a>
+<span class="sourceLineNo">142</span><a id="line.142">         * @return the cumulative distribution function</a>
+<span class="sourceLineNo">143</span><a id="line.143">         */</a>
+<span class="sourceLineNo">144</span><a id="line.144">        public static double[] cdf(int[] h) {</a>
+<span class="sourceLineNo">145</span><a id="line.145">                // returns the cumul. probability distribution function (cdf) for histogram h</a>
+<span class="sourceLineNo">146</span><a id="line.146">                final int K = h.length;</a>
+<span class="sourceLineNo">147</span><a id="line.147">                final int n = count(h);         // sum all histogram values             </a>
+<span class="sourceLineNo">148</span><a id="line.148">                double[] P = new double[K];</a>
+<span class="sourceLineNo">149</span><a id="line.149">                long c = h[0];</a>
+<span class="sourceLineNo">150</span><a id="line.150">                P[0] = (double) c / n;</a>
+<span class="sourceLineNo">151</span><a id="line.151">                for (int i = 1; i &lt; K; i++) {</a>
+<span class="sourceLineNo">152</span><a id="line.152">                c = c + h[i];</a>
+<span class="sourceLineNo">153</span><a id="line.153">                P[i] = (double) c / n;</a>
+<span class="sourceLineNo">154</span><a id="line.154">            }</a>
+<span class="sourceLineNo">155</span><a id="line.155">            return P;</a>
+<span class="sourceLineNo">156</span><a id="line.156">        }</a>
+<span class="sourceLineNo">157</span><a id="line.157">        </a>
+<span class="sourceLineNo">158</span><a id="line.158">        // -----------------------------------------------------------</a>
+<span class="sourceLineNo">159</span><a id="line.159">        </a>
+<span class="sourceLineNo">160</span><a id="line.160">        /**</a>
+<span class="sourceLineNo">161</span><a id="line.161">         * Calculates and returns the intensity mean (average) of</a>
+<span class="sourceLineNo">162</span><a id="line.162">         * the distribution represented by the given histogram.</a>
+<span class="sourceLineNo">163</span><a id="line.163">         * </a>
+<span class="sourceLineNo">164</span><a id="line.164">         * @param h a histogram</a>
+<span class="sourceLineNo">165</span><a id="line.165">         * @return the mean intensity</a>
+<span class="sourceLineNo">166</span><a id="line.166">         */</a>
+<span class="sourceLineNo">167</span><a id="line.167">        public static double mean(int[] h) {</a>
+<span class="sourceLineNo">168</span><a id="line.168">                return mean(h, 0, h.length - 1);</a>
+<span class="sourceLineNo">169</span><a id="line.169">        }</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">        /**</a>
+<span class="sourceLineNo">172</span><a id="line.172">         * Calculates and returns the intensity mean (average) of</a>
+<span class="sourceLineNo">173</span><a id="line.173">         * the distribution represented by the given histogram,</a>
+<span class="sourceLineNo">174</span><a id="line.174">         * limited to the specified intensity range.</a>
+<span class="sourceLineNo">175</span><a id="line.175">         * The range is automatically clipped. </a>
+<span class="sourceLineNo">176</span><a id="line.176">         * </a>
+<span class="sourceLineNo">177</span><a id="line.177">         * @param h a histogram</a>
+<span class="sourceLineNo">178</span><a id="line.178">         * @param lo the lower index (inclusive)</a>
+<span class="sourceLineNo">179</span><a id="line.179">         * @param hi the upper index (inclusive)</a>
+<span class="sourceLineNo">180</span><a id="line.180">         * @return the mean intensity</a>
+<span class="sourceLineNo">181</span><a id="line.181">         */</a>
+<span class="sourceLineNo">182</span><a id="line.182">        public static double mean(int[] h, int lo, int hi) {</a>
+<span class="sourceLineNo">183</span><a id="line.183">                if (lo &lt; 0)</a>
+<span class="sourceLineNo">184</span><a id="line.184">                        lo = 0;</a>
+<span class="sourceLineNo">185</span><a id="line.185">                if (hi &gt;= h.length)</a>
+<span class="sourceLineNo">186</span><a id="line.186">                        hi = h.length - 1;</a>
+<span class="sourceLineNo">187</span><a id="line.187">                long cnt = 0;</a>
+<span class="sourceLineNo">188</span><a id="line.188">                long sum = 0;</a>
+<span class="sourceLineNo">189</span><a id="line.189">                for (int i = lo; i &lt;= hi; i++) {</a>
+<span class="sourceLineNo">190</span><a id="line.190">                        cnt = cnt + h[i];</a>
+<span class="sourceLineNo">191</span><a id="line.191">                        sum = sum + i * h[i];</a>
+<span class="sourceLineNo">192</span><a id="line.192">                }</a>
+<span class="sourceLineNo">193</span><a id="line.193">                if (cnt &gt; 0)</a>
+<span class="sourceLineNo">194</span><a id="line.194">                        return ((double) sum) / cnt;</a>
+<span class="sourceLineNo">195</span><a id="line.195">                else</a>
+<span class="sourceLineNo">196</span><a id="line.196">                        return 0;</a>
+<span class="sourceLineNo">197</span><a id="line.197">        }</a>
+<span class="sourceLineNo">198</span><a id="line.198">        </a>
+<span class="sourceLineNo">199</span><a id="line.199">        // -----------------------------------------------------------</a>
+<span class="sourceLineNo">200</span><a id="line.200">        </a>
+<span class="sourceLineNo">201</span><a id="line.201">        /**</a>
+<span class="sourceLineNo">202</span><a id="line.202">         * Calculates and returns the intensity variance (&amp;sigma;&lt;sup&gt;2&lt;/sup&gt;) of</a>
+<span class="sourceLineNo">203</span><a id="line.203">         * the distribution represented by the given histogram.</a>
+<span class="sourceLineNo">204</span><a id="line.204">         * </a>
+<span class="sourceLineNo">205</span><a id="line.205">         * @param h a histogram</a>
+<span class="sourceLineNo">206</span><a id="line.206">         * @return the intensity variance</a>
+<span class="sourceLineNo">207</span><a id="line.207">         */</a>
+<span class="sourceLineNo">208</span><a id="line.208">        public static double variance(int[] h) {</a>
+<span class="sourceLineNo">209</span><a id="line.209">                return variance(h, 0, h.length-1);</a>
+<span class="sourceLineNo">210</span><a id="line.210">        }</a>
+<span class="sourceLineNo">211</span><a id="line.211"></a>
+<span class="sourceLineNo">212</span><a id="line.212">        /**</a>
+<span class="sourceLineNo">213</span><a id="line.213">         * Calculates and returns the intensity variance (&amp;sigma;&lt;sup&gt;2&lt;/sup&gt;) of</a>
+<span class="sourceLineNo">214</span><a id="line.214">         * the distribution represented by the given histogram,</a>
+<span class="sourceLineNo">215</span><a id="line.215">         * limited to the specified intensity range (fast version).</a>
+<span class="sourceLineNo">216</span><a id="line.216">         * The range is automatically clipped. </a>
+<span class="sourceLineNo">217</span><a id="line.217">         * </a>
+<span class="sourceLineNo">218</span><a id="line.218">         * @param h a histogram</a>
+<span class="sourceLineNo">219</span><a id="line.219">         * @param lo the lower index (inclusive)</a>
+<span class="sourceLineNo">220</span><a id="line.220">         * @param hi the upper index (inclusive)</a>
+<span class="sourceLineNo">221</span><a id="line.221">         * @return the intensity variance</a>
+<span class="sourceLineNo">222</span><a id="line.222">         */</a>
+<span class="sourceLineNo">223</span><a id="line.223">        public static double variance(int[] h, int lo, int hi) {</a>
+<span class="sourceLineNo">224</span><a id="line.224">                if (lo &lt; 0)</a>
+<span class="sourceLineNo">225</span><a id="line.225">                        lo = 0;</a>
+<span class="sourceLineNo">226</span><a id="line.226">                if (hi &gt;= h.length)</a>
+<span class="sourceLineNo">227</span><a id="line.227">                        hi = h.length - 1;</a>
+<span class="sourceLineNo">228</span><a id="line.228">                long A = 0;</a>
+<span class="sourceLineNo">229</span><a id="line.229">                long B = 0;</a>
+<span class="sourceLineNo">230</span><a id="line.230">                int N = 0;</a>
+<span class="sourceLineNo">231</span><a id="line.231">                for (int i = lo; i &lt;= hi; i++) {</a>
+<span class="sourceLineNo">232</span><a id="line.232">                        int ni = h[i];</a>
+<span class="sourceLineNo">233</span><a id="line.233">                        A = A + (long) i * ni;</a>
+<span class="sourceLineNo">234</span><a id="line.234">                        B = B + (long) i * i * ni;</a>
+<span class="sourceLineNo">235</span><a id="line.235">                        N = N + ni;</a>
+<span class="sourceLineNo">236</span><a id="line.236">                }</a>
+<span class="sourceLineNo">237</span><a id="line.237">                </a>
+<span class="sourceLineNo">238</span><a id="line.238">                if (N == 0) {</a>
+<span class="sourceLineNo">239</span><a id="line.239">                        throw new IllegalArgumentException("empty histogram or range");</a>
+<span class="sourceLineNo">240</span><a id="line.240">                }</a>
+<span class="sourceLineNo">241</span><a id="line.241">                </a>
+<span class="sourceLineNo">242</span><a id="line.242">                return (B - (double) (A * A) / N) / N;</a>
+<span class="sourceLineNo">243</span><a id="line.243">        }</a>
+<span class="sourceLineNo">244</span><a id="line.244">        </a>
+<span class="sourceLineNo">245</span><a id="line.245">        // This is a naive (slow) version, for testing only:</a>
+<span class="sourceLineNo">246</span><a id="line.246">        public static double varianceSlow(int[] h, int lo, int hi) {</a>
+<span class="sourceLineNo">247</span><a id="line.247">                if (lo &lt; 0)</a>
+<span class="sourceLineNo">248</span><a id="line.248">                        lo = 0;</a>
+<span class="sourceLineNo">249</span><a id="line.249">                if (hi &gt;= h.length)</a>
+<span class="sourceLineNo">250</span><a id="line.250">                        hi = h.length - 1;</a>
+<span class="sourceLineNo">251</span><a id="line.251">                final double mu = mean(h, lo, hi);</a>
+<span class="sourceLineNo">252</span><a id="line.252">                int N = 0;</a>
+<span class="sourceLineNo">253</span><a id="line.253">                double sum = 0;</a>
+<span class="sourceLineNo">254</span><a id="line.254">                for (int i = lo; i &lt;= hi; i++) {</a>
+<span class="sourceLineNo">255</span><a id="line.255">                        N = N + h[i];</a>
+<span class="sourceLineNo">256</span><a id="line.256">                        sum = sum + sqr(i - mu) * h[i];</a>
+<span class="sourceLineNo">257</span><a id="line.257">                }</a>
+<span class="sourceLineNo">258</span><a id="line.258">                </a>
+<span class="sourceLineNo">259</span><a id="line.259">                if (N == 0) {</a>
+<span class="sourceLineNo">260</span><a id="line.260">                        throw new IllegalArgumentException("empty histogram or range");</a>
+<span class="sourceLineNo">261</span><a id="line.261">                }</a>
+<span class="sourceLineNo">262</span><a id="line.262"></a>
+<span class="sourceLineNo">263</span><a id="line.263">                return sum / N;</a>
+<span class="sourceLineNo">264</span><a id="line.264">        }</a>
+<span class="sourceLineNo">265</span><a id="line.265">        </a>
+<span class="sourceLineNo">266</span><a id="line.266">        // -----------------------------------------------------------</a>
+<span class="sourceLineNo">267</span><a id="line.267">        </a>
+<span class="sourceLineNo">268</span><a id="line.268">        /**</a>
+<span class="sourceLineNo">269</span><a id="line.269">         * Calculates and returns the intensity &lt;em&gt;median&lt;/em&gt; of</a>
+<span class="sourceLineNo">270</span><a id="line.270">         * the distribution represented by the given histogram.</a>
+<span class="sourceLineNo">271</span><a id="line.271">         * </a>
+<span class="sourceLineNo">272</span><a id="line.272">         * @param h a histogram</a>
+<span class="sourceLineNo">273</span><a id="line.273">         * @return the intensity median</a>
+<span class="sourceLineNo">274</span><a id="line.274">         */</a>
+<span class="sourceLineNo">275</span><a id="line.275">        public static int median(int[] h) {</a>
+<span class="sourceLineNo">276</span><a id="line.276">                final int K = h.length;</a>
+<span class="sourceLineNo">277</span><a id="line.277">                final int N = count(h);</a>
+<span class="sourceLineNo">278</span><a id="line.278">                final int m = N / 2;</a>
+<span class="sourceLineNo">279</span><a id="line.279">                int i = 0;</a>
+<span class="sourceLineNo">280</span><a id="line.280">                int sum = h[0];</a>
+<span class="sourceLineNo">281</span><a id="line.281">                while (sum &lt;= m &amp;&amp; i &lt; K) {</a>
+<span class="sourceLineNo">282</span><a id="line.282">                        i++;</a>
+<span class="sourceLineNo">283</span><a id="line.283">                        sum += h[i];</a>
+<span class="sourceLineNo">284</span><a id="line.284">                }</a>
+<span class="sourceLineNo">285</span><a id="line.285">                return i;</a>
+<span class="sourceLineNo">286</span><a id="line.286">        }</a>
+<span class="sourceLineNo">287</span><a id="line.287">        </a>
+<span class="sourceLineNo">288</span><a id="line.288">        // -----------------------------------------------------------</a>
+<span class="sourceLineNo">289</span><a id="line.289"></a>
+<span class="sourceLineNo">290</span><a id="line.290">        /**</a>
+<span class="sourceLineNo">291</span><a id="line.291">         * Returns a normalized frequency distribution for the given</a>
+<span class="sourceLineNo">292</span><a id="line.292">         * histogram whose maximum entry is 1 ({@code int} version).</a>
+<span class="sourceLineNo">293</span><a id="line.293">         * Mainly intended for displaying histograms.</a>
+<span class="sourceLineNo">294</span><a id="line.294">         * </a>
+<span class="sourceLineNo">295</span><a id="line.295">         * @param h a histogram</a>
+<span class="sourceLineNo">296</span><a id="line.296">         * @return the max-normalized frequency distribution</a>
+<span class="sourceLineNo">297</span><a id="line.297">         */</a>
+<span class="sourceLineNo">298</span><a id="line.298">        public static double[] normalizeMax(int[] h) {</a>
+<span class="sourceLineNo">299</span><a id="line.299">                // find the max histogram entry</a>
+<span class="sourceLineNo">300</span><a id="line.300">                final int max = max(h);</a>
+<span class="sourceLineNo">301</span><a id="line.301">                if (max == 0) {</a>
+<span class="sourceLineNo">302</span><a id="line.302">                        throw new IllegalArgumentException("empty histogram");</a>
+<span class="sourceLineNo">303</span><a id="line.303">                }</a>
+<span class="sourceLineNo">304</span><a id="line.304">                double[] hn = new double[h.length];</a>
+<span class="sourceLineNo">305</span><a id="line.305">                double s = 1.0 / max;</a>
+<span class="sourceLineNo">306</span><a id="line.306">                for (int i = 0; i &lt; h.length; i++) {</a>
+<span class="sourceLineNo">307</span><a id="line.307">                        hn[i] = s * h[i];</a>
+<span class="sourceLineNo">308</span><a id="line.308">                }</a>
+<span class="sourceLineNo">309</span><a id="line.309">                return hn;</a>
+<span class="sourceLineNo">310</span><a id="line.310">        }</a>
+<span class="sourceLineNo">311</span><a id="line.311">        </a>
+<span class="sourceLineNo">312</span><a id="line.312">        /**</a>
+<span class="sourceLineNo">313</span><a id="line.313">         * Returns a normalized frequency distribution for the given</a>
+<span class="sourceLineNo">314</span><a id="line.314">         * histogram whose maximum entry is 1 ({@code double} version).</a>
+<span class="sourceLineNo">315</span><a id="line.315">         * Mainly intended for displaying histograms.</a>
+<span class="sourceLineNo">316</span><a id="line.316">         * </a>
+<span class="sourceLineNo">317</span><a id="line.317">         * @param h a histogram</a>
+<span class="sourceLineNo">318</span><a id="line.318">         * @return the max-normalized frequency distribution</a>
+<span class="sourceLineNo">319</span><a id="line.319">         */</a>
+<span class="sourceLineNo">320</span><a id="line.320">        public static double[] normalizeMax(double[] h) {</a>
+<span class="sourceLineNo">321</span><a id="line.321">                // find max histogram entry</a>
+<span class="sourceLineNo">322</span><a id="line.322">                final double max = max(h);</a>
+<span class="sourceLineNo">323</span><a id="line.323">                if (max == 0) {</a>
+<span class="sourceLineNo">324</span><a id="line.324">                        throw new IllegalArgumentException("empty histogram");</a>
+<span class="sourceLineNo">325</span><a id="line.325">                }</a>
+<span class="sourceLineNo">326</span><a id="line.326">                double[] hn = new double[h.length];</a>
+<span class="sourceLineNo">327</span><a id="line.327">                double s = 1.0 / max;</a>
+<span class="sourceLineNo">328</span><a id="line.328">                for (int i = 0; i &lt; h.length; i++) {</a>
+<span class="sourceLineNo">329</span><a id="line.329">                        hn[i] = s * h[i];</a>
+<span class="sourceLineNo">330</span><a id="line.330">                }</a>
+<span class="sourceLineNo">331</span><a id="line.331">                return hn;</a>
+<span class="sourceLineNo">332</span><a id="line.332">        }</a>
+<span class="sourceLineNo">333</span><a id="line.333">        </a>
+<span class="sourceLineNo">334</span><a id="line.334">        // -----------------------------------------------------------------</a>
+<span class="sourceLineNo">335</span><a id="line.335">        </a>
+<span class="sourceLineNo">336</span><a id="line.336">        /**</a>
+<span class="sourceLineNo">337</span><a id="line.337">         * Histogram matching. Given are two histograms: the histogram hA of the target</a>
+<span class="sourceLineNo">338</span><a id="line.338">         * image IA and a reference histogram hR, both of size K. The result is a</a>
+<span class="sourceLineNo">339</span><a id="line.339">         * discrete mapping f which, when applied to the target image, produces a new</a>
+<span class="sourceLineNo">340</span><a id="line.340">         * image with a distribution function similar to the reference histogram.</a>
+<span class="sourceLineNo">341</span><a id="line.341">         * </a>
+<span class="sourceLineNo">342</span><a id="line.342">         * @param hA histogram of the target image</a>
+<span class="sourceLineNo">343</span><a id="line.343">         * @param hR reference histogram (the same size as hA)</a>
+<span class="sourceLineNo">344</span><a id="line.344">         * @return a discrete mapping f to be applied to the values of a target image</a>
+<span class="sourceLineNo">345</span><a id="line.345">         */</a>
+<span class="sourceLineNo">346</span><a id="line.346">        public static int[] matchHistograms (int[] hA, int[] hR) {</a>
+<span class="sourceLineNo">347</span><a id="line.347">                int K = hA.length;</a>
+<span class="sourceLineNo">348</span><a id="line.348">                double[] PA = HistogramUtils.cdf(hA); // get CDF of histogram hA</a>
+<span class="sourceLineNo">349</span><a id="line.349">                double[] PR = HistogramUtils.cdf(hR); // get CDF of histogram hR</a>
+<span class="sourceLineNo">350</span><a id="line.350">                int[] f = new int[K]; // pixel mapping function f()</a>
+<span class="sourceLineNo">351</span><a id="line.351"></a>
+<span class="sourceLineNo">352</span><a id="line.352">                // compute pixel mapping function f():</a>
+<span class="sourceLineNo">353</span><a id="line.353">                for (int a = 0; a &lt; K; a++) {</a>
+<span class="sourceLineNo">354</span><a id="line.354">                        int j = K - 1;</a>
+<span class="sourceLineNo">355</span><a id="line.355">                        do {</a>
+<span class="sourceLineNo">356</span><a id="line.356">                                f[a] = j;</a>
+<span class="sourceLineNo">357</span><a id="line.357">                                j--;</a>
+<span class="sourceLineNo">358</span><a id="line.358">                        } while (j &gt;= 0 &amp;&amp; PA[a] &lt;= PR[j]);</a>
+<span class="sourceLineNo">359</span><a id="line.359">                }</a>
+<span class="sourceLineNo">360</span><a id="line.360">                return f;</a>
+<span class="sourceLineNo">361</span><a id="line.361">        }</a>
+<span class="sourceLineNo">362</span><a id="line.362">        </a>
+<span class="sourceLineNo">363</span><a id="line.363">        /**</a>
+<span class="sourceLineNo">364</span><a id="line.364">         * Histogram matching to a reference cumulative distribution</a>
+<span class="sourceLineNo">365</span><a id="line.365">         * function that is piecewise linear.</a>
+<span class="sourceLineNo">366</span><a id="line.366">         * </a>
+<span class="sourceLineNo">367</span><a id="line.367">         * @param hA histogram of the target image</a>
+<span class="sourceLineNo">368</span><a id="line.368">         * @param PR a piecewise linear reference cumulative distribution function ({@link PiecewiseLinearCdf})</a>
+<span class="sourceLineNo">369</span><a id="line.369">         * @return a discrete mapping f to be applied to the values of a target image</a>
+<span class="sourceLineNo">370</span><a id="line.370">         * </a>
+<span class="sourceLineNo">371</span><a id="line.371">         * @see PiecewiseLinearCdf</a>
+<span class="sourceLineNo">372</span><a id="line.372">         * @see #matchHistograms(int[], int[])</a>
+<span class="sourceLineNo">373</span><a id="line.373">         */</a>
+<span class="sourceLineNo">374</span><a id="line.374">        public static int[] matchHistograms(int[] hA, PiecewiseLinearCdf PR) {</a>
+<span class="sourceLineNo">375</span><a id="line.375">                int K = hA.length;</a>
+<span class="sourceLineNo">376</span><a id="line.376">                double[] PA = HistogramUtils.cdf(hA); // get p.d.f. of histogram Ha</a>
+<span class="sourceLineNo">377</span><a id="line.377">                int[] f = new int[K];                                   // pixel mapping function f()</a>
+<span class="sourceLineNo">378</span><a id="line.378"></a>
+<span class="sourceLineNo">379</span><a id="line.379">                // compute pixel mapping function f():</a>
+<span class="sourceLineNo">380</span><a id="line.380">                for (int a = 0; a &lt; K; a++) {</a>
+<span class="sourceLineNo">381</span><a id="line.381">                        double b = PA[a];</a>
+<span class="sourceLineNo">382</span><a id="line.382">                        f[a] = (int) Math.round(PR.getInverseCdf(b));</a>
+<span class="sourceLineNo">383</span><a id="line.383">                }</a>
+<span class="sourceLineNo">384</span><a id="line.384">                return f;</a>
+<span class="sourceLineNo">385</span><a id="line.385">        }</a>
+<span class="sourceLineNo">386</span><a id="line.386">        </a>
+<span class="sourceLineNo">387</span><a id="line.387">}</a>
 
 
 

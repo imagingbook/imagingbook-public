@@ -19,35 +19,30 @@
 <span class="sourceLineNo">009</span><a id="line.9"> */</a>
 <span class="sourceLineNo">010</span><a id="line.10">public interface RgbReferenceData {</a>
 <span class="sourceLineNo">011</span><a id="line.11">        </a>
-<span class="sourceLineNo">012</span><a id="line.12">        // methods required by all implementations of ColorSpace:</a>
-<span class="sourceLineNo">013</span><a id="line.13">        public float[] toCIEXYZ(float[] value);</a>
-<span class="sourceLineNo">014</span><a id="line.14">        public float[] fromCIEXYZ(float[] value);</a>
-<span class="sourceLineNo">015</span><a id="line.15">        public float[] toRGB(float[] value);</a>
-<span class="sourceLineNo">016</span><a id="line.16">        public float[] fromRGB(float[] value);</a>
-<span class="sourceLineNo">017</span><a id="line.17">        </a>
-<span class="sourceLineNo">018</span><a id="line.18">        /**</a>
-<span class="sourceLineNo">019</span><a id="line.19">         * Returns the XYZ coordinates of the white point</a>
-<span class="sourceLineNo">020</span><a id="line.20">         * associated with this color space (typically D65 or D50).</a>
-<span class="sourceLineNo">021</span><a id="line.21">         * </a>
-<span class="sourceLineNo">022</span><a id="line.22">         * @return the white point</a>
-<span class="sourceLineNo">023</span><a id="line.23">         */</a>
-<span class="sourceLineNo">024</span><a id="line.24">        public float[] getWhitePoint();</a>
-<span class="sourceLineNo">025</span><a id="line.25">        </a>
-<span class="sourceLineNo">026</span><a id="line.26">        /**</a>
-<span class="sourceLineNo">027</span><a id="line.27">         * Returns the XYZ color coordinates for the primary color with the specified</a>
-<span class="sourceLineNo">028</span><a id="line.28">         * index, measured relative to the white point of this color space (see</a>
-<span class="sourceLineNo">029</span><a id="line.29">         * {@link #getWhitePoint()}).</a>
-<span class="sourceLineNo">030</span><a id="line.30">         * </a>
-<span class="sourceLineNo">031</span><a id="line.31">         * @param idx the color index (R = 0, G = 1, B = 2)</a>
-<span class="sourceLineNo">032</span><a id="line.32">         * @return the XYZ coordinate for the primary color</a>
-<span class="sourceLineNo">033</span><a id="line.33">         */</a>
-<span class="sourceLineNo">034</span><a id="line.34">        public default float[] getPrimary(int idx) {</a>
-<span class="sourceLineNo">035</span><a id="line.35">                float[] rgb = new float[3];</a>
-<span class="sourceLineNo">036</span><a id="line.36">                rgb[idx] = 1;</a>
-<span class="sourceLineNo">037</span><a id="line.37">                return this.toCIEXYZ(rgb);</a>
-<span class="sourceLineNo">038</span><a id="line.38">        }</a>
-<span class="sourceLineNo">039</span><a id="line.39">        </a>
-<span class="sourceLineNo">040</span><a id="line.40">}</a>
+<span class="sourceLineNo">012</span><a id="line.12">//      public float[] toCIEXYZ(float[] value);</a>
+<span class="sourceLineNo">013</span><a id="line.13">//      public float[] fromCIEXYZ(float[] value);</a>
+<span class="sourceLineNo">014</span><a id="line.14">//      public float[] toRGB(float[] value);</a>
+<span class="sourceLineNo">015</span><a id="line.15">//      public float[] fromRGB(float[] value);</a>
+<span class="sourceLineNo">016</span><a id="line.16">        </a>
+<span class="sourceLineNo">017</span><a id="line.17">        /**</a>
+<span class="sourceLineNo">018</span><a id="line.18">         * Returns the XYZ coordinates of the white point</a>
+<span class="sourceLineNo">019</span><a id="line.19">         * associated with this color space (typically D65 or D50).</a>
+<span class="sourceLineNo">020</span><a id="line.20">         * </a>
+<span class="sourceLineNo">021</span><a id="line.21">         * @return the white point</a>
+<span class="sourceLineNo">022</span><a id="line.22">         */</a>
+<span class="sourceLineNo">023</span><a id="line.23">        public float[] getWhitePoint();</a>
+<span class="sourceLineNo">024</span><a id="line.24">        </a>
+<span class="sourceLineNo">025</span><a id="line.25">        /**</a>
+<span class="sourceLineNo">026</span><a id="line.26">         * Returns the XYZ color coordinates for the primary color with the specified</a>
+<span class="sourceLineNo">027</span><a id="line.27">         * index, measured relative to the white point of this color space (see</a>
+<span class="sourceLineNo">028</span><a id="line.28">         * {@link #getWhitePoint()}).</a>
+<span class="sourceLineNo">029</span><a id="line.29">         * </a>
+<span class="sourceLineNo">030</span><a id="line.30">         * @param idx the color index (R = 0, G = 1, B = 2)</a>
+<span class="sourceLineNo">031</span><a id="line.31">         * @return the XYZ coordinate for the primary color</a>
+<span class="sourceLineNo">032</span><a id="line.32">         */</a>
+<span class="sourceLineNo">033</span><a id="line.33">        public float[] getPrimary(int idx) ;</a>
+<span class="sourceLineNo">034</span><a id="line.34">        </a>
+<span class="sourceLineNo">035</span><a id="line.35">}</a>
 
 
 

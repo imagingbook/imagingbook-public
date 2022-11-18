@@ -27,59 +27,60 @@
 <span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.geometry.circle.GeometricCircle;</a>
 <span class="sourceLineNo">018</span><a id="line.18"></a>
 <span class="sourceLineNo">019</span><a id="line.19">/**</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * Utility class for picking random points on a given circle. </a>
-<span class="sourceLineNo">021</span><a id="line.21"> * @author WB</a>
-<span class="sourceLineNo">022</span><a id="line.22"> *</a>
-<span class="sourceLineNo">023</span><a id="line.23"> */</a>
-<span class="sourceLineNo">024</span><a id="line.24">public class CircleSampler {</a>
-<span class="sourceLineNo">025</span><a id="line.25">        </a>
-<span class="sourceLineNo">026</span><a id="line.26">        private final Random rg;        </a>
-<span class="sourceLineNo">027</span><a id="line.27">        private final GeometricCircle circle;</a>
-<span class="sourceLineNo">028</span><a id="line.28">        </a>
-<span class="sourceLineNo">029</span><a id="line.29">        public CircleSampler(GeometricCircle circle) {</a>
-<span class="sourceLineNo">030</span><a id="line.30">                this.circle = circle;</a>
-<span class="sourceLineNo">031</span><a id="line.31">                this.rg = new Random();</a>
-<span class="sourceLineNo">032</span><a id="line.32">        }</a>
-<span class="sourceLineNo">033</span><a id="line.33">        </a>
-<span class="sourceLineNo">034</span><a id="line.34">        public CircleSampler(GeometricCircle circle, long seed) {</a>
-<span class="sourceLineNo">035</span><a id="line.35">                this.circle = circle;</a>
-<span class="sourceLineNo">036</span><a id="line.36">                this.rg = new Random(seed);</a>
-<span class="sourceLineNo">037</span><a id="line.37">        }</a>
-<span class="sourceLineNo">038</span><a id="line.38">        </a>
-<span class="sourceLineNo">039</span><a id="line.39">        /**</a>
-<span class="sourceLineNo">040</span><a id="line.40">         * Creates and returns an array of 2D points sampled on </a>
-<span class="sourceLineNo">041</span><a id="line.41">         * the circle associated with this {@link CircleSampler}.</a>
-<span class="sourceLineNo">042</span><a id="line.42">         * Random Gaussian noise (with standard deviation sigma)</a>
-<span class="sourceLineNo">043</span><a id="line.43">         * is added to the individual x/y coordinates.</a>
-<span class="sourceLineNo">044</span><a id="line.44">         *</a>
-<span class="sourceLineNo">045</span><a id="line.45">         * @param n          number of points to sample</a>
-<span class="sourceLineNo">046</span><a id="line.46">         * @param startAngle initial angle (in radians)</a>
-<span class="sourceLineNo">047</span><a id="line.47">         * @param endAngle   final angle (in radians)</a>
-<span class="sourceLineNo">048</span><a id="line.48">         * @param sigma      sigma of Gaussian noise</a>
-<span class="sourceLineNo">049</span><a id="line.49">         * @return an array of sample points</a>
-<span class="sourceLineNo">050</span><a id="line.50">         */</a>
-<span class="sourceLineNo">051</span><a id="line.51">        public Pnt2d[] getPoints(int n, double startAngle, double endAngle, double sigma) {</a>
-<span class="sourceLineNo">052</span><a id="line.52">                double xc = circle.xc;</a>
-<span class="sourceLineNo">053</span><a id="line.53">                double yc = circle.yc;</a>
-<span class="sourceLineNo">054</span><a id="line.54">                double r = circle.r;</a>
-<span class="sourceLineNo">055</span><a id="line.55">                Pnt2d[] pts = new Pnt2d[n];</a>
-<span class="sourceLineNo">056</span><a id="line.56">                </a>
-<span class="sourceLineNo">057</span><a id="line.57">                startAngle = mod(startAngle, 2 * PI);</a>
-<span class="sourceLineNo">058</span><a id="line.58">                endAngle = mod(endAngle, 2 * PI);</a>
-<span class="sourceLineNo">059</span><a id="line.59">                double dAngle = (endAngle &gt;= startAngle) ? </a>
-<span class="sourceLineNo">060</span><a id="line.60">                                (endAngle - startAngle) :</a>
-<span class="sourceLineNo">061</span><a id="line.61">                                (endAngle + 2 * PI - startAngle);</a>
-<span class="sourceLineNo">062</span><a id="line.62">                </a>
-<span class="sourceLineNo">063</span><a id="line.63">                for (int i = 0; i &lt; n; i++) {</a>
-<span class="sourceLineNo">064</span><a id="line.64">                        double alpha = startAngle + dAngle * i / n;</a>
-<span class="sourceLineNo">065</span><a id="line.65">                        double x = xc + r * Math.cos(alpha) + sigma * rg.nextGaussian();</a>
-<span class="sourceLineNo">066</span><a id="line.66">                        double y = yc + r * Math.sin(alpha) + sigma * rg.nextGaussian();</a>
-<span class="sourceLineNo">067</span><a id="line.67">                        pts[i] = Pnt2d.from(x, y);</a>
-<span class="sourceLineNo">068</span><a id="line.68">                }</a>
-<span class="sourceLineNo">069</span><a id="line.69">                return pts;</a>
-<span class="sourceLineNo">070</span><a id="line.70">        }</a>
-<span class="sourceLineNo">071</span><a id="line.71"></a>
-<span class="sourceLineNo">072</span><a id="line.72">}</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * Defines utility methods for picking random points on a given circle.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * </a>
+<span class="sourceLineNo">022</span><a id="line.22"> * @author WB</a>
+<span class="sourceLineNo">023</span><a id="line.23"> *</a>
+<span class="sourceLineNo">024</span><a id="line.24"> */</a>
+<span class="sourceLineNo">025</span><a id="line.25">public class CircleSampler {</a>
+<span class="sourceLineNo">026</span><a id="line.26">        </a>
+<span class="sourceLineNo">027</span><a id="line.27">        private final Random rg;        </a>
+<span class="sourceLineNo">028</span><a id="line.28">        private final GeometricCircle circle;</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">        public CircleSampler(GeometricCircle circle) {</a>
+<span class="sourceLineNo">031</span><a id="line.31">                this.circle = circle;</a>
+<span class="sourceLineNo">032</span><a id="line.32">                this.rg = new Random();</a>
+<span class="sourceLineNo">033</span><a id="line.33">        }</a>
+<span class="sourceLineNo">034</span><a id="line.34">        </a>
+<span class="sourceLineNo">035</span><a id="line.35">        public CircleSampler(GeometricCircle circle, long seed) {</a>
+<span class="sourceLineNo">036</span><a id="line.36">                this.circle = circle;</a>
+<span class="sourceLineNo">037</span><a id="line.37">                this.rg = new Random(seed);</a>
+<span class="sourceLineNo">038</span><a id="line.38">        }</a>
+<span class="sourceLineNo">039</span><a id="line.39">        </a>
+<span class="sourceLineNo">040</span><a id="line.40">        /**</a>
+<span class="sourceLineNo">041</span><a id="line.41">         * Creates and returns an array of 2D points sampled on </a>
+<span class="sourceLineNo">042</span><a id="line.42">         * the circle associated with this {@link CircleSampler}.</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * Random Gaussian noise (with standard deviation sigma)</a>
+<span class="sourceLineNo">044</span><a id="line.44">         * is added to the individual x/y coordinates.</a>
+<span class="sourceLineNo">045</span><a id="line.45">         *</a>
+<span class="sourceLineNo">046</span><a id="line.46">         * @param n          number of points to sample</a>
+<span class="sourceLineNo">047</span><a id="line.47">         * @param startAngle initial angle (in radians)</a>
+<span class="sourceLineNo">048</span><a id="line.48">         * @param endAngle   final angle (in radians)</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * @param sigma      sigma of Gaussian noise</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * @return an array of sample points</a>
+<span class="sourceLineNo">051</span><a id="line.51">         */</a>
+<span class="sourceLineNo">052</span><a id="line.52">        public Pnt2d[] getPoints(int n, double startAngle, double endAngle, double sigma) {</a>
+<span class="sourceLineNo">053</span><a id="line.53">                double xc = circle.xc;</a>
+<span class="sourceLineNo">054</span><a id="line.54">                double yc = circle.yc;</a>
+<span class="sourceLineNo">055</span><a id="line.55">                double r = circle.r;</a>
+<span class="sourceLineNo">056</span><a id="line.56">                Pnt2d[] pts = new Pnt2d[n];</a>
+<span class="sourceLineNo">057</span><a id="line.57">                </a>
+<span class="sourceLineNo">058</span><a id="line.58">                startAngle = mod(startAngle, 2 * PI);</a>
+<span class="sourceLineNo">059</span><a id="line.59">                endAngle = mod(endAngle, 2 * PI);</a>
+<span class="sourceLineNo">060</span><a id="line.60">                double dAngle = (endAngle &gt;= startAngle) ? </a>
+<span class="sourceLineNo">061</span><a id="line.61">                                (endAngle - startAngle) :</a>
+<span class="sourceLineNo">062</span><a id="line.62">                                (endAngle + 2 * PI - startAngle);</a>
+<span class="sourceLineNo">063</span><a id="line.63">                </a>
+<span class="sourceLineNo">064</span><a id="line.64">                for (int i = 0; i &lt; n; i++) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                        double alpha = startAngle + dAngle * i / n;</a>
+<span class="sourceLineNo">066</span><a id="line.66">                        double x = xc + r * Math.cos(alpha) + sigma * rg.nextGaussian();</a>
+<span class="sourceLineNo">067</span><a id="line.67">                        double y = yc + r * Math.sin(alpha) + sigma * rg.nextGaussian();</a>
+<span class="sourceLineNo">068</span><a id="line.68">                        pts[i] = Pnt2d.from(x, y);</a>
+<span class="sourceLineNo">069</span><a id="line.69">                }</a>
+<span class="sourceLineNo">070</span><a id="line.70">                return pts;</a>
+<span class="sourceLineNo">071</span><a id="line.71">        }</a>
+<span class="sourceLineNo">072</span><a id="line.72"></a>
+<span class="sourceLineNo">073</span><a id="line.73">}</a>
 
 
 
