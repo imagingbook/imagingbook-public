@@ -9,7 +9,7 @@ package imagingbook.common.geometry.mappings;
 public interface Inversion {
 	
 	/**
-	 * The inverse of this mapping is calculated and returned.
+	 * Returns the inverse of this mapping.
 	 * 
 	 * @return the inverse mapping
 	 */
