@@ -11,113 +11,86 @@ package imagingbook.common.geometry.moments;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;
 
-//TODO: make more efficient versions!
 
 /**
- * This class defines static methods for moment calculations on 2D point sets.
+ * <p>
+ * This class defines methods for statistical moment calculations on 2D point
+ * sets. See Sec. 8.5 of [1] for details. This abstract class defines static
+ * methods only.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/17
  */
-public abstract class Moments2D {
+public abstract class Moments2D { 	//TODO: make more efficient versions!
 	
 	private Moments2D() {}
 	
-	public static double ordinaryMoment(Iterable<Pnt2d> R, int p, int q) {
+	/**
+	 * Calculates and returns the ordinary moment of order (p,q) for the
+	 * specified set of 2D points.
+	 * 
+	 * @param points a set of 2D points
+	 * @param p order index p
+	 * @param q order index q
+	 * @return the moment value
+	 */
+	public static double ordinaryMoment(Iterable<Pnt2d> points, int p, int q) {
 		double mpq = 0.0;
 		if (p == 0 && q == 0) {	// just count the number of points
-			for (@SuppressWarnings("unused") Pnt2d pnt : R) {
+			for (@SuppressWarnings("unused") Pnt2d pnt : points) {
 				mpq += 1;
 			}
 		}
 		else {
-			for (Pnt2d pnt : R) {
+			for (Pnt2d pnt : points) {
 				mpq += Math.pow(pnt.getX(), p) * Math.pow(pnt.getY(), q);
 			}
 		}
 		return mpq;
 	}
 
-	public static double centralMoment(Iterable<Pnt2d> R, int p, int q) {
-		double m00 = ordinaryMoment(R, 0, 0); // region area
+	/**
+	 * Calculates and returns the central moment of order (p,q) for the
+	 * specified set of 2D points.
+	 * 
+	 * @param points a set of 2D points
+	 * @param p order index p
+	 * @param q order index q
+	 * @return the moment value
+	 */
+	public static double centralMoment(Iterable<Pnt2d> points, int p, int q) {
+		double m00 = ordinaryMoment(points, 0, 0); // region area
 		if (Arithmetic.isZero(m00)) {
 			throw new RuntimeException("empty point set");
 		}
-		double xc = ordinaryMoment(R, 1, 0) / m00;
-		double yc = ordinaryMoment(R, 0, 1) / m00;
+		double xc = ordinaryMoment(points, 1, 0) / m00;
+		double yc = ordinaryMoment(points, 0, 1) / m00;
 		double mupq = 0.0;
-		for (Pnt2d pnt : R) {
+		for (Pnt2d pnt : points) {
 			mupq += Math.pow(pnt.getX() - xc, p) * Math.pow(pnt.getY() - yc, q);
 		}
 		return mupq;
 	}
 
-	public static double normalizedCentralMoment(Iterable<Pnt2d> R, int p, int q) {
-		double m00 = ordinaryMoment(R, 0, 0);
+	/**
+	 * Calculates and returns the normalized central moment of order (p,q) for the
+	 * specified set of 2D points.
+	 * 
+	 * @param points a set of 2D points
+	 * @param p order index p
+	 * @param q order index q
+	 * @return the moment value
+	 */
+	public static double normalizedCentralMoment(Iterable<Pnt2d> points, int p, int q) {
+		double m00 = ordinaryMoment(points, 0, 0);
 		double scale = 1.0 / Math.pow(m00, 0.5 * (p + q) + 1);
-		return centralMoment(R, p, q) * scale;
+		return scale * centralMoment(points, p, q);
 	}
-
-
-//	public static void main(String[] args) {
-//
-//		List<Pnt2d> points = Arrays.asList(
-//				Pnt2d.from(10, 15), 
-//				Pnt2d.from(3, 7), 
-//				Pnt2d.from(-1, 5), 
-//				Pnt2d.from(-1, 5));
-//
-//		System.out.println("Ordinary moments:");
-//		System.out.println("m00 = " + ordinaryMoment(points, 0, 0));
-//		System.out.println("m10 = " + ordinaryMoment(points, 1, 0));
-//		System.out.println("m01 = " + ordinaryMoment(points, 0, 1));
-//		System.out.println("m11 = " + ordinaryMoment(points, 1, 1));
-//		System.out.println("m20 = " + ordinaryMoment(points, 2, 0));
-//		System.out.println("m02 = " + ordinaryMoment(points, 0, 2));
-//
-//		double a = ordinaryMoment(points, 0, 0);
-//		System.out.println("a = " + a);
-//		System.out.println("xc = " + (ordinaryMoment(points, 1, 0) / a));
-//		System.out.println("yc = " + (ordinaryMoment(points, 0, 1) / a));	
-//
-//		System.out.println("Central moments:");
-//		System.out.println("mu10 = " + centralMoment(points, 1, 0));
-//		System.out.println("mu01 = " + centralMoment(points, 0, 1));
-//		System.out.println("mu11 = " + centralMoment(points, 1, 1));
-//		System.out.println("mu20 = " + centralMoment(points, 2, 0));
-//		System.out.println("mu02 = " + centralMoment(points, 0, 2));
-//
-//		System.out.println("Normalized central moments:");
-//		System.out.println("nu10 = " + normalizedCentralMoment(points, 1, 0));
-//		System.out.println("nu01 = " + normalizedCentralMoment(points, 0, 1));
-//		System.out.println("nu11 = " + normalizedCentralMoment(points, 1, 1));
-//		System.out.println("nu20 = " + normalizedCentralMoment(points, 2, 0));
-//		System.out.println("nu02 = " + normalizedCentralMoment(points, 0, 2));
-//	}
 
 }
 
-/*
-Ordinary moments:
-m00 = 4.0
-m10 = 11.0
-m01 = 32.0
-m11 = 161.0
-m20 = 111.0
-m02 = 324.0
-a = 4.0
-xc = 2.75
-yc = 8.0
-Central moments:
-mu10 = 0.0
-mu01 = 0.0
-mu11 = 73.0
-mu20 = 80.75
-mu02 = 68.0
-Normalized central moments:
-nu10 = 0.0
-nu01 = 0.0
-nu11 = 4.5625
-nu20 = 5.046875
-nu02 = 4.25
- */
