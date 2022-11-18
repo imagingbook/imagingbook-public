@@ -20,7 +20,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
  * @author WB
  *
  */
-public class LineTest {
+public class LineConversionTest {
 	
 	static double TOL = 1E-6;
 

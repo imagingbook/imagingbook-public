@@ -17,12 +17,18 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 
 /**
- * This class represents a line in parametric form: 
- * x = s + t v, where s is a start point on the line,
- * v is a direction vector, and t is a real variable.
- * Instances are immutable.
- * TODO: add implementation of Curve2d
- *
+ * <p>
+ * This class represents a line in parametric form: x = s + t v, where s is a
+ * start point on the line, v is a direction vector, and t is a real variable.
+ * Instances are immutable. See Sec. 10.1 and Appendix F.1 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/18
  */
 public class ParametricLine {
 	

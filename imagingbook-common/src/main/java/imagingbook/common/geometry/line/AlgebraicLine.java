@@ -24,11 +24,18 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.PrintPrecision;
 
 /**
+ * <p>
  * This class represents an algebraic line of the form A x + B y + C = 0.
- * Instances are immutable and normalized such that ||(A,B)|| = 1.
+ * Instances are immutable and normalized such that ||(A,B)|| = 1. See Sec. 10.1
+ * and Appendix F.1 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/18
  */
 public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	
