@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.geometry.misc;
+package imagingbook.common.geometry.fd;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
@@ -26,7 +26,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
  * @author WB
  * @version 2022/10/26
  */
-public class PolygonSampler {
+public class PolygonSampler {	// TODO: add unit tests
 	
 	private static final PolygonSampler instance = new PolygonSampler();
 	
