@@ -21,7 +21,7 @@ import imagingbook.common.math.Arithmetic;
  * Represents an algebraic circle with four parameters A, B, C, D in the form A
  * * (x^2 + y^2) + B * x + C * y + D = 0. Parameters are normalized such that
  * B^2 + C^2 - 4 * A * D = 1 and A &ge; 0 Circle instances are immutable. See
- * Sec. 11.1.1 and Appendix F.2.1 for details.
+ * Sec. 11.1.1 and Appendix F.2.1 of [1] for details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An

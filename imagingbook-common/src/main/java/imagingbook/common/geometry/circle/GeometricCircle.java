@@ -25,7 +25,7 @@ import imagingbook.common.math.Arithmetic;
 /**
  * <p>
  * Represents a geometric circle with center point (xc, yc) and radius r.
- * Instances are immutable. See Sec. 11.1.1 and Appendix F.2.1 for details.
+ * Instances are immutable. See Sec. 11.1.1 and Appendix F.2.1 of [1] for details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
