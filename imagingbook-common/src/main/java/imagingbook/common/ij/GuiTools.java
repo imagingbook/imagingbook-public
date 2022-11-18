@@ -25,7 +25,7 @@ import ij.gui.ImageWindow;
 import ij.plugin.ScreenGrabber;
 
 /**
- * Defines static utility methods related to ImageJ's GUI.
+ * Defines static helper methods related to ImageJ's GUI.
  * 
  * @author WB
  * @version 2020/10/09
@@ -39,10 +39,13 @@ public abstract class GuiTools {
 	
 	/**
 	 * Queries the user to select one of the currently open images.
-	 *  
-	 * @param title name of the dialog window (if null, {@link #DEFAULT_DIALOG_TITLE} is used)
-	 * @param exclude image to exclude from being selected (typically the current image)
-	 * @return a reference to the chosen image ({@link ImagePlus}) or null, if the dialog was cancelled
+	 * 
+	 * @param title   name of the dialog window (if null,
+	 *                {@link #DEFAULT_DIALOG_TITLE} is used)
+	 * @param exclude image to exclude from being selected (typically the current
+	 *                image)
+	 * @return a reference to the chosen image ({@link ImagePlus}) or null, if the
+	 *         dialog was cancelled
 	 */
     public static ImagePlus chooseOpenImage(String title, ImagePlus exclude) {
 		if (title == null) {
@@ -83,11 +86,13 @@ public abstract class GuiTools {
 		}
     }
     
-    /**
+	/**
 	 * Queries the user to select one of the currently open images.
-	 *  
-	 * @param title name of the dialog window (if null, {@link #DEFAULT_DIALOG_TITLE} is used)
-	 * @return a reference to the chosen image ({@link ImagePlus}) or null, if the dialog was cancelled
+	 * 
+	 * @param title name of the dialog window (if null,
+	 *              {@link #DEFAULT_DIALOG_TITLE} is used)
+	 * @return a reference to the chosen image ({@link ImagePlus}) or null, if the
+	 *         dialog was cancelled
 	 */
 	public static ImagePlus chooseOpenImage(String title) {
 		return chooseOpenImage(title, null);
@@ -96,7 +101,8 @@ public abstract class GuiTools {
 	/**
 	 * Queries the user to select one of the currently open images.
 	 *
-	 * @return a reference to the chosen image ({@link ImagePlus}) or null, if the dialog was cancelled
+	 * @return a reference to the chosen image ({@link ImagePlus}) or null, if the
+	 *         dialog was cancelled
 	 */
     public static ImagePlus chooseOpenImage() {
     	return chooseOpenImage(null, null);
@@ -105,21 +111,20 @@ public abstract class GuiTools {
     // ---------------------------------------------------------------------------------------------
     
 	/**
-	 * Modifies the view of the given {@link ImagePlus} image to the specified magnification
-	 * (zoom) factor and the anchor position in the source image. 
-	 * The size of the image window remains unchanged.
-	 * The specified anchor point is the top-left corner of the source rectangle,
-	 * both coordinates must be positive.
-	 * The method fails (does nothing and returns {@code null}) if the resulting 
-	 * source rectangle does not fit into the image.
-	 * If successful, the view is modified and the resulting source rectangle is returned.
-	 * Otherwise {@code null} is returned.
+	 * Modifies the view of the given {@link ImagePlus} image to the specified
+	 * magnification (zoom) factor and the anchor position in the source image. The
+	 * size of the image window remains unchanged. The specified anchor point is the
+	 * top-left corner of the source rectangle, both coordinates must be positive.
+	 * The method fails (does nothing and returns {@code null}) if the resulting
+	 * source rectangle does not fit into the image. If successful, the view is
+	 * modified and the resulting source rectangle is returned. Otherwise
+	 * {@code null} is returned.
 	 * 
-	 * @param im the image, which must be currently open (displayed)
+	 * @param im            the image, which must be currently open (displayed)
 	 * @param magnification the new magnification factor (1.0 = 100%)
-	 * @param xa the x-coordinate of the anchor point
-	 * @param ya the y-coordinate of the anchor point
-	 * @return the resulting source rectangle if successful, {@code null} otherwise 
+	 * @param xa            the x-coordinate of the anchor point
+	 * @param ya            the y-coordinate of the anchor point
+	 * @return the resulting source rectangle if successful, {@code null} otherwise
 	 */
 	public static Rectangle setImageView(ImagePlus im, double magnification, int xa, int ya) {
 		ImageCanvas ic = im.getCanvas();
@@ -166,24 +171,20 @@ public abstract class GuiTools {
 	
 	/**
 	 * Resizes the window of the given image to fit an arbitrary, user-specified
-	 * magnification factor.
-	 * The resulting window size is limited by the current screen size.
-	 * The window size is reduced if too large but the given magnification factor
-	 * remains always unchanged.
-	 * <br>
-	 * Adapted from https://albert.rierol.net/plugins/Zoom_Exact.java
-	 * by Albert Cardona @ 2006
-	 * General Public License applies.
-	 * <br>
-	 * TODO: Check calculation of source rectangle, final magnification may not always be exact!
+	 * magnification factor. The resulting window size is limited by the current
+	 * screen size. The window size is reduced if too large but the given
+	 * magnification factor remains always unchanged. <br>
+	 * Adapted from https://albert.rierol.net/plugins/Zoom_Exact.java by Albert
+	 * Cardona @ 2006 General Public License applies.
 	 * 
-	 * @param im the image, which must be currently open (displayed)
+	 * @param im            the image, which must be currently open (displayed)
 	 * @param magnification the new magnification factor (1.0 = 100%)
-	 * @param marginX horizontal screen margin
-	 * @param marginY vertical screen margin
+	 * @param marginX       horizontal screen margin
+	 * @param marginY       vertical screen margin
 	 * @return true if successful, false otherwise
 	 */
 	public static boolean zoomExact(ImagePlus im, double magnification, int marginX, int marginY) {
+//		TODO: Check calculation of source rectangle, final magnification may not always be exact!
 		ImageWindow win = im.getWindow();
 		if (null == win)
 			return false;
@@ -219,10 +220,10 @@ public abstract class GuiTools {
 	}
 	
 	/**
-	 * Convenience method for {@link #zoomExact(ImagePlus, double, int, int)}
-	 * using default screen margins.
+	 * Convenience method for {@link #zoomExact(ImagePlus, double, int, int)} using
+	 * default screen margins.
 	 * 
-	 * @param im the image, which must be currently open (displayed)
+	 * @param im            the image, which must be currently open (displayed)
 	 * @param magnification the new magnification factor (1.0 = 100%)
 	 * @return true if successful, false otherwise
 	 */
@@ -234,8 +235,8 @@ public abstract class GuiTools {
 	
 	/**
 	 * Returns the current magnification (zoom) factor for the specified
-	 * {@link ImagePlus} instance.
-	 * Throws an exception if the image is currently not displayed.
+	 * {@link ImagePlus} instance. Throws an exception if the image is currently not
+	 * displayed.
 	 * 
 	 * @param im the image, which must be currently open (displayed)
 	 * @return the magnification factor

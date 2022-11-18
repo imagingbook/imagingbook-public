@@ -14,15 +14,15 @@ import java.awt.Color;
 import imagingbook.common.math.Matrix;
 
 /**
- * A mirror class of {@link BasicStroke} which adds stroke and fill colors.
- * Instances of this class are cloneable and mutable,
- * setters for all fields are provided, i.e., strokes can be easily customized.
- * Use {@link #getBasicStroke()} to convert to an AWT {@link BasicStroke} instance.
+ * This is basically a mirror class of {@link BasicStroke} adding stroke and
+ * fill colors. Instances of this class are cloneable and mutable, setters for
+ * all fields are provided, i.e., strokes can be easily customized. Use
+ * {@link #getBasicStroke()} to convert to an AWT {@link BasicStroke} instance.
  * 
  * @author WB
  * @version 2021/10/26
  */
-public class ColoredStroke implements Cloneable {
+public class ColoredStroke implements Cloneable {	// TODO: simplify API
 	
 	public static final Color DefaultStrokeColor = Color.black;
 	public static final Color DefaultFillColor = null;

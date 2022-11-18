@@ -30,6 +30,8 @@ import imagingbook.core.resource.ImageResource;
  */
 public abstract class DialogUtils {
 	
+	private DialogUtils() {}
+	
 	/**
 	 * Annotation to specify a specific 'label' (value) to be shown for following
 	 * parameter fields. Default label is the variable name.
@@ -76,8 +78,6 @@ public abstract class DialogUtils {
 	}
 
 	// -----------------------------------------------------------------------
-
-	private DialogUtils() {}
 	
 	/**
 	 * Creates a HTML string by formatting the supplied strings

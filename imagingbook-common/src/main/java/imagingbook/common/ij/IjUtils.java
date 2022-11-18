@@ -25,7 +25,6 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
-import ij.io.OpenDialog;
 import ij.io.Opener;
 import ij.plugin.PlugIn;
 import ij.plugin.filter.Convolver;
@@ -53,8 +52,8 @@ public abstract class IjUtils {
 	private IjUtils() {}
 	
 	/**
-	 * Returns a (possibly empty) array of ImagePlus objects that are
-	 * sorted by their titles if the 'sortByTitle' flag is set.
+	 * Returns a (possibly empty) array of ImagePlus objects that are sorted by
+	 * their titles if the 'sortByTitle' flag is set.
 	 * 
 	 * @param sortByTitle flag, result is sorted if true.
 	 * @return an array of currently open images.
@@ -64,8 +63,8 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Returns an array of strings containing the short titles
-	 * of the images supplied.
+	 * Returns an array of strings containing the short titles of the images
+	 * supplied.
 	 * 
 	 * @param images array of images.
 	 * @return array of names.
@@ -80,8 +79,10 @@ public abstract class IjUtils {
 	
 	/**
 	 * Opens a dialog to let the user select one of the currently open images.
+	 * 
 	 * @param title string to show in the dialog
-	 * @return An ImagePlus object, use the getProcessor method to obtain the associated ImageProcessor
+	 * @return a {@link ImagePlus} object, use the getProcessor method to obtain the
+	 *         associated {@link ImageProcessor}
 	 */
 	public static ImagePlus selectOpenImage(String title) {
 		ImagePlus[] openImages = getOpenImages(true, null);
@@ -101,13 +102,13 @@ public abstract class IjUtils {
 	
 	
 	/**
-	 * Returns a (possibly empty) array of {@link ImagePlus} objects that are
-	 * sorted by their titles if the sortByTitle flag is set.
-	 * The image "exclude" (typically the current image) is not included 
-	 * in the returned array (pass null to exclude no image).
+	 * Returns a (possibly empty) array of {@link ImagePlus} objects that are sorted
+	 * by their titles if the sortByTitle flag is set. The image "exclude"
+	 * (typically the current image) is not included in the returned array (pass
+	 * null to exclude no image).
 	 * 
 	 * @param sortByTitle set {@code true} to return images sorted by title
-	 * @param exclude reference to an image to be excluded (may be {@code null})
+	 * @param exclude     reference to an image to be excluded (may be {@code null})
 	 * @return a (possibly empty) array of {@link ImagePlus} objects
 	 */
 	public static ImagePlus[] getOpenImages(boolean sortByTitle, ImagePlus exclude) {
@@ -134,24 +135,7 @@ public abstract class IjUtils {
 		return impArr;
 	}
 	
-
-	/**
-	 * Queries the user for an arbitrary file to be opened.
-	 * Deprecated: replace by IJ.open()
-	 *  
-	 * @param title string to be shown in the interaction window.
-	 * @return path of the selected resource.
-	 */
-	@Deprecated
-	public static String askForOpenPath(String title) {
-		OpenDialog od = new OpenDialog(title, "");
-		String dir = od.getDirectory();
-		String name = od.getFileName();
-		if (name == null)
-			return null;
-		return encodeURL(dir + name);
-	}
-	
+	@SuppressWarnings("unused")
 	private static String encodeURL(String url) {
 		//url = url.replaceAll(" ","%20");	// this doesn't work with spaces
 		url = url.replace('\\','/');
@@ -162,13 +146,13 @@ public abstract class IjUtils {
 	
 
 	/**
-	 * Creates an ImageJ {@link ImagePlus} image for the matrix {@code M[r][c]} (2D array),
-	 * where {@code r} is treated as the row (vertical) coordinate and
-	 * {@code c} is treated as the column (horizontal) coordinate.
-	 * Use {@code show()} to display the resulting image.
+	 * Creates an ImageJ {@link ImagePlus} image for the matrix {@code M[r][c]} (2D
+	 * array), where {@code r} is treated as the row (vertical) coordinate and
+	 * {@code c} is treated as the column (horizontal) coordinate. Use
+	 * {@code show()} to display the resulting image.
 	 * 
 	 * @param title image title
-	 * @param M 2D array
+	 * @param M     2D array
 	 * @return a new {@link ImagePlus} image
 	 */
 	public static ImagePlus createImage(String title, float[][] M) {
@@ -183,13 +167,13 @@ public abstract class IjUtils {
 	
 
 	/**
-	 * Creates an ImageJ {@link ImagePlus} image for the matrix {@code M[r][c]} (2D array),
-	 * where {@code r} is treated as the row (vertical) coordinate and
-	 * {@code c} is treated as the column (horizontal) coordinate.
-	 * Use {@code show()} to display the resulting image.
+	 * Creates an ImageJ {@link ImagePlus} image for the matrix {@code M[r][c]} (2D
+	 * array), where {@code r} is treated as the row (vertical) coordinate and
+	 * {@code c} is treated as the column (horizontal) coordinate. Use
+	 * {@code show()} to display the resulting image.
 	 * 
 	 * @param title the image title
-	 * @param M a 2D array holding the image data
+	 * @param M     a 2D array holding the image data
 	 * @return a new {@link ImagePlus} instance
 	 */
 	public static ImagePlus createImage(String title, double[][] M) {
@@ -203,29 +187,28 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Sets the weighing factors for the color components used
-	 * in RGB-to-grayscale conversion for the specified image {@code ip}.
-	 * Note that this method can be applied to any {@link ImageProcessor}
-	 * instance but has no effect unless {@code ip} is of type
-	 * {@link ColorProcessor}. Applies standard (ITU-709) weights.
+	 * Sets the weighing factors for the color components used in RGB-to-grayscale
+	 * conversion for the specified image {@code ip}. Note that this method can be
+	 * applied to any {@link ImageProcessor} instance but has no effect unless
+	 * {@code ip} is of type {@link ColorProcessor}. Applies standard (ITU-709)
+	 * weights.
 	 * 
-	 * @param ip The affected image
+	 * @param ip the affected image
 	 */
 	public static void setRgbConversionWeights(ImageProcessor ip) {
 		setRgbConversionWeights(ip, 0.299, 0.587, 0.114);
 	}
 	
 	/**
-	 * Sets the weighing factors for the color components used
-	 * in RGB-to-grayscale conversion for the specified image {@code ip}.
-	 * Note that this method can be applied to any {@link ImageProcessor}
-	 * instance but has no effect unless {@code ip} is of type
-	 * {@link ColorProcessor}.
+	 * Sets the weighing factors for the color components used in RGB-to-grayscale
+	 * conversion for the specified image {@code ip}. Note that this method can be
+	 * applied to any {@link ImageProcessor} instance but has no effect unless
+	 * {@code ip} is of type {@link ColorProcessor}.
 	 * 
-	 * @param ip The affected image
-	 * @param wr Red weight
-	 * @param wg Green weight
-	 * @param wb Blue weight
+	 * @param ip the affected image
+	 * @param wr red component weight
+	 * @param wg green component weight
+	 * @param wb blue component weight
 	 */
 	public static void setRgbConversionWeights(ImageProcessor ip, double wr, double wg, double wb) {
 		if (ip instanceof ColorProcessor) {
@@ -236,19 +219,19 @@ public abstract class IjUtils {
 	// -------------------------------------------------------------------
 	
 	/**
-	 * Extracts (crops) a rectangular region from the given image
-	 * and returns it as a new image (of the same sub-type of {@link ImageProcessor}).
-	 * If the specified rectangle extends outside the source image,
-	 * only the overlapping region is cropped.
-	 * Thus the returned image may have smaller size than the specified rectangle.
-	 * An exception is thrown if the specified width or height is less than 1.
-	 * {@code null} is returned if the rectangle does not overlap the image at all.
+	 * Extracts (crops) a rectangular region from the given image and returns it as
+	 * a new image (of the same sub-type of {@link ImageProcessor}). If the
+	 * specified rectangle extends outside the source image, only the overlapping
+	 * region is cropped. Thus the returned image may have smaller size than the
+	 * specified rectangle. An exception is thrown if the specified width or height
+	 * is less than 1. {@code null} is returned if the rectangle does not overlap
+	 * the image at all.
 	 * 
-	 * @param <T> the generic image type
-	 * @param ip the image to be cropped
-	 * @param x the left corner coordinate of the cropping rectangle
-	 * @param y the top corner coordinate of the cropping rectangle
-	 * @param width the width of the cropping rectangle
+	 * @param <T>    the generic image type
+	 * @param ip     the image to be cropped
+	 * @param x      the left corner coordinate of the cropping rectangle
+	 * @param y      the top corner coordinate of the cropping rectangle
+	 * @param width  the width of the cropping rectangle
 	 * @param height the height of the cropping rectangle
 	 * @return the cropped image
 	 */
@@ -278,9 +261,10 @@ public abstract class IjUtils {
 	
 	// -------------------------------------------------------------------
 	
-	/** 
-	 * Returns a copy of the pixel data as a 2D double
-	 * array with dimensions [x = 0..width-1][y = 0..height-1].
+	/**
+	 * Returns a copy of the pixel data as a 2D double array with dimensions [x =
+	 * 0,..,width-1][y = 0,..,height-1].
+	 * 
 	 * @param fp the image
 	 * @return the resulting array
 	 */
@@ -302,7 +286,7 @@ public abstract class IjUtils {
 	/**
 	 * Creates a new {@link FloatProcessor} instance of size width x height
 	 * from the given {@code double[][]} with dimensions 
-	 * [x = 0..width-1][y = 0..height-1].
+	 * [x = 0,..,width-1][y = 0,..,height-1].
 	 * 
 	 * @param A a 2D {@code double} array
 	 * @return a new {@link FloatProcessor} instance
@@ -324,7 +308,7 @@ public abstract class IjUtils {
 	/**
 	 * Creates a new {@link FloatProcessor} instance of size width x height
 	 * from the given {@code float[][]} with dimensions 
-	 * [x = 0..width-1][y = 0..height-1].
+	 * [x = 0,..,width-1][y = 0,..,height-1].
 	 * 
 	 * @param A a 2D {@code float} array
 	 * @return a new {@link FloatProcessor} instance
@@ -346,31 +330,23 @@ public abstract class IjUtils {
 	
 	/**
 	 * Converts a {@link FloatProcessor} to a {@code float[][]}.
+	 * 
 	 * @param fp a {@link FloatProcessor}
 	 * @return the resulting {@code float[][]}
 	 */
 	public static float[][] toFloatArray(FloatProcessor fp) {
-//		final int w = fp.getWidth();
-//		final int h = fp.getHeight();
-//		float[][] A = new float[w][h];
-//		for (int v = 0; v < h; v++) {
-//			for (int u = 0; u < w; u++) {
-//				A[u][v] =  fp.getf(u, v);
-//			}
-//		}
-//		return A;
 		return fp.getFloatArray();
 	}
 	
 	/**
 	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
-	 * {@link ByteProcessor}, using clearly specified RGB component weights.
-	 * The processor's individual RGB component weights are used if they have
-	 * been set (not null), otherwise ITU709 weights (see {@link RgbUtils#ITU709RgbWeights}) 
-	 * are applied.
-	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
-	 * on a variety of factors (including current user settings).
-	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights(double[])},
+	 * {@link ByteProcessor}, using clearly specified RGB component weights. The
+	 * processor's individual RGB component weights are used if they have been set
+	 * (not null), otherwise ITU709 weights (see {@link RgbUtils#ITU709RgbWeights})
+	 * are applied. This is to avoid problems with standard conversion methods in
+	 * ImageJ, which depend on a variety of factors (including current user
+	 * settings). See also {@link ColorProcessor#getRGBWeights()},
+	 * {@link ColorProcessor#setRGBWeights(double[])},
 	 * {@link ImageProcessor#convertToByteProcessor()}.
 	 * 
 	 * @param cp a {@link ColorProcessor}
@@ -389,13 +365,14 @@ public abstract class IjUtils {
 	/**
 	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
 	 * {@link ByteProcessor}, applying the specified set of RGB component weights.
-	 * The processor's individual weights (if set) are ignored.
-	 * This is to avoid problems with standard conversion methods in ImageJ, which depend 
-	 * on a variety of factors (including current user settings).
-	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights(double[])},
+	 * The processor's individual weights (if set) are ignored. This is to avoid
+	 * problems with standard conversion methods in ImageJ, which depend on a
+	 * variety of factors (including current user settings). See also
+	 * {@link ColorProcessor#getRGBWeights()},
+	 * {@link ColorProcessor#setRGBWeights(double[])},
 	 * {@link ImageProcessor#convertToByteProcessor()}.
 	 * 
-	 * @param cp a {@link ColorProcessor}
+	 * @param cp         a {@link ColorProcessor}
 	 * @param rgbWeights a 3-vector of RGB component weights (must sum to 1)
 	 * @return the resulting {@link ByteProcessor}
 	 * @see RgbUtils#ITU601RgbWeights
@@ -417,12 +394,13 @@ public abstract class IjUtils {
 	
 	/**
 	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
-	 * {@link FloatProcessor}, using clearly specified RGB component weights.
-	 * The processor's individual RGB component weights are used if 
-	 * set, otherweise default weights are used (see {@link RgbUtils#getDefaultWeights()}).
-	 * This should avoid problems with standard conversion methods in ImageJ, which depend 
-	 * on a variety of factors (including current user settings).
-	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights(double[])},
+	 * {@link FloatProcessor}, using clearly specified RGB component weights. The
+	 * processor's individual RGB component weights are used if set, otherweise
+	 * default weights are used (see {@link RgbUtils#getDefaultWeights()}). This
+	 * should avoid problems with standard conversion methods in ImageJ, which
+	 * depend on a variety of factors (including current user settings). See also
+	 * {@link ColorProcessor#getRGBWeights()},
+	 * {@link ColorProcessor#setRGBWeights(double[])},
 	 * {@link ImageProcessor#convertToFloatProcessor()}.
 	 * 
 	 * @param cp a {@link ColorProcessor}
@@ -441,15 +419,15 @@ public abstract class IjUtils {
 	/**
 	 * Converts the given RGB {@link ColorProcessor} to a scalar-valued
 	 * {@link FloatProcessor}, applying the specified set of RGB component weights.
-	 * If {@code null} is passed for the weights, default weights are used
-	 * (see {@link RgbUtils#getDefaultWeights()}).
-	 * The processor's individual weights (if set at all) are ignored.
-	 * This should avoid problems with standard conversion methods in ImageJ, which depend 
-	 * on a variety of factors (including current user settings).
-	 * See also {@link ColorProcessor#getRGBWeights()}, {@link ColorProcessor#setRGBWeights(double[])},
+	 * If {@code null} is passed for the weights, default weights are used (see
+	 * {@link RgbUtils#getDefaultWeights()}). The processor's individual weights (if
+	 * set at all) are ignored. This should avoid problems with standard conversion
+	 * methods in ImageJ, which depend on a variety of factors (including current
+	 * user settings). See also {@link ColorProcessor#getRGBWeights()},
+	 * {@link ColorProcessor#setRGBWeights(double[])},
 	 * {@link ImageProcessor#convertToFloatProcessor()}.
 	 * 
-	 * @param cp a {@link ColorProcessor}
+	 * @param cp         a {@link ColorProcessor}
 	 * @param rgbWeights a 3-vector of RGB component weights (must sum to 1)
 	 * @return the resulting {@link FloatProcessor}
 	 * @see RgbUtils#ITU601RgbWeights
@@ -470,15 +448,15 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Creates and returns a new {@link ByteProcessor} from
-	 * the specified 2D {@code byte} array, assumed to be
-	 * arranged in the form {@code A[x][y]}, i.e.,
-	 * the first coordinate is horizontal, the second vertical.
-	 * Thus {@code A.length} is the width and {@code A[0].length}
-	 * the height of the resulting image.
+	 * Creates and returns a new {@link ByteProcessor} from the specified 2D
+	 * {@code byte} array, assumed to be arranged in the form {@code A[x][y]}, i.e.,
+	 * the first coordinate is horizontal, the second vertical. Thus
+	 * {@code A.length} is the width and {@code A[0].length} the height of the
+	 * resulting image.
 	 * 
 	 * @param A a 2D {@code byte} array
-	 * @return a new {@link ByteProcessor} of size {@code A.length} x {@code A[0].length}
+	 * @return a new {@link ByteProcessor} of size {@code A.length} x
+	 *         {@code A[0].length}
 	 */
 	public static ByteProcessor toByteProcessor(byte[][] A) {
 		final int w = A.length;
@@ -493,12 +471,11 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Creates and returns a new {@code byte[][]} from
-	 * the specified {@link ByteProcessor}.
-	 * The resulting array is arranged in the form {@code A[x][y]},
-	 * i.e., the first coordinate is horizontal, the second vertical.
-	 * Thus {@code A.length} is the width and {@code A[0].length}
-	 * the height of the image.
+	 * Creates and returns a new {@code byte[][]} from the specified
+	 * {@link ByteProcessor}. The resulting array is arranged in the form
+	 * {@code A[x][y]}, i.e., the first coordinate is horizontal, the second
+	 * vertical. Thus {@code A.length} is the width and {@code A[0].length} the
+	 * height of the image.
 	 * 
 	 * @param bp a {@link ByteProcessor}
 	 * @return a 2D {@code byte} array
@@ -516,16 +493,15 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Creates and returns a new {@link ByteProcessor} from
-	 * the specified 2D {@code int} array, assumed to be
-	 * arranged in the form {@code A[x][y]}, i.e.,
-	 * the first coordinate is horizontal, the second vertical.
-	 * Thus {@code A.length} is the width and {@code A[0].length}
-	 * the height of the resulting image.
-	 * Pixel values are clamped to [0, 255].
+	 * Creates and returns a new {@link ByteProcessor} from the specified 2D
+	 * {@code int} array, assumed to be arranged in the form {@code A[x][y]}, i.e.,
+	 * the first coordinate is horizontal, the second vertical. Thus
+	 * {@code A.length} is the width and {@code A[0].length} the height of the
+	 * resulting image. Pixel values are clamped to [0, 255].
 	 * 
 	 * @param A a 2D {@code int} array
-	 * @return a new {@link ByteProcessor} of size {@code A.length} x {@code A[0].length}
+	 * @return a new {@link ByteProcessor} of size {@code A.length} x
+	 *         {@code A[0].length}
 	 */
 	public static ByteProcessor toByteProcessor(int[][] A) {
 		final int w = A.length;
@@ -545,12 +521,11 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Creates and returns a new {@code int[][]} from
-	 * the specified {@link ByteProcessor}.
-	 * The resulting array is arranged in the form {@code A[x][y]},
-	 * i.e., the first coordinate is horizontal, the second vertical.
-	 * Thus {@code A.length} is the width and {@code A[0].length}
-	 * the height of the image.
+	 * Creates and returns a new {@code int[][]} from the specified
+	 * {@link ByteProcessor}. The resulting array is arranged in the form
+	 * {@code A[x][y]}, i.e., the first coordinate is horizontal, the second
+	 * vertical. Thus {@code A.length} is the width and {@code A[0].length} the
+	 * height of the image.
 	 * 
 	 * @param bp a {@link ByteProcessor}
 	 * @return a 2D {@code int} array
@@ -560,8 +535,8 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Opens the image from the specified {@link URI} and returns it
-	 * as a {@link ImagePlus} instance.
+	 * Opens the image from the specified {@link URI} and returns it as a
+	 * {@link ImagePlus} instance.
 	 * 
 	 * @param uri the URI leading to the image (including extension)
 	 * @return a new {@link ImagePlus} instance or {@code null} if unable to open
@@ -572,8 +547,8 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Opens the image from the specified filename and returns it
-	 * as a {@link ImagePlus} instance.
+	 * Opens the image from the specified filename and returns it as a
+	 * {@link ImagePlus} instance.
 	 * 
 	 * @param filename the path and filename to be opened
 	 * @return a new {@link ImagePlus} instance or {@code null} if unable to open
@@ -608,11 +583,10 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Checks if the given image is possibly a binary image. This requires that
-	 * the image contains at most two different pixel values, one of which
-	 * must be zero. All pixels are checked.
-	 * This should work for all image types.
-	 * More efficient implementations are certainly possible.
+	 * Checks if the given image is possibly a binary image. This requires that the
+	 * image contains at most two different pixel values, one of which must be zero.
+	 * All pixels are checked. This should work for all image types. More efficient
+	 * implementations are certainly possible.
 	 * 
 	 * @param ip the image ({@link ImageProcessor}) to be checked
 	 * @return true if the image is binary
@@ -643,8 +617,7 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Checks if the given image is "flat", i.e., all pixels have
-	 * the same value.
+	 * Checks if the given image is "flat", i.e., all pixels have the same value.
 	 * This should work for all image types.
 	 * 
 	 * @param ip the image ({@link ImageProcessor}) to be checked
@@ -697,7 +670,7 @@ public abstract class IjUtils {
 	public static final double DefaultMatchTolerance = 1E-6;
 	
 	/**
-	 * Checks if two images have the same type, size and content (using 
+	 * Checks if two images have the same type, size and content (using
 	 * {@link #DefaultMatchTolerance} for float images).
 	 * 
 	 * @param ip1 the first image
@@ -710,11 +683,11 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Checks if two images have the same type, size and values (using 
-	 * the specified tolerance for float images). 
+	 * Checks if two images have the same type, size and values (using the specified
+	 * tolerance for float images).
 	 * 
-	 * @param ip1 the first image
-	 * @param ip2 the second image
+	 * @param ip1       the first image
+	 * @param ip2       the second image
 	 * @param tolerance the matching tolerance
 	 * @return true if both images have the same type, size and content
 	 */
@@ -755,9 +728,9 @@ public abstract class IjUtils {
 	
 	// BitMap from/to ByteProcessor conversion
 	/**
-	 * Converts the specified {@link ByteProcessor} to a {@link BitMap}
-	 * of the same size,
-	 * with all zero values set to 0 and non-zero values set to 1.
+	 * Converts the specified {@link ByteProcessor} to a {@link BitMap} of the same
+	 * size, with all zero values set to 0 and non-zero values set to 1.
+	 * 
 	 * @param bp a {@link ByteProcessor}
 	 * @return the corresponding {@link BitMap}
 	 * @see #convertToByteProcessor(BitMap)
@@ -768,18 +741,17 @@ public abstract class IjUtils {
 
 	/**
 	 * <p>
-	 * Converts the specified {@link BitMap} to a {@link ByteProcessor}
-	 * of the same size,
-	 * with all zero values set to 0 and non-zero values set to 1.
-	 * The resulting image should be multiplied by 255 to achieve full
-	 * contrast, e.g.:
+	 * Converts the specified {@link BitMap} to a {@link ByteProcessor} of the same
+	 * size, with all zero values set to 0 and non-zero values set to 1. The
+	 * resulting image should be multiplied by 255 to achieve full contrast, e.g.:
 	 * </p>
 	 * <pre>
 	 * ByteProcessor bp1 = ... // some ByteProcessor
 	 * BitMap bm = IjUtils.convertToBitMap(bp);
 	 * ByteProcessor bp2 = IjUtils.convertToByteProcessor(bm);
 	 * bp2.multiply(255);
-	 * ... </pre>
+	 * ...
+	 * </pre>
 	 * 
 	 * @param bitmap a {@link BitMap}
 	 * @return the corresponding {@link ByteProcessor}
@@ -791,12 +763,12 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Draws the given set of points onto the specified image
-	 * (by setting the corresponding pixels).
+	 * Draws the given set of points onto the specified image (by setting the
+	 * corresponding pixels).
 	 * 
-	 * @param ip the image to draw to
+	 * @param ip     the image to draw to
 	 * @param points the 2D points
-	 * @param value the pixel value to use
+	 * @param value  the pixel value to use
 	 */
 	public static void drawPoints(ImageProcessor ip, Pnt2d[] points, int value) {
 		for (int i = 0; i < points.length; i++) {
@@ -813,7 +785,8 @@ public abstract class IjUtils {
 	
 	/**
 	 * Runs the given {@link PlugInFilter} instance with empty argument string.
-	 * @param pluginfilter an instance of {@link PlugInFilter} 
+	 * 
+	 * @param pluginfilter an instance of {@link PlugInFilter}
 	 * @return true if no exception was thrown
 	 */
 	public static boolean run(PlugInFilter pluginfilter) {
@@ -822,8 +795,10 @@ public abstract class IjUtils {
 	
 	/**
 	 * Runs the given {@link PlugInFilter} instance.
-	 * @param pluginfilter an instance of {@link PlugInFilter} 
-	 * @param arg argument passed to {@link PlugInFilter#setup(String, ImagePlus)}
+	 * 
+	 * @param pluginfilter an instance of {@link PlugInFilter}
+	 * @param arg          argument passed to
+	 *                     {@link PlugInFilter#setup(String, ImagePlus)}
 	 * @return true if no exception was thrown
 	 */
 	public static boolean run(PlugInFilter pluginfilter, String arg) {
@@ -837,6 +812,7 @@ public abstract class IjUtils {
 	
 	/**
 	 * Runs the given {@link PlugIn} instance with empty argument string.
+	 * 
 	 * @param plugin an instance of {@link PlugIn}
 	 * @return true if no exception was thrown
 	 */
@@ -846,8 +822,9 @@ public abstract class IjUtils {
 	
 	/**
 	 * Runs the given {@link PlugIn} instance.
+	 * 
 	 * @param plugin an instance of {@link PlugIn}
-	 * @param arg argument passed to {@link PlugIn#run(String)}
+	 * @param arg    argument passed to {@link PlugIn#run(String)}
 	 * @return true if no exception was thrown
 	 */
 	public static boolean run(PlugIn plugin, String arg) {
@@ -862,8 +839,10 @@ public abstract class IjUtils {
 	// ------------------------------------------------------------------
 	
 	/**
-	 * Run a {@link PlugInFilter} from the associated class with empty argument string.
-	 * If the plugin's constructor is available, use method {@link #run(PlugInFilter)} instead.
+	 * Run a {@link PlugInFilter} from the associated class with empty argument
+	 * string. If the plugin's constructor is available, use method
+	 * {@link #run(PlugInFilter)} instead.
+	 * 
 	 * @param clazz class of the pluginfilter
 	 * @return true if no exception was thrown
 	 */
@@ -872,10 +851,12 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Run a {@link PlugInFilter} from the associated class.
-	 * If the plugin's constructor is available, use method {@link #run(PlugInFilter, String)} instead.
+	 * Run a {@link PlugInFilter} from the associated class. If the plugin's
+	 * constructor is available, use method {@link #run(PlugInFilter, String)}
+	 * instead.
+	 * 
 	 * @param clazz class of the plugin
-	 * @param arg argument string
+	 * @param arg   argument string
 	 * @return true if no exception was thrown
 	 */
 	public static boolean runPlugInFilter(Class<? extends PlugInFilter> clazz, String arg) {
@@ -890,8 +871,10 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Run a {@link PlugIn} from the associated class with empty argument string.
-	 * If the plugin's constructor is available, use method {@link #run(PlugIn)} instead.
+	 * Run a {@link PlugIn} from the associated class with empty argument string. If
+	 * the plugin's constructor is available, use method {@link #run(PlugIn)}
+	 * instead.
+	 * 
 	 * @param clazz class of the plugin
 	 * @return true if no exception was thrown
 	 */
@@ -900,10 +883,11 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Run a {@link PlugIn} from the associated class.
-	 * If the plugin's constructor is available, use method {@link #run(PlugIn, String)} instead.
+	 * Run a {@link PlugIn} from the associated class. If the plugin's constructor
+	 * is available, use method {@link #run(PlugIn, String)} instead.
+	 * 
 	 * @param clazz class of the plugin
-	 * @param arg argument string
+	 * @param arg   argument string
 	 * @return true if no exception was thrown
 	 */
 	public static boolean runPlugIn(Class<? extends PlugIn> clazz, String arg) {
@@ -921,12 +905,12 @@ public abstract class IjUtils {
 	//  static methods for filtering images using ImageJ's {@link Convolver} class. 
 
 	/**
-	 * Applies a one-dimensional convolution kernel to the given image,
-	 * which is modified. The 1D kernel is applied in horizontal direction only.#
-	 * The supplied filter kernel is not normalized.
+	 * Applies a one-dimensional convolution kernel to the given image, which is
+	 * modified. The 1D kernel is applied in horizontal direction only.# The
+	 * supplied filter kernel is not normalized.
 	 * 
 	 * @param ip the image to be filtered (modified)
-	 * @param h the filter kernel
+	 * @param h  the filter kernel
 	 * @see Convolver
 	 */
 	public static void convolveX (ImageProcessor ip, float[] h) { // TODO: unit test missing
@@ -936,12 +920,12 @@ public abstract class IjUtils {
 	}
 
 	/**
-	 * Applies a one-dimensional convolution kernel to the given image,
-	 * which is modified. The 1D kernel is applied in vertical direction only.
-	 * The supplied filter kernel must be odd-sized. It is not normalized.
+	 * Applies a one-dimensional convolution kernel to the given image, which is
+	 * modified. The 1D kernel is applied in vertical direction only. The supplied
+	 * filter kernel must be odd-sized. It is not normalized.
 	 * 
 	 * @param ip the image to be filtered (modified)
-	 * @param h the filter kernel
+	 * @param h  the filter kernel
 	 * @see Convolver
 	 */
 	public static void convolveY (ImageProcessor ip, float[] h) {
@@ -951,14 +935,13 @@ public abstract class IjUtils {
 	}
 
 	/**
-	 * Applies a one-dimensional convolution kernel to the given image,
-	 * which is modified.
-	 * The same 1D kernel is applied twice, once in horizontal and once in
-	 * vertical direction.
-	 * The supplied filter kernel must be odd-sized. It is not normalized.
+	 * Applies a one-dimensional convolution kernel to the given image, which is
+	 * modified. The same 1D kernel is applied twice, once in horizontal and once in
+	 * vertical direction. The supplied filter kernel must be odd-sized. It is not
+	 * normalized.
 	 * 
 	 * @param ip the image to be filtered (modified)
-	 * @param h the filter kernel
+	 * @param h  the filter kernel
 	 * @see Convolver
 	 */
 	public static void convolveXY (ImageProcessor ip, float[] h) {
@@ -969,12 +952,12 @@ public abstract class IjUtils {
 	}
 	
 	/**
-	 * Applies a two-dimensional convolution kernel to the given image,
-	 * which is modified. The supplied kernel {@code float[x][y]} must be 
-	 * rectangular and odd-sized. It is not normalized.
+	 * Applies a two-dimensional convolution kernel to the given image, which is
+	 * modified. The supplied kernel {@code float[x][y]} must be rectangular and
+	 * odd-sized. It is not normalized.
 	 * 
 	 * @param ip the image to be filtered (modified)
-	 * @param H the filter kernel
+	 * @param H  the filter kernel
 	 */
 	public static void convolve(ImageProcessor ip, float[][] H) {
 		float[] h = Matrix.flatten(H);	// TODO: right order? transpose?
@@ -986,15 +969,16 @@ public abstract class IjUtils {
 	// ---------------------------------------------------------------
 	
 	/**
-	 * Saves the given {@link ImageProcessor} using the specified
-	 * path. The image file type is inferred from the file extension.
-	 * TIFF is used if no file extension is given.
-	 * This method simply invokes {@link IJ#save(ImagePlus, String)},
-	 * creating a temporary and titleless {@link ImagePlus} instance.
-	 * Existing files with the same path are overwritten.
+	 * Saves the given {@link ImageProcessor} using the specified path. The image
+	 * file type is inferred from the file extension. TIFF is used if no file
+	 * extension is given. This method simply invokes
+	 * {@link IJ#save(ImagePlus, String)}, creating a temporary and titleless
+	 * {@link ImagePlus} instance. Existing files with the same path are
+	 * overwritten.
 	 * 
-	 * @param ip a {@link ImageProcessor}
-	 * @param filepath the path where to save the image, e.g. {@code "C:/tmp/MyImage.png"}
+	 * @param ip       a {@link ImageProcessor}
+	 * @param filepath the path where to save the image, e.g.
+	 *                 {@code "C:/tmp/MyImage.png"}
 	 * @return the absolute file path
 	 */
 	public static String save(ImageProcessor ip, String filepath) {
@@ -1020,20 +1004,23 @@ public abstract class IjUtils {
 	
 	/**
 	 * <p>
-	 * Returns true if the current (active) image is compatible
-	 * with the specified flags (as specified by {@link PlugInFilter},
-	 * typically used to compose the return value of {@link PlugInFilter#setup(String, ImagePlus)}).
-	 * This method emulates the compatibility check performed by ImageJ's built-in
-	 * {@link PlugInFilterRunner} before a {@link PlugInFilter} is executed.
-	 * It may be used, e.g., in the (normally empty) constructor of a class
-	 * implementing {@link PlugInFilter}.
+	 * Returns true if the current (active) image is compatible with the specified
+	 * flags (as specified by {@link PlugInFilter}, typically used to compose the
+	 * return value of {@link PlugInFilter#setup(String, ImagePlus)}). This method
+	 * emulates the compatibility check performed by ImageJ's built-in
+	 * {@link PlugInFilterRunner} before a {@link PlugInFilter} is executed. It may
+	 * be used, e.g., in the (normally empty) constructor of a class implementing
+	 * {@link PlugInFilter}.
 	 * </p>
 	 * <p>
-	 * Example, checking if the current image is either 8-bit or 32-bit gray:</p>
+	 * Example, checking if the current image is either 8-bit or 32-bit gray:
+	 * </p>
+	 * 
 	 * <pre>
 	 * if (checkCurrentImage(PlugInFilter.DOES_8G + PlugInFilter.DOES_32)) {
 	 * 	// some action ...
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param flags int-encoded binary flags
 	 * @return true if the current image is compatible
@@ -1054,7 +1041,8 @@ public abstract class IjUtils {
 	 * ImagePlus im = WindowManager.getCurrentImage(); // may be null
 	 * if (checkImage(im, PlugInFilter.DOES_8G + PlugInFilter.DOES_RGB)) {
 	 * 	// some action
-	 * }</pre>
+	 * }
+	 * </pre>
 	 * 
 	 * @param im    a {@link ImagePlus} or {@code null}
 	 * @param flags int-encoded binary flags

@@ -26,7 +26,7 @@ import ij.process.LUT;
  * @version 2016/12/19
  * @version 2022/09/15 converted to enum type
  */
-public enum LookupTables {
+public enum NamedLookupTable {
 	
 	Fire(fire()),
 	Grays(grays()),
@@ -39,10 +39,15 @@ public enum LookupTables {
 
 	private final LUT lut;
 	
-	private LookupTables(LUT lut) {
+	private NamedLookupTable(LUT lut) {
 		this.lut = lut;
 	}
 	
+	/**
+	 * Returns the actual lookup table for this named item.
+	 * 
+	 * @return the associated {@link LUT} instance
+	 */
 	public LUT getLUT() {
 		return this.lut;
 	}
@@ -59,7 +64,7 @@ public enum LookupTables {
 	 */
 	public static LUT create(byte[] r, byte[] g, byte[] b) {
 		if (r.length != 256 || g.length != 256 || b.length != 256) {
-			throw new IllegalArgumentException("Component arrays must be of length 256");
+			throw new IllegalArgumentException("component arrays must be of length 256");
 		}
 		return new LUT(r, g, b);
 	}
@@ -215,7 +220,6 @@ public enum LookupTables {
 			IJ.log(String.format("%3d: %3d %3d %3d", i, reds[i] & 0xFF, grns[i] & 0xFF, blus[i] & 0xFF));
 		}
 	}
-	
 	
 	/**
 	 * Modifies the lookup table to display a bright image with gray values

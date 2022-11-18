@@ -25,7 +25,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
  * to interface with ImageJ.
  * 
  * @author WB
- *
+ * @version 2022/09/22
  */
 public class RoiUtils {
 	
@@ -100,8 +100,8 @@ public class RoiUtils {
 	}
 	
 	/**
-	 * Converts an array of 2D points (of type {@link Pnt2d}) to
-	 * a {@link PointRoi} instance.
+	 * Converts an array of 2D points (of type {@link Pnt2d}) to a {@link PointRoi}
+	 * instance.
 	 * 
 	 * @param points v
 	 * @return a {@link PointRoi} instance

@@ -20,26 +20,25 @@ import ij.gui.TextRoi;
 
 /**
  * <p>
- * This is an adapter for ImageJ's {@link Overlay} class to ease the insertion of
- * AWT {@link Shape} elements.
- * Shapes are only geometric descriptions but have no stroke width, color
- * etc. attached. 
- * These are determined by {@link ShapeOverlayAdapter}'s <strong>current state</strong>
- * when insertion is done with {@link #addShape(Shape)} (i.e., without explicit
- * stroke information).
- * Alternatively, the shape's stroke and color may be explicitly specified by calling 
- * {@link #addShape(Shape, ColoredStroke)}.
- * When a shape is inserted into the associated overlay it is converted to an ImageJ
- * {@link ShapeRoi} instance whose stroke/fill properties are set. 
+ * This is an adapter for ImageJ's {@link Overlay} class to ease the insertion
+ * of AWT {@link Shape} elements. Shapes are only geometric descriptions but
+ * have no stroke width, color etc. attached. These are determined by
+ * {@link ShapeOverlayAdapter}'s <strong>current state</strong> when insertion
+ * is done with {@link #addShape(Shape)} (i.e., without explicit stroke
+ * information). Alternatively, the shape's stroke and color may be explicitly
+ * specified by calling {@link #addShape(Shape, ColoredStroke)}. When a shape is
+ * inserted into the associated overlay it is converted to an ImageJ
+ * {@link ShapeRoi} instance whose stroke/fill properties are set.
  * </p>
  * <p>
- * Similarly, text elements can be added using {@link #addText(double, double, String)}
- * or {@link #addText(double, double, String, Font, Color)}.
+ * Similarly, text elements can be added using
+ * {@link #addText(double, double, String)} or
+ * {@link #addText(double, double, String, Font, Color)}.
  * </p>
  * <p>
- * By default, shapes added to {@link ShapeOverlayAdapter} are automatically translated
- * by 0.5 units in x/y direction, such that integer coordinates are shifted to pixel
- * centers. This can be deactivated by using constructor 
+ * By default, shapes added to {@link ShapeOverlayAdapter} are automatically
+ * translated by 0.5 units in x/y direction, such that integer coordinates are
+ * shifted to pixel centers. This can be deactivated using constructor
  * {@link #ShapeOverlayAdapter(Overlay, boolean, boolean)}.
  * </p>
  * <p>
@@ -57,10 +56,11 @@ import ij.gui.TextRoi;
  * ola.addShape(new Line2D.Double(x3, y3, x4, y4));
  * ...			// add more shapes with same stroke
  * im.setOverlay(oly);
- * im.show();</pre>
- * 
+ * im.show();
+ * </pre>
  * <p>
- * <strong>Usage example 2 (adding shapes with element-wise stroke/color specification):</strong>
+ * <strong>Usage example 2 (adding shapes with element-wise stroke/color
+ * specification):</strong>
  * </p>
  * <pre>
  * ImagePlus im = ...
@@ -70,8 +70,8 @@ import ij.gui.TextRoi;
  * ola.addShape(new Line2D.Double(x1, y1, x2, y2), mystroke);
  * ...				// add more shapes
  * im.setOverlay(oly);
- * im.show();</pre>
- * 
+ * im.show();
+ * </pre>
  * <p>
  * <strong>Usage example 3 (adding text):</strong>
  * </p>
@@ -86,7 +86,8 @@ import ij.gui.TextRoi;
  * ola.addText(x, y, "text with explicit font and color", new Font(Font.SERIF, Font.PLAIN, 10), Color.black);
  * ...
  * im.setOverlay(oly);
- * im.show();</pre>
+ * im.show();
+ * </pre>
  * 
  * 
  * @author WB
