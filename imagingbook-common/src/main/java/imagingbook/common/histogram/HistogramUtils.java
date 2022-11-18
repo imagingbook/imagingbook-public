@@ -12,7 +12,14 @@ package imagingbook.common.histogram;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
- * This class defines static methods related to histograms.
+ * <p>
+ * This class defines static methods related to histograms. See Ch. 2 of [1] for
+ * additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/08/24
@@ -232,7 +239,7 @@ public abstract class HistogramUtils {
 			throw new IllegalArgumentException("empty histogram or range");
 		}
 		
-		return ((double) B - (double) (A * A) / N) / N;
+		return (B - (double) (A * A) / N) / N;
 	}
 	
 	// This is a naive (slow) version, for testing only:
@@ -253,7 +260,7 @@ public abstract class HistogramUtils {
 			throw new IllegalArgumentException("empty histogram or range");
 		}
 
-		return (double) sum / N;
+		return sum / N;
 	}
 	
 	// -----------------------------------------------------------

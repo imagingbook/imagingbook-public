@@ -10,8 +10,14 @@
 package imagingbook.common.histogram;
 
 /**
- * This class represents a discrete "cumulative distribution function" 
- * that is piecewise linear.
+ * <p>
+ * This class represents a discrete "cumulative distribution function" that is
+ * piecewise linear. See Sec. 3.6.3 (Fig. 3.12) of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  *

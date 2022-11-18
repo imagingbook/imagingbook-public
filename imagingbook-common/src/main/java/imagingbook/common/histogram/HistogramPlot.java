@@ -14,9 +14,8 @@ import ij.gui.NewImage;
 import ij.process.ImageProcessor;
 
 /**
- * Defines a simple image window to display histograms.
- * This is a sub-class of {@link ImagePlus} (similar to 
- * {@code ij.gui.HistogramPlot}).
+ * Defines a simple image window to display histograms. This is a sub-class of
+ * {@link ImagePlus} (similar to {@code ij.gui.HistogramPlot}).
  * 
  * @author WB
  * @version 2022/09/22 revised to extend ImagePlus
