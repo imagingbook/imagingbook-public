@@ -13,10 +13,18 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 
 /**
- * This (singleton) class is used to re-sample 2D polygons by interpolation.
+ * <p>
+ * This class is used to re-sample 2D polygons by interpolation. See Sec. 2.1.1
+ * (Alg. 26.1) if [1] for details. Note that this class has no public
+ * constructor, use {@link #getInstance()} instead.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction Using Java</em>, 2rd ed, Springer (2016).
+ * </p>
  * 
- *  @author WB
- *  @version 2022/10/26
+ * @author WB
+ * @version 2022/10/26
  */
 public class PolygonSampler {
 	
@@ -29,14 +37,13 @@ public class PolygonSampler {
 	}
 	
 	/**
-	 * Samples the closed polygon path specified by V at M
-	 * equi-distant positions.
+	 * Samples the closed polygon path specified by V at M equidistant positions.
 	 * 
 	 * @param V the vertices of the (closed) polygon.
 	 * @param M the number of sample points.
 	 * @return the sample points as an array of Point objects.
 	 */
-	public Pnt2d[] samplePolygonUniformly(Pnt2d[] V, int M) {
+	public Pnt2d[] samplePolygon(Pnt2d[] V, int M) {
 		int N = V.length;
 		double Delta = pathLength(V) / M;	// constant segment length in Q
 		// distribute N points along polygon path P
@@ -66,17 +73,18 @@ public class PolygonSampler {
 	}
 	
 	/**
-	 * For testing only: allows to choose an arbitrary start point by
-	 * setting 'startFrac' in [0,1].
-	 * @param V the vertices of the (closed) polygon.
-	 * @param M the number of sample points.
-	 * @param startFrac the position of the first sample as a fraction of the 
-	 * polggon's circumference in [0,1].
+	 * For testing only: allows to choose an arbitrary start point by setting
+	 * 'startFrac' in [0,1].
+	 * 
+	 * @param V         the vertices of the (closed) polygon.
+	 * @param M         the number of sample points.
+	 * @param startFrac the position of the first sample as a fraction of the
+	 *                  polggon's circumference in [0,1].
 	 * @return the sample points as an array of Point objects.
 	 */
-	public Pnt2d[] samplePolygonUniformly(Pnt2d[] V, int M, double startFrac) {
+	public Pnt2d[] samplePolygon(Pnt2d[] V, int M, double startFrac) {
 		int startPos = (int) Math.round(V.length * startFrac) % V.length;
-		return samplePolygonUniformly(shiftLeft(V, startPos), M);
+		return samplePolygon(shiftLeft(V, startPos), M);
 	}
 	
 	private Pnt2d[] shiftLeft(Pnt2d[] V, int startPos) {

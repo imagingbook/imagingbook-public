@@ -137,7 +137,7 @@ public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilte
 		}
 
 		Contour contr = outerContours.get(0);	// contour of largest region
-		Pnt2d[] polygon = PolygonSampler.getInstance().samplePolygonUniformly(contr.getPointArray(), NumberOfContourSamples);
+		Pnt2d[] polygon = PolygonSampler.getInstance().samplePolygon(contr.getPointArray(), NumberOfContourSamples);
 		Complex[] samples = FourierDescriptor.toComplexArray(polygon);
 		
 		FourierDescriptor fd = FourierDescriptorUniform.from(polygon);
