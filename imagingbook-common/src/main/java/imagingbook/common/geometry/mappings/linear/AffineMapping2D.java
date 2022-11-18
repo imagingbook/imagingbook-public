@@ -16,9 +16,18 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 
 /**
- * This class represents an affine transformation in 2D, which can be defined 
- * by three pairs of corresponding points.
- * It can be assumed that every instance of this class is indeed an affine mapping.
+ * <p>
+ * This class represents an affine transformation in 2D, which can be defined by
+ * three pairs of corresponding points. It can be assumed that every instance of
+ * this class is indeed an affine mapping. Instances are immutable. See Secs.
+ * 21.1.3 and 21.3.1 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
  */
 public class AffineMapping2D extends ProjectiveMapping2D {
 

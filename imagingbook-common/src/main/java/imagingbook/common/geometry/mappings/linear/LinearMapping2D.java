@@ -17,8 +17,15 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 
 /**
- * This class represents an arbitrary linear transformation in 2D.
- * Instances of this class and any subclass are immutable.
+ * <p>
+ * This class represents an arbitrary linear transformation in 2D. Instances of
+ * this class and any subclass are immutable. See Secs. 21.1 and 21.3 of [1] for
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  */
 public class LinearMapping2D implements Mapping2D, Inversion {
 	

@@ -12,9 +12,18 @@ package imagingbook.common.geometry.mappings.linear;
 import imagingbook.common.math.Matrix;
 
 /**
- * This class represents a pure 2D rotation about the coordinate origin 
- * (as a special case of affine mapping).
- * It can be assumed that every instance of this class is indeed a rotation.
+ * <p>
+ * This class represents a pure 2D rotation about the coordinate origin (as a
+ * special case of affine mapping). It can be assumed that every instance of
+ * this class is indeed a rotation. See Secs. 21.1.3 and 21.3.1 of [1] for
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ *  @author WB
  */
 public class Rotation2D extends AffineMapping2D {
 	

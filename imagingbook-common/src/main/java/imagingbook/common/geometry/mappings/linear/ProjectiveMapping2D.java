@@ -19,10 +19,18 @@ import imagingbook.common.math.PrintPrecision;
 
 
 /**
- * This class represents a projective transformation in 2D (also known
- * as a "homography"). It can be specified uniquely by four pairs of corresponding
- * points.
- * It can be assumed that every instance of this class is indeed a projective mapping.
+ * <p>
+ * This class represents a projective transformation in 2D (also known as a
+ * "homography"). It can be specified uniquely by four pairs of corresponding
+ * points. It can be assumed that every instance of this class is indeed a
+ * projective mapping. See Secs. 21.1.4 and 21.3.1 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ *  @author WB
  */
 public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 	

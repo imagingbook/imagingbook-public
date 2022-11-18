@@ -16,13 +16,23 @@ import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.math.Matrix;
 
 /**
- * This class represents a bilinear transformation in 2D with 8
- * parameters a0, ..., a3, b0, ..., b3 of the form
+ * <p>
+ * This class represents a bilinear transformation in 2D with 8 parameters a0,
+ * ..., a3, b0, ..., b3 of the form
+ * </p>
  * <pre>
  * x' = a0 * x + a1 * y + a2 * x * y + a3
- * y' = b0 * x + b1 * y + b2 * x * y + b3
- * </pre>
- * Note that this is a non-linear transformation because of the mixed term x * y.
+ * y' = b0 * x + b1 * y + b2 * x * y + b3</pre>
+ * <p>
+ * Note that this is a non-linear transformation because of the mixed term x *
+ * y. See Secs. 21.1.5 and 21.3.1 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
  */
 public class BilinearMapping2D implements Mapping2D {
 	
@@ -72,6 +82,7 @@ public class BilinearMapping2D implements Mapping2D {
 		return PntDouble.from(xx, yy);
 	}
 	
+	@Override
 	public String toString() {
 		return String.format(
 				"BilinearMapping[A = (%.3f, %.3f, %.3f, %.3f) / B = (%.3f, %.3f, %.3f, %.3f)]",

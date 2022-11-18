@@ -12,10 +12,18 @@ package imagingbook.common.geometry.mappings.linear;
 import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
- * This class represents a pure 2D translation (as a special case of 
- * affine transformation).
- * Instances are immutable and it can be assumed that every instance of
- * this class is indeed a translation.
+ * <p>
+ * This class represents a pure 2D translation (as a special case of affine
+ * transformation). Instances are immutable and it can be assumed that every
+ * instance of this class is indeed a translation. See Secs. 21.1.3 and 21.3.1
+ * of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
  */
 public class Translation2D extends AffineMapping2D {
 

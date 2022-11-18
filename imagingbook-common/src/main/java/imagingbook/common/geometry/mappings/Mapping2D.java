@@ -10,6 +10,12 @@ package imagingbook.common.geometry.mappings;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 
+/**
+ * Common interface to be implemented by all (linear and nonlinear) 2D mappings.
+ * 
+ * @author WB
+ *
+ */
 public interface Mapping2D extends Cloneable {
 	
 	/**
