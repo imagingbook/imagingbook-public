@@ -10,14 +10,13 @@ package imagingbook.common.geometry.shape;
 
 import java.awt.Shape;
 
-import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Primitive2d;
 
 /**
  * Used to check if AWT shapes produced by {@link ShapeProducer#getShape()}
- * match the underlying curve ({@link Primitive2d}).
- * This is mainly used to test if generated shapes (to be drawn
- * to the screen) are sufficiently accurate.
+ * match the underlying curve ({@link Primitive2d}). This is mainly used to test
+ * if generated shapes (to be drawn to the screen) are sufficiently accurate.
  * 
  * @see ShapeProducer
  * @see Primitive2d
