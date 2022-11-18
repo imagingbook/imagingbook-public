@@ -20,7 +20,7 @@ import ij.plugin.PlugIn;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.fitting.line.LineSampler;
+import imagingbook.common.geometry.fitting.line.utils.LineSampler;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
