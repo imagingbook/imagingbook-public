@@ -13,9 +13,11 @@ import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
- * A specific vector-valued image accessor for RGB images
- * (direct subclass of {@link VectorAccessor}) with 
- * depth = 3 color components.
+ * A special vector-valued image accessor for RGB images (direct subclass of
+ * {@link VectorAccessor}) with depth = 3 color components.
+ * 
+ * @author WB
+ * @version 2022/09/22
  */
 public class RgbAccessor extends VectorAccessor {
 	
@@ -42,7 +44,6 @@ public class RgbAccessor extends VectorAccessor {
 	}
 	
 	// ---------------------------------------------------------------------
-
 
 	@Override
 	public float[] getPix(int u, int v) { // returns an RGB value packed into a float[]

@@ -15,6 +15,9 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
  * Image accessor for scalar images with 8-bit (byte) values.
+ * 
+ * @author WB
+ * @version 2022/09/22
  */
 public class ByteAccessor extends ScalarAccessor {
 	private final byte[] pixels;

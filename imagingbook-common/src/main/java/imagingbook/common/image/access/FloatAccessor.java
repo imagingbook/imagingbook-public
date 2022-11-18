@@ -15,6 +15,9 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
  * Image accessor for scalar images with 32-bit (float) values.
+ * 
+ * @author WB
+ * @version 2022/09/22
  */
 public class FloatAccessor extends ScalarAccessor {
 	private final float[] pixels;
@@ -32,6 +35,10 @@ public class FloatAccessor extends ScalarAccessor {
 	public FloatAccessor(FloatProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
 		super(ip, obs, ipm);
 		this.pixels = (float[]) ip.getPixels();
+	}
+	
+	public static FloatAccessor create(FloatProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+		return new FloatAccessor(ip, obs, ipm);
 	}
 
 	@Override

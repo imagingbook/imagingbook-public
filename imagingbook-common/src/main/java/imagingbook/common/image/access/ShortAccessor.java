@@ -33,6 +33,10 @@ public class ShortAccessor extends ScalarAccessor {
 		super(ip, obs, ipm);
 		this.pixels = (short[]) this.ip.getPixels();
 	}
+	
+	public static ShortAccessor create(ShortProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+		return new ShortAccessor(ip, obs, ipm);
+	}
 
 	@Override
 	public float getVal(int u, int v) {
