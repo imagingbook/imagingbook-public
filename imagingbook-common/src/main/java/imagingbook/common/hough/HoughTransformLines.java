@@ -19,16 +19,23 @@ import imagingbook.common.util.ParameterBundle;
 import imagingbook.common.util.progress.ProgressReporter;
 
 /**
- * This class implements the "classic" Hough Transform for straight lines.
- * This implementation improves the algorithm described in the textbook in
- * the way the accumulator is updated. Here, the quantity 1 is not added
- * to a single accumulator cell but gets distributed over two neighboring
- * (radial) cells to reduce aliasing effects. Thus we accumulate non-integer
- * values and therefore the various accumulators are of type {@code float[][]}.
+ * <p>
+ * This class implements the "classic" Hough Transform for straight lines. This
+ * implementation improves the algorithm described in the textbook in the way
+ * the accumulator is updated. Here, the quantity 1 is not added to a single
+ * accumulator cell but gets distributed over two neighboring (radial) cells to
+ * reduce aliasing effects. Thus we accumulate non-integer values and therefore
+ * the various accumulators are of type {@code float[][]}. See Sec. 12.2 of [1]
+ * for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/04/01
- * @version 2022/09/10	removed ImageJ progress reporting
+ * @version 2022/09/10 removed ImageJ progress reporting
  */
 public class HoughTransformLines implements ProgressReporter {
 	

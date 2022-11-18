@@ -15,13 +15,22 @@ import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.line.HessianLine;
 
 /**
- * This class represents a straight line of the form
- * (x - xRef) * cos(angle) + (y - yRef) * sin(angle) = radius.
- * It is used by the Hough transform (see {@link imagingbook.common.hough.HoughTransformLines}).
- * It inherits from {@link HessianLine} which is, in turn, a subclass of 
- * {@link AlgebraicLine}.
- * It adds an arbitrary reference point (xRef, yRef) and a counter (count) for pixel votes.
- * Instances are immutable.
+ * <p>
+ * This class represents a straight line of the form (x - xRef) * cos(angle) +
+ * (y - yRef) * sin(angle) = radius. It is used by the Hough transform (see
+ * {@link imagingbook.common.hough.HoughTransformLines}). It inherits from
+ * {@link HessianLine} which is, in turn, a subclass of {@link AlgebraicLine}.
+ * It adds an arbitrary reference point (xRef, yRef) and a counter (count) for
+ * pixel votes. Instances are immutable. See Sec. 12.2 of [1] for additional
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/08/24
  */
 public class HoughLine extends HessianLine implements Comparable<HoughLine> {
 	
