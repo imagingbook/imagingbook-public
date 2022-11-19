@@ -27,6 +27,8 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
  * Instances of this class form the nodes of a {@link ComponentTree}.
  *
  * @param <T> the type of properties that can be attached to instances of this class
+ * @author WB
+ * @version 2022/11/19
  */
 public class Component<T> {
 	
@@ -67,8 +69,9 @@ public class Component<T> {
 	// --------------------------------------------------------
 	
 	/**
-	 * Returns the parent component of this component ({@code null} if 
-	 * this node is the tree's root).
+	 * Returns the parent component of this component ({@code null} if this node is
+	 * the tree's root).
+	 * 
 	 * @return the parent component
 	 */
 	public Component<T> getParent() {
@@ -83,9 +86,10 @@ public class Component<T> {
 	void addToSize(int sizeInc) {
 		size = size + sizeInc;
 	}
-	
+
 	/**
 	 * Returns the size (number of pixels) of this component.
+	 * 
 	 * @return the size of this component
 	 */
 	public int getSize() {
@@ -98,6 +102,7 @@ public class Component<T> {
 	
 	/**
 	 * Returns the list of this component's child components.
+	 * 
 	 * @return a (possibly empty) list of components, never {@code null}
 	 */
 	public Collection<Component<T>> getChildren() {
@@ -111,6 +116,7 @@ public class Component<T> {
 
 	/**
 	 * Returns the level (max. gray value) of this component.
+	 * 
 	 * @return the component's level
 	 */
 	public int getLevel() {
@@ -124,6 +130,7 @@ public class Component<T> {
 	
 	/**
 	 * Returns the height of the sub-tree which this component is the root of.
+	 * 
 	 * @return the height of the sub-tree rooted by this component
 	 */
 	public int getHeight() {
@@ -135,8 +142,9 @@ public class Component<T> {
 	}
 	
 	/**
-	 * Returns a list of "local" pixels that directly belong to this component
-	 * All these pixels have the same 'level' as the component itself.
+	 * Returns a list of "local" pixels that directly belong to this component All
+	 * these pixels have the same 'level' as the component itself.
+	 * 
 	 * @return the component's local pixels
 	 */
 	public Collection<Pixel> getLocalPixels() {
@@ -144,10 +152,10 @@ public class Component<T> {
 	}
 	
 	/**
-	 * Returns a collection of all pixels of this component,
-	 * including the component's local pixels
-	 * and the pixels of all child components.
-	 * Not needed in actual code, used only for debugging.
+	 * Returns a collection of all pixels of this component, including the
+	 * component's local pixels and the pixels of all child components. Not needed
+	 * in actual code, used only for debugging.
+	 * 
 	 * @return all pixels contained in this component
 	 */
 	public Collection<Pixel> getAllPixels() {
@@ -164,8 +172,9 @@ public class Component<T> {
 //	}
 	
 	/**
-	 * Returns a collection of all pixels contained in the
-	 * children of this component.
+	 * Returns a collection of all pixels contained in the children of this
+	 * component.
+	 * 
 	 * @return all pixels from child components
 	 */
 	public Collection<Pixel> getChildPixels() {
@@ -178,6 +187,7 @@ public class Component<T> {
 	
 	/**
 	 * Sets the properties of this component.
+	 * 
 	 * @param properties a property object (of type T)
 	 */
 	public void setProperties(T properties) {
@@ -195,13 +205,12 @@ public class Component<T> {
 	
 	/**
 	 * Recursively locates the root of the tree that contains this component,
-	 * returning the first ancestor node that has no parent, which my be this
-	 * node itself. 
-	 * The {@link #shortcut} field is used to quickly move up to nodes closer to
-	 * the root. The {@link #shortcut} field is updated "on the way back", i.e.,
-	 * by the unwinding recursion.
+	 * returning the first ancestor node that has no parent, which my be this node
+	 * itself. The {@link #shortcut} field is used to quickly move up to nodes
+	 * closer to the root. The {@link #shortcut} field is updated "on the way back",
+	 * i.e., by the unwinding recursion.
 	 * 
-	 * @return the root of the sub-tree containing this component 
+	 * @return the root of the sub-tree containing this component
 	 */
 	Component<T> findRoot() {
 		if (this.isRoot()) {
@@ -214,7 +223,9 @@ public class Component<T> {
 	}
 	
 	/**
-	 * Returns {@code true} if this component is the root of the associated {@link ComponentTree}.
+	 * Returns {@code true} if this component is the root of the associated
+	 * {@link ComponentTree}.
+	 * 
 	 * @return {@code true} if this component is the root
 	 */
 	public boolean isRoot() {	// TODO: change/clean/check!
@@ -223,6 +234,7 @@ public class Component<T> {
 	
 	/**
 	 * Returns {@code true} if this component represents an extremal region.
+	 * 
 	 * @return {@code true} if the component is extremal
 	 */
 	public boolean isExtremal() {
@@ -251,8 +263,8 @@ public class Component<T> {
 	
 	
 	/**
-	 * Sorts a list of Components by (decreasing) component size, i.e.,
-	 * the largest component (with the most pixels) becomes the first.
+	 * Sorts a list of Components by (decreasing) component size, i.e., the largest
+	 * component (with the most pixels) becomes the first.
 	 * 
 	 * @param components a list of {@link Component} instances
 	 */
@@ -267,8 +279,8 @@ public class Component<T> {
 	}
 	
 	/**
-	 * Sorts a list of Components by (increasing) component level, i.e.,
-	 * the component with the lowest level becomes the first.
+	 * Sorts a list of Components by (increasing) component level, i.e., the
+	 * component with the lowest level becomes the first.
 	 * 
 	 * @param components a list of {@link Component} instances
 	 */
@@ -284,21 +296,6 @@ public class Component<T> {
 	
 
 	// ---------------------------
-	
-//	public void printToStream(PrintStream strm) {
-//		strm.format("Component %d(%d): size=%d locPts=%d chldPts=%d allPts=%d parent=%s shortcut=%s children=%s extrml=%b", 
-//				this.ID, this.level, 
-//				this.size,
-//				this.points.size(),
-//				this.getChildPoints().size(),
-//				this.getAllPoints().size(),
-//				(this.parent == null) ? "x" : (this.parent.ID + "(" + this.parent.level + ")"),
-//				(this.shortcut == null) ? "x" : (this.shortcut.ID + "(" + this.shortcut.level + ")"),
-//				//this.findRoot().ID,
-//				this.listChildIds(),
-//				this.isExtremal()
-//				);
-//	}
 	
 	void printToStream(PrintStream strm) {
 		strm.format("Component %d(%d): size=%d locPts=%d chldPts=%d allPts=%d parent=%s",
@@ -318,22 +315,5 @@ public class Component<T> {
 		this.printToStream(ps);
 		return os.toString();
 	}
-	
-//	public String toStringShort() {
-//		return String.format("%d(%d)", ID, level);
-//	}
-	
-
-	
-//	public String levelsToString() {
-//		int[] levels = new int[this.getSize()];
-//		int i = 0;
-//		for (Pixel p : this.points) {
-//			levels[i] = p.val;
-//			i++;
-//		}
-//		Arrays.sort(levels);
-//		return Arrays.toString(levels);
-//	}
 	
 }

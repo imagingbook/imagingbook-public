@@ -33,6 +33,9 @@ import imagingbook.common.mser.components.Component;
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
+ * @author WB
+ * @version 2022/11/19
+ * 
  * @see AffineMapping2D
  * @see ImageMapper
  */

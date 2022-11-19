@@ -19,6 +19,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
  * TODO: Bring in line with binary region neighborhoods (type).
  * 
  * @author WB
+ * @version 2022/11/19
  */
 public class PixelMap {
 	

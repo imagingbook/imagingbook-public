@@ -16,6 +16,7 @@ import imagingbook.common.color.sets.ColorEnumeration;
 /**
  * Color definitions used in MSER demo plugins.
  * @author WB
+ * @version 2022/11/19
  *
  */
 public enum MserColor implements ColorEnumeration {
@@ -29,7 +30,7 @@ public enum MserColor implements ColorEnumeration {
 	Cyan(0x00, 0xc6, 0xFF),
 	;
 
-	public static Color[] LevelColors = 
+	public static final Color[] LevelColors = 
 		{Red.getColor(), Green.getColor(), Blue.getColor(), Magenta.getColor()}; // same as SIFT
 	
 	private final Color color;

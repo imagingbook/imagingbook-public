@@ -35,6 +35,7 @@ import imagingbook.common.util.ParameterBundle;
  * </p>
  * 
  * @author WB
+ * @version 2022/11/19
  */
 public class MserDetector {
 

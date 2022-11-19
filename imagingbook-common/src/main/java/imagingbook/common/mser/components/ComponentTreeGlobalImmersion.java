@@ -39,6 +39,7 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
  * </p>
  * 
  * @author WB
+ * @version 2022/11/19
  *
  * @param <T> the type of properties to be attached to components
  */

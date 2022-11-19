@@ -22,7 +22,10 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
 
 /**
  * Abstract class representing a tree of extremal image components.
+ * 
  * @param <T> the data type of components (e.g., {@link MserData})
+ * @author WB
+ * @version 2022/11/19
  */
 public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
@@ -42,10 +45,11 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	}
 	
 	/**
-	 * Creates a new component tree for the specified image using the
-	 * default method ({@link Method#LinearTime}).
+	 * Creates a new component tree for the specified image using the default method
+	 * ({@link Method#LinearTime}).
+	 * 
 	 * @param <T> the generic node type
-	 * @param ip the input image
+	 * @param ip  the input image
 	 * @return the component tree for the specified image
 	 */
 	public static <T> ComponentTree<T> from(ByteProcessor ip) {
@@ -54,8 +58,9 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
 	/**
 	 * Creates a new component tree for the specified image.
-	 * @param <T> the data type of components (e.g., {@link MserData})
-	 * @param ip the input (gray-level) image
+	 * 
+	 * @param <T>    the data type of components (e.g., {@link MserData})
+	 * @param ip     the input (gray-level) image
 	 * @param method the method for building the component tree
 	 * @return the component tree
 	 */
@@ -65,8 +70,9 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
 	/**
 	 * Creates a new component tree for the specified {@link PixelMap}.
-	 * @param <T> the data type of components (e.g., {@link MserData})
-	 * @param pm a {@link PixelMap} instance
+	 * 
+	 * @param <T>    the data type of components (e.g., {@link MserData})
+	 * @param pm     a {@link PixelMap} instance
 	 * @param method the method for building the component tree
 	 * @return the component tree
 	 */
@@ -82,12 +88,14 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 
 	/**
 	 * Returns the root component of this component tree.
+	 * 
 	 * @return the root component
 	 */
 	public abstract Component<T> getRoot();
 
 	/**
 	 * Returns an unordered collection of all tree components.
+	 * 
 	 * @return all tree components
 	 */
 	public abstract Collection<Component<T>> getComponents();
@@ -98,8 +106,9 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	}
 	
 	/**
-	 * Finds and returns a collection of all leaf components of this tree.
-	 * A leaf is a component which has no children.
+	 * Finds and returns a collection of all leaf components of this tree. A leaf is
+	 * a component which has no children.
+	 * 
 	 * @return all leaf components
 	 */
 	public Collection<Component<T>> getLeaves() {
@@ -116,6 +125,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
 	/**
 	 * Performs integrity checks on this component tree.
+	 * 
 	 * @return true iff all checks are passed
 	 */
 	public boolean validate() {
@@ -146,10 +156,10 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 		return true;
 	}
 	
-	
 	/**
-	 * Checks if all tree nodes reachable through root are contained in components list
-	 * and the tree has no duplicate nodes (and no cycles).
+	 * Checks if all tree nodes reachable through root are contained in components
+	 * list and the tree has no duplicate nodes (and no cycles).
+	 * 
 	 * @return true iff OK
 	 */
 	boolean checkNodes() {
@@ -184,6 +194,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 
 	/**
 	 * Checks if all parent relations are consistent.
+	 * 
 	 * @return true iff OK
 	 */
 	boolean checkParents() {
@@ -213,6 +224,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
 	/**
 	 * Checks if all child relations are consistent.
+	 * 
 	 * @return true iff OK
 	 */
 	boolean checkChildren() {
@@ -234,8 +246,10 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 		}
 		return true;
 	}
-	/** 
+	
+	/**
 	 * Checks if the tree has a unique root.
+	 * 
 	 * @return true iff OK
 	 */
 	boolean checkRoot() {
@@ -260,6 +274,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
 	/**
 	 * Checks if all local pixels of have the same value as {@link #level}.
+	 * 
 	 * @return true iff OK
 	 */
 	boolean checkLevels() {
@@ -287,8 +302,9 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	}
 	
 	/**
-	 * Checks if the size of each component is the same as the number of
-	 * local pixels plus the combined size of all children.
+	 * Checks if the size of each component is the same as the number of local
+	 * pixels plus the combined size of all children.
+	 * 
 	 * @return true iff OK
 	 */
 	boolean checkSize() {

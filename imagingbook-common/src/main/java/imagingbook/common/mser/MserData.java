@@ -19,6 +19,9 @@ import imagingbook.common.mser.components.Component;
  * Defines a container holding the data for calculating MSER properties.
  * Instances of this type are attached to {@link Component} objects during
  * MSER calculation in {@link MserDetector}.
+ * 
+ * @author WB
+ * @version 2022/11/19
  */
 public class MserData {
 	
