@@ -15,9 +15,17 @@ import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic;
 import imagingbook.common.geometry.fitting.circle.algebraic.CircleFitHyperSimple;
 
 /**
- * RANSAC detector for circles.
+ * <p>
+ * RANSAC detector for circles. See Sec. 12.1.4 of [1] for additional
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
+ * @version 2022/11/19
  * 
  * @see GeometricCircle
  * @see RansacDetector

@@ -24,6 +24,7 @@ import imagingbook.common.util.ParameterBundle;
  * functionality used by all derived (concrete) classes.
  * 
  * @author WB
+ * @version 2022/11/19
  * 
  * @see RansacLineDetector
  * @see RansacCircleDetector

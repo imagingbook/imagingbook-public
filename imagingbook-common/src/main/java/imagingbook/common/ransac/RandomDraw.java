@@ -13,13 +13,14 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * An instance of this class randomly draws a set of k unique, non-null elements 
- * from a given array of element type T, which may contain null elements
- * (see method {@link #drawFrom(Object[], int)}).
- * The size of the draw (k) is fixed and must be specified at construction.
- * The resulting sets contain no duplicate elements.
+ * An instance of this class randomly draws a set of k unique, non-null elements
+ * from a given array of element type T, which may contain null elements (see
+ * method {@link #drawFrom(Object[], int)}). The size of the draw (k) is fixed
+ * and must be specified at construction. The resulting sets contain no
+ * duplicate elements.
  * 
  * @author WB
+ * @version 2022/11/19
  *
  * @param <T> element type
  */

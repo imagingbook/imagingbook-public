@@ -11,16 +11,23 @@ package imagingbook.common.ransac;
 import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
 
-
 /**
- * Represents a single detection result returned by an implementation of 
- * {@link RansacDetector}.
+ * Represents a single detection result returned by an implementation of
+ * {@link RansacDetector}. Implements the {@link Comparable} interface for
+ * sorting by detection score. See Sec. 12.1 of [1] for additional
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
+ * @version 2022/11/19
  *
  * @param <T> generic primitive type
  */
-public class RansacResult<T extends Primitive2d> {
+public class RansacResult<T extends Primitive2d> implements Comparable<RansacResult<T>> {
 	
 	private final T primitiveInit;
 	private final T primitiveFinal;
@@ -80,6 +87,7 @@ public class RansacResult<T extends Primitive2d> {
 	
 	// ---------------------------------------------------------------------------
 	
+	@Override
 	public int compareTo(RansacResult<T> other) {
 		return Double.compare(other.score, this.score);
 	}
