@@ -13,9 +13,9 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 /**
- * Common interface for eigendecompositions capable of
- * delivering solutions when all eigenvalues are real.
- *  
+ * Common interface for eigendecompositions capable of delivering solutions when
+ * all eigenvalues are real.
+ * 
  * @author WB
  * @version 2022/07/08
  */

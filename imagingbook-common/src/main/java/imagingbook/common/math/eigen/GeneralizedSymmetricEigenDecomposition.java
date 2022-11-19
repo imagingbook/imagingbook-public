@@ -22,16 +22,20 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 /**
- * Solves the generalized symmetric eigenproblem of the form A x = &lambda; B x,
- * where matrices A, B are symmetric and B is positive definite
- * (see Sec. 11.0.5. of [1]).
- * The methods defined by this class are analogous to the conventional
- * eigendecomposition (see {@link EigenDecomposition}).
- * 
  * <p>
- * [1] Press, Teukolsky, Vetterling, Flannery:
- * "Numerical Recipes". Cambridge University Press, 3rd ed. (2007).
+ * Solves the generalized symmetric eigenproblem of the form A x = &lambda; B x,
+ * where matrices A, B are symmetric and B is positive definite (see Sec.
+ * 11.0.5. of [1]). See Appendix Sec. B.5.2 of [2] for more details. The methods
+ * defined by this class are analogous to the conventional eigendecomposition
+ * (see {@link EigenDecomposition}).
  * </p>
+ * <p>
+ * [1] Press, Teukolsky, Vetterling, Flannery: "Numerical Recipes". Cambridge
+ * University Press, 3rd ed. (2007). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
  * @see GeneralizedEigenDecomposition
  * @see EigenDecompositionJama
  * @author WB

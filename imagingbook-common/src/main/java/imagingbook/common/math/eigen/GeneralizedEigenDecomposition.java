@@ -19,32 +19,32 @@ import imagingbook.common.math.Matrix;
 
 /**
  * <p>
- * Solves the generalized eigenproblem of the form A x = &lambda; B x,
- * for square matrices A, B.
+ * Solves the generalized eigenproblem of the form A x = &lambda; B x, for
+ * square matrices A, B.
  * </p>
  * <p>
- * This implementation was ported from original EISPACK code [1] using
- * a finite state machine concept [2] to untangle Fortran's GOTO
- * statements (which are not available in Java), with some inspirations from this
- * <a href="https://github.com/accord-net/framework/blob/development/Sources/Accord.Math/Decompositions/GeneralizedEigenvalueDecomposition.cs">
- * C# implementation</a>.
- * See 
- * <a href="https://mipav.cit.nih.gov/">mipav.cit.nih.gov</a> 
- * (file {@code gov.nih.mipav.model.structures.jama.GeneralizedEigenvalue.java}) 
- * for another Java implementation based on EISPACK.
- * </p>
- * 
- * <p>
- * Note: Results have limited accuracy. For some reason the first eigenvalue/-vector (k=0) is reasonably
- * accurate, but the remaining ones are not. 
- * If matrices A, B are symmetric and B is positive definite, better use 
- * {@link GeneralizedSymmetricEigenDecomposition} instead, which is more accurate.
+ * This implementation was ported from original EISPACK code [1] using a finite
+ * state machine concept [2] to untangle Fortran's GOTO statements (which are
+ * not available in Java), with some inspirations from this <a href=
+ * "https://github.com/accord-net/framework/blob/development/Sources/Accord.Math/Decompositions/GeneralizedEigenvalueDecomposition.cs">
+ * C# implementation</a>. See
+ * <a href="https://mipav.cit.nih.gov/">mipav.cit.nih.gov</a> (file
+ * {@code gov.nih.mipav.model.structures.jama.GeneralizedEigenvalue.java}) for
+ * another Java implementation based on EISPACK.
  * </p>
  * 
  * <p>
- * [1] http://www.netlib.no/netlib/eispack/
- * <br>
- * [2] D. E. Knuth, "Structured Programming with Goto Statements", Computing Surveys, Vol. 6, No. 4 (1974).
+ * Note: Results have limited accuracy. For some reason the first
+ * eigenvalue/-vector (k=0) is reasonably accurate, but the remaining ones are
+ * not. If matrices A, B are symmetric and B is positive definite, better use
+ * {@link GeneralizedSymmetricEigenDecomposition} instead, which is more
+ * accurate.
+ * </p>
+ * 
+ * <p>
+ * [1] http://www.netlib.no/netlib/eispack/ <br>
+ * [2] D. E. Knuth, "Structured Programming with Goto Statements", Computing
+ * Surveys, Vol. 6, No. 4 (1974).
  *
  * @author WB
  * @version 2022/06/21
@@ -150,6 +150,7 @@ public class GeneralizedEigenDecomposition implements RealEigenDecomposition {
 	 * @param k index
 	 * @return the kth eigenvector
 	 */
+	@Override
 	public RealVector getEigenvector(int k) {
 		return MatrixUtils.createRealVector(Matrix.getColumn(Z, k));
 	}

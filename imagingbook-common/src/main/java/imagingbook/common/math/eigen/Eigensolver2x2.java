@@ -20,40 +20,42 @@ import imagingbook.common.math.Matrix;
 
 /**
  * <p>
- * Implements an efficient, closed form algorithm for calculating the real 
+ * Implements an efficient, closed form algorithm for calculating the real
  * eigenvalues (&lambda;) and eigenvectors (x) of a 2x2 matrix of the form
  * </p>
  * <pre>
  *   | a b |
- *   | c d | </pre>
+ *   | c d |
+ * </pre>
  * <p>
- * There are typically (but not always) two pairs of real-valued 
- * solutions 
- * &lang;&lambda;<sub>0</sub>, x<sub>0</sub>&rang;,
- * &lang;&lambda;<sub>1</sub>, x<sub>1</sub>&rang;
- * such that A&middot;x<sub>k</sub> = &lambda;<sub>k</sub>&middot;x<sub>k</sub>.
- * The resulting eigensystems are ordered such that
- * &lambda;<sub>0</sub> &ge; &lambda;<sub>1</sub>.
- * Eigenvectors are not normalized, i.e., no unit vectors
- * (any scalar multiple of an Eigenvector is an Eigenvector too).
- * Non-real eigenvalues are not handled.
- * Clients should call method {@link #isReal()} to check if the 
+ * There are typically (but not always) two pairs of real-valued solutions
+ * &lang;&lambda;<sub>0</sub>, x<sub>0</sub>&rang;, &lang;&lambda;<sub>1</sub>,
+ * x<sub>1</sub>&rang; such that A&middot;x<sub>k</sub> =
+ * &lambda;<sub>k</sub>&middot;x<sub>k</sub>. The resulting eigensystems are
+ * ordered such that &lambda;<sub>0</sub> &ge; &lambda;<sub>1</sub>.
+ * Eigenvectors are not normalized, i.e., no unit vectors (any scalar multiple
+ * of an Eigenvector is an Eigenvector too). Non-real eigenvalues are not
+ * handled. Clients should call method {@link #isReal()} to check if the
  * eigenvalue calculation was successful.
  * </p>
  * <p>
- * This implementation is inspired by Ch. 5 ("Consider the Lowly 2x2 Matrix") of [1].
- * Note that Blinn uses the notation 
- * x&middot;A = &lambda;&middot;x for the matrix-vector product (as common in computer graphics),
- * while this implementation uses 
- * A&middot;x = &lambda;&middot;x.
- * Thus x is treated as a column vector and matrix A is transposed (elements b/c are exchanged).
+ * This implementation is inspired by Ch. 5 ("Consider the Lowly 2x2 Matrix") of
+ * [1]. Note that Blinn uses the notation x&middot;A = &lambda;&middot;x for the
+ * matrix-vector product (as common in computer graphics), while this
+ * implementation uses A&middot;x = &lambda;&middot;x. Thus x is treated as a
+ * column vector and matrix A is transposed (elements b/c are exchanged). See
+ * Appendix Sec. B.5 of [2] for more details.
  * </p>
  * <p>
- * This implementation is considerably faster (ca. factor 5) than the general solution
- * available in {@link EigenDecompositionJama} (based on Apache Commons Math) for 2x2 matrices.
+ * This implementation is considerably faster (ca. factor 5) than the general
+ * solution available in {@link EigenDecompositionJama} (based on Apache Commons
+ * Math) for 2x2 matrices.
  * </p>
  * <p>
- * [1] Blinn, Jim: "Jim Blinn's Corner: Notation, Notation, Notation", Morgan Kaufmann (2002).
+ * [1] Blinn, Jim: "Jim Blinn's Corner: Notation, Notation, Notation", Morgan
+ * Kaufmann (2002). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

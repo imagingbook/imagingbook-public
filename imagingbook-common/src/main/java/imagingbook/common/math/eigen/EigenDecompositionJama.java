@@ -43,6 +43,13 @@ import imagingbook.common.math.exception.MaxIterationsExceededException;
  * V.times(D). The matrix V may be badly conditioned, or even singular, so the
  * validity of the equation A = V*D*inverse(V) depends upon V.cond().
  * </p>
+ * <p>
+ * See Appendix Sec. B.5 of [1] for more details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; 
+ * An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @version 2022/06/19
  */
