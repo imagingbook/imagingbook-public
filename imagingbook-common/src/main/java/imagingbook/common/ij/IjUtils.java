@@ -990,7 +990,6 @@ public abstract class IjUtils {
 		return absPath;
 	}
 	
-	
 	// ---------------------------------------------------------------
 	
 	/**
@@ -1015,9 +1014,8 @@ public abstract class IjUtils {
 	 * <p>
 	 * Example, checking if the current image is either 8-bit or 32-bit gray:
 	 * </p>
-	 * 
 	 * <pre>
-	 * if (checkCurrentImage(PlugInFilter.DOES_8G + PlugInFilter.DOES_32)) {
+	 * if (checkImageFlagsCurrent(PlugInFilter.DOES_8G + PlugInFilter.DOES_32)) {
 	 * 	// some action ...
 	 * }
 	 * </pre>
@@ -1025,10 +1023,10 @@ public abstract class IjUtils {
 	 * @param flags int-encoded binary flags
 	 * @return true if the current image is compatible
 	 * @see PlugInFilter
-	 * @see #checkImage(ImagePlus, int)
+	 * @see #checkImageFlags(ImagePlus, int)
 	 */
-	public static boolean checkCurrentImage(int flags) {
-		return checkImage(WindowManager.getCurrentImage(), flags);
+	public static boolean checkImageFlagsCurrent(int flags) {
+		return checkImageFlags(WindowManager.getCurrentImage(), flags);
 	}
 	
 	/**
@@ -1039,7 +1037,7 @@ public abstract class IjUtils {
 	 * </p>
 	 * <pre>
 	 * ImagePlus im = WindowManager.getCurrentImage(); // may be null
-	 * if (checkImage(im, PlugInFilter.DOES_8G + PlugInFilter.DOES_RGB)) {
+	 * if (checkImageFlags(im, PlugInFilter.DOES_8G + PlugInFilter.DOES_RGB)) {
 	 * 	// some action
 	 * }
 	 * </pre>
@@ -1049,13 +1047,28 @@ public abstract class IjUtils {
 	 * @return true if the image is compatible
 	 * @see PlugInFilter
 	 */
-	public static boolean checkImage(ImagePlus im, int flags) {
+	public static boolean checkImageFlags(ImagePlus im, int flags) {
+		// if no image is required, no more checks are needed:
 		if ((flags & PlugInFilter.NO_IMAGE_REQUIRED) != 0) {
 			return true;
 		}
+		// void if no active image or one without a processor:
 		if (im == null || im.getProcessor() == null) {
 			return false;
 		}
+		// check if the image type is compatible:
+		if (!checkImageType(im, flags)) {
+			return false;
+		}
+		// check if im is a stack, if required:
+		if (((flags & PlugInFilter.STACK_REQUIRED) != 0) && !im.hasImageStack()) {
+			return false;
+		}
+		// all checks passed:
+		return true;
+	}
+	
+	private static boolean checkImageType(ImagePlus im, int flags) {
 		switch (im.getType()) {
 		case ImagePlus.GRAY8:
 			return ((flags & PlugInFilter.DOES_8G) != 0);

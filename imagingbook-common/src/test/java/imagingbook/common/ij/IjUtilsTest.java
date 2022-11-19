@@ -19,6 +19,7 @@ import java.util.Random;
 import org.junit.Test;
 
 import ij.ImagePlus;
+import ij.gui.NewImage;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
@@ -411,56 +412,73 @@ public class IjUtilsTest {
 	@Test
 	public void testCheckImageNull() {
 		ImagePlus im = null;
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_8G));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_8C));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_16));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_32));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_RGB));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_ALL));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8G));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8C));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_16));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_32));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_RGB));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL + PlugInFilter.STACK_REQUIRED));
 	}
 	
 	@Test
 	public void testCheckImage8G() {
 		ImagePlus im = new ImagePlus(null, new ByteProcessor(10, 10));	
-		assertTrue(IjUtils.checkImage(im, PlugInFilter.DOES_8G));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_8C));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_16));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_32));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_RGB));
-		assertTrue(IjUtils.checkImage(im, PlugInFilter.DOES_ALL));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8G));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8C));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_16));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_32));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_RGB));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL + PlugInFilter.STACK_REQUIRED));
 	}
 	
 	@Test
 	public void testCheckImage16() {
 		ImagePlus im = new ImagePlus(null, new ShortProcessor(10, 10));	
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_8G));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_8C));
-		assertTrue(IjUtils.checkImage(im, PlugInFilter.DOES_16));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_32));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_RGB));
-		assertTrue(IjUtils.checkImage(im, PlugInFilter.DOES_ALL));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8G));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8C));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_16));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_32));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_RGB));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL + PlugInFilter.STACK_REQUIRED));
 	}
 	
 	@Test
 	public void testCheckImage32() {
 		ImagePlus im = new ImagePlus(null, new FloatProcessor(10, 10));	
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_8G));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_8C));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_16));
-		assertTrue(IjUtils.checkImage(im, PlugInFilter.DOES_32));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_RGB));
-		assertTrue(IjUtils.checkImage(im, PlugInFilter.DOES_ALL));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8G));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8C));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_16));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_32));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_RGB));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL + PlugInFilter.STACK_REQUIRED));
 	}
 	
 	@Test
 	public void testCheckImageRGB() {
 		ImagePlus im = new ImagePlus(null, new ColorProcessor(10, 10));	
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_8G));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_8C));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_16));
-		assertFalse(IjUtils.checkImage(im, PlugInFilter.DOES_32));
-		assertTrue(IjUtils.checkImage(im, PlugInFilter.DOES_RGB));
-		assertTrue(IjUtils.checkImage(im, PlugInFilter.DOES_ALL));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8G));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8C));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_16));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_32));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_RGB));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL + PlugInFilter.STACK_REQUIRED));
+	}
+	
+	@Test
+	public void testCheckImageStack() {
+		ImagePlus im = NewImage.createByteImage("", 10, 10, 5, NewImage.FILL_RAMP);
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8G));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8C));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_16));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_32));
+		assertFalse(IjUtils.checkImageFlags(im, PlugInFilter.DOES_RGB));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_8G + PlugInFilter.STACK_REQUIRED));
+		assertTrue(IjUtils.checkImageFlags(im, PlugInFilter.DOES_ALL + PlugInFilter.STACK_REQUIRED));
 	}
 	
 	// ----------------------------------------------------------------
