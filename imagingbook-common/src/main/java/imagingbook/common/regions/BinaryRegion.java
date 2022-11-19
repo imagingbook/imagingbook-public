@@ -45,6 +45,9 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
  * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
+ * 
+ * @author WB
+ * @version 2020/12/21
  */
 public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d> {
 	

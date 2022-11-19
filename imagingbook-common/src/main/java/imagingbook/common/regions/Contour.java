@@ -19,11 +19,11 @@ import imagingbook.common.geometry.basic.Pnt2d;
 
 
 /**
- * This class represents a closed contour as a sequence of
- * pixel coordinates. It implements the {@link Comparable}
- * interface for sorting contours by length.
- * It supports iteration over the points along the contour, 
- * e.g., by
+ * <p>
+ * This class represents a closed contour as a sequence of pixel coordinates. It
+ * implements the {@link Comparable} interface for sorting contours by length.
+ * It supports iteration over the points along the contour, e.g., by
+ * </p>
  * <pre>
  * Contour C = ...;
  * for (Point p : C) {
@@ -31,6 +31,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
  * }
  * </pre>
  * 
+ * @author WB
  * @version 2020/12/21
  */
 public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {

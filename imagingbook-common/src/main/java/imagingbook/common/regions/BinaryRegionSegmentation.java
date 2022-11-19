@@ -21,16 +21,23 @@ import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 
 /**
- * Performs region segmentation on a given binary image. This class is abstract,
- * since the implementation depends on the concrete region segmentation
- * algorithm being used. Concrete implementations (subclasses of this class) are
+ * <p>
+ * Performs region segmentation on a given binary image. See Ch. 8 of [1] for
+ * additional details. This class is abstract, since the implementation depends
+ * on the concrete region segmentation algorithm being used. Concrete
+ * implementations (subclasses of this class) are
  * {@link BreadthFirstSegmentation}, {@link DepthFirstSegmentation},
  * {@link RecursiveSegmentation}, {@link SequentialSegmentation},
- * {@link RegionContourSegmentation}.
+ * {@link RegionContourSegmentation}. Most of the work is done by the
+ * constructor(s). If the segmentation has failed for some reason
+ * {@link #getRegions()} returns {@code null}.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
- * Most of the work is done by the constructor(s). If the segmentation has
- * failed for some reason {@link #getRegions()} returns {@code null}.
- * 
+ * @author WB
  * @version 2021/12/22
  */
 public abstract class BinaryRegionSegmentation {

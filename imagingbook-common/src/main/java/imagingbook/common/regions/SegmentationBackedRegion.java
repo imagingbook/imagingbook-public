@@ -23,6 +23,9 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
  * segmentation. A {@link SegmentationBackedRegion} instance does not have its
  * own list or array of contained pixel coordinates but refers to the label
  * array of the associated {@link BinaryRegionSegmentation} instance.
+ * 
+ * @author WB
+ * @version 2020/12/21
  */
 public class SegmentationBackedRegion extends BinaryRegion {
 
