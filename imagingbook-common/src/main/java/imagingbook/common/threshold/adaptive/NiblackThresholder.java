@@ -19,21 +19,24 @@ import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
- * This is an implementation of the adaptive thresholder proposed by Niblack in [1].
- * See Sec. 9.2.2 of [2] for a detailed description.
- * It comes in three different version, depending on the type of local support region:
+ * This is an implementation of the adaptive thresholder proposed by Niblack in
+ * [1]. See Sec. 9.2.2 of [2] for a detailed description. It comes in three
+ * different version, depending on the type of local support region:
  * </p>
  * <ul>
- * <li>{@link Box}: uses a rectangular (box-shaped) support region;</li> 
- * <li>{@link Disk}: uses a circular (disk-shaped) support region (see [2], Alg. 9.8);</li> 
- * <li>{@link Gauss}: uses a 2D isotropic Gaussian support region (see [2], Alg. 9.9 and Prog. 9.2).</li> 
+ * <li>{@link Box}: uses a rectangular (box-shaped) support region;</li>
+ * <li>{@link Disk}: uses a circular (disk-shaped) support region (see [2], Alg.
+ * 9.8);</li>
+ * <li>{@link Gauss}: uses a 2D isotropic Gaussian support region (see [2], Alg.
+ * 9.9 and Prog. 9.2).</li>
  * </ul>
- * Note that {@link NiblackThresholder} itself is abstract and thus cannot be instantiated.
+ * Note that {@link NiblackThresholder} itself is abstract and thus cannot be
+ * instantiated.
  * <p>
- * [1] W. Niblack. "An Introduction to Digital Image Processing". Prentice-Hall (1986).
- * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [1] W. Niblack. "An Introduction to Digital Image Processing". Prentice-Hall
+ * (1986). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

@@ -16,18 +16,16 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * 
- <p>
- * This is an implementation of the adaptive thresholder proposed by Sauvola and
- * Pietikäinen in [1]. See also Sec. 9.2 (Eq. 9.74) of [2].
+ * <p>
+ * This is an implementation of the adaptive thresholder proposed in [1]. See
+ * also Sec. 9.2 (Eq. 9.74) of [2].
  * </p>
  * <p>
- * [1] Adaptive thresholder as proposed in J. Sauvola and M. Pietikäinen, 
- * "Adaptive document image binarization", Pattern Recognition 33(2), 
- * 1135-1143 (2000).
- * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>
- *  3rd ed, Springer (2022).
+ * [1] Adaptive thresholder as proposed in J. Sauvola and M. Pietikäinen,
+ * "Adaptive document image binarization", Pattern Recognition 33(2), 1135-1143
+ * (2000). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em> 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

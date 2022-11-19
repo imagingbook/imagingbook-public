@@ -14,11 +14,12 @@ import imagingbook.common.threshold.Thresholder;
 
 /**
  * <p>
- * Common interface to be implemented by all adaptive (i.e., non-global) thresholders.
- * See Sec. 9.2 of [1] for an overview.
+ * Common interface to be implemented by all adaptive (i.e., non-global)
+ * thresholders. See Sec. 9.2 of [1] for an overview.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

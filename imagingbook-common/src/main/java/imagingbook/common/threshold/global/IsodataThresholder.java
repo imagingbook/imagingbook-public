@@ -11,14 +11,15 @@ package imagingbook.common.threshold.global;
 
 /**
  * <p>
- * This is an implementation of the global thresholder proposed by Ridler and Calvard [1].
- * See Sec. 9.1.3 (Alg. 9.3) of [2] for a detailed description.
+ * This is an implementation of the global thresholder proposed by Ridler and
+ * Calvard [1]. See Sec. 9.1.3 (Alg. 9.3) of [2] for a detailed description.
  * </p>
  * <p>
- * [1] T.W. Ridler, S. Calvard, Picture thresholding using an iterative selection method,
- * IEEE Transactions on Systems, Man and Cybernetics, SMC-8 (August 1978) 630-632.
- * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] T.W. Ridler, S. Calvard, Picture thresholding using an iterative
+ * selection method, IEEE Transactions on Systems, Man and Cybernetics, SMC-8
+ * (August 1978) 630-632. <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

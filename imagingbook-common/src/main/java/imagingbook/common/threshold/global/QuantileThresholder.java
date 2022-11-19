@@ -14,14 +14,14 @@ import imagingbook.common.histogram.HistogramUtils;
 /**
  * <p>
  * This is an implementation of the global "quantile" thresholder, described in
- * Sec. 9.1 (Alg. 9.1) of [1].
- * Requires the quantile (b) to be specified at instantiation.
- * Method {@link #getThreshold(int[])} returns a threshold that will put AT LEAST the
- * b-fraction of pixels (but not all pixels) in the background.
+ * Sec. 9.1 (Alg. 9.1) of [1]. Requires the quantile (b) to be specified at
+ * instantiation. Method {@link #getThreshold(int[])} returns a threshold that
+ * will put AT LEAST the b-fraction of pixels (but not all pixels) in the
+ * background.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
