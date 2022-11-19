@@ -1,6 +1,6 @@
 package Ch21_GeometricOperations;
 
-import java.awt.Color;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Path2D;
@@ -10,14 +10,14 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.ImageCanvas;
 import ij.gui.Overlay;
-import ij.gui.ShapeRoi;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.sets.CssColor;
+import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.mappings.Mapping2D;
-import imagingbook.common.geometry.mappings.nonlinear.LogPolarMapping1;
 import imagingbook.common.geometry.mappings.nonlinear.LogPolarMapping2;
+import imagingbook.common.ij.overlay.ColoredStroke;
+import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.image.ImageMapper;
 
 /**
@@ -37,30 +37,23 @@ import imagingbook.common.image.ImageMapper;
  * @author WB
  * @version 2022/11/16
  */
-public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener { // TODO: convert to ShapeOverlayAdapter, revise termination (escape)
+public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener {
 	
-	private enum MappingType {
-		Version1, // simple log-polar mapping with no rmin (maps [0, rmax] -> [0,nr])
-		Version2; // improved log-polar mapping with rmin (maps [rmin, rmax] -> [0,nr])
-	}
-	
-	private static boolean ShowSamplingGrid = true;	
-	private static MappingType MappingVersion = MappingType.Version1;	
 	private static int P = 60;		// number of radial steps
 	private static int Q = 100;		// number of angular steps
+	private double rmin, rmax;		// min/max radius (determined by image size)
 	
-	private static CssColor OverlayColorChoice = CssColor.DodgerBlue; //Color.green;
-	private static float OverlayStrokeWidth = 0.1f;
+	private static boolean ShowSamplingGrid = true;	
+	private static BasicAwtColor OverlayColorChoice = BasicAwtColor.Green;
+	private static float OverlayStrokeWidth = 0.2f;
 	
-	private double rmax, rmin;
 	private ImagePlus sourceIm;
 	private ImageCanvas sourceCv;
 	private ImageProcessor sourceIp;
 	private ImageProcessor targetIp;
 	private ImagePlus targetIm;	
 	private Mapping2D mapping;
-	private String sourceTitle;
-	private Color OverlayColor;
+	private String title;
 	
 	// -----------------------------------------------------------------
 
@@ -72,14 +65,13 @@ public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener { // T
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		rmax = ip.getWidth() / 2;
-		rmin = rmax / Math.exp(2 * Math.PI * (P - 1) / Q);
+		rmax = Math.hypot(ip.getWidth(), ip.getHeight()) / 3;
+		rmin = rmax / 75;
 		
 		if (!getUserInput()) {
 			return;
 		}
 		
-		this.OverlayColor = OverlayColorChoice.getColor();
 		this.sourceIp = ip;
 		this.targetIp = sourceIp.createProcessor(P, Q);
 		this.targetIm = new ImagePlus("Log Polar Image", targetIp);
@@ -87,8 +79,8 @@ public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener { // T
 		this.sourceCv.addMouseListener(this);
 		//sourceCv.addMouseMotionListener(this);
 		this.sourceIm.setOverlay(null);
-		this.sourceTitle = sourceIm.getTitle();
-		this.sourceIm.setTitle(sourceTitle + " [RUNNING]");
+		this.title = sourceIm.getTitle();
+		this.sourceIm.setTitle(title + " [RUNNING]");
 		this.sourceIm.updateAndRepaintWindow();
 		IJ.wait(100);
 	}
@@ -96,14 +88,7 @@ public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener { // T
 	// -----------------------------------------------------------------
 	
 	private void mapAndUpdate(double xc, double yc) {
-		switch(MappingVersion) {
-		case Version1:
-			mapping = new LogPolarMapping1(xc, yc, P, Q, rmax).getInverse();
-			break;
-		case Version2:
-			mapping = new LogPolarMapping2(xc, yc, P, Q, rmax, rmin).getInverse();
-			break;
-		}
+		this.mapping = new LogPolarMapping2(xc, yc, P, Q, rmax, rmin).getInverse();
 		new ImageMapper(mapping).map(sourceIp, targetIp);		
 		targetIm.show();
 		targetIm.updateAndDraw();
@@ -114,30 +99,29 @@ public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener { // T
 	}
 
 	void finish() {
-		sourceIm.setTitle(sourceTitle);
+		sourceIm.setTitle(title);
 		sourceCv.removeMouseListener(this);
 	}
 	
 	// --------- generate source grid overlay ---------------
 	
 	private Overlay getSupportRegionOverlay(double xc, double yc) {
-		Overlay oly = new Overlay();
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
+		ColoredStroke stroke = new ColoredStroke(OverlayStrokeWidth, OverlayColorChoice.getColor());
+		ola.setStroke(stroke);
+		
 		for (int i = 0; i < P; i++) {
-			ShapeRoi roi = makeCircle(xc, yc, i);
-			roi.setStrokeWidth(OverlayStrokeWidth);
-			roi.setStrokeColor(OverlayColor);
-			oly.add(roi);
-		}		
+			ola.addShape(makeCircle(xc, yc, i));
+		}	
 		for (int j = 0; j < Q; j++) {
-			ShapeRoi roi = makeSpoke(xc, yc, j);
-			roi.setStrokeWidth(OverlayStrokeWidth);
-			roi.setStrokeColor(OverlayColor);
-			oly.add(roi);
+			ola.addShape(makeSpoke(xc, yc, j));
 		}
-		return oly;
+		
+		return ola.getOverlay();
 	}
 	
-	private ShapeRoi makeCircle(double xc, double yc, int i) {
+	
+	private Shape makeCircle(double xc, double yc, int i) {
 		Path2D path = new Path2D.Double();
 		Pnt2d start = mapping.applyTo(Pnt2d.from(i, 0));
 		path.moveTo(start.getX(), start.getY());
@@ -145,16 +129,16 @@ public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener { // T
 			Pnt2d pnt = mapping.applyTo(Pnt2d.from(i, j % Q));
 			path.lineTo(pnt.getX(), pnt.getY());
 		}
-		return new ShapeRoi(path);
+		return path;
 	}
 	
-	private ShapeRoi makeSpoke(double xc, double yc, int j) {
+	private Shape makeSpoke(double xc, double yc, int j) {
 		Path2D path = new Path2D.Double();
 		Pnt2d outer = mapping.applyTo(Pnt2d.from(P - 1, j));
-		Pnt2d inner   = mapping.applyTo(Pnt2d.from(0, j));
+		Pnt2d inner = mapping.applyTo(Pnt2d.from(0, j));
 		path.moveTo(outer.getX(), outer.getY());
 		path.lineTo(inner.getX(), inner.getY());
-		return new ShapeRoi(path);
+		return path;
 	}
 	
 	// --------- mouse event handling --------------------
@@ -186,11 +170,10 @@ public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener { // T
 	
 	boolean getUserInput() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addEnumChoice("Mapping type", MappingVersion);
 		gd.addNumericField("Radial steps (P)", P, 0);
 		gd.addNumericField("Angular steps (Q) ", Q, 0);
-		gd.addNumericField("Max. radius (rmax)", rmax, 2);
-		gd.addNumericField("Min. radius (rmin)", rmin, 2);
+		gd.addNumericField("Max. radius (rmax)", rmax, 1);
+		gd.addNumericField("Min. radius (rmin)", rmin, 1);
 		gd.addCheckbox("Draw sampling grid", ShowSamplingGrid);
 		gd.addEnumChoice("Overlay color", OverlayColorChoice);
 		
@@ -202,13 +185,12 @@ public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener { // T
 			return false;
 		}
 		
-		MappingVersion = gd.getNextEnumChoice(MappingType.class);
 		P = (int) gd.getNextNumber();
 		Q = (int) gd.getNextNumber();
 		rmax = gd.getNextNumber();
 		rmin = gd.getNextNumber();
 		ShowSamplingGrid = gd.getNextBoolean();
-		OverlayColorChoice = gd.getNextEnumChoice(CssColor.class);
+		OverlayColorChoice = gd.getNextEnumChoice(BasicAwtColor.class);
 		return true;
 	}
 }
