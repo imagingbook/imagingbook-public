@@ -12,19 +12,24 @@ package imagingbook.common.noise.hashing;
 import java.util.Random;
 
 /**
- * This class is the abstract superclass of various hash functions. 
- * It cannot be instantiated directly, but its subclasses can. Two static 
- * methods {@code create()} and {@code create(seed)} are provided for convenience.
- * Typical use: <br><pre>
- *   HashFun hf = new HashFun.create(); // or, alternatively,
- *   HashFun hf = new Hash32Ward(seed);
- *   double g = hf.hash(u); // g is in [-1,+1]
- *   double g = hf.hash(u,v);
- *   double[] g = hf.hash(u,v,w); </pre>
- * Omit seed in the constructor call to get a random seed 
- * hash function of the specified type.
+ * <p>
+ * Abstract superclass of various hash functions. It cannot be
+ * instantiated directly, but its subclasses can. Two static methods
+ * {@code create()} and {@code create(seed)} are provided for convenience.
+ * Typical use:
+ * </p>
+ * <pre>
+ * HashFun hf = new HashFun.create(); // or, alternatively,
+ * HashFun hf = new Hash32Ward(seed);
+ * double g = hf.hash(u); // g is in [-1,+1]
+ * double g = hf.hash(u, v);
+ * double[] g = hf.hash(u, v, w);
+ * </pre>
+ * <p>
+ * Omit seed in the constructor call to get a random seed hash function of the
+ * specified type.
+ * </p>
  */
-
 public abstract class HashFun {
 	
 	private static final Random rand = new Random();
