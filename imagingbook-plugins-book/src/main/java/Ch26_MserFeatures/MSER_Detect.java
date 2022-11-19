@@ -30,12 +30,12 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.ij.GuiTools;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.common.mser.MserColor;
 import imagingbook.common.mser.MserData;
 import imagingbook.common.mser.MserDetector;
 import imagingbook.common.mser.MserDetector.Parameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.common.mser.visualize.MserColor;
 
 /**
  * Runs MSER detection on the current image and produces a color image

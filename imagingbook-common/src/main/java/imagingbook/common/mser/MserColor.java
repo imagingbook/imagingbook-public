@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.mser.visualize;
+package imagingbook.common.mser;
 
 import java.awt.Color;
 
