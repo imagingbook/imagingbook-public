@@ -17,15 +17,14 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 /**
  * <p>
  * Implements a binary morphological thinning or "skeletonization" operation,
- * based on the algorithm by Zhang and Suen [1].
- * See Sec. 7.4 (Alg. 7.2-7.3) of [2] for additional details.
+ * based on the algorithm by Zhang and Suen [1]. See Sec. 7.4 (Alg. 7.2-7.3) of
+ * [2] for additional details.
  * </p>
  * <p>
  * [1] T. Y. Zhang and C. Y. Suen. A fast parallel algorithm for thinning
- * digital patterns. Communications of the ACM 27(3), 236–239 (1984).
- * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * digital patterns. Communications of the ACM 27(3), 236–239 (1984). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

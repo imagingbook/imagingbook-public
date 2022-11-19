@@ -10,9 +10,9 @@ package imagingbook.common.morphology;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-/** 
- * This class defines static methods related to binary
- * structuring elements (kernels).
+/**
+ * This class defines static methods related to binary structuring elements
+ * (kernels).
  * 
  * @author WB
  *

@@ -35,9 +35,9 @@ public abstract class BinaryMorphologyFilter implements BinaryMorphologyOperator
 	
 	/**
 	 * Returns the structuring element (kernel H) for this morphological filter.
-	 * Note that the structuring element is a 2D {@code byte} array structured in the 
-	 * form {@code H[y][x]}.
-	 * A reference to the internal array is returned, i.e., no copy is made.
+	 * Note that the structuring element is a 2D {@code byte} array structured in
+	 * the form {@code H[y][x]}. A reference to the internal array is returned,
+	 * i.e., no copy is made.
 	 * 
 	 * @return the structuring element
 	 */

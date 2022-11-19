@@ -14,12 +14,12 @@ import ij.process.ByteProcessor;
 
 /**
  * <p>
- * Implements a binary morphological dilation operation.
- * See Sec. 7.2.3 of [1] for additional details.
+ * Implements a binary morphological dilation operation. See Sec. 7.2.3 of [1]
+ * for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
@@ -28,14 +28,17 @@ import ij.process.ByteProcessor;
 public class BinaryDilation extends BinaryMorphologyFilter {
 	
 	/**
-	 * Constructor, creates a {@link BinaryDilation} with a 3x3 box structuring element by default.
+	 * Constructor, creates a {@link BinaryDilation} with a 3x3 box structuring
+	 * element by default.
 	 */
 	public BinaryDilation() {
 		super();
 	}
 	
 	/**
-	 * Constructor, creates a {@link BinaryDilation} with the specified structuring element.
+	 * Constructor, creates a {@link BinaryDilation} with the specified structuring
+	 * element.
+	 * 
 	 * @param H the structuring element
 	 */
 	public BinaryDilation(byte[][] H) {
