@@ -14,9 +14,8 @@ package imagingbook.common.math.exception;
  * @author WB
  *
  */
+@SuppressWarnings("serial")
 public class MaxIterationsExceededException extends RuntimeException {
-
-	private static final long serialVersionUID = 1L;
 	
 	public MaxIterationsExceededException(int maxIterations) {
 		super(String.format("max. number of iterations (%d) exceeded", maxIterations));

@@ -29,19 +29,20 @@ import org.apache.commons.math3.linear.SingularMatrixException;
 import imagingbook.common.math.exception.DivideByZeroException;
 
 /**
- * <p>This class defines a set of static methods for calculations
- * with vectors and matrices using native Java arrays without any enclosing 
- * object structures. 
- * Matrices are simple two-dimensional arrays {@code A[r][c]}, where {@code r} is the 
- * (vertical) <strong>row</strong> index
- * and {@code c} is the (horizontal) <strong>column</strong> index (as common in linear algebra). 
- * This means that matrices are really vectors of row vectors.
- * Only arrays of type {@code float} and {@code double} are supported.
- * All matrices are assumed to be rectangular (i.e., all rows are of equal length).
+ * <p>
+ * This class defines a set of static methods for calculations with vectors and
+ * matrices using native Java arrays without any enclosing object structures.
+ * Matrices are simple two-dimensional arrays {@code A[r][c]}, where {@code r}
+ * is the (vertical) <strong>row</strong> index and {@code c} is the
+ * (horizontal) <strong>column</strong> index (as common in linear algebra).
+ * This means that matrices are really vectors of row vectors. Only arrays of
+ * type {@code float} and {@code double} are supported. All matrices are assumed
+ * to be rectangular (i.e., all rows are of equal length).
  * </p>
  * <p>
- * Note: Methods named with a trailing '{@code D}' (e.g., {@link #multiplyD(double, double[])}) 
- * operate destructively, i.e., modify one of the supplied arguments.
+ * Note: Methods named with a trailing '{@code D}' (e.g.,
+ * {@link #multiplyD(double, double[])}) operate destructively, i.e., modify one
+ * of the supplied arguments.
  * </p>
  * 
  * @author WB
@@ -51,8 +52,6 @@ import imagingbook.common.math.exception.DivideByZeroException;
 public abstract class Matrix {
 	
 	private Matrix() {}
-	
-	// TODO: check if these variables should be public and non-final
 	
 	/** Locale used for printing decimal numbers by {@code toString()} methods. */
 	public static Locale PrintLocale = Locale.US;

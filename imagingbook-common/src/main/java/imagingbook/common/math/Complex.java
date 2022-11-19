@@ -15,12 +15,18 @@ import static imagingbook.common.math.Arithmetic.sqr;
 import java.util.Locale;
 
 /**
- * This class represents complex numbers. All instances are immutable.
- * Methods are mostly defined to be compatible with 
+ * <p>
+ * This class represents complex numbers. All instances are immutable. Methods
+ * are mostly defined to be compatible with
  * org.apache.commons.math3.complex.Complex and (newer)
- * org.apache.commons.numbers.complex.Complex.
- * Arithmetic operations are generally more precise than with the
- * Apache implementation.
+ * org.apache.commons.numbers.complex.Complex. Arithmetic operations are
+ * generally more precise than with the Apache implementation. See also Appendix
+ * Sec. A.5 of [1].
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/07/05

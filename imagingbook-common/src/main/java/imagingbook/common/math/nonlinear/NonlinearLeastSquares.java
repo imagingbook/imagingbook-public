@@ -23,14 +23,15 @@ import org.apache.commons.math3.optim.SimpleVectorValueChecker;
 
 /**
  * <p>
- * This class defines static methods for simplified access to nonlinear least-squares
- * solvers in Apache Commons Math, hiding much of the available configuration options.
- * If other than default settings are needed, the original (Apache Commons Math) 
- * API should be used.
- * See the Appendix C of [1] for additional details and examples.
+ * This class defines static methods for simplified access to nonlinear
+ * least-squares solvers in Apache Commons Math, hiding much of the available
+ * configuration options. If other than default settings are needed, the
+ * original (Apache Commons Math) API should be used. See the Appendix C of [1]
+ * for additional details and examples.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB

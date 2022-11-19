@@ -18,7 +18,7 @@ import static org.apache.commons.math3.util.FastMath.hypot;
 import static org.apache.commons.math3.util.FastMath.sin;
 
 /**
- * This class defines various static methods implementing arithmetic operations and predicates.
+ * This class defines static methods implementing arithmetic operations and predicates.
  * 
  * @author WB
  *
@@ -29,9 +29,9 @@ public abstract class Arithmetic {
 	
 	// machine accuracy for IEEE 754 float/double;
 	/** Default tolerance used for comparing {@code float} quantities. */
-	public static final float EPSILON_FLOAT 	= 1e-7f;	// 1.19 x 10^-7
+	public static final float EPSILON_FLOAT = 1e-7f;	// 1.19 x 10^-7
 	/** Default tolerance used for comparing {@code double} quantities. */
-	public static final double EPSILON_DOUBLE 	= 2e-16;	// 2.22 x 10^-16
+	public static final double EPSILON_DOUBLE = 2e-16;	// 2.22 x 10^-16
 
 	/**
 	 * Returns the square of its argument.

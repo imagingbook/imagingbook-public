@@ -15,8 +15,9 @@ package imagingbook.common.math.exception;
  * @author WB
  *
  */
+@SuppressWarnings("serial")
 public class DivideByZeroException extends ArithmeticException {
-	private static final long serialVersionUID = 1L;
+
 	private static String DefaultMessage = "zero denominator in division";
 	
 	public DivideByZeroException() {
