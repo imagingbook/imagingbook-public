@@ -13,6 +13,21 @@ import ij.process.ImageProcessor;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 public class ZipCompressorTest {
+	
+	@Test
+	public void test0() {
+		String inputText = "some really foolish text 12345 $%§&";
+//		System.out.println("input=\"" + inputText + "\"");
+		
+		ZipCompressor compr = new ZipCompressor();
+		byte[] compressed = compr.compressByteArray(inputText.getBytes());
+//		System.out.println("compressed=\"" + new String(compressed) + "\" + length=" + compressed.length);
+
+		byte[] decompressed = compr.decompressByteArray(compressed);
+		String outputText = new String(decompressed);
+//		System.out.println("decompressed=\"" + outputText + "\"");
+		assertEquals(inputText, outputText);
+	}
 
 	@Test	// random byte[]
 	public void test1() {

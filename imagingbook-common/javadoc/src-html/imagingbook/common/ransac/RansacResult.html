@@ -18,83 +18,92 @@
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9">package imagingbook.common.ransac;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
-<span class="sourceLineNo">011</span><a id="line.11">import imagingbook.common.geometry.basic.Primitive2d;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import imagingbook.common.geometry.basic.Pnt2d;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import imagingbook.common.geometry.basic.Primitive2d;</a>
 <span class="sourceLineNo">013</span><a id="line.13"></a>
-<span class="sourceLineNo">014</span><a id="line.14"></a>
-<span class="sourceLineNo">015</span><a id="line.15">/**</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * Represents a single detection result returned by an implementation of </a>
-<span class="sourceLineNo">017</span><a id="line.17"> * {@link RansacDetector}.</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * </a>
-<span class="sourceLineNo">019</span><a id="line.19"> * @author WB</a>
-<span class="sourceLineNo">020</span><a id="line.20"> *</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * @param &lt;T&gt; generic primitive type</a>
-<span class="sourceLineNo">022</span><a id="line.22"> */</a>
-<span class="sourceLineNo">023</span><a id="line.23">public class RansacResult&lt;T extends Primitive2d&gt; {</a>
-<span class="sourceLineNo">024</span><a id="line.24">        </a>
-<span class="sourceLineNo">025</span><a id="line.25">        private final T primitiveInit;</a>
-<span class="sourceLineNo">026</span><a id="line.26">        private final T primitiveFinal;</a>
-<span class="sourceLineNo">027</span><a id="line.27">        private final double score;</a>
-<span class="sourceLineNo">028</span><a id="line.28">        private final Pnt2d[] draw;</a>
-<span class="sourceLineNo">029</span><a id="line.29">        private final Pnt2d[] inliers;</a>
-<span class="sourceLineNo">030</span><a id="line.30">        </a>
-<span class="sourceLineNo">031</span><a id="line.31">        // full constructor (initially inliers = null)</a>
-<span class="sourceLineNo">032</span><a id="line.32">        public RansacResult(Pnt2d[] draw, T primitiveInit, T primitiveFinal, double score, Pnt2d[] inliers) {</a>
-<span class="sourceLineNo">033</span><a id="line.33">                this.primitiveInit = primitiveInit;</a>
-<span class="sourceLineNo">034</span><a id="line.34">                this.primitiveFinal = primitiveFinal;</a>
-<span class="sourceLineNo">035</span><a id="line.35">                this.score = score;</a>
-<span class="sourceLineNo">036</span><a id="line.36">                this.draw = draw;</a>
-<span class="sourceLineNo">037</span><a id="line.37">                this.inliers = inliers;</a>
-<span class="sourceLineNo">038</span><a id="line.38">        }</a>
-<span class="sourceLineNo">039</span><a id="line.39">        </a>
-<span class="sourceLineNo">040</span><a id="line.40">        /**</a>
-<span class="sourceLineNo">041</span><a id="line.41">         * Returns the initial primitive (e.g., a circle) obtained from the randomly </a>
-<span class="sourceLineNo">042</span><a id="line.42">         * drawn points.</a>
-<span class="sourceLineNo">043</span><a id="line.43">         * @return the initial primitive</a>
-<span class="sourceLineNo">044</span><a id="line.44">         */</a>
-<span class="sourceLineNo">045</span><a id="line.45">        public T getPrimitiveInit() {</a>
-<span class="sourceLineNo">046</span><a id="line.46">                return primitiveInit;</a>
-<span class="sourceLineNo">047</span><a id="line.47">        }</a>
-<span class="sourceLineNo">048</span><a id="line.48">        </a>
-<span class="sourceLineNo">049</span><a id="line.49">        /**</a>
-<span class="sourceLineNo">050</span><a id="line.50">         * Returns the final primitive obtained by fitting to all inlier points.</a>
-<span class="sourceLineNo">051</span><a id="line.51">         * @return the final primitive</a>
+<span class="sourceLineNo">014</span><a id="line.14">/**</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * &lt;p&gt;</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * Represents a single detection result returned by an implementation of</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * {@link RansacDetector}. Implements the {@link Comparable} interface for</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * sorting by detection score. See Sec. 12.1 of [1] for additional</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * details.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * &lt;p&gt;</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * </a>
+<span class="sourceLineNo">026</span><a id="line.26"> * @author WB</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * @version 2022/11/19</a>
+<span class="sourceLineNo">028</span><a id="line.28"> *</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * @param &lt;T&gt; generic primitive type</a>
+<span class="sourceLineNo">030</span><a id="line.30"> */</a>
+<span class="sourceLineNo">031</span><a id="line.31">public class RansacResult&lt;T extends Primitive2d&gt; implements Comparable&lt;RansacResult&lt;T&gt;&gt; {</a>
+<span class="sourceLineNo">032</span><a id="line.32">        </a>
+<span class="sourceLineNo">033</span><a id="line.33">        private final T primitiveInit;</a>
+<span class="sourceLineNo">034</span><a id="line.34">        private final T primitiveFinal;</a>
+<span class="sourceLineNo">035</span><a id="line.35">        private final double score;</a>
+<span class="sourceLineNo">036</span><a id="line.36">        private final Pnt2d[] draw;</a>
+<span class="sourceLineNo">037</span><a id="line.37">        private final Pnt2d[] inliers;</a>
+<span class="sourceLineNo">038</span><a id="line.38">        </a>
+<span class="sourceLineNo">039</span><a id="line.39">        // full constructor (initially inliers = null)</a>
+<span class="sourceLineNo">040</span><a id="line.40">        public RansacResult(Pnt2d[] draw, T primitiveInit, T primitiveFinal, double score, Pnt2d[] inliers) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">                this.primitiveInit = primitiveInit;</a>
+<span class="sourceLineNo">042</span><a id="line.42">                this.primitiveFinal = primitiveFinal;</a>
+<span class="sourceLineNo">043</span><a id="line.43">                this.score = score;</a>
+<span class="sourceLineNo">044</span><a id="line.44">                this.draw = draw;</a>
+<span class="sourceLineNo">045</span><a id="line.45">                this.inliers = inliers;</a>
+<span class="sourceLineNo">046</span><a id="line.46">        }</a>
+<span class="sourceLineNo">047</span><a id="line.47">        </a>
+<span class="sourceLineNo">048</span><a id="line.48">        /**</a>
+<span class="sourceLineNo">049</span><a id="line.49">         * Returns the initial primitive (e.g., a circle) obtained from the randomly </a>
+<span class="sourceLineNo">050</span><a id="line.50">         * drawn points.</a>
+<span class="sourceLineNo">051</span><a id="line.51">         * @return the initial primitive</a>
 <span class="sourceLineNo">052</span><a id="line.52">         */</a>
-<span class="sourceLineNo">053</span><a id="line.53">        public T getPrimitiveFinal() {</a>
-<span class="sourceLineNo">054</span><a id="line.54">                return primitiveFinal;</a>
+<span class="sourceLineNo">053</span><a id="line.53">        public T getPrimitiveInit() {</a>
+<span class="sourceLineNo">054</span><a id="line.54">                return primitiveInit;</a>
 <span class="sourceLineNo">055</span><a id="line.55">        }</a>
 <span class="sourceLineNo">056</span><a id="line.56">        </a>
 <span class="sourceLineNo">057</span><a id="line.57">        /**</a>
-<span class="sourceLineNo">058</span><a id="line.58">         * Returns the score (number of inliers) associated with this result.</a>
-<span class="sourceLineNo">059</span><a id="line.59">         * @return the score</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * Returns the final primitive obtained by fitting to all inlier points.</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * @return the final primitive</a>
 <span class="sourceLineNo">060</span><a id="line.60">         */</a>
-<span class="sourceLineNo">061</span><a id="line.61">        public double getScore() {</a>
-<span class="sourceLineNo">062</span><a id="line.62">                return score;</a>
+<span class="sourceLineNo">061</span><a id="line.61">        public T getPrimitiveFinal() {</a>
+<span class="sourceLineNo">062</span><a id="line.62">                return primitiveFinal;</a>
 <span class="sourceLineNo">063</span><a id="line.63">        }</a>
-<span class="sourceLineNo">064</span><a id="line.64"></a>
+<span class="sourceLineNo">064</span><a id="line.64">        </a>
 <span class="sourceLineNo">065</span><a id="line.65">        /**</a>
-<span class="sourceLineNo">066</span><a id="line.66">         * Returns the randomly drawn points that lead to this result.</a>
-<span class="sourceLineNo">067</span><a id="line.67">         * @return array of points</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * Returns the score (number of inliers) associated with this result.</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * @return the score</a>
 <span class="sourceLineNo">068</span><a id="line.68">         */</a>
-<span class="sourceLineNo">069</span><a id="line.69">        public Pnt2d[] getDraw() {</a>
-<span class="sourceLineNo">070</span><a id="line.70">                return draw;</a>
+<span class="sourceLineNo">069</span><a id="line.69">        public double getScore() {</a>
+<span class="sourceLineNo">070</span><a id="line.70">                return score;</a>
 <span class="sourceLineNo">071</span><a id="line.71">        }</a>
-<span class="sourceLineNo">072</span><a id="line.72">        </a>
+<span class="sourceLineNo">072</span><a id="line.72"></a>
 <span class="sourceLineNo">073</span><a id="line.73">        /**</a>
-<span class="sourceLineNo">074</span><a id="line.74">         * Returns the set of inliers (points) associated with this result.</a>
+<span class="sourceLineNo">074</span><a id="line.74">         * Returns the randomly drawn points that lead to this result.</a>
 <span class="sourceLineNo">075</span><a id="line.75">         * @return array of points</a>
 <span class="sourceLineNo">076</span><a id="line.76">         */</a>
-<span class="sourceLineNo">077</span><a id="line.77">        public Pnt2d[] getInliers() {</a>
-<span class="sourceLineNo">078</span><a id="line.78">                return inliers;</a>
+<span class="sourceLineNo">077</span><a id="line.77">        public Pnt2d[] getDraw() {</a>
+<span class="sourceLineNo">078</span><a id="line.78">                return draw;</a>
 <span class="sourceLineNo">079</span><a id="line.79">        }</a>
 <span class="sourceLineNo">080</span><a id="line.80">        </a>
-<span class="sourceLineNo">081</span><a id="line.81">        // ---------------------------------------------------------------------------</a>
-<span class="sourceLineNo">082</span><a id="line.82">        </a>
-<span class="sourceLineNo">083</span><a id="line.83">        public int compareTo(RansacResult&lt;T&gt; other) {</a>
-<span class="sourceLineNo">084</span><a id="line.84">                return Double.compare(other.score, this.score);</a>
-<span class="sourceLineNo">085</span><a id="line.85">        }</a>
-<span class="sourceLineNo">086</span><a id="line.86"></a>
-<span class="sourceLineNo">087</span><a id="line.87">}</a>
+<span class="sourceLineNo">081</span><a id="line.81">        /**</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * Returns the set of inliers (points) associated with this result.</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * @return array of points</a>
+<span class="sourceLineNo">084</span><a id="line.84">         */</a>
+<span class="sourceLineNo">085</span><a id="line.85">        public Pnt2d[] getInliers() {</a>
+<span class="sourceLineNo">086</span><a id="line.86">                return inliers;</a>
+<span class="sourceLineNo">087</span><a id="line.87">        }</a>
+<span class="sourceLineNo">088</span><a id="line.88">        </a>
+<span class="sourceLineNo">089</span><a id="line.89">        // ---------------------------------------------------------------------------</a>
+<span class="sourceLineNo">090</span><a id="line.90">        </a>
+<span class="sourceLineNo">091</span><a id="line.91">        @Override</a>
+<span class="sourceLineNo">092</span><a id="line.92">        public int compareTo(RansacResult&lt;T&gt; other) {</a>
+<span class="sourceLineNo">093</span><a id="line.93">                return Double.compare(other.score, this.score);</a>
+<span class="sourceLineNo">094</span><a id="line.94">        }</a>
+<span class="sourceLineNo">095</span><a id="line.95"></a>
+<span class="sourceLineNo">096</span><a id="line.96">}</a>
 
 
 

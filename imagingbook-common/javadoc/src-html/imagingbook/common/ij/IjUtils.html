@@ -1000,89 +1000,102 @@
 <span class="sourceLineNo">990</span><a id="line.990">                return absPath;</a>
 <span class="sourceLineNo">991</span><a id="line.991">        }</a>
 <span class="sourceLineNo">992</span><a id="line.992">        </a>
-<span class="sourceLineNo">993</span><a id="line.993">        </a>
-<span class="sourceLineNo">994</span><a id="line.994">        // ---------------------------------------------------------------</a>
-<span class="sourceLineNo">995</span><a id="line.995">        </a>
-<span class="sourceLineNo">996</span><a id="line.996">        /**</a>
-<span class="sourceLineNo">997</span><a id="line.997">         * Returns true if no image is currently open in ImageJ.</a>
-<span class="sourceLineNo">998</span><a id="line.998">         * </a>
-<span class="sourceLineNo">999</span><a id="line.999">         * @return true if no image is open</a>
-<span class="sourceLineNo">1000</span><a id="line.1000">         */</a>
-<span class="sourceLineNo">1001</span><a id="line.1001">        public static boolean noCurrentImage() {</a>
-<span class="sourceLineNo">1002</span><a id="line.1002">                return (WindowManager.getCurrentImage() == null);</a>
-<span class="sourceLineNo">1003</span><a id="line.1003">        }</a>
-<span class="sourceLineNo">1004</span><a id="line.1004">        </a>
-<span class="sourceLineNo">1005</span><a id="line.1005">        /**</a>
-<span class="sourceLineNo">1006</span><a id="line.1006">         * &lt;p&gt;</a>
-<span class="sourceLineNo">1007</span><a id="line.1007">         * Returns true if the current (active) image is compatible with the specified</a>
-<span class="sourceLineNo">1008</span><a id="line.1008">         * flags (as specified by {@link PlugInFilter}, typically used to compose the</a>
-<span class="sourceLineNo">1009</span><a id="line.1009">         * return value of {@link PlugInFilter#setup(String, ImagePlus)}). This method</a>
-<span class="sourceLineNo">1010</span><a id="line.1010">         * emulates the compatibility check performed by ImageJ's built-in</a>
-<span class="sourceLineNo">1011</span><a id="line.1011">         * {@link PlugInFilterRunner} before a {@link PlugInFilter} is executed. It may</a>
-<span class="sourceLineNo">1012</span><a id="line.1012">         * be used, e.g., in the (normally empty) constructor of a class implementing</a>
-<span class="sourceLineNo">1013</span><a id="line.1013">         * {@link PlugInFilter}.</a>
-<span class="sourceLineNo">1014</span><a id="line.1014">         * &lt;/p&gt;</a>
-<span class="sourceLineNo">1015</span><a id="line.1015">         * &lt;p&gt;</a>
-<span class="sourceLineNo">1016</span><a id="line.1016">         * Example, checking if the current image is either 8-bit or 32-bit gray:</a>
-<span class="sourceLineNo">1017</span><a id="line.1017">         * &lt;/p&gt;</a>
-<span class="sourceLineNo">1018</span><a id="line.1018">         * </a>
-<span class="sourceLineNo">1019</span><a id="line.1019">         * &lt;pre&gt;</a>
-<span class="sourceLineNo">1020</span><a id="line.1020">         * if (checkCurrentImage(PlugInFilter.DOES_8G + PlugInFilter.DOES_32)) {</a>
-<span class="sourceLineNo">1021</span><a id="line.1021">         *      // some action ...</a>
-<span class="sourceLineNo">1022</span><a id="line.1022">         * }</a>
-<span class="sourceLineNo">1023</span><a id="line.1023">         * &lt;/pre&gt;</a>
-<span class="sourceLineNo">1024</span><a id="line.1024">         * </a>
-<span class="sourceLineNo">1025</span><a id="line.1025">         * @param flags int-encoded binary flags</a>
-<span class="sourceLineNo">1026</span><a id="line.1026">         * @return true if the current image is compatible</a>
-<span class="sourceLineNo">1027</span><a id="line.1027">         * @see PlugInFilter</a>
-<span class="sourceLineNo">1028</span><a id="line.1028">         * @see #checkImage(ImagePlus, int)</a>
-<span class="sourceLineNo">1029</span><a id="line.1029">         */</a>
-<span class="sourceLineNo">1030</span><a id="line.1030">        public static boolean checkCurrentImage(int flags) {</a>
-<span class="sourceLineNo">1031</span><a id="line.1031">                return checkImage(WindowManager.getCurrentImage(), flags);</a>
-<span class="sourceLineNo">1032</span><a id="line.1032">        }</a>
-<span class="sourceLineNo">1033</span><a id="line.1033">        </a>
-<span class="sourceLineNo">1034</span><a id="line.1034">        /**</a>
-<span class="sourceLineNo">1035</span><a id="line.1035">         * &lt;p&gt;</a>
-<span class="sourceLineNo">1036</span><a id="line.1036">         * Returns true if the given image is compatible with the specified flags (as</a>
-<span class="sourceLineNo">1037</span><a id="line.1037">         * specified by {@link PlugInFilter}, typically used to compose the return value</a>
-<span class="sourceLineNo">1038</span><a id="line.1038">         * of {@link PlugInFilter#setup(String, ImagePlus)}). Usage example:</a>
-<span class="sourceLineNo">1039</span><a id="line.1039">         * &lt;/p&gt;</a>
-<span class="sourceLineNo">1040</span><a id="line.1040">         * &lt;pre&gt;</a>
-<span class="sourceLineNo">1041</span><a id="line.1041">         * ImagePlus im = WindowManager.getCurrentImage(); // may be null</a>
-<span class="sourceLineNo">1042</span><a id="line.1042">         * if (checkImage(im, PlugInFilter.DOES_8G + PlugInFilter.DOES_RGB)) {</a>
-<span class="sourceLineNo">1043</span><a id="line.1043">         *      // some action</a>
-<span class="sourceLineNo">1044</span><a id="line.1044">         * }</a>
-<span class="sourceLineNo">1045</span><a id="line.1045">         * &lt;/pre&gt;</a>
-<span class="sourceLineNo">1046</span><a id="line.1046">         * </a>
-<span class="sourceLineNo">1047</span><a id="line.1047">         * @param im    a {@link ImagePlus} or {@code null}</a>
-<span class="sourceLineNo">1048</span><a id="line.1048">         * @param flags int-encoded binary flags</a>
-<span class="sourceLineNo">1049</span><a id="line.1049">         * @return true if the image is compatible</a>
-<span class="sourceLineNo">1050</span><a id="line.1050">         * @see PlugInFilter</a>
-<span class="sourceLineNo">1051</span><a id="line.1051">         */</a>
-<span class="sourceLineNo">1052</span><a id="line.1052">        public static boolean checkImage(ImagePlus im, int flags) {</a>
-<span class="sourceLineNo">1053</span><a id="line.1053">                if ((flags &amp; PlugInFilter.NO_IMAGE_REQUIRED) != 0) {</a>
-<span class="sourceLineNo">1054</span><a id="line.1054">                        return true;</a>
-<span class="sourceLineNo">1055</span><a id="line.1055">                }</a>
+<span class="sourceLineNo">993</span><a id="line.993">        // ---------------------------------------------------------------</a>
+<span class="sourceLineNo">994</span><a id="line.994">        </a>
+<span class="sourceLineNo">995</span><a id="line.995">        /**</a>
+<span class="sourceLineNo">996</span><a id="line.996">         * Returns true if no image is currently open in ImageJ.</a>
+<span class="sourceLineNo">997</span><a id="line.997">         * </a>
+<span class="sourceLineNo">998</span><a id="line.998">         * @return true if no image is open</a>
+<span class="sourceLineNo">999</span><a id="line.999">         */</a>
+<span class="sourceLineNo">1000</span><a id="line.1000">        public static boolean noCurrentImage() {</a>
+<span class="sourceLineNo">1001</span><a id="line.1001">                return (WindowManager.getCurrentImage() == null);</a>
+<span class="sourceLineNo">1002</span><a id="line.1002">        }</a>
+<span class="sourceLineNo">1003</span><a id="line.1003">        </a>
+<span class="sourceLineNo">1004</span><a id="line.1004">        /**</a>
+<span class="sourceLineNo">1005</span><a id="line.1005">         * &lt;p&gt;</a>
+<span class="sourceLineNo">1006</span><a id="line.1006">         * Returns true if the current (active) image is compatible with the specified</a>
+<span class="sourceLineNo">1007</span><a id="line.1007">         * flags (as specified by {@link PlugInFilter}, typically used to compose the</a>
+<span class="sourceLineNo">1008</span><a id="line.1008">         * return value of {@link PlugInFilter#setup(String, ImagePlus)}). This method</a>
+<span class="sourceLineNo">1009</span><a id="line.1009">         * emulates the compatibility check performed by ImageJ's built-in</a>
+<span class="sourceLineNo">1010</span><a id="line.1010">         * {@link PlugInFilterRunner} before a {@link PlugInFilter} is executed. It may</a>
+<span class="sourceLineNo">1011</span><a id="line.1011">         * be used, e.g., in the (normally empty) constructor of a class implementing</a>
+<span class="sourceLineNo">1012</span><a id="line.1012">         * {@link PlugInFilter}.</a>
+<span class="sourceLineNo">1013</span><a id="line.1013">         * &lt;/p&gt;</a>
+<span class="sourceLineNo">1014</span><a id="line.1014">         * &lt;p&gt;</a>
+<span class="sourceLineNo">1015</span><a id="line.1015">         * Example, checking if the current image is either 8-bit or 32-bit gray:</a>
+<span class="sourceLineNo">1016</span><a id="line.1016">         * &lt;/p&gt;</a>
+<span class="sourceLineNo">1017</span><a id="line.1017">         * &lt;pre&gt;</a>
+<span class="sourceLineNo">1018</span><a id="line.1018">         * if (checkImageFlagsCurrent(PlugInFilter.DOES_8G + PlugInFilter.DOES_32)) {</a>
+<span class="sourceLineNo">1019</span><a id="line.1019">         *      // some action ...</a>
+<span class="sourceLineNo">1020</span><a id="line.1020">         * }</a>
+<span class="sourceLineNo">1021</span><a id="line.1021">         * &lt;/pre&gt;</a>
+<span class="sourceLineNo">1022</span><a id="line.1022">         * </a>
+<span class="sourceLineNo">1023</span><a id="line.1023">         * @param flags int-encoded binary flags</a>
+<span class="sourceLineNo">1024</span><a id="line.1024">         * @return true if the current image is compatible</a>
+<span class="sourceLineNo">1025</span><a id="line.1025">         * @see PlugInFilter</a>
+<span class="sourceLineNo">1026</span><a id="line.1026">         * @see #checkImageFlags(ImagePlus, int)</a>
+<span class="sourceLineNo">1027</span><a id="line.1027">         */</a>
+<span class="sourceLineNo">1028</span><a id="line.1028">        public static boolean checkImageFlagsCurrent(int flags) {</a>
+<span class="sourceLineNo">1029</span><a id="line.1029">                return checkImageFlags(WindowManager.getCurrentImage(), flags);</a>
+<span class="sourceLineNo">1030</span><a id="line.1030">        }</a>
+<span class="sourceLineNo">1031</span><a id="line.1031">        </a>
+<span class="sourceLineNo">1032</span><a id="line.1032">        /**</a>
+<span class="sourceLineNo">1033</span><a id="line.1033">         * &lt;p&gt;</a>
+<span class="sourceLineNo">1034</span><a id="line.1034">         * Returns true if the given image is compatible with the specified flags (as</a>
+<span class="sourceLineNo">1035</span><a id="line.1035">         * specified by {@link PlugInFilter}, typically used to compose the return value</a>
+<span class="sourceLineNo">1036</span><a id="line.1036">         * of {@link PlugInFilter#setup(String, ImagePlus)}). Usage example:</a>
+<span class="sourceLineNo">1037</span><a id="line.1037">         * &lt;/p&gt;</a>
+<span class="sourceLineNo">1038</span><a id="line.1038">         * &lt;pre&gt;</a>
+<span class="sourceLineNo">1039</span><a id="line.1039">         * ImagePlus im = WindowManager.getCurrentImage(); // may be null</a>
+<span class="sourceLineNo">1040</span><a id="line.1040">         * if (checkImageFlags(im, PlugInFilter.DOES_8G + PlugInFilter.DOES_RGB)) {</a>
+<span class="sourceLineNo">1041</span><a id="line.1041">         *      // some action</a>
+<span class="sourceLineNo">1042</span><a id="line.1042">         * }</a>
+<span class="sourceLineNo">1043</span><a id="line.1043">         * &lt;/pre&gt;</a>
+<span class="sourceLineNo">1044</span><a id="line.1044">         * </a>
+<span class="sourceLineNo">1045</span><a id="line.1045">         * @param im    a {@link ImagePlus} or {@code null}</a>
+<span class="sourceLineNo">1046</span><a id="line.1046">         * @param flags int-encoded binary flags</a>
+<span class="sourceLineNo">1047</span><a id="line.1047">         * @return true if the image is compatible</a>
+<span class="sourceLineNo">1048</span><a id="line.1048">         * @see PlugInFilter</a>
+<span class="sourceLineNo">1049</span><a id="line.1049">         */</a>
+<span class="sourceLineNo">1050</span><a id="line.1050">        public static boolean checkImageFlags(ImagePlus im, int flags) {</a>
+<span class="sourceLineNo">1051</span><a id="line.1051">                // if no image is required, no more checks are needed:</a>
+<span class="sourceLineNo">1052</span><a id="line.1052">                if ((flags &amp; PlugInFilter.NO_IMAGE_REQUIRED) != 0) {</a>
+<span class="sourceLineNo">1053</span><a id="line.1053">                        return true;</a>
+<span class="sourceLineNo">1054</span><a id="line.1054">                }</a>
+<span class="sourceLineNo">1055</span><a id="line.1055">                // void if no active image or one without a processor:</a>
 <span class="sourceLineNo">1056</span><a id="line.1056">                if (im == null || im.getProcessor() == null) {</a>
 <span class="sourceLineNo">1057</span><a id="line.1057">                        return false;</a>
 <span class="sourceLineNo">1058</span><a id="line.1058">                }</a>
-<span class="sourceLineNo">1059</span><a id="line.1059">                switch (im.getType()) {</a>
-<span class="sourceLineNo">1060</span><a id="line.1060">                case ImagePlus.GRAY8:</a>
-<span class="sourceLineNo">1061</span><a id="line.1061">                        return ((flags &amp; PlugInFilter.DOES_8G) != 0);</a>
-<span class="sourceLineNo">1062</span><a id="line.1062">                case ImagePlus.COLOR_256:</a>
-<span class="sourceLineNo">1063</span><a id="line.1063">                        return ((flags &amp; PlugInFilter.DOES_8C) != 0);</a>
-<span class="sourceLineNo">1064</span><a id="line.1064">                case ImagePlus.GRAY16:</a>
-<span class="sourceLineNo">1065</span><a id="line.1065">                        return ((flags &amp; PlugInFilter.DOES_16) != 0);</a>
-<span class="sourceLineNo">1066</span><a id="line.1066">                case ImagePlus.GRAY32:</a>
-<span class="sourceLineNo">1067</span><a id="line.1067">                        return ((flags &amp; PlugInFilter.DOES_32) != 0);           </a>
-<span class="sourceLineNo">1068</span><a id="line.1068">                case ImagePlus.COLOR_RGB:</a>
-<span class="sourceLineNo">1069</span><a id="line.1069">                        return ((flags &amp; PlugInFilter.DOES_RGB) != 0);</a>
-<span class="sourceLineNo">1070</span><a id="line.1070">                default:</a>
-<span class="sourceLineNo">1071</span><a id="line.1071">                        return false;</a>
-<span class="sourceLineNo">1072</span><a id="line.1072">                }</a>
-<span class="sourceLineNo">1073</span><a id="line.1073">        }</a>
-<span class="sourceLineNo">1074</span><a id="line.1074">        </a>
-<span class="sourceLineNo">1075</span><a id="line.1075">}</a>
+<span class="sourceLineNo">1059</span><a id="line.1059">                // check if the image type is compatible:</a>
+<span class="sourceLineNo">1060</span><a id="line.1060">                if (!checkImageType(im, flags)) {</a>
+<span class="sourceLineNo">1061</span><a id="line.1061">                        return false;</a>
+<span class="sourceLineNo">1062</span><a id="line.1062">                }</a>
+<span class="sourceLineNo">1063</span><a id="line.1063">                // check if im is a stack, if required:</a>
+<span class="sourceLineNo">1064</span><a id="line.1064">                if (((flags &amp; PlugInFilter.STACK_REQUIRED) != 0) &amp;&amp; !im.hasImageStack()) {</a>
+<span class="sourceLineNo">1065</span><a id="line.1065">                        return false;</a>
+<span class="sourceLineNo">1066</span><a id="line.1066">                }</a>
+<span class="sourceLineNo">1067</span><a id="line.1067">                // all checks passed:</a>
+<span class="sourceLineNo">1068</span><a id="line.1068">                return true;</a>
+<span class="sourceLineNo">1069</span><a id="line.1069">        }</a>
+<span class="sourceLineNo">1070</span><a id="line.1070">        </a>
+<span class="sourceLineNo">1071</span><a id="line.1071">        private static boolean checkImageType(ImagePlus im, int flags) {</a>
+<span class="sourceLineNo">1072</span><a id="line.1072">                switch (im.getType()) {</a>
+<span class="sourceLineNo">1073</span><a id="line.1073">                case ImagePlus.GRAY8:</a>
+<span class="sourceLineNo">1074</span><a id="line.1074">                        return ((flags &amp; PlugInFilter.DOES_8G) != 0);</a>
+<span class="sourceLineNo">1075</span><a id="line.1075">                case ImagePlus.COLOR_256:</a>
+<span class="sourceLineNo">1076</span><a id="line.1076">                        return ((flags &amp; PlugInFilter.DOES_8C) != 0);</a>
+<span class="sourceLineNo">1077</span><a id="line.1077">                case ImagePlus.GRAY16:</a>
+<span class="sourceLineNo">1078</span><a id="line.1078">                        return ((flags &amp; PlugInFilter.DOES_16) != 0);</a>
+<span class="sourceLineNo">1079</span><a id="line.1079">                case ImagePlus.GRAY32:</a>
+<span class="sourceLineNo">1080</span><a id="line.1080">                        return ((flags &amp; PlugInFilter.DOES_32) != 0);           </a>
+<span class="sourceLineNo">1081</span><a id="line.1081">                case ImagePlus.COLOR_RGB:</a>
+<span class="sourceLineNo">1082</span><a id="line.1082">                        return ((flags &amp; PlugInFilter.DOES_RGB) != 0);</a>
+<span class="sourceLineNo">1083</span><a id="line.1083">                default:</a>
+<span class="sourceLineNo">1084</span><a id="line.1084">                        return false;</a>
+<span class="sourceLineNo">1085</span><a id="line.1085">                }</a>
+<span class="sourceLineNo">1086</span><a id="line.1086">        }</a>
+<span class="sourceLineNo">1087</span><a id="line.1087">        </a>
+<span class="sourceLineNo">1088</span><a id="line.1088">}</a>
 
 
 

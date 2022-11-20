@@ -18,6 +18,7 @@ import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.common.util.ParameterBundle;
 
 /**
+ * <p>
  * Instances of this class perform matching between SIFT features. See Secs.
  * 25.5 of [1] for more details.
  * </p>

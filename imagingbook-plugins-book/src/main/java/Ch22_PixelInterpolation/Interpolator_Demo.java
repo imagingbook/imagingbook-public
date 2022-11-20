@@ -15,7 +15,6 @@ import ij.process.ImageProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.interpolation.InterpolationMethod;
-import imagingbook.common.util.EnumUtils;
 
 /**
  * This ImageJ plugin demonstrates the use of various pixel
@@ -81,12 +80,8 @@ public class Interpolator_Demo implements PlugInFilter {
 		gd.addMessage("Translation parameters:");
 		gd.addNumericField("dx", dx, 2);
 		gd.addNumericField("dy", dy, 2);
-		
-		String[] ipmOptions = EnumUtils.getEnumNames(InterpolationMethod.class);
-		gd.addChoice("Interpolation method", ipmOptions, ipm.name());
-		
-		String[] obsOptions = EnumUtils.getEnumNames(OutOfBoundsStrategy.class);
-		gd.addChoice("Out-of-bounds strategy", obsOptions, obs.name());
+		gd.addEnumChoice("Interpolation method", ipm);
+		gd.addEnumChoice("Out-of-bounds strategy", obs);
 
 		gd.showDialog();
 		if (gd.wasCanceled())
@@ -94,8 +89,8 @@ public class Interpolator_Demo implements PlugInFilter {
 		
 		dx = gd.getNextNumber();
 		dy = gd.getNextNumber();
-		ipm = InterpolationMethod.valueOf(gd.getNextChoice());
-		obs = OutOfBoundsStrategy.valueOf(gd.getNextChoice());
+		ipm = gd.getNextEnumChoice(InterpolationMethod.class);
+		obs = gd.getNextEnumChoice(OutOfBoundsStrategy.class);
 		return true;
 	}
 }

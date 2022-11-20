@@ -8,10 +8,11 @@
  *******************************************************************************/
 package imagingbook.common.ransac;
 
-import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Primitive2d;
 
 /**
+ * <p>
  * Represents a single detection result returned by an implementation of
  * {@link RansacDetector}. Implements the {@link Comparable} interface for
  * sorting by detection score. See Sec. 12.1 of [1] for additional

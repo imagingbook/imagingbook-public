@@ -26,10 +26,10 @@ import imagingbook.common.util.PrintsToStream;
  * 
  * @author WB
  * @version 2022/11/20
- * @see SCaleLevel
- * @see SCaleOctave
+ * @see ScaleLevel
+ * @see ScaleOctave
  * @see GaussianScaleSpace
- * @see DoGScaleSpace
+ * @see DogScaleSpace
  */
 public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	

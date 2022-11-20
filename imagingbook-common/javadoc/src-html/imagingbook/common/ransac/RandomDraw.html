@@ -23,125 +23,126 @@
 <span class="sourceLineNo">013</span><a id="line.13">import java.util.Random;</a>
 <span class="sourceLineNo">014</span><a id="line.14"></a>
 <span class="sourceLineNo">015</span><a id="line.15">/**</a>
-<span class="sourceLineNo">016</span><a id="line.16"> * An instance of this class randomly draws a set of k unique, non-null elements </a>
-<span class="sourceLineNo">017</span><a id="line.17"> * from a given array of element type T, which may contain null elements</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * (see method {@link #drawFrom(Object[], int)}).</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * The size of the draw (k) is fixed and must be specified at construction.</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * The resulting sets contain no duplicate elements.</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * An instance of this class randomly draws a set of k unique, non-null elements</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * from a given array of element type T, which may contain null elements (see</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * method {@link #drawFrom(Object[], int)}). The size of the draw (k) is fixed</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * and must be specified at construction. The resulting sets contain no</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * duplicate elements.</a>
 <span class="sourceLineNo">021</span><a id="line.21"> * </a>
 <span class="sourceLineNo">022</span><a id="line.22"> * @author WB</a>
-<span class="sourceLineNo">023</span><a id="line.23"> *</a>
-<span class="sourceLineNo">024</span><a id="line.24"> * @param &lt;T&gt; element type</a>
-<span class="sourceLineNo">025</span><a id="line.25"> */</a>
-<span class="sourceLineNo">026</span><a id="line.26">public class RandomDraw&lt;T&gt; {</a>
-<span class="sourceLineNo">027</span><a id="line.27">        </a>
-<span class="sourceLineNo">028</span><a id="line.28">        /**</a>
-<span class="sourceLineNo">029</span><a id="line.29">         * Default maximum number of tries before exception is thrown.</a>
-<span class="sourceLineNo">030</span><a id="line.30">         */</a>
-<span class="sourceLineNo">031</span><a id="line.31">        public static final int DefaultMaxTries = 1000;</a>
-<span class="sourceLineNo">032</span><a id="line.32">        </a>
-<span class="sourceLineNo">033</span><a id="line.33">        private int maxTries = DefaultMaxTries;</a>
-<span class="sourceLineNo">034</span><a id="line.34">        private final Random rand;</a>
-<span class="sourceLineNo">035</span><a id="line.35">        </a>
-<span class="sourceLineNo">036</span><a id="line.36">        // -------------------------------------------------------------</a>
-<span class="sourceLineNo">037</span><a id="line.37">        </a>
-<span class="sourceLineNo">038</span><a id="line.38">        /**</a>
-<span class="sourceLineNo">039</span><a id="line.39">         * Constructor accepting an existing random generator.</a>
-<span class="sourceLineNo">040</span><a id="line.40">         * This may be useful to achieve predictable (repetitive) random behavior.</a>
-<span class="sourceLineNo">041</span><a id="line.41">         * </a>
-<span class="sourceLineNo">042</span><a id="line.42">         * @param rand a random generator of type {@link Random}</a>
-<span class="sourceLineNo">043</span><a id="line.43">         */</a>
-<span class="sourceLineNo">044</span><a id="line.44">        public RandomDraw(Random rand) {</a>
-<span class="sourceLineNo">045</span><a id="line.45">                this.rand = (rand == null) ? new Random() : rand;</a>
-<span class="sourceLineNo">046</span><a id="line.46">        }</a>
-<span class="sourceLineNo">047</span><a id="line.47">        </a>
-<span class="sourceLineNo">048</span><a id="line.48">        /**</a>
-<span class="sourceLineNo">049</span><a id="line.49">         * Constructor creating its own random generator.</a>
-<span class="sourceLineNo">050</span><a id="line.50">         */</a>
-<span class="sourceLineNo">051</span><a id="line.51">        public RandomDraw() {</a>
-<span class="sourceLineNo">052</span><a id="line.52">                this(new Random());</a>
-<span class="sourceLineNo">053</span><a id="line.53">        }</a>
-<span class="sourceLineNo">054</span><a id="line.54">        </a>
-<span class="sourceLineNo">055</span><a id="line.55">        /**</a>
-<span class="sourceLineNo">056</span><a id="line.56">         * Set the maximum number of tries.</a>
-<span class="sourceLineNo">057</span><a id="line.57">         * @param maxTries new maximum number of tries</a>
-<span class="sourceLineNo">058</span><a id="line.58">         * @see DefaultMaxTries</a>
-<span class="sourceLineNo">059</span><a id="line.59">         */</a>
-<span class="sourceLineNo">060</span><a id="line.60">        public void setMaxTries(int maxTries) {</a>
-<span class="sourceLineNo">061</span><a id="line.61">                this.maxTries = maxTries;</a>
-<span class="sourceLineNo">062</span><a id="line.62">        }</a>
-<span class="sourceLineNo">063</span><a id="line.63">        </a>
-<span class="sourceLineNo">064</span><a id="line.64">        // -------------------------------------------------------------</a>
-<span class="sourceLineNo">065</span><a id="line.65">        </a>
-<span class="sourceLineNo">066</span><a id="line.66">        // alternative version using a HashSet (slower)</a>
-<span class="sourceLineNo">067</span><a id="line.67">//      public T[] drawFrom(T[] items, int k) {</a>
-<span class="sourceLineNo">068</span><a id="line.68">//              if (k &lt; 1) throw new IllegalArgumentException("k must be greater or equal 1");</a>
-<span class="sourceLineNo">069</span><a id="line.69">//              HashSet&lt;T&gt; hs = new HashSet&lt;&gt;(k);</a>
-<span class="sourceLineNo">070</span><a id="line.70">//              int i = 0;</a>
-<span class="sourceLineNo">071</span><a id="line.71">//              while (i &lt; k) {</a>
-<span class="sourceLineNo">072</span><a id="line.72">//                      int j = rand.nextInt(items.length);     // next random index</a>
-<span class="sourceLineNo">073</span><a id="line.73">//                      T item = items[j];</a>
-<span class="sourceLineNo">074</span><a id="line.74">//                      if (item != null &amp;&amp; hs.add(item)) {</a>
-<span class="sourceLineNo">075</span><a id="line.75">//                              i++;</a>
-<span class="sourceLineNo">076</span><a id="line.76">//                      }</a>
-<span class="sourceLineNo">077</span><a id="line.77">//              }</a>
-<span class="sourceLineNo">078</span><a id="line.78">//              return hs.toArray(Arrays.copyOf(items, k));</a>
-<span class="sourceLineNo">079</span><a id="line.79">//      }</a>
-<span class="sourceLineNo">080</span><a id="line.80">        </a>
-<span class="sourceLineNo">081</span><a id="line.81">        /**</a>
-<span class="sourceLineNo">082</span><a id="line.82">         * Randomly draws a set of k unique, non-null elements from the specified array</a>
-<span class="sourceLineNo">083</span><a id="line.83">         * of items, ignoring possible null elements. An exception is thrown if the</a>
-<span class="sourceLineNo">084</span><a id="line.84">         * maximum number of tries is exceeded (see {@link #DefaultMaxTries}). </a>
-<span class="sourceLineNo">085</span><a id="line.85">         * The returned array contains no null elements and no duplicates.</a>
-<span class="sourceLineNo">086</span><a id="line.86">         * Example:</a>
-<span class="sourceLineNo">087</span><a id="line.87">         * &lt;pre&gt;</a>
-<span class="sourceLineNo">088</span><a id="line.88">         * Integer[] numbers = { null, 1, 2, null, 3, 4, 5, 6, 7, null, null, null, 8, 9, 10, null };</a>
-<span class="sourceLineNo">089</span><a id="line.89">         * RandomDraw&amp;lt;Integer&amp;gt; rd = new RandomDraw&amp;lt;&amp;gt;();</a>
-<span class="sourceLineNo">090</span><a id="line.90">         * Integer[] draw = rd.drawFrom(numbers, 2);</a>
-<span class="sourceLineNo">091</span><a id="line.91">         * &lt;/pre&gt;</a>
-<span class="sourceLineNo">092</span><a id="line.92">         * </a>
-<span class="sourceLineNo">093</span><a id="line.93">         * @param items an array of elements of type T, null elements being allowed</a>
-<span class="sourceLineNo">094</span><a id="line.94">         * @param k     the number of items to draw</a>
-<span class="sourceLineNo">095</span><a id="line.95">         * @return an array of k randomly drawn (non-null) items</a>
-<span class="sourceLineNo">096</span><a id="line.96">         */</a>
-<span class="sourceLineNo">097</span><a id="line.97">        public T[] drawFrom(T[] items, int k) {</a>
-<span class="sourceLineNo">098</span><a id="line.98">                if (k &lt; 1) throw new IllegalArgumentException("k must be greater or equal 1");</a>
-<span class="sourceLineNo">099</span><a id="line.99">                int[] idx = drawRandomIndexes(items, k);</a>
-<span class="sourceLineNo">100</span><a id="line.100">                T[] draw = Arrays.copyOf(items, k);     // trick to create an array of generic type T</a>
-<span class="sourceLineNo">101</span><a id="line.101">                for (int i = 0; i &lt; k; i++) {</a>
-<span class="sourceLineNo">102</span><a id="line.102">                        draw[i] = items[idx[i]];</a>
-<span class="sourceLineNo">103</span><a id="line.103">                }</a>
-<span class="sourceLineNo">104</span><a id="line.104">                return draw;</a>
-<span class="sourceLineNo">105</span><a id="line.105">        }</a>
-<span class="sourceLineNo">106</span><a id="line.106">        </a>
-<span class="sourceLineNo">107</span><a id="line.107">        // draw k unique integers (all must be different):</a>
-<span class="sourceLineNo">108</span><a id="line.108">        private int[] drawRandomIndexes(T[] items, int k) {</a>
-<span class="sourceLineNo">109</span><a id="line.109">                int[] indexes = new int[k];</a>
-<span class="sourceLineNo">110</span><a id="line.110">                for (int d = 0; d &lt; k; d++) {</a>
-<span class="sourceLineNo">111</span><a id="line.111">                        int j = 0;                                                      // count tries</a>
-<span class="sourceLineNo">112</span><a id="line.112">                        int i = rand.nextInt(items.length);</a>
-<span class="sourceLineNo">113</span><a id="line.113">                        while (items[i] == null || wasPickedBefore(indexes, d, i)) {</a>
-<span class="sourceLineNo">114</span><a id="line.114">                                i = rand.nextInt(items.length);</a>
-<span class="sourceLineNo">115</span><a id="line.115">                                if (j++ &gt; maxTries) {</a>
-<span class="sourceLineNo">116</span><a id="line.116">                                        throw new RuntimeException("max. tries exceeded: " + j);</a>
-<span class="sourceLineNo">117</span><a id="line.117">                                }</a>
-<span class="sourceLineNo">118</span><a id="line.118">                        }</a>
-<span class="sourceLineNo">119</span><a id="line.119">                        indexes[d] = i;</a>
-<span class="sourceLineNo">120</span><a id="line.120">                }</a>
-<span class="sourceLineNo">121</span><a id="line.121">                return indexes;</a>
-<span class="sourceLineNo">122</span><a id="line.122">        }</a>
-<span class="sourceLineNo">123</span><a id="line.123"></a>
-<span class="sourceLineNo">124</span><a id="line.124">        // Checks if idx[0],...,idx[d-1] contains i.</a>
-<span class="sourceLineNo">125</span><a id="line.125">        private boolean wasPickedBefore(int[] indexes, int d, int i) {</a>
-<span class="sourceLineNo">126</span><a id="line.126">                for (int j = 0; j &lt; d; j++) {</a>
-<span class="sourceLineNo">127</span><a id="line.127">                        if (i == indexes[j]) {</a>
-<span class="sourceLineNo">128</span><a id="line.128">                                return true;</a>
-<span class="sourceLineNo">129</span><a id="line.129">                        }</a>
-<span class="sourceLineNo">130</span><a id="line.130">                }       </a>
-<span class="sourceLineNo">131</span><a id="line.131">                return false;</a>
-<span class="sourceLineNo">132</span><a id="line.132">        }</a>
-<span class="sourceLineNo">133</span><a id="line.133">        </a>
-<span class="sourceLineNo">134</span><a id="line.134">}</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * @version 2022/11/19</a>
+<span class="sourceLineNo">024</span><a id="line.24"> *</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * @param &lt;T&gt; element type</a>
+<span class="sourceLineNo">026</span><a id="line.26"> */</a>
+<span class="sourceLineNo">027</span><a id="line.27">public class RandomDraw&lt;T&gt; {</a>
+<span class="sourceLineNo">028</span><a id="line.28">        </a>
+<span class="sourceLineNo">029</span><a id="line.29">        /**</a>
+<span class="sourceLineNo">030</span><a id="line.30">         * Default maximum number of tries before exception is thrown.</a>
+<span class="sourceLineNo">031</span><a id="line.31">         */</a>
+<span class="sourceLineNo">032</span><a id="line.32">        public static final int DefaultMaxTries = 1000;</a>
+<span class="sourceLineNo">033</span><a id="line.33">        </a>
+<span class="sourceLineNo">034</span><a id="line.34">        private int maxTries = DefaultMaxTries;</a>
+<span class="sourceLineNo">035</span><a id="line.35">        private final Random rand;</a>
+<span class="sourceLineNo">036</span><a id="line.36">        </a>
+<span class="sourceLineNo">037</span><a id="line.37">        // -------------------------------------------------------------</a>
+<span class="sourceLineNo">038</span><a id="line.38">        </a>
+<span class="sourceLineNo">039</span><a id="line.39">        /**</a>
+<span class="sourceLineNo">040</span><a id="line.40">         * Constructor accepting an existing random generator.</a>
+<span class="sourceLineNo">041</span><a id="line.41">         * This may be useful to achieve predictable (repetitive) random behavior.</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * </a>
+<span class="sourceLineNo">043</span><a id="line.43">         * @param rand a random generator of type {@link Random}</a>
+<span class="sourceLineNo">044</span><a id="line.44">         */</a>
+<span class="sourceLineNo">045</span><a id="line.45">        public RandomDraw(Random rand) {</a>
+<span class="sourceLineNo">046</span><a id="line.46">                this.rand = (rand == null) ? new Random() : rand;</a>
+<span class="sourceLineNo">047</span><a id="line.47">        }</a>
+<span class="sourceLineNo">048</span><a id="line.48">        </a>
+<span class="sourceLineNo">049</span><a id="line.49">        /**</a>
+<span class="sourceLineNo">050</span><a id="line.50">         * Constructor creating its own random generator.</a>
+<span class="sourceLineNo">051</span><a id="line.51">         */</a>
+<span class="sourceLineNo">052</span><a id="line.52">        public RandomDraw() {</a>
+<span class="sourceLineNo">053</span><a id="line.53">                this(new Random());</a>
+<span class="sourceLineNo">054</span><a id="line.54">        }</a>
+<span class="sourceLineNo">055</span><a id="line.55">        </a>
+<span class="sourceLineNo">056</span><a id="line.56">        /**</a>
+<span class="sourceLineNo">057</span><a id="line.57">         * Set the maximum number of tries.</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * @param maxTries new maximum number of tries</a>
+<span class="sourceLineNo">059</span><a id="line.59">         * @see DefaultMaxTries</a>
+<span class="sourceLineNo">060</span><a id="line.60">         */</a>
+<span class="sourceLineNo">061</span><a id="line.61">        public void setMaxTries(int maxTries) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">                this.maxTries = maxTries;</a>
+<span class="sourceLineNo">063</span><a id="line.63">        }</a>
+<span class="sourceLineNo">064</span><a id="line.64">        </a>
+<span class="sourceLineNo">065</span><a id="line.65">        // -------------------------------------------------------------</a>
+<span class="sourceLineNo">066</span><a id="line.66">        </a>
+<span class="sourceLineNo">067</span><a id="line.67">        // alternative version using a HashSet (slower)</a>
+<span class="sourceLineNo">068</span><a id="line.68">//      public T[] drawFrom(T[] items, int k) {</a>
+<span class="sourceLineNo">069</span><a id="line.69">//              if (k &lt; 1) throw new IllegalArgumentException("k must be greater or equal 1");</a>
+<span class="sourceLineNo">070</span><a id="line.70">//              HashSet&lt;T&gt; hs = new HashSet&lt;&gt;(k);</a>
+<span class="sourceLineNo">071</span><a id="line.71">//              int i = 0;</a>
+<span class="sourceLineNo">072</span><a id="line.72">//              while (i &lt; k) {</a>
+<span class="sourceLineNo">073</span><a id="line.73">//                      int j = rand.nextInt(items.length);     // next random index</a>
+<span class="sourceLineNo">074</span><a id="line.74">//                      T item = items[j];</a>
+<span class="sourceLineNo">075</span><a id="line.75">//                      if (item != null &amp;&amp; hs.add(item)) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">//                              i++;</a>
+<span class="sourceLineNo">077</span><a id="line.77">//                      }</a>
+<span class="sourceLineNo">078</span><a id="line.78">//              }</a>
+<span class="sourceLineNo">079</span><a id="line.79">//              return hs.toArray(Arrays.copyOf(items, k));</a>
+<span class="sourceLineNo">080</span><a id="line.80">//      }</a>
+<span class="sourceLineNo">081</span><a id="line.81">        </a>
+<span class="sourceLineNo">082</span><a id="line.82">        /**</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * Randomly draws a set of k unique, non-null elements from the specified array</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * of items, ignoring possible null elements. An exception is thrown if the</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * maximum number of tries is exceeded (see {@link #DefaultMaxTries}). </a>
+<span class="sourceLineNo">086</span><a id="line.86">         * The returned array contains no null elements and no duplicates.</a>
+<span class="sourceLineNo">087</span><a id="line.87">         * Example:</a>
+<span class="sourceLineNo">088</span><a id="line.88">         * &lt;pre&gt;</a>
+<span class="sourceLineNo">089</span><a id="line.89">         * Integer[] numbers = { null, 1, 2, null, 3, 4, 5, 6, 7, null, null, null, 8, 9, 10, null };</a>
+<span class="sourceLineNo">090</span><a id="line.90">         * RandomDraw&amp;lt;Integer&amp;gt; rd = new RandomDraw&amp;lt;&amp;gt;();</a>
+<span class="sourceLineNo">091</span><a id="line.91">         * Integer[] draw = rd.drawFrom(numbers, 2);</a>
+<span class="sourceLineNo">092</span><a id="line.92">         * &lt;/pre&gt;</a>
+<span class="sourceLineNo">093</span><a id="line.93">         * </a>
+<span class="sourceLineNo">094</span><a id="line.94">         * @param items an array of elements of type T, null elements being allowed</a>
+<span class="sourceLineNo">095</span><a id="line.95">         * @param k     the number of items to draw</a>
+<span class="sourceLineNo">096</span><a id="line.96">         * @return an array of k randomly drawn (non-null) items</a>
+<span class="sourceLineNo">097</span><a id="line.97">         */</a>
+<span class="sourceLineNo">098</span><a id="line.98">        public T[] drawFrom(T[] items, int k) {</a>
+<span class="sourceLineNo">099</span><a id="line.99">                if (k &lt; 1) throw new IllegalArgumentException("k must be greater or equal 1");</a>
+<span class="sourceLineNo">100</span><a id="line.100">                int[] idx = drawRandomIndexes(items, k);</a>
+<span class="sourceLineNo">101</span><a id="line.101">                T[] draw = Arrays.copyOf(items, k);     // trick to create an array of generic type T</a>
+<span class="sourceLineNo">102</span><a id="line.102">                for (int i = 0; i &lt; k; i++) {</a>
+<span class="sourceLineNo">103</span><a id="line.103">                        draw[i] = items[idx[i]];</a>
+<span class="sourceLineNo">104</span><a id="line.104">                }</a>
+<span class="sourceLineNo">105</span><a id="line.105">                return draw;</a>
+<span class="sourceLineNo">106</span><a id="line.106">        }</a>
+<span class="sourceLineNo">107</span><a id="line.107">        </a>
+<span class="sourceLineNo">108</span><a id="line.108">        // draw k unique integers (all must be different):</a>
+<span class="sourceLineNo">109</span><a id="line.109">        private int[] drawRandomIndexes(T[] items, int k) {</a>
+<span class="sourceLineNo">110</span><a id="line.110">                int[] indexes = new int[k];</a>
+<span class="sourceLineNo">111</span><a id="line.111">                for (int d = 0; d &lt; k; d++) {</a>
+<span class="sourceLineNo">112</span><a id="line.112">                        int j = 0;                                                      // count tries</a>
+<span class="sourceLineNo">113</span><a id="line.113">                        int i = rand.nextInt(items.length);</a>
+<span class="sourceLineNo">114</span><a id="line.114">                        while (items[i] == null || wasPickedBefore(indexes, d, i)) {</a>
+<span class="sourceLineNo">115</span><a id="line.115">                                i = rand.nextInt(items.length);</a>
+<span class="sourceLineNo">116</span><a id="line.116">                                if (j++ &gt; maxTries) {</a>
+<span class="sourceLineNo">117</span><a id="line.117">                                        throw new RuntimeException("max. tries exceeded: " + j);</a>
+<span class="sourceLineNo">118</span><a id="line.118">                                }</a>
+<span class="sourceLineNo">119</span><a id="line.119">                        }</a>
+<span class="sourceLineNo">120</span><a id="line.120">                        indexes[d] = i;</a>
+<span class="sourceLineNo">121</span><a id="line.121">                }</a>
+<span class="sourceLineNo">122</span><a id="line.122">                return indexes;</a>
+<span class="sourceLineNo">123</span><a id="line.123">        }</a>
+<span class="sourceLineNo">124</span><a id="line.124"></a>
+<span class="sourceLineNo">125</span><a id="line.125">        // Checks if idx[0],...,idx[d-1] contains i.</a>
+<span class="sourceLineNo">126</span><a id="line.126">        private boolean wasPickedBefore(int[] indexes, int d, int i) {</a>
+<span class="sourceLineNo">127</span><a id="line.127">                for (int j = 0; j &lt; d; j++) {</a>
+<span class="sourceLineNo">128</span><a id="line.128">                        if (i == indexes[j]) {</a>
+<span class="sourceLineNo">129</span><a id="line.129">                                return true;</a>
+<span class="sourceLineNo">130</span><a id="line.130">                        }</a>
+<span class="sourceLineNo">131</span><a id="line.131">                }       </a>
+<span class="sourceLineNo">132</span><a id="line.132">                return false;</a>
+<span class="sourceLineNo">133</span><a id="line.133">        }</a>
+<span class="sourceLineNo">134</span><a id="line.134">        </a>
+<span class="sourceLineNo">135</span><a id="line.135">}</a>
 
 
 

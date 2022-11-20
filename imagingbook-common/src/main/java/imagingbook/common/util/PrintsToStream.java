@@ -55,7 +55,7 @@ public interface PrintsToStream {
 	 * object. The {@link #printToString()} method can also be used by implementing
 	 * classes to override the standard {@link Object#toString()} method, e.g.,
 	 * <pre>
-	 * &commat;Override
+	 * &#64;Override
 	 * public String toString() {
 	 * 	return this.printToString();
 	 * }

@@ -29,187 +29,188 @@
 <span class="sourceLineNo">019</span><a id="line.19"> * TODO: Bring in line with binary region neighborhoods (type).</a>
 <span class="sourceLineNo">020</span><a id="line.20"> * </a>
 <span class="sourceLineNo">021</span><a id="line.21"> * @author WB</a>
-<span class="sourceLineNo">022</span><a id="line.22"> */</a>
-<span class="sourceLineNo">023</span><a id="line.23">public class PixelMap {</a>
-<span class="sourceLineNo">024</span><a id="line.24">        </a>
-<span class="sourceLineNo">025</span><a id="line.25">        /** Image width */</a>
-<span class="sourceLineNo">026</span><a id="line.26">        public final int width;</a>
-<span class="sourceLineNo">027</span><a id="line.27">        </a>
-<span class="sourceLineNo">028</span><a id="line.28">        /** Image height */</a>
-<span class="sourceLineNo">029</span><a id="line.29">        public final int height;</a>
-<span class="sourceLineNo">030</span><a id="line.30">        </a>
-<span class="sourceLineNo">031</span><a id="line.31">        private final Pixel[][] pixels;</a>
-<span class="sourceLineNo">032</span><a id="line.32">        </a>
-<span class="sourceLineNo">033</span><a id="line.33">        /**</a>
-<span class="sourceLineNo">034</span><a id="line.34">         * Constructor.</a>
-<span class="sourceLineNo">035</span><a id="line.35">         * @param ip source image</a>
-<span class="sourceLineNo">036</span><a id="line.36">         */</a>
-<span class="sourceLineNo">037</span><a id="line.37">        public PixelMap(ImageProcessor ip) {</a>
-<span class="sourceLineNo">038</span><a id="line.38">                this.width = ip.getWidth();</a>
-<span class="sourceLineNo">039</span><a id="line.39">                this.height = ip.getHeight();</a>
-<span class="sourceLineNo">040</span><a id="line.40">                this.pixels = makeImagePoints(ip);</a>
-<span class="sourceLineNo">041</span><a id="line.41">        }</a>
-<span class="sourceLineNo">042</span><a id="line.42">        </a>
-<span class="sourceLineNo">043</span><a id="line.43">        private Pixel[][] makeImagePoints(ImageProcessor ip) {</a>
-<span class="sourceLineNo">044</span><a id="line.44">                Pixel[][] ipts = new Pixel[width][height];</a>
-<span class="sourceLineNo">045</span><a id="line.45">                for (int u = 0; u &lt; width; u++) {</a>
-<span class="sourceLineNo">046</span><a id="line.46">                        for (int v = 0; v &lt; height; v++) {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                                ipts[u][v] = new Pixel(u, v, ip.get(u, v));</a>
-<span class="sourceLineNo">048</span><a id="line.48">                        }</a>
-<span class="sourceLineNo">049</span><a id="line.49">                }</a>
-<span class="sourceLineNo">050</span><a id="line.50">                return ipts;</a>
-<span class="sourceLineNo">051</span><a id="line.51">        }</a>
-<span class="sourceLineNo">052</span><a id="line.52"></a>
-<span class="sourceLineNo">053</span><a id="line.53">        /**</a>
-<span class="sourceLineNo">054</span><a id="line.54">         * Returns the {@link Pixel} instance at the specified position.</a>
-<span class="sourceLineNo">055</span><a id="line.55">         * @param u horizontal position</a>
-<span class="sourceLineNo">056</span><a id="line.56">         * @param v vertical position</a>
-<span class="sourceLineNo">057</span><a id="line.57">         * @return the {@link Pixel} instance</a>
-<span class="sourceLineNo">058</span><a id="line.58">         */</a>
-<span class="sourceLineNo">059</span><a id="line.59">        public Pixel getPixel(int u, int v) {</a>
-<span class="sourceLineNo">060</span><a id="line.60">                return pixels[u][v];</a>
-<span class="sourceLineNo">061</span><a id="line.61">        }</a>
-<span class="sourceLineNo">062</span><a id="line.62">        </a>
-<span class="sourceLineNo">063</span><a id="line.63">        /**</a>
-<span class="sourceLineNo">064</span><a id="line.64">         * Returns a new 1D array (i.e., a "flattened" vector in row-first order) of {@link Pixel} elements,</a>
-<span class="sourceLineNo">065</span><a id="line.65">         * e.g., for sorting pixels by value.</a>
-<span class="sourceLineNo">066</span><a id="line.66">         * </a>
-<span class="sourceLineNo">067</span><a id="line.67">         * @return a 1D array of pixels</a>
-<span class="sourceLineNo">068</span><a id="line.68">         */</a>
-<span class="sourceLineNo">069</span><a id="line.69">        public Pixel[] getPixelVector() {</a>
-<span class="sourceLineNo">070</span><a id="line.70">                final Pixel[] pix = new Pixel[width * height];</a>
-<span class="sourceLineNo">071</span><a id="line.71">                int i = 0;</a>
-<span class="sourceLineNo">072</span><a id="line.72">                for (int v = 0; v &lt; height; v++) {</a>
-<span class="sourceLineNo">073</span><a id="line.73">                        for (int u = 0; u &lt; width; u++) {</a>
-<span class="sourceLineNo">074</span><a id="line.74">                                pix[i] = pixels[u][v];</a>
-<span class="sourceLineNo">075</span><a id="line.75">                                i++;</a>
-<span class="sourceLineNo">076</span><a id="line.76">                        }</a>
-<span class="sourceLineNo">077</span><a id="line.77">                }</a>
-<span class="sourceLineNo">078</span><a id="line.78">                return pix;</a>
-<span class="sourceLineNo">079</span><a id="line.79">        }</a>
-<span class="sourceLineNo">080</span><a id="line.80">        </a>
-<span class="sourceLineNo">081</span><a id="line.81">        /**</a>
-<span class="sourceLineNo">082</span><a id="line.82">         * Sets all pixels to unvisited and resets next-neighbor search directions.</a>
-<span class="sourceLineNo">083</span><a id="line.83">         */</a>
-<span class="sourceLineNo">084</span><a id="line.84">        void reset() {</a>
-<span class="sourceLineNo">085</span><a id="line.85">                //this.visited.unsetAll();</a>
-<span class="sourceLineNo">086</span><a id="line.86">                for (int u = 0; u &lt; width; u++) {</a>
-<span class="sourceLineNo">087</span><a id="line.87">                        for (int v = 0; v &lt; height; v++) {</a>
-<span class="sourceLineNo">088</span><a id="line.88">                                pixels[u][v].reset();</a>
-<span class="sourceLineNo">089</span><a id="line.89">                        }</a>
-<span class="sourceLineNo">090</span><a id="line.90">                }</a>
-<span class="sourceLineNo">091</span><a id="line.91">        }</a>
-<span class="sourceLineNo">092</span><a id="line.92">        </a>
-<span class="sourceLineNo">093</span><a id="line.93">        // ------------------------------------</a>
-<span class="sourceLineNo">094</span><a id="line.94">        </a>
+<span class="sourceLineNo">022</span><a id="line.22"> * @version 2022/11/19</a>
+<span class="sourceLineNo">023</span><a id="line.23"> */</a>
+<span class="sourceLineNo">024</span><a id="line.24">public class PixelMap {</a>
+<span class="sourceLineNo">025</span><a id="line.25">        </a>
+<span class="sourceLineNo">026</span><a id="line.26">        /** Image width */</a>
+<span class="sourceLineNo">027</span><a id="line.27">        public final int width;</a>
+<span class="sourceLineNo">028</span><a id="line.28">        </a>
+<span class="sourceLineNo">029</span><a id="line.29">        /** Image height */</a>
+<span class="sourceLineNo">030</span><a id="line.30">        public final int height;</a>
+<span class="sourceLineNo">031</span><a id="line.31">        </a>
+<span class="sourceLineNo">032</span><a id="line.32">        private final Pixel[][] pixels;</a>
+<span class="sourceLineNo">033</span><a id="line.33">        </a>
+<span class="sourceLineNo">034</span><a id="line.34">        /**</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * Constructor.</a>
+<span class="sourceLineNo">036</span><a id="line.36">         * @param ip source image</a>
+<span class="sourceLineNo">037</span><a id="line.37">         */</a>
+<span class="sourceLineNo">038</span><a id="line.38">        public PixelMap(ImageProcessor ip) {</a>
+<span class="sourceLineNo">039</span><a id="line.39">                this.width = ip.getWidth();</a>
+<span class="sourceLineNo">040</span><a id="line.40">                this.height = ip.getHeight();</a>
+<span class="sourceLineNo">041</span><a id="line.41">                this.pixels = makeImagePoints(ip);</a>
+<span class="sourceLineNo">042</span><a id="line.42">        }</a>
+<span class="sourceLineNo">043</span><a id="line.43">        </a>
+<span class="sourceLineNo">044</span><a id="line.44">        private Pixel[][] makeImagePoints(ImageProcessor ip) {</a>
+<span class="sourceLineNo">045</span><a id="line.45">                Pixel[][] ipts = new Pixel[width][height];</a>
+<span class="sourceLineNo">046</span><a id="line.46">                for (int u = 0; u &lt; width; u++) {</a>
+<span class="sourceLineNo">047</span><a id="line.47">                        for (int v = 0; v &lt; height; v++) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">                                ipts[u][v] = new Pixel(u, v, ip.get(u, v));</a>
+<span class="sourceLineNo">049</span><a id="line.49">                        }</a>
+<span class="sourceLineNo">050</span><a id="line.50">                }</a>
+<span class="sourceLineNo">051</span><a id="line.51">                return ipts;</a>
+<span class="sourceLineNo">052</span><a id="line.52">        }</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">        /**</a>
+<span class="sourceLineNo">055</span><a id="line.55">         * Returns the {@link Pixel} instance at the specified position.</a>
+<span class="sourceLineNo">056</span><a id="line.56">         * @param u horizontal position</a>
+<span class="sourceLineNo">057</span><a id="line.57">         * @param v vertical position</a>
+<span class="sourceLineNo">058</span><a id="line.58">         * @return the {@link Pixel} instance</a>
+<span class="sourceLineNo">059</span><a id="line.59">         */</a>
+<span class="sourceLineNo">060</span><a id="line.60">        public Pixel getPixel(int u, int v) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                return pixels[u][v];</a>
+<span class="sourceLineNo">062</span><a id="line.62">        }</a>
+<span class="sourceLineNo">063</span><a id="line.63">        </a>
+<span class="sourceLineNo">064</span><a id="line.64">        /**</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * Returns a new 1D array (i.e., a "flattened" vector in row-first order) of {@link Pixel} elements,</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * e.g., for sorting pixels by value.</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * </a>
+<span class="sourceLineNo">068</span><a id="line.68">         * @return a 1D array of pixels</a>
+<span class="sourceLineNo">069</span><a id="line.69">         */</a>
+<span class="sourceLineNo">070</span><a id="line.70">        public Pixel[] getPixelVector() {</a>
+<span class="sourceLineNo">071</span><a id="line.71">                final Pixel[] pix = new Pixel[width * height];</a>
+<span class="sourceLineNo">072</span><a id="line.72">                int i = 0;</a>
+<span class="sourceLineNo">073</span><a id="line.73">                for (int v = 0; v &lt; height; v++) {</a>
+<span class="sourceLineNo">074</span><a id="line.74">                        for (int u = 0; u &lt; width; u++) {</a>
+<span class="sourceLineNo">075</span><a id="line.75">                                pix[i] = pixels[u][v];</a>
+<span class="sourceLineNo">076</span><a id="line.76">                                i++;</a>
+<span class="sourceLineNo">077</span><a id="line.77">                        }</a>
+<span class="sourceLineNo">078</span><a id="line.78">                }</a>
+<span class="sourceLineNo">079</span><a id="line.79">                return pix;</a>
+<span class="sourceLineNo">080</span><a id="line.80">        }</a>
+<span class="sourceLineNo">081</span><a id="line.81">        </a>
+<span class="sourceLineNo">082</span><a id="line.82">        /**</a>
+<span class="sourceLineNo">083</span><a id="line.83">         * Sets all pixels to unvisited and resets next-neighbor search directions.</a>
+<span class="sourceLineNo">084</span><a id="line.84">         */</a>
+<span class="sourceLineNo">085</span><a id="line.85">        void reset() {</a>
+<span class="sourceLineNo">086</span><a id="line.86">                //this.visited.unsetAll();</a>
+<span class="sourceLineNo">087</span><a id="line.87">                for (int u = 0; u &lt; width; u++) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">                        for (int v = 0; v &lt; height; v++) {</a>
+<span class="sourceLineNo">089</span><a id="line.89">                                pixels[u][v].reset();</a>
+<span class="sourceLineNo">090</span><a id="line.90">                        }</a>
+<span class="sourceLineNo">091</span><a id="line.91">                }</a>
+<span class="sourceLineNo">092</span><a id="line.92">        }</a>
+<span class="sourceLineNo">093</span><a id="line.93">        </a>
+<span class="sourceLineNo">094</span><a id="line.94">        // ------------------------------------</a>
 <span class="sourceLineNo">095</span><a id="line.95">        </a>
-<span class="sourceLineNo">096</span><a id="line.96">//      public PointNeighborhood getNeighbors(PntInt p) {</a>
-<span class="sourceLineNo">097</span><a id="line.97">//              return new PointNeighborhood(p);</a>
-<span class="sourceLineNo">098</span><a id="line.98">//      }</a>
-<span class="sourceLineNo">099</span><a id="line.99">//      </a>
-<span class="sourceLineNo">100</span><a id="line.100">//      public class PointNeighborhood implements Iterable&lt;ImagePoint&gt; {</a>
-<span class="sourceLineNo">101</span><a id="line.101">//              private final int x, y; // the center of this neighborhood</a>
-<span class="sourceLineNo">102</span><a id="line.102">//              private int xn, yn;     // the coordinates of the next neighbor</a>
-<span class="sourceLineNo">103</span><a id="line.103">//              private int dir=  -1;   // the direction of the next neighbor (valid if dir=0,..,3)</a>
-<span class="sourceLineNo">104</span><a id="line.104">//              </a>
-<span class="sourceLineNo">105</span><a id="line.105">//              protected PointNeighborhood(PntInt p) {</a>
-<span class="sourceLineNo">106</span><a id="line.106">//                      this.x = p.x;</a>
-<span class="sourceLineNo">107</span><a id="line.107">//                      this.y = p.y;</a>
-<span class="sourceLineNo">108</span><a id="line.108">//                      findNextNeighbor();</a>
-<span class="sourceLineNo">109</span><a id="line.109">//              }</a>
-<span class="sourceLineNo">110</span><a id="line.110">//              </a>
-<span class="sourceLineNo">111</span><a id="line.111">//              private void findNextNeighbor() {</a>
-<span class="sourceLineNo">112</span><a id="line.112">//                      dir = dir + 1;</a>
-<span class="sourceLineNo">113</span><a id="line.113">//                      while (dir &lt; 4) {</a>
-<span class="sourceLineNo">114</span><a id="line.114">//                              xn = x + dX[dir];</a>
-<span class="sourceLineNo">115</span><a id="line.115">//                              yn = y + dY[dir];</a>
-<span class="sourceLineNo">116</span><a id="line.116">//                              if (xn &gt;= 0 &amp;&amp; xn &lt; width &amp;&amp; yn &gt;= 0 &amp;&amp; yn &lt; height) {</a>
-<span class="sourceLineNo">117</span><a id="line.117">//                                      break;  // found neighbor, don't advance dir</a>
-<span class="sourceLineNo">118</span><a id="line.118">//                              }</a>
-<span class="sourceLineNo">119</span><a id="line.119">//                              dir = dir + 1;</a>
-<span class="sourceLineNo">120</span><a id="line.120">//                      }</a>
-<span class="sourceLineNo">121</span><a id="line.121">//              }</a>
-<span class="sourceLineNo">122</span><a id="line.122">//</a>
-<span class="sourceLineNo">123</span><a id="line.123">//              @Override</a>
-<span class="sourceLineNo">124</span><a id="line.124">//              public Iterator&lt;ImagePoint&gt; iterator() {</a>
-<span class="sourceLineNo">125</span><a id="line.125">//                      return new Iterator&lt;ImagePoint&gt;() {</a>
-<span class="sourceLineNo">126</span><a id="line.126">//                              @Override</a>
-<span class="sourceLineNo">127</span><a id="line.127">//                              public boolean hasNext() {</a>
-<span class="sourceLineNo">128</span><a id="line.128">//                                      return dir &lt; 4;</a>
-<span class="sourceLineNo">129</span><a id="line.129">//                              }</a>
-<span class="sourceLineNo">130</span><a id="line.130">//                              @Override</a>
-<span class="sourceLineNo">131</span><a id="line.131">//                              public ImagePoint next() {</a>
-<span class="sourceLineNo">132</span><a id="line.132">//                                      ImagePoint nextPnt = imagePoints[xn][yn];</a>
-<span class="sourceLineNo">133</span><a id="line.133">//                                      findNextNeighbor();</a>
-<span class="sourceLineNo">134</span><a id="line.134">//                                      return nextPnt;</a>
-<span class="sourceLineNo">135</span><a id="line.135">//                              }</a>
-<span class="sourceLineNo">136</span><a id="line.136">//                      };</a>
-<span class="sourceLineNo">137</span><a id="line.137">//              }</a>
-<span class="sourceLineNo">138</span><a id="line.138">//              </a>
-<span class="sourceLineNo">139</span><a id="line.139">//      }</a>
-<span class="sourceLineNo">140</span><a id="line.140">        </a>
-<span class="sourceLineNo">141</span><a id="line.141">        // --------------------------------------------------------</a>
-<span class="sourceLineNo">142</span><a id="line.142">        </a>
-<span class="sourceLineNo">143</span><a id="line.143">        private static final int[] dX = {1, 0, -1, 0};</a>
-<span class="sourceLineNo">144</span><a id="line.144">        private static final int[] dY = {0, -1, 0, 1};</a>
-<span class="sourceLineNo">145</span><a id="line.145">        </a>
-<span class="sourceLineNo">146</span><a id="line.146">        /**</a>
-<span class="sourceLineNo">147</span><a id="line.147">         * A pixel value which knows its coordinates.</a>
-<span class="sourceLineNo">148</span><a id="line.148">         * This is a non-static class, i.e.,  {@link Pixel} instances can only</a>
-<span class="sourceLineNo">149</span><a id="line.149">         * exist in the context of a {@link PixelMap} instance.</a>
-<span class="sourceLineNo">150</span><a id="line.150">         */</a>
-<span class="sourceLineNo">151</span><a id="line.151">        public class Pixel extends PntInt implements Comparable&lt;Pixel&gt; {</a>
-<span class="sourceLineNo">152</span><a id="line.152">                </a>
-<span class="sourceLineNo">153</span><a id="line.153">                public final int val;           // the pixel value</a>
-<span class="sourceLineNo">154</span><a id="line.154">                private byte dir = 0;           // next-neighbor search direction</a>
-<span class="sourceLineNo">155</span><a id="line.155"></a>
-<span class="sourceLineNo">156</span><a id="line.156">                // only the enclosing PixelMap can instantiate pixels</a>
-<span class="sourceLineNo">157</span><a id="line.157">                public Pixel(int x, int y, int val) {</a>
-<span class="sourceLineNo">158</span><a id="line.158">                        super(x, y);    // Pnt2d.PntInt</a>
-<span class="sourceLineNo">159</span><a id="line.159">                        this.val = val;</a>
-<span class="sourceLineNo">160</span><a id="line.160">                }</a>
-<span class="sourceLineNo">161</span><a id="line.161">                </a>
-<span class="sourceLineNo">162</span><a id="line.162">                /**</a>
-<span class="sourceLineNo">163</span><a id="line.163">                 * Sets this pixel to unvisited and resets its next-neighbor search direction.</a>
-<span class="sourceLineNo">164</span><a id="line.164">                 */</a>
-<span class="sourceLineNo">165</span><a id="line.165">                public void reset() {</a>
-<span class="sourceLineNo">166</span><a id="line.166">                        this.dir = 0;</a>
-<span class="sourceLineNo">167</span><a id="line.167">                }</a>
-<span class="sourceLineNo">168</span><a id="line.168">                </a>
-<span class="sourceLineNo">169</span><a id="line.169">                /**</a>
-<span class="sourceLineNo">170</span><a id="line.170">                 * Gets the next neighbor of this pixel that is inside</a>
-<span class="sourceLineNo">171</span><a id="line.171">                 * the containing image.</a>
-<span class="sourceLineNo">172</span><a id="line.172">                 * @return the next neighboring {@link Pixel} or {@code null} if no more neighbors</a>
-<span class="sourceLineNo">173</span><a id="line.173">                 */</a>
-<span class="sourceLineNo">174</span><a id="line.174">                public Pixel getNextNeighbor() {</a>
-<span class="sourceLineNo">175</span><a id="line.175">                        int u = -1, v = -1;</a>
-<span class="sourceLineNo">176</span><a id="line.176">                        boolean found = false;</a>
-<span class="sourceLineNo">177</span><a id="line.177">                        while (this.dir &lt; 4 &amp;&amp; !found) {</a>
-<span class="sourceLineNo">178</span><a id="line.178">                                // try direction dir</a>
-<span class="sourceLineNo">179</span><a id="line.179">                                u = this.x + dX[this.dir];      // coordinates of neighbor in direction n</a>
-<span class="sourceLineNo">180</span><a id="line.180">                                v = this.y + dY[this.dir];</a>
-<span class="sourceLineNo">181</span><a id="line.181">                                found = (u &gt;= 0 &amp;&amp; u &lt; width &amp;&amp; v &gt;= 0 &amp;&amp; v &lt; height);</a>
-<span class="sourceLineNo">182</span><a id="line.182">                                this.dir++;</a>
-<span class="sourceLineNo">183</span><a id="line.183">                        }</a>
-<span class="sourceLineNo">184</span><a id="line.184">                        if (found) {</a>
-<span class="sourceLineNo">185</span><a id="line.185">                                return PixelMap.this.getPixel(u, v);</a>
-<span class="sourceLineNo">186</span><a id="line.186">                        }</a>
-<span class="sourceLineNo">187</span><a id="line.187">                        return null;</a>
-<span class="sourceLineNo">188</span><a id="line.188">                }</a>
-<span class="sourceLineNo">189</span><a id="line.189"></a>
-<span class="sourceLineNo">190</span><a id="line.190">                @Override       // sorts by increasing val</a>
-<span class="sourceLineNo">191</span><a id="line.191">                public int compareTo(Pixel other) {</a>
-<span class="sourceLineNo">192</span><a id="line.192">                        //return val - other.val;</a>
-<span class="sourceLineNo">193</span><a id="line.193">                        return Integer.compare(this.val, other.val);</a>
-<span class="sourceLineNo">194</span><a id="line.194">                }</a>
-<span class="sourceLineNo">195</span><a id="line.195"></a>
-<span class="sourceLineNo">196</span><a id="line.196">                @Override</a>
-<span class="sourceLineNo">197</span><a id="line.197">                public String toString() {</a>
-<span class="sourceLineNo">198</span><a id="line.198">                        return String.format("%s[x=%d, y=%d, val=%d]", Pixel.class.getSimpleName(), x, y, val);</a>
-<span class="sourceLineNo">199</span><a id="line.199">                }</a>
-<span class="sourceLineNo">200</span><a id="line.200"></a>
-<span class="sourceLineNo">201</span><a id="line.201">        }</a>
-<span class="sourceLineNo">202</span><a id="line.202">}</a>
+<span class="sourceLineNo">096</span><a id="line.96">        </a>
+<span class="sourceLineNo">097</span><a id="line.97">//      public PointNeighborhood getNeighbors(PntInt p) {</a>
+<span class="sourceLineNo">098</span><a id="line.98">//              return new PointNeighborhood(p);</a>
+<span class="sourceLineNo">099</span><a id="line.99">//      }</a>
+<span class="sourceLineNo">100</span><a id="line.100">//      </a>
+<span class="sourceLineNo">101</span><a id="line.101">//      public class PointNeighborhood implements Iterable&lt;ImagePoint&gt; {</a>
+<span class="sourceLineNo">102</span><a id="line.102">//              private final int x, y; // the center of this neighborhood</a>
+<span class="sourceLineNo">103</span><a id="line.103">//              private int xn, yn;     // the coordinates of the next neighbor</a>
+<span class="sourceLineNo">104</span><a id="line.104">//              private int dir=  -1;   // the direction of the next neighbor (valid if dir=0,..,3)</a>
+<span class="sourceLineNo">105</span><a id="line.105">//              </a>
+<span class="sourceLineNo">106</span><a id="line.106">//              protected PointNeighborhood(PntInt p) {</a>
+<span class="sourceLineNo">107</span><a id="line.107">//                      this.x = p.x;</a>
+<span class="sourceLineNo">108</span><a id="line.108">//                      this.y = p.y;</a>
+<span class="sourceLineNo">109</span><a id="line.109">//                      findNextNeighbor();</a>
+<span class="sourceLineNo">110</span><a id="line.110">//              }</a>
+<span class="sourceLineNo">111</span><a id="line.111">//              </a>
+<span class="sourceLineNo">112</span><a id="line.112">//              private void findNextNeighbor() {</a>
+<span class="sourceLineNo">113</span><a id="line.113">//                      dir = dir + 1;</a>
+<span class="sourceLineNo">114</span><a id="line.114">//                      while (dir &lt; 4) {</a>
+<span class="sourceLineNo">115</span><a id="line.115">//                              xn = x + dX[dir];</a>
+<span class="sourceLineNo">116</span><a id="line.116">//                              yn = y + dY[dir];</a>
+<span class="sourceLineNo">117</span><a id="line.117">//                              if (xn &gt;= 0 &amp;&amp; xn &lt; width &amp;&amp; yn &gt;= 0 &amp;&amp; yn &lt; height) {</a>
+<span class="sourceLineNo">118</span><a id="line.118">//                                      break;  // found neighbor, don't advance dir</a>
+<span class="sourceLineNo">119</span><a id="line.119">//                              }</a>
+<span class="sourceLineNo">120</span><a id="line.120">//                              dir = dir + 1;</a>
+<span class="sourceLineNo">121</span><a id="line.121">//                      }</a>
+<span class="sourceLineNo">122</span><a id="line.122">//              }</a>
+<span class="sourceLineNo">123</span><a id="line.123">//</a>
+<span class="sourceLineNo">124</span><a id="line.124">//              @Override</a>
+<span class="sourceLineNo">125</span><a id="line.125">//              public Iterator&lt;ImagePoint&gt; iterator() {</a>
+<span class="sourceLineNo">126</span><a id="line.126">//                      return new Iterator&lt;ImagePoint&gt;() {</a>
+<span class="sourceLineNo">127</span><a id="line.127">//                              @Override</a>
+<span class="sourceLineNo">128</span><a id="line.128">//                              public boolean hasNext() {</a>
+<span class="sourceLineNo">129</span><a id="line.129">//                                      return dir &lt; 4;</a>
+<span class="sourceLineNo">130</span><a id="line.130">//                              }</a>
+<span class="sourceLineNo">131</span><a id="line.131">//                              @Override</a>
+<span class="sourceLineNo">132</span><a id="line.132">//                              public ImagePoint next() {</a>
+<span class="sourceLineNo">133</span><a id="line.133">//                                      ImagePoint nextPnt = imagePoints[xn][yn];</a>
+<span class="sourceLineNo">134</span><a id="line.134">//                                      findNextNeighbor();</a>
+<span class="sourceLineNo">135</span><a id="line.135">//                                      return nextPnt;</a>
+<span class="sourceLineNo">136</span><a id="line.136">//                              }</a>
+<span class="sourceLineNo">137</span><a id="line.137">//                      };</a>
+<span class="sourceLineNo">138</span><a id="line.138">//              }</a>
+<span class="sourceLineNo">139</span><a id="line.139">//              </a>
+<span class="sourceLineNo">140</span><a id="line.140">//      }</a>
+<span class="sourceLineNo">141</span><a id="line.141">        </a>
+<span class="sourceLineNo">142</span><a id="line.142">        // --------------------------------------------------------</a>
+<span class="sourceLineNo">143</span><a id="line.143">        </a>
+<span class="sourceLineNo">144</span><a id="line.144">        private static final int[] dX = {1, 0, -1, 0};</a>
+<span class="sourceLineNo">145</span><a id="line.145">        private static final int[] dY = {0, -1, 0, 1};</a>
+<span class="sourceLineNo">146</span><a id="line.146">        </a>
+<span class="sourceLineNo">147</span><a id="line.147">        /**</a>
+<span class="sourceLineNo">148</span><a id="line.148">         * A pixel value which knows its coordinates.</a>
+<span class="sourceLineNo">149</span><a id="line.149">         * This is a non-static class, i.e.,  {@link Pixel} instances can only</a>
+<span class="sourceLineNo">150</span><a id="line.150">         * exist in the context of a {@link PixelMap} instance.</a>
+<span class="sourceLineNo">151</span><a id="line.151">         */</a>
+<span class="sourceLineNo">152</span><a id="line.152">        public class Pixel extends PntInt implements Comparable&lt;Pixel&gt; {</a>
+<span class="sourceLineNo">153</span><a id="line.153">                </a>
+<span class="sourceLineNo">154</span><a id="line.154">                public final int val;           // the pixel value</a>
+<span class="sourceLineNo">155</span><a id="line.155">                private byte dir = 0;           // next-neighbor search direction</a>
+<span class="sourceLineNo">156</span><a id="line.156"></a>
+<span class="sourceLineNo">157</span><a id="line.157">                // only the enclosing PixelMap can instantiate pixels</a>
+<span class="sourceLineNo">158</span><a id="line.158">                public Pixel(int x, int y, int val) {</a>
+<span class="sourceLineNo">159</span><a id="line.159">                        super(x, y);    // Pnt2d.PntInt</a>
+<span class="sourceLineNo">160</span><a id="line.160">                        this.val = val;</a>
+<span class="sourceLineNo">161</span><a id="line.161">                }</a>
+<span class="sourceLineNo">162</span><a id="line.162">                </a>
+<span class="sourceLineNo">163</span><a id="line.163">                /**</a>
+<span class="sourceLineNo">164</span><a id="line.164">                 * Sets this pixel to unvisited and resets its next-neighbor search direction.</a>
+<span class="sourceLineNo">165</span><a id="line.165">                 */</a>
+<span class="sourceLineNo">166</span><a id="line.166">                public void reset() {</a>
+<span class="sourceLineNo">167</span><a id="line.167">                        this.dir = 0;</a>
+<span class="sourceLineNo">168</span><a id="line.168">                }</a>
+<span class="sourceLineNo">169</span><a id="line.169">                </a>
+<span class="sourceLineNo">170</span><a id="line.170">                /**</a>
+<span class="sourceLineNo">171</span><a id="line.171">                 * Gets the next neighbor of this pixel that is inside</a>
+<span class="sourceLineNo">172</span><a id="line.172">                 * the containing image.</a>
+<span class="sourceLineNo">173</span><a id="line.173">                 * @return the next neighboring {@link Pixel} or {@code null} if no more neighbors</a>
+<span class="sourceLineNo">174</span><a id="line.174">                 */</a>
+<span class="sourceLineNo">175</span><a id="line.175">                public Pixel getNextNeighbor() {</a>
+<span class="sourceLineNo">176</span><a id="line.176">                        int u = -1, v = -1;</a>
+<span class="sourceLineNo">177</span><a id="line.177">                        boolean found = false;</a>
+<span class="sourceLineNo">178</span><a id="line.178">                        while (this.dir &lt; 4 &amp;&amp; !found) {</a>
+<span class="sourceLineNo">179</span><a id="line.179">                                // try direction dir</a>
+<span class="sourceLineNo">180</span><a id="line.180">                                u = this.x + dX[this.dir];      // coordinates of neighbor in direction n</a>
+<span class="sourceLineNo">181</span><a id="line.181">                                v = this.y + dY[this.dir];</a>
+<span class="sourceLineNo">182</span><a id="line.182">                                found = (u &gt;= 0 &amp;&amp; u &lt; width &amp;&amp; v &gt;= 0 &amp;&amp; v &lt; height);</a>
+<span class="sourceLineNo">183</span><a id="line.183">                                this.dir++;</a>
+<span class="sourceLineNo">184</span><a id="line.184">                        }</a>
+<span class="sourceLineNo">185</span><a id="line.185">                        if (found) {</a>
+<span class="sourceLineNo">186</span><a id="line.186">                                return PixelMap.this.getPixel(u, v);</a>
+<span class="sourceLineNo">187</span><a id="line.187">                        }</a>
+<span class="sourceLineNo">188</span><a id="line.188">                        return null;</a>
+<span class="sourceLineNo">189</span><a id="line.189">                }</a>
+<span class="sourceLineNo">190</span><a id="line.190"></a>
+<span class="sourceLineNo">191</span><a id="line.191">                @Override       // sorts by increasing val</a>
+<span class="sourceLineNo">192</span><a id="line.192">                public int compareTo(Pixel other) {</a>
+<span class="sourceLineNo">193</span><a id="line.193">                        //return val - other.val;</a>
+<span class="sourceLineNo">194</span><a id="line.194">                        return Integer.compare(this.val, other.val);</a>
+<span class="sourceLineNo">195</span><a id="line.195">                }</a>
+<span class="sourceLineNo">196</span><a id="line.196"></a>
+<span class="sourceLineNo">197</span><a id="line.197">                @Override</a>
+<span class="sourceLineNo">198</span><a id="line.198">                public String toString() {</a>
+<span class="sourceLineNo">199</span><a id="line.199">                        return String.format("%s[x=%d, y=%d, val=%d]", Pixel.class.getSimpleName(), x, y, val);</a>
+<span class="sourceLineNo">200</span><a id="line.200">                }</a>
+<span class="sourceLineNo">201</span><a id="line.201"></a>
+<span class="sourceLineNo">202</span><a id="line.202">        }</a>
+<span class="sourceLineNo">203</span><a id="line.203">}</a>
 
 
 

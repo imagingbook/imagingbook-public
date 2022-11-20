@@ -15,7 +15,6 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.nonlinear.VectorMedianFilter;
 import imagingbook.common.filter.nonlinear.VectorMedianFilter.Parameters;
 import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.common.util.EnumUtils;
 
 /**
  * This plugin applies a vector median filter to a RGB color image.
@@ -24,11 +23,13 @@ import imagingbook.common.util.EnumUtils;
  */
 public class MedianFilter_Color_Vector implements PlugInFilter {
 	
-    public int setup(String arg, ImagePlus imp) {
+    @Override
+	public int setup(String arg, ImagePlus imp) {
          return DOES_RGB;
     }
 
-    public void run(ImageProcessor ip) {
+    @Override
+	public void run(ImageProcessor ip) {
     	Parameters params = new VectorMedianFilter.Parameters();
     	if (!setParameters(params)) return;
     	
@@ -44,8 +45,7 @@ public class MedianFilter_Color_Vector implements PlugInFilter {
     boolean setParameters(Parameters params) {
 		GenericDialog gd = new GenericDialog("Median Filter");
 		gd.addNumericField("Radius", params.radius, 1);
-		String[] normChoices = EnumUtils.getEnumNames(NormType.class);
-		gd.addChoice("Distance norm", normChoices, params.distanceNorm.name());
+		gd.addEnumChoice("Distance norm", params.distanceNorm);
 //		gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);
 //		gd.addCheckbox("Show mask", params.showMask);
 		
@@ -53,7 +53,7 @@ public class MedianFilter_Color_Vector implements PlugInFilter {
 		if(gd.wasCanceled()) return false;
 		
 		params.radius = Math.max(gd.getNextNumber(),0.5);
-		params.distanceNorm = NormType.valueOf(gd.getNextChoice());
+		params.distanceNorm = gd.getNextEnumChoice(NormType.class);
 //		params.markModifiedPixels = gd.getNextBoolean();
 //		params.showMask = gd.getNextBoolean();
 		return true;

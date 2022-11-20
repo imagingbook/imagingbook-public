@@ -27,138 +27,139 @@
 <span class="sourceLineNo">017</span><a id="line.17">/**</a>
 <span class="sourceLineNo">018</span><a id="line.18"> * &lt;p&gt;</a>
 <span class="sourceLineNo">019</span><a id="line.19"> * This adaptive thresholder splits the image into non-overlapping square</a>
-<span class="sourceLineNo">020</span><a id="line.20"> * sub-images, computes the optimal threshold within each sub-image </a>
-<span class="sourceLineNo">021</span><a id="line.21"> * (using a {@link OtsuThresholder}) and interpolates linearly between </a>
-<span class="sourceLineNo">022</span><a id="line.22"> * these local thresholds. See also Sec. 9.4 of [1] for a description.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * sub-images, computes the optimal threshold within each sub-image (using a</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * {@link OtsuThresholder}) and interpolates linearly between these local</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * thresholds. See also Sec. 9.4 of [1] for a description.</a>
 <span class="sourceLineNo">023</span><a id="line.23"> * &lt;/p&gt;</a>
 <span class="sourceLineNo">024</span><a id="line.24"> * &lt;p&gt;</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
-<span class="sourceLineNo">026</span><a id="line.26"> * &lt;/p&gt;</a>
-<span class="sourceLineNo">027</span><a id="line.27"> * </a>
-<span class="sourceLineNo">028</span><a id="line.28"> * @author WB</a>
-<span class="sourceLineNo">029</span><a id="line.29"> * @version 2022/08/01</a>
-<span class="sourceLineNo">030</span><a id="line.30"> */</a>
-<span class="sourceLineNo">031</span><a id="line.31">public class InterpolatingThresholder implements AdaptiveThresholder {</a>
-<span class="sourceLineNo">032</span><a id="line.32">        </a>
-<span class="sourceLineNo">033</span><a id="line.33">        /**</a>
-<span class="sourceLineNo">034</span><a id="line.34">         * Parameters for class {@link InterpolatingThresholder}.</a>
-<span class="sourceLineNo">035</span><a id="line.35">         */</a>
-<span class="sourceLineNo">036</span><a id="line.36">        public static class Parameters implements ParameterBundle {</a>
-<span class="sourceLineNo">037</span><a id="line.37">                @DialogLabel("Tile size")</a>
-<span class="sourceLineNo">038</span><a id="line.38">                public int tileSize = 32;</a>
-<span class="sourceLineNo">039</span><a id="line.39">                </a>
-<span class="sourceLineNo">040</span><a id="line.40">                @DialogLabel("Background mode")</a>
-<span class="sourceLineNo">041</span><a id="line.41">                public BackgroundMode bgMode = BackgroundMode.DARK;</a>
-<span class="sourceLineNo">042</span><a id="line.42">        }</a>
-<span class="sourceLineNo">043</span><a id="line.43">        </a>
-<span class="sourceLineNo">044</span><a id="line.44">        private final Parameters params;</a>
-<span class="sourceLineNo">045</span><a id="line.45">        </a>
-<span class="sourceLineNo">046</span><a id="line.46">        public InterpolatingThresholder() {</a>
-<span class="sourceLineNo">047</span><a id="line.47">                this.params = new Parameters();</a>
-<span class="sourceLineNo">048</span><a id="line.48">        }</a>
-<span class="sourceLineNo">049</span><a id="line.49">        </a>
-<span class="sourceLineNo">050</span><a id="line.50">        public InterpolatingThresholder(Parameters params) {</a>
-<span class="sourceLineNo">051</span><a id="line.51">                this.params = params;</a>
-<span class="sourceLineNo">052</span><a id="line.52">        }</a>
-<span class="sourceLineNo">053</span><a id="line.53"></a>
-<span class="sourceLineNo">054</span><a id="line.54">        @Override</a>
-<span class="sourceLineNo">055</span><a id="line.55">        public ByteProcessor getThreshold(ByteProcessor ip) {</a>
-<span class="sourceLineNo">056</span><a id="line.56">                final int W = ip.getWidth();</a>
-<span class="sourceLineNo">057</span><a id="line.57">                final int H = ip.getHeight();</a>
-<span class="sourceLineNo">058</span><a id="line.58">                final int tileSize = params.tileSize;</a>
-<span class="sourceLineNo">059</span><a id="line.59">                </a>
-<span class="sourceLineNo">060</span><a id="line.60">                // determine number of tiles</a>
-<span class="sourceLineNo">061</span><a id="line.61">                int nW = (W % tileSize == 0) ? (W / tileSize + 1) : (W / tileSize + 2);</a>
-<span class="sourceLineNo">062</span><a id="line.62">                int nH = (H % tileSize == 0) ? (H / tileSize + 1) : (H / tileSize + 2);</a>
-<span class="sourceLineNo">063</span><a id="line.63">                </a>
-<span class="sourceLineNo">064</span><a id="line.64">                int[][] tiles = new int[nW][nH];</a>
-<span class="sourceLineNo">065</span><a id="line.65">                int s0 = tileSize / 2;  // center of title (s0 + s1 = tileSize)</a>
-<span class="sourceLineNo">066</span><a id="line.66">//              int s1 = tileSize - s0;</a>
-<span class="sourceLineNo">067</span><a id="line.67"></a>
-<span class="sourceLineNo">068</span><a id="line.68">                // compute threshold for each tile</a>
-<span class="sourceLineNo">069</span><a id="line.69">                int[] h = new int[256];</a>
-<span class="sourceLineNo">070</span><a id="line.70">                OtsuThresholder thr = new OtsuThresholder();</a>
-<span class="sourceLineNo">071</span><a id="line.71"></a>
-<span class="sourceLineNo">072</span><a id="line.72">                int q_ = (params.bgMode == BackgroundMode.DARK) ? 256 : 0;</a>
-<span class="sourceLineNo">073</span><a id="line.73"></a>
-<span class="sourceLineNo">074</span><a id="line.74">                for (int j = 0, v0 = 0; j &lt; nH; j++, v0 += tileSize) {</a>
-<span class="sourceLineNo">075</span><a id="line.75">                        for (int i = 0, u0 = 0; i &lt; nW; i++, u0 += tileSize) {</a>
-<span class="sourceLineNo">076</span><a id="line.76">                                getSubimageHistogram(ip, u0 - s0, v0 - s0, tileSize, h);</a>
-<span class="sourceLineNo">077</span><a id="line.77">                                int q = thr.getThreshold(h);</a>
-<span class="sourceLineNo">078</span><a id="line.78">                                if (q &lt; 0) q = q_; // no threshold found in this tile</a>
-<span class="sourceLineNo">079</span><a id="line.79">                                tiles[i][j] = q;</a>
-<span class="sourceLineNo">080</span><a id="line.80">                                //IJ.log(i + "/" + j + ": " + q);</a>
-<span class="sourceLineNo">081</span><a id="line.81">                        }</a>
-<span class="sourceLineNo">082</span><a id="line.82">                }</a>
-<span class="sourceLineNo">083</span><a id="line.83">                </a>
-<span class="sourceLineNo">084</span><a id="line.84">                ByteProcessor thrIp = new ByteProcessor(W, H);</a>
-<span class="sourceLineNo">085</span><a id="line.85">                </a>
-<span class="sourceLineNo">086</span><a id="line.86">                for (int j = 0, v0 = 0; j &lt; nH; j++, v0 += tileSize) {</a>
-<span class="sourceLineNo">087</span><a id="line.87">                        for (int i = 0, u0 = 0; i &lt; nW; i++, u0 += tileSize) {</a>
-<span class="sourceLineNo">088</span><a id="line.88">                                // Rectangle re = new Rectangle(u0-s0, v0-s0, u0-s0+tileSize, v0-s0+tileSize);</a>
-<span class="sourceLineNo">089</span><a id="line.89">                                for (int v = v0 - s0; v &lt; v0 - s0 + tileSize; v++) {</a>
-<span class="sourceLineNo">090</span><a id="line.90">                                        for (int u = u0 - s0; u &lt; u0 - s0 + tileSize; u++) {</a>
-<span class="sourceLineNo">091</span><a id="line.91">                                                thrIp.putPixel(u, v, tiles[i][j]);</a>
-<span class="sourceLineNo">092</span><a id="line.92">                                        }</a>
-<span class="sourceLineNo">093</span><a id="line.93">                                }</a>
-<span class="sourceLineNo">094</span><a id="line.94">                        }</a>
-<span class="sourceLineNo">095</span><a id="line.95">                }</a>
-<span class="sourceLineNo">096</span><a id="line.96">                </a>
-<span class="sourceLineNo">097</span><a id="line.97">                // linearly interpolate</a>
-<span class="sourceLineNo">098</span><a id="line.98">                for (int j = 0, v0 = 0; j &lt; nH - 1; j++, v0 += tileSize) {</a>
-<span class="sourceLineNo">099</span><a id="line.99">                        for (int i = 0, u0 = 0; i &lt; nW - 1; i++, u0 += tileSize) {</a>
-<span class="sourceLineNo">100</span><a id="line.100">                                int A = tiles[i][j];</a>
-<span class="sourceLineNo">101</span><a id="line.101">                                int B = tiles[i + 1][j];</a>
-<span class="sourceLineNo">102</span><a id="line.102">                                int C = tiles[i][j + 1];</a>
-<span class="sourceLineNo">103</span><a id="line.103">                                int D = tiles[i + 1][j + 1];</a>
-<span class="sourceLineNo">104</span><a id="line.104"></a>
-<span class="sourceLineNo">105</span><a id="line.105">                                // interpolate within [u0, v0, u0 + tileSize, v0 + tileSize]</a>
-<span class="sourceLineNo">106</span><a id="line.106">                                for (int v = v0; v &lt; v0 + tileSize; v++) {</a>
-<span class="sourceLineNo">107</span><a id="line.107">                                        double dy = (double) (v - v0) / tileSize;</a>
-<span class="sourceLineNo">108</span><a id="line.108">                                        double AC = A + dy * (C - A);</a>
-<span class="sourceLineNo">109</span><a id="line.109">                                        double BD = B + dy * (D - B);</a>
-<span class="sourceLineNo">110</span><a id="line.110">                                        for (int u = u0; u &lt; u0 + tileSize; u++) {</a>
-<span class="sourceLineNo">111</span><a id="line.111">                                                double dx = (double) (u - u0) / tileSize;</a>
-<span class="sourceLineNo">112</span><a id="line.112">                                                double ABCD = AC + dx * (BD - AC);</a>
-<span class="sourceLineNo">113</span><a id="line.113">                                                // thrIp.putPixel(u,v,tiles[i][j]);</a>
-<span class="sourceLineNo">114</span><a id="line.114">                                                thrIp.putPixel(u, v, (int) Math.rint(ABCD));</a>
-<span class="sourceLineNo">115</span><a id="line.115">                                        }</a>
-<span class="sourceLineNo">116</span><a id="line.116">                                }</a>
-<span class="sourceLineNo">117</span><a id="line.117"></a>
-<span class="sourceLineNo">118</span><a id="line.118">                        }</a>
-<span class="sourceLineNo">119</span><a id="line.119">                }</a>
-<span class="sourceLineNo">120</span><a id="line.120">                        </a>
-<span class="sourceLineNo">121</span><a id="line.121">                return thrIp;</a>
-<span class="sourceLineNo">122</span><a id="line.122">        }</a>
-<span class="sourceLineNo">123</span><a id="line.123">        </a>
-<span class="sourceLineNo">124</span><a id="line.124">        private void getSubimageHistogram(ByteProcessor ip, int u0, int v0, int size, int[] h) {</a>
-<span class="sourceLineNo">125</span><a id="line.125">                for (int i = 0; i &lt; h.length; i++) {</a>
-<span class="sourceLineNo">126</span><a id="line.126">                        h[i] = 0;</a>
-<span class="sourceLineNo">127</span><a id="line.127">                }</a>
-<span class="sourceLineNo">128</span><a id="line.128">                for (int v = v0; v &lt; v0 + size; v++) {</a>
-<span class="sourceLineNo">129</span><a id="line.129">                        for (int u = u0; u &lt; u0 + size; u++) {</a>
-<span class="sourceLineNo">130</span><a id="line.130">                                int p = getPaddedPixel(ip, u, v);</a>
-<span class="sourceLineNo">131</span><a id="line.131">                                h[p]++;</a>
-<span class="sourceLineNo">132</span><a id="line.132">                        }</a>
-<span class="sourceLineNo">133</span><a id="line.133">                }</a>
-<span class="sourceLineNo">134</span><a id="line.134">        }</a>
-<span class="sourceLineNo">135</span><a id="line.135">        </a>
-<span class="sourceLineNo">136</span><a id="line.136">        // TODO: change to use ImageAccessor!</a>
-<span class="sourceLineNo">137</span><a id="line.137">        private int getPaddedPixel(ByteProcessor bp, int u, int v) {</a>
-<span class="sourceLineNo">138</span><a id="line.138">                final int w = bp.getWidth();</a>
-<span class="sourceLineNo">139</span><a id="line.139">                final int h = bp.getHeight();</a>
-<span class="sourceLineNo">140</span><a id="line.140">                if (u &lt; 0)</a>
-<span class="sourceLineNo">141</span><a id="line.141">                        u = 0;</a>
-<span class="sourceLineNo">142</span><a id="line.142">                else if (u &gt;= w)</a>
-<span class="sourceLineNo">143</span><a id="line.143">                        u = w - 1;</a>
-<span class="sourceLineNo">144</span><a id="line.144">                if (v &lt; 0)</a>
-<span class="sourceLineNo">145</span><a id="line.145">                        v = 0;</a>
-<span class="sourceLineNo">146</span><a id="line.146">                else if (v &gt;= h)</a>
-<span class="sourceLineNo">147</span><a id="line.147">                        v = h - 1;</a>
-<span class="sourceLineNo">148</span><a id="line.148">                return bp.get(u, v);</a>
-<span class="sourceLineNo">149</span><a id="line.149">        }</a>
-<span class="sourceLineNo">150</span><a id="line.150"></a>
-<span class="sourceLineNo">151</span><a id="line.151">}</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * </a>
+<span class="sourceLineNo">029</span><a id="line.29"> * @author WB</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * @version 2022/08/01</a>
+<span class="sourceLineNo">031</span><a id="line.31"> */</a>
+<span class="sourceLineNo">032</span><a id="line.32">public class InterpolatingThresholder implements AdaptiveThresholder {</a>
+<span class="sourceLineNo">033</span><a id="line.33">        </a>
+<span class="sourceLineNo">034</span><a id="line.34">        /**</a>
+<span class="sourceLineNo">035</span><a id="line.35">         * Parameters for class {@link InterpolatingThresholder}.</a>
+<span class="sourceLineNo">036</span><a id="line.36">         */</a>
+<span class="sourceLineNo">037</span><a id="line.37">        public static class Parameters implements ParameterBundle {</a>
+<span class="sourceLineNo">038</span><a id="line.38">                @DialogLabel("Tile size")</a>
+<span class="sourceLineNo">039</span><a id="line.39">                public int tileSize = 32;</a>
+<span class="sourceLineNo">040</span><a id="line.40">                </a>
+<span class="sourceLineNo">041</span><a id="line.41">                @DialogLabel("Background mode")</a>
+<span class="sourceLineNo">042</span><a id="line.42">                public BackgroundMode bgMode = BackgroundMode.DARK;</a>
+<span class="sourceLineNo">043</span><a id="line.43">        }</a>
+<span class="sourceLineNo">044</span><a id="line.44">        </a>
+<span class="sourceLineNo">045</span><a id="line.45">        private final Parameters params;</a>
+<span class="sourceLineNo">046</span><a id="line.46">        </a>
+<span class="sourceLineNo">047</span><a id="line.47">        public InterpolatingThresholder() {</a>
+<span class="sourceLineNo">048</span><a id="line.48">                this.params = new Parameters();</a>
+<span class="sourceLineNo">049</span><a id="line.49">        }</a>
+<span class="sourceLineNo">050</span><a id="line.50">        </a>
+<span class="sourceLineNo">051</span><a id="line.51">        public InterpolatingThresholder(Parameters params) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">                this.params = params;</a>
+<span class="sourceLineNo">053</span><a id="line.53">        }</a>
+<span class="sourceLineNo">054</span><a id="line.54"></a>
+<span class="sourceLineNo">055</span><a id="line.55">        @Override</a>
+<span class="sourceLineNo">056</span><a id="line.56">        public ByteProcessor getThreshold(ByteProcessor ip) {</a>
+<span class="sourceLineNo">057</span><a id="line.57">                final int W = ip.getWidth();</a>
+<span class="sourceLineNo">058</span><a id="line.58">                final int H = ip.getHeight();</a>
+<span class="sourceLineNo">059</span><a id="line.59">                final int tileSize = params.tileSize;</a>
+<span class="sourceLineNo">060</span><a id="line.60">                </a>
+<span class="sourceLineNo">061</span><a id="line.61">                // determine number of tiles</a>
+<span class="sourceLineNo">062</span><a id="line.62">                int nW = (W % tileSize == 0) ? (W / tileSize + 1) : (W / tileSize + 2);</a>
+<span class="sourceLineNo">063</span><a id="line.63">                int nH = (H % tileSize == 0) ? (H / tileSize + 1) : (H / tileSize + 2);</a>
+<span class="sourceLineNo">064</span><a id="line.64">                </a>
+<span class="sourceLineNo">065</span><a id="line.65">                int[][] tiles = new int[nW][nH];</a>
+<span class="sourceLineNo">066</span><a id="line.66">                int s0 = tileSize / 2;  // center of title (s0 + s1 = tileSize)</a>
+<span class="sourceLineNo">067</span><a id="line.67">//              int s1 = tileSize - s0;</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">                // compute threshold for each tile</a>
+<span class="sourceLineNo">070</span><a id="line.70">                int[] h = new int[256];</a>
+<span class="sourceLineNo">071</span><a id="line.71">                OtsuThresholder thr = new OtsuThresholder();</a>
+<span class="sourceLineNo">072</span><a id="line.72"></a>
+<span class="sourceLineNo">073</span><a id="line.73">                int q_ = (params.bgMode == BackgroundMode.DARK) ? 256 : 0;</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">                for (int j = 0, v0 = 0; j &lt; nH; j++, v0 += tileSize) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                        for (int i = 0, u0 = 0; i &lt; nW; i++, u0 += tileSize) {</a>
+<span class="sourceLineNo">077</span><a id="line.77">                                getSubimageHistogram(ip, u0 - s0, v0 - s0, tileSize, h);</a>
+<span class="sourceLineNo">078</span><a id="line.78">                                int q = thr.getThreshold(h);</a>
+<span class="sourceLineNo">079</span><a id="line.79">                                if (q &lt; 0) q = q_; // no threshold found in this tile</a>
+<span class="sourceLineNo">080</span><a id="line.80">                                tiles[i][j] = q;</a>
+<span class="sourceLineNo">081</span><a id="line.81">                                //IJ.log(i + "/" + j + ": " + q);</a>
+<span class="sourceLineNo">082</span><a id="line.82">                        }</a>
+<span class="sourceLineNo">083</span><a id="line.83">                }</a>
+<span class="sourceLineNo">084</span><a id="line.84">                </a>
+<span class="sourceLineNo">085</span><a id="line.85">                ByteProcessor thrIp = new ByteProcessor(W, H);</a>
+<span class="sourceLineNo">086</span><a id="line.86">                </a>
+<span class="sourceLineNo">087</span><a id="line.87">                for (int j = 0, v0 = 0; j &lt; nH; j++, v0 += tileSize) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">                        for (int i = 0, u0 = 0; i &lt; nW; i++, u0 += tileSize) {</a>
+<span class="sourceLineNo">089</span><a id="line.89">                                // Rectangle re = new Rectangle(u0-s0, v0-s0, u0-s0+tileSize, v0-s0+tileSize);</a>
+<span class="sourceLineNo">090</span><a id="line.90">                                for (int v = v0 - s0; v &lt; v0 - s0 + tileSize; v++) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">                                        for (int u = u0 - s0; u &lt; u0 - s0 + tileSize; u++) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">                                                thrIp.putPixel(u, v, tiles[i][j]);</a>
+<span class="sourceLineNo">093</span><a id="line.93">                                        }</a>
+<span class="sourceLineNo">094</span><a id="line.94">                                }</a>
+<span class="sourceLineNo">095</span><a id="line.95">                        }</a>
+<span class="sourceLineNo">096</span><a id="line.96">                }</a>
+<span class="sourceLineNo">097</span><a id="line.97">                </a>
+<span class="sourceLineNo">098</span><a id="line.98">                // linearly interpolate</a>
+<span class="sourceLineNo">099</span><a id="line.99">                for (int j = 0, v0 = 0; j &lt; nH - 1; j++, v0 += tileSize) {</a>
+<span class="sourceLineNo">100</span><a id="line.100">                        for (int i = 0, u0 = 0; i &lt; nW - 1; i++, u0 += tileSize) {</a>
+<span class="sourceLineNo">101</span><a id="line.101">                                int A = tiles[i][j];</a>
+<span class="sourceLineNo">102</span><a id="line.102">                                int B = tiles[i + 1][j];</a>
+<span class="sourceLineNo">103</span><a id="line.103">                                int C = tiles[i][j + 1];</a>
+<span class="sourceLineNo">104</span><a id="line.104">                                int D = tiles[i + 1][j + 1];</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">                                // interpolate within [u0, v0, u0 + tileSize, v0 + tileSize]</a>
+<span class="sourceLineNo">107</span><a id="line.107">                                for (int v = v0; v &lt; v0 + tileSize; v++) {</a>
+<span class="sourceLineNo">108</span><a id="line.108">                                        double dy = (double) (v - v0) / tileSize;</a>
+<span class="sourceLineNo">109</span><a id="line.109">                                        double AC = A + dy * (C - A);</a>
+<span class="sourceLineNo">110</span><a id="line.110">                                        double BD = B + dy * (D - B);</a>
+<span class="sourceLineNo">111</span><a id="line.111">                                        for (int u = u0; u &lt; u0 + tileSize; u++) {</a>
+<span class="sourceLineNo">112</span><a id="line.112">                                                double dx = (double) (u - u0) / tileSize;</a>
+<span class="sourceLineNo">113</span><a id="line.113">                                                double ABCD = AC + dx * (BD - AC);</a>
+<span class="sourceLineNo">114</span><a id="line.114">                                                // thrIp.putPixel(u,v,tiles[i][j]);</a>
+<span class="sourceLineNo">115</span><a id="line.115">                                                thrIp.putPixel(u, v, (int) Math.rint(ABCD));</a>
+<span class="sourceLineNo">116</span><a id="line.116">                                        }</a>
+<span class="sourceLineNo">117</span><a id="line.117">                                }</a>
+<span class="sourceLineNo">118</span><a id="line.118"></a>
+<span class="sourceLineNo">119</span><a id="line.119">                        }</a>
+<span class="sourceLineNo">120</span><a id="line.120">                }</a>
+<span class="sourceLineNo">121</span><a id="line.121">                        </a>
+<span class="sourceLineNo">122</span><a id="line.122">                return thrIp;</a>
+<span class="sourceLineNo">123</span><a id="line.123">        }</a>
+<span class="sourceLineNo">124</span><a id="line.124">        </a>
+<span class="sourceLineNo">125</span><a id="line.125">        private void getSubimageHistogram(ByteProcessor ip, int u0, int v0, int size, int[] h) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                for (int i = 0; i &lt; h.length; i++) {</a>
+<span class="sourceLineNo">127</span><a id="line.127">                        h[i] = 0;</a>
+<span class="sourceLineNo">128</span><a id="line.128">                }</a>
+<span class="sourceLineNo">129</span><a id="line.129">                for (int v = v0; v &lt; v0 + size; v++) {</a>
+<span class="sourceLineNo">130</span><a id="line.130">                        for (int u = u0; u &lt; u0 + size; u++) {</a>
+<span class="sourceLineNo">131</span><a id="line.131">                                int p = getPaddedPixel(ip, u, v);</a>
+<span class="sourceLineNo">132</span><a id="line.132">                                h[p]++;</a>
+<span class="sourceLineNo">133</span><a id="line.133">                        }</a>
+<span class="sourceLineNo">134</span><a id="line.134">                }</a>
+<span class="sourceLineNo">135</span><a id="line.135">        }</a>
+<span class="sourceLineNo">136</span><a id="line.136">        </a>
+<span class="sourceLineNo">137</span><a id="line.137">        // TODO: change to use ImageAccessor!</a>
+<span class="sourceLineNo">138</span><a id="line.138">        private int getPaddedPixel(ByteProcessor bp, int u, int v) {</a>
+<span class="sourceLineNo">139</span><a id="line.139">                final int w = bp.getWidth();</a>
+<span class="sourceLineNo">140</span><a id="line.140">                final int h = bp.getHeight();</a>
+<span class="sourceLineNo">141</span><a id="line.141">                if (u &lt; 0)</a>
+<span class="sourceLineNo">142</span><a id="line.142">                        u = 0;</a>
+<span class="sourceLineNo">143</span><a id="line.143">                else if (u &gt;= w)</a>
+<span class="sourceLineNo">144</span><a id="line.144">                        u = w - 1;</a>
+<span class="sourceLineNo">145</span><a id="line.145">                if (v &lt; 0)</a>
+<span class="sourceLineNo">146</span><a id="line.146">                        v = 0;</a>
+<span class="sourceLineNo">147</span><a id="line.147">                else if (v &gt;= h)</a>
+<span class="sourceLineNo">148</span><a id="line.148">                        v = h - 1;</a>
+<span class="sourceLineNo">149</span><a id="line.149">                return bp.get(u, v);</a>
+<span class="sourceLineNo">150</span><a id="line.150">        }</a>
+<span class="sourceLineNo">151</span><a id="line.151"></a>
+<span class="sourceLineNo">152</span><a id="line.152">}</a>
 
 
 
