@@ -22,12 +22,11 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 /**
- * Helper class providing static methods for writing/reading
- * serialized data to/from files. It is recommended to serialize
- * only data structures composed of standard Java types.
- * Otherwise, if self-defined classes are reloaded, classes of 
- * previously serialized objects may not match any more, causing
- * a {@link ClassNotFoundException} to be thrown.
+ * Helper class providing static methods for writing/reading serialized data
+ * to/from files. It is recommended to serialize only data structures composed
+ * of standard Java types. Otherwise, if self-defined classes are reloaded,
+ * classes of previously serialized objects may not match any more, causing a
+ * {@link ClassNotFoundException} to be thrown.
  * 
  * @author WB
  * @version 2022/07/28

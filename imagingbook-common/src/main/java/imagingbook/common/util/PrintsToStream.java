@@ -12,43 +12,61 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
- * Classes which require a complex {@code toString()} method should
- * implement this interface, which requires the single method 
+ * <p>
+ * Classes which require a complex {@code toString()} method should implement
+ * this interface, which requires the single method
  * {@link #printToStream(PrintStream)}, e.g.,
+ * </p>
+ * 
  * <pre>
  * public void printToStream(PrintStream strm) {
  *     strm.format("...", ...);
- * }</pre>
- * Note that this interface cannot override the default {@link Object#toString()} 
- * method directly. If needed, this should be done in the implementing class by
- * using the pre-defined {@link #printToString()} method:
+ * }
+ * </pre>
+ * <p>
+ * Note that this interface cannot override the default
+ * {@link Object#toString()} method directly. If needed, this should be done in
+ * the implementing class by using the pre-defined {@link #printToString()}
+ * method:
+ * </p>
+ * 
  * <pre>
  * public String toString() {
- *    return printToString();
- * }</pre>
+ * 	return printToString();
+ * }
+ * </pre>
+ * 
  * @author WB
  * @version 2021/09/17
  */
 public interface PrintsToStream {
 	
 	/**
-	 * To be implemented by concrete implementations.
-	 * This method is supposed to write a description of this object
-	 * to the given {@link PrintStream}.
+	 * This method writes a description of this object to the specified
+	 * {@link PrintStream}.
+	 * 
 	 * @param strm the output stream to print to
 	 */
 	public void printToStream(PrintStream strm);
 	
 	/**
-	 * Utility method to save some boilerplate code.
-	 * Returns the description of this object produced
-	 * by {@link #printToStream(PrintStream)}.
-	 * @return the string representation of this object
+	 * Convenience method to save some boilerplate code. Calls
+	 * {@link #printToStream(PrintStream)} to produce a description string for this
+	 * object. The {@link #printToString()} method can also be used by implementing
+	 * classes to override the standard {@link Object#toString()} method, e.g.,
+	 * <pre>
+	 * &commat;Override
+	 * public String toString() {
+	 * 	return this.printToString();
+	 * }
+	 * </pre>
+	 * 
+	 * @return the string representation of this object as defined by {@link #printToStream(PrintStream)}
 	 */
 	public default String printToString() {
 		ByteArrayOutputStream bas = new ByteArrayOutputStream();
 		try (PrintStream strm = new PrintStream(bas)) {
-			printToStream(strm);
+			this.printToStream(strm);
 		}
 		return bas.toString();
 	}

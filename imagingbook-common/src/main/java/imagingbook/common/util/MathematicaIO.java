@@ -15,10 +15,11 @@ import java.util.Locale;
 import imagingbook.common.math.PrintPrecision;
 
 /**
- * This class provides some static methods for formatting
- * Java arrays (representing vectors, matrices or measurements)
- * for copy-pasting to Mathematica.
- * @author wilbur
+ * This class provides some static methods for formatting Java arrays
+ * (representing vectors, matrices or measurements) for copy-pasting to
+ * Mathematica.
+ * 
+ * @author WB
  * @version 2014/12/03
  */
 public abstract class MathematicaIO {
@@ -26,11 +27,11 @@ public abstract class MathematicaIO {
 	private MathematicaIO() {}
 
 	/**
-	 * Generates a string holding the named definition
-	 * of a 1D double array for Mathematica in the form
-	 * name = {A[0], A[1], ...,A[m-1]};
+	 * Generates a string holding the named definition of a 1D double array for
+	 * Mathematica in the form name = {A[0], A[1], ...,A[m-1]};
+	 * 
 	 * @param name the identifier to be used in Mathematica.
-	 * @param A the array to be encoded (of length m).
+	 * @param A    the array to be encoded (of length m).
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, double[] A) {
@@ -50,12 +51,11 @@ public abstract class MathematicaIO {
 	}
 	
 	/**
-	 * Generates a string holding the named definition
-	 * of a 1D float array for Mathematica in the form
-	 * {@code name = {A[0], A[1], ...,A[m-1]};}
+	 * Generates a string holding the named definition of a 1D float array for
+	 * Mathematica in the form {@code name = {A[0], A[1], ...,A[m-1]};}
 	 * 
 	 * @param name the name (Mathematica symbol) for the resulting array
-	 * @param A the array to be encoded (of length m).
+	 * @param A    the array to be encoded (of length m).
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, float[] A) {
@@ -74,14 +74,12 @@ public abstract class MathematicaIO {
 		return result;
 	}
 	
-	
 	/**
-	 * Generates a string holding the named definition
-	 * of a 1D int array for Mathematica in the form
-	 * {@code name = {A[0], A[1], ...,A[m-1]};}
+	 * Generates a string holding the named definition of a 1D int array for
+	 * Mathematica in the form {@code name = {A[0], A[1], ...,A[m-1]};}
 	 * 
 	 * @param name the name (Mathematica symbol) for the resulting array
-	 * @param A the array to be encoded (of length m).
+	 * @param A    the array to be encoded (of length m).
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, int[] A) {
@@ -99,15 +97,14 @@ public abstract class MathematicaIO {
 		return result;
 	}
 
-	// CHECK i/j indices!!!
+	// TODO: CHECK i/j indices!!!
 	/**
-	 * Generates a string holding the named definition
-	 * of a 2D double array for Mathematica in the form
-	 * name = {{A[0][0],...,A[0][m-1]},
-	 * {A[1][0],...,A[1][m-1]}, ...,
-	 * {A[n-1][0], A[n-1][1], ...,A[n-1][m-1]}};
+	 * Generates a string holding the named definition of a 2D double array for
+	 * Mathematica in the form name = {{A[0][0],...,A[0][m-1]},
+	 * {A[1][0],...,A[1][m-1]}, ..., {A[n-1][0], A[n-1][1], ...,A[n-1][m-1]}};
+	 * 
 	 * @param name the identifier to be used in Mathematica.
-	 * @param A the array to be encoded (of length m).
+	 * @param A    the array to be encoded (of length m).
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, double[][] A) {
@@ -134,16 +131,13 @@ public abstract class MathematicaIO {
 		return result;
 	}
 
-
-
 	/**
-	 * Generates a string holding the named definition
-	 * of a 2D float array for Mathematica in the form
-	 * name = {{A[0][0],...,A[0][m-1]},
-	 * {A[1][0],...,A[1][m-1]}, ...,
-	 * {A[n-1][0], A[n-1][1], ...,A[n-1][m-1]}};
+	 * Generates a string holding the named definition of a 2D float array for
+	 * Mathematica in the form name = {{A[0][0],...,A[0][m-1]},
+	 * {A[1][0],...,A[1][m-1]}, ..., {A[n-1][0], A[n-1][1], ...,A[n-1][m-1]}};
+	 * 
 	 * @param name the identifier to be used in Mathematica.
-	 * @param A the array to be encoded (of length m).
+	 * @param A    the array to be encoded (of length m).
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, float[][] A) {

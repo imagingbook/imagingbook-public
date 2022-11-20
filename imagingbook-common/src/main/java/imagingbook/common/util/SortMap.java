@@ -12,23 +12,25 @@ import java.util.stream.IntStream;
 
 /**
  * <p>
- * Determines the 'permutation' of a sequence of numbers and
- * keeps it as an array ({@link #perm}) of position indexes.
- * These indexes indicate how the original input array
- * may be re-ordered to become sorted
- * (see {@link #getPermutation()}).
+ * Determines the 'permutation' of a sequence of numbers and keeps it as an
+ * array ({@link #perm}) of position indexes. These indexes indicate how the
+ * original input array may be re-ordered to become sorted (see
+ * {@link #getPermutation()}).
  * </p>
- * 
  * <p>
  * Usage example - get the second-smallest element of a {@code double} array:
  * </p>
  * <pre>
  * double[] a = ... 	// some array
  * int k = SortMap.getNthSmallestIndex(a, 1);	// index of second-smallest element
- * double x = a[k];</pre>
- * <p>Alternatively,</p>
+ * double x = a[k];
+ * </pre>
+ * <p>
+ * Alternatively,
+ * </p>
  * <pre>
- * double x = getNthSmallestValue(a, 1);</pre>
+ * double x = getNthSmallestValue(a, 1);
+ * </pre>
  * 
  * @author WB
  * @version 2022/09/15

@@ -7,8 +7,7 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 /**
- * This class performs ZIP-compression and decompression on 
- * byte arrays.
+ * This class provides ZIP-compression/decompression of byte arrays.
  * 
  * @author WB
  * @version 2022/09/06
@@ -64,24 +63,6 @@ public class ZipCompressor {
 		} catch (IOException | DataFormatException e) { } 
 
 		return outputBytes;
-	}
-
-	// ----------------------------------------------------------------------------
-
-	public static void main(String a[]){
-		String inputText = "some really foolish text 12345 $%§&";
-		
-		System.out.println("input=\"" + inputText + "\"");
-		
-		ZipCompressor compr = new ZipCompressor();
-
-		byte[] compressed = compr.compressByteArray(inputText.getBytes());
-		System.out.println("compressed=\"" + new String(compressed) + "\" + length=" + compressed.length);
-		//      System.out.println("compressed=" + Arrays.toString(compressed));
-
-
-		byte[] decompressed = compr.decompressByteArray(compressed);
-		System.out.println("decompressed=\"" + new String(decompressed) + "\"");
 	}
 	
 }

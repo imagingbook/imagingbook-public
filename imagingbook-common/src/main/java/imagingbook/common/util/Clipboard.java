@@ -18,6 +18,7 @@ import java.awt.datatransfer.Transferable;
  * http://examples.javacodegeeks.com/desktop-java/awt/datatransfer/getting-and-setting-text-on-the-system-clipboard/
  * 
  * @author WB
+ * @version 2022/11/20
  */
 
 public abstract class Clipboard {

@@ -12,9 +12,9 @@ package imagingbook.common.util;
 import java.util.Iterator;
 
 /**
- * This class implements a 1D map for arbitrary objects
- * with flexible bottom and top index,
- * similar to an array in Pascal. Containers are immutable (apart from element values).
+ * This class implements a 1D map for arbitrary objects with flexible bottom and
+ * top index, similar to an array in Pascal. Containers are immutable (apart
+ * from element values).
  */
 public class LinearContainer<T> implements Iterable<T> {
 	
@@ -22,8 +22,9 @@ public class LinearContainer<T> implements Iterable<T> {
 	private final T[] data;
 	
 	/**
-	 * Creates a LinearContainer with the index range
-	 * [0, n - 1], like an ordinary array.
+	 * Creates a LinearContainer with the index range [0, n - 1], like an ordinary
+	 * array.
+	 * 
 	 * @param n size of the container.
 	 */
 	public LinearContainer(int n) {
@@ -31,8 +32,8 @@ public class LinearContainer<T> implements Iterable<T> {
 	}
 	
 	/**
-	 * Creates a LinearContainer with the index range
-	 * [botIndex, topIndex].
+	 * Creates a LinearContainer with the index range [botIndex, topIndex].
+	 * 
 	 * @param botIndex bottom (smallest) index.
 	 * @param topIndex top (largest) index.
 	 */
@@ -49,6 +50,7 @@ public class LinearContainer<T> implements Iterable<T> {
 	
 	/**
 	 * Returns the k-th element of this container.
+	 * 
 	 * @param k the element index
 	 * @return the k-th element
 	 */
@@ -59,7 +61,8 @@ public class LinearContainer<T> implements Iterable<T> {
 	
 	/**
 	 * Sets (replaces) the k-th element of this container.
-	 * @param k the element index
+	 * 
+	 * @param k    the element index
 	 * @param elem the new element
 	 */
 	public void setElement(int k, T elem) {
@@ -69,6 +72,7 @@ public class LinearContainer<T> implements Iterable<T> {
 
 	/**
 	 * Returns the bottom index of this container.
+	 * 
 	 * @return the bottom index
 	 */
 	public int getBotIndex() {
@@ -77,6 +81,7 @@ public class LinearContainer<T> implements Iterable<T> {
 	
 	/**
 	 * Returns the top index of this container.
+	 * 
 	 * @return the top index
 	 */
 	public int getTopIndex() {

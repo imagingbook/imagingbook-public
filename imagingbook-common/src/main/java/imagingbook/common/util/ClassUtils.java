@@ -26,6 +26,12 @@ import java.util.stream.Stream;
 
 import imagingbook.core.FileUtils;
 
+/**
+ * 
+ * @author WB
+ * @version 2022/11/20
+ *
+ */
 public abstract class ClassUtils {
 	
 	private ClassUtils() {}

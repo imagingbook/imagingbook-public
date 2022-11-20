@@ -14,6 +14,9 @@ import java.util.Iterator;
 
 /**
  * This class defines static methods for creating array iterators.
+ * 
+ * @author WB
+ * @version 2022/11/20
  */
 public abstract class ArrayIterator {
 	

@@ -18,7 +18,6 @@ import java.util.List;
 import ij.gui.GenericDialog;
 import imagingbook.common.ij.DialogUtils;
 
-
 /**
  * <p>
  * Interface to be implemented by local 'Parameters' classes. This is part of

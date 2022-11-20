@@ -8,6 +8,11 @@
  *******************************************************************************/
 package imagingbook.common.util;
 
+/**
+ * @author WB
+ * @version 2022/11/20
+ *
+ */
 public abstract class ArrayUtils {
 	
 	private ArrayUtils() {}
