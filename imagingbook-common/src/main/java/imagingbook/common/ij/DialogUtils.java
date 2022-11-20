@@ -131,6 +131,9 @@ public abstract class DialogUtils {
 	public static void addToDialog(ParameterBundle params, GenericDialog gd) {
 		Field[] dialogFields = getDialogFields(params);		// gets only public fields
 		for (Field f : dialogFields) {
+			if (!isValidDialogField(f) || f.isAnnotationPresent(DialogHide.class)) {
+				continue;
+			}
 			try {
 				addFieldToDialog(params, f, gd);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -169,7 +172,7 @@ public abstract class DialogUtils {
 		Field[] fields = clazz.getFields();		// gets only public fields
 		int errorCount = 0;
 		for (Field f : fields) {
-			if (!isValidDialogField(f) || f.isAnnotationPresent(DialogUtils.DialogHide.class)) {
+			if (!isValidDialogField(f) || f.isAnnotationPresent(DialogHide.class)) {
 				continue;
 			}
 			try {
@@ -324,8 +327,8 @@ public abstract class DialogUtils {
 		// accept only certain field types in dialogs:
 		Class<?> clazz = f.getType();
 		return (clazz == boolean.class || clazz == int.class || clazz == long.class || 
-				clazz == float.class || clazz == double.class || 
-				clazz == String.class || clazz.isEnum());
+				clazz == float.class   || clazz == double.class || 
+				clazz == String.class  || clazz.isEnum());
 	}
 	
 	// various static methods for simple dialogs -------------------------------
