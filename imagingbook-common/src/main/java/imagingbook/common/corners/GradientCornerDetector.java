@@ -27,12 +27,14 @@ import imagingbook.common.image.ImageMath;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Abstract super class for all corner detectors based on local 
- * structure tensor.
- * This is the superclass for various concrete implementations:
- * {@link HarrisCornerDetector},
- * {@link ShiTomasiCornerDetector},
- * {@link MopsCornerDetector}.
+ * <p>
+ * Abstract super class for all corner detectors based on the local structure
+ * matrix (tensor). See Ch. 6 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/03/30

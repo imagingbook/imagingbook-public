@@ -9,7 +9,19 @@
 
 package imagingbook.common.sift.scalespace;
 
-
+/**
+ * <p>
+ * Represents a hierarchical DoG scale space. See Sec. 25.1.4 of [1] for more
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/20
+ */
 public class DogScaleSpace extends HierarchicalScaleSpace {
 	
 	public DogScaleSpace(GaussianScaleSpace G) {

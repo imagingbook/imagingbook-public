@@ -9,6 +9,19 @@
 
 package imagingbook.common.sift;
 
+/**
+ * <p>
+ * Represents a match between two SIFT features. See Secs. 25.5 of [1] for more
+ * details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/20
+ */
 public class SiftMatch implements Comparable<SiftMatch> {
 	
 	final SiftDescriptor descriptor1, descriptor2;
@@ -32,15 +45,18 @@ public class SiftMatch implements Comparable<SiftMatch> {
 		return distance;
 	}
 
-	public int compareTo(SiftMatch match2) {
-		if (this.distance < match2.distance)
-			return -1;
-		else if (this.distance > match2.distance)
-			return 1;
-		else
-			return 0;
+	@Override
+	public int compareTo(SiftMatch other) {
+//		if (this.distance < other.distance)
+//			return -1;
+//		else if (this.distance > other.distance)
+//			return 1;
+//		else
+//			return 0;
+		return Double.compare(this.distance, other.distance);
 	}
 	
+	@Override
 	public String toString() {
 		return String.format("match %.2f", this.distance);
 	}

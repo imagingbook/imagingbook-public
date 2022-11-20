@@ -9,6 +9,19 @@
 
 package imagingbook.common.sift.scalespace;
 
+/**
+ * <p>
+ * Represents a single "octave" in a hierarchical Gaussian scale space. See
+ * Secs. 25.1.2 and 25.1.4 of [1] for more details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/20
+ */
 public class GaussianOctave extends ScaleOctave {
 	
 	GaussianOctave(int p, int Q, ScaleLevel Gbot, int botIndex, int topIndex, double sigma_0) {

@@ -9,7 +9,6 @@
 
 package imagingbook.common.sift;
 
-
 import java.awt.Shape;
 import java.awt.geom.Path2D;
 import java.util.Locale;
@@ -17,12 +16,17 @@ import java.util.Locale;
 import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
- * SIFT descriptor.
- * Added magnitude field and Comparable interface for easy sorting.
- * 2020/10/04: Added scale level for display reasons.
+ * <p>
+ * This class defines a SIFT descriptor. See Sec. 25.3 of [1] for more details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2020/10/04
+ * @version 2020/10/04 added scale level for display reasons
+ * @version 2022/11/20
  */
 public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 	
@@ -34,10 +38,12 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 	private final double orientation;
 	private final int[] features;
 	
+	@Override
 	public double getX() {
 		return x;
 	}
 
+	@Override
 	public double getY() {
 		return y;
 	}
@@ -61,7 +67,7 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 		return features;
 	}
 
-	public SiftDescriptor(double x, double y, double scale, int scaleLevel, double magnitude, double orientation, int[] features) {
+	SiftDescriptor(double x, double y, double scale, int scaleLevel, double magnitude, double orientation, int[] features) {
 		this.x = x;
 		this.y = y;
 		this.scale = scale;
@@ -137,10 +143,11 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 
 	//used for sorting SIFT descriptors by magnitude
 	@Override
-	public int compareTo(SiftDescriptor d2) {
-		if (this.magnitude > d2.magnitude) return -1;
-		if (this.magnitude < d2.magnitude) return 1;
-		else return 0;
+	public int compareTo(SiftDescriptor other) {
+//		if (this.magnitude > other.magnitude) return -1;
+//		if (this.magnitude < other.magnitude) return 1;
+//		else return 0;
+		return Double.compare(other.magnitude, this.magnitude);
 	}
 
 

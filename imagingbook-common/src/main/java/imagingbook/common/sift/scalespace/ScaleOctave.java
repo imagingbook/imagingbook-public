@@ -18,8 +18,18 @@ import imagingbook.common.util.LinearContainer;
 import imagingbook.common.util.PrintsToStream;
 
 /**
- * Represents a stack of scale levels within an octave. Basically this is 
- * only an array with flexible bottom and top index.
+ * <p>
+ * Represents a single "octave", which is a stack of scale "levels", in a
+ * generic hierarchical scale space. See Sec. 25.1.4. of [1] for details.
+ * Basically this is an array with flexible bottom and top index.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/20
  */
 public abstract class ScaleOctave implements PrintsToStream {
 	
@@ -87,6 +97,24 @@ public abstract class ScaleOctave implements PrintsToStream {
 		return topLevelIndex;
 	}
 	
+	public int getScaleIndex(int p, int q) {
+		int m = Q * p + q; 
+		return m;
+	}
+	
+	public double getAbsoluteScale(int p, int q) {
+		double m = getScaleIndex(p, q);
+		double sigma = sigma_0 * Math.pow(2, m/Q);
+		return sigma;
+	}
+	
+//	public double getRelativeScale(double scaleA, double scaleB) {	// scaleA <= scaleB
+//		return Math.sqrt(scaleB*scaleB - scaleA*scaleA);
+//	}
+//	
+//	public int getOctaveIndex() {
+//		return p;
+//	}
 	
 	/*
 	 * Collects and returns the 3x3x3 neighborhood values from this octave 
@@ -155,25 +183,5 @@ public abstract class ScaleOctave implements PrintsToStream {
 		}
 		(new ImagePlus(name,stk)).show();
 	}
-	
-
-	public int getScaleIndex(int p, int q) {
-		int m = Q * p + q; 
-		return m;
-	}
-	
-	public double getAbsoluteScale(int p, int q) {
-		double m = getScaleIndex(p, q);
-		double sigma = sigma_0 * Math.pow(2, m/Q);
-		return sigma;
-	}
-	
-//	public double getRelativeScale(double scaleA, double scaleB) {	// scaleA <= scaleB
-//		return Math.sqrt(scaleB*scaleB - scaleA*scaleA);
-//	}
-//	
-//	public int getOctaveIndex() {
-//		return p;
-//	}
 	
 }

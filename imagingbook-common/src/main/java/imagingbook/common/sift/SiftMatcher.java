@@ -17,6 +17,18 @@ import imagingbook.common.math.VectorNorm;
 import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.common.util.ParameterBundle;
 
+/**
+ * Instances of this class perform matching between SIFT features. See Secs.
+ * 25.5 of [1] for more details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/20
+ */
 public class SiftMatcher {
 	
 	public static class Parameters implements ParameterBundle {

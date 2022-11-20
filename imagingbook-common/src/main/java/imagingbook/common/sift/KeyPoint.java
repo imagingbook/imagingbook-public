@@ -12,12 +12,20 @@ package imagingbook.common.sift;
 import java.util.Locale;
 
 /**
- * Represents a SIFT key point in hierarchical scale space.
+ * <p>
+ * Represents a SIFT key point in hierarchical scale space. See Sec. 25.3 of [1]
+ * for more details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/20
  */
 public class KeyPoint implements Cloneable, Comparable<KeyPoint> {
+	
 	/** octave index */
 	public final int p;
 	/** level index */
@@ -80,7 +88,5 @@ public class KeyPoint implements Cloneable, Comparable<KeyPoint> {
 		//used for sorting keypoints by magnitude
 		return Float.compare(other.magnitude, this.magnitude);
 	}
-	
-	
 
 }

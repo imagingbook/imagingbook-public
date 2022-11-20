@@ -13,6 +13,24 @@ import java.io.PrintStream;
 
 import imagingbook.common.util.PrintsToStream;
 
+
+/**
+ * <p>
+ * This abstract class defines a generic hierarchical scale space, consisting of
+ * multiple "octaves". See Sec. 25.1.4. of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/20
+ * @see SCaleLevel
+ * @see SCaleOctave
+ * @see GaussianScaleSpace
+ * @see DoGScaleSpace
+ */
 public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	
 	protected final int P;						// number of octaves
@@ -22,7 +40,7 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	protected final int botLevel, topLevel; 	// bottom and top level index in each octave
 	protected final ScaleOctave[] octaves;		
 	
-	protected HierarchicalScaleSpace(int P, int Q, double sigma_s, double sigma_0, int botLevel, int topLevel) {
+	HierarchicalScaleSpace(int P, int Q, double sigma_s, double sigma_0, int botLevel, int topLevel) {
 		this.Q = Q;
 		this.P = P;
 		this.sigma_s = sigma_s;

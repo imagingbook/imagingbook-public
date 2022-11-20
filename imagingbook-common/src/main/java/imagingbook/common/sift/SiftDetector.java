@@ -26,8 +26,18 @@ import imagingbook.common.sift.scalespace.ScaleOctave;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * This class implements the detection of SIFT features from images.
+ * <p>
+ * This class implements the detection of SIFT features from images, 
+ * as described in [1]. See Ch. 25 of [2] for more details.
  * Currently only images of type {@link FloatProcessor} are supported.
+ * </p>
+ * <p>
+ * [1] D. G. Lowe. Distinctive image features from scale-invariant keypoints.
+ * International Journal of Computer Vision 60, 91–110 (2004).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
  * @version 2022/08/03
@@ -150,7 +160,7 @@ public class SiftDetector {
 			for (double km : peakOrientations) {
 				//for (int i=0; i<Math.min(1, peakOrientations.length); i++) {	// use only 1 descriptor!
 				float phi = (float) (km * 2 * Math.PI / oh.length);	// 0 <= phi < 2 PI. Should be in range +/-PI?
-				KeyPoint rkp = (KeyPoint) kp.clone();
+				KeyPoint rkp = kp.clone();
 				rkp.orientation = phi;
 				richKeyPoints.add(rkp);
 			}
