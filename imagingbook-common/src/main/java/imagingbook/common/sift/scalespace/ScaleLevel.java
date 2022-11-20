@@ -12,7 +12,6 @@ package imagingbook.common.sift.scalespace;
 import ij.process.FloatProcessor;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 
-
 /**
  * <p>
  * Represents a single scale level in a generic hierarchical scale space. See
@@ -30,6 +29,11 @@ import imagingbook.common.filter.linear.GaussianFilterSeparable;
 public class ScaleLevel extends FloatProcessor {	// TODO: make IJ independent, use only float arrays
 	
 	private double absoluteScale;	// really needed anywhere?
+	
+	@Override
+	public float[] getPixels() {
+		return (float[]) super.getPixels();
+	}
 	
 	// ------------------------------
 	
@@ -80,7 +84,7 @@ public class ScaleLevel extends FloatProcessor {	// TODO: make IJ independent, u
 		int width2 = width1 / 2;
 		int height2 = height1 / 2;
 		
-		float[] pixels1 = (float[]) this.getPixels();
+		float[] pixels1 = this.getPixels();
 		float[] pixels2 = new float[width2*height2];		
 		for (int v2 = 0 ; v2 < height2; v2++) {
 			int v1 = 2 * v2;
@@ -92,17 +96,17 @@ public class ScaleLevel extends FloatProcessor {	// TODO: make IJ independent, u
 		return new ScaleLevel(width2, height2, pixels2, absoluteScale);
 	}
 	
-	ScaleLevel subtract(FloatProcessor B) {
-		// A <-- A-B
-		ScaleLevel A = this.duplicate();
-		float[] pixelsA = (float[]) A.getPixels();
-		float[] pixelsB = (float[]) B.getPixels();
-		for (int i=0; i<pixelsA.length; i++) {
-			pixelsA[i] = pixelsA[i] - pixelsB[i];
-		}
-		A.setAbsoluteScale(0);
-		return A;
-	}
+//	ScaleLevel subtract(FloatProcessor B) {
+//		// A <-- A-B
+//		ScaleLevel A = this.duplicate();
+//		float[] pixelsA = A.getPixels();
+//		float[] pixelsB = (float[]) B.getPixels();
+//		for (int i=0; i<pixelsA.length; i++) {
+//			pixelsA[i] = pixelsA[i] - pixelsB[i];
+//		}
+//		A.setAbsoluteScale(0);
+//		return A;
+//	}
 	
 	void setAbsoluteScale(double sigma) {
 		this.absoluteScale = sigma;

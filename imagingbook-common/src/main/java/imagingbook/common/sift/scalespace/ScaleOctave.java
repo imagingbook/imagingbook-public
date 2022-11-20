@@ -40,7 +40,7 @@ public abstract class ScaleOctave implements PrintsToStream {
 	protected final int botLevelIndex, topLevelIndex;	
 	protected final LinearContainer<ScaleLevel> levels;
 	
-	ScaleOctave (int p, int Q, int width, int height, int botLevelIndex, int topLevelIndex) {
+	ScaleOctave(int p, int Q, int width, int height, int botLevelIndex, int topLevelIndex) {
 		this.p = p;
 		this.Q = Q;
 		this.width = width;
@@ -54,7 +54,7 @@ public abstract class ScaleOctave implements PrintsToStream {
 	
 	/* Create a scale octave from a given bottom level level_b
 	 */
-	ScaleOctave (int p, int Q, ScaleLevel level_b, int botIndex, int topIndex) {
+	ScaleOctave(int p, int Q, ScaleLevel level_b, int botIndex, int topIndex) {
 		this(p, Q, level_b.getWidth(), level_b.getHeight(), botIndex, topIndex);
 		this.setLevel(botIndex, level_b);
 	}

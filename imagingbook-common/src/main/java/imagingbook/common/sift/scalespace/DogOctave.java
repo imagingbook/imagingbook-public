@@ -40,9 +40,9 @@ public class DogOctave extends ScaleOctave {
 		// B: Gaussian at level q
 		// C <-- A - B (scale the same as B)
 		ScaleLevel C = B.duplicate();
-		final float[] pixelsA = (float[]) A.getPixels();
-		final float[] pixelsB = (float[]) B.getPixels();
-		final float[] pixelsC = (float[]) C.getPixels();
+		final float[] pixelsA = A.getPixels();
+		final float[] pixelsB = B.getPixels();
+		final float[] pixelsC = C.getPixels();
 		for (int i = 0; i < pixelsA.length; i++) {
 			pixelsC[i] = pixelsA[i] - pixelsB[i];
 		}
