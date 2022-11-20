@@ -10,6 +10,7 @@
 package imagingbook.common.sift;
 
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.util.Locale;
 
@@ -112,25 +113,45 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 	}
 	
 	// -----------------------------
-	
-	@Override
+
+	@Override	// returns an oriented M-shaped polygon centered at (x,y)
 	public Shape getShape(double featureScale) {
-		final double DisplayAngleOffset = -Math.PI / 2;
-		double x = this.getX(); 
-		double y = this.getY();
-		double scale = featureScale * this.getScale();
-		double orient = this.getOrientation() + DisplayAngleOffset;
-		double sin = Math.sin(orient);
-		double cos = Math.cos(orient);
-		Path2D poly = new Path2D.Double();	
-		poly.moveTo(x + (sin - cos) * scale, y - (sin + cos) * scale);
-		poly.lineTo(x + (sin + cos) * scale, y + (sin - cos) * scale);
-		poly.lineTo(x, y);
-		poly.lineTo(x - (sin - cos) * scale, y + (sin + cos) * scale);
-		poly.lineTo(x - (sin + cos) * scale, y - (sin - cos) * scale);
+		double d = featureScale * this.getScale();
+		// create M-shaped path around origin oriented along x-axis:
+		Path2D poly = new Path2D.Double();
+		poly.moveTo(0, 0);
+		poly.lineTo(d, d);
+		poly.lineTo(-d, d);
+		poly.lineTo(-d, -d);
+		poly.lineTo(d, -d);
 		poly.closePath();
-		return poly;
+		// translate and rotate shape:
+		AffineTransform atf = new AffineTransform();
+		atf.translate(this.getX(), this.getY());
+		atf.rotate(this.getOrientation());
+		return atf.createTransformedShape(poly);
 	}
+	
+//	@Override	// returns an M-shaped polygon centered at (x,y)
+//	public Shape getShape(double featureScale) {
+//		final double DisplayAngleOffset = 0; // -Math.PI / 2;
+//		double x = this.getX(); 
+//		double y = this.getY();
+//		double scale = featureScale * this.getScale();
+//		double orient = this.getOrientation() + DisplayAngleOffset;
+//		double dx = Math.cos(orient);
+//		double dy = Math.sin(orient);
+//		Path2D poly = new Path2D.Double();	
+//		poly.moveTo(x + (dy - dx) * scale, y - (dy + dx) * scale);
+//		poly.lineTo(x + (dy + dx) * scale, y + (dy - dx) * scale);
+//		poly.lineTo(x, y);
+//		poly.lineTo(x - (dy - dx) * scale, y + (dy + dx) * scale);
+//		poly.lineTo(x - (dy + dx) * scale, y - (dy - dx) * scale);
+//		poly.closePath();
+////		poly.moveTo(x, y);
+////		poly.lineTo(x + cos * scale, y + sin * scale);
+//		return poly;
+//	}
 	
 	// -----------------------------
 	

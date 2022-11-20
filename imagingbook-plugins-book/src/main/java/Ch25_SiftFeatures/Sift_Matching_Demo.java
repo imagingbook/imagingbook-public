@@ -32,13 +32,19 @@ import imagingbook.common.sift.SiftMatch;
 import imagingbook.common.sift.SiftMatcher;
 
 /**
+ * <p>
  * This ImageJ plugin demonstrates the use of the SIFT detection and matching
  * framework. The plugin takes a stack of at least 2 grayscale images, finds 
  * interest points in the first 2 images and determines the best matches between
  * feature points.
+ * </p>
+ * <p>
  * To display the results, the two input images are mounted side-by-side
  * in a combined image and the best-matching features are connected.
  * Vector overlays are used to draw the results on top of the images.
+ * </p>
+ * TODO: If no stack is supplied, split the image in the middle and
+ * use left/right halves for matching.
  * 
  * @author WB
  * @version 2016/01/05

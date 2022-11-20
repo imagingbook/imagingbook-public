@@ -164,23 +164,25 @@ public abstract class ScaleOctave implements PrintsToStream {
 			if (level != null) {
 				double scale = level.getAbsoluteScale();
 				String title = String.format(Locale.US, "q=%d, \u03C3=%.4f", q, scale);
-				stk.addSlice(title, level);
+				FloatProcessor fp = level.toFloatProcessor();
+				fp.resetMinAndMax();
+				stk.addSlice(title, fp);
 			}
 		}
-		(new ImagePlus(name,stk)).show();
+		new ImagePlus(name, stk).show();
 	}
 	
-	public void showAsStack(String name, int p) {
-		ImageStack stk = new ImageStack(width, height);
-		for (int q = botLevelIndex; q <= topLevelIndex; q++) {
-			ScaleLevel level = getLevel(q);
-			if (level != null) {
-				double scale = level.getAbsoluteScale();
-				String title = String.format(Locale.US, "p=%d, q=%d, \u03C3=%.4f", p, q, scale);
-				stk.addSlice(title, level);
-			}
-		}
-		(new ImagePlus(name,stk)).show();
-	}
+//	public void showAsStack(String name, int p) {
+//		ImageStack stk = new ImageStack(width, height);
+//		for (int q = botLevelIndex; q <= topLevelIndex; q++) {
+//			ScaleLevel level = getLevel(q);
+//			if (level != null) {
+//				double scale = level.getAbsoluteScale();
+//				String title = String.format(Locale.US, "p=%d, q=%d, \u03C3=%.4f", p, q, scale);
+//				stk.addSlice(title, level);
+//			}
+//		}
+//		(new ImagePlus(name,stk)).show();
+//	}
 	
 }

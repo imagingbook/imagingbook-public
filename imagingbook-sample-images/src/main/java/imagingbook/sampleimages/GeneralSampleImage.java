@@ -44,13 +44,16 @@ public enum GeneralSampleImage implements ImageResource {
 		/** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */
 		DotBlot,
 		
+		/** Grayscale image used for SIFT demos. */
+		IrishManor,
+		
 		/** Original gray scan from Kepler manuscript. */
 		Kepler,
 		
-		/** A binary image with a single connected component. */
+		/** Binary image with a single connected component. */
 		MapleLeafSmall,
 		
-		/** A small grayscale image. */
+		/** Small grayscale image. */
 		MonasterySmall,
 	
 		/** Binary image with straight lines embedded in noise. */
@@ -60,12 +63,16 @@ public enum GeneralSampleImage implements ImageResource {
 		/** Binary image with ellipses embedded in noise. */
 		NoisyEllipses,
 		
-		/** A fairly large binary image with 0/1 values. */
+		/** Fairly large binary image with 0/1 values. */
 		RhinoBigCrop,
 		
-		/** Used for trigonometric Fourier descriptors. */
+		/** TIFF image with attached ROI selection, used for trigonometric Fourier descriptors. */
 		HouseRoi_tif,
 		
+		/** Binary image with star-shaped regions, used for SIFT demos. */
+		Stars,
+		
+		/** Binary image with various tools, used for connected components segmentation. */
 		ToolsSmall,
 		
 	;

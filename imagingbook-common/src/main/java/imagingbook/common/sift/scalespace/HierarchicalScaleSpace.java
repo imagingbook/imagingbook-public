@@ -147,7 +147,7 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 			title = title + ": ";
 		}
 		for (int p = 0; p < P; p++) {
-			octaves[p].showAsStack(title + "Octave " + p);
+			octaves[p].showAsStack(title + "Octave p=" + p);
 		}
 	}
 	

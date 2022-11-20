@@ -9,6 +9,8 @@
 
 package Ch25_SiftFeatures;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -16,15 +18,16 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Overlay;
-import ij.io.LogStream;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftDetector.Parameters;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 
 
@@ -42,10 +45,6 @@ import imagingbook.common.sift.SiftDetector.Parameters;
 
 public class Extract_Sift_Features implements PlugInFilter {
 	
-	static {
-		LogStream.redirectSystem();
-	}
-
 	private static Parameters params = new Parameters();
 	private static double FeatureScale = 1.0; // 1.5;
 	private static double FeatureStrokewidth = 0.5;
@@ -60,6 +59,16 @@ public class Extract_Sift_Features implements PlugInFilter {
 		};
 
 	ImagePlus imp;
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Extract_Sift_Features() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
+		}
+	}
 	
 
 	@Override
@@ -105,20 +114,19 @@ public class Extract_Sift_Features implements PlugInFilter {
 	
 	private boolean showDialog() {
 		// TODO: use ParameterBundle methods
-		GenericDialog gd = new GenericDialog("Set SIFT parameters");
-		gd.addNumericField("tMag :", params.tMag, 3, 6, "");
-		gd.addNumericField("rMax :", params.rhoMax, 3, 6, "");
-		gd.addNumericField("orientation histogram smoothing :", params.nSmooth, 0, 6, "");
-		gd.addCheckbox("list all SIFT features (might be many!)", ListSiftFeatures);
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		DialogUtils.addToDialog(params, gd);
+		gd.addCheckbox("List all SIFT features (might be many!)", ListSiftFeatures);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
 			return false;
 		}
 		
-		params.tMag = gd.getNextNumber();
-		params.rhoMax = gd.getNextNumber();
-		params.nSmooth = (int) gd.getNextNumber();
+		DialogUtils.getFromDialog(params, gd);
+//		params.tMag = gd.getNextNumber();
+//		params.rhoMax = gd.getNextNumber();
+//		params.nSmooth = (int) gd.getNextNumber();
 		ListSiftFeatures = gd.getNextBoolean();
 		if(gd.invalidNumber()) {
 			IJ.error("Input Error", "Invalid input number");
@@ -126,5 +134,29 @@ public class Extract_Sift_Features implements PlugInFilter {
 		}	
 		return true;
 	}
+	
+//	private boolean showDialog() {
+//		// TODO: use ParameterBundle methods
+//		GenericDialog gd = new GenericDialog("Set SIFT parameters");
+//		gd.addNumericField("tMag :", params.tMag, 3, 6, "");
+//		gd.addNumericField("rMax :", params.rhoMax, 3, 6, "");
+//		gd.addNumericField("orientation histogram smoothing :", params.nSmooth, 0, 6, "");
+//		gd.addCheckbox("list all SIFT features (might be many!)", ListSiftFeatures);
+//		
+//		gd.showDialog();
+//		if (gd.wasCanceled()) {
+//			return false;
+//		}
+//		
+//		params.tMag = gd.getNextNumber();
+//		params.rhoMax = gd.getNextNumber();
+//		params.nSmooth = (int) gd.getNextNumber();
+//		ListSiftFeatures = gd.getNextBoolean();
+//		if(gd.invalidNumber()) {
+//			IJ.error("Input Error", "Invalid input number");
+//			return false;
+//		}	
+//		return true;
+//	}
 	
 }

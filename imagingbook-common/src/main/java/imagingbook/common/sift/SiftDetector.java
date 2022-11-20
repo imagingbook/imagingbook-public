@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 
 import ij.process.FloatProcessor;
+import imagingbook.common.ij.DialogUtils.DialogHide;
+import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
@@ -49,46 +51,87 @@ public class SiftDetector {
 	 * Default parameters; a (usually modified) instance of this class
 	 * may be passed to constructor of {@link SiftDetector}.
 	 */
-	public static class Parameters implements ParameterBundle {	// TODO: add dialog annotations
+	public static class Parameters implements ParameterBundle {
+		
 		/** Set true to output debug information */
+		@DialogHide
 		public boolean DEBUG = false;
+		
 		/** Type of neigborhood used for peak detection in 3D scale space */
+		@DialogLabel("Neighborhood for 3D peak detection")
 		public NeighborhoodType3D nhType = NeighborhoodType3D.NH18;
+		
 		/** Sampling scale (nominal smoothing level of the input image) */
+		@DialogLabel("Nominal sampling scale (sigmaS)")
 		public double sigmaS = 0.5;
-		/** Base scale of level 0 (base smoothing) */
+		
+		/** Base scale at level 0 (base smoothing) */
+		@DialogLabel("Base scale at level 0 (sigma0)")
 		public double sigma0 = 1.6;
+		
 		/** Number of octaves in Gaussian/DoG scale space */
+		@DialogLabel("Number of scale space octaves (P)")
 		public int P = 4;
+		
 		/** Scale steps (levels) per octave */
+		@DialogLabel("Scale levels per octaves (Q)")
 		public int Q = 3;
+		
 		/** Min. magnitude required in DoG peak detection (abs. value) */
+		@DialogLabel("Minimum detection magnitude (tMag)")
 		public double tMag = 0.01;
+		
+		
 		/** Min. DoG magnitude required for extrapolated peaks (abs. value) */
+		@DialogLabel("Minimum peak magnitude (tPeak)")
 		public double tPeak = tMag;
+		
 		/** Min. difference to all neighbors in DoG peak detection (max. 0.0005) */
+		@DialogLabel("Minimum neigborhood difference (tExtrm)")
 		public double tExtrm = 0.0;
+		
 		/** Max. number of iterations for refining the position of a key point */
+		@DialogLabel("Max. position refinement steps (nRefine)")
 		public int nRefine = 5;
+		
 		/** Max. principal curvature ratio used to eliminate line-like structures (3..10) */
+		@DialogLabel("Max. principal curvature ratio (rhoMax=3..10)")
 		public double rhoMax = 10.0;
+		
 		/** Number of orientation bins in the feature descriptor (angular resolution) */
+		@DialogLabel("Number of orientation bins (nOrient)")
 		public int nOrient = 36;
+		
 		/** Number of smoothing steps applied to the orientation histogram */
+		@DialogLabel("Histogram smoothing steps (nSmooth)")
 		public int nSmooth = 2;
+		
 		/** Min. value in orientation histogram for dominant orientations (rel. to max. entry) */
+		@DialogLabel("Min. value in orientation histogram (tDomOr)")
 		public double tDomOr = 0.8;
-		/** Spatial size factor of descriptor (relative to feature scale) */
-		public double sDesc = 10.0;
+		
 		/** Number of spatial descriptor bins along each x/y axis */
+		@DialogLabel("Number of spatial descriptor bins (nSpat)")
 		public int nSpat = 4;
+		
 		/** Number of angular descriptor bins */
+		@DialogLabel("Number of angular descriptor bins (nAngl)")
 		public int nAngl = 8;
+		
 		/** Max. value in normalized feature vector (0.2 recommended by Lowe) */
+		@DialogLabel("Max. normalized feature value (tFclip)")
 		public double tFclip = 0.2;
+		
 		/** Scale factor for converting normalized features to byte values in [0,255] */
+		@DialogLabel("Feature integer conversion scale (sFscale)")
 		public double sFscale = 512.0;
+		
+		/** Spatial size factor of descriptor (relative to feature scale) */
+		@DialogLabel("Descriptor display size factor (sDesc)")
+		public double sDesc = 10.0;
+		
 		/** Set true to sort detected keypoints by response magnitude */
+		@DialogLabel("Sort keypoints by score magnitude")
 		public boolean sortKeyPoints = true;
 	}
 	
@@ -738,7 +781,7 @@ public class SiftDetector {
 
 	private int[] mapToIntegers(float[] x, float s) {
 		int[] ivec = new int[x.length];
-		for (int i=0; i<x.length; i++) {
+		for (int i = 0; i < x.length; i++) {
 			ivec[i] = Math.round(s * x[i]);
 		}
 		return ivec;
