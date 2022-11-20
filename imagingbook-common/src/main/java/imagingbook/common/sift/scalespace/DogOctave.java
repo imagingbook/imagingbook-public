@@ -26,7 +26,6 @@ public class DogOctave extends ScaleOctave {
 
 	// TODO: check correctness of bottom and top levels!!
 	DogOctave(ScaleOctave Gp) {
-		//super(0,0,0,0);
 		super(Gp.p, Gp.Q, Gp.width, Gp.height, Gp.botLevelIndex, Gp.topLevelIndex-1);
 		// create DoG octave
 		for (int q = botLevelIndex; q <= topLevelIndex; q++) {
@@ -40,11 +39,11 @@ public class DogOctave extends ScaleOctave {
 		// B: Gaussian at level q
 		// C <-- A - B (scale the same as B)
 		ScaleLevel C = B.duplicate();
-		final float[] pixelsA = A.getPixels();
-		final float[] pixelsB = B.getPixels();
-		final float[] pixelsC = C.getPixels();
-		for (int i = 0; i < pixelsA.length; i++) {
-			pixelsC[i] = pixelsA[i] - pixelsB[i];
+		float[] dataA = A.getData();
+		float[] dataB = B.getData();
+		float[] dataC = C.getData();
+		for (int i = 0; i < dataA.length; i++) {
+			dataC[i] = dataA[i] - dataB[i];
 		}
 		C.setAbsoluteScale(B.getAbsoluteScale());
 		return C;

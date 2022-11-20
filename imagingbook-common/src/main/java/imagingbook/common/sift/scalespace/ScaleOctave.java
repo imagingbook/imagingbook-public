@@ -14,6 +14,7 @@ import java.util.Locale;
 
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.process.FloatProcessor;
 import imagingbook.common.util.LinearContainer;
 import imagingbook.common.util.PrintsToStream;
 
@@ -123,8 +124,8 @@ public abstract class ScaleOctave implements PrintsToStream {
 	 */
 	public void getNeighborhood(int q, int u, int v, final float[][][] nh) {
 		// nh[s][x][y]
-		for (int s = 0, level = q - 1; s < 3; s++, level++) {
-			getLevel(level).get3x3Neighborhood(u, v, nh[s]);
+		for (int s = 0, li = q - 1; s < 3; s++, li++) {
+			getLevel(li).get3x3Neighborhood(u, v, nh[s]);
 		}
 	}
 	
@@ -148,12 +149,10 @@ public abstract class ScaleOctave implements PrintsToStream {
 			ScaleLevel level = getLevel(q);
 			if (level != null) {
 				double scale = level.getAbsoluteScale();
-				//String title = name + " (q=" + q + ") " + String.format(Locale.US, "\u03C3=%.3f", scale);
 				String title = String.format(Locale.US, "%s (p=%d, q=%d, \u03C3=%.4f)", name, p, q, scale);
-				// IjDisplay.showProcessor(level, title, 0, 255);
-				//IjUtils.showProcessor(level, title);
-				level.resetMinAndMax();
-				(new ImagePlus(title, level)).show();
+				FloatProcessor fp = level.toFloatProcessor();
+				fp.resetMinAndMax();
+				new ImagePlus(title, fp).show();
 			}
 		}
 	}

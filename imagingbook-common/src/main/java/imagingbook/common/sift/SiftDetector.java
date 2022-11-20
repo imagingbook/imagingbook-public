@@ -268,7 +268,7 @@ public class SiftDetector {
 			float x_real = (float) D.getRealX(p, u);	// for display purposes only
 			for (int v = 1; v <= N-2; v++) {
 				float y_real = (float) D.getRealY(p, v);	// for display purposes only
-				float mag = Math.abs(Dpq.getf(u, v));
+				float mag = Math.abs(Dpq.getValue(u, v));
 				if (mag > tMag) {
 					Dp.getNeighborhood(q, u, v, nh);	// CHANGE to use D not Dp!!
 					if (isExtremum(nh, tExtrm)) {

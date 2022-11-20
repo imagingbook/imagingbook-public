@@ -11,12 +11,13 @@ package imagingbook.common.sift.scalespace;
 
 import ij.process.FloatProcessor;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
+import imagingbook.common.math.Matrix;
 
 /**
  * <p>
  * Represents a single scale level in a generic hierarchical scale space. See
- * Secs. 25.1.4 for more details. Currently implemented as a subtype of ImageJ's
- * {@link FloatProcessor} with some extra fields and methods (to be changed).
+ * Secs. 25.1.4 for more details.
+ * Pixel data are represented as one-dimensional {@code float} arrays.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -24,41 +25,65 @@ import imagingbook.common.filter.linear.GaussianFilterSeparable;
  * </p>
  * 
  * @author WB
- * @version 2022/11/20
+ * @version 2022/11/20 removed FloatProcessor as superclass
  */
-public class ScaleLevel extends FloatProcessor {	// TODO: make IJ independent, use only float arrays
+public class ScaleLevel {
 	
-	private double absoluteScale;	// really needed anywhere?
+	private final int width, height;
+	private final float[] data;
 	
-	@Override
-	public float[] getPixels() {
-		return (float[]) super.getPixels();
+	private double absoluteScale;		// TODO: should be final
+	
+	// ------------------------------
+	
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public int getHeight() {
+		return this.height;
+	}
+	
+	public float[] getData() {
+		return this.data;
+	}
+	
+	public double getAbsoluteScale() {
+		return this.absoluteScale;
 	}
 	
 	// ------------------------------
 	
 	ScaleLevel(int width, int height, float[] data, double absoluteScale) {
-		super(width, height, data, null);	// constructor of FloatProcessor
+		this.width = width;
+		this.height = height;
+		this.data = data;
 		this.absoluteScale = absoluteScale;
 	}
 	
 	ScaleLevel(FloatProcessor fp, double absoluteScale) {
-//		this(fp.getWidth(), fp.getHeight(), ((float[]) fp.getPixels()).clone(), absoluteScale);
-		this(fp.getWidth(), fp.getHeight(), getValues(fp, true), absoluteScale);
+		this(fp.getWidth(), fp.getHeight(), getValues((float[])fp.getPixels(), true), absoluteScale);
 	}
 	
 	ScaleLevel(ScaleLevel level) {
-//		this(level.getWidth(), level.getHeight(), ((float[]) level.getPixels()).clone(), level.absoluteScale);
-		this(level.getWidth(), level.getHeight(), getValues(level, false), level.absoluteScale);
+		this(level.width, level.height, level.data.clone(), level.absoluteScale);
 	}
 	
-	private static float[] getValues(FloatProcessor fp, boolean normalize) {
-		final double minVal = fp.getMin();
-		final double maxVal = fp.getMax();
-		final float offset = (float) -minVal;
-		final float scale = (float) (1.0 / (maxVal - minVal));
-		final float[] values = (float[]) fp.getPixelsCopy();
+	/**
+	 * Returns a copy of the specified pixel data and optionally
+	 * normalizes to [0,1].
+	 * 
+	 * @param data the original pixel data
+	 * @param normalize pass true to normalize data to [0,1]
+	 * @return a copy of the specified pixel data
+	 */
+	private static float[] getValues(float[] data, boolean normalize) {
+		float[] values = data.clone();
 		if (normalize) {
+			float minVal = Matrix.min(values);
+			float maxVal = Matrix.max(values);
+			float offset = -minVal;
+			float scale = 1.0f / (maxVal - minVal);
 			for (int i = 0; i < values.length; i++) {
 				values[i] = (values[i] + offset) * scale; 
 			}
@@ -69,22 +94,33 @@ public class ScaleLevel extends FloatProcessor {	// TODO: make IJ independent, u
 	// ------------------------------
 
 	void filterGaussian(double sigma) {
-		new GaussianFilterSeparable(sigma).applyTo(this);	// TODO: validate change!
+		FloatProcessor fp = this.toFloatProcessor();
+		new GaussianFilterSeparable(sigma).applyTo(fp);	// TODO: validate change!
 	}
 	
-	@Override
+	/**
+	 * Returns a copy of this scale level with identical size and duplicated
+	 * data.
+	 * 
+	 * @return a copy of this scale level
+	 */
 	public ScaleLevel duplicate() {
 		return new ScaleLevel(this);
 	}
 
+	/**
+	 * Decimates this scale level by half in both directions and returns a 
+	 * new scale level.
+	 *  
+	 * @return a new, decimated scale level
+	 */
 	ScaleLevel decimate() {	// returns a 2:1 subsampled copy of this ScaleLevel
-		//IJ.log(" reducing ...");
 		int width1 = this.getWidth();
 		int height1 = this.getHeight();
 		int width2 = width1 / 2;
 		int height2 = height1 / 2;
 		
-		float[] pixels1 = this.getPixels();
+		float[] pixels1 = this.getData();
 		float[] pixels2 = new float[width2*height2];		
 		for (int v2 = 0 ; v2 < height2; v2++) {
 			int v1 = 2 * v2;
@@ -96,42 +132,65 @@ public class ScaleLevel extends FloatProcessor {	// TODO: make IJ independent, u
 		return new ScaleLevel(width2, height2, pixels2, absoluteScale);
 	}
 	
-//	ScaleLevel subtract(FloatProcessor B) {
-//		// A <-- A-B
-//		ScaleLevel A = this.duplicate();
-//		float[] pixelsA = A.getPixels();
-//		float[] pixelsB = (float[]) B.getPixels();
-//		for (int i=0; i<pixelsA.length; i++) {
-//			pixelsA[i] = pixelsA[i] - pixelsB[i];
-//		}
-//		A.setAbsoluteScale(0);
-//		return A;
-//	}
-	
 	void setAbsoluteScale(double sigma) {
 		this.absoluteScale = sigma;
 	}
 	
-	public double getAbsoluteScale() {
-		return absoluteScale;
+
+	/**
+	 * Returns the element value at the specified position of this scale level.
+	 * An exception is thrown if the position is outside the scale level's
+	 * boundaries.
+	 * 
+	 * @param u horizontal position
+	 * @param v vertical position
+	 * @return the element value
+	 */
+	public float getValue(int u, int v) {
+		return this.data[v * width + u];
 	}
 	
-	/*
+	/**
 	 * Collects and returns the 3x3 neighborhood values at this scale level 
-	 * at center position u,v. The result is stored in the given 3x3 array nh.
+	 * at center position (u,v). The result is stored in the supplied 3x3 array.
+	 * 
+	 * @param u horizontal position
+	 * @param v vertical position
+	 * @param nh the 3x3 array where to insert the neighborhood values 
 	 */
 	void get3x3Neighborhood(final int u, final int v, final float[][] nh) {
 		for (int i = 0, x = u - 1; i < 3; i++, x++) {
 			for (int j = 0, y = v - 1; j < 3; j++, y++) {
-				nh[i][j] = this.getf(x, y);
+				nh[i][j] = this.getValue(x, y);
 			}
 		}
 	}
 	
-	public void getGradientPolar(int u, int v, double[] grad) {
-		final double grad_x = this.getf(u+1, v) - this.getf(u-1, v);	// x-component of local gradient
-		final double grad_y = this.getf(u, v+1) - this.getf(u, v-1);	// y-component of local gradient
-		grad[0] = Math.sqrt(grad_x * grad_x + grad_y * grad_y);		// local gradient magnitude (E)
+	/**
+	 * Calculates the gradient at the specified scale level position in polar form.
+	 * The results (gradient magnitude and direction) are placed in the supplied
+	 * 2-element array.
+	 * 
+	 * @param u    horizontal position
+	 * @param v    vertical position
+	 * @param grad a 2-element array for gradient magnitude and direction
+	 */
+	public void getGradientPolar(int u, int v, final double[] grad) {
+		final double grad_x = this.getValue(u+1, v) - this.getValue(u-1, v);	// x-component of local gradient
+		final double grad_y = this.getValue(u, v+1) - this.getValue(u, v-1);	// y-component of local gradient
+		grad[0] = Math.hypot(grad_x, grad_y);						// local gradient magnitude (E)
 		grad[1] = Math.atan2(grad_y, grad_x);						// local gradient direction (phi)
+	}
+	
+	/**
+	 * Returns a new ImageJ {@link FloatProcessor} with the same size and pixel data
+	 * as this scale level. Note that the pixel data are not duplicated but shared,
+	 * i.e., subsequent modifications to the new {@link FloatProcessor} are
+	 * transparent and directly affect the contents of this scale level.
+	 * 
+	 * @return a new {@link FloatProcessor} instance
+	 */
+	public FloatProcessor toFloatProcessor() {
+		return new FloatProcessor(this.width, this.height, this.data);
 	}
 }
