@@ -34,7 +34,8 @@ public class GaussianOctave extends ScaleOctave {
 		for (int q = botIndex + 1; q <= topIndex; q++) {
 			double sigmaA_q = getAbsoluteScale(p, q);	// absolute scale of level q
 //			double sigmaR_q = Math.sqrt(sigmaA_q * sigmaA_q - sigmaA_bot * sigmaA_bot) / Math.pow(2, p);  // relative scale from bottom level (-1)
-			double sigmaR_q = sigma_0 * Math.sqrt(Math.pow(2, 2.0 * q / Q) - Math.pow(2, -2.0 / Q)); // relative scale from bottom level (-1)
+			double sigmaR_q = 
+					sigma_0 * Math.sqrt(Math.pow(2, 2.0 * q / Q) - Math.pow(2, -2.0 / Q)); // relative scale from bottom level (-1)
 			ScaleLevel G_pq = Gbot.duplicate();
 			G_pq.filterGaussian(sigmaR_q);
 			G_pq.setAbsoluteScale(sigmaA_q);

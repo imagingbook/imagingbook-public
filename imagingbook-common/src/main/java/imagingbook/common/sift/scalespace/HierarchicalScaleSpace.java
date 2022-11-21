@@ -50,10 +50,20 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 		octaves = new ScaleOctave[P];	
 	}
 	
+	/**
+	 * Returns the number of octaves in this scale space.
+	 * 
+	 * @return the number of octaves
+	 */
 	public int getP() {
 		return P;
 	}
 	
+	/**
+	 * Returns the number of scale levels in each octave of this scale space.
+	 * 
+	 * @return the number of scale levels
+	 */
 	public int getQ() {
 		return Q;
 	}
@@ -66,10 +76,34 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 		return sigma_0;
 	}
 	
+	public int getBottomLevelIndex() {
+		return this.botLevel;
+	}
+	
+	public int getTopLevelIndex() {
+		return this.topLevel;
+	}
+	
+	/**
+	 * Returns a reference to the p-th octave in this scale space.
+	 * Valid octave indexes are p = 0,..,P-1 (see {@link #getP()}).
+	 * 
+	 * @param p
+	 * @return
+	 * @see #getP()
+	 */
 	public ScaleOctave getOctave(int p) {
 		return octaves[p];
 	}
 	
+	/**
+	 * Returns the q-th scale space level of octave p in this scale space.
+	 * Valid octave indexes are p = 0,..,P-1 (see {@link #getP()}).
+	 * 
+	 * @param p
+	 * @param q
+	 * @return
+	 */
 	public ScaleLevel getScaleLevel(int p, int q) {
 		return getOctave(p).getLevel(q);
 	}

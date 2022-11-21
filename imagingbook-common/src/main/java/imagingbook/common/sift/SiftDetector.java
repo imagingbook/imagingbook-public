@@ -156,10 +156,11 @@ public class SiftDetector {
 	private final GaussianScaleSpace G;
 	private final DogScaleSpace D;
 
-	/* Constructors */
+	// Constructors ------------------------------------ 
 
 	/**
 	 * Constructor using default parameters.
+	 * 
 	 * @param fp the input image
 	 */
 	public SiftDetector(FloatProcessor fp) {
@@ -168,6 +169,7 @@ public class SiftDetector {
 
 	/**
 	 * Constructor using specific parameters.
+	 * 
 	 * @param fp the input image
 	 * @param params parameters (see {@link Parameters})
 	 */
@@ -178,6 +180,30 @@ public class SiftDetector {
 		this.G = new GaussianScaleSpace(fp, params.sigmaS, params.sigma0, params.P, params.Q, -1, params.Q+1);
 		this.D = new DogScaleSpace(G);
 	}
+	
+	// --------------------------------------------------
+	
+	/**
+	 * Returns the {@link GaussianScaleSpace} for this SIFT detector
+	 * instance. Mainly intended for debugging and testing.
+	 * 
+	 * @return the {@link GaussianScaleSpace} for this SIFT detector
+	 */
+	public GaussianScaleSpace getGaussianScaleSpace() {
+		return this.G;
+	}
+	
+	/**
+	 * Returns the {@link DogScaleSpace} for this SIFT detector
+	 * instance. Mainly intended for debugging and testing.
+	 * 
+	 * @return the {@link DogScaleSpace} for this SIFT detector
+	 */
+	public DogScaleSpace getDogScaleSpace() {
+		return this.D;
+	}
+	
+	// --------------------------------------------------
 
 	/**
 	 * Only used for debugging: produces key points with orientation

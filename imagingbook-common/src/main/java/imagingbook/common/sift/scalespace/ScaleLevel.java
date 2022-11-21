@@ -57,7 +57,7 @@ public class ScaleLevel {
 	ScaleLevel(int width, int height, float[] data, double absoluteScale) {
 		this.width = width;
 		this.height = height;
-		this.data = data;
+		this.data = (data != null) ? data : new float[width * height];
 		this.absoluteScale = absoluteScale;
 	}
 	
@@ -107,29 +107,29 @@ public class ScaleLevel {
 	public ScaleLevel duplicate() {
 		return new ScaleLevel(this);
 	}
-
+	
 	/**
-	 * Decimates this scale level by half in both directions and returns a 
+	 * Decimates this scale level by factor 2 in both directions and returns a 
 	 * new scale level.
 	 *  
 	 * @return a new, decimated scale level
 	 */
 	ScaleLevel decimate() {	// returns a 2:1 subsampled copy of this ScaleLevel
-		int width1 = this.getWidth();
-		int height1 = this.getHeight();
-		int width2 = width1 / 2;
-		int height2 = height1 / 2;
+		int w1 = this.getWidth();
+		int h1 = this.getHeight();
+		int w2 = w1 / 2;
+		int h2 = h1 / 2;
 		
-		float[] pixels1 = this.getData();
-		float[] pixels2 = new float[width2*height2];		
-		for (int v2 = 0 ; v2 < height2; v2++) {
+		ScaleLevel level2 = new ScaleLevel(w2, h2, null, absoluteScale);
+		
+		for (int v2 = 0 ; v2 < h2; v2++) {
 			int v1 = 2 * v2;
-			for (int u2 = 0 ; u2 < width2; u2++) {
+			for (int u2 = 0 ; u2 < w2; u2++) {
 				int u1 = 2 * u2;
-				pixels2[v2 * width2 + u2] = pixels1[v1 * width1 + u1];
+				level2.setValue(u2, v2, this.getValue(u1, v1));
 			}
 		}
-		return new ScaleLevel(width2, height2, pixels2, absoluteScale);
+		return level2; //new ScaleLevel(w2, h2, pixels2, absoluteScale);
 	}
 	
 	void setAbsoluteScale(double sigma) {
@@ -147,7 +147,20 @@ public class ScaleLevel {
 	 * @return the element value
 	 */
 	public float getValue(int u, int v) {
-		return this.data[v * width + u];
+		return this.data[v * this.width + u];
+	}
+	
+	/**
+	 * Sets the element value at the specified position of this scale level.
+	 * An exception is thrown if the position is outside the scale level's
+	 * boundaries.
+	 * 
+	 * @param u horizontal position
+	 * @param v vertical position
+	 * @param val the new element value
+	 */
+	private void setValue(int u, int v, float val) {
+		this.data[v * this.width + u] = val;
 	}
 	
 	/**

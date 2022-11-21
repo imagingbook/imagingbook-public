@@ -9,6 +9,7 @@
 package imagingbook.common.sift;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -17,6 +18,10 @@ import org.junit.Test;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.sift.SiftDetector.NeighborhoodType3D;
+import imagingbook.common.sift.scalespace.DogScaleSpace;
+import imagingbook.common.sift.scalespace.GaussianScaleSpace;
+import imagingbook.common.sift.scalespace.ScaleLevel;
+import imagingbook.common.sift.scalespace.ScaleOctave;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testimages.SiftTestImage;
@@ -24,13 +29,8 @@ import imagingbook.testimages.SiftTestImage;
 
 public class SiftDetectorTest {
 	
-	private SiftDetector.Parameters params = null;
-	
-
-	@Test
-	public void test1() {
-		params = new SiftDetector.Parameters();	
-		
+	private static SiftDetector.Parameters params = new SiftDetector.Parameters();
+	static {
 		params.nhType = NeighborhoodType3D.NH18;
 		params.sigmaS = 0.5;
 		params.sigma0 = 1.6;
@@ -49,7 +49,71 @@ public class SiftDetectorTest {
 		params.nAngl = 8;
 		params.tFclip = 0.2;
 		params.sFscale = 512.0;
+	}
+	
+	@Test
+	public void testGaussianScaleSpace() {
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		FloatProcessor fp = ip.convertToFloatProcessor();
+		SiftDetector detector = new SiftDetector(fp, params);
+		
+		GaussianScaleSpace G = detector.getGaussianScaleSpace();
+		assertEquals(params.P, G.getP());
+		assertEquals(params.Q, G.getQ());
+		assertEquals(params.sigmaS, G.getSigma_s(), 1e-6);
+		assertEquals(params.sigma0, G.getSigma_0(), 1e-6);
+		
+		int botLevel = G.getBottomLevelIndex();
+		assertEquals(-1, botLevel);
+		int topLevel = G.getTopLevelIndex();
+		assertEquals(params.Q + 1, topLevel);
+		
+		for (int p = 0; p < G.getP(); p++) { 
+			ScaleOctave oct = G.getOctave(p);
+			assertNotNull(oct);
+			assertEquals(p, oct.getOctaveIndex());
+			
+			for (int q = botLevel; q <= topLevel; q++) {
+				ScaleLevel lvl = oct.getLevel(q);
+				assertNotNull(lvl);
+				assertNotNull(lvl.getData());
+				assertEquals(oct.getAbsoluteScale(p, q), lvl.getAbsoluteScale(), 1e-6);
+			}
+		}
+	}
+	
+	@Test
+	public void testDogScaleSpace() {
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		FloatProcessor fp = ip.convertToFloatProcessor();
+		SiftDetector detector = new SiftDetector(fp, params);
+		
+		DogScaleSpace D = detector.getDogScaleSpace();
+		assertEquals(params.P, D.getP());
+		assertEquals(params.Q, D.getQ());
+		assertEquals(params.sigmaS, D.getSigma_s(), 1e-6);
+		assertEquals(params.sigma0, D.getSigma_0(), 1e-6);
+		
+		int botLevel = D.getBottomLevelIndex();
+		assertEquals(-1, botLevel);
+		int topLevel = D.getTopLevelIndex();
+		assertEquals(params.Q, topLevel);
+		
+		for (int p = 0; p < D.getP(); p++) { 
+			ScaleOctave oct = D.getOctave(p);
+			assertNotNull(oct);
+			assertEquals(p, oct.getOctaveIndex());
+			for (int q = botLevel; q <= topLevel; q++) {
+				ScaleLevel lvl = oct.getLevel(q);
+				assertNotNull(lvl);
+				assertNotNull(lvl.getData());
+				assertEquals(oct.getAbsoluteScale(p, q), lvl.getAbsoluteScale(), 1e-6);
+			}
+		}	
+	}
 
+	@Test
+	public void testSiftOnImages() {
 		runSift(GeneralSampleImage.MonasterySmall, 291);
 		runSift(SiftTestImage.Box00, 38);
 		runSift(SiftTestImage.HalfDiskH, 8);

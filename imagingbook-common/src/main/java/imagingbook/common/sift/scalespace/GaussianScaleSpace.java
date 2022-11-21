@@ -40,10 +40,10 @@ public class GaussianScaleSpace extends HierarchicalScaleSpace {
 		Ginit.setAbsoluteScale(scale_b);
 
 		// build Gaussian octaves:
-		octaves[0] = new GaussianOctave(0, Q, Ginit, botLevel, topLevel, sigma_0);
+		this.octaves[0] = new GaussianOctave(0, Q, Ginit, botLevel, topLevel, sigma_0);
 		for (int p = 1; p < P; p++) {
 			ScaleLevel Gbase = octaves[p-1].getLevel(Q-1).decimate();
-			octaves[p] = new GaussianOctave(p, Q, Gbase, botLevel, topLevel, sigma_0);
+			this.octaves[p] = new GaussianOctave(p, Q, Gbase, botLevel, topLevel, sigma_0);
 		}
 	}
 	

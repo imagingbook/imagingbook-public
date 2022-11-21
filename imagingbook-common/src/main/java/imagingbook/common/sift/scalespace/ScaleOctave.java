@@ -38,7 +38,7 @@ public abstract class ScaleOctave implements PrintsToStream {
 	protected final int Q; 			// number of levels per doubling scale factor
 	protected final int p;			// octave index
 	protected final int width, height;
-	protected final int botLevelIndex, topLevelIndex;	
+	protected final int botLevelIndex, topLevelIndex;
 	protected final LinearContainer<ScaleLevel> levels;
 	
 	ScaleOctave(int p, int Q, int width, int height, int botLevelIndex, int topLevelIndex) {
