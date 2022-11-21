@@ -241,10 +241,10 @@ public abstract class IjUtils {
 //			throw new IllegalArgumentException("(x,y) must be inside the image");
 //		}
 		if (width < 1 || height < 1) {
-			throw new IllegalArgumentException("width/height must be at least 1");
+			throw new IllegalArgumentException("crop width/height must be at least 1");
 		}
 //		if (x + width > ip.getWidth() || y + height > ip.getHeight()) {
-//			throw new IllegalArgumentException("crop rectangle must be inside the image");
+//			throw new IllegalArgumentException("crop rectangle must not extend outside image");
 //		}
 		T ipc = null;
 		synchronized (ip) {
@@ -253,6 +253,9 @@ public abstract class IjUtils {
 			Rectangle roiTmp = ip.getRoi();
 			if (roiTmp.width > 0 && roiTmp.height > 0) {
 				ipc = (T) ip.crop();
+			}
+			else {
+				throw new IllegalArgumentException("empty crop rectangle");
 			}
 			ip.setRoi(roiOrig);
 		}

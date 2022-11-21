@@ -27,7 +27,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftDetector.Parameters;
-import imagingbook.sampleimages.GeneralSampleImage;
+import imagingbook.sampleimages.SiftSampleImage;
 
 
 
@@ -66,7 +66,7 @@ public class Extract_Sift_Features implements PlugInFilter {
 	 */
 	public Extract_Sift_Features() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
+			DialogUtils.askForSampleImage(SiftSampleImage.Castle);
 		}
 	}
 	
@@ -81,7 +81,7 @@ public class Extract_Sift_Features implements PlugInFilter {
 	public void run(ImageProcessor ip) {
 		params =  new SiftDetector.Parameters();
 						
-		if (!showDialog()) {
+		if (!runDialog()) {
 			return;
 		}
 		
@@ -112,8 +112,7 @@ public class Extract_Sift_Features implements PlugInFilter {
 		imp2.show();
 	}
 	
-	private boolean showDialog() {
-		// TODO: use ParameterBundle methods
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		DialogUtils.addToDialog(params, gd);
 		gd.addCheckbox("List all SIFT features (might be many!)", ListSiftFeatures);
@@ -124,14 +123,7 @@ public class Extract_Sift_Features implements PlugInFilter {
 		}
 		
 		DialogUtils.getFromDialog(params, gd);
-//		params.tMag = gd.getNextNumber();
-//		params.rhoMax = gd.getNextNumber();
-//		params.nSmooth = (int) gd.getNextNumber();
 		ListSiftFeatures = gd.getNextBoolean();
-		if(gd.invalidNumber()) {
-			IJ.error("Input Error", "Invalid input number");
-			return false;
-		}	
 		return true;
 	}
 	

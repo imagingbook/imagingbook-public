@@ -15,6 +15,7 @@ import java.awt.geom.Path2D;
 import java.util.Locale;
 
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.VectorNorm;
 
 /**
  * <p>
@@ -39,35 +40,9 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 	private final double orientation;
 	private final int[] features;
 	
-	@Override
-	public double getX() {
-		return x;
-	}
-
-	@Override
-	public double getY() {
-		return y;
-	}
-
-	public double getScale() {
-		return scale;
-	}
+	// --------------------------------------------------------------------
 	
-	public int getScaleLevel() {
-		return scaleLevel;
-	}
-	
-	public double getMagnitude() {
-		return magnitude;
-	}
-
-	public double getOrientation() {
-		return orientation;
-	}
-	public int[] getFeatures() {
-		return features;
-	}
-
+	// Constructor (non-public)
 	SiftDescriptor(double x, double y, double scale, int scaleLevel, double magnitude, double orientation, int[] features) {
 		this.x = x;
 		this.y = y;
@@ -78,38 +53,89 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 		this.features = features;
 	}
 	
+	// --------------------------------------------------------------------
+	
+	@Override
+	public double getX() {
+		return x;
+	}
+
+	@Override
+	public double getY() {
+		return y;
+	}
+
+	/**
+	 * Returns this descriptor's absolute scale (&sigma;).
+	 * 
+	 * @return the absolute scale
+	 */
+	public double getScale() {
+		return scale;
+	}
+	
+	/**
+	 * Returns this descriptor's scale level (scale space octave index p).
+	 * 
+	 * @return the scale level
+	 */
+	public int getScaleLevel() {
+		return scaleLevel;
+	}
+	
+	/**
+	 * Returns this descriptor's gradient response magnitude (score).
+	 * 
+	 * @return the gradient response magnitude
+	 */
+	public double getMagnitude() {
+		return magnitude;
+	}
+
+	/**
+	 * Returns this descriptor's orientation angle (in radians).
+	 * 
+	 * @return the orientation angle
+	 */
+	public double getOrientation() {
+		return orientation;
+	}
+	
+	/**
+	 * Returns this descriptor's feature vector (array of integers).
+	 * 
+	 * @return the feature vector
+	 */
+	public int[] getFeatures() {
+		return features;
+	}
+	
 	// -----------------------------
 	
-	public double getDistanceL1(SiftDescriptor other) {
-		int[] f1 = this.features;
-		int[] f2 = other.features;
-		int sum = 0;
-		for (int i=0; i<f1.length; i++) {
-			sum = sum + Math.abs(f1[i] - f2[i]);
-		}
-		return sum;
+	private static final VectorNorm DefaultNorm = VectorNorm.L2.getInstance();
+	
+	/**
+	 * Calculates and returns the distance between this descriptor's feature vector
+	 * and another descriptor's feature vector using the Euclidean distance
+	 * ({@link VectorNorm.L2}).
+	 * 
+	 * @param other another {@link SiftDescriptor}
+	 * @return the distance
+	 */
+	public double getDistance(SiftDescriptor other) {
+		return DefaultNorm.distance(this.features, other.features);
 	}
 	
-	public double getDistanceL2(SiftDescriptor other) {
-		int[] f1 = this.features;
-		int[] f2 = other.features;
-		int sum = 0;
-		for (int i = 0; i < f1.length; i++) {
-			int d = f1[i] - f2[i];
-			sum = sum + d * d;
-		}
-		return Math.sqrt(sum);
-	}
-	
-	public double getDistanceLinf(SiftDescriptor other) {
-		int[] f1 = this.features;
-		int[] f2 = other.features;
-		int dmax = 0;
-		for (int i = 0; i < f1.length; i++) {
-			int d = Math.abs(f1[i] - f2[i]);
-			dmax = Math.max(dmax, d);
-		}
-		return dmax;
+	/**
+	 * Calculates and returns the distance between this descriptor's feature vector
+	 * and another descriptor's feature vector using the specified {@link VectorNorm}.
+	 * 
+	 * @param other another {@link SiftDescriptor}
+	 * @param norm a {@link VectorNorm} instance
+	 * @return the distance
+	 */
+	public double getDistance(SiftDescriptor other, VectorNorm norm) {
+		return norm.distance(this.features, other.features);
 	}
 	
 	// -----------------------------
@@ -162,12 +188,9 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 				x, y, scale, magnitude, orientation);
 	}
 
-	//used for sorting SIFT descriptors by magnitude
-	@Override
+	
+	@Override // for sorting SIFT descriptors by descreasing magnitude
 	public int compareTo(SiftDescriptor other) {
-//		if (this.magnitude > other.magnitude) return -1;
-//		if (this.magnitude < other.magnitude) return 1;
-//		else return 0;
 		return Double.compare(other.magnitude, this.magnitude);
 	}
 

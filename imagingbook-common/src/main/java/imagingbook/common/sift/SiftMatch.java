@@ -24,8 +24,8 @@ package imagingbook.common.sift;
  */
 public class SiftMatch implements Comparable<SiftMatch> {
 	
-	final SiftDescriptor descriptor1, descriptor2;
-	final double distance;
+	private final SiftDescriptor descriptor1, descriptor2;
+	private final double distance;
 	
 	public SiftMatch(SiftDescriptor descriptor1, SiftDescriptor descriptor2, double distance) {
 		this.descriptor1 = descriptor1;
@@ -47,18 +47,12 @@ public class SiftMatch implements Comparable<SiftMatch> {
 
 	@Override
 	public int compareTo(SiftMatch other) {
-//		if (this.distance < other.distance)
-//			return -1;
-//		else if (this.distance > other.distance)
-//			return 1;
-//		else
-//			return 0;
 		return Double.compare(this.distance, other.distance);
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("match %.2f", this.distance);
+		return String.format("%s %.2f", this.getClass().getSimpleName(), distance);
 	}
 
 }

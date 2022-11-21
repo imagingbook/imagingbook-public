@@ -11,7 +11,6 @@ package imagingbook.common.ij;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
@@ -312,7 +311,7 @@ public class IjUtilsTest {
 		assertEquals(h - dy, ip2.getHeight());
 	}
 	
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testCrop5A() {
 		ImageProcessor ip1 = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
 		assertTrue(ip1 instanceof ByteProcessor);
@@ -320,11 +319,10 @@ public class IjUtilsTest {
 		int y = ip1.getHeight();
 		int w = ip1.getWidth();
 		int h = ip1.getHeight();
-		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
-		assertNull(ip2);
+		IjUtils.crop(ip1, x, y, w, h);
 	}
 	
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testCrop5B() {
 		ImageProcessor ip1 = GeneralSampleImage.Clown.getImage().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
@@ -332,8 +330,7 @@ public class IjUtilsTest {
 		int y = ip1.getHeight();
 		int w = ip1.getWidth();
 		int h = ip1.getHeight();
-		ImageProcessor ip2 = IjUtils.crop(ip1, x, y, w, h);
-		assertNull(ip2);
+		IjUtils.crop(ip1, x, y, w, h);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

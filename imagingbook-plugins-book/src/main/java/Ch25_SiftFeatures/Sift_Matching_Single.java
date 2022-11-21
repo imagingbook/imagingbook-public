@@ -9,6 +9,8 @@
 
 package Ch25_SiftFeatures;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Shape;
@@ -18,105 +20,114 @@ import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.ImageStack;
+import ij.gui.GenericDialog;
 import ij.gui.Overlay;
 import ij.gui.ShapeRoi;
 import ij.gui.TextRoi;
 import ij.plugin.filter.PlugInFilter;
-import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
+import imagingbook.common.math.VectorNorm.NormType;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftMatch;
 import imagingbook.common.sift.SiftMatcher;
+import imagingbook.sampleimages.SiftSampleImage;
 
 /**
  * <p>
  * This ImageJ plugin demonstrates the use of the SIFT detection and matching
- * framework. The plugin takes a stack of at least 2 grayscale images, finds 
- * interest points in the first 2 images and determines the best matches between
- * feature points.
+ * framework. The plugin takes a single grayscale image, which is assumed to be
+ * composed of a left and right frame. The input image is split horizontally,
+ * then SIFT detection and matching is applied to the two sub-images.
  * </p>
  * <p>
- * To display the results, the two input images are mounted side-by-side
- * in a combined image and the best-matching features are connected.
- * Vector overlays are used to draw the results on top of the images.
+ * The result is displayed as a graphic overlay by connecting and annotating the
+ * best-matching features. When saved as a TIFF image the overlay is preserved.
  * </p>
- * TODO: If no stack is supplied, split the image in the middle and
- * use left/right halves for matching.
  * 
  * @author WB
- * @version 2016/01/05
+ * @version 2022/11/20
  */
-public class Sift_Matching_Demo implements PlugInFilter {
+public class Sift_Matching_Single implements PlugInFilter {
 
-	static int NumberOfMatchesToShow = 25;
-	static double MatchLineCurvature = 0.25;
-	static double FeatureScale = 1.0;
-	static double FeatureStrokewidth = 1.0;
+	private static NormType DistanceNormType = SiftMatcher.DefaultNormType;
+	private static double MaxDistanceRatio = SiftMatcher.DefaultRMax;
 
-	static boolean ShowFeatureLabels = true;
+	private static int NumberOfMatchesToShow = 25;
+	private static double FeatureScale = 1.0;
+	private static boolean ShowFeatureLabels = true;
 
-	static Color SeparatorColor = 	Color.black;
-	static Color DescriptorColor1 = Color.green;
-	static Color DescriptorColor2 = Color.green;
-	static Color MatchLineColor = 	Color.magenta;
-	static Color LabelColor = 		Color.yellow;
-	static Font LabelFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+	private static double MatchLineCurvature = 0.25;
+	private static double FeatureStrokewidth = 1.0;
 
-	ImagePlus imp = null;
-
+	private static Color DescriptorColor1 = Color.green;
+	private static Color DescriptorColor2 = Color.green;
+	private static Color MatchLineColor = 	Color.magenta;
+	private static Color LabelColor = 		Color.yellow;
+	private static Font LabelFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+	
+	
+	private ImagePlus im = null;
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Sift_Matching_Single() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(SiftSampleImage.RamsesSmallStack_tif);
+		}
+	}
+	
 	@Override
-	public int setup(String arg0, ImagePlus imp) {
-		this.imp = imp;
-		return DOES_8G + PlugInFilter.STACK_REQUIRED + NO_CHANGES;
+	public int setup(String arg0, ImagePlus im) {
+		this.im = im;
+		return DOES_ALL;
 	}
 
 	@Override
 	public void run(ImageProcessor ip) {
-		if (imp.getStackSize() < 2) {
-			IJ.error("Stack with at least 2 images required!");
+		
+		if (!runDialog()) {
 			return;
 		}
 
-		ImageStack stack = imp.getImageStack();
-		final int w = stack.getWidth();
-		final int h = stack.getHeight();
-
-		FloatProcessor Ia = stack.getProcessor(1).convertToFloatProcessor();
-		FloatProcessor Ib = stack.getProcessor(2).convertToFloatProcessor();
-
-		SiftDetector.Parameters params = new SiftDetector.Parameters();
+		int w = ip.getWidth();
+		int h = ip.getHeight();
+		int w2 = w / 2;
+		
+		FloatProcessor Ia = IjUtils.crop(ip, 0, 0, w2, h).convertToFloatProcessor();
+		FloatProcessor Ib = IjUtils.crop(ip, w2, 0, w2, h).convertToFloatProcessor();
+		
+		SiftDetector.Parameters siftParams = new SiftDetector.Parameters();
 		// modify SIFT parameters here if needed
-
-		SiftDetector sdA = new SiftDetector(Ia, params);
-		SiftDetector sdB = new SiftDetector(Ib, params);
-
+		// we use the same parameters on left and right image
+		SiftDetector sdA = new SiftDetector(Ia, siftParams);
+		SiftDetector sdB = new SiftDetector(Ib, siftParams);
+		
 		List<SiftDescriptor> fsA = sdA.getSiftFeatures();
 		List<SiftDescriptor> fsB = sdB.getSiftFeatures();
 
-		IJ.log("SIFT features found in image 1: " + fsA.size());
-		IJ.log("SIFT features found in image 2: " + fsB.size());
+		IJ.log("SIFT features found in left image: "  + fsA.size());
+		IJ.log("SIFT features found in right image: " + fsB.size());
 
 		// --------------------------------------------------
 
 		IJ.log("matching ...");
-		// create a matcher on the first set of features:
-		SiftMatcher sm = new SiftMatcher(fsA);
-		// match the second set of features:
-		List<SiftMatch> matches = sm.matchDescriptors(fsB);
+		// create a SIFT matcher:
+		SiftMatcher sm = new SiftMatcher(DistanceNormType, MaxDistanceRatio);
+		// perform matching:
+		List<SiftMatch> matches = sm.match(fsA, fsB);
+		IJ.log("Matches found: " + matches.size());
 
 		// --------------------------------------------------
 
-		ImageProcessor montage = new ByteProcessor(2 * w, h);
-		montage.insert(stack.getProcessor(1), 0, 0);
-		montage.insert(stack.getProcessor(2), w, 0);
-		ImagePlus montageIm = new ImagePlus(imp.getShortTitle()+"-matches", montage);
-
 		Overlay oly = new Overlay();
 		oly.add(makeStraightLine(w, 0, w, h, Color.black));	// vertical separator
-		int xoffset = w;
+		int xoffset = w2;
 
 		// draw the matched SIFT markers:
 		// TODO: convert to CustomOverlay !
@@ -155,10 +166,38 @@ public class Sift_Matching_Demo implements PlugInFilter {
 		}
 
 		if (oly != null) {
-			montageIm.setOverlay(oly);
+			im.setOverlay(oly);
 		}
-		montageIm.show();
 	}
+	
+	// -------------------------
+	
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		
+		gd.addMessage("SIFT matching parameters:");
+		gd.addEnumChoice("Distance norm type", DistanceNormType);
+		gd.addNumericField("Max. ratio between 1st/2nd match (rMax)", MaxDistanceRatio, 2);
+		
+		gd.addMessage("Display parameters:");
+		gd.addNumericField("Number of matches to show", NumberOfMatchesToShow, 0);
+		gd.addNumericField("Feature scale", FeatureScale, 2);
+		gd.addCheckbox("Show feature labels", ShowFeatureLabels);
+		
+		gd.showDialog();
+		if (gd.wasCanceled()) {
+			return false;
+		}
+		
+		DistanceNormType = gd.getNextEnumChoice(NormType.class);
+		MaxDistanceRatio = gd.getNextNumber();
+		NumberOfMatchesToShow = (int) gd.getNextNumber();
+		FeatureScale = gd.getNextNumber();
+		ShowFeatureLabels = gd.getNextBoolean();
+		
+		return true;
+	}
+	
 
 	// drawing methods -------------------------------------------------
 	
