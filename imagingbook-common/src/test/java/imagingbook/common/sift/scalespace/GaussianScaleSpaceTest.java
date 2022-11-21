@@ -2,12 +2,13 @@ package imagingbook.common.sift.scalespace;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 public class GaussianScaleSpaceTest {
 	
@@ -19,16 +20,12 @@ public class GaussianScaleSpaceTest {
 	static int botLevel = 0;	// index q of bottom level in each octave
 	static int topLevel = Q;	// index q of top level in each octave
 	
-	@Test
-	public void testSymmetryOfTestImage() {
-		FloatProcessor fp = makeSymmetricBoxImage(50, 40);
-		double[] chk1 = checkSymmetry(fp, 1e-6f);
-		assertNull(makeChkString(0, 0, chk1), chk1);
-	}
 
 	@Test
 	public void testScaleSpaceParameters() {
-		FloatProcessor fp = makeSymmetricBoxImage(50, 40);
+//		FloatProcessor fp = makeSymmetricBoxImage(50, 40);
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		FloatProcessor fp = ip.convertToFloatProcessor();
 		
 		GaussianScaleSpace gss =
 				new GaussianScaleSpace(fp, sigma_s, sigma_0, P, Q, botLevel, topLevel);
@@ -54,6 +51,15 @@ public class GaussianScaleSpaceTest {
 		}	
 	}
 	
+	
+//	@Test
+//	public void testSymmetryOfTestImage() {
+//		FloatProcessor fp = makeSymmetricBoxImage(50, 40);
+//		double[] chk1 = checkSymmetry(fp, 1e-6f);
+//		assertNull(makeChkString(0, 0, chk1), chk1);
+//	}
+
+	
 //	@Test
 //	public void testScaleSpaceSymmetry() {
 //		FloatProcessor fp = makeSymmetricBoxImage(512, 256);
@@ -73,12 +79,12 @@ public class GaussianScaleSpaceTest {
 //		}
 //	}
 	
-	// chk = [u, v, u' v', val, val']
-	String makeChkString(int p, int q, double[] chk) {
-		if (chk == null) return "";
-		return String.format("p=%d q=%d (%d,%d)=%.6f (%d,%d)=%.6f",
-				p, q, (int)chk[0], (int)chk[1], chk[4], (int)chk[2], (int)chk[3], chk[5]);
-	}
+//	// chk = [u, v, u' v', val, val']
+//	private String makeChkString(int p, int q, double[] chk) {
+//		if (chk == null) return "";
+//		return String.format("p=%d q=%d (%d,%d)=%.6f (%d,%d)=%.6f",
+//				p, q, (int)chk[0], (int)chk[1], chk[4], (int)chk[2], (int)chk[3], chk[5]);
+//	}
 	
 	// ----------------------------------------------------------
 	
