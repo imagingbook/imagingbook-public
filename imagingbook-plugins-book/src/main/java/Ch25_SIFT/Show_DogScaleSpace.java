@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch25_SiftFeatures;
+package Ch25_SIFT;
 
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
@@ -44,7 +44,10 @@ public class Show_DogScaleSpace implements PlugInFilter {
 		GaussianScaleSpace gss =
 			new GaussianScaleSpace(fp, P, Q, sigma_s, sigma_0, botLevel, topLevel);
 		DogScaleSpace dss = new DogScaleSpace(gss);
-		dss.show("DoG");
+		ImagePlus[] images = dss.getImages("DoG");
+		for (ImagePlus im : images) {
+			im.show();
+		}
 	}
 
 }

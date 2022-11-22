@@ -10,6 +10,6 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch025 SIFT Features")
-package Ch25_SiftFeatures;
+package Ch25_SIFT;
 
 import imagingbook.core.plugin.IjPluginPath;

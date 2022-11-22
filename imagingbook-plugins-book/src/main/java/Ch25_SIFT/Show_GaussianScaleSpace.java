@@ -3,17 +3,16 @@
  * image processing published by Springer-Verlag in various languages and editions.
  * Permission to use and distribute this software is granted under the BSD 2-Clause 
  * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). 
- * Copyright (c) 2006-2015 Wilhelm Burger, Mark J. Burge. 
- * All rights reserved. Visit http://www.imagingbook.com for additional details.
- *  
+ * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
+ * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch25_SiftOLD;
+package Ch25_SIFT;
 
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.pub.sift.scalespace.GaussianScaleSpace;
+import imagingbook.common.sift.scalespace.GaussianScaleSpace;
 
 /**
  * Builds a hierarchical Gaussian scale space representation 
@@ -42,8 +41,11 @@ public class Show_GaussianScaleSpace implements PlugInFilter {
 	public void run(ImageProcessor ip) {
 		FloatProcessor fp = (FloatProcessor) ip.convertToFloat();
 		GaussianScaleSpace gss =
-			new GaussianScaleSpace(fp, sigma_s, sigma_0, P, K, botLevel, topLevel);
-		gss.show("Gauss");
+			new GaussianScaleSpace(fp, P, K, sigma_s, sigma_0, botLevel, topLevel);
+		ImagePlus[] images = gss.getImages("Gauss");
+		for (ImagePlus im : images) {
+			im.show();
+		}
 	}
 
 }

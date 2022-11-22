@@ -7,8 +7,9 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package Ch25_SiftFeatures;
+package Ch25_SIFT;
 
+import static imagingbook.common.color.sets.ColorEnumeration.getColors;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import java.awt.Color;
@@ -26,7 +27,6 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
-import imagingbook.common.color.sets.ColorEnumeration;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
@@ -75,7 +75,7 @@ public class Sift_Matching_Demo implements PlugInFilter {
 	private static BasicAwtColor LabelColor = BasicAwtColor.Yellow;
 	private static Font LabelFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	
-	private static Color[] ScaleLevelColors = ColorEnumeration.getColors(SiftColor.class);
+	private static Color[] ScaleLevelColors = getColors(SiftColor.class);
 	
 	private ImagePlus im = null;
 	
@@ -133,9 +133,9 @@ public class Sift_Matching_Demo implements PlugInFilter {
 		// --------------------------------------------------
 		
 		ColoredStroke matchLineStroke = new ColoredStroke(0.2, MatchLineColor.getColor());
-		ColoredStroke[] featureStrokes = new ColoredStroke[ScaleLevelColors.length];
+		ColoredStroke[] fStrokes = new ColoredStroke[ScaleLevelColors.length];
 		for (int i = 0; i < ScaleLevelColors.length; i++) {
-			featureStrokes[i] = new ColoredStroke(FeatureStrokewidth, ScaleLevelColors[i]);
+			fStrokes[i] = new ColoredStroke(FeatureStrokewidth, ScaleLevelColors[i]);
 		}
 		
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
@@ -149,7 +149,7 @@ public class Sift_Matching_Demo implements PlugInFilter {
 				new ColoredStroke(0.2, Color.green, 5)); 
 		
 		// add SIFT markers, connecting lines and number labels
-		int count = 1;
+		int n = 1;
 		for (SiftMatch m : matches) {
 			SiftDescriptor dA = m.getDescriptor1();
 			SiftDescriptor dB = m.getDescriptor2();
@@ -157,8 +157,8 @@ public class Sift_Matching_Demo implements PlugInFilter {
 			// draw the matched SIFT markers:
 			Shape sA = dA.getShape(FeatureScale);
 			Shape sB = trans.createTransformedShape(dB.getShape(FeatureScale));
-			ola.addShape(sA, featureStrokes[dA.getScaleLevel() % ScaleLevelColors.length]);
-			ola.addShape(sB, featureStrokes[dB.getScaleLevel() % ScaleLevelColors.length]);
+			ola.addShape(sA, fStrokes[dA.getScaleLevel() % fStrokes.length]);
+			ola.addShape(sB, fStrokes[dB.getScaleLevel() % fStrokes.length]);
 			
 			// draw the connecting lines:
 			Shape cAB = makeConnectingShape(dA, dB.plus(w2, 0));
@@ -166,12 +166,11 @@ public class Sift_Matching_Demo implements PlugInFilter {
 			
 			// draw the numeric feature labels on both sides:
 			if (ShowFeatureLabels) {
-				String label = Integer.toString(count);	
+				String label = Integer.toString(n);	
 				ola.addText(dA.getX(), dA.getY(), label);
 				ola.addText(dB.getX() + w2, dB.getY(), label);
 			}
-
-			if (count++ > NumberOfMatchesToShow) break;
+			if (++n > NumberOfMatchesToShow) break;
 		}
 
 		im.setOverlay(ola.getOverlay());

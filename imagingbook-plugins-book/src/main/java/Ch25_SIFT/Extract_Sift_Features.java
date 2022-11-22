@@ -7,8 +7,9 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package Ch25_SiftFeatures;
+package Ch25_SIFT;
 
+import static imagingbook.common.color.sets.ColorEnumeration.getColors;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import java.awt.Color;
@@ -17,13 +18,13 @@ import java.util.List;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.common.sift.SiftColor;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftDetector.Parameters;
@@ -32,10 +33,11 @@ import imagingbook.sampleimages.SiftSampleImage;
 
 
 /**
- * This plugin extracts multi-scale SIFT features from the current 
- * image and displays them as M-shaped markers.
- * List of keypoints (if selected) is sorted by descending magnitude.
- *  
+ * This plugin extracts multi-scale SIFT features from the current image and
+ * displays them as M-shaped markers. The list of keypoints (if shown) is sorted
+ * by descending magnitude. The input image is always converted to grayscale
+ * before SIFT feature detection is performed.
+ * 
  * @author WB
  * @version 2022/04/01
  * 
@@ -45,20 +47,14 @@ import imagingbook.sampleimages.SiftSampleImage;
 
 public class Extract_Sift_Features implements PlugInFilter {
 	
-	private static Parameters params = new Parameters();
+	private static Parameters params = new SiftDetector.Parameters();
+	private static int MaxFeaturesToShow = 200;
 	private static double FeatureScale = 1.0; // 1.5;
 	private static double FeatureStrokewidth = 0.5;
 	private static boolean ListSiftFeatures = false;
+	private static Color[] ScaleLevelColors = getColors(SiftColor.class);
 	
-	private static Color[] MarkerColors = {
-			new Color(240,0,0), 	// red
-			new Color(0,185,15), 	// green
-			new Color(0,60,255), 	// blue
-			new Color(255,0,200), 	// magenta
-			new Color(255,155,0)	// yellow
-		};
-
-	ImagePlus imp;
+	private ImagePlus im;
 	
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image
@@ -70,52 +66,57 @@ public class Extract_Sift_Features implements PlugInFilter {
 		}
 	}
 	
-
+	// ---------------------------------------------------
+	
 	@Override
-	public int setup(String arg0, ImagePlus imp) {
-		this.imp = imp;
-		return DOES_8G + NO_CHANGES;
+	public int setup(String arg0, ImagePlus im) {
+		this.im = im;
+		return DOES_ALL;
 	}
 
 	@Override
-	public void run(ImageProcessor ip) {
-		params =  new SiftDetector.Parameters();
-						
+	public void run(ImageProcessor ip) {		
 		if (!runDialog()) {
 			return;
 		}
 		
 		FloatProcessor fp = ip.convertToFloatProcessor();
-		SiftDetector sd = new SiftDetector(fp, params);
-		List<SiftDescriptor> features = sd.getSiftFeatures();
+		SiftDetector detector = new SiftDetector(fp, params);
+		List<SiftDescriptor> features = detector.getSiftFeatures();
+		
+		ColoredStroke[] fStrokes = new ColoredStroke[ScaleLevelColors.length];
+		for (int i = 0; i < ScaleLevelColors.length; i++) {
+			fStrokes[i] = new ColoredStroke(FeatureStrokewidth, ScaleLevelColors[i]);
+		}
+		
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
+		
+		int cnt = 1;
+		for (SiftDescriptor sf : features) {	
+			ColoredStroke stroke = fStrokes[sf.getScaleLevel() % fStrokes.length];
+			ola.addShape(sf.getShape(FeatureScale), stroke);
+			if(++cnt > MaxFeaturesToShow) break;
+		}
+
+		im.setOverlay(ola.getOverlay());
 		
 		if (ListSiftFeatures) {
-			int i = 0;
+			int n = 1;
 			for (SiftDescriptor sf : features) {
-				IJ.log(i + ": " + sf.toString());
-				i++;
+				IJ.log(n + ": " + sf.toString());
+				if(++n > MaxFeaturesToShow) break;
 			}
 		}
-
-		ImageProcessor ip2 = ip.duplicate();
-		ImagePlus imp2 = new ImagePlus(imp.getShortTitle() + "-SIFT", ip2);
-		
-		Overlay oly = new Overlay();
-		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
-		for (SiftDescriptor sf : features) {
-			Color col = MarkerColors[sf.getScaleLevel() % MarkerColors.length];
-			ColoredStroke stroke = new ColoredStroke(FeatureStrokewidth, col);
-			ola.addShape(sf.getShape(FeatureScale), stroke);
-		}
-
-		imp2.setOverlay(oly);
-		imp2.show();
 	}
+	
+	// ---------------------------------------------------
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addMessage("This plugin expects a single image.");
 		DialogUtils.addToDialog(params, gd);
-		gd.addCheckbox("List all SIFT features (might be many!)", ListSiftFeatures);
+		gd.addNumericField("Max. number of features to show", MaxFeaturesToShow);
+		gd.addCheckbox("List SIFT features)", ListSiftFeatures);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
@@ -123,32 +124,9 @@ public class Extract_Sift_Features implements PlugInFilter {
 		}
 		
 		DialogUtils.getFromDialog(params, gd);
+		MaxFeaturesToShow = (int) gd.getNextNumber();
 		ListSiftFeatures = gd.getNextBoolean();
 		return true;
 	}
-	
-//	private boolean showDialog() {
-//		// TODO: use ParameterBundle methods
-//		GenericDialog gd = new GenericDialog("Set SIFT parameters");
-//		gd.addNumericField("tMag :", params.tMag, 3, 6, "");
-//		gd.addNumericField("rMax :", params.rhoMax, 3, 6, "");
-//		gd.addNumericField("orientation histogram smoothing :", params.nSmooth, 0, 6, "");
-//		gd.addCheckbox("list all SIFT features (might be many!)", ListSiftFeatures);
-//		
-//		gd.showDialog();
-//		if (gd.wasCanceled()) {
-//			return false;
-//		}
-//		
-//		params.tMag = gd.getNextNumber();
-//		params.rhoMax = gd.getNextNumber();
-//		params.nSmooth = (int) gd.getNextNumber();
-//		ListSiftFeatures = gd.getNextBoolean();
-//		if(gd.invalidNumber()) {
-//			IJ.error("Input Error", "Invalid input number");
-//			return false;
-//		}	
-//		return true;
-//	}
-	
+
 }
