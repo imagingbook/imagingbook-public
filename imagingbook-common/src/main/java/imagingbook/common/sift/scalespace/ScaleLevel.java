@@ -93,6 +93,7 @@ public class ScaleLevel {
 	
 	// ------------------------------
 
+	@Deprecated // does not belong here!
 	void filterGaussian(double sigma) {
 		FloatProcessor fp = this.toFloatProcessor();
 		new GaussianFilterSeparable(sigma).applyTo(fp);	// TODO: validate change!
@@ -132,6 +133,7 @@ public class ScaleLevel {
 		return level2; //new ScaleLevel(w2, h2, pixels2, absoluteScale);
 	}
 	
+	// TODO: this sould be eliminated
 	void setAbsoluteScale(double sigma) {
 		this.absoluteScale = sigma;
 	}

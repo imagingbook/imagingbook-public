@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * <p>
  * Represents a SIFT key point in hierarchical scale space. See Sec. 25.3 of [1]
- * for more details.
+ * for more details. This class is non-public, instances are immutable.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -24,7 +24,7 @@ import java.util.Locale;
  * @author WB
  * @version 2022/11/20
  */
-public class KeyPoint implements Cloneable, Comparable<KeyPoint> {
+class KeyPoint implements Cloneable, Comparable<KeyPoint> {
 	
 	/** octave index */
 	public final int p;
@@ -33,29 +33,39 @@ public class KeyPoint implements Cloneable, Comparable<KeyPoint> {
 	
 	/** lattice x-position */
 	public final int u;
+	
 	/** lattice y-position */
 	public final int v;
+	
 	/** interpolated lattice x-position */
-	public float x;
+	public final float x;
+	
 	/** interpolated lattice y-position */
-	public float y;
+	public final float y;
 	
 	/** real x-position (in image coordinates) */
-	public float x_real;
+	public final float x_real;
+	
 	/** real y-position (in image coordinates) */	
-	public float y_real;
+	public final float y_real;
+	
 	/** absolute scale */
-	public float scale;
+	public final float scale;
 	
 	/** magnitude of DoG response */
 	public final float magnitude;
 	
-	/** for debugging only */
-	protected float[] orientation_histogram;
-	/** dominant orientation (for debugging only) */
-	protected double orientation;
+	// --------------------------------------------
 	
-	protected KeyPoint(int p, int q, int u, int v, float x, float y, float x_real, float y_real, float scale, float magnitude) {
+	/** for debugging only */
+	float[] orientation_histogram;
+	/** dominant orientation (for debugging only) */
+	double orientation;
+	
+	// --------------------------------------------
+	
+	/** Constructor (non-public). */
+	KeyPoint(int p, int q, int u, int v, float x, float y, float x_real, float y_real, float scale, float magnitude) {
 		this.p = p;
 		this.q = q;
 		this.u = u;
@@ -83,9 +93,8 @@ public class KeyPoint implements Cloneable, Comparable<KeyPoint> {
 		return null;
 	}
 
-	@Override
+	@Override //used for sorting keypoints by decreasing gradient magnitude
 	public int compareTo(KeyPoint other) {
-		//used for sorting keypoints by magnitude
 		return Float.compare(other.magnitude, this.magnitude);
 	}
 

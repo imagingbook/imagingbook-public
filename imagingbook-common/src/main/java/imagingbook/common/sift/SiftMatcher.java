@@ -99,10 +99,5 @@ public class SiftMatcher {
 		Collections.sort(matches);  // sort matches by ascending descriptor distance
 		return matches;
 	}
-	
-//	private double dist(SiftDescriptor a, SiftDescriptor b) {
-//		//final ArrayMatcher matcher = params.norm.matcher;
-//		return norm.distance(a.getFeatures(), b.getFeatures());
-//	}
 
 }

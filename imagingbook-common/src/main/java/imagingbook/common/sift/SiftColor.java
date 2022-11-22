@@ -14,7 +14,8 @@ import java.awt.Color;
 import imagingbook.common.color.sets.ColorEnumeration;
 
 /**
- * Color definitions used in MSER demo plugins.
+ * Color definitions used in various SIFT demo plugins.
+ * 
  * @author WB
  * @version 2022/11/19
  *

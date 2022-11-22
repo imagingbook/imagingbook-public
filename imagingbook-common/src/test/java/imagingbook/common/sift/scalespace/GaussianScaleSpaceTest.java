@@ -88,6 +88,7 @@ public class GaussianScaleSpaceTest {
 	
 	// ----------------------------------------------------------
 	
+	@SuppressWarnings("unused")
 	private FloatProcessor makeSymmetricBoxImage(int w2, int h2) {
 		// total size is (2 * w2 + 1) x (2 * h2 + 1)
 		int width =  2 * w2; // + 1;
@@ -106,6 +107,7 @@ public class GaussianScaleSpaceTest {
 	}
 	
 	// returns [u, v, u' v', val, val']
+	@SuppressWarnings("unused")
 	private double[] checkSymmetry(FloatProcessor fp, float tol) {
 		int w = fp.getWidth();
 		int h = fp.getHeight();

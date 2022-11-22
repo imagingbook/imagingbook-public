@@ -12,7 +12,7 @@ package imagingbook.common.sift;
 /**
  * <p>
  * Represents a match between two SIFT features. See Secs. 25.5 of [1] for more
- * details.
+ * details. Instances are immutable.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An

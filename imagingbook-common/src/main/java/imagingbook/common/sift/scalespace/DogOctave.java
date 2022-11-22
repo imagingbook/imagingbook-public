@@ -29,24 +29,23 @@ public class DogOctave extends ScaleOctave {
 		super(Gp.p, Gp.Q, Gp.width, Gp.height, Gp.botLevelIndex, Gp.topLevelIndex-1);
 		// create DoG octave
 		for (int q = botLevelIndex; q <= topLevelIndex; q++) {
-			ScaleLevel Dpq = differenceOfGaussians(Gp.getLevel(q+1), Gp.getLevel(q));
+			ScaleLevel Dpq = getDifference(Gp.getLevel(q+1), Gp.getLevel(q));
 			this.setLevel(q, Dpq);
 		}
 	}
 	
-	public ScaleLevel differenceOfGaussians(ScaleLevel A, ScaleLevel B) {
-		// A: Gaussian at level q+1
-		// B: Gaussian at level q
-		// C <-- A - B (scale the same as B)
-		ScaleLevel C = B.duplicate();
-		float[] dataA = A.getData();
-		float[] dataB = B.getData();
-		float[] dataC = C.getData();
+	private ScaleLevel getDifference(ScaleLevel Ga, ScaleLevel Gb) {
+		// Ga: Gaussian at level q+1
+		// Gb: Gaussian at level q
+		// D <-- Ga - Gb (scale the same as Gb)
+		float[] dataA = Ga.getData();
+		float[] dataB = Gb.getData();
+		float[] dataD = new float[dataA.length];
 		for (int i = 0; i < dataA.length; i++) {
-			dataC[i] = dataA[i] - dataB[i];
+			dataD[i] = dataA[i] - dataB[i];
 		}
-		C.setAbsoluteScale(B.getAbsoluteScale());
-		return C;
+		ScaleLevel D = new ScaleLevel(Ga.getWidth(), Ga.getHeight(), dataD, Gb.getAbsoluteScale());
+		return D;
 	}
 	
 }

@@ -10,6 +10,7 @@
 package imagingbook.common.sift.scalespace;
 
 import ij.process.FloatProcessor;
+import imagingbook.common.filter.linear.GaussianFilterSeparable;
 
 /**
  * <p>
@@ -35,9 +36,10 @@ public class GaussianScaleSpace extends HierarchicalScaleSpace {
 		double scale_b = getAbsoluteScale(0, -1) ;	// get absolute scale of level(0,-1)
 		double sigma_b = getRelativeScale(sigma_s, scale_b);
 		
-		ScaleLevel Ginit = new ScaleLevel(fp, sigma_s);
-		Ginit.filterGaussian(sigma_b);
-		Ginit.setAbsoluteScale(scale_b);
+		filterGaussian(fp, sigma_b);
+		ScaleLevel Ginit = new ScaleLevel(fp, sigma_b);
+//		Ginit.filterGaussian(sigma_b);
+//		Ginit.setAbsoluteScale(scale_b);
 
 		// build Gaussian octaves:
 		this.octaves[0] = new GaussianOctave(0, Q, Ginit, botLevel, topLevel, sigma_0);
@@ -45,6 +47,10 @@ public class GaussianScaleSpace extends HierarchicalScaleSpace {
 			ScaleLevel Gbase = octaves[p-1].getLevel(Q-1).decimate();
 			this.octaves[p] = new GaussianOctave(p, Q, Gbase, botLevel, topLevel, sigma_0);
 		}
+	}
+	
+	static void filterGaussian(FloatProcessor fp, double sigma) {
+		new GaussianFilterSeparable(sigma).applyTo(fp);
 	}
 	
 }

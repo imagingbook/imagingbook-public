@@ -278,9 +278,9 @@ public class SiftDetector {
 	public List<SiftDescriptor> getSiftFeatures() {
 		List<KeyPoint> keyPoints = getKeyPoints();
 		List<SiftDescriptor> siftDescriptors = new ArrayList<SiftDescriptor>();
-		for (KeyPoint c : keyPoints) {
-			for (double phi_d : getDominantOrientations(c)) {
-				SiftDescriptor sd = makeSiftDescriptor(c, phi_d);
+		for (KeyPoint kp : keyPoints) {
+			for (double phi_d : getDominantOrientations(kp)) {
+				SiftDescriptor sd = makeSiftDescriptor(kp, phi_d);
 				if (sd != null) {
 					siftDescriptors.add(sd);
 				}
@@ -313,21 +313,22 @@ public class SiftDetector {
 	private List<KeyPoint> findExtrema(int p, int q) {
 		final float tMag = (float) params.tMag;
 		final float tExtrm = (float) params.tExtrm;
-		ScaleOctave Dp = D.getOctave(p);
-		ScaleLevel Dpq = D.getScaleLevel(p, q);
-		int M = Dpq.getWidth();
-		int N = Dpq.getHeight();
+		final ScaleOctave Dp = D.getOctave(p);
+		final ScaleLevel Dpq = D.getScaleLevel(p, q);
+		final int M = Dpq.getWidth();
+		final int N = Dpq.getHeight();
+		
 		List<KeyPoint> E = new ArrayList<KeyPoint>();
-		float scale = (float) D.getAbsoluteScale(p, q); //D.getScaleIndexFloat(p, q); needed?
+		float scale = (float)D.getAbsoluteScale(p, q); 	//D.getScaleIndexFloat(p, q); needed?
 
-		final float[][][] nh = new float[3][3][3];	// 3x3x3 neighborhood [q][u][v]
-		for (int u = 1; u <= M-2; u++) {
-			float x_real = (float) D.getRealX(p, u);	// for display purposes only
-			for (int v = 1; v <= N-2; v++) {
+		final float[][][] nh = new float[3][3][3];			// 3x3x3 neighborhood [q][u][v]
+		for (int u = 1; u <= M - 2; u++) {
+			float x_real = (float) D.getRealX(p, u);		// for display purposes only
+			for (int v = 1; v <= N - 2; v++) {
 				float y_real = (float) D.getRealY(p, v);	// for display purposes only
 				float mag = Math.abs(Dpq.getValue(u, v));
 				if (mag > tMag) {
-					Dp.getNeighborhood(q, u, v, nh);	// CHANGE to use D not Dp!!
+					Dp.getNeighborhood(q, u, v, nh);		// CHANGE to use D not Dp!!
 					if (isExtremum(nh, tExtrm)) {
 						KeyPoint e = new KeyPoint(p, q, u, v, u, v, x_real, y_real, scale, mag);
 						E.add(e);
@@ -339,15 +340,15 @@ public class SiftDetector {
 	}
 
 	private KeyPoint refineKeyPosition(DogScaleSpace D, KeyPoint k) { 
-		//IJ.log("++Processing " + c.toString());
 		final int p = k.p;
 		final int q = k.q;
 		int u = k.u;
 		int v = k.v;
-		ScaleOctave Dp = D.getOctave(p);
-		//ScaleLevel Dpq = Dp.getLevel(q);
-
+		
+		final ScaleOctave Dp = D.getOctave(p);
 		final double rhoMax = params.rhoMax;
+		final double tPeak = params.tPeak;
+		final int nRefine = params.nRefine;
 
 		final float[][][] nh = new float[3][3][3];	// 3x3x3 neighborhood nh[q][u][v]
 		final float[] grad 	 = new float[3];		// gradient (dx, dy, ds)	
@@ -356,14 +357,12 @@ public class SiftDetector {
 													// | dxx dxy dxs |
 													// | dxy dyy dys |
 													// | dxs dys dss |
-		final double tPeak = params.tPeak;
-		final int n_max = params.nRefine;
-
+		
 		final float aMax = (float) (sqr(rhoMax + 1) / rhoMax);
 		KeyPoint kr = null;							// refined keypoint
 		boolean done = false;
 		int n = 1;
-		while (!done && n <= n_max && Dp.isInside(q, u, v)) {
+		while (!done && n <= nRefine && Dp.isInside(q, u, v)) {
 			Dp.getNeighborhood(q, u, v, nh);	// TODO: CHANGE to use D instead of Dp!
 			gradient(nh, grad);					// result stored in grad
 			hessian(nh, hess);					// result stored in hess
@@ -389,13 +388,13 @@ public class SiftDetector {
 					if (Math.abs(Dpeak) > tPeak && detHxy > 0) { // check peak magnitude
 						final float a = sqr(dxx + dyy) / detHxy;
 						if (a <= aMax) { 					// check curvature ratio (edgeness)
-//							if (params.DEBUG) IJ.log(k.toString() + String.format(": added after %d tries, alpha = %f", n, a));
-							kr = k;	//  the passed keypoint is reused for the refined keypoint, with p,q,u,v unchanged
-							kr.x = u + xx;
-							kr.y = v + yy;
-							kr.x_real = (float) D.getRealX(p, kr.x);
-							kr.y_real = (float) D.getRealY(p, kr.y);
-							kr.scale  = (float) D.getAbsoluteScale(p, q);
+							// new, refined keypoint:
+							float x = u + xx;
+							float y = v + yy;
+							float x_real = (float) D.getRealX(p, x);
+							float y_real = (float) D.getRealY(p, y);
+							float scale  = (float) D.getAbsoluteScale(p, q);
+							kr = new KeyPoint(k.p, k.q, k.u, k.v, x, y, x_real, y_real, scale, k.magnitude);
 						}
 					}
 				}
@@ -636,8 +635,10 @@ public class SiftDetector {
 	}
 
 	private SiftDescriptor makeSiftDescriptor(KeyPoint c, double phi_d) {
-		final int p = c.p, q = c.q;
-		final double x = c.x, y = c.y;
+		final int p = c.p;
+		final int q = c.q;
+		final double x = c.x;
+		final double y = c.y;
 		final double mag = c.magnitude;
 
 		ScaleLevel Gpq = G.getScaleLevel(p, q);
@@ -654,15 +655,11 @@ public class SiftDetector {
 		double sin_phi_d = Math.sin(-phi_d);	// precalculated sine
 		double cos_phi_d = Math.cos(-phi_d);	// precalculated cosine
 
-		//		Debug(logvar(p,"p") + logvar(q,"q") + logvar(w_d,"w_d"));
-
 		int u_min = Math.max((int)Math.floor(x - r_d), 1);
 		int u_max = Math.min((int)Math.ceil(x + r_d), M - 2);
-		//		Debug(logvar(x,"x") + logvar(u_min,"u_min") + logvar(u_max,"u_max"));
 
 		int v_min = Math.max((int)Math.floor(y - r_d), 1);
 		int v_max = Math.min((int)Math.ceil(y + r_d), N - 2);
-		//		Debug(logvar(y,"y") + logvar(v_min,"v_min") + logvar(v_max,"v_max"));
 
 		// create the 3D orientation histogram, initialize to zero:
 		final int n_Spat = params.nSpat;
@@ -785,7 +782,7 @@ public class SiftDetector {
 	}
 
 	private void clipPeaks(float[] x, float xmax) {
-		for (int i=0; i<x.length; i++) {
+		for (int i = 0; i<x.length; i++) {
 			if (x[i] > xmax) {
 				x[i] = xmax;
 			}

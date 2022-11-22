@@ -20,6 +20,7 @@ import imagingbook.common.math.VectorNorm;
 /**
  * <p>
  * This class defines a SIFT descriptor. See Sec. 25.3 of [1] for more details.
+ * Instances are immutable.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -158,27 +159,6 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 		return atf.createTransformedShape(poly);
 	}
 	
-//	@Override	// returns an M-shaped polygon centered at (x,y)
-//	public Shape getShape(double featureScale) {
-//		final double DisplayAngleOffset = 0; // -Math.PI / 2;
-//		double x = this.getX(); 
-//		double y = this.getY();
-//		double scale = featureScale * this.getScale();
-//		double orient = this.getOrientation() + DisplayAngleOffset;
-//		double dx = Math.cos(orient);
-//		double dy = Math.sin(orient);
-//		Path2D poly = new Path2D.Double();	
-//		poly.moveTo(x + (dy - dx) * scale, y - (dy + dx) * scale);
-//		poly.lineTo(x + (dy + dx) * scale, y + (dy - dx) * scale);
-//		poly.lineTo(x, y);
-//		poly.lineTo(x - (dy - dx) * scale, y + (dy + dx) * scale);
-//		poly.lineTo(x - (dy + dx) * scale, y - (dy - dx) * scale);
-//		poly.closePath();
-////		poly.moveTo(x, y);
-////		poly.lineTo(x + cos * scale, y + sin * scale);
-//		return poly;
-//	}
-	
 	// -----------------------------
 	
 	@Override
@@ -193,7 +173,5 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 	public int compareTo(SiftDescriptor other) {
 		return Double.compare(other.magnitude, this.magnitude);
 	}
-
-
 
 }
