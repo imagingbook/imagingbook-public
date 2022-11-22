@@ -20,12 +20,12 @@
 <span class="sourceLineNo">010</span><a id="line.10">package imagingbook.common.sift;</a>
 <span class="sourceLineNo">011</span><a id="line.11"></a>
 <span class="sourceLineNo">012</span><a id="line.12">import java.util.ArrayList;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import java.util.Collections;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import java.util.List;</a>
-<span class="sourceLineNo">015</span><a id="line.15"></a>
-<span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.math.VectorNorm;</a>
-<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.math.VectorNorm.NormType;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.util.ParameterBundle;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.util.Collection;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.Collections;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.util.List;</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.math.VectorNorm;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.math.VectorNorm.NormType;</a>
 <span class="sourceLineNo">019</span><a id="line.19"></a>
 <span class="sourceLineNo">020</span><a id="line.20">/**</a>
 <span class="sourceLineNo">021</span><a id="line.21"> * &lt;p&gt;</a>
@@ -38,80 +38,79 @@
 <span class="sourceLineNo">028</span><a id="line.28"> * &lt;/p&gt;</a>
 <span class="sourceLineNo">029</span><a id="line.29"> * </a>
 <span class="sourceLineNo">030</span><a id="line.30"> * @author WB</a>
-<span class="sourceLineNo">031</span><a id="line.31"> * @version 2022/11/20</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * @version 2022/11/20 removed inner Parameters class, changed constructor</a>
 <span class="sourceLineNo">032</span><a id="line.32"> */</a>
 <span class="sourceLineNo">033</span><a id="line.33">public class SiftMatcher {</a>
 <span class="sourceLineNo">034</span><a id="line.34">        </a>
-<span class="sourceLineNo">035</span><a id="line.35">        public static class Parameters implements ParameterBundle {</a>
-<span class="sourceLineNo">036</span><a id="line.36">                /** Specify type of distance norm */</a>
-<span class="sourceLineNo">037</span><a id="line.37">                public NormType norm = NormType.L2;</a>
-<span class="sourceLineNo">038</span><a id="line.38">                /** Max. ratio between best and second-best match */</a>
-<span class="sourceLineNo">039</span><a id="line.39">                public double rMax = 0.8;</a>
-<span class="sourceLineNo">040</span><a id="line.40">                /** Set true to sort matches */</a>
-<span class="sourceLineNo">041</span><a id="line.41">                public boolean sort = true;</a>
-<span class="sourceLineNo">042</span><a id="line.42">        }</a>
-<span class="sourceLineNo">043</span><a id="line.43">        </a>
-<span class="sourceLineNo">044</span><a id="line.44">        private final Parameters params;</a>
-<span class="sourceLineNo">045</span><a id="line.45">        private final SiftDescriptor[] fA;</a>
-<span class="sourceLineNo">046</span><a id="line.46">        private final VectorNorm am;</a>
-<span class="sourceLineNo">047</span><a id="line.47"></a>
-<span class="sourceLineNo">048</span><a id="line.48">        // constructor - using default parameters</a>
-<span class="sourceLineNo">049</span><a id="line.49">        public SiftMatcher(List&lt;SiftDescriptor&gt; sfA) {</a>
-<span class="sourceLineNo">050</span><a id="line.50">                this(sfA, new Parameters());</a>
-<span class="sourceLineNo">051</span><a id="line.51">        }</a>
-<span class="sourceLineNo">052</span><a id="line.52">        </a>
-<span class="sourceLineNo">053</span><a id="line.53">        // constructor - using specific parameters</a>
-<span class="sourceLineNo">054</span><a id="line.54">        public SiftMatcher(List&lt;SiftDescriptor&gt; sfA, Parameters params) {</a>
-<span class="sourceLineNo">055</span><a id="line.55">                this.fA = sfA.toArray(new SiftDescriptor[0]);</a>
-<span class="sourceLineNo">056</span><a id="line.56">                this.params = params;</a>
-<span class="sourceLineNo">057</span><a id="line.57">                am = params.norm.getInstance();</a>
-<span class="sourceLineNo">058</span><a id="line.58">        }</a>
-<span class="sourceLineNo">059</span><a id="line.59">        </a>
-<span class="sourceLineNo">060</span><a id="line.60">        public List&lt;SiftMatch&gt; matchDescriptors(List&lt;SiftDescriptor&gt; sfB) {</a>
-<span class="sourceLineNo">061</span><a id="line.61">                SiftDescriptor[] fB = sfB.toArray(new SiftDescriptor[0]);</a>
-<span class="sourceLineNo">062</span><a id="line.62">                List&lt;SiftMatch&gt; matches = new ArrayList&lt;SiftMatch&gt;(fA.length);</a>
-<span class="sourceLineNo">063</span><a id="line.63">                                </a>
-<span class="sourceLineNo">064</span><a id="line.64">                for (int i = 0; i &lt; fA.length; i++) {</a>
-<span class="sourceLineNo">065</span><a id="line.65">                        SiftDescriptor si = fA[i];</a>
-<span class="sourceLineNo">066</span><a id="line.66">                        int i0 = -1;</a>
-<span class="sourceLineNo">067</span><a id="line.67">//                      int i1 = -1;</a>
-<span class="sourceLineNo">068</span><a id="line.68">                        double d0 = Double.MAX_VALUE;</a>
-<span class="sourceLineNo">069</span><a id="line.69">                        double d1 = Double.MAX_VALUE;</a>
-<span class="sourceLineNo">070</span><a id="line.70">                        </a>
-<span class="sourceLineNo">071</span><a id="line.71">                        for (int j = 0; j &lt; fB.length; j++) {</a>
-<span class="sourceLineNo">072</span><a id="line.72">                                double d = dist(si, fB[j]);</a>
-<span class="sourceLineNo">073</span><a id="line.73">                                if (d &lt; d0) {   // new absolute minimum distance</a>
-<span class="sourceLineNo">074</span><a id="line.74">//                                      i1 = i0;        // old best becomes second-best</a>
-<span class="sourceLineNo">075</span><a id="line.75">                                        d1 = d0;</a>
-<span class="sourceLineNo">076</span><a id="line.76">                                        i0 = j;</a>
-<span class="sourceLineNo">077</span><a id="line.77">                                        d0 = d;</a>
-<span class="sourceLineNo">078</span><a id="line.78">                                }</a>
-<span class="sourceLineNo">079</span><a id="line.79">                                else // not a new absolute min., but possible second-best</a>
-<span class="sourceLineNo">080</span><a id="line.80">                                        if (d &lt; d1) { // new second-best</a>
-<span class="sourceLineNo">081</span><a id="line.81">//                                              i1 = j;</a>
-<span class="sourceLineNo">082</span><a id="line.82">                                                d1 = d;</a>
-<span class="sourceLineNo">083</span><a id="line.83">                                        }</a>
-<span class="sourceLineNo">084</span><a id="line.84">                        }</a>
-<span class="sourceLineNo">085</span><a id="line.85">//                      if (i1 &gt;= 0 &amp;&amp; d1 &gt; 0.001 &amp;&amp; d0/d1 &lt; params.rho_max) </a>
-<span class="sourceLineNo">086</span><a id="line.86">                        if (Double.isFinite(d1) &amp;&amp; d1 &gt; 0.001 &amp;&amp; d0/d1 &lt; params.rMax) {</a>
-<span class="sourceLineNo">087</span><a id="line.87">                                SiftDescriptor s0 = fB[i0];</a>
-<span class="sourceLineNo">088</span><a id="line.88">                                SiftMatch m = new SiftMatch(si, s0, d0);</a>
-<span class="sourceLineNo">089</span><a id="line.89">                                matches.add(m);</a>
-<span class="sourceLineNo">090</span><a id="line.90">                        }</a>
-<span class="sourceLineNo">091</span><a id="line.91">                }</a>
-<span class="sourceLineNo">092</span><a id="line.92">                if (params.sort) {</a>
-<span class="sourceLineNo">093</span><a id="line.93">                        Collections.sort(matches);  // sort matches to ascending distance d1</a>
-<span class="sourceLineNo">094</span><a id="line.94">                }</a>
-<span class="sourceLineNo">095</span><a id="line.95">                </a>
-<span class="sourceLineNo">096</span><a id="line.96">                return matches;</a>
-<span class="sourceLineNo">097</span><a id="line.97">        }</a>
-<span class="sourceLineNo">098</span><a id="line.98">        </a>
-<span class="sourceLineNo">099</span><a id="line.99">        double dist(SiftDescriptor d1, SiftDescriptor d2) {</a>
-<span class="sourceLineNo">100</span><a id="line.100">                //final ArrayMatcher matcher = params.norm.matcher;</a>
-<span class="sourceLineNo">101</span><a id="line.101">                return am.distance(d1.getFeatures(), d2.getFeatures());</a>
-<span class="sourceLineNo">102</span><a id="line.102">        }</a>
-<span class="sourceLineNo">103</span><a id="line.103"></a>
-<span class="sourceLineNo">104</span><a id="line.104">}</a>
+<span class="sourceLineNo">035</span><a id="line.35">        public static final NormType DefaultNormType = NormType.L2;</a>
+<span class="sourceLineNo">036</span><a id="line.36">        public static final double DefaultRMax = 0.8;</a>
+<span class="sourceLineNo">037</span><a id="line.37">        </a>
+<span class="sourceLineNo">038</span><a id="line.38">        private final VectorNorm norm;</a>
+<span class="sourceLineNo">039</span><a id="line.39">        private final double rMax;</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">        /**</a>
+<span class="sourceLineNo">042</span><a id="line.42">         * Constructor using specific parameters.</a>
+<span class="sourceLineNo">043</span><a id="line.43">         * </a>
+<span class="sourceLineNo">044</span><a id="line.44">         * @param normType the distance norm for comparing feature vectors</a>
+<span class="sourceLineNo">045</span><a id="line.45">         * @param rMax the max. distance ratio between best and second-best match</a>
+<span class="sourceLineNo">046</span><a id="line.46">         */</a>
+<span class="sourceLineNo">047</span><a id="line.47">        public SiftMatcher(NormType normType, double rMax) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">                this.norm = normType.getInstance();</a>
+<span class="sourceLineNo">049</span><a id="line.49">                this.rMax = rMax;</a>
+<span class="sourceLineNo">050</span><a id="line.50">        }</a>
+<span class="sourceLineNo">051</span><a id="line.51">        </a>
+<span class="sourceLineNo">052</span><a id="line.52">        /**</a>
+<span class="sourceLineNo">053</span><a id="line.53">         * Constructor using default parameters.</a>
+<span class="sourceLineNo">054</span><a id="line.54">         * @see #DefaultNormType</a>
+<span class="sourceLineNo">055</span><a id="line.55">         * @see #DefaultRMax</a>
+<span class="sourceLineNo">056</span><a id="line.56">         */</a>
+<span class="sourceLineNo">057</span><a id="line.57">        public SiftMatcher() {</a>
+<span class="sourceLineNo">058</span><a id="line.58">                this(DefaultNormType, DefaultRMax);</a>
+<span class="sourceLineNo">059</span><a id="line.59">        }</a>
+<span class="sourceLineNo">060</span><a id="line.60">        </a>
+<span class="sourceLineNo">061</span><a id="line.61">        /**</a>
+<span class="sourceLineNo">062</span><a id="line.62">         * Finds matches between two sets of SIFT descriptors. For each descriptor in</a>
+<span class="sourceLineNo">063</span><a id="line.63">         * the first set, the best and second-best fits are searched for in the second</a>
+<span class="sourceLineNo">064</span><a id="line.64">         * set. A valid match instance is created if the distance to the best-matching</a>
+<span class="sourceLineNo">065</span><a id="line.65">         * descriptor is significantly smaller than the distance to the second-best</a>
+<span class="sourceLineNo">066</span><a id="line.66">         * matching descriptor. The resulting list of matches is sorted by increasing</a>
+<span class="sourceLineNo">067</span><a id="line.67">         * match distance.</a>
+<span class="sourceLineNo">068</span><a id="line.68">         * </a>
+<span class="sourceLineNo">069</span><a id="line.69">         * @param setA the first set of SIFT descriptors</a>
+<span class="sourceLineNo">070</span><a id="line.70">         * @param setB the second set of SIFT descriptors</a>
+<span class="sourceLineNo">071</span><a id="line.71">         * @return a (possibly empty) list of {@link SiftMatch} instances</a>
+<span class="sourceLineNo">072</span><a id="line.72">         */</a>
+<span class="sourceLineNo">073</span><a id="line.73">        public List&lt;SiftMatch&gt; match(Collection&lt;SiftDescriptor&gt; setA, Collection&lt;SiftDescriptor&gt; setB) {</a>
+<span class="sourceLineNo">074</span><a id="line.74">                List&lt;SiftMatch&gt; matches = new ArrayList&lt;SiftMatch&gt;(setA.size());</a>
+<span class="sourceLineNo">075</span><a id="line.75">                                </a>
+<span class="sourceLineNo">076</span><a id="line.76">                for (SiftDescriptor si : setA) {</a>
+<span class="sourceLineNo">077</span><a id="line.77">                        SiftDescriptor s1 = null;                               // best-matching feature</a>
+<span class="sourceLineNo">078</span><a id="line.78">                        double d1 = Double.POSITIVE_INFINITY;   // best match distance</a>
+<span class="sourceLineNo">079</span><a id="line.79">                        double d2 = Double.POSITIVE_INFINITY;   // second-best match distance</a>
+<span class="sourceLineNo">080</span><a id="line.80">                        </a>
+<span class="sourceLineNo">081</span><a id="line.81">                        for (SiftDescriptor sj : setB) {</a>
+<span class="sourceLineNo">082</span><a id="line.82">                                double d = si.getDistance(sj, norm); // dist(si, sj);</a>
+<span class="sourceLineNo">083</span><a id="line.83">                                if (d &lt; d1) {   // new best match</a>
+<span class="sourceLineNo">084</span><a id="line.84">                                        d2 = d1;        // demote current best match to second-best (keep distance only)</a>
+<span class="sourceLineNo">085</span><a id="line.85">                                        s1 = sj;        // new best matching feature</a>
+<span class="sourceLineNo">086</span><a id="line.86">                                        d1 = d;         // new best match distance</a>
+<span class="sourceLineNo">087</span><a id="line.87">                                }</a>
+<span class="sourceLineNo">088</span><a id="line.88">                                else // not a new absolute min., but possible second-best</a>
+<span class="sourceLineNo">089</span><a id="line.89">                                        if (d &lt; d2) { // new second-best distance</a>
+<span class="sourceLineNo">090</span><a id="line.90">                                                d2 = d;</a>
+<span class="sourceLineNo">091</span><a id="line.91">                                        }</a>
+<span class="sourceLineNo">092</span><a id="line.92">                        }</a>
+<span class="sourceLineNo">093</span><a id="line.93">                        if (Double.isFinite(d2) &amp;&amp; d2 &gt; 0.001 &amp;&amp; d1/d2 &lt; this.rMax) {</a>
+<span class="sourceLineNo">094</span><a id="line.94">                                SiftMatch m = new SiftMatch(si, s1, d1);</a>
+<span class="sourceLineNo">095</span><a id="line.95">                                matches.add(m);</a>
+<span class="sourceLineNo">096</span><a id="line.96">                        }</a>
+<span class="sourceLineNo">097</span><a id="line.97">                }</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">                Collections.sort(matches);  // sort matches by ascending descriptor distance</a>
+<span class="sourceLineNo">100</span><a id="line.100">                return matches;</a>
+<span class="sourceLineNo">101</span><a id="line.101">        }</a>
+<span class="sourceLineNo">102</span><a id="line.102"></a>
+<span class="sourceLineNo">103</span><a id="line.103">}</a>
 
 
 

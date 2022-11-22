@@ -76,25 +76,25 @@ public class SiftDetector {
 		@DialogLabel("Scale levels per octaves (Q)")
 		public int Q = 3;
 		
-		/** Min. magnitude required in DoG peak detection (abs. value). */
+		/** Minimum magnitude required in DoG peak detection (abs. value). */
 		@DialogLabel("Minimum detection magnitude (tMag)")
 		public double tMag = 0.01;
 		
 		
-		/** Min. DoG magnitude required for extrapolated peaks (abs. value). */
+		/** Minimum DoG magnitude required for extrapolated peaks (abs. value). */
 		@DialogLabel("Minimum peak magnitude (tPeak)")
 		public double tPeak = tMag;
 		
-		/** Min. difference to all neighbors in DoG peak detection (max. 0.0005). */
+		/** Minimum difference to all neighbors in DoG peak detection (max. 0.0005). */
 		@DialogLabel("Minimum neigborhood difference (tExtrm)")
 		public double tExtrm = 0.0;
 		
-		/** Max. number of iterations for refining the position of a key point. */
-		@DialogLabel("Max. position refinement steps (nRefine)")
+		/** Maximum number of iterations for refining the position of a key point. */
+		@DialogLabel("Maximum position refinement steps (nRefine)")
 		public int nRefine = 5;
 		
-		/** Max. principal curvature ratio used to eliminate line-like structures (3..10). */
-		@DialogLabel("Max. principal curvature ratio (rhoMax=3..10)")
+		/** Maximum principal curvature ratio used to eliminate line-like structures (3..10). */
+		@DialogLabel("Maximum principal curvature ratio (rhoMax=3..10)")
 		public double rhoMax = 10.0;
 		
 		/** Number of orientation bins in the feature descriptor (angular resolution). */
@@ -105,8 +105,8 @@ public class SiftDetector {
 		@DialogLabel("Histogram smoothing steps (nSmooth)")
 		public int nSmooth = 2;
 		
-		/** Min. value in orientation histogram for dominant orientations (rel. to max. entry). */
-		@DialogLabel("Min. value in orientation histogram (tDomOr)")
+		/** Minimum value in orientation histogram for dominant orientations (rel. to max. entry). */
+		@DialogLabel("Minimum value in orientation histogram (tDomOr)")
 		public double tDomOr = 0.8;
 		
 		/** Number of spatial descriptor bins along each x/y axis. */
@@ -117,8 +117,8 @@ public class SiftDetector {
 		@DialogLabel("Number of angular descriptor bins (nAngl)")
 		public int nAngl = 8;
 		
-		/** Max. value in normalized feature vector (0.2 recommended by Lowe). */
-		@DialogLabel("Max. normalized feature value (tFclip)")
+		/** Maximum value in normalized feature vector (0.2 recommended by Lowe). */
+		@DialogLabel("Maximum normalized feature value (tFclip)")
 		public double tFclip = 0.2;
 		
 		/** Scale factor for converting normalized features to byte values in [0,255]. */

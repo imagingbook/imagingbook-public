@@ -24,7 +24,7 @@ import java.util.Locale;
  * @author WB
  * @version 2022/11/20
  */
-class KeyPoint implements Cloneable, Comparable<KeyPoint> {
+public class KeyPoint implements Cloneable, Comparable<KeyPoint> {
 	
 	/** octave index */
 	public final int p;
@@ -80,7 +80,8 @@ class KeyPoint implements Cloneable, Comparable<KeyPoint> {
 	
 	@Override
 	public String toString() {
-		return String.format(Locale.US, "p=%d, q=%d, u=%d, v=%d, scale=%.2f, mag=%.2f", p, q, u, v, scale, magnitude);
+		return String.format(Locale.US, "%s[p=%d, q=%d, u=%d, v=%d, scale=%.2f, mag=%.2f]", 
+				getClass().getSimpleName(), p, q, u, v, scale, magnitude);
 	}
 	
 	@Override

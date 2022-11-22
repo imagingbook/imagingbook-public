@@ -88,22 +88,6 @@ public class ScaleLevel {
 		this(level.width, level.height, level.data.clone(), absoluteScale);
 	}
 	
-	
-//	/**
-//	 * Constructor (non-public).
-//	 */
-//	ScaleLevel(FloatProcessor fp, double absoluteScale) {
-//		this(fp.getWidth(), fp.getHeight(), ((float[])fp.getPixels()).clone(), absoluteScale);
-//	}
-	
-//	/**
-//	 * Constructor (non-public).
-//	 */
-//	ScaleLevel(FloatProcessor fp, double absoluteScale, boolean normalize) {
-//		this(fp.getWidth(), fp.getHeight(), 
-//				getValues((float[])fp.getPixels(), normalize), absoluteScale);
-//	}
-	
 	// ------------------------------
 	
 	/**

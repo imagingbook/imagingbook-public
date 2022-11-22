@@ -75,10 +75,6 @@ public class GaussianScaleSpace extends HierarchicalScaleSpace {
 		return values;
 	}
 	
-	@Deprecated
-	static void filterGaussian(FloatProcessor fp, double sigma) {
-		new GaussianFilterSeparable(sigma).applyTo(fp);
-	}
 	
 	static void filterGaussian(ScaleLevel sl, double sigma) {
 		FloatProcessor fp = sl.toFloatProcessor();

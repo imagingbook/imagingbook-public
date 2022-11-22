@@ -29,8 +29,7 @@ class GaussianOctave extends ScaleOctave {
 	
 	GaussianOctave(int p, int Q, ScaleLevel Gbot, int botIndex, int topIndex, double sigma_0) {
 		// initialize generic octave structures (no scale levels yet):
-		super(p, Q, Gbot.getWidth(), Gbot.getHeight(), botIndex, topIndex);
-		this.sigma_0 = sigma_0;					// reference scale at level 0 of this octave
+		super(p, Q, Gbot.getWidth(), Gbot.getHeight(), botIndex, topIndex, sigma_0);
 		
 		// assign the bottom octave level:
 		double sigmaA_bot = getAbsoluteScale(p, botIndex);

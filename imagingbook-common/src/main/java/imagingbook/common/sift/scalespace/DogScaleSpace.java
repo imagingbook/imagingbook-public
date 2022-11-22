@@ -38,7 +38,7 @@ public class DogScaleSpace extends HierarchicalScaleSpace {
 	private void build(GaussianScaleSpace G) {
 		// build DoG octaves:
 		for (int p = 0; p < G.P; p++) {
-			ScaleOctave Gp = G.getOctave(p);
+			GaussianOctave Gp = (GaussianOctave) G.getOctave(p);	// TODO: unchecked cast!
 			setOctave(p, new DogOctave(Gp));
 		}
 	}

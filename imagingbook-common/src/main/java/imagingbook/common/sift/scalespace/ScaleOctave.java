@@ -33,14 +33,14 @@ import imagingbook.common.util.PrintsToStream;
  */
 public abstract class ScaleOctave implements PrintsToStream {
 	
-	protected double sigma_0 = 1.6;	// TODO: make field final
-	protected final int Q; 			// number of levels per doubling scale factor
-	protected final int p;			// octave index
-	protected final int width, height;
-	protected final int botLevelIndex, topLevelIndex;
-	protected final LinearContainer<ScaleLevel> levels;
+	final int Q; 			// number of levels per doubling scale factor
+	final int p;			// octave index
+	final int width, height;
+	final int botLevelIndex, topLevelIndex;
+	final LinearContainer<ScaleLevel> levels;
+	final double sigma_0;
 	
-	ScaleOctave(int p, int Q, int width, int height, int botLevelIndex, int topLevelIndex) {
+	ScaleOctave(int p, int Q, int width, int height, int botLevelIndex, int topLevelIndex, double sigma_0) {
 		this.p = p;
 		this.Q = Q;
 		this.width = width;
@@ -49,70 +49,114 @@ public abstract class ScaleOctave implements PrintsToStream {
 			throw new IllegalArgumentException("ScaleOctave (constructor): botLevelIndex > topLevelIndex");
 		this.botLevelIndex = botLevelIndex;
 		this.topLevelIndex = topLevelIndex;
+		this.sigma_0 = sigma_0;
 		levels = new LinearContainer<ScaleLevel>(botLevelIndex, topLevelIndex);
 	}
 	
-	/* Create a scale octave from a given bottom level level_b
+	/**
+	 * Returns the index (p) of this scale space octave.
+	 * @return the octave index
 	 */
-	@Deprecated
-	ScaleOctave(int p, int Q, ScaleLevel level_b, int botIndex, int topIndex) {
-		this(p, Q, level_b.getWidth(), level_b.getHeight(), botIndex, topIndex);
-		this.setLevel(botIndex, level_b);
-	}
-	
 	public int getOctaveIndex() {
 		return p;
 	}
 	
+	/**
+	 * Returns the image width of this scale space octave.
+	 * @return the image width
+	 */
 	public int getWidth() {
 		return width;
 	}
 	
+	/**
+	 * Returns the image height of this scale space octave.
+	 * @return the image height
+	 */
 	public int getHeight() {
 		return height;
 	}
 	
+	/**
+	 * Returns a reference to the scale level of this octave with the specified index.
+	 * @param q the level index
+	 * @return a reference to scale level q
+	 */
 	public ScaleLevel getLevel(int q) {	// TODO: honor bottom level, check q
 		return levels.getElement(q);
 	}
 	
+	// for internal use only
 	void setLevel(int q, ScaleLevel level) {	// TODO: check q
 		levels.setElement(q, level);
 	}
 	
+	/**
+	 * Returns true iff q is outside the level range and position (u,v) is inside the level's
+	 * bounds.
+	 * 
+	 * @param q the level index
+	 * @param u horizontal coordinate
+	 * @param v vertical coordinate
+	 * @return true iff inside this level
+	 */
 	public boolean isInside(int q, int u, int v) {
 		return (botLevelIndex < q && q < topLevelIndex &&
 				0 < u && u < width-1 && 
 				0 < v && v < height-1);
 	}
 	
+	/**
+	 * Returns the absolute scale (&sigma;) associated with level q.
+	 * @param q the level index
+	 * @return the absolute scale of the level
+	 */
 	public double getAbsoluteScale(int q) {
 		return getLevel(q).getAbsoluteScale();
 	}
 	
+	/**
+	 * Returns the bottom level index for this scale space octave
+	 * (e.g., this is -1 for the Gaussian scale space used in SIFT).
+	 * @return the bottom level index
+	 */
 	int getBottomLevelIndex() {
 		return botLevelIndex;
 	}
 	
+	/**
+	 * Returns the top level index for this scale space octave
+	 * (e.g., this is Q+1 for the Gaussian scale space used in SIFT).
+	 * @return the top level index
+	 */
 	int getTopLevelIndex() {
 		return topLevelIndex;
 	}
 	
-	public int getScaleIndex(int p, int q) {
-		int m = Q * p + q; 
-		return m;
-	}
-	
+
+	/**
+	 * Returns the absolute scale (&sigma;) for octave index p and
+	 * level index q;
+	 * 
+	 * @param p the octave index
+	 * @param q the level index
+	 * @return the absolute scale
+	 */
 	public double getAbsoluteScale(int p, int q) {
-		double m = getScaleIndex(p, q);
+		double m =  Q * p + q; 
 		double sigma = sigma_0 * Math.pow(2, m/Q);
 		return sigma;
 	}
 	
-	/*
+	/**
 	 * Collects and returns the 3x3x3 neighborhood values from this octave 
-	 * at scale level q and center position u,v. The result is stored
-	 * in the given 3x3x3 array nh[s][x][y], to which a reference is returned.
+	 * at scale level q and center position (u,v). The result is stored
+	 * in the supplied 3x3x3 array nh[s][x][y].
+	 * 
+	 * @param q the level index
+	 * @param u the horizontal coordinate
+	 * @param v the vertical coordinate
+	 * @param nh the 3x3x3 neighborhood array to hold the result
 	 */
 	public void getNeighborhood(int q, int u, int v, final float[][][] nh) {
 		// nh[s][x][y]
@@ -123,6 +167,12 @@ public abstract class ScaleOctave implements PrintsToStream {
 	
 	// ---------------------------------------------------------
 	
+	/**
+	 * Returns an ImageJ {@link ImageStack} for this octave which can be
+	 * displayed. Frame labels are automatically set.
+	 * 
+	 * @return an {@link ImageStack} for this octave
+	 */
 	public ImageStack getImageStack() {
 		ImageStack stk = new ImageStack(width, height);
 		for (int q = botLevelIndex; q <= topLevelIndex; q++) {

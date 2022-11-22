@@ -15,7 +15,6 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import imagingbook.common.util.PrintsToStream;
 
-
 /**
  * <p>
  * This abstract class defines a generic hierarchical scale space, consisting of
@@ -33,7 +32,7 @@ import imagingbook.common.util.PrintsToStream;
  * @see GaussianScaleSpace
  * @see DogScaleSpace
  */
-abstract class HierarchicalScaleSpace implements PrintsToStream {
+public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	
 	final int P;					// number of octaves
 	final int Q; 					// number of levels per octave

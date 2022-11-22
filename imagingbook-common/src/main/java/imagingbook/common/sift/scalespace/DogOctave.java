@@ -24,13 +24,13 @@ package imagingbook.common.sift.scalespace;
  */
 class DogOctave extends ScaleOctave {
 
-	// TODO: check correctness of bottom and top levels!!
-	DogOctave(ScaleOctave Gp) {
-		super(Gp.p, Gp.Q, Gp.width, Gp.height, Gp.botLevelIndex, Gp.topLevelIndex-1);
+
+	DogOctave(GaussianOctave Gp) {	// TODO: check correctness of bottom and top levels!!
+		super(Gp.p, Gp.Q, Gp.width, Gp.height, Gp.botLevelIndex, Gp.topLevelIndex-1, Gp.sigma_0);
 		// create DoG octave
 		for (int q = botLevelIndex; q <= topLevelIndex; q++) {
 			ScaleLevel Dpq = getDifference(Gp.getLevel(q+1), Gp.getLevel(q));
-			this.setLevel(q, Dpq);
+			setLevel(q, Dpq);
 		}
 	}
 	
