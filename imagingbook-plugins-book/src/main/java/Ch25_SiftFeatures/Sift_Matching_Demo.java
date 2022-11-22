@@ -43,9 +43,11 @@ import imagingbook.sampleimages.SiftSampleImage;
 /**
  * <p>
  * This ImageJ plugin demonstrates the use of the SIFT detection and matching
- * framework. The plugin takes a single grayscale image, which is assumed to be
+ * framework. The plugin takes a single image, which is assumed to be
  * composed of a left and right frame. The input image is split horizontally,
  * then SIFT detection and matching is applied to the two sub-images.
+ * The input image is always converted to grayscale before SIFT feature detection
+ * is performed.
  * </p>
  * <p>
  * The result is displayed as a graphic overlay by connecting and annotating the
@@ -55,7 +57,7 @@ import imagingbook.sampleimages.SiftSampleImage;
  * @author WB
  * @version 2022/11/20
  */
-public class Sift_Matching_Single implements PlugInFilter {
+public class Sift_Matching_Demo implements PlugInFilter {
 	
 	// matching parameters:
 	private static NormType DistanceNormType = SiftMatcher.DefaultNormType;
@@ -81,9 +83,9 @@ public class Sift_Matching_Single implements PlugInFilter {
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
 	 */
-	public Sift_Matching_Single() {
+	public Sift_Matching_Demo() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(SiftSampleImage.RamsesSmallStack_tif);
+			DialogUtils.askForSampleImage(SiftSampleImage.RamsesSmall);
 		}
 	}
 	
@@ -192,7 +194,8 @@ public class Sift_Matching_Single implements PlugInFilter {
 	// -------------------------
 	
 	private boolean runDialog() {
-		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());	
+		gd.addMessage("This plugin expects a single image composed of a left and right frame.");
 		
 		gd.addMessage("SIFT matching parameters:");
 		gd.addEnumChoice("Distance norm type", DistanceNormType);
@@ -201,6 +204,7 @@ public class Sift_Matching_Single implements PlugInFilter {
 		gd.addMessage("Display parameters:");
 		gd.addNumericField("Number of matches to show", NumberOfMatchesToShow, 0);
 		gd.addNumericField("Feature scale", FeatureScale, 2);
+		gd.addNumericField("Match line curvature", MatchLineCurvature, 2);
 		gd.addEnumChoice("Match line color", MatchLineColor);
 		gd.addEnumChoice("Label color", LabelColor);
 		gd.addCheckbox("Show feature labels", ShowFeatureLabels);
@@ -214,6 +218,7 @@ public class Sift_Matching_Single implements PlugInFilter {
 		MaxDistanceRatio = gd.getNextNumber();
 		NumberOfMatchesToShow = (int) gd.getNextNumber();
 		FeatureScale = gd.getNextNumber();
+		MatchLineCurvature = gd.getNextNumber();
 		MatchLineColor = gd.getNextEnumChoice(BasicAwtColor.class);
 		LabelColor = gd.getNextEnumChoice(BasicAwtColor.class);
 		ShowFeatureLabels = gd.getNextBoolean();
