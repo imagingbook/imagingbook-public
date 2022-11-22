@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Ch26_MserFeatures;
+package Ch26_MSER;
 
 import ij.ImagePlus;
 import ij.ImageStack;

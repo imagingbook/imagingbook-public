@@ -10,6 +10,6 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch26 MSER Features")
-package Ch26_MserFeatures;
+package Ch26_MSER;
 
 import imagingbook.core.plugin.IjPluginPath;
