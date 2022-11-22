@@ -14,22 +14,26 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Shape;
-import java.awt.geom.Path2D;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.QuadCurve2D;
 import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.gui.Overlay;
-import ij.gui.ShapeRoi;
-import ij.gui.TextRoi;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.sets.BasicAwtColor;
+import imagingbook.common.color.sets.ColorEnumeration;
+import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.common.ij.overlay.ColoredStroke;
+import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.VectorNorm.NormType;
+import imagingbook.common.sift.SiftColor;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftMatch;
@@ -52,10 +56,12 @@ import imagingbook.sampleimages.SiftSampleImage;
  * @version 2022/11/20
  */
 public class Sift_Matching_Single implements PlugInFilter {
-
+	
+	// matching parameters:
 	private static NormType DistanceNormType = SiftMatcher.DefaultNormType;
 	private static double MaxDistanceRatio = SiftMatcher.DefaultRMax;
 
+	// display parameters:
 	private static int NumberOfMatchesToShow = 25;
 	private static double FeatureScale = 1.0;
 	private static boolean ShowFeatureLabels = true;
@@ -63,12 +69,11 @@ public class Sift_Matching_Single implements PlugInFilter {
 	private static double MatchLineCurvature = 0.25;
 	private static double FeatureStrokewidth = 1.0;
 
-	private static Color DescriptorColor1 = Color.green;
-	private static Color DescriptorColor2 = Color.green;
-	private static Color MatchLineColor = 	Color.magenta;
-	private static Color LabelColor = 		Color.yellow;
+	private static BasicAwtColor MatchLineColor = BasicAwtColor.Magenta;
+	private static BasicAwtColor LabelColor = BasicAwtColor.Yellow;
 	private static Font LabelFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	
+	private static Color[] ScaleLevelColors = ColorEnumeration.getColors(SiftColor.class);
 	
 	private ImagePlus im = null;
 	
@@ -89,21 +94,21 @@ public class Sift_Matching_Single implements PlugInFilter {
 	}
 
 	@Override
-	public void run(ImageProcessor ip) {
-		
+	public void run(ImageProcessor ip) {		
 		if (!runDialog()) {
 			return;
 		}
 
-		int w = ip.getWidth();
-		int h = ip.getHeight();
-		int w2 = w / 2;
+		final int w = ip.getWidth();
+		final int h = ip.getHeight();
+		final int w2 = w / 2;
 		
 		FloatProcessor Ia = IjUtils.crop(ip, 0, 0, w2, h).convertToFloatProcessor();
 		FloatProcessor Ib = IjUtils.crop(ip, w2, 0, w2, h).convertToFloatProcessor();
 		
 		SiftDetector.Parameters siftParams = new SiftDetector.Parameters();
 		// modify SIFT parameters here if needed
+		
 		// we use the same parameters on left and right image
 		SiftDetector sdA = new SiftDetector(Ia, siftParams);
 		SiftDetector sdB = new SiftDetector(Ib, siftParams);
@@ -114,60 +119,74 @@ public class Sift_Matching_Single implements PlugInFilter {
 		IJ.log("SIFT features found in left image: "  + fsA.size());
 		IJ.log("SIFT features found in right image: " + fsB.size());
 
-		// --------------------------------------------------
-
-		IJ.log("matching ...");
-		// create a SIFT matcher:
+		// create a SIFT matcher and perform matching:
 		SiftMatcher sm = new SiftMatcher(DistanceNormType, MaxDistanceRatio);
-		// perform matching:
-		List<SiftMatch> matches = sm.match(fsA, fsB);
+		List<SiftMatch> matches = sm.match(fsA, fsB);	// matches are sorted by decreasing quality
+		
 		IJ.log("Matches found: " + matches.size());
+		if (matches.isEmpty()) {
+			return;
+		}
 
 		// --------------------------------------------------
-
-		Overlay oly = new Overlay();
-		oly.add(makeStraightLine(w, 0, w, h, Color.black));	// vertical separator
-		int xoffset = w2;
-
-		// draw the matched SIFT markers:
-		// TODO: convert to CustomOverlay !
+		
+		ColoredStroke matchLineStroke = new ColoredStroke(0.2, MatchLineColor.getColor());
+		ColoredStroke[] featureStrokes = new ColoredStroke[ScaleLevelColors.length];
+		for (int i = 0; i < ScaleLevelColors.length; i++) {
+			featureStrokes[i] = new ColoredStroke(FeatureStrokewidth, ScaleLevelColors[i]);
+		}
+		
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
+		ola.setTextColor(LabelColor.getColor());
+		ola.setFont(LabelFont);
+		
+		AffineTransform trans = AffineTransform.getTranslateInstance(w2, 0);
+		
+		// add vertical separator between left and right image:
+		ola.addShape(new Line2D.Double(w2 - 0.5, 0, w2 - 0.5, h), 
+				new ColoredStroke(0.2, Color.green, 5)); 
+		
+		// add SIFT markers, connecting lines and number labels
 		int count = 1;
 		for (SiftMatch m : matches) {
 			SiftDescriptor dA = m.getDescriptor1();
 			SiftDescriptor dB = m.getDescriptor2();
-			oly.add(makeSiftMarker(dA, 0, 0, DescriptorColor1));
-			oly.add(makeSiftMarker(dB, xoffset, 0, DescriptorColor2));
-			count++;
-			if (count > NumberOfMatchesToShow) break;
-		}
-
-		// draw the connecting lines:
-		count = 1;
-		for (SiftMatch m : matches) {
-			SiftDescriptor dA = m.getDescriptor1();
-			SiftDescriptor dB = m.getDescriptor2();
-			oly.add(makeConnectingLine(dA, dB, xoffset, 0, MatchLineColor));
-			count++;
-			if (count > NumberOfMatchesToShow) break;
-		}
-
-		// draw the labels:
-		if (ShowFeatureLabels) {
-			count = 1;
-			for (SiftMatch m : matches) {
-				SiftDescriptor dA = m.getDescriptor1();
-				SiftDescriptor dB = m.getDescriptor2();
-				String label = Integer.toString(count);
-				oly.add(makeSiftLabel(dA, 0, 0, label));
-				oly.add(makeSiftLabel(dB, xoffset, 0, label));
-				count++;
-				if (count > NumberOfMatchesToShow) break;
+			
+			// draw the matched SIFT markers:
+			Shape sA = dA.getShape(FeatureScale);
+			Shape sB = trans.createTransformedShape(dB.getShape(FeatureScale));
+			ola.addShape(sA, featureStrokes[dA.getScaleLevel() % ScaleLevelColors.length]);
+			ola.addShape(sB, featureStrokes[dB.getScaleLevel() % ScaleLevelColors.length]);
+			
+			// draw the connecting lines:
+			Shape cAB = makeConnectingShape(dA, dB.plus(w2, 0));
+			ola.addShape(cAB, matchLineStroke);
+			
+			// draw the numeric feature labels on both sides:
+			if (ShowFeatureLabels) {
+				String label = Integer.toString(count);	
+				ola.addText(dA.getX(), dA.getY(), label);
+				ola.addText(dB.getX() + w2, dB.getY(), label);
 			}
+
+			if (count++ > NumberOfMatchesToShow) break;
 		}
 
-		if (oly != null) {
-			im.setOverlay(oly);
-		}
+		im.setOverlay(ola.getOverlay());
+	}
+	
+	// -------------------------
+	
+	private Shape makeConnectingShape(Pnt2d p1, Pnt2d p2) {
+		double x1 = p1.getX(); 
+		double y1 = p1.getY();
+		double x2 = p2.getX(); 
+		double y2 = p2.getY();
+		double dx = x2 - x1;
+		double dy = y2 - y1;
+		double ctrlx = (x1 + x2) / 2 - MatchLineCurvature * dy;
+		double ctrly = (y1 + y2) / 2 + MatchLineCurvature * dx;
+		return new QuadCurve2D.Double(x1, y1, ctrlx, ctrly, x2, y2);
 	}
 	
 	// -------------------------
@@ -182,6 +201,8 @@ public class Sift_Matching_Single implements PlugInFilter {
 		gd.addMessage("Display parameters:");
 		gd.addNumericField("Number of matches to show", NumberOfMatchesToShow, 0);
 		gd.addNumericField("Feature scale", FeatureScale, 2);
+		gd.addEnumChoice("Match line color", MatchLineColor);
+		gd.addEnumChoice("Label color", LabelColor);
 		gd.addCheckbox("Show feature labels", ShowFeatureLabels);
 		
 		gd.showDialog();
@@ -193,67 +214,11 @@ public class Sift_Matching_Single implements PlugInFilter {
 		MaxDistanceRatio = gd.getNextNumber();
 		NumberOfMatchesToShow = (int) gd.getNextNumber();
 		FeatureScale = gd.getNextNumber();
+		MatchLineColor = gd.getNextEnumChoice(BasicAwtColor.class);
+		LabelColor = gd.getNextEnumChoice(BasicAwtColor.class);
 		ShowFeatureLabels = gd.getNextBoolean();
 		
 		return true;
-	}
-	
-
-	// drawing methods -------------------------------------------------
-	
-	private ShapeRoi makeStraightLine(double x1, double y1, double x2, double y2, Color col) {
-		Path2D poly = new Path2D.Double();
-		poly.moveTo(x1, y1);
-		poly.lineTo(x2, y2);
-		ShapeRoi roi = new ShapeRoi(poly);
-		roi.setStrokeWidth((float)FeatureStrokewidth);
-		roi.setStrokeColor(col);
-		return roi;
-	}
-
-	private ShapeRoi makeSiftMarker(SiftDescriptor d, double xo, double yo, Color col) {
-		double x = d.getX() + xo; 
-		double y = d.getY() + yo; 
-		double scale = FeatureScale * d.getScale();
-		double orient = d.getOrientation();
-		double sin = Math.sin(orient);
-		double cos = Math.cos(orient);
-		Path2D poly = new Path2D.Double();	
-		poly.moveTo(x + (sin - cos) * scale, y - (sin + cos) * scale);
-		//poly.lineTo(x, y);
-		poly.lineTo(x + (sin + cos) * scale, y + (sin - cos) * scale);
-		poly.lineTo(x, y);
-		poly.lineTo(x - (sin - cos) * scale, y + (sin + cos) * scale);
-		poly.lineTo(x - (sin + cos) * scale, y - (sin - cos) * scale);
-		poly.closePath();
-		ShapeRoi roi = new ShapeRoi(poly);
-		roi.setStrokeWidth((float)FeatureStrokewidth);
-		roi.setStrokeColor(col);
-		return roi;
-	}
-
-	private ShapeRoi makeConnectingLine(SiftDescriptor f1, SiftDescriptor f2, double xo, double yo, Color col) {
-		double x1 = f1.getX(); 
-		double y1 = f1.getY();
-		double x2 = f2.getX() + xo; 
-		double y2 = f2.getY() + yo;
-		double dx = x2 - x1;
-		double dy = y2 - y1;
-		double ctrlx = (x1 + x2) / 2 - MatchLineCurvature * dy;
-		double ctrly = (y1 + y2) / 2 + MatchLineCurvature * dx;
-		Shape curve = new QuadCurve2D.Double(x1, y1, ctrlx, ctrly, x2, y2);
-		ShapeRoi roi = new ShapeRoi(curve);
-		roi.setStrokeWidth((float)FeatureStrokewidth);
-		roi.setStrokeColor(col);
-		return roi;
-	}
-
-	private TextRoi makeSiftLabel(SiftDescriptor d, double xo, double yo, String text) {
-		double x = d.getX() + xo; 
-		double y = d.getY() + yo; 
-		TextRoi roi = new TextRoi((int)Math.rint(x), (int)Math.rint(y), text, LabelFont);
-		roi.setStrokeColor(LabelColor);
-		return roi;
 	}
 
 }

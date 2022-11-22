@@ -42,8 +42,7 @@ import imagingbook.common.util.ParameterBundle;
  * </p>
  * 
  * @author WB
- * @version 2022/08/03
- *
+ * @version 2022/11/20
  */
 public class SiftDetector {
 
@@ -53,84 +52,84 @@ public class SiftDetector {
 	 */
 	public static class Parameters implements ParameterBundle {
 		
-		/** Set true to output debug information */
+		/** Set true to output debug information. */
 		@DialogHide
 		public boolean DEBUG = false;
 		
-		/** Type of neigborhood used for peak detection in 3D scale space */
+		/** Type of neigborhood used for peak detection in 3D scale space. */
 		@DialogLabel("Neighborhood for 3D peak detection")
 		public NeighborhoodType3D nhType = NeighborhoodType3D.NH18;
 		
-		/** Sampling scale (nominal smoothing level of the input image) */
+		/** Sampling scale (nominal smoothing level of the input image). */
 		@DialogLabel("Nominal sampling scale (sigmaS)")
 		public double sigmaS = 0.5;
 		
-		/** Base scale at level 0 (base smoothing) */
+		/** Base scale at level 0 (base smoothing). */
 		@DialogLabel("Base scale at level 0 (sigma0)")
 		public double sigma0 = 1.6;
 		
-		/** Number of octaves in Gaussian/DoG scale space */
+		/** Number of octaves in Gaussian/DoG scale space. */
 		@DialogLabel("Number of scale space octaves (P)")
 		public int P = 4;
 		
-		/** Scale steps (levels) per octave */
+		/** Scale steps (levels) per octave. */
 		@DialogLabel("Scale levels per octaves (Q)")
 		public int Q = 3;
 		
-		/** Min. magnitude required in DoG peak detection (abs. value) */
+		/** Min. magnitude required in DoG peak detection (abs. value). */
 		@DialogLabel("Minimum detection magnitude (tMag)")
 		public double tMag = 0.01;
 		
 		
-		/** Min. DoG magnitude required for extrapolated peaks (abs. value) */
+		/** Min. DoG magnitude required for extrapolated peaks (abs. value). */
 		@DialogLabel("Minimum peak magnitude (tPeak)")
 		public double tPeak = tMag;
 		
-		/** Min. difference to all neighbors in DoG peak detection (max. 0.0005) */
+		/** Min. difference to all neighbors in DoG peak detection (max. 0.0005). */
 		@DialogLabel("Minimum neigborhood difference (tExtrm)")
 		public double tExtrm = 0.0;
 		
-		/** Max. number of iterations for refining the position of a key point */
+		/** Max. number of iterations for refining the position of a key point. */
 		@DialogLabel("Max. position refinement steps (nRefine)")
 		public int nRefine = 5;
 		
-		/** Max. principal curvature ratio used to eliminate line-like structures (3..10) */
+		/** Max. principal curvature ratio used to eliminate line-like structures (3..10). */
 		@DialogLabel("Max. principal curvature ratio (rhoMax=3..10)")
 		public double rhoMax = 10.0;
 		
-		/** Number of orientation bins in the feature descriptor (angular resolution) */
+		/** Number of orientation bins in the feature descriptor (angular resolution). */
 		@DialogLabel("Number of orientation bins (nOrient)")
 		public int nOrient = 36;
 		
-		/** Number of smoothing steps applied to the orientation histogram */
+		/** Number of smoothing steps applied to the orientation histogram. */
 		@DialogLabel("Histogram smoothing steps (nSmooth)")
 		public int nSmooth = 2;
 		
-		/** Min. value in orientation histogram for dominant orientations (rel. to max. entry) */
+		/** Min. value in orientation histogram for dominant orientations (rel. to max. entry). */
 		@DialogLabel("Min. value in orientation histogram (tDomOr)")
 		public double tDomOr = 0.8;
 		
-		/** Number of spatial descriptor bins along each x/y axis */
+		/** Number of spatial descriptor bins along each x/y axis. */
 		@DialogLabel("Number of spatial descriptor bins (nSpat)")
 		public int nSpat = 4;
 		
-		/** Number of angular descriptor bins */
+		/** Number of angular descriptor bins. */
 		@DialogLabel("Number of angular descriptor bins (nAngl)")
 		public int nAngl = 8;
 		
-		/** Max. value in normalized feature vector (0.2 recommended by Lowe) */
+		/** Max. value in normalized feature vector (0.2 recommended by Lowe). */
 		@DialogLabel("Max. normalized feature value (tFclip)")
 		public double tFclip = 0.2;
 		
-		/** Scale factor for converting normalized features to byte values in [0,255] */
+		/** Scale factor for converting normalized features to byte values in [0,255]. */
 		@DialogLabel("Feature integer conversion scale (sFscale)")
 		public double sFscale = 512.0;
 		
-		/** Spatial size factor of descriptor (relative to feature scale) */
+		/** Spatial size factor of descriptor (relative to feature scale). */
 		@DialogLabel("Descriptor display size factor (sDesc)")
 		public double sDesc = 10.0;
 		
-		/** Set true to sort detected keypoints by response magnitude */
+		/** Set true to sort detected keypoints by response magnitude. */
 		@DialogLabel("Sort keypoints by score magnitude")
 		public boolean sortKeyPoints = true;
 	}
@@ -174,10 +173,9 @@ public class SiftDetector {
 	 * @param params parameters (see {@link Parameters})
 	 */
 	public SiftDetector(FloatProcessor fp, Parameters params) {
-		//normalize(fp);	// was destructive, delegated to ScaleLevel.getValues()
 		this.params = params;
 		this.nhSize = params.nhType.size;
-		this.G = new GaussianScaleSpace(fp, params.sigmaS, params.sigma0, params.P, params.Q, -1, params.Q+1);
+		this.G = new GaussianScaleSpace(fp, params.sigmaS, params.sigma0, params.P, params.Q, -1, params.Q + 1);
 		this.D = new DogScaleSpace(G);
 	}
 	
@@ -214,18 +212,12 @@ public class SiftDetector {
 	 */
 	@SuppressWarnings("unused")
 	private  List<KeyPoint> makeRichKeypoints(List<KeyPoint> keypoints) {
-//		if (params.DEBUG) {IJ.log("makeSiftDescriptors...");}
-		//int cnt = 0;
 		List<KeyPoint> richKeyPoints = new ArrayList<KeyPoint>();
 		for (KeyPoint kp : keypoints) {
-			//IJ.log("   " + (cnt++));
 			float[] oh = getOrientationHistogram(kp);
 			smoothCircular(oh,params.nSmooth);
 			kp.orientation_histogram = oh;	// TODO: remove, for testing only!!
 			List<Double> peakOrientations = findPeakOrientationIndices(oh);
-//			if (params.DEBUG && peakOrientations.size() == 0) {
-//				IJ.log("insufficient orientations at " + kp.u + "/" + kp.v);
-//			}
 			for (double km : peakOrientations) {
 				//for (int i=0; i<Math.min(1, peakOrientations.length); i++) {	// use only 1 descriptor!
 				float phi = (float) (km * 2 * Math.PI / oh.length);	// 0 <= phi < 2 PI. Should be in range +/-PI?
@@ -234,7 +226,6 @@ public class SiftDetector {
 				richKeyPoints.add(rkp);
 			}
 		}
-//		if (params.DEBUG) {IJ.log("makeSiftDescriptors...done");}
 		return richKeyPoints;
 	}
 
@@ -247,7 +238,7 @@ public class SiftDetector {
 	private List<Double> findPeakOrientationIndices(float[] oh) {
 		int nb = oh.length;
 		List<Double> orientIndexes = new ArrayList<Double>(nb);
-		// find the maximum entry in the orientation histogram 'oh'
+		// find the maximum entry in the orientation histogram 'oh':
 		float maxh = oh[0];
 		for (int k = 1; k < nb; k++) {
 			if (oh[k] > maxh)
@@ -265,12 +256,10 @@ public class SiftDetector {
 					// value
 					float hn = oh[(k + 1) % nb]; // next histogram value
 					if (hc > hp && hc > hn) { // check if 'hc' is a local peak
-						// interpolate orientation by a quadratic function
-						// (parabola):
+						// interpolate orientation by a quadratic function (parabola):
 						double delta = interpolateQuadratic(hp, hc, hn);
-						double k_max = (k + delta + nb) % nb; // interpolated
-						// bin index, 0
-						// <= km < nPhi
+						double k_max = (k + delta + nb) % nb; 
+						// interpolated bin index, 0 <= km < nPhi:
 						// double phi_max = k_max * 2 * Math.PI / nb; // 0 <=
 						// phi < 2 PI. Should be in range +/-PI?
 						orientIndexes.add(k_max);
@@ -280,7 +269,6 @@ public class SiftDetector {
 		}
 		return orientIndexes;
 	}
-
 
 	/**
 	 * Calculates and returns a list of SIFT descriptors.
@@ -771,7 +759,6 @@ public class SiftDetector {
 		// flatten 3D histogram to a 1D vector
 		// the histogram is vectorized such that k (phi) is the fastest
 		// varying index, followed by j and i (which is the slowest index).
-		// Note: j (v) is the slowest in VLFEAT (i,j swapped)
 		int m = 0;
 		for (int i = 0; i < n_Spat; i++) {
 			for (int j = 0; j < n_Spat; j++) {
@@ -832,29 +819,4 @@ public class SiftDetector {
 		return x_extrm;	// x is in [-1,+1]
 	}
 
-	// -------------------------------------------
-
-//	private String logvar(float x, String name) {
-//		return name + " = " + String.format("%.3f ", x);
-//	}
-//
-//	private String logvar(double x, String name) {
-//		return name + " = " + String.format("%.3f ", x);
-//	}
-//
-//	private String logvar(int x, String name) {
-//		return name + " = " + x + " ";
-//	}
-//
-//	private void debug(String s) {
-//		IJ.log(s);
-//	}
-//
-//	private void stop() {
-//		throw new IllegalArgumentException("HALTED");
-//	}
-//	
-//	private void printGaussianScaleSpace() {
-//		G.print();
-//	}
 }
