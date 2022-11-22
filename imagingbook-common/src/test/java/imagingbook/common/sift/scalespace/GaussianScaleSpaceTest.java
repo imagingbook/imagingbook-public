@@ -28,7 +28,7 @@ public class GaussianScaleSpaceTest {
 		FloatProcessor fp = ip.convertToFloatProcessor();
 		
 		GaussianScaleSpace gss =
-				new GaussianScaleSpace(fp, sigma_s, sigma_0, P, Q, botLevel, topLevel);
+				new GaussianScaleSpace(fp, P, Q, sigma_s, sigma_0, botLevel, topLevel);
 		
 		assertEquals(P, gss.getP());
 		assertEquals(Q, gss.getQ());

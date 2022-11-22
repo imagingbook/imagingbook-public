@@ -24,16 +24,22 @@ package imagingbook.common.sift.scalespace;
  */
 public class DogScaleSpace extends HierarchicalScaleSpace {
 	
+	/**
+	 * Constructor, creates a {@link DogScaleSpace} from an existing
+	 * {@link GaussianScaleSpace}.
+	 * 
+	 * @param G a {@link GaussianScaleSpace}
+	 */
 	public DogScaleSpace(GaussianScaleSpace G) {
 		super(G.P, G.Q, G.sigma_s, G.sigma_0, G.botLevel, G.topLevel-1);  //botLevel = -1, topLevel = K+1
 		build(G);
 	}	
 	
-	private final void build(GaussianScaleSpace G) {
+	private void build(GaussianScaleSpace G) {
 		// build DoG octaves:
-		for (int p = 0; p < P; p++) {
+		for (int p = 0; p < G.P; p++) {
 			ScaleOctave Gp = G.getOctave(p);
-			octaves[p] = new DogOctave(Gp);
+			setOctave(p, new DogOctave(Gp));
 		}
 	}
 

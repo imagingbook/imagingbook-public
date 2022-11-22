@@ -9,8 +9,11 @@
 
 package imagingbook.common.sift.scalespace;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+
 import ij.process.FloatProcessor;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
+import imagingbook.common.math.Matrix;
 
 /**
  * <p>
@@ -27,29 +30,58 @@ import imagingbook.common.filter.linear.GaussianFilterSeparable;
  */
 public class GaussianScaleSpace extends HierarchicalScaleSpace {
 
-	public GaussianScaleSpace(FloatProcessor fp, double sigma_s, double sigma_0, int P, int Q, int botLevel, int topLevel) {
+	/**
+	 * Constructor, builds a {@link GaussianScaleSpace} from a {@link FloatProcessor}.
+	 * 
+	 * @param fp a {@link FloatProcessor}
+	 * @param P the number of scale space octaves
+	 * @param Q the number of scale steps (levels) per octave
+	 * @param sigma_s the assumed sampling scale (typ. 0.5)
+	 * @param sigma_0 the base scale of level 0 
+	 * @param botLevel the index of the bottom level in each octave
+	 * @param topLevel the index of the to level in each octave
+	 */
+	public GaussianScaleSpace(FloatProcessor fp, int P, int Q, double sigma_s, double sigma_0, int botLevel, int topLevel) {
 		super(P, Q, sigma_s, sigma_0, botLevel, topLevel);	
 		build(fp);
 	}
 	
 	private final void build(FloatProcessor fp) {
-		double scale_b = getAbsoluteScale(0, -1) ;	// get absolute scale of level(0,-1)
-		double sigma_b = getRelativeScale(sigma_s, scale_b);
+		double scaleA = getAbsoluteScale(0, -1) ;				// absolute scale of level(0,-1) = bottom
+		double scaleR = Math.sqrt(sqr(scaleA) - sqr(sigma_s));	// relative scale from sampling scale
 		
-		filterGaussian(fp, sigma_b);
-		ScaleLevel Ginit = new ScaleLevel(fp, sigma_b);
-//		Ginit.filterGaussian(sigma_b);
-//		Ginit.setAbsoluteScale(scale_b);
-
-		// build Gaussian octaves:
-		this.octaves[0] = new GaussianOctave(0, Q, Ginit, botLevel, topLevel, sigma_0);
+		float[] dataNormalized = normalize((float[])fp.getPixels());
+		ScaleLevel Ginit = new ScaleLevel(fp.getWidth(), fp.getHeight(), dataNormalized, scaleR);
+		filterGaussian(Ginit, scaleR);
+		
+		// build all Q octaves:
+		setOctave(0, new GaussianOctave(0, Q, Ginit, botLevel, topLevel, sigma_0));
 		for (int p = 1; p < P; p++) {
-			ScaleLevel Gbase = octaves[p-1].getLevel(Q-1).decimate();
-			this.octaves[p] = new GaussianOctave(p, Q, Gbase, botLevel, topLevel, sigma_0);
+			ScaleLevel Gbase = getOctave(p-1).getLevel(Q-1).decimate();
+			setOctave(p, new GaussianOctave(p, Q, Gbase, botLevel, topLevel, sigma_0));
 		}
 	}
 	
+	// this is highly problematic!
+	static float[] normalize(float[] a) {
+		float minVal = Matrix.min(a);
+		float maxVal = Matrix.max(a);
+		float offset = -minVal;
+		float scale = 1.0f / (maxVal - minVal);
+		float[] values = a.clone();
+		for (int i = 0; i < values.length; i++) {
+			values[i] = (values[i] + offset) * scale; 
+		}
+		return values;
+	}
+	
+	@Deprecated
 	static void filterGaussian(FloatProcessor fp, double sigma) {
+		new GaussianFilterSeparable(sigma).applyTo(fp);
+	}
+	
+	static void filterGaussian(ScaleLevel sl, double sigma) {
+		FloatProcessor fp = sl.toFloatProcessor();
 		new GaussianFilterSeparable(sigma).applyTo(fp);
 	}
 	

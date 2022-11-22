@@ -48,7 +48,7 @@ public class SiftDetector {
 
 	/**
 	 * Default parameters; a (usually modified) instance of this class
-	 * may be passed to constructor of {@link SiftDetector}.
+	 * may be passed to the constructor of {@link SiftDetector}.
 	 */
 	public static class Parameters implements ParameterBundle {
 		
@@ -129,9 +129,9 @@ public class SiftDetector {
 		@DialogLabel("Descriptor display size factor (sDesc)")
 		public double sDesc = 10.0;
 		
-		/** Set true to sort detected keypoints by response magnitude. */
-		@DialogLabel("Sort keypoints by score magnitude")
-		public boolean sortKeyPoints = true;
+//		/** Set true to sort detected keypoints by response magnitude. */
+//		@DialogLabel("Sort keypoints by score magnitude")
+//		public boolean sortKeyPoints = true;
 	}
 	
 	private final Parameters params;
@@ -175,7 +175,7 @@ public class SiftDetector {
 	public SiftDetector(FloatProcessor fp, Parameters params) {
 		this.params = params;
 		this.nhSize = params.nhType.size;
-		this.G = new GaussianScaleSpace(fp, params.sigmaS, params.sigma0, params.P, params.Q, -1, params.Q + 1);
+		this.G = new GaussianScaleSpace(fp, params.P, params.Q, params.sigmaS, params.sigma0, -1, params.Q + 1);
 		this.D = new DogScaleSpace(G);
 	}
 	
@@ -304,9 +304,7 @@ public class SiftDetector {
 				}
 			}
 		}
-		if (params.sortKeyPoints) {
-			Collections.sort(keyPts);
-		}
+		Collections.sort(keyPts);	// always sort (by decreasing score)
 		return keyPts;
 	}
 

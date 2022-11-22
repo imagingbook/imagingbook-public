@@ -41,7 +41,7 @@ public class Show_GaussianScaleSpace implements PlugInFilter {
 	public void run(ImageProcessor ip) {
 		FloatProcessor fp = (FloatProcessor) ip.convertToFloat();
 		GaussianScaleSpace gss =
-			new GaussianScaleSpace(fp, sigma_s, sigma_0, P, K, botLevel, topLevel);
+			new GaussianScaleSpace(fp, P, K, sigma_s, sigma_0, botLevel, topLevel);
 		gss.show("Gauss");
 	}
 

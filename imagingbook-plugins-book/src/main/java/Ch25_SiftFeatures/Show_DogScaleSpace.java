@@ -42,7 +42,7 @@ public class Show_DogScaleSpace implements PlugInFilter {
 	public void run(ImageProcessor ip) {
 		FloatProcessor fp = (FloatProcessor) ip.convertToFloat();
 		GaussianScaleSpace gss =
-			new GaussianScaleSpace(fp, sigma_s, sigma_0, P, Q, botLevel, topLevel);
+			new GaussianScaleSpace(fp, P, Q, sigma_s, sigma_0, botLevel, topLevel);
 		DogScaleSpace dss = new DogScaleSpace(gss);
 		dss.show("DoG");
 	}

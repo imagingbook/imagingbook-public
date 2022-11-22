@@ -9,6 +9,9 @@
 
 package imagingbook.common.sift.scalespace;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
 /**
  * <p>
  * Represents a single "octave" in a hierarchical Gaussian scale space. See
@@ -22,23 +25,29 @@ package imagingbook.common.sift.scalespace;
  * @author WB
  * @version 2022/11/20
  */
-public class GaussianOctave extends ScaleOctave {
+class GaussianOctave extends ScaleOctave {
 	
 	GaussianOctave(int p, int Q, ScaleLevel Gbot, int botIndex, int topIndex, double sigma_0) {
-		super(p, Q, Gbot, botIndex, topIndex);	// initialize the bottom level (botIndex) of this octave with Gbot
+		// initialize generic octave structures (no scale levels yet):
+		super(p, Q, Gbot.getWidth(), Gbot.getHeight(), botIndex, topIndex);
 		this.sigma_0 = sigma_0;					// reference scale at level 0 of this octave
+		
+		// assign the bottom octave level:
 		double sigmaA_bot = getAbsoluteScale(p, botIndex);
+		this.setLevel(botIndex, Gbot);
 		Gbot.setAbsoluteScale(sigmaA_bot);
 		
 		// create octave levels q = botIndex + 1,...,topIndex
 		for (int q = botIndex + 1; q <= topIndex; q++) {
-			double sigmaA_q = getAbsoluteScale(p, q);	// absolute scale of level q
-//			double sigmaR_q = Math.sqrt(sigmaA_q * sigmaA_q - sigmaA_bot * sigmaA_bot) / Math.pow(2, p);  // relative scale from bottom level (-1)
-			double sigmaR_q = 
-					sigma_0 * Math.sqrt(Math.pow(2, 2.0 * q / Q) - Math.pow(2, -2.0 / Q)); // relative scale from bottom level (-1)
-			ScaleLevel G_pq = Gbot.duplicate();
-			G_pq.filterGaussian(sigmaR_q);
-			G_pq.setAbsoluteScale(sigmaA_q);
+			double sigmaA = getAbsoluteScale(p, q);	// absolute scale of level q
+			// relative scale from bottom level (q = -1):
+			double sigmaR = sigma_0 * sqrt(pow(2, 2.0 * q/Q) - pow(2, -2.0/Q)); 
+			
+			// duplicate the botton scale level with the new absolute scale:
+			ScaleLevel G_pq = new ScaleLevel(Gbot, sigmaA);
+			// filter the new scale level (destructively):
+			GaussianScaleSpace.filterGaussian(G_pq, sigmaR);
+			// insert the new scale level into this scale octave
 			this.setLevel(q, G_pq);
 		}
 	}

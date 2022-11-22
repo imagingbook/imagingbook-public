@@ -11,6 +11,8 @@ package imagingbook.common.sift.scalespace;
 
 import java.io.PrintStream;
 
+import ij.ImagePlus;
+import ij.ImageStack;
 import imagingbook.common.util.PrintsToStream;
 
 
@@ -31,15 +33,25 @@ import imagingbook.common.util.PrintsToStream;
  * @see GaussianScaleSpace
  * @see DogScaleSpace
  */
-public abstract class HierarchicalScaleSpace implements PrintsToStream {
+abstract class HierarchicalScaleSpace implements PrintsToStream {
 	
-	protected final int P;						// number of octaves
-	protected final int Q; 						// number of levels per octave
-	protected final double sigma_s;				// absolute scale of original image
-	protected final double sigma_0;				// absolute base scale of first octave (level 0,0)
-	protected final int botLevel, topLevel; 	// bottom and top level index in each octave
-	protected final ScaleOctave[] octaves;		
+	final int P;					// number of octaves
+	final int Q; 					// number of levels per octave
+	final double sigma_s;			// absolute scale of original image
+	final double sigma_0;			// absolute base scale of first octave (level 0,0)
+	final int botLevel, topLevel; 	// bottom and top level index in each octave
+	private final ScaleOctave[] octaves;	
 	
+	/**
+	 * Constructor (non-public).
+	 * 
+	 * @param P the number of scale space octaves
+	 * @param Q the number of scale steps (levels) per octave
+	 * @param sigma_s the assumed sampling scale (typ. 0.5)
+	 * @param sigma_0 the base scale of level 0 
+	 * @param botLevel the index of the bottom level in each octave
+	 * @param topLevel the index of the to level in each octave
+	 */
 	HierarchicalScaleSpace(int P, int Q, double sigma_s, double sigma_0, int botLevel, int topLevel) {
 		this.Q = Q;
 		this.P = P;
@@ -47,12 +59,11 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 		this.sigma_0 = sigma_0;
 		this.botLevel = botLevel;
 		this.topLevel = topLevel;
-		octaves = new ScaleOctave[P];	
+		this.octaves = new ScaleOctave[P];
 	}
 	
 	/**
 	 * Returns the number of octaves in this scale space.
-	 * 
 	 * @return the number of octaves
 	 */
 	public int getP() {
@@ -61,25 +72,42 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	
 	/**
 	 * Returns the number of scale levels in each octave of this scale space.
-	 * 
 	 * @return the number of scale levels
 	 */
 	public int getQ() {
 		return Q;
 	}
 	
+	/**
+	 * Returns the assumed sampling scale.
+	 * @return the assumed sampling scale
+	 */
 	public double getSigma_s() {
 		return sigma_s;
 	}
 	
+	/**
+	 * Returns the base scale assigned to level 0 of octave 0.
+	 * @return the base scale
+	 */
 	public double getSigma_0() {
 		return sigma_0;
 	}
 	
+	/**
+	 * Returns the bottom level index in each scale space octave
+	 * (e.g., this is -1 for the Gaussian scale space used in SIFT).
+	 * @return the bottom level index
+	 */
 	public int getBottomLevelIndex() {
 		return this.botLevel;
 	}
 	
+	/**
+	 * Returns the top level index in each scale space octave
+	 * (e.g., this is Q+1 for the Gaussian scale space used in SIFT).
+	 * @return the top level index
+	 */
 	public int getTopLevelIndex() {
 		return this.topLevel;
 	}
@@ -88,51 +116,41 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	 * Returns a reference to the p-th octave in this scale space.
 	 * Valid octave indexes are p = 0,..,P-1 (see {@link #getP()}).
 	 * 
-	 * @param p
-	 * @return
+	 * @param p the octave index
+	 * @return the associated {@link ScaleOctave} instance
 	 * @see #getP()
 	 */
 	public ScaleOctave getOctave(int p) {
 		return octaves[p];
 	}
 	
+	// used internally only
+	void setOctave(int p, ScaleOctave oct) {
+		octaves[p] = oct;
+	}
+	
 	/**
 	 * Returns the q-th scale space level of octave p in this scale space.
 	 * Valid octave indexes are p = 0,..,P-1 (see {@link #getP()}).
 	 * 
-	 * @param p
-	 * @param q
-	 * @return
+	 * @param p the octave index 
+	 * @param q the (within-octave) level index
+	 * @return the associated {@link ScaleLevel} instance
 	 */
 	public ScaleLevel getScaleLevel(int p, int q) {
 		return getOctave(p).getLevel(q);
 	}
 	
-//	public float getValue(int p, int q, int u, int v) {
-//		ScaleLevel level = getLevel(p,q);
-//		return level.getf(u, v);
-//	}
-	
-	public int getScaleIndex(int p, int q) {
-		int m = Q * p + q; 
-		return m;
-	}
-	
-	public float getScaleIndexFloat(float p, float q) {
-		float m = Q * p + q; 
-		return m;
-	}
-	
+	/**
+	 * Returns the absolute scale (&sigma;) at scale level p, q.
+	 * 
+	 * @param p the octave index 
+	 * @param q the (within-octave) level index
+	 * @return the absolute level scale
+	 */
 	public double getAbsoluteScale(int p, float q) {
 		double m = Q * p + q;
 		return sigma_0 * Math.pow(2, m/Q);
-	}
-	
-	public double getRelativeScale(double scaleA, double scaleB) {	// scaleA <= scaleB
-		if (scaleA > scaleB) {
-			throw new IllegalArgumentException("getRelativeScale(): scaleA > scaleB");
-		}
-		return Math.sqrt(scaleB*scaleB - scaleA*scaleA);
 	}
 	
 	/**
@@ -172,17 +190,21 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	
 	// ----------------------------------------------------------------
 	
-	public void show() {
-		show("");
-	}
-	
-	public void show(String title) {
-		if (!title.isEmpty()) {
-			title = title + ": ";
-		}
+	/**
+	 * Returns the contents of this scale space as an array of ImageJ
+	 * ({@link ImagePlus}) images, one for each octave. Each image contains a stack
+	 * of frames, one for each scale level.
+	 * 
+	 * @param title a string used to compose the title of the images 
+	 * @return an array of {@link ImagePlus} instances.
+	 */
+	public ImagePlus[] getImages(String title) {
+		ImagePlus[] images = new ImagePlus[P];
 		for (int p = 0; p < P; p++) {
-			octaves[p].showAsStack(title + "Octave p=" + p);
+			ImageStack stk = octaves[p].getImageStack();
+			images[p] = new ImagePlus(title + " Octave p=" + p, stk);
 		}
+		return images;
 	}
 	
 }

@@ -114,7 +114,7 @@ public class SiftDetectorTest {
 
 	@Test
 	public void testSiftDetectionOnImages() {
-		runSift(GeneralSampleImage.MonasterySmall, 292);
+		runSift(GeneralSampleImage.MonasterySmall, 291);
 		runSift(SiftTestImage.Box00, 38);
 		runSift(SiftTestImage.HalfDiskH, 8);
 		runSift(SiftTestImage.HalfDiskV, 8);

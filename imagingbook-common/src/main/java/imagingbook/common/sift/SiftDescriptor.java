@@ -164,8 +164,8 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 	@Override
 	public String toString() {
 		return String.format(Locale.US, 
-				"x=%.1f y=%.1f s=%.2f mag=%.4f angle=%.2f", 
-				x, y, scale, magnitude, orientation);
+				"%s[x=%.1f y=%.1f scale=%.2f mag=%.4f angle=%.2f]", 
+				getClass().getSimpleName(), x, y, scale, magnitude, orientation);
 	}
 
 	
