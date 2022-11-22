@@ -43,16 +43,5 @@ public enum MserColor implements ColorEnumeration {
 	public Color getColor() {
 		return this.color;
 	}
-	
-//	// https://learnui.design/tools/data-color-picker.html#palette
-//	// makePalette(0x2a31fb, 0xcb00d6, 0xff00a7, 0xff0078, 0xff5b4d, 0xff9c27, 0xffd019, 0xfffd49);
-//	public static Color[] makePalette(Integer... cols) {
-//		Color[] colors = new Color[cols.length];
-//		for (int i = 0; i < cols.length; i++) {
-//			colors[i] = new Color(cols[i]);
-//		}
-//		return colors;
-//	}
-	
 
 }
