@@ -25,7 +25,7 @@ import static java.lang.Math.sqrt;
  * @author WB
  * @version 2022/11/20
  */
-class GaussianOctave extends ScaleOctave {
+class GaussianOctave extends ScaleOctave<ScaleLevel> {
 	
 	GaussianOctave(int p, int Q, ScaleLevel Gbot, int botIndex, int topIndex, double sigma_0) {
 		// initialize generic octave structures (no scale levels yet):

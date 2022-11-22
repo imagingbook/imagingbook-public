@@ -22,8 +22,7 @@ package imagingbook.common.sift.scalespace;
  * @author WB
  * @version 2022/11/20
  */
-class DogOctave extends ScaleOctave {
-
+class DogOctave extends ScaleOctave<ScaleLevel> {
 
 	DogOctave(GaussianOctave Gp) {	// TODO: check correctness of bottom and top levels!!
 		super(Gp.p, Gp.Q, Gp.width, Gp.height, Gp.botLevelIndex, Gp.topLevelIndex-1, Gp.sigma_0);

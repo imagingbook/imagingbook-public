@@ -13,6 +13,7 @@ import java.io.PrintStream;
 
 import ij.ImagePlus;
 import ij.ImageStack;
+import imagingbook.common.util.LinearContainer;
 import imagingbook.common.util.PrintsToStream;
 
 /**
@@ -32,14 +33,15 @@ import imagingbook.common.util.PrintsToStream;
  * @see GaussianScaleSpace
  * @see DogScaleSpace
  */
-public abstract class HierarchicalScaleSpace implements PrintsToStream {
+public abstract class HierarchicalScaleSpace<OctaveT extends ScaleOctave<?>> implements PrintsToStream {	//  extends ScaleOctave
 	
 	final int P;					// number of octaves
 	final int Q; 					// number of levels per octave
 	final double sigma_s;			// absolute scale of original image
 	final double sigma_0;			// absolute base scale of first octave (level 0,0)
 	final int botLevel, topLevel; 	// bottom and top level index in each octave
-	private final ScaleOctave[] octaves;	
+//	private final OctaveT[] octaves;
+	final LinearContainer<OctaveT> octaves;
 	
 	/**
 	 * Constructor (non-public).
@@ -58,7 +60,8 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 		this.sigma_0 = sigma_0;
 		this.botLevel = botLevel;
 		this.topLevel = topLevel;
-		this.octaves = new ScaleOctave[P];
+//		this.octaves =  (OctaveT[]) new Object[P];
+		this.octaves = new LinearContainer<>(0, P-1);
 	}
 	
 	/**
@@ -119,13 +122,15 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	 * @return the associated {@link ScaleOctave} instance
 	 * @see #getP()
 	 */
-	public ScaleOctave getOctave(int p) {
-		return octaves[p];
+	public OctaveT getOctave(int p) {
+		//return octaves[p];
+		return octaves.getElement(p);
 	}
 	
 	// used internally only
-	void setOctave(int p, ScaleOctave oct) {
-		octaves[p] = oct;
+	void setOctave(int p, OctaveT oct) {
+//		octaves[p] = oct;
+		octaves.setElement(p, oct);
 	}
 	
 	/**
@@ -181,7 +186,7 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	@Override
 	public void printToStream(PrintStream strm) {
 		strm.println("Hierarchical Scale Space (" + this.getClass().getSimpleName() + ")");
-		for (ScaleOctave oct : octaves) {
+		for (ScaleOctave<?> oct : octaves) {
 			oct.printToStream(strm);
 			strm.println();
 		}
@@ -200,7 +205,8 @@ public abstract class HierarchicalScaleSpace implements PrintsToStream {
 	public ImagePlus[] getImages(String title) {
 		ImagePlus[] images = new ImagePlus[P];
 		for (int p = 0; p < P; p++) {
-			ImageStack stk = octaves[p].getImageStack();
+//			ImageStack stk = octaves[p].getImageStack();
+			ImageStack stk = octaves.getElement(p).getImageStack();
 			images[p] = new ImagePlus(title + " Octave p=" + p, stk);
 		}
 		return images;

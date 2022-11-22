@@ -28,7 +28,7 @@ import imagingbook.common.math.Matrix;
  * @author WB
  * @version 2022/11/20
  */
-public class GaussianScaleSpace extends HierarchicalScaleSpace {
+public class GaussianScaleSpace extends HierarchicalScaleSpace<GaussianOctave> {
 
 	/**
 	 * Constructor, builds a {@link GaussianScaleSpace} from a {@link FloatProcessor}.

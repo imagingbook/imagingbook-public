@@ -31,13 +31,13 @@ import imagingbook.common.util.PrintsToStream;
  * @author WB
  * @version 2022/11/20
  */
-public abstract class ScaleOctave implements PrintsToStream {
+public abstract class ScaleOctave<LevelT extends ScaleLevel> implements PrintsToStream {
 	
 	final int Q; 			// number of levels per doubling scale factor
 	final int p;			// octave index
 	final int width, height;
 	final int botLevelIndex, topLevelIndex;
-	final LinearContainer<ScaleLevel> levels;
+	final LinearContainer<LevelT> levels;
 	final double sigma_0;
 	
 	ScaleOctave(int p, int Q, int width, int height, int botLevelIndex, int topLevelIndex, double sigma_0) {
@@ -50,7 +50,7 @@ public abstract class ScaleOctave implements PrintsToStream {
 		this.botLevelIndex = botLevelIndex;
 		this.topLevelIndex = topLevelIndex;
 		this.sigma_0 = sigma_0;
-		levels = new LinearContainer<ScaleLevel>(botLevelIndex, topLevelIndex);
+		levels = new LinearContainer<>(botLevelIndex, topLevelIndex);
 	}
 	
 	/**
@@ -82,12 +82,12 @@ public abstract class ScaleOctave implements PrintsToStream {
 	 * @param q the level index
 	 * @return a reference to scale level q
 	 */
-	public ScaleLevel getLevel(int q) {	// TODO: honor bottom level, check q
+	public LevelT getLevel(int q) {	// TODO: honor bottom level, check q
 		return levels.getElement(q);
 	}
 	
 	// for internal use only
-	void setLevel(int q, ScaleLevel level) {	// TODO: check q
+	void setLevel(int q, LevelT level) {	// TODO: check q
 		levels.setElement(q, level);
 	}
 	

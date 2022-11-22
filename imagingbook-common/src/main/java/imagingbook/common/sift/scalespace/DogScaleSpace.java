@@ -22,7 +22,7 @@ package imagingbook.common.sift.scalespace;
  * @author WB
  * @version 2022/11/20
  */
-public class DogScaleSpace extends HierarchicalScaleSpace {
+public class DogScaleSpace extends HierarchicalScaleSpace<DogOctave> {
 	
 	/**
 	 * Constructor, creates a {@link DogScaleSpace} from an existing
@@ -38,7 +38,7 @@ public class DogScaleSpace extends HierarchicalScaleSpace {
 	private void build(GaussianScaleSpace G) {
 		// build DoG octaves:
 		for (int p = 0; p < G.P; p++) {
-			GaussianOctave Gp = (GaussianOctave) G.getOctave(p);	// TODO: unchecked cast!
+			GaussianOctave Gp = G.getOctave(p);
 			setOctave(p, new DogOctave(Gp));
 		}
 	}
