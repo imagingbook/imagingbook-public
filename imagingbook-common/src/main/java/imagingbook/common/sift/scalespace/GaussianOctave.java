@@ -16,6 +16,7 @@ import static java.lang.Math.sqrt;
  * <p>
  * Represents a single "octave" in a hierarchical Gaussian scale space. See
  * Secs. 25.1.2 and 25.1.4 of [1] for more details.
+ * This class defines no public constructor.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -25,8 +26,17 @@ import static java.lang.Math.sqrt;
  * @author WB
  * @version 2022/11/20
  */
-class GaussianOctave extends ScaleOctave<ScaleLevel> {
+public class GaussianOctave extends ScaleOctave<ScaleLevel> {
 	
+	/**
+	 * Constructor (non-public).
+	 * @param p the index of the new octave
+	 * @param Q the number of scale levels inside the new octave
+	 * @param Gbot the bottom scale elevel to start with
+	 * @param botIndex the bottom scale level index
+	 * @param topIndex the top scale level index
+	 * @param sigma_0 the scale at scale level with index 0
+	 */
 	GaussianOctave(int p, int Q, ScaleLevel Gbot, int botIndex, int topIndex, double sigma_0) {
 		// initialize generic octave structures (no scale levels yet):
 		super(p, Q, Gbot.getWidth(), Gbot.getHeight(), botIndex, topIndex, sigma_0);

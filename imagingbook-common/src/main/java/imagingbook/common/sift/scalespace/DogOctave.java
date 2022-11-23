@@ -13,6 +13,7 @@ package imagingbook.common.sift.scalespace;
  * <p>
  * Represents a single "octave" in a hierarchical DoG scale space. See Secs.
  * 25.1.3 - 25.1.4 of [1] for more details.
+ * This class defines no public constructor.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -22,9 +23,13 @@ package imagingbook.common.sift.scalespace;
  * @author WB
  * @version 2022/11/20
  */
-class DogOctave extends ScaleOctave<ScaleLevel> {
+public class DogOctave extends ScaleOctave<ScaleLevel> {
 
-	DogOctave(GaussianOctave Gp) {	// TODO: check correctness of bottom and top levels!!
+	/**
+	 * Creates a new {@link DogOctave} from a {@link GaussianOctave}.
+	 * @param Gp octave from a Gaussian scale space
+	 */
+	DogOctave(GaussianOctave Gp) {
 		super(Gp.p, Gp.Q, Gp.width, Gp.height, Gp.botLevelIndex, Gp.topLevelIndex-1, Gp.sigma_0);
 		// create DoG octave
 		for (int q = botLevelIndex; q <= topLevelIndex; q++) {

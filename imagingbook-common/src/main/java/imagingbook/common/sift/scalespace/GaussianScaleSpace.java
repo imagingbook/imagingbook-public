@@ -54,9 +54,11 @@ public class GaussianScaleSpace extends HierarchicalScaleSpace<GaussianOctave> {
 		ScaleLevel Ginit = new ScaleLevel(fp.getWidth(), fp.getHeight(), dataNormalized, scaleR);
 		filterGaussian(Ginit, scaleR);
 		
-		// build all Q octaves:
+		// create the bottom octave
 		setOctave(0, new GaussianOctave(0, Q, Ginit, botLevel, topLevel, sigma_0));
+		// build the remaining Q-1 octaves:
 		for (int p = 1; p < P; p++) {
+			// get the top level of the previous octave and decimate it:
 			ScaleLevel Gbase = getOctave(p-1).getLevel(Q-1).decimate();
 			setOctave(p, new GaussianOctave(p, Q, Gbase, botLevel, topLevel, sigma_0));
 		}

@@ -16,6 +16,7 @@ import ij.process.FloatProcessor;
  * Represents a single scale level in a generic hierarchical scale space. See
  * Secs. 25.1.4 for more details. Pixel data are represented as one-dimensional
  * {@code float} arrays.
+ * This class defines no public constructor.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
@@ -31,6 +32,25 @@ public class ScaleLevel {
 	private final float[] data;
 	
 	private double absoluteScale;
+	
+	// ------------------------------
+	
+	/**
+	 * Constructor (non-public).
+	 */
+	ScaleLevel(int width, int height, float[] data, double absoluteScale) {
+		this.width = width;
+		this.height = height;
+		this.data = (data != null) ? data : new float[width * height];
+		this.absoluteScale = absoluteScale;
+	}
+	
+	/**
+	 * Constructor (non-public).
+	 */
+	ScaleLevel(ScaleLevel level, double absoluteScale) {
+		this(level.width, level.height, level.data.clone(), absoluteScale);
+	}
 	
 	// ------------------------------
 	
@@ -67,25 +87,6 @@ public class ScaleLevel {
 	 */
 	public double getAbsoluteScale() {
 		return this.absoluteScale;
-	}
-	
-	// ------------------------------
-	
-	/**
-	 * Constructor (non-public).
-	 */
-	ScaleLevel(int width, int height, float[] data, double absoluteScale) {
-		this.width = width;
-		this.height = height;
-		this.data = (data != null) ? data : new float[width * height];
-		this.absoluteScale = absoluteScale;
-	}
-	
-	/**
-	 * Constructor (non-public).
-	 */
-	ScaleLevel(ScaleLevel level, double absoluteScale) {
-		this(level.width, level.height, level.data.clone(), absoluteScale);
 	}
 	
 	// ------------------------------
