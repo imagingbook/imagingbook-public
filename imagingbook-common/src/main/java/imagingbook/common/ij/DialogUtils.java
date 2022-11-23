@@ -106,8 +106,8 @@ public abstract class DialogUtils {
 	
 	// ------------ Methods related to ParameterBundle  ------------------
 	
-	static Field[] getDialogFields(ParameterBundle params) {
-		Class<? extends ParameterBundle> clazz = params.getClass();
+	static Field[] getDialogFields(ParameterBundle<?> params) {
+		Class<?> clazz = params.getClass();
 		List<Field> dialogFields = new ArrayList<>();
 		for (Field f : clazz.getFields()) {
 			if (isValidDialogField(f)) {
@@ -128,7 +128,7 @@ public abstract class DialogUtils {
 	 * @param params a {@link ParameterBundle} instance
 	 * @param gd a generic dialog
 	 */
-	public static void addToDialog(ParameterBundle params, GenericDialog gd) {
+	public static void addToDialog(ParameterBundle<?> params, GenericDialog gd) {
 		Field[] dialogFields = getDialogFields(params);		// gets only public fields
 		for (Field f : dialogFields) {
 			if (!isValidDialogField(f) || f.isAnnotationPresent(DialogHide.class)) {
@@ -167,8 +167,8 @@ public abstract class DialogUtils {
 	 * @param gd a generic dialog
 	 * @return true if successful
 	 */
-	public static boolean getFromDialog(ParameterBundle params, GenericDialog gd) {
-		Class<? extends ParameterBundle> clazz = params.getClass();
+	public static boolean getFromDialog(ParameterBundle<?> params, GenericDialog gd) {
+		Class<?> clazz = params.getClass();
 		Field[] fields = clazz.getFields();		// gets only public fields
 		int errorCount = 0;
 		for (Field f : fields) {
@@ -199,7 +199,7 @@ public abstract class DialogUtils {
 	 * @param dialog the dialog
 	 * @throws IllegalAccessException when field is accessed illegally
 	 */
-	private static void addFieldToDialog(ParameterBundle params, Field field, GenericDialog dialog)
+	private static void addFieldToDialog(ParameterBundle<?> params, Field field, GenericDialog dialog)
 			throws IllegalAccessException {
 		
 		String name = field.getName();

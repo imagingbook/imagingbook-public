@@ -23,7 +23,7 @@ public interface BilateralF {
 	/**
 	 * Parameter bundle for bilateral filters (implementations of {@link BilateralF}).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<BilateralF> {
 
 		@DialogLabel("Sigma (domain)")
 		public double sigmaD = 2; 		

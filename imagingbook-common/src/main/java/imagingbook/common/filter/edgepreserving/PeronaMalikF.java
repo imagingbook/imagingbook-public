@@ -23,7 +23,7 @@ public interface PeronaMalikF {
 	/**
 	 * Parameter bundle for Perona-Malik filters (implementations of {@link PeronaMalikF}).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<PeronaMalikF> {
 
 		@DialogUtils.DialogLabel("Number of iterations")
 		public int iterations = 10;

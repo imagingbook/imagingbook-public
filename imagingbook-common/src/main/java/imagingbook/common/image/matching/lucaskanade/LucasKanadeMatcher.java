@@ -32,7 +32,7 @@ public abstract class LucasKanadeMatcher {
 	 * a (usually modified) instance of this class is passed to the constructor 
 	 * of a non-abstract sub-class.
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<LucasKanadeMatcher> {
 		/** Convergence limit */
 		public double tolerance = 0.00001;
 		/** Maximum number of iterations */

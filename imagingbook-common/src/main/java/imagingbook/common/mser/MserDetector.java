@@ -42,7 +42,7 @@ public class MserDetector {
 	/**
 	 * Inner class defining parameters for MSER detection.
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<MserDetector> {
 		
 		@DialogLabel("Component tree method")
 		public Method method = Method.LinearTime;

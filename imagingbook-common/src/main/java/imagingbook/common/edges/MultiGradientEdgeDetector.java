@@ -41,7 +41,7 @@ public class MultiGradientEdgeDetector implements EdgeDetector {
 	/**
 	 * Parameters for {@link MultiGradientEdgeDetector} (currently unused, no parameters to set).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<MultiGradientEdgeDetector> {
 	}
 	
 	@SuppressWarnings("unused")

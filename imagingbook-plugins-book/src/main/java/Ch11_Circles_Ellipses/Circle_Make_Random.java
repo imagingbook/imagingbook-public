@@ -41,7 +41,7 @@ import imagingbook.common.util.ParameterBundle;
  */
 public class Circle_Make_Random implements PlugIn {
 	
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<Circle_Make_Random> {
 		
 		@DialogLabel("image title")@DialogStringColumns(12)
 		public String Title = "RandomCircle"; // Circle_Make_Random.class.getSimpleName();

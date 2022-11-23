@@ -36,7 +36,7 @@ public class BernsenThresholder implements AdaptiveThresholder {
 	/**
 	 * Parameters for class {@link BernsenThresholder}.
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<BernsenThresholder> {
 		/** Radius of circular support region */ 
 		@DialogLabel("Radius")
 		public int radius = 15;

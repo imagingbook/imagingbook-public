@@ -21,7 +21,7 @@ public interface NagaoMatsuyamaF {
 	/**
 	 * Parameter bundle for Nagao-Matsuyama filters (implementations of {@link NagaoMatsuyamaF}).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<NagaoMatsuyamaF> {
 
 		@DialogLabel("Variance threshold (0,..,10)")
 		public double varThreshold = 0.0;

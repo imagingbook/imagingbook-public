@@ -279,7 +279,7 @@ public class EllipseGeometricFitCoord extends EllipseFitGeometric {
 	// -------------------------------------------------------------------
 	// -------------------------------------------------------------------
 	
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<EllipseGeometricFitCoord> {
 		
 		@DialogLabel("number of points")
 		public int n = 20;

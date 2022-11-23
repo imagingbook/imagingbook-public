@@ -41,7 +41,7 @@ public class GrayscaleEdgeDetector implements EdgeDetector {
 	/**
 	 * Parameters for {@link GrayscaleEdgeDetector} (currently none defined).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<GrayscaleEdgeDetector> {
 	}
 	
 	@SuppressWarnings("unused")

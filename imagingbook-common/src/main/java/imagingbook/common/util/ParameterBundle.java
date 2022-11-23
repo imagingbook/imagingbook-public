@@ -22,73 +22,77 @@ import imagingbook.common.ij.DialogUtils;
  * <p>
  * Interface to be implemented by local 'Parameters' classes. This is part of
  * the 'simple parameter object' scheme, working with public fields. Only
- * non-static, non-final, public fields are accepted as parameters.
- * Current features include: 
- * <br>
- * (a) Makes parameter bundles printable by listing all eligible fields.
- * <br>
+ * non-static, non-final, public fields are accepted as parameters. Current
+ * features include: <br>
+ * (a) Makes parameter bundles printable by listing all eligible fields. <br>
  * (b) Parameter bundles can be added/modified as a whole by ImageJ's
  * {@link GenericDialog}, supported by specific annotations (use methods
  * {@link DialogUtils#addToDialog(ParameterBundle, GenericDialog)} and
- * {@link DialogUtils#getFromDialog(ParameterBundle, GenericDialog)}).
- * <br>
+ * {@link DialogUtils#getFromDialog(ParameterBundle, GenericDialog)}). <br>
  * See the example in {@code DemoParameters} below. Other functionality may be
  * added in the future.
  * </p>
+ * 
  * <pre>
- * // Sample parameter bundle:
+ * public class ClassToBeParameterized {
  * 
- * enum MyEnum { A, B, Cee };
+ * 	enum MyEnum {  // local enum type
+ * 		A, B, Cee
+ * 	};
  * 
- * static class DemoParameters implements ParameterBundle {
- * 	public static int staticInt = 44; // currently static members are listed too!
+ * 	// Sample parameter bundle class:
+ * 	static class DemoParameters implements ParameterBundle&lt;ClassToBeParameterized&gt; {
+ * 		public static int staticInt = 44; // currently static members are listed too!
  * 
- * 	&#64;DialogLabel("Make a decision:")
- * 	public boolean someBool = true;
- * 	public int someInt = 39;
- * 	public float someFloat = 1.99f;
+ * 		&#64;DialogLabel("Make a decision:")
+ * 		public boolean someBool = true;
+ * 		public int someInt = 39;
+ * 		public float someFloat = 1.99f;
  * 
- * 	&#64;DialogLabel("Math.PI")
- * 	&#64;DialogDigits(10)
- * 	public double someDouble = Math.PI;
- * 	public String someString = "SHOW ME";
+ * 		&#64;DialogLabel("Math.PI")
+ * 		&#64;DialogDigits(10)
+ * 		public double someDouble = Math.PI;
+ * 		public String someString = "SHOW ME";
  * 
- * 	&#64;DialogHide
- * 	public String hiddenString = "HIDE ME";
- * 	public MyEnum someEnum = MyEnum.B;
- * }
+ * 		&#64;DialogHide
+ * 		public String hiddenString = "HIDE ME";
+ * 		public MyEnum someEnum = MyEnum.B;
+ * 	}
  * 
- * public static void main(String[] args) {
- * 	ParameterBundle params = new DemoParameters();
- * 	System.out.println("p1 = \n" + params.printToString());
+ * 	public static void main(String[] args) {
+ * 		ParameterBundle params = new DemoParameters();
+ * 		System.out.println("p1 = \n" + params.printToString());
  * 
- * 	GenericDialog gd = new GenericDialog(ParameterBundle.class.getSimpleName());
- * 	gd.addNumericField("some single int", 123, 0);
- * 	params.addToDialog(gd);
+ * 		GenericDialog gd = new GenericDialog(ParameterBundle.class.getSimpleName());
+ * 		gd.addNumericField("some single int", 123, 0);
+ * 		params.addToDialog(gd);
  * 
- * 	gd.showDialog();
- * 	if (gd.wasCanceled())
- * 		return;
+ * 		gd.showDialog();
+ * 		if (gd.wasCanceled())
+ * 			return;
  * 
- * 	int singleInt = (int) gd.getNextNumber();
- * 	boolean success = params.getFromDialog(gd);
- * 	System.out.println("success = " + success);
- * 	System.out.println("p2 = \n" + params.printToString());
+ * 		int singleInt = (int) gd.getNextNumber();
+ * 		boolean success = params.getFromDialog(gd);
+ * 		System.out.println("success = " + success);
+ * 		System.out.println("p2 = \n" + params.printToString());
+ * 	}
  * }
  * </pre>
  * 
  * @author WB
  * @version 2022/02/02
- * @version 2022/09/14 moved annotations and methods for {@link GenericDialog} to {@link DialogUtils}
+ * @version 2022/09/14 moved annotations and methods for {@link GenericDialog}
+ *          to {@link DialogUtils}
+ * @version 2022/11/23 added generic target type
  * 
  * @see DialogUtils.DialogDigits
  * @see DialogUtils.DialogLabel
  * @see DialogUtils.DialogHide
  */
-public interface ParameterBundle {
+public interface ParameterBundle<TargetT> {
 	
 	default Field[] getValidParameterFields() {
-		Class<? extends ParameterBundle> clazz = this.getClass();
+		Class<?> clazz = this.getClass();
 		List<Field> validFields = new ArrayList<>();
 		for (Field f : clazz.getFields()) {
 			if (isValidParameterItem(f)) {
@@ -107,7 +111,7 @@ public interface ParameterBundle {
 	}
 
 	default void printToStream(PrintStream strm) {
-		Class<? extends ParameterBundle> clazz = this.getClass();
+		Class<?> clazz = this.getClass();
 		if (!Modifier.isPublic(clazz.getModifiers())) {
 			strm.print("[WARNING] class " + clazz.getSimpleName() + " should be declared public or protected!\n");
 		}
@@ -184,7 +188,7 @@ public interface ParameterBundle {
 	 * @param params a {@link ParameterBundle} instance
 	 * @return a copy with the same type, fields and values as the original instance
 	 */
-	public static <T extends ParameterBundle> T duplicate(T params) {
+	public static <T extends ParameterBundle<?>> T duplicate(T params) {
 	    return ObjectUtils.copy(params);
 	}
 

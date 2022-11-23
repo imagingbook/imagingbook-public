@@ -41,7 +41,7 @@ public class HoughTransformLines implements ProgressReporter {
 	
 	// TODO: revise constructors and parameters, add bias correction
 
-	public static class Parameters implements ParameterBundle {	
+	public static class Parameters implements ParameterBundle<HoughTransformLines> {	
 		/** Number of angular steps over [0, pi] */
 		public int nAng = 256;		
 		/** Number of radial steps in each pos/neg direction (accum. size = 2 * nRad + 1) */

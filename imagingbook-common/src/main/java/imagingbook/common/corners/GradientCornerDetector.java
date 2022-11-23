@@ -48,7 +48,7 @@ public abstract class GradientCornerDetector {
 	/** For testing/example calculations only! */
 	public static boolean RETAIN_TEMPORARY_DATA = false;
 	
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<GradientCornerDetector> {
 		@DialogUtils.DialogLabel("Apply pre-filter")
 		public boolean doPreFilter = true;
 		

@@ -50,7 +50,7 @@ public class CannyEdgeDetector implements EdgeDetector {
 	
 	// TODO: implement convolutions with GenericFilter
 	
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<CannyEdgeDetector> {
 		
 		/** Gaussian sigma (scale, default = 2) */
 		@DialogLabel("Gaussian sigma (scale)")@DialogDigits(1)

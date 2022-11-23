@@ -1,6 +1,7 @@
 package imagingbook.common.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 
@@ -11,7 +12,7 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 public class ParameterBundleTest {
 	
 	@SuppressWarnings("unused")
-	private static class MyParameterBundle implements ParameterBundle {
+	private static class MyParameterBundle implements ParameterBundle<Object> {
 		// valid parameter fields
 		public boolean 	someBool = true;
 		public int 		someInt = 39;

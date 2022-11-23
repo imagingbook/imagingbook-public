@@ -21,7 +21,7 @@ public interface KuwaharaF {
 	/**
 	 * Parameter bundle for Kuwahara filters (implementations of {@link KuwaharaF}).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<KuwaharaF> {
 		
 		/** Radius of the filter (should be even) */
 		@DialogLabel("Radius of the filter (>1)")

@@ -49,7 +49,7 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	/**
 	 * Parameters for class {@link NiblackThresholder}.
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<NiblackThresholder> {
 		
 		@DialogLabel("Radius")
 		public int radius = 15;

@@ -23,7 +23,7 @@ public interface TschumperleDericheF {
 	/**
 	 * Parameter bundle for Tschumperle-Deriche filters (implementations of {@link TschumperleDericheF}).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<TschumperleDericheF> {
 		
 		@DialogUtils.DialogLabel("Number of iterations")
 		public int iterations = 20;	

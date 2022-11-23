@@ -36,7 +36,7 @@ public class SauvolaThresholder implements AdaptiveThresholder {
 	/**
 	 * Parameters for class {@link SauvolaThresholder}.
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<SauvolaThresholder> {
 		
 		@DialogUtils.DialogLabel("Radius")
 		public int radius = 15;

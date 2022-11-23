@@ -34,7 +34,7 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 	/**
 	 * Parameters for class {@link InterpolatingThresholder}.
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<InterpolatingThresholder> {
 		@DialogLabel("Tile size")
 		public int tileSize = 32;
 		

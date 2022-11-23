@@ -1,6 +1,6 @@
 package imagingbook.common.ij;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import imagingbook.common.util.ParameterBundle;
 public class DialogUtilsTest {
 	
 	@SuppressWarnings("unused")
-	private static class MyParameterBundle implements ParameterBundle {
+	private static class MyParameterBundle implements ParameterBundle<Object> {
 		// valid parameter fields
 		
 		@DialogLabel("Number of random draws") 

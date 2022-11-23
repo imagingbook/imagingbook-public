@@ -9,7 +9,7 @@ import imagingbook.common.util.ParameterBundle;
  * Default parameters; a (usually modified) instance of this class
  * may be passed to the constructor of {@link SiftDetector}.
  */
-public class SiftParameters implements ParameterBundle {
+public class SiftParameters implements ParameterBundle<SiftDetector> {
 	
 	/** Set true to output debug information. */
 	@DialogHide

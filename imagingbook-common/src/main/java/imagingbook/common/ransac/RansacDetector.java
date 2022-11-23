@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Random;
 
 import ij.process.ByteProcessor;
-import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.ij.IjUtils;
+import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.util.ParameterBundle;
 
 /**
@@ -38,7 +38,7 @@ public abstract class RansacDetector<T extends Primitive2d> {
 	/**
 	 * Parameters used by all RANSAC types.
 	 */
-	public static class RansacParameters implements ParameterBundle {
+	public static class RansacParameters implements ParameterBundle<RansacDetector<?>> {
 			
 		/** The number of iterations (random point draws) to use in each detection cycle.*/
 		@DialogLabel("Number of random draws") 

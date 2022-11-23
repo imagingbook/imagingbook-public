@@ -38,7 +38,7 @@ public class MonochromaticEdgeDetector implements EdgeDetector {
 	/**
 	 * Parameters for {@link MonochromaticEdgeDetector} (currently none defined).
 	 */
-	public static class Parameters implements ParameterBundle {
+	public static class Parameters implements ParameterBundle<MonochromaticEdgeDetector> {
 	}
 
 	@SuppressWarnings("unused")
