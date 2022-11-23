@@ -10,6 +10,7 @@
 package imagingbook.common.sift.scalespace;
 
 import ij.process.FloatProcessor;
+import imagingbook.common.filter.linear.GaussianFilterSeparable;
 
 /**
  * <p>
@@ -191,6 +192,18 @@ public class ScaleLevel {
 		final double grad_y = this.getValue(u, v+1) - this.getValue(u, v-1);	// y-component of local gradient
 		grad[0] = Math.hypot(grad_x, grad_y);						// local gradient magnitude (E)
 		grad[1] = Math.atan2(grad_y, grad_x);						// local gradient direction (phi)
+	}
+	
+	
+	/**
+	 * Applies a Gaussian filter to this scale level, which is
+	 * modified.
+	 * 
+	 * @param sigma the width of the Gaussian
+	 */
+	void filterGaussian(double sigma) {
+		FloatProcessor fp = this.toFloatProcessor();
+		new GaussianFilterSeparable(sigma).applyTo(fp);
 	}
 	
 	// ---------------------------------------

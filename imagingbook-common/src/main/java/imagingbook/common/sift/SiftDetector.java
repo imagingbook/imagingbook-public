@@ -21,10 +21,10 @@ import imagingbook.common.ij.DialogUtils.DialogHide;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.sift.scalespace.DogOctave;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
 import imagingbook.common.sift.scalespace.ScaleLevel;
-import imagingbook.common.sift.scalespace.ScaleOctave;
 import imagingbook.common.util.ParameterBundle;
 
 /**
@@ -175,8 +175,21 @@ public class SiftDetector {
 	public SiftDetector(FloatProcessor fp, Parameters params) {
 		this.params = params;
 		this.nhSize = params.nhType.size;
+		normalizeTo01(fp);
 		this.G = new GaussianScaleSpace(fp, params.P, params.Q, params.sigmaS, params.sigma0, -1, params.Q + 1);
 		this.D = new DogScaleSpace(G);
+	}
+	
+	// TODO: check this, only temporary
+	private void normalizeTo01(FloatProcessor fp) {
+		float[] a = (float[])fp.getPixels();
+		float minVal = Matrix.min(a);
+		float maxVal = Matrix.max(a);
+		float offset = -minVal;
+		float scale = 1.0f / (maxVal - minVal);
+		for (int i = 0; i < a.length; i++) {
+			a[i] = (a[i] + offset) * scale; 
+		}
 	}
 	
 	// --------------------------------------------------
@@ -311,7 +324,7 @@ public class SiftDetector {
 	private List<KeyPoint> findExtrema(int p, int q) {
 		final float tMag = (float) params.tMag;
 		final float tExtrm = (float) params.tExtrm;
-		final ScaleOctave Dp = D.getOctave(p);
+		final DogOctave Dp = D.getOctave(p);
 		final ScaleLevel Dpq = D.getScaleLevel(p, q);
 		final int M = Dpq.getWidth();
 		final int N = Dpq.getHeight();
@@ -343,7 +356,7 @@ public class SiftDetector {
 		int u = k.u;
 		int v = k.v;
 		
-		final ScaleOctave Dp = D.getOctave(p);
+		final DogOctave Dp = D.getOctave(p);
 		final double rhoMax = params.rhoMax;
 		final double tPeak = params.tPeak;
 		final int nRefine = params.nRefine;

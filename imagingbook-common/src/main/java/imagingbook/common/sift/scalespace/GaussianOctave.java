@@ -55,7 +55,7 @@ public class GaussianOctave extends ScaleOctave<ScaleLevel> {
 			// duplicate the botton scale level with the new absolute scale:
 			ScaleLevel G_pq = new ScaleLevel(Gbot, sigmaA);
 			// filter the new scale level (destructively):
-			GaussianScaleSpace.filterGaussian(G_pq, sigmaR);
+			G_pq.filterGaussian(sigmaR);
 			// insert the new scale level into this scale octave
 			this.setLevel(q, G_pq);
 		}

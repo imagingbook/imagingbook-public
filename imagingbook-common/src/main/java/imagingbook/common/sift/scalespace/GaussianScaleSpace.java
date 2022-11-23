@@ -12,8 +12,6 @@ package imagingbook.common.sift.scalespace;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import ij.process.FloatProcessor;
-import imagingbook.common.filter.linear.GaussianFilterSeparable;
-import imagingbook.common.math.Matrix;
 
 /**
  * <p>
@@ -46,13 +44,15 @@ public class GaussianScaleSpace extends HierarchicalScaleSpace<GaussianOctave> {
 		build(fp);
 	}
 	
+	// -------------------------------------------------------------
+	
 	private final void build(FloatProcessor fp) {
-		double scaleA = getAbsoluteScale(0, -1) ;				// absolute scale of level(0,-1) = bottom
+		double scaleA = getAbsoluteScale(0, botLevel) ;			// absolute scale of level(0,-1) = bottom
 		double scaleR = Math.sqrt(sqr(scaleA) - sqr(sigma_s));	// relative scale from sampling scale
 		
-		float[] dataNormalized = normalize((float[])fp.getPixels());
-		ScaleLevel Ginit = new ScaleLevel(fp.getWidth(), fp.getHeight(), dataNormalized, scaleR);
-		filterGaussian(Ginit, scaleR);
+		float[] data = ((float[])fp.getPixels()).clone();
+		ScaleLevel Ginit = new ScaleLevel(fp.getWidth(), fp.getHeight(), data, scaleR);
+		Ginit.filterGaussian(scaleR);
 		
 		// create the bottom octave
 		setOctave(0, new GaussianOctave(0, Q, Ginit, botLevel, topLevel, sigma_0));
@@ -62,25 +62,6 @@ public class GaussianScaleSpace extends HierarchicalScaleSpace<GaussianOctave> {
 			ScaleLevel Gbase = getOctave(p-1).getLevel(Q-1).decimate();
 			setOctave(p, new GaussianOctave(p, Q, Gbase, botLevel, topLevel, sigma_0));
 		}
-	}
-	
-	// this is highly problematic!
-	static float[] normalize(float[] a) {
-		float minVal = Matrix.min(a);
-		float maxVal = Matrix.max(a);
-		float offset = -minVal;
-		float scale = 1.0f / (maxVal - minVal);
-		float[] values = a.clone();
-		for (int i = 0; i < values.length; i++) {
-			values[i] = (values[i] + offset) * scale; 
-		}
-		return values;
-	}
-	
-	
-	static void filterGaussian(ScaleLevel sl, double sigma) {
-		FloatProcessor fp = sl.toFloatProcessor();
-		new GaussianFilterSeparable(sigma).applyTo(fp);
 	}
 	
 }
