@@ -14,7 +14,7 @@
 <span class="sourceLineNo">004</span><a id="line.4"> * Permission to use and distribute this software is granted under the BSD 2-Clause </a>
 <span class="sourceLineNo">005</span><a id="line.5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). </a>
 <span class="sourceLineNo">006</span><a id="line.6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. </a>
-<span class="sourceLineNo">007</span><a id="line.7"> * All rights reserved. Visit http://www.imagingbook.com for additional details.</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * All rights reserved. Visit https://imagingbook.com for additional details.</a>
 <span class="sourceLineNo">008</span><a id="line.8"> *******************************************************************************/</a>
 <span class="sourceLineNo">009</span><a id="line.9"></a>
 <span class="sourceLineNo">010</span><a id="line.10">package Fourier_Shape_Descriptors;</a>
@@ -40,20 +40,20 @@
 <span class="sourceLineNo">030</span><a id="line.30">import ij.process.ImageProcessor;</a>
 <span class="sourceLineNo">031</span><a id="line.31">import imagingbook.common.color.iterate.CssColorSequencer;</a>
 <span class="sourceLineNo">032</span><a id="line.32">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">033</span><a id="line.33">import imagingbook.common.math.Complex;</a>
-<span class="sourceLineNo">034</span><a id="line.34">import imagingbook.common.regions.BinaryRegion;</a>
-<span class="sourceLineNo">035</span><a id="line.35">import imagingbook.common.regions.Contour;</a>
-<span class="sourceLineNo">036</span><a id="line.36">import imagingbook.common.regions.segment.RegionContourSegmentation;</a>
-<span class="sourceLineNo">037</span><a id="line.37">import imagingbook.spectral.fd.Colors;</a>
-<span class="sourceLineNo">038</span><a id="line.38">import imagingbook.spectral.fd.FourierDescriptor;</a>
-<span class="sourceLineNo">039</span><a id="line.39">import imagingbook.spectral.fd.FourierDescriptorUniform;</a>
-<span class="sourceLineNo">040</span><a id="line.40">import imagingbook.spectral.fd.PolygonSampler;</a>
-<span class="sourceLineNo">041</span><a id="line.41"></a>
-<span class="sourceLineNo">042</span><a id="line.42">/**</a>
-<span class="sourceLineNo">043</span><a id="line.43"> * @version 2020/04/01</a>
-<span class="sourceLineNo">044</span><a id="line.44"> * @author WB</a>
-<span class="sourceLineNo">045</span><a id="line.45"> *</a>
-<span class="sourceLineNo">046</span><a id="line.46"> */</a>
+<span class="sourceLineNo">033</span><a id="line.33">import imagingbook.common.geometry.fd.FourierDescriptor;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import imagingbook.common.geometry.fd.FourierDescriptorUniform;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import imagingbook.common.geometry.fd.PolygonSampler;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import imagingbook.common.math.Complex;</a>
+<span class="sourceLineNo">037</span><a id="line.37">import imagingbook.common.regions.BinaryRegion;</a>
+<span class="sourceLineNo">038</span><a id="line.38">import imagingbook.common.regions.Contour;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import imagingbook.common.regions.RegionContourSegmentation;</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">/**</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * @version 2020/04/01</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * @author WB</a>
+<span class="sourceLineNo">044</span><a id="line.44"> *</a>
+<span class="sourceLineNo">045</span><a id="line.45"> */</a>
+<span class="sourceLineNo">046</span><a id="line.46">@Deprecated</a>
 <span class="sourceLineNo">047</span><a id="line.47">public class Private_Ellipse_Superposition_AnimationStack implements PlugInFilter {</a>
 <span class="sourceLineNo">048</span><a id="line.48"></a>
 <span class="sourceLineNo">049</span><a id="line.49">        static int StepsPerFullRevolution = 500;</a>
@@ -69,15 +69,15 @@
 <span class="sourceLineNo">059</span><a id="line.59">        static boolean MarkContourCentroid = true;</a>
 <span class="sourceLineNo">060</span><a id="line.60"></a>
 <span class="sourceLineNo">061</span><a id="line.61"></a>
-<span class="sourceLineNo">062</span><a id="line.62">        static Color    SampleColor = Colors.Magenta;</a>
+<span class="sourceLineNo">062</span><a id="line.62">        static Color    SampleColor = new Color(255, 0, 200);   // Colors.Magenta;</a>
 <span class="sourceLineNo">063</span><a id="line.63">        static double   SampleStrokeWidth = 1.0;</a>
 <span class="sourceLineNo">064</span><a id="line.64">        static double   SampleRadius = 2.5; //1.5;</a>
 <span class="sourceLineNo">065</span><a id="line.65"></a>
-<span class="sourceLineNo">066</span><a id="line.66">        static Color    ContourColor = Colors.Blue;</a>
+<span class="sourceLineNo">066</span><a id="line.66">        static Color    ContourColor = new Color(0, 60, 255);   // Colors.Blue;</a>
 <span class="sourceLineNo">067</span><a id="line.67">        static double   ContourStrokeWidth = 0.25;</a>
 <span class="sourceLineNo">068</span><a id="line.68"></a>
 <span class="sourceLineNo">069</span><a id="line.69">        static double   ReconstructionRadius = 1.0;</a>
-<span class="sourceLineNo">070</span><a id="line.70">        static Color    ReconstructionColor = Colors.Green;</a>
+<span class="sourceLineNo">070</span><a id="line.70">        static Color    ReconstructionColor = new Color(0, 185, 15);    // Colors.Green;</a>
 <span class="sourceLineNo">071</span><a id="line.71">        static double   ReconstructionStrokeWidth = 0.5; //0.75;</a>
 <span class="sourceLineNo">072</span><a id="line.72"></a>
 <span class="sourceLineNo">073</span><a id="line.73">        //static Font font = new Font("Serif", Font.PLAIN, 10);</a>
@@ -85,261 +85,273 @@
 <span class="sourceLineNo">075</span><a id="line.75">        </a>
 <span class="sourceLineNo">076</span><a id="line.76">        static boolean AntialiasGraphics = true;</a>
 <span class="sourceLineNo">077</span><a id="line.77"></a>
-<span class="sourceLineNo">078</span><a id="line.78">        static AffineTransform CtrShift = new AffineTransform(1, 0, 0, 1, 0.5, 0.5);    // shift by (0.5,0.5) to move to pixel centers</a>
+<span class="sourceLineNo">078</span><a id="line.78">        static AffineTransform PixelShift = new AffineTransform(1, 0, 0, 1, 0.5, 0.5);  // shift by (0.5,0.5) to move to pixel centers</a>
 <span class="sourceLineNo">079</span><a id="line.79"></a>
 <span class="sourceLineNo">080</span><a id="line.80">        ImagePlus origImage = null;</a>
 <span class="sourceLineNo">081</span><a id="line.81">        String origTitle = null;</a>
 <span class="sourceLineNo">082</span><a id="line.82">        static boolean verbose = true;</a>
 <span class="sourceLineNo">083</span><a id="line.83"></a>
-<span class="sourceLineNo">084</span><a id="line.84">        public int setup(String arg, ImagePlus im) { </a>
-<span class="sourceLineNo">085</span><a id="line.85">                origImage = im;</a>
-<span class="sourceLineNo">086</span><a id="line.86">                origTitle = im.getShortTitle();</a>
-<span class="sourceLineNo">087</span><a id="line.87">                //RegionLabeling.setVerbose(verbose);</a>
-<span class="sourceLineNo">088</span><a id="line.88">                return DOES_8G + NO_CHANGES;</a>
-<span class="sourceLineNo">089</span><a id="line.89">        }</a>
-<span class="sourceLineNo">090</span><a id="line.90"></a>
-<span class="sourceLineNo">091</span><a id="line.91">        public void run(ImageProcessor ip1) {</a>
-<span class="sourceLineNo">092</span><a id="line.92">                int W = ip1.getWidth();</a>
-<span class="sourceLineNo">093</span><a id="line.93">                int H = ip1.getHeight();</a>
-<span class="sourceLineNo">094</span><a id="line.94">                </a>
-<span class="sourceLineNo">095</span><a id="line.95">                double imgScale = Math.sqrt(W*W + H*H) / Math.sqrt(200*200);    // relate image to "standard" size</a>
-<span class="sourceLineNo">096</span><a id="line.96">                ContourStrokeWidth = ContourStrokeWidth * imgScale;</a>
-<span class="sourceLineNo">097</span><a id="line.97">                SampleStrokeWidth = SampleStrokeWidth * imgScale;</a>
-<span class="sourceLineNo">098</span><a id="line.98">                ReconstructionStrokeWidth = ReconstructionStrokeWidth * imgScale;</a>
-<span class="sourceLineNo">099</span><a id="line.99">                ReconstructionRadius = ReconstructionRadius * imgScale;</a>
-<span class="sourceLineNo">100</span><a id="line.100">                </a>
-<span class="sourceLineNo">101</span><a id="line.101">                GenericDialog dlg = new GenericDialog("Fourier Shape Composition Parameters");</a>
-<span class="sourceLineNo">102</span><a id="line.102">                dlg.addMessage("Fourier decomosition parameters");</a>
-<span class="sourceLineNo">103</span><a id="line.103">                dlg.addNumericField("Number contour samples", NumberOfContourSamples, 0);</a>
-<span class="sourceLineNo">104</span><a id="line.104">                dlg.addNumericField("Number of FD pairs (min. 1)", NumberOfFourierDescriptorPairs, 0);</a>
-<span class="sourceLineNo">105</span><a id="line.105">                dlg.addMessage("Animation parameters");</a>
-<span class="sourceLineNo">106</span><a id="line.106">                dlg.addNumericField("Angular steps per revolution", StepsPerFullRevolution, 0);</a>
-<span class="sourceLineNo">107</span><a id="line.107">                dlg.addNumericField("Steps per second", StepsPerSecond, 0);</a>
-<span class="sourceLineNo">108</span><a id="line.108">                dlg.addMessage("Drawing parameters");</a>
-<span class="sourceLineNo">109</span><a id="line.109">                dlg.addNumericField("Reconstruction point radius", ReconstructionRadius, 1);</a>
-<span class="sourceLineNo">110</span><a id="line.110">                dlg.addCheckbox("Anti-alias graphics", AntialiasGraphics);</a>
-<span class="sourceLineNo">111</span><a id="line.111">                dlg.addMessage("Press ESC or close window to stop animation.");</a>
-<span class="sourceLineNo">112</span><a id="line.112">                dlg.showDialog();</a>
-<span class="sourceLineNo">113</span><a id="line.113">                if(dlg.wasCanceled()) return;</a>
-<span class="sourceLineNo">114</span><a id="line.114">                NumberOfContourSamples = (int) dlg.getNextNumber();</a>
-<span class="sourceLineNo">115</span><a id="line.115">                NumberOfFourierDescriptorPairs = Math.max(1, (int) dlg.getNextNumber());</a>
-<span class="sourceLineNo">116</span><a id="line.116">                StepsPerFullRevolution = (int) dlg.getNextNumber();</a>
-<span class="sourceLineNo">117</span><a id="line.117">                StepsPerSecond = (int) dlg.getNextNumber();</a>
-<span class="sourceLineNo">118</span><a id="line.118">                ReconstructionRadius = dlg.getNextNumber();</a>
-<span class="sourceLineNo">119</span><a id="line.119">                AntialiasGraphics = dlg.getNextBoolean();</a>
-<span class="sourceLineNo">120</span><a id="line.120">                dlg.addMessage("Press ESC or close window to stop animation.");</a>
-<span class="sourceLineNo">121</span><a id="line.121"></a>
-<span class="sourceLineNo">122</span><a id="line.122">                // ------------------------------------------------------------------------</a>
+<span class="sourceLineNo">084</span><a id="line.84">        @Override</a>
+<span class="sourceLineNo">085</span><a id="line.85">        public int setup(String arg, ImagePlus im) { </a>
+<span class="sourceLineNo">086</span><a id="line.86">                origImage = im;</a>
+<span class="sourceLineNo">087</span><a id="line.87">                origTitle = im.getShortTitle();</a>
+<span class="sourceLineNo">088</span><a id="line.88">                //RegionLabeling.setVerbose(verbose);</a>
+<span class="sourceLineNo">089</span><a id="line.89">                return DOES_8G + NO_CHANGES;</a>
+<span class="sourceLineNo">090</span><a id="line.90">        }</a>
+<span class="sourceLineNo">091</span><a id="line.91"></a>
+<span class="sourceLineNo">092</span><a id="line.92">        @Override</a>
+<span class="sourceLineNo">093</span><a id="line.93">        public void run(ImageProcessor ip1) {</a>
+<span class="sourceLineNo">094</span><a id="line.94">                int W = ip1.getWidth();</a>
+<span class="sourceLineNo">095</span><a id="line.95">                int H = ip1.getHeight();</a>
+<span class="sourceLineNo">096</span><a id="line.96">                </a>
+<span class="sourceLineNo">097</span><a id="line.97">                double imgScale = Math.sqrt(W*W + H*H) / Math.sqrt(200*200);    // relate image to "standard" size</a>
+<span class="sourceLineNo">098</span><a id="line.98">                ContourStrokeWidth = ContourStrokeWidth * imgScale;</a>
+<span class="sourceLineNo">099</span><a id="line.99">                SampleStrokeWidth = SampleStrokeWidth * imgScale;</a>
+<span class="sourceLineNo">100</span><a id="line.100">                ReconstructionStrokeWidth = ReconstructionStrokeWidth * imgScale;</a>
+<span class="sourceLineNo">101</span><a id="line.101">                ReconstructionRadius = ReconstructionRadius * imgScale;</a>
+<span class="sourceLineNo">102</span><a id="line.102">                </a>
+<span class="sourceLineNo">103</span><a id="line.103">                GenericDialog dlg = new GenericDialog("Fourier Shape Composition Parameters");</a>
+<span class="sourceLineNo">104</span><a id="line.104">                dlg.addMessage("Fourier decomosition parameters");</a>
+<span class="sourceLineNo">105</span><a id="line.105">                dlg.addNumericField("Number contour samples", NumberOfContourSamples, 0);</a>
+<span class="sourceLineNo">106</span><a id="line.106">                dlg.addNumericField("Number of FD pairs (min. 1)", NumberOfFourierDescriptorPairs, 0);</a>
+<span class="sourceLineNo">107</span><a id="line.107">                dlg.addMessage("Animation parameters");</a>
+<span class="sourceLineNo">108</span><a id="line.108">                dlg.addNumericField("Angular steps per revolution", StepsPerFullRevolution, 0);</a>
+<span class="sourceLineNo">109</span><a id="line.109">                dlg.addNumericField("Steps per second", StepsPerSecond, 0);</a>
+<span class="sourceLineNo">110</span><a id="line.110">                dlg.addMessage("Drawing parameters");</a>
+<span class="sourceLineNo">111</span><a id="line.111">                dlg.addNumericField("Reconstruction point radius", ReconstructionRadius, 1);</a>
+<span class="sourceLineNo">112</span><a id="line.112">                dlg.addCheckbox("Anti-alias graphics", AntialiasGraphics);</a>
+<span class="sourceLineNo">113</span><a id="line.113">                dlg.addMessage("Press ESC or close window to stop animation.");</a>
+<span class="sourceLineNo">114</span><a id="line.114">                dlg.showDialog();</a>
+<span class="sourceLineNo">115</span><a id="line.115">                if(dlg.wasCanceled()) return;</a>
+<span class="sourceLineNo">116</span><a id="line.116">                NumberOfContourSamples = (int) dlg.getNextNumber();</a>
+<span class="sourceLineNo">117</span><a id="line.117">                NumberOfFourierDescriptorPairs = Math.max(1, (int) dlg.getNextNumber());</a>
+<span class="sourceLineNo">118</span><a id="line.118">                StepsPerFullRevolution = (int) dlg.getNextNumber();</a>
+<span class="sourceLineNo">119</span><a id="line.119">                StepsPerSecond = (int) dlg.getNextNumber();</a>
+<span class="sourceLineNo">120</span><a id="line.120">                ReconstructionRadius = dlg.getNextNumber();</a>
+<span class="sourceLineNo">121</span><a id="line.121">                AntialiasGraphics = dlg.getNextBoolean();</a>
+<span class="sourceLineNo">122</span><a id="line.122">                dlg.addMessage("Press ESC or close window to stop animation.");</a>
 <span class="sourceLineNo">123</span><a id="line.123"></a>
-<span class="sourceLineNo">124</span><a id="line.124">                ByteProcessor ip = (ByteProcessor) ip1.duplicate();</a>
+<span class="sourceLineNo">124</span><a id="line.124">                // ------------------------------------------------------------------------</a>
 <span class="sourceLineNo">125</span><a id="line.125"></a>
-<span class="sourceLineNo">126</span><a id="line.126">                //  label regions and trace contours</a>
-<span class="sourceLineNo">127</span><a id="line.127">                RegionContourSegmentation tracer = new RegionContourSegmentation((ByteProcessor)ip);</a>
-<span class="sourceLineNo">128</span><a id="line.128">                //IJ.log("tracing done");</a>
-<span class="sourceLineNo">129</span><a id="line.129"></a>
-<span class="sourceLineNo">130</span><a id="line.130">                // extract contours and regions</a>
-<span class="sourceLineNo">131</span><a id="line.131">                List&lt;? extends Contour&gt; outerContours = tracer.getOuterContours(true);</a>
-<span class="sourceLineNo">132</span><a id="line.132">                if (outerContours.isEmpty()) {</a>
-<span class="sourceLineNo">133</span><a id="line.133">                        IJ.error("no regions found");</a>
-<span class="sourceLineNo">134</span><a id="line.134">                        return;</a>
-<span class="sourceLineNo">135</span><a id="line.135">                }</a>
-<span class="sourceLineNo">136</span><a id="line.136"></a>
-<span class="sourceLineNo">137</span><a id="line.137">                Contour contr = outerContours.get(0);   // contour of largest region</a>
-<span class="sourceLineNo">138</span><a id="line.138">                Pnt2d[] polygon = new PolygonSampler().samplePolygonUniformly(contr.getPointArray(), NumberOfContourSamples);</a>
-<span class="sourceLineNo">139</span><a id="line.139">                FourierDescriptor fd = new FourierDescriptorUniform(polygon);</a>
-<span class="sourceLineNo">140</span><a id="line.140">                //fd.print();</a>
-<span class="sourceLineNo">141</span><a id="line.141"></a>
-<span class="sourceLineNo">142</span><a id="line.142">                String title = origTitle + String.format("-coeff%03d",NumberOfFourierDescriptorPairs);</a>
-<span class="sourceLineNo">143</span><a id="line.143">                ImagePlus im = new ImagePlus(title, ip);</a>
-<span class="sourceLineNo">144</span><a id="line.144">                if (ip.isInvertedLut()) {</a>
-<span class="sourceLineNo">145</span><a id="line.145">                        ip.invert();</a>
-<span class="sourceLineNo">146</span><a id="line.146">                        ip.invertLut();</a>
-<span class="sourceLineNo">147</span><a id="line.147">                }</a>
-<span class="sourceLineNo">148</span><a id="line.148">                brighten(ip, 220);</a>
-<span class="sourceLineNo">149</span><a id="line.149">                im.show();</a>
-<span class="sourceLineNo">150</span><a id="line.150"></a>
-<span class="sourceLineNo">151</span><a id="line.151">                long frameTimeMs = Math.round(1000.0/StepsPerSecond);</a>
-<span class="sourceLineNo">152</span><a id="line.152"></a>
-<span class="sourceLineNo">153</span><a id="line.153">                ImageStack stack = new ImageStack(ip.getWidth(), ip.getHeight());</a>
-<span class="sourceLineNo">154</span><a id="line.154"></a>
-<span class="sourceLineNo">155</span><a id="line.155">                for (int k = 0; k &lt; StepsPerFullRevolution; k++) {</a>
-<span class="sourceLineNo">156</span><a id="line.156"></a>
-<span class="sourceLineNo">157</span><a id="line.157">                        if (IJ.escapePressed() || im.getWindow() == null || im.getWindow().isClosed()) {</a>
-<span class="sourceLineNo">158</span><a id="line.158">                                break;</a>
-<span class="sourceLineNo">159</span><a id="line.159">                        }</a>
-<span class="sourceLineNo">160</span><a id="line.160"></a>
-<span class="sourceLineNo">161</span><a id="line.161">                        double t = (double) k / StepsPerFullRevolution;</a>
-<span class="sourceLineNo">162</span><a id="line.162">                        long startTime = System.currentTimeMillis();</a>
-<span class="sourceLineNo">163</span><a id="line.163">                        Overlay oly = new Overlay();</a>
-<span class="sourceLineNo">164</span><a id="line.164">                        </a>
-<span class="sourceLineNo">165</span><a id="line.165">                        String timeString = String.format(Locale.US, "t=%.4f", t);</a>
-<span class="sourceLineNo">166</span><a id="line.166"></a>
-<span class="sourceLineNo">167</span><a id="line.167">                        if (ShowPathPosition) {</a>
-<span class="sourceLineNo">168</span><a id="line.168">                                TextRoi troi = new TextRoi(5, 0, timeString, font);</a>
-<span class="sourceLineNo">169</span><a id="line.169">                                troi.setStrokeColor(Color.black);</a>
-<span class="sourceLineNo">170</span><a id="line.170">                                oly.add(troi);</a>
-<span class="sourceLineNo">171</span><a id="line.171">                        }</a>
-<span class="sourceLineNo">172</span><a id="line.172"></a>
-<span class="sourceLineNo">173</span><a id="line.173">                        if (ShowOriginalContour) { // draw the original contour ------------------------------------</a>
-<span class="sourceLineNo">174</span><a id="line.174">                                oly.add(makeCentroidShape(contr));</a>
-<span class="sourceLineNo">175</span><a id="line.175">                        }</a>
-<span class="sourceLineNo">176</span><a id="line.176"></a>
-<span class="sourceLineNo">177</span><a id="line.177">                        if (ShowContourSamples) { // draw the contour sample points ------------------------------</a>
-<span class="sourceLineNo">178</span><a id="line.178">                                drawSamples(oly, fd.getSamples(), 0.5, 0.5);</a>
-<span class="sourceLineNo">179</span><a id="line.179">                        }</a>
-<span class="sourceLineNo">180</span><a id="line.180"></a>
-<span class="sourceLineNo">181</span><a id="line.181">                        if (MarkContourCentroid) { // mark the center ---------------------------------------------</a>
-<span class="sourceLineNo">182</span><a id="line.182">                                oly.add(makeCentroidShape(fd));</a>
-<span class="sourceLineNo">183</span><a id="line.183">                        }</a>
-<span class="sourceLineNo">184</span><a id="line.184"></a>
-<span class="sourceLineNo">185</span><a id="line.185">                        // --------------------------------------------------------------</a>
-<span class="sourceLineNo">186</span><a id="line.186"></a>
-<span class="sourceLineNo">187</span><a id="line.187">                        { // draw the reconstructed shape from FD-pairs 0,...,mMax -------</a>
-<span class="sourceLineNo">188</span><a id="line.188">                                int mMax = NumberOfFourierDescriptorPairs;</a>
-<span class="sourceLineNo">189</span><a id="line.189">                                Path2D path = fd.makeFourierPairsReconstruction(mMax);</a>
-<span class="sourceLineNo">190</span><a id="line.190">                                path.transform(CtrShift);</a>
-<span class="sourceLineNo">191</span><a id="line.191">                                ShapeRoi roi = new ShapeRoi(path);</a>
-<span class="sourceLineNo">192</span><a id="line.192">                                roi.setStrokeColor(ReconstructionColor);</a>
-<span class="sourceLineNo">193</span><a id="line.193">                                roi.setStrokeWidth(ReconstructionStrokeWidth);</a>
-<span class="sourceLineNo">194</span><a id="line.194">                                oly.add(roi);</a>
-<span class="sourceLineNo">195</span><a id="line.195">                        }</a>
-<span class="sourceLineNo">196</span><a id="line.196"></a>
-<span class="sourceLineNo">197</span><a id="line.197">                        //  draw superposition of ellipses ----------------------</a>
-<span class="sourceLineNo">198</span><a id="line.198"></a>
-<span class="sourceLineNo">199</span><a id="line.199">                        Complex cc = fd.getCoefficient(0);      // current ellipse center</a>
-<span class="sourceLineNo">200</span><a id="line.200">                        int mMax = NumberOfFourierDescriptorPairs;</a>
-<span class="sourceLineNo">201</span><a id="line.201">                        //                      RandomColorGenerator rcg = new RandomColorGenerator(1);</a>
+<span class="sourceLineNo">126</span><a id="line.126">                ByteProcessor ip = (ByteProcessor) ip1.duplicate();</a>
+<span class="sourceLineNo">127</span><a id="line.127"></a>
+<span class="sourceLineNo">128</span><a id="line.128">                //  label regions and trace contours</a>
+<span class="sourceLineNo">129</span><a id="line.129">                RegionContourSegmentation tracer = new RegionContourSegmentation(ip);</a>
+<span class="sourceLineNo">130</span><a id="line.130">                //IJ.log("tracing done");</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">                // extract contours and regions</a>
+<span class="sourceLineNo">133</span><a id="line.133">                List&lt;? extends Contour&gt; outerContours = tracer.getOuterContours(true);</a>
+<span class="sourceLineNo">134</span><a id="line.134">                if (outerContours.isEmpty()) {</a>
+<span class="sourceLineNo">135</span><a id="line.135">                        IJ.error("no regions found");</a>
+<span class="sourceLineNo">136</span><a id="line.136">                        return;</a>
+<span class="sourceLineNo">137</span><a id="line.137">                }</a>
+<span class="sourceLineNo">138</span><a id="line.138"></a>
+<span class="sourceLineNo">139</span><a id="line.139">                Contour contr = outerContours.get(0);   // contour of largest region</a>
+<span class="sourceLineNo">140</span><a id="line.140">                Pnt2d[] polygon = PolygonSampler.getInstance().samplePolygon(contr.getPointArray(), NumberOfContourSamples);</a>
+<span class="sourceLineNo">141</span><a id="line.141">                Complex[] samples = FourierDescriptor.toComplexArray(polygon);</a>
+<span class="sourceLineNo">142</span><a id="line.142">                </a>
+<span class="sourceLineNo">143</span><a id="line.143">                FourierDescriptor fd = FourierDescriptorUniform.from(polygon);</a>
+<span class="sourceLineNo">144</span><a id="line.144">//              FourierDescriptor fd = new FourierDescriptorUniform(polygon);</a>
+<span class="sourceLineNo">145</span><a id="line.145">                //fd.print();</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">                String title = origTitle + String.format("-coeff%03d",NumberOfFourierDescriptorPairs);</a>
+<span class="sourceLineNo">148</span><a id="line.148">                ImagePlus im = new ImagePlus(title, ip);</a>
+<span class="sourceLineNo">149</span><a id="line.149">                if (ip.isInvertedLut()) {</a>
+<span class="sourceLineNo">150</span><a id="line.150">                        ip.invert();</a>
+<span class="sourceLineNo">151</span><a id="line.151">                        ip.invertLut();</a>
+<span class="sourceLineNo">152</span><a id="line.152">                }</a>
+<span class="sourceLineNo">153</span><a id="line.153">                brighten(ip, 220);</a>
+<span class="sourceLineNo">154</span><a id="line.154">                im.show();</a>
+<span class="sourceLineNo">155</span><a id="line.155"></a>
+<span class="sourceLineNo">156</span><a id="line.156">                long frameTimeMs = Math.round(1000.0/StepsPerSecond);</a>
+<span class="sourceLineNo">157</span><a id="line.157"></a>
+<span class="sourceLineNo">158</span><a id="line.158">                ImageStack stack = new ImageStack(ip.getWidth(), ip.getHeight());</a>
+<span class="sourceLineNo">159</span><a id="line.159"></a>
+<span class="sourceLineNo">160</span><a id="line.160">                for (int k = 0; k &lt; StepsPerFullRevolution; k++) {</a>
+<span class="sourceLineNo">161</span><a id="line.161"></a>
+<span class="sourceLineNo">162</span><a id="line.162">                        if (IJ.escapePressed() || im.getWindow() == null || im.getWindow().isClosed()) {</a>
+<span class="sourceLineNo">163</span><a id="line.163">                                break;</a>
+<span class="sourceLineNo">164</span><a id="line.164">                        }</a>
+<span class="sourceLineNo">165</span><a id="line.165"></a>
+<span class="sourceLineNo">166</span><a id="line.166">                        double t = (double) k / StepsPerFullRevolution;</a>
+<span class="sourceLineNo">167</span><a id="line.167">                        long startTime = System.currentTimeMillis();</a>
+<span class="sourceLineNo">168</span><a id="line.168">                        Overlay oly = new Overlay();</a>
+<span class="sourceLineNo">169</span><a id="line.169">                        </a>
+<span class="sourceLineNo">170</span><a id="line.170">                        String timeString = String.format(Locale.US, "t=%.4f", t);</a>
+<span class="sourceLineNo">171</span><a id="line.171"></a>
+<span class="sourceLineNo">172</span><a id="line.172">                        if (ShowPathPosition) {</a>
+<span class="sourceLineNo">173</span><a id="line.173">                                TextRoi troi = new TextRoi(5, 0, timeString, font);</a>
+<span class="sourceLineNo">174</span><a id="line.174">                                troi.setStrokeColor(Color.black);</a>
+<span class="sourceLineNo">175</span><a id="line.175">                                oly.add(troi);</a>
+<span class="sourceLineNo">176</span><a id="line.176">                        }</a>
+<span class="sourceLineNo">177</span><a id="line.177"></a>
+<span class="sourceLineNo">178</span><a id="line.178">                        if (ShowOriginalContour) { // draw the original contour ------------------------------------</a>
+<span class="sourceLineNo">179</span><a id="line.179">                                oly.add(makeCentroidShape(contr));</a>
+<span class="sourceLineNo">180</span><a id="line.180">                        }</a>
+<span class="sourceLineNo">181</span><a id="line.181"></a>
+<span class="sourceLineNo">182</span><a id="line.182">                        if (ShowContourSamples) { // draw the contour sample points ------------------------------</a>
+<span class="sourceLineNo">183</span><a id="line.183">                                drawSamples(oly, samples, 0.5, 0.5);</a>
+<span class="sourceLineNo">184</span><a id="line.184">                        }</a>
+<span class="sourceLineNo">185</span><a id="line.185"></a>
+<span class="sourceLineNo">186</span><a id="line.186">                        if (MarkContourCentroid) { // mark the center ---------------------------------------------</a>
+<span class="sourceLineNo">187</span><a id="line.187">                                oly.add(makeCentroidShape(fd));</a>
+<span class="sourceLineNo">188</span><a id="line.188">                        }</a>
+<span class="sourceLineNo">189</span><a id="line.189"></a>
+<span class="sourceLineNo">190</span><a id="line.190">                        // --------------------------------------------------------------</a>
+<span class="sourceLineNo">191</span><a id="line.191"></a>
+<span class="sourceLineNo">192</span><a id="line.192">                        { // draw the reconstructed shape from FD-pairs 0,...,mMax -------</a>
+<span class="sourceLineNo">193</span><a id="line.193">                                int mMax = NumberOfFourierDescriptorPairs;</a>
+<span class="sourceLineNo">194</span><a id="line.194">//                              Path2D path = fd.makeFourierPairsReconstructionPartial(mMax);</a>
+<span class="sourceLineNo">195</span><a id="line.195">                                Path2D path = FourierDescriptor.toPath(fd.getShapePartial(50, mMax));</a>
+<span class="sourceLineNo">196</span><a id="line.196">                                path.transform(PixelShift);</a>
+<span class="sourceLineNo">197</span><a id="line.197">                                ShapeRoi roi = new ShapeRoi(path);</a>
+<span class="sourceLineNo">198</span><a id="line.198">                                roi.setStrokeColor(ReconstructionColor);</a>
+<span class="sourceLineNo">199</span><a id="line.199">                                roi.setStrokeWidth(ReconstructionStrokeWidth);</a>
+<span class="sourceLineNo">200</span><a id="line.200">                                oly.add(roi);</a>
+<span class="sourceLineNo">201</span><a id="line.201">                        }</a>
 <span class="sourceLineNo">202</span><a id="line.202"></a>
-<span class="sourceLineNo">203</span><a id="line.203">                        CssColorSequencer csq = new CssColorSequencer();</a>
-<span class="sourceLineNo">204</span><a id="line.204">                        for (int m = 1; m &lt;= mMax; m++) {</a>
-<span class="sourceLineNo">205</span><a id="line.205">                                //IJ.log("drawing ellipse " + m);</a>
-<span class="sourceLineNo">206</span><a id="line.206">                                //                              Color color = rcg.nextColor(); //makeRandomColor();</a>
-<span class="sourceLineNo">207</span><a id="line.207">                                Color color = csq.next();</a>
-<span class="sourceLineNo">208</span><a id="line.208">                                Complex c1 = fd.getCoefficient(-m);</a>
-<span class="sourceLineNo">209</span><a id="line.209">                                Complex c2 = fd.getCoefficient(m);</a>
-<span class="sourceLineNo">210</span><a id="line.210">                                Path2D path = fd.makeEllipse(c1, c2, m, cc.re + 0.5, cc.im + 0.5);</a>
-<span class="sourceLineNo">211</span><a id="line.211">                                ShapeRoi rpoly = new ShapeRoi(path);</a>
-<span class="sourceLineNo">212</span><a id="line.212">                                rpoly.setStrokeColor(color);</a>
-<span class="sourceLineNo">213</span><a id="line.213">                                rpoly.setStrokeWidth(ReconstructionStrokeWidth/2);</a>
-<span class="sourceLineNo">214</span><a id="line.214">                                oly.add(rpoly);</a>
-<span class="sourceLineNo">215</span><a id="line.215"></a>
-<span class="sourceLineNo">216</span><a id="line.216">                                // mark the path position for t</a>
-<span class="sourceLineNo">217</span><a id="line.217">                                Complex c12 = fd.getEllipsePoint(c1, c2, m, t);</a>
-<span class="sourceLineNo">218</span><a id="line.218">                                //IJ.log("re: " + c12.re + " im: " + c12.im);</a>
-<span class="sourceLineNo">219</span><a id="line.219">                                double rad = ReconstructionRadius;</a>
-<span class="sourceLineNo">220</span><a id="line.220">                                Ellipse2D oval = </a>
-<span class="sourceLineNo">221</span><a id="line.221">                                                new Ellipse2D.Double(c12.re + cc.re - rad + 0.5, c12.im + cc.im - rad + 0.5, 2 * rad, 2 * rad);</a>
-<span class="sourceLineNo">222</span><a id="line.222">                                Roi roi = new ShapeRoi(oval);</a>
-<span class="sourceLineNo">223</span><a id="line.223">                                roi.setFillColor(color);</a>
-<span class="sourceLineNo">224</span><a id="line.224">                                //roi.setStrokeWidth(ReconstructionStrokeWidth/2);</a>
-<span class="sourceLineNo">225</span><a id="line.225">                                oly.add(roi);</a>
-<span class="sourceLineNo">226</span><a id="line.226">                                cc = cc.add(c12);</a>
-<span class="sourceLineNo">227</span><a id="line.227">                        }</a>
-<span class="sourceLineNo">228</span><a id="line.228"></a>
-<span class="sourceLineNo">229</span><a id="line.229">                        im.setOverlay(oly);</a>
-<span class="sourceLineNo">230</span><a id="line.230">                        im.setAntialiasRendering(AntialiasGraphics);</a>
-<span class="sourceLineNo">231</span><a id="line.231">                        //im.updateAndDraw();</a>
-<span class="sourceLineNo">232</span><a id="line.232">                        </a>
-<span class="sourceLineNo">233</span><a id="line.233">                        IJ.wait(10);</a>
-<span class="sourceLineNo">234</span><a id="line.234">                        ImagePlus imFlat = im.flatten();</a>
-<span class="sourceLineNo">235</span><a id="line.235">                        IJ.wait(10);</a>
-<span class="sourceLineNo">236</span><a id="line.236">                        </a>
-<span class="sourceLineNo">237</span><a id="line.237">                        stack.addSlice(timeString, imFlat.getProcessor());</a>
-<span class="sourceLineNo">238</span><a id="line.238"></a>
-<span class="sourceLineNo">239</span><a id="line.239">                        long elapsedTime = System.currentTimeMillis() - startTime;</a>
-<span class="sourceLineNo">240</span><a id="line.240">                        int remainingTime = (int) (frameTimeMs - elapsedTime);</a>
-<span class="sourceLineNo">241</span><a id="line.241"></a>
-<span class="sourceLineNo">242</span><a id="line.242">                        if (remainingTime &gt; 0) {</a>
-<span class="sourceLineNo">243</span><a id="line.243">                                //IJ.log("waiting " + remainingTime);</a>
-<span class="sourceLineNo">244</span><a id="line.244">                                //IJ.wait(remainingTime);</a>
-<span class="sourceLineNo">245</span><a id="line.245">                        }</a>
-<span class="sourceLineNo">246</span><a id="line.246">                }</a>
-<span class="sourceLineNo">247</span><a id="line.247">                </a>
-<span class="sourceLineNo">248</span><a id="line.248">                (new ImagePlus(title, stack)).show();</a>
-<span class="sourceLineNo">249</span><a id="line.249"></a>
-<span class="sourceLineNo">250</span><a id="line.250">        }</a>
-<span class="sourceLineNo">251</span><a id="line.251"></a>
-<span class="sourceLineNo">252</span><a id="line.252"></a>
+<span class="sourceLineNo">203</span><a id="line.203">                        //  draw superposition of ellipses ----------------------</a>
+<span class="sourceLineNo">204</span><a id="line.204"></a>
+<span class="sourceLineNo">205</span><a id="line.205">                        Complex cc = fd.getCoefficient(0);      // current ellipse center</a>
+<span class="sourceLineNo">206</span><a id="line.206">                        int mMax = NumberOfFourierDescriptorPairs;</a>
+<span class="sourceLineNo">207</span><a id="line.207">                        //                      RandomColorGenerator rcg = new RandomColorGenerator(1);</a>
+<span class="sourceLineNo">208</span><a id="line.208"></a>
+<span class="sourceLineNo">209</span><a id="line.209">                        CssColorSequencer csq = new CssColorSequencer();</a>
+<span class="sourceLineNo">210</span><a id="line.210">                        for (int m = 1; m &lt;= mMax; m++) {</a>
+<span class="sourceLineNo">211</span><a id="line.211">                                //IJ.log("drawing ellipse " + m);</a>
+<span class="sourceLineNo">212</span><a id="line.212">                                //                              Color color = rcg.nextColor(); //makeRandomColor();</a>
+<span class="sourceLineNo">213</span><a id="line.213">                                Color color = csq.next();</a>
+<span class="sourceLineNo">214</span><a id="line.214">//                              Complex c1 = fd.getCoefficient(-m);</a>
+<span class="sourceLineNo">215</span><a id="line.215">//                              Complex c2 = fd.getCoefficient(m);</a>
+<span class="sourceLineNo">216</span><a id="line.216">                                </a>
+<span class="sourceLineNo">217</span><a id="line.217">//                              Path2D path = fd.makeEllipse(c1, c2, m, cc.re + 0.5, cc.im + 0.5);</a>
+<span class="sourceLineNo">218</span><a id="line.218">//                              Path2D path = fd.getPathPair(m, cc.re + 0.5, cc.im + 0.5);</a>
+<span class="sourceLineNo">219</span><a id="line.219">                                Path2D path = FourierDescriptor.toPath(fd.getShapePair(50, m));</a>
+<span class="sourceLineNo">220</span><a id="line.220">                                path.transform(AffineTransform.getTranslateInstance(cc.re + 0.5, cc.im + 0.5)); // move to current center cc</a>
+<span class="sourceLineNo">221</span><a id="line.221">                                </a>
+<span class="sourceLineNo">222</span><a id="line.222">                                ShapeRoi rpoly = new ShapeRoi(path);</a>
+<span class="sourceLineNo">223</span><a id="line.223">                                rpoly.setStrokeColor(color);</a>
+<span class="sourceLineNo">224</span><a id="line.224">                                rpoly.setStrokeWidth(ReconstructionStrokeWidth/2);</a>
+<span class="sourceLineNo">225</span><a id="line.225">                                oly.add(rpoly);</a>
+<span class="sourceLineNo">226</span><a id="line.226"></a>
+<span class="sourceLineNo">227</span><a id="line.227">                                // mark the path position for t</a>
+<span class="sourceLineNo">228</span><a id="line.228">                                Complex c12 = fd.getShapePointPair(m, t);</a>
+<span class="sourceLineNo">229</span><a id="line.229">//                              Complex c12 = fd.getEllipsePoint(c1, c2, m, t);</a>
+<span class="sourceLineNo">230</span><a id="line.230">                                //IJ.log("re: " + c12.re + " im: " + c12.im);</a>
+<span class="sourceLineNo">231</span><a id="line.231">                                double rad = ReconstructionRadius;</a>
+<span class="sourceLineNo">232</span><a id="line.232">                                Ellipse2D oval =  // mark te current point by a small circle</a>
+<span class="sourceLineNo">233</span><a id="line.233">                                                new Ellipse2D.Double(c12.re + cc.re - rad + 0.5, c12.im + cc.im - rad + 0.5, 2 * rad, 2 * rad);</a>
+<span class="sourceLineNo">234</span><a id="line.234">                                Roi roi = new ShapeRoi(oval);</a>
+<span class="sourceLineNo">235</span><a id="line.235">                                roi.setFillColor(color);</a>
+<span class="sourceLineNo">236</span><a id="line.236">                                //roi.setStrokeWidth(ReconstructionStrokeWidth/2);</a>
+<span class="sourceLineNo">237</span><a id="line.237">                                oly.add(roi);</a>
+<span class="sourceLineNo">238</span><a id="line.238">                                cc = cc.add(c12);</a>
+<span class="sourceLineNo">239</span><a id="line.239">                        }</a>
+<span class="sourceLineNo">240</span><a id="line.240"></a>
+<span class="sourceLineNo">241</span><a id="line.241">                        im.setOverlay(oly);</a>
+<span class="sourceLineNo">242</span><a id="line.242">                        im.setAntialiasRendering(AntialiasGraphics);</a>
+<span class="sourceLineNo">243</span><a id="line.243">                        //im.updateAndDraw();</a>
+<span class="sourceLineNo">244</span><a id="line.244">                        </a>
+<span class="sourceLineNo">245</span><a id="line.245">                        IJ.wait(10);</a>
+<span class="sourceLineNo">246</span><a id="line.246">                        ImagePlus imFlat = im.flatten();</a>
+<span class="sourceLineNo">247</span><a id="line.247">                        IJ.wait(10);</a>
+<span class="sourceLineNo">248</span><a id="line.248">                        </a>
+<span class="sourceLineNo">249</span><a id="line.249">                        stack.addSlice(timeString, imFlat.getProcessor());</a>
+<span class="sourceLineNo">250</span><a id="line.250"></a>
+<span class="sourceLineNo">251</span><a id="line.251">                        long elapsedTime = System.currentTimeMillis() - startTime;</a>
+<span class="sourceLineNo">252</span><a id="line.252">                        int remainingTime = (int) (frameTimeMs - elapsedTime);</a>
 <span class="sourceLineNo">253</span><a id="line.253"></a>
-<span class="sourceLineNo">254</span><a id="line.254">        void drawSamples(Overlay oly, Complex[] samples, double dx, double dy) {</a>
-<span class="sourceLineNo">255</span><a id="line.255">                double rad = SampleRadius;</a>
-<span class="sourceLineNo">256</span><a id="line.256">                for (Complex c : samples) {</a>
-<span class="sourceLineNo">257</span><a id="line.257">                        Ellipse2D oval = new Ellipse2D.Double(c.re + dx - rad, c.im + dy - rad, 2 * rad, 2 * rad);</a>
-<span class="sourceLineNo">258</span><a id="line.258">                        Roi roi = new ShapeRoi(oval);</a>
-<span class="sourceLineNo">259</span><a id="line.259">                        roi.setFillColor(SampleColor);</a>
-<span class="sourceLineNo">260</span><a id="line.260">                        roi.setStrokeColor(SampleColor);</a>
-<span class="sourceLineNo">261</span><a id="line.261">                        roi.setStrokeWidth(SampleStrokeWidth);</a>
-<span class="sourceLineNo">262</span><a id="line.262">                        oly.add(roi);</a>
-<span class="sourceLineNo">263</span><a id="line.263">                }</a>
-<span class="sourceLineNo">264</span><a id="line.264">        }</a>
+<span class="sourceLineNo">254</span><a id="line.254">                        if (remainingTime &gt; 0) {</a>
+<span class="sourceLineNo">255</span><a id="line.255">                                //IJ.log("waiting " + remainingTime);</a>
+<span class="sourceLineNo">256</span><a id="line.256">                                //IJ.wait(remainingTime);</a>
+<span class="sourceLineNo">257</span><a id="line.257">                        }</a>
+<span class="sourceLineNo">258</span><a id="line.258">                }</a>
+<span class="sourceLineNo">259</span><a id="line.259">                </a>
+<span class="sourceLineNo">260</span><a id="line.260">                (new ImagePlus(title, stack)).show();</a>
+<span class="sourceLineNo">261</span><a id="line.261"></a>
+<span class="sourceLineNo">262</span><a id="line.262">        }</a>
+<span class="sourceLineNo">263</span><a id="line.263"></a>
+<span class="sourceLineNo">264</span><a id="line.264"></a>
 <span class="sourceLineNo">265</span><a id="line.265"></a>
-<span class="sourceLineNo">266</span><a id="line.266">        void printRegions(List&lt;BinaryRegion&gt; regions) {</a>
-<span class="sourceLineNo">267</span><a id="line.267">                for (BinaryRegion r: regions) {</a>
-<span class="sourceLineNo">268</span><a id="line.268">                        IJ.log("" + r);</a>
-<span class="sourceLineNo">269</span><a id="line.269">                }</a>
-<span class="sourceLineNo">270</span><a id="line.270">        }</a>
-<span class="sourceLineNo">271</span><a id="line.271"></a>
-<span class="sourceLineNo">272</span><a id="line.272">        void brighten(ByteProcessor ip, int minGray) {</a>
-<span class="sourceLineNo">273</span><a id="line.273">                float scale = (255 - minGray) / 255f;</a>
-<span class="sourceLineNo">274</span><a id="line.274">                int[] table = new int[256];</a>
-<span class="sourceLineNo">275</span><a id="line.275">                for (int i=0; i&lt;256; i++) {</a>
-<span class="sourceLineNo">276</span><a id="line.276">                        table[i] = (int) Math.round(minGray + scale * i);</a>
+<span class="sourceLineNo">266</span><a id="line.266">        void drawSamples(Overlay oly, Complex[] samples, double dx, double dy) {</a>
+<span class="sourceLineNo">267</span><a id="line.267">                double rad = SampleRadius;</a>
+<span class="sourceLineNo">268</span><a id="line.268">                for (Complex c : samples) {</a>
+<span class="sourceLineNo">269</span><a id="line.269">                        Ellipse2D oval = new Ellipse2D.Double(c.re + dx - rad, c.im + dy - rad, 2 * rad, 2 * rad);</a>
+<span class="sourceLineNo">270</span><a id="line.270">                        Roi roi = new ShapeRoi(oval);</a>
+<span class="sourceLineNo">271</span><a id="line.271">                        roi.setFillColor(SampleColor);</a>
+<span class="sourceLineNo">272</span><a id="line.272">                        roi.setStrokeColor(SampleColor);</a>
+<span class="sourceLineNo">273</span><a id="line.273">                        roi.setStrokeWidth(SampleStrokeWidth);</a>
+<span class="sourceLineNo">274</span><a id="line.274">                        oly.add(roi);</a>
+<span class="sourceLineNo">275</span><a id="line.275">                }</a>
+<span class="sourceLineNo">276</span><a id="line.276">        }</a>
 <span class="sourceLineNo">277</span><a id="line.277"></a>
-<span class="sourceLineNo">278</span><a id="line.278">                }</a>
-<span class="sourceLineNo">279</span><a id="line.279">                ip.applyTable(table);</a>
-<span class="sourceLineNo">280</span><a id="line.280">        }</a>
-<span class="sourceLineNo">281</span><a id="line.281"></a>
-<span class="sourceLineNo">282</span><a id="line.282">        void darken(ByteProcessor ip, int maxGray) {</a>
-<span class="sourceLineNo">283</span><a id="line.283">                float scale = maxGray / 255f;</a>
-<span class="sourceLineNo">284</span><a id="line.284">                int[] table = new int[256];</a>
-<span class="sourceLineNo">285</span><a id="line.285">                for (int i=0; i&lt;256; i++) {</a>
-<span class="sourceLineNo">286</span><a id="line.286">                        table[i] = (int) Math.round(scale * i);</a>
-<span class="sourceLineNo">287</span><a id="line.287"></a>
-<span class="sourceLineNo">288</span><a id="line.288">                }</a>
-<span class="sourceLineNo">289</span><a id="line.289">                ip.applyTable(table);</a>
-<span class="sourceLineNo">290</span><a id="line.290">        }</a>
-<span class="sourceLineNo">291</span><a id="line.291"></a>
-<span class="sourceLineNo">292</span><a id="line.292">        // ----------------------------------------------------------------------</a>
+<span class="sourceLineNo">278</span><a id="line.278">        void printRegions(List&lt;BinaryRegion&gt; regions) {</a>
+<span class="sourceLineNo">279</span><a id="line.279">                for (BinaryRegion r: regions) {</a>
+<span class="sourceLineNo">280</span><a id="line.280">                        IJ.log("" + r);</a>
+<span class="sourceLineNo">281</span><a id="line.281">                }</a>
+<span class="sourceLineNo">282</span><a id="line.282">        }</a>
+<span class="sourceLineNo">283</span><a id="line.283"></a>
+<span class="sourceLineNo">284</span><a id="line.284">        void brighten(ByteProcessor ip, int minGray) {</a>
+<span class="sourceLineNo">285</span><a id="line.285">                float scale = (255 - minGray) / 255f;</a>
+<span class="sourceLineNo">286</span><a id="line.286">                int[] table = new int[256];</a>
+<span class="sourceLineNo">287</span><a id="line.287">                for (int i=0; i&lt;256; i++) {</a>
+<span class="sourceLineNo">288</span><a id="line.288">                        table[i] = Math.round(minGray + scale * i);</a>
+<span class="sourceLineNo">289</span><a id="line.289"></a>
+<span class="sourceLineNo">290</span><a id="line.290">                }</a>
+<span class="sourceLineNo">291</span><a id="line.291">                ip.applyTable(table);</a>
+<span class="sourceLineNo">292</span><a id="line.292">        }</a>
 <span class="sourceLineNo">293</span><a id="line.293"></a>
-<span class="sourceLineNo">294</span><a id="line.294">        ShapeRoi makeCentroidShape(FourierDescriptor fd) { </a>
-<span class="sourceLineNo">295</span><a id="line.295">                int crossSize = 2;</a>
-<span class="sourceLineNo">296</span><a id="line.296">                Complex G0 = fd.getCoefficient(0);</a>
-<span class="sourceLineNo">297</span><a id="line.297">                double xc = G0.re;</a>
-<span class="sourceLineNo">298</span><a id="line.298">                double yc = G0.im;</a>
-<span class="sourceLineNo">299</span><a id="line.299">                Path2D path = new Path2D.Double();</a>
-<span class="sourceLineNo">300</span><a id="line.300">                path.moveTo(xc-crossSize, yc);</a>
-<span class="sourceLineNo">301</span><a id="line.301">                path.lineTo(xc+crossSize, yc);</a>
-<span class="sourceLineNo">302</span><a id="line.302">                path.moveTo(xc, yc-crossSize);</a>
-<span class="sourceLineNo">303</span><a id="line.303">                path.lineTo(xc, yc+crossSize);</a>
-<span class="sourceLineNo">304</span><a id="line.304">                path.transform(CtrShift);</a>
-<span class="sourceLineNo">305</span><a id="line.305">                ShapeRoi roi = new ShapeRoi(path);</a>
-<span class="sourceLineNo">306</span><a id="line.306">                roi.setStrokeColor(ReconstructionColor);</a>
-<span class="sourceLineNo">307</span><a id="line.307">                roi.setStrokeWidth(ReconstructionStrokeWidth);</a>
-<span class="sourceLineNo">308</span><a id="line.308">                return roi;</a>
-<span class="sourceLineNo">309</span><a id="line.309">        }</a>
-<span class="sourceLineNo">310</span><a id="line.310"></a>
-<span class="sourceLineNo">311</span><a id="line.311">        ShapeRoi makeCentroidShape(Contour contr) { // draw the original contour ------------------------------------</a>
-<span class="sourceLineNo">312</span><a id="line.312">                Path2D path = contr.getPolygonPath();</a>
-<span class="sourceLineNo">313</span><a id="line.313">                path.transform(CtrShift);</a>
-<span class="sourceLineNo">314</span><a id="line.314">                ShapeRoi roi = new ShapeRoi(path);</a>
-<span class="sourceLineNo">315</span><a id="line.315">                roi.setStrokeColor(ContourColor);</a>
-<span class="sourceLineNo">316</span><a id="line.316">                roi.setStrokeWidth(ContourStrokeWidth);</a>
-<span class="sourceLineNo">317</span><a id="line.317">                return roi;</a>
-<span class="sourceLineNo">318</span><a id="line.318">        }</a>
-<span class="sourceLineNo">319</span><a id="line.319"></a>
-<span class="sourceLineNo">320</span><a id="line.320"></a>
-<span class="sourceLineNo">321</span><a id="line.321">        //      private float h0 = 0;</a>
-<span class="sourceLineNo">322</span><a id="line.322">        //      Color makeRandomColor() {</a>
-<span class="sourceLineNo">323</span><a id="line.323">        //              double saturation = 0.5;</a>
-<span class="sourceLineNo">324</span><a id="line.324">        //              double brightness = 0.75;</a>
-<span class="sourceLineNo">325</span><a id="line.325">        //              float h = h0;  h0 = (float) (h0 + Math.PI / 10) % 1.0f; //r.nextFloat();</a>
-<span class="sourceLineNo">326</span><a id="line.326">        //              IJ.log("h=" + h);</a>
-<span class="sourceLineNo">327</span><a id="line.327">        //              float s = (float) saturation;</a>
-<span class="sourceLineNo">328</span><a id="line.328">        //              float b = (float) brightness;</a>
-<span class="sourceLineNo">329</span><a id="line.329">        //              return new Color(Color.HSBtoRGB(h, s, b));</a>
-<span class="sourceLineNo">330</span><a id="line.330">        //      }</a>
+<span class="sourceLineNo">294</span><a id="line.294">        void darken(ByteProcessor ip, int maxGray) {</a>
+<span class="sourceLineNo">295</span><a id="line.295">                float scale = maxGray / 255f;</a>
+<span class="sourceLineNo">296</span><a id="line.296">                int[] table = new int[256];</a>
+<span class="sourceLineNo">297</span><a id="line.297">                for (int i=0; i&lt;256; i++) {</a>
+<span class="sourceLineNo">298</span><a id="line.298">                        table[i] = Math.round(scale * i);</a>
+<span class="sourceLineNo">299</span><a id="line.299"></a>
+<span class="sourceLineNo">300</span><a id="line.300">                }</a>
+<span class="sourceLineNo">301</span><a id="line.301">                ip.applyTable(table);</a>
+<span class="sourceLineNo">302</span><a id="line.302">        }</a>
+<span class="sourceLineNo">303</span><a id="line.303"></a>
+<span class="sourceLineNo">304</span><a id="line.304">        // ----------------------------------------------------------------------</a>
+<span class="sourceLineNo">305</span><a id="line.305"></a>
+<span class="sourceLineNo">306</span><a id="line.306">        ShapeRoi makeCentroidShape(FourierDescriptor fd) { </a>
+<span class="sourceLineNo">307</span><a id="line.307">                int crossSize = 2;</a>
+<span class="sourceLineNo">308</span><a id="line.308">                Complex G0 = fd.getCoefficient(0);</a>
+<span class="sourceLineNo">309</span><a id="line.309">                double xc = G0.re;</a>
+<span class="sourceLineNo">310</span><a id="line.310">                double yc = G0.im;</a>
+<span class="sourceLineNo">311</span><a id="line.311">                Path2D path = new Path2D.Double();</a>
+<span class="sourceLineNo">312</span><a id="line.312">                path.moveTo(xc-crossSize, yc);</a>
+<span class="sourceLineNo">313</span><a id="line.313">                path.lineTo(xc+crossSize, yc);</a>
+<span class="sourceLineNo">314</span><a id="line.314">                path.moveTo(xc, yc-crossSize);</a>
+<span class="sourceLineNo">315</span><a id="line.315">                path.lineTo(xc, yc+crossSize);</a>
+<span class="sourceLineNo">316</span><a id="line.316">                path.transform(PixelShift);</a>
+<span class="sourceLineNo">317</span><a id="line.317">                ShapeRoi roi = new ShapeRoi(path);</a>
+<span class="sourceLineNo">318</span><a id="line.318">                roi.setStrokeColor(ReconstructionColor);</a>
+<span class="sourceLineNo">319</span><a id="line.319">                roi.setStrokeWidth(ReconstructionStrokeWidth);</a>
+<span class="sourceLineNo">320</span><a id="line.320">                return roi;</a>
+<span class="sourceLineNo">321</span><a id="line.321">        }</a>
+<span class="sourceLineNo">322</span><a id="line.322"></a>
+<span class="sourceLineNo">323</span><a id="line.323">        ShapeRoi makeCentroidShape(Contour contr) { // draw the original contour ------------------------------------</a>
+<span class="sourceLineNo">324</span><a id="line.324">                Path2D path = contr.getPolygonPath(0.5, 0.5);</a>
+<span class="sourceLineNo">325</span><a id="line.325">                path.transform(PixelShift);</a>
+<span class="sourceLineNo">326</span><a id="line.326">                ShapeRoi roi = new ShapeRoi(path);</a>
+<span class="sourceLineNo">327</span><a id="line.327">                roi.setStrokeColor(ContourColor);</a>
+<span class="sourceLineNo">328</span><a id="line.328">                roi.setStrokeWidth(ContourStrokeWidth);</a>
+<span class="sourceLineNo">329</span><a id="line.329">                return roi;</a>
+<span class="sourceLineNo">330</span><a id="line.330">        }</a>
 <span class="sourceLineNo">331</span><a id="line.331"></a>
-<span class="sourceLineNo">332</span><a id="line.332">}</a>
+<span class="sourceLineNo">332</span><a id="line.332"></a>
+<span class="sourceLineNo">333</span><a id="line.333">        //      private float h0 = 0;</a>
+<span class="sourceLineNo">334</span><a id="line.334">        //      Color makeRandomColor() {</a>
+<span class="sourceLineNo">335</span><a id="line.335">        //              double saturation = 0.5;</a>
+<span class="sourceLineNo">336</span><a id="line.336">        //              double brightness = 0.75;</a>
+<span class="sourceLineNo">337</span><a id="line.337">        //              float h = h0;  h0 = (float) (h0 + Math.PI / 10) % 1.0f; //r.nextFloat();</a>
+<span class="sourceLineNo">338</span><a id="line.338">        //              IJ.log("h=" + h);</a>
+<span class="sourceLineNo">339</span><a id="line.339">        //              float s = (float) saturation;</a>
+<span class="sourceLineNo">340</span><a id="line.340">        //              float b = (float) brightness;</a>
+<span class="sourceLineNo">341</span><a id="line.341">        //              return new Color(Color.HSBtoRGB(h, s, b));</a>
+<span class="sourceLineNo">342</span><a id="line.342">        //      }</a>
+<span class="sourceLineNo">343</span><a id="line.343"></a>
+<span class="sourceLineNo">344</span><a id="line.344">}</a>
 
 
 

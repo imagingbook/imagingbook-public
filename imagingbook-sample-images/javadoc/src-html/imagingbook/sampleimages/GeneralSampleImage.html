@@ -22,13 +22,13 @@
 <span class="sourceLineNo">012</span><a id="line.12"></a>
 <span class="sourceLineNo">013</span><a id="line.13">/**</a>
 <span class="sourceLineNo">014</span><a id="line.14"> * &lt;p&gt;</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * Enumeration defining a set of {@link ImageResource} objects for some general test images.</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Enumeration defining a set of {@link ImageResource} objects for selected sample images.</a>
 <span class="sourceLineNo">016</span><a id="line.16"> * Usage example:</a>
 <span class="sourceLineNo">017</span><a id="line.17"> * &lt;/p&gt;</a>
 <span class="sourceLineNo">018</span><a id="line.18"> * &lt;pre&gt;</a>
 <span class="sourceLineNo">019</span><a id="line.19"> * import ij.process.ImageProcessor;</a>
 <span class="sourceLineNo">020</span><a id="line.20"> * import imagingbook.core.resource.ImageResource;</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * import imagingbook.sampleimages.GeneralTestImage;</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * import imagingbook.sampleimages.GeneralSampleImage;</a>
 <span class="sourceLineNo">022</span><a id="line.22"> * </a>
 <span class="sourceLineNo">023</span><a id="line.23"> * ImageResource ir = GeneralTestImage.Clown;</a>
 <span class="sourceLineNo">024</span><a id="line.24"> * ImageProcessor ip = ir.getImage().getProcessor();</a>
@@ -40,45 +40,54 @@
 <span class="sourceLineNo">030</span><a id="line.30">public enum GeneralSampleImage implements ImageResource {</a>
 <span class="sourceLineNo">031</span><a id="line.31">        </a>
 <span class="sourceLineNo">032</span><a id="line.32">                /** Original: https://imagej.nih.gov/ij/images/blobs.gif */</a>
-<span class="sourceLineNo">033</span><a id="line.33">                Blobs("blobs.png"),</a>
+<span class="sourceLineNo">033</span><a id="line.33">                Blobs,</a>
 <span class="sourceLineNo">034</span><a id="line.34">                </a>
 <span class="sourceLineNo">035</span><a id="line.35">                /** Original: https://imagej.nih.gov/ij/images/boats.gif */</a>
-<span class="sourceLineNo">036</span><a id="line.36">                Boats("boats.png"),</a>
+<span class="sourceLineNo">036</span><a id="line.36">                Boats,</a>
 <span class="sourceLineNo">037</span><a id="line.37">                </a>
 <span class="sourceLineNo">038</span><a id="line.38">                /** A simple binary shape image with 0/255 values. */</a>
-<span class="sourceLineNo">039</span><a id="line.39">                Cat("cat.png"),</a>
+<span class="sourceLineNo">039</span><a id="line.39">                Cat,</a>
 <span class="sourceLineNo">040</span><a id="line.40">                </a>
 <span class="sourceLineNo">041</span><a id="line.41">                /** Original: https://imagej.nih.gov/ij/images/clown.png */</a>
-<span class="sourceLineNo">042</span><a id="line.42">                Clown("clown.png"),</a>
+<span class="sourceLineNo">042</span><a id="line.42">                Clown,</a>
 <span class="sourceLineNo">043</span><a id="line.43">                </a>
 <span class="sourceLineNo">044</span><a id="line.44">                /** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */</a>
-<span class="sourceLineNo">045</span><a id="line.45">                DotBlot("Dot_Blot.png"),</a>
+<span class="sourceLineNo">045</span><a id="line.45">                DotBlot,</a>
 <span class="sourceLineNo">046</span><a id="line.46">                </a>
-<span class="sourceLineNo">047</span><a id="line.47">                /** Original gray scan from Kepler manuscript. */</a>
-<span class="sourceLineNo">048</span><a id="line.48">                kepler("kepler.png"),</a>
+<span class="sourceLineNo">047</span><a id="line.47">                /** Grayscale image used for SIFT demos. */</a>
+<span class="sourceLineNo">048</span><a id="line.48">                IrishManor,</a>
 <span class="sourceLineNo">049</span><a id="line.49">                </a>
-<span class="sourceLineNo">050</span><a id="line.50">                /** A small grayscale image. */</a>
-<span class="sourceLineNo">051</span><a id="line.51">                MonasterySmall("monastery-small.png"),</a>
-<span class="sourceLineNo">052</span><a id="line.52">        </a>
-<span class="sourceLineNo">053</span><a id="line.53">                NoisyLines("noisy-lines.png"), </a>
-<span class="sourceLineNo">054</span><a id="line.54">                NoisyCircles("noisy-circles.png"), </a>
-<span class="sourceLineNo">055</span><a id="line.55">                NoisyEllipses("noisy-ellipses.png"),</a>
-<span class="sourceLineNo">056</span><a id="line.56">                </a>
-<span class="sourceLineNo">057</span><a id="line.57">                /** A fairly large binary image with 0/1 values. */</a>
-<span class="sourceLineNo">058</span><a id="line.58">                RhinoBigCrop("rhino-big-crop.png"),</a>
-<span class="sourceLineNo">059</span><a id="line.59">        ;</a>
-<span class="sourceLineNo">060</span><a id="line.60"></a>
-<span class="sourceLineNo">061</span><a id="line.61">        private final String filename;</a>
-<span class="sourceLineNo">062</span><a id="line.62">        </a>
-<span class="sourceLineNo">063</span><a id="line.63">        GeneralSampleImage(String filename) {</a>
-<span class="sourceLineNo">064</span><a id="line.64">                this.filename = filename;</a>
-<span class="sourceLineNo">065</span><a id="line.65">        }</a>
-<span class="sourceLineNo">066</span><a id="line.66">        </a>
-<span class="sourceLineNo">067</span><a id="line.67">        @Override</a>
-<span class="sourceLineNo">068</span><a id="line.68">        public String getFileName() {</a>
-<span class="sourceLineNo">069</span><a id="line.69">                return filename;</a>
-<span class="sourceLineNo">070</span><a id="line.70">        }</a>
-<span class="sourceLineNo">071</span><a id="line.71">}</a>
+<span class="sourceLineNo">050</span><a id="line.50">                /** Original gray scan from Kepler manuscript. */</a>
+<span class="sourceLineNo">051</span><a id="line.51">                Kepler,</a>
+<span class="sourceLineNo">052</span><a id="line.52">                </a>
+<span class="sourceLineNo">053</span><a id="line.53">                /** Binary image with a single connected component. */</a>
+<span class="sourceLineNo">054</span><a id="line.54">                MapleLeafSmall,</a>
+<span class="sourceLineNo">055</span><a id="line.55">                </a>
+<span class="sourceLineNo">056</span><a id="line.56">                /** Small grayscale image. */</a>
+<span class="sourceLineNo">057</span><a id="line.57">                MonasterySmall,</a>
+<span class="sourceLineNo">058</span><a id="line.58">        </a>
+<span class="sourceLineNo">059</span><a id="line.59">                /** Binary image with straight lines embedded in noise. */</a>
+<span class="sourceLineNo">060</span><a id="line.60">                NoisyLines,</a>
+<span class="sourceLineNo">061</span><a id="line.61">                /** Binary image with circles embedded in noise. */</a>
+<span class="sourceLineNo">062</span><a id="line.62">                NoisyCircles,</a>
+<span class="sourceLineNo">063</span><a id="line.63">                /** Binary image with ellipses embedded in noise. */</a>
+<span class="sourceLineNo">064</span><a id="line.64">                NoisyEllipses,</a>
+<span class="sourceLineNo">065</span><a id="line.65">                </a>
+<span class="sourceLineNo">066</span><a id="line.66">                /** Fairly large binary image with 0/1 values. */</a>
+<span class="sourceLineNo">067</span><a id="line.67">                RhinoBigCrop,</a>
+<span class="sourceLineNo">068</span><a id="line.68">                </a>
+<span class="sourceLineNo">069</span><a id="line.69">                /** TIFF image with attached ROI selection, used for trigonometric Fourier descriptors. */</a>
+<span class="sourceLineNo">070</span><a id="line.70">                HouseRoi_tif,</a>
+<span class="sourceLineNo">071</span><a id="line.71">                </a>
+<span class="sourceLineNo">072</span><a id="line.72">                /** Binary image with star-shaped regions, used for SIFT demos. */</a>
+<span class="sourceLineNo">073</span><a id="line.73">                Stars,</a>
+<span class="sourceLineNo">074</span><a id="line.74">                </a>
+<span class="sourceLineNo">075</span><a id="line.75">                /** Binary image with various tools, used for connected components segmentation. */</a>
+<span class="sourceLineNo">076</span><a id="line.76">                ToolsSmall,</a>
+<span class="sourceLineNo">077</span><a id="line.77">                </a>
+<span class="sourceLineNo">078</span><a id="line.78">        ;</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">}</a>
 
 
 

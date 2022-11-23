@@ -30,7 +30,7 @@
 <span class="sourceLineNo">020</span><a id="line.20">import ij.process.ImageProcessor;</a>
 <span class="sourceLineNo">021</span><a id="line.21">import imagingbook.common.color.sets.BasicAwtColor;</a>
 <span class="sourceLineNo">022</span><a id="line.22">import imagingbook.common.geometry.basic.Pnt2d;</a>
-<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.geometry.fitting.line.LineSampler;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import imagingbook.common.geometry.fitting.line.utils.LineSampler;</a>
 <span class="sourceLineNo">024</span><a id="line.24">import imagingbook.common.geometry.line.AlgebraicLine;</a>
 <span class="sourceLineNo">025</span><a id="line.25">import imagingbook.common.ij.DialogUtils;</a>
 <span class="sourceLineNo">026</span><a id="line.26">import imagingbook.common.ij.DialogUtils.DialogLabel;</a>
@@ -51,7 +51,7 @@
 <span class="sourceLineNo">041</span><a id="line.41"> */</a>
 <span class="sourceLineNo">042</span><a id="line.42">public class Line_Make_Random implements PlugIn {</a>
 <span class="sourceLineNo">043</span><a id="line.43">        </a>
-<span class="sourceLineNo">044</span><a id="line.44">        public static class Parameters implements ParameterBundle {             </a>
+<span class="sourceLineNo">044</span><a id="line.44">        public static class Parameters implements ParameterBundle&lt;Line_Make_Random&gt; {           </a>
 <span class="sourceLineNo">045</span><a id="line.45">                </a>
 <span class="sourceLineNo">046</span><a id="line.46">                @DialogLabel("image title")@DialogStringColumns(12)</a>
 <span class="sourceLineNo">047</span><a id="line.47">                public String Title = "RandomLine"; // Line_Make_Random.class.getSimpleName();</a>

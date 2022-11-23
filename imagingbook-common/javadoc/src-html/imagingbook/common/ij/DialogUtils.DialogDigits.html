@@ -116,8 +116,8 @@
 <span class="sourceLineNo">106</span><a id="line.106">        </a>
 <span class="sourceLineNo">107</span><a id="line.107">        // ------------ Methods related to ParameterBundle  ------------------</a>
 <span class="sourceLineNo">108</span><a id="line.108">        </a>
-<span class="sourceLineNo">109</span><a id="line.109">        static Field[] getDialogFields(ParameterBundle params) {</a>
-<span class="sourceLineNo">110</span><a id="line.110">                Class&lt;? extends ParameterBundle&gt; clazz = params.getClass();</a>
+<span class="sourceLineNo">109</span><a id="line.109">        static Field[] getDialogFields(ParameterBundle&lt;?&gt; params) {</a>
+<span class="sourceLineNo">110</span><a id="line.110">                Class&lt;?&gt; clazz = params.getClass();</a>
 <span class="sourceLineNo">111</span><a id="line.111">                List&lt;Field&gt; dialogFields = new ArrayList&lt;&gt;();</a>
 <span class="sourceLineNo">112</span><a id="line.112">                for (Field f : clazz.getFields()) {</a>
 <span class="sourceLineNo">113</span><a id="line.113">                        if (isValidDialogField(f)) {</a>
@@ -138,7 +138,7 @@
 <span class="sourceLineNo">128</span><a id="line.128">         * @param params a {@link ParameterBundle} instance</a>
 <span class="sourceLineNo">129</span><a id="line.129">         * @param gd a generic dialog</a>
 <span class="sourceLineNo">130</span><a id="line.130">         */</a>
-<span class="sourceLineNo">131</span><a id="line.131">        public static void addToDialog(ParameterBundle params, GenericDialog gd) {</a>
+<span class="sourceLineNo">131</span><a id="line.131">        public static void addToDialog(ParameterBundle&lt;?&gt; params, GenericDialog gd) {</a>
 <span class="sourceLineNo">132</span><a id="line.132">                Field[] dialogFields = getDialogFields(params);         // gets only public fields</a>
 <span class="sourceLineNo">133</span><a id="line.133">                for (Field f : dialogFields) {</a>
 <span class="sourceLineNo">134</span><a id="line.134">                        if (!isValidDialogField(f) || f.isAnnotationPresent(DialogHide.class)) {</a>
@@ -177,8 +177,8 @@
 <span class="sourceLineNo">167</span><a id="line.167">         * @param gd a generic dialog</a>
 <span class="sourceLineNo">168</span><a id="line.168">         * @return true if successful</a>
 <span class="sourceLineNo">169</span><a id="line.169">         */</a>
-<span class="sourceLineNo">170</span><a id="line.170">        public static boolean getFromDialog(ParameterBundle params, GenericDialog gd) {</a>
-<span class="sourceLineNo">171</span><a id="line.171">                Class&lt;? extends ParameterBundle&gt; clazz = params.getClass();</a>
+<span class="sourceLineNo">170</span><a id="line.170">        public static boolean getFromDialog(ParameterBundle&lt;?&gt; params, GenericDialog gd) {</a>
+<span class="sourceLineNo">171</span><a id="line.171">                Class&lt;?&gt; clazz = params.getClass();</a>
 <span class="sourceLineNo">172</span><a id="line.172">                Field[] fields = clazz.getFields();             // gets only public fields</a>
 <span class="sourceLineNo">173</span><a id="line.173">                int errorCount = 0;</a>
 <span class="sourceLineNo">174</span><a id="line.174">                for (Field f : fields) {</a>
@@ -209,7 +209,7 @@
 <span class="sourceLineNo">199</span><a id="line.199">         * @param dialog the dialog</a>
 <span class="sourceLineNo">200</span><a id="line.200">         * @throws IllegalAccessException when field is accessed illegally</a>
 <span class="sourceLineNo">201</span><a id="line.201">         */</a>
-<span class="sourceLineNo">202</span><a id="line.202">        private static void addFieldToDialog(ParameterBundle params, Field field, GenericDialog dialog)</a>
+<span class="sourceLineNo">202</span><a id="line.202">        private static void addFieldToDialog(ParameterBundle&lt;?&gt; params, Field field, GenericDialog dialog)</a>
 <span class="sourceLineNo">203</span><a id="line.203">                        throws IllegalAccessException {</a>
 <span class="sourceLineNo">204</span><a id="line.204">                </a>
 <span class="sourceLineNo">205</span><a id="line.205">                String name = field.getName();</a>
@@ -327,7 +327,7 @@
 <span class="sourceLineNo">317</span><a id="line.317">        }</a>
 <span class="sourceLineNo">318</span><a id="line.318">        </a>
 <span class="sourceLineNo">319</span><a id="line.319">        private static boolean isValidDialogField(Field f) {</a>
-<span class="sourceLineNo">320</span><a id="line.320">                if (!ParameterBundle.isValidParameterItem(f)) {</a>
+<span class="sourceLineNo">320</span><a id="line.320">                if (!ParameterBundle.isValidParameterField(f)) {</a>
 <span class="sourceLineNo">321</span><a id="line.321">                        return false;</a>
 <span class="sourceLineNo">322</span><a id="line.322">                }</a>
 <span class="sourceLineNo">323</span><a id="line.323">//              int mod = f.getModifiers();</a>

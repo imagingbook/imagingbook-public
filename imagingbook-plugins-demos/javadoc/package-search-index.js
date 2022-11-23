@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"ImageJ_Examples"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"GenericFilterDemos"},{"l":"ImageAccessorDemos"},{"l":"ImageJ_Demos"}]

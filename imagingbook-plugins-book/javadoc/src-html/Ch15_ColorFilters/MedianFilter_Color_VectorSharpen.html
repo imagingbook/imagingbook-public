@@ -25,42 +25,42 @@
 <span class="sourceLineNo">015</span><a id="line.15">import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen;</a>
 <span class="sourceLineNo">016</span><a id="line.16">import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen.Parameters;</a>
 <span class="sourceLineNo">017</span><a id="line.17">import imagingbook.common.math.VectorNorm.NormType;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import imagingbook.common.util.EnumUtils;</a>
-<span class="sourceLineNo">019</span><a id="line.19"></a>
-<span class="sourceLineNo">020</span><a id="line.20">/**</a>
-<span class="sourceLineNo">021</span><a id="line.21"> * This plugin applies a sharpening vector median filter to a RGB color image.</a>
-<span class="sourceLineNo">022</span><a id="line.22"> * @author WB</a>
-<span class="sourceLineNo">023</span><a id="line.23"> * </a>
-<span class="sourceLineNo">024</span><a id="line.24"> * @version 2013/05/30</a>
-<span class="sourceLineNo">025</span><a id="line.25"> * @version 2022/09/10 removed debugging code</a>
-<span class="sourceLineNo">026</span><a id="line.26"> */</a>
-<span class="sourceLineNo">027</span><a id="line.27">public class MedianFilter_Color_VectorSharpen implements PlugInFilter {</a>
-<span class="sourceLineNo">028</span><a id="line.28">        </a>
-<span class="sourceLineNo">029</span><a id="line.29">        ImagePlus imp = null;</a>
-<span class="sourceLineNo">030</span><a id="line.30">        </a>
-<span class="sourceLineNo">031</span><a id="line.31">    public int setup(String arg, ImagePlus imp) {</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">/**</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * This plugin applies a sharpening vector median filter to a RGB color image.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * @author WB</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * </a>
+<span class="sourceLineNo">023</span><a id="line.23"> * @version 2013/05/30</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * @version 2022/09/10 removed debugging code</a>
+<span class="sourceLineNo">025</span><a id="line.25"> */</a>
+<span class="sourceLineNo">026</span><a id="line.26">public class MedianFilter_Color_VectorSharpen implements PlugInFilter {</a>
+<span class="sourceLineNo">027</span><a id="line.27">        </a>
+<span class="sourceLineNo">028</span><a id="line.28">        ImagePlus imp = null;</a>
+<span class="sourceLineNo">029</span><a id="line.29">        </a>
+<span class="sourceLineNo">030</span><a id="line.30">    @Override</a>
+<span class="sourceLineNo">031</span><a id="line.31">        public int setup(String arg, ImagePlus imp) {</a>
 <span class="sourceLineNo">032</span><a id="line.32">        this.imp = imp;</a>
 <span class="sourceLineNo">033</span><a id="line.33">        return DOES_RGB;</a>
 <span class="sourceLineNo">034</span><a id="line.34">    }</a>
 <span class="sourceLineNo">035</span><a id="line.35"></a>
-<span class="sourceLineNo">036</span><a id="line.36">    public void run(ImageProcessor ip) {</a>
-<span class="sourceLineNo">037</span><a id="line.37">        Parameters params = new VectorMedianFilterSharpen.Parameters();</a>
-<span class="sourceLineNo">038</span><a id="line.38">        if (!setParameters(params))</a>
-<span class="sourceLineNo">039</span><a id="line.39">                return;</a>
-<span class="sourceLineNo">040</span><a id="line.40"></a>
-<span class="sourceLineNo">041</span><a id="line.41">        VectorMedianFilterSharpen filter = new VectorMedianFilterSharpen(params);</a>
-<span class="sourceLineNo">042</span><a id="line.42">        filter.applyTo(ip);</a>
-<span class="sourceLineNo">043</span><a id="line.43">        </a>
-<span class="sourceLineNo">044</span><a id="line.44"> //     IJ.log("Pixels modified: " + filter.modifiedCount + " of " + (ip.getPixelCount()));</a>
-<span class="sourceLineNo">045</span><a id="line.45">    }</a>
-<span class="sourceLineNo">046</span><a id="line.46">    </a>
-<span class="sourceLineNo">047</span><a id="line.47">    boolean setParameters(Parameters params) {</a>
-<span class="sourceLineNo">048</span><a id="line.48">                GenericDialog gd = new GenericDialog("Median Filter");</a>
-<span class="sourceLineNo">049</span><a id="line.49">                gd.addNumericField("Radius", params.radius, 1);</a>
-<span class="sourceLineNo">050</span><a id="line.50">                gd.addNumericField("Sharpen", params.sharpen, 1);</a>
-<span class="sourceLineNo">051</span><a id="line.51">                gd.addNumericField("Threshold", params.threshold, 1);</a>
-<span class="sourceLineNo">052</span><a id="line.52">                String[] normChoices = EnumUtils.getEnumNames(NormType.class);</a>
-<span class="sourceLineNo">053</span><a id="line.53">                gd.addChoice("Distance norm", normChoices, params.distanceNorm.name());</a>
+<span class="sourceLineNo">036</span><a id="line.36">    @Override</a>
+<span class="sourceLineNo">037</span><a id="line.37">        public void run(ImageProcessor ip) {</a>
+<span class="sourceLineNo">038</span><a id="line.38">        Parameters params = new VectorMedianFilterSharpen.Parameters();</a>
+<span class="sourceLineNo">039</span><a id="line.39">        if (!setParameters(params))</a>
+<span class="sourceLineNo">040</span><a id="line.40">                return;</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">        VectorMedianFilterSharpen filter = new VectorMedianFilterSharpen(params);</a>
+<span class="sourceLineNo">043</span><a id="line.43">        filter.applyTo(ip);</a>
+<span class="sourceLineNo">044</span><a id="line.44">        </a>
+<span class="sourceLineNo">045</span><a id="line.45"> //     IJ.log("Pixels modified: " + filter.modifiedCount + " of " + (ip.getPixelCount()));</a>
+<span class="sourceLineNo">046</span><a id="line.46">    }</a>
+<span class="sourceLineNo">047</span><a id="line.47">    </a>
+<span class="sourceLineNo">048</span><a id="line.48">    boolean setParameters(Parameters params) {</a>
+<span class="sourceLineNo">049</span><a id="line.49">                GenericDialog gd = new GenericDialog("Median Filter");</a>
+<span class="sourceLineNo">050</span><a id="line.50">                gd.addNumericField("Radius", params.radius, 1);</a>
+<span class="sourceLineNo">051</span><a id="line.51">                gd.addNumericField("Sharpen", params.sharpen, 1);</a>
+<span class="sourceLineNo">052</span><a id="line.52">                gd.addNumericField("Threshold", params.threshold, 1);</a>
+<span class="sourceLineNo">053</span><a id="line.53">                gd.addEnumChoice("Distance norm", params.distanceNorm);</a>
 <span class="sourceLineNo">054</span><a id="line.54">//              gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);</a>
 <span class="sourceLineNo">055</span><a id="line.55">//              gd.addCheckbox("Show mask", params.showMask);</a>
 <span class="sourceLineNo">056</span><a id="line.56">                </a>
@@ -69,7 +69,7 @@
 <span class="sourceLineNo">059</span><a id="line.59">                params.radius = Math.max(gd.getNextNumber(),0.5);</a>
 <span class="sourceLineNo">060</span><a id="line.60">                params.sharpen = gd.getNextNumber();</a>
 <span class="sourceLineNo">061</span><a id="line.61">                params.threshold = gd.getNextNumber();</a>
-<span class="sourceLineNo">062</span><a id="line.62">                params.distanceNorm = NormType.valueOf(gd.getNextChoice());</a>
+<span class="sourceLineNo">062</span><a id="line.62">                params.distanceNorm = gd.getNextEnumChoice(NormType.class);</a>
 <span class="sourceLineNo">063</span><a id="line.63">//              params.markModifiedPixels = gd.getNextBoolean();</a>
 <span class="sourceLineNo">064</span><a id="line.64">//              params.showMask = gd.getNextBoolean();</a>
 <span class="sourceLineNo">065</span><a id="line.65">                return true;</a>

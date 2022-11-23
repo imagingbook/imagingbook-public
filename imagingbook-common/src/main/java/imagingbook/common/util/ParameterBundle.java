@@ -91,17 +91,27 @@ import imagingbook.common.ij.DialogUtils;
  */
 public interface ParameterBundle<TargetT> {
 	
+	/**
+	 * Returns the valid parameter fields as an array. 
+	 * @return the valid parameter fields
+	 */
 	default Field[] getValidParameterFields() {
 		Class<?> clazz = this.getClass();
 		List<Field> validFields = new ArrayList<>();
 		for (Field f : clazz.getFields()) {
-			if (isValidParameterItem(f)) {
+			if (isValidParameterField(f)) {
 				validFields.add(f);
 			}
 		}
 		return validFields.toArray(new Field[0]);
 	}
 	
+	/**
+	 * Substitute for {@link Object#toString()}, which cannot be overridden by
+	 * an interface's default method.
+	 * 
+	 * @return as string representation of theis parameter bundle
+	 */
 	default String printToString() {
 		ByteArrayOutputStream bas = new ByteArrayOutputStream();
 		try (PrintStream strm = new PrintStream(bas)) {
@@ -110,6 +120,12 @@ public interface ParameterBundle<TargetT> {
 		return bas.toString();
 	}
 
+	/**
+	 * Sends a string representation of this parameter bundle to
+	 * the specified stream.
+	 * 
+	 * @param strm the output stream
+	 */
 	default void printToStream(PrintStream strm) {
 		Class<?> clazz = this.getClass();
 		if (!Modifier.isPublic(clazz.getModifiers())) {
@@ -136,9 +152,8 @@ public interface ParameterBundle<TargetT> {
 	}
 	
 	/**
-	 * Validates the correctness and compatibility of the
-	 * parameters in this bundle. 
-	 * Implementing classes should override this method.
+	 * Validates the correctness and compatibility of the parameters in this bundle.
+	 * Does nothing by default, implementing classes should override this method.
 	 * 
 	 * @return true if all parameters are OK, false otherwise
 	 */
@@ -146,7 +161,13 @@ public interface ParameterBundle<TargetT> {
 		return true;
 	}
 	
-	static boolean isValidParameterItem(Field f) {
+	/**
+	 * Returns true iff the specified field is a valid parameter item.
+	 * This applies if the field is neither private nor final or static.
+	 * @param f the field
+	 * @return true if a valid parameter field
+	 */
+	static boolean isValidParameterField(Field f) {
 		int mod = f.getModifiers();
 		if (Modifier.isPrivate(mod) || Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
 			return false;

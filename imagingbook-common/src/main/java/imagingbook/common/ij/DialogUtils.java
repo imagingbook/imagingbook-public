@@ -317,7 +317,7 @@ public abstract class DialogUtils {
 	}
 	
 	private static boolean isValidDialogField(Field f) {
-		if (!ParameterBundle.isValidParameterItem(f)) {
+		if (!ParameterBundle.isValidParameterField(f)) {
 			return false;
 		}
 //		int mod = f.getModifiers();
