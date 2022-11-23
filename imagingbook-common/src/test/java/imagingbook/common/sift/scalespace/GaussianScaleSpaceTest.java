@@ -35,7 +35,7 @@ public class GaussianScaleSpaceTest {
 		assertEquals(sigma_0, gss.getOctave(0).getAbsoluteScale(0), 1e-6);
 		
 		for (int p = 0; p < 1; p++) {
-			ScaleOctave oct = gss.getOctave(p);
+			GaussianOctave oct = gss.getOctave(p);
 			assertNotNull(oct);
 			assertEquals(p, oct.getOctaveIndex());
 			

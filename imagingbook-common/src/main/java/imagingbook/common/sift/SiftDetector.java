@@ -17,125 +17,36 @@ import java.util.Collections;
 import java.util.List;
 
 import ij.process.FloatProcessor;
-import imagingbook.common.ij.DialogUtils.DialogHide;
-import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.sift.scalespace.DogOctave;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
 import imagingbook.common.sift.scalespace.ScaleLevel;
-import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
- * This class implements the detection of SIFT features from images, 
- * as described in [1]. See Ch. 25 of [2] for more details.
- * Currently only images of type {@link FloatProcessor} are supported.
+ * This class implements the detection of SIFT features from images, as
+ * described in [1]. See Ch. 25 of [2] for more details.
+ * </p>
+ * <p>
+ * Currently only images of type {@link FloatProcessor} are supported. The input
+ * image is normalized to values in [0,1] before SIFT detection starts. A large
+ * set of parameters can be specified (see {@link SiftParameters}).
  * </p>
  * <p>
  * [1] D. G. Lowe. Distinctive image features from scale-invariant keypoints.
- * International Journal of Computer Vision 60, 91–110 (2004).
- * <br>
+ * International Journal of Computer Vision 60, 91–110 (2004). <br>
  * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
  * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
  * @version 2022/11/20
+ * @see SiftParameters
  */
 public class SiftDetector {
-
-	/**
-	 * Default parameters; a (usually modified) instance of this class
-	 * may be passed to the constructor of {@link SiftDetector}.
-	 */
-	public static class Parameters implements ParameterBundle {
-		
-		/** Set true to output debug information. */
-		@DialogHide
-		public boolean DEBUG = false;
-		
-		/** Type of neigborhood used for peak detection in 3D scale space. */
-		@DialogLabel("Neighborhood for 3D peak detection")
-		public NeighborhoodType3D nhType = NeighborhoodType3D.NH18;
-		
-		/** Sampling scale (nominal smoothing level of the input image). */
-		@DialogLabel("Nominal sampling scale (sigmaS)")
-		public double sigmaS = 0.5;
-		
-		/** Base scale at level 0 (base smoothing). */
-		@DialogLabel("Base scale at level 0 (sigma0)")
-		public double sigma0 = 1.6;
-		
-		/** Number of octaves in Gaussian/DoG scale space. */
-		@DialogLabel("Number of scale space octaves (P)")
-		public int P = 4;
-		
-		/** Scale steps (levels) per octave. */
-		@DialogLabel("Scale levels per octaves (Q)")
-		public int Q = 3;
-		
-		/** Minimum magnitude required in DoG peak detection (abs. value). */
-		@DialogLabel("Minimum detection magnitude (tMag)")
-		public double tMag = 0.01;
-		
-		
-		/** Minimum DoG magnitude required for extrapolated peaks (abs. value). */
-		@DialogLabel("Minimum peak magnitude (tPeak)")
-		public double tPeak = tMag;
-		
-		/** Minimum difference to all neighbors in DoG peak detection (max. 0.0005). */
-		@DialogLabel("Minimum neigborhood difference (tExtrm)")
-		public double tExtrm = 0.0;
-		
-		/** Maximum number of iterations for refining the position of a key point. */
-		@DialogLabel("Maximum position refinement steps (nRefine)")
-		public int nRefine = 5;
-		
-		/** Maximum principal curvature ratio used to eliminate line-like structures (3..10). */
-		@DialogLabel("Maximum principal curvature ratio (rhoMax=3..10)")
-		public double rhoMax = 10.0;
-		
-		/** Number of orientation bins in the feature descriptor (angular resolution). */
-		@DialogLabel("Number of orientation bins (nOrient)")
-		public int nOrient = 36;
-		
-		/** Number of smoothing steps applied to the orientation histogram. */
-		@DialogLabel("Histogram smoothing steps (nSmooth)")
-		public int nSmooth = 2;
-		
-		/** Minimum value in orientation histogram for dominant orientations (rel. to max. entry). */
-		@DialogLabel("Minimum value in orientation histogram (tDomOr)")
-		public double tDomOr = 0.8;
-		
-		/** Number of spatial descriptor bins along each x/y axis. */
-		@DialogLabel("Number of spatial descriptor bins (nSpat)")
-		public int nSpat = 4;
-		
-		/** Number of angular descriptor bins. */
-		@DialogLabel("Number of angular descriptor bins (nAngl)")
-		public int nAngl = 8;
-		
-		/** Maximum value in normalized feature vector (0.2 recommended by Lowe). */
-		@DialogLabel("Maximum normalized feature value (tFclip)")
-		public double tFclip = 0.2;
-		
-		/** Scale factor for converting normalized features to byte values in [0,255]. */
-		@DialogLabel("Feature integer conversion scale (sFscale)")
-		public double sFscale = 512.0;
-		
-		/** Spatial size factor of descriptor (relative to feature scale). */
-		@DialogLabel("Descriptor display size factor (sDesc)")
-		public double sDesc = 10.0;
-		
-//		/** Set true to sort detected keypoints by response magnitude. */
-//		@DialogLabel("Sort keypoints by score magnitude")
-//		public boolean sortKeyPoints = true;
-	}
 	
-	private final Parameters params;
-
 	/**
 	 * Types of 3D neighborhoods used in min/max detection 
 	 */
@@ -146,11 +57,10 @@ public class SiftDetector {
 			this.size = size;
 		}
 	}
-	
+
 	static private final double PI2 = 2 * Math.PI;
-
-	/* non-static/final fields */
-
+	
+	private final SiftParameters params;
 	private final int nhSize;
 	private final GaussianScaleSpace G;
 	private final DogScaleSpace D;
@@ -159,37 +69,51 @@ public class SiftDetector {
 
 	/**
 	 * Constructor using default parameters.
-	 * 
 	 * @param fp the input image
+	 * @see #SiftDetector(FloatProcessor, SiftParameters)
 	 */
 	public SiftDetector(FloatProcessor fp) {
-		this(fp, new Parameters());	// uses default parameters
+		this(fp, new SiftParameters());	// uses default parameters
 	}
 
 	/**
-	 * Constructor using specific parameters.
+	 * <p>
+	 * Constructor using specific parameters. The input image is normalized to
+	 * values in [0,1], the minimum pixel value being mapped to 0 and the maximum
+	 * value to 1. An exception is thrown if the supplied image is "flat", i.e.,
+	 * contains only a single pixel value. A large set of parameters can be
+	 * specified (see {@link SiftParameters}). The constructor sets up the complete
+	 * Gaussian and DoG scale spaces but does not perform feature detection itself,
+	 * which is initiated by calling {@link #getSiftFeatures()}.
+	 * </p>
 	 * 
-	 * @param fp the input image
-	 * @param params parameters (see {@link Parameters})
+	 * @param fp     the input image
+	 * @param params an instance of {@link SiftParameters}
+	 * @see SiftParameters
 	 */
-	public SiftDetector(FloatProcessor fp, Parameters params) {
+	public SiftDetector(FloatProcessor fp, SiftParameters params) {
 		this.params = params;
 		this.nhSize = params.nhType.size;
-		normalizeTo01(fp);
+		if (!normalizeTo01(fp))
+			throw new IllegalArgumentException("could not normalize input image");
 		this.G = new GaussianScaleSpace(fp, params.P, params.Q, params.sigmaS, params.sigma0, -1, params.Q + 1);
 		this.D = new DogScaleSpace(G);
 	}
 	
 	// TODO: check this, only temporary
-	private void normalizeTo01(FloatProcessor fp) {
+	private boolean normalizeTo01(FloatProcessor fp) {
 		float[] a = (float[])fp.getPixels();
 		float minVal = Matrix.min(a);
 		float maxVal = Matrix.max(a);
-		float offset = -minVal;
-		float scale = 1.0f / (maxVal - minVal);
-		for (int i = 0; i < a.length; i++) {
-			a[i] = (a[i] + offset) * scale; 
+		float diff = maxVal - minVal;
+		if (Arithmetic.isZero(diff)) {
+			return false;
 		}
+		float scale = 1.0f / diff;
+		for (int i = 0; i < a.length; i++) {
+			a[i] = (a[i] - minVal) * scale; 
+		}
+		return true;
 	}
 	
 	// --------------------------------------------------

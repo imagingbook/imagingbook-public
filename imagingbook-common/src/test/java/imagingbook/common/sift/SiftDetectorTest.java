@@ -29,7 +29,7 @@ import imagingbook.testimages.SiftTestImage;
 
 public class SiftDetectorTest {
 	
-	private static SiftDetector.Parameters params = new SiftDetector.Parameters();
+	private static SiftParameters params = new SiftParameters();
 	static {
 		params.nhType = NeighborhoodType3D.NH18;
 		params.sigmaS = 0.5;

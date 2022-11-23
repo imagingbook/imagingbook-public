@@ -38,20 +38,26 @@ import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftMatch;
 import imagingbook.common.sift.SiftMatcher;
+import imagingbook.common.sift.SiftParameters;
 import imagingbook.sampleimages.SiftSampleImage;
 
 /**
  * <p>
  * This ImageJ plugin demonstrates the use of the SIFT detection and matching
- * framework. The plugin takes a single image, which is assumed to be
- * composed of a left and right frame. The input image is split horizontally,
- * then SIFT detection and matching is applied to the two sub-images.
- * The input image is always converted to grayscale before SIFT feature detection
- * is performed.
+ * framework. See Sec. 25.5 of [1] for details.
  * </p>
  * <p>
- * The result is displayed as a graphic overlay by connecting and annotating the
- * best-matching features. When saved as a TIFF image the overlay is preserved.
+ * The plugin takes a single image, which is assumed to be composed of a left
+ * and right frame. The input image is split horizontally, then SIFT detection
+ * and matching is applied to the two sub-images. The input image is always
+ * converted to grayscale (and normalized to [0,1]) before SIFT feature
+ * detection is performed. The result is displayed as a graphic overlay by
+ * connecting and annotating the best-matching features. When saved as a TIFF
+ * image the overlay is preserved.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
@@ -108,7 +114,7 @@ public class Sift_Matching_Demo implements PlugInFilter {
 		FloatProcessor Ia = IjUtils.crop(ip, 0, 0, w2, h).convertToFloatProcessor();
 		FloatProcessor Ib = IjUtils.crop(ip, w2, 0, w2, h).convertToFloatProcessor();
 		
-		SiftDetector.Parameters siftParams = new SiftDetector.Parameters();
+		SiftParameters siftParams = new SiftParameters();
 		// modify SIFT parameters here if needed
 		
 		// we use the same parameters on left and right image
