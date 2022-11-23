@@ -15,13 +15,15 @@ import java.util.List;
 
 import org.junit.Test;
 
+import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.sift.SiftDetector.NeighborhoodType3D;
+import imagingbook.common.sift.scalespace.DogOctave;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
+import imagingbook.common.sift.scalespace.GaussianOctave;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
 import imagingbook.common.sift.scalespace.ScaleLevel;
-import imagingbook.common.sift.scalespace.ScaleOctave;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.testimages.SiftTestImage;
@@ -69,7 +71,7 @@ public class SiftDetectorTest {
 		assertEquals(params.Q + 1, topLevel);
 		
 		for (int p = 0; p < G.getP(); p++) { 
-			ScaleOctave oct = G.getOctave(p);
+			GaussianOctave oct = G.getOctave(p);
 			assertNotNull(oct);
 			assertEquals(p, oct.getOctaveIndex());
 			
@@ -100,7 +102,7 @@ public class SiftDetectorTest {
 		assertEquals(params.Q, topLevel);
 		
 		for (int p = 0; p < D.getP(); p++) { 
-			ScaleOctave oct = D.getOctave(p);
+			DogOctave oct = D.getOctave(p);
 			assertNotNull(oct);
 			assertEquals(p, oct.getOctaveIndex());
 			for (int q = botLevel; q <= topLevel; q++) {
@@ -121,6 +123,17 @@ public class SiftDetectorTest {
 		runSift(SiftTestImage.StarsH, 259);
 		runSift(SiftTestImage.StarsV, 251);
 	}
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSiftDetectorFlatImage() {
+		ByteProcessor bp = new ByteProcessor(50, 30);	// flat image
+		bp.setColor(17);
+		bp.fill();
+		new SiftDetector(bp.convertToFloatProcessor());
+	}
+	
+	// ---------------------------------------------------
 	
 	private void runSift(ImageResource res, int siftExpected) {
 //		System.out.println("running " + res);

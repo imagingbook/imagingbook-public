@@ -100,14 +100,13 @@ public class SiftDetector {
 		this.D = new DogScaleSpace(G);
 	}
 	
-	// TODO: check this, only temporary
 	private boolean normalizeTo01(FloatProcessor fp) {
 		float[] a = (float[])fp.getPixels();
 		float minVal = Matrix.min(a);
 		float maxVal = Matrix.max(a);
 		float diff = maxVal - minVal;
 		if (Arithmetic.isZero(diff)) {
-			return false;
+			return false;	// only one pixel value
 		}
 		float scale = 1.0f / diff;
 		for (int i = 0; i < a.length; i++) {
