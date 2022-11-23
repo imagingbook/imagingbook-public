@@ -63,7 +63,7 @@ import imagingbook.sampleimages.SiftSampleImage;
  * @author WB
  * @version 2022/11/20
  */
-public class Sift_Matching_Demo implements PlugInFilter {
+public class SIFT_Match_Features implements PlugInFilter {
 	
 	// matching parameters:
 	private static NormType DistanceNormType = SiftMatcher.DefaultNormType;
@@ -89,7 +89,7 @@ public class Sift_Matching_Demo implements PlugInFilter {
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
 	 */
-	public Sift_Matching_Demo() {
+	public SIFT_Match_Features() {
 		if (noCurrentImage()) {
 			DialogUtils.askForSampleImage(SiftSampleImage.RamsesSmall);
 		}

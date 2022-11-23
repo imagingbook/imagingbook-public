@@ -52,7 +52,7 @@ import imagingbook.sampleimages.SiftSampleImage;
  * @see SiftDescriptor
  */
 
-public class Sift_Extract_Features implements PlugInFilter {
+public class SIFT_Detect_Features implements PlugInFilter {
 	
 	private static SiftParameters params = new SiftParameters();
 	private static int MaxFeaturesToShow = 200;
@@ -67,7 +67,7 @@ public class Sift_Extract_Features implements PlugInFilter {
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
 	 */
-	public Sift_Extract_Features() {
+	public SIFT_Detect_Features() {
 		if (noCurrentImage()) {
 			DialogUtils.askForSampleImage(SiftSampleImage.Castle);
 		}

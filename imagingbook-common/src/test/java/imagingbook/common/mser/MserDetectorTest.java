@@ -15,7 +15,6 @@ import java.util.List;
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
-import imagingbook.common.mser.MserDetector.Parameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.core.resource.ImageResource;
@@ -23,15 +22,14 @@ import imagingbook.testimages.MserTestImage;
 
 public class MserDetectorTest {
 
-	private Parameters params = null;
-	MserDetector detector = null;
+	private MserParameters params = null;
 
 	/**
 	 * Runs validation on component trees from different images.
 	 */
 	@Test
 	public void test1() {
-		params = new Parameters();	// MSER default parameters
+		params = new MserParameters();	// MSER default parameters
 
 		params.method = Method.LinearTime;
 		params.delta = 5;
@@ -44,7 +42,7 @@ public class MserDetectorTest {
 		params.minCompactness = 		0.2;		
 		params.validateComponentTree =	false;
 
-		detector = new MserDetector(params);
+		
 		
 		runMser(MserTestImage.Blob1, 3);
 		runMser(MserTestImage.Blob2, 6);
@@ -65,7 +63,8 @@ public class MserDetectorTest {
 	private void runMser(ImageResource res, int mserExpected) {
 //		System.out.println("running " + res);
 		ByteProcessor ip = (ByteProcessor) res.getImage().getProcessor();
-		List<Component<MserData>> msers = detector.applyTo((ByteProcessor) ip);
+		MserDetector detector = new MserDetector(ip, params);
+		List<Component<MserData>> msers = detector.getMserFeatures();   // detector.applyTo(ip);
 //		System.out.println(msers.size());
 		assertEquals("detected MSER components (" + res + ")", mserExpected, msers.size());
 	}

@@ -8,115 +8,73 @@
  *******************************************************************************/
 package imagingbook.common.mser;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import ij.process.ByteProcessor;
-import imagingbook.common.ij.DialogUtils.DialogHide;
-import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree;
-import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
- * Performs "Maximally Stable Extremal Region" (MSER) detection [1] on gray-scale images.
- * See Chapter 26 of [2] for a detailed description.
+ * Performs "Maximally Stable Extremal Region" (MSER) detection [1] on
+ * gray-scale images. See Chapter 26 of [2] for more details. The constructor
+ * sets up the complete component tree for the specified image but does not
+ * perform feature detection itself, which is done by calling
+ * {@link #getMserFeatures()}.
  * </p>
  * <p>
- * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline
- * stereo from maximally stable extremal regions. Image and Vision Computing 22(10), 761–767 (2004).
- * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline stereo
+ * from maximally stable extremal regions. Image and Vision Computing 22(10),
+ * 761–767 (2004). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
  * @author WB
- * @version 2022/11/19
+ * @version 2022/11/23
  */
 public class MserDetector {
 
-	/**
-	 * Inner class defining parameters for MSER detection.
-	 */
-	public static class Parameters implements ParameterBundle<MserDetector> {
-		
-		@DialogLabel("Component tree method")
-		public Method method = Method.LinearTime;
-		
-		@DialogLabel("Delta")
-		public int delta = 5;							// = \Delta
-		
-		@DialogLabel("Min component size (pixels)")
-		public int minAbsComponentArea = 3;
-		
-		@DialogLabel("Min rel. component size")
-		public double minRelCompSize = 0.0001;		// = \alpha_{\min}
-		
-		@DialogLabel("Max rel. component size")
-		public double maxRelCompSize = 0.25;		// = \alpha_{\max}
-		
-		@DialogLabel("Max component size variation")
-		public double maxSizeVariation = 0.25;
-		
-		@DialogLabel("Min component diversity")
-		public double minDiversity = 0.50;
-		
-		@DialogLabel("Constrain ellipse size")
-		public boolean constrainEllipseSize = true;
-		
-		@DialogLabel("Min region compactness")
-		public double minCompactness = 0.2;
-		
-		@DialogLabel("Validate component tree")@DialogHide
-		public boolean validateComponentTree = false;
-	}
-
-	// --------------------------------------------------------------------
-
-	private final Parameters params;
-	private ComponentTree<MserData> compTree = null;
-	private List<Component<MserData>> msers = null;
-	private double minSizeAbs;
-	private double maxSizeAbs;
-	private double maxVar;
-	private double minDiv;	
-	private double elapsedTimeMs = Double.NaN;
+	private final MserParameters params;
+	private final ComponentTree<MserData> compTree;
+	private final double minSizeAbs;
+	private final double maxSizeAbs;
+	private final double maxVar;
+	private final double minDiv;	
+	private final double elapsedTimeMs;
+	
+	private List<Component<MserData>> msers = null;	// used to collect MSERs
 	
 	// --------------------------------------------------------------------
 	
 	/**
-	 * Constructor using default parameters.
-	 */
-	public MserDetector() {
-		this(new Parameters());
-	}
-
-	/**
-	 * Constructor using explicit parameters.
-	 * @see MserDetector.Parameters
+	 * Constructor using default parameters. 
 	 * 
-	 * @param params a {@link MserDetector.Parameters} instance
+	 * @param ip the input image
+	 * @see #MserDetector(ByteProcessor, MserParameters)
 	 */
-	public MserDetector(Parameters params) {
+	public MserDetector(ByteProcessor ip) {
+		this(ip, new MserParameters());
+	}
+
+	/**
+	 * Constructor using explicit parameters. A set of parameters can be specified
+	 * (see {@link MserParameters}). The constructor sets up the complete component
+	 * tree but does not perform feature detection itself, which is done by calling
+	 * {@link #getMserFeatures()}.
+	 * 
+	 * @param ip     the input image
+	 * @param params a {@link MserParameters} instance
+	 * @see MserParameters
+	 */
+	public MserDetector(ByteProcessor ip, MserParameters params) {
 		this.params = params;
-	}
-
-	// -----------------------------------------------------------------------
-
-	/**
-	 * Applies this {@link MserDetector} to the specified gray-scale image
-	 * and returns a list of detected MSER components.
-	 * 
-	 * @param ip a gray-scale image
-	 * @return a list of detected MSER components
-	 */
-	public List<Component<MserData>> applyTo(ByteProcessor ip) {
 		long startTime = System.nanoTime();
-		compTree = ComponentTree.from(ip, params.method);
+		
+		// set up the component tree for ip
+		this.compTree = ComponentTree.from(ip, params.method);
 		
 		if (params.validateComponentTree) {
 			if(!compTree.validate()) {
@@ -131,19 +89,32 @@ public class MserDetector {
 
 		int imgSize = ip.getWidth() * ip.getHeight();
 		
-		this.minSizeAbs = Math.max((int) (imgSize * params.minRelCompSize), params.minAbsComponentArea);
+		this.minSizeAbs = 
+				Math.max((int) (imgSize * params.minRelCompSize), params.minAbsComponentArea);
 		this.maxSizeAbs = (int) (imgSize * params.maxRelCompSize);
 		this.maxVar = params.maxSizeVariation;
 		this.minDiv = params.minDiversity;
 		
-		this.msers = new LinkedList<>();
-		collectMsers(compTree.getRoot(), Integer.MAX_VALUE);
-		
 		this.elapsedTimeMs = (System.nanoTime() - startTime) / 1000000.0;
-		return this.msers;
 	}
 
-	// --------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	
+	/**
+	 * Extracts and returns a list of MSER components. Features are extracted
+	 * only once and cached for subsequent calls.
+	 * 
+	 * @return a list of extracted MSER components
+	 */
+	public List<Component<MserData>> getMserFeatures() {
+		if (this.msers == null) {
+			this.msers = new LinkedList<>();
+			collectMsers(compTree.getRoot(), Integer.MAX_VALUE);
+		}
+		return this.msers;
+	}
+	
+	// -----------------------------------------------------------------------
 
 	/**
 	 * Attach Mser data to all region tree components.
@@ -208,7 +179,6 @@ public class MserDetector {
 			}
 		}
 	}
-
 
 	/**
 	 * Calculates point (coordinate) statistics for all tree components.
@@ -298,35 +268,18 @@ public class MserDetector {
 	}
 
 	/**
-	 * Returns the list of collected MSERs.
-	 * @return the list of collected MSERs
-	 */
-	public Collection<Component<MserData>> getMser() {
-		if (msers == null) {
-			throw new IllegalStateException("no MSERs available yet, call applyTo() first!");
-		}
-		return this.msers;
-	}
-
-	/**
-	 * Returns the tree of detected MSER components.
-	 * An exception is thrown if method {@link #applyTo(ByteProcessor)} 
-	 * was not previously called.
+	 * Returns the component tree for this MSER detector.
 	 * 
-	 * @return the tree of detected MSER components
+	 * @return the component tree
 	 */
 	public ComponentTree<MserData> getComponentTree() {
-		if (compTree == null) {
-			throw new IllegalStateException("no component tree yet, call applyTo() first!");
-		}
 		return compTree;
 	}
 
 	/**
-	 * Returns the time required for the
-	 * most recent invocation of {@link #applyTo(ByteProcessor)}) in milliseconds.
-	 * {@code NaN} is returned if method {@link #applyTo(ByteProcessor)} 
-	 * was not previously called.
+	 * Returns the time required for the MSER detector to process the
+	 * associated image (in milliseconds).
+	 * 
 	 * @return time required for MSER detection (ms)
 	 */
 	public double getElapsedTime() {

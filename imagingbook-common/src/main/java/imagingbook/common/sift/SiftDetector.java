@@ -84,7 +84,7 @@ public class SiftDetector {
 	 * contains only a single pixel value. A large set of parameters can be
 	 * specified (see {@link SiftParameters}). The constructor sets up the complete
 	 * Gaussian and DoG scale spaces but does not perform feature detection itself,
-	 * which is initiated by calling {@link #getSiftFeatures()}.
+	 * which is done by calling {@link #getSiftFeatures()}.
 	 * </p>
 	 * 
 	 * @param fp     the input image
@@ -116,6 +116,25 @@ public class SiftDetector {
 	}
 	
 	// --------------------------------------------------
+	
+	/**
+	 * Calculates and returns a list of SIFT descriptors.
+	 * 
+	 * @return a list of extracted SIFT descriptors
+	 */
+	public List<SiftDescriptor> getSiftFeatures() {
+		List<KeyPoint> keyPoints = getKeyPoints();
+		List<SiftDescriptor> siftDescriptors = new ArrayList<SiftDescriptor>();
+		for (KeyPoint kp : keyPoints) {
+			for (double phi_d : getDominantOrientations(kp)) {
+				SiftDescriptor sd = makeSiftDescriptor(kp, phi_d);
+				if (sd != null) {
+					siftDescriptors.add(sd);
+				}
+			}
+		}
+		return siftDescriptors;
+	}
 	
 	/**
 	 * Returns the {@link GaussianScaleSpace} for this SIFT detector
@@ -204,25 +223,6 @@ public class SiftDetector {
 			}
 		}
 		return orientIndexes;
-	}
-
-	/**
-	 * Calculates and returns a list of SIFT descriptors.
-	 * 
-	 * @return a list of extracted SIFT descriptors
-	 */
-	public List<SiftDescriptor> getSiftFeatures() {
-		List<KeyPoint> keyPoints = getKeyPoints();
-		List<SiftDescriptor> siftDescriptors = new ArrayList<SiftDescriptor>();
-		for (KeyPoint kp : keyPoints) {
-			for (double phi_d : getDominantOrientations(kp)) {
-				SiftDescriptor sd = makeSiftDescriptor(kp, phi_d);
-				if (sd != null) {
-					siftDescriptors.add(sd);
-				}
-			}
-		}
-		return siftDescriptors;
 	}
 
 	private List<KeyPoint> getKeyPoints() {

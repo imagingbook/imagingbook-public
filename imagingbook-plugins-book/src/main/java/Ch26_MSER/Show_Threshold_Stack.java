@@ -14,6 +14,13 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 
+/**
+ * ImageJ plugin, creates a stack of thresholded images, one
+ * for each threshold level 0,...,255.
+ * 
+ * @author WB
+ *
+ */
 public class Show_Threshold_Stack implements PlugInFilter {
 	
 	private ImagePlus im;
@@ -32,9 +39,7 @@ public class Show_Threshold_Stack implements PlugInFilter {
 	
 	/**
 	 * Creates a stack of binary images, one for thresholding the 
-	 * given image at each gray vale 0,..,255.
-	 * @param bp
-	 * @return
+	 * given image at each gray value 0,..,255.
 	 */
 	private ImageStack makeThresholdStack(ByteProcessor bp) {
 		int width = bp.getWidth();

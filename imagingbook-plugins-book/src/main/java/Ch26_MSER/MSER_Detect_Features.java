@@ -33,7 +33,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.mser.MserColor;
 import imagingbook.common.mser.MserData;
 import imagingbook.common.mser.MserDetector;
-import imagingbook.common.mser.MserDetector.Parameters;
+import imagingbook.common.mser.MserParameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.PixelMap.Pixel;
 
@@ -44,7 +44,7 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
  * @author WB
  *
  */
-public class MSER_Detect implements PlugInFilter {
+public class MSER_Detect_Features implements PlugInFilter {
 	
 	static {
 		LogStream.redirectSystem();
@@ -67,7 +67,7 @@ public class MSER_Detect implements PlugInFilter {
 	
 	private static int MinDisplayWidth = 300;
 	
-	private static Parameters params = new Parameters();	// MSER parameters
+	private static MserParameters params = new MserParameters();	// MSER parameters
 	
 
 	ImagePlus im = null;
@@ -115,15 +115,17 @@ public class MSER_Detect implements PlugInFilter {
 		Color[] palette = MserColor.LevelColors;
 		
 		labelFont = new Font(Font.SANS_SERIF, Font.PLAIN, labelFontSize);
-		
-		MserDetector detector = new MserDetector(params);
+	
 		
 		List<Component<MserData>> msersB = null;
 		List<Component<MserData>> msersW = null;
 //		List<Component<MserData>> msersAll = new ArrayList<>();
 		
+		double elapsedTime = 0;
+		
 		if (BlackToWhite) {
-			msersB = detector.applyTo(bp);
+			MserDetector detector = new MserDetector(bp, params);
+			msersB = detector.getMserFeatures();
 			if (ShowMserCount) {
 				IJ.log("Found MSERs (BlackToWhite): " + msersB.size());
 			}
@@ -132,11 +134,13 @@ public class MSER_Detect implements PlugInFilter {
 			else
 				makeColors(palette);
 			drawToOverlay(msersB);
+			elapsedTime += detector.getElapsedTime();
 		}
 		
 		if (WhiteToBlack) {
 			bp.invert();
-			msersW = detector.applyTo(bp);	
+			MserDetector detector = new MserDetector(bp, params);
+			msersW = detector.getMserFeatures();
 			if (ShowMserCount) {
 				IJ.log("Found MSERs (WhiteToBlack): " + msersW.size());
 			}
@@ -145,12 +149,12 @@ public class MSER_Detect implements PlugInFilter {
 			else
 				makeColors(palette);
 			drawToOverlay(msersW);
+			elapsedTime += detector.getElapsedTime();
 		}
 		
 		if (ShowElapsedTime) {
-			IJ.log(String.format("Algorithm %s: time elapsed %.0fms", params.method, detector.getElapsedTime()));
+			IJ.log(String.format("Algorithm %s: time elapsed %.0fms", params.method, elapsedTime));
 		}
-	
 		
 		if (ShowColorPalette) {
 			if (UseTwoColorsOnly) 
@@ -215,7 +219,7 @@ public class MSER_Detect implements PlugInFilter {
 	
 	// --------------------------------------------
 	
-	private boolean runDialog(Parameters params) {
+	private boolean runDialog(MserParameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		
 //		gd.addEnumChoice("Component tree method", params.method);
@@ -348,7 +352,7 @@ public class MSER_Detect implements PlugInFilter {
 	
 	// --------------------------------------------
 	
-	private void setMserImageProps(ImagePlus imp, Parameters params) {
+	private void setMserImageProps(ImagePlus imp, MserParameters params) {
 		imp.setProp("MSER-delta", params.delta);
 		imp.setProp("MSER-maxVariation", params.maxSizeVariation);
 		imp.setProp("MSER-minDiversity", params.minDiversity);

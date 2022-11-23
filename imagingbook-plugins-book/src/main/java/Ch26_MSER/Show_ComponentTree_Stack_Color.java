@@ -8,12 +8,17 @@
  *******************************************************************************/
 package Ch26_MSER;
 
+import java.awt.Color;
+
+import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
+import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.sets.CssColor;
 import imagingbook.common.mser.MserData;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree;
@@ -29,9 +34,11 @@ import imagingbook.common.mser.components.PixelMap.Pixel;
  * @version 2022/11/23
  * @see Show_Threshold_Stack
  */
-public class Show_ComponentTree_Stack implements PlugInFilter {
+public class Show_ComponentTree_Stack_Color implements PlugInFilter {
 	
 	private static Method method = Method.LinearTime;
+	
+	private static Color[] COLORS = CssColor.SelectColors;// MserColor.LevelColors;
 
 	@Override
 	public int setup(String arg0, ImagePlus im) {
@@ -58,7 +65,7 @@ public class Show_ComponentTree_Stack implements PlugInFilter {
 		//IJ.log("makeComponentStack...");
 		ImageStack stack = new ImageStack(width, height);
 		for (int level = 0; level < 256; level++) {
-			ByteProcessor bp = new ByteProcessor(width, height);
+			ColorProcessor bp = new ColorProcessor(width, height);
 			fillComponentImage(rt, bp, level);
 			stack.addSlice("Level " + level, bp);
 		}
@@ -69,16 +76,22 @@ public class Show_ComponentTree_Stack implements PlugInFilter {
 	/**
 	 * Creates a thresholded image with positions set if pixelvalue <= level.
 	 */
-	private void fillComponentImage(ComponentTree<?> rt, ByteProcessor bp, int level) {
-		//IJ.log("    makeComponentImage level="+level);
+	private void fillComponentImage(ComponentTree<?> rt, ColorProcessor cp, int level) {
+		IJ.log("    makeComponentImage level="+level);
 		//ByteProcessor bp = new ByteProcessor(width, height);
-		bp.setValue(255); 
-		bp.fill();
+//		cp.setValue(255); 
+		cp.setColor(Color.white);
+		cp.fill();
 		for (Component<?> c : rt.getComponents()) {
 			if (c.getLevel() <= level) {
 				//IJ.log("    level="+level + "  painting " + c.toString());
-				for (Pixel p : c.getLocalPixels()) {
-					bp.set(p.x, p.y, 0);
+				
+				Color col = COLORS[c.ID % COLORS.length];
+				cp.setColor(col);
+//				cp.setValue(c.ID);
+				for (Pixel p : c.getAllPixels()) {
+					cp.drawDot(p.x, p.y);
+					//cp.set(p.x, p.y, 0);
 				}
 			}
 		}

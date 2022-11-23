@@ -21,7 +21,7 @@ import imagingbook.common.mser.MserData;
 import imagingbook.common.mser.components.PixelMap.Pixel;
 
 /**
- * Abstract class representing a tree of extremal image components.
+ * This class represents a tree of extremal image components.
  * 
  * @param <T> the data type of components (e.g., {@link MserData})
  * @author WB
@@ -41,8 +41,8 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
 	// --------------------------------------------------------------
 	
-	ComponentTree() {		// non-public constructor
-	}
+	/** Constructor (non-public). */
+	ComponentTree() {}
 	
 	/**
 	 * Creates a new component tree for the specified image using the default method
@@ -88,14 +88,14 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 
 	/**
 	 * Returns the root component of this component tree.
-	 * 
+	 * To be implemented by concrete subclasses.
 	 * @return the root component
 	 */
 	public abstract Component<T> getRoot();
 
 	/**
 	 * Returns an unordered collection of all tree components.
-	 * 
+	 * To be implemented by concrete subclasses.
 	 * @return all tree components
 	 */
 	public abstract Collection<Component<T>> getComponents();
@@ -125,7 +125,6 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
 	/**
 	 * Performs integrity checks on this component tree.
-	 * 
 	 * @return true iff all checks are passed
 	 */
 	public boolean validate() {
@@ -162,7 +161,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	 * 
 	 * @return true iff OK
 	 */
-	boolean checkNodes() {
+	private boolean checkNodes() {
 		Set<Component<T>> componentSet = new HashSet<>(); // empty hash set
 		int duplicateID = traverse(getRoot(), componentSet);
 		if (duplicateID >= 0) {		// traverse() registers all visited components
@@ -176,7 +175,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 		return true;
 	}
 	
-	int traverse(Component<T> c, Set<Component<T>> cS) {
+	private int traverse(Component<T> c, Set<Component<T>> cS) {
 		if (cS.add(c)) {
 			for (Component<T> cc : c.getChildren()) {
 				int duplicateId = traverse(cc, cS);
@@ -194,10 +193,9 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 
 	/**
 	 * Checks if all parent relations are consistent.
-	 * 
 	 * @return true iff OK
 	 */
-	boolean checkParents() {
+	private boolean checkParents() {
 		Collection<Component<T>> comps = getComponents();
 		HashSet<Component<T>> compsH = new HashSet<>(comps); // to improve lookup speed
 		
@@ -227,7 +225,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	 * 
 	 * @return true iff OK
 	 */
-	boolean checkChildren() {
+	private boolean checkChildren() {
 		for (Component<?> c : getComponents()) {
 			// check if children is a list (not null)
 			if (c.getChildren() == null) {
@@ -252,7 +250,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	 * 
 	 * @return true iff OK
 	 */
-	boolean checkRoot() {
+	private boolean checkRoot() {
 		// check if a single root exists and is properly marked (with null parent)
 		int rootcnt = 0;
 		Component<T> root = getRoot();
@@ -277,7 +275,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	 * 
 	 * @return true iff OK
 	 */
-	boolean checkLevels() {
+	private boolean checkLevels() {
 		for (Component<?> c : getComponents()) {
 			int lc = c.getLevel();
 			
@@ -307,7 +305,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	 * 
 	 * @return true iff OK
 	 */
-	boolean checkSize() {
+	private boolean checkSize() {
 		for (Component<?> c : getComponents()) {
 			int csize = c.getLocalPixels().size();
 			for (Component<?> cc : c.getChildren()) {
@@ -346,7 +344,8 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	private static int INDENT = 4;
 	
 	// print a forest with multiple roots
-	static String toStringRecursive(ComponentTree<?> rt) { 
+	@SuppressWarnings("unused")
+	private static String toStringRecursive(ComponentTree<?> rt) { 
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		PrintStream ps = new PrintStream(os);
 		
@@ -359,7 +358,8 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	}
 	
 	// print tree with a single root
-	static String toStringRecursive(Component<?> rt) { 
+	@SuppressWarnings("unused")
+	private static String toStringRecursive(Component<?> rt) { 
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		PrintStream ps = new PrintStream(os);
 		printToStreamRecursive(rt, ps, 0);	
