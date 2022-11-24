@@ -167,7 +167,7 @@ public class TschumperleDericheFilter extends GenericFilter implements Tschumper
 		
 		// calculate the 2 eigenvalues lambda1, lambda2 and the greater eigenvector e1
 		Eigensolver2x2 solver = new Eigensolver2x2(Guv[0], Guv[1], Guv[1], Guv[2]);
-		if (!solver.isReal()) {
+		if (solver.hasComplexEigenvalues()) {
 			throw new RuntimeException("undefined eigenvalues in " + 
 					this.getClass().getSimpleName());
 		}

@@ -107,7 +107,7 @@ public class Eigensolver2x2Test {
 		for (int i = 0; i < N; i++) {
 			double[][] A = rg.makeRandomSymmetricMatrix(2);
 			Eigensolver2x2 solver = new Eigensolver2x2(A);
-			if (solver.isReal()) {
+			if (!solver.hasComplexEigenvalues()) {
 				//cnt++;
 				// check if A * x_i = lambda_i * x_i :
 				double[] eigenvals = solver.getRealEigenvalues();
@@ -130,10 +130,10 @@ public class Eigensolver2x2Test {
 	private void runTest(double[][] M, boolean shouldBeReal) {
 		Eigensolver2x2 solver = new Eigensolver2x2(M);	
 		if (shouldBeReal) {
-			assertTrue(solver.isReal());
+			assertFalse(solver.hasComplexEigenvalues());
 		}
 		else {
-			assertFalse(solver.isReal());
+			assertTrue(solver.hasComplexEigenvalues());
 			return;
 		}
 		

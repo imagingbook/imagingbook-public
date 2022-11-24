@@ -51,7 +51,11 @@ import imagingbook.common.math.exception.MaxIterationsExceededException;
  * An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  * 
+ * @author WB
  * @version 2022/06/19
+ * 
+ * @see EigenDecompositionApache
+ * @see EigenSolver2x2
  */
 public class EigenDecompositionJama implements RealEigenDecomposition {
 	

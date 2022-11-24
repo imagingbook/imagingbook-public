@@ -23,6 +23,7 @@ import imagingbook.common.math.Matrix;
  * Implements an efficient, closed form algorithm for calculating the real
  * eigenvalues (&lambda;) and eigenvectors (x) of a 2x2 matrix of the form
  * </p>
+ * 
  * <pre>
  *   | a b |
  *   | c d |
@@ -35,8 +36,8 @@ import imagingbook.common.math.Matrix;
  * ordered such that &lambda;<sub>0</sub> &ge; &lambda;<sub>1</sub>.
  * Eigenvectors are not normalized, i.e., no unit vectors (any scalar multiple
  * of an Eigenvector is an Eigenvector too). Non-real eigenvalues are not
- * handled. Clients should call method {@link #isReal()} to check if the
- * eigenvalue calculation was successful.
+ * handled. Clients should call method {@link #hasComplexEigenvalues()} to check
+ * if the eigenvalue calculation was successful.
  * </p>
  * <p>
  * This implementation is inspired by Ch. 5 ("Consider the Lowly 2x2 Matrix") of
@@ -48,8 +49,7 @@ import imagingbook.common.math.Matrix;
  * </p>
  * <p>
  * This implementation is considerably faster (ca. factor 5) than the general
- * solution available in {@link EigenDecompositionJama} (based on Apache Commons
- * Math) for 2x2 matrices.
+ * solution (e.g., {@link EigenDecompositionJama}) for 2x2 matrices.
  * </p>
  * <p>
  * [1] Blinn, Jim: "Jim Blinn's Corner: Notation, Notation, Notation", Morgan
@@ -60,6 +60,9 @@ import imagingbook.common.math.Matrix;
  * 
  * @author WB
  * @version 2022/02/18
+ * 
+ * @see EigenDecompositionJama
+ * @see EigenDecompositionApache
  * 
  */
 public class Eigensolver2x2 implements RealEigenDecomposition { // to check: http://www.akiti.ca/Eig2Solv.html
@@ -167,9 +170,10 @@ public class Eigensolver2x2 implements RealEigenDecomposition { // to check: htt
 		return true;	// real eigenvalues
 	}
 	
-	public boolean isReal() {
-		return isReal;
-	}
+	
+//	public boolean isReal() {
+//		return isReal;
+//	}
 	
 	@Override
 	public boolean hasComplexEigenvalues() {
