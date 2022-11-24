@@ -33,7 +33,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.common.sift.SiftColor;
+import imagingbook.common.sift.SiftColors;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftMatch;
@@ -81,7 +81,7 @@ public class SIFT_Match_Features implements PlugInFilter {
 	private static BasicAwtColor LabelColor = BasicAwtColor.Yellow;
 	private static Font LabelFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	
-	private static Color[] ScaleLevelColors = getColors(SiftColor.class);
+	private static Color[] ScaleLevelColors = getColors(SiftColors.class);
 	
 	private ImagePlus im = null;
 	

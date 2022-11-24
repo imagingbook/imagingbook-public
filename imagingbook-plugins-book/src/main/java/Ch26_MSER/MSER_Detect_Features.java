@@ -30,7 +30,7 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.ij.GuiTools;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.mser.MserColor;
+import imagingbook.common.mser.MserColors;
 import imagingbook.common.mser.MserData;
 import imagingbook.common.mser.MserDetector;
 import imagingbook.common.mser.MserParameters;
@@ -62,8 +62,8 @@ public class MSER_Detect_Features implements PlugInFilter {
 	private static boolean WhiteToBlack = false;	// detect on inverted image
 	
 	private static boolean UseTwoColorsOnly = false;	// detect on inverted image
-	private Color BlackToWhiteColor = MserColor.Yellow.getColor(); //.Orange;
-	private Color WhiteToBlackColor = MserColor.Cyan.getColor();
+	private Color BlackToWhiteColor = MserColors.Yellow.getColor(); //.Orange;
+	private Color WhiteToBlackColor = MserColors.Cyan.getColor();
 	
 	private static int MinDisplayWidth = 300;
 	
@@ -112,7 +112,7 @@ public class MSER_Detect_Features implements PlugInFilter {
 		if (WhiteToBlack)  title = title + "W";
 		if (UseTwoColorsOnly) title = title + "-2c";
 		
-		Color[] palette = MserColor.LevelColors;
+		Color[] palette = MserColors.LevelColors;
 		
 		labelFont = new Font(Font.SANS_SERIF, Font.PLAIN, labelFontSize);
 	

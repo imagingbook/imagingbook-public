@@ -24,7 +24,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.common.sift.SiftColor;
+import imagingbook.common.sift.SiftColors;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftParameters;
@@ -59,7 +59,7 @@ public class SIFT_Detect_Features implements PlugInFilter {
 	private static double FeatureScale = 1.0; // 1.5;
 	private static double FeatureStrokewidth = 0.5;
 	private static boolean ListSiftFeatures = false;
-	private static Color[] ScaleLevelColors = getColors(SiftColor.class);
+	private static Color[] ScaleLevelColors = getColors(SiftColors.class);
 	
 	private ImagePlus im;
 	
