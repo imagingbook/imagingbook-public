@@ -22,11 +22,11 @@ import imagingbook.common.color.sets.ColorEnumeration;
  * @version 2022/11/19
  */
 public enum SiftColors implements ColorEnumeration {
-	Red(240,0,0),
-	Green(0,185,15),
-	Blue(0,60,255),
-	Magenta(255,0,200),
-	Yellow(255,200,0),
+	Red(240, 0, 0),
+	Green(0, 185, 15),
+	Blue(0, 60, 255),
+	Magenta(255, 0, 200),
+	Yellow(255, 200, 0),
 	;
 	
 	public static final Color[] ScaleLevelColors = 
