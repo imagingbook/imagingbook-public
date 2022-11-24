@@ -9,27 +9,46 @@
 
 package imagingbook.common.noise.perlin;
 
-import imagingbook.common.noise.hashing.HashFun;
-
+import imagingbook.common.noise.hashing.HashFunction;
 
 /**
- * Gradient (Perlin) noise implementation. 
- * This class implements a 1D Perlin noise generator.
+ * <p>
+ * This class implements a 1-dimensional Perlin noise [1] generator. See Ch. 8
+ * of [2] for details.
+ * </p>
+ * <p>
+ * [1] K. Perlin. Improving noise. In "SIGGRAPH’02: Proceedings of the 29th
+ * Annual Conference on Computer Graphics and Interactive Techniques", pp.
+ * 681–682, San Antonio, Texas (2002).<br>
+ * [2] W. Burger and M.J. Burge. "Principles of Digital Image Processing -
+ * Advanced Methods" (Vol. 3). Undergraduate Topics in Computer Science.
+ * Springer-Verlag, London (2013).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/24
  */
-
-public class PerlinNoiseGen1d extends PerlinNoiseGen {
+public class PerlinNoiseGenerator1d extends PerlinNoiseGenerator {
 	
-	public PerlinNoiseGen1d(double f_min, double f_max, double persistence, HashFun hf) {
+	/**
+	 * Constructor.
+	 * @param f_min minimum frequency
+	 * @param f_max maximum frequency
+	 * @param persistence persistence
+	 * @param hf hash function
+	 */
+	public PerlinNoiseGenerator1d(double f_min, double f_max, double persistence, HashFunction hf) {
 		super(f_min, f_max, persistence, hf);
 	}
 	
 	/**
-	 * 1D combined (multi-frequency) Perlin noise function. 
-	 * @param x Interpolation position.
-	 * @return The value of the combined Perlin
-	 * noise function for the one-dimensional position x.
+	 * 1D combined (multi-frequency) Perlin noise function. Returns the value of the
+	 * combined Perlin noise function for the one-dimensional position x.
+	 * 
+	 * @param x interpolation position
+	 * @return the multi-frequency noise value for position x
 	 */
-	public double NOISE(double x) {
+	public double getNoiseValue(double x) {
 		double sum = 0;
 		for (int i = 0; i < F.length; i++) {
 			sum = sum + A[i] * noise(F[i] * x);
@@ -43,7 +62,7 @@ public class PerlinNoiseGen1d extends PerlinNoiseGen {
 	 * @return The value of the elementary Perlin
 	 * noise function for the one-dimensional position x.
 	 */
-	public double noise(double x) {
+	private double noise(double x) {
 		int p0 = ffloor(x);
 		double g0 = gradient(p0);
 		double g1 = gradient(p0 + 1);
@@ -58,7 +77,7 @@ public class PerlinNoiseGen1d extends PerlinNoiseGen {
 	 * @return A pseudo-random gradient value for the discrete 
 	 * position p.
 	 */
-	double gradient(int p) {
+	private double gradient(int p) {
 		return 2.0 * hashFun.hash(p) - 1;
 	}
 	
@@ -69,7 +88,7 @@ public class PerlinNoiseGen1d extends PerlinNoiseGen {
 	 * @param w1 Tangent value for x=1.
 	 * @return The interpolated noise value at position x01.
 	 */
-	double interpolate(double x01, double w0, double w1) { // local interpolation function (x01 is in [0,1])
+	private double interpolate(double x01, double w0, double w1) { // local interpolation function (x01 is in [0,1])
 		double s = this.s(x01); 
 		return (1 - s) * w0 + s * w1;
 	}

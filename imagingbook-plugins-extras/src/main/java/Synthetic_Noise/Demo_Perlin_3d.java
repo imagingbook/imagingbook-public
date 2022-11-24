@@ -13,8 +13,9 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.plugin.PlugIn;
 import ij.process.FloatProcessor;
-import imagingbook.common.noise.hashing.HashFun;
-import imagingbook.common.noise.perlin.PerlinNoiseGenNd;
+import imagingbook.common.noise.hashing.Hash32Shift;
+import imagingbook.common.noise.hashing.HashFunction;
+import imagingbook.common.noise.perlin.PerlinNoiseGeneratorNd;
 
 /**
  * This ImageJ plugin creates a new noise image using a 3D gradient noise 
@@ -47,24 +48,25 @@ public class Demo_Perlin_3d  implements PlugIn {
 
 	String title = this.getClass().getSimpleName() + " Seed=" + seed;
 	
+	@Override
 	public void run(String arg0) {
 		
 		// choose hash function:
-		HashFun hf = HashFun.create(seed);
-//		HashFun hf = new Hash32Shift(seed);
+//		HashFun hf = HashFun.create(seed);
+		HashFunction hf = new Hash32Shift(seed);
 //		HashFun hf = new Hash32ShiftMult(seed);
 //		HashFun hf = new Hash32Ward(seed);
 //		HashFun hf = new HashPermute(seed); 
 
 		// create the noise generator:
-		PerlinNoiseGenNd png = new PerlinNoiseGenNd(dim, f_min, f_max, persistence, hf);
+		PerlinNoiseGeneratorNd png = new PerlinNoiseGeneratorNd(dim, f_min, f_max, persistence, hf);
 		ImageStack stack = createNoiseImage(wx, wy, wz, png);
 		ImagePlus im = new ImagePlus(this.getClass().getSimpleName(), stack);
 		im.setDisplayRange(-0.6,0.6);
 		im.show();
 	}
 	
-	ImageStack createNoiseImage(int wx, int wy, int wz, PerlinNoiseGenNd ng) {
+	ImageStack createNoiseImage(int wx, int wy, int wz, PerlinNoiseGeneratorNd ng) {
 //		ImagePlus stackImg = 
 //			NewImage.createFloatImage(title, wx, wy, wz, NewImage.FILL_BLACK);		
 //		ImageStack stack = stackImg.getStack();
@@ -81,7 +83,7 @@ public class Demo_Perlin_3d  implements PlugIn {
 					X[0] = u;
 					X[1] = v;
 					X[2] = z * stepZ;
-					fp.setf(u, v, (float)ng.NOISE(X));
+					fp.setf(u, v, (float)ng.getNoiseValue(X));
 				}
 			}
 			stack.addSlice(fp);

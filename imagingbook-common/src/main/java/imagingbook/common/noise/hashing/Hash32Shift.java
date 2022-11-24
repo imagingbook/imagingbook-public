@@ -10,26 +10,41 @@
 package imagingbook.common.noise.hashing;
 
 /**
- * Hash function described in Thomas Wang, "Integer Hash Function"
- * http://www.concentric.net/~Ttwang/tech/inthash.htm (Jan. 2007)
+ * <p>
+ * Integer hash function proposed by Thomas Wang in [1]. See [2] for details.
+ * </p>
+ * <p>
+ * [1] Thomas Wang, "Integer Hash Function",
+ * http://web.archive.org/web/20071223173210/http://www.concentric.net/~Ttwang/tech/inthash.htm
+ * (Jan. 2007).<br>
+ * [2] W. Burger, M.J. Burge, <em>Principles of Digital Image Processing &ndash;
+ * Advanced Methods</em> (Vol. 3), Supplementary Chapter 8: "Synthetic Gradient
+ * Noise", Springer (2013).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/24
  */
-
 public class Hash32Shift extends Hash32 {
 
+	/**
+	 * Constructor, creates a hash function with a random seed value.
+	 */
 	public Hash32Shift() {
-		super();
+		this(0);
 	}
 	
+	/**
+	 * Constructor creating a hash function with the specified seed value.
+	 * @param seed the random seed value (set to 0 use a random seed value).
+	 */
 	public Hash32Shift(int seed) {
 		super(seed);
 	}
 	
 	@Override
 	int hashInt(int key) {
-		return hashIntShift(key);
-	}
-	
-	int hashIntShift(int key) {
+		key = key + seed;	// WB added
 		key = ~key + (key << 15); // key = (key << 15) - key - 1;
 		key = key ^ (key >>> 12);
 		key = key + (key << 2);

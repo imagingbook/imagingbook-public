@@ -9,15 +9,39 @@
 
 package imagingbook.common.noise.hashing;
 
-public class HashPermute extends HashFun {
+/**
+ * <p>
+ * Permutation-based hash function, similar to the one proposed in [1]. See [2]
+ * for details.
+ * </p>
+ * <p>
+ * [1] K. Perlin. An image synthesizer. SIGGRAPH Computer Graphics 19(3),
+ * 287–296 (1985). <br>
+ * [2] W. Burger, M.J. Burge, <em>Principles of Digital Image Processing &ndash;
+ * Advanced Methods</em> (Vol. 3), Supplementary Chapter 8: "Synthetic Gradient
+ * Noise", Springer (2013).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/24
+ */
+public class HashPermute implements HashFunction {
 	
-	public HashPermute() {
-		super();
+	private final int seed;
+	
+	/**
+	 * Constructor, creates a hash function with a random seed value.
+	 */
+	HashPermute() {
+		this(0);
 	}
 	
-    // seed is ignored by HashPermute
+	/**
+	 * Constructor creating a hash function with the specified seed value.
+	 * @param seed the random seed value (set to 0 use a random seed value).
+	 */
 	public HashPermute(int seed) {
-		super(seed);
+		this.seed = HashFunction.getRandomSeed(seed);
 	}
 	
 	@Override
@@ -78,8 +102,8 @@ public class HashPermute extends HashFun {
 	public double[] hash(int[] p) {
 		int N = p.length;
 		double[] g = new double[N];
-		for (int k=0; k<N; k++) {		// dimension k
-			int h = h8(p, k+seed);
+		for (int k = 0; k < N; k++) {		// dimension k
+			int h = h8(p, k + seed);
 			g[k] = (double) (h & 0xFF) / 0xFF;
 		}
 		return g;
@@ -90,7 +114,7 @@ public class HashPermute extends HashFun {
 	 */
 	private int h8 (int[] p, int sd) {
 		int h = sd & 0xFF;
-		for (int k=0; k<p.length; k++) {
+		for (int k = 0; k < p.length; k++) {
 			h = P[h + p[k] & 0xFF];
 		}
 		return h;
@@ -139,13 +163,11 @@ public class HashPermute extends HashFun {
 			P[256 + i] = P[i] = perm[i];
 	}
 	
-	public static void main(String[] args) {
-		HashPermute hf = new HashPermute();
-		for (int k=0; k<256; k++) {
-			System.out.format("%d : %10f\n", k, hf.hash(k));
-			
-		}
-		
-		System.out.println(-1 % 256);
-	}
+//	public static void main(String[] args) {
+//		HashPermute hf = new HashPermute();
+//		for (int k = 0; k < 256; k++) {
+//			System.out.format("%d : %10f\n", k, hf.hash(k));
+//			
+//		}
+//	}
 }

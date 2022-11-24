@@ -11,8 +11,11 @@ package imagingbook.common.noise.hashing;
 
 /**
  * Hash functions for gradient (Perlin) noise.
+ * 
+ * @author WB
+ * @version 2022/11/24
  */
-public abstract class Hash32 extends HashFun {
+public abstract class Hash32 implements HashFunction {
 	
 	private static final int maxInt = 0x7fffffff;
 	
@@ -24,25 +27,24 @@ public abstract class Hash32 extends HashFun {
 	    283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 
 	    353, 359, 367, 373, 379, 383, 389, 397, 401, 409 
 	};
-
-	protected Hash32() {
-		super();
-	}
+	
+	final int seed;
 	
 	protected Hash32(int seed) {
-		super(seed);
+		this.seed = HashFunction.getRandomSeed(seed);
 	}
 	
 	/**
-	 * "Hashes" an <tt>int</tt> key to a "pseudo-random" <tt>int</tt> value 
-	 * in [-2147483648, 2147483647].
-	 * This method is supposed to be overridden by subclasses if needed.
+	 * "Hashes" an <tt>int</tt> key to a "pseudo-random" <tt>int</tt> value in
+	 * [-2147483648, 2147483647]. This method is to be implemented by concrete
+	 * subclasses.
 	 * 
-	 * @param key key for random generator
-	 * @return A integer value in [-2147483648, 2147483647].
+	 * @param key key to be hashed
+	 * @return a integer value in [-2147483648, 2147483647].
 	 */
 	abstract int hashInt(int key);
 	
+	@Override
 	public double hash(int u) {
 		int h = hashInt(73*u + seed) & maxInt;
 		return (double) h / maxInt;
@@ -54,7 +56,8 @@ public abstract class Hash32 extends HashFun {
 //		return new double[] {(double) hx / maxInt, (double) hy / maxInt};
 //	}
 	
-	// call 1 hash function and extract 12-bit blocks
+	// call 1 hash function and extract 12-bit blocks 
+	@Override
 	public double[] hash(int u, int v) {
 		final int M = 0x00000FFF;
 		int h = hashInt(59*u + 67*v + seed);
@@ -74,6 +77,7 @@ public abstract class Hash32 extends HashFun {
 	
 	
 	// call 1 hash function and extract bit blocks
+	@Override
 	public double[] hash(int u, int v, int w) {
 		final int M = 0x000000FF;
 		int h = hashInt(59*u + 67*v + 71*w + seed);
@@ -84,12 +88,12 @@ public abstract class Hash32 extends HashFun {
 	}
 	
 	/*
-	 * N-dimensional permutation hash; this version does not use
-	 * any bit splitting. Instead, the hashInt() function is
-	 * applied repeatedly for every gradient dimension by 
-	 * using the dimension number (k) as a local seed - 
-	 * in addition to the global seed (seed).
+	 * N-dimensional permutation hash; this version does not use any bit splitting.
+	 * Instead, the hashInt() function is applied repeatedly for every gradient
+	 * dimension by using the dimension number (k) as a local seed - in addition to
+	 * the global seed (seed).
 	 */
+	@Override
 	public double[] hash(int[] p) {	
 		final int N = p.length;
 		double[] g = new double[N];

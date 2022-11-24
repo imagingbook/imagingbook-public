@@ -12,8 +12,9 @@ import ij.ImagePlus;
 import ij.plugin.PlugIn;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.noise.hashing.HashFun;
-import imagingbook.common.noise.perlin.PerlinNoiseGenNd;
+import imagingbook.common.noise.hashing.Hash32Shift;
+import imagingbook.common.noise.hashing.HashFunction;
+import imagingbook.common.noise.perlin.PerlinNoiseGeneratorNd;
 
 /**
  * This ImageJ plugin creates a new noise image using a N-dim. gradient noise 
@@ -42,29 +43,30 @@ public class Demo_Perlin_Nd  implements PlugIn {
 
 	String title = this.getClass().getSimpleName() + " Seed=" + seed;
 	
+	@Override
 	public void run(String arg0) {
 		int dim = 2;	// number of dimensions
 		
 		// choose hash function:
-		HashFun hf = HashFun.create(seed);
-//		HashFun hf = new Hash32Shift(seed);
+//		HashFun hf = HashFun.create(seed);
+		HashFunction hf = new Hash32Shift(seed);
 //		HashFun hf = new Hash32ShiftMult(seed);
 //		HashFun hf = new Hash32Ward(seed);
 //		HashFun hf = new HashPermute(seed); 
 
 		// create the noise generator:
-		PerlinNoiseGenNd png = new PerlinNoiseGenNd(dim, f_min, f_max, persistence, hf);
+		PerlinNoiseGeneratorNd png = new PerlinNoiseGeneratorNd(dim, f_min, f_max, persistence, hf);
 		createNoiseImage(w, h, png).show();
 	}
 	
-	ImagePlus createNoiseImage(int w, int h, PerlinNoiseGenNd ng) {
+	ImagePlus createNoiseImage(int w, int h, PerlinNoiseGeneratorNd ng) {
 		ImageProcessor fp = new FloatProcessor(w,h);
 		double[] X = new double[2];
 		for (int v=0; v<h; v++){
 			for (int u=0; u<w; u++){
 				X[0] = u;
 				X[1] = v;
-				fp.setf(u, v, (float) ng.NOISE(X));
+				fp.setf(u, v, (float) ng.getNoiseValue(X));
 			}
 		}
 		fp.setMinAndMax(-0.6,0.6); 	//fp.resetMinAndMax();

@@ -11,19 +11,42 @@ package imagingbook.common.noise.perlin;
 
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.Matrix.IncompatibleDimensionsException;
-import imagingbook.common.noise.hashing.HashFun;
+import imagingbook.common.noise.hashing.HashFunction;
 
 /**
- * Gradient (Perlin) noise implementation.
- * This class implements an N-dimensional Perlin noise generator.
+ * <p>
+ * This class implements an N-dimensional Perlin noise [1] generator. See Ch. 8
+ * of [2] for details.
+ * </p>
+ * <p>
+ * [1] K. Perlin. Improving noise. In "SIGGRAPH’02: Proceedings of the 29th
+ * Annual Conference on Computer Graphics and Interactive Techniques", pp.
+ * 681–682, San Antonio, Texas (2002).<br>
+ * [2] W. Burger and M.J. Burge. "Principles of Digital Image Processing -
+ * Advanced Methods" (Vol. 3). Undergraduate Topics in Computer Science.
+ * Springer-Verlag, London (2013).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/24
  */
-public class PerlinNoiseGenNd extends PerlinNoiseGen {
+
+public class PerlinNoiseGeneratorNd extends PerlinNoiseGenerator {
 	
-	final int N;		// dimensionality, default 1
-	final int K;			// number of hypercube vertices, default 2
-	final int[][] Q;			// vertex coordinates of the unit hypercube
+	private final int N;		// dimensionality, default 1
+	private final int K;		// number of hypercube vertices, default 2
+	private final int[][] Q;	// vertex coordinates of the unit hypercube
 	
-	public PerlinNoiseGenNd(int N, double f_min, double f_max, double persistence, HashFun hf) {
+	
+	/**
+	 * Constructor.
+	 * @param N number of dimensions
+	 * @param f_min minimum frequency
+	 * @param f_max maximum frequency
+	 * @param persistence persistence
+	 * @param hf hash function
+	 */
+	public PerlinNoiseGeneratorNd(int N, double f_min, double f_max, double persistence, HashFunction hf) {
 		super(f_min, f_max, persistence, hf);
 		this.N = N;
 		this.K = (int) Math.pow(2, N);	// number of hypercube vertices
@@ -39,7 +62,7 @@ public class PerlinNoiseGenNd extends PerlinNoiseGen {
 	 * @return The value of the combined Perlin
 	 * noise function for the N-dimensional position X.
 	 */
-	public double NOISE(double[] X) {
+	public double getNoiseValue(double[] X) {
 		double sum = 0;
 		for (int i = 0; i < F.length; i++) { // for all frequencies
 			sum = sum + A[i] * noise(Matrix.multiply(F[i], X));
@@ -53,7 +76,7 @@ public class PerlinNoiseGenNd extends PerlinNoiseGen {
 	 * @return The value of the elementary Perlin
 	 * noise function for the N-dimensional position X.
 	 */
-	public double noise(double[] X) {
+	private double noise(double[] X) {
 		int[] P0 = floor(X);		// origin of hypercube around X
 		 
 		// get the 2^N gradient vectors for all hypercube corners:
@@ -78,7 +101,7 @@ public class PerlinNoiseGenNd extends PerlinNoiseGen {
 	 * @return A pseudo-random gradient vector for 
 	 * the discrete lattice point p (N-dimensional).
 	 */
-	double[] gradient(int[] p) {	
+	private double[] gradient(int[] p) {	
 		if (p.length == 2) {
 			return gradient(p[0],p[1]);
 		}
@@ -98,7 +121,7 @@ public class PerlinNoiseGenNd extends PerlinNoiseGen {
 	 * @param k The interpolation dimension (axis).
 	 * @return  The interpolated noise value at position X01.
 	 */
-	double interpolate(double[] X01, double[] WW, int k) {
+	private double interpolate(double[] X01, double[] WW, int k) {
 		if (WW.length == 1) { // (d == N)
 			return WW[0]; // done, end of recursion
 		} else { // d < N
@@ -133,14 +156,14 @@ public class PerlinNoiseGenNd extends PerlinNoiseGen {
 	}
 	
 	// from 2D example
-	double[] gradient(int i, int j) {
+	private double[] gradient(int i, int j) {
 		double[] g = hashFun.hash(i,j);		// hash() always returns a new double[]
 		g[0] = 2.0 * g[0] - 1;
 		g[1] = 2.0 * g[1] - 1;
 		return g;
 	}
 	
-	double[] subtract(double[] a, int[] b) {
+	private double[] subtract(double[] a, int[] b) {
 		if (a.length != b.length)
 			throw new IncompatibleDimensionsException();
 		final int n = a.length;
@@ -151,7 +174,7 @@ public class PerlinNoiseGenNd extends PerlinNoiseGen {
 		return c;
 	}
 	
-	int[] add(int[] a, int[] b) {
+	private int[] add(int[] a, int[] b) {
 		if (a.length != b.length)
 			throw new IncompatibleDimensionsException();
 		final int n = a.length;
@@ -162,16 +185,12 @@ public class PerlinNoiseGenNd extends PerlinNoiseGen {
 		return c;
 	}
 	
-	int[] floor(double[] a) {
+	private int[] floor(double[] a) {
 		int[] b = new int[a.length];
 		for (int i = 0; i < a.length; i++) {
 			b[i] = (int) Math.floor(a[i]);
 		}
 		return b;
 	}
-
-//	private int Power2(int k) {
-//		return 1 << k;
-//	}
 
 }

@@ -9,27 +9,48 @@
 
 package imagingbook.common.noise.perlin;
 
-import imagingbook.common.noise.hashing.HashFun;
+import imagingbook.common.noise.hashing.HashFunction;
 
 /**
- * Gradient (Perlin) noise implementation. 
- * This class implements a 2D Perlin noise generator.
+ * <p>
+ * This class implements a 2D Perlin noise [1] generator. See Ch. 8 of [2] for
+ * details.
+ * </p>
+ * <p>
+ * [1] K. Perlin. Improving noise. In "SIGGRAPH’02: Proceedings of the 29th
+ * Annual Conference on Computer Graphics and Interactive Techniques", pp.
+ * 681–682, San Antonio, Texas (2002).<br>
+ * [2] W. Burger and M.J. Burge. "Principles of Digital Image Processing -
+ * Advanced Methods" (Vol. 3). Undergraduate Topics in Computer Science.
+ * Springer-Verlag, London (2013).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/24
  */
-
-public class PerlinNoiseGen2d extends PerlinNoiseGen {
+public class PerlinNoiseGenerator2d extends PerlinNoiseGenerator {
 	
-	public PerlinNoiseGen2d(double f_min, double f_max, double persistence, HashFun hf) {
+	/**
+	 * Constructor.
+	 * @param f_min minimum frequency
+	 * @param f_max maximum frequency
+	 * @param persistence persistence
+	 * @param hf hash function
+	 */
+	public PerlinNoiseGenerator2d(double f_min, double f_max, double persistence, HashFunction hf) {
 		super(f_min, f_max, persistence, hf);
 	}
 	
 	/**
 	 * 2D combined (multi-frequency) Perlin noise function. 
-	 * @param x Interpolation position x.
-	 * @param y Interpolation position y.
-	 * @return The value of the combined Perlin
+	 * Returns the value of the combined Perlin
 	 * noise function for the two-dimensional position (x,y).
-	 */
-	public double NOISE(double x, double y) {
+	 * 
+	 * @param x interpolation position x
+	 * @param y interpolation position y
+	 * @return the noise value for position (x,y)
+	 */ 
+	public double getNoiseValue(double x, double y) {
 		double sum = 0;
 		for (int i = 0; i < F.length; i++) {
 			sum = sum + A[i] * noise(F[i] * x, F[i] * y);
@@ -44,9 +65,9 @@ public class PerlinNoiseGen2d extends PerlinNoiseGen {
 	 * @return The value of the elementary Perlin
 	 * noise function for the two-dimensional position (x,y).
 	 */
-	public double noise(double x, double y) {
-		int px = (int) ffloor(x);
-		int py = (int) ffloor(y);
+	private double noise(double x, double y) {
+		int px = ffloor(x);
+		int py = ffloor(y);
 		double[] g00 = gradient(px, py);
 		double[] g10 = gradient(px + 1, py);
 		double[] g01 = gradient(px, py + 1);
@@ -65,7 +86,7 @@ public class PerlinNoiseGen2d extends PerlinNoiseGen {
 	 * @param py discrete vert. position
 	 * @return A pseudo-random gradient vector for the discrete position (px,py).
 	 */
-	double[] gradient(int px, int py) {
+	private double[] gradient(int px, int py) {
 		double[] g = hashFun.hash(px, py); // hash() always returns a new double[] in [0,1]
 		g[0] = 2.0 * g[0] - 1;
 		g[1] = 2.0 * g[1] - 1;
@@ -82,7 +103,7 @@ public class PerlinNoiseGen2d extends PerlinNoiseGen {
 	 * @param w11 Tangent value for position (1,1).
 	 * @return  The interpolated noise value at position (x01,y01).
 	 */
-	double interpolate(double x01, double y01, double w00, double w10, double w01, double w11) { 
+	private double interpolate(double x01, double y01, double w00, double w10, double w01, double w11) { 
 		double sx = this.s(x01); 
 		double w0 = (1 - sx) * w00 + sx * w10;
 		double w1 = (1 - sx) * w01 + sx * w11;

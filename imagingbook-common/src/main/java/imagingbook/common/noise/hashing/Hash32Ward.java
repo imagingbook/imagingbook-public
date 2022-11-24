@@ -10,28 +10,51 @@
 package imagingbook.common.noise.hashing;
 
 /**
- * Hash function described in G. Ward, "A recursive implementation 
- * of the Perlin noise function", Graphics Gems II, 1991
+ * <p>
+ * Hash function proposed by G Ward in [1]. See [2] for details.
+ * </p>
+ * <p>
+ * [1] G. Ward, "A recursive implementation of the Perlin noise function",
+ * Graphics Gems II (1991).<br>
+ * [2] W. Burger, M.J. Burge, <em>Principles of Digital Image Processing &ndash;
+ * Advanced Methods</em> (Vol. 3), Supplementary Chapter 8: "Synthetic Gradient
+ * Noise", Springer (2013).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/24
  */
 public class Hash32Ward extends Hash32 {
 	
+	/**
+	 * Constructor, creates a hash function with a random seed value.
+	 */
 	public Hash32Ward() {
-		super();
+		this(0);
 	}
 	
+	/**
+	 * Constructor creating a hash function with the specified seed value.
+	 * @param seed the random seed value (set to 0 use a random seed value).
+	 */
 	public Hash32Ward(int seed) {
 		super(seed);
 	}
 	
 	@Override
 	int hashInt(int key) {
-		return hashIntWard(key);
-	}
-	
-	//  lower 16 bits are highly repetitive and perfectly uniform!!!!
-	int hashIntWard(int key) {
+		key = key + seed;	// WB added
+		// lower 16 bits are highly repetitive and "perfectly" uniform!
 		key = (key << 13) ^ key; // ^ denotes bitwise XOR operation
 		key = (key * (key * key * 15731 + 789221) + 1376312589);
 		return key;
+	}
+	
+	public static void main(String[] args) {
+		Hash32Ward hf = new Hash32Ward();
+		for (int k = 0; k < 256; k++) {
+			System.out.format("%d : %10f\n", k, hf.hash(k));
+			
+		}
 	}
 }
