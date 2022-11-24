@@ -10,6 +10,7 @@ package Ch26_MSER;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,13 +21,13 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Overlay;
 import ij.gui.Roi;
-import ij.io.LogStream;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.GuiTools;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
@@ -36,19 +37,29 @@ import imagingbook.common.mser.MserDetector;
 import imagingbook.common.mser.MserParameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.PixelMap.Pixel;
+import imagingbook.sampleimages.SiftSampleImage;
 
 /**
- * Runs MSER detection on the current image and produces a color image
- * with vector overlay.
+ * <p>
+ * ImageJ plugin which runs MSER detection [1] on the current image and shows
+ * the result as a vector overlay in a new image. If the option
+ * {@code MarkMserPixels} is selected, the output is a color image with pixels
+ * belonging to MSER components marked in different colors. The input image is
+ * always converted to grayscale before MSER detection is performed. See Ch. 26
+ * of [2] for details.
+ * </p>
+ * <p>
+ * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline stereo
+ * from maximally stable extremal regions. Image and Vision Computing 22(10),
+ * 761–767 (2004). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
+ * @version 2022/11/24
  */
-public class MSER_Detect_Features implements PlugInFilter {
-	
-	static {
-		LogStream.redirectSystem();
-	}
+public class MSER_Detection_Demo implements PlugInFilter {
 	
 	private static boolean ShowMserCount = true;
 	private static boolean ShowEllipses = true;
@@ -58,33 +69,35 @@ public class MSER_Detect_Features implements PlugInFilter {
 	private static boolean ShowElapsedTime = false;
 	
 	// processing direction
-	private static boolean BlackToWhite = true;		// default
+	private static boolean BlackToWhite = true;		// detect on original image (default)
 	private static boolean WhiteToBlack = false;	// detect on inverted image
 	
 	private static boolean UseTwoColorsOnly = false;	// detect on inverted image
-	private Color BlackToWhiteColor = MserColors.Yellow.getColor(); //.Orange;
-	private Color WhiteToBlackColor = MserColors.Cyan.getColor();
-	
+	private static Color BlackToWhiteColor = MserColors.Yellow.getColor(); //.Orange;
+	private static Color WhiteToBlackColor = MserColors.Cyan.getColor();
 	private static int MinDisplayWidth = 300;
 	
 	private static MserParameters params = new MserParameters();	// MSER parameters
 	
-
-	ImagePlus im = null;
-	
+	private ImagePlus im = null;
 	private Color[] colors = null;
-	
-
-	
 	private double ellipseStrokeWidth = 0;		// set dynamically
 	private int labelFontSize = 0;				// set dynamically
-	private Font labelFont = null;				// set dynamically
+	private Font labelFont = null;				// set dynamically	
+	private Roi roi = null;
+	private ByteProcessor bp = null;
+	private ImageProcessor ip2 = null;
+	private Overlay oly = null;
 	
-	
-	Roi roi = null;
-	ByteProcessor bp = null;
-	ImageProcessor cp = null;
-	Overlay oly = null;
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public MSER_Detection_Demo() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(SiftSampleImage.Castle);
+		}
+	}
 	
 	@Override
 	public int setup(String arg0, ImagePlus im) {
@@ -103,7 +116,7 @@ public class MSER_Detect_Features implements PlugInFilter {
 		}
 		
 		bp = ip.convertToByteProcessor();
-		cp = (MarkMserPixels) ? ip.convertToColorProcessor() : ip.convertToByteProcessor();
+		ip2 = (MarkMserPixels) ? ip.convertToColorProcessor() : ip.convertToByteProcessor();
 		oly = new Overlay();
 		String title = im.getShortTitle() + "-MSER";
 		
@@ -113,10 +126,8 @@ public class MSER_Detect_Features implements PlugInFilter {
 		if (UseTwoColorsOnly) title = title + "-2c";
 		
 		Color[] palette = MserColors.LevelColors;
-		
 		labelFont = new Font(Font.SANS_SERIF, Font.PLAIN, labelFontSize);
 	
-		
 		List<Component<MserData>> msersB = null;
 		List<Component<MserData>> msersW = null;
 //		List<Component<MserData>> msersAll = new ArrayList<>();
@@ -152,6 +163,10 @@ public class MSER_Detect_Features implements PlugInFilter {
 			elapsedTime += detector.getElapsedTime();
 		}
 		
+		if (ShowMserCount && BlackToWhite && WhiteToBlack) {
+			IJ.log("Found MSERs total: " + (msersB.size() + msersW.size()));
+		}
+		
 		if (ShowElapsedTime) {
 			IJ.log(String.format("Algorithm %s: time elapsed %.0fms", params.method, elapsedTime));
 		}
@@ -168,7 +183,7 @@ public class MSER_Detect_Features implements PlugInFilter {
 //		Component.sortBySize(msersAll);	// optional
 //		drawToOverlay(msersAll);
 		
-		ImagePlus cimp = new ImagePlus(title, cp);
+		ImagePlus cimp = new ImagePlus(title, ip2);
 		setMserImageProps(cimp, params);
 		cimp.setOverlay(oly);
 		cimp.show();
@@ -198,9 +213,9 @@ public class MSER_Detect_Features implements PlugInFilter {
 			if (MarkMserPixels) {
 				float[] hsb = Color.RGBtoHSB(vecCol.getRed(), vecCol.getGreen(), vecCol.getBlue(), null);
 				Color pixCol = Color.getHSBColor(hsb[0], 0.5f, 0.5f);
-				cp.setColor(pixCol);
+				ip2.setColor(pixCol);
 				for (Pixel pnt : c.getAllPixels()) {
-					cp.drawDot(pnt.x, pnt.y);
+					ip2.drawDot(pnt.x, pnt.y);
 				}
 			}
 			
@@ -221,23 +236,13 @@ public class MSER_Detect_Features implements PlugInFilter {
 	
 	private boolean runDialog(MserParameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		
-//		gd.addEnumChoice("Component tree method", params.method);
-//		gd.addNumericField("Delta:", params.delta, 0);
-//		gd.addNumericField("Max variation (%)", params.maxSizeVariation * 100, 0);
-//		gd.addNumericField("Min diversity (%)", params.minDiversity * 100, 0);
-//		gd.addNumericField("Max rel. area (%)", params.maxRelCompSize * 100, 0);
-//		gd.addNumericField("Min rel. area (%)", params.minRelCompSize * 100, 0);
-//		gd.addNumericField("Min abs. area (pixel)", params.minAbsComponentArea, 0);
-//		gd.addNumericField("Min region compactness (%)", params.minCompactness * 100, 0);
-//		gd.addCheckbox("Constrain ellipse size", params.constrainEllipseSize);
 		addToDialog(params, gd);
 		
 		gd.addCheckbox("BLACK -> WHITE", BlackToWhite);
 		gd.addCheckbox("WHITE -> BLACK", WhiteToBlack);
 		gd.addCheckbox("Use 2 colors only", UseTwoColorsOnly);
 		
-		gd.addMessage("Output:");
+		gd.addMessage("Output parameters:");
 		gd.addCheckbox("Show MSER count", ShowMserCount);
 		gd.addCheckbox("Show elapsed time", ShowElapsedTime);
 		gd.addCheckbox("Show ellipses", ShowEllipses);
@@ -247,29 +252,15 @@ public class MSER_Detect_Features implements PlugInFilter {
 		gd.addCheckbox("Mark MSER pixels", MarkMserPixels);
 		gd.addCheckbox("Show color palette", ShowColorPalette);
 		
-		
-//		gd.addMessage("Debugging:");
-//		gd.addCheckbox("Validate component tree", params.validateComponentTree);
-		
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
 
-//		params.method = gd.getNextEnumChoice(Method.class);
-//		params.delta = (int) gd.getNextNumber();
-//		params.maxSizeVariation = gd.getNextNumber() / 100;
-//		params.minDiversity = gd.getNextNumber() / 100;
-//		params.maxRelCompSize = gd.getNextNumber() / 100;
-//		params.minRelCompSize = gd.getNextNumber() / 100;
-//		params.minAbsComponentArea = (int) gd.getNextNumber();
-//		params.minCompactness = gd.getNextNumber() / 100;
-//		params.constrainEllipseSize = gd.getNextBoolean();	
 		getFromDialog(params, gd);
 		
 		BlackToWhite = gd.getNextBoolean();
 		WhiteToBlack = gd.getNextBoolean();
-		UseTwoColorsOnly = gd.getNextBoolean();
-		
+		UseTwoColorsOnly = gd.getNextBoolean();	
 		// Output:
 		ShowMserCount = gd.getNextBoolean();
 		ShowElapsedTime = gd.getNextBoolean();
