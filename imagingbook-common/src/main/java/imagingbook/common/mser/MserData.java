@@ -48,7 +48,7 @@ public class MserData {
 	
 	/**
 	 * Constructor.
-	 * @param c the associated {@link Component}
+	 * @param c a reference to the associated {@link Component}
 	 */
 	public MserData(Component<MserData> c) {
 		this.component = c;

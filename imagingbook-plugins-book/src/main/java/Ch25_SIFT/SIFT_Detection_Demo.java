@@ -10,7 +10,6 @@
 package Ch25_SIFT;
 
 import static imagingbook.common.color.sets.ColorEnumeration.getColors;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import java.awt.Color;
 import java.util.List;
@@ -22,6 +21,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.sift.SiftColors;
@@ -72,7 +72,7 @@ public class SIFT_Detection_Demo implements PlugInFilter {
 	 * is currently open.
 	 */
 	public SIFT_Detection_Demo() {
-		if (noCurrentImage()) {
+		if (IjUtils.noCurrentImage()) {
 			DialogUtils.askForSampleImage(SampleImage);
 		}
 	}

@@ -30,7 +30,6 @@ public class MserDetectorTest {
 	@Test
 	public void test1() {
 		params = new MserParameters();	// MSER default parameters
-
 		params.method = Method.LinearTime;
 		params.delta = 5;
 		params.minAbsComponentArea = 	3;
@@ -41,8 +40,6 @@ public class MserDetectorTest {
 		params.constrainEllipseSize = 	true;
 		params.minCompactness = 		0.2;		
 		params.validateComponentTree =	false;
-
-		
 		
 		runMser(MserTestImage.Blob1, 3);
 		runMser(MserTestImage.Blob2, 6);
