@@ -10,11 +10,9 @@ package imagingbook.sampleimages;
 
 import imagingbook.core.resource.ImageResource;
 
-public enum SiftSampleImage implements ImageResource {
+public enum MserSampleImage implements ImageResource {
 	
-		Castle,
-		RamsesSmall,
-		RamsesSmallStack_tif
+		MortarSmall,
 	;
 
 }

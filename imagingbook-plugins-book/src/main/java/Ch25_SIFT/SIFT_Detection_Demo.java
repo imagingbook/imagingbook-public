@@ -28,6 +28,7 @@ import imagingbook.common.sift.SiftColors;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftParameters;
+import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.SiftSampleImage;
 
 /**
@@ -35,12 +36,13 @@ import imagingbook.sampleimages.SiftSampleImage;
  * This plugin extracts multi-scale SIFT features [1] from the current image and
  * displays them as M-shaped markers. The list of keypoints (if shown) is sorted
  * by descending magnitude. The input image is always converted to grayscale
- * before SIFT feature detection is performed. See Ch. 25 of [2] for details.
+ * before SIFT feature detection is performed. See Ch. 25 of [2] for details. If
+ * no image is currently open, the user is asked to load a predefined sample
+ * image.
  * </p>
  * <p>
  * [1] D. G. Lowe. Distinctive image features from scale-invariant keypoints.
- * International Journal of Computer Vision 60, 91–110 (2004).
- * <br>
+ * International Journal of Computer Vision 60, 91–110 (2004). <br>
  * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
  * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
@@ -53,6 +55,8 @@ import imagingbook.sampleimages.SiftSampleImage;
  */
 
 public class SIFT_Detection_Demo implements PlugInFilter {
+	
+	private static ImageResource SampleImage = SiftSampleImage.Castle;
 	
 	private static SiftParameters params = new SiftParameters();
 	private static int MaxFeaturesToShow = 200;
@@ -69,7 +73,7 @@ public class SIFT_Detection_Demo implements PlugInFilter {
 	 */
 	public SIFT_Detection_Demo() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(SiftSampleImage.Castle);
+			DialogUtils.askForSampleImage(SampleImage);
 		}
 	}
 	

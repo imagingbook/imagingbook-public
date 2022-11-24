@@ -37,7 +37,8 @@ import imagingbook.common.mser.MserDetector;
 import imagingbook.common.mser.MserParameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.sampleimages.SiftSampleImage;
+import imagingbook.core.resource.ImageResource;
+import imagingbook.sampleimages.MserSampleImage;
 
 /**
  * <p>
@@ -46,7 +47,8 @@ import imagingbook.sampleimages.SiftSampleImage;
  * {@code MarkMserPixels} is selected, the output is a color image with pixels
  * belonging to MSER components marked in different colors. The input image is
  * always converted to grayscale before MSER detection is performed. See Ch. 26
- * of [2] for details.
+ * of [2] for details. If no image is currently open, the user is asked to load
+ * a predefined sample image.
  * </p>
  * <p>
  * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline stereo
@@ -58,8 +60,12 @@ import imagingbook.sampleimages.SiftSampleImage;
  * 
  * @author WB
  * @version 2022/11/24
+ * 
+ * @see MserDetecor
  */
 public class MSER_Detection_Demo implements PlugInFilter {
+	
+	private static ImageResource SampleImage = MserSampleImage.MortarSmall;
 	
 	private static boolean ShowMserCount = true;
 	private static boolean ShowEllipses = true;
@@ -95,7 +101,7 @@ public class MSER_Detection_Demo implements PlugInFilter {
 	 */
 	public MSER_Detection_Demo() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(SiftSampleImage.Castle);
+			DialogUtils.askForSampleImage(SampleImage);
 		}
 	}
 	

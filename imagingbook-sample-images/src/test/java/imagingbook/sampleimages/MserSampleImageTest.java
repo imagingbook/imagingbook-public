@@ -8,13 +8,16 @@
  *******************************************************************************/
 package imagingbook.sampleimages;
 
-import imagingbook.core.resource.ImageResource;
+import org.junit.Test;
 
-public enum SiftSampleImage implements ImageResource {
+//import imagingbook.sampleimages.testutils.ResourceTestUtils;
+import imagingbook.testutils.ResourceTestUtils;
+
+public class MserSampleImageTest {
 	
-		Castle,
-		RamsesSmall,
-		RamsesSmallStack_tif
-	;
-
+	@Test
+	public void test1() {
+		ResourceTestUtils.testImageResource(MserSampleImage.class);
+	}
+	
 }
