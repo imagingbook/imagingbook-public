@@ -7,35 +7,34 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 
-package imagingbook.common.mser;
+package imagingbook.common.sift;
+
+import static imagingbook.common.color.sets.ColorEnumeration.getColors;
 
 import java.awt.Color;
 
 import imagingbook.common.color.sets.ColorEnumeration;
 
 /**
- * Color definitions used in MSER demo plugins.
+ * Color definitions used in various SIFT demo plugins.
+ * 
  * @author WB
  * @version 2022/11/19
- *
  */
-public enum MserColor implements ColorEnumeration {
+public enum SiftColors implements ColorEnumeration {
 	Red(240,0,0),
 	Green(0,185,15),
 	Blue(0,60,255),
 	Magenta(255,0,200),
-	Brown(0xA0, 0x52, 0x2D),
 	Yellow(255,200,0),
-	Orange(0xff, 0xb6, 0x56),
-	Cyan(0x00, 0xc6, 0xFF),
 	;
-
-	public static final Color[] LevelColors = 
-		{Red.getColor(), Green.getColor(), Blue.getColor(), Magenta.getColor()}; // same as SIFT
+	
+	public static final Color[] ScaleLevelColors = 
+			getColors(SiftColors.class);
 	
 	private final Color color;
 	
-	MserColor(int r, int g, int b) {
+	SiftColors(int r, int g, int b) {
 		this.color = new Color(r, g, b);
 	}
 	
@@ -43,5 +42,5 @@ public enum MserColor implements ColorEnumeration {
 	public Color getColor() {
 		return this.color;
 	}
-
+	
 }
