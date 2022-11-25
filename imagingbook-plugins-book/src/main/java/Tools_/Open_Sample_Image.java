@@ -1,4 +1,4 @@
-package More_;
+package Tools_;
 
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
