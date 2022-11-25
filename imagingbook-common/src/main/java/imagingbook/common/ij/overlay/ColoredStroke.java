@@ -82,6 +82,13 @@ public class ColoredStroke implements Cloneable {	// TODO: simplify API
 		this.setStrokeColor(strokeColor);
 	}
 	
+	public ColoredStroke(double lineWidth, Color strokeColor, Color fillColor) {
+		this();
+		this.setLineWidth(lineWidth);
+		this.setStrokeColor(strokeColor);
+		this.setFillColor(fillColor);
+	}
+	
 	@Override
 	public ColoredStroke clone() {
 		return new ColoredStroke(lineWidth, endCap, lineJoin, 
