@@ -30,14 +30,12 @@ import imagingbook.common.noise.hashing.HashFunction;
  * @author WB
  * @version 2022/11/24
  */
-
 public class PerlinNoiseGeneratorNd extends PerlinNoiseGenerator {
 	
-	private final int N;		// dimensionality, default 1
+	private final int N;		// dimensionality
 	private final int K;		// number of hypercube vertices, default 2
 	private final int[][] Q;	// vertex coordinates of the unit hypercube
-	
-	
+		
 	/**
 	 * Constructor.
 	 * @param N number of dimensions
