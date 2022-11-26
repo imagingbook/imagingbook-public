@@ -30,7 +30,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 /**
  * <p>
- * Different grid raster.
+ * Different grid topology -- problems with crossing lines!.
  * ImageJ plugin, performs piecewise affine transformation by triangulation of
  * the input image, as described in Sec. 21.1.8 (see Fig. 21.13) of [1].
  * </p>
@@ -134,12 +134,11 @@ public class Mesh_Warp_Interactive3 implements PlugInFilter, MouseListener, Mous
 		ipOrig.setInterpolate(true);
 		ipOrig.setInterpolationMethod(ImageProcessor.BICUBIC);
 		
-		im.setProperty(PropertyKey, "running");
-		im.setTitle(title + EditString);
-		setupListeners();
-		
 		reset();
 		repaint();
+		im.setTitle(title + EditString);
+		im.setProperty(PropertyKey, "running");
+		setupListeners();
 		IJ.wait(200);
 	}
 	
@@ -186,6 +185,7 @@ public class Mesh_Warp_Interactive3 implements PlugInFilter, MouseListener, Mous
 	
 		trianglesOrig = new Triangle[Rows - 1][Cols - 1][2];
 		trianglesWarp = new Triangle[Rows - 1][Cols - 1][2];
+		
 		updateTriangles(trianglesOrig, gridOrig);
 		updateTriangles(trianglesWarp, gridWarp);
 	}
@@ -218,8 +218,14 @@ public class Mesh_Warp_Interactive3 implements PlugInFilter, MouseListener, Mous
 		if (ShowTriangles) {
 			for (int r = 0; r < pnts.length - 1; r++) {
 				for (int c = 0; c < pnts[0].length - 1; c++) {
-					gridPath.moveTo(pnts[r][c].getX(), pnts[r][c].getY());
-					gridPath.lineTo(pnts[r + 1][c + 1].getX(), pnts[r + 1][c + 1].getY());
+					if ((r + c) % 2 == 0) {
+						gridPath.moveTo(pnts[r][c].getX(), pnts[r][c].getY());
+						gridPath.lineTo(pnts[r + 1][c + 1].getX(), pnts[r + 1][c + 1].getY());
+					}
+					else {
+						gridPath.moveTo(pnts[r+1][c].getX(), pnts[r+1][c].getY());
+						gridPath.lineTo(pnts[r][c + 1].getX(), pnts[r][c + 1].getY());
+					}
 				}
 			}
 		}	
@@ -321,7 +327,8 @@ public class Mesh_Warp_Interactive3 implements PlugInFilter, MouseListener, Mous
 		Pnt2d[] Q = {tQ.pa, tQ.pb, tQ.pc};
 		return AffineMapping2D.fromPoints(P, Q);
 	}
-		
+	
+	// to each grid point (r,c), 
 	private void updateTriangles(Triangle[][][] theTriangles, Pnt2d[][] theGrid) {
 		for (int r = 0; r < Rows - 1; r++) {
 			for (int c = 0; c < Cols - 1; c++) {
@@ -329,8 +336,14 @@ public class Mesh_Warp_Interactive3 implements PlugInFilter, MouseListener, Mous
 				Pnt2d p1 = theGrid[r+1][c];
 				Pnt2d p2 = theGrid[r+1][c+1];
 				Pnt2d p3 = theGrid[r][c+1];
-				theTriangles[r][c][0] = new Triangle(p0, p1, p2, r, c, 0);	// triangle A
-				theTriangles[r][c][1] = new Triangle(p0, p2, p3, r, c, 1);	// triangle B
+				if ((r + c) % 2 == 0) {
+					theTriangles[r][c][0] = new Triangle(p0, p1, p2, r, c, 0);	// triangle A
+					theTriangles[r][c][1] = new Triangle(p0, p2, p3, r, c, 1);	// triangle B
+				}
+				else {
+					theTriangles[r][c][0] = new Triangle(p0, p1, p3, r, c, 0);	// triangle C
+					theTriangles[r][c][1] = new Triangle(p1, p2, p3, r, c, 1);	// triangle D
+				}
 			}
 		}
 	}
@@ -552,13 +565,24 @@ public class Mesh_Warp_Interactive3 implements PlugInFilter, MouseListener, Mous
 	class EnclosingPoly extends Path2D.Double {
 		
 		EnclosingPoly(int r, int c) {
-			this.moveTo(gridWarp[r][c+1].getX(), 	gridWarp[r][c+1].getY());  	// 0
-			this.lineTo(gridWarp[r-1][c].getX(), 	gridWarp[r-1][c].getY());  	// 2
-			this.lineTo(gridWarp[r-1][c-1].getX(), 	gridWarp[r-1][c-1].getY());  // 3
-			this.lineTo(gridWarp[r][c-1].getX(), 	gridWarp[r][c-1].getY());  	// 4
-			this.lineTo(gridWarp[r+1][c].getX(), 	gridWarp[r+1][c].getY());  	// 6
-			this.lineTo(gridWarp[r+1][c+1].getX(), 	gridWarp[r+1][c+1].getY());  // 7
-			this.closePath();
+			if ((r + c) % 2 == 0) {
+				this.moveTo(gridWarp[r-1][c-1].getX(), 	gridWarp[r-1][c-1].getY());  	// 0
+				this.lineTo(gridWarp[r  ][c-1].getX(), 	gridWarp[r  ][c-1].getY());  	// 2
+				this.lineTo(gridWarp[r+1][c-1].getX(), 	gridWarp[r+1][c-1].getY());  // 3
+				this.lineTo(gridWarp[r+1][c  ].getX(), 	gridWarp[r+1][c  ].getY());  	// 4
+				this.lineTo(gridWarp[r+1][c+1].getX(), 	gridWarp[r+1][c+1].getY());  	// 6
+				this.lineTo(gridWarp[r  ][c+1].getX(), 	gridWarp[r  ][c+1].getY());  // 7
+				this.lineTo(gridWarp[r-1][c+1].getX(), 	gridWarp[r-1][c+1].getY());  // 7
+				this.lineTo(gridWarp[r-1][c  ].getX(), 	gridWarp[r-1][c  ].getY());  // 7
+				this.closePath();
+			}
+			else {
+				this.moveTo(gridWarp[r  ][c-1].getX(), 	gridWarp[r  ][c-1].getY());  	// 2
+				this.lineTo(gridWarp[r+1][c  ].getX(), 	gridWarp[r+1][c  ].getY());  	// 4
+				this.lineTo(gridWarp[r  ][c+1].getX(), 	gridWarp[r  ][c+1].getY());  // 7
+				this.lineTo(gridWarp[r-1][c  ].getX(), 	gridWarp[r-1][c  ].getY());  // 7
+				this.closePath();
+			}
 		}
 	}
 	
