@@ -22,7 +22,6 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.ij.DialogUtils;
@@ -59,6 +58,10 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * <li>enter or escape key: finish editing.</li>
  * </ul>
  * <p>
+ * Note that this implementation is ad hoc and leaves much room for improvements
+ * and increased efficiency.
+ * </p>
+ * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
  * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
@@ -67,18 +70,6 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * @version 2022/11/25
  */
 public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, MouseMotionListener, KeyListener {
-	
-	/*
-	Ideas for improvement: The remapping process is currently brute force and can be improved
-	in various ways to make it much faster:
-	+ all triangles and affine transformations should be pre-calculated.
-	+ allow other types of triangulations (e.g., 
-		see https://weltbild.scene7.com/asset/vgwjo/vgw/brettspiele-der-welt-254350853.jpg);
-	+ make the outer points movable too
-	+ enlarge canvas, add margins;
-	+ implement the grid as a (flexible) separate class;
-	+ use {@link ImageAccessor} for interpolation.
-	*/
 
 	private static final String PropertyKey = Mesh_Warp_Interactive.class.getName();
 	private static final String EditString = " (editing)";
@@ -91,32 +82,31 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private static double CatchRadius = 3.0;
 	private static boolean ShowTriangles = true;
 	
-	
-	private ImagePlus im;
-	private ImageWindow win;
-	private ImageCanvas canvas;
-	private String title;
-	
 	// event handling variables:
 	private KeyListener[] windowKeyListeners = null;
 	private MouseListener[] canvasMouseListeners = null;
 	private KeyListener[] canvasKeyListeners = null;
 	private MouseMotionListener[] canvasMouseMotionListeners = null;
 	
-	// grid points positions
+	// data structures representing the grid and mesh
+	// grid points positions:
 	private double[][][] gridOrig;
 	private double[][][] gridWarp;				// gridWarp[row][col][x/y]
-	// triangles
+	// triangles:
 	private Triangle[][][] trianglesOrig;
 	private Triangle[][][] trianglesWarp;		// trianglesWarp[row][col][0/1]
 	
-	
 	private int rSelect = -1;			// the currently selected grid point (row)
 	private int cSelect = -1;			// the currently selected grid point (column)
-	
 	private EnclosingPoly enclosingPolygon = null;
 	private boolean nodeSelected = false;
+	
+	
+	private ImageWindow win;
+	private ImageCanvas canvas;
+	private ImagePlus im;
 	private ImageProcessor ipOrig = null;
+	private String title;
 
 	@Override
 	public int setup(String arg, ImagePlus im) {
@@ -143,7 +133,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		ipOrig.setInterpolate(true);
 		ipOrig.setInterpolationMethod(ImageProcessor.BICUBIC);
 		
-		String title = im.getTitle();
 		im.setProperty(PropertyKey, "running");
 		im.setTitle(title + EditString);
 		setupListeners();
@@ -165,12 +154,12 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	
 	private void finish() {
 		revertListeners();
-		ipOrig = null;
 		im.setTitle(title);
 		nodeSelected = false;
 		enclosingPolygon = null;
-		repaint();
+		ipOrig = null;
 		im.setProperty(PropertyKey, null);
+		repaint();
 	}
 	
 	// ---------------------------------------------------------------
@@ -264,9 +253,8 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	}
 	
 	// move the currently selected grid point to new position
-	private void moveSelectedGridPoint(double newX, double newY) {
-		//if (selected) {	// only move if a grid point is currently selected
-		if (rSelect >= 0 && rSelect < Rows && cSelect >= 0 && cSelect < Cols) {
+	private void moveSelectedGridPoint(int newX, int newY) {
+		if (nodeSelected && (rSelect >= 0) && (rSelect < Rows) && (cSelect >= 0) && (cSelect < Cols)) {
 			gridWarp[rSelect][cSelect][0] = newX;
 			gridWarp[rSelect][cSelect][1] = newY;
 		}
@@ -275,7 +263,9 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private boolean selectGridPoint(int clickX, int clickY) {
 		for (int r = 0; r < gridWarp.length; r++) {
 			for (int c = 0; c < gridWarp[r].length; c++) {
-				double dist = dist(gridWarp[r][c], clickX, clickY);
+				double dx = gridWarp[r][c][0] - clickX;
+				double dy = gridWarp[r][c][1] - clickY;
+				double dist = Math.hypot(dx, dy);
 				if (dist <= CatchRadius) {
 					rSelect = r;
 					cSelect = c;
@@ -283,38 +273,9 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 				}
 			}
 		}
+		rSelect = -1;
+		cSelect = -1;
 		return false;
-	}
-	
-	/**
-	 * Returns a closed polygon for the grid point (v, h)
-	 * @param r selected center (row) coordinate
-	 * @param c selected center (column) coordinate
-	 * @return
-	 */
-	private Path2D.Double getEnclosingPolygon(int r, int c) {
-		if (0 < r && r < Rows-1 && 0 < c && c < Cols-1) {	// currently only inner points have polygons
-			Path2D.Double path = new Path2D.Double();
-			path.moveTo(gridWarp[r][c+1][0], gridWarp[r][c+1][1]);  	// 0
-			path.lineTo(gridWarp[r-1][c][0], gridWarp[r-1][c][1]);  	// 2
-			path.lineTo(gridWarp[r-1][c-1][0], gridWarp[r-1][c-1][1]);  // 3
-			path.lineTo(gridWarp[r][c-1][0], gridWarp[r][c-1][1]);  	// 4
-			path.lineTo(gridWarp[r+1][c][0], gridWarp[r+1][c][1]);  	// 6
-			path.lineTo(gridWarp[r+1][c+1][0], gridWarp[r+1][c+1][1]);  // 7
-			path.closePath();
-			return path;
-		}
-		else {
-			return null;
-		}
-	}
-	
-	private double dist(double x1, double y1, double x2, double y2) {
-		return Math.hypot(x1 - x2, y1 - y2);
-	}
-	
-	private double dist(double[] pnt, double cX, double cY) {
-		return dist(pnt[0], pnt[1], cX, cY);
 	}
 	
 	// -----------------------------------------------------------------------------
@@ -332,7 +293,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		}
 		return null;	// no enclosing triangle found
 	}
-	
 	
 	private void remapImage(ImageProcessor ip) {
 		updateTriangles(trianglesWarp, gridWarp);
@@ -387,11 +347,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 			}
 		}
 	}
-	
-	private Pnt2d getGridPointPos(double[][][] grid, int r, int c) {
-		return PntDouble.from(grid[r][c][0], grid[r][c][1]);
-	}
-	
 
 	// ------------------------------------------------------------
 	// EVENT HANDLING:
@@ -407,8 +362,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		canvas.addKeyListener(this);
 		canvas.addMouseListener(this);
 		canvas.addMouseMotionListener(this);
-//		win.addWindowListener(this);
-		
+
 		win.addWindowListener(new WindowAdapter() {  
             @Override
 			public void windowClosing(WindowEvent e) {  
@@ -420,7 +374,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	}
 	
 	private void revertListeners() {
-		//IJ.log("Revert Listeners:");
 		if (win != null) {
 			// remove this plugin's listener(s)
 			removeKeyListeners(win);
@@ -444,26 +397,19 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		int offscreenX = canvas.offScreenX(x);
-		int offscreenY = canvas.offScreenY(y);
-		IJ.log("Mouse pressed: " + e);
-		IJ.log("Modifiers: " + Integer.toBinaryString(e.getModifiersEx()));
-		IJ.log("Mask:      " + Integer.toBinaryString(InputEvent.META_DOWN_MASK));
-		if ((e.getModifiersEx() & InputEvent.META_DOWN_MASK) != 0) {	// if ((e.getModifiers() & Event.META_MASK) != 0)
-			IJ.log("RIGHT Mouse pressed");
+		if ((e.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
 			reset();
 		}
 		else {
-			nodeSelected = selectGridPoint(offscreenX, offscreenY);
+			int x = canvas.offScreenX(e.getX());
+			int y = canvas.offScreenY(e.getY());
+			nodeSelected = selectGridPoint(x, y);
 			if (nodeSelected) {
-				if (0 < rSelect && rSelect < Rows-1 && 0 < cSelect && cSelect < Cols-1) {
+				if ((0 < rSelect) && (rSelect < Rows-1) && (0 < cSelect) && (cSelect < Cols-1)) {
 					enclosingPolygon = new EnclosingPoly(rSelect, cSelect);
 				}
 				else {
 					enclosingPolygon = null;
-					rSelect = cSelect = -1;
 				}
 			}
 		}
@@ -483,31 +429,23 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		int offscreenX = canvas.offScreenX(e.getX());
-		int offscreenY = canvas.offScreenY(e.getY());
-		//IJ.log("Mouse dragged to: " + offscreenX + "," + offscreenY);
-		if (nodeSelected) {
-//			if (dist(offscreenX, offscreenY, sXorig, sYorig) < 10) {
-			if (enclosingPolygon != null && enclosingPolygon.contains(offscreenX, offscreenY)) {
-			//if (enclosingPolygon != null) {
-				moveSelectedGridPoint(offscreenX, offscreenY);
-				repaint();
-			}
-			else {
-				//IJ.log("dragging limited");
-			}
-		}
-		else {
-			//IJ.log("dragging but no node selected");
+		int x = canvas.offScreenX(e.getX());
+		int y = canvas.offScreenY(e.getY());
+		if (nodeSelected && (enclosingPolygon != null) && (enclosingPolygon.contains(x, y))) {
+			moveSelectedGridPoint(x, y);
+			repaint();
 		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) { }
+	
 	@Override
 	public void mouseEntered(MouseEvent e) { }
+	
 	@Override
 	public void mouseMoved(MouseEvent e) { }
 	
@@ -536,7 +474,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private KeyListener[] removeKeyListeners(Component comp) {
 		KeyListener[] listeners = comp.getKeyListeners();
 		for (KeyListener kl : comp.getKeyListeners()) {
-			//IJ.log("  removing key listener: " + kl.getClass().getName() + " from " + comp.getClass().getName());
 			comp.removeKeyListener(kl);
 		}
 		return listeners;
@@ -545,7 +482,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private MouseListener[] removeMouseListeners(Component comp) {
 		MouseListener[] listeners = comp.getMouseListeners();
 		for (MouseListener ml : listeners) {
-			//IJ.log("  removing mouse listener " + ml + " from " + comp);
 			comp.removeMouseListener(ml);
 		}
 		return listeners;
@@ -554,7 +490,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private MouseMotionListener[] removeMouseMotionListeners(Component comp) {
 		MouseMotionListener[] listeners = comp.getMouseMotionListeners();
 		for (MouseMotionListener ml : listeners) {
-			//IJ.log("  removing mouse listener " + ml + " from " + comp);
 			comp.removeMouseMotionListener(ml);
 		}
 		return listeners;
@@ -563,7 +498,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private void addKeyListeners(Component comp, KeyListener[] listeners) {
 		if (comp == null || listeners == null) return;
 		for (KeyListener kl : listeners) {
-			//IJ.log("  adding key listener: " + kl.getClass().getName() + " to " + comp.getClass().getName());
 			comp.addKeyListener(kl);
 		}
 	}
@@ -581,6 +515,8 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 			comp.addMouseMotionListener(ml);
 		}
 	}
+	
+	// ------------------------------------------------------------------
 	
 	@SuppressWarnings("serial")
 	class Triangle extends Path2D.Double {
@@ -626,7 +562,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		}
 	}
 	
-	// -------------------------------------------------------------------------------
+	// -------------------------------------------------------------------
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
