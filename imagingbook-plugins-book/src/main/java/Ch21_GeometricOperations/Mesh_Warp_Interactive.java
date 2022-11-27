@@ -11,6 +11,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -43,7 +45,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * <li>finding the containing (distorted) triangle of the pixel,</li>
  * <li>calculating the affine mapping w.r.t. the original (undistorted)
  * triangle,</li>
- * <li>inverse mapping the pixel coordinate to the original (source) image
+ * <li>apply target-to-source mapping of pixel coordinates to the original (source) image
  * and</li>
  * <li>retrieving the interpolated pixel values from the original image.</li>
  * </ol>
@@ -58,7 +60,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
  * <li>enter or escape key: finish editing.</li>
  * </ul>
  * <p>
- * Note that this implementation is ad hoc and leaves much room for improvements
+ * Note that this is a simplistic implementation which leaves much room for improvements
  * and increased efficiency.
  * </p>
  * <p>
@@ -76,11 +78,14 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	
 	private static int Rows = 10;	// number of grid rows
 	private static int Cols = 10;	// number of grid columns
+	
 	private static BasicAwtColor StrokeColorChoice = BasicAwtColor.Blue;
 	private static BasicAwtColor HighlightColorChoice = BasicAwtColor.Green;
-	private static double StrokeWidth = 0.2;
+	
+	private static double StrokeWidth = 0.25;
 	private static double CatchRadius = 3.0;
 	private static boolean ShowTriangles = true;
+	private static boolean HighlightSelection = true;
 	
 	// event handling variables:
 	private KeyListener[] windowKeyListeners = null;
@@ -89,18 +94,17 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private MouseMotionListener[] canvasMouseMotionListeners = null;
 	
 	// data structures representing the grid and mesh
+	
 	// grid points positions:
-	private double[][][] gridOrig;
-	private double[][][] gridWarp;				// gridWarp[row][col][x/y]
+	private Pnt2d[][] gridOrig;
+	private Pnt2d[][] gridWarped;			// gridWarped[row][col][x/y]
+	private PntInt nodeSelected = null;		// the selected grid node (x = row, y = column), inner node only!
+	
 	// triangles:
 	private Triangle[][][] trianglesOrig;
-	private Triangle[][][] trianglesWarp;		// trianglesWarp[row][col][0/1]
-	
-	private int rSelect = -1;			// the currently selected grid point (row)
-	private int cSelect = -1;			// the currently selected grid point (column)
-	private EnclosingPoly enclosingPolygon = null;
-	private boolean nodeSelected = false;
-	
+	private Triangle[][][] trianglesWarped;		// trianglesWarped[row][col][0/1]
+	private TriangleGroup trianglesSelected = null;
+
 	
 	private ImageWindow win;
 	private ImageCanvas canvas;
@@ -139,24 +143,24 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		
 		reset();
 		repaint();
-		IJ.wait(200);
+		IJ.wait(100);
 	}
 	
 	// ---------------------------------------------------------------
 	
 	private void reset() {
 		initGridAndTriangles(im.getWidth(), im.getHeight());
-		rSelect = -1;
-		cSelect = -1;
-		nodeSelected = false;
-		enclosingPolygon = null;
+//		rSelect = -1;
+//		cSelect = -1;
+		nodeSelected = null;
+		trianglesSelected = null;
 	}
 	
 	private void finish() {
 		revertListeners();
 		im.setTitle(title);
-		nodeSelected = false;
-		enclosingPolygon = null;
+		nodeSelected = null;
+		trianglesSelected = null;
 		ipOrig = null;
 		im.setProperty(PropertyKey, null);
 		repaint();
@@ -165,35 +169,33 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	// ---------------------------------------------------------------
 	
 	private void repaint() {
-		Overlay oly = makeGridOverlay(gridWarp);
-		im.setOverlay(oly);
+		im.setOverlay(makeGridOverlay(gridWarped));
 		im.updateAndDraw();
 	}
 	
 	private void initGridAndTriangles(int w, int h) {
-		gridOrig = new double[Rows][Cols][2];
-		gridWarp = new double[Rows][Cols][2];
+		this.gridOrig = new Pnt2d[Rows][Cols];
+		this.gridWarped = new Pnt2d[Rows][Cols];
 		
 		// insert equally spaced points over image width/height
 		for (int r = 0; r < Rows; r++) {
 			double y = (double) r * (h - 1) / (Rows - 1);
 			for (int c = 0; c < Cols; c++) {
 				double x = (double) c * (w - 1) / (Cols - 1);
-				gridOrig[r][c][0] = gridWarp[r][c][0] = x;
-				gridOrig[r][c][1] = gridWarp[r][c][1] = y;
+				gridOrig[r][c] = gridWarped[r][c] = Pnt2d.from(x, y);
 			}
 		}
 		
 		trianglesOrig = new Triangle[Rows - 1][Cols - 1][2];
-		trianglesWarp = new Triangle[Rows - 1][Cols - 1][2];
-		updateTriangles(trianglesOrig, gridOrig);
-		updateTriangles(trianglesWarp, gridWarp);
+		trianglesWarped = new Triangle[Rows - 1][Cols - 1][2];
+		updateTrianglesAll(trianglesOrig, gridOrig);
+		updateTrianglesAll(trianglesWarped, gridWarped);
 	}
 	
-	private Overlay makeGridOverlay(double[][][] pnts) {
+	private Overlay makeGridOverlay(Pnt2d[][] pnts) {
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 		ColoredStroke pathstroke = new ColoredStroke(StrokeWidth, StrokeColorChoice.getColor());
-		ColoredStroke polystroke = new ColoredStroke(3 * StrokeWidth, StrokeColorChoice.getColor());
+		ColoredStroke polystroke = new ColoredStroke(StrokeWidth, HighlightColorChoice.getColor());
 		ColoredStroke highlightstroke = 
 				new ColoredStroke(StrokeWidth, HighlightColorChoice.getColor(), HighlightColorChoice.getColor());
 		
@@ -202,24 +204,24 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		
 		// draw horizontal grid lines
 		for (int r = 0; r < pnts.length; r++) {
-			gridPath.moveTo(pnts[r][0][0], pnts[r][0][1]);
+			gridPath.moveTo(pnts[r][0].getX(), pnts[r][0].getY());
 			for (int c = 1; c < pnts[r].length; c++) {
-				gridPath.lineTo(pnts[r][c][0], pnts[r][c][1]);
+				gridPath.lineTo(pnts[r][c].getX(), pnts[r][c].getY());
 			}
 		}		
 		// draw vertical grid lines
 		for (int r = 0; r < pnts[0].length; r++) {
-			gridPath.moveTo(pnts[0][r][0], pnts[0][r][1]);
+			gridPath.moveTo(pnts[0][r].getX(), pnts[0][r].getY());
 			for (int c = 1; c < pnts.length; c++) {
-				gridPath.lineTo(pnts[c][r][0], pnts[c][r][1]);
+				gridPath.lineTo(pnts[c][r].getX(), pnts[c][r].getY());
 			}
 		}
 		// draw diagonal grid lines
 		if (ShowTriangles) {
 			for (int r = 0; r < pnts.length - 1; r++) {
 				for (int c = 0; c < pnts[0].length - 1; c++) {
-					gridPath.moveTo(pnts[r][c][0], pnts[r][c][1]);
-					gridPath.lineTo(pnts[r + 1][c + 1][0], pnts[r + 1][c + 1][1]);
+					gridPath.moveTo(pnts[r][c].getX(), pnts[r][c].getY());
+					gridPath.lineTo(pnts[r + 1][c + 1].getX(), pnts[r + 1][c + 1].getY());
 				}
 			}
 		}	
@@ -229,88 +231,134 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		double rad = CatchRadius;
 		for (int r = 0; r < pnts.length; r++) {
 			for (int c = 0; c < pnts[r].length; c++) {
-				double x = pnts[r][c][0];
-				double y = pnts[r][c][1];
+				double x = pnts[r][c].getX();
+				double y = pnts[r][c].getY();
 				Ellipse2D.Double circle = new Ellipse2D.Double(x - rad, y - rad, 2 * rad, 2 * rad);
 				ola.addShape(circle, polystroke);
 			}
 				}
 		
 		// mark the selected grid point
-		if (nodeSelected) {
-			double xs = gridWarp[rSelect][cSelect][0];	// gridpoints[sY][sX].getX();
-			double ys = gridWarp[rSelect][cSelect][1];	// gridpoints[sY][sX].getY();
+		if (nodeSelected != null && HighlightSelection) {	
+			Pnt2d ps = gridWarped[nodeSelected.x][nodeSelected.y];
+			double xs = ps.getX();
+			double ys = ps.getY();
 			Ellipse2D.Double circle = new Ellipse2D.Double(xs - rad, ys - rad, 2 * rad, 2 * rad);
 			ola.addShape(circle, highlightstroke);
 		}
 		
 		// mark the enclosing polygon (if exists)
-		if (nodeSelected && enclosingPolygon != null) {
-			ola.addShape(enclosingPolygon, polystroke);
+		if (trianglesSelected != null && HighlightSelection) {
+			for (Triangle t : trianglesSelected.trgls) {
+				ola.addShape(t, polystroke);
+			}
 		}
 		
 		return ola.getOverlay();
 	}
 	
 	// move the currently selected grid point to new position
-	private void moveSelectedGridPoint(int newX, int newY) {
-		if (nodeSelected && (rSelect >= 0) && (rSelect < Rows) && (cSelect >= 0) && (cSelect < Cols)) {
-			gridWarp[rSelect][cSelect][0] = newX;
-			gridWarp[rSelect][cSelect][1] = newY;
+	private void moveSelectedGridPoint(int xNew, int yNew) {
+		if (nodeSelected != null) {	//  && (ns.x >= 0) && (ns.x < Rows) && (ns.y >= 0) && (ns.y < Cols)
+			gridWarped[nodeSelected.x][nodeSelected.y] = Pnt2d.from(xNew, yNew);
 		}
 	}
 	
-	private boolean selectGridPoint(int clickX, int clickY) {
-		for (int r = 0; r < gridWarp.length; r++) {
-			for (int c = 0; c < gridWarp[r].length; c++) {
-				double dx = gridWarp[r][c][0] - clickX;
-				double dy = gridWarp[r][c][1] - clickY;
-				double dist = Math.hypot(dx, dy);
+	private PntInt findGridPoint(PntInt xyClick) {
+		// only inner grid points may be selected, not the ones at the border!
+		for (int r = 1; r < gridWarped.length - 1; r++) {
+			for (int c = 1; c < gridWarped[r].length - 1; c++) {
+				double dist = xyClick.distance(gridWarped[r][c]);
 				if (dist <= CatchRadius) {
-					rSelect = r;
-					cSelect = c;
-					return true;
+					return PntInt.from(r, c);
 				}
 			}
 		}
-		rSelect = -1;
-		cSelect = -1;
-		return false;
+		return null;
 	}
 	
+	private void updateGridSelection(PntInt xy) {
+		nodeSelected = findGridPoint(xy);
+		trianglesSelected = (nodeSelected == null) ? null : new TriangleGroup(nodeSelected);
+	}
+
 	// -----------------------------------------------------------------------------
 	
-	private Triangle findEnclosingTriangle(double x, double y) {
+	private void remapImage() {
+		updateTrianglesAll(trianglesWarped, gridWarped);
+		updateTrianglesSelected();
+		updateAffineMappings();
+		warpImage();
+	}
+	
+	private void warpImage() {
+		ImageProcessor ip = im.getProcessor();
+		
+		int width = ip.getWidth();
+		int height = ip.getHeight();
+		
+		// iterate over all pixels:
+		for (int u = 0; u < width; u++) {
+			for (int v = 0; v < height; v++) {
+				Triangle tWarp = null;
+				if (trianglesSelected != null) {
+					tWarp = trianglesSelected.findTriangle(u, v); 		// search only over enclosing polygon triangles
+				}
+				if (tWarp == null) {
+					tWarp = findEnclosingGridTriangle(u, v);				// search over all grid triangles
+				}
+
+				if (tWarp != null) {							// containing triangle found
+					AffineMapping2D am = tWarp.getMapping();
+					Pnt2d xy = am.applyTo(PntInt.from(u, v));	// source image position
+					int val = ipOrig.getPixelInterpolated(xy.getX(), xy.getY());
+					ip.set(u, v, val);
+				}
+			}
+		}
+	}
+	
+	private Triangle findEnclosingGridTriangle(double x, double y) {
 		for (int r = 0; r < Rows - 1; r++) {
 			for (int c = 0; c < Cols - 1; c++) {
 				for (int i = 0; i < 2; i++) {
-					Triangle t = trianglesWarp[r][c][i];
+					Triangle t = trianglesWarped[r][c][i];
 					if (t.contains(x, y)) {
 						return t;
 					}
 				}
 			}
 		}
-		return null;	// no enclosing triangle found
+		return null;  // no enclosing triangle found
 	}
 	
-	private void remapImage(ImageProcessor ip) {
-		updateTriangles(trianglesWarp, gridWarp);
-		updateMappings();
-		int width = im.getWidth();
-		int height = im.getHeight();
-		// iterate over all pixels:
-		for (int u = 0; u < width; u++) {
-			for (int v = 0; v < height; v++) {
-				if (enclosingPolygon == null || enclosingPolygon.contains(u, v)) {
-					// find the containing triangle in 'triangles' (if any)
-					Triangle tWarp = findEnclosingTriangle(u, v);
-					if (tWarp != null) {
-						AffineMapping2D am = tWarp.getMapping();
-						Pnt2d xy = am.applyTo(PntInt.from(u, v));	// source image position
-						int val = ipOrig.getPixelInterpolated(xy.getX(), xy.getY());
-						ip.set(u, v, val);
-					}
+	private void updateTrianglesAll(Triangle[][][] theTriangles, Pnt2d[][] theGrid) {
+		for (int r = 0; r < Rows - 1; r++) {
+			for (int c = 0; c < Cols - 1; c++) {
+				Pnt2d p0 = theGrid[r][c];
+				Pnt2d p1 = theGrid[r+1][c];
+				Pnt2d p2 = theGrid[r+1][c+1];
+				Pnt2d p3 = theGrid[r][c+1];
+				theTriangles[r][c][0] = new Triangle(p0, p1, p2, r, c, 0);	// triangle A
+				theTriangles[r][c][1] = new Triangle(p0, p2, p3, r, c, 1);	// triangle B
+			}
+		}
+	}
+	
+	private void updateTrianglesSelected() {
+		if (trianglesSelected != null) {
+			trianglesSelected.updateTriangles();
+		}
+	}
+	
+	private void updateAffineMappings() {
+		for (int r = 0; r < Rows - 1; r++) {
+			for (int c = 0; c < Cols - 1; c++) {
+				for (int i = 0; i < 2; i++) {
+					Triangle tOrig = trianglesOrig[r][c][i];
+					Triangle tWarp = trianglesWarped[r][c][i];
+					AffineMapping2D am = getAffineMapping(tWarp, tOrig);
+					tWarp.setMapping(am);
 				}
 			}
 		}
@@ -320,32 +368,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		Pnt2d[] P = {tP.pa, tP.pb, tP.pc};
 		Pnt2d[] Q = {tQ.pa, tQ.pb, tQ.pc};
 		return AffineMapping2D.fromPoints(P, Q);
-	}
-		
-	private void updateTriangles(Triangle[][][] theTriangles, double[][][] theGrid) {
-		for (int r = 0; r < Rows - 1; r++) {
-			for (int c = 0; c < Cols - 1; c++) {
-				Pnt2d p0 = Pnt2d.from(theGrid[r][c]);
-				Pnt2d p1 = Pnt2d.from(theGrid[r+1][c]);
-				Pnt2d p2 = Pnt2d.from(theGrid[r+1][c+1]);
-				Pnt2d p3 = Pnt2d.from(theGrid[r][c+1]);
-				theTriangles[r][c][0] = new Triangle(p0, p1, p2, r, c, 0);	// triangle A
-				theTriangles[r][c][1] = new Triangle(p0, p2, p3, r, c, 1);	// triangle B
-			}
-		}
-	}
-	
-	private void updateMappings() {
-		for (int r = 0; r < Rows - 1; r++) {
-			for (int c = 0; c < Cols - 1; c++) {
-				for (int i = 0; i < 2; i++) {
-					Triangle tOrig = trianglesOrig[r][c][i];
-					Triangle tWarp = trianglesWarp[r][c][i];
-					AffineMapping2D am = getAffineMapping(tWarp, tOrig);
-					tWarp.setMapping(am);
-				}
-			}
-		}
 	}
 
 	// ------------------------------------------------------------
@@ -397,43 +419,45 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if ((e.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
-			reset();
-		}
-		else {
-			int x = canvas.offScreenX(e.getX());
-			int y = canvas.offScreenY(e.getY());
-			nodeSelected = selectGridPoint(x, y);
-			if (nodeSelected) {
-				if ((0 < rSelect) && (rSelect < Rows-1) && (0 < cSelect) && (cSelect < Cols-1)) {
-					enclosingPolygon = new EnclosingPoly(rSelect, cSelect);
-				}
-				else {
-					enclosingPolygon = null;
-				}
+		try {
+			if ((e.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
+				reset();
 			}
+			else {
+				updateGridSelection(
+						PntInt.from(canvas.offScreenX(e.getX()), canvas.offScreenY(e.getY())));
+			}
+			repaint();
+			e.consume();
+		} catch (Exception ex) {
+			reportThrowable(ex);
 		}
-		repaint();
-		e.consume();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		//IJ.log("mouseReleased: ");
-		remapImage(im.getProcessor());
-		repaint();
-		if (e.getClickCount() == 2 && !e.isConsumed()) {
-		     e.consume();
+		try {
+			remapImage();
+			repaint();
+			if (e.getClickCount() == 2 && !e.isConsumed()) {
+				e.consume();
+			}
+		} catch (Exception ex) {
+			reportThrowable(ex);
 		}
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		int x = canvas.offScreenX(e.getX());
-		int y = canvas.offScreenY(e.getY());
-		if (nodeSelected && (enclosingPolygon != null) && (enclosingPolygon.contains(x, y))) {
-			moveSelectedGridPoint(x, y);
-			repaint();
+		try {
+			int x = canvas.offScreenX(e.getX());
+			int y = canvas.offScreenY(e.getY());
+			if ((nodeSelected != null) && (trianglesSelected != null) && (trianglesSelected.contains(x, y))) {
+				moveSelectedGridPoint(x, y);
+				repaint();
+			}
+			} catch (Exception ex) {
+				reportThrowable(ex);
 		}
 	}
 
@@ -516,8 +540,27 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		}
 	}
 	
+	/**
+	 * Used to report exceptions that would otherwise go unnoticed, since
+	 * exceptions thrown from event handling methods are implicitly
+	 * caught (and ignored) by the the event dispatcher. 
+	 * 
+	 * @param thr the throwable
+	 */
+	private void reportThrowable(Throwable thr) {
+		ByteArrayOutputStream bas = new ByteArrayOutputStream();
+		PrintStream strm = new PrintStream(bas);
+		thr.printStackTrace(strm);
+		IJ.log(bas.toString());
+	}
+	
 	// ------------------------------------------------------------------
 	
+	/**
+	 * Represents a 2D triangle, used for point inclusion testing and
+	 * affine mapping.
+	 * @author WB
+	 */
 	@SuppressWarnings("serial")
 	class Triangle extends Path2D.Double {
 		
@@ -541,24 +584,53 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 			this.pa = pa;
 			this.pb = pb;
 			this.pc = pc;
+			// make triangle path:
 			this.moveTo(pa.getX(), pa.getY());
 			this.lineTo(pb.getX(), pb.getY());
 			this.lineTo(pc.getX(), pc.getY());
 			this.closePath();
 		}
+		
+//		@Override
+//		public String toString() {
+//			return (String.format("Triangle[row=%d col=%d id=%d", this.row, this.col, this.id));
+//		}
 	}
 	
-	@SuppressWarnings("serial")
-	class EnclosingPoly extends Path2D.Double {
+	/**
+	 * This is the group of triangles associated with a particular grid point.
+	 */
+	class TriangleGroup {
+		final int r, c;						// the grid point
+		private final Triangle[] trgls;
 		
-		EnclosingPoly(int r, int c) {
-			this.moveTo(gridWarp[r][c+1][0], gridWarp[r][c+1][1]);  	// 0
-			this.lineTo(gridWarp[r-1][c][0], gridWarp[r-1][c][1]);  	// 2
-			this.lineTo(gridWarp[r-1][c-1][0], gridWarp[r-1][c-1][1]);  // 3
-			this.lineTo(gridWarp[r][c-1][0], gridWarp[r][c-1][1]);  	// 4
-			this.lineTo(gridWarp[r+1][c][0], gridWarp[r+1][c][1]);  	// 6
-			this.lineTo(gridWarp[r+1][c+1][0], gridWarp[r+1][c+1][1]);  // 7
-			this.closePath();
+		TriangleGroup(PntInt rc) {
+			this.r = rc.x;
+			this.c = rc.y;
+			this.trgls = new Triangle[6];
+			updateTriangles();
+		}
+
+		private void updateTriangles() {
+			trgls[0] = trianglesWarped[r-1][c-1][0];
+			trgls[1] = trianglesWarped[r-1][c-1][1];		
+			trgls[2] = trianglesWarped[r-1][c][0];
+			trgls[3] = trianglesWarped[r][c-1][1];			
+			trgls[4] = trianglesWarped[r][c][0];
+			trgls[5] = trianglesWarped[r][c][1];
+		}
+
+		private Triangle findTriangle(double x, double y) {
+			for (Triangle t : this.trgls) {
+				if (t.contains(x, y)) {
+					return t;
+				}
+			}
+			return null;
+		}	
+
+		private boolean contains(double x, double y) {
+			return (findTriangle(x, y) != null);
 		}
 	}
 	
@@ -582,6 +654,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		gd.addNumericField("Grid stroke width", StrokeWidth, 1);
 		gd.addNumericField("Catch radius", CatchRadius, 1);
 		gd.addCheckbox("Show grid triangles", ShowTriangles);
+		gd.addCheckbox("Highlight selection", HighlightSelection);
 		
 		gd.showDialog();
 		if (gd.wasCanceled())
@@ -594,6 +667,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		StrokeWidth = gd.getNextNumber();
 		CatchRadius = gd.getNextNumber();
 		ShowTriangles = gd.getNextBoolean();
+		HighlightSelection = gd.getNextBoolean();
 		
 		return true;
 	}
