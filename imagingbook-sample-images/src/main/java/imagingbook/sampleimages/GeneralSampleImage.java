@@ -75,6 +75,10 @@ public enum GeneralSampleImage implements ImageResource {
 		/** Binary image with various tools, used for connected components segmentation. */
 		ToolsSmall,
 		
+		WartburgSmall_jpg,
+		
+		PostalPackageSmall_jpg,
+		
 	;
 
 }

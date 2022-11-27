@@ -30,6 +30,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -75,6 +76,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  */
 public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, MouseMotionListener, KeyListener {
 
+	private static ImageResource SampleImage = GeneralSampleImage.WartburgSmall_jpg;
 	private static final String PropertyKey = Mesh_Warp_Interactive.class.getName();
 	private static final String EditString = " (editing)";
 	
@@ -122,7 +124,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	 */
 	public Mesh_Warp_Interactive() {
 		if (IjUtils.noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Clown);
+			DialogUtils.askForSampleImage(SampleImage);
 		}
 	}
 
