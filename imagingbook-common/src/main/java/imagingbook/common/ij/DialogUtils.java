@@ -374,7 +374,7 @@ public abstract class DialogUtils {
 	 * 
 	 * @param suggested a sample image (resource)
 	 */
-	public static void askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
+	public static boolean askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
 		boolean ok = askYesOrCancel(
 				"Open sample image", 
 				"No image is currently open.\nUse sample image\n" + suggested + "?");
@@ -383,7 +383,26 @@ public abstract class DialogUtils {
 			im.show();
 			WindowManager.setCurrentWindow(im.getWindow());
 		}
+		return ok;
 	}
+	
+	public static boolean askForSampleImage() {
+		boolean ok = askYesOrCancel(
+				"Open sample image", 
+				"No image is currently open.\nUse a sample image?");
+		return ok;
+	}
+	
+//	public static void askForSampleImage(ImagePlus im) {	// TODO: allow multiple sample images?
+//		boolean ok = askYesOrCancel(
+//				"Open sample image", 
+//				"No image is currently open.\nUse sample image\n" + im.getShortTitle() + "?");
+//		if (ok) {
+//			
+//			im.show();
+//			WindowManager.setCurrentWindow(im.getWindow());
+//		}
+//	}
 	
 //	public static void askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
 //		GenericDialog gd = new GenericDialog("No image open");

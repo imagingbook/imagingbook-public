@@ -10,8 +10,6 @@ package Ch11_Circles_Ellipses;
 
 import static imagingbook.common.geometry.fitting.circle.algebraic.CircleFitAlgebraic.FitType.Pratt;
 import static imagingbook.common.geometry.fitting.circle.geometric.CircleFitGeometric.FitType.DistanceBased;
-import static imagingbook.common.ij.DialogUtils.askYesOrCancel;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import java.util.Locale;
 
@@ -69,12 +67,13 @@ public class Circle_Fitting implements PlugInFilter {
 	 * is currently open.
 	 */
 	public Circle_Fitting() {
-		if (noCurrentImage()) {
-			if (askYesOrCancel("Create sample image", "No image is currently open.\nCreate a sample image?")) {
+		if (IjUtils.noCurrentImage()) {
+			if (DialogUtils.askForSampleImage()) {
 				IjUtils.run(new Circle_Make_Random()); //runPlugIn(Circle_Make_Random.class);
 			}			
 		}
 	}
+
 	
 	@Override
 	public int setup(String arg, ImagePlus im) {
