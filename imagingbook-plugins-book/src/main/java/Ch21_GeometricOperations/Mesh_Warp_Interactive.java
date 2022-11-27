@@ -27,8 +27,10 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -86,6 +88,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private static double CatchRadius = 3.0;
 	private static boolean ShowTriangles = true;
 	private static boolean HighlightSelection = true;
+	private static boolean RemoveOverlayWhenDone = true;
 	
 	// event handling variables:
 	private KeyListener[] windowKeyListeners = null;
@@ -111,6 +114,17 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private ImagePlus im;
 	private ImageProcessor ipOrig = null;
 	private String title;
+	
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Mesh_Warp_Interactive() {
+		if (IjUtils.noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Clown);
+		}
+	}
 
 	@Override
 	public int setup(String arg, ImagePlus im) {
@@ -142,7 +156,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		setupListeners();
 		
 		reset();
-		repaint();
+		redraw();
 		IJ.wait(100);
 	}
 	
@@ -157,18 +171,22 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	}
 	
 	private void finish() {
+		IJ.log("finish " + RemoveOverlayWhenDone);
 		revertListeners();
 		im.setTitle(title);
 		nodeSelected = null;
 		trianglesSelected = null;
+		if (RemoveOverlayWhenDone) {
+			im.setOverlay(null);
+		}
 		ipOrig = null;
 		im.setProperty(PropertyKey, null);
-		repaint();
+		im.updateAndDraw();
 	}
 	
 	// ---------------------------------------------------------------
 	
-	private void repaint() {
+	private void redraw() {
 		im.setOverlay(makeGridOverlay(gridWarped));
 		im.updateAndDraw();
 	}
@@ -427,7 +445,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 				updateGridSelection(
 						PntInt.from(canvas.offScreenX(e.getX()), canvas.offScreenY(e.getY())));
 			}
-			repaint();
+			redraw();
 			e.consume();
 		} catch (Exception ex) {
 			reportThrowable(ex);
@@ -438,7 +456,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	public void mouseReleased(MouseEvent e) {
 		try {
 			remapImage();
-			repaint();
+			redraw();
 			if (e.getClickCount() == 2 && !e.isConsumed()) {
 				e.consume();
 			}
@@ -454,7 +472,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 			int y = canvas.offScreenY(e.getY());
 			if ((nodeSelected != null) && (trianglesSelected != null) && (trianglesSelected.contains(x, y))) {
 				moveSelectedGridPoint(x, y);
-				repaint();
+				redraw();
 			}
 			} catch (Exception ex) {
 				reportThrowable(ex);
@@ -655,6 +673,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		gd.addNumericField("Catch radius", CatchRadius, 1);
 		gd.addCheckbox("Show grid triangles", ShowTriangles);
 		gd.addCheckbox("Highlight selection", HighlightSelection);
+		gd.addCheckbox("Remove overlay when done", RemoveOverlayWhenDone);
 		
 		gd.showDialog();
 		if (gd.wasCanceled())
@@ -668,6 +687,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		CatchRadius = gd.getNextNumber();
 		ShowTriangles = gd.getNextBoolean();
 		HighlightSelection = gd.getNextBoolean();
+		RemoveOverlayWhenDone = gd.getNextBoolean();
 		
 		return true;
 	}
