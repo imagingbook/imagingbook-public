@@ -13,44 +13,65 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.geometry.mappings.nonlinear.BilinearMapping2D;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
- * Demo plugin showing how to specify a bilinear transformation from
- * a pair of quadrilaterals (point arrays).
- * Also illustrates the use of {@link ImageMapper}.
+ * <p>
+ * ImageJ plugin, applies a bilinear transformation derived from a pair of
+ * quadrilaterals P, Q (for the source and target image, respectively) to the current
+ * image. See Sec. 2.1.4 of [1] for details. Optionally opens a sample image if
+ * no image is currently open.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
- * @see AffineMapping2D
+ * @version 2022/11/28
+ * 
  * @see ImageMapper
+ * @see BilinearMapping2D
  */
 public class Map_Bilinear implements PlugInFilter {
+	
+   	private static Pnt2d[] P = {		// source quadrilateral
+			PntInt.from(0, 0),
+			PntInt.from(400, 0),
+			PntInt.from(400, 400),
+			PntInt.from(0, 400)
+    	};
 
-    public int setup(String arg, ImagePlus imp) {
+   	private static Pnt2d[] Q = {		// target quadrilateral
+			PntInt.from(0, 60),
+			PntInt.from(400, 20),
+			PntInt.from(300, 400),
+			PntInt.from(30, 200)
+    	};
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Map_Bilinear() {
+		if (IjUtils.noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Kepler);
+		}
+	}
+	
+    @Override
+	public int setup(String arg, ImagePlus imp) {
         return DOES_ALL;
     }
 
-    public void run(ImageProcessor ip) {
-	
-	   	Pnt2d[] P = {			// source quadrilateral
-				PntInt.from(0, 0),
-				PntInt.from(400, 0),
-				PntInt.from(400, 400),
-				PntInt.from(0, 400)
-	    	};
-
-	    	Pnt2d[] Q = {		// target quadrilateral
-				PntInt.from(0, 60),
-				PntInt.from(400, 20),
-				PntInt.from(300, 400),
-				PntInt.from(30, 200)
-	    	};
-		
+    @Override
+	public void run(ImageProcessor ip) {
 		// we want the inverse mapping (Q -> P, so we swap P/Q):
 		BilinearMapping2D mi = BilinearMapping2D.fromPoints(Q, P);
 		new ImageMapper(mi, OutOfBoundsStrategy.ZeroValues, InterpolationMethod.Bicubic).map(ip);

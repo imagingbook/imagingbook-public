@@ -13,14 +13,44 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.mappings.Mapping2D;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.sampleimages.GeneralSampleImage;
 
-public class Map_Twirl implements PlugInFilter {
+/**
+ * <p>
+ * ImageJ plugin, applies a non-linear "twirl" transformation to the current
+ * image. See Sec. 2.1.7 (Exercise 21.9 and Fig. 21.18) of [1] for details.
+ * Optionally opens a sample image if no image is currently open.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/28
+ * 
+ * @see ImageMapper
+ * @see Mapping2D
+ */
+public class Map_Nonlinear_Twirl implements PlugInFilter {
 	
-	static double alpha = Math.toRadians(43.0); 	// angle (43 degrees)
+	private static double alpha = Math.toRadians(43.0); 	// angle (43 degrees)
 
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Map_Nonlinear_Twirl() {
+		if (IjUtils.noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+		}
+	}
+	
 	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_ALL;

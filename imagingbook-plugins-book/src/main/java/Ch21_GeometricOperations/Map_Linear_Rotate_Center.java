@@ -15,16 +15,46 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.geometry.mappings.linear.Translation2D;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.sampleimages.GeneralSampleImage;
 
-
-public class Rotate_About_Center implements PlugInFilter {
+/**
+ * <p>
+ * ImageJ plugin, rotates the current image by a specified angle around its
+ * center. See Sec. 2.1.1 of [1] for details. Optionally opens a 
+ * sample image if no image is currently open.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/28
+ * 
+ * @see ImageMapper
+ * @see Rotation2D
+ */
+public class Map_Linear_Rotate_Center implements PlugInFilter {
 	
 	private static double alphaDeg = 15.0; 	// rotation angle (in degrees)
-	private static OutOfBoundsStrategy obs = OutOfBoundsStrategy.ZeroValues;
-	private static InterpolationMethod ipm = InterpolationMethod.Bicubic;
+	
+	private static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.ZeroValues;
+	private static InterpolationMethod IPM = InterpolationMethod.Bicubic;
+	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Map_Linear_Rotate_Center() {
+		if (IjUtils.noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Clown);
+		}
+	}
 
 	@Override
     public int setup(String arg, ImagePlus im) {
@@ -48,7 +78,7 @@ public class Rotate_About_Center implements PlugInFilter {
 		AffineMapping2D A  = T1.concat(R).concat(T2);
 		
 		AffineMapping2D iA = A.getInverse(); 	// inverse mapping (target to source)
-		new ImageMapper(iA, obs, ipm).map(ip);
+		new ImageMapper(iA, OBS, IPM).map(ip);
     }
 	
 	// --------------------------------------------
@@ -57,16 +87,16 @@ public class Rotate_About_Center implements PlugInFilter {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		
 		gd.addNumericField("Rotation angle (deg)", alphaDeg, 1);
-		gd.addEnumChoice("Image out-of-bounds strategy", obs);
-		gd.addEnumChoice("Üixel interpolation method", ipm);
+		gd.addEnumChoice("Image out-of-bounds strategy", OBS);
+		gd.addEnumChoice("Pixel interpolation method", IPM);
 		
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
 		
 		alphaDeg = gd.getNextNumber();
-		obs = gd.getNextEnumChoice(OutOfBoundsStrategy.class);
-		ipm = gd.getNextEnumChoice(InterpolationMethod.class);
+		OBS = gd.getNextEnumChoice(OutOfBoundsStrategy.class);
+		IPM = gd.getNextEnumChoice(InterpolationMethod.class);
 		
 		return true;
 	}

@@ -79,6 +79,8 @@ public enum GeneralSampleImage implements ImageResource {
 		
 		PostalPackageSmall_jpg,
 		
+		Flower_jpg,
+		
 	;
 
 }

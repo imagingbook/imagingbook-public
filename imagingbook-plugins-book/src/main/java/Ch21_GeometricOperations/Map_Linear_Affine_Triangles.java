@@ -15,40 +15,63 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.common.math.Matrix;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
- * Demo plugin showing how to specify an affine transformation from
- * a pair of triangles (point arrays).
- * Also illustrates the use of {@link ImageMapper}.
+ * <p>
+ * ImageJ plugin, applies an affine transformation derived from a pair of
+ * triangles P, Q (for the source and target image, respectively) to the current
+ * image. See Sec. 2.1.3 of [1] for details. Optionally opens a sample image if
+ * no image is currently open.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- *
- * @see AffineMapping2D
+ * @version 2022/11/28
+ * 
  * @see ImageMapper
+ * @see AffineMapping2D
  */
-public class Map_Affine_Triangles implements PlugInFilter {
-
-    public int setup(String arg, ImagePlus imp) {
-        return DOES_ALL;
-    }
-
-    public void run(ImageProcessor ip) {
-    	Pnt2d[] P = {			// source triangle
+public class Map_Linear_Affine_Triangles implements PlugInFilter {
+	
+   	private static Pnt2d[] P = {			// source triangle
 			PntInt.from(0, 0),
 			PntInt.from(400, 0),
 			PntInt.from(400, 400)
     	};
 
-    	Pnt2d[] Q = {			// target triangle
+   	private static Pnt2d[] Q = {			// target triangle
 			PntInt.from(0, 60),
 			PntInt.from(400, 20),
 			PntInt.from(300, 400)
     	};
+    		
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Map_Linear_Affine_Triangles() {
+		if (IjUtils.noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Kepler);
+		}
+	}
 
+    @Override
+	public int setup(String arg, ImagePlus imp) {
+        return DOES_ALL;
+    }
+
+    @Override
+	public void run(ImageProcessor ip) {
 		// inverse mapping (target to source):
     	AffineMapping2D m = AffineMapping2D.fromPoints(P, Q);	// forward mapping P -> Q
 		AffineMapping2D mi = m.getInverse();					// inverse mapping Q -> P

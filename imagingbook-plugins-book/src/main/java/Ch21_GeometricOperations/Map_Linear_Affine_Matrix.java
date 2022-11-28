@@ -20,16 +20,29 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
- * ImageJ plugin for configurable affine image transformation.
+ * <p>
+ * ImageJ plugin, applies a configurable affine transformation to the current
+ * image. See Sec. 2.1.3 of [1] for details. Optionally opens a sample image if
+ * no image is currently open.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2021/10/07
- *
+ * @version 2022/11/28
+ * 
+ * @see ImageMapper
+ * @see AffineMapping2D
  */
-public class Map_Affine_Matrix implements PlugInFilter {
+public class Map_Linear_Affine_Matrix implements PlugInFilter {
 
 	private static String[][] ElemNames = {
 			{ "a00", "a01", "a02" },
@@ -39,6 +52,16 @@ public class Map_Affine_Matrix implements PlugInFilter {
 			{ 1, 0, 0 },
 			{ 0, 1, 0 }};
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Map_Linear_Affine_Matrix() {
+		if (IjUtils.noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Kepler);
+		}
+	}
+		
 	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_ALL;
@@ -46,7 +69,7 @@ public class Map_Affine_Matrix implements PlugInFilter {
 
 	@Override
 	public void run(ImageProcessor ip) {
-		if (!showDialog()) {
+		if (!runDialog()) {
 			return;
 		}
 		AffineMapping2D imap = new AffineMapping2D(A).getInverse();
@@ -54,12 +77,11 @@ public class Map_Affine_Matrix implements PlugInFilter {
 	}
 
 	// --------------------------------------------------------------------------------------
-	// Dialog example taken from http://rsbweb.nih.gov/ij/plugins/download/Dialog_Grid_Demo.java
 
-	private boolean showDialog() {
-		GenericDialog gd = new GenericDialog("Enter affine transformation matrix");
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addMessage("Affine forward transformation matrix (source to target):");
 		
-		// TODO: define proper class to hold all these items (instances to be passed to/from generic dialog)
 		TextField[] txtField = new TextField[A[0].length * A.length];
 		Panel panel = makePanel(A, ElemNames, txtField);
 		gd.addPanel(panel);

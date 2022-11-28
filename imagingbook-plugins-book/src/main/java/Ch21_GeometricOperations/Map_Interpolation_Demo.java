@@ -12,38 +12,66 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
- * This ImageJ plugin demonstrates the use of various pixel
- * interpolation methods and out-of-bounds strategies.
- * Simple translation is used as the geometric transformation
- * (parameters can be specified). Note the use if the
- * {@link ImageAccessor} class which gives uniform access
- * to all types of images.
+ * <p>
+ * This ImageJ plugin demonstrates the use of various pixel interpolation
+ * methods and out-of-bounds strategies. Simple translation is used as the
+ * geometric transformation (parameters can be specified). Note the use if the
+ * {@link ImageAccessor} class which gives uniform access to all types of
+ * images. See Ch. 22 of [1] for more details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2015/12/17
+ * @version 2022/11/28
+ * 
+ * @see InterpolationMethod
+ * @see OutOfBoundsStrategy
+ * @see ImageAccessor
  */
-public class Interpolation_Demo implements PlugInFilter {
+public class Map_Interpolation_Demo implements PlugInFilter {
 	
-	static InterpolationMethod IPM = InterpolationMethod.Bicubic;
-	static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.NearestBorder;
+	private static InterpolationMethod IPM = InterpolationMethod.Bicubic;
+	private static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.ZeroValues;
 	
-	static double dx = 10.50;	// translation parameters
-	static double dy = -3.25;
+	private static double dx = 10.50;	// translation parameters
+	private static double dy = -3.25;
 	
 	private ImagePlus im;
 	
-    public int setup(String arg, ImagePlus im) {
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Map_Interpolation_Demo() {
+//		if (noCurrentImage()) {
+//			DialogUtils.askForSampleImage(GeneralSampleImage.Kepler);
+//		}
+		if (IjUtils.noCurrentImage() && DialogUtils.askForSampleImage()) {
+			IjUtils.runPlugIn(Draw_Test_Grid.class);
+		}
+	}
+	
+	// ----------------------------------------
+	
+    @Override
+	public int setup(String arg, ImagePlus im) {
     	this.im = im;
         return DOES_ALL + NO_CHANGES;
     }
 
-    public void run(ImageProcessor source) {
-    	if (!showDialog())
+    @Override
+	public void run(ImageProcessor source) {
+    	if (!runDialog())
 			return;
     	
     	final int w = source.getWidth();
@@ -67,14 +95,15 @@ public class Interpolation_Demo implements PlugInFilter {
     	}
     	
     	// display the target image:
-    	(new ImagePlus(im.getShortTitle() + "-transformed", target)).show();
+    	(new ImagePlus(im.getShortTitle() + "-" + IPM.toString(), target)).show();
     }
     
-	private boolean showDialog() {
-		GenericDialog gd = new GenericDialog("Interpolation demo");
-		gd.addMessage("Translation parameters:");
-		gd.addNumericField("dx", dx, 2);
-		gd.addNumericField("dy", dy, 2);
+    // --------------------------------------------
+    
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addNumericField("Translation dx", dx, 2);
+		gd.addNumericField("Translation dy", dy, 2);
 		gd.addEnumChoice("Interpolation method", IPM);
 		gd.addEnumChoice("Out-of-bounds strategy", OBS);
 

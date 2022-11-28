@@ -13,21 +13,54 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.mappings.Mapping2D;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.sampleimages.GeneralSampleImage;
 
-public class Map_Ripple implements PlugInFilter {
+/**
+ * <p>
+ * ImageJ plugin, applies a non-linear "ripple" transformation to the current
+ * image. See Sec. 2.1.7 of [1] for details. Optionally opens a sample image if
+ * no image is currently open.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
+ * 
+ * @author WB
+ * @version 2022/11/28
+ * 
+ * @see ImageMapper
+ * @see Mapping2D
+ */
+public class Map_Nonlinear_Ripple implements PlugInFilter {
 	
-	static double aX = 10;
-	static double aY = 10;
-	static double tauX = 120 / (2 * Math.PI);
-	static double tauY = 250 / (2 * Math.PI);
+	// transformation parameters:
+	private static double aX = 10;
+	private static double aY = 10;
+	private static double tauX = 120 / (2 * Math.PI);
+	private static double tauY = 250 / (2 * Math.PI);
 	
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Map_Nonlinear_Ripple() {
+		if (IjUtils.noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+		}
+	}
+	
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_ALL;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 
 		Mapping2D imap = new Mapping2D() {

@@ -16,7 +16,6 @@ import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.process.FloatPolygon;
 import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 
 /**
  * This class defines static ROI-related utility methods
@@ -62,12 +61,32 @@ public class RoiUtils {
 	public static Pnt2d[] getOutlinePointsFloat(Roi roi) {
 //		final double offset = (isAreaRoi(roi)) ? -0.5 : 0.0; // replaced by Roi#isLineOrPoint() with IJ 1.53v
 		final double offset = (roi.isLineOrPoint()) ? 0.0 : -0.5; // shift area rois to pixel centers
-		FloatPolygon pgn = roi.getFloatPolygon();
-		Pnt2d[] pts = new Pnt2d[pgn.npoints];
-		for (int i = 0; i < pgn.npoints; i++) {
-			pts[i] = PntDouble.from(pgn.xpoints[i] + offset, pgn.ypoints[i] + offset);
+		FloatPolygon poly = roi.getFloatPolygon();
+		return getPoints(poly, offset);
+	}
+	
+	/**
+	 * Extracts the points of an ImageJ {@link FloatPolygon}.
+	 * @param poly the original polygon
+	 * @param offset x/y offset to add to coordinates (typically -0.5 for "area ROIs")
+	 * @return the polygon's vertex points
+	 */
+	public static Pnt2d[] getPoints(FloatPolygon poly, double offset) {
+		Pnt2d[] pts = new Pnt2d[poly.npoints];
+		for (int i = 0; i < poly.npoints; i++) {
+			pts[i] = Pnt2d.from(poly.xpoints[i] + offset, poly.ypoints[i] + offset);
 		}
 		return pts;
+	}
+	
+	/**
+	 * Extracts the points of an ImageJ {@link FloatPolygon}.
+	 * Calls {@link #getPoints(FloatPolygon, double)} with zero offset.
+	 * @param poly the original polygon
+	 * @return the polygon's vertex points
+	 */
+	public static Pnt2d[] getPoints(FloatPolygon poly) {
+		return getPoints(poly, 0.0);
 	}
 	
 	/**

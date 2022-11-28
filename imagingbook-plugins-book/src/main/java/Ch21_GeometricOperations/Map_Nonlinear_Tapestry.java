@@ -13,27 +13,52 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.mappings.Mapping2D;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
- * Nonlinear "tapestry" mapping, as described in book.
+ * <p>
+ * ImageJ plugin, applies a non-linear "tapestry" transformation to the current
+ * image. See Sec. 2.1.7 (Exercise 21.9 and Fig. 21.18) of [1] for details.
+ * Optionally opens a sample image if no image is currently open.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2021/10/04
- *
+ * @version 2022/11/28
+ * 
+ * @see ImageMapper
+ * @see Mapping2D
  */
-public class Map_Tapestry implements PlugInFilter {
+public class Map_Nonlinear_Tapestry implements PlugInFilter {
 
 	private static final double a = 5.0;
 	private static final double tx = 30;
 	private static final double ty = 30;
 	
-			
+		
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image
+	 * is currently open.
+	 */
+	public Map_Nonlinear_Tapestry() {
+		if (IjUtils.noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+		}
+	}
+	
+	@Override
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_ALL;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		
 		final double xc = 0.5 * ip.getWidth();

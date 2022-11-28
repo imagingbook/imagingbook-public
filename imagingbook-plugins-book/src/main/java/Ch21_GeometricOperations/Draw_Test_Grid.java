@@ -17,28 +17,38 @@ import ij.process.ByteProcessor;
 import imagingbook.common.image.ImageGraphics;
 
 /**
- * This ImageJ plugin draws a test grid in a newly created image.
- * It uses anti-aliased drawing operations provided by 
- * imagingbook's {@link ImageGraphics} class.
+ * <p>
+ * This ImageJ plugin draws a test grid in a new image. It uses anti-aliased
+ * drawing operations provided by imagingbook's {@link ImageGraphics} class.
+ * Used in [1] for testing geometric transformations (see Fig. 21.6) and
+ * interpolation methods (see Fig. 22.25).
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * </p>
  * 
  * @author WB
- * @version 2021/10/07
+ * @version 2022/11/28
+ * 
+ * @see ImageGraphics
  */
 public class Draw_Test_Grid implements PlugIn {
 	
-	static int W = 400;
-	static int H = 400;
-	static int xStep = 20;
-	static int yStep = 20;
-	static int xStart = 100;
-	static int yStart = 100;
-	static int xN = 10;
-	static int yN = 10;
+	private static int W = 400;
+	private static int H = 400;
+	private static int xStep = 20;
+	private static int yStep = 20;
+	private static int xStart = 100;
+	private static int yStart = 100;
+	private static int xN = 10;
+	private static int yN = 10;
 	
-	static int foreground = 0;
-	static int background = 255;
+	private static int foreground = 0;
+	private static int background = 255;
 	
-    public void run(String arg) {
+    @Override
+	public void run(String arg) {
     	ByteProcessor ip = new ByteProcessor(W, H);
     	ip.setValue(background);
     	ip.fill();
