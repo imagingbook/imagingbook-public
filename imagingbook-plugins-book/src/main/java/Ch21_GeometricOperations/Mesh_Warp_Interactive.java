@@ -2,8 +2,10 @@ package Ch21_GeometricOperations;
 
 import java.awt.Component;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -11,8 +13,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -74,7 +74,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @author WB
  * @version 2022/11/25
  */
-public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, MouseMotionListener, KeyListener {
+public class Mesh_Warp_Interactive implements PlugInFilter {
 
 	private static ImageResource SampleImage = GeneralSampleImage.WartburgSmall_jpg;
 	private static final String PropertyKey = Mesh_Warp_Interactive.class.getName();
@@ -98,10 +98,9 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private KeyListener[] canvasKeyListeners = null;
 	private MouseMotionListener[] canvasMouseMotionListeners = null;
 	
-	// data structures representing the grid and mesh
+	// ---- data structures representing the grid and mesh --------------
 	
-	// grid points positions:
-	private Pnt2d[][] gridOrig;
+	private Pnt2d[][] gridOrig;				// grid points positions
 	private Pnt2d[][] gridWarped;			// gridWarped[row][col][x/y]
 	private PntInt nodeSelected = null;		// the selected grid node (x = row, y = column), inner node only!
 	
@@ -110,13 +109,13 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	private Triangle[][][] trianglesWarped;		// trianglesWarped[row][col][0/1]
 	private TriangleGroup trianglesSelected = null;
 
+	// ------------------------------------------------------------------
 	
 	private ImageWindow win;
 	private ImageCanvas canvas;
 	private ImagePlus im;
 	private ImageProcessor ipOrig = null;
-	private String title;
-	
+	private String title;	
 	
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image
@@ -166,14 +165,11 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	
 	private void reset() {
 		initGridAndTriangles(im.getWidth(), im.getHeight());
-//		rSelect = -1;
-//		cSelect = -1;
 		nodeSelected = null;
 		trianglesSelected = null;
 	}
 	
 	private void finish() {
-		IJ.log("finish " + RemoveOverlayWhenDone);
 		revertListeners();
 		im.setTitle(title);
 		nodeSelected = null;
@@ -312,8 +308,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	}
 	
 	private void warpImage() {
-		ImageProcessor ip = im.getProcessor();
-		
+		ImageProcessor ip = im.getProcessor();	
 		int width = ip.getWidth();
 		int height = ip.getHeight();
 		
@@ -321,13 +316,20 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		for (int u = 0; u < width; u++) {
 			for (int v = 0; v < height; v++) {
 				Triangle tWarp = null;
+				
+				// if there is a selection we only remap pixels inside
 				if (trianglesSelected != null) {
 					tWarp = trianglesSelected.findTriangle(u, v); 		// search only over enclosing polygon triangles
+					if (tWarp == null)
+						continue;	
 				}
-				if (tWarp == null) {
-					tWarp = findEnclosingGridTriangle(u, v);				// search over all grid triangles
+				
+				// otherwise (if no selection), we remap all pixels
+				else {
+					tWarp = findEnclosingGridTriangle(u, v);				
 				}
 
+				// if enclosing triangle was found, remap pixel (u,v)
 				if (tWarp != null) {							// containing triangle found
 					AffineMapping2D am = tWarp.getMapping();
 					Pnt2d xy = am.applyTo(PntInt.from(u, v));	// source image position
@@ -394,16 +396,84 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 	// EVENT HANDLING:
 	// ----------------------------------------------------------------
 	
+	// anonymous sub-class of MouseAdapter
+	private final MouseAdapter MA = new MouseAdapter() {
+		@Override
+		public void mousePressed(MouseEvent e) {
+			try {		// right mouse button -> reset
+				if ((e.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
+					reset();
+				}
+				else {	// otherwise update the grid
+					updateGridSelection(
+							PntInt.from(canvas.offScreenX(e.getX()), canvas.offScreenY(e.getY())));
+				}
+				redraw();	
+				e.consume();
+			} catch (Exception ex) {
+				IJ.handleException(ex);
+			}
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			try {
+				remapImage();
+				redraw();
+				if (e.getClickCount() == 2 && !e.isConsumed()) {
+					e.consume();
+				}
+			} catch (Exception ex) {
+				IJ.handleException(ex);
+			}
+		}
+		
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			try {
+				int x = canvas.offScreenX(e.getX());
+				int y = canvas.offScreenY(e.getY());
+				if ((nodeSelected != null) && (trianglesSelected != null) && (trianglesSelected.contains(x, y))) {
+					moveSelectedGridPoint(x, y);
+					redraw();
+				}
+				} catch (Exception ex) {
+					IJ.handleException(ex);
+			}
+		}
+		
+	};
+	
+	// anonymous sub-class of KeyAdapter
+	private final KeyAdapter KA = new KeyAdapter() {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			int keyCode = e.getKeyCode();
+			// escape -> finish
+			if(keyCode == KeyEvent.VK_ESCAPE || keyCode == KeyEvent.VK_ENTER) {
+				finish();
+			}
+			// ctrl/+ zoom in
+			else if(keyCode == KeyEvent.VK_PLUS && e.isControlDown()) {
+				canvas.zoomIn(im.getWidth()/2, im.getHeight()/2);
+			}
+			// ctrl/- zoom out
+			else if(keyCode == KeyEvent.VK_MINUS && e.isControlDown()) {
+				canvas.zoomOut(im.getWidth()/2, im.getHeight()/2);
+			}
+		}
+	};
+	
 	private void setupListeners() {
 		// remove current listeners and keep for later re-install
 		windowKeyListeners = removeKeyListeners(win);
 		canvasKeyListeners = removeKeyListeners(canvas);
 		canvasMouseListeners = removeMouseListeners(canvas);
 		canvasMouseMotionListeners = removeMouseMotionListeners(canvas);
-			
-		canvas.addKeyListener(this);
-		canvas.addMouseListener(this);
-		canvas.addMouseMotionListener(this);
+		
+		canvas.addKeyListener(KA);
+		canvas.addMouseListener(MA);
+		canvas.addMouseMotionListener(MA);
 
 		win.addWindowListener(new WindowAdapter() {  
             @Override
@@ -435,84 +505,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		}
 	}
 	
-	// ----------------------------------------------------------------
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		try {
-			if ((e.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
-				reset();
-			}
-			else {
-				updateGridSelection(
-						PntInt.from(canvas.offScreenX(e.getX()), canvas.offScreenY(e.getY())));
-			}
-			redraw();
-			e.consume();
-		} catch (Exception ex) {
-			reportThrowable(ex);
-		}
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		try {
-			remapImage();
-			redraw();
-			if (e.getClickCount() == 2 && !e.isConsumed()) {
-				e.consume();
-			}
-		} catch (Exception ex) {
-			reportThrowable(ex);
-		}
-	}
-	
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		try {
-			int x = canvas.offScreenX(e.getX());
-			int y = canvas.offScreenY(e.getY());
-			if ((nodeSelected != null) && (trianglesSelected != null) && (trianglesSelected.contains(x, y))) {
-				moveSelectedGridPoint(x, y);
-				redraw();
-			}
-			} catch (Exception ex) {
-				reportThrowable(ex);
-		}
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) { }
-	
-	@Override
-	public void mouseEntered(MouseEvent e) { }
-	
-	@Override
-	public void mouseMoved(MouseEvent e) { }
-	
-	@Override
-	public void keyPressed(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		if(keyCode == KeyEvent.VK_ESCAPE || keyCode == KeyEvent.VK_ENTER) {
-			finish();
-		}
-		else if(keyCode == KeyEvent.VK_PLUS && e.isControlDown()) {
-			canvas.zoomIn(im.getWidth()/2, im.getHeight()/2);
-		}
-		else if(keyCode == KeyEvent.VK_MINUS && e.isControlDown()) {
-			canvas.zoomOut(im.getWidth()/2, im.getHeight()/2);
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) { }
-
-	@Override
-	public void keyTyped(KeyEvent e) { }
-	
 	// ------------------------------------------------------
 	
 	private KeyListener[] removeKeyListeners(Component comp) {
@@ -539,6 +531,8 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		return listeners;
 	}
 	
+	// ----------------
+	
 	private void addKeyListeners(Component comp, KeyListener[] listeners) {
 		if (comp == null || listeners == null) return;
 		for (KeyListener kl : listeners) {
@@ -558,20 +552,6 @@ public class Mesh_Warp_Interactive implements PlugInFilter, MouseListener, Mouse
 		for (MouseMotionListener ml : listeners) {
 			comp.addMouseMotionListener(ml);
 		}
-	}
-	
-	/**
-	 * Used to report exceptions that would otherwise go unnoticed, since
-	 * exceptions thrown from event handling methods are implicitly
-	 * caught (and ignored) by the the event dispatcher. 
-	 * 
-	 * @param thr the throwable
-	 */
-	private void reportThrowable(Throwable thr) {
-		ByteArrayOutputStream bas = new ByteArrayOutputStream();
-		PrintStream strm = new PrintStream(bas);
-		thr.printStackTrace(strm);
-		IJ.log(bas.toString());
 	}
 	
 	// ------------------------------------------------------------------
