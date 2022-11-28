@@ -10,12 +10,10 @@ package imagingbook.common.ij;
 
 import java.awt.Polygon;
 
-import ij.gui.EllipseRoi;
 import ij.gui.OvalRoi;
 import ij.gui.PointRoi;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
-import ij.gui.RotatedRectRoi;
 import ij.process.FloatPolygon;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
@@ -62,41 +60,14 @@ public class RoiUtils {
 	 * @return the ROI's outline coordinates
 	 */
 	public static Pnt2d[] getOutlinePointsFloat(Roi roi) {
-		final double offset = (isAreaRoi(roi)) ? -0.5 : 0.0; // TODO: replace by Roi.isLineOrPoint() when available
-//		final double offset = (roi.isLineOrPoint()) ? 0.0 : -0.5;
+//		final double offset = (isAreaRoi(roi)) ? -0.5 : 0.0; // replaced by Roi#isLineOrPoint() with IJ 1.53v
+		final double offset = (roi.isLineOrPoint()) ? 0.0 : -0.5; // shift area rois to pixel centers
 		FloatPolygon pgn = roi.getFloatPolygon();
 		Pnt2d[] pts = new Pnt2d[pgn.npoints];
 		for (int i = 0; i < pgn.npoints; i++) {
 			pts[i] = PntDouble.from(pgn.xpoints[i] + offset, pgn.ypoints[i] + offset);
 		}
 		return pts;
-	}
-	
-	/**
-	 * <p>
-	 * Returns true if the given {@link Roi} is an "area ROI", that is, coordinates
-	 * returned by returned {@code Roi#getFloatPolygon()} are referenced to the
-	 * top-left corner of pixels. In contrast, integer coordinates of "line ROIs"
-	 * are positioned at pixel centers.
-	 * </p>
-	 * <p>
-	 * Area selections: EllipseRoi, OvalRoi, polygon
-	 * (PolygonRoi with type = Roi.POLYGON), rectangle (Roi with
-	 * type = Roi.RECTANGLE), RotRectangle.<br>
-	 * Line selections: Line, FreehandLine, SegmentLine, Point, MultiPoint.
-	 * </p>
-	 * 
-	 * @param roi a ROI instance
-	 * @return true if the ROI is an area selection
-	 */
-	public static boolean isAreaRoi(Roi roi) {	// TODO: replace by Roi.isLineOrPoint() when available
-		int type = roi.getType();
-		if (roi instanceof EllipseRoi) return true;
-		if (roi instanceof OvalRoi) return true;
-		if (roi instanceof PolygonRoi && type == Roi.POLYGON) return true;
-		if (roi instanceof Roi && type == Roi.RECTANGLE) return true;
-		if (roi instanceof RotatedRectRoi) return true;
-		return false;
 	}
 	
 	/**
