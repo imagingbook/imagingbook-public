@@ -43,7 +43,7 @@
 <span class="sourceLineNo">033</span><a id="line.33">import imagingbook.common.ij.overlay.ColoredStroke;</a>
 <span class="sourceLineNo">034</span><a id="line.34">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</a>
 <span class="sourceLineNo">035</span><a id="line.35">import imagingbook.common.math.VectorNorm.NormType;</a>
-<span class="sourceLineNo">036</span><a id="line.36">import imagingbook.common.sift.SiftColor;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import imagingbook.common.sift.SiftColors;</a>
 <span class="sourceLineNo">037</span><a id="line.37">import imagingbook.common.sift.SiftDescriptor;</a>
 <span class="sourceLineNo">038</span><a id="line.38">import imagingbook.common.sift.SiftDetector;</a>
 <span class="sourceLineNo">039</span><a id="line.39">import imagingbook.common.sift.SiftMatch;</a>
@@ -73,7 +73,7 @@
 <span class="sourceLineNo">063</span><a id="line.63"> * @author WB</a>
 <span class="sourceLineNo">064</span><a id="line.64"> * @version 2022/11/20</a>
 <span class="sourceLineNo">065</span><a id="line.65"> */</a>
-<span class="sourceLineNo">066</span><a id="line.66">public class Sift_Matching_Demo implements PlugInFilter {</a>
+<span class="sourceLineNo">066</span><a id="line.66">public class SIFT_Matching_Demo implements PlugInFilter {</a>
 <span class="sourceLineNo">067</span><a id="line.67">        </a>
 <span class="sourceLineNo">068</span><a id="line.68">        // matching parameters:</a>
 <span class="sourceLineNo">069</span><a id="line.69">        private static NormType DistanceNormType = SiftMatcher.DefaultNormType;</a>
@@ -91,7 +91,7 @@
 <span class="sourceLineNo">081</span><a id="line.81">        private static BasicAwtColor LabelColor = BasicAwtColor.Yellow;</a>
 <span class="sourceLineNo">082</span><a id="line.82">        private static Font LabelFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);</a>
 <span class="sourceLineNo">083</span><a id="line.83">        </a>
-<span class="sourceLineNo">084</span><a id="line.84">        private static Color[] ScaleLevelColors = getColors(SiftColor.class);</a>
+<span class="sourceLineNo">084</span><a id="line.84">        private static Color[] ScaleLevelColors = getColors(SiftColors.class);</a>
 <span class="sourceLineNo">085</span><a id="line.85">        </a>
 <span class="sourceLineNo">086</span><a id="line.86">        private ImagePlus im = null;</a>
 <span class="sourceLineNo">087</span><a id="line.87">        </a>
@@ -99,7 +99,7 @@
 <span class="sourceLineNo">089</span><a id="line.89">         * Constructor, asks to open a predefined sample image if no other image</a>
 <span class="sourceLineNo">090</span><a id="line.90">         * is currently open.</a>
 <span class="sourceLineNo">091</span><a id="line.91">         */</a>
-<span class="sourceLineNo">092</span><a id="line.92">        public Sift_Matching_Demo() {</a>
+<span class="sourceLineNo">092</span><a id="line.92">        public SIFT_Matching_Demo() {</a>
 <span class="sourceLineNo">093</span><a id="line.93">                if (noCurrentImage()) {</a>
 <span class="sourceLineNo">094</span><a id="line.94">                        DialogUtils.askForSampleImage(SiftSampleImage.RamsesSmall);</a>
 <span class="sourceLineNo">095</span><a id="line.95">                }</a>

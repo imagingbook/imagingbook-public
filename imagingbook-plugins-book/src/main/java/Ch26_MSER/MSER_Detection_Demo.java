@@ -61,7 +61,7 @@ import imagingbook.sampleimages.MserSampleImage;
  * @author WB
  * @version 2022/11/24
  * 
- * @see MserDetecor
+ * @see MserDetector
  */
 public class MSER_Detection_Demo implements PlugInFilter {
 	

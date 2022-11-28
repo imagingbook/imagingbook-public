@@ -25,7 +25,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
 /**
  * <p>
  * ImageJ plugin, rotates the current image by a specified angle around its
- * center. See Sec. 2.1.1 of [1] for details. Optionally opens a 
+ * center. See Sec. 21.1.1 of [1] for details. Optionally opens a 
  * sample image if no image is currently open.
  * </p>
  * <p>

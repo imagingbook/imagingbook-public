@@ -22,7 +22,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
 /**
  * <p>
  * ImageJ plugin, applies a non-linear "tapestry" transformation to the current
- * image. See Sec. 2.1.7 (Exercise 21.9 and Fig. 21.18) of [1] for details.
+ * image. See Sec. 21.1.7 (Exercise 21.9 and Fig. 21.18) of [1] for details.
  * Optionally opens a sample image if no image is currently open.
  * </p>
  * <p>

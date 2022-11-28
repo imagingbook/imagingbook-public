@@ -34,7 +34,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @version 2022/11/28
  * 
  * @see ProjectiveMapping2D
- * @see LinearMapping
+ * @see LinearMapping2D
  * @see ImageMapper
  */
 public class Rectify_Quad_Selection implements PlugInFilter {

@@ -27,7 +27,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * <p>
  * ImageJ plugin, applies an affine transformation derived from a pair of
  * triangles P, Q (for the source and target image, respectively) to the current
- * image. See Sec. 2.1.3 of [1] for details. Optionally opens a sample image if
+ * image. See Sec. 21.1.3 of [1] for details. Optionally opens a sample image if
  * no image is currently open.
  * </p>
  * <p>

@@ -28,7 +28,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * This plugin demonstrates the use of geometric mappings, as implemented in the
  * imagingbook library. A {@link ProjectiveMapping2D} (transformation) is
  * specified by 4 corresponding point pairs, given by point sequences P and Q.
- * The inverse mapping is required for target-to-source mapping. See Sec. 2.1.4
+ * The inverse mapping is required for target-to-source mapping. See Sec. 21.1.4
  * of [1] for details. The actual pixel transformation is performed by an
  * {@link ImageMapper} object. Try on a suitable test image and check if the
  * image corners (P) are mapped to the points specified in Q. This plugin works
