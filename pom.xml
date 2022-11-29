@@ -42,7 +42,7 @@
 	</scm>
 
 	<modules>
-		<module>imagingbook-parent-pom</module>
+		<!-- <module>imagingbook-parent-pom</module> -->
 		<module>imagingbook-plugins-pom</module>
 		<module>imagingbook-core</module>
 		<module>imagingbook-common</module>
@@ -51,7 +51,6 @@
 		<module>imagingbook-plugins-book</module>
 		<module>imagingbook-plugins-demos</module>
 		<module>imagingbook-plugins-extras</module>
-		<module>imagingbook-plugins-tools</module>
 		<module>imagingbook-sample-images</module>
 		<module>imagingbook-book-images</module>
 		<module>imagingbook-testing</module>

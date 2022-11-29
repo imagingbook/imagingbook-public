@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Tools;
+package Tools_;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,7 +16,6 @@ import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import imagingbook.bookimages.BookImageCh01;
 import imagingbook.bookimages.BookImageCh02;
-import imagingbook.common.ij.DialogUtils;
 import imagingbook.core.resource.ImageResource;
 
 /**

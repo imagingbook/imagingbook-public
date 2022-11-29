@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
-package Tools;
+package Tools_;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
@@ -25,7 +25,6 @@ import imagingbook.core.FileUtils;
 import imagingbook.pdf.PdfExporter;
 import imagingbook.pdf.PdfExporter.Parameters;
 import imagingbook.pdf.Utils;
-
 
 /**
  * This ImageJ plugin exports the current image and its attached

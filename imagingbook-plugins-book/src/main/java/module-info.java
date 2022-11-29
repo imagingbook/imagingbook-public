@@ -34,4 +34,6 @@ module imagingbook.plugins_book {
 	requires imagingbook.sampleimages;
 	requires imagingbook.spectral;
 	requires java.desktop;
+	requires imagingbook.pdf;
+	requires imagingbook.bookimages;
 }
