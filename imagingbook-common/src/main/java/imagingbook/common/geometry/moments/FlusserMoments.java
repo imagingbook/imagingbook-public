@@ -10,8 +10,8 @@ import imagingbook.common.math.Complex;
  * This abstract class defines static methods only.
  * </p>
  * <p>
- * [1] J. Flusser, B. Zitova, and T. Suk. “Moments and Moment Invariants in
- * Pattern Recognition”. John Wiley and Sons (2009). 
+ * [1] J. Flusser, B. Zitova, and T. Suk. "Moments and Moment Invariants in
+ * Pattern Recognition". John Wiley and Sons (2009). 
  * <br>
  * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
  * Algorithmic Introduction</em>, 3rd ed, Springer (2022).

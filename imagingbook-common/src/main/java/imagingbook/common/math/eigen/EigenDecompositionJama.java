@@ -55,7 +55,7 @@ import imagingbook.common.math.exception.MaxIterationsExceededException;
  * @version 2022/06/19
  * 
  * @see EigenDecompositionApache
- * @see EigenSolver2x2
+ * @see Eigensolver2x2
  */
 public class EigenDecompositionJama implements RealEigenDecomposition {
 	

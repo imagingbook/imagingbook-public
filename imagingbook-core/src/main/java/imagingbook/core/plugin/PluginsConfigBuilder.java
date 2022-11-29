@@ -154,18 +154,20 @@ public class PluginsConfigBuilder {
 					String className = FileUtils.stripFileExtension(pathName);
 					// remove non-class part of filename:
 					className = className.substring(n + 1);
-					// convert to qualified class name:
-					className = className.replace(File.separatorChar, '.');
-					// find the associated class object (this should never fail):
-					Class<?> clazz = null;
-					try {
-						clazz = Class.forName(className);
-					} catch (final ClassNotFoundException e) {
-						throw new RuntimeException(e.getMessage());
-					}
-
-					if (clazz != null && isIjPlugin(clazz)) {
-						pluginClasses.add(clazz);
+					if (className.indexOf('-') < 0) {		// ignore 'package-info' and 'module-info'
+						// convert to qualified class name:
+						className = className.replace(File.separatorChar, '.');
+						// find the associated class object (this should never fail):
+						Class<?> clazz = null;
+						try {
+							clazz = Class.forName(className);
+						} catch (final ClassNotFoundException e) {
+							throw new RuntimeException(e.getMessage());
+						}
+	
+						if (clazz != null && isIjPlugin(clazz)) {
+							pluginClasses.add(clazz);
+						}
 					}
 				}
 			});
