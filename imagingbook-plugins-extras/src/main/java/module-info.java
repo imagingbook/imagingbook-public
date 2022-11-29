@@ -3,7 +3,7 @@ module imagingbook.plugins_extras {
 	exports Fourier_Shape_Descriptors;
 	exports Synthetic_Noise;
 
-	requires ij;
+	requires transitive ij;
 	requires imagingbook.common;
 	requires imagingbook.core;
 	requires java.desktop;

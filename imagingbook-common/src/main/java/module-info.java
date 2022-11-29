@@ -9,11 +9,9 @@ module imagingbook.common {
 	exports imagingbook.common.noise.perlin;
 	exports imagingbook.common.ij.overlay;
 	exports imagingbook.common.filter.mask;
-//	exports imagingbook.common.geometry.fitting.ellipse.algebraic.data;
 	exports imagingbook.common.geometry.basic;
 	exports imagingbook.common.geometry.fitting.ellipse.utils;
 	exports imagingbook.common.threshold.global;
-//	exports imagingbook.testimages;
 	exports imagingbook.common.ransac;
 	exports imagingbook.common.geometry.delaunay.guibas;
 	exports imagingbook.common.filter.linear;
@@ -74,9 +72,9 @@ module imagingbook.common {
 	exports imagingbook.common.util.progress;
 	exports imagingbook.common.util.random;
 
-	requires commons.math3;
-	requires ij;
-	requires imagingbook.core;
+	requires transitive commons.math3;
+	requires transitive ij;
+	requires transitive imagingbook.core;
 	requires java.datatransfer;
-	requires java.desktop;
+	requires transitive java.desktop;
 }

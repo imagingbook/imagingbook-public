@@ -1,8 +1,8 @@
 module imagingbook.testing {
 	exports imagingbook.testutils;
 
-	requires ij;
-	requires imagingbook.core;
+	requires transitive ij;
+	requires transitive imagingbook.core;
 	requires java.desktop;
 	requires junit;
 }

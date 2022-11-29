@@ -3,7 +3,7 @@ module imagingbook.plugins_demos {
 	exports ImageAccessorDemos;
 	exports GenericFilterDemos;
 
-	requires ij;
+	requires transitive ij;
 	requires imagingbook.common;
 	requires imagingbook.core;
 	requires imagingbook.sampleimages;

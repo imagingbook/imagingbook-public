@@ -28,12 +28,12 @@ module imagingbook.plugins_book {
 	exports More_;
 
 	requires commons.math3;
-	requires ij;
-	requires imagingbook.common;
+	requires transitive ij;
+	requires transitive imagingbook.common;
 	requires imagingbook.core;
 	requires imagingbook.sampleimages;
 	requires imagingbook.spectral;
-	requires java.desktop;
+	requires transitive java.desktop;
 	requires imagingbook.pdf;
 	requires imagingbook.bookimages;
 }
