@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- <groupId>com.imagingbook</groupId> -->
+	<artifactId>imagingbook-public</artifactId>
+	<!-- <version>6.0.0-SNAPSHOT</version> -->
+	<packaging>pom</packaging>
+	
+	<name>${project.groupId}:${project.artifactId}</name>
+	
+	<parent>
+		<groupId>com.imagingbook</groupId>
+		<artifactId>imagingbook-parent-pom</artifactId>
+		<version>6.0.0-SNAPSHOT</version>
+		<!-- <relativePath /> -->
+		<relativePath>imagingbook-parent-pom/pom.xml</relativePath>
+	</parent>
+	
+	<!-- This POM is only for defining Maven sub-modules to allow single-click bilds. It is not used as a parent POM. -->
+
+	<modules>
+		<module>imagingbook-parent-pom</module>
+		<module>imagingbook-plugins-pom</module>
+		<module>imagingbook-core</module>
+		<module>imagingbook-common</module>
+		<module>imagingbook-spectral</module>
+		<module>imagingbook-pdf</module>
+		<module>imagingbook-plugins-book</module>
+		<module>imagingbook-plugins-demos</module>
+		<module>imagingbook-plugins-extras</module>
+		<module>imagingbook-plugins-tools</module>
+		<module>imagingbook-sample-images</module>
+		<module>imagingbook-book-images</module>
+		<module>imagingbook-testing</module>
+	</modules>
+	
+	<!--
+	<properties>
+		<java.version>10</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+	    <maven.compiler.source>${java.version}</maven.compiler.source>
+	</properties>
+	-->
+	
+	<build>
+		<plugins>
+			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			-->
+				
+			<!-- do not deploy this artifact -->
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-deploy-plugin</artifactId>
+			  <!-- <version>3.0.0-M2</version> -->
+			  <configuration>
+			    <skip>true</skip>
+			  </configuration>
+			</plugin>	
+			
+		</plugins>
+	</build>
+
+</project>

@@ -2,11 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>imagingbook-book-images</artifactId>
   
-  <parent>
+  	<parent>
 		<groupId>com.imagingbook</groupId>
-		<artifactId>imagingbook-parent-pom</artifactId>
+		<artifactId>imagingbook-public</artifactId>
+		<!-- <artifactId>imagingbook-parent-pom</artifactId> -->
 		<version>6.0.0-SNAPSHOT</version>
-		<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>
+		<!-- <relativePath /> -->
+		<!-- <relativePath>../imagingbook-parent-pom/pom.xml</relativePath> -->
 	</parent>
 	
 	<name>${project.groupId}:${project.artifactId}</name>
