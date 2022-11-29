@@ -50,7 +50,7 @@
 		<imagingbook.docdir>${project.basedir}</imagingbook.docdir>
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
 
-		<java.version>10</java.version>
+		<java.version>11</java.version>	<!-- need to step to 11 to make Javadoc API linking work! -->
 		<imagej.version>1.53v</imagej.version> <!-- see https://mvnrepository.com/artifact/net.imagej/ij -->
 		<commons-math3.version>3.6.1</commons-math3.version>
 		<junit.version>4.13.2</junit.version>
@@ -331,12 +331,12 @@
 				<configuration>
 					<verbose>true</verbose>
 	                <!-- workaround for https://bugs.openjdk.java.net/browse/JDK-8212233 -->
-					<javaApiLinks>
+					<!-- <javaApiLinks>
 						<property>
 							<name>foo</name>
 							<value>bar</value>
 						</property>
-					</javaApiLinks>
+					</javaApiLinks> -->
 					<!-- Default configuration for all reports -->
 					<!-- Problem with Java 12: mixing named and unnamed modules?? -->
 					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->  <!-- add for Java 10, 11, 12 .. -->
@@ -350,8 +350,10 @@
 						<!-- <link>https://docs.oracle.com/javase/10/docs/api</link> -->
 			            <!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
 			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest/ij</link>  unnamed mdule, 'element-list' missing? -->
-			            <link>https://javadoc.io/doc/net.imagej/ij/1.53v</link>		<!-- seems to work, but incompatible woth API docs? -->
+			            <link>https://javadoc.io/doc/net.imagej/ij/1.53v</link>		<!-- works! -->
 			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest</link> -->
+			            <!-- <link>https://javadoc.io/doc/org.apache.commons/commons-math3/latest</link> -->
+			            <link>https://javadoc.io/doc/org.apache.commons/commons-math3/3.6.1</link>
 			            
 			        </links>
 
@@ -378,7 +380,7 @@
 					<verbose>true</verbose>
 					<!-- <quiet>true</quiet> -->				
 					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
-					<additionalOptions>--frames</additionalOptions> <!-- "frames" by default, javadoc does not generate HTML with frames any more! -->
+					<!-- <additionalOptions>xxframes</additionalOptions>--> <!-- with SE17, javadoc does not support frames any more! -->
 				</configuration>
 				<executions>
 					<execution>
