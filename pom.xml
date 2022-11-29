@@ -3,12 +3,20 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.imagingbook</groupId>
+	<!-- <groupId>com.imagingbook</groupId> -->
 	<artifactId>imagingbook-public</artifactId>
-	<version>6.0.0-SNAPSHOT</version>
+	<!-- <version>6.0.0-SNAPSHOT</version> -->
 	<packaging>pom</packaging>
 	
 	<name>${project.groupId}:${project.artifactId}</name>
+	
+	<parent>
+		<groupId>com.imagingbook</groupId>
+		<artifactId>imagingbook-parent-pom</artifactId>
+		<version>6.0.0-SNAPSHOT</version>
+		<!-- <relativePath /> -->
+		<relativePath>imagingbook-parent-pom/pom.xml</relativePath>
+	</parent>
 	
 	<!-- This POM is only for defining Maven sub-modules to allow single-click bilds. It is not used as a parent POM. -->
 
@@ -28,6 +36,7 @@
 		<module>imagingbook-testing</module>
 	</modules>
 	
+	<!--
 	<properties>
 		<java.version>10</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,9 +44,11 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	    <maven.compiler.source>${java.version}</maven.compiler.source>
 	</properties>
+	-->
 	
 	<build>
 		<plugins>
+			<!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -45,56 +56,19 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
-					<!-- <compilerArgs>
-        				<arg>-Xpkginfo:nonempty</arg>
-					</compilerArgs> -->
 				</configuration>
 			</plugin>
+			-->
 				
 			<!-- do not deploy this artifact -->
 			<plugin>
 			  <groupId>org.apache.maven.plugins</groupId>
 			  <artifactId>maven-deploy-plugin</artifactId>
-			  <version>3.0.0-M2</version>
+			  <!-- <version>3.0.0-M2</version> -->
 			  <configuration>
 			    <skip>true</skip>
 			  </configuration>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.4.1</version>
-				<configuration>
-					<source>10</source>
-					<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-					<!-- <destDir>javadoc</destDir> -->
-					<detectJavaApiLink>true</detectJavaApiLink>
-					<detectLinks>true</detectLinks>
-			        <links>
-			            <!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
-			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest/ij</link>  unnamed mdule, 'element-list' missing? -->
-			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/1.53v</link> -->		<!-- seems to work, but incompatible woth API docs? -->
-			            <link>https://javadoc.io/doc/net.imagej/ij/latest</link>	
-			        </links>
-			        <bottom>
-	        		<![CDATA[Copyright &#169; {inceptionYear}&#x2013;{currentYear}, 
-	        		<a href="https://imagingbook.com" target="new">
-	        		Wilhelm Burger, Mark J. Burge</a>
-	        		<a href="http://opensource.org/licenses/BSD-2-Clause" target="new">
-	        		(BSD 2-Clause Simplified License)</a>]]>
-					</bottom>
-					<show>protected</show>
-					<failOnError>false</failOnError>
-					<nohelp>true</nohelp>
-					<linksource>true</linksource>
-					<author>false</author>
-					<verbose>true</verbose>
-					<!-- <quiet>true</quiet> -->				
-					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
-					<additionalOptions>--frames</additionalOptions>
-		        </configuration>
-			</plugin>
+			</plugin>	
 			
 		</plugins>
 	</build>

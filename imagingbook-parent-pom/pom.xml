@@ -63,7 +63,7 @@
 		
 		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
 		
-		<maven.javadoc.skip>false</maven.javadoc.skip>	<!-- should be true! set false on command line -->
+		<maven.javadoc.skip>true</maven.javadoc.skip>	<!-- should be true! set false on command line -->
 		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
 		
 	</properties>
@@ -120,13 +120,13 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.2.0</version>
 				</plugin>
 				
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.0.2</version>
+					<version>3.3.0</version>
 				</plugin>
 				
 				<plugin>
@@ -147,7 +147,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>3.0.0-M6</version>
+					<version>3.0.0-M7</version>
 					<configuration>
 						<goals>deploy</goals>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
@@ -157,13 +157,13 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.1.0</version>
 				</plugin>
 				
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.2.2</version>
+					<version>3.3.0</version>
 				</plugin>
 				
 				<plugin>
@@ -187,7 +187,7 @@
 				<plugin>  
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.4.1</version>
 				</plugin>
 
 				<!-- Ignore/Execute plugin execution (https://stackoverflow.com/a/8752807) -->
@@ -329,14 +329,31 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
-					<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+					<verbose>true</verbose>
+	                <!-- workaround for https://bugs.openjdk.java.net/browse/JDK-8212233 -->
+					<javaApiLinks>
+						<property>
+							<name>foo</name>
+							<value>bar</value>
+						</property>
+					</javaApiLinks>
 					<!-- Default configuration for all reports -->
 					<!-- Problem with Java 12: mixing named and unnamed modules?? -->
 					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->  <!-- add for Java 10, 11, 12 .. -->
 					<!-- <source>1.8</source> -->
-					<detectJavaApiLink>true</detectJavaApiLink>
+					<source>${java.version}</source>
+					<detectJavaApiLink>true</detectJavaApiLink>	<!-- gives incorrect links! -->
 					<detectLinks>true</detectLinks>
 					<!-- <detectOfflineLinks>true</detectOfflineLinks> -->
+					
+					<links>
+						<!-- <link>https://docs.oracle.com/javase/10/docs/api</link> -->
+			            <!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
+			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest/ij</link>  unnamed mdule, 'element-list' missing? -->
+			            <link>https://javadoc.io/doc/net.imagej/ij/1.53v</link>		<!-- seems to work, but incompatible woth API docs? -->
+			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest</link> -->
+			            
+			        </links>
 
 					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
 					<destDir>javadoc</destDir>
