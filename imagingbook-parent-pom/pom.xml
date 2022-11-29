@@ -50,7 +50,7 @@
 		<imagingbook.docdir>${project.basedir}</imagingbook.docdir>
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
 
-		<java.version>1.8</java.version>
+		<java.version>10</java.version>
 		<imagej.version>1.53v</imagej.version> <!-- see https://mvnrepository.com/artifact/net.imagej/ij -->
 		<commons-math3.version>3.6.1</commons-math3.version>
 		<junit.version>4.13.2</junit.version>
@@ -63,7 +63,7 @@
 		
 		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
 		
-		<maven.javadoc.skip>true</maven.javadoc.skip>	<!-- set false on command line -->
+		<maven.javadoc.skip>false</maven.javadoc.skip>	<!-- should be true! set false on command line -->
 		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
 		
 	</properties>
@@ -177,9 +177,10 @@
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>3.4.1</version>
 					<configuration>
-			          <links>
-			            <!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
-			          </links>
+						<source>${java.version}</source>
+				          <links>
+				            <!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
+				          </links>
 			        </configuration>
 				</plugin>
 				
@@ -245,7 +246,6 @@
 					</configuration>
 				</plugin>
 				
-				<!-- 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -253,12 +253,11 @@
 					<configuration>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
-						<compilerArgs>
+						<!-- <compilerArgs>
             				<arg>-Xpkginfo:nonempty</arg>
-						</compilerArgs>
+						</compilerArgs> -->
 					</configuration>
 				</plugin>
-				-->
 				
 			</plugins>
 		</pluginManagement>
@@ -355,13 +354,14 @@
 	        		(BSD 2-Clause Simplified License)</a>]]>
 					</bottom>
 					<show>protected</show>
+					<failOnError>false</failOnError>
 					<nohelp>true</nohelp>
 					<linksource>true</linksource>
 					<author>false</author>
 					<verbose>true</verbose>
 					<!-- <quiet>true</quiet> -->				
 					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
-					<additionalOptions>--frames</additionalOptions> <!-- by default, javadoc does not generate HTML with frames any more! -->
+					<additionalOptions>--frames</additionalOptions> <!-- "frames" by default, javadoc does not generate HTML with frames any more! -->
 				</configuration>
 				<executions>
 					<execution>
