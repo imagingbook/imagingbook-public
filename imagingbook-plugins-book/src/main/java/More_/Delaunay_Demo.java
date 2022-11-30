@@ -30,7 +30,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.MserSampleImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 
 /**
@@ -47,7 +47,7 @@ import imagingbook.sampleimages.MserSampleImage;
  */
 public class Delaunay_Demo implements PlugInFilter {
 	
-	private static ImageResource SampleImage = MserSampleImage.MortarSmall;
+	private static ImageResource SampleImage = GeneralSampleImage.MortarSmall;
 	
 	private static int CornerCount = 0;					// number of corners to show (0 = show all)
 	private static boolean ShuffleCorners = true;	

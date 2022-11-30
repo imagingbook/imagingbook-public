@@ -75,12 +75,24 @@ public enum GeneralSampleImage implements ImageResource {
 		/** Binary image with various tools, used for connected components segmentation. */
 		ToolsSmall,
 		
+		/** Color image, used for piecewise image warping. */
 		WartburgSmall_jpg,
 		
+		/** Color image used for projective rectification. */
 		PostalPackageSmall_jpg,
 		
+		/** Color image used for various non-linear transformations. */
 		Flower_jpg,
 		
+		/** Grayscale image used for MSER feature detection. */
+		MortarSmall,
+		
+		/** Grayscale image used for SIFT feature detection. */
+		Castle,
+		/** Grayscale stereo image used for SIFT feature detection and matching. */
+		RamsesSmall,
+		/** A stack of 2 grayscale stereo frames used for SIFT feature detection and matching. */
+		RamsesSmallStack_tif,
 	;
 
 }

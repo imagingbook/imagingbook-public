@@ -13,7 +13,7 @@ import ij.ImagePlus;
 import ij.plugin.PlugIn;
 
 /**
- * Unlocks the currently active image.
+ * ImageJ plugin, unlocks the currently active image.
  * 
  * @author WB
  *

@@ -19,7 +19,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
-import imagingbook.sampleimages.SiftSampleImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -48,7 +48,7 @@ public class Show_Scale_Space implements PlugInFilter {
 	 */
 	public Show_Scale_Space() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(SiftSampleImage.Castle);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Castle);
 		}
 	}
 	

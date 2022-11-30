@@ -29,7 +29,7 @@ import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftParameters;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.SiftSampleImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -56,7 +56,7 @@ import imagingbook.sampleimages.SiftSampleImage;
 
 public class SIFT_Detection_Demo implements PlugInFilter {
 	
-	private static ImageResource SampleImage = SiftSampleImage.Castle;
+	private static ImageResource SampleImage = GeneralSampleImage.Castle;
 	
 	private static SiftParameters params = new SiftParameters();
 	private static int MaxFeaturesToShow = 200;

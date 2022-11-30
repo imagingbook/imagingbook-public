@@ -9,7 +9,7 @@
 package Tools_;
 
 /**
- * Closes all open images except the currently active image. 
+ * ImageJ plugin, closes all open images except the currently active image. 
  * Much copied from from ij.plugin.WindowOrganizer.java
  * 
  * @author WB
@@ -23,7 +23,7 @@ import ij.process.ImageProcessor;
 
 public class Close_Other_Images implements PlugInFilter {
 	
-	ImagePlus im;
+	private ImagePlus im;
 	
 	@Override
 	public int setup(String arg0, ImagePlus im) {

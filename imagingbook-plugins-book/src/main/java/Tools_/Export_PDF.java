@@ -18,7 +18,6 @@ import java.nio.file.Paths;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.io.LogStream;
 import ij.io.SaveDialog;
 import ij.plugin.PlugIn;
 import imagingbook.core.FileUtils;
@@ -27,10 +26,10 @@ import imagingbook.pdf.PdfExporter.Parameters;
 import imagingbook.pdf.Utils;
 
 /**
- * This ImageJ plugin exports the current image and its attached
- * vector graphic overlay (if existent) as a PDF file.
- * It uses the free OpenPDF library, which is based on iText4 but LGPL-licensed
- * (see <a href="https://github.com/LibrePDF/OpenPDF">
+ * This ImageJ plugin exports the current image and its attached vector graphic
+ * overlay (if existent) as a PDF file. It uses the free OpenPDF library, which
+ * is based on iText4 but LGPL-licensed (see
+ * <a href="https://github.com/LibrePDF/OpenPDF">
  * https://github.com/LibrePDF/OpenPDF</a>).
  * 
  * @author WB
@@ -39,29 +38,26 @@ import imagingbook.pdf.Utils;
  * @version 2021/04/21 (converted from PlugInFilter to PlugIn)
  * @version 2021/10/26 (added property insertion - TODO)
  * @version 2022/03/14 (complete rewrite, main functionality moved to
- * {@link PdfExporter}, fixed font embedding)
+ *          {@link PdfExporter}, fixed font embedding)
  * @version 2022/04/23 (removed DialogListener)
  * 
- * TODO: fix current directory mechanism
- * 
+ * @see PdfExporter
  */
 public class Export_PDF implements PlugIn {
 	
-	static {
-		LogStream.redirectSystem();
-	}
+//	TODO: fix current directory mechanism
 	
 	private static int MinImageWidth = 512; // used to suggest ImageUpscaleFactor
 	private static String DefaultFileExtension = ".pdf";
 	private static boolean OpenPdfAfterExport = false;
 	
-	private ImagePlus img;
+	private ImagePlus im;
 	private Parameters params;
 	
 	@Override
 	public void run(String arg) {
-		this.img = IJ.getImage();
-		if (img == null) 
+		this.im = IJ.getImage();
+		if (im == null) 
 			return;
 	
 		if (!Utils.verifyPdfLib()) {
@@ -69,24 +65,24 @@ public class Export_PDF implements PlugIn {
 			return;
 		}
 		
-		if (img.getStackSize() != 1) {
+		if (im.getStackSize() != 1) {
 			IJ.error("Can only export single images (no stacks)!");
 			return;
 		}
 		
 		// -------------------------------------------------
 		
-		int width = img.getWidth();
-		String filename = img.getShortTitle();
+		int width = im.getWidth();
+		String filename = im.getShortTitle();
 
 		params = new Parameters();
-		params.title = img.getShortTitle();
+		params.title = im.getShortTitle();
 		params.upscaleFactor = (width >= MinImageWidth) ? 1 :
 					(int) Math.ceil((double)MinImageWidth / width) ;
 		params.upscaleImage = (params.upscaleFactor > 1);
-		params.includeOverlay = (img.getOverlay() != null);
+		params.includeOverlay = (im.getOverlay() != null);
 					
-		if (!getUserInput(params)) {
+		if (!runDialog(params)) {
 			return;
 		}
 		
@@ -112,7 +108,7 @@ public class Export_PDF implements PlugIn {
 		FileUtils.setCurrentDirectory(this.getClass(), path);
 		
 		// ----------------------------------------------------------------
-		PdfExporter exporter = new PdfExporter(img, params);
+		PdfExporter exporter = new PdfExporter(im, params);
 		String finalPath = exporter.exportTo(path);
 		if (finalPath == null) 
 			IJ.error("PDF export failed to " + path.toString());
@@ -132,14 +128,12 @@ public class Export_PDF implements PlugIn {
 
 	// ----------------------------------------------------------------------
 	
-	private boolean getUserInput(Parameters params) {
+	private boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog("Export PDF");
-		
 		addToDialog(params, gd);
 		gd.addCheckbox("Open PDF after export", OpenPdfAfterExport);
 		
 		gd.showDialog();
-		
 		if (gd.wasCanceled()) {
 			return false;
 		}
@@ -163,14 +157,6 @@ public class Export_PDF implements PlugIn {
     	else
     		return null;
     }
-	
-	@SuppressWarnings("unused")
-	private String stripFileExtension(String fileName) {
-		int dotInd = fileName.lastIndexOf('.');
-		// if dot is in the first position,
-		// we are dealing with a hidden file rather than a DefaultFileExtension
-		return (dotInd > 0) ? fileName.substring(0, dotInd) : fileName;
-	}
 	
 }
 

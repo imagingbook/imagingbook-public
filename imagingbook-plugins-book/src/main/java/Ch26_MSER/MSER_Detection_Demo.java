@@ -38,7 +38,7 @@ import imagingbook.common.mser.MserParameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.PixelMap.Pixel;
 import imagingbook.core.resource.ImageResource;
-import imagingbook.sampleimages.MserSampleImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -65,7 +65,7 @@ import imagingbook.sampleimages.MserSampleImage;
  */
 public class MSER_Detection_Demo implements PlugInFilter {
 	
-	private static ImageResource SampleImage = MserSampleImage.MortarSmall;
+	private static ImageResource SampleImage = GeneralSampleImage.MortarSmall;
 	
 	private static boolean ShowMserCount = true;
 	private static boolean ShowEllipses = true;

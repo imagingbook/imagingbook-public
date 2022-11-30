@@ -39,7 +39,7 @@ import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftMatch;
 import imagingbook.common.sift.SiftMatcher;
 import imagingbook.common.sift.SiftParameters;
-import imagingbook.sampleimages.SiftSampleImage;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
@@ -91,7 +91,7 @@ public class SIFT_Matching_Demo implements PlugInFilter {
 	 */
 	public SIFT_Matching_Demo() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(SiftSampleImage.RamsesSmall);
+			DialogUtils.askForSampleImage(GeneralSampleImage.RamsesSmall);
 		}
 	}
 	
