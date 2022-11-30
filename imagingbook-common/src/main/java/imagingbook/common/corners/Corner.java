@@ -19,7 +19,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 /**
  * This class represents a 2D corner.
  * A corner is essentially a {@link Pnt2d} plus a scalar quantity
- * {@link #q} for the corner strength.
+ * {@code q} for the corner strength.
  * 
  * @version 2022/09/05
  */

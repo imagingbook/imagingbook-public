@@ -81,6 +81,7 @@ public class Kernel1D {
 	 * 
 	 * @param A a 1D array
 	 * @return the normalized array
+	 * @throws ArithmeticException 
 	 */
 	public static float[] normalize(float[] A) throws ArithmeticException {
 		double scale = 1.0 / Matrix.sum(A);

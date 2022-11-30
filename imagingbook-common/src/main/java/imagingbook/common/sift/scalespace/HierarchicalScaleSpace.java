@@ -28,12 +28,13 @@ import imagingbook.common.util.PrintsToStream;
  * 
  * @author WB
  * @version 2022/11/20
+ * @param <OctaveT> the octave type
  * @see ScaleLevel
  * @see ScaleOctave
  * @see GaussianScaleSpace
  * @see DogScaleSpace
  */
-public abstract class HierarchicalScaleSpace<OctaveT extends ScaleOctave<?>> implements PrintsToStream {	//  extends ScaleOctave
+public abstract class HierarchicalScaleSpace<OctaveT extends ScaleOctave<?>> implements PrintsToStream {
 	
 	final int P;								// number of octaves
 	final int Q; 								// number of levels per octave

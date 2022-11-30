@@ -30,6 +30,7 @@ import imagingbook.common.util.PrintsToStream;
  * 
  * @author WB
  * @version 2022/11/20
+ * @param <LevelT> the scale level type
  */
 public abstract class ScaleOctave<LevelT extends ScaleLevel> implements PrintsToStream {
 	

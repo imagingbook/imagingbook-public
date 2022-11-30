@@ -14,7 +14,7 @@ import imagingbook.common.image.PixelPack;
  * <p>
  * This (abstract) class represents a filter which treats all pixel data 
  * as vectors.
- * The filter calls the method {@link #doPixel(PixelPack, int, int)}
+ * The filter calls the method {@code doPixel(PixelPack, int, int)}
  * for each image pixel, which must be implemented by any concrete
  * sub-class.
  * </p>

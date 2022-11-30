@@ -12,6 +12,7 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.filter.linear.LinearFilter;
 import imagingbook.common.filter.linear.LinearFilterSeparable;
+import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
 
@@ -41,7 +42,7 @@ import imagingbook.common.math.Matrix;
  * @see LinearFilter
  * @see LinearFilterSeparable
  * @see GenericFilter#applyTo(ij.process.ImageProcessor)
- * @see GenericFilter#applyTo(ij.process.ImageProcessor, imagingbook.common.image.access.OutOfBoundsStrategy)
+ * @see GenericFilter#applyTo(ij.process.ImageProcessor, OutOfBoundsStrategy)
  */
 public class ExampleFilter3x3Vector extends GenericFilterVector {
 

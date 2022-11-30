@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 /**
  * <p>
  * Determines the 'permutation' of a sequence of numbers and keeps it as an
- * array ({@link #perm}) of position indexes. These indexes indicate how the
+ * array ({@code perm}) of position indexes. These indexes indicate how the
  * original input array may be re-ordered to become sorted (see
  * {@link #getPermutation()}).
  * </p>

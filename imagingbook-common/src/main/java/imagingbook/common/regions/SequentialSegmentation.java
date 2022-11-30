@@ -38,12 +38,12 @@ public class SequentialSegmentation extends BinaryRegionSegmentation {
 	 * Constructor. Creates a new region segmentation from the specified image,
 	 * which is not modified. The input image is considered binary, with 0 values
 	 * for background pixels and values &ne; 0 for foreground pixels.
-	 * The 4-neighborhood is used by default ({@link DEFAULT_NEIGHBORHOOD}).
+	 * The 4-neighborhood is used by default ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
 	 * 
 	 * @param ip the binary input image to be segmented
 	 */
 	public SequentialSegmentation(ByteProcessor ip) {
-		this(ip, DEFAULT_NEIGHBORHOOD);
+		this(ip, DefaultNeighborhoodT);
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public class SequentialSegmentation extends BinaryRegionSegmentation {
 		// Step 1: assign initial labels:
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
-				if (getLabel(u, v) == FOREGROUND) {
+				if (getLabel(u, v) == Foreground) {
 					nh = getNeighborhood(nh, u, v);
 					int a = max(nh);
 					if (!isRegionLabel(a)) { // a = 0 or 1,  i.e., (u,v) is isolated and not connected to any labeled pixel

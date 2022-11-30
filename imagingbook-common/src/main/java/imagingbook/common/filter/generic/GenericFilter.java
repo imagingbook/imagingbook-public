@@ -38,7 +38,7 @@ import imagingbook.common.util.progress.ProgressReporter;
  * structures are implemented by this class {@link GenericFilter}.
  * Most filters only require a single pass.
  * If more passes are required, the concrete (terminal) filter class
- * should override the method {@link #passesRequired()} to return the 
+ * should override the method {@code passesRequired()} to return the 
  * required number, which may change dynamically during the execution 
  * of the filter (e.g., to reach convergence of some sort).
  * Sub-classes provide definitions for scalar filters, i.e., filters
@@ -53,8 +53,8 @@ import imagingbook.common.util.progress.ProgressReporter;
  * In the simplest (though frequent) case a concrete filter class only needs 
  * to implement a single method to specify the work to be done for calculating the
  * value of a single image pixel (e.g., see 
- * {@link GenericFilterVector#doPixel(PixelPack, int, int)} and
- * {@link GenericFilterScalar#doPixel(PixelSlice, int, int)}).
+ * {@code GenericFilterVector.doPixel(PixelPack, int, int)} and
+ * {@code GenericFilterScalar.doPixel(PixelSlice, int, int)}).
  * See {@link ExampleFilter3x3Scalar} and {@link ExampleFilter3x3Vector} for examples.
  * </p>
  * <p>

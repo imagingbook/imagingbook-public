@@ -315,6 +315,7 @@ public class PixelPack {
 	 * An exception is thrown if the specified slice does not exist.
 	 * @param k the slice index (0,...,K-1)
 	 * @return the kth {@link PixelSlice}
+	 * @throws IllegalArgumentException 
 	 */
 	public PixelSlice getSlice(int k) throws IllegalArgumentException {
 		if (k < 0 || k >= depth) {

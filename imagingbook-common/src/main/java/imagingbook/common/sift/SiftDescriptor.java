@@ -118,7 +118,7 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 	/**
 	 * Calculates and returns the distance between this descriptor's feature vector
 	 * and another descriptor's feature vector using the Euclidean distance
-	 * ({@link VectorNorm.L2}).
+	 * ({@link imagingbook.common.math.VectorNorm.L2}).
 	 * 
 	 * @param other another {@link SiftDescriptor}
 	 * @return the distance

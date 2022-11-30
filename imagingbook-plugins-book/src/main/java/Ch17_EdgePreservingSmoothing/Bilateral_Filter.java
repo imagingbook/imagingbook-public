@@ -26,11 +26,10 @@ import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
 
 /**
- * This plugin demonstrates the use of the (full) BilateralFilter class.
- * This plugin works for all types of images.
- * Given a color image, the filter is applied separately to
- * each color component if {@link #UseScalarFilter} is set true.
- * Otherwise a vector filter is applied, using the specified color norm.
+ * This plugin demonstrates the use of the (full) BilateralFilter class. This
+ * plugin works for all types of images. Given a color image, the filter is
+ * applied separately to each color component if {@code UseScalarFilter} is set
+ * true. Otherwise a vector filter is applied, using the specified color norm.
  * 
  * @author WB
  * @version 2022/03/30
@@ -38,7 +37,6 @@ import imagingbook.common.util.progress.ProgressMonitor;
 public class Bilateral_Filter implements PlugInFilter {
 	
 	private static Parameters params = new Parameters();
-	
 	private static boolean UseSeparableFilter = false;
 	private static boolean UseScalarFilter = false;
 	

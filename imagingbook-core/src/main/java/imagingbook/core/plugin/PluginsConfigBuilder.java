@@ -110,16 +110,15 @@ import imagingbook.core.FileUtils;
  */
 public class PluginsConfigBuilder {
 	
-	static String DefaultMenuPath = "Plugins";	// can be overridden by package or class annotation @IjPluginPath
+	protected static String DefaultMenuPath = "Plugins";	// can be overridden by package or class annotation @IjPluginPath
 //	static String DefaultEntryPrefix = "B&B ";
 			
-	static String ConfigFileName = "plugins.config";
-	static String INFO = "[INFO] ";
+	protected static String ConfigFileName = "plugins.config";
+	protected static String INFO = "[INFO] ";
 	
-	static boolean VERBOSE = true;
-	static boolean ReplaceUndescoresInClassNames = true;
-	static boolean ReplaceUndescoresInPackageNames = true;
-	
+	protected static boolean VERBOSE = true;
+	protected static boolean ReplaceUndescoresInClassNames = true;
+	protected static boolean ReplaceUndescoresInPackageNames = true;
 	
 	private final String artifactId;
 	private final String rootPath;

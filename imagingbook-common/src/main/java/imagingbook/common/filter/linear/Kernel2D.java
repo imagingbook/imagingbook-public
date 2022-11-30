@@ -149,6 +149,7 @@ public class Kernel2D {
 	 * 
 	 * @param A a 2D array
 	 * @return the normalized array
+	 * @throws ArithmeticException 
 	 */
 	public static float[][] normalize(float[][] A) throws ArithmeticException {
 		float s = (float) (1.0 / Matrix.sum(A));
