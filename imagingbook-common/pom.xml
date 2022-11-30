@@ -20,7 +20,7 @@
 	<url>https://imagingbook.com</url>
 	
 	<properties>
-		<maven.javadoc.skip>true</maven.javadoc.skip>
+		<!-- <maven.javadoc.skip>true</maven.javadoc.skip> -->
 	</properties>
 
 	<dependencies>

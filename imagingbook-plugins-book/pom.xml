@@ -29,7 +29,8 @@
 	<url>https://imagingbook.com</url>
 	
 	<properties>
-		<maven.javadoc.skip>true</maven.javadoc.skip>
+	<!-- see also https://stackoverflow.com/questions/7412016/how-can-i-disable-the-maven-javadoc-plugin-from-the-command-line -->
+		<!-- <maven.javadoc.skip>${imagingbook.skipjavadoc}</maven.javadoc.skip> -->
 	</properties>
 
 	<dependencies>

@@ -76,8 +76,9 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
 		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
+		<imagingbook.skipjavadoc>false</imagingbook.skipjavadoc>
 		
-		<maven.javadoc.skip>false</maven.javadoc.skip>	<!-- internal Maven property, set false on command line -->
+		<!--<maven.javadoc.skip>${imagingbook.skipjavadoc}</maven.javadoc.skip>	--> <!-- internal Maven property, set false on command line -->
 		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
 		
 	</properties>
@@ -306,6 +307,7 @@
 								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
 								<!-- <echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo> -->
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
+								<echo level="info">**** imagingbook.skipjavadoc = ${imagingbook.skipjavadoc}</echo>
 								<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>
 								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
 								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
@@ -349,10 +351,11 @@
 			</plugin>
 
 			<plugin>
-				<!-- Javadoc generation -->
+				<!-- Javadoc generation, see https://maven.apache.org/plugins/maven-javadoc-plugin/javadoc-mojo.html -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
+					<skip>${imagingbook.skipjavadoc}</skip>
 					<verbose>true</verbose>
 	                <!-- workaround for https://bugs.openjdk.java.net/browse/JDK-8212233 -->
 					<!-- <javaApiLinks>
