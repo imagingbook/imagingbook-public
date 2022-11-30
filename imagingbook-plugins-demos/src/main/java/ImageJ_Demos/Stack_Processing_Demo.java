@@ -15,14 +15,15 @@ import ij.process.ImageProcessor;
 
 /**
  * <p>
- * This ImageJ plugin demonstrates how to iterate over the frames (slices)
- * of an image stack. In this case each frame is simply inverted. No new
- * frames are added to the stack.
- * Note that stack slices are numbered from 1,...,K (i.e., there is no slice 0)!
+ * This ImageJ plugin demonstrates how to iterate over the frames (slices) of an
+ * image stack. In this case each frame is simply inverted. No new frames are
+ * added to the stack. Note that stack slices are numbered from 1,...,K (i.e.,
+ * there is no slice 0)!
  * </p>
  * <p>
- * If {@link STACK_REQUIRED} is omitted in {@link #setup(String, ImagePlus)},
- * the plugin will also work on ordinary (single) images.
+ * If {@link PlugInFilter#STACK_REQUIRED} is omitted in
+ * {@link #setup(String, ImagePlus)}, the plugin will also work on ordinary
+ * (single) images.
  * </p>
  * 
  * @author WB

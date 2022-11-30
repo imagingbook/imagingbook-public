@@ -164,21 +164,20 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	
 	// ----------------------------------------------------------
 	
-	/** Deviation limit for checking 0 and 1 values. */
-	protected static double AffineTolerance = 1e-15;
-	
+
 	/**
 	 * Checks if the given linear mapping could be affine, i.e. if the
 	 * bottom row of its transformation matrix is (0, 0, 1). 
 	 * Note that this is a necessary but not sufficient requirement.
-	 * The threshold {@link AffineTolerance} is used in this check.
+	 * The threshold {@link Arithmetic#EPSILON_DOUBLE} is used in this check.
 	 * @param map a linear mapping
 	 * @return true if the mapping could be affine
 	 */
 	public static boolean isAffine(LinearMapping2D map) {
-		if (Math.abs(map.a20) > AffineTolerance) return false;
-		if (Math.abs(map.a21) > AffineTolerance) return false;
-		if (Math.abs(map.a22 - 1.0) > AffineTolerance) return false;
+		final double tol = Arithmetic.EPSILON_DOUBLE; // max. deviation for 0/1 values
+		if (Math.abs(map.a20) > tol) return false;
+		if (Math.abs(map.a21) > tol) return false;
+		if (Math.abs(map.a22 - 1.0) > tol) return false;
 		return true;
 	}
 

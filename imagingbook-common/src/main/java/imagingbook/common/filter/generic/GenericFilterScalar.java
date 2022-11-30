@@ -17,7 +17,7 @@ import imagingbook.common.image.PixelPack.PixelSlice;
  * as scalars. If the processed image has more than one component 
  * (e.g., a RGB color image), this filter is automatically 
  * and independently applied to all (scalar-valued) components.
- * The filter calls the method {@link #doPixel(PixelSlice, int, int)}
+ * The filter calls the method {@code doPixel(PixelSlice, int, int)}
  * for each image pixel, which must be implemented by any concrete
  * sub-class.
  * </p>

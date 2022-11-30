@@ -73,7 +73,7 @@ public class Edge2D {
 	 * Non-static inner class representing the distance of a particular point to the
 	 * associated (enclosing) {@link Edge2D} instance.
 	 */
-	protected class Distance implements Comparable<Distance> {
+	public class Distance implements Comparable<Distance> {
 
 		private final double distance;
 

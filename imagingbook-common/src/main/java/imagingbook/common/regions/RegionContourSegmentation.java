@@ -52,12 +52,12 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	 * Constructor. Creates a combined region and contour segmentation from the
 	 * specified image, which is not modified. The input image is considered binary,
 	 * with 0 values for background pixels and values &ne; 0 for foreground pixels.
-	 * The 4-neighborhood is used by default ({@link DEFAULT_NEIGHBORHOOD}).
+	 * The 4-neighborhood is used by default ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
 	 * 
 	 * @param ip the binary input image to be segmented
 	 */
 	public RegionContourSegmentation(ByteProcessor ip) {
-		this(ip, DEFAULT_NEIGHBORHOOD);
+		this(ip, DefaultNeighborhoodT);
 	}
 	
 	/**
@@ -138,7 +138,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 				} 
 				else {	// hit a BACKGROUND pixel
 					if (label != 0) { // exiting a region
-						if (getLabel(u, v) == BACKGROUND) { // unlabeled - new inner contour
+						if (getLabel(u, v) == Background) { // unlabeled - new inner contour
 							PntInt xs = PntInt.from(u - 1, v);
 							int ds = (NT == N4) ? 2 : 1;
 							Contour.Inner c = traceContour(xs, ds, new Contour.Inner(label));
@@ -198,7 +198,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 		boolean done = false;
 		while (i < 7 && !done) {	// N4: i = 0,2,4,6  N8: i = 0,1,2,3,4,5,6
 			xn = x0.plus(delta[d]);
-			if (!isInsideImage(xn) ||  ip.get(xn.x, xn.y) == BACKGROUND) {
+			if (!isInsideImage(xn) ||  ip.get(xn.x, xn.y) == Background) {
 				setLabel(xn, VISITED);	// mark this background pixel not to be visited again
 				d = (d + step) % 8;
 			} 
@@ -246,7 +246,7 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 		if (u >= -1 && u <= width && v >= -1 && v <= height)
 			return labelArray[u + 1][v + 1]; 	// label array is padded (offset = 1)
 		else
-			return BACKGROUND;
+			return Background;
 	}
 	
 	@Override

@@ -84,10 +84,11 @@ import imagingbook.common.ij.DialogUtils;
  * @version 2022/09/14 moved annotations and methods for {@link GenericDialog}
  *          to {@link DialogUtils}
  * @version 2022/11/23 added generic target type
+ * @param <TargetT> the target class to be parameterized
  * 
- * @see DialogUtils.DialogDigits
- * @see DialogUtils.DialogLabel
- * @see DialogUtils.DialogHide
+ * @see imagingbook.common.ij.DialogUtils.DialogDigits
+ * @see imagingbook.common.ij.DialogUtils.DialogLabel
+ * @see imagingbook.common.ij.DialogUtils.DialogHide
  */
 public interface ParameterBundle<TargetT> {
 	

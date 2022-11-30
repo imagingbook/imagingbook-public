@@ -16,7 +16,7 @@ import org.apache.commons.math3.linear.RealVector;
  * @version 2022/11/24
  * 
  * @see EigenDecompositionJama
- * @see EigenSolver2x2
+ * @see Eigensolver2x2
  */
 public class EigenDecompositionApache implements RealEigenDecomposition {
 	

@@ -71,7 +71,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
 public class Region_Segmentation_Demo implements PlugInFilter {
 	
 	/** Enum type for various region labeling methods. */
-	protected enum SegmentationMethod {
+	public enum SegmentationMethod {
 		Recursive,
 		DepthFirst, 
 		BreadthFirst,

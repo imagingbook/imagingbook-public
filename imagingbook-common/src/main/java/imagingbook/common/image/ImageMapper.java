@@ -45,9 +45,10 @@ public class ImageMapper {
 	private final Mapping2D mapping;
 	
 	/**
-	 * Constructor - creates a new {@link ImageMapper} with the specified geometric mapping.
-	 * The default pixel interpolation method is used
-	 * (see {@link DefaultInterpolationMethod}).
+	 * Constructor - creates a new {@link ImageMapper} with the specified geometric
+	 * mapping. The default pixel interpolation method (see
+	 * {@link #DefaultInterpolationMethod}) and out-of-bounds strategy (see
+	 * {@link #DefaultOutOfBoundsStrategy}) are used.
 	 * 
 	 * @param targetToSourceMapping the geometric (target to source) transformation
 	 */

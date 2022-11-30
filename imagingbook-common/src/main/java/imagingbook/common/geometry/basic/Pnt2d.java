@@ -156,7 +156,7 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns this point's coordinates as a new AWT {@link Point2D.Double} point.
+	 * Returns this point's coordinates as a new AWT {@link java.awt.geom.Point2D.Double} point.
 	 * @return the new point
 	 */
 	public default Point2D.Double toAwtPoint2D() {
@@ -365,13 +365,12 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 
 	/**
 	 * Immutable 2D point implementation with {@code double} coordinates. This class
-	 * implements the {@link Pnt2d} interface. A public constructor
-	 * ({@link #PntDouble(double, double)}) is provided but the preferred way of
-	 * instantiation is by one of the static factory methods, such as
-	 * {@link #from(double, double)}, {@link #from(double[])}, etc. Access to the
-	 * coordinate values is provided by the methods {@link #getX()} and
-	 * {@link #getY()}, but the actual field variables {@link #x}, {@link #y} are
-	 * also publicly accessible (for better performance and less clutter).
+	 * implements the {@link Pnt2d} interface. A protected constructor is provided
+	 * but the preferred way of instantiation is by one of the static factory
+	 * methods, such as {@link #from(double, double)}, {@link #from(double[])}, etc.
+	 * Access to the coordinate values is provided by the methods {@link #getX()}
+	 * and {@link #getY()}, but the actual field variables {@link #x}, {@link #y}
+	 * are also publicly accessible (for better performance and less clutter).
 	 */
 	public class PntDouble implements Pnt2d {
 
@@ -530,13 +529,12 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 
 	/**
 	 * Immutable 2D point implementation with {@code int} coordinates. This class
-	 * implements the {@link Pnt2d} interface. A public constructor
-	 * ({@link #PntInt(int, int)}) is provided but the preferred way of
-	 * instantiation is by one of the static factory methods, such as
-	 * {@link #from(int, int)}, {@link #from(int[])}, etc. The {@code int}
-	 * coordinates can only be retrieved via the publicly accessible field variables
-	 * {@link #x}, {@link #y}, while the methods {@link #getX()} and {@link #getY()}
-	 * return {@code double} values for compatibility reasons.
+	 * implements the {@link Pnt2d} interface. A protected constructor is provided
+	 * but the preferred way of instantiation is by one of the static factory
+	 * methods, such as {@link #from(int, int)}, {@link #from(int[])}, etc. The
+	 * {@code int} coordinates can only be retrieved via the publicly accessible
+	 * field variables {@link #x}, {@link #y}, while the methods {@link #getX()} and
+	 * {@link #getY()} return {@code double} values for compatibility reasons.
 	 */
 	public class PntInt implements Pnt2d {
 

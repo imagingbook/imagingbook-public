@@ -43,10 +43,10 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 public abstract class BinaryRegionSegmentation {
 	
 	/** The default neighborhood type. */
-	public static final NeighborhoodType2D DEFAULT_NEIGHBORHOOD = N4;
+	public static final NeighborhoodType2D DefaultNeighborhoodT = N4;
 	
-	static final int BACKGROUND = 0;
-	static final int FOREGROUND = 1;
+	static final int Background = 0;
+	static final int Foreground = 1;
 	
 //	final ImageProcessor ip;
 	final int width;
@@ -83,7 +83,7 @@ public abstract class BinaryRegionSegmentation {
 		// set all pixels to either FOREGROUND or BACKGROUND (by thresholding)
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
-				lA[u][v] = (ip.get(u, v) != 0) ? FOREGROUND : BACKGROUND;
+				lA[u][v] = (ip.get(u, v) != 0) ? Foreground : Background;
 			}
 		}
 		return lA;

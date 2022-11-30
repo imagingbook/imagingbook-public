@@ -40,7 +40,9 @@ import java.util.stream.Stream;
  * @author WB
  * @version 2022/11/01
  */
-public class ResourceUtils {
+public abstract class ResourceUtils {
+	
+	private ResourceUtils() {}
 	
 	/**
 	 * Determines if the specified class was loaded from

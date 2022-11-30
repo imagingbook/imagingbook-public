@@ -8,14 +8,8 @@
  *******************************************************************************/
 
 /**
- * <p>
  * Library code related to spectral image processing (Fourier transforms etc.),
- * separated from the main {@literal imagingbook} library to minimize third-party dependencies.
- * </p>
- * <p>
- * This code is part of the {@literal imagingbook}
- * software suite supporting the Digital Image Processing books by Wilhelm Burger and Mark J Burge 
- * (see <a href="https://imagingbook.com">https://imagingbook.com</a>).
- * </p>
+ * separated from the main {@literal imagingbook} library to minimize
+ * third-party dependencies.
  */
 package imagingbook.spectral;

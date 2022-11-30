@@ -25,7 +25,7 @@ import imagingbook.common.image.PixelPack;
  * </p>
  * <p>
  * Note that only the operation for a single pixel needs to be specified
- * (method {@code doPixel()} in the inner class {@link JitterFilter}),
+ * (method {@code doPixel()} in the inner class {@code JitterFilter}),
  * everything else (i.e., looping over all pixels, special treatment
  * of border pixels and multiple color components) are automatically handled
  * by {@link GenericFilter}.

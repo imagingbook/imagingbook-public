@@ -12,20 +12,17 @@ import imagingbook.common.image.PixelPack;
 import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
- * This (abstract) class represents a generic scalar filter whose pixel-operation
- * is x/y-separable.
- * It is similar to {@link GenericFilterScalar} but requires two methods to
- * be implemented by concrete sub-classes: 
- * {@link #doPixelX(PixelSlice, int, int)} and {@link #doPixelY(PixelSlice, int, int)}
- * for the x- and y-pass, respectively,
- * which are invoked in exactly this order.
- * If the processed image has more than one component 
- * (e.g., a RGB color image), this filter is automatically 
- * and independently applied to all (scalar-valued) components.
- * The remaining filter mechanics
- * including multiple components, out-of-bounds coordinate handling,
- * multiple passes and data copying are handled by this class and its super-class
- * (see {@link GenericFilter}). 
+ * This (abstract) class represents a generic scalar filter whose
+ * pixel-operation is x/y-separable. It is similar to
+ * {@link GenericFilterScalar} but requires two methods to be implemented by
+ * concrete sub-classes: {@code doPixelX(PixelSlice, int, int)} and
+ * {@code doPixelY(PixelSlice, int, int)} for the x- and y-pass, respectively,
+ * which are invoked in exactly this order. If the processed image has more than
+ * one component (e.g., a RGB color image), this filter is automatically and
+ * independently applied to all (scalar-valued) components. The remaining filter
+ * mechanics including multiple components, out-of-bounds coordinate handling,
+ * multiple passes and data copying are handled by this class and its
+ * super-class (see {@link GenericFilter}).
  */
 public abstract class GenericFilterScalarSeparable extends GenericFilter {
 	

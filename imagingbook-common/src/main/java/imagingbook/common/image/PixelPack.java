@@ -311,10 +311,12 @@ public class PixelPack {
 	}
 	
 	/**
-	 * Returns the kth {@link PixelSlice}.
-	 * An exception is thrown if the specified slice does not exist.
+	 * Returns the kth {@link PixelSlice}. An exception is thrown if the specified
+	 * slice does not exist.
+	 * 
 	 * @param k the slice index (0,...,K-1)
 	 * @return the kth {@link PixelSlice}
+	 * @throws IllegalArgumentException if slice with the given index does not exist
 	 */
 	public PixelSlice getSlice(int k) throws IllegalArgumentException {
 		if (k < 0 || k >= depth) {

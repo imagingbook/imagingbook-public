@@ -509,8 +509,10 @@ public abstract class Matrix {
 	
 	/**
 	 * Checks is the given square {@code double[][]} matrix is non-singular.
+	 * 
 	 * @param A a square {@code double[][]} matrix
 	 * @return true if the matrix is singular
+	 * @throws NonsquareMatrixException if the matrix is not square
 	 */
 	public static boolean isSingular(double[][] A) throws NonsquareMatrixException {
 		if (!Matrix.isSquare(A)) {
@@ -521,8 +523,10 @@ public abstract class Matrix {
 	
 	/**
 	 * Checks is the given square matrix is non-singular.
+	 * 
 	 * @param A a square {@link RealMatrix}
 	 * @return true if the matrix is singular
+	 * @throws NonsquareMatrixException if the matrix is not square
 	 */
 	public static boolean isSingular(RealMatrix A) throws NonsquareMatrixException {
 		if (!A.isSquare()) {
@@ -1302,14 +1306,16 @@ public abstract class Matrix {
 	
 	// A * B -> C (destructive)
 	/**
-	 * Calculates the product of two {@code double[][]} matrices A, B
-	 * and places the results in the third {@code double[][]} matrix C,
-	 * which is modified (destructively).
-	 * An exception is thrown if any matrix dimensions do not match
+	 * Calculates the product of two {@code double[][]} matrices A, B and places the
+	 * results in the third {@code double[][]} matrix C, which is modified
+	 * (destructively). An exception is thrown if any matrix dimensions do not match
 	 * or if the target matrix is the same as one of the source matrices.
+	 * 
 	 * @param A first matrix
 	 * @param B second matrix
 	 * @param C the result matrix
+	 * @throws SameSourceTargetException if the target matrix is the same as one of the source matrices
+	 * @throws IncompatibleDimensionsException if any matrix dimensions do not match
 	 */
 	public static void multiplyD(final double[][] A, final double[][] B, final double[][] C) 
 			throws SameSourceTargetException, IncompatibleDimensionsException {
@@ -2125,11 +2131,12 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Converts a homogeneous vector to its equivalent Cartesian
-	 * vector, which is one element shorter.
-	 * See also {@link #toHomogeneous(double[])}.
+	 * Converts a homogeneous vector to its equivalent Cartesian vector, which is
+	 * one element shorter. See also {@link #toHomogeneous(double[])}.
+	 * 
 	 * @param ah a homogeneous vector
 	 * @return the equivalent Cartesian vector
+	 * @throws DivideByZeroException if the last vector element is zero
 	 */
 	public static double[] toCartesian(double[] ah) throws DivideByZeroException {
 		double[] xc = new double[ah.length - 1];
@@ -2147,6 +2154,7 @@ public abstract class Matrix {
 	/**
 	 * Calculates and returns the determinant of the given {@link RealMatrix}.
 	 * Throws an exception if the matrix is non-square.
+	 * 
 	 * @param A a square matrix
 	 * @return the determinant
 	 */
@@ -2157,20 +2165,22 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Calculates and returns the determinant of the given {@code double[][]} matrix.
-	 * Throws an exception if the matrix is non-square.
+	 * Calculates and returns the determinant of the given {@code double[][]}
+	 * matrix. Throws an exception if the matrix is non-square.
+	 * 
 	 * @param A a square matrix
 	 * @return the determinant
 	 */
 	public static double determinant(final double[][] A) {
 		return determinant(MatrixUtils.createRealMatrix(A));
 	}
-	
+
 	/**
-	 * Calculates and returns the determinant of the given 2x2 {@code double[][]} matrix.
-	 * This method is hard-coded for the specific matrix size for better performance
-	 * than the general method ({@link #determinant(double[][])}).
+	 * Calculates and returns the determinant of the given 2x2 {@code double[][]}
+	 * matrix. This method is hard-coded for the specific matrix size for better
+	 * performance than the general method ({@link #determinant(double[][])}).
 	 * Throws an exception if the matrix is not 2x2.
+	 * 
 	 * @param A a 2x2 matrix
 	 * @return the determinant
 	 */
@@ -2181,8 +2191,9 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Calculates and returns the determinant of the given 2x2 {@code float[][]} matrix.
-	 * Throws an exception if the matrix is not 2x2.
+	 * Calculates and returns the determinant of the given 2x2 {@code float[][]}
+	 * matrix. Throws an exception if the matrix is not 2x2.
+	 * 
 	 * @param A a 2x2 matrix
 	 * @return the determinant
 	 */
@@ -2194,10 +2205,11 @@ public abstract class Matrix {
 	
 
 	/**
-	 * Calculates and returns the determinant of the given 3x3 {@code double[][]} matrix.
-	 * This method is hard-coded for the specific matrix size for better performance
-	 * than the general method ({@link #determinant(double[][])}).
+	 * Calculates and returns the determinant of the given 3x3 {@code double[][]}
+	 * matrix. This method is hard-coded for the specific matrix size for better
+	 * performance than the general method ({@link #determinant(double[][])}).
 	 * Throws an exception if the matrix is not 3x3.
+	 * 
 	 * @param A a 3x3 matrix
 	 * @return the determinant
 	 */
@@ -2214,8 +2226,9 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Calculates and returns the determinant of the given 3x3 {@code float[][]} matrix.
-	 * Throws an exception if the matrix is not 3x3.
+	 * Calculates and returns the determinant of the given 3x3 {@code float[][]}
+	 * matrix. Throws an exception if the matrix is not 3x3.
+	 * 
 	 * @param A a 3x3 matrix
 	 * @return the determinant
 	 */
@@ -2238,8 +2251,9 @@ public abstract class Matrix {
 	/**
 	 * Calculates and returns the trace of the given {@code double[][]} matrix.
 	 * Throws an exception if the matrix is non-square.
+	 * 
 	 * @param A a square matrix
-	 * @return the trace 
+	 * @return the trace
 	 */
 	public static double trace(final double[][] A) {
 		final int m = getNumberOfRows(A);
@@ -2256,8 +2270,9 @@ public abstract class Matrix {
 	/**
 	 * Calculates and returns the trace of the given {@code float[][]} matrix.
 	 * Throws an exception if the matrix is non-square.
+	 * 
 	 * @param A a square matrix
-	 * @return the trace 
+	 * @return the trace
 	 */
 	public static float trace(final float[][] A) {
 		final int m = getNumberOfRows(A);
@@ -2274,8 +2289,9 @@ public abstract class Matrix {
 	// Matrix transposition ---------------------------------------
 	
 	/**
-	 * Returns the transpose of the given {@code double[][]} matrix.
-	 * The original matrix is not modified.
+	 * Returns the transpose of the given {@code double[][]} matrix. The original
+	 * matrix is not modified.
+	 * 
 	 * @param A a matrix
 	 * @return the transpose of the matrix
 	 */
@@ -2292,8 +2308,9 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Returns the transpose of the given {@code float[][]} matrix.
-	 * The original matrix is not modified.
+	 * Returns the transpose of the given {@code float[][]} matrix. The original
+	 * matrix is not modified.
+	 * 
 	 * @param A a matrix
 	 * @return the transpose of the matrix
 	 */
@@ -2315,7 +2332,8 @@ public abstract class Matrix {
 	/**
 	 * Checks if all elements of the specified {@code double[]} vector are zero
 	 * using the specified tolerance value.
-	 * @param a a vector
+	 * 
+	 * @param a         a vector
 	 * @param tolerance the tolerance value
 	 * @return true if all vector elements are smaller than the tolerance
 	 */
@@ -2331,6 +2349,7 @@ public abstract class Matrix {
 	/**
 	 * Checks if all elements of the specified {@code double[]} vector are zero
 	 * using the default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
+	 * 
 	 * @param a a vector
 	 * @return true if all vector elements are smaller than the tolerance
 	 */
@@ -2339,9 +2358,10 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Checks if all elements of the specified {@code float[]} vector are zero
-	 * using the specified tolerance value.
-	 * @param a a vector
+	 * Checks if all elements of the specified {@code float[]} vector are zero using
+	 * the specified tolerance value.
+	 * 
+	 * @param a         a vector
 	 * @param tolerance the tolerance value
 	 * @return true if all vector elements are smaller than the tolerance
 	 */
@@ -2355,8 +2375,9 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Checks if all elements of the specified {@code float[]} vector are zero
-	 * using the default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
+	 * Checks if all elements of the specified {@code float[]} vector are zero using
+	 * the default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
+	 * 
 	 * @param a a vector
 	 * @return true if all vector elements are smaller than the tolerance
 	 */
@@ -2369,7 +2390,8 @@ public abstract class Matrix {
 	/**
 	 * Checks if all elements of the specified {@code double[][]} matrix are zero
 	 * using the specified tolerance value.
-	 * @param A a matrix
+	 * 
+	 * @param A         a matrix
 	 * @param tolerance the tolerance value
 	 * @return true if all matrix elements are smaller than the tolerance
 	 */
@@ -2385,6 +2407,7 @@ public abstract class Matrix {
 	/**
 	 * Checks if all elements of the specified {@code double[][]} matrix are zero
 	 * using default tolerance value ({@link Arithmetic#EPSILON_DOUBLE}).
+	 * 
 	 * @param A a matrix
 	 * @return true if all matrix elements are smaller than the tolerance
 	 */
@@ -2395,8 +2418,8 @@ public abstract class Matrix {
 	// Sorting vectors (non-destructively)  ------------------------------
 	
 	/**
-	 * Returns a sorted copy of the given {@code double[]} vector.
-	 * Elements are sorted by increasing value (smallest first).
+	 * Returns a sorted copy of the given {@code double[]} vector. Elements are
+	 * sorted by increasing value (smallest first).
 	 * 
 	 * @param a a {@code double[]} vector
 	 * @return a sorted copy of the vector
@@ -2408,8 +2431,8 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Returns a sorted copy of the given {@code float[]} vector.
-	 * Elements are sorted by increasing value (smallest first).
+	 * Returns a sorted copy of the given {@code float[]} vector. Elements are
+	 * sorted by increasing value (smallest first).
 	 * 
 	 * @param a a {@code float[]} vector
 	 * @return a sorted copy of the vector
@@ -2423,11 +2446,13 @@ public abstract class Matrix {
 	// Matrix inversion ---------------------------------------
 	
 	/**
-	 * Calculates and returns the inverse of the given matrix, which
-	 * must be square. Exceptions are n if the supplied matrix is
-	 * not square or ill-conditioned (singular).
+	 * Calculates and returns the inverse of the given matrix, which must be square.
+	 * Exceptions are thrown if the supplied matrix is not square or ill-conditioned
+	 * (singular).
+	 * 
 	 * @param A a square matrix
 	 * @return the inverse matrix
+	 * @throws NonsquareMatrixException if the supplied matrix is not square
 	 */
 	public static double[][] inverse(final double[][] A) throws NonsquareMatrixException {
 		if (!isSquare(A))
@@ -2437,11 +2462,13 @@ public abstract class Matrix {
 	}
 	
 	/**
-	 * Calculates and returns the inverse of the given matrix, which
-	 * must be square. Exceptions are thrown if the supplied matrix is
-	 * not square or ill-conditioned (singular).
+	 * Calculates and returns the inverse of the given matrix, which must be square.
+	 * Exceptions are thrown if the supplied matrix is not square or ill-conditioned
+	 * (singular).
+	 * 
 	 * @param A a square matrix
 	 * @return the inverse matrix
+	 * @throws NonsquareMatrixException if the supplied matrix is not square
 	 */
 	public static float[][] inverse(final float[][] A) throws NonsquareMatrixException {
 		if (!isSquare(A))
@@ -2453,32 +2480,32 @@ public abstract class Matrix {
 	// ------------------------------------------------------------------------
 	
 	/**
-	 * Finds the exact solution x for the linear system of equations
-	 * A * x = b. Returns the solution vector x or {@code null}
-	 * if the supplied matrix is ill-conditioned (i.e., singular).
-	 * Exceptions are thrown if A is not square or dimensions are incompatible.
-	 * Calls {@link #solve(RealMatrix, RealVector)}.
+	 * Finds the exact solution x for the linear system of equations A * x = b.
+	 * Returns the solution vector x or {@code null} if the supplied matrix is
+	 * ill-conditioned (i.e., singular). Exceptions are thrown if A is not square or
+	 * dimensions are incompatible. Calls {@link #solve(RealMatrix, RealVector)}.
 	 * 
 	 * @param A a square matrix of size n x n
 	 * @param b a vector of length n
-	 * @return the solution vector (x) of length n or {@code null} if no solution possible
+	 * @return the solution vector (x) of length n or {@code null} if no solution
+	 *         possible
 	 */
-	
 	public static double[] solve(final double[][] A, double[] b) {
 		RealVector x = solve(MatrixUtils.createRealMatrix(A), MatrixUtils.createRealVector(b));
 		return (x == null) ? null : x.toArray();
 	}
 	
 	/**
-	 * Finds the exact solution x for the linear system of equations
-	 * A * x = b. Returns the solution vector x or {@code null}
-	 * if the supplied matrix is ill-conditioned (i.e., singular).
-	 * Exceptions are thrown if A is not square or dimensions are incompatible.
-	 * Uses {@link LUDecomposition} from the Apache Commons Math library.
+	 * Finds the exact solution x for the linear system of equations A * x = b.
+	 * Returns the solution vector x or {@code null} if the supplied matrix is
+	 * ill-conditioned (i.e., singular). Exceptions are thrown if A is not square or
+	 * dimensions are incompatible. Uses {@link LUDecomposition} from the Apache
+	 * Commons Math library.
 	 * 
 	 * @param A a square matrix of size n x n
 	 * @param b a vector of length n
-	 * @return the solution vector (x) of length n or {@code null} if no solution possible
+	 * @return the solution vector (x) of length n or {@code null} if no solution
+	 *         possible
 	 */
 	public static RealVector solve(RealMatrix A, RealVector b) {
 		if (!A.isSquare()) {

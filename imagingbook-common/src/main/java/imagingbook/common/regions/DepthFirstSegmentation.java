@@ -36,12 +36,12 @@ public class DepthFirstSegmentation extends BinaryRegionSegmentation {
 	 * Constructor. Creates a new region segmentation from the specified image,
 	 * which is not modified. The input image is considered binary, with 0 values
 	 * for background pixels and values &ne; 0 for foreground pixels.
-	 * The 4-neighborhood is used by default ({@link DEFAULT_NEIGHBORHOOD}).
+	 * The 4-neighborhood is used by default ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
 	 * 
 	 * @param ip the binary input image to be segmented
 	 */
 	public DepthFirstSegmentation(ByteProcessor ip) {
-		this(ip, DEFAULT_NEIGHBORHOOD);
+		this(ip, DefaultNeighborhoodT);
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class DepthFirstSegmentation extends BinaryRegionSegmentation {
 	boolean applySegmentation(ByteProcessor ip) {
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
-				if (getLabel(u, v) == FOREGROUND) {
+				if (getLabel(u, v) == Foreground) {
 					// start a new region
 					int label = getNextLabel();
 					//IJ.log(String.format("assigning label %d at (%d,%d), maxLabel=%d", label, u, v, maxLabel));
@@ -79,7 +79,7 @@ public class DepthFirstSegmentation extends BinaryRegionSegmentation {
 			PntInt p = S.pop();
 			int x = p.x;
 			int y = p.y;
-			if ((x >= 0) && (x < width) && (y >= 0) && (y < height)	&& getLabel(x, y) == FOREGROUND) {
+			if ((x >= 0) && (x < width) && (y >= 0) && (y < height)	&& getLabel(x, y) == Foreground) {
 				setLabel(x, y, label);
 				S.push(PntInt.from(x + 1, y));
 				S.push(PntInt.from(x, y + 1));

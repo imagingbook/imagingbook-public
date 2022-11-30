@@ -8,13 +8,7 @@
  *******************************************************************************/
 
 /**
- * <p>
- * PDF-related library code, separated from the main {@literal imagingbook} to minimize third-party dependencies.
- * </p>
- * <p>
- * This code is part of the {@literal imagingbook}
- * software suite supporting the Digital Image Processing books by Wilhelm Burger and Mark J Burge 
- * (see <a href="https://imagingbook.com">https://imagingbook.com</a>).
- * </p>
+ * PDF-related code, separated from the main imagingbook library to minimize
+ * third-party dependencies.
  */
 package imagingbook.pdf;

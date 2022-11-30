@@ -373,6 +373,7 @@ public abstract class DialogUtils {
 	 * constructor of demo plugins when no (or no suitable) image is currently open.
 	 * 
 	 * @param suggested a sample image (resource)
+	 * @return true if user accepted
 	 */
 	public static boolean askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
 		boolean ok = askYesOrCancel(

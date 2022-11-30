@@ -15,6 +15,8 @@ import java.util.Iterator;
  * This class implements a 1D map for arbitrary objects with flexible bottom and
  * top index, similar to an array in Pascal. Containers are immutable (apart
  * from element values).
+ * 
+ * @param <T> the container's element type
  */
 public class LinearContainer<T> implements Iterable<T> {
 	

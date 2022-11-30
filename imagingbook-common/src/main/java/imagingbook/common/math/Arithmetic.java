@@ -177,7 +177,7 @@ public abstract class Arithmetic {
 	/**
 	 * Test for zero (float version) using a predefined tolerance.
 	 * Returns true if the argument's absolute value
-	 * is less than {@link EPSILON_FLOAT}.
+	 * is less than {@link #EPSILON_FLOAT}.
 	 * @param x quantity to be tested
 	 * @return true if argument is close to zero
 	 */
@@ -200,7 +200,7 @@ public abstract class Arithmetic {
 	/**
 	 * Test for zero (double version) using a predefined tolerance.
 	 * Returns true if the argument's absolute value
-	 * is less than {@link EPSILON_DOUBLE}.
+	 * is less than {@link #EPSILON_DOUBLE}.
 	 * @param x quantity to be tested
 	 * @return true if argument is close to zero
 	 */
@@ -223,7 +223,7 @@ public abstract class Arithmetic {
 	/**
 	 * Test for numerical equality (double version) using the default tolerance.
 	 * Returns true if the absolute difference of the arguments
-	 * is less than {@link EPSILON_DOUBLE}.
+	 * is less than {@link #EPSILON_DOUBLE}.
 	 * @param x first argument
 	 * @param y second argument
 	 * @return true if the absolute difference of the arguments is less than the tolerance
@@ -246,7 +246,7 @@ public abstract class Arithmetic {
 	/**
 	 * Test for numerical equality (float version) using the default tolerance.
 	 * Returns true if the absolute difference of the arguments
-	 * is less than {@link EPSILON_FLOAT}.
+	 * is less than {@link #EPSILON_FLOAT}.
 	 * @param x first argument
 	 * @param y second argument
 	 * @return true if the absolute difference of the arguments is less than the tolerance

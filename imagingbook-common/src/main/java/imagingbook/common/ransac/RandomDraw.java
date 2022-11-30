@@ -56,7 +56,7 @@ public class RandomDraw<T> {
 	/**
 	 * Set the maximum number of tries.
 	 * @param maxTries new maximum number of tries
-	 * @see DefaultMaxTries
+	 * @see #DefaultMaxTries
 	 */
 	public void setMaxTries(int maxTries) {
 		this.maxTries = maxTries;

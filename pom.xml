@@ -9,11 +9,40 @@
 	<packaging>pom</packaging>
 	
 	<name>${project.groupId}:${project.artifactId}</name>
+
 	
-	<!-- This POM is only for defining Maven sub-modules to allow single-click bilds. It is not used as a parent POM. -->
+	<description>
+		Parent POM (Project Object Model) for general (non-plugin) imagingbook artifacts.
+		This code is part of the imagingbook software suite accompanying the
+		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
+	</description>
+	<inceptionYear>2006</inceptionYear>
+	<url>https://imagingbook.com</url>
+
+	<developers>
+		<developer>
+			<name>Wilhelm Burger (WB)</name>
+		</developer>
+		<developer>
+			<name>Mark J. Burge (MJB)</name>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>BSD 2-Clause "Simplified" License</name>
+			<url>http://opensource.org/licenses/BSD-2-Clause</url>
+		</license>
+	</licenses>
+	
+	<scm>
+		<connection>scm:git:git://github.com/imagingbook/imagingbook-public.git</connection>
+		<developerConnection>scm:git:ssh://github.com:imagingbook/imagingbook-public.git.git</developerConnection>
+		<url>http://github.com/imagingbook/imagingbook-public.git/tree/master</url>
+	</scm>
 
 	<modules>
-		<module>imagingbook-parent-pom</module>
+		<!-- <module>imagingbook-parent-pom</module> -->
 		<module>imagingbook-plugins-pom</module>
 		<module>imagingbook-core</module>
 		<module>imagingbook-common</module>
@@ -22,24 +51,462 @@
 		<module>imagingbook-plugins-book</module>
 		<module>imagingbook-plugins-demos</module>
 		<module>imagingbook-plugins-extras</module>
-		<module>imagingbook-plugins-tools</module>
 		<module>imagingbook-sample-images</module>
 		<module>imagingbook-book-images</module>
 		<module>imagingbook-testing</module>
 	</modules>
 	
+	<properties>	
+		<directory-up-1>${project.basedir}${file.separator}..</directory-up-1>
+		<directory-up-2>${project.basedir}${file.separator}..${file.separator}..</directory-up-2>
+		<directory-up-3>${project.basedir}${file.separator}..${file.separator}..${file.separator}..</directory-up-3>	
+		<imagingbook.rootdir>${directory-up-1}</imagingbook.rootdir>   <!-- to be modified by nested projects -->
+		
+		<imagingbook.deploydir>DEPLOY</imagingbook.deploydir>
+		<!-- <imagingbook.docdir>${project.basedir}${file.separator}docs</imagingbook.docdir> -->
+		<imagingbook.docdir>${project.basedir}</imagingbook.docdir>
+		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
+
+		<java.version>11</java.version>	<!-- need to step to 11 to make Javadoc API linking work! -->
+		<imagej.version>1.53v</imagej.version> <!-- see https://mvnrepository.com/artifact/net.imagej/ij -->
+		<commons-math3.version>3.6.1</commons-math3.version>
+		<junit.version>4.13.2</junit.version>
+		
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+	    <maven.compiler.source>${java.version}</maven.compiler.source>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
+		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
+		
+		<maven.javadoc.skip>false</maven.javadoc.skip>	<!-- internal Maven property, set false on command line -->
+		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
+		
+	</properties>
+	
+	<distributionManagement>
+	 	<!-- used by 'mvn deploy' -->
+		<repository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+
+		<snapshotRepository>
+			<!-- 
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url> 
+			-->
+			<id>local-deploy</id>
+			<url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.deploydir}</url>
+		</snapshotRepository>	
+	</distributionManagement>
+	
+	<dependencyManagement>
+		<dependencies>
+		
+			<!-- https://mvnrepository.com/artifact/net.imagej/ij -->
+			<dependency>
+				<groupId>net.imagej</groupId>
+				<artifactId>ij</artifactId>
+				<version>${imagej.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-math3</artifactId>
+				<version>${commons-math3.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+	
 	<build>
+	
+		<pluginManagement>
+			<plugins>
+			
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.3.0</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>3.3.0</version>
+				</plugin>
+				
+				<plugin>
+					  <groupId>org.apache.maven.plugins</groupId>
+					  <artifactId>maven-deploy-plugin</artifactId>
+					  <version>3.0.0</version>
+					  <configuration>
+					    <skip>${imagingbook.skipdeploy}</skip>
+					  </configuration>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>3.0.0-M7</version>
+					<configuration>
+						<goals>deploy</goals>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+					</configuration>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.3.0</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.2.1</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>3.4.1</version>
+					<configuration>
+						<source>${java.version}</source>
+				          <links>
+				            <!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
+				          </links>
+			        </configuration>
+				</plugin>
+				
+				<plugin>  
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>3.4.1</version>
+				</plugin>
+
+				<!-- Ignore/Execute plugin execution (https://stackoverflow.com/a/8752807) -->
+				<!-- https://www.eclipse.org/m2e/documentation/m2e-execution-not-covered.html -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<!-- copy-dependency plugin -->
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+
+								<!-- <pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.commonjava.maven.plugins</groupId>
+										<artifactId>directory-maven-plugin</artifactId>
+										<versionRange>[0.1,)</versionRange>
+										<goals>
+											<goal>directory-of</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution> -->
+
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-antrun-plugin</artifactId>
+										<versionRange>[1.7,)</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.10.1</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+						<!-- <compilerArgs>
+            				<arg>-Xpkginfo:nonempty</arg>
+						</compilerArgs> -->
+					</configuration>
+				</plugin>
+				
+			</plugins>
+		</pluginManagement>
+		
 		<plugins>
 			<!-- do not deploy this artifact -->
-			<plugin>
+			<!-- <plugin>
 			  <groupId>org.apache.maven.plugins</groupId>
 			  <artifactId>maven-deploy-plugin</artifactId>
-			  <version>3.0.0-M2</version>
 			  <configuration>
 			    <skip>true</skip>
 			  </configuration>
+			</plugin>	-->
+			
+			<!-- Output the value of certain variables for debugging -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>echo</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<!-- output some status information -->
+								<echo level="info">**** imagingbook.buildprofile = ${imagingbook.buildprofile}</echo>
+								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
+								<echo level="info">**** outputDirectory = ${outputDirectory}</echo>
+								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
+								<!-- <echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo> -->
+								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
+								<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>
+								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
+								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
+								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
+								<echo level="info">**** maven.multiModuleProjectDirectory = ${maven.multiModuleProjectDirectory}</echo>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+
+			<plugin>  <!-- add more properties to MANIFEST file -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<!-- <useDefaultManifestFile>true</useDefaultManifestFile> --> <!-- not available since version 3.0.0 -->
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<!-- <Build-Date>${buildDate}</Build-Date> -->
+							<Build-Time>${maven.build.timestamp}</Build-Time>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>  <!-- generate a separate jar file with source code -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>	<!-- was "jar" only -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!-- Javadoc generation -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<verbose>true</verbose>
+	                <!-- workaround for https://bugs.openjdk.java.net/browse/JDK-8212233 -->
+					<!-- <javaApiLinks>
+						<property>
+							<name>foo</name>
+							<value>bar</value>
+						</property>
+					</javaApiLinks> -->
+					<!-- Default configuration for all reports -->
+					<!-- Problem with Java 12: mixing named and unnamed modules?? -->
+					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->  <!-- add for Java 10, 11, 12 .. -->
+					<!-- <source>1.8</source> -->
+					<source>${java.version}</source>
+					<detectJavaApiLink>true</detectJavaApiLink>	<!-- gives incorrect links for SE < 11 -->
+					<detectLinks>true</detectLinks>
+					<!-- <detectOfflineLinks>true</detectOfflineLinks> -->
+					
+					<links>
+			            <!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
+			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest/ij</link>  unnamed mdule, 'element-list' missing? -->
+			            <link>https://javadoc.io/doc/net.imagej/ij/1.53v</link>
+			            <!-- <link>https://javadoc.io/doc/org.apache.commons/commons-math3/latest</link> -->
+			            <link>https://javadoc.io/doc/org.apache.commons/commons-math3/3.6.1</link>
+			        </links>
+
+					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
+					<destDir>javadoc</destDir>
+					
+					<!-- <doctitle>${javadoc-doctitle}</doctitle> -->
+					<packagesheader>${project.name}</packagesheader>
+					<!-- <header>The ImagingBook HEADER</header> -->
+					<!-- <footer>The ImagingBook FOOTER</footer> -->
+					<!-- <top>The ImagingBook TOP text</top> -->
+					<bottom>
+	        		<![CDATA[Copyright &#169; {inceptionYear}&#x2013;{currentYear}, 
+	        		<a href="https://imagingbook.com" target="new">
+	        		Wilhelm Burger, Mark J. Burge</a>
+	        		<a href="http://opensource.org/licenses/BSD-2-Clause" target="new">
+	        		(BSD 2-Clause Simplified License)</a>]]>
+					</bottom>
+					<show>protected</show>
+					<failOnError>false</failOnError>
+					<nohelp>true</nohelp>
+					<linksource>true</linksource>
+					<author>false</author>
+					<verbose>true</verbose>
+					<!-- <quiet>true</quiet> -->				
+					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
+					<!-- <additionalOptions>xxframes</additionalOptions>--> <!-- with SE17, javadoc does not support frames any more! -->
+				</configuration>
+				
+				<executions>
+					<!-- see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html -->
+					<execution>
+						<id>aggregate</id>
+						<goals>
+							<goal>aggregate</goal>
+						</goals>
+						<phase>site</phase>
+						<configuration>
+							<!-- Specific configuration for the aggregate report -->
+						</configuration>
+					</execution>
+          
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+        			<skip>${imagingbook.gpgSkip}</skip>	<!-- exception with Eclipse maven plugin! -->
+    			</configuration>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<!-- explicitly define maven-deploy-plugin after other to force exec order -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 		</plugins>
 	</build>
+	
+	<reporting>
+		<plugins>
+			<plugin>
+				<!-- to stop Maven complaining about missing version number -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<reportSets>
+					<reportSet />
+				</reportSets>
+			</plugin>
+
+			<!-- NEEDED? aggregate JavaDoc (see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html) -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
+				<version>3.3.0</version> <reportSets> <reportSet> <id>aggregate</id> <inherited>false</inherited> 
+				<reports> <report>aggregate</report> </reports> </reportSet> <reportSet> 
+				<id>default</id> <reports> <report>javadoc</report> </reports> </reportSet> 
+				</reportSets> </plugin> -->
+		
+			<!--  see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<!-- <version>3.4.1</version> -->
+				<reportSets>
+					<reportSet>
+						<id>aggregate</id>
+						<inherited>false</inherited>
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+					<reportSet>
+						<id>default</id>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			
+      </plugins>
+	</reporting>
 
 </project>

@@ -110,16 +110,15 @@ import imagingbook.core.FileUtils;
  */
 public class PluginsConfigBuilder {
 	
-	static String DefaultMenuPath = "Plugins";	// can be overridden by package or class annotation @IjPluginPath
+	protected static String DefaultMenuPath = "Plugins";	// can be overridden by package or class annotation @IjPluginPath
 //	static String DefaultEntryPrefix = "B&B ";
 			
-	static String ConfigFileName = "plugins.config";
-	static String INFO = "[INFO] ";
+	protected static String ConfigFileName = "plugins.config";
+	protected static String INFO = "[INFO] ";
 	
-	static boolean VERBOSE = true;
-	static boolean ReplaceUndescoresInClassNames = true;
-	static boolean ReplaceUndescoresInPackageNames = true;
-	
+	protected static boolean VERBOSE = true;
+	protected static boolean ReplaceUndescoresInClassNames = true;
+	protected static boolean ReplaceUndescoresInPackageNames = true;
 	
 	private final String artifactId;
 	private final String rootPath;
@@ -154,18 +153,20 @@ public class PluginsConfigBuilder {
 					String className = FileUtils.stripFileExtension(pathName);
 					// remove non-class part of filename:
 					className = className.substring(n + 1);
-					// convert to qualified class name:
-					className = className.replace(File.separatorChar, '.');
-					// find the associated class object (this should never fail):
-					Class<?> clazz = null;
-					try {
-						clazz = Class.forName(className);
-					} catch (final ClassNotFoundException e) {
-						throw new RuntimeException(e.getMessage());
-					}
-
-					if (clazz != null && isIjPlugin(clazz)) {
-						pluginClasses.add(clazz);
+					if (className.indexOf('-') < 0) {		// ignore 'package-info' and 'module-info'
+						// convert to qualified class name:
+						className = className.replace(File.separatorChar, '.');
+						// find the associated class object (this should never fail):
+						Class<?> clazz = null;
+						try {
+							clazz = Class.forName(className);
+						} catch (final ClassNotFoundException e) {
+							throw new RuntimeException(e.getMessage());
+						}
+	
+						if (clazz != null && isIjPlugin(clazz)) {
+							pluginClasses.add(clazz);
+						}
 					}
 				}
 			});

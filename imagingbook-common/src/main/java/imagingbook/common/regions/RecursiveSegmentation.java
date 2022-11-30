@@ -34,12 +34,12 @@ public class RecursiveSegmentation extends BinaryRegionSegmentation {
 	 * Constructor. Creates a new region segmentation from the specified image,
 	 * which is not modified. The input image is considered binary, with 0 values
 	 * for background pixels and values &ne; 0 for foreground pixels.
-	 * The 4-neighborhood is used by default ({@link DEFAULT_NEIGHBORHOOD}).
+	 * The 4-neighborhood is used by default ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
 	 * 
 	 * @param ip the binary input image to be segmented
 	 */
 	public RecursiveSegmentation(ByteProcessor ip) {
-		this(ip, DEFAULT_NEIGHBORHOOD);
+		this(ip, DefaultNeighborhoodT);
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class RecursiveSegmentation extends BinaryRegionSegmentation {
 		try{
 			for (int v = 0; v < height; v++) {
 				for (int u = 0; u < width; u++) {
-					if (getLabel(u, v) == FOREGROUND) {	// = unlabeled foreground
+					if (getLabel(u, v) == Foreground) {	// = unlabeled foreground
 						// start a new region
 						int label = getNextLabel();
 						floodFill(u, v, label);
@@ -74,7 +74,7 @@ public class RecursiveSegmentation extends BinaryRegionSegmentation {
 	}
 
 	private void floodFill(int x, int y, int label) {
-		if ((x >= 0) && (x < width) && (y >= 0) && (y < height) && getLabel(x, y) == FOREGROUND) {
+		if ((x >= 0) && (x < width) && (y >= 0) && (y < height) && getLabel(x, y) == Foreground) {
 			setLabel(x, y, label);
 			floodFill(x + 1, y, label);
 			floodFill(x, y + 1, label);
