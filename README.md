@@ -42,13 +42,10 @@ Each plugin set is packaged to a `JAR` file that may be imported as a Maven depe
 or copied manually to ImageJ's `plugins/` directory:
 
 * **[imagingbook-plugins-book](imagingbook-plugins-book/)**: 
-    A collection of `ImageJ` plugins related to individual book chapters.
-* **[imagingbook-plugins-extras](imagingbook-plugins-extras/)**: 
-    `ImageJ` plugins related to chapters in previous book editions or other publications.
+    A collection of `ImageJ` plugins related to individual book chapters (including 
+    materials from previous editions) and tools for working with `ImageJ` (e.g., exact zooming and PDF-export).
 * **[imagingbook-plugins-demos](imagingbook-plugins-demos/)**: 
-    Various plugins illustrating basic `ImageJ` concepts.
-* **[imagingbook-plugins-tools](imagingbook-plugins-tools)**: 
-    Plugins providing tools for working with `ImageJ` (e.g., exact zooming and PDF-export).
+    Various plugins illustrating basic technical concepts in `ImageJ` and the `imagingbook` library..
 
 <!-- [**Change Log**](CHANGES.md) -->
 
@@ -60,9 +57,8 @@ or copied manually to ImageJ's `plugins/` directory:
 * [**imagingbook-pdf**](https://imagingbook.github.io/imagingbook-public/imagingbook-pdf/javadoc)
 * [**imagingbook-sample-images**](https://imagingbook.github.io/imagingbook-public/imagingbook-sample-images/javadoc)
 * [**imagingbook-plugins-book**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-book/javadoc)
-* [**imagingbook-plugins-extras**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-extras/javadoc)
 * [**imagingbook-plugins-demos**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-demos/javadoc)
-* [**imagingbook-plugins-tools**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-tools/javadoc)
+
 
 ## Use with Maven
 
@@ -91,14 +87,16 @@ The following preconfigured projects are available on GitHub for getting started
 These projects are set up to develop and run `ImageJ` user plugins out of the box. They are based on a special parent POM file 
 ([**imagingbook-plugins-pom**](https://github.com/imagingbook/imagingbook-public/tree/master/imagingbook-plugins-pom)),
 which takes care of ImageJ's particular directory structure during the Maven build.
-To use, clone one of these repositories and import it as a Maven project in your favorite IDE (the projects are preconfigured for Eclipse).
+To use, clone any of these repositories and import it as a Maven project in your favorite IDE.
 If necessary, perform Maven `clean` and `install` to update all dependencies and the runtime setup.
 These projects may also be used as a good starting point when working without Maven (see below).
 
+
+
 ## Use without Maven
 
-In an existing (non-Maven based) `ImageJ` environvent, you need to manually copy all necessary JAR files from
-[imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all/tree/master/ImageJ/jars):
+To use the `imagingbook` library in an existing (non-Maven based) `ImageJ` environment you need to manually copy all necessary JAR files
+e.g., from [imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all/tree/master/ImageJ/jars):
 
 * `ImageJ/jars/*.jar` &rarr; `ImageJ/jars`
 * `ImageJ/plugins/*.jar` &rarr;  `ImageJ/plugins`
