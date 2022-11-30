@@ -27,6 +27,10 @@
 	</description>
 	<inceptionYear>2006</inceptionYear>
 	<url>https://imagingbook.com</url>
+	
+	<properties>
+		<maven.javadoc.skip>true</maven.javadoc.skip>
+	</properties>
 
 	<dependencies>
 	

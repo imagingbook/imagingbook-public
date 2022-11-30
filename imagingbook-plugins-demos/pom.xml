@@ -27,11 +27,16 @@
 	</description>
 	<inceptionYear>2006</inceptionYear>
 	<url>https://imagingbook.com</url>
+	
 	<developers>
 		<developer>
 			<name>Wilhelm Burger</name>
 		</developer>
 	</developers>
+	
+	<properties>
+		<maven.javadoc.skip>true</maven.javadoc.skip>
+	</properties>
 
 	<dependencies>
 	
