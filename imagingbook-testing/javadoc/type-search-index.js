@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"imagingbook.testutils","l":"ImageTestUtils"},{"p":"imagingbook.testutils","l":"NumericTestUtils"},{"p":"imagingbook.testutils","l":"RandomMatrixGenerator"},{"p":"imagingbook.testutils","l":"ResourceTestUtils"}]

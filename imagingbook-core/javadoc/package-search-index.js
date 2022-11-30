@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"imagingbook.core"},{"l":"imagingbook.core.plugin"},{"l":"imagingbook.core.resource"}]
