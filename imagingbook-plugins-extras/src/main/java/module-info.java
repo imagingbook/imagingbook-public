@@ -1,3 +1,6 @@
+/**
+ * Probably OBSOLETE!
+ */
 module imagingbook.plugins_extras {
 	exports Delaunay_Triangulation;
 	exports Fourier_Shape_Descriptors;

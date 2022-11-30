@@ -8,6 +8,7 @@
  *******************************************************************************/
 
 /**
- * Defines basic utilities for file handling and information about this library.
+ * Defines the basic functionality for working with named resources and accessing
+ * resources in JAR files.
  */
-package imagingbook.core;
+package imagingbook.core.resource;

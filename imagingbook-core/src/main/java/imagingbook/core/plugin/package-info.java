@@ -7,7 +7,7 @@
  * All rights reserved. Visit https://imagingbook.com for additional details.
  *******************************************************************************/
 /**
- * This package is only used during the process of building ImageJ plugin projects
+ * Used during the process of building ImageJ plugin projects
  * (automatic generation of {@code plugins.config} files).
  */
 package imagingbook.core.plugin;

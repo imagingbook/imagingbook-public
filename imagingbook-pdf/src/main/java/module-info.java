@@ -1,3 +1,8 @@
+
+/**
+ * PDF-related code, separated from the main imagingbook library to minimize
+ * third-party dependencies.
+ */
 module imagingbook.pdf {
 	exports imagingbook.pdf;
 

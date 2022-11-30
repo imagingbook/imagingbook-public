@@ -1,31 +1,35 @@
+/**
+ * A collection of ImageJ plugins referenced in various chapters of the
+ * associated image processing books as well as additional demos and tools.
+ */
 module imagingbook.plugins_book {
-	exports Ch17_EdgePreservingSmoothing;
 	exports Ch02_Histograms_Statistics;
-	exports Ch13_ColorImages;
-	exports Ch24_NonRigidMatching;
+	exports Ch03_PointOperations;
 	exports Ch04_Filters;
-	exports Ch10_LineFitting;
-	exports Ch09_AutomaticThresholding;
-	exports Ch15_ColorFilters;
-	exports Ch14_ColorimetricColor;
-	exports Ch11_Circles_Ellipses;
-	exports Ch25_SIFT;
-	exports Ch26_MSER;
 	exports Ch05_Edges_Contours;
-	exports Ch12_Ransac_Hough.settings;
-	exports Ch12_Ransac_Hough;
+	exports Ch06_CornerDetection;
 	exports Ch07_MorphologicalFilters;
 	exports Ch08_BinaryRegions;
-	exports Ch20_DiscreteCosineTransform;
-	exports Ch03_PointOperations;
-	exports Ch19_DiscreteFourierTransform;
-	exports Tools_;
+	exports Ch09_AutomaticThresholding;
+	exports Ch10_LineFitting;
+	exports Ch11_Circles_Ellipses;
+	exports Ch12_Ransac_Hough.settings;
+	exports Ch12_Ransac_Hough;
+	exports Ch13_ColorImages;
+	exports Ch14_ColorimetricColor;
+	exports Ch15_ColorFilters;
 	exports Ch16_ColorEdges;
+	exports Ch17_EdgePreservingSmoothing;
+	exports Ch19_DiscreteFourierTransform;
+	exports Ch20_DiscreteCosineTransform;
+	exports Ch21_GeometricOperations;
 	exports Ch22_PixelInterpolation;
 	exports Ch23_ImageMatching;
-	exports Ch06_CornerDetection;
-	exports Ch21_GeometricOperations;
+	exports Ch24_NonRigidMatching;
+	exports Ch25_SIFT;
+	exports Ch26_MSER;
 	exports More_;
+	exports Tools_;
 
 	requires commons.math3;
 	requires transitive ij;

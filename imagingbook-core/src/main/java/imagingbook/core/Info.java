@@ -17,11 +17,12 @@ import java.util.jar.Manifest;
  * See https://stackoverflow.com/questions/3697449/retrieve-version-from-maven-pom-xml-in-code
  * for alternatives.
  * 
- * 
  * @author WB
  *
  */
 public abstract class Info {
+	
+	private Info() {}
 	
 	/**
 	 * Reads version information from the MANIFEST.MF file of the JAR file from
