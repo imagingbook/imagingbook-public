@@ -80,7 +80,7 @@
 		
 		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
 		
-		<maven.javadoc.skip>true</maven.javadoc.skip>	<!-- should be true! set false on command line -->
+		<maven.javadoc.skip>false</maven.javadoc.skip>	<!-- internal Maven property, set false on command line -->
 		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
 		
 	</properties>
@@ -307,12 +307,13 @@
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
 								<echo level="info">**** outputDirectory = ${outputDirectory}</echo>
 								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
-								<echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo>
+								<!-- <echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo> -->
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>
 								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
 								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
 								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
+								<echo level="info">**** maven.multiModuleProjectDirectory = ${maven.multiModuleProjectDirectory}</echo>
 							</target>
 						</configuration>
 					</execution>
@@ -368,19 +369,16 @@
 					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->  <!-- add for Java 10, 11, 12 .. -->
 					<!-- <source>1.8</source> -->
 					<source>${java.version}</source>
-					<detectJavaApiLink>true</detectJavaApiLink>	<!-- gives incorrect links! -->
+					<detectJavaApiLink>true</detectJavaApiLink>	<!-- gives incorrect links for SE < 11 -->
 					<detectLinks>true</detectLinks>
 					<!-- <detectOfflineLinks>true</detectOfflineLinks> -->
 					
 					<links>
-						<!-- <link>https://docs.oracle.com/javase/10/docs/api</link> -->
 			            <!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
 			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest/ij</link>  unnamed mdule, 'element-list' missing? -->
-			            <link>https://javadoc.io/doc/net.imagej/ij/1.53v</link>		<!-- works! -->
-			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest</link> -->
+			            <link>https://javadoc.io/doc/net.imagej/ij/1.53v</link>
 			            <!-- <link>https://javadoc.io/doc/org.apache.commons/commons-math3/latest</link> -->
 			            <link>https://javadoc.io/doc/org.apache.commons/commons-math3/3.6.1</link>
-			            
 			        </links>
 
 					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
@@ -408,7 +406,20 @@
 					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
 					<!-- <additionalOptions>xxframes</additionalOptions>--> <!-- with SE17, javadoc does not support frames any more! -->
 				</configuration>
+				
 				<executions>
+					<!-- see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html -->
+					<execution>
+						<id>aggregate</id>
+						<goals>
+							<goal>aggregate</goal>
+						</goals>
+						<phase>site</phase>
+						<configuration>
+							<!-- Specific configuration for the aggregate report -->
+						</configuration>
+					</execution>
+          
 					<execution>
 						<id>attach-javadocs</id>
 						<goals>
@@ -416,6 +427,7 @@
 						</goals>
 					</execution>
 				</executions>
+				
 			</plugin>
 			
 			<plugin>
@@ -471,7 +483,30 @@
 				<reports> <report>aggregate</report> </reports> </reportSet> <reportSet> 
 				<id>default</id> <reports> <report>javadoc</report> </reports> </reportSet> 
 				</reportSets> </plugin> -->
-		</plugins>
+		
+			<!--  see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<!-- <version>3.4.1</version> -->
+				<reportSets>
+					<reportSet>
+						<id>aggregate</id>
+						<inherited>false</inherited>
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+					<reportSet>
+						<id>default</id>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			
+      </plugins>
 	</reporting>
 
 </project>

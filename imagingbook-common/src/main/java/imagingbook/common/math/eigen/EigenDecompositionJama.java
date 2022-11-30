@@ -61,6 +61,7 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 	
 	public static final double DefaultSymmetryTolerance = 1e-12;
 	public static final double DefaultZeroTolerance = 1e-12;
+	public static final int SchurMaxIterations = 30;
 
 	private final int n;			// row and column dimension (square matrix).
 	private final boolean issymmetric;	// symmetry flag.
@@ -75,13 +76,14 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 	private final double zeroTol;
 
 	/**
-	 * Constructor. 
-	 * Checks for symmetry, then constructs the eigenvalue decomposition.
+	 * Constructor. Checks for symmetry, then constructs the eigenvalue
+	 * decomposition.
 	 * 
-	 * @param M matrix to be decomposed
+	 * @param M           matrix to be decomposed
 	 * @param symmetryTol absolute threshold for determining matrix symmetry
-	 * @param zeroTol absolute threshold for determining zero matrix entries
+	 * @param zeroTol     absolute threshold for determining zero matrix entries
 	 * @throws MaxIterationsExceededException 
+	 * 		if the maximum number of iterations is exceeded (see {@link #SchurMaxIterations})
 	 */
 	public EigenDecompositionJama(RealMatrix M, double symmetryTol, double zeroTol)
 			throws MaxIterationsExceededException {
@@ -776,8 +778,8 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 				}
 
 				iter = iter + 1; // (Could check iteration count here.)
-				if (iter > 30) {
-					throw new MaxIterationsExceededException(30);	// wilbur added as safeguard
+				if (iter > SchurMaxIterations) {
+					throw new MaxIterationsExceededException(SchurMaxIterations);	// wilbur added as safeguard
 				}
 
 				// Look for two consecutive small sub-diagonal elements

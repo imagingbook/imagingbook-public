@@ -509,9 +509,10 @@ public abstract class Matrix {
 	
 	/**
 	 * Checks is the given square {@code double[][]} matrix is non-singular.
+	 * 
 	 * @param A a square {@code double[][]} matrix
 	 * @return true if the matrix is singular
-	 * @throws NonsquareMatrixException 
+	 * @throws NonsquareMatrixException if the matrix is not square
 	 */
 	public static boolean isSingular(double[][] A) throws NonsquareMatrixException {
 		if (!Matrix.isSquare(A)) {
@@ -522,9 +523,10 @@ public abstract class Matrix {
 	
 	/**
 	 * Checks is the given square matrix is non-singular.
+	 * 
 	 * @param A a square {@link RealMatrix}
 	 * @return true if the matrix is singular
-	 * @throws NonsquareMatrixException 
+	 * @throws NonsquareMatrixException if the matrix is not square
 	 */
 	public static boolean isSingular(RealMatrix A) throws NonsquareMatrixException {
 		if (!A.isSquare()) {
@@ -1304,16 +1306,16 @@ public abstract class Matrix {
 	
 	// A * B -> C (destructive)
 	/**
-	 * Calculates the product of two {@code double[][]} matrices A, B
-	 * and places the results in the third {@code double[][]} matrix C,
-	 * which is modified (destructively).
-	 * An exception is thrown if any matrix dimensions do not match
+	 * Calculates the product of two {@code double[][]} matrices A, B and places the
+	 * results in the third {@code double[][]} matrix C, which is modified
+	 * (destructively). An exception is thrown if any matrix dimensions do not match
 	 * or if the target matrix is the same as one of the source matrices.
+	 * 
 	 * @param A first matrix
 	 * @param B second matrix
 	 * @param C the result matrix
-	 * @throws SameSourceTargetException 
-	 * @throws IncompatibleDimensionsException 
+	 * @throws SameSourceTargetException if the target matrix is the same as one of the source matrices
+	 * @throws IncompatibleDimensionsException if any matrix dimensions do not match
 	 */
 	public static void multiplyD(final double[][] A, final double[][] B, final double[][] C) 
 			throws SameSourceTargetException, IncompatibleDimensionsException {
@@ -2134,7 +2136,7 @@ public abstract class Matrix {
 	 * 
 	 * @param ah a homogeneous vector
 	 * @return the equivalent Cartesian vector
-	 * @throws DivideByZeroException
+	 * @throws DivideByZeroException if the last vector element is zero
 	 */
 	public static double[] toCartesian(double[] ah) throws DivideByZeroException {
 		double[] xc = new double[ah.length - 1];
@@ -2445,12 +2447,12 @@ public abstract class Matrix {
 	
 	/**
 	 * Calculates and returns the inverse of the given matrix, which must be square.
-	 * Exceptions are n if the supplied matrix is not square or ill-conditioned
+	 * Exceptions are thrown if the supplied matrix is not square or ill-conditioned
 	 * (singular).
 	 * 
 	 * @param A a square matrix
 	 * @return the inverse matrix
-	 * @throws NonsquareMatrixException 
+	 * @throws NonsquareMatrixException if the supplied matrix is not square
 	 */
 	public static double[][] inverse(final double[][] A) throws NonsquareMatrixException {
 		if (!isSquare(A))
@@ -2466,7 +2468,7 @@ public abstract class Matrix {
 	 * 
 	 * @param A a square matrix
 	 * @return the inverse matrix
-	 * @throws NonsquareMatrixException
+	 * @throws NonsquareMatrixException if the supplied matrix is not square
 	 */
 	public static float[][] inverse(final float[][] A) throws NonsquareMatrixException {
 		if (!isSquare(A))

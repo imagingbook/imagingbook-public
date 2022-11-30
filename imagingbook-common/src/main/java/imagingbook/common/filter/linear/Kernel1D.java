@@ -75,13 +75,12 @@ public class Kernel1D {
 	// ----------------------------------------------------------
 	
 	/**
-	 * Normalizes the specified array such that its sum becomes 1.
-	 * Throws an exception if the array's sum is zero.
-	 * The original array is not modified.
+	 * Normalizes the specified array such that its sum becomes 1. Throws an
+	 * exception if the array's sum is zero. The original array is not modified.
 	 * 
 	 * @param A a 1D array
 	 * @return the normalized array
-	 * @throws ArithmeticException 
+	 * @throws ArithmeticException if array sums to zero
 	 */
 	public static float[] normalize(float[] A) throws ArithmeticException {
 		double scale = 1.0 / Matrix.sum(A);
