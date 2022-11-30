@@ -8,12 +8,12 @@
 	<version>6.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
+	<!-- Parent POM (Project Object Model) for general (non-plugin) imagingbook artifacts. -->
+	
 	<name>${project.groupId}:${project.artifactId}</name>
-
 	
 	<description>
-		Parent POM (Project Object Model) for general (non-plugin) imagingbook artifacts.
-		This code is part of the imagingbook software suite accompanying the
+		This is the root project of the imagingbook software suite accompanying the
 		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
 	</description>
 	<inceptionYear>2006</inceptionYear>
@@ -38,7 +38,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/imagingbook/imagingbook-public.git</connection>
 		<developerConnection>scm:git:ssh://github.com:imagingbook/imagingbook-public.git.git</developerConnection>
-		<url>http://github.com/imagingbook/imagingbook-public.git/tree/master</url>
+		<url>http://github.com/imagingbook/imagingbook-public</url>
 	</scm>
 
 	<modules>
