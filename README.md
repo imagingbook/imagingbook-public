@@ -62,10 +62,10 @@ For example, to use the `imagingbook-common` library, simply include the followi
 <dependency>
   <groupId>com.imagingbook</groupId>
   <artifactId>imagingbook-common</artifactId>
-  <version>5.0.0</version>
+  <version>6.0.0</version>
 </dependency>
 ```
-Replace `5.0.0` with the most current release version found on 
+Replace `6.0.0` with the most current release version found on 
 Maven Central (https://mvnrepository.com/artifact/com.imagingbook).
 
 ### Preconfigured Maven Projects
