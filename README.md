@@ -49,15 +49,9 @@ or copied manually to ImageJ's `plugins/` directory:
 
 <!-- [**Change Log**](CHANGES.md) -->
 
-## Documentation (JavaDoc):
+## API Documentation:
 
-* [**imagingbook-core**](https://imagingbook.github.io/imagingbook-public/imagingbook-core/javadoc)
-* [**imagingbook-common**](https://imagingbook.github.io/imagingbook-public/imagingbook-common/javadoc)
-* [**imagingbook-spectral**](https://imagingbook.github.io/imagingbook-public/imagingbook-spectral/javadoc)
-* [**imagingbook-pdf**](https://imagingbook.github.io/imagingbook-public/imagingbook-pdf/javadoc)
-* [**imagingbook-sample-images**](https://imagingbook.github.io/imagingbook-public/imagingbook-sample-images/javadoc)
-* [**imagingbook-plugins-book**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-book/javadoc)
-* [**imagingbook-plugins-demos**](https://imagingbook.github.io/imagingbook-public/imagingbook-plugins-demos/javadoc)
+* [**imagingbook-public**](https://imagingbook.github.io/imagingbook-public/javadoc) (aggregated JavaDoc)
 
 
 ## Use with Maven
