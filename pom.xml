@@ -76,11 +76,27 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
 		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
-		<imagingbook.skipjavadoc>false</imagingbook.skipjavadoc>
 		
-		<!--<maven.javadoc.skip>${imagingbook.skipjavadoc}</maven.javadoc.skip>	--> <!-- internal Maven property, set false on command line -->
+		
+		<!-- <maven.javadoc.skip>true</maven.javadoc.skip> --> <!-- internal Maven property, set false on command line -->
 		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
 		
+		<!--   JavDoc related things -->
+		
+		<imagingbook.skipjavadoc>true</imagingbook.skipjavadoc>
+		<javadoc.doctitle>Image Processing Software for Textbooks by W. Burger and M. Burge</javadoc.doctitle>
+		<!-- <javadoc.header>
+			<![CDATA[<br><font size="+1" face="courier"><B><a href="https://imagingbook.com">imagingbook.com</a></B></font>]]>
+		</javadoc.header> -->
+		<javadoc.header>
+			<![CDATA[<br><font face="verdana"><B>imagingbook ]]>${project.version}<![CDATA[</B></font>]]>
+		</javadoc.header>
+		<javadoc.bottom>
+			<![CDATA[Copyright &#169; {inceptionYear}&#x2013;{currentYear}, 
+		        <a href="https://imagingbook.com" target="new">Wilhelm Burger, Mark J. Burge</a>
+		        <a href="http://opensource.org/licenses/BSD-2-Clause" target="new">
+		        (BSD 2-Clause Simplified License)</a>]]>
+		</javadoc.bottom>
 	</properties>
 	
 	<distributionManagement>
@@ -305,7 +321,7 @@
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
 								<echo level="info">**** outputDirectory = ${outputDirectory}</echo>
 								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
-								<!-- <echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo> -->
+								<echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** imagingbook.skipjavadoc = ${imagingbook.skipjavadoc}</echo>
 								<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>
@@ -352,30 +368,27 @@
 
 			<plugin>
 				<!-- Javadoc generation, see https://maven.apache.org/plugins/maven-javadoc-plugin/javadoc-mojo.html -->
+				<!-- https://docs.geotools.org/latest/userguide/build/maven/javadocs.html -->
+				<!-- To run on command line:
+					javadoc:javadoc -Dimagingbook.skipjavadoc=false
+					javadoc:aggregate -Dimagingbook.skipjavadoc=false
+				-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				
 				<configuration>
-					<skip>${imagingbook.skipjavadoc}</skip>
-					<verbose>true</verbose>
-	                <!-- workaround for https://bugs.openjdk.java.net/browse/JDK-8212233 -->
-					<!-- <javaApiLinks>
-						<property>
-							<name>foo</name>
-							<value>bar</value>
-						</property>
-					</javaApiLinks> -->
-					<!-- Default configuration for all reports -->
-					<!-- Problem with Java 12: mixing named and unnamed modules?? -->
-					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->  <!-- add for Java 10, 11, 12 .. -->
-					<!-- <source>1.8</source> -->
+					<!-- for some reason the standard property maven.javadoc.skip does not work as expected-->
+					<skip>${imagingbook.skipjavadoc}</skip>	
+					<skippedModules>imagingbook-testing</skippedModules>
+					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
+					<show>protected</show>
 					<source>${java.version}</source>
-					<detectJavaApiLink>true</detectJavaApiLink>	<!-- gives incorrect links for SE < 11 -->
-					<detectLinks>true</detectLinks>
-					<!-- <detectOfflineLinks>true</detectOfflineLinks> -->
+					<linksource>true</linksource>
 					
+					<detectJavaApiLink>true</detectJavaApiLink>	<!-- got incorrect links for SE < 11 -->
+					<detectLinks>true</detectLinks>
 					<links>
-			            <!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
-			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest/ij</link>  unnamed mdule, 'element-list' missing? -->
+			            <!-- <link>https://javadoc.io/doc/net.imagej/ij/latest/ij</link> -->
 			            <link>https://javadoc.io/doc/net.imagej/ij/1.53v</link>
 			            <!-- <link>https://javadoc.io/doc/org.apache.commons/commons-math3/latest</link> -->
 			            <link>https://javadoc.io/doc/org.apache.commons/commons-math3/3.6.1</link>
@@ -384,26 +397,18 @@
 					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
 					<destDir>javadoc</destDir>
 					
-					<!-- <doctitle>${javadoc-doctitle}</doctitle> -->
+					<doctitle>${javadoc.doctitle}</doctitle>
+					<header>${javadoc.header}</header>
+					<footer>${javadoc.header}</footer>
+					<bottom>${javadoc.bottom}</bottom>
 					<packagesheader>${project.name}</packagesheader>
-					<!-- <header>The ImagingBook HEADER</header> -->
-					<!-- <footer>The ImagingBook FOOTER</footer> -->
-					<!-- <top>The ImagingBook TOP text</top> -->
-					<bottom>
-	        		<![CDATA[Copyright &#169; {inceptionYear}&#x2013;{currentYear}, 
-	        		<a href="https://imagingbook.com" target="new">
-	        		Wilhelm Burger, Mark J. Burge</a>
-	        		<a href="http://opensource.org/licenses/BSD-2-Clause" target="new">
-	        		(BSD 2-Clause Simplified License)</a>]]>
-					</bottom>
-					<show>protected</show>
-					<failOnError>false</failOnError>
+					<overview>${project.basedir}/docs/overview.html</overview>
+					
 					<nohelp>true</nohelp>
-					<linksource>true</linksource>
 					<author>false</author>
-					<verbose>true</verbose>
-					<!-- <quiet>true</quiet> -->				
-					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
+					
+					<failOnError>false</failOnError>
+					<verbose>true</verbose>	
 					<!-- <additionalOptions>xxframes</additionalOptions>--> <!-- with SE17, javadoc does not support frames any more! -->
 				</configuration>
 				
@@ -478,12 +483,6 @@
 			</plugin>
 
 			<!-- NEEDED? aggregate JavaDoc (see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html) -->
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
-				<version>3.3.0</version> <reportSets> <reportSet> <id>aggregate</id> <inherited>false</inherited> 
-				<reports> <report>aggregate</report> </reports> </reportSet> <reportSet> 
-				<id>default</id> <reports> <report>javadoc</report> </reports> </reportSet> 
-				</reportSets> </plugin> -->
-		
 			<!--  see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
