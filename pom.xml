@@ -119,7 +119,8 @@
 			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url> 
 			-->
 			<id>local-deploy</id>
-			<url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.deploydir}</url>
+			<!-- <url>file:///${imagingbook.rootdir}${file.separator}${imagingbook.deploydir}</url> -->
+			<url>file:///${project.basedir}${file.separator}${imagingbook.deploydir}</url>
 		</snapshotRepository>	
 	</distributionManagement>
 	
