@@ -1,6 +1,6 @@
-/DEPLOY
 /target/
 /.project
 /.settings
 /.classpath
 /javadoc
+DEPLOY
