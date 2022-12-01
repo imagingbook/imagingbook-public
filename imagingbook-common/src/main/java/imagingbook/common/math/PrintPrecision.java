@@ -9,10 +9,10 @@
 package imagingbook.common.math;
 
 /**
- * This class holds settings to control the precision when printing floating-point numbers,
- * used in particular by various {@code toString()} methods 
- * for vectors and matrices defined in
- * class {@link Matrix} (mainly for debugging).
+ * This class holds settings to control the precision when printing
+ * floating-point numbers, used in particular by various {@code toString()}
+ * methods for vectors and matrices defined in class {@link Matrix} (mainly for
+ * debugging).
  * 
  * @author WB
  *
@@ -67,8 +67,11 @@ public abstract class PrintPrecision {
 	}
 
 	/**
-	 * Returns the current float format string (to be used
-	 * in {@link String#format(String, Object...)}, for example.
+	 * Returns the floaing-point format string for the current print precision (to
+	 * be used in {@link String#format(String, Object...)}, for example
+	 * {@code "%.6f"} if print precision is set to 6, or {@code "%e"} when
+	 * precision &le;0.
+	 * 
 	 * @return the format string
 	 */
 	public static String getFormatStringFloat() {
