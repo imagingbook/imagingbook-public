@@ -104,15 +104,19 @@
 							<!-- avoid removing the cleaned directories themselves, delete content only: -->
 							<excludeDefaultDirectories>true</excludeDefaultDirectories>
 							<filesets>
-								<!-- clean ImageJ/jars/  -->
-								<fileset>
+								<fileset> <!-- clean ImageJ/ij.jar  -->
+									<directory>${project.basedir}/ImageJ</directory>
+									<includes>
+										<include>**/ij.jar</include>
+									</includes>
+								</fileset>
+								<fileset> <!-- clean ImageJ/jars/  -->
 									<directory>${project.basedir}/ImageJ/jars</directory>
 									<includes>
 										<include>**/*</include>
 									</includes>
 								</fileset>
-								<!-- also clean the output directory (needed?) -->
-								<fileset>
+								<fileset> <!-- also clean the output directory (needed?) -->
 									<directory>${outputDirectory}</directory>
 									<excludes>
 										<exclude>.gitignore</exclude>
@@ -153,7 +157,7 @@
 										</artifactItem>
 									</artifactItems>
 									<overWriteSnapshots>true</overWriteSnapshots>
-									<excludeScope>test</excludeScope>
+									<!--<excludeScope>test</excludeScope>-->
 								</configuration>
 							</execution>
 							
