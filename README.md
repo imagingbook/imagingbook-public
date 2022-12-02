@@ -5,51 +5,54 @@
 This repository contains the **Java source code** accompanying the 
 **digital image processing books** by **W. Burger and M. J. Burge**, 
 published by Springer. This software is based on **[ImageJ](http://rsbweb.nih.gov/ij/index.html)**.
-Please visit the main website **[imagingbook.com](https://imagingbook.com/)** for more information.
+Please visit our main website **[imagingbook.com](https://imagingbook.com/)** for more information.
 
 **Index terms:** digital image processing, computer algorithms, Java, ImageJ, textbook support.
 
 ## Repository Structure
 
-The source code is built as a modular Maven project, which includes the following packages:
+The source code is built as a modular Maven project, which includes the following modules:
 
-### Library and Data Packages
+### Library and Data Modules
 
 These "library-only" packages are packaged as `JAR` files, which are typically imported as Maven
 dependencies. They may also be copied manually to ImageJ's `jars/` directory:
 
-* **[imagingbook-core](imagingbook-core/)**:
-    Minimal infrastructure required for building other `imagingbook` library packages.
-    Includes code for handling resources and automatically compiling `plugins.config` files
-    for ImageJ plugin sets.  
-* **[imagingbook-common](imagingbook-common/)**: 
+* **[imagingbook-core](imagingbook-core/)** <br>
+    Minimal infrastructure required for building other `imagingbook` library modules.
+    Includes code for basic file handling, managing resources and automatically compiling 
+    `plugins.config` files for ImageJ plugin sets.  
+* **[imagingbook-common](imagingbook-common/)** <br> 
     This is the main `imagingbook` library with implementions of image processing algorithms,
     associated data structures and utility code. Users interested in applying `imagingbook`
-    functionality in their own ImageJ plugins only require this package as a Maven dependency.
-* **[imagingbook-spectral](imagingbook-spectral/)**: 
+    functionality in their own programs only need to import this module (artefact) as a Maven
+    dependency.
+* **[imagingbook-spectral](imagingbook-spectral/)** <br>
     Library code related to spectral image processing (Fourier transforms etc.),
     separated from the main `imagingbook` library to minimize third-party dependencies.
-* **[imagingbook-pdf](imagingbook-pdf/)**: 
-    PDF-related library code,
-    separated from the main `imagingbook` library to minimize third-party dependencies.
-* **[imagingbook-sample-images](imagingbook-sample-images/)**: 
-    A small set of sample images used for demos and testing.
+* **[imagingbook-pdf](imagingbook-pdf/)**<br>
+    PDF-related library code, separated from the main `imagingbook` library to minimize 
+    third-party dependencies.
+* **[imagingbook-sample-images](imagingbook-sample-images/)** <br>
+    Makes available a set of sample images used for demos and testing.
 
-### ImageJ Plugin Packages
+### ImageJ Plugin Modules
 
-These packages contain sets of `ImageJ` plugins that make use of `imagingbook` library.
-Each plugin set is packaged to a `JAR` file that may be imported as a Maven dependency
+These packages contain sets of `ImageJ` plugins that make use of the `imagingbook` library.
+Each plugin set is packaged as a `JAR` file and may be imported as a Maven dependency
 or copied manually to ImageJ's `plugins/` directory:
 
-* **[imagingbook-plugins-book](imagingbook-plugins-book/)**: 
+* **[imagingbook-plugins-book](imagingbook-plugins-book/)** <br>
     A collection of `ImageJ` plugins related to individual book chapters (including 
-    materials from previous editions) and tools for working with `ImageJ` (e.g., exact zooming and PDF-export).
-* **[imagingbook-plugins-demos](imagingbook-plugins-demos/)**: 
-    Various plugins illustrating basic technical concepts in `ImageJ` and the `imagingbook` library..
+    materials from previous editions) and tools for working with `ImageJ` (e.g., exact
+    zooming and PDF-export).
+* **[imagingbook-plugins-demos](imagingbook-plugins-demos/)** <br>
+    Plugins demonstrating the use of various technical concepts in `ImageJ` and the
+    `imagingbook` library.
 
 <!-- [**Change Log**](CHANGES.md) -->
 
-## API Documentation:
+## API Documentation
 
 * [**imagingbook-public**](https://imagingbook.github.io/imagingbook-public/javadoc) (aggregated JavaDoc)
 
