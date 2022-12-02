@@ -1,9 +1,9 @@
 ![frankenburg-1918-960x200k.png](docs/img/443892583-frankenburg-1918-960x200k.png)
 
-# 'imagingbook' Main Source Code Repository
+# IMAGINGBOOK - Main Source Code Repository
 
 This repository contains the **Java source code** accompanying the 
-**digital image processing books** by **W. Burger and M. J. Burge**, 
+**Digital Image Processing** textbooks by **W. Burger and M. J. Burge**, 
 published by Springer. This software is based on **[ImageJ](http://rsbweb.nih.gov/ij/index.html)**.
 Please visit our main website **[imagingbook.com](https://imagingbook.com/)** for more information.
 
@@ -15,8 +15,9 @@ The source code is built as a modular Maven project, which includes the followin
 
 ### Library and Data Modules
 
-These "library-only" packages are packaged as `JAR` files, which are typically imported as Maven
-dependencies. They may also be copied manually to ImageJ's `jars/` directory:
+These "library-only" modules are packaged as `JAR` files and typically imported as Maven
+dependencies. They may also be copied manually to ImageJ's `jars/` directory 
+(see <a href="#WithoutMaven">Use Without Maven</a> below):
 
 * **[imagingbook-core](imagingbook-core/)** <br>
     Minimal infrastructure required for building other `imagingbook` library modules.
@@ -34,7 +35,7 @@ dependencies. They may also be copied manually to ImageJ's `jars/` directory:
     PDF-related library code, separated from the main `imagingbook` library to minimize 
     third-party dependencies.
 * **[imagingbook-sample-images](imagingbook-sample-images/)** <br>
-    Makes available a set of sample images used for demos and testing.
+    Provides a set of (JAR-packaged) sample images used for demos and testing.
 
 ### ImageJ Plugin Modules
 
@@ -52,15 +53,29 @@ or copied manually to ImageJ's `plugins/` directory:
 
 <!-- [**Change Log**](CHANGES.md) -->
 
-## API Documentation
+### API Documentation
 
-* [**imagingbook-public**](https://imagingbook.github.io/imagingbook-public/javadoc) (aggregated JavaDoc)
+* [**imagingbook-public**](https://imagingbook.github.io/imagingbook-public/javadoc)
+  (aggregated JavaDoc for latest build)
 
 
-## Use with Maven
+### Where to Report Problems
 
-Each of the above items is available as a [Maven artifact on Maven Central](https://mvnrepository.com/artifact/com.imagingbook).
-For example, to use the `imagingbook-common` library, simply include the following in your project's `pom.xml`file:
+This software is mainly intended for educational purposes and comes as is, with no
+guarantees whatsoever. API changes that make the code incompatible with previous versions
+may happen at any time. Users are encouraged to report any enountered problems here: 
+
+* **https://github.com/imagingbook/imagingbook-public/issues**
+
+
+## Use With Maven
+
+### Using Libraries Only
+
+Each of the above modules is available as a 
+[Maven artifact on Maven Central](https://search.maven.org/search?q=g:com.imagingbook).
+For example, to use the `imagingbook-common` library, simply include the following in your
+project's `pom.xml`file:
 ```
 <dependency>
   <groupId>com.imagingbook</groupId>
@@ -69,19 +84,21 @@ For example, to use the `imagingbook-common` library, simply include the followi
 </dependency>
 ```
 Replace `6.0.0` with the most current release version found on 
-Maven Central (https://mvnrepository.com/artifact/com.imagingbook).
+Maven Central (https://search.maven.org/search?q=g:com.imagingbook).
 
 ### Preconfigured Maven Projects
 
 The following preconfigured projects are available on GitHub for getting started:
 
-* **[imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all)**: 
+* **[imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all)** <br> 
     This is a ready-to-go Maven project that includes the `imagingbook` library, all plugin sets listed above, 
-    and a basic `ImageJ` runtime setup. 
-* **[imagingbook-maven-demo-project](https://github.com/imagingbook/imagingbook-maven-demo-project)**: This is
-    a minimal Maven setup for `ImageJ` with the `imagingbook` library, including sample Java code.
+    packaged in a complete `ImageJ` runtime setup.
+* **[imagingbook-maven-demo-project](https://github.com/imagingbook/imagingbook-maven-demo-project)** <br> This is
+    a minimal Maven setup for using the `imagingbook` library with `ImageJ`. It includes some sample Java code
+    to get started.
 
-These projects are set up to develop and run `ImageJ` user plugins out of the box. They are based on a special parent POM file 
+These projects are set up to develop and run `ImageJ` user plugins out of the box. 
+They are based on a special parent Maven POM file 
 ([**imagingbook-plugins-pom**](https://github.com/imagingbook/imagingbook-public/tree/master/imagingbook-plugins-pom)),
 which takes care of ImageJ's particular directory structure during the Maven build.
 To use, clone any of these repositories and import it as a Maven project in your favorite IDE.
@@ -90,20 +107,19 @@ These projects may also be used as a good starting point when working without Ma
 
 
 
-## Use without Maven
+## <a id="WithoutMaven"></a>Use Without Maven
 
 To use the `imagingbook` library in an existing (non-Maven based) `ImageJ` environment you need to manually copy all necessary JAR files
-e.g., from [imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all/tree/master/ImageJ/jars):
+e.g., from [imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all/tree/master/ImageJ):
 
 * `ImageJ/jars/*.jar` &rarr; `ImageJ/jars`
 * `ImageJ/plugins/*.jar` &rarr;  `ImageJ/plugins`
 
-Then restart `ImageJ`. Libraries and plugins should be loaded automatically.
-Note that the JAR files in [imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all/tree/master/ImageJ/jars)
-are typically from the most recent development ("snapshot") build.
-JAR files from stable release versions can be found on Maven Central (https://mvnrepository.com/artifact/com.imagingbook).
+Then restart `ImageJ`. Libraries and plugins should be loaded automatically. The JAR files in 
+[imagingbook-plugins-all](https://github.com/imagingbook/imagingbook-plugins-all/tree/master/ImageJ)
+are typically from the most recent stable ("release") build.
 
-## Related Projects on GitHub
+## Related Projects
 
 Other projects using the `imagingbook` library include:
 
