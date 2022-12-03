@@ -409,8 +409,8 @@
 				<!-- Javadoc generation, see https://maven.apache.org/plugins/maven-javadoc-plugin/javadoc-mojo.html -->
 				<!-- https://docs.geotools.org/latest/userguide/build/maven/javadocs.html -->
 				<!-- To run on command line:
-					javadoc:javadoc -Dimagingbook.skipjavadoc=false
-					javadoc:aggregate -Dimagingbook.skipjavadoc=false
+					mvn javadoc:javadoc -Dimagingbook.skipjavadoc=false
+					mvn javadoc:aggregate -Dimagingbook.skipjavadoc=false
 				-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
