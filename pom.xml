@@ -94,7 +94,7 @@
 			<![CDATA[<br><font size="+1" face="courier"><B><a href="https://imagingbook.com">imagingbook.com</a></B></font>]]>
 		</javadoc.header> -->
 		<javadoc.header>
-			<![CDATA[<br><font face="verdana"><B>imagingbook ]]>${project.version}<![CDATA[</B></font>]]>
+			<![CDATA[<br><font face="verdana"><B>imagingbook ]]>${project.name} ${project.version}<![CDATA[</B></font>]]>
 		</javadoc.header>
 		<javadoc.bottom>
 			<![CDATA[Copyright &#169; {inceptionYear}&#x2013;{currentYear}, 
@@ -441,7 +441,8 @@
 					<destDir>javadoc</destDir>
 					
 					<doctitle>${javadoc.doctitle}</doctitle>
-					<header>${javadoc.header}</header>
+					<!--<header>${javadoc.header}</header>-->
+					<header><![CDATA[<br><font face="verdana"><B>]]>${project.artifactId} ${project.version}<![CDATA[</B></font>]]></header>
 					<footer>${javadoc.header}</footer>
 					<bottom>${javadoc.bottom}</bottom>
 					<packagesheader>${project.name}</packagesheader>
