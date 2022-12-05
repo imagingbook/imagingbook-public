@@ -28,10 +28,6 @@
 	<inceptionYear>2006</inceptionYear>
 	<url>https://imagingbook.com</url>
 	
-	<properties>
-		<!-- <maven.javadoc.skip>true</maven.javadoc.skip> -->
-	</properties>
-	
 	<dependencies>
 	
 		<dependency>
@@ -49,7 +45,7 @@
 		<dependency>
 			<groupId>com.github.librepdf</groupId>
 			<artifactId>openpdf</artifactId>
-			<version>1.3.29</version>
+			<version>${openpdf.version}</version>
 		</dependency>
 		
 		<dependency>
