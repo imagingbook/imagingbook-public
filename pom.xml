@@ -51,7 +51,7 @@
 
 	<modules>
 		<module>imagingbook-parent-pom</module>
-		<module>imagingbook-plugins-pom</module>
+		<!--<module>imagingbook-plugins-pom</module>-->
 		<module>imagingbook-core</module>
 		<module>imagingbook-common</module>
 		<module>imagingbook-spectral</module>

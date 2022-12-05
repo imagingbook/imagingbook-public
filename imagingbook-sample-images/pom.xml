@@ -13,10 +13,8 @@
 
 	<parent>
 		<groupId>com.imagingbook</groupId>
-		<artifactId>imagingbook-parent-pom</artifactId>
+		<artifactId>imagingbook-public</artifactId>
 		<version>6.0.1-SNAPSHOT</version>
-		<relativePath />
-		<!--<relativePath>../imagingbook-parent-pom/pom.xml</relativePath>-->
 	</parent>
 	
 	<name>${project.groupId}:${project.artifactId}</name>
