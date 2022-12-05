@@ -24,8 +24,8 @@
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-plugins-pom</artifactId>
 		<version>6.0.1-SNAPSHOT</version>
-		<!-- <relativePath /> -->
-		<relativePath>../imagingbook-plugins-pom/pom.xml</relativePath>
+		<relativePath />
+		<!--<relativePath>../imagingbook-plugins-pom/pom.xml</relativePath>-->
 	</parent>
 	
 	<name>${project.groupId}:${project.artifactId}</name>
