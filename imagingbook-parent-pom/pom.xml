@@ -358,16 +358,16 @@
 								<!-- output some status information -->
 								<echo level="info">**** imagingbook.buildprofile = ${imagingbook.buildprofile}</echo>
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
-								<echo level="info">**** outputDirectory = ${outputDirectory}</echo>
+								<!--<echo level="info">**** outputDirectory = ${outputDirectory}</echo>-->
 								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
-								<echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo>
+								<!--<echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo>-->
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** imagingbook.skipjavadoc = ${imagingbook.skipjavadoc}</echo>
-								<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>
+								<!--<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>-->
 								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
 								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
 								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
-								<echo level="info">**** maven.multiModuleProjectDirectory = ${maven.multiModuleProjectDirectory}</echo>
+								<!--<echo level="info">**** maven.multiModuleProjectDirectory = ${maven.multiModuleProjectDirectory}</echo>-->
 							</target>
 						</configuration>
 					</execution>
@@ -550,5 +550,190 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<profiles>
+		<!--
+			This is a special build profile for ImageJ plugin projects. If the project
+			base directory contains an 'ImageJ' sub-folder it is assumed that the project
+			defines ImageJ plugins. This sets the output directory to 'ImageJ/plugins',
+			i.e., all project-related .class files are stored there, whereas all
+			dependencies are copied to the 'ImageJ/jars' folder.
+			File 'ImageJ/ij.jar' is also updated by maven.
+			Directories ImageJ/plugins and jars are cleared during the maven 'clean' phase.
+		-->
+		<profile>
+			<id>ij-plugins-build</id>
+
+			<activation>
+				<file>
+					<!-- activates this profile if directory ${project.basedir}/ImageJ exists -->
+					<exists>ImageJ</exists>
+				</file>
+			</activation>
+			<properties>
+				<imagingbook.buildprofile>IjPluginsProfile</imagingbook.buildprofile>
+				<outputDirectory>${project.basedir}/ImageJ/plugins</outputDirectory>
+				<!-- <imagingbook.rootdir>${directory-up-1}</imagingbook.rootdir> -->
+				<pluginConfigFile>plugins.config</pluginConfigFile>
+				<!-- future use to specify general plugins path: -->
+				<pluginPrefix>"Plugins&gt;B&amp;B "</pluginPrefix>
+				<imagingbook.libs>imagingbook-core,imagingbook-common,imagingbook-spectral,imagingbook-pdf,imagingbook-sample-images</imagingbook.libs>
+			</properties>
+
+			<build>
+				<plugins>
+					<!-- empty the ImageJ/plugins and ImageJ/jars directories at clean -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-clean-plugin</artifactId>
+						<configuration>
+							<!-- avoid removing the cleaned directories themselves, delete content only: -->
+							<excludeDefaultDirectories>true</excludeDefaultDirectories>
+							<filesets>
+								<fileset> <!-- clean ImageJ/ij.jar  -->
+									<directory>${project.basedir}/ImageJ</directory>
+									<includes>
+										<include>**/ij.jar</include>
+									</includes>
+								</fileset>
+								<fileset> <!-- clean ImageJ/jars/  -->
+									<directory>${project.basedir}/ImageJ/jars</directory>
+									<includes>
+										<include>**/*</include>
+									</includes>
+								</fileset>
+								<fileset> <!-- also clean the output directory (needed?) -->
+									<directory>${outputDirectory}</directory>
+									<excludes>
+										<exclude>.gitignore</exclude>
+									</excludes>
+								</fileset>
+								<!-- because excludeDefaultDirectories=true, target doesn't get cleaned by default -->
+								<fileset>
+									<directory>${project.basedir}/target</directory>
+									<includes>
+										<include>**/*</include>
+									</includes>
+								</fileset>
+							</filesets>
+						</configuration>
+					</plugin>
+
+					<!-- Copy dependencies into different places of ImageJ project:
+						see https://maven.apache.org/plugins/maven-dependency-plugin/examples/copying-artifacts.html -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<!-- copy ij.jar into ImageJ/ -->
+								<id>copy-ij-jar</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>net.imagej</groupId>
+											<artifactId>ij</artifactId>
+											<outputDirectory>${project.basedir}/ImageJ</outputDirectory>
+											<destFileName>ij.jar</destFileName>
+										</artifactItem>
+									</artifactItems>
+									<overWriteSnapshots>true</overWriteSnapshots>
+									<!--<excludeScope>test</excludeScope>-->
+								</configuration>
+							</execution>
+
+							<execution>
+								<!-- copy imagingbook plugins (but not library JARs) into ImageJ/plugins/ -->
+								<id>copy-imagingbook-dependencies</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeGroupIds>com.imagingbook</includeGroupIds>
+									<excludeArtifactIds>${imagingbook.libs}</excludeArtifactIds>
+									<outputDirectory>${project.basedir}/ImageJ/plugins</outputDirectory>
+									<overWriteSnapshots>true</overWriteSnapshots>
+								</configuration>
+							</execution>
+
+							<execution>
+								<!-- copy imagingbook libraries (not plugin JARs) into ImageJ/jars/ -->
+								<id>copy-imagingbook-common</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeGroupIds>com.imagingbook</includeGroupIds>
+									<includeArtifactIds>${imagingbook.libs}</includeArtifactIds>
+									<outputDirectory>${project.basedir}/ImageJ/jars</outputDirectory>
+									<overWriteSnapshots>true</overWriteSnapshots>
+								</configuration>
+							</execution>
+
+							<execution>
+								<!-- copy all other dependencies into ImageJ/jars/ -->
+								<id>copy-other-dependencies</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<excludeGroupIds>com.imagingbook,net.imagej</excludeGroupIds>
+									<excludeArtifactIds>ij</excludeArtifactIds>
+									<outputDirectory>${project.basedir}/ImageJ/jars</outputDirectory>
+									<overWriteSnapshots>true</overWriteSnapshots>
+								</configuration>
+							</execution>
+
+						</executions>
+					</plugin>
+					<!-- end of copy -->
+
+					<!-- Run a Java program to build plugins.config file in output directory (to be included in output JAR) -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>codegeneration</id>
+								<!-- <phase>generate-resources</phase>  -->
+								<!-- <phase>process-classes</phase>  -->
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<mainClass>imagingbook.core.plugin.PluginsConfigBuilder</mainClass>
+									<arguments>
+										<argument>${project.build.outputDirectory}</argument>
+										<argument>${project.name}</argument>
+										<argument>${pluginPrefix}</argument> <!-- reserved for future use -->
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+
+				<resources>
+					<!-- add plugins.config to the project's JAR -->
+					<resource>
+						<directory>src/main/java</directory>
+						<includes>
+							<include>**/${pluginConfigFile}</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
