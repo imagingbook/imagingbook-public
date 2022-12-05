@@ -8,14 +8,16 @@
  */
 package Ch06_CornerDetection;
 
-import static imagingbook.common.ij.DialogUtils.addToDialog;
-import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.DialogUtils.*;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
+import java.awt.*;
 import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
+import ij.gui.HTMLDialog;
 import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
@@ -28,6 +30,7 @@ import imagingbook.common.corners.MopsCornerDetector;
 import imagingbook.common.corners.ShiTomasiCornerDetector;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p> 
@@ -70,6 +73,12 @@ public class Find_Corners implements PlugInFilter {
 	private static Parameters params = new Parameters();
 	
 	private ImagePlus im;
+
+	public Find_Corners() {
+		if (noCurrentImage()) {
+			askForSampleImage(GeneralSampleImage.Kepler);
+		}
+	}
 	
 	@Override
     public int setup(String arg, ImagePlus im) {

@@ -8,6 +8,7 @@
  */
 package imagingbook.common.ij;
 
+import java.awt.*;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -376,6 +377,10 @@ public abstract class DialogUtils {
 	 * @return true if user accepted
 	 */
 	public static boolean askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
+		// TODO: insert this somewhere:
+//		Font f = new Font(Font.SANS_SERIF, Font.BOLD, 12);
+//		gd.addMessage("ThefileNameToSHow", f, Color.blue);
+
 		boolean ok = askYesOrCancel(
 				"Open sample image", 
 				"No image is currently open.\nUse sample image\n" + suggested + "?");
