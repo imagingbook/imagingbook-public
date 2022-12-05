@@ -98,13 +98,12 @@ The following preconfigured projects are available on GitHub for getting started
     to get started.
 
 These projects are set up to develop and run `ImageJ` user plugins out of the box. 
-They are based on a special parent Maven POM file 
-([**imagingbook-plugins-pom**](https://github.com/imagingbook/imagingbook-public/tree/master/imagingbook-plugins-pom)),
+They are based on a special Maven profile in 
+([**imagingbook-parent-pom**](https://github.com/imagingbook/imagingbook-public/tree/master/imagingbook-parent-pom)),
 which takes care of ImageJ's particular directory structure during the Maven build.
 To use, clone any of these repositories and import it as a Maven project in your favorite IDE.
 If necessary, perform Maven `clean` and `install` to update all dependencies and the runtime setup.
 These projects may also be used as a good starting point when working without Maven (see below).
-
 
 
 ## <a id="WithoutMaven"></a>Use Without Maven
