@@ -62,12 +62,19 @@ public enum GeneralSampleImage implements ImageResource {
 		NoisyCircles,
 		/** Binary image with ellipses embedded in noise. */
 		NoisyEllipses,
-		
-		/** Fairly large binary image with 0/1 values. */
-		RhinoBigCrop,
+
 		
 		/** TIFF image with attached ROI selection, used for trigonometric Fourier descriptors. */
 		HouseRoi_tif,
+
+		/** Fairly large binary image with 0/1 values. */
+		RhinoBigCrop,
+
+		/** A small binary image with 0/255 values (white background = 255). */
+		RhinoSmall,
+
+		/** A small binary image with 0/255 values and inverted LUT (white background = 0). */
+		RhinoSmallInv,
 		
 		/** Binary image with star-shaped regions, used for SIFT demos. */
 		Stars,
