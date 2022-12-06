@@ -23,22 +23,19 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * ImageJ plugin, implementing a "cartoon" or "edge burn-in" effect by
- * controlled darkening of image edges. Pixels are darkened depending on the
- * value of the normalized edge magnitude (as produced by an edge operator). At
- * points of maximum edge magnitude the darkening effect are strongest, while
- * pixels remain unmodified where the edge magnitude is zero. See Ch. 5
- * (Exercise 5.8) of [1] for additional details. Works for RGB color images
- * only. The input image is modified.
+ * ImageJ plugin, implementing a "cartoon" or "edge burn-in" effect by controlled darkening of image edges. Pixels are
+ * darkened depending on the value of the normalized edge magnitude (as produced by an edge operator). At points of
+ * maximum edge magnitude the darkening effect are strongest, while pixels remain unmodified where the edge magnitude is
+ * zero. See Ch. 5 (Exercise 5.8) of [1] for additional details. Works for RGB color images only. The input image is
+ * modified.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
- *
  */
 public class Cartoon_Effect implements PlugInFilter {
 	
@@ -47,10 +44,7 @@ public class Cartoon_Effect implements PlugInFilter {
 	private static boolean ShowOriginalEdgeMagnitude = false;
 	private static boolean ShowSoftenedEdgeMagnitude = false;
 	
-	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
-	 */
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
 	public Cartoon_Effect() {
 		if (noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.Clown);

@@ -8,56 +8,49 @@
  */
 package Ch05_Edges_Contours;
 
+import Ch16_ColorEdges.Color_Edges_Canny;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
-import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.edges.CannyEdgeDetector;
-import imagingbook.common.edges.CannyEdgeDetector.Parameters;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * ImageJ plugin showing the use of the Canny edge detector in
- * its simplest form. It works on all image types.
- * The original image is not modified. 
- * See Sec. 5.5 of [1] for additional details.
+ * ImageJ plugin showing the use of the Canny edge detector in its simplest form. It works on all image types. This
+ * plugin simply delegates to another plugin (@link Color_Edges_Canny}). The original image is not modified. See Sec.
+ * 5.5 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  * @see CannyEdgeDetector
+ * @see Color_Edges_Canny
  */
 public class Canny_Edges implements PlugInFilter {
-	
-	private static CannyEdgeDetector.Parameters params = new Parameters();
-	static {
-		params.gSigma = 3.0;	// sigma of Gaussian (3.0)
-		params.hiThr  = 20.0;	// high threshold (20% of max. edge magnitude)
-		params.loThr  = 5.0;	// low threshold (5% of max. edge magnitude)
+
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Canny_Edges() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Boats);
+		}
 	}
-	
-	private ImagePlus im;
 	
 	@Override
 	public int setup(String arg0, ImagePlus im) {
-		this.im = im;
 		return DOES_ALL + NO_CHANGES;
 	}
 
 	@Override
-	public void run(ImageProcessor ip) {			
-		CannyEdgeDetector detector = new CannyEdgeDetector(ip, params);
-		
-		ByteProcessor edge = detector.getEdgeBinary();
-		(new ImagePlus(im.getShortTitle() + "-CannyEdges", edge)).show();
-		
-//		FloatProcessor eMag = detector.getEdgeMagnitude();
-//		FloatProcessor eOrt = detector.getEdgeOrientation();
-//		List<List<Point>> edgeTraces = detector.getEdgeTraces();	
-
+	public void run(ImageProcessor ip) {
+		// delegate to another plugin:
+		IjUtils.runPlugInFilter(Color_Edges_Canny.class);
 	}
 }

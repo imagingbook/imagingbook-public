@@ -16,6 +16,10 @@ import ij.process.Blitter;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
@@ -48,6 +52,13 @@ public class Sobel_Edges_Colored implements PlugInFilter {
 			 0,  0,  0,
 			 1,  2,  1 };
 
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Sobel_Edges_Colored() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Boats);
+		}
+	}
+
     @Override
 	public int setup(String arg, ImagePlus I) {
         return DOES_8G + PlugInFilter.NO_CHANGES;
@@ -60,23 +71,23 @@ public class Sobel_Edges_Colored implements PlugInFilter {
         Ix.convolve(sobelX, 3, 3);
         Iy.convolve(sobelY, 3, 3);
         
-        (new ImagePlus("Ix", Ix)).show();
-        (new ImagePlus("Iy", Iy)).show();
+        (new ImagePlus("Gradient Ix", Ix)).show();
+        (new ImagePlus("Gradient Iy", Iy)).show();
         
         FloatProcessor Ix2 = (FloatProcessor) Ix.duplicate(); Ix2.sqr();
         FloatProcessor Iy2 = (FloatProcessor) Iy.duplicate(); Iy2.sqr();
         
         FloatProcessor E = (FloatProcessor) Ix2.duplicate();
-        E.copyBits(Iy2, 0, 0, Blitter.ADD);
-        E.sqrt();
+        E.copyBits(Iy2, 0, 0, Blitter.ADD);		// E = Ix2 + Iy2
+        E.sqrt();								// E = sqrt(Ix2 + Iy2)
         
         FloatProcessor Phi = makeOrientation(Ix, Iy);
         
         ColorProcessor cp = makeColorEdges(E, Phi);
        
-        (new ImagePlus("E", E)).show();
-        (new ImagePlus("Phi", Phi)).show();
-        (new ImagePlus("E Colors", cp)).show();
+        (new ImagePlus("Edge Magnitude E", E)).show();
+        (new ImagePlus("Edge Orientation Phi", Phi)).show();
+        (new ImagePlus("Edge Magitide E (colored)", cp)).show();
     }
     
     FloatProcessor makeOrientation(FloatProcessor fpx, FloatProcessor fpy) {

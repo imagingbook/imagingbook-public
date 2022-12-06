@@ -8,17 +8,8 @@
  */
 package Ch06_CornerDetection;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.awt.*;
-import java.util.HashMap;
-import java.util.List;
-
-import ij.IJ;
 import ij.ImagePlus;
-import ij.WindowManager;
 import ij.gui.GenericDialog;
-import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
@@ -31,29 +22,29 @@ import imagingbook.common.corners.ShiTomasiCornerDetector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
+import java.util.List;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+
 /**
- * <p> 
- * ImageJ plugin which demonstrates the use of gradient corner detectors
- * (Harris, MOPS, Sho-Tomasi), optionally using sub-pixel positioning.
- * See Ch. 6 of [1] for additional details.
- * Detected corners are shown as a vector overlay on top of the 
- * original image.
- * </p> 
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * ImageJ plugin which demonstrates the use of gradient corner detectors (Harris, MOPS, Sho-Tomasi), optionally using
+ * sub-pixel positioning. See Ch. 6 of [1] for additional details. Detected corners are shown as a vector overlay on top
+ * of the original image.
  * </p>
- * 
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
+ * @author WB
+ * @version 2022/03/30
  * @see HarrisCornerDetector
  * @see MopsCornerDetector
  * @see ShiTomasiCornerDetector
  * @see ShapeOverlayAdapter
- * 
- * @author WB
- * @version 2022/03/30
  */
 public class Find_Corners implements PlugInFilter {
 	
@@ -71,11 +62,14 @@ public class Find_Corners implements PlugInFilter {
 	public static double CornerMarkStrokeWidth = 0.25;
 	/** Color used for graphic corner marks. */
 	public static BasicAwtColor CornerMarkColor = BasicAwtColor.Green;
-	
-	private static Parameters params = new Parameters();
-	
+	/** Set true to display the corner scores as an image. */
+	public static boolean ShowCornerScoreImage = false;
+
+	private final static Parameters params = new Parameters();
+
 	private ImagePlus im;
 
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
 	public Find_Corners() {
 		if (noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
@@ -90,8 +84,7 @@ public class Find_Corners implements PlugInFilter {
     
 	@Override
     public void run(ImageProcessor ip) {
-    	
-		if (!showDialog(params)) {
+		if (!runDialog()) {
 			return;
 		}
 		
@@ -111,8 +104,7 @@ public class Find_Corners implements PlugInFilter {
 		List<Corner> corners = detector.getCorners();
 		
 		// create a vector overlay to mark the resulting corners
-		Overlay oly = new Overlay();
-		ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 		ola.setStroke(new ColoredStroke(CornerMarkStrokeWidth, CornerMarkColor.getColor()));
 		
 		int cnt = 0;
@@ -123,22 +115,24 @@ public class Find_Corners implements PlugInFilter {
 			if (MaxCornerCount > 0 && cnt >= MaxCornerCount) break;
 		}
 		
-		im.setOverlay(oly);
-		
-		// (new ImagePlus("Corner Score", detector.getQ())).show();	// optionally show corner score image
+		im.setOverlay(ola.getOverlay());
+
+		if (ShowCornerScoreImage) {
+			new ImagePlus("Corner Score (Q)", detector.getQ()).show();
+		}
     }
     
-	private boolean showDialog(Parameters params) {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		
 		gd.addEnumChoice("Detector type", Algorithm);
 		DialogUtils.addToDialog(params, gd);
 		gd.addNumericField("Corners to show (0 = show all)", MaxCornerCount, 0);
 		gd.addNumericField("Corners display size", CornerMarkSize, 1);
 		gd.addEnumChoice("Corner color", CornerMarkColor);
+		gd.addCheckbox("Show corner score image", ShowCornerScoreImage);
 		
 		gd.showDialog();
-		if(gd.wasCanceled())
+		if (gd.wasCanceled())
 			return false;
 		
 		Algorithm = gd.getNextEnumChoice(DetectorType.class);
@@ -146,13 +140,7 @@ public class Find_Corners implements PlugInFilter {
 		MaxCornerCount = (int) gd.getNextNumber();
 		CornerMarkSize = gd.getNextNumber();
 		CornerMarkColor = gd.getNextEnumChoice(BasicAwtColor.class);
-		
-		if(gd.invalidNumber() || !params.validate()) {
-			IJ.error("Input Error", "Invalid input");
-			return false;
-		}	
+		ShowCornerScoreImage = gd.getNextBoolean();
 		return true;
 	}
-
-
 }

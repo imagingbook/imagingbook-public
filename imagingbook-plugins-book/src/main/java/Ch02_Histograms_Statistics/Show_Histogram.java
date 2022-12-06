@@ -6,19 +6,23 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge.
  * All rights reserved. Visit https://imagingbook.com for additional details.
  */
-package Ch03_PointOperations;
+package Ch02_Histograms_Statistics;
 
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
- * ImageJ plugin, simply displays the histogram and cumulative histogram
- * of a grayscale image in two new windows.
- * The input image is not modified.
- * 
+ * ImageJ plugin, simply displays the histogram and cumulative histogram of a grayscale image in two new windows.
+ * Everything is done by built-in methods, nothing is calculated in this plugin itself. The input image is not
+ * modified.
+ *
  * @author WB
  * @see HistogramUtils
  * @see HistogramPlot
@@ -26,6 +30,13 @@ import imagingbook.common.histogram.HistogramUtils;
 public class Show_Histogram implements PlugInFilter { 
 	
 	private ImagePlus im;
+
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Show_Histogram() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
+		}
+	}
 	
 	@Override
 	public int setup(String arg0, ImagePlus im) {
@@ -37,8 +48,8 @@ public class Show_Histogram implements PlugInFilter {
 	public void run(ImageProcessor ip) {
 		int[] h = ip.getHistogram();
 		String title = im.getShortTitle();
-		(new HistogramPlot(h, "Histogram of " + title)).show();
-		(new HistogramPlot(HistogramUtils.cdf(h), "Cum. Histogram of " + title)).show();
+		new HistogramPlot(h, "Histogram of " + title).show();
+		new HistogramPlot(HistogramUtils.cdf(h), "Cum. Histogram of " + title).show();
 	}
 	
 }

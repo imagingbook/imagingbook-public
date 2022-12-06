@@ -16,33 +16,39 @@ import ij.process.Blitter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.linear.GaussianKernel1D;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * This plugin implements an Unsharp Masking filter similar to Photoshop 
- * without thresholds, using a "clean" (sufficiently large) Gaussian filter.
- * This implementation uses built-in ImageJ functionality only.
- * The original image is modified.
- * See Sec. 5.6.2 (Prog. 5.1) of [1] for additional details.
+ * This plugin implements an Unsharp Masking filter similar to Photoshop without thresholds, using a "clean"
+ * (sufficiently large) Gaussian filter. This implementation uses built-in ImageJ functionality only. The original image
+ * is modified. See Sec. 5.6.2 (Prog. 5.1) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2014/03/16
- * @version 2022/09/23 revised
- * 
+ * @version 2022/09/23
  * @see GaussianKernel1D#makeGaussKernel1D(double)
  */
-
 public class Unsharp_Masking_Filter implements PlugInFilter {
 	
 	/** Filter radius (sigma of Gaussian). */
 	public static double Radius = 1.0;
 	/** Amount of sharpening (1.0 = 100%). */
-	public static double Amount = 1.0; 
+	public static double Amount = 1.0;
+
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Unsharp_Masking_Filter() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Boats);
+		}
+	}
 
 	@Override
 	public int setup(String arg, ImagePlus im) {
@@ -51,7 +57,7 @@ public class Unsharp_Masking_Filter implements PlugInFilter {
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		if (!getParameters()) {
+		if (!runDialog()) {
 			return;
 		}
 			
@@ -75,8 +81,8 @@ public class Unsharp_Masking_Filter implements PlugInFilter {
 		ip.insert(I.convertToByte(false), 0, 0);
 	}
 	
-	private boolean getParameters() {
-		GenericDialog gd = new GenericDialog("Unsharp Mask");
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addNumericField("Radius (\u03C3 = 0.1 ... 20)", Radius, 1);
 		gd.addNumericField("Amount (a = 1 ... 500%)", Amount * 100, 0);
 		

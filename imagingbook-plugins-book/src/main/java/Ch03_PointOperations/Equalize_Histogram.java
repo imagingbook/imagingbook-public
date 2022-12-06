@@ -11,21 +11,31 @@ package Ch03_PointOperations;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * This ImageJ plugin performs linear histogram equalization on the
- * selected grayscale image, which is modified.
- * See Sec. 3.5 (Prog. 3.2) of [1] for additional details.
+ * This ImageJ plugin performs linear histogram equalization on the selected grayscale image, which is modified. See
+ * Sec. 3.5 (Prog. 3.2) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  */
 public class Equalize_Histogram implements PlugInFilter {
+
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Equalize_Histogram() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
+		}
+	}
 
 	@Override
 	public int setup(String arg, ImagePlus im) {
@@ -38,8 +48,8 @@ public class Equalize_Histogram implements PlugInFilter {
 		int N = ip.getHeight();
 		int K = 256; // number of intensity values
 
-		// compute the cumulative histogram H:
 		int[] H = ip.getHistogram();
+		// compute the cumulative histogram H (recursively and in-place):
 		for (int j = 1; j < H.length; j++) {
 			H[j] = H[j - 1] + H[j];
 		}

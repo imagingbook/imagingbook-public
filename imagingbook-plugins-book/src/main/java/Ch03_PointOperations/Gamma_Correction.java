@@ -9,8 +9,13 @@
 package Ch03_PointOperations;
 
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
@@ -27,7 +32,14 @@ import ij.process.ImageProcessor;
  */
 public class Gamma_Correction implements PlugInFilter {
 	
-	static double GAMMA = 2.8;   
+	private static double GAMMA = 2.8;
+
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Gamma_Correction() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
+		}
+	}
 
 	@Override
 	public int setup(String arg, ImagePlus im) {
@@ -36,6 +48,10 @@ public class Gamma_Correction implements PlugInFilter {
     
 	@Override
 	public void run(ImageProcessor ip) {
+		if (!runDialog()) {
+			return;
+		}
+
 		// works for 8-bit images only 
 	    int K = 256;
 	    int aMax = K - 1;
@@ -52,5 +68,18 @@ public class Gamma_Correction implements PlugInFilter {
 	    }
 	    
 	    ip.applyTable(Fgc);  // modify the image
-	}	
+	}
+
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+
+		gd.addNumericField("gamma (\u03B3 > 0)", GAMMA, 2);
+
+		gd.showDialog();
+		if (gd.wasCanceled())
+			return false;
+
+		GAMMA = gd.getNextNumber();
+		return true;
+	}
 }

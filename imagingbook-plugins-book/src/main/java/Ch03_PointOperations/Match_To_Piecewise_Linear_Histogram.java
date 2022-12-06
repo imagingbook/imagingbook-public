@@ -8,33 +8,51 @@
  */
 package Ch03_PointOperations;
 
+import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
 import imagingbook.common.histogram.PiecewiseLinearCdf;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * Adapts image intensities to match a reference histogram that is piecewise-linear.
- * See Sec. 3.6.4 (Fig. 3.14) of [1] for additional details.
+ * Adapts image intensities to match a reference histogram that is piecewise-linear. See Sec. 3.6.4 (Fig. 3.14) of [1]
+ * for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
+ *
  * @author WB
- * 
  * @see HistogramUtils
  * @see HistogramPlot
  * @see PiecewiseLinearCdf
  */
-public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter { 
-	
-	static int[]    a = {28, 75, 150, 210};			// a_k (brightness values)
-	static double[] P = {.05, .25, .75, .95};		// P_k (cum. probabilities)
-	
+public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
+
+	private static int[]    a = {28, 75, 150, 210};			// a_k (brightness values)
+	private static double[] P = {.05, .25, .75, .95};		// P_k (cum. probabilities)
+
+	private static boolean ShowOriginalHistograms = true;
+	private static boolean ShowCumulativeHistograms = true;
+	private static boolean ShowFinalHistogram = true;
+	private static boolean ListMappingFunction = false;
+
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Match_To_Piecewise_Linear_Histogram() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
+		}
+	}
+
 	@Override
 	public int setup(String arg0, ImagePlus im) {
 		return DOES_8G;
@@ -42,33 +60,64 @@ public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
 	
 	@Override
 	public void run(ImageProcessor ipA) {
+		if (!runDialog()) {
+			return;
+		}
+
 		// get histogram of original image
 		int[] hA = ipA.getHistogram();
-		
-		(new HistogramPlot(hA, "Histogram A")).show();
-		(new HistogramPlot(HistogramUtils.cdf(hA), "Cumulative Histogram A")).show();
-		
+
 		// -------------------------
 		PiecewiseLinearCdf cdf = new PiecewiseLinearCdf(256, a, P);
 		// -------------------------
-		
+
 		double[] nhB = cdf.getPdf();
 		nhB = HistogramUtils.normalizeMax(nhB);
-		(new HistogramPlot(nhB, "Piecewise Linear")).show();
-		(new HistogramPlot(cdf, "Piecewise Linear Cumulative")).show();
-		
+
+		if (ShowOriginalHistograms) {
+			new HistogramPlot(hA, "Original Histogram").show();
+			new HistogramPlot(nhB, "Reference Histogram").show();
+		}
+		if (ShowCumulativeHistograms) {
+			new HistogramPlot(HistogramUtils.cdf(hA), "Original Cumulative Histogram").show();
+			new HistogramPlot(cdf, "Reference Cumulative Histogram").show();
+		}
+
 		int[] F = HistogramUtils.matchHistograms(hA, cdf);
-		
-//		for (int i = 0; i < F.length; i++) {
-//			IJ.log(i + " -> " + F[i]);
-//		}
-		
+
 		ipA.applyTable(F);
 		
 		int[] hAm = ipA.getHistogram();
-		(new HistogramPlot(hAm, "Histogram A (mod)")).show();
-		(new HistogramPlot(HistogramUtils.cdf(hAm), "Cumulative Histogram A (mod)")).show();
+
+		if (ShowFinalHistogram) {
+			new HistogramPlot(hAm, "Final Histogram").show();
+			new HistogramPlot(HistogramUtils.cdf(hAm), "Final Cumulative Histogram").show();
+		}
+
+		if (ListMappingFunction) {
+			for (int i = 0; i < F.length; i++) {
+				IJ.log(i + " -> " + F[i]);
+			}
+		}
 	}
 
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+
+		gd.addCheckbox("Show original histograms", ShowOriginalHistograms);
+		gd.addCheckbox("Show cumulative histograms", ShowCumulativeHistograms);
+		gd.addCheckbox("Show final histogram", ShowFinalHistogram);
+		gd.addCheckbox("List mapping function", ListMappingFunction);
+
+		gd.showDialog();
+		if(gd.wasCanceled())
+			return false;
+
+		ShowOriginalHistograms = gd.getNextBoolean();
+		ShowCumulativeHistograms = gd.getNextBoolean();
+		ShowFinalHistogram = gd.getNextBoolean();
+		ListMappingFunction = gd.getNextBoolean();
+		return true;
+	}
 }
 

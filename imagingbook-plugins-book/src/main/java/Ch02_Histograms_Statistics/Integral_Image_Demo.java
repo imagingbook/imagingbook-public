@@ -13,24 +13,33 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.IntegralImage;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * This ImageJ plugin calculates the integral image for the current
- * image (8 bit grayscale only) and displays the resulting first and
- * second order summed area tables (S1, S2) as floating-point images.
- * See Sec. 2.8.1 of [1] for additional details.
+ * This ImageJ plugin calculates the integral image for the current image (8 bit grayscale only) and displays the
+ * resulting first and second order summed area tables (S1, S2) as floating-point images. See Sec. 2.8.1 of [1] for
+ * additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class Integral_Image_Demo implements PlugInFilter {
+
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Integral_Image_Demo() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
+		}
+	}
 
 	@Override
 	public int setup(String arg0, ImagePlus im) {

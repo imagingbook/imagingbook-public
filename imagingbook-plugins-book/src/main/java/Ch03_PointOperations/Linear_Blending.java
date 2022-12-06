@@ -18,28 +18,27 @@ import imagingbook.common.ij.IjUtils;
 /**
  * <p>
  * This plugin demonstrates linear (alpha) blending between two images:
- * <br>
- * {@code imBG}: the background image (the current active image),
- * <br>
- * {@code imFG}: the foreground image (selected in a user dialog).
  * </p>
+ * <ul>
+ * <li>{@code imBG}: the background image (the current active image),</li>
+ * <li>{@code imFG}: the foreground image (selected in a user dialog).</li>
+ * </ul>
  * <p>
- * Both images must be open when the plugin is started. The images 
- * may be of different size.
- * The transparency of the foreground image is initially set to &alpha; = 0.5
- * but may be adjusted in the user dialog.
- * See Sec. 3.8.5 (Prog. 3.5) of [1] for additional details.
+ * Both images must be open when the plugin is started. The images may be of different size. The transparency of the
+ * foreground image is initially set to &alpha; = 0.5 but may be adjusted in the user dialog. See Sec. 3.8.5 (Prog. 3.5)
+ * of [1] for additional details.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
  * 3rd ed, Springer (2022).
  * </p>
+ *
  * @author WB
  * @version 2022/04/01
  */
 public class Linear_Blending implements PlugInFilter {
 	
-	private static double alpha = 0.5;	// transparency of foreground image
+	private static double ALPHA = 0.5;	// transparency of foreground image
 	private ImagePlus imFG = null;		// foreground image (to be selected)
 	
 	@Override
@@ -54,8 +53,8 @@ public class Linear_Blending implements PlugInFilter {
 		}
 		ImageProcessor ipFG = imFG.getProcessor().convertToByte(false);
 		ipFG = ipFG.duplicate();
-		ipFG.multiply(1 - alpha);
-		ipBG.multiply(alpha);
+		ipFG.multiply(1 - ALPHA);
+		ipBG.multiply(ALPHA);
 		ipBG.copyBits(ipFG, 0, 0, Blitter.ADD);
 	}	
 
@@ -69,7 +68,7 @@ public class Linear_Blending implements PlugInFilter {
 		// create the dialog and show:
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addChoice("Foreground image:", titles, titles[0]);
-		gd.addNumericField("Alpha value (0,..,1)", alpha, 2);	
+		gd.addNumericField("Alpha value (0,..,1)", ALPHA, 2);
 		gd.showDialog();
 		
 		if (gd.wasCanceled()) {
@@ -77,7 +76,7 @@ public class Linear_Blending implements PlugInFilter {
 		}
 
 		imFG = images[gd.getNextChoiceIndex()];
-		alpha = gd.getNextNumber();
+		ALPHA = gd.getNextNumber();
 		return true;
 	}
 }

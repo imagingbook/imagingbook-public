@@ -165,8 +165,8 @@ public interface ImageResource extends NamedResource {
 			Image im = this.getImagePlus().getImage();	// an AWT image!
 			int w = im.getWidth(null);
 			int h = im.getHeight(null);
-			int hints = Image.SCALE_DEFAULT;
-			Image imScaled = (w > h) ?
+			int hints = Image.SCALE_SMOOTH;
+			Image imScaled = (w >= h) ?
 					im.getScaledInstance(iconSize, -1, hints) :
 					im.getScaledInstance(-1, iconSize, hints);
 			ImagePlus icon = new ImagePlus(null, imScaled);
