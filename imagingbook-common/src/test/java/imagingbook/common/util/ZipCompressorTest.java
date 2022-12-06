@@ -48,7 +48,7 @@ public class ZipCompressorTest {
 	
 	@Test	// byte[] data from ByteProcessor pixels
 	public void test2() {
-		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
 		assertTrue(ip instanceof ByteProcessor);
 		
 		ZipCompressor compr = new ZipCompressor();

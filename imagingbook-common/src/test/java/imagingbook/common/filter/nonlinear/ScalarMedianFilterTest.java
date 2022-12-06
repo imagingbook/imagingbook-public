@@ -19,8 +19,8 @@ public class ScalarMedianFilterTest {
 	public void testScalarMedianFilter() {
 		ImageResource resB = FilterTestImage.ClownMedianScalar3;
 		
-		ImageProcessor ipA = resA.getImage().getProcessor();
-		ImageProcessor ipB = resB.getImage().getProcessor();
+		ImageProcessor ipA = resA.getImagePlus().getProcessor();
+		ImageProcessor ipB = resB.getImagePlus().getProcessor();
 		
 		ScalarMedianFilter.Parameters params = new ScalarMedianFilter.Parameters();
 		params.radius = 3.0;

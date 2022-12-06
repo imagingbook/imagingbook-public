@@ -32,7 +32,7 @@ public class BinaryRegionSegmentation2_Test {
 	private static int RegionCount_N8 = 1;
 	
 	private ImageResource path = BinaryTestImage.CatThinning;
-	private ByteProcessor bp = (ByteProcessor) path.getImage().getProcessor();
+	private ByteProcessor bp = (ByteProcessor) path.getImagePlus().getProcessor();
 
 	@Test
 	public void testSegmentationBreadthFirst() {

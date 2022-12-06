@@ -32,7 +32,7 @@ public class BinaryRegionSegmentation3_Test {
 	private static int RegionCount_N8 = 9;
 	
 	private ImageResource path = BinaryTestImage.SegmentationMed;
-	private ByteProcessor bp = (ByteProcessor) path.getImage().getProcessor();
+	private ByteProcessor bp = (ByteProcessor) path.getImagePlus().getProcessor();
 
 
 	@Test

@@ -59,7 +59,7 @@ public class MserDetectorTest {
 
 	private void runMser(ImageResource res, int mserExpected) {
 //		System.out.println("running " + res);
-		ByteProcessor ip = (ByteProcessor) res.getImage().getProcessor();
+		ByteProcessor ip = (ByteProcessor) res.getImagePlus().getProcessor();
 		MserDetector detector = new MserDetector(ip, params);
 		List<Component<MserData>> msers = detector.getMserFeatures();   // detector.applyTo(ip);
 //		System.out.println(msers.size());

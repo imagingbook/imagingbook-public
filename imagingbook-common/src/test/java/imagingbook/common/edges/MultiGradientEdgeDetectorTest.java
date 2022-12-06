@@ -23,18 +23,18 @@ public class MultiGradientEdgeDetectorTest {
 	
 	@Test
 	public void testMultigradientColor() {
-		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImage().getProcessor();
+		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImagePlus().getProcessor();
 		assertTrue("must be a ColorProcessor", ip instanceof ColorProcessor);
 		
 		MultiGradientEdgeDetector detector = new MultiGradientEdgeDetector((ColorProcessor) ip, params);
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMultigradientEdgeMagnitude_tif.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMultigradientEdgeMagnitude_tif.getImagePlus().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMultigradientEdgeOrientation_tif.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMultigradientEdgeOrientation_tif.getImagePlus().getProcessor(), eOrt, TOL));
 	}
 
 }

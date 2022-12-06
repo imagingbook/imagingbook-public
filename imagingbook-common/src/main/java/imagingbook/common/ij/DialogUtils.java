@@ -8,7 +8,6 @@
  */
 package imagingbook.common.ij;
 
-import java.awt.*;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -354,6 +353,7 @@ public abstract class DialogUtils {
 	 * @param message the dialog message (may be multiple lines separated by newlines)
 	 * @return true if "yes" was selected, false otherwise 
 	 */
+	@Deprecated
 	public static boolean askYesOrCancel(String title, String message) {
 		GenericDialog gd = new GenericDialog(title);
 		gd.addMessage(message);
@@ -367,25 +367,35 @@ public abstract class DialogUtils {
 	}
 
 	/**
-	 * Opens a very specific dialog asking if the suggested sample image (resource)
-	 * should be opened and made the active image. Alternatively (if answer is NO)
-	 * the user is asked to select another image to be opened. Nothing happens if
-	 * the dialog is canceled. This if typically used in the (otherwise empty)
-	 * constructor of demo plugins when no (or no suitable) image is currently open.
-	 * 
-	 * @param suggested a sample image (resource)
+	 * Opens a very specific dialog asking if the suggested sample image (resource) should be opened and made the active
+	 * image. If the answer is YES, the suggested image is opened, otherwise not. This if typically used in the
+	 * (otherwise empty) constructor of demo plugins when no (or no suitable) image is currently open.
+	 *
+	 * @param suggested a sample image ({@link ImageResource})
 	 * @return true if user accepted
 	 */
 	public static boolean askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
-		// TODO: insert this somewhere:
-//		Font f = new Font(Font.SANS_SERIF, Font.BOLD, 12);
-//		gd.addMessage("ThefileNameToSHow", f, Color.blue);
+		String title = "Open sample image";
+		String message = "No image is currently open.\nUse sample image?\n";
+		GenericDialog gd = new GenericDialog(title);
+		gd.setInsets(0, 0, 0);
+		gd.addMessage(message);
 
-		boolean ok = askYesOrCancel(
-				"Open sample image", 
-				"No image is currently open.\nUse sample image\n" + suggested + "?");
-		if (ok) {
-			ImagePlus im = suggested.getImage();
+		if (suggested != null) {
+			gd.setInsets(10, 10, 10);
+			gd.addImage(suggested.getImageIcon());
+		}
+
+		gd.enableYesNoCancel("Yes", "Cancel");
+		gd.hideCancelButton();
+		gd.showDialog();
+		if (gd.wasCanceled()) {
+			return false;
+		}
+
+		boolean ok = gd.wasOKed();
+		if (ok && suggested != null) {
+			ImagePlus im = suggested.getImagePlus();
 			im.show();
 			WindowManager.setCurrentWindow(im.getWindow());
 		}
@@ -393,42 +403,8 @@ public abstract class DialogUtils {
 	}
 	
 	public static boolean askForSampleImage() {
-		boolean ok = askYesOrCancel(
-				"Open sample image", 
-				"No image is currently open.\nUse a sample image?");
-		return ok;
+		return askForSampleImage(null);
 	}
-	
-//	public static void askForSampleImage(ImagePlus im) {	// TODO: allow multiple sample images?
-//		boolean ok = askYesOrCancel(
-//				"Open sample image", 
-//				"No image is currently open.\nUse sample image\n" + im.getShortTitle() + "?");
-//		if (ok) {
-//			
-//			im.show();
-//			WindowManager.setCurrentWindow(im.getWindow());
-//		}
-//	}
-	
-//	public static void askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
-//		GenericDialog gd = new GenericDialog("No image open");
-//		gd.addMessage("Open sample image\n" + suggested + "?");
-//		gd.enableYesNoCancel("Yes", "Open other");
-//		gd.showDialog();
-//		if (gd.wasCanceled()) {
-//			return;
-//		}
-//		if (gd.wasOKed()) {
-//			ImagePlus im = suggested.getImage();
-//			im.show();
-//			WindowManager.setCurrentWindow(im.getWindow());
-//		}
-//		else {	// select other image
-//			IJ.open(null);
-//		}
-//	}
-
-
 
 	
 	// ----------------------------------------------------

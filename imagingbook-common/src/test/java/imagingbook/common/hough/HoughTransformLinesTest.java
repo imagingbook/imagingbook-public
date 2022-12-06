@@ -22,7 +22,7 @@ public class HoughTransformLinesTest {
 		int MaxLines = 5;			// number of strongest lines to be found
 		int MinPointsOnLine = 50;	// min. number of points on each line
 		
-		ImageProcessor ip = resource.getImage().getProcessor();
+		ImageProcessor ip = resource.getImagePlus().getProcessor();
 		assertTrue(ip instanceof ByteProcessor);
 		
 		HoughTransformLines ht = new HoughTransformLines((ByteProcessor)ip, params);

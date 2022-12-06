@@ -43,7 +43,7 @@ public class ColorStatisticsTest {
 	// --------------------
 	
 	private void runTest(ImageResource ir, int expectedCols) {
-		ColorProcessor cp = (ColorProcessor) ir.getImage().getProcessor();
+		ColorProcessor cp = (ColorProcessor) ir.getImagePlus().getProcessor();
 		assertEquals(expectedCols, ColorStatistics.countColors(cp));
 		cp.invert();
 		assertEquals(expectedCols, ColorStatistics.countColors(cp));

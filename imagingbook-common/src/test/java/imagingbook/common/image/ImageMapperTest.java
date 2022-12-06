@@ -21,8 +21,8 @@ import imagingbook.testutils.ImageTestUtils;
 public class ImageMapperTest {
 	
 	static float TOL = 1e-3f;
-	static ByteProcessor ip1 = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImage().getProcessor();
-	static ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.Clown.getImage().getProcessor();
+	static ByteProcessor ip1 = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
+	static ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.Clown.getImagePlus().getProcessor();
 	
 	static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.ZeroValues;
 	static InterpolationMethod IPM = InterpolationMethod.Bilinear;
@@ -73,7 +73,7 @@ public class ImageMapperTest {
 		mapper.map(source, target);
 		
 //		IjUtils.save(target, "D:/tmp/MonasterySmallRot15.png");
-		ByteProcessor ip2 = (ByteProcessor) MappingTestImage.MonasterySmallRot15.getImage().getProcessor();
+		ByteProcessor ip2 = (ByteProcessor) MappingTestImage.MonasterySmallRot15.getImagePlus().getProcessor();
 		assertTrue(ImageTestUtils.match(ip2, target, TOL));
 	}
 	
@@ -88,7 +88,7 @@ public class ImageMapperTest {
 		mapper.map(source, target);
 		
 //		IjUtils.save(target, "D:/tmp/ClownRot15.png");
-		ColorProcessor ip2 = (ColorProcessor) MappingTestImage.ClownRot15.getImage().getProcessor();
+		ColorProcessor ip2 = (ColorProcessor) MappingTestImage.ClownRot15.getImagePlus().getProcessor();
 		assertTrue(ImageTestUtils.match(ip2, target, TOL));
 	}
 

@@ -28,7 +28,7 @@ public class ColorPackTest {
 
 	@Test
 	public void testBasicConversion() {	// conversion ColorProcessor/ColorStack
-		ImageProcessor ip1 = clown.getImage().getProcessor();
+		ImageProcessor ip1 = clown.getImagePlus().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		ColorPack cstack = new ColorPack((ColorProcessor)ip1);
 		ImageProcessor ip2 = cstack.toColorProcessor();
@@ -63,7 +63,7 @@ public class ColorPackTest {
 	// ------------------------------------------------------------
 	
 	private void testColorStackConversion(ColorSpace cs) {
-		ImageProcessor ip1 = clown.getImage().getProcessor();
+		ImageProcessor ip1 = clown.getImagePlus().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		
 		ColorPack cstack = new ColorPack((ColorProcessor)ip1);
@@ -78,7 +78,7 @@ public class ColorPackTest {
 	
 	@Test
 	public void testImageStack() {
-		ImageProcessor ip1 = clown.getImage().getProcessor();
+		ImageProcessor ip1 = clown.getImagePlus().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		
 		ColorPack cstack = new ColorPack((ColorProcessor)ip1);

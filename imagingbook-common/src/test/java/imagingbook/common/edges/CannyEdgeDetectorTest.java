@@ -34,22 +34,22 @@ public class CannyEdgeDetectorTest {
 	
 	@Test
 	public void testCannyColor() {
-		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImage().getProcessor();
+		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImagePlus().getProcessor();
 		assertTrue(ip instanceof ColorProcessor);
 		
 		CannyEdgeDetector detector = new CannyEdgeDetector(ip, params);
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyEdgeMagnitude_tif.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyEdgeMagnitude_tif.getImagePlus().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyEdgeOrientation_tif.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyEdgeOrientation_tif.getImagePlus().getProcessor(), eOrt, TOL));
 
 		ByteProcessor eBin = detector.getEdgeBinary();
 		assertNotNull(eBin);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyBinaryEdges.getImage().getProcessor(), eBin, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorCannyBinaryEdges.getImagePlus().getProcessor(), eBin, TOL));
 		
 		List<EdgeTrace> traces = detector.getEdgeTraces();
 		assertNotNull(traces);
@@ -66,22 +66,22 @@ public class CannyEdgeDetectorTest {
 
 	@Test
 	public void testCannyGray() {
-		ImageProcessor ip = EdgeDetectionTestImage.Balloons600gray.getImage().getProcessor();
+		ImageProcessor ip = EdgeDetectionTestImage.Balloons600gray.getImagePlus().getProcessor();
 		assertTrue(ip instanceof ByteProcessor);
 		
 		CannyEdgeDetector detector = new CannyEdgeDetector(ip, params);
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyEdgeMagnitude_tif.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyEdgeMagnitude_tif.getImagePlus().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyEdgeOrientation_tif.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyEdgeOrientation_tif.getImagePlus().getProcessor(), eOrt, TOL));
 
 		ByteProcessor eBin = detector.getEdgeBinary();
 		assertNotNull(eBin);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyBinaryEdges.getImage().getProcessor(), eBin, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600grayCannyBinaryEdges.getImagePlus().getProcessor(), eBin, TOL));
 		
 		List<EdgeTrace> traces = detector.getEdgeTraces();
 		assertNotNull(traces);

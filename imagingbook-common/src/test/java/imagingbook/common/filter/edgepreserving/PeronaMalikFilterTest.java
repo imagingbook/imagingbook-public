@@ -35,8 +35,8 @@ public class PeronaMalikFilterTest {
 	private final Parameters params;
 	
 	public PeronaMalikFilterTest() {
-		monastery = FilterTestImage.MonasterySmall.getImage().getProcessor();
-		clown = FilterTestImage.Clown.getImage().getProcessor();
+		monastery = FilterTestImage.MonasterySmall.getImagePlus().getProcessor();
+		clown = FilterTestImage.Clown.getImagePlus().getProcessor();
 		
 		assertTrue(monastery instanceof ByteProcessor);
 		assertTrue(clown instanceof ColorProcessor);
@@ -72,7 +72,7 @@ public class PeronaMalikFilterTest {
 		params2.conductanceFunType = ConductanceFunction.Type.g1;
 		GenericFilter filter = new PeronaMalikFilterScalar(params2);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.MonasterySmallPeronaMalikG1.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.MonasterySmallPeronaMalikG1.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -84,7 +84,7 @@ public class PeronaMalikFilterTest {
 		params2.conductanceFunType = ConductanceFunction.Type.g2;
 		GenericFilter filter = new PeronaMalikFilterScalar(params2);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.MonasterySmallPeronaMalikG2.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.MonasterySmallPeronaMalikG2.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -96,7 +96,7 @@ public class PeronaMalikFilterTest {
 		params2.conductanceFunType = ConductanceFunction.Type.g3;
 		GenericFilter filter = new PeronaMalikFilterScalar(params2);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.MonasterySmallPeronaMalikG3.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.MonasterySmallPeronaMalikG3.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -108,7 +108,7 @@ public class PeronaMalikFilterTest {
 		params2.conductanceFunType = ConductanceFunction.Type.g4;
 		GenericFilter filter = new PeronaMalikFilterScalar(params2);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.MonasterySmallPeronaMalikG4.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.MonasterySmallPeronaMalikG4.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -120,7 +120,7 @@ public class PeronaMalikFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new PeronaMalikFilterScalar(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownPeronaMalikSeparateChannels.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownPeronaMalikSeparateChannels.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -132,7 +132,7 @@ public class PeronaMalikFilterTest {
 		params2.colorMode = ColorMode.BrightnessGradient;
 		GenericFilter filter = new PeronaMalikFilterVector(params2);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownPeronaMalikBrightnessGradient.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownPeronaMalikBrightnessGradient.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -144,7 +144,7 @@ public class PeronaMalikFilterTest {
 		params2.colorMode = ColorMode.ColorGradient;
 		GenericFilter filter = new PeronaMalikFilterVector(params2);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownPeronaMalikColorGradient.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownPeronaMalikColorGradient.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}

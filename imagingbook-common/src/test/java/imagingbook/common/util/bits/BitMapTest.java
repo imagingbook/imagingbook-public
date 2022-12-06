@@ -67,7 +67,7 @@ public class BitMapTest {
 	@Test
 	public void test3() {
 		for (ImageResource ir : Arrays.asList(BinaryTestImage.Cat, GeneralSampleImage.MonasterySmall)) {
-			ImageProcessor ip = ir.getImage().getProcessor();
+			ImageProcessor ip = ir.getImagePlus().getProcessor();
 			assertTrue(ip instanceof ByteProcessor);
 			
 			BitMap bm = IjUtils.convertToBitMap((ByteProcessor) ip);

@@ -55,7 +55,7 @@ public class SiftDetectorTest {
 	
 	@Test
 	public void testGaussianScaleSpace() {
-		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
 		FloatProcessor fp = ip.convertToFloatProcessor();
 		SiftDetector detector = new SiftDetector(fp, params);
 		
@@ -86,7 +86,7 @@ public class SiftDetectorTest {
 	
 	@Test
 	public void testDogScaleSpace() {
-		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
 		FloatProcessor fp = ip.convertToFloatProcessor();
 		SiftDetector detector = new SiftDetector(fp, params);
 		
@@ -137,7 +137,7 @@ public class SiftDetectorTest {
 	
 	private void runSift(ImageResource res, int siftExpected) {
 //		System.out.println("running " + res);
-		ImageProcessor ip = res.getImage().getProcessor();
+		ImageProcessor ip = res.getImagePlus().getProcessor();
 		FloatProcessor fp = ip.convertToFloatProcessor();
 		
 		SiftDetector detector = new SiftDetector(fp, params);

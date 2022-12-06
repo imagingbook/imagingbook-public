@@ -164,7 +164,7 @@ public class RegionContourSegmentationTest {
 		int FirstInnerContourLength;
 		
 		void run() {
-			ByteProcessor bp = (ByteProcessor)imgResource.getImage().getProcessor();
+			ByteProcessor bp = (ByteProcessor)imgResource.getImagePlus().getProcessor();
 			RegionContourSegmentation segmentation = new RegionContourSegmentation(bp, NHT);
 			
 			// check region count:

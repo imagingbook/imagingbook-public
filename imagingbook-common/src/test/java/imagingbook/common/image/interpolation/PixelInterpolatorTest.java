@@ -19,8 +19,8 @@ public class PixelInterpolatorTest {
 	private static final float TOL = 1e-6f;
 	private static final OutOfBoundsStrategy obs = OutOfBoundsStrategy.NearestBorder;
 	
-	private static final ByteProcessor ip1 = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImage().getProcessor();
-	private static final ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.Clown.getImage().getProcessor();
+	private static final ByteProcessor ip1 = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
+	private static final ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.Clown.getImagePlus().getProcessor();
 
 	@Test
 	public void testScalarA() {

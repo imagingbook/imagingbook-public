@@ -33,7 +33,7 @@ public class ColorHistogramTest {
 	}
 	
 	private void runTestA(ImageResource ir) {
-		ColorProcessor cp = (ColorProcessor) ir.getImage().getProcessor();
+		ColorProcessor cp = (ColorProcessor) ir.getImagePlus().getProcessor();
 		int[] pixels = (int[]) cp.getPixels();
 		ColorHistogram ch = new ColorHistogram(pixels);
 		

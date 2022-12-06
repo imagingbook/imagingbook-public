@@ -16,7 +16,7 @@ public class RansacCircleDetectorTest {
 
 	@Test
 	public void test1() {	
-		ByteProcessor bp = (ByteProcessor) RansacTestImage.NoisyCircles.getImage().getProcessor();
+		ByteProcessor bp = (ByteProcessor) RansacTestImage.NoisyCircles.getImagePlus().getProcessor();
 		
 		RansacCircleDetector.Parameters params = new RansacCircleDetector.Parameters();
 		params.randomPointDraws = 1000;

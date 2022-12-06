@@ -34,7 +34,7 @@ public class PixelPackTest {
 
 	@Test
 	public void testByteImage() {		
-		ImageProcessor ip1 = res1.getImage().getProcessor();
+		ImageProcessor ip1 = res1.getImagePlus().getProcessor();
 		assertTrue(ip1 instanceof ByteProcessor);
     	PixelPack pack = new PixelPack(ip1, scale, null);
     	assertEquals(1, pack.getDepth());
@@ -46,7 +46,7 @@ public class PixelPackTest {
 	
 	@Test
 	public void testShortImage() {
-		ImageProcessor ip1 = res1.getImage().getProcessor().convertToShortProcessor();
+		ImageProcessor ip1 = res1.getImagePlus().getProcessor().convertToShortProcessor();
 		assertTrue(ip1 instanceof ShortProcessor);
 		PixelPack pack = new PixelPack(ip1, scale, null);
 		assertEquals(1, pack.getDepth());
@@ -58,7 +58,7 @@ public class PixelPackTest {
 	
 	@Test
 	public void testFloatImage() {
-		ImageProcessor ip1 = res1.getImage().getProcessor().convertToFloatProcessor();
+		ImageProcessor ip1 = res1.getImagePlus().getProcessor().convertToFloatProcessor();
 		assertTrue(ip1 instanceof FloatProcessor);
 		PixelPack pack = new PixelPack(ip1, scale, null);
 		assertEquals(1, pack.getDepth());
@@ -70,7 +70,7 @@ public class PixelPackTest {
 	
 	@Test
 	public void testColorImage() {
-		ImageProcessor ip1 = res2.getImage().getProcessor();
+		ImageProcessor ip1 = res2.getImagePlus().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		PixelPack pack = new PixelPack(ip1, scale, null);
 		assertEquals(3, pack.getDepth());
@@ -82,7 +82,7 @@ public class PixelPackTest {
 	
 	@Test
 	public void testImageStack() {
-		ImageProcessor ip1 = res2.getImage().getProcessor();
+		ImageProcessor ip1 = res2.getImagePlus().getProcessor();
 		assertTrue(ip1 instanceof ColorProcessor);
 		
 		PixelPack pack = new PixelPack(ip1);

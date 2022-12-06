@@ -30,8 +30,8 @@ public class TschumperleDericheFilterTest {
 	private final Parameters params;
 	
 	public TschumperleDericheFilterTest() {
-		monastery = FilterTestImage.MonasterySmall.getImage().getProcessor();
-		clown = FilterTestImage.Clown.getImage().getProcessor();
+		monastery = FilterTestImage.MonasterySmall.getImagePlus().getProcessor();
+		clown = FilterTestImage.Clown.getImagePlus().getProcessor();
 		
 		assertTrue(monastery instanceof ByteProcessor);
 		assertTrue(clown instanceof ColorProcessor);
@@ -54,7 +54,7 @@ public class TschumperleDericheFilterTest {
 		ImageProcessor ipA = monastery.duplicate();
 		GenericFilter filter = new TschumperleDericheFilter(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.MonasterySmallTschumperleIter5.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.MonasterySmallTschumperleIter5.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -66,7 +66,7 @@ public class TschumperleDericheFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new TschumperleDericheFilter(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownSmallTschumperleIter5.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownSmallTschumperleIter5.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}

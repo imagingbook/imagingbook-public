@@ -33,7 +33,7 @@ public class Open_Sample_Image implements PlugIn {
 			return;
 		
 		ImageResource ir = gd.getNextEnumChoice(GeneralSampleImage.class);
-		ir.getImage().show();
+		ir.getImagePlus().show();
 	}
 
 }

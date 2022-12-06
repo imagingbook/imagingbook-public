@@ -8,16 +8,16 @@
  */
 package Ch06_CornerDetection;
 
-import static imagingbook.common.ij.DialogUtils.*;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.WindowManager;
 import ij.gui.GenericDialog;
-import ij.gui.HTMLDialog;
 import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
@@ -28,8 +28,10 @@ import imagingbook.common.corners.GradientCornerDetector.Parameters;
 import imagingbook.common.corners.HarrisCornerDetector;
 import imagingbook.common.corners.MopsCornerDetector;
 import imagingbook.common.corners.ShiTomasiCornerDetector;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -76,7 +78,7 @@ public class Find_Corners implements PlugInFilter {
 
 	public Find_Corners() {
 		if (noCurrentImage()) {
-			askForSampleImage(GeneralSampleImage.Kepler);
+			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
 		}
 	}
 	
@@ -130,7 +132,7 @@ public class Find_Corners implements PlugInFilter {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		
 		gd.addEnumChoice("Detector type", Algorithm);
-		addToDialog(params, gd);
+		DialogUtils.addToDialog(params, gd);
 		gd.addNumericField("Corners to show (0 = show all)", MaxCornerCount, 0);
 		gd.addNumericField("Corners display size", CornerMarkSize, 1);
 		gd.addEnumChoice("Corner color", CornerMarkColor);
@@ -140,7 +142,7 @@ public class Find_Corners implements PlugInFilter {
 			return false;
 		
 		Algorithm = gd.getNextEnumChoice(DetectorType.class);
-		getFromDialog(params, gd);
+		DialogUtils.getFromDialog(params, gd);
 		MaxCornerCount = (int) gd.getNextNumber();
 		CornerMarkSize = gd.getNextNumber();
 		CornerMarkColor = gd.getNextEnumChoice(BasicAwtColor.class);
@@ -151,5 +153,6 @@ public class Find_Corners implements PlugInFilter {
 		}	
 		return true;
 	}
+
 
 }

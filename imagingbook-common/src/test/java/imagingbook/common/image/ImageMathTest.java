@@ -24,9 +24,9 @@ public class ImageMathTest {
 	static ImageResource ir2 = GeneralSampleImage.Boats;
 	
 	static ImageProcessor[] images = {
-			ir1.getImage().getProcessor(),							// ColorProcessor
-			ir2.getImage().getProcessor(),							// ByteProcessor
-			ir2.getImage().getProcessor().convertToFloatProcessor()	// FloatProcessor
+			ir1.getImagePlus().getProcessor(),							// ColorProcessor
+			ir2.getImagePlus().getProcessor(),							// ByteProcessor
+			ir2.getImagePlus().getProcessor().convertToFloatProcessor()	// FloatProcessor
 			};
 
 	@Test

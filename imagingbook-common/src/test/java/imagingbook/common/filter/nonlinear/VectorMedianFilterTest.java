@@ -20,8 +20,8 @@ public class VectorMedianFilterTest {
 	@Test
 	public void testVectorMedianFilter() {
 		ImageResource resB = FilterTestImage.ClownMedianVector3L1;
-		ImageProcessor ipA = resA.getImage().getProcessor();
-		ImageProcessor ipB = resB.getImage().getProcessor();
+		ImageProcessor ipA = resA.getImagePlus().getProcessor();
+		ImageProcessor ipB = resB.getImagePlus().getProcessor();
 		
 		VectorMedianFilter.Parameters params = new VectorMedianFilter.Parameters();
 		params.radius = 3.0;

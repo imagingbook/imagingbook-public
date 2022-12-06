@@ -69,7 +69,7 @@ public class Line_Fitting implements PlugInFilter { // TODO: activate dialog
 	 */
 	public Line_Fitting() {
 		if (noCurrentImage()) {
-			if (askYesOrCancel("Create sample image", "No image is currently open.\nCreate a sample image?")) {
+			if (DialogUtils.askForSampleImage()) {
 				IjUtils.run(new Line_Make_Random()); //runPlugIn(Line_Make_Random.class);
 			}			
 		}	

@@ -25,7 +25,7 @@ public class IntegralImageTest {
 
 	@Test
 	public void test1() {
-		ByteProcessor bp = (ByteProcessor) ir.getImage().getProcessor();
+		ByteProcessor bp = (ByteProcessor) ir.getImagePlus().getProcessor();
 		IntegralImage iim = new IntegralImage(bp);
 		
 		assertNotNull(iim.getS1());

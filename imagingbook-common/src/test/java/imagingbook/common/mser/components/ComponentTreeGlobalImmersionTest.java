@@ -58,7 +58,7 @@ public class ComponentTreeGlobalImmersionTest {
 	}
 	
 	private void run1(ImageResource res) {
-		ByteProcessor ip = (ByteProcessor) res.getImage().getProcessor();
+		ByteProcessor ip = (ByteProcessor) res.getImagePlus().getProcessor();
 		ComponentTree<?> ct = ComponentTree.from(ip, Method.GlobalImmersion); //new ComponentTreeClassic<>(ip);
 		assertNotNull("could not create component tree for image " + res, ct);
 		assertTrue("component tree validation failed: " + res, ct.validate());
@@ -89,7 +89,7 @@ public class ComponentTreeGlobalImmersionTest {
 	}
 	
 	private void run2(ImageResource res, int noComponents, int noLeaves) {
-		ByteProcessor ip = (ByteProcessor) res.getImage().getProcessor();
+		ByteProcessor ip = (ByteProcessor) res.getImagePlus().getProcessor();
 		
 		for (int i = 0; i < 2; i++) {	// 2 rotations
 			check2(ip, noComponents, noLeaves);

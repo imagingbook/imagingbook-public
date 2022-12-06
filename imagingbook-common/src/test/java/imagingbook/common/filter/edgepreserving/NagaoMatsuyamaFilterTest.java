@@ -22,8 +22,8 @@ public class NagaoMatsuyamaFilterTest {
 	private final Parameters params;
 	
 	public NagaoMatsuyamaFilterTest() {
-		monastery = FilterTestImage.MonasterySmall.getImage().getProcessor();
-		clown = FilterTestImage.Clown.getImage().getProcessor();
+		monastery = FilterTestImage.MonasterySmall.getImagePlus().getProcessor();
+		clown = FilterTestImage.Clown.getImagePlus().getProcessor();
 		
 		assertTrue(monastery instanceof ByteProcessor);
 		assertTrue(clown instanceof ColorProcessor);
@@ -38,7 +38,7 @@ public class NagaoMatsuyamaFilterTest {
 		ImageProcessor ipA = monastery.duplicate();
 		GenericFilter filter = new NagaoMatsuyamaFilterScalar(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.MonasterySmallNagaoMatsuyama.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.MonasterySmallNagaoMatsuyama.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -50,7 +50,7 @@ public class NagaoMatsuyamaFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new NagaoMatsuyamaFilterScalar(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownNagaoMatsuyamaScalar.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownNagaoMatsuyamaScalar.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -60,7 +60,7 @@ public class NagaoMatsuyamaFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new NagaoMatsuyamaFilterVector(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownNagaoMatsuyamaVector.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownNagaoMatsuyamaVector.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}

@@ -26,7 +26,7 @@ public class MopsCornerDetectorTest {
 		params.scoreThreshold = 100;
 	}
 	
-	ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+	ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
 
 	@Test
 	public void testNoCornerRefinement() {

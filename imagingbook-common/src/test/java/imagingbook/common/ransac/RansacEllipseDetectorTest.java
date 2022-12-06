@@ -16,7 +16,7 @@ public class RansacEllipseDetectorTest {
 
 	@Test
 	public void test1() {	
-		ByteProcessor bp = (ByteProcessor) RansacTestImage.NoisyEllipses.getImage().getProcessor();
+		ByteProcessor bp = (ByteProcessor) RansacTestImage.NoisyEllipses.getImagePlus().getProcessor();
 		
 		RansacEllipseDetector.Parameters params = new RansacEllipseDetector.Parameters();
 		params.randomPointDraws = 1000;

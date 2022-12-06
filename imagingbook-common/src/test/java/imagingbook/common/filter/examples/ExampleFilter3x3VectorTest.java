@@ -18,8 +18,8 @@ public class ExampleFilter3x3VectorTest {
 
 	@Test
 	public void test() {
-		ImageProcessor ipA = resA.getImage().getProcessor();
-		ImageProcessor ipB = FilterTestImage.ClownExampleFilter3x3Vector.getImage().getProcessor();
+		ImageProcessor ipA = resA.getImagePlus().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownExampleFilter3x3Vector.getImagePlus().getProcessor();
 		GenericFilter filter = new ExampleFilter3x3Vector();
 		filter.applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, 1E-6));

@@ -23,7 +23,7 @@ public class HistogramUtilsTest {
 	public void test1() {
 		ImageResource ir = GeneralSampleImage.Boats;
 		
-		ImageProcessor ip = ir.getImage().getProcessor();
+		ImageProcessor ip = ir.getImagePlus().getProcessor();
 		int[] h = ip.getHistogram();
 		
 		assertEquals("wrong histogram count (all)", ip.getHeight() * ip.getWidth(), HistogramUtils.count(h));

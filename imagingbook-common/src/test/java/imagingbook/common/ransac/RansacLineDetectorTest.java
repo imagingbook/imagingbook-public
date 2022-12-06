@@ -16,7 +16,7 @@ public class RansacLineDetectorTest {
 	
 	@Test
 	public void test1() {	
-		ByteProcessor bp = (ByteProcessor) RansacTestImage.NoisyLines.getImage().getProcessor();
+		ByteProcessor bp = (ByteProcessor) RansacTestImage.NoisyLines.getImagePlus().getProcessor();
 		
 		RansacLineDetector.Parameters params = new RansacLineDetector.Parameters();
 		params.randomPointDraws = 1000;

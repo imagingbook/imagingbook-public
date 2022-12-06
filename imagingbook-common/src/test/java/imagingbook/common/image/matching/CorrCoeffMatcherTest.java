@@ -13,7 +13,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
 public class CorrCoeffMatcherTest {
 	
 	static float TOL = 1e-3f;
-	static ByteProcessor I = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+	static ByteProcessor I = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
 	static int MI = I.getWidth();
 	static int NI = I.getHeight();
 

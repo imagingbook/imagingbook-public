@@ -31,7 +31,7 @@ public class BinaryRegionSegmentation4_Test {
 	private static int RegionCount_N8 = 3;
 	
 	private ImageResource ir = BinaryTestImage.SimpleTestGridImg;
-	private ByteProcessor bp = (ByteProcessor) ir.getImage().getProcessor();
+	private ByteProcessor bp = (ByteProcessor) ir.getImagePlus().getProcessor();
 
 	@Test
 	public void testSegmentationBreadthFirst() {

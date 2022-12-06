@@ -93,7 +93,7 @@ public class GlobalThresholderBinaryTest {
 	// ----------------------------------------------------
 	
 	private void checkThreshold(GlobalThresholder thresholder, ImageResource res, int expectedThreshold) {
-		ByteProcessor bp = res.getImage().getProcessor().convertToByteProcessor();
+		ByteProcessor bp = res.getImagePlus().getProcessor().convertToByteProcessor();
 		
 		// check it a valid threshold was found:
 		int q = thresholder.getThreshold(bp);

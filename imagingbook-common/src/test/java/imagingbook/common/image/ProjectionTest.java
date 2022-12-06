@@ -24,7 +24,7 @@ public class ProjectionTest {
 
 	@Test
 	public void testByte() {
-		ByteProcessor ip = (ByteProcessor) ir.getImage().getProcessor();
+		ByteProcessor ip = (ByteProcessor) ir.getImagePlus().getProcessor();
 		Projection proj = new Projection(ip);
 		
 		double[] pHor = proj.getHorizontal();
@@ -41,7 +41,7 @@ public class ProjectionTest {
 	
 	@Test
 	public void testShort() {
-		ShortProcessor ip = ir.getImage().getProcessor().convertToShortProcessor(false);
+		ShortProcessor ip = ir.getImagePlus().getProcessor().convertToShortProcessor(false);
 		Projection proj = new Projection(ip);
 		
 		double[] pHor = proj.getHorizontal();
@@ -58,7 +58,7 @@ public class ProjectionTest {
 	
 	@Test
 	public void testFloat() {
-		FloatProcessor ip = ir.getImage().getProcessor().convertToFloatProcessor();
+		FloatProcessor ip = ir.getImagePlus().getProcessor().convertToFloatProcessor();
 		Projection proj = new Projection(ip);
 		
 		double[] pHor = proj.getHorizontal();

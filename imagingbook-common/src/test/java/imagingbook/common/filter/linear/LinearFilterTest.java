@@ -41,7 +41,7 @@ public class LinearFilterTest {
 	
 	@Test
 	public void testLinearFilterUnitKernel() {
-		ImageProcessor ipA = res1A.getImage().getProcessor();
+		ImageProcessor ipA = res1A.getImagePlus().getProcessor();
 		float[][] H = H1;
 		ImageProcessor ipAf = ipA.duplicate();
 		new LinearFilter(new Kernel2D(H)).applyTo(ipAf, OBS);
@@ -50,8 +50,8 @@ public class LinearFilterTest {
 	
 	@Test
 	public void testLinearFilter3x3gray() {
-		ImageProcessor ipA = res1A.getImage().getProcessor();
-		ImageProcessor ipB = res1B.getImage().getProcessor();
+		ImageProcessor ipA = res1A.getImagePlus().getProcessor();
+		ImageProcessor ipB = res1B.getImagePlus().getProcessor();
 		float[][] H = H2;
 		new LinearFilter(new Kernel2D(H)).applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, 1E-6));
@@ -59,8 +59,8 @@ public class LinearFilterTest {
 	
 	@Test
 	public void testLinearFilter3x3float() {
-		ImageProcessor ipA = res1A.getImage().getProcessor();
-		ImageProcessor ipB = res1B.getImage().getProcessor();
+		ImageProcessor ipA = res1A.getImagePlus().getProcessor();
+		ImageProcessor ipB = res1B.getImagePlus().getProcessor();
 		float[][] H = H2;
 		ImageProcessor ipAf = ipA.convertToFloatProcessor();
 		new LinearFilter(new Kernel2D(H)).applyTo(ipAf, OBS);
@@ -69,8 +69,8 @@ public class LinearFilterTest {
 	
 	@Test
 	public void testLinearFilter3x3rgb() {
-		ImageProcessor ipA = res2A.getImage().getProcessor();
-		ImageProcessor ipB = res2B.getImage().getProcessor();
+		ImageProcessor ipA = res2A.getImagePlus().getProcessor();
+		ImageProcessor ipB = res2B.getImagePlus().getProcessor();
 		float[][] H = H2;
 		
 		ImageProcessor ipAf = ipA.duplicate();

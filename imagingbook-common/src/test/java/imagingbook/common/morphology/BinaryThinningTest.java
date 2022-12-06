@@ -21,7 +21,7 @@ public class BinaryThinningTest {
 	
 	@Test
 	public void test1() {
-		ByteProcessor bp = (ByteProcessor) BinaryTestImage.Cat.getImage().getProcessor();
+		ByteProcessor bp = (ByteProcessor) BinaryTestImage.Cat.getImagePlus().getProcessor();
 		
 		BinaryThinning thinning = new BinaryThinning();
 		thinning.applyTo(bp);
@@ -29,13 +29,13 @@ public class BinaryThinningTest {
 		assertTrue(thinning.isComplete());
 		assertEquals(12, thinning.getIterations());
 		
-		ByteProcessor bp2 = (ByteProcessor) BinaryTestImage.CatThinning.getImage().getProcessor();
+		ByteProcessor bp2 = (ByteProcessor) BinaryTestImage.CatThinning.getImagePlus().getProcessor();
 		assertTrue(ImageTestUtils.match(bp2, bp));
 	}
 	
 	@Test
 	public void test2() {
-		ByteProcessor bp = (ByteProcessor) BinaryTestImage.BinaryTest.getImage().getProcessor();
+		ByteProcessor bp = (ByteProcessor) BinaryTestImage.BinaryTest.getImagePlus().getProcessor();
 
 		BinaryThinning thinning = new BinaryThinning();
 		thinning.applyTo(bp);
@@ -43,7 +43,7 @@ public class BinaryThinningTest {
 //		String tmpdir = FileUtils.getTempDirectory();
 //		System.out.println(IjUtils.save(bp, tmpdir + "BinaryTestThinning.png"));
 		
-		ByteProcessor bp2 = (ByteProcessor) BinaryTestImage.BinaryTestThinning.getImage().getProcessor();
+		ByteProcessor bp2 = (ByteProcessor) BinaryTestImage.BinaryTestThinning.getImagePlus().getProcessor();
 		assertTrue(ImageTestUtils.match(bp2, bp));
 	}
 

@@ -349,7 +349,7 @@ public class KMeansClusteringQuantizerTest {
 	
 	private void runTest(ImageResource ir, int K, int Kact, float[][] colormap) {
 		KMeansClusteringQuantizer.RandomSeed = 17;	// not needed?
-		ColorProcessor cp = (ColorProcessor) ir.getImage().getProcessor();
+		ColorProcessor cp = (ColorProcessor) ir.getImagePlus().getProcessor();
 		ColorQuantizer quantizer = new KMeansClusteringQuantizer((int[])cp.getPixels(), K, InitialClusterMethod.Random, 500);
 		assertEquals(Kact, quantizer.getColorCount());
 		float[][] cm = quantizer.getColorMap();

@@ -23,8 +23,8 @@ public class BilateralFilterTest {
 	private final BilateralF.Parameters params;
 	
 	public BilateralFilterTest() {
-		monastery = FilterTestImage.MonasterySmall.getImage().getProcessor();
-		clown = FilterTestImage.Clown.getImage().getProcessor();
+		monastery = FilterTestImage.MonasterySmall.getImagePlus().getProcessor();
+		clown = FilterTestImage.Clown.getImagePlus().getProcessor();
 		
 		assertTrue(monastery instanceof ByteProcessor);
 		assertTrue(clown instanceof ColorProcessor);
@@ -41,7 +41,7 @@ public class BilateralFilterTest {
 		ImageProcessor ipA = monastery.duplicate();
 		GenericFilter filter = new BilateralFilterScalar(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.MonasterySmallBilateralNonsep.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.MonasterySmallBilateralNonsep.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -51,7 +51,7 @@ public class BilateralFilterTest {
 		ImageProcessor ipA = monastery.duplicate();
 		GenericFilter filter = new BilateralFilterScalarSeparable(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.MonasterySmallBilateralSep.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.MonasterySmallBilateralSep.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -63,7 +63,7 @@ public class BilateralFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new BilateralFilterScalar(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownBilateralNonsepScalar.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownBilateralNonsepScalar.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -73,7 +73,7 @@ public class BilateralFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new BilateralFilterScalarSeparable(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownBilateralSepScalar.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownBilateralSepScalar.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -83,7 +83,7 @@ public class BilateralFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new BilateralFilterVector(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownBilateralNonsepVector.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownBilateralNonsepVector.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -93,7 +93,7 @@ public class BilateralFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new BilateralFilterVectorSeparable(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownBilateralSepVector.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownBilateralSepVector.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}

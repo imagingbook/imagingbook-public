@@ -63,7 +63,7 @@ public class AdaptiveThresholderTest {
 	// ------------------------
 	
 	private void runThreshold(AdaptiveThresholder thresholder, ImageResource res, int expectedZeros) {
-		ByteProcessor bp = res.getImage().getProcessor().convertToByteProcessor();
+		ByteProcessor bp = res.getImagePlus().getProcessor().convertToByteProcessor();
 		thresholder.threshold(bp);
 		int zeros = countZeros(bp);
 //		System.out.println(res + ": " + zeros + " / " + (bp.getWidth() * bp.getHeight()));

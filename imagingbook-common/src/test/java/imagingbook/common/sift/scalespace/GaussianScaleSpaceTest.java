@@ -24,7 +24,7 @@ public class GaussianScaleSpaceTest {
 	@Test
 	public void testScaleSpaceParameters() {
 //		FloatProcessor fp = makeSymmetricBoxImage(50, 40);
-		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImage().getProcessor();
+		ImageProcessor ip = GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
 		FloatProcessor fp = ip.convertToFloatProcessor();
 		
 		GaussianScaleSpace gss =

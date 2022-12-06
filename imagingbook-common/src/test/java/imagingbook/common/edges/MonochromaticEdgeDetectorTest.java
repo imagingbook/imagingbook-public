@@ -21,18 +21,18 @@ public class MonochromaticEdgeDetectorTest {
 
 	@Test
 	public void testColor() {
-		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImage().getProcessor();
+		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImagePlus().getProcessor();
 		assertTrue("must be a ColorProcessor", ip instanceof ColorProcessor);
 		
 		MonochromaticEdgeDetector detector = new MonochromaticEdgeDetector((ColorProcessor) ip, params);
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeMagnitudeL2_tif.getImage().getProcessor(), eMag, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeMagnitudeL2_tif.getImagePlus().getProcessor(), eMag, TOL));
 
 		FloatProcessor eOrt = detector.getEdgeOrientation();
 		assertNotNull(eOrt);
-		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeOrientationL2_tif.getImage().getProcessor(), eOrt, TOL));
+		assertTrue(ImageTestUtils.match(EdgeDetectionTestImage.Balloons600colorMonochromaticEdgeOrientationL2_tif.getImagePlus().getProcessor(), eOrt, TOL));
 	}
 
 }

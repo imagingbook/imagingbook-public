@@ -87,7 +87,7 @@ public abstract class ResourceTestUtils {
 //			System.out.println("   is in Jar: " + res.isInsideJar());
 		
 			assertNotNull("could not find resource " + file.getAbsolutePath(), res.getURL());	
-			assertNotNull("could not open image for resource " + res,  res.getImage());
+			assertNotNull("could not open image for resource " + res,  res.getImagePlus());
 			n++;
 		}
 		return n;

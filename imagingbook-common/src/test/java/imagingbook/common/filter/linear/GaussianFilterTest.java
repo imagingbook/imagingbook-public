@@ -34,8 +34,8 @@ public class GaussianFilterTest {
 	
 	@Test
 	public void testGaussianGray() {
-		ImageProcessor ipA = res1A.getImage().getProcessor();
-		ImageProcessor ipB = res1B.getImage().getProcessor();
+		ImageProcessor ipA = res1A.getImagePlus().getProcessor();
+		ImageProcessor ipB = res1B.getImagePlus().getProcessor();
 		
 		//new GaussianFilter(ipA, SIGMA).apply();
 		new GaussianFilter(SIGMA).applyTo(ipA, OBS);
@@ -44,8 +44,8 @@ public class GaussianFilterTest {
 	
 	@Test
 	public void testGaussianRgb() {
-		ImageProcessor ipA = res2A.getImage().getProcessor();
-		ImageProcessor ipB = res2B.getImage().getProcessor();
+		ImageProcessor ipA = res2A.getImagePlus().getProcessor();
+		ImageProcessor ipB = res2B.getImagePlus().getProcessor();
 		
 		new GaussianFilter(SIGMA).applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
@@ -55,8 +55,8 @@ public class GaussianFilterTest {
 	
 	@Test
 	public void testGaussianSeparableGray() {
-		ImageProcessor ipA = res1A.getImage().getProcessor();
-		ImageProcessor ipB = res1B.getImage().getProcessor();
+		ImageProcessor ipA = res1A.getImagePlus().getProcessor();
+		ImageProcessor ipB = res1B.getImagePlus().getProcessor();
 		
 		new GaussianFilter(SIGMA).applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
@@ -64,8 +64,8 @@ public class GaussianFilterTest {
 
 	@Test
 	public void testGaussianSeparableRgb() {
-		ImageProcessor ipA = res2A.getImage().getProcessor();
-		ImageProcessor ipB = res2B.getImage().getProcessor();
+		ImageProcessor ipA = res2A.getImagePlus().getProcessor();
+		ImageProcessor ipB = res2B.getImagePlus().getProcessor();
 		
 		new GaussianFilter(SIGMA).applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));

@@ -22,8 +22,8 @@ public class KuwaharaFilterTest {
 	private final Parameters params;
 	
 	public KuwaharaFilterTest() {
-		monastery = FilterTestImage.MonasterySmall.getImage().getProcessor();
-		clown = FilterTestImage.Clown.getImage().getProcessor();
+		monastery = FilterTestImage.MonasterySmall.getImagePlus().getProcessor();
+		clown = FilterTestImage.Clown.getImagePlus().getProcessor();
 		
 		assertTrue(monastery instanceof ByteProcessor);
 		assertTrue(clown instanceof ColorProcessor);
@@ -39,7 +39,7 @@ public class KuwaharaFilterTest {
 		ImageProcessor ipA = monastery.duplicate();
 		GenericFilter filter = new KuwaharaFilterScalar(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.MonasterySmallKuwahara.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.MonasterySmallKuwahara.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ByteProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -51,7 +51,7 @@ public class KuwaharaFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new KuwaharaFilterScalar(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownKuwaharaScalar.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownKuwaharaScalar.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}
@@ -61,7 +61,7 @@ public class KuwaharaFilterTest {
 		ImageProcessor ipA = clown.duplicate();
 		GenericFilter filter = new KuwaharaFilterVector(params);
 		filter.applyTo(ipA, OBS);
-		ImageProcessor ipB = FilterTestImage.ClownKuwaharaVector.getImage().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownKuwaharaVector.getImagePlus().getProcessor();
 		assertTrue(ipB instanceof ColorProcessor);
 		assertTrue(ImageTestUtils.match(ipA, ipB, TOL));
 	}

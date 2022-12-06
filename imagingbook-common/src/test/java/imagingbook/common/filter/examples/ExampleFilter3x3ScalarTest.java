@@ -18,8 +18,8 @@ public class ExampleFilter3x3ScalarTest {
 
 	@Test
 	public void test() {
-		ImageProcessor ipA = resA.getImage().getProcessor();
-		ImageProcessor ipB = FilterTestImage.ClownExampleFilter3x3Scalar.getImage().getProcessor();
+		ImageProcessor ipA = resA.getImagePlus().getProcessor();
+		ImageProcessor ipB = FilterTestImage.ClownExampleFilter3x3Scalar.getImagePlus().getProcessor();
 		GenericFilter filter = new ExampleFilter3x3Scalar();
 		filter.applyTo(ipA, OBS);
 		assertTrue(ImageTestUtils.match(ipA, ipB, 1E-6));

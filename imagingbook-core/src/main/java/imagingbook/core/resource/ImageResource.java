@@ -8,7 +8,9 @@
  */
 package imagingbook.core.resource;
 
+import java.awt.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import ij.IJ;
@@ -19,7 +21,7 @@ import ij.ImagePlus;
  * Interface to be implemented by named image resources.
  * This indicates (for testing) that the associated resource can be opened as
  * an image (by ImageJ).
- * Extends interface {@link NamedResource} by adding method {@link #getImage()},
+ * Extends interface {@link NamedResource} by adding method {@link #getImagePlus()},
  * which returns an {@link ImagePlus} instance.
  * By default, image files are assumed to reside in a directory at the same 
  * level and with exactly the same name as the defining enum class itself.
@@ -54,7 +56,7 @@ public interface ImageResource extends NamedResource {
 	 * 
 	 * @return a {@link ImagePlus} instance
 	 */
-	public default ImagePlus getImage() {
+	public default ImagePlus getImagePlus() {
 		return IJ.openImage(getURL().toString());
 	}
 	
@@ -123,6 +125,54 @@ public interface ImageResource extends NamedResource {
 	 */
 	public static String[] getResourceFileNames(Class<? extends ImageResource> clazz) {
 		return ResourceUtils.getResourceFileNames(clazz, clazz.getSimpleName());
+	}
+
+	// ---------------- icon handling --------------------------------------
+
+	/**
+	 * The default icon size (maximum width or height).
+	 */
+	static final int DefaultIconSize = 128;
+	static final HashMap<String, ImagePlus> IconMap = new HashMap<>();
+
+	/**
+	 * Returns an icon for this {@link ImageResource} with the default icon size. All icons are cached, i.e., are only
+	 * created once when first requested for a particular size.
+	 *
+	 * @return an {@link ImagePlus} instance containing the icon image
+	 * @see #DefaultIconSize
+	 * @see #getImageIcon(int)
+	 */
+	public default ImagePlus getImageIcon() {
+		return getImageIcon(DefaultIconSize);
+	}
+
+	/**
+	 * Returns an icon for this {@link ImageResource} with the specified size. All icons are cached, i.e., are only
+	 * created once when first requested for a particular size.
+	 *
+	 * @param iconSize
+	 * @return an {@link ImagePlus} instance containing the icon image
+	 * @see #getImageIcon()
+	 */
+	public default ImagePlus getImageIcon(int iconSize) {
+		String key =  this.toString() + iconSize + this.getClass().getCanonicalName();
+		ImagePlus hashedImp = IconMap.get(key);
+		if (hashedImp != null) {
+			return hashedImp;
+		}
+		else {
+			Image im = this.getImagePlus().getImage();	// an AWT image!
+			int w = im.getWidth(null);
+			int h = im.getHeight(null);
+			int hints = Image.SCALE_DEFAULT;
+			Image imScaled = (w > h) ?
+					im.getScaledInstance(iconSize, -1, hints) :
+					im.getScaledInstance(-1, iconSize, hints);
+			ImagePlus icon = new ImagePlus(null, imScaled);
+			IconMap.put(key, icon);
+			return icon;
+		}
 	}
 
 }
