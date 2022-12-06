@@ -9,11 +9,16 @@
 package Ch03_PointOperations;
 
 import ij.ImagePlus;
+import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.Blitter;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
@@ -40,7 +45,22 @@ public class Linear_Blending implements PlugInFilter {
 	
 	private static double ALPHA = 0.5;	// transparency of foreground image
 	private ImagePlus imFG = null;		// foreground image (to be selected)
-	
+
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Linear_Blending() {
+		if (noCurrentImage()) {	// TODO: to be finished!! Open 2 images and suggest for dialog
+			if (DialogUtils.askForSampleImage()) {
+				ImagePlus im1 = GeneralSampleImage.Boats.getImagePlus();
+				im1.show();
+				WindowManager.setCurrentWindow(im1.getWindow());
+
+				ImagePlus im2 = GeneralSampleImage.IrishManor.getImagePlus();
+				im2.show();
+				WindowManager.setCurrentWindow(im2.getWindow());
+			}
+		}
+	}
+
 	@Override
 	public int setup(String arg, ImagePlus imBG) {
 		return DOES_8G;
