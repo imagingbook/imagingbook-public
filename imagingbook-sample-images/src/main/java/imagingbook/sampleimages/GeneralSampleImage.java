@@ -98,8 +98,11 @@ public enum GeneralSampleImage implements ImageResource {
 		Castle,
 		/** Grayscale stereo image used for SIFT feature detection and matching. */
 		RamsesSmall,
-		/** A stack of 2 grayscale stereo frames used for SIFT feature detection and matching. */
+		/** A stack of 2 small grayscale stereo frames used for SIFT feature detection and matching. */
 		RamsesSmallStack_tif,
-	;
+
+		/** A stack of 2 small grayscale images used for linear blending. */
+		ShipBeachSmallStack_tif,
+		;
 
 }
