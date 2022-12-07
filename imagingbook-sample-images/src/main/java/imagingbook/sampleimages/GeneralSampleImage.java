@@ -103,6 +103,9 @@ public enum GeneralSampleImage implements ImageResource {
 
 		/** A stack of 2 small grayscale images used for linear blending. */
 		ShipBeachSmallStack_tif,
+
+		/** A stack of small grayscale images used for histogram specification/matching. */
+		CityscapeSmallStack_tif
 		;
 
 }
