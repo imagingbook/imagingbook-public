@@ -36,7 +36,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @see HistogramUtils
  * @see HistogramPlot
  */
-public class Match_To_Gaussian_Histogram implements PlugInFilter {
+public class Match_Gaussian_Histogram implements PlugInFilter {
 
 	// parameters of Gaussian target distribution:
 	private static double Mean = 128;
@@ -48,7 +48,7 @@ public class Match_To_Gaussian_Histogram implements PlugInFilter {
 	private static boolean ListMappingFunction = false;
 
 	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
-	public Match_To_Gaussian_Histogram() {
+	public Match_Gaussian_Histogram() {
 		if (noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
 		}

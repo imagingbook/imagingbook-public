@@ -106,6 +106,7 @@ public class Bin_Morphology_Disk implements PlugInFilter {
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		if (im.isInvertedLut()) {
+			gd.setInsets(0, 0, 0);
 			gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");
 		}
 		gd.addNumericField("Radius (filters only)", Radius, 1, 5, "pixels");

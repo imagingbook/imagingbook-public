@@ -15,34 +15,45 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.morphology.BinaryThinning;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
- * <p>This ImageJ plugin demonstrates morphological thinning
- * on binary images. See Sec. 7.2 of [1] for additional details. 
- * This plugin works on 8-bit grayscale images only, the original
- * image is modified. The maximum number of thinning iterations
- * can be specified.
- * Zero-value pixels are considered background, all other pixels
- * are foreground. Different to ImageJ's built-in morphological
- * operators, this implementation does not incorporate the current display 
- * lookup-table (LUT).
- * </p> 
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * This ImageJ plugin demonstrates morphological thinning on binary images. See Sec. 7.2 of [1] for additional details.
+ * This plugin works on 8-bit grayscale images only, the original image is modified. The maximum number of thinning
+ * iterations can be specified. Zero-value pixels are considered background, all other pixels are foreground. Different
+ * to ImageJ's built-in morphological operators, this implementation does not incorporate the current display
+ * lookup-table (LUT).
  * </p>
- * 
- * @author WB
- * @version 2022/01/24
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
  *
+ * @author WB
+ * @version 2022/12/07
  */
 public class Thinning_Demo implements PlugInFilter {
-	
+
+	private static boolean ShowIterationCount = false;
+
 	private int maxIterations;
-	
+	private ImagePlus im;
+
+	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
+	public Thinning_Demo() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.RhinoSmallInv);
+		}
+	}
+
 	@Override
-	public int setup(String arg, ImagePlus imp) {
+	public int setup(String arg, ImagePlus im) {
+		this.im = im;
 		return DOES_8G;
 	}
 
@@ -50,24 +61,32 @@ public class Thinning_Demo implements PlugInFilter {
 	public void run(ImageProcessor ip) {
 		maxIterations = Math.max(ip.getWidth(), ip.getHeight());
 		
-		if (!showDialog()) {
+		if (!runDialog()) {
 			return;
 		}
 		
 		BinaryThinning thin = new BinaryThinning(maxIterations);
 		thin.applyTo((ByteProcessor) ip);
-		IJ.log("Iterations performed: " + thin.getIterations());
+		if  (ShowIterationCount) {
+			IJ.log("Iterations performed: " + thin.getIterations());
+		}
 	}
 	
-	private boolean showDialog() {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		if (im.isInvertedLut()) {
+			gd.setInsets(0, 0, 0);
+			gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");
+		}
 		gd.addNumericField("max. iterations", maxIterations, 0);
+		gd.addCheckbox("Show actual iteration count", ShowIterationCount);
 
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
 		
 		maxIterations = (int) gd.getNextNumber();
+		ShowIterationCount = gd.getNextBoolean();
 		return true;
 	}
 	

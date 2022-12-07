@@ -36,7 +36,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see HistogramPlot
  * @see PiecewiseLinearCdf
  */
-public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
+public class Match_Piecewise_Linear_Histogram implements PlugInFilter {
 
 	private static int[]    a = {28, 75, 150, 210};			// a_k (brightness values)
 	private static double[] P = {.05, .25, .75, .95};		// P_k (cum. probabilities)
@@ -47,7 +47,7 @@ public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
 	private static boolean ListMappingFunction = false;
 
 	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
-	public Match_To_Piecewise_Linear_Histogram() {
+	public Match_Piecewise_Linear_Histogram() {
 		if (noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
 		}
@@ -68,10 +68,10 @@ public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
 		int[] hA = ipA.getHistogram();
 
 		// -------------------------
-		PiecewiseLinearCdf cdf = new PiecewiseLinearCdf(256, a, P);
+		PiecewiseLinearCdf plCdf = new PiecewiseLinearCdf(256, a, P);
 		// -------------------------
 
-		double[] nhB = cdf.getPdf();
+		double[] nhB = plCdf.getPdf();
 		nhB = HistogramUtils.normalizeMax(nhB);
 
 		if (ShowOriginalHistograms) {
@@ -80,10 +80,10 @@ public class Match_To_Piecewise_Linear_Histogram implements PlugInFilter {
 		}
 		if (ShowCumulativeHistograms) {
 			new HistogramPlot(HistogramUtils.cdf(hA), "Original Cumulative Histogram").show();
-			new HistogramPlot(cdf, "Reference Cumulative Histogram").show();
+			new HistogramPlot(plCdf.getCdf(), "Reference Cumulative Histogram").show();
 		}
 
-		int[] F = HistogramUtils.matchHistograms(hA, cdf);
+		int[] F = HistogramUtils.matchHistograms(hA, plCdf);
 
 		ipA.applyTable(F);
 		
