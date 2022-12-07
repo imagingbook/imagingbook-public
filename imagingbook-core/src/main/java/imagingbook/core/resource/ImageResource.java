@@ -18,14 +18,10 @@ import ij.ImagePlus;
 
 /**
  * <p>
- * Interface to be implemented by named image resources.
- * This indicates (for testing) that the associated resource can be opened as
- * an image (by ImageJ).
- * Extends interface {@link NamedResource} by adding method {@link #getImagePlus()},
- * which returns an {@link ImagePlus} instance.
- * By default, image files are assumed to reside in a directory at the same 
- * level and with exactly the same name as the defining enum class itself.
- * E.g., in a standard Maven-setup this is:
+ * Interface to be implemented by named image resources. This indicates (for testing) that the associated resource can
+ * be opened as an image (by ImageJ). Extends interface {@link NamedResource} by adding method {@link #getImagePlus()},
+ * which returns an {@link ImagePlus} instance. By default, image files are assumed to reside in a directory at the same
+ * level and with exactly the same name as the defining enum class itself. E.g., in a standard Maven-setup this is:
  * </p>
  * <pre>
  * .../java/    .../bar/MyImageResource.java          = enum class implementing 'ImageResource'
@@ -33,30 +29,26 @@ import ij.ImagePlus;
  * .../resource/.../bar/MyImageResource/image2.tif
  * .../resource/.../bar/MyImageResource/...</pre>
  * <p>
- * For example, given a named resource {@code MyImages.image1},
- * this can be used simply in the form
+ * For example, given a named resource {@code MyImages.image1}, this can be used simply in the form
  * </p>
  * <pre>
  * ImagePlus im = MyImages.image1.getImage();
- * im.show();
- * </pre>
+ * im.show();</pre>
  * <p>
- * By default, resource file names are derived automatically from the
- * enum item's name (by method {@link #autoName()}).
- * If some other behavior is needed, method {@link #getFileName()}
- * should be overridden.
- * 
+ * By default, resource file names are derived automatically from the enum item's name (by method {@link #autoName()}).
+ * If some other behavior is needed, method {@link #getFileName()} should be overridden.
+ *
  * @author WB
  */
 public interface ImageResource extends NamedResource {
-	
+
 	/**
-	 * Opens end returns a {@link ImagePlus} instance for this
-	 * {@link ImageResource}.
-	 * 
+	 * Opens end returns a {@link ImagePlus} instance for this {@link ImageResource}.
+	 *
 	 * @return a {@link ImagePlus} instance
 	 */
 	public default ImagePlus getImagePlus() {
+		// TODO: opening GIF image stacks does not work, returns only a single image
 		return IJ.openImage(getURL().toString());
 	}
 	
@@ -69,37 +61,33 @@ public interface ImageResource extends NamedResource {
 	 * The set of image file extensions supported in {@link #autoName()}.
 	 */
 	static final HashSet<String> ValidImageExtensions = 
-			new HashSet<>(Arrays.asList("png", "tif", "tiff", "jpg", "jpeg"));
-	
+			new HashSet<>(Arrays.asList("png", "tif", "tiff", "jpg", "jpeg", "gif"));
+
 	/**
 	 * <p>
-	 * Derives and returns a filename for this resource item to be used in
-	 * parameterless enum constructors. By default the file name is identical to the
-	 * name of the enum constant supplemented with a ".png" extension. No separate
-	 * file name needs to be supplied. A different file extension may be specified
-	 * by having the enum name end with an underscore followed by a valid image file
-	 * extension, that is, "png", "tif", "tiff", "jpg", or "jpeg". In this case, the
-	 * last underscore of the enum name is replaced by a '.' character to form the
-	 * file name. (Note that '.' is no legal character in a Java identifier, thus
-	 * cannot be used for the enum name directly.) If the last underscore is not
-	 * followed by a valid extension, the default case is assumed ("png").
+	 * Derives and returns a filename for this resource item to be used in parameterless enum constructors. By default
+	 * the file name is identical to the name of the enum constant supplemented with a ".png" extension. No separate
+	 * file name needs to be supplied. A different file extension may be specified by having the enum name end with an
+	 * underscore followed by a valid image file extension, that is, "png", "tif", "tiff", "jpg", "jpeg" or "gif". In
+	 * this case, the last underscore of the enum name is replaced by a '.' character to form the file name. (Note that
+	 * '.' is no legal character in a Java identifier, thus cannot be used for the enum name directly.) If the last
+	 * underscore in a item's name is not followed by a valid extension, the default case is assumed ("png").
 	 * </p>
 	 * <p>
 	 * Examples:
 	 * </p>
 	 * <pre>
 	 * enum DummyNamedResource implements ImageResource {
-	 *	a,
-	 *	A_png,				// A.png
-	 *	foo_tif,			// foo.tif
-	 *	foo_tiff,			// foo.tiff
-	 *	The_File_jpg,		// The_File.jpg
-	 *	The_File_jpeg,		// The_File.jpeg
-	 *	_Some____File_bla;	// _Some____File_bla.png
-	 * }
-	 * </pre>
-	 * 
-	 * @return the derived image filename
+	 * 	a,                  // file "a.png"
+	 * 	A_png,              // file "A.png"
+	 * 	foo_tif,            // file "foo.tif"
+	 * 	foo_tiff,           // file "foo.tiff"
+	 * 	The_File_jpg,       // file "The_File.jpg"
+	 * 	The_File_jpeg,      // file "The_File.jpeg"
+	 * 	_Some____File_bla;  // file "_Some____File_bla.png"
+	 * }</pre>
+	 *
+	 * @return the image filename derived from the enum item's name
 	 */
 	public default String autoName() {
 		String itemname = this.toString();
@@ -113,13 +101,12 @@ public interface ImageResource extends NamedResource {
 		}
 		return itemname + ".png";
 	}
-	
+
 	/**
-	 * Returns the names of the actual files contained in the associated resource directory of
-	 * the specified class, which must implement the {@link ImageResource} interface.
-	 * This can be used to check if a given named resource has a matching file in a 
-	 * case-sensitive way.
-	 * 
+	 * Returns the names of the actual files contained in the associated resource directory of the specified class,
+	 * which must implement the {@link ImageResource} interface. This can be used to check if a given named resource has
+	 * a matching file in a case-sensitive way.
+	 *
 	 * @param clazz the resource class
 	 * @return an array of strings
 	 */

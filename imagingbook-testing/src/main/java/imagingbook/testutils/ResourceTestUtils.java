@@ -72,8 +72,9 @@ public abstract class ResourceTestUtils {
 		
 		int n = 0;
 		for (ImageResource res : clazz.getEnumConstants()) {
-			
-			assertTrue("image file not found: " + res.getURL(), 
+
+			String expectedFileName = res.getFileName();
+			assertTrue("image file not found for resource " + res.toString() + ", expected: " + expectedFileName,
 					hs.contains(res.getFileName()));	// check if resource file exists (case sensitive!)
 			
 			assertNotNull(res.getRelativePath());
