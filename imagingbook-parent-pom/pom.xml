@@ -389,11 +389,19 @@
 				<configuration>
 					<!-- for some reason the standard property maven.javadoc.skip does not work as expected-->
 					<skip>${imagingbook.skipjavadoc}</skip>
-					<skippedModules>imagingbook-testing</skippedModules>
+					<skippedModules>imagingbook-testing,imagingbook-sample-images</skippedModules>
 					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
 					<show>protected</show>
 					<source>${java.version}</source>
 					<linksource>true</linksource>
+
+					<!-- https://stackoverflow.com/questions/14518220/maven-how-do-i-exclude-specific-source-files-from-javadoc -->
+					<sourceFileExcludes>
+						<!--<sourceFileExclude>**/dir_name/*.java</sourceFileExclude>-->
+						<!--<exclude>src/main/resources/*.java</exclude>-->
+						<!--<exclude>net/my/packagename/samples/*.java</exclude>-->
+						<exclude>**/*.png</exclude>  <!--not working!!-->
+					</sourceFileExcludes>
 
 					<detectJavaApiLink>true</detectJavaApiLink>	<!-- got incorrect links for SE < 11 -->
 					<detectLinks>true</detectLinks>
