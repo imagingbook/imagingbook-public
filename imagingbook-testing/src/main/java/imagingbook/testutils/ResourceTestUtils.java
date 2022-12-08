@@ -45,7 +45,6 @@ public abstract class ResourceTestUtils {
 		int n = 0;
 		for (NamedResource res : clazz.getEnumConstants()) {
 			assertTrue(hs.contains(res.getFileName()));	// check if resource file exists (case sensitive!)
-	
 			assertNotNull(res.getRelativePath());
 			assertNotNull(new File(res.getRelativePath()));
 			assertNotNull(res.getURL());

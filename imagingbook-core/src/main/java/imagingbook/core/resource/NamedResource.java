@@ -62,43 +62,42 @@ import java.net.URL;
  * @version 2022/08/23
  */
 public interface NamedResource {
-	
+
+	static String RelativeDirectorySuffix = "-data";
+
 	/**
-	 * Returns the resource directory relative to the implementing class.
-	 * The default implementations assumes that this is a single-level directory
-	 * with exactly the same name as the implementing class.
-	 * Implementations may override this definition to return some other 
-	 * relative directory.
-	 * 
+	 * Returns the resource directory relative to the implementing class. The default implementations assumes that this
+	 * is a single-level directory with exactly the same name as the implementing class, extended by
+	 * {@link #RelativeDirectorySuffix} ("-data"). Implementations may override this definition to return some other
+	 * relative directory. Note that the directory should not have a legal Java package name to avoid confusion in the
+	 * build process (e.g., by javadoc).
+	 *
 	 * @return the relative resource directory for the associated resource
 	 */
 	public default String getRelativeDirectory() {
-		return getClass().getSimpleName();
+		return getClass().getSimpleName() + RelativeDirectorySuffix;
 	}
-	
+
 	/**
-	 * Returns the path to the associated resource relative to the
-	 * location of the implementing class.
-	 * This method is not supposed to be overridden.
-	 * 
+	 * Returns the path to the associated resource relative to the location of the implementing class. This method is
+	 * not supposed to be overridden.
+	 *
 	 * @return the relative path to the associated resource
 	 */
 	public default String getRelativePath() {
 		return getRelativeDirectory() + "/" + getFileName();
 	}
-	
+
 	/**
-	 * Returns the file name for the associated resource (to be implemented by
-	 * concrete classes).
-	 * 
+	 * Returns the file name for the associated resource (to be implemented by concrete classes).
+	 *
 	 * @return the name of the resource file
 	 */
 	public String getFileName();
-	
+
 	/**
-	 * Returns the URL to the associated resource. This method is not supposed to be
-	 * overridden.
-	 * 
+	 * Returns the URL to the associated resource. This method is not supposed to be overridden.
+	 *
 	 * @return the URL to the associated resource
 	 */
 	public default URL getURL() {
@@ -118,29 +117,27 @@ public interface NamedResource {
 //		File file = new File(path);
 //		return file.isFile();
 	}
-	
+
 	/**
-	 * Returns an {@link InputStream} for reading from this resource.
-	 * See also {@link Class#getResourceAsStream(String)}.
-	 * This method is not supposed to be overridden.
-	 * 
+	 * Returns an {@link InputStream} for reading from this resource. See also
+	 * {@link Class#getResourceAsStream(String)}. This method is not supposed to be overridden.
+	 *
 	 * @return an {@link InputStream} for the associated resource
 	 */
 	public default InputStream getStream() {
 		return getClass().getResourceAsStream(getRelativePath());
 	}
-	
+
 	/**
-	 * Returns the names of the actual files contained in the associated resource directory of
-	 * the specified class, which must implement the {@link NamedResource} interface.
-	 * This can be used to check if a given named resource has a matching file in a 
-	 * case-sensitive way. 
-	 * 
+	 * Returns the names of the actual files contained in the associated resource directory of the specified class,
+	 * which must implement the {@link NamedResource} interface. This can be used to check if a given named resource has
+	 * a matching file in a case-sensitive way.
+	 *
 	 * @param clazz the resource class
 	 * @return an array of strings
 	 */
 	public static String[] getResourceFileNames(Class<? extends NamedResource> clazz) {
-		return ResourceUtils.getResourceFileNames(clazz, clazz.getSimpleName());
+		return ResourceUtils.getResourceFileNames(clazz, clazz.getSimpleName() + RelativeDirectorySuffix);
 	}
 
 }

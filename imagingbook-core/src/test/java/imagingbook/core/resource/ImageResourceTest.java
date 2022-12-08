@@ -28,10 +28,10 @@ public class ImageResourceTest {
 		assertEquals("_Some____File_bla.png", DummyNamedResource._Some____File_bla.getFileName());	
 	}
 	
-	public static void main(String[] args) {
-		for (ImageResource item : DummyNamedResource.values()) {
-			System.out.println(item + " --> " + item.getFileName());
-		}
-	}
+	// public static void main(String[] args) {
+	// 	for (ImageResource item : DummyNamedResource.values()) {
+	// 		System.out.println(item + " --> " + item.getFileName());
+	// 	}
+	// }
 
 }

@@ -108,4 +108,8 @@ public enum GeneralSampleImage implements ImageResource {
 		CityscapeSmallStack_tif
 		;
 
+		public static void main(String[] args) {
+			ImageResource ir = GeneralSampleImage.Blobs;
+			System.out.println(ir.getImagePlus());
+		}
 }

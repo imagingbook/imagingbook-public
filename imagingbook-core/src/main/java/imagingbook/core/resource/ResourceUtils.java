@@ -206,7 +206,12 @@ public abstract class ResourceUtils {
 	 * @return a possibly empty array of paths
 	 */
 	public static Path[] getResourcePaths(Class<?> clazz, String relPath) {
-		return getResourcePaths(getResourceUri(clazz, relPath));
+		URI uri = getResourceUri(clazz, relPath);
+		if (uri == null) {
+			throw new RuntimeException("uri is null for resource class " + clazz.getSimpleName()
+					+ " and relative path " + relPath);
+		}
+		return getResourcePaths(uri);
 	}
 	
 	/**
