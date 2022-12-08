@@ -8,18 +8,6 @@
  */
 package Ch08_BinaryRegions;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.math.Arithmetic.sqr;
-import static java.lang.Math.sqrt;
-
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
-import java.util.List;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -38,27 +26,31 @@ import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
 import imagingbook.sampleimages.GeneralSampleImage;
 
+import java.awt.*;
+import java.awt.geom.Line2D;
+import java.util.List;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.sqrt;
+
 /**
  * <p>
- * Performs binary region segmentation, then displays each region's major axis
- * (scaled by eccentricity) and equivalent ellipse as a vector overlay. See Sec.
- * 8.6.2 and 8.6.3 of [1] for additional details. This plugin expects a binary
- * (black and white) image with background = 0 and foreground &gt; 0. Display
- * lookup tables (LUTs) are not considered. Eccentricity values are limited to
- * {@link #MaxEccentricity}, axes are marked red if exceeded. Axes for regions
- * with {@code NaN} eccentricity value (single-pixel regions) are not displayed.
- * Axis and ellipse parameters are calculated from the region's central moments.
- * If no image is currently open, the plugin optionally loads a suitable
- * sample image.
+ * Performs binary region segmentation, then displays each region's major axis (scaled by eccentricity) and equivalent
+ * ellipse as a vector overlay. See Sec. 8.6.2 and 8.6.3 of [1] for additional details. This plugin expects a binary
+ * (black and white) image with background = 0 and foreground &gt; 0. Display lookup tables (LUTs) are not considered.
+ * Eccentricity values are limited to {@link #MaxEccentricity}, axes are marked red if exceeded. Axes for regions with
+ * {@code NaN} eccentricity value (single-pixel regions) are not displayed. Axis and ellipse parameters are calculated
+ * from the region's central moments. If no image is currently open, the plugin optionally loads a suitable sample
+ * image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2021/04/18
- * @version 2022/09/27 revised ellipse generation, overlay
+ * @version 2022/12/08
  */
 @IjPluginName("Region Eccentricity/Ellipse Demo")
 public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
@@ -98,8 +90,7 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 	private ImagePlus im = null;
 	
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Region_Eccentricity_Ellipse_Demo() {
 		if (noCurrentImage()) {
@@ -115,7 +106,6 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 
 	@Override
 	public void run(ImageProcessor ip) {
-		
 		if (!IjUtils.isBinary(ip)) {
 			IJ.showMessage("Plugin requires a binary image!");
 			return;
@@ -142,12 +132,11 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 			}
 			
 			Pnt2d ctr = r.getCenter();
-			final double xc = ctr.getX();
-			final double yc = ctr.getY();
 			
 			if (ShowCenterMark) {
 				ola.setStroke(new ColoredStroke(CenterLineWidth, CenterColor));
-				ola.addShape(makeCenterMark(xc, yc));
+				// ola.addShape(makeCenterMark(xc, yc));
+				ola.addShape(ctr.getShape(CenterMarkSize));
 			}
 			
 			double[] mu = r.getCentralMoments();	// = (mu10, mu01, mu20, mu02, mu11)
@@ -176,6 +165,8 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 				double len = ecc * unitLength;
 				double dx = Math.cos(theta) * len;
 				double dy = Math.sin(theta) * len;;
+				double xc = ctr.getX();
+				double yc = ctr.getY();
 				ola.setStroke(new ColoredStroke(AxisLineWidth, axisCol));
 				ola.addShape(new Line2D.Double(xc, yc, xc + dx, yc + dy));
 			}
@@ -190,25 +181,6 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
 		}
 		
 		im.setOverlay(ola.getOverlay());
-	}
-	
-	@SuppressWarnings("unused")
-	private Shape makeEllipse(double xc, double yc, double ra, double rb, double theta) {
-		Ellipse2D e = new Ellipse2D.Double(-ra, -rb, 2 * ra, 2 * rb);
-		AffineTransform t = new AffineTransform();
-		t.translate(xc, yc);
-		t.rotate(theta);
-		return t.createTransformedShape(e);
-	}
-	
-	private Shape makeCenterMark(double x, double y) {
-		double r = CenterMarkSize;
-		Path2D.Double path = new Path2D.Double();
-		path.moveTo(x - r, y - r);
-		path.lineTo(x + r, y + r);
-		path.moveTo(x + r, y - r);
-		path.lineTo(x - r, y + r);
-		return path;
 	}
 	
 	// -----------------------------------------------------------------

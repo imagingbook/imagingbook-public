@@ -16,9 +16,11 @@ import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.hulls.ConvexHull;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
@@ -55,7 +57,8 @@ import imagingbook.sampleimages.GeneralSampleImage;
 public class Convex_Hull_Demo implements PlugInFilter {
 	
 	/** Color of the convex hull outline. */
-	public static Color ConvexHullColor = Color.blue;
+	public static BasicAwtColor DrawingColor = BasicAwtColor.Blue;
+	public static double StrokeWidth = 0.5;
 	
 	private ImagePlus im = null;
 	
@@ -77,12 +80,14 @@ public class Convex_Hull_Demo implements PlugInFilter {
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		
 		if (!IjUtils.isBinary(ip)) {
 			IJ.showMessage("Plugin requires a binary image!");
 			return;
 		}
-		
+
+		if (!runDialog())
+			return;
+
 		RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);
 		
 		List<BinaryRegion> regions = segmenter.getRegions();
@@ -96,7 +101,7 @@ public class Convex_Hull_Demo implements PlugInFilter {
 		
 		// draw convex hulls as vector overlay
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ola.setStroke(new ColoredStroke(0.5, ConvexHullColor));
+		ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
 		
 		for (BinaryRegion r: regions) {
 			//ConvexHull hull = new ConvexHull(r);					// takes all region points
@@ -105,5 +110,23 @@ public class Convex_Hull_Demo implements PlugInFilter {
 		}
 
 		im.setOverlay(ola.getOverlay());
+	}
+
+
+	// --------------------------------------------------------------------------
+
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());
+		gd.addEnumChoice("Drawing color", DrawingColor);
+		gd.addNumericField("Stroke width", StrokeWidth, 1);
+
+		gd.showDialog();
+		if (gd.wasCanceled()) {
+			return false;
+		}
+
+		DrawingColor = gd.getNextEnumChoice(BasicAwtColor.class);
+		StrokeWidth = gd.getNextNumber();
+		return true;
 	}
 }

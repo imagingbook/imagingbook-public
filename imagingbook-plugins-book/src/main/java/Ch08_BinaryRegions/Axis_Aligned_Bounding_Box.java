@@ -14,11 +14,15 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 import java.awt.Color;
 import java.util.List;
 
+import Ch07_MorphologicalFilters.Bin_Morphology_Disk;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.sets.BasicAwtColor;
+import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.hulls.AxisAlignedBoundingBox;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
@@ -51,11 +55,10 @@ import imagingbook.sampleimages.GeneralSampleImage;
  */
 @IjPluginName("Axis-Aligned Bounding Box")
 public class Axis_Aligned_Bounding_Box implements PlugInFilter {
-	
-	/** Color of the bounding-box center. */
-	public static Color CenterColor = Color.magenta;
+
 	/** Color of the bounding-box outline. */
-	public static Color BoundingBoxColor = Color.blue;
+	public static BasicAwtColor DrawingColor = BasicAwtColor.Blue;
+	public static double StrokeWidth = 0.5;
 
 	private ImagePlus im;
 	
@@ -79,11 +82,13 @@ public class Axis_Aligned_Bounding_Box implements PlugInFilter {
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		
 		if (!IjUtils.isBinary(ip)) {
 			IJ.showMessage("Plugin requires a binary image!");
 			return;
 		}
+
+		if (!runDialog())
+			return;
 		
 		RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);
 		List<BinaryRegion> regions = segmenter.getRegions();
@@ -98,18 +103,33 @@ public class Axis_Aligned_Bounding_Box implements PlugInFilter {
 		// draw bounding boxes as vector overlay
 
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ola.setStroke(new ColoredStroke(0.5, BoundingBoxColor));
+		ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
 		
-		for (BinaryRegion r: regions) {
+		for (BinaryRegion r : regions) {
 			if (r.getSize() > 5) {
 				AxisAlignedBoundingBox box = new AxisAlignedBoundingBox(r);
 				ola.addShapes(box.getShapes());
 			}
 		}
-		
-//		ImagePlus im2 = new ImagePlus(im.getShortTitle() + "-aligned-bb", ip2);
+
 		im.setOverlay(ola.getOverlay());
-//		im2.show();
 	}
-	
+
+	// --------------------------------------------------------------------------
+
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());
+		gd.addEnumChoice("Drawing color", DrawingColor);
+		gd.addNumericField("Stroke width", StrokeWidth, 1);
+
+		gd.showDialog();
+		if (gd.wasCanceled()) {
+			return false;
+		}
+
+		DrawingColor = gd.getNextEnumChoice(BasicAwtColor.class);
+		StrokeWidth = gd.getNextNumber();
+		return true;
+	}
+
 }

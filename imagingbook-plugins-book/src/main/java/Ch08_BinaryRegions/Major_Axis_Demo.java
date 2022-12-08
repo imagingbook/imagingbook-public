@@ -13,17 +13,21 @@ import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
 
 import java.awt.Color;
+import java.awt.geom.Line2D;
 import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
-import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.common.ij.overlay.ColoredStroke;
+import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
@@ -31,21 +35,18 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * ImageJ plugin, shows each region's major axis as a vector scaled by the
- * region's eccentricity. See Sec. 8.6 of [1] for additional details. Also
- * demonstrates the use of the region property scheme, i.e., how to assign
- * numeric properties to regions and retrieve them afterwards. Requires a binary
- * image. Zero-value pixels are considered background, all other pixels are
- * foreground. Display lookup tables (LUTs) are not considered. Results are
- * drawn into a new image (pixel graphics), the original image is not modified.
- * If no image is currently open, the plugin optionally loads a suitable
- * sample image.
+ * ImageJ plugin, shows each region's major axis as a vector scaled by the region's eccentricity. See Sec. 8.6 of [1]
+ * for additional details. Also demonstrates the use of the region property scheme, i.e., how to assign numeric
+ * properties to regions and retrieve them afterwards. Requires a binary image. Zero-value pixels are considered
+ * background, all other pixels are foreground. Display lookup tables (LUTs) are not considered. Results are drawn into
+ * a new image (pixel graphics), the original image is not modified. If no image is currently open, the plugin
+ * optionally loads a suitable sample image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2020/12/17
  */
@@ -53,19 +54,16 @@ import imagingbook.sampleimages.GeneralSampleImage;
 public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overlay display
 	
 	/** Scale of the axis length. */
-	public static double AxisLength = 50;
-	/** Color used to draw regions' centroids. */
-	public static Color CenterColor = Color.blue;
-	/** Color used to draw regions' major axes. */
-	public static Color MajorAxisColor = CenterColor;
-	/** Line width used to draw regions' major axes. */
-	public static int LineWidth = 1;
+	public static double DrawingScale = 50;
+	/** Color for drawing overlay graphics. */
+	public static BasicAwtColor DrawingColor = BasicAwtColor.Blue;
+	/** Stroke width for drawing overlay graphics. */
+	public static double StrokeWidth = 0.5;
 	
 	private ImagePlus im;
 	
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Major_Axis_Demo() {
 		if (noCurrentImage()) {
@@ -76,17 +74,20 @@ public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overl
 	@Override
 	public int setup(String arg, ImagePlus im) {
 		this.im = im;
-		return DOES_8G + NO_CHANGES; 
+		return DOES_8G;
 	}
 
 	@Override
 	public void run(ImageProcessor ip) {
-		
 		if (!IjUtils.isBinary(ip)) {
 			IJ.showMessage("Plugin requires a binary image!");
 			return;
 		}
-		
+
+		if (!runDialog())
+			return;
+
+
 		// perform region segmentation:
 		RegionContourSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);
 		List<BinaryRegion> regions = segmenter.getRegions(true);
@@ -96,29 +97,21 @@ public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overl
 			calculateRegionProperties(r);
 		}
 		
-		// create the output (color) image:
-		ColorProcessor cp = ip.convertToColorProcessor();
-		cp.add(200);	// brighten
-		
-		// draw major axis vectors (scaled by eccentricity): 
+		// draw major axis vectors (scaled by eccentricity) as vector overlays
+		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
+		ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
 		for (BinaryRegion r : regions) {
 			if (r.getSize() > 10) {
 				Pnt2d xc = r.getCenter();
-				int u0 = (int) Math.round(xc.getX());
-				int v0 = (int) Math.round(xc.getY());
-				
-				double dx = r.getProperty("dx");
-				double dy = r.getProperty("dy");
-				int u1 = (int) Math.round(xc.getX() + AxisLength * dx);
-				int v1 = (int) Math.round(xc.getY() + AxisLength * dy);
-				
-				drawCenter(cp,  u0,  v0);
-				drawAxis(cp, u0, v0, u1, v1);
+				double x0 = xc.getX();
+				double y0 = xc.getY();
+				double x1 = x0 + DrawingScale * r.getProperty("dx");
+				double y1 = y0 + DrawingScale * r.getProperty("dy");
+				ola.addShape(xc.getShape(0.05 * DrawingScale));
+				ola.addShape(new Line2D.Double(x0, y0, x1, y1));
 			}
 		}
-		
-		// display the output image
-		new ImagePlus(im.getShortTitle() + "-major-axis", cp).show();
+		im.setOverlay(ola.getOverlay());
 	}
 	
 	private void calculateRegionProperties(BinaryRegion r) {
@@ -149,25 +142,29 @@ public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overl
 		r.setProperty("dx", dx / scale);
 		r.setProperty("dy", dy / scale);
 		
-		// --------------------------------------------------
-		
 		// calculate 2 versions of eccentricity:
 		double a = mu20 + mu02;
 		double b = Math.sqrt(Math.pow(mu20 - mu02, 2) + 4 * mu11 * mu11);
 		r.setProperty("ecc1", (a + b) / (a - b));
 		r.setProperty("ecc2", (Math.pow(mu20 - mu02,  2) + 4 * mu11 * mu11) / Math.pow(mu20 + mu02, 2));
 	}
-	
-	private void drawCenter(ImageProcessor ip, int uc, int vc) {
-		ip.setColor(CenterColor);
-		ip.setLineWidth(LineWidth);
-		ip.drawRect(uc - 2, vc - 2, 5, 5);
-	}
-	
-	private void drawAxis(ImageProcessor ip, int u0, int v0, int u1, int v1) {
-		ip.setColor(MajorAxisColor);
-		ip.setLineWidth(LineWidth);
-		ip.drawLine(u0, v0, u1, v1);
+
+
+	// --------------------------------------------------------------------------
+
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());
+		gd.addEnumChoice("Drawing color", DrawingColor);
+		gd.addNumericField("Stroke width", StrokeWidth, 1);
+
+		gd.showDialog();
+		if (gd.wasCanceled()) {
+			return false;
+		}
+
+		DrawingColor = gd.getNextEnumChoice(BasicAwtColor.class);
+		StrokeWidth = gd.getNextNumber();
+		return true;
 	}
 
 }

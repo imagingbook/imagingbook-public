@@ -19,6 +19,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
@@ -67,9 +68,9 @@ public class Region_Contours_Demo implements PlugInFilter {
 	/** Stroke width used for drawing contours. */
 	public static double ContourStrokeWidth = 0.25;
 	/** Color used for drawing outer contours. */
-	public static Color OuterContourColor = Color.red;
+	public static BasicAwtColor OuterContourColor = BasicAwtColor.Red;
 	/** Color used for drawing inner contours. */
-	public static Color InnerContourColor = Color.green;
+	public static BasicAwtColor InnerContourColor = BasicAwtColor.Green;
 	
 	/** Set true to list detected regions to the text console. */
 	public static boolean ListRegions = false;
@@ -77,8 +78,7 @@ public class Region_Contours_Demo implements PlugInFilter {
 	private ImagePlus im = null;
 	
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Region_Contours_Demo() {
 		if (noCurrentImage()) {
@@ -94,7 +94,6 @@ public class Region_Contours_Demo implements PlugInFilter {
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		
 	   	if (!IjUtils.isBinary(ip)) {
 				IJ.showMessage("Plugin requires a binary image!");
 				return;
@@ -118,8 +117,8 @@ public class Region_Contours_Demo implements PlugInFilter {
 
 		// Draw outer and inner contours for each detected region:
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ColoredStroke outerStroke = new ColoredStroke(ContourStrokeWidth, OuterContourColor);
-		ColoredStroke innerStroke = new ColoredStroke(ContourStrokeWidth, InnerContourColor);
+		ColoredStroke outerStroke = new ColoredStroke(ContourStrokeWidth, OuterContourColor.getColor());
+		ColoredStroke innerStroke = new ColoredStroke(ContourStrokeWidth, InnerContourColor.getColor());
 		
 		for (BinaryRegion r : seg.getRegions()) {
 			Contour oc = r.getOuterContour();
@@ -138,7 +137,6 @@ public class Region_Contours_Demo implements PlugInFilter {
 				IJ.log(R.toString());
 			}
 		}
-		
 	}
 	
 	// --------------------------------------------------------------------------
@@ -146,6 +144,10 @@ public class Region_Contours_Demo implements PlugInFilter {
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());
 		gd.addEnumChoice("Neighborhood type", Neighborhood);
+		gd.addEnumChoice("Outer contour color", OuterContourColor);
+		gd.addEnumChoice("Inner contour color", InnerContourColor);
+		gd.addNumericField("Stroke width", ContourStrokeWidth, 1);
+
 		gd.addCheckbox("List regions", ListRegions);
 		
 		gd.showDialog();
@@ -154,6 +156,9 @@ public class Region_Contours_Demo implements PlugInFilter {
 		}
 		
 		Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);
+		OuterContourColor = gd.getNextEnumChoice(BasicAwtColor.class);
+		InnerContourColor = gd.getNextEnumChoice(BasicAwtColor.class);
+		ContourStrokeWidth = gd.getNextNumber();
 		ListRegions  = gd.getNextBoolean();
 		return true;
 	}

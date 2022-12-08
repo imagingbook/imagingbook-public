@@ -85,9 +85,11 @@ public class Region_Segmentation_Demo implements PlugInFilter {
 	public static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N8;
 	
 	/** Set true to randomly color segmented regions. */
-	public static boolean ColorRegions = true;
+	public static boolean ColorComponents = true;
 	/** Set true to to list segmented regions to the console. */
 	public static boolean ListRegions = false;
+
+	public static int RandomSeed = 0;
 	
 	private ImagePlus im;
 	
@@ -151,7 +153,7 @@ public class Region_Segmentation_Demo implements PlugInFilter {
 		
 		// Show the resulting labeling as a color or gray image:
 		String title = im.getShortTitle() + "-" + Method.name();
-		ImageProcessor labelIp = ColorRegions ? //Display.makeLabelImage(segmenter, ColorRegions);
+		ImageProcessor labelIp = ColorComponents ? //Display.makeLabelImage(segmenter, ColorRegions);
 				makeLabelImageColor(segmentation) : makeLabelImageGray(segmentation);
 		(new ImagePlus(title, labelIp)).show();
 		
@@ -164,25 +166,6 @@ public class Region_Segmentation_Demo implements PlugInFilter {
 		
     }
 
-    private boolean runDialog() {
-		GenericDialog gd = new GenericDialog(Region_Segmentation_Demo.class.getSimpleName());
-		gd.addEnumChoice("Segmentation method", Method);
-		gd.addEnumChoice("Neighborhood type", Neighborhood);
-		gd.addCheckbox("Color result", ColorRegions);
-		gd.addCheckbox("List regions", ListRegions);
-		
-		gd.showDialog();
-		if (gd.wasCanceled()) {
-			return false;
-		}
-		
-		Method = gd.getNextEnumChoice(SegmentationMethod.class);
-		Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);
-		ColorRegions = gd.getNextBoolean();
-		ListRegions = gd.getNextBoolean();
-		return true;
-	}
-    
     // ---------------------------------------------------------------------
     
     /**
@@ -192,12 +175,12 @@ public class Region_Segmentation_Demo implements PlugInFilter {
      * @param segmenter a binary region segmentation
      * @return a {@link ColorProcessor} with randomly colored regions 
      */
-	public static ColorProcessor makeLabelImageColor(BinaryRegionSegmentation segmenter) {
+	private ColorProcessor makeLabelImageColor(BinaryRegionSegmentation segmenter) {
 		int minLabel = segmenter.getMinLabel();
 		int maxLabel = segmenter.getMaxLabel();
 		
 		// set up a table of random colors, one for each label:
-		RandomHueGenerator rcg = new RandomHueGenerator();
+		RandomHueGenerator rcg = new RandomHueGenerator(RandomSeed);
 		int[] labelColor = new int[maxLabel + 1];
 		for (int i = minLabel; i <= maxLabel; i++) {
 			labelColor[i] = rcg.next().getRGB();
@@ -225,7 +208,7 @@ public class Region_Segmentation_Demo implements PlugInFilter {
      * @param segmenter a binary region segmentation
      * @return a 16-bit {@link ShortProcessor} with the original region labels 
      */
-	public static ShortProcessor makeLabelImageGray(BinaryRegionSegmentation segmenter) {
+	private ShortProcessor makeLabelImageGray(BinaryRegionSegmentation segmenter) {
 		int width = segmenter.getWidth();
 		int height = segmenter.getHeight();
 		ShortProcessor sp = new ShortProcessor(width, height);
@@ -238,7 +221,31 @@ public class Region_Segmentation_Demo implements PlugInFilter {
 		sp.resetMinAndMax();
 		return sp;
 	}
-    
+
+	// ---------------------------------------------------------------------
+
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(Region_Segmentation_Demo.class.getSimpleName());
+		gd.addEnumChoice("Segmentation method", Method);
+		gd.addEnumChoice("Neighborhood type", Neighborhood);
+		gd.addCheckbox("Color components", ColorComponents);
+		gd.addCheckbox("List regions", ListRegions);
+		gd.addNumericField("Random seed (0 = none)", RandomSeed, 0);
+
+		gd.showDialog();
+		if (gd.wasCanceled()) {
+			return false;
+		}
+
+		Method = gd.getNextEnumChoice(SegmentationMethod.class);
+		Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);
+		ColorComponents = gd.getNextBoolean();
+		ListRegions = gd.getNextBoolean();
+		RandomSeed = (int) gd.getNextNumber();
+		return true;
+	}
+
+
 }
 
 
