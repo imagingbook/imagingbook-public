@@ -357,10 +357,13 @@ public class BinaryThinning implements BinaryMorphologyOperator {
 	
 	@Override
 	public void applyTo(ByteProcessor bp) {
-		int iMax = (maxIterations > 0) ? maxIterations : bp.getWidth() + bp.getHeight();
+		int iMax = (maxIterations > 0) ?
+				maxIterations : bp.getWidth() + bp.getHeight();
 		reset();
 		do {
-			thinOnce(bp);
+			int deletions = thinOnce(bp);
+			this.complete = (deletions == 0);
+			this.iterations++;
 		} while (!complete && iterations < iMax);
 	}
 	
@@ -401,8 +404,6 @@ public class BinaryThinning implements BinaryMorphologyOperator {
 				bp.putPixel(p.x, p.y, 0);
 			}
 		}
-		this.complete = (n == 0);
-		this.iterations++;
 		return n;
 	}
 	

@@ -11,6 +11,7 @@ package Ch07_MorphologicalFilters;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.ImageStack;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
@@ -24,10 +25,10 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 /**
  * <p>
  * This ImageJ plugin demonstrates morphological thinning on binary images. See Sec. 7.2 of [1] for additional details.
- * This plugin works on 8-bit grayscale images only, the original image is modified. The maximum number of thinning
- * iterations can be specified. Zero-value pixels are considered background, all other pixels are foreground. Different
- * to ImageJ's built-in morphological operators, this implementation does not incorporate the current display
- * lookup-table (LUT).
+ * This plugin works on 8-bit grayscale images only, the original image is modified. Optionally, the plugin creates a
+ * stack of images obtained from each thinning iteration. The maximum number of thinning iterations can be specified.
+ * Zero-value pixels are considered background, all other pixels are foreground. Different to ImageJ's built-in
+ * morphological operators, this implementation does not incorporate the current display lookup-table (LUT).
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
@@ -39,6 +40,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  */
 public class Thinning_Demo implements PlugInFilter {
 
+	private static boolean ShowStackAnimation = true;
 	private static boolean ShowIterationCount = false;
 
 	private int maxIterations;
@@ -64,9 +66,27 @@ public class Thinning_Demo implements PlugInFilter {
 		if (!runDialog()) {
 			return;
 		}
-		
+
 		BinaryThinning thin = new BinaryThinning(maxIterations);
-		thin.applyTo((ByteProcessor) ip);
+		ByteProcessor bp = (ByteProcessor) ip;
+
+		if (ShowStackAnimation) {
+			ImageStack stack = new ImageStack();
+			stack.addSlice("initial", ip.duplicate());
+			int deletions;
+			do {
+				deletions = thin.thinOnce(bp);
+				if (deletions > 0) {
+					stack.addSlice(deletions + " deletions", ip.duplicate());
+				}
+			}
+			while (deletions > 0 && thin.getIterations() < maxIterations);
+			new ImagePlus(im.getShortTitle() + "-thinning", stack).show();
+		}
+		else {
+			thin.applyTo((ByteProcessor) ip);
+		}
+
 		if  (ShowIterationCount) {
 			IJ.log("Iterations performed: " + thin.getIterations());
 		}
@@ -79,6 +99,7 @@ public class Thinning_Demo implements PlugInFilter {
 			gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");
 		}
 		gd.addNumericField("max. iterations", maxIterations, 0);
+		gd.addCheckbox("Show stack animation", ShowStackAnimation);
 		gd.addCheckbox("Show actual iteration count", ShowIterationCount);
 
 		gd.showDialog();
@@ -86,6 +107,7 @@ public class Thinning_Demo implements PlugInFilter {
 			return false;
 		
 		maxIterations = (int) gd.getNextNumber();
+		ShowStackAnimation = gd.getNextBoolean();
 		ShowIterationCount = gd.getNextBoolean();
 		return true;
 	}
