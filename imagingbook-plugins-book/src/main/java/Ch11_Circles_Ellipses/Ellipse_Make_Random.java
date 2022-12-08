@@ -31,12 +31,11 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Samples points on a given (ideal) circle and creates a new image with the
- * sample points marked and also contained in a {@link PointRoi}. Image size,
- * ellipse parameters and noise can be specified. The result can be used as a
- * test image for circle fitting. Note that the resulting image has an inverted
- * LUT, i.e., the background value is 0 and marked points have value 255.
- * 
+ * Samples points on a given (ideal) circle and creates a new image with the sample points marked and also contained in
+ * a {@link PointRoi}. Image size, ellipse parameters and noise can be specified. The result can be used as a test image
+ * for circle fitting. Note that the resulting image has an inverted LUT, i.e., the background value is 0 and marked
+ * points have value 255.
+ *
  * @author WB
  * @version 2022/10/03
  */
@@ -78,6 +77,8 @@ public class Ellipse_Make_Random implements PlugIn {
 		
 		@DialogLabel("x/y noise (sigma)")
 		public double sigma = 5.0; //2.0;
+		@DialogLabel("Random seed (0 = none)")
+		public int seed = 0;
 		
 		@DialogLabel("show real ellipse")
 		public boolean ShowRealCurve = true;
@@ -98,8 +99,9 @@ public class Ellipse_Make_Random implements PlugIn {
 		
 		GeometricEllipse realEllipse = new GeometricEllipse(params.ra, params.rb, params.xc, params.yc, 
 				Math.toRadians(params.theta));
-		Pnt2d[] points = new EllipseSampler(realEllipse).getPoints(params.n, 
-				Math.toRadians(params.angle0), Math.toRadians(params.angle1), params.sigma);
+		EllipseSampler sampler = new EllipseSampler(realEllipse, params.seed);
+		Pnt2d[] points =
+				sampler.getPoints(params.n, Math.toRadians(params.angle0), Math.toRadians(params.angle1), params.sigma);
 		
 		ImagePlus im = NewImage.createByteImage(params.Title, params.W, params.H, 1, NewImage.FILL_BLACK);
 		im.setRoi(RoiUtils.toPointRoi(points));

@@ -31,13 +31,12 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Samples points on a given (ideal) line and creates a new image with 
- * the sample points contained in a {@link PointRoi}.
- * Image size, circle parameters and noise can be specified.
- * The result can be used as a test image for line fitting.
- * 
+ * Samples points on a given (ideal) line and creates a new image with the sample points contained in a
+ * {@link PointRoi}. Image size, circle parameters and noise can be specified. The result can be used as a test image
+ * for line fitting. Random seed can be set for repeatable results.
+ *
  * @author WB
- * @version 2022/10/03
+ * @version 2022/12/08
  */
 public class Line_Make_Random implements PlugIn {
 	
@@ -65,7 +64,9 @@ public class Line_Make_Random implements PlugIn {
 		
 		@DialogLabel("x/y noise sigma")
 		public double sigma = 5.0;
-		
+		@DialogLabel("Random seed (0 = none)")
+		public int seed = 0;
+
 		@DialogLabel("show real line")
 		public boolean ShowRealCurve = true;
 		@DialogLabel("line color")
@@ -88,7 +89,7 @@ public class Line_Make_Random implements PlugIn {
 		Pnt2d pEnd = Pnt2d.from(params.x2, params.y2);
 		AlgebraicLine realLine = AlgebraicLine.from(pStart, pEnd);
 		
-		LineSampler ls = new LineSampler(pStart, pEnd);
+		LineSampler ls = new LineSampler(pStart, pEnd, params.seed);
 		Pnt2d[] points = ls.getPoints(params.n, params.sigma);	
 		
 		ImagePlus im = NewImage.createByteImage(params.Title, params.W, params.H, 1, NewImage.FILL_BLACK);

@@ -376,7 +376,7 @@ public abstract class DialogUtils {
 	 */
 	public static boolean askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
 		String title = "Open sample image";
-		String message = "No image is currently open.\nUse sample image?\n";
+		String message = "No image is currently open.\nUse a sample image?\n";
 		GenericDialog gd = new GenericDialog(title);
 		gd.setInsets(0, 0, 0);
 		gd.addMessage(message);

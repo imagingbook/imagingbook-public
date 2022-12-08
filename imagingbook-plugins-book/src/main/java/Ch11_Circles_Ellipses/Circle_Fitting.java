@@ -34,19 +34,17 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 /**
  * <p>
- * ImageJ plugin, performs algebraic circle fitting on the current ROI to find
- * an initial circle, followed by geometric fitting. Algebraic and geometric fitting
- * methods can be selected (see Sec. 11.1 of [1] for details). If successful,
- * the resulting ellipses are displayed as a vector overlay (color can be
- * chosen). Sample points are either collected from the ROI (if available) or
- * collected as foreground pixels (values &gt; 0) from the image. If no image is
+ * ImageJ plugin, performs algebraic circle fitting on the current ROI to find an initial circle, followed by geometric
+ * fitting. Algebraic and geometric fitting methods can be selected (see Sec. 11.1 of [1] for details). If successful,
+ * the resulting ellipses are displayed as a vector overlay (color can be chosen). Sample points are either collected
+ * from the ROI (if available) or collected as foreground pixels (values &gt; 0) from the image. If no image is
  * currently open, the user is asked to create a suitable sample image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/03
  */

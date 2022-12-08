@@ -29,33 +29,30 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 /**
  * <p>
- * This plugin creates a new image with an ellipse and a set of random points.
- * For each point, the closest (contact) point on the ellipse is
- * calculated and a connecting line is drawn to a vector overlay.
- * Two closest-point algorithms are available (see Secs. 11.2.2 and 11.2.3 of [1] 
- * for additional details):
+ * This plugin creates a new image with an ellipse and a set of random points. For each point, the closest (contact)
+ * point on the ellipse is calculated and a connecting line is drawn to a vector overlay. Two closest-point algorithms
+ * are available (see Secs. 11.2.2 and 11.2.3 of [1] for additional details):
  * </p>
  * <ol>
- * <li> orthogonal, exact closest point (iterative) and </li>
- * <li> approximate confocal conic closest point estimation (non-iterative).</li>
+ * <li> orthogonal, exact closest point (exact but iterative) and </li>
+ * <li> approximate confocal conic closest point estimation (only approximate but non-iterative).</li>
  * </ol>
  * <p>
  * The random seed may be specified for repeatability of experiments.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
+ * 3rd ed, Springer (2022).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class Ellipse_Closest_Points_Demo implements PlugIn {
 	
 	private static int W = 400;
 	private static int H = 400;
 	private static int N = 250;
-	private static int Seed = 11;
+	private static int Seed = 0;
 	
 	private static final double StrokeWidth = 1.0;
 	private static final Color EllipseColor = Color.green;

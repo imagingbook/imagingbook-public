@@ -71,6 +71,8 @@ public class Circle_Make_Random implements PlugIn {
 		
 		@DialogLabel("x/y noise (sigma)")
 		public double sigma = 5.0; //2.0;
+		@DialogLabel("Random seed (0 = none)")
+		public int seed = 0;
 		
 		@DialogLabel("show real circle")
 		public boolean ShowRealCurve = true;
@@ -89,11 +91,11 @@ public class Circle_Make_Random implements PlugIn {
 		}
 		
 		GeometricCircle realCircle = new GeometricCircle(params.xc, params.yc, params.r);
-		Pnt2d[] points = new CircleSampler(realCircle).getPoints(params.n, 
-				Math.toRadians(params.angle0), Math.toRadians(params.angle1), params.sigma);
+		CircleSampler sampler = new CircleSampler(realCircle, params.seed);
+		Pnt2d[] points =
+				sampler.getPoints(params.n, Math.toRadians(params.angle0), Math.toRadians(params.angle1), params.sigma);
 
-		
-		ImagePlus im = NewImage.createByteImage(params.Title, params.W, params.H, 1, NewImage.FILL_BLACK);  //new ImagePlus(title, ip);
+		ImagePlus im = NewImage.createByteImage(params.Title, params.W, params.H, 1, NewImage.FILL_BLACK);
 		im.setRoi(RoiUtils.toPointRoi(points));
 		
 		ImageProcessor ip = im.getProcessor();

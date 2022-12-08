@@ -34,21 +34,17 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 /**
  * <p>
- * Performs line fitting on the point set specified by the current ROI. Two
- * fitting methods are employed: (a) linear regression fitting, (b) orthogonal
- * regression fitting. The result of the first varies with rotation, while
- * orthogonal fitting is rotation-invariant. See Sec. 10.2 (Fig. 10.4) of [1]
- * for additional details.
- * Sample points are either collected from the ROI (if available) or collected
- * as foreground pixels (values &gt; 0) from the image.
- * If no image is currently open, the user is asked to create a suitable sample
- * image.
+ * Performs line fitting on the point set specified by the current ROI. Two fitting methods are employed: (a) linear
+ * regression fitting, (b) orthogonal regression fitting. The result of the first varies with rotation, while orthogonal
+ * fitting is rotation-invariant. See Sec. 10.2 (Fig. 10.4) of [1] for additional details. Sample points are either
+ * collected from the ROI (if available) or collected as foreground pixels (values &gt; 0) from the image. If no image
+ * is currently open, the user is asked to create a suitable sample image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/03
  */
