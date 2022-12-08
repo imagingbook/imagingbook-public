@@ -388,20 +388,28 @@
 
 				<configuration>
 					<!-- for some reason the standard property maven.javadoc.skip does not work as expected-->
-					<skip>${imagingbook.skipjavadoc}</skip>
-					<skippedModules>imagingbook-testing,imagingbook-sample-images</skippedModules>
-					<excludePackageNames>*.DATA;*.DATA.*</excludePackageNames>
-					<show>protected</show>
+					<skip>${imagingbook.skipjavadoc}</skip><show>protected</show>
 					<source>${java.version}</source>
 					<linksource>true</linksource>
+					<failOnError>false</failOnError>
+					<verbose>true</verbose>
 
-					<!-- https://stackoverflow.com/questions/14518220/maven-how-do-i-exclude-specific-source-files-from-javadoc -->
-					<sourceFileExcludes>
-						<!--<sourceFileExclude>**/dir_name/*.java</sourceFileExclude>-->
-						<!--<exclude>src/main/resources/*.java</exclude>-->
-						<!--<exclude>net/my/packagename/samples/*.java</exclude>-->
-						<exclude>**/*.png</exclude>  <!--not working!!-->
-					</sourceFileExcludes>
+					<skippedModules>imagingbook-testing</skippedModules>	<!--effective in aggregate only-->
+					<excludePackageNames>*.DATA:*.DATA.*</excludePackageNames>
+
+					<!--https://stackoverflow.com/questions/14518220/maven-how-do-i-exclude-specific-source-files-from-javadoc-->
+					<!--https://stackoverflow.com/questions/37580085/maven-javadoc-plugin-sourcefileexcludes-not-working-->
+					<!--trying to exclude images from javadoc.jar, but nothing works! -->
+					<!--<sourceFileExcludes>
+						<sourceFileExclude>**/GeneralSampleImage-data/**</sourceFileExclude>
+						<sourceFileExclude>**/**.tif</sourceFileExclude>
+						<sourceFileExclude>**/*.tif</sourceFileExclude>
+						<sourceFileExclude>**-data/*</sourceFileExclude>
+						<sourceFileExclude>**/*.png</sourceFileExclude>
+						<sourceFileExclude>*.png</sourceFileExclude>
+						<sourceFileExclude>*.jpg</sourceFileExclude>
+						<sourceFileExclude>*.tif</sourceFileExclude>
+					</sourceFileExcludes>-->
 
 					<detectJavaApiLink>true</detectJavaApiLink>	<!-- got incorrect links for SE < 11 -->
 					<detectLinks>true</detectLinks>
@@ -427,8 +435,7 @@
 					<overview>${project.basedir}/docs/overview.html</overview>
 					<nohelp>true</nohelp>
 					<author>false</author>
-					<failOnError>false</failOnError>
-					<verbose>true</verbose>
+
 				</configuration>
 
 				<executions>
@@ -440,7 +447,7 @@
 						</goals>
 						<phase>site</phase>
 						<configuration>
-							<!-- Specific configuration for the aggregate report -->
+
 						</configuration>
 					</execution>
 
@@ -449,6 +456,9 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration>
+
+						</configuration>
 					</execution>
 				</executions>
 
