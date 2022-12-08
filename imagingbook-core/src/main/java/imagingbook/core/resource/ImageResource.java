@@ -111,7 +111,8 @@ public interface ImageResource extends NamedResource {
 	 * @return an array of strings
 	 */
 	public static String[] getResourceFileNames(Class<? extends ImageResource> clazz) {
-		return ResourceUtils.getResourceFileNames(clazz, clazz.getSimpleName() + RelativeDirectorySuffix);
+		// return ResourceUtils.getResourceFileNames(clazz, clazz.getSimpleName() + RelativeDirectorySuffix);
+		return ResourceUtils.getResourceFileNames(clazz, NamedResource.getRelativeDirectory(clazz));
 	}
 
 	// ---------------- icon handling --------------------------------------
