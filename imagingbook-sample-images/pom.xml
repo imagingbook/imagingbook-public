@@ -48,25 +48,29 @@
 				<artifactId>maven-source-plugin</artifactId>
 				<configuration>
 					<excludeResources>true</excludeResources>
+					<excludes>
+						<exclude>**/*.tif</exclude>
+						<exclude>**/*.png</exclude>
+						<exclude>**/*.jpg</exclude>
+					</excludes>
+
 				</configuration>
 			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
+					<sourceFileIncludes>
+						<sourceFileInclude>**/*.java</sourceFileInclude>
+					</sourceFileIncludes>
 					<!--https://stackoverflow.com/questions/14518220/maven-how-do-i-exclude-specific-source-files-from-javadoc-->
 					<!--https://stackoverflow.com/questions/37580085/maven-javadoc-plugin-sourcefileexcludes-not-working-->
-					<!--trying to exclude images from javadoc.jar, but nothing works! -->
-					<!--<sourceFileExcludes>
-						<sourceFileExclude>**/GeneralSampleImage-data/**</sourceFileExclude>
-						<sourceFileExclude>**/**.tif</sourceFileExclude>
+					<!--trying to exclude images from javadoc.jar, but nothing seems to work! -->
+					<sourceFileExcludes>
 						<sourceFileExclude>**/*.tif</sourceFileExclude>
-						<sourceFileExclude>**-data/*</sourceFileExclude>
 						<sourceFileExclude>**/*.png</sourceFileExclude>
-						<sourceFileExclude>*.png</sourceFileExclude>
-						<sourceFileExclude>*.jpg</sourceFileExclude>
-						<sourceFileExclude>*.tif</sourceFileExclude>
-					</sourceFileExcludes>-->
+						<sourceFileExclude>**/*.jpg</sourceFileExclude>
+					</sourceFileExcludes>
 				</configuration>
 			</plugin>
 		</plugins>
