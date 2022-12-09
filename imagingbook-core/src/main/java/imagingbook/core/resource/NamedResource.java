@@ -63,7 +63,7 @@ public interface NamedResource {
 	 * the associated resource files are assumed to be in directory
 	 * <pre>src/main/resources/.../foo/ZeClass-data/</pre>
 	 */
-	static final String RelativeDirectorySuffix = "-data";
+	public static final String RelativeDirectorySuffix = "-data";
 
 	/**
 	 * Returns the resource directory relative to the implementing class. The default implementations assumes that this
