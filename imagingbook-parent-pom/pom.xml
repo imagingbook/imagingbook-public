@@ -47,6 +47,7 @@
 		<imagingbook.rootdir>${directory-up-1}</imagingbook.rootdir>   <!-- to be modified by nested projects -->
 		<imagingbook.deploydir>DEPLOY</imagingbook.deploydir>
 		<imagingbook.docdir>${project.basedir}</imagingbook.docdir>
+		<imagingbook.javadocdir>javadoc</imagingbook.javadocdir>
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
 
 		<java.version>11</java.version>	<!-- need to step to 11 to make Javadoc API linking work! -->
@@ -100,7 +101,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-
 			<dependency>
 				<groupId>net.imagej</groupId>
 				<artifactId>ij</artifactId>
@@ -119,14 +119,12 @@
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
 		<pluginManagement>
 			<plugins>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
@@ -217,12 +215,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>3.4.1</version>
-					<configuration>
-						<source>${java.version}</source>
-						<links>
-							<!-- <link>http://imagej.nih.gov/ij/developer/api/ij/module-summary.html</link> -->
-						</links>
-					</configuration>
 				</plugin>
 
 				<plugin>
@@ -304,6 +296,32 @@
 		</pluginManagement>
 
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<!-- avoid removing the cleaned directories themselves, delete content only: -->
+					<excludeDefaultDirectories>true</excludeDefaultDirectories>
+					<filesets>
+						<!-- because excludeDefaultDirectories=true, target doesn't get cleaned by default -->
+						<fileset>
+							<directory>${project.basedir}/target</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+						</fileset>
+						<fileset>
+							<directory>${project.basedir}/${imagingbook.deploydir}</directory>
+							<includes><include>**/*</include></includes>
+						</fileset>
+						<fileset>
+							<directory>${project.basedir}/${imagingbook.javadocdir}</directory>
+							<includes><include>**/*</include></includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
 			<!-- do not deploy this artifact -->
 			<!-- <plugin>
 			  <groupId>org.apache.maven.plugins</groupId>
@@ -330,9 +348,11 @@
 								<echo level="info">**** imagingbook.buildprofile = ${imagingbook.buildprofile}</echo>
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
 								<!--<echo level="info">**** outputDirectory = ${outputDirectory}</echo>-->
-								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
+								<echo level="info">**** reporting.outputDirectory = ${project.reporting.outputDirectory}</echo>
 								<!--<echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo>-->
+								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
+								<echo level="info">**** imagingbook.javadocdir = ${imagingbook.javadocdir}</echo>
 								<echo level="info">**** imagingbook.skipjavadoc = ${imagingbook.skipjavadoc}</echo>
 								<!--<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>-->
 								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
@@ -366,6 +386,10 @@
 			<plugin>  <!-- generate a separate jar file with source code -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<!--generally exclude resources from source jars -->
+					<excludeResources>true</excludeResources>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -385,32 +409,18 @@
 				-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-
 				<configuration>
 					<!-- for some reason the standard property maven.javadoc.skip does not work as expected-->
-					<skip>${imagingbook.skipjavadoc}</skip><show>protected</show>
+					<skip>${imagingbook.skipjavadoc}</skip>
+					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
+					<destDir>${imagingbook.javadocdir}</destDir>
+					<show>protected</show>
 					<source>${java.version}</source>
 					<linksource>true</linksource>
 					<failOnError>false</failOnError>
 					<verbose>true</verbose>
-
-					<skippedModules>imagingbook-testing</skippedModules>	<!--effective in aggregate only-->
+					<!--<skippedModules>imagingbook-testing</skippedModules>-->	<!--moved to imagingbook-public/pom-->
 					<excludePackageNames>*.DATA:*.DATA.*</excludePackageNames>
-
-					<!--https://stackoverflow.com/questions/14518220/maven-how-do-i-exclude-specific-source-files-from-javadoc-->
-					<!--https://stackoverflow.com/questions/37580085/maven-javadoc-plugin-sourcefileexcludes-not-working-->
-					<!--trying to exclude images from javadoc.jar, but nothing works! -->
-					<!--<sourceFileExcludes>
-						<sourceFileExclude>**/GeneralSampleImage-data/**</sourceFileExclude>
-						<sourceFileExclude>**/**.tif</sourceFileExclude>
-						<sourceFileExclude>**/*.tif</sourceFileExclude>
-						<sourceFileExclude>**-data/*</sourceFileExclude>
-						<sourceFileExclude>**/*.png</sourceFileExclude>
-						<sourceFileExclude>*.png</sourceFileExclude>
-						<sourceFileExclude>*.jpg</sourceFileExclude>
-						<sourceFileExclude>*.tif</sourceFileExclude>
-					</sourceFileExcludes>-->
-
 					<detectJavaApiLink>true</detectJavaApiLink>	<!-- got incorrect links for SE < 11 -->
 					<detectLinks>true</detectLinks>
 					<links>
@@ -421,12 +431,10 @@
 						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-core/latest</link>
 						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-common/latest</link>
 						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-spectral/latest</link>
-						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-pdf/sample-images</link>
-						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-spectral/sample-images</link>
+						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-pdf/latest</link>
+						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-spectral/latest</link>
+						<link>https://javadoc.io/doc/com.imagingbook/sample-images/latest</link>
 					</links>
-
-					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
-					<destDir>javadoc</destDir>
 					<doctitle>${imagingbook.doctitle}</doctitle>
 					<header>${imagingbook.header}</header>
 					<footer>${imagingbook.header}</footer>
@@ -435,7 +443,6 @@
 					<overview>${project.basedir}/docs/overview.html</overview>
 					<nohelp>true</nohelp>
 					<author>false</author>
-
 				</configuration>
 
 				<executions>
@@ -447,7 +454,6 @@
 						</goals>
 						<phase>site</phase>
 						<configuration>
-
 						</configuration>
 					</execution>
 
@@ -457,11 +463,9 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
-
 						</configuration>
 					</execution>
 				</executions>
-
 			</plugin>
 			
 			<plugin>
@@ -596,6 +600,14 @@
 									<includes>
 										<include>**/*</include>
 									</includes>
+								</fileset>
+								<fileset>
+									<directory>${project.basedir}/${imagingbook.deploydir}</directory>
+									<includes><include>**/*</include></includes>
+								</fileset>
+								<fileset>
+									<directory>${project.basedir}/${imagingbook.javadocdir}</directory>
+									<includes><include>**/*</include></includes>
 								</fileset>
 							</filesets>
 						</configuration>

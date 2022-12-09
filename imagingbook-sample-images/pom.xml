@@ -1,12 +1,3 @@
-<!--
-  ~  This software is provided as a supplement to the authors' textbooks on digital
-  ~ image processing published by Springer-Verlag in various languages and editions.
-  ~ Permission to use and distribute this software is granted under the BSD 2-Clause
-  ~ "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).
-  ~ Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge.
-  ~ All rights reserved. Visit https://imagingbook.com for additional details.
-  -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>imagingbook-sample-images</artifactId>
@@ -31,7 +22,6 @@
 	</properties>
 
 	<dependencies>
-	
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>ij</artifactId>
@@ -49,22 +39,34 @@
 			<version>6.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<!-- <dependency>
-      		<groupId>junit</groupId>
-      		<artifactId>junit</artifactId>
-      		<scope>test</scope>
-		</dependency> -->
-		
 	</dependencies>
 	
 	<build>
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<configuration>
 					<excludeResources>true</excludeResources>
+				</configuration>
+			</plugin>-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<!--https://stackoverflow.com/questions/14518220/maven-how-do-i-exclude-specific-source-files-from-javadoc-->
+					<!--https://stackoverflow.com/questions/37580085/maven-javadoc-plugin-sourcefileexcludes-not-working-->
+					<!--trying to exclude images from javadoc.jar, but nothing works! -->
+					<!--<sourceFileExcludes>
+						<sourceFileExclude>**/GeneralSampleImage-data/**</sourceFileExclude>
+						<sourceFileExclude>**/**.tif</sourceFileExclude>
+						<sourceFileExclude>**/*.tif</sourceFileExclude>
+						<sourceFileExclude>**-data/*</sourceFileExclude>
+						<sourceFileExclude>**/*.png</sourceFileExclude>
+						<sourceFileExclude>*.png</sourceFileExclude>
+						<sourceFileExclude>*.jpg</sourceFileExclude>
+						<sourceFileExclude>*.tif</sourceFileExclude>
+					</sourceFileExcludes>-->
 				</configuration>
 			</plugin>
 		</plugins>

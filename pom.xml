@@ -68,4 +68,16 @@
 		</imagingbook.bottom>
 	</properties>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<skippedModules>imagingbook-testing</skippedModules>	<!--effective in aggregate only-->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
