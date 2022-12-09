@@ -67,8 +67,7 @@ public class Hough_Line_Detect implements PlugInFilter {
 	private ImagePlus im;
 	
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Hough_Line_Detect() {
 		if (noCurrentImage()) {

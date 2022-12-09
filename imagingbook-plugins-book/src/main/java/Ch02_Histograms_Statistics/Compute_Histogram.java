@@ -8,7 +8,7 @@
  */
 package Ch02_Histograms_Statistics;
 
-import Ch03_PointOperations.Equalize_Histogram;
+import Ch03_Point_Operations.Equalize_Histogram;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
