@@ -306,9 +306,7 @@
 						<!-- because excludeDefaultDirectories=true, target doesn't get cleaned by default -->
 						<fileset>
 							<directory>${project.basedir}/target</directory>
-							<includes>
-								<include>**/*</include>
-							</includes>
+							<includes><include>**/*</include></includes>
 						</fileset>
 						<fileset>
 							<directory>${project.basedir}/${imagingbook.deploydir}</directory>
@@ -419,7 +417,6 @@
 					<linksource>true</linksource>
 					<failOnError>false</failOnError>
 					<verbose>true</verbose>
-					<!--<skippedModules>imagingbook-testing</skippedModules>-->	<!--moved to imagingbook-public/pom-->
 					<excludePackageNames>*.DATA:*.DATA.*</excludePackageNames>
 					<detectJavaApiLink>true</detectJavaApiLink>	<!-- got incorrect links for SE < 11 -->
 					<detectLinks>true</detectLinks>
