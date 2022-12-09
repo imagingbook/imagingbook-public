@@ -23,7 +23,7 @@ import imagingbook.common.color.iterate.RandomHueGenerator;
  * @author WB
  * @see imagingbook.common.color.iterate.RandomHueGenerator
  */
-public class Random_Hue_Demo implements PlugIn {
+public class Random_Hues_Demo implements PlugIn {
 	
 	private static int TileSize = 20;
 	private static int TilesHor = 48;
@@ -33,7 +33,7 @@ public class Random_Hue_Demo implements PlugIn {
 	private double Brightness = 0.9;
 	
 	private static int RandomSeed = 0;
-	private static String title = Random_Hue_Demo.class.getSimpleName();
+	private static String title = Random_Hues_Demo.class.getSimpleName();
 	
 	@Override
 	public void run(String arg) {

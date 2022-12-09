@@ -21,7 +21,12 @@ import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.color.colorspace.LabColorSpace;
 import imagingbook.common.color.colorspace.LinearRgb65ColorSpace;
 import imagingbook.common.color.colorspace.LuvColorSpace;
+import imagingbook.common.color.colorspace.XYZ65ColorSpace;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * ImageJ plugin, converts a sRGB color image to Lab, Luv, HLS, HSV or Linear
@@ -39,13 +44,22 @@ import imagingbook.common.image.ColorPack;
 public class Convert_To_Color_Stack implements PlugInFilter {
 	
 	private enum TargetSpaceType {
-		Lab, Luv, HLS, HSV, LinearRGB	// TODO: add XYZ
+		Lab, Luv, HLS, HSV, LinearRGB, XYZ	// TODO: add XYZ
 	}
 	
 	private static TargetSpaceType TargetSpace = TargetSpaceType.Lab;
 	private static boolean ReconstructRGB = false;
 	
 	private ImagePlus im;
+
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public Convert_To_Color_Stack() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+		}
+	}
 
 	@Override
 	public int setup(String arg, ImagePlus im) {
@@ -64,11 +78,12 @@ public class Convert_To_Color_Stack implements PlugInFilter {
 		
 		ColorSpace csp = null;
 		switch(TargetSpace) {
-		case Lab: csp = LabColorSpace.getInstance(); break;
-		case Luv: csp = LuvColorSpace.getInstance(); break; 
-		case HLS: csp = HlsColorSpace.getInstance(); break;
-		case HSV: csp = HsvColorSpace.getInstance(); break;
-		case LinearRGB:	csp = LinearRgb65ColorSpace.getInstance(); break;
+			case Lab: csp = LabColorSpace.getInstance(); break;
+			case Luv: csp = LuvColorSpace.getInstance(); break;
+			case HLS: csp = HlsColorSpace.getInstance(); break;
+			case HSV: csp = HsvColorSpace.getInstance(); break;
+			case LinearRGB:	csp = LinearRgb65ColorSpace.getInstance(); break;
+			case XYZ: csp = XYZ65ColorSpace.getInstance(); break;
 		}
 		
 		ColorPack cPack = new ColorPack((ColorProcessor) ip);
