@@ -88,8 +88,11 @@ public enum GeneralSampleImage implements ImageResource {
 		/** Color image used for projective rectification. */
 		PostalPackageSmall_jpg,
 		
-		/** Color image used for various non-linear transformations. */
+		/** Full-RGB color image used for various non-linear transformations. */
 		Flower_jpg,
+
+		/** Indexed color image with 256 colors. */
+		FlowerIdx256_tif,
 		
 		/** Grayscale image used for MSER feature detection. */
 		MortarSmall,
