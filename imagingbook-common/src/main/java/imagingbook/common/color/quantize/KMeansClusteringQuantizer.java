@@ -318,41 +318,6 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 					": ctr=(%.1f,%.1f,%.1f), pop=%d", cR, cG, cB, population);
 		}
 	}
-	
-	// ----------------------------------------------------------------------
-	
-	public static void main(String[] args) {
-		String path = "D:/svn-book/Book/img/ch-color-images/alps-01s.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg";
-//		String path = "C:/_SVN/svn-book/Book/img/ch-color-images/desaturation-hsv/balls.jpg";
-		
-//		String path = "D:/svn-book/Book/img/ch-color-images/single-color.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/two-colors.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/random-colors.png";
-//		String path = "D:/svn-book/Book/img/ch-color-images/ramp-fire.png";
-		
-		int K = 16; 
-		System.out.println("image = " + path);
-		System.out.println("K = " + K);
 
-		ImagePlus im = IJ.openImage(path);
-		if (im == null) {
-			System.out.println("could not open: " + path);
-			return;
-		}
-		
-		ImageProcessor ip = im.getProcessor();
-		ColorProcessor cp = ip.convertToColorProcessor();
-		
-		ColorQuantizer quantizer = new KMeansClusteringQuantizer((int[])cp.getPixels(), K, InitialClusterMethod.Random, 500);
-		quantizer.listColorMap();
-		
-		System.out.println("quantizing image");
-		ByteProcessor qi = quantizer.quantize(cp);
-		System.out.println("showing image");
-		(new ImagePlus("quantizez", qi)).show();
-		
-	}
-	
 } 
 

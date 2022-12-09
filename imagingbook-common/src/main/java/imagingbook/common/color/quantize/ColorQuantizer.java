@@ -11,6 +11,7 @@ package imagingbook.common.color.quantize;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 import java.awt.image.IndexColorModel;
+import java.io.PrintStream;
 import java.util.Locale;
 
 import ij.process.ByteProcessor;
@@ -91,12 +92,11 @@ public interface ColorQuantizer {
 		}
 		return (byte) (0xFF & xi);
 	}
-	
+
 	/**
-	 * Performs color quantization on the given sequence of
-	 * ARGB-encoded color values and returns a new sequence 
-	 * of quantized colors.
-	 * 
+	 * Performs color quantization on the given array of ARGB-encoded color values and returns a new sequence of
+	 * quantized colors.
+	 *
 	 * @param origPixels The original ARGB-encoded color values.
 	 * @return The quantized ARGB-encoded color values.
 	 */
@@ -107,11 +107,11 @@ public interface ColorQuantizer {
 		}
 		return qantPixels;
 	}
-	
+
 	/**
-	 * Performs color quantization on the given ARGB-encoded color value and returns
-	 * the associated quantized color.
-	 * 
+	 * Performs color quantization on the given single ARGB-encoded color value and returns the associated quantized
+	 * color.
+	 *
 	 * @param rgb The original ARGB-encoded color value.
 	 * @return The quantized ARGB-encoded color value.
 	 */
@@ -123,14 +123,13 @@ public interface ColorQuantizer {
 		int blu = (int) (colormap[idx][2] + 0.5f);
 		return RgbUtils.encodeRgbToInt(red, grn, blu);
 	}
-	
+
 	/**
-	 * Finds the color table index of the color that is "closest" to the supplied
-	 * RGB color (minimum Euclidean distance in color space). This method may be
-	 * overridden by inheriting classes, for example, to use quick indexing in the
+	 * Finds the color table index of the color that is "closest" to the supplied RGB color (minimum Euclidean distance
+	 * in color space). This method may be overridden by inheriting classes, for example, to use quick indexing in the
 	 * octree method.
-	 * 
-	 * @param p        Original color, encoded as an ARGB integer.
+	 *
+	 * @param p Original color, encoded as an ARGB integer.
 	 * @param colormap a color map (float)
 	 * @return The associated color table index.
 	 */
@@ -152,28 +151,5 @@ public interface ColorQuantizer {
 		}
 		return minIdx;
 	}
-	
-	default void listColorMap() {
-		float[][] colormap = getColorMap();
-		System.out.println("listColorMap: " + colormap.length);
-		int n = colormap.length;
-		for (int i = 0; i < n; i++) {
-			float red = colormap[i][0];
-			float grn = colormap[i][1];
-			float blu = colormap[i][2];
-			System.out.format(Locale.US, "i=%3d: r=%6.1f g=%6.1f b=%6.1f\n", i, red, grn, blu);
-		}
-	}
-	
-	// -----------------------------------------------------------------------------
-	
-//	protected int log2(int n){
-//		if(n <= 0) throw new IllegalArgumentException();
-//		return 31 - Integer.numberOfLeadingZeros(n);
-//	}
-	
-//	protected int sqr(int k) {
-//		return k * k;
-//	}
 
 }
