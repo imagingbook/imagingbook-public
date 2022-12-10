@@ -84,7 +84,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  */
 public class Mesh_Warp_Interactive implements PlugInFilter {
 
-	private static ImageResource SampleImage = GeneralSampleImage.WartburgSmall_jpg;
+	private static ImageResource SampleImage = GeneralSampleImage.WartburgSmall;
 	private static final String PropertyKey = Mesh_Warp_Interactive.class.getName();
 	private static final String EditString = " (editing)";
 	

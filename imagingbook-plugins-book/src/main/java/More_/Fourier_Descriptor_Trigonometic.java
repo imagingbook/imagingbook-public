@@ -74,7 +74,7 @@ public class Fourier_Descriptor_Trigonometic implements PlugInFilter {
 	 */
 	public Fourier_Descriptor_Trigonometic() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.HouseRoi_tif);
+			DialogUtils.askForSampleImage(GeneralSampleImage.HouseRoi);
 		}
 	}
 	

@@ -40,7 +40,7 @@ public class Brighten_Rgb_2 implements PlugInFilter {
 	 */
 	public Brighten_Rgb_2() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 

@@ -66,7 +66,7 @@ public class Quantize_Color_Image implements PlugInFilter {
 	 */
 	public Quantize_Color_Image() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 	

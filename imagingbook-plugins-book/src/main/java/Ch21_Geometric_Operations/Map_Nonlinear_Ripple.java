@@ -51,7 +51,7 @@ public class Map_Nonlinear_Ripple implements PlugInFilter {
 	 */
 	public Map_Nonlinear_Ripple() {
 		if (IjUtils.noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 	

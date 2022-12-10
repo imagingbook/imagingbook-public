@@ -40,7 +40,7 @@ public class Count_Colors implements PlugInFilter {
 	 */
 	public Count_Colors() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 	

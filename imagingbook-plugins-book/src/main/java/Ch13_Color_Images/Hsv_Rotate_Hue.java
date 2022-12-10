@@ -9,7 +9,6 @@
 package Ch13_Color_Images;
 
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -47,7 +46,7 @@ public class Hsv_Rotate_Hue implements PlugInFilter {
 	 */
 	public Hsv_Rotate_Hue() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 

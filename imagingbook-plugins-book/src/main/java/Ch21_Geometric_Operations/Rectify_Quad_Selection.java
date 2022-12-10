@@ -60,7 +60,7 @@ public class Rectify_Quad_Selection implements PlugInFilter {
 	 */
 	public Rectify_Quad_Selection() {
 		if (IjUtils.noCurrentImage() && DialogUtils.askForSampleImage()) {
-			ImagePlus imp = GeneralSampleImage.PostalPackageSmall_jpg.getImagePlus();
+			ImagePlus imp = GeneralSampleImage.PostalPackageSmall.getImagePlus();
 			float[] xpts = {22, 330, 981, 756};	// manually selected!
 			float[] ypts = {347, 71, 207, 591};
 			Roi roi = new PolygonRoi(xpts, ypts, Roi.POLYGON);

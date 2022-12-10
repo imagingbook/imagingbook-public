@@ -57,7 +57,7 @@ public class Convert_To_Color_Stack implements PlugInFilter {
 	 */
 	public Convert_To_Color_Stack() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 

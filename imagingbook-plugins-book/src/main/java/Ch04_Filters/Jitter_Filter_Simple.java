@@ -40,7 +40,7 @@ public class Jitter_Filter_Simple implements PlugInFilter {
 	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
 	public Jitter_Filter_Simple() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 		

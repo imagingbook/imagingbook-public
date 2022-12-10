@@ -46,7 +46,7 @@ public class Linear_Blending_Stack implements PlugInFilter {
 	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
 	public Linear_Blending_Stack() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.ShipBeachSmallStack_tif);
+			DialogUtils.askForSampleImage(GeneralSampleImage.ShipBeachSmallStack);
 		}
 	}
 

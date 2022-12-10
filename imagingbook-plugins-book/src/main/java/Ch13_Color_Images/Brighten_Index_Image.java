@@ -43,7 +43,7 @@ public class Brighten_Index_Image implements PlugInFilter {
 	 */
 	public Brighten_Index_Image() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.FlowerIdx256_tif);
+			DialogUtils.askForSampleImage(GeneralSampleImage.FlowerIdx256);
 		}
 	}
 	

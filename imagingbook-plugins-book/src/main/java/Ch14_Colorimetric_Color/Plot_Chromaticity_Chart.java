@@ -41,7 +41,7 @@ public class Plot_Chromaticity_Chart implements PlugInFilter {
      */
     public Plot_Chromaticity_Chart() {
         if (noCurrentImage()) {
-            DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+            DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
         }
     }
 

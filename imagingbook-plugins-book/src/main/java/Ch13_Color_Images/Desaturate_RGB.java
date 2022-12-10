@@ -41,7 +41,7 @@ public class Desaturate_RGB implements PlugInFilter {
 	 */
 	public Desaturate_RGB() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 

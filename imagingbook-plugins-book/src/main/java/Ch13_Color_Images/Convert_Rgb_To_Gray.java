@@ -40,7 +40,7 @@ public class Convert_Rgb_To_Gray implements PlugInFilter {
 	 */
 	public Convert_Rgb_To_Gray() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 	

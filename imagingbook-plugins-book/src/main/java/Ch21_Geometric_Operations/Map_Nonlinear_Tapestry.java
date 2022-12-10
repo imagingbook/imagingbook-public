@@ -49,7 +49,7 @@ public class Map_Nonlinear_Tapestry implements PlugInFilter {
 	 */
 	public Map_Nonlinear_Tapestry() {
 		if (IjUtils.noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Flower_jpg);
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
 		}
 	}
 	

@@ -50,7 +50,7 @@ public class Match_Reference_Histogram_Stack implements PlugInFilter {
 	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
 	public Match_Reference_Histogram_Stack() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.CityscapeSmallStack_tif);
+			DialogUtils.askForSampleImage(GeneralSampleImage.CityscapeSmallStack);
 		}
 	}
 

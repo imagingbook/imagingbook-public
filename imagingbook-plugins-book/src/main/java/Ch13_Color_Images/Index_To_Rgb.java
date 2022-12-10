@@ -44,7 +44,7 @@ public class Index_To_Rgb implements PlugInFilter {
 	 */
 	public Index_To_Rgb() {
 		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.FlowerIdx256_tif);
+			DialogUtils.askForSampleImage(GeneralSampleImage.FlowerIdx256);
 		}
 	}
 	
