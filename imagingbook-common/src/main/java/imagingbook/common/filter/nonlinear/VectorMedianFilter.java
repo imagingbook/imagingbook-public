@@ -15,13 +15,19 @@ import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.VectorNorm;
 import imagingbook.common.math.VectorNorm.NormType;
+import imagingbook.common.util.ParameterBundle;
 
 /**
- * Basic vector median filter for color images implemented
- * by extending the {@link GenericFilterVector} class.
- * 
+ * <p>
+ * Vector median filter for color images implemented by extending the {@link GenericFilterVector} class. See Sec. 15.2.2
+ * of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
  * @author WB
- * @version 2020/12/31
  * @version 2022/09/10 removed debugging code
  */
 public class VectorMedianFilter extends GenericFilterVector {

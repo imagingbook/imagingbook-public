@@ -15,18 +15,24 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.filter.mask.CircularMask;
 import imagingbook.common.image.PixelPack.PixelSlice;
+import imagingbook.common.util.ParameterBundle;
 
 /**
- * Ordinary (scalar) median filter for color images implemented
- * by extending the {@link GenericFilter} class.
- * Color images are filtered individually in all channels.
- * 
+ * <p>
+ * Ordinary (scalar) median filter for color images implemented by extending the {@link GenericFilter} class. Color
+ * images are filtered individually in all channels. See Sec. 15.2.1 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
  * @author WB
  * @version 2020/12/31
  */
 public class ScalarMedianFilter extends GenericFilterScalar {
 	
-	public static class Parameters {
+	public static class Parameters implements ParameterBundle<ScalarMedianFilter> {
 		/** Filter radius */
 		public double radius = 3.0;
 	}

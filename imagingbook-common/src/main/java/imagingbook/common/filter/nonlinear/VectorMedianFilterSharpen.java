@@ -18,12 +18,17 @@ import imagingbook.common.math.Matrix;
 import imagingbook.common.math.VectorNorm;
 
 /**
- * Sharpening vector median filter for color images implemented
- * by extending the {@link GenericFilterVector} class.
- * 
+ * <p>
+ * Sharpening vector median filter for color images implemented by extending the {@link GenericFilterVector} class. See
+ * Sec. 15.2.3 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
  * @author WB
- * @version 2020/12/31
- * @version 2022/09/10 removed debugging code
+ * @version 2022/12/10
  */
 public class VectorMedianFilterSharpen extends GenericFilterVector {
 	
