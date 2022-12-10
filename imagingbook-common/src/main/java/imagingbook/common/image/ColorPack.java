@@ -28,17 +28,17 @@ import imagingbook.common.color.colorspace.sRgbColorSpace;
  * {@link #ColorPack(ColorProcessor)}). To be converted back to a
  * {@link ColorProcessor}, the {@link ColorPack} must be in sRGB color space
  * (see {@link #convertToSrgb()}).
- * 
+ *
  * @author WB
  * @version 2022/09/10
  */
 public class ColorPack extends PixelPack {
-	
+
 	// the current color space of this color stack
 	private ColorSpace colorspace = null;
-	
+
 	// ---------------------------------------------------------------------
-	
+
 	/**
 	 * Constructor.
 	 * @param cp a color image assumed to be in sRGB
@@ -47,9 +47,9 @@ public class ColorPack extends PixelPack {
 		super(cp, 1.0/255, null);
 		setColorSpace(sRgbColorSpace.getInstance());
 	}
-	
+
 	// -----------------------------------------------------------------
-	
+
 	/**
 	 * Returns the 3 color components as an array of {@link FloatProcessor}.
 	 * @return a {@link FloatProcessor} array
@@ -61,7 +61,7 @@ public class ColorPack extends PixelPack {
 		}
 		return processors;
 	}
-	
+
 	/**
 	 * Returns the current color space instance of this {@link ColorPack}.
 	 * @return the current color space
@@ -69,56 +69,55 @@ public class ColorPack extends PixelPack {
 	public ColorSpace getColorspace() {
 		return this.colorspace;
 	}
-	
+
 	private void setColorSpace(ColorSpace colorspace) {
 		this.colorspace = colorspace;
 	}
-	
+
 	// -----------------------------------------------------------------
-	
+
 	/**
-	 * Converts the pixel values of this {@link ColorPack} to the specified
-	 * color space. The color stack must be in sRGB space.
-	 * Exceptions are thrown if the color stack is not in sRGB color space
-	 * or the target color space is sRGB.
-	 * 
+	 * Converts the pixel values of this {@link ColorPack} to the specified color space. The color stack must be in sRGB
+	 * space. An exceptions is thrown if the color stack is not in sRGB color space. Has no effect if the target color
+	 * space already is sRGB.
+	 *
 	 * @param targetColorspace the new color space
 	 */
 	public void convertFromSrgbTo(ColorSpace targetColorspace) {
 		if (!(colorspace instanceof sRgbColorSpace)) {
 			throw new IllegalStateException("color stack must be in sRGB");
 		}
-		
+
 		if (targetColorspace instanceof sRgbColorSpace) {
-			throw new IllegalArgumentException("cannot convert color stack from sRGB to sRGB");
+			return;	// no effect
+			// throw new IllegalArgumentException("cannot convert color stack from sRGB to sRGB");
 		}
-		
+
 		final float[] srgb = new float[3];
-		
+
 		for (int i = 0; i < length; i++) {
 			getPix(i, srgb);
 			clipTo01(srgb);
 			float[] c = targetColorspace.fromRGB(srgb);
 			setPix(i, c);
 		}
-		
+
 		setColorSpace(targetColorspace);
 	}
-	
+
 	// -----------------------------------------------------------------
 
 	/**
-	 * Converts this {@link ColorPack} to sRGB space.
-	 * An exceptions is thrown if the color stack is in sRGB color space
-	 * already.
+	 * Converts this {@link ColorPack} to sRGB space. Has no effect if the color stack is in sRGB color space already.
 	 */
 	public void convertToSrgb() {
 		if (colorspace instanceof sRgbColorSpace) {
-			throw new IllegalStateException("color stack is in sRGB already");
+			return;
+			// throw new IllegalStateException("color stack is in sRGB already");
 		}
-		
+
 		final float[] c = new float[3];
-		
+
 		for (int i = 0; i < length; i++) {
 			getPix(i, c);
 			float[] srgb = colorspace.toRGB(c);
@@ -127,9 +126,9 @@ public class ColorPack extends PixelPack {
 
 		setColorSpace(sRgbColorSpace.getInstance());
 	}
-	
+
 	// ---------------------------------------------------------------
-	
+
 	@Override
 	public ColorProcessor toColorProcessor() {
 		if (!(colorspace instanceof sRgbColorSpace)) {
@@ -137,12 +136,12 @@ public class ColorPack extends PixelPack {
 		}
 		return super.toColorProcessor(255);
 	}
-	
+
 	@Override	// arbitrary scaling is inhibited
 	public ColorProcessor toColorProcessor(double scale) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public ImageStack toImageStack() {
 		ImageStack stack = super.toImageStack();
@@ -152,19 +151,19 @@ public class ColorPack extends PixelPack {
 		}
 		return stack;
 	}
-	
+
 	// ------------------------------------------------------------------
-	
+
 	private float clipTo01(float val) {
 		if (val < 0) return 0f;
 		if (val > 1) return 1f;
 		return val;
 	}
-	
+
 	private void clipTo01(float[] vals) {
 		for (int i = 0; i < vals.length; i++) {
 			vals[i] = clipTo01(vals[i]);
 		}
 	}
-    
+
 }
