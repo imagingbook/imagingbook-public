@@ -65,7 +65,7 @@ public enum GeneralSampleImage implements ImageResource {
 
 		
 		/** TIFF image with attached ROI selection, used for trigonometric Fourier descriptors. */
-		HouseRoi_tif,
+		HouseRoi("HouseRoi.tif"),
 
 		/** Fairly large binary image with 0/1 values. */
 		RhinoBigCrop,
@@ -83,16 +83,16 @@ public enum GeneralSampleImage implements ImageResource {
 		ToolsSmall,
 		
 		/** Color image, used for piecewise image warping. */
-		WartburgSmall_jpg,
+		WartburgSmall("WartburgSmall.jpg"),
 		
 		/** Color image used for projective rectification. */
-		PostalPackageSmall_jpg,
+		PostalPackageSmall("PostalPackageSmall.jpg"),
 		
 		/** Full-RGB color image used for various non-linear transformations. */
-		Flower_jpg,
+		Flower("Flower.jpg"),
 
 		/** Indexed color image with 256 colors. */
-		FlowerIdx256_tif,
+		FlowerIdx256("FlowerIdx256.tif"),
 		
 		/** Grayscale image used for MSER feature detection. */
 		MortarSmall,
@@ -102,14 +102,31 @@ public enum GeneralSampleImage implements ImageResource {
 		/** Grayscale stereo image used for SIFT feature detection and matching. */
 		RamsesSmall,
 		/** A stack of 2 small grayscale stereo frames used for SIFT feature detection and matching. */
-		RamsesSmallStack_tif,
+		RamsesSmallStack("RamsesSmallStack.tif"),
 
 		/** A stack of 2 small grayscale images used for linear blending. */
-		ShipBeachSmallStack_tif,
+		ShipBeachSmallStack("ShipBeachSmallStack.tif"),
 
 		/** A stack of small grayscale images used for histogram specification/matching. */
-		CityscapeSmallStack_tif
+		CityscapeSmallStack("CityscapeSmallStack.tif"),
 		;
+
+		// -------------------------------------------------------------------------------
+
+		private final String filename;
+
+		GeneralSampleImage() {
+			this((String) null);
+		}
+
+		GeneralSampleImage(String filename) {
+			this.filename = filename;
+		}
+
+		@Override
+		public String getFileName() {
+			return (this.filename != null) ? this.filename : this.autoName();
+		}
 
 		public static void main(String[] args) {
 			ImageResource ir = GeneralSampleImage.Blobs;
