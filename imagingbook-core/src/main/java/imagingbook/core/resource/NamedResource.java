@@ -101,13 +101,20 @@ public interface NamedResource {
 	public String getFileName();
 
 	/**
-	 * Returns the URL to the associated resource. This method is not supposed to be overridden.
+	 * Returns the URL to the associated resource. This method is not supposed to be overridden. Throws an exception if
+	 * the requested resource does not exist.
 	 *
 	 * @return the URL to the associated resource
 	 */
 	public default URL getURL() {
 		Class<?> clazz = this.getClass();
-		return clazz.getResource(this.getRelativePath());
+		String relPath = this.getRelativePath();
+		URL url = clazz.getResource(relPath);
+		if (url == null) {
+			throw new RuntimeException("could not find resource " +
+					clazz.getResource("") + relPath);
+		}
+		return url;
 	}
 	
 	/**
