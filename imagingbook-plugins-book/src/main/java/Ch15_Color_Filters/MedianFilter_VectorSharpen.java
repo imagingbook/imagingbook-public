@@ -14,38 +14,60 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen;
 import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen.Parameters;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.VectorNorm.NormType;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
- * This plugin applies a sharpening vector median filter to a RGB color image.
+ * <p>
+ * This plugin applies a sharpening vector median filter to a RGB color image. See Sec. 15.2.3 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
  * @author WB
- * 
- * @version 2013/05/30
- * @version 2022/09/10 removed debugging code
+ *
+ * @version 2022/12/10
  */
-public class MedianFilter_Color_VectorSharpen implements PlugInFilter {
-	
-	ImagePlus imp = null;
+public class MedianFilter_VectorSharpen implements PlugInFilter {
+
+	private static Parameters params = new VectorMedianFilterSharpen.Parameters();
+	static {
+		params.radius = 3;
+		params.sharpen = 0.5;
+		params.threshold = 0.0;
+		params.distanceNorm = NormType.L1;
+	}
+	private ImagePlus im;
+
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public MedianFilter_VectorSharpen() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.ColorTest3);
+		}
+	}
 	
     @Override
-	public int setup(String arg, ImagePlus imp) {
-    	this.imp = imp;
+	public int setup(String arg, ImagePlus im) {
+    	this.im = im;
         return DOES_RGB;
     }
 
     @Override
 	public void run(ImageProcessor ip) {
-    	Parameters params = new VectorMedianFilterSharpen.Parameters();
-    	if (!setParameters(params))
+    	if (!runDialog())
     		return;
-
     	VectorMedianFilterSharpen filter = new VectorMedianFilterSharpen(params);
     	filter.applyTo(ip);
-    	
  //   	IJ.log("Pixels modified: " + filter.modifiedCount + " of " + (ip.getPixelCount()));
     }
     
-    boolean setParameters(Parameters params) {
+    boolean runDialog() {
 		GenericDialog gd = new GenericDialog("Median Filter");
 		gd.addNumericField("Radius", params.radius, 1);
 		gd.addNumericField("Sharpen", params.sharpen, 1);
@@ -55,7 +77,9 @@ public class MedianFilter_Color_VectorSharpen implements PlugInFilter {
 //		gd.addCheckbox("Show mask", params.showMask);
 		
 		gd.showDialog();
-		if(gd.wasCanceled()) return false;
+		if (gd.wasCanceled())
+			return false;
+
 		params.radius = Math.max(gd.getNextNumber(),0.5);
 		params.sharpen = gd.getNextNumber();
 		params.threshold = gd.getNextNumber();

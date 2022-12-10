@@ -14,37 +14,61 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.nonlinear.VectorMedianFilter;
 import imagingbook.common.filter.nonlinear.VectorMedianFilter.Parameters;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.VectorNorm.NormType;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
- * This plugin applies a vector median filter to a RGB color image.
+ * <p>
+ * This plugin applies a vector median filter to a RGB color image. See Sec. 15.2.2 of [1] for details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
  * @author WB
- * @version 2013/05/30
+ * @version 2022/12/10
  */
-public class MedianFilter_Color_Vector implements PlugInFilter {
-	
+public class MedianFilter_Vector implements PlugInFilter {
+
+	private static final Parameters params = new VectorMedianFilter.Parameters();
+	static {
+		params.radius = 3;
+		params.distanceNorm = NormType.L1;
+	}
+
+	private ImagePlus im;
+
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public MedianFilter_Vector() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.ColorTest3);
+		}
+	}
+
     @Override
-	public int setup(String arg, ImagePlus imp) {
+	public int setup(String arg, ImagePlus im) {
+		this.im = im;
          return DOES_RGB;
     }
 
     @Override
 	public void run(ImageProcessor ip) {
-    	Parameters params = new VectorMedianFilter.Parameters();
-    	if (!setParameters(params)) return;
-    	
-    	params.distanceNorm = NormType.L1;
-    	params.radius = 3.0;
+    	if (!runDialog())
+			return;
 
     	VectorMedianFilter filter = new VectorMedianFilter(params);
     	filter.applyTo(ip);
-    	
- //   	IJ.log("Pixels modified: " + filter.modifiedCount + " of " + (ip.getPixelCount()));
     }
     
-    boolean setParameters(Parameters params) {
-		GenericDialog gd = new GenericDialog("Median Filter");
-		gd.addNumericField("Radius", params.radius, 1);
+    private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addNumericField("Filter radius", params.radius, 1);
 		gd.addEnumChoice("Distance norm", params.distanceNorm);
 //		gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);
 //		gd.addCheckbox("Show mask", params.showMask);

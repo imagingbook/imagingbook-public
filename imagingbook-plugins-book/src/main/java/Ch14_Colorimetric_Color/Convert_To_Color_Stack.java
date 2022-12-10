@@ -29,27 +29,29 @@ import imagingbook.sampleimages.GeneralSampleImage;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
- * ImageJ plugin, converts a sRGB color image to Lab, Luv, HLS, HSV or Linear
- * RGB color space and shows the resulting components as a image stack
- * (with float values).
- * 
+ * ImageJ plugin, converts a sRGB color image to Lab, Luv, HLS, HSV or Linear RGB color space and shows the resulting
+ * components as a image stack (with float values).
+ *
  * @author WB
- * @see imagingbook.common.color.colorspace.LabColorSpace
- * @see imagingbook.common.color.colorspace.LuvColorSpace
- * @see imagingbook.common.color.colorspace.HlsColorSpace
- * @see imagingbook.common.color.colorspace.HsvColorSpace
- * @see imagingbook.common.color.colorspace.LinearRgb65ColorSpace
+ * @version 2022/12/09
+ *
+ * @see LabColorSpace
+ * @see LuvColorSpace
+ * @see HlsColorSpace
+ * @see HsvColorSpace
+ * @see LinearRgb65ColorSpace
+ * @see XYZ65ColorSpace
  * @see imagingbook.common.image.ColorPack
  */
 public class Convert_To_Color_Stack implements PlugInFilter {
-	
+
 	private enum TargetSpaceType {
-		Lab, Luv, HLS, HSV, LinearRGB, XYZ	// TODO: add XYZ
+		Lab, Luv, HLS, HSV, LinearRGB, XYZ;
 	}
-	
+
 	private static TargetSpaceType TargetSpace = TargetSpaceType.Lab;
 	private static boolean ReconstructRGB = false;
-	
+
 	private ImagePlus im;
 
 	/**
@@ -69,13 +71,13 @@ public class Convert_To_Color_Stack implements PlugInFilter {
 
 	@Override
 	public void run(ImageProcessor ip) {
-		
+
 		if (!runDialog()) {
 			return;
 		}
-		
+
 		String title = im.getShortTitle();
-		
+
 		ColorSpace csp = null;
 		switch(TargetSpace) {
 			case Lab: csp = LabColorSpace.getInstance(); break;
@@ -85,32 +87,32 @@ public class Convert_To_Color_Stack implements PlugInFilter {
 			case LinearRGB:	csp = LinearRgb65ColorSpace.getInstance(); break;
 			case XYZ: csp = XYZ65ColorSpace.getInstance(); break;
 		}
-		
+
 		ColorPack cPack = new ColorPack((ColorProcessor) ip);
 		cPack.convertFromSrgbTo(csp);
-		
+
 		ImageStack stack = cPack.toImageStack();
-		new ImagePlus(title + "-" + TargetSpace.toString(), stack).show();
-		
+		new ImagePlus(title + " (" + TargetSpace.toString() + ")", stack).show();
+
 		if (ReconstructRGB) {
 			cPack.convertToSrgb();
 			ColorProcessor cp = cPack.toColorProcessor();
-			new ImagePlus(title + "-RGB", cp).show();	
+			new ImagePlus(title + " (sRGB)", cp).show();
 		}
 	}
-	
+
 	// ---------------------------------------
-	
+
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addMessage("Convert RGB image to Lab/Luv stack.");
 		gd.addEnumChoice("Target color space", TargetSpace);
 		gd.addCheckbox("Reconstruct RGB image", ReconstructRGB);
-		
+
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
-		
+
 		TargetSpace = gd.getNextEnumChoice(TargetSpaceType.class);
 		ReconstructRGB = gd.getNextBoolean();
 		return true;
