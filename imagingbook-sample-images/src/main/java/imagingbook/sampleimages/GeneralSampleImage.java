@@ -109,6 +109,9 @@ public enum GeneralSampleImage implements ImageResource {
 
 		/** A stack of small grayscale images used for histogram specification/matching. */
 		CityscapeSmallStack("CityscapeSmallStack.tif"),
+
+		/** A small color test image for evaluating effects of filters in different color spaces. */
+		ColorTest3,
 		;
 
 		// -------------------------------------------------------------------------------
