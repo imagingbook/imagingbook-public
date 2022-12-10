@@ -19,7 +19,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -128,4 +130,22 @@ public abstract class ClassUtils {
 		return allClasses;
 	}
 
+	/**
+	 * Returns an array of all constants defined by the specified enum class, sorted by their names.
+	 *
+	 * @param enumClass the enum class
+	 * @return an array of enum items sorted by names
+	 * @param <E> generic type
+	 */
+	public static <E extends Enum<E>> E[] getEnumConstantsSorted(Class<E> enumClass) {
+		E[] items = enumClass.getEnumConstants();
+		// compare by constant names (case sensitive):
+		Comparator<E> cpr = new Comparator<>() {
+			public int compare(E e1, E e2) {
+				return e1.name().compareTo(e2.name());
+			}
+		};
+		Arrays.sort(items, cpr);
+		return items;
+	}
 }
