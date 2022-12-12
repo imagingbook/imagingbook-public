@@ -20,13 +20,6 @@ public class CieXyPlot extends Path2D.Double {
     private final double canvasSize;
 
     /**
-     * Constructor, creates a xy-diagram in a unit-size canvas.
-     */
-    public CieXyPlot() {
-        this(1);
-    }
-
-    /**
      * Constructor, creates a xy-diagram in a canvas with the specified size.
      * @param CanvasSize the size of the canvas
      */
