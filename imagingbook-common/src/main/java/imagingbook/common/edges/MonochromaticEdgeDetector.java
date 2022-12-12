@@ -34,15 +34,7 @@ import imagingbook.common.util.ParameterBundle;
  * @version 2022/09/11 changed to 2D kernel arrays using IjUtils
  */
 public class MonochromaticEdgeDetector implements EdgeDetector {
-	
-	/**
-	 * Parameters for {@link MonochromaticEdgeDetector} (currently none defined).
-	 */
-	public static class Parameters implements ParameterBundle<MonochromaticEdgeDetector> {
-	}
 
-	@SuppressWarnings("unused")
-	private final Parameters params;
 	private final int M;	// image width
 	private final int N;	// image height
 	private final FloatProcessor Emag;	// edge magnitude map
@@ -58,13 +50,9 @@ public class MonochromaticEdgeDetector implements EdgeDetector {
 			{-1, -2, -1},
 			{ 0,  0,  0},
 			{ 1,  2,  1}});
-    
-	public MonochromaticEdgeDetector(ColorProcessor cp) {
-		this(cp, new Parameters());
-	}
+
 	
-	public MonochromaticEdgeDetector(ColorProcessor cp, Parameters params) {
-		this.params = params;
+	public MonochromaticEdgeDetector(ColorProcessor cp) {
 		this.M = cp.getWidth();
 		this.N = cp.getHeight();
 		this.Emag = new FloatProcessor(M, N);

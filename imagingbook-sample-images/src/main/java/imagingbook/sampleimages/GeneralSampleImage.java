@@ -112,6 +112,8 @@ public enum GeneralSampleImage implements ImageResource {
 
 		/** A small color test image for evaluating effects of filters in different color spaces. */
 		ColorTest3,
+
+		Balloons600("Balloons600.jpg"),
 		;
 
 		// -------------------------------------------------------------------------------
@@ -131,8 +133,9 @@ public enum GeneralSampleImage implements ImageResource {
 			return (this.filename != null) ? this.filename : this.autoName();
 		}
 
-		public static void main(String[] args) {
-			ImageResource ir = GeneralSampleImage.Blobs;
-			System.out.println(ir.getImagePlus());
-		}
+		// public static void main(String[] args) {
+		// 	ImageResource ir = GeneralSampleImage.Balloons600;
+		// 	System.out.println(ir.getRelativePath());
+		// 	// System.out.println(ir.getImagePlus());
+		// }
 }

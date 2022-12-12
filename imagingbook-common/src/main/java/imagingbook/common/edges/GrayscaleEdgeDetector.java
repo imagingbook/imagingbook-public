@@ -22,30 +22,20 @@ import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
- * Simple grayscale edge detector for all types of images.
- * Color images are converted to grayscale before edge detection.
- * See Sec. 5.3 of [1] for a detailed description.
+ * Simple grayscale edge detector for all types of images. Color images are converted to grayscale before edge
+ * detection. See Sec. 5.3 of [1] for a detailed description.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2014/02/17
- * @version 2022/09/04 converted to implement interface
- * @version 2022/09/11 changed to 2D kernel arrays using IjUtils
+ * @version 2022/12/12
+ * @see GrayscaleEdgeDetector
  */
 public class GrayscaleEdgeDetector implements EdgeDetector {
 
-	/**
-	 * Parameters for {@link GrayscaleEdgeDetector} (currently none defined).
-	 */
-	public static class Parameters implements ParameterBundle<GrayscaleEdgeDetector> {
-	}
-	
-	@SuppressWarnings("unused")
-	private final Parameters params;
 	private final int M;	// image width
 	private final int N;	// image height
 	private final FloatProcessor Emag;	// edge magnitude map
@@ -61,13 +51,8 @@ public class GrayscaleEdgeDetector implements EdgeDetector {
 			{-1, -2, -1},
 			{ 0,  0,  0},
 			{ 1,  2,  1}});
-    
-	public GrayscaleEdgeDetector(ImageProcessor I) {
-		this(I, new Parameters());
-	}
-	
-	public GrayscaleEdgeDetector(ImageProcessor ip, Parameters params) {
-		this.params = params;
+
+	public GrayscaleEdgeDetector(ImageProcessor ip) {
 		this.M = ip.getWidth();
 		this.N = ip.getHeight();
 		Emag = new FloatProcessor(M, N);
@@ -90,11 +75,9 @@ public class GrayscaleEdgeDetector implements EdgeDetector {
 			for (int u = 0; u < M; u++) {
 				// extract the gradients of the R, G, B channels:
 				double dx = Ix.getf(u, v);	
-				double dy = Iy.getf(u, v);		
-				
+				double dy = Iy.getf(u, v);
 				// calculate local edge magnitude:
-				Emag.setf(u, v, (float) sqrt(sqr(dx) + sqr(dy)));	
-				
+				Emag.setf(u, v, (float) sqrt(sqr(dx) + sqr(dy)));
 				// calculate edge orientation for the maximum channel:
 				Eort.setf(u, v, (float) atan2(dy, dx));
 			}

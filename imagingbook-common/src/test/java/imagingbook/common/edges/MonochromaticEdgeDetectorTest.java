@@ -15,16 +15,13 @@ import imagingbook.testutils.ImageTestUtils;
 public class MonochromaticEdgeDetectorTest {
 	
 	private static final double TOL = 1e-3;
-	
-	// default parameters used to produce test images
-	private static final MonochromaticEdgeDetector.Parameters params = new MonochromaticEdgeDetector.Parameters();
 
 	@Test
 	public void testColor() {
 		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImagePlus().getProcessor();
 		assertTrue("must be a ColorProcessor", ip instanceof ColorProcessor);
 		
-		MonochromaticEdgeDetector detector = new MonochromaticEdgeDetector((ColorProcessor) ip, params);
+		MonochromaticEdgeDetector detector = new MonochromaticEdgeDetector((ColorProcessor) ip);
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);

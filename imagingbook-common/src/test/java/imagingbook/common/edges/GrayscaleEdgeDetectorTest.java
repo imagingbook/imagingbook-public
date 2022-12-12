@@ -16,8 +16,7 @@ import imagingbook.testutils.ImageTestUtils;
 public class GrayscaleEdgeDetectorTest {
 	
 	static double TOL = 0.001;
-	
-	static GrayscaleEdgeDetector.Parameters params = new GrayscaleEdgeDetector.Parameters();
+
 	static {	// default parameters used to produce test images
 		// no parameters to set
 	}
@@ -27,7 +26,7 @@ public class GrayscaleEdgeDetectorTest {
 		ImageProcessor ip = EdgeDetectionTestImage.Balloons600color.getImagePlus().getProcessor();
 		assertTrue(ip instanceof ColorProcessor);
 		
-		GrayscaleEdgeDetector detector = new GrayscaleEdgeDetector(ip, params);
+		GrayscaleEdgeDetector detector = new GrayscaleEdgeDetector(ip);
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
@@ -43,7 +42,7 @@ public class GrayscaleEdgeDetectorTest {
 		ImageProcessor ip = EdgeDetectionTestImage.Balloons600gray.getImagePlus().getProcessor();
 		assertTrue(ip instanceof ByteProcessor);
 		
-		GrayscaleEdgeDetector detector = new GrayscaleEdgeDetector(ip, params);
+		GrayscaleEdgeDetector detector = new GrayscaleEdgeDetector(ip);
 		
 		FloatProcessor eMag = detector.getEdgeMagnitude();
 		assertNotNull(eMag);
