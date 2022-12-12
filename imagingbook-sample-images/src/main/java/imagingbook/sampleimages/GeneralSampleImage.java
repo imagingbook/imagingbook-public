@@ -113,7 +113,11 @@ public enum GeneralSampleImage implements ImageResource {
 		/** A small color test image for evaluating effects of filters in different color spaces. */
 		ColorTest3,
 
+		/** A color image for testing color edge detectors. */
 		Balloons600("Balloons600.jpg"),
+
+		/** A poor-quality, noisy color image for testing edge-preserving smoothing. */
+		Postcard2c("Postcard2c.jpg"),
 		;
 
 		// -------------------------------------------------------------------------------

@@ -93,7 +93,6 @@ public class Color_Edges_Canny implements PlugInFilter {
 
 		if (ShowColoredEdgeTraces) {
 			List<EdgeTrace> edgeTraces = detector.getEdgeTraces();
-			IJ.log("number of edge traces: " + edgeTraces.size());
 			ColorProcessor traceIp = new ColorProcessor(ip.getWidth(), ip.getHeight());
 			RandomHueGenerator rcg = new RandomHueGenerator();
 			for (EdgeTrace trace : edgeTraces) {

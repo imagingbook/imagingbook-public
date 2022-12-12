@@ -10,6 +10,7 @@ package Ch17_EdgePreserving_Smoothing;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -19,16 +20,28 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.edgepreserving.KuwaharaF.Parameters;
 import imagingbook.common.filter.edgepreserving.KuwaharaFilterScalar;
 import imagingbook.common.filter.edgepreserving.KuwaharaFilterVector;
+import imagingbook.common.ij.DialogUtils;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
- * Scalar version. Applied to color images, each color component is filtered separately.
- * This plugin demonstrates the use of the Kuwahara filter, similar to the filter suggested in 
- * Tomita and Tsuji (1977). It structures the filter region into  five overlapping, 
- * square subregions of size (r+1) x (r+1). Unlike the original Kuwahara filter,
- * it includes a centered subregion. This plugin works for all types of images and stacks.
- * 
+ * <p>
+ * This ImageJ plugin demonstrates the use of the Kuwahara filter, similar to the filter suggested in [1]. It structures
+ * the filter region into  five overlapping, square subregions of size (r+1) x (r+1). Unlike the original Kuwahara
+ * filter, it includes a centered subregion. This plugin works for all types of images and stacks. See Sec. 17.1 of [2]
+ * for additional details.
+ * </p>
+ * <p>
+ * [1] F. Tomita and S. Tsuji. Extraction of multiple regions by smoothing in selected neighborhoods. IEEE Transactions
+ * on Systems, Man, and Cybernetics 7, 394–407 (1977).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
  * @author WB
- * @version 2022/03/30
+ * @version 2022/12/12
+ * @see KuwaharaFilterScalar
+ * @see KuwaharaFilterVector
  */
 public class Kuwahara_Filter implements PlugInFilter {
 
@@ -37,13 +50,22 @@ public class Kuwahara_Filter implements PlugInFilter {
 	
 	private boolean isColor;
 
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public Kuwahara_Filter() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Postcard2c);
+		}
+	}
+
 	public int setup(String arg, ImagePlus imp) {
 		return DOES_ALL + DOES_STACKS;
 	}
 
 	public void run(ImageProcessor ip) {
 		isColor = (ip instanceof ColorProcessor);
-		if (!getParameters())
+		if (!runDialog())
 			return;
 		if (isColor && UseVectorFilter) {
 			new KuwaharaFilterVector(params).applyTo((ColorProcessor)ip);
@@ -53,7 +75,7 @@ public class Kuwahara_Filter implements PlugInFilter {
 		}
 	}
 
-	private boolean getParameters() {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
 		if (isColor)

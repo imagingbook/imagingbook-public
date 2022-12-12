@@ -10,6 +10,7 @@ package Ch17_EdgePreserving_Smoothing;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -22,17 +23,28 @@ import imagingbook.common.filter.edgepreserving.BilateralFilterScalarSeparable;
 import imagingbook.common.filter.edgepreserving.BilateralFilterVector;
 import imagingbook.common.filter.edgepreserving.BilateralFilterVectorSeparable;
 import imagingbook.common.filter.generic.GenericFilter;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
- * This plugin demonstrates the use of the (full) BilateralFilter class. This
- * plugin works for all types of images. Given a color image, the filter is
- * applied separately to each color component if {@code UseScalarFilter} is set
- * true. Otherwise a vector filter is applied, using the specified color norm.
- * 
+ * <p>
+ * This ImageJ plugin demonstrates the use of the Bilateral filter. This plugin works for all types of images. Given a
+ * color image, the filter is applied separately to each color component if {@code UseScalarFilter} is set true.
+ * Otherwise a vector filter is applied, using the specified color norm. See Sec. 17.2 of [1] for additional details.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
  * @author WB
- * @version 2022/03/30
+ * @version 2022/12/12
+ * @see BilateralFilterScalar
+ * @see BilateralFilterVector
+ * @see BilateralFilterScalarSeparable
+ * @see BilateralFilterVectorSeparable
  */
 public class Bilateral_Filter implements PlugInFilter {
 	
@@ -41,14 +53,25 @@ public class Bilateral_Filter implements PlugInFilter {
 	private static boolean UseScalarFilter = false;
 	
 	private boolean isColor;
-	
+
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public Bilateral_Filter() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Postcard2c);
+		}
+	}
+
+	@Override
 	public int setup(String arg0, ImagePlus imp) {
 		return DOES_ALL;
 	}
-	
+
+	@Override
 	public void run(ImageProcessor ip) {
 		isColor = (ip instanceof ColorProcessor);
-		if (!getParameters())
+		if (!runDialog())
 			return;
 		
 		GenericFilter filter = null;	
@@ -68,11 +91,11 @@ public class Bilateral_Filter implements PlugInFilter {
 		}
 	}
 		
-	private boolean getParameters() {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
 		gd.addCheckbox("Use scalar filters (color only)", UseScalarFilter);
-		gd.addCheckbox("Use X/Y-separable filter", UseSeparableFilter);
+		gd.addCheckbox("Use X/Y-separable filter (faster)", UseSeparableFilter);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) 
@@ -81,11 +104,8 @@ public class Bilateral_Filter implements PlugInFilter {
 		getFromDialog(params, gd);
 		UseScalarFilter = gd.getNextBoolean();
 		UseSeparableFilter = gd.getNextBoolean();
-		
 		params.sigmaD = Math.max(params.sigmaD, 0.5);
 		params.sigmaR = Math.max(params.sigmaR, 1);
 		return params.validate();
     }
 }
-
-

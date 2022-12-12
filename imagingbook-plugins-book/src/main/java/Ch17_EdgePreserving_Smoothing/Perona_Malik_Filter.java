@@ -10,6 +10,7 @@ package Ch17_EdgePreserving_Smoothing;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -21,30 +22,51 @@ import imagingbook.common.filter.edgepreserving.PeronaMalikF.Parameters;
 import imagingbook.common.filter.edgepreserving.PeronaMalikFilterScalar;
 import imagingbook.common.filter.edgepreserving.PeronaMalikFilterVector;
 import imagingbook.common.filter.generic.GenericFilter;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
- * This plugin demonstrates the use of the PeronaMalikFilter class.
+ * This ImageJ plugin demonstrates the use of the Perona-Malik filter [1]. See Sec. 17.3 of [2] for additional details.
  * This plugin works for all types of images and stacks.
- * 
+ * <p>
+ * [1] Pietro Perona and Jitendra Malik, "Scale-space and edge detection using anisotropic diffusion", IEEE Transactions
+ * on Pattern Analysis and Machine Intelligence, vol. 12, no. 4, pp. 629-639 (July 1990).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
  * @author WB
- * @version 2021/01/05
+ * @version 2022/12/12
+ * @see PeronaMalikFilterScalar
+ * @see PeronaMalikFilterVector
  */
 public class Perona_Malik_Filter implements PlugInFilter {
 
 	private static Parameters params = new Parameters();
-	
 	private boolean isColor;
 
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public Perona_Malik_Filter() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Postcard2c);
+		}
+	}
+
+	@Override
 	public int setup(String arg0, ImagePlus imp) {
 		return DOES_ALL;
 	}
 
+	@Override
 	public void run(ImageProcessor ip) {
 		isColor = (ip instanceof ColorProcessor);
 		
-		if (!getParameters())
+		if (!runDialog())
 			return;
 		
 		GenericFilter filter = null;
@@ -62,7 +84,7 @@ public class Perona_Malik_Filter implements PlugInFilter {
 		}
 	}
 	
-	private boolean getParameters() {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
 		
@@ -71,7 +93,6 @@ public class Perona_Malik_Filter implements PlugInFilter {
 			return false;
 		
 		getFromDialog(params, gd);
-		
 		return params.validate();
 	}
 }

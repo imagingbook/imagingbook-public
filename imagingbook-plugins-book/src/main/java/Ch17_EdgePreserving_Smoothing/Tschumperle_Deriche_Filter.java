@@ -10,6 +10,7 @@ package Ch17_EdgePreserving_Smoothing;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -19,48 +20,62 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.edgepreserving.TschumperleDericheF.Parameters;
 import imagingbook.common.filter.edgepreserving.TschumperleDericheFilter;
 import imagingbook.common.filter.generic.GenericFilter;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.util.progress.ProgressMonitor;
+import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
- * This ImageJ plugin demonstrates the use of the Anisotropic Diffusion filter proposed 
- * by David Tschumperle in D. Tschumperle and R. Deriche, Rachid, "Diffusion PDEs on 
- * vector-valued images}", IEEE Signal Processing Magazine, vol. 19, no. 5, pp. 16-25 
- * (Sep. 2002). This plugin works for all types of images and stacks.
- * 
+ * <p>
+ * This ImageJ plugin demonstrates the use of the Anisotropic Diffusion filter described in [1]. See Sec. 17.3.5 for
+ * additional details. This plugin works for all types of images and stacks. It also demonstrates the use of
+ * {@link IjProgressBarMonitor}.
+ * </p>
+ * <p>
+ * [1] D. Tschumperle and R. Deriche, "Diffusion PDEs on vector-valued images", IEEE Signal Processing Magazine, vol.
+ * 19, no. 5, pp. 16-25 (Sep. 2002).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
  * @author WB
- * @version 2021/01/06
+ * @version 2022/12/12
+ * @see TschumperleDericheFilter
+ * @see IjProgressBarMonitor
  */
 
 public class Tschumperle_Deriche_Filter implements PlugInFilter {
-	
-	static {
-		LogStream.redirectSystem();
-		PrintPrecision.set(6);
-	}
-	
-	private static Parameters params = new Parameters();
-	
-//	private boolean isColor;
 
+	private static Parameters params = new Parameters();
+
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public Tschumperle_Deriche_Filter() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Postcard2c);
+		}
+	}
+
+	@Override
 	public int setup(String arg0, ImagePlus imp) {
 		return DOES_ALL + DOES_STACKS;
 	}
-	
+
+	@Override
 	public void run(ImageProcessor ip) {
-//		isColor = (ip instanceof ColorProcessor);
-		if (!getParameters())
+		if (!runDialog())
 			return;
 		
 		GenericFilter filter = new TschumperleDericheFilter(params);
-		
 		try (ProgressMonitor m = new IjProgressBarMonitor(filter)) {
 			filter.applyTo(ip);
 		}
 	}
 
-	private boolean getParameters() {
+	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
 		
@@ -70,34 +85,6 @@ public class Tschumperle_Deriche_Filter implements PlugInFilter {
 		getFromDialog(params, gd);
 		return params.validate();
 	}
-	
-//	private boolean getParameters() {
-//		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-//		gd.addNumericField("Number of iterations", params.iterations, 0);
-//		gd.addNumericField("dt (Time step)", params.dt, 1);
-//		gd.addNumericField("Gradient smoothing (sigma_g)", params.sigmaD, 2);
-//		gd.addNumericField("Structure tensor smoothing (sigma_s)", params.sigmaM, 2);
-//		gd.addNumericField("a1 (Diffusion limiter along minimal variations)", params.a0, 2);
-//		gd.addNumericField("a2 (Diffusion limiter along maximal variations)", params.a1, 2);
-////		if (isColor) {
-////			gd.addCheckbox("Use linear RGB", params.useLinearRgb);
-////		}
-//		gd.addMessage("Incorrect values are replaced by defaults.");
-//		
-//		gd.showDialog();
-//		if (gd.wasCanceled()) return false;
-//
-//		params.iterations = Math.max(1, (int)gd.getNextNumber());
-//		params.dt = (double) gd.getNextNumber();
-//		params.sigmaD = gd.getNextNumber();
-//		params.sigmaM = gd.getNextNumber();
-//		params.a0 = (float) gd.getNextNumber();
-//		params.a1 = (float) gd.getNextNumber();
-////		if (isColor) {
-////			params.useLinearRgb = gd.getNextBoolean();
-////		}
-//		return true;
-//	}
 
 }
 

@@ -17,21 +17,18 @@ import imagingbook.common.math.Matrix;
 
 /**
  * <p>
- * Vector version (applicable to ColorProcessor only) of a Kuwahara-type filter, 
- * similar to the filter described in [1]. 
- * It structures the filter region into five overlapping, 
- * square subregions (including a center region) of size (r+1) x (r+1). 
- * See Sec. 17.1 of [2] for additional details.
+ * Vector version (applicable to ColorProcessor only) of a Kuwahara-type filter, similar to the filter described in [1].
+ * It structures the filter region into five overlapping, square subregions (including a center region) of size (r+1) x
+ * (r+1). See Sec. 17.1 of [2] for additional details.
  * </p>
  * <p>
- * [1] F. Tomita and S. Tsuji. Extraction of multiple regions by smoothing
- * in selected neighborhoods. IEEE Transactions on Systems, Man,
- * and Cybernetics 7, 394–407 (1977).
+ * [1] F. Tomita and S. Tsuji. Extraction of multiple regions by smoothing in selected neighborhoods. IEEE Transactions
+ * on Systems, Man, and Cybernetics 7, 394–407 (1977).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2021/01/02
  */
@@ -57,16 +54,15 @@ public class KuwaharaFilterVector extends GenericFilterVector implements Kuwahar
 	
 	// ------------------------------------------------------
 
-	private float Smin;		// min. variance
 	private final float[] Amin = new float[3];
 	private final float[] rgb = new float[3];
-	
+	private float Smin;		// min. variance
 
 	@Override
 	protected float[] doPixel(PixelPack pack, int u, int v)  {
-		Smin = Float.MAX_VALUE;
+		Smin = Float.POSITIVE_INFINITY;
 		evalSubregion(pack, u, v);				// centered subregion - different to original Kuwahara!
-		Smin = Smin - 3 * tsigma * n;				// tS * n because we use variance scaled by n
+		Smin = Smin - 3 * tsigma * n;			// tS * n because we use variance scaled by n
 		evalSubregion(pack, u + dm, v + dm);
 		evalSubregion(pack, u + dm, v + dp);
 		evalSubregion(pack, u + dp, v + dm);
