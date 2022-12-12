@@ -13,23 +13,26 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Matrix;
+import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.spectral.dft.Dft2d;
 import imagingbook.spectral.dft.Dft2dDirect;
 import imagingbook.spectral.dft.Dft2dFast;
 import imagingbook.spectral.dft.ScalingMode;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+
 
 /**
  * <p>
- * This ImageJ plugin computes the 2-dimensional DFT (magnitude spectrum) from
- * an image of arbitrary size using {@code float} or {@code double} data.
- * Optionally, either a direct DFT or a fast FFT implementation is used. See
+ * This ImageJ plugin computes the 2-dimensional DFT (magnitude spectrum) from an image of arbitrary size using
+ * {@code float} or {@code double} data. Optionally, either a direct DFT or a fast FFT implementation is used. See
  * Chapters 18-19 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
  *
  * @author WB
@@ -47,6 +50,15 @@ public class DFT_2D_Demo implements PlugInFilter {
 	private int w, h;
 	private FloatProcessor reconstructionRe = null;
 	private FloatProcessor reconstructionIm = null;
+
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public DFT_2D_Demo() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
+		}
+	}
 	
 	@Override
 	public int setup(String arg, ImagePlus im) {
@@ -141,8 +153,8 @@ public class DFT_2D_Demo implements PlugInFilter {
 		gd.addCheckbox("Use fast mode (FFT)", UseFastMode);
 		gd.addCheckbox("Use double precision", UseDoublePrecision);
 		gd.addCheckbox("Show logarithmic spectrum", ShowLogSpectrum);
-		gd.addCheckbox("Center spectrum", CenterSpectrum);
-		gd.addCheckbox("Reconstruct image", ReconstructImage);
+		gd.addCheckbox("Show centered spectrum", CenterSpectrum);
+		gd.addCheckbox("Reconstruct image (re/im)", ReconstructImage);
 		
 		gd.showDialog(); 
 		if (gd.wasCanceled()) 

@@ -8,30 +8,32 @@
  */
 package Ch20_Discrete_Cosine_Transform;
 
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Matrix;
+import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.spectral.dct.Dct2d;
 import imagingbook.spectral.dct.Dct2dDirect;
 import imagingbook.spectral.dct.Dct2dFast;
 
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+
 /**
  * <p>
- * Calculates and displays the 2-dimensional DCT after converting the input
- * image to a float image. of arbitrary size. Optionally, either a direct DCT or
- * a fast DCT implementation is used, using either {@code float} or
- * {@code double} data. See Ch. 20 of [1] for additional details.
+ * Calculates and displays the 2-dimensional DCT after converting the input image to a float image. of arbitrary size.
+ * Optionally, either a direct DCT or a fast DCT implementation is used, using either {@code float} or {@code double}
+ * data. See Ch. 20 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/04/01
  */
@@ -45,6 +47,15 @@ public class DCT_2D_Demo implements PlugInFilter {
 	private ImagePlus im;
 	private int w, h;
 	private FloatProcessor reconstruction = null;
+
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public DCT_2D_Demo() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
+		}
+	}
 
 	@Override
 	public int setup(String arg, ImagePlus im) {
@@ -68,10 +79,7 @@ public class DCT_2D_Demo implements PlugInFilter {
 			spectrum.log();
 		}
 		
-//		spectrum.resetMinAndMax();		// why doesn't this work?
-		spectrum.setMinAndMax(0, 255);
-		IJ.log("min = " + spectrum.getMin());
-		IJ.log("max = " + spectrum.getMax());
+		spectrum.resetMinAndMax();
 		String name = im.getShortTitle();
 		String title = (ShowLogSpectrum) ?
 				name + "-DCT (log. spectrum)" : name + "-DCT (spectrum)";
@@ -80,7 +88,7 @@ public class DCT_2D_Demo implements PlugInFilter {
 		// ----------------------------------------------------
 		
 		if (ReconstructImage) {
-			reconstruction.setMinAndMax(0, 255);
+			reconstruction.resetMinAndMax();
 			new ImagePlus(name + "-reconstructed", reconstruction).show();
 		}
 
@@ -137,6 +145,5 @@ public class DCT_2D_Demo implements PlugInFilter {
 		ReconstructImage = gd.getNextBoolean();
 		return true;
 	}
-
 
 }

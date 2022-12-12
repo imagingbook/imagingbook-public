@@ -37,7 +37,7 @@ public class Open_Sample_Image implements PlugIn {
 		// gd.addEnumChoice("Select", init);
 		
 		gd.showDialog();
-		if(gd.wasCanceled()) 
+		if (gd.wasCanceled())
 			return;
 
 		String itemString = gd.getNextChoice();

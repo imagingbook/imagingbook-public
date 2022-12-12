@@ -33,13 +33,15 @@ public class Chamfer_Matching_Demo implements PlugInFilter {
 	private ImagePlus imgI = null;
 	private ImagePlus imgR = null;
 
+	@Override
     public int setup(String arg, ImagePlus imp) {
     	this.imgI = imp;
         return DOES_8G + NO_CHANGES;
     }
 
+	@Override
     public void run(ImageProcessor ipI) {
-		if (!showDialog() || imgR == null) {
+		if (!runDialog() || imgR == null) {
 			return;
 		}
 		
@@ -54,7 +56,7 @@ public class Chamfer_Matching_Demo implements PlugInFilter {
 		(new ImagePlus("Match of " + imgI.getTitle(), Q)).show();
     }
  
-    private boolean showDialog() {
+    private boolean runDialog() {
     	ImagePlus[] openImages = IjUtils.getOpenImages(true, imgI);
 		if (openImages.length == 0) {
 			IJ.error("No other images are open.");
