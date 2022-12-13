@@ -25,30 +25,26 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * This plugin demonstrates the use of geometric mappings, as implemented in the
- * imagingbook library. A {@link ProjectiveMapping2D} (transformation) is
- * specified by 4 corresponding point pairs, given by point sequences P and Q.
- * The inverse mapping is required for target-to-source mapping. See Sec. 21.1.4
- * of [1] for details. The actual pixel transformation is performed by an
- * {@link ImageMapper} object. Try on a suitable test image and check if the
- * image corners (P) are mapped to the points specified in Q. This plugin works
- * for all image types. The transformed image is shown in a new window, the
- * original image remains unchanged. Optionally opens a sample image if no image
- * is currently open.
+ * This plugin demonstrates the use of geometric mappings, as implemented in the imagingbook library. A
+ * {@link ProjectiveMapping2D} (transformation) is specified by 4 corresponding point pairs, given by point sequences P
+ * and Q. The inverse mapping is required for target-to-source mapping. See Sec. 21.1.4 of [1] for details. The actual
+ * pixel transformation is performed by an {@link ImageMapper} object. Try on a suitable test image and check if the
+ * image corners (P) are mapped to the points specified in Q. This plugin works for all image types. The transformed
+ * image is shown in a new window, the original image remains unchanged. Optionally opens a sample image if no image is
+ * currently open.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/28
- *
  * @see LinearMapping2D
  * @see ProjectiveMapping2D
  * @see ImageMapper
  */
-public class Map_Linear_Projective implements PlugInFilter {
+public class Map_Projective implements PlugInFilter {
 	
 	private static Pnt2d[] P = {		// source quad
 			Pnt2d.from(0, 0),
@@ -68,7 +64,7 @@ public class Map_Linear_Projective implements PlugInFilter {
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
 	 */
-	public Map_Linear_Projective() {
+	public Map_Projective() {
 		if (IjUtils.noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.Kepler);
 		}

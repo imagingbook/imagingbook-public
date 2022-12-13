@@ -21,20 +21,17 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
  * <p>
- * This ImageJ plugin demonstrates the use of various pixel interpolation
- * methods and out-of-bounds strategies. Sub-pixel translation is used as the
- * geometric transformation (parameters can be specified). Note the use if the
- * {@link ImageAccessor} class which gives uniform access to all types of
- * images. See Ch. 22 of [1] for more details.
+ * This ImageJ plugin demonstrates the use of various pixel interpolation methods and out-of-bounds strategies.
+ * Sub-pixel translation is used as the geometric transformation (parameters can be specified). Note the use if the
+ * {@link ImageAccessor} class which gives uniform access to all types of images. See Ch. 22 of [1] for more details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/28
- * 
  * @see InterpolationMethod
  * @see OutOfBoundsStrategy
  * @see ImageAccessor

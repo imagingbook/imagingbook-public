@@ -21,22 +21,20 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * ImageJ plugin, applies a continuous translation to the current
- * image. See Sec. 21.1.1 of [1] for details. Optionally opens a sample image if
- * no image is currently open.
+ * ImageJ plugin, applies a continuous translation to the current image. See Sec. 21.1.1 of [1] for details. Optionally
+ * opens a sample image if no image is currently open.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/28
- * 
  * @see ImageMapper
  * @see Translation2D
  */
-public class Map_Linear_Translate implements PlugInFilter {
+public class Map_Translate implements PlugInFilter {
 	
 	private static double dx = 5.25;
 	private static double dy = 7.3;
@@ -45,7 +43,7 @@ public class Map_Linear_Translate implements PlugInFilter {
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
 	 */
-	public Map_Linear_Translate() {
+	public Map_Translate() {
 		if (IjUtils.noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.Kepler);
 		}

@@ -25,23 +25,21 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * ImageJ plugin, applies an affine transformation derived from a pair of
- * triangles P, Q (for the source and target image, respectively) to the current
- * image. See Sec. 21.1.3 of [1] for details. Optionally opens a sample image if
- * no image is currently open.
+ * ImageJ plugin, applies an affine transformation derived from a pair of triangles P, Q (for the source and target
+ * image, respectively) to the current image. See Sec. 21.1.3 of [1] for details. Optionally opens a sample image if no
+ * image is currently open.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/28
- * 
  * @see ImageMapper
  * @see AffineMapping2D
  */
-public class Map_Linear_Affine_Triangles implements PlugInFilter {
+public class Map_Affine_Triangles implements PlugInFilter {
 	
    	private static Pnt2d[] P = {			// source triangle
 			PntInt.from(0, 0),
@@ -59,7 +57,7 @@ public class Map_Linear_Affine_Triangles implements PlugInFilter {
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
 	 */
-	public Map_Linear_Affine_Triangles() {
+	public Map_Affine_Triangles() {
 		if (IjUtils.noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.Kepler);
 		}

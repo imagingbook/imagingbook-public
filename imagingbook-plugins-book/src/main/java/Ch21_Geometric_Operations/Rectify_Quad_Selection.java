@@ -29,18 +29,16 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * ImageJ plugin, performs 4-point projective mapping from a selected polygon
- * ROI to the specified paper proportions (A4 or Letter, in portrait format).
- * See Sec. 21.1 (Exercise 21.5 and Fig. 21.17) of [1] for more details.
+ * ImageJ plugin, performs 4-point projective mapping from a selected polygon ROI to the specified paper proportions (A4
+ * or Letter, in portrait format). See Sec. 21.1 (Exercise 21.5 and Fig. 21.17) of [1] for more details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author W. Burger
  * @version 2022/11/28
- * 
  * @see ProjectiveMapping2D
  * @see LinearMapping2D
  * @see ImageMapper
@@ -53,10 +51,9 @@ public class Rectify_Quad_Selection implements PlugInFilter {
 	private static boolean ListTransformationMatrix = true;
 	
 	private ImagePlus im = null;
-	
+
 	/**
-	 * Constructor, asks to create sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to create sample image if no other image is currently open.
 	 */
 	public Rectify_Quad_Selection() {
 		if (IjUtils.noCurrentImage() && DialogUtils.askForSampleImage()) {

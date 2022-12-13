@@ -43,14 +43,13 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * ImageJ plugin, performs piecewise affine transformation by triangulation of
- * the input image, as described in Sec. 21.1.8 (see Fig. 21.13) of [1].
+ * ImageJ plugin, performs piecewise affine transformation by triangulation of the input image, as described in Sec.
+ * 21.1.8 (see Fig. 21.13) of [1].
  * </p>
  * <p>
- * The plugin projects a triangular grid onto the image which is mouse-editable,
- * i.e., grid points can be selected and dragged. Note that the outer grid
- * points (along the image border) cannot be moved. The grid is drawn as a
- * graphic overlay. In each repaint iteration, pixel values are re-calculated by
+ * The plugin projects a triangular grid onto the image which is mouse-editable, i.e., grid points can be selected and
+ * dragged. Note that the outer grid points (along the image border) cannot be moved. The grid is drawn as a graphic
+ * overlay. In each repaint iteration, pixel values are re-calculated by
  * </p>
  * <ol>
  * <li>finding the containing (distorted) triangle of the pixel,</li>
@@ -78,13 +77,12 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
  * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/25
  */
 public class Mesh_Warp_Interactive implements PlugInFilter {
 
-	private static ImageResource SampleImage = GeneralSampleImage.WartburgSmall;
 	private static final String PropertyKey = Mesh_Warp_Interactive.class.getName();
 	private static final String EditString = " (editing)";
 	
@@ -131,7 +129,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter {
 	 */
 	public Mesh_Warp_Interactive() {
 		if (IjUtils.noCurrentImage()) {
-			DialogUtils.askForSampleImage(SampleImage);
+			DialogUtils.askForSampleImage(GeneralSampleImage.WartburgSmall);
 		}
 	}
 

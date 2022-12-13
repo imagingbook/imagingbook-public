@@ -18,19 +18,17 @@ import imagingbook.common.image.ImageGraphics;
 
 /**
  * <p>
- * This ImageJ plugin draws a test grid in a new image. It uses anti-aliased
- * drawing operations provided by imagingbook's {@link ImageGraphics} class.
- * Used in [1] for testing geometric transformations (see Fig. 21.6) and
+ * This ImageJ plugin draws a test grid in a new image. It uses anti-aliased drawing operations provided by
+ * imagingbook's {@link ImageGraphics} class. Used in [1] for testing geometric transformations (see Fig. 21.6) and
  * interpolation methods (see Fig. 22.25).
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/28
- * 
  * @see ImageGraphics
  */
 public class Draw_Test_Grid implements PlugIn {

@@ -23,19 +23,17 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * ImageJ plugin, applies a bilinear transformation derived from a pair of
- * quadrilaterals P, Q (for the source and target image, respectively) to the current
- * image. See Sec. 21.1.4 of [1] for details. Optionally opens a sample image if
- * no image is currently open.
+ * ImageJ plugin, applies a bilinear transformation derived from a pair of quadrilaterals P, Q (for the source and
+ * target image, respectively) to the current image. See Sec. 21.1.4 of [1] for details. Optionally opens a sample image
+ * if no image is currently open.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/28
- * 
  * @see ImageMapper
  * @see BilinearMapping2D
  */

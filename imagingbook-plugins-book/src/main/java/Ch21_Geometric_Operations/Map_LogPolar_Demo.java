@@ -24,32 +24,35 @@ import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.geometry.mappings.nonlinear.LogPolarMapping2;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.image.ImageMapper;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * ImageJ plugin demonstrating the use of 2D log-polar mapping. Two mapping
- * types are available (Version1, Version2). See Sec. 21.1.6 of [1] for details
- * and examples. The plugin works interactively. Once started, the current mouse
- * position specifies the transformation's center point. A new image with
- * radius/angle coordinates is opened and continuously updated, until the plugin
- * is terminated. The circular source grid is displayed as a graphic overlay.
+ * ImageJ plugin demonstrating the use of 2D log-polar mapping. Two mapping types are available (Version1, Version2).
+ * See Sec. 21.1.6 of [1] for details and examples. The plugin works interactively. Once started, the current mouse
+ * position specifies the transformation's center point. A new image with radius/angle coordinates is opened and
+ * continuously updated, until the plugin is terminated. The circular source grid is displayed as a graphic overlay.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/16
+ * @see LogPolarMapping2
  */
-public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener {
+public class Map_LogPolar_Demo implements PlugInFilter, MouseListener {
 	
 	private static int P = 60;		// number of radial steps
 	private static int Q = 100;		// number of angular steps
-	private double rmin, rmax;		// min/max radius (determined by image size)
+	private double rmin, rmax;		// min/max radius (determined from image size)
 	
 	private static boolean ShowSamplingGrid = true;	
 	private static BasicAwtColor OverlayColorChoice = BasicAwtColor.Green;
@@ -62,8 +65,15 @@ public class LogPolar_Mapping_Demo implements PlugInFilter, MouseListener {
 	private ImagePlus targetIm;	
 	private Mapping2D mapping;
 	private String title;
-	
-	// -----------------------------------------------------------------
+
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public Map_LogPolar_Demo() {
+		if (noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.Flower);
+		}
+	}
 
 	@Override
 	public int setup(String arg, ImagePlus im) {

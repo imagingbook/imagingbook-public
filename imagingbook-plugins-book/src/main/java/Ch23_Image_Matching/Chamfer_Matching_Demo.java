@@ -15,63 +15,106 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.matching.ChamferMatcher;
 import imagingbook.common.image.matching.DistanceNorm;
+import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
- * This ImageJ plugin demonstrates the use of the {@link ChamferMatcher} class.
- * The active (search) image is assumed to be binary (not checked).
- * The reference (template) image is selected interactively by the user.
- * 
+ * This ImageJ plugin demonstrates the use of the {@link ChamferMatcher} class. The active (search) image is assumed to
+ * be binary (not checked). The reference (template) image is selected interactively by the user.
+ *
  * @author WB
- * @version 2014-04-20
+ * @version 2022/12/13
+ * @see ChamferMatcher
  */
 public class Chamfer_Matching_Demo implements PlugInFilter {
-	
-	private ImagePlus imgI = null;
-	private ImagePlus imgR = null;
+
+	private static DistanceNorm distNorm = DistanceNorm.L2;
+	private ImagePlus imgI;		// the search image
+	private ImagePlus imgR;		// the reference image (smaller)
+
+	/**
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
+	 */
+	public Chamfer_Matching_Demo() {
+		if (IjUtils.noCurrentImage()) {
+			DialogUtils.askForSampleImage(GeneralSampleImage.CirclesSquares);
+			ImagePlus imp = IJ.getImage();
+			imp.setRoi(39, 40, 58, 58);
+		}
+	}
 
 	@Override
     public int setup(String arg, ImagePlus imp) {
     	this.imgI = imp;
-        return DOES_8G + NO_CHANGES;
+        return DOES_8G + + ROI_REQUIRED + NO_CHANGES;
     }
 
 	@Override
     public void run(ImageProcessor ipI) {
-		if (!runDialog() || imgR == null) {
+		if (!IjUtils.isBinary(ipI)) {
+			IJ.showMessage("Current image is not binary!");
 			return;
 		}
-		
-		ByteProcessor I = ipI.convertToByteProcessor();					// search image I
-    	ByteProcessor R = imgR.getProcessor().convertToByteProcessor(); // reference image R
+
+		Rectangle roi = ipI.getRoi();
+		if (roi == null) {
+			IJ.showMessage("Rectangular selection required!");
+			return;
+		}
+		IJ.log("roi = " +  roi);
+
+		// if (!runDialog()) {
+		// 	return;
+		// }
+
+		ByteProcessor I = (ByteProcessor) ipI;			// search image I
+    	ByteProcessor R = (ByteProcessor) ipI.crop(); 	// reference image R
+
+		new ImagePlus("Reference image (R)", R).show();
     	
     	// TODO: better initialize matcher with reference image R?
-    	ChamferMatcher matcher = new ChamferMatcher(I, DistanceNorm.L2);
+    	ChamferMatcher matcher = new ChamferMatcher(I, distNorm);
+
     	float[][] Qa = matcher.getMatch(R);
-    	
-    	FloatProcessor Q = new FloatProcessor(Qa);
-		(new ImagePlus("Match of " + imgI.getTitle(), Q)).show();
+		new ImagePlus("A Match of " + imgI.getTitle() + " (inverted)", new FloatProcessor(Qa)).show();
+
+		float[][] Qb = matcher.getMatch(collectForegroundPoints(R), R.getWidth(), R.getHeight());
+		new ImagePlus("B Match of " + imgI.getTitle() + " (inverted)", new FloatProcessor(Qb)).show();
     }
+
+	private PntInt[] collectForegroundPoints(ByteProcessor bp) {
+		final int w = bp.getWidth();
+		final int h = bp.getHeight();
+		List<PntInt> pntList = new ArrayList<>();
+		for (int i = 0; i < w; i++) {
+			for (int j = 0; j < h; j++) {
+				if (bp.get(i, j) != 0) {	// foreground pixel in reference image
+					pntList.add(PntInt.from(i, j));
+				}
+			}
+		}
+		return pntList.toArray(new PntInt[0]);
+	}
  
     private boolean runDialog() {
-    	ImagePlus[] openImages = IjUtils.getOpenImages(true, imgI);
-		if (openImages.length == 0) {
-			IJ.error("No other images are open.");
-			return false;
-		}
-		
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		String[] titles = IjUtils.getImageShortTitles(openImages);
-		gd.addChoice("Reference image:", titles, titles[0]); // TODO: consider gd.addImageChoice()
-		
+		gd.addEnumChoice("Distance norm", distNorm);
+
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return false;
-		
-		imgR = openImages[gd.getNextChoiceIndex()];
+
+		distNorm = gd.getNextEnumChoice(DistanceNorm.class);
 		return true;
     }
 		

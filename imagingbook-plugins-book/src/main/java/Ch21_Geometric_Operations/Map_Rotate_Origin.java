@@ -20,22 +20,20 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * ImageJ plugin, rotates the current image by a specified angle around the
- * coordinate origin. See Sec. 21.1.1 of [1] for details. Optionally opens a 
- * sample image if no image is currently open.
+ * ImageJ plugin, rotates the current image by a specified angle around the coordinate origin. See Sec. 21.1.1 of [1]
+ * for details. Optionally opens a sample image if no image is currently open.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/28
- * 
  * @see ImageMapper
  * @see Rotation2D
  */
-public class Map_Linear_Rotate_Origin implements PlugInFilter {
+public class Map_Rotate_Origin implements PlugInFilter {
 	
 	private static double alphaDeg = 15.0; 	// rotation angle (15 degrees)
 	
@@ -43,7 +41,7 @@ public class Map_Linear_Rotate_Origin implements PlugInFilter {
 	 * Constructor, asks to open a predefined sample image if no other image
 	 * is currently open.
 	 */
-	public Map_Linear_Rotate_Origin() {
+	public Map_Rotate_Origin() {
 		if (IjUtils.noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.Clown);
 		}
