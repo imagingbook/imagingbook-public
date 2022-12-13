@@ -36,18 +36,19 @@ public class ChamferMatcher {
 	private final int MI, NI;		// dimensions of the search image
 	private final float[][] D;		// distance transform of I
 	private int MR, NR;				// dimensions of the reference image (temp.)
-	
+
 	/**
-	 * Constructor using the default distance norm (L2).
-	 * @param I the "search" image (to be searched for matches of the "reference" image)
+	 * Constructor using the default distance norm (L2). The supplied image must be binary with zero background values.
+	 *
+	 * @param I the binary "search" image (to be searched for matches of the "reference" image)
 	 */
 	public ChamferMatcher(ByteProcessor I) {
 		this(I, DistanceNorm.L2);
 	}
 	
 	/**
-	 * Constructor using the specified distance norm.
-	 * @param I the reference image (to be matched to)
+	 * Constructor using the specified distance norm. The supplied image must be binary with zero background values.
+	 * @param I the binary "search" image (to be searched for matches of the "reference" image)
 	 * @param norm the distance norm
 	 */
 	public ChamferMatcher(ByteProcessor I, DistanceNorm norm) {
@@ -57,8 +58,11 @@ public class ChamferMatcher {
 	}
 	
 	/**
-	 * Matches the specified reference image R to the (fixed) search image I.
-	 * @param R some binary reference image
+	 * Calculates the match function for specified reference image R to this matcher's search image I (defined
+	 * by the constructor). The returned function Q[r][s] is the match score for reference image R positioned
+	 * at (r,s) in the search image coordinate frame.
+	 *
+	 * @param R a binary reference image
 	 * @return a 2D array Q[r][s] of match scores
 	 */
 	public float[][] getMatch(ByteProcessor R) {
@@ -97,22 +101,22 @@ public class ChamferMatcher {
 			}
 		}
 		return q;
-	}  	
-	
+	}
+
 	/**
-	 * Matches the specified point set to the (fixed) search image I.
-	 * The points represent the foreground pixels of a virtual reference image (R)
-	 * with the specified width and height.
-	 * 
+	 * Matches the specified point set to the (fixed) search image I. The points represent the foreground pixels of a
+	 * virtual reference image (R) with the specified width and height.
+	 *
 	 * @param points a set of foreground points
-	 * @param width the width of the virtual reference image
-	 * @param height the height of the virtual reference image
-	 * @return a 2D array Q[r][s] of match scores of size width x height
+	 * @param MR the width of the reference image
+	 * @param NR the height of the reference image
+	 * @return a 2D array Q[r][s] of match scores
 	 */
-	public float[][] getMatch(PntInt[] points, int width, int height) {
-		float[][] Q = new float[width][height];
-		for (int r = 0; r <= width; r++) {
-			for (int s = 0; s <= height; s++) {
+	public float[][] getMatch(PntInt[] points, int MR, int NR) {
+		// float[][] Q = new float[width][height];
+		float[][] Q = new float[MI - MR + 1][NI - NR + 1];
+		for (int r = 0; r < Q.length; r++) {
+			for (int s = 0; s < Q[r].length; s++) {
 				float q = getMatchValue(points, r, s);
 				Q[r][s] = q;
 			}	
