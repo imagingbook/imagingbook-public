@@ -118,6 +118,10 @@ public enum GeneralSampleImage implements ImageResource {
 
 		/** A poor-quality, noisy color image for testing edge-preserving smoothing. */
 		Postcard2c("Postcard2c.jpg"),
+
+		/** A binary image (inverted LUT) with circles and squares for chamfer matching. */
+		CirclesSquares,
+
 		;
 
 		// -------------------------------------------------------------------------------
