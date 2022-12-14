@@ -41,10 +41,10 @@ public class ChamferMatcherTest {
 		assertEquals(0.0f, Q[x0][y0], TOL);
 		
 		// check score values at corners of Q:
-		assertEquals(210, Q[0][0], TOL);
-		assertEquals(437, Q[MI - MR][0], TOL);
-		assertEquals(747, Q[0][NI - NR], TOL);
-		assertEquals(393, Q[MI - MR][NI - NR], TOL);
+		assertEquals(210f, Q[0][0], TOL);
+		assertEquals(437f, Q[MI - MR][0], TOL);
+		assertEquals(747f, Q[0][NI - NR], TOL);
+		assertEquals(393f, Q[MI - MR][NI - NR], TOL);
 	}
 	
 	@Test
