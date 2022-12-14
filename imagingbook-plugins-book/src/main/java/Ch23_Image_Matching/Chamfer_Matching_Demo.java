@@ -39,6 +39,7 @@ import java.util.List;
 public class Chamfer_Matching_Demo implements PlugInFilter {
 
 	private static DistanceNorm distNorm = DistanceNorm.L2;
+
 	private ImagePlus imgI;		// the search image
 	private ImagePlus imgR;		// the reference image (smaller)
 
@@ -71,40 +72,24 @@ public class Chamfer_Matching_Demo implements PlugInFilter {
 			IJ.showMessage("Rectangular selection required!");
 			return;
 		}
-		IJ.log("roi = " +  roi);
 
-		// if (!runDialog()) {
-		// 	return;
-		// }
+		if (!runDialog()) {
+			return;
+		}
 
 		ByteProcessor I = (ByteProcessor) ipI;			// search image I
     	ByteProcessor R = (ByteProcessor) ipI.crop(); 	// reference image R
-
 		new ImagePlus("Reference image (R)", R).show();
-    	
-    	// TODO: better initialize matcher with reference image R?
+
     	ChamferMatcher matcher = new ChamferMatcher(I, distNorm);
+		float[][] Q = matcher.getMatch(R);
 
-    	float[][] Qa = matcher.getMatch(R);
-		new ImagePlus("A Match of " + imgI.getTitle() + " (inverted)", new FloatProcessor(Qa)).show();
-
-		float[][] Qb = matcher.getMatch(collectForegroundPoints(R), R.getWidth(), R.getHeight());
-		new ImagePlus("B Match of " + imgI.getTitle() + " (inverted)", new FloatProcessor(Qb)).show();
+		ImagePlus matchIm = new ImagePlus("Match of " + imgI.getTitle(), new FloatProcessor(Q));
+		matchIm.show();
+		IJ.run(matchIm, "Find Maxima...", "prominence=10000 light output=[Point Selection]");
     }
 
-	private PntInt[] collectForegroundPoints(ByteProcessor bp) {
-		final int w = bp.getWidth();
-		final int h = bp.getHeight();
-		List<PntInt> pntList = new ArrayList<>();
-		for (int i = 0; i < w; i++) {
-			for (int j = 0; j < h; j++) {
-				if (bp.get(i, j) != 0) {	// foreground pixel in reference image
-					pntList.add(PntInt.from(i, j));
-				}
-			}
-		}
-		return pntList.toArray(new PntInt[0]);
-	}
+	// -------------------------------------------------
  
     private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
