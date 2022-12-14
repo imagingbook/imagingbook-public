@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
+import static imagingbook.common.util.ClassUtils.getComparator;
 import static org.junit.Assert.*;
 
 public class SortedVectorTest {
@@ -27,7 +28,7 @@ public class SortedVectorTest {
 
     @Test
     public void test2() {
-        SortedVector<Integer> sv = new SortedVector<>(new Integer[3],  (Comparator<Integer>) Comparator.naturalOrder());
+        SortedVector<Integer> sv = new SortedVector<>(new Integer[3], getComparator(Integer.class));
         doInserts(sv);
         assertEquals(3, sv.size());
         // System.out.println(sv.toString());
@@ -37,7 +38,8 @@ public class SortedVectorTest {
     @Test
     public void test3() {
         SortedVector<Integer> sv =
-                new SortedVector<>(new Integer[3], (Comparator<Integer>) Comparator.naturalOrder().reversed());
+                new SortedVector<>(new Integer[3], getComparator(Integer.class).reversed());
+        // new SortedVector<>(new Integer[3], (Comparator<Integer>) Comparator.naturalOrder().reversed());
         doInserts(sv);
         assertEquals(3, sv.size());
         // System.out.println(sv.toString());
@@ -70,6 +72,22 @@ public class SortedVectorTest {
 
     }
 
+    @Test
+    public void test5() {
+        Comparator<Integer> cpr = getComparator(Integer.class);
+        assertEquals(-1, cpr.compare(5, 7));
+        assertEquals( 0, cpr.compare(5, 5));
+        assertEquals( 1, cpr.compare(7, 5));
+    }
+
+    @Test
+    public void test6() {
+        Comparator<Integer> cpr = getComparator(Integer.class).reversed();
+        assertEquals( 1, cpr.compare(5, 7));
+        assertEquals( 0, cpr.compare(5, 5));
+        assertEquals(-1, cpr.compare(7, 5));
+    }
+
     private void doInserts(SortedVector<Integer> sv) {
         sv.insert(5);
         sv.insert(2);
@@ -80,5 +98,9 @@ public class SortedVectorTest {
         sv.insert(22);
         sv.insert(1);
     }
+
+    // static <T> Comparator<T>  getComparator(Class<T> clazz) {
+    //     return (Comparator<T>) Comparator.naturalOrder();
+    // }
 
 }

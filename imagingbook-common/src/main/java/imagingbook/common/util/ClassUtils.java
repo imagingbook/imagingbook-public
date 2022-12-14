@@ -148,4 +148,16 @@ public abstract class ClassUtils {
 		Arrays.sort(items, cpr);
 		return items;
 	}
+
+	/**
+	 * Returns the "natural order" {@link Comparator} instance for the specified {@link Comparable} class. Use
+	 * {@link Comparator#reversed()} to obtain the associated comparator for sorting in reverse order.
+	 *
+	 * @param clazz a class implementing {@link Comparable}
+	 * @param <T> the generic type
+	 * @return the associated {@link Comparator} instance
+	 */
+	public static <T extends Comparable> Comparator<T> getComparator(Class<T> clazz) {
+		return Comparator.naturalOrder();
+	}
 }
