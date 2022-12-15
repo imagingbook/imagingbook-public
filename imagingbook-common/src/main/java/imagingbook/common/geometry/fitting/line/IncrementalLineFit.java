@@ -13,11 +13,11 @@ import static imagingbook.common.math.Arithmetic.sqr;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import imagingbook.common.util.PrimitiveSortMap;
 import org.apache.commons.math3.linear.MatrixUtils;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.eigen.EigenDecompositionJama;
-import imagingbook.common.util.SortMap;
 
 /**
  * <p>
@@ -228,7 +228,7 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 				{sxy, syy}};
 		
 		EigenDecompositionJama es = new EigenDecompositionJama(MatrixUtils.createRealMatrix(S));
-		int k = SortMap.getNthSmallestIndex(es.getRealEigenvalues(), 0);
+		int k = PrimitiveSortMap.getNthSmallestIndex(es.getRealEigenvalues(), 0);
 		double[] e = es.getEigenvector(k).toArray();
 		
 		double A = e[0];

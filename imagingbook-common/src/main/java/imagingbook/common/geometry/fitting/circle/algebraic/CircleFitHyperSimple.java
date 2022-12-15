@@ -19,7 +19,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.math.eigen.EigenDecompositionJama;
-import imagingbook.common.util.SortMap;
+import imagingbook.common.util.PrimitiveSortMap;
 
 /**
  * <p>
@@ -134,7 +134,7 @@ public class CircleFitHyperSimple implements CircleFitAlgebraic {
 		EigenDecompositionJama ed = new EigenDecompositionJama(CiD);
 		double[] evals = ed.getRealEigenvalues();
 		
-		int l = new SortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue	(1st is negative)
+		int l = new PrimitiveSortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue	(1st is negative)
 		RealVector qq = ed.getEigenvector(l);
 		
 		RealMatrix M = CircleFitAlgebraic.getDecenteringMatrix(xr, yr);

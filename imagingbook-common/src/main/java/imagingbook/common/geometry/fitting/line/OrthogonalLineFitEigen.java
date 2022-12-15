@@ -10,11 +10,11 @@ package imagingbook.common.geometry.fitting.line;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
+import imagingbook.common.util.PrimitiveSortMap;
 import org.apache.commons.math3.linear.MatrixUtils;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.eigen.EigenDecompositionJama;
-import imagingbook.common.util.SortMap;
 
 /**
  * <p>
@@ -89,7 +89,7 @@ public class OrthogonalLineFitEigen implements LineFit {
 		
 		EigenDecompositionJama es = new EigenDecompositionJama(MatrixUtils.createRealMatrix(S));	// Jama-derived local implementation
 //		EigenDecomposition es = new EigenDecomposition(MatrixUtils.createRealMatrix(S));	// Apache Commons Maths
-		int k = SortMap.getNthSmallestIndex(es.getRealEigenvalues(), 0);
+		int k = PrimitiveSortMap.getNthSmallestIndex(es.getRealEigenvalues(), 0);
 		double[] e = es.getEigenvector(k).toArray();
 		
 		double A = e[0];

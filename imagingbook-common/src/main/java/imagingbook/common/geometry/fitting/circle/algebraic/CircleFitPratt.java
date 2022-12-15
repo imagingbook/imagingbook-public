@@ -19,7 +19,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.EigenDecompositionJama;
-import imagingbook.common.util.SortMap;
+import imagingbook.common.util.PrimitiveSortMap;
 
 
 /**
@@ -138,7 +138,7 @@ public class CircleFitPratt implements CircleFitAlgebraic {
 			
 			EigenDecompositionJama ed = new EigenDecompositionJama(Z); 
 			double[] evals = ed.getRealEigenvalues();
-			int l = new SortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue			
+			int l = new PrimitiveSortMap(evals).getIndex(1);	// index of the 2nd-smallest eigenvalue
 			RealVector el = ed.getEigenvector(l);
 			
 			// Version1 ---------------------------------------------------

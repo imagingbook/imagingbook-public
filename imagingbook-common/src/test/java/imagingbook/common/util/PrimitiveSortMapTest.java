@@ -16,7 +16,7 @@ import java.util.Random;
 
 import org.junit.Test;
 
-public class SortMapTest {
+public class PrimitiveSortMapTest {
 
 	@Test
 	public void test1() {
@@ -24,18 +24,18 @@ public class SortMapTest {
 		int[] permExpected = {5, 1, 4, 0, 2, 3};
 		int n = numbers.length;
 		
-		SortMap sm = new SortMap(numbers);
+		PrimitiveSortMap sm = new PrimitiveSortMap(numbers);
 		
 		int[] perm = sm.getPermutation();
 		assertArrayEquals(permExpected, perm);
 		
 		for (int k = 0; k < n; k++) {
-			int smallestIdx = SortMap.getNthSmallestIndex(numbers, k);
+			int smallestIdx = PrimitiveSortMap.getNthSmallestIndex(numbers, k);
 			assertEquals(numbers[perm[k]], numbers[smallestIdx], 0);
-			assertEquals(numbers[perm[k]], SortMap.getNthSmallestValue(numbers, k), 0);
+			assertEquals(numbers[perm[k]], PrimitiveSortMap.getNthSmallestValue(numbers, k), 0);
 		}
 		
-		int largestIdx = SortMap.getLargestIndex(numbers);
+		int largestIdx = PrimitiveSortMap.getLargestIndex(numbers);
 		assertEquals(numbers[perm[n - 1]], numbers[largestIdx], 0);
 	}
 	
@@ -47,12 +47,12 @@ public class SortMapTest {
 		int n = 100;
 		for (int k = 0; k < 10; k++) {
 			double[] numbers = makeRandomDoubleArr(n, rg);
-			int[] perm = new SortMap(numbers).getPermutation();
+			int[] perm = new PrimitiveSortMap(numbers).getPermutation();
 			for (int i = 1; i < numbers.length; i++) {
 				assertTrue(numbers[perm[i - 1]] <= numbers[perm[i]]);
 			}
-			assertEquals(numbers[perm[0]], SortMap.getNthSmallestValue(numbers, 0), 0);
-			assertEquals(numbers[perm[n - 1]], SortMap.getNthSmallestValue(numbers, n - 1), 0);
+			assertEquals(numbers[perm[0]], PrimitiveSortMap.getNthSmallestValue(numbers, 0), 0);
+			assertEquals(numbers[perm[n - 1]], PrimitiveSortMap.getNthSmallestValue(numbers, n - 1), 0);
 		}
 	}
 	
@@ -62,12 +62,12 @@ public class SortMapTest {
 		int n = 100;
 		for (int k = 0; k < 10; k++) {
 			float[] numbers = makeRandomFloatArr(n, rg);
-			int[] perm = new SortMap(numbers).getPermutation();
+			int[] perm = new PrimitiveSortMap(numbers).getPermutation();
 			for (int i = 1; i < numbers.length; i++) {
 				assertTrue(numbers[perm[i - 1]] <= numbers[perm[i]]);
 			}
-			assertEquals(numbers[perm[0]], SortMap.getNthSmallestValue(numbers, 0), 0);
-			assertEquals(numbers[perm[n - 1]], SortMap.getNthSmallestValue(numbers, n - 1), 0);
+			assertEquals(numbers[perm[0]], PrimitiveSortMap.getNthSmallestValue(numbers, 0), 0);
+			assertEquals(numbers[perm[n - 1]], PrimitiveSortMap.getNthSmallestValue(numbers, n - 1), 0);
 		}
 	}
 	
@@ -77,12 +77,12 @@ public class SortMapTest {
 		int n = 100;
 		for (int k = 0; k < 10; k++) {
 			int[] numbers = makeRandomIntArr(n, rg);
-			int[] perm = new SortMap(numbers).getPermutation();
+			int[] perm = new PrimitiveSortMap(numbers).getPermutation();
 			for (int i = 1; i < numbers.length; i++) {
 				assertTrue(numbers[perm[i - 1]] <= numbers[perm[i]]);
 			}
-			assertEquals(numbers[perm[0]], SortMap.getNthSmallestValue(numbers, 0), 0);
-			assertEquals(numbers[perm[n - 1]], SortMap.getNthSmallestValue(numbers, n - 1), 0);
+			assertEquals(numbers[perm[0]], PrimitiveSortMap.getNthSmallestValue(numbers, 0), 0);
+			assertEquals(numbers[perm[n - 1]], PrimitiveSortMap.getNthSmallestValue(numbers, n - 1), 0);
 		}
 	}
 	
