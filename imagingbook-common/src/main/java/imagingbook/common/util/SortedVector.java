@@ -31,11 +31,12 @@ import java.util.PriorityQueue;
  * @author WB
  * @version 2022/12/14
  */
-public class SortedVector<T extends Comparable<T>> extends PriorityQueue<T> {
+public class SortedVector<T extends Comparable<T>> {    // extends PriorityQueue<T>
 
     private final int capacity;
     private final  Comparator<T> comp;
     private final T[] arr;
+    private final PriorityQueue<T> queue;
 
     /**
      * Constructor using a specific comparator. The length of the supplied array specifies the capacity of this
@@ -45,7 +46,8 @@ public class SortedVector<T extends Comparable<T>> extends PriorityQueue<T> {
      * @param comp
      */
     public SortedVector(T[] arr, Comparator<T> comp) {
-        super(comp);
+        //super(comp);
+        this.queue = new PriorityQueue<T>(comp);
         this.comp = comp;
         if (arr.length < 1) {
             throw new IllegalArgumentException("array must be non-empty");
@@ -72,14 +74,14 @@ public class SortedVector<T extends Comparable<T>> extends PriorityQueue<T> {
      * @param item
      */
     public void insert(T item) {
-        T head = this.peek();
+        T head = queue.peek();
         // System.out.println("adding " + item + "  head = " + head);
         if (head != null &&  comp.compare(item, head) < 0) { // item is smaller than head (= min.)
             return;
         }
-        this.add(item);
-        if (this.size() > capacity) {
-            this.poll();    // remove "smallest" item after insertion
+        queue.add(item);
+        if (queue.size() > capacity) {
+            queue.poll();    // remove "smallest" item after insertion
         }
     }
 
@@ -91,11 +93,15 @@ public class SortedVector<T extends Comparable<T>> extends PriorityQueue<T> {
      * @return a sorted array of elements
      */
     public T[] getArray() {
-        T[] arr2 = this.toArray(arr);                   // arr = arr2
-        T[] arr3 = Arrays.copyOf(arr2, this.size());    // trim null elements
+        T[] arr2 = queue.toArray(arr);                   // arr = arr2
+        T[] arr3 = Arrays.copyOf(arr2, queue.size());    // trim null elements
         // we need to sort once more since PriorityQueue#toArray() does not guarantee any order!
         Arrays.sort(arr3, comp);
         return arr3;
+    }
+
+    public int size() {
+        return queue.size();
     }
 
     @Override
