@@ -25,17 +25,14 @@ import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.PrintPrecision;
 
 /**
- * Interface specifying the behavior of simple 2D points. It is used to adapt to
- * different (legacy) point implementations with a common API. To some extent
- * this is similar to the functionality provided by {@link Point2D} and
- * {@link Point} but was re-implemented to avoid dependency on AWT and for more
- * flexibility in naming and class structure. Since defined as an interface,
- * {@link Pnt2d} can be easily implemented by other point-like structures, e.g.
- * corners (see {@link imagingbook.common.corners.Corner}). <br>
- * Two concrete (nested) classes are defined for points with {@code double} and
- * {@code int} coordinates, respectively. See {@link Pnt2d.PntDouble} and
+ * Interface specifying the behavior of simple 2D points. It is used to adapt to different (legacy) point
+ * implementations with a common API. To some extent this is similar to the functionality provided by {@link Point2D}
+ * and {@link Point} but was re-implemented to avoid dependency on AWT and for more flexibility in naming and class
+ * structure. Since defined as an interface, {@link Pnt2d} can be easily implemented by other point-like structures,
+ * e.g. corners (see {@link imagingbook.common.corners.Corner}). <br> Two concrete (nested) classes are defined for
+ * points with {@code double} and {@code int} coordinates, respectively. See {@link Pnt2d.PntDouble} and
  * {@link Pnt2d.PntInt} for how to instantiate such point objects.
- * 
+ *
  * @author WB
  */
 public interface Pnt2d extends ShapeProducer, Primitive2d {
@@ -58,8 +55,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	double getY();
 
 	/**
-	 * Returns the x-coordinate of this point as a 
-	 * (truncated) integer value.
+	 * Returns the x-coordinate of this point as a (truncated) integer value.
+	 *
 	 * @return the integer x-coordinate of this point.
 	 */
 	public default int getXint() {
@@ -67,8 +64,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns the y-coordinate of this point as a 
-	 * (truncated) integer value.
+	 * Returns the y-coordinate of this point as a (truncated) integer value.
+	 *
 	 * @return the integer y-coordinate of this point.
 	 */
 	public default int getYint() {
@@ -78,9 +75,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	// ----------------------------------------------------------
 
 	/**
-	 * Creates and returns a new point of type {@link Pnt2d.PntInt}
-	 * with the specified coordinates.
-	 * See also {@link PntInt#from(int, int)}.
+	 * Creates and returns a new point of type {@link Pnt2d.PntInt} with the specified coordinates. See also
+	 * {@link PntInt#from(int, int)}.
+	 *
 	 * @param x coordinate
 	 * @param y coordinate
 	 * @return the new point
@@ -90,10 +87,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Creates and returns a new point of type {@link Pnt2d.PntInt}
-	 * with the specified coordinates.
-	 * See also {@link PntInt#from(int[])}.
-	 * 
+	 * Creates and returns a new point of type {@link Pnt2d.PntInt} with the specified coordinates. See also
+	 * {@link PntInt#from(int[])}.
+	 *
 	 * @param xy coordinates
 	 * @return the new point
 	 */
@@ -102,10 +98,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Creates and returns a new point of type {@link Pnt2d.PntDouble}
-	 * with the specified coordinates.
-	 * See also {@link PntDouble#from(double, double)}.
-	 * 
+	 * Creates and returns a new point of type {@link Pnt2d.PntDouble} with the specified coordinates. See also
+	 * {@link PntDouble#from(double, double)}.
+	 *
 	 * @param x coordinate
 	 * @param y coordinate
 	 * @return the new point
@@ -115,10 +110,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Creates and returns a new point of type {@link Pnt2d.PntDouble}
-	 * with the specified coordinates.
-	 * See also {@link PntDouble#from(double[])}.
-	 * 
+	 * Creates and returns a new point of type {@link Pnt2d.PntDouble} with the specified coordinates. See also
+	 * {@link PntDouble#from(double[])}.
+	 *
 	 * @param xy coordinates
 	 * @return the new point
 	 */
@@ -164,8 +158,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns this point's coordinates as a new {@link Vector2D} instance
-	 * (for interfacing with Apache Commons Math).
+	 * Returns this point's coordinates as a new {@link Vector2D} instance (for interfacing with Apache Commons Math).
+	 *
 	 * @return a new vector
 	 */
 	public default Vector2D toVector2D() {
@@ -173,8 +167,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns this point's coordinates as a new {@link RealVector} instance
-	 * (for interfacing with Apache Commons Math).
+	 * Returns this point's coordinates as a new {@link RealVector} instance (for interfacing with Apache Commons
+	 * Math).
+	 *
 	 * @return a new vector
 	 */
 	public default RealVector toRealVector() {
@@ -190,9 +185,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns a new point whose coordinates are the sum of this point and 
-	 * the given point. The concrete type of the returned object depends on the type
-	 * of the original points.
+	 * Returns a new point whose coordinates are the sum of this point and the given point. The concrete type of the
+	 * returned object depends on the type of the original points.
+	 *
 	 * @param p the point to be added
 	 * @return a new point
 	 */
@@ -201,10 +196,10 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns a new point whose coordinates are the sum of this point and 
-	 * the specified {@code double} coordinates.
-	 * @param dx the x-coordinate to be added 
-	 * @param dy the y-coordinate to be added 
+	 * Returns a new point whose coordinates are the sum of this point and the specified {@code double} coordinates.
+	 *
+	 * @param dx the x-coordinate to be added
+	 * @param dy the y-coordinate to be added
 	 * @return a new point
 	 */
 	public default Pnt2d plus(double dx, double dy) {
@@ -212,19 +207,18 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns a new point whose coordinates are the difference of this point and 
-	 * the given point.
+	 * Returns a new point whose coordinates are the difference of this point and the given point.
+	 *
 	 * @param p the point to be subtracted
 	 * @return a new point
 	 */
 	public default Pnt2d minus(Pnt2d p) {
 		return this.minus(p.getX(), p.getY());
 	}
-	
+
 	/**
-	 * Returns a new point whose coordinates are multiplied by the
-	 * specified scalar value.
-	 * 
+	 * Returns a new point whose coordinates are multiplied by the specified scalar value.
+	 *
 	 * @param s some scalar value
 	 * @return a new point
 	 */
@@ -233,8 +227,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns a new point whose coordinates are the difference of this point and 
-	 * the given point (specified as a coordinate pair). 
+	 * Returns a new point whose coordinates are the difference of this point and the given point (specified as a
+	 * coordinate pair).
+	 *
 	 * @param dx x-coordinate
 	 * @param dy y-coordinate
 	 * @return a new point
@@ -252,9 +247,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Calculates and returns the dot product of this point and another point
-	 * (both points are interpreted as 2D vectors) 
-	 * 
+	 * Calculates and returns the dot product of this point and another point (both points are interpreted as 2D
+	 * vectors)
+	 *
 	 * @param other the point (vector) to be multiplied by this vector
 	 * @return a new point (vector)
 	 */
@@ -263,10 +258,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Calculates and returns the 2D pseudo cross product of this point
-	 * and another point (both points are interpreted as 2D vectors).
-	 * The result of {@code a.cross(b)} is equivalent to {@code a.perp().dot(b)}.
-	 * 
+	 * Calculates and returns the 2D pseudo cross product of this point and another point (both points are interpreted
+	 * as 2D vectors). The result of {@code a.cross(b)} is equivalent to {@code a.perp().dot(b)}.
+	 *
 	 * @param other the point (vector) to be multiplied to the perpendicular vector of this vector
 	 * @return a new point (vector)
 	 */
@@ -278,10 +272,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	// ----------------------------------------------------------
 
 	/**
-	 * Tests if this point matches the given point, i.e., if
-	 * both coordinate differences are zero (&lt; than 
-	 * the specified tolerance).
-	 *  
+	 * Tests if this point matches the given point, i.e., if both coordinate differences are zero (&lt; than the
+	 * specified tolerance).
+	 *
 	 * @param p the point to be matched to
 	 * @param tolerance the tolerance (see also {@link #TOLERANCE}).
 	 * @return true if both points match
@@ -294,9 +287,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	// ----------------------------------------------------------
 
 	/**
-	 * Returns the squared L2 distance between this point and the
-	 * given point.
-	 * 
+	 * Returns the squared L2 distance between this point and the given point.
+	 *
 	 * @param other the other point
 	 * @return the squared distance
 	 */
@@ -305,9 +297,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns the L2 (Euclidean) distance between this point and the
-	 * given point. This method is equivalent to {@link #distL2(Pnt2d)}.
-	 * 
+	 * Returns the L2 (Euclidean) distance between this point and the given point. This method is equivalent to
+	 * {@link #distL2(Pnt2d)}.
+	 *
 	 * @param other the other point
 	 * @return the distance
 	 */
@@ -325,9 +317,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns the L2 (Euclidean) distance between this point and the
-	 * given point. This method is equivalent to {@link #distance(Pnt2d)}.
-	 * 
+	 * Returns the L2 (Euclidean) distance between this point and the given point. This method is equivalent to
+	 * {@link #distance(Pnt2d)}.
+	 *
 	 * @param other the other point
 	 * @return the distance
 	 */
@@ -336,9 +328,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Returns the L1 (Manhattan) distance between this point and the
-	 * given point. 
-	 * 
+	 * Returns the L1 (Manhattan) distance between this point and the given point.
+	 *
 	 * @param other the other point
 	 * @return the distance
 	 */
@@ -364,13 +355,11 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	// ----------------------------------------------------------
 
 	/**
-	 * Immutable 2D point implementation with {@code double} coordinates. This class
-	 * implements the {@link Pnt2d} interface. A protected constructor is provided
-	 * but the preferred way of instantiation is by one of the static factory
-	 * methods, such as {@link #from(double, double)}, {@link #from(double[])}, etc.
-	 * Access to the coordinate values is provided by the methods {@link #getX()}
-	 * and {@link #getY()}, but the actual field variables {@link #x}, {@link #y}
-	 * are also publicly accessible (for better performance and less clutter).
+	 * Immutable 2D point implementation with {@code double} coordinates. This class implements the {@link Pnt2d}
+	 * interface. A protected constructor is provided but the preferred way of instantiation is by one of the static
+	 * factory methods, such as {@link #from(double, double)}, {@link #from(double[])}, etc. Access to the coordinate
+	 * values is provided by the methods {@link #getX()} and {@link #getY()}, but the actual field variables {@link #x},
+	 * {@link #y} are also publicly accessible (for better performance and less clutter).
 	 */
 	public class PntDouble implements Pnt2d {
 
@@ -421,8 +410,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		}
 
 		/**
-		 * Returns a new {@link PntDouble} instance with the same coordinates as the given point.
-		 * Equivalent to {@link #duplicate()}.
+		 * Returns a new {@link PntDouble} instance with the same coordinates as the given point. Equivalent to
+		 * {@link #duplicate()}.
+		 *
 		 * @param p the original point
 		 * @return the new point
 		 */
@@ -431,8 +421,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		}
 
 		/**
-		 * Returns a new {@link PntDouble} instance
-		 * with the same coordinates as the given AWT {@link Point2D}.
+		 * Returns a new {@link PntDouble} instance with the same coordinates as the given AWT {@link Point2D}.
+		 *
 		 * @param p the original AWT point
 		 * @return the new point
 		 */
@@ -441,9 +431,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		}
 
 		/**
-		 * Returns a new {@link PntDouble} instance
-		 * with the same coordinates as the given Apache Commons Math
+		 * Returns a new {@link PntDouble} instance with the same coordinates as the given Apache Commons Math
 		 * {@link Vector2D}.
+		 *
 		 * @param vec the original coordinate vector
 		 * @return the new point
 		 */
@@ -504,15 +494,13 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		// misc -----------------------------------
 
 		/**
-		 * {@inheritDoc}
-		 * The number of output digits is specified by the current 
-		 * settings of {@link PrintPrecision}.
-		 * Use {@link PrintPrecision#set(int)} or {@link PrintPrecision#reset()} to change.
+		 * {@inheritDoc} The number of output digits is specified by the current settings of {@link PrintPrecision}. Use
+		 * {@link PrintPrecision#set(int)} or {@link PrintPrecision#reset()} to change.
 		 */
 		@Override	
 		public String toString() {
 			String fStr = PrintPrecision.getFormatStringFloat();
-			return String.format(Locale.US, "%s(" + fStr + ", " + fStr + ")", 
+			return String.format(Locale.US, "%s[" + fStr + ", " + fStr + "]",
 					getClass().getSimpleName(), x, y);
 		}
 
@@ -528,13 +516,11 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	// ----------------------------------------------------------
 
 	/**
-	 * Immutable 2D point implementation with {@code int} coordinates. This class
-	 * implements the {@link Pnt2d} interface. A protected constructor is provided
-	 * but the preferred way of instantiation is by one of the static factory
-	 * methods, such as {@link #from(int, int)}, {@link #from(int[])}, etc. The
-	 * {@code int} coordinates can only be retrieved via the publicly accessible
-	 * field variables {@link #x}, {@link #y}, while the methods {@link #getX()} and
-	 * {@link #getY()} return {@code double} values for compatibility reasons.
+	 * Immutable 2D point implementation with {@code int} coordinates. This class implements the {@link Pnt2d}
+	 * interface. A protected constructor is provided but the preferred way of instantiation is by one of the static
+	 * factory methods, such as {@link #from(int, int)}, {@link #from(int[])}, etc. The {@code int} coordinates can only
+	 * be retrieved via the publicly accessible field variables {@link #x}, {@link #y}, while the methods
+	 * {@link #getX()} and {@link #getY()} return {@code double} values for compatibility reasons.
 	 */
 	public class PntInt implements Pnt2d {
 
@@ -567,8 +553,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		// static factory methods --------------------------------------
 
 		/**
-		 * Returns a new {@link PntInt} instance from
-		 * a given point.
+		 * Returns a new {@link PntInt} instance from a given point.
+		 *
 		 * @param p the original point
 		 * @return the new point
 		 */
@@ -596,10 +582,9 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		}
 
 		/**
-		 * Returns a new {@link PntInt} from a given {@link Pnt2d} instance.
-		 * This only works if the argument is of type {@link Pnt2d.PntInt},
-		 * otherwise an exception is thrown.
-		 * 
+		 * Returns a new {@link PntInt} from a given {@link Pnt2d} instance. This only works if the argument is of type
+		 * {@link Pnt2d.PntInt}, otherwise an exception is thrown.
+		 *
 		 * @param p a point of type {@link Pnt2d.PntInt}
 		 * @return the new point
 		 */
@@ -614,8 +599,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		}
 
 		/**
-		 * Returns a new {@link PntDouble} instance
-		 * with the same coordinates as the given AWT {@link Point}.
+		 * Returns a new {@link PntDouble} instance with the same coordinates as the given AWT {@link Point}.
+		 *
 		 * @param p the original AWT point
 		 * @return the new point
 		 */
@@ -692,9 +677,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		// distance -----------------------------------
 
 		/**
-		 * Returns the L1 (Manhattan) distance between this point and the
-		 * given point. 
-		 * 
+		 * Returns the L1 (Manhattan) distance between this point and the given point.
+		 *
 		 * @param p the other point
 		 * @return the distance
 		 */
@@ -703,9 +687,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		}
 
 		/**
-		 * Returns the squared L2 distance between this point and the
-		 * given point.
-		 * 
+		 * Returns the squared L2 distance between this point and the given point.
+		 *
 		 * @param other the other point
 		 * @return the squared distance
 		 */
@@ -734,7 +717,7 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 
 		@Override
 		public String toString() {
-			return String.format(Locale.US, "%s(%d, %d)", 
+			return String.format(Locale.US, "%s[%d, %d]",
 					getClass().getSimpleName(), x, y);
 		}
 
@@ -749,7 +732,6 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 			bits ^= java.lang.Double.doubleToLongBits(getY()) * 31;
 			return (((int) bits) ^ ((int) (bits >> 32)));
 		}
-
 
 		/**
 		 * Returns this point's coordinates as a new 2-element {@code int} array.
@@ -771,35 +753,4 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 
 	}
 
-	// -------------------------------------------------------------------------
-	
-
-	public static void main(String[] args) {
-		PntInt a = PntInt.from(10,  7);
-		PntInt b = PntInt.from(3,  5);
-		
-		System.out.println("a = " + a);
-		System.out.println("b = " + b);
-
-		System.out.println("a.perp = " + a.perp());
-		System.out.println("b.perp = " + b.perp());
-
-		//		System.out.println(" a = " + a.getClass());
-		//		System.out.println(" b = " + b.getClass());
-		//		System.out.println("dist1 = " + a.distL1(b));
-		//		System.out.println("dist2 = " + a.distL1(b));
-
-		System.out.println("a . b = " + a.dot(b));
-		System.out.println("b . a = " + b.dot(a));
-
-		System.out.println("a . a.perp() = " + a.dot(a.perp()));
-		System.out.println("b . b.perp() = " + b.dot(b.perp()));
-
-		System.out.println("a x b = " + a.cross(b));
-		System.out.println("b x a = " + b.cross(a));
-		
-		System.out.println("a x b = " + a.perp().dot(b));
-		System.out.println("a x b = " + b.perp().dot(a));
-
-	}
 }
