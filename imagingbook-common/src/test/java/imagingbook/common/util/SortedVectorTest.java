@@ -11,9 +11,12 @@ package imagingbook.common.util;
 import org.junit.Test;
 
 import java.util.Comparator;
+import java.util.Random;
 
 import static imagingbook.common.util.ClassUtils.getComparator;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SortedVectorTest {
 
@@ -23,7 +26,7 @@ public class SortedVectorTest {
         doInserts(sv);
         assertEquals(3, sv.size());
         // System.out.println(sv.toString());
-        assertArrayEquals(new Integer[] {9, 11, 22}, sv.getArray());
+        assertArrayEquals(new Integer[] {22, 11, 9}, sv.getArray());
     }
 
     @Test
@@ -32,7 +35,7 @@ public class SortedVectorTest {
         doInserts(sv);
         assertEquals(3, sv.size());
         // System.out.println(sv.toString());
-        assertArrayEquals(new Integer[] {9, 11, 22}, sv.getArray());
+        assertArrayEquals(new Integer[] {22, 11, 9}, sv.getArray());
     }
 
     @Test
@@ -43,7 +46,7 @@ public class SortedVectorTest {
         doInserts(sv);
         assertEquals(3, sv.size());
         // System.out.println(sv.toString());
-        assertArrayEquals(new Integer[] {2, 1, -1}, sv.getArray());
+        assertArrayEquals(new Integer[] {-1, 1, 2}, sv.getArray());
     }
 
     @Test
@@ -60,47 +63,65 @@ public class SortedVectorTest {
             doInserts(sv);
             assertEquals(3, sv.size());
             // System.out.println(sv.toString());
-            assertArrayEquals(new Integer[]{9, 11, 22}, sv.getArray());
+            assertArrayEquals(new Integer[]{22, 11, 9}, sv.getArray());
         }
         {   // collect min values
             SortedVector<Integer> sv = new SortedVector<>(new Integer[3], cpr.reversed());
             doInserts(sv);
             assertEquals(3, sv.size());
             // System.out.println(sv.toString());
-            assertArrayEquals(new Integer[] {2, 1, -1}, sv.getArray());
+            assertArrayEquals(new Integer[] {-1, 1, 2}, sv.getArray());
         }
-
     }
 
     @Test
-    public void test5() {
-        Comparator<Integer> cpr = getComparator(Integer.class);
-        assertEquals(-1, cpr.compare(5, 7));
-        assertEquals( 0, cpr.compare(5, 5));
-        assertEquals( 1, cpr.compare(7, 5));
+    public void testManyMaximum() {
+        Double[] a1 = new Double[3];
+        SortedVector<Double> sv = new SortedVector<>(a1);
+        Random rg = new Random(17);
+        double maxVal = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < 100000; i++) {
+            double x = rg.nextDouble();
+            maxVal = Math.max(maxVal, x);
+            sv.add(x);
+        }
+        assertEquals(3, sv.size());
+        Double[] a2 = sv.getArray();
+        assertEquals(3, a2.length);
+        assertEquals(maxVal, a2[0], 0);
+        for (int i = 1; i < a2.length; i++) {
+            assertTrue(a2[i-1] >= a2[i]);
+        }
     }
 
     @Test
-    public void test6() {
-        Comparator<Integer> cpr = getComparator(Integer.class).reversed();
-        assertEquals( 1, cpr.compare(5, 7));
-        assertEquals( 0, cpr.compare(5, 5));
-        assertEquals(-1, cpr.compare(7, 5));
+    public void testManyMinimum() {
+        Double[] a1 = new Double[3];
+        SortedVector<Double> sv = new SortedVector<>(a1, getComparator(Double.class).reversed());
+        Random rg = new Random(17);
+        double minVal = Double.POSITIVE_INFINITY;
+        for (int i = 0; i < 100000; i++) {
+            double x = rg.nextDouble();
+            minVal = Math.min(minVal, x);
+            sv.add(x);
+        }
+        assertEquals(3, sv.size());
+        Double[] a2 = sv.getArray();
+        assertEquals(3, a2.length);
+        assertEquals(minVal, a2[0], 0);
+        for (int i = 1; i < a2.length; i++) {
+            assertTrue(a2[i-1] <= a2[i]);
+        }
     }
 
     private void doInserts(SortedVector<Integer> sv) {
-        sv.insert(5);
-        sv.insert(2);
-        sv.insert(9);
-        sv.insert(7);
-        sv.insert(-1);
-        sv.insert(11);
-        sv.insert(22);
-        sv.insert(1);
+        sv.add(5);
+        sv.add(2);
+        sv.add(9);
+        sv.add(7);
+        sv.add(-1);
+        sv.add(11);
+        sv.add(22);
+        sv.add(1);
     }
-
-    // static <T> Comparator<T>  getComparator(Class<T> clazz) {
-    //     return (Comparator<T>) Comparator.naturalOrder();
-    // }
-
 }

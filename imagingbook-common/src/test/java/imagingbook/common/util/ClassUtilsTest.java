@@ -12,7 +12,9 @@ import imagingbook.sampleimages.GeneralSampleImage;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
+import static imagingbook.common.util.ClassUtils.getComparator;
 import static imagingbook.common.util.ClassUtils.getEnumConstantsSorted;
 import static org.junit.Assert.*;
 
@@ -47,4 +49,19 @@ public class ClassUtilsTest {
         assertEquals("zappa", x[5]);
     }
 
+    @Test
+    public void testGetComparator1() {
+        Comparator<Integer> cpr = getComparator(Integer.class);
+        assertEquals(-1, cpr.compare(5, 7));
+        assertEquals( 0, cpr.compare(5, 5));
+        assertEquals( 1, cpr.compare(7, 5));
+    }
+
+    @Test
+    public void testGetComparator2() {
+        Comparator<Integer> cpr = getComparator(Integer.class).reversed();
+        assertEquals( 1, cpr.compare(5, 7));
+        assertEquals( 0, cpr.compare(5, 5));
+        assertEquals(-1, cpr.compare(7, 5));
+    }
 }

@@ -151,7 +151,7 @@ public abstract class ClassUtils {
 
 	/**
 	 * Returns the "natural order" {@link Comparator} instance for the specified {@link Comparable} class. Use
-	 * {@link Comparator#reversed()} to obtain the associated comparator for sorting in reverse order.
+	 * {@link Comparator#reversed()} to obtain the comparator for sorting in reverse order.
 	 *
 	 * @param clazz a class implementing {@link Comparable}
 	 * @param <T> the generic type
