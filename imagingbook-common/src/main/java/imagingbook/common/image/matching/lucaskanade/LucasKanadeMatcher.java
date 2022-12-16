@@ -18,19 +18,28 @@ import imagingbook.common.geometry.mappings.linear.Translation2D;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.util.ParameterBundle;
 
-
 /**
- * This is the common super-class for different variants of the Lucas-Kanade
- * matcher.
- *  @author Wilhelm Burger
- *  @version 2019/01/03
+ * <p>
+ * This is the common super-class for different variants of the Lucas-Kanade matcher [1]. See Ch. 24 of [2] for
+ * additional details.
+ * </p>
+ * <p>
+ * [1] B. D. Lucas and T. Kanade. "An iterative image registration technique with an application to stereo vision". In
+ * Proceedings of the 7th International Joint Conference on Artificial Intelligence IJCAI’81, pp. 674–679, Vancouver, BC
+ * (1981).
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
+ * @author Wilhelm Burger
+ * @version 2019/01/03
  */
 public abstract class LucasKanadeMatcher {
 
 	/**
-	 * Default parameters for the containing class and its sub-classes; 
-	 * a (usually modified) instance of this class is passed to the constructor 
-	 * of a non-abstract sub-class.
+	 * Default parameters for the containing class and its sub-classes; a (usually modified) instance of this class is
+	 * passed to the constructor of a non-abstract sub-class.
 	 */
 	public static class Parameters implements ParameterBundle<LucasKanadeMatcher> {
 		/** Convergence limit */
@@ -55,12 +64,12 @@ public abstract class LucasKanadeMatcher {
 	int iteration = -1;
 	
 	/**
-	 * Creates a new Lucas-Kanade-type matcher.
+	 * Constructor.
 	 * @param I the search image (of type {@link FloatProcessor}).
 	 * @param R the reference image (of type {@link FloatProcessor})
 	 * @param params a parameter object of type  {@link LucasKanadeMatcher.Parameters}.
 	 */
-	protected LucasKanadeMatcher(FloatProcessor I, FloatProcessor R, Parameters params) {
+	LucasKanadeMatcher(FloatProcessor I, FloatProcessor R, Parameters params) {
 		this.I = I;	// search image
 		this.R = R;	// reference image
 		this.params = params;
@@ -69,20 +78,22 @@ public abstract class LucasKanadeMatcher {
 		xc = 0.5 * (wR - 1);
 		yc = 0.5 * (hR - 1);
 	}
-	
+
 	/**
-	 * Calculates the transformation that maps the reference image {@code R} (centered
-	 * around the origin) to the given quad Q.
-	 * @param Q an arbitrary quad (should be inside the search image I);
-	 * @return the transformation from {@code R}'s bounding rectangle to {@code Q}.
+	 * Calculates the projective transformation that maps the reference image R (centered at the origin) to some other
+	 * quad Q.
+	 *
+	 * @param Q an arbitrary quad (should be inside the search image I)
+	 * @return the transformation from R's bounding rectangle to Q
 	 */
 	public ProjectiveMapping2D getReferenceMappingTo(Pnt2d[] Q) {
-		Pnt2d[] Rpts = getReferencePoints();
+		Pnt2d[] Rpts = this.getReferencePoints();
 		return ProjectiveMapping2D.fromPoints(Rpts, Q);
 	}
 	
 	/**
-	 * @return the corner points of the bounding rectangle of R, centered at the origin.
+	 * Returns the corner points of the bounding rectangle of R, centered at the origin.
+	 * @return the corner points of the bounding rectangle of R
 	 */
 	public Pnt2d[] getReferencePoints() {
 		double xmin = -xc;
@@ -96,16 +107,14 @@ public abstract class LucasKanadeMatcher {
 		pts[3] = PntDouble.from(xmin, ymax);
 		return pts;
 	}
-	
-	
+
 	/**
 	 * Performs the full optimization on the given image pair (I, R).
-	 * @param Tinit the transformation from the reference image R to
-	 * the initial search patch, assuming that R is centered at the coordinate
-	 * origin!
-	 * @return the transformation to the best-matching patch in the search image I
-	 * (again assuming that R is centered at the coordinate origin) or null if
-	 * no match was found.
+	 *
+	 * @param Tinit the transformation from the reference image R to the initial search patch, assuming that R is
+	 * centered at the coordinate origin!
+	 * @return the transformation to the best-matching patch in the search image I (again assuming that R is centered at
+	 * the coordinate origin) or null if no match was found.
 	 */
 	public ProjectiveMapping2D getMatch(ProjectiveMapping2D Tinit) {
 //		initializeMatch(Tinit);			// to be implemented by sub-classes
@@ -116,29 +125,28 @@ public abstract class LucasKanadeMatcher {
 		} while (Tp != null && !hasConverged() && getIteration() < params.maxIterations);
 		return Tp;
 	}
-	
-	
+
+
 	/**
 	 * Performs a single matching iteration on the given image pair (I, R).
-	 * 
-	 * @param Tp the warp transformation from the reference image R to
-	 * the initial search patch, assuming that R is centered at the coordinate
-	 * origin! 
-	 * @return a new warp transformation (again assuming that R is centered at 
-	 * the coordinate origin) or null if the iteration was unsuccessful.
+	 *
+	 * @param Tp the warp transformation from the reference image R to the initial search patch, assuming that R is
+	 * centered at the coordinate origin!
+	 * @return a new warp transformation (again assuming that R is centered at the coordinate origin) or null if the
+	 * iteration was unsuccessful.
 	 */
 	public abstract ProjectiveMapping2D iterateOnce(ProjectiveMapping2D Tp);
-	
-	
+
 	/**
 	 * Checks if the matcher has converged.
 	 * @return true if minimization criteria have been reached.
 	 */
 	public abstract boolean hasConverged();
-	
+
 	/**
-	 * Measures the RMS intensity difference between the reference image R and the 
-	 * patch in the search image I defined by the current warp Tp.
+	 * Measures the RMS intensity difference between the reference image R and the patch in the search image I defined
+	 * by the current warp Tp.
+	 *
 	 * @return the RMS error under the current warp
 	 */
 	public abstract double getRmsError();		
@@ -149,7 +157,7 @@ public abstract class LucasKanadeMatcher {
 	
 	// ------------------------------------------------------------------------------------
 	
-	protected FloatProcessor gradientX(FloatProcessor fp) {
+	FloatProcessor gradientX(FloatProcessor fp) {
 		// Sobel-kernel for x-derivatives:
 	    final float[] Hx = Matrix.multiply(1f/8, new float[] {
 				-1, 0, 1,
@@ -161,7 +169,7 @@ public abstract class LucasKanadeMatcher {
 	    return fpX;
 	}
 	
-	protected FloatProcessor gradientY(FloatProcessor fp) {
+	FloatProcessor gradientY(FloatProcessor fp) {
 		// Sobel-kernel for y-derivatives:
 		final float[] Hy = Matrix.multiply(1f/8, new float[] {
 						-1, -2, -1,
@@ -199,7 +207,7 @@ public abstract class LucasKanadeMatcher {
 //		return pts;
 //	}
 	
-	protected void showSteepestDescentImages(double[][][] S) {	// S[u][v][n]
+	void showSteepestDescentImages(double[][][] S) {	// S[u][v][n]
 		String titlePrefix = "sd";
 		int w = S.length;
 		int h = S[0].length;

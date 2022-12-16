@@ -17,10 +17,10 @@ import imagingbook.common.geometry.mappings.linear.ProjectiveMapping2D;
 import imagingbook.common.image.access.ImageAccessor;
 
 /**
- * Use to extract warped images for testing the Lucas-Kanade matcher.
+ * Used to extract warped images for testing class {@link LucasKanadeMatcher}.
  * 
  * @author WB
- * @version 2022/09/16 made non-public
+ * @version 2022/09/16
  */
 public class ImageExtractor {
 	// TODO: replace by ImageMapper
@@ -35,34 +35,28 @@ public class ImageExtractor {
 	public ImageExtractor(ImageProcessor I) {
 		this.I = I;
 	}
-	
+
 	/**
-	 * Sets the interpolation method to be used for extracting sub-images
-	 * (defined by ImageJ's {@link ImageProcessor}):
-	 * {@code ImageProcessor.BILINEAR} (default),
-	 * {@code NEAREST_NEIGHBOR},
-	 * {@code BICUBIC} or
-	 * {@code NONE}.
-	 * 
+	 * Sets the interpolation method to be used for extracting sub-images (defined by ImageJ's {@link ImageProcessor}):
+	 * {@code ImageProcessor.BILINEAR} (default), {@code NEAREST_NEIGHBOR}, {@code BICUBIC} or {@code NONE}.
+	 *
 	 * @param method the interpolation method to use
 	 */
 	public void setInterpolationMethod(int method) {
 		this.interpolationMethod = method;
 	}
-	
+
 	/**
-	 * Extracts a sub-image of size {@code width} x {@code height} from the source image 
-	 * {@code I} (referenced by {@code this} {@link ImageExtractor}),
-	 * using the specified transformation.
-	 * The image {@code R} is extracted from a quadrilateral patch of the source image,
-	 * defined by the transformation of the boundary of {@code R} by {@code T(x)}.
-	 * 
+	 * Extracts a sub-image of size {@code width} x {@code height} from the source image {@code I} (referenced by
+	 * {@code this} {@link ImageExtractor}), using the specified transformation. The image {@code R} is extracted from a
+	 * quadrilateral patch of the source image, defined by the transformation of the boundary of {@code R} by
+	 * {@code T(x)}.
+	 *
 	 * @param width the width of the extracted image
 	 * @param height the height of the extracted image
 	 * @param T a {@link LinearMapping2D} instance
 	 * @return the extracted image, which is of the same type as the source image.
-	 */	
-
+	 */
 	public ImageProcessor extractImage(int width, int height, LinearMapping2D T) {
 		ImageProcessor R = I.createProcessor(width, height);
 		extractImage(R, T);
@@ -75,16 +69,16 @@ public class ImageExtractor {
 //		extractImage(R, T);
 //		return R;
 //	}
-	
+
 	/**
-	 * Fills the image {@code R} from the source image 
-	 * {@code I} (referenced by {@code this} object).
-	 * The image {@code R} is extracted from a quadrilateral patch of the source image,
-	 * defined by the transformation of the boundary of {@code R} by {@code T(x)}.
-	 * Grayscale and color images my not be mixed (i.e., {@code R} must be of the same type as {@code I}).
+	 * Fills the image {@code R} from the source image {@code I} (referenced by {@code this} object). The image
+	 * {@code R} is extracted from a quadrilateral patch of the source image, defined by the transformation of the
+	 * boundary of {@code R} by {@code T(x)}. Grayscale and color images my not be mixed (i.e., {@code R} must be of the
+	 * same type as {@code I}).
+	 *
 	 * @param R the image to be filled.
 	 * @param T a {@link LinearMapping2D} object.
-	 */	
+	 */
 	public void extractImage(ImageProcessor R, LinearMapping2D T) {
 		int prevInterpolationMethod = I.getInterpolationMethod();
 		// save current interpolation method
@@ -106,15 +100,15 @@ public class ImageExtractor {
 		// restore interpolation method
 		I.setInterpolationMethod(prevInterpolationMethod);
 	}
-	
+
 	/**
-	 * Extracts a warped sub-image of the associated target image I,
-	 * defined by a sequence of 3 or 4 points. In the case of 3 
-	 * points in sourcePnts, an {@link AffineMapping2D} is used; with 4 points,
-	 * a {@link ProjectiveMapping2D} is used. The 3 or 4 points map clockwise to
-	 * the corner points of the target image R, starting with the top-left corner.
-	 * @param R the target image;
-	 * @param sourcePnts an array of 3 or 4 {@link Pnt2d} objects.
+	 * Extracts a warped sub-image of the associated target image I, defined by a sequence of 3 or 4 points. In the case
+	 * of 3 points in sourcePnts, an {@link AffineMapping2D} is used; with 4 points, a {@link ProjectiveMapping2D} is
+	 * used. The 3 or 4 points map clockwise to the corner points of the target image R, starting with the top-left
+	 * corner.
+	 *
+	 * @param R the target image
+	 * @param sourcePnts an array of 3 or 4 {@link Pnt2d} objects
 	 */
 	public void extractImage(ImageProcessor R, Pnt2d[] sourcePnts) {
 		ProjectiveMapping2D T = getMapping(R.getWidth(), R.getHeight(), sourcePnts);

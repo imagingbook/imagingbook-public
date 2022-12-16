@@ -16,12 +16,20 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.math.Matrix;
 
 /**
- * Lucas-Kanade (forward-additive) matcher, as described in Simon Baker and Iain Matthews, 
- * "Lucas-Kanade 20 Years On: A Unifying Framework: Part 1", CMU-RI-TR-02-16 (2002)
- * Also called the "forward-additive" algorithm.
- * This version assumes that the the origin of R is at its center!
- *  @author Wilhelm Burger
- *  @version 2014/02/08
+ * Lucas-Kanade (forward-additive) matcher [1], as described in [2]. Also called the "forward-additive" algorithm. See
+ * Sec. 24.2 (Alg. 24.1) of [2] for additional details. This version assumes that the origin of R is at its center!
+ * <p>
+ * [1] B. D. Lucas and T. Kanade. "An iterative image registration technique with an application to stereo vision". In
+ * Proceedings of the 7th International Joint Conference on Artificial Intelligence IJCAI’81, pp. 674–679, Vancouver, BC
+ * (1981).
+ * <br>
+ * [2] Simon Baker and Iain Matthews, "Lucas-Kanade 20 Years On: A Unifying Framework: Part 1", CMU-RI-TR-02-16 (2002)
+ * <br>
+ * [3] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ *
+ * @author WB
+ * @version 2014/02/08
  */
 public class LucasKanadeForwardMatcher extends LucasKanadeMatcher {
 	

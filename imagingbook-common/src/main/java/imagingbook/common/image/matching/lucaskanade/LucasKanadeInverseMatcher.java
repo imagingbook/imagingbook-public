@@ -16,12 +16,17 @@ import imagingbook.common.geometry.mappings.linear.ProjectiveMapping2D;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.math.Matrix;
 
-
 /**
- * Inverse Compositional Matcher, as described in Simon Baker and Iain Matthews, 
- * "Lucas-Kanade 20 Years On: A Unifying Framework: Part 1", CMU-RI-TR-02-16 (2002)
- *  @author Wilhelm Burger
- *  @version 2014/02/08
+ * Lucas-Kanade elastic "Inverse Compositional" matcher, as described in [1]. See Sec. 24.3 (Alg. 4.2) of [2] for
+ * additional details.
+ * <p>
+ * [1] Simon Baker and Iain Matthews, "Lucas-Kanade 20 Years On: A Unifying Framework: Part 1", CMU-RI-TR-02-16 (2002)
+ * <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ *
+ * @author WB
+ * @version 2014/02/08
  */
 public class LucasKanadeInverseMatcher extends LucasKanadeMatcher {
 	
