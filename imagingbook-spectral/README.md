@@ -5,6 +5,6 @@ separated from the main `imagingbook` library to minimize third-party dependenci
 
 **Repository:** [imagingbook-public](https://github.com/imagingbook/imagingbook-public)
 
-**JavaDoc:** https://imagingbook.github.io/imagingbook-public/imagingbook-spectral/javadoc/
+**JavaDoc:** https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook.spectral/module-summary.html
 
 **Maven Artifact:** https://mvnrepository.com/artifact/com.imagingbook/imagingbook-spectral
