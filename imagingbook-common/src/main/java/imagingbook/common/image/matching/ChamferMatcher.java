@@ -67,7 +67,6 @@ public class ChamferMatcher {
 		return getMatch(pR, R.getWidth(), R.getHeight());
 	}
 
-
 	// Collect all foreground pixel coordinates of R into a point array.
 	private PntInt[] collectForegroundPoints(ByteProcessor R) {
 		final int w = R.getWidth();

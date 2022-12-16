@@ -12,26 +12,24 @@ import ij.process.ImageProcessor;
 
 /**
  * <p>
- * Instances of this class calculate an approximate distance transform of a given
- * image which is assumed to be binary (pixel value 0 = background, non-zero = foreground).
- * For the L2 norm, the resulting distances are only an approximation.
- * See Sec. 23.2.2 (Alg. 23.2) of [1] for additional details.
+ * Instances of this class calculate an approximate distance transform of a given image which is assumed to be binary
+ * (pixel value 0 = background, non-zero = foreground). For the L2 norm, the resulting distances are only an
+ * approximation. See Sec. 23.2.2 (Alg. 23.2) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2014-04-20
- * @version 2022/09/16 revised
+ * @version 2022/09/16
  */
 public class DistanceTransform {
 	
 	private final float[][] D;
 	
 	/**
-	 * Constructor using the default distance norm (L2).
+	 * Constructor using the default distance norm ({@link DistanceNorm#L2}).
 	 * @param I the input image
 	 */
 	public DistanceTransform(ImageProcessor I) {
@@ -68,7 +66,7 @@ public class DistanceTransform {
 		// L->R pass:
 		for (int v = 0; v < N; v++) {
 			for (int u = 0; u < M; u++) {
-				if (I.get(u, v) > 0) {		// a foreground pixel
+				if (I.get(u, v) != 0) {		// a foreground pixel
 					D[u][v] = 0;
 				}
 				else {						// a background pixel
@@ -122,7 +120,12 @@ public class DistanceTransform {
 		}
 		return minVal;
 	}
-	
+
+	/**
+	 * Returns the distance map as a 2D float array with the same size as the original image.
+	 *
+	 * @return the 2D distance map.
+	 */
 	public float[][] getDistanceMap() {
 		return D;
 	}
