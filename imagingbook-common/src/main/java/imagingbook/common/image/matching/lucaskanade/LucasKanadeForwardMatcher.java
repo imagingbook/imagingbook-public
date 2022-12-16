@@ -40,7 +40,7 @@ public class LucasKanadeForwardMatcher extends LucasKanadeMatcher {
 	private double[][][] S;						// S[u][u][n] = the steepest descent image for dimension n at pos. u,v (same size as R)
 
 	/**
-	 * Creates a new matcher of type {@link LucasKanadeForwardMatcher}.
+	 * Constructor.
 	 * @param I the search image (of type {@link FloatProcessor}).
 	 * @param R the reference image (of type {@link FloatProcessor})
 	 * @param params a parameter object of type  {@link LucasKanadeMatcher.Parameters}.
@@ -48,9 +48,14 @@ public class LucasKanadeForwardMatcher extends LucasKanadeMatcher {
 	public LucasKanadeForwardMatcher(FloatProcessor I, FloatProcessor R, Parameters params) {
 		super(I, R, params);
 	}
-	
+
+	/**
+	 * Constructor using default parameters.
+	 * @param I the search image (of type {@link FloatProcessor}).
+	 * @param R the reference image (of type {@link FloatProcessor})
+	 */
 	public LucasKanadeForwardMatcher(FloatProcessor I, FloatProcessor R) {
-		super(I, R, new Parameters());
+		this(I, R, new Parameters());
 	}
 
 	@Override
@@ -64,7 +69,6 @@ public class LucasKanadeForwardMatcher extends LucasKanadeMatcher {
 	}
 
 	private void initializeMatch(ProjectiveMapping2D Tinit) {
-//		n = Tinit.getParameters().length;
 		n = getParameters(Tinit).length;
 		Ix = gradientX(I);
 		Iy = gradientY(I);
@@ -138,8 +142,7 @@ public class LucasKanadeForwardMatcher extends LucasKanadeMatcher {
 			throw new RuntimeException(this.getClass().getName() + ": Encountered singular Hessian matrix!");
 			//return null;
 		}
-		
-//		double[] p = Matrix.add(Tp.getParameters(), qopt);
+
 		double[] p = Matrix.add(getParameters(Tp), qopt);
 		qmag = Matrix.normL2squared(qopt);
 

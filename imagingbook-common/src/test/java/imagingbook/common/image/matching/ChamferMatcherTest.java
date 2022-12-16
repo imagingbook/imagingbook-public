@@ -18,7 +18,7 @@ public class ChamferMatcherTest {
 
 	@Test
 	public void testL1() {
-		ChamferMatcher matcher = new ChamferMatcher(I, DistanceNorm.L1);
+		ChamferMatcher matcher = new ChamferMatcher(I, DistanceTransform.DistanceType.L1);
 
 		int x0 = 23, y0 = 20;	// top/left corner of extraction
 		int MR = 14, NR = 16;
@@ -49,7 +49,7 @@ public class ChamferMatcherTest {
 	
 	@Test
 	public void testL2() {
-		ChamferMatcher matcher = new ChamferMatcher(I, DistanceNorm.L2);
+		ChamferMatcher matcher = new ChamferMatcher(I, DistanceTransform.DistanceType.L2);
 
 		int x0 = 23, y0 = 20;	// top/left corner of extraction
 		int MR = 14, NR = 16;

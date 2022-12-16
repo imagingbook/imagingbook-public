@@ -32,8 +32,8 @@ import imagingbook.common.util.ParameterBundle;
  * (2022).
  * </p>
  *
- * @author Wilhelm Burger
- * @version 2019/01/03
+ * @author WB
+ * @version 2022/12/16
  */
 public abstract class LucasKanadeMatcher {
 
@@ -65,9 +65,9 @@ public abstract class LucasKanadeMatcher {
 	
 	/**
 	 * Constructor.
-	 * @param I the search image (of type {@link FloatProcessor}).
+	 * @param I the search image (of type {@link FloatProcessor})
 	 * @param R the reference image (of type {@link FloatProcessor})
-	 * @param params a parameter object of type  {@link LucasKanadeMatcher.Parameters}.
+	 * @param params a parameter object (of type {@link LucasKanadeMatcher.Parameters})
 	 */
 	LucasKanadeMatcher(FloatProcessor I, FloatProcessor R, Parameters params) {
 		this.I = I;	// search image
@@ -86,7 +86,7 @@ public abstract class LucasKanadeMatcher {
 	 * @param Q an arbitrary quad (should be inside the search image I)
 	 * @return the transformation from R's bounding rectangle to Q
 	 */
-	public ProjectiveMapping2D getReferenceMappingTo(Pnt2d[] Q) {
+	public ProjectiveMapping2D getReferenceMappingTo(Pnt2d[] Q) {	// TODO: move to plugin where used
 		Pnt2d[] Rpts = this.getReferencePoints();
 		return ProjectiveMapping2D.fromPoints(Rpts, Q);
 	}
@@ -117,15 +117,12 @@ public abstract class LucasKanadeMatcher {
 	 * the coordinate origin) or null if no match was found.
 	 */
 	public ProjectiveMapping2D getMatch(ProjectiveMapping2D Tinit) {
-//		initializeMatch(Tinit);			// to be implemented by sub-classes
-		// ProjectiveMappingP Tp = Tinit.duplicate();
 		ProjectiveMapping2D Tp = Tinit;
 		do {
 			Tp = iterateOnce(Tp);		// to be implemented by sub-classes
 		} while (Tp != null && !hasConverged() && getIteration() < params.maxIterations);
 		return Tp;
 	}
-
 
 	/**
 	 * Performs a single matching iteration on the given image pair (I, R).
@@ -149,8 +146,12 @@ public abstract class LucasKanadeMatcher {
 	 *
 	 * @return the RMS error under the current warp
 	 */
-	public abstract double getRmsError();		
-	
+	public abstract double getRmsError();
+
+	/**
+	 * Returns the current iteration number.
+	 * @return the current iteration number
+	 */
 	public int getIteration() {
 		return iteration;
 	}
@@ -225,14 +226,14 @@ public abstract class LucasKanadeMatcher {
 	
 	// ported from ProjectiveMapping2D --------------------------------
 	
-	public double[] getParameters(ProjectiveMapping2D map) {
+	double[] getParameters(ProjectiveMapping2D map) {
 		double[][] A = map.getTransformationMatrix();
 		return new double[] {
 				A[0][0]-1, A[0][1], A[1][0], A[1][1]-1, A[2][0], A[2][1], A[0][2], A[1][2]};
 		//return new double[] { a00 - 1, a01, a10, a11 - 1, a20, a21, a02, a12 };
 	}
 	
-	public ProjectiveMapping2D toProjectiveMap(double[] param) {
+	ProjectiveMapping2D toProjectiveMap(double[] param) {
 		if (param.length < 8) {
 			throw new IllegalArgumentException("Affine mapping requires 8 parameters");
 		}
@@ -244,14 +245,14 @@ public abstract class LucasKanadeMatcher {
 	
 	// ---------------------
 	
-	public double[] getParameters(AffineMapping2D map) {
+	double[] getParameters(AffineMapping2D map) {
 		double[][] A = map.getTransformationMatrix();
 		return new double[] { 
 				A[0][0] - 1, A[0][1], A[1][0], A[1][1]-1, A[0][2], A[1][2]};
 		//return new double[] { a00 - 1, a01, a10, a11 - 1, a02, a12 };
 	}
 	
-	public AffineMapping2D toAffineMap(double[] param) {
+	AffineMapping2D toAffineMap(double[] param) {
 		if (param.length < 6) {
 			throw new IllegalArgumentException("Affine mapping requires 6 parameters");
 		}
@@ -262,13 +263,13 @@ public abstract class LucasKanadeMatcher {
 	
 	// --------------------
 	
-	public double[] getParameters(Translation2D map) {
+	double[] getParameters(Translation2D map) {
 		double[][] A = map.getTransformationMatrix();
 //		double[] p = new double[] {a02,	a12};
 		return new double[] {A[0][2], A[1][2]};
 	}
 	
-	public Translation2D toTranslation(double[] p) {
+	Translation2D toTranslation(double[] p) {
 		if (p.length < 2) {
 			throw new IllegalArgumentException("Translation requires 2 parameters");
 		}

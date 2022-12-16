@@ -25,15 +25,25 @@ import ij.process.ImageProcessor;
  * @version 2022/09/16
  */
 public class DistanceTransform {
+
+	/**
+	 * Enum type for different distance norms used to calculate distance transforms.
+	 *
+	 * @see DistanceTransform
+	 */
+	public enum DistanceType {
+		/** L1 distance (Manhattan distance) */ L1,
+		/** L2 distance (Euclidean distance) */ L2;
+	}
 	
 	private final float[][] D;
 	
 	/**
-	 * Constructor using the default distance norm ({@link DistanceNorm#L2}).
+	 * Constructor using the default distance norm ({@link DistanceType#L2}).
 	 * @param I the input image
 	 */
 	public DistanceTransform(ImageProcessor I) {
-		 this(I, DistanceNorm.L2);
+		 this(I, DistanceType.L2);
 	}
 	
 	/**
@@ -41,13 +51,13 @@ public class DistanceTransform {
 	 * @param I the input image
 	 * @param norm the distance norm
 	 */
-	public DistanceTransform(ImageProcessor I, DistanceNorm norm) {
+	public DistanceTransform(ImageProcessor I, DistanceType norm) {
 		D = makeDistanceMap(I, norm);
 	}
 	
 	// -----------------------------------------------------------------
 	
-	private float[][] makeDistanceMap(ImageProcessor I, DistanceNorm norm) {
+	private float[][] makeDistanceMap(ImageProcessor I, DistanceType norm) {
 		float m1, m2;
 		switch (norm) {
 		case L1:
@@ -129,6 +139,5 @@ public class DistanceTransform {
 	public float[][] getDistanceMap() {
 		return D;
 	}
-	
 
 }

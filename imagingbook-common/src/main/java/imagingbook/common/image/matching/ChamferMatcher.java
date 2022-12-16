@@ -40,7 +40,7 @@ public class ChamferMatcher {
 	 * @param I the binary "search" image (to be searched for matches of the "reference" image)
 	 */
 	public ChamferMatcher(ByteProcessor I) {
-		this(I, DistanceNorm.L2);
+		this(I, DistanceTransform.DistanceType.L2);
 	}
 	
 	/**
@@ -48,7 +48,7 @@ public class ChamferMatcher {
 	 * @param I the binary "search" image (to be searched for matches of the "reference" image)
 	 * @param norm the distance norm
 	 */
-	public ChamferMatcher(ByteProcessor I, DistanceNorm norm) {
+	public ChamferMatcher(ByteProcessor I, DistanceTransform.DistanceType norm) {
 		this.wI = I.getWidth();
 		this.hI = I.getHeight();
 		this.DI = (new DistanceTransform(I, norm)).getDistanceMap();

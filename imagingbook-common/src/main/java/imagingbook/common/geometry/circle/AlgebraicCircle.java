@@ -118,7 +118,13 @@ public class AlgebraicCircle {
         }
 		return this.equals((AlgebraicCircle) other, Arithmetic.EPSILON_DOUBLE);
 	}
-	
+
+	/**
+	 * Same as {@link #equals(Object)} but with a numeric tolerance on parameters.
+	 * @param other some other circle
+	 * @param tolerance numeric tolerance
+	 * @return true is equal
+	 */
 	public boolean equals(AlgebraicCircle other, double tolerance) {
 		return 
 				Arithmetic.equals(A, other.A, tolerance) &&

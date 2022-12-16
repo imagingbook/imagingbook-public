@@ -39,7 +39,7 @@ public class LucasKanadeInverseMatcher extends LucasKanadeMatcher {
 	private double sqrError = Double.MAX_VALUE;	// squared sum of differences between I and R
 	
 	/**
-	 * Creates a new matcher of type {@link LucasKanadeInverseMatcher}.
+	 * Constructor.
 	 * @param I the search image (of type {@link FloatProcessor}).
 	 * @param R the reference image (of type {@link FloatProcessor})
 	 * @param params a parameter object of type  {@link LucasKanadeMatcher.Parameters}.
@@ -47,13 +47,17 @@ public class LucasKanadeInverseMatcher extends LucasKanadeMatcher {
 	public LucasKanadeInverseMatcher(FloatProcessor I, FloatProcessor R, Parameters params) {
 		super(I, R, params);
 	}
-	
+
+	/**
+	 * Constructor using default parameters.
+	 * @param I the search image (of type {@link FloatProcessor}).
+	 * @param R the reference image (of type {@link FloatProcessor})
+	 */
 	public LucasKanadeInverseMatcher(FloatProcessor I, FloatProcessor R) {
-		super(I, R, new Parameters());
+		this(I, R, new Parameters());
 	}
 	
 	private void initializeMatch(ProjectiveMapping2D Tinit) {
-//		n = Tinit.getParameters().length;	// number of transformation parameters
 		n = getParameters(Tinit).length;	// number of transformation parameters
 		S = new double[wR][hR][];			// S[u][v] holds a double vector of length n
 		Rx = gradientX(R).getFloatArray();	// gradient of R

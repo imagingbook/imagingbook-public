@@ -24,7 +24,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.image.LocalMinMaxFinder;
 import imagingbook.common.image.LocalMinMaxFinder.ExtremalPoint;
 import imagingbook.common.image.matching.ChamferMatcher;
-import imagingbook.common.image.matching.DistanceNorm;
+import imagingbook.common.image.matching.DistanceTransform.DistanceType;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Font;
@@ -61,7 +61,7 @@ public class Chamfer_Matching implements PlugInFilter {
 	private static boolean ShowScoreValues = true;
 	private static int ScoreValueFontSize = 5;
 
-	private static DistanceNorm distNorm = DistanceNorm.L2;
+	private static DistanceType distNorm = DistanceType.L2;
 	private static int MaxLocalMinimaCount = 5;
 	private static double MarkerSize = 2;
 	private static double MarkerStrokeWidth = 0.5;
@@ -210,7 +210,7 @@ public class Chamfer_Matching implements PlugInFilter {
 
 		ReferenceAddNoise = gd.getNextBoolean();
 		ReferenceNoiseLevel = gd.getNextNumber() / 100;
-		distNorm = gd.getNextEnumChoice(DistanceNorm.class);
+		distNorm = gd.getNextEnumChoice(DistanceType.class);
 		MaxLocalMinimaCount = (int) gd.getNextNumber();
 		BestMatchColor = gd.getNextEnumChoice(BasicAwtColor.class);
 		OtherMatchColor = gd.getNextEnumChoice(BasicAwtColor.class);

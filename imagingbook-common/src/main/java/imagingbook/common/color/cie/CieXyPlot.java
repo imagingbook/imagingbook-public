@@ -52,7 +52,7 @@ public class CieXyPlot extends Path2D.Double {
 
     /**
      * CIE 1964 10-deg chromaticity coordinates. Copied from
-     * <a href=">http://www.cvrl.org/ccs.htm">http://www.cvrl.org/ccs.htm</a>.
+     * <a href="http://www.cvrl.org/ccs.htm">http://www.cvrl.org/ccs.htm</a>.
      * The entry format is [ λ, x(λ), y(λ), z(λ)], with wavelength λ (in nm) and xyz chromaticity coordinates. The array
      * is truncated above 720nm, thereby skipping the "dangling" measurements.
      */

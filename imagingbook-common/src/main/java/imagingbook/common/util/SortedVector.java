@@ -19,7 +19,7 @@ import java.util.PriorityQueue;
  * ordering or a supplied comparator. Once the predefined capacity is exceeded, redundant items are removed from the
  * underlying priority queue. Example (using natural ordering of Integer):
  * <pre>
- *     SortedVector<Integer> sv = new SortedVector<>(new Integer[3]);
+ *     SortedVector&lt;Integer&gt; sv = new SortedVector&lt;&gt;(new Integer[3]);
  *     sv.insert(5);
  *     sv.insert(2);
  *     sv.insert(9);

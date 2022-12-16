@@ -8,6 +8,7 @@
  */
 package Ch23_Image_Matching;
 
+import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -15,11 +16,11 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
-import imagingbook.common.image.matching.DistanceNorm;
 import imagingbook.common.image.matching.DistanceTransform;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
+ * <p>
  * Demonstrates the use of the {@link DistanceTransform} class. See Sec. 23.2.3 of [1] for details. Optionally opens a
  * sample image if no image is currently open. The active image is assumed to be binary (not checked).
  * </p>
@@ -34,7 +35,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  */
 public class Show_Distance_Map implements PlugInFilter {
 	
-	private static DistanceNorm distanceNorm = DistanceNorm.L1;
+	private static DistanceTransform.DistanceType distanceNorm = DistanceTransform.DistanceType.L1;
 	
 	private ImagePlus im;
 
@@ -42,6 +43,7 @@ public class Show_Distance_Map implements PlugInFilter {
 	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Show_Distance_Map() {
+		IJ.log("constructor");
 		if (IjUtils.noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.RhinoSmallInv);
 		}
@@ -55,6 +57,7 @@ public class Show_Distance_Map implements PlugInFilter {
 
 	@Override
     public void run(ImageProcessor ip) {
+		IJ.log("run");
     	if (!runDialog()) {
 			return;
     	}
@@ -76,7 +79,7 @@ public class Show_Distance_Map implements PlugInFilter {
 		if (gd.wasCanceled())
 			return false;
 		
-		distanceNorm = gd.getNextEnumChoice(DistanceNorm.class);
+		distanceNorm = gd.getNextEnumChoice(DistanceTransform.DistanceType.class);
 		return true;
 	}
 		

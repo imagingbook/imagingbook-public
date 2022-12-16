@@ -63,7 +63,7 @@ public class DistanceTransformTest {
 	@Test
 	public void testL1() {
 		ImageProcessor ip = new ByteProcessor(W, H, pixels);
-		DistanceTransform dt = new DistanceTransform(ip, DistanceNorm.L1);
+		DistanceTransform dt = new DistanceTransform(ip, DistanceTransform.DistanceType.L1);
 		float[][] dmap = dt.getDistanceMap();
 		NumericTestUtils.assert2dArrayEquals(distL1, dmap, 1e-6);
 	}
@@ -71,7 +71,7 @@ public class DistanceTransformTest {
 	@Test
 	public void testL2() {
 		ImageProcessor ip = new ByteProcessor(W, H, pixels);
-		DistanceTransform dt = new DistanceTransform(ip, DistanceNorm.L2);
+		DistanceTransform dt = new DistanceTransform(ip, DistanceTransform.DistanceType.L2);
 		float[][] dmap = dt.getDistanceMap();
 		NumericTestUtils.assert2dArrayEquals(distL2, dmap, 1e-3);
 	}
