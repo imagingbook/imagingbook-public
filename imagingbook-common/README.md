@@ -44,7 +44,7 @@ in the project's `pom.xml`file:
 Replace `6.0.0` with the most current release version found on
 Maven Central (https://search.maven.org/search?q=g:com.imagingbook).
 
-**Repository:** [imagingbook-public](https://github.com/imagingbook/imagingbook-public)
-
 **JavaDoc:** https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook.common/module-summary.html
+
+**Repository:** [imagingbook-public](https://github.com/imagingbook/imagingbook-public)
 
