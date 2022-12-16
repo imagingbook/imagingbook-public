@@ -42,25 +42,21 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * ImageJ plugin which runs MSER detection [1] on the current image and shows
- * the result as a vector overlay in a new image. If the option
- * {@code MarkMserPixels} is selected, the output is a color image with pixels
- * belonging to MSER components marked in different colors. The input image is
- * always converted to grayscale before MSER detection is performed. See Ch. 26
- * of [2] for details. If no image is currently open, the user is asked to load
- * a predefined sample image.
+ * ImageJ plugin which runs MSER detection [1] on the current image and shows the result as a vector overlay in a new
+ * image. If the option {@code MarkMserPixels} is selected, the output is a color image with pixels belonging to MSER
+ * components marked in different colors. The input image is always converted to grayscale before MSER detection is
+ * performed. See Ch. 26 of [2] for details. If no image is currently open, the user is asked to load a predefined
+ * sample image.
  * </p>
  * <p>
- * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline stereo
- * from maximally stable extremal regions. Image and Vision Computing 22(10),
- * 761–767 (2004). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline stereo from maximally stable extremal regions.
+ * Image and Vision Computing 22(10), 761–767 (2004). <br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing
+ * &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/24
- * 
  * @see MserDetector
  */
 public class MSER_Detection_Demo implements PlugInFilter {

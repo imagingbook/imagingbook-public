@@ -34,14 +34,12 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 
 /**
- * This ImageJ plugin runs the Harris corner detector on the active image,
- * applies Delaunay triangulation to the N strongest corners and displays the
- * result as a vector overlay on top of the same image. If no image is currently
+ * This ImageJ plugin performs corner detection on the active image, applies Delaunay triangulation to the N
+ * strongest corners and displays the result as a vector overlay on top of the same image. If no image is currently
  * open, the user is asked to load a predefined sample image.
- * 
+ *
  * @author WB
  * @version 2022/06/25
- * 
  * @see HarrisCornerDetector
  * @see DelaunayTriangulation
  */
@@ -59,10 +57,9 @@ public class Delaunay_Demo implements PlugInFilter {
 	private static Parameters params = new Parameters();
 	
 	private ImagePlus im = null;
-	
+
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Delaunay_Demo() {
 		if (noCurrentImage()) {

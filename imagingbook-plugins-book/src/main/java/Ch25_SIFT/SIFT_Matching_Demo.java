@@ -43,23 +43,21 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * This ImageJ plugin demonstrates the use of the SIFT detection and matching
- * framework. See Sec. 25.5 of [1] for details.
+ * This ImageJ plugin demonstrates the use of the SIFT detection and matching framework. See Sec. 25.5 of [1] for
+ * details.
  * </p>
  * <p>
- * The plugin takes a single image, which is assumed to be composed of a left
- * and right frame. The input image is split horizontally, then SIFT detection
- * and matching is applied to the two sub-images. The input image is always
- * converted to grayscale (and normalized to [0,1]) before SIFT feature
- * detection is performed. The result is displayed as a graphic overlay by
- * connecting and annotating the best-matching features. When saved as a TIFF
- * image the overlay is preserved.
+ * The plugin takes a single image, which is assumed to be composed of a left and right frame. The input image is split
+ * horizontally, then SIFT detection and matching is applied to the two sub-images. The input image is always converted
+ * to grayscale (and normalized to [0,1]) before SIFT feature detection is performed. The result is displayed as a
+ * graphic overlay by connecting and annotating the best-matching features. When saved as a TIFF image the overlay is
+ * preserved.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/20
  */
@@ -84,10 +82,9 @@ public class SIFT_Matching_Demo implements PlugInFilter {
 	private static Color[] ScaleLevelColors = getColors(SiftColors.class);
 	
 	private ImagePlus im = null;
-	
+
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public SIFT_Matching_Demo() {
 		if (noCurrentImage()) {
@@ -227,7 +224,6 @@ public class SIFT_Matching_Demo implements PlugInFilter {
 		MatchLineColor = gd.getNextEnumChoice(BasicAwtColor.class);
 		LabelColor = gd.getNextEnumChoice(BasicAwtColor.class);
 		ShowFeatureLabels = gd.getNextBoolean();
-		
 		return true;
 	}
 

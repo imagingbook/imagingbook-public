@@ -23,17 +23,16 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * This ImageJ plugin visualizes the hierarchical scale space structures used
- * for SIFT feature detection (see {@link SiftDetector}). Optionally the
- * Gaussian scale space or the derived DoG scale space (or both) are shown. Each
- * scale space octave is displayed as an image stack, with one frame for each
- * scale level. See Ch. 25 of [1] for details.
+ * This ImageJ plugin visualizes the hierarchical scale space structures used for SIFT feature detection (see
+ * {@link SiftDetector}). Optionally the Gaussian scale space or the derived DoG scale space (or both) are shown. Each
+ * scale space octave is displayed as an image stack, with one frame for each scale level. See Ch. 25 of [1] for
+ * details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/23
  */
@@ -43,8 +42,7 @@ public class Show_Scale_Space implements PlugInFilter {
 	private static boolean ShowDoGScaleSpace = false;
 	
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Show_Scale_Space() {
 		if (noCurrentImage()) {

@@ -34,19 +34,17 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * This ImageJ plugin demonstrates the "trigonometric" construction of elliptic
- * Fourier descriptors. See Sec. 26.3.7 of [1] for details. The input is a
- * user-defined polygon selection (ROI). The number of Fourier coefficient pairs
- * can be specified in the user dialog. The plugin then displays the original polygon
- * and the approximate contour reconstruction from the Fourier descriptor using
- * all specified coefficient pairs. Increasing the number of coefficient pairs
- * improves the reconstruction.
+ * This ImageJ plugin demonstrates the "trigonometric" construction of elliptic Fourier descriptors. See Sec. 26.3.7 of
+ * [1] for details. The input is a user-defined polygon selection (ROI). The number of Fourier coefficient pairs can be
+ * specified in the user dialog. The plugin then displays the original polygon and the approximate contour
+ * reconstruction from the Fourier descriptor using all specified coefficient pairs. Increasing the number of
+ * coefficient pairs improves the reconstruction.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction Using Java</em>, 2nd ed,
+ * Springer (2016).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/28
  */

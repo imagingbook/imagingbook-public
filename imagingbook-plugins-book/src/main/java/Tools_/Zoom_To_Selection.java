@@ -19,22 +19,17 @@ import imagingbook.common.ij.GuiTools;
 
 /**
  * <p>
- * ImageJ plugin, zooms the current image such that the given selection (ROI)
- * fits the image window. The top-left anchor corner of the new view is set to
- * the top-left corner of the current ROI (which may be of any type). The
- * magnification factor is determined from the width/height of the ROI's
- * bounding rectangle, such that the selected box always fits entirely into the
- * current image window. If the resulting view has no complete coverage by the
- * source image, the plugin does nothing. The size of the existing image window
- * is never changed.
+ * ImageJ plugin, zooms the current image such that the given selection (ROI) fits the image window. The top-left anchor
+ * corner of the new view is set to the top-left corner of the current ROI (which may be of any type). The magnification
+ * factor is determined from the width/height of the ROI's bounding rectangle, such that the selected box always fits
+ * entirely into the current image window. If the resulting view has no complete coverage by the source image, the
+ * plugin does nothing. The size of the existing image window is never changed.
  * </p>
  * <p>
- * The functionality is similar to ImageJ's "Image &rarr; Zoom &rarr; To
- * Selection" operator which, however, only supports a limited number of
- * predefined zoom factors.
+ * The functionality is similar to ImageJ's "Image &rarr; Zoom &rarr; To Selection" operator which, however, only
+ * supports a limited number of predefined zoom factors.
  * </p>
- * 
- * 
+ *
  * @author WB
  * @version 2020/12/17
  */

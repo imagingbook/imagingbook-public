@@ -26,21 +26,12 @@ import imagingbook.pdf.PdfExporter.Parameters;
 import imagingbook.pdf.Utils;
 
 /**
- * This ImageJ plugin exports the current image and its attached vector graphic
- * overlay (if existent) as a PDF file. It uses the free OpenPDF library, which
- * is based on iText4 but LGPL-licensed (see
- * <a href="https://github.com/LibrePDF/OpenPDF">
- * https://github.com/LibrePDF/OpenPDF</a>).
- * 
+ * This ImageJ plugin exports the current image and its attached vector graphic overlay (if existent) as a PDF file. It
+ * uses the free OpenPDF library, which is based on iText4 but LGPL-licensed (see
+ * <a href="https://github.com/LibrePDF/OpenPDF">https://github.com/LibrePDF/OpenPDF</a>).
+ *
  * @author WB
- * @version 2021/04/05 (migrated to OpenPDF, added image properties)
- * @version 2021/04/06 (added automatic image upscaling, open PFD after export)
- * @version 2021/04/21 (converted from PlugInFilter to PlugIn)
- * @version 2021/10/26 (added property insertion - TODO)
- * @version 2022/03/14 (complete rewrite, main functionality moved to
- *          {@link PdfExporter}, fixed font embedding)
  * @version 2022/04/23 (removed DialogListener)
- * 
  * @see PdfExporter
  */
 public class Export_PDF implements PlugIn {

@@ -16,11 +16,10 @@ import ij.plugin.PlugIn;
 import imagingbook.common.ij.GuiTools;
 
 /**
- * ImageJ plugin, resizes the window of the given image to fit an arbitrary,
- * user-specified magnification factor. The resulting window size is limited by
- * the current screen size. The window size is reduced if too large but the
- * given magnification factor remains always unchanged.
- * 
+ * ImageJ plugin, resizes the window of the given image to fit an arbitrary, user-specified magnification factor. The
+ * resulting window size is limited by the current screen size. The window size is reduced if too large but the given
+ * magnification factor remains always unchanged.
+ *
  * @author WB
  * @version 2020/10/08
  */

@@ -33,23 +33,19 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * This plugin extracts multi-scale SIFT features [1] from the current image and
- * displays them as M-shaped markers. The list of keypoints (if shown) is sorted
- * by descending magnitude. The input image is always converted to grayscale
- * before SIFT feature detection is performed. See Ch. 25 of [2] for details. If
- * no image is currently open, the user is asked to load a predefined sample
- * image.
+ * This plugin extracts multi-scale SIFT features [1] from the current image and displays them as M-shaped markers. The
+ * list of keypoints (if shown) is sorted by descending magnitude. The input image is always converted to grayscale
+ * before SIFT feature detection is performed. See Ch. 25 of [2] for details. If no image is currently open, the user is
+ * asked to load a predefined sample image.
  * </p>
  * <p>
- * [1] D. G. Lowe. Distinctive image features from scale-invariant keypoints.
- * International Journal of Computer Vision 60, 91–110 (2004). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] D. G. Lowe. Distinctive image features from scale-invariant keypoints. International Journal of Computer Vision
+ * 60, 91–110 (2004). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/04/01
- * 
  * @see SiftDetector
  * @see SiftDescriptor
  */
@@ -66,10 +62,9 @@ public class SIFT_Detection_Demo implements PlugInFilter {
 	private static Color[] ScaleLevelColors = getColors(SiftColors.class);
 	
 	private ImagePlus im;
-	
+
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public SIFT_Detection_Demo() {
 		if (IjUtils.noCurrentImage()) {

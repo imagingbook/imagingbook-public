@@ -9,9 +9,9 @@
 package Tools_;
 
 /**
- * ImageJ plugin, closes all open images except the currently active image. 
- * Much copied from from ij.plugin.WindowOrganizer.java
- * 
+ * ImageJ plugin, closes all open images except the currently active image. Much copied from from
+ * ij.plugin.WindowOrganizer.java
+ *
  * @author WB
  * @version 2012/02/15
  */

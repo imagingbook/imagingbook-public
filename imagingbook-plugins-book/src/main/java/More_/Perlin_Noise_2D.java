@@ -22,23 +22,21 @@ import imagingbook.common.noise.perlin.PerlinNoiseGenerator2d;
 
 /**
  * <p>
- * This ImageJ plugin creates a new noise image using a 2D gradient noise
- * generator [1]. Several parameters can be adjusted. See Ch. 8 of [2] for
- * details. The resulting noise image is of type {@link FloatProcessor}.
+ * This ImageJ plugin creates a new noise image using a 2D gradient noise generator [1]. Several parameters can be
+ * adjusted. See Ch. 8 of [2] for details. The resulting noise image is of type {@link FloatProcessor}.
  * </p>
  * <p>
- * [1] K. Perlin. Improving noise. In "SIGGRAPH’02: Proceedings of the 29th
- * Annual Conference on Computer Graphics and Interactive Techniques", pp.
- * 681–682, San Antonio, Texas (2002).<br>
- * [2] W. Burger and M. J. Burge. "Principles of Digital Image Processing -
- * Advanced Methods" (Vol. 3). Undergraduate Topics in Computer Science.
- * Springer-Verlag, London (2013).
+ * [1] K. Perlin. Improving noise. In "SIGGRAPH’02: Proceedings of the 29th Annual Conference on Computer Graphics and
+ * Interactive Techniques", pp. 681–682, San Antonio, Texas (2002).
+ * <br>
+ * [2] W. Burger and M. J. Burge. "Principles of
+ * Digital Image Processing - Advanced Methods" (Vol. 3). Undergraduate Topics in Computer Science. Springer-Verlag,
+ * London (2013).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/24
  */
-
 public class Perlin_Noise_2D implements PlugIn {
 	
 	private enum HasFunctionType {

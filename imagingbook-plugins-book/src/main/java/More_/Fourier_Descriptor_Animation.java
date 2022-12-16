@@ -40,29 +40,26 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
  * <p>
- * This ImageJ plugin visualizes the composition of 2D shapes by superposition
- * of nested ellipses, corresponding to complex coefficient pairs of elliptic
- * Fourier descriptors.
+ * This ImageJ plugin visualizes the composition of 2D shapes by superposition of nested ellipses, corresponding to
+ * complex coefficient pairs of elliptic Fourier descriptors.
  * </p>
  * <p>
- * The plugin assumes that the input image is binary (of type
- * {@link ByteProcessor}). It is segmented and the outer contour of the largest
- * connected component is used to calculate a Fourier descriptor (of type
- * {@link FourierDescriptorUniform}) with a user-defined number of coefficient
- * pairs. The plugin then displays a sequence of frames illustrating the
- * reconstruction of the shape by superposition of nested ellipses as the path
- * parameter (t) runs from 0 to 1. See Sec. 26.3.6 (esp. Fig. 26.12) of [1] for
- * details.
+ * The plugin assumes that the input image is binary (of type {@link ByteProcessor}). It is segmented and the outer
+ * contour of the largest connected component is used to calculate a Fourier descriptor (of type
+ * {@link FourierDescriptorUniform}) with a user-defined number of coefficient pairs. The plugin then displays a
+ * sequence of frames illustrating the reconstruction of the shape by superposition of nested ellipses as the path
+ * parameter (t) runs from 0 to 1. See Sec. 26.3.6 (esp. Fig. 26.12) of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction Using Java</em>, 2nd ed,
+ * Springer (2016).
  * </p>
+ *
  * @author WB
  * @version 2022/10/28
  */
 public class Fourier_Descriptor_Animation implements PlugInFilter {
-	
+	// TODO: add key event to stop animation
 	private static int FourierCoefficientPairs = 3;
 	
 	// visualization-related settings
@@ -87,10 +84,9 @@ public class Fourier_Descriptor_Animation implements PlugInFilter {
 	private ImagePlus im;
 	
 	// ----------------------------------------------------------------
-	
+
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Fourier_Descriptor_Animation() {
 		if (noCurrentImage()) {
