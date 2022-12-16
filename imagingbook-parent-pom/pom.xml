@@ -312,10 +312,10 @@
 							<directory>${project.basedir}/${imagingbook.deploydir}</directory>
 							<includes><include>**/*</include></includes>
 						</fileset>
-						<fileset>
+						<!--<fileset>
 							<directory>${project.basedir}/${imagingbook.javadocdir}</directory>
 							<includes><include>**/*</include></includes>
-						</fileset>
+						</fileset>-->
 					</filesets>
 				</configuration>
 			</plugin>
@@ -434,12 +434,13 @@
 					</links>
 					<doctitle>${imagingbook.doctitle}</doctitle>
 					<header>${imagingbook.header}</header>
-					<footer>${imagingbook.header}</footer>
+					<!--<footer>${imagingbook.header}</footer>-->
 					<bottom>${imagingbook.bottom}</bottom>
 					<packagesheader>${project.name}</packagesheader>
 					<overview>${project.basedir}/docs/overview.html</overview>
 					<nohelp>true</nohelp>
 					<author>false</author>
+					<doclint>all,-missing</doclint>
 				</configuration>
 
 				<executions>

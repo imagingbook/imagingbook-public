@@ -3,7 +3,7 @@
 mvn clean 
 mvn install -Dmaven.test.skip=true
 
-rm -r javadoc/*
+rm -rf javadoc/*
 mvn javadoc:aggregate -Dimagingbook.skipjavadoc=false
 
 echo ""
