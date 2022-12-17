@@ -5,13 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.imagingbook</groupId>
 	<artifactId>imagingbook-public</artifactId>
-	<version>6.0.1-SNAPSHOT</version>
+	<version>7.0.0</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-parent-pom</artifactId>  <!-- interesting, this POM inherits from an inner module! -->
-		<version>6.0.1-SNAPSHOT</version>
+		<version>7.0.0</version>
 		<relativePath>imagingbook-parent-pom/pom.xml</relativePath>
 	</parent>
 	
