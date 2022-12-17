@@ -8,6 +8,6 @@
  ******************************************************************************/
 
 /**
- * Defines basic utilities for file handling and information about this library.
+ * Defines basic utilities for file and resource handling used by other libraries.
  */
 package imagingbook.core;

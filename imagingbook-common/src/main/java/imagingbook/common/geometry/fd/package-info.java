@@ -8,13 +8,6 @@
  ******************************************************************************/
 
 /**
- * <p>
- * Defines Fourier descriptors for 2D shape representation and matching.
- * </p>
- * <p>
- * This code is part of the {@literal imagingbook}
- * software suite supporting the Digital Image Processing books by Wilhelm Burger and Mark J Burge 
- * (see <a href="https://imagingbook.com">https://imagingbook.com</a>).
- * </p>
+ * Fourier descriptors for 2D shape representation and matching.
  */
 package imagingbook.common.geometry.fd;

@@ -8,17 +8,7 @@
  ******************************************************************************/
 
 /**
- * <p>
- * This package implements David Lowe's SIFT feature detection scheme [1].
- * See Ch. 25 of [2] for more details.
- * </p>
- * <p>
- * [1] D. G. Lowe. Distinctive image features from scale-invariant keypoints.
- * International Journal of Computer Vision 60, 91–110 (2004).
- * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
- * </p>
+ * Implementation of David Lowe's SIFT feature detection scheme.
  */
 package imagingbook.common.sift;
 // TODO: cleanup point-related classes (KeyPoint, SiftKeyPoint, SiftDescriptor)

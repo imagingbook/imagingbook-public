@@ -6,8 +6,10 @@
  * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.
  * Visit https://imagingbook.com for additional details.
  ******************************************************************************/
-
 /**
- * 1D and 2D implementations of the Discrete Cosine Transform.
+ * 
  */
-package imagingbook.spectral.dct;
+@IjPluginPath("B&B>Book>More")
+package More_;
+
+import imagingbook.core.plugin.IjPluginPath;

@@ -14,23 +14,18 @@ import java.util.jar.Manifest;
 
 /**
  * This class provides version information for this library.
- * See https://stackoverflow.com/questions/3697449/retrieve-version-from-maven-pom-xml-in-code
- * for alternatives.
- * 
- * @author WB
  *
+ * @author WB
  */
 public abstract class Info {
-	
+	// see https://stackoverflow.com/questions/3697449/retrieve-version-from-maven-pom-xml-in-code for alternatives
 	private Info() {}
-	
+
 	/**
-	 * Reads version information from the MANIFEST.MF file of the JAR file from
-	 * which this class was loaded. 
-	 * 
-	 * @return A string with the version information. 
-	 * "UNKNOWN" is returned if the library was not loaded from a JAR file or if 
-	 * the version information could not be determined.
+	 * Reads version information from the MANIFEST.MF file of the JAR file from which this class was loaded.
+	 *
+	 * @return A string with the version information. "UNKNOWN" is returned if the library was not loaded from a JAR
+	 * file or if the version information could not be determined.
 	 */
 	public static String getVersionInfo() {
 		Manifest mf = FileUtils.getJarManifest(Info.class);
