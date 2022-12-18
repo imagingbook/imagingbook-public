@@ -80,10 +80,10 @@ project's `pom.xml`file:
 <dependency>
   <groupId>com.imagingbook</groupId>
   <artifactId>imagingbook-common</artifactId>
-  <version>6.0.0</version>
+  <version>7.0.0</version>
 </dependency>
 ```
-Replace `6.0.0` with the most current release version found on 
+Replace `7.0.0` with the most current release version found on 
 Maven Central (https://search.maven.org/search?q=g:com.imagingbook).
 
 ### Preconfigured Maven Projects
