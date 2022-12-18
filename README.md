@@ -31,7 +31,7 @@ dependencies. They may also be copied manually to ImageJ's `jars/` directory
     PDF-related library code, separated from the main `imagingbook` library to minimize 
     third-party dependencies.
 * **[imagingbook-sample-images](imagingbook-sample-images/)** <br>
-    Provides a set of (JAR-packaged) sample images used for demos and testing.
+    Provides a set of (JAR-packaged) sample images accessible as "named resources", mainly used for demos and testing.
 * **[imagingbook-core](imagingbook-core/)** <br>
     Minimal (bootstrap) infrastructure required for building the main `imagingbook` library modules.
     Includes code for basic file handling, managing resources and automatically compiling 
