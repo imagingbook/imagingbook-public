@@ -9,9 +9,6 @@
 
 package imagingbook.common.edges;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-import static java.lang.Math.sqrt;
-
 import ij.plugin.filter.Convolver;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
@@ -20,21 +17,21 @@ import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.util.ParameterBundle;
 
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.sqrt;
+
 /**
  * <p>
- * Multi-Gradient ("DiZenzo/Cumani-style") color edge detector.
- * Applicable to color images ({@link ColorProcessor}) only.
- * See Sec. 16.2 (Alg. 16.2) of [1] for additional details.
+ * Multi-Gradient ("DiZenzo/Cumani-style") color edge detector. Applicable to color images ({@link ColorProcessor})
+ * only. See Sec. 16.2 (Alg. 16.2) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2013/05/30
- * @version 2022/09/07 implement interface, use PixelPack, renamed to MultiGradientEdgeDetector
- * @version 2022/09/11 convolutions implemented with IjUtils
+ * @version 2022/09/11
  */
 public class MultiGradientEdgeDetector implements EdgeDetector {
 	

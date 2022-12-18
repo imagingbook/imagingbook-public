@@ -9,16 +9,15 @@
 
 package imagingbook.common.edges;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-import static java.lang.Math.atan2;
-import static java.lang.Math.sqrt;
-
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.util.ParameterBundle;
+
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.atan2;
+import static java.lang.Math.sqrt;
 
 /**
  * <p>
@@ -32,7 +31,6 @@ import imagingbook.common.util.ParameterBundle;
  *
  * @author WB
  * @version 2022/12/12
- * @see GrayscaleEdgeDetector
  */
 public class GrayscaleEdgeDetector implements EdgeDetector {
 

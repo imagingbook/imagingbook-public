@@ -15,23 +15,20 @@ import ij.process.FloatProcessor;
  * This is the common interface for all color edge detectors.
  * 
  * @author WB
- * @version 2013/05/30
- * @version 2022/09/04 converted to interface
+ * @version 2022/09/04
  */
 public interface EdgeDetector {
-	
+
 	/**
-	 * Returns the calculated edge magnitude for each pixel
-	 * as a {@link FloatProcessor}.
-	 * 
+	 * Returns the calculated edge magnitude for each pixel as a {@link FloatProcessor}.
+	 *
 	 * @return the edge magnitude map
 	 */
 	public FloatProcessor getEdgeMagnitude();
-	
+
 	/**
-	 * Returns the calculated edge orientation for each pixel
-	 * as a {@link FloatProcessor}.
-	 * 
+	 * Returns the calculated edge orientation for each pixel as a {@link FloatProcessor}.
+	 *
 	 * @return the edge orientation map
 	 */
 	public FloatProcessor getEdgeOrientation();

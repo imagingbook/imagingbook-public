@@ -9,28 +9,25 @@
 
 package imagingbook.common.edges;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.util.ParameterBundle;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * Monochromatic edge detector, applicable to color images ({@link ColorProcessor}) only.
- * See Sec. 16.2 (Alg. 16.1) of [1] for additional details.
+ * Monochromatic edge detector, applicable to color images ({@link ColorProcessor}) only. See Sec. 16.2 (Alg. 16.1) of
+ * [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2014/02/16
- * @version 2022/09/04 converted to implement interface
  * @version 2022/09/11 changed to 2D kernel arrays using IjUtils
  */
 public class MonochromaticEdgeDetector implements EdgeDetector {

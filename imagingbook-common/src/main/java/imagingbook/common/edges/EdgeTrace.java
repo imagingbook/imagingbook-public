@@ -8,16 +8,15 @@
  ******************************************************************************/
 package imagingbook.common.edges;
 
-import java.util.Iterator;
-import java.util.List;
-
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.util.ArrayIterator;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
- * Represents a chain of connected edge points (integer pixel coordinates).
- * As is, this could have also be implemented as a generic {@link List} but
- * additional properties may be added in a future version.
+ * Represents a chain of connected edge points (integer pixel coordinates). As is, this could have also be implemented
+ * as a generic {@link List} but additional properties may be added in a future version.
  *
  * @author WB
  * @version 2022/09/07 made immutable, add() method removed
@@ -25,11 +24,10 @@ import imagingbook.common.util.ArrayIterator;
 public class EdgeTrace implements Iterable<PntInt> {
 	
 	private final PntInt[] edgePoints;
-	
+
 	/**
-	 * Constructor, creates a {@link EdgeTrace}
-	 * from the specified points.
-	 * 
+	 * Constructor, creates a {@link EdgeTrace} from the specified points.
+	 *
 	 * @param points an array of {@link PntInt} elements
 	 */
 	public EdgeTrace(PntInt[] points) {
@@ -38,11 +36,10 @@ public class EdgeTrace implements Iterable<PntInt> {
 		}
 		this.edgePoints = points;
 	}
-	
+
 	/**
-	 * Constructor, creates a {@link EdgeTrace}
-	 * from the specified points.
-	 * 
+	 * Constructor, creates a {@link EdgeTrace} from the specified points.
+	 *
 	 * @param points a list of {@link PntInt} elements
 	 */
 	public EdgeTrace(List<PntInt> points) {
@@ -56,11 +53,10 @@ public class EdgeTrace implements Iterable<PntInt> {
 	public int size() {
 		return edgePoints.length;
 	}
-	
+
 	/**
-	 * Returns an array of points contained in this 
-	 * edge trace.
-	 * 
+	 * Returns an array of points contained in this edge trace.
+	 *
 	 * @return an array of edge points
 	 */
 	public PntInt[] getPoints() {

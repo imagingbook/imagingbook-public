@@ -9,12 +9,6 @@
 
 package imagingbook.common.edges;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
@@ -27,23 +21,25 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.util.ParameterBundle;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+import static imagingbook.common.math.Arithmetic.sqr;
+
 
 /**
  * <p>
- * This class implements a Canny edge detector for grayscale and RGB images.
- * See Sec. 16.3 (Alg. 16.3) of [1] for more detail.
- * The edge detector is "lazy" in the sense that it performs local non-
- * maximum suppression and edge tracing only when the results are explicitly 
- * queried (by the methods {@link #getEdgeBinary()} and {@link #getEdgeTraces()}).
+ * This class implements a Canny edge detector for grayscale and RGB images. See Sec. 16.3 (Alg. 16.3) of [1] for more
+ * detail. The edge detector is "lazy" in the sense that it performs local non- maximum suppression and edge tracing
+ * only when the results are explicitly queried (by the methods {@link #getEdgeBinary()} and {@link #getEdgeTraces()}).
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2021/11/26
- * @version 2022/03/22 added parameter annotations for dialogs
  * @version 2022/09/04 converted to implement interface, use {@link PixelPack}
  */
 public class CannyEdgeDetector implements EdgeDetector {
@@ -277,10 +273,11 @@ public class CannyEdgeDetector implements EdgeDetector {
 			return (mL <= mC && mC >= mR);
 		}
 	}
-	
+
 	/**
-	 * Recursively collect and mark all pixels of an edge that are 8-connected to 
-	 * (u0,v0) and have a gradient magnitude above loThr.
+	 * Recursively collect and mark all pixels of an edge that are 8-connected to (u0,v0) and have a gradient magnitude
+	 * above loThr.
+	 *
 	 * @param u0 start coordinate (x)
 	 * @param v0 start coordinate (y)
 	 * @param loThr low threshold (min. edge magnitude to continue tracing)
@@ -361,11 +358,10 @@ public class CannyEdgeDetector implements EdgeDetector {
 		}
 		return E_theta;
 	}
-	
+
 	/**
-	 * Returns a binary edge image, obtained by rendering the
-	 * detected edge traces.
-	 * See also {@link #getEdgeTraces()}
+	 * Returns a binary edge image, obtained by rendering the detected edge traces. See also {@link #getEdgeTraces()}
+	 *
 	 * @return a binary image ({@link ByteProcessor})
 	 */
 	public ByteProcessor getEdgeBinary() {
