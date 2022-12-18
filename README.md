@@ -19,10 +19,6 @@ These "library-only" modules are packaged as `JAR` files and typically imported 
 dependencies. They may also be copied manually to ImageJ's `jars/` directory 
 (see <a href="#use-without-maven">Use Without Maven</a> below):
 
-* **[imagingbook-core](imagingbook-core/)** <br>
-    Minimal infrastructure required for building other `imagingbook` library modules.
-    Includes code for basic file handling, managing resources and automatically compiling 
-    `plugins.config` files for ImageJ plugin sets.  
 * **[imagingbook-common](imagingbook-common/)** <br> 
     This is the main `imagingbook` library with implementions of image processing algorithms,
     associated data structures and utility code. Users interested in applying `imagingbook`
@@ -36,6 +32,10 @@ dependencies. They may also be copied manually to ImageJ's `jars/` directory
     third-party dependencies.
 * **[imagingbook-sample-images](imagingbook-sample-images/)** <br>
     Provides a set of (JAR-packaged) sample images used for demos and testing.
+* **[imagingbook-core](imagingbook-core/)** <br>
+    Minimal (bootstrap) infrastructure required for building the main `imagingbook` library modules.
+    Includes code for basic file handling, managing resources and automatically compiling 
+    `plugins.config` files for ImageJ plugin sets. 
 
 ### ImageJ Plugin Modules
 
