@@ -83,7 +83,7 @@ project's `pom.xml`file:
   <version>7.0.0</version>
 </dependency>
 ```
-Replace `7.0.0` with the most current release version found on 
+Replace the number in `<version>...</version>` by the most current release version found on 
 [Maven Central](https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common).
 
 ### Preconfigured Maven Projects
