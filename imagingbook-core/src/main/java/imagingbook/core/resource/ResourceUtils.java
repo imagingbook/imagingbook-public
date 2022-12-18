@@ -28,13 +28,13 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- * This class defines static methods for accessing resources. What makes things
- * somewhat complex is the requirement that we want to retrieve resources
- * located in the file system or contained inside a JAR file.
+ * This class defines static methods for accessing resources. What makes things somewhat complex is the requirement that
+ * we want to retrieve resources located in the file system or contained inside a JAR file.
  * </p>
  * <p>
  * Here is a typical URI for a JAR-embedded file:
- * {@code "jar:file:/C:/PROJEC~2/parent/IM1D84~1/ImageJ/jars/jarWithResources.jar!/jarWithResouces/resources/clown.jpg"}
+ * {@code
+ * "jar:file:/C:/PROJEC~2/parent/IM1D84~1/ImageJ/jars/jarWithResources.jar!/jarWithResouces/resources/clown.jpg"}
  * </p>
  *
  * @author WB
@@ -43,11 +43,10 @@ import java.util.stream.Stream;
 public abstract class ResourceUtils {
 	
 	private ResourceUtils() {}
-	
+
 	/**
-	 * Determines if the specified class was loaded from
-	 * a JAR file or a .class file in the file system.
-	 * 
+	 * Determines if the specified class was loaded from a JAR file or a .class file in the file system.
+	 *
 	 * @param clazz the class
 	 * @return true if contained in a JAR file, false otherwise
 	 */
@@ -57,12 +56,11 @@ public abstract class ResourceUtils {
 		File file = new File(path);
 		return file.isFile();
 	}
-	
+
 	/**
-	 * Finds the URI for a resource relative to a specified class.
-	 * The resource may be located in the file system or
+	 * Finds the URI for a resource relative to a specified class. The resource may be located in the file system or
 	 * inside a JAR file.
-	 * 
+	 *
 	 * @param clazz the anchor class
 	 * @param relPath the resource path relative to the anchor class
 	 * @return the URI or {@code null} if the resource was not found
@@ -89,20 +87,18 @@ public abstract class ResourceUtils {
 		}
 		return uri;
 	}
-	
+
 	/**
 	 * <p>
-	 * Finds the path to a resource relative to the location of some class.
-	 * Example: Assume class C was loaded from file {@code someLocation/C.class}
-	 * and there is a subfolder {@code someLocation/resources/} that contains 
-	 * an image file {@code lenna.jpg}. Then the complete path to this image
-	 * is obtained by 
+	 * Finds the path to a resource relative to the location of some class. Example: Assume class C was loaded from file
+	 * {@code someLocation/C.class} and there is a subfolder {@code someLocation/resources/} that contains an image file
+	 * {@code lenna.jpg}. Then the complete path to this image is obtained by
 	 * </p>
 	 * <pre>
 	 * Path path = getResourcePath(C.class, "resources/lenna.jpg");
 	 * </pre>
-	 * 
-	 * @param clazz anchor class 
+	 *
+	 * @param clazz anchor class
 	 * @param relPath the path of the resource to be found (relative to the location of the anchor class)
 	 * @return the path to the specified resource
 	 * @version 2016/06/03: modified to return proper path to resource inside a JAR file.
@@ -116,11 +112,10 @@ public abstract class ResourceUtils {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Converts an {@link URI} to a {@link Path} for locations that are either in
-	 * the file system or inside a JAR file.
-	 * 
+	 * Converts an {@link URI} to a {@link Path} for locations that are either in the file system or inside a JAR file.
+	 *
 	 * @param uri the specified location
 	 * @return the associated path
 	 */
@@ -163,12 +158,11 @@ public abstract class ResourceUtils {
 	public static Path[] getResourcePaths(URI uri) {
 		return getResourcePaths(uriToPath(uri));
 	}
-	
+
 	/**
-	 * Method to obtain the paths to all files in a directory specified by a {@link Path}
-	 * (non-recursively). This should work in an ordinary file system as well as a
-	 * (possibly nested) JAR file.
-	 * 
+	 * Method to obtain the paths to all files in a directory specified by a {@link Path} (non-recursively). This should
+	 * work in an ordinary file system as well as a (possibly nested) JAR file.
+	 *
 	 * @param path {@link Path} to a directory (may be contained in a JAR file)
 	 * @return a possibly empty sequence of paths
 	 */
@@ -195,12 +189,11 @@ public abstract class ResourceUtils {
 		walk.close();
 		return pathList.toArray(new Path[0]);
 	}
-	
+
 	/**
-	 * Use this method to obtain the paths to all files in a directory located
-	 * relative to the specified class (non-recursively). This should work in an
-	 * ordinary file system as well as a (possibly nested) JAR file.
-	 * 
+	 * Use this method to obtain the paths to all files in a directory located relative to the specified class
+	 * (non-recursively). This should work in an ordinary file system as well as a (possibly nested) JAR file.
+	 *
 	 * @param clazz class whose source location defines the root
 	 * @param relPath path relative to the root
 	 * @return a possibly empty array of paths
@@ -213,13 +206,12 @@ public abstract class ResourceUtils {
 		}
 		return getResourcePaths(uri);
 	}
-	
+
 	/**
-	 * Use this method to obtain the names of all files in a directory located
-	 * relative to the specified class (non-recursively). This should work in an
-	 * ordinary file system as well as a (possibly nested) JAR file.
-	 * 
-	 * @param clazz  class whose source location specifies the root
+	 * Use this method to obtain the names of all files in a directory located relative to the specified class
+	 * (non-recursively). This should work in an ordinary file system as well as a (possibly nested) JAR file.
+	 *
+	 * @param clazz class whose source location specifies the root
 	 * @param relDir directory relative to the root
 	 * @return a possibly empty array of file names
 	 */

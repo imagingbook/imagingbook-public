@@ -16,17 +16,16 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation to specify the menu path (tree branch) of the associated plugin class
- * or an entire plugin package. Takes a {@link String} argument e.g.,
+ * Annotation to specify the menu path (tree branch) of the associated plugin class or an entire plugin package. Takes a
+ * {@link String} argument e.g.,
  * <pre>
  * {@literal @}IjMenuPath("Plugins&gt;My Stuff")
  * {@literal @}IjMenuEntry("My Plugin")
  * public class My_Plugin implements PlugInFilter {
  *   ...
  * }</pre>
- * May also be used on the {@code package} declaration 
- * in file {@code package-info.java} to set the default menu
- * path for all plugins directly contained in that package (but not nested), e.g.,
+ * May also be used on the {@code package} declaration in file {@code package-info.java} to set the default menu path
+ * for all plugins directly contained in that package (but not nested), e.g.,
  * <pre>
  * {@literal @}IjMenuPath("Plugins&gt;Binary Regions")
  * package Binary_Regions;</pre>

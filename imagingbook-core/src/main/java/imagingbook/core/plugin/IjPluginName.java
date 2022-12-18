@@ -16,8 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 
 /**
- * Annotation to specify the menu entry (name) of the associated plugin class.
- * Takes a {@link String} argument e.g.,
+ * Annotation to specify the menu entry (name) of the associated plugin class. Takes a {@link String} argument e.g.,
  * <pre>
  *  {@literal @}IjMenuEntry("My Grand Plugin")
  * public class My_Plugin implements PlugIn {

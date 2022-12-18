@@ -26,31 +26,28 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- * The {@code main()} method of this class creates the {@code plugins.config} file 
- * for a given plugins project, which is to be included in the associated JAR file.
- * The execution is to be triggered during the Maven build or manually by
+ * The {@code main()} method of this class creates the {@code plugins.config} file for a given plugins project, which is
+ * to be included in the associated JAR file. The execution is to be triggered during the Maven build or manually by
  * </p>
  * <pre>
  * mvn exec:java -Dexec.mainClass="imagingbook.pluginutils.PluginsConfigBuilder"</pre>
  * <p>
- * (at the root of a plugins project).
- * The format of the entries in {@code plugins.config} have the following structure:
+ * (at the root of a plugins project). The format of the entries in {@code plugins.config} have the following
+ * structure:
  * </p>
  * <pre>
  * menu-level, "plugin-name", package.classname</pre>
  * for example:
  * <pre>
  * Plugins&gt;Binary&gt;Regions, "Convex Hull Demo", Binary_Regions.Convex_Hull_Demo</pre>
- * <p>Note that, technically, menu paths may be more than 2 levels deep, but this 
+ * <p>Note that, technically, menu paths may be more than 2 levels deep, but this
  * does not seem useful.
  * </p>
  * <p>
- * Plugin classes (implementing {@link PlugIn} or {@link PlugInFilter}) may be annotated
- * with {@link IjPluginPath} and {@link IjPluginName} to specify where in ImageJ's menu tree
- * and by which name the plugin should be installed.
- * This information is stored in the {@code plugins.config} file at the root of the associated project,
- * which is automatically added to the project's output JAR file during the Maven build.
- * Example:
+ * Plugin classes (implementing {@link PlugIn} or {@link PlugInFilter}) may be annotated with {@link IjPluginPath} and
+ * {@link IjPluginName} to specify where in ImageJ's menu tree and by which name the plugin should be installed. This
+ * information is stored in the {@code plugins.config} file at the root of the associated project, which is
+ * automatically added to the project's output JAR file during the Maven build. Example:
  * </p>
  * <pre>
  * // file MySuperPlugin.java
@@ -67,13 +64,11 @@ import java.util.stream.Stream;
  * In this case, plugin {@code MySuperPlugin} should be installed in ImageJ's menu tree as
  * <pre> Plugins &gt; Mine &gt; Super Plugin</pre>
  * <p>
- * By default (i.e., if no annotations are present), plugins in the default package are installed at the
- * top-level of 'Plugins' whereas plugins inside a named package are  installed 
- * in 'Plugins&gt;<em>package-name</em>' (see below).
- * A {@link IjPluginPath} annotation may also be attached to a whole package
- * in the associated {@code package-info.java} file. The following
- * example specifies {@code Plugins>Binary Regions} as the default menu path
- * for all plugins in package {@code Binary_Regions}:
+ * By default (i.e., if no annotations are present), plugins in the default package are installed at the top-level of
+ * 'Plugins' whereas plugins inside a named package are  installed in 'Plugins&gt;<em>package-name</em>' (see below). A
+ * {@link IjPluginPath} annotation may also be attached to a whole package in the associated {@code package-info.java}
+ * file. The following example specifies {@code Plugins>Binary Regions} as the default menu path for all plugins in
+ * package {@code Binary_Regions}:
  * </p>
  * <pre>
  * // file Binary_Regions/package-info.java
@@ -99,14 +94,13 @@ import java.util.stream.Stream;
  * <li> Simple name of the plugin class.</li>
  * </ol>
  * <p>
- * Note that, in general, ImageJ uses the information in file {@code plugins.config} 
+ * Note that, in general, ImageJ uses the information in file {@code plugins.config}
  * only for plugins loaded from a JAR file!
  * </p>
- * 
+ *
+ * @author WB
  * @see IjPluginPath
  * @see IjPluginName
- * 
- * @author WB
  */
 public class PluginsConfigBuilder {
 	
