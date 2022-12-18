@@ -1,6 +1,6 @@
 ![frankenburg-1918-960x200k.png](docs/img/443892583-frankenburg-1918-960x200k.png)
 
-# IMAGINGBOOK - Main Source Code Repository
+# `imagingbook` - Main Source Code Repository
 
 This repository contains the **Java source code** accompanying the 
 **Digital Image Processing** textbooks by **W. Burger and M. J. Burge**, 
