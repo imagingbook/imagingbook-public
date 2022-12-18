@@ -20,25 +20,20 @@ import java.awt.geom.AffineTransform;
 
 /**
  * <p>
- * This is an adapter for ImageJ's {@link Overlay} class to ease the insertion
- * of AWT {@link Shape} elements. Shapes are only geometric descriptions but
- * have no stroke width, color etc. attached. These are determined by
- * {@link ShapeOverlayAdapter}'s <strong>current state</strong> when insertion
- * is done with {@link #addShape(Shape)} (i.e., without explicit stroke
- * information). Alternatively, the shape's stroke and color may be explicitly
- * specified by calling {@link #addShape(Shape, ColoredStroke)}. When a shape is
- * inserted into the associated overlay it is converted to an ImageJ
- * {@link ShapeRoi} instance whose stroke/fill properties are set.
+ * This is an adapter for ImageJ's {@link Overlay} class to ease the insertion of AWT {@link Shape} elements. Shapes are
+ * only geometric descriptions but have no stroke width, color etc. attached. These are determined by
+ * {@link ShapeOverlayAdapter}'s <strong>current state</strong> when insertion is done with {@link #addShape(Shape)}
+ * (i.e., without explicit stroke information). Alternatively, the shape's stroke and color may be explicitly specified
+ * by calling {@link #addShape(Shape, ColoredStroke)}. When a shape is inserted into the associated overlay it is
+ * converted to an ImageJ {@link ShapeRoi} instance whose stroke/fill properties are set.
  * </p>
  * <p>
- * Similarly, text elements can be added using
- * {@link #addText(double, double, String)} or
+ * Similarly, text elements can be added using {@link #addText(double, double, String)} or
  * {@link #addText(double, double, String, Font, Color)}.
  * </p>
  * <p>
- * By default, shapes added to {@link ShapeOverlayAdapter} are automatically
- * translated by 0.5 units in x/y direction, such that integer coordinates are
- * shifted to pixel centers. This can be deactivated using constructor
+ * By default, shapes added to {@link ShapeOverlayAdapter} are automatically translated by 0.5 units in x/y direction,
+ * such that integer coordinates are shifted to pixel centers. This can be deactivated using constructor
  * {@link #ShapeOverlayAdapter(Overlay, boolean, boolean)}.
  * </p>
  * <p>
@@ -48,7 +43,6 @@ import java.awt.geom.AffineTransform;
  * ImagePlus im = ...
  * Overlay oly = new Overlay();
  * ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
- * 
  * ola.setStroke(new ColoredStroke(0.25, Color.blue));
  * ola.addShape(new Line2D.Double(x1, y1, x2, y2));
  * ...			// add more shapes with same stroke
@@ -82,20 +76,16 @@ import java.awt.geom.AffineTransform;
  * ola.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 8));
  * ola.setTextColor(Color.green);
  * ola.addText(x, y, "text using current font/color state");
- * 
  * ola.addText(x, y, "text with explicit font and color", new Font(Font.SERIF, Font.PLAIN, 10), Color.black);
  * ...
  * im.setOverlay(oly);
  * im.show();
  * </pre>
- * 
- * 
+ *
  * @author WB
  * @version 2022/06/09
- * 
  * @see ColoredStroke
  * @see Shape
- *
  */
 public class ShapeOverlayAdapter {
 	
@@ -112,7 +102,7 @@ public class ShapeOverlayAdapter {
 	private ColoredStroke stroke;
 	private Color textColor = DefaultTextColor;
 	private Font font = DefaultFont;
-	
+	private int stackPosition = 0;
 
 	
 	// ----------------------------------------------------------
@@ -165,6 +155,9 @@ public class ShapeOverlayAdapter {
 		roi.setFillColor(stroke.getFillColor());
 		roi.setStroke(bs);
 		roi.setAntiAlias(antiAlias);
+		if (stackPosition > 0) {
+			roi.setPosition(stackPosition);
+		}
 		return roi;
 	}
 	
@@ -199,6 +192,15 @@ public class ShapeOverlayAdapter {
 		TextRoi troi = new TextRoi(x, y, text, font);
 		troi.setStrokeColor(textColor);
 		overlay.add(troi);
+	}
+
+	/**
+	 * Set the stack position (slice number) where subsequently added shapes should be inserted.
+	 *
+	 * @param position the stack slice number or zero if no stack insertion is intended
+	 */
+	public void setStackPosition(int position) {
+		stackPosition = position;
 	}
 
 	// ----------------------------------------------------------
