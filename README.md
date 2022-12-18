@@ -17,7 +17,7 @@ The source code is built as a modular Maven project, which includes the followin
 
 These "library-only" modules are packaged as `JAR` files and typically imported as Maven
 dependencies. They may also be copied manually to ImageJ's `jars/` directory 
-(see <a href="#WithoutMaven">Use Without Maven</a> below):
+(see <a href="#use-without-maven">Use Without Maven</a> below):
 
 * **[imagingbook-core](imagingbook-core/)** <br>
     Minimal infrastructure required for building other `imagingbook` library modules.
@@ -84,7 +84,7 @@ project's `pom.xml`file:
 </dependency>
 ```
 Replace `7.0.0` with the most current release version found on 
-Maven Central (https://search.maven.org/search?q=g:com.imagingbook).
+[Maven Central](https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common).
 
 ### Preconfigured Maven Projects
 
