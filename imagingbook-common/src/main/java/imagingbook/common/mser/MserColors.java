@@ -9,11 +9,11 @@
 
 package imagingbook.common.mser;
 
-import static imagingbook.common.color.sets.ColorEnumeration.getColors;
+import imagingbook.common.color.sets.ColorEnumeration;
 
 import java.awt.Color;
 
-import imagingbook.common.color.sets.ColorEnumeration;
+import static imagingbook.common.color.sets.ColorEnumeration.getColors;
 
 /**
  * Color definitions used in MSER demo plugins.

@@ -8,13 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.geometry.circle;
 
-import static imagingbook.common.math.Arithmetic.isZero;
-import static imagingbook.common.math.Arithmetic.sqr;
-import static java.lang.Math.sqrt;
+import imagingbook.common.math.Arithmetic;
 
 import java.util.Locale;
 
-import imagingbook.common.math.Arithmetic;
+import static imagingbook.common.math.Arithmetic.isZero;
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.sqrt;
 
 /**
  * <p>

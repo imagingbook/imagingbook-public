@@ -8,15 +8,15 @@
  ******************************************************************************/
 package imagingbook.common.util;
 
+import ij.gui.GenericDialog;
+import imagingbook.common.ij.DialogUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-
-import ij.gui.GenericDialog;
-import imagingbook.common.ij.DialogUtils;
 
 /**
  * <p>

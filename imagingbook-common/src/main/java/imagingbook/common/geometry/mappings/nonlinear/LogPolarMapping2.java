@@ -8,16 +8,16 @@
  ******************************************************************************/
 package imagingbook.common.geometry.mappings.nonlinear;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.mappings.Inversion;
+import imagingbook.common.geometry.mappings.Mapping2D;
+import imagingbook.common.math.Arithmetic;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.exp;
 import static java.lang.Math.hypot;
 import static java.lang.Math.log;
 import static java.lang.Math.sin;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.mappings.Inversion;
-import imagingbook.common.geometry.mappings.Mapping2D;
-import imagingbook.common.math.Arithmetic;
 
 /**
  * <p>

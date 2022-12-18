@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.geometry.ellipse.project;
 
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
+
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
-
-import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 /**
  * <p>

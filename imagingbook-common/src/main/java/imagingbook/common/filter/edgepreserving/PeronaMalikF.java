@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.filter.edgepreserving;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.util.ParameterBundle;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * Common interface for Perona-Malik filter implementations.

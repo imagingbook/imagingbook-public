@@ -8,13 +8,12 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.line;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.eigen.EigenDecompositionJama;
 import imagingbook.common.util.PrimitiveSortMap;
 import org.apache.commons.math3.linear.MatrixUtils;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.eigen.EigenDecompositionJama;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

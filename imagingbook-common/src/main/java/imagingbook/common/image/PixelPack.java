@@ -8,8 +8,6 @@
  ******************************************************************************/
 package imagingbook.common.image;
 
-import java.util.Arrays;
-
 import ij.ImageStack;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
@@ -19,6 +17,8 @@ import ij.process.ShortProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.image.access.ImageAccessor;
+
+import java.util.Arrays;
 
 /**
  * <p>

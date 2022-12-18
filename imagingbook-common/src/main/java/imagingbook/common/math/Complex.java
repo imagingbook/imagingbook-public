@@ -9,10 +9,10 @@
 
 package imagingbook.common.math;
 
+import java.util.Locale;
+
 import static imagingbook.common.math.Arithmetic.isZero;
 import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.util.Locale;
 
 /**
  * <p>

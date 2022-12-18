@@ -8,15 +8,15 @@
  ******************************************************************************/
 package imagingbook.common.regions;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+
 import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 /**
  * Defines a binary region that is backed by the label array of a region segmentation. A

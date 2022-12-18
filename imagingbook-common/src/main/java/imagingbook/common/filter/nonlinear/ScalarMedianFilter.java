@@ -9,13 +9,13 @@
 
 package imagingbook.common.filter.nonlinear;
 
-import java.util.Arrays;
-
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.filter.mask.CircularMask;
 import imagingbook.common.image.PixelPack.PixelSlice;
 import imagingbook.common.util.ParameterBundle;
+
+import java.util.Arrays;
 
 /**
  * <p>

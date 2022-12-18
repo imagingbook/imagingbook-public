@@ -8,11 +8,11 @@
  ******************************************************************************/
 package ImageJ_Demos;
 
-import java.util.Random;
-
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+
+import java.util.Random;
 
 /**
  * Fills the active image with uniform noise.

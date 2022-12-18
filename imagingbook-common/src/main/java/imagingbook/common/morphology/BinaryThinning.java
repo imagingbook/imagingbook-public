@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.morphology;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>

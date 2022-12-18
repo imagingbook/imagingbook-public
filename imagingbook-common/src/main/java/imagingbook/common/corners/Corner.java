@@ -9,11 +9,11 @@
 
 package imagingbook.common.corners;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+
 import java.awt.Shape;
 import java.awt.geom.Path2D;
 import java.util.Locale;
-
-import imagingbook.common.geometry.basic.Pnt2d;
 
 
 /**

@@ -8,8 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.geometry.basic;
 
-import static imagingbook.common.math.Arithmetic.isZero;
-import static imagingbook.common.math.Arithmetic.sqr;
+import imagingbook.common.geometry.shape.ShapeProducer;
+import imagingbook.common.math.PrintPrecision;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealVector;
 
 import java.awt.Point;
 import java.awt.Shape;
@@ -17,12 +20,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.Locale;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealVector;
-
-import imagingbook.common.geometry.shape.ShapeProducer;
-import imagingbook.common.math.PrintPrecision;
+import static imagingbook.common.math.Arithmetic.isZero;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * Interface specifying the behavior of simple 2D points. It is used to adapt to different (legacy) point

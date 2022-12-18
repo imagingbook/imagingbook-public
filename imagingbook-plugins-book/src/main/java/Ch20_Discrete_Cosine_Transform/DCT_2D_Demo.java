@@ -8,7 +8,6 @@
  ******************************************************************************/
 package Ch20_Discrete_Cosine_Transform;
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;

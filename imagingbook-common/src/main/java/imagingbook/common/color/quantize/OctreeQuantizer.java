@@ -9,10 +9,10 @@
 
 package imagingbook.common.color.quantize;
 
+import imagingbook.common.color.RgbUtils;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import imagingbook.common.color.RgbUtils;
 
 /**
  * <p>

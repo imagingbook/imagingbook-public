@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.ellipse.geometric;
 
-import java.util.List;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
+
+import java.util.List;
 
 /**
  * Interface to be implemented by all geometric ellipse fits.

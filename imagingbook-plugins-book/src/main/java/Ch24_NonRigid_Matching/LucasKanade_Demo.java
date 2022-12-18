@@ -8,12 +8,6 @@
  ******************************************************************************/
 package Ch24_NonRigid_Matching;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Random;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -34,9 +28,14 @@ import imagingbook.common.image.matching.lucaskanade.ImageExtractor;
 import imagingbook.common.image.matching.lucaskanade.LucasKanadeForwardMatcher;
 import imagingbook.common.image.matching.lucaskanade.LucasKanadeInverseMatcher;
 import imagingbook.common.image.matching.lucaskanade.LucasKanadeMatcher;
-import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
 
 /**

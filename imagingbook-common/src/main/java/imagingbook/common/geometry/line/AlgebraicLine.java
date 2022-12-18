@@ -8,13 +8,6 @@
  ******************************************************************************/
 package imagingbook.common.geometry.line;
 
-import static imagingbook.common.math.Arithmetic.isZero;
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.awt.Shape;
-import java.awt.geom.Path2D;
-import java.util.Locale;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Primitive2d;
@@ -22,6 +15,13 @@ import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.hough.HoughLine;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.PrintPrecision;
+
+import java.awt.Shape;
+import java.awt.geom.Path2D;
+import java.util.Locale;
+
+import static imagingbook.common.math.Arithmetic.isZero;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

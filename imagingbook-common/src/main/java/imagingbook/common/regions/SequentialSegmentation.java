@@ -9,12 +9,12 @@
 
 package imagingbook.common.regions;
 
-import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
+import ij.process.ByteProcessor;
+import imagingbook.common.geometry.basic.NeighborhoodType2D;
 
 import java.util.HashSet;
 
-import ij.process.ByteProcessor;
-import imagingbook.common.geometry.basic.NeighborhoodType2D;
+import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
 
 /**
  * <p>

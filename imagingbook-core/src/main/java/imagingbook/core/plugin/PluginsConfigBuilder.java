@@ -8,6 +8,10 @@
  ******************************************************************************/
 package imagingbook.core.plugin;
 
+import ij.plugin.PlugIn;
+import ij.plugin.filter.PlugInFilter;
+import imagingbook.core.FileUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,10 +23,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import ij.plugin.PlugIn;
-import ij.plugin.filter.PlugInFilter;
-import imagingbook.core.FileUtils;
 
 /**
  * <p>

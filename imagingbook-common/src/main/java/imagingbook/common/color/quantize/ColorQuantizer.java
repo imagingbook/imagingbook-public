@@ -8,15 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.color.quantize;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.awt.image.IndexColorModel;
-import java.io.PrintStream;
-import java.util.Locale;
-
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import imagingbook.common.color.RgbUtils;
+
+import java.awt.image.IndexColorModel;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 public interface ColorQuantizer {
 	

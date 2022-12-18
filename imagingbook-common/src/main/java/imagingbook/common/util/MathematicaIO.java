@@ -9,10 +9,10 @@
 
 package imagingbook.common.util;
 
+import imagingbook.common.math.PrintPrecision;
+
 import java.util.Formatter;
 import java.util.Locale;
-
-import imagingbook.common.math.PrintPrecision;
 
 /**
  * This class provides some static methods for formatting Java arrays

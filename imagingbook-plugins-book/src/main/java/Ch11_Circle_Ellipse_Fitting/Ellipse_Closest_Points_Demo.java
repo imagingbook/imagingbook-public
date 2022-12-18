@@ -8,12 +8,6 @@
  ******************************************************************************/
 package Ch11_Circle_Ellipse_Fitting;
 
-import static java.lang.Math.PI;
-
-import java.awt.Color;
-import java.awt.geom.Path2D;
-import java.util.Random;
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.NewImage;
@@ -26,6 +20,12 @@ import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+
+import java.awt.Color;
+import java.awt.geom.Path2D;
+import java.util.Random;
+
+import static java.lang.Math.PI;
 
 /**
  * <p>

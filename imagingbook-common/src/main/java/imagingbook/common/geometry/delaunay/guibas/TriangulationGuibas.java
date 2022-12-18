@@ -9,15 +9,15 @@
 
 package imagingbook.common.geometry.delaunay.guibas;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.delaunay.DelaunayTriangulation;
+import imagingbook.common.geometry.delaunay.Triangle;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.delaunay.DelaunayTriangulation;
-import imagingbook.common.geometry.delaunay.Triangle;
 
 /**
  * <p>

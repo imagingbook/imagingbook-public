@@ -8,10 +8,6 @@
  ******************************************************************************/
 package Ch10_Line_Fitting;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-
 import ij.ImagePlus;
 import ij.plugin.ImagesToStack;
 import ij.plugin.PlugIn;
@@ -28,6 +24,10 @@ import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.geometry.mappings.linear.Translation2D;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>

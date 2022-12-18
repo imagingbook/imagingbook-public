@@ -8,12 +8,12 @@
  ******************************************************************************/
 package ImageJ_Demos;
 
-import java.awt.Point;
-
 import ij.ImagePlus;
 import ij.gui.Roi;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+
+import java.awt.Point;
 
 /**
  * This ImageJ plugin shows processing the inside of 

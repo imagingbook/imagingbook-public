@@ -8,9 +8,6 @@
  ******************************************************************************/
 package Ch13_Color_Images;
 
-import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -18,6 +15,9 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 

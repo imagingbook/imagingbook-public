@@ -8,9 +8,10 @@
  ******************************************************************************/
 
 package imagingbook.common.color.statistics;
-import java.util.Arrays;
 
 import ij.process.ColorProcessor;
+
+import java.util.Arrays;
 
 /**
  * Defines static methods for calculating statistics of color images.

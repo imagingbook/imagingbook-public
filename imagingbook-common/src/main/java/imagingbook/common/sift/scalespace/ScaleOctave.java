@@ -9,13 +9,13 @@
 
 package imagingbook.common.sift.scalespace;
 
-import java.io.PrintStream;
-import java.util.Locale;
-
 import ij.ImageStack;
 import ij.process.FloatProcessor;
 import imagingbook.common.util.LinearContainer;
 import imagingbook.common.util.PrintsToStream;
+
+import java.io.PrintStream;
+import java.util.Locale;
 
 /**
  * <p>

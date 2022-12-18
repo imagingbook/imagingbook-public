@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.line;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.line.SlopeInterceptLine;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

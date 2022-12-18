@@ -8,11 +8,6 @@
  ******************************************************************************/
 package Ch21_Geometric_Operations;
 
-import java.awt.Shape;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Path2D;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -29,6 +24,11 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Shape;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Path2D;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 

@@ -8,11 +8,6 @@
  ******************************************************************************/
 package Ch12_Ransac_Hough;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.awt.Color;
-import java.awt.geom.Path2D;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -28,6 +23,11 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Color;
+import java.awt.geom.Path2D;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

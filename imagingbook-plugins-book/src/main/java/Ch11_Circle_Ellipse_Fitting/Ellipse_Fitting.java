@@ -8,12 +8,6 @@
  ******************************************************************************/
 package Ch11_Circle_Ellipse_Fitting;
 
-import static imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic.FitType.FitzgibbonStable;
-import static imagingbook.common.geometry.fitting.ellipse.geometric.EllipseFitGeometric.FitType.DistanceBased;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.util.Locale;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -32,6 +26,12 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+
+import java.util.Locale;
+
+import static imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic.FitType.FitzgibbonStable;
+import static imagingbook.common.geometry.fitting.ellipse.geometric.EllipseFitGeometric.FitType.DistanceBased;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

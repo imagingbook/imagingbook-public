@@ -8,9 +8,6 @@
  ******************************************************************************/
 package Ch09_Automatic_Thresholding;
 
-import static imagingbook.common.ij.DialogUtils.askForSampleImage;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
@@ -18,6 +15,9 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.global.OtsuThresholder;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.DialogUtils.askForSampleImage;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

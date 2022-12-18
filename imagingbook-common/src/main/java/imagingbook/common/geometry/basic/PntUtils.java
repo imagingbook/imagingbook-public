@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.geometry.basic;
 
-import java.util.Arrays;
-
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+
+import java.util.Arrays;
 
 public abstract class PntUtils {
 	

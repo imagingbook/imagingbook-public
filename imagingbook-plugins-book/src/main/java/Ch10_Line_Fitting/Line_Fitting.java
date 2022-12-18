@@ -8,8 +8,6 @@
  ******************************************************************************/
 package Ch10_Line_Fitting;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -29,6 +27,8 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 
 /**

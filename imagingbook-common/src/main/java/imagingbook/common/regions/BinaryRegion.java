@@ -8,8 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.regions;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-import static java.lang.Math.sqrt;
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 import java.awt.Rectangle;
 import java.util.Formatter;
@@ -18,10 +20,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
-import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.geometry.ellipse.GeometricEllipse;
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.sqrt;
 
 /**
  * <p>

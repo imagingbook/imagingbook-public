@@ -8,9 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.color;
 
-import java.awt.Color;
-
 import imagingbook.common.math.Matrix;
+
+import java.awt.Color;
 
 /**
  * This class defines static methods for manipulating and converting RGB colors.

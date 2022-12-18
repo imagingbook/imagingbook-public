@@ -8,14 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.line;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.Matrix;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.QRDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.Matrix;
 
 /**
  * <p>

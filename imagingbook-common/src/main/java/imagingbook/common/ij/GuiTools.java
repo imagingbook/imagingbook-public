@@ -9,13 +9,6 @@
 
 package imagingbook.common.ij;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
@@ -23,6 +16,13 @@ import ij.gui.GenericDialog;
 import ij.gui.ImageCanvas;
 import ij.gui.ImageWindow;
 import ij.plugin.ScreenGrabber;
+
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Defines static helper methods related to ImageJ's GUI.

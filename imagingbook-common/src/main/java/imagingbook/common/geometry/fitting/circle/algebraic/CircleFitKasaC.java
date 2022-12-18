@@ -8,15 +8,14 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.circle.algebraic;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.PntUtils;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularMatrixException;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.PntUtils;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * This is an improved implementation of the Kåsa [1] circle fitting algorithm described in 

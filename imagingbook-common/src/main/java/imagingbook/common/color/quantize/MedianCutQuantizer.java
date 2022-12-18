@@ -10,14 +10,14 @@
 package imagingbook.common.color.quantize;
 
 
+import imagingbook.common.color.RgbUtils;
+import imagingbook.common.color.statistics.ColorHistogram;
+
 import java.util.AbstractQueue;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.PriorityQueue;
-
-import imagingbook.common.color.RgbUtils;
-import imagingbook.common.color.statistics.ColorHistogram;
 
 /**
  * <p>

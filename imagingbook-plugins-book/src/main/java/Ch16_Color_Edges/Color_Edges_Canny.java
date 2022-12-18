@@ -8,12 +8,6 @@
  ******************************************************************************/
 package Ch16_Color_Edges;
 
-import static imagingbook.common.ij.DialogUtils.addToDialog;
-import static imagingbook.common.ij.DialogUtils.getFromDialog;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.util.List;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -27,6 +21,12 @@ import imagingbook.common.edges.EdgeTrace;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.util.List;
+
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

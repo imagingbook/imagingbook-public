@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.hough;
 
-import java.util.Locale;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.line.HessianLine;
+
+import java.util.Locale;
 
 /**
  * <p>

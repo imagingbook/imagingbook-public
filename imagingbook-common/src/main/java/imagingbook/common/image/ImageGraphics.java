@@ -8,6 +8,14 @@
  ******************************************************************************/
 package imagingbook.common.image;
 
+import ij.process.Blitter;
+import ij.process.ByteProcessor;
+import ij.process.ColorProcessor;
+import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
+import ij.process.ShortProcessor;
+import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -20,14 +28,6 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-
-import ij.process.Blitter;
-import ij.process.ByteProcessor;
-import ij.process.ColorProcessor;
-import ij.process.FloatProcessor;
-import ij.process.ImageProcessor;
-import ij.process.ShortProcessor;
-import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 /**
  * <p>This class defines functionality for drawing anti-aliased "pixel"

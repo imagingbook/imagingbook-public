@@ -9,16 +9,16 @@
 
 package imagingbook.common.regions;
 
-import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
+import ij.process.ByteProcessor;
+import imagingbook.common.geometry.basic.NeighborhoodType2D;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.util.tuples.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ij.process.ByteProcessor;
-import imagingbook.common.geometry.basic.NeighborhoodType2D;
-import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.util.tuples.Tuple2;
+import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
 
 /**
  * <p>

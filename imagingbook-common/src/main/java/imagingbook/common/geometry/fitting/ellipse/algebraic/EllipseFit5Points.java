@@ -8,10 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.ellipse.algebraic;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.util.Random;
-
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.DecompositionSolver;
@@ -20,9 +19,9 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularMatrixException;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
+import java.util.Random;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * Performs an exact ellipse fit to 5 given points. If the fit is unsuccessful,

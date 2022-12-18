@@ -9,18 +9,6 @@
 
 package imagingbook.common.ij;
 
-import java.awt.Rectangle;
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
@@ -40,6 +28,18 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.util.bits.BitMap;
+
+import java.awt.Rectangle;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 
 /**

@@ -1,12 +1,11 @@
 package imagingbook.spectral.dct;
 
-import static org.junit.Assert.assertArrayEquals;
+import imagingbook.spectral.TestUtils;
+import org.junit.Test;
 
 import java.util.Random;
 
-import org.junit.Test;
-
-import imagingbook.spectral.TestUtils;
+import static org.junit.Assert.assertArrayEquals;
 
 public class Dct1dSlowTest {
 

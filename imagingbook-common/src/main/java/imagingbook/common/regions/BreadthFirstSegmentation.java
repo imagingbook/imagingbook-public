@@ -9,12 +9,12 @@
 
 package imagingbook.common.regions;
 
-import java.util.Deque;
-import java.util.LinkedList;
-
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+
+import java.util.Deque;
+import java.util.LinkedList;
 
 /**
  * <p>

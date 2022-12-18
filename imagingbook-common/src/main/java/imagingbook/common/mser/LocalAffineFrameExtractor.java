@@ -8,10 +8,6 @@
  ******************************************************************************/
 package imagingbook.common.mser;
 
-import org.apache.commons.math3.linear.EigenDecomposition;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.linear.GaussianFilter;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
@@ -21,6 +17,9 @@ import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.mser.components.Component;
+import org.apache.commons.math3.linear.EigenDecomposition;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
 
 
 /**

@@ -9,10 +9,10 @@
 
 package imagingbook.common.corners;
 
+import ij.process.ImageProcessor;
+
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
-
-import ij.process.ImageProcessor;
 
 
 /**

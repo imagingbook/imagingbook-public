@@ -9,15 +9,8 @@
 
 package imagingbook.common.geometry.fd;
 
-import static imagingbook.common.math.Arithmetic.mod;
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Path2D;
-import java.util.Locale;
-
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.Complex;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.optim.MaxEval;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
@@ -27,8 +20,14 @@ import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction;
 import org.apache.commons.math3.optim.univariate.UnivariateOptimizer;
 import org.apache.commons.math3.optim.univariate.UnivariatePointValuePair;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.Complex;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
+import java.util.Locale;
+
+import static imagingbook.common.math.Arithmetic.mod;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

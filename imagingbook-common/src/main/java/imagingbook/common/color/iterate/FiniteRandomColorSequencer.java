@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.color.iterate;
 
+import imagingbook.common.color.sets.ColorEnumeration;
+
 import java.awt.Color;
 import java.util.Random;
-
-import imagingbook.common.color.sets.ColorEnumeration;
 
 public class FiniteRandomColorSequencer extends FiniteLinearColorSequencer {
 	

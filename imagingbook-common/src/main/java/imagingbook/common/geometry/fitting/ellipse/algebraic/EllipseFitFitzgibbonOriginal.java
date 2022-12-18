@@ -8,14 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.ellipse.algebraic;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

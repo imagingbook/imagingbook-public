@@ -9,9 +9,9 @@
 
 package imagingbook.common.corners;
 
-import static imagingbook.common.math.Arithmetic.isZero;
-
 import ij.process.ImageProcessor;
+
+import static imagingbook.common.math.Arithmetic.isZero;
 
 
 /**

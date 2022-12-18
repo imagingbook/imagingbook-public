@@ -9,11 +9,11 @@
 
 package imagingbook.common.filter.edgepreserving;
 
-import static imagingbook.common.math.Matrix.subtract;
-
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
+
+import static imagingbook.common.math.Matrix.subtract;
 
 /**
  * <p>

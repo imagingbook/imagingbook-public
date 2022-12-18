@@ -9,12 +9,6 @@
 
 package More_;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.awt.Color;
-import java.awt.geom.Path2D;
-import java.util.Arrays;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -31,6 +25,12 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.Complex;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Color;
+import java.awt.geom.Path2D;
+import java.util.Arrays;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

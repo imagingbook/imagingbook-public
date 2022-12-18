@@ -8,8 +8,6 @@
  ******************************************************************************/
 package Ch14_Colorimetric_Color;
 
-import java.awt.color.ColorSpace;
-
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.gui.GenericDialog;
@@ -25,6 +23,8 @@ import imagingbook.common.color.colorspace.XYZ65ColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.color.ColorSpace;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 

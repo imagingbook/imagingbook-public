@@ -8,19 +8,18 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.ellipse.algebraic;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.util.Arrays;
-
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
-
 import ij.IJ;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.EigenDecompositionJama;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
+
+import java.util.Arrays;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

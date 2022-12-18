@@ -8,12 +8,12 @@
  ******************************************************************************/
 package imagingbook.common.geometry.basic;
 
-import java.awt.Shape;
-import java.awt.geom.Path2D;
-
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.shape.ShapeProducer;
+
+import java.awt.Shape;
+import java.awt.geom.Path2D;
 
 /**
  * Described a 2D line segment defined by two end points.

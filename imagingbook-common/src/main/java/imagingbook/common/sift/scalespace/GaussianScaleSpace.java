@@ -9,9 +9,9 @@
 
 package imagingbook.common.sift.scalespace;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import ij.process.FloatProcessor;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

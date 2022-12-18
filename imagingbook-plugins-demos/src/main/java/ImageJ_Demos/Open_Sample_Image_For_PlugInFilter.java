@@ -8,14 +8,14 @@
  ******************************************************************************/
 package ImageJ_Demos;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 
 /**

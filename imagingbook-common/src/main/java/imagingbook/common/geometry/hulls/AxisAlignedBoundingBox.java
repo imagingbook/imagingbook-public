@@ -8,6 +8,17 @@
  ******************************************************************************/
 package imagingbook.common.geometry.hulls;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.basic.PntUtils;
+import imagingbook.common.geometry.line.AlgebraicLine;
+import imagingbook.common.geometry.shape.ShapeProducer;
+import imagingbook.common.util.ArrayIterator;
+
+import java.awt.Shape;
+import java.awt.geom.Path2D;
+import java.util.Arrays;
+
 import static imagingbook.common.math.Arithmetic.isZero;
 import static imagingbook.common.math.Arithmetic.radius;
 import static imagingbook.common.math.Arithmetic.sqr;
@@ -15,17 +26,6 @@ import static imagingbook.common.math.Matrix.add;
 import static imagingbook.common.math.Matrix.makeDoubleVector;
 import static imagingbook.common.math.Matrix.multiply;
 import static java.lang.Math.sqrt;
-
-import java.awt.Shape;
-import java.awt.geom.Path2D;
-import java.util.Arrays;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
-import imagingbook.common.geometry.basic.PntUtils;
-import imagingbook.common.geometry.line.AlgebraicLine;
-import imagingbook.common.geometry.shape.ShapeProducer;
-import imagingbook.common.util.ArrayIterator;
 
 /**
  * <p>

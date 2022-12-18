@@ -26,7 +26,7 @@ import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
 import imagingbook.sampleimages.GeneralSampleImage;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.util.List;
 

@@ -9,8 +9,6 @@
 package Ch11_Circle_Ellipse_Fitting;
 
 
-import static imagingbook.common.ij.DialogUtils.addToDialog;
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.NewImage;
@@ -28,6 +26,8 @@ import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.util.ParameterBundle;
+
+import static imagingbook.common.ij.DialogUtils.addToDialog;
 
 /**
  * Samples points on a given (ideal) circle and creates a new image with the

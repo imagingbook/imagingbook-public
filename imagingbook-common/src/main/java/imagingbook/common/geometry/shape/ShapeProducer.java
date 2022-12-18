@@ -8,13 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.geometry.shape;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
+
 import java.awt.Shape;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.List;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 /**
  * Implementing classes know how to create an AWT {@link Shape}.

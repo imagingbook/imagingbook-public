@@ -8,12 +8,12 @@
  ******************************************************************************/
 package imagingbook.common.mser;
 
-import java.util.Arrays;
-
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.math.eigen.Eigensolver2x2;
 import imagingbook.common.mser.components.Component;
+
+import java.util.Arrays;
 
 /**
  * Defines a container holding the data for calculating MSER properties.

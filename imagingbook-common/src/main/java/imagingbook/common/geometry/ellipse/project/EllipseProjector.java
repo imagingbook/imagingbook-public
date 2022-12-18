@@ -8,6 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.geometry.ellipse.project;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
+
 import static imagingbook.common.math.Arithmetic.sqr;
 import static imagingbook.common.math.Matrix.add;
 import static imagingbook.common.math.Matrix.multiply;
@@ -17,9 +20,6 @@ import static java.lang.Math.abs;
 import static java.lang.Math.copySign;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 /**
  * <p>

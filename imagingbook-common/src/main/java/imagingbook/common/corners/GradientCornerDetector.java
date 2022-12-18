@@ -9,14 +9,6 @@
 
 package imagingbook.common.corners;
 
-import static imagingbook.common.ij.IjUtils.convolveX;
-import static imagingbook.common.ij.IjUtils.convolveY;
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.corners.SubpixelMaxInterpolator.Method;
@@ -25,6 +17,14 @@ import imagingbook.common.filter.linear.LinearFilterSeparable;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ImageMath;
 import imagingbook.common.util.ParameterBundle;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static imagingbook.common.ij.IjUtils.convolveX;
+import static imagingbook.common.ij.IjUtils.convolveY;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

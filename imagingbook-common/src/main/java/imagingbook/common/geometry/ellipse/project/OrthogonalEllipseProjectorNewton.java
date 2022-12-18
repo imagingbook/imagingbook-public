@@ -8,12 +8,12 @@
  ******************************************************************************/
 package imagingbook.common.geometry.ellipse.project;
 
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
+
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
-
-import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 /**
  * <p>

@@ -8,8 +8,6 @@
  ******************************************************************************/
 package Ch08_Binary_Regions;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -20,6 +18,8 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.Projection;
 import imagingbook.core.plugin.IjPluginName;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

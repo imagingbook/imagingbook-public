@@ -8,15 +8,15 @@
  ******************************************************************************/
 package imagingbook.testutils;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import imagingbook.core.resource.ImageResource;
+import imagingbook.core.resource.NamedResource;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import imagingbook.core.resource.ImageResource;
-import imagingbook.core.resource.NamedResource;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Static methods for testing implementations of {@link NamedResource} and {@link ImageResource}.

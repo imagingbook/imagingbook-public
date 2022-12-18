@@ -8,6 +8,8 @@
  ******************************************************************************/
 package imagingbook.common.mser.components;
 
+import imagingbook.common.mser.components.PixelMap.Pixel;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -19,8 +21,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import imagingbook.common.mser.components.PixelMap.Pixel;
 
 /**
  * This class represents a connected component (i.e., a binary image region).

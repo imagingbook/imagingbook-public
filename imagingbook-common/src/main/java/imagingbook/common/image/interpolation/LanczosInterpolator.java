@@ -9,9 +9,9 @@
 
 package imagingbook.common.image.interpolation;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import imagingbook.common.image.access.ScalarAccessor;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

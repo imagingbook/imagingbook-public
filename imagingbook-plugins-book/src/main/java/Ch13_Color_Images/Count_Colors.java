@@ -8,8 +8,6 @@
  ******************************************************************************/
 package Ch13_Color_Images;
 
-import java.util.Arrays;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
@@ -17,6 +15,8 @@ import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.util.Arrays;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 

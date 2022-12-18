@@ -9,13 +9,13 @@
 
 package imagingbook.common.sift;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.VectorNorm;
+
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.util.Locale;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.VectorNorm;
 
 /**
  * <p>

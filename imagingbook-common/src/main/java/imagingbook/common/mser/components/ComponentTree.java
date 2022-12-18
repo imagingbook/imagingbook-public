@@ -8,6 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.mser.components;
 
+import ij.process.ByteProcessor;
+import imagingbook.common.mser.MserData;
+import imagingbook.common.mser.components.PixelMap.Pixel;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Collection;
@@ -15,10 +19,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
-
-import ij.process.ByteProcessor;
-import imagingbook.common.mser.MserData;
-import imagingbook.common.mser.components.PixelMap.Pixel;
 
 /**
  * This class represents a tree of extremal image components.

@@ -7,7 +7,6 @@
  * Visit https://imagingbook.com for additional details.
  ******************************************************************************/
 package Ch04_Filters;
-import java.util.Random;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -17,6 +16,8 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.util.Random;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 

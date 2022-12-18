@@ -9,10 +9,10 @@
 
 package imagingbook.common.color.adapt;
 
+import imagingbook.common.color.cie.Illuminant;
+
 import static imagingbook.common.math.Matrix.inverse;
 import static imagingbook.common.math.Matrix.multiply;
-
-import imagingbook.common.color.cie.Illuminant;
 
 /**
  * <p>

@@ -8,12 +8,12 @@
  ******************************************************************************/
 package imagingbook.common.geometry.shape;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+
 import java.awt.Shape;
 import java.awt.geom.FlatteningPathIterator;
 import java.awt.geom.PathIterator;
 import java.util.Iterator;
-
-import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
  * A small wrapper class to create a simple {@link Iterator} of {@link Pnt2d} to

@@ -9,12 +9,12 @@
 
 package imagingbook.common.image;
 
-import java.awt.color.ColorSpace;
-
 import ij.ImageStack;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.color.colorspace.sRgbColorSpace;
+
+import java.awt.color.ColorSpace;
 
 /**
  * This class defines a "color stack" as a subtype of {@link PixelPack} with

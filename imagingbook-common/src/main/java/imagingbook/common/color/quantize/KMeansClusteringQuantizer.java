@@ -9,7 +9,8 @@
 
 package imagingbook.common.color.quantize;
 
-import static imagingbook.common.math.Arithmetic.sqr;
+import imagingbook.common.color.RgbUtils;
+import imagingbook.common.color.statistics.ColorHistogram;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -17,13 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import ij.IJ;
-import ij.ImagePlus;
-import ij.process.ByteProcessor;
-import ij.process.ColorProcessor;
-import ij.process.ImageProcessor;
-import imagingbook.common.color.RgbUtils;
-import imagingbook.common.color.statistics.ColorHistogram;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

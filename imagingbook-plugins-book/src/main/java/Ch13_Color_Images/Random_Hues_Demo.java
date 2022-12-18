@@ -8,13 +8,13 @@
  ******************************************************************************/
 package Ch13_Color_Images;
 
-import java.awt.Color;
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import ij.process.ColorProcessor;
 import imagingbook.common.color.iterate.RandomHueGenerator;
+
+import java.awt.Color;
 
 
 /**

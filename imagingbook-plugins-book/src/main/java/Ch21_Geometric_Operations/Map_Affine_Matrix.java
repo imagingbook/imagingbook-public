@@ -8,12 +8,6 @@
  ******************************************************************************/
 package Ch21_Geometric_Operations;
 
-import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.Panel;
-import java.awt.TextField;
-import java.util.Locale;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -24,6 +18,12 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.TextField;
+import java.util.Locale;
 
 /**
  * <p>

@@ -9,6 +9,10 @@
 package imagingbook.common.geometry.mappings.nonlinear;
 
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.mappings.Inversion;
+import imagingbook.common.geometry.mappings.Mapping2D;
+
 import static imagingbook.common.math.Arithmetic.mod;
 import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
@@ -16,10 +20,6 @@ import static java.lang.Math.exp;
 import static java.lang.Math.hypot;
 import static java.lang.Math.log1p;
 import static java.lang.Math.sin;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.mappings.Inversion;
-import imagingbook.common.geometry.mappings.Mapping2D;
 
 /**
  * <p>

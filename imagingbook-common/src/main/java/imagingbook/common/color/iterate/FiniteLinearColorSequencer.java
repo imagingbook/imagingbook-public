@@ -8,9 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.color.iterate;
 
-import java.awt.Color;
-
 import imagingbook.common.color.sets.ColorEnumeration;
+
+import java.awt.Color;
 
 /**
  * <p>

@@ -8,8 +8,6 @@
  ******************************************************************************/
 package Ch25_SIFT;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -20,6 +18,8 @@ import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

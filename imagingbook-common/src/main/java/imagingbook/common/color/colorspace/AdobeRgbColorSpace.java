@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
-import java.awt.color.ICC_ColorSpace;
-
 import imagingbook.common.color.cie.NamedIccProfile;
 import imagingbook.common.color.cie.StandardIlluminant;
 import imagingbook.common.math.Matrix;
+
+import java.awt.color.ICC_ColorSpace;
 
 
 /**

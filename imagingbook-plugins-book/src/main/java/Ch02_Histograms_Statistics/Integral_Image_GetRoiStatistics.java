@@ -8,8 +8,6 @@
  ******************************************************************************/
 package Ch02_Histograms_Statistics;
 
-import java.awt.Rectangle;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
@@ -20,6 +18,8 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.IntegralImage;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Rectangle;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 

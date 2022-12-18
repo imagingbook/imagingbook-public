@@ -8,13 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.ellipse.utils;
 
-import static imagingbook.common.math.Arithmetic.mod;
-import static java.lang.Math.PI;
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 import java.util.Random;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.ellipse.GeometricEllipse;
+import static imagingbook.common.math.Arithmetic.mod;
+import static java.lang.Math.PI;
 
 /**
  * Utility class for picking random points on a given ellipse.

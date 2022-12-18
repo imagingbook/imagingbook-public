@@ -9,17 +9,6 @@
 
 package Ch25_SIFT;
 
-import static imagingbook.common.color.sets.ColorEnumeration.getColors;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
-import java.awt.geom.QuadCurve2D;
-import java.util.List;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -40,6 +29,17 @@ import imagingbook.common.sift.SiftMatch;
 import imagingbook.common.sift.SiftMatcher;
 import imagingbook.common.sift.SiftParameters;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
+import java.awt.geom.QuadCurve2D;
+import java.util.List;
+
+import static imagingbook.common.color.sets.ColorEnumeration.getColors;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

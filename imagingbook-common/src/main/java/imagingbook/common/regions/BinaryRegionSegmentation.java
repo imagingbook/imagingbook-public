@@ -9,7 +9,8 @@
 
 package imagingbook.common.regions;
 
-import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
+import ij.process.ByteProcessor;
+import imagingbook.common.geometry.basic.NeighborhoodType2D;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,8 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import ij.process.ByteProcessor;
-import imagingbook.common.geometry.basic.NeighborhoodType2D;
+import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;
 
 /**
  * <p>

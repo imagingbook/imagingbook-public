@@ -8,15 +8,14 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.circle.algebraic;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.PntUtils;
+import imagingbook.common.math.Matrix;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.PntUtils;
-import imagingbook.common.math.Matrix;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * This is an implementation of the algebraic circle fitting algorithm by Taubin [1],

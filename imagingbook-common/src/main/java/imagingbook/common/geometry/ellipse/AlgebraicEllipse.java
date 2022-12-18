@@ -8,18 +8,18 @@
  ******************************************************************************/
 package imagingbook.common.geometry.ellipse;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.Arithmetic;
+import imagingbook.common.math.Matrix;
+
+import java.util.Locale;
+
 import static imagingbook.common.math.Arithmetic.sqr;
 import static imagingbook.common.math.Matrix.multiply;
 import static imagingbook.common.math.Matrix.normL2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
-
-import java.util.Locale;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.Arithmetic;
-import imagingbook.common.math.Matrix;
 
 /**
  * <p>

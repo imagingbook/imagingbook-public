@@ -9,13 +9,13 @@
 
 package imagingbook.common.sift;
 
+import imagingbook.common.math.VectorNorm;
+import imagingbook.common.math.VectorNorm.NormType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import imagingbook.common.math.VectorNorm;
-import imagingbook.common.math.VectorNorm.NormType;
 
 /**
  * <p>

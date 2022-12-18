@@ -8,15 +8,15 @@
  ******************************************************************************/
 package imagingbook.common.mser.components;
 
+import imagingbook.common.mser.components.PixelMap.Pixel;
+import imagingbook.common.util.bits.BitMap;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
-
-import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.common.util.bits.BitMap;
 
 /**
  * <p>

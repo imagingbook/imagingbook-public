@@ -8,14 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.math.eigen;
 
-import static imagingbook.common.math.Matrix.isSquare;
-import static imagingbook.common.math.Matrix.sameSize;
-
+import imagingbook.common.math.Matrix;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
-import imagingbook.common.math.Matrix;
+import static imagingbook.common.math.Matrix.isSquare;
+import static imagingbook.common.math.Matrix.sameSize;
 
 /**
  * <p>

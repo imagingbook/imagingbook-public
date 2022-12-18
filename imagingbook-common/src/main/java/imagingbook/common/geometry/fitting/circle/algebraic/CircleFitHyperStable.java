@@ -9,18 +9,17 @@
 package imagingbook.common.geometry.fitting.circle.algebraic;
 
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
-import org.apache.commons.math3.linear.SingularValueDecomposition;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.eigen.EigenDecompositionJama;
 import imagingbook.common.util.PrimitiveSortMap;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.linear.SingularValueDecomposition;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

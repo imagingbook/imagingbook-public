@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.ij.overlay;
 
+import imagingbook.common.math.Matrix;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
-
-import imagingbook.common.math.Matrix;
 
 /**
  * This is basically a mirror class of {@link BasicStroke} adding stroke and

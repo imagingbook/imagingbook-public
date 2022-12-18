@@ -8,13 +8,6 @@
  ******************************************************************************/
 package Tools_;
 
-import static imagingbook.common.ij.DialogUtils.addToDialog;
-import static imagingbook.common.ij.DialogUtils.getFromDialog;
-
-import java.awt.Desktop;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -24,6 +17,13 @@ import imagingbook.core.FileUtils;
 import imagingbook.pdf.PdfExporter;
 import imagingbook.pdf.PdfExporter.Parameters;
 import imagingbook.pdf.Utils;
+
+import java.awt.Desktop;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
 
 /**
  * This ImageJ plugin exports the current image and its attached vector graphic overlay (if existent) as a PDF file. It

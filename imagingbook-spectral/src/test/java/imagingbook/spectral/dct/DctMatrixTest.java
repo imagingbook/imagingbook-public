@@ -8,10 +8,9 @@
  *******************************************************************************/
 package imagingbook.spectral.dct;
 
-import org.junit.Test;
-
 import imagingbook.common.math.Matrix;
 import imagingbook.testutils.NumericTestUtils;
+import org.junit.Test;
 
 // works for square data arrays only
 public class DctMatrixTest {

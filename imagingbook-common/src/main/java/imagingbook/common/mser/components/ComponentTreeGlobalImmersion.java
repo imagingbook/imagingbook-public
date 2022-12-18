@@ -8,15 +8,15 @@
  ******************************************************************************/
 package imagingbook.common.mser.components;
 
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.mser.MserData;
+import imagingbook.common.mser.components.PixelMap.Pixel;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-
-import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.mser.MserData;
-import imagingbook.common.mser.components.PixelMap.Pixel;
 
 /**
  * <p>

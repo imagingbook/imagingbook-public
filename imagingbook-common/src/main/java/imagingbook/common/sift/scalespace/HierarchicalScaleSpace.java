@@ -9,12 +9,12 @@
 
 package imagingbook.common.sift.scalespace;
 
-import java.io.PrintStream;
-
 import ij.ImagePlus;
 import ij.ImageStack;
 import imagingbook.common.util.LinearContainer;
 import imagingbook.common.util.PrintsToStream;
+
+import java.io.PrintStream;
 
 /**
  * <p>

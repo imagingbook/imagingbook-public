@@ -8,15 +8,15 @@
  ******************************************************************************/
 package imagingbook.pdf;
 
-import java.awt.Font;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
 import com.lowagie.text.pdf.FontMapper;
+
+import java.awt.Font;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * An implementation of {@link FontMapper} that substitutes unknown

@@ -9,9 +9,9 @@
 package imagingbook.common.geometry.line;
 
 
-import java.util.Locale;
-
 import imagingbook.common.geometry.basic.Pnt2d;
+
+import java.util.Locale;
 
 /**
  * <p>

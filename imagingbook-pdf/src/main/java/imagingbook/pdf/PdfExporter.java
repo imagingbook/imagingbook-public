@@ -8,14 +8,6 @@
  ******************************************************************************/
 package imagingbook.pdf;
 
-import java.awt.Graphics2D;
-import java.awt.color.ColorSpace;
-import java.awt.color.ICC_Profile;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Path;
-
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -24,7 +16,6 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfGraphics2D;
 import com.lowagie.text.pdf.PdfWriter;
-
 import ij.ImagePlus;
 import ij.gui.Overlay;
 import ij.gui.Roi;
@@ -33,6 +24,14 @@ import imagingbook.common.ij.DialogUtils.DialogHide;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.util.ParameterBundle;
 import imagingbook.core.Info;
+
+import java.awt.Graphics2D;
+import java.awt.color.ColorSpace;
+import java.awt.color.ICC_Profile;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * Exports an {@link ImagePlus} instance, including its vector overly

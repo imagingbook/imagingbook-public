@@ -8,16 +8,16 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fd;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.math.Arithmetic;
+import imagingbook.common.math.Complex;
+
 import static imagingbook.common.math.Arithmetic.mod;
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
-
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.math.Arithmetic;
-import imagingbook.common.math.Complex;
 
 /**
  * <p>

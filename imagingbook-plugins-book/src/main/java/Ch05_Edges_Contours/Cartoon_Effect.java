@@ -8,9 +8,6 @@
  ******************************************************************************/
 package Ch05_Edges_Contours;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.math.Arithmetic.clipTo;
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -20,6 +17,9 @@ import ij.process.ImageProcessor;
 import imagingbook.common.edges.GrayscaleEdgeDetector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.math.Arithmetic.clipTo;
 
 /**
  * <p>

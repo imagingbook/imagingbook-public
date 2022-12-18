@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.geometry.ellipse;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-import static java.lang.Math.PI;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Primitive2d;
+import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
+import imagingbook.common.geometry.shape.ShapeProducer;
+import imagingbook.common.math.Arithmetic;
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -20,11 +20,11 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.util.Locale;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Primitive2d;
-import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
-import imagingbook.common.geometry.shape.ShapeProducer;
-import imagingbook.common.math.Arithmetic;
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 
 /**
  * <p>

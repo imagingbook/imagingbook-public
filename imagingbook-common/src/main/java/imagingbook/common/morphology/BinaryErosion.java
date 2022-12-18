@@ -8,9 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.morphology;
 
-import static imagingbook.common.morphology.StructuringElements.reflect;
-
 import ij.process.ByteProcessor;
+
+import static imagingbook.common.morphology.StructuringElements.reflect;
 
 /**
  * <p>

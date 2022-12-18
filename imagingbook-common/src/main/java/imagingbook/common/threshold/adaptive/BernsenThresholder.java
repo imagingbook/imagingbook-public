@@ -9,8 +9,6 @@
 
 package imagingbook.common.threshold.adaptive;
 
-import static imagingbook.common.threshold.Thresholder.BackgroundMode;
-
 import ij.plugin.filter.RankFilters;
 import ij.process.ByteProcessor;
 import imagingbook.common.ij.DialogUtils.DialogLabel;

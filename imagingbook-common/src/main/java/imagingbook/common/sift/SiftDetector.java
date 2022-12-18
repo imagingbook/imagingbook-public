@@ -9,13 +9,6 @@
 
 package imagingbook.common.sift;
 
-import static imagingbook.common.math.Arithmetic.mod;
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import ij.process.FloatProcessor;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
@@ -23,6 +16,13 @@ import imagingbook.common.sift.scalespace.DogOctave;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
 import imagingbook.common.sift.scalespace.ScaleLevel;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static imagingbook.common.math.Arithmetic.mod;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

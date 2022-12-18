@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.geometry.delaunay;
 
-import java.util.Collection;
-import java.util.List;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.delaunay.guibas.TriangulationGuibas;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>

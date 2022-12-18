@@ -8,12 +8,11 @@
  ******************************************************************************/
 package imagingbook.pdf;
 
-import java.io.IOException;
-
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
-
 import imagingbook.core.resource.NamedResource;
+
+import java.io.IOException;
 
 
 /**

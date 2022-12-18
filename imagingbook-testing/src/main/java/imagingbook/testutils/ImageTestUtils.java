@@ -8,18 +8,18 @@
  ******************************************************************************/
 package imagingbook.testutils;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Random;
-
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ShortProcessor;
+
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Random;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 public class ImageTestUtils {

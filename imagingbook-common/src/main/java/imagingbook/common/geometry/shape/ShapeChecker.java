@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.geometry.shape;
 
-import java.awt.Shape;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Primitive2d;
+
+import java.awt.Shape;
 
 /**
  * Used to check if AWT shapes produced by {@link ShapeProducer#getShape()}

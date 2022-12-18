@@ -8,16 +8,8 @@
  ******************************************************************************/
 package Ch12_Ransac_Hough;
 
-import static imagingbook.common.ij.DialogUtils.addToDialog;
-import static imagingbook.common.ij.DialogUtils.getFromDialog;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import Ch12_Ransac_Hough.settings.RansacDrawSettings;
 import ij.IJ;
-//import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.Overlay;
@@ -34,6 +26,13 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.ransac.RansacCircleDetector;
 import imagingbook.common.ransac.RansacResult;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

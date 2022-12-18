@@ -9,10 +9,10 @@
 package imagingbook.common.geometry.fitting.circle.algebraic;
 
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

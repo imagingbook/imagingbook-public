@@ -8,9 +8,6 @@
  ******************************************************************************/
 package Ch03_Point_Operations;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -20,6 +17,9 @@ import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

@@ -8,18 +8,17 @@
  ******************************************************************************/
 package imagingbook.pdf;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.FileOutputStream;
-
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfWriter;
-
 import ij.IJ;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Creates a 1-page PDF with samples of all 14 standard Type1 fonts embedded.

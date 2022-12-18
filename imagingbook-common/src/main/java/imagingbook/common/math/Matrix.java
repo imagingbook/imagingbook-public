@@ -9,13 +9,7 @@
 
 package imagingbook.common.math;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Locale;
-
+import imagingbook.common.math.exception.DivideByZeroException;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.DecompositionSolver;
@@ -26,7 +20,12 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularMatrixException;
 
-import imagingbook.common.math.exception.DivideByZeroException;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Locale;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

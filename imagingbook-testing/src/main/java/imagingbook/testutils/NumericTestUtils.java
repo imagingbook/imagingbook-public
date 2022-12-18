@@ -8,9 +8,9 @@
  ******************************************************************************/
 package imagingbook.testutils;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Assert;
+
+import static org.junit.Assert.assertEquals;
 
 public abstract class NumericTestUtils {
 	

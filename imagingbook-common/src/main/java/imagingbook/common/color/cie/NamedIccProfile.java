@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.color.cie;
 
+import imagingbook.core.resource.NamedResource;
+
 import java.awt.color.ICC_ColorSpace;
 import java.awt.color.ICC_Profile;
 import java.io.IOException;
-
-import imagingbook.core.resource.NamedResource;
 
 public enum NamedIccProfile implements NamedResource {
 	AdobeRGB1998("AdobeRGB1998.icc"),

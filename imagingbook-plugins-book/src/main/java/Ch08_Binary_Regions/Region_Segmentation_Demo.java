@@ -9,10 +9,6 @@
 package Ch08_Binary_Regions;
 
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.util.List;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -33,6 +29,10 @@ import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.common.regions.SequentialSegmentation;
 import imagingbook.core.plugin.IjPluginName;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.util.List;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

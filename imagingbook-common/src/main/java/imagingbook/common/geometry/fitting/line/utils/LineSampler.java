@@ -8,9 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.line.utils;
 
-import java.util.Random;
-
 import imagingbook.common.geometry.basic.Pnt2d;
+
+import java.util.Random;
 
 /**
  * <p>

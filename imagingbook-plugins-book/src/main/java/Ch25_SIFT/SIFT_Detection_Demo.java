@@ -9,11 +9,6 @@
 
 package Ch25_SIFT;
 
-import static imagingbook.common.color.sets.ColorEnumeration.getColors;
-
-import java.awt.Color;
-import java.util.List;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -30,6 +25,11 @@ import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftParameters;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Color;
+import java.util.List;
+
+import static imagingbook.common.color.sets.ColorEnumeration.getColors;
 
 /**
  * <p>

@@ -9,11 +9,11 @@
 
 package imagingbook.common.sift;
 
-import static imagingbook.common.color.sets.ColorEnumeration.getColors;
+import imagingbook.common.color.sets.ColorEnumeration;
 
 import java.awt.Color;
 
-import imagingbook.common.color.sets.ColorEnumeration;
+import static imagingbook.common.color.sets.ColorEnumeration.getColors;
 
 /**
  * Color definitions used in various SIFT demo plugins.

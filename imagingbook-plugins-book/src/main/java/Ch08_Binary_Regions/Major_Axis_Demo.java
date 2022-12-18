@@ -8,13 +8,6 @@
  ******************************************************************************/
 package Ch08_Binary_Regions;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.math.Arithmetic.sqr;
-import static java.lang.Math.sqrt;
-
-import java.awt.geom.Line2D;
-import java.util.List;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -31,6 +24,13 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.geom.Line2D;
+import java.util.List;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.sqrt;
 
 /**
  * <p>

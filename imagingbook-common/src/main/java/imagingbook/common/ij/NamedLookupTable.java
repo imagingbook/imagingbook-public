@@ -9,13 +9,13 @@
 
 package imagingbook.common.ij;
 
-import java.awt.Color;
-import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
-
 import ij.IJ;
 import ij.process.ImageProcessor;
 import ij.process.LUT;
+
+import java.awt.Color;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
 
 
 /**

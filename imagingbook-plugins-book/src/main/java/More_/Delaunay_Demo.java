@@ -8,12 +8,6 @@
  ******************************************************************************/
 package More_;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.util.List;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -31,6 +25,12 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.util.List;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 
 /**

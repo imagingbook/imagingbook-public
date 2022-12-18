@@ -9,14 +9,14 @@
 
 package imagingbook.common.filter.edgepreserving;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import ij.process.ColorProcessor;
 import imagingbook.common.filter.edgepreserving.BilateralF.Parameters;
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.filter.linear.GaussianKernel2D;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

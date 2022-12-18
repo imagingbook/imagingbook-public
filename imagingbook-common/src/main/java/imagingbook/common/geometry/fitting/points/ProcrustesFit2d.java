@@ -8,8 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.points;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
+import imagingbook.common.geometry.basic.Pnt2d.PntInt;
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -17,11 +20,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
-import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 
 /**

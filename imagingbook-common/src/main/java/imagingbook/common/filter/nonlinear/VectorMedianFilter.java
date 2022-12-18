@@ -15,7 +15,6 @@ import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.VectorNorm;
 import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>

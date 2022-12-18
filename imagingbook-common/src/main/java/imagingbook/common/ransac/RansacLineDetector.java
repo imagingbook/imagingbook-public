@@ -8,13 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.ransac;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.fitting.line.LineFit;
 import imagingbook.common.geometry.fitting.line.OrthogonalLineFitEigen;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.ij.DialogUtils;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

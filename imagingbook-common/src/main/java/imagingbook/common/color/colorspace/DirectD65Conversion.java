@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.cie.StandardIlluminant.D50;
-import static imagingbook.common.color.cie.StandardIlluminant.D65;
-
 import imagingbook.common.color.adapt.BradfordAdaptation;
 import imagingbook.common.color.adapt.ChromaticAdaptation;
+
+import static imagingbook.common.color.cie.StandardIlluminant.D50;
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
 
 /**
  * A color space implementing this interface indicates that it can convert internal color values directly to and from

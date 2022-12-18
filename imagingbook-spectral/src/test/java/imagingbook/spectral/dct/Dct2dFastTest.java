@@ -1,12 +1,11 @@
 package imagingbook.spectral.dct;
 
-import java.util.Random;
-
-import org.junit.Test;
-
 import imagingbook.common.math.Matrix;
 import imagingbook.spectral.TestUtils;
 import imagingbook.testutils.NumericTestUtils;
+import org.junit.Test;
+
+import java.util.Random;
 
 public class Dct2dFastTest {
 

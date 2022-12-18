@@ -17,7 +17,6 @@ import ij.process.ImageProcessor;
 import imagingbook.common.edges.EdgeDetector;
 import imagingbook.common.edges.MultiGradientEdgeDetector;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.FileUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;

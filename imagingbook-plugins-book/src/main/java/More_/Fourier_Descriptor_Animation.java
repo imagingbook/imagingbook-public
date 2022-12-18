@@ -9,16 +9,6 @@
 
 package More_;
 
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
-import java.util.List;
-import java.util.Locale;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -37,6 +27,16 @@ import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.ContourTracer;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
+import java.util.List;
+import java.util.Locale;
+
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

@@ -8,9 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.geometry.delaunay.guibas;
 
-import static imagingbook.common.math.Arithmetic.isZero;
-
 import imagingbook.common.geometry.basic.Pnt2d;
+
+import static imagingbook.common.math.Arithmetic.isZero;
 
 
 /**

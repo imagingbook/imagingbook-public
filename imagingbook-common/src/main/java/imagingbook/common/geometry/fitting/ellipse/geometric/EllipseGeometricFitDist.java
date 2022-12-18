@@ -8,19 +8,15 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.ellipse.geometric;
 
-import static imagingbook.common.math.Arithmetic.isZero;
-import static imagingbook.common.math.Arithmetic.sqr;
-import static imagingbook.common.math.Matrix.makeRealMatrix;
-import static imagingbook.common.math.Matrix.subtract;
-import static java.lang.Math.cos;
-import static java.lang.Math.signum;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
-import static org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.evaluationChecker;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.ellipse.GeometricEllipse;
+import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic;
+import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbonStable;
+import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;
+import imagingbook.common.ij.DialogUtils.DialogLabel;
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
+import imagingbook.common.util.ParameterBundle;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresProblem;
@@ -33,15 +29,18 @@ import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.SimpleVectorValueChecker;
 import org.apache.commons.math3.util.Pair;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic;
-import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbonStable;
-import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;
-import imagingbook.common.ij.DialogUtils.DialogLabel;
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.util.ParameterBundle;
+import java.util.ArrayList;
+import java.util.List;
+
+import static imagingbook.common.math.Arithmetic.isZero;
+import static imagingbook.common.math.Arithmetic.sqr;
+import static imagingbook.common.math.Matrix.makeRealMatrix;
+import static imagingbook.common.math.Matrix.subtract;
+import static java.lang.Math.cos;
+import static java.lang.Math.signum;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.evaluationChecker;
 
 
 /**

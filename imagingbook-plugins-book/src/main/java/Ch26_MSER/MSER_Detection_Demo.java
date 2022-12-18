@@ -8,14 +8,6 @@
  ******************************************************************************/
 package Ch26_MSER;
 
-import static imagingbook.common.ij.DialogUtils.addToDialog;
-import static imagingbook.common.ij.DialogUtils.getFromDialog;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.util.List;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -39,6 +31,14 @@ import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.PixelMap.Pixel;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.util.List;
+
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

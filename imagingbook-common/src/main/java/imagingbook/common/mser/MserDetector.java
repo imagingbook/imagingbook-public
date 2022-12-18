@@ -8,13 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.mser;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import ij.process.ByteProcessor;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree;
 import imagingbook.common.mser.components.PixelMap.Pixel;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * <p>

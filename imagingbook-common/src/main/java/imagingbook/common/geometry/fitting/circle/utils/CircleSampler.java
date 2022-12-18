@@ -8,13 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.circle.utils;
 
-import static imagingbook.common.math.Arithmetic.mod;
-import static java.lang.Math.PI;
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.circle.GeometricCircle;
 
 import java.util.Random;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.circle.GeometricCircle;
+import static imagingbook.common.math.Arithmetic.mod;
+import static java.lang.Math.PI;
 
 /**
  * Defines utility methods for picking random points on a given circle.

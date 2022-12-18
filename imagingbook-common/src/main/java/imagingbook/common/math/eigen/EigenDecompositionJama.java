@@ -8,14 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.math.eigen;
 
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
+import imagingbook.common.math.exception.MaxIterationsExceededException;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
-
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
-import imagingbook.common.math.exception.MaxIterationsExceededException;
 
 /**
  * Eigenvalues and eigenvectors of a real matrix. This code has been ported from

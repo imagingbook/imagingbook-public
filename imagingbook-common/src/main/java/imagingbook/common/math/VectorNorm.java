@@ -9,9 +9,9 @@
 
 package imagingbook.common.math;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import java.lang.reflect.Array;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * This class defines various vector norms for calculating

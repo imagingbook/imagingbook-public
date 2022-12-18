@@ -9,11 +9,11 @@
 
 package imagingbook.common.filter.edgepreserving;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.filter.linear.GaussianKernel2D;
 import imagingbook.common.image.PixelPack.PixelSlice;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

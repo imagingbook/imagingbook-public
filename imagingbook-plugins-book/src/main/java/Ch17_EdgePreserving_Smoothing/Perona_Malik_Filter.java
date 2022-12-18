@@ -8,10 +8,6 @@
  ******************************************************************************/
 package Ch17_EdgePreserving_Smoothing;
 
-import static imagingbook.common.ij.DialogUtils.addToDialog;
-import static imagingbook.common.ij.DialogUtils.getFromDialog;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -26,6 +22,10 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * This ImageJ plugin demonstrates the use of the Perona-Malik filter [1]. See Sec. 17.3 of [2] for additional details.

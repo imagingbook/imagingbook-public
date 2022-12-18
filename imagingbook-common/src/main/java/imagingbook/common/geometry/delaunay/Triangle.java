@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.geometry.delaunay;
 
-import java.awt.Shape;
-import java.awt.geom.Path2D;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.shape.ShapeProducer;
+
+import java.awt.Shape;
+import java.awt.geom.Path2D;
 
 /** 
  * Interface specifying a 2D triangle.

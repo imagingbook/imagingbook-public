@@ -8,10 +8,8 @@
  *******************************************************************************/
 package imagingbook.sampleimages;
 
-import org.junit.Test;
-
-//import imagingbook.sampleimages.testutils.ResourceTestUtils;
 import imagingbook.testutils.ResourceTestUtils;
+import org.junit.Test;
 
 public class GeneralSampleImageTest {
 	

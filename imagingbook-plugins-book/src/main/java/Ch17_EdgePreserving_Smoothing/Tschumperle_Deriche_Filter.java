@@ -8,13 +8,8 @@
  ******************************************************************************/
 package Ch17_EdgePreserving_Smoothing;
 
-import static imagingbook.common.ij.DialogUtils.addToDialog;
-import static imagingbook.common.ij.DialogUtils.getFromDialog;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.io.LogStream;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.edgepreserving.TschumperleDericheF.Parameters;
@@ -22,9 +17,12 @@ import imagingbook.common.filter.edgepreserving.TschumperleDericheFilter;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjProgressBarMonitor;
-import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

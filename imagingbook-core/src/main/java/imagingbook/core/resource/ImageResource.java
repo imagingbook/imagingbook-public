@@ -8,13 +8,13 @@
  ******************************************************************************/
 package imagingbook.core.resource;
 
-import java.awt.*;
+import ij.IJ;
+import ij.ImagePlus;
+
+import java.awt.Image;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import ij.IJ;
-import ij.ImagePlus;
 
 /**
  * <p>

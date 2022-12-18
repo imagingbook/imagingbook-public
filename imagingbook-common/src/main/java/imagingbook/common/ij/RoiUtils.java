@@ -8,14 +8,14 @@
  ******************************************************************************/
 package imagingbook.common.ij;
 
-import java.awt.Polygon;
-
 import ij.gui.OvalRoi;
 import ij.gui.PointRoi;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.process.FloatPolygon;
 import imagingbook.common.geometry.basic.Pnt2d;
+
+import java.awt.Polygon;
 
 /**
  * This class defines static ROI-related utility methods

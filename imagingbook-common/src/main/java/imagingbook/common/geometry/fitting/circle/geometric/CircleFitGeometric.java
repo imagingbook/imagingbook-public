@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.geometry.fitting.circle.geometric;
 
-import java.util.List;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.circle.GeometricCircle;
+
+import java.util.List;
 
 /**
  * Common interface for geometric circle fits.

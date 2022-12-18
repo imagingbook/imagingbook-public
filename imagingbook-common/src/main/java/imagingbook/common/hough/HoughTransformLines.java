@@ -8,15 +8,15 @@
  ******************************************************************************/
 package imagingbook.common.hough;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.util.ParameterBundle;
 import imagingbook.common.util.progress.ProgressReporter;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <p>

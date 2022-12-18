@@ -8,14 +8,14 @@
  ******************************************************************************/
 package Tools_;
 
-import java.awt.Rectangle;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.Roi;
 import ij.plugin.PlugIn;
 import imagingbook.common.ij.GuiTools;
+
+import java.awt.Rectangle;
 
 /**
  * <p>

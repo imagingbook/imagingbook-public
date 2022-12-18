@@ -9,13 +9,13 @@
 
 package imagingbook.common.regions;
 
+import imagingbook.common.geometry.basic.NeighborhoodType2D;
+import imagingbook.common.geometry.basic.Pnt2d;
+
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import imagingbook.common.geometry.basic.NeighborhoodType2D;
-import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
  * <p>

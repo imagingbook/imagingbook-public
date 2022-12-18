@@ -8,11 +8,6 @@
  ******************************************************************************/
 package Ch09_Automatic_Thresholding;
 
-import static imagingbook.common.ij.DialogUtils.addToDialog;
-import static imagingbook.common.ij.DialogUtils.askForSampleImage;
-import static imagingbook.common.ij.DialogUtils.getFromDialog;
-import static imagingbook.common.ij.IjUtils.noCurrentImage;
-
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -22,6 +17,11 @@ import imagingbook.common.threshold.adaptive.NiblackThresholder;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.Parameters;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.RegionType;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import static imagingbook.common.ij.DialogUtils.addToDialog;
+import static imagingbook.common.ij.DialogUtils.askForSampleImage;
+import static imagingbook.common.ij.DialogUtils.getFromDialog;
+import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>

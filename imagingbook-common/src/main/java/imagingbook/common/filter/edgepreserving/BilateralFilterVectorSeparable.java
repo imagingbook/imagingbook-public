@@ -9,13 +9,13 @@
 
 package imagingbook.common.filter.edgepreserving;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import ij.process.ColorProcessor;
 import imagingbook.common.filter.generic.GenericFilterVectorSeparable;
 import imagingbook.common.filter.linear.GaussianKernel1D;
 import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.VectorNorm;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
 * <p>

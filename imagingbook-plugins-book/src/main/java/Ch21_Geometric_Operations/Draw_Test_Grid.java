@@ -8,13 +8,13 @@
  ******************************************************************************/
 package Ch21_Geometric_Operations;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import imagingbook.common.image.ImageGraphics;
+
+import java.awt.Font;
+import java.awt.Graphics2D;
 
 /**
  * <p>

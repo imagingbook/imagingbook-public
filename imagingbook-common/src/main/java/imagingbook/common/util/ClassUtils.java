@@ -8,6 +8,8 @@
  ******************************************************************************/
 package imagingbook.common.util;
 
+import imagingbook.core.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -25,8 +27,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-
-import imagingbook.core.FileUtils;
 
 /**
  * 

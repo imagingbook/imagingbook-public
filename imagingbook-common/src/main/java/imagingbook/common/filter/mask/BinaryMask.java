@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.filter.mask;
 
-import java.util.Objects;
-
 import ij.process.ByteProcessor;
 import imagingbook.common.ij.IjUtils;
+
+import java.util.Objects;
 
 /**
  * This class defines a binary mask, as used in filters, for example.

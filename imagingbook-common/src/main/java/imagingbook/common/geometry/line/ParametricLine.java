@@ -8,13 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.geometry.line;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-
-import java.util.Locale;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
+
+import java.util.Locale;
+
+import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>

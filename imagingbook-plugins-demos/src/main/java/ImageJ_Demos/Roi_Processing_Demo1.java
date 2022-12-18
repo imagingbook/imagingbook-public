@@ -8,12 +8,12 @@
  ******************************************************************************/
 package ImageJ_Demos;
 
-import java.awt.Rectangle;
-
 import ij.ImagePlus;
 import ij.gui.Roi;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+
+import java.awt.Rectangle;
 
 /**
  * This ImageJ plugin shows how an image operation can be confined

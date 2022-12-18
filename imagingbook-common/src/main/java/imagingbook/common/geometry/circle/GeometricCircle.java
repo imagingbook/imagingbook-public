@@ -8,19 +8,19 @@
  ******************************************************************************/
 package imagingbook.common.geometry.circle;
 
-import static imagingbook.common.math.Arithmetic.sqr;
-import static java.lang.Math.abs;
-import static java.lang.Math.sqrt;
+import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Primitive2d;
+import imagingbook.common.geometry.shape.ShapeProducer;
+import imagingbook.common.math.Arithmetic;
 
 import java.awt.Shape;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Path2D;
 import java.util.Locale;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-import imagingbook.common.geometry.basic.Primitive2d;
-import imagingbook.common.geometry.shape.ShapeProducer;
-import imagingbook.common.math.Arithmetic;
+import static imagingbook.common.math.Arithmetic.sqr;
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
 
 /**
  * <p>

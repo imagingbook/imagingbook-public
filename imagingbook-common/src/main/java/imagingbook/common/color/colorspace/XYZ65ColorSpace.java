@@ -8,13 +8,13 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.cie.StandardIlluminant.D50;
-import static imagingbook.common.color.cie.StandardIlluminant.D65;
+import imagingbook.common.color.adapt.BradfordAdaptation;
+import imagingbook.common.color.adapt.ChromaticAdaptation;
 
 import java.awt.color.ColorSpace;
 
-import imagingbook.common.color.adapt.BradfordAdaptation;
-import imagingbook.common.color.adapt.ChromaticAdaptation;
+import static imagingbook.common.color.cie.StandardIlluminant.D50;
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
 
 /**
  * <p>

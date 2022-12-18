@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.geometry.delaunay.guibas;
 
-import java.util.Arrays;
-
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.delaunay.Triangle;
+
+import java.util.Arrays;
 
 
 

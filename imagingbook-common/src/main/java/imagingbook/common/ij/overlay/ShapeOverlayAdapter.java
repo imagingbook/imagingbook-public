@@ -8,15 +8,15 @@
  ******************************************************************************/
 package imagingbook.common.ij.overlay;
 
+import ij.gui.Overlay;
+import ij.gui.ShapeRoi;
+import ij.gui.TextRoi;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-
-import ij.gui.Overlay;
-import ij.gui.ShapeRoi;
-import ij.gui.TextRoi;
 
 /**
  * <p>

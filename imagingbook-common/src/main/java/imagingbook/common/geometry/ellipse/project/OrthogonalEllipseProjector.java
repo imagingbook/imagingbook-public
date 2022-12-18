@@ -8,11 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.geometry.ellipse.project;
 
-import static imagingbook.common.math.Arithmetic.isZero;
-import static imagingbook.common.math.Arithmetic.sqr;
-
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
 import imagingbook.common.math.Arithmetic;
+
+import static imagingbook.common.math.Arithmetic.isZero;
+import static imagingbook.common.math.Arithmetic.sqr;
 
 
 /**

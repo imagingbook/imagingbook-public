@@ -8,16 +8,16 @@
  ******************************************************************************/
 package imagingbook.common.ransac;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import ij.process.ByteProcessor;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Primitive2d;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.util.ParameterBundle;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * <p>

@@ -8,10 +8,10 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
+import java.awt.color.ColorSpace;
+
 import static imagingbook.common.math.Arithmetic.max;
 import static imagingbook.common.math.Arithmetic.min;
-
-import java.awt.color.ColorSpace;
 
 
 /**

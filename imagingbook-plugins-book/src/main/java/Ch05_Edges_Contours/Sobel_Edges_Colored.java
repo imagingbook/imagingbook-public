@@ -8,8 +8,6 @@
  ******************************************************************************/
 package Ch05_Edges_Contours;
 
-import java.awt.Color;
-
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.Blitter;
@@ -18,6 +16,8 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
+
+import java.awt.Color;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 

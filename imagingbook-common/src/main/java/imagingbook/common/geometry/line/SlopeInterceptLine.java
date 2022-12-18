@@ -8,9 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.geometry.line;
 
-import java.util.Locale;
-
 import imagingbook.common.math.Arithmetic;
+
+import java.util.Locale;
 
 /**
  * <p>

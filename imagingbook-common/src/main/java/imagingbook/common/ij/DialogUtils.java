@@ -8,6 +8,12 @@
  ******************************************************************************/
 package imagingbook.common.ij;
 
+import ij.ImagePlus;
+import ij.WindowManager;
+import ij.gui.GenericDialog;
+import imagingbook.common.util.ParameterBundle;
+import imagingbook.core.resource.ImageResource;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,12 +21,6 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
-import ij.ImagePlus;
-import ij.WindowManager;
-import ij.gui.GenericDialog;
-import imagingbook.common.util.ParameterBundle;
-import imagingbook.core.resource.ImageResource;
 
 /**
  * Utility methods and annotations related to ImageJ's {@link GenericDialog} class.
