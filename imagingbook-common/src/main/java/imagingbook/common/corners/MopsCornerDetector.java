@@ -29,7 +29,7 @@ import ij.process.ImageProcessor;
  * patches, in Proc. of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition
  * (CVPR'05), 2005, pp. 510–517.
  * <br>
- * [2] W. Burger, M.J. Burge<em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
  * 3rd ed, Springer (2022).
  * </p>
  * 

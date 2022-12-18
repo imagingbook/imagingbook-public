@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-public</artifactId>
-		<version>7.0.0</version>
+		<version>7.0.1-SNAPSHOT</version>
 	</parent>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -33,7 +33,7 @@
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-core</artifactId>
-			<version>7.0.0</version>
+			<version>7.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
@@ -44,14 +44,14 @@
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-testing</artifactId>
-			<version>7.0.0</version>
+			<version>7.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
     	
     	<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-sample-images</artifactId>
-			<version>7.0.0</version>
+			<version>7.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		
