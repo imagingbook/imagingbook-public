@@ -34,12 +34,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 /**
- * Exports an {@link ImagePlus} instance, including its vector overly
- * (if existent) to a PDF file.
- * Configuration is accomplished by passing a {@link PdfExporter.Parameters}
- * instance to the constructor.
- * If selected, core Type1 fonts are substituted and embedded in the PDF.
- * 
+ * Exports an {@link ImagePlus} instance, including its vector overly (if existent) to a PDF file. Configuration is
+ * accomplished by passing a {@link PdfExporter.Parameters} instance to the constructor. If selected, core Type1 fonts
+ * are substituted and embedded in the PDF.
+ *
  * @author WB
  * @version 2022/03/15
  */
@@ -51,9 +49,8 @@ public class PdfExporter {
 	private final ImagePlus im;
 
 	/**
-	 * Parameter bundle for class {@link PdfExporter}.
-	 * Annotations are used for inserting the complete parameter bundle in
-	 * ImageJ's {@code GenericDialog}.
+	 * Parameter bundle for class {@link PdfExporter}. Annotations are used for inserting the complete parameter bundle
+	 * in ImageJ's {@code GenericDialog}.
 	 */
 	public static class Parameters implements ParameterBundle<PdfExporter> {
 

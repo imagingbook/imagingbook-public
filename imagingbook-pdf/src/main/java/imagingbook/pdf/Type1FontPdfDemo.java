@@ -22,22 +22,17 @@ import java.io.FileOutputStream;
 
 /**
  * Creates a 1-page PDF with samples of all 14 standard Type1 fonts embedded.
- * 
- * https://stackoverflow.com/questions/1775008/embed-font-into-pdf-file-by-using-itext
- * https://stackoverflow.com/questions/2019607/how-to-embed-helvetica-font-in-pdf-using-itext?rq=1
- * https://stackoverflow.com/questions/34328953/embedding-helvetica-neue-deskinterface-font-with-itext
- * https://stackoverflow.com/questions/32457258/pdf-partial-font-embedding-with-itext
- * 
- * AWT/PDF fonts issue: 
- * https://stackoverflow.com/questions/17667615/how-can-itext-embed-font-used-by-jfreechart-for-chart-title-and-labels?rq=1
- * 
- * 
- * TODO: check if change to https://pdfbox.apache.org/ = https://github.com/apache/pdfbox
+ *
  * @author WB
  *
  */
 public class Type1FontPdfDemo {
-	
+	// TODO: check if change to https://pdfbox.apache.org/ = https://github.com/apache/pdfbox
+	// https://stackoverflow.com/questions/1775008/embed-font-into-pdf-file-by-using-itext
+	// https://stackoverflow.com/questions/2019607/how-to-embed-helvetica-font-in-pdf-using-itext?rq=1
+	// https://stackoverflow.com/questions/34328953/embedding-helvetica-neue-deskinterface-font-with-itext
+	// https://stackoverflow.com/questions/32457258/pdf-partial-font-embedding-with-itext
+	// AWT/PDF fonts issue: https://stackoverflow.com/questions/17667615/how-can-itext-embed-font-used-by-jfreechart-for-chart-title-and-labels?rq=1
 	static float fontSize = 14f;
 
 	public static void main(String[] args) {

@@ -19,11 +19,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 /**
- * An implementation of {@link FontMapper} that substitutes unknown
- * fonts with embedded core fonts (Type1).
- * 
- * @author WB
+ * An implementation of {@link FontMapper} that substitutes unknown fonts with embedded core fonts (Type1).
  *
+ * @author WB
  */
 public class CoreFontMapper extends DefaultFontMapper {
 	
@@ -42,20 +40,22 @@ public class CoreFontMapper extends DefaultFontMapper {
 	}
 	
 	// --------------------------------------------------
-	
+
 	/**
-	 * Adds the logical name of a font to be treated as monospaced.
-	 * All such fonts will be replaced by {@code Courier} in the PDF.
+	 * Adds the logical name of a font to be treated as monospaced. All such fonts will be replaced by {@code Courier}
+	 * in the PDF.
+	 *
 	 * @param key the logical font name
 	 * @return true if insertion was successful
 	 */
 	public boolean addKeyMonospaced(String key) {
 		return keysMonospaced.add(key.toUpperCase());
 	}
-	
+
 	/**
-	 * Adds the logical name of a font to be treated as a serif font.
-	 * All such fonts will be replaced by {@code Times} in the PDF.
+	 * Adds the logical name of a font to be treated as a serif font. All such fonts will be replaced by {@code Times}
+	 * in the PDF.
+	 *
 	 * @param key the logical font name
 	 * @return true if insertion was successful
 	 */
@@ -124,14 +124,14 @@ public class CoreFontMapper extends DefaultFontMapper {
 
 	// ------------------------------------------------------------------------------------
 
-	public static void main(String[] args) {
-		FontMapper dfm = new CoreFontMapper();
-
-		//		java.awt.Font awtFont1 = new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.PLAIN, 18);
-		java.awt.Font awtFont1 = new java.awt.Font(java.awt.Font.DIALOG, java.awt.Font.ITALIC, 18);
-		BaseFont bf1 = dfm.awtToPdf(awtFont1);
-		System.out.println("bf1 = " + bf1.getPostscriptFontName());
-		System.out.println("bf1.isEmbedded = " + bf1.isEmbedded());
-
-	}
+	// public static void main(String[] args) {
+	// 	FontMapper dfm = new CoreFontMapper();
+	//
+	// 	//		java.awt.Font awtFont1 = new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.PLAIN, 18);
+	// 	java.awt.Font awtFont1 = new java.awt.Font(java.awt.Font.DIALOG, java.awt.Font.ITALIC, 18);
+	// 	BaseFont bf1 = dfm.awtToPdf(awtFont1);
+	// 	System.out.println("bf1 = " + bf1.getPostscriptFontName());
+	// 	System.out.println("bf1.isEmbedded = " + bf1.isEmbedded());
+	//
+	// }
 }
