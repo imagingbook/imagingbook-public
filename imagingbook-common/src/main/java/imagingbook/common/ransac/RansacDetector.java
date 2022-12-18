@@ -20,18 +20,22 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Generic RANSAC detector for 2D primitives. This abstract class defines the core RANSAC
- * functionality used by all derived (concrete) classes.
- * 
+ * <p>
+ * Generic RANSAC detector for 2D primitives. See Sec. 12.1 of [1] for additional details. This abstract class defines
+ * the core RANSAC functionality used by all derived (concrete) classes.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
+ *
+ * @param <T> generic type extending {@link Primitive2d}
  * @author WB
  * @version 2022/11/19
- * 
  * @see RansacLineDetector
  * @see RansacCircleDetector
  * @see RansacEllipseDetector
  * @see Primitive2d
- *
- * @param <T> generic type extending {@link Primitive2d}
  */
 public abstract class RansacDetector<T extends Primitive2d> {
 	

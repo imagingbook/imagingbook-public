@@ -19,23 +19,20 @@ import static imagingbook.common.math.Matrix.normL2;
 
 /**
  * <p>
- * Common interface for all sub-pixel maximum locator implementations.
- * A  sub-pixel maximum locator tries to interpolate the continuous position
- * and value of a local maximum for a discrete 3x3 neighborhood.
- * The center value in the discrete neighborhood is assumed to be a local maximum.
- * See Sec. 6.5 and Appendix E of [1] for additional details.
+ * Common interface for all sub-pixel maximum locator implementations. A  sub-pixel maximum locator tries to interpolate
+ * the continuous position and value of a local maximum for a discrete 3x3 neighborhood. The center value in the
+ * discrete neighborhood is assumed to be a local maximum. See Sec. 6.5 and Appendix E of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
+ * @author WB
+ * @version 2022/09/11 revised instance creation
  * @see QuadraticTaylor
  * @see QuadraticLeastSquares
  * @see Quartic
- * @author WB
- * @version 2021/01/19
- * @version 2022/09/11 revised instance creation
  */
 public abstract class SubpixelMaxInterpolator {
 	

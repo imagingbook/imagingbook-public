@@ -18,17 +18,15 @@ import imagingbook.common.ij.DialogUtils;
 
 /**
  * <p>
- * RANSAC detector for straight lines. See Sec. 12.1.2 - 12.1.3 of [1] for
- * additional details.
+ * RANSAC detector for straight lines. See Sec. 12.1.2 - 12.1.3 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/19
- * 
  * @see AlgebraicLine
  * @see RansacDetector
  */

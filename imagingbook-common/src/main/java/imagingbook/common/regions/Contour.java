@@ -17,12 +17,10 @@ import java.util.List;
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.basic.Pnt2d;
 
-
 /**
  * <p>
- * This class represents a closed contour as a sequence of pixel coordinates. It
- * implements the {@link Comparable} interface for sorting contours by length.
- * It supports iteration over the points along the contour, e.g., by
+ * This class represents a closed contour as a sequence of pixel coordinates. It implements the {@link Comparable}
+ * interface for sorting contours by length. It supports iteration over the points along the contour, e.g., by
  * </p>
  * <pre>
  * Contour C = ...;
@@ -30,7 +28,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
  *    // process p ...
  * }
  * </pre>
- * 
+ *
  * @author WB
  * @version 2020/12/21
  */
@@ -105,12 +103,11 @@ public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {
 	public Path2D getPolygonPath() {
 		return getPolygonPath(0.0, 0.0);
 	}
-	
+
 	/**
-	 * Get the polygon for this contour (for subsequent drawing).
-	 * An offset can be specified for shifting the contour positions
-	 * to pixel centers (by passing 0.5, 0.5).
-	 * 
+	 * Get the polygon for this contour (for subsequent drawing). An offset can be specified for shifting the contour
+	 * positions to pixel centers (by passing 0.5, 0.5).
+	 *
 	 * @param xOffset the horizontal offset.
 	 * @param yOffset the vertical offset.
 	 * @return a polygon.
@@ -135,10 +132,10 @@ public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {
 		}
 		return path;
 	}
-	
+
 	/**
-	 * Returns the number of successive duplicates in this contour.
-	 * The result should be zero.
+	 * Returns the number of successive duplicates in this contour. The result should be zero.
+	 *
 	 * @return as described.
 	 */
 	public int countDuplicatePoints() {
@@ -155,12 +152,11 @@ public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {
 		}
 		return cnt;
 	}
-	
+
 	/**
-	 * Checks if this contour is closed w.r.t. the specified
-	 * {@link NeighborhoodType2D}, i.e., if the last and the first
+	 * Checks if this contour is closed w.r.t. the specified {@link NeighborhoodType2D}, i.e., if the last and the first
 	 * contour point are "connected".
-	 * 
+	 *
 	 * @param nht the (@link NeighborhoodType}.
 	 * @return true if the contour is closed.
 	 */

@@ -13,16 +13,13 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * An instance of this class randomly draws a set of k unique, non-null elements
- * from a given array of element type T, which may contain null elements (see
- * method {@link #drawFrom(Object[], int)}). The size of the draw (k) is fixed
- * and must be specified at construction. The resulting sets contain no
- * duplicate elements.
- * 
- * @author WB
- * @version 2022/11/19
+ * An instance of this class randomly draws a set of k unique, non-null elements from a given array of element type T,
+ * which may contain null elements (see method {@link #drawFrom(Object[], int)}). The size of the draw (k) is fixed and
+ * must be specified at construction. The resulting sets contain no duplicate elements.
  *
  * @param <T> element type
+ * @author WB
+ * @version 2022/11/19
  */
 public class RandomDraw<T> {
 	
@@ -35,11 +32,11 @@ public class RandomDraw<T> {
 	private final Random rand;
 	
 	// -------------------------------------------------------------
-	
+
 	/**
-	 * Constructor accepting an existing random generator.
-	 * This may be useful to achieve predictable (repetitive) random behavior.
-	 * 
+	 * Constructor accepting an existing random generator. This may be useful to achieve predictable (repetitive) random
+	 * behavior.
+	 *
 	 * @param rand a random generator of type {@link Random}
 	 */
 	public RandomDraw(Random rand) {
@@ -78,21 +75,19 @@ public class RandomDraw<T> {
 //		}
 //		return hs.toArray(Arrays.copyOf(items, k));
 //	}
-	
+
 	/**
-	 * Randomly draws a set of k unique, non-null elements from the specified array
-	 * of items, ignoring possible null elements. An exception is thrown if the
-	 * maximum number of tries is exceeded (see {@link #DefaultMaxTries}). 
-	 * The returned array contains no null elements and no duplicates.
-	 * Example:
+	 * Randomly draws a set of k unique, non-null elements from the specified array of items, ignoring possible null
+	 * elements. An exception is thrown if the maximum number of tries is exceeded (see {@link #DefaultMaxTries}). The
+	 * returned array contains no null elements and no duplicates. Example:
 	 * <pre>
 	 * Integer[] numbers = { null, 1, 2, null, 3, 4, 5, 6, 7, null, null, null, 8, 9, 10, null };
 	 * RandomDraw&lt;Integer&gt; rd = new RandomDraw&lt;&gt;();
 	 * Integer[] draw = rd.drawFrom(numbers, 2);
 	 * </pre>
-	 * 
+	 *
 	 * @param items an array of elements of type T, null elements being allowed
-	 * @param k     the number of items to draw
+	 * @param k the number of items to draw
 	 * @return an array of k randomly drawn (non-null) items
 	 */
 	public T[] drawFrom(T[] items, int k) {

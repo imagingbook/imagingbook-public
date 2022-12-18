@@ -22,23 +22,19 @@ import imagingbook.common.util.tuples.Tuple2;
 
 /**
  * <p>
- * Binary region segmentation based on a combined region labeling
- * and contour tracing algorithm as described in [1].
- * Detected regions and contours are 4- or 8-connected.
- * See Sec. 8.2.2 of [2] for additional details.
+ * Binary region segmentation based on a combined region labeling and contour tracing algorithm as described in [1].
+ * Detected regions and contours are 4- or 8-connected. See Sec. 8.2.2 of [2] for additional details.
  * </p>
  * <p>
- * [1] F. Chang, C. J. Chen, and C. J. Lu. A linear-time component labeling
- * algorithm using contour tracing technique. Computer Vision, Graphics,
- * and Image Processing: Image Understanding 93(2), 206-220 (2004).
+ * [1] F. Chang, C. J. Chen, and C. J. Lu. A linear-time component labeling algorithm using contour tracing technique.
+ * Computer Vision, Graphics, and Image Processing: Image Understanding 93(2), 206-220 (2004).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2020/04/01
- * @version 2022/09/28 revised
+ * @version 2022/09/28
  */
 public class RegionContourSegmentation extends BinaryRegionSegmentation implements ContourTracer { 
 	
@@ -47,25 +43,23 @@ public class RegionContourSegmentation extends BinaryRegionSegmentation implemen
 	private ByteProcessor ip;	// only used temporarily   
 	private List<Contour.Outer> outerContours;
 	private List<Contour.Inner> innerContours;
-	
+
 	/**
-	 * Constructor. Creates a combined region and contour segmentation from the
-	 * specified image, which is not modified. The input image is considered binary,
-	 * with 0 values for background pixels and values &ne; 0 for foreground pixels.
-	 * The 4-neighborhood is used by default ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
-	 * 
+	 * Constructor. Creates a combined region and contour segmentation from the specified image, which is not modified.
+	 * The input image is considered binary, with 0 values for background pixels and values &ne; 0 for foreground
+	 * pixels. The 4-neighborhood is used by default ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
+	 *
 	 * @param ip the binary input image to be segmented
 	 */
 	public RegionContourSegmentation(ByteProcessor ip) {
 		this(ip, DefaultNeighborhoodT);
 	}
-	
+
 	/**
-	 * Constructor. Creates a combined region and contour segmentation from the
-	 * specified image and neighborhood type (4- or 8-neighborhood). The input image
-	 * is considered binary, with 0 values for background pixels and values &ne; 0
-	 * for foreground pixels.
-	 * 
+	 * Constructor. Creates a combined region and contour segmentation from the specified image and neighborhood type
+	 * (4- or 8-neighborhood). The input image is considered binary, with 0 values for background pixels and values &ne;
+	 * 0 for foreground pixels.
+	 *
 	 * @param ip the binary input image to be segmented
 	 * @param nh the neighborhood type (4- or 8-neighborhood)
 	 */

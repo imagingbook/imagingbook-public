@@ -13,20 +13,17 @@ import imagingbook.common.geometry.basic.Primitive2d;
 
 /**
  * <p>
- * Represents a single detection result returned by an implementation of
- * {@link RansacDetector}. Implements the {@link Comparable} interface for
- * sorting by detection score. See Sec. 12.1 of [1] for additional
- * details.
+ * Represents a single detection result returned by an implementation of {@link RansacDetector}. Implements the
+ * {@link Comparable} interface for sorting by detection score. See Sec. 12.1 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * @author WB
- * @version 2022/11/19
  *
  * @param <T> generic primitive type
+ * @author WB
+ * @version 2022/11/19
  */
 public class RansacResult<T extends Primitive2d> implements Comparable<RansacResult<T>> {
 	
@@ -44,10 +41,10 @@ public class RansacResult<T extends Primitive2d> implements Comparable<RansacRes
 		this.draw = draw;
 		this.inliers = inliers;
 	}
-	
+
 	/**
-	 * Returns the initial primitive (e.g., a circle) obtained from the randomly 
-	 * drawn points.
+	 * Returns the initial primitive (e.g., a circle) obtained from the minimum number of randomly drawn points.
+	 *
 	 * @return the initial primitive
 	 */
 	public T getPrimitiveInit() {
@@ -55,7 +52,7 @@ public class RansacResult<T extends Primitive2d> implements Comparable<RansacRes
 	}
 	
 	/**
-	 * Returns the final primitive obtained by fitting to all inlier points.
+	 * Returns the final primitive obtained after fitting numerically to the associated inlier points.
 	 * @return the final primitive
 	 */
 	public T getPrimitiveFinal() {

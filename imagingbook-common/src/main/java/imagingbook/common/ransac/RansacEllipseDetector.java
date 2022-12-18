@@ -17,17 +17,15 @@ import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbo
 
 /**
  * <p>
- * RANSAC detector for ellipses. See Sec. 12.1.5 of [1] for additional
- * details.
+ * RANSAC detector for ellipses. See Sec. 12.1.5 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/19
- * 
  * @see GeometricEllipse
  * @see RansacDetector
  */

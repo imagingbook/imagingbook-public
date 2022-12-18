@@ -19,11 +19,10 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 /**
- * Defines a binary region that is backed by the label array of a region
- * segmentation. A {@link SegmentationBackedRegion} instance does not have its
- * own list or array of contained pixel coordinates but refers to the label
- * array of the associated {@link BinaryRegionSegmentation} instance.
- * 
+ * Defines a binary region that is backed by the label array of a region segmentation. A
+ * {@link SegmentationBackedRegion} instance does not have its own list or array of contained pixel coordinates but
+ * refers to the label array of the associated {@link BinaryRegionSegmentation} instance.
+ *
  * @author WB
  * @version 2020/12/21
  */
@@ -114,9 +113,9 @@ public class SegmentationBackedRegion extends BinaryRegion {
 	}
 
 	/**
-	 * Adds a single pixel to this region and updates summation
-	 * and boundary variables used to calculate various region statistics.
-	 * 
+	 * Adds a single pixel to this region and updates summation and boundary variables used to calculate various region
+	 * statistics.
+	 *
 	 * @param u x-position
 	 * @param v y-position
 	 */
@@ -134,8 +133,7 @@ public class SegmentationBackedRegion extends BinaryRegion {
 	}
 
 	/**
-	 * Updates the region's statistics. 
-	 * Does nothing but may be overridden by inheriting classes.
+	 * Updates the region's statistics. Does nothing but may be overridden by inheriting classes.
 	 */
 	void update() {
 	}

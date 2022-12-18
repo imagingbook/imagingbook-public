@@ -22,23 +22,25 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 
 /**
  * <p>
- * Performs region segmentation on a given binary image. See Ch. 8 of [1] for
- * additional details. This class is abstract, since the implementation depends
- * on the concrete region segmentation algorithm being used. Concrete
- * implementations (subclasses of this class) are
- * {@link BreadthFirstSegmentation}, {@link DepthFirstSegmentation},
- * {@link RecursiveSegmentation}, {@link SequentialSegmentation},
- * {@link RegionContourSegmentation}. Most of the work is done by the
- * constructor(s). If the segmentation has failed for some reason
- * {@link #getRegions()} returns {@code null}.
+ * Performs region segmentation on a given binary image. See Ch. 8 of [1] for additional details. This class is
+ * abstract, since the implementation depends on the concrete region segmentation algorithm being used. Concrete
+ * implementations (subclasses of this class) are {@link BreadthFirstSegmentation}, {@link DepthFirstSegmentation},
+ * {@link RecursiveSegmentation}, {@link SequentialSegmentation}, {@link RegionContourSegmentation}. Most of the work is
+ * done by the constructor(s). If the segmentation has failed for some reason {@link #getRegions()} returns
+ * {@code null}.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2021/12/22
+ * @see BreadthFirstSegmentation
+ * @see DepthFirstSegmentation
+ * @see SequentialSegmentation
+ * @see RecursiveSegmentation
+ * @see RegionContourSegmentation
  */
 public abstract class BinaryRegionSegmentation {
 	
@@ -93,7 +95,7 @@ public abstract class BinaryRegionSegmentation {
 	
 	/**
 	 * This method must be implemented by all concrete sub-classes.
-	 * @param ip TODO
+	 * @param ip the image to be segmented
 	 * 
 	 * @return true if segmentation was successful
 	 */
@@ -140,22 +142,21 @@ public abstract class BinaryRegionSegmentation {
 	public boolean isSegmented() {
 		return isSegmented;
 	}
-	
+
 	/**
-	 * Returns an unsorted list of all regions associated with this region labeling.
-	 * The returned list is empty if no regions were detected.
-	 * See also {@link #getRegions(boolean)}.
-	 * 
+	 * Returns an unsorted list of all regions associated with this region labeling. The returned list is empty if no
+	 * regions were detected. See also {@link #getRegions(boolean)}.
+	 *
 	 * @return a (possibly empty) list of detected regions
 	 */
 	public List<BinaryRegion> getRegions() {
 		return getRegions(false);	// unsorted
 	}
-	
+
 	/**
-	 * Returns a (optionally sorted) list of all regions associated with this region labeling.
-	 * The returned list is empty if no regions were detected.
-	 * 
+	 * Returns a (optionally sorted) list of all regions associated with this region labeling. The returned list is
+	 * empty if no regions were detected.
+	 *
 	 * @param sort set {@code true} to sort regions by size (largest regions first).
 	 * @return the list of detected regions or {@code null} if the segmentation has failed.
 	 */
@@ -171,13 +172,12 @@ public abstract class BinaryRegionSegmentation {
 	}
 	
 	// -------------------------------------------------------------------------
-	
+
 	/**
-	 * Creates a (map) container of {@link BinaryRegion} objects,
-	 * collects the region pixels from the label image
-	 * and calls {@link SegmentationBackedRegion#update()} to compute
-	 * the statistics for each region.
-	 * Region label numbers serve as map keys.
+	 * Creates a (map) container of {@link BinaryRegion} objects, collects the region pixels from the label image and
+	 * calls {@link SegmentationBackedRegion#update()} to compute the statistics for each region. Region label numbers
+	 * serve as map keys.
+	 *
 	 * @return a map of {@link BinaryRegion} instances.
 	 */
 	Map<Integer, SegmentationBackedRegion> collectRegions() {
@@ -203,11 +203,10 @@ public abstract class BinaryRegionSegmentation {
 		}
 		return regionMap;
 	}
-	
+
 	/**
-	 * Returns the label number for the specified image coordinate.
-	 * -1 is returned for out-of-image coordinates.
-	 * 
+	 * Returns the label number for the specified image coordinate. -1 is returned for out-of-image coordinates.
+	 *
 	 * @param u the horizontal coordinate.
 	 * @param v the vertical coordinate.
 	 * @return the label number for the given position or -1 if outside the image
@@ -234,26 +233,23 @@ public abstract class BinaryRegionSegmentation {
 	// --------------------------------------------------
 
 	/**
-	 * Finds the region associated to the specified label
-	 * or {@code null} if no region for that label exists.
-	 * 
+	 * Finds the region associated to the specified label or {@code null} if no region for that label exists.
+	 *
 	 * @param label the region's label number
-	 * @return the region object associated with the given label
-	 * 		or {@code null} if it does not exist
+	 * @return the region object associated with the given label or {@code null} if it does not exist
 	 */
 	public SegmentationBackedRegion getRegion(int label) {
 		return (label < minLabel || label > maxLabel) ? null : regions.get(label);
 	}
-	
+
 	/**
-	 * Returns the {@link BinaryRegion} instance associated with
-	 * the given image position or {@code null} if the segmentation
-	 * contains no region covering the given position.
-	 * 
+	 * Returns the {@link BinaryRegion} instance associated with the given image position or {@code null} if the
+	 * segmentation contains no region covering the given position.
+	 *
 	 * @param u the horizontal position.
 	 * @param v the vertical position.
-	 * @return The associated {@link BinaryRegion} object or {@code null} if
-	 * 		this {@link BinaryRegionSegmentation} has no region at the given position.
+	 * @return The associated {@link BinaryRegion} object or {@code null} if this {@link BinaryRegionSegmentation} has
+	 * no region at the given position.
 	 */
 	public SegmentationBackedRegion getRegion(int u, int v) {
 		return getRegion(getLabel(u, v));

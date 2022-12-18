@@ -17,40 +17,36 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 /**
- * <p> 
- * Binary region segmentation based on a breadth-first flood filling algorithm
- * using a queue. See Sec. 8.1.1 (Alg. 8.2) of [1] for additional details.
+ * <p>
+ * Binary region segmentation based on a breadth-first flood filling algorithm using a queue. See Sec. 8.1.1 (Alg. 8.2)
+ * of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2020/04/01
  * @version 2022/09/28 revised
  */
 public class BreadthFirstSegmentation extends BinaryRegionSegmentation {
-	
+
 	/**
-	 * Constructor. Creates a new region segmentation from the specified image,
-	 * which is not modified. The input image is considered binary, with 0 values
-	 * for background pixels and values &ne; 0 for foreground pixels. The
-	 * 4-neighborhood is used by default
-	 * ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
-	 * 
+	 * Constructor. Creates a new region segmentation from the specified image, which is not modified. The input image
+	 * is considered binary, with 0 values for background pixels and values &ne; 0 for foreground pixels. The
+	 * 4-neighborhood is used by default ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
+	 *
 	 * @param ip the binary input image to be segmented
 	 */
 	public BreadthFirstSegmentation(ByteProcessor ip) {
 		this(ip, DefaultNeighborhoodT);
 	}
-	
+
 	/**
-	 * Constructor. Creates a new region segmentation from the specified image and
-	 * neighborhood type (4- or 8-neighborhood). The input image is considered
-	 * binary, with 0 values for background pixels and values &ne; 0 for foreground
-	 * pixels.
-	 * 
+	 * Constructor. Creates a new region segmentation from the specified image and neighborhood type (4- or
+	 * 8-neighborhood). The input image is considered binary, with 0 values for background pixels and values &ne; 0 for
+	 * foreground pixels.
+	 *
 	 * @param ip the binary input image to be segmented
 	 * @param nh the neighborhood type (4- or 8-neighborhood)
 	 */

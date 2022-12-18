@@ -25,27 +25,25 @@ import imagingbook.common.geometry.ellipse.GeometricEllipse;
 
 /**
  * <p>
- * This class represents a connected component or binary region. See Sec. 8.4 of
- * [1] for additional details. Instances of this class support iteration over
- * the contained pixel coordinates of type {@link Pnt2d}, e.g., by
+ * This class represents a connected component or binary region. See Sec. 8.4 of [1] for additional details. Instances
+ * of this class support iteration over the contained pixel coordinates of type {@link Pnt2d}, e.g., by
  * </p>
  * <pre>
  * import imagingbook.pub.geometry.basic.Pnt2d;
- * 
  * BinaryRegion R = ...;
  * for (Pnt2d p : R) {
  *    // process point p ...
  * }
  * </pre>
  * <p>
- * The advantage of providing iteration only is that it avoids the creation of
- * (possibly large) arrays of pixel coordinates.
+ * The advantage of providing iteration only is that it avoids the creation of (possibly large) arrays of pixel
+ * coordinates.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2020/12/21
  */
@@ -56,43 +54,43 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	}
 
 	/**
-	 * Returns the sum of the x-coordinates of the points
-	 * contained in this region.
+	 * Returns the sum of the x-coordinates of the points contained in this region.
+	 *
 	 * @return the sum of x-values.
 	 */
 	public abstract long getX1Sum();
 
 	/**
-	 * Returns the sum of the y-coordinates of the points
-	 * contained in this region.
+	 * Returns the sum of the y-coordinates of the points contained in this region.
+	 *
 	 * @return the sum of y-values.
 	 */
 	public abstract long getY1Sum();
 
 	/**
-	 * Returns the sum of the squared x-coordinates of the points
-	 * contained in this region.
+	 * Returns the sum of the squared x-coordinates of the points contained in this region.
+	 *
 	 * @return the sum of squared x-values.
 	 */
 	public abstract long getX2Sum();
 
 	/**
-	 * Returns the sum of the squared y-coordinates of the points
-	 * contained in this region.
+	 * Returns the sum of the squared y-coordinates of the points contained in this region.
+	 *
 	 * @return the sum of squared y-values.
 	 */
 	public abstract long getY2Sum();
 
 	/**
-	 * Returns the sum of the mixed x*y-coordinates of the points
-	 * contained in this region.
+	 * Returns the sum of the mixed x*y-coordinates of the points contained in this region.
+	 *
 	 * @return the sum of xy-values.
 	 */
 	public abstract long getXYSum();
-	
+
 	/**
-	 * Calculates and returns a vector of ordinary moments:
-	 * (m10, m01, m20, m02, m11).
+	 * Calculates and returns a vector of ordinary moments: (m10, m01, m20, m02, m11).
+	 *
 	 * @return vector of ordinary moments
 	 */
 	public double[] getMoments() {
@@ -109,8 +107,8 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	}
 
 	/**
-	 * Calculates and returns a vector of central moments:
-	 * (mu20, mu02, mu11).
+	 * Calculates and returns a vector of central moments: (mu20, mu02, mu11).
+	 *
 	 * @return vector of central moments
 	 */
 	public double[] getCentralMoments() {
@@ -126,12 +124,10 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 
 	/**
 	 * <p>
-	 * Returns the 2x2 covariance matrix for the pixel coordinates contained in this
-	 * region: <br>
-	 * | &sigma;<sub>20</sub> &sigma;<sub>11</sub> | <br>
-	 * | &sigma;<sub>11</sub> &sigma;<sub>02</sub> |
+	 * Returns the 2x2 covariance matrix for the pixel coordinates contained in this region: <br> | &sigma;<sub>20</sub>
+	 * &sigma;<sub>11</sub> | <br> | &sigma;<sub>11</sub> &sigma;<sub>02</sub> |
 	 * </p>
-	 * 
+	 *
 	 * @return the covariance matrix
 	 */
 	public double[][] getCovarianceMatrix() {
@@ -150,8 +146,8 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	public abstract int getSize();
 
 	/**
-	 * Get the x/y axes-parallel bounding box as a rectangle
-	 * (including the extremal coordinates).
+	 * Get the x/y axes-parallel bounding box as a rectangle (including the extremal coordinates).
+	 *
 	 * @return the bounding box rectangle.
 	 */
 	public abstract Rectangle getBoundingBox();
@@ -171,14 +167,13 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 
 	/**
 	 * <p>
-	 * Calculates and returns this region's equivalent ellipse (see Sec. 8.6.3 of
-	 * [1] for details).
+	 * Calculates and returns this region's equivalent ellipse (see Sec. 8.6.3 of [1] for details).
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
-	 * Introduction</em>, 3rd ed, Springer (2022).
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed,
+	 * Springer (2022).
 	 * </p>
-	 * 
+	 *
 	 * @return the equivalent ellipse (instance of {@link GeometricEllipse})
 	 */
 	public GeometricEllipse getEquivalentEllipse() {
@@ -214,19 +209,18 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	abstract void setOuterContour(Contour.Outer contr);
 
 	/**
-	 * Returns the (single) outer contour of this region if available, null
-	 * otherwise. Points on an outer contour are arranged in clockwise order.
-	 * 
+	 * Returns the (single) outer contour of this region if available, null otherwise. Points on an outer contour are
+	 * arranged in clockwise order.
+	 *
 	 * @return the outer contour or {@code null} if not available
 	 */
 	public abstract Contour getOuterContour();
 
 	/**
-	 * Get all inner contours of this region if available, null otherwise. Points on
-	 * inner contours are arranged in counter-clockwise order.
-	 * 
-	 * @return the (possibly empty) list of inner contours or {@code null} if not
-	 *         available
+	 * Get all inner contours of this region if available, null otherwise. Points on inner contours are arranged in
+	 * counter-clockwise order.
+	 *
+	 * @return the (possibly empty) list of inner contours or {@code null} if not available
 	 */
 	public abstract List<Contour> getInnerContours();
 
@@ -237,17 +231,17 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	}
 
 	/**
-	 * Checks if the given pixel position is contained in this
-	 * {@link BinaryRegion} instance.
+	 * Checks if the given pixel position is contained in this {@link BinaryRegion} instance.
+	 *
 	 * @param u x-coordinate
 	 * @param v y-coordinate
 	 * @return true if (u,v) is contained in this region
 	 */
 	public abstract boolean contains(int u, int v);
-	
+
 	/**
-	 * Checks if the given pixel position is contained in this
-	 * {@link BinaryRegion} instance.
+	 * Checks if the given pixel position is contained in this {@link BinaryRegion} instance.
+	 *
 	 * @param p the pixel coordinate
 	 * @return true if the position is contained in this region
 	 */
@@ -287,10 +281,9 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	}
 
 	/**
-	 * Retrieves the specified region property. 
-	 * {@link IllegalArgumentException} is thrown if the property 
-	 * is not defined for this region.
-	 * 
+	 * Retrieves the specified region property. {@link IllegalArgumentException} is thrown if the property is not
+	 * defined for this region.
+	 *
 	 * @param key The key of the property.
 	 * @return The value associated with the specified property.
 	 */

@@ -18,16 +18,15 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 
 /**
  * <p>
- * Binary region segmentation based on a two-pass sequential labeling
- * algorithm. See Sec. 8.1.2 (Alg. 8.3) of [1] for additional details.
+ * Binary region segmentation based on a two-pass sequential labeling algorithm. See Sec. 8.1.2 (Alg. 8.3) of [1] for
+ * additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2020/12/20
  * @version 2022/09/28 revised
  */
 public class SequentialSegmentation extends BinaryRegionSegmentation {
@@ -35,23 +34,21 @@ public class SequentialSegmentation extends BinaryRegionSegmentation {
 	private HashSet<LabelCollision> collisions;
 
 	/**
-	 * Constructor. Creates a new region segmentation from the specified image,
-	 * which is not modified. The input image is considered binary, with 0 values
-	 * for background pixels and values &ne; 0 for foreground pixels.
-	 * The 4-neighborhood is used by default ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
-	 * 
+	 * Constructor. Creates a new region segmentation from the specified image, which is not modified. The input image
+	 * is considered binary, with 0 values for background pixels and values &ne; 0 for foreground pixels. The
+	 * 4-neighborhood is used by default ({@link BinaryRegionSegmentation#DefaultNeighborhoodT}).
+	 *
 	 * @param ip the binary input image to be segmented
 	 */
 	public SequentialSegmentation(ByteProcessor ip) {
 		this(ip, DefaultNeighborhoodT);
 	}
-	
+
 	/**
-	 * Constructor. Creates a new region segmentation from the specified image and
-	 * neighborhood type (4- or 8-neighborhood). The input image is considered
-	 * binary, with 0 values for background pixels and values &ne; 0 for foreground
-	 * pixels.
-	 * 
+	 * Constructor. Creates a new region segmentation from the specified image and neighborhood type (4- or
+	 * 8-neighborhood). The input image is considered binary, with 0 values for background pixels and values &ne; 0 for
+	 * foreground pixels.
+	 *
 	 * @param ip the binary input image to be segmented
 	 * @param nh the neighborhood type (4- or 8-neighborhood)
 	 */
@@ -133,21 +130,18 @@ public class SequentialSegmentation extends BinaryRegionSegmentation {
 	}
 	
 	//---------------------------------------------------------------------------
-	
+
 	/**
-	 *  This is the core of the algorithm: The set of collisions (stored in map) 
-	 *  is used to merge connected regions. Transitivity of collisions makes this 
-	 *  a nontrivial task. The algorithm used here is a basic "Connected-Components 
-	 *  Algorithm" as used for finding connected parts in undirected graphs 
-	 *  (e.g. see Corman, Leiserson, Rivest: "Introduction to Algorithms", MIT Press, 
-	 *  1995, p. 441). Here, the regions represent the nodes of the graph and the 
-	 *  collisions are equivalent to the edges of the graph. The implementation is 
-	 *  not particularly efficient, since the merging of sets is done by relabeling 
-	 *  the entire replacement table for each pair of nodes. Still fast enough even 
-	 *  for large and complex images.
-	 *  
-	 *  @param size size of the label set
-	 *  @return replacement table
+	 * This is the core of the algorithm: The set of collisions (stored in map) is used to merge connected regions.
+	 * Transitivity of collisions makes this a nontrivial task. The algorithm used here is a basic "Connected-Components
+	 * Algorithm" as used for finding connected parts in undirected graphs (e.g. see Corman, Leiserson, Rivest:
+	 * "Introduction to Algorithms", MIT Press, 1995, p. 441). Here, the regions represent the nodes of the graph and
+	 * the collisions are equivalent to the edges of the graph. The implementation is not particularly efficient, since
+	 * the merging of sets is done by relabeling the entire replacement table for each pair of nodes. Still fast enough
+	 * even for large and complex images.
+	 *
+	 * @param size size of the label set
+	 * @return replacement table
 	 */
 	private int[] resolveCollisions() {
 		final int N = getMaxLabel() + 1;
