@@ -26,13 +26,13 @@ import java.util.List;
  * Utility methods and annotations related to ImageJ's {@link GenericDialog} class.
  * 
  * @author WB
- * @version 2022/09/14 transfered annotations and dialog-related methods from {@link ParameterBundle}
+ * @version 2022/09/14
  */
 public abstract class DialogUtils {
-	
-	private DialogUtils() {}
-	
-	/**
+
+    private DialogUtils() {}
+
+    /**
 	 * Annotation to specify a specific 'label' (value) to be shown for following
 	 * parameter fields. Default label is the variable name.
 	 * Intended to be used on {@link ParameterBundle} fields.
@@ -78,6 +78,47 @@ public abstract class DialogUtils {
 	}
 
 	// -----------------------------------------------------------------------
+
+	private static final char NEWLINE = '\n';
+	private static final String SPACE_SEPARATOR = " ";
+	//if text has \n, \r or \t symbols it's better to split by \s+
+	private static final String SPLIT_REGEXP= "\\s+";
+	/**
+	 * Splits a long string into multiple lines of the specified maximum length and builds a new string with newline
+	 * characters separating successive lines. Multiple input strings are first joined into a single sstring using blank
+	 * spaces as separators. Intended mainly to format message texts of plugin dialogs.
+	 * Inspired by: https://stackoverflow.com/a/21002193
+	 *
+	 * @param maxLineLength the maximum number oc characters per line
+	 * @param strings one ore mor strings
+	 * @return a new string with newline characters separating successive lines
+	 */
+	public static String splitLines(int maxLineLength, String... strings) {
+		if (strings.length == 0) {
+			throw new IllegalArgumentException("must pass at least one string");
+		}
+		String input = String.join(SPACE_SEPARATOR, strings);
+		String[] tokens = input.split(SPLIT_REGEXP);
+		StringBuilder output = new StringBuilder(input.length());
+		int lineLen = 0;
+		for (int i = 0; i < tokens.length; i++) {
+			String word = tokens[i];
+
+			if (lineLen + (SPACE_SEPARATOR + word).length() > maxLineLength) {
+				if (i > 0) {
+					output.append(NEWLINE);
+				}
+				lineLen = 0;
+			}
+			if (i < tokens.length - 1 && (lineLen + (word + SPACE_SEPARATOR).length() + tokens[i + 1].length() <=
+					maxLineLength)) {
+				word += SPACE_SEPARATOR;
+			}
+			output.append(word);
+			lineLen += word.length();
+		}
+		return output.toString();
+	}
 	
 	/**
 	 * Creates a HTML string by formatting the supplied strings
@@ -141,21 +182,6 @@ public abstract class DialogUtils {
 			}
 		}
 	}
-	
-//	public static void addToDialog(ParameterBundle params, GenericDialog gd) {
-//		Class<? extends ParameterBundle> clazz = params.getClass();
-//		Field[] fields = clazz.getFields();		// gets only public fields
-//		for (Field f : fields) {
-//			if (!isValidDialogField(f) || f.isAnnotationPresent(DialogUtils.DialogHide.class)) {
-//				continue;
-//			}
-//			try {
-//				addFieldToDialog(params, f, gd);
-//			} catch (IllegalArgumentException | IllegalAccessException e) {
-//				throw new RuntimeException(e.getMessage());	// TODO: refine exception handling!
-//			}
-//		}
-//	}
 	
 	/**
 	 * Retrieves the field values of the specified {@link ParameterBundle} from
@@ -424,5 +450,25 @@ public abstract class DialogUtils {
 //	            "--Stephen King");
 //		System.out.println(lines);
 //	}
+
+	// -------------------------------------------------------------
+
+	// static String input1 =
+	// 		"THESE TERMS AND CONDITIONS OF SERVICE (the Terms) ARE A     LEGAL AND BINDING " +
+	// 				"AGREEMENT BETWEEN YOU AND NATIONAL GEOGRAPHIC governing     your use of this site, " +
+	// 				"www.nationalgeographic.com, which includes but is not limited to products, " +
+	// 				"software and services offered by way of the website such as the Video Player.";
+	//
+	// static String[] input2 = {
+	// 		"THESE TERMS AND CONDITIONS OF SERVICE (the Terms) ARE A     LEGAL AND BINDING",
+	// 		"AGREEMENT BETWEEN YOU AND NATIONAL GEOGRAPHIC governing     your use of this site,",
+	// 		"www.nationalgeographic.com, which includes but is not limited to products,",
+	// 		"software and services offered by way of the website such as the Video Player."};
+	//
+	//
+	// public static void main(String[] args) {
+	// 	// System.out.println(splitLines(20, input1));
+	// 	System.out.println(DialogUtils.splitLines(20, input2));
+	// }
 
 }
