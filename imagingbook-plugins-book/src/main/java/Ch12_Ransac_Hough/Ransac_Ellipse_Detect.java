@@ -12,7 +12,6 @@ import Ch12_Ransac_Hough.settings.RansacDrawSettings;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.gui.Overlay;
 import ij.plugin.ImagesToStack;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
@@ -37,15 +36,14 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * RANSAC ellipse detection implemented with imagingbook library class
- * {@link RansacCircleDetector} (see Sec. 12.1.5 of [1] for details). If no
- * image is currently open, the plugin optionally loads a suitable sample image.
+ * RANSAC ellipse detection implemented with imagingbook library class {@link RansacCircleDetector} (see Sec. 12.1.5 of
+ * [1] for details). If no image is currently open, the plugin optionally loads a suitable sample image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/03
  */
@@ -109,10 +107,8 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, RansacDrawSettings {
 			cnt = cnt + 1;
 			
 			ImagePlus imSnap = new ImagePlus("circle-"+cnt, showPointSet(points));
-			Overlay oly = new Overlay();
-			ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
-			imSnap.setOverlay(oly);
-			
+			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
+
 			{	// draw inliers (points)
 				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, InlierColor, 0);
 				stroke.setFillColor(InlierColor);
@@ -140,7 +136,8 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, RansacDrawSettings {
 					ola.addShape(p.getShape(RandoDrawDotRadius), stroke);
 				}
 			}
-			
+
+			imSnap.setOverlay(ola.getOverlay());
 			resultImages.add(imSnap);
 			sol = detector.detectNext(points);
 		}

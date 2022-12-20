@@ -11,7 +11,6 @@ package Ch12_Ransac_Hough;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.gui.Overlay;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
@@ -31,18 +30,16 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * This ImageJ plugin demonstrates the use of the {@link HoughTransformLines}
- * class for detecting straight lines in images (see Sec. 12.2 of [1] for
- * details). It expects a binary input image with background = 0 and foreground
- * (contour) pixels with values &gt; 0. A vector overlay is used to display the
- * detected lines. If no image is currently open, the plugin optionally loads a
- * suitable sample image.
+ * This ImageJ plugin demonstrates the use of the {@link HoughTransformLines} class for detecting straight lines in
+ * images (see Sec. 12.2 of [1] for details). It expects a binary input image with background = 0 and foreground
+ * (contour) pixels with values &gt; 0. A vector overlay is used to display the detected lines. If no image is currently
+ * open, the plugin optionally loads a suitable sample image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/03
  */
@@ -129,9 +126,8 @@ public class Hough_Line_Detect implements PlugInFilter {
 			ImageProcessor lineIp = ip.duplicate();
 			if (InvertOriginal) lineIp.invert();
 			double lineLength = Math.hypot(ip.getWidth(), ip.getHeight());
-			
-			Overlay oly = new Overlay();
-			ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+
+			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 			ola.setStroke(new ColoredStroke(LineWidth, LineColor));
 			for (HoughLine hl : lines) {
 				ola.addShape(hl.getShape(lineLength));
@@ -143,7 +139,7 @@ public class Hough_Line_Detect implements PlugInFilter {
 			}
 
 			ImagePlus lim = new ImagePlus(im.getShortTitle()+"-lines", lineIp);
-			lim.setOverlay(oly);
+			lim.setOverlay(ola.getOverlay());
 			lim.show();
 		}
 	}

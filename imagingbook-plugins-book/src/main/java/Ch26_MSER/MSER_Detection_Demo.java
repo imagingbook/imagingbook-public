@@ -90,10 +90,9 @@ public class MSER_Detection_Demo implements PlugInFilter {
 	private ByteProcessor bp = null;
 	private ImageProcessor ip2 = null;
 	private Overlay oly = null;
-	
+
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public MSER_Detection_Demo() {
 		if (noCurrentImage()) {
@@ -342,7 +341,6 @@ public class MSER_Detection_Demo implements PlugInFilter {
 		}
 	}
 
-	
 	// --------------------------------------------
 	
 	private void setMserImageProps(ImagePlus imp, MserParameters params) {

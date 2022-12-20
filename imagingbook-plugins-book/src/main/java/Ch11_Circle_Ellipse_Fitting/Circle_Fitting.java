@@ -173,6 +173,4 @@ public class Circle_Fitting implements PlugInFilter {
 		return true;
 	}
 
-
-
 }

@@ -12,7 +12,6 @@ import Ch12_Ransac_Hough.settings.RansacDrawSettings;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
-import ij.gui.Overlay;
 import ij.plugin.ImagesToStack;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
@@ -36,15 +35,14 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * RANSAC line detection using imagingbook library class
- * {@link RansacLineDetector} (see Sec. 12.1.2 of [1] for details). If no image
- * is currently open, the plugin optionally loads a suitable sample image.
+ * RANSAC line detection using imagingbook library class {@link RansacLineDetector} (see Sec. 12.1.2 of [1] for
+ * details). If no image is currently open, the plugin optionally loads a suitable sample image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/03
  */
@@ -105,9 +103,7 @@ public class Ransac_Line_Detect implements PlugInFilter, RansacDrawSettings {
 			cnt = cnt + 1;
 			
 			ImagePlus imSnap = new ImagePlus("line-"+cnt, showPointSet(points));
-			Overlay oly = new Overlay();
-			ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
-			imSnap.setOverlay(oly);
+			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 
 			{	// draw inliers (points)
 				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, InlierColor, 0);
@@ -136,7 +132,8 @@ public class Ransac_Line_Detect implements PlugInFilter, RansacDrawSettings {
 					ola.addShape(p.getShape(RandoDrawDotRadius), pointStroke);
 				}
 			}
-			
+
+			imSnap.setOverlay(ola.getOverlay());
 			resultImages.add(imSnap);
 			sol = detector.detectNext(points);
 		}
@@ -152,7 +149,6 @@ public class Ransac_Line_Detect implements PlugInFilter, RansacDrawSettings {
 		}
 	}
 
-	
 	private ByteProcessor showPointSet(Pnt2d[] points) {
 		ByteProcessor bp = new ByteProcessor(W, H);
 		IjUtils.drawPoints(bp, points, 255);

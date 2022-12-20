@@ -30,7 +30,6 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
-
 /**
  * <p>
  * Performs line fitting on the point set specified by the current ROI. Two fitting methods are employed: (a) linear

@@ -175,6 +175,4 @@ public class Ellipse_Fitting implements PlugInFilter {
 		return true;
 	}
 
-
-
 }
