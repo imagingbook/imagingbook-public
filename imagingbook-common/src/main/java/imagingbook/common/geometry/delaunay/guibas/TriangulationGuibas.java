@@ -24,12 +24,11 @@ import java.util.List;
  * This is an implementation of the triangulation algorithm described in [1].
  * </p>
  * <p>
- * [1] L. J. Guibas, D. E. Knuth, and M. Sharir" "Randomized incremental construction of 
- * Delaunay and Voronoi diagrams", Algorithmica, 7, pp. 381--413 (1992).
+ * [1] L. J. Guibas, D. E. Knuth, and M. Sharir" "Randomized incremental construction of Delaunay and Voronoi diagrams",
+ * Algorithmica, 7, pp. 381--413 (1992).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class TriangulationGuibas implements DelaunayTriangulation {
 
@@ -55,12 +54,10 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 		this.triangles = new ArrayList<>();
 		triangulate();
 	}
-	
+
 	/**
-	 * Constructor. 
-	 * Supplied points are inserted without shuffling, i.e.,
-	 * in their original order.
-	 * 
+	 * Constructor. Supplied points are inserted without shuffling, i.e., in their original order.
+	 *
 	 * @param points the point set to be triangulated
 	 */
 	public TriangulationGuibas(Collection<? extends Pnt2d> points) {
@@ -185,8 +182,8 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	// triangle-related methods ---------------------------
 
 	/**
-	 * Returns the triangle that contains the specified point or null if no
-	 * such triangle exists.
+	 * Returns the triangle that contains the specified point or null if no such triangle exists.
+	 *
 	 * @param point the query point
 	 * @return the containing triangle or {@code null} if none was found
 	 */
@@ -200,14 +197,13 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	}
 
 	/**
-	 * Returns the neighboring triangle of the specified triangle sharing the same edge
-	 * as specified. If no neighbor sharing the same edge exists {@code null} is returned.
-	 * NOTE: Searching over ALL triangles seems to be unnecessarily expensive!
-	 * 
+	 * Returns the neighboring triangle of the specified triangle sharing the same edge as specified. If no neighbor
+	 * sharing the same edge exists {@code null} is returned. NOTE: Searching over ALL triangles seems to be
+	 * unnecessarily expensive!
+	 *
 	 * @param tri1 the triangle
 	 * @param edge the edge
-	 * @return the triangle's neighboring triangle sharing the same edge or {@code null} if no
-	 *         such triangle exists
+	 * @return the triangle's neighboring triangle sharing the same edge or {@code null} if no such triangle exists
 	 */
 	public Triangle2D findNeighbour(Triangle2D tri1, Edge2D edge) {
 		for (Triangle2D tri2 : triangles) {
@@ -219,10 +215,10 @@ public class TriangulationGuibas implements DelaunayTriangulation {
 	}
 
 	/**
-	 * Returns one of the possible triangles sharing the specified edge. Based on
-	 * the ordering of the triangles in this triangle soup the returned triangle may
-	 * differ. To find the other triangle that shares this edge use the
+	 * Returns one of the possible triangles sharing the specified edge. Based on the ordering of the triangles in this
+	 * triangle soup the returned triangle may differ. To find the other triangle that shares this edge use the
 	 * {@code findNeighbour(Triangle2D triangle, Edge2D edge)} method.
+	 *
 	 * @param edge the edge
 	 * @return the triangle that shares the specified edge or {@code null} if none exists
 	 */

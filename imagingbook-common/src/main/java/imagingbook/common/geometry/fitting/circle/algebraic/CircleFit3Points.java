@@ -16,15 +16,14 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * Performs an exact circle fit to 3 given (non-collinear) points. If the fit is
- * unsuccessful, {@link #getParameters()} returns {@code null}. See the Appendix
- * of [1] (Sec. F.2.2) for details.
+ * Performs an exact circle fit to 3 given (non-collinear) points. If the fit is unsuccessful, {@link #getParameters()}
+ * returns {@code null}. See the Appendix of [1] (Sec. F.2.2) for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */
@@ -36,10 +35,11 @@ public class CircleFit3Points implements CircleFitAlgebraic {
 	public double[] getParameters() {
 		return this.p;
 	}
-	
+
 	/**
-	 * Constructor. Fits a circle to the specified three sample points.
-	 * If the fit is unsuccessful, {@link #getParameters()} returns {@code null}.
+	 * Constructor. Fits a circle to the specified three sample points. If the fit is unsuccessful,
+	 * {@link #getParameters()} returns {@code null}.
+	 *
 	 * @param p0 sample point 1
 	 * @param p1 sample point 2
 	 * @param p2 sample point 3
@@ -66,13 +66,12 @@ public class CircleFit3Points implements CircleFitAlgebraic {
 			this.p = new double[] {A, B, C, D};
 		}
 	}
-	
+
 	/**
-	 * Constructor. Fits a circle to the specified three sample points,
-	 * passed as an array of points. Only the first three points are
-	 * used, additional points are ignored.
-	 * If the fit is unsuccessful, {@link #getParameters()} returns {@code null}.
-	 * 
+	 * Constructor. Fits a circle to the specified three sample points, passed as an array of points. Only the first
+	 * three points are used, additional points are ignored. If the fit is unsuccessful, {@link #getParameters()}
+	 * returns {@code null}.
+	 *
 	 * @param pts three or more sample points
 	 */
 	public CircleFit3Points(Pnt2d[] pts) {

@@ -24,14 +24,13 @@ import java.util.Random;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
- * Performs an exact ellipse fit to 5 given points. If the fit is unsuccessful,
- * {@link #getParameters()} returns {@code null}. The underlying algorithm is
- * described in Section F.3.3 of [1].
+ * Performs an exact ellipse fit to 5 given points. If the fit is unsuccessful, {@link #getParameters()} returns
+ * {@code null}. The underlying algorithm is described in Section F.3.3 of [1].
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */

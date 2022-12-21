@@ -17,21 +17,20 @@ import imagingbook.common.math.Matrix;
 
 /**
  * <p>
- * This class represents a bilinear transformation in 2D with 8 parameters a0,
- * ..., a3, b0, ..., b3 of the form
+ * This class represents a bilinear transformation in 2D with 8 parameters a0, ..., a3, b0, ..., b3 of the form
  * </p>
  * <pre>
  * x' = a0 * x + a1 * y + a2 * x * y + a3
  * y' = b0 * x + b1 * y + b2 * x * y + b3</pre>
  * <p>
- * Note that this is a non-linear transformation because of the mixed term x *
- * y. See Secs. 21.1.5 and 21.3.1 of [1] for details.
+ * Note that this is a non-linear transformation because of the mixed term x * y. See Secs. 21.1.5 and 21.3.1 of [1] for
+ * details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  */
 public class BilinearMapping2D implements Mapping2D {
@@ -45,11 +44,11 @@ public class BilinearMapping2D implements Mapping2D {
 		this.a0 = a0;   this.a1 = a1;   this.a2 = a2;   this.a3 = a3;
 		this.b0 = b0;   this.b1 = b1;   this.b2 = b2;   this.b3 = b3;		
 	}
-	
+
 	/**
-	 * Calculates and returns the bilinear mapping M between two point
-	 * sets P, Q, with 4 points each, such that q_i = M(p_i).
-	 * The inverse mapping is obtained by simply swapping the two point sets.
+	 * Calculates and returns the bilinear mapping M between two point sets P, Q, with 4 points each, such that q_i =
+	 * M(p_i). The inverse mapping is obtained by simply swapping the two point sets.
+	 *
 	 * @param P the first point sequence
 	 * @param Q the second point sequence
 	 * @return a new bilinear mapping
@@ -91,33 +90,33 @@ public class BilinearMapping2D implements Mapping2D {
 	
 	// ------------------------------------------------------------------------
 	
-	/**
-	 * For testing only.
-	 * @param args ignored
-	 */
-	public static void main(String[] args) {
-		Pnt2d[] P = {
-				PntInt.from(2,5),
-				PntInt.from(4,6),
-				PntInt.from(7,9),
-				PntInt.from(5,9),
-				};
-		
-		Pnt2d[] Q = {
-				PntInt.from(4,3),
-				PntInt.from(5,2),
-				PntInt.from(9,3),
-				PntInt.from(7,5),
-				};
-		
-		BilinearMapping2D bm = fromPoints(P, Q);
-		System.out.println("\nbilinear mapping = \n" + bm.toString());
-		
-		for (int i = 0; i < P.length; i++) {
-			Pnt2d Qi = bm.applyTo(P[i]);
-			System.out.println(P[i].toString() + " -> " + Qi.toString());
-		}	
-	}
+	// /**
+	//  * For testing only.
+	//  * @param args ignored
+	//  */
+	// public static void main(String[] args) {
+	// 	Pnt2d[] P = {
+	// 			PntInt.from(2,5),
+	// 			PntInt.from(4,6),
+	// 			PntInt.from(7,9),
+	// 			PntInt.from(5,9),
+	// 			};
+	//
+	// 	Pnt2d[] Q = {
+	// 			PntInt.from(4,3),
+	// 			PntInt.from(5,2),
+	// 			PntInt.from(9,3),
+	// 			PntInt.from(7,5),
+	// 			};
+	//
+	// 	BilinearMapping2D bm = fromPoints(P, Q);
+	// 	System.out.println("\nbilinear mapping = \n" + bm.toString());
+	//
+	// 	for (int i = 0; i < P.length; i++) {
+	// 		Pnt2d Qi = bm.applyTo(P[i]);
+	// 		System.out.println(P[i].toString() + " -> " + Qi.toString());
+	// 	}
+	// }
 
 
 }

@@ -19,24 +19,20 @@ import imagingbook.common.math.eigen.Eigensolver2x2;
 
 /**
  * <p>
- * This class implements the Anisotropic Diffusion filter described in [1].
- * It is based on an earlier C++ (CImg) implementation (pde_TschumperleDeriche2d.cpp) by the original
- * author, made available under the CeCILL v2.0 license 
- * (http://www.cecill.info/licences/Licence_CeCILL_V2-en.html).
- * See Sec. 17.3.5 of [2] for additional details.
+ * This class implements the Anisotropic Diffusion filter described in [1]. It is based on an earlier C++ (CImg)
+ * implementation (pde_TschumperleDeriche2d.cpp) by the original author, made available under the CeCILL v2.0 license
+ * (http://www.cecill.info/licences/Licence_CeCILL_V2-en.html). See Sec. 17.3.5 of [2] for additional details.
  * </p>
  * <p>
- * [1] D. Tschumperle and R. Deriche, "Diffusion PDEs on vector-valued images", 
- * IEEE Signal Processing Magazine, vol. 19, no. 5, pp. 16-25 (Sep. 2002).
+ * [1] D. Tschumperle and R. Deriche, "Diffusion PDEs on vector-valued images", IEEE Signal Processing Magazine, vol.
+ * 19, no. 5, pp. 16-25 (Sep. 2002).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * @version 2021/01/06 (complete rewrite from scratch)
+ *
  * @version 2022/09/09 added zero-gradient check
  */
-
 public class TschumperleDericheFilter extends GenericFilter implements TschumperleDericheF {
 
 	// ----------------------------------------------------------------------------------

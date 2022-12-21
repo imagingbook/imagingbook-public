@@ -17,29 +17,27 @@ import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
-
 /**
  * <p>
- * This class represents a projective transformation in 2D (also known as a
- * "homography"). It can be specified uniquely by four pairs of corresponding
- * points. It can be assumed that every instance of this class is indeed a
- * projective mapping. See Secs. 21.1.4 and 21.3.1 of [1] for details.
+ * This class represents a projective transformation in 2D (also known as a "homography"). It can be specified uniquely
+ * by four pairs of corresponding points. It can be assumed that every instance of this class is indeed a projective
+ * mapping. See Secs. 21.1.4 and 21.3.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- *  @author WB
+ *
+ * @author WB
  */
 public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 	
 	//  static methods -----------------------------------------------------
-	
+
 	/**
-	 * Creates a projective 2D mapping from two sequences of corresponding points.
-	 * If 4 point pairs are specified, the mapping is exact, otherwise a
-	 * minimum least-squares fit is calculated.
+	 * Creates a projective 2D mapping from two sequences of corresponding points. If 4 point pairs are specified, the
+	 * mapping is exact, otherwise a minimum least-squares fit is calculated.
+	 *
 	 * @param P the source points
 	 * @param Q the target points
 	 * @return a new projective mapping for the two point sets
@@ -185,14 +183,12 @@ public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 	public ProjectiveMapping2D() {
 		super();
 	}
-	
+
 	/**
-	 * Creates a projective mapping from a transformation matrix A,
-	 * of arbitrary size. All relevant elements of A are inserted into
-	 * actual 3x3 transformation matrix, except element (2,2) which
-	 * is ignored and always set to 1 (to keep the transformation projective).
-	 * If A is larger than 3 x 3, the remaining elements are ignored.
-	 * 
+	 * Creates a projective mapping from a transformation matrix A, of arbitrary size. All relevant elements of A are
+	 * inserted into actual 3x3 transformation matrix, except element (2,2) which is ignored and always set to 1 (to
+	 * keep the transformation projective). If A is larger than 3 x 3, the remaining elements are ignored.
+	 *
 	 * @param A a transformation matrix of arbitrary size
 	 */
 	public ProjectiveMapping2D(double[][] A) {
@@ -213,9 +209,10 @@ public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 		return M;
 	}
 
-	
+
 	/**
 	 * Creates a projective mapping from the specified matrix elements.
+	 *
 	 * @param a00 matrix element A_00
 	 * @param a01 matrix element A_01
 	 * @param a02 matrix element A_02
@@ -231,10 +228,10 @@ public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 			double a20, double a21) {
 		super(a00, a01, a02, a10, a11, a12, a20, a21, 1);
 	}
-	
+
 	/**
-	 * Creates a projective mapping from any linear mapping.
-	 * The transformation matrix gets normalized to a22 = 1.
+	 * Creates a projective mapping from any linear mapping. The transformation matrix gets normalized to a22 = 1.
+	 *
 	 * @param m a linear mapping
 	 */
 	public ProjectiveMapping2D(LinearMapping2D m) {
@@ -251,10 +248,10 @@ public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 	}
 	
 	// ----------------------------------------------------------
-	
+
 	/**
-	 * Concatenates this mapping A with another linear mapping B and returns
-	 * a new mapping C, such that C(x) = B(A(x)).
+	 * Concatenates this mapping A with another linear mapping B and returns a new mapping C, such that C(x) = B(A(x)).
+	 *
 	 * @param B the second mapping
 	 * @return the concatenated mapping
 	 */
@@ -271,12 +268,12 @@ public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 	public ProjectiveMapping2D duplicate() {
 		return new ProjectiveMapping2D(this);
 	}
-	
+
 	/**
-	 * {@inheritDoc}
-	 * Note that the inverse A' of a projective transformation matrix A is again a linear transformation
-	 * but its a'2' element is generally not 1. Scaling A' to A'' = A' / a22' yields a projective transformation
-	 * that reverses A. While A * A' = I, the result of A * A'' is a scaled identity matrix.
+	 * {@inheritDoc} Note that the inverse A' of a projective transformation matrix A is again a linear transformation
+	 * but its a'2' element is generally not 1. Scaling A' to A'' = A' / a22' yields a projective transformation that
+	 * reverses A. While A * A' = I, the result of A * A'' is a scaled identity matrix.
+	 *
 	 * @return the inverse projective transformation
 	 */
 	@Override

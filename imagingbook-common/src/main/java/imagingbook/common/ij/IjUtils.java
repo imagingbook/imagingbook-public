@@ -1087,5 +1087,23 @@ public abstract class IjUtils {
 			return false;
 		}
 	}
-	
+
+    /**
+     * Determines how many different colors are contained in the specified 24 bit full-color RGB image.
+     *
+     * @param cp a RGB image
+     * @return the number of distinct colors
+     */
+    public static int countColors(ColorProcessor cp) {
+        // duplicate pixel array and sort
+        int[] pixels = (int[]) cp.getPixelsCopy();
+        Arrays.sort(pixels);
+
+        int k = 1;	// image contains at least one color
+        for (int i = 0; i < pixels.length - 1; i++) {
+            if (pixels[i] != pixels[i + 1])
+                k = k + 1;
+        }
+        return k;
+    }
 }

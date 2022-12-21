@@ -23,48 +23,40 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This is an implementation of the "hyperaccurate" algebraic circle fit proposed
- * by Al-Sharadqah and Chernov in [1], also described in [2] (Sec. 7.5, Eq. 744).
- * This method combines the Pratt and Taubin fits to eliminate the essential bias.
- * This version is "optimized for stability, not for speed"
- * (see https://people.cas.uab.edu/~mosya/cl/HyperSVD.m).
- * Singular-value decomposition is used for testing singularity of the data matrix
- * and finding a solution in the singular case.
- * Fits to exactly 3 (non-collinear) points are handled properly.
- * Data centering is used to improve numerical stability (alternatively, a reference
- * point can be specified).
+ * This is an implementation of the "hyperaccurate" algebraic circle fit proposed by Al-Sharadqah and Chernov in [1],
+ * also described in [2] (Sec. 7.5, Eq. 744). This method combines the Pratt and Taubin fits to eliminate the essential
+ * bias. This version is "optimized for stability, not for speed" (see https://people.cas.uab.edu/~mosya/cl/HyperSVD.m).
+ * Singular-value decomposition is used for testing singularity of the data matrix and finding a solution in the
+ * singular case. Fits to exactly 3 (non-collinear) points are handled properly. Data centering is used to improve
+ * numerical stability (alternatively, a reference point can be specified).
  * </p>
  * <p>
  * [1] A. Al-Sharadqah and N. Chernov. "Error analysis for circle fitting algorithms".
  * <em>Electronic Journal of Statistics</em>, 3:886–911 (2009).
  * <br>
- * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
- * Lines by Least Squares". Monographs on Statistics and Applied Probability.
- * Taylor &amp; Francis (2011).
+ * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and Lines by Least Squares". Monographs on
+ * Statistics and Applied Probability. Taylor &amp; Francis (2011).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class CircleFitHyperStable implements CircleFitAlgebraic {
 	
 	private final double[] q;	// q = (A,B,C,D) circle parameters
-	
+
 	/**
-	 * Constructor.
-	 * The centroid of the sample points is used as the reference point.
-	 * 
+	 * Constructor. The centroid of the sample points is used as the reference point.
+	 *
 	 * @param points sample points
 	 */
 	public CircleFitHyperStable(Pnt2d[] points) {
 		this.q = fit(points, null);
 	}
-	
+
 	/**
-	 * Constructor.
-	 * The centroid of the sample points is used as the reference point for data
-	 * centering if {@code null} is passed for {@code xref}.
-	 * 
+	 * Constructor. The centroid of the sample points is used as the reference point for data centering if {@code null}
+	 * is passed for {@code xref}.
+	 *
 	 * @param points sample points
 	 * @param xref reference point or {@code null}
 	 */

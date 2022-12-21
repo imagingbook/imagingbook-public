@@ -14,39 +14,36 @@ import imagingbook.common.math.Complex;
 
 /**
  * <p>
- * Defines static methods to create Fourier descriptors from uniformly sampled
- * point sequences. See Ch. 26 of [1] for additional details.
+ * Defines static methods to create Fourier descriptors from uniformly sampled point sequences. See Ch. 26 of [1] for
+ * additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction Using Java</em>, 2nd ed,
+ * Springer (2016).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/24
  */
 public abstract class FourierDescriptorUniform {
 	
 	private FourierDescriptorUniform() {}
-	
+
 	/**
-	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
-	 * with the maximum number of Fourier coefficient pairs.
-	 * The length of the resulting DFT spectrum equals V.length.
-	 * 
+	 * Creates a new Fourier descriptor from a uniformly sampled polygon V with the maximum number of Fourier
+	 * coefficient pairs. The length of the resulting DFT spectrum equals V.length.
+	 *
 	 * @param V a polygon
 	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
 	public static FourierDescriptor from(Pnt2d[] V) {
 		return from(FourierDescriptor.toComplexArray(V));
 	}
-	
+
 	/**
-	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
-	 * with Mp coefficient pairs.
-	 * The length of the resulting DFT spectrum is 2 * mp + 1, i.e.,
-	 * it must be assured that Mp &lt; (V.length - 1) &divide; 2.
-	 * 
+	 * Creates a new Fourier descriptor from a uniformly sampled polygon V with Mp coefficient pairs. The length of the
+	 * resulting DFT spectrum is 2 * mp + 1, i.e., it must be assured that Mp &lt; (V.length - 1) &divide; 2.
+	 *
 	 * @param V a polygon
 	 * @param mp number of coefficient pairs
 	 * @return a new {@link FourierDescriptorUniform} instance
@@ -57,25 +54,22 @@ public abstract class FourierDescriptorUniform {
 	
 	
 	// -------------------------------------------------------------------
-	
+
 	/**
-	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
-	 * with the maximum number of Fourier coefficient pairs.
-	 * The length of the resulting DFT spectrum equals V.length.
-	 * 
+	 * Creates a new Fourier descriptor from a uniformly sampled polygon V with the maximum number of Fourier
+	 * coefficient pairs. The length of the resulting DFT spectrum equals V.length.
+	 *
 	 * @param V a polygon
 	 * @return a new {@link FourierDescriptorUniform} instance
 	 */
 	public static FourierDescriptor from(Complex[] V) {
 		return new FourierDescriptor(DFT(V));
 	}
-	
+
 	/**
-	 * Creates a new Fourier descriptor from a uniformly sampled polygon V
-	 * with Mp coefficient pairs.
-	 * The length of the resulting DFT spectrum is 2 * mp + 1, i.e.,
-	 * it must be assured that Mp &lt; (V.length - 1) &divide; 2.
-	 * 
+	 * Creates a new Fourier descriptor from a uniformly sampled polygon V with Mp coefficient pairs. The length of the
+	 * resulting DFT spectrum is 2 * mp + 1, i.e., it must be assured that Mp &lt; (V.length - 1) &divide; 2.
+	 *
 	 * @param V a sequence of uniformly-spaced 2D sample points
 	 * @param mp number of coefficient pairs
 	 * @return a new {@link FourierDescriptorUniform} instance
@@ -91,9 +85,9 @@ public abstract class FourierDescriptorUniform {
 	// -------------------------------------------------------------------
 
 	/**
-	 * DFT with the resulting spectrum (signal, if inverse) of the same length
-	 * as the input vector g. Not using sin/cos tables.
-	 * 
+	 * DFT with the resulting spectrum (signal, if inverse) of the same length as the input vector g. Not using sin/cos
+	 * tables.
+	 *
 	 * @param g signal vector
 	 * @return DFT spectrum
 	 */
@@ -119,13 +113,13 @@ public abstract class FourierDescriptorUniform {
 		}
 		return G;
 	}
-	
+
 
 	/**
-	 * As {@link #DFT(Complex[])}, with the length of the resulting spectrum
-	 * (or signal, if inverse) explicitly specified.
-	 * 
-	 * @param g  signal vector
+	 * As {@link #DFT(Complex[])}, with the length of the resulting spectrum (or signal, if inverse) explicitly
+	 * specified.
+	 *
+	 * @param g signal vector
 	 * @param MM length of the resulting DFT spectrum
 	 * @return DFT spectrum
 	 */

@@ -17,10 +17,9 @@ import java.util.Locale;
 
 
 /**
- * This class represents a 2D corner.
- * A corner is essentially a {@link Pnt2d} plus a scalar quantity
- * {@code q} for the corner strength.
- * 
+ * This class represents a 2D corner. A corner is essentially a {@link Pnt2d} plus a scalar quantity {@code q} for the
+ * corner strength.
+ *
  * @version 2022/09/05
  */
 public class Corner implements Pnt2d, Comparable<Corner> {

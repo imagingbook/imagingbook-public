@@ -21,23 +21,19 @@ public class Kernel1D {
 	private final float[] h;
 	private final int xc;
 	private final int width;
-	
+
 	/**
-	 * Constructor.
-	 * The kernel's hot spot is at its center.
-	 * The kernel is normalized.
-	 * 
+	 * Constructor. The kernel's hot spot is at its center. The kernel is normalized.
+	 *
 	 * @param h the 1D kernel array
 	 */
 	public Kernel1D(float[] h) {
 		this(h, (h.length - 1) / 2, true);
 	}
-	
+
 	/**
-	 * Constructor.
-	 * The hot spot index must be specified.
-	 * The kernel is optionally normalized.
-	 * 
+	 * Constructor. The hot spot index must be specified. The kernel is optionally normalized.
+	 *
 	 * @param h the 1D kernel array
 	 * @param xc the x-coordinate of the kernel's hot spot, default is (width-1)/2
 	 * @param normalize if true the kernel is normalized (to sum = 1)
@@ -73,11 +69,11 @@ public class Kernel1D {
 	}
 	
 	// ----------------------------------------------------------
-	
+
 	/**
-	 * Normalizes the specified array such that its sum becomes 1. Throws an
-	 * exception if the array's sum is zero. The original array is not modified.
-	 * 
+	 * Normalizes the specified array such that its sum becomes 1. Throws an exception if the array's sum is zero. The
+	 * original array is not modified.
+	 *
 	 * @param A a 1D array
 	 * @return the normalized array
 	 * @throws ArithmeticException if array sums to zero

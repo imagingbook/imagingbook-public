@@ -17,10 +17,10 @@ import imagingbook.common.image.PixelPack;
 import imagingbook.common.math.Matrix;
 
 /**
- * <p>Example filter based on {@link GenericFilterVector} performing
- * linear convolution with a custom 3x3 filter kernel.
- * Typically used on RGB color images (with 3-element pixel vectors).
- * Pixels in scalar-valued images are treated as 1-element vectors.
+ * <p>
+ * Example filter based on {@link GenericFilterVector} performing linear convolution with a custom 3x3 filter kernel.
+ * Typically used on RGB color images (with 3-element pixel vectors). Pixels in scalar-valued images are treated as
+ * 1-element vectors.
  * </p>
  * <p>
  * Usage:
@@ -31,13 +31,11 @@ import imagingbook.common.math.Matrix;
  * filter.applyTo(ip);		// modifies ip
  * </pre>
  * <p>
- * Note: This is merely a linear filter with a custom kernel to demonstrate
- * the concept of a generic filter.
- * In practice (depending on the type of kernel) this would be implemented
- * as a sub-class of {@link LinearFilter} or {@link LinearFilterSeparable},
- * which is much more efficient.
+ * Note: This is merely a linear filter with a custom kernel to demonstrate the concept of a generic filter. In practice
+ * (depending on the type of kernel) this would be implemented as a sub-class of {@link LinearFilter} or
+ * {@link LinearFilterSeparable}, which is much more efficient.
  * </p>
- * 
+ *
  * @author WB
  * @see LinearFilter
  * @see LinearFilterSeparable

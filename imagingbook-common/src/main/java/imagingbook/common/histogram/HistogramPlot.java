@@ -25,18 +25,20 @@ public class HistogramPlot extends ImagePlus {
 	private static final int Foreground = 0;
     private static final int width =  256;
     private static final int height = 128;
-	
+
 	/**
 	 * Constructor for a normalized discrete distribution.
+	 *
 	 * @param nH a normalized discrete distribution with values in [0,1]
 	 * @param title the window title to be displayed (may be null)
 	 */
 	public HistogramPlot(double[] nH, String title) {
 		super(title, drawHistogram(nH));
 	}
-	
+
 	/**
 	 * Constructor for a discrete distribution.
+	 *
 	 * @param h a discrete distribution (histogram) with arbitrary values
 	 * @param title the window title to be displayed (may be null)
 	 */

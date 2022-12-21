@@ -25,15 +25,14 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class represents an algebraic line of the form A x + B y + C = 0.
- * Instances are immutable and normalized such that ||(A,B)|| = 1. See Sec. 10.1
- * and Appendix F.1 of [1] for details.
+ * This class represents an algebraic line of the form A x + B y + C = 0. Instances are immutable and normalized such
+ * that ||(A,B)|| = 1. See Sec. 10.1 and Appendix F.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/18
  */
@@ -45,6 +44,7 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 
 	/**
 	 * Constructor. Creates a {@link AlgebraicLine} instance with parameters A, B, C.
+	 *
 	 * @param A line parameter A
 	 * @param B line parameter B
 	 * @param C line parameter C
@@ -58,10 +58,10 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 		this.B = B / norm;
 		this.C = C / norm;
 	}
-	
+
 	/**
-	 * Constructor.  Creates a {@link AlgebraicLine} instance from a 
-	 * parameter vector [A, B, C].
+	 * Constructor.  Creates a {@link AlgebraicLine} instance from a parameter vector [A, B, C].
+	 *
 	 * @param p parameter vector [A, B, C]
 	 */
 	public AlgebraicLine(double[] p) {
@@ -70,14 +70,12 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	
 	
 	// static factory methods ----------------------------------------
-	
+
 	/**
-	 * Creates a new {@link AlgebraicLine} instance from a given
-	 * start point and orientation vector.
-	 * For a point on the left side of the line (looking along the direction
-	 * vector), the value returned by {@link #getSignedDistance(Pnt2d)} is positive
-	 * and negative for points on the right side.
-	 * 
+	 * Creates a new {@link AlgebraicLine} instance from a given start point and orientation vector. For a point on the
+	 * left side of the line (looking along the direction vector), the value returned by
+	 * {@link #getSignedDistance(Pnt2d)} is positive and negative for points on the right side.
+	 *
 	 * @param s start point
 	 * @param v orientation vector
 	 * @return a new {@link AlgebraicLine} instance
@@ -88,23 +86,21 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 		double c = v[1] * s[0] - v[0] * s[1];
 		return new AlgebraicLine(a, b, c);
 	}
-	
+
 	/**
-	 * Creates a new {@link AlgebraicLine} instance from a given
-	 * {@link ParametricLine}.
-	 * 
+	 * Creates a new {@link AlgebraicLine} instance from a given {@link ParametricLine}.
+	 *
 	 * @param pl a {@link ParametricLine}
 	 * @return a new {@link AlgebraicLine} instance
 	 */
 	public static AlgebraicLine from(ParametricLine pl) {
 		return AlgebraicLine.from(pl.getS(), pl.getV());
 	}
-	
+
 	/**
-	 * Creates a new {@link AlgebraicLine} instance from two given
-	 * points. The direction of the line is from the first
+	 * Creates a new {@link AlgebraicLine} instance from two given points. The direction of the line is from the first
 	 * to the second point.
-	 * 
+	 *
 	 * @param p0 first point
 	 * @param p1 second point
 	 * @return a new {@link AlgebraicLine} instance
@@ -114,13 +110,11 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 		double[] v = p1.minus(p0).toDoubleArray();
 		return AlgebraicLine.from(s, v);
 	}
-	
+
 	/**
-	 * Creates a new {@link AlgebraicLine} instance from a given
-	 * {@link SlopeInterceptLine}.
-	 * Note: This is trivial, since {@link SlopeInterceptLine} is 
-	 * a (restricted) {@link AlgebraicLine} itself.
-	 * 
+	 * Creates a new {@link AlgebraicLine} instance from a given {@link SlopeInterceptLine}. Note: This is trivial,
+	 * since {@link SlopeInterceptLine} is a (restricted) {@link AlgebraicLine} itself.
+	 *
 	 * @param sil a {@link SlopeInterceptLine}
 	 * @return a new {@link AlgebraicLine} instance
 	 */
@@ -140,23 +134,21 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	public final double[] getParameters() {
 		return new double[] {A, B, C};
 	}
-	
+
 	/**
-	 * Returns the x-coordinate of the reference point.
-	 * For a {@link AlgebraicLine}, the result is always zero.
+	 * Returns the x-coordinate of the reference point. For a {@link AlgebraicLine}, the result is always zero.
 	 * Inheriting classes (like {@link HoughLine}) override this method.
-	 * 
+	 *
 	 * @return the x-coordinate reference
 	 */
 	public double getXref() {
 		return 0.0;
 	}
-	
+
 	/**
-	 * Returns the y-coordinate of the reference point.
-	 * For a {@link AlgebraicLine}, the result is always zero.
+	 * Returns the y-coordinate of the reference point. For a {@link AlgebraicLine}, the result is always zero.
 	 * Inheriting classes (like {@link HoughLine}) override this method.
-	 * 
+	 *
 	 * @return the y-coordinate reference
 	 */
 	public double getYref() {
@@ -164,13 +156,12 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	}
 	
 	// other methods ------------------------------------------
-	
+
 	/**
-	 * Returns the orthogonal distance between this line and the point (x, y).
-	 * The result may be positive or negative, depending on which side of the line
-	 * (x, y) is located. It is assumed that the line is normalized, i.e.,
-	 * ||(a,b)|| = 1.
-	 * 
+	 * Returns the orthogonal distance between this line and the point (x, y). The result may be positive or negative,
+	 * depending on which side of the line (x, y) is located. It is assumed that the line is normalized, i.e., ||(a,b)||
+	 * = 1.
+	 *
 	 * @param x x-coordinate of point position.
 	 * @param y y-coordinate of point position.
 	 * @return The perpendicular distance between this line and the point (x, y).
@@ -178,11 +169,10 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	public double getDistance(double x, double y) {
 		return Math.abs(getSignedDistance(x, y));
 	}
-	
+
 	/**
-	 * Returns the orthogonal (unsigned) distance between this line and the point p. The
-	 * result is always non-negative.
-	 * 
+	 * Returns the orthogonal (unsigned) distance between this line and the point p. The result is always non-negative.
+	 *
 	 * @param p point position.
 	 * @return The perpendicular distance between this line and the point p.
 	 */
@@ -190,13 +180,12 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	public double getDistance(Pnt2d p) {
 		return Math.abs(getSignedDistance(p));
 	}
-	
+
 	/**
-	 * Returns the orthogonal (signed) distance between this line and the point (x, y).
-	 * The result may be positive or negative, depending on which side of the line
-	 * (x, y) is located. It is assumed that the line is normalized, i.e.,
+	 * Returns the orthogonal (signed) distance between this line and the point (x, y). The result may be positive or
+	 * negative, depending on which side of the line (x, y) is located. It is assumed that the line is normalized, i.e.,
 	 * ||(A,B)|| = 1.
-	 * 
+	 *
 	 * @param x x-coordinate of point position.
 	 * @param y y-coordinate of point position.
 	 * @return The perpendicular distance between this line and the point (x, y).
@@ -204,24 +193,23 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	public double getSignedDistance(double x, double y) {
 		return (A * (x - this.getXref()) + B * (y - this.getYref()) + C);
 	}
-	
+
 	/**
-	 * Returns the orthogonal (signed) distance between this line and the specified point.
-	 * The result may be positive or negative, depending on which side of the line
-	 * (the point is located. It is assumed that the line is normalized, i.e.,
-	 * ||(A,B)|| = 1.
+	 * Returns the orthogonal (signed) distance between this line and the specified point. The result may be positive or
+	 * negative, depending on which side of the line (the point is located. It is assumed that the line is normalized,
+	 * i.e., ||(A,B)|| = 1.
+	 *
 	 * @param p a 2D point
 	 * @return The perpendicular distance between this line and the point
 	 */
 	public double getSignedDistance(Pnt2d p) {
 		return getSignedDistance(p.getX(), p.getY());
 	}
-	
-	
+
+
 	/**
-	 * Returns the point on the line that is closest to the specified
-	 * 2D point. The line is assumed to be normalized.
-	 * 
+	 * Returns the point on the line that is closest to the specified 2D point. The line is assumed to be normalized.
+	 *
 	 * @param p an arbitrary 2D point
 	 * @return the closest line point
 	 */
@@ -234,12 +222,11 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 		double x0 = xr + s * (sqr(B) * xx - A * B * yy - A * C);
 		double y0 = yr + s * (sqr(A) * yy - A * B * xx - B * C);
 		return PntDouble.from(x0, y0);
-	}	
+	}
 
 	/**
-	 * Calculates the sum of squared distances between this line
-	 * and a given array of 2D points.
-	 * 
+	 * Calculates the sum of squared distances between this line and a given array of 2D points.
+	 *
 	 * @param points an array of points
 	 * @return the sum of squared distances
 	 */
@@ -250,12 +237,11 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 		}
 		return sum2;
 	}
-	
+
 	/**
-	 * Finds the intersection point between this line and
-	 * another {@link AlgebraicLine}. Returns {@code null} 
-	 * if the two lines are parallel.
-	 * 
+	 * Finds the intersection point between this line and another {@link AlgebraicLine}. Returns {@code null} if the two
+	 * lines are parallel.
+	 *
 	 * @param l2 another {@link AlgebraicLine}
 	 * @return the intersection point or {@code null} if lines are parallel
 	 */
@@ -296,13 +282,11 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 		path.lineTo(x2, y2);
 		return path;
 	}
-	
+
 	/**
-	 * Returns a {@link Shape} for this line to be drawn in a canvas of the
-	 * specified size. Since an algebraic line is of infinite extent, we need
-	 * to know the drawing size. The returned line segment is sufficiently long 
-	 * to cover the entire canvas, i.e., both end points are outside the
-	 * canvas.
+	 * Returns a {@link Shape} for this line to be drawn in a canvas of the specified size. Since an algebraic line is
+	 * of infinite extent, we need to know the drawing size. The returned line segment is sufficiently long to cover the
+	 * entire canvas, i.e., both end points are outside the canvas.
 	 *
 	 * @param width the width of the drawing canvas
 	 * @param height the height of the drawing canvas

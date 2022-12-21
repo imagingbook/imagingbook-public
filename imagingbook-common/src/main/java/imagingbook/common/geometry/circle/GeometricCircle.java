@@ -24,14 +24,14 @@ import static java.lang.Math.sqrt;
 
 /**
  * <p>
- * Represents a geometric circle with center point (xc, yc) and radius r.
- * Instances are immutable. See Sec. 11.1.1 and Appendix F.2.1 of [1] for details.
+ * Represents a geometric circle with center point (xc, yc) and radius r. Instances are immutable. See Sec. 11.1.1 and
+ * Appendix F.2.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */
@@ -56,19 +56,19 @@ public class GeometricCircle implements ShapeProducer, Primitive2d {
 		this.yc = yc;
 		this.r = r;		
 	}
-	
+
 	/**
-	 * Constructor.
-	 * Creates a new {@link GeometricCircle} instance from parameters p = [xc, yc, r].
+	 * Constructor. Creates a new {@link GeometricCircle} instance from parameters p = [xc, yc, r].
+	 *
 	 * @param p circle parameters [xc, yc, r]
 	 */
 	public GeometricCircle(double[] p) {
 		this(p[0], p[1], p[2]);
 	}
-	
+
 	/**
-	 * Constructor.
-	 * Creates a new {@link GeometricCircle} from a {@link AlgebraicCircle} instance.
+	 * Constructor. Creates a new {@link GeometricCircle} from a {@link AlgebraicCircle} instance.
+	 *
 	 * @param ac a {@link AlgebraicCircle} instance
 	 */
 	public GeometricCircle(AlgebraicCircle ac) {
@@ -110,10 +110,9 @@ public class GeometricCircle implements ShapeProducer, Primitive2d {
 	}
 
 	// --------------------------------------------------------------------------------
-	
+
 	/**
-	 * Calculates and returns the mean of the squared distances between this circle 
-	 * and a set of 2D points.
+	 * Calculates and returns the mean of the squared distances between this circle and a set of 2D points.
 	 *
 	 * @param points a set of sample points (usually the points used for fitting)
 	 * @return the mean squared error
@@ -126,11 +125,10 @@ public class GeometricCircle implements ShapeProducer, Primitive2d {
 		}
 		return sumR2 / n;
 	}
-	
+
 	/**
-	 * Returns the (unsigned) distance between the specified point
-	 * and this circle. The result is always non-negative.
-	 * 
+	 * Returns the (unsigned) distance between the specified point and this circle. The result is always non-negative.
+	 *
 	 * @param p a 2D point
 	 * @return the point's distance from the circle
 	 */
@@ -138,12 +136,11 @@ public class GeometricCircle implements ShapeProducer, Primitive2d {
 	public double getDistance(Pnt2d p) {
 		return Math.abs(getSignedDistance(p));
 	}
-	
+
 	/**
-	 * Returns the signed distance between the specified point
-	 * and this circle. The result is positive for points outside
-	 * the circle, negative inside.
-	 * 
+	 * Returns the signed distance between the specified point and this circle. The result is positive for points
+	 * outside the circle, negative inside.
+	 *
 	 * @param p a 2D point
 	 * @return the point's signed distance from the circle
 	 */

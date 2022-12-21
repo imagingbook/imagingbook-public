@@ -16,32 +16,26 @@ import java.util.List;
 
 /**
  * <p>
- * This class implements color quantization based on the octree method. It is a
- * re-factored version of an implementation ({@code OctTreeOpImage.java}) used
- * in Sun's JAI (Java Advanced Imaging) framework, which &ndash; in turn &ndash;
- * is based on a C implementation ({@code quantize.c}) by John Cristy in 1992 as
- * part of <a href="http://www.imagemagick.org/">ImageMagick</a>. The associated
- * source code can be found <a href=
- * "https://github.com/ImageMagick/ImageMagick/blob/main/MagickCore/quantize.c">
- * here</a>, the original license note is provided at the bottom of this source
- * file. This implementation is similar but not identical to the original octree
+ * This class implements color quantization based on the octree method. It is a re-factored version of an implementation
+ * ({@code OctTreeOpImage.java}) used in Sun's JAI (Java Advanced Imaging) framework, which &ndash; in turn &ndash; is
+ * based on a C implementation ({@code quantize.c}) by John Cristy in 1992 as part of <a
+ * href="http://www.imagemagick.org/">ImageMagick</a>. The associated source code can be found <a href=
+ * "https://github.com/ImageMagick/ImageMagick/blob/main/MagickCore/quantize.c"> here</a>, the original license note is
+ * provided at the bottom of this source file. This implementation is similar but not identical to the original octree
  * quantization algorithm described in [1].
  * </p>
  * <p>
- * This implementation uses a modified strategy for pruning the octree for
- * better efficiency. "Quick quantization" means that original colors are mapped
- * to their color index by simply finding the containing octree node. Otherwise,
- * the closest quantized color (in terms of Euclidean distance) is searched for,
- * which is naturally slower. See Sec. 13.4 of [2] for more details.
+ * This implementation uses a modified strategy for pruning the octree for better efficiency. "Quick quantization" means
+ * that original colors are mapped to their color index by simply finding the containing octree node. Otherwise, the
+ * closest quantized color (in terms of Euclidean distance) is searched for, which is naturally slower. See Sec. 13.4 of
+ * [2] for more details.
  * </p>
  * <p>
- * [1] M. Gervautz and W. Purgathofer, "A simple method for color quantization:
- * octree quantization", in A. Glassner (editor), Graphics Gems I, pp. 287–293.
- * Academic Press, New York (1990).<br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] M. Gervautz and W. Purgathofer, "A simple method for color quantization: octree quantization", in A. Glassner
+ * (editor), Graphics Gems I, pp. 287–293. Academic Press, New York (1990).<br> [2] W. Burger, M.J. Burge, <em>Digital
+ * Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/05
  */
@@ -63,32 +57,29 @@ public class OctreeQuantizer implements ColorQuantizer {
 	private int colorCnt = 0; 		// counts the number of colors in the cube (used for temp. counting)
 
 	// -------------------------------------------------------------------------
-	
+
 	/**
-	 * Constructor, creates a new {@link OctreeQuantizer} with up to K colors, but
-	 * never more than the number of colors found in the supplied image. Quick
-	 * quantization is turned off by default.
-	 * 
+	 * Constructor, creates a new {@link OctreeQuantizer} with up to K colors, but never more than the number of colors
+	 * found in the supplied image. Quick quantization is turned off by default.
+	 *
 	 * @param pixels an image as a aRGB-encoded int array
-	 * @param K      the desired number of colors (1 or more)
+	 * @param K the desired number of colors (1 or more)
 	 */
 	public OctreeQuantizer(int[] pixels, int K) {
 		this(pixels, K, false);
 	}
-	
+
 	/**
-	 * Constructor, creates a new {@link OctreeQuantizer} with up to K colors, but
-	 * never more than the number of colors found in the supplied image. "Quick"
-	 * quantization can be selected, which means that original colors are mapped to
-	 * their color index by simply finding the containing octree node. Otherwise,
-	 * the closest quantized color (in terms of Euclidean distance) is searched for,
-	 * which is naturally slower but usually gives better results. This setting only
-	 * affects the final assignment of input colors to the nearest reference colors,
-	 * the reference colors themselves are not changed.
-	 * 
+	 * Constructor, creates a new {@link OctreeQuantizer} with up to K colors, but never more than the number of colors
+	 * found in the supplied image. "Quick" quantization can be selected, which means that original colors are mapped to
+	 * their color index by simply finding the containing octree node. Otherwise, the closest quantized color (in terms
+	 * of Euclidean distance) is searched for, which is naturally slower but usually gives better results. This setting
+	 * only affects the final assignment of input colors to the nearest reference colors, the reference colors
+	 * themselves are not changed.
+	 *
 	 * @param pixels an image as a aRGB-encoded int array
-	 * @param K      the desired number of colors (1 or more)
-	 * @param quick  turns "quick quantization" on or off
+	 * @param K the desired number of colors (1 or more)
+	 * @param quick turns "quick quantization" on or off
 	 */
 	public OctreeQuantizer(int[] pixels, int K, boolean quick) {
 		this.maxColors = K;
@@ -139,17 +130,14 @@ public class OctreeQuantizer implements ColorQuantizer {
 	}
 
 	/**
-	 * Repeatedly prunes the tree until the number of nodes with unique &gt; 0 is less
-	 * than or equal to the maximum number of colors allowed in the output image.
-	 * When a node to be pruned has offspring, the pruning procedure invokes itself
-	 * recursively in order to prune the tree from the leaves upward. The statistics
-	 * of the node being pruned are always added to the corresponding data in that
-	 * node's parent. This retains the pruned node's color characteristics for later
-	 * averaging.
-	 * 
+	 * Repeatedly prunes the tree until the number of nodes with unique &gt; 0 is less than or equal to the maximum
+	 * number of colors allowed in the output image. When a node to be pruned has offspring, the pruning procedure
+	 * invokes itself recursively in order to prune the tree from the leaves upward. The statistics of the node being
+	 * pruned are always added to the corresponding data in that node's parent. This retains the pruned node's color
+	 * characteristics for later averaging.
+	 *
 	 * @param initColorCnt The initial number of colors (leaves) in the octree.
-	 * @param nSamples     The total number of color samples used for creating the
-	 *                     tree.
+	 * @param nSamples The total number of color samples used for creating the tree.
 	 * @return the number of colors
 	 */
 	private int reduceTree(int initColorCnt, int nSamples) {
@@ -251,9 +239,9 @@ public class OctreeQuantizer implements ColorQuantizer {
 		}
 
 		/**
-		 * Removes any nodes that hold fewer than 'minPixelCount' pixels
-		 * and finds the minimum population of all remaining nodes. 
-		 * 
+		 * Removes any nodes that hold fewer than 'minPixelCount' pixels and finds the minimum population of all
+		 * remaining nodes.
+		 *
 		 * @param minPixelCount The minimum population required for surviving nodes.
 		 * @param newMinPixelCnt The minimum population found so far (during recursive tree walk).
 		 * @return
@@ -292,10 +280,9 @@ public class OctreeQuantizer implements ColorQuantizer {
 			parent.childs[id] = null;	// unlink
 			nodeCnt--;
 		}
-		
+
 		/**
-		 * Calculates the branch index [0,...,7] out of this node
-		 * for the specified color.
+		 * Calculates the branch index [0,...,7] out of this node for the specified color.
 		 */
 		private int getChildId(int[] rgb) {
 			int idx = 0;
@@ -304,13 +291,12 @@ public class OctreeQuantizer implements ColorQuantizer {
 			if (rgb[2] > this.midBlu) idx = idx | 0X04;
 			return idx;
 		}
-		
+
 		/**
-		 * Collects the color entries for the color map. Any node
-		 * with a non-zero number of unique colors creates a color map
-		 * entry. The representative color for the node is calculated
-		 * as the average color vector over all contributing pixels.
-		 * 
+		 * Collects the color entries for the color map. Any node with a non-zero number of unique colors creates a
+		 * color map entry. The representative color for the node is calculated as the average color vector over all
+		 * contributing pixels.
+		 *
 		 * @param colList List of colors to add to.
 		 */
 		private void collectColors(List<float[]> colList) {
@@ -364,8 +350,7 @@ public class OctreeQuantizer implements ColorQuantizer {
 	}
 
 	/**
-	 * Finds the associated color table index for the supplied RGB color
-	 * by traversing the octree.
+	 * Finds the associated color table index for the supplied RGB color by traversing the octree.
 	 */
 	private int getNodeIndex(int p) {
 		int[] rgb = RgbUtils.intToRgb(p);

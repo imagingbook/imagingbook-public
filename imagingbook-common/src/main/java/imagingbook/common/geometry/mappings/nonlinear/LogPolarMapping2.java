@@ -21,15 +21,14 @@ import static java.lang.Math.sin;
 
 /**
  * <p>
- * This class implements a 2D log-polar mapping transformation. Improved version
- * (Version 2), maps radius [rmin,rmax] to [0,nr]). See Sec. 21.1.6 (Eq 21.71 -
- * 21.74, Alg. 21.1) of [1] for additional details and examples.
+ * This class implements a 2D log-polar mapping transformation. Improved version (Version 2), maps radius [rmin,rmax] to
+ * [0,nr]). See Sec. 21.1.6 (Eq 21.71 - 21.74, Alg. 21.1) of [1] for additional details and examples.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/16
  */

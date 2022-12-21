@@ -42,10 +42,11 @@ public abstract class EllipseFitGeometric {
 	public abstract double[] getParameters();	
 	public abstract int getIterations();
 	public abstract List<double[]> getHistory();
-	
-	
+
+
 	/**
 	 * Returns a geometric Ellipse or {@code null} if the fit was unsuccessful.
+	 *
 	 * @return the geometric ellipse or {@code null}
 	 */
 	public GeometricEllipse getEllipse() {

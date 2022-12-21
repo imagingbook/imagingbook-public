@@ -13,18 +13,17 @@ import imagingbook.common.math.Complex;
 
 /**
  * <p>
- * Naive implementation of Flusser's complex invariant moments [1]. See Sec.
- * 8.6.5 (Eq. 8.51 - 8.54) of [2] for additional details.
- * This abstract class defines static methods only.
+ * Naive implementation of Flusser's complex invariant moments [1]. See Sec. 8.6.5 (Eq. 8.51 - 8.54) of [2] for
+ * additional details. This abstract class defines static methods only.
  * </p>
  * <p>
- * [1] J. Flusser, B. Zitova, and T. Suk. "Moments and Moment Invariants in
- * Pattern Recognition". John Wiley and Sons (2009). 
+ * [1] J. Flusser, B. Zitova, and T. Suk. "Moments and Moment Invariants in Pattern Recognition". John Wiley and Sons
+ * (2009).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */
@@ -34,11 +33,10 @@ public abstract class FlusserMoments {
 	
 	/** Length of moment vector returned by {@link #getInvariantMoments(Iterable)}. */
 	public static final int N = 11;	// 11 moment invariants
-	
+
 	/**
-	 * Calculates and returns a vector of 11 invariant moments
-	 * for the specified set of 2D points.
-	 * 
+	 * Calculates and returns a vector of 11 invariant moments for the specified set of 2D points.
+	 *
 	 * @param points a set of 2D points
 	 * @return the vector of invariant moments
 	 */
@@ -66,11 +64,10 @@ public abstract class FlusserMoments {
 		
 		return new double[] {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11};
 	}
-	
+
 	/**
-	 * Returns the scale-normalizes complex moment of order (p,q)
-	 * for the specified set of 2D points.
-	 * 
+	 * Returns the scale-normalizes complex moment of order (p,q) for the specified set of 2D points.
+	 *
 	 * @param points a set of 2D points
 	 * @param p order index p
 	 * @param q order index q

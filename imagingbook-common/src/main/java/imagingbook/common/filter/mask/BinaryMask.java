@@ -88,23 +88,21 @@ public class BinaryMask {
 	public int getElementCount() {
 		return count;
 	}
-	
+
 	/**
-	 * Returns a {@code byte[x][y]} with outside mask element values
-	 * zero, inside mask elements non-zero.
-	 * The first array index corresponds to the horizontal coordinate.
-	 * 
+	 * Returns a {@code byte[x][y]} with outside mask element values zero, inside mask elements non-zero. The first
+	 * array index corresponds to the horizontal coordinate.
+	 *
 	 * @return the mask as a {@code byte[][]}
 	 */
 	public byte[][] getByteArray() {
 		return mask;
 	}
-	
+
 	/**
-	 * Returns a {@code byte[x][y]} with outside mask element values
-	 * zero, inside mask elements non-zero.
-	 * The first array index corresponds to the horizontal coordinate.
-	 * 
+	 * Returns a {@code byte[x][y]} with outside mask element values zero, inside mask elements non-zero. The first
+	 * array index corresponds to the horizontal coordinate.
+	 *
 	 * @return the mask as a {@code byte[][]}
 	 */
 	public ByteProcessor getByteProcessor() {

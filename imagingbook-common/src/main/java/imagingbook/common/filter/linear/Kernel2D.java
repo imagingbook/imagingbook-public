@@ -21,25 +21,21 @@ public class Kernel2D {
 	private final float[][] H;	// H[y][x] !!
 	private final int xc, yc;
 	private final int width, height;
-	
+
 	/**
-	 * Constructor.
-	 * Assumes that the kernel's structure is H[y][x] (i.e., vertical coordinate first)
-	 * and the hot spot is at its center.
-	 * The kernel is normalized by default.
-	 * 
+	 * Constructor. Assumes that the kernel's structure is H[y][x] (i.e., vertical coordinate first) and the hot spot is
+	 * at its center. The kernel is normalized by default.
+	 *
 	 * @param H the 2D kernel array
 	 */
 	public Kernel2D(float[][] H) {
 		this(H, (H[0].length - 1) / 2, (H.length - 1) / 2, true);
 	}
-	
+
 	/**
-	 * Full constructor.
-	 * Assumes that the kernel's structure is H[y][x] (i.e., vertical coordinate first),
-	 * the hot spot position must be specified. 
-	 * The kernel is optionally normalized.
-	 * 
+	 * Full constructor. Assumes that the kernel's structure is H[y][x] (i.e., vertical coordinate first), the hot spot
+	 * position must be specified. The kernel is optionally normalized.
+	 *
 	 * @param H the 2D kernel array
 	 * @param xc the x-coordinate of the kernel's hot spot, default is (width-1)/2
 	 * @param yc the y-coordinate of the kernel's hot spot, default is (height-1)/2
@@ -64,15 +60,12 @@ public class Kernel2D {
 	public Kernel2D(Kernel1D Hx, Kernel1D Hy, boolean normalize) {
 		this(getEffectiveKernel(Hx, Hy), Hx.getXc(), Hy.getXc(), normalize);
 	}
-	
+
 	/**
-	 * Calculates the effective 2D kernel array from two 1D kernels
-	 * assumed to be applied in x- and y-direction, respectively.
-	 * The result is not normalized.
-	 * Use the constructor {@link #Kernel2D(Kernel1D, Kernel1D, boolean)}
-	 * to create the equivalent (optionally normalized) 2D kernel.
-	 * Note that the kernel coordinates are {@code H[y][x]}.
-	 * 
+	 * Calculates the effective 2D kernel array from two 1D kernels assumed to be applied in x- and y-direction,
+	 * respectively. The result is not normalized. Use the constructor {@link #Kernel2D(Kernel1D, Kernel1D, boolean)} to
+	 * create the equivalent (optionally normalized) 2D kernel. Note that the kernel coordinates are {@code H[y][x]}.
+	 *
 	 * @param Hx the 1D kernel for the x-direction
 	 * @param Hy the 1D kernel for the y-direction
 	 * @return the effective 2D kernel matrix
@@ -98,10 +91,10 @@ public class Kernel2D {
 			throw new IllegalArgumentException("filter kernel is not rectangular");
 		}
 	}
-	
+
 	/**
-	 * Returns the kernel's 2D array.
-	 * Note that the kernel coordinates are {@code H[y][x]}.
+	 * Returns the kernel's 2D array. Note that the kernel coordinates are {@code H[y][x]}.
+	 *
 	 * @return the kernel's 2D array
 	 */
 	public float[][] getH() {
@@ -141,11 +134,11 @@ public class Kernel2D {
 	}
 	
 	// ----------------------------------------------------------
-	
+
 	/**
-	 * Normalizes the specified array such that its sum becomes 1. Throws an
-	 * exception if the array's sum is zero. The original array is not modified.
-	 * 
+	 * Normalizes the specified array such that its sum becomes 1. Throws an exception if the array's sum is zero. The
+	 * original array is not modified.
+	 *
 	 * @param A a 2D array
 	 * @return the normalized array
 	 * @throws ArithmeticException if the array sums to zero

@@ -11,20 +11,21 @@ package imagingbook.common.geometry.mappings.linear;
 
 /**
  * <p>
- * This class represents a 2D shear transformation (as a special case of affine
- * transformation). See Secs. 21.1.3 and 21.3.1 of [1] for details.
+ * This class represents a 2D shear transformation (as a special case of affine transformation). See Secs. 21.1.3 and
+ * 21.3.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  */
 public class Shear2D extends AffineMapping2D {
-	
+
 	/**
-	 * Constructor Creates a shear transform.
+	 * Constructor, creates a shear transform.
+	 *
 	 * @param bx shear factor in x-direction
 	 * @param by shear factor in y-direction
 	 */

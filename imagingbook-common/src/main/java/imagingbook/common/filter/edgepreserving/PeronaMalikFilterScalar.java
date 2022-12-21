@@ -15,21 +15,19 @@ import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
  * <p>
- * Scalar version of the Perona-Malik filter, without gradient array.
- * This code is based on the Anisotropic Diffusion filter proposed by Perona and Malik,
- * as proposed in [1]. See Sec. 17.3.2 of [2] for additional details.
- * The filter operates on all types of grayscale (scalar) and RGB color images.
- * Consult the source code of the related ImageJ plugins for examples.
+ * Scalar version of the Perona-Malik filter, without gradient array. This code is based on the Anisotropic Diffusion
+ * filter proposed by Perona and Malik, as proposed in [1]. See Sec. 17.3.2 of [2] for additional details. The filter
+ * operates on all types of grayscale (scalar) and RGB color images. Consult the source code of the related ImageJ
+ * plugins for examples.
  * </p>
  * <p>
- * [1] Pietro Perona and Jitendra Malik, "Scale-space and edge detection 
- * using anisotropic diffusion", IEEE Transactions on Pattern Analysis 
- * and Machine Intelligence, vol. 12, no. 4, pp. 629-639 (July 1990).
+ * [1] Pietro Perona and Jitendra Malik, "Scale-space and edge detection using anisotropic diffusion", IEEE Transactions
+ * on Pattern Analysis and Machine Intelligence, vol. 12, no. 4, pp. 629-639 (July 1990).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2021/01/02
  */

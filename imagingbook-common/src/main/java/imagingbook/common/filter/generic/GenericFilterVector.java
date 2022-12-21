@@ -12,18 +12,13 @@ import imagingbook.common.image.PixelPack;
 
 /**
  * <p>
- * This (abstract) class represents a filter which treats all pixel data 
- * as vectors.
- * The filter calls the method {@code doPixel(PixelPack, int, int)}
- * for each image pixel, which must be implemented by any concrete
- * sub-class.
+ * This (abstract) class represents a filter which treats all pixel data as vectors. The filter calls the method
+ * {@code doPixel(PixelPack, int, int)} for each image pixel, which must be implemented by any concrete sub-class.
  * </p>
  * <p>
- * Thus a custom filter based on this class only needs to specify the steps
- * to be performed for a single pixel. The remaining filter mechanics
- * including multiple components, out-of-bounds coordinate handling,
- * multiple passes and data copying are handled by this class and its super-class
- * (see {@link GenericFilter}).
+ * Thus a custom filter based on this class only needs to specify the steps to be performed for a single pixel. The
+ * remaining filter mechanics including multiple components, out-of-bounds coordinate handling, multiple passes and data
+ * copying are handled by this class and its super-class (see {@link GenericFilter}).
  * </p>
  */
 public abstract class GenericFilterVector extends GenericFilter {

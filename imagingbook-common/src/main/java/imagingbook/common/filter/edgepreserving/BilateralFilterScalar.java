@@ -17,20 +17,18 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * Scalar (non-separable) version of the Bilateral filter as proposed in [1].
- * On color images, this filter is applied separately to each color component.
- * The filter uses Gaussian domain and range kernels and can be applied to all 
- * image types. See Sec. 17.2 of [2] for additional details.
+ * Scalar (non-separable) version of the Bilateral filter as proposed in [1]. On color images, this filter is applied
+ * separately to each color component. The filter uses Gaussian domain and range kernels and can be applied to all image
+ * types. See Sec. 17.2 of [2] for additional details.
  * </p>
  * <p>
- * [1] C. Tomasi and R. Manduchi, "Bilateral Filtering for Gray and Color Images",
- * Proceedings of the 1998 IEEE International Conference on Computer Vision,
- * Bombay, India.
+ * [1] C. Tomasi and R. Manduchi, "Bilateral Filtering for Gray and Color Images", Proceedings of the 1998 IEEE
+ * International Conference on Computer Vision, Bombay, India.
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2021/01/01
  */

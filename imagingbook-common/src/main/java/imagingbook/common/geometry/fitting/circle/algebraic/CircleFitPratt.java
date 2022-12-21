@@ -22,28 +22,25 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 
 /**
- * This is an implementation of the algebraic circle fitting algorithm by Pratt [1],
- * as described in [2] (Sec. 5.5-5.6). The algorithm uses singular-value decomposition
- * (SVD) and eigen-decomposition. See [3, Alg. 11.2] for additional details.
+ * This is an implementation of the algebraic circle fitting algorithm by Pratt [1], as described in [2] (Sec. 5.5-5.6).
+ * The algorithm uses singular-value decomposition (SVD) and eigen-decomposition. See [3, Alg. 11.2] for additional
+ * details.
  * <p>
- * Fits to exactly 3 (non-collinear) points are handled properly.
- * Data centering is used to improve numerical stability (alternatively, a reference
- * point can be specified).
+ * Fits to exactly 3 (non-collinear) points are handled properly. Data centering is used to improve numerical stability
+ * (alternatively, a reference point can be specified).
  * </p>
  * <p>
- * [1] V. Pratt. "Direct least-squares fitting of algebraic surfaces". <em>ACM
- * SIGGRAPH Computer Graphics</em> <strong>21</strong>(4), 145–152 (July 1987).
+ * [1] V. Pratt. "Direct least-squares fitting of algebraic surfaces". <em>ACM SIGGRAPH Computer Graphics</em>
+ * <strong>21</strong>(4), 145–152 (July 1987).
  * <br>
- * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
- * Lines by Least Squares". Monographs on Statistics and Applied Probability.
- * Taylor &amp; Francis (2011).
+ * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and Lines by Least Squares". Monographs on
+ * Statistics and Applied Probability. Taylor &amp; Francis (2011).
  * <br>
- * [3] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [3] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class CircleFitPratt implements CircleFitAlgebraic {
 	
@@ -60,22 +57,20 @@ public class CircleFitPratt implements CircleFitAlgebraic {
 	public double[] getParameters() {
 		return this.q;
 	}
-	
+
 	/**
-	 * Constructor.
-	 * The centroid of the sample points is used as the reference point.
-	 * 
+	 * Constructor. The centroid of the sample points is used as the reference point.
+	 *
 	 * @param points sample points
 	 */
 	public CircleFitPratt(Pnt2d[] points) {
 		this(points, null);
 	}
-	
+
 	/**
-	 * Constructor.
-	 * The centroid of the sample points is used as the reference point for data
-	 * centering if {@code null} is passed for {@code xref}.
-	 * 
+	 * Constructor. The centroid of the sample points is used as the reference point for data centering if {@code null}
+	 * is passed for {@code xref}.
+	 *
 	 * @param points sample points
 	 * @param xref reference point or {@code null}
 	 */

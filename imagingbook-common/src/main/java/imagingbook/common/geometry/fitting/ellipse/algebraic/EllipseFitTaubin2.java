@@ -20,21 +20,17 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * Algebraic ellipse fit based on Taubin's method [1]. Version 2 uses a reduced
- * scatter and constraint matrix (5x5), the solution is found by generalized
- * symmetric eigendecomposition. See [3, Sec. 11.2.1] for a detailed description
- * (Alg. 11.8). This implementation performs data centering or, alternatively,
- * accepts a specific reference point.
+ * Algebraic ellipse fit based on Taubin's method [1]. Version 2 uses a reduced scatter and constraint matrix (5x5), the
+ * solution is found by generalized symmetric eigendecomposition. See [3, Sec. 11.2.1] for a detailed description (Alg.
+ * 11.8). This implementation performs data centering or, alternatively, accepts a specific reference point.
  * </p>
  * <p>
- * [1] G. Taubin, G. Taubin. "Estimation of planar curves, surfaces, and
- * nonplanar space curves defined by implicit equations with applications to
- * edge and range image segmentation", IEEE Transactions on Pattern Analysis and
- * Machine Intelligence 13(11), 1115–1138 (1991). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
+ * [1] G. Taubin, G. Taubin. "Estimation of planar curves, surfaces, and nonplanar space curves defined by implicit
+ * equations with applications to edge and range image segmentation", IEEE Transactions on Pattern Analysis and Machine
+ * Intelligence 13(11), 1115–1138 (1991). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
  * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2021/11/09
  * @see EllipseFitTaubin1

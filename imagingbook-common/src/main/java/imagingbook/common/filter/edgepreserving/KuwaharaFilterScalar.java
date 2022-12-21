@@ -14,20 +14,18 @@ import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
  * <p>
- * Scalar version of a Kuwahara-type filter, similar to the filter described in [1]. 
- * It structures the filter region into five overlapping, 
- * square subregions (including a center region) of size (r+1) x (r+1). 
- * See Sec. 17.1 of [2] for additional details.
+ * Scalar version of a Kuwahara-type filter, similar to the filter described in [1]. It structures the filter region
+ * into five overlapping, square subregions (including a center region) of size (r+1) x (r+1). See Sec. 17.1 of [2] for
+ * additional details.
  * </p>
  * <p>
- * [1] F. Tomita and S. Tsuji. Extraction of multiple regions by smoothing
- * in selected neighborhoods. IEEE Transactions on Systems, Man,
- * and Cybernetics 7, 394–407 (1977).
+ * [1] F. Tomita and S. Tsuji. Extraction of multiple regions by smoothing in selected neighborhoods. IEEE Transactions
+ * on Systems, Man, and Cybernetics 7, 394–407 (1977).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2021/01/02
  */

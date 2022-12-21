@@ -21,51 +21,40 @@ import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.common.util.progress.ProgressReporter;
 
 /**
- * <p>This is the (abstract) root class of the generic filter hierarchy.
- * Generic filters are designed to work with all types of
- * ImageJ images, i.e., sub-classes of {@link ImageProcessor}.
- * Filters implemented with this framework use a set of unified
- * image data structures, all based on {@code float} values
- * (see {@link PixelPack} and {@link PixelSlice}).
- * Input images are transparently copied from and back to these
- * float data, thus authors of new filters do not need to concern themselves
- * with the original pixel data types.
- * Behind the scenes, classes {@link GridIndexer2D} and {@link OutOfBoundsStrategy} are relevant for
- * pixel indexing and out-of-boundary coordinates handling.
+ * <p>
+ * This is the (abstract) root class of the generic filter hierarchy. Generic filters are designed to work with all
+ * types of ImageJ images, i.e., sub-classes of {@link ImageProcessor}. Filters implemented with this framework use a
+ * set of unified image data structures, all based on {@code float} values (see {@link PixelPack} and
+ * {@link PixelSlice}). Input images are transparently copied from and back to these float data, thus authors of new
+ * filters do not need to concern themselves with the original pixel data types. Behind the scenes, classes
+ * {@link GridIndexer2D} and {@link OutOfBoundsStrategy} are relevant for pixel indexing and out-of-boundary coordinates
+ * handling.
  * </p>
  * <p>
- * Generic filters support multiple passes, the associated control 
- * structures are implemented by this class {@link GenericFilter}.
- * Most filters only require a single pass.
- * If more passes are required, the concrete (terminal) filter class
- * should override the method {@code passesRequired()} to return the 
- * required number, which may change dynamically during the execution 
- * of the filter (e.g., to reach convergence of some sort).
- * Sub-classes provide definitions for scalar filters, i.e., filters
- * that operate independently on the different components of color images
- * (e.g., see {@link GenericFilterScalar}),
- * as opposed to vector vector filters that deal with color datea as
- * vectors (e.g., see {@link GenericFilterVector}).
- * In addition, both types provide sub-classes for X/Y-separable versions
- * (see {@link GenericFilterScalarSeparable} and {@link GenericFilterVectorSeparable}).
+ * Generic filters support multiple passes, the associated control structures are implemented by this class
+ * {@link GenericFilter}. Most filters only require a single pass. If more passes are required, the concrete (terminal)
+ * filter class should override the method {@code passesRequired()} to return the required number, which may change
+ * dynamically during the execution of the filter (e.g., to reach convergence of some sort). Sub-classes provide
+ * definitions for scalar filters, i.e., filters that operate independently on the different components of color images
+ * (e.g., see {@link GenericFilterScalar}), as opposed to vector vector filters that deal with color datea as vectors
+ * (e.g., see {@link GenericFilterVector}). In addition, both types provide sub-classes for X/Y-separable versions (see
+ * {@link GenericFilterScalarSeparable} and {@link GenericFilterVectorSeparable}).
  * </p>
  * <p>
- * In the simplest (though frequent) case a concrete filter class only needs 
- * to implement a single method to specify the work to be done for calculating the
- * value of a single image pixel (e.g., see 
- * {@code GenericFilterVector.doPixel(PixelPack, int, int)} and
- * {@code GenericFilterScalar.doPixel(PixelSlice, int, int)}).
- * See {@link ExampleFilter3x3Scalar} and {@link ExampleFilter3x3Vector} for examples.
+ * In the simplest (though frequent) case a concrete filter class only needs to implement a single method to specify the
+ * work to be done for calculating the value of a single image pixel (e.g., see
+ * {@link GenericFilterVector#doPixel(PixelPack, int, int)} and
+ * {@link GenericFilterScalar#doPixel(PixelSlice, int, int)}. See {@link ExampleFilter3x3Scalar} and
+ * {@link ExampleFilter3x3Vector} for examples.
  * </p>
  * <p>
- * To <strong>apply</strong> as filter to a given image, the key method is 
- * {@link #applyTo(ImageProcessor)} (or {@link #applyTo(PixelPack)} if
- * the pixel data are already available as a {@link PixelPack}).
- * All filters operate destructively, i.e., by modifying the supplied image.
+ * To <strong>apply</strong> as filter to a given image, the key method is {@link #applyTo(ImageProcessor)} (or
+ * {@link #applyTo(PixelPack)} if the pixel data are already available as a {@link PixelPack}). All filters operate
+ * destructively, i.e., by modifying the supplied image.
  * </p>
  * <p>
- * {@link GenericFilter}s support asynchronous <strong>progress reporting</strong> based on the
- * {@link ProgressMonitor} framework. Here is a usage example (from one of the sample plugins):</p>
+ * {@link GenericFilter}s support asynchronous <strong>progress reporting</strong> based on the {@link ProgressMonitor}
+ * framework. Here is a usage example (from one of the sample plugins):</p>
  * <pre>
  * ImageProcessor ip = ... // any image
  * ...
@@ -74,11 +63,10 @@ import imagingbook.common.util.progress.ProgressReporter;
  *     filter.applyTo(ip);
  * }</pre>
  * <p>
- * During execution of the filter, the {@link IjProgressBarMonitor} instance queries the filter
- * periodically (in a separate thread) for its progress status and updates ImageJ's progress
- * bar.
+ * During execution of the filter, the {@link IjProgressBarMonitor} instance queries the filter periodically (in a
+ * separate thread) for its progress status and updates ImageJ's progress bar.
  * </p>
- * 
+ *
  * @author WB
  * @version 2012/01/12
  */

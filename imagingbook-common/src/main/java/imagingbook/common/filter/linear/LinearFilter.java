@@ -13,16 +13,11 @@ import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
- * This class represents a 2D linear filter specified by an
- * arbitrary 2D convolution kernel.
- * It is based on {@link GenericFilter} and {@link GenericFilterScalar},
- * which take care of all data copying and filter mechanics.
- * Since it is a "scalar" filter, pixel values are treated as scalars.
- * If the processed image has more than one component 
- * (e.g., a RGB color image), this filter is automatically 
- * and independently applied to all (scalar-valued) components.
- * To apply to an image, use the {@link #applyTo(ij.process.ImageProcessor)}
- * method, for example.
+ * This class represents a 2D linear filter specified by an arbitrary 2D convolution kernel. It is based on
+ * {@link GenericFilter} and {@link GenericFilterScalar}, which take care of all data copying and filter mechanics.
+ * Since it is a "scalar" filter, pixel values are treated as scalars. If the processed image has more than one
+ * component (e.g., a RGB color image), this filter is automatically and independently applied to all (scalar-valued)
+ * components. To apply to an image, use the {@link #applyTo(ij.process.ImageProcessor)} method, for example.
  */
 public class LinearFilter extends GenericFilterScalar {
 

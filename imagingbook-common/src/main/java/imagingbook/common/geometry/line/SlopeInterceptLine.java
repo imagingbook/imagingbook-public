@@ -14,17 +14,15 @@ import java.util.Locale;
 
 /**
  * <p>
- * This class represents a line in slope-intercept form: y = k x + d. Instances
- * are immutable. Not all possible lines in the 2D plane can be represented. A
- * {@link SlopeInterceptLine} is merely a {@link AlgebraicLine} with a special
- * constructor and getter methods for k, d. See Sec. 10.1 and Appendix F.1 of
- * [1] for details.
+ * This class represents a line in slope-intercept form: y = k x + d. Instances are immutable. Not all possible lines in
+ * the 2D plane can be represented. A {@link SlopeInterceptLine} is merely a {@link AlgebraicLine} with a special
+ * constructor and getter methods for k, d. See Sec. 10.1 and Appendix F.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/18
  */
@@ -48,9 +46,10 @@ public class SlopeInterceptLine extends AlgebraicLine {
 	public double getD() {
 		return C / -B;	// = d
 	}
-	
+
 	/**
 	 * Returns the line's y-value for the specified x-position.
+	 *
 	 * @param x position along the x-axis
 	 * @return the associated y-value
 	 */

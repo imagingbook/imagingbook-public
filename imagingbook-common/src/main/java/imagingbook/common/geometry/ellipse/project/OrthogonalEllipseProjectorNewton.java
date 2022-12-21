@@ -17,23 +17,18 @@ import static java.lang.Math.pow;
 
 /**
  * <p>
- * Calculates the closest point on the ellipse for a given 2D point inside or
- * outside the ellipse, using orthogonal projection of points onto the ellipse.
- * This is a robust algorithm based on [1]. See Sec.11.2.2 (Alg. 11.9) of [2]
- * for details. This version uses the Newton-method for root finding, which is
- * quick but may fail to return a valid result if the target point is close to
- * the x- or y-axis. See {@link OrthogonalEllipseProjector} for a robust
- * solution or {@link ConfocalConicEllipseProjector} for an approximate but
- * non-iterative (i.e., fast) alternative.
+ * Calculates the closest point on the ellipse for a given 2D point inside or outside the ellipse, using orthogonal
+ * projection of points onto the ellipse. This is a robust algorithm based on [1]. See Sec.11.2.2 (Alg. 11.9) of [2] for
+ * details. This version uses the Newton-method for root finding, which is quick but may fail to return a valid result
+ * if the target point is close to the x- or y-axis. See {@link OrthogonalEllipseProjector} for a robust solution or
+ * {@link ConfocalConicEllipseProjector} for an approximate but non-iterative (i.e., fast) alternative.
  * </p>
  * <p>
- * [1] D. Eberly: "Distance from a point to an ellipse, an ellipsoid, or a
- * hyperellipsoid", Technical Report, Geometric Tools, www.geometrictools.com,
- * Redmont, WA (June 2013). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] D. Eberly: "Distance from a point to an ellipse, an ellipsoid, or a hyperellipsoid", Technical Report, Geometric
+ * Tools, www.geometrictools.com, Redmont, WA (June 2013). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing
+ * &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/04/09
  * @see OrthogonalEllipseProjector

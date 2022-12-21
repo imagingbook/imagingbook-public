@@ -13,25 +13,25 @@ import java.util.Objects;
 
 /**
  * Interface used for color enum types.
- * @author WB
  *
+ * @author WB
  */
 public interface ColorEnumeration {
-	
+
 	/**
-	 * Returns the enum item's {@link Color}.
-	 * Example:
+	 * Returns the enum item's {@link Color}. Example:
 	 * <pre>
 	 * Color c = BasicAwtColor.Blue.getColor();</pre>
+	 *
 	 * @return the item's AWT {@link Color}
 	 */
 	public Color getColor();
 
 	/**
-	 * Returns an array of colors defined by the specified
-	 * {@link ColorEnumeration} enum class.
+	 * Returns an array of colors defined by the specified {@link ColorEnumeration} enum class.
 	 * <pre>
 	 * Color[] colors = ColorEnumeration.getColors(BasicAwtColor.class);</pre>
+	 *
 	 * @param clazz a {@link ColorEnumeration} enum class
 	 * @return a {@link Color} array
 	 */
@@ -44,12 +44,12 @@ public interface ColorEnumeration {
 		Objects.requireNonNull(colorItems);
 		return getColors(colorItems);
 	}
-	
+
 	/**
-	 * Returns a color subset as an array of colors for the specified 
-	 * {@link ColorEnumeration} items. Example:
+	 * Returns a color subset as an array of colors for the specified {@link ColorEnumeration} items. Example:
 	 * <pre>
 	 * Color[] colors = ColorEnumeration.getColors(BasicAwtColor.Blue, BasicAwtColor.Green);</pre>
+	 *
 	 * @param cols a sequence of {@link ColorEnumeration} items
 	 * @return a {@link Color} array
 	 */
@@ -60,12 +60,11 @@ public interface ColorEnumeration {
 		}
 		return colors;
 	}
-	
+
 	/**
-	 * Searches for the specified AWT {@link Color} in the given
-	 * {@link ColorEnumeration}. If a matching color is found,
+	 * Searches for the specified AWT {@link Color} in the given {@link ColorEnumeration}. If a matching color is found,
 	 * the associated enum item is returned, {@code null} otherwise.
-	 * 
+	 *
 	 * @param col some AWT {@link Color}
 	 * @param clazz a {@link ColorEnumeration} enum class
 	 * @return a {@link ColorEnumeration} instance or {@code null}

@@ -25,11 +25,10 @@ public interface Mapping2D extends Cloneable {
 	 * @return the transformed point
 	 */
 	public Pnt2d applyTo (Pnt2d pnt);
-	
+
 	/**
-	 * Applies this mapping to an array of 2D points and
-	 * returns a new array of points.
-	 * 
+	 * Applies this mapping to an array of 2D points and returns a new array of points.
+	 *
 	 * @param pnts the original points
 	 * @return the transformed points
 	 */

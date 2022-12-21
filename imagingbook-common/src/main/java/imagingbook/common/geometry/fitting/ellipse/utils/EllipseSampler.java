@@ -37,16 +37,15 @@ public class EllipseSampler {
 		this.ellipse = ellipse;
 		this.rg = new Random(seed);
 	}
-	
+
 	/**
-	 * Creates and returns an array of 2D points sampled on the ellipse associated
-	 * with this {@link EllipseSampler}. Random Gaussian noise (with standard
-	 * deviation sigma) is added to the individual x/y coordinates.
-	 * 
-	 * @param n          number of points
+	 * Creates and returns an array of 2D points sampled on the ellipse associated with this {@link EllipseSampler}.
+	 * Random Gaussian noise (with standard deviation sigma) is added to the individual x/y coordinates.
+	 *
+	 * @param n number of points
 	 * @param startAngle initial angle (radians)
-	 * @param arcAngle   arc angle (radians)
-	 * @param sigma      amount of random noise
+	 * @param arcAngle arc angle (radians)
+	 * @param sigma amount of random noise
 	 * @return an array of sample points
 	 */
 	public Pnt2d[] getPoints(int n, double startAngle, double arcAngle, double sigma) {

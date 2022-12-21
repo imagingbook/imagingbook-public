@@ -28,7 +28,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
  * </p>
  *
  * @author WB
- * @version 2022/09/11 changed to 2D kernel arrays using IjUtils
+ * @version 2022/09/11
  */
 public class MonochromaticEdgeDetector implements EdgeDetector {
 
@@ -65,6 +65,7 @@ public class MonochromaticEdgeDetector implements EdgeDetector {
 		for (int k = 0; k < 3; k++) {
 			Ix[k] = I[k];
 			Iy[k] = (FloatProcessor) Ix[k].duplicate();
+			// TODO: convert to generic filter?
 			IjUtils.convolve(Ix[k], HxS);
 			IjUtils.convolve(Iy[k], HyS);
 		}

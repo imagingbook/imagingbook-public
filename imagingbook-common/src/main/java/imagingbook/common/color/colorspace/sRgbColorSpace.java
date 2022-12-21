@@ -22,16 +22,15 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
 
 /**
  * <p>
- * This class implements the sRGBcolor space with D65 white point. See Sec. 14.4
- * of [1] for details. Components of all {@code float[]} colors are supposed to
- * be in [0,1]. This is a singleton class with no public constructors, use
+ * This class implements the sRGBcolor space with D65 white point. See Sec. 14.4 of [1] for details. Components of all
+ * {@code float[]} colors are supposed to be in [0,1]. This is a singleton class with no public constructors, use
  * {@link #getInstance()} to obtain the single instance.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/14
  * @see LinearRgb65ColorSpace
@@ -49,9 +48,10 @@ public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, R
 	public static sRgbColorSpace getInstance() {
 		return instance;
 	}
-	
-	/** Matrix for conversion from XYZ to linear RGB. Its column vectors are the 
-	 * XYZ coordinates of the RGB primaries. */
+
+	/**
+	 * Matrix for conversion from XYZ to linear RGB. Its column vectors are the XYZ coordinates of the RGB primaries.
+	 */
 	private static final double[][] Mrgbi = 
 		{{0.412453, 0.357580, 0.180423},
 		 {0.212671, 0.715160, 0.072169},

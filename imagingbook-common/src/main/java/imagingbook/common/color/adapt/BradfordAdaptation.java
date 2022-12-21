@@ -113,9 +113,10 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 		}
 		return XYZB;
 	}
-	
+
 	/**
 	 * Returns the composite color adaptation transformation matrix.
+	 *
 	 * @return the color adaptation transformation matrix
 	 */
 	public double[][] getAdaptationMatrix() {

@@ -12,35 +12,31 @@ package imagingbook.common.color.statistics;
 import java.util.Arrays;
 
 /**
- * This class calculates a color histogram of a set of colors (i.e., a color
- * image). Only the unique colors are accounted for. Colors are supplied as
- * ARGB-encoded integers (A = alpha values being ignored). Colors are internally
- * sorted by their frequency (in descending order).
- * Used mainly for color quantization.
- * 
+ * This class calculates a color histogram of a set of colors (i.e., a color image). Only the unique colors are
+ * accounted for. Colors are supplied as ARGB-encoded integers (A = alpha values being ignored). Colors are internally
+ * sorted by their frequency (in descending order). Used mainly for color quantization.
+ *
  * @author WB
  * @version 2022/11/05
  */
 public class ColorHistogram {
 	
 	private final ColorBin[] colorBins;
-	
+
 	/**
-	 * Creates a color histogram instance from the supplied sequence
-	 * of color pixel values (assumed to be aRGB-encoded integers).
-	 * The original pixel values are not modified.
-	 * 
-	 * @param pixels aRGB-encoded integer pixel data 
+	 * Creates a color histogram instance from the supplied sequence of color pixel values (assumed to be aRGB-encoded
+	 * integers). The original pixel values are not modified.
+	 *
+	 * @param pixels aRGB-encoded integer pixel data
 	 */
 	public ColorHistogram(int[] pixels) {
 		this(pixels, false);
 	}
-	
+
 	/**
-	 * Creates a color histogram instance from the supplied sequence
-	 * of color pixel values (assumed to be ARGB-encoded integers).
-	 * The original pixel values are not modified.
-	 * 
+	 * Creates a color histogram instance from the supplied sequence of color pixel values (assumed to be ARGB-encoded
+	 * integers). The original pixel values are not modified.
+	 *
 	 * @param pixelsOrig original pixel values (not modified)
 	 * @param sortByFrequency set true to sort the final colors by descending frequency
 	 */
@@ -82,20 +78,20 @@ public class ColorHistogram {
 		if (sortByFrequency)
 			Arrays.sort(colorBins);	// sort unique colors by descending frequency
 	}
-	
+
 	/**
-	 * Returns the number of unique colors.
-	 * @return The number of unique colors.
+	 * Returns the number of distinct colors in this color histogram.
+	 *
+	 * @return the number of distinct colors.
 	 */
 	public int getNumberOfColors() {
 		return colorBins.length;
 	}
-	
+
 	/**
-	 * Returns an array with all (distinct) colors of this histogram as sRGB
-	 * int-encoded values. Values are in no particular order but in the same order
-	 * as the array returned by {@link #getFrequencies()}.
-	 * 
+	 * Returns an array with all (distinct) colors of this histogram as sRGB int-encoded values. Values are in no
+	 * particular order but in the same order as the array returned by {@link #getFrequencies()}.
+	 *
 	 * @return an array of all distinct colors
 	 */
 	public int[] getColors() {
@@ -105,12 +101,11 @@ public class ColorHistogram {
 		}
 		return colors;
 	}
-	
+
 	/**
-	 * Returns an array with the frequencies of all (distinct) colors of this
-	 * histogram. Values are in no particular order but in the same order as the
-	 * array returned by {@link #getColors()}.
-	 * 
+	 * Returns an array with the frequencies of all (distinct) colors of this histogram. Values are in no particular
+	 * order but in the same order as the array returned by {@link #getColors()}.
+	 *
 	 * @return an array of all distinct color frequencies
 	 */
 	public int[] getFrequencies() {
@@ -120,31 +115,29 @@ public class ColorHistogram {
 		}
 		return frequencies;
 	}
-	
+
 	/**
-	 * Returns the unique color with the given index.
-	 * Colors are sorted by (decreasing) frequency.
-	 * 
+	 * Returns the unique color with the given index. Colors are sorted by (decreasing) frequency.
+	 *
 	 * @param index The color index.
-	 * @return	The color, encoded as an ARGB integer (A is zero).
+	 * @return The color, encoded as an ARGB integer (A is zero).
 	 */
 	public int getColor(int index) {
 		return colorBins[index].rgb;
 	}
-	
+
 	/**
-	 * Returns the frequency of the unique color with the given index.
-	 * Colors are sorted by (decreasing) frequency.
+	 * Returns the frequency of the unique color with the given index. Colors are sorted by (decreasing) frequency.
+	 *
 	 * @param index The color index.
-	 * @return	The frequency of the color.
+	 * @return The frequency of the color.
 	 */
 	public int getFrequency(int index) {
 		return colorBins[index].count;
 	}
-	
+
 	/**
-	 * Lists the unique colors to System.out (intended for
-	 * debugging only).
+	 * Lists the unique colors to System.out (intended for debugging only).
 	 */
 	public void listUniqueColors() {
 		for (ColorBin cn : colorBins) {

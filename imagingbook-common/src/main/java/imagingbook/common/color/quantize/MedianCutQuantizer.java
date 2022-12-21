@@ -21,27 +21,23 @@ import java.util.PriorityQueue;
 
 /**
  * <p>
- * This is an implementation of Heckbert's median-cut color quantization
- * algorithm [1]. Unlike in the original algorithm, no initial uniform (scalar)
- * quantization is used to for reducing the number of image colors. Instead, all
- * colors contained in the original image are considered in the quantization
- * process. After the set of representative colors has been found, each image
- * color is mapped to the closest representative in RGB color space using the
+ * This is an implementation of Heckbert's median-cut color quantization algorithm [1]. Unlike in the original
+ * algorithm, no initial uniform (scalar) quantization is used to for reducing the number of image colors. Instead, all
+ * colors contained in the original image are considered in the quantization process. After the set of representative
+ * colors has been found, each image color is mapped to the closest representative in RGB color space using the
  * Euclidean distance. See Sec. 13.4.2 (Algs. 13.1-3) of [2] for details.
  * </p>
  * <p>
- * The quantization process has two steps: first a {@link ColorQuantizer}
- * instance is created from a given image using one of the constructor methods
- * provided. This quantizer can then be used to quantize the original image or
- * any other image using the same set of representative colors (color table).
+ * The quantization process has two steps: first a {@link ColorQuantizer} instance is created from a given image using
+ * one of the constructor methods provided. This quantizer can then be used to quantize the original image or any other
+ * image using the same set of representative colors (color table).
  * </p>
  * <p>
- * [1] Heckbert P., "Color Image Quantization for Frame Buffer Display", ACM
- * Transactions on Computer Graphics (SIGGRAPH), pp. 297-307 (1982). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] Heckbert P., "Color Image Quantization for Frame Buffer Display", ACM Transactions on Computer Graphics
+ * (SIGGRAPH), pp. 297-307 (1982). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/05 revised to use PriorityQueue, made deterministic
  */
@@ -53,13 +49,13 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	private final float[][] colorMap;
 	
 	// -------------------------------------------------------------------------------
-	
+
 	/**
-	 * Constructor, creates a new {@link MedianCutQuantizer} with up to K colors,
-	 * but never more than the number of colors found in the supplied pixel data.
-	 * 
+	 * Constructor, creates a new {@link MedianCutQuantizer} with up to K colors, but never more than the number of
+	 * colors found in the supplied pixel data.
+	 *
 	 * @param pixels an image as a aRGB-encoded int array
-	 * @param K      the desired number of colors (1 or more)
+	 * @param K the desired number of colors (1 or more)
 	 */
 	public MedianCutQuantizer(int[] pixels, int K) {
 		if (K < 1) 
@@ -78,11 +74,11 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	}
 	
 	// -------------------------------------------------------------------------------
-	
+
 	/**
-	 * Collects and returns the distinct colors found in the specified
-	 * pixel array as an array of {@link ColorBin} instances.
-	 * 
+	 * Collects and returns the distinct colors found in the specified pixel array as an array of {@link ColorBin}
+	 * instances.
+	 *
 	 * @param pixels an array of aRGB-encoded color values
 	 * @return an array of distinct colors
 	 */
@@ -99,15 +95,13 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	}
 
 	/**
-	 * Performs the actual quantization and returns the calculated reference colors
-	 * as an array of {@link #K} {@link ColorBox} instances. Color boxes are
-	 * maintained in a sorted list (of type {@link PriorityQueue}) B whose sorting
-	 * order is determined by the {@link ColorBox#compareTo(ColorBox)}. Boxes are
-	 * iteratively split until the specified number of quantized colors is reached.
-	 * In each step, the first color box (head element) of the sorted list is
-	 * removed and two new boxes (the result of splitting) are added. Thus each step
-	 * increases the size of list B by 1.
-	 * 
+	 * Performs the actual quantization and returns the calculated reference colors as an array of K
+	 * {@link ColorBox} instances. Color boxes are maintained in a sorted list (of type {@link PriorityQueue}) B whose
+	 * sorting order is determined by the {@link ColorBox#compareTo(ColorBox)}. Boxes are iteratively split until the
+	 * specified number of quantized colors is reached. In each step, the first color box (head element) of the sorted
+	 * list is removed and two new boxes (the result of splitting) are added. Thus each step increases the size of list
+	 * B by 1.
+	 *
 	 * @return an array of reference colors
 	 */
 	private ColorBox[] findReferenceColors(int K) {
@@ -203,11 +197,9 @@ public class MedianCutQuantizer implements ColorQuantizer {
 	// -------------- non-static inner class ColorBox -----------------------------------
 
 	/**
-	 * Represents a 'color box' holding a set of colors (of type {@link ColorBin}),
-	 * which is implemented as a contiguous range of elements in array
-	 * {@link MedianCutQuantizer#origColors}. Instances of {@link ColorBox} reference
-	 * this array directly (this is why this class is non-static).
-	 * Instances of this class are immutable.
+	 * Represents a 'color box' holding a set of colors (of type {@link ColorBin}), which is implemented as a contiguous
+	 * range of elements in array {@link MedianCutQuantizer#origColors}. Instances of {@link ColorBox} reference this
+	 * array directly (this is why this class is non-static). Instances of this class are immutable.
 	 */
 	private class ColorBox implements Comparable<ColorBox> { 
 		final int loIdx; 		// lower index into 'imageColors'
@@ -272,11 +264,11 @@ public class MedianCutQuantizer implements ColorQuantizer {
 		int colorCount() {
 			return hiIdx - loIdx;
 		}
-		
+
 		/**
-		 * Splits this color box at the median point along its longest color dimension.
-		 * Modifies the original color box and creates a new one, which is returned.
-		 * 
+		 * Splits this color box at the median point along its longest color dimension. Modifies the original color box
+		 * and creates a new one, which is returned.
+		 *
 		 * @return A new color box.
 		 */
 		ColorBox[] splitBox() {	
@@ -293,11 +285,11 @@ public class MedianCutQuantizer implements ColorQuantizer {
 			ColorBox cb2 = new ColorBox(medIdx + 1, hiIdx, m + 1);
 			return new ColorBox[] {cb1, cb2};
 		}
-				
+
 		/**
-		 * Finds the position of the median of this color box in RGB space along the
-		 * red, green or blue dimension, respectively.
-		 * 
+		 * Finds the position of the median of this color box in RGB space along the red, green or blue dimension,
+		 * respectively.
+		 *
 		 * @param dim the color dimension
 		 * @return the median value
 		 */
@@ -314,12 +306,12 @@ public class MedianCutQuantizer implements ColorQuantizer {
 			}			
 			return k;		// k = index of median
 		}
-		
+
 		/**
-		 * Calculates the (linear) average of the colors contained in this color box and
-		 * returns the result as a {@code float} vector. This is the 3D centroid (in RGB
-		 * color space) of the pixel colors represented by this box.
-		 * 
+		 * Calculates the (linear) average of the colors contained in this color box and returns the result as a
+		 * {@code float} vector. This is the 3D centroid (in RGB color space) of the pixel colors represented by this
+		 * box.
+		 *
 		 * @return the average color for this box
 		 */
 		private float[] getAvgColor() {
@@ -350,11 +342,10 @@ public class MedianCutQuantizer implements ColorQuantizer {
 		}
 
 		/**
-		 * This method is required to satisfy the {@link Comparator} interface. It
-		 * determines how boxes are selected for splitting. The specific strategy is to
-		 * prefer color boxes at low levels. Boxes at the same level are selected based
-		 * on their maximum color span, i.e., their maximum side length in color space.
-		 * Finally, the number of pixels decides.
+		 * This method is required to satisfy the {@link Comparator} interface. It determines how boxes are selected for
+		 * splitting. The specific strategy is to prefer color boxes at low levels. Boxes at the same level are selected
+		 * based on their maximum color span, i.e., their maximum side length in color space. Finally, the number of
+		 * pixels decides.
 		 */
 		@Override
 		public int compareTo(ColorBox other) {
@@ -366,10 +357,10 @@ public class MedianCutQuantizer implements ColorQuantizer {
 			return v;
 		}
 	}
-	
+
 	/**
-	 * Associates the color dimensions RED, GRN, BLU with the corresponding
-	 * comparators (for sorting along selected color dimensions).
+	 * Associates the color dimensions RED, GRN, BLU with the corresponding comparators (for sorting along selected
+	 * color dimensions).
 	 */
 	private enum ColorDimension {
 		RED (new Comparator<ColorBin>() {

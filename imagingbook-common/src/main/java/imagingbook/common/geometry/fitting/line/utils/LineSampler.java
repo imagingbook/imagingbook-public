@@ -14,14 +14,12 @@ import java.util.Random;
 
 /**
  * <p>
- * Instances of this class are used to randomly sample points along a given
- * straight line segment, x/y coordinates being perturbed with Gaussian noise.
- * Mainly used for testing line fitters.
+ * Instances of this class are used to randomly sample points along a given straight line segment, x/y coordinates being
+ * perturbed with Gaussian noise. Mainly used for testing line fitters.
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/29
- * 
  */
 public class LineSampler {
 	

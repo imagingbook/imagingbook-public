@@ -14,6 +14,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.common.ij.IjUtils;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Arrays;
@@ -31,7 +32,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * </p>
  *
  * @author WB
- * @see imagingbook.common.color.statistics.ColorStatistics
+ * @see IjUtils#countColors(ColorProcessor)
  */
 public class Count_Colors implements PlugInFilter {
 
@@ -57,7 +58,7 @@ public class Count_Colors implements PlugInFilter {
 
 	/**
 	 * Determines how many different colors are contained in the specified 24 bit full-color RGB image. Replicated from
-	 * {@link imagingbook.common.color.statistics.ColorStatistics}.
+	 * {@link IjUtils#countColors(ColorProcessor)}.
 	 *
 	 * @param cp a RGB image
 	 * @return the number of distinct colors

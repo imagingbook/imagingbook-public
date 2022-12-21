@@ -16,9 +16,8 @@ import java.awt.Shape;
 import java.awt.geom.Path2D;
 
 /**
- * Described a 2D line segment defined by two end points.
- * Instances are immutable.
- * 
+ * Described a 2D line segment defined by two end points. Instances are immutable.
+ *
  * @author WB
  */
 public class LineSegment2d implements ShapeProducer {

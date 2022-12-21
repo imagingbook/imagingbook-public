@@ -11,13 +11,11 @@ package imagingbook.common.filter.linear;
 import imagingbook.common.image.OutOfBoundsStrategy;
 
 /**
- * This class implements a 2D Gaussian filter by extending
- * {@link LinearFilter}.
- * This version uses a non-separated 2D convolution kernel.
- * 
+ * This class implements a 2D Gaussian filter by extending {@link LinearFilter}. This version uses a non-separated 2D
+ * convolution kernel.
+ *
  * @author WB
  * @version 2020/12/29
- * 
  * @see LinearFilter
  * @see GaussianFilterSeparable
  */

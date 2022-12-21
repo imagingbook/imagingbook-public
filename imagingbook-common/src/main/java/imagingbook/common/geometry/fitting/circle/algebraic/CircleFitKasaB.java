@@ -16,46 +16,38 @@ import org.apache.commons.math3.linear.RealMatrix;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
- * This is an implementation of the modified Kåsa [1] circle fitting algorithm described in 
- * [2, Sec. 5.1]. A description of the concrete algorithm can be found in [3, Alg. 11.1].
- * See {@link CircleFitKasaA} for the original version.
+ * This is an implementation of the modified Kåsa [1] circle fitting algorithm described in [2, Sec. 5.1]. A description
+ * of the concrete algorithm can be found in [3, Alg. 11.1]. See {@link CircleFitKasaA} for the original version.
  * <p>
- * Compared to the original Kåsa algorithm, this variant also solves a 3x3 linear
- * system but uses a slightly different setup of the scatter matrix (using only
- * powers of 2 instead of 3). A numerical solver is used for this purpose.
- * The algorithm is fast but shares the same numerical instabilities and bias when 
- * sample points are taken from a small circle segment.
- * It fails when matrix M becomes singular.
- * Fits to exactly 3 (non-collinear) points are handled properly.
- * Data centering is used to improve numerical stability (alternatively, a reference
- * point can be specified).
+ * Compared to the original Kåsa algorithm, this variant also solves a 3x3 linear system but uses a slightly different
+ * setup of the scatter matrix (using only powers of 2 instead of 3). A numerical solver is used for this purpose. The
+ * algorithm is fast but shares the same numerical instabilities and bias when sample points are taken from a small
+ * circle segment. It fails when matrix M becomes singular. Fits to exactly 3 (non-collinear) points are handled
+ * properly. Data centering is used to improve numerical stability (alternatively, a reference point can be specified).
  * </p>
  * <p>
  * [1] I. Kåsa. "A circle fitting procedure and its error analysis",
- * <em>IEEE Transactions on Instrumentation and Measurement</em> <strong>25</strong>(1), 
+ * <em>IEEE Transactions on Instrumentation and Measurement</em> <strong>25</strong>(1),
  * 8–14 (1976).
  * <br>
- * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
- * Lines by Least Squares". Monographs on Statistics and Applied Probability.
- * Taylor &amp; Francis (2011).
+ * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and Lines by Least Squares". Monographs on
+ * Statistics and Applied Probability. Taylor &amp; Francis (2011).
  * <br>
- * [3] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [3] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @see CircleFitKasaA
  * @see CircleFitKasaC
- *
  */
 public class CircleFitKasaB implements CircleFitAlgebraic {
 
 	private final double[] q;	// q = (B,C,D) circle parameters, A=1
-	
+
 	/**
-	 * Constructor.
-	 * The centroid of the sample points is used as the reference point.
-	 * 
+	 * Constructor. The centroid of the sample points is used as the reference point.
+	 *
 	 * @param points sample points
 	 */
 	public CircleFitKasaB(Pnt2d[] points) {
@@ -63,10 +55,9 @@ public class CircleFitKasaB implements CircleFitAlgebraic {
 	}
 
 	/**
-	 * Constructor.
-	 * The centroid of the sample points is used as the reference point for data
-	 * centering if {@code null} is passed for {@code xref}.
-	 * 
+	 * Constructor. The centroid of the sample points is used as the reference point for data centering if {@code null}
+	 * is passed for {@code xref}.
+	 *
 	 * @param points sample points
 	 * @param xref reference point or {@code null}
 	 */

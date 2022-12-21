@@ -22,17 +22,14 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-
 /**
  * <p>
- * Implements a 2-dimensional Procrustes fit, using the algorithm described in
- * [1]. Usage example:
+ * Implements a 2-dimensional Procrustes fit, using the algorithm described in [1]. Usage example:
  * </p>
  * <pre>
  * Point[] P = ... // create sequence of 2D source points
  * Point[] Q = ... // create sequence of 2D target points
  * ProcrustesFit pf = new ProcrustesFit(P, Q);
- * 
  * RealMatrix R = pf.getRotation();
  * RealVector t = pf.getTranslation();
  * double s = pf.getScale();
@@ -40,11 +37,10 @@ import static imagingbook.common.math.Arithmetic.sqr;
  * RealMatrix A = pf.getTransformationMatrix();
  * </pre>
  * <p>
- * [1] Shinji Umeyama, "Least-squares estimation of transformation parameters
- * between two point patterns", IEEE Transactions on Pattern Analysis and
- * Machine Intelligence, 13.4 (Apr. 1991), pp. 376–380.
+ * [1] Shinji Umeyama, "Least-squares estimation of transformation parameters between two point patterns", IEEE
+ * Transactions on Pattern Analysis and Machine Intelligence, 13.4 (Apr. 1991), pp. 376–380.
  * </p>
- * 
+ *
  * @author WB
  * @version 2021/11/27
  */
@@ -58,28 +54,28 @@ public class ProcrustesFit2d implements LinearFit2d {
 	private final double err;					// RMS fitting error
 	
 	// --------------------------------------------------------------
-	
+
 	/**
-	 * Convenience constructor, with
-	 * parameters {@code allowTranslation}, {@code allowScaling} and {@code forceRotation}
+	 * Convenience constructor, with parameters {@code allowTranslation}, {@code allowScaling} and {@code forceRotation}
 	 * set to {@code true}.
+	 *
 	 * @param P the source points
 	 * @param Q the target points
 	 */
 	public ProcrustesFit2d(Pnt2d[] P, Pnt2d[] Q) {
 		this(P, Q, true, true, true);
 	}
-	
+
 	/**
 	 * Full constructor.
+	 *
 	 * @param P the first point sequence
 	 * @param Q the second point sequence
-	 * @param allowTranslation if {@code true}, translation (t) between point sets is considered, 
-	 * 		otherwise zero translation is assumed
-	 * @param allowScaling if {@code true}, scaling (s) between point sets is considered, 
-	 * 		otherwise unit scale assumed
-	 * @param forceRotation if {@code true}, the orthogonal part of the transformation (Q)
-	 * 		is forced to a true rotation and no reflection is allowed
+	 * @param allowTranslation if {@code true}, translation (t) between point sets is considered, otherwise zero
+	 * translation is assumed
+	 * @param allowScaling if {@code true}, scaling (s) between point sets is considered, otherwise unit scale assumed
+	 * @param forceRotation if {@code true}, the orthogonal part of the transformation (Q) is forced to a true rotation
+	 * and no reflection is allowed
 	 */
 	public ProcrustesFit2d(Pnt2d[] P, Pnt2d[] Q, boolean allowTranslation, boolean allowScaling, boolean forceRotation) {
 		checkSize(P, Q);
@@ -174,14 +170,12 @@ public class ProcrustesFit2d implements LinearFit2d {
 	public double getError() {
 		return err;
 	}
-	
+
 	/**
-	 * Calculates the total error for the estimated fit as
-	 * the sum of the squared Euclidean distances between the 
-	 * transformed point set X and the reference set Y.
-	 * This method is provided for testing as an alternative to
-	 * the quicker {@link getError} method.
-	 * 
+	 * Calculates the total error for the estimated fit as the sum of the squared Euclidean distances between the
+	 * transformed point set X and the reference set Y. This method is provided for testing as an alternative to the
+	 * quicker {@link #getError()} method.
+	 *
 	 * @param P Sequence of n-dimensional points.
 	 * @param Q Sequence of n-dimensional points (reference).
 	 * @return The total error for the estimated fit.
@@ -260,64 +254,64 @@ public class ProcrustesFit2d implements LinearFit2d {
 
 	// --------------------------------------------------------------------------------
 	
-	public static void main(String[] args) {
-		PrintPrecision.set(6);
-		int NDIGITS = 1;
-		
-		boolean allowTranslation = true;
-		boolean allowScaling = true;
-		boolean forceRotation = true;
-		
-		double a = 0.6;
-		double[][] R0data =
-			{{ Math.cos(a), -Math.sin(a) },
-			 { Math.sin(a),  Math.cos(a) }};
-		
-		RealMatrix R0 = MatrixUtils.createRealMatrix(R0data);
-		double[] t0 = {4, -3};
-		double s = 3.5;
-		
-		System.out.format("original alpha: a = %.6f\n", a);
-		System.out.println("original rotation: R = \n" + Matrix.toString(R0.getData()));
-		System.out.println("original translation: t = " + Matrix.toString(t0));
-		System.out.format("original scale: s = %.6f\n", s);
-		System.out.println();
-		
-		Pnt2d[] P = {
-				PntInt.from(2, 5),
-				PntInt.from(7, 3),
-				PntInt.from(0, 9),
-				PntInt.from(5, 4)
-		};
-		
-		Pnt2d[] Q = new Pnt2d[P.length];
-		
-		for (int i = 0; i < P.length; i++) {
-			Pnt2d q = PntDouble.from(R0.operate(P[i].toDoubleArray()));
-			// noise!
-			double qx = roundToDigits(s * q.getX() + t0[0], NDIGITS);
-			double qy = roundToDigits(s * q.getY() + t0[1], NDIGITS);
-			Q[i] = Pnt2d.PntDouble.from(qx, qy);
-		}
-		
-		//P[0] = Point.create(2, 0);	// to provoke a large error
-		
-		ProcrustesFit2d pf = new ProcrustesFit2d(P, Q, allowTranslation, allowScaling, forceRotation);
-
-		double[][] R = pf.getRotation();
-		System.out.format("estimated alpha: a = %.6f\n", Math.acos(R[0][0]));
-		System.out.println("estimated rotation: R = \n" + Matrix.toString(R));
-		double[] T = pf.getTranslation();
-		System.out.println("estimated translation: t = " + Matrix.toString(T));
-		System.out.format("estimated scale: s = %.6f\n", pf.getScale());
-		
-		System.out.println();
-		System.out.format("RMS fitting error = %.6f\n", pf.getError());
-		System.out.format("euclidean error (test) = %.6f\n", pf.getEuclideanError(P, Q));
-		
-		double[][] A = pf.getTransformationMatrix();
-		System.out.println("transformation matrix: A = \n" + Matrix.toString(A));
-	}
+	// public static void main(String[] args) {
+	// 	PrintPrecision.set(6);
+	// 	int NDIGITS = 1;
+	//
+	// 	boolean allowTranslation = true;
+	// 	boolean allowScaling = true;
+	// 	boolean forceRotation = true;
+	//
+	// 	double a = 0.6;
+	// 	double[][] R0data =
+	// 		{{ Math.cos(a), -Math.sin(a) },
+	// 		 { Math.sin(a),  Math.cos(a) }};
+	//
+	// 	RealMatrix R0 = MatrixUtils.createRealMatrix(R0data);
+	// 	double[] t0 = {4, -3};
+	// 	double s = 3.5;
+	//
+	// 	System.out.format("original alpha: a = %.6f\n", a);
+	// 	System.out.println("original rotation: R = \n" + Matrix.toString(R0.getData()));
+	// 	System.out.println("original translation: t = " + Matrix.toString(t0));
+	// 	System.out.format("original scale: s = %.6f\n", s);
+	// 	System.out.println();
+	//
+	// 	Pnt2d[] P = {
+	// 			PntInt.from(2, 5),
+	// 			PntInt.from(7, 3),
+	// 			PntInt.from(0, 9),
+	// 			PntInt.from(5, 4)
+	// 	};
+	//
+	// 	Pnt2d[] Q = new Pnt2d[P.length];
+	//
+	// 	for (int i = 0; i < P.length; i++) {
+	// 		Pnt2d q = PntDouble.from(R0.operate(P[i].toDoubleArray()));
+	// 		// noise!
+	// 		double qx = roundToDigits(s * q.getX() + t0[0], NDIGITS);
+	// 		double qy = roundToDigits(s * q.getY() + t0[1], NDIGITS);
+	// 		Q[i] = Pnt2d.PntDouble.from(qx, qy);
+	// 	}
+	//
+	// 	//P[0] = Point.create(2, 0);	// to provoke a large error
+	//
+	// 	ProcrustesFit2d pf = new ProcrustesFit2d(P, Q, allowTranslation, allowScaling, forceRotation);
+	//
+	// 	double[][] R = pf.getRotation();
+	// 	System.out.format("estimated alpha: a = %.6f\n", Math.acos(R[0][0]));
+	// 	System.out.println("estimated rotation: R = \n" + Matrix.toString(R));
+	// 	double[] T = pf.getTranslation();
+	// 	System.out.println("estimated translation: t = " + Matrix.toString(T));
+	// 	System.out.format("estimated scale: s = %.6f\n", pf.getScale());
+	//
+	// 	System.out.println();
+	// 	System.out.format("RMS fitting error = %.6f\n", pf.getError());
+	// 	System.out.format("euclidean error (test) = %.6f\n", pf.getEuclideanError(P, Q));
+	//
+	// 	double[][] A = pf.getTransformationMatrix();
+	// 	System.out.println("transformation matrix: A = \n" + Matrix.toString(A));
+	// }
 
 	/*
 	original alpha: a = 0.600000

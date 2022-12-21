@@ -20,21 +20,18 @@ import java.util.List;
 
 /**
  * <p>
- * This class implements the "classic" Hough Transform for straight lines. This
- * implementation improves the algorithm described in the textbook in the way
- * the accumulator is updated. Here, the quantity 1 is not added to a single
- * accumulator cell but gets distributed over two neighboring (radial) cells to
- * reduce aliasing effects. Thus we accumulate non-integer values and therefore
- * the various accumulators are of type {@code float[][]}. See Sec. 12.2 of [1]
- * for additional details.
+ * This class implements the "classic" Hough Transform for straight lines. This implementation improves the algorithm
+ * described in the textbook in the way the accumulator is updated. Here, the quantity 1 is not added to a single
+ * accumulator cell but gets distributed over two neighboring (radial) cells to reduce aliasing effects. Thus we
+ * accumulate non-integer values and therefore the various accumulators are of type {@code float[][]}. See Sec. 12.2 of
+ * [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2022/04/01
  * @version 2022/09/10 removed ImageJ progress reporting
  */
 public class HoughTransformLines implements ProgressReporter {
@@ -70,9 +67,9 @@ public class HoughTransformLines implements ProgressReporter {
 	// -------------- public constructor(s) ------------------------
 
 	/**
-	 * Constructor. Creates a new Hough transform from the binary image.
-	 * 
-	 * @param I      input image, relevant (edge) points have pixel values greater 0.
+	 * Constructor, creates a new Hough transform from the binary image.
+	 *
+	 * @param I input image, relevant (edge) points have pixel values greater 0.
 	 * @param params parameter object.
 	 */
 	public HoughTransformLines(ByteProcessor I, Parameters params) {
@@ -85,14 +82,13 @@ public class HoughTransformLines implements ProgressReporter {
 	}
 
 	/**
-	 * Constructor. Creates a new Hough transform from a sequence of 2D points. Parameters M, N
-	 * are only used to specify the reference point (usually at the center of the
-	 * image). Use this constructor if the relevant image points are collected
-	 * separately.
-	 * 
+	 * Constructor, creates a new Hough transform from a sequence of 2D points. Parameters M, N are only used to specify
+	 * the reference point (usually at the center of the image). Use this constructor if the relevant image points are
+	 * collected separately.
+	 *
 	 * @param points an array of 2D points.
-	 * @param width      width of the corresponding image plane.
-	 * @param height      height of the corresponding image plane.
+	 * @param width width of the corresponding image plane.
+	 * @param height height of the corresponding image plane.
 	 * @param params parameter object.
 	 */
 	public HoughTransformLines(Pnt2d[] points, int width, int height, Parameters params) {
@@ -126,11 +122,10 @@ public class HoughTransformLines implements ProgressReporter {
 	// -------------- public methods ------------------------
 
 	/**
-	 * Finds and returns the parameters of the strongest lines with a specified min.
-	 * pixel count. All objects in the returned array are valid, but the array may
-	 * be empty. Note: Could perhaps be implemented more efficiently with
+	 * Finds and returns the parameters of the strongest lines with a specified min. pixel count. All objects in the
+	 * returned array are valid, but the array may be empty. Note: Could perhaps be implemented more efficiently with
 	 * insert-sort.
-	 * 
+	 *
 	 * @param amin the minimum accumulator value for each line.
 	 * @param maxLines maximum number of (strongest) lines to extract.
 	 * @return a possibly empty array of {@link HoughLine} objects.
@@ -208,9 +203,10 @@ public class HoughTransformLines implements ProgressReporter {
 	}
 
 	/**
-	 * Returns the local maximum values of the accumulator as a 2D float-array
-	 * (all non-maximum elements are set to zero).
-	 * @return the local maximum values of the accumulator 
+	 * Returns the local maximum values of the accumulator as a 2D float-array (all non-maximum elements are set to
+	 * zero).
+	 *
+	 * @return the local maximum values of the accumulator
 	 */
 	public float[][] getAccumulatorMax() {
 		return this.accumulatorMax;
@@ -223,7 +219,6 @@ public class HoughTransformLines implements ProgressReporter {
 	public float[][] getAccumulatorExtended() {
 		return this.accumulatorExt;
 	}
-	
 
 	/**
 	 * Creates and returns an image of the 2D accumulator array.
@@ -232,11 +227,11 @@ public class HoughTransformLines implements ProgressReporter {
 	public FloatProcessor getAccumulatorImage() {
 		return new FloatProcessor(accumulator);
 	}
-	
 
 	/**
-	 * Creates and returns an image of the extended 2D accumulator array, produced
-	 * by adding a vertically mirrored copy of the accumulator to its right end. 
+	 * Creates and returns an image of the extended 2D accumulator array, produced by adding a vertically mirrored copy
+	 * of the accumulator to its right end.
+	 *
 	 * @return a {@link FloatProcessor} image of the extended accumulator
 	 */
 	public FloatProcessor getAccumulatorImageExtended() {
@@ -309,10 +304,9 @@ public class HoughTransformLines implements ProgressReporter {
 			}
 		}
 	}
-	
+
 	/**
-	 * Searches for local maxima in the extended accumulator but enters their
-	 * positions in 'accumulatorMax'.
+	 * Searches for local maxima in the extended accumulator but enters their positions in 'accumulatorMax'.
 	 */
 	private void findLocalMaxima() {
 		for (int ai = 1; ai <= accWidth; ai++) {	// note the range!

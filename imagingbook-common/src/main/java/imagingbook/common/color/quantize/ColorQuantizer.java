@@ -18,16 +18,15 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 public interface ColorQuantizer {
 	
-	public final static int MAX_RGB = 255;
-	
+	public static final int MAX_RGB = 255;
+
 	/**
-	 * Retrieves the color map produced by this color quantizer.
-	 * The returned array is in the format float[idx][rgb], where
-	 * rgb = 0 (red), 1 (green), 2 (blue) and  0 &le; idx &lt; nColors.
-	 * 
+	 * Retrieves the color map produced by this color quantizer. The returned array is in the format float[idx][rgb],
+	 * where rgb = 0 (red), 1 (green), 2 (blue) and  0 &le; idx &lt; nColors.
+	 *
 	 * @return The table of reference (quantization) colors.
 	 */
-	public abstract float[][] getColorMap();
+	public float[][] getColorMap();
 	
 	// ---------------------------------------------------------------
 	
@@ -39,12 +38,11 @@ public interface ColorQuantizer {
 	public default int getColorCount() {
 		return getColorMap().length;
 	}
-	
-	
+
+
 	/**
-	 * Performs color quantization on the given full-color RGB image
-	 * and creates an indexed color image.
-	 * 
+	 * Performs color quantization on the given full-color RGB image and creates an indexed color image.
+	 *
 	 * @param cp The original full-color RGB image.
 	 * @return The quantized (indexed color) image.
 	 */
@@ -132,7 +130,6 @@ public interface ColorQuantizer {
 	 * @return The associated color table index.
 	 */
 	default int findColorIndex(int p, float[][] colormap) {
-//		float[][] colormap = getColorMap();
 		int[] rgb = RgbUtils.intToRgb(p);
 		int n = colormap.length;
 		float minD2 = Float.POSITIVE_INFINITY;

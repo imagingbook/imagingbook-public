@@ -16,10 +16,10 @@ import java.util.List;
 
 /**
  * <p>
- * Interface specification for implementations of the Delaunay triangulation.
- * see {@link TriangulationGuibas} for a concrete implementation.
+ * Interface specification for implementations of Delaunay triangulations. See {@link TriangulationGuibas} for a
+ * concrete implementation.
  * </p>
- * 
+ *
  * @author WB
  * @see TriangulationGuibas
  */
@@ -30,29 +30,29 @@ public interface DelaunayTriangulation {
 	 * @return the number of triangles
 	 */
 	public int size();
-	
+
 	/**
-	 * Returns a list of {@link Triangle} instances
-	 * contained in this triangulation. The list does not contain the initial outer 
-	 * triangle.
-	 * @return a list of triangles 
+	 * Returns a list of {@link Triangle} instances contained in this triangulation. The list does not contain the
+	 * initial outer triangle.
+	 *
+	 * @return a list of triangles
 	 */
 	public List<Triangle> getTriangles();
-	
+
 	/**
-	 * Returns a list of 2D vertices
-	 * contained in this triangulation. The list does not contain the
-	 * vertices of the initial (outer) triangle.
+	 * Returns a list of 2D vertices contained in this triangulation. The list does not contain the vertices of the
+	 * initial (outer) triangle.
+	 *
 	 * @return a list of points
 	 */
 	public List<Pnt2d> getPoints();
 	
 	// utility methods: ----------------------------------------
-	
+
 	/**
-	 * Creates a 2D triangle that is sufficiently large to be used as 
-	 * an outer triangle for the Delaunay triangulation of the given
-	 * point set.
+	 * Creates a 2D triangle that is sufficiently large to be used as an outer triangle for the Delaunay triangulation
+	 * of the given point set.
+	 *
 	 * @param points the 2D point set
 	 * @return a triangle as an array of 3 points
 	 */
@@ -74,9 +74,9 @@ public interface DelaunayTriangulation {
 	}
 
 	/**
-	 * Creates a 2D triangle that is sufficiently large to be used as 
-	 * an outer triangle for the Delaunay triangulation of points 
-	 * inside the given bounding rectangle.
+	 * Creates a 2D triangle that is sufficiently large to be used as an outer triangle for the Delaunay triangulation
+	 * of points inside the given bounding rectangle.
+	 *
 	 * @param xmin minimum x-coordinate of the bounding rectangle
 	 * @param xmax maximum x-coordinate of the bounding rectangle
 	 * @param ymin minimum y-coordinate of the bounding rectangle
@@ -98,9 +98,9 @@ public interface DelaunayTriangulation {
 	}
 
 	/**
-	 * Creates a 2D triangle that is sufficiently large to be used as 
-	 * an outer triangle for the Delaunay triangulation of points 
-	 * inside the given bounding rectangle, anchored at (0,0).
+	 * Creates a 2D triangle that is sufficiently large to be used as an outer triangle for the Delaunay triangulation
+	 * of points inside the given bounding rectangle, anchored at (0,0).
+	 *
 	 * @param width the width of the bounding rectangle
 	 * @param height the height of the bounding rectangle
 	 * @return a triangle as an array of 3 points
@@ -110,10 +110,9 @@ public interface DelaunayTriangulation {
 	}
 
 	/**
-	 * Performs Delaunay triangulation on the specified points.
-	 * Supplied points are inserted without shuffling, i.e.,
-	 * in their original order.
-	 * 
+	 * Performs Delaunay triangulation on the specified points. Supplied points are inserted without shuffling, i.e., in
+	 * their original order.
+	 *
 	 * @param points the point set to be triangulated
 	 * @return a {@link DelaunayTriangulation} instance
 	 */
@@ -122,11 +121,10 @@ public interface DelaunayTriangulation {
 	}
 	
 	// static construction methods: -----------------------------------
-	
+
 	/**
-	 * Performs Delaunay triangulation on the specified points with
-	 * (optional) random insertion order.
-	 * 
+	 * Performs Delaunay triangulation on the specified points with (optional) random insertion order.
+	 *
 	 * @param points the point set to be triangulated
 	 * @param shuffle set {@code true} to randomly shuffle the input points
 	 * @return a {@link DelaunayTriangulation} instance

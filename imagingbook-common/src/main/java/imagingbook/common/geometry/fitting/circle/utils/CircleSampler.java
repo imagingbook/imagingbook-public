@@ -36,17 +36,15 @@ public class CircleSampler {
 		this.circle = circle;
 		this.rg = new Random(seed);
 	}
-	
+
 	/**
-	 * Creates and returns an array of 2D points sampled on 
-	 * the circle associated with this {@link CircleSampler}.
-	 * Random Gaussian noise (with standard deviation sigma)
-	 * is added to the individual x/y coordinates.
+	 * Creates and returns an array of 2D points sampled on the circle associated with this {@link CircleSampler}.
+	 * Random Gaussian noise (with standard deviation sigma) is added to the individual x/y coordinates.
 	 *
-	 * @param n          number of points to sample
+	 * @param n number of points to sample
 	 * @param startAngle initial angle (in radians)
-	 * @param endAngle   final angle (in radians)
-	 * @param sigma      sigma of Gaussian noise
+	 * @param endAngle final angle (in radians)
+	 * @param sigma sigma of Gaussian noise
 	 * @return an array of sample points
 	 */
 	public Pnt2d[] getPoints(int n, double startAngle, double endAngle, double sigma) {

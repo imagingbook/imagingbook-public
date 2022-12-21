@@ -24,18 +24,16 @@ import java.util.List;
 
 /**
  * <p>
- * This class calculate the convex hull of a 2D point set. It is based on the
- * convex hull implementation provided by the Apache Commons Math library, in
- * particular classes {@link ConvexHull2D} and {@link MonotoneChain} [1]. See
- * Sec. 8.4.2 of [2] for additional details.
+ * This class calculate the convex hull of a 2D point set. It is based on the convex hull implementation provided by the
+ * Apache Commons Math library, in particular classes {@link ConvexHull2D} and {@link MonotoneChain} [1]. See Sec. 8.4.2
+ * of [2] for additional details.
  * </p>
  * <p>
  * [1] <a href="https://commons.apache.org/proper/commons-math/index.html">
- * https://commons.apache.org/proper/commons-math/index.html</a> <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * https://commons.apache.org/proper/commons-math/index.html</a> <br> [2] W. Burger, M.J. Burge, <em>Digital Image
+ * Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/06/24
  */
@@ -43,11 +41,11 @@ public class ConvexHull implements ShapeProducer {
 	
 	private final ConvexHull2D hull;
 	private final Pnt2d[] vertices;
-	
+
 	/**
-	 * Constructor, creates a {@link ConvexHull} instance from an {@link Iterable}
-	 * over {@link Pnt2d}. At least one distinct point is required.
-	 * 
+	 * Constructor, creates a {@link ConvexHull} instance from an {@link Iterable} over {@link Pnt2d}. At least one
+	 * distinct point is required.
+	 *
 	 * @param points an iterator over 2D points
 	 */
 	public ConvexHull(Iterable<Pnt2d> points) {
@@ -62,11 +60,11 @@ public class ConvexHull implements ShapeProducer {
 			vertices[i] = PntDouble.from(vecs[i]);
 		}
 	}
-	
+
 	/**
-	 * Constructor, creates a {@link AxisAlignedBoundingBox} instance from
-	 * an array of {@link Pnt2d} points. At least one distinct point is required.
-	 * 
+	 * Constructor, creates a {@link AxisAlignedBoundingBox} instance from an array of {@link Pnt2d} points. At least
+	 * one distinct point is required.
+	 *
 	 * @param points an array of 2D points
 	 */
 	public ConvexHull(Pnt2d[] points) {
@@ -80,11 +78,10 @@ public class ConvexHull implements ShapeProducer {
 		}
 		return vecs;
 	}
-	
+
 	/**
-	 * Returns a sequence of 2D points on the convex hull
-	 * (in counter-clockwise order).
-	 * 
+	 * Returns a sequence of 2D points on the convex hull (in counter-clockwise order).
+	 *
 	 * @return sequence of 2D points on the convex hull
 	 */
 	public Pnt2d[] getVertices() {
@@ -131,12 +128,11 @@ public class ConvexHull implements ShapeProducer {
 	public boolean contains(Pnt2d p) {
 		return contains(p, DefaultContainsTolerance);
 	}
-	
+
 	/**
-	 * Checks if this convex hull contains the specified point.
-	 * This method is used instead of {@link Path2D#contains(double, double)}
-	 * to avoid false results due to roundoff errors.
-	 * 
+	 * Checks if this convex hull contains the specified point. This method is used instead of
+	 * {@link Path2D#contains(double, double)} to avoid false results due to roundoff errors.
+	 *
 	 * @param p some 2D point
 	 * @param tolerance positive quantity for being outside
 	 * @return true if the point is inside the hull

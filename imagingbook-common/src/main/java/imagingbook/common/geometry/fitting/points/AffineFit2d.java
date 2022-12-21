@@ -18,15 +18,14 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 /**
  * <p>
- * This class implements 2D point fitting under affine (three-point)
- * transformations (exact and least-squares). See Sec. 21.1.3 of [1] for
- * details.
+ * This class implements 2D point fitting under affine (three-point) transformations (exact and least-squares). See Sec.
+ * 21.1.3 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/08/01
  */
@@ -34,13 +33,11 @@ public class AffineFit2d implements LinearFit2d {
 	
 	private final RealMatrix A;		// the calculated transformation matrix
 	private final double err;		// the calculated error
-	
+
 	/**
-	 * Constructor.
-	 * Fits two sequences of 2D points using an affine transformation model.
-	 * At least 3 point pairs are required. For 3 point pairs, the solution
-	 * is an exact fit, otherwise a least-squares fit is found.
-	 * 
+	 * Constructor. Fits two sequences of 2D points using an affine transformation model. At least 3 point pairs are
+	 * required. For 3 point pairs, the solution is an exact fit, otherwise a least-squares fit is found.
+	 *
 	 * @param P the source points
 	 * @param Q the target points
 	 */

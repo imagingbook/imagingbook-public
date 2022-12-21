@@ -18,19 +18,17 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
 
 /**
  * <p>
- * Implementation of a D65-based XYZ color space, as a substitute for Java's
- * built-in standard connection space (obtained with
- * {@code  ColorSpace.getInstance(ColorSpace.CS_CIEXYZ)}), with improved
- * accuracy. The reference white point of this color space is D50 and any XYZ
- * coordinate passed to {@link #fromCIEXYZ(float[])} is assumed to be relative
- * to D50 as well, thus no conversion (color adaptation) is necessary between
- * XYZ values. See Sec. 14.1.1 of [1] for details.
+ * Implementation of a D65-based XYZ color space, as a substitute for Java's built-in standard connection space
+ * (obtained with {@code  ColorSpace.getInstance(ColorSpace.CS_CIEXYZ)}), with improved accuracy. The reference white
+ * point of this color space is D50 and any XYZ coordinate passed to {@link #fromCIEXYZ(float[])} is assumed to be
+ * relative to D50 as well, thus no conversion (color adaptation) is necessary between XYZ values. See Sec. 14.1.1 of
+ * [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/14
  * @see XYZ50ColorSpace

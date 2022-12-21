@@ -22,28 +22,24 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class implements color quantization using k-means clustering of image
- * pixels in RGB color space. It provides two modes for selecting initial color
- * clusters: (a) random sampling of the input colors, (b) using the K most
- * frequent colors.
- * Note that this implementation is mainly to demonstrate the concept. Depending
- * on the data size and number of quantization colors, this process may be
- * excessively slow compared to other methods. It is usually impractical even
- * for medium-sized images. During clustering all input pixels are used, i.e.,
- * no stochastic sub-sampling is applied (which could make the process a lot
- * more efficient).
+ * This class implements color quantization using k-means clustering of image pixels in RGB color space. It provides two
+ * modes for selecting initial color clusters: (a) random sampling of the input colors, (b) using the K most frequent
+ * colors. Note that this implementation is mainly to demonstrate the concept. Depending on the data size and number of
+ * quantization colors, this process may be excessively slow compared to other methods. It is usually impractical even
+ * for medium-sized images. During clustering all input pixels are used, i.e., no stochastic sub-sampling is applied
+ * (which could make the process a lot more efficient).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/06
  * @see MedianCutQuantizer
  * @see OctreeQuantizer
  */
 public class KMeansClusteringQuantizer implements ColorQuantizer {
-	
+
 	/**
-	 * Seed for random number generation (set to a nonzero value to
-	 * obtain repeatable results for debugging and testing).
+	 * Seed for random number generation (set to a nonzero value to obtain repeatable results for debugging and
+	 * testing).
 	 */
 	public static long RandomSeed = 0;	
 	private final Random random = (RandomSeed == 0) ? new Random() : new Random(RandomSeed);
@@ -64,26 +60,25 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 	};
 	
 	// --------------------------------------------------------------
-	
+
 	/**
-	 * Constructor, creates a new {@link KMeansClusteringQuantizer} with up to K colors,
-	 * using default parameters.
-	 * 
+	 * Constructor, creates a new {@link KMeansClusteringQuantizer} with up to K colors, using default parameters.
+	 *
 	 * @param pixels an image as a aRGB-encoded int array
-	 * @param K  the desired number of colors (1 or more)
+	 * @param K the desired number of colors (1 or more)
 	 */
 	public KMeansClusteringQuantizer(int[] pixels, int K) {
 		this(pixels, K, InitialClusterMethod.Random, DefaultIterations);
 	}
 
 	/**
-	 * Constructor, creates a new {@link KMeansClusteringQuantizer} with up to K colors,
-	 * but never more than the number of colors found in the supplied pixel data.
-	 * 
+	 * Constructor, creates a new {@link KMeansClusteringQuantizer} with up to K colors, but never more than the number
+	 * of colors found in the supplied pixel data.
+	 *
 	 * @param pixels an image as a aRGB-encoded int array
-	 * @param K  the desired number of colors (1 or more)
+	 * @param K the desired number of colors (1 or more)
 	 * @param initMethod the method to initialize color clusters ({@link InitialClusterMethod})
-	 * @param maxIterations the maximum number of clustering iterations 
+	 * @param maxIterations the maximum number of clustering iterations
 	 */
 	public KMeansClusteringQuantizer(int[] pixels, int K, InitialClusterMethod initMethod, int maxIterations) {
 		clusters = initClusters(pixels, K, initMethod);
@@ -110,7 +105,7 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 	}
 
 	/**
-	 * Returns (maximally) k colors randomly selected from the given pixel data.
+	 * Returns (up to) k colors randomly selected from the given pixel data.
 	 */
 	private int[] getRandomColors(int[] pixels, int k) {
 		ColorHistogram colorHist = new ColorHistogram(pixels);
@@ -136,11 +131,10 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 			arr[i] = tmp;
 		}
 	}
-	
+
 	/**
-	 * Returns the (maximally) k most frequent color values in the given pixel data.
-	 * If fewer than k colors are available, these are returned, i.e., the resulting
-	 * array may have less than k elements.
+	 * Returns the (maximally) k most frequent color values in the given pixel data. If fewer than k colors are
+	 * available, these are returned, i.e., the resulting array may have less than k elements.
 	 */
 	private int[] getMostFrequentColors(int[] pixels, int k) {
 		ColorHistogram colorHist = new ColorHistogram(pixels, true);	// sorts color bins by frequency
@@ -224,12 +218,11 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 			System.out.println(c.toString());
 		}
 	}
-	
+
 	/**
-	 * Returns the final clustering error, calculated as the sum of
-	 * the squared distances of the color samples to the associated cluster
-	 * centers. This calculation is performed during the final iteration.
-	 * 
+	 * Returns the final clustering error, calculated as the sum of the squared distances of the color samples to the
+	 * associated cluster centers. This calculation is performed during the final iteration.
+	 *
 	 * @return the final clustering error
 	 */
 	public double getTotalError() {
@@ -276,11 +269,11 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 			sB += rgb[2];
 			pcount = pcount + 1;
 		}
-		
+
 		/**
-		 * This method is invoked after all samples have been assigned to clusters. It
-		 * updates the cluster's center and returns by how much its population changed from
-		 * the previous clustering (absolute count).
+		 * This method is invoked after all samples have been assigned to clusters. It updates the cluster's center and
+		 * returns by how much its population changed from the previous clustering (absolute count).
+		 *
 		 * @return the change in cluster population from the previous clustering
 		 */
 		private int update() {
@@ -295,10 +288,11 @@ public class KMeansClusteringQuantizer implements ColorQuantizer {
 			reset();
 			return changeCount;	
 		}
-		
+
 		/**
-		 * Calculates and returns the squared Euclidean distance between the color p
-		 * and this cluster's center in RGB space.
+		 * Calculates and returns the squared Euclidean distance between the color p and this cluster's center in RGB
+		 * space.
+		 *
 		 * @param p Color sample
 		 * @return squared distance to the cluster center
 		 */

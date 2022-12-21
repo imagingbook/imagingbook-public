@@ -42,17 +42,16 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 import static org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.evaluationChecker;
 
-
 /**
  * <p>
- * "Distance-based" geometric ellipse fitter using iterative minimization with
- * the Levenberg-Marquart method. See Sec. 11.2.2 of [1] for details.
+ * "Distance-based" geometric ellipse fitter using iterative minimization with the Levenberg-Marquart method. See Sec.
+ * 11.2.2 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */

@@ -11,13 +11,18 @@ package imagingbook.common.color.sets;
 
 import java.awt.Color;
 
-
 // Experimental!
 // from https://gist.github.com/lunohodov/1995178 CORRECT??
 // same as in https://woehr-tabellen.industriegehaeuse.de/en/ral-tabellen/ral-colors/
 // different to: https://www.ralcolorchart.com/ral-classic
 //    https://en.wikipedia.org/wiki/List_of_RAL_colors
 //    https://abes-online.com/en/colors/
+
+/**
+ * {@link ColorEnumeration} defining a set of RAL colors (see https://en.wikipedia.org/wiki/List_of_RAL_colors)
+ *
+ * @author WB
+ */
 public enum RalColor implements ColorEnumeration {
 	RAL1000(0xBEBD7F, "Green beige"),
 	RAL1001(0xC2B078, "Beige"),

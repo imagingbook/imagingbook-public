@@ -11,17 +11,12 @@ package imagingbook.common.filter.generic;
 import imagingbook.common.image.PixelPack;
 
 /**
- * This (abstract) class represents a generic vector filter whose pixel-operation
- * is x/y-separable.
- * It is similar to {@link GenericFilterVector} but requires two methods to
- * be implemented by concrete sub-classes: 
- * {@link #doPixelX(PixelPack, int, int)} and {@link #doPixelY(PixelPack, int, int)}
- * for the x- and y-pass, respectively,
- * which are invoked in exactly this order.
- * The remaining filter mechanics
- * including out-of-bounds coordinate handling,
- * multiple passes and data copying are handled by this class and its super-class
- * (see {@link GenericFilter}). 
+ * This (abstract) class represents a generic vector filter whose pixel-operation is x/y-separable. It is similar to
+ * {@link GenericFilterVector} but requires two methods to be implemented by concrete sub-classes:
+ * {@link #doPixelX(PixelPack, int, int)} and {@link #doPixelY(PixelPack, int, int)} for the x- and y-pass,
+ * respectively, which are invoked in exactly this order. The remaining filter mechanics including out-of-bounds
+ * coordinate handling, multiple passes and data copying are handled by this class and its super-class (see
+ * {@link GenericFilter}).
  */
 public abstract class GenericFilterVectorSeparable extends GenericFilter { // GenericFilterVector
 	

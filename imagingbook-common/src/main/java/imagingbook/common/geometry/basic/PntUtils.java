@@ -13,13 +13,16 @@ import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 import java.util.Arrays;
 
+/**
+ * Defines static methods for manipulating 2D points.
+ */
 public abstract class PntUtils {
 	
 	private PntUtils() {}
-	
+
 	/**
-	 * Calculates and returns the centroid of the specified
-	 * point set.
+	 * Calculates and returns the centroid of the specified point set.
+	 *
 	 * @param pts an {@link Iterable} of {@link Pnt2d} instances
 	 * @return the centroid (as a {@link Pnt2d} instance)
 	 */
@@ -37,10 +40,10 @@ public abstract class PntUtils {
 		}
 		return Pnt2d.from(sx/n, sy/n);
 	}
-	
+
 	/**
-	 * Calculates and returns the centroid of the specified
-	 * point set.
+	 * Calculates and returns the centroid of the specified point set.
+	 *
 	 * @param pts an array of {@link Pnt2d} instances
 	 * @return the centroid (as a {@link Pnt2d} instance)
 	 */
@@ -49,10 +52,11 @@ public abstract class PntUtils {
 	}
 	
 	// -------------------------------------------------------------------
-	
+
 	/**
-	 * Converts a given point array {@code Pnt2d[n]} to a 2D double array {@code double[n][2]},
-	 * with x-coordinates in column 0 and y-coordinates in column 1.
+	 * Converts a given point array {@code Pnt2d[n]} to a 2D double array {@code double[n][2]}, with x-coordinates in
+	 * column 0 and y-coordinates in column 1.
+	 *
 	 * @param pts the point array
 	 * @return a 2D double array
 	 */
@@ -65,11 +69,12 @@ public abstract class PntUtils {
 		}
 		return pa;
 	}
-	
+
 	/**
-	 * Converts a given 2D double array {@code double[n][2]} to a point array {@code Pnt2d[n]},
-	 * taking x-coordinates from column 0 and y-coordinates from column 1.
-	 * @param da a 2D double array 
+	 * Converts a given 2D double array {@code double[n][2]} to a point array {@code Pnt2d[n]}, taking x-coordinates
+	 * from column 0 and y-coordinates from column 1.
+	 *
+	 * @param da a 2D double array
 	 * @return a point array
 	 */
 	public static Pnt2d[] fromDoubleArray(double[][] da) {
@@ -82,17 +87,16 @@ public abstract class PntUtils {
 	}
 	
 	// -------------------------------------------------------------------
-	
+
 	/**
-	 * Creates and returns an array of {@link Pnt2d.PntInt} points from the
-	 * given sequence of {@code int} coordinate values, interpreted as x/y
-	 * pairs. Throws an exception if the length of the coordinate sequence
-	 * is not even. Usage example:
+	 * Creates and returns an array of {@link Pnt2d.PntInt} points from the given sequence of {@code int} coordinate
+	 * values, interpreted as x/y pairs. Throws an exception if the length of the coordinate sequence is not even. Usage
+	 * example:
 	 * <pre>
 	 * Pnt2d[] pts = PntUtils.makeIntPoints(1, 2, 3, 4, 5, 6);
 	 *    // gives [PntInt(1, 2), PntInt(3, 4), PntInt(5, 6)]
 	 * </pre>
-	 * 
+	 *
 	 * @param xy an even-numbered sequence of point coordinates
 	 * @return an array of {@link Pnt2d.PntInt} points
 	 */
@@ -107,17 +111,16 @@ public abstract class PntUtils {
 		}
 		return pts;
 	}
-	
+
 	/**
-	 * Creates and returns an array of {@link Pnt2d.PntDouble} points from the
-	 * given sequence of {@code double} coordinate values, interpreted as x/y
-	 * pairs. Throws an exception if the length of the coordinate sequence
-	 * is not even. Usage example:
+	 * Creates and returns an array of {@link Pnt2d.PntDouble} points from the given sequence of {@code double}
+	 * coordinate values, interpreted as x/y pairs. Throws an exception if the length of the coordinate sequence is not
+	 * even. Usage example:
 	 * <pre>
 	 * Pnt2d[] pts = PntUtils.makeDoublePoints(1, 2, 3, 4, 5, 6);
 	 * // gives [PntDouble(1.0, 2.0), PntDouble(3.0, 4.0), PntDouble(5.0, 6.0)]
 	 * </pre>
-	 * 
+	 *
 	 * @param xy an even-numbered sequence of point coordinates
 	 * @return an array of {@link Pnt2d.PntDouble} points
 	 */

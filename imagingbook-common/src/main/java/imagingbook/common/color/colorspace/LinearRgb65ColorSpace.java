@@ -21,11 +21,10 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
 
 
 /**
- * Defines a linear RGB space with the same white point and primaries as
- * sRGB. Everything is D65, components of all {@code float[]} colors are
- * supposed to be in [0,1]. This is a singleton class with no public
- * constructors, use {@link #getInstance()} to obtain the single instance.
- * 
+ * Defines a linear RGB space with the same white point and primaries as sRGB. Everything is D65, components of all
+ * {@code float[]} colors are supposed to be in [0,1]. This is a singleton class with no public constructors, use
+ * {@link #getInstance()} to obtain the single instance.
+ *
  * @author WB
  * @version 2022/11/14
  * @see sRgbColorSpace

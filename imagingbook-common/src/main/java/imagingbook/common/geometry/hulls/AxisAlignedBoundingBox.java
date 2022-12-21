@@ -29,17 +29,15 @@ import static java.lang.Math.sqrt;
 
 /**
  * <p>
- * Represents a major axis-aligned bounding box of a 2D point set. At least one
- * point is required to set up a bounding box. If the direction vector is
- * undefined (e.g., in the case of a single input point), the unit vector in
- * x-direction is assumed. See Sec. 8.6.4 (Alg. 8.6) of [1] for details.
+ * Represents a major axis-aligned bounding box of a 2D point set. At least one point is required to set up a bounding
+ * box. If the direction vector is undefined (e.g., in the case of a single input point), the unit vector in x-direction
+ * is assumed. See Sec. 8.6.4 (Alg. 8.6) of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * 
+ *
  * @author WB
  * @version 2022/11/01
  */
@@ -51,9 +49,9 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	private final AlgebraicLine[] boundinglines;
 
 	/**
-	 * Constructor, creates a {@link AxisAlignedBoundingBox} instance from
-	 * an {@link Iterable} over {@link Pnt2d}. At least one distinct point is required.
-	 * 
+	 * Constructor, creates a {@link AxisAlignedBoundingBox} instance from an {@link Iterable} over {@link Pnt2d}. At
+	 * least one distinct point is required.
+	 *
 	 * @param points an iterator over 2D points
 	 */
 	public AxisAlignedBoundingBox(Iterable<Pnt2d> points) {
@@ -65,32 +63,30 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 		this.corners = makeBox(points);
 		this.boundinglines = makeBoundingLines();
 	}
-	
+
 	/**
-	 * Constructor, creates a {@link AxisAlignedBoundingBox} instance from
-	 * an array of {@link Pnt2d} points. At least one distinct point is required.
-	 * 
+	 * Constructor, creates a {@link AxisAlignedBoundingBox} instance from an array of {@link Pnt2d} points. At least
+	 * one distinct point is required.
+	 *
 	 * @param points an array of 2D points
 	 */
 	public AxisAlignedBoundingBox(Pnt2d[] points) {
 		this(() -> ArrayIterator.from(points));
 	}
-	
+
 	/**
-	 * Returns the orientation vector of this bounding box (pointing in the
-	 * direction of its major axis).
-	 * 
+	 * Returns the orientation vector of this bounding box (pointing in the direction of its major axis).
+	 *
 	 * @return the orientation vector of this bounding box
 	 */
 	public double[] getOrientationVector() {
 		return dir;
 	}
-	
+
 	/**
-	 * Returns an array of four {@link AlgebraicLine} instances which
-	 * coincide with the outline of the bounding box. The lines can be used to determine
-	 * if a given point is inside the box or not (see {@link #contains(Pnt2d, double)}).
-	 * 
+	 * Returns an array of four {@link AlgebraicLine} instances which coincide with the outline of the bounding box. The
+	 * lines can be used to determine if a given point is inside the box or not (see {@link #contains(Pnt2d, double)}).
+	 *
 	 * @return an array of bounding lines
 	 */
 	public AlgebraicLine[] getBoundingLines() {
@@ -105,13 +101,12 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	public Pnt2d[] getVertices() {
 		return this.corners;
 	}
-		
+
 	/**
-	 * Calculates the major axis-aligned bounding box of the supplied region, as a
-	 * sequence of four point coordinates (p0, p1, p2, p3).
-	 * 
-	 * @return the region's bounding box as a sequence of the 4 corner coordinates
-	 *         (p0, p1, p2, p3)
+	 * Calculates the major axis-aligned bounding box of the supplied region, as a sequence of four point coordinates
+	 * (p0, p1, p2, p3).
+	 *
+	 * @return the region's bounding box as a sequence of the 4 corner coordinates (p0, p1, p2, p3)
 	 */
 	private Pnt2d[] makeBox(Iterable<Pnt2d> points) {
 		//double theta = getOrientationAngle(points);
@@ -209,26 +204,23 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	}
 	
 	public static final double DefaultContainsTolerance = 1e-12;
-	
-	
+
+
 	/**
-	 * Checks if this bounding box contains the specified point
-	 * using the default tolerance.
-	 * This method is used instead of {@link Path2D#contains(double, double)}
-	 * to avoid false results due to roundoff errors.
-	 * 
+	 * Checks if this bounding box contains the specified point using the default tolerance. This method is used instead
+	 * of {@link Path2D#contains(double, double)} to avoid false results due to roundoff errors.
+	 *
 	 * @param p some 2D point
 	 * @return true if the point is inside the bounding box
 	 */
 	public boolean contains(Pnt2d p) {
 		return contains(p, DefaultContainsTolerance);
 	}
-	
+
 	/**
-	 * Checks if this bounding box contains the specified point using the specified tolerance.
-	 * This method is used instead of {@link Path2D#contains(double, double)}
-	 * to avoid false results due to roundoff errors.
-	 * 
+	 * Checks if this bounding box contains the specified point using the specified tolerance. This method is used
+	 * instead of {@link Path2D#contains(double, double)} to avoid false results due to roundoff errors.
+	 *
 	 * @param p some 2D point
 	 * @param tolerance positive quantity for being outside
 	 * @return true if the point is inside the bounding box

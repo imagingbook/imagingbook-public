@@ -17,18 +17,17 @@ package imagingbook.common.color.adapt;
 public interface ChromaticAdaptation {
 
 	/**
-	 * Transforms the specified XYZ source color coordinates to target coordinates.
-	 * The specified color coordinates are interpreted relative to (source) white point (W1).
-	 * Returns a new color adapted to (target) white point W2.
-	 * 
+	 * Transforms the specified XYZ source color coordinates to target coordinates. The specified color coordinates are
+	 * interpreted relative to (source) white point (W1). Returns a new color adapted to (target) white point W2.
+	 *
 	 * @param xyz the original color point w.r.t. the source white point (W1)
 	 * @return the associated color w.r.t. the target white point (W2).
 	 */
 	public float[] applyTo(float[] xyz);
-	
+
 	/**
 	 * Double version of {@link #applyTo(float[])}.
-	 * 
+	 *
 	 * @param xyz the original color point w.r.t. the source white point (W1)
 	 * @return the associated color w.r.t. the target white point (W2).
 	 */

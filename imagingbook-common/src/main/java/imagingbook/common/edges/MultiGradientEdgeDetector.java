@@ -83,6 +83,7 @@ public class MultiGradientEdgeDetector implements EdgeDetector {
 		for (int k = 0; k < 3; k++) {
 			Ix[k] = I[k];
 			Iy[k] = (FloatProcessor) Ix[k].duplicate();
+			// TODO: convert to generic filter?
 			IjUtils.convolve(Ix[k], HxS);
 			IjUtils.convolve(Iy[k], HyS);
 		}

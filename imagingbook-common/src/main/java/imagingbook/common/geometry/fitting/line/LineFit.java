@@ -24,21 +24,19 @@ public interface LineFit {
 	 * @return the number of sample points used for fitting
 	 */
 	public abstract int getSize();
-	
+
 	/**
-	 * Returns the parameters [A, B, C] for the {@link AlgebraicLine}
-	 * associated with this line fit. To be implemented by concrete
-	 * classes. {@code null} is returned if no fit was found.
-	 * 
+	 * Returns the parameters [A, B, C] for the {@link AlgebraicLine} associated with this line fit. To be implemented
+	 * by concrete classes. {@code null} is returned if no fit was found.
+	 *
 	 * @return algebraic line parameters [A, B, C]
 	 * @see AlgebraicLine
 	 */
 	public abstract double[] getLineParameters();
 
 	/**
-	 * Returns the {@link AlgebraicLine} associated with this line fit.
-	 * {@code null} is returned if no fit was found.
-	 * 
+	 * Returns the {@link AlgebraicLine} associated with this line fit. {@code null} is returned if no fit was found.
+	 *
 	 * @return an {@link AlgebraicLine} instance
 	 */
 	public default AlgebraicLine getLine() {
@@ -50,11 +48,10 @@ public interface LineFit {
 			return new AlgebraicLine(p);
 		}
 	}
-	
+
 	/**
-	 * Calculates and returns the sum of the squared orthogonal distances
-	 * of the specified points for this line fit.
-	 * 
+	 * Calculates and returns the sum of the squared orthogonal distances of the specified points for this line fit.
+	 *
 	 * @param points an array of 2D points
 	 * @return the squared orthogonal error
 	 */

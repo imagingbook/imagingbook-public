@@ -13,23 +13,21 @@ import imagingbook.common.math.Matrix;
 
 /**
  * <p>
- * This class represents a pure 2D rotation about the coordinate origin (as a
- * special case of affine mapping). It can be assumed that every instance of
- * this class is indeed a rotation. See Secs. 21.1.3 and 21.3.1 of [1] for
- * details.
+ * This class represents a pure 2D rotation about the coordinate origin (as a special case of affine mapping). It can be
+ * assumed that every instance of this class is indeed a rotation. See Secs. 21.1.3 and 21.3.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- *  @author WB
+ *
+ * @author WB
  */
 public class Rotation2D extends AffineMapping2D {
-	
+
 	/**
-	 * Constructor. Creates a 2D rotation by a given
-	 * angle about the origin.
+	 * Constructor. Creates a 2D rotation by a given angle about the origin.
+	 *
 	 * @param alpha rotation angle (in radians)
 	 */
 	public Rotation2D(double alpha) {
@@ -37,9 +35,10 @@ public class Rotation2D extends AffineMapping2D {
 			 Math.cos(alpha), -Math.sin(alpha), 0,
 			 Math.sin(alpha),  Math.cos(alpha), 0);
 	}
-	
+
 	/**
 	 * Auxiliary constructor used internally for duplicating instances.
+	 *
 	 * @param a00 matrix element A_00
 	 * @param a01 matrix element A_01
 	 * @param a10 matrix element A_10
@@ -48,10 +47,10 @@ public class Rotation2D extends AffineMapping2D {
 	protected Rotation2D(double a00, double a01, double a10, double a11) {
 		super(a00, a01, 0, a10, a11, 0);
 	}
-	
+
 	/**
-	 * Constructor. 
-	 * Creates a new {@link Rotation2D} object from an existing instance.
+	 * Constructor. Creates a new {@link Rotation2D} object from an existing instance.
+	 *
 	 * @param m a {@link Rotation2D} instance
 	 */
 	public Rotation2D(Rotation2D m) {
@@ -59,10 +58,11 @@ public class Rotation2D extends AffineMapping2D {
 	}
 	
 	// ----------------------------------------------------------
-	
+
 	/**
-	 * Concatenates this rotation (A) with another rotation (B) and returns
-	 * a new rotation (C), such that C(x) = B(A(x)).
+	 * Concatenates this rotation (A) with another rotation (B) and returns a new rotation (C), such that C(x) =
+	 * B(A(x)).
+	 *
 	 * @param B the second rotation
 	 * @return the concatenated rotations
 	 */

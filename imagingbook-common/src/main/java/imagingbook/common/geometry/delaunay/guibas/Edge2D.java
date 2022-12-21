@@ -14,17 +14,17 @@ import static imagingbook.common.math.Arithmetic.isZero;
 
 
 /**
- * This class represents a 2D edge (line segment), specified
- * by its two end-points. Instances of this class are immutable.
+ * This class represents a 2D edge (line segment), specified by its two end-points. Instances of this class are
+ * immutable.
  */
 public class Edge2D {
 
 	protected final Pnt2d a, b;
 
 	/**
-	 * Constructor of the 2D edge class used to create a new edge instance from two
-	 * 2D vectors describing the edge's vertices.
-	 * 
+	 * Constructor of the 2D edge class used to create a new edge instance from two 2D vectors describing the edge's
+	 * vertices.
+	 *
 	 * @param a first vertex of the edge
 	 * @param b second vertex of the edge
 	 */
@@ -39,8 +39,8 @@ public class Edge2D {
 	}
 
 	/**
-	 * Calculates the point on this edge that is closest to the
-	 * specified point.
+	 * Calculates the point on this edge that is closest to the specified point.
+	 *
 	 * @param point the point whose distance is to be calculated
 	 * @return the closest point on this edge
 	 */
@@ -60,8 +60,9 @@ public class Edge2D {
 	}
 
 	/**
-	 * Creates and returns a new {@link Edge2D.Distance} object, representing
-	 * the minimum distance between this edge and the specified point.
+	 * Creates and returns a new {@link Edge2D.Distance} object, representing the minimum distance between this edge and
+	 * the specified point.
+	 *
 	 * @param point the point to calculate the distance for
 	 * @return a new {@link Edge2D.Distance} instance
 	 */
@@ -70,8 +71,8 @@ public class Edge2D {
 	}
 
 	/**
-	 * Non-static inner class representing the distance of a particular point to the
-	 * associated (enclosing) {@link Edge2D} instance.
+	 * Non-static inner class representing the distance of a particular point to the associated (enclosing)
+	 * {@link Edge2D} instance.
 	 */
 	public class Distance implements Comparable<Distance> {
 

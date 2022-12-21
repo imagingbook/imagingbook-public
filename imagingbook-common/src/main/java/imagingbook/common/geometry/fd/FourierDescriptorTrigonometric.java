@@ -21,28 +21,25 @@ import static java.lang.Math.sqrt;
 
 /**
  * <p>
- * Defines static methods to create Fourier descriptors directly from 2D
- * polygons without re-sampling or interpolation. See Ch. 26 of [1] for
- * additional details.
+ * Defines static methods to create Fourier descriptors directly from 2D polygons without re-sampling or interpolation.
+ * See Ch. 26 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction Using Java</em>, 2nd ed,
+ * Springer (2016).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/24
  */
 public abstract class FourierDescriptorTrigonometric {
 	
 	private FourierDescriptorTrigonometric() {}
-	
+
 	/**
-	 * Creates a {@link FourierDescriptor} directly from
-	 * the vertices of a closed polygon (without interpolation).
-	 * For a given number (mp) of Fourier coefficient pairs,
-	 * the resulting number of Fourier coefficients is M = 2 * mp + 1.
-	 * 
+	 * Creates a {@link FourierDescriptor} directly from the vertices of a closed polygon (without interpolation). For a
+	 * given number (mp) of Fourier coefficient pairs, the resulting number of Fourier coefficients is M = 2 * mp + 1.
+	 *
 	 * @param V sequence of 2D points representing a closed polygon
 	 * @param mp the number of Fourier coefficient pairs (arbitrary)
 	 * @return a new {@link FourierDescriptorTrigonometric} instance

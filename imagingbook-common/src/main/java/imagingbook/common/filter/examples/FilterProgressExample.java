@@ -16,29 +16,23 @@ import imagingbook.common.util.progress.ProgressMonitor;
 import imagingbook.common.util.progress.ProgressMonitorExample;
 
 /**
- *<p>
- * This class defines a custom filter implementing {@link GenericFilterVector} 
- * that reports its progress, which is queried by a {@link ProgressMonitor}
- * in the {@link #main(String[])} method.
+ * <p>
+ * This class defines a custom filter implementing {@link GenericFilterVector} that reports its progress, which is
+ * queried by a {@link ProgressMonitor} in the {@link #main(String[])} method.
  * </p>
  * <p>
- * In this example the work required for processing each SINGLE pixel is
- * assumed to be substantial and progress reporting thus goes all the way
- * down to the single pixel level.
- * Method {@link #getProgress()} in this case reports how much of the work for
- * the current pixel is already completed. 
- * Note that this is for demonstration only and such fine granularity is usually
- * not needed.
- * Typically method {@link #getProgress()} needs not to be overridden or
- * may be defined to return always 1.
+ * In this example the work required for processing each SINGLE pixel is assumed to be substantial and progress
+ * reporting thus goes all the way down to the single pixel level. Method {@link #getProgress()} in this case reports
+ * how much of the work for the current pixel is already completed. Note that this is for demonstration only and such
+ * fine granularity is usually not needed. Typically method {@link #getProgress()} needs not to be overridden or may be
+ * defined to return always 1.
  * </p>
  * <p>
- * The OVERALL filter progress (which depends on the image size and the 
- * number of required filter passes) is calculated automatically by the
- * associated super classes.
+ * The OVERALL filter progress (which depends on the image size and the number of required filter passes) is calculated
+ * automatically by the associated super classes.
  * </p>
- * @author WB
  *
+ * @author WB
  * @see ProgressMonitor
  * @see ProgressMonitorExample
  * @see ConsoleProgressMonitor

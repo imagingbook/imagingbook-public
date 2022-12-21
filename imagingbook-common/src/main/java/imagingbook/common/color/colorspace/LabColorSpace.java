@@ -21,19 +21,17 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
 
 /**
  * <p>
- * This class implements the CIELab color space. See Sec. 14.2 of [1] for
- * details. All component values are assumed to be in [0,1]. Conversion from/to
- * sRGB is implemented directly through D65-based XYZ coordinates, i.e., without
- * conversion to Java's D50-based profile connection space. The methods
- * fromCIEXYZ/toCIEXYZ still return D50-based XYZ coordinates in Java's profile
- * connection space. This is a singleton class with no public constructors, use
+ * This class implements the CIELab color space. See Sec. 14.2 of [1] for details. All component values are assumed to
+ * be in [0,1]. Conversion from/to sRGB is implemented directly through D65-based XYZ coordinates, i.e., without
+ * conversion to Java's D50-based profile connection space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ
+ * coordinates in Java's profile connection space. This is a singleton class with no public constructors, use
  * {@link #getInstance()} to obtain the single instance.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/01
  */

@@ -36,15 +36,14 @@ import static org.apache.commons.math3.linear.MatrixUtils.createRealVector;
 
 /**
  * <p>
- * "Coordinate-based" geometric circle fitter using a nonlinear least-squares
- * (Levenberg-Marquart) optimizer. See [1, Sec. 11.1.3] for a detailed
- * description (Alg. 11.4).
+ * "Coordinate-based" geometric circle fitter using a nonlinear least-squares (Levenberg-Marquart) optimizer. See [1,
+ * Sec. 11.1.3] for a detailed description (Alg. 11.4).
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */
@@ -110,12 +109,11 @@ public class CircleFitGeometricCoord implements CircleFitGeometric {
 	}
 	
 	// --------------------------------------------------------------------------
-    
-    /**
-     * Defines function {@link #value(RealVector)} which returns
-     * the vector of model values and the associated Jacobian matrix
-     * for a given parameter point.
-     */
+
+	/**
+	 * Defines function {@link #value(RealVector)} which returns the vector of model values and the associated Jacobian
+	 * matrix for a given parameter point.
+	 */
     class AnalyticModel implements MultivariateJacobianFunction {
     	int k = 0;
 

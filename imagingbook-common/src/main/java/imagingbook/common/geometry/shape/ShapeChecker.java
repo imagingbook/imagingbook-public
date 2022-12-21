@@ -14,10 +14,10 @@ import imagingbook.common.geometry.basic.Primitive2d;
 import java.awt.Shape;
 
 /**
- * Used to check if AWT shapes produced by {@link ShapeProducer#getShape()}
- * match the underlying curve ({@link Primitive2d}). This is mainly used to test
- * if generated shapes (to be drawn to the screen) are sufficiently accurate.
- * 
+ * Used to check if AWT shapes produced by {@link ShapeProducer#getShape()} match the underlying curve
+ * ({@link Primitive2d}). This is mainly used to test if generated shapes (to be drawn to the screen) are sufficiently
+ * accurate.
+ *
  * @see ShapeProducer
  * @see Primitive2d
  */
@@ -40,20 +40,17 @@ public class ShapeChecker {
 	public ShapeChecker() {
 		this(0.5);
 	}
-	
+
 	/**
-	 * Checks if all points of the specified AWT {@link Shape} are sufficiently
-	 * close to the {@link Primitive2d} instance specified in the constructor.
-	 * This is typically used to test if a shape produced
-	 * by {@link ShapeProducer#getShape()} coincides with this curve.
-	 * Only the discrete sample points produced by {@link ShapePointIterator}
-	 * are checked, not the points on connecting polygon segments. 
-	 * Typical usage example:
+	 * Checks if all points of the specified AWT {@link Shape} are sufficiently close to the {@link Primitive2d}
+	 * instance specified in the constructor. This is typically used to test if a shape produced by
+	 * {@link ShapeProducer#getShape()} coincides with this curve. Only the discrete sample points produced by
+	 * {@link ShapePointIterator} are checked, not the points on connecting polygon segments. Typical usage example:
 	 * <pre>
 	 * GeometricCircle circle = ... ; // implements ShapeProducer and Curve2d
 	 * Shape shape = circle.getShape();
 	 * boolean ok = new ShapeChecker().checkShape(circle, shape);</pre>
-	 * 
+	 *
 	 * @param curve a {@link Primitive2d} instance
 	 * @param shape the AWT shape to check
 	 * @return true if all points of the shape are closer to the curve than tolerance

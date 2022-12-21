@@ -17,24 +17,23 @@ import imagingbook.common.math.Matrix;
 
 /**
  * <p>
- * This class represents an affine transformation in 2D, which can be defined by
- * three pairs of corresponding points. It can be assumed that every instance of
- * this class is indeed an affine mapping. Instances are immutable. See Secs.
+ * This class represents an affine transformation in 2D, which can be defined by three pairs of corresponding points. It
+ * can be assumed that every instance of this class is indeed an affine mapping. Instances are immutable. See Secs.
  * 21.1.3 and 21.3.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  */
 public class AffineMapping2D extends ProjectiveMapping2D {
 
 	/**
-	 * Creates an affine 2D mapping from two sequences of corresponding points.
-	 * If 3 point pairs are specified, the mapping is exact, otherwise a
-	 * minimum least-squares fit is calculated.
+	 * Creates an affine 2D mapping from two sequences of corresponding points. If 3 point pairs are specified, the
+	 * mapping is exact, otherwise a minimum least-squares fit is calculated.
+	 *
 	 * @param P the source points
 	 * @param Q the target points
 	 * @return a new {@link AffineMapping2D} instance for the two point sets
@@ -56,17 +55,17 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 			return new AffineMapping2D(fit.getTransformationMatrix());
 		}
 	}
-	
+
 	/**
 	 * <p>
-	 * Creates an affine mapping from 3 pairs of corresponding 2D points
-	 * (p0, p1, p2) &rarr; (q0, q1, q2).
-	 * The solution is found in closed form (see [1], Sec. 21.1.3, eq. 21.31).
+	 * Creates an affine mapping from 3 pairs of corresponding 2D points (p0, p1, p2) &rarr; (q0, q1, q2). The solution
+	 * is found in closed form (see [1], Sec. 21.1.3, eq. 21.31).
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed,
+	 * Springer (2022).
 	 * </p>
-	 * 
+	 *
 	 * @param p0 point 1 of source triangle A
 	 * @param p1 point 2 of source triangle A
 	 * @param p2 point 3 of source triangle A
@@ -114,12 +113,11 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	public AffineMapping2D() {
 		super();
 	}
-	
+
 	/**
-	 * Creates a linear mapping from a transformation matrix A,
-	 * which must be at least of size 2 x 3.
-	 * The elements of A are copied into a 3x3 identity matrix.
-	 * If A is larger than 2 x 3, the remaining elements are ignored.
+	 * Creates a linear mapping from a transformation matrix A, which must be at least of size 2 x 3. The elements of A
+	 * are copied into a 3x3 identity matrix. If A is larger than 2 x 3, the remaining elements are ignored.
+	 *
 	 * @param A a 2x3 (or larger) matrix
 	 */
 	public AffineMapping2D(double[][] A) {
@@ -141,6 +139,7 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 
 	/**
 	 * Creates an affine mapping from the specified matrix elements.
+	 *
 	 * @param a00 matrix element A_00
 	 * @param a01 matrix element A_01
 	 * @param a02 matrix element A_02
@@ -163,13 +162,13 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	}
 	
 	// ----------------------------------------------------------
-	
+
 
 	/**
-	 * Checks if the given linear mapping could be affine, i.e. if the
-	 * bottom row of its transformation matrix is (0, 0, 1). 
-	 * Note that this is a necessary but not sufficient requirement.
-	 * The threshold {@link Arithmetic#EPSILON_DOUBLE} is used in this check.
+	 * Checks if the given linear mapping could be affine, i.e. if the bottom row of its transformation matrix is (0, 0,
+	 * 1). Note that this is a necessary but not sufficient requirement. The threshold {@link Arithmetic#EPSILON_DOUBLE}
+	 * is used in this check.
+	 *
 	 * @param map a linear mapping
 	 * @return true if the mapping could be affine
 	 */
@@ -182,8 +181,8 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	}
 
 	/**
-	 * Concatenates this mapping A with another affine mapping B and returns
-	 * a new mapping C, such that C(x) = B(A(x)).
+	 * Concatenates this mapping A with another affine mapping B and returns a new mapping C, such that C(x) = B(A(x)).
+	 *
 	 * @param B the second mapping
 	 * @return the concatenated affine mapping
 	 */
@@ -202,9 +201,7 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * Note that inverting an affine transformation always yields
-	 * another affine transformation.
+	 * {@inheritDoc} Note that inverting an affine transformation always yields another affine transformation.
 	 */
 	@Override
 	public AffineMapping2D getInverse() {

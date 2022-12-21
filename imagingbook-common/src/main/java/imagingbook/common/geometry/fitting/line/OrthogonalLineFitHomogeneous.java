@@ -18,20 +18,17 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 /**
  * <p>
- * This class implements line fitting by orthogonal regression to a set of 2D
- * points by solving a homogeneous linear system. See Sec. 6.7.1 of [1] and Sec.
- * 10.2.2 (Alg. 10.2) of [2] for additional details.
+ * This class implements line fitting by orthogonal regression to a set of 2D points by solving a homogeneous linear
+ * system. See Sec. 6.7.1 of [1] and Sec. 10.2.2 (Alg. 10.2) of [2] for additional details.
  * </p>
  * <p>
- * [1] W. Gander, M. J. Gander, and F. Kwok. "Scientific Computing – An
- * Introduction using Maple and MATLAB". Springer (2014). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Gander, M. J. Gander, and F. Kwok. "Scientific Computing – An Introduction using Maple and MATLAB". Springer
+ * (2014). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd
+ * ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/29
- * 
  * @see OrthogonalLineFitEigen
  * @see OrthogonalLineFitSvd
  */
@@ -39,11 +36,11 @@ public class OrthogonalLineFitHomogeneous implements LineFit {
 	
 	private final Pnt2d[] points;
 	private final double[] p;	// algebraic line parameters A,B,C
-	
+
 	/**
-	 * Constructor, performs a orthogonal regression fit to the specified points.
-	 * At least two different points are required.
-	 * 
+	 * Constructor, performs a orthogonal regression fit to the specified points. At least two different points are
+	 * required.
+	 *
 	 * @param points an array with at least 2 points
 	 */
 	public OrthogonalLineFitHomogeneous(Pnt2d[] points) {

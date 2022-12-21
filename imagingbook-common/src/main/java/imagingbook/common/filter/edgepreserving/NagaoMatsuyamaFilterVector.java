@@ -17,19 +17,17 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * Vector version of the Nagao-Matsuyama filter.
- * This class implements a 5x5 Nagao-Matsuyama filter, as described in [1].
- * See Sec. 17.1 of [2] for additional details.
+ * Vector version of the Nagao-Matsuyama filter. This class implements a 5x5 Nagao-Matsuyama filter, as described in
+ * [1]. See Sec. 17.1 of [2] for additional details.
  * </p>
  * <p>
- * [1] M. Nagao and T. Matsuyama. Edge preserving smoothing. Computer
- * Graphics and Image Processing 9(4), 394–407 (1979).
+ * [1] M. Nagao and T. Matsuyama. Edge preserving smoothing. Computer Graphics and Image Processing 9(4), 394–407
+ * (1979).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
  */
-
 public class NagaoMatsuyamaFilterVector extends GenericFilterVector implements NagaoMatsuyamaF {
 
 	// uses the same subregions as defined in {@link NagaoMatsuyamaFilterScalar}

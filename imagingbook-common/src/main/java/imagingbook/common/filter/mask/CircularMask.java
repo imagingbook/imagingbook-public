@@ -10,13 +10,10 @@
 package imagingbook.common.filter.mask;
 
 /**
- * Defines a circular mask with the specified radius.
- * Mask values are 1 inside the radius, 0 outside.
- * Mask dimensions are square and odd,
- * the reference point is as the center. 
- * 
- * @author WB
+ * Defines a circular mask with the specified radius. Mask values are 1 inside the radius, 0 outside. Mask dimensions
+ * are square and odd, the reference point is as the center.
  *
+ * @author WB
  */
 public class CircularMask extends BinaryMask {
 	

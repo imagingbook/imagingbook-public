@@ -31,18 +31,16 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class represents elliptic Fourier descriptors. See
- * Ch. 26 of [1] for additional details including invariance
+ * This class represents elliptic Fourier descriptors. See Ch. 26 of [1] for additional details including invariance
  * calculations.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction Using Java</em>, 2nd ed,
+ * Springer (2016).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/10/24
- * 
  * @see FourierDescriptorUniform
  * @see FourierDescriptorTrigonometric
  */
@@ -53,17 +51,19 @@ public class FourierDescriptor {
 	private final int mp;		// number of Fourier pairs
 	private final Complex[] G;	// complex-valued DFT spectrum (of length 2 * mp + 1)
 	private final double scale;	// scale factor to apply for reconstructing original (sample) size
-	
+
 	/**
-	 * Constructor using the default scale (1).
+	 * Constructor using the default scale (1.0).
+	 *
 	 * @param G a complex-valued DFT spectrum
 	 */
 	public FourierDescriptor(Complex[] G) {
 		this(G, 1.0);
 	}
-	
+
 	/**
 	 * Constructor using a specific scale.
+	 *
 	 * @param G a complex-valued DFT spectrum
 	 * @param scale the reconstruction scale
 	 */
@@ -72,9 +72,10 @@ public class FourierDescriptor {
 		this.G = truncate(G, this.mp);	// always make G odd-sized
 		this.scale = scale;
 	}
-	
+
 	/**
 	 * Constructor for cloning Fourier descriptors.
+	 *
 	 * @param fd an existing instance
 	 */
 	public FourierDescriptor(FourierDescriptor fd) {
@@ -85,12 +86,11 @@ public class FourierDescriptor {
 
 	/**
 	 * <p>
-	 * Truncate the given DFT spectrum to the specified number of coefficient pairs.
-	 * Truncation removes the highest-frequency coefficients. The resulting spectrum
-	 * is always odd-sized. If the number of coefficient pairs is zero, only
-	 * coefficient 0 remains, i.e., the new spectrum has length 1. An exception is
-	 * thrown if the original spectrum has fewer coefficient pairs than needed.
-	 * For example, for an even-sized spectrum with 10 coefficients G[m] = a,b,...,j,
+	 * Truncate the given DFT spectrum to the specified number of coefficient pairs. Truncation removes the
+	 * highest-frequency coefficients. The resulting spectrum is always odd-sized. If the number of coefficient pairs is
+	 * zero, only coefficient 0 remains, i.e., the new spectrum has length 1. An exception is thrown if the original
+	 * spectrum has fewer coefficient pairs than needed. For example, for an even-sized spectrum with 10 coefficients
+	 * G[m] = a,b,...,j,
 	 * </p>
 	 * <pre>
 	 * m    = 0 1 2 3 4 5 6 7 8 9
@@ -102,10 +102,9 @@ public class FourierDescriptor {
 	 * m'    = 0 1 2 3 4 5 6
 	 * G[m'] = a b c d h i j </pre>
 	 * <p>
-	 * I.e., the highest frequency coefficients (e, f, g) of the original spectrum are 
-	 * removed.
-	 * 
-	 * @param G  the original DFT spectrum (with length greater than 2 * mp + 1)
+	 * I.e., the highest frequency coefficients (e, f, g) of the original spectrum are removed.
+	 *
+	 * @param G the original DFT spectrum (with length greater than 2 * mp + 1)
 	 * @param mp the number of remaining coefficient pairs.
 	 * @return the truncated spectrum (always odd-sized)
 	 */
@@ -128,13 +127,12 @@ public class FourierDescriptor {
 		}
 		return Gnew;
 	}
-	
+
 	/**
-	 * Truncates the given DFT spectrum to the maximum number of coefficient pairs.
-	 * The resulting spectrum is always odd-sized. If the original spectrum is
-	 * odd-sized, the same spectrum is return, otherwise the single
+	 * Truncates the given DFT spectrum to the maximum number of coefficient pairs. The resulting spectrum is always
+	 * odd-sized. If the original spectrum is odd-sized, the same spectrum is return, otherwise the single
 	 * highest-frequency coefficient is removed.
-	 * 
+	 *
 	 * @param G the original DFT spectrum
 	 * @return the truncated spectrum (always odd-sized)
 	 * @see #truncate(Complex[], int)
@@ -146,53 +144,50 @@ public class FourierDescriptor {
 	// ----------------------------------------------------------------
 
 	/**
-	 * Returns the size (length) of this Fourier descriptor's array of
-	 * DFT coefficients G. The resulting value is always odd.
-	 * 
+	 * Returns the size (length) of this Fourier descriptor's array of DFT coefficients G. The resulting value is always
+	 * odd.
+	 *
 	 * @return the size of the DFT coefficient array (M)
 	 */
 	public int size() {
 		return G.length;
 	}
-	
+
 	/**
-	 * Returns the scale of this Fourier descriptor, that is, the
-	 * factor required to scale it to its original (sample) size.
-	 * The scale factor is changed in the process of making descriptors
-	 * scale-invariant.
-	 * 
+	 * Returns the scale of this Fourier descriptor, that is, the factor required to scale it to its original (sample)
+	 * size. The scale factor is changed in the process of making descriptors scale-invariant.
+	 *
 	 * @return the scale factor
 	 */
 	public double getScale() {
 		return scale;
 	}
-	
+
 	/**
-	 * Returns the number of Fourier coefficient pairs for this descriptor.
-	 * The result is (M-1)/2, M being the size of the DFT coefficient array G.
-	 * 
+	 * Returns the number of Fourier coefficient pairs for this descriptor. The result is (M-1)/2, M being the size of
+	 * the DFT coefficient array G.
+	 *
 	 * @return the number of Fourier coefficient pairs
 	 */
 	public int getMp() {
 		return this.mp;
 	}
-	
+
 	/**
-	 * Returns the array G = {G[0], ..., G[M-1]} of complex-valued DFT coefficients. 
+	 * Returns the array G = {G[0], ..., G[M-1]} of complex-valued DFT coefficients.
+	 *
 	 * @return the array of DFT coefficients
 	 */
 	public Complex[] getCoefficients() {
 		return G;
 	}
-	
+
 	/**
 	 * <p>
-	 * Returns the complex-valued DFT coefficient with the specified
-	 * frequency index m. The returned coefficient is G[k] with k = (m mod G.length).
-	 * Unique coefficients are returned for m = 0, ..., M-1,
-	 * where M is the size of the DFT coefficient array, or
-	 * m = -mp, ..., +mp where mp is the number of coefficient pairs.
-	 * For example, given a Fourier descriptor with a 9-element spectrum,
+	 * Returns the complex-valued DFT coefficient with the specified frequency index m. The returned coefficient is G[k]
+	 * with k = (m mod G.length). Unique coefficients are returned for m = 0, ..., M-1, where M is the size of the DFT
+	 * coefficient array, or m = -mp, ..., +mp where mp is the number of coefficient pairs. For example, given a Fourier
+	 * descriptor with a 9-element spectrum,
 	 * </p>
 	 * <pre>
 	 * k    = 0 1 2 3 4 5 6 7 8
@@ -210,6 +205,7 @@ public class FourierDescriptor {
 	 * getCoefficient(-4) &rarr; G[5] = f
 	 * getCoefficient(-5) &rarr; G[4] = e
 	 * ...</pre>
+	 *
 	 * @param m frequency index (positive or negative)
 	 * @return the associated DFT coefficient
 	 * @see #getCoefficientIndex(int)
@@ -217,11 +213,10 @@ public class FourierDescriptor {
 	public Complex getCoefficient(int m) {
 		return G[getCoefficientIndex(m)];
 	}
-	
+
 	/**
-	 * Returns the Fourier coefficient pair (G[-m], G[+m]) as a
-	 * {@link Complex} valued array.
-	 *  
+	 * Returns the Fourier coefficient pair (G[-m], G[+m]) as a {@link Complex} valued array.
+	 *
 	 * @param m frequency index
 	 * @return the DFT coefficient pair
 	 */
@@ -230,9 +225,8 @@ public class FourierDescriptor {
 	}
 
 	/**
-	 * Returns the coefficient array index for the specified frequency index,
-	 * which may be positive or negative.
-	 * 
+	 * Returns the coefficient array index for the specified frequency index, which may be positive or negative.
+	 *
 	 * @param m frequency index (positive or negative)
 	 * @return the coefficient array index
 	 * @see #getCoefficient(int)
@@ -244,12 +238,11 @@ public class FourierDescriptor {
 	// ----------------------------------------------------------------
 	// Invariance-related methods
 	// ----------------------------------------------------------------
-	
+
 	/**
 	 * <p>
-	 * Makes this Fourier descriptor invariant to scale, start-point and rotation.
-	 * The descriptors center position (coefficient 0) is preserved. Performs the
-	 * following normalization steps in sequence:
+	 * Makes this Fourier descriptor invariant to scale, start-point and rotation. The descriptors center position
+	 * (coefficient 0) is preserved. Performs the following normalization steps in sequence:
 	 * </p>
 	 * <ol>
 	 * <li>scale invariance,</li>
@@ -265,7 +258,7 @@ public class FourierDescriptor {
 	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
 	 * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
 	 * </p>
-	 * 
+	 *
 	 * @return an array of modified Fourier descriptors
 	 * @see #makeScaleInvariant()
 	 * @see #makeStartPointInvariant()
@@ -287,13 +280,12 @@ public class FourierDescriptor {
 	}
 	
 	// ----------------------------------------------------------------
-	
+
 	/**
-	 * Returns a new scale invariant Fourier descriptor by normalizing the L2 norm
-	 * of the sub-vector {G[-mp], ..., G[-1], G[1], ..., G[mp]}. Coefficient G_0
-	 * remains unmodified. The new Fourier descriptor carries the associated scale
-	 * (see {@link #getScale()}). The original Fourier descriptor is not modified.
-	 * 
+	 * Returns a new scale invariant Fourier descriptor by normalizing the L2 norm of the sub-vector {G[-mp], ...,
+	 * G[-1], G[1], ..., G[mp]}. Coefficient G_0 remains unmodified. The new Fourier descriptor carries the associated
+	 * scale (see {@link #getScale()}). The original Fourier descriptor is not modified.
+	 *
 	 * @return a new scale-normalized Fourier descriptor
 	 */
 	public FourierDescriptor makeScaleInvariant() {
@@ -313,9 +305,8 @@ public class FourierDescriptor {
 	}
 
 	/**
-	 * Returns a pair of start-point normalized Fourier descriptors.
-	 * The original Fourier descriptor is not modified.
-	 * 
+	 * Returns a pair of start-point normalized Fourier descriptors. The original Fourier descriptor is not modified.
+	 *
 	 * @return a pair of start-point normalized Fourier descriptors
 	 */
 	public FourierDescriptor[] makeStartPointInvariant() {
@@ -339,14 +330,11 @@ public class FourierDescriptor {
 		}
 		return Gnew;
 	}
-	
+
 	/**
-	 * Calculates the 'canonical' start point. This version uses 
-	 * (a) a coarse search for a global maximum of fp() and subsequently 
-	 * (b) a numerical optimization using Brent's method
-	 * (implemented with Apache Commons Math).
-	 * 
-	 * @param mp number of Fourier coefficient pairs
+	 * Calculates the 'canonical' start point. This version uses (a) a coarse search for a global maximum of fp() and
+	 * subsequently (b) a numerical optimization using Brent's method (implemented with Apache Commons Math).
+	 *
 	 * @return the "canonical" start point phase
 	 */
 	private double getStartPointPhase() {
@@ -397,12 +385,11 @@ public class FourierDescriptor {
 		double phi0 = result.getPoint();
 		return phi0;	// the canonical start point phase
 	}
-	
+
 	/**
-	 * Returns a new rotation invariant Fourier descriptor by
-	 * applying complex rotation to all coefficients (except coefficient 0).
-	 * The original Fourier descriptor is not modified.
-	 * 
+	 * Returns a new rotation invariant Fourier descriptor by applying complex rotation to all coefficients (except
+	 * coefficient 0). The original Fourier descriptor is not modified.
+	 *
 	 * @return a new rotation-normalized Fourier descriptor
 	 */
 	public FourierDescriptor makeRotationInvariant() {
@@ -424,12 +411,10 @@ public class FourierDescriptor {
 	// -----------------------------------------------------------------
 
 	/**
-	 * Returns a new translation invariant Fourier descriptor by
-	 * setting coefficient 0 to zero.
-	 * The original Fourier descriptor is not modified.
-	 * This method is not used for shape invariance calculation,
-	 * since position is not shape-relevant.
-	 * 
+	 * Returns a new translation invariant Fourier descriptor by setting coefficient 0 to zero. The original Fourier
+	 * descriptor is not modified. This method is not used for shape invariance calculation, since position is not
+	 * shape-relevant.
+	 *
 	 * @return a new translation-normalized Fourier descriptor
 	 */
 	public FourierDescriptor makeTranslationInvariant() {
@@ -443,10 +428,9 @@ public class FourierDescriptor {
 	// ------------------------------------------------------------------
 
 	/**
-	 * Reconstructs the associated 2D shape (closed contour) with N sample points,
-	 * using all of the Fourier descriptor's coefficient pairs. The result is
-	 * returned as an array of {@link Complex} values.
-	 * 
+	 * Reconstructs the associated 2D shape (closed contour) with N sample points, using all of the Fourier descriptor's
+	 * coefficient pairs. The result is returned as an array of {@link Complex} values.
+	 *
 	 * @param n number of shape points
 	 * @return reconstructed shape points
 	 */
@@ -455,10 +439,9 @@ public class FourierDescriptor {
 	}
 
 	/**
-	 * Reconstructs the associated 2D shape (closed contour) with N sample points,
-	 * using only a subset of the Fourier descriptor's coefficient pairs. The result
-	 * is returned as an array of {@link Complex} values.
-	 * 
+	 * Reconstructs the associated 2D shape (closed contour) with N sample points, using only a subset of the Fourier
+	 * descriptor's coefficient pairs. The result is returned as an array of {@link Complex} values.
+	 *
 	 * @param n number of shape points
 	 * @param p the number of (low frequency) coefficient pairs to be used
 	 * @return the reconstructed shape points
@@ -474,10 +457,9 @@ public class FourierDescriptor {
 	}
 
 	/**
-	 * Reconstructs a single space point of the associated shape (closed contour) at
-	 * the fractional path position t &isin; [0,1], using all of the Fourier
-	 * descriptor's coefficient pairs.
-	 * 
+	 * Reconstructs a single space point of the associated shape (closed contour) at the fractional path position t
+	 * &isin; [0,1], using all of the Fourier descriptor's coefficient pairs.
+	 *
 	 * @param t path position
 	 * @return the reconstructed shape point
 	 */
@@ -486,12 +468,11 @@ public class FourierDescriptor {
 	}
 
 	/**
-	 * Reconstructs a single space point of the associated shape (closed contour) at
-	 * the fractional path position t &isin; [0,1], using only a subset of the
-	 * Fourier descriptor's coefficient pairs.
+	 * Reconstructs a single space point of the associated shape (closed contour) at the fractional path position t
+	 * &isin; [0,1], using only a subset of the Fourier descriptor's coefficient pairs.
+	 *
 	 * @param p the number of (low frequency) coefficient pairs to be used
 	 * @param t path position &isin; [0,1]
-	 * 
 	 * @return the reconstructed shape point
 	 */
 	public Complex getShapePointPartial(int p, double t) {
@@ -512,12 +493,11 @@ public class FourierDescriptor {
 		}
 		return new Complex(x, y);
 	}
-	
+
 	/**
-	 * Reconstructs the associated 2D shape (closed contour) with N sample points,
-	 * using only a single coefficient pairs. The result
-	 * is returned as an array of {@link Complex} values.
-	 * 
+	 * Reconstructs the associated 2D shape (closed contour) with N sample points, using only a single coefficient
+	 * pairs. The result is returned as an array of {@link Complex} values.
+	 *
 	 * @param n number of shape points
 	 * @param m the frequency index of the coefficient pair
 	 * @return the reconstructed shape points
@@ -531,11 +511,11 @@ public class FourierDescriptor {
 		}
 		return S;
 	}
-	
+
 	/**
-	 * Returns the spatial point reconstructed from a single DFT coefficient pair
-	 * G[-m], G[+m] at position t &isin; [0,1]. Varying t creates points on an
-	 * ellipse.
+	 * Returns the spatial point reconstructed from a single DFT coefficient pair G[-m], G[+m] at position t &isin;
+	 * [0,1]. Varying t creates points on an ellipse.
+	 *
 	 * @param m frequency index (coefficient pair number)
 	 * @param t contour position &isin; [0,1]
 	 * @return reconstructed shape point
@@ -546,11 +526,11 @@ public class FourierDescriptor {
 		return p1.add(p2);
 	}
 
-	
+
 	/**
-	 * Returns the spatial point reconstructed from a single DFT coefficient G[m]
-	 * with frequency index m at position t &isin; [0,1]. Varying t creates points
-	 * on a circle.
+	 * Returns the spatial point reconstructed from a single DFT coefficient G[m] with frequency index m at position t
+	 * &isin; [0,1]. Varying t creates points on a circle.
+	 *
 	 * @param m frequency index (pos/neg, 0 &le; m &le; this.mp)
 	 * @param t contour position &isin; [0,1]
 	 * @return reconstructed shape point
@@ -566,20 +546,17 @@ public class FourierDescriptor {
 		double yt = Bm * cost + Am * sint;
 		return new Complex(xt, yt);
 	}
-	
-	
-	
+
 	/**
 	 * <p>
-	 * Returns the parameters of the geometric ellipse associated with a single
-	 * Fourier coefficient pair (G[-m], G[+m]). See Sec. 26.3.5 of [1] for details.
-	 * The result is in the form (ra, rb, xc, yc, theta).
+	 * Returns the parameters of the geometric ellipse associated with a single Fourier coefficient pair (G[-m], G[+m]).
+	 * See Sec. 26.3.5 of [1] for details. The result is in the form (ra, rb, xc, yc, theta).
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
-	 * Algorithmic Introduction Using Java</em>, 2nd ed, Springer (2016).
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction Using Java</em>, 2nd
+	 * ed, Springer (2016).
 	 * </p>
-	 * 
+	 *
 	 * @param m the frequency index of the Fourier coefficient pair
 	 * @return the ellipse parameters (ra, rb, xc, yc, theta)
 	 */
@@ -593,15 +570,14 @@ public class FourierDescriptor {
 		
 		return new double[] {ra, rb, 0, 0, theta};
 	}
-	
+
 	/**
 	 * <p>
-	 * Returns the ellipse associated with a single Fourier coefficient pair (G[-m],
-	 * G[+m]) as a (AWT) {@link Shape} object. The resulting ellipse is centered at
-	 * (0,0). {@link AffineTransform} may be used to shift the ellipse to any other
-	 * position.
+	 * Returns the ellipse associated with a single Fourier coefficient pair (G[-m], G[+m]) as a (AWT) {@link Shape}
+	 * object. The resulting ellipse is centered at (0,0). {@link AffineTransform} may be used to shift the ellipse to
+	 * any other position.
 	 * </p>
-	 * 
+	 *
 	 * @param m the frequency index of the Fourier coefficient pair
 	 * @return the ellipse ({@link Shape})
 	 * @see #getEllipseParameters(int)
@@ -619,12 +595,11 @@ public class FourierDescriptor {
 	// ------------------------------------------------------------------
 	// Distance methods for matching Fourier descriptors:
 	// ------------------------------------------------------------------	
-	
+
 	/**
-	 * Returns a L2-type distance between this and another {@link FourierDescriptor}
-	 * instance comparing the real and imaginary parts of all coefficient pairs.
-	 * The zero-frequency coefficients are ignored.
-	 * 
+	 * Returns a L2-type distance between this and another {@link FourierDescriptor} instance comparing the real and
+	 * imaginary parts of all coefficient pairs. The zero-frequency coefficients are ignored.
+	 *
 	 * @param fd2 another Fourier descriptor
 	 * @return the resulting distance
 	 */
@@ -633,11 +608,10 @@ public class FourierDescriptor {
 	}
 
 	/**
-	 * Returns a L2-type distance between this and another {@link FourierDescriptor}
-	 * instance comparing the real and imaginary parts of a limited range of
-	 * (low-frequency) coefficient pairs. The zero-frequency coefficients are
+	 * Returns a L2-type distance between this and another {@link FourierDescriptor} instance comparing the real and
+	 * imaginary parts of a limited range of (low-frequency) coefficient pairs. The zero-frequency coefficients are
 	 * ignored.
-	 * 
+	 *
 	 * @param fd2 another Fourier descriptor
 	 * @param p the number of (low-frequency) coefficient pairs to evaluate
 	 * @return the resulting distance
@@ -659,10 +633,9 @@ public class FourierDescriptor {
 	}
 
 	/**
-	 * Returns a L2-type distance between this and another {@link FourierDescriptor}
-	 * instance comparing the magnitudes of all coefficient pairs. The
-	 * zero-frequency coefficients are ignored.
-	 * 
+	 * Returns a L2-type distance between this and another {@link FourierDescriptor} instance comparing the magnitudes
+	 * of all coefficient pairs. The zero-frequency coefficients are ignored.
+	 *
 	 * @param fd2 another Fourier descriptor
 	 * @return the resulting distance
 	 */
@@ -671,10 +644,9 @@ public class FourierDescriptor {
 	}
 
 	/**
-	 * Returns a L2-type distance between this and another {@link FourierDescriptor}
-	 * instance comparing the magnitudes of a limited range of (low-frequency)
-	 * coefficient pairs. The zero-frequency coefficients are ignored.
-	 * 
+	 * Returns a L2-type distance between this and another {@link FourierDescriptor} instance comparing the magnitudes
+	 * of a limited range of (low-frequency) coefficient pairs. The zero-frequency coefficients are ignored.
+	 *
 	 * @param fd2 another Fourier descriptor
 	 * @param p the number of (low-frequency) coefficient pairs to evaluate
 	 * @return the resulting distance

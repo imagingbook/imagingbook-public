@@ -13,11 +13,10 @@ import java.awt.Color;
 import java.util.Random;
 
 /**
- * Instances of this class create a sequence of random colors.
- * 
+ * Instances of this class create a sequence of random colors which only differ in hue, with saturation and value fixed.
+ *
  * @author WB
  * @version 2022/11/06
- *
  */
 public class RandomHueGenerator implements ColorSequencer {
 //	TODO: Improve randomness (currently not too good, much red ...), modify saturation?.
@@ -32,21 +31,30 @@ public class RandomHueGenerator implements ColorSequencer {
 	public RandomHueGenerator() {
 		this(0);
 	}
-	
+
 	/**
 	 * Constructor with specific random seed (for repeatability).
-	 * @param seed random seed 
+	 *
+	 * @param seed random seed
 	 */
 	public RandomHueGenerator(long seed) {
 		this.rnd = (seed == 0) ? new Random() : new Random(seed);
 	}
-	
+
+	/**
+	 * Set the 'saturation' component of subsequent colors.
+	 * @param s new saturation value
+	 */
 	public void setSaturation(double s) {
 		if (s < 0) s = 0;
 		if (s > 1) s = 1;
 		this.s = (float) s;
 	}
-	
+
+	/**
+	 * Set the 'brightness' component of subsequent colors.
+	 * @param b new saturation value
+	 */
 	public void setBrightness(double b) {
 		if (b < 0) b = 0;
 		if (b > 1) b = 1;

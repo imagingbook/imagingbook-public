@@ -11,7 +11,12 @@ package imagingbook.common.color.sets;
 
 import java.awt.Color;
 
-// see http://davidbau.com/colors/
+/**
+ * {@link ColorEnumeration} defining a set of CSS colors (see http://davidbau.com/colors/)
+ *
+ * @author WB
+ *
+ */
 public enum CssColor implements ColorEnumeration {
 	AliceBlue(0xF0, 0xF8, 0xFF),
 	AntiqueWhite(0xFA, 0xEB, 0xD7),

@@ -13,25 +13,23 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class defines static methods related to histograms. See Ch. 2 of [1] for
- * additional details.
+ * This class defines static methods related to histograms. See Ch. 2 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/08/24
  */
 public abstract class HistogramUtils {
 	
 	private HistogramUtils() { }
-	
+
 	/**
-	 * Calculates and returns the total population (sum of
-	 * all bin counts) of a histogram.
-	 * 
+	 * Calculates and returns the total population (sum of all bin counts) of a histogram.
+	 *
 	 * @param h a histogram
 	 * @return the histogram's total count
 	 */
@@ -40,10 +38,9 @@ public abstract class HistogramUtils {
 	}
 
 	/**
-	 * Calculates and returns the population (sum of bin counts) of a histogram
-	 * over the specified range of indexes.
-	 * The range is automatically clipped. 
-	 * 
+	 * Calculates and returns the population (sum of bin counts) of a histogram over the specified range of indexes. The
+	 * range is automatically clipped.
+	 *
 	 * @param h a histogram
 	 * @param lo the lower index (inclusive)
 	 * @param hi the upper index (inclusive)
@@ -75,11 +72,10 @@ public abstract class HistogramUtils {
 		}
 		return hmax;
 	}
-	
+
 	/**
-	 * Returns the maximum bin value (count) of the given
-	 * frequency distribution (histogram).
-	 * 
+	 * Returns the maximum bin value (count) of the given frequency distribution (histogram).
+	 *
 	 * @param h a histogram
 	 * @return the maximum bin value
 	 */
@@ -93,11 +89,10 @@ public abstract class HistogramUtils {
 	}
 	
 	// -----------------------------------------------------------
-	
+
 	/**
-	 * Calculates and returns the cumulative histogram from
-	 * a given histogram.
-	 * 
+	 * Calculates and returns the cumulative histogram from a given histogram.
+	 *
 	 * @param h a histogram
 	 * @return the cumulative histogram
 	 */
@@ -112,15 +107,13 @@ public abstract class HistogramUtils {
 	}
 	
 	// -----------------------------------------------------------
-	
+
 	/**
-	 * Calculates and returns the <em>probability distribution function</em> (pdf)
-	 * for the given histogram.
-	 * The resulting {@code double} array has the same length as the original histogram.
-	 * Its values sum to 1.
-	 * 
+	 * Calculates and returns the <em>probability distribution function</em> (pdf) for the given histogram. The
+	 * resulting {@code double} array has the same length as the original histogram. Its values sum to 1.
+	 *
 	 * @param h a histogram
-	 * @return the probability distribution function 
+	 * @return the probability distribution function
 	 */
 	public static double[] pdf(int[] h) {
 		final int K = h.length;
@@ -131,13 +124,11 @@ public abstract class HistogramUtils {
 		}
 		return p;
 	}
-	
+
 	/**
-	 * Calculates and returns the <em>cumulative distribution function</em> (cdf)
-	 * for the given histogram.
-	 * The resulting {@code double} array has the same length as the original histogram.
-	 * Its maximum value is 1.
-	 * 
+	 * Calculates and returns the <em>cumulative distribution function</em> (cdf) for the given histogram. The resulting
+	 * {@code double} array has the same length as the original histogram. Its maximum value is 1.
+	 *
 	 * @param h a histogram
 	 * @return the cumulative distribution function
 	 */
@@ -156,11 +147,10 @@ public abstract class HistogramUtils {
 	}
 	
 	// -----------------------------------------------------------
-	
+
 	/**
-	 * Calculates and returns the intensity mean (average) of
-	 * the distribution represented by the given histogram.
-	 * 
+	 * Calculates and returns the intensity mean (average) of the distribution represented by the given histogram.
+	 *
 	 * @param h a histogram
 	 * @return the mean intensity
 	 */
@@ -169,11 +159,9 @@ public abstract class HistogramUtils {
 	}
 
 	/**
-	 * Calculates and returns the intensity mean (average) of
-	 * the distribution represented by the given histogram,
-	 * limited to the specified intensity range.
-	 * The range is automatically clipped. 
-	 * 
+	 * Calculates and returns the intensity mean (average) of the distribution represented by the given histogram,
+	 * limited to the specified intensity range. The range is automatically clipped.
+	 *
 	 * @param h a histogram
 	 * @param lo the lower index (inclusive)
 	 * @param hi the upper index (inclusive)
@@ -197,11 +185,11 @@ public abstract class HistogramUtils {
 	}
 	
 	// -----------------------------------------------------------
-	
+
 	/**
-	 * Calculates and returns the intensity variance (&sigma;<sup>2</sup>) of
-	 * the distribution represented by the given histogram.
-	 * 
+	 * Calculates and returns the intensity variance (&sigma;<sup>2</sup>) of the distribution represented by the given
+	 * histogram.
+	 *
 	 * @param h a histogram
 	 * @return the intensity variance
 	 */
@@ -210,11 +198,9 @@ public abstract class HistogramUtils {
 	}
 
 	/**
-	 * Calculates and returns the intensity variance (&sigma;<sup>2</sup>) of
-	 * the distribution represented by the given histogram,
-	 * limited to the specified intensity range (fast version).
-	 * The range is automatically clipped. 
-	 * 
+	 * Calculates and returns the intensity variance (&sigma;<sup>2</sup>) of the distribution represented by the given
+	 * histogram, limited to the specified intensity range (fast version). The range is automatically clipped.
+	 *
 	 * @param h a histogram
 	 * @param lo the lower index (inclusive)
 	 * @param hi the upper index (inclusive)
@@ -264,11 +250,10 @@ public abstract class HistogramUtils {
 	}
 	
 	// -----------------------------------------------------------
-	
+
 	/**
-	 * Calculates and returns the intensity <em>median</em> of
-	 * the distribution represented by the given histogram.
-	 * 
+	 * Calculates and returns the intensity <em>median</em> of the distribution represented by the given histogram.
+	 *
 	 * @param h a histogram
 	 * @return the intensity median
 	 */
@@ -288,10 +273,9 @@ public abstract class HistogramUtils {
 	// -----------------------------------------------------------
 
 	/**
-	 * Returns a normalized frequency distribution for the given
-	 * histogram whose maximum entry is 1 ({@code int} version).
-	 * Mainly intended for displaying histograms.
-	 * 
+	 * Returns a normalized frequency distribution for the given histogram whose maximum entry is 1 ({@code int}
+	 * version). Mainly intended for displaying histograms.
+	 *
 	 * @param h a histogram
 	 * @return the max-normalized frequency distribution
 	 */
@@ -308,12 +292,11 @@ public abstract class HistogramUtils {
 		}
 		return hn;
 	}
-	
+
 	/**
-	 * Returns a normalized frequency distribution for the given
-	 * histogram whose maximum entry is 1 ({@code double} version).
-	 * Mainly intended for displaying histograms.
-	 * 
+	 * Returns a normalized frequency distribution for the given histogram whose maximum entry is 1 ({@code double}
+	 * version). Mainly intended for displaying histograms.
+	 *
 	 * @param h a histogram
 	 * @return the max-normalized frequency distribution
 	 */
@@ -332,13 +315,12 @@ public abstract class HistogramUtils {
 	}
 	
 	// -----------------------------------------------------------------
-	
+
 	/**
-	 * Histogram matching. Given are two histograms: the histogram hA of the target
-	 * image IA and a reference histogram hR, both of size K. The result is a
-	 * discrete mapping f which, when applied to the target image, produces a new
+	 * Histogram matching. Given are two histograms: the histogram hA of the target image IA and a reference histogram
+	 * hR, both of size K. The result is a discrete mapping f which, when applied to the target image, produces a new
 	 * image with a distribution function similar to the reference histogram.
-	 * 
+	 *
 	 * @param hA histogram of the target image
 	 * @param hR reference histogram (the same size as hA)
 	 * @return a discrete mapping f to be applied to the values of a target image
@@ -359,15 +341,13 @@ public abstract class HistogramUtils {
 		}
 		return f;
 	}
-	
+
 	/**
-	 * Histogram matching to a reference cumulative distribution
-	 * function that is piecewise linear.
-	 * 
+	 * Histogram matching to a reference cumulative distribution function that is piecewise linear.
+	 *
 	 * @param hA histogram of the target image
 	 * @param PR a piecewise linear reference cumulative distribution function ({@link PiecewiseLinearCdf})
 	 * @return a discrete mapping f to be applied to the values of a target image
-	 * 
 	 * @see PiecewiseLinearCdf
 	 * @see #matchHistograms(int[], int[])
 	 */

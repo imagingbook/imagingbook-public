@@ -18,29 +18,21 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * Algebraic ellipse fit based on Fitzgibbon's original method [1], as described
- * in [2] (WITHOUT the additional numerical improvements). Based on generalized
- * symmetric eigenproblem solution. See [3, Sec. 11.2.1] for a detailed
- * description. Note: This implementation does not use data centering nor
- * accepts a specific reference point. With exactly 5 input points (generally
- * sufficient for ellipse fitting) the scatter matrix X is singular and thus the
- * Cholesky decomposition used by the
- * {@link GeneralizedSymmetricEigenDecomposition} cannot be applied. Thus at
- * least 6 distinct input points are required (i.e., no duplicate points are
- * allowed).
+ * Algebraic ellipse fit based on Fitzgibbon's original method [1], as described in [2] (WITHOUT the additional
+ * numerical improvements). Based on generalized symmetric eigenproblem solution. See [3, Sec. 11.2.1] for a detailed
+ * description. Note: This implementation does not use data centering nor accepts a specific reference point. With
+ * exactly 5 input points (generally sufficient for ellipse fitting) the scatter matrix X is singular and thus the
+ * Cholesky decomposition used by the {@link GeneralizedSymmetricEigenDecomposition} cannot be applied. Thus at least 6
+ * distinct input points are required (i.e., no duplicate points are allowed).
  * </p>
  * <p>
- * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least- squares
- * fitting of ellipses. IEEE Transactions on Pattern Analysis and Machine
- * Intelligence 21(5), 476-480 (1999). <br>
- * [2] R. Halíř and J. Flusser. Numerically stable direct least squares fitting
- * of ellipses. In "Proceedings of the 6th International Conference in Central
- * Europe on Computer Graphics and Visualization (WSCG’98)", pp. 125-132, Plzeň,
- * CZ (February 1998). <br>
- * [3] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least- squares fitting of ellipses. IEEE Transactions on
+ * Pattern Analysis and Machine Intelligence 21(5), 476-480 (1999). <br> [2] R. Halíř and J. Flusser. Numerically stable
+ * direct least squares fitting of ellipses. In "Proceedings of the 6th International Conference in Central Europe on
+ * Computer Graphics and Visualization (WSCG’98)", pp. 125-132, Plzeň, CZ (February 1998). <br> [3] W. Burger, M.J.
+ * Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */

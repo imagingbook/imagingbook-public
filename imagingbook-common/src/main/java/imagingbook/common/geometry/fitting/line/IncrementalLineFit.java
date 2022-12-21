@@ -20,25 +20,22 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class implements incremental orthogonal line fitting to a set of 2D
- * points using eigendecomposition (see {@link OrthogonalLineFitEigen} for
- * a non-incremental version). See Sec. 10.3 (Alg. 10.4) of [1] for additional
+ * This class implements incremental orthogonal line fitting to a set of 2D points using eigendecomposition (see
+ * {@link OrthogonalLineFitEigen} for a non-incremental version). See Sec. 10.3 (Alg. 10.4) of [1] for additional
  * details.
  * </p>
  * <p>
- * This fitter behaves like a queue: sample points may be added and removed
- * freely either at its front or its end, while the ordering of the remaining
- * points remains unchanged. This is to simplify back-tracking, for example for
- * incremental contour fitting. Whenever a point is added or removed, the
- * internal statistics (scatter matrix) are updated. The current line fit can be
- * queried any time as long as there are more than two points in the point set
+ * This fitter behaves like a queue: sample points may be added and removed freely either at its front or its end, while
+ * the ordering of the remaining points remains unchanged. This is to simplify back-tracking, for example for
+ * incremental contour fitting. Whenever a point is added or removed, the internal statistics (scatter matrix) are
+ * updated. The current line fit can be queried any time as long as there are more than two points in the point set
  * (otherwise an exception is thrown).
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/29 revised
  * @see OrthogonalLineFitEigen
@@ -56,12 +53,11 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 	public IncrementalLineFit() {
 		this(null);
 	}
-	
+
 	/**
-	 * Constructor accepting a sequence of initial points.
-	 * The first point is placed at the from of the queue,
-	 * the last point at its end.
-	 * 
+	 * Constructor accepting a sequence of initial points. The first point is placed at the from of the queue, the last
+	 * point at its end.
+	 *
 	 * @param initPnts an array of initial points
 	 */
 	public IncrementalLineFit(Pnt2d[] initPnts) {	
@@ -79,11 +75,10 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 			this.add(p);
 		}
 	}
-	
+
 	/**
-	 * Calculates and returns the sum of the squared orthogonal distances
-	 * of the current point set for this line fit.
-	 * 
+	 * Calculates and returns the sum of the squared orthogonal distances of the current point set for this line fit.
+	 *
 	 * @return the squared orthogonal error
 	 * @see LineFit#getSquaredOrthogonalError(Pnt2d[])
 	 */
@@ -126,12 +121,12 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 	}
 	
 	// delegate methods matching those of Deque interface
-	
+
 	/**
-	 * Adds a new sample points to the end of the point sequence
-	 * (same as {@link #addLast(Pnt2d)}).
+	 * Adds a new sample points to the end of the point sequence (same as {@link #addLast(Pnt2d)}).
+	 *
 	 * @param pnt the point to be added
-	 * @return true (always, to be compatible with {@link Deque}) 
+	 * @return true (always, to be compatible with {@link Deque})
 	 */
 	public boolean add(Pnt2d pnt) {
 		addLast(pnt);
@@ -146,10 +141,10 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 		points.addFirst(pnt);
 		addSamplePoint(pnt);
 	}
-	
+
 	/**
-	 * Adds a new sample points to the end of the point sequence
-	 * (same as {@link #addLast(Pnt2d)}).
+	 * Adds a new sample points to the end of the point sequence (same as {@link #addLast(Pnt2d)}).
+	 *
 	 * @param pnt the point to be added
 	 */
 	public void addLast(Pnt2d pnt) {
@@ -176,21 +171,19 @@ public class IncrementalLineFit implements LineFit {	// extends ArrayDeque<Pnt2d
 		removeSamplePoint(pnt);
 		return pnt;
 	}
-	
+
 	/**
-	 * Returns (but does not remove) the point positioned at the front of the point
-	 * sequence.
-	 * 
+	 * Returns (but does not remove) the point positioned at the front of the point sequence.
+	 *
 	 * @return the first point
 	 */
 	public Pnt2d peekFirst() {
 		return points.peekFirst();
 	}
-	
+
 	/**
-	 * Returns (but does not remove) the point positioned at the end of the point
-	 * sequence.
-	 * 
+	 * Returns (but does not remove) the point positioned at the end of the point sequence.
+	 *
 	 * @return the last point
 	 */
 	public Pnt2d peekLast() {

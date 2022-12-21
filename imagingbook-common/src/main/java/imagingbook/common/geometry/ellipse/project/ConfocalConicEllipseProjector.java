@@ -15,17 +15,15 @@ import static java.lang.Math.sqrt;
 
 /**
  * <p>
- * Calculates an approximate closest point on the ellipse for a given 2D point inside
- * or outside the ellipse, using "confocal conic distance approximation" [1].
- * See Sec. 11.2.3 (Alg. 11.12) and Appendix F.3.1 of [2] for details.
+ * Calculates an approximate closest point on the ellipse for a given 2D point inside or outside the ellipse, using
+ * "confocal conic distance approximation" [1]. See Sec. 11.2.3 (Alg. 11.12) and Appendix F.3.1 of [2] for details.
  * </p>
  * <p>
- * [1] P. L. Rosin. Ellipse fitting using orthogonal hyperbolae and stirling’s
- * oval. Graphical Models and Image Processing 60(3), 209–213 (1998). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] P. L. Rosin. Ellipse fitting using orthogonal hyperbolae and stirling’s oval. Graphical Models and Image
+ * Processing 60(3), 209–213 (1998). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */

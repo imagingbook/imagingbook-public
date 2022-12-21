@@ -16,14 +16,14 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class implements line fitting by linear regression to a set of 2D points.
- * See Sec. 10.2.1 of [1] for additional details.
+ * This class implements line fitting by linear regression to a set of 2D points. See Sec. 10.2.1 of [1] for additional
+ * details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/29
  */
@@ -32,11 +32,11 @@ public class LinearRegressionFit implements LineFit {
 	private final int n;
 	private final double[] p;	// line parameters A,B,C
 	private double k, d;
-	
+
 	/**
-	 * Constructor, performs a linear regression fit to the specified points.
-	 * At least two different points are required.
-	 * 
+	 * Constructor, performs a linear regression fit to the specified points. At least two different points are
+	 * required.
+	 *
 	 * @param points an array with at least 2 points
 	 */
 	public LinearRegressionFit(Pnt2d[] points) {
@@ -56,19 +56,19 @@ public class LinearRegressionFit implements LineFit {
 	public double[] getLineParameters() {
 		return p;
 	}
-	
+
 	/**
-	 * Returns the slope parameter k for the fitted line
-	 * y = k * x + d.
+	 * Returns the slope parameter k for the fitted line y = k * x + d.
+	 *
 	 * @return line parameter k
 	 */
 	public double getK() {
 		return k;
 	}
-	
+
 	/**
-	 * Returns the intercept parameter d for the fitted line
-	 * y = k * x + d.
+	 * Returns the intercept parameter d for the fitted line y = k * x + d.
+	 *
 	 * @return line parameter d
 	 */
 	public double getD() {

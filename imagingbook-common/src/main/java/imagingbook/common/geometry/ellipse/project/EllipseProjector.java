@@ -23,22 +23,18 @@ import static java.lang.Math.sin;
 
 /**
  * <p>
- * Abstract superclass for ellipse projectors, used to find the
- * closest "contact" point on an ellipse for some given target point.
- * Defines specific methods for calculating minimum distance only, 
- * i.e., without returning the closest point itself.
- * All calculations are performed in a "canonical" coordinate frame,
- * with the ellipse centered at the origin and its major axis aligned
- * to the x-axis. See Sec. 11.2.2 (Fig. 11.7) of [1] for details.
+ * Abstract superclass for ellipse projectors, used to find the closest "contact" point on an ellipse for some given
+ * target point. Defines specific methods for calculating minimum distance only, i.e., without returning the closest
+ * point itself. All calculations are performed in a "canonical" coordinate frame, with the ellipse centered at the
+ * origin and its major axis aligned to the x-axis. See Sec. 11.2.2 (Fig. 11.7) of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
- * 
  */
 public abstract class EllipseProjector {
 	
@@ -88,10 +84,10 @@ public abstract class EllipseProjector {
 	public Pnt2d project(Pnt2d pnt) {
 		return Pnt2d.from(project(pnt.toDoubleArray()));
 	}
-	
+
 	/**
-	 * Calculates the distance to the closest ellipse point
-	 * (but not the point itself).
+	 * Calculates the distance to the closest ellipse point (but not the point itself).
+	 *
 	 * @param x the 2D point to be projected
 	 * @return the distance to the closest ellipse point
 	 */

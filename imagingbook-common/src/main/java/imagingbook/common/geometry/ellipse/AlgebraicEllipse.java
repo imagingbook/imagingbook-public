@@ -23,30 +23,26 @@ import static java.lang.Math.sqrt;
 
 /**
  * <p>
- * Represents an algebraic ellipse with the implicit equation A x^2 + B x y + C
- * y^2 + D x + E y + F = 0. Parameters A, ..., F are normalized such that B^2 -
- * 4 A C = -1. Instances are immutable. See Secs. 11.2.1 and F.3.1 for details.
+ * Represents an algebraic ellipse with the implicit equation A x^2 + B x y + C y^2 + D x + E y + F = 0. Parameters A,
+ * ..., F are normalized such that B^2 - 4 A C = -1. Instances are immutable. See Secs. 11.2.1 and F.3.1 for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
- * 
  */
 public class AlgebraicEllipse {
 	
 	/** Ellipse parameters. */
 	private final double A, B, C, D, E, F;
-	
+
 	/**
-	 * Constructor.
-	 * Creates a {@link AlgebraicEllipse} instance by normalizing the
-	 * supplied parameters [A,...,F] such that d = B^2 - 4 A C = -1.
-	 * Throws an exception if d is non-negative.
-	 * 
+	 * Constructor. Creates a {@link AlgebraicEllipse} instance by normalizing the supplied parameters [A,...,F] such
+	 * that d = B^2 - 4 A C = -1. Throws an exception if d is non-negative.
+	 *
 	 * @param A ellipse parameter A
 	 * @param B ellipse parameter B
 	 * @param C ellipse parameter C
@@ -79,21 +75,19 @@ public class AlgebraicEllipse {
 			this.F = -F * s;
 		}
 	}
-	
+
 	/**
-	 * Constructor. Creates a {@link AlgebraicEllipse} instance from the
-	 * specified parameter vector [A,...,F].
-	 * 
+	 * Constructor. Creates a {@link AlgebraicEllipse} instance from the specified parameter vector [A,...,F].
+	 *
 	 * @param p algebraic ellipse parameters
 	 */
 	public AlgebraicEllipse(double[] p) {
 		this(p[0], p[1], p[2], p[3], p[4], p[5]);
 	}
-	
+
 	/**
-	 * Constructor. Creates a {@link AlgebraicEllipse} instance from
-	 * a {@link GeometricEllipse}.
-	 * 
+	 * Constructor. Creates a {@link AlgebraicEllipse} instance from a {@link GeometricEllipse}.
+	 *
 	 * @param ge a {@link GeometricEllipse}
 	 */
 	public AlgebraicEllipse(GeometricEllipse ge) {
@@ -118,12 +112,11 @@ public class AlgebraicEllipse {
 		double F = A * sqr(xc) + B * xc * yc + C * sqr(yc) - sqr(ra * rb);	
 		return new double[] {A, B, C, D, E, F};
 	}
-	
+
 	/**
-	 * Return a vector of parameters for this ellipse.
-	 * The length of the vector and the meaning of the parameters depends
-	 * on the concrete ellipse type.
-	 * 
+	 * Return a vector of parameters for this ellipse. The length of the vector and the meaning of the parameters
+	 * depends on the concrete ellipse type.
+	 *
 	 * @return a vector of parameters [A, B, C, D, E, F]
 	 */
 	public double[] getParameters() {

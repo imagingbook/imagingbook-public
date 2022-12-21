@@ -11,39 +11,36 @@ package imagingbook.common.histogram;
 
 /**
  * <p>
- * This class represents a discrete "cumulative distribution function" that is
- * piecewise linear. See Sec. 3.6.3 (Fig. 3.12) of [1] for additional details.
+ * This class represents a discrete "cumulative distribution function" that is piecewise linear. See Sec. 3.6.3 (Fig.
+ * 3.12) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class PiecewiseLinearCdf {
 	
 	private final int K;
 	private final int[] iArr;
 	private final double[] pArr;
-	
+
 	/**
 	 * <p>
-	 * Constructor, creates a {@link PiecewiseLinearCdf} from a sequence of 
-	 * brightness / cumulative probability pairs.
-	 * See Sec. 3.6.3 (Fig. 3.12) of [1] for additional details.
-	 * Usage example:
+	 * Constructor, creates a {@link PiecewiseLinearCdf} from a sequence of brightness / cumulative probability pairs.
+	 * See Sec. 3.6.3 (Fig. 3.12) of [1] for additional details. Usage example:
 	 * </p>
 	 * <pre>
 	 * int[] ik = {28, 75, 150, 210};
 	 * double[] Pk = {.05, .25, .75, .95};
 	 * PiecewiseLinearCdf pLCdf = new PiecewiseLinearCdf(256, ik, Pk);</pre>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
-	 * 3rd ed, Springer (2022).
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed,
+	 * Springer (2022).
 	 * </p>
-	 * 
+	 *
 	 * @param K number of brightness values (typ. 256)
 	 * @param a a sequence of brightness values serving as control points
 	 * @param b a sequence of cumulative probability values in [0,1], one for each control point
@@ -86,11 +83,10 @@ public class PiecewiseLinearCdf {
 					* ((pArr[s + 1] - pArr[s]) / (iArr[s + 1] - iArr[s]));
 		}
 	}
-	
+
 	/**
-	 * Returns the cumulative probabilities for the intensity values
-	 * 0 to 255 as a {@code double[]}.
-	 * 
+	 * Returns the cumulative probabilities for the intensity values 0 to 255 as a {@code double[]}.
+	 *
 	 * @return the array of cumulative probabilities
 	 */
 	public double[] getCdf() {
@@ -100,11 +96,11 @@ public class PiecewiseLinearCdf {
 		}
 		return P;
 	}
-	
+
 	/**
-	 * Returns the inverse cumulative probability function a = P<sup>-1</sup>(a), that is,
-	 * the intensity value a associated with a given cum. probability P.
-	 * 
+	 * Returns the inverse cumulative probability function a = P<sup>-1</sup>(a), that is, the intensity value a
+	 * associated with a given cum. probability P.
+	 *
 	 * @param P a cumulative probability
 	 * @return the associated intensity
 	 */
@@ -124,11 +120,10 @@ public class PiecewiseLinearCdf {
 			return iArr[r] + (P - pArr[r]) * ((iArr[r + 1] - iArr[r]) / (pArr[r + 1] - pArr[r]));
 		}
 	}
-	
+
 	/**
-	 * Returns the probability function for this distribution
-	 * as a discrete array of probabilities.
-	 * 
+	 * Returns the probability function for this distribution as a discrete array of probabilities.
+	 *
 	 * @return the probability array
 	 */
 	public double[] getPdf() {	

@@ -11,8 +11,14 @@ package imagingbook.common.color.iterate;
 
 import imagingbook.common.color.sets.CssColor;
 
+/**
+ * Example for a {@link FiniteRandomColorSequencer} which iterates over a subset of {@link CssColor}.
+ */
 public class CssColorSequencer extends FiniteRandomColorSequencer {
-	
+
+	/**
+	 * Constructor.
+	 */
 	public CssColorSequencer() {
 		super(CssColor.SelectColors);
 	}

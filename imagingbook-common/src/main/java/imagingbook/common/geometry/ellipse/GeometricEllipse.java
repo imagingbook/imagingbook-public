@@ -28,15 +28,14 @@ import static java.lang.Math.sqrt;
 
 /**
  * <p>
- * Represents an ellipse with major axis length ra, minor axis length rb, center
- * point (xc, yc), and orientation theta. Instances are immutable. See Secs.
- * 11.2.2 and F.3.1 for details.
+ * Represents an ellipse with major axis length ra, minor axis length rb, center point (xc, yc), and orientation theta.
+ * Instances are immutable. See Secs. 11.2.2 and F.3.1 for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */
@@ -47,11 +46,10 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 	 */
 	public final double ra, rb, xc, yc, theta;
 	private final OrthogonalEllipseProjector projector;
-	
+
 	/**
-	 * Constructor.
-	 * Axis lengths may be exchanged to ensure ra &ge; rb.
-	 * 
+	 * Constructor. Axis lengths may be exchanged to ensure ra &ge; rb.
+	 *
 	 * @param ra major axis length
 	 * @param rb minor axis length
 	 * @param xc center point (x)
@@ -77,11 +75,10 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 			throw new RuntimeException(this.toString());
 		}
 	}
-	
+
 	/**
-	 * Constructor, short version for axis-aligned ellipses.
-	 * Axis lengths may be exchanged to ensure ra &ge; rb.
-	 * 
+	 * Constructor, short version for axis-aligned ellipses. Axis lengths may be exchanged to ensure ra &ge; rb.
+	 *
 	 * @param ra major axis length
 	 * @param rb minor axis length
 	 * @param xc center point (x)
@@ -90,19 +87,20 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 	public GeometricEllipse(double ra, double rb, double xc, double yc) {
 		this(ra, rb, xc, yc, 0.0);
 	}
-	
+
 	/**
 	 * Constructor.
+	 *
 	 * @param p parameter vector [ra, rb, xc, yc, theta].
 	 * @see #getParameters()
 	 */
 	public GeometricEllipse(double[] p) {
 		this(p[0], p[1], p[2], p[3], p[4]);
 	}
-	
+
 	/**
-	 * Constructor.
-	 * Creates a new {@link GeometricEllipse} from a {@link AlgebraicEllipse} instance.
+	 * Constructor. Creates a new {@link GeometricEllipse} from a {@link AlgebraicEllipse} instance.
+	 *
 	 * @param ae a {@link AlgebraicEllipse} instance
 	 */
 	public GeometricEllipse(AlgebraicEllipse ae) {
@@ -110,10 +108,9 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 	}
 
 	/**
-	 * Calculates and returns the geometric ellipse parameters from a
-	 * given algebraic ellipse (see Eqns. 19-23 at 
+	 * Calculates and returns the geometric ellipse parameters from a given algebraic ellipse (see Eqns. 19-23 at
 	 * <a href="http://mathworld.wolfram.com/Ellipse.html">http://mathworld.wolfram.com/Ellipse.html</a>).
-	 * 
+	 *
 	 * @param ae a {@linkplain AlgebraicEllipse} instance with parameters (A,...,F)
 	 * @return the geometric ellipse parameters (ra, rb, xc, yc, theta)
 	 * @see AlgebraicEllipse
@@ -150,9 +147,9 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 	// ---------------------------------------
 
 	/**
-	 * Returns a vector of parameters for this ellipse. The length of the vector and
-	 * the meaning of the parameters depends on the concrete ellipse type.
-	 * 
+	 * Returns a vector of parameters for this ellipse. The length of the vector and the meaning of the parameters
+	 * depends on the concrete ellipse type.
+	 *
 	 * @return a vector of parameters [ra, rb, xc, yc, theta]
 	 */
 	public double[] getParameters() {
@@ -170,15 +167,14 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 	public double getAlgebraicDistance(Pnt2d p) {
 		return new AlgebraicEllipse(this).getAlgebraicDistance(p);
 	}
-	
+
 	/**
-	 * Returns the ellipse point closest to the specified point.
-	 * To perform this calculation for multiple points on the
+	 * Returns the ellipse point closest to the specified point. To perform this calculation for multiple points on the
 	 * same ellipse use {@link OrthogonalEllipseProjector}.
-	 * 
-	 * @see OrthogonalEllipseProjector
+	 *
 	 * @param pnt some 2D point
 	 * @return the closest ("contact") point on the ellipse
+	 * @see OrthogonalEllipseProjector
 	 */
 	public Pnt2d getClosestPoint(Pnt2d pnt) {
 		return projector.project(pnt);
@@ -190,9 +186,8 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 	
 	// ---------------------------------------------------------------------------------
 
-    /**
-	 * Returns the mean squared error between this ellipse 
-	 * and a set of 2D points.
+	/**
+	 * Returns the mean squared error between this ellipse and a set of 2D points.
 	 *
 	 * @param points a set of sample points (usually the points used for fitting)
 	 * @return the mean squared error
@@ -204,9 +199,10 @@ public class GeometricEllipse implements ShapeProducer, Primitive2d {
 		}
 		return sum2 / points.length;
 	}
-	
+
 	/**
 	 * Returns the closest (geometric) distance of the specified point to this ellipse.
+	 *
 	 * @param p some 2D point
 	 * @return the distance to the closest point on the ellipse
 	 */

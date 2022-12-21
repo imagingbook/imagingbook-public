@@ -11,29 +11,26 @@ package imagingbook.common.geometry.moments;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.math.Arithmetic;
 
-
 /**
  * <p>
- * This class defines methods for statistical moment calculations on 2D point
- * sets. See Sec. 8.5 of [1] for details. This abstract class defines static
- * methods only.
+ * This class defines methods for statistical moment calculations on 2D point sets. See Sec. 8.5 of [1] for details.
+ * This abstract class defines static methods only.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */
 public abstract class Moments2D { 	//TODO: make more efficient versions!
 	
 	private Moments2D() {}
-	
+
 	/**
-	 * Calculates and returns the ordinary moment of order (p,q) for the
-	 * specified set of 2D points.
-	 * 
+	 * Calculates and returns the ordinary moment of order (p,q) for the specified set of 2D points.
+	 *
 	 * @param points a set of 2D points
 	 * @param p order index p
 	 * @param q order index q
@@ -55,9 +52,8 @@ public abstract class Moments2D { 	//TODO: make more efficient versions!
 	}
 
 	/**
-	 * Calculates and returns the central moment of order (p,q) for the
-	 * specified set of 2D points.
-	 * 
+	 * Calculates and returns the central moment of order (p,q) for the specified set of 2D points.
+	 *
 	 * @param points a set of 2D points
 	 * @param p order index p
 	 * @param q order index q
@@ -78,9 +74,8 @@ public abstract class Moments2D { 	//TODO: make more efficient versions!
 	}
 
 	/**
-	 * Calculates and returns the normalized central moment of order (p,q) for the
-	 * specified set of 2D points.
-	 * 
+	 * Calculates and returns the normalized central moment of order (p,q) for the specified set of 2D points.
+	 *
 	 * @param points a set of 2D points
 	 * @param p order index p
 	 * @param q order index q

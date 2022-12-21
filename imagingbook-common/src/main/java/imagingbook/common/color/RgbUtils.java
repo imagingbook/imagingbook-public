@@ -14,8 +14,8 @@ import java.awt.Color;
 
 /**
  * This class defines static methods for manipulating and converting RGB colors.
- * @author WB
  *
+ * @author WB
  */
 public abstract class RgbUtils {
 	
@@ -32,9 +32,9 @@ public abstract class RgbUtils {
 	}
 
 	/**
-	 * Converts the given integer-encoded 8-bit RGB color
-	 * to a 3-element {@code int[]} with components red, green and blue.
-	 * 
+	 * Converts the given integer-encoded 8-bit RGB color to a 3-element {@code int[]} with components red, green and
+	 * blue.
+	 *
 	 * @param argb integer-encoded 8-bit RGB color in ARGB format
 	 * @return {@code int[]} with R, G, B components
 	 */
@@ -43,14 +43,13 @@ public abstract class RgbUtils {
 		decodeIntToRgb(argb, RGB);
 		return RGB;
 	}
-	
+
 	/**
-	 * Converts the given integer-encoded 8-bit RGB color to a 3-element
-	 * {@code int[]} with components red, green and blue. Fills the specified
-	 * {@code int[]}, nothing is returned.
-	 * 
+	 * Converts the given integer-encoded 8-bit RGB color to a 3-element {@code int[]} with components red, green and
+	 * blue. Fills the specified {@code int[]}, nothing is returned.
+	 *
 	 * @param argb integer-encoded 8-bit RGB color in ARGB format
-	 * @param RGB  {@code int[]} with R, G, B components
+	 * @param RGB {@code int[]} with R, G, B components
 	 */
 	public static void decodeIntToRgb(int argb, int[] RGB) {
 		RGB[0] = ((argb >> 16) & 0xFF);
@@ -59,20 +58,20 @@ public abstract class RgbUtils {
 	}
 
 	/**
-	 * Encodes the given RGB component values into a single 32-bit {@code int} value
-	 * in ARGB format (with transparency A set to zero).
-	 * 
+	 * Encodes the given RGB component values into a single 32-bit {@code int} value in ARGB format (with transparency A
+	 * set to zero).
+	 *
 	 * @param RGB {@code int[]} with R, G, B components
 	 * @return integer-encoded 8-bit RGB color in ARGB format
 	 */
 	public static int encodeRgbToInt(int[] RGB) {
 		return encodeRgbToInt(RGB[0], RGB[1], RGB[2]);
 	}
-	
+
 	/**
-	 * Encodes the given r, g, b component values into a single 32-bit {@code int}
-	 * value in ARGB format (with transparency A set to zero).
-	 * 
+	 * Encodes the given r, g, b component values into a single 32-bit {@code int} value in ARGB format (with
+	 * transparency A set to zero).
+	 *
 	 * @param r red component value
 	 * @param g breen component value
 	 * @param b blue component value
@@ -83,11 +82,10 @@ public abstract class RgbUtils {
 	}
 	
 	// -------------------------------------------------------------
-	
+
 	/**
-	 * Converts integer RGB values (with components assumed to be in [0,255])
-	 * to float values in [0,1].
-	 * 
+	 * Converts integer RGB values (with components assumed to be in [0,255]) to float values in [0,1].
+	 *
 	 * @param RGB a sequence of R,G,B values or {@code int[]}
 	 * @return the RGB values normalized to [0,1]
 	 */
@@ -98,11 +96,10 @@ public abstract class RgbUtils {
 	public static double[] normalizeD(int[] RGB) {
 		return new double[] {RGB[0]/255.0, RGB[1]/255.0, RGB[2]/255.0};
 	}
-	
+
 	/**
-	 * Converts float RGB values (with components assumed to be in [0,1]) to integer
-	 * values in [0,255].
-	 * 
+	 * Converts float RGB values (with components assumed to be in [0,1]) to integer values in [0,255].
+	 *
 	 * @param rgb RGB float values in [0,1]
 	 * @return RGB integer values in [0,255]
 	 */
@@ -117,11 +114,10 @@ public abstract class RgbUtils {
 		}
 		return RGB;
 	}
-	
+
 	/**
-	 * Converts double RGB values (with components assumed to be in [0,1]) to
-	 * integer values in [0,255].
-	 * 
+	 * Converts double RGB values (with components assumed to be in [0,1]) to integer values in [0,255].
+	 *
 	 * @param rgb RGB float values in [0,1]
 	 * @return RGB integer values in [0,255]
 	 */
@@ -158,12 +154,11 @@ public abstract class RgbUtils {
 	}
 
 	/**
-	 * Interpolates linearly between the colors in the specified color palette. The
-	 * interpolation coefficient must be in [0,1]. If 0, the first palette color is
-	 * returned, if 1 the last color.
-	 * 
+	 * Interpolates linearly between the colors in the specified color palette. The interpolation coefficient must be in
+	 * [0,1]. If 0, the first palette color is returned, if 1 the last color.
+	 *
 	 * @param palette an array of colors (at least 2)
-	 * @param t       interpolation coefficient, must be in [0,1]
+	 * @param t interpolation coefficient, must be in [0,1]
 	 * @return the interpolated color
 	 */
 	public static Color interpolate(Color[] palette, double t) {

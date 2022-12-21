@@ -13,22 +13,21 @@ import imagingbook.common.geometry.basic.Pnt2d;
 
 /**
  * <p>
- * This class represents a pure 2D translation (as a special case of affine
- * transformation). Instances are immutable and it can be assumed that every
- * instance of this class is indeed a translation. See Secs. 21.1.3 and 21.3.1
- * of [1] for details.
+ * This class represents a pure 2D translation (as a special case of affine transformation). Instances are immutable and
+ * it can be assumed that every instance of this class is indeed a translation. See Secs. 21.1.3 and 21.3.1 of [1] for
+ * details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  */
 public class Translation2D extends AffineMapping2D {
 
 	/**
-	 * Constructor. Creates a new 2D translation mapping.
+	 * Constructor, creates a new 2D translation mapping.
 	 * @param tx translation in x
 	 * @param ty translation in y
 	 */
@@ -37,7 +36,7 @@ public class Translation2D extends AffineMapping2D {
 	}
 	
 	/**
-	 * Constructor. Creates a new 2D translation mapping.
+	 * Constructor, creates a new 2D translation mapping.
 	 * @param txy translation in x/y (2-element array)
 	 */
 	public Translation2D(double[] txy) {
@@ -45,17 +44,17 @@ public class Translation2D extends AffineMapping2D {
 	}
 
 	/** 
-	 * Constructor. Creates a new translation instance from a given translation.
+	 * Constructor, reates a new translation instance from a given translation.
 	 * @param m a 2D translation mapping
 	 */
 	public Translation2D(Translation2D m) {
 		this(m.a02, m.a12);
 	}
-	
+
 	/**
-	 * Creates a new translation that maps between the first point
-	 * to the second point specified.
-	 * @param p the first point 
+	 * Creates a new translation that maps between the first point to the second point specified.
+	 *
+	 * @param p the first point
 	 * @param q the second point
 	 * @return a new translation instance
 	 */
@@ -69,10 +68,11 @@ public class Translation2D extends AffineMapping2D {
 	public Translation2D duplicate() {
 		return new Translation2D(this);
 	}
-	
+
 	/**
-	 * Concatenates this translation A with another translation B and returns
-	 * a new translation C, such that C(x) = B(A(x)).
+	 * Concatenates this translation A with another translation B and returns a new translation C, such that C(x) =
+	 * B(A(x)).
+	 *
 	 * @param B the second translation
 	 * @return the concatenated translations
 	 */

@@ -13,11 +13,8 @@ import imagingbook.common.geometry.delaunay.Triangle;
 
 import java.util.Arrays;
 
-
-
 /**
- * Represents a 2D triangle, specified by three corner points.
- * Instances of this class are immutable.
+ * Represents a 2D triangle, specified by three corner points. Instances of this class are immutable.
  */
 public class Triangle2D implements Triangle {
 
@@ -25,12 +22,12 @@ public class Triangle2D implements Triangle {
 	private final boolean isOrientedCCW;
 
 	/**
-	 * Constructor of the 2D triangle class used to create a new triangle instance
-	 * from three 2D vectors describing the triangle's vertices.
-	 * 
-	 * @param a The first vertex of the triangle
-	 * @param b The second vertex of the triangle
-	 * @param c The third vertex of the triangle
+	 * Constructor of the 2D triangle class used to create a new triangle instance from three 2D vectors describing the
+	 * triangle's vertices.
+	 *
+	 * @param a the first vertex of the triangle
+	 * @param b the second vertex of the triangle
+	 * @param c the third vertex of the triangle
 	 */
 	public Triangle2D(Pnt2d a, Pnt2d b, Pnt2d c) {
 		this.a = a;
@@ -45,9 +42,9 @@ public class Triangle2D implements Triangle {
 	}
 
 	/**
-	 * Tests if a 2D point lies inside this 2D triangle. See See Christer Ericson, 
-	 * Real-Time Collision Detection, CRC Press, 2004 (Ch. 5, p. 206).
-	 * 
+	 * Tests if a 2D point lies inside this 2D triangle. See See Christer Ericson, Real-Time Collision Detection, CRC
+	 * Press, 2004 (Ch. 5, p. 206).
+	 *
 	 * @param point the point to be checked
 	 * @return {@code true} iff the point lies inside this 2D triangle
 	 */
@@ -65,17 +62,15 @@ public class Triangle2D implements Triangle {
 	}
 
 	/**
-	 * Tests if a given point lies in the circumcircle of this triangle. Let the
-	 * triangle ABC appear in counterclockwise (CCW) order. Then when det &gt; 0,
-	 * the point lies inside the circumcircle through the three points a, b and c.
-	 * If instead det &lt; 0, the point lies outside the circumcircle. When det = 0,
-	 * the four points are cocircular. If the triangle is oriented clockwise (CW)
-	 * the result is reversed. 
-	 * See Christer Ericson, Real-Time Collision Detection, CRC Press, 2004 (Ch. 3, p. 34).
-	 * 
+	 * Tests if a given point lies in the circumcircle of this triangle. Let the triangle ABC appear in counterclockwise
+	 * (CCW) order. Then when det &gt; 0, the point lies inside the circumcircle through the three points a, b and c. If
+	 * instead det &lt; 0, the point lies outside the circumcircle. When det = 0, the four points are cocircular. If the
+	 * triangle is oriented clockwise (CW) the result is reversed. See Christer Ericson, Real-Time Collision Detection,
+	 * CRC Press, 2004 (Ch. 3, p. 34).
+	 *
 	 * @param point the point to be checked
-	 * @return {@code true} iff the point lies inside the circumcircle through the
-	 *         three points a, b, and c of the triangle
+	 * @return {@code true} iff the point lies inside the circumcircle through the three points a, b, and c of the
+	 * triangle
 	 */
 	protected boolean isPointInCircumCircle(Pnt2d point) {
 		final double a11 = a.getX() - point.getX();
@@ -99,15 +94,12 @@ public class Triangle2D implements Triangle {
 	}
 
 	/**
-	 * Tests if a given point lies in the circumcircle of this triangle. Let the
-	 * triangle ABC appear in counterclockwise (CCW) order. Then when det &gt; 0,
-	 * the point lies inside the circumcircle through the three points a, b and c.
-	 * If instead det &lt; 0, the point lies outside the circumcircle. When det = 0,
-	 * the four points are cocircular. If the triangle is oriented clockwise (CW)
-	 * the result is reversed. 
-	 * See Christer Ericson, Real-Time Collision Detection, CRC Press, 2004 (Ch. 3, p. 32).
-	 * Since triangles are immutable, this property can be pre-calculated.
-	 * 
+	 * Tests if a given point lies in the circumcircle of this triangle. Let the triangle ABC appear in counterclockwise
+	 * (CCW) order. Then when det &gt; 0, the point lies inside the circumcircle through the three points a, b and c. If
+	 * instead det &lt; 0, the point lies outside the circumcircle. When det = 0, the four points are cocircular. If the
+	 * triangle is oriented clockwise (CW) the result is reversed. See Christer Ericson, Real-Time Collision Detection,
+	 * CRC Press, 2004 (Ch. 3, p. 32). Since triangles are immutable, this property can be pre-calculated.
+	 *
 	 * @return {@code true} iff the triangle abc is oriented counterclockwise (CCW)
 	 */
 	private boolean findIfOrientedCCW() {
@@ -120,9 +112,8 @@ public class Triangle2D implements Triangle {
 	}
 
 	/**
-	 * Test if this triangle is oriented counterclockwise (CCW).
-	 * This property is pre-calculated.
-	 * 
+	 * Test if this triangle is oriented counterclockwise (CCW). This property is pre-calculated.
+	 *
 	 * @return {@code true} iff the triangle ABC is oriented counterclockwise (CCW)
 	 */
 	protected boolean isOrientedCCW() {
@@ -131,7 +122,7 @@ public class Triangle2D implements Triangle {
 
 	/**
 	 * Returns {@code true} if this triangle contains the given edge.
-	 * 
+	 *
 	 * @param edge the edge to be tested
 	 * @return {@code true} iff this triangle contains the specified edge
 	 */
@@ -171,10 +162,9 @@ public class Triangle2D implements Triangle {
 	}
 
 	/**
-	 * Calculates the minimum distance from the specified point to this triangle.
-	 * The result is returned as an {@link Edge2D.Distance} instance, representing 
-	 * the point's distance to the closest edge of this triangle.
-	 * 
+	 * Calculates the minimum distance from the specified point to this triangle. The result is returned as an
+	 * {@link Edge2D.Distance} instance, representing the point's distance to the closest edge of this triangle.
+	 *
 	 * @param point the point to be checked
 	 * @return the edge of this triangle that is closest to the specified point
 	 */

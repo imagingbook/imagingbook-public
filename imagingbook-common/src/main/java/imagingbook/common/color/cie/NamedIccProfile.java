@@ -40,11 +40,11 @@ public enum NamedIccProfile implements NamedResource {
 	public String getFileName() {
 		return filename;
 	}
-	
+
 	/**
-	 * Returns the {@link ICC_Profile} associated with this enum item or
-	 * {@code null} if the profile could not be read (which is an error).
-	 * 
+	 * Returns the {@link ICC_Profile} associated with this enum item or {@code null} if the profile could not be read
+	 * (which is an error).
+	 *
 	 * @return the {@link ICC_Profile} associated with this enum item
 	 */
 	public ICC_Profile getProfile() {
@@ -57,11 +57,11 @@ public enum NamedIccProfile implements NamedResource {
 		}
 		return this.profile;
 	}
-	
+
 	/**
-	 * Returns a {@link ICC_ColorSpace} instance obtained from the associated ICC
-	 * color profile. An exception is thrown if the profile could not be read.
-	 * 
+	 * Returns a {@link ICC_ColorSpace} instance obtained from the associated ICC color profile. An exception is thrown
+	 * if the profile could not be read.
+	 *
 	 * @return the {@link ICC_ColorSpace} associated with this enum item
 	 */
 	public ICC_ColorSpace getColorSpace() {

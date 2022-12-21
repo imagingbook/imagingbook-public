@@ -17,17 +17,17 @@ import imagingbook.common.geometry.basic.Pnt2d;
  *
  */
 public interface Jacobian {
-	
+
 	/**
 	 * <p>
-	 * Returns the Jacobian matrix for this mapping, evaluated at the given 2D
-	 * point. See Appendix Sec. D.1.1 of [1] for more details.
+	 * Returns the Jacobian matrix for this mapping, evaluated at the given 2D point. See Appendix Sec. D.1.1 of [1] for
+	 * more details.
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
-	 * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed,
+	 * Springer (2022).
 	 * </p>
-	 * 
+	 *
 	 * @param pnt the 2D position to calculate the Jacobian for
 	 * @return the Jacobian matrix
 	 */

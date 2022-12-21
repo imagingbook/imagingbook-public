@@ -18,14 +18,13 @@ import java.awt.geom.Path2D;
  * Interface specifying a 2D triangle.
  */
 public interface Triangle extends ShapeProducer {	// TODO: better integrate with other 2D primitives
-	
+
 	/**
-	 * Returns an array of points used by the triangulation in the order 
-	 * of their insertion.
-	 * 
+	 * Returns an array of points used by the triangulation in the order of their insertion.
+	 *
 	 * @return an array of points
 	 */
-	Pnt2d[] getPoints();
+	public Pnt2d[] getPoints();
 	
 	@Override
 	public default Shape getShape(double scale) {

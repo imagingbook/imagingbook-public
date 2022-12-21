@@ -14,10 +14,8 @@ import java.awt.Color;
 
 /**
  * <p>
- * This class defines methods for iterating over an ordered set of AWT colors.
- * The color set can be constructed from individual AWT colors 
- * (see {@link #FiniteLinearColorSequencer(Color...)})
- * or an enum class implementing
+ * This class defines methods for iterating over an ordered set of AWT colors. The color set can be constructed from
+ * individual AWT colors (see {@link #FiniteLinearColorSequencer(Color...)}) or an enum class implementing
  * {@link ColorEnumeration} (see {@link #FiniteLinearColorSequencer(Class)}).
  * </p>
  * <p>
@@ -30,7 +28,6 @@ import java.awt.Color;
  * 	Color c = iter1.next();
  * 	// use color c
  * }
- * 
  * // from enum type:
  * FiniteLinearColorSequencer iter2 = new FiniteLinearColorSequencer(BasicAwtColor.class);
  * iter2.reset(5);
@@ -39,11 +36,11 @@ import java.awt.Color;
  * 	// use color c
  * }
  * </pre>
- * 
+ *
  * @author WB
  * @version 2022/04/06
- * 
  * @see Color
+ * @see ColorEnumeration
  */
 public class FiniteLinearColorSequencer implements ColorSequencer {
 
@@ -79,17 +76,16 @@ public class FiniteLinearColorSequencer implements ColorSequencer {
 	// --- iteration stuff -----------------------------------
 
 	/**
-	 * Reset the iterator, such that the color returned by the following call to
-	 * {@link #next()} has index 0.
+	 * Reset the iterator, such that the color returned by the following call to {@link #next()} has index 0.
 	 */
 	public void reset() {
 		reset(0);
 	}
 
 	/**
-	 * Reset the iterator such that the index of the item returned by the following
-	 * call to {@link #next()} has the specified start index.
-	 * 
+	 * Reset the iterator such that the index of the item returned by the following call to {@link #next()} has the
+	 * specified start index.
+	 *
 	 * @param offset the new start index
 	 */
 	public void reset(int offset) {

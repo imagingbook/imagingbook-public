@@ -18,16 +18,15 @@ import static java.lang.Math.sqrt;
 
 /**
  * <p>
- * Represents an algebraic circle with four parameters A, B, C, D in the form A
- * * (x^2 + y^2) + B * x + C * y + D = 0. Parameters are normalized such that
- * B^2 + C^2 - 4 * A * D = 1 and A &ge; 0 Circle instances are immutable. See
- * Sec. 11.1.1 and Appendix F.2.1 of [1] for details.
+ * Represents an algebraic circle with four parameters A, B, C, D in the form A * (x^2 + y^2) + B * x + C * y + D = 0.
+ * Parameters are normalized such that B^2 + C^2 - 4 * A * D = 1 and A &ge; 0 Circle instances are immutable. See Sec.
+ * 11.1.1 and Appendix F.2.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/17
  */
@@ -37,13 +36,12 @@ public class AlgebraicCircle {
 	 * Circle parameter.
 	 */
 	public final double A, B, C, D;
-	
+
 	/**
-	 * Constructor. Creates a {@link AlgebraicCircle} instance
-	 * whose parameters A, B, C, D are normalized such that
-	 * B^2 + C^2 - 4 * A * D = 1 and A &ge; 0.
-	 * Throws an exception if d = B^2 + C^2 - 4 * A * D (the <em>discriminant</em>) is negative.
-	 * 
+	 * Constructor. Creates a {@link AlgebraicCircle} instance whose parameters A, B, C, D are normalized such that B^2
+	 * + C^2 - 4 * A * D = 1 and A &ge; 0. Throws an exception if d = B^2 + C^2 - 4 * A * D (the <em>discriminant</em>)
+	 * is negative.
+	 *
 	 * @param A circle parameter A
 	 * @param B circle parameter B
 	 * @param C circle parameter C
@@ -70,21 +68,19 @@ public class AlgebraicCircle {
 			this.D = -D * s;
 		}
 	}
-	
+
 	/**
-	 * Constructor. Creates a {@link AlgebraicCircle} instance from the
-	 * specified parameter vector [A, B, C, D].
-	 * 
+	 * Constructor. Creates a {@link AlgebraicCircle} instance from the specified parameter vector [A, B, C, D].
+	 *
 	 * @param p algebraic circle parameters
 	 */
 	public AlgebraicCircle(double[] p) {
 		this(p[0], p[1], p[2], p[3]);
 	}
-	
+
 	/**
-	 * Constructor. Creates a {@link AlgebraicCircle} instance from
-	 * a {@link GeometricCircle}.
-	 * 
+	 * Constructor. Creates a {@link AlgebraicCircle} instance from a {@link GeometricCircle}.
+	 *
 	 * @param gc a {@link GeometricCircle}
 	 */
 	public AlgebraicCircle(GeometricCircle gc) {

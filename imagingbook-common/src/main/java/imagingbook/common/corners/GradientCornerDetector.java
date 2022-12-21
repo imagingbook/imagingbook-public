@@ -105,20 +105,18 @@ public abstract class GradientCornerDetector {
 			//SubpixelMaxInterpolator.getInstance(params.maxLocatorMethod);
 		this.Q = makeCornerScores(ip);
 	}
-	
+
 	/**
-	 * Calculates the corner response score for a single image position (u,v)
-	 * from the elements A, B, C of the local structure matrix.
-	 * The method should normalize the score value, such that 100
-	 * is returned for the default threshold value.
-	 * To be implemented by concrete sub-classes.
-	 * 
-	 * @see HarrisCornerDetector
-	 * @see ShiTomasiCornerDetector
+	 * Calculates the corner response score for a single image position (u,v) from the elements A, B, C of the local
+	 * structure matrix. The method should normalize the score value, such that 100 is returned for the default
+	 * threshold value. To be implemented by concrete sub-classes.
+	 *
 	 * @param A = Ixx(u,v)
 	 * @param B = Iyy(u,v)
 	 * @param C = Ixy(u,v)
 	 * @return the corner score
+	 * @see HarrisCornerDetector
+	 * @see ShiTomasiCornerDetector
 	 */
 	protected abstract float getCornerScore(float A, float B, float C);
 	
@@ -274,10 +272,11 @@ public abstract class GradientCornerDetector {
 		}
 		return Cclean;
 	}
-	
+
 	/**
-	 * Creates a new {@link Corner} instance. Performs sub-pixel
-	 * position refinement if a {@link #maxLocator} is defined.
+	 * Creates a new {@link Corner} instance. Performs sub-pixel position refinement if a {@link #maxLocator} is
+	 * defined.
+	 *
 	 * @param u the corner's horizontal position (int)
 	 * @param v the corner's vertical position (int)
 	 * @param qn the 9 corner scores in the 3x3 neighborhood

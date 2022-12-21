@@ -40,19 +40,18 @@ public interface EllipseFitAlgebraic {
 		}
 		throw new RuntimeException("unknown algebraic fit type: " + type);
 	}
-	
+
 	/**
-	 * Returns a vector of algebraic ellipse parameters:
-	 * {@code (a,b,c,d,e,f)}, representing the ellipse by
+	 * Returns a vector of algebraic ellipse parameters: {@code (a,b,c,d,e,f)}, representing the ellipse by
 	 * {@code a x^2 + b x y + c y^2 + d x + e y + f = 0}.
+	 *
 	 * @return the ellipse parameters
 	 */
 	public double[] getParameters();
-	
+
 	/**
-	 * Returns a algebraic ellipse constructed from the 
-	 * estimated ellipse parameters.
-	 * 
+	 * Returns a algebraic ellipse constructed from the estimated ellipse parameters.
+	 *
 	 * @return an {@link AlgebraicEllipse} instance
 	 */
 	public default AlgebraicEllipse getEllipse() {
@@ -72,19 +71,18 @@ public interface EllipseFitAlgebraic {
 			return (sqr(b) - 4*a*c) < 0;
 		}
 	}
-	
+
 	/**
 	 * <p>
-	 * Returns a 6x6 matrix (U) to convert ellipse parameters qr = (ar,...,fr)
-	 * calculated for data centered at (xr, yr) to ellipse parameters q = (a,...,f)
-	 * for the original non-centered data: q = U * qr. See [1, Sec. 11.2.1] (e.g.,
+	 * Returns a 6x6 matrix (U) to convert ellipse parameters qr = (ar,...,fr) calculated for data centered at (xr, yr)
+	 * to ellipse parameters q = (a,...,f) for the original non-centered data: q = U * qr. See [1, Sec. 11.2.1] (e.g.,
 	 * Alg. 11.6) for additional information.
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
-	 * Introduction</em>, 3rd ed, Springer (2022).
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed,
+	 * Springer (2022).
 	 * </p>
-	 * 
+	 *
 	 * @param xr data reference point (x)
 	 * @param yr data reference point (y)
 	 * @return the offset correction matrix (U)

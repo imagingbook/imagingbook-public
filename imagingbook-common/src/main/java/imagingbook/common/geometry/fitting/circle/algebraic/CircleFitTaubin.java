@@ -18,47 +18,40 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
- * This is an implementation of the algebraic circle fitting algorithm by Taubin [1],
- * following the description in [2] (Sec. 5.9-5.10). 
+ * This is an implementation of the algebraic circle fitting algorithm by Taubin [1], following the description in [2]
+ * (Sec. 5.9-5.10).
  * <p>
- * The algorithm uses singular-value decomposition (SVD).
- * Fits to exactly 3 (non-collinear) points are handled properly.
- * Data centering is used to improve numerical stability (alternatively, a reference
- * point can be specified).
+ * The algorithm uses singular-value decomposition (SVD). Fits to exactly 3 (non-collinear) points are handled properly.
+ * Data centering is used to improve numerical stability (alternatively, a reference point can be specified).
  * </p>
  * <p>
- * [1] G. Taubin. "Estimation of planar curves, surfaces, and nonplanar
- * space curves defined by implicit equations with applications to edge
- * and range image segmentation". <em>IEEE Transactions on Pattern Analysis
- * and Machine Intelligence</em> <strong>13</strong>(11), 1115–1138 (1991).
+ * [1] G. Taubin. "Estimation of planar curves, surfaces, and nonplanar space curves defined by implicit equations with
+ * applications to edge and range image segmentation". <em>IEEE Transactions on Pattern Analysis and Machine
+ * Intelligence</em> <strong>13</strong>(11), 1115–1138 (1991).
  * <br>
- * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and
- * Lines by Least Squares". Monographs on Statistics and Applied Probability.
- * Taylor &amp; Francis (2011).
+ * [2] N. Chernov. "Circular and Linear Regression: Fitting Circles and Lines by Least Squares". Monographs on
+ * Statistics and Applied Probability. Taylor &amp; Francis (2011).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class CircleFitTaubin implements CircleFitAlgebraic {
 	
 	private final double[] q;	// p = (A,B,C,D) circle parameters
-	
+
 	/**
-	 * Constructor.
-	 * The centroid of the sample points is used as the reference point.
-	 * 
+	 * Constructor. The centroid of the sample points is used as the reference point.
+	 *
 	 * @param points sample points
 	 */
 	public CircleFitTaubin(Pnt2d[] points) {
 		this(points, null);
 	}
-	
+
 	/**
-	 * Constructor.
-	 * The centroid of the sample points is used as the reference point for data
-	 * centering if {@code null} is passed for {@code xref}.
-	 * 
+	 * Constructor. The centroid of the sample points is used as the reference point for data centering if {@code null}
+	 * is passed for {@code xref}.
+	 *
 	 * @param points sample points
 	 * @param xref reference point or {@code null}
 	 */

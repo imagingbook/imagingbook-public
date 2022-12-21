@@ -12,12 +12,10 @@ import java.awt.Color;
 import java.util.Iterator;
 
 /**
- * Common interface for color sequencers.
- * They are supposed to iterate infinitely, thus 
- * {@link #hasNext()} returns {@code true} by default.
- * 
- * @author WB
+ * Common interface for color sequencers. Color sequencers iterate over a given set of colors. Unless specified
+ * otherwise, they iterate infinitely, thus {@link #hasNext()} returns {@code true} by default.
  *
+ * @author WB
  */
 public interface ColorSequencer extends Iterator<Color> {
 	

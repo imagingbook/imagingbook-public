@@ -9,11 +9,9 @@
 package imagingbook.common.geometry.basic;
 
 /**
- * Interface specifying a 2D curve capable of calculating the minimum
- * distance to a given point.
- *  
- * @author WB
+ * Interface specifying a 2D curve capable of calculating the minimum distance to a given point.
  *
+ * @author WB
  */
 public interface Primitive2d {
 	

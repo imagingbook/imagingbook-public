@@ -37,22 +37,21 @@ import static imagingbook.common.math.Matrix.normL2;
 public abstract class SubpixelMaxInterpolator {
 	
 	private SubpixelMaxInterpolator() {}
-	
+
 	/**
-	 * Tries to locate the sub-pixel maximum from the 9 discrete sample values
-	 * (s0,...,s8) taken from a 3x3 neighborhood, arranged in the following order:
+	 * Tries to locate the sub-pixel maximum from the 9 discrete sample values (s0,...,s8) taken from a 3x3
+	 * neighborhood, arranged in the following order:
 	 * <pre>
 	 * s4 s3 s2
 	 * s5 s0 s1
 	 * s6 s7 s8
 	 * </pre>
 	 * The center value (s0) is associated with position (0,0).
-	 * 
+	 *
 	 * @param s a vector containing 9 sample values in the order described above
-	 * @return a 3-element array [x,y,z], with the estimated maximum position (x,y) 
-	 * and the associated max. value (z). 
-	 * The position is relative to the center coordinate (0,0).
-	 * {@code null} is returned if the maximum position could not be located.
+	 * @return a 3-element array [x,y,z], with the estimated maximum position (x,y) and the associated max. value (z).
+	 * This position is relative to the center coordinate (0,0). {@code null} is returned if the maximum position could
+	 * not be located.
 	 */
 	public abstract float[] getMax(float[] s);
 	
@@ -84,23 +83,21 @@ public abstract class SubpixelMaxInterpolator {
 	}
 	
 	// ------------------------------------------------------------------------------
-	
+
 	/**
 	 * <p>
-	 * 2D interpolator using second-order Taylor expansion to find the coefficients
-	 * of the quadratic interpolating polynomial 
+	 * 2D interpolator using second-order Taylor expansion to find the coefficients of the quadratic interpolating
+	 * polynomial
 	 * </p>
 	 * <pre>f(x,y) = c_0 + c_1 x + c_2 y + c_3 x^2 + c_4 y^2  + c_5 xy</pre>
 	 * <p>
-	 * The resulting function fits exactly the 5 on-axis samples 
-	 * (s[0], s[1], s[3], s[5], s[7]) but in general does not pass
-	 * through the outer diagonal samples (s[2], s[4], s[6], s[8]).
-	 * See Appendix E.2.2 (Alg. E.1, 'FindMaxQuadraticTaylor') of [1] for 
-	 * additional details.
+	 * The resulting function fits exactly the 5 on-axis samples (s[0], s[1], s[3], s[5], s[7]) but in general does not
+	 * pass through the outer diagonal samples (s[2], s[4], s[6], s[8]). See Appendix E.2.2 (Alg. E.1,
+	 * 'FindMaxQuadraticTaylor') of [1] for additional details.
 	 * </p>
 	 * <p>
-	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
-	 * 3rd ed, Springer (2022).
+	 * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed,
+	 * Springer (2022).
 	 * </p>
 	 */
 	public static class QuadraticTaylor extends SubpixelMaxInterpolator {

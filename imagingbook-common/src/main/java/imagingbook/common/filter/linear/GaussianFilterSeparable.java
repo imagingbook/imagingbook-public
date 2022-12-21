@@ -12,12 +12,10 @@ package imagingbook.common.filter.linear;
 import imagingbook.common.math.Arithmetic;
 
 /**
- * This class implements a x/y-separated 2D Gaussian filter by extending
- * {@link LinearFilterSeparable}.
- * 
+ * This class implements a x/y-separated 2D Gaussian filter by extending {@link LinearFilterSeparable}.
+ *
  * @author WB
  * @version 2020/12/29
- * 
  * @see LinearFilterSeparable
  * @see GaussianFilter
  */
@@ -30,11 +28,11 @@ public class GaussianFilterSeparable extends LinearFilterSeparable {
 	public GaussianFilterSeparable(double sigma) {
 		super(new GaussianKernel1D(sigma));
 	}
-	
+
 	/**
-	 * Constructor accepting individual sigmas for x/y.
-	 * If any sigma &le; 0 or NaN, i.e., the corresponding x- or y-pass is not performed.
-	 * 
+	 * Constructor accepting individual sigmas for x/y. If any sigma &le; 0 or NaN, i.e., the corresponding x- or y-pass
+	 * is not performed.
+	 *
 	 * @param sigmaX the width of the 2D Gaussian in x-direction
 	 * @param sigmaY the width of the 2D Gaussian in y-direction
 	 */

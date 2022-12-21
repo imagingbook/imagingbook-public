@@ -13,16 +13,12 @@ import imagingbook.common.filter.generic.GenericFilterScalarSeparable;
 import imagingbook.common.image.PixelPack.PixelSlice;
 
 /**
- * This class represents a 2D linear filter that is x/y-separable and
- * specified by two 1D-kernels.
- * It is based on {@link GenericFilter} and {@link GenericFilterScalarSeparable},
- * which take care of all data copying and filter mechanics.
- * Since it is a "scalar" filter, pixel values are treated as scalars.
- * If the processed image has more than one component 
- * (e.g., a RGB color image), this filter is automatically 
- * and independently applied to all (scalar-valued) components.
- * To apply to an image, use the {@link #applyTo(ij.process.ImageProcessor)}
- * method, for example.
+ * This class represents a 2D linear filter that is x/y-separable and specified by two 1D-kernels. It is based on
+ * {@link GenericFilter} and {@link GenericFilterScalarSeparable}, which take care of all data copying and filter
+ * mechanics. Since it is a "scalar" filter, pixel values are treated as scalars. If the processed image has more than
+ * one component (e.g., a RGB color image), this filter is automatically and independently applied to all
+ * (scalar-valued) components. To apply to an image, use the {@link #applyTo(ij.process.ImageProcessor)} method, for
+ * example.
  */
 public class LinearFilterSeparable extends GenericFilterScalarSeparable {
 
@@ -42,14 +38,12 @@ public class LinearFilterSeparable extends GenericFilterScalarSeparable {
 	public LinearFilterSeparable(Kernel1D kernelXY) {
 		this(kernelXY, kernelXY);
 	}
-	
+
 	/**
-	 * Constructor, takes two 1D convolution kernels to be applied
-	 * in x- and y-direction, respectively.
-	 * One (but not both) of the supplied kernels may be {@code null}.
-	 * If this is the case, filtering in the associated direction
-	 * is skipped.
-	 * 
+	 * Constructor, takes two 1D convolution kernels to be applied in x- and y-direction, respectively. One (but not
+	 * both) of the supplied kernels may be {@code null}. If this is the case, filtering in the associated direction is
+	 * skipped.
+	 *
 	 * @param kernelX a 1D kernel for convolution in x-direction
 	 * @param kernelY a 1D kernel for convolution in y-direction
 	 */

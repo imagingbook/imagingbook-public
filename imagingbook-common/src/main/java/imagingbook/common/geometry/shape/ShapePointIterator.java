@@ -16,10 +16,9 @@ import java.awt.geom.PathIterator;
 import java.util.Iterator;
 
 /**
- * A small wrapper class to create a simple {@link Iterator} of {@link Pnt2d} to
- * step over the individual points of a AWT {@link Shape} object. Curved shapes
- * are flattened by a {@link FlatteningPathIterator}.
- * 
+ * A small wrapper class to create a simple {@link Iterator} of {@link Pnt2d} to step over the individual points of a
+ * AWT {@link Shape} object. Curved shapes are flattened by a {@link FlatteningPathIterator}.
+ *
  * @author WB
  * @see PathIterator
  * @see FlatteningPathIterator

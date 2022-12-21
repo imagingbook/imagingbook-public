@@ -17,18 +17,16 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class implements line fitting by orthogonal regression to a set of 2D
- * points using eigendecomposition. See Sec. 10.2.2 (Alg. 10.1) of [1] for
- * additional details.
+ * This class implements line fitting by orthogonal regression to a set of 2D points using eigendecomposition. See Sec.
+ * 10.2.2 (Alg. 10.1) of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/29
- * 
  * @see OrthogonalLineFitSvd
  * @see OrthogonalLineFitHomogeneous
  */
@@ -36,11 +34,11 @@ public class OrthogonalLineFitEigen implements LineFit {
 	
 	private final int n;
 	private final double[] p;	// algebraic line parameters A,B,C
-	
+
 	/**
-	 * Constructor, performs a orthogonal regression fit to the specified points.
-	 * At least two different points are required.
-	 * 
+	 * Constructor, performs a orthogonal regression fit to the specified points. At least two different points are
+	 * required.
+	 *
 	 * @param points an array with at least 2 points
 	 */
 	public OrthogonalLineFitEigen(Pnt2d[] points) {

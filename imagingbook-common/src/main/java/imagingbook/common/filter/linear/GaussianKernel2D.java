@@ -36,11 +36,9 @@ public class GaussianKernel2D extends Kernel2D {
 	}
 
 	/**
-	 * Creates and returns a 2D Gaussian filter kernel large enough
-	 * to avoid truncation effects. The associated array is odd-sized in
-	 * both dimensions.
-	 * The returned kernel is normalized.
-	 * 
+	 * Creates and returns a 2D Gaussian filter kernel large enough to avoid truncation effects. The associated array is
+	 * odd-sized in both dimensions. The returned kernel is normalized.
+	 *
 	 * @param sigmaX the width (standard deviation) of the Gaussian in x-direction
 	 * @param sigmaY the width (standard deviation) of the Gaussian in y-direction
 	 * @return the Gaussian filter kernel
@@ -48,13 +46,11 @@ public class GaussianKernel2D extends Kernel2D {
 	public static float[][] makeGaussKernel2D(double sigmaX, double sigmaY) {
 		return makeGaussKernel2D(sigmaX, sigmaY, true);
 	}
-	
+
 	/**
-	 * Creates and returns a 2D Gaussian filter kernel large enough
-	 * to avoid truncation effects. The associated array is odd-sized in
-	 * both dimensions.
-	 * The returned kernel is optionally normalized.
-	 * 
+	 * Creates and returns a 2D Gaussian filter kernel large enough to avoid truncation effects. The associated array is
+	 * odd-sized in both dimensions. The returned kernel is optionally normalized.
+	 *
 	 * @param sigmaX the width (standard deviation) of the Gaussian in x-direction
 	 * @param sigmaY the width (standard deviation) of the Gaussian in y-direction
 	 * @param normalize set true to normalize the kernel

@@ -14,25 +14,20 @@ import imagingbook.common.math.Arithmetic;
 import static imagingbook.common.math.Arithmetic.isZero;
 import static imagingbook.common.math.Arithmetic.sqr;
 
-
 /**
  * <p>
- * Calculates the closest point on the ellipse for a given 2D point inside or
- * outside the ellipse, using orthogonal projection of points onto the ellipse.
- * This is a robust algorithm based on [1]. See Sec.11.2.2 (Alg. 11.9) of [2]
- * for details. In contrast to the Newton-based algorithm (see
- * {@link OrthogonalEllipseProjectorNewton}, this version uses the bisection
- * method for root finding and returns valid results for points close to the x-
- * and y-axis but requires significantly more iterations to converge.
+ * Calculates the closest point on the ellipse for a given 2D point inside or outside the ellipse, using orthogonal
+ * projection of points onto the ellipse. This is a robust algorithm based on [1]. See Sec.11.2.2 (Alg. 11.9) of [2] for
+ * details. In contrast to the Newton-based algorithm (see {@link OrthogonalEllipseProjectorNewton}, this version uses
+ * the bisection method for root finding and returns valid results for points close to the x- and y-axis but requires
+ * significantly more iterations to converge.
  * </p>
  * <p>
- * [1] D. Eberly: "Distance from a point to an ellipse, an ellipsoid, or a
- * hyperellipsoid", Technical Report, Geometric Tools, www.geometrictools.com,
- * Redmont, WA (June 2013). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] D. Eberly: "Distance from a point to an ellipse, an ellipsoid, or a hyperellipsoid", Technical Report, Geometric
+ * Tools, www.geometrictools.com, Redmont, WA (June 2013). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing
+ * &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/04/09
  * @see OrthogonalEllipseProjectorNewton

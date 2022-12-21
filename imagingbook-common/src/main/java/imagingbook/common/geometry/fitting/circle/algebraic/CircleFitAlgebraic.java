@@ -34,15 +34,13 @@ public interface CircleFitAlgebraic {
 		HyperSimple,
 		HyperStable
 	}
-	
+
 	/**
-	 * Creates and returns a new circle fit instance of the specified
-	 * type for the given sample points.
-	 * 
+	 * Creates and returns a new circle fit instance of the specified type for the given sample points.
+	 *
 	 * @param type the circle fit type
 	 * @param points an array of 2D sample points
 	 * @return a new circle fit instance
-	 * 
 	 * @see FitType
 	 */
 	public static CircleFitAlgebraic getFit(FitType type, Pnt2d[] points) {
@@ -57,30 +55,29 @@ public interface CircleFitAlgebraic {
 		}
 		throw new IllegalArgumentException("unknown algebraic fit type: " + type);
 	}
-	
+
 	/**
-	 * Returns parameters (A, B, C, D) of the {@link AlgebraicCircle}
-	 * or {@code null} if the fit was unsuccessful.
+	 * Returns parameters (A, B, C, D) of the {@link AlgebraicCircle} or {@code null} if the fit was unsuccessful.
 	 * Parameters are not normalized.
-	 * 
+	 *
 	 * @return the algebraic circle parameters or {@code null}
 	 */
 	public double[] getParameters();
-	
-	
+
+
 	/**
-	 * Returns a {@link AlgebraicCircle} instance for this fit 
-	 * or {@code null} if the fit was unsuccessful.
+	 * Returns a {@link AlgebraicCircle} instance for this fit or {@code null} if the fit was unsuccessful.
+	 *
 	 * @return a {@link AlgebraicCircle} instance or null
 	 */
 	public default AlgebraicCircle getAlgebraicCircle() {
 		double[] p = getParameters();
 		return (p == null) ? null : new AlgebraicCircle(p);
 	}
-	
+
 	/**
-	 * Returns a {@link GeometricCircle} instance for this fit 
-	 * or {@code null} if the fit was unsuccessful.
+	 * Returns a {@link GeometricCircle} instance for this fit or {@code null} if the fit was unsuccessful.
+	 *
 	 * @return a {@link GeometricCircle} instance or null
 	 */
 	public default GeometricCircle getGeometricCircle() {
@@ -92,14 +89,12 @@ public interface CircleFitAlgebraic {
 			return new GeometricCircle(getAlgebraicCircle());
 		}
 	}
-	
+
 	/**
-	 * Used to transform the algebraic parameter vector for sample data
-	 * shifted to the reference point specified.
-	 * If qq is the parameter vector for the data centered at (xr, yr),
-	 * the original parameters q are obtained as
+	 * Used to transform the algebraic parameter vector for sample data shifted to the reference point specified. If qq
+	 * is the parameter vector for the data centered at (xr, yr), the original parameters q are obtained as
 	 * <pre>q = M * qq</pre>
-	 * 
+	 *
 	 * @param xr reference point (x)
 	 * @param yr reference point (y)
 	 * @return the transformation matrix
@@ -111,11 +106,10 @@ public interface CircleFitAlgebraic {
 				 {-2*yr, 0, 1, 0 },
 				 {sqr(xr) + sqr(yr), -xr, -yr, 1}});
 	}
-	
+
 	/**
-	 * Normalize parameter vector q=(A,B,C,D) by enforcing 
-	 * the constraint B^2 + C^2 - 4 A D = 1.
-	 * 
+	 * Normalize parameter vector q=(A,B,C,D) by enforcing the constraint B^2 + C^2 - 4 A D = 1.
+	 *
 	 * @param q original parameter vector
 	 * @return normalized parameter vector
 	 */

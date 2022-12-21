@@ -16,11 +16,11 @@ import imagingbook.common.geometry.mappings.linear.LinearMapping2D;
  * @author WB
  */
 public interface LinearFit2d {
-	
+
 	/**
-	 * Returns the (3,3) or (2,3) transformation matrix A for this fit, such that
-	 * {@code y_i ~ A * x_i} (with {@code x_i} in homogeneous coordinates).
-	 * 
+	 * Returns the (3,3) or (2,3) transformation matrix A for this fit, such that {@code y_i ~ A * x_i} (with
+	 * {@code x_i} in homogeneous coordinates).
+	 *
 	 * @return the transformation matrix for this fit
 	 */
 	double[][] getTransformationMatrix();
@@ -30,12 +30,11 @@ public interface LinearFit2d {
 	 * @return the fitting error
 	 */
 	double getError();
-	
+
 	/**
-	 * Calculates and returns the sum of squared fitting errors for two associated
-	 * point sequences (P, Q) under a linear transformation specified by a 3x3
-	 * matrix A.
-	 * 
+	 * Calculates and returns the sum of squared fitting errors for two associated point sequences (P, Q) under a linear
+	 * transformation specified by a 3x3 matrix A.
+	 *
 	 * @param P the point sequence to be fitted
 	 * @param Q the reference point sequence
 	 * @param A a 3x3 transformation matrix

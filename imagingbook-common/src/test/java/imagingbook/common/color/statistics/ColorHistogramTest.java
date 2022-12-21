@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
+import imagingbook.common.ij.IjUtils;
 import org.junit.Test;
 
 import ij.process.ColorProcessor;
@@ -39,7 +40,7 @@ public class ColorHistogramTest {
 		
 		// check if the total number of colors is correct
 		int n = ch.getNumberOfColors();
-		assertEquals(ColorStatistics.countColors(cp), n);
+		assertEquals(IjUtils.countColors(cp), n);
 		
 		// validate the size of some color bins by counting pixels with the bin's value
 		Random rg = new Random(17);

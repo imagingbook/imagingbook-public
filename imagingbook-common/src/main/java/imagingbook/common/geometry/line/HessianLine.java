@@ -8,27 +8,23 @@
  ******************************************************************************/
 package imagingbook.common.geometry.line;
 
-
 import imagingbook.common.geometry.basic.Pnt2d;
 
 import java.util.Locale;
 
 /**
  * <p>
- * This class represents a straight line in Hessian normal form, i.e., x *
- * cos(angle) + y * sin(angle) = radius. It is merely a subclass of
- * {@link AlgebraicLine} with a different constructor and getter methods for
- * angle and radius. Instances are immutable. Reference point is (0,0). See Sec.
- * 10.1 and Appendix F.1 of [1] for details.
+ * This class represents a straight line in Hessian normal form, i.e., x * cos(angle) + y * sin(angle) = radius. It is
+ * merely a subclass of {@link AlgebraicLine} with a different constructor and getter methods for angle and radius.
+ * Instances are immutable. Reference point is (0,0). See Sec. 10.1 and Appendix F.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/18
- * 
  */
 public class HessianLine extends AlgebraicLine {
 	
@@ -41,12 +37,10 @@ public class HessianLine extends AlgebraicLine {
 	// constructors --------------------------------------------------
 
 	/**
-	 * Constructor. Creates a new {@link HessianLine} instance with the
-	 * specified angle and radius.
-	 * Note that this really creates a normalized {@link AlgebraicLine}.
-	 * The values returned by {@link #getAngle()} and {@link #getRadius()}
-	 * may not be identical to the values passed to this constructor.
-	 * 
+	 * Constructor. Creates a new {@link HessianLine} instance with the specified angle and radius. Note that this
+	 * really creates a normalized {@link AlgebraicLine}. The values returned by {@link #getAngle()} and
+	 * {@link #getRadius()} may not be identical to the values passed to this constructor.
+	 *
 	 * @param angle the line's angle
 	 * @param radius the line's radius
 	 */

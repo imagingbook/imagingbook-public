@@ -13,14 +13,14 @@ import imagingbook.common.math.Arithmetic;
 
 /**
  * <p>
- * This class represents a 2D scaling transformation (as a special case of
- * affine transformation). See Secs. 21.1.3 and 21.3.1 of [1] for details.
+ * This class represents a 2D scaling transformation (as a special case of affine transformation). See Secs. 21.1.3 and
+ * 21.3.1 of [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  */
 public class Scaling2D extends AffineMapping2D {
@@ -30,10 +30,8 @@ public class Scaling2D extends AffineMapping2D {
 	}
 
 	/**
-	 * Constructor.
-	 * Creates a mapping that scales along the x- and y-axis
-	 * by the associated factors.
-	 * 
+	 * Constructor. Creates a mapping that scales along the x- and y-axis by the associated factors.
+	 *
 	 * @param sx the scale factor in x-direction
 	 * @param sy the scale factor in y-direction
 	 */
@@ -57,7 +55,7 @@ public class Scaling2D extends AffineMapping2D {
 	public Scaling2D(double s) {
 		this(s, s);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * @return a new scaling transformation
