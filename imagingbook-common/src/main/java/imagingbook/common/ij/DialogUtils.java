@@ -32,10 +32,9 @@ public abstract class DialogUtils {
 
     private DialogUtils() {}
 
-    /**
-	 * Annotation to specify a specific 'label' (value) to be shown for following
-	 * parameter fields. Default label is the variable name.
-	 * Intended to be used on {@link ParameterBundle} fields.
+	/**
+	 * Annotation to specify a specific 'label' (value) to be shown for following parameter fields. Default label is the
+	 * variable name. Intended to be used on {@link ParameterBundle} fields.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
@@ -44,22 +43,18 @@ public abstract class DialogUtils {
 	}
 
 	/**
-	 * Annotation to specify the number of digits (value) displayed when showing
-	 * numeric values in dialogs.
-	 * This annotation has no effect on non-floating-point fields.
-	 * Intended to be used on {@link ParameterBundle} fields.
+	 * Annotation to specify the number of digits (value) displayed when showing numeric values in dialogs. This
+	 * annotation has no effect on non-floating-point fields. Intended to be used on {@link ParameterBundle} fields.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
 	public static @interface DialogDigits {
 		public int value();
 	}
-	
+
 	/**
-	 * Annotation to specify the number of "columns" (value) displayed when showing
-	 * string items in dialogs.
-	 * This annotation has no effect on non-string fields.
-	 * Intended to be used on {@link ParameterBundle} fields.
+	 * Annotation to specify the number of "columns" (value) displayed when showing string items in dialogs. This
+	 * annotation has no effect on non-string fields. Intended to be used on {@link ParameterBundle} fields.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
@@ -69,8 +64,8 @@ public abstract class DialogUtils {
 
 
 	/**
-	 * Annotation to hide the following parameter field in dialogs.
-	 * Intended to be used on {@link ParameterBundle} fields.
+	 * Annotation to hide the following parameter field in dialogs. Intended to be used on {@link ParameterBundle}
+	 * fields.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.FIELD})
@@ -83,11 +78,12 @@ public abstract class DialogUtils {
 	private static final String SPACE_SEPARATOR = " ";
 	//if text has \n, \r or \t symbols it's better to split by \s+
 	private static final String SPLIT_REGEXP= "\\s+";
+
 	/**
 	 * Splits a long string into multiple lines of the specified maximum length and builds a new string with newline
 	 * characters separating successive lines. Multiple input strings are first joined into a single sstring using blank
-	 * spaces as separators. Intended mainly to format message texts of plugin dialogs.
-	 * Inspired by: https://stackoverflow.com/a/21002193
+	 * spaces as separators. Intended mainly to format message texts of plugin dialogs. Inspired by:
+	 * https://stackoverflow.com/a/21002193
 	 *
 	 * @param maxLineLength the maximum number oc characters per line
 	 * @param strings one ore mor strings
@@ -119,25 +115,23 @@ public abstract class DialogUtils {
 		}
 		return output.toString();
 	}
-	
+
 	/**
-	 * Creates a HTML string by formatting the supplied strings
-	 * as individual text lines separated by {@literal <br>}.
-	 * The complete text is wrapped by {@literal <html>...</html>}.
-	 * Mainly to be used with {@link GenericDialog#addHelp(String)}.
-	 * 
+	 * Creates a HTML string by formatting the supplied strings as individual text lines separated by {@literal <br>}.
+	 * The complete text is wrapped by {@literal <html>...</html>}. Mainly to be used with
+	 * {@link GenericDialog#addHelp(String)}.
+	 *
 	 * @param lines a sequence of strings interpreted as text lines
 	 * @return a HTML string
 	 */
 	public static String makeHtmlString(CharSequence... lines) {
 		return "<html>\n" + String.join("<br>\n", lines) + "\n</html>";
 	}
-	
+
 	/**
-	 * Creates a string by formatting the supplied strings
-	 * as individual text lines separated by newline.
-	 * Mainly to be used with {@link GenericDialog#addMessage(String)}.
-	 * 
+	 * Creates a string by formatting the supplied strings as individual text lines separated by newline. Mainly to be
+	 * used with {@link GenericDialog#addMessage(String)}.
+	 *
 	 * @param lines a sequence of strings interpreted as text lines
 	 * @return a newline-separated string
 	 */
@@ -157,15 +151,13 @@ public abstract class DialogUtils {
 		}
 		return dialogFields.toArray(new Field[0]);
 	}
-	
+
 	/**
-	 * Adds all qualified fields of the given {@link ParameterBundle} to the specified
-	 * {@link GenericDialog} instance, in the exact order of their definition.
-	 * Qualified means that the field is of suitable type and no 
-	 * {@link DialogUtils.DialogHide} annotation is present.
-	 * Allowed field types are {@code boolean}, {@code int}, {@code long}, {@code float},
-	 * {@code double}, {@code enum}, and {@code String}.
-	 * 
+	 * Adds all qualified fields of the given {@link ParameterBundle} to the specified {@link GenericDialog} instance,
+	 * in the exact order of their definition. Qualified means that the field is of suitable type and no
+	 * {@link DialogUtils.DialogHide} annotation is present. Allowed field types are {@code boolean}, {@code int},
+	 * {@code long}, {@code float}, {@code double}, {@code enum}, and {@code String}.
+	 *
 	 * @param params a {@link ParameterBundle} instance
 	 * @param gd a generic dialog
 	 */
@@ -182,13 +174,11 @@ public abstract class DialogUtils {
 			}
 		}
 	}
-	
+
 	/**
-	 * Retrieves the field values of the specified {@link ParameterBundle} from
-	 * the {@link GenericDialog} instance.
-	 * The {@link ParameterBundle} is modified. 
-	 * Throws an exception if anything goes wrong.
-	 * 
+	 * Retrieves the field values of the specified {@link ParameterBundle} from the {@link GenericDialog} instance. The
+	 * {@link ParameterBundle} is modified. Throws an exception if anything goes wrong.
+	 *
 	 * @param params a {@link ParameterBundle} instance
 	 * @param gd a generic dialog
 	 * @return true if successful
@@ -211,15 +201,12 @@ public abstract class DialogUtils {
 		}
 		return (errorCount == 0);
 	}
-	
+
 	/**
-	 * Adds the specified {@link Field} of this object as new item to 
-	 * the {@link GenericDialog} instance.
-	 * The name of the field is used as the 'label' of the dialog item
-	 * unless a {@link DialogLabel} annotation is present.
-	 * Allowed field types are {@code boolean}, {@code int}, {@code float},
-	 * {@code double}, {@code enum}, and {@code String}.
-	 * 
+	 * Adds the specified {@link Field} of this object as new item to the {@link GenericDialog} instance. The name of
+	 * the field is used as the 'label' of the dialog item unless a {@link DialogLabel} annotation is present. Allowed
+	 * field types are {@code boolean}, {@code int}, {@code float}, {@code double}, {@code enum}, and {@code String}.
+	 *
 	 * @param params a {@link ParameterBundle} instance
 	 * @param field some field
 	 * @param dialog the dialog
@@ -275,11 +262,11 @@ public abstract class DialogUtils {
 	}
 
 	/**
-	 * Modifies the specified {@link Field} of this object by reading the next item
-	 * from the {@link GenericDialog} instance.
-	 * 
+	 * Modifies the specified {@link Field} of this object by reading the next item from the {@link GenericDialog}
+	 * instance.
+	 *
 	 * @param params a {@link ParameterBundle} instance
-	 * @param field	a publicly accessible {@link Field} of this object 
+	 * @param field a publicly accessible {@link Field} of this object
 	 * @param gd a {@link GenericDialog} instance
 	 * @return true if successful
 	 * @throws IllegalAccessException illegal field access
@@ -370,14 +357,13 @@ public abstract class DialogUtils {
 //	public static boolean isYes(DialogResponse response) {
 //		return response.equals(DialogResponse.Yes);
 //	}
-	
+
 	/**
-	 * Opens a simple dialog with the specified title and message that allows
-	 * only a "Yes" or "Cancel" response.
-	 * 
+	 * Opens a simple dialog with the specified title and message that allows only a "Yes" or "Cancel" response.
+	 *
 	 * @param title the text displayed in the dialog's title bar
 	 * @param message the dialog message (may be multiple lines separated by newlines)
-	 * @return true if "yes" was selected, false otherwise 
+	 * @return true if "yes" was selected, false otherwise
 	 */
 	@Deprecated
 	public static boolean askYesOrCancel(String title, String message) {

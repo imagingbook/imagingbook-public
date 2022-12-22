@@ -9,11 +9,9 @@
 package imagingbook.common.math.exception;
 
 /**
- * Exception indicating a floating-point division by zero (or some
- * denominator too small to yield a finite result).
- *  
- * @author WB
+ * Exception indicating a floating-point division by zero (or some denominator too small to yield a finite result).
  *
+ * @author WB
  */
 @SuppressWarnings("serial")
 public class DivideByZeroException extends ArithmeticException {

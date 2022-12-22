@@ -23,11 +23,10 @@ public class RandomAngle extends java.util.Random {
 	public RandomAngle(long seed) {
 		super(seed);
 	}
-	
+
 	/**
-	 * Returns a random {@code double} value in the range
-	 * [-&pi;,+&pi;].
-	 * 
+	 * Returns a random {@code double} value in the range [-&pi;,+&pi;].
+	 *
 	 * @return a random angle
 	 */
 	public double nextAngle() {

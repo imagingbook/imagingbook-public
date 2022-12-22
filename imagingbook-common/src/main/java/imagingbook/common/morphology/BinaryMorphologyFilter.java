@@ -14,8 +14,7 @@ import static imagingbook.common.morphology.StructuringElements.makeBoxKernel3x3
  * This is the (abstract) super-class for binary morphological filters.
  * 
  * @author WB
- * @version 2022/01/24 
- * @version 2022/09/18 revised visibility, moved static methods
+ * @version 2022/09/18
  */
 public abstract class BinaryMorphologyFilter implements BinaryMorphologyOperator {
 	
@@ -32,40 +31,17 @@ public abstract class BinaryMorphologyFilter implements BinaryMorphologyOperator
 	}
 	
 	// --------------------------------------------------------------------------
-	
+
 	/**
-	 * Returns the structuring element (kernel H) for this morphological filter.
-	 * Note that the structuring element is a 2D {@code byte} array structured in
-	 * the form {@code H[y][x]}. A reference to the internal array is returned,
+	 * Returns the structuring element (kernel H) for this morphological filter. Note that the structuring element is a
+	 * 2D {@code byte} array structured in the form {@code H[y][x]}. A reference to the internal array is returned,
 	 * i.e., no copy is made.
-	 * 
+	 *
 	 * @return the structuring element
 	 */
 	public byte[][] getStructuringElement() {
 		return this.H;
 	}
-	
-	// ----------------------------------------------------------------
 
-
-	// -------------------------------------------------------------
-	
-//	private static int[][] iA = {
-//			{0, 0, 0, 3, 0, 0, 3, 3, 0, 0, 0, 0, 3, 0, 3, 3}, 
-//			{0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 3, 0, 3, 1}, 
-//			{0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-//			{3, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 3, 0, 3, 1}, 
-//			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-//			{}, 
-//			{3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-//			{3, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 1, 0}, 
-//		};
-//	
-//	public static void main(String[] args) {
-//		byte[][] bA = toByteArray(iA);
-//		for (int i = 0; i < bA.length; i++) {
-//			System.out.println(Arrays.toString(bA[i]));
-//		}
-//	}
 }
 

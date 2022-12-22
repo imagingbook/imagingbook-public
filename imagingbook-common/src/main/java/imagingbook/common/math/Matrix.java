@@ -75,8 +75,8 @@ public abstract class Matrix {
 	/**
 	 * <p>
 	 * Creates and returns a {@code double[][]} matrix containing the specified values. Throws a
-	 * {@link IllegalArgumentException} if the number of supplied values does not exactly match the matrix
-	 * size. Example for creating a 2x3 matrix:
+	 * {@link IllegalArgumentException} if the number of supplied values does not exactly match the matrix size. Example
+	 * for creating a 2x3 matrix:
 	 * </p>
 	 * <pre>
 	 * double[][] A = makeDoubleMatrix(2, 3,
@@ -607,9 +607,8 @@ public abstract class Matrix {
 			new CholeskyDecomposition(A, tolerance, tolerance);
 			return true;
 		} catch (NonPositiveDefiniteMatrixException e) {
+			return false;
 		}
-		;
-		return false;
 	}
 
 	/**
@@ -2821,41 +2820,5 @@ public abstract class Matrix {
 			super(msg);
 		}
 	}
-
-	// ------------------------------------------------------------------------
-
-// 	public static void main(String[] args) {
-// 		double s = Double.NaN;
-// 		s = -1.0 / 1E-200; // / 1E-200;
-// 		System.out.println(Double.isFinite(s));
-// 		System.out.println((double[]) null);
-//
-// 		double[][] A = makeDoubleMatrix(5, 4,
-// 				-1, 2, 3, 4,
-// 				5, 6, 7, 8,
-// 				9, 10, 11, 12,
-// 				13, 14, 15, 16,
-// 				17, 18, 19, Double.NaN);
-// 		System.out.println("A = \n" + toString(A));
-//
-// //		RealMatrix B = makeRealMatrix(5, 4);
-// //		System.out.println("B = \n" + toString(B.getData()));
-//
-// 		long[][] AL = Matrix.toLongBits(A);
-// 		System.out.println("AL = \n" + toString(AL));
-//
-// 		double[][] A2 = Matrix.fromLongBits(AL);
-// 		System.out.println("A2 = \n" + toString(A2));
-//
-// 		double[][] A3 = Matrix.fromLongBits(new long[][]
-// 				{{-4616189618054758400L, 4611686018427387904L, 4613937818241073152L, 4616189618054758400L},
-// 				{4617315517961601024L, 4618441417868443648L, 4619567317775286272L, 4620693217682128896L},
-// 				{4621256167635550208L, 4621819117588971520L, 4622382067542392832L, 4622945017495814144L},
-// 				{4623507967449235456L, 4624070917402656768L, 4624633867356078080L, 4625196817309499392L},
-// 				{4625478292286210048L, 4625759767262920704L, 4626041242239631360L, 9221120237041090560L}});
-//
-// 		System.out.println("A3 = \n" + toString(A3));
-//
-// 	}
 
 }

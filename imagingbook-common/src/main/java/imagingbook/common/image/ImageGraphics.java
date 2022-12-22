@@ -30,25 +30,17 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
- * <p>This class defines functionality for drawing anti-aliased "pixel"
- * graphics in images of type 
- * {@link ByteProcessor},
- * {@link ShortProcessor} or
- * {@link ColorProcessor}
- * (there is no support for {@link FloatProcessor}).
- * It uses the capabilities of AWT's {@link Graphics2D} class
- * by drawing to a {@link BufferedImage}, which is a copy of
- * the original image. After performing the drawing operations
- * the {@link BufferedImage} is copied back to the original.
- * Thus all operations possible on a {@link Graphics2D} instance
- * are available, including the drawing of {@link Shape}
- * objects with floating-point coordinates, arbitrary 
- * strokes and anti-aliasing, which is not available with
- * ImageJ's built-in graphics operations (for class {@link ImageProcessor}).
+ * <p>
+ * This class defines functionality for drawing anti-aliased "pixel" graphics in images of type {@link ByteProcessor},
+ * {@link ShortProcessor} or {@link ColorProcessor} (there is no support for {@link FloatProcessor}). It uses the
+ * capabilities of AWT's {@link Graphics2D} class by drawing to a {@link BufferedImage}, which is a copy of the original
+ * image. After performing the drawing operations the {@link BufferedImage} is copied back to the original. Thus all
+ * operations possible on a {@link Graphics2D} instance are available, including the drawing of {@link Shape} objects
+ * with floating-point coordinates, arbitrary strokes and anti-aliasing, which is not available with ImageJ's built-in
+ * graphics operations (for class {@link ImageProcessor}).
  * </p>
  * <p>
- * Since drawing involves copying the image multiple times, graphic operations
- * should be grouped for efficiency reasons.
+ * Since drawing involves copying the image multiple times, graphic operations should be grouped for efficiency reasons.
  * Here is an example for the intended form of use:
  * </p>
  * <pre>
@@ -61,13 +53,10 @@ import java.awt.image.BufferedImage;
  * 	...
  * }</pre>
  * <p>
- * Note the use of <code>double</code> coordinates throughout.
- * The original image ({@code ip} in the above example) is automatically updated 
- * at the end of the {@code try() ...} clause (by {@link ImageGraphics} implementing the
- * {@link AutoCloseable} interface).
- * The {@link #getGraphics2D()} method exposes the underlying 
- * {@link Graphics2D} instance of the {@link ImageGraphics} object, which can then be used to
- * perform arbitrary AWT graphic operations.
+ * Note the use of <code>double</code> coordinates throughout. The original image ({@code ip} in the above example) is
+ * automatically updated at the end of the {@code try() ...} clause (by {@link ImageGraphics} implementing the
+ * {@link AutoCloseable} interface). The {@link #getGraphics2D()} method exposes the underlying {@link Graphics2D}
+ * instance of the {@link ImageGraphics} object, which can then be used to perform arbitrary AWT graphic operations.
  * Thus, the above example could <strong>alternatively</strong> be implemented as follows:
  * <pre>
  * ImageProcessor ip = ... ;   // some ByteProcessor, ShortProcessor or ColorProcessor
@@ -80,21 +69,18 @@ import java.awt.image.BufferedImage;
  * 	...
  * }</pre>
  * <p>
- * This class also defines several convenience methods for drawing
- * shapes with floating-point ({@code double}) coordinates, as well as for
- * setting colors and stroke parameters.
- * If intermediate updates are needed (e.g., for animations), the {@code update()} method
- * can be invoked any time.
+ * This class also defines several convenience methods for drawing shapes with floating-point ({@code double})
+ * coordinates, as well as for setting colors and stroke parameters. If intermediate updates are needed (e.g., for
+ * animations), the {@code update()} method can be invoked any time.
  * </p>
- * 
+ *
  * @author WB
  * @version 2020-01-07
- * 
  * @see ShapeOverlayAdapter
  */
 public class ImageGraphics implements AutoCloseable {
 	
-	// TODO: Add text drawing, merge with {@link ColoredStroke}.
+	// TODO: Add text drawing, integrate with ShapeOverlayAdapter and ColoredStroke.
 	
 	private static BasicStroke DEFAULT_STROKE = new BasicStroke();
 	private static Color DEFAULT_COLOR = Color.white;
@@ -108,27 +94,21 @@ public class ImageGraphics implements AutoCloseable {
 	private Color color = DEFAULT_COLOR;
 	
 	// -------------------------------------------------------------
-	
+
 	/**
-	 * Constructor. The supplied image must be of type
-	 * {@link ByteProcessor}, {@link ShortProcessor} or 
-	 * {@link ColorProcessor}.
-	 * An {@link IllegalArgumentException} is thrown for images
-	 * of type {@link FloatProcessor}.
-	 * 
+	 * Constructor. The supplied image must be of type {@link ByteProcessor}, {@link ShortProcessor} or
+	 * {@link ColorProcessor}. An {@link IllegalArgumentException} is thrown for images of type {@link FloatProcessor}.
+	 *
 	 * @param ip image to draw on
 	 */
 	public ImageGraphics(ImageProcessor ip) {
 		this(ip, null, null);
 	}
-	
+
 	/**
-	 * Constructor. The supplied image must be of type
-	 * {@link ByteProcessor}, {@link ShortProcessor} or 
-	 * {@link ColorProcessor}.
-	 * An {@link IllegalArgumentException} is thrown for images
-	 * of type {@link FloatProcessor}.
-	 * 
+	 * Constructor. The supplied image must be of type {@link ByteProcessor}, {@link ShortProcessor} or
+	 * {@link ColorProcessor}. An {@link IllegalArgumentException} is thrown for images of type {@link FloatProcessor}.
+	 *
 	 * @param ip image to draw on
 	 * @param color the initial drawing color
 	 * @param stroke the initial stroke
@@ -146,12 +126,11 @@ public class ImageGraphics implements AutoCloseable {
 		this.g2.setStroke(this.stroke);
 		this.setAntialiasing(DEFAULT_ANTIALIASING);
 	}
-	
+
 	/**
-	 * Turn anti-aliasing on/off for this {@link ImageGraphics} instance
-	 * (turned on by default). The new setting will only affect
-	 * subsequent graphics operations.
-	 * 
+	 * Turn anti-aliasing on/off for this {@link ImageGraphics} instance (turned on by default). The new setting will
+	 * only affect subsequent graphics operations.
+	 *
 	 * @param onoff set true to turn on
 	 */
 	public void setAntialiasing(boolean onoff) {
@@ -160,23 +139,20 @@ public class ImageGraphics implements AutoCloseable {
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, onoff ?
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 	}
-	
+
 	/**
-	 * Returns the underlying {@link Graphics2D} object,
-	 * which can be used to perform arbitrary graphics operations.
+	 * Returns the underlying {@link Graphics2D} object, which can be used to perform arbitrary graphics operations.
+	 *
 	 * @return the {@link Graphics2D} object
 	 */
 	public Graphics2D getGraphics2D() {
 		return this.g2;
 	}
-	
+
 	/**
-	 * Forces the image to be updated by copying the (modified)
-	 * {@link BufferedImage} back to the input image.
-	 * There is usually no need to call this (expensive) method explicitly.
-	 * It is called automatically and only once at end of the 
-	 * {@code try() ...} clause, as described in the {@link ImageGraphics}
-	 * class documentation above.
+	 * Forces the image to be updated by copying the (modified) {@link BufferedImage} back to the input image. There is
+	 * usually no need to call this (expensive) method explicitly. It is called automatically and only once at end of
+	 * the {@code try() ...} clause, as described in the {@link ImageGraphics} class documentation above.
 	 */
 	public void update() {
 		copyImageToProcessor(bi, ip);
@@ -207,12 +183,11 @@ public class ImageGraphics implements AutoCloseable {
 					ip.getClass().getName());
 		}
 	}
-	
+
 	/**
-	 * Copies the contents of the {@link BufferedImage} to the specified 
-	 * {@link ImageProcessor}. The size and type of the BufferedImage
-	 * is assumed to match the ImageProcessor.
-	 * 
+	 * Copies the contents of the {@link BufferedImage} to the specified {@link ImageProcessor}. The size and type of
+	 * the BufferedImage is assumed to match the ImageProcessor.
+	 *
 	 * @param bi the local (intermediate) {@link BufferedImage} instance
 	 * @param ip the original {@link ImageProcessor}
 	 */
@@ -237,10 +212,10 @@ public class ImageGraphics implements AutoCloseable {
 	// -----------------------------------------------------------
 	//  Convenience methods for drawing selected shapes with double coordinates
 	// -----------------------------------------------------------
-	
+
 	/**
-	 * Draws a straight line segment specified with
-	 * {@code double} coordinate values (convenience method).
+	 * Draws a straight line segment specified with {@code double} coordinate values (convenience method).
+	 *
 	 * @param x1 x-coordinate of start point
 	 * @param y1 y-coordinate of start point
 	 * @param x2 x-coordinate of end point
@@ -250,10 +225,10 @@ public class ImageGraphics implements AutoCloseable {
 	public void drawLine(double x1, double y1, double x2, double y2) {
 		g2.draw(new Line2D.Double(x1, y1, x2, y2));
 	}
-	
+
 	/**
-	 * Draws an ellipse specified with
-	 * {@code double} coordinate values (convenience method).
+	 * Draws an ellipse specified with {@code double} coordinate values (convenience method).
+	 *
 	 * @param x x-coordinate of the upper-left corner of the framing rectangle
 	 * @param y y-coordinate of the upper-left corner of the framing rectangle
 	 * @param w width
@@ -263,10 +238,10 @@ public class ImageGraphics implements AutoCloseable {
 	public void drawOval(double x, double y, double w, double h) {
 		g2.draw(new Ellipse2D.Double(x, y, w, h));
 	}
-	
+
 	/**
-	 * Draws a rectangle specified with
-	 * {@code double} coordinate values (convenience method).
+	 * Draws a rectangle specified with {@code double} coordinate values (convenience method).
+	 *
 	 * @param x x-coordinate of the upper-left corner
 	 * @param y y-coordinate of the upper-left corner
 	 * @param w width
@@ -276,13 +251,12 @@ public class ImageGraphics implements AutoCloseable {
 	public void drawRectangle(double x, double y, double w, double h) {
 		g2.draw(new Rectangle2D.Double(x, y, w, h));
 	}
-	
+
 	/**
-	 * Draws a closed polygon specified by a 
-	 * sequence of {@link Point2D} objects with arbitrary coordinate values
-	 * (convenience method).
-	 * Note that the the polygon is automatically closed, i.e.,
-	 * N+1 segments are drawn if the number of given points is N.
+	 * Draws a closed polygon specified by a sequence of {@link Point2D} objects with arbitrary coordinate values
+	 * (convenience method). Note that the the polygon is automatically closed, i.e., N+1 segments are drawn if the
+	 * number of given points is N.
+	 *
 	 * @param points a sequence of 2D points
 	 * @see Path2D
 	 */
@@ -297,11 +271,11 @@ public class ImageGraphics implements AutoCloseable {
 	}
 	
 	// stroke-related methods -------------------------------------
-	
+
 	/**
-	 * Sets this graphics context's current color to the specified color. 
-	 * All subsequent graphics operations using this graphics context use 
-	 * this specified color.
+	 * Sets this graphics context's current color to the specified color. All subsequent graphics operations using this
+	 * graphics context use this specified color.
+	 *
 	 * @param color the new rendering color
 	 * @see Graphics#setColor
 	 */
@@ -309,10 +283,10 @@ public class ImageGraphics implements AutoCloseable {
 		this.color = color;
 		g2.setColor(color);
 	}
-	
+
 	/**
-	 * Sets this graphics context's current color to the specified
-	 * (gray) color, with RGB = (gray, gray, gray).
+	 * Sets this graphics context's current color to the specified (gray) color, with RGB = (gray, gray, gray).
+	 *
 	 * @param gray the gray value
 	 */
 	public void setColor(int gray) {
@@ -320,9 +294,10 @@ public class ImageGraphics implements AutoCloseable {
 		if (gray > 255) gray = 255;
 		this.setColor(new Color(gray, gray, gray));
 	}
-	
+
 	/**
 	 * Sets the stroke to be used for all subsequent graphics operations.
+	 *
 	 * @param stroke a {@link BasicStroke} instance
 	 * @see BasicStroke
 	 */
@@ -330,10 +305,10 @@ public class ImageGraphics implements AutoCloseable {
 		this.stroke = stroke;
 		g2.setStroke(this.stroke);
 	}
-	
+
 	/**
-	 * Sets the line width of the current stroke.
-	 * All other stroke properties remain unchanged.
+	 * Sets the line width of the current stroke. All other stroke properties remain unchanged.
+	 *
 	 * @param width the line width
 	 * @see BasicStroke
 	 */
@@ -341,28 +316,28 @@ public class ImageGraphics implements AutoCloseable {
 		this.stroke = new BasicStroke((float)width, stroke.getEndCap(), stroke.getLineJoin());
 		g2.setStroke(this.stroke);
 	}
-	
+
 	/**
-	 * Sets the end cap style of the current stroke to "BUTT".
-	 * All other stroke properties remain unchanged.
+	 * Sets the end cap style of the current stroke to "BUTT". All other stroke properties remain unchanged.
+	 *
 	 * @see BasicStroke
 	 */
 	public void setEndCapButt() {
 		this.setEndCap(BasicStroke.CAP_BUTT);
 	}
-	
+
 	/**
-	 * Sets the end cap style of the current stroke to "ROUND".
-	 * All other stroke properties remain unchanged.
+	 * Sets the end cap style of the current stroke to "ROUND". All other stroke properties remain unchanged.
+	 *
 	 * @see BasicStroke
 	 */
 	public void setEndCapRound() {
 		this.setEndCap(BasicStroke.CAP_ROUND);
 	}
-	
+
 	/**
-	 * Sets the end cap style of the current stroke to "SQUARE".
-	 * All other stroke properties remain unchanged.
+	 * Sets the end cap style of the current stroke to "SQUARE". All other stroke properties remain unchanged.
+	 *
 	 * @see BasicStroke
 	 */
 	public void setEndCapSquare() {
@@ -374,28 +349,28 @@ public class ImageGraphics implements AutoCloseable {
 	}
 	
 	// ---------------------
-	
+
 	/**
-	 * Sets the line segment join style of the current stroke to "BEVEL".
-	 * All other stroke properties remain unchanged.
+	 * Sets the line segment join style of the current stroke to "BEVEL". All other stroke properties remain unchanged.
+	 *
 	 * @see BasicStroke
 	 */
 	public void setLineJoinBevel() {
 		setLineJoin(BasicStroke.JOIN_BEVEL);
 	}
-	
+
 	/**
-	 * Sets the line segment join style of the current stroke to "MITER".
-	 * All other stroke properties remain unchanged.
+	 * Sets the line segment join style of the current stroke to "MITER". All other stroke properties remain unchanged.
+	 *
 	 * @see BasicStroke
 	 */
 	public void setLineJoinMiter() {
 		setLineJoin(BasicStroke.JOIN_MITER);
 	}
-	
+
 	/**
-	 * Sets the line segment join style of the current stroke to "ROUND".
-	 * All other stroke properties remain unchanged.
+	 * Sets the line segment join style of the current stroke to "ROUND". All other stroke properties remain unchanged.
+	 *
 	 * @see BasicStroke
 	 */
 	public void setLineJoinRound() {

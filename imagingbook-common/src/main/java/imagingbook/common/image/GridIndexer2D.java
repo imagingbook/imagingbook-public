@@ -11,36 +11,29 @@ package imagingbook.common.image;
 
 /**
  * <p>
- * Instances of this class perform the transformation between 2D image coordinates 
- * and indexes into the associated 1D pixel array and vice versa.
- * As usual images are assumed to be stored in row-major order.
- * Instances of this class do not hold any image data themselves, they just
- * perform the indexing task.
- * This is used, for example, by class {@link PixelPack}, which
- * provides a universal image data container which 
- * uses {@link GridIndexer2D} internally.
+ * Instances of this class perform the transformation between 2D image coordinates and indexes into the associated 1D
+ * pixel array and vice versa. As usual images are assumed to be stored in row-major order. Instances of this class do
+ * not hold any image data themselves, they just perform the indexing task. This is used, for example, by class
+ * {@link PixelPack}, which provides a universal image data container which uses {@link GridIndexer2D} internally.
  * </p>
  * <p>
- * The (abstract) method {@link #getIndex(int, int)} returns the 1D array index
- * for a pair of 2D image coordinates. It is implemented by
- * the inner subclasses {@link ZeroValueIndexer}, {@link MirrorImageIndexer} and
- * {@link NearestBorderIndexer}. They exhibit different behaviors when accessing
- * out-of-image coordinates (see {@link OutOfBoundsStrategy}).
+ * The (abstract) method {@link #getIndex(int, int)} returns the 1D array index for a pair of 2D image coordinates. It
+ * is implemented by the inner subclasses {@link ZeroValueIndexer}, {@link MirrorImageIndexer} and
+ * {@link NearestBorderIndexer}. They exhibit different behaviors when accessing out-of-image coordinates (see
+ * {@link OutOfBoundsStrategy}).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/17
- * 
  * @see OutOfBoundsStrategy
  */
 public abstract class GridIndexer2D implements Cloneable {
 	
 	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.NearestBorder;
-	
+
 	/**
-	 * Creates and returns a new {@link GridIndexer2D} with the specified
-	 * size and {@link OutOfBoundsStrategy}.
-	 * 
+	 * Creates and returns a new {@link GridIndexer2D} with the specified size and {@link OutOfBoundsStrategy}.
+	 *
 	 * @param width grid size (horizontal)
 	 * @param height grid size (vertical)
 	 * @param obs out-of-bounds strategy
@@ -68,25 +61,22 @@ public abstract class GridIndexer2D implements Cloneable {
 		this.height = height;
 		this.obs = obs;
 	}
-	
+
 	/**
-	 * Returns the 1D array index for a given pair of image coordinates.
-	 * For u, v coordinates outside the image, the returned index depends
-	 * on the concrete sub-class of {@link GridIndexer2D}.
-	 * As a general rule, this method either returns a valid 1D array
-	 * index or throws an exception.
-	 * 
+	 * Returns the 1D array index for a given pair of image coordinates. For u, v coordinates outside the image, the
+	 * returned index depends on the concrete sub-class of {@link GridIndexer2D}. As a general rule, this method either
+	 * returns a valid 1D array index or throws an exception.
 	 * Subclasses implement (override) this method.
+	 *
 	 * @param u x-coordinate
 	 * @param v y-coordinate
 	 * @return 1D array index
 	 */
 	public abstract int getIndex(int u, int v);
-	
+
 	/**
-	 * Returns the 1D array index assuming that the
-	 * specified coordinates are inside the image.
-	 * 
+	 * Returns the 1D array index assuming that the specified coordinates are inside the image.
+	 *
 	 * @param u x-coordinate
 	 * @param v y-coordinate
 	 * @return the associated 1D index
@@ -110,10 +100,10 @@ public abstract class GridIndexer2D implements Cloneable {
 	public int getHeight() {
 		return this.height;
 	}
-	
+
 	/**
-	 * Returns the out-of-bounds strategy (see {qlink OutOfBoundsStrategy} 
-	 * used by this indexer.
+	 * Returns the out-of-bounds strategy (see {qlink OutOfBoundsStrategy} used by this indexer.
+	 *
 	 * @return the out-of-bounds strategy
 	 */
 	public OutOfBoundsStrategy getOutOfBoundsStrategy() {
@@ -122,12 +112,10 @@ public abstract class GridIndexer2D implements Cloneable {
 	
 	// ---------------------------------------------------------
 
-	/** 
-	 * This indexer returns the closest border pixel for coordinates
-	 * outside the image bounds. This is the most common method.
-	 * There is no public constructor. To instantiate use method 
-	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)}
-	 * with {@link OutOfBoundsStrategy#NearestBorder}.
+	/**
+	 * This indexer returns the closest border pixel for coordinates outside the image bounds. This is the most common
+	 * method. There is no public constructor. To instantiate use method
+	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)} with {@link OutOfBoundsStrategy#NearestBorder}.
 	 */
 	public static class NearestBorderIndexer extends GridIndexer2D {
 		
@@ -152,13 +140,11 @@ public abstract class GridIndexer2D implements Cloneable {
 			return super.getWithinBoundsIndex(u, v);
 		}
 	}
-	
-	/** 
-	 * This indexer returns mirrored image values for coordinates
-	 * outside the image bounds.
-	 * There is no public constructor. To instantiate use method 
-	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)}
-	 * with {@link OutOfBoundsStrategy#MirrorImage}.
+
+	/**
+	 * This indexer returns mirrored image values for coordinates outside the image bounds. There is no public
+	 * constructor. To instantiate use method {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)} with
+	 * {@link OutOfBoundsStrategy#MirrorImage}.
 	 */
 	public static class MirrorImageIndexer extends GridIndexer2D {
 		
@@ -180,13 +166,11 @@ public abstract class GridIndexer2D implements Cloneable {
 			return super.getWithinBoundsIndex(u, v);
 		}
 	}
-	
-	/** 
-	 * This indexer returns -1 for coordinates outside the image
-	 * bounds, indicating that a (predefined) default value should be used.
-	 * There is no public constructor. To instantiate use method 
-	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)}
-	 * with {@link OutOfBoundsStrategy#ZeroValues}.
+
+	/**
+	 * This indexer returns -1 for coordinates outside the image bounds, indicating that a (predefined) default value
+	 * should be used. There is no public constructor. To instantiate use method
+	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)} with {@link OutOfBoundsStrategy#ZeroValues}.
 	 */
 	public static class ZeroValueIndexer extends GridIndexer2D {
 		
@@ -204,13 +188,11 @@ public abstract class GridIndexer2D implements Cloneable {
 			}
 		}
 	}
-	
+
 	/**
-	 * This indexer throws an exception if coordinates outside
-	 * image bounds are accessed.
-	 * There is no public constructor. To instantiate use method 
-	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)}
-	 * with {@link OutOfBoundsStrategy#ThrowException}.
+	 * This indexer throws an exception if coordinates outside image bounds are accessed. There is no public
+	 * constructor. To instantiate use method {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)} with
+	 * {@link OutOfBoundsStrategy#ThrowException}.
 	 */
 	public static class ExceptionIndexer extends GridIndexer2D {
 		
@@ -233,7 +215,6 @@ public abstract class GridIndexer2D implements Cloneable {
 	
 	/**
 	 * Exception to be thrown by {@link ExceptionIndexer}.
-	 *
 	 */
 	public static class OutOfImageException extends RuntimeException {
 		private static final long serialVersionUID = 1L;

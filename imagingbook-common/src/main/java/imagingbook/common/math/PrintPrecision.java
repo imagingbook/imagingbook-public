@@ -9,13 +9,10 @@
 package imagingbook.common.math;
 
 /**
- * This class holds settings to control the precision when printing
- * floating-point numbers, used in particular by various {@code toString()}
- * methods for vectors and matrices defined in class {@link Matrix} (mainly for
- * debugging).
- * 
- * @author WB
+ * This class holds settings to control the precision when printing floating-point numbers, used in particular by
+ * various {@code toString()} methods for vectors and matrices defined in class {@link Matrix} (mainly for debugging).
  *
+ * @author WB
  */
 public abstract class PrintPrecision {
 	
@@ -38,14 +35,12 @@ public abstract class PrintPrecision {
 	public static void reset() {
 		set(DefaultPrecision);
 	}
-	
+
 	/**
-	 * Set print precision to the specified number of digits.
-	 * For example, with {@code nDigits = 5} the resulting element format string
-	 * is {@code "%.5f"}.
-	 * If a value &le;0 is specified, the scientific float format 
-	 * string {@code "%e"} is used.
-	 * 
+	 * Set print precision to the specified number of digits. For example, with {@code nDigits = 5} the resulting
+	 * element format string is {@code "%.5f"}. If a value &le;0 is specified, the scientific float format string
+	 * {@code "%e"} is used.
+	 *
 	 * @param nDigits the number of digits to be used
 	 */
 	public static void set(int nDigits) {
@@ -67,11 +62,10 @@ public abstract class PrintPrecision {
 	}
 
 	/**
-	 * Returns the floaing-point format string for the current print precision (to
-	 * be used in {@link String#format(String, Object...)}, for example
-	 * {@code "%.6f"} if print precision is set to 6, or {@code "%e"} when
-	 * precision &le;0.
-	 * 
+	 * Returns the floaing-point format string for the current print precision (to be used in
+	 * {@link String#format(String, Object...)}, for example {@code "%.6f"} if print precision is set to 6, or
+	 * {@code "%e"} when precision &le;0.
+	 *
 	 * @return the format string
 	 */
 	public static String getFormatStringFloat() {

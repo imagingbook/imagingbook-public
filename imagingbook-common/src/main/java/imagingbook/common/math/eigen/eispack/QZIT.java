@@ -8,61 +8,52 @@
  ******************************************************************************/
 package imagingbook.common.math.eigen.eispack;
 
-abstract class QZIT {
+public abstract class QZIT {
 	
-	// EISPACK Routines, see http://www.netlib.org/eispack/
+	/*
+	EISPACK Routines, see http://www.netlib.org/eispack/ for the original FORTRAN code.
+	Untangled to goto-free Java by W. Burger using a sequential state machine concept, inspired by D. E. Knuth,
+	"Structured Programming with Goto Statements", Computing Surveys, Vol. 6, No. 4 (1974).
+	 */
+
+	private QZIT() {}
 
 	/**
 	 * <p>
-	 * This subroutine is the second step of the qz algorithm for solving
-	 * generalized matrix eigenvalue problems, Siam J. Numer. anal. 10,
-	 * 241-256(1973) by Moler and Stewart, as modified in technical note NASA TN
-	 * D-7305(1973) by Ward. 
-	 * This description has been adapted from the original version
-	 * (dated August 1983).
+	 * This subroutine is the second step of the qz algorithm for solving generalized matrix eigenvalue problems, Siam
+	 * J. Numer. anal. 10, 241-256(1973) by Moler and Stewart, as modified in technical note NASA TN D-7305(1973) by
+	 * Ward. This description has been adapted from the original version (dated August 1983).
 	 * </p>
 	 * <p>
-	 * This subroutine accepts a pair of real matrices, one of them in upper
-	 * Hessenberg form and the other in upper triangular form. It reduces the
-	 * Hessenberg matrix to quasi-triangular form using orthogonal transformations
-	 * while maintaining the triangular form of the other matrix. It is usually
-	 * preceded by qzhes and followed by qzval and, possibly, qzvec.
+	 * This subroutine accepts a pair of real matrices, one of them in upper Hessenberg form and the other in upper
+	 * triangular form. It reduces the Hessenberg matrix to quasi-triangular form using orthogonal transformations while
+	 * maintaining the triangular form of the other matrix. It is usually preceded by qzhes and followed by qzval and,
+	 * possibly, qzvec.
 	 * </p>
 	 * <p>
 	 * On output:
 	 * </p>
 	 * <ul>
-	 * <li><strong>a</strong> has been reduced to quasi-triangular form. The elements 
-	 * below the first subdiagonal are still zero and no two consecutive subdiagonal
-	 * elements are nonzero.</li>
-	 * 
-	 * <li><strong>b</strong> is still in upper triangular form, although its elements have been altered.
-	 * the location b(n,1) is used to store eps1 times the norm of b for later use
-	 * by qzval and qzvec.
-	 * 
-	 * <li><strong>z</strong> contains the product of the right hand transformations (for both steps) if
-	 * matz has been set to true.</li>
+	 * <li><strong>a</strong> has been reduced to quasi-triangular form. The elements below the first subdiagonal are
+	 * still zero and no two consecutive subdiagonal elements are nonzero.</li>
+	 * <li><strong>b</strong> is still in upper triangular form, although its elements have been altered. The location
+	 * b(n,1) is used to store eps1 times the norm of b for later use by qzval and qzvec.
+	 * <li><strong>z</strong> contains the product of the right hand transformations (for both steps) if matz has been
+	 * set to true.</li>
 	 * </ul>
-	 * 
-	 * 
-	 * @param a    contains a real upper hessenberg matrix.
-	 * @param b    contains a real upper triangular matrix.
-	 * @param eps1 is a tolerance used to determine negligible elements. eps1 = 0.0
-	 *             (or negative) may be input, in which case an element will be
-	 *             neglected only if it is less than roundoff error times the norm
-	 *             of its matrix. If the input eps1 is positive, then an element
-	 *             will be considered negligible if it is less than eps1 times the
-	 *             norm of its matrix. A positive value of eps1 may result in faster
-	 *             execution, but less accurate results.
-	 * @param matz should be set to true if the right hand transformations are to be
-	 *             accumulated for later use in computing eigenvectors, and to false
-	 *             otherwise.
-	 * @param z    contains, if matz has been set to true, the transformation matrix
-	 *             produced in the reduction by qzhes, if performed, or else the
-	 *             identity matrix. If matz has been set to false, z is not
-	 *             referenced.
-	 * @return -1 for normal return, j if the limit of 30*n iterations is exhausted
-	 *         while the j-th eigenvalue is being sought.
+	 *
+	 * @param a contains a real upper hessenberg matrix.
+	 * @param b contains a real upper triangular matrix.
+	 * @param eps1 is a tolerance used to determine negligible elements. eps1 = 0.0 (or negative) may be input, in which
+	 * case an element will be neglected only if it is less than roundoff error times the norm of its matrix. If the
+	 * input eps1 is positive, then an element will be considered negligible if it is less than eps1 times the norm of
+	 * its matrix. A positive value of eps1 may result in faster execution, but less accurate results.
+	 * @param matz should be set to true if the right hand transformations are to be accumulated for later use in
+	 * computing eigenvectors, and to false otherwise.
+	 * @param z contains, if matz has been set to true, the transformation matrix produced in the reduction by qzhes, if
+	 * performed, or else the identity matrix. If matz has been set to false, z is not referenced.
+	 * @return -1 for normal return, j if the limit of 30*n iterations is exhausted while the j-th eigenvalue is being
+	 * is being sought.
 	 */
 	public static int qzit(double[][] a, double[][] b, double eps1, boolean matz, double[][] z) {
 
@@ -545,13 +536,11 @@ abstract class QZIT {
 		} while (eps == 0);
 		EpsFloat = eps;
 	}
- 
+
 	/**
-	 * Estimates unit round-off in quantities of size x.
-	 * This is a port of the epsilon function from EISPACK.
-	 * See also
+	 * Estimates unit round-off in quantities of size x. This is a port of the epsilon function from EISPACK. See also
 	 * https://www.researchgate.net/publication/2860253_A_Comment_on_the_Eispack_Machine_Epsilon_Routine
-	 * 
+	 *
 	 * @param x some quantity
 	 * @return returns the smallest number e of the same kind as x such that 1 + e > 1.
 	 */
@@ -591,12 +580,12 @@ program test_epsilon
 end program test_epsilon
  */
 	
-	public static void main(String[] args) {
-		double x = 3.143;
-		System.out.println(epslon(x));
-		float y = 2.33f;
-		System.out.println(epslon(y));
-		
-	}
+	// public static void main(String[] args) {
+	// 	double x = 3.143;
+	// 	System.out.println(epslon(x));
+	// 	float y = 2.33f;
+	// 	System.out.println(epslon(y));
+	//
+	// }
 
 }

@@ -17,11 +17,9 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.common.image.interpolation.PixelInterpolator;
 
 /**
- * The common (abstract) super-class for all image accessors to scalar-valued
- * images. It inherits all methods from {@link ImageAccessor} but adds the
- * methods {@link #getVal(int, int)}, {@link #getVal(double, double)} and
- * {@link #setVal(int, int, float)} for reading and writing scalar-valued pixel
- * data.
+ * The common (abstract) super-class for all image accessors to scalar-valued images. It inherits all methods from
+ * {@link ImageAccessor} but adds the methods {@link #getVal(int, int)}, {@link #getVal(double, double)} and
+ * {@link #setVal(int, int, float)} for reading and writing scalar-valued pixel data.
  */
 public abstract class ScalarAccessor extends ImageAccessor {
 
@@ -33,16 +31,13 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	}
 
 	/**
-	 * Creates a new image accessor of general type {@link ScalarAccessor}. The conrete type
-	 * of the returned instance depends on the specified image, i.e., {@link ByteAccessor}
-	 * for {@link ByteProcessor}, {@link ShortAccessor} for {@link ShortProcessor},
-	 * {@link FloatAccessor} for {@link FloatProcessor}.
-	 * 
-	 * @param ip  the image to be accessed
-	 * @param obs the out-of-bounds strategy to be used (use {@code null} for
-	 *            default settings)
-	 * @param ipm the interpolation method to be used (use {@code null} for default
-	 *            settings)
+	 * Creates a new image accessor of general type {@link ScalarAccessor}. The conrete type of the returned instance
+	 * depends on the specified image, i.e., {@link ByteAccessor} for {@link ByteProcessor}, {@link ShortAccessor} for
+	 * {@link ShortProcessor}, {@link FloatAccessor} for {@link FloatProcessor}.
+	 *
+	 * @param ip the image to be accessed
+	 * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
+	 * @param ipm the interpolation method to be used (use {@code null} for default settings)
 	 * @return a new image accessor
 	 */
 	public static ScalarAccessor create(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
@@ -68,10 +63,9 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	}
 
 	/**
-	 * Reads and returns the scalar pixel value for the given image position. The
-	 * value returned for coordinates outside the image boundaries depends on the
-	 * {@link OutOfBoundsStrategy} specified for this {@link ImageAccessor}.
-	 * 
+	 * Reads and returns the scalar pixel value for the given image position. The value returned for coordinates outside
+	 * the image boundaries depends on the {@link OutOfBoundsStrategy} specified for this {@link ImageAccessor}.
+	 *
 	 * @param u the x-coordinate
 	 * @param v the y-coordinate
 	 * @return the pixel value ({@code float})
@@ -91,11 +85,10 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	}
 
 	/**
-	 * Reads and returns the interpolated scalar pixel value for the given image
-	 * position. The value returned for coordinates outside the image boundaries
-	 * depends on the {@link OutOfBoundsStrategy} specified for this
+	 * Reads and returns the interpolated scalar pixel value for the given image position. The value returned for
+	 * coordinates outside the image boundaries depends on the {@link OutOfBoundsStrategy} specified for this
 	 * {@link ImageAccessor}.
-	 * 
+	 *
 	 * @param x the x-coordinate
 	 * @param y the y-coordinate
 	 * @return the pixel value ({@code float})
@@ -105,11 +98,11 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	}
 
 	/**
-	 * Writes a scalar pixel value to the given image position. 
-	 * An exception is thrown if u, v coordinates are outside the image.
-	 * 
-	 * @param u   the x-coordinate
-	 * @param v   the y-coordinate
+	 * Writes a scalar pixel value to the given image position. An exception is thrown if u, v coordinates are outside
+	 * the image.
+	 *
+	 * @param u the x-coordinate
+	 * @param v the y-coordinate
 	 * @param val the new pixel value ({@code float})
 	 */
 	public abstract void setVal(int u, int v, float val);

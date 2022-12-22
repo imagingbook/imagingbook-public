@@ -17,15 +17,14 @@ import org.apache.commons.math3.stat.correlation.Covariance;
 
 /**
  * <p>
- * This class implements the Mahalanobis distance using the Apache Commons Math
- * library. No statistical bias correction is used. See the Appendix G (Sections
- * G.2-G.3) of [1] for additional details and examples.
+ * This class implements the Mahalanobis distance using the Apache Commons Math library. No statistical bias correction
+ * is used. See the Appendix G (Sections G.2-G.3) of [1] for additional details and examples.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  */
 public class MahalanobisDistance {
@@ -51,29 +50,27 @@ public class MahalanobisDistance {
 	private final double[][] icov;			// inverse covariance matrix of size n x n
 
 	/**
-	 * Create a new instance from an array of m-dimensional samples, e.g.,
-	 * samples = {{x1,y1}, {x2,y2},...,{xn,yn}} for a vector of n two-dimensional
-	 * samples. Uses {@link #DefaultMinimumDiagonalValue} to condition the 
-	 * covariance matrix.
-	 * @param samples a sequence of m-dimensional samples, i.e.,
-	 *      samples[k][i] represents the i-th component of the k-th sample
+	 * Constructor, creates a new instance from an array of m-dimensional samples, e.g., samples = {{x1,y1},
+	 * {x2,y2},...,{xn,yn}} for a vector of n two-dimensional samples. Uses {@link #DefaultMinimumDiagonalValue} to
+	 * condition the covariance matrix.
+	 *
+	 * @param samples a sequence of m-dimensional samples, i.e., samples[k][i] represents the i-th component of the k-th
+	 * sample
 	 */
 	public MahalanobisDistance(double[][] samples) {
 		this(samples, DefaultMinimumDiagonalValue, DefaultRelativeSymmetryThreshold, DefaultAbsolutePositivityThreshold);
 	}
-	
+
 	/**
-	 * Create a new instance from an array of m-dimensional samples, e.g.
-	 * samples = {{x1,y1}, {x2,y2},...,{xn,yn}} for a vector of n two-dimensional
-	 * samples.
-	 * @param samples a vector of length n with m-dimensional samples, i.e.,
-	 *      samples[k][i] represents the i-th component of the k-th sample
-	 * @param minDiagVal the minimum diagonal value used to condition the
-	 *      covariance matrix to avoid singularity (see {@link #DefaultMinimumDiagonalValue})
-	 * @param relSymThr
-	 * 		maximum deviation from symmetry (see {@link #DefaultRelativeSymmetryThreshold})
-	 * @param absPosThr
-	 * 		maximum deviation from positivity (see {@link #DefaultAbsolutePositivityThreshold})
+	 * Create a new instance from an array of m-dimensional samples, e.g. samples = {{x1,y1}, {x2,y2},...,{xn,yn}} for a
+	 * vector of n two-dimensional samples.
+	 *
+	 * @param samples a vector of length n with m-dimensional samples, i.e., samples[k][i] represents the i-th component
+	 * of the k-th sample
+	 * @param minDiagVal the minimum diagonal value used to condition the covariance matrix to avoid singularity (see
+	 * {@link #DefaultMinimumDiagonalValue})
+	 * @param relSymThr maximum deviation from symmetry (see {@link #DefaultRelativeSymmetryThreshold})
+	 * @param absPosThr maximum deviation from positivity (see {@link #DefaultAbsolutePositivityThreshold})
 	 */
 	public MahalanobisDistance(double[][] samples, double minDiagVal, double relSymThr, double absPosThr) {
 		if (samples.length < 2)
@@ -110,9 +107,10 @@ public class MahalanobisDistance {
 //	}
 
 	// 
+
 	/**
-	 * Conditions the supplied covariance matrix by enforcing
-	 * positive eigenvalues on its main diagonal. 
+	 * Conditions the supplied covariance matrix by enforcing positive eigenvalues on its main diagonal.
+	 *
 	 * @param S original covariance matrix
 	 * @param minDiagVal the minimum positive value of diagonal elements
 	 * @return conditioned covariance matrix
@@ -146,15 +144,14 @@ public class MahalanobisDistance {
 	}
 
 	/**
-	 * Calculates the covariance matrix for a sequence of m-dimensional samples, e.g.,
-	 * samples = {{x1,y1}, {x2,y2},...,{xn,yn}} for n two-dimensional
-	 * samples. The covariance matrix is conditioned to avoid negative or zero
-	 * values on its main diagonal.
-	 * @param samples a sequence of m-dimensional samples, i.e.,
-	 *      samples[k][i] represents the i-th component of the k-th sample
-	 * @param minDiagVal the minimum positive value of covariance matrix diagonal elements
-	 * 		(see {@link #DefaultMinimumDiagonalValue})
-	 * 
+	 * Calculates the covariance matrix for a sequence of m-dimensional samples, e.g., samples = {{x1,y1},
+	 * {x2,y2},...,{xn,yn}} for n two-dimensional samples. The covariance matrix is conditioned to avoid negative or
+	 * zero values on its main diagonal.
+	 *
+	 * @param samples a sequence of m-dimensional samples, i.e., samples[k][i] represents the i-th component of the k-th
+	 * sample
+	 * @param minDiagVal the minimum positive value of covariance matrix diagonal elements (see
+	 * {@link #DefaultMinimumDiagonalValue})
 	 * @return the covariance matrix for the supplied samples
 	 */
 	public static double[][] makeCovarianceMatrix(double[][] samples, double minDiagVal) {
@@ -206,13 +203,11 @@ public class MahalanobisDistance {
 	//------------------------------------------------------------------------------------
 
 	/**
-	 * Returns the 'root' (U) of the inverse covariance matrix S^{-1},
-	 * such that S^{-1} = U^T . U
-	 * This matrix can be used to pre-transform the original sample
-	 * vectors X (by X &#8594; U . X) to a space where distance (in the Mahalanobis
-	 * sense) can be measured with the usual Euclidean norm.
-	 * The matrix U is invertible in case the reverse transformation is required.
-	 * 
+	 * Returns the 'root' (U) of the inverse covariance matrix S^{-1}, such that S^{-1} = U^T . U This matrix can be
+	 * used to pre-transform the original sample vectors X (by X &#8594; U . X) to a space where distance (in the
+	 * Mahalanobis sense) can be measured with the usual Euclidean norm. The matrix U is invertible in case the reverse
+	 * transformation is required.
+	 *
 	 * @return the m x m matrix for pre-transforming the original (m-dimensional) sample vectors
 	 */
 	public double[][] getWhiteningTransformation() {
@@ -237,8 +232,8 @@ public class MahalanobisDistance {
 	}
 
 	/**
-	 * Returns the squared Mahalanobis distance between the given points a, b:
-	 * d^2(a,b) = (a-b)^T . S^{-1} . (a-b)
+	 * Returns the squared Mahalanobis distance between the given points a, b: d^2(a,b) = (a-b)^T . S^{-1} . (a-b)
+	 *
 	 * @param a first point
 	 * @param b second point
 	 * @return the squared Mahalanobis distance
@@ -276,22 +271,20 @@ public class MahalanobisDistance {
 //	}
 
 	/**
-	 * Calculates the Mahalanobis distance between point x and
-	 * the mean of the reference distribution.
+	 * Calculates the Mahalanobis distance between point x and the mean of the reference distribution.
+	 *
 	 * @param x an arbitrary m-dimensional vector
-	 * @return the Mahalanobis distance between the point x and
-	 * 			the mean of the reference distribution
+	 * @return the Mahalanobis distance between the point x and the mean of the reference distribution
 	 */
 	public double distance(double[] x) {
 		return distance(x, mean);
 	}
 
 	/**
-	 * Calculates the sqared Mahalanobis distance between point x and
-	 * the mean of the reference distribution.
+	 * Calculates the sqared Mahalanobis distance between point x and the mean of the reference distribution.
+	 *
 	 * @param x an arbitrary m-dimensional vector
-	 * @return the squared Mahalanobis distance between the point x and
-	 * 			the mean of the reference distribution
+	 * @return the squared Mahalanobis distance between the point x and the mean of the reference distribution
 	 */
 	public double distance2(double[] x) {
 		return distance2(x, mean);

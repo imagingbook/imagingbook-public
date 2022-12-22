@@ -96,7 +96,7 @@ public class LucasKanadeMatcher1D {
 			dp = Matrix.add(dp, Matrix.multiply(d, sx));
 		}
 		
-		IJ.log(String.format(" iteration=%d  s=%.4f t=%.4f  sqrError=%.3f", iteration, p[0]+1, p[1], sqrError));
+		// IJ.log(String.format(" iteration=%d  s=%.4f t=%.4f  sqrError=%.3f", iteration, p[0]+1, p[1], sqrError));
 		// Step 9: calculate the optimal parameter change:
 		
 		double[] qopt = Matrix.solve(H, dp);
@@ -145,11 +145,6 @@ public class LucasKanadeMatcher1D {
 	
 	public double getRmsError() {
 		return Math.sqrt(sqrError);
-	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

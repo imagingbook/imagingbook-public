@@ -14,8 +14,8 @@ import imagingbook.common.sift.SiftDetector.NeighborhoodType3D;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Default parameters; a (usually modified) instance of this class
- * may be passed to the constructor of {@link SiftDetector}.
+ * Default parameters; a (usually modified) instance of this class may be passed to the constructor of
+ * {@link SiftDetector}.
  */
 public class SiftParameters implements ParameterBundle<SiftDetector> {
 	

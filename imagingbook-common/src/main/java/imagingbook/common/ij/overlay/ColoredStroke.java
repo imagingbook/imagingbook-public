@@ -14,11 +14,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 /**
- * This is basically a mirror class of {@link BasicStroke} adding stroke and
- * fill colors. Instances of this class are cloneable and mutable, setters for
- * all fields are provided, i.e., strokes can be easily customized. Use
+ * This is basically a mirror class of {@link BasicStroke} adding line and fill colors. Instances of this class are
+ * cloneable and mutable, setters for all fields are provided, i.e., strokes can be easily customized. Use
  * {@link #getBasicStroke()} to convert to an AWT {@link BasicStroke} instance.
- * 
+ *
  * @author WB
  * @version 2021/10/26
  */
@@ -130,18 +129,18 @@ public class ColoredStroke implements Cloneable {	// TODO: simplify API
 	}
 	
 	// -------------------------------------------------------------
-	
+
 	/**
-	 * Convenience method to set (unset) the dash pattern
-	 * Usage examples:
-	 * <pre> 
+	 * Convenience method to set (unset) the dash pattern Usage examples:
+	 * <pre>
 	 * setDash(6);      // = setDashArray(new float[] {6})
 	 * setDash(6, 4);   // = setDashArray(new float[] {6, 4})
 	 * setDash();       // = setDashArray(null)
 	 * </pre>
+	 *
+	 * @param dashes a (possibly empty) sequence of dash lengths
 	 * @see BasicStroke
 	 * @see BasicStroke#getDashArray()
-	 * @param dashes a (possibly empty) sequence of dash lengths
 	 */
 	public void setDash(double... dashes) {
 		if (dashes == null || dashes.length == 0) {
@@ -163,11 +162,10 @@ public class ColoredStroke implements Cloneable {	// TODO: simplify API
 	}
 
 	// -------------------------------------------------------------
-	
+
 	/**
-	 * Returns a AWT {@link BasicStroke} instance for the current
-	 * state of this stroke (with no color information).
-	 * 
+	 * Returns a AWT {@link BasicStroke} instance for the current state of this stroke (with no color information).
+	 *
 	 * @return a AWT {@link BasicStroke}
 	 */
 	public BasicStroke getBasicStroke() {	// TODO: invoke once or only when parameters change?

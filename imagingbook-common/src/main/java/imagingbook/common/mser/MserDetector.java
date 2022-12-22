@@ -18,20 +18,16 @@ import java.util.List;
 
 /**
  * <p>
- * Performs "Maximally Stable Extremal Region" (MSER) detection [1] on
- * gray-scale images. See Chapter 26 of [2] for more details. The constructor
- * sets up the complete component tree for the specified image but does not
- * perform feature detection itself, which is done by calling
- * {@link #getMserFeatures()}.
+ * Performs "Maximally Stable Extremal Region" (MSER) detection [1] on gray-scale images. See Chapter 26 of [2] for more
+ * details. The constructor sets up the complete component tree for the specified image but does not perform feature
+ * detection itself, which is done by calling {@link #getMserFeatures()}.
  * </p>
  * <p>
- * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline stereo
- * from maximally stable extremal regions. Image and Vision Computing 22(10),
- * 761–767 (2004). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline stereo from maximally stable extremal regions.
+ * Image and Vision Computing 22(10), 761–767 (2004). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing
+ * &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/23
  */
@@ -60,12 +56,11 @@ public class MserDetector {
 	}
 
 	/**
-	 * Constructor using explicit parameters. A set of parameters can be specified
-	 * (see {@link MserParameters}). The constructor sets up the complete component
-	 * tree but does not perform feature detection itself, which is done by calling
-	 * {@link #getMserFeatures()}.
-	 * 
-	 * @param ip     the input image
+	 * Constructor using explicit parameters. A set of parameters can be specified (see {@link MserParameters}). The
+	 * constructor sets up the complete component tree but does not perform feature detection itself, which is done by
+	 * calling {@link #getMserFeatures()}.
+	 *
+	 * @param ip the input image
 	 * @param params a {@link MserParameters} instance
 	 * @see MserParameters
 	 */
@@ -99,11 +94,11 @@ public class MserDetector {
 	}
 
 	// -----------------------------------------------------------------------
-	
+
 	/**
-	 * Extracts and returns a list of MSER components. Features are extracted
-	 * only once and cached for subsequent calls.
-	 * 
+	 * Extracts and returns a list of MSER components. Features are extracted only once and cached for subsequent
+	 * calls.
+	 *
 	 * @return a list of extracted MSER components
 	 */
 	public List<Component<MserData>> getMserFeatures() {
@@ -181,11 +176,10 @@ public class MserDetector {
 	}
 
 	/**
-	 * Calculates point (coordinate) statistics for all tree components.
-	 * We start at the forest root nodes and walk down recursively
-	 * toward the leaf nodes. Each component carries a 5-element
-	 * {@code long} vector of sums, where each element is the sum 
-	 * of the corresponding elements over all child components.
+	 * Calculates point (coordinate) statistics for all tree components. We start at the forest root nodes and walk down
+	 * recursively toward the leaf nodes. Each component carries a 5-element {@code long} vector of sums, where each
+	 * element is the sum of the corresponding elements over all child components.
+	 *
 	 * @param c the current component
 	 * @return a 5-element vector of coordinate sums
 	 */
@@ -194,13 +188,6 @@ public class MserDetector {
 			throw new RuntimeException(this.getClass().getSimpleName() + ": sums array should not exist yet!");
 		}
 		long[] m = new long[5];
-		//		if (c.sums == null) {
-		//			c.sums = new long[5];
-		//		}
-		//		else {
-		//			Arrays.fill(c.sums, 0);
-		//		}
-		// add local point statistics
 		for (Pixel p : c.getLocalPixels()) {
 			final long x = p.x;
 			final long y = p.y;
@@ -223,29 +210,25 @@ public class MserDetector {
 	}
 
 	// --------------------------------------------------------------------------------
-	
+
 	/**
-	 * Checks and collects component 'c' into {@link #msers}'.
-	 * Started from a root component, recursively walks toward the leaf
-	 * components.
-	 * Diversity is the size ratio between collected components on the same
-	 * path. I.e., to be eligible, the current component must be significantly smaller than
-	 * the previously collected component. This starts with the largest component.
+	 * Checks and collects component 'c' into {@link #msers}'. Started from a root component, recursively walks toward
+	 * the leaf components. Diversity is the size ratio between collected components on the same path. I.e., to be
+	 * eligible, the current component must be significantly smaller than the previously collected component. This
+	 * starts with the largest component.
+	 *
 	 * @param c the current component
 	 * @param ap the size of the closest ancestor component marked as MSER
 	 */
 	private void collectMsers(Component<MserData> c, int ap) {
-		//IJ.log("collecting " + c.ID + " / " + msers.size());
 		int ac = c.getSize();		// the current component's size
-		//double diversity = (ap - ac) / (double) ap;
 
 		MserData props = c.getProperties();
 		if (props.isStable && 
 				minSizeAbs <= ac && ac <= maxSizeAbs && 
 				props.variation <= maxVar && 
 				((ap - ac) / (double) ap) >= minDiv) {
-			
-			//Mser mser = new Mser(c);			// create a candidate MSER (with ellipse)
+
 			props.init();
 			double ellipseArea = props.getEllipse().getArea();
 			double compactness = ac / ellipseArea;
@@ -253,7 +236,7 @@ public class MserDetector {
 			// ignore MSERs whose size is much smaller than the associated ellipse (i.e., not compact at all)
 			if ((!params.constrainEllipseSize || ellipseArea <= maxSizeAbs) && 
 					compactness > params.minCompactness) {
-				this.msers.add(c); //this.msers.add(mser);
+				this.msers.add(c);
 				ap = ac;
 				props.isMserP = true;	// mark component c as a selected MSER
 			}

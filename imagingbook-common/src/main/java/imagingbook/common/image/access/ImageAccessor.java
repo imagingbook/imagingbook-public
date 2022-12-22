@@ -18,41 +18,31 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
  * <p>
- * An 'image accessor' is a wrapper around some {@link ImageProcessor} object to
- * allow unified (read and write) access to its pixels values. This abstract
- * class defines unified access functionality to all 4 types of images available
- * in ImageJ: 8-bit, 16-bit, float, and color images. All pixel values are of
- * type {@code float[]}, either containing a single element (for scalar-valued
- * images) or three elements (for color images).
+ * An 'image accessor' is a wrapper around some {@link ImageProcessor} object to allow unified (read and write) access
+ * to its pixels values. This abstract class defines unified access functionality to all 4 types of images available in
+ * ImageJ: 8-bit, 16-bit, float, and color images. All pixel values are of type {@code float[]}, either containing a
+ * single element (for scalar-valued images) or three elements (for color images).
  * </p>
  * <p>
- * A generic {@link ImageAccessor} is created, e.g., by
- * {@link #create(ImageProcessor)}, which returns an instance of
- * {@link ByteAccessor}, {@link ShortAccessor}, {@link FloatAccessor} or
- * {@link RgbAccessor}. {@link ImageAccessor} itself can access any ImageJ image
- * using the methods {@link #getPix(int, int)}, {@link #getPix(double, double)}
- * for retrieving pixel values and {@link #setPix(int, int, float[])} to modify
- * pixel values.
+ * A generic {@link ImageAccessor} is created, e.g., by {@link #create(ImageProcessor)}, which returns an instance of
+ * {@link ByteAccessor}, {@link ShortAccessor}, {@link FloatAccessor} or {@link RgbAccessor}. {@link ImageAccessor}
+ * itself can access any ImageJ image using the methods {@link #getPix(int, int)}, {@link #getPix(double, double)} for
+ * retrieving pixel values and {@link #setPix(int, int, float[])} to modify pixel values.
  * </p>
  * <p>
- * In addition, the accessors for scalar-valued images ({@link ByteAccessor},
- * {@link ShortAccessor}, {@link FloatAccessor}) provide the methods
- * {@link ScalarAccessor#getVal(int, int)},
- * {@link ScalarAccessor#getVal(double, double)} and
- * {@link ScalarAccessor#setVal(int, int, float)} to read and write
- * scalar-valued pixels passed as single {@code float} values. <br>
- * The methods {@link #getPix(double, double)} and
- * {@link ScalarAccessor#getVal(double, double)} perform interpolation at
- * non-integer coordinates using the specified {@link InterpolationMethod}.
+ * In addition, the accessors for scalar-valued images ({@link ByteAccessor}, {@link ShortAccessor},
+ * {@link FloatAccessor}) provide the methods {@link ScalarAccessor#getVal(int, int)},
+ * {@link ScalarAccessor#getVal(double, double)} and {@link ScalarAccessor#setVal(int, int, float)} to read and write
+ * scalar-valued pixels passed as single {@code float} values. <br> The methods {@link #getPix(double, double)} and
+ * {@link ScalarAccessor#getVal(double, double)} perform interpolation at non-integer coordinates using the specified
+ * {@link InterpolationMethod}.
  * </p>
  * <p>
- * A related concept for providing unified access to images is
- * {@link PixelPack}, which copies all pixel data to internal {@code float}
- * arrays. In contrast to {@link PixelPack}, {@link ImageAccessor} does not
- * duplicate any data but reads and writes the original {@link ImageProcessor}
- * pixel data directly.
+ * A related concept for providing unified access to images is {@link PixelPack}, which copies all pixel data to
+ * internal {@code float} arrays. In contrast to {@link PixelPack}, {@link ImageAccessor} does not duplicate any data
+ * but reads and writes the original {@link ImageProcessor} pixel data directly.
  * </p>
- * 
+ *
  * @author WB
  * @version 2020/12/27
  * @see PixelPack

@@ -19,9 +19,8 @@ import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
- * This is an implementation of the adaptive thresholder proposed by Niblack in
- * [1]. See Sec. 9.2.2 of [2] for a detailed description. It comes in three
- * different version, depending on the type of local support region:
+ * This is an implementation of the adaptive thresholder proposed by Niblack in [1]. See Sec. 9.2.2 of [2] for a
+ * detailed description. It comes in three different version, depending on the type of local support region:
  * </p>
  * <ul>
  * <li>{@link Box}: uses a rectangular (box-shaped) support region;</li>
@@ -38,7 +37,7 @@ import imagingbook.common.util.ParameterBundle;
  * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
  * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/08/01
  */

@@ -12,10 +12,8 @@ import ij.process.ImageProcessor;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 
-/** 
- * Accessor for vector-valued images with arbitrary depth 
- * (number of components).
- *
+/**
+ * Accessor for vector-valued images with arbitrary depth (number of components).
  */
 public abstract class VectorAccessor extends ImageAccessor {
 	
@@ -30,12 +28,11 @@ public abstract class VectorAccessor extends ImageAccessor {
 			componentAccessors[k] = makeComponentAccessor(k);
 		}
 	}
-	
+
 	/**
-	 * To be implemented by all real sublasses of {@link ScalarAccessor}, 
-	 * who know how to create an accessor object to their k-th component.
-	 * See {@link RgbAccessor#makeComponentAccessor(int)} for an example.
-	 * 
+	 * To be implemented by all real sublasses of {@link ScalarAccessor}, who know how to create an accessor object to
+	 * their k-th component. See {@link RgbAccessor#makeComponentAccessor(int)} for an example.
+	 *
 	 * @param k the component index
 	 * @return the image accessor for the specified component
 	 */

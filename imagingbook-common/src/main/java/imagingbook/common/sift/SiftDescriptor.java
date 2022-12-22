@@ -19,16 +19,14 @@ import java.util.Locale;
 
 /**
  * <p>
- * This class defines a SIFT descriptor. See Sec. 25.3 of [1] for more details.
- * Instances are immutable.
+ * This class defines a SIFT descriptor. See Sec. 25.3 of [1] for more details. Instances are immutable.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
- * @version 2020/10/04 added scale level for display reasons
  * @version 2022/11/20
  */
 public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
@@ -114,23 +112,22 @@ public class SiftDescriptor implements Pnt2d, Comparable<SiftDescriptor> {
 	// -----------------------------
 	
 	private static final VectorNorm DefaultNorm = VectorNorm.L2.getInstance();
-	
+
 	/**
-	 * Calculates and returns the distance between this descriptor's feature vector
-	 * and another descriptor's feature vector using the Euclidean distance
-	 * ({@link imagingbook.common.math.VectorNorm.L2}).
-	 * 
+	 * Calculates and returns the distance between this descriptor's feature vector and another descriptor's feature
+	 * vector using the Euclidean distance ({@link imagingbook.common.math.VectorNorm.L2}).
+	 *
 	 * @param other another {@link SiftDescriptor}
 	 * @return the distance
 	 */
 	public double getDistance(SiftDescriptor other) {
 		return DefaultNorm.distance(this.features, other.features);
 	}
-	
+
 	/**
-	 * Calculates and returns the distance between this descriptor's feature vector
-	 * and another descriptor's feature vector using the specified {@link VectorNorm}.
-	 * 
+	 * Calculates and returns the distance between this descriptor's feature vector and another descriptor's feature
+	 * vector using the specified {@link VectorNorm}.
+	 *
 	 * @param other another {@link SiftDescriptor}
 	 * @param norm a {@link VectorNorm} instance
 	 * @return the distance

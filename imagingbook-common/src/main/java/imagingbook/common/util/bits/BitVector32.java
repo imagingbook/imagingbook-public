@@ -8,6 +8,8 @@
  ******************************************************************************/
 package imagingbook.common.util.bits;
 
+import java.util.Arrays;
+
 /**
  * This class implements {@link BitVector} with internal 32-bit {@code int} data.
  * @author WB
@@ -82,16 +84,12 @@ public class BitVector32 implements BitVector {
 	
 	@Override
 	public void setAll() {
-		for (int j = 0; j < data.length; j++) {
-			data[j] = ~0;
-		}
+		Arrays.fill(data, ~0);
 	}
 
 	@Override
 	public void unsetAll() {
-		for (int j = 0; j < data.length; j++) {
-			data[j] = 0;
-		}
+		Arrays.fill(data, 0);
 	}
 	
 	@Override
@@ -104,25 +102,5 @@ public class BitVector32 implements BitVector {
 		buf.append("]");
 		return buf.toString();
 	}
-	
-//	//----------------------------------------------------------------------------------
-//	
-//	public static void main(String[] args) {
-//		int K = 99;
-//		BitVector32 b = new BitVector32(K);
-//		
-//		System.out.println(b.toString());
-//		b.setAll();
-//		System.out.println(b.toString());
-//		b.unsetAll();
-//		System.out.println(b.toString());
-//		System.out.println();
-//		
-//		for (int i = 0; i < b.length; i++) {
-//			b.set(i);
-//			System.out.println(b.toString());
-//			b.unset(i);
-//		}
-//	}
 
 }

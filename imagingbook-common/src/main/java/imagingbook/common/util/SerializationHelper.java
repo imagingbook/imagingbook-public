@@ -22,12 +22,11 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 /**
- * Helper class providing static methods for writing/reading serialized data
- * to/from files. It is recommended to serialize only data structures composed
- * of standard Java types. Otherwise, if self-defined classes are reloaded,
- * classes of previously serialized objects may not match any more, causing a
- * {@link ClassNotFoundException} to be thrown.
- * 
+ * Helper class providing static methods for writing/reading serialized data to/from files. It is recommended to
+ * serialize only data structures composed of standard Java types. Otherwise, if self-defined classes are reloaded,
+ * classes of previously serialized objects may not match any more, causing a {@link ClassNotFoundException} to be
+ * thrown.
+ *
  * @author WB
  * @version 2022/07/28
  */
@@ -35,10 +34,10 @@ public abstract class SerializationHelper {
 	
 	// This class is not supposed to be instantiated.
 	private SerializationHelper() {}
-	
+
 	/**
-	 * Writes a serialized representation of an arbitrary Java object to 
-	 * a file.
+	 * Writes a serialized representation of an arbitrary Java object to a file.
+	 *
 	 * @param obj the object to be serialized.
 	 * @param file the file to write to.
 	 * @return the full path of the written file.
@@ -58,9 +57,9 @@ public abstract class SerializationHelper {
 	}
 
 	/**
-	 * Reads an object from a serialization file.
-	 * The return value must be cast to the appropriate type, which
-	 * must be known.
+	 * Reads an object from a serialization file. The return value must be cast to the appropriate type, which must be
+	 * known.
+	 *
 	 * @param file the file to read.
 	 * @return the object reconstructed from the file representation or null if unsuccessful.
 	 */

@@ -11,6 +11,7 @@ package imagingbook.common.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.PrimitiveIterator;
 
 /**
  * This class defines static methods for creating array iterators.
@@ -19,20 +20,35 @@ import java.util.Iterator;
  * @version 2022/11/20
  */
 public abstract class ArrayIterator {
-	
+	// TODO: make class generic, consider primitive arrays!
 	private ArrayIterator() {}
 	
 	// https://stackoverflow.com/questions/10335662/convert-java-array-to-iterable.
 	/**
-	 * Returns an iterator for the specified (non-primitive) array.
-	 * The resulting iterator does not implement {@link Iterator#remove()}.
-	 * 
+	 * Returns an iterator for the specified (non-primitive) array. The resulting iterator does not implement
+	 * {@link Iterator#remove()}.
+	 *
 	 * @param <T> the generic element type
-	 * @param array a non-primitive array 
+	 * @param array a non-primitive array
 	 * @return the associated iterator
 	 */
 	public static <T> Iterator<T> from(T[] array) {
 		return Arrays.stream(array).iterator();
 	}
+	
+	// public static void main(String[] args) {
+	// 	Integer[] a = {1, 2, 3};
+	// 	Iterator<Integer> iterA = ArrayIterator.from(a);
+	//
+	// 	while(iterA.hasNext()) {
+	// 		System.out.println(iterA.next());
+	// 	}
+	//
+	// 	int[] b = {5, 6, 7};
+	// 	PrimitiveIterator.OfInt iterB = Arrays.stream(b).iterator();
+	// 	while(iterB.hasNext()) {
+	// 		System.out.println(iterB.next());
+	// 	}
+	// }
 
 }

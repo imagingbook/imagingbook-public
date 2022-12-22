@@ -16,28 +16,25 @@ import ij.process.ShortProcessor;
 
 /**
  * <p>
- * This class implements horizontal and vertical projections of scalar-valued
- * images. See Sec. 8.7 of [1] for additional details. 
+ * This class implements horizontal and vertical projections of scalar-valued images. See Sec. 8.7 of [1] for additional
+ * details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/28
- *
  */
 public class Projection {
 	
 	private final double[] pHor, pVer;
 
 	/**
-	 * Constructor, works only on images of type {@link ByteProcessor},
-	 * {@link ShortProcessor}, and {@link FloatProcessor}.
-	 * Throws an exception if the specified image is of type
-	 * {@link ColorProcessor}.
-	 * 
+	 * Constructor, works only on images of type {@link ByteProcessor}, {@link ShortProcessor}, and
+	 * {@link FloatProcessor}. Throws an exception if the specified image is of type {@link ColorProcessor}.
+	 *
 	 * @param ip the image to process
 	 */
 	public Projection(ImageProcessor ip) {
@@ -55,19 +52,21 @@ public class Projection {
 			throw new IllegalArgumentException("projections not implemented for ColorProcessor");
 		}
 	}
-	
+
 	/**
-	 * Returns the horizontal projection of the associated image.
-	 * The length of the returned array corresponds to the image height.
+	 * Returns the horizontal projection of the associated image. The length of the returned array corresponds to the
+	 * image height.
+	 *
 	 * @return the horizontal projection array
 	 */
 	public double[] getHorizontal() {
 		return this.pHor;
 	}
-	
+
 	/**
-	 * Returns the vertical projection of the associated image.
-	 * The length of the returned array corresponds to the image width.
+	 * Returns the vertical projection of the associated image. The length of the returned array corresponds to the
+	 * image width.
+	 *
 	 * @return the vertical projection array
 	 */
 	public double[] getVertical() {

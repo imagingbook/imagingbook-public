@@ -349,7 +349,110 @@ public class IjUtilsTest {
         IjUtils.crop(ip1, 2, 3, 15, 0);
     }
 
-    // ----------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    @Test
+    public void testIsBinary1() {
+        ImageProcessor ip = GeneralSampleImage.ToolsSmall.getImagePlus().getProcessor();
+        assertTrue(IjUtils.isBinary(ip));
+    }
+
+    @Test
+    public void testIsBinary2() {
+        ImageProcessor ip = GeneralSampleImage.Cat.getImagePlus().getProcessor();
+        assertTrue(IjUtils.isBinary(ip));
+    }
+
+    @Test
+    public void testIsBinary3() {
+        ImageProcessor ip;
+        ip = GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
+        assertFalse(IjUtils.isBinary(ip));
+        ip = GeneralSampleImage.Clown.getImagePlus().getProcessor();
+        assertFalse(IjUtils.isBinary(ip));
+        ip = GeneralSampleImage.FlowerIdx256.getImagePlus().getProcessor();
+        assertFalse(IjUtils.isBinary(ip));
+    }
+
+    @Test
+    public void testIsBinary4() {
+        ImageProcessor ip;
+        int fill = 100;
+
+        ip = new FloatProcessor (30, 20);
+        assertTrue(IjUtils.isBinary(ip));
+        ip.setColor(fill); ip.fill();
+        assertTrue(IjUtils.isBinary(ip));
+
+        ip = new ByteProcessor (30, 20);
+        assertTrue(IjUtils.isBinary(ip));
+        ip.setColor(fill); ip.fill();
+        assertTrue(IjUtils.isBinary(ip));
+
+        ip = new ShortProcessor (30, 20);
+        assertTrue(IjUtils.isBinary(ip));
+        ip.setColor(fill); ip.fill();
+        assertTrue(IjUtils.isBinary(ip));
+
+        ip = new ColorProcessor (30, 20);
+        assertTrue(IjUtils.isBinary(ip));
+        ip.setColor(fill); ip.fill();
+        assertTrue(IjUtils.isBinary(ip));
+    }
+    @Test
+    public void testIsBinary5() {
+        ImageProcessor ip;
+        ip = new FloatProcessor (30, 20); ip.set(10, 10, 10);
+        assertTrue(IjUtils.isBinary(ip));
+
+        ip = new ByteProcessor (30, 20); ip.set(10, 10, 10);
+        assertTrue(IjUtils.isBinary(ip));
+
+        ip = new ShortProcessor (30, 20); ip.set(10, 10, 10);
+        assertTrue(IjUtils.isBinary(ip));
+
+        ip = new ColorProcessor (30, 20); ip.set(10, 10, 10);
+        assertTrue(IjUtils.isBinary(ip));
+    }
+
+    // ----------------------------
+
+    @Test
+    public void testIsFlat2() {
+        ImageProcessor ip;
+        int fill = 100;
+
+        ip = new FloatProcessor (30, 20);
+        assertTrue(IjUtils.isFlat(ip));
+        ip.setColor(fill); ip.fill();
+        assertTrue(IjUtils.isFlat(ip));
+        ip.set(10, 10, 10);
+        assertFalse(IjUtils.isFlat(ip));
+
+        ip = new ByteProcessor (30, 20);
+        assertTrue(IjUtils.isFlat(ip));
+        ip.setColor(fill); ip.fill();
+        assertTrue(IjUtils.isFlat(ip));
+        ip.set(10, 10, 10);
+        assertFalse(IjUtils.isFlat(ip));
+
+        ip = new ShortProcessor (30, 20);
+        assertTrue(IjUtils.isFlat(ip));
+        ip.setColor(fill); ip.fill();
+        assertTrue(IjUtils.isFlat(ip));
+        ip.set(10, 10, 10);
+        assertFalse(IjUtils.isFlat(ip));
+
+        ip = new ColorProcessor (30, 20);
+        assertTrue(IjUtils.isFlat(ip));
+        ip.setColor(fill); ip.fill();
+        assertTrue(IjUtils.isFlat(ip));
+        ip.set(10, 10, 10);
+        assertFalse(IjUtils.isFlat(ip));
+    }
+
+
+    // ------------------------------------------------------------------------
 
     @Test
     public void testSaveAndReadImageColor() {

@@ -12,21 +12,19 @@ import ij.process.Blitter;
 import ij.process.ImageProcessor;
 
 /**
- * This class defines static methods for non-destructive, arithmetic operations on ImageJ's 
- * {@link ImageProcessor} objects.
- * Unlike the built-in {@link ImageProcessor} methods, the methods below always
- * return new images and keep the original images unmodified.
- * 
+ * This class defines static methods for non-destructive, arithmetic operations on ImageJ's {@link ImageProcessor}
+ * objects. Unlike the built-in {@link ImageProcessor} methods, the methods below always return new images (of the same
+ * type) and keep the original images unmodified.
+ *
  * @version 2013/08/23: static methods converted to use generics.
  */
 public abstract class ImageMath {
 	
 	private ImageMath() {}
-	
+
 	/**
-	 * Calculates the absolute pixel values of the specified image
-	 * and returns a new image of the same type.
-	 *  
+	 * Calculates the absolute pixel values of the specified image and returns a new image of the same type.
+	 *
 	 * @param <T> the type of {@link ImageProcessor}
 	 * @param ip the input image
 	 * @return the resulting image
@@ -37,11 +35,10 @@ public abstract class ImageMath {
 		ip2.abs();
 		return ip2;
 	}
-	
+
 	/**
-	 * Calculates the squared pixel values of the specified image
-	 * and returns a new image of the same type.
-	 *  
+	 * Calculates the squared pixel values of the specified image and returns a new image of the same type.
+	 *
 	 * @param <T> the type of {@link ImageProcessor}
 	 * @param ip the input image
 	 * @return the resulting image
@@ -52,11 +49,10 @@ public abstract class ImageMath {
 		ip2.sqr();
 		return ip2;
 	}
-	
+
 	/**
-	 * Calculates the square root of the pixel values of the specified image
-	 * and returns a new image of the same type.
-	 *  
+	 * Calculates the square root of the pixel values of the specified image and returns a new image of the same type.
+	 *
 	 * @param <T> the type of {@link ImageProcessor}
 	 * @param ip the input image
 	 * @return the resulting image
@@ -67,12 +63,10 @@ public abstract class ImageMath {
 		ip2.sqrt();
 		return ip2;
 	}
-	
+
 	/**
-	 * Adds the pixel values of the specified images
-	 * and returns a new image of the same type
-	 * as the first image.
-	 *  
+	 * Adds the pixel values of the specified images and returns a new image of the same type as the first image.
+	 *
 	 * @param <T> the type of {@link ImageProcessor}
 	 * @param ip1 first input image
 	 * @param ip2 second input image
@@ -87,12 +81,10 @@ public abstract class ImageMath {
 		ip3.copyBits(ip2, 0, 0, Blitter.ADD);
 		return ip3;
 	}
-	
+
 	/**
-	 * Multiplies the pixel values of the specified images
-	 * and returns a new image of the same type
-	 * as the first image.
-	 *  
+	 * Multiplies the pixel values of the specified images and returns a new image of the same type as the first image.
+	 *
 	 * @param <T> the type of {@link ImageProcessor}
 	 * @param ip1 first input image
 	 * @param ip2 second input image

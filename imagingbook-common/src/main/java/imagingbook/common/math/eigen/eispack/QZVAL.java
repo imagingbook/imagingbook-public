@@ -8,24 +8,27 @@
  ******************************************************************************/
 package imagingbook.common.math.eigen.eispack;
 
-abstract class QZVAL {
+public abstract class QZVAL {
 
-	// EISPACK Routines, see http://www.netlib.org/eispack/
+	/*
+	EISPACK Routines, see http://www.netlib.org/eispack/ for the original FORTRAN code.
+	Untangled to goto-free Java by W. Burger using a sequential state machine concept, inspired by D. E. Knuth,
+	"Structured Programming with Goto Statements", Computing Surveys, Vol. 6, No. 4 (1974).
+	 */
+
+	private QZVAL() {}
 
 	/**
 	 * <p>
-	 * This subroutine is the third step of the qz algorithm for solving generalized
-	 * matrix eigenvalue problems, Siam J. Numer. Anal. 10, 241-256 (1973) by Moler
-	 * and Stewart. This description has been adapted from the original version
+	 * This subroutine is the third step of the qz algorithm for solving generalized matrix eigenvalue problems, Siam J.
+	 * Numer. Anal. 10, 241-256 (1973) by Moler and Stewart. This description has been adapted from the original version
 	 * (dated August 1983).
 	 * </p>
 	 * <p>
-	 * This subroutine accepts a pair of real matrices, one of them in
-	 * quasi-triangular form and the other in upper triangular form. it reduces the
-	 * quasi-triangular matrix further, so that any remaining 2-by-2 blocks
-	 * correspond to pairs of complex Eigenvalues, and returns quantities whose
-	 * ratios give the generalized eigenvalues. it is usually preceded by qzhes and
-	 * qzit and may be followed by qzvec.
+	 * This subroutine accepts a pair of real matrices, one of them in quasi-triangular form and the other in upper
+	 * triangular form. it reduces the quasi-triangular matrix further, so that any remaining 2-by-2 blocks correspond
+	 * to pairs of complex Eigenvalues, and returns quantities whose ratios give the generalized eigenvalues. It is
+	 * usually preceded by qzhes and qzit and may be followed by qzvec.
 	 * </p>
 	 * <p>
 	 * On output:
@@ -34,46 +37,34 @@ abstract class QZVAL {
 	 * <li><strong>a</strong> has been reduced further to a quasi-triangular matrix
 	 * in which all nonzero subdiagonal elements correspond to pairs of complex
 	 * eigenvalues.</li>
-	 * 
 	 * <li><strong>b</strong> is still in upper triangular form, although its
 	 * elements have been altered. b[n-1][0] is unaltered.</li>
-	 * 
-	 * <li><strong>alfr</strong> and <strong>alfi</strong> contain the real and
-	 * imaginary parts of the diagonal elements of the triangular matrix that would
-	 * be obtained if a were reduced completely to triangular form by unitary
-	 * transformations. Non-zero values of <strong>alfi</strong> occur in pairs, the
-	 * first member positive and the second negative.</li>
-	 * 
-	 * <li><strong>beta</strong> contains the diagonal elements of the corresponding
-	 * <strong>b</strong>, normalized to be real and non-negative. The generalized
-	 * eigenvalues are then the ratios ((alfr + i * alfi) / beta).</li>
-	 * 
-	 * <li><strong>z</strong> contains the product of the right hand transformations
-	 * (for all three steps) if <strong>matz</strong> has been set to true.</li>
+	 * <li><strong>alfr</strong> and <strong>alfi</strong> contain the real and imaginary parts of the diagonal elements
+	 * of the triangular matrix that would be obtained if a were reduced completely to triangular form by unitary
+	 * transformations. Non-zero values of <strong>alfi</strong> occur in pairs, the first member positive and the
+	 * second negative.</li>
+	 * <li><strong>beta</strong> contains the diagonal elements of the corresponding <strong>b</strong>, normalized to
+	 * be real and non-negative. The generalized eigenvalues are then the ratios ((alfr + i * alfi) / beta).</li>
+	 * <li><strong>z</strong> contains the product of the right hand transformations (for all three steps) if
+	 * <strong>matz</strong> has been set to true.</li>
 	 * </ul>
-	 * 
-	 * @param a    contains a real upper quasi-triangular matrix.
-	 * @param b    contains a real upper triangular matrix. In addition, location
-	 *             b[n-1][0] contains the tolerance quantity (epsb) computed and
-	 *             saved in qzit.
-	 * @param alfr and alfi contain the real and imaginary parts of the diagonal
-	 *             elements of the triangular matrix that would be obtained if a
-	 *             were reduced completely to triangular form by unitary
-	 *             transformations. Non-zero values of <strong>alfi</strong> occur
-	 *             in pairs, the first member positive and the second negative.
+	 *
+	 * @param a contains a real upper quasi-triangular matrix.
+	 * @param b contains a real upper triangular matrix. In addition, location b[n-1][0] contains the tolerance quantity
+	 * (epsb) computed and saved in qzit.
+	 * @param alfr and alfi contain the real and imaginary parts of the diagonal elements of the triangular matrix that
+	 * would be obtained if a were reduced completely to triangular form by unitary transformations. Non-zero values of
+	 * <strong>alfi</strong> occur in pairs, the first member positive and the second negative.
 	 * @param alfi see description for <strong>alfr</strong>.
 	 * @param beta contains the diagonal elements of the corresponding
-	 *             <strong>b</strong>, normalized to be real and non-negative. The
-	 *             generalized eigenvalues are then the ratios ((alfr + i * alfi) / beta).
-	 * @param matz should be set to true. if the right hand transformations are to
-	 *             be accumulated for later use in computing eigenvectors, and to
-	 *             false otherwise.
-	 * @param z    contains, if <strong>matz</strong> has been set to true, the
-	 *             transformation matrix produced in the reductions by qzhes and
-	 *             qzit, if performed, or else the identity matrix. If
-	 *             <strong>matz</strong> has been set to false, z is not referenced.
+	 * <strong>b</strong>, normalized to be real and non-negative. The
+	 * generalized eigenvalues are then the ratios ((alfr + i * alfi) / beta).
+	 * @param matz should be set to true. if the right hand transformations are to be accumulated for later use in
+	 * computing eigenvectors, and to false otherwise.
+	 * @param z contains, if <strong>matz</strong> has been set to true, the transformation matrix produced in the
+	 * reductions by qzhes and qzit, if performed, or else the identity matrix. If
+	 * <strong>matz</strong> has been set to false, z is not referenced.
 	 */
-	@SuppressWarnings("unused")
 	public static void qzval(double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, boolean matz,
 			double[][] z) {
 

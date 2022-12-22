@@ -9,6 +9,7 @@
 package imagingbook.common.ij.overlay;
 
 import ij.gui.Overlay;
+import ij.gui.Roi;
 import ij.gui.ShapeRoi;
 import ij.gui.TextRoi;
 
@@ -41,20 +42,19 @@ import java.awt.geom.AffineTransform;
  * </p>
  * <pre>
  * ImagePlus im = ...
- * Overlay oly = new Overlay();
- * ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+ * ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
  * ola.setStroke(new ColoredStroke(0.25, Color.blue));
  * ola.addShape(new Line2D.Double(x1, y1, x2, y2));
  * ...			// add more shapes with same stroke
  * ola.setStroke(new ColoredStroke(0.4, Color.pink));
  * ola.addShape(new Line2D.Double(x3, y3, x4, y4));
  * ...			// add more shapes with same stroke
- * im.setOverlay(oly);
+ * im.setOverlay(ola.getOverlay());
  * im.show();
  * </pre>
  * <p>
- * <strong>Usage example 2 (adding shapes with element-wise stroke/color
- * specification):</strong>
+ * <strong>Usage example 2 (adding shapes with element-wise stroke/color specification), mixed use of {@link Overlay}
+ * and {@link ShapeOverlayAdapter}:</strong>
  * </p>
  * <pre>
  * ImagePlus im = ...
@@ -71,14 +71,13 @@ import java.awt.geom.AffineTransform;
  * </p>
  * <pre>
  * ImagePlus im = ...
- * Overlay oly = new Overlay();
- * ShapeOverlayAdapter ola = new ShapeOverlayAdapter(oly);
+ * ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
  * ola.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 8));
  * ola.setTextColor(Color.green);
  * ola.addText(x, y, "text using current font/color state");
  * ola.addText(x, y, "text with explicit font and color", new Font(Font.SERIF, Font.PLAIN, 10), Color.black);
  * ...
- * im.setOverlay(oly);
+ * im.setOverlay(ola.getOverlay());
  * im.show();
  * </pre>
  *
@@ -195,7 +194,8 @@ public class ShapeOverlayAdapter {
 	}
 
 	/**
-	 * Set the stack position (slice number) where subsequently added shapes should be inserted.
+	 * Set the stack position (slice number) where subsequently added shapes should be inserted. See ImageJ's
+	 * {@link Roi#setPosition(int)}.
 	 *
 	 * @param position the stack slice number or zero if no stack insertion is intended
 	 */

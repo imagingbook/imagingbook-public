@@ -11,14 +11,13 @@ package imagingbook.common.sift;
 
 /**
  * <p>
- * Represents a match between two SIFT features. See Secs. 25.5 of [1] for more
- * details. Instances are immutable.
+ * Represents a match between two SIFT features. See Secs. 25.5 of [1] for more details. Instances are immutable.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/20
  */

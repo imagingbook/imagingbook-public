@@ -10,13 +10,10 @@ package imagingbook.common.util.tuples;
 
 /**
  * <p>
- * Elementary implementation of tuples, i.e, ordered sequences
- * of items of arbitrary types.
- * Tuples are generally immutable and their main use is to get methods
- * return multiple values with maximum compile-time safety.
- * A concrete tuple class is defined for
- * each "arity", e.g., {@link Tuple2} for 2 elements.
- * Currently tuple classes for 2, 3 and 4 elements are defined.
+ * Elementary implementation of tuples, i.e, ordered sequences of items of arbitrary types. Tuples are generally
+ * immutable and their main use is to get methods return multiple values with maximum compile-time safety. A concrete
+ * tuple class is defined for each "arity", e.g., {@link Tuple2} for 2 elements. Currently tuple classes for 2, 3 and 4
+ * elements are defined.
  * </p>
  * <p>
  * A tuple may be instantiated using either the class constructor, e.g.,
@@ -26,11 +23,10 @@ package imagingbook.common.util.tuples;
  * or the associated static method
  * </p>
  * <pre>Tuple2.of(10, "Foo")</pre>
- * Individual tuple elements can be accessed (read-only) by the associated
- * field names, e.g. {@code f0}, {@code f1} ... etc.
- * There are no getter methods.
- * @author WB
+ * Individual tuple elements can be accessed (read-only) by the associated field names, e.g. {@code f0}, {@code f1} ...
+ * etc. There are no getter methods.
  *
+ * @author WB
  */
 public interface Tuple {
 	

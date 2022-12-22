@@ -43,36 +43,35 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	
 	/** Constructor (non-public). */
 	ComponentTree() {}
-	
+
 	/**
-	 * Creates a new component tree for the specified image using the default method
-	 * ({@link Method#LinearTime}).
-	 * 
+	 * Creates a new component tree for the specified image using the default method ({@link Method#LinearTime}).
+	 *
 	 * @param <T> the generic node type
-	 * @param ip  the input image
+	 * @param ip the input image
 	 * @return the component tree for the specified image
 	 */
 	public static <T> ComponentTree<T> from(ByteProcessor ip) {
 		return from(ip, Method.LinearTime);
 	}
-	
+
 	/**
 	 * Creates a new component tree for the specified image.
-	 * 
-	 * @param <T>    the data type of components (e.g., {@link MserData})
-	 * @param ip     the input (gray-level) image
+	 *
+	 * @param <T> the data type of components (e.g., {@link MserData})
+	 * @param ip the input (gray-level) image
 	 * @param method the method for building the component tree
 	 * @return the component tree
 	 */
 	public static <T> ComponentTree<T> from(ByteProcessor ip, Method method) {
 		return from(new PixelMap(ip), method);
 	}
-	
+
 	/**
 	 * Creates a new component tree for the specified {@link PixelMap}.
-	 * 
-	 * @param <T>    the data type of components (e.g., {@link MserData})
-	 * @param pm     a {@link PixelMap} instance
+	 *
+	 * @param <T> the data type of components (e.g., {@link MserData})
+	 * @param pm a {@link PixelMap} instance
 	 * @param method the method for building the component tree
 	 * @return the component tree
 	 */
@@ -87,15 +86,15 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	// --------------------------------------------------------------
 
 	/**
-	 * Returns the root component of this component tree.
-	 * To be implemented by concrete subclasses.
+	 * Returns the root component of this component tree. To be implemented by concrete subclasses.
+	 *
 	 * @return the root component
 	 */
 	public abstract Component<T> getRoot();
 
 	/**
-	 * Returns an unordered collection of all tree components.
-	 * To be implemented by concrete subclasses.
+	 * Returns an unordered collection of all tree components. To be implemented by concrete subclasses.
+	 *
 	 * @return all tree components
 	 */
 	public abstract Collection<Component<T>> getComponents();
@@ -104,11 +103,10 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	public Iterator<Component<T>> iterator() {
 		return getComponents().iterator();
 	}
-	
+
 	/**
-	 * Finds and returns a collection of all leaf components of this tree. A leaf is
-	 * a component which has no children.
-	 * 
+	 * Finds and returns a collection of all leaf components of this tree. A leaf is a component which has no children.
+	 *
 	 * @return all leaf components
 	 */
 	public Collection<Component<T>> getLeaves() {
@@ -154,11 +152,11 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 		}
 		return true;
 	}
-	
+
 	/**
-	 * Checks if all tree nodes reachable through root are contained in components
-	 * list and the tree has no duplicate nodes (and no cycles).
-	 * 
+	 * Checks if all tree nodes reachable through root are contained in components list and the tree has no duplicate
+	 * nodes (and no cycles).
+	 *
 	 * @return true iff OK
 	 */
 	private boolean checkNodes() {
@@ -271,7 +269,7 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 	}
 	
 	/**
-	 * Checks if all local pixels of have the same value as {@link #level}.
+	 * Checks if all local pixels of have the same value as {@link Component#getLevel()}.
 	 * 
 	 * @return true iff OK
 	 */
@@ -284,25 +282,25 @@ public abstract class ComponentTree<T> implements Iterable<Component<T>> {
 			if (p != null) {
 				int lp = p.getLevel();
 				if (lc >= lp) {	// must be lc < lp
-					System.out.println("*** value lc >= lp for component " + c.ID);
+					throw new RuntimeException("checkLevels: value lc >= lp for component " + c.ID);
 				}
 			}
 			
 			// check if all local points have the same level as this component's level:
 			for (Pixel x : c.getLocalPixels()) {
 				if (x.val != lc) {
-					System.out.println("*** local pixel with wrong value in component " + c.ID);
-					return false;
+					throw new RuntimeException("checkLevels: local pixel with wrong value in component " + c.ID);
+					// return false;
 				}
 			}
 		}
 		return true;
 	}
-	
+
 	/**
-	 * Checks if the size of each component is the same as the number of local
-	 * pixels plus the combined size of all children.
-	 * 
+	 * Checks if the size of each component is the same as the number of local pixels plus the combined size of all
+	 * children.
+	 *
 	 * @return true iff OK
 	 */
 	private boolean checkSize() {

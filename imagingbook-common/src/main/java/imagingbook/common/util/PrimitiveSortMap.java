@@ -97,12 +97,11 @@ public class PrimitiveSortMap {
 	public int[] getPermutation() {
 		return this.perm;
 	}
-	
+
 	/**
-	 * Returns the index of the n-th smallest element of the original number sequence
-	 * (passed to the constructor),
+	 * Returns the index of the n-th smallest element of the original number sequence (passed to the constructor),
 	 * starting with {@code n = 0}, which returns the index of the smallest element.
-	 * 
+	 *
 	 * @param n the index
 	 * @return the index of the n-th smallest element in the original number sequence
 	 */
@@ -114,12 +113,11 @@ public class PrimitiveSortMap {
 	}
 	
 	// --------------------------------------------------
-	
+
 	/**
-	 * Returns the nth smallest element of the specified array,
-	 * starting with n = 0, which returns the smallest 
-	 * element of the array.
-	 * 
+	 * Returns the nth smallest element of the specified array, starting with n = 0, which returns the smallest element
+	 * of the array.
+	 *
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
 	 * @return the n-th smallest element
@@ -127,12 +125,11 @@ public class PrimitiveSortMap {
 	public static double getNthSmallestValue(double[] numbers, int n) {
 		return numbers[getNthSmallestIndex(numbers, n)];
 	}
-	
+
 	/**
-	 * Returns the index of the nth smallest element of the specified array,
-	 * starting with n = 0, which returns the smallest element of 
-	 * the array.
-	 * 
+	 * Returns the index of the nth smallest element of the specified array, starting with n = 0, which returns the
+	 * smallest element of the array.
+	 *
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
 	 * @return the index of the n-th smallest element
@@ -160,12 +157,11 @@ public class PrimitiveSortMap {
 	public static int getLargestIndex(double[] numbers) {
 		return getNthSmallestIndex(numbers, numbers.length - 1);
 	}
-	
+
 	/**
-	 * Returns the nth smallest element of the specified array,
-	 * starting with n = 0, which returns the smallest element of 
-	 * the array.
-	 * 
+	 * Returns the nth smallest element of the specified array, starting with n = 0, which returns the smallest element
+	 * of the array.
+	 *
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
 	 * @return the n-th smallest element
@@ -173,12 +169,11 @@ public class PrimitiveSortMap {
 	public static float getNthSmallestValue(float[] numbers, int n) {
 		return numbers[getNthSmallestIndex(numbers, n)];
 	}
-	
+
 	/**
-	 * Returns the index of the nth smallest element of the specified array,
-	 * starting with n = 0, which returns the smallest element of 
-	 * the array.
-	 * 
+	 * Returns the index of the nth smallest element of the specified array, starting with n = 0, which returns the
+	 * smallest element of the array.
+	 *
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
 	 * @return the index of the n-th smallest element
@@ -206,11 +201,11 @@ public class PrimitiveSortMap {
 	public static int getLargestIndex(float[] numbers) {
 		return getNthSmallestIndex(numbers, numbers.length - 1);
 	}
-	
+
 	/**
-	 * Returns the nth smallest element of the specified {@code int[]},
-	 * starting with {@code n = 0}, which returns the smallest element of {@code numbers}.
-	 * 
+	 * Returns the nth smallest element of the specified {@code int[]}, starting with {@code n = 0}, which returns the
+	 * smallest element of {@code numbers}.
+	 *
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
 	 * @return the n-th smallest element of {@code numbers}
@@ -218,12 +213,11 @@ public class PrimitiveSortMap {
 	public static int getNthSmallestValue(int[] numbers, int n) {
 		return numbers[getNthSmallestIndex(numbers, n)];
 	}
-	
+
 	/**
-	 * Returns the index of the nth smallest element of the specified array,
-	 * starting with n = 0, which returns the smallest element of 
-	 * the array.
-	 * 
+	 * Returns the index of the nth smallest element of the specified array, starting with n = 0, which returns the
+	 * smallest element of the array.
+	 *
 	 * @param numbers sequence of unsorted values
 	 * @param n the index
 	 * @return the index of the n-th smallest element

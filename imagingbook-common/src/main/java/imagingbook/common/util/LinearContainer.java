@@ -12,30 +12,28 @@ package imagingbook.common.util;
 import java.util.Iterator;
 
 /**
- * This class implements a 1D map for arbitrary objects with flexible bottom and
- * top index, similar to an array in Pascal. Containers are immutable (apart
- * from element values).
- * 
+ * This class implements a 1D map for arbitrary objects with flexible bottom and top index, similar to an array in
+ * Pascal. Containers are immutable (apart from element values).
+ *
  * @param <T> the container's element type
  */
 public class LinearContainer<T> implements Iterable<T> {
 	
 	private final int botIndex, topIndex;
 	private final T[] data;
-	
+
 	/**
-	 * Creates a LinearContainer with the index range [0, n - 1], like an ordinary
-	 * array.
-	 * 
+	 * Creates a LinearContainer with the index range [0, n - 1], like an ordinary array.
+	 *
 	 * @param n size of the container.
 	 */
 	public LinearContainer(int n) {
 		this(0, n - 1);
 	}
-	
+
 	/**
 	 * Creates a LinearContainer with the index range [botIndex, topIndex].
-	 * 
+	 *
 	 * @param botIndex bottom (smallest) index.
 	 * @param topIndex top (largest) index.
 	 */

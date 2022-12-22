@@ -11,10 +11,9 @@ package imagingbook.common.util.bits;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 /**
- * This class implements a true 2D bitmap container, i.e., each 0/1 element
- * occupies only a single bit (unlike {@code boolean} arrays, which require at 
- * least 8 bits per element).
- * 
+ * This class implements a true 2D bitmap container, i.e., each 0/1 element occupies only a single bit (unlike
+ * {@code boolean} arrays, which require at least 8 bits per element).
+ *
  * @author WB
  * @version 2022/09/13
  * @see BitVector
@@ -24,28 +23,25 @@ public class BitMap {
 	private final int width;
 	private final int height;
 	private final BitVector bitvec;
-	
+
 	/**
-	 * Constructor, creates an empty bitmap (with all elements set to 0).
-	 * Both dimensions must be at least 1.
+	 * Constructor, creates an empty bitmap (with all elements set to 0). Both dimensions must be at least 1.
+	 *
 	 * @param width the width of the new bitmap
 	 * @param height the height of the new bitmap
 	 */
 	public BitMap(int width, int height) {
 		this(width, height, null);
 	}
-	
+
 	/**
-	 * Constructor, creates a bitmap from a one-dimensional byte array.
-	 * Elements of the specified byte array are assumed in row-major order,
-	 * zero values map to 0, anything else to 1.
-	 * Passing {@code null} for the byte array creates an empty
-	 * bitmap (with all elements set to 0).
-	 * Both dimensions must be at least 1.
-	 * 
+	 * Constructor, creates a bitmap from a one-dimensional byte array. Elements of the specified byte array are assumed
+	 * in row-major order, zero values map to 0, anything else to 1. Passing {@code null} for the byte array creates an
+	 * empty bitmap (with all elements set to 0). Both dimensions must be at least 1.
+	 *
 	 * @param width the width of the new bitmap
 	 * @param height the height of the new bitmap
-	 * @param bytes a byte array ({@code null} is allowed) 
+	 * @param bytes a byte array ({@code null} is allowed)
 	 */
 	public BitMap(int width, int height, byte[] bytes) {
 		if (width <= 0) {
@@ -81,10 +77,10 @@ public class BitMap {
 	public int getHeight() {
 		return this.height;
 	}
-	
+
 	/**
-	 * Returns {@code true} is the specified element is set (1),
-	 * {@code false} otherwise (0).
+	 * Returns {@code true} is the specified element is set (1), {@code false} otherwise (0).
+	 *
 	 * @param x the x-coordinate
 	 * @param y the y-coordinate
 	 * @return as described
@@ -92,20 +88,20 @@ public class BitMap {
 	public boolean get(int x, int y) {
 		return bitvec.get(y * width + x);
 	}
-	
+
 	/**
-	 * Returns {@code true} is the specified element is set (1),
-	 * {@code false} otherwise (0).
+	 * Returns {@code true} is the specified element is set (1), {@code false} otherwise (0).
+	 *
 	 * @param p the x/y-coordinate (point)
 	 * @return as described
 	 */
 	public boolean get(PntInt p) {
 		return bitvec.get(p.y * width + p.x);
 	}
-	
+
 	/**
-	 * Sets the specified bit-element to the given boolean value
-	 * (1 for {@code true}, 0 for {@code false}).
+	 * Sets the specified bit-element to the given boolean value (1 for {@code true}, 0 for {@code false}).
+	 *
 	 * @param x the x-coordinate
 	 * @param y the y-coordinate
 	 * @param val a boolean value
@@ -118,10 +114,10 @@ public class BitMap {
 			this.unset(x, y);
 		}
 	}
-	
+
 	/**
-	 * Sets the specified bit-element to the given boolean value
-	 * (1 for {@code true}, 0 for {@code false}).
+	 * Sets the specified bit-element to the given boolean value (1 for {@code true}, 0 for {@code false}).
+	 *
 	 * @param p the x/y-coordinate (point)
 	 * @param val a boolean value
 	 */
@@ -184,11 +180,11 @@ public class BitMap {
 	public BitVector getBitVector() {
 		return this.bitvec;
 	}
-	
+
 	/**
-	 * Returns the contents of this bitmap as a one-dimensional
-	 * {@code byte} array, with elements in row-major order.
+	 * Returns the contents of this bitmap as a one-dimensional {@code byte} array, with elements in row-major order.
 	 * Bit-value 0 maps to byte value 0, value 1 maps to 1.
+	 *
 	 * @return a one-dimensional {@code byte} array
 	 */
 	public byte[] toByteArray() {

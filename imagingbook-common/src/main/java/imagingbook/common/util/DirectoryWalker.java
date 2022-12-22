@@ -30,24 +30,24 @@ public class DirectoryWalker {
 	
 	private final List<String> fileList;
 	private final String[] extensions;
-	
+
 	/**
 	 * Constructor.
-	 * @param extensions a sequence of file extensions like ".jpg", ".gif", ".tif" etc.
-	 * Note that extensions are case sensitive, i.e., multiple extensions must be 
-	 * supplied if upper/lower case extensions should be considered.
-	 * Supply {@code null} to accept *any* file extension.
+	 *
+	 * @param extensions a sequence of file extensions like ".jpg", ".gif", ".tif" etc. Note that extensions are case
+	 * sensitive, i.e., multiple extensions must be supplied if upper/lower case extensions should be considered. Supply
+	 * {@code null} to accept *any* file extension.
 	 */
 	public DirectoryWalker(String... extensions) {
 		this.fileList = new ArrayList<String>();
 		this.extensions = extensions;
 	}
-	
+
 	/**
-	 * Use this method to recursively collect all files with the initially specified
-	 * extensions, starting from the given directory. 
+	 * Use this method to recursively collect all files with the initially specified extensions, starting from the given
+	 * directory.
 	 * TODO: clean up exception handling.
-	 * 
+	 *
 	 * @param startDir The start directory.
 	 * @return A list of file names.
 	 */
@@ -57,15 +57,15 @@ public class DirectoryWalker {
 		} catch (IOException e) { }
 		return this.fileList;
 	}
-	
+
 	/**
 	 * Traverses the directory tree and collects all matching file names.
-	 * TODO: clean up exception handling.
-	 * 
+	 *
 	 * @param startDir start directory
 	 * @throws IOException
 	 */
 	private void traverse(Path startDir) throws IOException {
+		// TODO: clean up exception handling.
 		Files.walkFileTree(startDir, new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -88,11 +88,10 @@ public class DirectoryWalker {
 			}
 		});
 	}
-	
+
 	/**
-	 * Checks if the pathName has any of the specified extensions.
-	 * This is case sensitive!
-	 * 
+	 * Checks if the pathName has any of the specified extensions. This is case sensitive!
+	 *
 	 * @param pathName
 	 * @return true if the path name matches one of the specified extensions
 	 */

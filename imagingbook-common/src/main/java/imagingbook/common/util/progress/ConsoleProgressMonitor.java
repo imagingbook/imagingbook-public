@@ -9,11 +9,9 @@
 package imagingbook.common.util.progress;
 
 /**
- * A simple progress monitor that only prints the progress of the monitored target task
- * to the console.
- * See {@link ProgressMonitorExample} for a usage example.
- * 
- * 
+ * A simple progress monitor that only prints the progress of the monitored target task to the console. See
+ * {@link ProgressMonitorExample} for a usage example.
+ *
  * @see ProgressMonitor
  * @see ProgressReporter
  * @see ProgressMonitorExample

@@ -140,7 +140,6 @@ public class SequentialSegmentation extends BinaryRegionSegmentation {
 	 * the merging of sets is done by relabeling the entire replacement table for each pair of nodes. Still fast enough
 	 * even for large and complex images.
 	 *
-	 * @param size size of the label set
 	 * @return replacement table
 	 */
 	private int[] resolveCollisions() {

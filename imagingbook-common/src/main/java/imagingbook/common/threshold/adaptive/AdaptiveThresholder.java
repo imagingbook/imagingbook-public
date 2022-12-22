@@ -14,32 +14,31 @@ import imagingbook.common.threshold.Thresholder;
 
 /**
  * <p>
- * Common interface to be implemented by all adaptive (i.e., non-global)
- * thresholders. See Sec. 9.2 of [1] for an overview.
+ * Common interface to be implemented by all adaptive (i.e., non-global) thresholders. See Sec. 9.2 of [1] for an
+ * overview.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/08/01
  */
 public interface AdaptiveThresholder extends Thresholder {
-	
+
 	/**
-	 * Calculates a adaptive "threshold surface" for the specified
-	 * {@link ByteProcessor} and returns it as another {@link ByteProcessor}.
-	 * 
+	 * Calculates a adaptive "threshold surface" for the specified {@link ByteProcessor} and returns it as another
+	 * {@link ByteProcessor}.
+	 *
 	 * @param bp the input image
 	 * @return the threshold surface
 	 */
 	public ByteProcessor getThreshold(ByteProcessor bp);
-	
+
 	/**
-	 * Thresholds a  {@link ByteProcessor} image by the specified
-	 * threshold surface.
-	 * 
+	 * Thresholds a  {@link ByteProcessor} image by the specified threshold surface.
+	 *
 	 * @param bp the input image (gets modified)
 	 * @param Q the threshold surface
 	 */

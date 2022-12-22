@@ -126,11 +126,12 @@ public abstract class Arithmetic {
 	public static double[] toCartesian(double[] polar) {
 		return toCartesian(polar[0], polar[1]);
 	}
-	
+
 	/**
-	 * Integer version of the modulus operator ({@code a mod b}).
-	 * Also see <a href="http://en.wikipedia.org/wiki/Modulo_operation">here</a>.
-	 * Calls {@code Math.floorMod(a,b)} (available in Java 8 and higher).
+	 * Integer version of the modulus operator ({@code a mod b}). Also see <a
+	 * href="http://en.wikipedia.org/wiki/Modulo_operation">here</a>. Calls {@code Math.floorMod(a,b)} (available in
+	 * Java 8 and higher).
+	 *
 	 * @param a dividend
 	 * @param b divisor (modulus), must be nonzero
 	 * @return {@code a mod b}
@@ -138,32 +139,17 @@ public abstract class Arithmetic {
 	public static int mod(int a, int b) {
 		return floorMod(a, b);
 	}
-	
-	// original implementation (obsolete)
-//	public static int mod(int a, int b) {
-//		if (b == 0)
-//			return a;
-//		// a, b have the same sign OR the remainder is zero
-//        if ((long)a * b >= 0 || a % b == 0)	// or (a / b) * b == a
-//        	return a - b * (a / b);
-//        else
-//        	return a - b * (a / b - 1);
-//	}
 
-	
 	/**
-	 * Non-integer version of modulus operator using floored division
-	 * (see <a href="http://en.wikipedia.org/wiki/Modulo_operation">here</a>),
-	 * with results identical to Mathematica. 
-	 * Calculates {@code a mod b} for floating-point arguments.
-	 * An exception is thrown if  {@code b} is zero.
-	 * Examples:
+	 * Non-integer version of modulus operator using floored division (see <a
+	 * href="http://en.wikipedia.org/wiki/Modulo_operation">here</a>), with results identical to Mathematica. Calculates
+	 * {@code a mod b} for floating-point arguments. An exception is thrown if  {@code b} is zero. Examples:
 	 * <pre>
 	 * mod( 3.5, 2.1) =  1.4
 	 * mod(-3.5, 2.1) =  0.7
 	 * mod( 3.5,-2.1) = -0.7
 	 * mod(-3.5,-2.1) = -1.4</pre>
-	 * 
+	 *
 	 * @param a dividend
 	 * @param b divisor (modulus), must be nonzero
 	 * @return {@code a mod b}
@@ -173,22 +159,22 @@ public abstract class Arithmetic {
 				throw new IllegalArgumentException("zero modulus in mod");
 		return a - b * floor(a / b);
 	}
-	
+
 	/**
-	 * Test for zero (float version) using a predefined tolerance.
-	 * Returns true if the argument's absolute value
-	 * is less than {@link #EPSILON_FLOAT}.
+	 * Test for zero (float version) using a predefined tolerance. Returns true if the argument's absolute value is less
+	 * than {@link #EPSILON_FLOAT}.
+	 *
 	 * @param x quantity to be tested
 	 * @return true if argument is close to zero
 	 */
 	public static boolean isZero(float x) {
 		return abs(x) < EPSILON_FLOAT;
 	}
-	
+
 	/**
-	 * Test for zero (float version) using a specified tolerance.
-	 * Returns true if the argument's absolute value
-	 * is less than the specified tolerance.
+	 * Test for zero (float version) using a specified tolerance. Returns true if the argument's absolute value is less
+	 * than the specified tolerance.
+	 *
 	 * @param x quantity to be tested
 	 * @param tolerance the tolerance to be used
 	 * @return true if argument is close to zero
@@ -196,22 +182,22 @@ public abstract class Arithmetic {
 	public static boolean isZero(float x, float tolerance) {
 		return abs(x) < tolerance;
 	}
-	
+
 	/**
-	 * Test for zero (double version) using a predefined tolerance.
-	 * Returns true if the argument's absolute value
-	 * is less than {@link #EPSILON_DOUBLE}.
+	 * Test for zero (double version) using a predefined tolerance. Returns true if the argument's absolute value is
+	 * less than {@link #EPSILON_DOUBLE}.
+	 *
 	 * @param x quantity to be tested
 	 * @return true if argument is close to zero
 	 */
 	public static boolean isZero(double x) {
 		return abs(x) < EPSILON_DOUBLE;
 	}
-	
+
 	/**
-	 * Test for zero (double version) using a specified tolerance.
-	 * Returns true if the argument's absolute value
-	 * is less than the specified tolerance.
+	 * Test for zero (double version) using a specified tolerance. Returns true if the argument's absolute value is less
+	 * than the specified tolerance.
+	 *
 	 * @param x quantity to be tested
 	 * @param tolerance the tolerance to be used
 	 * @return true if argument is close to zero
@@ -219,11 +205,11 @@ public abstract class Arithmetic {
 	public static boolean isZero(double x, double tolerance) {
 		return abs(x) < tolerance;
 	}
-	
+
 	/**
-	 * Test for numerical equality (double version) using the default tolerance.
-	 * Returns true if the absolute difference of the arguments
-	 * is less than {@link #EPSILON_DOUBLE}.
+	 * Test for numerical equality (double version) using the default tolerance. Returns true if the absolute difference
+	 * of the arguments is less than {@link #EPSILON_DOUBLE}.
+	 *
 	 * @param x first argument
 	 * @param y second argument
 	 * @return true if the absolute difference of the arguments is less than the tolerance
@@ -231,9 +217,10 @@ public abstract class Arithmetic {
 	public static boolean equals(double x, double y) {
 		return isZero(x - y);
 	}
-	
+
 	/**
 	 * Test for numerical equality (double version) using a specific tolerance.
+	 *
 	 * @param x first argument
 	 * @param y second argument
 	 * @param tolerance the maximum (absolute) deviation
@@ -242,11 +229,11 @@ public abstract class Arithmetic {
 	public static boolean equals(double x, double y, double tolerance) {
 		return isZero(x - y, tolerance);
 	}
-	
+
 	/**
-	 * Test for numerical equality (float version) using the default tolerance.
-	 * Returns true if the absolute difference of the arguments
-	 * is less than {@link #EPSILON_FLOAT}.
+	 * Test for numerical equality (float version) using the default tolerance. Returns true if the absolute difference
+	 * of the arguments is less than {@link #EPSILON_FLOAT}.
+	 *
 	 * @param x first argument
 	 * @param y second argument
 	 * @return true if the absolute difference of the arguments is less than the tolerance
@@ -254,9 +241,10 @@ public abstract class Arithmetic {
 	public static boolean equals(float x, float y) {
 		return isZero(x - y);
 	}
-	
+
 	/**
 	 * Test for numerical equality (float version) using a specific tolerance.
+	 *
 	 * @param x first argument
 	 * @param y second argument
 	 * @param tolerance the maximum (absolute) deviation
@@ -363,14 +351,13 @@ public abstract class Arithmetic {
 		}
 		return minVal;
 	}
-	
+
 	/**
-	 * Limits the first argument to the clipping interval specified by the two other
-	 * arguments ({@code double} version). The clipped value is returned. Throws an
-	 * exception if the clipping interval is empty.
-	 * 
-	 * @param x    the value to be clipped
-	 * @param low  the lower boundary of the clipping interval
+	 * Limits the first argument to the clipping interval specified by the two other arguments ({@code double} version).
+	 * The clipped value is returned. Throws an exception if the clipping interval is empty.
+	 *
+	 * @param x the value to be clipped
+	 * @param low the lower boundary of the clipping interval
 	 * @param high the upper boundary of the clipping interval
 	 * @return the clipped value
 	 */
@@ -382,14 +369,13 @@ public abstract class Arithmetic {
 		if (x > high) return high;
 		return x;
 	}
-	
+
 	/**
-	 * Limits the first argument to the clipping interval specified by the two other
-	 * arguments ({@code float} version). The clipped value is returned. Throws an
-	 * exception if the clipping interval is empty.
-	 * 
-	 * @param x    the value to be clipped
-	 * @param low  the lower boundary of the clipping interval
+	 * Limits the first argument to the clipping interval specified by the two other arguments ({@code float} version).
+	 * The clipped value is returned. Throws an exception if the clipping interval is empty.
+	 *
+	 * @param x the value to be clipped
+	 * @param low the lower boundary of the clipping interval
 	 * @param high the upper boundary of the clipping interval
 	 * @return the clipped value
 	 */
@@ -401,14 +387,13 @@ public abstract class Arithmetic {
 		if (x > high) return high;
 		return x;
 	}
-	
+
 	/**
-	 * Limits the first argument to the clipping interval specified by the two other
-	 * arguments ({@code float} version). The clipped value is returned. Throws an
-	 * exception if the clipping interval is empty.
-	 * 
-	 * @param x    the value to be clipped
-	 * @param low  the lower boundary of the clipping interval
+	 * Limits the first argument to the clipping interval specified by the two other arguments ({@code float} version).
+	 * The clipped value is returned. Throws an exception if the clipping interval is empty.
+	 *
+	 * @param x the value to be clipped
+	 * @param low the lower boundary of the clipping interval
 	 * @param high the upper boundary of the clipping interval
 	 * @return the clipped value
 	 */
@@ -420,11 +405,11 @@ public abstract class Arithmetic {
 		if (x > high) return high;
 		return x;
 	}
-	
+
 	/**
-	 * Returns the two real roots of the quadratic function
-	 * f(x) = ax^2 + bx + c.
-	 * Null is returned if roots are non-real.
+	 * Returns the two real roots of the quadratic function f(x) = ax^2 + bx + c. Null is returned if roots are
+	 * non-real.
+	 *
 	 * @param a function coefficient
 	 * @param b function coefficient
 	 * @param c function coefficient

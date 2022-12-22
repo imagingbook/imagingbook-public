@@ -15,14 +15,13 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * Represents a hierarchical Gaussian scale space. See Secs. 25.1.2 and 25.1.4
- * of [1] for more details.
+ * Represents a hierarchical Gaussian scale space. See Secs. 25.1.2 and 25.1.4 of [1] for more details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/20
  */

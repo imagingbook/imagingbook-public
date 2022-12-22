@@ -13,9 +13,9 @@ import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 
 /**
- * A special vector-valued image accessor for RGB images (direct subclass of
- * {@link VectorAccessor}) with depth = 3 color components.
- * 
+ * A special vector-valued image accessor for RGB images (direct subclass of {@link VectorAccessor}) with depth = 3
+ * color components.
+ *
  * @author WB
  * @version 2022/09/22
  */
@@ -93,14 +93,12 @@ public class RgbAccessor extends VectorAccessor {
 		 */
 		int set(int rgb, int c);
 	}
-	
+
 	/**
-	 * Defines a scalar image accessor for one particular color component.
-	 * This is a non-static inner class, which shares data with the enclosing
-	 * {@link RgbAccessor} instance.
-	 * Note that this subclass of {@link ScalarAccessor} has no ImageProcessor
-	 * of is own, but {@link #getProcessor()} returns the original 
-	 * {@link ColorProcessor} instance.
+	 * Defines a scalar image accessor for one particular color component. This is a non-static inner class, which
+	 * shares data with the enclosing {@link RgbAccessor} instance. Note that this subclass of {@link ScalarAccessor}
+	 * has no ImageProcessor of is own, but {@link #getProcessor()} returns the original {@link ColorProcessor}
+	 * instance.
 	 */
 	private class ComponentAccessor extends ScalarAccessor {
 		

@@ -29,7 +29,8 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * 
+ * Static utility methods related to classes.
+ *
  * @author WB
  * @version 2022/11/20
  *
@@ -37,11 +38,11 @@ import java.util.stream.Stream;
 public abstract class ClassUtils {
 	
 	private ClassUtils() {}
-	
+
 	/**
-	 * Lists all accessible public fields of the given object and 
-	 * returns the result as a string.
-	 * @param obj a (non-null) object 
+	 * Lists all accessible public fields of the given object and returns the result as a string.
+	 *
+	 * @param obj a (non-null) object
 	 * @return a string listing the names and values of the object's fields
 	 */
 	public static String listFields(Object obj) {
@@ -58,12 +59,11 @@ public abstract class ClassUtils {
 		}
 		return buf.toString();
 	}
-	
+
 	/**
-	 * Collects and returns the list of classes defined in the specified package.
-	 * The {@link Package} may be obtained from an existing {@link Class} object ({@code clazz}) by
-	 * {@code clazz.getPackage()}.
-	 * 
+	 * Collects and returns the list of classes defined in the specified package. The {@link Package} may be obtained
+	 * from an existing {@link Class} object ({@code clazz}) by {@code clazz.getPackage()}.
+	 *
 	 * @param pkg a {@link Package} instance, e.g., {@code Package.getPackage("imagingbook.lib.ij.overlay")}
 	 * @return a list of classes contained in the package
 	 */
@@ -72,9 +72,9 @@ public abstract class ClassUtils {
 	}
 
 	/**
-	 * Collects and returns the list of classes defined in the specified package.
-	 * Adapted from https://stackoverflow.com/a/58773271 
-	 * 
+	 * Collects and returns the list of classes defined in the specified package. Adapted from
+	 * https://stackoverflow.com/a/58773271
+	 *
 	 * @param pkgName the full package name, e.g., "imagingbook.lib.ij.overlay"
 	 * @return a list of classes contained in the package
 	 */

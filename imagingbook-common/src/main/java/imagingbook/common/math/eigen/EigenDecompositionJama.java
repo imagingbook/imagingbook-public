@@ -9,7 +9,6 @@
 package imagingbook.common.math.eigen;
 
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -18,41 +17,33 @@ import org.apache.commons.math3.linear.RealVector;
 
 /**
  * Eigenvalues and eigenvectors of a real matrix. This code has been ported from
- * https://math.nist.gov/javanumerics/jama/ (Version 1.0.3), with the public API
- * (and some internals) adapted to Apache Commons Math. Most comments below were
- * taken from the original sources.
+ * https://math.nist.gov/javanumerics/jama/ (Version 1.0.3), with the public API (and some internals) adapted to Apache
+ * Commons Math. Most comments below were taken from the original sources.
  * <p>
- * This is intended as a temporary substitute for Apache Commons Math's
- * implementation ({@link org.apache.commons.math3.linear.EigenDecomposition},
- * whose symmetry tolerance appears to be too low and thus returns complex
- * eigenvalues for close-to-symmetric matrices although solutions with real
- * eigenvalues exist.
+ * This is intended as a temporary substitute for Apache Commons Math's implementation
+ * ({@link org.apache.commons.math3.linear.EigenDecomposition}, whose symmetry tolerance appears to be too low and thus
+ * returns complex eigenvalues for close-to-symmetric matrices although solutions with real eigenvalues exist.
  * </p>
  * <p>
- * If A is symmetric, then A = V*D*V' where the eigenvalue matrix D is diagonal
- * and the eigenvector matrix V is orthogonal. I.e. A =
- * V.times(D.times(V.transpose())) and V.times(V.transpose()) equals the
- * identity matrix.
+ * If A is symmetric, then A = V*D*V' where the eigenvalue matrix D is diagonal and the eigenvector matrix V is
+ * orthogonal. I.e. A = V.times(D.times(V.transpose())) and V.times(V.transpose()) equals the identity matrix.
  * </p>
  * <p>
- * If A is not symmetric, then the eigenvalue matrix D is block diagonal with
- * the real eigenvalues in 1-by-1 blocks and any complex eigenvalues, lambda +
- * i*mu, in 2-by-2 blocks, [lambda, mu; -mu, lambda]. The columns of V represent
- * the eigenvectors in the sense that A*V = V*D, i.e. A.times(V) equals
- * V.times(D). The matrix V may be badly conditioned, or even singular, so the
- * validity of the equation A = V*D*inverse(V) depends upon V.cond().
+ * If A is not symmetric, then the eigenvalue matrix D is block diagonal with the real eigenvalues in 1-by-1 blocks and
+ * any complex eigenvalues, lambda + i*mu, in 2-by-2 blocks, [lambda, mu; -mu, lambda]. The columns of V represent the
+ * eigenvectors in the sense that A*V = V*D, i.e. A.times(V) equals V.times(D). The matrix V may be badly conditioned,
+ * or even singular, so the validity of the equation A = V*D*inverse(V) depends upon V.cond().
  * </p>
  * <p>
  * See Appendix Sec. B.5 of [1] for more details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; 
- * An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/06/19
- * 
  * @see EigenDecompositionApache
  * @see Eigensolver2x2
  */
@@ -75,14 +66,13 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 	private final double zeroTol;
 
 	/**
-	 * Constructor. Checks for symmetry, then constructs the eigenvalue
-	 * decomposition.
-	 * 
-	 * @param M           matrix to be decomposed
+	 * Constructor. Checks for symmetry, then constructs the eigenvalue decomposition.
+	 *
+	 * @param M matrix to be decomposed
 	 * @param symmetryTol absolute threshold for determining matrix symmetry
-	 * @param zeroTol     absolute threshold for determining zero matrix entries
-	 * @throws MaxIterationsExceededException 
-	 * 		if the maximum number of iterations is exceeded (see {@link #SchurMaxIterations})
+	 * @param zeroTol absolute threshold for determining zero matrix entries
+	 * @throws MaxIterationsExceededException if the maximum number of iterations is exceeded (see
+	 * {@link #SchurMaxIterations})
 	 */
 	public EigenDecompositionJama(RealMatrix M, double symmetryTol, double zeroTol)
 			throws MaxIterationsExceededException {
@@ -125,11 +115,11 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 			hqr2();		// Reduce Hessenberg to real Schur form.
 		}
 	}
-	
+
 	/**
-	 * Constructor using default tolerance setting.
-	 * See also {@link #DefaultSymmetryTolerance},  {@link #DefaultZeroTolerance}.
-	 * 
+	 * Constructor using default tolerance setting. See also {@link #DefaultSymmetryTolerance},
+	 * {@link #DefaultZeroTolerance}.
+	 *
 	 * @param M matrix to be decomposed
 	 */
 	public EigenDecompositionJama(RealMatrix M) {
@@ -137,12 +127,11 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 	}
 	
 	// ------------------------ Public Methods ------------------------
-	
+
 	/**
-	 * Returns true if the decomposed matrix is considered symmetric.
-	 * See also {@link #EigenDecompositionJama(RealMatrix, double, double)},
-	 * {@link #DefaultSymmetryTolerance}.
-	 * 
+	 * Returns true if the decomposed matrix is considered symmetric. See also
+	 * {@link #EigenDecompositionJama(RealMatrix, double, double)}, {@link #DefaultSymmetryTolerance}.
+	 *
 	 * @return true if symmetric, false otherwise
 	 */
 	public boolean isSymmetric() {
@@ -150,34 +139,31 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 	}
 
 	/**
-	 * Return the matrix of eigenvectors, which are its column
-	 * vectors.
-	 * 
+	 * Return the matrix of eigenvectors, which are its column vectors.
+	 *
 	 * @return the matrix of eigenvectors
 	 */
 	@Override
 	public RealMatrix getV() {
 		return MatrixUtils.createRealMatrix(V);
 	}
-	
+
 	/**
-	 * Return the transpose of the eigenvector matrix.
-	 * The eigenvectors are the rows of the returned matrix.
-	 * 
+	 * Return the transpose of the eigenvector matrix. The eigenvectors are the rows of the returned matrix.
+	 *
 	 * @return the transposed matrix of eigenvectors
 	 */
 	public RealMatrix getVT() {
 		return MatrixUtils.createRealMatrix(V).transpose();
 	}
-	
-	 /**
-     * Returns a copy of the specified eigenvector, i.e., the
-     * associated column vector of the matrix returned
-     * by {@link #getV()}.
-     * 
-     * @param k index of the eigenvector (counting from 0).
-     * @return a copy of the k-th eigenvector
-     */
+
+	/**
+	 * Returns a copy of the specified eigenvector, i.e., the associated column vector of the matrix returned by
+	 * {@link #getV()}.
+	 *
+	 * @param k index of the eigenvector (counting from 0).
+	 * @return a copy of the k-th eigenvector
+	 */
 	@Override
     public RealVector getEigenvector(int k) {
     	double[] ev = new double[n];
@@ -212,15 +198,13 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 	public double getImagEigenvalue(int k) {
 		return e[k];
 	}
-	
+
 	/**
-     * Returns whether the calculated eigenvalues are complex or real.
-     * The method performs a zero check on each element of the
-     * {@link #getImagEigenvalues()} array and returns {@code true} if any
-     * element is not equal to zero.
-     *
-     * @return {@code true} if any of the eigenvalues is complex, {@code false} otherwise
-     */
+	 * Returns whether the calculated eigenvalues are complex or real. The method performs a zero check on each element
+	 * of the {@link #getImagEigenvalues()} array and returns {@code true} if any element is not equal to zero.
+	 *
+	 * @return {@code true} if any of the eigenvalues is complex, {@code false} otherwise
+	 */
 	@Override
     public boolean hasComplexEigenvalues() {
         for (int i = 0; i < e.length; i++) {
@@ -250,14 +234,12 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 //		}
 //		return MatrixUtils.createRealMatrix(D);
 //	}
-    
-    /**
-     * Gets the block diagonal matrix D of the decomposition.
-     * D is a block diagonal matrix.
-     * Real eigenvalues are on the diagonal while complex values are on
-     * 2x2 blocks {{real pos imaginary}, {neg imaginary, real}}.
-     * WB: Wonder if indexes are safe!
-     *
+
+	/**
+	 * Gets the block diagonal matrix D of the decomposition. D is a block diagonal matrix. Real eigenvalues are on the
+	 * diagonal while complex values are on 2x2 blocks {{real pos imaginary}, {neg imaginary, real}}. WB: Wonder if
+	 * indexes are safe!
+	 *
 	 * @return D
 	 */
 	@Override
@@ -1038,67 +1020,5 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
 			}
 		}
 	}
-	
-	// --------------------------------------------------------------------------------------------------
-	
-	public static void main(String[] args) {
-		
-		// 2 examples where Apache's implementation fails:
-		
-		// non-symmetric example:
-//		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]  
-//			{{4455707.000000000, 16685.500000000, 17344.500000000, 142.000000000}, 
-//			{-951005821.436619800, -3525507.007042253, -4059917.288732395, -33371.000000000}, 
-//			{-997789920.901407700, -4059917.288732392, -3879630.838028166, -34689.000000000}, 
-//			{70029373562.509700000, 297685588.322852130, 314485277.997519970, 2949430.845070420}});
-		
-		// symmetric example:
-		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
-			{{-635322.712034708800000, 4756.174679968795000, -265184.797553499500000, 20382.684252847448000}, 
-			{4756.174679968796000, 560670.646574945200000, 0.190328961575323, -0.016193729208773}, 
-			{-265184.797553499500000, 0.190328961575416, 74652.065423977560000, 1.470729864949432}, 
-			{20382.684252847444000, -0.016193729208773, 1.470729864949432, 0.000035786438260}});
-		
-		// singular matrix
-//		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
-//				{{2, 1, 0},
-//				{0, 2, 0},
-//				{0, 0, 0}});
-		
-		// singular matrix
-//				RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
-//						{{2, 1, 4, -1},
-//						{3, -2, 1, 0},
-//						{5, 1, -3, 2},
-//						{-1, 3, 3, -1}});
-		
-		PrintPrecision.set(9);
-		
-		System.out.println("det(M) = " + Matrix.determinant(M));
-		System.out.println("symmetric(M) = " + MatrixUtils.isSymmetric(M, 1e-12));
-		System.out.println("singular(M) = " + Matrix.isSingular(M));
-		
-		{
-			System.out.println("\nJAMA: *****************************");
-			EigenDecompositionJama ed = new EigenDecompositionJama(M);
-			System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
-			System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
-			System.out.println("has complex evs = " + ed.hasComplexEigenvalues());
-			System.out.println("D = \n" + Matrix.toString(ed.getD()));
-			System.out.println("V = \n" + Matrix.toString(ed.getV()));
-		}
-		
-		{
-			System.out.println("\nApache Commons Math: *****************************");
-			org.apache.commons.math3.linear.EigenDecomposition  ed = 
-					new org.apache.commons.math3.linear.EigenDecomposition(M);
-			System.out.println("evalsRe = " + Matrix.toString(ed.getRealEigenvalues()));
-			System.out.println("evalsIm = " + Matrix.toString(ed.getImagEigenvalues()));
-			System.out.println("has complex evs = " + ed.hasComplexEigenvalues());
-			System.out.println("D = \n" + Matrix.toString(ed.getD()));
-			System.out.println("V = \n" + Matrix.toString(ed.getV()));
-		}
-	}
-	
 	
 }

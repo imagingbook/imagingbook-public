@@ -8,46 +8,45 @@
  ******************************************************************************/
 package imagingbook.common.math.eigen.eispack;
 
-abstract class QZHES {
+public abstract class QZHES {
 	
-	// EISPACK Routines, see http://www.netlib.org/eispack/
-	
+	/*
+	EISPACK Routines, see http://www.netlib.org/eispack/ for the original FORTRAN code.
+	Untangled to goto-free Java by W. Burger using a sequential state machine concept, inspired by D. E. Knuth,
+	"Structured Programming with Goto Statements", Computing Surveys, Vol. 6, No. 4 (1974).
+	 */
+
+	private QZHES() {}
+
 	/**
 	 * <p>
-	 * This subroutine is the first step of the qz algorithm for solving generalized
-	 * matrix eigenvalue problems, SIAM J. Numer. Anal. 10, 241-256 (1973) by Moler
-	 * and Stewart. This description has been adapted from the original version
+	 * This subroutine is the first step of the qz algorithm for solving generalized matrix eigenvalue problems, SIAM J.
+	 * Numer. Anal. 10, 241-256 (1973) by Moler and Stewart. This description has been adapted from the original version
 	 * (dated August 1983).
 	 * </p>
 	 * <p>
-	 * This subroutine accepts a pair of real general matrices and reduces one of
-	 * them to upper Hessenberg form and the other to upper triangular form using
-	 * orthogonal transformations. It is usually followed by qzit, qzval and,
+	 * This subroutine accepts a pair of real general matrices and reduces one of them to upper Hessenberg form and the
+	 * other to upper triangular form using orthogonal transformations. It is usually followed by qzit, qzval and,
 	 * possibly, qzvec.
 	 * </p>
 	 * <p>
 	 * On output:
 	 * </p>
 	 * <ul>
-	 * <li><strong>a</strong> has been reduced to upper hessenberg form. The
-	 * elements below the first subdiagonal have been set to zero.</li>
-	 * 
-	 * <li><strong>b</strong> has been reduced to upper triangular form. The
-	 * elements below the main diagonal have been set to zero.</li>
-	 * 
-	 * <li><strong>z</strong> contains the product of the right hand transformations
-	 * if matz has been set to true. Otherwise, <strong>z</strong> is not
-	 * referenced.</li>
+	 * <li><strong>a</strong> has been reduced to upper hessenberg form. The elements below the first subdiagonal have
+	 * been set to zero.</li>
+	 * <li><strong>b</strong> has been reduced to upper triangular form. The elements below the main diagonal have been
+	 * set to zero.</li>
+	 * <li><strong>z</strong> contains the product of the right hand transformations if matz has been set to true.
+	 * Otherwise, <strong>z</strong> is not referenced.</li>
 	 * </ul>
-	 * 
-	 * 
-	 * @param a    contains a real general matrix.
-	 * @param b    contains a real general matrix.
-	 * @param matz should be set to true if the right hand transformations are to be
-	 *             accumulated for later use in computing eigenvectors, and to false
-	 *             otherwise.
-	 * @param z    on output, contains the product of the right hand transformations if matz
-	 *             has been set to true. Otherwise, z is not referenced.
+	 *
+	 * @param a contains a real general matrix.
+	 * @param b contains a real general matrix.
+	 * @param matz should be set to true if the right hand transformations are to be accumulated for later use in
+	 * computing eigenvectors, and to false otherwise.
+	 * @param z on output, contains the product of the right hand transformations if matz has been set to true.
+	 * Otherwise, z is not referenced.
 	 */
 	public static void qzhes(double[][] a, double[][] b, boolean matz, double[][] z) {
 		

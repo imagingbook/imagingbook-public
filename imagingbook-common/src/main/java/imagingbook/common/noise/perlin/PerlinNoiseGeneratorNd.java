@@ -15,18 +15,15 @@ import imagingbook.common.noise.hashing.HashFunction;
 
 /**
  * <p>
- * This class implements an N-dimensional Perlin noise [1] generator. See Ch. 8
- * of [2] for details.
+ * This class implements an N-dimensional Perlin noise [1] generator. See Ch. 8 of [2] for details.
  * </p>
  * <p>
- * [1] K. Perlin. Improving noise. In "SIGGRAPH’02: Proceedings of the 29th
- * Annual Conference on Computer Graphics and Interactive Techniques", pp.
- * 681–682, San Antonio, Texas (2002).<br>
- * [2] W. Burger and M.J. Burge. "Principles of Digital Image Processing -
- * Advanced Methods" (Vol. 3). Undergraduate Topics in Computer Science.
- * Springer-Verlag, London (2013).
+ * [1] K. Perlin. Improving noise. In "SIGGRAPH’02: Proceedings of the 29th Annual Conference on Computer Graphics and
+ * Interactive Techniques", pp. 681–682, San Antonio, Texas (2002).<br> [2] W. Burger and M.J. Burge. "Principles of
+ * Digital Image Processing - Advanced Methods" (Vol. 3). Undergraduate Topics in Computer Science. Springer-Verlag,
+ * London (2013).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/24
  */
@@ -53,12 +50,12 @@ public class PerlinNoiseGeneratorNd extends PerlinNoiseGenerator {
 			Q[j] = vertex(j, N);
 		}
 	}
-	
+
 	/**
-	 * N-dim combined (multi-frequency) Perlin noise function. 
+	 * N-dim combined (multi-frequency) Perlin noise function.
+	 *
 	 * @param X Interpolation position X (N-dimensional).
-	 * @return The value of the combined Perlin
-	 * noise function for the N-dimensional position X.
+	 * @return The value of the combined Perlin noise function for the N-dimensional position X.
 	 */
 	public double getNoiseValue(double[] X) {
 		double sum = 0;
@@ -67,12 +64,12 @@ public class PerlinNoiseGeneratorNd extends PerlinNoiseGenerator {
 		}
 		return sum;
 	}
-	
+
 	/**
-	 * 2D elementary (single-frequency) Perlin noise function. 
+	 * 2D elementary (single-frequency) Perlin noise function.
+	 *
 	 * @param X Interpolation position X (N-dimensional).
-	 * @return The value of the elementary Perlin
-	 * noise function for the N-dimensional position X.
+	 * @return The value of the elementary Perlin noise function for the N-dimensional position X.
 	 */
 	private double noise(double[] X) {
 		int[] P0 = floor(X);		// origin of hypercube around X
@@ -93,11 +90,10 @@ public class PerlinNoiseGeneratorNd extends PerlinNoiseGenerator {
 		
 		return interpolate(X01, W, 0);
 	}
-	
+
 	/**
 	 * @param p discrete position.
-	 * @return A pseudo-random gradient vector for 
-	 * the discrete lattice point p (N-dimensional).
+	 * @return A pseudo-random gradient vector for the discrete lattice point p (N-dimensional).
 	 */
 	private double[] gradient(int[] p) {	
 		if (p.length == 2) {
@@ -110,14 +106,14 @@ public class PerlinNoiseGeneratorNd extends PerlinNoiseGenerator {
 		}
 		return g;
 	}
-	
+
 	/**
 	 * Local interpolation function (recursive).
+	 *
 	 * @param X01 Interpolation position in [0,1]^N
-	 * @param WW  A vector of length 2^(N-d) with
-	 * the tangent values for the hypercube corners.
+	 * @param WW A vector of length 2^(N-d) with the tangent values for the hypercube corners.
 	 * @param k The interpolation dimension (axis).
-	 * @return  The interpolated noise value at position X01.
+	 * @return The interpolated noise value at position X01.
 	 */
 	private double interpolate(double[] X01, double[] WW, int k) {
 		if (WW.length == 1) { // (d == N)

@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This class represents a connected component (i.e., a binary image region).
- * Instances of this class form the nodes of a {@link ComponentTree}.
+ * This class represents a connected component (i.e., a binary image region). Instances of this class form the nodes of
+ * a {@link ComponentTree}.
  *
  * @param <T> the type of properties that can be attached to instances of this class
  * @author WB
@@ -67,11 +67,10 @@ public class Component<T> {
 	}
 	
 	// --------------------------------------------------------
-	
+
 	/**
-	 * Returns the parent component of this component ({@code null} if this node is
-	 * the tree's root).
-	 * 
+	 * Returns the parent component of this component ({@code null} if this node is the tree's root).
+	 *
 	 * @return the parent component
 	 */
 	public Component<T> getParent() {
@@ -140,22 +139,21 @@ public class Component<T> {
 	void setHeight(int newHeight) {
 		height = newHeight;
 	}
-	
+
 	/**
-	 * Returns a list of "local" pixels that directly belong to this component All
-	 * these pixels have the same 'level' as the component itself.
-	 * 
+	 * Returns a list of "local" pixels that directly belong to this component All these pixels have the same 'level' as
+	 * the component itself.
+	 *
 	 * @return the component's local pixels
 	 */
 	public Collection<Pixel> getLocalPixels() {
 		return this.points;
 	}
-	
+
 	/**
-	 * Returns a collection of all pixels of this component, including the
-	 * component's local pixels and the pixels of all child components. Not needed
-	 * in actual code, used only for debugging.
-	 * 
+	 * Returns a collection of all pixels of this component, including the component's local pixels and the pixels of
+	 * all child components. Not needed in actual code, used only for debugging.
+	 *
 	 * @return all pixels contained in this component
 	 */
 	public Collection<Pixel> getAllPixels() {
@@ -170,11 +168,10 @@ public class Component<T> {
 //		allPoints.addAll(this.getChildPixels());
 //		return allPoints;
 //	}
-	
+
 	/**
-	 * Returns a collection of all pixels contained in the children of this
-	 * component.
-	 * 
+	 * Returns a collection of all pixels contained in the children of this component.
+	 *
 	 * @return all pixels from child components
 	 */
 	public Collection<Pixel> getChildPixels() {
@@ -202,14 +199,12 @@ public class Component<T> {
 		return properties;
 	}
 	// ------------------------------------------------------------------
-	
+
 	/**
-	 * Recursively locates the root of the tree that contains this component,
-	 * returning the first ancestor node that has no parent, which my be this node
-	 * itself. The {@link #shortcut} field is used to quickly move up to nodes
-	 * closer to the root. The {@link #shortcut} field is updated "on the way back",
-	 * i.e., by the unwinding recursion.
-	 * 
+	 * Recursively locates the root of the tree that contains this component, returning the first ancestor node that has
+	 * no parent, which my be this node itself. The {@link #shortcut} field is used to quickly move up to nodes closer
+	 * to the root. The {@link #shortcut} field is updated "on the way back", i.e., by the unwinding recursion.
+	 *
 	 * @return the root of the sub-tree containing this component
 	 */
 	Component<T> findRoot() {
@@ -221,11 +216,10 @@ public class Component<T> {
 			return shortcut;
 		}
 	}
-	
+
 	/**
-	 * Returns {@code true} if this component is the root of the associated
-	 * {@link ComponentTree}.
-	 * 
+	 * Returns {@code true} if this component is the root of the associated {@link ComponentTree}.
+	 *
 	 * @return {@code true} if this component is the root
 	 */
 	public boolean isRoot() {	// TODO: change/clean/check!
@@ -260,12 +254,12 @@ public class Component<T> {
 		}
 		return Arrays.toString(ids);
 	}
-	
-	
+
+
 	/**
-	 * Sorts a list of Components by (decreasing) component size, i.e., the largest
-	 * component (with the most pixels) becomes the first.
-	 * 
+	 * Sorts a list of Components by (decreasing) component size, i.e., the largest component (with the most pixels)
+	 * becomes the first.
+	 *
 	 * @param components a list of {@link Component} instances
 	 */
 	public static void sortBySize(List<? extends Component<?>> components) {
@@ -277,11 +271,11 @@ public class Component<T> {
 		};
 		Collections.sort(components, cmp);
 	}
-	
+
 	/**
-	 * Sorts a list of Components by (increasing) component level, i.e., the
-	 * component with the lowest level becomes the first.
-	 * 
+	 * Sorts a list of Components by (increasing) component level, i.e., the component with the lowest level becomes the
+	 * first.
+	 *
 	 * @param components a list of {@link Component} instances
 	 */
 	public static void sortByLevel(List<? extends Component<?>> components) {

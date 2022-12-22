@@ -32,11 +32,6 @@ public final class Tuple2<T0, T1> implements Tuple {
 		return item1;
 	}
 	
-//	// needed??
-//	public Tuple2(Tuple2<? extends T0, ? extends T1> entry) {
-//        this(entry.item0, entry.item1);
-//    }
-	
 	@Override
 	public String toString() {
 		return String.format("<%s,%s>", item0.toString(), item1.toString());

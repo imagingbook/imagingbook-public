@@ -15,16 +15,14 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * A {@link PixelInterpolator} implementing Lanczos interpolation in 2D.
- * See Sec. 22.5.4 of [1] for additional details.
+ * A {@link PixelInterpolator} implementing Lanczos interpolation in 2D. See Sec. 22.5.4 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class LanczosInterpolator implements PixelInterpolator {
 	

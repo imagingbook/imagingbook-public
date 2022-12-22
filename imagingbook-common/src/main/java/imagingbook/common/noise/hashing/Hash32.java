@@ -33,12 +33,11 @@ public abstract class Hash32 implements HashFunction {
 	protected Hash32(int seed) {
 		this.seed = HashFunction.getRandomSeed(seed);
 	}
-	
+
 	/**
-	 * "Hashes" an <tt>int</tt> key to a "pseudo-random" <tt>int</tt> value in
-	 * [-2147483648, 2147483647]. This method is to be implemented by concrete
-	 * subclasses.
-	 * 
+	 * "Hashes" an <tt>int</tt> key to a "pseudo-random" <tt>int</tt> value in [-2147483648, 2147483647]. This method is
+	 * to be implemented by concrete subclasses.
+	 *
 	 * @param key key to be hashed
 	 * @return a integer value in [-2147483648, 2147483647].
 	 */
@@ -86,12 +85,11 @@ public abstract class Hash32 implements HashFunction {
 		int hz = (h >> 16) & M;	// extract bits 16..23
 		return new double[] {(double) hx / M, (double) hy / M, (double) hz / M};
 	}
-	
-	/*
-	 * N-dimensional permutation hash; this version does not use any bit splitting.
-	 * Instead, the hashInt() function is applied repeatedly for every gradient
-	 * dimension by using the dimension number (k) as a local seed - in addition to
-	 * the global seed (seed).
+
+	/**
+	 * N-dimensional permutation hash; this version does not use any bit splitting. Instead, the hashInt() function is
+	 * applied repeatedly for every gradient dimension by using the dimension number (k) as a local seed - in addition
+	 * to the global seed (seed).
 	 */
 	@Override
 	public double[] hash(int[] p) {	

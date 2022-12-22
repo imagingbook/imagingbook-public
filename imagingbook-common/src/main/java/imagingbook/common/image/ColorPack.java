@@ -17,17 +17,13 @@ import imagingbook.common.color.colorspace.sRgbColorSpace;
 import java.awt.color.ColorSpace;
 
 /**
- * This class defines a "color stack" as a subtype of {@link PixelPack} with
- * exactly 3 components (slices), representing a color image in a specific color
- * space (default is {@link sRgbColorSpace}). It allows simple conversion to
- * other color spaces (see {@link #convertFromSrgbTo(ColorSpace)}). All
- * conversions are 'destructive', i.e., the affected color stack is modified.
- * Pixel values are typically in [0,1], depending on the associated color space.
- * A {@link ColorPack} may be created from an existing {@link ColorProcessor}
- * whose pixels are assumed to be in sRGB color space (see
- * {@link #ColorPack(ColorProcessor)}). To be converted back to a
- * {@link ColorProcessor}, the {@link ColorPack} must be in sRGB color space
- * (see {@link #convertToSrgb()}).
+ * This class defines a "color stack" as a subtype of {@link PixelPack} with exactly 3 components (slices), representing
+ * a color image in a specific color space (default is {@link sRgbColorSpace}). It allows simple conversion to other
+ * color spaces (see {@link #convertFromSrgbTo(ColorSpace)}). All conversions are 'destructive', i.e., the affected
+ * color stack is modified. Pixel values are typically in [0,1], depending on the associated color space. A
+ * {@link ColorPack} may be created from an existing {@link ColorProcessor} whose pixels are assumed to be in sRGB color
+ * space (see {@link #ColorPack(ColorProcessor)}). To be converted back to a {@link ColorProcessor}, the
+ * {@link ColorPack} must be in sRGB color space (see {@link #convertToSrgb()}).
  *
  * @author WB
  * @version 2022/09/10

@@ -16,10 +16,9 @@ import imagingbook.common.mser.components.Component;
 import java.util.Arrays;
 
 /**
- * Defines a container holding the data for calculating MSER properties.
- * Instances of this type are attached to {@link Component} objects during
- * MSER calculation in {@link MserDetector}.
- * 
+ * Defines a container holding the data for calculating MSER properties. Instances of this type are attached to
+ * {@link Component} objects during MSER calculation in {@link MserDetector}.
+ *
  * @author WB
  * @version 2022/11/19
  */
@@ -61,20 +60,21 @@ public class MserData {
 	public boolean isMser() {
 		return isMserP;
 	}
-	
+
 	/**
-	 * Returns the vector of central moments (mu10, mu01, mu20, mu02, mu11)
-	 * for the pixel coordinates contained in the associated component.
+	 * Returns the vector of central moments (mu10, mu01, mu20, mu02, mu11) for the pixel coordinates contained in the
+	 * associated component.
+	 *
 	 * @return the vector of central moments
 	 */
 	public double[] getCentralMoments() {
 		return this.moments;
 	}
-	
+
 	/**
-	 * Returns the covariance matrix for the pixel coordinates contained
-	 * in the associated component.
-	 * @return the covariance matrix 
+	 * Returns the covariance matrix for the pixel coordinates contained in the associated component.
+	 *
+	 * @return the covariance matrix
 	 */
 	public double[][] getCovarianceMatrix() {
 		double[] mu = getCentralMoments(); // = (mu10, mu01, mu20, mu02, mu11)

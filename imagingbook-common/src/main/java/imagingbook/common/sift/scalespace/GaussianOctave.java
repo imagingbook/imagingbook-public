@@ -14,15 +14,14 @@ import static java.lang.Math.sqrt;
 
 /**
  * <p>
- * Represents a single "octave" in a hierarchical Gaussian scale space. See
- * Secs. 25.1.2 and 25.1.4 of [1] for more details.
- * This class defines no public constructor.
+ * Represents a single "octave" in a hierarchical Gaussian scale space. See Secs. 25.1.2 and 25.1.4 of [1] for more
+ * details. This class defines no public constructor.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/20
  */

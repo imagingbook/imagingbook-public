@@ -22,30 +22,23 @@ import java.util.Arrays;
 
 /**
  * <p>
- * This class defines a generic data container for scalar and
- * vector-valued images, using float-values throughout.
- * Its primary use is in the {@link GenericFilter} framework.
- * A {@link PixelPack} may represent images with an arbitrary number of
- * components. Scalar images (such as {@link ByteProcessor}, 
- * {@link ShortProcessor} and {@link FloatProcessor}) have 1 component,
- * color images (such as {@link ColorProcessor}) typically have 3 components.
- * Conversion methods to and from ImageJ's processor classes are provided,
- * with optional scaling of pixel component values.
+ * This class defines a generic data container for scalar and vector-valued images, using float-values throughout. Its
+ * primary use is in the {@link GenericFilter} framework. A {@link PixelPack} may represent images with an arbitrary
+ * number of components. Scalar images (such as {@link ByteProcessor}, {@link ShortProcessor} and
+ * {@link FloatProcessor}) have 1 component, color images (such as {@link ColorProcessor}) typically have 3 components.
+ * Conversion methods to and from ImageJ's processor classes are provided, with optional scaling of pixel component
+ * values.
  * </p>
  * <p>
- * Internally, pixel data are stored as 1-dimensional {@code float} arrays,
- * one array for each component.
- * Method {@link #getData()} may be used to access the internal data directly.
- * Individual components may be extracted as a {@link PixelSlice} using
- * method {@link #getSlice(int)}.
+ * Internally, pixel data are stored as 1-dimensional {@code float} arrays, one array for each component. Method
+ * {@link #getData()} may be used to access the internal data directly. Individual components may be extracted as a
+ * {@link PixelSlice} using method {@link #getSlice(int)}.
  * </p>
  * <p>
- * Methods {@link #getPix(int, int)} and {@link #setPix(int, int, float...)} are
- * provided to read and write individual pixels, which are 
- * ALWAYS of type {@code float[]} (even if the underlying image is scalar-valued).
- * Pixel values returned for positions outside the image boundaries depend 
- * on the {@link OutOfBoundsStrategy} specified by the constructor
- * (e.g., {@link #PixelPack(ImageProcessor, double, OutOfBoundsStrategy)}).
+ * Methods {@link #getPix(int, int)} and {@link #setPix(int, int, float...)} are provided to read and write individual
+ * pixels, which are ALWAYS of type {@code float[]} (even if the underlying image is scalar-valued). Pixel values
+ * returned for positions outside the image boundaries depend on the {@link OutOfBoundsStrategy} specified by the
+ * constructor (e.g., {@link #PixelPack(ImageProcessor, double, OutOfBoundsStrategy)}).
  * </p>
  * <p>Here is a simple usage example:</p>
  * <pre>
@@ -58,12 +51,11 @@ import java.util.Arrays;
  * ColorProcessor ip2 = pack.toColorProcessor();
  * </pre>
  * <p>
- * A related concept for providing unified access to images is {@link ImageAccessor}.
- * In contrast to {@link PixelPack}, {@link ImageAccessor} does not duplicate
- * any data but reads and writes the original {@link ImageProcessor} pixel data
+ * A related concept for providing unified access to images is {@link ImageAccessor}. In contrast to {@link PixelPack},
+ * {@link ImageAccessor} does not duplicate any data but reads and writes the original {@link ImageProcessor} pixel data
  * directly.
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/03
  * @see ImageAccessor
@@ -81,9 +73,10 @@ public class PixelPack {
 	private final GridIndexer2D indexer;
 	
 	// --------------------------------------------------------------------
-	
+
 	/**
-	 * Constructor. Creates a blank (zero-valued) pack of pixel data.
+	 * Constructor, creates a blank (zero-valued) pack of pixel data.
+	 *
 	 * @param width the image width
 	 * @param height the image height
 	 * @param depth the number of channels (slices)
@@ -97,22 +90,22 @@ public class PixelPack {
 		this.data = new float[depth][length];
 		this.indexer = GridIndexer2D.create(width, height, obs);
 	}
-	
+
 	/**
-	 * Constructor. Creates a pack of pixel data from the given 
-	 * {@link ImageProcessor} object.
-	 * Does not scale pixel values and uses
-	 * {@link #DefaultOutOfBoundsStrategy} as the out-of-bounds strategy
-	 * (see {@link OutOfBoundsStrategy}).
+	 * Constructor, creates a pack of pixel data from the given {@link ImageProcessor} object. Does not scale pixel
+	 * values and uses {@link #DefaultOutOfBoundsStrategy} as the out-of-bounds strategy (see
+	 * {@link OutOfBoundsStrategy}).
+	 *
 	 * @param ip the source image
 	 */
 	public PixelPack(ImageProcessor ip) {
 		this(ip, 1.0, DefaultOutOfBoundsStrategy);
 	}
-	
+
 	/**
-	 * Constructor. Creates a pack of pixel data from the given 
-	 * {@link ImageProcessor} object, using the specified out-of-bounds strategy.
+	 * Constructor, reates a pack of pixel data from the given {@link ImageProcessor} object, using the specified
+	 * out-of-bounds strategy.
+	 *
 	 * @param ip the source image
 	 * @param scale scale factor applied to pixel components
 	 * @param obs strategy to be used when reading from out-of-bounds coordinates (pass {@code null} for default)
@@ -121,24 +114,21 @@ public class PixelPack {
 		this(ip.getWidth(), ip.getHeight(), ip.getNChannels(), obs);
 		copyFromImageProcessor(ip, scale);
 	}
-	
+
 	/**
-	 * Constructor. Creates a new {@link PixelPack} with the same dimension
-	 * as the original without copying the contained pixel data
-	 * (initialized to zero).
-	 * 
+	 * Constructor, creates a new {@link PixelPack} with the same dimension as the original without copying the
+	 * contained pixel data (initialized to zero).
+	 *
 	 * @param orig the original {@link PixelPack}
 	 */
 	public PixelPack(PixelPack orig) {
 		this(orig, false);
 	}
-	
+
 	/**
-	 * Constructor. Creates a new {@link PixelPack} with the same dimension
-	 * as the original.
-	 * Optionally the original pixel data are copied, otherwise they are initialized 
-	 * to zero values.
-	 * 
+	 * Constructor, creates a new {@link PixelPack} with the same dimension as the original. Optionally the original
+	 * pixel data are copied, otherwise they are initialized to zero values.
+	 *
 	 * @param orig the original {@link PixelPack}
 	 * @param copyData set true to copy pixel data
 	 */
@@ -170,13 +160,10 @@ public class PixelPack {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Reads the pixel data at the specified image position.
-	 * The supplied array is filled.
-	 * The length of this array must match corresponds the number of slices in this
-	 * pixel pack.
-	 * The values returned for out-of-bounds positions depend on this
-	 * pixel-pack's out-of-bounds strategy.
-	 * 
+	 * Reads the pixel data at the specified image position. The supplied array is filled. The length of this array must
+	 * match corresponds the number of slices in this pixel pack. The values returned for out-of-bounds positions depend
+	 * on this pixel-pack's out-of-bounds strategy.
+	 *
 	 * @param u the x-position
 	 * @param v the y-position
 	 * @param vals a suitable array of pixel data
@@ -195,12 +182,11 @@ public class PixelPack {
 			getPix(idx, vals);
 		}
 	}
-	
+
 	/**
-	 * Returns the pixel data at the specified position as a {@code float[]}.
-	 * The values returned for out-of-bounds positions depend on this
-	 * pixel-pack's out-of-bounds strategy.
-	 * 
+	 * Returns the pixel data at the specified position as a {@code float[]}. The values returned for out-of-bounds
+	 * positions depend on this pixel-pack's out-of-bounds strategy.
+	 *
 	 * @param u the x-position
 	 * @param v the y-position
 	 * @return the array of pixel component values
@@ -210,15 +196,12 @@ public class PixelPack {
 		getPix(u, v, vals);
 		return vals;
 	}
-	
+
 	/**
-	 * Reads the pixel data at the specified 1D index.
-	 * The supplied array is filled.
-	 * The length of this array must match corresponds the number of slices in this
-	 * pixel pack.
-	 * The index is not checked, the corresponding pixel must always be inside
-	 * the image bounds, otherwise an exception will be thrown.
-	 * 
+	 * Reads the pixel data at the specified 1D index. The supplied array is filled. The length of this array must match
+	 * corresponds the number of slices in this pixel pack. The index is not checked, the corresponding pixel must
+	 * always be inside the image bounds, otherwise an exception will be thrown.
+	 *
 	 * @param idx a valid 1D pixel index (in row-major order)
 	 * @param vals a suitable array of pixel data
 	 */
@@ -227,11 +210,11 @@ public class PixelPack {
 			vals[k] = data[k][idx];
 		}
 	}
-	
+
 	/**
-	 * Returns the pixel data at the specified position as a {@code float[]}.
-	 * The index is not checked, the corresponding pixel must always be inside
-	 * the image bounds, otherwise an exception will be thrown.
+	 * Returns the pixel data at the specified position as a {@code float[]}. The index is not checked, the
+	 * corresponding pixel must always be inside the image bounds, otherwise an exception will be thrown.
+	 *
 	 * @param idx a valid 1D pixel index (in row-major order)
 	 * @return the array of pixel component values
 	 */
@@ -241,11 +224,11 @@ public class PixelPack {
 		return vals;
 	}
 
-	
+
 	/**
-	 * Sets the pixel data at the specified pixel position.
-	 * The length of the value array corresponds to the number of slices 
-	 * (components) in this pixel pack.
+	 * Sets the pixel data at the specified pixel position. The length of the value array corresponds to the number of
+	 * slices (components) in this pixel pack.
+	 *
 	 * @param u the x-position
 	 * @param v the y-position
 	 * @param vals the pixel's component values (may also be a {@code float[]})
@@ -265,10 +248,10 @@ public class PixelPack {
 			data[k][idx] = vals[k];
 		}
 	}
-	
+
 	/**
-	 * Copies the contents of one pixel pack to another.
-	 * The involved pixel packs must have the same dimensions.
+	 * Copies the contents of one pixel pack to another. The involved pixel packs must have the same dimensions.
+	 *
 	 * @param other another pixel pack
 	 */
 	public void copyTo(PixelPack other) {
@@ -279,10 +262,10 @@ public class PixelPack {
 			System.arraycopy(this.data[k], 0, other.data[k], 0, this.length);
 		}
 	}
-	
+
 	/**
-	 * Checks is this pixel pack has the same dimensions as another
-	 * pixel pack, i.e., can be copied to it.
+	 * Checks is this pixel pack has the same dimensions as another pixel pack, i.e., can be copied to it.
+	 *
 	 * @param other the other pixel pack
 	 * @return true if both have the same dimensions
 	 */
@@ -293,10 +276,11 @@ public class PixelPack {
 		else
 			return false;
 	}
-	
+
 	/**
-	 * Checks is this pixel pack has the same dimensions as the
-	 * specified {@link ImageProcessor} instance, i.e., can be copied to it.
+	 * Checks is this pixel pack has the same dimensions as the specified {@link ImageProcessor} instance, i.e., can be
+	 * copied to it.
+	 *
 	 * @param ip the image processor instance
 	 * @return true if compatible
 	 */
@@ -309,11 +293,10 @@ public class PixelPack {
 		}
 		return true;
 	}
-	
+
 	/**
-	 * Returns the kth {@link PixelSlice}. An exception is thrown if the specified
-	 * slice does not exist.
-	 * 
+	 * Returns the kth {@link PixelSlice}. An exception is thrown if the specified slice does not exist.
+	 *
 	 * @param k the slice index (0,...,K-1)
 	 * @return the kth {@link PixelSlice}
 	 * @throws IllegalArgumentException if slice with the given index does not exist
@@ -324,20 +307,20 @@ public class PixelPack {
 		}
 		return new PixelSlice(k);
 	}
-	
+
 	/**
-	 * Creates and returns a new {@link PixelSlice} with the same dimensions
-	 * and out-of-bounds strategy as this {@link PixelPack}.
+	 * Creates and returns a new {@link PixelSlice} with the same dimensions and out-of-bounds strategy as this
+	 * {@link PixelPack}.
+	 *
 	 * @return a new pixel slice
 	 */
 	public PixelSlice getEmptySlice() {
 		return new PixelSlice();
 	}
-	
+
 	/**
-	 * Returns an array of {@link PixelSlice} instances
-	 * for this {@link PixelPack}. All pixel data are shared.
-	 * 
+	 * Returns an array of {@link PixelSlice} instances for this {@link PixelPack}. All pixel data are shared.
+	 *
 	 * @return an array of {@link PixelSlice}
 	 */
 	public PixelSlice[] getSlices() {
@@ -347,22 +330,22 @@ public class PixelPack {
 		}
 		return slices;
 	}
-	
+
 	/**
-	 * Returns the {@link FloatProcessor} for the kth pixel slice.
-	 * An exception is thrown if the specified slice does not exist.
+	 * Returns the {@link FloatProcessor} for the kth pixel slice. An exception is thrown if the specified slice does
+	 * not exist.
+	 *
 	 * @param k the slice index (0,...,K-1)
 	 * @return the kth {@link FloatProcessor}
 	 */
 	public FloatProcessor getFloatProcessor(int k) {
 		return getSlice(k).getFloatProcessor();
 	}
-	
-	
+
+
 	/**
-	 * Returns an array of {@link FloatProcessor} instances
-	 * for this {@link PixelPack}. All pixel data are shared.
-	 * 
+	 * Returns an array of {@link FloatProcessor} instances for this {@link PixelPack}. All pixel data are shared.
+	 *
 	 * @return an array of {@link FloatProcessor}
 	 */
 	public FloatProcessor[] getFloatProcessors() {
@@ -372,29 +355,30 @@ public class PixelPack {
 		}
 		return processors;
 	}
-	
+
 	/**
-	 * Returns a reference to this {@link PixelPack}'s internal data
-	 * array, which is always two-dimensional:
-	 * dimension 1 is the slice (component) index,
-	 * dimension 2 is the pixel index (each slice is a 1D array).
+	 * Returns a reference to this {@link PixelPack}'s internal data array, which is always two-dimensional: dimension 1
+	 * is the slice (component) index, dimension 2 is the pixel index (each slice is a 1D array).
+	 *
 	 * @return the pixel pack's data array
 	 */
 	public float[][] getData() {
 		return data;
 	}
-	
+
 	/**
 	 * Returns the width of the associated image.
+	 *
 	 * @return the image width
 	 */
 	public int getWidth() {
 //		return this.indexer.getWidth();
 		return this.width;
 	}
-	
+
 	/**
 	 * Returns the height of the associated image.
+	 *
 	 * @return the image height
 	 */
 	public int getHeight() {
@@ -426,13 +410,11 @@ public class PixelPack {
 			getSlice(k).zero();
 		}
 	}
-	
+
 	/**
-	 * Returns the pixel values in the 3x3 neighborhood around the
-	 * specified position.
-	 * The returned float-array has the structure {@code [x][y][k]},
-	 * with x,y = 0,...,2  and k is the slice index.
-	 * 
+	 * Returns the pixel values in the 3x3 neighborhood around the specified position. The returned float-array has the
+	 * structure {@code [x][y][k]}, with x,y = 0,...,2  and k is the slice index.
+	 *
 	 * @param uc the center x-position
 	 * @param vc the center x-position
 	 * @param nh a float array to be filled in (or null)
@@ -462,28 +444,26 @@ public class PixelPack {
 //	}
 	
 	// -------------------------------------------------------------------
-	
+
 	/**
-	 * Inner class representing a single (scalar-valued) component of a 
-	 * (vector-valued) {@link PixelPack}.
-	 *
+	 * Inner class representing a single (scalar-valued) component of a (vector-valued) {@link PixelPack}.
 	 */
 	public class PixelSlice {
 		private final int idx;
 		private final float[] vals;
 		
 		/**
-		 * Constructor. Creates a pixel slice for the specified component.
+		 * Constructor, creates a pixel slice for the specified component.
 		 * @param idx the slice (component) index
 		 */
 		PixelSlice(int idx) {
 			this.idx = idx;
 			this.vals = data[idx];
 		}
-		
-		/** Constructor. Creates an empty (zero-valued) pixel slice with the same
-		 * properties as the containing pixel pack but not associated
-		 * with it.
+
+		/**
+		 * Constructor, creates an empty (zero-valued) pixel slice with the same properties as the containing pixel pack
+		 * but not associated with it.
 		 */
 		PixelSlice() {
 			this.idx = -1;
@@ -513,12 +493,11 @@ public class PixelPack {
 				vals[i] = val;
 			}
 		}
-		
+
 		/**
-		 * Returns the slice index for this pixel slice, i.e, the
-		 * component number in the containing pixel pack.
-		 * -1 is returned if the pixel slice is not associated with
-		 * a pixel pack.
+		 * Returns the slice index for this pixel slice, i.e, the component number in the containing pixel pack. -1 is
+		 * returned if the pixel slice is not associated with a pixel pack.
+		 *
 		 * @return the slice index
 		 */
 		public int getIndex() {
@@ -532,21 +511,20 @@ public class PixelPack {
 		public float[] getArray() {
 			return vals;
 		}
-		
+
 		/**
-		 * Returns a {@link FloatProcessor} for this {@link PixelSlice} 
-		 * sharing the internal pixel data (nothing is copied).
-		 * 
+		 * Returns a {@link FloatProcessor} for this {@link PixelSlice} sharing the internal pixel data (nothing is
+		 * copied).
+		 *
 		 * @return a {@link FloatProcessor}
 		 */
 		public FloatProcessor getFloatProcessor() {
 			return new FloatProcessor(getWidth(), getHeight(), vals);
 		}
-		
+
 		/**
-		 * Returns a {@link FloatProcessor} for this {@link PixelSlice} 
-		 * by copying the internal pixel data.
-		 * 
+		 * Returns a {@link FloatProcessor} for this {@link PixelSlice} by copying the internal pixel data.
+		 *
 		 * @return a {@link FloatProcessor}
 		 */
 		public FloatProcessor getFloatProcessorCopy() {
@@ -560,19 +538,19 @@ public class PixelPack {
 		public int getLength() {
 			return vals.length;
 		}
-		
+
 		/**
-		 * Returns the width of the associated image
-		 * (see also {@link GridIndexer2D}).
+		 * Returns the width of the associated image (see also {@link GridIndexer2D}).
+		 *
 		 * @return the image width
 		 */
 		public int getWidth() {
 			return PixelPack.this.getWidth();
 		}
-		
+
 		/**
-		 * Returns the height of the associated image
-		 * (see also {@link GridIndexer2D}).
+		 * Returns the height of the associated image (see also {@link GridIndexer2D}).
+		 *
 		 * @return the image height
 		 */
 		public int getHeight() {
@@ -585,26 +563,22 @@ public class PixelPack {
 		public void zero() {
 			Arrays.fill(this.vals, 0);
 		}
-		
+
 		/**
-		 * Copies the contents of this pixel slice to another
-		 * pixel slice.
+		 * Copies the contents of this pixel slice to another pixel slice.
+		 *
 		 * @param other the pixel slice to modified
 		 */
 		public void copyTo(PixelSlice other) {
 			System.arraycopy(this.vals, 0, other.vals, 0, this.vals.length);
 		}
-		
+
 		/**
-		 * Returns the pixel values from the 3x3 neighborhood centered at
-		 * the specified position.
-		 * The 3x3 array {@code nh[x][y]} has the coordinates
-		 * x = 0,..,2 and y = 0,..,2; 
-		 * the value at position {@code [1][1]} belongs to the 
-		 * specified position.
-		 * If a non-null array is supplied, it is filled and returned.
-		 * If null, a new array is created and returned.
-		 * 
+		 * Returns the pixel values from the 3x3 neighborhood centered at the specified position. The 3x3 array
+		 * {@code nh[x][y]} has the coordinates x = 0,..,2 and y = 0,..,2; the value at position {@code [1][1]} belongs
+		 * to the specified position. If a non-null array is supplied, it is filled and returned. If null, a new array
+		 * is created and returned.
+		 *
 		 * @param uc the center x-position
 		 * @param vc the center y-position
 		 * @param nh a 3x3 array or null
@@ -627,21 +601,19 @@ public class PixelPack {
 	// -------------------------------------------------------------------
 
 	/**
-	 * Copies the contents of an image processor to an existing
-	 * pixel pack, which must be compatible w.r.t. size and depth.
-	 * Does not scale pixel values.
-	 * 
+	 * Copies the contents of an image processor to an existing pixel pack, which must be compatible w.r.t. size and
+	 * depth. Does not scale pixel values.
+	 *
 	 * @param ip the image processor to be copied
 	 */
 	public void copyFromImageProcessor(ImageProcessor ip) {
 		copyFromImageProcessor(ip, 1.0);
 	}
-	
+
 	/**
-	 * Copies the contents of an image processor to an existing
-	 * pixel pack, which must be compatible w.r.t. size and depth.
-	 * Applies the specified scale factor to the pixel component values.
-	 * 
+	 * Copies the contents of an image processor to an existing pixel pack, which must be compatible w.r.t. size and
+	 * depth. Applies the specified scale factor to the pixel component values.
+	 *
 	 * @param ip the image processor to be copied
 	 * @param scale scale factor applied to pixel component values
 	 */
@@ -695,23 +667,21 @@ public class PixelPack {
 	}
 	
 	// --------------------------------------------------------------------
-	
+
 	/**
-	 * Converts this {@link PixelPack} to a new {@link ByteProcessor} instance.
-	 * An exception is thrown if the depth of the pack is not equal 1.
-	 * Pixel values are rounded, no scale factor is applied.
-	 * 
+	 * Converts this {@link PixelPack} to a new {@link ByteProcessor} instance. An exception is thrown if the depth of
+	 * the pack is not equal 1. Pixel values are rounded, no scale factor is applied.
+	 *
 	 * @return a new {@link ByteProcessor} instance
 	 */
 	public ByteProcessor toByteProcessor() {
 		return toByteProcessor(1.0);
 	}
-	
+
 	/**
-	 * Converts this {@link PixelPack} to a new {@link ByteProcessor} instance.
-	 * An exception is thrown if the depth of the pack is not equal 1.
-	 * Applies the specified scale factor to pixel values.
-	 * 
+	 * Converts this {@link PixelPack} to a new {@link ByteProcessor} instance. An exception is thrown if the depth of
+	 * the pack is not equal 1. Applies the specified scale factor to pixel values.
+	 *
 	 * @param scale scale factor applied to pixel values (before rounding)
 	 * @return a new {@link ByteProcessor} instance
 	 */
@@ -723,23 +693,21 @@ public class PixelPack {
 		copyToByteProcessor(ip, (float)scale);
 		return ip;
 	}
-	
+
 	/**
-	 * Converts this {@link PixelPack} to a new {@link ShortProcessor} instance.
-	 * An exception is thrown if the depth of the pack is not equal 1.
-	 * Pixel values are rounded, no scale factor is applied.
-	 * 
+	 * Converts this {@link PixelPack} to a new {@link ShortProcessor} instance. An exception is thrown if the depth of
+	 * the pack is not equal 1. Pixel values are rounded, no scale factor is applied.
+	 *
 	 * @return a new {@link ShortProcessor} instance
 	 */
 	public ShortProcessor toShortProcessor() {
 		return toShortProcessor(1.0);
 	}
-	
+
 	/**
-	 * Converts this {@link PixelPack} to a new {@link ShortProcessor} instance.
-	 * An exception is thrown if the depth of the pack is not equal 1.
-	 * Applies the specified scale factor to pixel values.
-	 * 
+	 * Converts this {@link PixelPack} to a new {@link ShortProcessor} instance. An exception is thrown if the depth of
+	 * the pack is not equal 1. Applies the specified scale factor to pixel values.
+	 *
 	 * @param scale scale factor applied to pixel values (before rounding)
 	 * @return a new {@link ShortProcessor} instance
 	 */
@@ -751,22 +719,21 @@ public class PixelPack {
 		copyToShortProcessor(ip, (float)scale);
 		return ip;
 	}
-	
+
 	/**
-	 * Converts this {@link PixelPack} to a new {@link FloatProcessor} instance.
-	 * An exception is thrown if the depth of the pack is not equal 1.
-	 * No scale factor is applied to pixel values.
-	 * 
+	 * Converts this {@link PixelPack} to a new {@link FloatProcessor} instance. An exception is thrown if the depth of
+	 * the pack is not equal 1. No scale factor is applied to pixel values.
+	 *
 	 * @return a new {@link FloatProcessor} instance
 	 */
 	public FloatProcessor toFloatProcessor() {
 		return toFloatProcessor(1.0);
 	}
-	
+
 	/**
-	 * Converts this {@link PixelPack} to a new {@link FloatProcessor} instance.
-	 * An exception is thrown if the depth of the pack is not equal 1.
-	 * 
+	 * Converts this {@link PixelPack} to a new {@link FloatProcessor} instance. An exception is thrown if the depth of
+	 * the pack is not equal 1.
+	 *
 	 * @param scale scale factor applied to pixel values
 	 * @return a new {@link FloatProcessor} instance
 	 */
@@ -778,22 +745,21 @@ public class PixelPack {
 		copyToFloatProcessor(ip, (float)scale);
 		return ip;
 	}
-	
+
 	/**
-	 * Converts this {@link PixelPack} to a new {@link ColorProcessor} instance.
-	 * An exception is thrown if the depth of the pack is not equal 3.
-	 * Component values are rounded, no scale factor is applied.
-	 * 
+	 * Converts this {@link PixelPack} to a new {@link ColorProcessor} instance. An exception is thrown if the depth of
+	 * the pack is not equal 3. Component values are rounded, no scale factor is applied.
+	 *
 	 * @return a new {@link ColorProcessor} instance
 	 */
 	public ColorProcessor toColorProcessor() {
 		return toColorProcessor(1.0);
 	}
-	
+
 	/**
-	 * Converts this {@link PixelPack} to a new {@link ColorProcessor} instance.
-	 * An exception is thrown if the depth of the pack is not equal 3.
-	 * 
+	 * Converts this {@link PixelPack} to a new {@link ColorProcessor} instance. An exception is thrown if the depth of
+	 * the pack is not equal 3.
+	 *
 	 * @param scale scale factor applied to component values (before rounding)
 	 * @return a new {@link ColorProcessor} instance
 	 */
@@ -807,13 +773,12 @@ public class PixelPack {
 	}
 	
 	// --------------------------------------------------------------------
-	
+
 	/**
-	 * Converts this {@link PixelPack} to a new {@link ImageStack} with the same
-	 * number of slices (see {@link #getDepth()}). The stack images are of type
-	 * {@link FloatProcessor}. The resulting {@link ImageStack} does not share any
-	 * pixel data with this {@link PixelPack}.
-	 * 
+	 * Converts this {@link PixelPack} to a new {@link ImageStack} with the same number of slices (see
+	 * {@link #getDepth()}). The stack images are of type {@link FloatProcessor}. The resulting {@link ImageStack} does
+	 * not share any pixel data with this {@link PixelPack}.
+	 *
 	 * @return a new {@link ImageStack} instance
 	 */
 	public ImageStack toImageStack() {
@@ -825,26 +790,23 @@ public class PixelPack {
 	}
 	
 	// --------------------------------------------------------------------
-	
+
 	/**
-	 * Copies the contents of a pixel pack to an existing
-	 * image processor. They must be compatible w.r.t. size and depth.
-	 * Component values are rounded if necessary, no scale factor is applied.
-	 * 
+	 * Copies the contents of a pixel pack to an existing image processor. They must be compatible w.r.t. size and
+	 * depth. Component values are rounded if necessary, no scale factor is applied.
+	 *
 	 * @param ip the receiving image processor
 	 */
 	public void copyToImageProcessor(ImageProcessor ip) {
 		copyToImageProcessor(ip, 1.0);
 	}
-	
+
 	/**
-	 * Copies the contents of a pixel pack to an existing
-	 * image processor. They must be compatible w.r.t. size and depth.
-	 * Component values are rounded if necessary, after the
-	 * specified scale factor is applied.
-	 * 
+	 * Copies the contents of a pixel pack to an existing image processor. They must be compatible w.r.t. size and
+	 * depth. Component values are rounded if necessary, after the specified scale factor is applied.
+	 *
 	 * @param ip the receiving image processor
-	 * @param scale  scale factor applied to pixel values
+	 * @param scale scale factor applied to pixel values
 	 */
 	public void copyToImageProcessor(ImageProcessor ip, double scale) {
 		if (!this.isCompatibleTo(ip) ){

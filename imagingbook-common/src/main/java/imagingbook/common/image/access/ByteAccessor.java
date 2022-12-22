@@ -25,12 +25,10 @@ public class ByteAccessor extends ScalarAccessor {
 	/**
 	 * Constructor. See also the factory method
 	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy, InterpolationMethod)}.
-	 * 
-	 * @param ip  an instance of {@link ByteProcessor}
-	 * @param obs the out-of-bounds strategy to be used (use {@code null} for
-	 *            default settings)
-	 * @param ipm the interpolation method to be used (use {@code null} for default
-	 *            settings)
+	 *
+	 * @param ip an instance of {@link ByteProcessor}
+	 * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
+	 * @param ipm the interpolation method to be used (use {@code null} for default settings)
 	 */
 	public ByteAccessor(ByteProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
 		super(ip, obs, ipm);

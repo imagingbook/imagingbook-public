@@ -10,6 +10,7 @@
 package imagingbook.common.ij;
 
 import ij.IJ;
+import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import ij.process.LUT;
 
@@ -21,10 +22,10 @@ import java.awt.image.IndexColorModel;
 /**
  * This enum type wraps a selection of ImageJ's lookup tables (originally defined in class
  * {@link ij.plugin.LutLoader}).
- * 
+ *
  * @author WB
- * @version 2016/12/19
  * @version 2022/09/15 converted to enum type
+ * @see LUT
  */
 public enum NamedLookupTable {
 	
@@ -199,11 +200,10 @@ public enum NamedLookupTable {
 	}
 	
 	// ----------------------------------------------------------------------
-	
+
 	/**
-	 * Lists the contents of the lookup-table currently associated
-	 * with the specified image.
-	 * 
+	 * Lists the contents of the lookup-table currently associated with the specified image.
+	 *
 	 * @param ip the image.
 	 */
 	public static void listCurrentLut(ImageProcessor ip) {
@@ -220,12 +220,11 @@ public enum NamedLookupTable {
 			IJ.log(String.format("%3d: %3d %3d %3d", i, reds[i] & 0xFF, grns[i] & 0xFF, blus[i] & 0xFF));
 		}
 	}
-	
+
 	/**
-	 * Modifies the lookup table to display a bright image with gray values
-	 * in the range minGray ... 255. Does nothing if ip is of type
-	 * ColorProcessor.
-	 * 
+	 * Modifies the lookup table to display a bright image with gray values in the range minGray ... 255. Does nothing
+	 * if ip is of type {@link ColorProcessor}.
+	 *
 	 * @param ip the target image.
 	 * @param minGray minimum gray value.
 	 */

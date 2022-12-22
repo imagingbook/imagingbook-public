@@ -21,20 +21,18 @@ import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 
-
 /**
  * <p>
- * Provides functionality to extract local affine frames from a given image.
- * Assumes that the specified image has a white background (255) and black (0) objects.
- * See Section 26.5 of [1] for a detailed description.
+ * Provides functionality to extract local affine frames from a given image. Assumes that the specified image has a
+ * white background (255) and black (0) objects. See Section 26.5 of [1] for a detailed description.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/19
- * 
  * @see AffineMapping2D
  * @see ImageMapper
  */
@@ -69,13 +67,11 @@ public class LocalAffineFrameExtractor {	// TODO: needs testing!
 	public LocalAffineFrameExtractor(ImageProcessor sourceIp, int m) {
 		this(sourceIp, m, 1.5, true);
 	}
-	
+
 	/**
-	 * Extracts a single local-affine frame for the specified
-	 * MSER component.
-	 * The extracted image has the same type as the original source image
-	 * (passed to the constructor).
-	 * 
+	 * Extracts a single local-affine frame for the specified MSER component. The extracted image has the same type as
+	 * the original source image (passed to the constructor).
+	 *
 	 * @param mser a MSER component
 	 * @return the local-affine frame (instance of {@link ImageProcessor})
 	 */

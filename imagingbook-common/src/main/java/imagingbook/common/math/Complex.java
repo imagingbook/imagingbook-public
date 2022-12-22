@@ -16,18 +16,15 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class represents complex numbers. All instances are immutable. Methods
- * are mostly defined to be compatible with
- * org.apache.commons.math3.complex.Complex and (newer)
- * org.apache.commons.numbers.complex.Complex. Arithmetic operations are
- * generally more precise than with the Apache implementation. See also Appendix
- * Sec. A.5 of [1].
+ * This class represents complex numbers. All instances are immutable. Methods are mostly defined to be compatible with
+ * org.apache.commons.math3.complex.Complex and (newer) org.apache.commons.numbers.complex.Complex. Arithmetic
+ * operations are generally more precise than with the Apache implementation. See also Appendix Sec. A.5 of [1].
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/07/05
  */
@@ -75,6 +72,7 @@ public class Complex {
 	/**
 	 * Constructor, creates a complex quantity on the unit circle with angle {@code phi}:
 	 * {@code e^(i * phi) = cos(phi) + i * sin(phi)}.
+	 *
 	 * @param phi the angle
 	 * @see #arg()
 	 */
@@ -86,8 +84,8 @@ public class Complex {
 	// -------------------------------------------------------------------
 
 	/**
-	 * Returns the absolute value of this complex number, i.e.,
-	 * its radius or distance from the origin.
+	 * Returns the absolute value of this complex number, i.e., its radius or distance from the origin.
+	 *
 	 * @return the absolute value
 	 */
 	public double abs() {
@@ -95,8 +93,8 @@ public class Complex {
 	}
 
 	/**
-	 * Returns the squared absolute value of this complex number, i.e.,
-	 * its squared radius or distance from the origin.
+	 * Returns the squared absolute value of this complex number, i.e., its squared radius or distance from the origin.
+	 *
 	 * @return the squared absolute value
 	 */
 	public double abs2() {
@@ -104,8 +102,8 @@ public class Complex {
 	}
 
 	/**
-	 * Returns the 'argument' of this complex number, i.e.,
-	 * its angle w.r.t. to the real axis. 
+	 * Returns the 'argument' of this complex number, i.e., its angle w.r.t. to the real axis.
+	 *
 	 * @return the argument (in radians)
 	 */
 	public double arg() {
@@ -113,17 +111,17 @@ public class Complex {
 	}
 
 	/**
-     * Returns the conjugate {@code z*} of this complex number, i.e,
-     * if {@code z = a + i b} then {@code z* = a - i b}.
-     * @return the complex conjugate
-     */
+	 * Returns the conjugate {@code z*} of this complex number, i.e, if {@code z = a + i b} then {@code z* = a - i b}.
+	 *
+	 * @return the complex conjugate
+	 */
 	public Complex conjugate() {
 		return new Complex(this.re, -this.im);
 	}
 
 	/**
-	 * Adds a complex quantity to this complex number and returns
-	 * a new complex number.
+	 * Adds a complex quantity to this complex number and returns a new complex number.
+	 *
 	 * @param z complex value
 	 * @return the sum of this complex number and {@code z}
 	 */
@@ -132,8 +130,8 @@ public class Complex {
 	}
 
 	/**
-	 * Rotates this complex number by angle {@code phi} and returns
-	 * the resulting complex number.
+	 * Rotates this complex number by angle {@code phi} and returns the resulting complex number.
+	 *
 	 * @param phi the angle (in radians)
 	 * @return the rotated complex value
 	 */
@@ -145,18 +143,19 @@ public class Complex {
     public String toString() {
         return String.format(Locale.US, "(%.9f, %.9f)", re, im);
     }
-	
-    /**
-     * Returns true if the real or imaginary component of this complex number
-     * is {@code NaN}.
-     * @return true if {@code NaN}, otherwise false
-     */
+
+	/**
+	 * Returns true if the real or imaginary component of this complex number is {@code NaN}.
+	 *
+	 * @return true if {@code NaN}, otherwise false
+	 */
 	public boolean isNaN() {
 		return Double.isNaN(this.getRe()) || Double.isNaN(this.getIm());
 	}
-	
+
 	/**
 	 * Returns the real part of this complex number.
+	 *
 	 * @return the real part
 	 */
 	public double getRe() {
@@ -172,10 +171,10 @@ public class Complex {
 	}
 
 	// -------------------------------------------------------
-	
+
 	/**
-	 * Multiplies this complex number with another complex quantity and returns
-	 * a new complex number.
+	 * Multiplies this complex number with another complex quantity and returns a new complex number.
+	 *
 	 * @param z a complex quantity
 	 * @return this complex number multiplied by {@code z}
 	 */
@@ -185,23 +184,23 @@ public class Complex {
 		final double y = this.re * z.im + this.im * z.re;
 		return new Complex(x, y);
 	}
-	
+
 	/**
-	 * Multiplies this complex number with the scalar factor {@code s} and returns
-	 * a new complex number.
+	 * Multiplies this complex number with the scalar factor {@code s} and returns a new complex number.
+	 *
 	 * @param s a scalar factor
 	 * @return this complex number multiplied by {@code s}
 	 */
 	public Complex multiply(double s) {
 		return new Complex(this.re * s, this.im * s);
 	}
-	
-	 /**
-     * Returns of value of this complex number ({@code z}) raised to the power {@code k}
-     * (integer).
-     * @param k the integer exponent (&ge; 0)
-     * @return {@code z^k}
-     */
+
+	/**
+	 * Returns of value of this complex number ({@code z}) raised to the power {@code k} (integer).
+	 *
+	 * @param k the integer exponent (&ge; 0)
+	 * @return {@code z^k}
+	 */
 	public Complex pow(int k) {
 		if (k < 0) throw new IllegalArgumentException("exponent k >= 0 expected");
 		Complex prod = new Complex(1, 0);
@@ -210,10 +209,10 @@ public class Complex {
 		}
 		return prod;
 	}
-	
+
 	/**
-	 * Returns a 2-element array with the real and imaginary part of this
-	 * complex number.
+	 * Returns a 2-element array with the real and imaginary part of this complex number.
+	 *
 	 * @return (re, im)
 	 */
 	public double[] toArray() {
@@ -221,10 +220,8 @@ public class Complex {
 	}
 
 	/**
-	 * Checks if the given {@link Object} is equal to
-	 * this {@link Complex} quantity.
-	 * Calls {@link #equals(Complex, double)} if the argument is
-	 * of type {@link Complex}, otherwise {@code null} is returned.
+	 * Checks if the given {@link Object} is equal to this {@link Complex} quantity. Calls
+	 * {@link #equals(Complex, double)} if the argument is of type {@link Complex}, otherwise {@code null} is returned.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -238,11 +235,10 @@ public class Complex {
         }
         return false;
 	}
-	
+
 	/**
-	 * Checks if the given {@link Complex} quantity is equal to
-	 * this {@link Complex} quantity.
-	 * 
+	 * Checks if the given {@link Complex} quantity is equal to this {@link Complex} quantity.
+	 *
 	 * @param z another {@link Complex} quantity
 	 * @param tolerance the maximum difference of real and imaginary parts
 	 * @return true if the two complex quantities are sufficiently close, false otherwise
@@ -251,12 +247,11 @@ public class Complex {
 		return isZero(this.re - z.re, tolerance) 
 				&& isZero(this.im - z.im, tolerance);
 	}
-	
+
 	/**
-	 * Checks if the given complex quantity is equal to
-	 * this {@link Complex} quantity, using the default tolerance
+	 * Checks if the given complex quantity is equal to this {@link Complex} quantity, using the default tolerance
 	 * ({@link Arithmetic#EPSILON_DOUBLE}).
-	 * 
+	 *
 	 * @param re real part of other complex quantity
 	 * @param im imaginary part of other complex quantity
 	 * @return true if the two complex quantities are sufficiently close, false otherwise
@@ -265,11 +260,10 @@ public class Complex {
 		//return Double.compare(this.re, re) == 0 && Double.compare(this.im, im) == 0;
 		return this.equals(re, im, Arithmetic.EPSILON_DOUBLE);
 	}
-	
+
 	/**
-	 * Checks if the given complex quantity is equal to
-	 * this {@link Complex} quantity, using the specified tolerance.
-	 * 
+	 * Checks if the given complex quantity is equal to this {@link Complex} quantity, using the specified tolerance.
+	 *
 	 * @param re real part of other complex quantity
 	 * @param im imaginary part of other complex quantity
 	 * @param tolerance the maximum difference of real and imaginary parts
@@ -279,7 +273,5 @@ public class Complex {
 		return isZero(this.re - re, tolerance) 
 				&& isZero(this.im - im, tolerance);
 	}
-	
-	// -------------------------------------------------------------------
 	
 }

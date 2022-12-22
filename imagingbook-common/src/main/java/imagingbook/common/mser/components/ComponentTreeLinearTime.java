@@ -20,31 +20,29 @@ import java.util.PriorityQueue;
 
 /**
  * <p>
- * This class implements the "linear-time" ("local flooding")
- * component tree algorithm described in [1].
- * See Section 26.2.3 of [2] for a detailed description (Algs. 26.3 - 26.4).
+ * This class implements the "linear-time" ("local flooding") component tree algorithm described in [1]. See Section
+ * 26.2.3 of [2] for a detailed description (Algs. 26.3 - 26.4).
  * </p>
  * <p>
- * [1] D. Nister and H. Stewenius, "Linear Time Maximally Stable Extremal Regions", 
- * Computer Vision - ECCV 2008. pp. 183-196, Springer Berlin/Heidelberg (2008).
+ * [1] D. Nister and H. Stewenius, "Linear Time Maximally Stable Extremal Regions", Computer Vision - ECCV 2008. pp.
+ * 183-196, Springer Berlin/Heidelberg (2008).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * @author WB
- * @version 2022/11/19
  *
  * @param <T> the type of properties to be attached to components
+ * @author WB
+ * @version 2022/11/19
  */
 public class ComponentTreeLinearTime<T> extends ComponentTree<T> {
 	
 	private final List<Component<T>> components;
 	private final Component<T> root;
-	
+
 	/**
-	 * Constructor. 
-	 * Creates a new component tree from a {@link PixelMap} representing
-	 * a gray-level image.
+	 * Constructor, creates a new component tree from a {@link PixelMap} representing a gray-level image.
+	 *
 	 * @param P a {@link PixelMap}
 	 */
 	public ComponentTreeLinearTime(PixelMap P) {
@@ -68,9 +66,9 @@ public class ComponentTreeLinearTime<T> extends ComponentTree<T> {
 	// -----------------------------------------------------------------------------------
 
 	/**
-	 * Creates the component set from a {@link PixelMap}.
-	 * Modifies {@link #components}.
-	 * The last item in {@link #components} is the root component.
+	 * Creates the component set from a {@link PixelMap}. Modifies {@link #components}. The last item in
+	 * {@link #components} is the root component.
+	 *
 	 * @param P the input image
 	 */
 	private Component<T> buildTree(PixelMap P) {		
@@ -122,10 +120,10 @@ public class ComponentTreeLinearTime<T> extends ComponentTree<T> {
 	// -------------------------------------------------------------------
 
 	/**
-	 * This method is called whenever the current pixel value is raised.
-	 * Processes the top items on the component stack.
+	 * This method is called whenever the current pixel value is raised. Processes the top items on the component stack.
 	 * Modifies {@link #components}.
-	 * @param v	new "target" level
+	 *
+	 * @param v new "target" level
 	 * @param C component stack
 	 */
 	private void processStack(int v, Deque<Component<T>> C) {
@@ -146,8 +144,7 @@ public class ComponentTreeLinearTime<T> extends ComponentTree<T> {
 			}
 		}
 	}
-	
-	
+
 	private int nextComponentIndex = 0;
 	
 	private Component<T> makeComponent(int level) {

@@ -11,15 +11,14 @@ package imagingbook.common.sift.scalespace;
 
 /**
  * <p>
- * Represents a single "octave" in a hierarchical DoG scale space. See Secs.
- * 25.1.3 - 25.1.4 of [1] for more details.
+ * Represents a single "octave" in a hierarchical DoG scale space. See Secs. 25.1.3 - 25.1.4 of [1] for more details.
  * This class defines no public constructor.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/20
  */

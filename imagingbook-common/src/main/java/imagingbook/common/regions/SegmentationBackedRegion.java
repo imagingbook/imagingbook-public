@@ -162,8 +162,8 @@ public class SegmentationBackedRegion extends BinaryRegion {
 	}
 
 	/**
-	 * Checks if the given pixel position is contained in this
-	 * {@link SegmentationBackedRegion} instance.
+	 * Checks if the given pixel position is contained in this {@link SegmentationBackedRegion} instance.
+	 *
 	 * @param u x-coordinate
 	 * @param v y-coordinate
 	 * @return true if (u,v) is contained in this region
@@ -176,8 +176,8 @@ public class SegmentationBackedRegion extends BinaryRegion {
 	// --------------------------------------------------------------------------------
 
 	/**
-	 * Instances of this class are returned by {@link SegmentationBackedRegion#iterator()},
-	 * which implements  {@link Iterable} for instances of class {@link Pnt2d}.
+	 * Instances of this class are returned by {@link SegmentationBackedRegion#iterator()}, which implements
+	 * {@link Iterable} for instances of class {@link Pnt2d}.
 	 */
 	private class RegionPixelIterator implements Iterator<Pnt2d> {
 		private final int label;					// the corresponding region's label
@@ -199,11 +199,10 @@ public class SegmentationBackedRegion extends BinaryRegion {
 			pNext = null;
 		}
 
-		/** 
-		 * Search from position (uCur, vCur) for the next valid region pixel.
-		 * Return the next position as a Point or null if no such point can be found.
-		 * Don't assume that (uCur, vCur) is a valid region pixel!
-		 * 
+		/**
+		 * Search from position (uCur, vCur) for the next valid region pixel. Return the next position as a Point or
+		 * null if no such point can be found. Don't assume that (uCur, vCur) is a valid region pixel!
+		 *
 		 * @return the next point
 		 */
 		private Pnt2d.PntInt findNext() {
@@ -258,6 +257,6 @@ public class SegmentationBackedRegion extends BinaryRegion {
 			throw new UnsupportedOperationException();
 		}
 
-	} // end of class RegionPixelIterator
+	}
 
-} // end of class BinaryRegion
+}

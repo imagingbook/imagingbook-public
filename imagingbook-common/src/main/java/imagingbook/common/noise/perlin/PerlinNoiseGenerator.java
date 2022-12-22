@@ -14,17 +14,15 @@ import imagingbook.common.noise.hashing.HashFunction;
 
 /**
  * <p>
- * Gradient (Perlin) noise implementation (see [1] for a detailed description).
- * This is the super-class for all other Perlin noise generators (1D, 2D,
- * N-dimensional).
+ * Gradient (Perlin) noise implementation (see [1] for a detailed description). This is the super-class for all other
+ * Perlin noise generators (1D, 2D, N-dimensional).
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Principles of Digital Image Processing &ndash;
- * Advanced Methods</em> (Vol. 3), Supplementary Chapter 8: "Synthetic Gradient
- * Noise", Springer (2013). <a href=
+ * [1] W. Burger, M.J. Burge, <em>Principles of Digital Image Processing &ndash; Advanced Methods</em> (Vol. 3),
+ * Supplementary Chapter 8: "Synthetic Gradient Noise", Springer (2013). <a href=
  * "https://dx.doi.org/10.13140/RG.2.1.3427.7284">https://dx.doi.org/10.13140/RG.2.1.3427.7284</a>
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/24
  */
@@ -58,8 +56,9 @@ public abstract class PerlinNoiseGenerator {
 
 	/**
 	 * Perlin's improved "fading" function s(x)
+	 *
 	 * @param x interpolation position in [0,1]
-	 * @return s(x) = 10 x^3 - 15 x^4 + 6 x^5 
+	 * @return s(x) = 10 x^3 - 15 x^4 + 6 x^5
 	 */
 	double s(double x) {
 		return x * x * x * (x * (x * 6 - 15) + 10);
@@ -101,18 +100,19 @@ public abstract class PerlinNoiseGenerator {
 	}
 
 	// -----------------------------------------------
-	
+
 	/**
-	 * @return An array with the frequencies f_i used for generating 
-	 * the noise function.
+	 * Returns an array with the frequencies f_i used for generating the noise function
+	 * @return an array of frequencies
 	 */
 	public double[] getFrequencies() {
 		return F;
 	}
 
 	/**
-	 * @return An array with the amplitudes a_i used for generating 
-	 * the noise function.
+	 * Returns an array with the amplitudes a_i used for generating * the noise function.
+	 *
+	 * @return an array of amplitudes
 	 */
 	public double[] getAmplitudes() {
 		return A;

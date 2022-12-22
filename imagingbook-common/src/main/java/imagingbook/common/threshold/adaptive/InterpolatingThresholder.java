@@ -16,16 +16,15 @@ import imagingbook.common.util.ParameterBundle;
 
 /**
  * <p>
- * This adaptive thresholder splits the image into non-overlapping square
- * sub-images, computes the optimal threshold within each sub-image (using a
- * {@link OtsuThresholder}) and interpolates linearly between these local
- * thresholds. See also Sec. 9.4 of [1] for a description.
+ * This adaptive thresholder splits the image into non-overlapping square sub-images, computes the optimal threshold
+ * within each sub-image (using a {@link OtsuThresholder}) and interpolates linearly between these local thresholds. See
+ * also Sec. 9.4 of [1] for a description.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/08/01
  */

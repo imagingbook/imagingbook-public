@@ -11,25 +11,23 @@ package imagingbook.common.image.interpolation;
 
 import imagingbook.common.image.access.ScalarAccessor;
 
-
 /**
  * <p>
- * This interface defines the behavior of 2D pixel interpolators
- * for scalar-valued images. See Ch. 22 of [1] for additional details.
+ * This interface defines the behavior of 2D pixel interpolators for scalar-valued images. See Ch. 22 of [1] for
+ * additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  */
 public interface PixelInterpolator {
-	
+
 	/**
-	 * Returns a {@link PixelInterpolator} instance for the specified
-	 * {@link InterpolationMethod}.
-	 * 
+	 * Returns a {@link PixelInterpolator} instance for the specified {@link InterpolationMethod}.
+	 *
 	 * @param method the interpolation method
 	 * @return an instance of {@link PixelInterpolator}
 	 */
@@ -57,25 +55,23 @@ public interface PixelInterpolator {
 	 * @param ia a {@link ScalarAccessor} to the interpolated image
 	 * @param x continuous interpolation position (horiz.)  
 	 * @param y continuous interpolation position (vert.)  
-	 * @return The interpolated pixel value at position (x,y).
+	 * @return the interpolated pixel value at position (x,y).
 	 */
 	public float getInterpolatedValue(ScalarAccessor ia, double x, double y);
-	
+
 	/**
-	 * Returns the value of the one-dimensional weight function w(x), that is
-	 * the weight given to some pixel at distance x from the current interpolation
-	 * point. This method is primarily used for testing.
-	 * 
+	 * Returns the value of the one-dimensional weight function w(x), that is the weight given to some pixel at distance
+	 * x from the current interpolation point. This method is primarily used for testing.
+	 *
 	 * @param x the position relative to the interpolation point
 	 * @return the weight for this position
 	 */
 	public double getWeight(double x);
-	
+
 	/**
-	 * Returns the value of the two-dimensional weight function W(x,y), that is
-	 * the weight given to some pixel at distance (x,y) relative to the current interpolation
-	 * point. This method is primarily used for testing.
-	 * 
+	 * Returns the value of the two-dimensional weight function W(x,y), that is the weight given to some pixel at
+	 * distance (x,y) relative to the current interpolation point. This method is primarily used for testing.
+	 *
 	 * @param x the x-position relative to the interpolation point
 	 * @param y the y-position relative to the interpolation point
 	 * @return the weight for this position

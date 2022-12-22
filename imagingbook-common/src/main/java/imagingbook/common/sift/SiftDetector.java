@@ -26,21 +26,19 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class implements the detection of SIFT features from images, as
- * described in [1]. See Ch. 25 of [2] for more details.
+ * This class implements the detection of SIFT features from images, as described in [1]. See Ch. 25 of [2] for more
+ * details.
  * </p>
  * <p>
- * Currently only images of type {@link FloatProcessor} are supported. The input
- * image is normalized to values in [0,1] before SIFT detection starts. A large
- * set of parameters can be specified (see {@link SiftParameters}).
+ * Currently only images of type {@link FloatProcessor} are supported. The input image is normalized to values in [0,1]
+ * before SIFT detection starts. A large set of parameters can be specified (see {@link SiftParameters}).
  * </p>
  * <p>
- * [1] D. G. Lowe. Distinctive image features from scale-invariant keypoints.
- * International Journal of Computer Vision 60, 91–110 (2004). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] D. G. Lowe. Distinctive image features from scale-invariant keypoints. International Journal of Computer Vision
+ * 60, 91–110 (2004). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/20
  * @see SiftParameters
@@ -78,16 +76,14 @@ public class SiftDetector {
 
 	/**
 	 * <p>
-	 * Constructor using specific parameters. The input image is normalized to
-	 * values in [0,1], the minimum pixel value being mapped to 0 and the maximum
-	 * value to 1. An exception is thrown if the supplied image is "flat", i.e.,
-	 * contains only a single pixel value. A large set of parameters can be
-	 * specified (see {@link SiftParameters}). The constructor sets up the complete
-	 * Gaussian and DoG scale spaces but does not perform feature detection itself,
+	 * Constructor using specific parameters. The input image is normalized to values in [0,1], the minimum pixel value
+	 * being mapped to 0 and the maximum value to 1. An exception is thrown if the supplied image is "flat", i.e.,
+	 * contains only a single pixel value. A large set of parameters can be specified (see {@link SiftParameters}). The
+	 * constructor sets up the complete Gaussian and DoG scale spaces but does not perform feature detection itself,
 	 * which is done by calling {@link #getSiftFeatures()}.
 	 * </p>
-	 * 
-	 * @param fp     the input image
+	 *
+	 * @param fp the input image
 	 * @param params an instance of {@link SiftParameters}
 	 * @see SiftParameters
 	 */
@@ -135,21 +131,20 @@ public class SiftDetector {
 		}
 		return siftDescriptors;
 	}
-	
+
 	/**
-	 * Returns the {@link GaussianScaleSpace} for this SIFT detector
-	 * instance. Mainly intended for debugging and testing.
-	 * 
+	 * Returns the {@link GaussianScaleSpace} for this SIFT detector instance. Mainly intended for debugging and
+	 * testing.
+	 *
 	 * @return the {@link GaussianScaleSpace} for this SIFT detector
 	 */
 	public GaussianScaleSpace getGaussianScaleSpace() {
 		return this.G;
 	}
-	
+
 	/**
-	 * Returns the {@link DogScaleSpace} for this SIFT detector
-	 * instance. Mainly intended for debugging and testing.
-	 * 
+	 * Returns the {@link DogScaleSpace} for this SIFT detector instance. Mainly intended for debugging and testing.
+	 *
 	 * @return the {@link DogScaleSpace} for this SIFT detector
 	 */
 	public DogScaleSpace getDogScaleSpace() {
@@ -159,9 +154,8 @@ public class SiftDetector {
 	// --------------------------------------------------
 
 	/**
-	 * Only used for debugging: produces key points with orientation
-	 * histograms attached for display purposes.
-	 * 
+	 * Only used for debugging: produces key points with orientation histograms attached for display purposes.
+	 *
 	 * @param keypoints the sequence of original key points
 	 * @return a sequence of enhanced key points
 	 */

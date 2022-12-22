@@ -14,14 +14,13 @@ import static imagingbook.common.morphology.StructuringElements.reflect;
 
 /**
  * <p>
- * Implements a binary morphological erosion operation. See Sec. 7.2.4 of [1]
- * for additional details.
+ * Implements a binary morphological erosion operation. See Sec. 7.2.4 of [1] for additional details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/09/18
  */

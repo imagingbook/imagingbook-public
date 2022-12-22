@@ -9,5 +9,7 @@
 
 /**
  * EISPACK code (FORTRAN) for solving generalized eigenvalue problems (from http://www.netlib.no/netlib/eispack).
+ * Untangled to goto-free Java using a sequential state machine concept, inspired by D. E. Knuth,
+ * "Structured Programming with Goto Statements", Computing Surveys, Vol. 6, No. 4 (1974).
  */
 package imagingbook.common.math.eigen.eispack;

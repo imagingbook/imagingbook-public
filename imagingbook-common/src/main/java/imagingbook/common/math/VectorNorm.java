@@ -14,9 +14,8 @@ import java.lang.reflect.Array;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
- * This class defines various vector norms for calculating
- * the magnitude of a vector and the distance between vectors.
- * 
+ * This class defines various vector norms for calculating the magnitude of a vector and the distance between vectors.
+ *
  * @author WB
  * @version 2022/09/11
  */
@@ -26,6 +25,7 @@ public abstract class VectorNorm {
 
 	/**
 	 * Returns the magnitude of the specified {@code double[]} vector under this norm.
+	 *
 	 * @param a a vector
 	 * @return the magnitude of the vector
 	 */
@@ -94,12 +94,10 @@ public abstract class VectorNorm {
 	public abstract double distance2(int[] a, int[] b);
 
 	/**
-	 * Returns a factor to scale magnitude and distance values 
-	 * to the range of the vector components of dimensionality
-	 * n. This is prim. used for scaling color distances (n = 3).
-	 * E.g., if components are distributed in [0,255], the distances
-	 * multiplied by this factor should again be in [0,255].
-	 * 
+	 * Returns a factor to scale magnitude and distance values to the range of the vector components of dimensionality
+	 * n. This is prim. used for scaling color distances (n = 3). E.g., if components are distributed in [0,255], the
+	 * distances multiplied by this factor should again be in [0,255].
+	 *
 	 * @param n dimensionality
 	 * @return scale factor
 	 */
@@ -132,32 +130,12 @@ public abstract class VectorNorm {
 			throw new IllegalArgumentException("vectors a, b must be of same length");
 		}
 	}
-		
-//	private static void checkLengths(double[] a, double[] b) {
-//		if (a.length != b.length) {
-//			throw new IllegalArgumentException("vectors must be of same length");
-//		}	
-//	}
-	
-//	private static void checkLengths(float[] a, float[] b) {
-//		if (a.length != b.length) {
-//			throw new IllegalArgumentException("vectors must be of same length");
-//		}	
-//	}
-	
-//	private static void checkLengths(int[] a, int[] b) {
-//		if (a.length != b.length) {
-//			throw new IllegalArgumentException("vectors must be of same length");
-//		}	
-//	}
 
 	//  concrete classes -----------------------------------------------
 
 	/**
-	 * Implementation of the L1 vector norm (Manhattan norm/distance).
-	 * This class defines no public constructor, use method
-	 * {@link L1#getInstance()} to
-	 * retrieve the associated (singleton) instance.
+	 * Implementation of the L1 vector norm (Manhattan norm/distance). This class defines no public constructor, use
+	 * method {@link L1#getInstance()} to retrieve the associated (singleton) instance.
 	 */
 	public static class L1 extends VectorNorm {
 		
@@ -257,10 +235,8 @@ public abstract class VectorNorm {
 	// ------------------------------------------------------------------------------
 
 	/**
-	 * Implementation of the L2 vector norm (Euclidean norm/distance).
-	 * This class defines no public constructor, use method
-	 * {@link L2#getInstance()} to
-	 * retrieve the associated (singleton) instance.
+	 * Implementation of the L2 vector norm (Euclidean norm/distance). This class defines no public constructor, use
+	 * method {@link L2#getInstance()} to retrieve the associated (singleton) instance.
 	 */
 	public static class L2 extends VectorNorm {
 		
@@ -360,10 +336,8 @@ public abstract class VectorNorm {
 	// ------------------------------------------------------------------------------
 
 	/**
-	 * Implementation of the L-infinity vector norm (maximum norm/distance).
-	 * This class defines no public constructor, use method
-	 * {@link Linf#getInstance()} to
-	 * retrieve the associated (singleton) instance.
+	 * Implementation of the L-infinity vector norm (maximum norm/distance). This class defines no public constructor,
+	 * use method {@link Linf#getInstance()} to retrieve the associated (singleton) instance.
 	 */
 	public static class Linf extends VectorNorm {
 		

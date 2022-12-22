@@ -19,14 +19,13 @@ import java.util.List;
 
 /**
  * <p>
- * Instances of this class perform matching between SIFT features. See Secs.
- * 25.5 of [1] for more details.
+ * Instances of this class perform matching between SIFT features. See Secs. 25.5 of [1] for more details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/20 removed inner Parameters class, changed constructor
  */
@@ -57,15 +56,13 @@ public class SiftMatcher {
 	public SiftMatcher() {
 		this(DefaultNormType, DefaultRMax);
 	}
-	
+
 	/**
-	 * Finds matches between two sets of SIFT descriptors. For each descriptor in
-	 * the first set, the best and second-best fits are searched for in the second
-	 * set. A valid match instance is created if the distance to the best-matching
-	 * descriptor is significantly smaller than the distance to the second-best
-	 * matching descriptor. The resulting list of matches is sorted by increasing
-	 * match distance.
-	 * 
+	 * Finds matches between two sets of SIFT descriptors. For each descriptor in the first set, the best and
+	 * second-best fits are searched for in the second set. A valid match instance is created if the distance to the
+	 * best-matching descriptor is significantly smaller than the distance to the second-best matching descriptor. The
+	 * resulting list of matches is sorted by increasing match distance.
+	 *
 	 * @param setA the first set of SIFT descriptors
 	 * @param setB the second set of SIFT descriptors
 	 * @return a (possibly empty) list of {@link SiftMatch} instances

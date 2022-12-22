@@ -78,26 +78,12 @@ public abstract class RansacDetector<T extends Primitive2d> {
 		this.randomDraw = new RandomDraw<>(rand);
 	}
 	
-	// -----------------------------------------------------------
-	
-//	/**
-//	 * Returns this detector's random generator. This can be used, e.g.,
-//	 * to set its seed (by {@link Random#setSeed(long)}).
-//	 * 
-//	 * @return the random generator
-//	 */
-//	public Random getRandom() {
-//		return this.rand;
-//	}
-	
 	// ----------------------------------------------------------
-	
+
 	/**
-	 * Performs iterative RANSAC steps on the supplied image,
-	 * which is assumed to be binary (all nonzero pixels are considered
-	 * input points).
-	 * Extracts the point set from the image and calls {@link #detectAll(Pnt2d[], int)}.
-	 * 
+	 * Performs iterative RANSAC steps on the supplied image, which is assumed to be binary (all nonzero pixels are
+	 * considered input points). Extracts the point set from the image and calls {@link #detectAll(Pnt2d[], int)}.
+	 *
 	 * @param bp a binary image (nonzero pixels are considered points)
 	 * @param maxCount the maximum number of primitives to detect
 	 * @return the list of detected primitives
@@ -109,14 +95,12 @@ public abstract class RansacDetector<T extends Primitive2d> {
 		}
 		return detectAll(points, maxCount);
 	}
-	
+
 	/**
-	 * Performs iterative RANSAC steps on the supplied point set until
-	 * either no more primitive was detected or the maximum number
-	 * of primitives was reached.
-	 * Iteratively calls {@link #detectNext(Pnt2d[])} on the specified
-	 * point set.
-	 * 
+	 * Performs iterative RANSAC steps on the supplied point set until either no more primitive was detected or the
+	 * maximum number of primitives was reached. Iteratively calls {@link #detectNext(Pnt2d[])} on the specified point
+	 * set.
+	 *
 	 * @param points the original point set
 	 * @param maxCount the maximum number of primitives to detect
 	 * @return the list of detected primitives
@@ -133,13 +117,11 @@ public abstract class RansacDetector<T extends Primitive2d> {
 		}
 		return primitives;
 	}
-	
+
 	/**
-	 * Performs a single RANSAC step on the supplied point set. 
-	 * If {@link RansacParameters#removeInliers} is set true, 
-	 * all associated inlier points are removed from the point set (by setting
-	 * array elements to {@code null}).
-	 * 
+	 * Performs a single RANSAC step on the supplied point set. If {@link RansacParameters#removeInliers} is set true,
+	 * all associated inlier points are removed from the point set (by setting array elements to {@code null}).
+	 *
 	 * @param points an array of {@link Pnt2d} instances (modified)
 	 * @return the detected primitive (of generic type T) or {@code null} if unsuccessful
 	 */
@@ -175,12 +157,11 @@ public abstract class RansacDetector<T extends Primitive2d> {
 				throw new RuntimeException("final fit failed!");
 		}
 	}
-	
+
 	/**
-	 * Randomly selects {@link #K} unique points from the supplied {@link Pnt2d} array.
-	 * Inheriting classes may override this method to enforce specific constraints 
-	 * on the selected points (e.g., see {@link RansacLineDetector}).
-	 * 
+	 * Randomly selects {@link #K} unique points from the supplied {@link Pnt2d} array. Inheriting classes may override
+	 * this method to enforce specific constraints on the selected points (e.g., see {@link RansacLineDetector}).
+	 *
 	 * @param points an array of {@link Pnt2d} instances
 	 * @return an array of {@link #K} unique points
 	 */
@@ -200,14 +181,12 @@ public abstract class RansacDetector<T extends Primitive2d> {
 		}
 		return count;
 	}
-	
+
 	/**
-	 * Find all points that are considered inliers with respect to the
-	 * specified curve and the value of {@link RansacParameters#maxInlierDistance}.
-	 * If {@link RansacParameters#removeInliers} is set true, these
-	 * points are also removed from the original point set, otherwise
-	 * they remain.
-	 * 
+	 * Find all points that are considered inliers with respect to the specified curve and the value of
+	 * {@link RansacParameters#maxInlierDistance}. If {@link RansacParameters#removeInliers} is set true, these points
+	 * are also removed from the original point set, otherwise they remain.
+	 *
 	 * @param curve
 	 * @param points
 	 * @return
@@ -230,21 +209,19 @@ public abstract class RansacDetector<T extends Primitive2d> {
 	}
 	
 	// abstract methods to be implemented by specific sub-classes: -----------------------
-	
+
 	/**
-	 * Fits an initial primitive to the specified points.
-	 * This abstract method must be implemented by inheriting classes,
-	 * which must also specify the required number of initial points ({@link #K}).
-	 * 
+	 * Fits an initial primitive to the specified points. This abstract method must be implemented by inheriting
+	 * classes, which must also specify the required number of initial points ({@link #K}).
+	 *
 	 * @param draw an array of exactly {@link #K} points
 	 * @return a new primitive of type T
 	 */
 	abstract T fitInitial(Pnt2d[] draw);
-	
+
 	/**
-	 * Fits a primitive to the specified points.
-	 * This abstract method must be implemented by inheriting classes.
-	 * 
+	 * Fits a primitive to the specified points. This abstract method must be implemented by inheriting classes.
+	 *
 	 * @param inliers an array of at least {@link #K} points
 	 * @return a new primitive of type T.
 	 */

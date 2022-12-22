@@ -13,34 +13,27 @@ import imagingbook.common.ij.IjProgressBarMonitor;
 
 /**
  * <p>
- * This class represents a "progress monitor". This is a simple {@link Thread}
- * that queries the attached target task (implementing {@link ProgressReporter})
- * and calls its {@link #handleProgress(double, long)} method at regular
- * intervals. {@link ProgressMonitor} implements the {@link AutoCloseable} and
- * thus can (and should) be used in a try-with-resources context, e.g.,
+ * This class represents a "progress monitor". This is a simple {@link Thread} that queries the attached target task
+ * (implementing {@link ProgressReporter}) and calls its {@link #handleProgress(double, long)} method at regular
+ * intervals. {@link ProgressMonitor} implements the {@link AutoCloseable} and thus can (and should) be used in a
+ * try-with-resources context, e.g.,
  * </p>
- * 
  * <pre>
  * ProgressReporter task = ....; // the activity to be monitored
  * try (ProgressMonitor m = new ConsoleProgressMonitor(task)) {
  *     // run task ...
  * }
  * </pre>
- * 
  * <p>
- * Otherwise, if not used in a auto-start/close mode, the methods
- * {@link #start()} and {@link #close()} should be used to "manually" start and
- * terminate monitoring. See {@link ProgressMonitorExample},
- * {@link GenericFilter}, {@link ConsoleProgressMonitor} and {@link IjProgressBarMonitor} 
- * for examples.
+ * Otherwise, if not used in a auto-start/close mode, the methods {@link #start()} and {@link #close()} should be used
+ * to "manually" start and terminate monitoring. See {@link ProgressMonitorExample}, {@link GenericFilter},
+ * {@link ConsoleProgressMonitor} and {@link IjProgressBarMonitor} for examples.
  * </p>
- * 
  * <p>
- * Note that this mechanism cannot be used to monitor activities inside
- * a constructor, since no reference to the monitored instance is available
- * before the constructor is finished.
+ * Note that this mechanism cannot be used to monitor activities inside a constructor, since no reference to the
+ * monitored instance is available before the constructor is finished.
  * </p>
- * 
+ *
  * @see ProgressReporter
  * @see ProgressMonitorExample
  * @see ConsoleProgressMonitor
@@ -55,25 +48,22 @@ public abstract class ProgressMonitor extends Thread implements AutoCloseable {
 
 	private boolean running;
 	private long startTime, endTime;
-	
+
 	/**
-	 * Constructor, starts monitoring immediately.
-	 * The target object's {@link ProgressReporter#getProgress()}
-	 * method is called it regular intervals.
-	 * 
+	 * Constructor, starts monitoring immediately. The target object's {@link ProgressReporter#getProgress()} method is
+	 * called it regular intervals.
+	 *
 	 * @param target the object (task) to be monitored
 	 */
 	public ProgressMonitor(ProgressReporter target) {
 		this(target, true);
 	}
-	
+
 	/**
-	 * Constructor, optionally starts monitoring immediately or waits
-	 * for its {@link #start()} method to be called (which starts the 
-	 * associated thread).
-	 * The target object's {@link ProgressReporter#getProgress()}
-	 * method is called it regular intervals.
-	 * 
+	 * Constructor, optionally starts monitoring immediately or waits for its {@link #start()} method to be called
+	 * (which starts the associated thread). The target object's {@link ProgressReporter#getProgress()} method is called
+	 * it regular intervals.
+	 *
 	 * @param target the object (task) to be monitored
 	 * @param autoStart starts immediately if true
 	 */
@@ -85,24 +75,21 @@ public abstract class ProgressMonitor extends Thread implements AutoCloseable {
 			start();
 		}
 	}
-	
+
 	/**
-	 * The time interval between progress queries can be set with this method.
-	 * See also {@link #DefaultWaitTime}.
-	 * 
+	 * The time interval between progress queries can be set with this method. See also {@link #DefaultWaitTime}.
+	 *
 	 * @param waitTime the time interval (in milliseconds)
 	 */
 	public void setWaitTime(int waitTime) {
 		this.waitTime = waitTime;
 	}
-	
+
 	/**
-	 * Called periodically by the {@link ProgressMonitor} thread
-	 * supplying the current progress value (degree of completion).
-	 * It is up to the implementation what action should be performed,
-	 * e.g., display the current progress graphically 
-	 * (see e.g. {@link IjProgressBarMonitor}).
-	 * 
+	 * Called periodically by the {@link ProgressMonitor} thread supplying the current progress value (degree of
+	 * completion). It is up to the implementation what action should be performed, e.g., display the current progress
+	 * graphically (see e.g. {@link IjProgressBarMonitor}).
+	 *
 	 * @param progress the current progress value (degree of completion) in [0,1)
 	 * @param elapsedNanoTime the time elapsed since this progress monitor was started (in nanoseconds)
 	 */

@@ -35,7 +35,6 @@ public enum MserColors implements ColorEnumeration {
 	public static final Color[] LevelColors = 
 			getColors(Red, Green, Blue, Magenta);
 
-	
 	private final Color color;
 	
 	MserColors(int r, int g, int b) {

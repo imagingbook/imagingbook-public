@@ -9,8 +9,8 @@
 package imagingbook.common.util.bits;
 
 /**
- * This class implements {@link BitVector} with internal 64-bit 
- * {@code long} data.
+ * This class implements {@link BitVector} with internal 64-bit {@code long} data.
+ *
  * @author WB
  */
 public class BitVector64 implements BitVector {
@@ -106,38 +106,5 @@ public class BitVector64 implements BitVector {
 		buf.append("]");
 		return buf.toString();
 	}
-	
-//	public String toHexString() {
-//		StringBuilder buf = new StringBuilder();
-//		buf.append(BitVector64.class.getSimpleName() + "[");
-//		for (int i = 0; i < data.length; i++) {
-//			buf.append(Long.toHexString(data[i]));
-//		}
-//		buf.append("]");
-//		return buf.toString();
-//	}
-	
-	//----------------------------------------------------------------------------------
-	
-//	public static void main(String[] args) {
-//		int K = 99;
-//		BitVector64 b = new BitVector64(K);
-//		
-//		System.out.println(b.toString());
-//		b.setAll();
-//		System.out.println(b.toString());
-//		b.unsetAll();
-//		System.out.println(b.toString());
-//		
-////		System.out.println(b.toHexString());
-//		
-//		System.out.println();
-//		
-//		for (int i = 0; i < b.length; i++) {
-//			b.set(i);
-//			System.out.println(b.toString());
-//			b.unset(i);
-//		}
-//	}
 
 }

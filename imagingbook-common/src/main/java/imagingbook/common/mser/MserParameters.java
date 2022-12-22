@@ -16,8 +16,7 @@ import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.common.util.ParameterBundle;
 
 /**
- * Parameters for MSER detection. Instances of this class may be placed inside a
- * {@link GenericDialog} using
+ * Parameters for MSER detection. Instances of this class may be placed inside a {@link GenericDialog} using
  * {@link DialogUtils#addToDialog(ParameterBundle, ij.gui.GenericDialog)}.
  */
 public class MserParameters implements ParameterBundle<MserDetector> {

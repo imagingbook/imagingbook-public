@@ -21,26 +21,24 @@ import org.apache.commons.math3.stat.correlation.Covariance;
 public abstract class Statistics {
 	
 	private Statistics() {}
-	
+
 	/**
-	 * Calculates the covariance matrix for a sequence of sample vectors.
-	 * Takes a sequence of n data samples, each of dimension m.
-	 * The data element {@code samples[i][j]} refers to the j-th component
-	 * of sample i. No statistical bias correction is applied.
-	 * 
+	 * Calculates the covariance matrix for a sequence of sample vectors. Takes a sequence of n data samples, each of
+	 * dimension m. The data element {@code samples[i][j]} refers to the j-th component of sample i. No statistical bias
+	 * correction is applied.
+	 *
 	 * @param samples a 2D array of m-dimensional vectors (double[n][m]).
 	 * @return the covariance matrix for the sample data (of dimension m x m).
 	 */
 	public static double[][] covarianceMatrix(double[][] samples) {
 		return covarianceMatrix(samples, false);
 	}
-	
+
 	/**
-	 * Calculates the covariance matrix for a sequence of sample vectors.
-	 * Takes a sequence of n data samples, each of dimension m.
-	 * The data element {@code samples[i][j]} refers to the j-th component
-	 * of sample i. Statistical bias correction is optionally applied.
-	 * 
+	 * Calculates the covariance matrix for a sequence of sample vectors. Takes a sequence of n data samples, each of
+	 * dimension m. The data element {@code samples[i][j]} refers to the j-th component of sample i. Statistical bias
+	 * correction is optionally applied.
+	 *
 	 * @param samples a 2D array of m-dimensional vectors (double[n][m]).
 	 * @param biasCorrect If {@code true}, statistical bias correction is applied.
 	 * @return the covariance matrix for the sample data (of dimension m x m).

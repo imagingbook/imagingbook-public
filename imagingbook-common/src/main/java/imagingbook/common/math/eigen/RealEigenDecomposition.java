@@ -13,9 +13,8 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 /**
- * Common interface for eigendecompositions capable of delivering solutions when
- * all eigenvalues are real.
- * 
+ * Common interface for eigendecompositions capable of delivering solutions when all eigenvalues are real.
+ *
  * @author WB
  * @version 2022/07/08
  */
@@ -57,15 +56,13 @@ public interface RealEigenDecomposition {	// TODO: add 'ComplexEigenDecompositio
 //	public default double[] getImagEigenvalues() {
 //		throw new UnsupportedOperationException();
 //	}
-	
-	 /**
-     * Returns the k-th eigenvector, i.e., the
-     * k-th column vector of the matrix returned
-     * by {@link #getV()}.
-     * 
-     * @param k index of the eigenvector (0-based)
-     * @return the k-th eigenvector (instance of {@link RealVector})
-     */
+
+	/**
+	 * Returns the k-th eigenvector, i.e., the k-th column vector of the matrix returned by {@link #getV()}.
+	 *
+	 * @param k index of the eigenvector (0-based)
+	 * @return the k-th eigenvector (instance of {@link RealVector})
+	 */
 	public RealVector getEigenvector(int k);
 	
 	/**
@@ -74,13 +71,12 @@ public interface RealEigenDecomposition {	// TODO: add 'ComplexEigenDecompositio
 	 * @return the matrix of eigenvectors
 	 */
 	public RealMatrix getV();
-	
-	
+
+
 	/**
-     * Gets the block diagonal matrix D of the decomposition.
-     * Real eigenvalues are on the diagonal while complex values are on
-     * 2x2 blocks {{real pos imaginary}, {neg imaginary, real}}.
-     *
+	 * Gets the block diagonal matrix D of the decomposition. Real eigenvalues are on the diagonal while complex values
+	 * are on 2x2 blocks {{real_pos imaginary}, {neg_imaginary, real}}.
+	 *
 	 * @return matrix D
 	 */
 	public default RealMatrix getD() {

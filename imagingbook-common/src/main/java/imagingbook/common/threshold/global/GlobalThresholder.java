@@ -14,32 +14,29 @@ import imagingbook.common.threshold.Thresholder;
 
 /**
  * <p>
- * Common interface to be implemented by all global thresholders. See Sec. 9.1
- * of [1] for an overview.
+ * Common interface to be implemented by all global thresholders. See Sec. 9.1 of [1] for an overview.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/08/01
  */
 public interface GlobalThresholder extends Thresholder {
-	
+
 	/**
-	 * Returns a single (global) threshold value for the
-	 * specified histogram.
-	 * 
+	 * Returns a single (global) threshold value for the specified histogram.
+	 *
 	 * @param h a histogram (array of frequencies)
 	 * @return a single (global) threshold value
 	 */
 	public int getThreshold(int[] h);	// TODO: change return type to double?
-	
+
 	/**
-	 * Returns a single (global) threshold value for the
-	 * specified {@link ByteProcessor} (8-bit image).
-	 * 
+	 * Returns a single (global) threshold value for the specified {@link ByteProcessor} (8-bit image).
+	 *
 	 * @param bp a {@link ByteProcessor} (8-bit image)
 	 * @return a single (global) threshold value
 	 */

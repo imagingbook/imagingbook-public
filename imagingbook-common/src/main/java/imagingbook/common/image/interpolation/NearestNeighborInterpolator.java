@@ -13,16 +13,15 @@ import imagingbook.common.image.access.ScalarAccessor;
 
 /**
  * <p>
- * A {@link PixelInterpolator} implementing nearest-neighbor interpolation in 2D.
- * See Sec. 22.5.1 of [1] for additional details.
+ * A {@link PixelInterpolator} implementing nearest-neighbor interpolation in 2D. See Sec. 22.5.1 of [1] for additional
+ * details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class NearestNeighborInterpolator implements PixelInterpolator {
 	

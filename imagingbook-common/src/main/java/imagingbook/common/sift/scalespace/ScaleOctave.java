@@ -19,18 +19,17 @@ import java.util.Locale;
 
 /**
  * <p>
- * Represents a single "octave", which is a stack of scale "levels", in a
- * generic hierarchical scale space. See Sec. 25.1.4. of [1] for details.
- * Basically this is an array with flexible bottom and top index.
+ * Represents a single "octave", which is a stack of scale "levels", in a generic hierarchical scale space. See Sec.
+ * 25.1.4. of [1] for details. Basically this is an array with flexible bottom and top index.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
+ * @param <LevelT> the scale level type
  * @author WB
  * @version 2022/11/20
- * @param <LevelT> the scale level type
  */
 public abstract class ScaleOctave<LevelT extends ScaleLevel> implements PrintsToStream {
 	
@@ -77,9 +76,10 @@ public abstract class ScaleOctave<LevelT extends ScaleLevel> implements PrintsTo
 	public int getHeight() {
 		return height;
 	}
-	
+
 	/**
 	 * Returns a reference to the scale level of this octave with the specified index.
+	 *
 	 * @param q the level index
 	 * @return a reference to scale level q
 	 */
@@ -91,11 +91,10 @@ public abstract class ScaleOctave<LevelT extends ScaleLevel> implements PrintsTo
 	void setLevel(int q, LevelT level) {	// TODO: check q
 		levels.setElement(q, level);
 	}
-	
+
 	/**
-	 * Returns true iff q is outside the level range and position (u,v) is inside the level's
-	 * bounds.
-	 * 
+	 * Returns true iff q is outside the level range and position (u,v) is inside the level's bounds.
+	 *
 	 * @param q the level index
 	 * @param u horizontal coordinate
 	 * @param v vertical coordinate
@@ -115,30 +114,30 @@ public abstract class ScaleOctave<LevelT extends ScaleLevel> implements PrintsTo
 	public double getAbsoluteScale(int q) {
 		return getLevel(q).getAbsoluteScale();
 	}
-	
+
 	/**
-	 * Returns the bottom level index for this scale space octave
-	 * (e.g., this is -1 for the Gaussian scale space used in SIFT).
+	 * Returns the bottom level index for this scale space octave (e.g., this is -1 for the Gaussian scale space used in
+	 * SIFT).
+	 *
 	 * @return the bottom level index
 	 */
 	int getBottomLevelIndex() {
 		return botLevelIndex;
 	}
-	
+
 	/**
-	 * Returns the top level index for this scale space octave
-	 * (e.g., this is Q+1 for the Gaussian scale space used in SIFT).
+	 * Returns the top level index for this scale space octave (e.g., this is Q+1 for the Gaussian scale space used in
+	 * SIFT).
+	 *
 	 * @return the top level index
 	 */
 	int getTopLevelIndex() {
 		return topLevelIndex;
 	}
-	
 
 	/**
-	 * Returns the absolute scale (&sigma;) for octave index p and
-	 * level index q;
-	 * 
+	 * Returns the absolute scale (&sigma;) for octave index p and level index q;
+	 *
 	 * @param p the octave index
 	 * @param q the level index
 	 * @return the absolute scale
@@ -148,12 +147,11 @@ public abstract class ScaleOctave<LevelT extends ScaleLevel> implements PrintsTo
 		double sigma = sigma_0 * Math.pow(2, m/Q);
 		return sigma;
 	}
-	
+
 	/**
-	 * Collects and returns the 3x3x3 neighborhood values from this octave 
-	 * at scale level q and center position (u,v). The result is stored
-	 * in the supplied 3x3x3 array nh[s][x][y].
-	 * 
+	 * Collects and returns the 3x3x3 neighborhood values from this octave at scale level q and center position (u,v).
+	 * The result is stored in the supplied 3x3x3 array nh[s][x][y].
+	 *
 	 * @param q the level index
 	 * @param u the horizontal coordinate
 	 * @param v the vertical coordinate
@@ -167,11 +165,10 @@ public abstract class ScaleOctave<LevelT extends ScaleLevel> implements PrintsTo
 	}
 	
 	// ---------------------------------------------------------
-	
+
 	/**
-	 * Returns an ImageJ {@link ImageStack} for this octave which can be
-	 * displayed. Frame labels are automatically set.
-	 * 
+	 * Returns an ImageJ {@link ImageStack} for this octave which can be displayed. Frame labels are automatically set.
+	 *
 	 * @return an {@link ImageStack} for this octave
 	 */
 	public ImageStack getImageStack() {

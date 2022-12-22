@@ -13,14 +13,14 @@ import java.util.Locale;
 
 /**
  * <p>
- * Represents a SIFT key point in hierarchical scale space. See Sec. 25.3 of [1]
- * for more details. This class is non-public, instances are immutable.
+ * Represents a SIFT key point in hierarchical scale space. See Sec. 25.3 of [1] for more details. This class is
+ * non-public, instances are immutable.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/20
  */

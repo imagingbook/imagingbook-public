@@ -19,22 +19,20 @@ import ij.process.ByteProcessor;
  *
  */
 public interface Thresholder {
-	
+
 	/**
-	 * Enum type to discriminate if the image background is assumed to be
-	 * bright or dark.
+	 * Enum type to discriminate if the image background is assumed to be bright or dark.
 	 */
 	public enum BackgroundMode {
 		/** bright background */
 		BRIGHT,
 		/** dark background */
 		DARK}
-			
+
 	/**
-	 * Thresholds the specified {@link ByteProcessor} (8-bit image), which is
-	 * modified. Does nothing and returns {@code true} if no valid threshold could
-	 * be found (e.g., if all image pixels have the same value).
-	 * 
+	 * Thresholds the specified {@link ByteProcessor} (8-bit image), which is modified. Does nothing and returns
+	 * {@code true} if no valid threshold could be found (e.g., if all image pixels have the same value).
+	 *
 	 * @param ip a {@link ByteProcessor} (8-bit image)
 	 * @return {@code true} iff the operation was successful
 	 */

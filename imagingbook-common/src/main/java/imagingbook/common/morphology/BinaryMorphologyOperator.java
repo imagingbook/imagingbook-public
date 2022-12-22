@@ -15,11 +15,10 @@ import ij.process.ByteProcessor;
  * @author WB
  */
 public interface BinaryMorphologyOperator {
-	
+
 	/**
-	 * Applies this morphological operator to the specified image (destructively,
-	 * that is, the image is modified).
-	 * 
+	 * Applies this morphological operator to the specified image (destructively, that is, the image is modified).
+	 *
 	 * @param bp the image the operator is applied to
 	 */
 	public void applyTo(ByteProcessor bp);

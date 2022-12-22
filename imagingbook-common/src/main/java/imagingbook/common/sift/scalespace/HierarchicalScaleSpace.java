@@ -18,17 +18,17 @@ import java.io.PrintStream;
 
 /**
  * <p>
- * This abstract class defines a generic hierarchical scale space, consisting of
- * multiple "octaves". See Sec. 25.1.4. of [1] for details.
+ * This abstract class defines a generic hierarchical scale space, consisting of multiple "octaves". See Sec. 25.1.4. of
+ * [1] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
+ * @param <OctaveT> the octave type
  * @author WB
  * @version 2022/11/20
- * @param <OctaveT> the octave type
  * @see ScaleLevel
  * @see ScaleOctave
  * @see GaussianScaleSpace
@@ -94,29 +94,31 @@ public abstract class HierarchicalScaleSpace<OctaveT extends ScaleOctave<?>> imp
 	public double getSigma_0() {
 		return sigma_0;
 	}
-	
+
 	/**
-	 * Returns the bottom level index in each scale space octave
-	 * (e.g., this is -1 for the Gaussian scale space used in SIFT).
+	 * Returns the bottom level index in each scale space octave (e.g., this is -1 for the Gaussian scale space used in
+	 * SIFT).
+	 *
 	 * @return the bottom level index
 	 */
 	public int getBottomLevelIndex() {
 		return this.botLevel;
 	}
-	
+
 	/**
-	 * Returns the top level index in each scale space octave
-	 * (e.g., this is Q+1 for the Gaussian scale space used in SIFT).
+	 * Returns the top level index in each scale space octave (e.g., this is Q+1 for the Gaussian scale space used in
+	 * SIFT).
+	 *
 	 * @return the top level index
 	 */
 	public int getTopLevelIndex() {
 		return this.topLevel;
 	}
-	
+
 	/**
-	 * Returns a reference to the p-th octave in this scale space.
-	 * Valid octave indexes are p = 0,..,P-1 (see {@link #getP()}).
-	 * 
+	 * Returns a reference to the p-th octave in this scale space. Valid octave indexes are p = 0,..,P-1 (see
+	 * {@link #getP()}).
+	 *
 	 * @param p the octave index
 	 * @return the associated {@link ScaleOctave} instance
 	 * @see #getP()
@@ -131,23 +133,23 @@ public abstract class HierarchicalScaleSpace<OctaveT extends ScaleOctave<?>> imp
 //		octaves[p] = oct;
 		octaves.setElement(p, oct);
 	}
-	
+
 	/**
-	 * Returns the q-th scale space level of octave p in this scale space.
-	 * Valid octave indexes are p = 0,..,P-1 (see {@link #getP()}).
-	 * 
-	 * @param p the octave index 
+	 * Returns the q-th scale space level of octave p in this scale space. Valid octave indexes are p = 0,..,P-1 (see
+	 * {@link #getP()}).
+	 *
+	 * @param p the octave index
 	 * @param q the (within-octave) level index
 	 * @return the associated {@link ScaleLevel} instance
 	 */
 	public ScaleLevel getScaleLevel(int p, int q) {
 		return getOctave(p).getLevel(q);
 	}
-	
+
 	/**
 	 * Returns the absolute scale (&sigma;) at scale level p, q.
-	 * 
-	 * @param p the octave index 
+	 *
+	 * @param p the octave index
 	 * @param q the (within-octave) level index
 	 * @return the absolute level scale
 	 */
@@ -155,11 +157,10 @@ public abstract class HierarchicalScaleSpace<OctaveT extends ScaleOctave<?>> imp
 		double m = Q * p + q;
 		return sigma_0 * Math.pow(2, m/Q);
 	}
-	
+
 	/**
-	 * Calculates and returns the real (unscaled) x-position for a
-	 * local coordinate at the specified octave.
-	 * 
+	 * Calculates and returns the real (unscaled) x-position for a local coordinate at the specified octave.
+	 *
 	 * @param p the octave index
 	 * @param xp the (scale-level) local coordinate
 	 * @return the original x-position
@@ -167,11 +168,10 @@ public abstract class HierarchicalScaleSpace<OctaveT extends ScaleOctave<?>> imp
 	public double getRealX(int p, double xp) {
 		return Math.pow(2, p) * xp;	// TODO: optimize (precalculate Math.pow(p, 2))
 	}
-	
+
 	/**
-	 * Calculates and returns the real (unscaled) y-position for a
-	 * local coordinate at the specified octave.
-	 * 
+	 * Calculates and returns the real (unscaled) y-position for a local coordinate at the specified octave.
+	 *
 	 * @param p the octave index
 	 * @param yp the scale-level) local coordinate
 	 * @return the original y-position
@@ -192,13 +192,12 @@ public abstract class HierarchicalScaleSpace<OctaveT extends ScaleOctave<?>> imp
 	}
 	
 	// ----------------------------------------------------------------
-	
+
 	/**
-	 * Returns the contents of this scale space as an array of ImageJ
-	 * ({@link ImagePlus}) images, one for each octave. Each image contains a stack
-	 * of frames, one for each scale level.
-	 * 
-	 * @param title a string used to compose the title of the images 
+	 * Returns the contents of this scale space as an array of ImageJ ({@link ImagePlus}) images, one for each octave.
+	 * Each image contains a stack of frames, one for each scale level.
+	 *
+	 * @param title a string used to compose the title of the images
 	 * @return an array of {@link ImagePlus} instances.
 	 */
 	public ImagePlus[] getImages(String title) {

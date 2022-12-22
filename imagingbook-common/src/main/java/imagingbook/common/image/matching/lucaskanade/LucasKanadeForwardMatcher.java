@@ -37,7 +37,7 @@ public class LucasKanadeForwardMatcher extends LucasKanadeMatcher {
 	private FloatProcessor Ix, Iy;				// gradient of the search image
 	private double qmag = Double.MAX_VALUE; 	// magnitude of parameter difference vector
 	private double sqrError = Double.MAX_VALUE;	// squared sum of differences between I and R
-	private double[][][] S;						// S[u][u][n] = the steepest descent image for dimension n at pos. u,v (same size as R)
+	private double[][][] S;		// S[u][u][n] = the steepest descent image for dimension n at pos. u,v (same size as R)
 
 	/**
 	 * Constructor.

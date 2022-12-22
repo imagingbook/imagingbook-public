@@ -12,17 +12,15 @@ import ij.process.ImageProcessor;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
 /**
- * Basically a 2D array of pixels which
- * holds all necessary information about the image geometry,
- * keeps track of which pixels have been visited and knows how
- * to access neighboring pixels (currently 4-neighborhood only).
- * TODO: Bring in line with binary region neighborhoods (type).
- * 
+ * Basically a 2D array of pixels which holds all necessary information about the image geometry, keeps track of which
+ * pixels have been visited and knows how to access neighboring pixels (currently 4-neighborhood only).
+ *
  * @author WB
  * @version 2022/11/19
  */
 public class PixelMap {
-	
+	// TODO: Bring in line with binary region neighborhoods (type).
+
 	/** Image width */
 	public final int width;
 	
@@ -53,6 +51,7 @@ public class PixelMap {
 
 	/**
 	 * Returns the {@link Pixel} instance at the specified position.
+	 *
 	 * @param u horizontal position
 	 * @param v vertical position
 	 * @return the {@link Pixel} instance
@@ -60,11 +59,11 @@ public class PixelMap {
 	public Pixel getPixel(int u, int v) {
 		return pixels[u][v];
 	}
-	
+
 	/**
-	 * Returns a new 1D array (i.e., a "flattened" vector in row-first order) of {@link Pixel} elements,
-	 * e.g., for sorting pixels by value.
-	 * 
+	 * Returns a new 1D array (i.e., a "flattened" vector in row-first order) of {@link Pixel} elements, e.g., for
+	 * sorting pixels by value.
+	 *
 	 * @return a 1D array of pixels
 	 */
 	public Pixel[] getPixelVector() {
@@ -91,62 +90,13 @@ public class PixelMap {
 		}
 	}
 	
-	// ------------------------------------
-	
-	
-//	public PointNeighborhood getNeighbors(PntInt p) {
-//		return new PointNeighborhood(p);
-//	}
-//	
-//	public class PointNeighborhood implements Iterable<ImagePoint> {
-//		private final int x, y;	// the center of this neighborhood
-//		private int xn, yn; 	// the coordinates of the next neighbor
-//		private int dir=  -1;	// the direction of the next neighbor (valid if dir=0,..,3)
-//		
-//		protected PointNeighborhood(PntInt p) {
-//			this.x = p.x;
-//			this.y = p.y;
-//			findNextNeighbor();
-//		}
-//		
-//		private void findNextNeighbor() {
-//			dir = dir + 1;
-//			while (dir < 4) {
-//				xn = x + dX[dir];
-//				yn = y + dY[dir];
-//				if (xn >= 0 && xn < width && yn >= 0 && yn < height) {
-//					break;	// found neighbor, don't advance dir
-//				}
-//				dir = dir + 1;
-//			}
-//		}
-//
-//		@Override
-//		public Iterator<ImagePoint> iterator() {
-//			return new Iterator<ImagePoint>() {
-//				@Override
-//				public boolean hasNext() {
-//					return dir < 4;
-//				}
-//				@Override
-//				public ImagePoint next() {
-//					ImagePoint nextPnt = imagePoints[xn][yn];
-//					findNextNeighbor();
-//					return nextPnt;
-//				}
-//			};
-//		}
-//		
-//	}
-	
 	// --------------------------------------------------------
 	
 	private static final int[] dX = {1, 0, -1, 0};
 	private static final int[] dY = {0, -1, 0, 1};
-	
+
 	/**
-	 * A pixel value which knows its coordinates.
-	 * This is a non-static class, i.e.,  {@link Pixel} instances can only
+	 * A pixel value which knows its coordinates. This is a non-static class, i.e., {@link Pixel} instances can only
 	 * exist in the context of a {@link PixelMap} instance.
 	 */
 	public class Pixel extends PntInt implements Comparable<Pixel> {
@@ -166,10 +116,10 @@ public class PixelMap {
 		public void reset() {
 			this.dir = 0;
 		}
-		
+
 		/**
-		 * Gets the next neighbor of this pixel that is inside
-		 * the containing image.
+		 * Gets the next neighbor of this pixel that is inside the containing image.
+		 *
 		 * @return the next neighboring {@link Pixel} or {@code null} if no more neighbors
 		 */
 		public Pixel getNextNeighbor() {

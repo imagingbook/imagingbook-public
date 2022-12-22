@@ -11,18 +11,15 @@ package imagingbook.common.noise.hashing;
 
 /**
  * <p>
- * Permutation-based hash function, similar to the one proposed in [1]. See [2]
- * for details.
+ * Permutation-based hash function, similar to the one proposed in [1]. See [2] for details.
  * </p>
  * <p>
- * [1] K. Perlin. An image synthesizer. SIGGRAPH Computer Graphics 19(3),
- * 287–296 (1985). <br>
- * [2] W. Burger, M.J. Burge, <em>Principles of Digital Image Processing &ndash;
- * Advanced Methods</em> (Vol. 3), Supplementary Chapter 8: "Synthetic Gradient
- * Noise", Springer (2013). <a href=
+ * [1] K. Perlin. An image synthesizer. SIGGRAPH Computer Graphics 19(3), 287–296 (1985). <br> [2] W. Burger, M.J.
+ * Burge, <em>Principles of Digital Image Processing &ndash; Advanced Methods</em> (Vol. 3), Supplementary Chapter 8:
+ * "Synthetic Gradient Noise", Springer (2013). <a href=
  * "https://dx.doi.org/10.13140/RG.2.1.3427.7284">https://dx.doi.org/10.13140/RG.2.1.3427.7284</a>
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/24
  */
@@ -91,15 +88,14 @@ public class HashPermute implements HashFunction {
 		w = w & 0xFF;
 		return P[P[P[w] + v] + u];
 	}
-	
-	@Override
-	/*
-	 * N-dimensional permutation hash; this version does not use
-	 * any bit splitting. Instead, the hash8() function is
-	 * applied repeatedly for every gradient dimension by 
-	 * using the dimension number (k) as a local seed (sd) - 
-	 * in addition to the global seed (seed).
+
+
+	/**
+	 * N-dimensional permutation hash; this version does not use any bit splitting. Instead, the hash8() function is
+	 * applied repeatedly for every gradient dimension by using the dimension number (k) as a local seed (sd) - in
+	 * addition to the global seed (seed).
 	 */
+	@Override
 	public double[] hash(int[] p) {
 		int N = p.length;
 		double[] g = new double[N];
@@ -121,9 +117,8 @@ public class HashPermute implements HashFunction {
 		return h;
 	}
 
-	/*
-	 * Permutation table P[i], for i = 0..255. To avoid index wrapping, 
-	 * table's length is doubled to 512.
+	/**
+	 * Permutation table P[i], for i = 0..255. To avoid index wrapping, table's length is doubled to 512.
 	 */
 	static final int P[] = new int[512];
 	static {
@@ -163,12 +158,5 @@ public class HashPermute implements HashFunction {
 		for (int i = 0; i < 256; i++)
 			P[256 + i] = P[i] = perm[i];
 	}
-	
-//	public static void main(String[] args) {
-//		HashPermute hf = new HashPermute();
-//		for (int k = 0; k < 256; k++) {
-//			System.out.format("%d : %10f\n", k, hf.hash(k));
-//			
-//		}
-//	}
+
 }

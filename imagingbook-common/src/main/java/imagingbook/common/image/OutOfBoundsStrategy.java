@@ -10,11 +10,9 @@
 package imagingbook.common.image;
 
 /**
- * Enumeration type representing the available strategies
- * for accessing pixel locations outside the image bounds.
- * 
+ * Enumeration type representing the available strategies for accessing pixel locations outside the image bounds.
+ *
  * @author WB
- * 
  * @see GridIndexer2D
  */
 public enum OutOfBoundsStrategy {

@@ -13,19 +13,17 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This is an implementation of the global thresholder proposed by Otsu [1]. See
- * Sec. 9.1.4 (Alg. 9.4 and 9.3) in [2] for a detailed description.
+ * This is an implementation of the global thresholder proposed by Otsu [1]. See Sec. 9.1.4 (Alg. 9.4 and 9.3) in [2]
+ * for a detailed description.
  * </p>
  * <p>
- * [1] N. Otsu, "A threshold selection method from gray-level histograms", IEEE
- * Transactions on Systems, Man, and Cybernetics 9(1), 62-66 (1979). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] N. Otsu, "A threshold selection method from gray-level histograms", IEEE Transactions on Systems, Man, and
+ * Cybernetics 9(1), 62-66 (1979). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
+ * Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/08/21
- * 
  */
 public class OtsuThresholder implements GlobalThresholder {
 	

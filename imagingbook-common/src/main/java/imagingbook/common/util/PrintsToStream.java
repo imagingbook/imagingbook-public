@@ -13,29 +13,24 @@ import java.io.PrintStream;
 
 /**
  * <p>
- * Classes which require a complex {@code toString()} method should implement
- * this interface, which requires the single method
- * {@link #printToStream(PrintStream)}, e.g.,
+ * Classes which require a complex {@code toString()} method should implement this interface, which requires the single
+ * method {@link #printToStream(PrintStream)}, e.g.,
  * </p>
- * 
  * <pre>
  * public void printToStream(PrintStream strm) {
  *     strm.format("...", ...);
  * }
  * </pre>
  * <p>
- * Note that this interface cannot override the default
- * {@link Object#toString()} method directly. If needed, this should be done in
- * the implementing class by using the pre-defined {@link #printToString()}
- * method:
+ * Note that this interface cannot override the default {@link Object#toString()} method directly. If needed, this
+ * should be done in the implementing class by using the pre-defined {@link #printToString()} method:
  * </p>
- * 
  * <pre>
  * public String toString() {
  * 	return printToString();
  * }
  * </pre>
- * 
+ *
  * @author WB
  * @version 2021/09/17
  */
@@ -48,19 +43,18 @@ public interface PrintsToStream {
 	 * @param strm the output stream to print to
 	 */
 	public void printToStream(PrintStream strm);
-	
+
 	/**
-	 * Convenience method to save some boilerplate code. Calls
-	 * {@link #printToStream(PrintStream)} to produce a description string for this
-	 * object. The {@link #printToString()} method can also be used by implementing
-	 * classes to override the standard {@link Object#toString()} method, e.g.,
+	 * Convenience method to save some boilerplate code. Calls {@link #printToStream(PrintStream)} to produce a
+	 * description string for this object. The {@link #printToString()} method can also be used by implementing classes
+	 * to override the standard {@link Object#toString()} method, e.g.,
 	 * <pre>
 	 * &#64;Override
 	 * public String toString() {
 	 * 	return this.printToString();
 	 * }
 	 * </pre>
-	 * 
+	 *
 	 * @return the string representation of this object as defined by {@link #printToStream(PrintStream)}
 	 */
 	public default String printToString() {

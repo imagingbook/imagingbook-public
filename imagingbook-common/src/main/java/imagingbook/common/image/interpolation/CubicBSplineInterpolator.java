@@ -11,14 +11,14 @@ package imagingbook.common.image.interpolation;
 
 /**
  * <p>
- * A {@link PixelInterpolator} implementing cubic B-spline interpolation in 2D
- * See Sec.22.4.2 of [1] for additional details.
+ * A {@link PixelInterpolator} implementing cubic B-spline interpolation in 2D See Sec.22.4.2 of [1] for additional
+ * details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @see SplineInterpolator
  */

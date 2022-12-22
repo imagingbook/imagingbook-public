@@ -11,20 +11,17 @@ package imagingbook.common.morphology;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
- * This class defines static methods related to binary structuring elements
- * (kernels).
- * 
- * @author WB
+ * This class defines static methods related to binary structuring elements (kernels).
  *
+ * @author WB
  */
 public abstract class StructuringElements {
 	
 	private StructuringElements() {}
 
 	/**
-	 * Creates and returns a square binary structuring element (kernel)
-	 * of size 3x3 (radius 1).
-	 * 
+	 * Creates and returns a square binary structuring element (kernel) of size 3x3 (radius 1).
+	 *
 	 * @return a 3x3 binary box kernel
 	 */
 	public static byte[][] makeBoxKernel3x3() {
@@ -32,10 +29,9 @@ public abstract class StructuringElements {
 	}
 
 	/**
-	 * Creates and returns a square binary "box" kernel
-	 * with the specified radius. The kernel size is
-	 * (2 * radius + 1) x (2 * radius + 1). It is always odd.
-	 * 
+	 * Creates and returns a square binary "box" kernel with the specified radius. The kernel size is (2 * radius + 1) x
+	 * (2 * radius + 1). It is always odd.
+	 *
 	 * @param radius the kernel radius
 	 * @return a square binary box kernel
 	 */
@@ -54,11 +50,11 @@ public abstract class StructuringElements {
 	}
 
 	// TODO: compare to CircularMask (filters), define BinaryKernel class?
+
 	/**
-	 * Creates and returns a square binary "disk" kernel
-	 * with the specified radius. The kernel size is
-	 * (2 * radius + 1) x (2 * radius + 1). It is always odd.
-	 * 
+	 * Creates and returns a square binary "disk" kernel with the specified radius. The kernel size is (2 * radius + 1)
+	 * x (2 * radius + 1). It is always odd.
+	 *
 	 * @param radius the kernel radius
 	 * @return a square binary disk kernel
 	 */
@@ -80,9 +76,8 @@ public abstract class StructuringElements {
 	}
 
 	/**
-	 * Converts the specified {@code int[][]}
-	 * to a {@code byte[][]}, which is returned.
-	 * 
+	 * Converts the specified {@code int[][]} to a {@code byte[][]}, which is returned.
+	 *
 	 * @param iA the {@code int[][]} array to be converted
 	 * @return the resulting {@code byte[][]}
 	 */
@@ -98,8 +93,7 @@ public abstract class StructuringElements {
 	}
 
 	/**
-	 * Returns a copy of the specified structuring element
-	 * that is mirrored along both axes. For example
+	 * Returns a copy of the specified structuring element that is mirrored along both axes. For example
 	 * <pre>
 	 * | A B |
 	 * | C D |</pre>
@@ -107,7 +101,7 @@ public abstract class StructuringElements {
 	 * <pre>
 	 * | D C |
 	 * | B A |</pre>
-	 * 
+	 *
 	 * @param H the original structuring element
 	 * @return the reflected structuring element
 	 */
@@ -124,30 +118,5 @@ public abstract class StructuringElements {
 		}
 		return rH;
 	}
-	
-	
-//	@Deprecated
-//	public void showStructuringElement() {
-//		show(H, "Structuring Element");
-//	}
-
-//	public static void show(byte[][] matrix, String title) {
-//		int w = matrix[0].length;
-//		int h = matrix.length;
-//		ImageProcessor ip = new ByteProcessor(w, h);
-//		for (int v = 0; v < h; v++) {
-//			for (int u = 0; u < w; u++) {
-//				if (matrix[v][u] == 1)
-//					ip.putPixel(u, v, 255);
-//				else
-//					ip.putPixel(u, v, 0);
-//			}
-//		}
-//		ip.invertLut();
-//		ImagePlus im = new ImagePlus(title, ip);
-//		
-//		im.show();
-//	}
-	
 
 }

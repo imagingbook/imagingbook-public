@@ -8,64 +8,56 @@
  ******************************************************************************/
 package imagingbook.common.math.eigen.eispack;
 
-abstract class QZVEC {
+public abstract class QZVEC {
+
+	/*
+	EISPACK Routines, see http://www.netlib.org/eispack/ for the original FORTRAN code.
+	Untangled to goto-free Java by W. Burger using a sequential state machine concept, inspired by D. E. Knuth,
+	"Structured Programming with Goto Statements", Computing Surveys, Vol. 6, No. 4 (1974).
+	 */
+
+	private QZVEC() {}
 	
 	public static boolean VERBOSE = false;
 
-	// EISPACK Routines, see http://www.netlib.org/eispack/
-
 	/**
 	 * <p>
-	 * This subroutine is the optional fourth step of the qz algorithm for solving
-	 * generalized matrix eigenvalue problems, Siam J. Numer. Anal. 10, 241-256
-	 * (1973) by Moler and Stewart. This description has been adapted from the
-	 * original version (dated August 1983).
+	 * This subroutine is the optional fourth step of the qz algorithm for solving generalized matrix eigenvalue
+	 * problems, Siam J. Numer. Anal. 10, 241-256 (1973) by Moler and Stewart. This description has been adapted from
+	 * the original version (dated August 1983).
 	 * </p>
 	 * <p>
-	 * This subroutine accepts a pair of real matrices, one of them in
-	 * quasi-triangular form (in which each 2-by-2 block corresponds to a pair of
-	 * complex eigenvalues) and the other in upper triangular form. It computes the
-	 * eigenvectors of the triangular problem and transforms the results back to the
-	 * original coordinate system. It is usually preceded by qzhes, qzit, and qzval.
+	 * This subroutine accepts a pair of real matrices, one of them in quasi-triangular form (in which each 2-by-2 block
+	 * corresponds to a pair of complex eigenvalues) and the other in upper triangular form. It computes the
+	 * eigenvectors of the triangular problem and transforms the results back to the original coordinate system. It is
+	 * usually preceded by qzhes, qzit, and qzval.
 	 * </p>
 	 * <p>
 	 * On output:
 	 * </p>
 	 * <ul>
-	 * <li><strong>a</strong> is unaltered. Its subdiagonal elements provide
-	 * information about the storage of the complex eigenvectors.</li>
-	 * 
+	 * <li><strong>a</strong> is unaltered. Its subdiagonal elements provide  information about the storage of the
+	 * complex eigenvectors.</li>
 	 * <li><strong>b</strong> has been destroyed.</li>
-	 * 
-	 * <li><strong>alfr</strong>, <strong>alfi</strong> and <strong>beta</strong>
-	 * are unaltered.</li>
-	 * 
-	 * <li><strong>z</strong> contains the real and imaginary parts of the
-	 * eigenvectors. If alfi(i) = 0.0, the i-th eigenvalue is real and the i-th
-	 * column of z contains its eigenvector. if alfi(i) &ne; 0.0, the i-th
-	 * eigenvalue is complex. if alfi(i) &gt; 0.0, the eigenvalue is the first of a
-	 * complex pair and the i-th and (i+1)-th columns of z contain its eigenvector.
-	 * if alfi(i) &lt; 0.0, the eigenvalue is the second of a complex pair and the
-	 * (i-1)-th and i-th columns of z contain the conjugate of its eigenvector. Each
-	 * eigenvector is normalized so that the modulus of its largest component is
-	 * 1.0.</li>
+	 * <li><strong>alfr</strong>, <strong>alfi</strong> and <strong>beta</strong> are unaltered.</li>
+	 * <li><strong>z</strong> contains the real and imaginary parts of the eigenvectors. If alfi(i) = 0.0, the i-th
+	 * eigenvalue is real and the i-th column of z contains its eigenvector. if alfi(i) &ne; 0.0, the i-th eigenvalue
+	 * is complex. if alfi(i) &gt; 0.0, the eigenvalue is the first of a complex pair and the i-th and (i+1)-th columns
+	 * of z contain its eigenvector. If alfi(i) &lt; 0.0, the eigenvalue is the second of a complex pair and the
+	 * (i-1)-th and i-th columns of z contain the conjugate of its eigenvector. Each eigenvector is normalized so that
+	 * the modulus of its largest component is 1.0.</li>
 	 * </ul>
-	 * 
-	 * @param a    contains a real upper quasi-triangular matrix.
-	 * @param b    contains a real upper triangular matrix. In addition, location
-	 *             b[n-1][0] contains the tolerance quantity (epsb) computed and
-	 *             saved in qzit.
-	 * @param alfr , <strong>alfi</strong>, and <strong>beta</strong> are vectors
-	 *             with components whose ratios ((alfr + i * alfi) / beta) are the
-	 *             generalized eigenvalues. They are usually obtained from qzval.
+	 *
+	 * @param a contains a real upper quasi-triangular matrix.
+	 * @param b contains a real upper triangular matrix. In addition, location b[n-1][0] contains the tolerance quantity
+	 * (epsb) computed and saved in qzit.
+	 * @param alfr , <strong>alfi</strong>, and <strong>beta</strong> are vectors with components whose ratios ((alfr +
+	 * i * alfi) / beta) are the generalized eigenvalues. They are usually obtained from qzval.
 	 * @param alfi see <strong>alfr</strong>
 	 * @param beta see <strong>alfr</strong>
-	 * @param z    contains the transformation matrix produced in the reductions by
-	 *             qzhes, qzit, and qzval, if performed. If the eigenvectors of the
-	 *             triangular problem are desired, z must contain the identity
-	 *             matrix.
+	 * @param z contains the transformation matrix produced in the reductions by qzhes, qzit, and qzval, if performed.
+	 * If the eigenvectors of the triangular problem are desired, z must contain the identity matrix.
 	 */
-	@SuppressWarnings("unused")
 	public static void qzvec(double[][] a, double[][] b, double[] alfr, double[] alfi, double[] beta, double[][] z) {
 
 		final int n = a.length;

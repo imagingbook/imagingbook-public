@@ -20,37 +20,33 @@ import java.util.LinkedList;
 
 /**
  * <p>
- * This class is a re-implementation of the "quasi-linear-time" component
- * tree algorithm which is based on efficient, tree-based union finding as described in [1].
- * See Section 26.2.2 of [2] for a detailed description (Algs. 26.1 - 26.2).
- * This algorithm is also used in the original MSER paper by Matas et al. [3].
+ * This class is a re-implementation of the "quasi-linear-time" component tree algorithm which is based on efficient,
+ * tree-based union finding as described in [1]. See Section 26.2.2 of [2] for a detailed description (Algs. 26.1 -
+ * 26.2). This algorithm is also used in the original MSER paper by Matas et al. [3].
  * </p>
  * <p>
- * [1] L. Vincent and P. Soille, "Watersheds in digital spaces: An efficient 
- * algorithm based on immersion simulations", IEEE Transactions on 
- * Pattern Analysis and Machine Intelligence 13(6), 583–598 (1991).
+ * [1] L. Vincent and P. Soille, "Watersheds in digital spaces: An efficient algorithm based on immersion simulations",
+ * IEEE Transactions on Pattern Analysis and Machine Intelligence 13(6), 583–598 (1991).
  * <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * <br>
- * [3] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline
- * stereo from maximally stable extremal regions. Image and Vision Computing 22(10), 
- * 761–767 (2004).
+ * [3] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline stereo from maximally stable extremal regions.
+ * Image and Vision Computing 22(10), 761–767 (2004).
  * </p>
- * 
- * @author WB
- * @version 2022/11/19
  *
  * @param <T> the type of properties to be attached to components
+ * @author WB
+ * @version 2022/11/19
  */
 public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 	
 	private final Collection<Component<T>> components;
 	private final Component<T> root;
-	
+
 	/**
-	 * Constructor. Creates a new component tree from a {@link PixelMap}
-	 * representing a gray-level image.
+	 * Constructor, creates a new component tree from a {@link PixelMap} representing a gray-level image.
+	 *
 	 * @param pm a {@link PixelMap}
 	 */
 	public ComponentTreeGlobalImmersion(PixelMap pm) {
@@ -70,11 +66,10 @@ public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 	}
 	
 	// ------------------------------------------------------------
-	
+
 	/**
-	 * Collects all image pixels (in sorted order) and creates a preliminary
-	 * component tree whose root is returned.
-	 * 
+	 * Collects all image pixels (in sorted order) and creates a preliminary component tree whose root is returned.
+	 *
 	 * @param P a {@link PixelMap} (the input image)
 	 * @return
 	 */
@@ -115,13 +110,11 @@ public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 		
 		return r;
 	}
-	
+
 	/**
-	 *  Joins the disjoint trees with root nodes r1 and r2.
-	 *  Makes the tree rooted at r1 a sub-tree under root r2, i.e.,
-	 *  r1 becomes a child node of r2. Node r2 is the root of
-	 *  the joined tree.
-	 *  
+	 * Joins the disjoint trees with root nodes r1 and r2. Makes the tree rooted at r1 a sub-tree under root r2, i.e.,
+	 * r1 becomes a child node of r2. Node r2 is the root of the joined tree.
+	 *
 	 * @param r1 the root of the first (child) sub-tree
 	 * @param r2 the root of the second (master) sub-tree
 	 */
@@ -150,11 +143,11 @@ public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 	}
 	
 	// -----------------------------------------------------------------
-	
+
 	/**
-	 * Recursively links extremal components by omitting intermediate
-	 * non-extremal components. Initially applied to the root component.
-	 * Collects extremal regions into {@link #components}.
+	 * Recursively links extremal components by omitting intermediate non-extremal components. Initially applied to the
+	 * root component. Collects extremal regions into {@link #components}.
+	 *
 	 * @param c the current component (to be inspected)
 	 * @param e the closest extremal component on the ancestor path
 	 */
@@ -193,12 +186,12 @@ public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 		}
 		return E;
 	}
-	
+
 	/**
-	 * Eliminates all non-extremal components attached to the given component.
-	 * Initially invoked on an extremal component.
-	 * All local pixels from a non-extremal child components are collected
-	 * and merged to the parent component.
+	 * Eliminates all non-extremal components attached to the given component. Initially invoked on an extremal
+	 * component. All local pixels from a non-extremal child components are collected and merged to the parent
+	 * component.
+	 *
 	 * @param c an extremal component
 	 */
 	private void reduceNonExtremalComponents(Component<T> c) {
@@ -218,16 +211,14 @@ public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 	}
 		
 	// -------------------------------------------------------------------------------------
-	
-	/**
-	 * This nested class represents a 2D container for elements of type {@link Component}.
-	 * The array is of the same size as the image, with one component for every image pixel.
-	 * The array is initially empty, i.e. contains only {@code null} values.
-	 * Components are created on demand (by {@link #makeComponent(Pixel)} during building
-	 * of the component tree.
-	 * The method {@link #getComponent(Pixel)} is used to check if the component for
-	 * a specific image point exists.
 
+	/**
+	 * This nested class represents a 2D container for elements of type {@link Component}. The array is of the same size
+	 * as the image, with one component for every image pixel. The array is initially empty, i.e. contains only
+	 * {@code null} values. Components are created on demand (by {@link #makeComponent(Pixel)} during building of the
+	 * component tree. The method {@link #getComponent(Pixel)} is used to check if the component for a specific image
+	 * point exists.
+	 *
 	 * @param <T> the type of data that may be attached to components (e.g., {@link MserData})
 	 */
 	private static class ComponentMap<T> implements Iterable<Component<T>> {
@@ -240,11 +231,11 @@ public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 			this.height = height;
 			this.compArr = new Object[this.width * this.height];
 		}
-		
+
 		/**
-		 * Creates and returns a new component for the specified image point.
-		 * An exception is thrown if a component already exists for this
-		 * point.
+		 * Creates and returns a new component for the specified image point. An exception is thrown if a component
+		 * already exists for this point.
+		 *
 		 * @param p the image point
 		 * @return the new component
 		 */
@@ -258,10 +249,10 @@ public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 			compArr[idx] = c;
 			return c;
 		}
-		
+
 		/**
-		 * Returns the component for the specified image point or
-		 * {@code null} if it does not exist.
+		 * Returns the component for the specified image point or {@code null} if it does not exist.
+		 *
 		 * @param p the image point
 		 * @return the associated component or {@code null}
 		 */
@@ -269,10 +260,10 @@ public class ComponentTreeGlobalImmersion<T> extends ComponentTree<T> {
 		public Component<T> getComponent(Pixel p) {
 			return (Component<T>) compArr[p.y * width + p.x];
 		}
-		
+
 		/**
-		 * Iterator to loop over all {@link Component} elements of this {@link ComponentMap}.
-		 * Note that this iterator may return null elements!
+		 * Iterator to loop over all {@link Component} elements of this {@link ComponentMap}. Note that this iterator
+		 * may return null elements!
 		 */
 		@Override
 		public Iterator<Component<T>> iterator() {

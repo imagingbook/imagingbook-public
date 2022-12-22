@@ -14,16 +14,14 @@ import imagingbook.common.filter.linear.GaussianFilterSeparable;
 
 /**
  * <p>
- * Represents a single scale level in a generic hierarchical scale space. See
- * Secs. 25.1.4 for more details. Pixel data are represented as one-dimensional
- * {@code float} arrays.
- * This class defines no public constructor.
+ * Represents a single scale level in a generic hierarchical scale space. See Secs. 25.1.4 for more details. Pixel data
+ * are represented as one-dimensional {@code float} arrays. This class defines no public constructor.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An
- * Algorithmic Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/11/20 removed FloatProcessor as superclass
  */
@@ -70,11 +68,10 @@ public class ScaleLevel {
 	public int getHeight() {
 		return this.height;
 	}
-	
+
 	/**
-	 * Returns a reference to the internal (one-dimensional)
-	 * data array of this scale level.
-	 * 
+	 * Returns a reference to the internal (one-dimensional) data array of this scale level.
+	 *
 	 * @return to the internal data array
 	 */
 	public float[] getData() {
@@ -91,25 +88,22 @@ public class ScaleLevel {
 	}
 	
 	// ------------------------------
-	
+
 	/**
-	 * Returns a new ImageJ {@link FloatProcessor} with the same size and pixel data
-	 * as this scale level. Note that the pixel data are not duplicated but shared,
-	 * i.e., subsequent modifications to the new {@link FloatProcessor} are
-	 * transparent and directly affect the contents of this scale level.
-	 * Thus the resulting {@link FloatProcessor} only serves as a wrapper for
-	 * the data in this scale level.
-	 * 
+	 * Returns a new ImageJ {@link FloatProcessor} with the same size and pixel data as this scale level. Note that the
+	 * pixel data are not duplicated but shared, i.e., subsequent modifications to the new {@link FloatProcessor} are
+	 * transparent and directly affect the contents of this scale level. Thus the resulting {@link FloatProcessor} only
+	 * serves as a wrapper for the data in this scale level.
+	 *
 	 * @return a new {@link FloatProcessor} instance
 	 */
 	FloatProcessor toFloatProcessor() {
 		return new FloatProcessor(this.width, this.height, this.data);
 	}
-	
+
 	/**
-	 * Decimates this scale level by factor 2 in both directions and returns a 
-	 * new scale level.
-	 *  
+	 * Decimates this scale level by factor 2 in both directions and returns a new scale level.
+	 *
 	 * @return a new, decimated scale level
 	 */
 	ScaleLevel decimate() {	// returns a 2:1 subsampled copy of this ScaleLevel
@@ -135,12 +129,11 @@ public class ScaleLevel {
 	void setAbsoluteScale(double sigma) {
 		this.absoluteScale = sigma;
 	}
-	
+
 	/**
-	 * Returns the element value at the specified position of this scale level.
-	 * An exception is thrown if the position is outside the scale level's
-	 * boundaries.
-	 * 
+	 * Returns the element value at the specified position of this scale level. An exception is thrown if the position
+	 * is outside the scale level's boundaries.
+	 *
 	 * @param u horizontal position
 	 * @param v vertical position
 	 * @return the element value
@@ -148,12 +141,11 @@ public class ScaleLevel {
 	public float getValue(int u, int v) {
 		return this.data[v * this.width + u];
 	}
-	
+
 	/**
-	 * Sets the element value at the specified position of this scale level.
-	 * An exception is thrown if the position is outside the scale level's
-	 * boundaries.
-	 * 
+	 * Sets the element value at the specified position of this scale level. An exception is thrown if the position is
+	 * outside the scale level's boundaries.
+	 *
 	 * @param u horizontal position
 	 * @param v vertical position
 	 * @param val the new element value
@@ -161,14 +153,14 @@ public class ScaleLevel {
 	private void setValue(int u, int v, float val) {
 		this.data[v * this.width + u] = val;
 	}
-	
+
 	/**
-	 * Collects and returns the 3x3 neighborhood values at this scale level 
-	 * at center position (u,v). The result is stored in the supplied 3x3 array.
-	 * 
+	 * Collects and returns the 3x3 neighborhood values at this scale level at center position (u,v). The result is
+	 * stored in the supplied 3x3 array.
+	 *
 	 * @param u horizontal position
 	 * @param v vertical position
-	 * @param nh the 3x3 array where to insert the neighborhood values 
+	 * @param nh the 3x3 array where to insert the neighborhood values
 	 */
 	void get3x3Neighborhood(final int u, final int v, final float[][] nh) {
 		for (int i = 0, x = u - 1; i < 3; i++, x++) {
@@ -177,14 +169,13 @@ public class ScaleLevel {
 			}
 		}
 	}
-	
+
 	/**
-	 * Calculates the gradient at the specified scale level position in polar form.
-	 * The results (gradient magnitude and direction) are placed in the supplied
-	 * 2-element array.
-	 * 
-	 * @param u    horizontal position
-	 * @param v    vertical position
+	 * Calculates the gradient at the specified scale level position in polar form. The results (gradient magnitude and
+	 * direction) are placed in the supplied 2-element array.
+	 *
+	 * @param u horizontal position
+	 * @param v vertical position
 	 * @param grad a 2-element array for gradient magnitude and direction
 	 */
 	public void getGradientPolar(int u, int v, final double[] grad) {
@@ -193,12 +184,11 @@ public class ScaleLevel {
 		grad[0] = Math.hypot(grad_x, grad_y);						// local gradient magnitude (E)
 		grad[1] = Math.atan2(grad_y, grad_x);						// local gradient direction (phi)
 	}
-	
-	
+
+
 	/**
-	 * Applies a Gaussian filter to this scale level, which is
-	 * modified.
-	 * 
+	 * Applies a Gaussian filter to this scale level, which is modified.
+	 *
 	 * @param sigma the width of the Gaussian
 	 */
 	void filterGaussian(double sigma) {

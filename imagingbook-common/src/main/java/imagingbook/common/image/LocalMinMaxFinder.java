@@ -128,11 +128,12 @@ public class LocalMinMaxFinder {
 
     /**
      * Fills the neighborhood array s as follows:
+     * <pre>
      * 	s4 s3 s2
      *  s5 s0 s1
      *  s6 s7 s8
-     *  Returns true of the neighborhood could be filled completely,
-     *  false otherwise.
+     * </pre>
+     * Returns true of the neighborhood could be filled completely, false otherwise.
      */
     private boolean getNeighborhood(int u, int v) {
         if (u <= 0 || u >= W - 1 || v <= 0 || v >= H - 1) {

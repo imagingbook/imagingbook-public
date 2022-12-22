@@ -31,12 +31,11 @@ public abstract class ObjectUtils {
 	}
 	
 	// https://stackoverflow.com/a/26000025
-	
+
 	/**
-	 * Returns a shallow copy of the given object using reflection.
-	 * This can be used if the {@link Cloneable} interface is not 
-	 * (or cannot be) implemented.
-	 * 
+	 * Returns a shallow copy of the given object using reflection. This can be used if the {@link Cloneable} interface
+	 * is not (or cannot be) implemented.
+	 *
 	 * @param <T> generic type
 	 * @param entity the object to be copied
 	 * @return the object copy
@@ -95,13 +94,12 @@ public abstract class ObjectUtils {
 	
 	
 	// TODO: check for null/exceptions
+
 	/**
-	 * Serializes and encodes an arbitrary object to a string. This is potentially
-	 * dangerous and only intended for local use, e.g., to define constant matrices
-	 * with full precision. The string encoding is 'Base64' implemented with
-	 * standard Java8 functionality. See {@link #decodeFromString(String)} for
-	 * decoding.
-	 * 
+	 * Serializes and encodes an arbitrary object to a string. This is potentially dangerous and only intended for local
+	 * use, e.g., to define constant matrices with full precision. The string encoding is 'Base64' implemented with
+	 * standard Java8 functionality. See {@link #decodeFromString(String)} for decoding.
+	 *
 	 * @param object an arbitrary object
 	 * @return the Base64 string encoding of the object
 	 */
@@ -111,10 +109,11 @@ public abstract class ObjectUtils {
 	}
 	
 	// TODO: check for null/exceptions
+
 	/**
-	 * Decodes and deserializes an object encoded with {@link #encodeToString(Object)}.
-	 * The type of the encoded object must be known.
-	 * 
+	 * Decodes and deserializes an object encoded with {@link #encodeToString(Object)}. The type of the encoded object
+	 * must be known.
+	 *
 	 * @param string the encoded object string
 	 * @return the associated object (cast to the known type)
 	 */

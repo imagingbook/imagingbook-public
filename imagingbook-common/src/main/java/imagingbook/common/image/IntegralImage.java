@@ -13,28 +13,25 @@ import ij.process.ByteProcessor;
 
 /**
  * <p>
- * This class represents an 'integral image' or 'summed area table' as proposed in [1], 
- * See Sec. 2.8 of [2] for a detailed description.
- * Currently only implemented for images of type {@link ByteProcessor}.
+ * This class represents an 'integral image' or 'summed area table' as proposed in [1], See Sec. 2.8 of [2] for a
+ * detailed description. Currently only implemented for images of type {@link ByteProcessor}.
  * </p>
  * <p>
- * [1] F. C. Crow. Summed-area tables for texture mapping. SIGGRAPH, Computer Graphics 18(3), 207–212 (1984).<br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>,
- * 3rd ed, Springer (2022).
+ * [1] F. C. Crow. Summed-area tables for texture mapping. SIGGRAPH, Computer Graphics 18(3), 207–212 (1984).<br> [2] W.
+ * Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/07/11
- *
  */
 public class IntegralImage {
 	
 	private final int M, N;	
 	private final long[][] S1, S2;
-	
+
 	/**
-	 * Constructor. Creates a new {@link IntegralImage} instance from pixel values 
-	 * in a 2D int-array I[x][y].
+	 * Constructor, creates a new {@link IntegralImage} instance from pixel values in a 2D int-array I[x][y].
+	 *
 	 * @param I pixel values
 	 */
 	public IntegralImage(int[][] I) {
@@ -61,10 +58,11 @@ public class IntegralImage {
 			}
 		}
 	}
-	
+
 	/**
-	 * Constructor. Creates a new {@link IntegralImage} instance from pixel values in the 
-	 * specified {@link ByteProcessor}.
+	 * Constructor, creates a new {@link IntegralImage} instance from pixel values in the specified
+	 * {@link ByteProcessor}.
+	 *
 	 * @param I input image
 	 */
 	public IntegralImage(ByteProcessor I) {
@@ -72,17 +70,19 @@ public class IntegralImage {
 	}
 	
 	// -------------------------------------------------------
-	
+
 	/**
 	 * Returns the summed area table of pixel values (&Sigma;<sub>1</sub>).
+	 *
 	 * @return array of &Sigma;<sub>1</sub> values
 	 */
 	public long[][] getS1() {
 		return S1;
 	}
-	
+
 	/**
 	 * Returns the summed area table of squared pixel values (&Sigma;<sub>2</sub>).
+	 *
 	 * @return array of &Sigma;<sub>2</sub> values
 	 */
 	public long[][] getS2() {
@@ -90,18 +90,16 @@ public class IntegralImage {
 	}
 	
 	// -------------------------------------------------------
-	
+
 	/**
-	 * Calculates the sum of the pixel values in the rectangle
-	 * R, specified by the corner points a = (ua, va) and b = (ub, vb).
-	 * 
+	 * Calculates the sum of the pixel values in the rectangle R, specified by the corner points a = (ua, va) and b =
+	 * (ub, vb).
+	 *
 	 * @param ua leftmost position in R
 	 * @param va top position in R
 	 * @param ub rightmost position in R
 	 * @param vb bottom position in R
-	 * @return the first-order block sum (S1(R)) inside the specified rectangle 
-	 * or zero if the rectangle is empty.
-	 * 
+	 * @return the first-order block sum (S1(R)) inside the specified rectangle or zero if the rectangle is empty.
 	 */
 	public long getBlockSum1(int ua, int va, int ub, int vb) {	// TODO: allow coordinates outside image boundaries
 		if (ub < ua || vb < va) {
@@ -113,17 +111,16 @@ public class IntegralImage {
 		final long sbb = (ub >= 0 && vb >= 0) ? S1[ub][vb] : 0;
 		return sbb + saa - sba - sab;
 	}
-	
+
 	/**
-	 * Calculates the sum of the squared pixel values in the rectangle
-	 * R, specified by the corner points a = (ua, va) and b = (ub, vb).
-	 * 
+	 * Calculates the sum of the squared pixel values in the rectangle R, specified by the corner points a = (ua, va)
+	 * and b = (ub, vb).
+	 *
 	 * @param ua leftmost position in R
 	 * @param va top position in R
 	 * @param ub rightmost position in R
 	 * @param vb bottom position in R
-	 * @return the second-order block sum (S2(R)) inside the specified rectangle
-	 * or zero if the rectangle is empty.
+	 * @return the second-order block sum (S2(R)) inside the specified rectangle or zero if the rectangle is empty.
 	 */
 	public long getBlockSum2(int ua, int va, int ub, int vb) {	// TODO: allow coordinates outside image boundaries
 		if (ub < ua || vb < va) {
@@ -135,9 +132,10 @@ public class IntegralImage {
 		final long sbb = (ub >= 0 && vb >= 0) ? S2[ub][vb] : 0;
 		return sbb + saa - sba - sab;
 	}
-	
+
 	/**
 	 * Returns the size of (number of pixels in) the specified rectangle.
+	 *
 	 * @param ua leftmost position in R
 	 * @param va top position in R
 	 * @param ub rightmost position in R {@literal (ub >= ua)}
@@ -147,10 +145,10 @@ public class IntegralImage {
 	public int getSize(int ua, int va, int ub, int vb) {
 		return (ub - ua + 1) * (vb - va + 1);
 	}
-	
+
 	/**
 	 * Calculates the mean of the image values in the specified rectangle.
-	 * 
+	 *
 	 * @param ua leftmost position in R
 	 * @param va top position in R
 	 * @param ub rightmost position in R {@literal (ub >= ua)}
@@ -164,10 +162,10 @@ public class IntegralImage {
 		}
 		return getBlockSum1(ua, va, ub, vb) / size;
 	}
-	
+
 	/**
-	 * Calculates the variance of the image values in the specified rectangle.
-	 * parameters.
+	 * Calculates the variance of the image values in the specified rectangle. parameters.
+	 *
 	 * @param ua leftmost position in R
 	 * @param va top position in R
 	 * @param ub rightmost position in R {@literal (u1 >= u0)}
