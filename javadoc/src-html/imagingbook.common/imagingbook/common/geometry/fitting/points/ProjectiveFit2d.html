@@ -21,98 +21,92 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.geometry.fitting.points;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import org.apache.commons.math3.linear.DecompositionSolver;</span>
-<span class="source-line-no">012</span><span id="line-12">import org.apache.commons.math3.linear.MatrixUtils;</span>
-<span class="source-line-no">013</span><span id="line-13">import org.apache.commons.math3.linear.RealMatrix;</span>
-<span class="source-line-no">014</span><span id="line-14">import org.apache.commons.math3.linear.RealVector;</span>
-<span class="source-line-no">015</span><span id="line-15">import org.apache.commons.math3.linear.SingularValueDecomposition;</span>
-<span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">import imagingbook.common.geometry.basic.Pnt2d;</span>
-<span class="source-line-no">018</span><span id="line-18"></span>
-<span class="source-line-no">019</span><span id="line-19"></span>
-<span class="source-line-no">020</span><span id="line-20"></span>
-<span class="source-line-no">021</span><span id="line-21">/**</span>
-<span class="source-line-no">022</span><span id="line-22"> * &lt;p&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * This class implements 2D point fitting under projective (4-point)</span>
-<span class="source-line-no">024</span><span id="line-24"> * transformations (exact and least-squares). See Sec. 21.1.4 of [1] for</span>
-<span class="source-line-no">025</span><span id="line-25"> * details.</span>
+<span class="source-line-no">011</span><span id="line-11">import imagingbook.common.geometry.basic.Pnt2d;</span>
+<span class="source-line-no">012</span><span id="line-12">import org.apache.commons.math3.linear.DecompositionSolver;</span>
+<span class="source-line-no">013</span><span id="line-13">import org.apache.commons.math3.linear.MatrixUtils;</span>
+<span class="source-line-no">014</span><span id="line-14">import org.apache.commons.math3.linear.RealMatrix;</span>
+<span class="source-line-no">015</span><span id="line-15">import org.apache.commons.math3.linear.RealVector;</span>
+<span class="source-line-no">016</span><span id="line-16">import org.apache.commons.math3.linear.SingularValueDecomposition;</span>
+<span class="source-line-no">017</span><span id="line-17"></span>
+<span class="source-line-no">018</span><span id="line-18">/**</span>
+<span class="source-line-no">019</span><span id="line-19"> * &lt;p&gt;</span>
+<span class="source-line-no">020</span><span id="line-20"> * This class implements 2D point fitting under projective (4-point) transformations (exact and least-squares). See Sec.</span>
+<span class="source-line-no">021</span><span id="line-21"> * 21.1.4 of [1] for details.</span>
+<span class="source-line-no">022</span><span id="line-22"> * &lt;/p&gt;</span>
+<span class="source-line-no">023</span><span id="line-23"> * &lt;p&gt;</span>
+<span class="source-line-no">024</span><span id="line-24"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">025</span><span id="line-25"> * (2022).</span>
 <span class="source-line-no">026</span><span id="line-26"> * &lt;/p&gt;</span>
-<span class="source-line-no">027</span><span id="line-27"> * &lt;p&gt;</span>
-<span class="source-line-no">028</span><span id="line-28"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">029</span><span id="line-29"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">030</span><span id="line-30"> * &lt;/p&gt;</span>
-<span class="source-line-no">031</span><span id="line-31"> * </span>
-<span class="source-line-no">032</span><span id="line-32"> * @author WB</span>
-<span class="source-line-no">033</span><span id="line-33"> * @version 2022/08/01</span>
-<span class="source-line-no">034</span><span id="line-34"> */</span>
-<span class="source-line-no">035</span><span id="line-35">public class ProjectiveFit2d implements LinearFit2d {</span>
-<span class="source-line-no">036</span><span id="line-36">        </span>
-<span class="source-line-no">037</span><span id="line-37">        private final RealMatrix A;             // the calculated transformation matrix</span>
-<span class="source-line-no">038</span><span id="line-38">        private final double err;               // the calculated error</span>
-<span class="source-line-no">039</span><span id="line-39">        </span>
-<span class="source-line-no">040</span><span id="line-40">        /**</span>
-<span class="source-line-no">041</span><span id="line-41">         * Constructor.</span>
-<span class="source-line-no">042</span><span id="line-42">         * Fits two sequences of 2D points using a projective transformation model.</span>
-<span class="source-line-no">043</span><span id="line-43">         * At least 4 point pairs are required. For 4 point pairs, the solution</span>
-<span class="source-line-no">044</span><span id="line-44">         * is an exact fit, otherwise a least-squares fit is found.</span>
-<span class="source-line-no">045</span><span id="line-45">         * </span>
-<span class="source-line-no">046</span><span id="line-46">         * @param P the source points</span>
-<span class="source-line-no">047</span><span id="line-47">         * @param Q the target points</span>
-<span class="source-line-no">048</span><span id="line-48">         */</span>
-<span class="source-line-no">049</span><span id="line-49">        public ProjectiveFit2d(Pnt2d[] P, Pnt2d[] Q) {</span>
-<span class="source-line-no">050</span><span id="line-50">                checkSize(P, Q);</span>
-<span class="source-line-no">051</span><span id="line-51">                final int n = Math.min(P.length, Q.length);</span>
-<span class="source-line-no">052</span><span id="line-52">                </span>
-<span class="source-line-no">053</span><span id="line-53">                double[] ba = new double[2 * n];</span>
-<span class="source-line-no">054</span><span id="line-54">                double[][] Ma = new double[2 * n][];</span>
-<span class="source-line-no">055</span><span id="line-55">                for (int i = 0; i &lt; n; i++) {</span>
-<span class="source-line-no">056</span><span id="line-56">                        double px = P[i].getX();</span>
-<span class="source-line-no">057</span><span id="line-57">                        double py = P[i].getY();</span>
-<span class="source-line-no">058</span><span id="line-58">                        double qx = Q[i].getX();</span>
-<span class="source-line-no">059</span><span id="line-59">                        double qy = Q[i].getY();</span>
-<span class="source-line-no">060</span><span id="line-60">                        ba[2 * i + 0] = qx;</span>
-<span class="source-line-no">061</span><span id="line-61">                        ba[2 * i + 1] = qy;</span>
-<span class="source-line-no">062</span><span id="line-62">                        Ma[2 * i + 0] = new double[] { px, py, 1, 0, 0, 0, -qx * px, -qx * py };</span>
-<span class="source-line-no">063</span><span id="line-63">                        Ma[2 * i + 1] = new double[] { 0, 0, 0, px, py, 1, -qy * px, -qy * py };</span>
-<span class="source-line-no">064</span><span id="line-64">                }</span>
-<span class="source-line-no">065</span><span id="line-65">                </span>
-<span class="source-line-no">066</span><span id="line-66">                RealMatrix M = MatrixUtils.createRealMatrix(Ma);</span>
-<span class="source-line-no">067</span><span id="line-67">                RealVector b = MatrixUtils.createRealVector(ba);</span>
-<span class="source-line-no">068</span><span id="line-68">                DecompositionSolver solver = new SingularValueDecomposition(M).getSolver();</span>
-<span class="source-line-no">069</span><span id="line-69">                RealVector h = solver.solve(b);</span>
-<span class="source-line-no">070</span><span id="line-70">                A = MatrixUtils.createRealMatrix(3, 3);</span>
-<span class="source-line-no">071</span><span id="line-71">                A.setEntry(0, 0, h.getEntry(0));</span>
-<span class="source-line-no">072</span><span id="line-72">                A.setEntry(0, 1, h.getEntry(1));</span>
-<span class="source-line-no">073</span><span id="line-73">                A.setEntry(0, 2, h.getEntry(2));</span>
-<span class="source-line-no">074</span><span id="line-74">                A.setEntry(1, 0, h.getEntry(3));</span>
-<span class="source-line-no">075</span><span id="line-75">                A.setEntry(1, 1, h.getEntry(4));</span>
-<span class="source-line-no">076</span><span id="line-76">                A.setEntry(1, 2, h.getEntry(5));</span>
-<span class="source-line-no">077</span><span id="line-77">                A.setEntry(2, 0, h.getEntry(6));</span>
-<span class="source-line-no">078</span><span id="line-78">                A.setEntry(2, 1, h.getEntry(7));</span>
-<span class="source-line-no">079</span><span id="line-79">                A.setEntry(2, 2, 1.0);</span>
-<span class="source-line-no">080</span><span id="line-80">                </span>
-<span class="source-line-no">081</span><span id="line-81">                err = Math.sqrt(LinearFit2d.getSquaredError(P, Q, A.getData()));</span>
-<span class="source-line-no">082</span><span id="line-82">        }</span>
-<span class="source-line-no">083</span><span id="line-83"></span>
-<span class="source-line-no">084</span><span id="line-84">        @Override</span>
-<span class="source-line-no">085</span><span id="line-85">        public double[][] getTransformationMatrix() {</span>
-<span class="source-line-no">086</span><span id="line-86">                return A.getData();</span>
-<span class="source-line-no">087</span><span id="line-87">        }</span>
-<span class="source-line-no">088</span><span id="line-88"></span>
-<span class="source-line-no">089</span><span id="line-89">        @Override</span>
-<span class="source-line-no">090</span><span id="line-90">        public double getError() {</span>
-<span class="source-line-no">091</span><span id="line-91">                return err;</span>
-<span class="source-line-no">092</span><span id="line-92">        }</span>
-<span class="source-line-no">093</span><span id="line-93">        </span>
-<span class="source-line-no">094</span><span id="line-94">        // ------------------------------------------------------------------------------</span>
-<span class="source-line-no">095</span><span id="line-95">        </span>
-<span class="source-line-no">096</span><span id="line-96">        private void checkSize(Pnt2d[] P, Pnt2d[] Q) {</span>
-<span class="source-line-no">097</span><span id="line-97">                if (P.length &lt; 4 || Q.length &lt; 4) {</span>
-<span class="source-line-no">098</span><span id="line-98">                        throw new IllegalArgumentException("4 or more point pairs are required to calculate this fit");</span>
-<span class="source-line-no">099</span><span id="line-99">                }</span>
-<span class="source-line-no">100</span><span id="line-100">        }</span>
-<span class="source-line-no">101</span><span id="line-101"></span>
-<span class="source-line-no">102</span><span id="line-102">}</span>
+<span class="source-line-no">027</span><span id="line-27"> *</span>
+<span class="source-line-no">028</span><span id="line-28"> * @author WB</span>
+<span class="source-line-no">029</span><span id="line-29"> * @version 2022/08/01</span>
+<span class="source-line-no">030</span><span id="line-30"> */</span>
+<span class="source-line-no">031</span><span id="line-31">public class ProjectiveFit2d implements LinearFit2d {</span>
+<span class="source-line-no">032</span><span id="line-32">        </span>
+<span class="source-line-no">033</span><span id="line-33">        private final RealMatrix A;             // the calculated transformation matrix</span>
+<span class="source-line-no">034</span><span id="line-34">        private final double err;               // the calculated error</span>
+<span class="source-line-no">035</span><span id="line-35"></span>
+<span class="source-line-no">036</span><span id="line-36">        /**</span>
+<span class="source-line-no">037</span><span id="line-37">         * Constructor. Fits two sequences of 2D points using a projective transformation model. At least 4 point pairs are</span>
+<span class="source-line-no">038</span><span id="line-38">         * required. For 4 point pairs, the solution is an exact fit, otherwise a least-squares fit is found.</span>
+<span class="source-line-no">039</span><span id="line-39">         *</span>
+<span class="source-line-no">040</span><span id="line-40">         * @param P the source points</span>
+<span class="source-line-no">041</span><span id="line-41">         * @param Q the target points</span>
+<span class="source-line-no">042</span><span id="line-42">         */</span>
+<span class="source-line-no">043</span><span id="line-43">        public ProjectiveFit2d(Pnt2d[] P, Pnt2d[] Q) {</span>
+<span class="source-line-no">044</span><span id="line-44">                checkSize(P, Q);</span>
+<span class="source-line-no">045</span><span id="line-45">                final int n = Math.min(P.length, Q.length);</span>
+<span class="source-line-no">046</span><span id="line-46">                </span>
+<span class="source-line-no">047</span><span id="line-47">                double[] ba = new double[2 * n];</span>
+<span class="source-line-no">048</span><span id="line-48">                double[][] Ma = new double[2 * n][];</span>
+<span class="source-line-no">049</span><span id="line-49">                for (int i = 0; i &lt; n; i++) {</span>
+<span class="source-line-no">050</span><span id="line-50">                        double px = P[i].getX();</span>
+<span class="source-line-no">051</span><span id="line-51">                        double py = P[i].getY();</span>
+<span class="source-line-no">052</span><span id="line-52">                        double qx = Q[i].getX();</span>
+<span class="source-line-no">053</span><span id="line-53">                        double qy = Q[i].getY();</span>
+<span class="source-line-no">054</span><span id="line-54">                        ba[2 * i + 0] = qx;</span>
+<span class="source-line-no">055</span><span id="line-55">                        ba[2 * i + 1] = qy;</span>
+<span class="source-line-no">056</span><span id="line-56">                        Ma[2 * i + 0] = new double[] { px, py, 1, 0, 0, 0, -qx * px, -qx * py };</span>
+<span class="source-line-no">057</span><span id="line-57">                        Ma[2 * i + 1] = new double[] { 0, 0, 0, px, py, 1, -qy * px, -qy * py };</span>
+<span class="source-line-no">058</span><span id="line-58">                }</span>
+<span class="source-line-no">059</span><span id="line-59">                </span>
+<span class="source-line-no">060</span><span id="line-60">                RealMatrix M = MatrixUtils.createRealMatrix(Ma);</span>
+<span class="source-line-no">061</span><span id="line-61">                RealVector b = MatrixUtils.createRealVector(ba);</span>
+<span class="source-line-no">062</span><span id="line-62">                DecompositionSolver solver = new SingularValueDecomposition(M).getSolver();</span>
+<span class="source-line-no">063</span><span id="line-63">                RealVector h = solver.solve(b);</span>
+<span class="source-line-no">064</span><span id="line-64">                A = MatrixUtils.createRealMatrix(3, 3);</span>
+<span class="source-line-no">065</span><span id="line-65">                A.setEntry(0, 0, h.getEntry(0));</span>
+<span class="source-line-no">066</span><span id="line-66">                A.setEntry(0, 1, h.getEntry(1));</span>
+<span class="source-line-no">067</span><span id="line-67">                A.setEntry(0, 2, h.getEntry(2));</span>
+<span class="source-line-no">068</span><span id="line-68">                A.setEntry(1, 0, h.getEntry(3));</span>
+<span class="source-line-no">069</span><span id="line-69">                A.setEntry(1, 1, h.getEntry(4));</span>
+<span class="source-line-no">070</span><span id="line-70">                A.setEntry(1, 2, h.getEntry(5));</span>
+<span class="source-line-no">071</span><span id="line-71">                A.setEntry(2, 0, h.getEntry(6));</span>
+<span class="source-line-no">072</span><span id="line-72">                A.setEntry(2, 1, h.getEntry(7));</span>
+<span class="source-line-no">073</span><span id="line-73">                A.setEntry(2, 2, 1.0);</span>
+<span class="source-line-no">074</span><span id="line-74">                </span>
+<span class="source-line-no">075</span><span id="line-75">                err = Math.sqrt(LinearFit2d.getSquaredError(P, Q, A.getData()));</span>
+<span class="source-line-no">076</span><span id="line-76">        }</span>
+<span class="source-line-no">077</span><span id="line-77"></span>
+<span class="source-line-no">078</span><span id="line-78">        @Override</span>
+<span class="source-line-no">079</span><span id="line-79">        public double[][] getTransformationMatrix() {</span>
+<span class="source-line-no">080</span><span id="line-80">                return A.getData();</span>
+<span class="source-line-no">081</span><span id="line-81">        }</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">        @Override</span>
+<span class="source-line-no">084</span><span id="line-84">        public double getError() {</span>
+<span class="source-line-no">085</span><span id="line-85">                return err;</span>
+<span class="source-line-no">086</span><span id="line-86">        }</span>
+<span class="source-line-no">087</span><span id="line-87">        </span>
+<span class="source-line-no">088</span><span id="line-88">        // ------------------------------------------------------------------------------</span>
+<span class="source-line-no">089</span><span id="line-89">        </span>
+<span class="source-line-no">090</span><span id="line-90">        private void checkSize(Pnt2d[] P, Pnt2d[] Q) {</span>
+<span class="source-line-no">091</span><span id="line-91">                if (P.length &lt; 4 || Q.length &lt; 4) {</span>
+<span class="source-line-no">092</span><span id="line-92">                        throw new IllegalArgumentException("4 or more point pairs are required to calculate this fit");</span>
+<span class="source-line-no">093</span><span id="line-93">                }</span>
+<span class="source-line-no">094</span><span id="line-94">        }</span>
+<span class="source-line-no">095</span><span id="line-95"></span>
+<span class="source-line-no">096</span><span id="line-96">}</span>
 
 
 

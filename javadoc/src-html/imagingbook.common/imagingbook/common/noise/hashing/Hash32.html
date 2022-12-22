@@ -46,82 +46,80 @@
 <span class="source-line-no">033</span><span id="line-33">        protected Hash32(int seed) {</span>
 <span class="source-line-no">034</span><span id="line-34">                this.seed = HashFunction.getRandomSeed(seed);</span>
 <span class="source-line-no">035</span><span id="line-35">        }</span>
-<span class="source-line-no">036</span><span id="line-36">        </span>
+<span class="source-line-no">036</span><span id="line-36"></span>
 <span class="source-line-no">037</span><span id="line-37">        /**</span>
-<span class="source-line-no">038</span><span id="line-38">         * "Hashes" an &lt;tt&gt;int&lt;/tt&gt; key to a "pseudo-random" &lt;tt&gt;int&lt;/tt&gt; value in</span>
-<span class="source-line-no">039</span><span id="line-39">         * [-2147483648, 2147483647]. This method is to be implemented by concrete</span>
-<span class="source-line-no">040</span><span id="line-40">         * subclasses.</span>
-<span class="source-line-no">041</span><span id="line-41">         * </span>
-<span class="source-line-no">042</span><span id="line-42">         * @param key key to be hashed</span>
-<span class="source-line-no">043</span><span id="line-43">         * @return a integer value in [-2147483648, 2147483647].</span>
-<span class="source-line-no">044</span><span id="line-44">         */</span>
-<span class="source-line-no">045</span><span id="line-45">        abstract int hashInt(int key);</span>
-<span class="source-line-no">046</span><span id="line-46">        </span>
-<span class="source-line-no">047</span><span id="line-47">        @Override</span>
-<span class="source-line-no">048</span><span id="line-48">        public double hash(int u) {</span>
-<span class="source-line-no">049</span><span id="line-49">                int h = hashInt(73*u + seed) &amp; maxInt;</span>
-<span class="source-line-no">050</span><span id="line-50">                return (double) h / maxInt;</span>
-<span class="source-line-no">051</span><span id="line-51">        }</span>
-<span class="source-line-no">052</span><span id="line-52">        </span>
-<span class="source-line-no">053</span><span id="line-53">//      public double[] hash(int u, int v) {</span>
-<span class="source-line-no">054</span><span id="line-54">//              int hx = hashInt(59*u + 67*v + seed) &amp; maxInt;  </span>
-<span class="source-line-no">055</span><span id="line-55">//              int hy = hashInt(73*u + 79*v + seed) &amp; maxInt;  </span>
-<span class="source-line-no">056</span><span id="line-56">//              return new double[] {(double) hx / maxInt, (double) hy / maxInt};</span>
-<span class="source-line-no">057</span><span id="line-57">//      }</span>
-<span class="source-line-no">058</span><span id="line-58">        </span>
-<span class="source-line-no">059</span><span id="line-59">        // call 1 hash function and extract 12-bit blocks </span>
-<span class="source-line-no">060</span><span id="line-60">        @Override</span>
-<span class="source-line-no">061</span><span id="line-61">        public double[] hash(int u, int v) {</span>
-<span class="source-line-no">062</span><span id="line-62">                final int M = 0x00000FFF;</span>
-<span class="source-line-no">063</span><span id="line-63">                int h = hashInt(59*u + 67*v + seed);</span>
-<span class="source-line-no">064</span><span id="line-64">                int hx =  h &amp; M;                // extract bits  0..11</span>
-<span class="source-line-no">065</span><span id="line-65">                int hy = (h &gt;&gt; 12) &amp; M; // extract bits 12..23</span>
-<span class="source-line-no">066</span><span id="line-66">                return new double[] {(double) hx / M, (double) hy / M};</span>
-<span class="source-line-no">067</span><span id="line-67">        }</span>
-<span class="source-line-no">068</span><span id="line-68">        </span>
-<span class="source-line-no">069</span><span id="line-69">        // call 3 different hash functions for 3 dimensions</span>
-<span class="source-line-no">070</span><span id="line-70">//      public double[] hash(int u, int v, int w) {</span>
-<span class="source-line-no">071</span><span id="line-71">//              int M = 0x7FFFFFFF;</span>
-<span class="source-line-no">072</span><span id="line-72">//              int hx = hashInt(59*u + 67*v + 71*w + seed) &amp; M;</span>
-<span class="source-line-no">073</span><span id="line-73">//              int hy = hashInt(73*u + 79*v + 83*w + seed) &amp; M;</span>
-<span class="source-line-no">074</span><span id="line-74">//              int hz = hashInt(89*u + 97*v + 101*w + seed) &amp; M;</span>
-<span class="source-line-no">075</span><span id="line-75">//              return new double[] {(double) hx/M, (double) hy/M, (double) hz/M};</span>
-<span class="source-line-no">076</span><span id="line-76">//      }</span>
+<span class="source-line-no">038</span><span id="line-38">         * "Hashes" an &lt;tt&gt;int&lt;/tt&gt; key to a "pseudo-random" &lt;tt&gt;int&lt;/tt&gt; value in [-2147483648, 2147483647]. This method is</span>
+<span class="source-line-no">039</span><span id="line-39">         * to be implemented by concrete subclasses.</span>
+<span class="source-line-no">040</span><span id="line-40">         *</span>
+<span class="source-line-no">041</span><span id="line-41">         * @param key key to be hashed</span>
+<span class="source-line-no">042</span><span id="line-42">         * @return a integer value in [-2147483648, 2147483647].</span>
+<span class="source-line-no">043</span><span id="line-43">         */</span>
+<span class="source-line-no">044</span><span id="line-44">        abstract int hashInt(int key);</span>
+<span class="source-line-no">045</span><span id="line-45">        </span>
+<span class="source-line-no">046</span><span id="line-46">        @Override</span>
+<span class="source-line-no">047</span><span id="line-47">        public double hash(int u) {</span>
+<span class="source-line-no">048</span><span id="line-48">                int h = hashInt(73*u + seed) &amp; maxInt;</span>
+<span class="source-line-no">049</span><span id="line-49">                return (double) h / maxInt;</span>
+<span class="source-line-no">050</span><span id="line-50">        }</span>
+<span class="source-line-no">051</span><span id="line-51">        </span>
+<span class="source-line-no">052</span><span id="line-52">//      public double[] hash(int u, int v) {</span>
+<span class="source-line-no">053</span><span id="line-53">//              int hx = hashInt(59*u + 67*v + seed) &amp; maxInt;  </span>
+<span class="source-line-no">054</span><span id="line-54">//              int hy = hashInt(73*u + 79*v + seed) &amp; maxInt;  </span>
+<span class="source-line-no">055</span><span id="line-55">//              return new double[] {(double) hx / maxInt, (double) hy / maxInt};</span>
+<span class="source-line-no">056</span><span id="line-56">//      }</span>
+<span class="source-line-no">057</span><span id="line-57">        </span>
+<span class="source-line-no">058</span><span id="line-58">        // call 1 hash function and extract 12-bit blocks </span>
+<span class="source-line-no">059</span><span id="line-59">        @Override</span>
+<span class="source-line-no">060</span><span id="line-60">        public double[] hash(int u, int v) {</span>
+<span class="source-line-no">061</span><span id="line-61">                final int M = 0x00000FFF;</span>
+<span class="source-line-no">062</span><span id="line-62">                int h = hashInt(59*u + 67*v + seed);</span>
+<span class="source-line-no">063</span><span id="line-63">                int hx =  h &amp; M;                // extract bits  0..11</span>
+<span class="source-line-no">064</span><span id="line-64">                int hy = (h &gt;&gt; 12) &amp; M; // extract bits 12..23</span>
+<span class="source-line-no">065</span><span id="line-65">                return new double[] {(double) hx / M, (double) hy / M};</span>
+<span class="source-line-no">066</span><span id="line-66">        }</span>
+<span class="source-line-no">067</span><span id="line-67">        </span>
+<span class="source-line-no">068</span><span id="line-68">        // call 3 different hash functions for 3 dimensions</span>
+<span class="source-line-no">069</span><span id="line-69">//      public double[] hash(int u, int v, int w) {</span>
+<span class="source-line-no">070</span><span id="line-70">//              int M = 0x7FFFFFFF;</span>
+<span class="source-line-no">071</span><span id="line-71">//              int hx = hashInt(59*u + 67*v + 71*w + seed) &amp; M;</span>
+<span class="source-line-no">072</span><span id="line-72">//              int hy = hashInt(73*u + 79*v + 83*w + seed) &amp; M;</span>
+<span class="source-line-no">073</span><span id="line-73">//              int hz = hashInt(89*u + 97*v + 101*w + seed) &amp; M;</span>
+<span class="source-line-no">074</span><span id="line-74">//              return new double[] {(double) hx/M, (double) hy/M, (double) hz/M};</span>
+<span class="source-line-no">075</span><span id="line-75">//      }</span>
+<span class="source-line-no">076</span><span id="line-76">        </span>
 <span class="source-line-no">077</span><span id="line-77">        </span>
-<span class="source-line-no">078</span><span id="line-78">        </span>
-<span class="source-line-no">079</span><span id="line-79">        // call 1 hash function and extract bit blocks</span>
-<span class="source-line-no">080</span><span id="line-80">        @Override</span>
-<span class="source-line-no">081</span><span id="line-81">        public double[] hash(int u, int v, int w) {</span>
-<span class="source-line-no">082</span><span id="line-82">                final int M = 0x000000FF;</span>
-<span class="source-line-no">083</span><span id="line-83">                int h = hashInt(59*u + 67*v + 71*w + seed);</span>
-<span class="source-line-no">084</span><span id="line-84">                int hx =  h &amp; M;                        // extract bits 0..7</span>
-<span class="source-line-no">085</span><span id="line-85">                int hy = (h &gt;&gt; 8) &amp; M;  // extract bits 8..15</span>
-<span class="source-line-no">086</span><span id="line-86">                int hz = (h &gt;&gt; 16) &amp; M; // extract bits 16..23</span>
-<span class="source-line-no">087</span><span id="line-87">                return new double[] {(double) hx / M, (double) hy / M, (double) hz / M};</span>
-<span class="source-line-no">088</span><span id="line-88">        }</span>
-<span class="source-line-no">089</span><span id="line-89">        </span>
-<span class="source-line-no">090</span><span id="line-90">        /*</span>
-<span class="source-line-no">091</span><span id="line-91">         * N-dimensional permutation hash; this version does not use any bit splitting.</span>
-<span class="source-line-no">092</span><span id="line-92">         * Instead, the hashInt() function is applied repeatedly for every gradient</span>
-<span class="source-line-no">093</span><span id="line-93">         * dimension by using the dimension number (k) as a local seed - in addition to</span>
-<span class="source-line-no">094</span><span id="line-94">         * the global seed (seed).</span>
-<span class="source-line-no">095</span><span id="line-95">         */</span>
-<span class="source-line-no">096</span><span id="line-96">        @Override</span>
-<span class="source-line-no">097</span><span id="line-97">        public double[] hash(int[] p) { </span>
-<span class="source-line-no">098</span><span id="line-98">                final int N = p.length;</span>
-<span class="source-line-no">099</span><span id="line-99">                double[] g = new double[N];</span>
-<span class="source-line-no">100</span><span id="line-100">                for (int k = 0; k &lt; N; k++) { // dimension k</span>
-<span class="source-line-no">101</span><span id="line-101">                        int sum = seed;</span>
-<span class="source-line-no">102</span><span id="line-102">                        for (int l = 0; l &lt; N; l++) { // dimension k</span>
-<span class="source-line-no">103</span><span id="line-103">                                sum = sum + smallPrimes[l + k] * p[l];</span>
-<span class="source-line-no">104</span><span id="line-104">                        }</span>
-<span class="source-line-no">105</span><span id="line-105">                        int h = hashInt(sum + k) &amp; maxInt;</span>
-<span class="source-line-no">106</span><span id="line-106">                        g[k] = (double) h / maxInt;</span>
-<span class="source-line-no">107</span><span id="line-107">                }</span>
-<span class="source-line-no">108</span><span id="line-108">                return g;</span>
-<span class="source-line-no">109</span><span id="line-109">        }</span>
-<span class="source-line-no">110</span><span id="line-110"></span>
-<span class="source-line-no">111</span><span id="line-111">}</span>
+<span class="source-line-no">078</span><span id="line-78">        // call 1 hash function and extract bit blocks</span>
+<span class="source-line-no">079</span><span id="line-79">        @Override</span>
+<span class="source-line-no">080</span><span id="line-80">        public double[] hash(int u, int v, int w) {</span>
+<span class="source-line-no">081</span><span id="line-81">                final int M = 0x000000FF;</span>
+<span class="source-line-no">082</span><span id="line-82">                int h = hashInt(59*u + 67*v + 71*w + seed);</span>
+<span class="source-line-no">083</span><span id="line-83">                int hx =  h &amp; M;                        // extract bits 0..7</span>
+<span class="source-line-no">084</span><span id="line-84">                int hy = (h &gt;&gt; 8) &amp; M;  // extract bits 8..15</span>
+<span class="source-line-no">085</span><span id="line-85">                int hz = (h &gt;&gt; 16) &amp; M; // extract bits 16..23</span>
+<span class="source-line-no">086</span><span id="line-86">                return new double[] {(double) hx / M, (double) hy / M, (double) hz / M};</span>
+<span class="source-line-no">087</span><span id="line-87">        }</span>
+<span class="source-line-no">088</span><span id="line-88"></span>
+<span class="source-line-no">089</span><span id="line-89">        /**</span>
+<span class="source-line-no">090</span><span id="line-90">         * N-dimensional permutation hash; this version does not use any bit splitting. Instead, the hashInt() function is</span>
+<span class="source-line-no">091</span><span id="line-91">         * applied repeatedly for every gradient dimension by using the dimension number (k) as a local seed - in addition</span>
+<span class="source-line-no">092</span><span id="line-92">         * to the global seed (seed).</span>
+<span class="source-line-no">093</span><span id="line-93">         */</span>
+<span class="source-line-no">094</span><span id="line-94">        @Override</span>
+<span class="source-line-no">095</span><span id="line-95">        public double[] hash(int[] p) { </span>
+<span class="source-line-no">096</span><span id="line-96">                final int N = p.length;</span>
+<span class="source-line-no">097</span><span id="line-97">                double[] g = new double[N];</span>
+<span class="source-line-no">098</span><span id="line-98">                for (int k = 0; k &lt; N; k++) { // dimension k</span>
+<span class="source-line-no">099</span><span id="line-99">                        int sum = seed;</span>
+<span class="source-line-no">100</span><span id="line-100">                        for (int l = 0; l &lt; N; l++) { // dimension k</span>
+<span class="source-line-no">101</span><span id="line-101">                                sum = sum + smallPrimes[l + k] * p[l];</span>
+<span class="source-line-no">102</span><span id="line-102">                        }</span>
+<span class="source-line-no">103</span><span id="line-103">                        int h = hashInt(sum + k) &amp; maxInt;</span>
+<span class="source-line-no">104</span><span id="line-104">                        g[k] = (double) h / maxInt;</span>
+<span class="source-line-no">105</span><span id="line-105">                }</span>
+<span class="source-line-no">106</span><span id="line-106">                return g;</span>
+<span class="source-line-no">107</span><span id="line-107">        }</span>
+<span class="source-line-no">108</span><span id="line-108"></span>
+<span class="source-line-no">109</span><span id="line-109">}</span>
 
 
 

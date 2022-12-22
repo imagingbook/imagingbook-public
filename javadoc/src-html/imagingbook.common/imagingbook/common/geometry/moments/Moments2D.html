@@ -24,89 +24,84 @@
 <span class="source-line-no">011</span><span id="line-11">import imagingbook.common.geometry.basic.Pnt2d;</span>
 <span class="source-line-no">012</span><span id="line-12">import imagingbook.common.math.Arithmetic;</span>
 <span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">/**</span>
-<span class="source-line-no">016</span><span id="line-16"> * &lt;p&gt;</span>
-<span class="source-line-no">017</span><span id="line-17"> * This class defines methods for statistical moment calculations on 2D point</span>
-<span class="source-line-no">018</span><span id="line-18"> * sets. See Sec. 8.5 of [1] for details. This abstract class defines static</span>
-<span class="source-line-no">019</span><span id="line-19"> * methods only.</span>
-<span class="source-line-no">020</span><span id="line-20"> * &lt;/p&gt;</span>
-<span class="source-line-no">021</span><span id="line-21"> * &lt;p&gt;</span>
-<span class="source-line-no">022</span><span id="line-22"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">023</span><span id="line-23"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">024</span><span id="line-24"> * &lt;/p&gt;</span>
-<span class="source-line-no">025</span><span id="line-25"> * </span>
-<span class="source-line-no">026</span><span id="line-26"> * @author WB</span>
-<span class="source-line-no">027</span><span id="line-27"> * @version 2022/11/17</span>
-<span class="source-line-no">028</span><span id="line-28"> */</span>
-<span class="source-line-no">029</span><span id="line-29">public abstract class Moments2D {       //TODO: make more efficient versions!</span>
-<span class="source-line-no">030</span><span id="line-30">        </span>
-<span class="source-line-no">031</span><span id="line-31">        private Moments2D() {}</span>
-<span class="source-line-no">032</span><span id="line-32">        </span>
-<span class="source-line-no">033</span><span id="line-33">        /**</span>
-<span class="source-line-no">034</span><span id="line-34">         * Calculates and returns the ordinary moment of order (p,q) for the</span>
-<span class="source-line-no">035</span><span id="line-35">         * specified set of 2D points.</span>
-<span class="source-line-no">036</span><span id="line-36">         * </span>
-<span class="source-line-no">037</span><span id="line-37">         * @param points a set of 2D points</span>
-<span class="source-line-no">038</span><span id="line-38">         * @param p order index p</span>
-<span class="source-line-no">039</span><span id="line-39">         * @param q order index q</span>
-<span class="source-line-no">040</span><span id="line-40">         * @return the moment value</span>
-<span class="source-line-no">041</span><span id="line-41">         */</span>
-<span class="source-line-no">042</span><span id="line-42">        public static double ordinaryMoment(Iterable&lt;Pnt2d&gt; points, int p, int q) {</span>
-<span class="source-line-no">043</span><span id="line-43">                double mpq = 0.0;</span>
-<span class="source-line-no">044</span><span id="line-44">                if (p == 0 &amp;&amp; q == 0) { // just count the number of points</span>
-<span class="source-line-no">045</span><span id="line-45">                        for (@SuppressWarnings("unused") Pnt2d pnt : points) {</span>
-<span class="source-line-no">046</span><span id="line-46">                                mpq += 1;</span>
-<span class="source-line-no">047</span><span id="line-47">                        }</span>
-<span class="source-line-no">048</span><span id="line-48">                }</span>
-<span class="source-line-no">049</span><span id="line-49">                else {</span>
-<span class="source-line-no">050</span><span id="line-50">                        for (Pnt2d pnt : points) {</span>
-<span class="source-line-no">051</span><span id="line-51">                                mpq += Math.pow(pnt.getX(), p) * Math.pow(pnt.getY(), q);</span>
-<span class="source-line-no">052</span><span id="line-52">                        }</span>
-<span class="source-line-no">053</span><span id="line-53">                }</span>
-<span class="source-line-no">054</span><span id="line-54">                return mpq;</span>
-<span class="source-line-no">055</span><span id="line-55">        }</span>
-<span class="source-line-no">056</span><span id="line-56"></span>
-<span class="source-line-no">057</span><span id="line-57">        /**</span>
-<span class="source-line-no">058</span><span id="line-58">         * Calculates and returns the central moment of order (p,q) for the</span>
-<span class="source-line-no">059</span><span id="line-59">         * specified set of 2D points.</span>
-<span class="source-line-no">060</span><span id="line-60">         * </span>
-<span class="source-line-no">061</span><span id="line-61">         * @param points a set of 2D points</span>
-<span class="source-line-no">062</span><span id="line-62">         * @param p order index p</span>
-<span class="source-line-no">063</span><span id="line-63">         * @param q order index q</span>
-<span class="source-line-no">064</span><span id="line-64">         * @return the moment value</span>
-<span class="source-line-no">065</span><span id="line-65">         */</span>
-<span class="source-line-no">066</span><span id="line-66">        public static double centralMoment(Iterable&lt;Pnt2d&gt; points, int p, int q) {</span>
-<span class="source-line-no">067</span><span id="line-67">                double m00 = ordinaryMoment(points, 0, 0); // region area</span>
-<span class="source-line-no">068</span><span id="line-68">                if (Arithmetic.isZero(m00)) {</span>
-<span class="source-line-no">069</span><span id="line-69">                        throw new RuntimeException("empty point set");</span>
-<span class="source-line-no">070</span><span id="line-70">                }</span>
-<span class="source-line-no">071</span><span id="line-71">                double xc = ordinaryMoment(points, 1, 0) / m00;</span>
-<span class="source-line-no">072</span><span id="line-72">                double yc = ordinaryMoment(points, 0, 1) / m00;</span>
-<span class="source-line-no">073</span><span id="line-73">                double mupq = 0.0;</span>
-<span class="source-line-no">074</span><span id="line-74">                for (Pnt2d pnt : points) {</span>
-<span class="source-line-no">075</span><span id="line-75">                        mupq += Math.pow(pnt.getX() - xc, p) * Math.pow(pnt.getY() - yc, q);</span>
-<span class="source-line-no">076</span><span id="line-76">                }</span>
-<span class="source-line-no">077</span><span id="line-77">                return mupq;</span>
-<span class="source-line-no">078</span><span id="line-78">        }</span>
-<span class="source-line-no">079</span><span id="line-79"></span>
-<span class="source-line-no">080</span><span id="line-80">        /**</span>
-<span class="source-line-no">081</span><span id="line-81">         * Calculates and returns the normalized central moment of order (p,q) for the</span>
-<span class="source-line-no">082</span><span id="line-82">         * specified set of 2D points.</span>
-<span class="source-line-no">083</span><span id="line-83">         * </span>
-<span class="source-line-no">084</span><span id="line-84">         * @param points a set of 2D points</span>
-<span class="source-line-no">085</span><span id="line-85">         * @param p order index p</span>
-<span class="source-line-no">086</span><span id="line-86">         * @param q order index q</span>
-<span class="source-line-no">087</span><span id="line-87">         * @return the moment value</span>
-<span class="source-line-no">088</span><span id="line-88">         */</span>
-<span class="source-line-no">089</span><span id="line-89">        public static double normalizedCentralMoment(Iterable&lt;Pnt2d&gt; points, int p, int q) {</span>
-<span class="source-line-no">090</span><span id="line-90">                double m00 = ordinaryMoment(points, 0, 0);</span>
-<span class="source-line-no">091</span><span id="line-91">                double scale = 1.0 / Math.pow(m00, 0.5 * (p + q) + 1);</span>
-<span class="source-line-no">092</span><span id="line-92">                return scale * centralMoment(points, p, q);</span>
-<span class="source-line-no">093</span><span id="line-93">        }</span>
-<span class="source-line-no">094</span><span id="line-94"></span>
-<span class="source-line-no">095</span><span id="line-95">}</span>
-<span class="source-line-no">096</span><span id="line-96"></span>
+<span class="source-line-no">014</span><span id="line-14">/**</span>
+<span class="source-line-no">015</span><span id="line-15"> * &lt;p&gt;</span>
+<span class="source-line-no">016</span><span id="line-16"> * This class defines methods for statistical moment calculations on 2D point sets. See Sec. 8.5 of [1] for details.</span>
+<span class="source-line-no">017</span><span id="line-17"> * This abstract class defines static methods only.</span>
+<span class="source-line-no">018</span><span id="line-18"> * &lt;/p&gt;</span>
+<span class="source-line-no">019</span><span id="line-19"> * &lt;p&gt;</span>
+<span class="source-line-no">020</span><span id="line-20"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">021</span><span id="line-21"> * (2022).</span>
+<span class="source-line-no">022</span><span id="line-22"> * &lt;/p&gt;</span>
+<span class="source-line-no">023</span><span id="line-23"> *</span>
+<span class="source-line-no">024</span><span id="line-24"> * @author WB</span>
+<span class="source-line-no">025</span><span id="line-25"> * @version 2022/11/17</span>
+<span class="source-line-no">026</span><span id="line-26"> */</span>
+<span class="source-line-no">027</span><span id="line-27">public abstract class Moments2D {       //TODO: make more efficient versions!</span>
+<span class="source-line-no">028</span><span id="line-28">        </span>
+<span class="source-line-no">029</span><span id="line-29">        private Moments2D() {}</span>
+<span class="source-line-no">030</span><span id="line-30"></span>
+<span class="source-line-no">031</span><span id="line-31">        /**</span>
+<span class="source-line-no">032</span><span id="line-32">         * Calculates and returns the ordinary moment of order (p,q) for the specified set of 2D points.</span>
+<span class="source-line-no">033</span><span id="line-33">         *</span>
+<span class="source-line-no">034</span><span id="line-34">         * @param points a set of 2D points</span>
+<span class="source-line-no">035</span><span id="line-35">         * @param p order index p</span>
+<span class="source-line-no">036</span><span id="line-36">         * @param q order index q</span>
+<span class="source-line-no">037</span><span id="line-37">         * @return the moment value</span>
+<span class="source-line-no">038</span><span id="line-38">         */</span>
+<span class="source-line-no">039</span><span id="line-39">        public static double ordinaryMoment(Iterable&lt;Pnt2d&gt; points, int p, int q) {</span>
+<span class="source-line-no">040</span><span id="line-40">                double mpq = 0.0;</span>
+<span class="source-line-no">041</span><span id="line-41">                if (p == 0 &amp;&amp; q == 0) { // just count the number of points</span>
+<span class="source-line-no">042</span><span id="line-42">                        for (@SuppressWarnings("unused") Pnt2d pnt : points) {</span>
+<span class="source-line-no">043</span><span id="line-43">                                mpq += 1;</span>
+<span class="source-line-no">044</span><span id="line-44">                        }</span>
+<span class="source-line-no">045</span><span id="line-45">                }</span>
+<span class="source-line-no">046</span><span id="line-46">                else {</span>
+<span class="source-line-no">047</span><span id="line-47">                        for (Pnt2d pnt : points) {</span>
+<span class="source-line-no">048</span><span id="line-48">                                mpq += Math.pow(pnt.getX(), p) * Math.pow(pnt.getY(), q);</span>
+<span class="source-line-no">049</span><span id="line-49">                        }</span>
+<span class="source-line-no">050</span><span id="line-50">                }</span>
+<span class="source-line-no">051</span><span id="line-51">                return mpq;</span>
+<span class="source-line-no">052</span><span id="line-52">        }</span>
+<span class="source-line-no">053</span><span id="line-53"></span>
+<span class="source-line-no">054</span><span id="line-54">        /**</span>
+<span class="source-line-no">055</span><span id="line-55">         * Calculates and returns the central moment of order (p,q) for the specified set of 2D points.</span>
+<span class="source-line-no">056</span><span id="line-56">         *</span>
+<span class="source-line-no">057</span><span id="line-57">         * @param points a set of 2D points</span>
+<span class="source-line-no">058</span><span id="line-58">         * @param p order index p</span>
+<span class="source-line-no">059</span><span id="line-59">         * @param q order index q</span>
+<span class="source-line-no">060</span><span id="line-60">         * @return the moment value</span>
+<span class="source-line-no">061</span><span id="line-61">         */</span>
+<span class="source-line-no">062</span><span id="line-62">        public static double centralMoment(Iterable&lt;Pnt2d&gt; points, int p, int q) {</span>
+<span class="source-line-no">063</span><span id="line-63">                double m00 = ordinaryMoment(points, 0, 0); // region area</span>
+<span class="source-line-no">064</span><span id="line-64">                if (Arithmetic.isZero(m00)) {</span>
+<span class="source-line-no">065</span><span id="line-65">                        throw new RuntimeException("empty point set");</span>
+<span class="source-line-no">066</span><span id="line-66">                }</span>
+<span class="source-line-no">067</span><span id="line-67">                double xc = ordinaryMoment(points, 1, 0) / m00;</span>
+<span class="source-line-no">068</span><span id="line-68">                double yc = ordinaryMoment(points, 0, 1) / m00;</span>
+<span class="source-line-no">069</span><span id="line-69">                double mupq = 0.0;</span>
+<span class="source-line-no">070</span><span id="line-70">                for (Pnt2d pnt : points) {</span>
+<span class="source-line-no">071</span><span id="line-71">                        mupq += Math.pow(pnt.getX() - xc, p) * Math.pow(pnt.getY() - yc, q);</span>
+<span class="source-line-no">072</span><span id="line-72">                }</span>
+<span class="source-line-no">073</span><span id="line-73">                return mupq;</span>
+<span class="source-line-no">074</span><span id="line-74">        }</span>
+<span class="source-line-no">075</span><span id="line-75"></span>
+<span class="source-line-no">076</span><span id="line-76">        /**</span>
+<span class="source-line-no">077</span><span id="line-77">         * Calculates and returns the normalized central moment of order (p,q) for the specified set of 2D points.</span>
+<span class="source-line-no">078</span><span id="line-78">         *</span>
+<span class="source-line-no">079</span><span id="line-79">         * @param points a set of 2D points</span>
+<span class="source-line-no">080</span><span id="line-80">         * @param p order index p</span>
+<span class="source-line-no">081</span><span id="line-81">         * @param q order index q</span>
+<span class="source-line-no">082</span><span id="line-82">         * @return the moment value</span>
+<span class="source-line-no">083</span><span id="line-83">         */</span>
+<span class="source-line-no">084</span><span id="line-84">        public static double normalizedCentralMoment(Iterable&lt;Pnt2d&gt; points, int p, int q) {</span>
+<span class="source-line-no">085</span><span id="line-85">                double m00 = ordinaryMoment(points, 0, 0);</span>
+<span class="source-line-no">086</span><span id="line-86">                double scale = 1.0 / Math.pow(m00, 0.5 * (p + q) + 1);</span>
+<span class="source-line-no">087</span><span id="line-87">                return scale * centralMoment(points, p, q);</span>
+<span class="source-line-no">088</span><span id="line-88">        }</span>
+<span class="source-line-no">089</span><span id="line-89"></span>
+<span class="source-line-no">090</span><span id="line-90">}</span>
+<span class="source-line-no">091</span><span id="line-91"></span>
 
 
 

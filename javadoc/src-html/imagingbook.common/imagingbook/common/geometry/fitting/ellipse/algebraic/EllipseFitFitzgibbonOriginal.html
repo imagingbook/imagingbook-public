@@ -21,100 +21,91 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.geometry.fitting.ellipse.algebraic;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import static imagingbook.common.math.Arithmetic.sqr;</span>
-<span class="source-line-no">012</span><span id="line-12"></span>
-<span class="source-line-no">013</span><span id="line-13">import org.apache.commons.math3.linear.MatrixUtils;</span>
-<span class="source-line-no">014</span><span id="line-14">import org.apache.commons.math3.linear.RealMatrix;</span>
-<span class="source-line-no">015</span><span id="line-15"></span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.common.geometry.basic.Pnt2d;</span>
-<span class="source-line-no">017</span><span id="line-17">import imagingbook.common.math.Matrix;</span>
-<span class="source-line-no">018</span><span id="line-18">import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;</span>
-<span class="source-line-no">019</span><span id="line-19"></span>
-<span class="source-line-no">020</span><span id="line-20">/**</span>
-<span class="source-line-no">021</span><span id="line-21"> * &lt;p&gt;</span>
-<span class="source-line-no">022</span><span id="line-22"> * Algebraic ellipse fit based on Fitzgibbon's original method [1], as described</span>
-<span class="source-line-no">023</span><span id="line-23"> * in [2] (WITHOUT the additional numerical improvements). Based on generalized</span>
-<span class="source-line-no">024</span><span id="line-24"> * symmetric eigenproblem solution. See [3, Sec. 11.2.1] for a detailed</span>
-<span class="source-line-no">025</span><span id="line-25"> * description. Note: This implementation does not use data centering nor</span>
-<span class="source-line-no">026</span><span id="line-26"> * accepts a specific reference point. With exactly 5 input points (generally</span>
-<span class="source-line-no">027</span><span id="line-27"> * sufficient for ellipse fitting) the scatter matrix X is singular and thus the</span>
-<span class="source-line-no">028</span><span id="line-28"> * Cholesky decomposition used by the</span>
-<span class="source-line-no">029</span><span id="line-29"> * {@link GeneralizedSymmetricEigenDecomposition} cannot be applied. Thus at</span>
-<span class="source-line-no">030</span><span id="line-30"> * least 6 distinct input points are required (i.e., no duplicate points are</span>
-<span class="source-line-no">031</span><span id="line-31"> * allowed).</span>
-<span class="source-line-no">032</span><span id="line-32"> * &lt;/p&gt;</span>
-<span class="source-line-no">033</span><span id="line-33"> * &lt;p&gt;</span>
-<span class="source-line-no">034</span><span id="line-34"> * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least- squares</span>
-<span class="source-line-no">035</span><span id="line-35"> * fitting of ellipses. IEEE Transactions on Pattern Analysis and Machine</span>
-<span class="source-line-no">036</span><span id="line-36"> * Intelligence 21(5), 476-480 (1999). &lt;br&gt;</span>
-<span class="source-line-no">037</span><span id="line-37"> * [2] R. Halíř and J. Flusser. Numerically stable direct least squares fitting</span>
-<span class="source-line-no">038</span><span id="line-38"> * of ellipses. In "Proceedings of the 6th International Conference in Central</span>
-<span class="source-line-no">039</span><span id="line-39"> * Europe on Computer Graphics and Visualization (WSCG’98)", pp. 125-132, Plzeň,</span>
-<span class="source-line-no">040</span><span id="line-40"> * CZ (February 1998). &lt;br&gt;</span>
-<span class="source-line-no">041</span><span id="line-41"> * [3] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">042</span><span id="line-42"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">043</span><span id="line-43"> * &lt;/p&gt;</span>
-<span class="source-line-no">044</span><span id="line-44"> * </span>
-<span class="source-line-no">045</span><span id="line-45"> * @author WB</span>
-<span class="source-line-no">046</span><span id="line-46"> * @version 2022/11/17</span>
-<span class="source-line-no">047</span><span id="line-47"> */</span>
-<span class="source-line-no">048</span><span id="line-48">public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {</span>
-<span class="source-line-no">049</span><span id="line-49">        </span>
-<span class="source-line-no">050</span><span id="line-50">        // constraint matrix</span>
-<span class="source-line-no">051</span><span id="line-51">        // constraint matrix</span>
-<span class="source-line-no">052</span><span id="line-52">        private static final RealMatrix C = Matrix.makeRealMatrix(6, 6,</span>
-<span class="source-line-no">053</span><span id="line-53">                                0, 0, 2, 0, 0, 0,</span>
-<span class="source-line-no">054</span><span id="line-54">                                0,-1, 0, 0, 0, 0,</span>
-<span class="source-line-no">055</span><span id="line-55">                                2, 0, 0, 0, 0, 0,</span>
-<span class="source-line-no">056</span><span id="line-56">                                0, 0, 0, 0, 0, 0,</span>
-<span class="source-line-no">057</span><span id="line-57">                                0, 0, 0, 0, 0, 0,</span>
-<span class="source-line-no">058</span><span id="line-58">                                0, 0, 0, 0, 0, 0 );</span>
+<span class="source-line-no">011</span><span id="line-11">import imagingbook.common.geometry.basic.Pnt2d;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.math.Matrix;</span>
+<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.math.eigen.GeneralizedSymmetricEigenDecomposition;</span>
+<span class="source-line-no">014</span><span id="line-14">import org.apache.commons.math3.linear.MatrixUtils;</span>
+<span class="source-line-no">015</span><span id="line-15">import org.apache.commons.math3.linear.RealMatrix;</span>
+<span class="source-line-no">016</span><span id="line-16"></span>
+<span class="source-line-no">017</span><span id="line-17">import static imagingbook.common.math.Arithmetic.sqr;</span>
+<span class="source-line-no">018</span><span id="line-18"></span>
+<span class="source-line-no">019</span><span id="line-19">/**</span>
+<span class="source-line-no">020</span><span id="line-20"> * &lt;p&gt;</span>
+<span class="source-line-no">021</span><span id="line-21"> * Algebraic ellipse fit based on Fitzgibbon's original method [1], as described in [2] (WITHOUT the additional</span>
+<span class="source-line-no">022</span><span id="line-22"> * numerical improvements). Based on generalized symmetric eigenproblem solution. See [3, Sec. 11.2.1] for a detailed</span>
+<span class="source-line-no">023</span><span id="line-23"> * description. Note: This implementation does not use data centering nor accepts a specific reference point. With</span>
+<span class="source-line-no">024</span><span id="line-24"> * exactly 5 input points (generally sufficient for ellipse fitting) the scatter matrix X is singular and thus the</span>
+<span class="source-line-no">025</span><span id="line-25"> * Cholesky decomposition used by the {@link GeneralizedSymmetricEigenDecomposition} cannot be applied. Thus at least 6</span>
+<span class="source-line-no">026</span><span id="line-26"> * distinct input points are required (i.e., no duplicate points are allowed).</span>
+<span class="source-line-no">027</span><span id="line-27"> * &lt;/p&gt;</span>
+<span class="source-line-no">028</span><span id="line-28"> * &lt;p&gt;</span>
+<span class="source-line-no">029</span><span id="line-29"> * [1] A. W. Fitzgibbon, M. Pilu, and R. B. Fisher. Direct least- squares fitting of ellipses. IEEE Transactions on</span>
+<span class="source-line-no">030</span><span id="line-30"> * Pattern Analysis and Machine Intelligence 21(5), 476-480 (1999). &lt;br&gt; [2] R. Halíř and J. Flusser. Numerically stable</span>
+<span class="source-line-no">031</span><span id="line-31"> * direct least squares fitting of ellipses. In "Proceedings of the 6th International Conference in Central Europe on</span>
+<span class="source-line-no">032</span><span id="line-32"> * Computer Graphics and Visualization (WSCG’98)", pp. 125-132, Plzeň, CZ (February 1998). &lt;br&gt; [3] W. Burger, M.J.</span>
+<span class="source-line-no">033</span><span id="line-33"> * Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
+<span class="source-line-no">034</span><span id="line-34"> * &lt;/p&gt;</span>
+<span class="source-line-no">035</span><span id="line-35"> *</span>
+<span class="source-line-no">036</span><span id="line-36"> * @author WB</span>
+<span class="source-line-no">037</span><span id="line-37"> * @version 2022/11/17</span>
+<span class="source-line-no">038</span><span id="line-38"> */</span>
+<span class="source-line-no">039</span><span id="line-39">public class EllipseFitFitzgibbonOriginal implements EllipseFitAlgebraic {</span>
+<span class="source-line-no">040</span><span id="line-40">        </span>
+<span class="source-line-no">041</span><span id="line-41">        // constraint matrix</span>
+<span class="source-line-no">042</span><span id="line-42">        // constraint matrix</span>
+<span class="source-line-no">043</span><span id="line-43">        private static final RealMatrix C = Matrix.makeRealMatrix(6, 6,</span>
+<span class="source-line-no">044</span><span id="line-44">                                0, 0, 2, 0, 0, 0,</span>
+<span class="source-line-no">045</span><span id="line-45">                                0,-1, 0, 0, 0, 0,</span>
+<span class="source-line-no">046</span><span id="line-46">                                2, 0, 0, 0, 0, 0,</span>
+<span class="source-line-no">047</span><span id="line-47">                                0, 0, 0, 0, 0, 0,</span>
+<span class="source-line-no">048</span><span id="line-48">                                0, 0, 0, 0, 0, 0,</span>
+<span class="source-line-no">049</span><span id="line-49">                                0, 0, 0, 0, 0, 0 );</span>
+<span class="source-line-no">050</span><span id="line-50"></span>
+<span class="source-line-no">051</span><span id="line-51">        private final double[] q;       // = (A,B,C,D,E,F) algebraic ellipse parameters</span>
+<span class="source-line-no">052</span><span id="line-52">        </span>
+<span class="source-line-no">053</span><span id="line-53">        public EllipseFitFitzgibbonOriginal(Pnt2d[] points) {</span>
+<span class="source-line-no">054</span><span id="line-54">                if (points.length &lt; 6) {</span>
+<span class="source-line-no">055</span><span id="line-55">                        throw new IllegalArgumentException("fitter requires at least 6 sample points instead of " + points.length);</span>
+<span class="source-line-no">056</span><span id="line-56">                }</span>
+<span class="source-line-no">057</span><span id="line-57">                this.q = fit(points);</span>
+<span class="source-line-no">058</span><span id="line-58">        }</span>
 <span class="source-line-no">059</span><span id="line-59"></span>
-<span class="source-line-no">060</span><span id="line-60">        private final double[] q;       // = (A,B,C,D,E,F) algebraic ellipse parameters</span>
-<span class="source-line-no">061</span><span id="line-61">        </span>
-<span class="source-line-no">062</span><span id="line-62">        public EllipseFitFitzgibbonOriginal(Pnt2d[] points) {</span>
-<span class="source-line-no">063</span><span id="line-63">                if (points.length &lt; 6) {</span>
-<span class="source-line-no">064</span><span id="line-64">                        throw new IllegalArgumentException("fitter requires at least 6 sample points instead of " + points.length);</span>
-<span class="source-line-no">065</span><span id="line-65">                }</span>
-<span class="source-line-no">066</span><span id="line-66">                this.q = fit(points);</span>
-<span class="source-line-no">067</span><span id="line-67">        }</span>
-<span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">        @Override</span>
-<span class="source-line-no">070</span><span id="line-70">        public double[] getParameters() {</span>
-<span class="source-line-no">071</span><span id="line-71">                return this.q;</span>
-<span class="source-line-no">072</span><span id="line-72">        }</span>
-<span class="source-line-no">073</span><span id="line-73">        </span>
-<span class="source-line-no">074</span><span id="line-74">        private double[] fit(Pnt2d[] points) {</span>
-<span class="source-line-no">075</span><span id="line-75">                final int n = points.length;</span>
-<span class="source-line-no">076</span><span id="line-76"></span>
-<span class="source-line-no">077</span><span id="line-77">                // design matrix X:</span>
-<span class="source-line-no">078</span><span id="line-78">                RealMatrix X = MatrixUtils.createRealMatrix(n, 6);</span>
-<span class="source-line-no">079</span><span id="line-79">                </span>
-<span class="source-line-no">080</span><span id="line-80">                for (int i = 0; i &lt; n; i++) {</span>
-<span class="source-line-no">081</span><span id="line-81">                        double x = points[i].getX();</span>
-<span class="source-line-no">082</span><span id="line-82">                        double y = points[i].getY();</span>
-<span class="source-line-no">083</span><span id="line-83">                        double[] ri = {sqr(x), x * y, sqr(y), x, y, 1};</span>
-<span class="source-line-no">084</span><span id="line-84">                        X.setRow(i, ri);</span>
-<span class="source-line-no">085</span><span id="line-85">                }</span>
-<span class="source-line-no">086</span><span id="line-86">                </span>
-<span class="source-line-no">087</span><span id="line-87">                // scatter matrix S:</span>
-<span class="source-line-no">088</span><span id="line-88">                RealMatrix S = X.transpose().multiply(X);</span>
-<span class="source-line-no">089</span><span id="line-89"></span>
-<span class="source-line-no">090</span><span id="line-90">                // solve C*p = lambda*S*p, </span>
-<span class="source-line-no">091</span><span id="line-91">                // equiv. to A*x = lambda*B*x (with A, B symmetric, B positive definite):</span>
-<span class="source-line-no">092</span><span id="line-92">                GeneralizedSymmetricEigenDecomposition eigen = </span>
-<span class="source-line-no">093</span><span id="line-93">                                new GeneralizedSymmetricEigenDecomposition(C, S, 1e-15, 1e-15); </span>
-<span class="source-line-no">094</span><span id="line-94">                </span>
-<span class="source-line-no">095</span><span id="line-95">                if (eigen.hasComplexEigenvalues()) {</span>
-<span class="source-line-no">096</span><span id="line-96">                        throw new RuntimeException("encountered complex eigenvalues");</span>
-<span class="source-line-no">097</span><span id="line-97">                }</span>
-<span class="source-line-no">098</span><span id="line-98">                </span>
-<span class="source-line-no">099</span><span id="line-99">                double[] evals = eigen.getRealEigenvalues();    </span>
-<span class="source-line-no">100</span><span id="line-100">                int k = Matrix.idxMax(evals);                                   // index of the largest eigenvalue</span>
-<span class="source-line-no">101</span><span id="line-101">                return eigen.getEigenvector(k).toArray();               // associated eigenvector       </span>
-<span class="source-line-no">102</span><span id="line-102">        }</span>
-<span class="source-line-no">103</span><span id="line-103">        </span>
-<span class="source-line-no">104</span><span id="line-104">}</span>
+<span class="source-line-no">060</span><span id="line-60">        @Override</span>
+<span class="source-line-no">061</span><span id="line-61">        public double[] getParameters() {</span>
+<span class="source-line-no">062</span><span id="line-62">                return this.q;</span>
+<span class="source-line-no">063</span><span id="line-63">        }</span>
+<span class="source-line-no">064</span><span id="line-64">        </span>
+<span class="source-line-no">065</span><span id="line-65">        private double[] fit(Pnt2d[] points) {</span>
+<span class="source-line-no">066</span><span id="line-66">                final int n = points.length;</span>
+<span class="source-line-no">067</span><span id="line-67"></span>
+<span class="source-line-no">068</span><span id="line-68">                // design matrix X:</span>
+<span class="source-line-no">069</span><span id="line-69">                RealMatrix X = MatrixUtils.createRealMatrix(n, 6);</span>
+<span class="source-line-no">070</span><span id="line-70">                </span>
+<span class="source-line-no">071</span><span id="line-71">                for (int i = 0; i &lt; n; i++) {</span>
+<span class="source-line-no">072</span><span id="line-72">                        double x = points[i].getX();</span>
+<span class="source-line-no">073</span><span id="line-73">                        double y = points[i].getY();</span>
+<span class="source-line-no">074</span><span id="line-74">                        double[] ri = {sqr(x), x * y, sqr(y), x, y, 1};</span>
+<span class="source-line-no">075</span><span id="line-75">                        X.setRow(i, ri);</span>
+<span class="source-line-no">076</span><span id="line-76">                }</span>
+<span class="source-line-no">077</span><span id="line-77">                </span>
+<span class="source-line-no">078</span><span id="line-78">                // scatter matrix S:</span>
+<span class="source-line-no">079</span><span id="line-79">                RealMatrix S = X.transpose().multiply(X);</span>
+<span class="source-line-no">080</span><span id="line-80"></span>
+<span class="source-line-no">081</span><span id="line-81">                // solve C*p = lambda*S*p, </span>
+<span class="source-line-no">082</span><span id="line-82">                // equiv. to A*x = lambda*B*x (with A, B symmetric, B positive definite):</span>
+<span class="source-line-no">083</span><span id="line-83">                GeneralizedSymmetricEigenDecomposition eigen = </span>
+<span class="source-line-no">084</span><span id="line-84">                                new GeneralizedSymmetricEigenDecomposition(C, S, 1e-15, 1e-15); </span>
+<span class="source-line-no">085</span><span id="line-85">                </span>
+<span class="source-line-no">086</span><span id="line-86">                if (eigen.hasComplexEigenvalues()) {</span>
+<span class="source-line-no">087</span><span id="line-87">                        throw new RuntimeException("encountered complex eigenvalues");</span>
+<span class="source-line-no">088</span><span id="line-88">                }</span>
+<span class="source-line-no">089</span><span id="line-89">                </span>
+<span class="source-line-no">090</span><span id="line-90">                double[] evals = eigen.getRealEigenvalues();    </span>
+<span class="source-line-no">091</span><span id="line-91">                int k = Matrix.idxMax(evals);                                   // index of the largest eigenvalue</span>
+<span class="source-line-no">092</span><span id="line-92">                return eigen.getEigenvector(k).toArray();               // associated eigenvector       </span>
+<span class="source-line-no">093</span><span id="line-93">        }</span>
+<span class="source-line-no">094</span><span id="line-94">        </span>
+<span class="source-line-no">095</span><span id="line-95">}</span>
 
 
 

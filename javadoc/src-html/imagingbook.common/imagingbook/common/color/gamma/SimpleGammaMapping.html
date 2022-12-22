@@ -23,41 +23,44 @@
 <span class="source-line-no">010</span><span id="line-10"></span>
 <span class="source-line-no">011</span><span id="line-11">/**</span>
 <span class="source-line-no">012</span><span id="line-12"> * &lt;p&gt;</span>
-<span class="source-line-no">013</span><span id="line-13"> * Defines the basic "gamma correction" used for converting linear to</span>
-<span class="source-line-no">014</span><span id="line-14"> * non-linear color component values. The mapping function consists of a </span>
-<span class="source-line-no">015</span><span id="line-15"> * non-linear part only. Note that {@code gamma} specifies the nominal &amp;gamma;</span>
-<span class="source-line-no">016</span><span id="line-16"> * parameter for the &lt;em&gt;forward&lt;/em&gt; (i.e., linear to non-linear) mapping, e.g.,</span>
-<span class="source-line-no">017</span><span id="line-17"> * &amp;gamma; ~ 1/2.2 for Adobe RGB. See Sec. 3.7.2 of [1] for more details.</span>
-<span class="source-line-no">018</span><span id="line-18"> * &lt;/p&gt;</span>
-<span class="source-line-no">019</span><span id="line-19"> * &lt;p&gt;</span>
-<span class="source-line-no">020</span><span id="line-20"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">021</span><span id="line-21"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">022</span><span id="line-22"> * &lt;/p&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * </span>
-<span class="source-line-no">024</span><span id="line-24"> * @author WB</span>
-<span class="source-line-no">025</span><span id="line-25"> * @version 2022/11/14</span>
-<span class="source-line-no">026</span><span id="line-26"> */</span>
-<span class="source-line-no">027</span><span id="line-27">public class SimpleGammaMapping implements GammaMapping {</span>
-<span class="source-line-no">028</span><span id="line-28">        </span>
-<span class="source-line-no">029</span><span id="line-29">        private final double gamma;</span>
-<span class="source-line-no">030</span><span id="line-30">        private final double igamma;</span>
-<span class="source-line-no">031</span><span id="line-31">        </span>
-<span class="source-line-no">032</span><span id="line-32">        public SimpleGammaMapping(double gamma) {</span>
-<span class="source-line-no">033</span><span id="line-33">                this.gamma = gamma;</span>
-<span class="source-line-no">034</span><span id="line-34">                this.igamma = 1.0 / gamma;</span>
-<span class="source-line-no">035</span><span id="line-35">        }</span>
-<span class="source-line-no">036</span><span id="line-36"></span>
-<span class="source-line-no">037</span><span id="line-37">        @Override</span>
-<span class="source-line-no">038</span><span id="line-38">        public double applyFwd(double a) {</span>
-<span class="source-line-no">039</span><span id="line-39">                return Math.pow(a, gamma);</span>
-<span class="source-line-no">040</span><span id="line-40">        }</span>
-<span class="source-line-no">041</span><span id="line-41"></span>
-<span class="source-line-no">042</span><span id="line-42">        @Override</span>
-<span class="source-line-no">043</span><span id="line-43">        public double applyInv(double b) {</span>
-<span class="source-line-no">044</span><span id="line-44">                return Math.pow(b, igamma);</span>
-<span class="source-line-no">045</span><span id="line-45">        }</span>
-<span class="source-line-no">046</span><span id="line-46"></span>
-<span class="source-line-no">047</span><span id="line-47">}</span>
+<span class="source-line-no">013</span><span id="line-13"> * Defines the basic "gamma correction" used for converting linear to non-linear color component values. The mapping</span>
+<span class="source-line-no">014</span><span id="line-14"> * function consists of a non-linear part only. Note that {@code gamma} specifies the nominal &amp;gamma; parameter for the</span>
+<span class="source-line-no">015</span><span id="line-15"> * &lt;em&gt;forward&lt;/em&gt; (i.e., linear to non-linear) mapping, e.g., &amp;gamma; ~ 1/2.2 for Adobe RGB. See Sec. 3.7.2 of [1] for</span>
+<span class="source-line-no">016</span><span id="line-16"> * more details.</span>
+<span class="source-line-no">017</span><span id="line-17"> * &lt;/p&gt;</span>
+<span class="source-line-no">018</span><span id="line-18"> * &lt;p&gt;</span>
+<span class="source-line-no">019</span><span id="line-19"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">020</span><span id="line-20"> * (2022).</span>
+<span class="source-line-no">021</span><span id="line-21"> * &lt;/p&gt;</span>
+<span class="source-line-no">022</span><span id="line-22"> *</span>
+<span class="source-line-no">023</span><span id="line-23"> * @author WB</span>
+<span class="source-line-no">024</span><span id="line-24"> * @version 2022/11/14</span>
+<span class="source-line-no">025</span><span id="line-25"> */</span>
+<span class="source-line-no">026</span><span id="line-26">public class SimpleGammaMapping implements GammaMapping {</span>
+<span class="source-line-no">027</span><span id="line-27">        </span>
+<span class="source-line-no">028</span><span id="line-28">        private final double gamma;</span>
+<span class="source-line-no">029</span><span id="line-29">        private final double igamma;</span>
+<span class="source-line-no">030</span><span id="line-30"></span>
+<span class="source-line-no">031</span><span id="line-31">        /**</span>
+<span class="source-line-no">032</span><span id="line-32">         * Constructor.</span>
+<span class="source-line-no">033</span><span id="line-33">         * @param gamma nominal &amp;gamma; value for the forward mapping (e.g., &amp;gamma; ~ 1/2.2 for Adobe RGB)</span>
+<span class="source-line-no">034</span><span id="line-34">         */</span>
+<span class="source-line-no">035</span><span id="line-35">        public SimpleGammaMapping(double gamma) {</span>
+<span class="source-line-no">036</span><span id="line-36">                this.gamma = gamma;</span>
+<span class="source-line-no">037</span><span id="line-37">                this.igamma = 1.0 / gamma;</span>
+<span class="source-line-no">038</span><span id="line-38">        }</span>
+<span class="source-line-no">039</span><span id="line-39"></span>
+<span class="source-line-no">040</span><span id="line-40">        @Override</span>
+<span class="source-line-no">041</span><span id="line-41">        public double applyFwd(double a) {</span>
+<span class="source-line-no">042</span><span id="line-42">                return Math.pow(a, gamma);</span>
+<span class="source-line-no">043</span><span id="line-43">        }</span>
+<span class="source-line-no">044</span><span id="line-44"></span>
+<span class="source-line-no">045</span><span id="line-45">        @Override</span>
+<span class="source-line-no">046</span><span id="line-46">        public double applyInv(double b) {</span>
+<span class="source-line-no">047</span><span id="line-47">                return Math.pow(b, igamma);</span>
+<span class="source-line-no">048</span><span id="line-48">        }</span>
+<span class="source-line-no">049</span><span id="line-49"></span>
+<span class="source-line-no">050</span><span id="line-50">}</span>
 
 
 

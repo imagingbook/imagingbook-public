@@ -21,102 +21,98 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.color.iterate;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import java.awt.Color;</span>
+<span class="source-line-no">011</span><span id="line-11">import imagingbook.common.color.sets.ColorEnumeration;</span>
 <span class="source-line-no">012</span><span id="line-12"></span>
-<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.color.sets.ColorEnumeration;</span>
+<span class="source-line-no">013</span><span id="line-13">import java.awt.Color;</span>
 <span class="source-line-no">014</span><span id="line-14"></span>
 <span class="source-line-no">015</span><span id="line-15">/**</span>
 <span class="source-line-no">016</span><span id="line-16"> * &lt;p&gt;</span>
-<span class="source-line-no">017</span><span id="line-17"> * This class defines methods for iterating over an ordered set of AWT colors.</span>
-<span class="source-line-no">018</span><span id="line-18"> * The color set can be constructed from individual AWT colors </span>
-<span class="source-line-no">019</span><span id="line-19"> * (see {@link #FiniteLinearColorSequencer(Color...)})</span>
-<span class="source-line-no">020</span><span id="line-20"> * or an enum class implementing</span>
-<span class="source-line-no">021</span><span id="line-21"> * {@link ColorEnumeration} (see {@link #FiniteLinearColorSequencer(Class)}).</span>
-<span class="source-line-no">022</span><span id="line-22"> * &lt;/p&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * &lt;p&gt;</span>
-<span class="source-line-no">024</span><span id="line-24"> * Usage examples:</span>
-<span class="source-line-no">025</span><span id="line-25"> * &lt;/p&gt;</span>
-<span class="source-line-no">026</span><span id="line-26"> * &lt;pre&gt;</span>
-<span class="source-line-no">027</span><span id="line-27"> * // from individual colors (or array of colors):</span>
-<span class="source-line-no">028</span><span id="line-28"> * ColorSequencer iter1 = new FiniteLinearColorSequencer(Color.blue, Color.green, Color.red);</span>
-<span class="source-line-no">029</span><span id="line-29"> * for (int i = 0; i &amp;lt; 10; i++) {</span>
-<span class="source-line-no">030</span><span id="line-30"> *      Color c = iter1.next();</span>
-<span class="source-line-no">031</span><span id="line-31"> *      // use color c</span>
-<span class="source-line-no">032</span><span id="line-32"> * }</span>
-<span class="source-line-no">033</span><span id="line-33"> * </span>
-<span class="source-line-no">034</span><span id="line-34"> * // from enum type:</span>
-<span class="source-line-no">035</span><span id="line-35"> * FiniteLinearColorSequencer iter2 = new FiniteLinearColorSequencer(BasicAwtColor.class);</span>
-<span class="source-line-no">036</span><span id="line-36"> * iter2.reset(5);</span>
-<span class="source-line-no">037</span><span id="line-37"> * for (int i = 0; i &amp;lt; 10; i++) {</span>
-<span class="source-line-no">038</span><span id="line-38"> *      Color c = iter2.nextRandom();</span>
-<span class="source-line-no">039</span><span id="line-39"> *      // use color c</span>
-<span class="source-line-no">040</span><span id="line-40"> * }</span>
-<span class="source-line-no">041</span><span id="line-41"> * &lt;/pre&gt;</span>
-<span class="source-line-no">042</span><span id="line-42"> * </span>
-<span class="source-line-no">043</span><span id="line-43"> * @author WB</span>
-<span class="source-line-no">044</span><span id="line-44"> * @version 2022/04/06</span>
-<span class="source-line-no">045</span><span id="line-45"> * </span>
-<span class="source-line-no">046</span><span id="line-46"> * @see Color</span>
-<span class="source-line-no">047</span><span id="line-47"> */</span>
-<span class="source-line-no">048</span><span id="line-48">public class FiniteLinearColorSequencer implements ColorSequencer {</span>
+<span class="source-line-no">017</span><span id="line-17"> * This class defines methods for iterating over an ordered set of AWT colors. The color set can be constructed from</span>
+<span class="source-line-no">018</span><span id="line-18"> * individual AWT colors (see {@link #FiniteLinearColorSequencer(Color...)}) or an enum class implementing</span>
+<span class="source-line-no">019</span><span id="line-19"> * {@link ColorEnumeration} (see {@link #FiniteLinearColorSequencer(Class)}).</span>
+<span class="source-line-no">020</span><span id="line-20"> * &lt;/p&gt;</span>
+<span class="source-line-no">021</span><span id="line-21"> * &lt;p&gt;</span>
+<span class="source-line-no">022</span><span id="line-22"> * Usage examples:</span>
+<span class="source-line-no">023</span><span id="line-23"> * &lt;/p&gt;</span>
+<span class="source-line-no">024</span><span id="line-24"> * &lt;pre&gt;</span>
+<span class="source-line-no">025</span><span id="line-25"> * // from individual colors (or array of colors):</span>
+<span class="source-line-no">026</span><span id="line-26"> * ColorSequencer iter1 = new FiniteLinearColorSequencer(Color.blue, Color.green, Color.red);</span>
+<span class="source-line-no">027</span><span id="line-27"> * for (int i = 0; i &amp;lt; 10; i++) {</span>
+<span class="source-line-no">028</span><span id="line-28"> *      Color c = iter1.next();</span>
+<span class="source-line-no">029</span><span id="line-29"> *      // use color c</span>
+<span class="source-line-no">030</span><span id="line-30"> * }</span>
+<span class="source-line-no">031</span><span id="line-31"> * // from enum type:</span>
+<span class="source-line-no">032</span><span id="line-32"> * FiniteLinearColorSequencer iter2 = new FiniteLinearColorSequencer(BasicAwtColor.class);</span>
+<span class="source-line-no">033</span><span id="line-33"> * iter2.reset(5);</span>
+<span class="source-line-no">034</span><span id="line-34"> * for (int i = 0; i &amp;lt; 10; i++) {</span>
+<span class="source-line-no">035</span><span id="line-35"> *      Color c = iter2.nextRandom();</span>
+<span class="source-line-no">036</span><span id="line-36"> *      // use color c</span>
+<span class="source-line-no">037</span><span id="line-37"> * }</span>
+<span class="source-line-no">038</span><span id="line-38"> * &lt;/pre&gt;</span>
+<span class="source-line-no">039</span><span id="line-39"> *</span>
+<span class="source-line-no">040</span><span id="line-40"> * @author WB</span>
+<span class="source-line-no">041</span><span id="line-41"> * @version 2022/04/06</span>
+<span class="source-line-no">042</span><span id="line-42"> * @see Color</span>
+<span class="source-line-no">043</span><span id="line-43"> * @see ColorEnumeration</span>
+<span class="source-line-no">044</span><span id="line-44"> */</span>
+<span class="source-line-no">045</span><span id="line-45">public class FiniteLinearColorSequencer implements ColorSequencer {</span>
+<span class="source-line-no">046</span><span id="line-46"></span>
+<span class="source-line-no">047</span><span id="line-47">        protected final Color[] colorArray;</span>
+<span class="source-line-no">048</span><span id="line-48">        protected int next = 0;</span>
 <span class="source-line-no">049</span><span id="line-49"></span>
-<span class="source-line-no">050</span><span id="line-50">        protected final Color[] colorArray;</span>
-<span class="source-line-no">051</span><span id="line-51">        protected int next = 0;</span>
-<span class="source-line-no">052</span><span id="line-52"></span>
-<span class="source-line-no">053</span><span id="line-53">        public FiniteLinearColorSequencer(Color... colors) {</span>
-<span class="source-line-no">054</span><span id="line-54">                if (colors.length == 0) {</span>
-<span class="source-line-no">055</span><span id="line-55">                        throw new IllegalArgumentException("color set may not be empty!");</span>
-<span class="source-line-no">056</span><span id="line-56">                }</span>
-<span class="source-line-no">057</span><span id="line-57">                this.colorArray = colors.clone();</span>
-<span class="source-line-no">058</span><span id="line-58">        }</span>
-<span class="source-line-no">059</span><span id="line-59"></span>
-<span class="source-line-no">060</span><span id="line-60">        public FiniteLinearColorSequencer(Class&lt;? extends ColorEnumeration&gt; clazz) {</span>
-<span class="source-line-no">061</span><span id="line-61">//              this.colorArray = ColorEnumeration.getColors(clazz);</span>
-<span class="source-line-no">062</span><span id="line-62">                this(ColorEnumeration.getColors(clazz));</span>
-<span class="source-line-no">063</span><span id="line-63">        }</span>
-<span class="source-line-no">064</span><span id="line-64">        </span>
-<span class="source-line-no">065</span><span id="line-65">        // -------------------------------------------------------</span>
-<span class="source-line-no">066</span><span id="line-66"></span>
-<span class="source-line-no">067</span><span id="line-67">        public int size() {</span>
-<span class="source-line-no">068</span><span id="line-68">                return colorArray.length;</span>
-<span class="source-line-no">069</span><span id="line-69">        }</span>
-<span class="source-line-no">070</span><span id="line-70"></span>
-<span class="source-line-no">071</span><span id="line-71">        public Color getColor(int idx) {</span>
-<span class="source-line-no">072</span><span id="line-72">                return colorArray[idx];</span>
-<span class="source-line-no">073</span><span id="line-73">        }</span>
-<span class="source-line-no">074</span><span id="line-74"></span>
-<span class="source-line-no">075</span><span id="line-75">        public Color[] getColors() {</span>
-<span class="source-line-no">076</span><span id="line-76">                return colorArray;</span>
-<span class="source-line-no">077</span><span id="line-77">        }</span>
-<span class="source-line-no">078</span><span id="line-78"></span>
-<span class="source-line-no">079</span><span id="line-79">        // --- iteration stuff -----------------------------------</span>
-<span class="source-line-no">080</span><span id="line-80"></span>
-<span class="source-line-no">081</span><span id="line-81">        /**</span>
-<span class="source-line-no">082</span><span id="line-82">         * Reset the iterator, such that the color returned by the following call to</span>
-<span class="source-line-no">083</span><span id="line-83">         * {@link #next()} has index 0.</span>
-<span class="source-line-no">084</span><span id="line-84">         */</span>
-<span class="source-line-no">085</span><span id="line-85">        public void reset() {</span>
-<span class="source-line-no">086</span><span id="line-86">                reset(0);</span>
-<span class="source-line-no">087</span><span id="line-87">        }</span>
-<span class="source-line-no">088</span><span id="line-88"></span>
-<span class="source-line-no">089</span><span id="line-89">        /**</span>
-<span class="source-line-no">090</span><span id="line-90">         * Reset the iterator such that the index of the item returned by the following</span>
-<span class="source-line-no">091</span><span id="line-91">         * call to {@link #next()} has the specified start index.</span>
-<span class="source-line-no">092</span><span id="line-92">         * </span>
-<span class="source-line-no">093</span><span id="line-93">         * @param offset the new start index</span>
-<span class="source-line-no">094</span><span id="line-94">         */</span>
-<span class="source-line-no">095</span><span id="line-95">        public void reset(int offset) {</span>
-<span class="source-line-no">096</span><span id="line-96">                this.next = Math.floorMod(offset, colorArray.length);</span>
-<span class="source-line-no">097</span><span id="line-97">        }</span>
-<span class="source-line-no">098</span><span id="line-98"></span>
-<span class="source-line-no">099</span><span id="line-99">        @Override</span>
-<span class="source-line-no">100</span><span id="line-100">        public Color next() {</span>
-<span class="source-line-no">101</span><span id="line-101">                Color nc = colorArray[next];</span>
-<span class="source-line-no">102</span><span id="line-102">                next = (next + 1) % colorArray.length;</span>
-<span class="source-line-no">103</span><span id="line-103">                return nc;</span>
-<span class="source-line-no">104</span><span id="line-104">        }</span>
-<span class="source-line-no">105</span><span id="line-105"></span>
-<span class="source-line-no">106</span><span id="line-106">}</span>
+<span class="source-line-no">050</span><span id="line-50">        public FiniteLinearColorSequencer(Color... colors) {</span>
+<span class="source-line-no">051</span><span id="line-51">                if (colors.length == 0) {</span>
+<span class="source-line-no">052</span><span id="line-52">                        throw new IllegalArgumentException("color set may not be empty!");</span>
+<span class="source-line-no">053</span><span id="line-53">                }</span>
+<span class="source-line-no">054</span><span id="line-54">                this.colorArray = colors.clone();</span>
+<span class="source-line-no">055</span><span id="line-55">        }</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">        public FiniteLinearColorSequencer(Class&lt;? extends ColorEnumeration&gt; clazz) {</span>
+<span class="source-line-no">058</span><span id="line-58">//              this.colorArray = ColorEnumeration.getColors(clazz);</span>
+<span class="source-line-no">059</span><span id="line-59">                this(ColorEnumeration.getColors(clazz));</span>
+<span class="source-line-no">060</span><span id="line-60">        }</span>
+<span class="source-line-no">061</span><span id="line-61">        </span>
+<span class="source-line-no">062</span><span id="line-62">        // -------------------------------------------------------</span>
+<span class="source-line-no">063</span><span id="line-63"></span>
+<span class="source-line-no">064</span><span id="line-64">        public int size() {</span>
+<span class="source-line-no">065</span><span id="line-65">                return colorArray.length;</span>
+<span class="source-line-no">066</span><span id="line-66">        }</span>
+<span class="source-line-no">067</span><span id="line-67"></span>
+<span class="source-line-no">068</span><span id="line-68">        public Color getColor(int idx) {</span>
+<span class="source-line-no">069</span><span id="line-69">                return colorArray[idx];</span>
+<span class="source-line-no">070</span><span id="line-70">        }</span>
+<span class="source-line-no">071</span><span id="line-71"></span>
+<span class="source-line-no">072</span><span id="line-72">        public Color[] getColors() {</span>
+<span class="source-line-no">073</span><span id="line-73">                return colorArray;</span>
+<span class="source-line-no">074</span><span id="line-74">        }</span>
+<span class="source-line-no">075</span><span id="line-75"></span>
+<span class="source-line-no">076</span><span id="line-76">        // --- iteration stuff -----------------------------------</span>
+<span class="source-line-no">077</span><span id="line-77"></span>
+<span class="source-line-no">078</span><span id="line-78">        /**</span>
+<span class="source-line-no">079</span><span id="line-79">         * Reset the iterator, such that the color returned by the following call to {@link #next()} has index 0.</span>
+<span class="source-line-no">080</span><span id="line-80">         */</span>
+<span class="source-line-no">081</span><span id="line-81">        public void reset() {</span>
+<span class="source-line-no">082</span><span id="line-82">                reset(0);</span>
+<span class="source-line-no">083</span><span id="line-83">        }</span>
+<span class="source-line-no">084</span><span id="line-84"></span>
+<span class="source-line-no">085</span><span id="line-85">        /**</span>
+<span class="source-line-no">086</span><span id="line-86">         * Reset the iterator such that the index of the item returned by the following call to {@link #next()} has the</span>
+<span class="source-line-no">087</span><span id="line-87">         * specified start index.</span>
+<span class="source-line-no">088</span><span id="line-88">         *</span>
+<span class="source-line-no">089</span><span id="line-89">         * @param offset the new start index</span>
+<span class="source-line-no">090</span><span id="line-90">         */</span>
+<span class="source-line-no">091</span><span id="line-91">        public void reset(int offset) {</span>
+<span class="source-line-no">092</span><span id="line-92">                this.next = Math.floorMod(offset, colorArray.length);</span>
+<span class="source-line-no">093</span><span id="line-93">        }</span>
+<span class="source-line-no">094</span><span id="line-94"></span>
+<span class="source-line-no">095</span><span id="line-95">        @Override</span>
+<span class="source-line-no">096</span><span id="line-96">        public Color next() {</span>
+<span class="source-line-no">097</span><span id="line-97">                Color nc = colorArray[next];</span>
+<span class="source-line-no">098</span><span id="line-98">                next = (next + 1) % colorArray.length;</span>
+<span class="source-line-no">099</span><span id="line-99">                return nc;</span>
+<span class="source-line-no">100</span><span id="line-100">        }</span>
+<span class="source-line-no">101</span><span id="line-101"></span>
+<span class="source-line-no">102</span><span id="line-102">}</span>
 
 
 

@@ -21,22 +21,22 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package Tools_;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import static imagingbook.common.ij.DialogUtils.addToDialog;</span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.ij.DialogUtils.getFromDialog;</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">import java.awt.Desktop;</span>
-<span class="source-line-no">015</span><span id="line-15">import java.nio.file.Path;</span>
-<span class="source-line-no">016</span><span id="line-16">import java.nio.file.Paths;</span>
-<span class="source-line-no">017</span><span id="line-17"></span>
-<span class="source-line-no">018</span><span id="line-18">import ij.IJ;</span>
-<span class="source-line-no">019</span><span id="line-19">import ij.ImagePlus;</span>
-<span class="source-line-no">020</span><span id="line-20">import ij.gui.GenericDialog;</span>
-<span class="source-line-no">021</span><span id="line-21">import ij.io.SaveDialog;</span>
-<span class="source-line-no">022</span><span id="line-22">import ij.plugin.PlugIn;</span>
-<span class="source-line-no">023</span><span id="line-23">import imagingbook.core.FileUtils;</span>
-<span class="source-line-no">024</span><span id="line-24">import imagingbook.pdf.PdfExporter;</span>
-<span class="source-line-no">025</span><span id="line-25">import imagingbook.pdf.PdfExporter.Parameters;</span>
-<span class="source-line-no">026</span><span id="line-26">import imagingbook.pdf.Utils;</span>
+<span class="source-line-no">011</span><span id="line-11">import ij.IJ;</span>
+<span class="source-line-no">012</span><span id="line-12">import ij.ImagePlus;</span>
+<span class="source-line-no">013</span><span id="line-13">import ij.gui.GenericDialog;</span>
+<span class="source-line-no">014</span><span id="line-14">import ij.io.SaveDialog;</span>
+<span class="source-line-no">015</span><span id="line-15">import ij.plugin.PlugIn;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.FileUtils;</span>
+<span class="source-line-no">017</span><span id="line-17">import imagingbook.pdf.PdfExporter;</span>
+<span class="source-line-no">018</span><span id="line-18">import imagingbook.pdf.PdfExporter.Parameters;</span>
+<span class="source-line-no">019</span><span id="line-19">import imagingbook.pdf.Utils;</span>
+<span class="source-line-no">020</span><span id="line-20"></span>
+<span class="source-line-no">021</span><span id="line-21">import java.awt.Desktop;</span>
+<span class="source-line-no">022</span><span id="line-22">import java.nio.file.Path;</span>
+<span class="source-line-no">023</span><span id="line-23">import java.nio.file.Paths;</span>
+<span class="source-line-no">024</span><span id="line-24"></span>
+<span class="source-line-no">025</span><span id="line-25">import static imagingbook.common.ij.DialogUtils.addToDialog;</span>
+<span class="source-line-no">026</span><span id="line-26">import static imagingbook.common.ij.DialogUtils.getFromDialog;</span>
 <span class="source-line-no">027</span><span id="line-27"></span>
 <span class="source-line-no">028</span><span id="line-28">/**</span>
 <span class="source-line-no">029</span><span id="line-29"> * This ImageJ plugin exports the current image and its attached vector graphic overlay (if existent) as a PDF file. It</span>

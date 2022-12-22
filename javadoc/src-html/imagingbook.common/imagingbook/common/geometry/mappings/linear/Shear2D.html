@@ -24,45 +24,46 @@
 <span class="source-line-no">011</span><span id="line-11"></span>
 <span class="source-line-no">012</span><span id="line-12">/**</span>
 <span class="source-line-no">013</span><span id="line-13"> * &lt;p&gt;</span>
-<span class="source-line-no">014</span><span id="line-14"> * This class represents a 2D shear transformation (as a special case of affine</span>
-<span class="source-line-no">015</span><span id="line-15"> * transformation). See Secs. 21.1.3 and 21.3.1 of [1] for details.</span>
+<span class="source-line-no">014</span><span id="line-14"> * This class represents a 2D shear transformation (as a special case of affine transformation). See Secs. 21.1.3 and</span>
+<span class="source-line-no">015</span><span id="line-15"> * 21.3.1 of [1] for details.</span>
 <span class="source-line-no">016</span><span id="line-16"> * &lt;/p&gt;</span>
 <span class="source-line-no">017</span><span id="line-17"> * &lt;p&gt;</span>
-<span class="source-line-no">018</span><span id="line-18"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">019</span><span id="line-19"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
+<span class="source-line-no">018</span><span id="line-18"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">019</span><span id="line-19"> * (2022).</span>
 <span class="source-line-no">020</span><span id="line-20"> * &lt;/p&gt;</span>
-<span class="source-line-no">021</span><span id="line-21"> * </span>
+<span class="source-line-no">021</span><span id="line-21"> *</span>
 <span class="source-line-no">022</span><span id="line-22"> * @author WB</span>
 <span class="source-line-no">023</span><span id="line-23"> */</span>
 <span class="source-line-no">024</span><span id="line-24">public class Shear2D extends AffineMapping2D {</span>
-<span class="source-line-no">025</span><span id="line-25">        </span>
+<span class="source-line-no">025</span><span id="line-25"></span>
 <span class="source-line-no">026</span><span id="line-26">        /**</span>
-<span class="source-line-no">027</span><span id="line-27">         * Constructor Creates a shear transform.</span>
-<span class="source-line-no">028</span><span id="line-28">         * @param bx shear factor in x-direction</span>
-<span class="source-line-no">029</span><span id="line-29">         * @param by shear factor in y-direction</span>
-<span class="source-line-no">030</span><span id="line-30">         */</span>
-<span class="source-line-no">031</span><span id="line-31">        public Shear2D(double bx, double by) {</span>
-<span class="source-line-no">032</span><span id="line-32">                super( // calls constructor of AffineMapping</span>
-<span class="source-line-no">033</span><span id="line-33">                        1,  bx, 0,</span>
-<span class="source-line-no">034</span><span id="line-34">                        by, 1,  0);</span>
-<span class="source-line-no">035</span><span id="line-35">        }</span>
-<span class="source-line-no">036</span><span id="line-36">        </span>
-<span class="source-line-no">037</span><span id="line-37">        public Shear2D(Shear2D sh) {</span>
-<span class="source-line-no">038</span><span id="line-38">                super(sh);</span>
-<span class="source-line-no">039</span><span id="line-39">        }</span>
-<span class="source-line-no">040</span><span id="line-40">        </span>
-<span class="source-line-no">041</span><span id="line-41">        /**</span>
-<span class="source-line-no">042</span><span id="line-42">         * {@inheritDoc}</span>
-<span class="source-line-no">043</span><span id="line-43">         * @return a new shear mapping</span>
-<span class="source-line-no">044</span><span id="line-44">         */</span>
-<span class="source-line-no">045</span><span id="line-45">        @Override</span>
-<span class="source-line-no">046</span><span id="line-46">        public Shear2D duplicate() {</span>
-<span class="source-line-no">047</span><span id="line-47">                return new Shear2D(this);</span>
-<span class="source-line-no">048</span><span id="line-48">        }</span>
-<span class="source-line-no">049</span><span id="line-49">        </span>
-<span class="source-line-no">050</span><span id="line-50">}</span>
-<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">027</span><span id="line-27">         * Constructor, creates a shear transform.</span>
+<span class="source-line-no">028</span><span id="line-28">         *</span>
+<span class="source-line-no">029</span><span id="line-29">         * @param bx shear factor in x-direction</span>
+<span class="source-line-no">030</span><span id="line-30">         * @param by shear factor in y-direction</span>
+<span class="source-line-no">031</span><span id="line-31">         */</span>
+<span class="source-line-no">032</span><span id="line-32">        public Shear2D(double bx, double by) {</span>
+<span class="source-line-no">033</span><span id="line-33">                super( // calls constructor of AffineMapping</span>
+<span class="source-line-no">034</span><span id="line-34">                        1,  bx, 0,</span>
+<span class="source-line-no">035</span><span id="line-35">                        by, 1,  0);</span>
+<span class="source-line-no">036</span><span id="line-36">        }</span>
+<span class="source-line-no">037</span><span id="line-37">        </span>
+<span class="source-line-no">038</span><span id="line-38">        public Shear2D(Shear2D sh) {</span>
+<span class="source-line-no">039</span><span id="line-39">                super(sh);</span>
+<span class="source-line-no">040</span><span id="line-40">        }</span>
+<span class="source-line-no">041</span><span id="line-41">        </span>
+<span class="source-line-no">042</span><span id="line-42">        /**</span>
+<span class="source-line-no">043</span><span id="line-43">         * {@inheritDoc}</span>
+<span class="source-line-no">044</span><span id="line-44">         * @return a new shear mapping</span>
+<span class="source-line-no">045</span><span id="line-45">         */</span>
+<span class="source-line-no">046</span><span id="line-46">        @Override</span>
+<span class="source-line-no">047</span><span id="line-47">        public Shear2D duplicate() {</span>
+<span class="source-line-no">048</span><span id="line-48">                return new Shear2D(this);</span>
+<span class="source-line-no">049</span><span id="line-49">        }</span>
+<span class="source-line-no">050</span><span id="line-50">        </span>
+<span class="source-line-no">051</span><span id="line-51">}</span>
 <span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53"></span>
 
 
 

@@ -26,48 +26,46 @@
 <span class="source-line-no">013</span><span id="line-13"></span>
 <span class="source-line-no">014</span><span id="line-14">/**</span>
 <span class="source-line-no">015</span><span id="line-15"> * &lt;p&gt;</span>
-<span class="source-line-no">016</span><span id="line-16"> * This is an implementation of the global "quantile" thresholder, described in</span>
-<span class="source-line-no">017</span><span id="line-17"> * Sec. 9.1 (Alg. 9.1) of [1]. Requires the quantile (b) to be specified at</span>
-<span class="source-line-no">018</span><span id="line-18"> * instantiation. Method {@link #getThreshold(int[])} returns a threshold that</span>
-<span class="source-line-no">019</span><span id="line-19"> * will put AT LEAST the b-fraction of pixels (but not all pixels) in the</span>
-<span class="source-line-no">020</span><span id="line-20"> * background.</span>
-<span class="source-line-no">021</span><span id="line-21"> * &lt;/p&gt;</span>
-<span class="source-line-no">022</span><span id="line-22"> * &lt;p&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">024</span><span id="line-24"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">025</span><span id="line-25"> * &lt;/p&gt;</span>
-<span class="source-line-no">026</span><span id="line-26"> * </span>
-<span class="source-line-no">027</span><span id="line-27"> * @author WB</span>
-<span class="source-line-no">028</span><span id="line-28"> * @version 2022/08/22</span>
-<span class="source-line-no">029</span><span id="line-29"> */</span>
-<span class="source-line-no">030</span><span id="line-30">public class QuantileThresholder implements GlobalThresholder {</span>
+<span class="source-line-no">016</span><span id="line-16"> * This is an implementation of the global "quantile" thresholder, described in Sec. 9.1 (Alg. 9.1) of [1]. Requires the</span>
+<span class="source-line-no">017</span><span id="line-17"> * quantile (b) to be specified at instantiation. Method {@link #getThreshold(int[])} returns a threshold that will put</span>
+<span class="source-line-no">018</span><span id="line-18"> * AT LEAST the b-fraction of pixels (but not all pixels) in the background.</span>
+<span class="source-line-no">019</span><span id="line-19"> * &lt;/p&gt;</span>
+<span class="source-line-no">020</span><span id="line-20"> * &lt;p&gt;</span>
+<span class="source-line-no">021</span><span id="line-21"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">022</span><span id="line-22"> * (2022).</span>
+<span class="source-line-no">023</span><span id="line-23"> * &lt;/p&gt;</span>
+<span class="source-line-no">024</span><span id="line-24"> *</span>
+<span class="source-line-no">025</span><span id="line-25"> * @author WB</span>
+<span class="source-line-no">026</span><span id="line-26"> * @version 2022/08/22</span>
+<span class="source-line-no">027</span><span id="line-27"> */</span>
+<span class="source-line-no">028</span><span id="line-28">public class QuantileThresholder implements GlobalThresholder {</span>
+<span class="source-line-no">029</span><span id="line-29">        </span>
+<span class="source-line-no">030</span><span id="line-30">        private final double b; // quantile of expected background pixels</span>
 <span class="source-line-no">031</span><span id="line-31">        </span>
-<span class="source-line-no">032</span><span id="line-32">        private final double b; // quantile of expected background pixels</span>
-<span class="source-line-no">033</span><span id="line-33">        </span>
-<span class="source-line-no">034</span><span id="line-34">        public QuantileThresholder(double b) {</span>
-<span class="source-line-no">035</span><span id="line-35">                if (b &lt;= 0 || b &gt;= 1) {</span>
-<span class="source-line-no">036</span><span id="line-36">                        throw new IllegalArgumentException("quantile b must be in [0,1]");</span>
-<span class="source-line-no">037</span><span id="line-37">                }</span>
-<span class="source-line-no">038</span><span id="line-38">                this.b = b;</span>
-<span class="source-line-no">039</span><span id="line-39">        }</span>
-<span class="source-line-no">040</span><span id="line-40"></span>
-<span class="source-line-no">041</span><span id="line-41">        @Override</span>
-<span class="source-line-no">042</span><span id="line-42">        public int getThreshold(int[] h) {</span>
-<span class="source-line-no">043</span><span id="line-43">                int K = h.length;</span>
-<span class="source-line-no">044</span><span id="line-44">                int N = HistogramUtils.count(h);        // total number of pixels       </span>
-<span class="source-line-no">045</span><span id="line-45">                double n = N * b;               // number of pixels in quantile</span>
-<span class="source-line-no">046</span><span id="line-46">                </span>
-<span class="source-line-no">047</span><span id="line-47">                int i = 0;</span>
-<span class="source-line-no">048</span><span id="line-48">                int c = h[0];</span>
-<span class="source-line-no">049</span><span id="line-49">                while (i &lt; K &amp;&amp; c &lt; n) {</span>
-<span class="source-line-no">050</span><span id="line-50">                        i++;</span>
-<span class="source-line-no">051</span><span id="line-51">                        c = c + h[i];</span>
-<span class="source-line-no">052</span><span id="line-52">                }</span>
-<span class="source-line-no">053</span><span id="line-53">                </span>
-<span class="source-line-no">054</span><span id="line-54">                int q = (c &lt; N) ? i : -1; // check if all pixels are included by the estimated threshold</span>
-<span class="source-line-no">055</span><span id="line-55">                return q;</span>
-<span class="source-line-no">056</span><span id="line-56">        }</span>
-<span class="source-line-no">057</span><span id="line-57">}</span>
+<span class="source-line-no">032</span><span id="line-32">        public QuantileThresholder(double b) {</span>
+<span class="source-line-no">033</span><span id="line-33">                if (b &lt;= 0 || b &gt;= 1) {</span>
+<span class="source-line-no">034</span><span id="line-34">                        throw new IllegalArgumentException("quantile b must be in [0,1]");</span>
+<span class="source-line-no">035</span><span id="line-35">                }</span>
+<span class="source-line-no">036</span><span id="line-36">                this.b = b;</span>
+<span class="source-line-no">037</span><span id="line-37">        }</span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">        @Override</span>
+<span class="source-line-no">040</span><span id="line-40">        public int getThreshold(int[] h) {</span>
+<span class="source-line-no">041</span><span id="line-41">                int K = h.length;</span>
+<span class="source-line-no">042</span><span id="line-42">                int N = HistogramUtils.count(h);        // total number of pixels       </span>
+<span class="source-line-no">043</span><span id="line-43">                double n = N * b;               // number of pixels in quantile</span>
+<span class="source-line-no">044</span><span id="line-44">                </span>
+<span class="source-line-no">045</span><span id="line-45">                int i = 0;</span>
+<span class="source-line-no">046</span><span id="line-46">                int c = h[0];</span>
+<span class="source-line-no">047</span><span id="line-47">                while (i &lt; K &amp;&amp; c &lt; n) {</span>
+<span class="source-line-no">048</span><span id="line-48">                        i++;</span>
+<span class="source-line-no">049</span><span id="line-49">                        c = c + h[i];</span>
+<span class="source-line-no">050</span><span id="line-50">                }</span>
+<span class="source-line-no">051</span><span id="line-51">                </span>
+<span class="source-line-no">052</span><span id="line-52">                int q = (c &lt; N) ? i : -1; // check if all pixels are included by the estimated threshold</span>
+<span class="source-line-no">053</span><span id="line-53">                return q;</span>
+<span class="source-line-no">054</span><span id="line-54">        }</span>
+<span class="source-line-no">055</span><span id="line-55">}</span>
 
 
 

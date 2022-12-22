@@ -22,77 +22,77 @@
 <span class="source-line-no">009</span><span id="line-9"></span>
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.sift.scalespace;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import java.io.PrintStream;</span>
-<span class="source-line-no">013</span><span id="line-13">import java.util.Locale;</span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">import ij.ImageStack;</span>
-<span class="source-line-no">016</span><span id="line-16">import ij.process.FloatProcessor;</span>
-<span class="source-line-no">017</span><span id="line-17">import imagingbook.common.util.LinearContainer;</span>
-<span class="source-line-no">018</span><span id="line-18">import imagingbook.common.util.PrintsToStream;</span>
+<span class="source-line-no">012</span><span id="line-12">import ij.ImageStack;</span>
+<span class="source-line-no">013</span><span id="line-13">import ij.process.FloatProcessor;</span>
+<span class="source-line-no">014</span><span id="line-14">import imagingbook.common.util.LinearContainer;</span>
+<span class="source-line-no">015</span><span id="line-15">import imagingbook.common.util.PrintsToStream;</span>
+<span class="source-line-no">016</span><span id="line-16"></span>
+<span class="source-line-no">017</span><span id="line-17">import java.io.PrintStream;</span>
+<span class="source-line-no">018</span><span id="line-18">import java.util.Locale;</span>
 <span class="source-line-no">019</span><span id="line-19"></span>
 <span class="source-line-no">020</span><span id="line-20">/**</span>
 <span class="source-line-no">021</span><span id="line-21"> * &lt;p&gt;</span>
-<span class="source-line-no">022</span><span id="line-22"> * Represents a single "octave", which is a stack of scale "levels", in a</span>
-<span class="source-line-no">023</span><span id="line-23"> * generic hierarchical scale space. See Sec. 25.1.4. of [1] for details.</span>
-<span class="source-line-no">024</span><span id="line-24"> * Basically this is an array with flexible bottom and top index.</span>
-<span class="source-line-no">025</span><span id="line-25"> * &lt;/p&gt;</span>
-<span class="source-line-no">026</span><span id="line-26"> * &lt;p&gt;</span>
-<span class="source-line-no">027</span><span id="line-27"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">028</span><span id="line-28"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">029</span><span id="line-29"> * &lt;/p&gt;</span>
-<span class="source-line-no">030</span><span id="line-30"> * </span>
+<span class="source-line-no">022</span><span id="line-22"> * Represents a single "octave", which is a stack of scale "levels", in a generic hierarchical scale space. See Sec.</span>
+<span class="source-line-no">023</span><span id="line-23"> * 25.1.4. of [1] for details. Basically this is an array with flexible bottom and top index.</span>
+<span class="source-line-no">024</span><span id="line-24"> * &lt;/p&gt;</span>
+<span class="source-line-no">025</span><span id="line-25"> * &lt;p&gt;</span>
+<span class="source-line-no">026</span><span id="line-26"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">027</span><span id="line-27"> * (2022).</span>
+<span class="source-line-no">028</span><span id="line-28"> * &lt;/p&gt;</span>
+<span class="source-line-no">029</span><span id="line-29"> *</span>
+<span class="source-line-no">030</span><span id="line-30"> * @param &lt;LevelT&gt; the scale level type</span>
 <span class="source-line-no">031</span><span id="line-31"> * @author WB</span>
 <span class="source-line-no">032</span><span id="line-32"> * @version 2022/11/20</span>
-<span class="source-line-no">033</span><span id="line-33"> * @param &lt;LevelT&gt; the scale level type</span>
-<span class="source-line-no">034</span><span id="line-34"> */</span>
-<span class="source-line-no">035</span><span id="line-35">public abstract class ScaleOctave&lt;LevelT extends ScaleLevel&gt; implements PrintsToStream {</span>
-<span class="source-line-no">036</span><span id="line-36">        </span>
-<span class="source-line-no">037</span><span id="line-37">        final int Q;                    // number of levels per doubling scale factor</span>
-<span class="source-line-no">038</span><span id="line-38">        final int p;                    // octave index</span>
-<span class="source-line-no">039</span><span id="line-39">        final int width, height;</span>
-<span class="source-line-no">040</span><span id="line-40">        final int botLevelIndex, topLevelIndex;</span>
-<span class="source-line-no">041</span><span id="line-41">        final LinearContainer&lt;LevelT&gt; levels;</span>
-<span class="source-line-no">042</span><span id="line-42">        final double sigma_0;</span>
-<span class="source-line-no">043</span><span id="line-43">        </span>
-<span class="source-line-no">044</span><span id="line-44">        ScaleOctave(int p, int Q, int width, int height, int botLevelIndex, int topLevelIndex, double sigma_0) {</span>
-<span class="source-line-no">045</span><span id="line-45">                this.p = p;</span>
-<span class="source-line-no">046</span><span id="line-46">                this.Q = Q;</span>
-<span class="source-line-no">047</span><span id="line-47">                this.width = width;</span>
-<span class="source-line-no">048</span><span id="line-48">                this.height = height;</span>
-<span class="source-line-no">049</span><span id="line-49">                if (botLevelIndex &gt; topLevelIndex) </span>
-<span class="source-line-no">050</span><span id="line-50">                        throw new IllegalArgumentException("ScaleOctave (constructor): botLevelIndex &gt; topLevelIndex");</span>
-<span class="source-line-no">051</span><span id="line-51">                this.botLevelIndex = botLevelIndex;</span>
-<span class="source-line-no">052</span><span id="line-52">                this.topLevelIndex = topLevelIndex;</span>
-<span class="source-line-no">053</span><span id="line-53">                this.sigma_0 = sigma_0;</span>
-<span class="source-line-no">054</span><span id="line-54">                levels = new LinearContainer&lt;&gt;(botLevelIndex, topLevelIndex);</span>
-<span class="source-line-no">055</span><span id="line-55">        }</span>
-<span class="source-line-no">056</span><span id="line-56">        </span>
-<span class="source-line-no">057</span><span id="line-57">        /**</span>
-<span class="source-line-no">058</span><span id="line-58">         * Returns the index (p) of this scale space octave.</span>
-<span class="source-line-no">059</span><span id="line-59">         * @return the octave index</span>
-<span class="source-line-no">060</span><span id="line-60">         */</span>
-<span class="source-line-no">061</span><span id="line-61">        public int getOctaveIndex() {</span>
-<span class="source-line-no">062</span><span id="line-62">                return p;</span>
-<span class="source-line-no">063</span><span id="line-63">        }</span>
-<span class="source-line-no">064</span><span id="line-64">        </span>
-<span class="source-line-no">065</span><span id="line-65">        /**</span>
-<span class="source-line-no">066</span><span id="line-66">         * Returns the image width of this scale space octave.</span>
-<span class="source-line-no">067</span><span id="line-67">         * @return the image width</span>
-<span class="source-line-no">068</span><span id="line-68">         */</span>
-<span class="source-line-no">069</span><span id="line-69">        public int getWidth() {</span>
-<span class="source-line-no">070</span><span id="line-70">                return width;</span>
-<span class="source-line-no">071</span><span id="line-71">        }</span>
-<span class="source-line-no">072</span><span id="line-72">        </span>
-<span class="source-line-no">073</span><span id="line-73">        /**</span>
-<span class="source-line-no">074</span><span id="line-74">         * Returns the image height of this scale space octave.</span>
-<span class="source-line-no">075</span><span id="line-75">         * @return the image height</span>
-<span class="source-line-no">076</span><span id="line-76">         */</span>
-<span class="source-line-no">077</span><span id="line-77">        public int getHeight() {</span>
-<span class="source-line-no">078</span><span id="line-78">                return height;</span>
-<span class="source-line-no">079</span><span id="line-79">        }</span>
-<span class="source-line-no">080</span><span id="line-80">        </span>
-<span class="source-line-no">081</span><span id="line-81">        /**</span>
-<span class="source-line-no">082</span><span id="line-82">         * Returns a reference to the scale level of this octave with the specified index.</span>
+<span class="source-line-no">033</span><span id="line-33"> */</span>
+<span class="source-line-no">034</span><span id="line-34">public abstract class ScaleOctave&lt;LevelT extends ScaleLevel&gt; implements PrintsToStream {</span>
+<span class="source-line-no">035</span><span id="line-35">        </span>
+<span class="source-line-no">036</span><span id="line-36">        final int Q;                    // number of levels per doubling scale factor</span>
+<span class="source-line-no">037</span><span id="line-37">        final int p;                    // octave index</span>
+<span class="source-line-no">038</span><span id="line-38">        final int width, height;</span>
+<span class="source-line-no">039</span><span id="line-39">        final int botLevelIndex, topLevelIndex;</span>
+<span class="source-line-no">040</span><span id="line-40">        final LinearContainer&lt;LevelT&gt; levels;</span>
+<span class="source-line-no">041</span><span id="line-41">        final double sigma_0;</span>
+<span class="source-line-no">042</span><span id="line-42">        </span>
+<span class="source-line-no">043</span><span id="line-43">        ScaleOctave(int p, int Q, int width, int height, int botLevelIndex, int topLevelIndex, double sigma_0) {</span>
+<span class="source-line-no">044</span><span id="line-44">                this.p = p;</span>
+<span class="source-line-no">045</span><span id="line-45">                this.Q = Q;</span>
+<span class="source-line-no">046</span><span id="line-46">                this.width = width;</span>
+<span class="source-line-no">047</span><span id="line-47">                this.height = height;</span>
+<span class="source-line-no">048</span><span id="line-48">                if (botLevelIndex &gt; topLevelIndex) </span>
+<span class="source-line-no">049</span><span id="line-49">                        throw new IllegalArgumentException("ScaleOctave (constructor): botLevelIndex &gt; topLevelIndex");</span>
+<span class="source-line-no">050</span><span id="line-50">                this.botLevelIndex = botLevelIndex;</span>
+<span class="source-line-no">051</span><span id="line-51">                this.topLevelIndex = topLevelIndex;</span>
+<span class="source-line-no">052</span><span id="line-52">                this.sigma_0 = sigma_0;</span>
+<span class="source-line-no">053</span><span id="line-53">                levels = new LinearContainer&lt;&gt;(botLevelIndex, topLevelIndex);</span>
+<span class="source-line-no">054</span><span id="line-54">        }</span>
+<span class="source-line-no">055</span><span id="line-55">        </span>
+<span class="source-line-no">056</span><span id="line-56">        /**</span>
+<span class="source-line-no">057</span><span id="line-57">         * Returns the index (p) of this scale space octave.</span>
+<span class="source-line-no">058</span><span id="line-58">         * @return the octave index</span>
+<span class="source-line-no">059</span><span id="line-59">         */</span>
+<span class="source-line-no">060</span><span id="line-60">        public int getOctaveIndex() {</span>
+<span class="source-line-no">061</span><span id="line-61">                return p;</span>
+<span class="source-line-no">062</span><span id="line-62">        }</span>
+<span class="source-line-no">063</span><span id="line-63">        </span>
+<span class="source-line-no">064</span><span id="line-64">        /**</span>
+<span class="source-line-no">065</span><span id="line-65">         * Returns the image width of this scale space octave.</span>
+<span class="source-line-no">066</span><span id="line-66">         * @return the image width</span>
+<span class="source-line-no">067</span><span id="line-67">         */</span>
+<span class="source-line-no">068</span><span id="line-68">        public int getWidth() {</span>
+<span class="source-line-no">069</span><span id="line-69">                return width;</span>
+<span class="source-line-no">070</span><span id="line-70">        }</span>
+<span class="source-line-no">071</span><span id="line-71">        </span>
+<span class="source-line-no">072</span><span id="line-72">        /**</span>
+<span class="source-line-no">073</span><span id="line-73">         * Returns the image height of this scale space octave.</span>
+<span class="source-line-no">074</span><span id="line-74">         * @return the image height</span>
+<span class="source-line-no">075</span><span id="line-75">         */</span>
+<span class="source-line-no">076</span><span id="line-76">        public int getHeight() {</span>
+<span class="source-line-no">077</span><span id="line-77">                return height;</span>
+<span class="source-line-no">078</span><span id="line-78">        }</span>
+<span class="source-line-no">079</span><span id="line-79"></span>
+<span class="source-line-no">080</span><span id="line-80">        /**</span>
+<span class="source-line-no">081</span><span id="line-81">         * Returns a reference to the scale level of this octave with the specified index.</span>
+<span class="source-line-no">082</span><span id="line-82">         *</span>
 <span class="source-line-no">083</span><span id="line-83">         * @param q the level index</span>
 <span class="source-line-no">084</span><span id="line-84">         * @return a reference to scale level q</span>
 <span class="source-line-no">085</span><span id="line-85">         */</span>
@@ -104,117 +104,114 @@
 <span class="source-line-no">091</span><span id="line-91">        void setLevel(int q, LevelT level) {    // TODO: check q</span>
 <span class="source-line-no">092</span><span id="line-92">                levels.setElement(q, level);</span>
 <span class="source-line-no">093</span><span id="line-93">        }</span>
-<span class="source-line-no">094</span><span id="line-94">        </span>
+<span class="source-line-no">094</span><span id="line-94"></span>
 <span class="source-line-no">095</span><span id="line-95">        /**</span>
-<span class="source-line-no">096</span><span id="line-96">         * Returns true iff q is outside the level range and position (u,v) is inside the level's</span>
-<span class="source-line-no">097</span><span id="line-97">         * bounds.</span>
-<span class="source-line-no">098</span><span id="line-98">         * </span>
-<span class="source-line-no">099</span><span id="line-99">         * @param q the level index</span>
-<span class="source-line-no">100</span><span id="line-100">         * @param u horizontal coordinate</span>
-<span class="source-line-no">101</span><span id="line-101">         * @param v vertical coordinate</span>
-<span class="source-line-no">102</span><span id="line-102">         * @return true iff inside this level</span>
-<span class="source-line-no">103</span><span id="line-103">         */</span>
-<span class="source-line-no">104</span><span id="line-104">        public boolean isInside(int q, int u, int v) {</span>
-<span class="source-line-no">105</span><span id="line-105">                return (botLevelIndex &lt; q &amp;&amp; q &lt; topLevelIndex &amp;&amp;</span>
-<span class="source-line-no">106</span><span id="line-106">                                0 &lt; u &amp;&amp; u &lt; width-1 &amp;&amp; </span>
-<span class="source-line-no">107</span><span id="line-107">                                0 &lt; v &amp;&amp; v &lt; height-1);</span>
-<span class="source-line-no">108</span><span id="line-108">        }</span>
-<span class="source-line-no">109</span><span id="line-109">        </span>
-<span class="source-line-no">110</span><span id="line-110">        /**</span>
-<span class="source-line-no">111</span><span id="line-111">         * Returns the absolute scale (&amp;sigma;) associated with level q.</span>
-<span class="source-line-no">112</span><span id="line-112">         * @param q the level index</span>
-<span class="source-line-no">113</span><span id="line-113">         * @return the absolute scale of the level</span>
-<span class="source-line-no">114</span><span id="line-114">         */</span>
-<span class="source-line-no">115</span><span id="line-115">        public double getAbsoluteScale(int q) {</span>
-<span class="source-line-no">116</span><span id="line-116">                return getLevel(q).getAbsoluteScale();</span>
-<span class="source-line-no">117</span><span id="line-117">        }</span>
-<span class="source-line-no">118</span><span id="line-118">        </span>
-<span class="source-line-no">119</span><span id="line-119">        /**</span>
-<span class="source-line-no">120</span><span id="line-120">         * Returns the bottom level index for this scale space octave</span>
-<span class="source-line-no">121</span><span id="line-121">         * (e.g., this is -1 for the Gaussian scale space used in SIFT).</span>
+<span class="source-line-no">096</span><span id="line-96">         * Returns true iff q is outside the level range and position (u,v) is inside the level's bounds.</span>
+<span class="source-line-no">097</span><span id="line-97">         *</span>
+<span class="source-line-no">098</span><span id="line-98">         * @param q the level index</span>
+<span class="source-line-no">099</span><span id="line-99">         * @param u horizontal coordinate</span>
+<span class="source-line-no">100</span><span id="line-100">         * @param v vertical coordinate</span>
+<span class="source-line-no">101</span><span id="line-101">         * @return true iff inside this level</span>
+<span class="source-line-no">102</span><span id="line-102">         */</span>
+<span class="source-line-no">103</span><span id="line-103">        public boolean isInside(int q, int u, int v) {</span>
+<span class="source-line-no">104</span><span id="line-104">                return (botLevelIndex &lt; q &amp;&amp; q &lt; topLevelIndex &amp;&amp;</span>
+<span class="source-line-no">105</span><span id="line-105">                                0 &lt; u &amp;&amp; u &lt; width-1 &amp;&amp; </span>
+<span class="source-line-no">106</span><span id="line-106">                                0 &lt; v &amp;&amp; v &lt; height-1);</span>
+<span class="source-line-no">107</span><span id="line-107">        }</span>
+<span class="source-line-no">108</span><span id="line-108">        </span>
+<span class="source-line-no">109</span><span id="line-109">        /**</span>
+<span class="source-line-no">110</span><span id="line-110">         * Returns the absolute scale (&amp;sigma;) associated with level q.</span>
+<span class="source-line-no">111</span><span id="line-111">         * @param q the level index</span>
+<span class="source-line-no">112</span><span id="line-112">         * @return the absolute scale of the level</span>
+<span class="source-line-no">113</span><span id="line-113">         */</span>
+<span class="source-line-no">114</span><span id="line-114">        public double getAbsoluteScale(int q) {</span>
+<span class="source-line-no">115</span><span id="line-115">                return getLevel(q).getAbsoluteScale();</span>
+<span class="source-line-no">116</span><span id="line-116">        }</span>
+<span class="source-line-no">117</span><span id="line-117"></span>
+<span class="source-line-no">118</span><span id="line-118">        /**</span>
+<span class="source-line-no">119</span><span id="line-119">         * Returns the bottom level index for this scale space octave (e.g., this is -1 for the Gaussian scale space used in</span>
+<span class="source-line-no">120</span><span id="line-120">         * SIFT).</span>
+<span class="source-line-no">121</span><span id="line-121">         *</span>
 <span class="source-line-no">122</span><span id="line-122">         * @return the bottom level index</span>
 <span class="source-line-no">123</span><span id="line-123">         */</span>
 <span class="source-line-no">124</span><span id="line-124">        int getBottomLevelIndex() {</span>
 <span class="source-line-no">125</span><span id="line-125">                return botLevelIndex;</span>
 <span class="source-line-no">126</span><span id="line-126">        }</span>
-<span class="source-line-no">127</span><span id="line-127">        </span>
+<span class="source-line-no">127</span><span id="line-127"></span>
 <span class="source-line-no">128</span><span id="line-128">        /**</span>
-<span class="source-line-no">129</span><span id="line-129">         * Returns the top level index for this scale space octave</span>
-<span class="source-line-no">130</span><span id="line-130">         * (e.g., this is Q+1 for the Gaussian scale space used in SIFT).</span>
-<span class="source-line-no">131</span><span id="line-131">         * @return the top level index</span>
-<span class="source-line-no">132</span><span id="line-132">         */</span>
-<span class="source-line-no">133</span><span id="line-133">        int getTopLevelIndex() {</span>
-<span class="source-line-no">134</span><span id="line-134">                return topLevelIndex;</span>
-<span class="source-line-no">135</span><span id="line-135">        }</span>
-<span class="source-line-no">136</span><span id="line-136">        </span>
+<span class="source-line-no">129</span><span id="line-129">         * Returns the top level index for this scale space octave (e.g., this is Q+1 for the Gaussian scale space used in</span>
+<span class="source-line-no">130</span><span id="line-130">         * SIFT).</span>
+<span class="source-line-no">131</span><span id="line-131">         *</span>
+<span class="source-line-no">132</span><span id="line-132">         * @return the top level index</span>
+<span class="source-line-no">133</span><span id="line-133">         */</span>
+<span class="source-line-no">134</span><span id="line-134">        int getTopLevelIndex() {</span>
+<span class="source-line-no">135</span><span id="line-135">                return topLevelIndex;</span>
+<span class="source-line-no">136</span><span id="line-136">        }</span>
 <span class="source-line-no">137</span><span id="line-137"></span>
 <span class="source-line-no">138</span><span id="line-138">        /**</span>
-<span class="source-line-no">139</span><span id="line-139">         * Returns the absolute scale (&amp;sigma;) for octave index p and</span>
-<span class="source-line-no">140</span><span id="line-140">         * level index q;</span>
-<span class="source-line-no">141</span><span id="line-141">         * </span>
-<span class="source-line-no">142</span><span id="line-142">         * @param p the octave index</span>
-<span class="source-line-no">143</span><span id="line-143">         * @param q the level index</span>
-<span class="source-line-no">144</span><span id="line-144">         * @return the absolute scale</span>
-<span class="source-line-no">145</span><span id="line-145">         */</span>
-<span class="source-line-no">146</span><span id="line-146">        public double getAbsoluteScale(int p, int q) {</span>
-<span class="source-line-no">147</span><span id="line-147">                double m =  Q * p + q; </span>
-<span class="source-line-no">148</span><span id="line-148">                double sigma = sigma_0 * Math.pow(2, m/Q);</span>
-<span class="source-line-no">149</span><span id="line-149">                return sigma;</span>
-<span class="source-line-no">150</span><span id="line-150">        }</span>
-<span class="source-line-no">151</span><span id="line-151">        </span>
-<span class="source-line-no">152</span><span id="line-152">        /**</span>
-<span class="source-line-no">153</span><span id="line-153">         * Collects and returns the 3x3x3 neighborhood values from this octave </span>
-<span class="source-line-no">154</span><span id="line-154">         * at scale level q and center position (u,v). The result is stored</span>
-<span class="source-line-no">155</span><span id="line-155">         * in the supplied 3x3x3 array nh[s][x][y].</span>
-<span class="source-line-no">156</span><span id="line-156">         * </span>
-<span class="source-line-no">157</span><span id="line-157">         * @param q the level index</span>
-<span class="source-line-no">158</span><span id="line-158">         * @param u the horizontal coordinate</span>
-<span class="source-line-no">159</span><span id="line-159">         * @param v the vertical coordinate</span>
-<span class="source-line-no">160</span><span id="line-160">         * @param nh the 3x3x3 neighborhood array to hold the result</span>
-<span class="source-line-no">161</span><span id="line-161">         */</span>
-<span class="source-line-no">162</span><span id="line-162">        public void getNeighborhood(int q, int u, int v, final float[][][] nh) {</span>
-<span class="source-line-no">163</span><span id="line-163">                // nh[s][x][y]</span>
-<span class="source-line-no">164</span><span id="line-164">                for (int s = 0, li = q - 1; s &lt; 3; s++, li++) {</span>
-<span class="source-line-no">165</span><span id="line-165">                        getLevel(li).get3x3Neighborhood(u, v, nh[s]);</span>
-<span class="source-line-no">166</span><span id="line-166">                }</span>
-<span class="source-line-no">167</span><span id="line-167">        }</span>
-<span class="source-line-no">168</span><span id="line-168">        </span>
-<span class="source-line-no">169</span><span id="line-169">        // ---------------------------------------------------------</span>
-<span class="source-line-no">170</span><span id="line-170">        </span>
-<span class="source-line-no">171</span><span id="line-171">        /**</span>
-<span class="source-line-no">172</span><span id="line-172">         * Returns an ImageJ {@link ImageStack} for this octave which can be</span>
-<span class="source-line-no">173</span><span id="line-173">         * displayed. Frame labels are automatically set.</span>
-<span class="source-line-no">174</span><span id="line-174">         * </span>
-<span class="source-line-no">175</span><span id="line-175">         * @return an {@link ImageStack} for this octave</span>
-<span class="source-line-no">176</span><span id="line-176">         */</span>
-<span class="source-line-no">177</span><span id="line-177">        public ImageStack getImageStack() {</span>
-<span class="source-line-no">178</span><span id="line-178">                ImageStack stk = new ImageStack(width, height);</span>
-<span class="source-line-no">179</span><span id="line-179">                for (int q = botLevelIndex; q &lt;= topLevelIndex; q++) {</span>
-<span class="source-line-no">180</span><span id="line-180">                        ScaleLevel level = getLevel(q);</span>
-<span class="source-line-no">181</span><span id="line-181">                        if (level != null) {</span>
-<span class="source-line-no">182</span><span id="line-182">                                double scale = level.getAbsoluteScale();</span>
-<span class="source-line-no">183</span><span id="line-183">                                String title = String.format(Locale.US, "q=%d, \u03C3=%.4f", q, scale);</span>
-<span class="source-line-no">184</span><span id="line-184">                                FloatProcessor fp = level.toFloatProcessor();</span>
-<span class="source-line-no">185</span><span id="line-185">                                fp.resetMinAndMax();</span>
-<span class="source-line-no">186</span><span id="line-186">                                stk.addSlice(title, fp);</span>
-<span class="source-line-no">187</span><span id="line-187">                        }</span>
-<span class="source-line-no">188</span><span id="line-188">                }</span>
-<span class="source-line-no">189</span><span id="line-189">                return stk;</span>
-<span class="source-line-no">190</span><span id="line-190">        }</span>
-<span class="source-line-no">191</span><span id="line-191">        </span>
-<span class="source-line-no">192</span><span id="line-192">        @Override</span>
-<span class="source-line-no">193</span><span id="line-193">        public void printToStream(PrintStream strm) {</span>
-<span class="source-line-no">194</span><span id="line-194">                strm.println("  Scale Octave p=" + p);</span>
-<span class="source-line-no">195</span><span id="line-195">                for (int q = botLevelIndex; q &lt;= topLevelIndex; q++) {</span>
-<span class="source-line-no">196</span><span id="line-196">                        ScaleLevel level = getLevel(q);</span>
-<span class="source-line-no">197</span><span id="line-197">                        if (level != null) {</span>
-<span class="source-line-no">198</span><span id="line-198">                                double scale = level.getAbsoluteScale();</span>
-<span class="source-line-no">199</span><span id="line-199">                                strm.format(Locale.US, "   level (p=%d, q=%d, scale=%.4f)\n", p, q, scale);</span>
-<span class="source-line-no">200</span><span id="line-200">                        }</span>
-<span class="source-line-no">201</span><span id="line-201">                }</span>
-<span class="source-line-no">202</span><span id="line-202">        }</span>
-<span class="source-line-no">203</span><span id="line-203">        </span>
-<span class="source-line-no">204</span><span id="line-204">}</span>
+<span class="source-line-no">139</span><span id="line-139">         * Returns the absolute scale (&amp;sigma;) for octave index p and level index q;</span>
+<span class="source-line-no">140</span><span id="line-140">         *</span>
+<span class="source-line-no">141</span><span id="line-141">         * @param p the octave index</span>
+<span class="source-line-no">142</span><span id="line-142">         * @param q the level index</span>
+<span class="source-line-no">143</span><span id="line-143">         * @return the absolute scale</span>
+<span class="source-line-no">144</span><span id="line-144">         */</span>
+<span class="source-line-no">145</span><span id="line-145">        public double getAbsoluteScale(int p, int q) {</span>
+<span class="source-line-no">146</span><span id="line-146">                double m =  Q * p + q; </span>
+<span class="source-line-no">147</span><span id="line-147">                double sigma = sigma_0 * Math.pow(2, m/Q);</span>
+<span class="source-line-no">148</span><span id="line-148">                return sigma;</span>
+<span class="source-line-no">149</span><span id="line-149">        }</span>
+<span class="source-line-no">150</span><span id="line-150"></span>
+<span class="source-line-no">151</span><span id="line-151">        /**</span>
+<span class="source-line-no">152</span><span id="line-152">         * Collects and returns the 3x3x3 neighborhood values from this octave at scale level q and center position (u,v).</span>
+<span class="source-line-no">153</span><span id="line-153">         * The result is stored in the supplied 3x3x3 array nh[s][x][y].</span>
+<span class="source-line-no">154</span><span id="line-154">         *</span>
+<span class="source-line-no">155</span><span id="line-155">         * @param q the level index</span>
+<span class="source-line-no">156</span><span id="line-156">         * @param u the horizontal coordinate</span>
+<span class="source-line-no">157</span><span id="line-157">         * @param v the vertical coordinate</span>
+<span class="source-line-no">158</span><span id="line-158">         * @param nh the 3x3x3 neighborhood array to hold the result</span>
+<span class="source-line-no">159</span><span id="line-159">         */</span>
+<span class="source-line-no">160</span><span id="line-160">        public void getNeighborhood(int q, int u, int v, final float[][][] nh) {</span>
+<span class="source-line-no">161</span><span id="line-161">                // nh[s][x][y]</span>
+<span class="source-line-no">162</span><span id="line-162">                for (int s = 0, li = q - 1; s &lt; 3; s++, li++) {</span>
+<span class="source-line-no">163</span><span id="line-163">                        getLevel(li).get3x3Neighborhood(u, v, nh[s]);</span>
+<span class="source-line-no">164</span><span id="line-164">                }</span>
+<span class="source-line-no">165</span><span id="line-165">        }</span>
+<span class="source-line-no">166</span><span id="line-166">        </span>
+<span class="source-line-no">167</span><span id="line-167">        // ---------------------------------------------------------</span>
+<span class="source-line-no">168</span><span id="line-168"></span>
+<span class="source-line-no">169</span><span id="line-169">        /**</span>
+<span class="source-line-no">170</span><span id="line-170">         * Returns an ImageJ {@link ImageStack} for this octave which can be displayed. Frame labels are automatically set.</span>
+<span class="source-line-no">171</span><span id="line-171">         *</span>
+<span class="source-line-no">172</span><span id="line-172">         * @return an {@link ImageStack} for this octave</span>
+<span class="source-line-no">173</span><span id="line-173">         */</span>
+<span class="source-line-no">174</span><span id="line-174">        public ImageStack getImageStack() {</span>
+<span class="source-line-no">175</span><span id="line-175">                ImageStack stk = new ImageStack(width, height);</span>
+<span class="source-line-no">176</span><span id="line-176">                for (int q = botLevelIndex; q &lt;= topLevelIndex; q++) {</span>
+<span class="source-line-no">177</span><span id="line-177">                        ScaleLevel level = getLevel(q);</span>
+<span class="source-line-no">178</span><span id="line-178">                        if (level != null) {</span>
+<span class="source-line-no">179</span><span id="line-179">                                double scale = level.getAbsoluteScale();</span>
+<span class="source-line-no">180</span><span id="line-180">                                String title = String.format(Locale.US, "q=%d, \u03C3=%.4f", q, scale);</span>
+<span class="source-line-no">181</span><span id="line-181">                                FloatProcessor fp = level.toFloatProcessor();</span>
+<span class="source-line-no">182</span><span id="line-182">                                fp.resetMinAndMax();</span>
+<span class="source-line-no">183</span><span id="line-183">                                stk.addSlice(title, fp);</span>
+<span class="source-line-no">184</span><span id="line-184">                        }</span>
+<span class="source-line-no">185</span><span id="line-185">                }</span>
+<span class="source-line-no">186</span><span id="line-186">                return stk;</span>
+<span class="source-line-no">187</span><span id="line-187">        }</span>
+<span class="source-line-no">188</span><span id="line-188">        </span>
+<span class="source-line-no">189</span><span id="line-189">        @Override</span>
+<span class="source-line-no">190</span><span id="line-190">        public void printToStream(PrintStream strm) {</span>
+<span class="source-line-no">191</span><span id="line-191">                strm.println("  Scale Octave p=" + p);</span>
+<span class="source-line-no">192</span><span id="line-192">                for (int q = botLevelIndex; q &lt;= topLevelIndex; q++) {</span>
+<span class="source-line-no">193</span><span id="line-193">                        ScaleLevel level = getLevel(q);</span>
+<span class="source-line-no">194</span><span id="line-194">                        if (level != null) {</span>
+<span class="source-line-no">195</span><span id="line-195">                                double scale = level.getAbsoluteScale();</span>
+<span class="source-line-no">196</span><span id="line-196">                                strm.format(Locale.US, "   level (p=%d, q=%d, scale=%.4f)\n", p, q, scale);</span>
+<span class="source-line-no">197</span><span id="line-197">                        }</span>
+<span class="source-line-no">198</span><span id="line-198">                }</span>
+<span class="source-line-no">199</span><span id="line-199">        }</span>
+<span class="source-line-no">200</span><span id="line-200">        </span>
+<span class="source-line-no">201</span><span id="line-201">}</span>
 
 
 

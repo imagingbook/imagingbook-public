@@ -38,44 +38,46 @@
 <span class="source-line-no">025</span><span id="line-25">        private static final int Foreground = 0;</span>
 <span class="source-line-no">026</span><span id="line-26">    private static final int width =  256;</span>
 <span class="source-line-no">027</span><span id="line-27">    private static final int height = 128;</span>
-<span class="source-line-no">028</span><span id="line-28">        </span>
+<span class="source-line-no">028</span><span id="line-28"></span>
 <span class="source-line-no">029</span><span id="line-29">        /**</span>
 <span class="source-line-no">030</span><span id="line-30">         * Constructor for a normalized discrete distribution.</span>
-<span class="source-line-no">031</span><span id="line-31">         * @param nH a normalized discrete distribution with values in [0,1]</span>
-<span class="source-line-no">032</span><span id="line-32">         * @param title the window title to be displayed (may be null)</span>
-<span class="source-line-no">033</span><span id="line-33">         */</span>
-<span class="source-line-no">034</span><span id="line-34">        public HistogramPlot(double[] nH, String title) {</span>
-<span class="source-line-no">035</span><span id="line-35">                super(title, drawHistogram(nH));</span>
-<span class="source-line-no">036</span><span id="line-36">        }</span>
-<span class="source-line-no">037</span><span id="line-37">        </span>
-<span class="source-line-no">038</span><span id="line-38">        /**</span>
-<span class="source-line-no">039</span><span id="line-39">         * Constructor for a discrete distribution.</span>
-<span class="source-line-no">040</span><span id="line-40">         * @param h a discrete distribution (histogram) with arbitrary values</span>
-<span class="source-line-no">041</span><span id="line-41">         * @param title the window title to be displayed (may be null)</span>
-<span class="source-line-no">042</span><span id="line-42">         */</span>
-<span class="source-line-no">043</span><span id="line-43">        public HistogramPlot(int[] h, String title) {</span>
-<span class="source-line-no">044</span><span id="line-44">                this(HistogramUtils.normalizeMax(h), title);</span>
-<span class="source-line-no">045</span><span id="line-45">        }</span>
-<span class="source-line-no">046</span><span id="line-46"></span>
-<span class="source-line-no">047</span><span id="line-47">        private static ByteProcessor drawHistogram(double[] nH) {</span>
-<span class="source-line-no">048</span><span id="line-48">                ByteProcessor ip = new ByteProcessor(width, height);</span>
-<span class="source-line-no">049</span><span id="line-49">                int base = height - 1;</span>
-<span class="source-line-no">050</span><span id="line-50">                ip.setValue(Background);</span>
-<span class="source-line-no">051</span><span id="line-51">                ip.fill();</span>
-<span class="source-line-no">052</span><span id="line-52">                ip.setValue(Foreground);</span>
-<span class="source-line-no">053</span><span id="line-53">                ip.drawLine(0, base, width - 1, base);</span>
-<span class="source-line-no">054</span><span id="line-54">                int u = 0;</span>
-<span class="source-line-no">055</span><span id="line-55">                for (int i = 0; i &lt; nH.length; i++) {</span>
-<span class="source-line-no">056</span><span id="line-56">                        int k = (int) Math.round(height * nH[i]);</span>
-<span class="source-line-no">057</span><span id="line-57">                        if (k &gt; 0) {</span>
-<span class="source-line-no">058</span><span id="line-58">                                ip.drawLine(u, base - 1, u, base - k);</span>
-<span class="source-line-no">059</span><span id="line-59">                        }</span>
-<span class="source-line-no">060</span><span id="line-60">                        u = u + 1;</span>
-<span class="source-line-no">061</span><span id="line-61">                }</span>
-<span class="source-line-no">062</span><span id="line-62">                return ip;</span>
-<span class="source-line-no">063</span><span id="line-63">        }</span>
-<span class="source-line-no">064</span><span id="line-64">        </span>
-<span class="source-line-no">065</span><span id="line-65">}</span>
+<span class="source-line-no">031</span><span id="line-31">         *</span>
+<span class="source-line-no">032</span><span id="line-32">         * @param nH a normalized discrete distribution with values in [0,1]</span>
+<span class="source-line-no">033</span><span id="line-33">         * @param title the window title to be displayed (may be null)</span>
+<span class="source-line-no">034</span><span id="line-34">         */</span>
+<span class="source-line-no">035</span><span id="line-35">        public HistogramPlot(double[] nH, String title) {</span>
+<span class="source-line-no">036</span><span id="line-36">                super(title, drawHistogram(nH));</span>
+<span class="source-line-no">037</span><span id="line-37">        }</span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">        /**</span>
+<span class="source-line-no">040</span><span id="line-40">         * Constructor for a discrete distribution.</span>
+<span class="source-line-no">041</span><span id="line-41">         *</span>
+<span class="source-line-no">042</span><span id="line-42">         * @param h a discrete distribution (histogram) with arbitrary values</span>
+<span class="source-line-no">043</span><span id="line-43">         * @param title the window title to be displayed (may be null)</span>
+<span class="source-line-no">044</span><span id="line-44">         */</span>
+<span class="source-line-no">045</span><span id="line-45">        public HistogramPlot(int[] h, String title) {</span>
+<span class="source-line-no">046</span><span id="line-46">                this(HistogramUtils.normalizeMax(h), title);</span>
+<span class="source-line-no">047</span><span id="line-47">        }</span>
+<span class="source-line-no">048</span><span id="line-48"></span>
+<span class="source-line-no">049</span><span id="line-49">        private static ByteProcessor drawHistogram(double[] nH) {</span>
+<span class="source-line-no">050</span><span id="line-50">                ByteProcessor ip = new ByteProcessor(width, height);</span>
+<span class="source-line-no">051</span><span id="line-51">                int base = height - 1;</span>
+<span class="source-line-no">052</span><span id="line-52">                ip.setValue(Background);</span>
+<span class="source-line-no">053</span><span id="line-53">                ip.fill();</span>
+<span class="source-line-no">054</span><span id="line-54">                ip.setValue(Foreground);</span>
+<span class="source-line-no">055</span><span id="line-55">                ip.drawLine(0, base, width - 1, base);</span>
+<span class="source-line-no">056</span><span id="line-56">                int u = 0;</span>
+<span class="source-line-no">057</span><span id="line-57">                for (int i = 0; i &lt; nH.length; i++) {</span>
+<span class="source-line-no">058</span><span id="line-58">                        int k = (int) Math.round(height * nH[i]);</span>
+<span class="source-line-no">059</span><span id="line-59">                        if (k &gt; 0) {</span>
+<span class="source-line-no">060</span><span id="line-60">                                ip.drawLine(u, base - 1, u, base - k);</span>
+<span class="source-line-no">061</span><span id="line-61">                        }</span>
+<span class="source-line-no">062</span><span id="line-62">                        u = u + 1;</span>
+<span class="source-line-no">063</span><span id="line-63">                }</span>
+<span class="source-line-no">064</span><span id="line-64">                return ip;</span>
+<span class="source-line-no">065</span><span id="line-65">        }</span>
+<span class="source-line-no">066</span><span id="line-66">        </span>
+<span class="source-line-no">067</span><span id="line-67">}</span>
 
 
 

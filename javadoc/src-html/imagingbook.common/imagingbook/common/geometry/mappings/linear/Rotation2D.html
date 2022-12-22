@@ -26,56 +26,56 @@
 <span class="source-line-no">013</span><span id="line-13"></span>
 <span class="source-line-no">014</span><span id="line-14">/**</span>
 <span class="source-line-no">015</span><span id="line-15"> * &lt;p&gt;</span>
-<span class="source-line-no">016</span><span id="line-16"> * This class represents a pure 2D rotation about the coordinate origin (as a</span>
-<span class="source-line-no">017</span><span id="line-17"> * special case of affine mapping). It can be assumed that every instance of</span>
-<span class="source-line-no">018</span><span id="line-18"> * this class is indeed a rotation. See Secs. 21.1.3 and 21.3.1 of [1] for</span>
-<span class="source-line-no">019</span><span id="line-19"> * details.</span>
-<span class="source-line-no">020</span><span id="line-20"> * &lt;/p&gt;</span>
-<span class="source-line-no">021</span><span id="line-21"> * &lt;p&gt;</span>
-<span class="source-line-no">022</span><span id="line-22"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">023</span><span id="line-23"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">024</span><span id="line-24"> * &lt;/p&gt;</span>
-<span class="source-line-no">025</span><span id="line-25"> * </span>
-<span class="source-line-no">026</span><span id="line-26"> *  @author WB</span>
-<span class="source-line-no">027</span><span id="line-27"> */</span>
-<span class="source-line-no">028</span><span id="line-28">public class Rotation2D extends AffineMapping2D {</span>
-<span class="source-line-no">029</span><span id="line-29">        </span>
-<span class="source-line-no">030</span><span id="line-30">        /**</span>
-<span class="source-line-no">031</span><span id="line-31">         * Constructor. Creates a 2D rotation by a given</span>
-<span class="source-line-no">032</span><span id="line-32">         * angle about the origin.</span>
-<span class="source-line-no">033</span><span id="line-33">         * @param alpha rotation angle (in radians)</span>
-<span class="source-line-no">034</span><span id="line-34">         */</span>
-<span class="source-line-no">035</span><span id="line-35">        public Rotation2D(double alpha) {</span>
-<span class="source-line-no">036</span><span id="line-36">                super(</span>
-<span class="source-line-no">037</span><span id="line-37">                         Math.cos(alpha), -Math.sin(alpha), 0,</span>
-<span class="source-line-no">038</span><span id="line-38">                         Math.sin(alpha),  Math.cos(alpha), 0);</span>
-<span class="source-line-no">039</span><span id="line-39">        }</span>
-<span class="source-line-no">040</span><span id="line-40">        </span>
-<span class="source-line-no">041</span><span id="line-41">        /**</span>
-<span class="source-line-no">042</span><span id="line-42">         * Auxiliary constructor used internally for duplicating instances.</span>
-<span class="source-line-no">043</span><span id="line-43">         * @param a00 matrix element A_00</span>
-<span class="source-line-no">044</span><span id="line-44">         * @param a01 matrix element A_01</span>
-<span class="source-line-no">045</span><span id="line-45">         * @param a10 matrix element A_10</span>
-<span class="source-line-no">046</span><span id="line-46">         * @param a11 matrix element A_11</span>
-<span class="source-line-no">047</span><span id="line-47">         */</span>
-<span class="source-line-no">048</span><span id="line-48">        protected Rotation2D(double a00, double a01, double a10, double a11) {</span>
-<span class="source-line-no">049</span><span id="line-49">                super(a00, a01, 0, a10, a11, 0);</span>
-<span class="source-line-no">050</span><span id="line-50">        }</span>
-<span class="source-line-no">051</span><span id="line-51">        </span>
-<span class="source-line-no">052</span><span id="line-52">        /**</span>
-<span class="source-line-no">053</span><span id="line-53">         * Constructor. </span>
-<span class="source-line-no">054</span><span id="line-54">         * Creates a new {@link Rotation2D} object from an existing instance.</span>
-<span class="source-line-no">055</span><span id="line-55">         * @param m a {@link Rotation2D} instance</span>
-<span class="source-line-no">056</span><span id="line-56">         */</span>
-<span class="source-line-no">057</span><span id="line-57">        public Rotation2D(Rotation2D m) {</span>
-<span class="source-line-no">058</span><span id="line-58">                this(m.a00, m.a01, m.a10, m.a11);</span>
-<span class="source-line-no">059</span><span id="line-59">        }</span>
-<span class="source-line-no">060</span><span id="line-60">        </span>
-<span class="source-line-no">061</span><span id="line-61">        // ----------------------------------------------------------</span>
-<span class="source-line-no">062</span><span id="line-62">        </span>
-<span class="source-line-no">063</span><span id="line-63">        /**</span>
-<span class="source-line-no">064</span><span id="line-64">         * Concatenates this rotation (A) with another rotation (B) and returns</span>
-<span class="source-line-no">065</span><span id="line-65">         * a new rotation (C), such that C(x) = B(A(x)).</span>
+<span class="source-line-no">016</span><span id="line-16"> * This class represents a pure 2D rotation about the coordinate origin (as a special case of affine mapping). It can be</span>
+<span class="source-line-no">017</span><span id="line-17"> * assumed that every instance of this class is indeed a rotation. See Secs. 21.1.3 and 21.3.1 of [1] for details.</span>
+<span class="source-line-no">018</span><span id="line-18"> * &lt;/p&gt;</span>
+<span class="source-line-no">019</span><span id="line-19"> * &lt;p&gt;</span>
+<span class="source-line-no">020</span><span id="line-20"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">021</span><span id="line-21"> * (2022).</span>
+<span class="source-line-no">022</span><span id="line-22"> * &lt;/p&gt;</span>
+<span class="source-line-no">023</span><span id="line-23"> *</span>
+<span class="source-line-no">024</span><span id="line-24"> * @author WB</span>
+<span class="source-line-no">025</span><span id="line-25"> */</span>
+<span class="source-line-no">026</span><span id="line-26">public class Rotation2D extends AffineMapping2D {</span>
+<span class="source-line-no">027</span><span id="line-27"></span>
+<span class="source-line-no">028</span><span id="line-28">        /**</span>
+<span class="source-line-no">029</span><span id="line-29">         * Constructor. Creates a 2D rotation by a given angle about the origin.</span>
+<span class="source-line-no">030</span><span id="line-30">         *</span>
+<span class="source-line-no">031</span><span id="line-31">         * @param alpha rotation angle (in radians)</span>
+<span class="source-line-no">032</span><span id="line-32">         */</span>
+<span class="source-line-no">033</span><span id="line-33">        public Rotation2D(double alpha) {</span>
+<span class="source-line-no">034</span><span id="line-34">                super(</span>
+<span class="source-line-no">035</span><span id="line-35">                         Math.cos(alpha), -Math.sin(alpha), 0,</span>
+<span class="source-line-no">036</span><span id="line-36">                         Math.sin(alpha),  Math.cos(alpha), 0);</span>
+<span class="source-line-no">037</span><span id="line-37">        }</span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">        /**</span>
+<span class="source-line-no">040</span><span id="line-40">         * Auxiliary constructor used internally for duplicating instances.</span>
+<span class="source-line-no">041</span><span id="line-41">         *</span>
+<span class="source-line-no">042</span><span id="line-42">         * @param a00 matrix element A_00</span>
+<span class="source-line-no">043</span><span id="line-43">         * @param a01 matrix element A_01</span>
+<span class="source-line-no">044</span><span id="line-44">         * @param a10 matrix element A_10</span>
+<span class="source-line-no">045</span><span id="line-45">         * @param a11 matrix element A_11</span>
+<span class="source-line-no">046</span><span id="line-46">         */</span>
+<span class="source-line-no">047</span><span id="line-47">        protected Rotation2D(double a00, double a01, double a10, double a11) {</span>
+<span class="source-line-no">048</span><span id="line-48">                super(a00, a01, 0, a10, a11, 0);</span>
+<span class="source-line-no">049</span><span id="line-49">        }</span>
+<span class="source-line-no">050</span><span id="line-50"></span>
+<span class="source-line-no">051</span><span id="line-51">        /**</span>
+<span class="source-line-no">052</span><span id="line-52">         * Constructor. Creates a new {@link Rotation2D} object from an existing instance.</span>
+<span class="source-line-no">053</span><span id="line-53">         *</span>
+<span class="source-line-no">054</span><span id="line-54">         * @param m a {@link Rotation2D} instance</span>
+<span class="source-line-no">055</span><span id="line-55">         */</span>
+<span class="source-line-no">056</span><span id="line-56">        public Rotation2D(Rotation2D m) {</span>
+<span class="source-line-no">057</span><span id="line-57">                this(m.a00, m.a01, m.a10, m.a11);</span>
+<span class="source-line-no">058</span><span id="line-58">        }</span>
+<span class="source-line-no">059</span><span id="line-59">        </span>
+<span class="source-line-no">060</span><span id="line-60">        // ----------------------------------------------------------</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">        /**</span>
+<span class="source-line-no">063</span><span id="line-63">         * Concatenates this rotation (A) with another rotation (B) and returns a new rotation (C), such that C(x) =</span>
+<span class="source-line-no">064</span><span id="line-64">         * B(A(x)).</span>
+<span class="source-line-no">065</span><span id="line-65">         *</span>
 <span class="source-line-no">066</span><span id="line-66">         * @param B the second rotation</span>
 <span class="source-line-no">067</span><span id="line-67">         * @return the concatenated rotations</span>
 <span class="source-line-no">068</span><span id="line-68">         */</span>

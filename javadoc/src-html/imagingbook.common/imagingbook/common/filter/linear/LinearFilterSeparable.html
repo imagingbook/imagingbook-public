@@ -26,97 +26,91 @@
 <span class="source-line-no">013</span><span id="line-13">import imagingbook.common.image.PixelPack.PixelSlice;</span>
 <span class="source-line-no">014</span><span id="line-14"></span>
 <span class="source-line-no">015</span><span id="line-15">/**</span>
-<span class="source-line-no">016</span><span id="line-16"> * This class represents a 2D linear filter that is x/y-separable and</span>
-<span class="source-line-no">017</span><span id="line-17"> * specified by two 1D-kernels.</span>
-<span class="source-line-no">018</span><span id="line-18"> * It is based on {@link GenericFilter} and {@link GenericFilterScalarSeparable},</span>
-<span class="source-line-no">019</span><span id="line-19"> * which take care of all data copying and filter mechanics.</span>
-<span class="source-line-no">020</span><span id="line-20"> * Since it is a "scalar" filter, pixel values are treated as scalars.</span>
-<span class="source-line-no">021</span><span id="line-21"> * If the processed image has more than one component </span>
-<span class="source-line-no">022</span><span id="line-22"> * (e.g., a RGB color image), this filter is automatically </span>
-<span class="source-line-no">023</span><span id="line-23"> * and independently applied to all (scalar-valued) components.</span>
-<span class="source-line-no">024</span><span id="line-24"> * To apply to an image, use the {@link #applyTo(ij.process.ImageProcessor)}</span>
-<span class="source-line-no">025</span><span id="line-25"> * method, for example.</span>
-<span class="source-line-no">026</span><span id="line-26"> */</span>
-<span class="source-line-no">027</span><span id="line-27">public class LinearFilterSeparable extends GenericFilterScalarSeparable {</span>
-<span class="source-line-no">028</span><span id="line-28"></span>
-<span class="source-line-no">029</span><span id="line-29">        private float[] hX = null;                      // the horizontal kernel array</span>
-<span class="source-line-no">030</span><span id="line-30">        private float[] hY = null;                      // the vertical kernel array</span>
-<span class="source-line-no">031</span><span id="line-31">        private int width = 0;                          // width of the effective kernel</span>
-<span class="source-line-no">032</span><span id="line-32">        private int height = 0;                         // height of the effective kernel</span>
-<span class="source-line-no">033</span><span id="line-33">        private int xc = 0;                                     // 'hot spot' x-position</span>
-<span class="source-line-no">034</span><span id="line-34">        private int yc = 0;                                     // 'hot spot' y-position</span>
-<span class="source-line-no">035</span><span id="line-35">        </span>
-<span class="source-line-no">036</span><span id="line-36">        /**</span>
-<span class="source-line-no">037</span><span id="line-37">         * Constructor, takes a 1D convolution kernel to be applied both</span>
-<span class="source-line-no">038</span><span id="line-38">         * in x- and y-direction. </span>
-<span class="source-line-no">039</span><span id="line-39">         * </span>
-<span class="source-line-no">040</span><span id="line-40">         * @param kernelXY a 1D convolution kernel</span>
-<span class="source-line-no">041</span><span id="line-41">         */</span>
-<span class="source-line-no">042</span><span id="line-42">        public LinearFilterSeparable(Kernel1D kernelXY) {</span>
-<span class="source-line-no">043</span><span id="line-43">                this(kernelXY, kernelXY);</span>
-<span class="source-line-no">044</span><span id="line-44">        }</span>
-<span class="source-line-no">045</span><span id="line-45">        </span>
-<span class="source-line-no">046</span><span id="line-46">        /**</span>
-<span class="source-line-no">047</span><span id="line-47">         * Constructor, takes two 1D convolution kernels to be applied</span>
-<span class="source-line-no">048</span><span id="line-48">         * in x- and y-direction, respectively.</span>
-<span class="source-line-no">049</span><span id="line-49">         * One (but not both) of the supplied kernels may be {@code null}.</span>
-<span class="source-line-no">050</span><span id="line-50">         * If this is the case, filtering in the associated direction</span>
-<span class="source-line-no">051</span><span id="line-51">         * is skipped.</span>
-<span class="source-line-no">052</span><span id="line-52">         * </span>
-<span class="source-line-no">053</span><span id="line-53">         * @param kernelX a 1D kernel for convolution in x-direction</span>
-<span class="source-line-no">054</span><span id="line-54">         * @param kernelY a 1D kernel for convolution in y-direction</span>
-<span class="source-line-no">055</span><span id="line-55">         */</span>
-<span class="source-line-no">056</span><span id="line-56">        public LinearFilterSeparable(Kernel1D kernelX, Kernel1D kernelY) {</span>
-<span class="source-line-no">057</span><span id="line-57">                super();</span>
-<span class="source-line-no">058</span><span id="line-58">                </span>
-<span class="source-line-no">059</span><span id="line-59">                if (kernelX == null &amp;&amp; kernelY == null) {</span>
-<span class="source-line-no">060</span><span id="line-60">                        throw new RuntimeException("both X/Y kernels may not be null");</span>
-<span class="source-line-no">061</span><span id="line-61">                }</span>
-<span class="source-line-no">062</span><span id="line-62">                </span>
-<span class="source-line-no">063</span><span id="line-63">                if (kernelX == null) {</span>
-<span class="source-line-no">064</span><span id="line-64">                        this.doX = false;       // skip X-part</span>
-<span class="source-line-no">065</span><span id="line-65">                }</span>
-<span class="source-line-no">066</span><span id="line-66">                else {</span>
-<span class="source-line-no">067</span><span id="line-67">                        this.hX = kernelX.getH();</span>
-<span class="source-line-no">068</span><span id="line-68">                        this.width = kernelX.getWidth();</span>
-<span class="source-line-no">069</span><span id="line-69">                        this.xc = kernelX.getXc();</span>
-<span class="source-line-no">070</span><span id="line-70">                }</span>
-<span class="source-line-no">071</span><span id="line-71">                </span>
-<span class="source-line-no">072</span><span id="line-72">                if (kernelY == null) {</span>
-<span class="source-line-no">073</span><span id="line-73">                        this.doY = false;       // skip Y-part</span>
-<span class="source-line-no">074</span><span id="line-74">                }</span>
-<span class="source-line-no">075</span><span id="line-75">                else {</span>
-<span class="source-line-no">076</span><span id="line-76">                        this.hY = kernelY.getH();</span>
-<span class="source-line-no">077</span><span id="line-77">                        this.height = kernelY.getWidth();</span>
-<span class="source-line-no">078</span><span id="line-78">                        this.yc = kernelY.getXc();</span>
-<span class="source-line-no">079</span><span id="line-79">                }</span>
-<span class="source-line-no">080</span><span id="line-80">        }</span>
-<span class="source-line-no">081</span><span id="line-81"></span>
-<span class="source-line-no">082</span><span id="line-82">        // ------------------------------------------------------------------------</span>
-<span class="source-line-no">083</span><span id="line-83"></span>
-<span class="source-line-no">084</span><span id="line-84">        // 1D convolution in x-direction</span>
-<span class="source-line-no">085</span><span id="line-85">        @Override</span>
-<span class="source-line-no">086</span><span id="line-86">        protected float doPixelX(PixelSlice source, int u, final int v) {</span>
-<span class="source-line-no">087</span><span id="line-87">                double sum = 0;</span>
-<span class="source-line-no">088</span><span id="line-88">                for (int i = 0; i &lt; width; i++) {</span>
-<span class="source-line-no">089</span><span id="line-89">                        int ui = u + i - xc;</span>
-<span class="source-line-no">090</span><span id="line-90">                        sum = sum + source.getVal(ui, v) * hX[i];</span>
-<span class="source-line-no">091</span><span id="line-91">                }</span>
-<span class="source-line-no">092</span><span id="line-92">                return (float)sum;</span>
-<span class="source-line-no">093</span><span id="line-93">        }</span>
-<span class="source-line-no">094</span><span id="line-94">        </span>
-<span class="source-line-no">095</span><span id="line-95">        // 1D convolution in y-direction</span>
-<span class="source-line-no">096</span><span id="line-96">        @Override</span>
-<span class="source-line-no">097</span><span id="line-97">        protected float doPixelY(PixelSlice source, final int u, int v) {</span>
-<span class="source-line-no">098</span><span id="line-98">                double sum = 0;</span>
-<span class="source-line-no">099</span><span id="line-99">                for (int j = 0; j &lt; height; j++) {</span>
-<span class="source-line-no">100</span><span id="line-100">                        int vj = v + j - yc;</span>
-<span class="source-line-no">101</span><span id="line-101">                        sum = sum + source.getVal(u, vj) * hY[j];</span>
-<span class="source-line-no">102</span><span id="line-102">                }</span>
-<span class="source-line-no">103</span><span id="line-103">                return (float)sum;</span>
-<span class="source-line-no">104</span><span id="line-104">        }</span>
-<span class="source-line-no">105</span><span id="line-105"></span>
-<span class="source-line-no">106</span><span id="line-106">}</span>
+<span class="source-line-no">016</span><span id="line-16"> * This class represents a 2D linear filter that is x/y-separable and specified by two 1D-kernels. It is based on</span>
+<span class="source-line-no">017</span><span id="line-17"> * {@link GenericFilter} and {@link GenericFilterScalarSeparable}, which take care of all data copying and filter</span>
+<span class="source-line-no">018</span><span id="line-18"> * mechanics. Since it is a "scalar" filter, pixel values are treated as scalars. If the processed image has more than</span>
+<span class="source-line-no">019</span><span id="line-19"> * one component (e.g., a RGB color image), this filter is automatically and independently applied to all</span>
+<span class="source-line-no">020</span><span id="line-20"> * (scalar-valued) components. To apply to an image, use the {@link #applyTo(ij.process.ImageProcessor)} method, for</span>
+<span class="source-line-no">021</span><span id="line-21"> * example.</span>
+<span class="source-line-no">022</span><span id="line-22"> */</span>
+<span class="source-line-no">023</span><span id="line-23">public class LinearFilterSeparable extends GenericFilterScalarSeparable {</span>
+<span class="source-line-no">024</span><span id="line-24"></span>
+<span class="source-line-no">025</span><span id="line-25">        private float[] hX = null;                      // the horizontal kernel array</span>
+<span class="source-line-no">026</span><span id="line-26">        private float[] hY = null;                      // the vertical kernel array</span>
+<span class="source-line-no">027</span><span id="line-27">        private int width = 0;                          // width of the effective kernel</span>
+<span class="source-line-no">028</span><span id="line-28">        private int height = 0;                         // height of the effective kernel</span>
+<span class="source-line-no">029</span><span id="line-29">        private int xc = 0;                                     // 'hot spot' x-position</span>
+<span class="source-line-no">030</span><span id="line-30">        private int yc = 0;                                     // 'hot spot' y-position</span>
+<span class="source-line-no">031</span><span id="line-31">        </span>
+<span class="source-line-no">032</span><span id="line-32">        /**</span>
+<span class="source-line-no">033</span><span id="line-33">         * Constructor, takes a 1D convolution kernel to be applied both</span>
+<span class="source-line-no">034</span><span id="line-34">         * in x- and y-direction. </span>
+<span class="source-line-no">035</span><span id="line-35">         * </span>
+<span class="source-line-no">036</span><span id="line-36">         * @param kernelXY a 1D convolution kernel</span>
+<span class="source-line-no">037</span><span id="line-37">         */</span>
+<span class="source-line-no">038</span><span id="line-38">        public LinearFilterSeparable(Kernel1D kernelXY) {</span>
+<span class="source-line-no">039</span><span id="line-39">                this(kernelXY, kernelXY);</span>
+<span class="source-line-no">040</span><span id="line-40">        }</span>
+<span class="source-line-no">041</span><span id="line-41"></span>
+<span class="source-line-no">042</span><span id="line-42">        /**</span>
+<span class="source-line-no">043</span><span id="line-43">         * Constructor, takes two 1D convolution kernels to be applied in x- and y-direction, respectively. One (but not</span>
+<span class="source-line-no">044</span><span id="line-44">         * both) of the supplied kernels may be {@code null}. If this is the case, filtering in the associated direction is</span>
+<span class="source-line-no">045</span><span id="line-45">         * skipped.</span>
+<span class="source-line-no">046</span><span id="line-46">         *</span>
+<span class="source-line-no">047</span><span id="line-47">         * @param kernelX a 1D kernel for convolution in x-direction</span>
+<span class="source-line-no">048</span><span id="line-48">         * @param kernelY a 1D kernel for convolution in y-direction</span>
+<span class="source-line-no">049</span><span id="line-49">         */</span>
+<span class="source-line-no">050</span><span id="line-50">        public LinearFilterSeparable(Kernel1D kernelX, Kernel1D kernelY) {</span>
+<span class="source-line-no">051</span><span id="line-51">                super();</span>
+<span class="source-line-no">052</span><span id="line-52">                </span>
+<span class="source-line-no">053</span><span id="line-53">                if (kernelX == null &amp;&amp; kernelY == null) {</span>
+<span class="source-line-no">054</span><span id="line-54">                        throw new RuntimeException("both X/Y kernels may not be null");</span>
+<span class="source-line-no">055</span><span id="line-55">                }</span>
+<span class="source-line-no">056</span><span id="line-56">                </span>
+<span class="source-line-no">057</span><span id="line-57">                if (kernelX == null) {</span>
+<span class="source-line-no">058</span><span id="line-58">                        this.doX = false;       // skip X-part</span>
+<span class="source-line-no">059</span><span id="line-59">                }</span>
+<span class="source-line-no">060</span><span id="line-60">                else {</span>
+<span class="source-line-no">061</span><span id="line-61">                        this.hX = kernelX.getH();</span>
+<span class="source-line-no">062</span><span id="line-62">                        this.width = kernelX.getWidth();</span>
+<span class="source-line-no">063</span><span id="line-63">                        this.xc = kernelX.getXc();</span>
+<span class="source-line-no">064</span><span id="line-64">                }</span>
+<span class="source-line-no">065</span><span id="line-65">                </span>
+<span class="source-line-no">066</span><span id="line-66">                if (kernelY == null) {</span>
+<span class="source-line-no">067</span><span id="line-67">                        this.doY = false;       // skip Y-part</span>
+<span class="source-line-no">068</span><span id="line-68">                }</span>
+<span class="source-line-no">069</span><span id="line-69">                else {</span>
+<span class="source-line-no">070</span><span id="line-70">                        this.hY = kernelY.getH();</span>
+<span class="source-line-no">071</span><span id="line-71">                        this.height = kernelY.getWidth();</span>
+<span class="source-line-no">072</span><span id="line-72">                        this.yc = kernelY.getXc();</span>
+<span class="source-line-no">073</span><span id="line-73">                }</span>
+<span class="source-line-no">074</span><span id="line-74">        }</span>
+<span class="source-line-no">075</span><span id="line-75"></span>
+<span class="source-line-no">076</span><span id="line-76">        // ------------------------------------------------------------------------</span>
+<span class="source-line-no">077</span><span id="line-77"></span>
+<span class="source-line-no">078</span><span id="line-78">        // 1D convolution in x-direction</span>
+<span class="source-line-no">079</span><span id="line-79">        @Override</span>
+<span class="source-line-no">080</span><span id="line-80">        protected float doPixelX(PixelSlice source, int u, final int v) {</span>
+<span class="source-line-no">081</span><span id="line-81">                double sum = 0;</span>
+<span class="source-line-no">082</span><span id="line-82">                for (int i = 0; i &lt; width; i++) {</span>
+<span class="source-line-no">083</span><span id="line-83">                        int ui = u + i - xc;</span>
+<span class="source-line-no">084</span><span id="line-84">                        sum = sum + source.getVal(ui, v) * hX[i];</span>
+<span class="source-line-no">085</span><span id="line-85">                }</span>
+<span class="source-line-no">086</span><span id="line-86">                return (float)sum;</span>
+<span class="source-line-no">087</span><span id="line-87">        }</span>
+<span class="source-line-no">088</span><span id="line-88">        </span>
+<span class="source-line-no">089</span><span id="line-89">        // 1D convolution in y-direction</span>
+<span class="source-line-no">090</span><span id="line-90">        @Override</span>
+<span class="source-line-no">091</span><span id="line-91">        protected float doPixelY(PixelSlice source, final int u, int v) {</span>
+<span class="source-line-no">092</span><span id="line-92">                double sum = 0;</span>
+<span class="source-line-no">093</span><span id="line-93">                for (int j = 0; j &lt; height; j++) {</span>
+<span class="source-line-no">094</span><span id="line-94">                        int vj = v + j - yc;</span>
+<span class="source-line-no">095</span><span id="line-95">                        sum = sum + source.getVal(u, vj) * hY[j];</span>
+<span class="source-line-no">096</span><span id="line-96">                }</span>
+<span class="source-line-no">097</span><span id="line-97">                return (float)sum;</span>
+<span class="source-line-no">098</span><span id="line-98">        }</span>
+<span class="source-line-no">099</span><span id="line-99"></span>
+<span class="source-line-no">100</span><span id="line-100">}</span>
 
 
 

@@ -22,25 +22,25 @@
 <span class="source-line-no">009</span><span id="line-9">package Ch11_Circle_Ellipse_Fitting;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.ij.DialogUtils.addToDialog;</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">import ij.ImagePlus;</span>
-<span class="source-line-no">015</span><span id="line-15">import ij.gui.GenericDialog;</span>
-<span class="source-line-no">016</span><span id="line-16">import ij.gui.NewImage;</span>
-<span class="source-line-no">017</span><span id="line-17">import ij.gui.PointRoi;</span>
-<span class="source-line-no">018</span><span id="line-18">import ij.plugin.PlugIn;</span>
-<span class="source-line-no">019</span><span id="line-19">import ij.process.ImageProcessor;</span>
-<span class="source-line-no">020</span><span id="line-20">import imagingbook.common.color.sets.BasicAwtColor;</span>
-<span class="source-line-no">021</span><span id="line-21">import imagingbook.common.geometry.basic.Pnt2d;</span>
-<span class="source-line-no">022</span><span id="line-22">import imagingbook.common.geometry.circle.GeometricCircle;</span>
-<span class="source-line-no">023</span><span id="line-23">import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;</span>
-<span class="source-line-no">024</span><span id="line-24">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">025</span><span id="line-25">import imagingbook.common.ij.DialogUtils.DialogLabel;</span>
-<span class="source-line-no">026</span><span id="line-26">import imagingbook.common.ij.DialogUtils.DialogStringColumns;</span>
-<span class="source-line-no">027</span><span id="line-27">import imagingbook.common.ij.RoiUtils;</span>
-<span class="source-line-no">028</span><span id="line-28">import imagingbook.common.ij.overlay.ColoredStroke;</span>
-<span class="source-line-no">029</span><span id="line-29">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
-<span class="source-line-no">030</span><span id="line-30">import imagingbook.common.util.ParameterBundle;</span>
+<span class="source-line-no">012</span><span id="line-12">import ij.ImagePlus;</span>
+<span class="source-line-no">013</span><span id="line-13">import ij.gui.GenericDialog;</span>
+<span class="source-line-no">014</span><span id="line-14">import ij.gui.NewImage;</span>
+<span class="source-line-no">015</span><span id="line-15">import ij.gui.PointRoi;</span>
+<span class="source-line-no">016</span><span id="line-16">import ij.plugin.PlugIn;</span>
+<span class="source-line-no">017</span><span id="line-17">import ij.process.ImageProcessor;</span>
+<span class="source-line-no">018</span><span id="line-18">import imagingbook.common.color.sets.BasicAwtColor;</span>
+<span class="source-line-no">019</span><span id="line-19">import imagingbook.common.geometry.basic.Pnt2d;</span>
+<span class="source-line-no">020</span><span id="line-20">import imagingbook.common.geometry.circle.GeometricCircle;</span>
+<span class="source-line-no">021</span><span id="line-21">import imagingbook.common.geometry.fitting.circle.utils.CircleSampler;</span>
+<span class="source-line-no">022</span><span id="line-22">import imagingbook.common.ij.DialogUtils;</span>
+<span class="source-line-no">023</span><span id="line-23">import imagingbook.common.ij.DialogUtils.DialogLabel;</span>
+<span class="source-line-no">024</span><span id="line-24">import imagingbook.common.ij.DialogUtils.DialogStringColumns;</span>
+<span class="source-line-no">025</span><span id="line-25">import imagingbook.common.ij.RoiUtils;</span>
+<span class="source-line-no">026</span><span id="line-26">import imagingbook.common.ij.overlay.ColoredStroke;</span>
+<span class="source-line-no">027</span><span id="line-27">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
+<span class="source-line-no">028</span><span id="line-28">import imagingbook.common.util.ParameterBundle;</span>
+<span class="source-line-no">029</span><span id="line-29"></span>
+<span class="source-line-no">030</span><span id="line-30">import static imagingbook.common.ij.DialogUtils.addToDialog;</span>
 <span class="source-line-no">031</span><span id="line-31"></span>
 <span class="source-line-no">032</span><span id="line-32">/**</span>
 <span class="source-line-no">033</span><span id="line-33"> * Samples points on a given (ideal) circle and creates a new image with the</span>

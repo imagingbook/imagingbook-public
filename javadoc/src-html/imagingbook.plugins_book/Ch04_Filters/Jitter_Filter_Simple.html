@@ -20,88 +20,89 @@
 <span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package Ch04_Filters;</span>
-<span class="source-line-no">010</span><span id="line-10">import java.util.Random;</span>
-<span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import ij.ImagePlus;</span>
-<span class="source-line-no">013</span><span id="line-13">import ij.gui.GenericDialog;</span>
-<span class="source-line-no">014</span><span id="line-14">import ij.plugin.filter.PlugInFilter;</span>
-<span class="source-line-no">015</span><span id="line-15">import ij.process.ImageProcessor;</span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">017</span><span id="line-17">import imagingbook.sampleimages.GeneralSampleImage;</span>
-<span class="source-line-no">018</span><span id="line-18"></span>
-<span class="source-line-no">019</span><span id="line-19">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
-<span class="source-line-no">020</span><span id="line-20"></span>
-<span class="source-line-no">021</span><span id="line-21">/**</span>
-<span class="source-line-no">022</span><span id="line-22"> * &lt;p&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * ImageJ plugin which implements a simple version of the Jitter filter, using ImageJ functionality only. Works for all</span>
-<span class="source-line-no">024</span><span id="line-24"> * image types but does not handle image borders (pixels outside the image are assumed to be black). The input image is</span>
-<span class="source-line-no">025</span><span id="line-25"> * destructively modified. See Sec. 4.7 (Exercise 4.14) of [1] for additional details.</span>
-<span class="source-line-no">026</span><span id="line-26"> * &lt;/p&gt;</span>
-<span class="source-line-no">027</span><span id="line-27"> * &lt;p&gt;</span>
-<span class="source-line-no">028</span><span id="line-28"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
-<span class="source-line-no">029</span><span id="line-29"> * (2022).</span>
-<span class="source-line-no">030</span><span id="line-30"> * &lt;/p&gt;</span>
-<span class="source-line-no">031</span><span id="line-31"> *</span>
-<span class="source-line-no">032</span><span id="line-32"> * @author WB</span>
-<span class="source-line-no">033</span><span id="line-33"> * @version 2016/11/01</span>
-<span class="source-line-no">034</span><span id="line-34"> */</span>
-<span class="source-line-no">035</span><span id="line-35">public class Jitter_Filter_Simple implements PlugInFilter {</span>
-<span class="source-line-no">036</span><span id="line-36">        </span>
-<span class="source-line-no">037</span><span id="line-37">        /** The filter radius. */</span>
-<span class="source-line-no">038</span><span id="line-38">        public static int R = 3;</span>
-<span class="source-line-no">039</span><span id="line-39"></span>
-<span class="source-line-no">040</span><span id="line-40">        /** Constructor, asks to open a predefined sample image if no other image is currently open. */</span>
-<span class="source-line-no">041</span><span id="line-41">        public Jitter_Filter_Simple() {</span>
-<span class="source-line-no">042</span><span id="line-42">                if (noCurrentImage()) {</span>
-<span class="source-line-no">043</span><span id="line-43">                        DialogUtils.askForSampleImage(GeneralSampleImage.Flower);</span>
-<span class="source-line-no">044</span><span id="line-44">                }</span>
-<span class="source-line-no">045</span><span id="line-45">        }</span>
-<span class="source-line-no">046</span><span id="line-46">                </span>
-<span class="source-line-no">047</span><span id="line-47">        @Override</span>
-<span class="source-line-no">048</span><span id="line-48">        public int setup(String arg, ImagePlus im) {</span>
-<span class="source-line-no">049</span><span id="line-49">                return DOES_ALL;</span>
-<span class="source-line-no">050</span><span id="line-50">        }</span>
-<span class="source-line-no">051</span><span id="line-51"></span>
-<span class="source-line-no">052</span><span id="line-52">        @Override</span>
-<span class="source-line-no">053</span><span id="line-53">        public void run(ImageProcessor ip1) {</span>
-<span class="source-line-no">054</span><span id="line-54">                if (!runDialog()) {</span>
-<span class="source-line-no">055</span><span id="line-55">                        return;</span>
-<span class="source-line-no">056</span><span id="line-56">                }</span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">                final int w = ip1.getWidth();</span>
-<span class="source-line-no">059</span><span id="line-59">                final int h = ip1.getHeight();</span>
-<span class="source-line-no">060</span><span id="line-60">                </span>
-<span class="source-line-no">061</span><span id="line-61">                Random rnd = new Random();</span>
-<span class="source-line-no">062</span><span id="line-62">                ImageProcessor ip2 = ip1.duplicate();</span>
-<span class="source-line-no">063</span><span id="line-63">                </span>
-<span class="source-line-no">064</span><span id="line-64">                final int d = 2 * R + 1;        // width/height of the "kernel"</span>
-<span class="source-line-no">065</span><span id="line-65">                </span>
-<span class="source-line-no">066</span><span id="line-66">                for (int u = 0; u &lt; w; u++) {</span>
-<span class="source-line-no">067</span><span id="line-67">                        for (int v = 0; v &lt; h; v++) {</span>
-<span class="source-line-no">068</span><span id="line-68">                                int rx = rnd.nextInt(d) - R;</span>
-<span class="source-line-no">069</span><span id="line-69">                                int ry = rnd.nextInt(d) - R;</span>
-<span class="source-line-no">070</span><span id="line-70">                                // pick a random position inside the current support region</span>
-<span class="source-line-no">071</span><span id="line-71">                                // we need getPixel/putPixel here because we reach outside the image!</span>
-<span class="source-line-no">072</span><span id="line-72">                                int p = ip2.getPixel(u + rx, v + ry);</span>
-<span class="source-line-no">073</span><span id="line-73">                                // replace the current center pixel</span>
-<span class="source-line-no">074</span><span id="line-74">                                ip1.putPixel(u, v, p);</span>
-<span class="source-line-no">075</span><span id="line-75">                        }</span>
-<span class="source-line-no">076</span><span id="line-76">                }</span>
-<span class="source-line-no">077</span><span id="line-77">        }</span>
-<span class="source-line-no">078</span><span id="line-78"></span>
-<span class="source-line-no">079</span><span id="line-79">        private boolean runDialog() {</span>
-<span class="source-line-no">080</span><span id="line-80">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">081</span><span id="line-81">                gd.addMessage("Filter kernel size is (2r+1) x (2r+1):");</span>
-<span class="source-line-no">082</span><span id="line-82">                gd.addNumericField("Kernel radius (r &gt; 0)", R, 0);</span>
-<span class="source-line-no">083</span><span id="line-83"></span>
-<span class="source-line-no">084</span><span id="line-84">                gd.showDialog();</span>
-<span class="source-line-no">085</span><span id="line-85">                if (gd.wasCanceled())</span>
-<span class="source-line-no">086</span><span id="line-86">                        return false;</span>
-<span class="source-line-no">087</span><span id="line-87"></span>
-<span class="source-line-no">088</span><span id="line-88">                R = (int) gd.getNextNumber();</span>
-<span class="source-line-no">089</span><span id="line-89">                return true;</span>
-<span class="source-line-no">090</span><span id="line-90">        }</span>
-<span class="source-line-no">091</span><span id="line-91">}</span>
+<span class="source-line-no">010</span><span id="line-10"></span>
+<span class="source-line-no">011</span><span id="line-11">import ij.ImagePlus;</span>
+<span class="source-line-no">012</span><span id="line-12">import ij.gui.GenericDialog;</span>
+<span class="source-line-no">013</span><span id="line-13">import ij.plugin.filter.PlugInFilter;</span>
+<span class="source-line-no">014</span><span id="line-14">import ij.process.ImageProcessor;</span>
+<span class="source-line-no">015</span><span id="line-15">import imagingbook.common.ij.DialogUtils;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.sampleimages.GeneralSampleImage;</span>
+<span class="source-line-no">017</span><span id="line-17"></span>
+<span class="source-line-no">018</span><span id="line-18">import java.util.Random;</span>
+<span class="source-line-no">019</span><span id="line-19"></span>
+<span class="source-line-no">020</span><span id="line-20">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
+<span class="source-line-no">021</span><span id="line-21"></span>
+<span class="source-line-no">022</span><span id="line-22">/**</span>
+<span class="source-line-no">023</span><span id="line-23"> * &lt;p&gt;</span>
+<span class="source-line-no">024</span><span id="line-24"> * ImageJ plugin which implements a simple version of the Jitter filter, using ImageJ functionality only. Works for all</span>
+<span class="source-line-no">025</span><span id="line-25"> * image types but does not handle image borders (pixels outside the image are assumed to be black). The input image is</span>
+<span class="source-line-no">026</span><span id="line-26"> * destructively modified. See Sec. 4.7 (Exercise 4.14) of [1] for additional details.</span>
+<span class="source-line-no">027</span><span id="line-27"> * &lt;/p&gt;</span>
+<span class="source-line-no">028</span><span id="line-28"> * &lt;p&gt;</span>
+<span class="source-line-no">029</span><span id="line-29"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">030</span><span id="line-30"> * (2022).</span>
+<span class="source-line-no">031</span><span id="line-31"> * &lt;/p&gt;</span>
+<span class="source-line-no">032</span><span id="line-32"> *</span>
+<span class="source-line-no">033</span><span id="line-33"> * @author WB</span>
+<span class="source-line-no">034</span><span id="line-34"> * @version 2016/11/01</span>
+<span class="source-line-no">035</span><span id="line-35"> */</span>
+<span class="source-line-no">036</span><span id="line-36">public class Jitter_Filter_Simple implements PlugInFilter {</span>
+<span class="source-line-no">037</span><span id="line-37">        </span>
+<span class="source-line-no">038</span><span id="line-38">        /** The filter radius. */</span>
+<span class="source-line-no">039</span><span id="line-39">        public static int R = 3;</span>
+<span class="source-line-no">040</span><span id="line-40"></span>
+<span class="source-line-no">041</span><span id="line-41">        /** Constructor, asks to open a predefined sample image if no other image is currently open. */</span>
+<span class="source-line-no">042</span><span id="line-42">        public Jitter_Filter_Simple() {</span>
+<span class="source-line-no">043</span><span id="line-43">                if (noCurrentImage()) {</span>
+<span class="source-line-no">044</span><span id="line-44">                        DialogUtils.askForSampleImage(GeneralSampleImage.Flower);</span>
+<span class="source-line-no">045</span><span id="line-45">                }</span>
+<span class="source-line-no">046</span><span id="line-46">        }</span>
+<span class="source-line-no">047</span><span id="line-47">                </span>
+<span class="source-line-no">048</span><span id="line-48">        @Override</span>
+<span class="source-line-no">049</span><span id="line-49">        public int setup(String arg, ImagePlus im) {</span>
+<span class="source-line-no">050</span><span id="line-50">                return DOES_ALL;</span>
+<span class="source-line-no">051</span><span id="line-51">        }</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">        @Override</span>
+<span class="source-line-no">054</span><span id="line-54">        public void run(ImageProcessor ip1) {</span>
+<span class="source-line-no">055</span><span id="line-55">                if (!runDialog()) {</span>
+<span class="source-line-no">056</span><span id="line-56">                        return;</span>
+<span class="source-line-no">057</span><span id="line-57">                }</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">                final int w = ip1.getWidth();</span>
+<span class="source-line-no">060</span><span id="line-60">                final int h = ip1.getHeight();</span>
+<span class="source-line-no">061</span><span id="line-61">                </span>
+<span class="source-line-no">062</span><span id="line-62">                Random rnd = new Random();</span>
+<span class="source-line-no">063</span><span id="line-63">                ImageProcessor ip2 = ip1.duplicate();</span>
+<span class="source-line-no">064</span><span id="line-64">                </span>
+<span class="source-line-no">065</span><span id="line-65">                final int d = 2 * R + 1;        // width/height of the "kernel"</span>
+<span class="source-line-no">066</span><span id="line-66">                </span>
+<span class="source-line-no">067</span><span id="line-67">                for (int u = 0; u &lt; w; u++) {</span>
+<span class="source-line-no">068</span><span id="line-68">                        for (int v = 0; v &lt; h; v++) {</span>
+<span class="source-line-no">069</span><span id="line-69">                                int rx = rnd.nextInt(d) - R;</span>
+<span class="source-line-no">070</span><span id="line-70">                                int ry = rnd.nextInt(d) - R;</span>
+<span class="source-line-no">071</span><span id="line-71">                                // pick a random position inside the current support region</span>
+<span class="source-line-no">072</span><span id="line-72">                                // we need getPixel/putPixel here because we reach outside the image!</span>
+<span class="source-line-no">073</span><span id="line-73">                                int p = ip2.getPixel(u + rx, v + ry);</span>
+<span class="source-line-no">074</span><span id="line-74">                                // replace the current center pixel</span>
+<span class="source-line-no">075</span><span id="line-75">                                ip1.putPixel(u, v, p);</span>
+<span class="source-line-no">076</span><span id="line-76">                        }</span>
+<span class="source-line-no">077</span><span id="line-77">                }</span>
+<span class="source-line-no">078</span><span id="line-78">        }</span>
+<span class="source-line-no">079</span><span id="line-79"></span>
+<span class="source-line-no">080</span><span id="line-80">        private boolean runDialog() {</span>
+<span class="source-line-no">081</span><span id="line-81">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
+<span class="source-line-no">082</span><span id="line-82">                gd.addMessage("Filter kernel size is (2r+1) x (2r+1):");</span>
+<span class="source-line-no">083</span><span id="line-83">                gd.addNumericField("Kernel radius (r &gt; 0)", R, 0);</span>
+<span class="source-line-no">084</span><span id="line-84"></span>
+<span class="source-line-no">085</span><span id="line-85">                gd.showDialog();</span>
+<span class="source-line-no">086</span><span id="line-86">                if (gd.wasCanceled())</span>
+<span class="source-line-no">087</span><span id="line-87">                        return false;</span>
+<span class="source-line-no">088</span><span id="line-88"></span>
+<span class="source-line-no">089</span><span id="line-89">                R = (int) gd.getNextNumber();</span>
+<span class="source-line-no">090</span><span id="line-90">                return true;</span>
+<span class="source-line-no">091</span><span id="line-91">        }</span>
+<span class="source-line-no">092</span><span id="line-92">}</span>
 
 
 

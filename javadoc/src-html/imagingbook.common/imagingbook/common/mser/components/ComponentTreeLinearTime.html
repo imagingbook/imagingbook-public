@@ -21,153 +21,150 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.mser.components;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import java.util.ArrayList;</span>
-<span class="source-line-no">012</span><span id="line-12">import java.util.Collection;</span>
-<span class="source-line-no">013</span><span id="line-13">import java.util.Deque;</span>
-<span class="source-line-no">014</span><span id="line-14">import java.util.LinkedList;</span>
-<span class="source-line-no">015</span><span id="line-15">import java.util.List;</span>
-<span class="source-line-no">016</span><span id="line-16">import java.util.PriorityQueue;</span>
-<span class="source-line-no">017</span><span id="line-17"></span>
-<span class="source-line-no">018</span><span id="line-18">import imagingbook.common.mser.components.PixelMap.Pixel;</span>
-<span class="source-line-no">019</span><span id="line-19">import imagingbook.common.util.bits.BitMap;</span>
+<span class="source-line-no">011</span><span id="line-11">import imagingbook.common.mser.components.PixelMap.Pixel;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.util.bits.BitMap;</span>
+<span class="source-line-no">013</span><span id="line-13"></span>
+<span class="source-line-no">014</span><span id="line-14">import java.util.ArrayList;</span>
+<span class="source-line-no">015</span><span id="line-15">import java.util.Collection;</span>
+<span class="source-line-no">016</span><span id="line-16">import java.util.Deque;</span>
+<span class="source-line-no">017</span><span id="line-17">import java.util.LinkedList;</span>
+<span class="source-line-no">018</span><span id="line-18">import java.util.List;</span>
+<span class="source-line-no">019</span><span id="line-19">import java.util.PriorityQueue;</span>
 <span class="source-line-no">020</span><span id="line-20"></span>
 <span class="source-line-no">021</span><span id="line-21">/**</span>
 <span class="source-line-no">022</span><span id="line-22"> * &lt;p&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * This class implements the "linear-time" ("local flooding")</span>
-<span class="source-line-no">024</span><span id="line-24"> * component tree algorithm described in [1].</span>
-<span class="source-line-no">025</span><span id="line-25"> * See Section 26.2.3 of [2] for a detailed description (Algs. 26.3 - 26.4).</span>
-<span class="source-line-no">026</span><span id="line-26"> * &lt;/p&gt;</span>
-<span class="source-line-no">027</span><span id="line-27"> * &lt;p&gt;</span>
-<span class="source-line-no">028</span><span id="line-28"> * [1] D. Nister and H. Stewenius, "Linear Time Maximally Stable Extremal Regions", </span>
-<span class="source-line-no">029</span><span id="line-29"> * Computer Vision - ECCV 2008. pp. 183-196, Springer Berlin/Heidelberg (2008).</span>
-<span class="source-line-no">030</span><span id="line-30"> * &lt;br&gt;</span>
-<span class="source-line-no">031</span><span id="line-31"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
+<span class="source-line-no">023</span><span id="line-23"> * This class implements the "linear-time" ("local flooding") component tree algorithm described in [1]. See Section</span>
+<span class="source-line-no">024</span><span id="line-24"> * 26.2.3 of [2] for a detailed description (Algs. 26.3 - 26.4).</span>
+<span class="source-line-no">025</span><span id="line-25"> * &lt;/p&gt;</span>
+<span class="source-line-no">026</span><span id="line-26"> * &lt;p&gt;</span>
+<span class="source-line-no">027</span><span id="line-27"> * [1] D. Nister and H. Stewenius, "Linear Time Maximally Stable Extremal Regions", Computer Vision - ECCV 2008. pp.</span>
+<span class="source-line-no">028</span><span id="line-28"> * 183-196, Springer Berlin/Heidelberg (2008).</span>
+<span class="source-line-no">029</span><span id="line-29"> * &lt;br&gt;</span>
+<span class="source-line-no">030</span><span id="line-30"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">031</span><span id="line-31"> * (2022).</span>
 <span class="source-line-no">032</span><span id="line-32"> * &lt;/p&gt;</span>
-<span class="source-line-no">033</span><span id="line-33"> * </span>
-<span class="source-line-no">034</span><span id="line-34"> * @author WB</span>
-<span class="source-line-no">035</span><span id="line-35"> * @version 2022/11/19</span>
-<span class="source-line-no">036</span><span id="line-36"> *</span>
-<span class="source-line-no">037</span><span id="line-37"> * @param &lt;T&gt; the type of properties to be attached to components</span>
-<span class="source-line-no">038</span><span id="line-38"> */</span>
-<span class="source-line-no">039</span><span id="line-39">public class ComponentTreeLinearTime&lt;T&gt; extends ComponentTree&lt;T&gt; {</span>
-<span class="source-line-no">040</span><span id="line-40">        </span>
-<span class="source-line-no">041</span><span id="line-41">        private final List&lt;Component&lt;T&gt;&gt; components;</span>
-<span class="source-line-no">042</span><span id="line-42">        private final Component&lt;T&gt; root;</span>
-<span class="source-line-no">043</span><span id="line-43">        </span>
-<span class="source-line-no">044</span><span id="line-44">        /**</span>
-<span class="source-line-no">045</span><span id="line-45">         * Constructor. </span>
-<span class="source-line-no">046</span><span id="line-46">         * Creates a new component tree from a {@link PixelMap} representing</span>
-<span class="source-line-no">047</span><span id="line-47">         * a gray-level image.</span>
-<span class="source-line-no">048</span><span id="line-48">         * @param P a {@link PixelMap}</span>
-<span class="source-line-no">049</span><span id="line-49">         */</span>
-<span class="source-line-no">050</span><span id="line-50">        public ComponentTreeLinearTime(PixelMap P) {</span>
-<span class="source-line-no">051</span><span id="line-51">                components = new ArrayList&lt;Component&lt;T&gt;&gt;();</span>
-<span class="source-line-no">052</span><span id="line-52">                root = buildTree(P);</span>
-<span class="source-line-no">053</span><span id="line-53">        }</span>
+<span class="source-line-no">033</span><span id="line-33"> *</span>
+<span class="source-line-no">034</span><span id="line-34"> * @param &lt;T&gt; the type of properties to be attached to components</span>
+<span class="source-line-no">035</span><span id="line-35"> * @author WB</span>
+<span class="source-line-no">036</span><span id="line-36"> * @version 2022/11/19</span>
+<span class="source-line-no">037</span><span id="line-37"> */</span>
+<span class="source-line-no">038</span><span id="line-38">public class ComponentTreeLinearTime&lt;T&gt; extends ComponentTree&lt;T&gt; {</span>
+<span class="source-line-no">039</span><span id="line-39">        </span>
+<span class="source-line-no">040</span><span id="line-40">        private final List&lt;Component&lt;T&gt;&gt; components;</span>
+<span class="source-line-no">041</span><span id="line-41">        private final Component&lt;T&gt; root;</span>
+<span class="source-line-no">042</span><span id="line-42"></span>
+<span class="source-line-no">043</span><span id="line-43">        /**</span>
+<span class="source-line-no">044</span><span id="line-44">         * Constructor, creates a new component tree from a {@link PixelMap} representing a gray-level image.</span>
+<span class="source-line-no">045</span><span id="line-45">         *</span>
+<span class="source-line-no">046</span><span id="line-46">         * @param P a {@link PixelMap}</span>
+<span class="source-line-no">047</span><span id="line-47">         */</span>
+<span class="source-line-no">048</span><span id="line-48">        public ComponentTreeLinearTime(PixelMap P) {</span>
+<span class="source-line-no">049</span><span id="line-49">                components = new ArrayList&lt;Component&lt;T&gt;&gt;();</span>
+<span class="source-line-no">050</span><span id="line-50">                root = buildTree(P);</span>
+<span class="source-line-no">051</span><span id="line-51">        }</span>
+<span class="source-line-no">052</span><span id="line-52">        </span>
+<span class="source-line-no">053</span><span id="line-53">        // -----------------------------------------------------------------------------------</span>
 <span class="source-line-no">054</span><span id="line-54">        </span>
-<span class="source-line-no">055</span><span id="line-55">        // -----------------------------------------------------------------------------------</span>
-<span class="source-line-no">056</span><span id="line-56">        </span>
-<span class="source-line-no">057</span><span id="line-57">        @Override</span>
-<span class="source-line-no">058</span><span id="line-58">        public Component&lt;T&gt; getRoot() {</span>
-<span class="source-line-no">059</span><span id="line-59">//              return components.get(components.size() - 1);   // root is the last component</span>
-<span class="source-line-no">060</span><span id="line-60">                return root;</span>
-<span class="source-line-no">061</span><span id="line-61">        }</span>
-<span class="source-line-no">062</span><span id="line-62"></span>
-<span class="source-line-no">063</span><span id="line-63">        @Override</span>
-<span class="source-line-no">064</span><span id="line-64">        public Collection&lt;Component&lt;T&gt;&gt; getComponents() {</span>
-<span class="source-line-no">065</span><span id="line-65">                return components;</span>
-<span class="source-line-no">066</span><span id="line-66">        }</span>
-<span class="source-line-no">067</span><span id="line-67">        </span>
-<span class="source-line-no">068</span><span id="line-68">        // -----------------------------------------------------------------------------------</span>
-<span class="source-line-no">069</span><span id="line-69"></span>
-<span class="source-line-no">070</span><span id="line-70">        /**</span>
-<span class="source-line-no">071</span><span id="line-71">         * Creates the component set from a {@link PixelMap}.</span>
-<span class="source-line-no">072</span><span id="line-72">         * Modifies {@link #components}.</span>
-<span class="source-line-no">073</span><span id="line-73">         * The last item in {@link #components} is the root component.</span>
-<span class="source-line-no">074</span><span id="line-74">         * @param P the input image</span>
-<span class="source-line-no">075</span><span id="line-75">         */</span>
-<span class="source-line-no">076</span><span id="line-76">        private Component&lt;T&gt; buildTree(PixelMap P) {            </span>
-<span class="source-line-no">077</span><span id="line-77">                final BitMap V = new BitMap(P.width, P.height);         // "visited", all set to false by default</span>
-<span class="source-line-no">078</span><span id="line-78">                final PriorityQueue&lt;Pixel&gt; B = new PriorityQueue&lt;&gt;();   // heap of boundary points that is sorted by 'val'</span>
-<span class="source-line-no">079</span><span id="line-79">                final Deque&lt;Component&lt;T&gt;&gt; C = new LinkedList&lt;&gt;();               // stack of region components</span>
-<span class="source-line-no">080</span><span id="line-80">                </span>
-<span class="source-line-no">081</span><span id="line-81">                Pixel p = P.getPixel(0, 0);                             // start point (seed), could be any pixel</span>
-<span class="source-line-no">082</span><span id="line-82">                V.set(p); //p.setVisited();                                     // p is the current point, mark as accessible</span>
-<span class="source-line-no">083</span><span id="line-83">                C.push(makeComponent(p.val));                           // push an empty component onto stack</span>
-<span class="source-line-no">084</span><span id="line-84">                </span>
-<span class="source-line-no">085</span><span id="line-85">                while (p != null) {                                                     // repeat until all pixels are done</span>
-<span class="source-line-no">086</span><span id="line-86">                        Pixel n = p.getNextNeighbor();                  // get the next neighbor of p (pixels keep track of visited neighbors)</span>
-<span class="source-line-no">087</span><span id="line-87">                        while (n != null) {</span>
-<span class="source-line-no">088</span><span id="line-88">                                if (!V.get(n)) {                                        // (!n.isVisited())</span>
-<span class="source-line-no">089</span><span id="line-89">                                        V.set(n);                                               //n.setVisited();</span>
-<span class="source-line-no">090</span><span id="line-90">                                        if (n.val &gt;= p.val) {           </span>
-<span class="source-line-no">091</span><span id="line-91">                                                B.add(n);                                       // add neighbor to the boundary heap</span>
-<span class="source-line-no">092</span><span id="line-92">                                        }</span>
-<span class="source-line-no">093</span><span id="line-93">                                        else {</span>
-<span class="source-line-no">094</span><span id="line-94">                                                B.add(p);                                                       // move current pixel back to boundary heap </span>
-<span class="source-line-no">095</span><span id="line-95">                                                C.push(makeComponent(n.val));   // create an empty component for the neighbor pixel</span>
-<span class="source-line-no">096</span><span id="line-96">                                                p = n;                                                          // make neighbor the current pixel</span>
-<span class="source-line-no">097</span><span id="line-97">                                        }</span>
-<span class="source-line-no">098</span><span id="line-98">                                }</span>
-<span class="source-line-no">099</span><span id="line-99">                                n = p.getNextNeighbor();</span>
-<span class="source-line-no">100</span><span id="line-100">                        }</span>
+<span class="source-line-no">055</span><span id="line-55">        @Override</span>
+<span class="source-line-no">056</span><span id="line-56">        public Component&lt;T&gt; getRoot() {</span>
+<span class="source-line-no">057</span><span id="line-57">//              return components.get(components.size() - 1);   // root is the last component</span>
+<span class="source-line-no">058</span><span id="line-58">                return root;</span>
+<span class="source-line-no">059</span><span id="line-59">        }</span>
+<span class="source-line-no">060</span><span id="line-60"></span>
+<span class="source-line-no">061</span><span id="line-61">        @Override</span>
+<span class="source-line-no">062</span><span id="line-62">        public Collection&lt;Component&lt;T&gt;&gt; getComponents() {</span>
+<span class="source-line-no">063</span><span id="line-63">                return components;</span>
+<span class="source-line-no">064</span><span id="line-64">        }</span>
+<span class="source-line-no">065</span><span id="line-65">        </span>
+<span class="source-line-no">066</span><span id="line-66">        // -----------------------------------------------------------------------------------</span>
+<span class="source-line-no">067</span><span id="line-67"></span>
+<span class="source-line-no">068</span><span id="line-68">        /**</span>
+<span class="source-line-no">069</span><span id="line-69">         * Creates the component set from a {@link PixelMap}. Modifies {@link #components}. The last item in</span>
+<span class="source-line-no">070</span><span id="line-70">         * {@link #components} is the root component.</span>
+<span class="source-line-no">071</span><span id="line-71">         *</span>
+<span class="source-line-no">072</span><span id="line-72">         * @param P the input image</span>
+<span class="source-line-no">073</span><span id="line-73">         */</span>
+<span class="source-line-no">074</span><span id="line-74">        private Component&lt;T&gt; buildTree(PixelMap P) {            </span>
+<span class="source-line-no">075</span><span id="line-75">                final BitMap V = new BitMap(P.width, P.height);         // "visited", all set to false by default</span>
+<span class="source-line-no">076</span><span id="line-76">                final PriorityQueue&lt;Pixel&gt; B = new PriorityQueue&lt;&gt;();   // heap of boundary points that is sorted by 'val'</span>
+<span class="source-line-no">077</span><span id="line-77">                final Deque&lt;Component&lt;T&gt;&gt; C = new LinkedList&lt;&gt;();               // stack of region components</span>
+<span class="source-line-no">078</span><span id="line-78">                </span>
+<span class="source-line-no">079</span><span id="line-79">                Pixel p = P.getPixel(0, 0);                             // start point (seed), could be any pixel</span>
+<span class="source-line-no">080</span><span id="line-80">                V.set(p); //p.setVisited();                                     // p is the current point, mark as accessible</span>
+<span class="source-line-no">081</span><span id="line-81">                C.push(makeComponent(p.val));                           // push an empty component onto stack</span>
+<span class="source-line-no">082</span><span id="line-82">                </span>
+<span class="source-line-no">083</span><span id="line-83">                while (p != null) {                                                     // repeat until all pixels are done</span>
+<span class="source-line-no">084</span><span id="line-84">                        Pixel n = p.getNextNeighbor();                  // get the next neighbor of p (pixels keep track of visited neighbors)</span>
+<span class="source-line-no">085</span><span id="line-85">                        while (n != null) {</span>
+<span class="source-line-no">086</span><span id="line-86">                                if (!V.get(n)) {                                        // (!n.isVisited())</span>
+<span class="source-line-no">087</span><span id="line-87">                                        V.set(n);                                               //n.setVisited();</span>
+<span class="source-line-no">088</span><span id="line-88">                                        if (n.val &gt;= p.val) {           </span>
+<span class="source-line-no">089</span><span id="line-89">                                                B.add(n);                                       // add neighbor to the boundary heap</span>
+<span class="source-line-no">090</span><span id="line-90">                                        }</span>
+<span class="source-line-no">091</span><span id="line-91">                                        else {</span>
+<span class="source-line-no">092</span><span id="line-92">                                                B.add(p);                                                       // move current pixel back to boundary heap </span>
+<span class="source-line-no">093</span><span id="line-93">                                                C.push(makeComponent(n.val));   // create an empty component for the neighbor pixel</span>
+<span class="source-line-no">094</span><span id="line-94">                                                p = n;                                                          // make neighbor the current pixel</span>
+<span class="source-line-no">095</span><span id="line-95">                                        }</span>
+<span class="source-line-no">096</span><span id="line-96">                                }</span>
+<span class="source-line-no">097</span><span id="line-97">                                n = p.getNextNeighbor();</span>
+<span class="source-line-no">098</span><span id="line-98">                        }</span>
+<span class="source-line-no">099</span><span id="line-99">                        </span>
+<span class="source-line-no">100</span><span id="line-100">                        C.peek().addPoint(p);                                   // add the current pixel to the top-of-stack component</span>
 <span class="source-line-no">101</span><span id="line-101">                        </span>
-<span class="source-line-no">102</span><span id="line-102">                        C.peek().addPoint(p);                                   // add the current pixel to the top-of-stack component</span>
-<span class="source-line-no">103</span><span id="line-103">                        </span>
-<span class="source-line-no">104</span><span id="line-104">                        Pixel q = B.poll();                                             // remove the first point from the heap of boundary pixels</span>
-<span class="source-line-no">105</span><span id="line-105">                        if (q != null &amp;&amp; q.val &gt; p.val) {               // new pixel value (q) is greater than current value (p)</span>
-<span class="source-line-no">106</span><span id="line-106">                                processStack(q.val, C);                         // see below</span>
-<span class="source-line-no">107</span><span id="line-107">                        }</span>
-<span class="source-line-no">108</span><span id="line-108">                        p = q;                                                                  // update the current pixel</span>
-<span class="source-line-no">109</span><span id="line-109">                }</span>
-<span class="source-line-no">110</span><span id="line-110">                </span>
-<span class="source-line-no">111</span><span id="line-111">                if (C.size() != 1) {    // just to make sure!</span>
-<span class="source-line-no">112</span><span id="line-112">                        throw new RuntimeException("component stack size must be 1 but is " + C.size());</span>
-<span class="source-line-no">113</span><span id="line-113">                }</span>
-<span class="source-line-no">114</span><span id="line-114">                Component&lt;T&gt; r = C.peek();                                      // the root component is still on the stack</span>
-<span class="source-line-no">115</span><span id="line-115">                processStack(Integer.MAX_VALUE, C);             // process the root component</span>
-<span class="source-line-no">116</span><span id="line-116">                </span>
-<span class="source-line-no">117</span><span id="line-117">                return r;</span>
-<span class="source-line-no">118</span><span id="line-118">        }</span>
+<span class="source-line-no">102</span><span id="line-102">                        Pixel q = B.poll();                                             // remove the first point from the heap of boundary pixels</span>
+<span class="source-line-no">103</span><span id="line-103">                        if (q != null &amp;&amp; q.val &gt; p.val) {               // new pixel value (q) is greater than current value (p)</span>
+<span class="source-line-no">104</span><span id="line-104">                                processStack(q.val, C);                         // see below</span>
+<span class="source-line-no">105</span><span id="line-105">                        }</span>
+<span class="source-line-no">106</span><span id="line-106">                        p = q;                                                                  // update the current pixel</span>
+<span class="source-line-no">107</span><span id="line-107">                }</span>
+<span class="source-line-no">108</span><span id="line-108">                </span>
+<span class="source-line-no">109</span><span id="line-109">                if (C.size() != 1) {    // just to make sure!</span>
+<span class="source-line-no">110</span><span id="line-110">                        throw new RuntimeException("component stack size must be 1 but is " + C.size());</span>
+<span class="source-line-no">111</span><span id="line-111">                }</span>
+<span class="source-line-no">112</span><span id="line-112">                Component&lt;T&gt; r = C.peek();                                      // the root component is still on the stack</span>
+<span class="source-line-no">113</span><span id="line-113">                processStack(Integer.MAX_VALUE, C);             // process the root component</span>
+<span class="source-line-no">114</span><span id="line-114">                </span>
+<span class="source-line-no">115</span><span id="line-115">                return r;</span>
+<span class="source-line-no">116</span><span id="line-116">        }</span>
+<span class="source-line-no">117</span><span id="line-117">        </span>
+<span class="source-line-no">118</span><span id="line-118"></span>
 <span class="source-line-no">119</span><span id="line-119">        </span>
-<span class="source-line-no">120</span><span id="line-120"></span>
-<span class="source-line-no">121</span><span id="line-121">        </span>
-<span class="source-line-no">122</span><span id="line-122">        // -------------------------------------------------------------------</span>
-<span class="source-line-no">123</span><span id="line-123"></span>
-<span class="source-line-no">124</span><span id="line-124">        /**</span>
-<span class="source-line-no">125</span><span id="line-125">         * This method is called whenever the current pixel value is raised.</span>
-<span class="source-line-no">126</span><span id="line-126">         * Processes the top items on the component stack.</span>
-<span class="source-line-no">127</span><span id="line-127">         * Modifies {@link #components}.</span>
-<span class="source-line-no">128</span><span id="line-128">         * @param v     new "target" level</span>
-<span class="source-line-no">129</span><span id="line-129">         * @param C component stack</span>
-<span class="source-line-no">130</span><span id="line-130">         */</span>
-<span class="source-line-no">131</span><span id="line-131">        private void processStack(int v, Deque&lt;Component&lt;T&gt;&gt; C) {</span>
-<span class="source-line-no">132</span><span id="line-132">                while (!C.isEmpty() &amp;&amp; v &gt; C.peek().getLevel()) {               </span>
-<span class="source-line-no">133</span><span id="line-133">                        Component&lt;T&gt; c1 = C.poll();     // retrieve the top-of-stack component</span>
-<span class="source-line-no">134</span><span id="line-134">                        components.add(c1);                             // "emit" component c1 (note: c1.parent == null)</span>
-<span class="source-line-no">135</span><span id="line-135"></span>
-<span class="source-line-no">136</span><span id="line-136">                        if (v &lt; Integer.MAX_VALUE) {</span>
-<span class="source-line-no">137</span><span id="line-137">                                Component&lt;T&gt; c2 = (C.isEmpty() || v &lt; C.peek().getLevel()) ?</span>
-<span class="source-line-no">138</span><span id="line-138">                                                makeComponent(v) :              // c2 = artificial component with level v</span>
-<span class="source-line-no">139</span><span id="line-139">                                                C.pop();                                // c2 = next component on the stack </span>
-<span class="source-line-no">140</span><span id="line-140">                                </span>
-<span class="source-line-no">141</span><span id="line-141">                                // merge c1 into c2 (c2 becomes parent of c1)</span>
-<span class="source-line-no">142</span><span id="line-142">                                c2.addChild(c1);</span>
-<span class="source-line-no">143</span><span id="line-143">                                c2.addToSize(c1.getSize());</span>
-<span class="source-line-no">144</span><span id="line-144">                                c1.setParent(c2);</span>
-<span class="source-line-no">145</span><span id="line-145">                                C.push(c2);     // insert c2 into the stack C (again)</span>
-<span class="source-line-no">146</span><span id="line-146">                        }</span>
-<span class="source-line-no">147</span><span id="line-147">                }</span>
-<span class="source-line-no">148</span><span id="line-148">        }</span>
+<span class="source-line-no">120</span><span id="line-120">        // -------------------------------------------------------------------</span>
+<span class="source-line-no">121</span><span id="line-121"></span>
+<span class="source-line-no">122</span><span id="line-122">        /**</span>
+<span class="source-line-no">123</span><span id="line-123">         * This method is called whenever the current pixel value is raised. Processes the top items on the component stack.</span>
+<span class="source-line-no">124</span><span id="line-124">         * Modifies {@link #components}.</span>
+<span class="source-line-no">125</span><span id="line-125">         *</span>
+<span class="source-line-no">126</span><span id="line-126">         * @param v new "target" level</span>
+<span class="source-line-no">127</span><span id="line-127">         * @param C component stack</span>
+<span class="source-line-no">128</span><span id="line-128">         */</span>
+<span class="source-line-no">129</span><span id="line-129">        private void processStack(int v, Deque&lt;Component&lt;T&gt;&gt; C) {</span>
+<span class="source-line-no">130</span><span id="line-130">                while (!C.isEmpty() &amp;&amp; v &gt; C.peek().getLevel()) {               </span>
+<span class="source-line-no">131</span><span id="line-131">                        Component&lt;T&gt; c1 = C.poll();     // retrieve the top-of-stack component</span>
+<span class="source-line-no">132</span><span id="line-132">                        components.add(c1);                             // "emit" component c1 (note: c1.parent == null)</span>
+<span class="source-line-no">133</span><span id="line-133"></span>
+<span class="source-line-no">134</span><span id="line-134">                        if (v &lt; Integer.MAX_VALUE) {</span>
+<span class="source-line-no">135</span><span id="line-135">                                Component&lt;T&gt; c2 = (C.isEmpty() || v &lt; C.peek().getLevel()) ?</span>
+<span class="source-line-no">136</span><span id="line-136">                                                makeComponent(v) :              // c2 = artificial component with level v</span>
+<span class="source-line-no">137</span><span id="line-137">                                                C.pop();                                // c2 = next component on the stack </span>
+<span class="source-line-no">138</span><span id="line-138">                                </span>
+<span class="source-line-no">139</span><span id="line-139">                                // merge c1 into c2 (c2 becomes parent of c1)</span>
+<span class="source-line-no">140</span><span id="line-140">                                c2.addChild(c1);</span>
+<span class="source-line-no">141</span><span id="line-141">                                c2.addToSize(c1.getSize());</span>
+<span class="source-line-no">142</span><span id="line-142">                                c1.setParent(c2);</span>
+<span class="source-line-no">143</span><span id="line-143">                                C.push(c2);     // insert c2 into the stack C (again)</span>
+<span class="source-line-no">144</span><span id="line-144">                        }</span>
+<span class="source-line-no">145</span><span id="line-145">                }</span>
+<span class="source-line-no">146</span><span id="line-146">        }</span>
+<span class="source-line-no">147</span><span id="line-147"></span>
+<span class="source-line-no">148</span><span id="line-148">        private int nextComponentIndex = 0;</span>
 <span class="source-line-no">149</span><span id="line-149">        </span>
-<span class="source-line-no">150</span><span id="line-150">        </span>
-<span class="source-line-no">151</span><span id="line-151">        private int nextComponentIndex = 0;</span>
-<span class="source-line-no">152</span><span id="line-152">        </span>
-<span class="source-line-no">153</span><span id="line-153">        private Component&lt;T&gt; makeComponent(int level) {</span>
-<span class="source-line-no">154</span><span id="line-154">                return new Component&lt;&gt;(level, nextComponentIndex++);</span>
-<span class="source-line-no">155</span><span id="line-155">        }</span>
-<span class="source-line-no">156</span><span id="line-156"></span>
-<span class="source-line-no">157</span><span id="line-157">}</span>
+<span class="source-line-no">150</span><span id="line-150">        private Component&lt;T&gt; makeComponent(int level) {</span>
+<span class="source-line-no">151</span><span id="line-151">                return new Component&lt;&gt;(level, nextComponentIndex++);</span>
+<span class="source-line-no">152</span><span id="line-152">        }</span>
+<span class="source-line-no">153</span><span id="line-153"></span>
+<span class="source-line-no">154</span><span id="line-154">}</span>
 
 
 

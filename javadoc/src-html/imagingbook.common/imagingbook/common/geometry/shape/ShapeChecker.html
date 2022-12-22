@@ -21,16 +21,16 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.geometry.shape;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import java.awt.Shape;</span>
-<span class="source-line-no">012</span><span id="line-12"></span>
-<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.geometry.basic.Pnt2d;</span>
-<span class="source-line-no">014</span><span id="line-14">import imagingbook.common.geometry.basic.Primitive2d;</span>
+<span class="source-line-no">011</span><span id="line-11">import imagingbook.common.geometry.basic.Pnt2d;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.geometry.basic.Primitive2d;</span>
+<span class="source-line-no">013</span><span id="line-13"></span>
+<span class="source-line-no">014</span><span id="line-14">import java.awt.Shape;</span>
 <span class="source-line-no">015</span><span id="line-15"></span>
 <span class="source-line-no">016</span><span id="line-16">/**</span>
-<span class="source-line-no">017</span><span id="line-17"> * Used to check if AWT shapes produced by {@link ShapeProducer#getShape()}</span>
-<span class="source-line-no">018</span><span id="line-18"> * match the underlying curve ({@link Primitive2d}). This is mainly used to test</span>
-<span class="source-line-no">019</span><span id="line-19"> * if generated shapes (to be drawn to the screen) are sufficiently accurate.</span>
-<span class="source-line-no">020</span><span id="line-20"> * </span>
+<span class="source-line-no">017</span><span id="line-17"> * Used to check if AWT shapes produced by {@link ShapeProducer#getShape()} match the underlying curve</span>
+<span class="source-line-no">018</span><span id="line-18"> * ({@link Primitive2d}). This is mainly used to test if generated shapes (to be drawn to the screen) are sufficiently</span>
+<span class="source-line-no">019</span><span id="line-19"> * accurate.</span>
+<span class="source-line-no">020</span><span id="line-20"> *</span>
 <span class="source-line-no">021</span><span id="line-21"> * @see ShapeProducer</span>
 <span class="source-line-no">022</span><span id="line-22"> * @see Primitive2d</span>
 <span class="source-line-no">023</span><span id="line-23"> */</span>
@@ -53,38 +53,35 @@
 <span class="source-line-no">040</span><span id="line-40">        public ShapeChecker() {</span>
 <span class="source-line-no">041</span><span id="line-41">                this(0.5);</span>
 <span class="source-line-no">042</span><span id="line-42">        }</span>
-<span class="source-line-no">043</span><span id="line-43">        </span>
+<span class="source-line-no">043</span><span id="line-43"></span>
 <span class="source-line-no">044</span><span id="line-44">        /**</span>
-<span class="source-line-no">045</span><span id="line-45">         * Checks if all points of the specified AWT {@link Shape} are sufficiently</span>
-<span class="source-line-no">046</span><span id="line-46">         * close to the {@link Primitive2d} instance specified in the constructor.</span>
-<span class="source-line-no">047</span><span id="line-47">         * This is typically used to test if a shape produced</span>
-<span class="source-line-no">048</span><span id="line-48">         * by {@link ShapeProducer#getShape()} coincides with this curve.</span>
-<span class="source-line-no">049</span><span id="line-49">         * Only the discrete sample points produced by {@link ShapePointIterator}</span>
-<span class="source-line-no">050</span><span id="line-50">         * are checked, not the points on connecting polygon segments. </span>
-<span class="source-line-no">051</span><span id="line-51">         * Typical usage example:</span>
-<span class="source-line-no">052</span><span id="line-52">         * &lt;pre&gt;</span>
-<span class="source-line-no">053</span><span id="line-53">         * GeometricCircle circle = ... ; // implements ShapeProducer and Curve2d</span>
-<span class="source-line-no">054</span><span id="line-54">         * Shape shape = circle.getShape();</span>
-<span class="source-line-no">055</span><span id="line-55">         * boolean ok = new ShapeChecker().checkShape(circle, shape);&lt;/pre&gt;</span>
-<span class="source-line-no">056</span><span id="line-56">         * </span>
-<span class="source-line-no">057</span><span id="line-57">         * @param curve a {@link Primitive2d} instance</span>
-<span class="source-line-no">058</span><span id="line-58">         * @param shape the AWT shape to check</span>
-<span class="source-line-no">059</span><span id="line-59">         * @return true if all points of the shape are closer to the curve than tolerance</span>
-<span class="source-line-no">060</span><span id="line-60">         */</span>
-<span class="source-line-no">061</span><span id="line-61">        public boolean check(Primitive2d curve, Shape shape) {</span>
-<span class="source-line-no">062</span><span id="line-62">                ShapePointIterator iter = new ShapePointIterator(shape, 0.5 * tolerance);</span>
-<span class="source-line-no">063</span><span id="line-63">                boolean result = true;</span>
-<span class="source-line-no">064</span><span id="line-64">                while(iter.hasNext()) {</span>
-<span class="source-line-no">065</span><span id="line-65">                        Pnt2d p = iter.next();</span>
-<span class="source-line-no">066</span><span id="line-66">                        if (curve.getDistance(p) &gt; tolerance) {</span>
-<span class="source-line-no">067</span><span id="line-67">                                result = false;</span>
-<span class="source-line-no">068</span><span id="line-68">                                break;</span>
-<span class="source-line-no">069</span><span id="line-69">                        }</span>
-<span class="source-line-no">070</span><span id="line-70">                }</span>
-<span class="source-line-no">071</span><span id="line-71">                return result;</span>
-<span class="source-line-no">072</span><span id="line-72">        }</span>
-<span class="source-line-no">073</span><span id="line-73"></span>
-<span class="source-line-no">074</span><span id="line-74">}</span>
+<span class="source-line-no">045</span><span id="line-45">         * Checks if all points of the specified AWT {@link Shape} are sufficiently close to the {@link Primitive2d}</span>
+<span class="source-line-no">046</span><span id="line-46">         * instance specified in the constructor. This is typically used to test if a shape produced by</span>
+<span class="source-line-no">047</span><span id="line-47">         * {@link ShapeProducer#getShape()} coincides with this curve. Only the discrete sample points produced by</span>
+<span class="source-line-no">048</span><span id="line-48">         * {@link ShapePointIterator} are checked, not the points on connecting polygon segments. Typical usage example:</span>
+<span class="source-line-no">049</span><span id="line-49">         * &lt;pre&gt;</span>
+<span class="source-line-no">050</span><span id="line-50">         * GeometricCircle circle = ... ; // implements ShapeProducer and Curve2d</span>
+<span class="source-line-no">051</span><span id="line-51">         * Shape shape = circle.getShape();</span>
+<span class="source-line-no">052</span><span id="line-52">         * boolean ok = new ShapeChecker().checkShape(circle, shape);&lt;/pre&gt;</span>
+<span class="source-line-no">053</span><span id="line-53">         *</span>
+<span class="source-line-no">054</span><span id="line-54">         * @param curve a {@link Primitive2d} instance</span>
+<span class="source-line-no">055</span><span id="line-55">         * @param shape the AWT shape to check</span>
+<span class="source-line-no">056</span><span id="line-56">         * @return true if all points of the shape are closer to the curve than tolerance</span>
+<span class="source-line-no">057</span><span id="line-57">         */</span>
+<span class="source-line-no">058</span><span id="line-58">        public boolean check(Primitive2d curve, Shape shape) {</span>
+<span class="source-line-no">059</span><span id="line-59">                ShapePointIterator iter = new ShapePointIterator(shape, 0.5 * tolerance);</span>
+<span class="source-line-no">060</span><span id="line-60">                boolean result = true;</span>
+<span class="source-line-no">061</span><span id="line-61">                while(iter.hasNext()) {</span>
+<span class="source-line-no">062</span><span id="line-62">                        Pnt2d p = iter.next();</span>
+<span class="source-line-no">063</span><span id="line-63">                        if (curve.getDistance(p) &gt; tolerance) {</span>
+<span class="source-line-no">064</span><span id="line-64">                                result = false;</span>
+<span class="source-line-no">065</span><span id="line-65">                                break;</span>
+<span class="source-line-no">066</span><span id="line-66">                        }</span>
+<span class="source-line-no">067</span><span id="line-67">                }</span>
+<span class="source-line-no">068</span><span id="line-68">                return result;</span>
+<span class="source-line-no">069</span><span id="line-69">        }</span>
+<span class="source-line-no">070</span><span id="line-70"></span>
+<span class="source-line-no">071</span><span id="line-71">}</span>
 
 
 

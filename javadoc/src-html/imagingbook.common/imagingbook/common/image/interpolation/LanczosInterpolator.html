@@ -22,86 +22,84 @@
 <span class="source-line-no">009</span><span id="line-9"></span>
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.image.interpolation;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.math.Arithmetic.sqr;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.image.access.ScalarAccessor;</span>
 <span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">import imagingbook.common.image.access.ScalarAccessor;</span>
+<span class="source-line-no">014</span><span id="line-14">import static imagingbook.common.math.Arithmetic.sqr;</span>
 <span class="source-line-no">015</span><span id="line-15"></span>
 <span class="source-line-no">016</span><span id="line-16">/**</span>
 <span class="source-line-no">017</span><span id="line-17"> * &lt;p&gt;</span>
-<span class="source-line-no">018</span><span id="line-18"> * A {@link PixelInterpolator} implementing Lanczos interpolation in 2D.</span>
-<span class="source-line-no">019</span><span id="line-19"> * See Sec. 22.5.4 of [1] for additional details.</span>
-<span class="source-line-no">020</span><span id="line-20"> * &lt;/p&gt;</span>
-<span class="source-line-no">021</span><span id="line-21"> * &lt;p&gt;</span>
-<span class="source-line-no">022</span><span id="line-22"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, </span>
-<span class="source-line-no">023</span><span id="line-23"> * 3rd ed, Springer (2022).</span>
-<span class="source-line-no">024</span><span id="line-24"> * &lt;/p&gt;</span>
-<span class="source-line-no">025</span><span id="line-25"> * </span>
-<span class="source-line-no">026</span><span id="line-26"> * @author WB</span>
-<span class="source-line-no">027</span><span id="line-27"> *</span>
-<span class="source-line-no">028</span><span id="line-28"> */</span>
-<span class="source-line-no">029</span><span id="line-29">public class LanczosInterpolator implements PixelInterpolator {</span>
-<span class="source-line-no">030</span><span id="line-30">        </span>
-<span class="source-line-no">031</span><span id="line-31">        private final int n;    // order (tap count) of this interpolator</span>
-<span class="source-line-no">032</span><span id="line-32">        private final int d;    // kernel width</span>
-<span class="source-line-no">033</span><span id="line-33">        </span>
-<span class="source-line-no">034</span><span id="line-34">        /**</span>
-<span class="source-line-no">035</span><span id="line-35">         * Constructor creating a Lanczos interpolator of order n = 2.</span>
-<span class="source-line-no">036</span><span id="line-36">         */</span>
-<span class="source-line-no">037</span><span id="line-37">        public LanczosInterpolator() {</span>
-<span class="source-line-no">038</span><span id="line-38">                this(2);</span>
-<span class="source-line-no">039</span><span id="line-39">        }</span>
-<span class="source-line-no">040</span><span id="line-40">        </span>
-<span class="source-line-no">041</span><span id="line-41">        /**</span>
-<span class="source-line-no">042</span><span id="line-42">         * Constructor creating a Lanczos interpolator of arbitrary order n &amp;ge; 2.</span>
-<span class="source-line-no">043</span><span id="line-43">         * @param n order of the interpolator</span>
-<span class="source-line-no">044</span><span id="line-44">         */</span>
-<span class="source-line-no">045</span><span id="line-45">        public LanczosInterpolator(int n) {</span>
-<span class="source-line-no">046</span><span id="line-46">                if (n &lt; 2) {</span>
-<span class="source-line-no">047</span><span id="line-47">                        throw new IllegalArgumentException("Lanczos order must be &gt;= 2");</span>
-<span class="source-line-no">048</span><span id="line-48">                }</span>
-<span class="source-line-no">049</span><span id="line-49">                this.n = n; // order &gt;= 2</span>
-<span class="source-line-no">050</span><span id="line-50">                this.d = 2 * n - 1;</span>
-<span class="source-line-no">051</span><span id="line-51">        }</span>
-<span class="source-line-no">052</span><span id="line-52">        </span>
-<span class="source-line-no">053</span><span id="line-53">        @Override</span>
-<span class="source-line-no">054</span><span id="line-54">        public float getInterpolatedValue(ScalarAccessor ia, double x, double y) {</span>
-<span class="source-line-no">055</span><span id="line-55">                final int u0 = (int) Math.floor(x); // use floor to handle negative coordinates too</span>
-<span class="source-line-no">056</span><span id="line-56">                final int v0 = (int) Math.floor(y);</span>
-<span class="source-line-no">057</span><span id="line-57">                double q = 0;</span>
-<span class="source-line-no">058</span><span id="line-58">                for (int j = 0; j &lt;= d; j++) {</span>
-<span class="source-line-no">059</span><span id="line-59">                        int v = v0 + j - n + 1;</span>
-<span class="source-line-no">060</span><span id="line-60">                        double p = 0;</span>
-<span class="source-line-no">061</span><span id="line-61">                        for (int i = 0; i &lt;= d; i++) {</span>
-<span class="source-line-no">062</span><span id="line-62">                                int u = u0 + i - n + 1;</span>
-<span class="source-line-no">063</span><span id="line-63">                                p = p + wLn(x - u) * ia.getVal(u, v);</span>
-<span class="source-line-no">064</span><span id="line-64">                        }</span>
-<span class="source-line-no">065</span><span id="line-65">                        q = q + wLn(y - v) * p;</span>
-<span class="source-line-no">066</span><span id="line-66">                }</span>
-<span class="source-line-no">067</span><span id="line-67">                return (float) q;</span>
-<span class="source-line-no">068</span><span id="line-68">        }</span>
-<span class="source-line-no">069</span><span id="line-69">        </span>
-<span class="source-line-no">070</span><span id="line-70">        </span>
-<span class="source-line-no">071</span><span id="line-71">        private static final double pi = Math.PI;</span>
-<span class="source-line-no">072</span><span id="line-72">        private static final double pi2 = sqr(pi);</span>
-<span class="source-line-no">073</span><span id="line-73">        </span>
-<span class="source-line-no">074</span><span id="line-74">        private double wLn(double x) { // 1D Lanczos interpolator of order n</span>
-<span class="source-line-no">075</span><span id="line-75">                final double r = Math.abs(x);</span>
-<span class="source-line-no">076</span><span id="line-76">                if (r &lt; 0.001) </span>
-<span class="source-line-no">077</span><span id="line-77">                        return 1.0;</span>
-<span class="source-line-no">078</span><span id="line-78">                if (r &lt; n) {</span>
-<span class="source-line-no">079</span><span id="line-79">                        return n * (Math.sin(pi * r / n) * Math.sin(pi * r)) / (pi2 * sqr(r));</span>
-<span class="source-line-no">080</span><span id="line-80">                }</span>
-<span class="source-line-no">081</span><span id="line-81">                else </span>
-<span class="source-line-no">082</span><span id="line-82">                        return 0.0;</span>
-<span class="source-line-no">083</span><span id="line-83">        }</span>
-<span class="source-line-no">084</span><span id="line-84"></span>
-<span class="source-line-no">085</span><span id="line-85">        @Override</span>
-<span class="source-line-no">086</span><span id="line-86">        public double getWeight(double x) {</span>
-<span class="source-line-no">087</span><span id="line-87">                return wLn(x);</span>
-<span class="source-line-no">088</span><span id="line-88">        }</span>
-<span class="source-line-no">089</span><span id="line-89"></span>
-<span class="source-line-no">090</span><span id="line-90"></span>
-<span class="source-line-no">091</span><span id="line-91">}</span>
+<span class="source-line-no">018</span><span id="line-18"> * A {@link PixelInterpolator} implementing Lanczos interpolation in 2D. See Sec. 22.5.4 of [1] for additional details.</span>
+<span class="source-line-no">019</span><span id="line-19"> * &lt;/p&gt;</span>
+<span class="source-line-no">020</span><span id="line-20"> * &lt;p&gt;</span>
+<span class="source-line-no">021</span><span id="line-21"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">022</span><span id="line-22"> * (2022).</span>
+<span class="source-line-no">023</span><span id="line-23"> * &lt;/p&gt;</span>
+<span class="source-line-no">024</span><span id="line-24"> *</span>
+<span class="source-line-no">025</span><span id="line-25"> * @author WB</span>
+<span class="source-line-no">026</span><span id="line-26"> */</span>
+<span class="source-line-no">027</span><span id="line-27">public class LanczosInterpolator implements PixelInterpolator {</span>
+<span class="source-line-no">028</span><span id="line-28">        </span>
+<span class="source-line-no">029</span><span id="line-29">        private final int n;    // order (tap count) of this interpolator</span>
+<span class="source-line-no">030</span><span id="line-30">        private final int d;    // kernel width</span>
+<span class="source-line-no">031</span><span id="line-31">        </span>
+<span class="source-line-no">032</span><span id="line-32">        /**</span>
+<span class="source-line-no">033</span><span id="line-33">         * Constructor creating a Lanczos interpolator of order n = 2.</span>
+<span class="source-line-no">034</span><span id="line-34">         */</span>
+<span class="source-line-no">035</span><span id="line-35">        public LanczosInterpolator() {</span>
+<span class="source-line-no">036</span><span id="line-36">                this(2);</span>
+<span class="source-line-no">037</span><span id="line-37">        }</span>
+<span class="source-line-no">038</span><span id="line-38">        </span>
+<span class="source-line-no">039</span><span id="line-39">        /**</span>
+<span class="source-line-no">040</span><span id="line-40">         * Constructor creating a Lanczos interpolator of arbitrary order n &amp;ge; 2.</span>
+<span class="source-line-no">041</span><span id="line-41">         * @param n order of the interpolator</span>
+<span class="source-line-no">042</span><span id="line-42">         */</span>
+<span class="source-line-no">043</span><span id="line-43">        public LanczosInterpolator(int n) {</span>
+<span class="source-line-no">044</span><span id="line-44">                if (n &lt; 2) {</span>
+<span class="source-line-no">045</span><span id="line-45">                        throw new IllegalArgumentException("Lanczos order must be &gt;= 2");</span>
+<span class="source-line-no">046</span><span id="line-46">                }</span>
+<span class="source-line-no">047</span><span id="line-47">                this.n = n; // order &gt;= 2</span>
+<span class="source-line-no">048</span><span id="line-48">                this.d = 2 * n - 1;</span>
+<span class="source-line-no">049</span><span id="line-49">        }</span>
+<span class="source-line-no">050</span><span id="line-50">        </span>
+<span class="source-line-no">051</span><span id="line-51">        @Override</span>
+<span class="source-line-no">052</span><span id="line-52">        public float getInterpolatedValue(ScalarAccessor ia, double x, double y) {</span>
+<span class="source-line-no">053</span><span id="line-53">                final int u0 = (int) Math.floor(x); // use floor to handle negative coordinates too</span>
+<span class="source-line-no">054</span><span id="line-54">                final int v0 = (int) Math.floor(y);</span>
+<span class="source-line-no">055</span><span id="line-55">                double q = 0;</span>
+<span class="source-line-no">056</span><span id="line-56">                for (int j = 0; j &lt;= d; j++) {</span>
+<span class="source-line-no">057</span><span id="line-57">                        int v = v0 + j - n + 1;</span>
+<span class="source-line-no">058</span><span id="line-58">                        double p = 0;</span>
+<span class="source-line-no">059</span><span id="line-59">                        for (int i = 0; i &lt;= d; i++) {</span>
+<span class="source-line-no">060</span><span id="line-60">                                int u = u0 + i - n + 1;</span>
+<span class="source-line-no">061</span><span id="line-61">                                p = p + wLn(x - u) * ia.getVal(u, v);</span>
+<span class="source-line-no">062</span><span id="line-62">                        }</span>
+<span class="source-line-no">063</span><span id="line-63">                        q = q + wLn(y - v) * p;</span>
+<span class="source-line-no">064</span><span id="line-64">                }</span>
+<span class="source-line-no">065</span><span id="line-65">                return (float) q;</span>
+<span class="source-line-no">066</span><span id="line-66">        }</span>
+<span class="source-line-no">067</span><span id="line-67">        </span>
+<span class="source-line-no">068</span><span id="line-68">        </span>
+<span class="source-line-no">069</span><span id="line-69">        private static final double pi = Math.PI;</span>
+<span class="source-line-no">070</span><span id="line-70">        private static final double pi2 = sqr(pi);</span>
+<span class="source-line-no">071</span><span id="line-71">        </span>
+<span class="source-line-no">072</span><span id="line-72">        private double wLn(double x) { // 1D Lanczos interpolator of order n</span>
+<span class="source-line-no">073</span><span id="line-73">                final double r = Math.abs(x);</span>
+<span class="source-line-no">074</span><span id="line-74">                if (r &lt; 0.001) </span>
+<span class="source-line-no">075</span><span id="line-75">                        return 1.0;</span>
+<span class="source-line-no">076</span><span id="line-76">                if (r &lt; n) {</span>
+<span class="source-line-no">077</span><span id="line-77">                        return n * (Math.sin(pi * r / n) * Math.sin(pi * r)) / (pi2 * sqr(r));</span>
+<span class="source-line-no">078</span><span id="line-78">                }</span>
+<span class="source-line-no">079</span><span id="line-79">                else </span>
+<span class="source-line-no">080</span><span id="line-80">                        return 0.0;</span>
+<span class="source-line-no">081</span><span id="line-81">        }</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">        @Override</span>
+<span class="source-line-no">084</span><span id="line-84">        public double getWeight(double x) {</span>
+<span class="source-line-no">085</span><span id="line-85">                return wLn(x);</span>
+<span class="source-line-no">086</span><span id="line-86">        }</span>
+<span class="source-line-no">087</span><span id="line-87"></span>
+<span class="source-line-no">088</span><span id="line-88"></span>
+<span class="source-line-no">089</span><span id="line-89">}</span>
 
 
 

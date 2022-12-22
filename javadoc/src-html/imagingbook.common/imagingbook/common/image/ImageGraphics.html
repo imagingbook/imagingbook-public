@@ -21,404 +21,379 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.image;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import java.awt.BasicStroke;</span>
-<span class="source-line-no">012</span><span id="line-12">import java.awt.Color;</span>
-<span class="source-line-no">013</span><span id="line-13">import java.awt.Graphics;</span>
-<span class="source-line-no">014</span><span id="line-14">import java.awt.Graphics2D;</span>
-<span class="source-line-no">015</span><span id="line-15">import java.awt.RenderingHints;</span>
-<span class="source-line-no">016</span><span id="line-16">import java.awt.Shape;</span>
-<span class="source-line-no">017</span><span id="line-17">import java.awt.geom.Ellipse2D;</span>
-<span class="source-line-no">018</span><span id="line-18">import java.awt.geom.Line2D;</span>
-<span class="source-line-no">019</span><span id="line-19">import java.awt.geom.Path2D;</span>
-<span class="source-line-no">020</span><span id="line-20">import java.awt.geom.Point2D;</span>
-<span class="source-line-no">021</span><span id="line-21">import java.awt.geom.Rectangle2D;</span>
-<span class="source-line-no">022</span><span id="line-22">import java.awt.image.BufferedImage;</span>
-<span class="source-line-no">023</span><span id="line-23"></span>
-<span class="source-line-no">024</span><span id="line-24">import ij.process.Blitter;</span>
-<span class="source-line-no">025</span><span id="line-25">import ij.process.ByteProcessor;</span>
-<span class="source-line-no">026</span><span id="line-26">import ij.process.ColorProcessor;</span>
-<span class="source-line-no">027</span><span id="line-27">import ij.process.FloatProcessor;</span>
-<span class="source-line-no">028</span><span id="line-28">import ij.process.ImageProcessor;</span>
-<span class="source-line-no">029</span><span id="line-29">import ij.process.ShortProcessor;</span>
-<span class="source-line-no">030</span><span id="line-30">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
+<span class="source-line-no">011</span><span id="line-11">import ij.process.Blitter;</span>
+<span class="source-line-no">012</span><span id="line-12">import ij.process.ByteProcessor;</span>
+<span class="source-line-no">013</span><span id="line-13">import ij.process.ColorProcessor;</span>
+<span class="source-line-no">014</span><span id="line-14">import ij.process.FloatProcessor;</span>
+<span class="source-line-no">015</span><span id="line-15">import ij.process.ImageProcessor;</span>
+<span class="source-line-no">016</span><span id="line-16">import ij.process.ShortProcessor;</span>
+<span class="source-line-no">017</span><span id="line-17">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
+<span class="source-line-no">018</span><span id="line-18"></span>
+<span class="source-line-no">019</span><span id="line-19">import java.awt.BasicStroke;</span>
+<span class="source-line-no">020</span><span id="line-20">import java.awt.Color;</span>
+<span class="source-line-no">021</span><span id="line-21">import java.awt.Graphics;</span>
+<span class="source-line-no">022</span><span id="line-22">import java.awt.Graphics2D;</span>
+<span class="source-line-no">023</span><span id="line-23">import java.awt.RenderingHints;</span>
+<span class="source-line-no">024</span><span id="line-24">import java.awt.Shape;</span>
+<span class="source-line-no">025</span><span id="line-25">import java.awt.geom.Ellipse2D;</span>
+<span class="source-line-no">026</span><span id="line-26">import java.awt.geom.Line2D;</span>
+<span class="source-line-no">027</span><span id="line-27">import java.awt.geom.Path2D;</span>
+<span class="source-line-no">028</span><span id="line-28">import java.awt.geom.Point2D;</span>
+<span class="source-line-no">029</span><span id="line-29">import java.awt.geom.Rectangle2D;</span>
+<span class="source-line-no">030</span><span id="line-30">import java.awt.image.BufferedImage;</span>
 <span class="source-line-no">031</span><span id="line-31"></span>
 <span class="source-line-no">032</span><span id="line-32">/**</span>
-<span class="source-line-no">033</span><span id="line-33"> * &lt;p&gt;This class defines functionality for drawing anti-aliased "pixel"</span>
-<span class="source-line-no">034</span><span id="line-34"> * graphics in images of type </span>
-<span class="source-line-no">035</span><span id="line-35"> * {@link ByteProcessor},</span>
-<span class="source-line-no">036</span><span id="line-36"> * {@link ShortProcessor} or</span>
-<span class="source-line-no">037</span><span id="line-37"> * {@link ColorProcessor}</span>
-<span class="source-line-no">038</span><span id="line-38"> * (there is no support for {@link FloatProcessor}).</span>
-<span class="source-line-no">039</span><span id="line-39"> * It uses the capabilities of AWT's {@link Graphics2D} class</span>
-<span class="source-line-no">040</span><span id="line-40"> * by drawing to a {@link BufferedImage}, which is a copy of</span>
-<span class="source-line-no">041</span><span id="line-41"> * the original image. After performing the drawing operations</span>
-<span class="source-line-no">042</span><span id="line-42"> * the {@link BufferedImage} is copied back to the original.</span>
-<span class="source-line-no">043</span><span id="line-43"> * Thus all operations possible on a {@link Graphics2D} instance</span>
-<span class="source-line-no">044</span><span id="line-44"> * are available, including the drawing of {@link Shape}</span>
-<span class="source-line-no">045</span><span id="line-45"> * objects with floating-point coordinates, arbitrary </span>
-<span class="source-line-no">046</span><span id="line-46"> * strokes and anti-aliasing, which is not available with</span>
-<span class="source-line-no">047</span><span id="line-47"> * ImageJ's built-in graphics operations (for class {@link ImageProcessor}).</span>
-<span class="source-line-no">048</span><span id="line-48"> * &lt;/p&gt;</span>
-<span class="source-line-no">049</span><span id="line-49"> * &lt;p&gt;</span>
-<span class="source-line-no">050</span><span id="line-50"> * Since drawing involves copying the image multiple times, graphic operations</span>
-<span class="source-line-no">051</span><span id="line-51"> * should be grouped for efficiency reasons.</span>
-<span class="source-line-no">052</span><span id="line-52"> * Here is an example for the intended form of use:</span>
-<span class="source-line-no">053</span><span id="line-53"> * &lt;/p&gt;</span>
-<span class="source-line-no">054</span><span id="line-54"> * &lt;pre&gt;</span>
-<span class="source-line-no">055</span><span id="line-55"> * ImageProcessor ip = ... ;   // some ByteProcessor, ShortProcessor or ColorProcessor</span>
-<span class="source-line-no">056</span><span id="line-56"> * try (ImageGraphics ig = new ImageGraphics(ip)) {</span>
-<span class="source-line-no">057</span><span id="line-57"> *      ig.setColor(255);</span>
-<span class="source-line-no">058</span><span id="line-58"> *      ig.setLineWidth(1.0);</span>
-<span class="source-line-no">059</span><span id="line-59"> *      ig.drawLine(40, 100.5, 250, 101.5);</span>
-<span class="source-line-no">060</span><span id="line-60"> *      ig.drawOval(230.6, 165.2, 150, 150);</span>
-<span class="source-line-no">061</span><span id="line-61"> *      ...</span>
-<span class="source-line-no">062</span><span id="line-62"> * }&lt;/pre&gt;</span>
-<span class="source-line-no">063</span><span id="line-63"> * &lt;p&gt;</span>
-<span class="source-line-no">064</span><span id="line-64"> * Note the use of &lt;code&gt;double&lt;/code&gt; coordinates throughout.</span>
-<span class="source-line-no">065</span><span id="line-65"> * The original image ({@code ip} in the above example) is automatically updated </span>
-<span class="source-line-no">066</span><span id="line-66"> * at the end of the {@code try() ...} clause (by {@link ImageGraphics} implementing the</span>
-<span class="source-line-no">067</span><span id="line-67"> * {@link AutoCloseable} interface).</span>
-<span class="source-line-no">068</span><span id="line-68"> * The {@link #getGraphics2D()} method exposes the underlying </span>
-<span class="source-line-no">069</span><span id="line-69"> * {@link Graphics2D} instance of the {@link ImageGraphics} object, which can then be used to</span>
-<span class="source-line-no">070</span><span id="line-70"> * perform arbitrary AWT graphic operations.</span>
-<span class="source-line-no">071</span><span id="line-71"> * Thus, the above example could &lt;strong&gt;alternatively&lt;/strong&gt; be implemented as follows:</span>
-<span class="source-line-no">072</span><span id="line-72"> * &lt;pre&gt;</span>
-<span class="source-line-no">073</span><span id="line-73"> * ImageProcessor ip = ... ;   // some ByteProcessor, ShortProcessor or ColorProcessor</span>
-<span class="source-line-no">074</span><span id="line-74"> * try (ImageGraphics ig = new ImageGraphics(ip)) {</span>
-<span class="source-line-no">075</span><span id="line-75"> *      Graphics2D g2 = ig.getGraphics2D();</span>
-<span class="source-line-no">076</span><span id="line-76"> *      g2.setColor(Color.white);</span>
-<span class="source-line-no">077</span><span id="line-77"> *      g2.setStroke(new BasicStroke(1.0f));</span>
-<span class="source-line-no">078</span><span id="line-78"> *      g2.draw(new Line2D.Double(40, 100.5, 250, 101.5));</span>
-<span class="source-line-no">079</span><span id="line-79"> *      g2.draw(new Ellipse2D.Double(230.6, 165.2, 150, 150));</span>
-<span class="source-line-no">080</span><span id="line-80"> *      ...</span>
-<span class="source-line-no">081</span><span id="line-81"> * }&lt;/pre&gt;</span>
-<span class="source-line-no">082</span><span id="line-82"> * &lt;p&gt;</span>
-<span class="source-line-no">083</span><span id="line-83"> * This class also defines several convenience methods for drawing</span>
-<span class="source-line-no">084</span><span id="line-84"> * shapes with floating-point ({@code double}) coordinates, as well as for</span>
-<span class="source-line-no">085</span><span id="line-85"> * setting colors and stroke parameters.</span>
-<span class="source-line-no">086</span><span id="line-86"> * If intermediate updates are needed (e.g., for animations), the {@code update()} method</span>
-<span class="source-line-no">087</span><span id="line-87"> * can be invoked any time.</span>
-<span class="source-line-no">088</span><span id="line-88"> * &lt;/p&gt;</span>
-<span class="source-line-no">089</span><span id="line-89"> * </span>
-<span class="source-line-no">090</span><span id="line-90"> * @author WB</span>
-<span class="source-line-no">091</span><span id="line-91"> * @version 2020-01-07</span>
-<span class="source-line-no">092</span><span id="line-92"> * </span>
-<span class="source-line-no">093</span><span id="line-93"> * @see ShapeOverlayAdapter</span>
-<span class="source-line-no">094</span><span id="line-94"> */</span>
-<span class="source-line-no">095</span><span id="line-95">public class ImageGraphics implements AutoCloseable {</span>
-<span class="source-line-no">096</span><span id="line-96">        </span>
-<span class="source-line-no">097</span><span id="line-97">        // TODO: Add text drawing, merge with {@link ColoredStroke}.</span>
-<span class="source-line-no">098</span><span id="line-98">        </span>
-<span class="source-line-no">099</span><span id="line-99">        private static BasicStroke DEFAULT_STROKE = new BasicStroke();</span>
-<span class="source-line-no">100</span><span id="line-100">        private static Color DEFAULT_COLOR = Color.white;</span>
-<span class="source-line-no">101</span><span id="line-101">        private static boolean DEFAULT_ANTIALIASING = true;</span>
-<span class="source-line-no">102</span><span id="line-102">        </span>
-<span class="source-line-no">103</span><span id="line-103">        private ImageProcessor ip;</span>
-<span class="source-line-no">104</span><span id="line-104">        private BufferedImage bi;</span>
-<span class="source-line-no">105</span><span id="line-105">        private final Graphics2D g2;</span>
-<span class="source-line-no">106</span><span id="line-106">        </span>
-<span class="source-line-no">107</span><span id="line-107">        private BasicStroke stroke = DEFAULT_STROKE;</span>
-<span class="source-line-no">108</span><span id="line-108">        private Color color = DEFAULT_COLOR;</span>
-<span class="source-line-no">109</span><span id="line-109">        </span>
-<span class="source-line-no">110</span><span id="line-110">        // -------------------------------------------------------------</span>
-<span class="source-line-no">111</span><span id="line-111">        </span>
-<span class="source-line-no">112</span><span id="line-112">        /**</span>
-<span class="source-line-no">113</span><span id="line-113">         * Constructor. The supplied image must be of type</span>
-<span class="source-line-no">114</span><span id="line-114">         * {@link ByteProcessor}, {@link ShortProcessor} or </span>
-<span class="source-line-no">115</span><span id="line-115">         * {@link ColorProcessor}.</span>
-<span class="source-line-no">116</span><span id="line-116">         * An {@link IllegalArgumentException} is thrown for images</span>
-<span class="source-line-no">117</span><span id="line-117">         * of type {@link FloatProcessor}.</span>
-<span class="source-line-no">118</span><span id="line-118">         * </span>
-<span class="source-line-no">119</span><span id="line-119">         * @param ip image to draw on</span>
-<span class="source-line-no">120</span><span id="line-120">         */</span>
-<span class="source-line-no">121</span><span id="line-121">        public ImageGraphics(ImageProcessor ip) {</span>
-<span class="source-line-no">122</span><span id="line-122">                this(ip, null, null);</span>
-<span class="source-line-no">123</span><span id="line-123">        }</span>
-<span class="source-line-no">124</span><span id="line-124">        </span>
-<span class="source-line-no">125</span><span id="line-125">        /**</span>
-<span class="source-line-no">126</span><span id="line-126">         * Constructor. The supplied image must be of type</span>
-<span class="source-line-no">127</span><span id="line-127">         * {@link ByteProcessor}, {@link ShortProcessor} or </span>
-<span class="source-line-no">128</span><span id="line-128">         * {@link ColorProcessor}.</span>
-<span class="source-line-no">129</span><span id="line-129">         * An {@link IllegalArgumentException} is thrown for images</span>
-<span class="source-line-no">130</span><span id="line-130">         * of type {@link FloatProcessor}.</span>
-<span class="source-line-no">131</span><span id="line-131">         * </span>
-<span class="source-line-no">132</span><span id="line-132">         * @param ip image to draw on</span>
-<span class="source-line-no">133</span><span id="line-133">         * @param color the initial drawing color</span>
-<span class="source-line-no">134</span><span id="line-134">         * @param stroke the initial stroke</span>
+<span class="source-line-no">033</span><span id="line-33"> * &lt;p&gt;</span>
+<span class="source-line-no">034</span><span id="line-34"> * This class defines functionality for drawing anti-aliased "pixel" graphics in images of type {@link ByteProcessor},</span>
+<span class="source-line-no">035</span><span id="line-35"> * {@link ShortProcessor} or {@link ColorProcessor} (there is no support for {@link FloatProcessor}). It uses the</span>
+<span class="source-line-no">036</span><span id="line-36"> * capabilities of AWT's {@link Graphics2D} class by drawing to a {@link BufferedImage}, which is a copy of the original</span>
+<span class="source-line-no">037</span><span id="line-37"> * image. After performing the drawing operations the {@link BufferedImage} is copied back to the original. Thus all</span>
+<span class="source-line-no">038</span><span id="line-38"> * operations possible on a {@link Graphics2D} instance are available, including the drawing of {@link Shape} objects</span>
+<span class="source-line-no">039</span><span id="line-39"> * with floating-point coordinates, arbitrary strokes and anti-aliasing, which is not available with ImageJ's built-in</span>
+<span class="source-line-no">040</span><span id="line-40"> * graphics operations (for class {@link ImageProcessor}).</span>
+<span class="source-line-no">041</span><span id="line-41"> * &lt;/p&gt;</span>
+<span class="source-line-no">042</span><span id="line-42"> * &lt;p&gt;</span>
+<span class="source-line-no">043</span><span id="line-43"> * Since drawing involves copying the image multiple times, graphic operations should be grouped for efficiency reasons.</span>
+<span class="source-line-no">044</span><span id="line-44"> * Here is an example for the intended form of use:</span>
+<span class="source-line-no">045</span><span id="line-45"> * &lt;/p&gt;</span>
+<span class="source-line-no">046</span><span id="line-46"> * &lt;pre&gt;</span>
+<span class="source-line-no">047</span><span id="line-47"> * ImageProcessor ip = ... ;   // some ByteProcessor, ShortProcessor or ColorProcessor</span>
+<span class="source-line-no">048</span><span id="line-48"> * try (ImageGraphics ig = new ImageGraphics(ip)) {</span>
+<span class="source-line-no">049</span><span id="line-49"> *      ig.setColor(255);</span>
+<span class="source-line-no">050</span><span id="line-50"> *      ig.setLineWidth(1.0);</span>
+<span class="source-line-no">051</span><span id="line-51"> *      ig.drawLine(40, 100.5, 250, 101.5);</span>
+<span class="source-line-no">052</span><span id="line-52"> *      ig.drawOval(230.6, 165.2, 150, 150);</span>
+<span class="source-line-no">053</span><span id="line-53"> *      ...</span>
+<span class="source-line-no">054</span><span id="line-54"> * }&lt;/pre&gt;</span>
+<span class="source-line-no">055</span><span id="line-55"> * &lt;p&gt;</span>
+<span class="source-line-no">056</span><span id="line-56"> * Note the use of &lt;code&gt;double&lt;/code&gt; coordinates throughout. The original image ({@code ip} in the above example) is</span>
+<span class="source-line-no">057</span><span id="line-57"> * automatically updated at the end of the {@code try() ...} clause (by {@link ImageGraphics} implementing the</span>
+<span class="source-line-no">058</span><span id="line-58"> * {@link AutoCloseable} interface). The {@link #getGraphics2D()} method exposes the underlying {@link Graphics2D}</span>
+<span class="source-line-no">059</span><span id="line-59"> * instance of the {@link ImageGraphics} object, which can then be used to perform arbitrary AWT graphic operations.</span>
+<span class="source-line-no">060</span><span id="line-60"> * Thus, the above example could &lt;strong&gt;alternatively&lt;/strong&gt; be implemented as follows:</span>
+<span class="source-line-no">061</span><span id="line-61"> * &lt;pre&gt;</span>
+<span class="source-line-no">062</span><span id="line-62"> * ImageProcessor ip = ... ;   // some ByteProcessor, ShortProcessor or ColorProcessor</span>
+<span class="source-line-no">063</span><span id="line-63"> * try (ImageGraphics ig = new ImageGraphics(ip)) {</span>
+<span class="source-line-no">064</span><span id="line-64"> *      Graphics2D g2 = ig.getGraphics2D();</span>
+<span class="source-line-no">065</span><span id="line-65"> *      g2.setColor(Color.white);</span>
+<span class="source-line-no">066</span><span id="line-66"> *      g2.setStroke(new BasicStroke(1.0f));</span>
+<span class="source-line-no">067</span><span id="line-67"> *      g2.draw(new Line2D.Double(40, 100.5, 250, 101.5));</span>
+<span class="source-line-no">068</span><span id="line-68"> *      g2.draw(new Ellipse2D.Double(230.6, 165.2, 150, 150));</span>
+<span class="source-line-no">069</span><span id="line-69"> *      ...</span>
+<span class="source-line-no">070</span><span id="line-70"> * }&lt;/pre&gt;</span>
+<span class="source-line-no">071</span><span id="line-71"> * &lt;p&gt;</span>
+<span class="source-line-no">072</span><span id="line-72"> * This class also defines several convenience methods for drawing shapes with floating-point ({@code double})</span>
+<span class="source-line-no">073</span><span id="line-73"> * coordinates, as well as for setting colors and stroke parameters. If intermediate updates are needed (e.g., for</span>
+<span class="source-line-no">074</span><span id="line-74"> * animations), the {@code update()} method can be invoked any time.</span>
+<span class="source-line-no">075</span><span id="line-75"> * &lt;/p&gt;</span>
+<span class="source-line-no">076</span><span id="line-76"> *</span>
+<span class="source-line-no">077</span><span id="line-77"> * @author WB</span>
+<span class="source-line-no">078</span><span id="line-78"> * @version 2020-01-07</span>
+<span class="source-line-no">079</span><span id="line-79"> * @see ShapeOverlayAdapter</span>
+<span class="source-line-no">080</span><span id="line-80"> */</span>
+<span class="source-line-no">081</span><span id="line-81">public class ImageGraphics implements AutoCloseable {</span>
+<span class="source-line-no">082</span><span id="line-82">        </span>
+<span class="source-line-no">083</span><span id="line-83">        // TODO: Add text drawing, integrate with ShapeOverlayAdapter and ColoredStroke.</span>
+<span class="source-line-no">084</span><span id="line-84">        </span>
+<span class="source-line-no">085</span><span id="line-85">        private static BasicStroke DEFAULT_STROKE = new BasicStroke();</span>
+<span class="source-line-no">086</span><span id="line-86">        private static Color DEFAULT_COLOR = Color.white;</span>
+<span class="source-line-no">087</span><span id="line-87">        private static boolean DEFAULT_ANTIALIASING = true;</span>
+<span class="source-line-no">088</span><span id="line-88">        </span>
+<span class="source-line-no">089</span><span id="line-89">        private ImageProcessor ip;</span>
+<span class="source-line-no">090</span><span id="line-90">        private BufferedImage bi;</span>
+<span class="source-line-no">091</span><span id="line-91">        private final Graphics2D g2;</span>
+<span class="source-line-no">092</span><span id="line-92">        </span>
+<span class="source-line-no">093</span><span id="line-93">        private BasicStroke stroke = DEFAULT_STROKE;</span>
+<span class="source-line-no">094</span><span id="line-94">        private Color color = DEFAULT_COLOR;</span>
+<span class="source-line-no">095</span><span id="line-95">        </span>
+<span class="source-line-no">096</span><span id="line-96">        // -------------------------------------------------------------</span>
+<span class="source-line-no">097</span><span id="line-97"></span>
+<span class="source-line-no">098</span><span id="line-98">        /**</span>
+<span class="source-line-no">099</span><span id="line-99">         * Constructor. The supplied image must be of type {@link ByteProcessor}, {@link ShortProcessor} or</span>
+<span class="source-line-no">100</span><span id="line-100">         * {@link ColorProcessor}. An {@link IllegalArgumentException} is thrown for images of type {@link FloatProcessor}.</span>
+<span class="source-line-no">101</span><span id="line-101">         *</span>
+<span class="source-line-no">102</span><span id="line-102">         * @param ip image to draw on</span>
+<span class="source-line-no">103</span><span id="line-103">         */</span>
+<span class="source-line-no">104</span><span id="line-104">        public ImageGraphics(ImageProcessor ip) {</span>
+<span class="source-line-no">105</span><span id="line-105">                this(ip, null, null);</span>
+<span class="source-line-no">106</span><span id="line-106">        }</span>
+<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">108</span><span id="line-108">        /**</span>
+<span class="source-line-no">109</span><span id="line-109">         * Constructor. The supplied image must be of type {@link ByteProcessor}, {@link ShortProcessor} or</span>
+<span class="source-line-no">110</span><span id="line-110">         * {@link ColorProcessor}. An {@link IllegalArgumentException} is thrown for images of type {@link FloatProcessor}.</span>
+<span class="source-line-no">111</span><span id="line-111">         *</span>
+<span class="source-line-no">112</span><span id="line-112">         * @param ip image to draw on</span>
+<span class="source-line-no">113</span><span id="line-113">         * @param color the initial drawing color</span>
+<span class="source-line-no">114</span><span id="line-114">         * @param stroke the initial stroke</span>
+<span class="source-line-no">115</span><span id="line-115">         */</span>
+<span class="source-line-no">116</span><span id="line-116">        public ImageGraphics(ImageProcessor ip, Color color, BasicStroke stroke) {</span>
+<span class="source-line-no">117</span><span id="line-117">                this.ip = ip;</span>
+<span class="source-line-no">118</span><span id="line-118">                this.bi = toBufferedImage(ip);  // throws exception when ip is a ShortProcessor</span>
+<span class="source-line-no">119</span><span id="line-119">                </span>
+<span class="source-line-no">120</span><span id="line-120">                if (color != null) this.color = color;</span>
+<span class="source-line-no">121</span><span id="line-121">                if (stroke != null) this.stroke = stroke;</span>
+<span class="source-line-no">122</span><span id="line-122">                </span>
+<span class="source-line-no">123</span><span id="line-123">                this.g2 = (Graphics2D) bi.getGraphics();</span>
+<span class="source-line-no">124</span><span id="line-124">                this.g2.setColor(color);</span>
+<span class="source-line-no">125</span><span id="line-125">                this.g2.setColor(this.color);</span>
+<span class="source-line-no">126</span><span id="line-126">                this.g2.setStroke(this.stroke);</span>
+<span class="source-line-no">127</span><span id="line-127">                this.setAntialiasing(DEFAULT_ANTIALIASING);</span>
+<span class="source-line-no">128</span><span id="line-128">        }</span>
+<span class="source-line-no">129</span><span id="line-129"></span>
+<span class="source-line-no">130</span><span id="line-130">        /**</span>
+<span class="source-line-no">131</span><span id="line-131">         * Turn anti-aliasing on/off for this {@link ImageGraphics} instance (turned on by default). The new setting will</span>
+<span class="source-line-no">132</span><span id="line-132">         * only affect subsequent graphics operations.</span>
+<span class="source-line-no">133</span><span id="line-133">         *</span>
+<span class="source-line-no">134</span><span id="line-134">         * @param onoff set true to turn on</span>
 <span class="source-line-no">135</span><span id="line-135">         */</span>
-<span class="source-line-no">136</span><span id="line-136">        public ImageGraphics(ImageProcessor ip, Color color, BasicStroke stroke) {</span>
-<span class="source-line-no">137</span><span id="line-137">                this.ip = ip;</span>
-<span class="source-line-no">138</span><span id="line-138">                this.bi = toBufferedImage(ip);  // throws exception when ip is a ShortProcessor</span>
-<span class="source-line-no">139</span><span id="line-139">                </span>
-<span class="source-line-no">140</span><span id="line-140">                if (color != null) this.color = color;</span>
-<span class="source-line-no">141</span><span id="line-141">                if (stroke != null) this.stroke = stroke;</span>
-<span class="source-line-no">142</span><span id="line-142">                </span>
-<span class="source-line-no">143</span><span id="line-143">                this.g2 = (Graphics2D) bi.getGraphics();</span>
-<span class="source-line-no">144</span><span id="line-144">                this.g2.setColor(color);</span>
-<span class="source-line-no">145</span><span id="line-145">                this.g2.setColor(this.color);</span>
-<span class="source-line-no">146</span><span id="line-146">                this.g2.setStroke(this.stroke);</span>
-<span class="source-line-no">147</span><span id="line-147">                this.setAntialiasing(DEFAULT_ANTIALIASING);</span>
-<span class="source-line-no">148</span><span id="line-148">        }</span>
-<span class="source-line-no">149</span><span id="line-149">        </span>
-<span class="source-line-no">150</span><span id="line-150">        /**</span>
-<span class="source-line-no">151</span><span id="line-151">         * Turn anti-aliasing on/off for this {@link ImageGraphics} instance</span>
-<span class="source-line-no">152</span><span id="line-152">         * (turned on by default). The new setting will only affect</span>
-<span class="source-line-no">153</span><span id="line-153">         * subsequent graphics operations.</span>
-<span class="source-line-no">154</span><span id="line-154">         * </span>
-<span class="source-line-no">155</span><span id="line-155">         * @param onoff set true to turn on</span>
+<span class="source-line-no">136</span><span id="line-136">        public void setAntialiasing(boolean onoff) {</span>
+<span class="source-line-no">137</span><span id="line-137">                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, onoff ? </span>
+<span class="source-line-no">138</span><span id="line-138">                                RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);</span>
+<span class="source-line-no">139</span><span id="line-139">                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, onoff ?</span>
+<span class="source-line-no">140</span><span id="line-140">                                RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);</span>
+<span class="source-line-no">141</span><span id="line-141">        }</span>
+<span class="source-line-no">142</span><span id="line-142"></span>
+<span class="source-line-no">143</span><span id="line-143">        /**</span>
+<span class="source-line-no">144</span><span id="line-144">         * Returns the underlying {@link Graphics2D} object, which can be used to perform arbitrary graphics operations.</span>
+<span class="source-line-no">145</span><span id="line-145">         *</span>
+<span class="source-line-no">146</span><span id="line-146">         * @return the {@link Graphics2D} object</span>
+<span class="source-line-no">147</span><span id="line-147">         */</span>
+<span class="source-line-no">148</span><span id="line-148">        public Graphics2D getGraphics2D() {</span>
+<span class="source-line-no">149</span><span id="line-149">                return this.g2;</span>
+<span class="source-line-no">150</span><span id="line-150">        }</span>
+<span class="source-line-no">151</span><span id="line-151"></span>
+<span class="source-line-no">152</span><span id="line-152">        /**</span>
+<span class="source-line-no">153</span><span id="line-153">         * Forces the image to be updated by copying the (modified) {@link BufferedImage} back to the input image. There is</span>
+<span class="source-line-no">154</span><span id="line-154">         * usually no need to call this (expensive) method explicitly. It is called automatically and only once at end of</span>
+<span class="source-line-no">155</span><span id="line-155">         * the {@code try() ...} clause, as described in the {@link ImageGraphics} class documentation above.</span>
 <span class="source-line-no">156</span><span id="line-156">         */</span>
-<span class="source-line-no">157</span><span id="line-157">        public void setAntialiasing(boolean onoff) {</span>
-<span class="source-line-no">158</span><span id="line-158">                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, onoff ? </span>
-<span class="source-line-no">159</span><span id="line-159">                                RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);</span>
-<span class="source-line-no">160</span><span id="line-160">                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, onoff ?</span>
-<span class="source-line-no">161</span><span id="line-161">                                RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);</span>
-<span class="source-line-no">162</span><span id="line-162">        }</span>
-<span class="source-line-no">163</span><span id="line-163">        </span>
-<span class="source-line-no">164</span><span id="line-164">        /**</span>
-<span class="source-line-no">165</span><span id="line-165">         * Returns the underlying {@link Graphics2D} object,</span>
-<span class="source-line-no">166</span><span id="line-166">         * which can be used to perform arbitrary graphics operations.</span>
-<span class="source-line-no">167</span><span id="line-167">         * @return the {@link Graphics2D} object</span>
-<span class="source-line-no">168</span><span id="line-168">         */</span>
-<span class="source-line-no">169</span><span id="line-169">        public Graphics2D getGraphics2D() {</span>
-<span class="source-line-no">170</span><span id="line-170">                return this.g2;</span>
-<span class="source-line-no">171</span><span id="line-171">        }</span>
-<span class="source-line-no">172</span><span id="line-172">        </span>
-<span class="source-line-no">173</span><span id="line-173">        /**</span>
-<span class="source-line-no">174</span><span id="line-174">         * Forces the image to be updated by copying the (modified)</span>
-<span class="source-line-no">175</span><span id="line-175">         * {@link BufferedImage} back to the input image.</span>
-<span class="source-line-no">176</span><span id="line-176">         * There is usually no need to call this (expensive) method explicitly.</span>
-<span class="source-line-no">177</span><span id="line-177">         * It is called automatically and only once at end of the </span>
-<span class="source-line-no">178</span><span id="line-178">         * {@code try() ...} clause, as described in the {@link ImageGraphics}</span>
-<span class="source-line-no">179</span><span id="line-179">         * class documentation above.</span>
-<span class="source-line-no">180</span><span id="line-180">         */</span>
-<span class="source-line-no">181</span><span id="line-181">        public void update() {</span>
-<span class="source-line-no">182</span><span id="line-182">                copyImageToProcessor(bi, ip);</span>
-<span class="source-line-no">183</span><span id="line-183">        }</span>
-<span class="source-line-no">184</span><span id="line-184"></span>
-<span class="source-line-no">185</span><span id="line-185">        @Override</span>
-<span class="source-line-no">186</span><span id="line-186">        public void close() {</span>
-<span class="source-line-no">187</span><span id="line-187">                update();</span>
-<span class="source-line-no">188</span><span id="line-188">                ip = null;</span>
-<span class="source-line-no">189</span><span id="line-189">                bi = null;</span>
-<span class="source-line-no">190</span><span id="line-190">        }</span>
-<span class="source-line-no">191</span><span id="line-191">        </span>
-<span class="source-line-no">192</span><span id="line-192">        // -----------------------------------------------------------</span>
-<span class="source-line-no">193</span><span id="line-193">        </span>
-<span class="source-line-no">194</span><span id="line-194">        // Needed, since IJ's conversion methods are not named consistently.</span>
-<span class="source-line-no">195</span><span id="line-195">        private BufferedImage toBufferedImage(ImageProcessor ip) {</span>
+<span class="source-line-no">157</span><span id="line-157">        public void update() {</span>
+<span class="source-line-no">158</span><span id="line-158">                copyImageToProcessor(bi, ip);</span>
+<span class="source-line-no">159</span><span id="line-159">        }</span>
+<span class="source-line-no">160</span><span id="line-160"></span>
+<span class="source-line-no">161</span><span id="line-161">        @Override</span>
+<span class="source-line-no">162</span><span id="line-162">        public void close() {</span>
+<span class="source-line-no">163</span><span id="line-163">                update();</span>
+<span class="source-line-no">164</span><span id="line-164">                ip = null;</span>
+<span class="source-line-no">165</span><span id="line-165">                bi = null;</span>
+<span class="source-line-no">166</span><span id="line-166">        }</span>
+<span class="source-line-no">167</span><span id="line-167">        </span>
+<span class="source-line-no">168</span><span id="line-168">        // -----------------------------------------------------------</span>
+<span class="source-line-no">169</span><span id="line-169">        </span>
+<span class="source-line-no">170</span><span id="line-170">        // Needed, since IJ's conversion methods are not named consistently.</span>
+<span class="source-line-no">171</span><span id="line-171">        private BufferedImage toBufferedImage(ImageProcessor ip) {</span>
+<span class="source-line-no">172</span><span id="line-172">                if (ip instanceof ByteProcessor) {</span>
+<span class="source-line-no">173</span><span id="line-173">                        return ((ByteProcessor) ip).getBufferedImage(); </span>
+<span class="source-line-no">174</span><span id="line-174">                }</span>
+<span class="source-line-no">175</span><span id="line-175">                else if (ip instanceof ShortProcessor) {</span>
+<span class="source-line-no">176</span><span id="line-176">                        return ((ShortProcessor) ip).get16BitBufferedImage(); </span>
+<span class="source-line-no">177</span><span id="line-177">                }</span>
+<span class="source-line-no">178</span><span id="line-178">                else if (ip instanceof ColorProcessor) {</span>
+<span class="source-line-no">179</span><span id="line-179">                        return ((ColorProcessor) ip).getBufferedImage();</span>
+<span class="source-line-no">180</span><span id="line-180">                }</span>
+<span class="source-line-no">181</span><span id="line-181">                else {</span>
+<span class="source-line-no">182</span><span id="line-182">                        throw new IllegalArgumentException("Cannot create BufferedImage from " +</span>
+<span class="source-line-no">183</span><span id="line-183">                                        ip.getClass().getName());</span>
+<span class="source-line-no">184</span><span id="line-184">                }</span>
+<span class="source-line-no">185</span><span id="line-185">        }</span>
+<span class="source-line-no">186</span><span id="line-186"></span>
+<span class="source-line-no">187</span><span id="line-187">        /**</span>
+<span class="source-line-no">188</span><span id="line-188">         * Copies the contents of the {@link BufferedImage} to the specified {@link ImageProcessor}. The size and type of</span>
+<span class="source-line-no">189</span><span id="line-189">         * the BufferedImage is assumed to match the ImageProcessor.</span>
+<span class="source-line-no">190</span><span id="line-190">         *</span>
+<span class="source-line-no">191</span><span id="line-191">         * @param bi the local (intermediate) {@link BufferedImage} instance</span>
+<span class="source-line-no">192</span><span id="line-192">         * @param ip the original {@link ImageProcessor}</span>
+<span class="source-line-no">193</span><span id="line-193">         */</span>
+<span class="source-line-no">194</span><span id="line-194">        private void copyImageToProcessor(BufferedImage bi, ImageProcessor ip) {</span>
+<span class="source-line-no">195</span><span id="line-195">                ImageProcessor ip2 = null;</span>
 <span class="source-line-no">196</span><span id="line-196">                if (ip instanceof ByteProcessor) {</span>
-<span class="source-line-no">197</span><span id="line-197">                        return ((ByteProcessor) ip).getBufferedImage(); </span>
+<span class="source-line-no">197</span><span id="line-197">                        ip2 = new ByteProcessor(bi); </span>
 <span class="source-line-no">198</span><span id="line-198">                }</span>
 <span class="source-line-no">199</span><span id="line-199">                else if (ip instanceof ShortProcessor) {</span>
-<span class="source-line-no">200</span><span id="line-200">                        return ((ShortProcessor) ip).get16BitBufferedImage(); </span>
+<span class="source-line-no">200</span><span id="line-200">                        ip2 = new ShortProcessor(bi); </span>
 <span class="source-line-no">201</span><span id="line-201">                }</span>
 <span class="source-line-no">202</span><span id="line-202">                else if (ip instanceof ColorProcessor) {</span>
-<span class="source-line-no">203</span><span id="line-203">                        return ((ColorProcessor) ip).getBufferedImage();</span>
+<span class="source-line-no">203</span><span id="line-203">                        ip2 = new ColorProcessor(bi); </span>
 <span class="source-line-no">204</span><span id="line-204">                }</span>
 <span class="source-line-no">205</span><span id="line-205">                else {</span>
 <span class="source-line-no">206</span><span id="line-206">                        throw new IllegalArgumentException("Cannot create BufferedImage from " +</span>
 <span class="source-line-no">207</span><span id="line-207">                                        ip.getClass().getName());</span>
 <span class="source-line-no">208</span><span id="line-208">                }</span>
-<span class="source-line-no">209</span><span id="line-209">        }</span>
-<span class="source-line-no">210</span><span id="line-210">        </span>
-<span class="source-line-no">211</span><span id="line-211">        /**</span>
-<span class="source-line-no">212</span><span id="line-212">         * Copies the contents of the {@link BufferedImage} to the specified </span>
-<span class="source-line-no">213</span><span id="line-213">         * {@link ImageProcessor}. The size and type of the BufferedImage</span>
-<span class="source-line-no">214</span><span id="line-214">         * is assumed to match the ImageProcessor.</span>
-<span class="source-line-no">215</span><span id="line-215">         * </span>
-<span class="source-line-no">216</span><span id="line-216">         * @param bi the local (intermediate) {@link BufferedImage} instance</span>
-<span class="source-line-no">217</span><span id="line-217">         * @param ip the original {@link ImageProcessor}</span>
-<span class="source-line-no">218</span><span id="line-218">         */</span>
-<span class="source-line-no">219</span><span id="line-219">        private void copyImageToProcessor(BufferedImage bi, ImageProcessor ip) {</span>
-<span class="source-line-no">220</span><span id="line-220">                ImageProcessor ip2 = null;</span>
-<span class="source-line-no">221</span><span id="line-221">                if (ip instanceof ByteProcessor) {</span>
-<span class="source-line-no">222</span><span id="line-222">                        ip2 = new ByteProcessor(bi); </span>
-<span class="source-line-no">223</span><span id="line-223">                }</span>
-<span class="source-line-no">224</span><span id="line-224">                else if (ip instanceof ShortProcessor) {</span>
-<span class="source-line-no">225</span><span id="line-225">                        ip2 = new ShortProcessor(bi); </span>
-<span class="source-line-no">226</span><span id="line-226">                }</span>
-<span class="source-line-no">227</span><span id="line-227">                else if (ip instanceof ColorProcessor) {</span>
-<span class="source-line-no">228</span><span id="line-228">                        ip2 = new ColorProcessor(bi); </span>
-<span class="source-line-no">229</span><span id="line-229">                }</span>
-<span class="source-line-no">230</span><span id="line-230">                else {</span>
-<span class="source-line-no">231</span><span id="line-231">                        throw new IllegalArgumentException("Cannot create BufferedImage from " +</span>
-<span class="source-line-no">232</span><span id="line-232">                                        ip.getClass().getName());</span>
-<span class="source-line-no">233</span><span id="line-233">                }</span>
-<span class="source-line-no">234</span><span id="line-234">                ip.copyBits(ip2, 0, 0, Blitter.COPY);</span>
-<span class="source-line-no">235</span><span id="line-235">        }</span>
-<span class="source-line-no">236</span><span id="line-236">        </span>
-<span class="source-line-no">237</span><span id="line-237">        // -----------------------------------------------------------</span>
-<span class="source-line-no">238</span><span id="line-238">        //  Convenience methods for drawing selected shapes with double coordinates</span>
-<span class="source-line-no">239</span><span id="line-239">        // -----------------------------------------------------------</span>
-<span class="source-line-no">240</span><span id="line-240">        </span>
-<span class="source-line-no">241</span><span id="line-241">        /**</span>
-<span class="source-line-no">242</span><span id="line-242">         * Draws a straight line segment specified with</span>
-<span class="source-line-no">243</span><span id="line-243">         * {@code double} coordinate values (convenience method).</span>
-<span class="source-line-no">244</span><span id="line-244">         * @param x1 x-coordinate of start point</span>
-<span class="source-line-no">245</span><span id="line-245">         * @param y1 y-coordinate of start point</span>
-<span class="source-line-no">246</span><span id="line-246">         * @param x2 x-coordinate of end point</span>
-<span class="source-line-no">247</span><span id="line-247">         * @param y2 y-coordinate of end point</span>
-<span class="source-line-no">248</span><span id="line-248">         * @see Line2D</span>
-<span class="source-line-no">249</span><span id="line-249">         */</span>
-<span class="source-line-no">250</span><span id="line-250">        public void drawLine(double x1, double y1, double x2, double y2) {</span>
-<span class="source-line-no">251</span><span id="line-251">                g2.draw(new Line2D.Double(x1, y1, x2, y2));</span>
-<span class="source-line-no">252</span><span id="line-252">        }</span>
-<span class="source-line-no">253</span><span id="line-253">        </span>
-<span class="source-line-no">254</span><span id="line-254">        /**</span>
-<span class="source-line-no">255</span><span id="line-255">         * Draws an ellipse specified with</span>
-<span class="source-line-no">256</span><span id="line-256">         * {@code double} coordinate values (convenience method).</span>
-<span class="source-line-no">257</span><span id="line-257">         * @param x x-coordinate of the upper-left corner of the framing rectangle</span>
-<span class="source-line-no">258</span><span id="line-258">         * @param y y-coordinate of the upper-left corner of the framing rectangle</span>
-<span class="source-line-no">259</span><span id="line-259">         * @param w width</span>
-<span class="source-line-no">260</span><span id="line-260">         * @param h height</span>
-<span class="source-line-no">261</span><span id="line-261">         * @see Ellipse2D</span>
+<span class="source-line-no">209</span><span id="line-209">                ip.copyBits(ip2, 0, 0, Blitter.COPY);</span>
+<span class="source-line-no">210</span><span id="line-210">        }</span>
+<span class="source-line-no">211</span><span id="line-211">        </span>
+<span class="source-line-no">212</span><span id="line-212">        // -----------------------------------------------------------</span>
+<span class="source-line-no">213</span><span id="line-213">        //  Convenience methods for drawing selected shapes with double coordinates</span>
+<span class="source-line-no">214</span><span id="line-214">        // -----------------------------------------------------------</span>
+<span class="source-line-no">215</span><span id="line-215"></span>
+<span class="source-line-no">216</span><span id="line-216">        /**</span>
+<span class="source-line-no">217</span><span id="line-217">         * Draws a straight line segment specified with {@code double} coordinate values (convenience method).</span>
+<span class="source-line-no">218</span><span id="line-218">         *</span>
+<span class="source-line-no">219</span><span id="line-219">         * @param x1 x-coordinate of start point</span>
+<span class="source-line-no">220</span><span id="line-220">         * @param y1 y-coordinate of start point</span>
+<span class="source-line-no">221</span><span id="line-221">         * @param x2 x-coordinate of end point</span>
+<span class="source-line-no">222</span><span id="line-222">         * @param y2 y-coordinate of end point</span>
+<span class="source-line-no">223</span><span id="line-223">         * @see Line2D</span>
+<span class="source-line-no">224</span><span id="line-224">         */</span>
+<span class="source-line-no">225</span><span id="line-225">        public void drawLine(double x1, double y1, double x2, double y2) {</span>
+<span class="source-line-no">226</span><span id="line-226">                g2.draw(new Line2D.Double(x1, y1, x2, y2));</span>
+<span class="source-line-no">227</span><span id="line-227">        }</span>
+<span class="source-line-no">228</span><span id="line-228"></span>
+<span class="source-line-no">229</span><span id="line-229">        /**</span>
+<span class="source-line-no">230</span><span id="line-230">         * Draws an ellipse specified with {@code double} coordinate values (convenience method).</span>
+<span class="source-line-no">231</span><span id="line-231">         *</span>
+<span class="source-line-no">232</span><span id="line-232">         * @param x x-coordinate of the upper-left corner of the framing rectangle</span>
+<span class="source-line-no">233</span><span id="line-233">         * @param y y-coordinate of the upper-left corner of the framing rectangle</span>
+<span class="source-line-no">234</span><span id="line-234">         * @param w width</span>
+<span class="source-line-no">235</span><span id="line-235">         * @param h height</span>
+<span class="source-line-no">236</span><span id="line-236">         * @see Ellipse2D</span>
+<span class="source-line-no">237</span><span id="line-237">         */</span>
+<span class="source-line-no">238</span><span id="line-238">        public void drawOval(double x, double y, double w, double h) {</span>
+<span class="source-line-no">239</span><span id="line-239">                g2.draw(new Ellipse2D.Double(x, y, w, h));</span>
+<span class="source-line-no">240</span><span id="line-240">        }</span>
+<span class="source-line-no">241</span><span id="line-241"></span>
+<span class="source-line-no">242</span><span id="line-242">        /**</span>
+<span class="source-line-no">243</span><span id="line-243">         * Draws a rectangle specified with {@code double} coordinate values (convenience method).</span>
+<span class="source-line-no">244</span><span id="line-244">         *</span>
+<span class="source-line-no">245</span><span id="line-245">         * @param x x-coordinate of the upper-left corner</span>
+<span class="source-line-no">246</span><span id="line-246">         * @param y y-coordinate of the upper-left corner</span>
+<span class="source-line-no">247</span><span id="line-247">         * @param w width</span>
+<span class="source-line-no">248</span><span id="line-248">         * @param h height</span>
+<span class="source-line-no">249</span><span id="line-249">         * @see Rectangle2D</span>
+<span class="source-line-no">250</span><span id="line-250">         */</span>
+<span class="source-line-no">251</span><span id="line-251">        public void drawRectangle(double x, double y, double w, double h) {</span>
+<span class="source-line-no">252</span><span id="line-252">                g2.draw(new Rectangle2D.Double(x, y, w, h));</span>
+<span class="source-line-no">253</span><span id="line-253">        }</span>
+<span class="source-line-no">254</span><span id="line-254"></span>
+<span class="source-line-no">255</span><span id="line-255">        /**</span>
+<span class="source-line-no">256</span><span id="line-256">         * Draws a closed polygon specified by a sequence of {@link Point2D} objects with arbitrary coordinate values</span>
+<span class="source-line-no">257</span><span id="line-257">         * (convenience method). Note that the the polygon is automatically closed, i.e., N+1 segments are drawn if the</span>
+<span class="source-line-no">258</span><span id="line-258">         * number of given points is N.</span>
+<span class="source-line-no">259</span><span id="line-259">         *</span>
+<span class="source-line-no">260</span><span id="line-260">         * @param points a sequence of 2D points</span>
+<span class="source-line-no">261</span><span id="line-261">         * @see Path2D</span>
 <span class="source-line-no">262</span><span id="line-262">         */</span>
-<span class="source-line-no">263</span><span id="line-263">        public void drawOval(double x, double y, double w, double h) {</span>
-<span class="source-line-no">264</span><span id="line-264">                g2.draw(new Ellipse2D.Double(x, y, w, h));</span>
-<span class="source-line-no">265</span><span id="line-265">        }</span>
-<span class="source-line-no">266</span><span id="line-266">        </span>
-<span class="source-line-no">267</span><span id="line-267">        /**</span>
-<span class="source-line-no">268</span><span id="line-268">         * Draws a rectangle specified with</span>
-<span class="source-line-no">269</span><span id="line-269">         * {@code double} coordinate values (convenience method).</span>
-<span class="source-line-no">270</span><span id="line-270">         * @param x x-coordinate of the upper-left corner</span>
-<span class="source-line-no">271</span><span id="line-271">         * @param y y-coordinate of the upper-left corner</span>
-<span class="source-line-no">272</span><span id="line-272">         * @param w width</span>
-<span class="source-line-no">273</span><span id="line-273">         * @param h height</span>
-<span class="source-line-no">274</span><span id="line-274">         * @see Rectangle2D</span>
-<span class="source-line-no">275</span><span id="line-275">         */</span>
-<span class="source-line-no">276</span><span id="line-276">        public void drawRectangle(double x, double y, double w, double h) {</span>
-<span class="source-line-no">277</span><span id="line-277">                g2.draw(new Rectangle2D.Double(x, y, w, h));</span>
-<span class="source-line-no">278</span><span id="line-278">        }</span>
-<span class="source-line-no">279</span><span id="line-279">        </span>
-<span class="source-line-no">280</span><span id="line-280">        /**</span>
-<span class="source-line-no">281</span><span id="line-281">         * Draws a closed polygon specified by a </span>
-<span class="source-line-no">282</span><span id="line-282">         * sequence of {@link Point2D} objects with arbitrary coordinate values</span>
-<span class="source-line-no">283</span><span id="line-283">         * (convenience method).</span>
-<span class="source-line-no">284</span><span id="line-284">         * Note that the the polygon is automatically closed, i.e.,</span>
-<span class="source-line-no">285</span><span id="line-285">         * N+1 segments are drawn if the number of given points is N.</span>
-<span class="source-line-no">286</span><span id="line-286">         * @param points a sequence of 2D points</span>
-<span class="source-line-no">287</span><span id="line-287">         * @see Path2D</span>
-<span class="source-line-no">288</span><span id="line-288">         */</span>
-<span class="source-line-no">289</span><span id="line-289">        public void drawPolygon(Point2D ... points) {</span>
-<span class="source-line-no">290</span><span id="line-290">                Path2D.Double p = new Path2D.Double();</span>
-<span class="source-line-no">291</span><span id="line-291">                p.moveTo(points[0].getX(), points[0].getY());</span>
-<span class="source-line-no">292</span><span id="line-292">                for (int i = 1; i &lt; points.length; i++) {</span>
-<span class="source-line-no">293</span><span id="line-293">                        p.lineTo(points[i].getX(), points[i].getY());</span>
-<span class="source-line-no">294</span><span id="line-294">                }</span>
-<span class="source-line-no">295</span><span id="line-295">                p.closePath();</span>
-<span class="source-line-no">296</span><span id="line-296">                g2.draw(p);</span>
-<span class="source-line-no">297</span><span id="line-297">        }</span>
-<span class="source-line-no">298</span><span id="line-298">        </span>
-<span class="source-line-no">299</span><span id="line-299">        // stroke-related methods -------------------------------------</span>
-<span class="source-line-no">300</span><span id="line-300">        </span>
-<span class="source-line-no">301</span><span id="line-301">        /**</span>
-<span class="source-line-no">302</span><span id="line-302">         * Sets this graphics context's current color to the specified color. </span>
-<span class="source-line-no">303</span><span id="line-303">         * All subsequent graphics operations using this graphics context use </span>
-<span class="source-line-no">304</span><span id="line-304">         * this specified color.</span>
-<span class="source-line-no">305</span><span id="line-305">         * @param color the new rendering color</span>
-<span class="source-line-no">306</span><span id="line-306">         * @see Graphics#setColor</span>
-<span class="source-line-no">307</span><span id="line-307">         */</span>
-<span class="source-line-no">308</span><span id="line-308">        public void setColor(Color color) {</span>
-<span class="source-line-no">309</span><span id="line-309">                this.color = color;</span>
-<span class="source-line-no">310</span><span id="line-310">                g2.setColor(color);</span>
-<span class="source-line-no">311</span><span id="line-311">        }</span>
-<span class="source-line-no">312</span><span id="line-312">        </span>
-<span class="source-line-no">313</span><span id="line-313">        /**</span>
-<span class="source-line-no">314</span><span id="line-314">         * Sets this graphics context's current color to the specified</span>
-<span class="source-line-no">315</span><span id="line-315">         * (gray) color, with RGB = (gray, gray, gray).</span>
-<span class="source-line-no">316</span><span id="line-316">         * @param gray the gray value</span>
-<span class="source-line-no">317</span><span id="line-317">         */</span>
-<span class="source-line-no">318</span><span id="line-318">        public void setColor(int gray) {</span>
-<span class="source-line-no">319</span><span id="line-319">                if (gray &lt; 0) gray = 0;</span>
-<span class="source-line-no">320</span><span id="line-320">                if (gray &gt; 255) gray = 255;</span>
-<span class="source-line-no">321</span><span id="line-321">                this.setColor(new Color(gray, gray, gray));</span>
-<span class="source-line-no">322</span><span id="line-322">        }</span>
-<span class="source-line-no">323</span><span id="line-323">        </span>
-<span class="source-line-no">324</span><span id="line-324">        /**</span>
-<span class="source-line-no">325</span><span id="line-325">         * Sets the stroke to be used for all subsequent graphics operations.</span>
-<span class="source-line-no">326</span><span id="line-326">         * @param stroke a {@link BasicStroke} instance</span>
-<span class="source-line-no">327</span><span id="line-327">         * @see BasicStroke</span>
-<span class="source-line-no">328</span><span id="line-328">         */</span>
-<span class="source-line-no">329</span><span id="line-329">        public void setStroke(BasicStroke stroke) {</span>
-<span class="source-line-no">330</span><span id="line-330">                this.stroke = stroke;</span>
-<span class="source-line-no">331</span><span id="line-331">                g2.setStroke(this.stroke);</span>
-<span class="source-line-no">332</span><span id="line-332">        }</span>
-<span class="source-line-no">333</span><span id="line-333">        </span>
-<span class="source-line-no">334</span><span id="line-334">        /**</span>
-<span class="source-line-no">335</span><span id="line-335">         * Sets the line width of the current stroke.</span>
-<span class="source-line-no">336</span><span id="line-336">         * All other stroke properties remain unchanged.</span>
-<span class="source-line-no">337</span><span id="line-337">         * @param width the line width</span>
-<span class="source-line-no">338</span><span id="line-338">         * @see BasicStroke</span>
-<span class="source-line-no">339</span><span id="line-339">         */</span>
-<span class="source-line-no">340</span><span id="line-340">        public void setLineWidth(double width) {</span>
-<span class="source-line-no">341</span><span id="line-341">                this.stroke = new BasicStroke((float)width, stroke.getEndCap(), stroke.getLineJoin());</span>
-<span class="source-line-no">342</span><span id="line-342">                g2.setStroke(this.stroke);</span>
-<span class="source-line-no">343</span><span id="line-343">        }</span>
-<span class="source-line-no">344</span><span id="line-344">        </span>
-<span class="source-line-no">345</span><span id="line-345">        /**</span>
-<span class="source-line-no">346</span><span id="line-346">         * Sets the end cap style of the current stroke to "BUTT".</span>
-<span class="source-line-no">347</span><span id="line-347">         * All other stroke properties remain unchanged.</span>
-<span class="source-line-no">348</span><span id="line-348">         * @see BasicStroke</span>
-<span class="source-line-no">349</span><span id="line-349">         */</span>
-<span class="source-line-no">350</span><span id="line-350">        public void setEndCapButt() {</span>
-<span class="source-line-no">351</span><span id="line-351">                this.setEndCap(BasicStroke.CAP_BUTT);</span>
-<span class="source-line-no">352</span><span id="line-352">        }</span>
-<span class="source-line-no">353</span><span id="line-353">        </span>
-<span class="source-line-no">354</span><span id="line-354">        /**</span>
-<span class="source-line-no">355</span><span id="line-355">         * Sets the end cap style of the current stroke to "ROUND".</span>
-<span class="source-line-no">356</span><span id="line-356">         * All other stroke properties remain unchanged.</span>
-<span class="source-line-no">357</span><span id="line-357">         * @see BasicStroke</span>
-<span class="source-line-no">358</span><span id="line-358">         */</span>
-<span class="source-line-no">359</span><span id="line-359">        public void setEndCapRound() {</span>
-<span class="source-line-no">360</span><span id="line-360">                this.setEndCap(BasicStroke.CAP_ROUND);</span>
-<span class="source-line-no">361</span><span id="line-361">        }</span>
-<span class="source-line-no">362</span><span id="line-362">        </span>
-<span class="source-line-no">363</span><span id="line-363">        /**</span>
-<span class="source-line-no">364</span><span id="line-364">         * Sets the end cap style of the current stroke to "SQUARE".</span>
-<span class="source-line-no">365</span><span id="line-365">         * All other stroke properties remain unchanged.</span>
-<span class="source-line-no">366</span><span id="line-366">         * @see BasicStroke</span>
-<span class="source-line-no">367</span><span id="line-367">         */</span>
-<span class="source-line-no">368</span><span id="line-368">        public void setEndCapSquare() {</span>
-<span class="source-line-no">369</span><span id="line-369">                this.setEndCap(BasicStroke.CAP_SQUARE);</span>
-<span class="source-line-no">370</span><span id="line-370">        }</span>
-<span class="source-line-no">371</span><span id="line-371">        </span>
-<span class="source-line-no">372</span><span id="line-372">        private void setEndCap(int cap) {</span>
-<span class="source-line-no">373</span><span id="line-373">                setStroke(new BasicStroke(stroke.getLineWidth(), cap, stroke.getLineJoin()));</span>
-<span class="source-line-no">374</span><span id="line-374">        }</span>
-<span class="source-line-no">375</span><span id="line-375">        </span>
-<span class="source-line-no">376</span><span id="line-376">        // ---------------------</span>
-<span class="source-line-no">377</span><span id="line-377">        </span>
-<span class="source-line-no">378</span><span id="line-378">        /**</span>
-<span class="source-line-no">379</span><span id="line-379">         * Sets the line segment join style of the current stroke to "BEVEL".</span>
-<span class="source-line-no">380</span><span id="line-380">         * All other stroke properties remain unchanged.</span>
-<span class="source-line-no">381</span><span id="line-381">         * @see BasicStroke</span>
-<span class="source-line-no">382</span><span id="line-382">         */</span>
-<span class="source-line-no">383</span><span id="line-383">        public void setLineJoinBevel() {</span>
-<span class="source-line-no">384</span><span id="line-384">                setLineJoin(BasicStroke.JOIN_BEVEL);</span>
-<span class="source-line-no">385</span><span id="line-385">        }</span>
-<span class="source-line-no">386</span><span id="line-386">        </span>
-<span class="source-line-no">387</span><span id="line-387">        /**</span>
-<span class="source-line-no">388</span><span id="line-388">         * Sets the line segment join style of the current stroke to "MITER".</span>
-<span class="source-line-no">389</span><span id="line-389">         * All other stroke properties remain unchanged.</span>
-<span class="source-line-no">390</span><span id="line-390">         * @see BasicStroke</span>
-<span class="source-line-no">391</span><span id="line-391">         */</span>
-<span class="source-line-no">392</span><span id="line-392">        public void setLineJoinMiter() {</span>
-<span class="source-line-no">393</span><span id="line-393">                setLineJoin(BasicStroke.JOIN_MITER);</span>
-<span class="source-line-no">394</span><span id="line-394">        }</span>
-<span class="source-line-no">395</span><span id="line-395">        </span>
-<span class="source-line-no">396</span><span id="line-396">        /**</span>
-<span class="source-line-no">397</span><span id="line-397">         * Sets the line segment join style of the current stroke to "ROUND".</span>
-<span class="source-line-no">398</span><span id="line-398">         * All other stroke properties remain unchanged.</span>
-<span class="source-line-no">399</span><span id="line-399">         * @see BasicStroke</span>
-<span class="source-line-no">400</span><span id="line-400">         */</span>
-<span class="source-line-no">401</span><span id="line-401">        public void setLineJoinRound() {</span>
-<span class="source-line-no">402</span><span id="line-402">                setLineJoin(BasicStroke.JOIN_ROUND);</span>
-<span class="source-line-no">403</span><span id="line-403">        }</span>
-<span class="source-line-no">404</span><span id="line-404">        </span>
-<span class="source-line-no">405</span><span id="line-405">        private void setLineJoin(int join) {</span>
-<span class="source-line-no">406</span><span id="line-406">                setStroke(new BasicStroke(stroke.getLineWidth(), stroke.getEndCap(), join));</span>
-<span class="source-line-no">407</span><span id="line-407">        }</span>
-<span class="source-line-no">408</span><span id="line-408">}</span>
+<span class="source-line-no">263</span><span id="line-263">        public void drawPolygon(Point2D ... points) {</span>
+<span class="source-line-no">264</span><span id="line-264">                Path2D.Double p = new Path2D.Double();</span>
+<span class="source-line-no">265</span><span id="line-265">                p.moveTo(points[0].getX(), points[0].getY());</span>
+<span class="source-line-no">266</span><span id="line-266">                for (int i = 1; i &lt; points.length; i++) {</span>
+<span class="source-line-no">267</span><span id="line-267">                        p.lineTo(points[i].getX(), points[i].getY());</span>
+<span class="source-line-no">268</span><span id="line-268">                }</span>
+<span class="source-line-no">269</span><span id="line-269">                p.closePath();</span>
+<span class="source-line-no">270</span><span id="line-270">                g2.draw(p);</span>
+<span class="source-line-no">271</span><span id="line-271">        }</span>
+<span class="source-line-no">272</span><span id="line-272">        </span>
+<span class="source-line-no">273</span><span id="line-273">        // stroke-related methods -------------------------------------</span>
+<span class="source-line-no">274</span><span id="line-274"></span>
+<span class="source-line-no">275</span><span id="line-275">        /**</span>
+<span class="source-line-no">276</span><span id="line-276">         * Sets this graphics context's current color to the specified color. All subsequent graphics operations using this</span>
+<span class="source-line-no">277</span><span id="line-277">         * graphics context use this specified color.</span>
+<span class="source-line-no">278</span><span id="line-278">         *</span>
+<span class="source-line-no">279</span><span id="line-279">         * @param color the new rendering color</span>
+<span class="source-line-no">280</span><span id="line-280">         * @see Graphics#setColor</span>
+<span class="source-line-no">281</span><span id="line-281">         */</span>
+<span class="source-line-no">282</span><span id="line-282">        public void setColor(Color color) {</span>
+<span class="source-line-no">283</span><span id="line-283">                this.color = color;</span>
+<span class="source-line-no">284</span><span id="line-284">                g2.setColor(color);</span>
+<span class="source-line-no">285</span><span id="line-285">        }</span>
+<span class="source-line-no">286</span><span id="line-286"></span>
+<span class="source-line-no">287</span><span id="line-287">        /**</span>
+<span class="source-line-no">288</span><span id="line-288">         * Sets this graphics context's current color to the specified (gray) color, with RGB = (gray, gray, gray).</span>
+<span class="source-line-no">289</span><span id="line-289">         *</span>
+<span class="source-line-no">290</span><span id="line-290">         * @param gray the gray value</span>
+<span class="source-line-no">291</span><span id="line-291">         */</span>
+<span class="source-line-no">292</span><span id="line-292">        public void setColor(int gray) {</span>
+<span class="source-line-no">293</span><span id="line-293">                if (gray &lt; 0) gray = 0;</span>
+<span class="source-line-no">294</span><span id="line-294">                if (gray &gt; 255) gray = 255;</span>
+<span class="source-line-no">295</span><span id="line-295">                this.setColor(new Color(gray, gray, gray));</span>
+<span class="source-line-no">296</span><span id="line-296">        }</span>
+<span class="source-line-no">297</span><span id="line-297"></span>
+<span class="source-line-no">298</span><span id="line-298">        /**</span>
+<span class="source-line-no">299</span><span id="line-299">         * Sets the stroke to be used for all subsequent graphics operations.</span>
+<span class="source-line-no">300</span><span id="line-300">         *</span>
+<span class="source-line-no">301</span><span id="line-301">         * @param stroke a {@link BasicStroke} instance</span>
+<span class="source-line-no">302</span><span id="line-302">         * @see BasicStroke</span>
+<span class="source-line-no">303</span><span id="line-303">         */</span>
+<span class="source-line-no">304</span><span id="line-304">        public void setStroke(BasicStroke stroke) {</span>
+<span class="source-line-no">305</span><span id="line-305">                this.stroke = stroke;</span>
+<span class="source-line-no">306</span><span id="line-306">                g2.setStroke(this.stroke);</span>
+<span class="source-line-no">307</span><span id="line-307">        }</span>
+<span class="source-line-no">308</span><span id="line-308"></span>
+<span class="source-line-no">309</span><span id="line-309">        /**</span>
+<span class="source-line-no">310</span><span id="line-310">         * Sets the line width of the current stroke. All other stroke properties remain unchanged.</span>
+<span class="source-line-no">311</span><span id="line-311">         *</span>
+<span class="source-line-no">312</span><span id="line-312">         * @param width the line width</span>
+<span class="source-line-no">313</span><span id="line-313">         * @see BasicStroke</span>
+<span class="source-line-no">314</span><span id="line-314">         */</span>
+<span class="source-line-no">315</span><span id="line-315">        public void setLineWidth(double width) {</span>
+<span class="source-line-no">316</span><span id="line-316">                this.stroke = new BasicStroke((float)width, stroke.getEndCap(), stroke.getLineJoin());</span>
+<span class="source-line-no">317</span><span id="line-317">                g2.setStroke(this.stroke);</span>
+<span class="source-line-no">318</span><span id="line-318">        }</span>
+<span class="source-line-no">319</span><span id="line-319"></span>
+<span class="source-line-no">320</span><span id="line-320">        /**</span>
+<span class="source-line-no">321</span><span id="line-321">         * Sets the end cap style of the current stroke to "BUTT". All other stroke properties remain unchanged.</span>
+<span class="source-line-no">322</span><span id="line-322">         *</span>
+<span class="source-line-no">323</span><span id="line-323">         * @see BasicStroke</span>
+<span class="source-line-no">324</span><span id="line-324">         */</span>
+<span class="source-line-no">325</span><span id="line-325">        public void setEndCapButt() {</span>
+<span class="source-line-no">326</span><span id="line-326">                this.setEndCap(BasicStroke.CAP_BUTT);</span>
+<span class="source-line-no">327</span><span id="line-327">        }</span>
+<span class="source-line-no">328</span><span id="line-328"></span>
+<span class="source-line-no">329</span><span id="line-329">        /**</span>
+<span class="source-line-no">330</span><span id="line-330">         * Sets the end cap style of the current stroke to "ROUND". All other stroke properties remain unchanged.</span>
+<span class="source-line-no">331</span><span id="line-331">         *</span>
+<span class="source-line-no">332</span><span id="line-332">         * @see BasicStroke</span>
+<span class="source-line-no">333</span><span id="line-333">         */</span>
+<span class="source-line-no">334</span><span id="line-334">        public void setEndCapRound() {</span>
+<span class="source-line-no">335</span><span id="line-335">                this.setEndCap(BasicStroke.CAP_ROUND);</span>
+<span class="source-line-no">336</span><span id="line-336">        }</span>
+<span class="source-line-no">337</span><span id="line-337"></span>
+<span class="source-line-no">338</span><span id="line-338">        /**</span>
+<span class="source-line-no">339</span><span id="line-339">         * Sets the end cap style of the current stroke to "SQUARE". All other stroke properties remain unchanged.</span>
+<span class="source-line-no">340</span><span id="line-340">         *</span>
+<span class="source-line-no">341</span><span id="line-341">         * @see BasicStroke</span>
+<span class="source-line-no">342</span><span id="line-342">         */</span>
+<span class="source-line-no">343</span><span id="line-343">        public void setEndCapSquare() {</span>
+<span class="source-line-no">344</span><span id="line-344">                this.setEndCap(BasicStroke.CAP_SQUARE);</span>
+<span class="source-line-no">345</span><span id="line-345">        }</span>
+<span class="source-line-no">346</span><span id="line-346">        </span>
+<span class="source-line-no">347</span><span id="line-347">        private void setEndCap(int cap) {</span>
+<span class="source-line-no">348</span><span id="line-348">                setStroke(new BasicStroke(stroke.getLineWidth(), cap, stroke.getLineJoin()));</span>
+<span class="source-line-no">349</span><span id="line-349">        }</span>
+<span class="source-line-no">350</span><span id="line-350">        </span>
+<span class="source-line-no">351</span><span id="line-351">        // ---------------------</span>
+<span class="source-line-no">352</span><span id="line-352"></span>
+<span class="source-line-no">353</span><span id="line-353">        /**</span>
+<span class="source-line-no">354</span><span id="line-354">         * Sets the line segment join style of the current stroke to "BEVEL". All other stroke properties remain unchanged.</span>
+<span class="source-line-no">355</span><span id="line-355">         *</span>
+<span class="source-line-no">356</span><span id="line-356">         * @see BasicStroke</span>
+<span class="source-line-no">357</span><span id="line-357">         */</span>
+<span class="source-line-no">358</span><span id="line-358">        public void setLineJoinBevel() {</span>
+<span class="source-line-no">359</span><span id="line-359">                setLineJoin(BasicStroke.JOIN_BEVEL);</span>
+<span class="source-line-no">360</span><span id="line-360">        }</span>
+<span class="source-line-no">361</span><span id="line-361"></span>
+<span class="source-line-no">362</span><span id="line-362">        /**</span>
+<span class="source-line-no">363</span><span id="line-363">         * Sets the line segment join style of the current stroke to "MITER". All other stroke properties remain unchanged.</span>
+<span class="source-line-no">364</span><span id="line-364">         *</span>
+<span class="source-line-no">365</span><span id="line-365">         * @see BasicStroke</span>
+<span class="source-line-no">366</span><span id="line-366">         */</span>
+<span class="source-line-no">367</span><span id="line-367">        public void setLineJoinMiter() {</span>
+<span class="source-line-no">368</span><span id="line-368">                setLineJoin(BasicStroke.JOIN_MITER);</span>
+<span class="source-line-no">369</span><span id="line-369">        }</span>
+<span class="source-line-no">370</span><span id="line-370"></span>
+<span class="source-line-no">371</span><span id="line-371">        /**</span>
+<span class="source-line-no">372</span><span id="line-372">         * Sets the line segment join style of the current stroke to "ROUND". All other stroke properties remain unchanged.</span>
+<span class="source-line-no">373</span><span id="line-373">         *</span>
+<span class="source-line-no">374</span><span id="line-374">         * @see BasicStroke</span>
+<span class="source-line-no">375</span><span id="line-375">         */</span>
+<span class="source-line-no">376</span><span id="line-376">        public void setLineJoinRound() {</span>
+<span class="source-line-no">377</span><span id="line-377">                setLineJoin(BasicStroke.JOIN_ROUND);</span>
+<span class="source-line-no">378</span><span id="line-378">        }</span>
+<span class="source-line-no">379</span><span id="line-379">        </span>
+<span class="source-line-no">380</span><span id="line-380">        private void setLineJoin(int join) {</span>
+<span class="source-line-no">381</span><span id="line-381">                setStroke(new BasicStroke(stroke.getLineWidth(), stroke.getEndCap(), join));</span>
+<span class="source-line-no">382</span><span id="line-382">        }</span>
+<span class="source-line-no">383</span><span id="line-383">}</span>
 
 
 

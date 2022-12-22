@@ -25,22 +25,20 @@
 <span class="source-line-no">012</span><span id="line-12">import java.util.Iterator;</span>
 <span class="source-line-no">013</span><span id="line-13"></span>
 <span class="source-line-no">014</span><span id="line-14">/**</span>
-<span class="source-line-no">015</span><span id="line-15"> * Common interface for color sequencers.</span>
-<span class="source-line-no">016</span><span id="line-16"> * They are supposed to iterate infinitely, thus </span>
-<span class="source-line-no">017</span><span id="line-17"> * {@link #hasNext()} returns {@code true} by default.</span>
-<span class="source-line-no">018</span><span id="line-18"> * </span>
-<span class="source-line-no">019</span><span id="line-19"> * @author WB</span>
-<span class="source-line-no">020</span><span id="line-20"> *</span>
-<span class="source-line-no">021</span><span id="line-21"> */</span>
-<span class="source-line-no">022</span><span id="line-22">public interface ColorSequencer extends Iterator&lt;Color&gt; {</span>
-<span class="source-line-no">023</span><span id="line-23">        </span>
-<span class="source-line-no">024</span><span id="line-24">        @Override</span>
-<span class="source-line-no">025</span><span id="line-25">        public default boolean hasNext() {</span>
-<span class="source-line-no">026</span><span id="line-26">                return true;</span>
-<span class="source-line-no">027</span><span id="line-27">        }</span>
+<span class="source-line-no">015</span><span id="line-15"> * Common interface for color sequencers. Color sequencers iterate over a given set of colors. Unless specified</span>
+<span class="source-line-no">016</span><span id="line-16"> * otherwise, they iterate infinitely, thus {@link #hasNext()} returns {@code true} by default.</span>
+<span class="source-line-no">017</span><span id="line-17"> *</span>
+<span class="source-line-no">018</span><span id="line-18"> * @author WB</span>
+<span class="source-line-no">019</span><span id="line-19"> */</span>
+<span class="source-line-no">020</span><span id="line-20">public interface ColorSequencer extends Iterator&lt;Color&gt; {</span>
+<span class="source-line-no">021</span><span id="line-21">        </span>
+<span class="source-line-no">022</span><span id="line-22">        @Override</span>
+<span class="source-line-no">023</span><span id="line-23">        public default boolean hasNext() {</span>
+<span class="source-line-no">024</span><span id="line-24">                return true;</span>
+<span class="source-line-no">025</span><span id="line-25">        }</span>
+<span class="source-line-no">026</span><span id="line-26"></span>
+<span class="source-line-no">027</span><span id="line-27">}</span>
 <span class="source-line-no">028</span><span id="line-28"></span>
-<span class="source-line-no">029</span><span id="line-29">}</span>
-<span class="source-line-no">030</span><span id="line-30"></span>
 
 
 

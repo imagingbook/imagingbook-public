@@ -22,11 +22,11 @@
 <span class="source-line-no">009</span><span id="line-9"></span>
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.mser;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.color.sets.ColorEnumeration.getColors;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.color.sets.ColorEnumeration;</span>
 <span class="source-line-no">013</span><span id="line-13"></span>
 <span class="source-line-no">014</span><span id="line-14">import java.awt.Color;</span>
 <span class="source-line-no">015</span><span id="line-15"></span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.common.color.sets.ColorEnumeration;</span>
+<span class="source-line-no">016</span><span id="line-16">import static imagingbook.common.color.sets.ColorEnumeration.getColors;</span>
 <span class="source-line-no">017</span><span id="line-17"></span>
 <span class="source-line-no">018</span><span id="line-18">/**</span>
 <span class="source-line-no">019</span><span id="line-19"> * Color definitions used in MSER demo plugins.</span>
@@ -48,19 +48,18 @@
 <span class="source-line-no">035</span><span id="line-35">        public static final Color[] LevelColors = </span>
 <span class="source-line-no">036</span><span id="line-36">                        getColors(Red, Green, Blue, Magenta);</span>
 <span class="source-line-no">037</span><span id="line-37"></span>
-<span class="source-line-no">038</span><span id="line-38">        </span>
-<span class="source-line-no">039</span><span id="line-39">        private final Color color;</span>
-<span class="source-line-no">040</span><span id="line-40">        </span>
-<span class="source-line-no">041</span><span id="line-41">        MserColors(int r, int g, int b) {</span>
-<span class="source-line-no">042</span><span id="line-42">                this.color = new Color(r, g, b);</span>
-<span class="source-line-no">043</span><span id="line-43">        }</span>
-<span class="source-line-no">044</span><span id="line-44">        </span>
-<span class="source-line-no">045</span><span id="line-45">        @Override</span>
-<span class="source-line-no">046</span><span id="line-46">        public Color getColor() {</span>
-<span class="source-line-no">047</span><span id="line-47">                return this.color;</span>
-<span class="source-line-no">048</span><span id="line-48">        }</span>
-<span class="source-line-no">049</span><span id="line-49"></span>
-<span class="source-line-no">050</span><span id="line-50">}</span>
+<span class="source-line-no">038</span><span id="line-38">        private final Color color;</span>
+<span class="source-line-no">039</span><span id="line-39">        </span>
+<span class="source-line-no">040</span><span id="line-40">        MserColors(int r, int g, int b) {</span>
+<span class="source-line-no">041</span><span id="line-41">                this.color = new Color(r, g, b);</span>
+<span class="source-line-no">042</span><span id="line-42">        }</span>
+<span class="source-line-no">043</span><span id="line-43">        </span>
+<span class="source-line-no">044</span><span id="line-44">        @Override</span>
+<span class="source-line-no">045</span><span id="line-45">        public Color getColor() {</span>
+<span class="source-line-no">046</span><span id="line-46">                return this.color;</span>
+<span class="source-line-no">047</span><span id="line-47">        }</span>
+<span class="source-line-no">048</span><span id="line-48"></span>
+<span class="source-line-no">049</span><span id="line-49">}</span>
 
 
 

@@ -23,23 +23,21 @@
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.image;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
 <span class="source-line-no">012</span><span id="line-12">/**</span>
-<span class="source-line-no">013</span><span id="line-13"> * Enumeration type representing the available strategies</span>
-<span class="source-line-no">014</span><span id="line-14"> * for accessing pixel locations outside the image bounds.</span>
-<span class="source-line-no">015</span><span id="line-15"> * </span>
-<span class="source-line-no">016</span><span id="line-16"> * @author WB</span>
-<span class="source-line-no">017</span><span id="line-17"> * </span>
-<span class="source-line-no">018</span><span id="line-18"> * @see GridIndexer2D</span>
-<span class="source-line-no">019</span><span id="line-19"> */</span>
-<span class="source-line-no">020</span><span id="line-20">public enum OutOfBoundsStrategy {</span>
-<span class="source-line-no">021</span><span id="line-21">        /** Insert zero values. */</span>
-<span class="source-line-no">022</span><span id="line-22">        ZeroValues,</span>
-<span class="source-line-no">023</span><span id="line-23">        /** Insert the value of the nearest border pixel. */</span>
-<span class="source-line-no">024</span><span id="line-24">        NearestBorder,</span>
-<span class="source-line-no">025</span><span id="line-25">        /** Replicate the image by mirroring at its borders. */</span>
-<span class="source-line-no">026</span><span id="line-26">        MirrorImage,</span>
-<span class="source-line-no">027</span><span id="line-27">        /** Throws an exception when out-of-boundary coordinates are accessed. */</span>
-<span class="source-line-no">028</span><span id="line-28">        ThrowException;</span>
-<span class="source-line-no">029</span><span id="line-29">}</span>
+<span class="source-line-no">013</span><span id="line-13"> * Enumeration type representing the available strategies for accessing pixel locations outside the image bounds.</span>
+<span class="source-line-no">014</span><span id="line-14"> *</span>
+<span class="source-line-no">015</span><span id="line-15"> * @author WB</span>
+<span class="source-line-no">016</span><span id="line-16"> * @see GridIndexer2D</span>
+<span class="source-line-no">017</span><span id="line-17"> */</span>
+<span class="source-line-no">018</span><span id="line-18">public enum OutOfBoundsStrategy {</span>
+<span class="source-line-no">019</span><span id="line-19">        /** Insert zero values. */</span>
+<span class="source-line-no">020</span><span id="line-20">        ZeroValues,</span>
+<span class="source-line-no">021</span><span id="line-21">        /** Insert the value of the nearest border pixel. */</span>
+<span class="source-line-no">022</span><span id="line-22">        NearestBorder,</span>
+<span class="source-line-no">023</span><span id="line-23">        /** Replicate the image by mirroring at its borders. */</span>
+<span class="source-line-no">024</span><span id="line-24">        MirrorImage,</span>
+<span class="source-line-no">025</span><span id="line-25">        /** Throws an exception when out-of-boundary coordinates are accessed. */</span>
+<span class="source-line-no">026</span><span id="line-26">        ThrowException;</span>
+<span class="source-line-no">027</span><span id="line-27">}</span>
 
 
 

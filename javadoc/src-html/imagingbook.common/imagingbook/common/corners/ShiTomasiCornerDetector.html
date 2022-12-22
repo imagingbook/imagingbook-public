@@ -22,52 +22,48 @@
 <span class="source-line-no">009</span><span id="line-9"></span>
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.corners;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.math.Arithmetic.sqr;</span>
-<span class="source-line-no">013</span><span id="line-13">import static java.lang.Math.sqrt;</span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">import ij.process.ImageProcessor;</span>
+<span class="source-line-no">012</span><span id="line-12">import ij.process.ImageProcessor;</span>
+<span class="source-line-no">013</span><span id="line-13"></span>
+<span class="source-line-no">014</span><span id="line-14">import static imagingbook.common.math.Arithmetic.sqr;</span>
+<span class="source-line-no">015</span><span id="line-15">import static java.lang.Math.sqrt;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
 <span class="source-line-no">017</span><span id="line-17"></span>
 <span class="source-line-no">018</span><span id="line-18">/**</span>
 <span class="source-line-no">019</span><span id="line-19"> * &lt;p&gt;</span>
-<span class="source-line-no">020</span><span id="line-20"> * This is an implementation of the Shi-Tomasi corner detector, as </span>
-<span class="source-line-no">021</span><span id="line-21"> * described in [1].</span>
-<span class="source-line-no">022</span><span id="line-22"> * This class extends {@link GradientCornerDetector} (where most</span>
-<span class="source-line-no">023</span><span id="line-23"> * of the work is done) by defining a specific corner score function</span>
-<span class="source-line-no">024</span><span id="line-24"> * and associated threshold.</span>
-<span class="source-line-no">025</span><span id="line-25"> * See Sec. 6.3.1 of [2] for additional details.</span>
-<span class="source-line-no">026</span><span id="line-26"> * &lt;/p&gt;</span>
-<span class="source-line-no">027</span><span id="line-27"> * &lt;p&gt;</span>
-<span class="source-line-no">028</span><span id="line-28"> * [1] J. Shi and C. Tomasi. Good features to track. In Proceedings</span>
-<span class="source-line-no">029</span><span id="line-29"> *  of IEEE Conference on Computer Vision and Pattern Recognition,</span>
-<span class="source-line-no">030</span><span id="line-30"> *  CVPR’94, pp. 593–600, Seattle, WA, USA (1994).</span>
-<span class="source-line-no">031</span><span id="line-31"> * &lt;br&gt;</span>
-<span class="source-line-no">032</span><span id="line-32"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;,</span>
-<span class="source-line-no">033</span><span id="line-33"> * 3rd ed, Springer (2022).</span>
-<span class="source-line-no">034</span><span id="line-34"> * &lt;/p&gt;</span>
-<span class="source-line-no">035</span><span id="line-35"> * </span>
-<span class="source-line-no">036</span><span id="line-36"> * @author WB</span>
-<span class="source-line-no">037</span><span id="line-37"> * @version 2022/03/30</span>
-<span class="source-line-no">038</span><span id="line-38"> */</span>
-<span class="source-line-no">039</span><span id="line-39">public class ShiTomasiCornerDetector extends GradientCornerDetector {</span>
+<span class="source-line-no">020</span><span id="line-20"> * This is an implementation of the Shi-Tomasi corner detector, as described in [1]. This class extends</span>
+<span class="source-line-no">021</span><span id="line-21"> * {@link GradientCornerDetector} (where most of the work is done) by defining a specific corner score function and</span>
+<span class="source-line-no">022</span><span id="line-22"> * associated threshold. See Sec. 6.3.1 of [2] for additional details.</span>
+<span class="source-line-no">023</span><span id="line-23"> * &lt;/p&gt;</span>
+<span class="source-line-no">024</span><span id="line-24"> * &lt;p&gt;</span>
+<span class="source-line-no">025</span><span id="line-25"> * [1] J. Shi and C. Tomasi. Good features to track. In Proceedings of IEEE Conference on Computer Vision and Pattern</span>
+<span class="source-line-no">026</span><span id="line-26"> * Recognition, CVPR’94, pp. 593–600, Seattle, WA, USA (1994).</span>
+<span class="source-line-no">027</span><span id="line-27"> * &lt;br&gt;</span>
+<span class="source-line-no">028</span><span id="line-28"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">029</span><span id="line-29"> * (2022).</span>
+<span class="source-line-no">030</span><span id="line-30"> * &lt;/p&gt;</span>
+<span class="source-line-no">031</span><span id="line-31"> *</span>
+<span class="source-line-no">032</span><span id="line-32"> * @author WB</span>
+<span class="source-line-no">033</span><span id="line-33"> * @version 2022/03/30</span>
+<span class="source-line-no">034</span><span id="line-34"> */</span>
+<span class="source-line-no">035</span><span id="line-35">public class ShiTomasiCornerDetector extends GradientCornerDetector {</span>
+<span class="source-line-no">036</span><span id="line-36">        </span>
+<span class="source-line-no">037</span><span id="line-37">        public ShiTomasiCornerDetector(ImageProcessor ip, GradientCornerDetector.Parameters params) {</span>
+<span class="source-line-no">038</span><span id="line-38">                super(ip, params);</span>
+<span class="source-line-no">039</span><span id="line-39">        }</span>
 <span class="source-line-no">040</span><span id="line-40">        </span>
-<span class="source-line-no">041</span><span id="line-41">        public ShiTomasiCornerDetector(ImageProcessor ip, GradientCornerDetector.Parameters params) {</span>
-<span class="source-line-no">042</span><span id="line-42">                super(ip, params);</span>
-<span class="source-line-no">043</span><span id="line-43">        }</span>
-<span class="source-line-no">044</span><span id="line-44">        </span>
-<span class="source-line-no">045</span><span id="line-45">        // --------------------------------------------------------------</span>
-<span class="source-line-no">046</span><span id="line-46"></span>
-<span class="source-line-no">047</span><span id="line-47">        @Override</span>
-<span class="source-line-no">048</span><span id="line-48">        protected float getCornerScore(float A, float B, float C) {</span>
-<span class="source-line-no">049</span><span id="line-49">                double rootExpr = sqr((A - B) / 2) + sqr(C);</span>
-<span class="source-line-no">050</span><span id="line-50">                if (rootExpr &lt; 0) {</span>
-<span class="source-line-no">051</span><span id="line-51">                        return UndefinedScoreValue;</span>
-<span class="source-line-no">052</span><span id="line-52">                }</span>
-<span class="source-line-no">053</span><span id="line-53">                double lambda2 = (A + B) / 2 - sqrt(rootExpr);</span>
-<span class="source-line-no">054</span><span id="line-54">                return (float) lambda2;</span>
-<span class="source-line-no">055</span><span id="line-55">        }</span>
-<span class="source-line-no">056</span><span id="line-56"></span>
-<span class="source-line-no">057</span><span id="line-57">}</span>
+<span class="source-line-no">041</span><span id="line-41">        // --------------------------------------------------------------</span>
+<span class="source-line-no">042</span><span id="line-42"></span>
+<span class="source-line-no">043</span><span id="line-43">        @Override</span>
+<span class="source-line-no">044</span><span id="line-44">        protected float getCornerScore(float A, float B, float C) {</span>
+<span class="source-line-no">045</span><span id="line-45">                double rootExpr = sqr((A - B) / 2) + sqr(C);</span>
+<span class="source-line-no">046</span><span id="line-46">                if (rootExpr &lt; 0) {</span>
+<span class="source-line-no">047</span><span id="line-47">                        return UndefinedScoreValue;</span>
+<span class="source-line-no">048</span><span id="line-48">                }</span>
+<span class="source-line-no">049</span><span id="line-49">                double lambda2 = (A + B) / 2 - sqrt(rootExpr);</span>
+<span class="source-line-no">050</span><span id="line-50">                return (float) lambda2;</span>
+<span class="source-line-no">051</span><span id="line-51">        }</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">}</span>
 
 
 

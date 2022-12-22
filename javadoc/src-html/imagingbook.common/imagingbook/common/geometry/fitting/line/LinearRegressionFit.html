@@ -21,22 +21,22 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.geometry.fitting.line;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import static imagingbook.common.math.Arithmetic.sqr;</span>
-<span class="source-line-no">012</span><span id="line-12"></span>
-<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.geometry.basic.Pnt2d;</span>
-<span class="source-line-no">014</span><span id="line-14">import imagingbook.common.geometry.line.AlgebraicLine;</span>
-<span class="source-line-no">015</span><span id="line-15">import imagingbook.common.geometry.line.SlopeInterceptLine;</span>
+<span class="source-line-no">011</span><span id="line-11">import imagingbook.common.geometry.basic.Pnt2d;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.geometry.line.AlgebraicLine;</span>
+<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.geometry.line.SlopeInterceptLine;</span>
+<span class="source-line-no">014</span><span id="line-14"></span>
+<span class="source-line-no">015</span><span id="line-15">import static imagingbook.common.math.Arithmetic.sqr;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
 <span class="source-line-no">017</span><span id="line-17">/**</span>
 <span class="source-line-no">018</span><span id="line-18"> * &lt;p&gt;</span>
-<span class="source-line-no">019</span><span id="line-19"> * This class implements line fitting by linear regression to a set of 2D points.</span>
-<span class="source-line-no">020</span><span id="line-20"> * See Sec. 10.2.1 of [1] for additional details.</span>
+<span class="source-line-no">019</span><span id="line-19"> * This class implements line fitting by linear regression to a set of 2D points. See Sec. 10.2.1 of [1] for additional</span>
+<span class="source-line-no">020</span><span id="line-20"> * details.</span>
 <span class="source-line-no">021</span><span id="line-21"> * &lt;/p&gt;</span>
 <span class="source-line-no">022</span><span id="line-22"> * &lt;p&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic</span>
-<span class="source-line-no">024</span><span id="line-24"> * Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
+<span class="source-line-no">023</span><span id="line-23"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">024</span><span id="line-24"> * (2022).</span>
 <span class="source-line-no">025</span><span id="line-25"> * &lt;/p&gt;</span>
-<span class="source-line-no">026</span><span id="line-26"> * </span>
+<span class="source-line-no">026</span><span id="line-26"> *</span>
 <span class="source-line-no">027</span><span id="line-27"> * @author WB</span>
 <span class="source-line-no">028</span><span id="line-28"> * @version 2022/09/29</span>
 <span class="source-line-no">029</span><span id="line-29"> */</span>
@@ -45,11 +45,11 @@
 <span class="source-line-no">032</span><span id="line-32">        private final int n;</span>
 <span class="source-line-no">033</span><span id="line-33">        private final double[] p;       // line parameters A,B,C</span>
 <span class="source-line-no">034</span><span id="line-34">        private double k, d;</span>
-<span class="source-line-no">035</span><span id="line-35">        </span>
+<span class="source-line-no">035</span><span id="line-35"></span>
 <span class="source-line-no">036</span><span id="line-36">        /**</span>
-<span class="source-line-no">037</span><span id="line-37">         * Constructor, performs a linear regression fit to the specified points.</span>
-<span class="source-line-no">038</span><span id="line-38">         * At least two different points are required.</span>
-<span class="source-line-no">039</span><span id="line-39">         * </span>
+<span class="source-line-no">037</span><span id="line-37">         * Constructor, performs a linear regression fit to the specified points. At least two different points are</span>
+<span class="source-line-no">038</span><span id="line-38">         * required.</span>
+<span class="source-line-no">039</span><span id="line-39">         *</span>
 <span class="source-line-no">040</span><span id="line-40">         * @param points an array with at least 2 points</span>
 <span class="source-line-no">041</span><span id="line-41">         */</span>
 <span class="source-line-no">042</span><span id="line-42">        public LinearRegressionFit(Pnt2d[] points) {</span>
@@ -69,19 +69,19 @@
 <span class="source-line-no">056</span><span id="line-56">        public double[] getLineParameters() {</span>
 <span class="source-line-no">057</span><span id="line-57">                return p;</span>
 <span class="source-line-no">058</span><span id="line-58">        }</span>
-<span class="source-line-no">059</span><span id="line-59">        </span>
+<span class="source-line-no">059</span><span id="line-59"></span>
 <span class="source-line-no">060</span><span id="line-60">        /**</span>
-<span class="source-line-no">061</span><span id="line-61">         * Returns the slope parameter k for the fitted line</span>
-<span class="source-line-no">062</span><span id="line-62">         * y = k * x + d.</span>
+<span class="source-line-no">061</span><span id="line-61">         * Returns the slope parameter k for the fitted line y = k * x + d.</span>
+<span class="source-line-no">062</span><span id="line-62">         *</span>
 <span class="source-line-no">063</span><span id="line-63">         * @return line parameter k</span>
 <span class="source-line-no">064</span><span id="line-64">         */</span>
 <span class="source-line-no">065</span><span id="line-65">        public double getK() {</span>
 <span class="source-line-no">066</span><span id="line-66">                return k;</span>
 <span class="source-line-no">067</span><span id="line-67">        }</span>
-<span class="source-line-no">068</span><span id="line-68">        </span>
+<span class="source-line-no">068</span><span id="line-68"></span>
 <span class="source-line-no">069</span><span id="line-69">        /**</span>
-<span class="source-line-no">070</span><span id="line-70">         * Returns the intercept parameter d for the fitted line</span>
-<span class="source-line-no">071</span><span id="line-71">         * y = k * x + d.</span>
+<span class="source-line-no">070</span><span id="line-70">         * Returns the intercept parameter d for the fitted line y = k * x + d.</span>
+<span class="source-line-no">071</span><span id="line-71">         *</span>
 <span class="source-line-no">072</span><span id="line-72">         * @return line parameter d</span>
 <span class="source-line-no">073</span><span id="line-73">         */</span>
 <span class="source-line-no">074</span><span id="line-74">        public double getD() {</span>

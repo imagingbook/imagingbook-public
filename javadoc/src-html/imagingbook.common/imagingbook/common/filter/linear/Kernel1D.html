@@ -34,78 +34,74 @@
 <span class="source-line-no">021</span><span id="line-21">        private final float[] h;</span>
 <span class="source-line-no">022</span><span id="line-22">        private final int xc;</span>
 <span class="source-line-no">023</span><span id="line-23">        private final int width;</span>
-<span class="source-line-no">024</span><span id="line-24">        </span>
+<span class="source-line-no">024</span><span id="line-24"></span>
 <span class="source-line-no">025</span><span id="line-25">        /**</span>
-<span class="source-line-no">026</span><span id="line-26">         * Constructor.</span>
-<span class="source-line-no">027</span><span id="line-27">         * The kernel's hot spot is at its center.</span>
-<span class="source-line-no">028</span><span id="line-28">         * The kernel is normalized.</span>
-<span class="source-line-no">029</span><span id="line-29">         * </span>
-<span class="source-line-no">030</span><span id="line-30">         * @param h the 1D kernel array</span>
-<span class="source-line-no">031</span><span id="line-31">         */</span>
-<span class="source-line-no">032</span><span id="line-32">        public Kernel1D(float[] h) {</span>
-<span class="source-line-no">033</span><span id="line-33">                this(h, (h.length - 1) / 2, true);</span>
-<span class="source-line-no">034</span><span id="line-34">        }</span>
-<span class="source-line-no">035</span><span id="line-35">        </span>
-<span class="source-line-no">036</span><span id="line-36">        /**</span>
-<span class="source-line-no">037</span><span id="line-37">         * Constructor.</span>
-<span class="source-line-no">038</span><span id="line-38">         * The hot spot index must be specified.</span>
-<span class="source-line-no">039</span><span id="line-39">         * The kernel is optionally normalized.</span>
-<span class="source-line-no">040</span><span id="line-40">         * </span>
-<span class="source-line-no">041</span><span id="line-41">         * @param h the 1D kernel array</span>
-<span class="source-line-no">042</span><span id="line-42">         * @param xc the x-coordinate of the kernel's hot spot, default is (width-1)/2</span>
-<span class="source-line-no">043</span><span id="line-43">         * @param normalize if true the kernel is normalized (to sum = 1)</span>
-<span class="source-line-no">044</span><span id="line-44">         */</span>
-<span class="source-line-no">045</span><span id="line-45">        public Kernel1D(float[] h, int xc, boolean normalize) {</span>
-<span class="source-line-no">046</span><span id="line-46">                this.h = (normalize) ? normalize(h) : Matrix.duplicate(h);</span>
-<span class="source-line-no">047</span><span id="line-47">                this.width = h.length;</span>
-<span class="source-line-no">048</span><span id="line-48">                this.xc = xc;</span>
-<span class="source-line-no">049</span><span id="line-49">        }</span>
-<span class="source-line-no">050</span><span id="line-50">        </span>
-<span class="source-line-no">051</span><span id="line-51">        /**</span>
-<span class="source-line-no">052</span><span id="line-52">         * Returns the kernel's 1D array.</span>
-<span class="source-line-no">053</span><span id="line-53">         * @return the kernel's 1D array</span>
-<span class="source-line-no">054</span><span id="line-54">         */</span>
-<span class="source-line-no">055</span><span id="line-55">        public float[] getH() {</span>
-<span class="source-line-no">056</span><span id="line-56">                return h;</span>
-<span class="source-line-no">057</span><span id="line-57">        }</span>
-<span class="source-line-no">058</span><span id="line-58">        </span>
-<span class="source-line-no">059</span><span id="line-59">        /**</span>
-<span class="source-line-no">060</span><span id="line-60">         * Returns the width (length) of this kernel.</span>
-<span class="source-line-no">061</span><span id="line-61">         * @return the kernel's width</span>
-<span class="source-line-no">062</span><span id="line-62">         */</span>
-<span class="source-line-no">063</span><span id="line-63">        public int getWidth() {</span>
-<span class="source-line-no">064</span><span id="line-64">                return width;</span>
-<span class="source-line-no">065</span><span id="line-65">        }</span>
-<span class="source-line-no">066</span><span id="line-66">        </span>
-<span class="source-line-no">067</span><span id="line-67">        /**</span>
-<span class="source-line-no">068</span><span id="line-68">         * Returns the center coordinate of this kernel.</span>
-<span class="source-line-no">069</span><span id="line-69">         * @return the kernel's center coordinate</span>
-<span class="source-line-no">070</span><span id="line-70">         */</span>
-<span class="source-line-no">071</span><span id="line-71">        public int getXc() {</span>
-<span class="source-line-no">072</span><span id="line-72">                return xc;</span>
-<span class="source-line-no">073</span><span id="line-73">        }</span>
-<span class="source-line-no">074</span><span id="line-74">        </span>
-<span class="source-line-no">075</span><span id="line-75">        // ----------------------------------------------------------</span>
-<span class="source-line-no">076</span><span id="line-76">        </span>
-<span class="source-line-no">077</span><span id="line-77">        /**</span>
-<span class="source-line-no">078</span><span id="line-78">         * Normalizes the specified array such that its sum becomes 1. Throws an</span>
-<span class="source-line-no">079</span><span id="line-79">         * exception if the array's sum is zero. The original array is not modified.</span>
-<span class="source-line-no">080</span><span id="line-80">         * </span>
-<span class="source-line-no">081</span><span id="line-81">         * @param A a 1D array</span>
-<span class="source-line-no">082</span><span id="line-82">         * @return the normalized array</span>
-<span class="source-line-no">083</span><span id="line-83">         * @throws ArithmeticException if array sums to zero</span>
-<span class="source-line-no">084</span><span id="line-84">         */</span>
-<span class="source-line-no">085</span><span id="line-85">        public static float[] normalize(float[] A) throws ArithmeticException {</span>
-<span class="source-line-no">086</span><span id="line-86">                double scale = 1.0 / Matrix.sum(A);</span>
-<span class="source-line-no">087</span><span id="line-87">                if (!Double.isFinite(scale))    // isZero(s)</span>
-<span class="source-line-no">088</span><span id="line-88">                        throw new ArithmeticException("zero kernel sum, cannot normalize");</span>
-<span class="source-line-no">089</span><span id="line-89">                for (int i = 0; i &lt; A.length; i++) {</span>
-<span class="source-line-no">090</span><span id="line-90">                        A[i] = (float) (A[i] * scale);</span>
-<span class="source-line-no">091</span><span id="line-91">                }</span>
-<span class="source-line-no">092</span><span id="line-92">                return A;       //Matrix.multiply((float)scale, A);</span>
-<span class="source-line-no">093</span><span id="line-93">        }</span>
-<span class="source-line-no">094</span><span id="line-94"></span>
-<span class="source-line-no">095</span><span id="line-95">}</span>
+<span class="source-line-no">026</span><span id="line-26">         * Constructor. The kernel's hot spot is at its center. The kernel is normalized.</span>
+<span class="source-line-no">027</span><span id="line-27">         *</span>
+<span class="source-line-no">028</span><span id="line-28">         * @param h the 1D kernel array</span>
+<span class="source-line-no">029</span><span id="line-29">         */</span>
+<span class="source-line-no">030</span><span id="line-30">        public Kernel1D(float[] h) {</span>
+<span class="source-line-no">031</span><span id="line-31">                this(h, (h.length - 1) / 2, true);</span>
+<span class="source-line-no">032</span><span id="line-32">        }</span>
+<span class="source-line-no">033</span><span id="line-33"></span>
+<span class="source-line-no">034</span><span id="line-34">        /**</span>
+<span class="source-line-no">035</span><span id="line-35">         * Constructor. The hot spot index must be specified. The kernel is optionally normalized.</span>
+<span class="source-line-no">036</span><span id="line-36">         *</span>
+<span class="source-line-no">037</span><span id="line-37">         * @param h the 1D kernel array</span>
+<span class="source-line-no">038</span><span id="line-38">         * @param xc the x-coordinate of the kernel's hot spot, default is (width-1)/2</span>
+<span class="source-line-no">039</span><span id="line-39">         * @param normalize if true the kernel is normalized (to sum = 1)</span>
+<span class="source-line-no">040</span><span id="line-40">         */</span>
+<span class="source-line-no">041</span><span id="line-41">        public Kernel1D(float[] h, int xc, boolean normalize) {</span>
+<span class="source-line-no">042</span><span id="line-42">                this.h = (normalize) ? normalize(h) : Matrix.duplicate(h);</span>
+<span class="source-line-no">043</span><span id="line-43">                this.width = h.length;</span>
+<span class="source-line-no">044</span><span id="line-44">                this.xc = xc;</span>
+<span class="source-line-no">045</span><span id="line-45">        }</span>
+<span class="source-line-no">046</span><span id="line-46">        </span>
+<span class="source-line-no">047</span><span id="line-47">        /**</span>
+<span class="source-line-no">048</span><span id="line-48">         * Returns the kernel's 1D array.</span>
+<span class="source-line-no">049</span><span id="line-49">         * @return the kernel's 1D array</span>
+<span class="source-line-no">050</span><span id="line-50">         */</span>
+<span class="source-line-no">051</span><span id="line-51">        public float[] getH() {</span>
+<span class="source-line-no">052</span><span id="line-52">                return h;</span>
+<span class="source-line-no">053</span><span id="line-53">        }</span>
+<span class="source-line-no">054</span><span id="line-54">        </span>
+<span class="source-line-no">055</span><span id="line-55">        /**</span>
+<span class="source-line-no">056</span><span id="line-56">         * Returns the width (length) of this kernel.</span>
+<span class="source-line-no">057</span><span id="line-57">         * @return the kernel's width</span>
+<span class="source-line-no">058</span><span id="line-58">         */</span>
+<span class="source-line-no">059</span><span id="line-59">        public int getWidth() {</span>
+<span class="source-line-no">060</span><span id="line-60">                return width;</span>
+<span class="source-line-no">061</span><span id="line-61">        }</span>
+<span class="source-line-no">062</span><span id="line-62">        </span>
+<span class="source-line-no">063</span><span id="line-63">        /**</span>
+<span class="source-line-no">064</span><span id="line-64">         * Returns the center coordinate of this kernel.</span>
+<span class="source-line-no">065</span><span id="line-65">         * @return the kernel's center coordinate</span>
+<span class="source-line-no">066</span><span id="line-66">         */</span>
+<span class="source-line-no">067</span><span id="line-67">        public int getXc() {</span>
+<span class="source-line-no">068</span><span id="line-68">                return xc;</span>
+<span class="source-line-no">069</span><span id="line-69">        }</span>
+<span class="source-line-no">070</span><span id="line-70">        </span>
+<span class="source-line-no">071</span><span id="line-71">        // ----------------------------------------------------------</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">        /**</span>
+<span class="source-line-no">074</span><span id="line-74">         * Normalizes the specified array such that its sum becomes 1. Throws an exception if the array's sum is zero. The</span>
+<span class="source-line-no">075</span><span id="line-75">         * original array is not modified.</span>
+<span class="source-line-no">076</span><span id="line-76">         *</span>
+<span class="source-line-no">077</span><span id="line-77">         * @param A a 1D array</span>
+<span class="source-line-no">078</span><span id="line-78">         * @return the normalized array</span>
+<span class="source-line-no">079</span><span id="line-79">         * @throws ArithmeticException if array sums to zero</span>
+<span class="source-line-no">080</span><span id="line-80">         */</span>
+<span class="source-line-no">081</span><span id="line-81">        public static float[] normalize(float[] A) throws ArithmeticException {</span>
+<span class="source-line-no">082</span><span id="line-82">                double scale = 1.0 / Matrix.sum(A);</span>
+<span class="source-line-no">083</span><span id="line-83">                if (!Double.isFinite(scale))    // isZero(s)</span>
+<span class="source-line-no">084</span><span id="line-84">                        throw new ArithmeticException("zero kernel sum, cannot normalize");</span>
+<span class="source-line-no">085</span><span id="line-85">                for (int i = 0; i &lt; A.length; i++) {</span>
+<span class="source-line-no">086</span><span id="line-86">                        A[i] = (float) (A[i] * scale);</span>
+<span class="source-line-no">087</span><span id="line-87">                }</span>
+<span class="source-line-no">088</span><span id="line-88">                return A;       //Matrix.multiply((float)scale, A);</span>
+<span class="source-line-no">089</span><span id="line-89">        }</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">}</span>
 
 
 

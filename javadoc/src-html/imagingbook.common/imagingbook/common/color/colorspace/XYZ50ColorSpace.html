@@ -25,63 +25,61 @@
 <span class="source-line-no">012</span><span id="line-12"></span>
 <span class="source-line-no">013</span><span id="line-13">/**</span>
 <span class="source-line-no">014</span><span id="line-14"> * &lt;p&gt;</span>
-<span class="source-line-no">015</span><span id="line-15"> * Implementation of a D50-based XYZ color space, as a substitute for Java's</span>
-<span class="source-line-no">016</span><span id="line-16"> * built-in standard connection space (obtained with</span>
-<span class="source-line-no">017</span><span id="line-17"> * {@code  ColorSpace.getInstance(ColorSpace.CS_CIEXYZ)}), with improved</span>
-<span class="source-line-no">018</span><span id="line-18"> * accuracy. The reference white point of this color space is D50 and any XYZ</span>
-<span class="source-line-no">019</span><span id="line-19"> * coordinate passed to {@link #fromCIEXYZ(float[])} is assumed to be relative</span>
-<span class="source-line-no">020</span><span id="line-20"> * to D50 as well, thus no conversion (color adaptation) is necessary between</span>
-<span class="source-line-no">021</span><span id="line-21"> * XYZ values. See Sec. 14.1.1 of [1] for details.</span>
-<span class="source-line-no">022</span><span id="line-22"> * &lt;/p&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * &lt;p&gt;</span>
-<span class="source-line-no">024</span><span id="line-24"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">025</span><span id="line-25"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">026</span><span id="line-26"> * &lt;/p&gt;</span>
-<span class="source-line-no">027</span><span id="line-27"> * </span>
-<span class="source-line-no">028</span><span id="line-28"> * @author WB</span>
-<span class="source-line-no">029</span><span id="line-29"> * @version 2022/11/14</span>
-<span class="source-line-no">030</span><span id="line-30"> * @see XYZ65ColorSpace</span>
-<span class="source-line-no">031</span><span id="line-31"> */</span>
-<span class="source-line-no">032</span><span id="line-32">@SuppressWarnings("serial")</span>
-<span class="source-line-no">033</span><span id="line-33">public class XYZ50ColorSpace extends ColorSpace implements DirectD65Conversion {</span>
-<span class="source-line-no">034</span><span id="line-34">        private static sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();</span>
+<span class="source-line-no">015</span><span id="line-15"> * Implementation of a D50-based XYZ color space, as a substitute for Java's built-in standard connection space</span>
+<span class="source-line-no">016</span><span id="line-16"> * (obtained with {@code  ColorSpace.getInstance(ColorSpace.CS_CIEXYZ)}), with improved accuracy. The reference white</span>
+<span class="source-line-no">017</span><span id="line-17"> * point of this color space is D50 and any XYZ coordinate passed to {@link #fromCIEXYZ(float[])} is assumed to be</span>
+<span class="source-line-no">018</span><span id="line-18"> * relative to D50 as well, thus no conversion (color adaptation) is necessary between XYZ values. See Sec. 14.1.1 of</span>
+<span class="source-line-no">019</span><span id="line-19"> * [1] for details.</span>
+<span class="source-line-no">020</span><span id="line-20"> * &lt;/p&gt;</span>
+<span class="source-line-no">021</span><span id="line-21"> * &lt;p&gt;</span>
+<span class="source-line-no">022</span><span id="line-22"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">023</span><span id="line-23"> * (2022).</span>
+<span class="source-line-no">024</span><span id="line-24"> * &lt;/p&gt;</span>
+<span class="source-line-no">025</span><span id="line-25"> *</span>
+<span class="source-line-no">026</span><span id="line-26"> * @author WB</span>
+<span class="source-line-no">027</span><span id="line-27"> * @version 2022/11/14</span>
+<span class="source-line-no">028</span><span id="line-28"> * @see XYZ65ColorSpace</span>
+<span class="source-line-no">029</span><span id="line-29"> */</span>
+<span class="source-line-no">030</span><span id="line-30">@SuppressWarnings("serial")</span>
+<span class="source-line-no">031</span><span id="line-31">public class XYZ50ColorSpace extends ColorSpace implements DirectD65Conversion {</span>
+<span class="source-line-no">032</span><span id="line-32">        private static sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();</span>
+<span class="source-line-no">033</span><span id="line-33">        </span>
+<span class="source-line-no">034</span><span id="line-34">        private static final XYZ50ColorSpace instance = new XYZ50ColorSpace();</span>
 <span class="source-line-no">035</span><span id="line-35">        </span>
-<span class="source-line-no">036</span><span id="line-36">        private static final XYZ50ColorSpace instance = new XYZ50ColorSpace();</span>
-<span class="source-line-no">037</span><span id="line-37">        </span>
-<span class="source-line-no">038</span><span id="line-38">        public static XYZ50ColorSpace getInstance() {</span>
-<span class="source-line-no">039</span><span id="line-39">                return instance;</span>
-<span class="source-line-no">040</span><span id="line-40">        }</span>
-<span class="source-line-no">041</span><span id="line-41">        </span>
-<span class="source-line-no">042</span><span id="line-42">        private XYZ50ColorSpace() {</span>
-<span class="source-line-no">043</span><span id="line-43">                super(TYPE_XYZ, 3);</span>
-<span class="source-line-no">044</span><span id="line-44">        }</span>
+<span class="source-line-no">036</span><span id="line-36">        public static XYZ50ColorSpace getInstance() {</span>
+<span class="source-line-no">037</span><span id="line-37">                return instance;</span>
+<span class="source-line-no">038</span><span id="line-38">        }</span>
+<span class="source-line-no">039</span><span id="line-39">        </span>
+<span class="source-line-no">040</span><span id="line-40">        private XYZ50ColorSpace() {</span>
+<span class="source-line-no">041</span><span id="line-41">                super(TYPE_XYZ, 3);</span>
+<span class="source-line-no">042</span><span id="line-42">        }</span>
+<span class="source-line-no">043</span><span id="line-43"></span>
+<span class="source-line-no">044</span><span id="line-44">        // -------------------------------------------------</span>
 <span class="source-line-no">045</span><span id="line-45"></span>
-<span class="source-line-no">046</span><span id="line-46">        // -------------------------------------------------</span>
-<span class="source-line-no">047</span><span id="line-47"></span>
-<span class="source-line-no">048</span><span id="line-48">        @Override       // convert (D50-based) thisXyz to sRGB</span>
-<span class="source-line-no">049</span><span id="line-49">        public float[] toRGB(float[] thisXyz) {</span>
-<span class="source-line-no">050</span><span id="line-50">                return srgbCS.fromCIEXYZ(thisXyz);</span>
-<span class="source-line-no">051</span><span id="line-51">        }</span>
-<span class="source-line-no">052</span><span id="line-52"></span>
-<span class="source-line-no">053</span><span id="line-53">        @Override       // convert sRGB to (D50-based) thisXyz</span>
-<span class="source-line-no">054</span><span id="line-54">        public float[] fromRGB(float[] srgb) {</span>
-<span class="source-line-no">055</span><span id="line-55">                float[] thisXyz = srgbCS.toCIEXYZ(srgb);</span>
-<span class="source-line-no">056</span><span id="line-56">                return thisXyz;</span>
-<span class="source-line-no">057</span><span id="line-57">        }</span>
-<span class="source-line-no">058</span><span id="line-58">        </span>
-<span class="source-line-no">059</span><span id="line-59">        // -------------------------------------------------</span>
-<span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">        @Override</span>
-<span class="source-line-no">062</span><span id="line-62">        public float[] toCIEXYZ(float[] thisXyz) {</span>
-<span class="source-line-no">063</span><span id="line-63">                return thisXyz; // nothing to do since D50-based XYZ already</span>
-<span class="source-line-no">064</span><span id="line-64">        }</span>
-<span class="source-line-no">065</span><span id="line-65"></span>
-<span class="source-line-no">066</span><span id="line-66">        @Override</span>
-<span class="source-line-no">067</span><span id="line-67">        public float[] fromCIEXYZ(float[] xyz50) {</span>
-<span class="source-line-no">068</span><span id="line-68">                return xyz50;           // nothing to do, since D50-based XYZ is what we want</span>
-<span class="source-line-no">069</span><span id="line-69">        }</span>
-<span class="source-line-no">070</span><span id="line-70">        </span>
-<span class="source-line-no">071</span><span id="line-71">}</span>
+<span class="source-line-no">046</span><span id="line-46">        @Override       // convert (D50-based) thisXyz to sRGB</span>
+<span class="source-line-no">047</span><span id="line-47">        public float[] toRGB(float[] thisXyz) {</span>
+<span class="source-line-no">048</span><span id="line-48">                return srgbCS.fromCIEXYZ(thisXyz);</span>
+<span class="source-line-no">049</span><span id="line-49">        }</span>
+<span class="source-line-no">050</span><span id="line-50"></span>
+<span class="source-line-no">051</span><span id="line-51">        @Override       // convert sRGB to (D50-based) thisXyz</span>
+<span class="source-line-no">052</span><span id="line-52">        public float[] fromRGB(float[] srgb) {</span>
+<span class="source-line-no">053</span><span id="line-53">                float[] thisXyz = srgbCS.toCIEXYZ(srgb);</span>
+<span class="source-line-no">054</span><span id="line-54">                return thisXyz;</span>
+<span class="source-line-no">055</span><span id="line-55">        }</span>
+<span class="source-line-no">056</span><span id="line-56">        </span>
+<span class="source-line-no">057</span><span id="line-57">        // -------------------------------------------------</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">        @Override</span>
+<span class="source-line-no">060</span><span id="line-60">        public float[] toCIEXYZ(float[] thisXyz) {</span>
+<span class="source-line-no">061</span><span id="line-61">                return thisXyz; // nothing to do since D50-based XYZ already</span>
+<span class="source-line-no">062</span><span id="line-62">        }</span>
+<span class="source-line-no">063</span><span id="line-63"></span>
+<span class="source-line-no">064</span><span id="line-64">        @Override</span>
+<span class="source-line-no">065</span><span id="line-65">        public float[] fromCIEXYZ(float[] xyz50) {</span>
+<span class="source-line-no">066</span><span id="line-66">                return xyz50;           // nothing to do, since D50-based XYZ is what we want</span>
+<span class="source-line-no">067</span><span id="line-67">        }</span>
+<span class="source-line-no">068</span><span id="line-68">        </span>
+<span class="source-line-no">069</span><span id="line-69">}</span>
 
 
 

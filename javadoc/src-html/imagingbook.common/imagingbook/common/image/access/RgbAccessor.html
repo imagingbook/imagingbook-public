@@ -26,9 +26,9 @@
 <span class="source-line-no">013</span><span id="line-13">import imagingbook.common.image.interpolation.InterpolationMethod;</span>
 <span class="source-line-no">014</span><span id="line-14"></span>
 <span class="source-line-no">015</span><span id="line-15">/**</span>
-<span class="source-line-no">016</span><span id="line-16"> * A special vector-valued image accessor for RGB images (direct subclass of</span>
-<span class="source-line-no">017</span><span id="line-17"> * {@link VectorAccessor}) with depth = 3 color components.</span>
-<span class="source-line-no">018</span><span id="line-18"> * </span>
+<span class="source-line-no">016</span><span id="line-16"> * A special vector-valued image accessor for RGB images (direct subclass of {@link VectorAccessor}) with depth = 3</span>
+<span class="source-line-no">017</span><span id="line-17"> * color components.</span>
+<span class="source-line-no">018</span><span id="line-18"> *</span>
 <span class="source-line-no">019</span><span id="line-19"> * @author WB</span>
 <span class="source-line-no">020</span><span id="line-20"> * @version 2022/09/22</span>
 <span class="source-line-no">021</span><span id="line-21"> */</span>
@@ -106,63 +106,61 @@
 <span class="source-line-no">093</span><span id="line-93">                 */</span>
 <span class="source-line-no">094</span><span id="line-94">                int set(int rgb, int c);</span>
 <span class="source-line-no">095</span><span id="line-95">        }</span>
-<span class="source-line-no">096</span><span id="line-96">        </span>
+<span class="source-line-no">096</span><span id="line-96"></span>
 <span class="source-line-no">097</span><span id="line-97">        /**</span>
-<span class="source-line-no">098</span><span id="line-98">         * Defines a scalar image accessor for one particular color component.</span>
-<span class="source-line-no">099</span><span id="line-99">         * This is a non-static inner class, which shares data with the enclosing</span>
-<span class="source-line-no">100</span><span id="line-100">         * {@link RgbAccessor} instance.</span>
-<span class="source-line-no">101</span><span id="line-101">         * Note that this subclass of {@link ScalarAccessor} has no ImageProcessor</span>
-<span class="source-line-no">102</span><span id="line-102">         * of is own, but {@link #getProcessor()} returns the original </span>
-<span class="source-line-no">103</span><span id="line-103">         * {@link ColorProcessor} instance.</span>
-<span class="source-line-no">104</span><span id="line-104">         */</span>
-<span class="source-line-no">105</span><span id="line-105">        private class ComponentAccessor extends ScalarAccessor {</span>
-<span class="source-line-no">106</span><span id="line-106">                </span>
-<span class="source-line-no">107</span><span id="line-107">                private final int k;    // the RGB component index = 0,1,2</span>
-<span class="source-line-no">108</span><span id="line-108">                        </span>
-<span class="source-line-no">109</span><span id="line-109">                private final ComponentGetter[] getComponent = {                        // note the fancy use of lambda expressions!</span>
-<span class="source-line-no">110</span><span id="line-110">                                (rgb) -&gt; (rgb &amp; 0xff0000) &gt;&gt; 16,        // extract red component</span>
-<span class="source-line-no">111</span><span id="line-111">                                (rgb) -&gt; (rgb &amp; 0x00ff00) &gt;&gt; 8,         // extract green component</span>
-<span class="source-line-no">112</span><span id="line-112">                                (rgb) -&gt; (rgb &amp; 0x0000ff) };            // extract blue component</span>
-<span class="source-line-no">113</span><span id="line-113">                </span>
-<span class="source-line-no">114</span><span id="line-114">                private final ComponentSetter[] setComponent = {</span>
-<span class="source-line-no">115</span><span id="line-115">                                (rgb, r) -&gt; (rgb &amp; 0xff00ffff) | (r &amp; 0xff) &lt;&lt; 16,      // insert red component</span>
-<span class="source-line-no">116</span><span id="line-116">                                (rgb, g) -&gt; (rgb &amp; 0xffff00ff) | (g &amp; 0xff) &lt;&lt; 8,       // insert green component</span>
-<span class="source-line-no">117</span><span id="line-117">                                (rgb, b) -&gt; (rgb &amp; 0xffffff00) | (b &amp; 0xff)                     // insert blue component</span>
-<span class="source-line-no">118</span><span id="line-118">                };</span>
-<span class="source-line-no">119</span><span id="line-119">                </span>
-<span class="source-line-no">120</span><span id="line-120">                private ComponentAccessor(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int k) {</span>
-<span class="source-line-no">121</span><span id="line-121">                        super(ip, obs, ipm);</span>
-<span class="source-line-no">122</span><span id="line-122">                        this.k = k;</span>
-<span class="source-line-no">123</span><span id="line-123">                }</span>
-<span class="source-line-no">124</span><span id="line-124">                </span>
-<span class="source-line-no">125</span><span id="line-125"></span>
-<span class="source-line-no">126</span><span id="line-126">                @Override</span>
-<span class="source-line-no">127</span><span id="line-127">                public float getVal(int u, int v) {</span>
-<span class="source-line-no">128</span><span id="line-128">                        int i = indexer.getIndex(u, v);</span>
-<span class="source-line-no">129</span><span id="line-129">                        if (i &lt; 0) {</span>
-<span class="source-line-no">130</span><span id="line-130">                                return this.defaultValue;</span>
-<span class="source-line-no">131</span><span id="line-131">                        } else {</span>
-<span class="source-line-no">132</span><span id="line-132">                                return getComponent[k].get(pixels[i]);</span>
-<span class="source-line-no">133</span><span id="line-133">                        }</span>
-<span class="source-line-no">134</span><span id="line-134">                }</span>
-<span class="source-line-no">135</span><span id="line-135"></span>
-<span class="source-line-no">136</span><span id="line-136">                @Override</span>
-<span class="source-line-no">137</span><span id="line-137">                public void setVal(int u, int v, float val) {</span>
-<span class="source-line-no">138</span><span id="line-138">                        int i = indexer.getIndex(u, v);</span>
-<span class="source-line-no">139</span><span id="line-139">                        if (i &gt;= 0) {</span>
-<span class="source-line-no">140</span><span id="line-140">                                int vali = clamp(Math.round(val));</span>
-<span class="source-line-no">141</span><span id="line-141">                                pixels[i] = setComponent[k].set(pixels[i], vali);</span>
-<span class="source-line-no">142</span><span id="line-142">                        }</span>
-<span class="source-line-no">143</span><span id="line-143">                }</span>
-<span class="source-line-no">144</span><span id="line-144">                </span>
-<span class="source-line-no">145</span><span id="line-145">                private int clamp(int val) {</span>
-<span class="source-line-no">146</span><span id="line-146">                        if (val &lt; 0) return 0;</span>
-<span class="source-line-no">147</span><span id="line-147">                        if (val &gt; 255) return 255;</span>
-<span class="source-line-no">148</span><span id="line-148">                        return val;</span>
-<span class="source-line-no">149</span><span id="line-149">                }</span>
-<span class="source-line-no">150</span><span id="line-150">        }</span>
-<span class="source-line-no">151</span><span id="line-151"></span>
-<span class="source-line-no">152</span><span id="line-152">}</span>
+<span class="source-line-no">098</span><span id="line-98">         * Defines a scalar image accessor for one particular color component. This is a non-static inner class, which</span>
+<span class="source-line-no">099</span><span id="line-99">         * shares data with the enclosing {@link RgbAccessor} instance. Note that this subclass of {@link ScalarAccessor}</span>
+<span class="source-line-no">100</span><span id="line-100">         * has no ImageProcessor of is own, but {@link #getProcessor()} returns the original {@link ColorProcessor}</span>
+<span class="source-line-no">101</span><span id="line-101">         * instance.</span>
+<span class="source-line-no">102</span><span id="line-102">         */</span>
+<span class="source-line-no">103</span><span id="line-103">        private class ComponentAccessor extends ScalarAccessor {</span>
+<span class="source-line-no">104</span><span id="line-104">                </span>
+<span class="source-line-no">105</span><span id="line-105">                private final int k;    // the RGB component index = 0,1,2</span>
+<span class="source-line-no">106</span><span id="line-106">                        </span>
+<span class="source-line-no">107</span><span id="line-107">                private final ComponentGetter[] getComponent = {                        // note the fancy use of lambda expressions!</span>
+<span class="source-line-no">108</span><span id="line-108">                                (rgb) -&gt; (rgb &amp; 0xff0000) &gt;&gt; 16,        // extract red component</span>
+<span class="source-line-no">109</span><span id="line-109">                                (rgb) -&gt; (rgb &amp; 0x00ff00) &gt;&gt; 8,         // extract green component</span>
+<span class="source-line-no">110</span><span id="line-110">                                (rgb) -&gt; (rgb &amp; 0x0000ff) };            // extract blue component</span>
+<span class="source-line-no">111</span><span id="line-111">                </span>
+<span class="source-line-no">112</span><span id="line-112">                private final ComponentSetter[] setComponent = {</span>
+<span class="source-line-no">113</span><span id="line-113">                                (rgb, r) -&gt; (rgb &amp; 0xff00ffff) | (r &amp; 0xff) &lt;&lt; 16,      // insert red component</span>
+<span class="source-line-no">114</span><span id="line-114">                                (rgb, g) -&gt; (rgb &amp; 0xffff00ff) | (g &amp; 0xff) &lt;&lt; 8,       // insert green component</span>
+<span class="source-line-no">115</span><span id="line-115">                                (rgb, b) -&gt; (rgb &amp; 0xffffff00) | (b &amp; 0xff)                     // insert blue component</span>
+<span class="source-line-no">116</span><span id="line-116">                };</span>
+<span class="source-line-no">117</span><span id="line-117">                </span>
+<span class="source-line-no">118</span><span id="line-118">                private ComponentAccessor(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int k) {</span>
+<span class="source-line-no">119</span><span id="line-119">                        super(ip, obs, ipm);</span>
+<span class="source-line-no">120</span><span id="line-120">                        this.k = k;</span>
+<span class="source-line-no">121</span><span id="line-121">                }</span>
+<span class="source-line-no">122</span><span id="line-122">                </span>
+<span class="source-line-no">123</span><span id="line-123"></span>
+<span class="source-line-no">124</span><span id="line-124">                @Override</span>
+<span class="source-line-no">125</span><span id="line-125">                public float getVal(int u, int v) {</span>
+<span class="source-line-no">126</span><span id="line-126">                        int i = indexer.getIndex(u, v);</span>
+<span class="source-line-no">127</span><span id="line-127">                        if (i &lt; 0) {</span>
+<span class="source-line-no">128</span><span id="line-128">                                return this.defaultValue;</span>
+<span class="source-line-no">129</span><span id="line-129">                        } else {</span>
+<span class="source-line-no">130</span><span id="line-130">                                return getComponent[k].get(pixels[i]);</span>
+<span class="source-line-no">131</span><span id="line-131">                        }</span>
+<span class="source-line-no">132</span><span id="line-132">                }</span>
+<span class="source-line-no">133</span><span id="line-133"></span>
+<span class="source-line-no">134</span><span id="line-134">                @Override</span>
+<span class="source-line-no">135</span><span id="line-135">                public void setVal(int u, int v, float val) {</span>
+<span class="source-line-no">136</span><span id="line-136">                        int i = indexer.getIndex(u, v);</span>
+<span class="source-line-no">137</span><span id="line-137">                        if (i &gt;= 0) {</span>
+<span class="source-line-no">138</span><span id="line-138">                                int vali = clamp(Math.round(val));</span>
+<span class="source-line-no">139</span><span id="line-139">                                pixels[i] = setComponent[k].set(pixels[i], vali);</span>
+<span class="source-line-no">140</span><span id="line-140">                        }</span>
+<span class="source-line-no">141</span><span id="line-141">                }</span>
+<span class="source-line-no">142</span><span id="line-142">                </span>
+<span class="source-line-no">143</span><span id="line-143">                private int clamp(int val) {</span>
+<span class="source-line-no">144</span><span id="line-144">                        if (val &lt; 0) return 0;</span>
+<span class="source-line-no">145</span><span id="line-145">                        if (val &gt; 255) return 255;</span>
+<span class="source-line-no">146</span><span id="line-146">                        return val;</span>
+<span class="source-line-no">147</span><span id="line-147">                }</span>
+<span class="source-line-no">148</span><span id="line-148">        }</span>
+<span class="source-line-no">149</span><span id="line-149"></span>
+<span class="source-line-no">150</span><span id="line-150">}</span>
 
 
 

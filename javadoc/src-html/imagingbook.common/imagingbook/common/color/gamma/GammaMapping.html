@@ -22,29 +22,29 @@
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.color.gamma;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
 <span class="source-line-no">011</span><span id="line-11">/**</span>
-<span class="source-line-no">012</span><span id="line-12"> * Interface to be implemented by gamma correction classes. All in/out component</span>
-<span class="source-line-no">013</span><span id="line-13"> * values are assumed to be in [0,1]. Implementing classes must at least define</span>
-<span class="source-line-no">014</span><span id="line-14"> * a {@code double} version of the required methods but are free to override the</span>
-<span class="source-line-no">015</span><span id="line-15"> * associated {@code float} versions.</span>
-<span class="source-line-no">016</span><span id="line-16"> * </span>
-<span class="source-line-no">017</span><span id="line-17"> * @author WB</span>
-<span class="source-line-no">018</span><span id="line-18"> * @version 2022/11/16</span>
-<span class="source-line-no">019</span><span id="line-19"> */</span>
-<span class="source-line-no">020</span><span id="line-20">public interface GammaMapping {</span>
-<span class="source-line-no">021</span><span id="line-21">        </span>
-<span class="source-line-no">022</span><span id="line-22">        /**</span>
-<span class="source-line-no">023</span><span id="line-23">         * Forward Gamma mapping (from linear to non-linear component values).</span>
-<span class="source-line-no">024</span><span id="line-24">         * </span>
-<span class="source-line-no">025</span><span id="line-25">         * @param a linear component value in [0,1]</span>
-<span class="source-line-no">026</span><span id="line-26">         * @return the gamma-corrected (non-linear) component value</span>
-<span class="source-line-no">027</span><span id="line-27">         */</span>
-<span class="source-line-no">028</span><span id="line-28">        public double applyFwd(double a);</span>
-<span class="source-line-no">029</span><span id="line-29">        </span>
-<span class="source-line-no">030</span><span id="line-30">        /**</span>
-<span class="source-line-no">031</span><span id="line-31">     * Float version of {@link #applyFwd(double)}</span>
-<span class="source-line-no">032</span><span id="line-32">     * @param a linear component value in [0,1]</span>
-<span class="source-line-no">033</span><span id="line-33">     * @return the gamma-corrected (non-linear) component value</span>
-<span class="source-line-no">034</span><span id="line-34">     */</span>
+<span class="source-line-no">012</span><span id="line-12"> * Interface to be implemented by gamma correction classes. All in/out component values are assumed to be in [0,1].</span>
+<span class="source-line-no">013</span><span id="line-13"> * Implementing classes must at least define a {@code double} version of the required methods but are free to override</span>
+<span class="source-line-no">014</span><span id="line-14"> * the associated {@code float} versions.</span>
+<span class="source-line-no">015</span><span id="line-15"> *</span>
+<span class="source-line-no">016</span><span id="line-16"> * @author WB</span>
+<span class="source-line-no">017</span><span id="line-17"> * @version 2022/11/16</span>
+<span class="source-line-no">018</span><span id="line-18"> */</span>
+<span class="source-line-no">019</span><span id="line-19">public interface GammaMapping {</span>
+<span class="source-line-no">020</span><span id="line-20">        </span>
+<span class="source-line-no">021</span><span id="line-21">        /**</span>
+<span class="source-line-no">022</span><span id="line-22">         * Forward Gamma mapping (from linear to non-linear component values).</span>
+<span class="source-line-no">023</span><span id="line-23">         * </span>
+<span class="source-line-no">024</span><span id="line-24">         * @param a linear component value in [0,1]</span>
+<span class="source-line-no">025</span><span id="line-25">         * @return the gamma-corrected (non-linear) component value</span>
+<span class="source-line-no">026</span><span id="line-26">         */</span>
+<span class="source-line-no">027</span><span id="line-27">        public double applyFwd(double a);</span>
+<span class="source-line-no">028</span><span id="line-28"></span>
+<span class="source-line-no">029</span><span id="line-29">        /**</span>
+<span class="source-line-no">030</span><span id="line-30">         * Float version of {@link #applyFwd(double)}</span>
+<span class="source-line-no">031</span><span id="line-31">         *</span>
+<span class="source-line-no">032</span><span id="line-32">         * @param a linear component value in [0,1]</span>
+<span class="source-line-no">033</span><span id="line-33">         * @return the gamma-corrected (non-linear) component value</span>
+<span class="source-line-no">034</span><span id="line-34">         */</span>
 <span class="source-line-no">035</span><span id="line-35">        public default float applyFwd(float a) {</span>
 <span class="source-line-no">036</span><span id="line-36">                return (float) applyFwd((double) a);</span>
 <span class="source-line-no">037</span><span id="line-37">        }</span>

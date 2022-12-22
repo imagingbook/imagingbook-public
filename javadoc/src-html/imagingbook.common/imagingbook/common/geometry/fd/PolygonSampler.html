@@ -27,109 +27,106 @@
 <span class="source-line-no">014</span><span id="line-14"></span>
 <span class="source-line-no">015</span><span id="line-15">/**</span>
 <span class="source-line-no">016</span><span id="line-16"> * &lt;p&gt;</span>
-<span class="source-line-no">017</span><span id="line-17"> * This class is used to re-sample 2D polygons by interpolation. See Sec. 2.1.1</span>
-<span class="source-line-no">018</span><span id="line-18"> * (Alg. 26.1) if [1] for details. Note that this class has no public</span>
-<span class="source-line-no">019</span><span id="line-19"> * constructor, use {@link #getInstance()} instead.</span>
-<span class="source-line-no">020</span><span id="line-20"> * &lt;/p&gt;</span>
-<span class="source-line-no">021</span><span id="line-21"> * &lt;p&gt;</span>
-<span class="source-line-no">022</span><span id="line-22"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">023</span><span id="line-23"> * Algorithmic Introduction Using Java&lt;/em&gt;, 2rd ed, Springer (2016).</span>
-<span class="source-line-no">024</span><span id="line-24"> * &lt;/p&gt;</span>
-<span class="source-line-no">025</span><span id="line-25"> * </span>
-<span class="source-line-no">026</span><span id="line-26"> * @author WB</span>
-<span class="source-line-no">027</span><span id="line-27"> * @version 2022/10/26</span>
-<span class="source-line-no">028</span><span id="line-28"> */</span>
-<span class="source-line-no">029</span><span id="line-29">public class PolygonSampler {   // TODO: add unit tests</span>
-<span class="source-line-no">030</span><span id="line-30">        </span>
-<span class="source-line-no">031</span><span id="line-31">        private static final PolygonSampler instance = new PolygonSampler();</span>
-<span class="source-line-no">032</span><span id="line-32">        </span>
-<span class="source-line-no">033</span><span id="line-33">        private PolygonSampler() {}</span>
-<span class="source-line-no">034</span><span id="line-34">        </span>
-<span class="source-line-no">035</span><span id="line-35">        public static PolygonSampler getInstance() {</span>
-<span class="source-line-no">036</span><span id="line-36">                return instance;</span>
-<span class="source-line-no">037</span><span id="line-37">        }</span>
-<span class="source-line-no">038</span><span id="line-38">        </span>
-<span class="source-line-no">039</span><span id="line-39">        /**</span>
-<span class="source-line-no">040</span><span id="line-40">         * Samples the closed polygon path specified by V at M equidistant positions.</span>
-<span class="source-line-no">041</span><span id="line-41">         * </span>
-<span class="source-line-no">042</span><span id="line-42">         * @param V the vertices of the (closed) polygon.</span>
-<span class="source-line-no">043</span><span id="line-43">         * @param M the number of sample points.</span>
-<span class="source-line-no">044</span><span id="line-44">         * @return the sample points as an array of Point objects.</span>
-<span class="source-line-no">045</span><span id="line-45">         */</span>
-<span class="source-line-no">046</span><span id="line-46">        public Pnt2d[] samplePolygon(Pnt2d[] V, int M) {</span>
-<span class="source-line-no">047</span><span id="line-47">                int N = V.length;</span>
-<span class="source-line-no">048</span><span id="line-48">                double Delta = pathLength(V) / M;       // constant segment length in Q</span>
-<span class="source-line-no">049</span><span id="line-49">                // distribute N points along polygon path P</span>
-<span class="source-line-no">050</span><span id="line-50">                Pnt2d[] S = new Pnt2d[M];</span>
-<span class="source-line-no">051</span><span id="line-51">//              S[0] = (Point) V[0].clone();            // q_0 = p_0 (duplicate p_0)</span>
-<span class="source-line-no">052</span><span id="line-52">                S[0] = PntDouble.from(V[0]);            // q_0 = p_0 (duplicate p_0)</span>
-<span class="source-line-no">053</span><span id="line-53">                int i = 0;                      // lower index of segment (i,i+1) in P</span>
-<span class="source-line-no">054</span><span id="line-54">                int j = 1;                      // index of next point to be added to Q</span>
-<span class="source-line-no">055</span><span id="line-55">                double alpha = 0;       // lower boundary of current path segment in P</span>
-<span class="source-line-no">056</span><span id="line-56">                double beta = Delta;    // path position of next point to be added to Q</span>
-<span class="source-line-no">057</span><span id="line-57">                // for all M segments in P do:</span>
-<span class="source-line-no">058</span><span id="line-58">                while (i &lt; N &amp;&amp; j &lt; M) {</span>
-<span class="source-line-no">059</span><span id="line-59">                        Pnt2d vA = V[i];</span>
-<span class="source-line-no">060</span><span id="line-60">                        Pnt2d vB = V[(i + 1) % N];</span>
-<span class="source-line-no">061</span><span id="line-61">                        double delta = vA.distance(vB);</span>
-<span class="source-line-no">062</span><span id="line-62">                        // handle segment (i,i+1) with path boundaries (a,a+d), knowing a &lt; b</span>
-<span class="source-line-no">063</span><span id="line-63">                        while (beta &lt;= alpha + delta &amp;&amp; j &lt; M) {</span>
-<span class="source-line-no">064</span><span id="line-64">                                // a &lt; b &lt;= a+d</span>
-<span class="source-line-no">065</span><span id="line-65">                                S[j] = interpolate(vA, vB, (beta - alpha) / delta);</span>
-<span class="source-line-no">066</span><span id="line-66">                                j = j + 1;</span>
-<span class="source-line-no">067</span><span id="line-67">                                beta = beta + Delta;</span>
-<span class="source-line-no">068</span><span id="line-68">                        }</span>
-<span class="source-line-no">069</span><span id="line-69">                        alpha = alpha + delta;</span>
-<span class="source-line-no">070</span><span id="line-70">                        i = i + 1;</span>
-<span class="source-line-no">071</span><span id="line-71">                }       </span>
-<span class="source-line-no">072</span><span id="line-72">                return S;</span>
-<span class="source-line-no">073</span><span id="line-73">        }</span>
-<span class="source-line-no">074</span><span id="line-74">        </span>
-<span class="source-line-no">075</span><span id="line-75">        /**</span>
-<span class="source-line-no">076</span><span id="line-76">         * For testing only: allows to choose an arbitrary start point by setting</span>
-<span class="source-line-no">077</span><span id="line-77">         * 'startFrac' in [0,1].</span>
-<span class="source-line-no">078</span><span id="line-78">         * </span>
-<span class="source-line-no">079</span><span id="line-79">         * @param V         the vertices of the (closed) polygon.</span>
-<span class="source-line-no">080</span><span id="line-80">         * @param M         the number of sample points.</span>
-<span class="source-line-no">081</span><span id="line-81">         * @param startFrac the position of the first sample as a fraction of the</span>
-<span class="source-line-no">082</span><span id="line-82">         *                  polggon's circumference in [0,1].</span>
-<span class="source-line-no">083</span><span id="line-83">         * @return the sample points as an array of Point objects.</span>
-<span class="source-line-no">084</span><span id="line-84">         */</span>
-<span class="source-line-no">085</span><span id="line-85">        public Pnt2d[] samplePolygon(Pnt2d[] V, int M, double startFrac) {</span>
-<span class="source-line-no">086</span><span id="line-86">                int startPos = (int) Math.round(V.length * startFrac) % V.length;</span>
-<span class="source-line-no">087</span><span id="line-87">                return samplePolygon(shiftLeft(V, startPos), M);</span>
-<span class="source-line-no">088</span><span id="line-88">        }</span>
-<span class="source-line-no">089</span><span id="line-89">        </span>
-<span class="source-line-no">090</span><span id="line-90">        private Pnt2d[] shiftLeft(Pnt2d[] V, int startPos) {</span>
-<span class="source-line-no">091</span><span id="line-91">                int polyLen = V.length;</span>
-<span class="source-line-no">092</span><span id="line-92">                Pnt2d[] P2 = new Pnt2d[polyLen]; </span>
-<span class="source-line-no">093</span><span id="line-93">                for (int i = 0; i &lt; P2.length; i++) {</span>
-<span class="source-line-no">094</span><span id="line-94">//                      P2[i] = (Point) V[(i + startPos) % polyLen].clone();</span>
-<span class="source-line-no">095</span><span id="line-95">                        P2[i] = PntDouble.from(V[(i + startPos) % polyLen]);</span>
-<span class="source-line-no">096</span><span id="line-96">                }</span>
-<span class="source-line-no">097</span><span id="line-97">                return P2;</span>
-<span class="source-line-no">098</span><span id="line-98">        }</span>
-<span class="source-line-no">099</span><span id="line-99">        </span>
-<span class="source-line-no">100</span><span id="line-100">        </span>
-<span class="source-line-no">101</span><span id="line-101">        private double pathLength(Pnt2d[] V) {</span>
-<span class="source-line-no">102</span><span id="line-102">                double L = 0;</span>
-<span class="source-line-no">103</span><span id="line-103">                final int N = V.length;</span>
-<span class="source-line-no">104</span><span id="line-104">                for (int i = 0; i &lt; N; i++) {</span>
-<span class="source-line-no">105</span><span id="line-105">                        Pnt2d p0 = V[i];</span>
-<span class="source-line-no">106</span><span id="line-106">                        Pnt2d p1 = V[(i + 1) % N];</span>
-<span class="source-line-no">107</span><span id="line-107">                        L = L + p0.distance(p1);</span>
-<span class="source-line-no">108</span><span id="line-108">                }</span>
-<span class="source-line-no">109</span><span id="line-109">                return L;</span>
-<span class="source-line-no">110</span><span id="line-110">        }</span>
-<span class="source-line-no">111</span><span id="line-111">        </span>
-<span class="source-line-no">112</span><span id="line-112">        private Pnt2d interpolate(Pnt2d p0, Pnt2d p1, double alpha) {</span>
-<span class="source-line-no">113</span><span id="line-113">                // alpha is in [0,1]</span>
-<span class="source-line-no">114</span><span id="line-114">                double x = p0.getX() + alpha * (p1.getX() - p0.getX());</span>
-<span class="source-line-no">115</span><span id="line-115">                double y = p0.getY() + alpha * (p1.getY() - p0.getY());</span>
-<span class="source-line-no">116</span><span id="line-116">                return Pnt2d.PntDouble.from(x, y);</span>
-<span class="source-line-no">117</span><span id="line-117">        }</span>
-<span class="source-line-no">118</span><span id="line-118">        </span>
-<span class="source-line-no">119</span><span id="line-119">}</span>
+<span class="source-line-no">017</span><span id="line-17"> * This class is used to re-sample 2D polygons by interpolation. See Sec. 2.1.1 (Alg. 26.1) if [1] for details. Note</span>
+<span class="source-line-no">018</span><span id="line-18"> * that this class has no public constructor, use {@link #getInstance()} instead.</span>
+<span class="source-line-no">019</span><span id="line-19"> * &lt;/p&gt;</span>
+<span class="source-line-no">020</span><span id="line-20"> * &lt;p&gt;</span>
+<span class="source-line-no">021</span><span id="line-21"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction Using Java&lt;/em&gt;, 2rd ed,</span>
+<span class="source-line-no">022</span><span id="line-22"> * Springer (2016).</span>
+<span class="source-line-no">023</span><span id="line-23"> * &lt;/p&gt;</span>
+<span class="source-line-no">024</span><span id="line-24"> *</span>
+<span class="source-line-no">025</span><span id="line-25"> * @author WB</span>
+<span class="source-line-no">026</span><span id="line-26"> * @version 2022/10/26</span>
+<span class="source-line-no">027</span><span id="line-27"> */</span>
+<span class="source-line-no">028</span><span id="line-28">public class PolygonSampler {   // TODO: add unit tests</span>
+<span class="source-line-no">029</span><span id="line-29">        </span>
+<span class="source-line-no">030</span><span id="line-30">        private static final PolygonSampler instance = new PolygonSampler();</span>
+<span class="source-line-no">031</span><span id="line-31">        </span>
+<span class="source-line-no">032</span><span id="line-32">        private PolygonSampler() {}</span>
+<span class="source-line-no">033</span><span id="line-33">        </span>
+<span class="source-line-no">034</span><span id="line-34">        public static PolygonSampler getInstance() {</span>
+<span class="source-line-no">035</span><span id="line-35">                return instance;</span>
+<span class="source-line-no">036</span><span id="line-36">        }</span>
+<span class="source-line-no">037</span><span id="line-37"></span>
+<span class="source-line-no">038</span><span id="line-38">        /**</span>
+<span class="source-line-no">039</span><span id="line-39">         * Samples the closed polygon path specified by V at M equidistant positions.</span>
+<span class="source-line-no">040</span><span id="line-40">         *</span>
+<span class="source-line-no">041</span><span id="line-41">         * @param V the vertices of the (closed) polygon.</span>
+<span class="source-line-no">042</span><span id="line-42">         * @param M the number of sample points.</span>
+<span class="source-line-no">043</span><span id="line-43">         * @return the sample points as an array of Point objects.</span>
+<span class="source-line-no">044</span><span id="line-44">         */</span>
+<span class="source-line-no">045</span><span id="line-45">        public Pnt2d[] samplePolygon(Pnt2d[] V, int M) {</span>
+<span class="source-line-no">046</span><span id="line-46">                int N = V.length;</span>
+<span class="source-line-no">047</span><span id="line-47">                double Delta = pathLength(V) / M;       // constant segment length in Q</span>
+<span class="source-line-no">048</span><span id="line-48">                // distribute N points along polygon path P</span>
+<span class="source-line-no">049</span><span id="line-49">                Pnt2d[] S = new Pnt2d[M];</span>
+<span class="source-line-no">050</span><span id="line-50">//              S[0] = (Point) V[0].clone();            // q_0 = p_0 (duplicate p_0)</span>
+<span class="source-line-no">051</span><span id="line-51">                S[0] = PntDouble.from(V[0]);            // q_0 = p_0 (duplicate p_0)</span>
+<span class="source-line-no">052</span><span id="line-52">                int i = 0;                      // lower index of segment (i,i+1) in P</span>
+<span class="source-line-no">053</span><span id="line-53">                int j = 1;                      // index of next point to be added to Q</span>
+<span class="source-line-no">054</span><span id="line-54">                double alpha = 0;       // lower boundary of current path segment in P</span>
+<span class="source-line-no">055</span><span id="line-55">                double beta = Delta;    // path position of next point to be added to Q</span>
+<span class="source-line-no">056</span><span id="line-56">                // for all M segments in P do:</span>
+<span class="source-line-no">057</span><span id="line-57">                while (i &lt; N &amp;&amp; j &lt; M) {</span>
+<span class="source-line-no">058</span><span id="line-58">                        Pnt2d vA = V[i];</span>
+<span class="source-line-no">059</span><span id="line-59">                        Pnt2d vB = V[(i + 1) % N];</span>
+<span class="source-line-no">060</span><span id="line-60">                        double delta = vA.distance(vB);</span>
+<span class="source-line-no">061</span><span id="line-61">                        // handle segment (i,i+1) with path boundaries (a,a+d), knowing a &lt; b</span>
+<span class="source-line-no">062</span><span id="line-62">                        while (beta &lt;= alpha + delta &amp;&amp; j &lt; M) {</span>
+<span class="source-line-no">063</span><span id="line-63">                                // a &lt; b &lt;= a+d</span>
+<span class="source-line-no">064</span><span id="line-64">                                S[j] = interpolate(vA, vB, (beta - alpha) / delta);</span>
+<span class="source-line-no">065</span><span id="line-65">                                j = j + 1;</span>
+<span class="source-line-no">066</span><span id="line-66">                                beta = beta + Delta;</span>
+<span class="source-line-no">067</span><span id="line-67">                        }</span>
+<span class="source-line-no">068</span><span id="line-68">                        alpha = alpha + delta;</span>
+<span class="source-line-no">069</span><span id="line-69">                        i = i + 1;</span>
+<span class="source-line-no">070</span><span id="line-70">                }       </span>
+<span class="source-line-no">071</span><span id="line-71">                return S;</span>
+<span class="source-line-no">072</span><span id="line-72">        }</span>
+<span class="source-line-no">073</span><span id="line-73"></span>
+<span class="source-line-no">074</span><span id="line-74">        /**</span>
+<span class="source-line-no">075</span><span id="line-75">         * For testing only: allows to choose an arbitrary start point by setting 'startFrac' in [0,1].</span>
+<span class="source-line-no">076</span><span id="line-76">         *</span>
+<span class="source-line-no">077</span><span id="line-77">         * @param V the vertices of the (closed) polygon.</span>
+<span class="source-line-no">078</span><span id="line-78">         * @param M the number of sample points.</span>
+<span class="source-line-no">079</span><span id="line-79">         * @param startFrac the position of the first sample as a fraction of the polggon's circumference in [0,1].</span>
+<span class="source-line-no">080</span><span id="line-80">         * @return the sample points as an array of Point objects.</span>
+<span class="source-line-no">081</span><span id="line-81">         */</span>
+<span class="source-line-no">082</span><span id="line-82">        public Pnt2d[] samplePolygon(Pnt2d[] V, int M, double startFrac) {</span>
+<span class="source-line-no">083</span><span id="line-83">                int startPos = (int) Math.round(V.length * startFrac) % V.length;</span>
+<span class="source-line-no">084</span><span id="line-84">                return samplePolygon(shiftLeft(V, startPos), M);</span>
+<span class="source-line-no">085</span><span id="line-85">        }</span>
+<span class="source-line-no">086</span><span id="line-86">        </span>
+<span class="source-line-no">087</span><span id="line-87">        private Pnt2d[] shiftLeft(Pnt2d[] V, int startPos) {</span>
+<span class="source-line-no">088</span><span id="line-88">                int polyLen = V.length;</span>
+<span class="source-line-no">089</span><span id="line-89">                Pnt2d[] P2 = new Pnt2d[polyLen]; </span>
+<span class="source-line-no">090</span><span id="line-90">                for (int i = 0; i &lt; P2.length; i++) {</span>
+<span class="source-line-no">091</span><span id="line-91">//                      P2[i] = (Point) V[(i + startPos) % polyLen].clone();</span>
+<span class="source-line-no">092</span><span id="line-92">                        P2[i] = PntDouble.from(V[(i + startPos) % polyLen]);</span>
+<span class="source-line-no">093</span><span id="line-93">                }</span>
+<span class="source-line-no">094</span><span id="line-94">                return P2;</span>
+<span class="source-line-no">095</span><span id="line-95">        }</span>
+<span class="source-line-no">096</span><span id="line-96">        </span>
+<span class="source-line-no">097</span><span id="line-97">        </span>
+<span class="source-line-no">098</span><span id="line-98">        private double pathLength(Pnt2d[] V) {</span>
+<span class="source-line-no">099</span><span id="line-99">                double L = 0;</span>
+<span class="source-line-no">100</span><span id="line-100">                final int N = V.length;</span>
+<span class="source-line-no">101</span><span id="line-101">                for (int i = 0; i &lt; N; i++) {</span>
+<span class="source-line-no">102</span><span id="line-102">                        Pnt2d p0 = V[i];</span>
+<span class="source-line-no">103</span><span id="line-103">                        Pnt2d p1 = V[(i + 1) % N];</span>
+<span class="source-line-no">104</span><span id="line-104">                        L = L + p0.distance(p1);</span>
+<span class="source-line-no">105</span><span id="line-105">                }</span>
+<span class="source-line-no">106</span><span id="line-106">                return L;</span>
+<span class="source-line-no">107</span><span id="line-107">        }</span>
+<span class="source-line-no">108</span><span id="line-108">        </span>
+<span class="source-line-no">109</span><span id="line-109">        private Pnt2d interpolate(Pnt2d p0, Pnt2d p1, double alpha) {</span>
+<span class="source-line-no">110</span><span id="line-110">                // alpha is in [0,1]</span>
+<span class="source-line-no">111</span><span id="line-111">                double x = p0.getX() + alpha * (p1.getX() - p0.getX());</span>
+<span class="source-line-no">112</span><span id="line-112">                double y = p0.getY() + alpha * (p1.getY() - p0.getY());</span>
+<span class="source-line-no">113</span><span id="line-113">                return Pnt2d.PntDouble.from(x, y);</span>
+<span class="source-line-no">114</span><span id="line-114">        }</span>
+<span class="source-line-no">115</span><span id="line-115">        </span>
+<span class="source-line-no">116</span><span id="line-116">}</span>
 
 
 

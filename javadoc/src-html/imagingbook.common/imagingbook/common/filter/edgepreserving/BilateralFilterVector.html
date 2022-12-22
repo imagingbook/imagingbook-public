@@ -22,87 +22,85 @@
 <span class="source-line-no">009</span><span id="line-9"></span>
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.filter.edgepreserving;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.math.Arithmetic.sqr;</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">import ij.process.ColorProcessor;</span>
-<span class="source-line-no">015</span><span id="line-15">import imagingbook.common.filter.edgepreserving.BilateralF.Parameters;</span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.common.filter.generic.GenericFilterVector;</span>
-<span class="source-line-no">017</span><span id="line-17">import imagingbook.common.filter.linear.GaussianKernel2D;</span>
-<span class="source-line-no">018</span><span id="line-18">import imagingbook.common.image.PixelPack;</span>
-<span class="source-line-no">019</span><span id="line-19">import imagingbook.common.math.VectorNorm;</span>
+<span class="source-line-no">012</span><span id="line-12">import ij.process.ColorProcessor;</span>
+<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.filter.edgepreserving.BilateralF.Parameters;</span>
+<span class="source-line-no">014</span><span id="line-14">import imagingbook.common.filter.generic.GenericFilterVector;</span>
+<span class="source-line-no">015</span><span id="line-15">import imagingbook.common.filter.linear.GaussianKernel2D;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.common.image.PixelPack;</span>
+<span class="source-line-no">017</span><span id="line-17">import imagingbook.common.math.VectorNorm;</span>
+<span class="source-line-no">018</span><span id="line-18"></span>
+<span class="source-line-no">019</span><span id="line-19">import static imagingbook.common.math.Arithmetic.sqr;</span>
 <span class="source-line-no">020</span><span id="line-20"></span>
 <span class="source-line-no">021</span><span id="line-21">/**</span>
 <span class="source-line-no">022</span><span id="line-22"> * &lt;p&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * Vector (non-separable) version of the Bilateral filter as proposed in [1], </span>
-<span class="source-line-no">024</span><span id="line-24"> * for RGB images ({@link ColorProcessor}) only.</span>
-<span class="source-line-no">025</span><span id="line-25"> * The filter uses Gaussian domain and range kernels and can be applied to all </span>
-<span class="source-line-no">026</span><span id="line-26"> * image types. See Sec. 17.2 of [2] for additional details.</span>
-<span class="source-line-no">027</span><span id="line-27"> * &lt;/p&gt;</span>
-<span class="source-line-no">028</span><span id="line-28"> * &lt;p&gt;</span>
-<span class="source-line-no">029</span><span id="line-29"> * [1] C. Tomasi and R. Manduchi, "Bilateral Filtering for Gray and Color Images",</span>
-<span class="source-line-no">030</span><span id="line-30"> * Proceedings of the 1998 IEEE International Conference on Computer Vision,</span>
-<span class="source-line-no">031</span><span id="line-31"> * Bombay, India.</span>
-<span class="source-line-no">032</span><span id="line-32"> * &lt;br&gt;</span>
-<span class="source-line-no">033</span><span id="line-33"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, </span>
-<span class="source-line-no">034</span><span id="line-34"> * 3rd ed, Springer (2022).</span>
-<span class="source-line-no">035</span><span id="line-35"> * &lt;/p&gt;</span>
-<span class="source-line-no">036</span><span id="line-36"> * </span>
-<span class="source-line-no">037</span><span id="line-37"> * @author WB</span>
-<span class="source-line-no">038</span><span id="line-38"> * @version 2021/01/01</span>
-<span class="source-line-no">039</span><span id="line-39"> */</span>
-<span class="source-line-no">040</span><span id="line-40">public class BilateralFilterVector extends GenericFilterVector {</span>
-<span class="source-line-no">041</span><span id="line-41">        </span>
-<span class="source-line-no">042</span><span id="line-42">        private final float[][] Hd;     // the domain kernel</span>
-<span class="source-line-no">043</span><span id="line-43">        private final int K;            // the domain kernel size [-K,...,K]</span>
-<span class="source-line-no">044</span><span id="line-44">        private final double sigmaR2;</span>
-<span class="source-line-no">045</span><span id="line-45">        private final VectorNorm colorNorm;</span>
-<span class="source-line-no">046</span><span id="line-46">        private final double colorScale2;</span>
-<span class="source-line-no">047</span><span id="line-47">        </span>
-<span class="source-line-no">048</span><span id="line-48">        public BilateralFilterVector() {</span>
-<span class="source-line-no">049</span><span id="line-49">                this(new Parameters());</span>
-<span class="source-line-no">050</span><span id="line-50">        }</span>
-<span class="source-line-no">051</span><span id="line-51">        </span>
-<span class="source-line-no">052</span><span id="line-52">        public BilateralFilterVector(Parameters params) {</span>
-<span class="source-line-no">053</span><span id="line-53">                GaussianKernel2D kernel = new GaussianKernel2D(params.sigmaD);</span>
-<span class="source-line-no">054</span><span id="line-54">                this.Hd = kernel.getH();</span>
-<span class="source-line-no">055</span><span id="line-55">                this.K = kernel.getXc();</span>
-<span class="source-line-no">056</span><span id="line-56">                this.sigmaR2 = sqr(params.sigmaR);</span>
-<span class="source-line-no">057</span><span id="line-57">                this.colorNorm = params.colorNormType.getInstance();</span>
-<span class="source-line-no">058</span><span id="line-58">                this.colorScale2 = sqr(colorNorm.getScale(3));</span>
-<span class="source-line-no">059</span><span id="line-59">        }</span>
-<span class="source-line-no">060</span><span id="line-60">        </span>
-<span class="source-line-no">061</span><span id="line-61">        @Override</span>
-<span class="source-line-no">062</span><span id="line-62">        protected float[] doPixel(PixelPack pack, int u, int v) {</span>
-<span class="source-line-no">063</span><span id="line-63">                float[] S = new float[3];       // sum of weighted RGB values</span>
-<span class="source-line-no">064</span><span id="line-64">                float W = 0;                            // sum of weights</span>
-<span class="source-line-no">065</span><span id="line-65">                float[] a = pack.getPix(u, v);                  // value of the current center pixel</span>
-<span class="source-line-no">066</span><span id="line-66">                </span>
-<span class="source-line-no">067</span><span id="line-67">                for (int m = -K; m &lt;= K; m++) {</span>
-<span class="source-line-no">068</span><span id="line-68">                        for (int n = -K; n &lt;= K; n++) {</span>
-<span class="source-line-no">069</span><span id="line-69">                                float[] b = pack.getPix(u + m, v + n);</span>
-<span class="source-line-no">070</span><span id="line-70">                                float wd = Hd[m + K][n + K];                            // domain weight</span>
-<span class="source-line-no">071</span><span id="line-71">                                float wr = similarityGauss(a, b);                       // range weight</span>
-<span class="source-line-no">072</span><span id="line-72">                                float w = wd * wr;</span>
-<span class="source-line-no">073</span><span id="line-73">                                S[0] = S[0] + w * b[0];</span>
-<span class="source-line-no">074</span><span id="line-74">                                S[1] = S[1] + w * b[1];</span>
-<span class="source-line-no">075</span><span id="line-75">                                S[2] = S[2] + w * b[2];</span>
-<span class="source-line-no">076</span><span id="line-76">                                W = W + w;</span>
-<span class="source-line-no">077</span><span id="line-77">                        }</span>
-<span class="source-line-no">078</span><span id="line-78">                }</span>
-<span class="source-line-no">079</span><span id="line-79">                S[0] = S[0] / W;</span>
-<span class="source-line-no">080</span><span id="line-80">                S[1] = S[1] / W;</span>
-<span class="source-line-no">081</span><span id="line-81">                S[2] = S[2] / W;</span>
-<span class="source-line-no">082</span><span id="line-82">                return S;</span>
-<span class="source-line-no">083</span><span id="line-83">        }</span>
+<span class="source-line-no">023</span><span id="line-23"> * Vector (non-separable) version of the Bilateral filter as proposed in [1], for RGB images ({@link ColorProcessor})</span>
+<span class="source-line-no">024</span><span id="line-24"> * only. The filter uses Gaussian domain and range kernels and can be applied to all image types. See Sec. 17.2 of [2]</span>
+<span class="source-line-no">025</span><span id="line-25"> * for additional details.</span>
+<span class="source-line-no">026</span><span id="line-26"> * &lt;/p&gt;</span>
+<span class="source-line-no">027</span><span id="line-27"> * &lt;p&gt;</span>
+<span class="source-line-no">028</span><span id="line-28"> * [1] C. Tomasi and R. Manduchi, "Bilateral Filtering for Gray and Color Images", Proceedings of the 1998 IEEE</span>
+<span class="source-line-no">029</span><span id="line-29"> * International Conference on Computer Vision, Bombay, India.</span>
+<span class="source-line-no">030</span><span id="line-30"> * &lt;br&gt;</span>
+<span class="source-line-no">031</span><span id="line-31"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">032</span><span id="line-32"> * (2022).</span>
+<span class="source-line-no">033</span><span id="line-33"> * &lt;/p&gt;</span>
+<span class="source-line-no">034</span><span id="line-34"> *</span>
+<span class="source-line-no">035</span><span id="line-35"> * @author WB</span>
+<span class="source-line-no">036</span><span id="line-36"> * @version 2021/01/01</span>
+<span class="source-line-no">037</span><span id="line-37"> */</span>
+<span class="source-line-no">038</span><span id="line-38">public class BilateralFilterVector extends GenericFilterVector {</span>
+<span class="source-line-no">039</span><span id="line-39">        </span>
+<span class="source-line-no">040</span><span id="line-40">        private final float[][] Hd;     // the domain kernel</span>
+<span class="source-line-no">041</span><span id="line-41">        private final int K;            // the domain kernel size [-K,...,K]</span>
+<span class="source-line-no">042</span><span id="line-42">        private final double sigmaR2;</span>
+<span class="source-line-no">043</span><span id="line-43">        private final VectorNorm colorNorm;</span>
+<span class="source-line-no">044</span><span id="line-44">        private final double colorScale2;</span>
+<span class="source-line-no">045</span><span id="line-45">        </span>
+<span class="source-line-no">046</span><span id="line-46">        public BilateralFilterVector() {</span>
+<span class="source-line-no">047</span><span id="line-47">                this(new Parameters());</span>
+<span class="source-line-no">048</span><span id="line-48">        }</span>
+<span class="source-line-no">049</span><span id="line-49">        </span>
+<span class="source-line-no">050</span><span id="line-50">        public BilateralFilterVector(Parameters params) {</span>
+<span class="source-line-no">051</span><span id="line-51">                GaussianKernel2D kernel = new GaussianKernel2D(params.sigmaD);</span>
+<span class="source-line-no">052</span><span id="line-52">                this.Hd = kernel.getH();</span>
+<span class="source-line-no">053</span><span id="line-53">                this.K = kernel.getXc();</span>
+<span class="source-line-no">054</span><span id="line-54">                this.sigmaR2 = sqr(params.sigmaR);</span>
+<span class="source-line-no">055</span><span id="line-55">                this.colorNorm = params.colorNormType.getInstance();</span>
+<span class="source-line-no">056</span><span id="line-56">                this.colorScale2 = sqr(colorNorm.getScale(3));</span>
+<span class="source-line-no">057</span><span id="line-57">        }</span>
+<span class="source-line-no">058</span><span id="line-58">        </span>
+<span class="source-line-no">059</span><span id="line-59">        @Override</span>
+<span class="source-line-no">060</span><span id="line-60">        protected float[] doPixel(PixelPack pack, int u, int v) {</span>
+<span class="source-line-no">061</span><span id="line-61">                float[] S = new float[3];       // sum of weighted RGB values</span>
+<span class="source-line-no">062</span><span id="line-62">                float W = 0;                            // sum of weights</span>
+<span class="source-line-no">063</span><span id="line-63">                float[] a = pack.getPix(u, v);                  // value of the current center pixel</span>
+<span class="source-line-no">064</span><span id="line-64">                </span>
+<span class="source-line-no">065</span><span id="line-65">                for (int m = -K; m &lt;= K; m++) {</span>
+<span class="source-line-no">066</span><span id="line-66">                        for (int n = -K; n &lt;= K; n++) {</span>
+<span class="source-line-no">067</span><span id="line-67">                                float[] b = pack.getPix(u + m, v + n);</span>
+<span class="source-line-no">068</span><span id="line-68">                                float wd = Hd[m + K][n + K];                            // domain weight</span>
+<span class="source-line-no">069</span><span id="line-69">                                float wr = similarityGauss(a, b);                       // range weight</span>
+<span class="source-line-no">070</span><span id="line-70">                                float w = wd * wr;</span>
+<span class="source-line-no">071</span><span id="line-71">                                S[0] = S[0] + w * b[0];</span>
+<span class="source-line-no">072</span><span id="line-72">                                S[1] = S[1] + w * b[1];</span>
+<span class="source-line-no">073</span><span id="line-73">                                S[2] = S[2] + w * b[2];</span>
+<span class="source-line-no">074</span><span id="line-74">                                W = W + w;</span>
+<span class="source-line-no">075</span><span id="line-75">                        }</span>
+<span class="source-line-no">076</span><span id="line-76">                }</span>
+<span class="source-line-no">077</span><span id="line-77">                S[0] = S[0] / W;</span>
+<span class="source-line-no">078</span><span id="line-78">                S[1] = S[1] / W;</span>
+<span class="source-line-no">079</span><span id="line-79">                S[2] = S[2] / W;</span>
+<span class="source-line-no">080</span><span id="line-80">                return S;</span>
+<span class="source-line-no">081</span><span id="line-81">        }</span>
+<span class="source-line-no">082</span><span id="line-82">        </span>
+<span class="source-line-no">083</span><span id="line-83">        // ------------------------------------------------------</span>
 <span class="source-line-no">084</span><span id="line-84">        </span>
-<span class="source-line-no">085</span><span id="line-85">        // ------------------------------------------------------</span>
-<span class="source-line-no">086</span><span id="line-86">        </span>
-<span class="source-line-no">087</span><span id="line-87">        // This returns the weights for a Gaussian range kernel (color vector version):</span>
-<span class="source-line-no">088</span><span id="line-88">        private float similarityGauss(float[] A, float[] B) {</span>
-<span class="source-line-no">089</span><span id="line-89">                double d2 = colorScale2 * colorNorm.distance2(A, B);</span>
-<span class="source-line-no">090</span><span id="line-90">                return (float) Math.exp(-d2 / (2 * sigmaR2));</span>
-<span class="source-line-no">091</span><span id="line-91">        }</span>
-<span class="source-line-no">092</span><span id="line-92">}</span>
+<span class="source-line-no">085</span><span id="line-85">        // This returns the weights for a Gaussian range kernel (color vector version):</span>
+<span class="source-line-no">086</span><span id="line-86">        private float similarityGauss(float[] A, float[] B) {</span>
+<span class="source-line-no">087</span><span id="line-87">                double d2 = colorScale2 * colorNorm.distance2(A, B);</span>
+<span class="source-line-no">088</span><span id="line-88">                return (float) Math.exp(-d2 / (2 * sigmaR2));</span>
+<span class="source-line-no">089</span><span id="line-89">        }</span>
+<span class="source-line-no">090</span><span id="line-90">}</span>
 
 
 

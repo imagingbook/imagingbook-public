@@ -22,8 +22,8 @@
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.util.bits;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
 <span class="source-line-no">011</span><span id="line-11">/**</span>
-<span class="source-line-no">012</span><span id="line-12"> * This class implements {@link BitVector} with internal 64-bit </span>
-<span class="source-line-no">013</span><span id="line-13"> * {@code long} data.</span>
+<span class="source-line-no">012</span><span id="line-12"> * This class implements {@link BitVector} with internal 64-bit {@code long} data.</span>
+<span class="source-line-no">013</span><span id="line-13"> *</span>
 <span class="source-line-no">014</span><span id="line-14"> * @author WB</span>
 <span class="source-line-no">015</span><span id="line-15"> */</span>
 <span class="source-line-no">016</span><span id="line-16">public class BitVector64 implements BitVector {</span>
@@ -119,41 +119,8 @@
 <span class="source-line-no">106</span><span id="line-106">                buf.append("]");</span>
 <span class="source-line-no">107</span><span id="line-107">                return buf.toString();</span>
 <span class="source-line-no">108</span><span id="line-108">        }</span>
-<span class="source-line-no">109</span><span id="line-109">        </span>
-<span class="source-line-no">110</span><span id="line-110">//      public String toHexString() {</span>
-<span class="source-line-no">111</span><span id="line-111">//              StringBuilder buf = new StringBuilder();</span>
-<span class="source-line-no">112</span><span id="line-112">//              buf.append(BitVector64.class.getSimpleName() + "[");</span>
-<span class="source-line-no">113</span><span id="line-113">//              for (int i = 0; i &lt; data.length; i++) {</span>
-<span class="source-line-no">114</span><span id="line-114">//                      buf.append(Long.toHexString(data[i]));</span>
-<span class="source-line-no">115</span><span id="line-115">//              }</span>
-<span class="source-line-no">116</span><span id="line-116">//              buf.append("]");</span>
-<span class="source-line-no">117</span><span id="line-117">//              return buf.toString();</span>
-<span class="source-line-no">118</span><span id="line-118">//      }</span>
-<span class="source-line-no">119</span><span id="line-119">        </span>
-<span class="source-line-no">120</span><span id="line-120">        //----------------------------------------------------------------------------------</span>
-<span class="source-line-no">121</span><span id="line-121">        </span>
-<span class="source-line-no">122</span><span id="line-122">//      public static void main(String[] args) {</span>
-<span class="source-line-no">123</span><span id="line-123">//              int K = 99;</span>
-<span class="source-line-no">124</span><span id="line-124">//              BitVector64 b = new BitVector64(K);</span>
-<span class="source-line-no">125</span><span id="line-125">//              </span>
-<span class="source-line-no">126</span><span id="line-126">//              System.out.println(b.toString());</span>
-<span class="source-line-no">127</span><span id="line-127">//              b.setAll();</span>
-<span class="source-line-no">128</span><span id="line-128">//              System.out.println(b.toString());</span>
-<span class="source-line-no">129</span><span id="line-129">//              b.unsetAll();</span>
-<span class="source-line-no">130</span><span id="line-130">//              System.out.println(b.toString());</span>
-<span class="source-line-no">131</span><span id="line-131">//              </span>
-<span class="source-line-no">132</span><span id="line-132">////            System.out.println(b.toHexString());</span>
-<span class="source-line-no">133</span><span id="line-133">//              </span>
-<span class="source-line-no">134</span><span id="line-134">//              System.out.println();</span>
-<span class="source-line-no">135</span><span id="line-135">//              </span>
-<span class="source-line-no">136</span><span id="line-136">//              for (int i = 0; i &lt; b.length; i++) {</span>
-<span class="source-line-no">137</span><span id="line-137">//                      b.set(i);</span>
-<span class="source-line-no">138</span><span id="line-138">//                      System.out.println(b.toString());</span>
-<span class="source-line-no">139</span><span id="line-139">//                      b.unset(i);</span>
-<span class="source-line-no">140</span><span id="line-140">//              }</span>
-<span class="source-line-no">141</span><span id="line-141">//      }</span>
-<span class="source-line-no">142</span><span id="line-142"></span>
-<span class="source-line-no">143</span><span id="line-143">}</span>
+<span class="source-line-no">109</span><span id="line-109"></span>
+<span class="source-line-no">110</span><span id="line-110">}</span>
 
 
 

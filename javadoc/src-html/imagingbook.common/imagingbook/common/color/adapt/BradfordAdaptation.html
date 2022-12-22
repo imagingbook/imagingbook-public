@@ -22,10 +22,10 @@
 <span class="source-line-no">009</span><span id="line-9"></span>
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.color.adapt;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.math.Matrix.inverse;</span>
-<span class="source-line-no">013</span><span id="line-13">import static imagingbook.common.math.Matrix.multiply;</span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">import imagingbook.common.color.cie.Illuminant;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.color.cie.Illuminant;</span>
+<span class="source-line-no">013</span><span id="line-13"></span>
+<span class="source-line-no">014</span><span id="line-14">import static imagingbook.common.math.Matrix.inverse;</span>
+<span class="source-line-no">015</span><span id="line-15">import static imagingbook.common.math.Matrix.multiply;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
 <span class="source-line-no">017</span><span id="line-17">/**</span>
 <span class="source-line-no">018</span><span id="line-18"> * &lt;p&gt;</span>
@@ -126,31 +126,32 @@
 <span class="source-line-no">113</span><span id="line-113">                }</span>
 <span class="source-line-no">114</span><span id="line-114">                return XYZB;</span>
 <span class="source-line-no">115</span><span id="line-115">        }</span>
-<span class="source-line-no">116</span><span id="line-116">        </span>
+<span class="source-line-no">116</span><span id="line-116"></span>
 <span class="source-line-no">117</span><span id="line-117">        /**</span>
 <span class="source-line-no">118</span><span id="line-118">         * Returns the composite color adaptation transformation matrix.</span>
-<span class="source-line-no">119</span><span id="line-119">         * @return the color adaptation transformation matrix</span>
-<span class="source-line-no">120</span><span id="line-120">         */</span>
-<span class="source-line-no">121</span><span id="line-121">        public double[][] getAdaptationMatrix() {</span>
-<span class="source-line-no">122</span><span id="line-122">                return this.Madapt;</span>
-<span class="source-line-no">123</span><span id="line-123">        }</span>
-<span class="source-line-no">124</span><span id="line-124">        </span>
-<span class="source-line-no">125</span><span id="line-125"></span>
-<span class="source-line-no">126</span><span id="line-126">        // Creates a diagonal matrix with the ratios of the rgb components</span>
-<span class="source-line-no">127</span><span id="line-127">        // obtained by transforming the two white points</span>
-<span class="source-line-no">128</span><span id="line-128">        private static double[][] getRgbWhiteRatioMatrix(double[] rgbA, double[] rgbB) {</span>
-<span class="source-line-no">129</span><span id="line-129">                if (rgbA.length != rgbB.length) {</span>
-<span class="source-line-no">130</span><span id="line-130">                        throw new IllegalArgumentException();</span>
-<span class="source-line-no">131</span><span id="line-131">                }</span>
-<span class="source-line-no">132</span><span id="line-132">                final int n = rgbA.length;</span>
-<span class="source-line-no">133</span><span id="line-133">                double[][] M = new double[n][n];</span>
-<span class="source-line-no">134</span><span id="line-134">                for (int i = 0; i &lt; n; i++) {</span>
-<span class="source-line-no">135</span><span id="line-135">                        M[i][i] = rgbB[i] / rgbA[i];</span>
-<span class="source-line-no">136</span><span id="line-136">                }</span>
-<span class="source-line-no">137</span><span id="line-137">                return M;</span>
-<span class="source-line-no">138</span><span id="line-138">        }</span>
-<span class="source-line-no">139</span><span id="line-139">                </span>
-<span class="source-line-no">140</span><span id="line-140">}</span>
+<span class="source-line-no">119</span><span id="line-119">         *</span>
+<span class="source-line-no">120</span><span id="line-120">         * @return the color adaptation transformation matrix</span>
+<span class="source-line-no">121</span><span id="line-121">         */</span>
+<span class="source-line-no">122</span><span id="line-122">        public double[][] getAdaptationMatrix() {</span>
+<span class="source-line-no">123</span><span id="line-123">                return this.Madapt;</span>
+<span class="source-line-no">124</span><span id="line-124">        }</span>
+<span class="source-line-no">125</span><span id="line-125">        </span>
+<span class="source-line-no">126</span><span id="line-126"></span>
+<span class="source-line-no">127</span><span id="line-127">        // Creates a diagonal matrix with the ratios of the rgb components</span>
+<span class="source-line-no">128</span><span id="line-128">        // obtained by transforming the two white points</span>
+<span class="source-line-no">129</span><span id="line-129">        private static double[][] getRgbWhiteRatioMatrix(double[] rgbA, double[] rgbB) {</span>
+<span class="source-line-no">130</span><span id="line-130">                if (rgbA.length != rgbB.length) {</span>
+<span class="source-line-no">131</span><span id="line-131">                        throw new IllegalArgumentException();</span>
+<span class="source-line-no">132</span><span id="line-132">                }</span>
+<span class="source-line-no">133</span><span id="line-133">                final int n = rgbA.length;</span>
+<span class="source-line-no">134</span><span id="line-134">                double[][] M = new double[n][n];</span>
+<span class="source-line-no">135</span><span id="line-135">                for (int i = 0; i &lt; n; i++) {</span>
+<span class="source-line-no">136</span><span id="line-136">                        M[i][i] = rgbB[i] / rgbA[i];</span>
+<span class="source-line-no">137</span><span id="line-137">                }</span>
+<span class="source-line-no">138</span><span id="line-138">                return M;</span>
+<span class="source-line-no">139</span><span id="line-139">        }</span>
+<span class="source-line-no">140</span><span id="line-140">                </span>
+<span class="source-line-no">141</span><span id="line-141">}</span>
 
 
 

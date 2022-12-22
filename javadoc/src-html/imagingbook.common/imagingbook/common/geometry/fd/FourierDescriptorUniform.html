@@ -27,167 +27,161 @@
 <span class="source-line-no">014</span><span id="line-14"></span>
 <span class="source-line-no">015</span><span id="line-15">/**</span>
 <span class="source-line-no">016</span><span id="line-16"> * &lt;p&gt;</span>
-<span class="source-line-no">017</span><span id="line-17"> * Defines static methods to create Fourier descriptors from uniformly sampled</span>
-<span class="source-line-no">018</span><span id="line-18"> * point sequences. See Ch. 26 of [1] for additional details.</span>
+<span class="source-line-no">017</span><span id="line-17"> * Defines static methods to create Fourier descriptors from uniformly sampled point sequences. See Ch. 26 of [1] for</span>
+<span class="source-line-no">018</span><span id="line-18"> * additional details.</span>
 <span class="source-line-no">019</span><span id="line-19"> * &lt;/p&gt;</span>
 <span class="source-line-no">020</span><span id="line-20"> * &lt;p&gt;</span>
-<span class="source-line-no">021</span><span id="line-21"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">022</span><span id="line-22"> * Algorithmic Introduction Using Java&lt;/em&gt;, 2nd ed, Springer (2016).</span>
+<span class="source-line-no">021</span><span id="line-21"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction Using Java&lt;/em&gt;, 2nd ed,</span>
+<span class="source-line-no">022</span><span id="line-22"> * Springer (2016).</span>
 <span class="source-line-no">023</span><span id="line-23"> * &lt;/p&gt;</span>
-<span class="source-line-no">024</span><span id="line-24"> * </span>
+<span class="source-line-no">024</span><span id="line-24"> *</span>
 <span class="source-line-no">025</span><span id="line-25"> * @author WB</span>
 <span class="source-line-no">026</span><span id="line-26"> * @version 2022/10/24</span>
 <span class="source-line-no">027</span><span id="line-27"> */</span>
 <span class="source-line-no">028</span><span id="line-28">public abstract class FourierDescriptorUniform {</span>
 <span class="source-line-no">029</span><span id="line-29">        </span>
 <span class="source-line-no">030</span><span id="line-30">        private FourierDescriptorUniform() {}</span>
-<span class="source-line-no">031</span><span id="line-31">        </span>
+<span class="source-line-no">031</span><span id="line-31"></span>
 <span class="source-line-no">032</span><span id="line-32">        /**</span>
-<span class="source-line-no">033</span><span id="line-33">         * Creates a new Fourier descriptor from a uniformly sampled polygon V</span>
-<span class="source-line-no">034</span><span id="line-34">         * with the maximum number of Fourier coefficient pairs.</span>
-<span class="source-line-no">035</span><span id="line-35">         * The length of the resulting DFT spectrum equals V.length.</span>
-<span class="source-line-no">036</span><span id="line-36">         * </span>
-<span class="source-line-no">037</span><span id="line-37">         * @param V a polygon</span>
-<span class="source-line-no">038</span><span id="line-38">         * @return a new {@link FourierDescriptorUniform} instance</span>
-<span class="source-line-no">039</span><span id="line-39">         */</span>
-<span class="source-line-no">040</span><span id="line-40">        public static FourierDescriptor from(Pnt2d[] V) {</span>
-<span class="source-line-no">041</span><span id="line-41">                return from(FourierDescriptor.toComplexArray(V));</span>
-<span class="source-line-no">042</span><span id="line-42">        }</span>
-<span class="source-line-no">043</span><span id="line-43">        </span>
-<span class="source-line-no">044</span><span id="line-44">        /**</span>
-<span class="source-line-no">045</span><span id="line-45">         * Creates a new Fourier descriptor from a uniformly sampled polygon V</span>
-<span class="source-line-no">046</span><span id="line-46">         * with Mp coefficient pairs.</span>
-<span class="source-line-no">047</span><span id="line-47">         * The length of the resulting DFT spectrum is 2 * mp + 1, i.e.,</span>
-<span class="source-line-no">048</span><span id="line-48">         * it must be assured that Mp &amp;lt; (V.length - 1) &amp;divide; 2.</span>
-<span class="source-line-no">049</span><span id="line-49">         * </span>
-<span class="source-line-no">050</span><span id="line-50">         * @param V a polygon</span>
-<span class="source-line-no">051</span><span id="line-51">         * @param mp number of coefficient pairs</span>
-<span class="source-line-no">052</span><span id="line-52">         * @return a new {@link FourierDescriptorUniform} instance</span>
-<span class="source-line-no">053</span><span id="line-53">         */</span>
-<span class="source-line-no">054</span><span id="line-54">        public static FourierDescriptor from(Pnt2d[] V, int mp) {</span>
-<span class="source-line-no">055</span><span id="line-55">                return from(FourierDescriptor.toComplexArray(V), mp);</span>
-<span class="source-line-no">056</span><span id="line-56">        }</span>
-<span class="source-line-no">057</span><span id="line-57">        </span>
-<span class="source-line-no">058</span><span id="line-58">        </span>
-<span class="source-line-no">059</span><span id="line-59">        // -------------------------------------------------------------------</span>
-<span class="source-line-no">060</span><span id="line-60">        </span>
-<span class="source-line-no">061</span><span id="line-61">        /**</span>
-<span class="source-line-no">062</span><span id="line-62">         * Creates a new Fourier descriptor from a uniformly sampled polygon V</span>
-<span class="source-line-no">063</span><span id="line-63">         * with the maximum number of Fourier coefficient pairs.</span>
-<span class="source-line-no">064</span><span id="line-64">         * The length of the resulting DFT spectrum equals V.length.</span>
-<span class="source-line-no">065</span><span id="line-65">         * </span>
-<span class="source-line-no">066</span><span id="line-66">         * @param V a polygon</span>
-<span class="source-line-no">067</span><span id="line-67">         * @return a new {@link FourierDescriptorUniform} instance</span>
-<span class="source-line-no">068</span><span id="line-68">         */</span>
-<span class="source-line-no">069</span><span id="line-69">        public static FourierDescriptor from(Complex[] V) {</span>
-<span class="source-line-no">070</span><span id="line-70">                return new FourierDescriptor(DFT(V));</span>
-<span class="source-line-no">071</span><span id="line-71">        }</span>
-<span class="source-line-no">072</span><span id="line-72">        </span>
-<span class="source-line-no">073</span><span id="line-73">        /**</span>
-<span class="source-line-no">074</span><span id="line-74">         * Creates a new Fourier descriptor from a uniformly sampled polygon V</span>
-<span class="source-line-no">075</span><span id="line-75">         * with Mp coefficient pairs.</span>
-<span class="source-line-no">076</span><span id="line-76">         * The length of the resulting DFT spectrum is 2 * mp + 1, i.e.,</span>
-<span class="source-line-no">077</span><span id="line-77">         * it must be assured that Mp &amp;lt; (V.length - 1) &amp;divide; 2.</span>
-<span class="source-line-no">078</span><span id="line-78">         * </span>
-<span class="source-line-no">079</span><span id="line-79">         * @param V a sequence of uniformly-spaced 2D sample points</span>
-<span class="source-line-no">080</span><span id="line-80">         * @param mp number of coefficient pairs</span>
-<span class="source-line-no">081</span><span id="line-81">         * @return a new {@link FourierDescriptorUniform} instance</span>
-<span class="source-line-no">082</span><span id="line-82">         */</span>
-<span class="source-line-no">083</span><span id="line-83">        public static FourierDescriptor from(Complex[] V, int mp) {</span>
-<span class="source-line-no">084</span><span id="line-84">                if (mp &gt; (V.length - 1) / 2) {</span>
-<span class="source-line-no">085</span><span id="line-85">                        throw new IllegalArgumentException("number of Fourier pairs (mp) may not be greater than " </span>
-<span class="source-line-no">086</span><span id="line-86">                                                        + ((V.length - 1) / 2));</span>
-<span class="source-line-no">087</span><span id="line-87">                }</span>
-<span class="source-line-no">088</span><span id="line-88">                return new FourierDescriptor(DFT(V, 2 * mp + 1));</span>
-<span class="source-line-no">089</span><span id="line-89">        }</span>
-<span class="source-line-no">090</span><span id="line-90">        </span>
-<span class="source-line-no">091</span><span id="line-91">        // -------------------------------------------------------------------</span>
-<span class="source-line-no">092</span><span id="line-92"></span>
-<span class="source-line-no">093</span><span id="line-93">        /**</span>
-<span class="source-line-no">094</span><span id="line-94">         * DFT with the resulting spectrum (signal, if inverse) of the same length</span>
-<span class="source-line-no">095</span><span id="line-95">         * as the input vector g. Not using sin/cos tables.</span>
-<span class="source-line-no">096</span><span id="line-96">         * </span>
-<span class="source-line-no">097</span><span id="line-97">         * @param g signal vector</span>
-<span class="source-line-no">098</span><span id="line-98">         * @return DFT spectrum</span>
-<span class="source-line-no">099</span><span id="line-99">         */</span>
-<span class="source-line-no">100</span><span id="line-100">        private static Complex[] DFT(Complex[] g) {</span>
-<span class="source-line-no">101</span><span id="line-101">                int M = g.length;</span>
-<span class="source-line-no">102</span><span id="line-102">//              double[] cosTable = makeCosTable(M);    // cosTable[m] == cos(2*pi*m/M)</span>
-<span class="source-line-no">103</span><span id="line-103">//              double[] sinTable = makeSinTable(M);    // sinTable[m] == sin(2*pi*m/M)</span>
-<span class="source-line-no">104</span><span id="line-104">                Complex[] G = new Complex[M];</span>
-<span class="source-line-no">105</span><span id="line-105">                double s = 1.0 / M; //common scale factor (fwd/inverse differ!)</span>
-<span class="source-line-no">106</span><span id="line-106">                for (int m = 0; m &lt; M; m++) {</span>
-<span class="source-line-no">107</span><span id="line-107">                        double Am = 0;</span>
-<span class="source-line-no">108</span><span id="line-108">                        double Bm = 0;</span>
-<span class="source-line-no">109</span><span id="line-109">                        for (int k = 0; k &lt; M; k++) {</span>
-<span class="source-line-no">110</span><span id="line-110">                                double x = g[k].re;</span>
-<span class="source-line-no">111</span><span id="line-111">                                double y = g[k].im;</span>
-<span class="source-line-no">112</span><span id="line-112">                                double phi = 2 * Math.PI * m * k / M;</span>
-<span class="source-line-no">113</span><span id="line-113">                                double cosPhi = Math.cos(phi);</span>
-<span class="source-line-no">114</span><span id="line-114">                                double sinPhi = Math.sin(phi);</span>
-<span class="source-line-no">115</span><span id="line-115">                                Am = Am + x * cosPhi + y * sinPhi;</span>
-<span class="source-line-no">116</span><span id="line-116">                                Bm = Bm - x * sinPhi + y * cosPhi;</span>
-<span class="source-line-no">117</span><span id="line-117">                        }</span>
-<span class="source-line-no">118</span><span id="line-118">                        G[m] = new Complex(s * Am, s * Bm);</span>
-<span class="source-line-no">119</span><span id="line-119">                }</span>
-<span class="source-line-no">120</span><span id="line-120">                return G;</span>
-<span class="source-line-no">121</span><span id="line-121">        }</span>
-<span class="source-line-no">122</span><span id="line-122">        </span>
-<span class="source-line-no">123</span><span id="line-123"></span>
-<span class="source-line-no">124</span><span id="line-124">        /**</span>
-<span class="source-line-no">125</span><span id="line-125">         * As {@link #DFT(Complex[])}, with the length of the resulting spectrum</span>
-<span class="source-line-no">126</span><span id="line-126">         * (or signal, if inverse) explicitly specified.</span>
-<span class="source-line-no">127</span><span id="line-127">         * </span>
-<span class="source-line-no">128</span><span id="line-128">         * @param g  signal vector</span>
-<span class="source-line-no">129</span><span id="line-129">         * @param MM length of the resulting DFT spectrum</span>
-<span class="source-line-no">130</span><span id="line-130">         * @return DFT spectrum</span>
-<span class="source-line-no">131</span><span id="line-131">         */</span>
-<span class="source-line-no">132</span><span id="line-132">        private static Complex[] DFT(Complex[] g, int MM) {</span>
-<span class="source-line-no">133</span><span id="line-133">                int M = g.length;</span>
-<span class="source-line-no">134</span><span id="line-134">                if (MM &gt; M) {</span>
-<span class="source-line-no">135</span><span id="line-135">                        throw new IllegalArgumentException("truncated spectrum must be shorter than original MM = " + MM);</span>
-<span class="source-line-no">136</span><span id="line-136">                }</span>
-<span class="source-line-no">137</span><span id="line-137">//              double[] cosTable = makeCosTable(M);    // cosTable[m] == cos(2*pi*m/M)</span>
-<span class="source-line-no">138</span><span id="line-138">//              double[] sinTable = makeSinTable(M);    // sinTable[m] == sin(2*pi*m/M)</span>
-<span class="source-line-no">139</span><span id="line-139">                Complex[] G = new Complex[MM];</span>
-<span class="source-line-no">140</span><span id="line-140">                double s = 1.0 / M; //common scale factor (fwd/inverse differ!)</span>
-<span class="source-line-no">141</span><span id="line-141">                </span>
-<span class="source-line-no">142</span><span id="line-142">//              for (int j = Mp/2-Mp+1; j &lt;= Mp/2; j++) {</span>
-<span class="source-line-no">143</span><span id="line-143">                for (int j = -MM/2; j &lt;= (MM-1)/2; j++) {</span>
-<span class="source-line-no">144</span><span id="line-144">                        double Am = 0;</span>
-<span class="source-line-no">145</span><span id="line-145">                        double Bm = 0;</span>
-<span class="source-line-no">146</span><span id="line-146">                        for (int k = 0; k &lt; M; k++) {</span>
-<span class="source-line-no">147</span><span id="line-147">                                double x = g[k].re;</span>
-<span class="source-line-no">148</span><span id="line-148">                                double y = g[k].im;</span>
-<span class="source-line-no">149</span><span id="line-149">                                //int mk = (m * k) % M; double phi = 2 * Math.PI * mk / M;</span>
-<span class="source-line-no">150</span><span id="line-150">                                double phi = 2 * Math.PI * j * k / M;   </span>
-<span class="source-line-no">151</span><span id="line-151">                                double cosPhi = Math.cos(phi);</span>
-<span class="source-line-no">152</span><span id="line-152">                                double sinPhi = Math.sin(phi);</span>
-<span class="source-line-no">153</span><span id="line-153">                                Am = Am + x * cosPhi + y * sinPhi;</span>
-<span class="source-line-no">154</span><span id="line-154">                                Bm = Bm - x * sinPhi + y * cosPhi;</span>
-<span class="source-line-no">155</span><span id="line-155">                        }</span>
-<span class="source-line-no">156</span><span id="line-156">                        G[Arithmetic.mod(j, MM)] = new Complex(s * Am, s * Bm);</span>
-<span class="source-line-no">157</span><span id="line-157">                }</span>
-<span class="source-line-no">158</span><span id="line-158">                return G;</span>
-<span class="source-line-no">159</span><span id="line-159">        }</span>
-<span class="source-line-no">160</span><span id="line-160"></span>
-<span class="source-line-no">161</span><span id="line-161">//      private double[] makeCosTable(int M) {</span>
-<span class="source-line-no">162</span><span id="line-162">//              double[] cosTab = new double[M];</span>
-<span class="source-line-no">163</span><span id="line-163">//              for (int m = 0; m &lt; M; m++) {</span>
-<span class="source-line-no">164</span><span id="line-164">//                      cosTab[m] = Math.cos(2 * Math.PI * m / M);</span>
-<span class="source-line-no">165</span><span id="line-165">//              }</span>
-<span class="source-line-no">166</span><span id="line-166">//              return cosTab;</span>
-<span class="source-line-no">167</span><span id="line-167">//      }</span>
-<span class="source-line-no">168</span><span id="line-168"></span>
-<span class="source-line-no">169</span><span id="line-169">//      private double[] makeSinTable(int M) {</span>
-<span class="source-line-no">170</span><span id="line-170">//              double[] sinTab = new double[M];</span>
-<span class="source-line-no">171</span><span id="line-171">//              for (int m = 0; m &lt; M; m++) {</span>
-<span class="source-line-no">172</span><span id="line-172">//                      sinTab[m] = Math.sin(2 * Math.PI * m / M);</span>
-<span class="source-line-no">173</span><span id="line-173">//              }</span>
-<span class="source-line-no">174</span><span id="line-174">//              return sinTab;</span>
-<span class="source-line-no">175</span><span id="line-175">//      }</span>
-<span class="source-line-no">176</span><span id="line-176">        </span>
-<span class="source-line-no">177</span><span id="line-177">}</span>
+<span class="source-line-no">033</span><span id="line-33">         * Creates a new Fourier descriptor from a uniformly sampled polygon V with the maximum number of Fourier</span>
+<span class="source-line-no">034</span><span id="line-34">         * coefficient pairs. The length of the resulting DFT spectrum equals V.length.</span>
+<span class="source-line-no">035</span><span id="line-35">         *</span>
+<span class="source-line-no">036</span><span id="line-36">         * @param V a polygon</span>
+<span class="source-line-no">037</span><span id="line-37">         * @return a new {@link FourierDescriptorUniform} instance</span>
+<span class="source-line-no">038</span><span id="line-38">         */</span>
+<span class="source-line-no">039</span><span id="line-39">        public static FourierDescriptor from(Pnt2d[] V) {</span>
+<span class="source-line-no">040</span><span id="line-40">                return from(FourierDescriptor.toComplexArray(V));</span>
+<span class="source-line-no">041</span><span id="line-41">        }</span>
+<span class="source-line-no">042</span><span id="line-42"></span>
+<span class="source-line-no">043</span><span id="line-43">        /**</span>
+<span class="source-line-no">044</span><span id="line-44">         * Creates a new Fourier descriptor from a uniformly sampled polygon V with Mp coefficient pairs. The length of the</span>
+<span class="source-line-no">045</span><span id="line-45">         * resulting DFT spectrum is 2 * mp + 1, i.e., it must be assured that Mp &amp;lt; (V.length - 1) &amp;divide; 2.</span>
+<span class="source-line-no">046</span><span id="line-46">         *</span>
+<span class="source-line-no">047</span><span id="line-47">         * @param V a polygon</span>
+<span class="source-line-no">048</span><span id="line-48">         * @param mp number of coefficient pairs</span>
+<span class="source-line-no">049</span><span id="line-49">         * @return a new {@link FourierDescriptorUniform} instance</span>
+<span class="source-line-no">050</span><span id="line-50">         */</span>
+<span class="source-line-no">051</span><span id="line-51">        public static FourierDescriptor from(Pnt2d[] V, int mp) {</span>
+<span class="source-line-no">052</span><span id="line-52">                return from(FourierDescriptor.toComplexArray(V), mp);</span>
+<span class="source-line-no">053</span><span id="line-53">        }</span>
+<span class="source-line-no">054</span><span id="line-54">        </span>
+<span class="source-line-no">055</span><span id="line-55">        </span>
+<span class="source-line-no">056</span><span id="line-56">        // -------------------------------------------------------------------</span>
+<span class="source-line-no">057</span><span id="line-57"></span>
+<span class="source-line-no">058</span><span id="line-58">        /**</span>
+<span class="source-line-no">059</span><span id="line-59">         * Creates a new Fourier descriptor from a uniformly sampled polygon V with the maximum number of Fourier</span>
+<span class="source-line-no">060</span><span id="line-60">         * coefficient pairs. The length of the resulting DFT spectrum equals V.length.</span>
+<span class="source-line-no">061</span><span id="line-61">         *</span>
+<span class="source-line-no">062</span><span id="line-62">         * @param V a polygon</span>
+<span class="source-line-no">063</span><span id="line-63">         * @return a new {@link FourierDescriptorUniform} instance</span>
+<span class="source-line-no">064</span><span id="line-64">         */</span>
+<span class="source-line-no">065</span><span id="line-65">        public static FourierDescriptor from(Complex[] V) {</span>
+<span class="source-line-no">066</span><span id="line-66">                return new FourierDescriptor(DFT(V));</span>
+<span class="source-line-no">067</span><span id="line-67">        }</span>
+<span class="source-line-no">068</span><span id="line-68"></span>
+<span class="source-line-no">069</span><span id="line-69">        /**</span>
+<span class="source-line-no">070</span><span id="line-70">         * Creates a new Fourier descriptor from a uniformly sampled polygon V with Mp coefficient pairs. The length of the</span>
+<span class="source-line-no">071</span><span id="line-71">         * resulting DFT spectrum is 2 * mp + 1, i.e., it must be assured that Mp &amp;lt; (V.length - 1) &amp;divide; 2.</span>
+<span class="source-line-no">072</span><span id="line-72">         *</span>
+<span class="source-line-no">073</span><span id="line-73">         * @param V a sequence of uniformly-spaced 2D sample points</span>
+<span class="source-line-no">074</span><span id="line-74">         * @param mp number of coefficient pairs</span>
+<span class="source-line-no">075</span><span id="line-75">         * @return a new {@link FourierDescriptorUniform} instance</span>
+<span class="source-line-no">076</span><span id="line-76">         */</span>
+<span class="source-line-no">077</span><span id="line-77">        public static FourierDescriptor from(Complex[] V, int mp) {</span>
+<span class="source-line-no">078</span><span id="line-78">                if (mp &gt; (V.length - 1) / 2) {</span>
+<span class="source-line-no">079</span><span id="line-79">                        throw new IllegalArgumentException("number of Fourier pairs (mp) may not be greater than " </span>
+<span class="source-line-no">080</span><span id="line-80">                                                        + ((V.length - 1) / 2));</span>
+<span class="source-line-no">081</span><span id="line-81">                }</span>
+<span class="source-line-no">082</span><span id="line-82">                return new FourierDescriptor(DFT(V, 2 * mp + 1));</span>
+<span class="source-line-no">083</span><span id="line-83">        }</span>
+<span class="source-line-no">084</span><span id="line-84">        </span>
+<span class="source-line-no">085</span><span id="line-85">        // -------------------------------------------------------------------</span>
+<span class="source-line-no">086</span><span id="line-86"></span>
+<span class="source-line-no">087</span><span id="line-87">        /**</span>
+<span class="source-line-no">088</span><span id="line-88">         * DFT with the resulting spectrum (signal, if inverse) of the same length as the input vector g. Not using sin/cos</span>
+<span class="source-line-no">089</span><span id="line-89">         * tables.</span>
+<span class="source-line-no">090</span><span id="line-90">         *</span>
+<span class="source-line-no">091</span><span id="line-91">         * @param g signal vector</span>
+<span class="source-line-no">092</span><span id="line-92">         * @return DFT spectrum</span>
+<span class="source-line-no">093</span><span id="line-93">         */</span>
+<span class="source-line-no">094</span><span id="line-94">        private static Complex[] DFT(Complex[] g) {</span>
+<span class="source-line-no">095</span><span id="line-95">                int M = g.length;</span>
+<span class="source-line-no">096</span><span id="line-96">//              double[] cosTable = makeCosTable(M);    // cosTable[m] == cos(2*pi*m/M)</span>
+<span class="source-line-no">097</span><span id="line-97">//              double[] sinTable = makeSinTable(M);    // sinTable[m] == sin(2*pi*m/M)</span>
+<span class="source-line-no">098</span><span id="line-98">                Complex[] G = new Complex[M];</span>
+<span class="source-line-no">099</span><span id="line-99">                double s = 1.0 / M; //common scale factor (fwd/inverse differ!)</span>
+<span class="source-line-no">100</span><span id="line-100">                for (int m = 0; m &lt; M; m++) {</span>
+<span class="source-line-no">101</span><span id="line-101">                        double Am = 0;</span>
+<span class="source-line-no">102</span><span id="line-102">                        double Bm = 0;</span>
+<span class="source-line-no">103</span><span id="line-103">                        for (int k = 0; k &lt; M; k++) {</span>
+<span class="source-line-no">104</span><span id="line-104">                                double x = g[k].re;</span>
+<span class="source-line-no">105</span><span id="line-105">                                double y = g[k].im;</span>
+<span class="source-line-no">106</span><span id="line-106">                                double phi = 2 * Math.PI * m * k / M;</span>
+<span class="source-line-no">107</span><span id="line-107">                                double cosPhi = Math.cos(phi);</span>
+<span class="source-line-no">108</span><span id="line-108">                                double sinPhi = Math.sin(phi);</span>
+<span class="source-line-no">109</span><span id="line-109">                                Am = Am + x * cosPhi + y * sinPhi;</span>
+<span class="source-line-no">110</span><span id="line-110">                                Bm = Bm - x * sinPhi + y * cosPhi;</span>
+<span class="source-line-no">111</span><span id="line-111">                        }</span>
+<span class="source-line-no">112</span><span id="line-112">                        G[m] = new Complex(s * Am, s * Bm);</span>
+<span class="source-line-no">113</span><span id="line-113">                }</span>
+<span class="source-line-no">114</span><span id="line-114">                return G;</span>
+<span class="source-line-no">115</span><span id="line-115">        }</span>
+<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">117</span><span id="line-117"></span>
+<span class="source-line-no">118</span><span id="line-118">        /**</span>
+<span class="source-line-no">119</span><span id="line-119">         * As {@link #DFT(Complex[])}, with the length of the resulting spectrum (or signal, if inverse) explicitly</span>
+<span class="source-line-no">120</span><span id="line-120">         * specified.</span>
+<span class="source-line-no">121</span><span id="line-121">         *</span>
+<span class="source-line-no">122</span><span id="line-122">         * @param g signal vector</span>
+<span class="source-line-no">123</span><span id="line-123">         * @param MM length of the resulting DFT spectrum</span>
+<span class="source-line-no">124</span><span id="line-124">         * @return DFT spectrum</span>
+<span class="source-line-no">125</span><span id="line-125">         */</span>
+<span class="source-line-no">126</span><span id="line-126">        private static Complex[] DFT(Complex[] g, int MM) {</span>
+<span class="source-line-no">127</span><span id="line-127">                int M = g.length;</span>
+<span class="source-line-no">128</span><span id="line-128">                if (MM &gt; M) {</span>
+<span class="source-line-no">129</span><span id="line-129">                        throw new IllegalArgumentException("truncated spectrum must be shorter than original MM = " + MM);</span>
+<span class="source-line-no">130</span><span id="line-130">                }</span>
+<span class="source-line-no">131</span><span id="line-131">//              double[] cosTable = makeCosTable(M);    // cosTable[m] == cos(2*pi*m/M)</span>
+<span class="source-line-no">132</span><span id="line-132">//              double[] sinTable = makeSinTable(M);    // sinTable[m] == sin(2*pi*m/M)</span>
+<span class="source-line-no">133</span><span id="line-133">                Complex[] G = new Complex[MM];</span>
+<span class="source-line-no">134</span><span id="line-134">                double s = 1.0 / M; //common scale factor (fwd/inverse differ!)</span>
+<span class="source-line-no">135</span><span id="line-135">                </span>
+<span class="source-line-no">136</span><span id="line-136">//              for (int j = Mp/2-Mp+1; j &lt;= Mp/2; j++) {</span>
+<span class="source-line-no">137</span><span id="line-137">                for (int j = -MM/2; j &lt;= (MM-1)/2; j++) {</span>
+<span class="source-line-no">138</span><span id="line-138">                        double Am = 0;</span>
+<span class="source-line-no">139</span><span id="line-139">                        double Bm = 0;</span>
+<span class="source-line-no">140</span><span id="line-140">                        for (int k = 0; k &lt; M; k++) {</span>
+<span class="source-line-no">141</span><span id="line-141">                                double x = g[k].re;</span>
+<span class="source-line-no">142</span><span id="line-142">                                double y = g[k].im;</span>
+<span class="source-line-no">143</span><span id="line-143">                                //int mk = (m * k) % M; double phi = 2 * Math.PI * mk / M;</span>
+<span class="source-line-no">144</span><span id="line-144">                                double phi = 2 * Math.PI * j * k / M;   </span>
+<span class="source-line-no">145</span><span id="line-145">                                double cosPhi = Math.cos(phi);</span>
+<span class="source-line-no">146</span><span id="line-146">                                double sinPhi = Math.sin(phi);</span>
+<span class="source-line-no">147</span><span id="line-147">                                Am = Am + x * cosPhi + y * sinPhi;</span>
+<span class="source-line-no">148</span><span id="line-148">                                Bm = Bm - x * sinPhi + y * cosPhi;</span>
+<span class="source-line-no">149</span><span id="line-149">                        }</span>
+<span class="source-line-no">150</span><span id="line-150">                        G[Arithmetic.mod(j, MM)] = new Complex(s * Am, s * Bm);</span>
+<span class="source-line-no">151</span><span id="line-151">                }</span>
+<span class="source-line-no">152</span><span id="line-152">                return G;</span>
+<span class="source-line-no">153</span><span id="line-153">        }</span>
+<span class="source-line-no">154</span><span id="line-154"></span>
+<span class="source-line-no">155</span><span id="line-155">//      private double[] makeCosTable(int M) {</span>
+<span class="source-line-no">156</span><span id="line-156">//              double[] cosTab = new double[M];</span>
+<span class="source-line-no">157</span><span id="line-157">//              for (int m = 0; m &lt; M; m++) {</span>
+<span class="source-line-no">158</span><span id="line-158">//                      cosTab[m] = Math.cos(2 * Math.PI * m / M);</span>
+<span class="source-line-no">159</span><span id="line-159">//              }</span>
+<span class="source-line-no">160</span><span id="line-160">//              return cosTab;</span>
+<span class="source-line-no">161</span><span id="line-161">//      }</span>
+<span class="source-line-no">162</span><span id="line-162"></span>
+<span class="source-line-no">163</span><span id="line-163">//      private double[] makeSinTable(int M) {</span>
+<span class="source-line-no">164</span><span id="line-164">//              double[] sinTab = new double[M];</span>
+<span class="source-line-no">165</span><span id="line-165">//              for (int m = 0; m &lt; M; m++) {</span>
+<span class="source-line-no">166</span><span id="line-166">//                      sinTab[m] = Math.sin(2 * Math.PI * m / M);</span>
+<span class="source-line-no">167</span><span id="line-167">//              }</span>
+<span class="source-line-no">168</span><span id="line-168">//              return sinTab;</span>
+<span class="source-line-no">169</span><span id="line-169">//      }</span>
+<span class="source-line-no">170</span><span id="line-170">        </span>
+<span class="source-line-no">171</span><span id="line-171">}</span>
 
 
 

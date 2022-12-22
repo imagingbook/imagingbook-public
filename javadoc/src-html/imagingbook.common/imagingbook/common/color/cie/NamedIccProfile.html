@@ -21,11 +21,11 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.color.cie;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import java.awt.color.ICC_ColorSpace;</span>
-<span class="source-line-no">012</span><span id="line-12">import java.awt.color.ICC_Profile;</span>
-<span class="source-line-no">013</span><span id="line-13">import java.io.IOException;</span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">import imagingbook.core.resource.NamedResource;</span>
+<span class="source-line-no">011</span><span id="line-11">import imagingbook.core.resource.NamedResource;</span>
+<span class="source-line-no">012</span><span id="line-12"></span>
+<span class="source-line-no">013</span><span id="line-13">import java.awt.color.ICC_ColorSpace;</span>
+<span class="source-line-no">014</span><span id="line-14">import java.awt.color.ICC_Profile;</span>
+<span class="source-line-no">015</span><span id="line-15">import java.io.IOException;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
 <span class="source-line-no">017</span><span id="line-17">public enum NamedIccProfile implements NamedResource {</span>
 <span class="source-line-no">018</span><span id="line-18">        AdobeRGB1998("AdobeRGB1998.icc"),</span>
@@ -53,11 +53,11 @@
 <span class="source-line-no">040</span><span id="line-40">        public String getFileName() {</span>
 <span class="source-line-no">041</span><span id="line-41">                return filename;</span>
 <span class="source-line-no">042</span><span id="line-42">        }</span>
-<span class="source-line-no">043</span><span id="line-43">        </span>
+<span class="source-line-no">043</span><span id="line-43"></span>
 <span class="source-line-no">044</span><span id="line-44">        /**</span>
-<span class="source-line-no">045</span><span id="line-45">         * Returns the {@link ICC_Profile} associated with this enum item or</span>
-<span class="source-line-no">046</span><span id="line-46">         * {@code null} if the profile could not be read (which is an error).</span>
-<span class="source-line-no">047</span><span id="line-47">         * </span>
+<span class="source-line-no">045</span><span id="line-45">         * Returns the {@link ICC_Profile} associated with this enum item or {@code null} if the profile could not be read</span>
+<span class="source-line-no">046</span><span id="line-46">         * (which is an error).</span>
+<span class="source-line-no">047</span><span id="line-47">         *</span>
 <span class="source-line-no">048</span><span id="line-48">         * @return the {@link ICC_Profile} associated with this enum item</span>
 <span class="source-line-no">049</span><span id="line-49">         */</span>
 <span class="source-line-no">050</span><span id="line-50">        public ICC_Profile getProfile() {</span>
@@ -70,11 +70,11 @@
 <span class="source-line-no">057</span><span id="line-57">                }</span>
 <span class="source-line-no">058</span><span id="line-58">                return this.profile;</span>
 <span class="source-line-no">059</span><span id="line-59">        }</span>
-<span class="source-line-no">060</span><span id="line-60">        </span>
+<span class="source-line-no">060</span><span id="line-60"></span>
 <span class="source-line-no">061</span><span id="line-61">        /**</span>
-<span class="source-line-no">062</span><span id="line-62">         * Returns a {@link ICC_ColorSpace} instance obtained from the associated ICC</span>
-<span class="source-line-no">063</span><span id="line-63">         * color profile. An exception is thrown if the profile could not be read.</span>
-<span class="source-line-no">064</span><span id="line-64">         * </span>
+<span class="source-line-no">062</span><span id="line-62">         * Returns a {@link ICC_ColorSpace} instance obtained from the associated ICC color profile. An exception is thrown</span>
+<span class="source-line-no">063</span><span id="line-63">         * if the profile could not be read.</span>
+<span class="source-line-no">064</span><span id="line-64">         *</span>
 <span class="source-line-no">065</span><span id="line-65">         * @return the {@link ICC_ColorSpace} associated with this enum item</span>
 <span class="source-line-no">066</span><span id="line-66">         */</span>
 <span class="source-line-no">067</span><span id="line-67">        public ICC_ColorSpace getColorSpace() {</span>

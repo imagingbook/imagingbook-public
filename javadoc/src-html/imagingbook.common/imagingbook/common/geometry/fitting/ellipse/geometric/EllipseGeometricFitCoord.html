@@ -21,15 +21,15 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.geometry.fitting.ellipse.geometric;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import static imagingbook.common.math.Arithmetic.sqr;</span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.math.Matrix.makeRealMatrix;</span>
-<span class="source-line-no">013</span><span id="line-13">import static imagingbook.common.math.Matrix.subtract;</span>
-<span class="source-line-no">014</span><span id="line-14">import static org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.evaluationChecker;</span>
-<span class="source-line-no">015</span><span id="line-15">import static org.apache.commons.math3.linear.MatrixUtils.createRealVector;</span>
-<span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">import java.util.ArrayList;</span>
-<span class="source-line-no">018</span><span id="line-18">import java.util.List;</span>
-<span class="source-line-no">019</span><span id="line-19"></span>
+<span class="source-line-no">011</span><span id="line-11">import imagingbook.common.geometry.basic.Pnt2d;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.geometry.ellipse.GeometricEllipse;</span>
+<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic;</span>
+<span class="source-line-no">014</span><span id="line-14">import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbonStable;</span>
+<span class="source-line-no">015</span><span id="line-15">import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.common.ij.DialogUtils.DialogLabel;</span>
+<span class="source-line-no">017</span><span id="line-17">import imagingbook.common.math.Matrix;</span>
+<span class="source-line-no">018</span><span id="line-18">import imagingbook.common.math.PrintPrecision;</span>
+<span class="source-line-no">019</span><span id="line-19">import imagingbook.common.util.ParameterBundle;</span>
 <span class="source-line-no">020</span><span id="line-20">import org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory;</span>
 <span class="source-line-no">021</span><span id="line-21">import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;</span>
 <span class="source-line-no">022</span><span id="line-22">import org.apache.commons.math3.fitting.leastsquares.LeastSquaresProblem;</span>
@@ -43,347 +43,346 @@
 <span class="source-line-no">030</span><span id="line-30">import org.apache.commons.math3.optim.SimpleVectorValueChecker;</span>
 <span class="source-line-no">031</span><span id="line-31">import org.apache.commons.math3.util.Pair;</span>
 <span class="source-line-no">032</span><span id="line-32"></span>
-<span class="source-line-no">033</span><span id="line-33">import imagingbook.common.geometry.basic.Pnt2d;</span>
-<span class="source-line-no">034</span><span id="line-34">import imagingbook.common.geometry.ellipse.GeometricEllipse;</span>
-<span class="source-line-no">035</span><span id="line-35">import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitAlgebraic;</span>
-<span class="source-line-no">036</span><span id="line-36">import imagingbook.common.geometry.fitting.ellipse.algebraic.EllipseFitFitzgibbonStable;</span>
-<span class="source-line-no">037</span><span id="line-37">import imagingbook.common.geometry.fitting.ellipse.utils.EllipseSampler;</span>
-<span class="source-line-no">038</span><span id="line-38">import imagingbook.common.ij.DialogUtils.DialogLabel;</span>
-<span class="source-line-no">039</span><span id="line-39">import imagingbook.common.math.Matrix;</span>
-<span class="source-line-no">040</span><span id="line-40">import imagingbook.common.math.PrintPrecision;</span>
-<span class="source-line-no">041</span><span id="line-41">import imagingbook.common.util.ParameterBundle;</span>
-<span class="source-line-no">042</span><span id="line-42"></span>
-<span class="source-line-no">043</span><span id="line-43">/**</span>
-<span class="source-line-no">044</span><span id="line-44"> * &lt;p&gt;</span>
-<span class="source-line-no">045</span><span id="line-45"> * "Coordinate-based" geometric ellipse fitter using iterative minimization with</span>
-<span class="source-line-no">046</span><span id="line-46"> * the Levenberg-Marquart method. See Sec. 11.2.2 of [1] for details.</span>
-<span class="source-line-no">047</span><span id="line-47"> * &lt;/p&gt;</span>
-<span class="source-line-no">048</span><span id="line-48"> * &lt;p&gt;</span>
-<span class="source-line-no">049</span><span id="line-49"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">050</span><span id="line-50"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">051</span><span id="line-51"> * &lt;/p&gt;</span>
-<span class="source-line-no">052</span><span id="line-52"> * </span>
-<span class="source-line-no">053</span><span id="line-53"> * @author WB</span>
-<span class="source-line-no">054</span><span id="line-54"> * @version 2022/11/17</span>
-<span class="source-line-no">055</span><span id="line-55"> */</span>
-<span class="source-line-no">056</span><span id="line-56">public class EllipseGeometricFitCoord extends EllipseFitGeometric {</span>
-<span class="source-line-no">057</span><span id="line-57">        </span>
-<span class="source-line-no">058</span><span id="line-58">        private final Pnt2d[] pts;</span>
-<span class="source-line-no">059</span><span id="line-59">        private final double tolerance;</span>
-<span class="source-line-no">060</span><span id="line-60">        private final int maxEvaluations;</span>
-<span class="source-line-no">061</span><span id="line-61">        private final int maxIterations;</span>
-<span class="source-line-no">062</span><span id="line-62">        </span>
-<span class="source-line-no">063</span><span id="line-63">        private final double[] V;               // arrays for function values/Jacobian</span>
-<span class="source-line-no">064</span><span id="line-64">        private final double[][] J;</span>
-<span class="source-line-no">065</span><span id="line-65">        </span>
-<span class="source-line-no">066</span><span id="line-66">        private final MultivariateJacobianFunction model;</span>
-<span class="source-line-no">067</span><span id="line-67">        private final Optimum solution;</span>
-<span class="source-line-no">068</span><span id="line-68">        private final List&lt;double[]&gt; history = new ArrayList&lt;&gt;();</span>
+<span class="source-line-no">033</span><span id="line-33">import java.util.ArrayList;</span>
+<span class="source-line-no">034</span><span id="line-34">import java.util.List;</span>
+<span class="source-line-no">035</span><span id="line-35"></span>
+<span class="source-line-no">036</span><span id="line-36">import static imagingbook.common.math.Arithmetic.sqr;</span>
+<span class="source-line-no">037</span><span id="line-37">import static imagingbook.common.math.Matrix.makeRealMatrix;</span>
+<span class="source-line-no">038</span><span id="line-38">import static imagingbook.common.math.Matrix.subtract;</span>
+<span class="source-line-no">039</span><span id="line-39">import static org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.evaluationChecker;</span>
+<span class="source-line-no">040</span><span id="line-40">import static org.apache.commons.math3.linear.MatrixUtils.createRealVector;</span>
+<span class="source-line-no">041</span><span id="line-41"></span>
+<span class="source-line-no">042</span><span id="line-42">/**</span>
+<span class="source-line-no">043</span><span id="line-43"> * &lt;p&gt;</span>
+<span class="source-line-no">044</span><span id="line-44"> * "Coordinate-based" geometric ellipse fitter using iterative minimization with the Levenberg-Marquart method. See Sec.</span>
+<span class="source-line-no">045</span><span id="line-45"> * 11.2.2 of [1] for details.</span>
+<span class="source-line-no">046</span><span id="line-46"> * &lt;/p&gt;</span>
+<span class="source-line-no">047</span><span id="line-47"> * &lt;p&gt;</span>
+<span class="source-line-no">048</span><span id="line-48"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">049</span><span id="line-49"> * (2022).</span>
+<span class="source-line-no">050</span><span id="line-50"> * &lt;/p&gt;</span>
+<span class="source-line-no">051</span><span id="line-51"> *</span>
+<span class="source-line-no">052</span><span id="line-52"> * @author WB</span>
+<span class="source-line-no">053</span><span id="line-53"> * @version 2022/11/17</span>
+<span class="source-line-no">054</span><span id="line-54"> */</span>
+<span class="source-line-no">055</span><span id="line-55">public class EllipseGeometricFitCoord extends EllipseFitGeometric {</span>
+<span class="source-line-no">056</span><span id="line-56">        </span>
+<span class="source-line-no">057</span><span id="line-57">        private final Pnt2d[] pts;</span>
+<span class="source-line-no">058</span><span id="line-58">        private final double tolerance;</span>
+<span class="source-line-no">059</span><span id="line-59">        private final int maxEvaluations;</span>
+<span class="source-line-no">060</span><span id="line-60">        private final int maxIterations;</span>
+<span class="source-line-no">061</span><span id="line-61">        </span>
+<span class="source-line-no">062</span><span id="line-62">        private final double[] V;               // arrays for function values/Jacobian</span>
+<span class="source-line-no">063</span><span id="line-63">        private final double[][] J;</span>
+<span class="source-line-no">064</span><span id="line-64">        </span>
+<span class="source-line-no">065</span><span id="line-65">        private final MultivariateJacobianFunction model;</span>
+<span class="source-line-no">066</span><span id="line-66">        private final Optimum solution;</span>
+<span class="source-line-no">067</span><span id="line-67">        private final List&lt;double[]&gt; history = new ArrayList&lt;&gt;();</span>
+<span class="source-line-no">068</span><span id="line-68">        </span>
 <span class="source-line-no">069</span><span id="line-69">        </span>
-<span class="source-line-no">070</span><span id="line-70">        </span>
-<span class="source-line-no">071</span><span id="line-71">        public EllipseGeometricFitCoord(Pnt2d[] pts, GeometricEllipse initEllipse, int maxEvaluations, </span>
-<span class="source-line-no">072</span><span id="line-72">                        int maxIterations, double tolerance, boolean syntheticDeriv) {</span>
-<span class="source-line-no">073</span><span id="line-73">                this.pts = pts;</span>
-<span class="source-line-no">074</span><span id="line-74">                int n = pts.length;</span>
-<span class="source-line-no">075</span><span id="line-75">                this.V = new double[2*n];</span>
-<span class="source-line-no">076</span><span id="line-76">                this.J = new double[2*n][5];</span>
-<span class="source-line-no">077</span><span id="line-77">                this.maxEvaluations = maxEvaluations;</span>
-<span class="source-line-no">078</span><span id="line-78">                this.maxIterations = maxIterations;</span>
-<span class="source-line-no">079</span><span id="line-79">                this.tolerance = tolerance;</span>
-<span class="source-line-no">080</span><span id="line-80">                this.model = (syntheticDeriv) ? new SyntheticModel() : new AnalyticModel();</span>
-<span class="source-line-no">081</span><span id="line-81">                this.solution = solveLM(initEllipse.getParameters());</span>
-<span class="source-line-no">082</span><span id="line-82">        }</span>
-<span class="source-line-no">083</span><span id="line-83">        </span>
-<span class="source-line-no">084</span><span id="line-84">        public EllipseGeometricFitCoord(Pnt2d[] pts, GeometricEllipse initEllipse) {</span>
-<span class="source-line-no">085</span><span id="line-85">                this(pts, initEllipse, DefaultMaxIterations, DefaultMaxIterations, DefaultTolerance, false);</span>
-<span class="source-line-no">086</span><span id="line-86">        }</span>
-<span class="source-line-no">087</span><span id="line-87">        </span>
-<span class="source-line-no">088</span><span id="line-88">        // --------------------------------------------------------------------------</span>
-<span class="source-line-no">089</span><span id="line-89">        </span>
-<span class="source-line-no">090</span><span id="line-90">        @Override</span>
-<span class="source-line-no">091</span><span id="line-91">        public double[] getParameters() {</span>
-<span class="source-line-no">092</span><span id="line-92">                return solution.getPoint().toArray();</span>
-<span class="source-line-no">093</span><span id="line-93">        }</span>
-<span class="source-line-no">094</span><span id="line-94">        </span>
-<span class="source-line-no">095</span><span id="line-95">        @Override</span>
-<span class="source-line-no">096</span><span id="line-96">        public int getIterations() {</span>
-<span class="source-line-no">097</span><span id="line-97">                return solution.getIterations();</span>
-<span class="source-line-no">098</span><span id="line-98">        }</span>
-<span class="source-line-no">099</span><span id="line-99">        </span>
-<span class="source-line-no">100</span><span id="line-100">        @Override</span>
-<span class="source-line-no">101</span><span id="line-101">        public List&lt;double[]&gt; getHistory() {</span>
-<span class="source-line-no">102</span><span id="line-102">                return history;</span>
-<span class="source-line-no">103</span><span id="line-103">        }</span>
-<span class="source-line-no">104</span><span id="line-104">        </span>
-<span class="source-line-no">105</span><span id="line-105">        // --------------------------------------------------------------------------</span>
-<span class="source-line-no">106</span><span id="line-106"></span>
-<span class="source-line-no">107</span><span id="line-107">        private Optimum solveLM(double[] p0) {</span>
-<span class="source-line-no">108</span><span id="line-108">                LeastSquaresProblem problem = </span>
-<span class="source-line-no">109</span><span id="line-109">                        LeastSquaresFactory.create(</span>
-<span class="source-line-no">110</span><span id="line-110">                                model, </span>
-<span class="source-line-no">111</span><span id="line-111">                                makeTargetVector(pts),</span>
-<span class="source-line-no">112</span><span id="line-112">                                createRealVector(p0),</span>
-<span class="source-line-no">113</span><span id="line-113">                                evaluationChecker(new SimpleVectorValueChecker(tolerance, tolerance)),</span>
-<span class="source-line-no">114</span><span id="line-114">                                maxEvaluations, maxIterations);</span>
-<span class="source-line-no">115</span><span id="line-115"></span>
-<span class="source-line-no">116</span><span id="line-116">                LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();</span>
-<span class="source-line-no">117</span><span id="line-117">                Optimum solution = optimizer.optimize(problem);</span>
-<span class="source-line-no">118</span><span id="line-118">                </span>
-<span class="source-line-no">119</span><span id="line-119">                return solution;</span>
-<span class="source-line-no">120</span><span id="line-120">        }</span>
-<span class="source-line-no">121</span><span id="line-121">        </span>
-<span class="source-line-no">122</span><span id="line-122">        /**</span>
-<span class="source-line-no">123</span><span id="line-123">         * Returns a vector of alternating x/y coordinates of the target points:</span>
-<span class="source-line-no">124</span><span id="line-124">         * {@code (x_0, y_0, x_1, y_1, ..., x_{n-1}, y_{n-1})}.</span>
-<span class="source-line-no">125</span><span id="line-125">         * </span>
-<span class="source-line-no">126</span><span id="line-126">         * @param pts target points</span>
-<span class="source-line-no">127</span><span id="line-127">         * @return vector of length 2n</span>
-<span class="source-line-no">128</span><span id="line-128">         */</span>
-<span class="source-line-no">129</span><span id="line-129">        private RealVector makeTargetVector(Pnt2d[] pts) {</span>
-<span class="source-line-no">130</span><span id="line-130">                int n = pts.length;</span>
-<span class="source-line-no">131</span><span id="line-131">                final double[] target = new double[2*n];</span>
-<span class="source-line-no">132</span><span id="line-132">                for (int i = 0; i &lt; n; i++) {</span>
-<span class="source-line-no">133</span><span id="line-133">                        Pnt2d p = pts[i];</span>
-<span class="source-line-no">134</span><span id="line-134">                        target[2*i]     = p.getX();</span>
-<span class="source-line-no">135</span><span id="line-135">                        target[2*i + 1] = p.getY();</span>
-<span class="source-line-no">136</span><span id="line-136">                }</span>
-<span class="source-line-no">137</span><span id="line-137">                return MatrixUtils.createRealVector(target);</span>
-<span class="source-line-no">138</span><span id="line-138">        }</span>
-<span class="source-line-no">139</span><span id="line-139">        </span>
-<span class="source-line-no">140</span><span id="line-140">        // --------------------------------------------------------------------------</span>
-<span class="source-line-no">141</span><span id="line-141">        </span>
-<span class="source-line-no">142</span><span id="line-142">        class AnalyticModel implements MultivariateJacobianFunction {</span>
-<span class="source-line-no">143</span><span id="line-143">                </span>
-<span class="source-line-no">144</span><span id="line-144">                @Override</span>
-<span class="source-line-no">145</span><span id="line-145">                public Pair&lt;RealVector, RealMatrix&gt; value(RealVector point) {</span>
-<span class="source-line-no">146</span><span id="line-146">                        final double[] p = point.toArray();</span>
-<span class="source-line-no">147</span><span id="line-147">                        if (RecordHistory) {</span>
-<span class="source-line-no">148</span><span id="line-148">                                history.add(p.clone());</span>
-<span class="source-line-no">149</span><span id="line-149">                        }</span>
-<span class="source-line-no">150</span><span id="line-150">                        final GeometricEllipse ellipse = new GeometricEllipse(p);</span>
-<span class="source-line-no">151</span><span id="line-151">                        final double ra = ellipse.ra;</span>
-<span class="source-line-no">152</span><span id="line-152">                        final double rb = ellipse.rb;</span>
-<span class="source-line-no">153</span><span id="line-153">                        final double xc = ellipse.xc;</span>
-<span class="source-line-no">154</span><span id="line-154">                        final double yc = ellipse.yc;</span>
-<span class="source-line-no">155</span><span id="line-155">                        final double theta = ellipse.theta;</span>
-<span class="source-line-no">156</span><span id="line-156">                        final double ra2 = sqr(ra);</span>
-<span class="source-line-no">157</span><span id="line-157">                        final double rb2 = sqr(rb);</span>
-<span class="source-line-no">158</span><span id="line-158">                        final double C = Math.cos(theta);</span>
-<span class="source-line-no">159</span><span id="line-159">                        final double S = Math.sin(theta);</span>
-<span class="source-line-no">160</span><span id="line-160">                        final double[] xyc = new double[] {xc, yc};</span>
-<span class="source-line-no">161</span><span id="line-161">                        RealMatrix R = makeRealMatrix(2, 2,</span>
-<span class="source-line-no">162</span><span id="line-162">                                        C, -S, </span>
-<span class="source-line-no">163</span><span id="line-163">                                        S,  C);</span>
-<span class="source-line-no">164</span><span id="line-164">                        RealMatrix Rt = R.transpose();</span>
-<span class="source-line-no">165</span><span id="line-165">                        </span>
-<span class="source-line-no">166</span><span id="line-166">                        // calculate values and Jacobian</span>
-<span class="source-line-no">167</span><span id="line-167">                        for (int i = 0; i &lt; pts.length; i++) {</span>
-<span class="source-line-no">168</span><span id="line-168">                                final int i2 = 2*i;</span>
-<span class="source-line-no">169</span><span id="line-169">                                Pnt2d XYi = pts[i];</span>
-<span class="source-line-no">170</span><span id="line-170">                                Pnt2d XYp = ellipse.getClosestPoint(XYi);</span>
-<span class="source-line-no">171</span><span id="line-171">                                </span>
-<span class="source-line-no">172</span><span id="line-172">                                // values</span>
-<span class="source-line-no">173</span><span id="line-173">                                V[i2]     = XYp.getX();</span>
-<span class="source-line-no">174</span><span id="line-174">                                V[i2 + 1] = XYp.getY();</span>
-<span class="source-line-no">175</span><span id="line-175">                                </span>
-<span class="source-line-no">176</span><span id="line-176">                                // Jacobian</span>
-<span class="source-line-no">177</span><span id="line-177">                                double[] xyi = XYi.toDoubleArray();</span>
-<span class="source-line-no">178</span><span id="line-178">                                double[] uvi = Rt.operate(subtract(xyi, xyc));                                  // target point in canon. coordinates</span>
-<span class="source-line-no">179</span><span id="line-179">                                double ui = uvi[0],  vi = uvi[1];                                                               // = (u_i, v_i)</span>
-<span class="source-line-no">180</span><span id="line-180"></span>
-<span class="source-line-no">181</span><span id="line-181">                                double[] xyp = ellipse.getClosestPoint(xyi);                                    // ellipse point closest to Xi</span>
-<span class="source-line-no">182</span><span id="line-182">                                double xp = xyp[0], yp = xyp[1];                                                                // = (\breve{x}_i, \breve{y}_i)</span>
-<span class="source-line-no">183</span><span id="line-183"></span>
-<span class="source-line-no">184</span><span id="line-184">                                double[] uvp = Rt.operate(subtract(xyp, xyc));                                  // closest point in canon. coordinates</span>
-<span class="source-line-no">185</span><span id="line-185">                                double up = uvp[0], vp = uvp[1];                                                                // = (\breve{u}_i, \breve{u}_i)                         </span>
-<span class="source-line-no">186</span><span id="line-186"></span>
-<span class="source-line-no">187</span><span id="line-187">                                RealMatrix Q1 = makeRealMatrix(2, 2,</span>
-<span class="source-line-no">188</span><span id="line-188">                                                0, 0 ,</span>
-<span class="source-line-no">189</span><span id="line-189">                                                vi - vp, up - ui );     </span>
-<span class="source-line-no">190</span><span id="line-190">                                RealMatrix Q2 = makeRealMatrix(2, 2,</span>
-<span class="source-line-no">191</span><span id="line-191">                                                1/ra2, 0,</span>
-<span class="source-line-no">192</span><span id="line-192">                                                0,   1/rb2 );</span>
-<span class="source-line-no">193</span><span id="line-193">                                RealMatrix Q3 = makeRealMatrix(2, 2,</span>
-<span class="source-line-no">194</span><span id="line-194">                                                up/ra2,  vp/rb2,</span>
-<span class="source-line-no">195</span><span id="line-195">                                                vp/rb2, -up/ra2 );</span>
-<span class="source-line-no">196</span><span id="line-196">                                RealMatrix Q = Q1.multiply(Q2).add(Q3);</span>
-<span class="source-line-no">197</span><span id="line-197">                                RealMatrix Qi = MatrixUtils.inverse(Q);</span>
-<span class="source-line-no">198</span><span id="line-198"></span>
-<span class="source-line-no">199</span><span id="line-199">                                RealMatrix T = makeRealMatrix(2, 2,</span>
-<span class="source-line-no">200</span><span id="line-200">                                                0, 0,</span>
-<span class="source-line-no">201</span><span id="line-201">                                                -vp/rb2, up/ra2 );</span>
-<span class="source-line-no">202</span><span id="line-202"></span>
-<span class="source-line-no">203</span><span id="line-203">                                RealMatrix U = makeRealMatrix(2, 5,</span>
-<span class="source-line-no">204</span><span id="line-204">                                                0, 0,  -C, -S,  vi,</span>
-<span class="source-line-no">205</span><span id="line-205">                                                0, 0,   S, -C, -ui );</span>
-<span class="source-line-no">206</span><span id="line-206"></span>
-<span class="source-line-no">207</span><span id="line-207">                                RealMatrix V1 = makeRealMatrix(2, 3,</span>
-<span class="source-line-no">208</span><span id="line-208">                                                1, 0, 0,</span>
-<span class="source-line-no">209</span><span id="line-209">                                                0, vi - vp, up - ui );</span>
-<span class="source-line-no">210</span><span id="line-210">                                RealMatrix V2 = makeRealMatrix(3, 5,</span>
-<span class="source-line-no">211</span><span id="line-211">                                                -sqr(up)/(ra2*ra), -sqr(vp)/(rb2*rb), 0, 0, 0 ,</span>
-<span class="source-line-no">212</span><span id="line-212">                                                -2*up/(ra2*ra), 0,                    0, 0, 0 ,</span>
-<span class="source-line-no">213</span><span id="line-213">                                                0, -2*vp/(rb2*rb),                    0, 0, 0 );</span>
-<span class="source-line-no">214</span><span id="line-214">                                RealMatrix V = V1.multiply(V2);</span>
-<span class="source-line-no">215</span><span id="line-215"></span>
-<span class="source-line-no">216</span><span id="line-216">                                RealMatrix W = makeRealMatrix(2, 5,</span>
-<span class="source-line-no">217</span><span id="line-217">                                                0, 0, 1, 0, yc - yp,</span>
-<span class="source-line-no">218</span><span id="line-218">                                                0, 0, 0, 1, xp - xc );</span>
-<span class="source-line-no">219</span><span id="line-219"></span>
-<span class="source-line-no">220</span><span id="line-220">                                RealMatrix Ji = // J = -R * Q^-1 * (T * U + V) + W ..... 2x5 matrix</span>
-<span class="source-line-no">221</span><span id="line-221">                                                R.scalarMultiply(-1).multiply(Qi).multiply(T.multiply(U).add(V)).add(W);</span>
-<span class="source-line-no">222</span><span id="line-222">                                </span>
-<span class="source-line-no">223</span><span id="line-223">                                for (int j = 0; j &lt; 5; j++) {</span>
-<span class="source-line-no">224</span><span id="line-224">                                        J[i2][j]     = Ji.getEntry(0, j);</span>
-<span class="source-line-no">225</span><span id="line-225">                                        J[i2 + 1][j] = Ji.getEntry(1, j);</span>
-<span class="source-line-no">226</span><span id="line-226">                                }</span>
-<span class="source-line-no">227</span><span id="line-227">                        }</span>
-<span class="source-line-no">228</span><span id="line-228">                        </span>
-<span class="source-line-no">229</span><span id="line-229">                        RealVector VV = new ArrayRealVector(V, false);</span>
-<span class="source-line-no">230</span><span id="line-230">                        RealMatrix JJ = new Array2DRowRealMatrix(J, false);</span>
-<span class="source-line-no">231</span><span id="line-231">                        return new Pair&lt;&gt;(VV, JJ);</span>
-<span class="source-line-no">232</span><span id="line-232">                }</span>
-<span class="source-line-no">233</span><span id="line-233">                </span>
-<span class="source-line-no">234</span><span id="line-234">        }</span>
-<span class="source-line-no">235</span><span id="line-235">        </span>
-<span class="source-line-no">236</span><span id="line-236">        // ---------------------------------------------------------------------------</span>
-<span class="source-line-no">237</span><span id="line-237">        </span>
-<span class="source-line-no">238</span><span id="line-238">        class SyntheticModel implements MultivariateJacobianFunction {</span>
-<span class="source-line-no">239</span><span id="line-239">                double delta = 0.00001;</span>
-<span class="source-line-no">240</span><span id="line-240"></span>
-<span class="source-line-no">241</span><span id="line-241">                @Override</span>
-<span class="source-line-no">242</span><span id="line-242">                public Pair&lt;RealVector, RealMatrix&gt; value(RealVector point) {</span>
-<span class="source-line-no">243</span><span id="line-243">                        double[] p = point.toArray();</span>
-<span class="source-line-no">244</span><span id="line-244">                        if (RecordHistory) {</span>
-<span class="source-line-no">245</span><span id="line-245">                                history.add(p.clone());</span>
-<span class="source-line-no">246</span><span id="line-246">                        }</span>
-<span class="source-line-no">247</span><span id="line-247">                        GeometricEllipse ellipse = new GeometricEllipse(p);             // ellipse for current parameter point</span>
-<span class="source-line-no">248</span><span id="line-248">                        GeometricEllipse[] dEllipses = new GeometricEllipse[5]; // differentially modified ellipses</span>
-<span class="source-line-no">249</span><span id="line-249">                        for (int j = 0; j &lt; 5; j++) {</span>
-<span class="source-line-no">250</span><span id="line-250">                                double[] pd = p.clone();        </span>
-<span class="source-line-no">251</span><span id="line-251">                                pd[j] = p[j] + delta;                           // vary parameter j</span>
-<span class="source-line-no">252</span><span id="line-252">                                dEllipses[j] = new GeometricEllipse(pd);</span>
-<span class="source-line-no">253</span><span id="line-253">                        }</span>
-<span class="source-line-no">254</span><span id="line-254">                        </span>
-<span class="source-line-no">255</span><span id="line-255">                        // calculate values and Jacobian</span>
-<span class="source-line-no">256</span><span id="line-256">                        for (int i = 0; i &lt; pts.length; i++) {</span>
-<span class="source-line-no">257</span><span id="line-257">                                final int i2 = 2*i;</span>
-<span class="source-line-no">258</span><span id="line-258">                                Pnt2d XYi = pts[i];</span>
-<span class="source-line-no">259</span><span id="line-259">                                Pnt2d XYp = ellipse.getClosestPoint(XYi);</span>
-<span class="source-line-no">260</span><span id="line-260">                                double xp = XYp.getX();</span>
-<span class="source-line-no">261</span><span id="line-261">                                double yp = XYp.getY();</span>
-<span class="source-line-no">262</span><span id="line-262">                                V[i2]     = xp;                                                         // values = closest point coord.</span>
-<span class="source-line-no">263</span><span id="line-263">                                V[i2 + 1] = yp; </span>
-<span class="source-line-no">264</span><span id="line-264">                                </span>
-<span class="source-line-no">265</span><span id="line-265">                                for (int j = 0; j &lt; 5; j++) {</span>
-<span class="source-line-no">266</span><span id="line-266">                                        Pnt2d XYpj = dEllipses[j].getClosestPoint(XYi);</span>
-<span class="source-line-no">267</span><span id="line-267">                                        J[i2][j]     = (XYpj.getX() - xp) / delta;      // estimated partial derivative</span>
-<span class="source-line-no">268</span><span id="line-268">                                        J[i2 + 1][j] = (XYpj.getY() - yp) / delta;</span>
-<span class="source-line-no">269</span><span id="line-269">                                }</span>
-<span class="source-line-no">270</span><span id="line-270">                        }</span>
-<span class="source-line-no">271</span><span id="line-271">                        </span>
-<span class="source-line-no">272</span><span id="line-272">                        RealVector VV = new ArrayRealVector(V, false);</span>
-<span class="source-line-no">273</span><span id="line-273">                        RealMatrix JJ = new Array2DRowRealMatrix(J, false);</span>
-<span class="source-line-no">274</span><span id="line-274">                        return new Pair&lt;&gt;(VV, JJ);</span>
-<span class="source-line-no">275</span><span id="line-275">                }</span>
-<span class="source-line-no">276</span><span id="line-276">                </span>
-<span class="source-line-no">277</span><span id="line-277">        }</span>
-<span class="source-line-no">278</span><span id="line-278">        </span>
+<span class="source-line-no">070</span><span id="line-70">        public EllipseGeometricFitCoord(Pnt2d[] pts, GeometricEllipse initEllipse, int maxEvaluations, </span>
+<span class="source-line-no">071</span><span id="line-71">                        int maxIterations, double tolerance, boolean syntheticDeriv) {</span>
+<span class="source-line-no">072</span><span id="line-72">                this.pts = pts;</span>
+<span class="source-line-no">073</span><span id="line-73">                int n = pts.length;</span>
+<span class="source-line-no">074</span><span id="line-74">                this.V = new double[2*n];</span>
+<span class="source-line-no">075</span><span id="line-75">                this.J = new double[2*n][5];</span>
+<span class="source-line-no">076</span><span id="line-76">                this.maxEvaluations = maxEvaluations;</span>
+<span class="source-line-no">077</span><span id="line-77">                this.maxIterations = maxIterations;</span>
+<span class="source-line-no">078</span><span id="line-78">                this.tolerance = tolerance;</span>
+<span class="source-line-no">079</span><span id="line-79">                this.model = (syntheticDeriv) ? new SyntheticModel() : new AnalyticModel();</span>
+<span class="source-line-no">080</span><span id="line-80">                this.solution = solveLM(initEllipse.getParameters());</span>
+<span class="source-line-no">081</span><span id="line-81">        }</span>
+<span class="source-line-no">082</span><span id="line-82">        </span>
+<span class="source-line-no">083</span><span id="line-83">        public EllipseGeometricFitCoord(Pnt2d[] pts, GeometricEllipse initEllipse) {</span>
+<span class="source-line-no">084</span><span id="line-84">                this(pts, initEllipse, DefaultMaxIterations, DefaultMaxIterations, DefaultTolerance, false);</span>
+<span class="source-line-no">085</span><span id="line-85">        }</span>
+<span class="source-line-no">086</span><span id="line-86">        </span>
+<span class="source-line-no">087</span><span id="line-87">        // --------------------------------------------------------------------------</span>
+<span class="source-line-no">088</span><span id="line-88">        </span>
+<span class="source-line-no">089</span><span id="line-89">        @Override</span>
+<span class="source-line-no">090</span><span id="line-90">        public double[] getParameters() {</span>
+<span class="source-line-no">091</span><span id="line-91">                return solution.getPoint().toArray();</span>
+<span class="source-line-no">092</span><span id="line-92">        }</span>
+<span class="source-line-no">093</span><span id="line-93">        </span>
+<span class="source-line-no">094</span><span id="line-94">        @Override</span>
+<span class="source-line-no">095</span><span id="line-95">        public int getIterations() {</span>
+<span class="source-line-no">096</span><span id="line-96">                return solution.getIterations();</span>
+<span class="source-line-no">097</span><span id="line-97">        }</span>
+<span class="source-line-no">098</span><span id="line-98">        </span>
+<span class="source-line-no">099</span><span id="line-99">        @Override</span>
+<span class="source-line-no">100</span><span id="line-100">        public List&lt;double[]&gt; getHistory() {</span>
+<span class="source-line-no">101</span><span id="line-101">                return history;</span>
+<span class="source-line-no">102</span><span id="line-102">        }</span>
+<span class="source-line-no">103</span><span id="line-103">        </span>
+<span class="source-line-no">104</span><span id="line-104">        // --------------------------------------------------------------------------</span>
+<span class="source-line-no">105</span><span id="line-105"></span>
+<span class="source-line-no">106</span><span id="line-106">        private Optimum solveLM(double[] p0) {</span>
+<span class="source-line-no">107</span><span id="line-107">                LeastSquaresProblem problem = </span>
+<span class="source-line-no">108</span><span id="line-108">                        LeastSquaresFactory.create(</span>
+<span class="source-line-no">109</span><span id="line-109">                                model, </span>
+<span class="source-line-no">110</span><span id="line-110">                                makeTargetVector(pts),</span>
+<span class="source-line-no">111</span><span id="line-111">                                createRealVector(p0),</span>
+<span class="source-line-no">112</span><span id="line-112">                                evaluationChecker(new SimpleVectorValueChecker(tolerance, tolerance)),</span>
+<span class="source-line-no">113</span><span id="line-113">                                maxEvaluations, maxIterations);</span>
+<span class="source-line-no">114</span><span id="line-114"></span>
+<span class="source-line-no">115</span><span id="line-115">                LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();</span>
+<span class="source-line-no">116</span><span id="line-116">                Optimum solution = optimizer.optimize(problem);</span>
+<span class="source-line-no">117</span><span id="line-117">                </span>
+<span class="source-line-no">118</span><span id="line-118">                return solution;</span>
+<span class="source-line-no">119</span><span id="line-119">        }</span>
+<span class="source-line-no">120</span><span id="line-120">        </span>
+<span class="source-line-no">121</span><span id="line-121">        /**</span>
+<span class="source-line-no">122</span><span id="line-122">         * Returns a vector of alternating x/y coordinates of the target points:</span>
+<span class="source-line-no">123</span><span id="line-123">         * {@code (x_0, y_0, x_1, y_1, ..., x_{n-1}, y_{n-1})}.</span>
+<span class="source-line-no">124</span><span id="line-124">         * </span>
+<span class="source-line-no">125</span><span id="line-125">         * @param pts target points</span>
+<span class="source-line-no">126</span><span id="line-126">         * @return vector of length 2n</span>
+<span class="source-line-no">127</span><span id="line-127">         */</span>
+<span class="source-line-no">128</span><span id="line-128">        private RealVector makeTargetVector(Pnt2d[] pts) {</span>
+<span class="source-line-no">129</span><span id="line-129">                int n = pts.length;</span>
+<span class="source-line-no">130</span><span id="line-130">                final double[] target = new double[2*n];</span>
+<span class="source-line-no">131</span><span id="line-131">                for (int i = 0; i &lt; n; i++) {</span>
+<span class="source-line-no">132</span><span id="line-132">                        Pnt2d p = pts[i];</span>
+<span class="source-line-no">133</span><span id="line-133">                        target[2*i]     = p.getX();</span>
+<span class="source-line-no">134</span><span id="line-134">                        target[2*i + 1] = p.getY();</span>
+<span class="source-line-no">135</span><span id="line-135">                }</span>
+<span class="source-line-no">136</span><span id="line-136">                return MatrixUtils.createRealVector(target);</span>
+<span class="source-line-no">137</span><span id="line-137">        }</span>
+<span class="source-line-no">138</span><span id="line-138">        </span>
+<span class="source-line-no">139</span><span id="line-139">        // --------------------------------------------------------------------------</span>
+<span class="source-line-no">140</span><span id="line-140">        </span>
+<span class="source-line-no">141</span><span id="line-141">        class AnalyticModel implements MultivariateJacobianFunction {</span>
+<span class="source-line-no">142</span><span id="line-142">                </span>
+<span class="source-line-no">143</span><span id="line-143">                @Override</span>
+<span class="source-line-no">144</span><span id="line-144">                public Pair&lt;RealVector, RealMatrix&gt; value(RealVector point) {</span>
+<span class="source-line-no">145</span><span id="line-145">                        final double[] p = point.toArray();</span>
+<span class="source-line-no">146</span><span id="line-146">                        if (RecordHistory) {</span>
+<span class="source-line-no">147</span><span id="line-147">                                history.add(p.clone());</span>
+<span class="source-line-no">148</span><span id="line-148">                        }</span>
+<span class="source-line-no">149</span><span id="line-149">                        final GeometricEllipse ellipse = new GeometricEllipse(p);</span>
+<span class="source-line-no">150</span><span id="line-150">                        final double ra = ellipse.ra;</span>
+<span class="source-line-no">151</span><span id="line-151">                        final double rb = ellipse.rb;</span>
+<span class="source-line-no">152</span><span id="line-152">                        final double xc = ellipse.xc;</span>
+<span class="source-line-no">153</span><span id="line-153">                        final double yc = ellipse.yc;</span>
+<span class="source-line-no">154</span><span id="line-154">                        final double theta = ellipse.theta;</span>
+<span class="source-line-no">155</span><span id="line-155">                        final double ra2 = sqr(ra);</span>
+<span class="source-line-no">156</span><span id="line-156">                        final double rb2 = sqr(rb);</span>
+<span class="source-line-no">157</span><span id="line-157">                        final double C = Math.cos(theta);</span>
+<span class="source-line-no">158</span><span id="line-158">                        final double S = Math.sin(theta);</span>
+<span class="source-line-no">159</span><span id="line-159">                        final double[] xyc = new double[] {xc, yc};</span>
+<span class="source-line-no">160</span><span id="line-160">                        RealMatrix R = makeRealMatrix(2, 2,</span>
+<span class="source-line-no">161</span><span id="line-161">                                        C, -S, </span>
+<span class="source-line-no">162</span><span id="line-162">                                        S,  C);</span>
+<span class="source-line-no">163</span><span id="line-163">                        RealMatrix Rt = R.transpose();</span>
+<span class="source-line-no">164</span><span id="line-164">                        </span>
+<span class="source-line-no">165</span><span id="line-165">                        // calculate values and Jacobian</span>
+<span class="source-line-no">166</span><span id="line-166">                        for (int i = 0; i &lt; pts.length; i++) {</span>
+<span class="source-line-no">167</span><span id="line-167">                                final int i2 = 2*i;</span>
+<span class="source-line-no">168</span><span id="line-168">                                Pnt2d XYi = pts[i];</span>
+<span class="source-line-no">169</span><span id="line-169">                                Pnt2d XYp = ellipse.getClosestPoint(XYi);</span>
+<span class="source-line-no">170</span><span id="line-170">                                </span>
+<span class="source-line-no">171</span><span id="line-171">                                // values</span>
+<span class="source-line-no">172</span><span id="line-172">                                V[i2]     = XYp.getX();</span>
+<span class="source-line-no">173</span><span id="line-173">                                V[i2 + 1] = XYp.getY();</span>
+<span class="source-line-no">174</span><span id="line-174">                                </span>
+<span class="source-line-no">175</span><span id="line-175">                                // Jacobian</span>
+<span class="source-line-no">176</span><span id="line-176">                                double[] xyi = XYi.toDoubleArray();</span>
+<span class="source-line-no">177</span><span id="line-177">                                double[] uvi = Rt.operate(subtract(xyi, xyc));                                  // target point in canon. coordinates</span>
+<span class="source-line-no">178</span><span id="line-178">                                double ui = uvi[0],  vi = uvi[1];                                                               // = (u_i, v_i)</span>
+<span class="source-line-no">179</span><span id="line-179"></span>
+<span class="source-line-no">180</span><span id="line-180">                                double[] xyp = ellipse.getClosestPoint(xyi);                                    // ellipse point closest to Xi</span>
+<span class="source-line-no">181</span><span id="line-181">                                double xp = xyp[0], yp = xyp[1];                                                                // = (\breve{x}_i, \breve{y}_i)</span>
+<span class="source-line-no">182</span><span id="line-182"></span>
+<span class="source-line-no">183</span><span id="line-183">                                double[] uvp = Rt.operate(subtract(xyp, xyc));                                  // closest point in canon. coordinates</span>
+<span class="source-line-no">184</span><span id="line-184">                                double up = uvp[0], vp = uvp[1];                                                                // = (\breve{u}_i, \breve{u}_i)                         </span>
+<span class="source-line-no">185</span><span id="line-185"></span>
+<span class="source-line-no">186</span><span id="line-186">                                RealMatrix Q1 = makeRealMatrix(2, 2,</span>
+<span class="source-line-no">187</span><span id="line-187">                                                0, 0 ,</span>
+<span class="source-line-no">188</span><span id="line-188">                                                vi - vp, up - ui );     </span>
+<span class="source-line-no">189</span><span id="line-189">                                RealMatrix Q2 = makeRealMatrix(2, 2,</span>
+<span class="source-line-no">190</span><span id="line-190">                                                1/ra2, 0,</span>
+<span class="source-line-no">191</span><span id="line-191">                                                0,   1/rb2 );</span>
+<span class="source-line-no">192</span><span id="line-192">                                RealMatrix Q3 = makeRealMatrix(2, 2,</span>
+<span class="source-line-no">193</span><span id="line-193">                                                up/ra2,  vp/rb2,</span>
+<span class="source-line-no">194</span><span id="line-194">                                                vp/rb2, -up/ra2 );</span>
+<span class="source-line-no">195</span><span id="line-195">                                RealMatrix Q = Q1.multiply(Q2).add(Q3);</span>
+<span class="source-line-no">196</span><span id="line-196">                                RealMatrix Qi = MatrixUtils.inverse(Q);</span>
+<span class="source-line-no">197</span><span id="line-197"></span>
+<span class="source-line-no">198</span><span id="line-198">                                RealMatrix T = makeRealMatrix(2, 2,</span>
+<span class="source-line-no">199</span><span id="line-199">                                                0, 0,</span>
+<span class="source-line-no">200</span><span id="line-200">                                                -vp/rb2, up/ra2 );</span>
+<span class="source-line-no">201</span><span id="line-201"></span>
+<span class="source-line-no">202</span><span id="line-202">                                RealMatrix U = makeRealMatrix(2, 5,</span>
+<span class="source-line-no">203</span><span id="line-203">                                                0, 0,  -C, -S,  vi,</span>
+<span class="source-line-no">204</span><span id="line-204">                                                0, 0,   S, -C, -ui );</span>
+<span class="source-line-no">205</span><span id="line-205"></span>
+<span class="source-line-no">206</span><span id="line-206">                                RealMatrix V1 = makeRealMatrix(2, 3,</span>
+<span class="source-line-no">207</span><span id="line-207">                                                1, 0, 0,</span>
+<span class="source-line-no">208</span><span id="line-208">                                                0, vi - vp, up - ui );</span>
+<span class="source-line-no">209</span><span id="line-209">                                RealMatrix V2 = makeRealMatrix(3, 5,</span>
+<span class="source-line-no">210</span><span id="line-210">                                                -sqr(up)/(ra2*ra), -sqr(vp)/(rb2*rb), 0, 0, 0 ,</span>
+<span class="source-line-no">211</span><span id="line-211">                                                -2*up/(ra2*ra), 0,                    0, 0, 0 ,</span>
+<span class="source-line-no">212</span><span id="line-212">                                                0, -2*vp/(rb2*rb),                    0, 0, 0 );</span>
+<span class="source-line-no">213</span><span id="line-213">                                RealMatrix V = V1.multiply(V2);</span>
+<span class="source-line-no">214</span><span id="line-214"></span>
+<span class="source-line-no">215</span><span id="line-215">                                RealMatrix W = makeRealMatrix(2, 5,</span>
+<span class="source-line-no">216</span><span id="line-216">                                                0, 0, 1, 0, yc - yp,</span>
+<span class="source-line-no">217</span><span id="line-217">                                                0, 0, 0, 1, xp - xc );</span>
+<span class="source-line-no">218</span><span id="line-218"></span>
+<span class="source-line-no">219</span><span id="line-219">                                RealMatrix Ji = // J = -R * Q^-1 * (T * U + V) + W ..... 2x5 matrix</span>
+<span class="source-line-no">220</span><span id="line-220">                                                R.scalarMultiply(-1).multiply(Qi).multiply(T.multiply(U).add(V)).add(W);</span>
+<span class="source-line-no">221</span><span id="line-221">                                </span>
+<span class="source-line-no">222</span><span id="line-222">                                for (int j = 0; j &lt; 5; j++) {</span>
+<span class="source-line-no">223</span><span id="line-223">                                        J[i2][j]     = Ji.getEntry(0, j);</span>
+<span class="source-line-no">224</span><span id="line-224">                                        J[i2 + 1][j] = Ji.getEntry(1, j);</span>
+<span class="source-line-no">225</span><span id="line-225">                                }</span>
+<span class="source-line-no">226</span><span id="line-226">                        }</span>
+<span class="source-line-no">227</span><span id="line-227">                        </span>
+<span class="source-line-no">228</span><span id="line-228">                        RealVector VV = new ArrayRealVector(V, false);</span>
+<span class="source-line-no">229</span><span id="line-229">                        RealMatrix JJ = new Array2DRowRealMatrix(J, false);</span>
+<span class="source-line-no">230</span><span id="line-230">                        return new Pair&lt;&gt;(VV, JJ);</span>
+<span class="source-line-no">231</span><span id="line-231">                }</span>
+<span class="source-line-no">232</span><span id="line-232">                </span>
+<span class="source-line-no">233</span><span id="line-233">        }</span>
+<span class="source-line-no">234</span><span id="line-234">        </span>
+<span class="source-line-no">235</span><span id="line-235">        // ---------------------------------------------------------------------------</span>
+<span class="source-line-no">236</span><span id="line-236">        </span>
+<span class="source-line-no">237</span><span id="line-237">        class SyntheticModel implements MultivariateJacobianFunction {</span>
+<span class="source-line-no">238</span><span id="line-238">                double delta = 0.00001;</span>
+<span class="source-line-no">239</span><span id="line-239"></span>
+<span class="source-line-no">240</span><span id="line-240">                @Override</span>
+<span class="source-line-no">241</span><span id="line-241">                public Pair&lt;RealVector, RealMatrix&gt; value(RealVector point) {</span>
+<span class="source-line-no">242</span><span id="line-242">                        double[] p = point.toArray();</span>
+<span class="source-line-no">243</span><span id="line-243">                        if (RecordHistory) {</span>
+<span class="source-line-no">244</span><span id="line-244">                                history.add(p.clone());</span>
+<span class="source-line-no">245</span><span id="line-245">                        }</span>
+<span class="source-line-no">246</span><span id="line-246">                        GeometricEllipse ellipse = new GeometricEllipse(p);             // ellipse for current parameter point</span>
+<span class="source-line-no">247</span><span id="line-247">                        GeometricEllipse[] dEllipses = new GeometricEllipse[5]; // differentially modified ellipses</span>
+<span class="source-line-no">248</span><span id="line-248">                        for (int j = 0; j &lt; 5; j++) {</span>
+<span class="source-line-no">249</span><span id="line-249">                                double[] pd = p.clone();        </span>
+<span class="source-line-no">250</span><span id="line-250">                                pd[j] = p[j] + delta;                           // vary parameter j</span>
+<span class="source-line-no">251</span><span id="line-251">                                dEllipses[j] = new GeometricEllipse(pd);</span>
+<span class="source-line-no">252</span><span id="line-252">                        }</span>
+<span class="source-line-no">253</span><span id="line-253">                        </span>
+<span class="source-line-no">254</span><span id="line-254">                        // calculate values and Jacobian</span>
+<span class="source-line-no">255</span><span id="line-255">                        for (int i = 0; i &lt; pts.length; i++) {</span>
+<span class="source-line-no">256</span><span id="line-256">                                final int i2 = 2*i;</span>
+<span class="source-line-no">257</span><span id="line-257">                                Pnt2d XYi = pts[i];</span>
+<span class="source-line-no">258</span><span id="line-258">                                Pnt2d XYp = ellipse.getClosestPoint(XYi);</span>
+<span class="source-line-no">259</span><span id="line-259">                                double xp = XYp.getX();</span>
+<span class="source-line-no">260</span><span id="line-260">                                double yp = XYp.getY();</span>
+<span class="source-line-no">261</span><span id="line-261">                                V[i2]     = xp;                                                         // values = closest point coord.</span>
+<span class="source-line-no">262</span><span id="line-262">                                V[i2 + 1] = yp; </span>
+<span class="source-line-no">263</span><span id="line-263">                                </span>
+<span class="source-line-no">264</span><span id="line-264">                                for (int j = 0; j &lt; 5; j++) {</span>
+<span class="source-line-no">265</span><span id="line-265">                                        Pnt2d XYpj = dEllipses[j].getClosestPoint(XYi);</span>
+<span class="source-line-no">266</span><span id="line-266">                                        J[i2][j]     = (XYpj.getX() - xp) / delta;      // estimated partial derivative</span>
+<span class="source-line-no">267</span><span id="line-267">                                        J[i2 + 1][j] = (XYpj.getY() - yp) / delta;</span>
+<span class="source-line-no">268</span><span id="line-268">                                }</span>
+<span class="source-line-no">269</span><span id="line-269">                        }</span>
+<span class="source-line-no">270</span><span id="line-270">                        </span>
+<span class="source-line-no">271</span><span id="line-271">                        RealVector VV = new ArrayRealVector(V, false);</span>
+<span class="source-line-no">272</span><span id="line-272">                        RealMatrix JJ = new Array2DRowRealMatrix(J, false);</span>
+<span class="source-line-no">273</span><span id="line-273">                        return new Pair&lt;&gt;(VV, JJ);</span>
+<span class="source-line-no">274</span><span id="line-274">                }</span>
+<span class="source-line-no">275</span><span id="line-275">                </span>
+<span class="source-line-no">276</span><span id="line-276">        }</span>
+<span class="source-line-no">277</span><span id="line-277">        </span>
+<span class="source-line-no">278</span><span id="line-278">        // -------------------------------------------------------------------</span>
 <span class="source-line-no">279</span><span id="line-279">        // -------------------------------------------------------------------</span>
-<span class="source-line-no">280</span><span id="line-280">        // -------------------------------------------------------------------</span>
-<span class="source-line-no">281</span><span id="line-281">        </span>
-<span class="source-line-no">282</span><span id="line-282">        public static class Parameters implements ParameterBundle&lt;EllipseGeometricFitCoord&gt; {</span>
-<span class="source-line-no">283</span><span id="line-283">                </span>
-<span class="source-line-no">284</span><span id="line-284">                @DialogLabel("number of points")</span>
-<span class="source-line-no">285</span><span id="line-285">                public int n = 20;</span>
-<span class="source-line-no">286</span><span id="line-286">                </span>
-<span class="source-line-no">287</span><span id="line-287">                @DialogLabel("ellipse center (xc)")</span>
-<span class="source-line-no">288</span><span id="line-288">                public double xc = 200;</span>
-<span class="source-line-no">289</span><span id="line-289">                </span>
-<span class="source-line-no">290</span><span id="line-290">                @DialogLabel("ellipsecenter (yc)")</span>
-<span class="source-line-no">291</span><span id="line-291">                public double yc = 190;</span>
-<span class="source-line-no">292</span><span id="line-292">                </span>
-<span class="source-line-no">293</span><span id="line-293">                @DialogLabel("major axis radius (ra)")</span>
-<span class="source-line-no">294</span><span id="line-294">                public double ra = 170;</span>
-<span class="source-line-no">295</span><span id="line-295">                </span>
-<span class="source-line-no">296</span><span id="line-296">                @DialogLabel("minor axis radius (rb)")</span>
-<span class="source-line-no">297</span><span id="line-297">                public double rb = 120;</span>
-<span class="source-line-no">298</span><span id="line-298">                </span>
-<span class="source-line-no">299</span><span id="line-299">                @DialogLabel("start angle (deg)")</span>
-<span class="source-line-no">300</span><span id="line-300">                public double angle0 = 0;</span>
-<span class="source-line-no">301</span><span id="line-301">                </span>
-<span class="source-line-no">302</span><span id="line-302">                @DialogLabel("stop angle (deg)")</span>
-<span class="source-line-no">303</span><span id="line-303">                public double angle1 = 180; // was Math.PI/4;</span>
-<span class="source-line-no">304</span><span id="line-304">                </span>
-<span class="source-line-no">305</span><span id="line-305">                @DialogLabel("ellipse orientation (deg)")</span>
-<span class="source-line-no">306</span><span id="line-306">                public double theta = 45;</span>
-<span class="source-line-no">307</span><span id="line-307">                </span>
-<span class="source-line-no">308</span><span id="line-308">                @DialogLabel("x/y noise (sigma)")</span>
-<span class="source-line-no">309</span><span id="line-309">                public double sigma = 5.0; //2.0;</span>
-<span class="source-line-no">310</span><span id="line-310">        };</span>
-<span class="source-line-no">311</span><span id="line-311">        </span>
-<span class="source-line-no">312</span><span id="line-312">        private static Parameters params = new Parameters();</span>
-<span class="source-line-no">313</span><span id="line-313">        </span>
-<span class="source-line-no">314</span><span id="line-314">      </span>
-<span class="source-line-no">315</span><span id="line-315">    public static void main(String[] args) {</span>
-<span class="source-line-no">316</span><span id="line-316">        </span>
-<span class="source-line-no">317</span><span id="line-317">        System.out.println("*** Testing "  + EllipseGeometricFitCoord.class.getSimpleName() + " ***");</span>
-<span class="source-line-no">318</span><span id="line-318">        </span>
-<span class="source-line-no">319</span><span id="line-319">        PrintPrecision.set(9);</span>
-<span class="source-line-no">320</span><span id="line-320">        </span>
-<span class="source-line-no">321</span><span id="line-321">        GeometricEllipse realEllipse = new GeometricEllipse(params.ra, params.rb, params.xc, params.yc, </span>
-<span class="source-line-no">322</span><span id="line-322">                                Math.toRadians(params.theta));</span>
-<span class="source-line-no">323</span><span id="line-323">        </span>
-<span class="source-line-no">324</span><span id="line-324">        EllipseSampler sampler = new EllipseSampler(realEllipse, 17);</span>
-<span class="source-line-no">325</span><span id="line-325">        </span>
-<span class="source-line-no">326</span><span id="line-326">        Pnt2d[] points = sampler.getPoints(params.n, </span>
-<span class="source-line-no">327</span><span id="line-327">                                Math.toRadians(params.angle0), Math.toRadians(params.angle1), params.sigma);</span>
-<span class="source-line-no">328</span><span id="line-328">        </span>
-<span class="source-line-no">329</span><span id="line-329">//      Pnt2d[] points = null;</span>
-<span class="source-line-no">330</span><span id="line-330">        //Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, 100, Angle0, Angle1, SigmaNoise);</span>
-<span class="source-line-no">331</span><span id="line-331">        //Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, 4, Angle0, Angle1, 0.1);</span>
-<span class="source-line-no">332</span><span id="line-332">        //Pnt2d[] points = CircleSampler.makeTestGander(30);</span>
-<span class="source-line-no">333</span><span id="line-333">        //Pnt2d[] points = CircleSampler.make3Points(30);</span>
-<span class="source-line-no">334</span><span id="line-334">                </span>
-<span class="source-line-no">335</span><span id="line-335">        EllipseFitAlgebraic fitA = new EllipseFitFitzgibbonStable(points);</span>
-<span class="source-line-no">336</span><span id="line-336">        </span>
-<span class="source-line-no">337</span><span id="line-337">        GeometricEllipse ellipseA = new GeometricEllipse(fitA.getEllipse());</span>
-<span class="source-line-no">338</span><span id="line-338">        System.out.println("ellipseA = " + ellipseA);</span>
-<span class="source-line-no">339</span><span id="line-339">        System.out.println("errorA = " + ellipseA.getMeanSquareError(points));</span>
-<span class="source-line-no">340</span><span id="line-340">                </span>
-<span class="source-line-no">341</span><span id="line-341">        EllipseGeometricFitCoord fitG = new EllipseGeometricFitCoord(points, ellipseA);</span>
-<span class="source-line-no">342</span><span id="line-342">        GeometricEllipse ellipseG = fitG.getEllipse();</span>
-<span class="source-line-no">343</span><span id="line-343">        System.out.println("ellipseG = " + ellipseG);</span>
-<span class="source-line-no">344</span><span id="line-344">        System.out.println("errorG = " + ellipseG.getMeanSquareError(points));</span>
-<span class="source-line-no">345</span><span id="line-345">        System.out.println("iterations = " + fitG.getIterations());</span>
-<span class="source-line-no">346</span><span id="line-346">        </span>
-<span class="source-line-no">347</span><span id="line-347">        for (double[] p : fitG.getHistory()) {</span>
-<span class="source-line-no">348</span><span id="line-348">                System.out.println("   " + Matrix.toString(p));</span>
-<span class="source-line-no">349</span><span id="line-349">        }</span>
-<span class="source-line-no">350</span><span id="line-350">        </span>
-<span class="source-line-no">351</span><span id="line-351">        // check analytic/synthetic Jacobians:</span>
-<span class="source-line-no">352</span><span id="line-352">        GeometricEllipse eTest = new GeometricEllipse (100, 120, 50, -30, 0.25);</span>
-<span class="source-line-no">353</span><span id="line-353">        Pnt2d xi = Pnt2d.from(110, -70);</span>
-<span class="source-line-no">354</span><span id="line-354">        Pnt2d[] pts = {xi};</span>
-<span class="source-line-no">355</span><span id="line-355">        </span>
-<span class="source-line-no">356</span><span id="line-356">        {</span>
-<span class="source-line-no">357</span><span id="line-357">                EllipseGeometricFitCoord fit = new EllipseGeometricFitCoord(pts, ellipseA);</span>
-<span class="source-line-no">358</span><span id="line-358">                MultivariateJacobianFunction model = fit.new AnalyticModel();</span>
-<span class="source-line-no">359</span><span id="line-359">                Pair&lt;RealVector, RealMatrix&gt; result = model.value(Matrix.makeRealVector(eTest.getParameters()));</span>
-<span class="source-line-no">360</span><span id="line-360">                RealMatrix J = result.getSecond();</span>
-<span class="source-line-no">361</span><span id="line-361">                System.out.println("J analytic = \n" + Matrix.toString(J.getData()));</span>
-<span class="source-line-no">362</span><span id="line-362">        }</span>
-<span class="source-line-no">363</span><span id="line-363">        </span>
-<span class="source-line-no">364</span><span id="line-364">        {</span>
-<span class="source-line-no">365</span><span id="line-365">                EllipseGeometricFitCoord fit = new EllipseGeometricFitCoord(pts, ellipseA);</span>
-<span class="source-line-no">366</span><span id="line-366">                MultivariateJacobianFunction model = fit.new SyntheticModel();</span>
-<span class="source-line-no">367</span><span id="line-367">                Pair&lt;RealVector, RealMatrix&gt; result = model.value(Matrix.makeRealVector(eTest.getParameters()));</span>
-<span class="source-line-no">368</span><span id="line-368">                RealMatrix J = result.getSecond();</span>
-<span class="source-line-no">369</span><span id="line-369">                System.out.println("J synthetic = \n" + Matrix.toString(J.getData()));</span>
-<span class="source-line-no">370</span><span id="line-370">        }</span>
-<span class="source-line-no">371</span><span id="line-371">    }</span>
-<span class="source-line-no">372</span><span id="line-372"></span>
-<span class="source-line-no">373</span><span id="line-373">}</span>
+<span class="source-line-no">280</span><span id="line-280">        </span>
+<span class="source-line-no">281</span><span id="line-281">        public static class Parameters implements ParameterBundle&lt;EllipseGeometricFitCoord&gt; {</span>
+<span class="source-line-no">282</span><span id="line-282">                </span>
+<span class="source-line-no">283</span><span id="line-283">                @DialogLabel("number of points")</span>
+<span class="source-line-no">284</span><span id="line-284">                public int n = 20;</span>
+<span class="source-line-no">285</span><span id="line-285">                </span>
+<span class="source-line-no">286</span><span id="line-286">                @DialogLabel("ellipse center (xc)")</span>
+<span class="source-line-no">287</span><span id="line-287">                public double xc = 200;</span>
+<span class="source-line-no">288</span><span id="line-288">                </span>
+<span class="source-line-no">289</span><span id="line-289">                @DialogLabel("ellipsecenter (yc)")</span>
+<span class="source-line-no">290</span><span id="line-290">                public double yc = 190;</span>
+<span class="source-line-no">291</span><span id="line-291">                </span>
+<span class="source-line-no">292</span><span id="line-292">                @DialogLabel("major axis radius (ra)")</span>
+<span class="source-line-no">293</span><span id="line-293">                public double ra = 170;</span>
+<span class="source-line-no">294</span><span id="line-294">                </span>
+<span class="source-line-no">295</span><span id="line-295">                @DialogLabel("minor axis radius (rb)")</span>
+<span class="source-line-no">296</span><span id="line-296">                public double rb = 120;</span>
+<span class="source-line-no">297</span><span id="line-297">                </span>
+<span class="source-line-no">298</span><span id="line-298">                @DialogLabel("start angle (deg)")</span>
+<span class="source-line-no">299</span><span id="line-299">                public double angle0 = 0;</span>
+<span class="source-line-no">300</span><span id="line-300">                </span>
+<span class="source-line-no">301</span><span id="line-301">                @DialogLabel("stop angle (deg)")</span>
+<span class="source-line-no">302</span><span id="line-302">                public double angle1 = 180; // was Math.PI/4;</span>
+<span class="source-line-no">303</span><span id="line-303">                </span>
+<span class="source-line-no">304</span><span id="line-304">                @DialogLabel("ellipse orientation (deg)")</span>
+<span class="source-line-no">305</span><span id="line-305">                public double theta = 45;</span>
+<span class="source-line-no">306</span><span id="line-306">                </span>
+<span class="source-line-no">307</span><span id="line-307">                @DialogLabel("x/y noise (sigma)")</span>
+<span class="source-line-no">308</span><span id="line-308">                public double sigma = 5.0; //2.0;</span>
+<span class="source-line-no">309</span><span id="line-309">        };</span>
+<span class="source-line-no">310</span><span id="line-310">        </span>
+<span class="source-line-no">311</span><span id="line-311">        private static Parameters params = new Parameters();</span>
+<span class="source-line-no">312</span><span id="line-312">        </span>
+<span class="source-line-no">313</span><span id="line-313">      </span>
+<span class="source-line-no">314</span><span id="line-314">    public static void main(String[] args) {</span>
+<span class="source-line-no">315</span><span id="line-315">        </span>
+<span class="source-line-no">316</span><span id="line-316">        System.out.println("*** Testing "  + EllipseGeometricFitCoord.class.getSimpleName() + " ***");</span>
+<span class="source-line-no">317</span><span id="line-317">        </span>
+<span class="source-line-no">318</span><span id="line-318">        PrintPrecision.set(9);</span>
+<span class="source-line-no">319</span><span id="line-319">        </span>
+<span class="source-line-no">320</span><span id="line-320">        GeometricEllipse realEllipse = new GeometricEllipse(params.ra, params.rb, params.xc, params.yc, </span>
+<span class="source-line-no">321</span><span id="line-321">                                Math.toRadians(params.theta));</span>
+<span class="source-line-no">322</span><span id="line-322">        </span>
+<span class="source-line-no">323</span><span id="line-323">        EllipseSampler sampler = new EllipseSampler(realEllipse, 17);</span>
+<span class="source-line-no">324</span><span id="line-324">        </span>
+<span class="source-line-no">325</span><span id="line-325">        Pnt2d[] points = sampler.getPoints(params.n, </span>
+<span class="source-line-no">326</span><span id="line-326">                                Math.toRadians(params.angle0), Math.toRadians(params.angle1), params.sigma);</span>
+<span class="source-line-no">327</span><span id="line-327">        </span>
+<span class="source-line-no">328</span><span id="line-328">//      Pnt2d[] points = null;</span>
+<span class="source-line-no">329</span><span id="line-329">        //Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, 100, Angle0, Angle1, SigmaNoise);</span>
+<span class="source-line-no">330</span><span id="line-330">        //Pnt2d[] points = CircleMaker.makeTestCircle(XC, YC, R, 4, Angle0, Angle1, 0.1);</span>
+<span class="source-line-no">331</span><span id="line-331">        //Pnt2d[] points = CircleSampler.makeTestGander(30);</span>
+<span class="source-line-no">332</span><span id="line-332">        //Pnt2d[] points = CircleSampler.make3Points(30);</span>
+<span class="source-line-no">333</span><span id="line-333">                </span>
+<span class="source-line-no">334</span><span id="line-334">        EllipseFitAlgebraic fitA = new EllipseFitFitzgibbonStable(points);</span>
+<span class="source-line-no">335</span><span id="line-335">        </span>
+<span class="source-line-no">336</span><span id="line-336">        GeometricEllipse ellipseA = new GeometricEllipse(fitA.getEllipse());</span>
+<span class="source-line-no">337</span><span id="line-337">        System.out.println("ellipseA = " + ellipseA);</span>
+<span class="source-line-no">338</span><span id="line-338">        System.out.println("errorA = " + ellipseA.getMeanSquareError(points));</span>
+<span class="source-line-no">339</span><span id="line-339">                </span>
+<span class="source-line-no">340</span><span id="line-340">        EllipseGeometricFitCoord fitG = new EllipseGeometricFitCoord(points, ellipseA);</span>
+<span class="source-line-no">341</span><span id="line-341">        GeometricEllipse ellipseG = fitG.getEllipse();</span>
+<span class="source-line-no">342</span><span id="line-342">        System.out.println("ellipseG = " + ellipseG);</span>
+<span class="source-line-no">343</span><span id="line-343">        System.out.println("errorG = " + ellipseG.getMeanSquareError(points));</span>
+<span class="source-line-no">344</span><span id="line-344">        System.out.println("iterations = " + fitG.getIterations());</span>
+<span class="source-line-no">345</span><span id="line-345">        </span>
+<span class="source-line-no">346</span><span id="line-346">        for (double[] p : fitG.getHistory()) {</span>
+<span class="source-line-no">347</span><span id="line-347">                System.out.println("   " + Matrix.toString(p));</span>
+<span class="source-line-no">348</span><span id="line-348">        }</span>
+<span class="source-line-no">349</span><span id="line-349">        </span>
+<span class="source-line-no">350</span><span id="line-350">        // check analytic/synthetic Jacobians:</span>
+<span class="source-line-no">351</span><span id="line-351">        GeometricEllipse eTest = new GeometricEllipse (100, 120, 50, -30, 0.25);</span>
+<span class="source-line-no">352</span><span id="line-352">        Pnt2d xi = Pnt2d.from(110, -70);</span>
+<span class="source-line-no">353</span><span id="line-353">        Pnt2d[] pts = {xi};</span>
+<span class="source-line-no">354</span><span id="line-354">        </span>
+<span class="source-line-no">355</span><span id="line-355">        {</span>
+<span class="source-line-no">356</span><span id="line-356">                EllipseGeometricFitCoord fit = new EllipseGeometricFitCoord(pts, ellipseA);</span>
+<span class="source-line-no">357</span><span id="line-357">                MultivariateJacobianFunction model = fit.new AnalyticModel();</span>
+<span class="source-line-no">358</span><span id="line-358">                Pair&lt;RealVector, RealMatrix&gt; result = model.value(Matrix.makeRealVector(eTest.getParameters()));</span>
+<span class="source-line-no">359</span><span id="line-359">                RealMatrix J = result.getSecond();</span>
+<span class="source-line-no">360</span><span id="line-360">                System.out.println("J analytic = \n" + Matrix.toString(J.getData()));</span>
+<span class="source-line-no">361</span><span id="line-361">        }</span>
+<span class="source-line-no">362</span><span id="line-362">        </span>
+<span class="source-line-no">363</span><span id="line-363">        {</span>
+<span class="source-line-no">364</span><span id="line-364">                EllipseGeometricFitCoord fit = new EllipseGeometricFitCoord(pts, ellipseA);</span>
+<span class="source-line-no">365</span><span id="line-365">                MultivariateJacobianFunction model = fit.new SyntheticModel();</span>
+<span class="source-line-no">366</span><span id="line-366">                Pair&lt;RealVector, RealMatrix&gt; result = model.value(Matrix.makeRealVector(eTest.getParameters()));</span>
+<span class="source-line-no">367</span><span id="line-367">                RealMatrix J = result.getSecond();</span>
+<span class="source-line-no">368</span><span id="line-368">                System.out.println("J synthetic = \n" + Matrix.toString(J.getData()));</span>
+<span class="source-line-no">369</span><span id="line-369">        }</span>
+<span class="source-line-no">370</span><span id="line-370">    }</span>
+<span class="source-line-no">371</span><span id="line-371"></span>
+<span class="source-line-no">372</span><span id="line-372">}</span>
 
 
 

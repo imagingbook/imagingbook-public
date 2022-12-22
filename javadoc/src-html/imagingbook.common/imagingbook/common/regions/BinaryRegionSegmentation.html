@@ -22,175 +22,175 @@
 <span class="source-line-no">009</span><span id="line-9"></span>
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.regions;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">import java.util.Arrays;</span>
-<span class="source-line-no">015</span><span id="line-15">import java.util.Collections;</span>
-<span class="source-line-no">016</span><span id="line-16">import java.util.LinkedHashMap;</span>
-<span class="source-line-no">017</span><span id="line-17">import java.util.List;</span>
-<span class="source-line-no">018</span><span id="line-18">import java.util.Map;</span>
-<span class="source-line-no">019</span><span id="line-19"></span>
-<span class="source-line-no">020</span><span id="line-20">import ij.process.ByteProcessor;</span>
-<span class="source-line-no">021</span><span id="line-21">import imagingbook.common.geometry.basic.NeighborhoodType2D;</span>
+<span class="source-line-no">012</span><span id="line-12">import ij.process.ByteProcessor;</span>
+<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.geometry.basic.NeighborhoodType2D;</span>
+<span class="source-line-no">014</span><span id="line-14"></span>
+<span class="source-line-no">015</span><span id="line-15">import java.util.Arrays;</span>
+<span class="source-line-no">016</span><span id="line-16">import java.util.Collections;</span>
+<span class="source-line-no">017</span><span id="line-17">import java.util.LinkedHashMap;</span>
+<span class="source-line-no">018</span><span id="line-18">import java.util.List;</span>
+<span class="source-line-no">019</span><span id="line-19">import java.util.Map;</span>
+<span class="source-line-no">020</span><span id="line-20"></span>
+<span class="source-line-no">021</span><span id="line-21">import static imagingbook.common.geometry.basic.NeighborhoodType2D.N4;</span>
 <span class="source-line-no">022</span><span id="line-22"></span>
 <span class="source-line-no">023</span><span id="line-23">/**</span>
 <span class="source-line-no">024</span><span id="line-24"> * &lt;p&gt;</span>
-<span class="source-line-no">025</span><span id="line-25"> * Performs region segmentation on a given binary image. See Ch. 8 of [1] for</span>
-<span class="source-line-no">026</span><span id="line-26"> * additional details. This class is abstract, since the implementation depends</span>
-<span class="source-line-no">027</span><span id="line-27"> * on the concrete region segmentation algorithm being used. Concrete</span>
-<span class="source-line-no">028</span><span id="line-28"> * implementations (subclasses of this class) are</span>
-<span class="source-line-no">029</span><span id="line-29"> * {@link BreadthFirstSegmentation}, {@link DepthFirstSegmentation},</span>
-<span class="source-line-no">030</span><span id="line-30"> * {@link RecursiveSegmentation}, {@link SequentialSegmentation},</span>
-<span class="source-line-no">031</span><span id="line-31"> * {@link RegionContourSegmentation}. Most of the work is done by the</span>
-<span class="source-line-no">032</span><span id="line-32"> * constructor(s). If the segmentation has failed for some reason</span>
-<span class="source-line-no">033</span><span id="line-33"> * {@link #getRegions()} returns {@code null}.</span>
-<span class="source-line-no">034</span><span id="line-34"> * &lt;/p&gt;</span>
-<span class="source-line-no">035</span><span id="line-35"> * &lt;p&gt;</span>
-<span class="source-line-no">036</span><span id="line-36"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">037</span><span id="line-37"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">038</span><span id="line-38"> * &lt;/p&gt;</span>
-<span class="source-line-no">039</span><span id="line-39"> * </span>
-<span class="source-line-no">040</span><span id="line-40"> * @author WB</span>
-<span class="source-line-no">041</span><span id="line-41"> * @version 2021/12/22</span>
-<span class="source-line-no">042</span><span id="line-42"> */</span>
-<span class="source-line-no">043</span><span id="line-43">public abstract class BinaryRegionSegmentation {</span>
-<span class="source-line-no">044</span><span id="line-44">        </span>
-<span class="source-line-no">045</span><span id="line-45">        /** The default neighborhood type. */</span>
-<span class="source-line-no">046</span><span id="line-46">        public static final NeighborhoodType2D DefaultNeighborhoodT = N4;</span>
-<span class="source-line-no">047</span><span id="line-47">        </span>
-<span class="source-line-no">048</span><span id="line-48">        static final int Background = 0;</span>
-<span class="source-line-no">049</span><span id="line-49">        static final int Foreground = 1;</span>
-<span class="source-line-no">050</span><span id="line-50">        </span>
-<span class="source-line-no">051</span><span id="line-51">//      final ImageProcessor ip;</span>
-<span class="source-line-no">052</span><span id="line-52">        final int width;</span>
-<span class="source-line-no">053</span><span id="line-53">        final int height;       </span>
-<span class="source-line-no">054</span><span id="line-54">        final NeighborhoodType2D NT;</span>
-<span class="source-line-no">055</span><span id="line-55">        </span>
-<span class="source-line-no">056</span><span id="line-56">        final int[][] labelArray;</span>
-<span class="source-line-no">057</span><span id="line-57">        // label values in labelArray can be:</span>
-<span class="source-line-no">058</span><span id="line-58">        //  0 ... unlabeled</span>
-<span class="source-line-no">059</span><span id="line-59">        // -1 ... previously visited background pixel</span>
-<span class="source-line-no">060</span><span id="line-60">        // &gt;0 ... valid label</span>
-<span class="source-line-no">061</span><span id="line-61">        </span>
-<span class="source-line-no">062</span><span id="line-62">        private final Map&lt;Integer, SegmentationBackedRegion&gt; regions;</span>
-<span class="source-line-no">063</span><span id="line-63">        private final boolean isSegmented;</span>
-<span class="source-line-no">064</span><span id="line-64">        </span>
-<span class="source-line-no">065</span><span id="line-65">        private final int minLabel = 2;</span>
-<span class="source-line-no">066</span><span id="line-66">        private int currentLabel = -1;  // the maximum label assigned sofar</span>
-<span class="source-line-no">067</span><span id="line-67">        private int maxLabel = -1;              // the maximum label assigned total</span>
-<span class="source-line-no">068</span><span id="line-68">        </span>
-<span class="source-line-no">069</span><span id="line-69">        // -------------------------------------------------------------------------</span>
+<span class="source-line-no">025</span><span id="line-25"> * Performs region segmentation on a given binary image. See Ch. 8 of [1] for additional details. This class is</span>
+<span class="source-line-no">026</span><span id="line-26"> * abstract, since the implementation depends on the concrete region segmentation algorithm being used. Concrete</span>
+<span class="source-line-no">027</span><span id="line-27"> * implementations (subclasses of this class) are {@link BreadthFirstSegmentation}, {@link DepthFirstSegmentation},</span>
+<span class="source-line-no">028</span><span id="line-28"> * {@link RecursiveSegmentation}, {@link SequentialSegmentation}, {@link RegionContourSegmentation}. Most of the work is</span>
+<span class="source-line-no">029</span><span id="line-29"> * done by the constructor(s). If the segmentation has failed for some reason {@link #getRegions()} returns</span>
+<span class="source-line-no">030</span><span id="line-30"> * {@code null}.</span>
+<span class="source-line-no">031</span><span id="line-31"> * &lt;/p&gt;</span>
+<span class="source-line-no">032</span><span id="line-32"> * &lt;p&gt;</span>
+<span class="source-line-no">033</span><span id="line-33"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">034</span><span id="line-34"> * (2022).</span>
+<span class="source-line-no">035</span><span id="line-35"> * &lt;/p&gt;</span>
+<span class="source-line-no">036</span><span id="line-36"> *</span>
+<span class="source-line-no">037</span><span id="line-37"> * @author WB</span>
+<span class="source-line-no">038</span><span id="line-38"> * @version 2021/12/22</span>
+<span class="source-line-no">039</span><span id="line-39"> * @see BreadthFirstSegmentation</span>
+<span class="source-line-no">040</span><span id="line-40"> * @see DepthFirstSegmentation</span>
+<span class="source-line-no">041</span><span id="line-41"> * @see SequentialSegmentation</span>
+<span class="source-line-no">042</span><span id="line-42"> * @see RecursiveSegmentation</span>
+<span class="source-line-no">043</span><span id="line-43"> * @see RegionContourSegmentation</span>
+<span class="source-line-no">044</span><span id="line-44"> */</span>
+<span class="source-line-no">045</span><span id="line-45">public abstract class BinaryRegionSegmentation {</span>
+<span class="source-line-no">046</span><span id="line-46">        </span>
+<span class="source-line-no">047</span><span id="line-47">        /** The default neighborhood type. */</span>
+<span class="source-line-no">048</span><span id="line-48">        public static final NeighborhoodType2D DefaultNeighborhoodT = N4;</span>
+<span class="source-line-no">049</span><span id="line-49">        </span>
+<span class="source-line-no">050</span><span id="line-50">        static final int Background = 0;</span>
+<span class="source-line-no">051</span><span id="line-51">        static final int Foreground = 1;</span>
+<span class="source-line-no">052</span><span id="line-52">        </span>
+<span class="source-line-no">053</span><span id="line-53">//      final ImageProcessor ip;</span>
+<span class="source-line-no">054</span><span id="line-54">        final int width;</span>
+<span class="source-line-no">055</span><span id="line-55">        final int height;       </span>
+<span class="source-line-no">056</span><span id="line-56">        final NeighborhoodType2D NT;</span>
+<span class="source-line-no">057</span><span id="line-57">        </span>
+<span class="source-line-no">058</span><span id="line-58">        final int[][] labelArray;</span>
+<span class="source-line-no">059</span><span id="line-59">        // label values in labelArray can be:</span>
+<span class="source-line-no">060</span><span id="line-60">        //  0 ... unlabeled</span>
+<span class="source-line-no">061</span><span id="line-61">        // -1 ... previously visited background pixel</span>
+<span class="source-line-no">062</span><span id="line-62">        // &gt;0 ... valid label</span>
+<span class="source-line-no">063</span><span id="line-63">        </span>
+<span class="source-line-no">064</span><span id="line-64">        private final Map&lt;Integer, SegmentationBackedRegion&gt; regions;</span>
+<span class="source-line-no">065</span><span id="line-65">        private final boolean isSegmented;</span>
+<span class="source-line-no">066</span><span id="line-66">        </span>
+<span class="source-line-no">067</span><span id="line-67">        private final int minLabel = 2;</span>
+<span class="source-line-no">068</span><span id="line-68">        private int currentLabel = -1;  // the maximum label assigned sofar</span>
+<span class="source-line-no">069</span><span id="line-69">        private int maxLabel = -1;              // the maximum label assigned total</span>
 <span class="source-line-no">070</span><span id="line-70">        </span>
-<span class="source-line-no">071</span><span id="line-71">        BinaryRegionSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {</span>
-<span class="source-line-no">072</span><span id="line-72">//              this.ip = ip;</span>
-<span class="source-line-no">073</span><span id="line-73">                this.NT = nh;</span>
-<span class="source-line-no">074</span><span id="line-74">                this.width  = ip.getWidth();</span>
-<span class="source-line-no">075</span><span id="line-75">                this.height = ip.getHeight();</span>
-<span class="source-line-no">076</span><span id="line-76">                this.labelArray = makeLabelArray(ip);</span>
-<span class="source-line-no">077</span><span id="line-77">                this.isSegmented = applySegmentation(ip);</span>
-<span class="source-line-no">078</span><span id="line-78">                this.regions = (isSegmented) ? collectRegions() : Collections.emptyMap();</span>
-<span class="source-line-no">079</span><span id="line-79">        }</span>
-<span class="source-line-no">080</span><span id="line-80">        </span>
-<span class="source-line-no">081</span><span id="line-81">        int[][] makeLabelArray(ByteProcessor ip) {</span>
-<span class="source-line-no">082</span><span id="line-82">                int[][] lA = new int[width][height];    // label array</span>
-<span class="source-line-no">083</span><span id="line-83">                // set all pixels to either FOREGROUND or BACKGROUND (by thresholding)</span>
-<span class="source-line-no">084</span><span id="line-84">                for (int v = 0; v &lt; height; v++) {</span>
-<span class="source-line-no">085</span><span id="line-85">                        for (int u = 0; u &lt; width; u++) {</span>
-<span class="source-line-no">086</span><span id="line-86">                                lA[u][v] = (ip.get(u, v) != 0) ? Foreground : Background;</span>
-<span class="source-line-no">087</span><span id="line-87">                        }</span>
-<span class="source-line-no">088</span><span id="line-88">                }</span>
-<span class="source-line-no">089</span><span id="line-89">                return lA;</span>
-<span class="source-line-no">090</span><span id="line-90">        }</span>
-<span class="source-line-no">091</span><span id="line-91">        </span>
-<span class="source-line-no">092</span><span id="line-92">        // -------------------------------------------------------------------------</span>
+<span class="source-line-no">071</span><span id="line-71">        // -------------------------------------------------------------------------</span>
+<span class="source-line-no">072</span><span id="line-72">        </span>
+<span class="source-line-no">073</span><span id="line-73">        BinaryRegionSegmentation(ByteProcessor ip, NeighborhoodType2D nh) {</span>
+<span class="source-line-no">074</span><span id="line-74">//              this.ip = ip;</span>
+<span class="source-line-no">075</span><span id="line-75">                this.NT = nh;</span>
+<span class="source-line-no">076</span><span id="line-76">                this.width  = ip.getWidth();</span>
+<span class="source-line-no">077</span><span id="line-77">                this.height = ip.getHeight();</span>
+<span class="source-line-no">078</span><span id="line-78">                this.labelArray = makeLabelArray(ip);</span>
+<span class="source-line-no">079</span><span id="line-79">                this.isSegmented = applySegmentation(ip);</span>
+<span class="source-line-no">080</span><span id="line-80">                this.regions = (isSegmented) ? collectRegions() : Collections.emptyMap();</span>
+<span class="source-line-no">081</span><span id="line-81">        }</span>
+<span class="source-line-no">082</span><span id="line-82">        </span>
+<span class="source-line-no">083</span><span id="line-83">        int[][] makeLabelArray(ByteProcessor ip) {</span>
+<span class="source-line-no">084</span><span id="line-84">                int[][] lA = new int[width][height];    // label array</span>
+<span class="source-line-no">085</span><span id="line-85">                // set all pixels to either FOREGROUND or BACKGROUND (by thresholding)</span>
+<span class="source-line-no">086</span><span id="line-86">                for (int v = 0; v &lt; height; v++) {</span>
+<span class="source-line-no">087</span><span id="line-87">                        for (int u = 0; u &lt; width; u++) {</span>
+<span class="source-line-no">088</span><span id="line-88">                                lA[u][v] = (ip.get(u, v) != 0) ? Foreground : Background;</span>
+<span class="source-line-no">089</span><span id="line-89">                        }</span>
+<span class="source-line-no">090</span><span id="line-90">                }</span>
+<span class="source-line-no">091</span><span id="line-91">                return lA;</span>
+<span class="source-line-no">092</span><span id="line-92">        }</span>
 <span class="source-line-no">093</span><span id="line-93">        </span>
-<span class="source-line-no">094</span><span id="line-94">        /**</span>
-<span class="source-line-no">095</span><span id="line-95">         * This method must be implemented by all concrete sub-classes.</span>
-<span class="source-line-no">096</span><span id="line-96">         * @param ip TODO</span>
-<span class="source-line-no">097</span><span id="line-97">         * </span>
-<span class="source-line-no">098</span><span id="line-98">         * @return true if segmentation was successful</span>
-<span class="source-line-no">099</span><span id="line-99">         */</span>
-<span class="source-line-no">100</span><span id="line-100">        abstract boolean applySegmentation(ByteProcessor ip);</span>
-<span class="source-line-no">101</span><span id="line-101">        </span>
-<span class="source-line-no">102</span><span id="line-102">        /**</span>
-<span class="source-line-no">103</span><span id="line-103">         * Returns the width of the segmented image. </span>
-<span class="source-line-no">104</span><span id="line-104">         * @return the width of the segmented image</span>
-<span class="source-line-no">105</span><span id="line-105">         */</span>
-<span class="source-line-no">106</span><span id="line-106">        public int getWidth() {</span>
-<span class="source-line-no">107</span><span id="line-107">                return this.width;</span>
-<span class="source-line-no">108</span><span id="line-108">        }</span>
-<span class="source-line-no">109</span><span id="line-109">        </span>
-<span class="source-line-no">110</span><span id="line-110">        /**</span>
-<span class="source-line-no">111</span><span id="line-111">         * Returns the height of the segmented image. </span>
-<span class="source-line-no">112</span><span id="line-112">         * @return the height of the segmented image</span>
-<span class="source-line-no">113</span><span id="line-113">         */</span>
-<span class="source-line-no">114</span><span id="line-114">        public int getHeight() {</span>
-<span class="source-line-no">115</span><span id="line-115">                return this.height;</span>
-<span class="source-line-no">116</span><span id="line-116">        }</span>
-<span class="source-line-no">117</span><span id="line-117">        </span>
-<span class="source-line-no">118</span><span id="line-118">        /**</span>
-<span class="source-line-no">119</span><span id="line-119">         * Returns the minimum label assigned by this segmentation.</span>
-<span class="source-line-no">120</span><span id="line-120">         * @return the minimum label</span>
-<span class="source-line-no">121</span><span id="line-121">         */</span>
-<span class="source-line-no">122</span><span id="line-122">        public int getMinLabel() {</span>
-<span class="source-line-no">123</span><span id="line-123">                return minLabel;</span>
-<span class="source-line-no">124</span><span id="line-124">        }</span>
-<span class="source-line-no">125</span><span id="line-125">        </span>
-<span class="source-line-no">126</span><span id="line-126">        /**</span>
-<span class="source-line-no">127</span><span id="line-127">         * Returns the maximum label assigned by this segmentation.</span>
-<span class="source-line-no">128</span><span id="line-128">         * @return the maximum label</span>
-<span class="source-line-no">129</span><span id="line-129">         */</span>
-<span class="source-line-no">130</span><span id="line-130">        public int getMaxLabel() {</span>
-<span class="source-line-no">131</span><span id="line-131">                return maxLabel;</span>
-<span class="source-line-no">132</span><span id="line-132">        }</span>
-<span class="source-line-no">133</span><span id="line-133">        </span>
-<span class="source-line-no">134</span><span id="line-134">        /**</span>
-<span class="source-line-no">135</span><span id="line-135">         * Returns true if the segmentation did complete successfully,</span>
-<span class="source-line-no">136</span><span id="line-136">         * false otherwise.</span>
-<span class="source-line-no">137</span><span id="line-137">         * </span>
-<span class="source-line-no">138</span><span id="line-138">         * @return true if segmentation was successful</span>
-<span class="source-line-no">139</span><span id="line-139">         */</span>
-<span class="source-line-no">140</span><span id="line-140">        public boolean isSegmented() {</span>
-<span class="source-line-no">141</span><span id="line-141">                return isSegmented;</span>
-<span class="source-line-no">142</span><span id="line-142">        }</span>
-<span class="source-line-no">143</span><span id="line-143">        </span>
-<span class="source-line-no">144</span><span id="line-144">        /**</span>
-<span class="source-line-no">145</span><span id="line-145">         * Returns an unsorted list of all regions associated with this region labeling.</span>
-<span class="source-line-no">146</span><span id="line-146">         * The returned list is empty if no regions were detected.</span>
-<span class="source-line-no">147</span><span id="line-147">         * See also {@link #getRegions(boolean)}.</span>
-<span class="source-line-no">148</span><span id="line-148">         * </span>
-<span class="source-line-no">149</span><span id="line-149">         * @return a (possibly empty) list of detected regions</span>
-<span class="source-line-no">150</span><span id="line-150">         */</span>
-<span class="source-line-no">151</span><span id="line-151">        public List&lt;BinaryRegion&gt; getRegions() {</span>
-<span class="source-line-no">152</span><span id="line-152">                return getRegions(false);       // unsorted</span>
-<span class="source-line-no">153</span><span id="line-153">        }</span>
-<span class="source-line-no">154</span><span id="line-154">        </span>
-<span class="source-line-no">155</span><span id="line-155">        /**</span>
-<span class="source-line-no">156</span><span id="line-156">         * Returns a (optionally sorted) list of all regions associated with this region labeling.</span>
-<span class="source-line-no">157</span><span id="line-157">         * The returned list is empty if no regions were detected.</span>
-<span class="source-line-no">158</span><span id="line-158">         * </span>
-<span class="source-line-no">159</span><span id="line-159">         * @param sort set {@code true} to sort regions by size (largest regions first).</span>
-<span class="source-line-no">160</span><span id="line-160">         * @return the list of detected regions or {@code null} if the segmentation has failed.</span>
-<span class="source-line-no">161</span><span id="line-161">         */</span>
-<span class="source-line-no">162</span><span id="line-162">        public List&lt;BinaryRegion&gt; getRegions(boolean sort) {</span>
-<span class="source-line-no">163</span><span id="line-163">                if (regions == null) {</span>
-<span class="source-line-no">164</span><span id="line-164">                        throw new RuntimeException("regions is null, this should never happen");</span>
-<span class="source-line-no">165</span><span id="line-165">                }</span>
-<span class="source-line-no">166</span><span id="line-166">                BinaryRegion[] ra = regions.values().toArray(new BinaryRegion[0]);</span>
-<span class="source-line-no">167</span><span id="line-167">                if (sort) {</span>
-<span class="source-line-no">168</span><span id="line-168">                        Arrays.sort(ra);</span>
-<span class="source-line-no">169</span><span id="line-169">                }</span>
-<span class="source-line-no">170</span><span id="line-170">                return Arrays.asList(ra);</span>
-<span class="source-line-no">171</span><span id="line-171">        }</span>
-<span class="source-line-no">172</span><span id="line-172">        </span>
-<span class="source-line-no">173</span><span id="line-173">        // -------------------------------------------------------------------------</span>
-<span class="source-line-no">174</span><span id="line-174">        </span>
-<span class="source-line-no">175</span><span id="line-175">        /**</span>
-<span class="source-line-no">176</span><span id="line-176">         * Creates a (map) container of {@link BinaryRegion} objects,</span>
-<span class="source-line-no">177</span><span id="line-177">         * collects the region pixels from the label image</span>
-<span class="source-line-no">178</span><span id="line-178">         * and calls {@link SegmentationBackedRegion#update()} to compute</span>
-<span class="source-line-no">179</span><span id="line-179">         * the statistics for each region.</span>
-<span class="source-line-no">180</span><span id="line-180">         * Region label numbers serve as map keys.</span>
+<span class="source-line-no">094</span><span id="line-94">        // -------------------------------------------------------------------------</span>
+<span class="source-line-no">095</span><span id="line-95">        </span>
+<span class="source-line-no">096</span><span id="line-96">        /**</span>
+<span class="source-line-no">097</span><span id="line-97">         * This method must be implemented by all concrete sub-classes.</span>
+<span class="source-line-no">098</span><span id="line-98">         * @param ip the image to be segmented</span>
+<span class="source-line-no">099</span><span id="line-99">         * </span>
+<span class="source-line-no">100</span><span id="line-100">         * @return true if segmentation was successful</span>
+<span class="source-line-no">101</span><span id="line-101">         */</span>
+<span class="source-line-no">102</span><span id="line-102">        abstract boolean applySegmentation(ByteProcessor ip);</span>
+<span class="source-line-no">103</span><span id="line-103">        </span>
+<span class="source-line-no">104</span><span id="line-104">        /**</span>
+<span class="source-line-no">105</span><span id="line-105">         * Returns the width of the segmented image. </span>
+<span class="source-line-no">106</span><span id="line-106">         * @return the width of the segmented image</span>
+<span class="source-line-no">107</span><span id="line-107">         */</span>
+<span class="source-line-no">108</span><span id="line-108">        public int getWidth() {</span>
+<span class="source-line-no">109</span><span id="line-109">                return this.width;</span>
+<span class="source-line-no">110</span><span id="line-110">        }</span>
+<span class="source-line-no">111</span><span id="line-111">        </span>
+<span class="source-line-no">112</span><span id="line-112">        /**</span>
+<span class="source-line-no">113</span><span id="line-113">         * Returns the height of the segmented image. </span>
+<span class="source-line-no">114</span><span id="line-114">         * @return the height of the segmented image</span>
+<span class="source-line-no">115</span><span id="line-115">         */</span>
+<span class="source-line-no">116</span><span id="line-116">        public int getHeight() {</span>
+<span class="source-line-no">117</span><span id="line-117">                return this.height;</span>
+<span class="source-line-no">118</span><span id="line-118">        }</span>
+<span class="source-line-no">119</span><span id="line-119">        </span>
+<span class="source-line-no">120</span><span id="line-120">        /**</span>
+<span class="source-line-no">121</span><span id="line-121">         * Returns the minimum label assigned by this segmentation.</span>
+<span class="source-line-no">122</span><span id="line-122">         * @return the minimum label</span>
+<span class="source-line-no">123</span><span id="line-123">         */</span>
+<span class="source-line-no">124</span><span id="line-124">        public int getMinLabel() {</span>
+<span class="source-line-no">125</span><span id="line-125">                return minLabel;</span>
+<span class="source-line-no">126</span><span id="line-126">        }</span>
+<span class="source-line-no">127</span><span id="line-127">        </span>
+<span class="source-line-no">128</span><span id="line-128">        /**</span>
+<span class="source-line-no">129</span><span id="line-129">         * Returns the maximum label assigned by this segmentation.</span>
+<span class="source-line-no">130</span><span id="line-130">         * @return the maximum label</span>
+<span class="source-line-no">131</span><span id="line-131">         */</span>
+<span class="source-line-no">132</span><span id="line-132">        public int getMaxLabel() {</span>
+<span class="source-line-no">133</span><span id="line-133">                return maxLabel;</span>
+<span class="source-line-no">134</span><span id="line-134">        }</span>
+<span class="source-line-no">135</span><span id="line-135">        </span>
+<span class="source-line-no">136</span><span id="line-136">        /**</span>
+<span class="source-line-no">137</span><span id="line-137">         * Returns true if the segmentation did complete successfully,</span>
+<span class="source-line-no">138</span><span id="line-138">         * false otherwise.</span>
+<span class="source-line-no">139</span><span id="line-139">         * </span>
+<span class="source-line-no">140</span><span id="line-140">         * @return true if segmentation was successful</span>
+<span class="source-line-no">141</span><span id="line-141">         */</span>
+<span class="source-line-no">142</span><span id="line-142">        public boolean isSegmented() {</span>
+<span class="source-line-no">143</span><span id="line-143">                return isSegmented;</span>
+<span class="source-line-no">144</span><span id="line-144">        }</span>
+<span class="source-line-no">145</span><span id="line-145"></span>
+<span class="source-line-no">146</span><span id="line-146">        /**</span>
+<span class="source-line-no">147</span><span id="line-147">         * Returns an unsorted list of all regions associated with this region labeling. The returned list is empty if no</span>
+<span class="source-line-no">148</span><span id="line-148">         * regions were detected. See also {@link #getRegions(boolean)}.</span>
+<span class="source-line-no">149</span><span id="line-149">         *</span>
+<span class="source-line-no">150</span><span id="line-150">         * @return a (possibly empty) list of detected regions</span>
+<span class="source-line-no">151</span><span id="line-151">         */</span>
+<span class="source-line-no">152</span><span id="line-152">        public List&lt;BinaryRegion&gt; getRegions() {</span>
+<span class="source-line-no">153</span><span id="line-153">                return getRegions(false);       // unsorted</span>
+<span class="source-line-no">154</span><span id="line-154">        }</span>
+<span class="source-line-no">155</span><span id="line-155"></span>
+<span class="source-line-no">156</span><span id="line-156">        /**</span>
+<span class="source-line-no">157</span><span id="line-157">         * Returns a (optionally sorted) list of all regions associated with this region labeling. The returned list is</span>
+<span class="source-line-no">158</span><span id="line-158">         * empty if no regions were detected.</span>
+<span class="source-line-no">159</span><span id="line-159">         *</span>
+<span class="source-line-no">160</span><span id="line-160">         * @param sort set {@code true} to sort regions by size (largest regions first).</span>
+<span class="source-line-no">161</span><span id="line-161">         * @return the list of detected regions or {@code null} if the segmentation has failed.</span>
+<span class="source-line-no">162</span><span id="line-162">         */</span>
+<span class="source-line-no">163</span><span id="line-163">        public List&lt;BinaryRegion&gt; getRegions(boolean sort) {</span>
+<span class="source-line-no">164</span><span id="line-164">                if (regions == null) {</span>
+<span class="source-line-no">165</span><span id="line-165">                        throw new RuntimeException("regions is null, this should never happen");</span>
+<span class="source-line-no">166</span><span id="line-166">                }</span>
+<span class="source-line-no">167</span><span id="line-167">                BinaryRegion[] ra = regions.values().toArray(new BinaryRegion[0]);</span>
+<span class="source-line-no">168</span><span id="line-168">                if (sort) {</span>
+<span class="source-line-no">169</span><span id="line-169">                        Arrays.sort(ra);</span>
+<span class="source-line-no">170</span><span id="line-170">                }</span>
+<span class="source-line-no">171</span><span id="line-171">                return Arrays.asList(ra);</span>
+<span class="source-line-no">172</span><span id="line-172">        }</span>
+<span class="source-line-no">173</span><span id="line-173">        </span>
+<span class="source-line-no">174</span><span id="line-174">        // -------------------------------------------------------------------------</span>
+<span class="source-line-no">175</span><span id="line-175"></span>
+<span class="source-line-no">176</span><span id="line-176">        /**</span>
+<span class="source-line-no">177</span><span id="line-177">         * Creates a (map) container of {@link BinaryRegion} objects, collects the region pixels from the label image and</span>
+<span class="source-line-no">178</span><span id="line-178">         * calls {@link SegmentationBackedRegion#update()} to compute the statistics for each region. Region label numbers</span>
+<span class="source-line-no">179</span><span id="line-179">         * serve as map keys.</span>
+<span class="source-line-no">180</span><span id="line-180">         *</span>
 <span class="source-line-no">181</span><span id="line-181">         * @return a map of {@link BinaryRegion} instances.</span>
 <span class="source-line-no">182</span><span id="line-182">         */</span>
 <span class="source-line-no">183</span><span id="line-183">        Map&lt;Integer, SegmentationBackedRegion&gt; collectRegions() {</span>
@@ -216,63 +216,59 @@
 <span class="source-line-no">203</span><span id="line-203">                }</span>
 <span class="source-line-no">204</span><span id="line-204">                return regionMap;</span>
 <span class="source-line-no">205</span><span id="line-205">        }</span>
-<span class="source-line-no">206</span><span id="line-206">        </span>
+<span class="source-line-no">206</span><span id="line-206"></span>
 <span class="source-line-no">207</span><span id="line-207">        /**</span>
-<span class="source-line-no">208</span><span id="line-208">         * Returns the label number for the specified image coordinate.</span>
-<span class="source-line-no">209</span><span id="line-209">         * -1 is returned for out-of-image coordinates.</span>
-<span class="source-line-no">210</span><span id="line-210">         * </span>
-<span class="source-line-no">211</span><span id="line-211">         * @param u the horizontal coordinate.</span>
-<span class="source-line-no">212</span><span id="line-212">         * @param v the vertical coordinate.</span>
-<span class="source-line-no">213</span><span id="line-213">         * @return the label number for the given position or -1 if outside the image</span>
-<span class="source-line-no">214</span><span id="line-214">         */</span>
-<span class="source-line-no">215</span><span id="line-215">        public int getLabel(int u, int v) {</span>
-<span class="source-line-no">216</span><span id="line-216">                return (u &gt;= 0 &amp;&amp; u &lt; width &amp;&amp; v &gt;= 0 &amp;&amp; v &lt; height) ? labelArray[u][v] : -1;</span>
-<span class="source-line-no">217</span><span id="line-217">        }</span>
-<span class="source-line-no">218</span><span id="line-218">        </span>
-<span class="source-line-no">219</span><span id="line-219">        void setLabel(int u, int v, int label) {</span>
-<span class="source-line-no">220</span><span id="line-220">                if (u &gt;= 0 &amp;&amp; u &lt; width &amp;&amp; v &gt;= 0 &amp;&amp; v &lt; height)</span>
-<span class="source-line-no">221</span><span id="line-221">                        labelArray[u][v] = label;</span>
-<span class="source-line-no">222</span><span id="line-222">        }</span>
-<span class="source-line-no">223</span><span id="line-223">        </span>
-<span class="source-line-no">224</span><span id="line-224">        int getNextLabel() {</span>
-<span class="source-line-no">225</span><span id="line-225">                currentLabel = (currentLabel &lt; 1) ? minLabel : currentLabel + 1;</span>
-<span class="source-line-no">226</span><span id="line-226">                maxLabel = currentLabel;</span>
-<span class="source-line-no">227</span><span id="line-227">                return currentLabel;</span>
-<span class="source-line-no">228</span><span id="line-228">        }</span>
-<span class="source-line-no">229</span><span id="line-229">        </span>
-<span class="source-line-no">230</span><span id="line-230">        boolean isRegionLabel(int i) {</span>
-<span class="source-line-no">231</span><span id="line-231">                return (i &gt;= minLabel);</span>
-<span class="source-line-no">232</span><span id="line-232">        }</span>
-<span class="source-line-no">233</span><span id="line-233"></span>
-<span class="source-line-no">234</span><span id="line-234">        // --------------------------------------------------</span>
-<span class="source-line-no">235</span><span id="line-235"></span>
-<span class="source-line-no">236</span><span id="line-236">        /**</span>
-<span class="source-line-no">237</span><span id="line-237">         * Finds the region associated to the specified label</span>
-<span class="source-line-no">238</span><span id="line-238">         * or {@code null} if no region for that label exists.</span>
-<span class="source-line-no">239</span><span id="line-239">         * </span>
-<span class="source-line-no">240</span><span id="line-240">         * @param label the region's label number</span>
-<span class="source-line-no">241</span><span id="line-241">         * @return the region object associated with the given label</span>
-<span class="source-line-no">242</span><span id="line-242">         *              or {@code null} if it does not exist</span>
-<span class="source-line-no">243</span><span id="line-243">         */</span>
-<span class="source-line-no">244</span><span id="line-244">        public SegmentationBackedRegion getRegion(int label) {</span>
-<span class="source-line-no">245</span><span id="line-245">                return (label &lt; minLabel || label &gt; maxLabel) ? null : regions.get(label);</span>
-<span class="source-line-no">246</span><span id="line-246">        }</span>
-<span class="source-line-no">247</span><span id="line-247">        </span>
-<span class="source-line-no">248</span><span id="line-248">        /**</span>
-<span class="source-line-no">249</span><span id="line-249">         * Returns the {@link BinaryRegion} instance associated with</span>
-<span class="source-line-no">250</span><span id="line-250">         * the given image position or {@code null} if the segmentation</span>
-<span class="source-line-no">251</span><span id="line-251">         * contains no region covering the given position.</span>
-<span class="source-line-no">252</span><span id="line-252">         * </span>
-<span class="source-line-no">253</span><span id="line-253">         * @param u the horizontal position.</span>
-<span class="source-line-no">254</span><span id="line-254">         * @param v the vertical position.</span>
-<span class="source-line-no">255</span><span id="line-255">         * @return The associated {@link BinaryRegion} object or {@code null} if</span>
-<span class="source-line-no">256</span><span id="line-256">         *              this {@link BinaryRegionSegmentation} has no region at the given position.</span>
-<span class="source-line-no">257</span><span id="line-257">         */</span>
-<span class="source-line-no">258</span><span id="line-258">        public SegmentationBackedRegion getRegion(int u, int v) {</span>
-<span class="source-line-no">259</span><span id="line-259">                return getRegion(getLabel(u, v));</span>
-<span class="source-line-no">260</span><span id="line-260">        }</span>
-<span class="source-line-no">261</span><span id="line-261"></span>
-<span class="source-line-no">262</span><span id="line-262">}</span>
+<span class="source-line-no">208</span><span id="line-208">         * Returns the label number for the specified image coordinate. -1 is returned for out-of-image coordinates.</span>
+<span class="source-line-no">209</span><span id="line-209">         *</span>
+<span class="source-line-no">210</span><span id="line-210">         * @param u the horizontal coordinate.</span>
+<span class="source-line-no">211</span><span id="line-211">         * @param v the vertical coordinate.</span>
+<span class="source-line-no">212</span><span id="line-212">         * @return the label number for the given position or -1 if outside the image</span>
+<span class="source-line-no">213</span><span id="line-213">         */</span>
+<span class="source-line-no">214</span><span id="line-214">        public int getLabel(int u, int v) {</span>
+<span class="source-line-no">215</span><span id="line-215">                return (u &gt;= 0 &amp;&amp; u &lt; width &amp;&amp; v &gt;= 0 &amp;&amp; v &lt; height) ? labelArray[u][v] : -1;</span>
+<span class="source-line-no">216</span><span id="line-216">        }</span>
+<span class="source-line-no">217</span><span id="line-217">        </span>
+<span class="source-line-no">218</span><span id="line-218">        void setLabel(int u, int v, int label) {</span>
+<span class="source-line-no">219</span><span id="line-219">                if (u &gt;= 0 &amp;&amp; u &lt; width &amp;&amp; v &gt;= 0 &amp;&amp; v &lt; height)</span>
+<span class="source-line-no">220</span><span id="line-220">                        labelArray[u][v] = label;</span>
+<span class="source-line-no">221</span><span id="line-221">        }</span>
+<span class="source-line-no">222</span><span id="line-222">        </span>
+<span class="source-line-no">223</span><span id="line-223">        int getNextLabel() {</span>
+<span class="source-line-no">224</span><span id="line-224">                currentLabel = (currentLabel &lt; 1) ? minLabel : currentLabel + 1;</span>
+<span class="source-line-no">225</span><span id="line-225">                maxLabel = currentLabel;</span>
+<span class="source-line-no">226</span><span id="line-226">                return currentLabel;</span>
+<span class="source-line-no">227</span><span id="line-227">        }</span>
+<span class="source-line-no">228</span><span id="line-228">        </span>
+<span class="source-line-no">229</span><span id="line-229">        boolean isRegionLabel(int i) {</span>
+<span class="source-line-no">230</span><span id="line-230">                return (i &gt;= minLabel);</span>
+<span class="source-line-no">231</span><span id="line-231">        }</span>
+<span class="source-line-no">232</span><span id="line-232"></span>
+<span class="source-line-no">233</span><span id="line-233">        // --------------------------------------------------</span>
+<span class="source-line-no">234</span><span id="line-234"></span>
+<span class="source-line-no">235</span><span id="line-235">        /**</span>
+<span class="source-line-no">236</span><span id="line-236">         * Finds the region associated to the specified label or {@code null} if no region for that label exists.</span>
+<span class="source-line-no">237</span><span id="line-237">         *</span>
+<span class="source-line-no">238</span><span id="line-238">         * @param label the region's label number</span>
+<span class="source-line-no">239</span><span id="line-239">         * @return the region object associated with the given label or {@code null} if it does not exist</span>
+<span class="source-line-no">240</span><span id="line-240">         */</span>
+<span class="source-line-no">241</span><span id="line-241">        public SegmentationBackedRegion getRegion(int label) {</span>
+<span class="source-line-no">242</span><span id="line-242">                return (label &lt; minLabel || label &gt; maxLabel) ? null : regions.get(label);</span>
+<span class="source-line-no">243</span><span id="line-243">        }</span>
+<span class="source-line-no">244</span><span id="line-244"></span>
+<span class="source-line-no">245</span><span id="line-245">        /**</span>
+<span class="source-line-no">246</span><span id="line-246">         * Returns the {@link BinaryRegion} instance associated with the given image position or {@code null} if the</span>
+<span class="source-line-no">247</span><span id="line-247">         * segmentation contains no region covering the given position.</span>
+<span class="source-line-no">248</span><span id="line-248">         *</span>
+<span class="source-line-no">249</span><span id="line-249">         * @param u the horizontal position.</span>
+<span class="source-line-no">250</span><span id="line-250">         * @param v the vertical position.</span>
+<span class="source-line-no">251</span><span id="line-251">         * @return The associated {@link BinaryRegion} object or {@code null} if this {@link BinaryRegionSegmentation} has</span>
+<span class="source-line-no">252</span><span id="line-252">         * no region at the given position.</span>
+<span class="source-line-no">253</span><span id="line-253">         */</span>
+<span class="source-line-no">254</span><span id="line-254">        public SegmentationBackedRegion getRegion(int u, int v) {</span>
+<span class="source-line-no">255</span><span id="line-255">                return getRegion(getLabel(u, v));</span>
+<span class="source-line-no">256</span><span id="line-256">        }</span>
+<span class="source-line-no">257</span><span id="line-257"></span>
+<span class="source-line-no">258</span><span id="line-258">}</span>
 
 
 

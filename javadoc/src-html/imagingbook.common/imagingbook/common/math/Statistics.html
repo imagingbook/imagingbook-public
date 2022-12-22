@@ -34,102 +34,100 @@
 <span class="source-line-no">021</span><span id="line-21">public abstract class Statistics {</span>
 <span class="source-line-no">022</span><span id="line-22">        </span>
 <span class="source-line-no">023</span><span id="line-23">        private Statistics() {}</span>
-<span class="source-line-no">024</span><span id="line-24">        </span>
+<span class="source-line-no">024</span><span id="line-24"></span>
 <span class="source-line-no">025</span><span id="line-25">        /**</span>
-<span class="source-line-no">026</span><span id="line-26">         * Calculates the covariance matrix for a sequence of sample vectors.</span>
-<span class="source-line-no">027</span><span id="line-27">         * Takes a sequence of n data samples, each of dimension m.</span>
-<span class="source-line-no">028</span><span id="line-28">         * The data element {@code samples[i][j]} refers to the j-th component</span>
-<span class="source-line-no">029</span><span id="line-29">         * of sample i. No statistical bias correction is applied.</span>
-<span class="source-line-no">030</span><span id="line-30">         * </span>
-<span class="source-line-no">031</span><span id="line-31">         * @param samples a 2D array of m-dimensional vectors (double[n][m]).</span>
-<span class="source-line-no">032</span><span id="line-32">         * @return the covariance matrix for the sample data (of dimension m x m).</span>
-<span class="source-line-no">033</span><span id="line-33">         */</span>
-<span class="source-line-no">034</span><span id="line-34">        public static double[][] covarianceMatrix(double[][] samples) {</span>
-<span class="source-line-no">035</span><span id="line-35">                return covarianceMatrix(samples, false);</span>
-<span class="source-line-no">036</span><span id="line-36">        }</span>
-<span class="source-line-no">037</span><span id="line-37">        </span>
-<span class="source-line-no">038</span><span id="line-38">        /**</span>
-<span class="source-line-no">039</span><span id="line-39">         * Calculates the covariance matrix for a sequence of sample vectors.</span>
-<span class="source-line-no">040</span><span id="line-40">         * Takes a sequence of n data samples, each of dimension m.</span>
-<span class="source-line-no">041</span><span id="line-41">         * The data element {@code samples[i][j]} refers to the j-th component</span>
-<span class="source-line-no">042</span><span id="line-42">         * of sample i. Statistical bias correction is optionally applied.</span>
-<span class="source-line-no">043</span><span id="line-43">         * </span>
-<span class="source-line-no">044</span><span id="line-44">         * @param samples a 2D array of m-dimensional vectors (double[n][m]).</span>
-<span class="source-line-no">045</span><span id="line-45">         * @param biasCorrect If {@code true}, statistical bias correction is applied.</span>
-<span class="source-line-no">046</span><span id="line-46">         * @return the covariance matrix for the sample data (of dimension m x m).</span>
-<span class="source-line-no">047</span><span id="line-47">         */</span>
-<span class="source-line-no">048</span><span id="line-48">        public static double[][] covarianceMatrix(double[][] samples, boolean biasCorrect) {</span>
-<span class="source-line-no">049</span><span id="line-49">                Covariance cov = new Covariance(samples, biasCorrect);</span>
-<span class="source-line-no">050</span><span id="line-50">                return cov.getCovarianceMatrix().getData();</span>
-<span class="source-line-no">051</span><span id="line-51">        }</span>
-<span class="source-line-no">052</span><span id="line-52">        </span>
-<span class="source-line-no">053</span><span id="line-53">//      /** </span>
-<span class="source-line-no">054</span><span id="line-54">//       * example from UTICS-C Appendix:</span>
-<span class="source-line-no">055</span><span id="line-55">//       * N = 4 samples</span>
-<span class="source-line-no">056</span><span id="line-56">//       * K = 3 dimensions</span>
-<span class="source-line-no">057</span><span id="line-57">//       * @param args ignored</span>
-<span class="source-line-no">058</span><span id="line-58">//       */</span>
-<span class="source-line-no">059</span><span id="line-59">//      public static void main(String[] args) {</span>
+<span class="source-line-no">026</span><span id="line-26">         * Calculates the covariance matrix for a sequence of sample vectors. Takes a sequence of n data samples, each of</span>
+<span class="source-line-no">027</span><span id="line-27">         * dimension m. The data element {@code samples[i][j]} refers to the j-th component of sample i. No statistical bias</span>
+<span class="source-line-no">028</span><span id="line-28">         * correction is applied.</span>
+<span class="source-line-no">029</span><span id="line-29">         *</span>
+<span class="source-line-no">030</span><span id="line-30">         * @param samples a 2D array of m-dimensional vectors (double[n][m]).</span>
+<span class="source-line-no">031</span><span id="line-31">         * @return the covariance matrix for the sample data (of dimension m x m).</span>
+<span class="source-line-no">032</span><span id="line-32">         */</span>
+<span class="source-line-no">033</span><span id="line-33">        public static double[][] covarianceMatrix(double[][] samples) {</span>
+<span class="source-line-no">034</span><span id="line-34">                return covarianceMatrix(samples, false);</span>
+<span class="source-line-no">035</span><span id="line-35">        }</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">        /**</span>
+<span class="source-line-no">038</span><span id="line-38">         * Calculates the covariance matrix for a sequence of sample vectors. Takes a sequence of n data samples, each of</span>
+<span class="source-line-no">039</span><span id="line-39">         * dimension m. The data element {@code samples[i][j]} refers to the j-th component of sample i. Statistical bias</span>
+<span class="source-line-no">040</span><span id="line-40">         * correction is optionally applied.</span>
+<span class="source-line-no">041</span><span id="line-41">         *</span>
+<span class="source-line-no">042</span><span id="line-42">         * @param samples a 2D array of m-dimensional vectors (double[n][m]).</span>
+<span class="source-line-no">043</span><span id="line-43">         * @param biasCorrect If {@code true}, statistical bias correction is applied.</span>
+<span class="source-line-no">044</span><span id="line-44">         * @return the covariance matrix for the sample data (of dimension m x m).</span>
+<span class="source-line-no">045</span><span id="line-45">         */</span>
+<span class="source-line-no">046</span><span id="line-46">        public static double[][] covarianceMatrix(double[][] samples, boolean biasCorrect) {</span>
+<span class="source-line-no">047</span><span id="line-47">                Covariance cov = new Covariance(samples, biasCorrect);</span>
+<span class="source-line-no">048</span><span id="line-48">                return cov.getCovarianceMatrix().getData();</span>
+<span class="source-line-no">049</span><span id="line-49">        }</span>
+<span class="source-line-no">050</span><span id="line-50">        </span>
+<span class="source-line-no">051</span><span id="line-51">//      /** </span>
+<span class="source-line-no">052</span><span id="line-52">//       * example from UTICS-C Appendix:</span>
+<span class="source-line-no">053</span><span id="line-53">//       * N = 4 samples</span>
+<span class="source-line-no">054</span><span id="line-54">//       * K = 3 dimensions</span>
+<span class="source-line-no">055</span><span id="line-55">//       * @param args ignored</span>
+<span class="source-line-no">056</span><span id="line-56">//       */</span>
+<span class="source-line-no">057</span><span id="line-57">//      public static void main(String[] args) {</span>
+<span class="source-line-no">058</span><span id="line-58">//              </span>
+<span class="source-line-no">059</span><span id="line-59">//              boolean BIAS_CORRECT = false;</span>
 <span class="source-line-no">060</span><span id="line-60">//              </span>
-<span class="source-line-no">061</span><span id="line-61">//              boolean BIAS_CORRECT = false;</span>
-<span class="source-line-no">062</span><span id="line-62">//              </span>
-<span class="source-line-no">063</span><span id="line-63">//              // example: n = 4 samples of dimension m = 3:</span>
-<span class="source-line-no">064</span><span id="line-64">//              // samples[i][j], i = column (sample index), j = row (dimension index).</span>
-<span class="source-line-no">065</span><span id="line-65">//              double[][] samples = { </span>
-<span class="source-line-no">066</span><span id="line-66">//                              {75, 37, 12},   // i = 0</span>
-<span class="source-line-no">067</span><span id="line-67">//                              {41, 27, 20},   // i = 1</span>
-<span class="source-line-no">068</span><span id="line-68">//                              {93, 81, 11},   // i = 2</span>
-<span class="source-line-no">069</span><span id="line-69">//                              {12, 48, 52}    // i = 3</span>
-<span class="source-line-no">070</span><span id="line-70">//              };</span>
-<span class="source-line-no">071</span><span id="line-71">//              </span>
-<span class="source-line-no">072</span><span id="line-72">//              // covariance matrix Cov (3x3)</span>
-<span class="source-line-no">073</span><span id="line-73">//              double[][] cov = covarianceMatrix(samples, BIAS_CORRECT);</span>
-<span class="source-line-no">074</span><span id="line-74">//              System.out.println("cov = \n" + Matrix.toString(cov));</span>
+<span class="source-line-no">061</span><span id="line-61">//              // example: n = 4 samples of dimension m = 3:</span>
+<span class="source-line-no">062</span><span id="line-62">//              // samples[i][j], i = column (sample index), j = row (dimension index).</span>
+<span class="source-line-no">063</span><span id="line-63">//              double[][] samples = { </span>
+<span class="source-line-no">064</span><span id="line-64">//                              {75, 37, 12},   // i = 0</span>
+<span class="source-line-no">065</span><span id="line-65">//                              {41, 27, 20},   // i = 1</span>
+<span class="source-line-no">066</span><span id="line-66">//                              {93, 81, 11},   // i = 2</span>
+<span class="source-line-no">067</span><span id="line-67">//                              {12, 48, 52}    // i = 3</span>
+<span class="source-line-no">068</span><span id="line-68">//              };</span>
+<span class="source-line-no">069</span><span id="line-69">//              </span>
+<span class="source-line-no">070</span><span id="line-70">//              // covariance matrix Cov (3x3)</span>
+<span class="source-line-no">071</span><span id="line-71">//              double[][] cov = covarianceMatrix(samples, BIAS_CORRECT);</span>
+<span class="source-line-no">072</span><span id="line-72">//              System.out.println("cov = \n" + Matrix.toString(cov));</span>
+<span class="source-line-no">073</span><span id="line-73">//              </span>
+<span class="source-line-no">074</span><span id="line-74">//              System.out.println();</span>
 <span class="source-line-no">075</span><span id="line-75">//              </span>
-<span class="source-line-no">076</span><span id="line-76">//              System.out.println();</span>
-<span class="source-line-no">077</span><span id="line-77">//              </span>
-<span class="source-line-no">078</span><span id="line-78">//              double[][] icov = Matrix.inverse(cov);</span>
-<span class="source-line-no">079</span><span id="line-79">//              System.out.println("icov = \n" + Matrix.toString(icov));</span>
+<span class="source-line-no">076</span><span id="line-76">//              double[][] icov = Matrix.inverse(cov);</span>
+<span class="source-line-no">077</span><span id="line-77">//              System.out.println("icov = \n" + Matrix.toString(icov));</span>
+<span class="source-line-no">078</span><span id="line-78">//              </span>
+<span class="source-line-no">079</span><span id="line-79">//              System.out.println();</span>
 <span class="source-line-no">080</span><span id="line-80">//              </span>
-<span class="source-line-no">081</span><span id="line-81">//              System.out.println();</span>
-<span class="source-line-no">082</span><span id="line-82">//              </span>
-<span class="source-line-no">083</span><span id="line-83">//              double trace = MatrixUtils.createRealMatrix(cov).getTrace();</span>
-<span class="source-line-no">084</span><span id="line-84">//              System.out.println("trace(cov) = " + trace);</span>
-<span class="source-line-no">085</span><span id="line-85">//              double Fnorm = MatrixUtils.createRealMatrix(cov).getFrobeniusNorm();</span>
-<span class="source-line-no">086</span><span id="line-86">//              System.out.println("Fnorm(cov) = " + Fnorm);</span>
-<span class="source-line-no">087</span><span id="line-87">//      }</span>
-<span class="source-line-no">088</span><span id="line-88">        </span>
-<span class="source-line-no">089</span><span id="line-89">/* Results (bias-corrected):</span>
-<span class="source-line-no">090</span><span id="line-90">cov = </span>
-<span class="source-line-no">091</span><span id="line-91">{{1296.250, 442.583, -627.250}, </span>
-<span class="source-line-no">092</span><span id="line-92">{442.583, 550.250, -70.917}, </span>
-<span class="source-line-no">093</span><span id="line-93">{-627.250, -70.917, 370.917}}</span>
-<span class="source-line-no">094</span><span id="line-94"></span>
-<span class="source-line-no">095</span><span id="line-95">icov = </span>
-<span class="source-line-no">096</span><span id="line-96">{{0.024, -0.014, 0.038}, </span>
-<span class="source-line-no">097</span><span id="line-97">{-0.014, 0.011, -0.022}, </span>
-<span class="source-line-no">098</span><span id="line-98">{0.038, -0.022, 0.063}}</span>
-<span class="source-line-no">099</span><span id="line-99">*/</span>
-<span class="source-line-no">100</span><span id="line-100">        </span>
-<span class="source-line-no">101</span><span id="line-101">/* verified with Mathematica</span>
-<span class="source-line-no">102</span><span id="line-102">X1 = {75, 37, 12}; X2 = {41, 27, 20}; X3 = {93, 81, 11}; X4 = {12, 48, 52};</span>
-<span class="source-line-no">103</span><span id="line-103">samples = {X1, X2, X3, X4}</span>
-<span class="source-line-no">104</span><span id="line-104">N[Covariance[samples]]</span>
-<span class="source-line-no">105</span><span id="line-105">-&gt; {{1296.25, 442.583, -627.25}, {442.583, 550.25, -70.9167}, {-627.25, -70.9167, 370.917}}</span>
-<span class="source-line-no">106</span><span id="line-106">*/</span>
-<span class="source-line-no">107</span><span id="line-107">        </span>
-<span class="source-line-no">108</span><span id="line-108">/* Results (NON bias-corrected):</span>
-<span class="source-line-no">109</span><span id="line-109">cov = </span>
-<span class="source-line-no">110</span><span id="line-110">{{972.188, 331.938, -470.438}, </span>
-<span class="source-line-no">111</span><span id="line-111">{331.938, 412.688, -53.188}, </span>
-<span class="source-line-no">112</span><span id="line-112">{-470.438, -53.188, 278.188}}</span>
-<span class="source-line-no">113</span><span id="line-113"></span>
-<span class="source-line-no">114</span><span id="line-114">icov = {{0.032, -0.019, 0.051}, </span>
-<span class="source-line-no">115</span><span id="line-115">{-0.019, 0.014, -0.030}, </span>
-<span class="source-line-no">116</span><span id="line-116">{0.051, -0.030, 0.083}}</span>
-<span class="source-line-no">117</span><span id="line-117">*/</span>
-<span class="source-line-no">118</span><span id="line-118"></span>
-<span class="source-line-no">119</span><span id="line-119">}</span>
+<span class="source-line-no">081</span><span id="line-81">//              double trace = MatrixUtils.createRealMatrix(cov).getTrace();</span>
+<span class="source-line-no">082</span><span id="line-82">//              System.out.println("trace(cov) = " + trace);</span>
+<span class="source-line-no">083</span><span id="line-83">//              double Fnorm = MatrixUtils.createRealMatrix(cov).getFrobeniusNorm();</span>
+<span class="source-line-no">084</span><span id="line-84">//              System.out.println("Fnorm(cov) = " + Fnorm);</span>
+<span class="source-line-no">085</span><span id="line-85">//      }</span>
+<span class="source-line-no">086</span><span id="line-86">        </span>
+<span class="source-line-no">087</span><span id="line-87">/* Results (bias-corrected):</span>
+<span class="source-line-no">088</span><span id="line-88">cov = </span>
+<span class="source-line-no">089</span><span id="line-89">{{1296.250, 442.583, -627.250}, </span>
+<span class="source-line-no">090</span><span id="line-90">{442.583, 550.250, -70.917}, </span>
+<span class="source-line-no">091</span><span id="line-91">{-627.250, -70.917, 370.917}}</span>
+<span class="source-line-no">092</span><span id="line-92"></span>
+<span class="source-line-no">093</span><span id="line-93">icov = </span>
+<span class="source-line-no">094</span><span id="line-94">{{0.024, -0.014, 0.038}, </span>
+<span class="source-line-no">095</span><span id="line-95">{-0.014, 0.011, -0.022}, </span>
+<span class="source-line-no">096</span><span id="line-96">{0.038, -0.022, 0.063}}</span>
+<span class="source-line-no">097</span><span id="line-97">*/</span>
+<span class="source-line-no">098</span><span id="line-98">        </span>
+<span class="source-line-no">099</span><span id="line-99">/* verified with Mathematica</span>
+<span class="source-line-no">100</span><span id="line-100">X1 = {75, 37, 12}; X2 = {41, 27, 20}; X3 = {93, 81, 11}; X4 = {12, 48, 52};</span>
+<span class="source-line-no">101</span><span id="line-101">samples = {X1, X2, X3, X4}</span>
+<span class="source-line-no">102</span><span id="line-102">N[Covariance[samples]]</span>
+<span class="source-line-no">103</span><span id="line-103">-&gt; {{1296.25, 442.583, -627.25}, {442.583, 550.25, -70.9167}, {-627.25, -70.9167, 370.917}}</span>
+<span class="source-line-no">104</span><span id="line-104">*/</span>
+<span class="source-line-no">105</span><span id="line-105">        </span>
+<span class="source-line-no">106</span><span id="line-106">/* Results (NON bias-corrected):</span>
+<span class="source-line-no">107</span><span id="line-107">cov = </span>
+<span class="source-line-no">108</span><span id="line-108">{{972.188, 331.938, -470.438}, </span>
+<span class="source-line-no">109</span><span id="line-109">{331.938, 412.688, -53.188}, </span>
+<span class="source-line-no">110</span><span id="line-110">{-470.438, -53.188, 278.188}}</span>
+<span class="source-line-no">111</span><span id="line-111"></span>
+<span class="source-line-no">112</span><span id="line-112">icov = {{0.032, -0.019, 0.051}, </span>
+<span class="source-line-no">113</span><span id="line-113">{-0.019, 0.014, -0.030}, </span>
+<span class="source-line-no">114</span><span id="line-114">{0.051, -0.030, 0.083}}</span>
+<span class="source-line-no">115</span><span id="line-115">*/</span>
+<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">117</span><span id="line-117">}</span>
 
 
 

@@ -22,49 +22,49 @@
 <span class="source-line-no">009</span><span id="line-9"></span>
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.color.colorspace;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.color.cie.StandardIlluminant.D50;</span>
-<span class="source-line-no">013</span><span id="line-13">import static imagingbook.common.color.cie.StandardIlluminant.D65;</span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">import java.awt.color.ColorSpace;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.color.adapt.BradfordAdaptation;</span>
+<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.color.adapt.ChromaticAdaptation;</span>
+<span class="source-line-no">014</span><span id="line-14">import imagingbook.common.color.gamma.ModifiedGammaMapping;</span>
+<span class="source-line-no">015</span><span id="line-15">import imagingbook.common.math.Matrix;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">import imagingbook.common.color.adapt.BradfordAdaptation;</span>
-<span class="source-line-no">018</span><span id="line-18">import imagingbook.common.color.adapt.ChromaticAdaptation;</span>
-<span class="source-line-no">019</span><span id="line-19">import imagingbook.common.color.gamma.ModifiedGammaMapping;</span>
-<span class="source-line-no">020</span><span id="line-20">import imagingbook.common.math.Matrix;</span>
+<span class="source-line-no">017</span><span id="line-17">import java.awt.color.ColorSpace;</span>
+<span class="source-line-no">018</span><span id="line-18"></span>
+<span class="source-line-no">019</span><span id="line-19">import static imagingbook.common.color.cie.StandardIlluminant.D50;</span>
+<span class="source-line-no">020</span><span id="line-20">import static imagingbook.common.color.cie.StandardIlluminant.D65;</span>
 <span class="source-line-no">021</span><span id="line-21"></span>
 <span class="source-line-no">022</span><span id="line-22"></span>
 <span class="source-line-no">023</span><span id="line-23">/**</span>
 <span class="source-line-no">024</span><span id="line-24"> * &lt;p&gt;</span>
-<span class="source-line-no">025</span><span id="line-25"> * This class implements the sRGBcolor space with D65 white point. See Sec. 14.4</span>
-<span class="source-line-no">026</span><span id="line-26"> * of [1] for details. Components of all {@code float[]} colors are supposed to</span>
-<span class="source-line-no">027</span><span id="line-27"> * be in [0,1]. This is a singleton class with no public constructors, use</span>
-<span class="source-line-no">028</span><span id="line-28"> * {@link #getInstance()} to obtain the single instance.</span>
-<span class="source-line-no">029</span><span id="line-29"> * &lt;/p&gt;</span>
-<span class="source-line-no">030</span><span id="line-30"> * &lt;p&gt;</span>
-<span class="source-line-no">031</span><span id="line-31"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An</span>
-<span class="source-line-no">032</span><span id="line-32"> * Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">033</span><span id="line-33"> * &lt;/p&gt;</span>
-<span class="source-line-no">034</span><span id="line-34"> * </span>
-<span class="source-line-no">035</span><span id="line-35"> * @author WB</span>
-<span class="source-line-no">036</span><span id="line-36"> * @version 2022/11/14</span>
-<span class="source-line-no">037</span><span id="line-37"> * @see LinearRgb65ColorSpace</span>
-<span class="source-line-no">038</span><span id="line-38"> */</span>
-<span class="source-line-no">039</span><span id="line-39">@SuppressWarnings("serial")</span>
-<span class="source-line-no">040</span><span id="line-40">public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {</span>
-<span class="source-line-no">041</span><span id="line-41">        </span>
-<span class="source-line-no">042</span><span id="line-42">        // chromatic adaptation objects:</span>
-<span class="source-line-no">043</span><span id="line-43">        private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);</span>
-<span class="source-line-no">044</span><span id="line-44">        private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);</span>
-<span class="source-line-no">045</span><span id="line-45">        private static final ModifiedGammaMapping GammaMap = ModifiedGammaMapping.sRGB;</span>
-<span class="source-line-no">046</span><span id="line-46">        </span>
-<span class="source-line-no">047</span><span id="line-47">        private static final sRgbColorSpace instance = new sRgbColorSpace();</span>
-<span class="source-line-no">048</span><span id="line-48">        </span>
-<span class="source-line-no">049</span><span id="line-49">        public static sRgbColorSpace getInstance() {</span>
-<span class="source-line-no">050</span><span id="line-50">                return instance;</span>
-<span class="source-line-no">051</span><span id="line-51">        }</span>
-<span class="source-line-no">052</span><span id="line-52">        </span>
-<span class="source-line-no">053</span><span id="line-53">        /** Matrix for conversion from XYZ to linear RGB. Its column vectors are the </span>
-<span class="source-line-no">054</span><span id="line-54">         * XYZ coordinates of the RGB primaries. */</span>
+<span class="source-line-no">025</span><span id="line-25"> * This class implements the sRGBcolor space with D65 white point. See Sec. 14.4 of [1] for details. Components of all</span>
+<span class="source-line-no">026</span><span id="line-26"> * {@code float[]} colors are supposed to be in [0,1]. This is a singleton class with no public constructors, use</span>
+<span class="source-line-no">027</span><span id="line-27"> * {@link #getInstance()} to obtain the single instance.</span>
+<span class="source-line-no">028</span><span id="line-28"> * &lt;/p&gt;</span>
+<span class="source-line-no">029</span><span id="line-29"> * &lt;p&gt;</span>
+<span class="source-line-no">030</span><span id="line-30"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">031</span><span id="line-31"> * (2022).</span>
+<span class="source-line-no">032</span><span id="line-32"> * &lt;/p&gt;</span>
+<span class="source-line-no">033</span><span id="line-33"> *</span>
+<span class="source-line-no">034</span><span id="line-34"> * @author WB</span>
+<span class="source-line-no">035</span><span id="line-35"> * @version 2022/11/14</span>
+<span class="source-line-no">036</span><span id="line-36"> * @see LinearRgb65ColorSpace</span>
+<span class="source-line-no">037</span><span id="line-37"> */</span>
+<span class="source-line-no">038</span><span id="line-38">@SuppressWarnings("serial")</span>
+<span class="source-line-no">039</span><span id="line-39">public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {</span>
+<span class="source-line-no">040</span><span id="line-40">        </span>
+<span class="source-line-no">041</span><span id="line-41">        // chromatic adaptation objects:</span>
+<span class="source-line-no">042</span><span id="line-42">        private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);</span>
+<span class="source-line-no">043</span><span id="line-43">        private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);</span>
+<span class="source-line-no">044</span><span id="line-44">        private static final ModifiedGammaMapping GammaMap = ModifiedGammaMapping.sRGB;</span>
+<span class="source-line-no">045</span><span id="line-45">        </span>
+<span class="source-line-no">046</span><span id="line-46">        private static final sRgbColorSpace instance = new sRgbColorSpace();</span>
+<span class="source-line-no">047</span><span id="line-47">        </span>
+<span class="source-line-no">048</span><span id="line-48">        public static sRgbColorSpace getInstance() {</span>
+<span class="source-line-no">049</span><span id="line-49">                return instance;</span>
+<span class="source-line-no">050</span><span id="line-50">        }</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">        /**</span>
+<span class="source-line-no">053</span><span id="line-53">         * Matrix for conversion from XYZ to linear RGB. Its column vectors are the XYZ coordinates of the RGB primaries.</span>
+<span class="source-line-no">054</span><span id="line-54">         */</span>
 <span class="source-line-no">055</span><span id="line-55">        private static final double[][] Mrgbi = </span>
 <span class="source-line-no">056</span><span id="line-56">                {{0.412453, 0.357580, 0.180423},</span>
 <span class="source-line-no">057</span><span id="line-57">                 {0.212671, 0.715160, 0.072169},</span>

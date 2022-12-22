@@ -24,24 +24,22 @@
 <span class="source-line-no">011</span><span id="line-11">import imagingbook.common.filter.generic.GenericFilter;</span>
 <span class="source-line-no">012</span><span id="line-12"></span>
 <span class="source-line-no">013</span><span id="line-13">/**</span>
-<span class="source-line-no">014</span><span id="line-14"> * Interface for defining tasks that may be queried (monitored) to report their</span>
-<span class="source-line-no">015</span><span id="line-15"> * current progress status. Monitored objects (tasks) must only implement method</span>
-<span class="source-line-no">016</span><span id="line-16"> * {@link #getProgress()}, which returns the current completion status. See</span>
-<span class="source-line-no">017</span><span id="line-17"> * {@link GenericFilter} for an example.</span>
-<span class="source-line-no">018</span><span id="line-18"> * </span>
-<span class="source-line-no">019</span><span id="line-19"> * @see ProgressMonitor</span>
-<span class="source-line-no">020</span><span id="line-20"> * </span>
-<span class="source-line-no">021</span><span id="line-21"> */</span>
-<span class="source-line-no">022</span><span id="line-22">public interface ProgressReporter {</span>
-<span class="source-line-no">023</span><span id="line-23">        </span>
-<span class="source-line-no">024</span><span id="line-24">        /**</span>
-<span class="source-line-no">025</span><span id="line-25">         * Returns a value in [0,1) indicating to which degree this</span>
-<span class="source-line-no">026</span><span id="line-26">         * task is complete.</span>
-<span class="source-line-no">027</span><span id="line-27">         * @return a value between 0 and 1</span>
-<span class="source-line-no">028</span><span id="line-28">         */</span>
-<span class="source-line-no">029</span><span id="line-29">        public double getProgress();</span>
-<span class="source-line-no">030</span><span id="line-30"></span>
-<span class="source-line-no">031</span><span id="line-31">}</span>
+<span class="source-line-no">014</span><span id="line-14"> * Interface for defining tasks that may be queried (monitored) to report their current progress status. Monitored</span>
+<span class="source-line-no">015</span><span id="line-15"> * objects (tasks) must only implement method {@link #getProgress()}, which returns the current completion status. See</span>
+<span class="source-line-no">016</span><span id="line-16"> * {@link GenericFilter} for an example.</span>
+<span class="source-line-no">017</span><span id="line-17"> *</span>
+<span class="source-line-no">018</span><span id="line-18"> * @see ProgressMonitor</span>
+<span class="source-line-no">019</span><span id="line-19"> */</span>
+<span class="source-line-no">020</span><span id="line-20">public interface ProgressReporter {</span>
+<span class="source-line-no">021</span><span id="line-21"></span>
+<span class="source-line-no">022</span><span id="line-22">        /**</span>
+<span class="source-line-no">023</span><span id="line-23">         * Returns a value in [0,1) indicating to which degree this task is complete.</span>
+<span class="source-line-no">024</span><span id="line-24">         *</span>
+<span class="source-line-no">025</span><span id="line-25">         * @return a value between 0 and 1</span>
+<span class="source-line-no">026</span><span id="line-26">         */</span>
+<span class="source-line-no">027</span><span id="line-27">        public double getProgress();</span>
+<span class="source-line-no">028</span><span id="line-28"></span>
+<span class="source-line-no">029</span><span id="line-29">}</span>
 
 
 

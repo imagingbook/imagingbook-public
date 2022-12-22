@@ -35,63 +35,62 @@
 <span class="source-line-no">022</span><span id="line-22">import java.io.OutputStream;</span>
 <span class="source-line-no">023</span><span id="line-23"></span>
 <span class="source-line-no">024</span><span id="line-24">/**</span>
-<span class="source-line-no">025</span><span id="line-25"> * Helper class providing static methods for writing/reading serialized data</span>
-<span class="source-line-no">026</span><span id="line-26"> * to/from files. It is recommended to serialize only data structures composed</span>
-<span class="source-line-no">027</span><span id="line-27"> * of standard Java types. Otherwise, if self-defined classes are reloaded,</span>
-<span class="source-line-no">028</span><span id="line-28"> * classes of previously serialized objects may not match any more, causing a</span>
-<span class="source-line-no">029</span><span id="line-29"> * {@link ClassNotFoundException} to be thrown.</span>
-<span class="source-line-no">030</span><span id="line-30"> * </span>
-<span class="source-line-no">031</span><span id="line-31"> * @author WB</span>
-<span class="source-line-no">032</span><span id="line-32"> * @version 2022/07/28</span>
-<span class="source-line-no">033</span><span id="line-33"> */</span>
-<span class="source-line-no">034</span><span id="line-34">public abstract class SerializationHelper {</span>
-<span class="source-line-no">035</span><span id="line-35">        </span>
-<span class="source-line-no">036</span><span id="line-36">        // This class is not supposed to be instantiated.</span>
-<span class="source-line-no">037</span><span id="line-37">        private SerializationHelper() {}</span>
-<span class="source-line-no">038</span><span id="line-38">        </span>
-<span class="source-line-no">039</span><span id="line-39">        /**</span>
-<span class="source-line-no">040</span><span id="line-40">         * Writes a serialized representation of an arbitrary Java object to </span>
-<span class="source-line-no">041</span><span id="line-41">         * a file.</span>
-<span class="source-line-no">042</span><span id="line-42">         * @param obj the object to be serialized.</span>
-<span class="source-line-no">043</span><span id="line-43">         * @param file the file to write to.</span>
-<span class="source-line-no">044</span><span id="line-44">         * @return the full path of the written file.</span>
-<span class="source-line-no">045</span><span id="line-45">         */</span>
-<span class="source-line-no">046</span><span id="line-46">        public static String writeObject(Object obj, File file) {</span>
-<span class="source-line-no">047</span><span id="line-47">                String path = file.getAbsolutePath();</span>
-<span class="source-line-no">048</span><span id="line-48">                try (FileOutputStream strm = new FileOutputStream(file);</span>
-<span class="source-line-no">049</span><span id="line-49">                         OutputStream buffer = new BufferedOutputStream(strm);</span>
-<span class="source-line-no">050</span><span id="line-50">                         ObjectOutput output = new ObjectOutputStream(buffer);) </span>
-<span class="source-line-no">051</span><span id="line-51">                {</span>
-<span class="source-line-no">052</span><span id="line-52">                        output.writeObject(obj);</span>
-<span class="source-line-no">053</span><span id="line-53">                } catch (IOException e) {</span>
-<span class="source-line-no">054</span><span id="line-54">                        System.err.println(e.toString());</span>
-<span class="source-line-no">055</span><span id="line-55">                        return null;</span>
-<span class="source-line-no">056</span><span id="line-56">                }</span>
-<span class="source-line-no">057</span><span id="line-57">                return path;</span>
-<span class="source-line-no">058</span><span id="line-58">        }</span>
-<span class="source-line-no">059</span><span id="line-59"></span>
-<span class="source-line-no">060</span><span id="line-60">        /**</span>
-<span class="source-line-no">061</span><span id="line-61">         * Reads an object from a serialization file.</span>
-<span class="source-line-no">062</span><span id="line-62">         * The return value must be cast to the appropriate type, which</span>
-<span class="source-line-no">063</span><span id="line-63">         * must be known.</span>
-<span class="source-line-no">064</span><span id="line-64">         * @param file the file to read.</span>
-<span class="source-line-no">065</span><span id="line-65">         * @return the object reconstructed from the file representation or null if unsuccessful.</span>
-<span class="source-line-no">066</span><span id="line-66">         */</span>
-<span class="source-line-no">067</span><span id="line-67">        public static Object readObject(File file) {</span>
-<span class="source-line-no">068</span><span id="line-68">                Object obj = null;</span>
-<span class="source-line-no">069</span><span id="line-69">                try (InputStream strm = new FileInputStream(file);</span>
-<span class="source-line-no">070</span><span id="line-70">                         InputStream buffer = new BufferedInputStream(strm);</span>
-<span class="source-line-no">071</span><span id="line-71">                         ObjectInput input = new ObjectInputStream(buffer);) </span>
-<span class="source-line-no">072</span><span id="line-72">                {</span>
-<span class="source-line-no">073</span><span id="line-73">                        obj = input.readObject();</span>
-<span class="source-line-no">074</span><span id="line-74">                } catch (ClassNotFoundException | IOException e) {</span>
-<span class="source-line-no">075</span><span id="line-75">                        System.err.println(e.toString());</span>
-<span class="source-line-no">076</span><span id="line-76">                        return null;</span>
-<span class="source-line-no">077</span><span id="line-77">                }</span>
-<span class="source-line-no">078</span><span id="line-78">                return obj;</span>
-<span class="source-line-no">079</span><span id="line-79">        }</span>
-<span class="source-line-no">080</span><span id="line-80"></span>
-<span class="source-line-no">081</span><span id="line-81">}</span>
+<span class="source-line-no">025</span><span id="line-25"> * Helper class providing static methods for writing/reading serialized data to/from files. It is recommended to</span>
+<span class="source-line-no">026</span><span id="line-26"> * serialize only data structures composed of standard Java types. Otherwise, if self-defined classes are reloaded,</span>
+<span class="source-line-no">027</span><span id="line-27"> * classes of previously serialized objects may not match any more, causing a {@link ClassNotFoundException} to be</span>
+<span class="source-line-no">028</span><span id="line-28"> * thrown.</span>
+<span class="source-line-no">029</span><span id="line-29"> *</span>
+<span class="source-line-no">030</span><span id="line-30"> * @author WB</span>
+<span class="source-line-no">031</span><span id="line-31"> * @version 2022/07/28</span>
+<span class="source-line-no">032</span><span id="line-32"> */</span>
+<span class="source-line-no">033</span><span id="line-33">public abstract class SerializationHelper {</span>
+<span class="source-line-no">034</span><span id="line-34">        </span>
+<span class="source-line-no">035</span><span id="line-35">        // This class is not supposed to be instantiated.</span>
+<span class="source-line-no">036</span><span id="line-36">        private SerializationHelper() {}</span>
+<span class="source-line-no">037</span><span id="line-37"></span>
+<span class="source-line-no">038</span><span id="line-38">        /**</span>
+<span class="source-line-no">039</span><span id="line-39">         * Writes a serialized representation of an arbitrary Java object to a file.</span>
+<span class="source-line-no">040</span><span id="line-40">         *</span>
+<span class="source-line-no">041</span><span id="line-41">         * @param obj the object to be serialized.</span>
+<span class="source-line-no">042</span><span id="line-42">         * @param file the file to write to.</span>
+<span class="source-line-no">043</span><span id="line-43">         * @return the full path of the written file.</span>
+<span class="source-line-no">044</span><span id="line-44">         */</span>
+<span class="source-line-no">045</span><span id="line-45">        public static String writeObject(Object obj, File file) {</span>
+<span class="source-line-no">046</span><span id="line-46">                String path = file.getAbsolutePath();</span>
+<span class="source-line-no">047</span><span id="line-47">                try (FileOutputStream strm = new FileOutputStream(file);</span>
+<span class="source-line-no">048</span><span id="line-48">                         OutputStream buffer = new BufferedOutputStream(strm);</span>
+<span class="source-line-no">049</span><span id="line-49">                         ObjectOutput output = new ObjectOutputStream(buffer);) </span>
+<span class="source-line-no">050</span><span id="line-50">                {</span>
+<span class="source-line-no">051</span><span id="line-51">                        output.writeObject(obj);</span>
+<span class="source-line-no">052</span><span id="line-52">                } catch (IOException e) {</span>
+<span class="source-line-no">053</span><span id="line-53">                        System.err.println(e.toString());</span>
+<span class="source-line-no">054</span><span id="line-54">                        return null;</span>
+<span class="source-line-no">055</span><span id="line-55">                }</span>
+<span class="source-line-no">056</span><span id="line-56">                return path;</span>
+<span class="source-line-no">057</span><span id="line-57">        }</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">        /**</span>
+<span class="source-line-no">060</span><span id="line-60">         * Reads an object from a serialization file. The return value must be cast to the appropriate type, which must be</span>
+<span class="source-line-no">061</span><span id="line-61">         * known.</span>
+<span class="source-line-no">062</span><span id="line-62">         *</span>
+<span class="source-line-no">063</span><span id="line-63">         * @param file the file to read.</span>
+<span class="source-line-no">064</span><span id="line-64">         * @return the object reconstructed from the file representation or null if unsuccessful.</span>
+<span class="source-line-no">065</span><span id="line-65">         */</span>
+<span class="source-line-no">066</span><span id="line-66">        public static Object readObject(File file) {</span>
+<span class="source-line-no">067</span><span id="line-67">                Object obj = null;</span>
+<span class="source-line-no">068</span><span id="line-68">                try (InputStream strm = new FileInputStream(file);</span>
+<span class="source-line-no">069</span><span id="line-69">                         InputStream buffer = new BufferedInputStream(strm);</span>
+<span class="source-line-no">070</span><span id="line-70">                         ObjectInput input = new ObjectInputStream(buffer);) </span>
+<span class="source-line-no">071</span><span id="line-71">                {</span>
+<span class="source-line-no">072</span><span id="line-72">                        obj = input.readObject();</span>
+<span class="source-line-no">073</span><span id="line-73">                } catch (ClassNotFoundException | IOException e) {</span>
+<span class="source-line-no">074</span><span id="line-74">                        System.err.println(e.toString());</span>
+<span class="source-line-no">075</span><span id="line-75">                        return null;</span>
+<span class="source-line-no">076</span><span id="line-76">                }</span>
+<span class="source-line-no">077</span><span id="line-77">                return obj;</span>
+<span class="source-line-no">078</span><span id="line-78">        }</span>
+<span class="source-line-no">079</span><span id="line-79"></span>
+<span class="source-line-no">080</span><span id="line-80">}</span>
 
 
 

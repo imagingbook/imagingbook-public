@@ -21,126 +21,124 @@
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.color.colorspace;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
-<span class="source-line-no">011</span><span id="line-11">import static imagingbook.common.math.Arithmetic.max;</span>
-<span class="source-line-no">012</span><span id="line-12">import static imagingbook.common.math.Arithmetic.min;</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">import java.awt.color.ColorSpace;</span>
+<span class="source-line-no">011</span><span id="line-11">import java.awt.color.ColorSpace;</span>
+<span class="source-line-no">012</span><span id="line-12"></span>
+<span class="source-line-no">013</span><span id="line-13">import static imagingbook.common.math.Arithmetic.max;</span>
+<span class="source-line-no">014</span><span id="line-14">import static imagingbook.common.math.Arithmetic.min;</span>
 <span class="source-line-no">015</span><span id="line-15"></span>
 <span class="source-line-no">016</span><span id="line-16"></span>
 <span class="source-line-no">017</span><span id="line-17">/**</span>
 <span class="source-line-no">018</span><span id="line-18"> * &lt;p&gt;</span>
-<span class="source-line-no">019</span><span id="line-19"> * Implementation of HLS (hue/lightness/saturation) color space.</span>
-<span class="source-line-no">020</span><span id="line-20"> * See Sec. 13.2.3 of [1] for additional details.</span>
-<span class="source-line-no">021</span><span id="line-21"> * All component values are assumed to be in [0,1].</span>
-<span class="source-line-no">022</span><span id="line-22"> * This is a singleton class with no public constructors,</span>
-<span class="source-line-no">023</span><span id="line-23"> * use {@link #getInstance()} to obtain the single instance.</span>
-<span class="source-line-no">024</span><span id="line-24"> * &lt;/p&gt;</span>
-<span class="source-line-no">025</span><span id="line-25"> * &lt;p&gt;</span>
-<span class="source-line-no">026</span><span id="line-26"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; </span>
-<span class="source-line-no">027</span><span id="line-27"> * An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer (2022).</span>
-<span class="source-line-no">028</span><span id="line-28"> * &lt;/p&gt;</span>
-<span class="source-line-no">029</span><span id="line-29"> * </span>
-<span class="source-line-no">030</span><span id="line-30"> * @author WB</span>
-<span class="source-line-no">031</span><span id="line-31"> * @version 2022/09/04</span>
-<span class="source-line-no">032</span><span id="line-32"> */</span>
-<span class="source-line-no">033</span><span id="line-33">@SuppressWarnings("serial")</span>
-<span class="source-line-no">034</span><span id="line-34">public class HlsColorSpace extends ColorSpace {</span>
+<span class="source-line-no">019</span><span id="line-19"> * Implementation of HLS (hue/lightness/saturation) color space. See Sec. 13.2.3 of [1] for additional details. All</span>
+<span class="source-line-no">020</span><span id="line-20"> * component values are assumed to be in [0,1]. This is a singleton class with no public constructors, use</span>
+<span class="source-line-no">021</span><span id="line-21"> * {@link #getInstance()} to obtain the single instance.</span>
+<span class="source-line-no">022</span><span id="line-22"> * &lt;/p&gt;</span>
+<span class="source-line-no">023</span><span id="line-23"> * &lt;p&gt;</span>
+<span class="source-line-no">024</span><span id="line-24"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">025</span><span id="line-25"> * (2022).</span>
+<span class="source-line-no">026</span><span id="line-26"> * &lt;/p&gt;</span>
+<span class="source-line-no">027</span><span id="line-27"> *</span>
+<span class="source-line-no">028</span><span id="line-28"> * @author WB</span>
+<span class="source-line-no">029</span><span id="line-29"> * @version 2022/09/04</span>
+<span class="source-line-no">030</span><span id="line-30"> */</span>
+<span class="source-line-no">031</span><span id="line-31">@SuppressWarnings("serial")</span>
+<span class="source-line-no">032</span><span id="line-32">public class HlsColorSpace extends ColorSpace {</span>
+<span class="source-line-no">033</span><span id="line-33">        </span>
+<span class="source-line-no">034</span><span id="line-34">        private static final HlsColorSpace instance = new HlsColorSpace();</span>
 <span class="source-line-no">035</span><span id="line-35">        </span>
-<span class="source-line-no">036</span><span id="line-36">        private static final HlsColorSpace instance = new HlsColorSpace();</span>
-<span class="source-line-no">037</span><span id="line-37">        </span>
-<span class="source-line-no">038</span><span id="line-38">        public static HlsColorSpace getInstance() {</span>
-<span class="source-line-no">039</span><span id="line-39">                return instance;</span>
-<span class="source-line-no">040</span><span id="line-40">        }</span>
-<span class="source-line-no">041</span><span id="line-41">        </span>
-<span class="source-line-no">042</span><span id="line-42">        private HlsColorSpace() {</span>
-<span class="source-line-no">043</span><span id="line-43">                super(ColorSpace.TYPE_HLS, 3);</span>
-<span class="source-line-no">044</span><span id="line-44">        }</span>
-<span class="source-line-no">045</span><span id="line-45"></span>
-<span class="source-line-no">046</span><span id="line-46">        @Override</span>
-<span class="source-line-no">047</span><span id="line-47">        public float[] fromRGB(float[] rgb) {</span>
-<span class="source-line-no">048</span><span id="line-48">                final float r = rgb[0], g = rgb[1], b = rgb[2]; // r, g, b assumed to be in [0,1]</span>
-<span class="source-line-no">049</span><span id="line-49">                final float cHi = max(r, g, b);         // max. component value</span>
-<span class="source-line-no">050</span><span id="line-50">                final float cLo = min(r, g, b);         // min. component value</span>
-<span class="source-line-no">051</span><span id="line-51">                final float cRng = cHi - cLo;                   // component range</span>
-<span class="source-line-no">052</span><span id="line-52">                </span>
-<span class="source-line-no">053</span><span id="line-53">                // Calculate lightness L</span>
-<span class="source-line-no">054</span><span id="line-54">                float L = (cHi + cLo) / 2;</span>
-<span class="source-line-no">055</span><span id="line-55">                </span>
-<span class="source-line-no">056</span><span id="line-56">                // Calculate saturation S               </span>
-<span class="source-line-no">057</span><span id="line-57">                float S = 0;</span>
-<span class="source-line-no">058</span><span id="line-58">                if (0 &lt; L &amp;&amp; L &lt; 1) {</span>
-<span class="source-line-no">059</span><span id="line-59">                        float d = (L &lt;= 0.5f) ? L : (1 - L);</span>
-<span class="source-line-no">060</span><span id="line-60">                        S = 0.5f * cRng / d;</span>
-<span class="source-line-no">061</span><span id="line-61">                }</span>
-<span class="source-line-no">062</span><span id="line-62">                </span>
-<span class="source-line-no">063</span><span id="line-63">                // Calculate hue H (same as in HSV)</span>
-<span class="source-line-no">064</span><span id="line-64">                float H = 0;    </span>
-<span class="source-line-no">065</span><span id="line-65">                if (cHi &gt; 0 &amp;&amp; cRng &gt; 0) {        // a color pixel</span>
-<span class="source-line-no">066</span><span id="line-66">                        float dr = (cHi - r) / cRng;</span>
-<span class="source-line-no">067</span><span id="line-67">                        float dg = (cHi - g) / cRng;</span>
-<span class="source-line-no">068</span><span id="line-68">                        float db = (cHi - b) / cRng;</span>
-<span class="source-line-no">069</span><span id="line-69">                        float h;</span>
-<span class="source-line-no">070</span><span id="line-70">                        if (r == cHi)                      // R is largest component</span>
-<span class="source-line-no">071</span><span id="line-71">                                h = db - dg;</span>
-<span class="source-line-no">072</span><span id="line-72">                        else if (g == cHi)                 // G is largest component</span>
-<span class="source-line-no">073</span><span id="line-73">                                h = dr - db + 2.0f;</span>
-<span class="source-line-no">074</span><span id="line-74">                        else                               // B is largest component</span>
-<span class="source-line-no">075</span><span id="line-75">                                h = dg - dr + 4.0f;</span>
-<span class="source-line-no">076</span><span id="line-76">                        if (h &lt; 0)</span>
-<span class="source-line-no">077</span><span id="line-77">                          h = h + 6;</span>
-<span class="source-line-no">078</span><span id="line-78">                        H = h / 6;</span>
-<span class="source-line-no">079</span><span id="line-79">                }</span>
-<span class="source-line-no">080</span><span id="line-80">                return new float[] {H, L, S};</span>
-<span class="source-line-no">081</span><span id="line-81">        }</span>
-<span class="source-line-no">082</span><span id="line-82">        </span>
-<span class="source-line-no">083</span><span id="line-83">        @Override</span>
-<span class="source-line-no">084</span><span id="line-84">        public float[] toRGB(float[] hls) {</span>
-<span class="source-line-no">085</span><span id="line-85">                final float H = hls[0], L = hls[1], S = hls[2]; // H,L,S in [0,1]</span>
-<span class="source-line-no">086</span><span id="line-86">                float r = 0, g = 0, b = 0;      </span>
-<span class="source-line-no">087</span><span id="line-87">                if (L &lt;= 0)                             // black</span>
-<span class="source-line-no">088</span><span id="line-88">                        r = g = b = 0;</span>
-<span class="source-line-no">089</span><span id="line-89">                else if (L &gt;= 1)                // white</span>
-<span class="source-line-no">090</span><span id="line-90">                        r = g = b = 1;</span>
-<span class="source-line-no">091</span><span id="line-91">                else {</span>
-<span class="source-line-no">092</span><span id="line-92">                        float hh = (6 * H) % 6;</span>
-<span class="source-line-no">093</span><span id="line-93">                        int   c1 = (int) hh;</span>
-<span class="source-line-no">094</span><span id="line-94">                        float c2 = hh - c1;</span>
-<span class="source-line-no">095</span><span id="line-95">                        float d = (L &lt;= 0.5f) ? (S * L) : (S * (1 - L));</span>
-<span class="source-line-no">096</span><span id="line-96">                        float w = L + d;</span>
-<span class="source-line-no">097</span><span id="line-97">                        float x = L - d;</span>
-<span class="source-line-no">098</span><span id="line-98">                        float y = w - (w - x) * c2;</span>
-<span class="source-line-no">099</span><span id="line-99">                        float z = x + (w - x) * c2;</span>
-<span class="source-line-no">100</span><span id="line-100">                        switch (c1) {</span>
-<span class="source-line-no">101</span><span id="line-101">                                case 0: r = w; g = z; b = x; break;</span>
-<span class="source-line-no">102</span><span id="line-102">                                case 1: r = y; g = w; b = x; break;</span>
-<span class="source-line-no">103</span><span id="line-103">                                case 2: r = x; g = w; b = z; break;</span>
-<span class="source-line-no">104</span><span id="line-104">                                case 3: r = x; g = y; b = w; break;</span>
-<span class="source-line-no">105</span><span id="line-105">                                case 4: r = z; g = x; b = w; break;</span>
-<span class="source-line-no">106</span><span id="line-106">                                case 5: r = w; g = x; b = y; break;</span>
-<span class="source-line-no">107</span><span id="line-107">                                default: // this should not happen</span>
-<span class="source-line-no">108</span><span id="line-108">                        }                       </span>
-<span class="source-line-no">109</span><span id="line-109">                }       // r, g, b in [0,1]</span>
-<span class="source-line-no">110</span><span id="line-110">                return new float[] {r, g, b};</span>
-<span class="source-line-no">111</span><span id="line-111">        }</span>
-<span class="source-line-no">112</span><span id="line-112"></span>
-<span class="source-line-no">113</span><span id="line-113">        @Override</span>
-<span class="source-line-no">114</span><span id="line-114">        public float[] toCIEXYZ(float[] colorvalue) {</span>
-<span class="source-line-no">115</span><span id="line-115">                throw new UnsupportedOperationException();</span>
-<span class="source-line-no">116</span><span id="line-116">        }</span>
-<span class="source-line-no">117</span><span id="line-117"></span>
-<span class="source-line-no">118</span><span id="line-118">        @Override</span>
-<span class="source-line-no">119</span><span id="line-119">        public float[] fromCIEXYZ(float[] colorvalue) {</span>
-<span class="source-line-no">120</span><span id="line-120">                throw new UnsupportedOperationException();</span>
-<span class="source-line-no">121</span><span id="line-121">        }</span>
+<span class="source-line-no">036</span><span id="line-36">        public static HlsColorSpace getInstance() {</span>
+<span class="source-line-no">037</span><span id="line-37">                return instance;</span>
+<span class="source-line-no">038</span><span id="line-38">        }</span>
+<span class="source-line-no">039</span><span id="line-39">        </span>
+<span class="source-line-no">040</span><span id="line-40">        private HlsColorSpace() {</span>
+<span class="source-line-no">041</span><span id="line-41">                super(ColorSpace.TYPE_HLS, 3);</span>
+<span class="source-line-no">042</span><span id="line-42">        }</span>
+<span class="source-line-no">043</span><span id="line-43"></span>
+<span class="source-line-no">044</span><span id="line-44">        @Override</span>
+<span class="source-line-no">045</span><span id="line-45">        public float[] fromRGB(float[] rgb) {</span>
+<span class="source-line-no">046</span><span id="line-46">                final float r = rgb[0], g = rgb[1], b = rgb[2]; // r, g, b assumed to be in [0,1]</span>
+<span class="source-line-no">047</span><span id="line-47">                final float cHi = max(r, g, b);         // max. component value</span>
+<span class="source-line-no">048</span><span id="line-48">                final float cLo = min(r, g, b);         // min. component value</span>
+<span class="source-line-no">049</span><span id="line-49">                final float cRng = cHi - cLo;                   // component range</span>
+<span class="source-line-no">050</span><span id="line-50">                </span>
+<span class="source-line-no">051</span><span id="line-51">                // Calculate lightness L</span>
+<span class="source-line-no">052</span><span id="line-52">                float L = (cHi + cLo) / 2;</span>
+<span class="source-line-no">053</span><span id="line-53">                </span>
+<span class="source-line-no">054</span><span id="line-54">                // Calculate saturation S               </span>
+<span class="source-line-no">055</span><span id="line-55">                float S = 0;</span>
+<span class="source-line-no">056</span><span id="line-56">                if (0 &lt; L &amp;&amp; L &lt; 1) {</span>
+<span class="source-line-no">057</span><span id="line-57">                        float d = (L &lt;= 0.5f) ? L : (1 - L);</span>
+<span class="source-line-no">058</span><span id="line-58">                        S = 0.5f * cRng / d;</span>
+<span class="source-line-no">059</span><span id="line-59">                }</span>
+<span class="source-line-no">060</span><span id="line-60">                </span>
+<span class="source-line-no">061</span><span id="line-61">                // Calculate hue H (same as in HSV)</span>
+<span class="source-line-no">062</span><span id="line-62">                float H = 0;    </span>
+<span class="source-line-no">063</span><span id="line-63">                if (cHi &gt; 0 &amp;&amp; cRng &gt; 0) {        // a color pixel</span>
+<span class="source-line-no">064</span><span id="line-64">                        float dr = (cHi - r) / cRng;</span>
+<span class="source-line-no">065</span><span id="line-65">                        float dg = (cHi - g) / cRng;</span>
+<span class="source-line-no">066</span><span id="line-66">                        float db = (cHi - b) / cRng;</span>
+<span class="source-line-no">067</span><span id="line-67">                        float h;</span>
+<span class="source-line-no">068</span><span id="line-68">                        if (r == cHi)                      // R is largest component</span>
+<span class="source-line-no">069</span><span id="line-69">                                h = db - dg;</span>
+<span class="source-line-no">070</span><span id="line-70">                        else if (g == cHi)                 // G is largest component</span>
+<span class="source-line-no">071</span><span id="line-71">                                h = dr - db + 2.0f;</span>
+<span class="source-line-no">072</span><span id="line-72">                        else                               // B is largest component</span>
+<span class="source-line-no">073</span><span id="line-73">                                h = dg - dr + 4.0f;</span>
+<span class="source-line-no">074</span><span id="line-74">                        if (h &lt; 0)</span>
+<span class="source-line-no">075</span><span id="line-75">                          h = h + 6;</span>
+<span class="source-line-no">076</span><span id="line-76">                        H = h / 6;</span>
+<span class="source-line-no">077</span><span id="line-77">                }</span>
+<span class="source-line-no">078</span><span id="line-78">                return new float[] {H, L, S};</span>
+<span class="source-line-no">079</span><span id="line-79">        }</span>
+<span class="source-line-no">080</span><span id="line-80">        </span>
+<span class="source-line-no">081</span><span id="line-81">        @Override</span>
+<span class="source-line-no">082</span><span id="line-82">        public float[] toRGB(float[] hls) {</span>
+<span class="source-line-no">083</span><span id="line-83">                final float H = hls[0], L = hls[1], S = hls[2]; // H,L,S in [0,1]</span>
+<span class="source-line-no">084</span><span id="line-84">                float r = 0, g = 0, b = 0;      </span>
+<span class="source-line-no">085</span><span id="line-85">                if (L &lt;= 0)                             // black</span>
+<span class="source-line-no">086</span><span id="line-86">                        r = g = b = 0;</span>
+<span class="source-line-no">087</span><span id="line-87">                else if (L &gt;= 1)                // white</span>
+<span class="source-line-no">088</span><span id="line-88">                        r = g = b = 1;</span>
+<span class="source-line-no">089</span><span id="line-89">                else {</span>
+<span class="source-line-no">090</span><span id="line-90">                        float hh = (6 * H) % 6;</span>
+<span class="source-line-no">091</span><span id="line-91">                        int   c1 = (int) hh;</span>
+<span class="source-line-no">092</span><span id="line-92">                        float c2 = hh - c1;</span>
+<span class="source-line-no">093</span><span id="line-93">                        float d = (L &lt;= 0.5f) ? (S * L) : (S * (1 - L));</span>
+<span class="source-line-no">094</span><span id="line-94">                        float w = L + d;</span>
+<span class="source-line-no">095</span><span id="line-95">                        float x = L - d;</span>
+<span class="source-line-no">096</span><span id="line-96">                        float y = w - (w - x) * c2;</span>
+<span class="source-line-no">097</span><span id="line-97">                        float z = x + (w - x) * c2;</span>
+<span class="source-line-no">098</span><span id="line-98">                        switch (c1) {</span>
+<span class="source-line-no">099</span><span id="line-99">                                case 0: r = w; g = z; b = x; break;</span>
+<span class="source-line-no">100</span><span id="line-100">                                case 1: r = y; g = w; b = x; break;</span>
+<span class="source-line-no">101</span><span id="line-101">                                case 2: r = x; g = w; b = z; break;</span>
+<span class="source-line-no">102</span><span id="line-102">                                case 3: r = x; g = y; b = w; break;</span>
+<span class="source-line-no">103</span><span id="line-103">                                case 4: r = z; g = x; b = w; break;</span>
+<span class="source-line-no">104</span><span id="line-104">                                case 5: r = w; g = x; b = y; break;</span>
+<span class="source-line-no">105</span><span id="line-105">                                default: // this should not happen</span>
+<span class="source-line-no">106</span><span id="line-106">                        }                       </span>
+<span class="source-line-no">107</span><span id="line-107">                }       // r, g, b in [0,1]</span>
+<span class="source-line-no">108</span><span id="line-108">                return new float[] {r, g, b};</span>
+<span class="source-line-no">109</span><span id="line-109">        }</span>
+<span class="source-line-no">110</span><span id="line-110"></span>
+<span class="source-line-no">111</span><span id="line-111">        @Override</span>
+<span class="source-line-no">112</span><span id="line-112">        public float[] toCIEXYZ(float[] colorvalue) {</span>
+<span class="source-line-no">113</span><span id="line-113">                throw new UnsupportedOperationException();</span>
+<span class="source-line-no">114</span><span id="line-114">        }</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">        @Override</span>
+<span class="source-line-no">117</span><span id="line-117">        public float[] fromCIEXYZ(float[] colorvalue) {</span>
+<span class="source-line-no">118</span><span id="line-118">                throw new UnsupportedOperationException();</span>
+<span class="source-line-no">119</span><span id="line-119">        }</span>
+<span class="source-line-no">120</span><span id="line-120">        </span>
+<span class="source-line-no">121</span><span id="line-121">        private static final String[] ComponentNames = {"H", "L", "S"};</span>
 <span class="source-line-no">122</span><span id="line-122">        </span>
-<span class="source-line-no">123</span><span id="line-123">        private static final String[] ComponentNames = {"H", "L", "S"};</span>
-<span class="source-line-no">124</span><span id="line-124">        </span>
-<span class="source-line-no">125</span><span id="line-125">        @Override</span>
-<span class="source-line-no">126</span><span id="line-126">        public String getName (int idx) {</span>
-<span class="source-line-no">127</span><span id="line-127">                return ComponentNames[idx];</span>
-<span class="source-line-no">128</span><span id="line-128">        }</span>
-<span class="source-line-no">129</span><span id="line-129"></span>
-<span class="source-line-no">130</span><span id="line-130">}</span>
+<span class="source-line-no">123</span><span id="line-123">        @Override</span>
+<span class="source-line-no">124</span><span id="line-124">        public String getName (int idx) {</span>
+<span class="source-line-no">125</span><span id="line-125">                return ComponentNames[idx];</span>
+<span class="source-line-no">126</span><span id="line-126">        }</span>
+<span class="source-line-no">127</span><span id="line-127"></span>
+<span class="source-line-no">128</span><span id="line-128">}</span>
 
 
 
