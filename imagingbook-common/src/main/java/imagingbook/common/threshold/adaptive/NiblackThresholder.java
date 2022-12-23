@@ -49,16 +49,12 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	 * Parameters for class {@link NiblackThresholder}.
 	 */
 	public static class Parameters implements ParameterBundle<NiblackThresholder> {
-		
 		@DialogLabel("Radius")
 		public int radius = 15;
-		
-		@DialogLabel("kappa")
+		@DialogLabel("kappa (κ)")
 		public double kappa = 0.30;
-		
-		@DialogLabel("d_min")
-		public int dMin = 5;
-		
+		@DialogLabel("Min. offset (d)")
+		public double dMin = 5;
 		@DialogLabel("Background mode")
 		public BackgroundMode bgMode = BackgroundMode.DARK;
 	}
@@ -72,7 +68,6 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	}
 
 	private NiblackThresholder(Parameters params) {
-		super();
 		this.params = params;
 	}
 	
@@ -80,24 +75,24 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 	abstract void makeMeanAndVariance(ByteProcessor I, int radius);
 	
 	@Override
-	public ByteProcessor getThreshold(ByteProcessor I) {
-		final int M = I.getWidth();
-		final int N = I.getHeight();
+	public FloatProcessor getThreshold(ByteProcessor I) {
+		final int W = I.getWidth();
+		final int H = I.getHeight();
 		makeMeanAndVariance(I, params.radius);
-		ByteProcessor Q = new ByteProcessor(M, N);
-		final double kappa = params.kappa;
-		final int dMin = params.dMin;
+		FloatProcessor Q = new FloatProcessor(W, H);
+		final float kappa = (float) params.kappa;
+		final float dMin = (float) params.dMin;
 		final boolean darkBg = (params.bgMode == BackgroundMode.DARK);
 		
-		for (int v = 0; v < N; v++) {
-			for (int u = 0; u < M; u++) {
-				double sigma = Isigma.getf(u, v);
-				double mu = Imean.getf(u, v);
-				double diff = kappa * sigma + dMin;
-				int q = (int) Math.rint((darkBg) ? mu + diff : mu - diff);
-				if (q < 0)	 q = 0;
-				if (q > 255) q = 255;
-				Q.set(u, v, q);
+		for (int v = 0; v < H; v++) {
+			for (int u = 0; u < W; u++) {
+				float sigma = Isigma.getf(u, v);
+				float mu = Imean.getf(u, v);
+				float diff = kappa * sigma + dMin;
+				float q = (darkBg) ? mu + diff : mu - diff;
+				// if (q < 0)	 q = 0;
+				// if (q > 255) q = 255;
+				Q.setf(u, v, q);
 			}
 		}
 		return Q;
@@ -150,14 +145,14 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 
 		@Override
 		void makeMeanAndVariance(ByteProcessor I, int radius) {
-			int M = I.getWidth();
-			int N = I.getHeight();
-			Imean =  new FloatProcessor(M, N);
-			Isigma =  new FloatProcessor(M, N);
+			final int W = I.getWidth();
+			final int H = I.getHeight();
+			this.Imean =  new FloatProcessor(W, H);
+			this.Isigma =  new FloatProcessor(W, H);
 			final int n = (radius + 1 + radius) * (radius + 1 + radius);
 
-			for (int v = 0; v < N; v++) {
-				for (int u = 0; u < M; u++) {
+			for (int v = 0; v < H; v++) {
+				for (int u = 0; u < W; u++) {
 					long A = 0;	// sum of image values in support region
 					long B = 0;	// sum of squared image values in support region
 					for (int j = -radius; j <= radius; j++) {
@@ -221,11 +216,11 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 			
 			RankFilters rf = new RankFilters();
 			rf.rank(mean, radius, RankFilters.MEAN);
-			Imean = mean;
+			this.Imean = mean;
 			
 			rf.rank(var, radius, RankFilters.VARIANCE);
 			var.sqrt();
-			Isigma = var;
+			this.Isigma = var;
 		}
 	}
 	
@@ -257,11 +252,11 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 		void makeMeanAndVariance(ByteProcessor I, int r) {
 			// //uses ImageJ's GaussianBlur
 			// local variance over square of size (size + 1 + size)^2
-			int M = I.getWidth();
-			int N = I.getHeight();
+			final int W = I.getWidth();
+			final int H = I.getHeight();
 			
-			Imean = new FloatProcessor(M,N);
-			Isigma = new FloatProcessor(M,N);
+			this.Imean = new FloatProcessor(W,H);
+			this.Isigma = new FloatProcessor(W,H);
 
 			FloatProcessor A = I.convertToFloatProcessor();
 			FloatProcessor B = I.convertToFloatProcessor();
@@ -277,13 +272,13 @@ public abstract class NiblackThresholder implements AdaptiveThresholder {
 			gaussian.applyTo(A);
 			gaussian.applyTo(B);
 
-			for (int v = 0; v < N; v++) {
-				for (int u = 0; u < M; u++) {
+			for (int v = 0; v < H; v++) {
+				for (int u = 0; u < W; u++) {
 					float a = A.getf(u, v);
 					float b = B.getf(u, v);
 					float sigmaG = (float) Math.sqrt(b - a * a);
-					Imean.setf(u, v, a);
-					Isigma.setf(u, v, sigmaG);
+					this.Imean.setf(u, v, a);
+					this.Isigma.setf(u, v, sigmaG);
 				}
 			}
 		}

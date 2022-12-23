@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.AdaptiveThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder;
@@ -42,6 +43,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 public class Adaptive_Bernsen implements PlugInFilter {
 	
 	private static Parameters params = new Parameters();
+	private static boolean ShowThresholdSurface = false;
 	
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image
@@ -65,13 +67,18 @@ public class Adaptive_Bernsen implements PlugInFilter {
 		
 		ByteProcessor I = (ByteProcessor) ip;	
 		AdaptiveThresholder thr = new BernsenThresholder(params);
-		ByteProcessor Q = thr.getThreshold(I);
+		FloatProcessor Q = thr.getThreshold(I);
 		thr.threshold(I, Q);
+		if (ShowThresholdSurface) {
+			new ImagePlus("Threshold (Q)", Q).show();
+		}
+
 	}
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
+		gd.addCheckbox("Show threshold surface", ShowThresholdSurface);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
@@ -79,6 +86,7 @@ public class Adaptive_Bernsen implements PlugInFilter {
 		}	
 		
 		getFromDialog(params, gd);
+		ShowThresholdSurface = gd.getNextBoolean();
 		return true;
 	}
 }

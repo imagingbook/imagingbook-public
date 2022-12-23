@@ -9,6 +9,7 @@
 
 package imagingbook.common.threshold.adaptive;
 
+import ij.ImagePlus;
 import ij.plugin.filter.RankFilters;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
@@ -34,67 +35,61 @@ public class SauvolaThresholder implements AdaptiveThresholder {
 	 * Parameters for class {@link SauvolaThresholder}.
 	 */
 	public static class Parameters implements ParameterBundle<SauvolaThresholder> {
-		
 		@DialogUtils.DialogLabel("Radius")
 		public int radius = 15;
-		
 		@DialogUtils.DialogLabel("kappa")
-		public double kappa =  0.5;
-		
+		public double kappa = 0.5;
 		@DialogUtils.DialogLabel("sigma_max")
-		public double sigmaMax =  128;
-		
+		public double sigmaMax = 128;
 		@DialogUtils.DialogLabel("Background mode")
 		public BackgroundMode bgMode = BackgroundMode.DARK;
 	}
-		
-	private FloatProcessor Imean;
-	private FloatProcessor Isigma;
+
 	private final Parameters params;
 	
 	public SauvolaThresholder() {
-		super();
-		this.params = new Parameters();
+		this(new Parameters());
 	}
 	
 	public SauvolaThresholder(Parameters params) {
-		super();
 		this.params = params;
 	}
 	
 	@Override
-	public ByteProcessor getThreshold(ByteProcessor I) {
-		FloatProcessor mean = (FloatProcessor) I.convertToFloat();
-		FloatProcessor var = (FloatProcessor) mean.duplicate();
+	public FloatProcessor getThreshold(ByteProcessor I) {
+		FloatProcessor Imean = I.convertToFloatProcessor();
+		FloatProcessor Isigma = (FloatProcessor) Imean.duplicate();
 		
 		RankFilters rf = new RankFilters();
-		rf.rank(mean, params.radius, RankFilters.MEAN);
-		Imean = mean;
+		rf.rank(Imean, params.radius, RankFilters.MEAN);
+		new ImagePlus("Imean", Imean). show();
 		
-		rf.rank(var, params.radius, RankFilters.VARIANCE);
-		var.sqrt();
-		Isigma = var;
+		rf.rank(Isigma, params.radius, RankFilters.VARIANCE);
+		Isigma.sqrt();
+		new ImagePlus("Isigma", Isigma). show();
 		
-		int width = I.getWidth();
-		int height = I.getHeight();
-		final double kappa = params.kappa;
-		final double sigmaMax = params.sigmaMax;
+		final int W = I.getWidth();
+		final int H = I.getHeight();
+		final float kappa = (float) params.kappa;
+		final float sigmaMax = (float) params.sigmaMax;
 		final boolean darkBg = (params.bgMode == BackgroundMode.DARK);
-		
-		ByteProcessor Q = new ByteProcessor(width, height);
-		for (int v = 0; v < height; v++) {
-			for (int u = 0; u < width; u++) {
-				final double sigma = Isigma.getf(u, v);
-				final double mu = Imean.getf(u, v);
-				final double diff = kappa * (sigma / sigmaMax - 1);
-				int q = (int) Math.rint((darkBg) ? mu * (1 - diff) : mu	* (1 + diff));
-				if (q < 0)
-					q = 0;
-				if (q > 255)
-					q = 255;
-				Q.set(u, v, q);
+
+		FloatProcessor DIFF = new FloatProcessor(W, H);
+		FloatProcessor Q = new FloatProcessor(W, H);
+		for (int v = 0; v < H; v++) {
+			for (int u = 0; u < W; u++) {
+				final float sigmaR = Isigma.getf(u, v);
+				final float meanR = Imean.getf(u, v);
+				final float diff = kappa * (sigmaR / sigmaMax - 1);
+				DIFF.setf(u, v, diff);
+				float q = (darkBg) ? meanR * (1 - diff) : meanR * (1 + diff);
+				// if (q < 0) q = 0;		// necessary?
+				// if (q > 255) q = 255;
+				Q.setf(u, v, q);
 			}
 		}
+
+		new ImagePlus("DIFF", DIFF). show();
 		return Q;
 	}
 	

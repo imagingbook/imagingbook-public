@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.NiblackThresholder;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.Parameters;
@@ -25,9 +26,9 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * ImageJ plugin demonstrating the use of the {@link NiblackThresholder} class.
- * See Sec. 9.2.2 of [1] for additional details.
- * 
+ * ImageJ plugin demonstrating the use of the {@link NiblackThresholder} class. See Sec. 9.2.2 of [1] for additional
+ * details.
+ *
  * @author WB
  * @version 2022/04/01
  * @see imagingbook.common.threshold.adaptive.NiblackThresholder
@@ -38,10 +39,10 @@ public class Adaptive_Niblack implements PlugInFilter {
 	
 	private static RegionType regType = RegionType.Box;
 	private static Parameters params = new Parameters();
+	private static boolean ShowThresholdSurface = false;
 
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Adaptive_Niblack() {
 		if (noCurrentImage()) {
@@ -61,14 +62,20 @@ public class Adaptive_Niblack implements PlugInFilter {
 		
 		ByteProcessor I = (ByteProcessor) ip;
 		NiblackThresholder thr = NiblackThresholder.create(regType, params);
-		ByteProcessor Q = thr.getThreshold(I);
+		FloatProcessor Q = thr.getThreshold(I);
 		thr.threshold(I, Q);
+
+		if (ShowThresholdSurface) {
+			(new ImagePlus("Niblack-Threshold", Q)).show();
+		}
+
 	}
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addEnumChoice("Region type", regType);
 		addToDialog(params, gd);
+		gd.addCheckbox("Show threshold surface", ShowThresholdSurface);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
@@ -77,6 +84,7 @@ public class Adaptive_Niblack implements PlugInFilter {
 		
 		regType = gd.getNextEnumChoice(RegionType.class);
 		getFromDialog(params, gd);
+		ShowThresholdSurface = gd.getNextBoolean();
 		return true;
 	}
 }

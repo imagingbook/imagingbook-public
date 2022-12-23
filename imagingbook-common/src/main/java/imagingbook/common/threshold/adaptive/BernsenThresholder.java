@@ -9,8 +9,10 @@
 
 package imagingbook.common.threshold.adaptive;
 
+import ij.IJ;
 import ij.plugin.filter.RankFilters;
 import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.util.ParameterBundle;
 
@@ -41,7 +43,7 @@ public class BernsenThresholder implements AdaptiveThresholder {
 		
 		/** Minimum contrast */ 
 		@DialogLabel("Min. contrast")
-		public int cmin = 15;
+		public double cmin = 15;
 		
 		/** Background type (see {@link BackgroundMode}) */
 		@DialogLabel("Background mode")
@@ -56,7 +58,7 @@ public class BernsenThresholder implements AdaptiveThresholder {
 	 * Constructor using default parameters.
 	 */
 	public BernsenThresholder() {
-		this.params = new Parameters();
+		this(new Parameters());
 	}
 	
 	/**
@@ -68,31 +70,43 @@ public class BernsenThresholder implements AdaptiveThresholder {
 	}
 
 	@Override
-	public ByteProcessor getThreshold(ByteProcessor I) {
-		final int M = I.getWidth();
-		final int N = I.getHeight();
+	public FloatProcessor getThreshold(ByteProcessor I) {
+		final int W = I.getWidth();
+		final int H = I.getHeight();
 		ByteProcessor Imin = (ByteProcessor) I.duplicate();
 		ByteProcessor Imax = (ByteProcessor) I.duplicate();
 
 		RankFilters rf = new RankFilters();
-		rf.rank(Imin, params.radius, RankFilters.MIN);
-		rf.rank(Imax, params.radius, RankFilters.MAX);
+		rf.rank(Imin, params.radius, RankFilters.MIN);	// minimum filter
+		rf.rank(Imax, params.radius, RankFilters.MAX);	// maximum filter
 
-		int q = (params.bgMode == BackgroundMode.DARK) ? 256 : 0;
-		ByteProcessor Q = new ByteProcessor(M, N);
+		// new ImagePlus("Imin", Imin).show();
+		// new ImagePlus("Imax", Imax).show();
 
-		for (int v = 0; v < N; v++) {
-			for (int u = 0; u < M; u++) {
+		ByteProcessor Contrast = (ByteProcessor) Imax.duplicate();
+		for (int v = 0; v < H; v++) {
+			for (int u = 0; u < W; u++) {
+				Contrast.set(u, v, Contrast.get(u, v) - Imin.get(u, v));
+			}
+		}
+		// new ImagePlus("Contrast", Contrast).show();
+
+		// default threshold for regions with insufficient contrast
+		float qq = (params.bgMode == BackgroundMode.DARK) ? 256 : -1;
+		FloatProcessor Q = new FloatProcessor(W, H);
+
+		for (int v = 0; v < H; v++) {
+			for (int u = 0; u < W; u++) {
 				int gMin = Imin.get(u, v);
 				int gMax = Imax.get(u, v);
-				int c = gMax - gMin;
+				int c = gMax - gMin;			// local contrast
 				if (c >= params.cmin)
-					Q.set(u, v, (gMin + gMax) / 2);
+					Q.setf(u, v, 0.5f * (gMin + gMax));
 				else
-					Q.set(u, v, q);
+					Q.setf(u, v, qq);
 			}
 		}
 		return Q;
 	}
-	
+
 }

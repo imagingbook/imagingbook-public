@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.AdaptiveThresholder;
 import imagingbook.common.threshold.adaptive.InterpolatingThresholder;
@@ -25,14 +26,14 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * ImageJ plugin demonstrating the use of the {@link InterpolatingThresholder} class.
- * See Sec. 9.4 of [1] for additional details.
+ * ImageJ plugin demonstrating the use of the {@link InterpolatingThresholder} class. See Sec. 9.4 of [1] for additional
+ * details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/04/01
  * @see imagingbook.common.threshold.adaptive.InterpolatingThresholder
@@ -40,6 +41,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 public class Adaptive_Interpolating implements PlugInFilter {
 	
 	private static Parameters params = new Parameters();
+	private static boolean ShowThresholdSurface = false;
 
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image
@@ -63,13 +65,18 @@ public class Adaptive_Interpolating implements PlugInFilter {
 		
 		ByteProcessor I = (ByteProcessor) ip;
 		AdaptiveThresholder thr = new InterpolatingThresholder(params);
-		ByteProcessor Q = thr.getThreshold(I);
+		FloatProcessor Q = thr.getThreshold(I);
 		thr.threshold(I, Q);
+
+		if (ShowThresholdSurface) {
+			new ImagePlus("Interpolating-Threshold", Q).show();
+		}
 	}
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
+		gd.addCheckbox("Show threshold surface", ShowThresholdSurface);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
@@ -77,6 +84,7 @@ public class Adaptive_Interpolating implements PlugInFilter {
 		}	
 		
 		getFromDialog(params, gd);
+		ShowThresholdSurface = gd.getNextBoolean();
 		return true;
 	}
 }

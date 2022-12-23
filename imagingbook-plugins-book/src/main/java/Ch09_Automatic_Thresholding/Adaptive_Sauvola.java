@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.SauvolaThresholder;
 import imagingbook.common.threshold.adaptive.SauvolaThresholder.Parameters;
@@ -38,7 +39,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 public class Adaptive_Sauvola implements PlugInFilter {
 	
 	private static Parameters params = new Parameters();
-	private static boolean showThresholdImage = false;
+	private static boolean ShowThresholdSurface = false;
 	
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image
@@ -63,17 +64,18 @@ public class Adaptive_Sauvola implements PlugInFilter {
 		
 		ByteProcessor I = (ByteProcessor) ip;
 		SauvolaThresholder thr = new SauvolaThresholder(params);
-		ByteProcessor Q = thr.getThreshold(I);
+		FloatProcessor Q = thr.getThreshold(I);
 		thr.threshold(I, Q);
 		
-		if (showThresholdImage) {
-			(new ImagePlus("Sauvola-Threshold", Q)).show();
+		if (ShowThresholdSurface) {
+			new ImagePlus("Sauvola-Threshold", Q).show();
 		}
 	}
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		addToDialog(params, gd);
+		gd.addCheckbox("Show threshold surface", ShowThresholdSurface);
 		
 		gd.showDialog();
 		if (gd.wasCanceled()) {
@@ -81,6 +83,7 @@ public class Adaptive_Sauvola implements PlugInFilter {
 		}
 
 		getFromDialog(params, gd);
+		ShowThresholdSurface = gd.getNextBoolean();
 		return true;
 	}
 }

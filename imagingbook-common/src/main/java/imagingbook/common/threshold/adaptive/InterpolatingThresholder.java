@@ -10,6 +10,7 @@
 package imagingbook.common.threshold.adaptive;
 
 import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
 import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.threshold.global.OtsuThresholder;
 import imagingbook.common.util.ParameterBundle;
@@ -36,7 +37,6 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 	public static class Parameters implements ParameterBundle<InterpolatingThresholder> {
 		@DialogLabel("Tile size")
 		public int tileSize = 32;
-		
 		@DialogLabel("Background mode")
 		public BackgroundMode bgMode = BackgroundMode.DARK;
 	}
@@ -52,7 +52,7 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 	}
 
 	@Override
-	public ByteProcessor getThreshold(ByteProcessor ip) {
+	public FloatProcessor getThreshold(ByteProcessor ip) {
 		final int W = ip.getWidth();
 		final int H = ip.getHeight();
 		final int tileSize = params.tileSize;
@@ -67,28 +67,31 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 
 		// compute threshold for each tile
 		int[] h = new int[256];
-		OtsuThresholder thr = new OtsuThresholder();
+		OtsuThresholder localThresholder = new OtsuThresholder();
 
 		int q_ = (params.bgMode == BackgroundMode.DARK) ? 256 : 0;
 
+		// sample the thresholds at tile centers (u0, v0):
 		for (int j = 0, v0 = 0; j < nH; j++, v0 += tileSize) {
 			for (int i = 0, u0 = 0; i < nW; i++, u0 += tileSize) {
 				getSubimageHistogram(ip, u0 - s0, v0 - s0, tileSize, h);
-				int q = thr.getThreshold(h);
-				if (q < 0) q = q_; // no threshold found in this tile
+				int q = localThresholder.getThreshold(h);
+				if (q < 0)
+					q = q_; // no threshold found in this tile
 				tiles[i][j] = q;
 				//IJ.log(i + "/" + j + ": " + q);
 			}
 		}
 		
-		ByteProcessor thrIp = new ByteProcessor(W, H);
+		FloatProcessor Q = new FloatProcessor(W, H);
 		
 		for (int j = 0, v0 = 0; j < nH; j++, v0 += tileSize) {
 			for (int i = 0, u0 = 0; i < nW; i++, u0 += tileSize) {
 				// Rectangle re = new Rectangle(u0-s0, v0-s0, u0-s0+tileSize, v0-s0+tileSize);
 				for (int v = v0 - s0; v < v0 - s0 + tileSize; v++) {
 					for (int u = u0 - s0; u < u0 - s0 + tileSize; u++) {
-						thrIp.putPixel(u, v, tiles[i][j]);
+						// Q.setf(u, v, tiles[i][j]);
+						Q.putPixelValue(u, v, tiles[i][j]);
 					}
 				}
 			}
@@ -104,21 +107,21 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 
 				// interpolate within [u0, v0, u0 + tileSize, v0 + tileSize]
 				for (int v = v0; v < v0 + tileSize; v++) {
-					double dy = (double) (v - v0) / tileSize;
-					double AC = A + dy * (C - A);
-					double BD = B + dy * (D - B);
+					float dy = (float) (v - v0) / tileSize;
+					float AC = A + dy * (C - A);
+					float BD = B + dy * (D - B);
 					for (int u = u0; u < u0 + tileSize; u++) {
-						double dx = (double) (u - u0) / tileSize;
-						double ABCD = AC + dx * (BD - AC);
-						// thrIp.putPixel(u,v,tiles[i][j]);
-						thrIp.putPixel(u, v, (int) Math.rint(ABCD));
+						float dx = (float) (u - u0) / tileSize;
+						float ABCD = AC + dx * (BD - AC);
+						// Q.setf(u, v, ABCD);
+						Q.putPixelValue(u, v, ABCD);
 					}
 				}
 
 			}
 		}
-			
-		return thrIp;
+
+		return Q;
 	}
 	
 	private void getSubimageHistogram(ByteProcessor ip, int u0, int v0, int size, int[] h) {
