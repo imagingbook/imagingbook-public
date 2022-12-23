@@ -21,83 +21,104 @@ public class GlobalThresholderBinaryTest {
 	@Test
 	public void testIsodataThresholder() {
 		GlobalThresholder thresholder = new IsodataThresholder();
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 127);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 77);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 177);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 127, 127);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 77, 177);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 177, 77);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 0, 254);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 17, 237);
 	}
 
 	@Test
 	public void testMaxEntropyThresholder() {
 		GlobalThresholder thresholder = new MaxEntropyThresholder();
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0, 100);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 0, 254);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 17, 237);
 	}
 	
 	@Test
 	public void testMaxMeanThresholder() {
 		GlobalThresholder thresholder = new MeanThresholder();
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 203);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 123);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 223);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 203, 51);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 123, 131);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 223, 31);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 0, 254);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 17, 237);
 	}
 	
 	@Test
 	public void testMaxMedianThresholder() {
 		GlobalThresholder thresholder = new MedianThresholder();
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, -1);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, -1);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, -1);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, -1);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 154, 100);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 0, 254);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 17, 237);
 	}
 	
 	@Test
 	public void testMinErrorThresholder() {
 		GlobalThresholder thresholder = new MinErrorThresholder();
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0, 100);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 0, 254);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 17, 237);
 	}
 	
 	@Test
 	public void testMinMaxThresholder() {
 		GlobalThresholder thresholder = new MinMaxThresholder();
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 127);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 77);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 177);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 127, 127);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 77, 177);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 177, 77);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 0, 254);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 17, 237);
 	}
 	
 	@Test
 	public void testOtsuThresholder() {
 		GlobalThresholder thresholder = new OtsuThresholder();
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0, 100);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 0, 254);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 17, 237);
 	}
 
 	@Test
 	public void testQuantileThresholder() {
 		GlobalThresholder thresholder = new QuantileThresholder(0.10);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin1718, 17);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 0, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 0, 100);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 100, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 0, 254);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 254, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 17, 237);
 	}
 
 	// ----------------------------------------------------
 	
-	private void checkThreshold(GlobalThresholder thresholder, ImageResource res, int expectedThreshold) {
+	private void checkThreshold(GlobalThresholder thresholder, ImageResource res, int thresh1, int thresh2) {
 		ByteProcessor bp = res.getImagePlus().getProcessor().convertToByteProcessor();
-		
 		// check it a valid threshold was found:
-		int q = thresholder.getThreshold(bp);
-		assertEquals("threshold not as expected (" + res + ")", expectedThreshold, q);
+		int q1 = thresholder.getThreshold(bp);
+		assertEquals("threshold 1 not as expected (" + res + ")", thresh1, q1);
+		// System.out.format("threshold 1 not as expected (" + res + "): %d vs %d\n", thresh1, q1);
+		//
+		bp.invert();
+		int q2 = thresholder.getThreshold(bp);
+		assertEquals("threshold 2 not as expected (" + res + ")", thresh2, q2);
+		// System.out.format("threshold 2 not as expected (" + res + "): %d vs %d\n\n", thresh2, q2);
 	}
 
 }

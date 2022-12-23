@@ -53,9 +53,9 @@ public class MinMaxFinderTest {
         ExtremalPoint p1 = new ExtremalPoint(1, 2, 77);
         ExtremalPoint p2 = new ExtremalPoint(3, 4, 88);
         ExtremalPoint p3 = new ExtremalPoint(5, 6, 88);
-        System.out.println("p1 | p2 -> " + p1.compareTo(p2));
-        System.out.println("p2 | p1 -> " + p2.compareTo(p1));
-        System.out.println("p2 | p3 -> " + p2.compareTo(p3));
+        // System.out.println("p1 | p2 -> " + p1.compareTo(p2));
+        // System.out.println("p2 | p1 -> " + p2.compareTo(p1));
+        // System.out.println("p2 | p3 -> " + p2.compareTo(p3));
         assertEquals(-1, p1.compareTo(p2));
         assertEquals( 1, p2.compareTo(p1));
         assertEquals( 0, p2.compareTo(p3));

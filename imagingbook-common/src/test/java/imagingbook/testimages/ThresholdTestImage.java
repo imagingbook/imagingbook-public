@@ -23,8 +23,12 @@ import imagingbook.testutils.ResourceTestUtils;
 public enum ThresholdTestImage implements ImageResource {
 	/** Original gray scan from Kepler manuscript. */
 	kepler,
+	/** Binary Kepler image with values 0 and 1 only. */
+	keplerBin_000_001,
+	/** Binary Kepler image with values 254 and 255 only. */
+	keplerBin_254_255,
 	/** Binary Kepler image with values 17 and 18 only. */
-	keplerBin1718,
+	keplerBin_017_018,
 	/** Binary Kepler image darkened by 100 units. */
 	keplerBinMinus100,
 	/** Binary Kepler image brightened by 100 units. */
