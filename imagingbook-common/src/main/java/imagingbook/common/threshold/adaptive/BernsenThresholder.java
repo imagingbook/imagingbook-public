@@ -40,11 +40,9 @@ public class BernsenThresholder implements AdaptiveThresholder {
 		/** Radius of circular support region */ 
 		@DialogLabel("Radius")
 		public int radius = 15;
-		
 		/** Minimum contrast */ 
 		@DialogLabel("Min. contrast")
 		public double cmin = 15;
-		
 		/** Background type (see {@link BackgroundMode}) */
 		@DialogLabel("Background mode")
 		public BackgroundMode bgMode = BackgroundMode.DARK;
@@ -83,17 +81,19 @@ public class BernsenThresholder implements AdaptiveThresholder {
 		// new ImagePlus("Imin", Imin).show();
 		// new ImagePlus("Imax", Imax).show();
 
-		ByteProcessor Contrast = (ByteProcessor) Imax.duplicate();
-		for (int v = 0; v < H; v++) {
-			for (int u = 0; u < W; u++) {
-				Contrast.set(u, v, Contrast.get(u, v) - Imin.get(u, v));
-			}
-		}
+		// ByteProcessor Contrast = (ByteProcessor) Imax.duplicate();
+		// for (int v = 0; v < H; v++) {
+		// 	for (int u = 0; u < W; u++) {
+		// 		Contrast.set(u, v, Contrast.get(u, v) - Imin.get(u, v));
+		// 	}
+		// }
 		// new ImagePlus("Contrast", Contrast).show();
 
+		// threshold surface
+		FloatProcessor Q = new FloatProcessor(W, H);
 		// default threshold for regions with insufficient contrast
 		float qq = (params.bgMode == BackgroundMode.DARK) ? 256 : -1;
-		FloatProcessor Q = new FloatProcessor(W, H);
+
 
 		for (int v = 0; v < H; v++) {
 			for (int u = 0; u < W; u++) {
