@@ -29,8 +29,8 @@ public class MaxEntropyThresholder implements GlobalThresholder {
 	
 	static final double EPSILON = 1E-16;
 	
-	private double[] S0 = null;
-	private double[] S1 = null;
+	private double[] S0;
+	private double[] S1;
 	
 	public MaxEntropyThresholder() {
 		super();

@@ -39,16 +39,18 @@ public class MeanThresholder implements GlobalThresholder {
 			sum += i * h[i];
 		}
 		
-		int mean = (int) Math.floor((double)sum / N);	// important to use floor if only two pixel values
+		int mean = (int) Math.floor((double)sum / N);	// important to use floor for bi-level images
 
 		// count resulting background pixels:
-		int n0 = 0;
+		int nb = 0;
 		for (int i = 0; i <= mean; i++) {
-			n0 += h[i];
+			nb += h[i];
 		}
 		
 		// determine if background or foreground is empty:
-		int q = (n0 < N) ? mean : -1;
-		return q;
+		if (nb < N)
+			return mean;
+		else
+			return -1;	// no threshold found
 	}
 }

@@ -25,10 +25,10 @@ package imagingbook.common.threshold.global;
  */
 public class IsodataThresholder implements GlobalThresholder {
 	
-	private int MAX_ITERATIONS = 100;
+	private static int MAX_ITERATIONS = 100;
 
-	private double[] M0 = null;		// table of background means
-	private double[] M1 = null;		// table of foreground means
+	private double[] M0;		// table of background means
+	private double[] M1;		// table of foreground means
 	
 	public IsodataThresholder() {
 		super();
@@ -39,16 +39,16 @@ public class IsodataThresholder implements GlobalThresholder {
 		makeMeanTables(h);
 		int K = h.length;
 		int q = (int) M0[K-1]; 	// start with total mean
-		int q_;
+		int qq;
 		
 		int i = 0;
 		do {
 			i++; 
 			if (M0[q] < 0 || M1[q] < 0)  // background or foreground is empty
 				return -1;
-			q_ = q;				
+			qq = q;
 			q = (int) ((M0[q] + M1[q]) / 2);
-		} while (q != q_ && i < MAX_ITERATIONS);
+		} while (q != qq && i < MAX_ITERATIONS);
 		
 		return q;
 	}
@@ -65,7 +65,6 @@ public class IsodataThresholder implements GlobalThresholder {
 			s0 = s0 + q * h[q];
 			M0[q] = (n0 > 0) ? ((double) s0)/n0 : -1;
 		}
-//		int N = n0;
 		
 		int n1 = 0;
 		long s1 = 0;
@@ -75,8 +74,6 @@ public class IsodataThresholder implements GlobalThresholder {
 			s1 = s1 + (q+1) * h[q+1];
 			M1[q] = (n1 > 0) ? ((double) s1)/n1 : -1;
 		}
-		
-//		return N;
 	}
 	
 }

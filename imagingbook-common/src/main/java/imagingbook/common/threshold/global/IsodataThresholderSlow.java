@@ -27,7 +27,7 @@ import imagingbook.common.histogram.HistogramUtils;
 public class IsodataThresholderSlow implements GlobalThresholder {
 	
 	
-	private int MAX_ITERATIONS = 100;
+	private static int MAX_ITERATIONS = 100;
 	
 	public IsodataThresholderSlow() {
 		super();
@@ -37,7 +37,7 @@ public class IsodataThresholderSlow implements GlobalThresholder {
 	public int getThreshold(int[] h) {
 		int K = h.length;
 		int q = (int) HistogramUtils.mean(h, 0, K-1); 	// start with the total mean
-		int q_;
+		int qq;
 		
 		int i = 0;	// iteration counter
 		do {
@@ -48,9 +48,9 @@ public class IsodataThresholderSlow implements GlobalThresholder {
 				return -1;
 			double meanB = HistogramUtils.mean(h, 0, q);
 			double meanF = HistogramUtils.mean(h, q+1, K-1);
-			q_ = q;				
+			qq = q;
 			q = (int)((meanB + meanF)/2);
-		} while (q != q_ && i < MAX_ITERATIONS);
+		} while (q != qq && i < MAX_ITERATIONS);
 		
 		return q;
 	}

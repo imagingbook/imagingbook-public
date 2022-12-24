@@ -26,19 +26,17 @@ import static imagingbook.common.math.Arithmetic.sqr;
  * @version 2022/08/21
  */
 public class OtsuThresholder implements GlobalThresholder {
-	
-	private int[] h = null;
-	private double[] M0 = null;		// table of background means
-	private double[] M1 = null;		// table of foreground means
-	private int N = 0;				// number of image pixels
+
+	private double[] M0;		// table of background means
+	private double[] M1;		// table of foreground means
+	private int N;				// number of image pixels
 	
 	public OtsuThresholder() {
 		super();
 	}
 	
 	@Override
-	public int getThreshold(int[] hist) {
-		h = hist;
+	public int getThreshold(int[] h) {
 		int K = h.length;
 		makeMeanTables(h);
 
