@@ -28,7 +28,7 @@ public class MeanThresholder implements GlobalThresholder {
 	}
 
 	@Override
-	public int getThreshold(int[] h) {
+	public float getThreshold(int[] h) {
 		// calculate mean of the entire image:
 		int K = h.length;
 		int N = 0;

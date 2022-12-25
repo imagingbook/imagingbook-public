@@ -34,7 +34,7 @@ public class IsodataThresholderSlow implements GlobalThresholder {
 	}
 
 	@Override
-	public int getThreshold(int[] h) {
+	public float getThreshold(int[] h) {
 		int K = h.length;
 		int q = (int) HistogramUtils.mean(h, 0, K-1); 	// start with the total mean
 		int qq;
@@ -50,7 +50,7 @@ public class IsodataThresholderSlow implements GlobalThresholder {
 			double meanF = HistogramUtils.mean(h, q+1, K-1);
 			qq = q;
 			q = (int)((meanB + meanF)/2);
-		} while (q != qq && i < MAX_ITERATIONS);
+		} while(q != qq && i < MAX_ITERATIONS);
 		
 		return q;
 	}

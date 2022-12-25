@@ -62,11 +62,11 @@ public class SauvolaThresholder implements AdaptiveThresholder {
 		
 		RankFilters rf = new RankFilters();
 		rf.rank(Imean, params.radius, RankFilters.MEAN);
-		new ImagePlus("Imean", Imean). show();
+		// new ImagePlus("Imean", Imean). show();
 		
 		rf.rank(Isigma, params.radius, RankFilters.VARIANCE);
 		Isigma.sqrt();
-		new ImagePlus("Isigma", Isigma). show();
+		// new ImagePlus("Isigma", Isigma). show();
 		
 		final int W = I.getWidth();
 		final int H = I.getHeight();
@@ -89,7 +89,7 @@ public class SauvolaThresholder implements AdaptiveThresholder {
 			}
 		}
 
-		new ImagePlus("DIFF", DIFF). show();
+		// new ImagePlus("DIFF", DIFF). show();
 		return Q;
 	}
 	

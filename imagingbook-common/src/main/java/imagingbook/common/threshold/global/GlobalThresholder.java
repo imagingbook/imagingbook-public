@@ -26,13 +26,15 @@ import imagingbook.common.threshold.Thresholder;
  */
 public interface GlobalThresholder extends Thresholder {
 
+	public static final float InvalidThreshold = Float.NaN;
+
 	/**
 	 * Returns a single (global) threshold value for the specified histogram.
 	 *
 	 * @param h a histogram (array of frequencies)
 	 * @return a single (global) threshold value
 	 */
-	public int getThreshold(int[] h);	// TODO: change return type to double?
+	public float getThreshold(int[] h);	// TODO: change return type to double?
 
 	/**
 	 * Returns a single (global) threshold value for the specified {@link ByteProcessor} (8-bit image).
@@ -40,16 +42,16 @@ public interface GlobalThresholder extends Thresholder {
 	 * @param bp a {@link ByteProcessor} (8-bit image)
 	 * @return a single (global) threshold value
 	 */
-	public default int getThreshold(ByteProcessor bp) {
+	public default float getThreshold(ByteProcessor bp) {
 		int[] h = bp.getHistogram();
 		return getThreshold(h);
 	}
 	
 	@Override
 	public default boolean threshold(ByteProcessor ip) {
-		int q = getThreshold(ip);
+		float q = getThreshold(ip);
 		if (q > 0) {
-			ip.threshold(q);
+			ip.threshold(Math.round(q));
 			return true;
 		}
 		else {

@@ -120,13 +120,13 @@ public class GlobalThresholderGrayTest {
 	private void checkThreshold(GlobalThresholder thresholder, ImageResource res, int thresh1, int thresh2) {
 		ByteProcessor bp = res.getImagePlus().getProcessor().convertToByteProcessor();
 		// check it a valid threshold was found:
-		int q1 = thresholder.getThreshold(bp);
-		assertEquals("threshold 1 not as expected (" + res + ")", thresh1, q1);
+		float q1 = thresholder.getThreshold(bp);
+		assertEquals("threshold 1 not as expected (" + res + ")", thresh1, q1, 1e-3f);
 		// System.out.format("threshold 1 not as expected (" + res + "): %d vs %d\n", thresh1, q1);
 		//
 		bp.invert();
-		int q2 = thresholder.getThreshold(bp);
-		assertEquals("threshold 2 not as expected (" + res + ")", thresh2, q2);
+		float q2 = thresholder.getThreshold(bp);
+		assertEquals("threshold 2 not as expected (" + res + ")", thresh2, q2, 1e-3f);
 		// System.out.format("threshold 2 not as expected (" + res + "): %d vs %d\n", thresh2, q2);
 	}
 

@@ -34,7 +34,7 @@ public class MinErrorThresholder implements GlobalThresholder {
 	}
 	
 	@Override
-	public int getThreshold(int[] h) {
+	public float getThreshold(int[] h) {
 		int K = h.length;
 		makeSigmaTables(h);	// set up S2_0, S2_1, N
 

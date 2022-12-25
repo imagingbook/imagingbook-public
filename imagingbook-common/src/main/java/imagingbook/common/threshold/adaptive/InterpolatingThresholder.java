@@ -61,7 +61,7 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 		int nW = (W % tileSize == 0) ? (W / tileSize + 1) : (W / tileSize + 2);
 		int nH = (H % tileSize == 0) ? (H / tileSize + 1) : (H / tileSize + 2);
 		
-		int[][] tiles = new int[nW][nH];
+		float[][] tiles = new float[nW][nH];
 		int s0 = tileSize / 2;	// center of title (s0 + s1 = tileSize)
 //		int s1 = tileSize - s0;
 
@@ -75,7 +75,7 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 		for (int j = 0, v0 = 0; j < nH; j++, v0 += tileSize) {
 			for (int i = 0, u0 = 0; i < nW; i++, u0 += tileSize) {
 				getSubimageHistogram(ip, u0 - s0, v0 - s0, tileSize, h);
-				int q = localThresholder.getThreshold(h);
+				float q = localThresholder.getThreshold(h);
 				if (q < 0)
 					q = q_; // no threshold found in this tile
 				tiles[i][j] = q;
@@ -100,10 +100,10 @@ public class InterpolatingThresholder implements AdaptiveThresholder {
 		// linearly interpolate
 		for (int j = 0, v0 = 0; j < nH - 1; j++, v0 += tileSize) {
 			for (int i = 0, u0 = 0; i < nW - 1; i++, u0 += tileSize) {
-				int A = tiles[i][j];
-				int B = tiles[i + 1][j];
-				int C = tiles[i][j + 1];
-				int D = tiles[i + 1][j + 1];
+				float A = tiles[i][j];
+				float B = tiles[i + 1][j];
+				float C = tiles[i][j + 1];
+				float D = tiles[i + 1][j + 1];
 
 				// interpolate within [u0, v0, u0 + tileSize, v0 + tileSize]
 				for (int v = v0; v < v0 + tileSize; v++) {

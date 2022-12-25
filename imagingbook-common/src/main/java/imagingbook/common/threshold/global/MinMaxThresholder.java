@@ -29,7 +29,7 @@ public class MinMaxThresholder implements GlobalThresholder {
 	}
 
 	@Override
-	public int getThreshold(int[] h) {
+	public float getThreshold(int[] h) {
 		// calculate mean of entire image:
 		int K = h.length;
 		int minVal, maxVal;

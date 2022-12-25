@@ -50,7 +50,7 @@ public class QuantileThresholder implements GlobalThresholder {
 	}
 
 	@Override
-	public int getThreshold(int[] h) {
+	public float getThreshold(int[] h) {
 		int K = h.length;
 		int N = HistogramUtils.count(h);		// total number of pixels
 		double np = N * p;						// number of pixels in quantile

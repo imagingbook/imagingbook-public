@@ -34,8 +34,8 @@ public class AdaptiveThresholderTestBinary {
 	@Test
 	public void testInterpolatingThresholder() {
 		AdaptiveThresholder thresholder = new InterpolatingThresholder();
-		runThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 57374);	// PROBLEM!
-		runThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 57374);
+		runThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 57374);
+		runThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 57340);
 		runThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 40638);
 	}
 
@@ -97,8 +97,8 @@ public class AdaptiveThresholderTestBinary {
 		ByteProcessor bp = res.getImagePlus().getProcessor().convertToByteProcessor();
 		thresholder.threshold(bp);
 		int zeros = countZeros(bp);
-		System.out.println(res + ": " + zeros + " / " + (bp.getWidth() * bp.getHeight()));
-		// assertEquals("threshold to zero pixels (" + res + ")", expectedZeros, zeros);
+		// System.out.println(res + ": " + zeros + " / " + (bp.getWidth() * bp.getHeight()));
+		assertEquals("threshold to zero pixels (" + res + ")", expectedZeros, zeros);
 	}
 	
 	private int countZeros(ByteProcessor bp) {

@@ -35,7 +35,7 @@ public class IsodataThresholder implements GlobalThresholder {
 	}
 
 	@Override
-	public int getThreshold(int[] h) {
+	public float getThreshold(int[] h) {
 		makeMeanTables(h);
 		int K = h.length;
 		int q = (int) M0[K-1]; 	// start with total mean

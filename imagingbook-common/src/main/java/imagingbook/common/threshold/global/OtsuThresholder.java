@@ -36,7 +36,7 @@ public class OtsuThresholder implements GlobalThresholder {
 	}
 	
 	@Override
-	public int getThreshold(int[] h) {
+	public float getThreshold(int[] h) {
 		int K = h.length;
 		makeMeanTables(h);
 
