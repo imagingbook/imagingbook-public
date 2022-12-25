@@ -39,7 +39,7 @@ public class MinErrorThresholder implements GlobalThresholder {
 		makeSigmaTables(h);	// set up S2_0, S2_1, N
 
 		int n0 = 0, n1;
-		int qMin = -1;
+		float qMin = NoThreshold;
 		double eMin = Double.POSITIVE_INFINITY;
 		for (int q = 0; q <= K-2; q++) {
 			n0 = n0 + h[q];

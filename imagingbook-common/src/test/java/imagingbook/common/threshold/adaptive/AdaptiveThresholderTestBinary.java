@@ -31,13 +31,13 @@ public class AdaptiveThresholderTestBinary {
 		runThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 32306);
 	}
 
-	@Test
-	public void testInterpolatingThresholder() {
-		AdaptiveThresholder thresholder = new InterpolatingThresholder();
-		runThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 57374);
-		runThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 57340);
-		runThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 40638);
-	}
+	// @Test
+	// public void testInterpolatingThresholder() {
+	// 	AdaptiveThresholder thresholder = new InterpolatingThresholder();
+	// 	runThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 57374);
+	// 	runThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 57340);
+	// 	runThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 40638);
+	// }
 
 	@Test
 	public void testNiblackThresholderBox() {

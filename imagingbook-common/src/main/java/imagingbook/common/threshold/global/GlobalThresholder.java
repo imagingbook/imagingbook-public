@@ -26,7 +26,7 @@ import imagingbook.common.threshold.Thresholder;
  */
 public interface GlobalThresholder extends Thresholder {
 
-	public static final float InvalidThreshold = Float.NaN;
+	public static final float NoThreshold = Float.NaN;
 
 	/**
 	 * Returns a single (global) threshold value for the specified histogram.

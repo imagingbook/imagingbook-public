@@ -45,7 +45,7 @@ public class IsodataThresholderSlow implements GlobalThresholder {
 			int nB = HistogramUtils.count(h, 0, q);
 			int nF = HistogramUtils.count(h, q+1, K-1);
 			if (nB == 0 || nF == 0)
-				return -1;
+				return NoThreshold;
 			double meanB = HistogramUtils.mean(h, 0, q);
 			double meanF = HistogramUtils.mean(h, q+1, K-1);
 			qq = q;

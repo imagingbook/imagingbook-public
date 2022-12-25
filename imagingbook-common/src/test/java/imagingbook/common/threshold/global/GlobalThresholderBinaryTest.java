@@ -108,7 +108,9 @@ public class GlobalThresholderBinaryTest {
 
 	// ----------------------------------------------------
 	
-	private void checkThreshold(GlobalThresholder thresholder, ImageResource res, int thresh1, int thresh2) {
+	private void checkThreshold(GlobalThresholder thresholder, ImageResource res, float thresh1, float thresh2) {
+		if (thresh1 == -1) thresh1 = Float.NaN;
+		if (thresh2 == -1) thresh2 = Float.NaN;
 		ByteProcessor bp = res.getImagePlus().getProcessor().convertToByteProcessor();
 		// check it a valid threshold was found:
 		float q1 = thresholder.getThreshold(bp);

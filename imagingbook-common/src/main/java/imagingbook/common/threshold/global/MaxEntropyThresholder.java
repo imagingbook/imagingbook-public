@@ -44,7 +44,7 @@ public class MaxEntropyThresholder implements GlobalThresholder {
 		
 		double P0 = 0;	// cumulative probability
 		
-		int qMax = -1;
+		float qMax = NoThreshold;
 		double Hmax = Double.NEGATIVE_INFINITY;
 		
 		for (int q = 0; q <= K-2; q++) {		

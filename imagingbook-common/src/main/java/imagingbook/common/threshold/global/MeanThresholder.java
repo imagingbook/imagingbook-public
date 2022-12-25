@@ -51,6 +51,6 @@ public class MeanThresholder implements GlobalThresholder {
 		if (nb < N)
 			return mean;
 		else
-			return -1;	// no threshold found
+			return NoThreshold;	// no threshold found
 	}
 }

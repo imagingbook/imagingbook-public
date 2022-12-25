@@ -16,23 +16,12 @@ import imagingbook.common.histogram.HistogramUtils;
  * This is an implementation of the global "quantile" thresholder, described in Sec. 9.1 (Alg. 9.1) of [1]. Requires the
  * quantile (p) to be specified at instantiation. Method {@link #getThreshold(int[])} returns the minimal threshold that
  * will put AT LEAST the p-fraction of pixels (but not all pixels) in the background. If the underlying image is flat
- * (i.e., contains only a single pixel value), q = -1 is returned to indicate an invalid threshold.
+ * (i.e., contains only a single pixel value), {@link GlobalThresholder#NoThreshold} is returned to indicate an invalid
+ * threshold. Similarly there is no valid threshold if it takes the pixels from all brightness levels to fill the
+ * p-quantile.
  * </p>
- * <p>
- * Note that this implementation slightly deviates from [1] in the way it handles binary images. Let's assume that the
- * image contains only two pixel values a, b (with a &lt& b):
- * </p>
- * <ul>
- * <li>Case 1: Assume count(a) &gt; np, where np is the number of pixels in the p-quantile.</li>
- * In this case, q = q is returned as the (correct) threshold.
- * <li>Case 2: When count(q) &lt; np, there are not enough A-pixels to fill the p-quantile, but increasing the threshold
- * to level b would include all image pixels and thus have no effect. In this case, q = b-1 is returned as the
- * threshold, which means that the thresholded image will have fewer than the p-fraction of pixels in the background.
- * </li>
- * </ul>
- * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
- * (2022). See Errata p. 245!
+ * (2022). Also see the Errata p. 245!
  * </p>
  *
  * @author WB
@@ -60,7 +49,7 @@ public class QuantileThresholder implements GlobalThresholder {
 			i = i + 1;
 			c = c + h[i];
 		}
-		return (c < N) ? i : -1;			// level i does not include all pixels
+		return (c < N) ? i : NoThreshold;		// return i if level i does not include all pixels
 	}
 
 }

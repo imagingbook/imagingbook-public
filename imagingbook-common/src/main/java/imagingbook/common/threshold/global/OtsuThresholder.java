@@ -41,7 +41,7 @@ public class OtsuThresholder implements GlobalThresholder {
 		makeMeanTables(h);
 
 		double sigma2Bmax = 0;
-		int qMax = -1;
+		float qMax = NoThreshold;
 		int n0 = 0;
 		
 		// examine all possible threshold values q:

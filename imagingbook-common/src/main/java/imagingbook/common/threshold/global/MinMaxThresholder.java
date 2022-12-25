@@ -48,9 +48,9 @@ public class MinMaxThresholder implements GlobalThresholder {
 			}
 		}
 		
-		int q = (minVal < maxVal) ? 
-				(int) Math.floor((minVal + maxVal) / 2.0) : -1;
-		
-		return q;
+		if (minVal < maxVal)
+			return (float) Math.floor((minVal + maxVal) / 2.0);
+		else
+			return NoThreshold;
 	}
 }

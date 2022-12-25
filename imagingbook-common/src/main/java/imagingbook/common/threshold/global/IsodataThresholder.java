@@ -45,7 +45,7 @@ public class IsodataThresholder implements GlobalThresholder {
 		do {
 			i++; 
 			if (M0[q] < 0 || M1[q] < 0)  // background or foreground is empty
-				return -1;
+				return NoThreshold;
 			qq = q;
 			q = (int) ((M0[q] + M1[q]) / 2);
 		} while (q != qq && i < MAX_ITERATIONS);
