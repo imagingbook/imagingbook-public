@@ -109,7 +109,7 @@ public class GlobalThresholderGrayTest {
 		checkThreshold(thresholder, GeneralSampleImage.Blobs, 48, 79);
 		checkThreshold(thresholder, GeneralSampleImage.Boats, 98, 99);
 		checkThreshold(thresholder, ThresholdTestImage.kepler, 151, 71);
-		// flat (single-value) images
+		// // flat (single-value) images
 		checkThreshold(thresholder, ThresholdTestImage.flat000, -1, -1);
 		checkThreshold(thresholder, ThresholdTestImage.flat031, -1, -1);
 		checkThreshold(thresholder, ThresholdTestImage.flat255, -1, -1);

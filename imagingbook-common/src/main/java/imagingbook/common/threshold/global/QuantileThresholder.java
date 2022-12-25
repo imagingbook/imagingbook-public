@@ -53,21 +53,14 @@ public class QuantileThresholder implements GlobalThresholder {
 	public int getThreshold(int[] h) {
 		int K = h.length;
 		int N = HistogramUtils.count(h);		// total number of pixels
-		int[] H = HistogramUtils.cumulate(h);	// cumulative histogram
 		double np = N * p;						// number of pixels in quantile
-
 		int i = 0;
-		while (i < K && H[i] < np) {
-			i++;
+		int c = h[0];							// c = cumulative histogram [i]
+		while (i < K && c < np) {				// quantile calculation
+			i = i + 1;
+			c = c + h[i];
 		}
-
-		if (H[i] < N) {              			// level i does not include all pixels
-			return i;                			// q = i
-		} else if (i > 0 && H[i - 1] > 0) {    // there are pixels at a lower level
-			return i - 1;
-		} else {    							// image has only one pixel value, no threshold
-			return -1;
-		}
+		return (c < N) ? i : -1;			// level i does not include all pixels
 	}
 
 }

@@ -54,12 +54,12 @@ public class GlobalThresholderBinaryTest {
 	@Test
 	public void testMaxMedianThresholder() {
 		GlobalThresholder thresholder = new MedianThresholder();
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin, 254, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, 154, 100);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, 254, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, 0, 254);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, 254, 0);
-		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, 17, 237);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin, -1, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinMinus100, -1, 100);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBinPlus100, -1, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_000_001, -1, 254);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_254_255, -1, 0);
+		checkThreshold(thresholder, ThresholdTestImage.keplerBin_017_018, -1, 237);
 	}
 	
 	@Test
