@@ -6,4 +6,6 @@ module imagingbook.sampleimages {
 	exports imagingbook.sampleimages;
 
 	requires imagingbook.core;
+	requires transitive ij;
+	requires java.desktop;
 }
