@@ -25,7 +25,7 @@ public class ImageResourceTest {
 		assertEquals("foo.tiff", DummyNamedResource.foo_tiff.getFileName());
 		assertEquals("The_File.jpg", DummyNamedResource.The_File_jpg.getFileName());
 		assertEquals("The_File.jpeg", DummyNamedResource.The_File_jpeg.getFileName());
-		assertEquals("_Some____File_bla.png", DummyNamedResource._Some____File_bla.getFileName());	
+		assertEquals("_Some____File_bla.png", DummyNamedResource._Some____File_bla.getFileName());
 	}
 	
 	// public static void main(String[] args) {

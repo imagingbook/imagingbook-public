@@ -8,6 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.util;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 /**
  * @author WB
  * @version 2022/11/20
@@ -32,4 +35,15 @@ public abstract class ArrayUtils {
 		return cnt;
 	}
 
+	/**
+	 * Returns an iterator for the specified (non-primitive) array. The resulting iterator does not implement
+	 * {@link Iterator#remove()}.
+	 *
+	 * @param <T> the generic element type
+	 * @param array a non-primitive array
+	 * @return the associated iterator
+	 */
+	public static <T> Iterator<T> getIterator(T[] array) {
+		return Arrays.stream(array).iterator();
+	}
 }

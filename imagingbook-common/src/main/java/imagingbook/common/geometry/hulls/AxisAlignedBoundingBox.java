@@ -13,7 +13,7 @@ import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.shape.ShapeProducer;
-import imagingbook.common.util.ArrayIterator;
+import imagingbook.common.util.ArrayUtils;
 
 import java.awt.Shape;
 import java.awt.geom.Path2D;
@@ -71,7 +71,7 @@ public class AxisAlignedBoundingBox implements ShapeProducer {
 	 * @param points an array of 2D points
 	 */
 	public AxisAlignedBoundingBox(Pnt2d[] points) {
-		this(() -> ArrayIterator.from(points));
+		this(() -> ArrayUtils.getIterator(points));
 	}
 
 	/**

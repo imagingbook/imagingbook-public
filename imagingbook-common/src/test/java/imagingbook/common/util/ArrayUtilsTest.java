@@ -1,6 +1,7 @@
 package imagingbook.common.util;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,13 +9,19 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class ArrayIteratorTest {
+public class ArrayUtilsTest {
 
 	@Test
-	public void test1() {
+	public void testCountNonNullElements() {
+		String[] items1 = {"A", "B", null, "C"};
+		assertEquals(3, ArrayUtils.countNonNullElements(items1));
+	}
+
+	@Test
+	public void testArrayIterator1() {
 		String[] items1 = {"A", "B", null, "C"};
 		
-		Iterator<String> iter = ArrayIterator.from(items1);
+		Iterator<String> iter = ArrayUtils.getIterator(items1);
 		
 		List<String> list = new ArrayList<>();
 		while (iter.hasNext()) {
@@ -27,10 +34,10 @@ public class ArrayIteratorTest {
 	}
 	
 	@Test
-	public void test2() {
+	public void testArrayIterator2() {
 		Integer[] items1 = {9, 4, 5, 6 -3, 19};
 		
-		Iterator<Integer> iter = ArrayIterator.from(items1);
+		Iterator<Integer> iter = ArrayUtils.getIterator(items1);
 		
 		List<Integer> list = new ArrayList<>();
 		while (iter.hasNext()) {

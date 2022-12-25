@@ -9,7 +9,7 @@
 package imagingbook.common.edges;
 
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
-import imagingbook.common.util.ArrayIterator;
+import imagingbook.common.util.ArrayUtils;
 
 import java.util.Iterator;
 import java.util.List;
@@ -65,7 +65,7 @@ public class EdgeTrace implements Iterable<PntInt> {
 
 	@Override
 	public Iterator<PntInt> iterator() {
-		return ArrayIterator.from(edgePoints);
+		return ArrayUtils.getIterator(edgePoints);
 	}
 	
 	@Override
