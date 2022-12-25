@@ -19,6 +19,8 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.askForSampleImage;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.threshold.global.GlobalThresholder.NoThreshold;
+import static java.lang.Float.isFinite;
 
 /**
  * <p>
@@ -54,17 +56,15 @@ public class Global_MinError implements PlugInFilter {
 	public void run(ImageProcessor ip) {
 		ByteProcessor bp = (ByteProcessor) ip;
 		
-		GlobalThresholder thr = new MinErrorThresholder();		
-		int q = thr.getThreshold(bp); 
+		GlobalThresholder thr = new MinErrorThresholder();
+		float q = thr.getThreshold(bp);
 
-		if (q > 0) {
-			IJ.log("threshold = " + q);
-			bp.threshold(q);
+		if (isFinite(q)) {
+			bp.threshold(Math.round(q));
 		}
 		else {
 			IJ.showMessage("no threshold found");
 		}
-
 	}
 	
 }

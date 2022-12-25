@@ -19,6 +19,8 @@ import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.askForSampleImage;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
+import static imagingbook.common.threshold.global.GlobalThresholder.NoThreshold;
+import static java.lang.Float.isFinite;
 
 /**
  * <p>
@@ -36,7 +38,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  */
 public class Global_Quantile implements PlugInFilter {
 	
-	private static double quantile = 0.5;
+	private static double quantile = 0.2;
 
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image
@@ -57,18 +59,19 @@ public class Global_Quantile implements PlugInFilter {
 	public void run(ImageProcessor ip) {
 		ByteProcessor bp = (ByteProcessor) ip;
 		
-		quantile = IJ.getNumber("Black quantile [0,1]", quantile);
-		if (quantile < 0) quantile = 0;
-		if (quantile > 1) quantile = 1;
+		quantile = IJ.getNumber("Black quantile (0 < p < 1)", quantile);
+		if (quantile < 0.01) quantile = 0.01;
+		if (quantile > 0.99) quantile = 0.99;
 		
 		GlobalThresholder thr = new QuantileThresholder(quantile);
-		int q = thr.getThreshold(bp);
-		if (q >= 0) {
-			IJ.log("threshold = " + q);
-			ip.threshold(q);
+		float q = thr.getThreshold(bp);
+
+		if (isFinite(q)) {
+			bp.threshold(Math.round(q));
 		}
 		else {
 			IJ.showMessage("no threshold found");
 		}
+
 	}
 }

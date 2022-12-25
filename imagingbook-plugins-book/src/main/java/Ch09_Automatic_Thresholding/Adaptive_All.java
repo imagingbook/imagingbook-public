@@ -33,15 +33,13 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/04/01
  * 
  * @see Adaptive_Bernsen
- * @see Adaptive_Interpolating
  * @see Adaptive_Niblack
  * @see Adaptive_Sauvola
  */
 public class Adaptive_All implements PlugInFilter {
 	
 	enum Algorithm {
-		Bernsen(Adaptive_Bernsen.class), 
-		Interpolating(Adaptive_Interpolating.class),
+		Bernsen(Adaptive_Bernsen.class),
 		Niblack(Adaptive_Niblack.class),
 		Sauvola(Adaptive_Sauvola.class);
 		
