@@ -32,25 +32,20 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * This ImageJ plugin demonstrates the use of the {@link ConvexHull} class. See
- * Sec. 8.4.2 of [1] for additional details. It performs region segmentation,
- * calculates the convex hull for each region found and then displays the result
- * in a new image. Requires a binary image. Zero-value pixels are considered
- * background, all other pixels are foreground. Display lookup tables (LUTs) are
- * not considered. The resulting convex hull is shown as a vector overlay on top
- * of a new image, the original image is not modified.
- * If no image is currently open, the plugin optionally loads a suitable
- * sample image.
+ * This ImageJ plugin demonstrates the use of the {@link ConvexHull} class. See Sec. 8.4.2 of [1] for additional
+ * details. It performs region segmentation, calculates the convex hull for each region found and then displays the
+ * result in a new image. Requires a binary image. Zero-value pixels are considered background, all other pixels are
+ * foreground. Display lookup tables (LUTs) are not considered. The resulting convex hull is shown as a vector overlay
+ * on top of a new image, the original image is not modified. If no image is currently open, the plugin optionally loads
+ * a suitable sample image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
- * 
+ *
  * @author WB
  * @version 2022/06/24
- * 
  */
 @IjPluginName("Convex Hull Demo")
 public class Convex_Hull_Demo implements PlugInFilter {
