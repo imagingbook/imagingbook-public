@@ -25,18 +25,19 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * This ImageJ plugin assumes a binary image (with 0 background) and calculates the 11 scale and rotation invariant
- * Flusser moments for the largest contained region.
+ * Flusser moments for the largest contained region. Optionally the moments are calculated from the region's contour
+ * points only (ignoring all inner points).
  *
  * @author WB
- * @version 2015/04/16
+ * @version 2022/12/28
  */
 public class Flusser_Moments_Image implements PlugInFilter {
 
-    static private int MIN_REGION_SIZE = 10;
-    static private int MAX_REGION_COUNT = 5;
-    static private boolean USE_CONTOURS_ONLY = false;
+    private static int MIN_REGION_SIZE = 10;
+    private static int MAX_REGION_COUNT = 5;
+    private static boolean USE_CONTOURS_ONLY = false;
+    private static boolean MARK_OUTER_CONTOURS = true;
 
-    String title = null;
     private ImagePlus im;
 
     /**
@@ -44,9 +45,7 @@ public class Flusser_Moments_Image implements PlugInFilter {
      */
     public Flusser_Moments_Image() {
         if (noCurrentImage()) {
-            if (DialogUtils.askForSampleImage(Kimia216.bird02)) {
-                IJ.getImage().getProcessor().invert();
-            }
+            DialogUtils.askForSampleImage(Kimia216.bird02);
         }
     }
 
@@ -59,8 +58,6 @@ public class Flusser_Moments_Image implements PlugInFilter {
         if (!runDialog())
             return;
 
-        // ip.invert();
-
         BinaryRegionSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);
         List<BinaryRegion> regions = segmenter.getRegions(true);
         if (regions.isEmpty()) {
@@ -68,21 +65,23 @@ public class Flusser_Moments_Image implements PlugInFilter {
             return;
         }
 
-        IJ.log("regions found: " + regions.size());
-        // Util.sortByXc(regions);
-
+        IJ.log("Regions found: " + regions.size());
         ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-        ola.setStroke(new ColoredStroke(0.5, Color.blue));
         int i = 0;
         for (BinaryRegion r : regions) {
             if (r.getSize() >= MIN_REGION_SIZE) {
-                IJ.log("Region " + i + ", size=" + r.getSize());
                 Contour c = r.getOuterContour();
+                ola.setStroke(new ColoredStroke(0.5, Color.green));
                 ola.addShape(c.getPolygonPath());
-
-                double[] moments = (USE_CONTOURS_ONLY) ?
-                        FlusserMoments.getInvariantMoments(r.getOuterContour()) :
-                        FlusserMoments.getInvariantMoments(r);
+                double[] moments;
+                if (USE_CONTOURS_ONLY) {
+                    IJ.log("Contour " + i + ", length = " + c.getLength());
+                    moments = new FlusserMoments(c).getInvariantMoments();
+                }
+                else {
+                    IJ.log("Region " + i + ", size = " + r.getSize());
+                    moments = new FlusserMoments(r).getInvariantMoments();
+                }
                 print(moments);
                 i++;
                 if (i > MAX_REGION_COUNT)
@@ -103,9 +102,14 @@ public class Flusser_Moments_Image implements PlugInFilter {
 
     private boolean runDialog() {
         GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+        if (im.isInvertedLut()) {
+            gd.setInsets(0, 0, 0);
+            gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");
+        }
         gd.addNumericField("Minimum region size (pixels)", MIN_REGION_SIZE);
         gd.addNumericField("Maximum region count", MAX_REGION_COUNT);
-        gd.addCheckbox("Use contours only", USE_CONTOURS_ONLY);
+        gd.addCheckbox("Calculate moments from contour", USE_CONTOURS_ONLY);
+        gd.addCheckbox("Mark outer contours", MARK_OUTER_CONTOURS);
 
         gd.showDialog();
         if (gd.wasCanceled()) {
@@ -115,8 +119,8 @@ public class Flusser_Moments_Image implements PlugInFilter {
         MIN_REGION_SIZE = (int) gd.getNextNumber();
         MAX_REGION_COUNT = (int) gd.getNextNumber();
         USE_CONTOURS_ONLY = gd.getNextBoolean();
+        MARK_OUTER_CONTOURS = gd.getNextBoolean();
         return true;
     }
 
 }
-
