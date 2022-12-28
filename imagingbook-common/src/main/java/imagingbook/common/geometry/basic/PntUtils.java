@@ -21,6 +21,19 @@ public abstract class PntUtils {
 	private PntUtils() {}
 
 	/**
+	 * Simply counts the points in the specified point set.
+	 * @param pts an {@link Iterable} of {@link Pnt2d} instances
+	 * @return the number of points
+	 */
+	public static int count(Iterable<Pnt2d> pts) {
+		int n = 0;
+		for (Pnt2d p : pts) {
+			n++;
+		}
+		return n;
+	}
+
+	/**
 	 * Calculates and returns the centroid of the specified point set.
 	 *
 	 * @param pts an {@link Iterable} of {@link Pnt2d} instances
