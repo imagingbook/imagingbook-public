@@ -97,6 +97,9 @@ public class ComplexTest {
 //		assertEquals( 0.09963, z12.re, 1E-6);
 //		assertEquals(-0.09234, z12.im, 1E-6);
 		assertTrue(z12.equals(0.09963, -0.09234, 1E-6));
+
+		// org.apache.commons.math3.complex.Complex z1a = new org.apache.commons.math3.complex.Complex(z1.re, z1.im);
+		// System.out.println(z1a.pow(5));
 	}
 
 	@Test // z1.rotate(0.1) = (0.238601200, 0.626952524)
