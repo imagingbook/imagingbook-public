@@ -10,8 +10,11 @@ import ij.process.ImageProcessor;
 import imagingbook.common.color.iterate.RandomHueGenerator;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.moments.FlusserMoments;
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.BinaryRegionSegmentation;
+import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.kimia.KimiaCollage;
@@ -37,6 +40,8 @@ public class Flusser_Collage_Matching_Demo implements PlugIn {
 	private static final ImageResource ir = KimiaCollage.ShapeCollage1;
 
 	private static int MIN_REGION_SIZE = 100;
+	private static boolean USE_CONTOURS_ONLY = false;
+
 	private static int REFERENCE_BOUNDARY_Y = 130;	// everything above is a reference shape
 	private static double MAX_MOMENT_DISTANCE = 10.001;
 	private static int FONT_SIZE = 20;
@@ -96,20 +101,28 @@ public class Flusser_Collage_Matching_Demo implements PlugIn {
 		cp.setFont(new Font("Sans", Font.PLAIN, FONT_SIZE));
 		RandomHueGenerator rcg = new RandomHueGenerator(17);
 
+		PrintPrecision.set(6);
 		IJ.log("Reference shapes:");
 		int i = 0;
 		for (BinaryRegion r : referenceShapes) {
+			double[] moments = null;
+			if (USE_CONTOURS_ONLY) {
+				Contour c = r.getOuterContour();
+				moments = new FlusserMoments(c).getInvariantMoments();
+				// TODO: is calculation of scale normalization correct for contours?
+			}
+			else {
+				moments = new FlusserMoments(r).getInvariantMoments();
+			}
 			String rName = "R" + i;
-			IJ.log(rName + ":");
-			double[] moments = new FlusserMoments(r).getInvariantMoments();
-			// print(moments);
+			IJ.log(rName + ": " + Matrix.toString(moments));
+
 			refMoments[i] = moments;
 			refColors[i] = rcg.next();
 			paintRegion(r, cp, refColors[i]);
 			markRegion(r, cp, rName);
 			i++;
 		}
-
 
 		new ImagePlus("Colored Regions", cp).show();
 	}
@@ -131,7 +144,7 @@ public class Flusser_Collage_Matching_Demo implements PlugIn {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		// gd.addEnumChoice("Data set to use", DATA_SET);
 		gd.addNumericField("Minimum region size (pixels)", MIN_REGION_SIZE);
-		// gd.addCheckbox("Calculate moments from contour", USE_CONTOURS_ONLY);
+		gd.addCheckbox("Calculate moments from contours", USE_CONTOURS_ONLY);
 		// gd.addCheckbox("List long-encoded covariance matrix", LIST_LONG_ENCODED_MATRIX);
 		// gd.addCheckbox("Log output", BE_VERBOSE);
 
@@ -142,7 +155,7 @@ public class Flusser_Collage_Matching_Demo implements PlugIn {
 
 		// DATA_SET = gd.getNextEnumChoice(Flusser_Moments_Get_Covariance.DataSet.class);
 		MIN_REGION_SIZE = (int) gd.getNextNumber();
-		// USE_CONTOURS_ONLY = gd.getNextBoolean();
+		USE_CONTOURS_ONLY = gd.getNextBoolean();
 		// LIST_LONG_ENCODED_MATRIX = gd.getNextBoolean();
 		// BE_VERBOSE = gd.getNextBoolean();
 		return true;
