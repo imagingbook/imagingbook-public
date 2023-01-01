@@ -10,6 +10,9 @@
 package imagingbook.common.math;
 
 //import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.EigenDecomposition;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
 /**
@@ -23,12 +26,32 @@ public abstract class Statistics {
 	private Statistics() {}
 
 	/**
+	 * Calculates the mean vector for a sequence of sample vectors.
+	 * @param samples a 2D array of m-dimensional vectors ({@code }double[n][m]})
+	 * @return the mean vector for the sample data (of length m)
+	 */
+	public static double[] meanVector(double[][] samples) {
+		final int n = samples.length;
+		final int m = samples[0].length;
+		double[] mean = new double[m];
+		for (int k = 0; k < n; k++) {
+			for (int i = 0; i < m; i++) {
+				mean[i] = mean[i] + samples[k][i];
+			}
+		}
+		for (int i = 0; i < m; i++) {
+			mean[i] = mean[i] / n;
+		}
+		return mean;
+	}
+
+	/**
 	 * Calculates the covariance matrix for a sequence of sample vectors. Takes a sequence of n data samples, each of
 	 * dimension m. The data element {@code samples[i][j]} refers to the j-th component of sample i. No statistical bias
 	 * correction is applied. Uses {@link Covariance} from Apache Commons Math.
 	 *
-	 * @param samples a 2D array of m-dimensional vectors ({@code }double[n][m]}).
-	 * @return the covariance matrix for the sample data (of dimension m x m).
+	 * @param samples a 2D array of m-dimensional vectors ({@code }double[n][m]})
+	 * @return the covariance matrix for the sample data (of dimension m x m)
 	 * @see Covariance
 	 */
 	public static double[][] covarianceMatrix(double[][] samples) {
@@ -48,6 +71,39 @@ public abstract class Statistics {
 	public static double[][] covarianceMatrix(double[][] samples, boolean biasCorrect) {
 		Covariance cov = new Covariance(samples, biasCorrect);
 		return cov.getCovarianceMatrix().getData();
+	}
+
+	/**
+	 * Conditions the supplied covariance matrix by enforcing positive eigenvalues.
+	 *
+	 * @param cov original covariance matrix
+	 * @param minDiagVal the minimum positive value of diagonal elements
+	 * @return conditioned covariance matrix
+	 */
+	public static double[][] conditionCovarianceMatrix(double[][] cov, double minDiagVal) {
+		RealMatrix C = MatrixUtils.createRealMatrix(cov);
+		return conditionCovarianceMatrix(C, minDiagVal).getData();
+	}
+
+	/**
+	 * Conditions the supplied covariance matrix by enforcing positive eigenvalues.
+	 *
+	 * @param cov original covariance matrix
+	 * @param minDiagVal the minimum positive value of diagonal elements
+	 * @return conditioned covariance matrix
+	 */
+	public static RealMatrix conditionCovarianceMatrix(RealMatrix cov, double minDiagVal) {
+		if (!cov.isSquare()) {
+			throw new IllegalArgumentException("covariance matrix must be square");
+		}
+		EigenDecomposition ed = new EigenDecomposition(cov);  // S  ->  V . D . V^T
+		RealMatrix V  = ed.getV();
+		RealMatrix D  = ed.getD();	// diagonal matrix of eigenvalues
+		RealMatrix VT = ed.getVT();
+		for (int i = 0; i < D.getRowDimension(); i++) {
+			D.setEntry(i, i, Math.max(D.getEntry(i, i), minDiagVal));	// setting eigenvalues to zero is not enough!
+		}
+		return V.multiply(D).multiply(VT);
 	}
 	
 //	/** 
