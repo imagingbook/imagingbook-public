@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
@@ -45,7 +46,7 @@ import static java.lang.Math.sqrt;
  * </p>
  *
  * @author WB
- * @version 2020/12/21
+ * @version 2023/01/02
  */
 public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d> {
 	
@@ -252,56 +253,72 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	// ------------------------------------------------------------
 	// ------------------------------------------------------------
 
-
-	/* Methods for attaching region properties dynamically.
-	 * Properties can be used to hash results of region calculations
-	 * to avoid multiple calculations.
-	 * Currently, only 'double' values are supported.
-	 * 
-	 * E.g. calculate major axis angle theta for region r, then do
-	 *    r.setProperty("angle", theta);
+	/**
+	 * Primitive mechanism for attaching region properties dynamically. Properties can be used to hash results of region
+	 * calculations to avoid multiple calculations. Objects of any type may be attached but no type checking is done at
+	 * compile time. E.g., to keep the major axis angle theta for some region r we do
+	 * <pre>
+	 * 		double theta = ... // calculate theta of r
+	 *  	r.setProperty("angle", theta);
+	 * </pre>
 	 * and subsequently
-	 *    double theta = r.getProperty("angle");
+	 * <pre>
+	 * 		theta = (double) r.getProperty("angle");
+	 * </pre>
+	 * {@code null} keys or values are not allowed. P
 	 */
-	private Map<Object, Double> properties = null;
+	private Map<String, Object> properties = null;
 
 	/**
 	 * Sets the specified property of this region to the given value.
-	 * @param key The key of the property.
-	 * @param val The value associated with this property.
+	 * @param key the key of the property (may not be {@code null})
+	 * @param value the value associated with this property (may not be {@code null})
+	 * @throws IllegalArgumentException if the supplied key or value is {@code null}
 	 */
-	public void setProperty(Object key, double val) {
-		if (key == null) {
+	public void setProperty(String key, Object value) {
+		if (Objects.isNull(key)) {
 			throw new IllegalArgumentException("property key must not be null");
+		}
+		if (Objects.isNull(value)) {
+			throw new IllegalArgumentException("property value must not be null");
 		}
 		if (properties == null) {
 			properties = new HashMap<>();
 		}
-		properties.put(key, val);
+		properties.put(key, value);
 	}
 
 	/**
 	 * Retrieves the specified region property. {@link IllegalArgumentException} is thrown if the property is not
 	 * defined for this region.
 	 *
-	 * @param key The key of the property.
-	 * @return The value associated with the specified property.
+	 * @param key the name of the property (may not be {@code null})
+	 * @return the value of the associated property
+	 * @throws IllegalArgumentException if the supplied key is {@code null}
+	 * @throws IllegalStateException if no property with the specified name is defined
 	 */
-	public double getProperty(Object key) {
+	public Object getProperty(String key) {
 		if (key == null) {
 			throw new IllegalArgumentException("property key must not be null");
 		}
-		Double value;
-		if (properties == null || (value = properties.get(key)) == null) {
-			throw new IllegalArgumentException("Region property " + key + " is undefined.");
+		if (properties == null || !properties.containsKey(key)) {
+			throw new IllegalStateException("region property " + key + " is undefined");
 		}
-		return value.doubleValue();
+		return properties.get(key);
+	}
+
+	/**
+	 * Removes the property associated with the specified key if defined, otherwise does nothing.
+	 * @param key
+	 */
+	public void removeProperty(String key) {
+		properties.remove(key);
 	}
 
 	/**
 	 * Removes all properties attached to this region.
 	 */
-	public void clearProperties() {
+	public void clearAllProperties() {
 		properties.clear();
 	}
 	
