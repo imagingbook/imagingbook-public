@@ -246,7 +246,7 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	 * @param p the pixel coordinate
 	 * @return true if the position is contained in this region
 	 */
-	public boolean contains (PntInt p) {
+	public boolean contains(PntInt p) {
 		return this.contains(p.x, p.y);
 	}
 
@@ -309,7 +309,7 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 
 	/**
 	 * Removes the property associated with the specified key if defined, otherwise does nothing.
-	 * @param key
+	 * @param key the name of the property
 	 */
 	public void removeProperty(String key) {
 		properties.remove(key);
