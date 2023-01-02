@@ -6,13 +6,13 @@ import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
-import ij.process.ImageProcessor;
-import imagingbook.common.color.iterate.RandomHueGenerator;
+import imagingbook.common.color.iterate.ColorSequencer;
+import imagingbook.common.color.iterate.FiniteLinearColorSequencer;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.moments.FlusserMoments;
+import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.MahalanobisDistance;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.BinaryRegionSegmentation;
 import imagingbook.common.regions.RegionContourSegmentation;
@@ -30,199 +30,197 @@ import java.util.List;
 /**
  * Assumes a special binary input image (collage of shapes). The top row are the reference shapes. They are assigned
  * different colors. In the second step, all other shapes are compared to the reference shapes and colored with the
- * color of the most similar shape.
- *
- * Taken from 'Flusser_Moments_Collage_Euclidean'
+ * color of the most similar reference shape.
  *
  * @author WB
- * @version 2018/03/07
+ * @version 2023/01/02
  */
 public class Flusser_Collage_Matching_Demo implements PlugIn {
 
-	private static final ImageResource ir = KimiaCollage.ShapeCollage1;
+    private static final ImageResource ir = KimiaCollage.ShapeCollage1;
+    private static final int ReferenceBoundaryY = 130;    // everything above this position is a reference shape
 
-	private static int MIN_REGION_SIZE = 100;
-	private static boolean USE_MAHALANOBIS_DISTANCE = false;
-	private static int REFERENCE_BOUNDARY_Y = 130;	// everything above this position is a reference shape
-	private static double MAX_MOMENT_DISTANCE = 0.5;
-	private static int FONT_SIZE = 20;
-	private static Color UNMATCHED_COLOR = Color.gray;
+    private static int MinRegionSize = 100;
+    private static boolean UseMahalanobisDistance = true;
+    private static double MaxMomentDistance = 1.0;
 
-	private static double[][] cov = Matrix.fromLongBits(Kimia1070.covarianceRegionBits);
-	private static MahalanobisDistance md = new MahalanobisDistance(cov);
-	private static double[][] U = md.getWhiteningTransformation();
+    private static final int FontSize = 20;
+    private static final Color UnmatchedColor = Color.gray;
+    private static final Color[] ReferenceShapeColors = {Color.yellow, Color.green, Color.cyan, Color.magenta, Color.pink};
+    private static final Font MarkerFont = new Font(Font.SANS_SERIF, Font.BOLD, 14);
+    private static final Color MarkerColor = Color.white;
 
-	private ImagePlus im;
+    private static final String MomentKey = "mts";
+    private static final String LabelKey = "lbl";
 
+    private MahalanobisDistance md;     // new MahalanobisDistance(cov);
+    private double[][] U;               // md.getWhiteningTransformation();
 
-	@Override
-	public void run(String str) {
-		im = ir.getImagePlus();
-		im.show();
+    @Override
+    public void run(String str) {
+        ImagePlus im = ir.getImagePlus();
+        im.show();
+        if (!runDialog()) {
+            return;
+        }
 
-		if (!runDialog()) {
-			return;
-		}
+        // segment the image into binary regions
+        ByteProcessor ip = (ByteProcessor) im.getProcessor();
+        BinaryRegionSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);
+        List<BinaryRegion> regions = segmenter.getRegions(true);
+        if (regions.isEmpty()) {
+            IJ.log("No regions found!");
+            return;
+        }
 
-		// segment the image into binary regions
-		ByteProcessor ip = (ByteProcessor) im.getProcessor();
-		BinaryRegionSegmentation segmenter = new RegionContourSegmentation((ByteProcessor) ip);
-		List<BinaryRegion> regions = segmenter.getRegions(true);
-		if (regions.isEmpty()) {
-			IJ.log("No regions found!");
-			return;
-		}
+        // calculate invariant moment for all regions
+        // and split into reference/other shapes
+        List<BinaryRegion> refShapes = new ArrayList<BinaryRegion>();
+        List<BinaryRegion> othShapes = new ArrayList<BinaryRegion>();
+        for (BinaryRegion r : regions) {
+            if (r.getSize() > MinRegionSize) {
+                // calculate invariant Flusser moments for region r
+                double[] moments = new FlusserMoments(r).getInvariantMoments();
+                r.setProperty(MomentKey, moments);
+                if (r.getCenter().getY() < ReferenceBoundaryY)
+                    refShapes.add(r);
+                else
+                    othShapes.add(r);
+            }
+        }
 
-		// collect all regions and split into reference/other shapes
-		List<BinaryRegion> refShapes = new ArrayList<BinaryRegion>();
-		List<BinaryRegion> othShapes = new ArrayList<BinaryRegion>();
-		for (BinaryRegion r : regions) {
-			if (r.getSize() > MIN_REGION_SIZE) {
-				Pnt2d ctr = r.getCenter();
-				if (ctr.getY() < REFERENCE_BOUNDARY_Y)
-					refShapes.add(r);
-				else
-					othShapes.add(r);
-			}
-		}
+        // sort reference shapes by center x-coordinates and assign labels:
+        refShapes.sort(Comparator.comparingDouble(r -> r.getCenter().getX()));
+        {
+            int k = 0;
+            for (BinaryRegion r : refShapes) {
+                r.setProperty(LabelKey, "R" + k);
+                k++;
+            }
+        }
 
-		// sort reference shapes by center x-coordinates:
-		refShapes.sort(Comparator.comparingDouble(r -> r.getCenter().getX()));
-		// sort other shapes by center x-coordinates:
-		othShapes.sort(Comparator.comparingDouble(r -> r.getCenter().getY()));
+        // sort other shapes by center y-coordinates and assign labels:
+        othShapes.sort(Comparator.comparingDouble(r -> r.getCenter().getY()));
+        {
+            int k = 0;
+            for (BinaryRegion s : othShapes) {
+                s.setProperty(LabelKey, "S" + k);
+                k++;
+            }
+        }
 
-		IJ.log("found reference shapes: " + refShapes.size());
-		IJ.log("found other shapes: " + othShapes.size());
+        if (UseMahalanobisDistance) {
+            // Matrix.fromLongBits(Kimia1070.covarianceRegionBits);
+            double[][] cov = Matrix.fromLongBits(Kimia1070.covarianceRegionBits);
+            md = new MahalanobisDistance(cov);
+            // U = md.getWhiteningTransformation();
+        }
 
-		// for (BinaryRegion r : referenceShapes) {
-		// 	IJ.log(r.toString());
-		// }
+        // ----- perform matching and create output image -------
 
-		PrintPrecision.set(9);
-		IJ.log("cov = \n" + Matrix.toString(cov));
-		IJ.log("U = \n" + Matrix.toString(U));
+        ColorProcessor cp = new ColorProcessor(ip.getWidth(), ip.getHeight());
+        ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
+        ola.setFont(MarkerFont);
+        ola.setTextColor(MarkerColor);
+        ColorSequencer randomColor = new FiniteLinearColorSequencer(ReferenceShapeColors);
 
-		ColorProcessor cp = ip.convertToColorProcessor();
-		cp.setFont(new Font("Sans", Font.PLAIN, FONT_SIZE));
-		RandomHueGenerator rcg = new RandomHueGenerator(17);
+        // process reference shapes
+        Color[] refColors = new Color[refShapes.size()];
+        double[][] refMoments = new double[refShapes.size()][];
+        {
+            int k = 0;
+            for (BinaryRegion r : refShapes) {
+                refMoments[k] = (double[]) r.getProperty(MomentKey);
+                refColors[k] = randomColor.next();
+                paintRegion(r, cp, refColors[k]);
+                markRegion(r, ola, (String) r.getProperty(LabelKey));
+                k++;
+            }
+        }
 
-		PrintPrecision.set(6);
+        // process other shapes
+        for (BinaryRegion s : othShapes) {
+            double[] moments = (double[]) s.getProperty(MomentKey);
+            // find best-matching reference shape
+            Tuple2<Integer, Double> match = (UseMahalanobisDistance) ?
+                    findBestMatchMahalanobis(moments, refMoments) :
+                    findBestMatchEuclidean(moments, refMoments);
+            int k = match.get0();
+            double dist = match.get1();
+            Color col = (dist <= MaxMomentDistance) ? refColors[k] : UnmatchedColor;
+            paintRegion(s, cp, col);
+            markRegion(s, ola, (String) s.getProperty(LabelKey));
+        }
 
-		// analyze and color the reference shapes
-		IJ.log("\nProcessing reference shapes:");
-		Color[] refColors = new Color[refShapes.size()];
-		double[][] refMoments = new double[refShapes.size()][];
-		int i = 0;
-		for (BinaryRegion r : refShapes) {
-			refMoments[i] = new FlusserMoments(r).getInvariantMoments();
-			String rName = "R" + i;
-			IJ.log(rName + ": " + Matrix.toString(refMoments[i]));
-			refColors[i] = rcg.next();
-			paintRegion(r, cp, refColors[i]);
-			markRegion(r, cp, rName);
-			i++;
-		}
+        ImagePlus imResult = new ImagePlus("Matched Regions", cp);
+        imResult.setOverlay(ola.getOverlay());
+        imResult.show();
+    }
 
-		// process other regions
-		IJ.log("\nProcessing other shapes:");
-		double[][] othMoments = new double[othShapes.size()][];
-		int j = 0;
-		for (BinaryRegion s : othShapes) {
-			othMoments[j] = new FlusserMoments(s).getInvariantMoments();
-			String rName = "S"+j;
-			IJ.log(rName);
-			IJ.log("   original: " + Matrix.toString(othMoments[j]));
-			IJ.log("   whitened: " + Matrix.toString(Matrix.multiply(U, othMoments[j])));
-			Tuple2<Integer, Double> match = (USE_MAHALANOBIS_DISTANCE) ?
-					findBestMatchMahalanobis(othMoments[j], refMoments) :
-					findBestMatchEuclidean(othMoments[j], refMoments);
-			int k = match.get0();
-			double dist = match.get1();
-			IJ.log(String.format("  %s: dmin = %.9f (R%d)", rName, dist, k));
-			if (dist <= MAX_MOMENT_DISTANCE) {
-				paintRegion(s, cp, refColors[k]);
-			}
-			else {
-				paintRegion(s, cp, UNMATCHED_COLOR);
-			}
-			markRegion(s, cp, rName);
-			j++;
-		}
+    /**
+     * Finds the reference moment vector closest to the given sample moment vector and returns the associated index (k)
+     * and distance (d).
+     *
+     * @param moments a sample moment vector
+     * @param refMoments an array of reference moment vectors
+     * @return a pair (k, d) consisting of reference index k and min. vector distance d
+     */
+    private Tuple2<Integer, Double> findBestMatchEuclidean(double[] moments, double[][] refMoments) {
+        int iMin = -1;
+        double dMin = Double.POSITIVE_INFINITY;
+        for (int i = 0; i < refMoments.length; i++) {
+            double d = Matrix.distL2(moments, refMoments[i]);    // Euclidean distance
+            if (d < dMin) {
+                dMin = d;
+                iMin = i;
+            }
+        }
+        return new Tuple2<>(iMin, dMin);
+    }
 
-		new ImagePlus("Colored Regions", cp).show();
-	}
+    private Tuple2<Integer, Double> findBestMatchMahalanobis(double[] moments, double[][] refMoments) {
+        int iMin = -1;
+        double dMin = Double.POSITIVE_INFINITY;
+        for (int i = 0; i < refMoments.length; i++) {
+            double d = md.distance(moments, refMoments[i]);    // Euclidean distance
+            if (d < dMin) {
+                dMin = d;
+                iMin = i;
+            }
+        }
+        return new Tuple2<>(iMin, dMin);
+    }
 
-	/**
-	 * Finds the reference moment vector closest to the given sample moment vector and returns the associated index (k)
-	 * and distance (d).
-	 * @param moments a sample moment vector
-	 * @param refMoments an array of reference moment vectors
-	 * @return a pair (k, d) consisting of reference index k and min. vector distance d
-	 */
-	private Tuple2<Integer, Double> findBestMatchEuclidean(double[] moments, double[][] refMoments) {
-		int iMin = -1;
-		double dMin = Double.POSITIVE_INFINITY;
-		for (int i = 0; i < refMoments.length; i++) {
-			double d = Matrix.distL2(moments, refMoments[i]);	// Euclidean distance
-			if (d < dMin) {
-				dMin = d;
-				iMin = i;
-			}
-		}
-		return new Tuple2<>(iMin, dMin);
-	}
+    private void markRegion(BinaryRegion r, ShapeOverlayAdapter ola, String s) {
+        Pnt2d c = r.getCenter();
+        ola.addText(c.getX(), c.getY(), s);
+    }
 
-	private Tuple2<Integer, Double> findBestMatchMahalanobis(double[] moments, double[][] refMoments) {
-		int iMin = -1;
-		double dMin = Double.POSITIVE_INFINITY;
-		for (int i = 0; i < refMoments.length; i++) {
-			double d = md.distance(moments, refMoments[i]);	// Euclidean distance
-			if (d < dMin) {
-				dMin = d;
-				iMin = i;
-			}
-		}
-		return new Tuple2<>(iMin, dMin);
-	}
+    private void paintRegion(BinaryRegion r, ColorProcessor cp, Color col) {
+        cp.setColor(col);
+        for (Pnt2d p : r) {
+            cp.drawDot(p.getXint(), p.getYint());
+        }
+    }
 
-	// -----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
-	void markRegion(BinaryRegion r, ImageProcessor ip, String s) {
-		ip.setColor(Color.white);
-		ip.drawString(s, (int) Math.round(r.getCenter().getX()), (int) Math.round(r.getCenter().getY()));
-	}
+    private boolean runDialog() {
+        GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+        gd.addNumericField("Minimum region size", MinRegionSize, 0);
+        gd.addNumericField("Uax. moment vector distance", MaxMomentDistance, 3);
+        gd.addCheckbox("Use Mahalanobis distance", UseMahalanobisDistance);
 
-	void paintRegion(BinaryRegion r, ImageProcessor ip, Color col) {
-		ip.setColor(col);
-		for (Pnt2d p : r) {
-			ip.drawDot(p.getXint(), p.getYint());
-		}
-	}
+        gd.showDialog();
+        if (gd.wasCanceled()) {
+            return false;
+        }
 
-	// ----------------------------------------------------------------------
-
-	private boolean runDialog() {
-		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		// gd.addEnumChoice("Data set to use", DATA_SET);
-		gd.addNumericField("Minimum region size", MIN_REGION_SIZE, 0);
-		gd.addNumericField("Uax. moment vector distance", MAX_MOMENT_DISTANCE, 3);
-		gd.addCheckbox("Use Mahalanobis distance", USE_MAHALANOBIS_DISTANCE);
-		// gd.addCheckbox("List long-encoded covariance matrix", LIST_LONG_ENCODED_MATRIX);
-		// gd.addCheckbox("Log output", BE_VERBOSE);
-
-		gd.showDialog();
-		if (gd.wasCanceled()) {
-			return false;
-		}
-
-		// DATA_SET = gd.getNextEnumChoice(Flusser_Moments_Get_Covariance.DataSet.class);
-		MIN_REGION_SIZE = (int) gd.getNextNumber();
-		MAX_MOMENT_DISTANCE = gd.getNextNumber();
-		USE_MAHALANOBIS_DISTANCE = gd.getNextBoolean();
-		// LIST_LONG_ENCODED_MATRIX = gd.getNextBoolean();
-		// BE_VERBOSE = gd.getNextBoolean();
-		return true;
-	}
+        MinRegionSize = (int) gd.getNextNumber();
+        MaxMomentDistance = gd.getNextNumber();
+        UseMahalanobisDistance = gd.getNextBoolean();
+        return true;
+    }
 
 }
 
