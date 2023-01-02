@@ -28,12 +28,34 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Assumes a special binary input image (collage of shapes). The top row are the reference shapes. They are assigned
- * different colors. In the second step, all other shapes are compared to the reference shapes and colored with the
- * color of the most similar reference shape.
+ * <p>
+ * This ImageJ plugin demonstrates the use of complex invariant Flusser moments for 2D shape matching. It opens a
+ * special binary input image (collage of shapes), where the top row are the reference shapes. They are assigned
+ * different colors. All other shapes are compared to the reference shapes and colored with the color of the most
+ * similar reference shape. See Sec. 8.6.5 of [1] for * additional details.
+ * </p>
+ * <p>
+ * The plugin offers two options for finding the "closest" reference moment vector for a given shape.
+ * <br>
+ * (a) Mahalonobis distance (MD, see Eq. 8.57 and Sec. G.3 of [1]): The MD is calculated from the (pre-calculated)
+ * covariance matrix of the moment vectors of the entire 'Kimia1070' dataset to obtain representative statistical shape
+ * parameters. The MD compensates the large magnitude variation between the 11 moment space dimensions.
+ * <br>
+ * (b) Euclidean distance (ED): Here the distance between moment vectors is measured using the ED. The large-magnitude
+ * moment elements obviously dominate this quantity. Typically only the 3-4 largest moments are actually used, all
+ * others have no effect. Thus results with the ED are inferior to the ones obtained with the MD.
+ * <br>
+ * In both cases matching is performed linearly, i.e., a given moment vector is simply compared to all reference
+ * vectors.
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
  *
  * @author WB
  * @version 2023/01/02
+ * @see Flusser_Moments_Get_Covariance
  */
 public class Flusser_Collage_Matching_Demo implements PlugIn {
 

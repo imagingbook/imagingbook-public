@@ -7,7 +7,7 @@ import imagingbook.common.math.Complex;
 /**
  * <p>
  * Naive implementation of Flusser's complex invariant moments [1]. See Sec. 8.6.5 (Eq. 8.51 - 8.54) of [2] for
- * additional details. This abstract class defines static methods only.
+ * additional details.
  * </p>
  * <p>
  * [1] J. Flusser, B. Zitova, and T. Suk. "Moments and Moment Invariants in Pattern Recognition". John Wiley and Sons
@@ -111,7 +111,5 @@ public class FlusserMoments {
             throw new RuntimeException("NaN encountered in complex quantity");
         }
     }
-
-
 
 }

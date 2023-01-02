@@ -39,11 +39,9 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 
 	private static DataSet DATA_SET = DataSet.Kimia99;
 	private static int MIN_REGION_SIZE = 50;
-	private static boolean USE_CONTOURS_ONLY = false;
 	private static boolean LIST_LONG_ENCODED_MATRIX = false;
 	private static boolean BE_VERBOSE = false;
 
-	
 	public void run(String arg0) {
 		if (!runDialog())
 			return;
@@ -81,14 +79,7 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 			if (!regions.isEmpty()) {
 				BinaryRegion r = regions.get(0);
 				if (r.getSize() >= MIN_REGION_SIZE) {
-					double[] moments = null;
-					if (USE_CONTOURS_ONLY) {
-						Contour c = r.getOuterContour();
-						moments = new FlusserMoments(c).getInvariantMoments();
-					}
-					else {
-						moments = new FlusserMoments(r).getInvariantMoments();
-					}
+					double[] moments = new FlusserMoments(r).getInvariantMoments();
 					if (!isFinite(moments)) {
 						IJ.log("ERROR: non-finite moment vector for " + ir + ": " + Matrix.toString(moments));
 					}
@@ -104,8 +95,6 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 
 		PrintPrecision.set(9);
 		IJ.log("covariance matrix (double):\n" + Matrix.toString(cov));
-
-		IJ.log("covariance matrix (compare):\n" + Matrix.toString(Matrix.fromLongBits(Kimia1070.covarianceRegionBits)));
 
 		if ( LIST_LONG_ENCODED_MATRIX) {
 			IJ.log("covariance matrix (long):\n" + Matrix.toString(Matrix.toLongBits(cov)));
@@ -128,7 +117,6 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addEnumChoice("Data set to use", DATA_SET);
 		gd.addNumericField("Minimum region size (pixels)", MIN_REGION_SIZE);
-		gd.addCheckbox("Calculate moments from contour", USE_CONTOURS_ONLY);
 		gd.addCheckbox("List long-encoded covariance matrix", LIST_LONG_ENCODED_MATRIX);
 		gd.addCheckbox("Log output", BE_VERBOSE);
 
@@ -139,7 +127,6 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 
 		DATA_SET = gd.getNextEnumChoice(DataSet.class);
 		MIN_REGION_SIZE = (int) gd.getNextNumber();
-		USE_CONTOURS_ONLY = gd.getNextBoolean();
 		LIST_LONG_ENCODED_MATRIX = gd.getNextBoolean();
 		BE_VERBOSE = gd.getNextBoolean();
 		return true;
