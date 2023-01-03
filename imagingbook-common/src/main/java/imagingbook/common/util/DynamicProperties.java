@@ -11,15 +11,17 @@ package imagingbook.common.util;
 import java.util.HashMap;
 import java.util.Objects;
 
+
 /**
- * Defines a primitive mechanism for attaching arbitrary properties to an object at runtime. Objects of any type may be
- * attached and no type checking is done at compile time, i.e., the required type casts are inherently unsafe. An
- * implementing class only needs to define method {@link #getPropertyMap()}. The functionality is basically the same as
- * {@link HashMap} but definition as an interface avoids having to subclass {@link HashMap}. Typical usage example:
+ * Defines a primitive mechanism for attaching arbitrary properties to an object dynamically using generic types to
+ * avoid unsafe type casts. Objects of any type may be attached and type checking is done at compile time. The keys to
+ * be used for inserting and retrieving values are identified by name (a {@link String}) and associated with a specific
+ * value type. An implementing class only needs to define method {@link #getPropertyMap()}. In principle, the
+ * functionality is the same as {@link HashMap} but definition as an interface avoids having to subclass
+ * {@link HashMap}. Typical usage example:
  * <pre>
  *     public class Foo implements DynamicProperties {
  *          private final PropertyMap properties = new PropertyMap();
- *
  *          &#64;Override
  *          public PropertyMap getPropertyMap() {
  *              return this.properties;
@@ -28,13 +30,31 @@ import java.util.Objects;
  *     }
  *
  *     Foo f = new Foo();
+ *     PropertyKey<double[]> key = new PropertyKey<>("UniqueName");
  *     double[] x = {1, 2, 3, 4};
- *     f.setProperty("SomeDoubleArray", x);
+ *     f.setProperty(key, x);
  *     ...
- *     double[] y = (double[]) f.getProperty("SomeDoubleArray");
+ *     double[] y = f.getProperty(key);
  * </pre>
+ * Note that only values matching the key's type can be passed to {@link #setProperty(PropertyKey, Object)} and
+ * no type casts are required when using {@link #getProperty(PropertyKey)}.
+ *
+ * @author WB
+ * @version 2023/01/03
  */
 public interface DynamicProperties {
+
+    /**
+     * Defines a generic map key to be used with {@link DynamicProperties}.
+     * @param <T> the generic key type
+     */
+    public static class PropertyKey<T> {
+        private final String name;
+
+        public PropertyKey(String name) {
+            this.name = name;
+        }
+    }
 
     /**
      * The underlying hash map, to be instantiated by implementing classes.
@@ -55,42 +75,60 @@ public interface DynamicProperties {
     public PropertyMap getPropertyMap();
 
     /**
-     * Sets the specified property of this region to the given value.
+     * Associates the specified value with the specified key in this property map. The supplied value must match the
+     * generic type of key. If the property map previously contained an entry for that key, the old value is replaced by
+     * the specified value if it is of the same type as the new value. Otherwise, if the type of the existing entry is
+     * different to the type of the new value, an exception is thrown. This happens when two {@link PropertyKey} with the
+     * same name but of different value type are used (which is an error).
+     *
      * @param key the key of the property (may not be {@code null})
      * @param value the value associated with this property (may not be {@code null})
-     * @throws IllegalArgumentException if the supplied key or value is {@code null}
+     * @param <T> the generic key and value type
+     * @throws IllegalArgumentException if the supplied key or value is {@code null} or if the property map already
+     * contains an entry with a different type
      */
-    public default void setProperty(String key, Object value) {
+    public default <T> void setProperty(PropertyKey<T> key, T value) {
         if (Objects.isNull(key)) {
             throw new IllegalArgumentException("property key must not be null");
         }
         if (Objects.isNull(value)) {
             throw new IllegalArgumentException("property value must not be null");
         }
-        getPropertyMap().put(key, value);
+        PropertyMap map = getPropertyMap();
+        Object oldval = map.get(key.name);
+        if (oldval != null && !oldval.getClass().equals(value.getClass())) {
+            throw new IllegalArgumentException("duplicate map key " + key.name + " with value of type " +
+                            oldval.getClass().getSimpleName());
+        }
+        map.put(key.name, value);
     }
 
     /**
-     * Retrieves the specified region property. {@link IllegalArgumentException} is thrown if the property is not
-     * defined.
+     * Returns the value associated with the specified {@link PropertyKey}, or {@code null} if this map contains no mapping
+     * for the key.
      *
      * @param key the name of the property (may not be {@code null})
-     * @return the value of the associated property
+     * @param <T> the generic key and value type
+     * @return the value (of type T) to which the specified key is mapped, or {@code null} if this map contains no
+     * mapping for the key
      * @throws IllegalArgumentException if the supplied key is {@code null}
      */
-    public default Object getProperty(String key) {
+    //public default Object getProperty(String key) {
+    public default <T> T getProperty(PropertyKey<T> key) {
         if (key == null) {
             throw new IllegalArgumentException("property key must not be null");
         }
-        return getPropertyMap().get(key);
+        // return getPropertyMap().get(key);
+        return (T) getPropertyMap().get(key.name);
     }
 
     /**
      * Removes the property associated with the specified key if defined, otherwise does nothing.
      * @param key the name of the property
+     * @param <T> the generic key type
      */
-    public default void removeProperty(String key) {
-        getPropertyMap().remove(key);
+    public default <T> void removeProperty(PropertyKey<T> key) {
+        getPropertyMap().remove(key.name);
     }
 
     /**

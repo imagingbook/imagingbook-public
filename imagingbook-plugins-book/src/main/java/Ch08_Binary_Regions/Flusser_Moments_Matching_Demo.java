@@ -24,6 +24,8 @@ import imagingbook.common.math.Matrix;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.BinaryRegionSegmentation;
 import imagingbook.common.regions.RegionContourSegmentation;
+import imagingbook.common.util.DynamicProperties;
+import imagingbook.common.util.DynamicProperties.PropertyKey;
 import imagingbook.common.util.tuples.Tuple2;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.kimia.Kimia1070;
@@ -80,8 +82,8 @@ public class Flusser_Moments_Matching_Demo implements PlugIn {
     private static final Font MarkerFont = new Font(Font.SANS_SERIF, Font.BOLD, 14);
     private static final Color MarkerColor = Color.white;
 
-    private static final String MomentKey = "mts";
-    private static final String LabelKey = "lbl";
+    private static final PropertyKey<double[]> MomentKey = new PropertyKey<>("mts");
+    private static final PropertyKey<String> LabelKey = new PropertyKey<>("lbl");
 
     private MahalanobisDistance md;     // new MahalanobisDistance(cov);
     private double[][] U;               // md.getWhiteningTransformation();
@@ -160,17 +162,17 @@ public class Flusser_Moments_Matching_Demo implements PlugIn {
         {
             int k = 0;
             for (BinaryRegion r : refShapes) {
-                refMoments[k] = (double[]) r.getProperty(MomentKey);
+                refMoments[k] = r.getProperty(MomentKey);
                 refColors[k] = randomColor.next();
                 paintRegion(r, cp, refColors[k]);
-                markRegion(r, ola, (String) r.getProperty(LabelKey));
+                markRegion(r, ola, r.getProperty(LabelKey));
                 k++;
             }
         }
 
         // process other shapes
         for (BinaryRegion s : othShapes) {
-            double[] moments = (double[]) s.getProperty(MomentKey);
+            double[] moments = s.getProperty(MomentKey);
             // find best-matching reference shape
             Tuple2<Integer, Double> match = (UseMahalanobisDistance) ?
                     findBestMatchMahalanobis(moments, refMoments) :
@@ -179,7 +181,7 @@ public class Flusser_Moments_Matching_Demo implements PlugIn {
             double dist = match.get1();
             Color col = (dist <= MaxMomentDistance) ? refColors[k] : UnmatchedColor;
             paintRegion(s, cp, col);
-            markRegion(s, ola, (String) s.getProperty(LabelKey));
+            markRegion(s, ola, s.getProperty(LabelKey));
         }
 
         ImagePlus imResult = new ImagePlus("Matched Regions", cp);

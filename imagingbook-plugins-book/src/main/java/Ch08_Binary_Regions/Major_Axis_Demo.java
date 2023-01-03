@@ -22,6 +22,8 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
+import imagingbook.common.util.DynamicProperties;
+import imagingbook.common.util.DynamicProperties.PropertyKey;
 import imagingbook.core.plugin.IjPluginName;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -51,6 +53,13 @@ import static java.lang.Math.sqrt;
  */
 @IjPluginName("Major Axis Demo")
 public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overlay display
+
+
+	static final PropertyKey<Double> dxKey = new PropertyKey<>("dx");
+	static final PropertyKey<Double> dyKey = new PropertyKey<>("dy");
+	static final PropertyKey<Double> ecc1Key = new PropertyKey<>("ecc1");
+	static final PropertyKey<Double> ecc2Key = new PropertyKey<>("ecc2");
+
 	
 	/** Scale of the axis length. */
 	public static double DrawingScale = 50;
@@ -104,8 +113,8 @@ public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overl
 				Pnt2d xc = r.getCenter();
 				double x0 = xc.getX();
 				double y0 = xc.getY();
-				double x1 = x0 + DrawingScale * (double) r.getProperty("dx");
-				double y1 = y0 + DrawingScale * (double) r.getProperty("dy");
+				double x1 = x0 + DrawingScale * r.getProperty(dxKey);
+				double y1 = y0 + DrawingScale * r.getProperty(dyKey);
 				ola.addShape(xc.getShape(0.05 * DrawingScale));
 				ola.addShape(new Line2D.Double(x0, y0, x1, y1));
 			}
@@ -138,16 +147,15 @@ public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overl
 		double dx = B + normAB;
 		double dy = A;
 		
-		r.setProperty("dx", dx / scale);
-		r.setProperty("dy", dy / scale);
+		r.setProperty(dxKey, dx / scale);
+		r.setProperty(dyKey, dy / scale);
 		
 		// calculate 2 versions of eccentricity:
 		double a = mu20 + mu02;
 		double b = Math.sqrt(Math.pow(mu20 - mu02, 2) + 4 * mu11 * mu11);
-		r.setProperty("ecc1", (a + b) / (a - b));
-		r.setProperty("ecc2", (Math.pow(mu20 - mu02,  2) + 4 * mu11 * mu11) / Math.pow(mu20 + mu02, 2));
+		r.setProperty(ecc1Key, (a + b) / (a - b));
+		r.setProperty(ecc2Key, (Math.pow(mu20 - mu02,  2) + 4 * mu11 * mu11) / Math.pow(mu20 + mu02, 2));
 	}
-
 
 	// --------------------------------------------------------------------------
 
