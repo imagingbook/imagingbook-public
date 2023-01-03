@@ -12,13 +12,12 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
+import imagingbook.common.util.DynamicProperties;
 
 import java.awt.Rectangle;
 import java.util.Formatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import static imagingbook.common.math.Arithmetic.sqr;
@@ -48,7 +47,7 @@ import static java.lang.Math.sqrt;
  * @author WB
  * @version 2023/01/02
  */
-public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d> {
+public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d>, DynamicProperties {
 	
 	// Constructor, to be used by package-local sub-classes only.
 	BinaryRegion() {
@@ -250,78 +249,18 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 		return this.contains(p.x, p.y);
 	}
 
-	// ------------------------------------------------------------
-	// ------------------------------------------------------------
+	// for attaching properties at runtime ---------------------------------
 
-	/**
-	 * Primitive mechanism for attaching region properties dynamically. Properties can be used to hash results of region
-	 * calculations to avoid multiple calculations. Objects of any type may be attached but no type checking is done at
-	 * compile time. E.g., to keep the major axis angle theta for some region r we do
-	 * <pre>
-	 * 		double theta = ... // calculate theta of r
-	 *  	r.setProperty("angle", theta);
-	 * </pre>
-	 * and subsequently
-	 * <pre>
-	 * 		theta = (double) r.getProperty("angle");
-	 * </pre>
-	 * {@code null} keys or values are not allowed. P
-	 */
-	private Map<String, Object> properties = null;
+	private PropertyMap properties = null;
 
-	/**
-	 * Sets the specified property of this region to the given value.
-	 * @param key the key of the property (may not be {@code null})
-	 * @param value the value associated with this property (may not be {@code null})
-	 * @throws IllegalArgumentException if the supplied key or value is {@code null}
-	 */
-	public void setProperty(String key, Object value) {
-		if (Objects.isNull(key)) {
-			throw new IllegalArgumentException("property key must not be null");
+	@Override
+	public PropertyMap getPropertyMap() {
+		if (Objects.isNull(properties)) {
+			properties = new PropertyMap();
 		}
-		if (Objects.isNull(value)) {
-			throw new IllegalArgumentException("property value must not be null");
-		}
-		if (properties == null) {
-			properties = new HashMap<>();
-		}
-		properties.put(key, value);
+		return properties;
 	}
 
-	/**
-	 * Retrieves the specified region property. {@link IllegalArgumentException} is thrown if the property is not
-	 * defined for this region.
-	 *
-	 * @param key the name of the property (may not be {@code null})
-	 * @return the value of the associated property
-	 * @throws IllegalArgumentException if the supplied key is {@code null}
-	 * @throws IllegalStateException if no property with the specified name is defined
-	 */
-	public Object getProperty(String key) {
-		if (key == null) {
-			throw new IllegalArgumentException("property key must not be null");
-		}
-		if (properties == null || !properties.containsKey(key)) {
-			throw new IllegalStateException("region property " + key + " is undefined");
-		}
-		return properties.get(key);
-	}
-
-	/**
-	 * Removes the property associated with the specified key if defined, otherwise does nothing.
-	 * @param key the name of the property
-	 */
-	public void removeProperty(String key) {
-		properties.remove(key);
-	}
-
-	/**
-	 * Removes all properties attached to this region.
-	 */
-	public void clearAllProperties() {
-		properties.clear();
-	}
-	
 	// ---------------------------------------------------------------------
 	
 	@Override

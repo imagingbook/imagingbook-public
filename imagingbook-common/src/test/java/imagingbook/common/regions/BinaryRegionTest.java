@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class BinaryRegionTest {
 
@@ -21,19 +22,19 @@ public class BinaryRegionTest {
         assertEquals(x2, y , 0);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testProperties2() {
         BinaryRegion r = new SegmentationBackedRegion(99, null);    // dummy region
         String key = "SomeDouble";
-        double y = (double) r.getProperty(key);
+        assertNull(r.getProperty(key));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testProperties3() {
         BinaryRegion r = new SegmentationBackedRegion(99, null);    // dummy region
         String key = "SomeDouble";
         r.setProperty(key, 1.234);
-        double y = (double) r.getProperty("OTHER-KEY");
+        assertNull(r.getProperty("OTHER-KEY"));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -49,13 +50,13 @@ public class BinaryRegionTest {
         r.setProperty(null, 123);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testProperties6() {
         BinaryRegion r = new SegmentationBackedRegion(99, null);    // dummy region
         String key = "SomeDouble";
         r.setProperty(key, 1.234);
         r.removeProperty(key);
-        double y = (double) r.getProperty(key);
+        assertNull(r.getProperty(key));
     }
 
     @Test
