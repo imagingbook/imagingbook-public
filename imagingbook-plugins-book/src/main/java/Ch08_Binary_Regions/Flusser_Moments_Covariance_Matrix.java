@@ -12,7 +12,6 @@ import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.math.Statistics;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.BinaryRegionSegmentation;
-import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.kimia.Kimia1070;
@@ -23,15 +22,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This ImageJ plugin assumes a binary image (with 0 background) and calculates the 11 scale and rotation invariant
- * Flusser moments for the largest contained region contained in each image of the user-selected data set. Outputs the
- * resulting covariance matrix in {@code float} and bit-encoded {@code long} format to avoid precision loss. The latter
- * can be converted to {@code double} using {@link Matrix#fromLongBits(long[][])}.
+ * <p>
+ * This ImageJ plugin calculates the covariance matrix for the 11-element Flusser moment vectors over a collection of
+ * binary images. The plugin assumes binary images (with 0 background and non-zero foreground) and calculates the 11
+ * scale and rotation invariant Flusser moments (sec. G.3 of [1] for details) for the largest contained region contained
+ * in each image of the data set . The resulting covariance matrix is output in {@code float} and bit-encoded
+ * {@code long} format to avoid precision loss. The latter can be converted to {@code double} using
+ * {@link Matrix#fromLongBits(long[][])}. The covariance matrix is used as a parameter to the Mahalanobis distance for
+ * matching moment vectors (see {@link Flusser_Moments_Matching_Demo}).
+ * </p>
+ * <p>
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
+ * </p>
  *
  * @author WB
  * @version 2022/12/28
+ * @see Flusser_Moments_Matching_Demo
  */
-public class Flusser_Moments_Get_Covariance implements PlugIn {
+public class Flusser_Moments_Covariance_Matrix implements PlugIn {
 
 	private enum DataSet {
 		Kimia99, Kimia216, Kimia1070
@@ -40,7 +49,6 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 	private static DataSet DATA_SET = DataSet.Kimia99;
 	private static int MIN_REGION_SIZE = 50;
 	private static boolean LIST_LONG_ENCODED_MATRIX = false;
-	private static boolean BE_VERBOSE = false;
 
 	public void run(String arg0) {
 		if (!runDialog())
@@ -53,16 +61,14 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 			case Kimia1070:  	clazz = Kimia1070.class; break;
 		}
 
-		IJ.log("Processing " + clazz.getSimpleName() + " dataset ...");
 		ImageResource[] irs = clazz.getEnumConstants();
+		IJ.log("Processing " + clazz.getSimpleName() + " dataset (" + irs.length + " images)");
 
 		// moment vectors
 		List<double[]> samples = new ArrayList<double[]>();
 
 		for (int i = 0; i < irs.length; i++) {
 			ImageResource ir = irs[i];
-			if (BE_VERBOSE) IJ.log("processing " + ir);
-
 			ImagePlus img = ir.getImagePlus();
 			if (img == null) {
 				IJ.log("ERROR: could not open " + ir);
@@ -99,7 +105,6 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 		if ( LIST_LONG_ENCODED_MATRIX) {
 			IJ.log("covariance matrix (long):\n" + Matrix.toString(Matrix.toLongBits(cov)));
 		}
-		IJ.log("done.");
 	}
 
 	private boolean isFinite(double[] moments) {
@@ -118,7 +123,6 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 		gd.addEnumChoice("Data set to use", DATA_SET);
 		gd.addNumericField("Minimum region size (pixels)", MIN_REGION_SIZE);
 		gd.addCheckbox("List long-encoded covariance matrix", LIST_LONG_ENCODED_MATRIX);
-		gd.addCheckbox("Log output", BE_VERBOSE);
 
 		gd.showDialog();
 		if (gd.wasCanceled()) {
@@ -128,7 +132,6 @@ public class Flusser_Moments_Get_Covariance implements PlugIn {
 		DATA_SET = gd.getNextEnumChoice(DataSet.class);
 		MIN_REGION_SIZE = (int) gd.getNextNumber();
 		LIST_LONG_ENCODED_MATRIX = gd.getNextBoolean();
-		BE_VERBOSE = gd.getNextBoolean();
 		return true;
 	}
 

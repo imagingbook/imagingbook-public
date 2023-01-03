@@ -32,10 +32,10 @@ import java.util.List;
  * This ImageJ plugin demonstrates the use of complex invariant Flusser moments for 2D shape matching. It opens a
  * special binary input image (collage of shapes), where the top row are the reference shapes. They are assigned
  * different colors. All other shapes are compared to the reference shapes and colored with the color of the most
- * similar reference shape. See Sec. 8.6.5 of [1] for * additional details.
+ * similar reference shape. See Sec. 8.6.5 of [1] for additional details.
  * </p>
  * <p>
- * The plugin offers two options for finding the "closest" reference moment vector for a given shape.
+ * The plugin offers two options for finding the "closest" reference moment vector for a given shape:
  * <br>
  * (a) Mahalonobis distance (MD, see Eq. 8.57 and Sec. G.3 of [1]): The MD is calculated from the (pre-calculated)
  * covariance matrix of the moment vectors of the entire 'Kimia1070' dataset to obtain representative statistical shape
@@ -55,9 +55,9 @@ import java.util.List;
  *
  * @author WB
  * @version 2023/01/02
- * @see Flusser_Moments_Get_Covariance
+ * @see Flusser_Moments_Covariance_Matrix
  */
-public class Flusser_Collage_Matching_Demo implements PlugIn {
+public class Flusser_Moments_Matching_Demo implements PlugIn {
 
     private static final ImageResource ir = KimiaCollage.ShapeCollage1;
     private static final int ReferenceBoundaryY = 130;    // everything above this position is a reference shape
