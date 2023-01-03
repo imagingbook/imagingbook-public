@@ -16,7 +16,7 @@
 <span class="source-line-no">003</span><span id="line-3"> * image processing published by Springer-Verlag in various languages and editions.</span>
 <span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause</span>
 <span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).</span>
-<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
+<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
 <span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9"></span>
@@ -47,12 +47,12 @@
 <span class="source-line-no">034</span><span id="line-34">        }</span>
 <span class="source-line-no">035</span><span id="line-35">        </span>
 <span class="source-line-no">036</span><span id="line-36">        @Override</span>
-<span class="source-line-no">037</span><span id="line-37">        public int getThreshold(int[] h) {</span>
+<span class="source-line-no">037</span><span id="line-37">        public float getThreshold(int[] h) {</span>
 <span class="source-line-no">038</span><span id="line-38">                int K = h.length;</span>
 <span class="source-line-no">039</span><span id="line-39">                makeSigmaTables(h);     // set up S2_0, S2_1, N</span>
 <span class="source-line-no">040</span><span id="line-40"></span>
 <span class="source-line-no">041</span><span id="line-41">                int n0 = 0, n1;</span>
-<span class="source-line-no">042</span><span id="line-42">                int qMin = -1;</span>
+<span class="source-line-no">042</span><span id="line-42">                float qMin = NoThreshold;</span>
 <span class="source-line-no">043</span><span id="line-43">                double eMin = Double.POSITIVE_INFINITY;</span>
 <span class="source-line-no">044</span><span id="line-44">                for (int q = 0; q &lt;= K-2; q++) {</span>
 <span class="source-line-no">045</span><span id="line-45">                        n0 = n0 + h[q];</span>

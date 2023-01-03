@@ -3,7 +3,7 @@
  * image processing published by Springer-Verlag in various languages and editions.
  * Permission to use and distribute this software is granted under the BSD 2-Clause
  * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).
- * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.
+ * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.
  * Visit https://imagingbook.com for additional details.
  ******************************************************************************/
 
@@ -32,21 +32,18 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * This ImageJ plugin creates a binary region segmentation, calculates the
- * center and major axis and subsequently the major axis-aligned bounding box
- * for each binary region (connected component). See Sec. 8.6.4 of [1] for
- * additional details. Requires a binary image. Zero-value pixels are considered
- * background, all other pixels are foreground. Display lookup tables (LUTs) are
- * not considered. The resulting bounding box is shown as a vector overlay on
- * top of a new image, the original image is not modified.
- * If no image is currently open, the plugin optionally loads a suitable
+ * This ImageJ plugin creates a binary region segmentation, calculates the center and major axis and subsequently the
+ * major axis-aligned bounding box for each binary region (connected component). See Sec. 8.6.4 of [1] for additional
+ * details. Requires a binary image. Zero-value pixels are considered background, all other pixels are foreground.
+ * Display lookup tables (LUTs) are not considered. The resulting bounding box is shown as a vector overlay on top of a
+ * new image, the original image is not modified. If no image is currently open, the plugin optionally loads a suitable
  * sample image.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic
- * Introduction</em>, 3rd ed, Springer (2022).
+ * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * (2022).
  * </p>
- * 
+ *
  * @author WB
  * @version 2022/06/23
  */
@@ -58,10 +55,9 @@ public class Axis_Aligned_Bounding_Box implements PlugInFilter {
 	public static double StrokeWidth = 0.5;
 
 	private ImagePlus im;
-	
+
 	/**
-	 * Constructor, asks to open a predefined sample image if no other image
-	 * is currently open.
+	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Axis_Aligned_Bounding_Box() {
 		if (noCurrentImage()) {

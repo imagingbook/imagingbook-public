@@ -16,7 +16,7 @@
 <span class="source-line-no">003</span><span id="line-3"> * image processing published by Springer-Verlag in various languages and editions.</span>
 <span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause</span>
 <span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).</span>
-<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
+<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
 <span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9"></span>
@@ -42,22 +42,22 @@
 <span class="source-line-no">029</span><span id="line-29">        </span>
 <span class="source-line-no">030</span><span id="line-30">        static final double EPSILON = 1E-16;</span>
 <span class="source-line-no">031</span><span id="line-31">        </span>
-<span class="source-line-no">032</span><span id="line-32">        private double[] S0 = null;</span>
-<span class="source-line-no">033</span><span id="line-33">        private double[] S1 = null;</span>
+<span class="source-line-no">032</span><span id="line-32">        private double[] S0;</span>
+<span class="source-line-no">033</span><span id="line-33">        private double[] S1;</span>
 <span class="source-line-no">034</span><span id="line-34">        </span>
 <span class="source-line-no">035</span><span id="line-35">        public MaxEntropyThresholder() {</span>
 <span class="source-line-no">036</span><span id="line-36">                super();</span>
 <span class="source-line-no">037</span><span id="line-37">        }</span>
 <span class="source-line-no">038</span><span id="line-38">        </span>
 <span class="source-line-no">039</span><span id="line-39">        @Override</span>
-<span class="source-line-no">040</span><span id="line-40">        public int getThreshold(int[] h) {</span>
+<span class="source-line-no">040</span><span id="line-40">        public float getThreshold(int[] h) {</span>
 <span class="source-line-no">041</span><span id="line-41">                int K = h.length;       </span>
 <span class="source-line-no">042</span><span id="line-42">                double[] p = HistogramUtils.pdf(h);                     // normalized histogram (to probabilities)      </span>
 <span class="source-line-no">043</span><span id="line-43">                makeTables(p);  // initialize S0, S1</span>
 <span class="source-line-no">044</span><span id="line-44">                </span>
 <span class="source-line-no">045</span><span id="line-45">                double P0 = 0;  // cumulative probability</span>
 <span class="source-line-no">046</span><span id="line-46">                </span>
-<span class="source-line-no">047</span><span id="line-47">                int qMax = -1;</span>
+<span class="source-line-no">047</span><span id="line-47">                float qMax = NoThreshold;</span>
 <span class="source-line-no">048</span><span id="line-48">                double Hmax = Double.NEGATIVE_INFINITY;</span>
 <span class="source-line-no">049</span><span id="line-49">                </span>
 <span class="source-line-no">050</span><span id="line-50">                for (int q = 0; q &lt;= K-2; q++) {                </span>

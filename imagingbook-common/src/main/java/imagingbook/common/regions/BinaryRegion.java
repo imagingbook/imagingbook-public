@@ -3,7 +3,7 @@
  * image processing published by Springer-Verlag in various languages and editions.
  * Permission to use and distribute this software is granted under the BSD 2-Clause
  * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).
- * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.
+ * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.
  * Visit https://imagingbook.com for additional details.
  ******************************************************************************/
 package imagingbook.common.regions;
@@ -12,13 +12,13 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
+import imagingbook.common.util.DynamicProperties;
 
 import java.awt.Rectangle;
 import java.util.Formatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Objects;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 import static java.lang.Math.sqrt;
@@ -45,9 +45,9 @@ import static java.lang.Math.sqrt;
  * </p>
  *
  * @author WB
- * @version 2020/12/21
+ * @version 2023/01/02
  */
-public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d> {
+public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d>, DynamicProperties {
 	
 	// Constructor, to be used by package-local sub-classes only.
 	BinaryRegion() {
@@ -245,66 +245,22 @@ public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable
 	 * @param p the pixel coordinate
 	 * @return true if the position is contained in this region
 	 */
-	public boolean contains (PntInt p) {
+	public boolean contains(PntInt p) {
 		return this.contains(p.x, p.y);
 	}
 
-	// ------------------------------------------------------------
-	// ------------------------------------------------------------
+	// for attaching properties at runtime ---------------------------------
 
+	private PropertyMap properties = null;
 
-	/* Methods for attaching region properties dynamically.
-	 * Properties can be used to hash results of region calculations
-	 * to avoid multiple calculations.
-	 * Currently, only 'double' values are supported.
-	 * 
-	 * E.g. calculate major axis angle theta for region r, then do
-	 *    r.setProperty("angle", theta);
-	 * and subsequently
-	 *    double theta = r.getProperty("angle");
-	 */
-	private Map<Object, Double> properties = null;
-
-	/**
-	 * Sets the specified property of this region to the given value.
-	 * @param key The key of the property.
-	 * @param val The value associated with this property.
-	 */
-	public void setProperty(Object key, double val) {
-		if (key == null) {
-			throw new IllegalArgumentException("property key must not be null");
+	@Override
+	public PropertyMap getPropertyMap() {
+		if (Objects.isNull(properties)) {
+			properties = new PropertyMap();
 		}
-		if (properties == null) {
-			properties = new HashMap<>();
-		}
-		properties.put(key, val);
+		return properties;
 	}
 
-	/**
-	 * Retrieves the specified region property. {@link IllegalArgumentException} is thrown if the property is not
-	 * defined for this region.
-	 *
-	 * @param key The key of the property.
-	 * @return The value associated with the specified property.
-	 */
-	public double getProperty(Object key) {
-		if (key == null) {
-			throw new IllegalArgumentException("property key must not be null");
-		}
-		Double value;
-		if (properties == null || (value = properties.get(key)) == null) {
-			throw new IllegalArgumentException("Region property " + key + " is undefined.");
-		}
-		return value.doubleValue();
-	}
-
-	/**
-	 * Removes all properties attached to this region.
-	 */
-	public void clearProperties() {
-		properties.clear();
-	}
-	
 	// ---------------------------------------------------------------------
 	
 	@Override

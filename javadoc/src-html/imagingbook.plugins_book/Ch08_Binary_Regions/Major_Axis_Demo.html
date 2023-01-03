@@ -16,7 +16,7 @@
 <span class="source-line-no">003</span><span id="line-3"> * image processing published by Springer-Verlag in various languages and editions.</span>
 <span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause</span>
 <span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).</span>
-<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
+<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
 <span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package Ch08_Binary_Regions;</span>
@@ -117,8 +117,8 @@
 <span class="source-line-no">104</span><span id="line-104">                                Pnt2d xc = r.getCenter();</span>
 <span class="source-line-no">105</span><span id="line-105">                                double x0 = xc.getX();</span>
 <span class="source-line-no">106</span><span id="line-106">                                double y0 = xc.getY();</span>
-<span class="source-line-no">107</span><span id="line-107">                                double x1 = x0 + DrawingScale * r.getProperty("dx");</span>
-<span class="source-line-no">108</span><span id="line-108">                                double y1 = y0 + DrawingScale * r.getProperty("dy");</span>
+<span class="source-line-no">107</span><span id="line-107">                                double x1 = x0 + DrawingScale * (double) r.getProperty("dx");</span>
+<span class="source-line-no">108</span><span id="line-108">                                double y1 = y0 + DrawingScale * (double) r.getProperty("dy");</span>
 <span class="source-line-no">109</span><span id="line-109">                                ola.addShape(xc.getShape(0.05 * DrawingScale));</span>
 <span class="source-line-no">110</span><span id="line-110">                                ola.addShape(new Line2D.Double(x0, y0, x1, y1));</span>
 <span class="source-line-no">111</span><span id="line-111">                        }</span>

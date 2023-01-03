@@ -16,13 +16,13 @@
 <span class="source-line-no">003</span><span id="line-3"> * image processing published by Springer-Verlag in various languages and editions.</span>
 <span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause</span>
 <span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).</span>
-<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
+<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
 <span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.edges;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
 <span class="source-line-no">011</span><span id="line-11">import imagingbook.common.geometry.basic.Pnt2d.PntInt;</span>
-<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.util.ArrayIterator;</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.util.ArrayUtils;</span>
 <span class="source-line-no">013</span><span id="line-13"></span>
 <span class="source-line-no">014</span><span id="line-14">import java.util.Iterator;</span>
 <span class="source-line-no">015</span><span id="line-15">import java.util.List;</span>
@@ -78,7 +78,7 @@
 <span class="source-line-no">065</span><span id="line-65"></span>
 <span class="source-line-no">066</span><span id="line-66">        @Override</span>
 <span class="source-line-no">067</span><span id="line-67">        public Iterator&lt;PntInt&gt; iterator() {</span>
-<span class="source-line-no">068</span><span id="line-68">                return ArrayIterator.from(edgePoints);</span>
+<span class="source-line-no">068</span><span id="line-68">                return ArrayUtils.getIterator(edgePoints);</span>
 <span class="source-line-no">069</span><span id="line-69">        }</span>
 <span class="source-line-no">070</span><span id="line-70">        </span>
 <span class="source-line-no">071</span><span id="line-71">        @Override</span>

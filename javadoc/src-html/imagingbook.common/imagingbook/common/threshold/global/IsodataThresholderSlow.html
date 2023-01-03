@@ -16,7 +16,7 @@
 <span class="source-line-no">003</span><span id="line-3"> * image processing published by Springer-Verlag in various languages and editions.</span>
 <span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause</span>
 <span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).</span>
-<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
+<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
 <span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9"></span>
@@ -40,17 +40,17 @@
 <span class="source-line-no">027</span><span id="line-27">public class IsodataThresholderSlow implements GlobalThresholder {</span>
 <span class="source-line-no">028</span><span id="line-28">        </span>
 <span class="source-line-no">029</span><span id="line-29">        </span>
-<span class="source-line-no">030</span><span id="line-30">        private int MAX_ITERATIONS = 100;</span>
+<span class="source-line-no">030</span><span id="line-30">        private static int MAX_ITERATIONS = 100;</span>
 <span class="source-line-no">031</span><span id="line-31">        </span>
 <span class="source-line-no">032</span><span id="line-32">        public IsodataThresholderSlow() {</span>
 <span class="source-line-no">033</span><span id="line-33">                super();</span>
 <span class="source-line-no">034</span><span id="line-34">        }</span>
 <span class="source-line-no">035</span><span id="line-35"></span>
 <span class="source-line-no">036</span><span id="line-36">        @Override</span>
-<span class="source-line-no">037</span><span id="line-37">        public int getThreshold(int[] h) {</span>
+<span class="source-line-no">037</span><span id="line-37">        public float getThreshold(int[] h) {</span>
 <span class="source-line-no">038</span><span id="line-38">                int K = h.length;</span>
 <span class="source-line-no">039</span><span id="line-39">                int q = (int) HistogramUtils.mean(h, 0, K-1);   // start with the total mean</span>
-<span class="source-line-no">040</span><span id="line-40">                int q_;</span>
+<span class="source-line-no">040</span><span id="line-40">                int qq;</span>
 <span class="source-line-no">041</span><span id="line-41">                </span>
 <span class="source-line-no">042</span><span id="line-42">                int i = 0;      // iteration counter</span>
 <span class="source-line-no">043</span><span id="line-43">                do {</span>
@@ -58,12 +58,12 @@
 <span class="source-line-no">045</span><span id="line-45">                        int nB = HistogramUtils.count(h, 0, q);</span>
 <span class="source-line-no">046</span><span id="line-46">                        int nF = HistogramUtils.count(h, q+1, K-1);</span>
 <span class="source-line-no">047</span><span id="line-47">                        if (nB == 0 || nF == 0)</span>
-<span class="source-line-no">048</span><span id="line-48">                                return -1;</span>
+<span class="source-line-no">048</span><span id="line-48">                                return NoThreshold;</span>
 <span class="source-line-no">049</span><span id="line-49">                        double meanB = HistogramUtils.mean(h, 0, q);</span>
 <span class="source-line-no">050</span><span id="line-50">                        double meanF = HistogramUtils.mean(h, q+1, K-1);</span>
-<span class="source-line-no">051</span><span id="line-51">                        q_ = q;                         </span>
+<span class="source-line-no">051</span><span id="line-51">                        qq = q;</span>
 <span class="source-line-no">052</span><span id="line-52">                        q = (int)((meanB + meanF)/2);</span>
-<span class="source-line-no">053</span><span id="line-53">                } while (q != q_ &amp;&amp; i &lt; MAX_ITERATIONS);</span>
+<span class="source-line-no">053</span><span id="line-53">                } while(q != qq &amp;&amp; i &lt; MAX_ITERATIONS);</span>
 <span class="source-line-no">054</span><span id="line-54">                </span>
 <span class="source-line-no">055</span><span id="line-55">                return q;</span>
 <span class="source-line-no">056</span><span id="line-56">        }</span>

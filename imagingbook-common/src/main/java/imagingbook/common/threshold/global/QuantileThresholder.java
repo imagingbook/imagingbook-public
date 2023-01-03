@@ -3,7 +3,7 @@
  * image processing published by Springer-Verlag in various languages and editions.
  * Permission to use and distribute this software is granted under the BSD 2-Clause
  * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).
- * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.
+ * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.
  * Visit https://imagingbook.com for additional details.
  ******************************************************************************/
 
@@ -20,6 +20,7 @@ import imagingbook.common.histogram.HistogramUtils;
  * threshold. Similarly there is no valid threshold if it takes the pixels from all brightness levels to fill the
  * p-quantile.
  * </p>
+ * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
  * (2022). Also see the Errata p. 245!
  * </p>
