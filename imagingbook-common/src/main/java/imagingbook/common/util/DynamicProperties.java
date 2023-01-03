@@ -15,10 +15,16 @@ import java.util.Objects;
  * Defines a primitive mechanism for attaching arbitrary properties to an object at runtime. Objects of any type may be
  * attached and no type checking is done at compile time, i.e., the required type casts are inherently unsafe. An
  * implementing class only needs to define method {@link #getPropertyMap()}. The functionality is basically the same as
- * {@link HashMap} but definition as an interface avoids having to subclass {@link HashMap}. Usage example:
+ * {@link HashMap} but definition as an interface avoids having to subclass {@link HashMap}. Typical usage example:
  * <pre>
  *     public class Foo implements DynamicProperties {
- *         ...
+ *          private final PropertyMap properties = new PropertyMap();
+ *
+ *          &#64;Override
+ *          public PropertyMap getPropertyMap() {
+ *              return this.properties;
+ *          }
+ *          ...
  *     }
  *
  *     Foo f = new Foo();
