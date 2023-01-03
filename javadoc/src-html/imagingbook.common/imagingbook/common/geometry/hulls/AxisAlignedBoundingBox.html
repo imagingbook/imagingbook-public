@@ -16,7 +16,7 @@
 <span class="source-line-no">003</span><span id="line-3"> * image processing published by Springer-Verlag in various languages and editions.</span>
 <span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause</span>
 <span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).</span>
-<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
+<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
 <span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.geometry.hulls;</span>
@@ -26,7 +26,7 @@
 <span class="source-line-no">013</span><span id="line-13">import imagingbook.common.geometry.basic.PntUtils;</span>
 <span class="source-line-no">014</span><span id="line-14">import imagingbook.common.geometry.line.AlgebraicLine;</span>
 <span class="source-line-no">015</span><span id="line-15">import imagingbook.common.geometry.shape.ShapeProducer;</span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.common.util.ArrayIterator;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.common.util.ArrayUtils;</span>
 <span class="source-line-no">017</span><span id="line-17"></span>
 <span class="source-line-no">018</span><span id="line-18">import java.awt.Shape;</span>
 <span class="source-line-no">019</span><span id="line-19">import java.awt.geom.Path2D;</span>
@@ -84,7 +84,7 @@
 <span class="source-line-no">071</span><span id="line-71">         * @param points an array of 2D points</span>
 <span class="source-line-no">072</span><span id="line-72">         */</span>
 <span class="source-line-no">073</span><span id="line-73">        public AxisAlignedBoundingBox(Pnt2d[] points) {</span>
-<span class="source-line-no">074</span><span id="line-74">                this(() -&gt; ArrayIterator.from(points));</span>
+<span class="source-line-no">074</span><span id="line-74">                this(() -&gt; ArrayUtils.getIterator(points));</span>
 <span class="source-line-no">075</span><span id="line-75">        }</span>
 <span class="source-line-no">076</span><span id="line-76"></span>
 <span class="source-line-no">077</span><span id="line-77">        /**</span>

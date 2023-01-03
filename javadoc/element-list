@@ -110,6 +110,7 @@ ImageAccessorDemos
 ImageJ_Demos
 module:imagingbook.sampleimages
 imagingbook.sampleimages
+imagingbook.sampleimages.kimia
 module:imagingbook.spectral
 imagingbook.spectral.dct
 imagingbook.spectral.dft

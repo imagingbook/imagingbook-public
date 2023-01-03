@@ -16,7 +16,7 @@
 <span class="source-line-no">003</span><span id="line-3"> * image processing published by Springer-Verlag in various languages and editions.</span>
 <span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause</span>
 <span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).</span>
-<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
+<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
 <span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9"></span>
@@ -39,38 +39,40 @@
 <span class="source-line-no">026</span><span id="line-26"> */</span>
 <span class="source-line-no">027</span><span id="line-27">public interface GlobalThresholder extends Thresholder {</span>
 <span class="source-line-no">028</span><span id="line-28"></span>
-<span class="source-line-no">029</span><span id="line-29">        /**</span>
-<span class="source-line-no">030</span><span id="line-30">         * Returns a single (global) threshold value for the specified histogram.</span>
-<span class="source-line-no">031</span><span id="line-31">         *</span>
-<span class="source-line-no">032</span><span id="line-32">         * @param h a histogram (array of frequencies)</span>
-<span class="source-line-no">033</span><span id="line-33">         * @return a single (global) threshold value</span>
-<span class="source-line-no">034</span><span id="line-34">         */</span>
-<span class="source-line-no">035</span><span id="line-35">        public int getThreshold(int[] h);       // TODO: change return type to double?</span>
-<span class="source-line-no">036</span><span id="line-36"></span>
-<span class="source-line-no">037</span><span id="line-37">        /**</span>
-<span class="source-line-no">038</span><span id="line-38">         * Returns a single (global) threshold value for the specified {@link ByteProcessor} (8-bit image).</span>
-<span class="source-line-no">039</span><span id="line-39">         *</span>
-<span class="source-line-no">040</span><span id="line-40">         * @param bp a {@link ByteProcessor} (8-bit image)</span>
-<span class="source-line-no">041</span><span id="line-41">         * @return a single (global) threshold value</span>
-<span class="source-line-no">042</span><span id="line-42">         */</span>
-<span class="source-line-no">043</span><span id="line-43">        public default int getThreshold(ByteProcessor bp) {</span>
-<span class="source-line-no">044</span><span id="line-44">                int[] h = bp.getHistogram();</span>
-<span class="source-line-no">045</span><span id="line-45">                return getThreshold(h);</span>
-<span class="source-line-no">046</span><span id="line-46">        }</span>
-<span class="source-line-no">047</span><span id="line-47">        </span>
-<span class="source-line-no">048</span><span id="line-48">        @Override</span>
-<span class="source-line-no">049</span><span id="line-49">        public default boolean threshold(ByteProcessor ip) {</span>
-<span class="source-line-no">050</span><span id="line-50">                int q = getThreshold(ip);</span>
-<span class="source-line-no">051</span><span id="line-51">                if (q &gt; 0) {</span>
-<span class="source-line-no">052</span><span id="line-52">                        ip.threshold(q);</span>
-<span class="source-line-no">053</span><span id="line-53">                        return true;</span>
-<span class="source-line-no">054</span><span id="line-54">                }</span>
-<span class="source-line-no">055</span><span id="line-55">                else {</span>
-<span class="source-line-no">056</span><span id="line-56">                        return false;</span>
-<span class="source-line-no">057</span><span id="line-57">                }</span>
-<span class="source-line-no">058</span><span id="line-58">        }</span>
-<span class="source-line-no">059</span><span id="line-59">        </span>
-<span class="source-line-no">060</span><span id="line-60">}</span>
+<span class="source-line-no">029</span><span id="line-29">        public static final float NoThreshold = Float.NaN;</span>
+<span class="source-line-no">030</span><span id="line-30"></span>
+<span class="source-line-no">031</span><span id="line-31">        /**</span>
+<span class="source-line-no">032</span><span id="line-32">         * Returns a single (global) threshold value for the specified histogram.</span>
+<span class="source-line-no">033</span><span id="line-33">         *</span>
+<span class="source-line-no">034</span><span id="line-34">         * @param h a histogram (array of frequencies)</span>
+<span class="source-line-no">035</span><span id="line-35">         * @return a single (global) threshold value</span>
+<span class="source-line-no">036</span><span id="line-36">         */</span>
+<span class="source-line-no">037</span><span id="line-37">        public float getThreshold(int[] h);     // TODO: change return type to double?</span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">        /**</span>
+<span class="source-line-no">040</span><span id="line-40">         * Returns a single (global) threshold value for the specified {@link ByteProcessor} (8-bit image).</span>
+<span class="source-line-no">041</span><span id="line-41">         *</span>
+<span class="source-line-no">042</span><span id="line-42">         * @param bp a {@link ByteProcessor} (8-bit image)</span>
+<span class="source-line-no">043</span><span id="line-43">         * @return a single (global) threshold value</span>
+<span class="source-line-no">044</span><span id="line-44">         */</span>
+<span class="source-line-no">045</span><span id="line-45">        public default float getThreshold(ByteProcessor bp) {</span>
+<span class="source-line-no">046</span><span id="line-46">                int[] h = bp.getHistogram();</span>
+<span class="source-line-no">047</span><span id="line-47">                return getThreshold(h);</span>
+<span class="source-line-no">048</span><span id="line-48">        }</span>
+<span class="source-line-no">049</span><span id="line-49">        </span>
+<span class="source-line-no">050</span><span id="line-50">        @Override</span>
+<span class="source-line-no">051</span><span id="line-51">        public default boolean threshold(ByteProcessor ip) {</span>
+<span class="source-line-no">052</span><span id="line-52">                float q = getThreshold(ip);</span>
+<span class="source-line-no">053</span><span id="line-53">                if (q &gt; 0) {</span>
+<span class="source-line-no">054</span><span id="line-54">                        ip.threshold(Math.round(q));</span>
+<span class="source-line-no">055</span><span id="line-55">                        return true;</span>
+<span class="source-line-no">056</span><span id="line-56">                }</span>
+<span class="source-line-no">057</span><span id="line-57">                else {</span>
+<span class="source-line-no">058</span><span id="line-58">                        return false;</span>
+<span class="source-line-no">059</span><span id="line-59">                }</span>
+<span class="source-line-no">060</span><span id="line-60">        }</span>
+<span class="source-line-no">061</span><span id="line-61">        </span>
+<span class="source-line-no">062</span><span id="line-62">}</span>
 
 
 

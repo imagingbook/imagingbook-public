@@ -16,110 +16,124 @@
 <span class="source-line-no">003</span><span id="line-3"> * image processing published by Springer-Verlag in various languages and editions.</span>
 <span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause</span>
 <span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).</span>
-<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
+<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
 <span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
 <span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package imagingbook.common.geometry.moments;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
 <span class="source-line-no">011</span><span id="line-11">import imagingbook.common.geometry.basic.Pnt2d;</span>
-<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.math.Complex;</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">/**</span>
-<span class="source-line-no">015</span><span id="line-15"> * &lt;p&gt;</span>
-<span class="source-line-no">016</span><span id="line-16"> * Naive implementation of Flusser's complex invariant moments [1]. See Sec. 8.6.5 (Eq. 8.51 - 8.54) of [2] for</span>
-<span class="source-line-no">017</span><span id="line-17"> * additional details. This abstract class defines static methods only.</span>
-<span class="source-line-no">018</span><span id="line-18"> * &lt;/p&gt;</span>
-<span class="source-line-no">019</span><span id="line-19"> * &lt;p&gt;</span>
-<span class="source-line-no">020</span><span id="line-20"> * [1] J. Flusser, B. Zitova, and T. Suk. "Moments and Moment Invariants in Pattern Recognition". John Wiley and Sons</span>
-<span class="source-line-no">021</span><span id="line-21"> * (2009).</span>
-<span class="source-line-no">022</span><span id="line-22"> * &lt;br&gt;</span>
-<span class="source-line-no">023</span><span id="line-23"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
-<span class="source-line-no">024</span><span id="line-24"> * (2022).</span>
-<span class="source-line-no">025</span><span id="line-25"> * &lt;/p&gt;</span>
-<span class="source-line-no">026</span><span id="line-26"> *</span>
-<span class="source-line-no">027</span><span id="line-27"> * @author WB</span>
-<span class="source-line-no">028</span><span id="line-28"> * @version 2022/11/17</span>
-<span class="source-line-no">029</span><span id="line-29"> */</span>
-<span class="source-line-no">030</span><span id="line-30">public abstract class FlusserMoments {</span>
-<span class="source-line-no">031</span><span id="line-31">        </span>
-<span class="source-line-no">032</span><span id="line-32">        private FlusserMoments() {}</span>
-<span class="source-line-no">033</span><span id="line-33">        </span>
-<span class="source-line-no">034</span><span id="line-34">        /** Length of moment vector returned by {@link #getInvariantMoments(Iterable)}. */</span>
-<span class="source-line-no">035</span><span id="line-35">        public static final int N = 11; // 11 moment invariants</span>
+<span class="source-line-no">012</span><span id="line-12">import imagingbook.common.geometry.basic.PntUtils;</span>
+<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.math.Complex;</span>
+<span class="source-line-no">014</span><span id="line-14"></span>
+<span class="source-line-no">015</span><span id="line-15">/**</span>
+<span class="source-line-no">016</span><span id="line-16"> * &lt;p&gt;</span>
+<span class="source-line-no">017</span><span id="line-17"> * Naive implementation of Flusser's complex invariant moments [1]. See Sec. 8.6.5 (Eq. 8.51 - 8.54) of [2] for</span>
+<span class="source-line-no">018</span><span id="line-18"> * additional details.</span>
+<span class="source-line-no">019</span><span id="line-19"> * &lt;/p&gt;</span>
+<span class="source-line-no">020</span><span id="line-20"> * &lt;p&gt;</span>
+<span class="source-line-no">021</span><span id="line-21"> * [1] J. Flusser, B. Zitova, and T. Suk. "Moments and Moment Invariants in Pattern Recognition". John Wiley and Sons</span>
+<span class="source-line-no">022</span><span id="line-22"> * (2009).</span>
+<span class="source-line-no">023</span><span id="line-23"> * &lt;br&gt;</span>
+<span class="source-line-no">024</span><span id="line-24"> * [2] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">025</span><span id="line-25"> * (2022).</span>
+<span class="source-line-no">026</span><span id="line-26"> * &lt;/p&gt;</span>
+<span class="source-line-no">027</span><span id="line-27"> *</span>
+<span class="source-line-no">028</span><span id="line-28"> * @author WB</span>
+<span class="source-line-no">029</span><span id="line-29"> * @version 2022/12/28</span>
+<span class="source-line-no">030</span><span id="line-30"> */</span>
+<span class="source-line-no">031</span><span id="line-31">public class FlusserMoments {</span>
+<span class="source-line-no">032</span><span id="line-32"></span>
+<span class="source-line-no">033</span><span id="line-33">    private final Iterable&lt;Pnt2d&gt; points;</span>
+<span class="source-line-no">034</span><span id="line-34">    private final int n;</span>
+<span class="source-line-no">035</span><span id="line-35">    private final double xc, yc;</span>
 <span class="source-line-no">036</span><span id="line-36"></span>
-<span class="source-line-no">037</span><span id="line-37">        /**</span>
-<span class="source-line-no">038</span><span id="line-38">         * Calculates and returns a vector of 11 invariant moments for the specified set of 2D points.</span>
-<span class="source-line-no">039</span><span id="line-39">         *</span>
-<span class="source-line-no">040</span><span id="line-40">         * @param points a set of 2D points</span>
-<span class="source-line-no">041</span><span id="line-41">         * @return the vector of invariant moments</span>
-<span class="source-line-no">042</span><span id="line-42">         */</span>
-<span class="source-line-no">043</span><span id="line-43">        public static double[] getInvariantMoments(Iterable&lt;Pnt2d&gt; points) {</span>
-<span class="source-line-no">044</span><span id="line-44">                Complex c11 = getScaleNormalizedMoment(points, 1, 1);</span>
-<span class="source-line-no">045</span><span id="line-45">                Complex c12 = getScaleNormalizedMoment(points, 1, 2);</span>
-<span class="source-line-no">046</span><span id="line-46">                Complex c21 = getScaleNormalizedMoment(points, 2, 1);</span>
-<span class="source-line-no">047</span><span id="line-47">                Complex c20 = getScaleNormalizedMoment(points, 2, 0);</span>
-<span class="source-line-no">048</span><span id="line-48">                Complex c22 = getScaleNormalizedMoment(points, 2, 2);</span>
-<span class="source-line-no">049</span><span id="line-49">                Complex c30 = getScaleNormalizedMoment(points, 3, 0);</span>
-<span class="source-line-no">050</span><span id="line-50">                Complex c31 = getScaleNormalizedMoment(points, 3, 1);</span>
-<span class="source-line-no">051</span><span id="line-51">                Complex c40 = getScaleNormalizedMoment(points, 4, 0);</span>
-<span class="source-line-no">052</span><span id="line-52">                </span>
-<span class="source-line-no">053</span><span id="line-53">                double p1 = c11.getRe(); </span>
-<span class="source-line-no">054</span><span id="line-54">                double p2 = c21.multiply(c12).getRe();</span>
-<span class="source-line-no">055</span><span id="line-55">                double p3 = c20.multiply(c12.pow(2)).getRe();</span>
-<span class="source-line-no">056</span><span id="line-56">                double p4 = c20.multiply(c12.pow(2)).getIm();</span>
-<span class="source-line-no">057</span><span id="line-57">                double p5 = c30.multiply(c12.pow(3)).getRe();</span>
-<span class="source-line-no">058</span><span id="line-58">                double p6 = c30.multiply(c12.pow(3)).getIm();</span>
-<span class="source-line-no">059</span><span id="line-59">                double p7 = c22.getRe();</span>
-<span class="source-line-no">060</span><span id="line-60">                double p8 = c31.multiply(c12.pow(2)).getRe();</span>
-<span class="source-line-no">061</span><span id="line-61">                double p9 = c31.multiply(c12.pow(2)).getIm();</span>
-<span class="source-line-no">062</span><span id="line-62">                double p10 = c40.multiply(c12.pow(4)).getRe();</span>
-<span class="source-line-no">063</span><span id="line-63">                double p11 = c40.multiply(c12.pow(4)).getIm();</span>
-<span class="source-line-no">064</span><span id="line-64">                </span>
-<span class="source-line-no">065</span><span id="line-65">                return new double[] {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11};</span>
-<span class="source-line-no">066</span><span id="line-66">        }</span>
-<span class="source-line-no">067</span><span id="line-67"></span>
-<span class="source-line-no">068</span><span id="line-68">        /**</span>
-<span class="source-line-no">069</span><span id="line-69">         * Returns the scale-normalizes complex moment of order (p,q) for the specified set of 2D points.</span>
-<span class="source-line-no">070</span><span id="line-70">         *</span>
-<span class="source-line-no">071</span><span id="line-71">         * @param points a set of 2D points</span>
-<span class="source-line-no">072</span><span id="line-72">         * @param p order index p</span>
-<span class="source-line-no">073</span><span id="line-73">         * @param q order index q</span>
-<span class="source-line-no">074</span><span id="line-74">         * @return the moment value</span>
-<span class="source-line-no">075</span><span id="line-75">         */</span>
-<span class="source-line-no">076</span><span id="line-76">        public static Complex getScaleNormalizedMoment(Iterable&lt;Pnt2d&gt; points, int p, int q) {</span>
-<span class="source-line-no">077</span><span id="line-77">                int xS = 0;</span>
-<span class="source-line-no">078</span><span id="line-78">                int yS = 0;</span>
-<span class="source-line-no">079</span><span id="line-79">                int n = 0;</span>
-<span class="source-line-no">080</span><span id="line-80">                for (Pnt2d pnt : points) {</span>
-<span class="source-line-no">081</span><span id="line-81">                        xS = xS + pnt.getXint();</span>
-<span class="source-line-no">082</span><span id="line-82">                        yS = yS + pnt.getYint();</span>
-<span class="source-line-no">083</span><span id="line-83">                        n++;</span>
-<span class="source-line-no">084</span><span id="line-84">                }</span>
-<span class="source-line-no">085</span><span id="line-85">                </span>
-<span class="source-line-no">086</span><span id="line-86">                double a = n;</span>
-<span class="source-line-no">087</span><span id="line-87">                double xc = xS / n;</span>
-<span class="source-line-no">088</span><span id="line-88">                double yc = yS / n;</span>
-<span class="source-line-no">089</span><span id="line-89">                Complex sum = new Complex(0, 0);</span>
-<span class="source-line-no">090</span><span id="line-90">                for (Pnt2d pnt : points) {</span>
-<span class="source-line-no">091</span><span id="line-91">                        double x = pnt.getX() - xc;</span>
-<span class="source-line-no">092</span><span id="line-92">                        double y = pnt.getY() - yc;</span>
-<span class="source-line-no">093</span><span id="line-93">                        Complex z1 = (x == 0.0 &amp;&amp; y == 0 &amp;&amp; p == 0) ? </span>
-<span class="source-line-no">094</span><span id="line-94">                                                        Complex.ZERO : new Complex(x, y).pow(p);        // beware: 0^0 is undefined!</span>
-<span class="source-line-no">095</span><span id="line-95">                        Complex z2 = (x == 0.0 &amp;&amp; y == 0 &amp;&amp; q == 0) ? </span>
-<span class="source-line-no">096</span><span id="line-96">                                                        Complex.ZERO : new Complex(x, -y).pow(q);</span>
-<span class="source-line-no">097</span><span id="line-97">                        sum = sum.add(z1.multiply(z2));</span>
-<span class="source-line-no">098</span><span id="line-98">                }</span>
-<span class="source-line-no">099</span><span id="line-99">                checkForNaN(sum);</span>
-<span class="source-line-no">100</span><span id="line-100">                return sum.multiply(1.0 / Math.pow(a, 0.5 * (p + q) + 1));</span>
-<span class="source-line-no">101</span><span id="line-101">        }</span>
-<span class="source-line-no">102</span><span id="line-102">        </span>
-<span class="source-line-no">103</span><span id="line-103">        private static void checkForNaN(Complex z) {</span>
-<span class="source-line-no">104</span><span id="line-104">                if (z.isNaN()) {</span>
-<span class="source-line-no">105</span><span id="line-105">                        throw new RuntimeException("NaN encountered in complex quantity");</span>
-<span class="source-line-no">106</span><span id="line-106">                }</span>
-<span class="source-line-no">107</span><span id="line-107">        }</span>
-<span class="source-line-no">108</span><span id="line-108">        </span>
-<span class="source-line-no">109</span><span id="line-109">}</span>
+<span class="source-line-no">037</span><span id="line-37">    public FlusserMoments(Iterable&lt;Pnt2d&gt; points) {</span>
+<span class="source-line-no">038</span><span id="line-38">        this.points = points;</span>
+<span class="source-line-no">039</span><span id="line-39">        double sx = 0;</span>
+<span class="source-line-no">040</span><span id="line-40">        double sy = 0;</span>
+<span class="source-line-no">041</span><span id="line-41">        int i = 0;</span>
+<span class="source-line-no">042</span><span id="line-42">        for (Pnt2d p : points) {</span>
+<span class="source-line-no">043</span><span id="line-43">            sx = sx + p.getX();</span>
+<span class="source-line-no">044</span><span id="line-44">            sy = sy + p.getY();</span>
+<span class="source-line-no">045</span><span id="line-45">            i++;</span>
+<span class="source-line-no">046</span><span id="line-46">        }</span>
+<span class="source-line-no">047</span><span id="line-47">        this.n = i;</span>
+<span class="source-line-no">048</span><span id="line-48">        if (n == 0) {</span>
+<span class="source-line-no">049</span><span id="line-49">            throw new IllegalArgumentException("at least one point is required");</span>
+<span class="source-line-no">050</span><span id="line-50">        }</span>
+<span class="source-line-no">051</span><span id="line-51">        this.xc = sx / n;</span>
+<span class="source-line-no">052</span><span id="line-52">        this.yc = sy / n;</span>
+<span class="source-line-no">053</span><span id="line-53">    }</span>
+<span class="source-line-no">054</span><span id="line-54">    /**</span>
+<span class="source-line-no">055</span><span id="line-55">     * Returns the scale-normalized complex moment of order (p,q) for the 2D point set associated with</span>
+<span class="source-line-no">056</span><span id="line-56">     * this {@link FlusserMoments} instance.</span>
+<span class="source-line-no">057</span><span id="line-57">     *</span>
+<span class="source-line-no">058</span><span id="line-58">     * @param p order index p</span>
+<span class="source-line-no">059</span><span id="line-59">     * @param q order index q</span>
+<span class="source-line-no">060</span><span id="line-60">     * @return the complex moment of order (p,q)</span>
+<span class="source-line-no">061</span><span id="line-61">     */</span>
+<span class="source-line-no">062</span><span id="line-62">    public Complex getComplexMoment(int p, int q) {</span>
+<span class="source-line-no">063</span><span id="line-63">        Complex sum = new Complex(0, 0);</span>
+<span class="source-line-no">064</span><span id="line-64">        for (Pnt2d pnt : points) {</span>
+<span class="source-line-no">065</span><span id="line-65">            double x = pnt.getX() - xc;</span>
+<span class="source-line-no">066</span><span id="line-66">            double y = pnt.getY() - yc;</span>
+<span class="source-line-no">067</span><span id="line-67">            Complex zp = (x == 0.0 &amp;&amp; y == 0 &amp;&amp; p == 0) ?                       // beware: 0^0 is undefined!</span>
+<span class="source-line-no">068</span><span id="line-68">                    Complex.ZERO : new Complex(x, y).pow(p);</span>
+<span class="source-line-no">069</span><span id="line-69">            Complex zq = (x == 0.0 &amp;&amp; y == 0 &amp;&amp; q == 0) ?</span>
+<span class="source-line-no">070</span><span id="line-70">                    Complex.ZERO : new Complex(x, -y).pow(q);</span>
+<span class="source-line-no">071</span><span id="line-71">            sum = sum.add(zp.multiply(zq));</span>
+<span class="source-line-no">072</span><span id="line-72">        }</span>
+<span class="source-line-no">073</span><span id="line-73">        checkForNaN(sum);</span>
+<span class="source-line-no">074</span><span id="line-74">        return sum;</span>
+<span class="source-line-no">075</span><span id="line-75">    }</span>
+<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">077</span><span id="line-77">    /**</span>
+<span class="source-line-no">078</span><span id="line-78">     * Returns the scale-normalized complex moment of order (p,q) for the specified set of 2D points.</span>
+<span class="source-line-no">079</span><span id="line-79">     *</span>
+<span class="source-line-no">080</span><span id="line-80">     * @param p order index p</span>
+<span class="source-line-no">081</span><span id="line-81">     * @param q order index q</span>
+<span class="source-line-no">082</span><span id="line-82">     * @return the complex moment of order (p,q)</span>
+<span class="source-line-no">083</span><span id="line-83">     */</span>
+<span class="source-line-no">084</span><span id="line-84">    public Complex getScaleNormalizedMoment(int p, int q) {</span>
+<span class="source-line-no">085</span><span id="line-85">        Complex cpq = getComplexMoment(p, q);</span>
+<span class="source-line-no">086</span><span id="line-86">        return cpq.multiply(1.0 / Math.pow(n, 0.5 * (p + q) + 1));</span>
+<span class="source-line-no">087</span><span id="line-87">    }</span>
+<span class="source-line-no">088</span><span id="line-88"></span>
+<span class="source-line-no">089</span><span id="line-89">    /**</span>
+<span class="source-line-no">090</span><span id="line-90">     * Calculates and returns a vector of 11 invariant moments for the specified set of 2D points.</span>
+<span class="source-line-no">091</span><span id="line-91">     *</span>
+<span class="source-line-no">092</span><span id="line-92">     * @return the vector of invariant moments</span>
+<span class="source-line-no">093</span><span id="line-93">     */</span>
+<span class="source-line-no">094</span><span id="line-94">    public double[] getInvariantMoments() {</span>
+<span class="source-line-no">095</span><span id="line-95">        Complex c11 = getScaleNormalizedMoment(1, 1);</span>
+<span class="source-line-no">096</span><span id="line-96">        Complex c12 = getScaleNormalizedMoment(1, 2);</span>
+<span class="source-line-no">097</span><span id="line-97">        Complex c21 = getScaleNormalizedMoment(2, 1);</span>
+<span class="source-line-no">098</span><span id="line-98">        Complex c20 = getScaleNormalizedMoment(2, 0);</span>
+<span class="source-line-no">099</span><span id="line-99">        Complex c22 = getScaleNormalizedMoment(2, 2);</span>
+<span class="source-line-no">100</span><span id="line-100">        Complex c30 = getScaleNormalizedMoment(3, 0);</span>
+<span class="source-line-no">101</span><span id="line-101">        Complex c31 = getScaleNormalizedMoment(3, 1);</span>
+<span class="source-line-no">102</span><span id="line-102">        Complex c40 = getScaleNormalizedMoment(4, 0);</span>
+<span class="source-line-no">103</span><span id="line-103">        double p1 = c11.getRe();</span>
+<span class="source-line-no">104</span><span id="line-104">        double p2 = c21.multiply(c12).getRe();</span>
+<span class="source-line-no">105</span><span id="line-105">        double p3 = c20.multiply(c12.pow(2)).getRe();</span>
+<span class="source-line-no">106</span><span id="line-106">        double p4 = c20.multiply(c12.pow(2)).getIm();</span>
+<span class="source-line-no">107</span><span id="line-107">        double p5 = c30.multiply(c12.pow(3)).getRe();</span>
+<span class="source-line-no">108</span><span id="line-108">        double p6 = c30.multiply(c12.pow(3)).getIm();</span>
+<span class="source-line-no">109</span><span id="line-109">        double p7 = c22.getRe();</span>
+<span class="source-line-no">110</span><span id="line-110">        double p8 = c31.multiply(c12.pow(2)).getRe();</span>
+<span class="source-line-no">111</span><span id="line-111">        double p9 = c31.multiply(c12.pow(2)).getIm();</span>
+<span class="source-line-no">112</span><span id="line-112">        double p10 = c40.multiply(c12.pow(4)).getRe();</span>
+<span class="source-line-no">113</span><span id="line-113">        double p11 = c40.multiply(c12.pow(4)).getIm();</span>
+<span class="source-line-no">114</span><span id="line-114">        return new double[] {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11};</span>
+<span class="source-line-no">115</span><span id="line-115">    }</span>
+<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">117</span><span id="line-117">    private void checkForNaN(Complex z) {</span>
+<span class="source-line-no">118</span><span id="line-118">        if (z.isNaN()) {</span>
+<span class="source-line-no">119</span><span id="line-119">            throw new RuntimeException("NaN encountered in complex quantity");</span>
+<span class="source-line-no">120</span><span id="line-120">        }</span>
+<span class="source-line-no">121</span><span id="line-121">    }</span>
+<span class="source-line-no">122</span><span id="line-122"></span>
+<span class="source-line-no">123</span><span id="line-123">}</span>
 
 
 

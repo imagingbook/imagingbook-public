@@ -20,6 +20,7 @@ import imagingbook.common.histogram.HistogramUtils;
  * threshold. Similarly there is no valid threshold if it takes the pixels from all brightness levels to fill the
  * p-quantile.
  * </p>
+ * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
  * (2022). Also see the Errata p. 245!
  * </p>
