@@ -22,8 +22,7 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
-import imagingbook.common.util.DynamicProperties;
-import imagingbook.common.util.DynamicProperties.PropertyKey;
+import imagingbook.common.util.GenericProperties.PropertyKey;
 import imagingbook.core.plugin.IjPluginName;
 import imagingbook.sampleimages.GeneralSampleImage;
 

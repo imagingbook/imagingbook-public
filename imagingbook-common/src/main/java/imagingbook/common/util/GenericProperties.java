@@ -14,13 +14,13 @@ import java.util.Objects;
 
 /**
  * Defines a primitive mechanism for attaching arbitrary properties to an object dynamically using generic types to
- * avoid unsafe type casts. Objects of any type may be attached and type checking is done at compile time. The keys to
+ * eliminate type casts. Objects of any type may be attached and some type checking is done at compile time. The keys to
  * be used for inserting and retrieving values are identified by name (a {@link String}) and associated with a specific
  * value type. An implementing class only needs to define method {@link #getPropertyMap()}. In principle, the
  * functionality is the same as {@link HashMap} but definition as an interface avoids having to subclass
  * {@link HashMap}. Typical usage example:
  * <pre>
- *     public class Foo implements DynamicProperties {
+ *     public class Foo implements GenericProperties {
  *          private final PropertyMap properties = new PropertyMap();
  *          &#64;Override
  *          public PropertyMap getPropertyMap() {
@@ -28,7 +28,6 @@ import java.util.Objects;
  *          }
  *          ...
  *     }
- *
  *     Foo f = new Foo();
  *     PropertyKey<double[]> key = new PropertyKey<>("UniqueName");
  *     double[] x = {1, 2, 3, 4};
@@ -36,19 +35,21 @@ import java.util.Objects;
  *     ...
  *     double[] y = f.getProperty(key);
  * </pre>
- * Note that only values matching the key's type can be passed to {@link #setProperty(PropertyKey, Object)} and
- * no type casts are required when using {@link #getProperty(PropertyKey)}.
+ * Note that only values matching the key's type can be passed to {@link #setProperty(PropertyKey, Object)} and no type
+ * casts are required when using {@link #getProperty(PropertyKey)}. However, creating duplicate keys with the same name
+ * but different type is an error and must be avoided (unfortunately this cannot be checked at compile time and
+ * {@link PropertyKey} has no information about the associated value class at runtime).
  *
  * @author WB
  * @version 2023/01/03
  */
-public interface DynamicProperties {
+public interface GenericProperties {
 
     /**
-     * Defines a generic map key to be used with {@link DynamicProperties}.
+     * Defines a generic map key to be used with {@link GenericProperties}.
      * @param <T> the generic key type
      */
-    public static class PropertyKey<T> {
+    public final class PropertyKey<T> {
         private final String name;
 
         public PropertyKey(String name) {
@@ -57,9 +58,9 @@ public interface DynamicProperties {
     }
 
     /**
-     * The underlying hash map, to be instantiated by implementing classes.
+     * The underlying hash map class, to be instantiated by implementing classes.
      */
-    public class PropertyMap extends HashMap<String, Object> {
+    public final class PropertyMap extends HashMap<String, Object> {
         public PropertyMap() {
             super(4);   // start with up to 4 properties
         }
@@ -104,8 +105,8 @@ public interface DynamicProperties {
     }
 
     /**
-     * Returns the value associated with the specified {@link PropertyKey}, or {@code null} if this map contains no mapping
-     * for the key.
+     * Returns the value associated with the specified {@link PropertyKey}, or {@code null} if this map contains no
+     * mapping for the key.
      *
      * @param key the name of the property (may not be {@code null})
      * @param <T> the generic key and value type
@@ -113,12 +114,10 @@ public interface DynamicProperties {
      * mapping for the key
      * @throws IllegalArgumentException if the supplied key is {@code null}
      */
-    //public default Object getProperty(String key) {
     public default <T> T getProperty(PropertyKey<T> key) {
         if (key == null) {
             throw new IllegalArgumentException("property key must not be null");
         }
-        // return getPropertyMap().get(key);
         return (T) getPropertyMap().get(key.name);
     }
 
