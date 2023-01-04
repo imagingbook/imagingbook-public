@@ -50,8 +50,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * </p>
  * <p>
  * [1] J. Matas, O. Chum, M. Urban, and T. Pajdla. Robust widebaseline stereo from maximally stable extremal regions.
- * Image and Vision Computing 22(10), 761–767 (2004). <br>
- * [2] W. Burger, M.J. Burge, <em>Digital Image Processing
+ * Image and Vision Computing 22(10), 761–767 (2004). <br> [2] W. Burger, M.J. Burge, <em>Digital Image Processing
  * &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  *
@@ -75,7 +74,7 @@ public class MSER_Detection_Demo implements PlugInFilter {
 	private static boolean WhiteToBlack = false;	// detect on inverted image
 	
 	private static boolean UseTwoColorsOnly = false;	// detect on inverted image
-	private static Color BlackToWhiteColor = MserColors.Yellow.getColor(); //.Orange;
+	private static Color BlackToWhiteColor = MserColors.Yellow.getColor();
 	private static Color WhiteToBlackColor = MserColors.Cyan.getColor();
 	private static int MinDisplayWidth = 300;
 	
