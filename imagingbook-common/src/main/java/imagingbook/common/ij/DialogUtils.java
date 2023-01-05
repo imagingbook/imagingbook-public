@@ -81,33 +81,33 @@ public abstract class DialogUtils {
 
 	/**
 	 * Splits a long string into multiple lines of the specified maximum length and builds a new string with newline
-	 * characters separating successive lines. Multiple input strings are first joined into a single sstring using blank
-	 * spaces as separators. Intended mainly to format message texts of plugin dialogs. Inspired by:
+	 * ({@literal \n}) characters separating successive lines. Multiple input strings are first joined into a single
+	 * string using blank spaces as separators. Intended mainly to format message texts of plugin dialogs. Inspired by:
 	 * https://stackoverflow.com/a/21002193
 	 *
-	 * @param maxLineLength the maximum number oc characters per line
-	 * @param strings one ore mor strings
+	 * @param columns the maximum number of characters per line
+	 * @param textChunks one or more strings which are joined
 	 * @return a new string with newline characters separating successive lines
 	 */
-	public static String splitLines(int maxLineLength, String... strings) {
-		if (strings.length == 0) {
+	public static String splitLines(int columns, String... textChunks) {
+		if (textChunks.length == 0) {
 			throw new IllegalArgumentException("must pass at least one string");
 		}
-		String input = String.join(SPACE_SEPARATOR, strings);
+		String input = String.join(SPACE_SEPARATOR, textChunks);
 		String[] tokens = input.split(SPLIT_REGEXP);
 		StringBuilder output = new StringBuilder(input.length());
 		int lineLen = 0;
 		for (int i = 0; i < tokens.length; i++) {
 			String word = tokens[i];
 
-			if (lineLen + (SPACE_SEPARATOR + word).length() > maxLineLength) {
+			if (lineLen + (SPACE_SEPARATOR + word).length() > columns) {
 				if (i > 0) {
 					output.append(NEWLINE);
 				}
 				lineLen = 0;
 			}
 			if (i < tokens.length - 1 && (lineLen + (word + SPACE_SEPARATOR).length() + tokens[i + 1].length() <=
-					maxLineLength)) {
+					columns)) {
 				word += SPACE_SEPARATOR;
 			}
 			output.append(word);
@@ -118,14 +118,14 @@ public abstract class DialogUtils {
 
 	/**
 	 * Creates a HTML string by formatting the supplied strings as individual text lines separated by {@literal <br>}.
-	 * The complete text is wrapped by {@literal <html>...</html>}. Mainly to be used with
-	 * {@link GenericDialog#addHelp(String)}.
+	 * The complete text is wrapped by {@literal <html>...</html>}. Mainly used to format HTML-texts before being
+	 * passed to {@link GenericDialog#addHelp(String)}, which requires text lines to be separated by {@literal <br>}.
 	 *
-	 * @param lines a sequence of strings interpreted as text lines
+	 * @param textLines a sequence of strings interpreted as text lines
 	 * @return a HTML string
 	 */
-	public static String makeHtmlString(CharSequence... lines) {
-		return "<html>\n" + String.join("<br>\n", lines) + "\n</html>";
+	public static String makeHtmlString(String... textLines) {
+		return "<html>\n" + String.join("<br>\n", textLines) + "\n</html>";
 	}
 
 	/**
@@ -135,7 +135,7 @@ public abstract class DialogUtils {
 	 * @param lines a sequence of strings interpreted as text lines
 	 * @return a newline-separated string
 	 */
-	public static String makeLineSeparatedString(CharSequence... lines) {
+	public static String makeLineSeparatedString(String... lines) {
 		return String.join("\n", lines);
 	}
 	
