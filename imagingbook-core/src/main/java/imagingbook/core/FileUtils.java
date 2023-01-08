@@ -21,6 +21,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.jar.Manifest;
 
 
@@ -319,10 +320,74 @@ public abstract class FileUtils {
 		}
 		return tempDir;
 	}
+
+	public static String getModuleName(Class<?> clazz) throws URISyntaxException {
+		Path ppp = Paths.get("imagingbook-public");
+		// URL url1 = clazz.getResource("");
+		// System.out.println("resource URL = " + clazz.getResource(""));
+		// Path p1 = Paths.get(url1.toURI());
+		String path = null;
+		try {
+			URI uri = clazz.getProtectionDomain().getCodeSource().getLocation().toURI();
+			if (uri != null && !uri.getPath().isEmpty()) {
+				// path = new File(uri).getPath();
+				// path = new File(uri).getCanonicalPath();
+				Path p = Paths.get(uri);
+				System.out.println("p = " + p);
+				int n = p.getNameCount();
+				System.out.println("name count = " + n);
+				int k = -1;
+				for (int i = 0; i < n; i++) {
+					System.out.println("  " + p.getName(i));
+					if (p.getName(i).equals(ppp)) {
+						k = i + 1;
+						break;
+					}
+				}
+
+				if (k >= 0 && k < n-1)
+					return p.getName(k).toString();
+			}
+		} catch (URISyntaxException e) { }
+		return null;
+	}
+
+	public static String getModuleName2(Class<?> clazz) throws URISyntaxException {
+		System.out.println("getResource = " + clazz.getResource(""));
+		System.out.println("clsName = " + clazz.getCanonicalName());
+		System.out.println("pkgName = " + clazz.getPackage().getName());
+
+		Path ppp = Paths.get("imagingbook-public");
+
+		String path = null;
+		try {
+			URI uri = clazz.getProtectionDomain().getCodeSource().getLocation().toURI();
+			if (uri != null && !uri.getPath().isEmpty()) {
+				// path = new File(uri).getPath();
+				// path = new File(uri).getCanonicalPath();
+				Path p = Paths.get(uri);
+				System.out.println("p = " + p);
+				int n = p.getNameCount();
+				System.out.println("name count = " + n);
+				int k = -1;
+				for (int i = 0; i < n; i++) {
+					System.out.println("  " + p.getName(i));
+					if (p.getName(i).equals(ppp)) {
+						k = i + 1;
+						break;
+					}
+				}
+
+				if (k >= 0 && k < n-1)
+					return p.getName(k).toString();
+			}
+		} catch (URISyntaxException e) { }
+		return null;
+	}
 	
 	// -----------------------------------------------------------------
 			
-//	public static void main(String[] args) {
+	public static void main(String[] args) throws URISyntaxException {
 ////		String fileName = ".txt";
 ////		System.out.println("name = " + fileName);
 ////		System.out.println("stripped = " + stripFileExtension(fileName));
@@ -334,7 +399,11 @@ public abstract class FileUtils {
 //		System.out.println("dir = " + getCurrentDirectory());
 //		setCurrentDirectory("D:/tmp");
 //		System.out.println("dir = " + getCurrentDirectory());
-//	}
+
+		// System.out.println(getModuleName(FileUtils.class));
+		System.out.println("module name = " + getModuleName2(FileUtils.class));
+
+	}
 	
 
 }

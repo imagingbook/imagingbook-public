@@ -16,6 +16,7 @@ import ij.process.ImageProcessor;
 import static imagingbook.common.ij.DialogUtils.makeHtmlString;
 import static imagingbook.core.modules.JavaDocUtils.getJavaDocUrl;
 
+import imagingbook.core.FileUtils;
 import imagingbook.core.modules.JavaDocBaseUrl;
 import imagingbook.core.modules.JavaDocUtils;
 import imagingbook.core.resource.ImageResource;
@@ -45,20 +46,27 @@ public class Test_GenericDialog_Help implements PlugInFilter {
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		if (!runDialog()) {
-			return;
-		}
 
-		for (Module m : ModuleLayer.boot().modules()) {
-			IJ.log("   " + m.toString());
-		}
+		IJ.log("class path = " + FileUtils.getClassPath(this.getClass()));
 
-		IJ.log("IJ.module = " + IJ.class.getModule());
-		IJ.log("classnameC = " + this.getClass().getCanonicalName());
-		Module module = this.getClass().getModule();
-		IJ.log("module = " + module);
-		IJ.log("ann = " + module.getAnnotation(JavaDocBaseUrl.class));
-		IJ.log("url = " + getJavaDocUrl(this.getClass()));
+		Class<?> clazz = this.getClass();
+		IJ.log("class name = " + clazz.getName());
+
+		// for (Module m : ModuleLayer.boot().modules()) {
+		// 	IJ.log(m.toString());
+		// }
+		//
+		// IJ.log("IJ module = " + IJ.class.getModule());
+		// IJ.log("IJ module name = " + IJ.class.getModule().getName());
+		// IJ.log("classnameC = " + this.getClass().getCanonicalName());
+		// Module module = this.getClass().getModule();
+		// IJ.log("module = " + module);
+		// IJ.log("ann = " + module.getAnnotation(JavaDocBaseUrl.class));
+		// IJ.log("url = " + getJavaDocUrl(this.getClass()));
+
+		// if (!runDialog()) {
+		// 	return;
+		// }
 	}
 	
 	// ---------------------------
