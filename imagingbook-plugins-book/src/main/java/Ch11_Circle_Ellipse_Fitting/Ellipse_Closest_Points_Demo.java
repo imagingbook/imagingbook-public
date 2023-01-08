@@ -112,8 +112,8 @@ public class Ellipse_Closest_Points_Demo implements PlugIn {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		
-		gd.addMessage(DialogUtils.makeLineSeparatedString(
+
+		gd.addMessage(DialogUtils.formatText(50,
 				"This plugin creates a new image with an ellipse and a",
 				"set of random points. For each point, the closest (contact)",
 				"point on the ellipse is calculated and a connecting line",

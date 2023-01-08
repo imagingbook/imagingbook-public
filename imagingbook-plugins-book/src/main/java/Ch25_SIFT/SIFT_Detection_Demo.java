@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.util.List;
 
 import static imagingbook.common.color.sets.ColorEnumeration.getColors;
+import static imagingbook.common.ij.DialogUtils.makeHtmlString;
 
 /**
  * <p>
@@ -51,9 +52,15 @@ import static imagingbook.common.color.sets.ColorEnumeration.getColors;
  */
 
 public class SIFT_Detection_Demo implements PlugInFilter {
+
+	private static final String HelpText = makeHtmlString(
+			"This plugin extracts multi-scale SIFT features from the current image and displays them as",
+			"M-shaped markers. The list of keypoints (if shown) is sorted by descending magnitude.",
+			"The input image is always converted to grayscale before SIFT feature detection is performed.",
+			"If no image is currently open, the user is asked to load a predefined sample image."
+	);
 	
 	private static ImageResource SampleImage = GeneralSampleImage.Castle;
-	
 	private static SiftParameters params = new SiftParameters();
 	private static int MaxFeaturesToShow = 200;
 	private static double FeatureScale = 1.0; // 1.5;
@@ -119,7 +126,7 @@ public class SIFT_Detection_Demo implements PlugInFilter {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addMessage("This plugin expects a single image.");
+		gd.addHelp(HelpText);
 		DialogUtils.addToDialog(params, gd);
 		gd.addNumericField("Max. number of features to show", MaxFeaturesToShow);
 		gd.addCheckbox("List SIFT features)", ListSiftFeatures);

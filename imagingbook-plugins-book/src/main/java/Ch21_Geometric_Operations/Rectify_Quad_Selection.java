@@ -136,7 +136,7 @@ public class Rectify_Quad_Selection implements PlugInFilter {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addMessage(DialogUtils.makeLineSeparatedString(
+		gd.addMessage(DialogUtils.formatText(50,
 				"How to use: Select the four corners of the quad to be rectified",
 				"with a polygon ROI, in clockwise direction, starting at the point",
 				"that should map to the top-left corner (in portrait mode).",

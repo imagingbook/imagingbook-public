@@ -39,6 +39,7 @@ import java.awt.geom.QuadCurve2D;
 import java.util.List;
 
 import static imagingbook.common.color.sets.ColorEnumeration.getColors;
+import static imagingbook.common.ij.DialogUtils.makeHtmlString;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
@@ -62,7 +63,17 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/11/20
  */
 public class SIFT_Matching_Demo implements PlugInFilter {
-	
+
+	private static final String HelpText = makeHtmlString(
+			"This ImageJ plugin demonstrates the use of the SIFT detection and matching framework.",
+			"The plugin takes a single image, which is assumed to be composed of a left and right frame.",
+			"The input image is split horizontally, then SIFT detection and matching is applied to the",
+			"two sub-images. The input image is always converted to grayscale (and normalized to [0,1])",
+			"before SIFT feature detection is performed. The result is displayed as a graphic overlay by",
+			"connecting and annotating the best-matching features. When saved as a TIFF image the overlay",
+			"is preserved."
+	);
+
 	// matching parameters:
 	private static NormType DistanceNormType = SiftMatcher.DefaultNormType;
 	private static double MaxDistanceRatio = SiftMatcher.DefaultRMax;
@@ -196,7 +207,8 @@ public class SIFT_Matching_Demo implements PlugInFilter {
 	// -------------------------
 	
 	private boolean runDialog() {
-		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());	
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(HelpText);
 		gd.addMessage("This plugin expects a single image composed of a left and right frame.");
 		
 		gd.addMessage("SIFT matching parameters:");

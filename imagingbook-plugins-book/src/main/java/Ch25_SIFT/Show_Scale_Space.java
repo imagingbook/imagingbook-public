@@ -8,7 +8,6 @@
  ******************************************************************************/
 package Ch25_SIFT;
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
@@ -40,6 +39,13 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/11/23
  */
 public class Show_Scale_Space implements PlugInFilter {
+
+	private static final String HelpText = makeHtmlString(
+			"This ImageJ plugin visualizes the hierarchical scale space structures",
+			"used for SIFT feature detection. Optionally the Gaussian scale space or the",
+			"derived DoG scale space (or both) are shown. Each scale space octave",
+			"is displayed as an image stack, with one frame for each scale level."
+	);
 
 	private static ImageResource SampleImage = GeneralSampleImage.Castle;
 	private static boolean ShowGaussianScaleSpace = true;
@@ -94,6 +100,7 @@ public class Show_Scale_Space implements PlugInFilter {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(HelpText);
 		gd.addCheckbox("Show Gaussian scale space)", ShowGaussianScaleSpace);
 		gd.addCheckbox("Show DoG scale space)", ShowDoGScaleSpace);
 		
@@ -105,6 +112,24 @@ public class Show_Scale_Space implements PlugInFilter {
 		ShowGaussianScaleSpace = gd.getNextBoolean();
 		ShowDoGScaleSpace = gd.getNextBoolean();
 		return true;
+	}
+
+	final static String JAVADOC_PATH = "https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook.plugins_book/";
+
+	private String getJavaDocUrl() {
+		this.getClass().getPackage();
+		return "https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook.plugins_book/Ch25_SIFT/Show_Scale_Space.html";
+	}
+
+	public static void main(String[] args) {
+		System.out.println("package = "  + Show_Scale_Space.class.getPackage().getName());
+		String name = Show_Scale_Space.class.getCanonicalName();
+		System.out.println("name = "  + name);
+		System.out.println("name = "  + name.replace('.', '/'));
+
+		String filename = name.replace('.', '/') + ".html";
+		String url = JAVADOC_PATH + filename;
+		System.out.println("url = "  + url);
 	}
 
 }

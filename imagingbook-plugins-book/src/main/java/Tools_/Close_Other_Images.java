@@ -15,11 +15,15 @@ package Tools_;
  * @author WB
  * @version 2012/02/15
  */
+import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.modules.JavaDocBaseUrl;
+
+import static imagingbook.core.modules.JavaDocUtils.getJavaDocUrl;
 
 public class Close_Other_Images implements PlugInFilter {
 	
@@ -33,19 +37,19 @@ public class Close_Other_Images implements PlugInFilter {
 	
 	@Override
 	public void run(ImageProcessor ip) {
-		int[] winIds = WindowManager.getIDList();
+				int[] winIds = WindowManager.getIDList();
 		if (winIds == null || winIds.length < 1) {
 			return;
 		}
 		
-		GenericDialog dlg = new GenericDialog("Close all images");
-		dlg.addCheckbox("Close current image too?", false);
-		dlg.showDialog();
-		if (dlg.wasCanceled()) {
+		GenericDialog gd = new GenericDialog("Close all images");
+		gd.addCheckbox("Close current image too?", false);
+		gd.showDialog();
+		if (gd.wasCanceled()) {
 			return;
 		}
 		
-		boolean closeCurrentImage = dlg.getNextBoolean();
+		boolean closeCurrentImage = gd.getNextBoolean();
 		int thisId = this.im.getID();
 		
 		for (int id : winIds) {

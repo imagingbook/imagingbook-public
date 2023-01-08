@@ -145,8 +145,8 @@ public class Line_Fitting implements PlugInFilter { // TODO: activate dialog
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		
-		gd.addMessage(DialogUtils.makeLineSeparatedString(
+
+		gd.addMessage(DialogUtils.formatText(50,
 				"This plugin performs algebraic + geometric circle fitting,",
 				"either to ROI points (if available) or foreground points",
 				"collected from the pixel image."

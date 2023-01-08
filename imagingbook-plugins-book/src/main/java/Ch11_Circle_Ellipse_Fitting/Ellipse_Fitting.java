@@ -149,8 +149,8 @@ public class Ellipse_Fitting implements PlugInFilter {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		
-		gd.addMessage(DialogUtils.makeLineSeparatedString(
+
+		gd.addMessage(DialogUtils.formatText(50,
 				"This plugin performs algebraic + geometric ellipse fitting,",
 				"either to ROI points (if available) or foreground points",
 				"collected from the pixel image."

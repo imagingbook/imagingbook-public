@@ -118,7 +118,7 @@ public class Line_Make_Random implements PlugIn {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addMessage(DialogUtils.makeLineSeparatedString(
+		gd.addMessage(DialogUtils.formatText(50,
 				"This plugin samples points on a given (ideal) line and",
 				"creates a new image with the sample points marked and also",
 				"contained in a ROI (float coordinates)."
