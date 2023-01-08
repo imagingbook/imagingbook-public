@@ -4,8 +4,9 @@
  * plugins.config files for ImageJ plugin sets.
  */
 module imagingbook.core {
-	exports imagingbook.core.resource;
+	exports imagingbook.core.modules;
 	exports imagingbook.core.plugin;
+	exports imagingbook.core.resource;
 	exports imagingbook.core;
 
 	requires transitive ij;
