@@ -321,34 +321,8 @@ public abstract class FileUtils {
 		return tempDir;
 	}
 
-	public static String getModuleName(Class<?> clazz) throws URISyntaxException {
-		Path ppp = Paths.get("imagingbook-public");
-		// URL url1 = clazz.getResource("");
-		// System.out.println("resource URL = " + clazz.getResource(""));
-		// Path p1 = Paths.get(url1.toURI());
-		String path = null;
-		try {
-			URI uri = clazz.getProtectionDomain().getCodeSource().getLocation().toURI();
-			if (uri != null && !uri.getPath().isEmpty()) {
-				// path = new File(uri).getPath();
-				// path = new File(uri).getCanonicalPath();
-				Path p = Paths.get(uri);
-				System.out.println("p = " + p);
-				int n = p.getNameCount();
-				System.out.println("name count = " + n);
-				int k = -1;
-				for (int i = 0; i < n; i++) {
-					System.out.println("  " + p.getName(i));
-					if (p.getName(i).equals(ppp)) {
-						k = i + 1;
-						break;
-					}
-				}
+	public static String getModuleName(Class<?> clazz) {
 
-				if (k >= 0 && k < n-1)
-					return p.getName(k).toString();
-			}
-		} catch (URISyntaxException e) { }
 		return null;
 	}
 
@@ -384,23 +358,19 @@ public abstract class FileUtils {
 		} catch (URISyntaxException e) { }
 		return null;
 	}
+
+
+
 	
 	// -----------------------------------------------------------------
 			
 	public static void main(String[] args) throws URISyntaxException {
-////		String fileName = ".txt";
-////		System.out.println("name = " + fileName);
-////		System.out.println("stripped = " + stripFileExtension(fileName));
-////		System.out.println("ext = " + getFileExtension(fileName));
-////		System.out.println(getClassPath(FileUtils.class));
-//		
-//		System.out.println("dir = " + getCurrentDirectory());
-//		setCurrentDirectory("C:/tmp");
-//		System.out.println("dir = " + getCurrentDirectory());
-//		setCurrentDirectory("D:/tmp");
-//		System.out.println("dir = " + getCurrentDirectory());
 
-		// System.out.println(getModuleName(FileUtils.class));
+
+		Class<?> clazz = FileUtils.class;
+		String specs = clazz.getPackage().getSpecificationTitle();
+		System.out.println("specs = " + specs);
+
 		System.out.println("module name = " + getModuleName2(FileUtils.class));
 
 	}

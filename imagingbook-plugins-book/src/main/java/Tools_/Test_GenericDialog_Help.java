@@ -16,6 +16,7 @@ import ij.process.ImageProcessor;
 import static imagingbook.common.ij.DialogUtils.makeHtmlString;
 import static imagingbook.core.modules.JavaDocUtils.getJavaDocUrl;
 
+import imagingbook.core.ClassUtils;
 import imagingbook.core.FileUtils;
 import imagingbook.core.modules.JavaDocBaseUrl;
 import imagingbook.core.modules.JavaDocUtils;
@@ -56,17 +57,12 @@ public class Test_GenericDialog_Help implements PlugInFilter {
 		// 	IJ.log(m.toString());
 		// }
 		//
-		// IJ.log("IJ module = " + IJ.class.getModule());
-		// IJ.log("IJ module name = " + IJ.class.getModule().getName());
-		// IJ.log("classnameC = " + this.getClass().getCanonicalName());
-		// Module module = this.getClass().getModule();
-		// IJ.log("module = " + module);
-		// IJ.log("ann = " + module.getAnnotation(JavaDocBaseUrl.class));
-		// IJ.log("url = " + getJavaDocUrl(this.getClass()));
+		IJ.log("IJ module = " + IJ.class.getModule());
+		IJ.log("IJ module name = " + IJ.class.getModule().getName());
 
-		// if (!runDialog()) {
-		// 	return;
-		// }
+		IJ.log("class package impl = " + clazz.getPackage().getImplementationTitle());
+		IJ.log("class package spec = " + clazz.getPackage().getSpecificationTitle());
+
 	}
 	
 	// ---------------------------
@@ -89,8 +85,15 @@ public class Test_GenericDialog_Help implements PlugInFilter {
 	}
 
 	public static void main(String[] args) {
-		String url = JavaDocUtils.getJavaDocUrl(Close_Other_Images.class);
-		System.out.println(url);
+		// String url = JavaDocUtils.getJavaDocUrl(Close_Other_Images.class);
+		// System.out.println(url);
+		Class<?> clazz = Test_GenericDialog_Help.class;
+
+		System.out.println("class path = " + FileUtils.getClassPath(clazz));
+
+		System.out.println("module from class = " + clazz.getModule().getName());
+		System.out.println("module from package = " + ClassUtils.getModuleFromPackage(clazz));
+		System.out.println("module from classpath = " + ClassUtils.getModuleFromClasspath(clazz, "imagingbook-public"));
 
 	}
 
