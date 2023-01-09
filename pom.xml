@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.imagingbook</groupId>
+<!--	<groupId>com.imagingbook</groupId>-->
 	<artifactId>imagingbook-public</artifactId>
 	<version>7.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -52,10 +52,10 @@
 		<module>imagingbook-common</module>
 		<module>imagingbook-spectral</module>
 		<module>imagingbook-pdf</module>
-		<module>imagingbook-plugins-book</module>
-		<module>imagingbook-plugins-demos</module>
 		<module>imagingbook-sample-images</module>
 		<module>imagingbook-testing</module>
+		<module>imagingbook_plugins_book</module>
+		<module>imagingbook_plugins_demos</module>
 	</modules>
 
 	<properties>
