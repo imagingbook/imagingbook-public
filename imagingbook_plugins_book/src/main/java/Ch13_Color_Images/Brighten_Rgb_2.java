@@ -83,6 +83,7 @@ public class Brighten_Rgb_2 implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Brightness delta", BrightnessDelta, 0);
 
 		gd.showDialog();

@@ -113,6 +113,7 @@ public class Axis_Aligned_Bounding_Box implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Drawing color", DrawingColor);
 		gd.addNumericField("Stroke width", StrokeWidth, 1);
 

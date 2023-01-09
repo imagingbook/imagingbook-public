@@ -18,16 +18,12 @@ import imagingbook.common.image.access.VectorAccessor;
 import imagingbook.core.plugin.JavaDocHelp;
 
 /**
- * This plugin demonstrates the of class {@link ImageAccessor} for
- * unified access to scalar and vector-valued images.
- * The plugin adds 20 brightness units to each component (color
- * plane) of the active image. It can be applied to any image type.
- * Image pixels are treated as vectors, even if only a single
- * component is present.
+ * This plugin demonstrates the of class {@link ImageAccessor} for unified access to scalar and vector-valued images.
+ * The plugin adds 20 brightness units to each component (color plane) of the active image. It can be applied to any
+ * image type. Image pixels are treated as vectors, even if only a single component is present.
  * TODO: move to other package
- * 
- * @author WB
  *
+ * @author WB
  * @see ImageAccessor
  * @see ScalarAccessor
  * @see VectorAccessor

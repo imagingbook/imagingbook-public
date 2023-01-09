@@ -78,6 +78,7 @@ public class Kuwahara_Filter implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		if (isColor)
 			gd.addCheckbox("Use vector filter (color only)", UseVectorFilter);

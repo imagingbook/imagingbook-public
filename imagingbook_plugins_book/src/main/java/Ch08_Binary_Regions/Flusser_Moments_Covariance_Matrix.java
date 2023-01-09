@@ -129,6 +129,7 @@ public class Flusser_Moments_Covariance_Matrix implements PlugIn, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Data set to use", DATA_SET);
 		gd.addNumericField("Minimum region size (pixels)", MIN_REGION_SIZE);
 		gd.addCheckbox("List long-encoded covariance matrix", LIST_LONG_ENCODED_MATRIX);

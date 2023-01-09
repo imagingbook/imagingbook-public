@@ -106,6 +106,7 @@ public class Convert_To_Color_Stack implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage("Convert RGB image to Lab/Luv stack.");
 		gd.addEnumChoice("Target color space", TargetSpace);
 		gd.addCheckbox("Reconstruct RGB image", ReconstructRGB);

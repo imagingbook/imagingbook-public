@@ -62,6 +62,7 @@ public class MedianFilter_Scalar implements PlugInFilter, JavaDocHelp {
     
     private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Filter radius", params.radius, 1);
 		gd.showDialog();
 

@@ -151,6 +151,7 @@ public class DFT_2D_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Use fast mode (FFT)", UseFastMode);
 		gd.addCheckbox("Use double precision", UseDoublePrecision);
 		gd.addCheckbox("Show logarithmic spectrum", ShowLogSpectrum);

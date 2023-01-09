@@ -17,12 +17,10 @@ import imagingbook.core.plugin.JavaDocHelp;
 import java.awt.Point;
 
 /**
- * This ImageJ plugin shows processing the inside of 
- * the currently selected region of interest (ROI)
- * using the {@link Point} iterator of {@link Roi}. 
- * The plugin works for RGB color images and merely inverts the
- * each pixel contained in the ROI.
- * 
+ * This ImageJ plugin shows processing the inside of the currently selected region of interest (ROI) using the
+ * {@link Point} iterator of {@link Roi}. The plugin works for RGB color images and merely inverts the each pixel
+ * contained in the ROI.
+ *
  * @author WB
  * @version 2022/04/01
  */
@@ -43,6 +41,5 @@ public class Roi_Processing_Demo2 implements PlugInFilter, JavaDocHelp {
 			int p = ip.getPixel(pnt.x, pnt.y);
 			ip.putPixel(pnt.x, pnt.y, ~p);	// invert color values
 		}
-
 	}
 }

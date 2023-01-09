@@ -73,7 +73,7 @@ public class Gamma_Correction implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("gamma (\u03B3 > 0)", GAMMA, 2);
 
 		gd.showDialog();

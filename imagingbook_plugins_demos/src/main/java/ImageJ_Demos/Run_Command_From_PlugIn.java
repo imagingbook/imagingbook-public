@@ -14,9 +14,8 @@ import ij.plugin.PlugIn;
 import imagingbook.core.plugin.JavaDocHelp;
 
 /**
- * This plugin demonstrates how to run another ImageJ "command" (plugin)
- * from our own PlugIn using the IJ.run() method.
- * 
+ * This plugin demonstrates how to run another ImageJ "command" (plugin) from our own PlugIn using the IJ.run() method.
+ *
  * @author WB
  */
 public class Run_Command_From_PlugIn implements PlugIn, JavaDocHelp {

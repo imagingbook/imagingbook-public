@@ -17,15 +17,11 @@ import imagingbook.common.filter.linear.LinearFilterSeparable;
 import imagingbook.core.plugin.JavaDocHelp;
 
 /**
- * This ImageJ plugin shows how to construct a separable linear filter
- * using the classes {@link LinearFilterSeparable} and {@link GenericFilter}.
- * This plugin works for all types of images.
- * On RGB color images, the filter is applied independently
- * to the three color channels.
- * The active image is modified.
- * 
- * @author WB
+ * This ImageJ plugin shows how to construct a separable linear filter using the classes {@link LinearFilterSeparable}
+ * and {@link GenericFilter}. This plugin works for all types of images. On RGB color images, the filter is applied
+ * independently to the three color channels. The active image is modified.
  *
+ * @author WB
  */
 public class Linear_Filter_3x3_Separable implements PlugInFilter, JavaDocHelp {
 	

@@ -239,6 +239,7 @@ public class Flusser_Moments_Matching_Demo implements PlugIn, JavaDocHelp {
 
     private boolean runDialog() {
         GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+        gd.addHelp(getJavaDocUrl());
         gd.addNumericField("Minimum region size", MinRegionSize, 0);
         gd.addNumericField("Uax. moment vector distance", MaxMomentDistance, 3);
         gd.addCheckbox("Use Mahalanobis distance", UseMahalanobisDistance);

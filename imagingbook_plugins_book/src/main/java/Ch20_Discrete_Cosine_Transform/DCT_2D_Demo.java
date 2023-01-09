@@ -130,6 +130,7 @@ public class DCT_2D_Demo implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Use fast transform", UseFastMode);
 		gd.addCheckbox("Use double precision", UseDoublePrecision);
 		gd.addCheckbox("Show absolute/log spectrum", ShowLogSpectrum);

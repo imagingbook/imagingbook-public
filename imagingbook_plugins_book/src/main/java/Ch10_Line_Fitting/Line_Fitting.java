@@ -146,7 +146,7 @@ public class Line_Fitting implements PlugInFilter, JavaDocHelp { // TODO: activa
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage(DialogUtils.formatText(50,
 				"This plugin performs algebraic + geometric circle fitting,",
 				"either to ROI points (if available) or foreground points",

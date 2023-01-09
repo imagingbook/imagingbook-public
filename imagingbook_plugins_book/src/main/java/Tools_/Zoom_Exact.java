@@ -30,7 +30,6 @@ public class Zoom_Exact implements PlugIn, JavaDocHelp {
 	
 	@Override
 	public void run(String arg) {
-		
 		ImagePlus im = WindowManager.getCurrentImage();
 		if (im == null) {
 			IJ.showMessage("No image open");
@@ -38,6 +37,7 @@ public class Zoom_Exact implements PlugIn, JavaDocHelp {
 		}
 		
 		GenericDialog gd = new GenericDialog("Zoom Exact");
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Magnification (%): ", GuiTools.getMagnification(im) * 100, 2);
 		gd.addCheckbox("Log output", LOG_OUTPUT);
 		gd.showDialog();

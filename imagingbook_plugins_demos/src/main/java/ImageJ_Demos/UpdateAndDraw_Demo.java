@@ -15,11 +15,9 @@ import ij.process.ImageProcessor;
 import imagingbook.core.plugin.JavaDocHelp;
 
 /**
- * This ImageJ plugin modifies and re-displays the current image 
- * repeatedly.
- * 
- * @author WB
+ * This ImageJ plugin modifies and re-displays the current image repeatedly.
  *
+ * @author WB
  */
 public class UpdateAndDraw_Demo implements PlugInFilter, JavaDocHelp {
 	

@@ -40,6 +40,7 @@ public class Close_Other_Images implements PlugInFilter, JavaDocHelp {
 		}
 		
 		GenericDialog gd = new GenericDialog("Close all images");
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Close current image too?", false);
 		gd.showDialog();
 		if (gd.wasCanceled()) {

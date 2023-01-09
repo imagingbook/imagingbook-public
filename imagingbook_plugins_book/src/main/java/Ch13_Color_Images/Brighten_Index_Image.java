@@ -102,6 +102,7 @@ public class Brighten_Index_Image implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Brightness delta", BrightnessDelta, 0);
 
 		gd.showDialog();

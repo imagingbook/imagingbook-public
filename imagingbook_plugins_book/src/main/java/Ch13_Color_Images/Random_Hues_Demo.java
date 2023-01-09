@@ -64,6 +64,7 @@ public class Random_Hues_Demo implements PlugIn, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage("Creates a tiled color image with random hues.");
 		gd.addNumericField("Tile size", TileSize, 0);
 		gd.addNumericField("Tiles horizontal", TilesHor, 0);

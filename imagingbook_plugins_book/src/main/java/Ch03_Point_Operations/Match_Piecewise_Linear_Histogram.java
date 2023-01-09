@@ -104,7 +104,7 @@ public class Match_Piecewise_Linear_Histogram implements PlugInFilter, JavaDocHe
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Show original histograms", ShowOriginalHistograms);
 		gd.addCheckbox("Show cumulative histograms", ShowCumulativeHistograms);
 		gd.addCheckbox("Show final histogram", ShowFinalHistogram);

@@ -77,6 +77,7 @@ public class Color_Edges_Gray implements PlugInFilter, JavaDocHelp {
     
     boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Show edge magnitude", ShowEdgeMagnitude);
 		gd.addCheckbox("Show edge orientation", ShowEdgeOrientation);
 		

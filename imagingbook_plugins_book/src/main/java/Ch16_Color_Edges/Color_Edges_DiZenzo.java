@@ -79,6 +79,7 @@ public class Color_Edges_DiZenzo implements PlugInFilter, JavaDocHelp {
     
     boolean runDialog() {
 		GenericDialog gd = new GenericDialog("Multi-Gradient Color Edges");
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Show edge magnitude", ShowEdgeMagnitude);
 		gd.addCheckbox("Show edge orientation", ShowEdgeOrientation);
 

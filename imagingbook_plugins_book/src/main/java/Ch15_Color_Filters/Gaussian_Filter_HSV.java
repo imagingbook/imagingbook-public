@@ -208,6 +208,7 @@ public class Gaussian_Filter_HSV implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Gaussian sigma", Sigma, 1);
 		gd.setInsets(0, 0, 0);
 		gd.addMessage("Components to filter:");

@@ -192,6 +192,7 @@ public class CorrelCoefficient_Matching implements PlugInFilter, JavaDocHelp {
  
     private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Add noise to reference image", ReferenceAddNoise);
 		gd.addNumericField("Reference noise sigma", ReferenceNoiseSigma, 2);
 		gd.addNumericField("Acceptance threshold (< 1.0)", AcceptanceThreshold, 2);

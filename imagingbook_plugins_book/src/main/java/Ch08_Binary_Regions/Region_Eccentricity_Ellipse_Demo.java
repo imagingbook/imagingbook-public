@@ -188,6 +188,7 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter, JavaDocHe
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Neighborhood type", Neighborhood);
 		gd.addNumericField("Min. region size (pixels)", MinRegionSize, 0);
 		gd.addNumericField("Max. eccentricity", MaxEccentricity, 0);

@@ -41,13 +41,6 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  */
 public class Show_Scale_Space implements PlugInFilter, JavaDocHelp {
 
-	private static final String HelpText = makeHtmlString(
-			"This ImageJ plugin visualizes the hierarchical scale space structures",
-			"used for SIFT feature detection. Optionally the Gaussian scale space or the",
-			"derived DoG scale space (or both) are shown. Each scale space octave",
-			"is displayed as an image stack, with one frame for each scale level."
-	);
-
 	private static ImageResource SampleImage = GeneralSampleImage.Castle;
 	private static boolean ShowGaussianScaleSpace = true;
 	private static boolean ShowDoGScaleSpace = false;

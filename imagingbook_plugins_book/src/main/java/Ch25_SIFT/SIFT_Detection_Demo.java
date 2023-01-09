@@ -54,13 +54,6 @@ import static imagingbook.common.ij.DialogUtils.makeHtmlString;
 
 public class SIFT_Detection_Demo implements PlugInFilter, JavaDocHelp {
 
-	private static final String HelpText = makeHtmlString(
-			"This plugin extracts multi-scale SIFT features from the current image and displays them as",
-			"M-shaped markers. The list of keypoints (if shown) is sorted by descending magnitude.",
-			"The input image is always converted to grayscale before SIFT feature detection is performed.",
-			"If no image is currently open, the user is asked to load a predefined sample image."
-	);
-	
 	private static ImageResource SampleImage = GeneralSampleImage.Castle;
 	private static SiftParameters params = new SiftParameters();
 	private static int MaxFeaturesToShow = 200;
@@ -127,7 +120,7 @@ public class SIFT_Detection_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addHelp(HelpText);
+		gd.addHelp(getJavaDocUrl());
 		DialogUtils.addToDialog(params, gd);
 		gd.addNumericField("Max. number of features to show", MaxFeaturesToShow);
 		gd.addCheckbox("List SIFT features)", ListSiftFeatures);

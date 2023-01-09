@@ -118,7 +118,7 @@ public class Color_Edges_Canny implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addMessage("Plugin parameters:");
 		gd.addCheckbox("Show edge magnitude", ShowEdgeMagnitude);

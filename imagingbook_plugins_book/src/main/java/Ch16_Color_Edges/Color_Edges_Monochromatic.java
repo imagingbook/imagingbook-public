@@ -78,6 +78,7 @@ public class Color_Edges_Monochromatic implements PlugInFilter, JavaDocHelp {
     
     boolean runDialog() {
 		GenericDialog gd = new GenericDialog("Monochromatic Color Edges");
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Show edge magnitude", ShowEdgeMagnitude);
 		gd.addCheckbox("Show edge orientation", ShowEdgeOrientation);
 		

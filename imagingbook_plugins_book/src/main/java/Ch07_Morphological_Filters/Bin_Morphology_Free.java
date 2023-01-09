@@ -132,6 +132,7 @@ public class Bin_Morphology_Free implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		if (im.isInvertedLut()) {
 			gd.setInsets(0, 0, 0);
 			gd.addMessage("Image has inverted LUT (0=white)!");

@@ -227,6 +227,7 @@ public class Region_Segmentation_Demo implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(Region_Segmentation_Demo.class.getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Segmentation method", Method);
 		gd.addEnumChoice("Neighborhood type", Neighborhood);
 		gd.addCheckbox("Color components", ColorComponents);

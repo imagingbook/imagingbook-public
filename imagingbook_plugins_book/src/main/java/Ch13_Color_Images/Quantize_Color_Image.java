@@ -141,6 +141,7 @@ public class Quantize_Color_Image implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Quantization method", METHOD);
 		gd.addNumericField("No. of colors (1,..,256)", NCOLORS, 0);
 		gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);

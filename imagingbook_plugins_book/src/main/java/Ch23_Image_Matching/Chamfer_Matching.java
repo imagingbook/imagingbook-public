@@ -191,6 +191,7 @@ public class Chamfer_Matching implements PlugInFilter, JavaDocHelp {
  
     private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		if (imgI.isInvertedLut()) {
 			gd.setInsets(0, 0, 0);
 			gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");

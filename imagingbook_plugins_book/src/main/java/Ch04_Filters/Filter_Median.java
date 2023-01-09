@@ -86,6 +86,7 @@ public class Filter_Median implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage("Filter kernel size is (2r+1) x (2r+1):");
 		gd.addNumericField("Kernel radius (r > 0)", R, 0);
 

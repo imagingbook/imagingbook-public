@@ -149,6 +149,8 @@ public class Hough_Line_Detect implements PlugInFilter, JavaDocHelp {
 
 	private boolean showDialog(HoughTransformLines.Parameters params) {
 		GenericDialog gd = new GenericDialog("Hough Transform (lines)");
+		gd.addHelp(getJavaDocUrl());
+
 		gd.addNumericField("Axial steps", params.nAng, 0);
 		gd.addNumericField("Radial steps", params.nRad, 0);
 		gd.addNumericField("Max. number of lines to show", MaxLines, 0);

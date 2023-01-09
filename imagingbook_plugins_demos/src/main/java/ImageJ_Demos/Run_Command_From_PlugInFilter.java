@@ -15,11 +15,10 @@ import ij.process.ImageProcessor;
 import imagingbook.core.plugin.JavaDocHelp;
 
 /**
- * This plugin demonstrates how to run another ImageJ command (plugin)
- * from our own PlugInFilter using the IJ.run() method.
- * Note that PlugInFilter locks the current image until is is finished,
- * thus we need to unlock() it before running the other command.
- * 
+ * This plugin demonstrates how to run another ImageJ command (plugin) from our own PlugInFilter using the IJ.run()
+ * method. Note that PlugInFilter locks the current image until is is finished, thus we need to unlock() it before
+ * running the other command.
+ *
  * @author WB
  */
 public class Run_Command_From_PlugInFilter implements PlugInFilter, JavaDocHelp {

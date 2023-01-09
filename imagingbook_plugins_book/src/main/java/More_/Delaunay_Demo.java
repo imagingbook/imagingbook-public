@@ -77,7 +77,7 @@ public class Delaunay_Demo implements PlugInFilter, JavaDocHelp {
     @Override
 	public void run(ImageProcessor ip) {
     	
-		if (!showDialog()) {
+		if (!runDialog()) {
 			return;
 		}
 		
@@ -119,25 +119,26 @@ public class Delaunay_Demo implements PlugInFilter, JavaDocHelp {
 	
 	// ---------------------------------------------------------------------------
 	
-	private boolean showDialog() {
-		GenericDialog dlg = new GenericDialog(this.getClass().getSimpleName());
-		dlg.addNumericField("Corner score threshold", params.scoreThreshold, 0);
-		dlg.addNumericField("Border width", params.border, 0);
-		dlg.addCheckbox("Clean up corners", params.doCleanUp);
-		dlg.addNumericField("Corners to show (0 = show all)", CornerCount, 0);
-		dlg.addCheckbox("Shuffle corners", ShuffleCorners);
+	private boolean runDialog() {
+		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
+		gd.addNumericField("Corner score threshold", params.scoreThreshold, 0);
+		gd.addNumericField("Border width", params.border, 0);
+		gd.addCheckbox("Clean up corners", params.doCleanUp);
+		gd.addNumericField("Corners to show (0 = show all)", CornerCount, 0);
+		gd.addCheckbox("Shuffle corners", ShuffleCorners);
 		
-		dlg.showDialog();
-		if(dlg.wasCanceled())
+		gd.showDialog();
+		if(gd.wasCanceled())
 			return false;	
 		
-		params.scoreThreshold = (int) dlg.getNextNumber();
-		params.border = (int) dlg.getNextNumber();
-		params.doCleanUp = dlg.getNextBoolean();
-		CornerCount = (int) dlg.getNextNumber();
-		ShuffleCorners = dlg.getNextBoolean();
+		params.scoreThreshold = (int) gd.getNextNumber();
+		params.border = (int) gd.getNextNumber();
+		params.doCleanUp = gd.getNextBoolean();
+		CornerCount = (int) gd.getNextNumber();
+		ShuffleCorners = gd.getNextBoolean();
 		
-		if(dlg.invalidNumber() || !params.validate()) {
+		if(gd.invalidNumber() || !params.validate()) {
 			IJ.error("Input Error", "Invalid input");
 			return false;
 		}	

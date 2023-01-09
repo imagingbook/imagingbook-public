@@ -644,7 +644,7 @@ public class Mesh_Warp_Interactive implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage(DialogUtils.makeLineSeparatedString(
 				"How to use:",
 				"      left mouse: select and drag grid points",

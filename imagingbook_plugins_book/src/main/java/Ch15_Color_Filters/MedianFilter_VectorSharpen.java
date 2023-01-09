@@ -70,6 +70,7 @@ public class MedianFilter_VectorSharpen implements PlugInFilter, JavaDocHelp {
     
     boolean runDialog() {
 		GenericDialog gd = new GenericDialog("Median Filter");
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Radius", params.radius, 1);
 		gd.addNumericField("Sharpen", params.sharpen, 1);
 		gd.addNumericField("Threshold", params.threshold, 1);

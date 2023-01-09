@@ -166,6 +166,7 @@ public class Fourier_Descriptor_Trigonometic implements PlugInFilter, JavaDocHel
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Number of FD pairs (min. 1)", FourierCoefficientPairs, 0);
 		gd.addNumericField("Reconstruction Points", ReconstructionPoints, 0);
 		gd.addCheckbox("Show Original Contour", ShowOriginalContour);

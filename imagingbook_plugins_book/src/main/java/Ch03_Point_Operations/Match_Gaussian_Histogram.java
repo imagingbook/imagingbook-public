@@ -109,7 +109,7 @@ public class Match_Gaussian_Histogram implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Mean (μ)", Mean, 2);
 		gd.addNumericField("Std deviation (σ)", StdDev, 2);
 

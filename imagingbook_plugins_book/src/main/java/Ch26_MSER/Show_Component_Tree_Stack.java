@@ -120,7 +120,8 @@ public class Show_Component_Tree_Stack implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog("Settings");
-		gd.addEnumChoice("component tree method", method);
+		gd.addHelp(getJavaDocUrl());
+		gd.addEnumChoice("Component tree method", method);
 
 		gd.showDialog();
 		if (gd.wasCanceled())

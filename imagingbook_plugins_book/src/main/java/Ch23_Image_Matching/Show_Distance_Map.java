@@ -69,6 +69,7 @@ public class Show_Distance_Map implements PlugInFilter, JavaDocHelp {
     
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		if (im.isInvertedLut()) {
 			gd.setInsets(0, 0, 0);
 			gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");

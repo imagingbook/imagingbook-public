@@ -17,13 +17,10 @@ import imagingbook.core.plugin.JavaDocHelp;
 import java.awt.Rectangle;
 
 /**
- * This ImageJ plugin shows how an image operation can be confined
- * to the currently selected region of interest (ROI). Note that
- * it uses the ROI attached to the associated {@link ImagePlus} instance,
- * which may be of any shape (not just a rectangle).
- * The plugin works for RGB color images and merely inverts the
- * each pixel contained in the ROI.
- * 
+ * This ImageJ plugin shows how an image operation can be confined to the currently selected region of interest (ROI).
+ * Note that it uses the ROI attached to the associated {@link ImagePlus} instance, which may be of any shape (not just
+ * a rectangle). The plugin works for RGB color images and merely inverts the each pixel contained in the ROI.
+ *
  * @author WB
  * @version 2022/04/01
  */
@@ -53,7 +50,6 @@ public class Roi_Processing_Demo1 implements PlugInFilter, JavaDocHelp {
 					int p = ip.getPixel(u, v);
 					ip.putPixel(u, v, ~p);	// invert color values
 				}
-
 			}
 		}
 	}

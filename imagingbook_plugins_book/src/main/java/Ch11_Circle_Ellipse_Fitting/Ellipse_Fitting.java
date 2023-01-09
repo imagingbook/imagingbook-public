@@ -150,7 +150,7 @@ public class Ellipse_Fitting implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage(DialogUtils.formatText(50,
 				"This plugin performs algebraic + geometric ellipse fitting,",
 				"either to ROI points (if available) or foreground points",

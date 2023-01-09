@@ -22,16 +22,12 @@ import imagingbook.core.plugin.JavaDocHelp;
 
 
 /**
- * This ImageJ plugin shows how to construct a generic linear filter
- * based on classes {@link LinearFilter} and {@link Kernel2D}.
- * This plugin works for all types of images.
- * On RGB color images, the filter is applied independently
- * to the three color channels.
- * The active image is modified.
- * 
+ * This ImageJ plugin shows how to construct a generic linear filter based on classes {@link LinearFilter} and
+ * {@link Kernel2D}. This plugin works for all types of images. On RGB color images, the filter is applied independently
+ * to the three color channels. The active image is modified.
+ *
  * @author WB
  * @version 2022/03/30
- * 
  * @see LinearFilter
  * @see LinearFilterSeparable
  * @see GenericFilter

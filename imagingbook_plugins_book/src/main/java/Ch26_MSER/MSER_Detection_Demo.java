@@ -237,8 +237,8 @@ public class MSER_Detection_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog(MserParameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
-		
 		gd.addCheckbox("BLACK -> WHITE", BlackToWhite);
 		gd.addCheckbox("WHITE -> BLACK", WhiteToBlack);
 		gd.addCheckbox("Use 2 colors only", UseTwoColorsOnly);

@@ -69,6 +69,7 @@ public class MedianFilter_Vector implements PlugInFilter, JavaDocHelp {
     
     private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Filter radius", params.radius, 1);
 		gd.addEnumChoice("Distance norm", params.distanceNorm);
 //		gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);

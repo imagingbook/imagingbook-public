@@ -25,6 +25,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.ransac.RansacCircleDetector;
 import imagingbook.common.ransac.RansacEllipseDetector;
 import imagingbook.common.ransac.RansacResult;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/10/03
  */
-public class Ransac_Ellipse_Detect implements PlugInFilter, RansacDrawSettings {
+public class Ransac_Ellipse_Detect implements PlugInFilter, RansacDrawSettings, JavaDocHelp {
 
 	private static RansacEllipseDetector.Parameters params = new RansacEllipseDetector.Parameters();
 	static {
@@ -164,6 +165,7 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, RansacDrawSettings {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addNumericField("Max. number of ellipses", MaxEllipseCount);
 		

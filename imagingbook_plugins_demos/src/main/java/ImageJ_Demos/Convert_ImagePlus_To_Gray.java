@@ -16,9 +16,8 @@ import ij.process.ImageConverter;
 import imagingbook.core.plugin.JavaDocHelp;
 
 /**
- * This ImageJ plugin shows how to change the type of the current
- * image 'in place', i.e., without copying the image.
- * 
+ * This ImageJ plugin shows how to change the type of the current image 'in place', i.e., without copying the image.
+ *
  * @author WB
  * @version 2020/12/17
  */

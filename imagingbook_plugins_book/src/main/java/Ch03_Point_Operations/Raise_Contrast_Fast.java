@@ -68,6 +68,7 @@ public class Raise_Contrast_Fast implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Contrast scale (S > 0)", S, 2);
 
 		gd.showDialog();

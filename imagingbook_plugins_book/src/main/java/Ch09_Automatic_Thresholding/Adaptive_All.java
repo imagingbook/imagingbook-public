@@ -73,6 +73,7 @@ public class Adaptive_All implements PlugInFilter, JavaDocHelp {
 	@Override
 	public void run(ImageProcessor ip) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Algorithm", algo);
 		
 		gd.showDialog();

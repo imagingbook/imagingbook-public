@@ -109,6 +109,7 @@ public class Gaussian_Filter_RGB implements PlugInFilter, JavaDocHelp {
 
 	boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Color space", CsType);
 		gd.addNumericField("sigma", Sigma, 1);
 		gd.addNumericField("iterations", Iterations, 0);

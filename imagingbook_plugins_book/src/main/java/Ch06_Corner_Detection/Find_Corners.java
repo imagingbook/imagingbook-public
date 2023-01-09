@@ -125,6 +125,7 @@ public class Find_Corners implements PlugInFilter, JavaDocHelp {
     
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Detector type", Algorithm);
 		DialogUtils.addToDialog(params, gd);
 		gd.addNumericField("Corners to show (0 = show all)", MaxCornerCount, 0);

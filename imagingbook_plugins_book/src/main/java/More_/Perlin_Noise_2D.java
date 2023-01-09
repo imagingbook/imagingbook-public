@@ -95,7 +95,7 @@ public class Perlin_Noise_2D implements PlugIn, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Image width", W, 0);
 		gd.addNumericField("Image height", H, 0);
 		gd.addNumericField("Number of noise frequencies", K, 0);

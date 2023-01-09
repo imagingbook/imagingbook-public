@@ -36,6 +36,7 @@ public class Convert_Images_To_PNG implements PlugIn, JavaDocHelp {
 	
 	public void run(String arg0) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addStringField("Source file extension", SourceExtension);
 		gd.addStringField("Target file extension", TargetExtension);
 		gd.addDirectoryField("Select directory", CurrentDirectory);

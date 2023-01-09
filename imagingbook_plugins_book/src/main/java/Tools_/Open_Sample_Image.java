@@ -29,6 +29,7 @@ public class Open_Sample_Image implements PlugIn, JavaDocHelp {
 	@Override
 	public void run(String arg) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		GeneralSampleImage[] sortedItems = ClassUtils.getEnumConstantsSorted(GeneralSampleImage.class);
 		// TODO: replace by new GenericDialog method addEnumChoice(enum[] ...)
 		String[] sortedStrings =  Arrays.stream(sortedItems).map(Enum::toString).toArray(String[]::new);

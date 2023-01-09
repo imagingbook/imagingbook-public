@@ -80,6 +80,7 @@ public class Hsv_Rotate_Hue implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Hue rotation angle (degrees)", RotationAngle, 0);
 
 		gd.showDialog();

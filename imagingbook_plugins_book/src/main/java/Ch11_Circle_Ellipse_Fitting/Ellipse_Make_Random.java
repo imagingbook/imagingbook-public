@@ -129,6 +129,7 @@ public class Ellipse_Make_Random implements PlugIn, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage(DialogUtils.formatText(50,
 				"This plugin samples points on a given (ideal) ellipse and",
 				"creates a new image with the sample points marked and also",

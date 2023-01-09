@@ -78,6 +78,7 @@ public class Adaptive_Bernsen implements PlugInFilter, JavaDocHelp {
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addCheckbox("Show threshold surface", ShowThresholdSurface);
 		

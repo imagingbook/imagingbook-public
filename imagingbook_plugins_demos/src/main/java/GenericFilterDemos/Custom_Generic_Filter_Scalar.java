@@ -16,13 +16,10 @@ import imagingbook.common.image.PixelPack.PixelSlice;
 import imagingbook.core.plugin.JavaDocHelp;
 
 /**
- * This ImageJ plugin shows how to construct a 3x3 custom generic filter
- * based on class {@link GenericFilterScalar}.
- * This plugin works for all types of images.
- * On RGB color images, the filter is applied independently
- * to the three color channels.
- * The active image is modified.
- * 
+ * This ImageJ plugin shows how to construct a 3x3 custom generic filter based on class {@link GenericFilterScalar}.
+ * This plugin works for all types of images. On RGB color images, the filter is applied independently to the three
+ * color channels. The active image is modified.
+ *
  * @author WB
  * @version 2022/03/30
  */

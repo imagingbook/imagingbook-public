@@ -143,6 +143,7 @@ public class Make_Projections implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Size of projection plots", ProjectionSize, 0);
 		gd.addCheckbox("Show amount of black", ShowAmountOfBlack);
 		gd.addEnumChoice("Horizontal plot color", PlotColorH);

@@ -94,6 +94,7 @@ public class Bilateral_Filter implements PlugInFilter, JavaDocHelp {
 		
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addCheckbox("Use scalar filters (color only)", UseScalarFilter);
 		gd.addCheckbox("Use X/Y-separable filter (faster)", UseSeparableFilter);

@@ -122,6 +122,7 @@ public class Export_PDF implements PlugIn, JavaDocHelp {
 	
 	private boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog("Export PDF");
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addCheckbox("Open PDF after export", OpenPdfAfterExport);
 		

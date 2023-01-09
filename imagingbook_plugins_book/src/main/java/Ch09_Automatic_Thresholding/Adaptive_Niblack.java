@@ -74,6 +74,7 @@ public class Adaptive_Niblack implements PlugInFilter, JavaDocHelp {
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Region type", regType);
 		addToDialog(params, gd);
 		gd.addCheckbox("Show threshold surface", ShowThresholdSurface);

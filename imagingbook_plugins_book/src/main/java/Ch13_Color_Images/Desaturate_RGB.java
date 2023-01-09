@@ -97,6 +97,7 @@ public class Desaturate_RGB implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage("Saturates or desaturates the current image.");
 		gd.addNumericField("Saturation factor (S = 0..1)", S, 2);
 		

@@ -14,11 +14,9 @@ import ij.process.ImageProcessor;
 import imagingbook.core.plugin.JavaDocHelp;
 
 /**
- * This ImageJ plugin shows how a subimage is extracted from
- * a given image using the bounding box of the currently selected 
- * region of interest (ROI). Note that the resulting image is
- * of the same type as the original.
- * 
+ * This ImageJ plugin shows how a subimage is extracted from a given image using the bounding box of the currently
+ * selected region of interest (ROI). Note that the resulting image is of the same type as the original.
+ *
  * @author WB
  * @version 2022/04/01
  */

@@ -238,6 +238,7 @@ public class Fourier_Descriptor_Animation implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage("Fourier decomposition parameters:");
 		gd.addNumericField("Number of FD pairs (min. 1)", FourierCoefficientPairs, 0);
 		gd.addNumericField("Reconstruction Points", ReconstructionPoints, 0);

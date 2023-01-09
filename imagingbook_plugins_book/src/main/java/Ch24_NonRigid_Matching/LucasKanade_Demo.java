@@ -298,7 +298,7 @@ public class LucasKanade_Demo implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Maximum iterations", MaxIterations, 0);
 		gd.addNumericField("Position noise sigma", PositionNoiseSigma, 2);
 		// gd.addNumericField("Position noise sigma", PixelNoiseSigma, 2);

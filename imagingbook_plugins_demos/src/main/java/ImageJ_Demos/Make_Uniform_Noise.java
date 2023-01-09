@@ -17,9 +17,8 @@ import java.util.Random;
 
 /**
  * Fills the active image with uniform noise.
- * 
- * @author WB
  *
+ * @author WB
  */
 public class Make_Uniform_Noise implements PlugInFilter, JavaDocHelp {
 	

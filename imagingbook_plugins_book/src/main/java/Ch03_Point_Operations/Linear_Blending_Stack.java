@@ -94,6 +94,7 @@ public class Linear_Blending_Stack implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Step count (N > 0)", StepCount, 0);
 
 		gd.showDialog();
