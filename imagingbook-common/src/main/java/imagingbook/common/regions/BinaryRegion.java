@@ -12,7 +12,7 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 import imagingbook.common.geometry.ellipse.GeometricEllipse;
-import imagingbook.common.util.DynamicProperties;
+import imagingbook.common.util.GenericProperties;
 
 import java.awt.Rectangle;
 import java.util.Formatter;
@@ -47,7 +47,7 @@ import static java.lang.Math.sqrt;
  * @author WB
  * @version 2023/01/02
  */
-public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d>, DynamicProperties {
+public abstract class BinaryRegion implements Comparable<BinaryRegion>, Iterable<Pnt2d>, GenericProperties {
 	
 	// Constructor, to be used by package-local sub-classes only.
 	BinaryRegion() {

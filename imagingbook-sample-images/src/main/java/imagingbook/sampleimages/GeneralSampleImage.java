@@ -43,6 +43,7 @@ public enum GeneralSampleImage implements ImageResource {
 		
 		/** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */
 		DotBlot,
+		DotBlotSmall,
 		
 		/** Grayscale image used for SIFT demos. */
 		IrishManor,

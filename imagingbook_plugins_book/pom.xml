@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<!-- Note: The artifact ID has hyphens replaced by underscores to be compatible
+	with the standard naming scheme for ImageJ plugins 
+	(see https://imagej.nih.gov/ij/plugins/jar-demo.html). -->
+
+	<artifactId>imagingbook_plugins_book</artifactId>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>com.imagingbook</groupId>
+		<artifactId>imagingbook-public</artifactId>
+		<version>7.0.1-SNAPSHOT</version>
+	</parent>
+	
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>
+		ImageJ plugins related to individual book chapters.
+		This code is part of the imagingbook software suite accompanying the
+		image processing textbooks by W. Burger and M.J. Burge (Springer 2006-2022).
+	</description>
+	<inceptionYear>2006</inceptionYear>
+	<url>https://imagingbook.com</url>
+	
+	<properties>
+		<!-- <maven.javadoc.skip>true</maven.javadoc.skip> -->
+	</properties>
+
+	<dependencies>
+	
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-common</artifactId>
+			<version>7.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-spectral</artifactId>
+			<version>7.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-pdf</artifactId>
+			<version>7.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-sample-images</artifactId>
+			<version>7.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-testing</artifactId>
+			<version>7.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- <dependency>
+			<groupId>com.imagingbook</groupId>
+			<artifactId>imagingbook-book-images</artifactId>
+			<version>6.0.0-SNAPSHOT</version>
+		</dependency> -->
+		
+	</dependencies>
+	
+	<build>
+   		<!-- needed for updating Eclipse settings (see also ij-plugins-build profile) -->
+    	<outputDirectory>ImageJ/plugins</outputDirectory>
+    </build>
+	
+</project>

@@ -8,9 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.ij;
 
+import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
+import ij.macro.Interpreter;
 import imagingbook.common.util.ParameterBundle;
 import imagingbook.core.resource.ImageResource;
 
@@ -72,60 +74,55 @@ public abstract class DialogUtils {
 	public static @interface DialogHide {
 	}
 
-	// -----------------------------------------------------------------------
-
-	private static final char NEWLINE = '\n';
-	private static final String SPACE_SEPARATOR = " ";
-	//if text has \n, \r or \t symbols it's better to split by \s+
-	private static final String SPLIT_REGEXP= "\\s+";
+	// Text-related methods ------------------------------------------------
 
 	/**
-	 * Splits a long string into multiple lines of the specified maximum length and builds a new string with newline
-	 * characters separating successive lines. Multiple input strings are first joined into a single sstring using blank
-	 * spaces as separators. Intended mainly to format message texts of plugin dialogs. Inspired by:
-	 * https://stackoverflow.com/a/21002193
+	 * Splits a long string into multiple lines of the specified maximum length. The result is returned as a
+	 * {@code String[]} with one element per text line. Multiple input strings are first joined into a single string
+	 * using blank spaces as separators. Inspired by: https://stackoverflow.com/a/21002193
 	 *
-	 * @param maxLineLength the maximum number oc characters per line
-	 * @param strings one ore mor strings
-	 * @return a new string with newline characters separating successive lines
+	 * @param columns the maximum number of characters per line
+	 * @param input the input text to be decomposed
+	 * @return a {@code String[]} with one element per text line
 	 */
-	public static String splitLines(int maxLineLength, String... strings) {
-		if (strings.length == 0) {
-			throw new IllegalArgumentException("must pass at least one string");
-		}
-		String input = String.join(SPACE_SEPARATOR, strings);
-		String[] tokens = input.split(SPLIT_REGEXP);
-		StringBuilder output = new StringBuilder(input.length());
-		int lineLen = 0;
+	public static String[] splitTextToLines(int columns, String input) {
+		String[] tokens = input.split("\\s+");      // SPLIT_REGEXP
+		List<String> lines = new ArrayList<>();
+		StringBuilder lineBuf = new StringBuilder(columns);
 		for (int i = 0; i < tokens.length; i++) {
-			String word = tokens[i];
-
-			if (lineLen + (SPACE_SEPARATOR + word).length() > maxLineLength) {
-				if (i > 0) {
-					output.append(NEWLINE);
-				}
-				lineLen = 0;
+			String word = tokens[i];			// get next token
+			if (lineBuf.length() == 0) {		// always add the first word of a line
+				lineBuf.append(word);
 			}
-			if (i < tokens.length - 1 && (lineLen + (word + SPACE_SEPARATOR).length() + tokens[i + 1].length() <=
-					maxLineLength)) {
-				word += SPACE_SEPARATOR;
+			else if (lineBuf.length() + 1 + word.length() < columns) {	// does word fit into the current line?
+				lineBuf.append(' ');
+				lineBuf.append(word);
 			}
-			output.append(word);
-			lineLen += word.length();
+			else { // no, word does not fit
+				lines.add(lineBuf.toString());				// eject existing line and start a new one
+				lineBuf = new StringBuilder(columns);		// start a new line
+				lineBuf.append(word);
+			}
 		}
-		return output.toString();
+		// flush remaining line (if any)
+		if (lineBuf.length() > 0) {
+			lines.add(lineBuf.toString());
+		}
+		return lines.toArray(new String[0]);
 	}
 
 	/**
-	 * Creates a HTML string by formatting the supplied strings as individual text lines separated by {@literal <br>}.
-	 * The complete text is wrapped by {@literal <html>...</html>}. Mainly to be used with
-	 * {@link GenericDialog#addHelp(String)}.
+	 * Splits a long string into multiple lines of the specified maximum length and builds a new string with newline
+	 * ({@literal \n}) characters separating successive lines. Multiple input strings are first joined into a single
+	 * string using blank spaces as separators. Intended mainly to format message texts of plugin dialogs.
 	 *
-	 * @param lines a sequence of strings interpreted as text lines
-	 * @return a HTML string
+	 * @param columns the maximum number of characters per line
+	 * @param textChunks one or more strings which are joined
+	 * @return a new string with newline characters separating successive lines
 	 */
-	public static String makeHtmlString(CharSequence... lines) {
-		return "<html>\n" + String.join("<br>\n", lines) + "\n</html>";
+	public static String formatText(int columns, String... textChunks) {
+		String[] lines = splitTextToLines(columns, String.join(" ", textChunks));
+		return String.join("\n", lines);
 	}
 
 	/**
@@ -135,8 +132,21 @@ public abstract class DialogUtils {
 	 * @param lines a sequence of strings interpreted as text lines
 	 * @return a newline-separated string
 	 */
-	public static String makeLineSeparatedString(CharSequence... lines) {
+	public static String makeLineSeparatedString(String... lines) {
 		return String.join("\n", lines);
+	}
+
+	/**
+	 * Creates a HTML string by formatting the supplied string(s) as individual text lines separated by {@literal <br>}.
+	 * The complete text is wrapped by {@literal <html>...</html>}. Mainly used to format HTML-texts before being
+	 * passed to {@link GenericDialog#addHelp(String)}, which requires text lines to be separated by {@literal <br>}.
+	 * The supplied text lines may contain any text (including HTML formatting code), they are not processed or split.
+	 *
+	 * @param textLines a sequence of strings interpreted as text lines
+	 * @return a HTML string with input lines separated by {@literal <br>}
+	 */
+	public static String makeHtmlString(String... textLines) {
+		return "<html>\n" + String.join("<br>\n", textLines) + "\n</html>";
 	}
 	
 	// ------------ Methods related to ParameterBundle  ------------------
@@ -382,11 +392,19 @@ public abstract class DialogUtils {
 	 * Opens a very specific dialog asking if the suggested sample image (resource) should be opened and made the active
 	 * image. If the answer is YES, the suggested image is opened, otherwise not. This if typically used in the
 	 * (otherwise empty) constructor of demo plugins when no (or no suitable) image is currently open.
+	 * Does nothing and returns false if invoked from outside ImageJ (e.g., during testing) and in IJ batch mode.
 	 *
 	 * @param suggested a sample image ({@link ImageResource})
-	 * @return true if user accepted
+	 * @return true if user accepted, false otherwise
 	 */
 	public static boolean askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
+		// System.out.println("askForSampleImage " + suggested);
+		// System.out.println("IJ.getInstance() = " + IJ.getInstance());
+		// System.out.println("Interpreter.isBatchMode() = " + Interpreter.isBatchMode());
+		if (IJ.getInstance() == null || Interpreter.isBatchMode()) {	// skip in tests and in ImageJ batch mode
+			return false;
+		}
+
 		String title = "Open sample image";
 		String message = "No image is currently open.\nUse a sample image?\n";
 		GenericDialog gd = new GenericDialog(title);
@@ -418,24 +436,22 @@ public abstract class DialogUtils {
 		return askForSampleImage(null);
 	}
 
-	
 	// ----------------------------------------------------
 	
-//	public static void main(String[] args) {
-//		String html = makeHtmlString(
-//	            "Get busy living or",
-//	            "get busy dying.",
-//	            "--Stephen King");
-//		System.out.println(html);
-//		
-//		System.out.println();
-//		
-//		String lines = makeLineSeparatedString(
-//	            "Get busy living or",
-//	            "get busy dying.",
-//	            "--Stephen King");
-//		System.out.println(lines);
-//	}
+	// public static void main(String[] args) {
+	// 	String html = makeHtmlString(
+	//             "Get busy living or",
+	//             "get busy dying.",
+	//             "--Stephen King");
+	// 	System.out.println(html);
+	// 	System.out.println();
+	//
+	// 	String lines = makeLineSeparatedString(
+	//             "Get busy living or",
+	//             "get busy dying.",
+	//             "--Stephen King");
+	// 	System.out.println(lines);
+	// }
 
 	// -------------------------------------------------------------
 
@@ -454,7 +470,7 @@ public abstract class DialogUtils {
 	//
 	// public static void main(String[] args) {
 	// 	// System.out.println(splitLines(20, input1));
-	// 	System.out.println(DialogUtils.splitLines(20, input2));
+	// 	System.out.println(DialogUtils.formatText(20, input1));
 	// }
 
 }

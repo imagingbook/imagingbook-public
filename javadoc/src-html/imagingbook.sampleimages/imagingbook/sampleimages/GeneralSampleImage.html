@@ -56,110 +56,111 @@
 <span class="source-line-no">043</span><span id="line-43">                </span>
 <span class="source-line-no">044</span><span id="line-44">                /** Original: https://imagej.nih.gov/ij/images/Dot_Blot.jpg */</span>
 <span class="source-line-no">045</span><span id="line-45">                DotBlot,</span>
-<span class="source-line-no">046</span><span id="line-46">                </span>
-<span class="source-line-no">047</span><span id="line-47">                /** Grayscale image used for SIFT demos. */</span>
-<span class="source-line-no">048</span><span id="line-48">                IrishManor,</span>
-<span class="source-line-no">049</span><span id="line-49">                </span>
-<span class="source-line-no">050</span><span id="line-50">                /** Original gray scan from Kepler manuscript. */</span>
-<span class="source-line-no">051</span><span id="line-51">                Kepler,</span>
-<span class="source-line-no">052</span><span id="line-52">                </span>
-<span class="source-line-no">053</span><span id="line-53">                /** Binary image with a single connected component. */</span>
-<span class="source-line-no">054</span><span id="line-54">                MapleLeafSmall,</span>
-<span class="source-line-no">055</span><span id="line-55">                </span>
-<span class="source-line-no">056</span><span id="line-56">                /** Small grayscale image. */</span>
-<span class="source-line-no">057</span><span id="line-57">                MonasterySmall,</span>
-<span class="source-line-no">058</span><span id="line-58">        </span>
-<span class="source-line-no">059</span><span id="line-59">                /** Binary image with straight lines embedded in noise. */</span>
-<span class="source-line-no">060</span><span id="line-60">                NoisyLines,</span>
-<span class="source-line-no">061</span><span id="line-61">                /** Binary image with circles embedded in noise. */</span>
-<span class="source-line-no">062</span><span id="line-62">                NoisyCircles,</span>
-<span class="source-line-no">063</span><span id="line-63">                /** Binary image with ellipses embedded in noise. */</span>
-<span class="source-line-no">064</span><span id="line-64">                NoisyEllipses,</span>
-<span class="source-line-no">065</span><span id="line-65"></span>
-<span class="source-line-no">066</span><span id="line-66">                </span>
-<span class="source-line-no">067</span><span id="line-67">                /** TIFF image with attached ROI selection, used for trigonometric Fourier descriptors. */</span>
-<span class="source-line-no">068</span><span id="line-68">                HouseRoi("HouseRoi.tif"),</span>
-<span class="source-line-no">069</span><span id="line-69"></span>
-<span class="source-line-no">070</span><span id="line-70">                /** Fairly large binary image with 0/1 values. */</span>
-<span class="source-line-no">071</span><span id="line-71">                RhinoBigCrop,</span>
-<span class="source-line-no">072</span><span id="line-72"></span>
-<span class="source-line-no">073</span><span id="line-73">                /** A small binary image with 0/255 values (white background = 255). */</span>
-<span class="source-line-no">074</span><span id="line-74">                RhinoSmall,</span>
-<span class="source-line-no">075</span><span id="line-75"></span>
-<span class="source-line-no">076</span><span id="line-76">                /** A small binary image with 0/255 values and inverted LUT (white background = 0). */</span>
-<span class="source-line-no">077</span><span id="line-77">                RhinoSmallInv,</span>
-<span class="source-line-no">078</span><span id="line-78">                </span>
-<span class="source-line-no">079</span><span id="line-79">                /** Binary image with star-shaped regions, used for SIFT demos. */</span>
-<span class="source-line-no">080</span><span id="line-80">                Stars,</span>
-<span class="source-line-no">081</span><span id="line-81">                </span>
-<span class="source-line-no">082</span><span id="line-82">                /** Binary image with various tools, used for connected components segmentation. */</span>
-<span class="source-line-no">083</span><span id="line-83">                ToolsSmall,</span>
-<span class="source-line-no">084</span><span id="line-84">                </span>
-<span class="source-line-no">085</span><span id="line-85">                /** Color image, used for piecewise image warping. */</span>
-<span class="source-line-no">086</span><span id="line-86">                WartburgSmall("WartburgSmall.jpg"),</span>
-<span class="source-line-no">087</span><span id="line-87">                </span>
-<span class="source-line-no">088</span><span id="line-88">                /** Color image used for projective rectification. */</span>
-<span class="source-line-no">089</span><span id="line-89">                PostalPackageSmall("PostalPackageSmall.jpg"),</span>
-<span class="source-line-no">090</span><span id="line-90">                </span>
-<span class="source-line-no">091</span><span id="line-91">                /** Full-RGB color image used for various non-linear transformations. */</span>
-<span class="source-line-no">092</span><span id="line-92">                Flower("Flower.jpg"),</span>
-<span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">                /** Indexed color image with 256 colors. */</span>
-<span class="source-line-no">095</span><span id="line-95">                FlowerIdx256("FlowerIdx256.tif"),</span>
-<span class="source-line-no">096</span><span id="line-96">                </span>
-<span class="source-line-no">097</span><span id="line-97">                /** Grayscale image used for MSER feature detection. */</span>
-<span class="source-line-no">098</span><span id="line-98">                MortarSmall,</span>
-<span class="source-line-no">099</span><span id="line-99">                </span>
-<span class="source-line-no">100</span><span id="line-100">                /** Grayscale image used for SIFT feature detection. */</span>
-<span class="source-line-no">101</span><span id="line-101">                Castle,</span>
-<span class="source-line-no">102</span><span id="line-102">                /** Grayscale stereo image used for SIFT feature detection and matching. */</span>
-<span class="source-line-no">103</span><span id="line-103">                RamsesSmall,</span>
-<span class="source-line-no">104</span><span id="line-104">                /** A stack of 2 small grayscale stereo frames used for SIFT feature detection and matching. */</span>
-<span class="source-line-no">105</span><span id="line-105">                RamsesSmallStack("RamsesSmallStack.tif"),</span>
-<span class="source-line-no">106</span><span id="line-106"></span>
-<span class="source-line-no">107</span><span id="line-107">                /** A stack of 2 small grayscale images used for linear blending. */</span>
-<span class="source-line-no">108</span><span id="line-108">                ShipBeachSmallStack("ShipBeachSmallStack.tif"),</span>
-<span class="source-line-no">109</span><span id="line-109"></span>
-<span class="source-line-no">110</span><span id="line-110">                /** A stack of small grayscale images used for histogram specification/matching. */</span>
-<span class="source-line-no">111</span><span id="line-111">                CityscapeSmallStack("CityscapeSmallStack.tif"),</span>
-<span class="source-line-no">112</span><span id="line-112"></span>
-<span class="source-line-no">113</span><span id="line-113">                /** A small color test image for evaluating effects of filters in different color spaces. */</span>
-<span class="source-line-no">114</span><span id="line-114">                ColorTest3,</span>
-<span class="source-line-no">115</span><span id="line-115"></span>
-<span class="source-line-no">116</span><span id="line-116">                /** A color image for testing color edge detectors. */</span>
-<span class="source-line-no">117</span><span id="line-117">                Balloons600("Balloons600.jpg"),</span>
-<span class="source-line-no">118</span><span id="line-118"></span>
-<span class="source-line-no">119</span><span id="line-119">                /** A poor-quality, noisy color image for testing edge-preserving smoothing. */</span>
-<span class="source-line-no">120</span><span id="line-120">                Postcard2c("Postcard2c.jpg"),</span>
-<span class="source-line-no">121</span><span id="line-121"></span>
-<span class="source-line-no">122</span><span id="line-122">                /** A binary image (inverted LUT) with circles and squares for chamfer matching. */</span>
-<span class="source-line-no">123</span><span id="line-123">                CirclesSquares,</span>
-<span class="source-line-no">124</span><span id="line-124"></span>
-<span class="source-line-no">125</span><span id="line-125">                ;</span>
-<span class="source-line-no">126</span><span id="line-126"></span>
-<span class="source-line-no">127</span><span id="line-127">                // -------------------------------------------------------------------------------</span>
-<span class="source-line-no">128</span><span id="line-128"></span>
-<span class="source-line-no">129</span><span id="line-129">                private final String filename;</span>
-<span class="source-line-no">130</span><span id="line-130"></span>
-<span class="source-line-no">131</span><span id="line-131">                GeneralSampleImage() {</span>
-<span class="source-line-no">132</span><span id="line-132">                        this((String) null);</span>
-<span class="source-line-no">133</span><span id="line-133">                }</span>
-<span class="source-line-no">134</span><span id="line-134"></span>
-<span class="source-line-no">135</span><span id="line-135">                GeneralSampleImage(String filename) {</span>
-<span class="source-line-no">136</span><span id="line-136">                        this.filename = filename;</span>
-<span class="source-line-no">137</span><span id="line-137">                }</span>
-<span class="source-line-no">138</span><span id="line-138"></span>
-<span class="source-line-no">139</span><span id="line-139">                @Override</span>
-<span class="source-line-no">140</span><span id="line-140">                public String getFileName() {</span>
-<span class="source-line-no">141</span><span id="line-141">                        return (this.filename != null) ? this.filename : this.autoName();</span>
-<span class="source-line-no">142</span><span id="line-142">                }</span>
-<span class="source-line-no">143</span><span id="line-143"></span>
-<span class="source-line-no">144</span><span id="line-144">                // public static void main(String[] args) {</span>
-<span class="source-line-no">145</span><span id="line-145">                //      ImageResource ir = GeneralSampleImage.Balloons600;</span>
-<span class="source-line-no">146</span><span id="line-146">                //      System.out.println(ir.getRelativePath());</span>
-<span class="source-line-no">147</span><span id="line-147">                //      // System.out.println(ir.getImagePlus());</span>
-<span class="source-line-no">148</span><span id="line-148">                // }</span>
-<span class="source-line-no">149</span><span id="line-149">}</span>
+<span class="source-line-no">046</span><span id="line-46">                DotBlotSmall,</span>
+<span class="source-line-no">047</span><span id="line-47">                </span>
+<span class="source-line-no">048</span><span id="line-48">                /** Grayscale image used for SIFT demos. */</span>
+<span class="source-line-no">049</span><span id="line-49">                IrishManor,</span>
+<span class="source-line-no">050</span><span id="line-50">                </span>
+<span class="source-line-no">051</span><span id="line-51">                /** Original gray scan from Kepler manuscript. */</span>
+<span class="source-line-no">052</span><span id="line-52">                Kepler,</span>
+<span class="source-line-no">053</span><span id="line-53">                </span>
+<span class="source-line-no">054</span><span id="line-54">                /** Binary image with a single connected component. */</span>
+<span class="source-line-no">055</span><span id="line-55">                MapleLeafSmall,</span>
+<span class="source-line-no">056</span><span id="line-56">                </span>
+<span class="source-line-no">057</span><span id="line-57">                /** Small grayscale image. */</span>
+<span class="source-line-no">058</span><span id="line-58">                MonasterySmall,</span>
+<span class="source-line-no">059</span><span id="line-59">        </span>
+<span class="source-line-no">060</span><span id="line-60">                /** Binary image with straight lines embedded in noise. */</span>
+<span class="source-line-no">061</span><span id="line-61">                NoisyLines,</span>
+<span class="source-line-no">062</span><span id="line-62">                /** Binary image with circles embedded in noise. */</span>
+<span class="source-line-no">063</span><span id="line-63">                NoisyCircles,</span>
+<span class="source-line-no">064</span><span id="line-64">                /** Binary image with ellipses embedded in noise. */</span>
+<span class="source-line-no">065</span><span id="line-65">                NoisyEllipses,</span>
+<span class="source-line-no">066</span><span id="line-66"></span>
+<span class="source-line-no">067</span><span id="line-67">                </span>
+<span class="source-line-no">068</span><span id="line-68">                /** TIFF image with attached ROI selection, used for trigonometric Fourier descriptors. */</span>
+<span class="source-line-no">069</span><span id="line-69">                HouseRoi("HouseRoi.tif"),</span>
+<span class="source-line-no">070</span><span id="line-70"></span>
+<span class="source-line-no">071</span><span id="line-71">                /** Fairly large binary image with 0/1 values. */</span>
+<span class="source-line-no">072</span><span id="line-72">                RhinoBigCrop,</span>
+<span class="source-line-no">073</span><span id="line-73"></span>
+<span class="source-line-no">074</span><span id="line-74">                /** A small binary image with 0/255 values (white background = 255). */</span>
+<span class="source-line-no">075</span><span id="line-75">                RhinoSmall,</span>
+<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">077</span><span id="line-77">                /** A small binary image with 0/255 values and inverted LUT (white background = 0). */</span>
+<span class="source-line-no">078</span><span id="line-78">                RhinoSmallInv,</span>
+<span class="source-line-no">079</span><span id="line-79">                </span>
+<span class="source-line-no">080</span><span id="line-80">                /** Binary image with star-shaped regions, used for SIFT demos. */</span>
+<span class="source-line-no">081</span><span id="line-81">                Stars,</span>
+<span class="source-line-no">082</span><span id="line-82">                </span>
+<span class="source-line-no">083</span><span id="line-83">                /** Binary image with various tools, used for connected components segmentation. */</span>
+<span class="source-line-no">084</span><span id="line-84">                ToolsSmall,</span>
+<span class="source-line-no">085</span><span id="line-85">                </span>
+<span class="source-line-no">086</span><span id="line-86">                /** Color image, used for piecewise image warping. */</span>
+<span class="source-line-no">087</span><span id="line-87">                WartburgSmall("WartburgSmall.jpg"),</span>
+<span class="source-line-no">088</span><span id="line-88">                </span>
+<span class="source-line-no">089</span><span id="line-89">                /** Color image used for projective rectification. */</span>
+<span class="source-line-no">090</span><span id="line-90">                PostalPackageSmall("PostalPackageSmall.jpg"),</span>
+<span class="source-line-no">091</span><span id="line-91">                </span>
+<span class="source-line-no">092</span><span id="line-92">                /** Full-RGB color image used for various non-linear transformations. */</span>
+<span class="source-line-no">093</span><span id="line-93">                Flower("Flower.jpg"),</span>
+<span class="source-line-no">094</span><span id="line-94"></span>
+<span class="source-line-no">095</span><span id="line-95">                /** Indexed color image with 256 colors. */</span>
+<span class="source-line-no">096</span><span id="line-96">                FlowerIdx256("FlowerIdx256.tif"),</span>
+<span class="source-line-no">097</span><span id="line-97">                </span>
+<span class="source-line-no">098</span><span id="line-98">                /** Grayscale image used for MSER feature detection. */</span>
+<span class="source-line-no">099</span><span id="line-99">                MortarSmall,</span>
+<span class="source-line-no">100</span><span id="line-100">                </span>
+<span class="source-line-no">101</span><span id="line-101">                /** Grayscale image used for SIFT feature detection. */</span>
+<span class="source-line-no">102</span><span id="line-102">                Castle,</span>
+<span class="source-line-no">103</span><span id="line-103">                /** Grayscale stereo image used for SIFT feature detection and matching. */</span>
+<span class="source-line-no">104</span><span id="line-104">                RamsesSmall,</span>
+<span class="source-line-no">105</span><span id="line-105">                /** A stack of 2 small grayscale stereo frames used for SIFT feature detection and matching. */</span>
+<span class="source-line-no">106</span><span id="line-106">                RamsesSmallStack("RamsesSmallStack.tif"),</span>
+<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">108</span><span id="line-108">                /** A stack of 2 small grayscale images used for linear blending. */</span>
+<span class="source-line-no">109</span><span id="line-109">                ShipBeachSmallStack("ShipBeachSmallStack.tif"),</span>
+<span class="source-line-no">110</span><span id="line-110"></span>
+<span class="source-line-no">111</span><span id="line-111">                /** A stack of small grayscale images used for histogram specification/matching. */</span>
+<span class="source-line-no">112</span><span id="line-112">                CityscapeSmallStack("CityscapeSmallStack.tif"),</span>
+<span class="source-line-no">113</span><span id="line-113"></span>
+<span class="source-line-no">114</span><span id="line-114">                /** A small color test image for evaluating effects of filters in different color spaces. */</span>
+<span class="source-line-no">115</span><span id="line-115">                ColorTest3,</span>
+<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">117</span><span id="line-117">                /** A color image for testing color edge detectors. */</span>
+<span class="source-line-no">118</span><span id="line-118">                Balloons600("Balloons600.jpg"),</span>
+<span class="source-line-no">119</span><span id="line-119"></span>
+<span class="source-line-no">120</span><span id="line-120">                /** A poor-quality, noisy color image for testing edge-preserving smoothing. */</span>
+<span class="source-line-no">121</span><span id="line-121">                Postcard2c("Postcard2c.jpg"),</span>
+<span class="source-line-no">122</span><span id="line-122"></span>
+<span class="source-line-no">123</span><span id="line-123">                /** A binary image (inverted LUT) with circles and squares for chamfer matching. */</span>
+<span class="source-line-no">124</span><span id="line-124">                CirclesSquares,</span>
+<span class="source-line-no">125</span><span id="line-125"></span>
+<span class="source-line-no">126</span><span id="line-126">                ;</span>
+<span class="source-line-no">127</span><span id="line-127"></span>
+<span class="source-line-no">128</span><span id="line-128">                // -------------------------------------------------------------------------------</span>
+<span class="source-line-no">129</span><span id="line-129"></span>
+<span class="source-line-no">130</span><span id="line-130">                private final String filename;</span>
+<span class="source-line-no">131</span><span id="line-131"></span>
+<span class="source-line-no">132</span><span id="line-132">                GeneralSampleImage() {</span>
+<span class="source-line-no">133</span><span id="line-133">                        this((String) null);</span>
+<span class="source-line-no">134</span><span id="line-134">                }</span>
+<span class="source-line-no">135</span><span id="line-135"></span>
+<span class="source-line-no">136</span><span id="line-136">                GeneralSampleImage(String filename) {</span>
+<span class="source-line-no">137</span><span id="line-137">                        this.filename = filename;</span>
+<span class="source-line-no">138</span><span id="line-138">                }</span>
+<span class="source-line-no">139</span><span id="line-139"></span>
+<span class="source-line-no">140</span><span id="line-140">                @Override</span>
+<span class="source-line-no">141</span><span id="line-141">                public String getFileName() {</span>
+<span class="source-line-no">142</span><span id="line-142">                        return (this.filename != null) ? this.filename : this.autoName();</span>
+<span class="source-line-no">143</span><span id="line-143">                }</span>
+<span class="source-line-no">144</span><span id="line-144"></span>
+<span class="source-line-no">145</span><span id="line-145">                // public static void main(String[] args) {</span>
+<span class="source-line-no">146</span><span id="line-146">                //      ImageResource ir = GeneralSampleImage.Balloons600;</span>
+<span class="source-line-no">147</span><span id="line-147">                //      System.out.println(ir.getRelativePath());</span>
+<span class="source-line-no">148</span><span id="line-148">                //      // System.out.println(ir.getImagePlus());</span>
+<span class="source-line-no">149</span><span id="line-149">                // }</span>
+<span class="source-line-no">150</span><span id="line-150">}</span>
 
 
 

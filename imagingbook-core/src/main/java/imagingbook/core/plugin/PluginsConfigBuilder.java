@@ -126,11 +126,11 @@ public class PluginsConfigBuilder {
 		this.artifactId = artifactId;		
 		File rootDir = (rootName != null) ?
 				new File(rootName) :
-				new File(PluginsConfigBuilder.class.getClassLoader().getResource("").getFile());				
+				new File(PluginsConfigBuilder.class.getClassLoader().getResource("").getFile());
 		this.rootPath = rootDir.getAbsolutePath();
 	}
 	
-	private List<Class<?>> collectPluginClasses() {
+	public List<Class<?>> collectPluginClasses(String rootPath) {
 		int n = rootPath.length();
 		File rootFile = new File(rootPath);	
 		if (!rootFile.exists()) {	// this happens when executed in a project with POM-packaging
@@ -218,7 +218,7 @@ public class PluginsConfigBuilder {
 	}
 	
 	private String buildfile() {
-		List<Class<?>> pluginClasses = collectPluginClasses();
+		List<Class<?>> pluginClasses = collectPluginClasses(rootPath);
 		if  (pluginClasses == null) {
 			System.out.println(INFO + "WARNING: no target directory (POM project?)");
 			return null;
@@ -249,7 +249,7 @@ public class PluginsConfigBuilder {
 	 * @param clazz a {@link Class} object
 	 * @return true if a plugin type
 	 */
-	private boolean isIjPlugin(Class<?> clazz) {
+	public boolean isIjPlugin(Class<?> clazz) {
 		return PlugIn.class.isAssignableFrom(clazz) || PlugInFilter.class.isAssignableFrom(clazz);
 	}
 	

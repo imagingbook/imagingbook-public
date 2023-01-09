@@ -139,11 +139,11 @@
 <span class="source-line-no">126</span><span id="line-126">                this.artifactId = artifactId;           </span>
 <span class="source-line-no">127</span><span id="line-127">                File rootDir = (rootName != null) ?</span>
 <span class="source-line-no">128</span><span id="line-128">                                new File(rootName) :</span>
-<span class="source-line-no">129</span><span id="line-129">                                new File(PluginsConfigBuilder.class.getClassLoader().getResource("").getFile());                                </span>
+<span class="source-line-no">129</span><span id="line-129">                                new File(PluginsConfigBuilder.class.getClassLoader().getResource("").getFile());</span>
 <span class="source-line-no">130</span><span id="line-130">                this.rootPath = rootDir.getAbsolutePath();</span>
 <span class="source-line-no">131</span><span id="line-131">        }</span>
 <span class="source-line-no">132</span><span id="line-132">        </span>
-<span class="source-line-no">133</span><span id="line-133">        private List&lt;Class&lt;?&gt;&gt; collectPluginClasses() {</span>
+<span class="source-line-no">133</span><span id="line-133">        public List&lt;Class&lt;?&gt;&gt; collectPluginClasses(String rootPath) {</span>
 <span class="source-line-no">134</span><span id="line-134">                int n = rootPath.length();</span>
 <span class="source-line-no">135</span><span id="line-135">                File rootFile = new File(rootPath);     </span>
 <span class="source-line-no">136</span><span id="line-136">                if (!rootFile.exists()) {       // this happens when executed in a project with POM-packaging</span>
@@ -231,7 +231,7 @@
 <span class="source-line-no">218</span><span id="line-218">        }</span>
 <span class="source-line-no">219</span><span id="line-219">        </span>
 <span class="source-line-no">220</span><span id="line-220">        private String buildfile() {</span>
-<span class="source-line-no">221</span><span id="line-221">                List&lt;Class&lt;?&gt;&gt; pluginClasses = collectPluginClasses();</span>
+<span class="source-line-no">221</span><span id="line-221">                List&lt;Class&lt;?&gt;&gt; pluginClasses = collectPluginClasses(rootPath);</span>
 <span class="source-line-no">222</span><span id="line-222">                if  (pluginClasses == null) {</span>
 <span class="source-line-no">223</span><span id="line-223">                        System.out.println(INFO + "WARNING: no target directory (POM project?)");</span>
 <span class="source-line-no">224</span><span id="line-224">                        return null;</span>
@@ -262,7 +262,7 @@
 <span class="source-line-no">249</span><span id="line-249">         * @param clazz a {@link Class} object</span>
 <span class="source-line-no">250</span><span id="line-250">         * @return true if a plugin type</span>
 <span class="source-line-no">251</span><span id="line-251">         */</span>
-<span class="source-line-no">252</span><span id="line-252">        private boolean isIjPlugin(Class&lt;?&gt; clazz) {</span>
+<span class="source-line-no">252</span><span id="line-252">        public boolean isIjPlugin(Class&lt;?&gt; clazz) {</span>
 <span class="source-line-no">253</span><span id="line-253">                return PlugIn.class.isAssignableFrom(clazz) || PlugInFilter.class.isAssignableFrom(clazz);</span>
 <span class="source-line-no">254</span><span id="line-254">        }</span>
 <span class="source-line-no">255</span><span id="line-255">        </span>
