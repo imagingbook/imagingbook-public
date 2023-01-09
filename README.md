@@ -43,11 +43,11 @@ These packages contain sets of `ImageJ` plugins that make use of the `imagingboo
 Each plugin set is packaged as a `JAR` file and may be imported as a Maven dependency
 or copied manually to ImageJ's `plugins/` directory:
 
-* **[imagingbook-plugins-book](imagingbook-plugins-book/)** <br>
+* **[imagingbook_plugins_book](imagingbook_plugins_book/)** <br>
     A collection of `ImageJ` plugins related to individual book chapters (including 
     materials from previous editions) and tools for working with `ImageJ` (e.g., exact
     zooming and PDF-export).
-* **[imagingbook-plugins-demos](imagingbook-plugins-demos/)** <br>
+* **[imagingbook_plugins_demos](imagingbook_plugins_demos/)** <br>
     Plugins demonstrating the use of various technical concepts in `ImageJ` and the
     `imagingbook` library.
 
