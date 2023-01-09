@@ -14,6 +14,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -27,7 +28,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see HistogramUtils
  * @see HistogramPlot
  */
-public class Show_Histogram implements PlugInFilter { 
+public class Show_Histogram implements PlugInFilter, JavaDocHelp {
 	
 	private ImagePlus im;
 

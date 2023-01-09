@@ -15,6 +15,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.IntegralImage;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -32,7 +33,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  *
  * @author WB
  */
-public class Integral_Image_Demo implements PlugInFilter {
+public class Integral_Image_Demo implements PlugInFilter, JavaDocHelp {
 
 	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
 	public Integral_Image_Demo() {

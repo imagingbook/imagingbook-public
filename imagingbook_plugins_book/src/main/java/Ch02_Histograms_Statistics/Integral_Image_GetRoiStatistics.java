@@ -17,6 +17,7 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.IntegralImage;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Rectangle;
@@ -38,7 +39,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @see IntegralImage
  */
-public class Integral_Image_GetRoiStatistics implements PlugInFilter {
+public class Integral_Image_GetRoiStatistics implements PlugInFilter, JavaDocHelp {
 	
 	private ImagePlus im = null;
 

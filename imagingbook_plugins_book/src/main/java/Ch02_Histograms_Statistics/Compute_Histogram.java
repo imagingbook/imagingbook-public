@@ -18,6 +18,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -40,7 +41,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see HistogramUtils
  * @see Show_Histogram
  */
-public class Compute_Histogram implements PlugInFilter {
+public class Compute_Histogram implements PlugInFilter, JavaDocHelp {
 
 	private static boolean ShowHistogramPlot = true;
 	private static boolean ListHistogramEntries = false;
@@ -115,7 +116,7 @@ public class Compute_Histogram implements PlugInFilter {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Show histogram plot", ShowHistogramPlot);
 		gd.addCheckbox("List histogram entries", ListHistogramEntries);
 
