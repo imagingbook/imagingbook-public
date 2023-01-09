@@ -119,33 +119,33 @@ public class FlusserMomentsTest {
         Assert.assertArrayEquals(invMomentsExp, moments, TOL);
     }
 
-    @Test
-    public void testFlusserInvariantMomentsScale() {
-        // scale?
-        LinearMapping2D map = new Scaling2D(2.0);
-        Pnt2d[] pointA = map.applyTo(points.toArray(new Pnt2d[0]));
-        FlusserMoments fm = new FlusserMoments(Arrays.asList(pointA));
-        double[] moments = fm.getInvariantMoments();
-        System.out.println(Arrays.toString(moments));
-        // Assert.assertArrayEquals(invMomentsExp, moments, TOL);
-        for (int i = 0; i < moments.length; i++) {
-            System.out.format(Locale.US, "%.8f / %.8f  = %.8f \n", invMomentsExp[i], moments[i], moments[i]/invMomentsExp[i]);
-        }
-    }
+    // @Test
+    // public void testFlusserInvariantMomentsScale() {
+    //     // scale?
+    //     LinearMapping2D map = new Scaling2D(2.0);
+    //     Pnt2d[] pointA = map.applyTo(points.toArray(new Pnt2d[0]));
+    //     FlusserMoments fm = new FlusserMoments(Arrays.asList(pointA));
+    //     double[] moments = fm.getInvariantMoments();
+    //     // System.out.println(Arrays.toString(moments));
+    //     // Assert.assertArrayEquals(invMomentsExp, moments, TOL);
+    //     for (int i = 0; i < moments.length; i++) {
+    //         System.out.format(Locale.US, "%.8f / %.8f  = %.8f \n", invMomentsExp[i], moments[i], moments[i]/invMomentsExp[i]);
+    //     }
+    // }
 
     // ---------------------------------------------------------------------------------------
     @Test
     public void testFlusserInvariantMomentsImageR() {
         ImageResource ir = Kimia1070.bird02; ImageProcessor xxx;
         ByteProcessor ip = (ByteProcessor) ir.getImagePlus().getProcessor();
-        System.out.println("ip1 = " + ip);
+        // System.out.println("ip1 = " + ip);
         {
             BinaryRegionSegmentation segmenter = new RegionContourSegmentation(ip);
             BinaryRegion r = segmenter.getRegions(true).get(0);
-            System.out.println("   r.size = = " + r.getSize());
+            // System.out.println("   r.size = = " + r.getSize());
             double[] moments = new FlusserMoments(r).getInvariantMoments();
 
-            System.out.println(Arrays.toString(moments));
+            // System.out.println(Arrays.toString(moments));
             //     [0.25374273452323387, 1.6511699439525E-4, 5.20902798567151E-6, 2.416343273212465E-5, 1.2311370528758843E-7,
             //     6.443592161668993E-8, 0.11847904398583721, 2.5604374283752694E-6, 1.382435638611414E-5, -1.4036909566376298E-9,
             //     1.0176945756381126E-9]
@@ -153,14 +153,14 @@ public class FlusserMomentsTest {
         ByteProcessor ip2 = (ByteProcessor) ip.resize(2 * ip.getWidth(), 2 * ip.getHeight(), false);
         // ip2.flipHorizontal();
         // ip2.flipVertical();
-        System.out.println("ip2 = " + ip2);
+        // System.out.println("ip2 = " + ip2);
         {
             BinaryRegionSegmentation segmenter = new RegionContourSegmentation(ip2);
             BinaryRegion r = segmenter.getRegions(true).get(0);
-            System.out.println("   r.size = = " + r.getSize());
+            // System.out.println("   r.size = = " + r.getSize());
             double[] moments = new FlusserMoments(r).getInvariantMoments();
 
-            System.out.println(Arrays.toString(moments));
+            // System.out.println(Arrays.toString(moments));
             //     [0.25374273452323387, 1.6511699439525E-4, 5.20902798567151E-6, 2.416343273212465E-5, 1.2311370528758843E-7,
             //     6.443592161668993E-8, 0.11847904398583721, 2.5604374283752694E-6, 1.382435638611414E-5, -1.4036909566376298E-9,
             //     1.0176945756381126E-9]
@@ -171,16 +171,16 @@ public class FlusserMomentsTest {
     public void testFlusserInvariantMomentsImageC() {
         ImageResource ir = Kimia1070.bird02; ImageProcessor xxx;
         ByteProcessor ip = (ByteProcessor) ir.getImagePlus().getProcessor();
-        System.out.println("ip1 = " + ip);
+        // System.out.println("ip1 = " + ip);
         double[] moments1;
         {
             BinaryRegionSegmentation segmenter = new RegionContourSegmentation(ip);
             BinaryRegion r = segmenter.getRegions(true).get(0);
             Contour c = r.getOuterContour();
-            System.out.println("   c.size = = " + c.getLength());
+            // System.out.println("   c.size = = " + c.getLength());
             moments1 = new FlusserMoments(c).getInvariantMoments();
 
-            System.out.println(Arrays.toString(moments1));
+            // System.out.println(Arrays.toString(moments1));
             //     [0.25374273452323387, 1.6511699439525E-4, 5.20902798567151E-6, 2.416343273212465E-5, 1.2311370528758843E-7,
             //     6.443592161668993E-8, 0.11847904398583721, 2.5604374283752694E-6, 1.382435638611414E-5, -1.4036909566376298E-9,
             //     1.0176945756381126E-9]
@@ -188,22 +188,22 @@ public class FlusserMomentsTest {
         ByteProcessor ip2 = (ByteProcessor) ip.resize(2 * ip.getWidth(), 2 * ip.getHeight(), false);
         // ip2.flipHorizontal();
         // ip2.flipVertical();
-        System.out.println("ip2 = " + ip2);
+        // System.out.println("ip2 = " + ip2);
         double[] moments2;
         {
             BinaryRegionSegmentation segmenter = new RegionContourSegmentation(ip2);
             BinaryRegion r = segmenter.getRegions(true).get(0);
             Contour c = r.getOuterContour();
-            System.out.println("   c.size = = " + c.getLength());
+            // System.out.println("   c.size = = " + c.getLength());
             moments2 = new FlusserMoments(c).getInvariantMoments();
 
-            System.out.println(Arrays.toString(moments2));
+            // System.out.println(Arrays.toString(moments2));
             //     [0.25374273452323387, 1.6511699439525E-4, 5.20902798567151E-6, 2.416343273212465E-5, 1.2311370528758843E-7,
             //     6.443592161668993E-8, 0.11847904398583721, 2.5604374283752694E-6, 1.382435638611414E-5, -1.4036909566376298E-9,
             //     1.0176945756381126E-9]
         }
-        for (int i = 0; i < moments1.length; i++) {
-            System.out.format(Locale.US, "%.8f / %.8f  = %.8f \n", moments1[i], moments2[i], moments2[i]/moments1[i]);
-        }
+        // for (int i = 0; i < moments1.length; i++) {
+        //     System.out.format(Locale.US, "%.8f / %.8f  = %.8f \n", moments1[i], moments2[i], moments2[i]/moments1[i]);
+        // }
     }
 }
