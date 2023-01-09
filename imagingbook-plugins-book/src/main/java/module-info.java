@@ -5,7 +5,7 @@ import imagingbook.core.modules.JavaDocBaseUrl;
  * additional demos and tools.
  */
 @JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook.plugins_book")
-module imagingbook.plugins_book {
+module imagingbook_plugins_book {
 	exports Ch02_Histograms_Statistics;
 	exports Ch03_Point_Operations;
 	exports Ch04_Filters;

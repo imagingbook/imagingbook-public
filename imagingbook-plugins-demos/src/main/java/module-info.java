@@ -2,7 +2,7 @@
  * A collection of ImageJ plugins demonstrating various technical 
  * concepts of the imagingbook library.
  */
-module imagingbook.plugins_demos {
+module imagingbook_plugins_demos {
 	exports ImageJ_Demos;
 	exports ImageAccessorDemos;
 	exports GenericFilterDemos;
