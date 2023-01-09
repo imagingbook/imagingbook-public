@@ -8,9 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.ij;
 
+import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
+import ij.macro.Interpreter;
 import imagingbook.common.util.ParameterBundle;
 import imagingbook.core.resource.ImageResource;
 
@@ -390,11 +392,19 @@ public abstract class DialogUtils {
 	 * Opens a very specific dialog asking if the suggested sample image (resource) should be opened and made the active
 	 * image. If the answer is YES, the suggested image is opened, otherwise not. This if typically used in the
 	 * (otherwise empty) constructor of demo plugins when no (or no suitable) image is currently open.
+	 * Does nothing and returns false if invoked from outside ImageJ (e.g., during testing) and in IJ batch mode.
 	 *
 	 * @param suggested a sample image ({@link ImageResource})
-	 * @return true if user accepted
+	 * @return true if user accepted, false otherwise
 	 */
 	public static boolean askForSampleImage(ImageResource suggested) {	// TODO: allow multiple sample images?
+		// System.out.println("askForSampleImage " + suggested);
+		// System.out.println("IJ.getInstance() = " + IJ.getInstance());
+		// System.out.println("Interpreter.isBatchMode() = " + Interpreter.isBatchMode());
+		if (IJ.getInstance() == null || Interpreter.isBatchMode()) {	// skip in tests and in ImageJ batch mode
+			return false;
+		}
+
 		String title = "Open sample image";
 		String message = "No image is currently open.\nUse a sample image?\n";
 		GenericDialog gd = new GenericDialog(title);
