@@ -1,1 +1,1 @@
-moduleSearchIndex = [{"l":"imagingbook.common"},{"l":"imagingbook.core"},{"l":"imagingbook.pdf"},{"l":"imagingbook.plugins_book"},{"l":"imagingbook.plugins_demos"},{"l":"imagingbook.sampleimages"},{"l":"imagingbook.spectral"}];updateSearchResults();
+moduleSearchIndex = [{"l":"imagingbook_plugins_book"},{"l":"imagingbook_plugins_demos"},{"l":"imagingbook.common"},{"l":"imagingbook.core"},{"l":"imagingbook.pdf"},{"l":"imagingbook.sampleimages"},{"l":"imagingbook.spectral"}];updateSearchResults();
