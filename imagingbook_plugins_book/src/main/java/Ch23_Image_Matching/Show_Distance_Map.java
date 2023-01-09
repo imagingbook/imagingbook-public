@@ -44,7 +44,6 @@ public class Show_Distance_Map implements PlugInFilter, JavaDocHelp {
 	 * Constructor, asks to open a predefined sample image if no other image is currently open.
 	 */
 	public Show_Distance_Map() {
-		IJ.log("constructor");
 		if (IjUtils.noCurrentImage()) {
 			DialogUtils.askForSampleImage(GeneralSampleImage.RhinoSmallInv);
 		}

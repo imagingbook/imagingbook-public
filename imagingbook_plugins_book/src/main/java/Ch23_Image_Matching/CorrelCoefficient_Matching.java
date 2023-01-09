@@ -75,9 +75,10 @@ public class CorrelCoefficient_Matching implements PlugInFilter, JavaDocHelp {
 	 */
 	public CorrelCoefficient_Matching() {
 		if (IjUtils.noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
-			ImagePlus imp = IJ.getImage();
-			imp.setRoi(190, 41, 30, 30);
+			if (DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor)) {
+				ImagePlus imp = IJ.getImage();
+				imp.setRoi(190, 41, 30, 30);
+			}
 		}
 	}
 

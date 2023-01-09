@@ -76,9 +76,10 @@ public class Chamfer_Matching implements PlugInFilter, JavaDocHelp {
 	 */
 	public Chamfer_Matching() {
 		if (IjUtils.noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.CirclesSquares);
-			ImagePlus imp = IJ.getImage();
-			imp.setRoi(39, 40, 58, 58);
+			if (DialogUtils.askForSampleImage(GeneralSampleImage.CirclesSquares)) {
+				ImagePlus imp = IJ.getImage();
+				imp.setRoi(39, 40, 58, 58);
+			}
 		}
 	}
 

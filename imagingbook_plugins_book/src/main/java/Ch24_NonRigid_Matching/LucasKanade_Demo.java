@@ -95,9 +95,10 @@ public class LucasKanade_Demo implements PlugInFilter, JavaDocHelp {
 	 */
 	public LucasKanade_Demo() {
 		if (IjUtils.noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor);
-			ImagePlus imp = IJ.getImage();
-			imp.setRoi(240, 90, 60, 60);
+			if (DialogUtils.askForSampleImage(GeneralSampleImage.IrishManor)) {
+				ImagePlus imp = IJ.getImage();
+				imp.setRoi(240, 90, 60, 60);
+			}
 		}
 	}
 
