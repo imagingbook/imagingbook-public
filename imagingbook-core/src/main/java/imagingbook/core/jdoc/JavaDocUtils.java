@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.
  * Visit https://imagingbook.com for additional details.
  ******************************************************************************/
-package imagingbook.core.modules;
+package imagingbook.core.jdoc;
 
 public abstract class JavaDocUtils {
 
@@ -22,20 +22,25 @@ public abstract class JavaDocUtils {
      * @return a string with the web URL for the JavaDoc information of the specified class
      */
     public static String getJavaDocUrl(Class<?> clazz) {
-        String classCName = clazz.getCanonicalName();
         Module module = clazz.getModule();
+        Package pkg = clazz.getPackage();
+
         String baseUrl = null;
+
         if (module.isAnnotationPresent(JavaDocBaseUrl.class)) {
             baseUrl = module.getAnnotation(JavaDocBaseUrl.class).value();
         }
-        else {
-            String moduleName = module.getName();
-            if (moduleName != null) {       // currently in ImageJ modules are unnamed at runtime
-                baseUrl = JAVADOC_BASE_URL + moduleName;
-            }
+        else if (pkg != null && pkg.isAnnotationPresent(JavaDocBaseUrl.class)) {
+            baseUrl = pkg.getAnnotation(JavaDocBaseUrl.class).value();
         }
 
-        return (baseUrl == null) ? null : baseUrl + "/" + classCName.replace('.', '/') + ".html";
+        if (baseUrl != null) {
+            String classCName = clazz.getCanonicalName();
+            return baseUrl + "/" + classCName.replace('.', '/') + ".html";
+        }
+        else {
+            return null;
+        }
     }
 
 }
