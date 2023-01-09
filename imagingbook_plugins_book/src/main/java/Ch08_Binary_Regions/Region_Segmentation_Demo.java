@@ -28,6 +28,7 @@ import imagingbook.common.regions.RecursiveSegmentation;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.common.regions.SequentialSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;
@@ -68,7 +69,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/09/28 revised
  */
 @IjPluginName("Region Segmentation Demo")
-public class Region_Segmentation_Demo implements PlugInFilter {
+public class Region_Segmentation_Demo implements PlugInFilter, JavaDocHelp {
 	
 	/** Enum type for various region labeling methods. */
 	public enum SegmentationMethod {

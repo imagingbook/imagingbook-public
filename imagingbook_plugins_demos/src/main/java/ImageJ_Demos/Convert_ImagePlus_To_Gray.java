@@ -13,6 +13,7 @@ import ij.ImagePlus;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import ij.process.ImageConverter;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how to change the type of the current
@@ -21,7 +22,7 @@ import ij.process.ImageConverter;
  * @author WB
  * @version 2020/12/17
  */
-public class Convert_ImagePlus_To_Gray implements PlugIn {
+public class Convert_ImagePlus_To_Gray implements PlugIn, JavaDocHelp {
 
 	@Override
 	public void run(String arg) {

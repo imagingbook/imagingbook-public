@@ -17,6 +17,7 @@ import imagingbook.common.filter.edgepreserving.KuwaharaF.Parameters;
 import imagingbook.common.filter.edgepreserving.KuwaharaFilterScalar;
 import imagingbook.common.filter.edgepreserving.KuwaharaFilterVector;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
@@ -43,7 +44,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see KuwaharaFilterScalar
  * @see KuwaharaFilterVector
  */
-public class Kuwahara_Filter implements PlugInFilter {
+public class Kuwahara_Filter implements PlugInFilter, JavaDocHelp {
 
 	private static Parameters params = new Parameters();
 	private static boolean UseVectorFilter = false;

@@ -18,6 +18,7 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.morphology.BinaryMorphologyOperator;
 import imagingbook.common.morphology.BinaryOutline;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -37,7 +38,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/01/24
  */
-public class Outline_Demo implements PlugInFilter {
+public class Outline_Demo implements PlugInFilter, JavaDocHelp {
 	
 	public static NeighborhoodType2D Neigborhood = NeighborhoodType2D.N4;
 

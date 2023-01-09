@@ -18,6 +18,7 @@ import imagingbook.common.filter.edgepreserving.PeronaMalikFilterScalar;
 import imagingbook.common.filter.edgepreserving.PeronaMalikFilterVector;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -39,7 +40,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see PeronaMalikFilterVector
  * @see GenericFilter
  */
-public class Perona_Malik_Minimal implements PlugInFilter {
+public class Perona_Malik_Minimal implements PlugInFilter, JavaDocHelp {
 
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image is currently open.

@@ -27,6 +27,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
@@ -46,7 +47,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/10/03
  */
-public class Line_Fitting implements PlugInFilter { // TODO: activate dialog
+public class Line_Fitting implements PlugInFilter, JavaDocHelp { // TODO: activate dialog
 	
 	public static BasicAwtColor RegressionFitColor = BasicAwtColor.Red;
 	public static BasicAwtColor OrthogonalFitColor = BasicAwtColor.Blue;

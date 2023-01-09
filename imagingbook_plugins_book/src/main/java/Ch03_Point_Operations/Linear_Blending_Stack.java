@@ -16,6 +16,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.Blitter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Locale;
@@ -38,7 +39,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/12/07
  */
-public class Linear_Blending_Stack implements PlugInFilter {
+public class Linear_Blending_Stack implements PlugInFilter, JavaDocHelp {
 
 	private static int StepCount = 5;	// number of intermediate images
 	private ImagePlus im;

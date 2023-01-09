@@ -13,6 +13,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.askForSampleImage;
@@ -39,7 +40,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see Global_MinMax
  * @see Global_Otsu
  */
-public class Global_All implements PlugInFilter {
+public class Global_All implements PlugInFilter, JavaDocHelp {
 	
 	enum Algorithm {
 		IsoData(Global_Isodata.class), 

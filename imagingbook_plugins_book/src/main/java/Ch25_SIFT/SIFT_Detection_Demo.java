@@ -23,6 +23,7 @@ import imagingbook.common.sift.SiftColors;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftParameters;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -51,7 +52,7 @@ import static imagingbook.common.ij.DialogUtils.makeHtmlString;
  * @see SiftDescriptor
  */
 
-public class SIFT_Detection_Demo implements PlugInFilter {
+public class SIFT_Detection_Demo implements PlugInFilter, JavaDocHelp {
 
 	private static final String HelpText = makeHtmlString(
 			"This plugin extracts multi-scale SIFT features from the current image and displays them as",

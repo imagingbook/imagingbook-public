@@ -23,6 +23,7 @@ import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree;
 import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.common.mser.components.PixelMap.Pixel;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -53,7 +54,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2023/01/04
  */
-public class Show_Component_Tree_Stack implements PlugInFilter {
+public class Show_Component_Tree_Stack implements PlugInFilter, JavaDocHelp {
 
 	private static ImageResource SampleImage = GeneralSampleImage.DotBlotSmall;
 	private static ComponentTree.Method method = Method.LinearTime;

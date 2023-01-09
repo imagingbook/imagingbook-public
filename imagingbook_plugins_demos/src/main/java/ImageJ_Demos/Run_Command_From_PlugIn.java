@@ -11,6 +11,7 @@ package ImageJ_Demos;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This plugin demonstrates how to run another ImageJ "command" (plugin)
@@ -18,7 +19,7 @@ import ij.plugin.PlugIn;
  * 
  * @author WB
  */
-public class Run_Command_From_PlugIn implements PlugIn {
+public class Run_Command_From_PlugIn implements PlugIn, JavaDocHelp {
 	
     public void run(String args) {
     	ImagePlus im = IJ.getImage();

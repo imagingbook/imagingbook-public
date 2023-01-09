@@ -13,6 +13,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.askForSampleImage;
@@ -36,7 +37,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see Adaptive_Niblack
  * @see Adaptive_Sauvola
  */
-public class Adaptive_All implements PlugInFilter {
+public class Adaptive_All implements PlugInFilter, JavaDocHelp {
 	
 	enum Algorithm {
 		Bernsen(Adaptive_Bernsen.class),

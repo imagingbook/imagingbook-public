@@ -22,6 +22,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.color.ColorSpace;
@@ -43,7 +44,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/09/02
  */
-public class Geometry_Rotate_Color implements PlugInFilter {
+public class Geometry_Rotate_Color implements PlugInFilter, JavaDocHelp {
 	
 	enum ColorStackType {
 		Lab, Luv, LinearRGB, sRGB

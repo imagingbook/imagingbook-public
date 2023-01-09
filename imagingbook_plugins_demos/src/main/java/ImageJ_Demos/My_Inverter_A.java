@@ -11,13 +11,14 @@ package ImageJ_Demos;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This is a minimal ImageJ plugin (PlugInFilter) that inverts an
  * 8-bit grayscale (byte) image.
  * @author WB
  */
-public class My_Inverter_A implements PlugInFilter {
+public class My_Inverter_A implements PlugInFilter, JavaDocHelp {
 
 	public int setup(String args, ImagePlus im) {
 		return DOES_8G; // this plugin accepts 8-bit grayscale images 

@@ -15,6 +15,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Random;
@@ -37,7 +38,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see ImageAccessor
  * @see OutOfBoundsStrategy
  */
-public class Jitter_Filter_ImageAccessor implements PlugInFilter {
+public class Jitter_Filter_ImageAccessor implements PlugInFilter, JavaDocHelp {
 	
 	/** The filter radius. */
 	public static int R = 3;

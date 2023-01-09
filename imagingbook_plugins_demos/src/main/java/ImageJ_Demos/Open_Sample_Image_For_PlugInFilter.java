@@ -13,6 +13,7 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -26,7 +27,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * If the specified sample image is not of the proper type is will still be
  * opened but the problem is subsequently detected by the setup() method.
  */
-public class Open_Sample_Image_For_PlugInFilter implements PlugInFilter {
+public class Open_Sample_Image_For_PlugInFilter implements PlugInFilter, JavaDocHelp {
 	
 	/**
 	 * Trick, using the (normally empty) constructor to check if a suitable image is

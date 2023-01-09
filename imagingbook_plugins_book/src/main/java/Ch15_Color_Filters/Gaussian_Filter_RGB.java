@@ -21,6 +21,7 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.color.ColorSpace;
@@ -45,7 +46,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see GenericFilter
  * @see GaussianFilterSeparable
  */
-public class Gaussian_Filter_RGB implements PlugInFilter {
+public class Gaussian_Filter_RGB implements PlugInFilter, JavaDocHelp {
 
 	private enum ColorStackType {
 		Lab, Luv, LinearRGB, sRGB;

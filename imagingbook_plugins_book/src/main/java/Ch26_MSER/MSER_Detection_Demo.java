@@ -29,6 +29,7 @@ import imagingbook.common.mser.MserDetector;
 import imagingbook.common.mser.MserParameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.PixelMap.Pixel;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -58,7 +59,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/11/24
  * @see MserDetector
  */
-public class MSER_Detection_Demo implements PlugInFilter {
+public class MSER_Detection_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private static ImageResource SampleImage = GeneralSampleImage.MortarSmall;
 	

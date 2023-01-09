@@ -16,6 +16,7 @@ import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen;
 import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen.Parameters;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.VectorNorm.NormType;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -32,7 +33,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  *
  * @version 2022/12/10
  */
-public class MedianFilter_VectorSharpen implements PlugInFilter {
+public class MedianFilter_VectorSharpen implements PlugInFilter, JavaDocHelp {
 
 	private static Parameters params = new VectorMedianFilterSharpen.Parameters();
 	static {

@@ -22,6 +22,7 @@ import imagingbook.common.morphology.BinaryErosion;
 import imagingbook.common.morphology.BinaryMorphologyFilter;
 import imagingbook.common.morphology.BinaryOpening;
 import imagingbook.common.morphology.StructuringElements;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -42,7 +43,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/01/24
  */
-public class Bin_Morphology_Disk implements PlugInFilter {
+public class Bin_Morphology_Disk implements PlugInFilter, JavaDocHelp {
 	
 	public enum OpType {
 		Dilate, Erode, Open, Close;

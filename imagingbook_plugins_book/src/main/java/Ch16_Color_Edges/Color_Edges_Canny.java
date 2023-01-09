@@ -20,6 +20,7 @@ import imagingbook.common.edges.CannyEdgeDetector.Parameters;
 import imagingbook.common.edges.EdgeTrace;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;
@@ -42,7 +43,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/12/12
  * @see CannyEdgeDetector
  */
-public class Color_Edges_Canny implements PlugInFilter {
+public class Color_Edges_Canny implements PlugInFilter, JavaDocHelp {
 
 	private static Parameters params = new Parameters();
 	private static boolean ShowEdgeMagnitude = false;

@@ -25,6 +25,7 @@ import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.common.math.PrintPrecision;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -43,7 +44,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @see LinearMapping2D
  * @see ImageMapper
  */
-public class Rectify_Quad_Selection implements PlugInFilter {
+public class Rectify_Quad_Selection implements PlugInFilter, JavaDocHelp {
 	
 	private static PaperFormatType PaperFormat = PaperFormatType.A4;
 	private static double OutputPixelSize = 0.5;	// pixel size in mm

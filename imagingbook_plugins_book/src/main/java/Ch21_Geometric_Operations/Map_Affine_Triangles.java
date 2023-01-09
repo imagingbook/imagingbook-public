@@ -21,6 +21,7 @@ import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.common.math.Matrix;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -39,7 +40,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @see ImageMapper
  * @see AffineMapping2D
  */
-public class Map_Affine_Triangles implements PlugInFilter {
+public class Map_Affine_Triangles implements PlugInFilter, JavaDocHelp {
 	
    	private static Pnt2d[] P = {			// source triangle
 			PntInt.from(0, 0),

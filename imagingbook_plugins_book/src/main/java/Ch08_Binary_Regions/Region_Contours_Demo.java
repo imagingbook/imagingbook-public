@@ -24,6 +24,7 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;
@@ -59,7 +60,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see RegionContourSegmentation
  */
 @IjPluginName("Region Contours Demo")
-public class Region_Contours_Demo implements PlugInFilter {
+public class Region_Contours_Demo implements PlugInFilter, JavaDocHelp {
 	
 	/** Neighborhood type used for region segmentation (4- or 8-neighborhood). */
 	public static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N8;

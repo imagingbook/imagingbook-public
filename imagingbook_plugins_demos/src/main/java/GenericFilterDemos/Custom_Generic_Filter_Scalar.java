@@ -13,6 +13,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilterScalar;
 import imagingbook.common.image.PixelPack.PixelSlice;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how to construct a 3x3 custom generic filter
@@ -25,7 +26,7 @@ import imagingbook.common.image.PixelPack.PixelSlice;
  * @author WB
  * @version 2022/03/30
  */
-public class Custom_Generic_Filter_Scalar implements PlugInFilter {
+public class Custom_Generic_Filter_Scalar implements PlugInFilter, JavaDocHelp {
 
     public int setup(String arg, ImagePlus imp) {
         return DOES_ALL;

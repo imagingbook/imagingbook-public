@@ -16,6 +16,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -36,7 +37,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
  * @see HistogramUtils
  * @see HistogramPlot
  */
-public class Match_Gaussian_Histogram implements PlugInFilter {
+public class Match_Gaussian_Histogram implements PlugInFilter, JavaDocHelp {
 
 	// parameters of Gaussian target distribution:
 	private static double Mean = 128;

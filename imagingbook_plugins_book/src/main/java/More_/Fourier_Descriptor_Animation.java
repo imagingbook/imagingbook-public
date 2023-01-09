@@ -26,6 +26,7 @@ import imagingbook.common.math.Complex;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.ContourTracer;
 import imagingbook.common.regions.RegionContourSegmentation;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -58,7 +59,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/10/28
  */
-public class Fourier_Descriptor_Animation implements PlugInFilter {
+public class Fourier_Descriptor_Animation implements PlugInFilter, JavaDocHelp {
 	// TODO: add key event to stop animation
 	private static int FourierCoefficientPairs = 3;
 	

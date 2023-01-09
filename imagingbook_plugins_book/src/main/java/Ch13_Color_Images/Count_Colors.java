@@ -15,6 +15,7 @@ import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Arrays;
@@ -34,7 +35,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @see IjUtils#countColors(ColorProcessor)
  */
-public class Count_Colors implements PlugInFilter {
+public class Count_Colors implements PlugInFilter, JavaDocHelp {
 
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image is currently open.

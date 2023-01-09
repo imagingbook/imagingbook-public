@@ -18,6 +18,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * <p>
@@ -36,7 +37,7 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
  * @see OutOfBoundsStrategy
  * @see ImageAccessor
  */
-public class Pixel_Interpolation_Demo implements PlugInFilter {
+public class Pixel_Interpolation_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private static InterpolationMethod IPM = InterpolationMethod.Bicubic;
 	private static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.ZeroValues;

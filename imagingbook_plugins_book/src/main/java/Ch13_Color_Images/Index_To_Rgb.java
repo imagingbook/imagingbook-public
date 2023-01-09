@@ -14,6 +14,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.image.ColorModel;
@@ -34,7 +35,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  *
  * @author WB
  */
-public class Index_To_Rgb implements PlugInFilter {
+public class Index_To_Rgb implements PlugInFilter, JavaDocHelp {
 	private static final int R = 0, G = 1, B = 2;
 	
 	private ImagePlus im;

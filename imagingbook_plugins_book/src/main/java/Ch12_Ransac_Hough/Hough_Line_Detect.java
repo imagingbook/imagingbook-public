@@ -21,6 +21,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -43,7 +44,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/10/03
  */
-public class Hough_Line_Detect implements PlugInFilter {
+public class Hough_Line_Detect implements PlugInFilter, JavaDocHelp {
 
 	private static int MaxLines = 5;			// number of strongest lines to be found
 	private static int MinPointsOnLine = 50;	// min. number of points on each line

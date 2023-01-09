@@ -17,6 +17,7 @@ import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaF.Parameters;
 import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaFilterScalar;
 import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaFilterVector;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -38,7 +39,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see NagaoMatsuyamaFilterScalar
  * @see NagaoMatsuyamaFilterVector
  */
-public class Nagao_Matsuyama_Filter implements PlugInFilter {
+public class Nagao_Matsuyama_Filter implements PlugInFilter, JavaDocHelp {
 	
 	private static Parameters params = new Parameters();
 	private static boolean UseVectorFilter = false;

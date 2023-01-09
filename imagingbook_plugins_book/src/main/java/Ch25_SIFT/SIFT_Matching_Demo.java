@@ -28,6 +28,7 @@ import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftMatch;
 import imagingbook.common.sift.SiftMatcher;
 import imagingbook.common.sift.SiftParameters;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -62,7 +63,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/11/20
  */
-public class SIFT_Matching_Demo implements PlugInFilter {
+public class SIFT_Matching_Demo implements PlugInFilter, JavaDocHelp {
 
 	private static final String HelpText = makeHtmlString(
 			"This ImageJ plugin demonstrates the use of the SIFT detection and matching framework.",

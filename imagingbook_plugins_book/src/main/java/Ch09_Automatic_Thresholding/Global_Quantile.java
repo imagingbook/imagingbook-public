@@ -15,11 +15,11 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.global.GlobalThresholder;
 import imagingbook.common.threshold.global.QuantileThresholder;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.askForSampleImage;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.threshold.global.GlobalThresholder.NoThreshold;
 import static java.lang.Float.isFinite;
 
 /**
@@ -36,7 +36,7 @@ import static java.lang.Float.isFinite;
  * @version 2022/04/02
  * @see imagingbook.common.threshold.global.QuantileThresholder
  */
-public class Global_Quantile implements PlugInFilter {
+public class Global_Quantile implements PlugInFilter, JavaDocHelp {
 	
 	private static double quantile = 0.2;
 

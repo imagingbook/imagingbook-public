@@ -13,6 +13,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Arrays;
@@ -33,7 +34,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  *
  * @author WB
  */
-public class Filter_Median implements PlugInFilter {
+public class Filter_Median implements PlugInFilter, JavaDocHelp {
 
 	/** Filter radius. */
 	public static int R = 3; // the size of the filter is (2R+1)x(2R+1)

@@ -13,6 +13,7 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -32,7 +33,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  *
  * @author WB
  */
-public class Filter_Arbitrary implements PlugInFilter {
+public class Filter_Arbitrary implements PlugInFilter, JavaDocHelp {
 
     // arbitrary filter kernel of size (2K + 1) x (2L + 1):
     private static int[][] H = {

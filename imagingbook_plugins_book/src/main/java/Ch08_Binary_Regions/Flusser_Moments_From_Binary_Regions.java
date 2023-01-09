@@ -23,6 +23,7 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.BinaryRegionSegmentation;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.kimia.KimiaCollage;
 
 import java.awt.Color;
@@ -46,7 +47,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/12/28
  */
-public class Flusser_Moments_From_Binary_Regions implements PlugInFilter {
+public class Flusser_Moments_From_Binary_Regions implements PlugInFilter, JavaDocHelp {
 
     private static int MIN_REGION_SIZE = 100;
     private static int MAX_REGION_COUNT = 30;

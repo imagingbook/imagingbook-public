@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -28,7 +29,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  *
  * @author WB
  */
-public class Equalize_Histogram implements PlugInFilter {
+public class Equalize_Histogram implements PlugInFilter, JavaDocHelp {
 
 	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
 	public Equalize_Histogram() {

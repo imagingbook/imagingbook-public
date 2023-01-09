@@ -17,6 +17,7 @@ import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.PixelPack;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Random;
@@ -45,7 +46,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see GenericFilter
  * @see OutOfBoundsStrategy
  */
-public class Jitter_Filter_GenericFilter implements PlugInFilter {
+public class Jitter_Filter_GenericFilter implements PlugInFilter, JavaDocHelp {
 	
 	/** The filter radius. */
 	public static int R = 3;

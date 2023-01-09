@@ -21,6 +21,7 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
@@ -43,7 +44,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see PeronaMalikFilterScalar
  * @see PeronaMalikFilterVector
  */
-public class Perona_Malik_Filter implements PlugInFilter {
+public class Perona_Malik_Filter implements PlugInFilter, JavaDocHelp {
 
 	private static Parameters params = new Parameters();
 	private boolean isColor;

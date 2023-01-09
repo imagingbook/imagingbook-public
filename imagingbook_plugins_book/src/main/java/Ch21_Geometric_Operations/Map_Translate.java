@@ -17,6 +17,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -34,7 +35,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @see ImageMapper
  * @see Translation2D
  */
-public class Map_Translate implements PlugInFilter {
+public class Map_Translate implements PlugInFilter, JavaDocHelp {
 	
 	private static double dx = 5.25;
 	private static double dy = 7.3;

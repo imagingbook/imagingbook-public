@@ -11,6 +11,7 @@ package ImageJ_Demos;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import java.util.Random;
 
@@ -20,7 +21,7 @@ import java.util.Random;
  * @author WB
  *
  */
-public class Make_Uniform_Noise implements PlugInFilter {
+public class Make_Uniform_Noise implements PlugInFilter, JavaDocHelp {
 	
 	@Override
 	public int setup(String arg0, ImagePlus im) {

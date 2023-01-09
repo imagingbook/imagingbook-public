@@ -15,6 +15,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
 import imagingbook.common.image.access.VectorAccessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This plugin demonstrates the of class {@link ImageAccessor} for
@@ -31,7 +32,7 @@ import imagingbook.common.image.access.VectorAccessor;
  * @see ScalarAccessor
  * @see VectorAccessor
  */
-public class ImageAccessor_Demo_Vector implements PlugInFilter {
+public class ImageAccessor_Demo_Vector implements PlugInFilter, JavaDocHelp {
 
 	public int setup(String arg, ImagePlus img) {
 		return DOES_ALL;

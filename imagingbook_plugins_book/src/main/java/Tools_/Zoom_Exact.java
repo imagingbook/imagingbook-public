@@ -14,6 +14,7 @@ import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import imagingbook.common.ij.GuiTools;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * ImageJ plugin, resizes the window of the given image to fit an arbitrary, user-specified magnification factor. The
@@ -23,7 +24,7 @@ import imagingbook.common.ij.GuiTools;
  * @author WB
  * @version 2020/10/08
  */
-public class Zoom_Exact implements PlugIn {
+public class Zoom_Exact implements PlugIn, JavaDocHelp {
 	
 	private static boolean LOG_OUTPUT = false;
 	

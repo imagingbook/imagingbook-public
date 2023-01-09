@@ -17,6 +17,7 @@ import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.GridLayout;
@@ -40,7 +41,7 @@ import java.util.Locale;
  * @see ImageMapper
  * @see AffineMapping2D
  */
-public class Map_Affine_Matrix implements PlugInFilter {
+public class Map_Affine_Matrix implements PlugInFilter, JavaDocHelp {
 
 	private static String[][] ElemNames = {
 			{ "a00", "a01", "a02" },

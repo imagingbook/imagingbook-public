@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * <p>
@@ -29,7 +30,7 @@ import ij.process.ImageProcessor;
  * @author WB
  *
  */
-public class Stack_Processing_Demo implements PlugInFilter {
+public class Stack_Processing_Demo implements PlugInFilter, JavaDocHelp {
 	
 	ImagePlus im = null;	// keep a reference to the associated ImagePlus object
 	

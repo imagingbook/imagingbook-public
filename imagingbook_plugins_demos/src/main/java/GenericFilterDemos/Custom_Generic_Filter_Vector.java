@@ -13,6 +13,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.PixelPack;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how to construct a 3x3 custom generic vector filter
@@ -23,7 +24,7 @@ import imagingbook.common.image.PixelPack;
  * @version 2022/03/30
  *
  */
-public class Custom_Generic_Filter_Vector implements PlugInFilter {
+public class Custom_Generic_Filter_Vector implements PlugInFilter, JavaDocHelp {
 
 
     public int setup(String arg, ImagePlus imp) {

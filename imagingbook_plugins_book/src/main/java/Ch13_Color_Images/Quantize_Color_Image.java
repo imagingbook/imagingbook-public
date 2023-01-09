@@ -21,6 +21,7 @@ import imagingbook.common.color.quantize.KMeansClusteringQuantizer;
 import imagingbook.common.color.quantize.MedianCutQuantizer;
 import imagingbook.common.color.quantize.OctreeQuantizer;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Locale;
@@ -43,7 +44,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/11/05
  */
-public class Quantize_Color_Image implements PlugInFilter {
+public class Quantize_Color_Image implements PlugInFilter, JavaDocHelp {
 	
 	enum QuantizeMethod {
 		MedianCut,

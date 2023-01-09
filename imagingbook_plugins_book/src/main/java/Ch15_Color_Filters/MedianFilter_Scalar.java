@@ -15,6 +15,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.nonlinear.ScalarMedianFilter;
 import imagingbook.common.filter.nonlinear.ScalarMedianFilter.Parameters;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -32,7 +33,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/12/10
  */
-public class MedianFilter_Scalar implements PlugInFilter {
+public class MedianFilter_Scalar implements PlugInFilter, JavaDocHelp {
 
 	private static final Parameters params = new Parameters();
 	static {

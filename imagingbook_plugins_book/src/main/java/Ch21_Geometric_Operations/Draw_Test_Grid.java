@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import imagingbook.common.image.ImageGraphics;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -31,7 +32,7 @@ import java.awt.Graphics2D;
  * @version 2022/11/28
  * @see ImageGraphics
  */
-public class Draw_Test_Grid implements PlugIn {
+public class Draw_Test_Grid implements PlugIn, JavaDocHelp {
 	
 	private static int W = 400;
 	private static int H = 400;

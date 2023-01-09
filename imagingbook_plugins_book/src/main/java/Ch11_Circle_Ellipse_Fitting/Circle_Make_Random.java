@@ -26,6 +26,7 @@ import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.util.ParameterBundle;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
 
@@ -39,7 +40,7 @@ import static imagingbook.common.ij.DialogUtils.addToDialog;
  * @author WB
  * @version 2022/10/03
  */
-public class Circle_Make_Random implements PlugIn {
+public class Circle_Make_Random implements PlugIn, JavaDocHelp {
 	
 	public static class Parameters implements ParameterBundle<Circle_Make_Random> {
 		

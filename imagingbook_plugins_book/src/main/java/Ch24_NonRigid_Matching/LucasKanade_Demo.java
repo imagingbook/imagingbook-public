@@ -29,6 +29,7 @@ import imagingbook.common.image.matching.lucaskanade.LucasKanadeForwardMatcher;
 import imagingbook.common.image.matching.lucaskanade.LucasKanadeInverseMatcher;
 import imagingbook.common.image.matching.lucaskanade.LucasKanadeMatcher;
 import imagingbook.common.math.PrintPrecision;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -71,7 +72,7 @@ import java.util.Random;
  * @see LucasKanadeInverseMatcher
  * @see ImageExtractor
  */
-public class LucasKanade_Demo implements PlugInFilter {
+public class LucasKanade_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private static int MaxIterations = 100;
 	private static double PositionNoiseSigma = 2.5;

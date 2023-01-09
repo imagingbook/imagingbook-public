@@ -20,6 +20,7 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Arithmetic;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -39,7 +40,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/12/10
  */
-public class Gaussian_Filter_HSV implements PlugInFilter {
+public class Gaussian_Filter_HSV implements PlugInFilter, JavaDocHelp {
 	// TODO: convert to use imagingbook's GenericFilter methods!
 
 	private static final String[] HsvLabels = {"H", "S", "V"};

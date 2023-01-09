@@ -24,6 +24,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Component;
@@ -80,7 +81,7 @@ import java.awt.geom.Path2D;
  * @author WB
  * @version 2022/11/25
  */
-public class Mesh_Warp_Interactive implements PlugInFilter {
+public class Mesh_Warp_Interactive implements PlugInFilter, JavaDocHelp {
 
 	private static final String PropertyKey = Mesh_Warp_Interactive.class.getName();
 	private static final String EditString = " (editing)";

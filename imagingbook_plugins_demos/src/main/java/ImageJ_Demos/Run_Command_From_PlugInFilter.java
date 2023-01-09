@@ -12,6 +12,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This plugin demonstrates how to run another ImageJ command (plugin)
@@ -21,7 +22,7 @@ import ij.process.ImageProcessor;
  * 
  * @author WB
  */
-public class Run_Command_From_PlugInFilter implements PlugInFilter {
+public class Run_Command_From_PlugInFilter implements PlugInFilter, JavaDocHelp {
 	
 	ImagePlus im;
 

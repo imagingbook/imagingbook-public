@@ -20,6 +20,7 @@ import imagingbook.common.color.colorspace.sRgbColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -32,7 +33,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * ImageJ plugin, takes any RGB color image and plots its color distribution in CIE xy-space, together with the
  * outline of the xy ("horseshoe") chromaticity outline.
  */
-public class Plot_Chromaticity_Chart implements PlugInFilter {
+public class Plot_Chromaticity_Chart implements PlugInFilter, JavaDocHelp {
 
     private static int ImageSize = 512;
 

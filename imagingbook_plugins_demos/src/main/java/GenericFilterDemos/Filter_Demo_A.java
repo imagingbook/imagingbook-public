@@ -12,8 +12,9 @@ import ij.ImagePlus;
 import ij.plugin.filter.Convolver;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
-public class Filter_Demo_A implements PlugInFilter {
+public class Filter_Demo_A implements PlugInFilter, JavaDocHelp {
 	
 	public int setup(String arg, ImagePlus im) {
 		return DOES_ALL;				// works for any type of image!

@@ -17,6 +17,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -34,7 +35,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @see ImageMapper
  * @see Mapping2D
  */
-public class Map_Nonlinear_Tapestry implements PlugInFilter {
+public class Map_Nonlinear_Tapestry implements PlugInFilter, JavaDocHelp {
 
 	private static final double a = 5.0;
 	private static final double tx = 30;

@@ -18,6 +18,7 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Arithmetic;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -37,7 +38,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/12/09
  */
-public class Hsv_Rotate_Hue implements PlugInFilter {
+public class Hsv_Rotate_Hue implements PlugInFilter, JavaDocHelp {
 	
 	private static double RotationAngle = 120.0;	// shift hue by 1/3 of full circle (120 degrees)
 

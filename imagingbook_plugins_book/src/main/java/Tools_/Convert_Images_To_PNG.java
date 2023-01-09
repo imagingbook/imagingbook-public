@@ -13,6 +13,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import imagingbook.common.util.DirectoryWalker;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import java.io.File;
 import java.util.Collection;
@@ -25,7 +26,7 @@ import java.util.Collection;
  * @author WB
  * @version 2022/12/27
  */
-public class Convert_Images_To_PNG implements PlugIn {
+public class Convert_Images_To_PNG implements PlugIn, JavaDocHelp {
 	private static String SourceExtension = ".pgm";
 	private static String TargetExtension = ".png";
 	private static String CurrentDirectory =  IJ.getDirectory("current");

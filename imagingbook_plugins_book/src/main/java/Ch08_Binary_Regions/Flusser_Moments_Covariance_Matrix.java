@@ -21,6 +21,7 @@ import imagingbook.common.math.Statistics;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.BinaryRegionSegmentation;
 import imagingbook.common.regions.RegionContourSegmentation;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.kimia.Kimia1070;
 import imagingbook.sampleimages.kimia.Kimia216;
@@ -48,7 +49,7 @@ import java.util.List;
  * @version 2022/12/28
  * @see Flusser_Moments_Matching_Demo
  */
-public class Flusser_Moments_Covariance_Matrix implements PlugIn {
+public class Flusser_Moments_Covariance_Matrix implements PlugIn, JavaDocHelp {
 
 	private enum DataSet {
 		Kimia99, Kimia216, Kimia1070

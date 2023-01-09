@@ -12,6 +12,7 @@ import ij.IJ;
 import ij.plugin.PlugIn;
 import imagingbook.core.FileUtils;
 import imagingbook.core.Info;
+import imagingbook.core.plugin.JavaDocHelp;
 
 
 /**
@@ -19,7 +20,7 @@ import imagingbook.core.Info;
  * 
  * @author WB
  */
-public class Check_Installation implements PlugIn {
+public class Check_Installation implements PlugIn, JavaDocHelp {
 
 	@Override
 	public void run(String arg0) {

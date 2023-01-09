@@ -13,6 +13,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This plugin demonstrates the of class {@link ScalarAccessor} for
@@ -27,7 +28,7 @@ import imagingbook.common.image.access.ScalarAccessor;
  * @see ScalarAccessor
  *
  */
-public class ImageAccessor_Demo_Scalar implements PlugInFilter {
+public class ImageAccessor_Demo_Scalar implements PlugInFilter, JavaDocHelp {
 
 	public int setup(String arg, ImagePlus img) {
 		return DOES_8G + DOES_16 + DOES_32;

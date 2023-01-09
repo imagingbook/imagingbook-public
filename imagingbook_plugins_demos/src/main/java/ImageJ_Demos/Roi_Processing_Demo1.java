@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.gui.Roi;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import java.awt.Rectangle;
 
@@ -26,7 +27,7 @@ import java.awt.Rectangle;
  * @author WB
  * @version 2022/04/01
  */
-public class Roi_Processing_Demo1 implements PlugInFilter {
+public class Roi_Processing_Demo1 implements PlugInFilter, JavaDocHelp {
 
 	private ImagePlus im = null;
 

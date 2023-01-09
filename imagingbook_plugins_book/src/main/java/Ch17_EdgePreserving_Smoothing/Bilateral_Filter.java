@@ -22,6 +22,7 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
@@ -46,7 +47,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see BilateralFilterScalarSeparable
  * @see BilateralFilterVectorSeparable
  */
-public class Bilateral_Filter implements PlugInFilter {
+public class Bilateral_Filter implements PlugInFilter, JavaDocHelp {
 	
 	private static Parameters params = new Parameters();
 	private static boolean UseSeparableFilter = false;

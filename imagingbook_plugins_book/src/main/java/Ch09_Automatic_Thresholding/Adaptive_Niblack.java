@@ -17,6 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.NiblackThresholder;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.Parameters;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.RegionType;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
@@ -33,7 +34,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/04/01
  * @see imagingbook.common.threshold.adaptive.NiblackThresholder
  */
-public class Adaptive_Niblack implements PlugInFilter {
+public class Adaptive_Niblack implements PlugInFilter, JavaDocHelp {
 	
 //	enum RegionType { Box, Disk, Gaussian }
 	

@@ -15,6 +15,7 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianKernel2D;
 import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.filter.linear.LinearFilter;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how to construct a generic linear filter
@@ -32,7 +33,7 @@ import imagingbook.common.filter.linear.LinearFilter;
  * @see Kernel2D
  * @see GaussianKernel2D
  */
-public class Gaussian_Filter implements PlugInFilter {
+public class Gaussian_Filter implements PlugInFilter, JavaDocHelp {
 	
 	static double SIGMA = 3.0;
 

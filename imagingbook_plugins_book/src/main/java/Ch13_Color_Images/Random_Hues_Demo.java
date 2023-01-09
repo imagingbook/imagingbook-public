@@ -13,6 +13,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import ij.process.ColorProcessor;
 import imagingbook.common.color.iterate.RandomHueGenerator;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import java.awt.Color;
 
@@ -23,7 +24,7 @@ import java.awt.Color;
  * @author WB
  * @see imagingbook.common.color.iterate.RandomHueGenerator
  */
-public class Random_Hues_Demo implements PlugIn {
+public class Random_Hues_Demo implements PlugIn, JavaDocHelp {
 	
 	private static int TileSize = 20;
 	private static int TilesHor = 48;

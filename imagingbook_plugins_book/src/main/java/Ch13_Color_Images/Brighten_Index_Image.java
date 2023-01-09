@@ -14,6 +14,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.image.ColorModel;
@@ -34,7 +35,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  *
  * @author WB
  */
-public class Brighten_Index_Image implements PlugInFilter {
+public class Brighten_Index_Image implements PlugInFilter, JavaDocHelp {
 	
 	private static int BrightnessDelta = 10;	// increase by 10 units
 

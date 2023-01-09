@@ -11,6 +11,7 @@ package Tools_;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import imagingbook.common.util.ClassUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -23,7 +24,7 @@ import java.util.Arrays;
  * @author WB
  * @see GeneralSampleImage
  */
-public class Open_Sample_Image implements PlugIn {
+public class Open_Sample_Image implements PlugIn, JavaDocHelp {
 
 	@Override
 	public void run(String arg) {

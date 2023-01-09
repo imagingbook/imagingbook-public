@@ -12,8 +12,9 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.NewImage;
 import ij.plugin.PlugIn;
+import imagingbook.core.plugin.JavaDocHelp;
 
-public class Generic_Dialog_Example implements PlugIn {
+public class Generic_Dialog_Example implements PlugIn, JavaDocHelp {
 	static String title = "Untitled";
 	static int width = 512;
 	static int height = 512;

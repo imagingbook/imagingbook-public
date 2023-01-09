@@ -24,6 +24,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -53,7 +54,7 @@ import static java.lang.Math.sqrt;
  * @version 2022/12/08
  */
 @IjPluginName("Region Eccentricity/Ellipse Demo")
-public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter {
+public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter, JavaDocHelp {
 	
 	/** Neighborhood type used for region segmentation (4- or 8-neighborhood). */
 	public static NeighborhoodType2D Neighborhood = NeighborhoodType2D.N4;

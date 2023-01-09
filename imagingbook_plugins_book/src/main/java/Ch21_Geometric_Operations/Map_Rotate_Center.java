@@ -20,6 +20,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -37,7 +38,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @see ImageMapper
  * @see Rotation2D
  */
-public class Map_Rotate_Center implements PlugInFilter {
+public class Map_Rotate_Center implements PlugInFilter, JavaDocHelp {
 	
 	private static double alphaDeg = 15.0; 	// rotation angle (in degrees)
 	

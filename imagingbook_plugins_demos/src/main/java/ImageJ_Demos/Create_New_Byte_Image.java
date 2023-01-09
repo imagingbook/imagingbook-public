@@ -12,12 +12,13 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This plugin demonstrates how to create and display a 
  * new byte image (to show the histogram of the input image).
  */
-public class Create_New_Byte_Image implements PlugInFilter {
+public class Create_New_Byte_Image implements PlugInFilter, JavaDocHelp {
 	
 	ImagePlus im;
 

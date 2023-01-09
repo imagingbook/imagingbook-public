@@ -15,6 +15,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.edges.CannyEdgeDetector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -34,23 +35,25 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see CannyEdgeDetector
  * @see Color_Edges_Canny
  */
-public class Canny_Edges implements PlugInFilter {
+public class Canny_Edges implements PlugInFilter, JavaDocHelp {
 
-	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
-	public Canny_Edges() {
-		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Boats);
-		}
-	}
-	
-	@Override
-	public int setup(String arg0, ImagePlus im) {
-		return DOES_ALL + NO_CHANGES;
-	}
+    /**
+     * Constructor, asks to open a predefined sample image if no other image is currently open.
+     */
+    public Canny_Edges() {
+        if (noCurrentImage()) {
+            DialogUtils.askForSampleImage(GeneralSampleImage.Boats);
+        }
+    }
 
-	@Override
-	public void run(ImageProcessor ip) {
-		// delegate to another plugin:
-		IjUtils.runPlugInFilter(Color_Edges_Canny.class);
-	}
+    @Override
+    public int setup(String arg0, ImagePlus im) {
+        return DOES_ALL + NO_CHANGES;
+    }
+
+    @Override
+    public void run(ImageProcessor ip) {
+        // delegate to another plugin:
+        IjUtils.runPlugInFilter(Color_Edges_Canny.class);
+    }
 }

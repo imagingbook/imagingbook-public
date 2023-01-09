@@ -25,6 +25,7 @@ import imagingbook.common.image.LocalMinMaxFinder;
 import imagingbook.common.image.LocalMinMaxFinder.ExtremalPoint;
 import imagingbook.common.image.matching.ChamferMatcher;
 import imagingbook.common.image.matching.DistanceTransform.DistanceType;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Font;
@@ -51,7 +52,7 @@ import java.util.Random;
  * @see ChamferMatcher
  * @see LocalMinMaxFinder
  */
-public class Chamfer_Matching implements PlugInFilter {
+public class Chamfer_Matching implements PlugInFilter, JavaDocHelp {
 
 	private static boolean ShowReferenceImage = true;
 	private static boolean ShowScoreMap = true;

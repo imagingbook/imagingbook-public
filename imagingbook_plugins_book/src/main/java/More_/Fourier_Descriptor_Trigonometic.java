@@ -24,6 +24,7 @@ import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.Complex;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -48,7 +49,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/10/28
  */
-public class Fourier_Descriptor_Trigonometic implements PlugInFilter {
+public class Fourier_Descriptor_Trigonometic implements PlugInFilter, JavaDocHelp {
 	
 	private static int FourierCoefficientPairs = 3;
 	

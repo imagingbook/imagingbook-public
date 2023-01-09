@@ -17,6 +17,7 @@ import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
 import imagingbook.common.histogram.PiecewiseLinearCdf;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -36,7 +37,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see HistogramPlot
  * @see PiecewiseLinearCdf
  */
-public class Match_Piecewise_Linear_Histogram implements PlugInFilter {
+public class Match_Piecewise_Linear_Histogram implements PlugInFilter, JavaDocHelp {
 
 	private static int[]    a = {28, 75, 150, 210};			// a_k (brightness values)
 	private static double[] P = {.05, .25, .75, .95};		// P_k (cum. probabilities)

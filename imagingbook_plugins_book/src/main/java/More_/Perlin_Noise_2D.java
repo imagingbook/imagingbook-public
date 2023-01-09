@@ -19,6 +19,7 @@ import imagingbook.common.noise.hashing.Hash32Ward;
 import imagingbook.common.noise.hashing.HashFunction;
 import imagingbook.common.noise.hashing.HashPermute;
 import imagingbook.common.noise.perlin.PerlinNoiseGenerator2d;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * <p>
@@ -37,7 +38,7 @@ import imagingbook.common.noise.perlin.PerlinNoiseGenerator2d;
  * @author WB
  * @version 2022/11/24
  */
-public class Perlin_Noise_2D implements PlugIn {
+public class Perlin_Noise_2D implements PlugIn, JavaDocHelp {
 	
 	private enum HasFunctionType {
 		HashPermute, Hash32Ward, Hash32Shift, Hash32ShiftMult;

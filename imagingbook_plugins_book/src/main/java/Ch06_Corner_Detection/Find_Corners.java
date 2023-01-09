@@ -22,6 +22,7 @@ import imagingbook.common.corners.ShiTomasiCornerDetector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;
@@ -46,7 +47,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see ShiTomasiCornerDetector
  * @see ShapeOverlayAdapter
  */
-public class Find_Corners implements PlugInFilter {
+public class Find_Corners implements PlugInFilter, JavaDocHelp {
 	
 	public enum DetectorType {
 		Harris, Mops, ShiThomasi;

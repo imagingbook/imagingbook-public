@@ -24,6 +24,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;
@@ -48,7 +49,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/06/23
  */
 @IjPluginName("Axis-Aligned Bounding Box")
-public class Axis_Aligned_Bounding_Box implements PlugInFilter {
+public class Axis_Aligned_Bounding_Box implements PlugInFilter, JavaDocHelp {
 
 	/** Color of the bounding-box outline. */
 	public static BasicAwtColor DrawingColor = BasicAwtColor.Blue;

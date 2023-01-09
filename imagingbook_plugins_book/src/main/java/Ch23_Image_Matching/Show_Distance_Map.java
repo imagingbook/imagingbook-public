@@ -17,6 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.matching.DistanceTransform;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -33,7 +34,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @version 2022/12/13
  * @see DistanceTransform
  */
-public class Show_Distance_Map implements PlugInFilter {
+public class Show_Distance_Map implements PlugInFilter, JavaDocHelp {
 	
 	private static DistanceTransform.DistanceType distanceNorm = DistanceTransform.DistanceType.L1;
 	

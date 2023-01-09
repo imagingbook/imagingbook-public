@@ -13,6 +13,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Random;
@@ -33,7 +34,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2016/11/01
  */
-public class Jitter_Filter_Simple implements PlugInFilter {
+public class Jitter_Filter_Simple implements PlugInFilter, JavaDocHelp {
 	
 	/** The filter radius. */
 	public static int R = 3;

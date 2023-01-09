@@ -12,6 +12,7 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how to access the one-dimensional pixel array
@@ -22,7 +23,7 @@ import ij.process.ImageProcessor;
  * @author WB
  *
  */
-public class Direct_Byte_Pixel_Access implements PlugInFilter {
+public class Direct_Byte_Pixel_Access implements PlugInFilter, JavaDocHelp {
 
 	public int setup(String arg, ImagePlus img) {
 		return DOES_8G; 	// this plugin accepts 8-bit grayscale images

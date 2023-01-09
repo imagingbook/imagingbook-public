@@ -15,6 +15,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Matrix;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.spectral.dct.Dct2d;
 import imagingbook.spectral.dct.Dct2dDirect;
@@ -36,7 +37,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/04/01
  */
-public class DCT_2D_Demo implements PlugInFilter {
+public class DCT_2D_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private static boolean UseFastMode = true;
 	private static boolean UseDoublePrecision = false;

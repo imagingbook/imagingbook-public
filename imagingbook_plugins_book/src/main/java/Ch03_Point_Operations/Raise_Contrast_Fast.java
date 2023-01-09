@@ -13,6 +13,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -31,7 +32,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @see Raise_Contrast
  */
-public class Raise_Contrast_Fast implements PlugInFilter {
+public class Raise_Contrast_Fast implements PlugInFilter, JavaDocHelp {
 	
 	/** Contrast scale factor. */
 	public static double S = 1.5;

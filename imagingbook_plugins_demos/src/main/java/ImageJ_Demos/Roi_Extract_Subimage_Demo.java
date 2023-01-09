@@ -11,6 +11,7 @@ package ImageJ_Demos;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how a subimage is extracted from
@@ -21,7 +22,7 @@ import ij.process.ImageProcessor;
  * @author WB
  * @version 2022/04/01
  */
-public class Roi_Extract_Subimage_Demo implements PlugInFilter {
+public class Roi_Extract_Subimage_Demo implements PlugInFilter, JavaDocHelp {
 
 	ImagePlus im = null;
 

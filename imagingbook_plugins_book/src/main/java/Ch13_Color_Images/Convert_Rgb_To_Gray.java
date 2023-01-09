@@ -14,6 +14,7 @@ import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -31,7 +32,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/12/09
  */
-public class Convert_Rgb_To_Gray implements PlugInFilter {
+public class Convert_Rgb_To_Gray implements PlugInFilter, JavaDocHelp {
 		
 	private ImagePlus im;
 

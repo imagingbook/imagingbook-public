@@ -21,6 +21,7 @@ import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.common.math.Matrix;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -44,7 +45,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @see ProjectiveMapping2D
  * @see ImageMapper
  */
-public class Map_Projective implements PlugInFilter {
+public class Map_Projective implements PlugInFilter, JavaDocHelp {
 	
 	private static Pnt2d[] P = {		// source quad
 			Pnt2d.from(0, 0),

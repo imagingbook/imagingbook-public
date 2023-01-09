@@ -14,11 +14,11 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.global.OtsuThresholder;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.askForSampleImage;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
-import static imagingbook.common.threshold.global.GlobalThresholder.NoThreshold;
 import static java.lang.Float.isFinite;
 
 /**
@@ -35,7 +35,7 @@ import static java.lang.Float.isFinite;
  * @version 2022/04/02
  * @see imagingbook.common.threshold.global.OtsuThresholder
  */
-public class Global_Otsu implements PlugInFilter {
+public class Global_Otsu implements PlugInFilter, JavaDocHelp {
 	
 	/**
 	 * Constructor, asks to open a predefined sample image if no other image

@@ -14,6 +14,7 @@ import ij.gui.GenericDialog;
 import ij.io.SaveDialog;
 import ij.plugin.PlugIn;
 import imagingbook.core.FileUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.pdf.PdfExporter;
 import imagingbook.pdf.PdfExporter.Parameters;
 import imagingbook.pdf.Utils;
@@ -34,7 +35,7 @@ import static imagingbook.common.ij.DialogUtils.getFromDialog;
  * @version 2022/04/23 (removed DialogListener)
  * @see PdfExporter
  */
-public class Export_PDF implements PlugIn {
+public class Export_PDF implements PlugIn, JavaDocHelp {
 	
 //	TODO: fix current directory mechanism
 	

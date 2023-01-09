@@ -23,6 +23,7 @@ import imagingbook.common.geometry.delaunay.Triangle;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -43,7 +44,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see HarrisCornerDetector
  * @see DelaunayTriangulation
  */
-public class Delaunay_Demo implements PlugInFilter {
+public class Delaunay_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private static ImageResource SampleImage = GeneralSampleImage.MortarSmall;
 	

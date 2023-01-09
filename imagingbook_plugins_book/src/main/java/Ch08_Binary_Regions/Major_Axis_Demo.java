@@ -24,6 +24,7 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.common.util.GenericProperties.PropertyKey;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.geom.Line2D;
@@ -51,7 +52,7 @@ import static java.lang.Math.sqrt;
  * @version 2020/12/17
  */
 @IjPluginName("Major Axis Demo")
-public class Major_Axis_Demo implements PlugInFilter {	// TODO: convert to overlay display
+public class Major_Axis_Demo implements PlugInFilter, JavaDocHelp {	// TODO: convert to overlay display
 
 
 	static final PropertyKey<Double> dxKey = new PropertyKey<>("dx");

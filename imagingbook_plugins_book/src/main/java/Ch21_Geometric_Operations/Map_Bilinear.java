@@ -19,6 +19,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -37,7 +38,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
  * @see ImageMapper
  * @see BilinearMapping2D
  */
-public class Map_Bilinear implements PlugInFilter {
+public class Map_Bilinear implements PlugInFilter, JavaDocHelp {
 	
    	private static Pnt2d[] P = {		// source quadrilateral
 			PntInt.from(0, 0),

@@ -18,6 +18,7 @@ import imagingbook.common.filter.linear.Kernel1D;
 import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.filter.linear.LinearFilter;
 import imagingbook.common.filter.linear.LinearFilterSeparable;
+import imagingbook.core.plugin.JavaDocHelp;
 
 
 /**
@@ -37,7 +38,7 @@ import imagingbook.common.filter.linear.LinearFilterSeparable;
  * @see Kernel2D
  * @see GaussianKernel1D
  */
-public class Gaussian_Filter_Separable implements PlugInFilter {
+public class Gaussian_Filter_Separable implements PlugInFilter, JavaDocHelp {
 	
 	static double SIGMA = 7.5;
 

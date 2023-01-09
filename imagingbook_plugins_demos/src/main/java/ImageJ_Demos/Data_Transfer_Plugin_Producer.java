@@ -11,6 +11,7 @@ package ImageJ_Demos;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how data can be communicated from one
@@ -24,7 +25,7 @@ import ij.process.ImageProcessor;
  * @author WB
  *
  */
-public class Data_Transfer_Plugin_Producer implements PlugInFilter {
+public class Data_Transfer_Plugin_Producer implements PlugInFilter, JavaDocHelp {
 	
 	// Create a unique (publicly visible) property key:
 	public static final String HistKey = 

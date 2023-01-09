@@ -20,8 +20,9 @@ import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
-public class Close_Other_Images implements PlugInFilter {
+public class Close_Other_Images implements PlugInFilter, JavaDocHelp {
 	
 	private ImagePlus im;
 	

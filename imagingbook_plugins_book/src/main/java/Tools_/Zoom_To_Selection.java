@@ -14,6 +14,7 @@ import ij.WindowManager;
 import ij.gui.Roi;
 import ij.plugin.PlugIn;
 import imagingbook.common.ij.GuiTools;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import java.awt.Rectangle;
 
@@ -33,7 +34,7 @@ import java.awt.Rectangle;
  * @author WB
  * @version 2020/12/17
  */
-public class Zoom_To_Selection implements PlugIn {
+public class Zoom_To_Selection implements PlugIn, JavaDocHelp {
 	
 	private static boolean LogOutput = false;
 	

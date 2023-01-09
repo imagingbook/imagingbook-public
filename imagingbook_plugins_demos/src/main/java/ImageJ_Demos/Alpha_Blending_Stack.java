@@ -19,6 +19,7 @@ import ij.process.Blitter;
 import ij.process.ByteBlitter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This imageJ plugin demonstrates blending of two images
@@ -30,7 +31,7 @@ import ij.process.ImageProcessor;
  * @author WB
  *
  */
-public class Alpha_Blending_Stack implements PlugInFilter {
+public class Alpha_Blending_Stack implements PlugInFilter, JavaDocHelp {
 	static int nFrames = 10;
 
 	ImagePlus fgIm = null; // foreground image (chosen interactively)

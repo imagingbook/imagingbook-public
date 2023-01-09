@@ -16,6 +16,7 @@ import imagingbook.common.filter.nonlinear.VectorMedianFilter;
 import imagingbook.common.filter.nonlinear.VectorMedianFilter.Parameters;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.VectorNorm.NormType;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -32,7 +33,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/12/10
  */
-public class MedianFilter_Vector implements PlugInFilter {
+public class MedianFilter_Vector implements PlugInFilter, JavaDocHelp {
 
 	private static final Parameters params = new VectorMedianFilter.Parameters();
 	static {

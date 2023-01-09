@@ -22,6 +22,7 @@ import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.color.colorspace.XYZ65ColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.color.ColorSpace;
@@ -43,7 +44,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see XYZ65ColorSpace
  * @see imagingbook.common.image.ColorPack
  */
-public class Convert_To_Color_Stack implements PlugInFilter {
+public class Convert_To_Color_Stack implements PlugInFilter, JavaDocHelp {
 
 	private enum TargetSpaceType {
 		Lab, Luv, HLS, HSV, LinearRGB, XYZ;

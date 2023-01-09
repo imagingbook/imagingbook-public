@@ -17,6 +17,7 @@ import imagingbook.common.color.sets.BasicAwtColor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.Projection;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -54,7 +55,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @see imagingbook.common.image.Projection
  */
 @IjPluginName("Make Projections")
-public class Make_Projections implements PlugInFilter {
+public class Make_Projections implements PlugInFilter, JavaDocHelp {
 	
 	/** Size of horizontal/vertical projection bars. */
 	public static int ProjectionSize = 150;

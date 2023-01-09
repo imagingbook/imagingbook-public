@@ -17,6 +17,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.linear.GaussianKernel1D;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -36,69 +37,75 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/09/23
  * @see GaussianKernel1D#makeGaussKernel1D(double)
  */
-public class Unsharp_Masking_Filter implements PlugInFilter {
-	
-	/** Filter radius (sigma of Gaussian). */
-	public static double Radius = 1.0;
-	/** Amount of sharpening (1.0 = 100%). */
-	public static double Amount = 1.0;
+public class Unsharp_Masking_Filter implements PlugInFilter, JavaDocHelp {
 
-	/** Constructor, asks to open a predefined sample image if no other image is currently open. */
-	public Unsharp_Masking_Filter() {
-		if (noCurrentImage()) {
-			DialogUtils.askForSampleImage(GeneralSampleImage.Boats);
-		}
-	}
+    /**
+     * Filter radius (sigma of Gaussian).
+     */
+    public static double Radius = 1.0;
+    /**
+     * Amount of sharpening (1.0 = 100%).
+     */
+    public static double Amount = 1.0;
 
-	@Override
-	public int setup(String arg, ImagePlus im) {
-		return DOES_8G + DOES_STACKS; 
-	}
-	
-	@Override
-	public void run(ImageProcessor ip) {
-		if (!runDialog()) {
-			return;
-		}
-			
-		FloatProcessor I = ip.convertToFloatProcessor();
-		
-		//create a blurred version of the original
-		ImageProcessor J = I.duplicate();
-		float[] H = GaussianKernel1D.makeGaussKernel1D(Radius);
-		Convolver cv = new Convolver();
-		cv.setNormalize(true);
-		cv.convolve(J, H, 1, H.length);
-		cv.convolve(J, H, H.length, 1);
+    /**
+     * Constructor, asks to open a predefined sample image if no other image is currently open.
+     */
+    public Unsharp_Masking_Filter() {
+        if (noCurrentImage()) {
+            DialogUtils.askForSampleImage(GeneralSampleImage.Boats);
+        }
+    }
 
-		double a = Amount;
-		
-		I.multiply(1 + a);						// multiply the original image by (1+a)
-		J.multiply(a);							// multiply the mask image by a
-		I.copyBits(J, 0, 0, Blitter.SUBTRACT);	// subtract the weighted mask from the original
+    @Override
+    public int setup(String arg, ImagePlus im) {
+        return DOES_8G + DOES_STACKS;
+    }
 
-		//copy result back into original byte image
-		ip.insert(I.convertToByte(false), 0, 0);
-	}
-	
-	private boolean runDialog() {
-		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addNumericField("Radius (\u03C3 = 0.1 ... 20)", Radius, 1);
-		gd.addNumericField("Amount (a = 1 ... 500%)", Amount * 100, 0);
-		
-		gd.showDialog();
-		if (gd.wasCanceled()) {
-			return false;
-		}
-		
-		//same limits as in Photoshop:
-		Radius = gd.getNextNumber();
-		if (Radius > 20) Radius = 20;
-		if (Radius < 0.1) Radius = 0.1;
-		Amount = gd.getNextNumber() / 100;
-		if (Amount > 5.0) Amount = 5.0;
-		if (Amount < 0.01) Amount = 0.01;
-		return true;
-	}
+    @Override
+    public void run(ImageProcessor ip) {
+        if (!runDialog()) {
+            return;
+        }
+
+        FloatProcessor I = ip.convertToFloatProcessor();
+
+        // create a blurred version of the original
+        ImageProcessor J = I.duplicate();
+        float[] H = GaussianKernel1D.makeGaussKernel1D(Radius);
+        Convolver cv = new Convolver();
+        cv.setNormalize(true);
+        cv.convolve(J, H, 1, H.length);
+        cv.convolve(J, H, H.length, 1);
+
+        double a = Amount;
+
+        I.multiply(1 + a);                        // multiply the original image by (1+a)
+        J.multiply(a);                            // multiply the mask image by a
+        I.copyBits(J, 0, 0, Blitter.SUBTRACT);    // subtract the weighted mask from the original
+
+        // copy result back into original byte image
+        ip.insert(I.convertToByte(false), 0, 0);
+    }
+
+    private boolean runDialog() {
+        GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+        gd.addNumericField("Radius (\u03C3 = 0.1 ... 20)", Radius, 1);
+        gd.addNumericField("Amount (a = 1 ... 500%)", Amount * 100, 0);
+
+        gd.showDialog();
+        if (gd.wasCanceled()) {
+            return false;
+        }
+
+        // same limits as in Photoshop:
+        Radius = gd.getNextNumber();
+        if (Radius > 20) Radius = 20;
+        if (Radius < 0.1) Radius = 0.1;
+        Amount = gd.getNextNumber() / 100;
+        if (Amount > 5.0) Amount = 5.0;
+        if (Amount < 0.01) Amount = 0.01;
+        return true;
+    }
 
 }

@@ -26,6 +26,7 @@ import imagingbook.common.regions.BinaryRegionSegmentation;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.common.util.GenericProperties.PropertyKey;
 import imagingbook.common.util.tuples.Tuple2;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.kimia.Kimia1070;
 import imagingbook.sampleimages.kimia.KimiaCollage;
@@ -66,7 +67,7 @@ import java.util.List;
  * @version 2023/01/02
  * @see Flusser_Moments_Covariance_Matrix
  */
-public class Flusser_Moments_Matching_Demo implements PlugIn {
+public class Flusser_Moments_Matching_Demo implements PlugIn, JavaDocHelp {
 
     private static final ImageResource ir = KimiaCollage.ShapeCollage1;
     private static final int ReferenceBoundaryY = 130;    // everything above this position is a reference shape

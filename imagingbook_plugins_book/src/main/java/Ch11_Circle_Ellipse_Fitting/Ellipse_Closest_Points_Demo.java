@@ -20,6 +20,7 @@ import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import java.awt.Color;
 import java.awt.geom.Path2D;
@@ -47,7 +48,7 @@ import static java.lang.Math.PI;
  *
  * @author WB
  */
-public class Ellipse_Closest_Points_Demo implements PlugIn {
+public class Ellipse_Closest_Points_Demo implements PlugIn, JavaDocHelp {
 	
 	private static int W = 400;
 	private static int H = 400;

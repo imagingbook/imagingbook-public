@@ -24,6 +24,7 @@ import imagingbook.common.geometry.mappings.linear.Rotation2D;
 import imagingbook.common.geometry.mappings.linear.Translation2D;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ import java.util.List;
  * @see imagingbook.common.geometry.fitting.line.LinearRegressionFit
  * @see imagingbook.common.geometry.fitting.line.OrthogonalLineFitEigen
  */
-public class Line_Rotation_Demo implements PlugIn {
+public class Line_Rotation_Demo implements PlugIn, JavaDocHelp {
 
 	public static int W = 400;
 	public static int H = 400;

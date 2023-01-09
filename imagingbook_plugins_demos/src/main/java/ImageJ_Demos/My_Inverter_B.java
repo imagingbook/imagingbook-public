@@ -12,6 +12,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This plugin does the same as {@link My_Inverter_A} but is based on the {@link ij.plugin.PlugIn}
@@ -20,7 +21,7 @@ import ij.process.ImageProcessor;
  * is currently open and is of the proper type must be explicitly coded.
  * @author WB
  */
-public class My_Inverter_B implements PlugIn {
+public class My_Inverter_B implements PlugIn, JavaDocHelp {
 
 	public void run(String args) {
 		ImagePlus im = IJ.getImage(); // WindowManager.getCurrentImage();

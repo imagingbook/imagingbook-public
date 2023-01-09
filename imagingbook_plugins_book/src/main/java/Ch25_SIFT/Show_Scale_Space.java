@@ -17,6 +17,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -38,7 +39,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/11/23
  */
-public class Show_Scale_Space implements PlugInFilter {
+public class Show_Scale_Space implements PlugInFilter, JavaDocHelp {
 
 	private static final String HelpText = makeHtmlString(
 			"This ImageJ plugin visualizes the hierarchical scale space structures",
@@ -100,7 +101,7 @@ public class Show_Scale_Space implements PlugInFilter {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		gd.addHelp(HelpText);
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Show Gaussian scale space)", ShowGaussianScaleSpace);
 		gd.addCheckbox("Show DoG scale space)", ShowDoGScaleSpace);
 		
@@ -114,22 +115,5 @@ public class Show_Scale_Space implements PlugInFilter {
 		return true;
 	}
 
-	final static String JAVADOC_PATH = "https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook.plugins_book/";
-
-	private String getJavaDocUrl() {
-		this.getClass().getPackage();
-		return "https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook.plugins_book/Ch25_SIFT/Show_Scale_Space.html";
-	}
-
-	public static void main(String[] args) {
-		System.out.println("package = "  + Show_Scale_Space.class.getPackage().getName());
-		String name = Show_Scale_Space.class.getCanonicalName();
-		System.out.println("name = "  + name);
-		System.out.println("name = "  + name.replace('.', '/'));
-
-		String filename = name.replace('.', '/') + ".html";
-		String url = JAVADOC_PATH + filename;
-		System.out.println("url = "  + url);
-	}
 
 }

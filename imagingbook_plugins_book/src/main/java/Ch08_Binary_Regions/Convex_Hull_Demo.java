@@ -24,6 +24,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.core.plugin.IjPluginName;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;
@@ -48,7 +49,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/06/24
  */
 @IjPluginName("Convex Hull Demo")
-public class Convex_Hull_Demo implements PlugInFilter {
+public class Convex_Hull_Demo implements PlugInFilter, JavaDocHelp {
 	
 	/** Color of the convex hull outline. */
 	public static BasicAwtColor DrawingColor = BasicAwtColor.Blue;

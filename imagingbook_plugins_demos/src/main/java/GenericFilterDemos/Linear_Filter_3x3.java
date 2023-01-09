@@ -16,6 +16,7 @@ import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.filter.linear.LinearFilter;
 import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how to construct a generic linear filter
@@ -32,7 +33,7 @@ import imagingbook.common.util.progress.ProgressMonitor;
  * @see GenericFilter
  * @see LinearFilter
  */
-public class Linear_Filter_3x3 implements PlugInFilter {
+public class Linear_Filter_3x3 implements PlugInFilter, JavaDocHelp {
 	
 	private static float[][] H = {	// 3x3 smoothing kernel
 			{1, 2, 1},

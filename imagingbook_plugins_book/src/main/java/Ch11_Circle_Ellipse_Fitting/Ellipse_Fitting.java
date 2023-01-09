@@ -26,6 +26,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
+import imagingbook.core.plugin.JavaDocHelp;
 
 import java.util.Locale;
 
@@ -49,7 +50,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/10/03
  */
-public class Ellipse_Fitting implements PlugInFilter {
+public class Ellipse_Fitting implements PlugInFilter, JavaDocHelp {
 	
 	static EllipseFitAlgebraic.FitType AlgebraicFitMethod = FitzgibbonStable;
 	static EllipseFitGeometric.FitType GeometricFitMethod = DistanceBased;

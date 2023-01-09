@@ -18,6 +18,7 @@ import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.morphology.BinaryThinning;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -38,7 +39,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/12/07
  */
-public class Thinning_Demo implements PlugInFilter {
+public class Thinning_Demo implements PlugInFilter, JavaDocHelp {
 
 	private static boolean ShowStackAnimation = true;
 	private static boolean ShowIterationCount = false;

@@ -17,6 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.edges.EdgeDetector;
 import imagingbook.common.edges.MultiGradientEdgeDetector;
 import imagingbook.common.ij.DialogUtils;
+import imagingbook.core.plugin.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -35,7 +36,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/12/12
  * @see MultiGradientEdgeDetector
  */
-public class Color_Edges_DiZenzo implements PlugInFilter {
+public class Color_Edges_DiZenzo implements PlugInFilter, JavaDocHelp {
 
 	private static boolean ShowEdgeMagnitude = true;
 	private static boolean ShowEdgeOrientation = false;

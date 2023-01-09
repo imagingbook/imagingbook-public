@@ -12,6 +12,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import imagingbook.core.plugin.JavaDocHelp;
 
 /**
  * This ImageJ plugin modifies and re-displays the current image 
@@ -20,7 +21,7 @@ import ij.process.ImageProcessor;
  * @author WB
  *
  */
-public class UpdateAndDraw_Demo implements PlugInFilter {
+public class UpdateAndDraw_Demo implements PlugInFilter, JavaDocHelp {
 	
 	ImagePlus im;
 
