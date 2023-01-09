@@ -29,7 +29,7 @@ import java.util.Objects;
  *          ...
  *     }
  *     Foo f = new Foo();
- *     PropertyKey<double[]> key = new PropertyKey<>("UniqueName");
+ *     PropertyKey&lt;double[]&gt; key = new PropertyKey&lt;&gt;("UniqueName");
  *     double[] x = {1, 2, 3, 4};
  *     f.setProperty(key, x);
  *     ...
