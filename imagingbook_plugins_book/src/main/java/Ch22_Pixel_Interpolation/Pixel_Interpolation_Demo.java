@@ -18,7 +18,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.interpolation.InterpolationMethod;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * <p>

@@ -17,7 +17,7 @@ import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.PixelPack;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Random;

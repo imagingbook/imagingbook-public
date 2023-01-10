@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch15 Color Filters")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch15_Color_Filters;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

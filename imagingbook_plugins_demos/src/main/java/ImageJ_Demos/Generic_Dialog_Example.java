@@ -12,7 +12,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.gui.NewImage;
 import ij.plugin.PlugIn;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * This ImageJ plugin demonstrates the basic use of {@link GenericDialog} to create a new byte image.

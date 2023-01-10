@@ -12,7 +12,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how data can be communicated from one plugin to another. In this example, ANOTHER plugin

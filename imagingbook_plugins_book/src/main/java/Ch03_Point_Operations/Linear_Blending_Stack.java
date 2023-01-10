@@ -16,7 +16,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.Blitter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Locale;

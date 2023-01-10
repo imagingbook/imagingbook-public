@@ -28,7 +28,7 @@ import imagingbook.common.regions.RecursiveSegmentation;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.common.regions.SequentialSegmentation;
 import imagingbook.core.plugin.IjPluginName;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;

@@ -14,7 +14,7 @@ import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import imagingbook.common.ij.GuiTools;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * ImageJ plugin, resizes the window of the given image to fit an arbitrary, user-specified magnification factor. The

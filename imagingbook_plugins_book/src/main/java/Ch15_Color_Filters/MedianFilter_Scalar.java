@@ -15,7 +15,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.nonlinear.ScalarMedianFilter;
 import imagingbook.common.filter.nonlinear.ScalarMedianFilter.Parameters;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;

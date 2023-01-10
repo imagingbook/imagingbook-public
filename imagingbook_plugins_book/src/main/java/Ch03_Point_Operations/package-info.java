@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch03 Point Operations")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch03_Point_Operations;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

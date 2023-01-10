@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch17 Edge-Preserving Smoothing")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch17_EdgePreserving_Smoothing;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

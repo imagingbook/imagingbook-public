@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.NiblackThresholder;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.Parameters;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.RegionType;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;

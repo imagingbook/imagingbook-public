@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch06 Corner Detection")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch06_Corner_Detection;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

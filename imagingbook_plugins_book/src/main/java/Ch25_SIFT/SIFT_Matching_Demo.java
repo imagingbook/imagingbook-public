@@ -28,7 +28,7 @@ import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftMatch;
 import imagingbook.common.sift.SiftMatcher;
 import imagingbook.common.sift.SiftParameters;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -40,7 +40,6 @@ import java.awt.geom.QuadCurve2D;
 import java.util.List;
 
 import static imagingbook.common.color.sets.ColorEnumeration.getColors;
-import static imagingbook.common.ij.DialogUtils.makeHtmlString;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**

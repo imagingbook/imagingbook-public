@@ -11,20 +11,42 @@ package imagingbook.core.jdoc;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.MODULE;
 import static java.lang.annotation.ElementType.PACKAGE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * This module or package-level annotation is used to specify a base URL for automatic retrieval of JavaDoc
- * information. The URL is given WITH the module's name, e.g., for module {@code imagingbook_plugins_book} this is<br>
- * {@literal https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book}<br>
- * This information is used by {@link JavaDocUtils#getJavaDocUrl(Class)}.
+ * <p>
+ * This package-level annotation is used to specify a URL for automatic retrieval of JavaDoc information. The the
+ * supplied URL-string must include all address parts including the module part and must end with '/'.
+ * </p>
+ * <p>
+ * For example, for class '{@literal Compute_Histogram}' in package '{@literal Ch02_Histograms_Statistics}' and module
+ * '{@literal imagingbook_plugins_book}' the associated JavaDoc page is
+ * </p>
+ * <pre>
+ * https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/Ch02_Histograms_Statistics/Compute_Histogram.html</pre>
+ * i.e., in the format
+ * <pre>
+ *     https://BASEURL/MODULENAME/PACKAGENAME/CLASSNAME.htlm</pre>
+ * In this case, the URL-string to be supplied is
+ * <pre>
+ *     https://BASEURL/MODULENAME/</pre>
+ * that is,
+ * <pre>
+ *     https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/</pre>
+ * <p>
+ * The remaining parts (PACKAGENAME, CLASSNAME) are filled in automatically.
+ * </p>
+ * <p>
+ * This information is used by {@link JavaDocHelp#getJavaDocUrl(Class)}. Future version may include annotations at the
+ * MODULE and TYPE (class) level. Note that currently ImageJ does not fully support modules and cannot read the names
+ * and annotations of external modules.
+ * </p>
  *
- * @see JavaDocUtils#JAVADOC_BASE_URL
+ * @see JavaDocHelp
  */
 @Retention(RUNTIME)
-@Target({MODULE, PACKAGE})
+@Target({PACKAGE})
 public @interface JavaDocBaseUrl {
     public String value();
 }

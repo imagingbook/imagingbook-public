@@ -16,7 +16,7 @@ import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen;
 import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen.Parameters;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;

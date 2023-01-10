@@ -24,7 +24,7 @@ import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.Complex;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;

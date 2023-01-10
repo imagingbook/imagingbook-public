@@ -11,7 +11,7 @@ package ImageJ_Demos;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * This plugin demonstrates how to run another ImageJ "command" (plugin) from our own PlugIn using the IJ.run() method.

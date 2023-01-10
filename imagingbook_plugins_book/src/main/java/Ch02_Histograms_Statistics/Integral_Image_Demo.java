@@ -15,7 +15,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.IntegralImage;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;

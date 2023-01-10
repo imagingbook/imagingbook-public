@@ -18,7 +18,7 @@ import imagingbook.common.filter.edgepreserving.PeronaMalikFilterScalar;
 import imagingbook.common.filter.edgepreserving.PeronaMalikFilterVector;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;

@@ -13,7 +13,7 @@ import ij.ImagePlus;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import imagingbook.common.util.DirectoryWalker;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.io.File;
 import java.util.Collection;

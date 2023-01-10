@@ -20,7 +20,7 @@ import imagingbook.common.edges.CannyEdgeDetector.Parameters;
 import imagingbook.common.edges.EdgeTrace;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;

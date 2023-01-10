@@ -4,7 +4,6 @@ import imagingbook.core.jdoc.JavaDocBaseUrl;
  * A collection of ImageJ plugins referenced in various chapters of the associated image processing books as well as
  * additional demos and tools.
  */
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
 module imagingbook_plugins_book {
 	exports Ch02_Histograms_Statistics;
 	exports Ch03_Point_Operations;

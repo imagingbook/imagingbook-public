@@ -21,7 +21,7 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianFilterSeparable;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.color.ColorSpace;

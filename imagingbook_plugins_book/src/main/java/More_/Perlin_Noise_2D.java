@@ -19,7 +19,7 @@ import imagingbook.common.noise.hashing.Hash32Ward;
 import imagingbook.common.noise.hashing.HashFunction;
 import imagingbook.common.noise.hashing.HashPermute;
 import imagingbook.common.noise.perlin.PerlinNoiseGenerator2d;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * <p>

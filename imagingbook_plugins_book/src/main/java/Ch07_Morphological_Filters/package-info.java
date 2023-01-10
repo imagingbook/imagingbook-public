@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch07 Morphological Filters")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch07_Morphological_Filters;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

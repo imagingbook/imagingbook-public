@@ -20,7 +20,7 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Arithmetic;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;

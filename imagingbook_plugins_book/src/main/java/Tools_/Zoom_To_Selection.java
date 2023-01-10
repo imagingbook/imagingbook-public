@@ -14,7 +14,7 @@ import ij.WindowManager;
 import ij.gui.Roi;
 import ij.plugin.PlugIn;
 import imagingbook.common.ij.GuiTools;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.awt.Rectangle;
 

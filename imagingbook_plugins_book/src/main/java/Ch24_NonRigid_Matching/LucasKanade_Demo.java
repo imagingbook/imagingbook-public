@@ -29,7 +29,7 @@ import imagingbook.common.image.matching.lucaskanade.LucasKanadeForwardMatcher;
 import imagingbook.common.image.matching.lucaskanade.LucasKanadeInverseMatcher;
 import imagingbook.common.image.matching.lucaskanade.LucasKanadeMatcher;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;

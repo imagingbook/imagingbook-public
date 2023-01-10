@@ -11,7 +11,7 @@ package Tools_;
 import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import imagingbook.common.util.ClassUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 

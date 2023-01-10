@@ -18,7 +18,7 @@ import imagingbook.common.filter.linear.Kernel1D;
 import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.filter.linear.LinearFilter;
 import imagingbook.common.filter.linear.LinearFilterSeparable;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 
 /**

@@ -21,7 +21,7 @@ import imagingbook.common.color.quantize.KMeansClusteringQuantizer;
 import imagingbook.common.color.quantize.MedianCutQuantizer;
 import imagingbook.common.color.quantize.OctreeQuantizer;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Locale;

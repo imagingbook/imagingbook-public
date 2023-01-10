@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch26 MSER Features")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch26_MSER;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

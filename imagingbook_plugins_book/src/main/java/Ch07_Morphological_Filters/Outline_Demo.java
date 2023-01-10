@@ -18,7 +18,7 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.morphology.BinaryMorphologyOperator;
 import imagingbook.common.morphology.BinaryOutline;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;

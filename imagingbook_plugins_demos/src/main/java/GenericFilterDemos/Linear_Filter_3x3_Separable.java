@@ -14,7 +14,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.Kernel1D;
 import imagingbook.common.filter.linear.LinearFilterSeparable;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how to construct a separable linear filter using the classes {@link LinearFilterSeparable}

@@ -23,7 +23,7 @@ import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.image.LocalMinMaxFinder;
 import imagingbook.common.image.LocalMinMaxFinder.ExtremalPoint;
 import imagingbook.common.image.matching.CorrCoeffMatcher;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Font;

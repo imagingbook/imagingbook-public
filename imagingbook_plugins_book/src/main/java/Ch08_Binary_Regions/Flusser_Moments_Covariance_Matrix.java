@@ -21,7 +21,7 @@ import imagingbook.common.math.Statistics;
 import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.BinaryRegionSegmentation;
 import imagingbook.common.regions.RegionContourSegmentation;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.kimia.Kimia1070;
 import imagingbook.sampleimages.kimia.Kimia216;

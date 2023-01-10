@@ -15,7 +15,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
 import imagingbook.common.image.access.VectorAccessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * This plugin demonstrates the of class {@link ImageAccessor} for unified access to scalar and vector-valued images.

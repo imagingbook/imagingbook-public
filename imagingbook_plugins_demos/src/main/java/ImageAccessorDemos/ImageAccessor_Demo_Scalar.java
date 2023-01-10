@@ -13,7 +13,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * This plugin demonstrates the of class {@link ScalarAccessor} for unified access to scalar-valued images. The plugin

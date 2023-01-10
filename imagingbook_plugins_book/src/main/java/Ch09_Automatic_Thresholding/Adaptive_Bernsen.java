@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.AdaptiveThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder.Parameters;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;

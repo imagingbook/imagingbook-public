@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch025 SIFT Features")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch25_SIFT;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

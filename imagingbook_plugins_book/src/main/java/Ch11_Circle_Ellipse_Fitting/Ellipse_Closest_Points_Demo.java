@@ -20,7 +20,7 @@ import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.awt.Color;
 import java.awt.geom.Path2D;

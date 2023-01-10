@@ -23,7 +23,7 @@ import imagingbook.common.sift.SiftColors;
 import imagingbook.common.sift.SiftDescriptor;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.SiftParameters;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -31,7 +31,6 @@ import java.awt.Color;
 import java.util.List;
 
 import static imagingbook.common.color.sets.ColorEnumeration.getColors;
-import static imagingbook.common.ij.DialogUtils.makeHtmlString;
 
 /**
  * <p>

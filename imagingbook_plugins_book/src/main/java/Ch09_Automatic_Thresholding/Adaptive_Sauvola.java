@@ -16,7 +16,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.SauvolaThresholder;
 import imagingbook.common.threshold.adaptive.SauvolaThresholder.Parameters;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;

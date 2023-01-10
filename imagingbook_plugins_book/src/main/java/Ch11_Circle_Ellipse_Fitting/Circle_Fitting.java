@@ -25,7 +25,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.util.Locale;
 

@@ -19,7 +19,7 @@ import ij.process.Blitter;
 import ij.process.ByteBlitter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * This imageJ plugin demonstrates blending of two images and generating a stack of intermediate images. At least two

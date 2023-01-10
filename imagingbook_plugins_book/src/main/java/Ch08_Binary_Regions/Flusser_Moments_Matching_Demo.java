@@ -26,7 +26,7 @@ import imagingbook.common.regions.BinaryRegionSegmentation;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.common.util.GenericProperties.PropertyKey;
 import imagingbook.common.util.tuples.Tuple2;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.kimia.Kimia1070;
 import imagingbook.sampleimages.kimia.KimiaCollage;

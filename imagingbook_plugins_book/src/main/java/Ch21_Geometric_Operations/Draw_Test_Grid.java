@@ -12,7 +12,7 @@ import ij.ImagePlus;
 import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
 import imagingbook.common.image.ImageGraphics;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.awt.Font;
 import java.awt.Graphics2D;

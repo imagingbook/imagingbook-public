@@ -25,7 +25,7 @@ import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**

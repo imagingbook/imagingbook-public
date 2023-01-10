@@ -24,7 +24,7 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.RegionContourSegmentation;
 import imagingbook.common.util.GenericProperties.PropertyKey;
 import imagingbook.core.plugin.IjPluginName;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.geom.Line2D;

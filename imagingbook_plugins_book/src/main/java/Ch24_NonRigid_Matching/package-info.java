@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch24 Non-Rigid Matching")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch24_NonRigid_Matching;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

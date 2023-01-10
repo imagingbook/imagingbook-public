@@ -12,7 +12,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * This plugin does the same as {@link My_Inverter_A} but is based on the {@link ij.plugin.PlugIn} instead of the

@@ -17,11 +17,10 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
-import static imagingbook.common.ij.DialogUtils.makeHtmlString;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**

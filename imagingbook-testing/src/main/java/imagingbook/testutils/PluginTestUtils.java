@@ -8,25 +8,31 @@
  ******************************************************************************/
 package imagingbook.testutils;
 
-import ij.plugin.PlugIn;
-import ij.plugin.filter.PlugInFilter;
-import imagingbook.core.plugin.JavaDocHelp;
-
-import java.lang.reflect.InvocationTargetException;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class PluginTestUtils {
 
-    public static void CheckJavaDocHelp(Class<?> clazz) throws NoSuchMethodException, InvocationTargetException,
-            InstantiationException, IllegalAccessException {
-        if (isIjPlugin(clazz) && JavaDocHelp.class.isAssignableFrom(clazz)) {
-            JavaDocHelp plug = (JavaDocHelp) clazz.getDeclaredConstructor().newInstance();  // instantiate plugin
-            assertNotNull("null JavaDocUrl for plugin " + clazz.getSimpleName(), plug.getJavaDocUrl());
+    /**
+     * Checks if the specified class (if implementing {@link JavaDocHelp}) returns a useful URL when invoking
+     * {@link JavaDocHelp#getJavaDocUrl()} on it.
+     *
+     * @param clazz a class implementing {@link JavaDocHelp}
+     */
+    public static void CheckJavaDocHelp(Class<?> clazz)  {
+        if (JavaDocHelp.class.isAssignableFrom(clazz)) {
+            JavaDocHelp plug = null;  // instantiate plugin
+            try {
+                plug = (JavaDocHelp) clazz.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {  }
+            assertNotNull("could not instantiate plugin class " + clazz.getSimpleName(), plug);
+            String url = plug.getJavaDocUrl();
+            assertNotNull("null JavaDoc URL for plugin " + clazz.getSimpleName(), url);
+            assertTrue("invalid JavaDoc URL " + url, JavaDocHelp.isValidURL(url));
         }
     }
 
-    public static boolean isIjPlugin(Class<?> clazz) {
-        return PlugIn.class.isAssignableFrom(clazz) || PlugInFilter.class.isAssignableFrom(clazz);
-    }
+
 }

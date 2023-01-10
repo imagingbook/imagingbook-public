@@ -15,7 +15,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Random;

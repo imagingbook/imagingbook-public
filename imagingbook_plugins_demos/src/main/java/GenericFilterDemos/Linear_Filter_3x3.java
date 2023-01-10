@@ -16,7 +16,7 @@ import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.filter.linear.LinearFilter;
 import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * This ImageJ plugin shows how to construct a generic linear filter using the classes {@link LinearFilter} and

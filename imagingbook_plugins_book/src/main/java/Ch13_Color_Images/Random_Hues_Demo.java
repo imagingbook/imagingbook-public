@@ -13,7 +13,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import ij.process.ColorProcessor;
 import imagingbook.common.color.iterate.RandomHueGenerator;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.awt.Color;
 

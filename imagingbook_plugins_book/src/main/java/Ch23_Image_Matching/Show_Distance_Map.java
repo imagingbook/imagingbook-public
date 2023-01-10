@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.matching.DistanceTransform;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**

@@ -23,7 +23,7 @@ import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree;
 import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 

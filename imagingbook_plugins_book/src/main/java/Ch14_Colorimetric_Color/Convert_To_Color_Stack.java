@@ -22,7 +22,7 @@ import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.color.colorspace.XYZ65ColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.color.ColorSpace;

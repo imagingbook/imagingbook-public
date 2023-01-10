@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch12 RANSAC/Hough")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch12_Ransac_Hough;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;
