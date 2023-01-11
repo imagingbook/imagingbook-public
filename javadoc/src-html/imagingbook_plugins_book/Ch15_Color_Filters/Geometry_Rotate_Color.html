@@ -35,7 +35,7 @@
 <span class="source-line-no">022</span><span id="line-22">import imagingbook.common.image.ColorPack;</span>
 <span class="source-line-no">023</span><span id="line-23">import imagingbook.common.image.ImageMapper;</span>
 <span class="source-line-no">024</span><span id="line-24">import imagingbook.common.image.interpolation.InterpolationMethod;</span>
-<span class="source-line-no">025</span><span id="line-25">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">025</span><span id="line-25">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">027</span><span id="line-27"></span>
 <span class="source-line-no">028</span><span id="line-28">import java.awt.color.ColorSpace;</span>
@@ -83,7 +83,7 @@
 <span class="source-line-no">070</span><span id="line-70">    }</span>
 <span class="source-line-no">071</span><span id="line-71"></span>
 <span class="source-line-no">072</span><span id="line-72">    public void run(ImageProcessor ip) {</span>
-<span class="source-line-no">073</span><span id="line-73">        if (!getParameters()) </span>
+<span class="source-line-no">073</span><span id="line-73">        if (!runDialog())</span>
 <span class="source-line-no">074</span><span id="line-74">                return;</span>
 <span class="source-line-no">075</span><span id="line-75">        </span>
 <span class="source-line-no">076</span><span id="line-76">        ColorPack colStack = new ColorPack((ColorProcessor) ip);</span>
@@ -116,22 +116,23 @@
 <span class="source-line-no">103</span><span id="line-103">        result.show();</span>
 <span class="source-line-no">104</span><span id="line-104">    }</span>
 <span class="source-line-no">105</span><span id="line-105">    </span>
-<span class="source-line-no">106</span><span id="line-106">    boolean getParameters() {</span>
+<span class="source-line-no">106</span><span id="line-106">    boolean runDialog() {</span>
 <span class="source-line-no">107</span><span id="line-107">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">108</span><span id="line-108">                gd.addEnumChoice("Color space", CsType);</span>
-<span class="source-line-no">109</span><span id="line-109">                gd.addNumericField("Rotation angle", Angle, 0);</span>
-<span class="source-line-no">110</span><span id="line-110">                </span>
-<span class="source-line-no">111</span><span id="line-111">                gd.showDialog();</span>
-<span class="source-line-no">112</span><span id="line-112">                if(gd.wasCanceled())</span>
-<span class="source-line-no">113</span><span id="line-113">                        return false;</span>
-<span class="source-line-no">114</span><span id="line-114">                </span>
-<span class="source-line-no">115</span><span id="line-115">                CsType = gd.getNextEnumChoice(ColorStackType.class);</span>
-<span class="source-line-no">116</span><span id="line-116">                Angle = gd.getNextNumber();</span>
-<span class="source-line-no">117</span><span id="line-117">                return true;</span>
-<span class="source-line-no">118</span><span id="line-118">    }</span>
-<span class="source-line-no">119</span><span id="line-119"></span>
-<span class="source-line-no">120</span><span id="line-120">}</span>
-<span class="source-line-no">121</span><span id="line-121"></span>
+<span class="source-line-no">108</span><span id="line-108">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">109</span><span id="line-109">                gd.addEnumChoice("Color space", CsType);</span>
+<span class="source-line-no">110</span><span id="line-110">                gd.addNumericField("Rotation angle", Angle, 0);</span>
+<span class="source-line-no">111</span><span id="line-111">                </span>
+<span class="source-line-no">112</span><span id="line-112">                gd.showDialog();</span>
+<span class="source-line-no">113</span><span id="line-113">                if(gd.wasCanceled())</span>
+<span class="source-line-no">114</span><span id="line-114">                        return false;</span>
+<span class="source-line-no">115</span><span id="line-115">                </span>
+<span class="source-line-no">116</span><span id="line-116">                CsType = gd.getNextEnumChoice(ColorStackType.class);</span>
+<span class="source-line-no">117</span><span id="line-117">                Angle = gd.getNextNumber();</span>
+<span class="source-line-no">118</span><span id="line-118">                return true;</span>
+<span class="source-line-no">119</span><span id="line-119">    }</span>
+<span class="source-line-no">120</span><span id="line-120"></span>
+<span class="source-line-no">121</span><span id="line-121">}</span>
+<span class="source-line-no">122</span><span id="line-122"></span>
 
 
 

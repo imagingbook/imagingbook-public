@@ -24,22 +24,21 @@
 <span class="source-line-no">011</span><span id="line-11">import ij.IJ;</span>
 <span class="source-line-no">012</span><span id="line-12">import ij.ImagePlus;</span>
 <span class="source-line-no">013</span><span id="line-13">import ij.plugin.PlugIn;</span>
-<span class="source-line-no">014</span><span id="line-14">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">014</span><span id="line-14">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">015</span><span id="line-15"></span>
 <span class="source-line-no">016</span><span id="line-16">/**</span>
-<span class="source-line-no">017</span><span id="line-17"> * This plugin demonstrates how to run another ImageJ "command" (plugin)</span>
-<span class="source-line-no">018</span><span id="line-18"> * from our own PlugIn using the IJ.run() method.</span>
-<span class="source-line-no">019</span><span id="line-19"> * </span>
-<span class="source-line-no">020</span><span id="line-20"> * @author WB</span>
-<span class="source-line-no">021</span><span id="line-21"> */</span>
-<span class="source-line-no">022</span><span id="line-22">public class Run_Command_From_PlugIn implements PlugIn, JavaDocHelp {</span>
-<span class="source-line-no">023</span><span id="line-23">        </span>
-<span class="source-line-no">024</span><span id="line-24">    public void run(String args) {</span>
-<span class="source-line-no">025</span><span id="line-25">        ImagePlus im = IJ.getImage();</span>
-<span class="source-line-no">026</span><span id="line-26">        IJ.run(im, "Invert", "");       // run the "Invert" command on im</span>
-<span class="source-line-no">027</span><span id="line-27">        // IJ.run("Invert");            // alternatively, run "Invert" on the current image</span>
-<span class="source-line-no">028</span><span id="line-28">    }</span>
-<span class="source-line-no">029</span><span id="line-29">}</span>
+<span class="source-line-no">017</span><span id="line-17"> * This plugin demonstrates how to run another ImageJ "command" (plugin) from our own PlugIn using the IJ.run() method.</span>
+<span class="source-line-no">018</span><span id="line-18"> *</span>
+<span class="source-line-no">019</span><span id="line-19"> * @author WB</span>
+<span class="source-line-no">020</span><span id="line-20"> */</span>
+<span class="source-line-no">021</span><span id="line-21">public class Run_Command_From_PlugIn implements PlugIn, JavaDocHelp {</span>
+<span class="source-line-no">022</span><span id="line-22">        </span>
+<span class="source-line-no">023</span><span id="line-23">    public void run(String args) {</span>
+<span class="source-line-no">024</span><span id="line-24">        ImagePlus im = IJ.getImage();</span>
+<span class="source-line-no">025</span><span id="line-25">        IJ.run(im, "Invert", "");       // run the "Invert" command on im</span>
+<span class="source-line-no">026</span><span id="line-26">        // IJ.run("Invert");            // alternatively, run "Invert" on the current image</span>
+<span class="source-line-no">027</span><span id="line-27">    }</span>
+<span class="source-line-no">028</span><span id="line-28">}</span>
 
 
 

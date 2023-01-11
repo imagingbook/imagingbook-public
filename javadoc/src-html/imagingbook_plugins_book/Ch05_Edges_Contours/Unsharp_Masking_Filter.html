@@ -30,7 +30,7 @@
 <span class="source-line-no">017</span><span id="line-17">import ij.process.ImageProcessor;</span>
 <span class="source-line-no">018</span><span id="line-18">import imagingbook.common.filter.linear.GaussianKernel1D;</span>
 <span class="source-line-no">019</span><span id="line-19">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">020</span><span id="line-20">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">020</span><span id="line-20">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">022</span><span id="line-22"></span>
 <span class="source-line-no">023</span><span id="line-23">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
@@ -103,25 +103,26 @@
 <span class="source-line-no">090</span><span id="line-90"></span>
 <span class="source-line-no">091</span><span id="line-91">    private boolean runDialog() {</span>
 <span class="source-line-no">092</span><span id="line-92">        GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">093</span><span id="line-93">        gd.addNumericField("Radius (\u03C3 = 0.1 ... 20)", Radius, 1);</span>
-<span class="source-line-no">094</span><span id="line-94">        gd.addNumericField("Amount (a = 1 ... 500%)", Amount * 100, 0);</span>
-<span class="source-line-no">095</span><span id="line-95"></span>
-<span class="source-line-no">096</span><span id="line-96">        gd.showDialog();</span>
-<span class="source-line-no">097</span><span id="line-97">        if (gd.wasCanceled()) {</span>
-<span class="source-line-no">098</span><span id="line-98">            return false;</span>
-<span class="source-line-no">099</span><span id="line-99">        }</span>
-<span class="source-line-no">100</span><span id="line-100"></span>
-<span class="source-line-no">101</span><span id="line-101">        // same limits as in Photoshop:</span>
-<span class="source-line-no">102</span><span id="line-102">        Radius = gd.getNextNumber();</span>
-<span class="source-line-no">103</span><span id="line-103">        if (Radius &gt; 20) Radius = 20;</span>
-<span class="source-line-no">104</span><span id="line-104">        if (Radius &lt; 0.1) Radius = 0.1;</span>
-<span class="source-line-no">105</span><span id="line-105">        Amount = gd.getNextNumber() / 100;</span>
-<span class="source-line-no">106</span><span id="line-106">        if (Amount &gt; 5.0) Amount = 5.0;</span>
-<span class="source-line-no">107</span><span id="line-107">        if (Amount &lt; 0.01) Amount = 0.01;</span>
-<span class="source-line-no">108</span><span id="line-108">        return true;</span>
-<span class="source-line-no">109</span><span id="line-109">    }</span>
-<span class="source-line-no">110</span><span id="line-110"></span>
-<span class="source-line-no">111</span><span id="line-111">}</span>
+<span class="source-line-no">093</span><span id="line-93">        gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">094</span><span id="line-94">        gd.addNumericField("Radius (\u03C3 = 0.1 ... 20)", Radius, 1);</span>
+<span class="source-line-no">095</span><span id="line-95">        gd.addNumericField("Amount (a = 1 ... 500%)", Amount * 100, 0);</span>
+<span class="source-line-no">096</span><span id="line-96"></span>
+<span class="source-line-no">097</span><span id="line-97">        gd.showDialog();</span>
+<span class="source-line-no">098</span><span id="line-98">        if (gd.wasCanceled()) {</span>
+<span class="source-line-no">099</span><span id="line-99">            return false;</span>
+<span class="source-line-no">100</span><span id="line-100">        }</span>
+<span class="source-line-no">101</span><span id="line-101"></span>
+<span class="source-line-no">102</span><span id="line-102">        // same limits as in Photoshop:</span>
+<span class="source-line-no">103</span><span id="line-103">        Radius = gd.getNextNumber();</span>
+<span class="source-line-no">104</span><span id="line-104">        if (Radius &gt; 20) Radius = 20;</span>
+<span class="source-line-no">105</span><span id="line-105">        if (Radius &lt; 0.1) Radius = 0.1;</span>
+<span class="source-line-no">106</span><span id="line-106">        Amount = gd.getNextNumber() / 100;</span>
+<span class="source-line-no">107</span><span id="line-107">        if (Amount &gt; 5.0) Amount = 5.0;</span>
+<span class="source-line-no">108</span><span id="line-108">        if (Amount &lt; 0.01) Amount = 0.01;</span>
+<span class="source-line-no">109</span><span id="line-109">        return true;</span>
+<span class="source-line-no">110</span><span id="line-110">    }</span>
+<span class="source-line-no">111</span><span id="line-111"></span>
+<span class="source-line-no">112</span><span id="line-112">}</span>
 
 
 

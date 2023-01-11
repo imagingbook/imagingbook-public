@@ -37,7 +37,7 @@
 <span class="source-line-no">024</span><span id="line-24">import imagingbook.common.ij.overlay.ColoredStroke;</span>
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.common.math.Complex;</span>
-<span class="source-line-no">027</span><span id="line-27">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">027</span><span id="line-27">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">029</span><span id="line-29"></span>
 <span class="source-line-no">030</span><span id="line-30">import java.awt.Color;</span>
@@ -179,23 +179,24 @@
 <span class="source-line-no">166</span><span id="line-166">        </span>
 <span class="source-line-no">167</span><span id="line-167">        private boolean runDialog() {</span>
 <span class="source-line-no">168</span><span id="line-168">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">169</span><span id="line-169">                gd.addNumericField("Number of FD pairs (min. 1)", FourierCoefficientPairs, 0);</span>
-<span class="source-line-no">170</span><span id="line-170">                gd.addNumericField("Reconstruction Points", ReconstructionPoints, 0);</span>
-<span class="source-line-no">171</span><span id="line-171">                gd.addCheckbox("Show Original Contour", ShowOriginalContour);</span>
-<span class="source-line-no">172</span><span id="line-172">                gd.addCheckbox("Show Full Reconstruction", ShowFullReconstruction);</span>
-<span class="source-line-no">173</span><span id="line-173"></span>
-<span class="source-line-no">174</span><span id="line-174">                gd.showDialog();</span>
-<span class="source-line-no">175</span><span id="line-175">                if(gd.wasCanceled()) </span>
-<span class="source-line-no">176</span><span id="line-176">                        return false;</span>
-<span class="source-line-no">177</span><span id="line-177">                </span>
-<span class="source-line-no">178</span><span id="line-178">                FourierCoefficientPairs = Math.max(1, (int) gd.getNextNumber());</span>
-<span class="source-line-no">179</span><span id="line-179">                ReconstructionPoints = (int) gd.getNextNumber();</span>
-<span class="source-line-no">180</span><span id="line-180">                ShowOriginalContour = gd.getNextBoolean();</span>
-<span class="source-line-no">181</span><span id="line-181">                ShowFullReconstruction = gd.getNextBoolean();</span>
-<span class="source-line-no">182</span><span id="line-182">                return true;</span>
-<span class="source-line-no">183</span><span id="line-183">        }</span>
-<span class="source-line-no">184</span><span id="line-184">        </span>
-<span class="source-line-no">185</span><span id="line-185">}</span>
+<span class="source-line-no">169</span><span id="line-169">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">170</span><span id="line-170">                gd.addNumericField("Number of FD pairs (min. 1)", FourierCoefficientPairs, 0);</span>
+<span class="source-line-no">171</span><span id="line-171">                gd.addNumericField("Reconstruction Points", ReconstructionPoints, 0);</span>
+<span class="source-line-no">172</span><span id="line-172">                gd.addCheckbox("Show Original Contour", ShowOriginalContour);</span>
+<span class="source-line-no">173</span><span id="line-173">                gd.addCheckbox("Show Full Reconstruction", ShowFullReconstruction);</span>
+<span class="source-line-no">174</span><span id="line-174"></span>
+<span class="source-line-no">175</span><span id="line-175">                gd.showDialog();</span>
+<span class="source-line-no">176</span><span id="line-176">                if(gd.wasCanceled()) </span>
+<span class="source-line-no">177</span><span id="line-177">                        return false;</span>
+<span class="source-line-no">178</span><span id="line-178">                </span>
+<span class="source-line-no">179</span><span id="line-179">                FourierCoefficientPairs = Math.max(1, (int) gd.getNextNumber());</span>
+<span class="source-line-no">180</span><span id="line-180">                ReconstructionPoints = (int) gd.getNextNumber();</span>
+<span class="source-line-no">181</span><span id="line-181">                ShowOriginalContour = gd.getNextBoolean();</span>
+<span class="source-line-no">182</span><span id="line-182">                ShowFullReconstruction = gd.getNextBoolean();</span>
+<span class="source-line-no">183</span><span id="line-183">                return true;</span>
+<span class="source-line-no">184</span><span id="line-184">        }</span>
+<span class="source-line-no">185</span><span id="line-185">        </span>
+<span class="source-line-no">186</span><span id="line-186">}</span>
 
 
 

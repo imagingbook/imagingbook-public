@@ -28,7 +28,7 @@
 <span class="source-line-no">015</span><span id="line-15">import ij.process.ImageProcessor;</span>
 <span class="source-line-no">016</span><span id="line-16">import imagingbook.common.ij.DialogUtils;</span>
 <span class="source-line-no">017</span><span id="line-17">import imagingbook.common.math.Matrix;</span>
-<span class="source-line-no">018</span><span id="line-18">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">018</span><span id="line-18">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">019</span><span id="line-19">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">020</span><span id="line-20">import imagingbook.spectral.dct.Dct2d;</span>
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.spectral.dct.Dct2dDirect;</span>
@@ -143,23 +143,24 @@
 <span class="source-line-no">130</span><span id="line-130"></span>
 <span class="source-line-no">131</span><span id="line-131">        private boolean runDialog() {</span>
 <span class="source-line-no">132</span><span id="line-132">                GenericDialog gd = new GenericDialog(getClass().getSimpleName());</span>
-<span class="source-line-no">133</span><span id="line-133">                gd.addCheckbox("Use fast transform", UseFastMode);</span>
-<span class="source-line-no">134</span><span id="line-134">                gd.addCheckbox("Use double precision", UseDoublePrecision);</span>
-<span class="source-line-no">135</span><span id="line-135">                gd.addCheckbox("Show absolute/log spectrum", ShowLogSpectrum);</span>
-<span class="source-line-no">136</span><span id="line-136">                gd.addCheckbox("Reconstruct the input image", ReconstructImage);</span>
-<span class="source-line-no">137</span><span id="line-137">                </span>
-<span class="source-line-no">138</span><span id="line-138">                gd.showDialog(); </span>
-<span class="source-line-no">139</span><span id="line-139">                if (gd.wasCanceled()) </span>
-<span class="source-line-no">140</span><span id="line-140">                        return false;</span>
-<span class="source-line-no">141</span><span id="line-141">                </span>
-<span class="source-line-no">142</span><span id="line-142">                UseFastMode = gd.getNextBoolean();</span>
-<span class="source-line-no">143</span><span id="line-143">                UseDoublePrecision = gd.getNextBoolean();</span>
-<span class="source-line-no">144</span><span id="line-144">                ShowLogSpectrum = gd.getNextBoolean();</span>
-<span class="source-line-no">145</span><span id="line-145">                ReconstructImage = gd.getNextBoolean();</span>
-<span class="source-line-no">146</span><span id="line-146">                return true;</span>
-<span class="source-line-no">147</span><span id="line-147">        }</span>
-<span class="source-line-no">148</span><span id="line-148"></span>
-<span class="source-line-no">149</span><span id="line-149">}</span>
+<span class="source-line-no">133</span><span id="line-133">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">134</span><span id="line-134">                gd.addCheckbox("Use fast transform", UseFastMode);</span>
+<span class="source-line-no">135</span><span id="line-135">                gd.addCheckbox("Use double precision", UseDoublePrecision);</span>
+<span class="source-line-no">136</span><span id="line-136">                gd.addCheckbox("Show absolute/log spectrum", ShowLogSpectrum);</span>
+<span class="source-line-no">137</span><span id="line-137">                gd.addCheckbox("Reconstruct the input image", ReconstructImage);</span>
+<span class="source-line-no">138</span><span id="line-138">                </span>
+<span class="source-line-no">139</span><span id="line-139">                gd.showDialog(); </span>
+<span class="source-line-no">140</span><span id="line-140">                if (gd.wasCanceled()) </span>
+<span class="source-line-no">141</span><span id="line-141">                        return false;</span>
+<span class="source-line-no">142</span><span id="line-142">                </span>
+<span class="source-line-no">143</span><span id="line-143">                UseFastMode = gd.getNextBoolean();</span>
+<span class="source-line-no">144</span><span id="line-144">                UseDoublePrecision = gd.getNextBoolean();</span>
+<span class="source-line-no">145</span><span id="line-145">                ShowLogSpectrum = gd.getNextBoolean();</span>
+<span class="source-line-no">146</span><span id="line-146">                ReconstructImage = gd.getNextBoolean();</span>
+<span class="source-line-no">147</span><span id="line-147">                return true;</span>
+<span class="source-line-no">148</span><span id="line-148">        }</span>
+<span class="source-line-no">149</span><span id="line-149"></span>
+<span class="source-line-no">150</span><span id="line-150">}</span>
 
 
 

@@ -33,7 +33,7 @@
 <span class="source-line-no">020</span><span id="line-20">import imagingbook.common.ij.DialogUtils;</span>
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.common.ij.overlay.ColoredStroke;</span>
 <span class="source-line-no">022</span><span id="line-22">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
-<span class="source-line-no">023</span><span id="line-23">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">023</span><span id="line-23">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">024</span><span id="line-24"></span>
 <span class="source-line-no">025</span><span id="line-25">import java.awt.Color;</span>
 <span class="source-line-no">026</span><span id="line-26">import java.awt.geom.Path2D;</span>
@@ -126,7 +126,7 @@
 <span class="source-line-no">113</span><span id="line-113"></span>
 <span class="source-line-no">114</span><span id="line-114">        private boolean runDialog() {</span>
 <span class="source-line-no">115</span><span id="line-115">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">116</span><span id="line-116">                gd.addHelp(getJavaDocUrl());</span>
 <span class="source-line-no">117</span><span id="line-117">                gd.addMessage(DialogUtils.formatText(50,</span>
 <span class="source-line-no">118</span><span id="line-118">                                "This plugin creates a new image with an ellipse and a",</span>
 <span class="source-line-no">119</span><span id="line-119">                                "set of random points. For each point, the closest (contact)",</span>

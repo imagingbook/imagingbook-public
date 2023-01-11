@@ -29,7 +29,7 @@
 <span class="source-line-no">016</span><span id="line-16">import imagingbook.common.histogram.HistogramPlot;</span>
 <span class="source-line-no">017</span><span id="line-17">import imagingbook.common.histogram.HistogramUtils;</span>
 <span class="source-line-no">018</span><span id="line-18">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">019</span><span id="line-19">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">019</span><span id="line-19">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">020</span><span id="line-20">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">021</span><span id="line-21"></span>
 <span class="source-line-no">022</span><span id="line-22">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
@@ -122,7 +122,7 @@
 <span class="source-line-no">109</span><span id="line-109"></span>
 <span class="source-line-no">110</span><span id="line-110">        private boolean runDialog() {</span>
 <span class="source-line-no">111</span><span id="line-111">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">112</span><span id="line-112"></span>
+<span class="source-line-no">112</span><span id="line-112">                gd.addHelp(getJavaDocUrl());</span>
 <span class="source-line-no">113</span><span id="line-113">                gd.addNumericField("Mean (μ)", Mean, 2);</span>
 <span class="source-line-no">114</span><span id="line-114">                gd.addNumericField("Std deviation (σ)", StdDev, 2);</span>
 <span class="source-line-no">115</span><span id="line-115"></span>

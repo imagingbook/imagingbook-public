@@ -29,7 +29,7 @@
 <span class="source-line-no">016</span><span id="line-16">import ij.process.Blitter;</span>
 <span class="source-line-no">017</span><span id="line-17">import ij.process.ImageProcessor;</span>
 <span class="source-line-no">018</span><span id="line-18">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">019</span><span id="line-19">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">019</span><span id="line-19">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">020</span><span id="line-20">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">021</span><span id="line-21"></span>
 <span class="source-line-no">022</span><span id="line-22">import java.util.Locale;</span>
@@ -107,17 +107,18 @@
 <span class="source-line-no">094</span><span id="line-94"></span>
 <span class="source-line-no">095</span><span id="line-95">        private boolean runDialog() {</span>
 <span class="source-line-no">096</span><span id="line-96">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">097</span><span id="line-97">                gd.addNumericField("Step count (N &gt; 0)", StepCount, 0);</span>
-<span class="source-line-no">098</span><span id="line-98"></span>
-<span class="source-line-no">099</span><span id="line-99">                gd.showDialog();</span>
-<span class="source-line-no">100</span><span id="line-100">                if (gd.wasCanceled()) {</span>
-<span class="source-line-no">101</span><span id="line-101">                        return false;</span>
-<span class="source-line-no">102</span><span id="line-102">                }</span>
-<span class="source-line-no">103</span><span id="line-103"></span>
-<span class="source-line-no">104</span><span id="line-104">                StepCount = (int) gd.getNextNumber();</span>
-<span class="source-line-no">105</span><span id="line-105">                return true;</span>
-<span class="source-line-no">106</span><span id="line-106">        }</span>
-<span class="source-line-no">107</span><span id="line-107">}</span>
+<span class="source-line-no">097</span><span id="line-97">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">098</span><span id="line-98">                gd.addNumericField("Step count (N &gt; 0)", StepCount, 0);</span>
+<span class="source-line-no">099</span><span id="line-99"></span>
+<span class="source-line-no">100</span><span id="line-100">                gd.showDialog();</span>
+<span class="source-line-no">101</span><span id="line-101">                if (gd.wasCanceled()) {</span>
+<span class="source-line-no">102</span><span id="line-102">                        return false;</span>
+<span class="source-line-no">103</span><span id="line-103">                }</span>
+<span class="source-line-no">104</span><span id="line-104"></span>
+<span class="source-line-no">105</span><span id="line-105">                StepCount = (int) gd.getNextNumber();</span>
+<span class="source-line-no">106</span><span id="line-106">                return true;</span>
+<span class="source-line-no">107</span><span id="line-107">        }</span>
+<span class="source-line-no">108</span><span id="line-108">}</span>
 
 
 

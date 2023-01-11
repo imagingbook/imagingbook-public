@@ -37,7 +37,7 @@
 <span class="source-line-no">024</span><span id="line-24">import imagingbook.common.regions.BinaryRegion;</span>
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.common.regions.RegionContourSegmentation;</span>
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.core.plugin.IjPluginName;</span>
-<span class="source-line-no">027</span><span id="line-27">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">027</span><span id="line-27">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">029</span><span id="line-29"></span>
 <span class="source-line-no">030</span><span id="line-30">import java.awt.Color;</span>
@@ -201,30 +201,31 @@
 <span class="source-line-no">188</span><span id="line-188">        </span>
 <span class="source-line-no">189</span><span id="line-189">        private boolean runDialog() {</span>
 <span class="source-line-no">190</span><span id="line-190">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">191</span><span id="line-191">                gd.addEnumChoice("Neighborhood type", Neighborhood);</span>
-<span class="source-line-no">192</span><span id="line-192">                gd.addNumericField("Min. region size (pixels)", MinRegionSize, 0);</span>
-<span class="source-line-no">193</span><span id="line-193">                gd.addNumericField("Max. eccentricity", MaxEccentricity, 0);</span>
-<span class="source-line-no">194</span><span id="line-194">                gd.addNumericField("Axis scale", AxisEccentricityScale, 1);</span>
-<span class="source-line-no">195</span><span id="line-195">                gd.addCheckbox("Show center marks", ShowCenterMark);</span>
-<span class="source-line-no">196</span><span id="line-196">                gd.addCheckbox("Show major axes", ShowMajorAxis);</span>
-<span class="source-line-no">197</span><span id="line-197">                gd.addCheckbox("Show ellipses", ShowEllipse);</span>
-<span class="source-line-no">198</span><span id="line-198">                                </span>
-<span class="source-line-no">199</span><span id="line-199">                gd.showDialog();</span>
-<span class="source-line-no">200</span><span id="line-200">                if (gd.wasCanceled())</span>
-<span class="source-line-no">201</span><span id="line-201">                        return false;</span>
-<span class="source-line-no">202</span><span id="line-202"></span>
-<span class="source-line-no">203</span><span id="line-203">                Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);</span>
-<span class="source-line-no">204</span><span id="line-204">                MinRegionSize = (int) gd.getNextNumber();</span>
-<span class="source-line-no">205</span><span id="line-205">                MaxEccentricity = gd.getNextNumber();</span>
-<span class="source-line-no">206</span><span id="line-206">                AxisEccentricityScale = gd.getNextNumber();</span>
-<span class="source-line-no">207</span><span id="line-207">                </span>
-<span class="source-line-no">208</span><span id="line-208">                ShowCenterMark = gd.getNextBoolean();</span>
-<span class="source-line-no">209</span><span id="line-209">                ShowMajorAxis = gd.getNextBoolean();</span>
-<span class="source-line-no">210</span><span id="line-210">                ShowEllipse = gd.getNextBoolean();</span>
-<span class="source-line-no">211</span><span id="line-211">                return true;</span>
-<span class="source-line-no">212</span><span id="line-212">        }</span>
-<span class="source-line-no">213</span><span id="line-213"></span>
-<span class="source-line-no">214</span><span id="line-214">}</span>
+<span class="source-line-no">191</span><span id="line-191">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">192</span><span id="line-192">                gd.addEnumChoice("Neighborhood type", Neighborhood);</span>
+<span class="source-line-no">193</span><span id="line-193">                gd.addNumericField("Min. region size (pixels)", MinRegionSize, 0);</span>
+<span class="source-line-no">194</span><span id="line-194">                gd.addNumericField("Max. eccentricity", MaxEccentricity, 0);</span>
+<span class="source-line-no">195</span><span id="line-195">                gd.addNumericField("Axis scale", AxisEccentricityScale, 1);</span>
+<span class="source-line-no">196</span><span id="line-196">                gd.addCheckbox("Show center marks", ShowCenterMark);</span>
+<span class="source-line-no">197</span><span id="line-197">                gd.addCheckbox("Show major axes", ShowMajorAxis);</span>
+<span class="source-line-no">198</span><span id="line-198">                gd.addCheckbox("Show ellipses", ShowEllipse);</span>
+<span class="source-line-no">199</span><span id="line-199">                                </span>
+<span class="source-line-no">200</span><span id="line-200">                gd.showDialog();</span>
+<span class="source-line-no">201</span><span id="line-201">                if (gd.wasCanceled())</span>
+<span class="source-line-no">202</span><span id="line-202">                        return false;</span>
+<span class="source-line-no">203</span><span id="line-203"></span>
+<span class="source-line-no">204</span><span id="line-204">                Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);</span>
+<span class="source-line-no">205</span><span id="line-205">                MinRegionSize = (int) gd.getNextNumber();</span>
+<span class="source-line-no">206</span><span id="line-206">                MaxEccentricity = gd.getNextNumber();</span>
+<span class="source-line-no">207</span><span id="line-207">                AxisEccentricityScale = gd.getNextNumber();</span>
+<span class="source-line-no">208</span><span id="line-208">                </span>
+<span class="source-line-no">209</span><span id="line-209">                ShowCenterMark = gd.getNextBoolean();</span>
+<span class="source-line-no">210</span><span id="line-210">                ShowMajorAxis = gd.getNextBoolean();</span>
+<span class="source-line-no">211</span><span id="line-211">                ShowEllipse = gd.getNextBoolean();</span>
+<span class="source-line-no">212</span><span id="line-212">                return true;</span>
+<span class="source-line-no">213</span><span id="line-213">        }</span>
+<span class="source-line-no">214</span><span id="line-214"></span>
+<span class="source-line-no">215</span><span id="line-215">}</span>
 
 
 

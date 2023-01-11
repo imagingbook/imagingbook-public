@@ -39,7 +39,7 @@
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.common.regions.Contour;</span>
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.common.regions.ContourTracer;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.common.regions.RegionContourSegmentation;</span>
-<span class="source-line-no">029</span><span id="line-29">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">029</span><span id="line-29">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">030</span><span id="line-30">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">031</span><span id="line-31"></span>
 <span class="source-line-no">032</span><span id="line-32">import java.awt.Color;</span>
@@ -251,39 +251,40 @@
 <span class="source-line-no">238</span><span id="line-238">        </span>
 <span class="source-line-no">239</span><span id="line-239">        private boolean runDialog() {</span>
 <span class="source-line-no">240</span><span id="line-240">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">241</span><span id="line-241">                gd.addMessage("Fourier decomposition parameters:");</span>
-<span class="source-line-no">242</span><span id="line-242">                gd.addNumericField("Number of FD pairs (min. 1)", FourierCoefficientPairs, 0);</span>
-<span class="source-line-no">243</span><span id="line-243">                gd.addNumericField("Reconstruction Points", ReconstructionPoints, 0);</span>
-<span class="source-line-no">244</span><span id="line-244">                </span>
-<span class="source-line-no">245</span><span id="line-245">                gd.addMessage("Animation parameters:");</span>
-<span class="source-line-no">246</span><span id="line-246">                gd.addNumericField("Steps per full revolution", StepsPerFullRevolution, 0);</span>
-<span class="source-line-no">247</span><span id="line-247">                gd.addNumericField("Steps per second", StepsPerSecond, 0);</span>
-<span class="source-line-no">248</span><span id="line-248">                </span>
-<span class="source-line-no">249</span><span id="line-249">                gd.addCheckbox("Show Original Contour", ShowOriginalContour);</span>
-<span class="source-line-no">250</span><span id="line-250">                gd.addCheckbox("Show Full Reconstruction", ShowFullReconstruction);</span>
-<span class="source-line-no">251</span><span id="line-251">                gd.addCheckbox("Show Ellipse Tree", ShowEllipseTree);</span>
-<span class="source-line-no">252</span><span id="line-252">                gd.addCheckbox("Show Path Parameter (t)", ShowPathParameter);</span>
-<span class="source-line-no">253</span><span id="line-253">                </span>
-<span class="source-line-no">254</span><span id="line-254">                gd.showDialog();</span>
-<span class="source-line-no">255</span><span id="line-255">                if(gd.wasCanceled()) </span>
-<span class="source-line-no">256</span><span id="line-256">                        return false;</span>
-<span class="source-line-no">257</span><span id="line-257">                </span>
-<span class="source-line-no">258</span><span id="line-258">                FourierCoefficientPairs = Math.max(1, (int) gd.getNextNumber());</span>
-<span class="source-line-no">259</span><span id="line-259">                ReconstructionPoints = (int) gd.getNextNumber();</span>
-<span class="source-line-no">260</span><span id="line-260">                </span>
-<span class="source-line-no">261</span><span id="line-261">                StepsPerFullRevolution = (int) gd.getNextNumber();</span>
-<span class="source-line-no">262</span><span id="line-262">                StepsPerSecond = (int) gd.getNextNumber();</span>
-<span class="source-line-no">263</span><span id="line-263">                </span>
-<span class="source-line-no">264</span><span id="line-264">                ShowOriginalContour = gd.getNextBoolean();</span>
-<span class="source-line-no">265</span><span id="line-265">                ShowFullReconstruction = gd.getNextBoolean();</span>
-<span class="source-line-no">266</span><span id="line-266">                ShowEllipseTree = gd.getNextBoolean();</span>
-<span class="source-line-no">267</span><span id="line-267">                ShowPathParameter = gd.getNextBoolean();</span>
-<span class="source-line-no">268</span><span id="line-268">                </span>
-<span class="source-line-no">269</span><span id="line-269">                gd.addMessage("Press ESC or close window to stop animation.");</span>
-<span class="source-line-no">270</span><span id="line-270">                return true;</span>
-<span class="source-line-no">271</span><span id="line-271">        }</span>
-<span class="source-line-no">272</span><span id="line-272">        </span>
-<span class="source-line-no">273</span><span id="line-273">}</span>
+<span class="source-line-no">241</span><span id="line-241">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">242</span><span id="line-242">                gd.addMessage("Fourier decomposition parameters:");</span>
+<span class="source-line-no">243</span><span id="line-243">                gd.addNumericField("Number of FD pairs (min. 1)", FourierCoefficientPairs, 0);</span>
+<span class="source-line-no">244</span><span id="line-244">                gd.addNumericField("Reconstruction Points", ReconstructionPoints, 0);</span>
+<span class="source-line-no">245</span><span id="line-245">                </span>
+<span class="source-line-no">246</span><span id="line-246">                gd.addMessage("Animation parameters:");</span>
+<span class="source-line-no">247</span><span id="line-247">                gd.addNumericField("Steps per full revolution", StepsPerFullRevolution, 0);</span>
+<span class="source-line-no">248</span><span id="line-248">                gd.addNumericField("Steps per second", StepsPerSecond, 0);</span>
+<span class="source-line-no">249</span><span id="line-249">                </span>
+<span class="source-line-no">250</span><span id="line-250">                gd.addCheckbox("Show Original Contour", ShowOriginalContour);</span>
+<span class="source-line-no">251</span><span id="line-251">                gd.addCheckbox("Show Full Reconstruction", ShowFullReconstruction);</span>
+<span class="source-line-no">252</span><span id="line-252">                gd.addCheckbox("Show Ellipse Tree", ShowEllipseTree);</span>
+<span class="source-line-no">253</span><span id="line-253">                gd.addCheckbox("Show Path Parameter (t)", ShowPathParameter);</span>
+<span class="source-line-no">254</span><span id="line-254">                </span>
+<span class="source-line-no">255</span><span id="line-255">                gd.showDialog();</span>
+<span class="source-line-no">256</span><span id="line-256">                if(gd.wasCanceled()) </span>
+<span class="source-line-no">257</span><span id="line-257">                        return false;</span>
+<span class="source-line-no">258</span><span id="line-258">                </span>
+<span class="source-line-no">259</span><span id="line-259">                FourierCoefficientPairs = Math.max(1, (int) gd.getNextNumber());</span>
+<span class="source-line-no">260</span><span id="line-260">                ReconstructionPoints = (int) gd.getNextNumber();</span>
+<span class="source-line-no">261</span><span id="line-261">                </span>
+<span class="source-line-no">262</span><span id="line-262">                StepsPerFullRevolution = (int) gd.getNextNumber();</span>
+<span class="source-line-no">263</span><span id="line-263">                StepsPerSecond = (int) gd.getNextNumber();</span>
+<span class="source-line-no">264</span><span id="line-264">                </span>
+<span class="source-line-no">265</span><span id="line-265">                ShowOriginalContour = gd.getNextBoolean();</span>
+<span class="source-line-no">266</span><span id="line-266">                ShowFullReconstruction = gd.getNextBoolean();</span>
+<span class="source-line-no">267</span><span id="line-267">                ShowEllipseTree = gd.getNextBoolean();</span>
+<span class="source-line-no">268</span><span id="line-268">                ShowPathParameter = gd.getNextBoolean();</span>
+<span class="source-line-no">269</span><span id="line-269">                </span>
+<span class="source-line-no">270</span><span id="line-270">                gd.addMessage("Press ESC or close window to stop animation.");</span>
+<span class="source-line-no">271</span><span id="line-271">                return true;</span>
+<span class="source-line-no">272</span><span id="line-272">        }</span>
+<span class="source-line-no">273</span><span id="line-273">        </span>
+<span class="source-line-no">274</span><span id="line-274">}</span>
 
 
 

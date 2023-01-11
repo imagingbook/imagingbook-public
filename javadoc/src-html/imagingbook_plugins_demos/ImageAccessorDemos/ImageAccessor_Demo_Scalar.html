@@ -26,42 +26,37 @@
 <span class="source-line-no">013</span><span id="line-13">import ij.process.ImageProcessor;</span>
 <span class="source-line-no">014</span><span id="line-14">import imagingbook.common.image.access.ImageAccessor;</span>
 <span class="source-line-no">015</span><span id="line-15">import imagingbook.common.image.access.ScalarAccessor;</span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">017</span><span id="line-17"></span>
 <span class="source-line-no">018</span><span id="line-18">/**</span>
-<span class="source-line-no">019</span><span id="line-19"> * This plugin demonstrates the of class {@link ScalarAccessor} for</span>
-<span class="source-line-no">020</span><span id="line-20"> * unified access to scalar-valued images.</span>
-<span class="source-line-no">021</span><span id="line-21"> * The plugin adds 20 brightness units to each pixel of the active image. </span>
-<span class="source-line-no">022</span><span id="line-22"> * It can be applied to any scalar image type.</span>
-<span class="source-line-no">023</span><span id="line-23"> * TODO: move to other package</span>
-<span class="source-line-no">024</span><span id="line-24"> * </span>
-<span class="source-line-no">025</span><span id="line-25"> * @author WB</span>
-<span class="source-line-no">026</span><span id="line-26"> *</span>
-<span class="source-line-no">027</span><span id="line-27"> * @see ImageAccessor</span>
-<span class="source-line-no">028</span><span id="line-28"> * @see ScalarAccessor</span>
-<span class="source-line-no">029</span><span id="line-29"> *</span>
-<span class="source-line-no">030</span><span id="line-30"> */</span>
-<span class="source-line-no">031</span><span id="line-31">public class ImageAccessor_Demo_Scalar implements PlugInFilter, JavaDocHelp {</span>
-<span class="source-line-no">032</span><span id="line-32"></span>
-<span class="source-line-no">033</span><span id="line-33">        public int setup(String arg, ImagePlus img) {</span>
-<span class="source-line-no">034</span><span id="line-34">                return DOES_8G + DOES_16 + DOES_32;</span>
-<span class="source-line-no">035</span><span id="line-35">        }</span>
-<span class="source-line-no">036</span><span id="line-36"></span>
-<span class="source-line-no">037</span><span id="line-37">        public void run(ImageProcessor ip) {</span>
-<span class="source-line-no">038</span><span id="line-38">                final int width = ip.getWidth();</span>
-<span class="source-line-no">039</span><span id="line-39">                final int height = ip.getHeight();</span>
-<span class="source-line-no">040</span><span id="line-40">                </span>
-<span class="source-line-no">041</span><span id="line-41">                ScalarAccessor ia = ScalarAccessor.create(ip, null, null);</span>
-<span class="source-line-no">042</span><span id="line-42">                </span>
-<span class="source-line-no">043</span><span id="line-43">                for (int u = 0; u &lt; width; u++) {</span>
-<span class="source-line-no">044</span><span id="line-44">                        for (int v = 0; v &lt; height; v++) {</span>
-<span class="source-line-no">045</span><span id="line-45">                                float val = ia.getVal(u, v);            // get a single value (float)</span>
-<span class="source-line-no">046</span><span id="line-46">                                ia.setVal(u, v, val  + 20);</span>
-<span class="source-line-no">047</span><span id="line-47">                        }</span>
-<span class="source-line-no">048</span><span id="line-48">                }</span>
-<span class="source-line-no">049</span><span id="line-49">        }</span>
-<span class="source-line-no">050</span><span id="line-50"></span>
-<span class="source-line-no">051</span><span id="line-51">}</span>
+<span class="source-line-no">019</span><span id="line-19"> * This plugin demonstrates the of class {@link ScalarAccessor} for unified access to scalar-valued images. The plugin</span>
+<span class="source-line-no">020</span><span id="line-20"> * adds 20 brightness units to each pixel of the active image. It can be applied to any scalar image type.</span>
+<span class="source-line-no">021</span><span id="line-21"> *</span>
+<span class="source-line-no">022</span><span id="line-22"> * @author WB</span>
+<span class="source-line-no">023</span><span id="line-23"> * @see ImageAccessor</span>
+<span class="source-line-no">024</span><span id="line-24"> * @see ScalarAccessor</span>
+<span class="source-line-no">025</span><span id="line-25"> */</span>
+<span class="source-line-no">026</span><span id="line-26">public class ImageAccessor_Demo_Scalar implements PlugInFilter, JavaDocHelp {</span>
+<span class="source-line-no">027</span><span id="line-27"></span>
+<span class="source-line-no">028</span><span id="line-28">        public int setup(String arg, ImagePlus img) {</span>
+<span class="source-line-no">029</span><span id="line-29">                return DOES_8G + DOES_16 + DOES_32;</span>
+<span class="source-line-no">030</span><span id="line-30">        }</span>
+<span class="source-line-no">031</span><span id="line-31"></span>
+<span class="source-line-no">032</span><span id="line-32">        public void run(ImageProcessor ip) {</span>
+<span class="source-line-no">033</span><span id="line-33">                final int width = ip.getWidth();</span>
+<span class="source-line-no">034</span><span id="line-34">                final int height = ip.getHeight();</span>
+<span class="source-line-no">035</span><span id="line-35">                </span>
+<span class="source-line-no">036</span><span id="line-36">                ScalarAccessor ia = ScalarAccessor.create(ip, null, null);</span>
+<span class="source-line-no">037</span><span id="line-37">                </span>
+<span class="source-line-no">038</span><span id="line-38">                for (int u = 0; u &lt; width; u++) {</span>
+<span class="source-line-no">039</span><span id="line-39">                        for (int v = 0; v &lt; height; v++) {</span>
+<span class="source-line-no">040</span><span id="line-40">                                float val = ia.getVal(u, v);            // get a single value (float)</span>
+<span class="source-line-no">041</span><span id="line-41">                                ia.setVal(u, v, val  + 20);</span>
+<span class="source-line-no">042</span><span id="line-42">                        }</span>
+<span class="source-line-no">043</span><span id="line-43">                }</span>
+<span class="source-line-no">044</span><span id="line-44">        }</span>
+<span class="source-line-no">045</span><span id="line-45"></span>
+<span class="source-line-no">046</span><span id="line-46">}</span>
 
 
 

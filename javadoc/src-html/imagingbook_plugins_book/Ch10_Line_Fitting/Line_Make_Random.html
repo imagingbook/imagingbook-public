@@ -39,7 +39,7 @@
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.common.ij.overlay.ColoredStroke;</span>
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.common.util.ParameterBundle;</span>
-<span class="source-line-no">029</span><span id="line-29">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">029</span><span id="line-29">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">030</span><span id="line-30"></span>
 <span class="source-line-no">031</span><span id="line-31">import static imagingbook.common.ij.DialogUtils.addToDialog;</span>
 <span class="source-line-no">032</span><span id="line-32">import static imagingbook.common.ij.DialogUtils.getFromDialog;</span>
@@ -132,23 +132,24 @@
 <span class="source-line-no">119</span><span id="line-119">        </span>
 <span class="source-line-no">120</span><span id="line-120">        private boolean runDialog() {</span>
 <span class="source-line-no">121</span><span id="line-121">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">122</span><span id="line-122">                gd.addMessage(DialogUtils.formatText(50,</span>
-<span class="source-line-no">123</span><span id="line-123">                                "This plugin samples points on a given (ideal) line and",</span>
-<span class="source-line-no">124</span><span id="line-124">                                "creates a new image with the sample points marked and also",</span>
-<span class="source-line-no">125</span><span id="line-125">                                "contained in a ROI (float coordinates)."</span>
-<span class="source-line-no">126</span><span id="line-126">                                ));</span>
-<span class="source-line-no">127</span><span id="line-127">                </span>
-<span class="source-line-no">128</span><span id="line-128">                addToDialog(params, gd);</span>
-<span class="source-line-no">129</span><span id="line-129"></span>
-<span class="source-line-no">130</span><span id="line-130">                gd.showDialog();</span>
-<span class="source-line-no">131</span><span id="line-131">                if (gd.wasCanceled())</span>
-<span class="source-line-no">132</span><span id="line-132">                        return false;</span>
-<span class="source-line-no">133</span><span id="line-133">                </span>
-<span class="source-line-no">134</span><span id="line-134">                getFromDialog(params, gd);</span>
-<span class="source-line-no">135</span><span id="line-135">                return params.validate();</span>
-<span class="source-line-no">136</span><span id="line-136">        }</span>
-<span class="source-line-no">137</span><span id="line-137"></span>
-<span class="source-line-no">138</span><span id="line-138">}</span>
+<span class="source-line-no">122</span><span id="line-122">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">123</span><span id="line-123">                gd.addMessage(DialogUtils.formatText(50,</span>
+<span class="source-line-no">124</span><span id="line-124">                                "This plugin samples points on a given (ideal) line and",</span>
+<span class="source-line-no">125</span><span id="line-125">                                "creates a new image with the sample points marked and also",</span>
+<span class="source-line-no">126</span><span id="line-126">                                "contained in a ROI (float coordinates)."</span>
+<span class="source-line-no">127</span><span id="line-127">                                ));</span>
+<span class="source-line-no">128</span><span id="line-128">                </span>
+<span class="source-line-no">129</span><span id="line-129">                addToDialog(params, gd);</span>
+<span class="source-line-no">130</span><span id="line-130"></span>
+<span class="source-line-no">131</span><span id="line-131">                gd.showDialog();</span>
+<span class="source-line-no">132</span><span id="line-132">                if (gd.wasCanceled())</span>
+<span class="source-line-no">133</span><span id="line-133">                        return false;</span>
+<span class="source-line-no">134</span><span id="line-134">                </span>
+<span class="source-line-no">135</span><span id="line-135">                getFromDialog(params, gd);</span>
+<span class="source-line-no">136</span><span id="line-136">                return params.validate();</span>
+<span class="source-line-no">137</span><span id="line-137">        }</span>
+<span class="source-line-no">138</span><span id="line-138"></span>
+<span class="source-line-no">139</span><span id="line-139">}</span>
 
 
 

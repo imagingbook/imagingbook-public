@@ -37,7 +37,7 @@
 <span class="source-line-no">024</span><span id="line-24">import imagingbook.common.ij.IjUtils;</span>
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.common.ij.overlay.ColoredStroke;</span>
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
-<span class="source-line-no">027</span><span id="line-27">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">027</span><span id="line-27">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">029</span><span id="line-29"></span>
 <span class="source-line-no">030</span><span id="line-30">import java.awt.Component;</span>
@@ -657,7 +657,7 @@
 <span class="source-line-no">644</span><span id="line-644">        </span>
 <span class="source-line-no">645</span><span id="line-645">        private boolean runDialog() {</span>
 <span class="source-line-no">646</span><span id="line-646">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">647</span><span id="line-647"></span>
+<span class="source-line-no">647</span><span id="line-647">                gd.addHelp(getJavaDocUrl());</span>
 <span class="source-line-no">648</span><span id="line-648">                gd.addMessage(DialogUtils.makeLineSeparatedString(</span>
 <span class="source-line-no">649</span><span id="line-649">                                "How to use:",</span>
 <span class="source-line-no">650</span><span id="line-650">                                "      left mouse: select and drag grid points",</span>

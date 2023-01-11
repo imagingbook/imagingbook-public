@@ -34,7 +34,7 @@
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.common.color.quantize.MedianCutQuantizer;</span>
 <span class="source-line-no">022</span><span id="line-22">import imagingbook.common.color.quantize.OctreeQuantizer;</span>
 <span class="source-line-no">023</span><span id="line-23">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">024</span><span id="line-24">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">024</span><span id="line-24">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">026</span><span id="line-26"></span>
 <span class="source-line-no">027</span><span id="line-27">import java.util.Locale;</span>
@@ -154,27 +154,28 @@
 <span class="source-line-no">141</span><span id="line-141">        </span>
 <span class="source-line-no">142</span><span id="line-142">        private boolean runDialog() {</span>
 <span class="source-line-no">143</span><span id="line-143">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">144</span><span id="line-144">                gd.addEnumChoice("Quantization method", METHOD);</span>
-<span class="source-line-no">145</span><span id="line-145">                gd.addNumericField("No. of colors (1,..,256)", NCOLORS, 0);</span>
-<span class="source-line-no">146</span><span id="line-146">                gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);</span>
-<span class="source-line-no">147</span><span id="line-147">                gd.addCheckbox("Create quantized RGB image", CREATE_RGB_IMAGE);</span>
-<span class="source-line-no">148</span><span id="line-148">                gd.addCheckbox("List quantized colors", LIST_COLOR_MAP);</span>
-<span class="source-line-no">149</span><span id="line-149">                </span>
-<span class="source-line-no">150</span><span id="line-150">                gd.showDialog();</span>
-<span class="source-line-no">151</span><span id="line-151">                if (gd.wasCanceled())</span>
-<span class="source-line-no">152</span><span id="line-152">                        return false;</span>
-<span class="source-line-no">153</span><span id="line-153">                </span>
-<span class="source-line-no">154</span><span id="line-154">                METHOD = gd.getNextEnumChoice(QuantizeMethod.class);</span>
-<span class="source-line-no">155</span><span id="line-155">                int nc = (int) gd.getNextNumber();</span>
-<span class="source-line-no">156</span><span id="line-156">                nc = Math.min(nc, 256);</span>
-<span class="source-line-no">157</span><span id="line-157">                nc = Math.max(1, nc);           </span>
-<span class="source-line-no">158</span><span id="line-158">                NCOLORS = nc;</span>
-<span class="source-line-no">159</span><span id="line-159">                CREATE_INDEXED_IMAGE = gd.getNextBoolean();</span>
-<span class="source-line-no">160</span><span id="line-160">                CREATE_RGB_IMAGE = gd.getNextBoolean();</span>
-<span class="source-line-no">161</span><span id="line-161">                LIST_COLOR_MAP = gd.getNextBoolean();</span>
-<span class="source-line-no">162</span><span id="line-162">                return true;</span>
-<span class="source-line-no">163</span><span id="line-163">        }</span>
-<span class="source-line-no">164</span><span id="line-164">}</span>
+<span class="source-line-no">144</span><span id="line-144">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">145</span><span id="line-145">                gd.addEnumChoice("Quantization method", METHOD);</span>
+<span class="source-line-no">146</span><span id="line-146">                gd.addNumericField("No. of colors (1,..,256)", NCOLORS, 0);</span>
+<span class="source-line-no">147</span><span id="line-147">                gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);</span>
+<span class="source-line-no">148</span><span id="line-148">                gd.addCheckbox("Create quantized RGB image", CREATE_RGB_IMAGE);</span>
+<span class="source-line-no">149</span><span id="line-149">                gd.addCheckbox("List quantized colors", LIST_COLOR_MAP);</span>
+<span class="source-line-no">150</span><span id="line-150">                </span>
+<span class="source-line-no">151</span><span id="line-151">                gd.showDialog();</span>
+<span class="source-line-no">152</span><span id="line-152">                if (gd.wasCanceled())</span>
+<span class="source-line-no">153</span><span id="line-153">                        return false;</span>
+<span class="source-line-no">154</span><span id="line-154">                </span>
+<span class="source-line-no">155</span><span id="line-155">                METHOD = gd.getNextEnumChoice(QuantizeMethod.class);</span>
+<span class="source-line-no">156</span><span id="line-156">                int nc = (int) gd.getNextNumber();</span>
+<span class="source-line-no">157</span><span id="line-157">                nc = Math.min(nc, 256);</span>
+<span class="source-line-no">158</span><span id="line-158">                nc = Math.max(1, nc);           </span>
+<span class="source-line-no">159</span><span id="line-159">                NCOLORS = nc;</span>
+<span class="source-line-no">160</span><span id="line-160">                CREATE_INDEXED_IMAGE = gd.getNextBoolean();</span>
+<span class="source-line-no">161</span><span id="line-161">                CREATE_RGB_IMAGE = gd.getNextBoolean();</span>
+<span class="source-line-no">162</span><span id="line-162">                LIST_COLOR_MAP = gd.getNextBoolean();</span>
+<span class="source-line-no">163</span><span id="line-163">                return true;</span>
+<span class="source-line-no">164</span><span id="line-164">        }</span>
+<span class="source-line-no">165</span><span id="line-165">}</span>
 
 
 

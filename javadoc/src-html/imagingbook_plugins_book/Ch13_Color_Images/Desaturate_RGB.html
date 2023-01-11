@@ -26,7 +26,7 @@
 <span class="source-line-no">013</span><span id="line-13">import ij.plugin.filter.PlugInFilter;</span>
 <span class="source-line-no">014</span><span id="line-14">import ij.process.ImageProcessor;</span>
 <span class="source-line-no">015</span><span id="line-15">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">017</span><span id="line-17">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">018</span><span id="line-18"></span>
 <span class="source-line-no">019</span><span id="line-19">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
@@ -110,20 +110,21 @@
 <span class="source-line-no">097</span><span id="line-97">        </span>
 <span class="source-line-no">098</span><span id="line-98">        private boolean runDialog() {</span>
 <span class="source-line-no">099</span><span id="line-99">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">100</span><span id="line-100">                gd.addMessage("Saturates or desaturates the current image.");</span>
-<span class="source-line-no">101</span><span id="line-101">                gd.addNumericField("Saturation factor (S = 0..1)", S, 2);</span>
-<span class="source-line-no">102</span><span id="line-102">                </span>
-<span class="source-line-no">103</span><span id="line-103">                gd.showDialog();</span>
-<span class="source-line-no">104</span><span id="line-104">                if (gd.wasCanceled())</span>
-<span class="source-line-no">105</span><span id="line-105">                        return false;</span>
-<span class="source-line-no">106</span><span id="line-106">                </span>
-<span class="source-line-no">107</span><span id="line-107">                S = gd.getNextNumber();</span>
-<span class="source-line-no">108</span><span id="line-108">                if (S &lt; 0) S = 0;</span>
-<span class="source-line-no">109</span><span id="line-109">                if (S &gt; 1) S = 1;</span>
-<span class="source-line-no">110</span><span id="line-110">                return true;</span>
-<span class="source-line-no">111</span><span id="line-111">        }</span>
-<span class="source-line-no">112</span><span id="line-112"></span>
-<span class="source-line-no">113</span><span id="line-113">}</span>
+<span class="source-line-no">100</span><span id="line-100">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">101</span><span id="line-101">                gd.addMessage("Saturates or desaturates the current image.");</span>
+<span class="source-line-no">102</span><span id="line-102">                gd.addNumericField("Saturation factor (S = 0..1)", S, 2);</span>
+<span class="source-line-no">103</span><span id="line-103">                </span>
+<span class="source-line-no">104</span><span id="line-104">                gd.showDialog();</span>
+<span class="source-line-no">105</span><span id="line-105">                if (gd.wasCanceled())</span>
+<span class="source-line-no">106</span><span id="line-106">                        return false;</span>
+<span class="source-line-no">107</span><span id="line-107">                </span>
+<span class="source-line-no">108</span><span id="line-108">                S = gd.getNextNumber();</span>
+<span class="source-line-no">109</span><span id="line-109">                if (S &lt; 0) S = 0;</span>
+<span class="source-line-no">110</span><span id="line-110">                if (S &gt; 1) S = 1;</span>
+<span class="source-line-no">111</span><span id="line-111">                return true;</span>
+<span class="source-line-no">112</span><span id="line-112">        }</span>
+<span class="source-line-no">113</span><span id="line-113"></span>
+<span class="source-line-no">114</span><span id="line-114">}</span>
 
 
 

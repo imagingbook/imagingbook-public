@@ -38,7 +38,7 @@
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.common.image.LocalMinMaxFinder.ExtremalPoint;</span>
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.common.image.matching.ChamferMatcher;</span>
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.common.image.matching.DistanceTransform.DistanceType;</span>
-<span class="source-line-no">028</span><span id="line-28">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">028</span><span id="line-28">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">029</span><span id="line-29">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">030</span><span id="line-30"></span>
 <span class="source-line-no">031</span><span id="line-31">import java.awt.Font;</span>
@@ -204,39 +204,40 @@
 <span class="source-line-no">191</span><span id="line-191"> </span>
 <span class="source-line-no">192</span><span id="line-192">    private boolean runDialog() {</span>
 <span class="source-line-no">193</span><span id="line-193">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">194</span><span id="line-194">                if (imgI.isInvertedLut()) {</span>
-<span class="source-line-no">195</span><span id="line-195">                        gd.setInsets(0, 0, 0);</span>
-<span class="source-line-no">196</span><span id="line-196">                        gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");</span>
-<span class="source-line-no">197</span><span id="line-197">                }</span>
-<span class="source-line-no">198</span><span id="line-198">                gd.addCheckbox("Add noise to reference image", ReferenceAddNoise);</span>
-<span class="source-line-no">199</span><span id="line-199">                gd.addNumericField("Noise level (%)", ReferenceNoiseLevel * 100, 1);</span>
-<span class="source-line-no">200</span><span id="line-200">                gd.addEnumChoice("Distance transform norm", distNorm);</span>
-<span class="source-line-no">201</span><span id="line-201">                gd.addNumericField("Max. local minima count", MaxLocalMinimaCount, 0);</span>
-<span class="source-line-no">202</span><span id="line-202">                gd.addEnumChoice("Best match color", BestMatchColor);</span>
-<span class="source-line-no">203</span><span id="line-203">                gd.addEnumChoice("Other match color", OtherMatchColor);</span>
-<span class="source-line-no">204</span><span id="line-204">                gd.addCheckbox("Show score values", ShowScoreValues);</span>
-<span class="source-line-no">205</span><span id="line-205">                gd.addNumericField("Score value font size", ScoreValueFontSize, 0);</span>
-<span class="source-line-no">206</span><span id="line-206">                gd.addCheckbox("Show reference image", ShowReferenceImage);</span>
-<span class="source-line-no">207</span><span id="line-207">                gd.addCheckbox("Show score map", ShowScoreMap);</span>
-<span class="source-line-no">208</span><span id="line-208"></span>
-<span class="source-line-no">209</span><span id="line-209">                gd.showDialog();</span>
-<span class="source-line-no">210</span><span id="line-210">                if (gd.wasCanceled())</span>
-<span class="source-line-no">211</span><span id="line-211">                        return false;</span>
-<span class="source-line-no">212</span><span id="line-212"></span>
-<span class="source-line-no">213</span><span id="line-213">                ReferenceAddNoise = gd.getNextBoolean();</span>
-<span class="source-line-no">214</span><span id="line-214">                ReferenceNoiseLevel = gd.getNextNumber() / 100;</span>
-<span class="source-line-no">215</span><span id="line-215">                distNorm = gd.getNextEnumChoice(DistanceType.class);</span>
-<span class="source-line-no">216</span><span id="line-216">                MaxLocalMinimaCount = (int) gd.getNextNumber();</span>
-<span class="source-line-no">217</span><span id="line-217">                BestMatchColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
-<span class="source-line-no">218</span><span id="line-218">                OtherMatchColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
-<span class="source-line-no">219</span><span id="line-219">                ShowScoreValues = gd.getNextBoolean();</span>
-<span class="source-line-no">220</span><span id="line-220">                ScoreValueFontSize = (int) gd.getNextNumber();</span>
-<span class="source-line-no">221</span><span id="line-221">                ShowReferenceImage = gd.getNextBoolean();</span>
-<span class="source-line-no">222</span><span id="line-222">                ShowScoreMap = gd.getNextBoolean();</span>
-<span class="source-line-no">223</span><span id="line-223">                return true;</span>
-<span class="source-line-no">224</span><span id="line-224">    }</span>
-<span class="source-line-no">225</span><span id="line-225">                </span>
-<span class="source-line-no">226</span><span id="line-226">}</span>
+<span class="source-line-no">194</span><span id="line-194">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">195</span><span id="line-195">                if (imgI.isInvertedLut()) {</span>
+<span class="source-line-no">196</span><span id="line-196">                        gd.setInsets(0, 0, 0);</span>
+<span class="source-line-no">197</span><span id="line-197">                        gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");</span>
+<span class="source-line-no">198</span><span id="line-198">                }</span>
+<span class="source-line-no">199</span><span id="line-199">                gd.addCheckbox("Add noise to reference image", ReferenceAddNoise);</span>
+<span class="source-line-no">200</span><span id="line-200">                gd.addNumericField("Noise level (%)", ReferenceNoiseLevel * 100, 1);</span>
+<span class="source-line-no">201</span><span id="line-201">                gd.addEnumChoice("Distance transform norm", distNorm);</span>
+<span class="source-line-no">202</span><span id="line-202">                gd.addNumericField("Max. local minima count", MaxLocalMinimaCount, 0);</span>
+<span class="source-line-no">203</span><span id="line-203">                gd.addEnumChoice("Best match color", BestMatchColor);</span>
+<span class="source-line-no">204</span><span id="line-204">                gd.addEnumChoice("Other match color", OtherMatchColor);</span>
+<span class="source-line-no">205</span><span id="line-205">                gd.addCheckbox("Show score values", ShowScoreValues);</span>
+<span class="source-line-no">206</span><span id="line-206">                gd.addNumericField("Score value font size", ScoreValueFontSize, 0);</span>
+<span class="source-line-no">207</span><span id="line-207">                gd.addCheckbox("Show reference image", ShowReferenceImage);</span>
+<span class="source-line-no">208</span><span id="line-208">                gd.addCheckbox("Show score map", ShowScoreMap);</span>
+<span class="source-line-no">209</span><span id="line-209"></span>
+<span class="source-line-no">210</span><span id="line-210">                gd.showDialog();</span>
+<span class="source-line-no">211</span><span id="line-211">                if (gd.wasCanceled())</span>
+<span class="source-line-no">212</span><span id="line-212">                        return false;</span>
+<span class="source-line-no">213</span><span id="line-213"></span>
+<span class="source-line-no">214</span><span id="line-214">                ReferenceAddNoise = gd.getNextBoolean();</span>
+<span class="source-line-no">215</span><span id="line-215">                ReferenceNoiseLevel = gd.getNextNumber() / 100;</span>
+<span class="source-line-no">216</span><span id="line-216">                distNorm = gd.getNextEnumChoice(DistanceType.class);</span>
+<span class="source-line-no">217</span><span id="line-217">                MaxLocalMinimaCount = (int) gd.getNextNumber();</span>
+<span class="source-line-no">218</span><span id="line-218">                BestMatchColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
+<span class="source-line-no">219</span><span id="line-219">                OtherMatchColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
+<span class="source-line-no">220</span><span id="line-220">                ShowScoreValues = gd.getNextBoolean();</span>
+<span class="source-line-no">221</span><span id="line-221">                ScoreValueFontSize = (int) gd.getNextNumber();</span>
+<span class="source-line-no">222</span><span id="line-222">                ShowReferenceImage = gd.getNextBoolean();</span>
+<span class="source-line-no">223</span><span id="line-223">                ShowScoreMap = gd.getNextBoolean();</span>
+<span class="source-line-no">224</span><span id="line-224">                return true;</span>
+<span class="source-line-no">225</span><span id="line-225">    }</span>
+<span class="source-line-no">226</span><span id="line-226">                </span>
+<span class="source-line-no">227</span><span id="line-227">}</span>
 
 
 

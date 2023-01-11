@@ -1041,7 +1041,17 @@
 <span class="source-line-no">1028</span><span id="line-1028">        }</span>
 <span class="source-line-no">1029</span><span id="line-1029">        return k;</span>
 <span class="source-line-no">1030</span><span id="line-1030">    }</span>
-<span class="source-line-no">1031</span><span id="line-1031">}</span>
+<span class="source-line-no">1031</span><span id="line-1031"></span>
+<span class="source-line-no">1032</span><span id="line-1032">        /**</span>
+<span class="source-line-no">1033</span><span id="line-1033">         * Checks if the specified class implements one of ImageJ's plugin interfaces.</span>
+<span class="source-line-no">1034</span><span id="line-1034">         *</span>
+<span class="source-line-no">1035</span><span id="line-1035">         * @param clazz any class</span>
+<span class="source-line-no">1036</span><span id="line-1036">         * @return true iff class implements one of ImageJ's plugin interfaces</span>
+<span class="source-line-no">1037</span><span id="line-1037">         */</span>
+<span class="source-line-no">1038</span><span id="line-1038">        public static boolean isIjPlugin(Class&lt;?&gt; clazz) {</span>
+<span class="source-line-no">1039</span><span id="line-1039">                return PlugIn.class.isAssignableFrom(clazz) || PlugInFilter.class.isAssignableFrom(clazz);</span>
+<span class="source-line-no">1040</span><span id="line-1040">        }</span>
+<span class="source-line-no">1041</span><span id="line-1041">}</span>
 
 
 

@@ -30,7 +30,7 @@
 <span class="source-line-no">017</span><span id="line-17">import imagingbook.common.histogram.HistogramUtils;</span>
 <span class="source-line-no">018</span><span id="line-18">import imagingbook.common.histogram.PiecewiseLinearCdf;</span>
 <span class="source-line-no">019</span><span id="line-19">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">020</span><span id="line-20">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">020</span><span id="line-20">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">022</span><span id="line-22"></span>
 <span class="source-line-no">023</span><span id="line-23">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
@@ -117,7 +117,7 @@
 <span class="source-line-no">104</span><span id="line-104"></span>
 <span class="source-line-no">105</span><span id="line-105">        private boolean runDialog() {</span>
 <span class="source-line-no">106</span><span id="line-106">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">107</span><span id="line-107">                gd.addHelp(getJavaDocUrl());</span>
 <span class="source-line-no">108</span><span id="line-108">                gd.addCheckbox("Show original histograms", ShowOriginalHistograms);</span>
 <span class="source-line-no">109</span><span id="line-109">                gd.addCheckbox("Show cumulative histograms", ShowCumulativeHistograms);</span>
 <span class="source-line-no">110</span><span id="line-110">                gd.addCheckbox("Show final histogram", ShowFinalHistogram);</span>

@@ -24,35 +24,33 @@
 <span class="source-line-no">011</span><span id="line-11">import ij.ImagePlus;</span>
 <span class="source-line-no">012</span><span id="line-12">import ij.plugin.filter.PlugInFilter;</span>
 <span class="source-line-no">013</span><span id="line-13">import ij.process.ImageProcessor;</span>
-<span class="source-line-no">014</span><span id="line-14">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">014</span><span id="line-14">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">015</span><span id="line-15"></span>
 <span class="source-line-no">016</span><span id="line-16">/**</span>
-<span class="source-line-no">017</span><span id="line-17"> * This ImageJ plugin shows how a subimage is extracted from</span>
-<span class="source-line-no">018</span><span id="line-18"> * a given image using the bounding box of the currently selected </span>
-<span class="source-line-no">019</span><span id="line-19"> * region of interest (ROI). Note that the resulting image is</span>
-<span class="source-line-no">020</span><span id="line-20"> * of the same type as the original.</span>
-<span class="source-line-no">021</span><span id="line-21"> * </span>
-<span class="source-line-no">022</span><span id="line-22"> * @author WB</span>
-<span class="source-line-no">023</span><span id="line-23"> * @version 2022/04/01</span>
-<span class="source-line-no">024</span><span id="line-24"> */</span>
-<span class="source-line-no">025</span><span id="line-25">public class Roi_Extract_Subimage_Demo implements PlugInFilter, JavaDocHelp {</span>
+<span class="source-line-no">017</span><span id="line-17"> * This ImageJ plugin shows how a subimage is extracted from a given image using the bounding box of the currently</span>
+<span class="source-line-no">018</span><span id="line-18"> * selected region of interest (ROI). Note that the resulting image is of the same type as the original.</span>
+<span class="source-line-no">019</span><span id="line-19"> *</span>
+<span class="source-line-no">020</span><span id="line-20"> * @author WB</span>
+<span class="source-line-no">021</span><span id="line-21"> * @version 2022/04/01</span>
+<span class="source-line-no">022</span><span id="line-22"> */</span>
+<span class="source-line-no">023</span><span id="line-23">public class Roi_Extract_Subimage_Demo implements PlugInFilter, JavaDocHelp {</span>
+<span class="source-line-no">024</span><span id="line-24"></span>
+<span class="source-line-no">025</span><span id="line-25">        ImagePlus im = null;</span>
 <span class="source-line-no">026</span><span id="line-26"></span>
-<span class="source-line-no">027</span><span id="line-27">        ImagePlus im = null;</span>
-<span class="source-line-no">028</span><span id="line-28"></span>
-<span class="source-line-no">029</span><span id="line-29">        public int setup(String arg, ImagePlus im) {</span>
-<span class="source-line-no">030</span><span id="line-30">                this.im = im;</span>
-<span class="source-line-no">031</span><span id="line-31">                return DOES_ALL + NO_CHANGES;</span>
-<span class="source-line-no">032</span><span id="line-32">        }</span>
-<span class="source-line-no">033</span><span id="line-33"></span>
-<span class="source-line-no">034</span><span id="line-34">        public void run(ImageProcessor ip) {</span>
-<span class="source-line-no">035</span><span id="line-35">                // The ROI obtained from ImageProcessor always exists even without a user selection.</span>
-<span class="source-line-no">036</span><span id="line-36">                // It is a rectangle with int coordinates.</span>
-<span class="source-line-no">037</span><span id="line-37">                // By default (no user selection) the ROI contains the whole image.</span>
-<span class="source-line-no">038</span><span id="line-38">                // Rectangle roi = ip.getRoi();</span>
-<span class="source-line-no">039</span><span id="line-39">                ImageProcessor ip2 = ip.crop();         // extracts the subimage defined by the ROI</span>
-<span class="source-line-no">040</span><span id="line-40">                new ImagePlus(im.getShortTitle() + "-extracted", ip2).show();</span>
-<span class="source-line-no">041</span><span id="line-41">        }</span>
-<span class="source-line-no">042</span><span id="line-42">}</span>
+<span class="source-line-no">027</span><span id="line-27">        public int setup(String arg, ImagePlus im) {</span>
+<span class="source-line-no">028</span><span id="line-28">                this.im = im;</span>
+<span class="source-line-no">029</span><span id="line-29">                return DOES_ALL + NO_CHANGES;</span>
+<span class="source-line-no">030</span><span id="line-30">        }</span>
+<span class="source-line-no">031</span><span id="line-31"></span>
+<span class="source-line-no">032</span><span id="line-32">        public void run(ImageProcessor ip) {</span>
+<span class="source-line-no">033</span><span id="line-33">                // The ROI obtained from ImageProcessor always exists even without a user selection.</span>
+<span class="source-line-no">034</span><span id="line-34">                // It is a rectangle with int coordinates.</span>
+<span class="source-line-no">035</span><span id="line-35">                // By default (no user selection) the ROI contains the whole image.</span>
+<span class="source-line-no">036</span><span id="line-36">                // Rectangle roi = ip.getRoi();</span>
+<span class="source-line-no">037</span><span id="line-37">                ImageProcessor ip2 = ip.crop();         // extracts the subimage defined by the ROI</span>
+<span class="source-line-no">038</span><span id="line-38">                new ImagePlus(im.getShortTitle() + "-extracted", ip2).show();</span>
+<span class="source-line-no">039</span><span id="line-39">        }</span>
+<span class="source-line-no">040</span><span id="line-40">}</span>
 
 
 
