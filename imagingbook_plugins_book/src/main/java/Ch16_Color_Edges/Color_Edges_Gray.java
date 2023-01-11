@@ -16,7 +16,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.edges.EdgeDetector;
 import imagingbook.common.edges.GrayscaleEdgeDetector;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -77,6 +77,7 @@ public class Color_Edges_Gray implements PlugInFilter, JavaDocHelp {
     
     boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Show edge magnitude", ShowEdgeMagnitude);
 		gd.addCheckbox("Show edge orientation", ShowEdgeOrientation);
 		

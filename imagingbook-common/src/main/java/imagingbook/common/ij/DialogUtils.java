@@ -263,7 +263,8 @@ public abstract class DialogUtils {
 			dialog.addStringField(name, str, stringColumns);
 		}
 		else if (clazz.isEnum()) {
-			dialog.addEnumChoice(name, (Enum<?>) field.get(params));
+			// dialog.addEnumChoice(name, (Enum<?>) field.get(params));
+			dialog.addEnumChoice(name, (Enum) field.get(params));
 		}
 		else {
 			// ignore this field

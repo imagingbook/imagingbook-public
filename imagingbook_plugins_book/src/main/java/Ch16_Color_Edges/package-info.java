@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch16 Color Edge Detection")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch16_Color_Edges;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

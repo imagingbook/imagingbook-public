@@ -29,7 +29,7 @@
 <span class="source-line-no">016</span><span id="line-16">import ij.process.ImageProcessor;</span>
 <span class="source-line-no">017</span><span id="line-17">import imagingbook.common.edges.GrayscaleEdgeDetector;</span>
 <span class="source-line-no">018</span><span id="line-18">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">019</span><span id="line-19">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">019</span><span id="line-19">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">020</span><span id="line-20">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">021</span><span id="line-21"></span>
 <span class="source-line-no">022</span><span id="line-22">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
@@ -74,7 +74,7 @@
 <span class="source-line-no">061</span><span id="line-61"></span>
 <span class="source-line-no">062</span><span id="line-62">    @Override</span>
 <span class="source-line-no">063</span><span id="line-63">    public void run(ImageProcessor ip) {</span>
-<span class="source-line-no">064</span><span id="line-64">        if (!getUserInput()) {</span>
+<span class="source-line-no">064</span><span id="line-64">        if (!runDialog()) {</span>
 <span class="source-line-no">065</span><span id="line-65">            return;</span>
 <span class="source-line-no">066</span><span id="line-66">        }</span>
 <span class="source-line-no">067</span><span id="line-67"></span>
@@ -137,30 +137,29 @@
 <span class="source-line-no">124</span><span id="line-124">        }</span>
 <span class="source-line-no">125</span><span id="line-125">    }</span>
 <span class="source-line-no">126</span><span id="line-126"></span>
-<span class="source-line-no">127</span><span id="line-127">    GenericDialog gd = null;</span>
+<span class="source-line-no">127</span><span id="line-127">    // ---------------------------------------------------------------------</span>
 <span class="source-line-no">128</span><span id="line-128"></span>
-<span class="source-line-no">129</span><span id="line-129">    // ---------------------------------------------------------------------</span>
-<span class="source-line-no">130</span><span id="line-130"></span>
-<span class="source-line-no">131</span><span id="line-131">    private boolean getUserInput() {    // TODO: add a preview button</span>
-<span class="source-line-no">132</span><span id="line-132">        gd = new GenericDialog(Cartoon_Effect.class.getSimpleName());</span>
-<span class="source-line-no">133</span><span id="line-133">        gd.addMessage("Parameters: 0 \u2264 a \u2264 b \u2264 1");</span>
-<span class="source-line-no">134</span><span id="line-134">        gd.addNumericField("a", A, 2);</span>
-<span class="source-line-no">135</span><span id="line-135">        gd.addNumericField("b", B, 2);</span>
-<span class="source-line-no">136</span><span id="line-136">        gd.addCheckbox("Show original edge magnitude", ShowOriginalEdgeMagnitude);</span>
-<span class="source-line-no">137</span><span id="line-137">        gd.addCheckbox("Show softened edge magnitude", ShowSoftenedEdgeMagnitude);</span>
-<span class="source-line-no">138</span><span id="line-138"></span>
-<span class="source-line-no">139</span><span id="line-139">        gd.showDialog();</span>
-<span class="source-line-no">140</span><span id="line-140">        if (gd.wasCanceled()) {</span>
-<span class="source-line-no">141</span><span id="line-141">            return false;</span>
-<span class="source-line-no">142</span><span id="line-142">        }</span>
-<span class="source-line-no">143</span><span id="line-143">        A = gd.getNextNumber();</span>
-<span class="source-line-no">144</span><span id="line-144">        B = gd.getNextNumber();</span>
-<span class="source-line-no">145</span><span id="line-145">        ShowOriginalEdgeMagnitude = gd.getNextBoolean();</span>
-<span class="source-line-no">146</span><span id="line-146">        ShowSoftenedEdgeMagnitude = gd.getNextBoolean();</span>
-<span class="source-line-no">147</span><span id="line-147">        return true;</span>
-<span class="source-line-no">148</span><span id="line-148">    }</span>
-<span class="source-line-no">149</span><span id="line-149"></span>
-<span class="source-line-no">150</span><span id="line-150">}</span>
+<span class="source-line-no">129</span><span id="line-129">    private boolean runDialog() {    // TODO: add a preview button</span>
+<span class="source-line-no">130</span><span id="line-130">        GenericDialog gd = new GenericDialog(Cartoon_Effect.class.getSimpleName());</span>
+<span class="source-line-no">131</span><span id="line-131">        gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">132</span><span id="line-132">        gd.addMessage("Parameters: 0 \u2264 a \u2264 b \u2264 1");</span>
+<span class="source-line-no">133</span><span id="line-133">        gd.addNumericField("a", A, 2);</span>
+<span class="source-line-no">134</span><span id="line-134">        gd.addNumericField("b", B, 2);</span>
+<span class="source-line-no">135</span><span id="line-135">        gd.addCheckbox("Show original edge magnitude", ShowOriginalEdgeMagnitude);</span>
+<span class="source-line-no">136</span><span id="line-136">        gd.addCheckbox("Show softened edge magnitude", ShowSoftenedEdgeMagnitude);</span>
+<span class="source-line-no">137</span><span id="line-137"></span>
+<span class="source-line-no">138</span><span id="line-138">        gd.showDialog();</span>
+<span class="source-line-no">139</span><span id="line-139">        if (gd.wasCanceled()) {</span>
+<span class="source-line-no">140</span><span id="line-140">            return false;</span>
+<span class="source-line-no">141</span><span id="line-141">        }</span>
+<span class="source-line-no">142</span><span id="line-142">        A = gd.getNextNumber();</span>
+<span class="source-line-no">143</span><span id="line-143">        B = gd.getNextNumber();</span>
+<span class="source-line-no">144</span><span id="line-144">        ShowOriginalEdgeMagnitude = gd.getNextBoolean();</span>
+<span class="source-line-no">145</span><span id="line-145">        ShowSoftenedEdgeMagnitude = gd.getNextBoolean();</span>
+<span class="source-line-no">146</span><span id="line-146">        return true;</span>
+<span class="source-line-no">147</span><span id="line-147">    }</span>
+<span class="source-line-no">148</span><span id="line-148"></span>
+<span class="source-line-no">149</span><span id="line-149">}</span>
 
 
 

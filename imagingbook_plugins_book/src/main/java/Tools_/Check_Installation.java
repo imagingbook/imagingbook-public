@@ -12,7 +12,7 @@ import ij.IJ;
 import ij.plugin.PlugIn;
 import imagingbook.core.FileUtils;
 import imagingbook.core.Info;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 
 /**

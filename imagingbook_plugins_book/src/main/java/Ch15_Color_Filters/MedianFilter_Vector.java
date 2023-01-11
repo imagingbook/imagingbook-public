@@ -16,7 +16,7 @@ import imagingbook.common.filter.nonlinear.VectorMedianFilter;
 import imagingbook.common.filter.nonlinear.VectorMedianFilter.Parameters;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -69,6 +69,7 @@ public class MedianFilter_Vector implements PlugInFilter, JavaDocHelp {
     
     private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Filter radius", params.radius, 1);
 		gd.addEnumChoice("Distance norm", params.distanceNorm);
 //		gd.addCheckbox("Mark modified pixels", params.markModifiedPixels);

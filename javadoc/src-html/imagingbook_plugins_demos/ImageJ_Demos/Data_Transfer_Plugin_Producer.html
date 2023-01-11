@@ -24,38 +24,35 @@
 <span class="source-line-no">011</span><span id="line-11">import ij.ImagePlus;</span>
 <span class="source-line-no">012</span><span id="line-12">import ij.plugin.filter.PlugInFilter;</span>
 <span class="source-line-no">013</span><span id="line-13">import ij.process.ImageProcessor;</span>
-<span class="source-line-no">014</span><span id="line-14">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">014</span><span id="line-14">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">015</span><span id="line-15"></span>
 <span class="source-line-no">016</span><span id="line-16">/**</span>
-<span class="source-line-no">017</span><span id="line-17"> * This ImageJ plugin shows how data can be communicated from one</span>
-<span class="source-line-no">018</span><span id="line-18"> * plugin to another. In this example, THIS plugin ({@link Data_Transfer_Plugin_Producer})</span>
-<span class="source-line-no">019</span><span id="line-19"> * calculates a histogram that is subsequently retrieved by ANOTHER</span>
-<span class="source-line-no">020</span><span id="line-20"> * plugin {@link Data_Transfer_Plugin_Consumer}. </span>
-<span class="source-line-no">021</span><span id="line-21"> * Data are stored as a &lt;strong&gt;property&lt;/strong&gt; of the associated image (of type {@link ImagePlus}).</span>
-<span class="source-line-no">022</span><span id="line-22"> * Note that the stored data should contain no instances of self-defined</span>
-<span class="source-line-no">023</span><span id="line-23"> * classes, since these may be re-loaded when performing compile-and-run.</span>
-<span class="source-line-no">024</span><span id="line-24"> * </span>
-<span class="source-line-no">025</span><span id="line-25"> * @author WB</span>
-<span class="source-line-no">026</span><span id="line-26"> *</span>
-<span class="source-line-no">027</span><span id="line-27"> */</span>
-<span class="source-line-no">028</span><span id="line-28">public class Data_Transfer_Plugin_Producer implements PlugInFilter, JavaDocHelp {</span>
-<span class="source-line-no">029</span><span id="line-29">        </span>
-<span class="source-line-no">030</span><span id="line-30">        // Create a unique (publicly visible) property key:</span>
-<span class="source-line-no">031</span><span id="line-31">        public static final String HistKey = </span>
-<span class="source-line-no">032</span><span id="line-32">                        Data_Transfer_Plugin_Producer.class.getCanonicalName() + "histogram";</span>
-<span class="source-line-no">033</span><span id="line-33">        </span>
-<span class="source-line-no">034</span><span id="line-34">        ImagePlus im;</span>
-<span class="source-line-no">035</span><span id="line-35">        </span>
-<span class="source-line-no">036</span><span id="line-36">        public int setup(String arg, ImagePlus im) {</span>
-<span class="source-line-no">037</span><span id="line-37">                this.im = im;</span>
-<span class="source-line-no">038</span><span id="line-38">                return DOES_ALL + NO_CHANGES;}</span>
-<span class="source-line-no">039</span><span id="line-39">                </span>
-<span class="source-line-no">040</span><span id="line-40">        public void run(ImageProcessor ip) {</span>
-<span class="source-line-no">041</span><span id="line-41">                int[] hist = ip.getHistogram();</span>
-<span class="source-line-no">042</span><span id="line-42">                // add histogram to image properties:</span>
-<span class="source-line-no">043</span><span id="line-43">                im.setProperty(HistKey, hist);</span>
-<span class="source-line-no">044</span><span id="line-44">        }</span>
-<span class="source-line-no">045</span><span id="line-45">}</span>
+<span class="source-line-no">017</span><span id="line-17"> * This ImageJ plugin shows how data can be communicated from one plugin to another. In this example, THIS plugin</span>
+<span class="source-line-no">018</span><span id="line-18"> * ({@link Data_Transfer_Plugin_Producer}) calculates a histogram that is subsequently retrieved by ANOTHER plugin</span>
+<span class="source-line-no">019</span><span id="line-19"> * {@link Data_Transfer_Plugin_Consumer}. Data are stored as a &lt;strong&gt;property&lt;/strong&gt; of the associated image (of</span>
+<span class="source-line-no">020</span><span id="line-20"> * type {@link ImagePlus}). Note that the stored data should contain no instances of self-defined classes, since these</span>
+<span class="source-line-no">021</span><span id="line-21"> * may be re-loaded when performing compile-and-run.</span>
+<span class="source-line-no">022</span><span id="line-22"> *</span>
+<span class="source-line-no">023</span><span id="line-23"> * @author WB</span>
+<span class="source-line-no">024</span><span id="line-24"> */</span>
+<span class="source-line-no">025</span><span id="line-25">public class Data_Transfer_Plugin_Producer implements PlugInFilter, JavaDocHelp {</span>
+<span class="source-line-no">026</span><span id="line-26">        </span>
+<span class="source-line-no">027</span><span id="line-27">        // Create a unique (publicly visible) property key:</span>
+<span class="source-line-no">028</span><span id="line-28">        public static final String HistKey = </span>
+<span class="source-line-no">029</span><span id="line-29">                        Data_Transfer_Plugin_Producer.class.getCanonicalName() + "histogram";</span>
+<span class="source-line-no">030</span><span id="line-30">        </span>
+<span class="source-line-no">031</span><span id="line-31">        ImagePlus im;</span>
+<span class="source-line-no">032</span><span id="line-32">        </span>
+<span class="source-line-no">033</span><span id="line-33">        public int setup(String arg, ImagePlus im) {</span>
+<span class="source-line-no">034</span><span id="line-34">                this.im = im;</span>
+<span class="source-line-no">035</span><span id="line-35">                return DOES_ALL + NO_CHANGES;}</span>
+<span class="source-line-no">036</span><span id="line-36">                </span>
+<span class="source-line-no">037</span><span id="line-37">        public void run(ImageProcessor ip) {</span>
+<span class="source-line-no">038</span><span id="line-38">                int[] hist = ip.getHistogram();</span>
+<span class="source-line-no">039</span><span id="line-39">                // add histogram to image properties:</span>
+<span class="source-line-no">040</span><span id="line-40">                im.setProperty(HistKey, hist);</span>
+<span class="source-line-no">041</span><span id="line-41">        }</span>
+<span class="source-line-no">042</span><span id="line-42">}</span>
 
 
 

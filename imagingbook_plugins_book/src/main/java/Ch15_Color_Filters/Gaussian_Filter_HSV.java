@@ -20,7 +20,7 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Arithmetic;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -208,6 +208,7 @@ public class Gaussian_Filter_HSV implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Gaussian sigma", Sigma, 1);
 		gd.setInsets(0, 0, 0);
 		gd.addMessage("Components to filter:");

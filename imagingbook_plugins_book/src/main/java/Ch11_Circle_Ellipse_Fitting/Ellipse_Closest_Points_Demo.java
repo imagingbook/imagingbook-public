@@ -20,7 +20,7 @@ import imagingbook.common.geometry.ellipse.project.OrthogonalEllipseProjector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.awt.Color;
 import java.awt.geom.Path2D;
@@ -113,7 +113,7 @@ public class Ellipse_Closest_Points_Demo implements PlugIn, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage(DialogUtils.formatText(50,
 				"This plugin creates a new image with an ellipse and a",
 				"set of random points. For each point, the closest (contact)",

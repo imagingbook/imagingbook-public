@@ -20,7 +20,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.interpolation.InterpolationMethod;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -84,7 +84,7 @@ public class Map_Rotate_Center implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Rotation angle (deg)", alphaDeg, 1);
 		gd.addEnumChoice("Image out-of-bounds strategy", OBS);
 		gd.addEnumChoice("Pixel interpolation method", IPM);

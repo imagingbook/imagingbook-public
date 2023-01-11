@@ -34,7 +34,7 @@
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.common.morphology.BinaryErosion;</span>
 <span class="source-line-no">022</span><span id="line-22">import imagingbook.common.morphology.BinaryMorphologyFilter;</span>
 <span class="source-line-no">023</span><span id="line-23">import imagingbook.common.morphology.BinaryOpening;</span>
-<span class="source-line-no">024</span><span id="line-24">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">024</span><span id="line-24">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">026</span><span id="line-26"></span>
 <span class="source-line-no">027</span><span id="line-27">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
@@ -145,28 +145,29 @@
 <span class="source-line-no">132</span><span id="line-132"></span>
 <span class="source-line-no">133</span><span id="line-133">        private boolean runDialog() {</span>
 <span class="source-line-no">134</span><span id="line-134">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">135</span><span id="line-135">                if (im.isInvertedLut()) {</span>
-<span class="source-line-no">136</span><span id="line-136">                        gd.setInsets(0, 0, 0);</span>
-<span class="source-line-no">137</span><span id="line-137">                        gd.addMessage("Image has inverted LUT (0=white)!");</span>
-<span class="source-line-no">138</span><span id="line-138">                }</span>
-<span class="source-line-no">139</span><span id="line-139"></span>
-<span class="source-line-no">140</span><span id="line-140">                gd.addMessage("Structuring element\n(hot-spot at center):");</span>
-<span class="source-line-no">141</span><span id="line-141">                gd.addCheckboxGroup(Size, Size, makeFilterLabels(), StructuringElement);</span>
-<span class="source-line-no">142</span><span id="line-142">                gd.addEnumChoice("Operation", Operation);</span>
-<span class="source-line-no">143</span><span id="line-143">                gd.addCheckbox("Show structuring element", ShowStructuringElement);</span>
-<span class="source-line-no">144</span><span id="line-144">                gd.showDialog();</span>
-<span class="source-line-no">145</span><span id="line-145">                if (gd.wasCanceled())</span>
-<span class="source-line-no">146</span><span id="line-146">                        return false;</span>
-<span class="source-line-no">147</span><span id="line-147"></span>
-<span class="source-line-no">148</span><span id="line-148">                for (int i = 0; i &lt; StructuringElement.length; i++) {</span>
-<span class="source-line-no">149</span><span id="line-149">                        StructuringElement[i] = gd.getNextBoolean();</span>
-<span class="source-line-no">150</span><span id="line-150">                }</span>
-<span class="source-line-no">151</span><span id="line-151">                Operation = gd.getNextEnumChoice(OpType.class);</span>
-<span class="source-line-no">152</span><span id="line-152">                ShowStructuringElement = gd.getNextBoolean();</span>
-<span class="source-line-no">153</span><span id="line-153">                return true;</span>
-<span class="source-line-no">154</span><span id="line-154">        }</span>
-<span class="source-line-no">155</span><span id="line-155"></span>
-<span class="source-line-no">156</span><span id="line-156">}</span>
+<span class="source-line-no">135</span><span id="line-135">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">136</span><span id="line-136">                if (im.isInvertedLut()) {</span>
+<span class="source-line-no">137</span><span id="line-137">                        gd.setInsets(0, 0, 0);</span>
+<span class="source-line-no">138</span><span id="line-138">                        gd.addMessage("Image has inverted LUT (0=white)!");</span>
+<span class="source-line-no">139</span><span id="line-139">                }</span>
+<span class="source-line-no">140</span><span id="line-140"></span>
+<span class="source-line-no">141</span><span id="line-141">                gd.addMessage("Structuring element\n(hot-spot at center):");</span>
+<span class="source-line-no">142</span><span id="line-142">                gd.addCheckboxGroup(Size, Size, makeFilterLabels(), StructuringElement);</span>
+<span class="source-line-no">143</span><span id="line-143">                gd.addEnumChoice("Operation", Operation);</span>
+<span class="source-line-no">144</span><span id="line-144">                gd.addCheckbox("Show structuring element", ShowStructuringElement);</span>
+<span class="source-line-no">145</span><span id="line-145">                gd.showDialog();</span>
+<span class="source-line-no">146</span><span id="line-146">                if (gd.wasCanceled())</span>
+<span class="source-line-no">147</span><span id="line-147">                        return false;</span>
+<span class="source-line-no">148</span><span id="line-148"></span>
+<span class="source-line-no">149</span><span id="line-149">                for (int i = 0; i &lt; StructuringElement.length; i++) {</span>
+<span class="source-line-no">150</span><span id="line-150">                        StructuringElement[i] = gd.getNextBoolean();</span>
+<span class="source-line-no">151</span><span id="line-151">                }</span>
+<span class="source-line-no">152</span><span id="line-152">                Operation = gd.getNextEnumChoice(OpType.class);</span>
+<span class="source-line-no">153</span><span id="line-153">                ShowStructuringElement = gd.getNextBoolean();</span>
+<span class="source-line-no">154</span><span id="line-154">                return true;</span>
+<span class="source-line-no">155</span><span id="line-155">        }</span>
+<span class="source-line-no">156</span><span id="line-156"></span>
+<span class="source-line-no">157</span><span id="line-157">}</span>
 
 
 

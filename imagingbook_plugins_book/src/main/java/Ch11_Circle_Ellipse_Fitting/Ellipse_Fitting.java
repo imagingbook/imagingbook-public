@@ -26,7 +26,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.util.Locale;
 
@@ -150,7 +150,7 @@ public class Ellipse_Fitting implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage(DialogUtils.formatText(50,
 				"This plugin performs algebraic + geometric ellipse fitting,",
 				"either to ROI points (if available) or foreground points",

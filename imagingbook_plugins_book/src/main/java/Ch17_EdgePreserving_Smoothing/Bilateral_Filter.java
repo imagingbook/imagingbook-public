@@ -22,7 +22,7 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjProgressBarMonitor;
 import imagingbook.common.util.progress.ProgressMonitor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
@@ -94,6 +94,7 @@ public class Bilateral_Filter implements PlugInFilter, JavaDocHelp {
 		
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addCheckbox("Use scalar filters (color only)", UseScalarFilter);
 		gd.addCheckbox("Use X/Y-separable filter (faster)", UseSeparableFilter);

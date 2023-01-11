@@ -35,7 +35,7 @@
 <span class="source-line-no">022</span><span id="line-22">import imagingbook.common.ij.DialogUtils;</span>
 <span class="source-line-no">023</span><span id="line-23">import imagingbook.common.ij.overlay.ColoredStroke;</span>
 <span class="source-line-no">024</span><span id="line-24">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
-<span class="source-line-no">025</span><span id="line-25">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">025</span><span id="line-25">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">027</span><span id="line-27"></span>
 <span class="source-line-no">028</span><span id="line-28">import java.util.List;</span>
@@ -138,26 +138,27 @@
 <span class="source-line-no">125</span><span id="line-125">    </span>
 <span class="source-line-no">126</span><span id="line-126">        private boolean runDialog() {</span>
 <span class="source-line-no">127</span><span id="line-127">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">128</span><span id="line-128">                gd.addEnumChoice("Detector type", Algorithm);</span>
-<span class="source-line-no">129</span><span id="line-129">                DialogUtils.addToDialog(params, gd);</span>
-<span class="source-line-no">130</span><span id="line-130">                gd.addNumericField("Corners to show (0 = show all)", MaxCornerCount, 0);</span>
-<span class="source-line-no">131</span><span id="line-131">                gd.addNumericField("Corners display size", CornerMarkSize, 1);</span>
-<span class="source-line-no">132</span><span id="line-132">                gd.addEnumChoice("Corner color", CornerMarkColor);</span>
-<span class="source-line-no">133</span><span id="line-133">                gd.addCheckbox("Show corner score image", ShowCornerScoreImage);</span>
-<span class="source-line-no">134</span><span id="line-134">                </span>
-<span class="source-line-no">135</span><span id="line-135">                gd.showDialog();</span>
-<span class="source-line-no">136</span><span id="line-136">                if (gd.wasCanceled())</span>
-<span class="source-line-no">137</span><span id="line-137">                        return false;</span>
-<span class="source-line-no">138</span><span id="line-138">                </span>
-<span class="source-line-no">139</span><span id="line-139">                Algorithm = gd.getNextEnumChoice(DetectorType.class);</span>
-<span class="source-line-no">140</span><span id="line-140">                DialogUtils.getFromDialog(params, gd);</span>
-<span class="source-line-no">141</span><span id="line-141">                MaxCornerCount = (int) gd.getNextNumber();</span>
-<span class="source-line-no">142</span><span id="line-142">                CornerMarkSize = gd.getNextNumber();</span>
-<span class="source-line-no">143</span><span id="line-143">                CornerMarkColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
-<span class="source-line-no">144</span><span id="line-144">                ShowCornerScoreImage = gd.getNextBoolean();</span>
-<span class="source-line-no">145</span><span id="line-145">                return true;</span>
-<span class="source-line-no">146</span><span id="line-146">        }</span>
-<span class="source-line-no">147</span><span id="line-147">}</span>
+<span class="source-line-no">128</span><span id="line-128">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">129</span><span id="line-129">                gd.addEnumChoice("Detector type", Algorithm);</span>
+<span class="source-line-no">130</span><span id="line-130">                DialogUtils.addToDialog(params, gd);</span>
+<span class="source-line-no">131</span><span id="line-131">                gd.addNumericField("Corners to show (0 = show all)", MaxCornerCount, 0);</span>
+<span class="source-line-no">132</span><span id="line-132">                gd.addNumericField("Corners display size", CornerMarkSize, 1);</span>
+<span class="source-line-no">133</span><span id="line-133">                gd.addEnumChoice("Corner color", CornerMarkColor);</span>
+<span class="source-line-no">134</span><span id="line-134">                gd.addCheckbox("Show corner score image", ShowCornerScoreImage);</span>
+<span class="source-line-no">135</span><span id="line-135">                </span>
+<span class="source-line-no">136</span><span id="line-136">                gd.showDialog();</span>
+<span class="source-line-no">137</span><span id="line-137">                if (gd.wasCanceled())</span>
+<span class="source-line-no">138</span><span id="line-138">                        return false;</span>
+<span class="source-line-no">139</span><span id="line-139">                </span>
+<span class="source-line-no">140</span><span id="line-140">                Algorithm = gd.getNextEnumChoice(DetectorType.class);</span>
+<span class="source-line-no">141</span><span id="line-141">                DialogUtils.getFromDialog(params, gd);</span>
+<span class="source-line-no">142</span><span id="line-142">                MaxCornerCount = (int) gd.getNextNumber();</span>
+<span class="source-line-no">143</span><span id="line-143">                CornerMarkSize = gd.getNextNumber();</span>
+<span class="source-line-no">144</span><span id="line-144">                CornerMarkColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
+<span class="source-line-no">145</span><span id="line-145">                ShowCornerScoreImage = gd.getNextBoolean();</span>
+<span class="source-line-no">146</span><span id="line-146">                return true;</span>
+<span class="source-line-no">147</span><span id="line-147">        }</span>
+<span class="source-line-no">148</span><span id="line-148">}</span>
 
 
 

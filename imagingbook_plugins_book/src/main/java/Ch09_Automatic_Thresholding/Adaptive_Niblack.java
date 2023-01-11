@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.NiblackThresholder;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.Parameters;
 import imagingbook.common.threshold.adaptive.NiblackThresholder.RegionType;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
@@ -74,6 +74,7 @@ public class Adaptive_Niblack implements PlugInFilter, JavaDocHelp {
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Region type", regType);
 		addToDialog(params, gd);
 		gd.addCheckbox("Show threshold surface", ShowThresholdSurface);

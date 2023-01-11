@@ -28,7 +28,7 @@
 <span class="source-line-no">015</span><span id="line-15">import imagingbook.common.filter.nonlinear.ScalarMedianFilter;</span>
 <span class="source-line-no">016</span><span id="line-16">import imagingbook.common.filter.nonlinear.ScalarMedianFilter.Parameters;</span>
 <span class="source-line-no">017</span><span id="line-17">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">018</span><span id="line-18">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">018</span><span id="line-18">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">019</span><span id="line-19">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">020</span><span id="line-20"></span>
 <span class="source-line-no">021</span><span id="line-21">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
@@ -75,18 +75,19 @@
 <span class="source-line-no">062</span><span id="line-62">    </span>
 <span class="source-line-no">063</span><span id="line-63">    private boolean runDialog() {</span>
 <span class="source-line-no">064</span><span id="line-64">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">065</span><span id="line-65">                gd.addNumericField("Filter radius", params.radius, 1);</span>
-<span class="source-line-no">066</span><span id="line-66">                gd.showDialog();</span>
-<span class="source-line-no">067</span><span id="line-67"></span>
-<span class="source-line-no">068</span><span id="line-68">                if (gd.wasCanceled())</span>
-<span class="source-line-no">069</span><span id="line-69">                        return false;</span>
-<span class="source-line-no">070</span><span id="line-70"></span>
-<span class="source-line-no">071</span><span id="line-71">                params.radius = Math.max(gd.getNextNumber(), 1);</span>
-<span class="source-line-no">072</span><span id="line-72">                return true;</span>
-<span class="source-line-no">073</span><span id="line-73">    }</span>
-<span class="source-line-no">074</span><span id="line-74"></span>
-<span class="source-line-no">075</span><span id="line-75">}</span>
-<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">065</span><span id="line-65">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">066</span><span id="line-66">                gd.addNumericField("Filter radius", params.radius, 1);</span>
+<span class="source-line-no">067</span><span id="line-67">                gd.showDialog();</span>
+<span class="source-line-no">068</span><span id="line-68"></span>
+<span class="source-line-no">069</span><span id="line-69">                if (gd.wasCanceled())</span>
+<span class="source-line-no">070</span><span id="line-70">                        return false;</span>
+<span class="source-line-no">071</span><span id="line-71"></span>
+<span class="source-line-no">072</span><span id="line-72">                params.radius = Math.max(gd.getNextNumber(), 1);</span>
+<span class="source-line-no">073</span><span id="line-73">                return true;</span>
+<span class="source-line-no">074</span><span id="line-74">    }</span>
+<span class="source-line-no">075</span><span id="line-75"></span>
+<span class="source-line-no">076</span><span id="line-76">}</span>
+<span class="source-line-no">077</span><span id="line-77"></span>
 
 
 

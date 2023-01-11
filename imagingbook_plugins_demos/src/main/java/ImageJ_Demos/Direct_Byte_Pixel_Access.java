@@ -12,16 +12,13 @@ import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
- * This ImageJ plugin shows how to access the one-dimensional pixel array
- * of a 8-bit (= byte) grayscale image.
- * Each pixel value is increased by 10 without range limiting, i.e., bright values
- * wrap back to black etc.
- * 
- * @author WB
+ * This ImageJ plugin shows how to access the one-dimensional pixel array of a 8-bit (= byte) grayscale image. Each
+ * pixel value is increased by 10 without range limiting, i.e., bright values wrap back to black etc.
  *
+ * @author WB
  */
 public class Direct_Byte_Pixel_Access implements PlugInFilter, JavaDocHelp {
 

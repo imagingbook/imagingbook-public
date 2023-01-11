@@ -12,13 +12,13 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
- * This plugin does the same as {@link My_Inverter_A} but is based on the {@link ij.plugin.PlugIn}
- * instead of the {@link ij.plugin.filter.PlugInFilter} interface. Its advantage is that only one
- * method (run()) must be implemented. Disadvantage is that testing if an image
- * is currently open and is of the proper type must be explicitly coded.
+ * This plugin does the same as {@link My_Inverter_A} but is based on the {@link ij.plugin.PlugIn} instead of the
+ * {@link ij.plugin.filter.PlugInFilter} interface. Its advantage is that only one method (run()) must be implemented.
+ * Disadvantage is that testing if an image is currently open and is of the proper type must be explicitly coded.
+ *
  * @author WB
  */
 public class My_Inverter_B implements PlugIn, JavaDocHelp {

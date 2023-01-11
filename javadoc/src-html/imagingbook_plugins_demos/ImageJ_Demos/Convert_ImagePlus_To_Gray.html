@@ -26,28 +26,27 @@
 <span class="source-line-no">013</span><span id="line-13">import ij.plugin.PlugIn;</span>
 <span class="source-line-no">014</span><span id="line-14">import ij.process.ByteProcessor;</span>
 <span class="source-line-no">015</span><span id="line-15">import ij.process.ImageConverter;</span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">017</span><span id="line-17"></span>
 <span class="source-line-no">018</span><span id="line-18">/**</span>
-<span class="source-line-no">019</span><span id="line-19"> * This ImageJ plugin shows how to change the type of the current</span>
-<span class="source-line-no">020</span><span id="line-20"> * image 'in place', i.e., without copying the image.</span>
-<span class="source-line-no">021</span><span id="line-21"> * </span>
-<span class="source-line-no">022</span><span id="line-22"> * @author WB</span>
-<span class="source-line-no">023</span><span id="line-23"> * @version 2020/12/17</span>
-<span class="source-line-no">024</span><span id="line-24"> */</span>
-<span class="source-line-no">025</span><span id="line-25">public class Convert_ImagePlus_To_Gray implements PlugIn, JavaDocHelp {</span>
-<span class="source-line-no">026</span><span id="line-26"></span>
-<span class="source-line-no">027</span><span id="line-27">        @Override</span>
-<span class="source-line-no">028</span><span id="line-28">        public void run(String arg) {</span>
-<span class="source-line-no">029</span><span id="line-29">                ImagePlus im = IJ.getImage();   // im can be of any type</span>
-<span class="source-line-no">030</span><span id="line-30">                </span>
-<span class="source-line-no">031</span><span id="line-31">                ImageConverter iConv = new ImageConverter(im);</span>
-<span class="source-line-no">032</span><span id="line-32">                iConv.convertToGray8();</span>
-<span class="source-line-no">033</span><span id="line-33">                </span>
-<span class="source-line-no">034</span><span id="line-34">                ByteProcessor ip = (ByteProcessor) im.getProcessor();   // bp is of type ByteProcessor</span>
-<span class="source-line-no">035</span><span id="line-35">                ip.sharpen(); // process the grayscale image ...</span>
-<span class="source-line-no">036</span><span id="line-36">        }</span>
-<span class="source-line-no">037</span><span id="line-37">}</span>
+<span class="source-line-no">019</span><span id="line-19"> * This ImageJ plugin shows how to change the type of the current image 'in place', i.e., without copying the image.</span>
+<span class="source-line-no">020</span><span id="line-20"> *</span>
+<span class="source-line-no">021</span><span id="line-21"> * @author WB</span>
+<span class="source-line-no">022</span><span id="line-22"> * @version 2020/12/17</span>
+<span class="source-line-no">023</span><span id="line-23"> */</span>
+<span class="source-line-no">024</span><span id="line-24">public class Convert_ImagePlus_To_Gray implements PlugIn, JavaDocHelp {</span>
+<span class="source-line-no">025</span><span id="line-25"></span>
+<span class="source-line-no">026</span><span id="line-26">        @Override</span>
+<span class="source-line-no">027</span><span id="line-27">        public void run(String arg) {</span>
+<span class="source-line-no">028</span><span id="line-28">                ImagePlus im = IJ.getImage();   // im can be of any type</span>
+<span class="source-line-no">029</span><span id="line-29">                </span>
+<span class="source-line-no">030</span><span id="line-30">                ImageConverter iConv = new ImageConverter(im);</span>
+<span class="source-line-no">031</span><span id="line-31">                iConv.convertToGray8();</span>
+<span class="source-line-no">032</span><span id="line-32">                </span>
+<span class="source-line-no">033</span><span id="line-33">                ByteProcessor ip = (ByteProcessor) im.getProcessor();   // bp is of type ByteProcessor</span>
+<span class="source-line-no">034</span><span id="line-34">                ip.sharpen(); // process the grayscale image ...</span>
+<span class="source-line-no">035</span><span id="line-35">        }</span>
+<span class="source-line-no">036</span><span id="line-36">}</span>
 
 
 

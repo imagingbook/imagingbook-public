@@ -17,7 +17,7 @@ import imagingbook.common.filter.edgepreserving.KuwaharaF.Parameters;
 import imagingbook.common.filter.edgepreserving.KuwaharaFilterScalar;
 import imagingbook.common.filter.edgepreserving.KuwaharaFilterVector;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
@@ -78,6 +78,7 @@ public class Kuwahara_Filter implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		if (isColor)
 			gd.addCheckbox("Use vector filter (color only)", UseVectorFilter);

@@ -19,17 +19,13 @@ import ij.process.Blitter;
 import ij.process.ByteBlitter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
- * This imageJ plugin demonstrates blending of two images
- * and generating a stack of intermediate images.
- * At least two images must be open. The active image is 
- * taken as the first image, the second image may be selected
- * interactively.
- * 
- * @author WB
+ * This imageJ plugin demonstrates blending of two images and generating a stack of intermediate images. At least two
+ * images must be open. The active image is taken as the first image, the second image may be selected interactively.
  *
+ * @author WB
  */
 public class Alpha_Blending_Stack implements PlugInFilter, JavaDocHelp {
 	static int nFrames = 10;
@@ -95,7 +91,8 @@ public class Alpha_Blending_Stack implements PlugInFilter, JavaDocHelp {
 				windowTitles[i] = "untitled";
 		}
 		
-		GenericDialog gd = new GenericDialog("Alpha Blending"); 
+		GenericDialog gd = new GenericDialog("Alpha Blending");
+		gd.addHelp(getJavaDocUrl());
 		gd.addChoice("Foreground image:", 
 		windowTitles, windowTitles[0]);
 		gd.addNumericField("Frames:", nFrames, 0); 

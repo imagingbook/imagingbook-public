@@ -14,11 +14,11 @@
 <pre><span class="source-line-no">001</span><span id="line-1">/*******************************************************************************</span>
 <span class="source-line-no">002</span><span id="line-2"> * This software is provided as a supplement to the authors' textbooks on digital</span>
 <span class="source-line-no">003</span><span id="line-3"> * image processing published by Springer-Verlag in various languages and editions.</span>
-<span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause </span>
-<span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). </span>
-<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. </span>
-<span class="source-line-no">007</span><span id="line-7"> * All rights reserved. Visit https://imagingbook.com for additional details.</span>
-<span class="source-line-no">008</span><span id="line-8"> *******************************************************************************/</span>
+<span class="source-line-no">004</span><span id="line-4"> * Permission to use and distribute this software is granted under the BSD 2-Clause</span>
+<span class="source-line-no">005</span><span id="line-5"> * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).</span>
+<span class="source-line-no">006</span><span id="line-6"> * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.</span>
+<span class="source-line-no">007</span><span id="line-7"> * Visit https://imagingbook.com for additional details.</span>
+<span class="source-line-no">008</span><span id="line-8"> ******************************************************************************/</span>
 <span class="source-line-no">009</span><span id="line-9">package Ch26_MSER;</span>
 <span class="source-line-no">010</span><span id="line-10"></span>
 <span class="source-line-no">011</span><span id="line-11">import ij.IJ;</span>
@@ -36,7 +36,7 @@
 <span class="source-line-no">023</span><span id="line-23">import imagingbook.common.mser.components.ComponentTree;</span>
 <span class="source-line-no">024</span><span id="line-24">import imagingbook.common.mser.components.ComponentTree.Method;</span>
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.common.mser.components.PixelMap.Pixel;</span>
-<span class="source-line-no">026</span><span id="line-26">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">026</span><span id="line-26">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.core.resource.ImageResource;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">029</span><span id="line-29"></span>
@@ -133,18 +133,19 @@
 <span class="source-line-no">120</span><span id="line-120">        </span>
 <span class="source-line-no">121</span><span id="line-121">        private boolean runDialog() {</span>
 <span class="source-line-no">122</span><span id="line-122">                GenericDialog gd = new GenericDialog("Settings");</span>
-<span class="source-line-no">123</span><span id="line-123">                gd.addEnumChoice("component tree method", method);</span>
-<span class="source-line-no">124</span><span id="line-124"></span>
-<span class="source-line-no">125</span><span id="line-125">                gd.showDialog();</span>
-<span class="source-line-no">126</span><span id="line-126">                if (gd.wasCanceled())</span>
-<span class="source-line-no">127</span><span id="line-127">                        return false;</span>
-<span class="source-line-no">128</span><span id="line-128"></span>
-<span class="source-line-no">129</span><span id="line-129">                method = gd.getNextEnumChoice(Method.class);</span>
-<span class="source-line-no">130</span><span id="line-130">                return true;</span>
-<span class="source-line-no">131</span><span id="line-131">        }</span>
-<span class="source-line-no">132</span><span id="line-132">        </span>
+<span class="source-line-no">123</span><span id="line-123">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">124</span><span id="line-124">                gd.addEnumChoice("Component tree method", method);</span>
+<span class="source-line-no">125</span><span id="line-125"></span>
+<span class="source-line-no">126</span><span id="line-126">                gd.showDialog();</span>
+<span class="source-line-no">127</span><span id="line-127">                if (gd.wasCanceled())</span>
+<span class="source-line-no">128</span><span id="line-128">                        return false;</span>
+<span class="source-line-no">129</span><span id="line-129"></span>
+<span class="source-line-no">130</span><span id="line-130">                method = gd.getNextEnumChoice(Method.class);</span>
+<span class="source-line-no">131</span><span id="line-131">                return true;</span>
+<span class="source-line-no">132</span><span id="line-132">        }</span>
 <span class="source-line-no">133</span><span id="line-133">        </span>
-<span class="source-line-no">134</span><span id="line-134">}</span>
+<span class="source-line-no">134</span><span id="line-134">        </span>
+<span class="source-line-no">135</span><span id="line-135">}</span>
 
 
 

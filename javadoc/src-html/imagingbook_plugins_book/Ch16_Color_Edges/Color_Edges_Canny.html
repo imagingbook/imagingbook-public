@@ -33,7 +33,7 @@
 <span class="source-line-no">020</span><span id="line-20">import imagingbook.common.edges.EdgeTrace;</span>
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.common.geometry.basic.Pnt2d;</span>
 <span class="source-line-no">022</span><span id="line-22">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">023</span><span id="line-23">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">023</span><span id="line-23">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">024</span><span id="line-24">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">025</span><span id="line-25"></span>
 <span class="source-line-no">026</span><span id="line-26">import java.util.List;</span>
@@ -131,7 +131,7 @@
 <span class="source-line-no">118</span><span id="line-118"></span>
 <span class="source-line-no">119</span><span id="line-119">        private boolean runDialog() {</span>
 <span class="source-line-no">120</span><span id="line-120">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">121</span><span id="line-121"></span>
+<span class="source-line-no">121</span><span id="line-121">                gd.addHelp(getJavaDocUrl());</span>
 <span class="source-line-no">122</span><span id="line-122">                addToDialog(params, gd);</span>
 <span class="source-line-no">123</span><span id="line-123">                gd.addMessage("Plugin parameters:");</span>
 <span class="source-line-no">124</span><span id="line-124">                gd.addCheckbox("Show edge magnitude", ShowEdgeMagnitude);</span>

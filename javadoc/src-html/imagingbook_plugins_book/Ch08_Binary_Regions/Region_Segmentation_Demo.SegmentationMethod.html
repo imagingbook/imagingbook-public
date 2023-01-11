@@ -41,7 +41,7 @@
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.common.regions.RegionContourSegmentation;</span>
 <span class="source-line-no">029</span><span id="line-29">import imagingbook.common.regions.SequentialSegmentation;</span>
 <span class="source-line-no">030</span><span id="line-30">import imagingbook.core.plugin.IjPluginName;</span>
-<span class="source-line-no">031</span><span id="line-31">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">031</span><span id="line-31">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">032</span><span id="line-32">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">033</span><span id="line-33"></span>
 <span class="source-line-no">034</span><span id="line-34">import java.util.List;</span>
@@ -240,30 +240,31 @@
 <span class="source-line-no">227</span><span id="line-227"></span>
 <span class="source-line-no">228</span><span id="line-228">        private boolean runDialog() {</span>
 <span class="source-line-no">229</span><span id="line-229">                GenericDialog gd = new GenericDialog(Region_Segmentation_Demo.class.getSimpleName());</span>
-<span class="source-line-no">230</span><span id="line-230">                gd.addEnumChoice("Segmentation method", Method);</span>
-<span class="source-line-no">231</span><span id="line-231">                gd.addEnumChoice("Neighborhood type", Neighborhood);</span>
-<span class="source-line-no">232</span><span id="line-232">                gd.addCheckbox("Color components", ColorComponents);</span>
-<span class="source-line-no">233</span><span id="line-233">                gd.addCheckbox("List regions", ListRegions);</span>
-<span class="source-line-no">234</span><span id="line-234">                gd.addNumericField("Random seed (0 = none)", RandomSeed, 0);</span>
-<span class="source-line-no">235</span><span id="line-235"></span>
-<span class="source-line-no">236</span><span id="line-236">                gd.showDialog();</span>
-<span class="source-line-no">237</span><span id="line-237">                if (gd.wasCanceled()) {</span>
-<span class="source-line-no">238</span><span id="line-238">                        return false;</span>
-<span class="source-line-no">239</span><span id="line-239">                }</span>
-<span class="source-line-no">240</span><span id="line-240"></span>
-<span class="source-line-no">241</span><span id="line-241">                Method = gd.getNextEnumChoice(SegmentationMethod.class);</span>
-<span class="source-line-no">242</span><span id="line-242">                Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);</span>
-<span class="source-line-no">243</span><span id="line-243">                ColorComponents = gd.getNextBoolean();</span>
-<span class="source-line-no">244</span><span id="line-244">                ListRegions = gd.getNextBoolean();</span>
-<span class="source-line-no">245</span><span id="line-245">                RandomSeed = (int) gd.getNextNumber();</span>
-<span class="source-line-no">246</span><span id="line-246">                return true;</span>
-<span class="source-line-no">247</span><span id="line-247">        }</span>
-<span class="source-line-no">248</span><span id="line-248"></span>
+<span class="source-line-no">230</span><span id="line-230">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">231</span><span id="line-231">                gd.addEnumChoice("Segmentation method", Method);</span>
+<span class="source-line-no">232</span><span id="line-232">                gd.addEnumChoice("Neighborhood type", Neighborhood);</span>
+<span class="source-line-no">233</span><span id="line-233">                gd.addCheckbox("Color components", ColorComponents);</span>
+<span class="source-line-no">234</span><span id="line-234">                gd.addCheckbox("List regions", ListRegions);</span>
+<span class="source-line-no">235</span><span id="line-235">                gd.addNumericField("Random seed (0 = none)", RandomSeed, 0);</span>
+<span class="source-line-no">236</span><span id="line-236"></span>
+<span class="source-line-no">237</span><span id="line-237">                gd.showDialog();</span>
+<span class="source-line-no">238</span><span id="line-238">                if (gd.wasCanceled()) {</span>
+<span class="source-line-no">239</span><span id="line-239">                        return false;</span>
+<span class="source-line-no">240</span><span id="line-240">                }</span>
+<span class="source-line-no">241</span><span id="line-241"></span>
+<span class="source-line-no">242</span><span id="line-242">                Method = gd.getNextEnumChoice(SegmentationMethod.class);</span>
+<span class="source-line-no">243</span><span id="line-243">                Neighborhood = gd.getNextEnumChoice(NeighborhoodType2D.class);</span>
+<span class="source-line-no">244</span><span id="line-244">                ColorComponents = gd.getNextBoolean();</span>
+<span class="source-line-no">245</span><span id="line-245">                ListRegions = gd.getNextBoolean();</span>
+<span class="source-line-no">246</span><span id="line-246">                RandomSeed = (int) gd.getNextNumber();</span>
+<span class="source-line-no">247</span><span id="line-247">                return true;</span>
+<span class="source-line-no">248</span><span id="line-248">        }</span>
 <span class="source-line-no">249</span><span id="line-249"></span>
-<span class="source-line-no">250</span><span id="line-250">}</span>
-<span class="source-line-no">251</span><span id="line-251"></span>
+<span class="source-line-no">250</span><span id="line-250"></span>
+<span class="source-line-no">251</span><span id="line-251">}</span>
 <span class="source-line-no">252</span><span id="line-252"></span>
 <span class="source-line-no">253</span><span id="line-253"></span>
+<span class="source-line-no">254</span><span id="line-254"></span>
 
 
 

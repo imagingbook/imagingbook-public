@@ -22,7 +22,7 @@ import imagingbook.common.corners.ShiTomasiCornerDetector;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;
@@ -125,6 +125,7 @@ public class Find_Corners implements PlugInFilter, JavaDocHelp {
     
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Detector type", Algorithm);
 		DialogUtils.addToDialog(params, gd);
 		gd.addNumericField("Corners to show (0 = show all)", MaxCornerCount, 0);

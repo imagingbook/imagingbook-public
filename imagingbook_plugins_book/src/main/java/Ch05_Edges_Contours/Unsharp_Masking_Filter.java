@@ -17,7 +17,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.linear.GaussianKernel1D;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -90,6 +90,7 @@ public class Unsharp_Masking_Filter implements PlugInFilter, JavaDocHelp {
 
     private boolean runDialog() {
         GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+        gd.addHelp(getJavaDocUrl());
         gd.addNumericField("Radius (\u03C3 = 0.1 ... 20)", Radius, 1);
         gd.addNumericField("Amount (a = 1 ... 500%)", Amount * 100, 0);
 

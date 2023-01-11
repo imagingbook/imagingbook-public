@@ -22,7 +22,7 @@ import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.color.colorspace.XYZ65ColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.color.ColorSpace;
@@ -106,6 +106,7 @@ public class Convert_To_Color_Stack implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage("Convert RGB image to Lab/Luv stack.");
 		gd.addEnumChoice("Target color space", TargetSpace);
 		gd.addCheckbox("Reconstruct RGB image", ReconstructRGB);

@@ -1,11 +1,11 @@
 /*******************************************************************************
  * This software is provided as a supplement to the authors' textbooks on digital
  * image processing published by Springer-Verlag in various languages and editions.
- * Permission to use and distribute this software is granted under the BSD 2-Clause 
- * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause). 
- * Copyright (c) 2006-2022 Wilhelm Burger, Mark J. Burge. 
- * All rights reserved. Visit https://imagingbook.com for additional details.
- *******************************************************************************/
+ * Permission to use and distribute this software is granted under the BSD 2-Clause
+ * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).
+ * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.
+ * Visit https://imagingbook.com for additional details.
+ ******************************************************************************/
 package Ch26_MSER;
 
 import ij.IJ;
@@ -23,7 +23,7 @@ import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.ComponentTree;
 import imagingbook.common.mser.components.ComponentTree.Method;
 import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -120,7 +120,8 @@ public class Show_Component_Tree_Stack implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog("Settings");
-		gd.addEnumChoice("component tree method", method);
+		gd.addHelp(getJavaDocUrl());
+		gd.addEnumChoice("Component tree method", method);
 
 		gd.showDialog();
 		if (gd.wasCanceled())

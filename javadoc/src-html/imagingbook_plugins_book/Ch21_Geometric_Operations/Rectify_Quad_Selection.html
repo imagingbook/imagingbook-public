@@ -38,7 +38,7 @@
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.common.image.ImageMapper;</span>
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.common.image.interpolation.InterpolationMethod;</span>
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.common.math.PrintPrecision;</span>
-<span class="source-line-no">028</span><span id="line-28">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">028</span><span id="line-28">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">029</span><span id="line-29">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">030</span><span id="line-30"></span>
 <span class="source-line-no">031</span><span id="line-31">/**</span>
@@ -150,30 +150,31 @@
 <span class="source-line-no">137</span><span id="line-137">        </span>
 <span class="source-line-no">138</span><span id="line-138">        private boolean runDialog() {</span>
 <span class="source-line-no">139</span><span id="line-139">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">140</span><span id="line-140">                gd.addMessage(DialogUtils.formatText(50,</span>
-<span class="source-line-no">141</span><span id="line-141">                                "How to use: Select the four corners of the quad to be rectified",</span>
-<span class="source-line-no">142</span><span id="line-142">                                "with a polygon ROI, in clockwise direction, starting at the point",</span>
-<span class="source-line-no">143</span><span id="line-143">                                "that should map to the top-left corner (in portrait mode).",</span>
-<span class="source-line-no">144</span><span id="line-144">                                "Note that only the first 4 points are used!"));</span>
-<span class="source-line-no">145</span><span id="line-145">                </span>
-<span class="source-line-no">146</span><span id="line-146">                gd.addEnumChoice("Output paper format", PaperFormat);</span>
-<span class="source-line-no">147</span><span id="line-147">                gd.addNumericField("Output pixel size (mm)", OutputPixelSize, 2);</span>
-<span class="source-line-no">148</span><span id="line-148">                gd.addEnumChoice("Pixel interpolation method", IPM);</span>
-<span class="source-line-no">149</span><span id="line-149">                gd.addCheckbox("List transformation matrix", ListTransformationMatrix);</span>
-<span class="source-line-no">150</span><span id="line-150">                </span>
-<span class="source-line-no">151</span><span id="line-151">                gd.showDialog();</span>
-<span class="source-line-no">152</span><span id="line-152">                if (gd.wasCanceled())</span>
-<span class="source-line-no">153</span><span id="line-153">                        return false;</span>
-<span class="source-line-no">154</span><span id="line-154">        </span>
-<span class="source-line-no">155</span><span id="line-155">                PaperFormat = gd.getNextEnumChoice(PaperFormatType.class);</span>
-<span class="source-line-no">156</span><span id="line-156">                OutputPixelSize = gd.getNextNumber();</span>
-<span class="source-line-no">157</span><span id="line-157">                IPM = gd.getNextEnumChoice(InterpolationMethod.class);</span>
-<span class="source-line-no">158</span><span id="line-158">                ListTransformationMatrix = gd.getNextBoolean();</span>
-<span class="source-line-no">159</span><span id="line-159">                </span>
-<span class="source-line-no">160</span><span id="line-160">                return true;</span>
-<span class="source-line-no">161</span><span id="line-161">        }</span>
-<span class="source-line-no">162</span><span id="line-162">        </span>
-<span class="source-line-no">163</span><span id="line-163">}</span>
+<span class="source-line-no">140</span><span id="line-140">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">141</span><span id="line-141">                gd.addMessage(DialogUtils.formatText(50,</span>
+<span class="source-line-no">142</span><span id="line-142">                                "How to use: Select the four corners of the quad to be rectified",</span>
+<span class="source-line-no">143</span><span id="line-143">                                "with a polygon ROI, in clockwise direction, starting at the point",</span>
+<span class="source-line-no">144</span><span id="line-144">                                "that should map to the top-left corner (in portrait mode).",</span>
+<span class="source-line-no">145</span><span id="line-145">                                "Note that only the first 4 points are used!"));</span>
+<span class="source-line-no">146</span><span id="line-146">                </span>
+<span class="source-line-no">147</span><span id="line-147">                gd.addEnumChoice("Output paper format", PaperFormat);</span>
+<span class="source-line-no">148</span><span id="line-148">                gd.addNumericField("Output pixel size (mm)", OutputPixelSize, 2);</span>
+<span class="source-line-no">149</span><span id="line-149">                gd.addEnumChoice("Pixel interpolation method", IPM);</span>
+<span class="source-line-no">150</span><span id="line-150">                gd.addCheckbox("List transformation matrix", ListTransformationMatrix);</span>
+<span class="source-line-no">151</span><span id="line-151">                </span>
+<span class="source-line-no">152</span><span id="line-152">                gd.showDialog();</span>
+<span class="source-line-no">153</span><span id="line-153">                if (gd.wasCanceled())</span>
+<span class="source-line-no">154</span><span id="line-154">                        return false;</span>
+<span class="source-line-no">155</span><span id="line-155">        </span>
+<span class="source-line-no">156</span><span id="line-156">                PaperFormat = gd.getNextEnumChoice(PaperFormatType.class);</span>
+<span class="source-line-no">157</span><span id="line-157">                OutputPixelSize = gd.getNextNumber();</span>
+<span class="source-line-no">158</span><span id="line-158">                IPM = gd.getNextEnumChoice(InterpolationMethod.class);</span>
+<span class="source-line-no">159</span><span id="line-159">                ListTransformationMatrix = gd.getNextBoolean();</span>
+<span class="source-line-no">160</span><span id="line-160">                </span>
+<span class="source-line-no">161</span><span id="line-161">                return true;</span>
+<span class="source-line-no">162</span><span id="line-162">        }</span>
+<span class="source-line-no">163</span><span id="line-163">        </span>
+<span class="source-line-no">164</span><span id="line-164">}</span>
 
 
 

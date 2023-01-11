@@ -1028,4 +1028,14 @@ public abstract class IjUtils {
         }
         return k;
     }
+
+	/**
+	 * Checks if the specified class implements one of ImageJ's plugin interfaces.
+	 *
+	 * @param clazz any class
+	 * @return true iff class implements one of ImageJ's plugin interfaces
+	 */
+	public static boolean isIjPlugin(Class<?> clazz) {
+		return PlugIn.class.isAssignableFrom(clazz) || PlugInFilter.class.isAssignableFrom(clazz);
+	}
 }

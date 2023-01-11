@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.matching.DistanceTransform;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -69,6 +69,7 @@ public class Show_Distance_Map implements PlugInFilter, JavaDocHelp {
     
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		if (im.isInvertedLut()) {
 			gd.setInsets(0, 0, 0);
 			gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");

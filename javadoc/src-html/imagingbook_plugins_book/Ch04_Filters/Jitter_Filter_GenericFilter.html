@@ -30,7 +30,7 @@
 <span class="source-line-no">017</span><span id="line-17">import imagingbook.common.ij.DialogUtils;</span>
 <span class="source-line-no">018</span><span id="line-18">import imagingbook.common.image.OutOfBoundsStrategy;</span>
 <span class="source-line-no">019</span><span id="line-19">import imagingbook.common.image.PixelPack;</span>
-<span class="source-line-no">020</span><span id="line-20">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">020</span><span id="line-20">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">022</span><span id="line-22"></span>
 <span class="source-line-no">023</span><span id="line-23">import java.util.Random;</span>
@@ -109,19 +109,20 @@
 <span class="source-line-no">096</span><span id="line-96"></span>
 <span class="source-line-no">097</span><span id="line-97">        private boolean runDialog() {</span>
 <span class="source-line-no">098</span><span id="line-98">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">099</span><span id="line-99">                gd.addMessage("Filter kernel size is (2r+1) x (2r+1):");</span>
-<span class="source-line-no">100</span><span id="line-100">                gd.addNumericField("Kernel radius (r &gt; 0)", R, 0);</span>
-<span class="source-line-no">101</span><span id="line-101">                gd.addEnumChoice("Out-of-bounds strategy", OBS);</span>
-<span class="source-line-no">102</span><span id="line-102"></span>
-<span class="source-line-no">103</span><span id="line-103">                gd.showDialog();</span>
-<span class="source-line-no">104</span><span id="line-104">                if (gd.wasCanceled())</span>
-<span class="source-line-no">105</span><span id="line-105">                        return false;</span>
-<span class="source-line-no">106</span><span id="line-106"></span>
-<span class="source-line-no">107</span><span id="line-107">                R = (int) gd.getNextNumber();</span>
-<span class="source-line-no">108</span><span id="line-108">                OBS = gd.getNextEnumChoice(OutOfBoundsStrategy.class);</span>
-<span class="source-line-no">109</span><span id="line-109">                return true;</span>
-<span class="source-line-no">110</span><span id="line-110">        }</span>
-<span class="source-line-no">111</span><span id="line-111">}</span>
+<span class="source-line-no">099</span><span id="line-99">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">100</span><span id="line-100">                gd.addMessage("Filter kernel size is (2r+1) x (2r+1):");</span>
+<span class="source-line-no">101</span><span id="line-101">                gd.addNumericField("Kernel radius (r &gt; 0)", R, 0);</span>
+<span class="source-line-no">102</span><span id="line-102">                gd.addEnumChoice("Out-of-bounds strategy", OBS);</span>
+<span class="source-line-no">103</span><span id="line-103"></span>
+<span class="source-line-no">104</span><span id="line-104">                gd.showDialog();</span>
+<span class="source-line-no">105</span><span id="line-105">                if (gd.wasCanceled())</span>
+<span class="source-line-no">106</span><span id="line-106">                        return false;</span>
+<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">108</span><span id="line-108">                R = (int) gd.getNextNumber();</span>
+<span class="source-line-no">109</span><span id="line-109">                OBS = gd.getNextEnumChoice(OutOfBoundsStrategy.class);</span>
+<span class="source-line-no">110</span><span id="line-110">                return true;</span>
+<span class="source-line-no">111</span><span id="line-111">        }</span>
+<span class="source-line-no">112</span><span id="line-112">}</span>
 
 
 

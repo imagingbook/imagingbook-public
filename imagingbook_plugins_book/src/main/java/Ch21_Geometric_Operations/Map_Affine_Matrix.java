@@ -17,7 +17,7 @@ import imagingbook.common.geometry.mappings.linear.AffineMapping2D;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.ImageMapper;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.GridLayout;
@@ -79,8 +79,8 @@ public class Map_Affine_Matrix implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage("Affine forward transformation matrix (source to target):");
-		
 		TextField[] txtField = new TextField[A[0].length * A.length];
 		Panel panel = makePanel(A, ElemNames, txtField);
 		gd.addPanel(panel);

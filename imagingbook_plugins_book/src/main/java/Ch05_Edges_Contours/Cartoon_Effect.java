@@ -16,7 +16,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.edges.GrayscaleEdgeDetector;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -61,7 +61,7 @@ public class Cartoon_Effect implements PlugInFilter, JavaDocHelp {
 
     @Override
     public void run(ImageProcessor ip) {
-        if (!getUserInput()) {
+        if (!runDialog()) {
             return;
         }
 
@@ -124,12 +124,11 @@ public class Cartoon_Effect implements PlugInFilter, JavaDocHelp {
         }
     }
 
-    GenericDialog gd = null;
-
     // ---------------------------------------------------------------------
 
-    private boolean getUserInput() {    // TODO: add a preview button
-        gd = new GenericDialog(Cartoon_Effect.class.getSimpleName());
+    private boolean runDialog() {    // TODO: add a preview button
+        GenericDialog gd = new GenericDialog(Cartoon_Effect.class.getSimpleName());
+        gd.addHelp(getJavaDocUrl());
         gd.addMessage("Parameters: 0 \u2264 a \u2264 b \u2264 1");
         gd.addNumericField("a", A, 2);
         gd.addNumericField("b", B, 2);

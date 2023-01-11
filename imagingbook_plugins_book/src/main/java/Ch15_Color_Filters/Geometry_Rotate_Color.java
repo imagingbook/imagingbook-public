@@ -22,7 +22,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.interpolation.InterpolationMethod;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.color.ColorSpace;
@@ -70,7 +70,7 @@ public class Geometry_Rotate_Color implements PlugInFilter, JavaDocHelp {
     }
 
     public void run(ImageProcessor ip) {
-    	if (!getParameters()) 
+    	if (!runDialog())
     		return;
     	
     	ColorPack colStack = new ColorPack((ColorProcessor) ip);
@@ -103,8 +103,9 @@ public class Geometry_Rotate_Color implements PlugInFilter, JavaDocHelp {
        	result.show();
     }
     
-    boolean getParameters() {
+    boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Color space", CsType);
 		gd.addNumericField("Rotation angle", Angle, 0);
 		

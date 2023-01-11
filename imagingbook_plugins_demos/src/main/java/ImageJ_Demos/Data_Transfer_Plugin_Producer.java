@@ -11,19 +11,16 @@ package ImageJ_Demos;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
- * This ImageJ plugin shows how data can be communicated from one
- * plugin to another. In this example, THIS plugin ({@link Data_Transfer_Plugin_Producer})
- * calculates a histogram that is subsequently retrieved by ANOTHER
- * plugin {@link Data_Transfer_Plugin_Consumer}. 
- * Data are stored as a <strong>property</strong> of the associated image (of type {@link ImagePlus}).
- * Note that the stored data should contain no instances of self-defined
- * classes, since these may be re-loaded when performing compile-and-run.
- * 
- * @author WB
+ * This ImageJ plugin shows how data can be communicated from one plugin to another. In this example, THIS plugin
+ * ({@link Data_Transfer_Plugin_Producer}) calculates a histogram that is subsequently retrieved by ANOTHER plugin
+ * {@link Data_Transfer_Plugin_Consumer}. Data are stored as a <strong>property</strong> of the associated image (of
+ * type {@link ImagePlus}). Note that the stored data should contain no instances of self-defined classes, since these
+ * may be re-loaded when performing compile-and-run.
  *
+ * @author WB
  */
 public class Data_Transfer_Plugin_Producer implements PlugInFilter, JavaDocHelp {
 	

@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch11 Circles & Ellipses")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch11_Circle_Ellipse_Fitting;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

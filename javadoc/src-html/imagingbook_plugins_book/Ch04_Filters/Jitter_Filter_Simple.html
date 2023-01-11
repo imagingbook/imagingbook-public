@@ -26,7 +26,7 @@
 <span class="source-line-no">013</span><span id="line-13">import ij.plugin.filter.PlugInFilter;</span>
 <span class="source-line-no">014</span><span id="line-14">import ij.process.ImageProcessor;</span>
 <span class="source-line-no">015</span><span id="line-15">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">017</span><span id="line-17">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">018</span><span id="line-18"></span>
 <span class="source-line-no">019</span><span id="line-19">import java.util.Random;</span>
@@ -93,17 +93,18 @@
 <span class="source-line-no">080</span><span id="line-80"></span>
 <span class="source-line-no">081</span><span id="line-81">        private boolean runDialog() {</span>
 <span class="source-line-no">082</span><span id="line-82">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">083</span><span id="line-83">                gd.addMessage("Filter kernel size is (2r+1) x (2r+1):");</span>
-<span class="source-line-no">084</span><span id="line-84">                gd.addNumericField("Kernel radius (r &gt; 0)", R, 0);</span>
-<span class="source-line-no">085</span><span id="line-85"></span>
-<span class="source-line-no">086</span><span id="line-86">                gd.showDialog();</span>
-<span class="source-line-no">087</span><span id="line-87">                if (gd.wasCanceled())</span>
-<span class="source-line-no">088</span><span id="line-88">                        return false;</span>
-<span class="source-line-no">089</span><span id="line-89"></span>
-<span class="source-line-no">090</span><span id="line-90">                R = (int) gd.getNextNumber();</span>
-<span class="source-line-no">091</span><span id="line-91">                return true;</span>
-<span class="source-line-no">092</span><span id="line-92">        }</span>
-<span class="source-line-no">093</span><span id="line-93">}</span>
+<span class="source-line-no">083</span><span id="line-83">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">084</span><span id="line-84">                gd.addMessage("Filter kernel size is (2r+1) x (2r+1):");</span>
+<span class="source-line-no">085</span><span id="line-85">                gd.addNumericField("Kernel radius (r &gt; 0)", R, 0);</span>
+<span class="source-line-no">086</span><span id="line-86"></span>
+<span class="source-line-no">087</span><span id="line-87">                gd.showDialog();</span>
+<span class="source-line-no">088</span><span id="line-88">                if (gd.wasCanceled())</span>
+<span class="source-line-no">089</span><span id="line-89">                        return false;</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">                R = (int) gd.getNextNumber();</span>
+<span class="source-line-no">092</span><span id="line-92">                return true;</span>
+<span class="source-line-no">093</span><span id="line-93">        }</span>
+<span class="source-line-no">094</span><span id="line-94">}</span>
 
 
 

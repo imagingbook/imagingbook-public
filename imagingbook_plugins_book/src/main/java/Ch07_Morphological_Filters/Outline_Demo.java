@@ -18,7 +18,7 @@ import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.morphology.BinaryMorphologyOperator;
 import imagingbook.common.morphology.BinaryOutline;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -69,6 +69,7 @@ public class Outline_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private boolean showDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		if (im.isInvertedLut()) {
 			gd.setInsets(0, 0, 0);
 			gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");

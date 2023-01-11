@@ -39,7 +39,7 @@
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.common.regions.RegionContourSegmentation;</span>
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.common.util.GenericProperties.PropertyKey;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.common.util.tuples.Tuple2;</span>
-<span class="source-line-no">029</span><span id="line-29">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">029</span><span id="line-29">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">030</span><span id="line-30">import imagingbook.core.resource.ImageResource;</span>
 <span class="source-line-no">031</span><span id="line-31">import imagingbook.sampleimages.kimia.Kimia1070;</span>
 <span class="source-line-no">032</span><span id="line-32">import imagingbook.sampleimages.kimia.KimiaCollage;</span>
@@ -252,23 +252,24 @@
 <span class="source-line-no">239</span><span id="line-239"></span>
 <span class="source-line-no">240</span><span id="line-240">    private boolean runDialog() {</span>
 <span class="source-line-no">241</span><span id="line-241">        GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">242</span><span id="line-242">        gd.addNumericField("Minimum region size", MinRegionSize, 0);</span>
-<span class="source-line-no">243</span><span id="line-243">        gd.addNumericField("Uax. moment vector distance", MaxMomentDistance, 3);</span>
-<span class="source-line-no">244</span><span id="line-244">        gd.addCheckbox("Use Mahalanobis distance", UseMahalanobisDistance);</span>
-<span class="source-line-no">245</span><span id="line-245"></span>
-<span class="source-line-no">246</span><span id="line-246">        gd.showDialog();</span>
-<span class="source-line-no">247</span><span id="line-247">        if (gd.wasCanceled()) {</span>
-<span class="source-line-no">248</span><span id="line-248">            return false;</span>
-<span class="source-line-no">249</span><span id="line-249">        }</span>
-<span class="source-line-no">250</span><span id="line-250"></span>
-<span class="source-line-no">251</span><span id="line-251">        MinRegionSize = (int) gd.getNextNumber();</span>
-<span class="source-line-no">252</span><span id="line-252">        MaxMomentDistance = gd.getNextNumber();</span>
-<span class="source-line-no">253</span><span id="line-253">        UseMahalanobisDistance = gd.getNextBoolean();</span>
-<span class="source-line-no">254</span><span id="line-254">        return true;</span>
-<span class="source-line-no">255</span><span id="line-255">    }</span>
-<span class="source-line-no">256</span><span id="line-256"></span>
-<span class="source-line-no">257</span><span id="line-257">}</span>
-<span class="source-line-no">258</span><span id="line-258"></span>
+<span class="source-line-no">242</span><span id="line-242">        gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">243</span><span id="line-243">        gd.addNumericField("Minimum region size", MinRegionSize, 0);</span>
+<span class="source-line-no">244</span><span id="line-244">        gd.addNumericField("Uax. moment vector distance", MaxMomentDistance, 3);</span>
+<span class="source-line-no">245</span><span id="line-245">        gd.addCheckbox("Use Mahalanobis distance", UseMahalanobisDistance);</span>
+<span class="source-line-no">246</span><span id="line-246"></span>
+<span class="source-line-no">247</span><span id="line-247">        gd.showDialog();</span>
+<span class="source-line-no">248</span><span id="line-248">        if (gd.wasCanceled()) {</span>
+<span class="source-line-no">249</span><span id="line-249">            return false;</span>
+<span class="source-line-no">250</span><span id="line-250">        }</span>
+<span class="source-line-no">251</span><span id="line-251"></span>
+<span class="source-line-no">252</span><span id="line-252">        MinRegionSize = (int) gd.getNextNumber();</span>
+<span class="source-line-no">253</span><span id="line-253">        MaxMomentDistance = gd.getNextNumber();</span>
+<span class="source-line-no">254</span><span id="line-254">        UseMahalanobisDistance = gd.getNextBoolean();</span>
+<span class="source-line-no">255</span><span id="line-255">        return true;</span>
+<span class="source-line-no">256</span><span id="line-256">    }</span>
+<span class="source-line-no">257</span><span id="line-257"></span>
+<span class="source-line-no">258</span><span id="line-258">}</span>
+<span class="source-line-no">259</span><span id="line-259"></span>
 
 
 

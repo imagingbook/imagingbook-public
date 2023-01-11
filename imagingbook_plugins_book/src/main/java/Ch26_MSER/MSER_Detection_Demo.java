@@ -29,7 +29,7 @@ import imagingbook.common.mser.MserDetector;
 import imagingbook.common.mser.MserParameters;
 import imagingbook.common.mser.components.Component;
 import imagingbook.common.mser.components.PixelMap.Pixel;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
@@ -237,8 +237,8 @@ public class MSER_Detection_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog(MserParameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
-		
 		gd.addCheckbox("BLACK -> WHITE", BlackToWhite);
 		gd.addCheckbox("WHITE -> BLACK", WhiteToBlack);
 		gd.addCheckbox("Use 2 colors only", UseTwoColorsOnly);

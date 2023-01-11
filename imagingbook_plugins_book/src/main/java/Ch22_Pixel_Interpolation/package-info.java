@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch22 Pixel Interpolation")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch22_Pixel_Interpolation;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

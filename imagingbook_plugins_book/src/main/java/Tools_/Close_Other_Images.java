@@ -20,7 +20,7 @@ import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 public class Close_Other_Images implements PlugInFilter, JavaDocHelp {
 	
@@ -40,6 +40,7 @@ public class Close_Other_Images implements PlugInFilter, JavaDocHelp {
 		}
 		
 		GenericDialog gd = new GenericDialog("Close all images");
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Close current image too?", false);
 		gd.showDialog();
 		if (gd.wasCanceled()) {

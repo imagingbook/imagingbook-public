@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.AdaptiveThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder;
 import imagingbook.common.threshold.adaptive.BernsenThresholder.Parameters;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
@@ -78,6 +78,7 @@ public class Adaptive_Bernsen implements PlugInFilter, JavaDocHelp {
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addCheckbox("Show threshold surface", ShowThresholdSurface);
 		

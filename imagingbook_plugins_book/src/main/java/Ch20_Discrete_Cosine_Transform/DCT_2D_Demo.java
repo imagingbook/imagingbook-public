@@ -15,7 +15,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.spectral.dct.Dct2d;
 import imagingbook.spectral.dct.Dct2dDirect;
@@ -130,6 +130,7 @@ public class DCT_2D_Demo implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Use fast transform", UseFastMode);
 		gd.addCheckbox("Use double precision", UseDoublePrecision);
 		gd.addCheckbox("Show absolute/log spectrum", ShowLogSpectrum);

@@ -20,7 +20,7 @@ import imagingbook.common.edges.CannyEdgeDetector.Parameters;
 import imagingbook.common.edges.EdgeTrace;
 import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.List;
@@ -118,7 +118,7 @@ public class Color_Edges_Canny implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addMessage("Plugin parameters:");
 		gd.addCheckbox("Show edge magnitude", ShowEdgeMagnitude);

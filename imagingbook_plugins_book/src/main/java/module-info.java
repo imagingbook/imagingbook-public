@@ -1,10 +1,16 @@
-import imagingbook.core.jdoc.JavaDocBaseUrl;
+/*******************************************************************************
+ * This software is provided as a supplement to the authors' textbooks on digital
+ * image processing published by Springer-Verlag in various languages and editions.
+ * Permission to use and distribute this software is granted under the BSD 2-Clause
+ * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).
+ * Copyright (c) 2006-2023 Wilhelm Burger, Mark J. Burge. All rights reserved.
+ * Visit https://imagingbook.com for additional details.
+ ******************************************************************************/
 
 /**
  * A collection of ImageJ plugins referenced in various chapters of the associated image processing books as well as
  * additional demos and tools.
  */
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
 module imagingbook_plugins_book {
 	exports Ch02_Histograms_Statistics;
 	exports Ch03_Point_Operations;

@@ -26,7 +26,7 @@
 <span class="source-line-no">013</span><span id="line-13">import ij.plugin.PlugIn;</span>
 <span class="source-line-no">014</span><span id="line-14">import ij.process.ColorProcessor;</span>
 <span class="source-line-no">015</span><span id="line-15">import imagingbook.common.color.iterate.RandomHueGenerator;</span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">017</span><span id="line-17"></span>
 <span class="source-line-no">018</span><span id="line-18">import java.awt.Color;</span>
 <span class="source-line-no">019</span><span id="line-19"></span>
@@ -77,29 +77,30 @@
 <span class="source-line-no">064</span><span id="line-64">        </span>
 <span class="source-line-no">065</span><span id="line-65">        private boolean runDialog() {</span>
 <span class="source-line-no">066</span><span id="line-66">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">067</span><span id="line-67">                gd.addMessage("Creates a tiled color image with random hues.");</span>
-<span class="source-line-no">068</span><span id="line-68">                gd.addNumericField("Tile size", TileSize, 0);</span>
-<span class="source-line-no">069</span><span id="line-69">                gd.addNumericField("Tiles horizontal", TilesHor, 0);</span>
-<span class="source-line-no">070</span><span id="line-70">                gd.addNumericField("Tiles vertical", TilesVer, 0);</span>
-<span class="source-line-no">071</span><span id="line-71">                gd.addNumericField("Saturation 0..1 (S)", Saturation, 2);</span>
-<span class="source-line-no">072</span><span id="line-72">                gd.addNumericField("Brightness 0..1 (V)", Brightness, 2);</span>
-<span class="source-line-no">073</span><span id="line-73">                gd.addNumericField("Random seed (0=none)", RandomSeed, 0);</span>
-<span class="source-line-no">074</span><span id="line-74">                gd.addStringField("Image title", title, 12);</span>
-<span class="source-line-no">075</span><span id="line-75">                </span>
-<span class="source-line-no">076</span><span id="line-76">                gd.showDialog();</span>
-<span class="source-line-no">077</span><span id="line-77">                if (gd.wasCanceled())</span>
-<span class="source-line-no">078</span><span id="line-78">                        return false;</span>
-<span class="source-line-no">079</span><span id="line-79">                </span>
-<span class="source-line-no">080</span><span id="line-80">                TileSize = (int) gd.getNextNumber();</span>
-<span class="source-line-no">081</span><span id="line-81">                TilesHor = (int) gd.getNextNumber();</span>
-<span class="source-line-no">082</span><span id="line-82">                TilesVer = (int) gd.getNextNumber();</span>
-<span class="source-line-no">083</span><span id="line-83">                Saturation = gd.getNextNumber();</span>
-<span class="source-line-no">084</span><span id="line-84">                Brightness = gd.getNextNumber();</span>
-<span class="source-line-no">085</span><span id="line-85">                RandomSeed = (int) gd.getNextNumber();</span>
-<span class="source-line-no">086</span><span id="line-86">                title = gd.getNextString();</span>
-<span class="source-line-no">087</span><span id="line-87">                return true;</span>
-<span class="source-line-no">088</span><span id="line-88">        }</span>
-<span class="source-line-no">089</span><span id="line-89">}</span>
+<span class="source-line-no">067</span><span id="line-67">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">068</span><span id="line-68">                gd.addMessage("Creates a tiled color image with random hues.");</span>
+<span class="source-line-no">069</span><span id="line-69">                gd.addNumericField("Tile size", TileSize, 0);</span>
+<span class="source-line-no">070</span><span id="line-70">                gd.addNumericField("Tiles horizontal", TilesHor, 0);</span>
+<span class="source-line-no">071</span><span id="line-71">                gd.addNumericField("Tiles vertical", TilesVer, 0);</span>
+<span class="source-line-no">072</span><span id="line-72">                gd.addNumericField("Saturation 0..1 (S)", Saturation, 2);</span>
+<span class="source-line-no">073</span><span id="line-73">                gd.addNumericField("Brightness 0..1 (V)", Brightness, 2);</span>
+<span class="source-line-no">074</span><span id="line-74">                gd.addNumericField("Random seed (0=none)", RandomSeed, 0);</span>
+<span class="source-line-no">075</span><span id="line-75">                gd.addStringField("Image title", title, 12);</span>
+<span class="source-line-no">076</span><span id="line-76">                </span>
+<span class="source-line-no">077</span><span id="line-77">                gd.showDialog();</span>
+<span class="source-line-no">078</span><span id="line-78">                if (gd.wasCanceled())</span>
+<span class="source-line-no">079</span><span id="line-79">                        return false;</span>
+<span class="source-line-no">080</span><span id="line-80">                </span>
+<span class="source-line-no">081</span><span id="line-81">                TileSize = (int) gd.getNextNumber();</span>
+<span class="source-line-no">082</span><span id="line-82">                TilesHor = (int) gd.getNextNumber();</span>
+<span class="source-line-no">083</span><span id="line-83">                TilesVer = (int) gd.getNextNumber();</span>
+<span class="source-line-no">084</span><span id="line-84">                Saturation = gd.getNextNumber();</span>
+<span class="source-line-no">085</span><span id="line-85">                Brightness = gd.getNextNumber();</span>
+<span class="source-line-no">086</span><span id="line-86">                RandomSeed = (int) gd.getNextNumber();</span>
+<span class="source-line-no">087</span><span id="line-87">                title = gd.getNextString();</span>
+<span class="source-line-no">088</span><span id="line-88">                return true;</span>
+<span class="source-line-no">089</span><span id="line-89">        }</span>
+<span class="source-line-no">090</span><span id="line-90">}</span>
 
 
 

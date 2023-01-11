@@ -31,42 +31,38 @@
 <span class="source-line-no">018</span><span id="line-18">import imagingbook.common.filter.linear.Kernel2D;</span>
 <span class="source-line-no">019</span><span id="line-19">import imagingbook.common.filter.linear.LinearFilter;</span>
 <span class="source-line-no">020</span><span id="line-20">import imagingbook.common.filter.linear.LinearFilterSeparable;</span>
-<span class="source-line-no">021</span><span id="line-21">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">021</span><span id="line-21">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">022</span><span id="line-22"></span>
 <span class="source-line-no">023</span><span id="line-23"></span>
 <span class="source-line-no">024</span><span id="line-24">/**</span>
-<span class="source-line-no">025</span><span id="line-25"> * This ImageJ plugin shows how to construct a generic linear filter</span>
-<span class="source-line-no">026</span><span id="line-26"> * based on classes {@link LinearFilter} and {@link Kernel2D}.</span>
-<span class="source-line-no">027</span><span id="line-27"> * This plugin works for all types of images.</span>
-<span class="source-line-no">028</span><span id="line-28"> * On RGB color images, the filter is applied independently</span>
-<span class="source-line-no">029</span><span id="line-29"> * to the three color channels.</span>
-<span class="source-line-no">030</span><span id="line-30"> * The active image is modified.</span>
-<span class="source-line-no">031</span><span id="line-31"> * </span>
-<span class="source-line-no">032</span><span id="line-32"> * @author WB</span>
-<span class="source-line-no">033</span><span id="line-33"> * @version 2022/03/30</span>
-<span class="source-line-no">034</span><span id="line-34"> * </span>
-<span class="source-line-no">035</span><span id="line-35"> * @see LinearFilter</span>
-<span class="source-line-no">036</span><span id="line-36"> * @see LinearFilterSeparable</span>
-<span class="source-line-no">037</span><span id="line-37"> * @see GenericFilter</span>
-<span class="source-line-no">038</span><span id="line-38"> * @see Kernel2D</span>
-<span class="source-line-no">039</span><span id="line-39"> * @see GaussianKernel1D</span>
-<span class="source-line-no">040</span><span id="line-40"> */</span>
-<span class="source-line-no">041</span><span id="line-41">public class Gaussian_Filter_Separable implements PlugInFilter, JavaDocHelp {</span>
-<span class="source-line-no">042</span><span id="line-42">        </span>
-<span class="source-line-no">043</span><span id="line-43">        static double SIGMA = 7.5;</span>
+<span class="source-line-no">025</span><span id="line-25"> * This ImageJ plugin shows how to construct a generic linear filter based on classes {@link LinearFilter} and</span>
+<span class="source-line-no">026</span><span id="line-26"> * {@link Kernel2D}. This plugin works for all types of images. On RGB color images, the filter is applied independently</span>
+<span class="source-line-no">027</span><span id="line-27"> * to the three color channels. The active image is modified.</span>
+<span class="source-line-no">028</span><span id="line-28"> *</span>
+<span class="source-line-no">029</span><span id="line-29"> * @author WB</span>
+<span class="source-line-no">030</span><span id="line-30"> * @version 2022/03/30</span>
+<span class="source-line-no">031</span><span id="line-31"> * @see LinearFilter</span>
+<span class="source-line-no">032</span><span id="line-32"> * @see LinearFilterSeparable</span>
+<span class="source-line-no">033</span><span id="line-33"> * @see GenericFilter</span>
+<span class="source-line-no">034</span><span id="line-34"> * @see Kernel2D</span>
+<span class="source-line-no">035</span><span id="line-35"> * @see GaussianKernel1D</span>
+<span class="source-line-no">036</span><span id="line-36"> */</span>
+<span class="source-line-no">037</span><span id="line-37">public class Gaussian_Filter_Separable implements PlugInFilter, JavaDocHelp {</span>
+<span class="source-line-no">038</span><span id="line-38">        </span>
+<span class="source-line-no">039</span><span id="line-39">        static double SIGMA = 7.5;</span>
+<span class="source-line-no">040</span><span id="line-40"></span>
+<span class="source-line-no">041</span><span id="line-41">    public int setup(String arg, ImagePlus imp) {</span>
+<span class="source-line-no">042</span><span id="line-42">        return DOES_ALL;</span>
+<span class="source-line-no">043</span><span id="line-43">    }</span>
 <span class="source-line-no">044</span><span id="line-44"></span>
-<span class="source-line-no">045</span><span id="line-45">    public int setup(String arg, ImagePlus imp) {</span>
-<span class="source-line-no">046</span><span id="line-46">        return DOES_ALL;</span>
-<span class="source-line-no">047</span><span id="line-47">    }</span>
-<span class="source-line-no">048</span><span id="line-48"></span>
-<span class="source-line-no">049</span><span id="line-49">    public void run(ImageProcessor ip) {</span>
-<span class="source-line-no">050</span><span id="line-50">        IJ.log("sigma = " + SIGMA);</span>
-<span class="source-line-no">051</span><span id="line-51">                Kernel1D kernel = new GaussianKernel1D(SIGMA);</span>
-<span class="source-line-no">052</span><span id="line-52">                GenericFilter filter = new LinearFilterSeparable(kernel);</span>
-<span class="source-line-no">053</span><span id="line-53">                filter.applyTo(ip);</span>
-<span class="source-line-no">054</span><span id="line-54">    }</span>
-<span class="source-line-no">055</span><span id="line-55"></span>
-<span class="source-line-no">056</span><span id="line-56">}</span>
+<span class="source-line-no">045</span><span id="line-45">    public void run(ImageProcessor ip) {</span>
+<span class="source-line-no">046</span><span id="line-46">        IJ.log("sigma = " + SIGMA);</span>
+<span class="source-line-no">047</span><span id="line-47">                Kernel1D kernel = new GaussianKernel1D(SIGMA);</span>
+<span class="source-line-no">048</span><span id="line-48">                GenericFilter filter = new LinearFilterSeparable(kernel);</span>
+<span class="source-line-no">049</span><span id="line-49">                filter.applyTo(ip);</span>
+<span class="source-line-no">050</span><span id="line-50">    }</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">}</span>
 
 
 

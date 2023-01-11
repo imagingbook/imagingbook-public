@@ -23,7 +23,7 @@ import imagingbook.common.regions.BinaryRegion;
 import imagingbook.common.regions.BinaryRegionSegmentation;
 import imagingbook.common.regions.Contour;
 import imagingbook.common.regions.RegionContourSegmentation;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.kimia.KimiaCollage;
 
 import java.awt.Color;
@@ -118,6 +118,7 @@ public class Flusser_Moments_From_Binary_Regions implements PlugInFilter, JavaDo
 
     private boolean runDialog() {
         GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+        gd.addHelp(getJavaDocUrl());
         if (im.isInvertedLut()) {
             gd.setInsets(0, 0, 0);
             gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");

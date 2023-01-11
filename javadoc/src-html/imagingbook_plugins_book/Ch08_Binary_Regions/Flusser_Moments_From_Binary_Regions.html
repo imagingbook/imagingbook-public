@@ -36,7 +36,7 @@
 <span class="source-line-no">023</span><span id="line-23">import imagingbook.common.regions.BinaryRegionSegmentation;</span>
 <span class="source-line-no">024</span><span id="line-24">import imagingbook.common.regions.Contour;</span>
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.common.regions.RegionContourSegmentation;</span>
-<span class="source-line-no">026</span><span id="line-26">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">026</span><span id="line-26">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.sampleimages.kimia.KimiaCollage;</span>
 <span class="source-line-no">028</span><span id="line-28"></span>
 <span class="source-line-no">029</span><span id="line-29">import java.awt.Color;</span>
@@ -131,26 +131,27 @@
 <span class="source-line-no">118</span><span id="line-118"></span>
 <span class="source-line-no">119</span><span id="line-119">    private boolean runDialog() {</span>
 <span class="source-line-no">120</span><span id="line-120">        GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">121</span><span id="line-121">        if (im.isInvertedLut()) {</span>
-<span class="source-line-no">122</span><span id="line-122">            gd.setInsets(0, 0, 0);</span>
-<span class="source-line-no">123</span><span id="line-123">            gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");</span>
-<span class="source-line-no">124</span><span id="line-124">        }</span>
-<span class="source-line-no">125</span><span id="line-125">        gd.addNumericField("Minimum region size (pixels)", MIN_REGION_SIZE);</span>
-<span class="source-line-no">126</span><span id="line-126">        gd.addNumericField("Maximum region count", MAX_REGION_COUNT);</span>
-<span class="source-line-no">127</span><span id="line-127">        gd.addCheckbox("Mark outer contours", MARK_OUTER_CONTOURS);</span>
-<span class="source-line-no">128</span><span id="line-128"></span>
-<span class="source-line-no">129</span><span id="line-129">        gd.showDialog();</span>
-<span class="source-line-no">130</span><span id="line-130">        if (gd.wasCanceled()) {</span>
-<span class="source-line-no">131</span><span id="line-131">            return false;</span>
-<span class="source-line-no">132</span><span id="line-132">        }</span>
-<span class="source-line-no">133</span><span id="line-133"></span>
-<span class="source-line-no">134</span><span id="line-134">        MIN_REGION_SIZE = (int) gd.getNextNumber();</span>
-<span class="source-line-no">135</span><span id="line-135">        MAX_REGION_COUNT = (int) gd.getNextNumber();</span>
-<span class="source-line-no">136</span><span id="line-136">        MARK_OUTER_CONTOURS = gd.getNextBoolean();</span>
-<span class="source-line-no">137</span><span id="line-137">        return true;</span>
-<span class="source-line-no">138</span><span id="line-138">    }</span>
-<span class="source-line-no">139</span><span id="line-139"></span>
-<span class="source-line-no">140</span><span id="line-140">}</span>
+<span class="source-line-no">121</span><span id="line-121">        gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">122</span><span id="line-122">        if (im.isInvertedLut()) {</span>
+<span class="source-line-no">123</span><span id="line-123">            gd.setInsets(0, 0, 0);</span>
+<span class="source-line-no">124</span><span id="line-124">            gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");</span>
+<span class="source-line-no">125</span><span id="line-125">        }</span>
+<span class="source-line-no">126</span><span id="line-126">        gd.addNumericField("Minimum region size (pixels)", MIN_REGION_SIZE);</span>
+<span class="source-line-no">127</span><span id="line-127">        gd.addNumericField("Maximum region count", MAX_REGION_COUNT);</span>
+<span class="source-line-no">128</span><span id="line-128">        gd.addCheckbox("Mark outer contours", MARK_OUTER_CONTOURS);</span>
+<span class="source-line-no">129</span><span id="line-129"></span>
+<span class="source-line-no">130</span><span id="line-130">        gd.showDialog();</span>
+<span class="source-line-no">131</span><span id="line-131">        if (gd.wasCanceled()) {</span>
+<span class="source-line-no">132</span><span id="line-132">            return false;</span>
+<span class="source-line-no">133</span><span id="line-133">        }</span>
+<span class="source-line-no">134</span><span id="line-134"></span>
+<span class="source-line-no">135</span><span id="line-135">        MIN_REGION_SIZE = (int) gd.getNextNumber();</span>
+<span class="source-line-no">136</span><span id="line-136">        MAX_REGION_COUNT = (int) gd.getNextNumber();</span>
+<span class="source-line-no">137</span><span id="line-137">        MARK_OUTER_CONTOURS = gd.getNextBoolean();</span>
+<span class="source-line-no">138</span><span id="line-138">        return true;</span>
+<span class="source-line-no">139</span><span id="line-139">    }</span>
+<span class="source-line-no">140</span><span id="line-140"></span>
+<span class="source-line-no">141</span><span id="line-141">}</span>
 
 
 

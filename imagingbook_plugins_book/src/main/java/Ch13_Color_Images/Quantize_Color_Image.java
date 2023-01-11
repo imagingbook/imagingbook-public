@@ -21,7 +21,7 @@ import imagingbook.common.color.quantize.KMeansClusteringQuantizer;
 import imagingbook.common.color.quantize.MedianCutQuantizer;
 import imagingbook.common.color.quantize.OctreeQuantizer;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Locale;
@@ -141,6 +141,7 @@ public class Quantize_Color_Image implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addEnumChoice("Quantization method", METHOD);
 		gd.addNumericField("No. of colors (1,..,256)", NCOLORS, 0);
 		gd.addCheckbox("Create indexed color image", CREATE_INDEXED_IMAGE);

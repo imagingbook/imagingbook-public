@@ -39,7 +39,7 @@
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.common.ij.RoiUtils;</span>
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.common.ij.overlay.ColoredStroke;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
-<span class="source-line-no">029</span><span id="line-29">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">029</span><span id="line-29">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">030</span><span id="line-30"></span>
 <span class="source-line-no">031</span><span id="line-31">import java.util.Locale;</span>
 <span class="source-line-no">032</span><span id="line-32"></span>
@@ -163,7 +163,7 @@
 <span class="source-line-no">150</span><span id="line-150">        </span>
 <span class="source-line-no">151</span><span id="line-151">        private boolean runDialog() {</span>
 <span class="source-line-no">152</span><span id="line-152">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">153</span><span id="line-153"></span>
+<span class="source-line-no">153</span><span id="line-153">                gd.addHelp(getJavaDocUrl());</span>
 <span class="source-line-no">154</span><span id="line-154">                gd.addMessage(DialogUtils.formatText(50,</span>
 <span class="source-line-no">155</span><span id="line-155">                                "This plugin performs algebraic + geometric ellipse fitting,",</span>
 <span class="source-line-no">156</span><span id="line-156">                                "either to ROI points (if available) or foreground points",</span>

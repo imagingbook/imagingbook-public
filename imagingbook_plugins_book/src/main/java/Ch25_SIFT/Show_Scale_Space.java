@@ -17,11 +17,10 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.sift.SiftDetector;
 import imagingbook.common.sift.scalespace.DogScaleSpace;
 import imagingbook.common.sift.scalespace.GaussianScaleSpace;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.core.resource.ImageResource;
 import imagingbook.sampleimages.GeneralSampleImage;
 
-import static imagingbook.common.ij.DialogUtils.makeHtmlString;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
@@ -40,13 +39,6 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/11/23
  */
 public class Show_Scale_Space implements PlugInFilter, JavaDocHelp {
-
-	private static final String HelpText = makeHtmlString(
-			"This ImageJ plugin visualizes the hierarchical scale space structures",
-			"used for SIFT feature detection. Optionally the Gaussian scale space or the",
-			"derived DoG scale space (or both) are shown. Each scale space octave",
-			"is displayed as an image stack, with one frame for each scale level."
-	);
 
 	private static ImageResource SampleImage = GeneralSampleImage.Castle;
 	private static boolean ShowGaussianScaleSpace = true;

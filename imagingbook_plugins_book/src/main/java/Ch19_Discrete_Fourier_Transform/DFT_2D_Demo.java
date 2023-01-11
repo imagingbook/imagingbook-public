@@ -15,7 +15,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.spectral.dft.Dft2d;
 import imagingbook.spectral.dft.Dft2dDirect;
@@ -151,6 +151,7 @@ public class DFT_2D_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Use fast mode (FFT)", UseFastMode);
 		gd.addCheckbox("Use double precision", UseDoublePrecision);
 		gd.addCheckbox("Show logarithmic spectrum", ShowLogSpectrum);

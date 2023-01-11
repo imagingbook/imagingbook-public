@@ -18,7 +18,7 @@ import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.Arithmetic;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -80,6 +80,7 @@ public class Hsv_Rotate_Hue implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Hue rotation angle (degrees)", RotationAngle, 0);
 
 		gd.showDialog();

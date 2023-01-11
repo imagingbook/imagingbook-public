@@ -19,7 +19,7 @@ import imagingbook.common.noise.hashing.Hash32Ward;
 import imagingbook.common.noise.hashing.HashFunction;
 import imagingbook.common.noise.hashing.HashPermute;
 import imagingbook.common.noise.perlin.PerlinNoiseGenerator2d;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * <p>
@@ -95,7 +95,7 @@ public class Perlin_Noise_2D implements PlugIn, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-		
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Image width", W, 0);
 		gd.addNumericField("Image height", H, 0);
 		gd.addNumericField("Number of noise frequencies", K, 0);

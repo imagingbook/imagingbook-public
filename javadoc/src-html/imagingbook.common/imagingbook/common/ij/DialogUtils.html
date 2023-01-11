@@ -276,217 +276,218 @@
 <span class="source-line-no">263</span><span id="line-263">                        dialog.addStringField(name, str, stringColumns);</span>
 <span class="source-line-no">264</span><span id="line-264">                }</span>
 <span class="source-line-no">265</span><span id="line-265">                else if (clazz.isEnum()) {</span>
-<span class="source-line-no">266</span><span id="line-266">                        dialog.addEnumChoice(name, (Enum&lt;?&gt;) field.get(params));</span>
-<span class="source-line-no">267</span><span id="line-267">                }</span>
-<span class="source-line-no">268</span><span id="line-268">                else {</span>
-<span class="source-line-no">269</span><span id="line-269">                        // ignore this field</span>
-<span class="source-line-no">270</span><span id="line-270">                        //throw new RuntimeException("cannot handle field of type " + clazz);</span>
-<span class="source-line-no">271</span><span id="line-271">                }</span>
-<span class="source-line-no">272</span><span id="line-272">        }</span>
-<span class="source-line-no">273</span><span id="line-273"></span>
-<span class="source-line-no">274</span><span id="line-274">        /**</span>
-<span class="source-line-no">275</span><span id="line-275">         * Modifies the specified {@link Field} of this object by reading the next item from the {@link GenericDialog}</span>
-<span class="source-line-no">276</span><span id="line-276">         * instance.</span>
-<span class="source-line-no">277</span><span id="line-277">         *</span>
-<span class="source-line-no">278</span><span id="line-278">         * @param params a {@link ParameterBundle} instance</span>
-<span class="source-line-no">279</span><span id="line-279">         * @param field a publicly accessible {@link Field} of this object</span>
-<span class="source-line-no">280</span><span id="line-280">         * @param gd a {@link GenericDialog} instance</span>
-<span class="source-line-no">281</span><span id="line-281">         * @return true if successful</span>
-<span class="source-line-no">282</span><span id="line-282">         * @throws IllegalAccessException illegal field access</span>
-<span class="source-line-no">283</span><span id="line-283">         */</span>
-<span class="source-line-no">284</span><span id="line-284">        @SuppressWarnings({ "rawtypes", "unchecked" })</span>
-<span class="source-line-no">285</span><span id="line-285">        private static boolean getFieldFromDialog(ParameterBundle params, Field field, GenericDialog gd)</span>
-<span class="source-line-no">286</span><span id="line-286">                                        throws IllegalAccessException {</span>
-<span class="source-line-no">287</span><span id="line-287">                Class&lt;?&gt; clazz = field.getType();</span>
-<span class="source-line-no">288</span><span id="line-288">                if  (clazz.equals(boolean.class)) {</span>
-<span class="source-line-no">289</span><span id="line-289">                        field.setBoolean(params, gd.getNextBoolean());</span>
-<span class="source-line-no">290</span><span id="line-290">                }</span>
-<span class="source-line-no">291</span><span id="line-291">                else if (clazz.equals(int.class)) {</span>
-<span class="source-line-no">292</span><span id="line-292">                        double val = gd.getNextNumber();</span>
-<span class="source-line-no">293</span><span id="line-293">                        if (Double.isNaN(val)) {</span>
-<span class="source-line-no">294</span><span id="line-294">                                return false;</span>
-<span class="source-line-no">295</span><span id="line-295">                        }</span>
-<span class="source-line-no">296</span><span id="line-296">                        field.setInt(params, (int) val);</span>
-<span class="source-line-no">297</span><span id="line-297">                }</span>
-<span class="source-line-no">298</span><span id="line-298">                else if (clazz.equals(long.class)) {</span>
-<span class="source-line-no">299</span><span id="line-299">                        double val = gd.getNextNumber();</span>
-<span class="source-line-no">300</span><span id="line-300">                        if (Double.isNaN(val)) {</span>
-<span class="source-line-no">301</span><span id="line-301">                                return false;</span>
-<span class="source-line-no">302</span><span id="line-302">                        }</span>
-<span class="source-line-no">303</span><span id="line-303">                        field.setLong(params, (long) val);</span>
-<span class="source-line-no">304</span><span id="line-304">                }</span>
-<span class="source-line-no">305</span><span id="line-305">                else if (clazz.equals(float.class)) {</span>
-<span class="source-line-no">306</span><span id="line-306">                        double val = gd.getNextNumber();</span>
-<span class="source-line-no">307</span><span id="line-307">                        if (Double.isNaN(val)) {</span>
-<span class="source-line-no">308</span><span id="line-308">                                return false;</span>
-<span class="source-line-no">309</span><span id="line-309">                        }</span>
-<span class="source-line-no">310</span><span id="line-310">                        field.setFloat(params, (float) val);</span>
-<span class="source-line-no">311</span><span id="line-311">                }</span>
-<span class="source-line-no">312</span><span id="line-312">                else if (clazz.equals(double.class)) {</span>
-<span class="source-line-no">313</span><span id="line-313">                        double val = gd.getNextNumber();</span>
-<span class="source-line-no">314</span><span id="line-314">                        if (Double.isNaN(val)) {</span>
-<span class="source-line-no">315</span><span id="line-315">                                return false;</span>
-<span class="source-line-no">316</span><span id="line-316">                        }</span>
-<span class="source-line-no">317</span><span id="line-317">                        field.setDouble(params, val);</span>
-<span class="source-line-no">318</span><span id="line-318">                }</span>
-<span class="source-line-no">319</span><span id="line-319">                else if (clazz.equals(String.class)) {</span>
-<span class="source-line-no">320</span><span id="line-320">                        String str = gd.getNextString();</span>
-<span class="source-line-no">321</span><span id="line-321">                        if (str == null) {</span>
-<span class="source-line-no">322</span><span id="line-322">                                return false;</span>
-<span class="source-line-no">323</span><span id="line-323">                        }</span>
-<span class="source-line-no">324</span><span id="line-324">                        field.set(params, str);</span>
-<span class="source-line-no">325</span><span id="line-325">                }</span>
-<span class="source-line-no">326</span><span id="line-326">                else if (clazz.isEnum()) {</span>
-<span class="source-line-no">327</span><span id="line-327">                        Enum en = gd.getNextEnumChoice((Class&lt;Enum&gt;) clazz);</span>
-<span class="source-line-no">328</span><span id="line-328">                        if (en == null) {</span>
-<span class="source-line-no">329</span><span id="line-329">                                return false;</span>
-<span class="source-line-no">330</span><span id="line-330">                        }</span>
-<span class="source-line-no">331</span><span id="line-331">                        field.set(params, en);</span>
-<span class="source-line-no">332</span><span id="line-332">//                      field.set(instance, gd.getNextEnumChoice((Class&lt;? extends Enum&gt;) clazz));       // works                        </span>
-<span class="source-line-no">333</span><span id="line-333">//                      field.set(instance, gd.getNextEnumChoice((Class&lt;Enum&gt;) clazz)); // works        </span>
-<span class="source-line-no">334</span><span id="line-334">                }</span>
-<span class="source-line-no">335</span><span id="line-335">                else {</span>
-<span class="source-line-no">336</span><span id="line-336">                        // ignore this field</span>
-<span class="source-line-no">337</span><span id="line-337">                        // throw new RuntimeException("cannot handle field of type " + clazz);</span>
-<span class="source-line-no">338</span><span id="line-338">                }</span>
-<span class="source-line-no">339</span><span id="line-339">                return true;</span>
-<span class="source-line-no">340</span><span id="line-340">        }</span>
-<span class="source-line-no">341</span><span id="line-341">        </span>
-<span class="source-line-no">342</span><span id="line-342">        private static boolean isValidDialogField(Field f) {</span>
-<span class="source-line-no">343</span><span id="line-343">                if (!ParameterBundle.isValidParameterField(f)) {</span>
-<span class="source-line-no">344</span><span id="line-344">                        return false;</span>
-<span class="source-line-no">345</span><span id="line-345">                }</span>
-<span class="source-line-no">346</span><span id="line-346">//              int mod = f.getModifiers();</span>
-<span class="source-line-no">347</span><span id="line-347">//              if (Modifier.isPrivate(mod) || Modifier.isFinal(mod) || Modifier.isStatic(mod)) {</span>
-<span class="source-line-no">348</span><span id="line-348">//                      return false;</span>
-<span class="source-line-no">349</span><span id="line-349">//              }</span>
-<span class="source-line-no">350</span><span id="line-350">                // accept only certain field types in dialogs:</span>
-<span class="source-line-no">351</span><span id="line-351">                Class&lt;?&gt; clazz = f.getType();</span>
-<span class="source-line-no">352</span><span id="line-352">                return (clazz == boolean.class || clazz == int.class || clazz == long.class || </span>
-<span class="source-line-no">353</span><span id="line-353">                                clazz == float.class   || clazz == double.class || </span>
-<span class="source-line-no">354</span><span id="line-354">                                clazz == String.class  || clazz.isEnum());</span>
-<span class="source-line-no">355</span><span id="line-355">        }</span>
-<span class="source-line-no">356</span><span id="line-356">        </span>
-<span class="source-line-no">357</span><span id="line-357">        // various static methods for simple dialogs -------------------------------</span>
-<span class="source-line-no">358</span><span id="line-358">        </span>
-<span class="source-line-no">359</span><span id="line-359">//      /**</span>
-<span class="source-line-no">360</span><span id="line-360">//       * Values that may be returned by dialog methods, to be used in</span>
-<span class="source-line-no">361</span><span id="line-361">//       * switch clauses.</span>
-<span class="source-line-no">362</span><span id="line-362">//       */</span>
-<span class="source-line-no">363</span><span id="line-363">//      public enum DialogResponse {</span>
-<span class="source-line-no">364</span><span id="line-364">//              Yes, No, Cancel;</span>
-<span class="source-line-no">365</span><span id="line-365">//      }</span>
-<span class="source-line-no">366</span><span id="line-366">//      </span>
-<span class="source-line-no">367</span><span id="line-367">//      public static boolean isYes(DialogResponse response) {</span>
-<span class="source-line-no">368</span><span id="line-368">//              return response.equals(DialogResponse.Yes);</span>
-<span class="source-line-no">369</span><span id="line-369">//      }</span>
-<span class="source-line-no">370</span><span id="line-370"></span>
-<span class="source-line-no">371</span><span id="line-371">        /**</span>
-<span class="source-line-no">372</span><span id="line-372">         * Opens a simple dialog with the specified title and message that allows only a "Yes" or "Cancel" response.</span>
-<span class="source-line-no">373</span><span id="line-373">         *</span>
-<span class="source-line-no">374</span><span id="line-374">         * @param title the text displayed in the dialog's title bar</span>
-<span class="source-line-no">375</span><span id="line-375">         * @param message the dialog message (may be multiple lines separated by newlines)</span>
-<span class="source-line-no">376</span><span id="line-376">         * @return true if "yes" was selected, false otherwise</span>
-<span class="source-line-no">377</span><span id="line-377">         */</span>
-<span class="source-line-no">378</span><span id="line-378">        @Deprecated</span>
-<span class="source-line-no">379</span><span id="line-379">        public static boolean askYesOrCancel(String title, String message) {</span>
-<span class="source-line-no">380</span><span id="line-380">                GenericDialog gd = new GenericDialog(title);</span>
-<span class="source-line-no">381</span><span id="line-381">                gd.addMessage(message);</span>
-<span class="source-line-no">382</span><span id="line-382">                gd.enableYesNoCancel("Yes", "Cancel");</span>
-<span class="source-line-no">383</span><span id="line-383">                gd.hideCancelButton();</span>
-<span class="source-line-no">384</span><span id="line-384">                gd.showDialog();</span>
-<span class="source-line-no">385</span><span id="line-385">                if (gd.wasCanceled()) {</span>
-<span class="source-line-no">386</span><span id="line-386">                        return false;</span>
-<span class="source-line-no">387</span><span id="line-387">                }</span>
-<span class="source-line-no">388</span><span id="line-388">                return gd.wasOKed();</span>
-<span class="source-line-no">389</span><span id="line-389">        }</span>
-<span class="source-line-no">390</span><span id="line-390"></span>
-<span class="source-line-no">391</span><span id="line-391">        /**</span>
-<span class="source-line-no">392</span><span id="line-392">         * Opens a very specific dialog asking if the suggested sample image (resource) should be opened and made the active</span>
-<span class="source-line-no">393</span><span id="line-393">         * image. If the answer is YES, the suggested image is opened, otherwise not. This if typically used in the</span>
-<span class="source-line-no">394</span><span id="line-394">         * (otherwise empty) constructor of demo plugins when no (or no suitable) image is currently open.</span>
-<span class="source-line-no">395</span><span id="line-395">         * Does nothing and returns false if invoked from outside ImageJ (e.g., during testing) and in IJ batch mode.</span>
-<span class="source-line-no">396</span><span id="line-396">         *</span>
-<span class="source-line-no">397</span><span id="line-397">         * @param suggested a sample image ({@link ImageResource})</span>
-<span class="source-line-no">398</span><span id="line-398">         * @return true if user accepted, false otherwise</span>
-<span class="source-line-no">399</span><span id="line-399">         */</span>
-<span class="source-line-no">400</span><span id="line-400">        public static boolean askForSampleImage(ImageResource suggested) {      // TODO: allow multiple sample images?</span>
-<span class="source-line-no">401</span><span id="line-401">                // System.out.println("askForSampleImage " + suggested);</span>
-<span class="source-line-no">402</span><span id="line-402">                // System.out.println("IJ.getInstance() = " + IJ.getInstance());</span>
-<span class="source-line-no">403</span><span id="line-403">                // System.out.println("Interpreter.isBatchMode() = " + Interpreter.isBatchMode());</span>
-<span class="source-line-no">404</span><span id="line-404">                if (IJ.getInstance() == null || Interpreter.isBatchMode()) {    // skip in tests and in ImageJ batch mode</span>
-<span class="source-line-no">405</span><span id="line-405">                        return false;</span>
-<span class="source-line-no">406</span><span id="line-406">                }</span>
-<span class="source-line-no">407</span><span id="line-407"></span>
-<span class="source-line-no">408</span><span id="line-408">                String title = "Open sample image";</span>
-<span class="source-line-no">409</span><span id="line-409">                String message = "No image is currently open.\nUse a sample image?\n";</span>
-<span class="source-line-no">410</span><span id="line-410">                GenericDialog gd = new GenericDialog(title);</span>
-<span class="source-line-no">411</span><span id="line-411">                gd.setInsets(0, 0, 0);</span>
-<span class="source-line-no">412</span><span id="line-412">                gd.addMessage(message);</span>
-<span class="source-line-no">413</span><span id="line-413"></span>
-<span class="source-line-no">414</span><span id="line-414">                if (suggested != null) {</span>
-<span class="source-line-no">415</span><span id="line-415">                        gd.setInsets(10, 10, 10);</span>
-<span class="source-line-no">416</span><span id="line-416">                        gd.addImage(suggested.getImageIcon());</span>
-<span class="source-line-no">417</span><span id="line-417">                }</span>
-<span class="source-line-no">418</span><span id="line-418"></span>
-<span class="source-line-no">419</span><span id="line-419">                gd.enableYesNoCancel("Yes", "Cancel");</span>
-<span class="source-line-no">420</span><span id="line-420">                gd.hideCancelButton();</span>
-<span class="source-line-no">421</span><span id="line-421">                gd.showDialog();</span>
-<span class="source-line-no">422</span><span id="line-422">                if (gd.wasCanceled()) {</span>
-<span class="source-line-no">423</span><span id="line-423">                        return false;</span>
-<span class="source-line-no">424</span><span id="line-424">                }</span>
-<span class="source-line-no">425</span><span id="line-425"></span>
-<span class="source-line-no">426</span><span id="line-426">                boolean ok = gd.wasOKed();</span>
-<span class="source-line-no">427</span><span id="line-427">                if (ok &amp;&amp; suggested != null) {</span>
-<span class="source-line-no">428</span><span id="line-428">                        ImagePlus im = suggested.getImagePlus();</span>
-<span class="source-line-no">429</span><span id="line-429">                        im.show();</span>
-<span class="source-line-no">430</span><span id="line-430">                        WindowManager.setCurrentWindow(im.getWindow());</span>
-<span class="source-line-no">431</span><span id="line-431">                }</span>
-<span class="source-line-no">432</span><span id="line-432">                return ok;</span>
-<span class="source-line-no">433</span><span id="line-433">        }</span>
-<span class="source-line-no">434</span><span id="line-434">        </span>
-<span class="source-line-no">435</span><span id="line-435">        public static boolean askForSampleImage() {</span>
-<span class="source-line-no">436</span><span id="line-436">                return askForSampleImage(null);</span>
-<span class="source-line-no">437</span><span id="line-437">        }</span>
-<span class="source-line-no">438</span><span id="line-438"></span>
-<span class="source-line-no">439</span><span id="line-439">        // ----------------------------------------------------</span>
-<span class="source-line-no">440</span><span id="line-440">        </span>
-<span class="source-line-no">441</span><span id="line-441">        // public static void main(String[] args) {</span>
-<span class="source-line-no">442</span><span id="line-442">        //      String html = makeHtmlString(</span>
-<span class="source-line-no">443</span><span id="line-443">        //             "Get busy living or",</span>
-<span class="source-line-no">444</span><span id="line-444">        //             "get busy dying.",</span>
-<span class="source-line-no">445</span><span id="line-445">        //             "--Stephen King");</span>
-<span class="source-line-no">446</span><span id="line-446">        //      System.out.println(html);</span>
-<span class="source-line-no">447</span><span id="line-447">        //      System.out.println();</span>
-<span class="source-line-no">448</span><span id="line-448">        //</span>
-<span class="source-line-no">449</span><span id="line-449">        //      String lines = makeLineSeparatedString(</span>
-<span class="source-line-no">450</span><span id="line-450">        //             "Get busy living or",</span>
-<span class="source-line-no">451</span><span id="line-451">        //             "get busy dying.",</span>
-<span class="source-line-no">452</span><span id="line-452">        //             "--Stephen King");</span>
-<span class="source-line-no">453</span><span id="line-453">        //      System.out.println(lines);</span>
-<span class="source-line-no">454</span><span id="line-454">        // }</span>
-<span class="source-line-no">455</span><span id="line-455"></span>
-<span class="source-line-no">456</span><span id="line-456">        // -------------------------------------------------------------</span>
-<span class="source-line-no">457</span><span id="line-457"></span>
-<span class="source-line-no">458</span><span id="line-458">        // static String input1 =</span>
-<span class="source-line-no">459</span><span id="line-459">        //              "THESE TERMS AND CONDITIONS OF SERVICE (the Terms) ARE A     LEGAL AND BINDING " +</span>
-<span class="source-line-no">460</span><span id="line-460">        //                              "AGREEMENT BETWEEN YOU AND NATIONAL GEOGRAPHIC governing     your use of this site, " +</span>
-<span class="source-line-no">461</span><span id="line-461">        //                              "www.nationalgeographic.com, which includes but is not limited to products, " +</span>
-<span class="source-line-no">462</span><span id="line-462">        //                              "software and services offered by way of the website such as the Video Player.";</span>
-<span class="source-line-no">463</span><span id="line-463">        //</span>
-<span class="source-line-no">464</span><span id="line-464">        // static String[] input2 = {</span>
-<span class="source-line-no">465</span><span id="line-465">        //              "THESE TERMS AND CONDITIONS OF SERVICE (the Terms) ARE A     LEGAL AND BINDING",</span>
-<span class="source-line-no">466</span><span id="line-466">        //              "AGREEMENT BETWEEN YOU AND NATIONAL GEOGRAPHIC governing     your use of this site,",</span>
-<span class="source-line-no">467</span><span id="line-467">        //              "www.nationalgeographic.com, which includes but is not limited to products,",</span>
-<span class="source-line-no">468</span><span id="line-468">        //              "software and services offered by way of the website such as the Video Player."};</span>
-<span class="source-line-no">469</span><span id="line-469">        //</span>
+<span class="source-line-no">266</span><span id="line-266">                        // dialog.addEnumChoice(name, (Enum&lt;?&gt;) field.get(params));</span>
+<span class="source-line-no">267</span><span id="line-267">                        dialog.addEnumChoice(name, (Enum) field.get(params));</span>
+<span class="source-line-no">268</span><span id="line-268">                }</span>
+<span class="source-line-no">269</span><span id="line-269">                else {</span>
+<span class="source-line-no">270</span><span id="line-270">                        // ignore this field</span>
+<span class="source-line-no">271</span><span id="line-271">                        //throw new RuntimeException("cannot handle field of type " + clazz);</span>
+<span class="source-line-no">272</span><span id="line-272">                }</span>
+<span class="source-line-no">273</span><span id="line-273">        }</span>
+<span class="source-line-no">274</span><span id="line-274"></span>
+<span class="source-line-no">275</span><span id="line-275">        /**</span>
+<span class="source-line-no">276</span><span id="line-276">         * Modifies the specified {@link Field} of this object by reading the next item from the {@link GenericDialog}</span>
+<span class="source-line-no">277</span><span id="line-277">         * instance.</span>
+<span class="source-line-no">278</span><span id="line-278">         *</span>
+<span class="source-line-no">279</span><span id="line-279">         * @param params a {@link ParameterBundle} instance</span>
+<span class="source-line-no">280</span><span id="line-280">         * @param field a publicly accessible {@link Field} of this object</span>
+<span class="source-line-no">281</span><span id="line-281">         * @param gd a {@link GenericDialog} instance</span>
+<span class="source-line-no">282</span><span id="line-282">         * @return true if successful</span>
+<span class="source-line-no">283</span><span id="line-283">         * @throws IllegalAccessException illegal field access</span>
+<span class="source-line-no">284</span><span id="line-284">         */</span>
+<span class="source-line-no">285</span><span id="line-285">        @SuppressWarnings({ "rawtypes", "unchecked" })</span>
+<span class="source-line-no">286</span><span id="line-286">        private static boolean getFieldFromDialog(ParameterBundle params, Field field, GenericDialog gd)</span>
+<span class="source-line-no">287</span><span id="line-287">                                        throws IllegalAccessException {</span>
+<span class="source-line-no">288</span><span id="line-288">                Class&lt;?&gt; clazz = field.getType();</span>
+<span class="source-line-no">289</span><span id="line-289">                if  (clazz.equals(boolean.class)) {</span>
+<span class="source-line-no">290</span><span id="line-290">                        field.setBoolean(params, gd.getNextBoolean());</span>
+<span class="source-line-no">291</span><span id="line-291">                }</span>
+<span class="source-line-no">292</span><span id="line-292">                else if (clazz.equals(int.class)) {</span>
+<span class="source-line-no">293</span><span id="line-293">                        double val = gd.getNextNumber();</span>
+<span class="source-line-no">294</span><span id="line-294">                        if (Double.isNaN(val)) {</span>
+<span class="source-line-no">295</span><span id="line-295">                                return false;</span>
+<span class="source-line-no">296</span><span id="line-296">                        }</span>
+<span class="source-line-no">297</span><span id="line-297">                        field.setInt(params, (int) val);</span>
+<span class="source-line-no">298</span><span id="line-298">                }</span>
+<span class="source-line-no">299</span><span id="line-299">                else if (clazz.equals(long.class)) {</span>
+<span class="source-line-no">300</span><span id="line-300">                        double val = gd.getNextNumber();</span>
+<span class="source-line-no">301</span><span id="line-301">                        if (Double.isNaN(val)) {</span>
+<span class="source-line-no">302</span><span id="line-302">                                return false;</span>
+<span class="source-line-no">303</span><span id="line-303">                        }</span>
+<span class="source-line-no">304</span><span id="line-304">                        field.setLong(params, (long) val);</span>
+<span class="source-line-no">305</span><span id="line-305">                }</span>
+<span class="source-line-no">306</span><span id="line-306">                else if (clazz.equals(float.class)) {</span>
+<span class="source-line-no">307</span><span id="line-307">                        double val = gd.getNextNumber();</span>
+<span class="source-line-no">308</span><span id="line-308">                        if (Double.isNaN(val)) {</span>
+<span class="source-line-no">309</span><span id="line-309">                                return false;</span>
+<span class="source-line-no">310</span><span id="line-310">                        }</span>
+<span class="source-line-no">311</span><span id="line-311">                        field.setFloat(params, (float) val);</span>
+<span class="source-line-no">312</span><span id="line-312">                }</span>
+<span class="source-line-no">313</span><span id="line-313">                else if (clazz.equals(double.class)) {</span>
+<span class="source-line-no">314</span><span id="line-314">                        double val = gd.getNextNumber();</span>
+<span class="source-line-no">315</span><span id="line-315">                        if (Double.isNaN(val)) {</span>
+<span class="source-line-no">316</span><span id="line-316">                                return false;</span>
+<span class="source-line-no">317</span><span id="line-317">                        }</span>
+<span class="source-line-no">318</span><span id="line-318">                        field.setDouble(params, val);</span>
+<span class="source-line-no">319</span><span id="line-319">                }</span>
+<span class="source-line-no">320</span><span id="line-320">                else if (clazz.equals(String.class)) {</span>
+<span class="source-line-no">321</span><span id="line-321">                        String str = gd.getNextString();</span>
+<span class="source-line-no">322</span><span id="line-322">                        if (str == null) {</span>
+<span class="source-line-no">323</span><span id="line-323">                                return false;</span>
+<span class="source-line-no">324</span><span id="line-324">                        }</span>
+<span class="source-line-no">325</span><span id="line-325">                        field.set(params, str);</span>
+<span class="source-line-no">326</span><span id="line-326">                }</span>
+<span class="source-line-no">327</span><span id="line-327">                else if (clazz.isEnum()) {</span>
+<span class="source-line-no">328</span><span id="line-328">                        Enum en = gd.getNextEnumChoice((Class&lt;Enum&gt;) clazz);</span>
+<span class="source-line-no">329</span><span id="line-329">                        if (en == null) {</span>
+<span class="source-line-no">330</span><span id="line-330">                                return false;</span>
+<span class="source-line-no">331</span><span id="line-331">                        }</span>
+<span class="source-line-no">332</span><span id="line-332">                        field.set(params, en);</span>
+<span class="source-line-no">333</span><span id="line-333">//                      field.set(instance, gd.getNextEnumChoice((Class&lt;? extends Enum&gt;) clazz));       // works                        </span>
+<span class="source-line-no">334</span><span id="line-334">//                      field.set(instance, gd.getNextEnumChoice((Class&lt;Enum&gt;) clazz)); // works        </span>
+<span class="source-line-no">335</span><span id="line-335">                }</span>
+<span class="source-line-no">336</span><span id="line-336">                else {</span>
+<span class="source-line-no">337</span><span id="line-337">                        // ignore this field</span>
+<span class="source-line-no">338</span><span id="line-338">                        // throw new RuntimeException("cannot handle field of type " + clazz);</span>
+<span class="source-line-no">339</span><span id="line-339">                }</span>
+<span class="source-line-no">340</span><span id="line-340">                return true;</span>
+<span class="source-line-no">341</span><span id="line-341">        }</span>
+<span class="source-line-no">342</span><span id="line-342">        </span>
+<span class="source-line-no">343</span><span id="line-343">        private static boolean isValidDialogField(Field f) {</span>
+<span class="source-line-no">344</span><span id="line-344">                if (!ParameterBundle.isValidParameterField(f)) {</span>
+<span class="source-line-no">345</span><span id="line-345">                        return false;</span>
+<span class="source-line-no">346</span><span id="line-346">                }</span>
+<span class="source-line-no">347</span><span id="line-347">//              int mod = f.getModifiers();</span>
+<span class="source-line-no">348</span><span id="line-348">//              if (Modifier.isPrivate(mod) || Modifier.isFinal(mod) || Modifier.isStatic(mod)) {</span>
+<span class="source-line-no">349</span><span id="line-349">//                      return false;</span>
+<span class="source-line-no">350</span><span id="line-350">//              }</span>
+<span class="source-line-no">351</span><span id="line-351">                // accept only certain field types in dialogs:</span>
+<span class="source-line-no">352</span><span id="line-352">                Class&lt;?&gt; clazz = f.getType();</span>
+<span class="source-line-no">353</span><span id="line-353">                return (clazz == boolean.class || clazz == int.class || clazz == long.class || </span>
+<span class="source-line-no">354</span><span id="line-354">                                clazz == float.class   || clazz == double.class || </span>
+<span class="source-line-no">355</span><span id="line-355">                                clazz == String.class  || clazz.isEnum());</span>
+<span class="source-line-no">356</span><span id="line-356">        }</span>
+<span class="source-line-no">357</span><span id="line-357">        </span>
+<span class="source-line-no">358</span><span id="line-358">        // various static methods for simple dialogs -------------------------------</span>
+<span class="source-line-no">359</span><span id="line-359">        </span>
+<span class="source-line-no">360</span><span id="line-360">//      /**</span>
+<span class="source-line-no">361</span><span id="line-361">//       * Values that may be returned by dialog methods, to be used in</span>
+<span class="source-line-no">362</span><span id="line-362">//       * switch clauses.</span>
+<span class="source-line-no">363</span><span id="line-363">//       */</span>
+<span class="source-line-no">364</span><span id="line-364">//      public enum DialogResponse {</span>
+<span class="source-line-no">365</span><span id="line-365">//              Yes, No, Cancel;</span>
+<span class="source-line-no">366</span><span id="line-366">//      }</span>
+<span class="source-line-no">367</span><span id="line-367">//      </span>
+<span class="source-line-no">368</span><span id="line-368">//      public static boolean isYes(DialogResponse response) {</span>
+<span class="source-line-no">369</span><span id="line-369">//              return response.equals(DialogResponse.Yes);</span>
+<span class="source-line-no">370</span><span id="line-370">//      }</span>
+<span class="source-line-no">371</span><span id="line-371"></span>
+<span class="source-line-no">372</span><span id="line-372">        /**</span>
+<span class="source-line-no">373</span><span id="line-373">         * Opens a simple dialog with the specified title and message that allows only a "Yes" or "Cancel" response.</span>
+<span class="source-line-no">374</span><span id="line-374">         *</span>
+<span class="source-line-no">375</span><span id="line-375">         * @param title the text displayed in the dialog's title bar</span>
+<span class="source-line-no">376</span><span id="line-376">         * @param message the dialog message (may be multiple lines separated by newlines)</span>
+<span class="source-line-no">377</span><span id="line-377">         * @return true if "yes" was selected, false otherwise</span>
+<span class="source-line-no">378</span><span id="line-378">         */</span>
+<span class="source-line-no">379</span><span id="line-379">        @Deprecated</span>
+<span class="source-line-no">380</span><span id="line-380">        public static boolean askYesOrCancel(String title, String message) {</span>
+<span class="source-line-no">381</span><span id="line-381">                GenericDialog gd = new GenericDialog(title);</span>
+<span class="source-line-no">382</span><span id="line-382">                gd.addMessage(message);</span>
+<span class="source-line-no">383</span><span id="line-383">                gd.enableYesNoCancel("Yes", "Cancel");</span>
+<span class="source-line-no">384</span><span id="line-384">                gd.hideCancelButton();</span>
+<span class="source-line-no">385</span><span id="line-385">                gd.showDialog();</span>
+<span class="source-line-no">386</span><span id="line-386">                if (gd.wasCanceled()) {</span>
+<span class="source-line-no">387</span><span id="line-387">                        return false;</span>
+<span class="source-line-no">388</span><span id="line-388">                }</span>
+<span class="source-line-no">389</span><span id="line-389">                return gd.wasOKed();</span>
+<span class="source-line-no">390</span><span id="line-390">        }</span>
+<span class="source-line-no">391</span><span id="line-391"></span>
+<span class="source-line-no">392</span><span id="line-392">        /**</span>
+<span class="source-line-no">393</span><span id="line-393">         * Opens a very specific dialog asking if the suggested sample image (resource) should be opened and made the active</span>
+<span class="source-line-no">394</span><span id="line-394">         * image. If the answer is YES, the suggested image is opened, otherwise not. This if typically used in the</span>
+<span class="source-line-no">395</span><span id="line-395">         * (otherwise empty) constructor of demo plugins when no (or no suitable) image is currently open.</span>
+<span class="source-line-no">396</span><span id="line-396">         * Does nothing and returns false if invoked from outside ImageJ (e.g., during testing) and in IJ batch mode.</span>
+<span class="source-line-no">397</span><span id="line-397">         *</span>
+<span class="source-line-no">398</span><span id="line-398">         * @param suggested a sample image ({@link ImageResource})</span>
+<span class="source-line-no">399</span><span id="line-399">         * @return true if user accepted, false otherwise</span>
+<span class="source-line-no">400</span><span id="line-400">         */</span>
+<span class="source-line-no">401</span><span id="line-401">        public static boolean askForSampleImage(ImageResource suggested) {      // TODO: allow multiple sample images?</span>
+<span class="source-line-no">402</span><span id="line-402">                // System.out.println("askForSampleImage " + suggested);</span>
+<span class="source-line-no">403</span><span id="line-403">                // System.out.println("IJ.getInstance() = " + IJ.getInstance());</span>
+<span class="source-line-no">404</span><span id="line-404">                // System.out.println("Interpreter.isBatchMode() = " + Interpreter.isBatchMode());</span>
+<span class="source-line-no">405</span><span id="line-405">                if (IJ.getInstance() == null || Interpreter.isBatchMode()) {    // skip in tests and in ImageJ batch mode</span>
+<span class="source-line-no">406</span><span id="line-406">                        return false;</span>
+<span class="source-line-no">407</span><span id="line-407">                }</span>
+<span class="source-line-no">408</span><span id="line-408"></span>
+<span class="source-line-no">409</span><span id="line-409">                String title = "Open sample image";</span>
+<span class="source-line-no">410</span><span id="line-410">                String message = "No image is currently open.\nUse a sample image?\n";</span>
+<span class="source-line-no">411</span><span id="line-411">                GenericDialog gd = new GenericDialog(title);</span>
+<span class="source-line-no">412</span><span id="line-412">                gd.setInsets(0, 0, 0);</span>
+<span class="source-line-no">413</span><span id="line-413">                gd.addMessage(message);</span>
+<span class="source-line-no">414</span><span id="line-414"></span>
+<span class="source-line-no">415</span><span id="line-415">                if (suggested != null) {</span>
+<span class="source-line-no">416</span><span id="line-416">                        gd.setInsets(10, 10, 10);</span>
+<span class="source-line-no">417</span><span id="line-417">                        gd.addImage(suggested.getImageIcon());</span>
+<span class="source-line-no">418</span><span id="line-418">                }</span>
+<span class="source-line-no">419</span><span id="line-419"></span>
+<span class="source-line-no">420</span><span id="line-420">                gd.enableYesNoCancel("Yes", "Cancel");</span>
+<span class="source-line-no">421</span><span id="line-421">                gd.hideCancelButton();</span>
+<span class="source-line-no">422</span><span id="line-422">                gd.showDialog();</span>
+<span class="source-line-no">423</span><span id="line-423">                if (gd.wasCanceled()) {</span>
+<span class="source-line-no">424</span><span id="line-424">                        return false;</span>
+<span class="source-line-no">425</span><span id="line-425">                }</span>
+<span class="source-line-no">426</span><span id="line-426"></span>
+<span class="source-line-no">427</span><span id="line-427">                boolean ok = gd.wasOKed();</span>
+<span class="source-line-no">428</span><span id="line-428">                if (ok &amp;&amp; suggested != null) {</span>
+<span class="source-line-no">429</span><span id="line-429">                        ImagePlus im = suggested.getImagePlus();</span>
+<span class="source-line-no">430</span><span id="line-430">                        im.show();</span>
+<span class="source-line-no">431</span><span id="line-431">                        WindowManager.setCurrentWindow(im.getWindow());</span>
+<span class="source-line-no">432</span><span id="line-432">                }</span>
+<span class="source-line-no">433</span><span id="line-433">                return ok;</span>
+<span class="source-line-no">434</span><span id="line-434">        }</span>
+<span class="source-line-no">435</span><span id="line-435">        </span>
+<span class="source-line-no">436</span><span id="line-436">        public static boolean askForSampleImage() {</span>
+<span class="source-line-no">437</span><span id="line-437">                return askForSampleImage(null);</span>
+<span class="source-line-no">438</span><span id="line-438">        }</span>
+<span class="source-line-no">439</span><span id="line-439"></span>
+<span class="source-line-no">440</span><span id="line-440">        // ----------------------------------------------------</span>
+<span class="source-line-no">441</span><span id="line-441">        </span>
+<span class="source-line-no">442</span><span id="line-442">        // public static void main(String[] args) {</span>
+<span class="source-line-no">443</span><span id="line-443">        //      String html = makeHtmlString(</span>
+<span class="source-line-no">444</span><span id="line-444">        //             "Get busy living or",</span>
+<span class="source-line-no">445</span><span id="line-445">        //             "get busy dying.",</span>
+<span class="source-line-no">446</span><span id="line-446">        //             "--Stephen King");</span>
+<span class="source-line-no">447</span><span id="line-447">        //      System.out.println(html);</span>
+<span class="source-line-no">448</span><span id="line-448">        //      System.out.println();</span>
+<span class="source-line-no">449</span><span id="line-449">        //</span>
+<span class="source-line-no">450</span><span id="line-450">        //      String lines = makeLineSeparatedString(</span>
+<span class="source-line-no">451</span><span id="line-451">        //             "Get busy living or",</span>
+<span class="source-line-no">452</span><span id="line-452">        //             "get busy dying.",</span>
+<span class="source-line-no">453</span><span id="line-453">        //             "--Stephen King");</span>
+<span class="source-line-no">454</span><span id="line-454">        //      System.out.println(lines);</span>
+<span class="source-line-no">455</span><span id="line-455">        // }</span>
+<span class="source-line-no">456</span><span id="line-456"></span>
+<span class="source-line-no">457</span><span id="line-457">        // -------------------------------------------------------------</span>
+<span class="source-line-no">458</span><span id="line-458"></span>
+<span class="source-line-no">459</span><span id="line-459">        // static String input1 =</span>
+<span class="source-line-no">460</span><span id="line-460">        //              "THESE TERMS AND CONDITIONS OF SERVICE (the Terms) ARE A     LEGAL AND BINDING " +</span>
+<span class="source-line-no">461</span><span id="line-461">        //                              "AGREEMENT BETWEEN YOU AND NATIONAL GEOGRAPHIC governing     your use of this site, " +</span>
+<span class="source-line-no">462</span><span id="line-462">        //                              "www.nationalgeographic.com, which includes but is not limited to products, " +</span>
+<span class="source-line-no">463</span><span id="line-463">        //                              "software and services offered by way of the website such as the Video Player.";</span>
+<span class="source-line-no">464</span><span id="line-464">        //</span>
+<span class="source-line-no">465</span><span id="line-465">        // static String[] input2 = {</span>
+<span class="source-line-no">466</span><span id="line-466">        //              "THESE TERMS AND CONDITIONS OF SERVICE (the Terms) ARE A     LEGAL AND BINDING",</span>
+<span class="source-line-no">467</span><span id="line-467">        //              "AGREEMENT BETWEEN YOU AND NATIONAL GEOGRAPHIC governing     your use of this site,",</span>
+<span class="source-line-no">468</span><span id="line-468">        //              "www.nationalgeographic.com, which includes but is not limited to products,",</span>
+<span class="source-line-no">469</span><span id="line-469">        //              "software and services offered by way of the website such as the Video Player."};</span>
 <span class="source-line-no">470</span><span id="line-470">        //</span>
-<span class="source-line-no">471</span><span id="line-471">        // public static void main(String[] args) {</span>
-<span class="source-line-no">472</span><span id="line-472">        //      // System.out.println(splitLines(20, input1));</span>
-<span class="source-line-no">473</span><span id="line-473">        //      System.out.println(DialogUtils.formatText(20, input1));</span>
-<span class="source-line-no">474</span><span id="line-474">        // }</span>
-<span class="source-line-no">475</span><span id="line-475"></span>
-<span class="source-line-no">476</span><span id="line-476">}</span>
+<span class="source-line-no">471</span><span id="line-471">        //</span>
+<span class="source-line-no">472</span><span id="line-472">        // public static void main(String[] args) {</span>
+<span class="source-line-no">473</span><span id="line-473">        //      // System.out.println(splitLines(20, input1));</span>
+<span class="source-line-no">474</span><span id="line-474">        //      System.out.println(DialogUtils.formatText(20, input1));</span>
+<span class="source-line-no">475</span><span id="line-475">        // }</span>
+<span class="source-line-no">476</span><span id="line-476"></span>
+<span class="source-line-no">477</span><span id="line-477">}</span>
 
 
 

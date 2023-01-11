@@ -13,16 +13,14 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.filter.generic.GenericFilterVector;
 import imagingbook.common.image.PixelPack;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
- * This ImageJ plugin shows how to construct a 3x3 custom generic vector filter
- * based on class {@link GenericFilterVector}.
- * This plugin works for all types of images.
- * 
+ * This ImageJ plugin shows how to construct a 3x3 custom generic vector filter based on class
+ * {@link GenericFilterVector}. This plugin works for all types of images.
+ *
  * @author WB
  * @version 2022/03/30
- *
  */
 public class Custom_Generic_Filter_Vector implements PlugInFilter, JavaDocHelp {
 

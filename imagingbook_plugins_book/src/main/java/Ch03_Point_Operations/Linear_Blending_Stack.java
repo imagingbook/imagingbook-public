@@ -16,7 +16,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.Blitter;
 import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Locale;
@@ -94,6 +94,7 @@ public class Linear_Blending_Stack implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Step count (N > 0)", StepCount, 0);
 
 		gd.showDialog();

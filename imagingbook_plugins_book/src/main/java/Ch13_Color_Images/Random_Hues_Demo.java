@@ -13,7 +13,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.PlugIn;
 import ij.process.ColorProcessor;
 import imagingbook.common.color.iterate.RandomHueGenerator;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.awt.Color;
 
@@ -64,6 +64,7 @@ public class Random_Hues_Demo implements PlugIn, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage("Creates a tiled color image with random hues.");
 		gd.addNumericField("Tile size", TileSize, 0);
 		gd.addNumericField("Tiles horizontal", TilesHor, 0);

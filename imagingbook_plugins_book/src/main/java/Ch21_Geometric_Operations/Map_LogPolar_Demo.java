@@ -23,6 +23,7 @@ import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.image.ImageMapper;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Shape;
@@ -48,7 +49,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @version 2022/11/16
  * @see LogPolarMapping2
  */
-public class Map_LogPolar_Demo implements PlugInFilter, MouseListener {
+public class Map_LogPolar_Demo implements PlugInFilter, MouseListener, JavaDocHelp {
 	
 	private static int P = 60;		// number of radial steps
 	private static int Q = 100;		// number of angular steps
@@ -86,7 +87,7 @@ public class Map_LogPolar_Demo implements PlugInFilter, MouseListener {
 		rmax = Math.hypot(ip.getWidth(), ip.getHeight()) / 3;
 		rmin = rmax / 75;
 		
-		if (!getUserInput()) {
+		if (!runDialog()) {
 			return;
 		}
 		
@@ -186,8 +187,9 @@ public class Map_LogPolar_Demo implements PlugInFilter, MouseListener {
 	
 	// ----------------------------------------------------
 	
-	boolean getUserInput() {
+	boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Radial steps (P)", P, 0);
 		gd.addNumericField("Angular steps (Q) ", Q, 0);
 		gd.addNumericField("Max. radius (rmax)", rmax, 1);

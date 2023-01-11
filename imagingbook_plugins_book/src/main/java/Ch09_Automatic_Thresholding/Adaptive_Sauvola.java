@@ -16,7 +16,7 @@ import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.threshold.adaptive.SauvolaThresholder;
 import imagingbook.common.threshold.adaptive.SauvolaThresholder.Parameters;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.DialogUtils.addToDialog;
@@ -75,6 +75,7 @@ public class Adaptive_Sauvola implements PlugInFilter, JavaDocHelp {
 	
 	boolean runDialog(Parameters params) {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addCheckbox("Show threshold surface", ShowThresholdSurface);
 		

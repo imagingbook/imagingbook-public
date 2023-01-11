@@ -18,7 +18,7 @@ import imagingbook.common.ij.IjUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.interpolation.InterpolationMethod;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * <p>
@@ -101,6 +101,7 @@ public class Pixel_Interpolation_Demo implements PlugInFilter, JavaDocHelp {
     
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Translation dx", dx, 2);
 		gd.addNumericField("Translation dy", dy, 2);
 		gd.addEnumChoice("Interpolation method", IPM);

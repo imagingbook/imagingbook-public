@@ -25,7 +25,7 @@ import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 /**
@@ -137,6 +137,7 @@ public class Rectify_Quad_Selection implements PlugInFilter, JavaDocHelp {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage(DialogUtils.formatText(50,
 				"How to use: Select the four corners of the quad to be rectified",
 				"with a polygon ROI, in clockwise direction, starting at the point",

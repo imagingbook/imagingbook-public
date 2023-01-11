@@ -42,7 +42,7 @@
 <span class="source-line-no">029</span><span id="line-29">import imagingbook.common.image.matching.lucaskanade.LucasKanadeInverseMatcher;</span>
 <span class="source-line-no">030</span><span id="line-30">import imagingbook.common.image.matching.lucaskanade.LucasKanadeMatcher;</span>
 <span class="source-line-no">031</span><span id="line-31">import imagingbook.common.math.PrintPrecision;</span>
-<span class="source-line-no">032</span><span id="line-32">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">032</span><span id="line-32">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">033</span><span id="line-33">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">034</span><span id="line-34"></span>
 <span class="source-line-no">035</span><span id="line-35">import java.awt.Color;</span>
@@ -311,7 +311,7 @@
 <span class="source-line-no">298</span><span id="line-298"></span>
 <span class="source-line-no">299</span><span id="line-299">        private boolean runDialog() {</span>
 <span class="source-line-no">300</span><span id="line-300">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">301</span><span id="line-301"></span>
+<span class="source-line-no">301</span><span id="line-301">                gd.addHelp(getJavaDocUrl());</span>
 <span class="source-line-no">302</span><span id="line-302">                gd.addNumericField("Maximum iterations", MaxIterations, 0);</span>
 <span class="source-line-no">303</span><span id="line-303">                gd.addNumericField("Position noise sigma", PositionNoiseSigma, 2);</span>
 <span class="source-line-no">304</span><span id="line-304">                // gd.addNumericField("Position noise sigma", PixelNoiseSigma, 2);</span>

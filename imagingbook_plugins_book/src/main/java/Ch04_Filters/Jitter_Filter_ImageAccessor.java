@@ -15,7 +15,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.OutOfBoundsStrategy;
 import imagingbook.common.image.access.ImageAccessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.Random;
@@ -87,6 +87,7 @@ public class Jitter_Filter_ImageAccessor implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addMessage("Filter kernel size is (2r+1) x (2r+1):");
 		gd.addNumericField("Kernel radius (r > 0)", R, 0);
 		gd.addEnumChoice("Out-of-bounds strategy", OBS);

@@ -29,7 +29,7 @@ import imagingbook.common.image.matching.lucaskanade.LucasKanadeForwardMatcher;
 import imagingbook.common.image.matching.lucaskanade.LucasKanadeInverseMatcher;
 import imagingbook.common.image.matching.lucaskanade.LucasKanadeMatcher;
 import imagingbook.common.math.PrintPrecision;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -298,7 +298,7 @@ public class LucasKanade_Demo implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
-
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Maximum iterations", MaxIterations, 0);
 		gd.addNumericField("Position noise sigma", PositionNoiseSigma, 2);
 		// gd.addNumericField("Position noise sigma", PixelNoiseSigma, 2);

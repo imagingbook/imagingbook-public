@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch20 Discrete Cosine Transform")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch20_Discrete_Cosine_Transform;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

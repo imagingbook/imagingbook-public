@@ -24,7 +24,7 @@ import imagingbook.common.ij.RoiUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.math.Complex;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.awt.Color;
@@ -166,6 +166,7 @@ public class Fourier_Descriptor_Trigonometic implements PlugInFilter, JavaDocHel
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Number of FD pairs (min. 1)", FourierCoefficientPairs, 0);
 		gd.addNumericField("Reconstruction Points", ReconstructionPoints, 0);
 		gd.addCheckbox("Show Original Contour", ShowOriginalContour);

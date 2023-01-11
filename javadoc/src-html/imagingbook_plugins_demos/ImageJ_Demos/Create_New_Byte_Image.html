@@ -25,44 +25,45 @@
 <span class="source-line-no">012</span><span id="line-12">import ij.plugin.filter.PlugInFilter;</span>
 <span class="source-line-no">013</span><span id="line-13">import ij.process.ByteProcessor;</span>
 <span class="source-line-no">014</span><span id="line-14">import ij.process.ImageProcessor;</span>
-<span class="source-line-no">015</span><span id="line-15">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">015</span><span id="line-15">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
 <span class="source-line-no">017</span><span id="line-17">/**</span>
-<span class="source-line-no">018</span><span id="line-18"> * This plugin demonstrates how to create and display a </span>
-<span class="source-line-no">019</span><span id="line-19"> * new byte image (to show the histogram of the input image).</span>
-<span class="source-line-no">020</span><span id="line-20"> */</span>
-<span class="source-line-no">021</span><span id="line-21">public class Create_New_Byte_Image implements PlugInFilter, JavaDocHelp {</span>
-<span class="source-line-no">022</span><span id="line-22">        </span>
-<span class="source-line-no">023</span><span id="line-23">        ImagePlus im;</span>
-<span class="source-line-no">024</span><span id="line-24"></span>
-<span class="source-line-no">025</span><span id="line-25">        public int setup(String arg, ImagePlus im) {</span>
-<span class="source-line-no">026</span><span id="line-26">                this.im = im;</span>
-<span class="source-line-no">027</span><span id="line-27">                return DOES_8G + NO_CHANGES;</span>
-<span class="source-line-no">028</span><span id="line-28">        }</span>
-<span class="source-line-no">029</span><span id="line-29"></span>
-<span class="source-line-no">030</span><span id="line-30">        public void run(ImageProcessor ip) {</span>
-<span class="source-line-no">031</span><span id="line-31">                // obtain the histogram of ip:</span>
-<span class="source-line-no">032</span><span id="line-32">                int[] hist = ip.getHistogram();</span>
-<span class="source-line-no">033</span><span id="line-33">                int K = hist.length;</span>
-<span class="source-line-no">034</span><span id="line-34">                </span>
-<span class="source-line-no">035</span><span id="line-35">                // create the histogram image:</span>
-<span class="source-line-no">036</span><span id="line-36">                ImageProcessor histIp = new ByteProcessor(K, 100);</span>
-<span class="source-line-no">037</span><span id="line-37">                histIp.setValue(255);   // white = 255</span>
-<span class="source-line-no">038</span><span id="line-38">                histIp.fill();</span>
-<span class="source-line-no">039</span><span id="line-39"></span>
-<span class="source-line-no">040</span><span id="line-40">                // draw the histogram values as black bars in histIp here, </span>
-<span class="source-line-no">041</span><span id="line-41">                // for example, using histIp.putpixel(u, v, 0)</span>
-<span class="source-line-no">042</span><span id="line-42">                // ...</span>
-<span class="source-line-no">043</span><span id="line-43">                </span>
-<span class="source-line-no">044</span><span id="line-44">                // compose a nice title:</span>
-<span class="source-line-no">045</span><span id="line-45">                String imTitle = im.getShortTitle();</span>
-<span class="source-line-no">046</span><span id="line-46">                String histTitle = "Histogram of " + imTitle;</span>
-<span class="source-line-no">047</span><span id="line-47">                </span>
-<span class="source-line-no">048</span><span id="line-48">                // display the histogram image:</span>
-<span class="source-line-no">049</span><span id="line-49">                ImagePlus histIm = new ImagePlus(histTitle, histIp);</span>
-<span class="source-line-no">050</span><span id="line-50">                histIm.show(); </span>
-<span class="source-line-no">051</span><span id="line-51">        }</span>
-<span class="source-line-no">052</span><span id="line-52">}</span>
+<span class="source-line-no">018</span><span id="line-18"> * This plugin demonstrates how to create and display a new byte image (to show the histogram of the input image).</span>
+<span class="source-line-no">019</span><span id="line-19"> *</span>
+<span class="source-line-no">020</span><span id="line-20"> * @author WB</span>
+<span class="source-line-no">021</span><span id="line-21"> */</span>
+<span class="source-line-no">022</span><span id="line-22">public class Create_New_Byte_Image implements PlugInFilter, JavaDocHelp {</span>
+<span class="source-line-no">023</span><span id="line-23">        </span>
+<span class="source-line-no">024</span><span id="line-24">        ImagePlus im;</span>
+<span class="source-line-no">025</span><span id="line-25"></span>
+<span class="source-line-no">026</span><span id="line-26">        public int setup(String arg, ImagePlus im) {</span>
+<span class="source-line-no">027</span><span id="line-27">                this.im = im;</span>
+<span class="source-line-no">028</span><span id="line-28">                return DOES_8G + NO_CHANGES;</span>
+<span class="source-line-no">029</span><span id="line-29">        }</span>
+<span class="source-line-no">030</span><span id="line-30"></span>
+<span class="source-line-no">031</span><span id="line-31">        public void run(ImageProcessor ip) {</span>
+<span class="source-line-no">032</span><span id="line-32">                // obtain the histogram of ip:</span>
+<span class="source-line-no">033</span><span id="line-33">                int[] hist = ip.getHistogram();</span>
+<span class="source-line-no">034</span><span id="line-34">                int K = hist.length;</span>
+<span class="source-line-no">035</span><span id="line-35">                </span>
+<span class="source-line-no">036</span><span id="line-36">                // create the histogram image:</span>
+<span class="source-line-no">037</span><span id="line-37">                ImageProcessor histIp = new ByteProcessor(K, 100);</span>
+<span class="source-line-no">038</span><span id="line-38">                histIp.setValue(255);   // white = 255</span>
+<span class="source-line-no">039</span><span id="line-39">                histIp.fill();</span>
+<span class="source-line-no">040</span><span id="line-40"></span>
+<span class="source-line-no">041</span><span id="line-41">                // draw the histogram values as black bars in histIp here, </span>
+<span class="source-line-no">042</span><span id="line-42">                // for example, using histIp.putpixel(u, v, 0)</span>
+<span class="source-line-no">043</span><span id="line-43">                // ...</span>
+<span class="source-line-no">044</span><span id="line-44">                </span>
+<span class="source-line-no">045</span><span id="line-45">                // compose a nice title:</span>
+<span class="source-line-no">046</span><span id="line-46">                String imTitle = im.getShortTitle();</span>
+<span class="source-line-no">047</span><span id="line-47">                String histTitle = "Histogram of " + imTitle;</span>
+<span class="source-line-no">048</span><span id="line-48">                </span>
+<span class="source-line-no">049</span><span id="line-49">                // display the histogram image:</span>
+<span class="source-line-no">050</span><span id="line-50">                ImagePlus histIm = new ImagePlus(histTitle, histIp);</span>
+<span class="source-line-no">051</span><span id="line-51">                histIm.show(); </span>
+<span class="source-line-no">052</span><span id="line-52">        }</span>
+<span class="source-line-no">053</span><span id="line-53">}</span>
 
 
 

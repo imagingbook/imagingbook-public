@@ -11,7 +11,7 @@ package Tools_;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * ImageJ plugin, unlocks the currently active image.

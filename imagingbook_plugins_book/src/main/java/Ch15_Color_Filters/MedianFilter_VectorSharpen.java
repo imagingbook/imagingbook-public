@@ -16,7 +16,7 @@ import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen;
 import imagingbook.common.filter.nonlinear.VectorMedianFilterSharpen.Parameters;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.math.VectorNorm.NormType;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -70,6 +70,7 @@ public class MedianFilter_VectorSharpen implements PlugInFilter, JavaDocHelp {
     
     boolean runDialog() {
 		GenericDialog gd = new GenericDialog("Median Filter");
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Radius", params.radius, 1);
 		gd.addNumericField("Sharpen", params.sharpen, 1);
 		gd.addNumericField("Threshold", params.threshold, 1);

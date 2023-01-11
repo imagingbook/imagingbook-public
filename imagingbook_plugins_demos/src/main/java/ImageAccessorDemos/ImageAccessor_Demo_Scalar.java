@@ -13,20 +13,15 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.access.ScalarAccessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
- * This plugin demonstrates the of class {@link ScalarAccessor} for
- * unified access to scalar-valued images.
- * The plugin adds 20 brightness units to each pixel of the active image. 
- * It can be applied to any scalar image type.
- * TODO: move to other package
- * 
- * @author WB
+ * This plugin demonstrates the of class {@link ScalarAccessor} for unified access to scalar-valued images. The plugin
+ * adds 20 brightness units to each pixel of the active image. It can be applied to any scalar image type.
  *
+ * @author WB
  * @see ImageAccessor
  * @see ScalarAccessor
- *
  */
 public class ImageAccessor_Demo_Scalar implements PlugInFilter, JavaDocHelp {
 

@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Demos>ImageAccessor Demos")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_demos")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_demos/")
 package ImageAccessorDemos;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

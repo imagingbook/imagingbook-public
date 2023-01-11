@@ -27,7 +27,7 @@
 <span class="source-line-no">014</span><span id="line-14">import ij.plugin.filter.PlugInFilter;</span>
 <span class="source-line-no">015</span><span id="line-15">import ij.process.ImageProcessor;</span>
 <span class="source-line-no">016</span><span id="line-16">import imagingbook.common.ij.DialogUtils;</span>
-<span class="source-line-no">017</span><span id="line-17">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">017</span><span id="line-17">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">018</span><span id="line-18">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">019</span><span id="line-19"></span>
 <span class="source-line-no">020</span><span id="line-20">import java.awt.image.ColorModel;</span>
@@ -115,18 +115,19 @@
 <span class="source-line-no">102</span><span id="line-102"></span>
 <span class="source-line-no">103</span><span id="line-103">        private boolean runDialog() {</span>
 <span class="source-line-no">104</span><span id="line-104">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">105</span><span id="line-105">                gd.addNumericField("Brightness delta", BrightnessDelta, 0);</span>
-<span class="source-line-no">106</span><span id="line-106"></span>
-<span class="source-line-no">107</span><span id="line-107">                gd.showDialog();</span>
-<span class="source-line-no">108</span><span id="line-108">                if(gd.wasCanceled())</span>
-<span class="source-line-no">109</span><span id="line-109">                        return false;</span>
-<span class="source-line-no">110</span><span id="line-110"></span>
-<span class="source-line-no">111</span><span id="line-111">                BrightnessDelta = (int) gd.getNextNumber();</span>
-<span class="source-line-no">112</span><span id="line-112">                return true;</span>
-<span class="source-line-no">113</span><span id="line-113">        }</span>
-<span class="source-line-no">114</span><span id="line-114"></span>
-<span class="source-line-no">115</span><span id="line-115">}</span>
-<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">105</span><span id="line-105">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">106</span><span id="line-106">                gd.addNumericField("Brightness delta", BrightnessDelta, 0);</span>
+<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">108</span><span id="line-108">                gd.showDialog();</span>
+<span class="source-line-no">109</span><span id="line-109">                if(gd.wasCanceled())</span>
+<span class="source-line-no">110</span><span id="line-110">                        return false;</span>
+<span class="source-line-no">111</span><span id="line-111"></span>
+<span class="source-line-no">112</span><span id="line-112">                BrightnessDelta = (int) gd.getNextNumber();</span>
+<span class="source-line-no">113</span><span id="line-113">                return true;</span>
+<span class="source-line-no">114</span><span id="line-114">        }</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">}</span>
+<span class="source-line-no">117</span><span id="line-117"></span>
 
 
 

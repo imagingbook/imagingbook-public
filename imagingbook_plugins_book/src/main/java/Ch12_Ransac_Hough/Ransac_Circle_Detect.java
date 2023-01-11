@@ -24,6 +24,7 @@ import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
 import imagingbook.common.ransac.RansacCircleDetector;
 import imagingbook.common.ransac.RansacResult;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2022/10/03
  */
-public class Ransac_Circle_Detect implements PlugInFilter, RansacDrawSettings {
+public class Ransac_Circle_Detect implements PlugInFilter, RansacDrawSettings, JavaDocHelp {
 
 	private static RansacCircleDetector.Parameters params = new RansacCircleDetector.Parameters();
 	static {
@@ -163,6 +164,7 @@ public class Ransac_Circle_Detect implements PlugInFilter, RansacDrawSettings {
 	
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		addToDialog(params, gd);
 		gd.addNumericField("Max. number of circles", MaxCircleCount);
 		

@@ -25,32 +25,38 @@
 <span class="source-line-no">012</span><span id="line-12">import ij.gui.GenericDialog;</span>
 <span class="source-line-no">013</span><span id="line-13">import ij.gui.NewImage;</span>
 <span class="source-line-no">014</span><span id="line-14">import ij.plugin.PlugIn;</span>
-<span class="source-line-no">015</span><span id="line-15">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">015</span><span id="line-15">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">public class Generic_Dialog_Example implements PlugIn, JavaDocHelp {</span>
-<span class="source-line-no">018</span><span id="line-18">        static String title = "Untitled";</span>
-<span class="source-line-no">019</span><span id="line-19">        static int width = 512;</span>
-<span class="source-line-no">020</span><span id="line-20">        static int height = 512;</span>
-<span class="source-line-no">021</span><span id="line-21"></span>
-<span class="source-line-no">022</span><span id="line-22">        public void run(String arg) {</span>
-<span class="source-line-no">023</span><span id="line-23">                </span>
-<span class="source-line-no">024</span><span id="line-24">                GenericDialog gd = new GenericDialog("New Image");</span>
-<span class="source-line-no">025</span><span id="line-25">                gd.addStringField("Title:", title);</span>
-<span class="source-line-no">026</span><span id="line-26">                gd.addNumericField("Width:", width, 0);</span>
-<span class="source-line-no">027</span><span id="line-27">                gd.addNumericField("Height:", height, 0);</span>
-<span class="source-line-no">028</span><span id="line-28">                gd.showDialog();</span>
-<span class="source-line-no">029</span><span id="line-29">                </span>
-<span class="source-line-no">030</span><span id="line-30">                if (gd.wasCanceled())</span>
-<span class="source-line-no">031</span><span id="line-31">                        return;</span>
-<span class="source-line-no">032</span><span id="line-32">                </span>
-<span class="source-line-no">033</span><span id="line-33">                title = gd.getNextString();</span>
-<span class="source-line-no">034</span><span id="line-34">                width = (int) gd.getNextNumber();</span>
-<span class="source-line-no">035</span><span id="line-35">                height = (int) gd.getNextNumber();</span>
-<span class="source-line-no">036</span><span id="line-36"></span>
-<span class="source-line-no">037</span><span id="line-37">                ImagePlus imp = NewImage.createByteImage(title, width, height, 1, NewImage.FILL_WHITE);</span>
-<span class="source-line-no">038</span><span id="line-38">                imp.show();</span>
-<span class="source-line-no">039</span><span id="line-39">        }</span>
-<span class="source-line-no">040</span><span id="line-40">}</span>
+<span class="source-line-no">017</span><span id="line-17">/**</span>
+<span class="source-line-no">018</span><span id="line-18"> * This ImageJ plugin demonstrates the basic use of {@link GenericDialog} to create a new byte image.</span>
+<span class="source-line-no">019</span><span id="line-19"> *</span>
+<span class="source-line-no">020</span><span id="line-20"> * @author WB</span>
+<span class="source-line-no">021</span><span id="line-21"> */</span>
+<span class="source-line-no">022</span><span id="line-22">public class Generic_Dialog_Example implements PlugIn, JavaDocHelp {</span>
+<span class="source-line-no">023</span><span id="line-23"></span>
+<span class="source-line-no">024</span><span id="line-24">        private static String Title = "Untitled";</span>
+<span class="source-line-no">025</span><span id="line-25">        private static int Width = 512;</span>
+<span class="source-line-no">026</span><span id="line-26">        private static int Height = 512;</span>
+<span class="source-line-no">027</span><span id="line-27"></span>
+<span class="source-line-no">028</span><span id="line-28">        public void run(String arg) {</span>
+<span class="source-line-no">029</span><span id="line-29">                GenericDialog gd = new GenericDialog("New Image");</span>
+<span class="source-line-no">030</span><span id="line-30">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">031</span><span id="line-31">                gd.addStringField("Title:", Title);</span>
+<span class="source-line-no">032</span><span id="line-32">                gd.addNumericField("Width:", Width, 0);</span>
+<span class="source-line-no">033</span><span id="line-33">                gd.addNumericField("Height:", Height, 0);</span>
+<span class="source-line-no">034</span><span id="line-34">                gd.showDialog();</span>
+<span class="source-line-no">035</span><span id="line-35">                </span>
+<span class="source-line-no">036</span><span id="line-36">                if (gd.wasCanceled())</span>
+<span class="source-line-no">037</span><span id="line-37">                        return;</span>
+<span class="source-line-no">038</span><span id="line-38">                </span>
+<span class="source-line-no">039</span><span id="line-39">                Title = gd.getNextString();</span>
+<span class="source-line-no">040</span><span id="line-40">                Width = (int) gd.getNextNumber();</span>
+<span class="source-line-no">041</span><span id="line-41">                Height = (int) gd.getNextNumber();</span>
+<span class="source-line-no">042</span><span id="line-42"></span>
+<span class="source-line-no">043</span><span id="line-43">                ImagePlus imp = NewImage.createByteImage(Title, Width, Height, 1, NewImage.FILL_WHITE);</span>
+<span class="source-line-no">044</span><span id="line-44">                imp.show();</span>
+<span class="source-line-no">045</span><span id="line-45">        }</span>
+<span class="source-line-no">046</span><span id="line-46">}</span>
 
 
 

@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch21 Geometric Operations")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch21_Geometric_Operations;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

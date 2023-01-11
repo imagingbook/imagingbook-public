@@ -15,19 +15,14 @@ import imagingbook.common.filter.generic.GenericFilter;
 import imagingbook.common.filter.linear.GaussianKernel2D;
 import imagingbook.common.filter.linear.Kernel2D;
 import imagingbook.common.filter.linear.LinearFilter;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
- * This ImageJ plugin shows how to construct a generic linear filter
- * using the classes {@link LinearFilter} and {@link Kernel2D}.
- * This plugin works for all types of images.
- * On RGB color images, the filter is applied independently
- * to the three color channels.
- * The active image is modified.
- * 
+ * This ImageJ plugin shows how to construct a generic linear filter using the classes {@link LinearFilter} and
+ * {@link Kernel2D}. This plugin works for all types of images. On RGB color images, the filter is applied independently
+ * to the three color channels. The active image is modified.
+ *
  * @author WB
- *
- *
  * @see LinearFilter
  * @see GenericFilter
  * @see Kernel2D

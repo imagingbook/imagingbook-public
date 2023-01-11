@@ -17,7 +17,7 @@ import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaF.Parameters;
 import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaFilterScalar;
 import imagingbook.common.filter.edgepreserving.NagaoMatsuyamaFilterVector;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -74,6 +74,7 @@ public class Nagao_Matsuyama_Filter implements PlugInFilter, JavaDocHelp {
     
     private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addNumericField("Variance threshold", params.varThreshold, 0);
 		if (isColor)
 			gd.addCheckbox("Use vector filter", UseVectorFilter);

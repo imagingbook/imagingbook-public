@@ -22,7 +22,7 @@ import imagingbook.common.morphology.BinaryErosion;
 import imagingbook.common.morphology.BinaryMorphologyFilter;
 import imagingbook.common.morphology.BinaryOpening;
 import imagingbook.common.morphology.StructuringElements;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -106,6 +106,7 @@ public class Bin_Morphology_Disk implements PlugInFilter, JavaDocHelp {
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		if (im.isInvertedLut()) {
 			gd.setInsets(0, 0, 0);
 			gd.addMessage("NOTE: Image has inverted LUT (0 = white)!");

@@ -12,23 +12,20 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 /**
  * <p>
- * This ImageJ plugin demonstrates how to iterate over the frames (slices) of an
- * image stack. In this case each frame is simply inverted. No new frames are
- * added to the stack. Note that stack slices are numbered from 1,...,K (i.e.,
- * there is no slice 0)!
+ * This ImageJ plugin demonstrates how to iterate over the frames (slices) of an image stack. In this case each frame is
+ * simply inverted. No new frames are added to the stack. Note that stack slices are numbered from 1,...,K (i.e., there
+ * is no slice 0)!
  * </p>
  * <p>
- * If {@link PlugInFilter#STACK_REQUIRED} is omitted in
- * {@link #setup(String, ImagePlus)}, the plugin will also work on ordinary
- * (single) images.
+ * If {@link PlugInFilter#STACK_REQUIRED} is omitted in {@link #setup(String, ImagePlus)}, the plugin will also work on
+ * ordinary (single) images.
  * </p>
- * 
- * @author WB
  *
+ * @author WB
  */
 public class Stack_Processing_Demo implements PlugInFilter, JavaDocHelp {
 	

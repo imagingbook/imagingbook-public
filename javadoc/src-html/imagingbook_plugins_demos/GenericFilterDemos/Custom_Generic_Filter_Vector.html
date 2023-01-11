@@ -26,60 +26,58 @@
 <span class="source-line-no">013</span><span id="line-13">import ij.process.ImageProcessor;</span>
 <span class="source-line-no">014</span><span id="line-14">import imagingbook.common.filter.generic.GenericFilterVector;</span>
 <span class="source-line-no">015</span><span id="line-15">import imagingbook.common.image.PixelPack;</span>
-<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">016</span><span id="line-16">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">017</span><span id="line-17"></span>
 <span class="source-line-no">018</span><span id="line-18">/**</span>
-<span class="source-line-no">019</span><span id="line-19"> * This ImageJ plugin shows how to construct a 3x3 custom generic vector filter</span>
-<span class="source-line-no">020</span><span id="line-20"> * based on class {@link GenericFilterVector}.</span>
-<span class="source-line-no">021</span><span id="line-21"> * This plugin works for all types of images.</span>
-<span class="source-line-no">022</span><span id="line-22"> * </span>
-<span class="source-line-no">023</span><span id="line-23"> * @author WB</span>
-<span class="source-line-no">024</span><span id="line-24"> * @version 2022/03/30</span>
-<span class="source-line-no">025</span><span id="line-25"> *</span>
-<span class="source-line-no">026</span><span id="line-26"> */</span>
-<span class="source-line-no">027</span><span id="line-27">public class Custom_Generic_Filter_Vector implements PlugInFilter, JavaDocHelp {</span>
-<span class="source-line-no">028</span><span id="line-28"></span>
-<span class="source-line-no">029</span><span id="line-29"></span>
-<span class="source-line-no">030</span><span id="line-30">    public int setup(String arg, ImagePlus imp) {</span>
-<span class="source-line-no">031</span><span id="line-31">        return DOES_ALL;</span>
-<span class="source-line-no">032</span><span id="line-32">    }</span>
-<span class="source-line-no">033</span><span id="line-33"></span>
-<span class="source-line-no">034</span><span id="line-34">    public void run(ImageProcessor ip) {</span>
-<span class="source-line-no">035</span><span id="line-35">        new ExampleFilterVector3x3().applyTo(ip);    </span>
-<span class="source-line-no">036</span><span id="line-36">    }</span>
-<span class="source-line-no">037</span><span id="line-37"></span>
-<span class="source-line-no">038</span><span id="line-38">    // -------------------------------------------------------------</span>
-<span class="source-line-no">039</span><span id="line-39">    </span>
-<span class="source-line-no">040</span><span id="line-40">    private static class ExampleFilterVector3x3 extends GenericFilterVector {</span>
-<span class="source-line-no">041</span><span id="line-41">        private final static float[][] H = {</span>
-<span class="source-line-no">042</span><span id="line-42">                        {1, 2, 1},</span>
-<span class="source-line-no">043</span><span id="line-43">                        {2, 4, 2},</span>
-<span class="source-line-no">044</span><span id="line-44">                        {1, 2, 1}};</span>
-<span class="source-line-no">045</span><span id="line-45">        </span>
-<span class="source-line-no">046</span><span id="line-46">        private final int width = 3;</span>
-<span class="source-line-no">047</span><span id="line-47">        private final int height = 3;</span>
-<span class="source-line-no">048</span><span id="line-48">        private final int xc = 1;</span>
-<span class="source-line-no">049</span><span id="line-49">        private final int yc = 1;</span>
-<span class="source-line-no">050</span><span id="line-50">        private final float s = 16;</span>
-<span class="source-line-no">051</span><span id="line-51">        </span>
-<span class="source-line-no">052</span><span id="line-52">        @Override</span>
-<span class="source-line-no">053</span><span id="line-53">        protected float[] doPixel(PixelPack pack, int u, int v) {</span>
-<span class="source-line-no">054</span><span id="line-54">                int depth = pack.getDepth();</span>
-<span class="source-line-no">055</span><span id="line-55">                float[] sum = new float[depth];</span>
-<span class="source-line-no">056</span><span id="line-56">                for (int j = 0; j &lt; height; j++) {</span>
-<span class="source-line-no">057</span><span id="line-57">                        int vj = v + j - yc;</span>
-<span class="source-line-no">058</span><span id="line-58">                        for (int i = 0; i &lt; width; i++) {</span>
-<span class="source-line-no">059</span><span id="line-59">                                int ui = u + i - xc;</span>
-<span class="source-line-no">060</span><span id="line-60">                                float[] p = pack.getPix(ui, vj);</span>
-<span class="source-line-no">061</span><span id="line-61">                                for (int k = 0; k &lt; depth; k++) {</span>
-<span class="source-line-no">062</span><span id="line-62">                                        sum[k] = sum[k] + (p[k] * H[i][j]) / s;</span>
-<span class="source-line-no">063</span><span id="line-63">                                }</span>
-<span class="source-line-no">064</span><span id="line-64">                        }</span>
-<span class="source-line-no">065</span><span id="line-65">                }</span>
-<span class="source-line-no">066</span><span id="line-66">                return sum;</span>
-<span class="source-line-no">067</span><span id="line-67">        }</span>
-<span class="source-line-no">068</span><span id="line-68">    }</span>
-<span class="source-line-no">069</span><span id="line-69">}</span>
+<span class="source-line-no">019</span><span id="line-19"> * This ImageJ plugin shows how to construct a 3x3 custom generic vector filter based on class</span>
+<span class="source-line-no">020</span><span id="line-20"> * {@link GenericFilterVector}. This plugin works for all types of images.</span>
+<span class="source-line-no">021</span><span id="line-21"> *</span>
+<span class="source-line-no">022</span><span id="line-22"> * @author WB</span>
+<span class="source-line-no">023</span><span id="line-23"> * @version 2022/03/30</span>
+<span class="source-line-no">024</span><span id="line-24"> */</span>
+<span class="source-line-no">025</span><span id="line-25">public class Custom_Generic_Filter_Vector implements PlugInFilter, JavaDocHelp {</span>
+<span class="source-line-no">026</span><span id="line-26"></span>
+<span class="source-line-no">027</span><span id="line-27"></span>
+<span class="source-line-no">028</span><span id="line-28">    public int setup(String arg, ImagePlus imp) {</span>
+<span class="source-line-no">029</span><span id="line-29">        return DOES_ALL;</span>
+<span class="source-line-no">030</span><span id="line-30">    }</span>
+<span class="source-line-no">031</span><span id="line-31"></span>
+<span class="source-line-no">032</span><span id="line-32">    public void run(ImageProcessor ip) {</span>
+<span class="source-line-no">033</span><span id="line-33">        new ExampleFilterVector3x3().applyTo(ip);    </span>
+<span class="source-line-no">034</span><span id="line-34">    }</span>
+<span class="source-line-no">035</span><span id="line-35"></span>
+<span class="source-line-no">036</span><span id="line-36">    // -------------------------------------------------------------</span>
+<span class="source-line-no">037</span><span id="line-37">    </span>
+<span class="source-line-no">038</span><span id="line-38">    private static class ExampleFilterVector3x3 extends GenericFilterVector {</span>
+<span class="source-line-no">039</span><span id="line-39">        private final static float[][] H = {</span>
+<span class="source-line-no">040</span><span id="line-40">                        {1, 2, 1},</span>
+<span class="source-line-no">041</span><span id="line-41">                        {2, 4, 2},</span>
+<span class="source-line-no">042</span><span id="line-42">                        {1, 2, 1}};</span>
+<span class="source-line-no">043</span><span id="line-43">        </span>
+<span class="source-line-no">044</span><span id="line-44">        private final int width = 3;</span>
+<span class="source-line-no">045</span><span id="line-45">        private final int height = 3;</span>
+<span class="source-line-no">046</span><span id="line-46">        private final int xc = 1;</span>
+<span class="source-line-no">047</span><span id="line-47">        private final int yc = 1;</span>
+<span class="source-line-no">048</span><span id="line-48">        private final float s = 16;</span>
+<span class="source-line-no">049</span><span id="line-49">        </span>
+<span class="source-line-no">050</span><span id="line-50">        @Override</span>
+<span class="source-line-no">051</span><span id="line-51">        protected float[] doPixel(PixelPack pack, int u, int v) {</span>
+<span class="source-line-no">052</span><span id="line-52">                int depth = pack.getDepth();</span>
+<span class="source-line-no">053</span><span id="line-53">                float[] sum = new float[depth];</span>
+<span class="source-line-no">054</span><span id="line-54">                for (int j = 0; j &lt; height; j++) {</span>
+<span class="source-line-no">055</span><span id="line-55">                        int vj = v + j - yc;</span>
+<span class="source-line-no">056</span><span id="line-56">                        for (int i = 0; i &lt; width; i++) {</span>
+<span class="source-line-no">057</span><span id="line-57">                                int ui = u + i - xc;</span>
+<span class="source-line-no">058</span><span id="line-58">                                float[] p = pack.getPix(ui, vj);</span>
+<span class="source-line-no">059</span><span id="line-59">                                for (int k = 0; k &lt; depth; k++) {</span>
+<span class="source-line-no">060</span><span id="line-60">                                        sum[k] = sum[k] + (p[k] * H[i][j]) / s;</span>
+<span class="source-line-no">061</span><span id="line-61">                                }</span>
+<span class="source-line-no">062</span><span id="line-62">                        }</span>
+<span class="source-line-no">063</span><span id="line-63">                }</span>
+<span class="source-line-no">064</span><span id="line-64">                return sum;</span>
+<span class="source-line-no">065</span><span id="line-65">        }</span>
+<span class="source-line-no">066</span><span id="line-66">    }</span>
+<span class="source-line-no">067</span><span id="line-67">}</span>
 
 
 

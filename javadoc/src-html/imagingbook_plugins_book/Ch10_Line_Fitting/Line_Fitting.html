@@ -40,7 +40,7 @@
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.common.ij.RoiUtils;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.common.ij.overlay.ColoredStroke;</span>
 <span class="source-line-no">029</span><span id="line-29">import imagingbook.common.ij.overlay.ShapeOverlayAdapter;</span>
-<span class="source-line-no">030</span><span id="line-30">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">030</span><span id="line-30">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">031</span><span id="line-31"></span>
 <span class="source-line-no">032</span><span id="line-32">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
 <span class="source-line-no">033</span><span id="line-33"></span>
@@ -159,7 +159,7 @@
 <span class="source-line-no">146</span><span id="line-146">        </span>
 <span class="source-line-no">147</span><span id="line-147">        private boolean runDialog() {</span>
 <span class="source-line-no">148</span><span id="line-148">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">149</span><span id="line-149"></span>
+<span class="source-line-no">149</span><span id="line-149">                gd.addHelp(getJavaDocUrl());</span>
 <span class="source-line-no">150</span><span id="line-150">                gd.addMessage(DialogUtils.formatText(50,</span>
 <span class="source-line-no">151</span><span id="line-151">                                "This plugin performs algebraic + geometric circle fitting,",</span>
 <span class="source-line-no">152</span><span id="line-152">                                "either to ROI points (if available) or foreground points",</span>

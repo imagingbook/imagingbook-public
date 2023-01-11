@@ -34,7 +34,7 @@
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.common.regions.BinaryRegion;</span>
 <span class="source-line-no">022</span><span id="line-22">import imagingbook.common.regions.BinaryRegionSegmentation;</span>
 <span class="source-line-no">023</span><span id="line-23">import imagingbook.common.regions.RegionContourSegmentation;</span>
-<span class="source-line-no">024</span><span id="line-24">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">024</span><span id="line-24">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.core.resource.ImageResource;</span>
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.sampleimages.kimia.Kimia1070;</span>
 <span class="source-line-no">027</span><span id="line-27">import imagingbook.sampleimages.kimia.Kimia216;</span>
@@ -142,23 +142,24 @@
 <span class="source-line-no">129</span><span id="line-129"></span>
 <span class="source-line-no">130</span><span id="line-130">        private boolean runDialog() {</span>
 <span class="source-line-no">131</span><span id="line-131">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">132</span><span id="line-132">                gd.addEnumChoice("Data set to use", DATA_SET);</span>
-<span class="source-line-no">133</span><span id="line-133">                gd.addNumericField("Minimum region size (pixels)", MIN_REGION_SIZE);</span>
-<span class="source-line-no">134</span><span id="line-134">                gd.addCheckbox("List long-encoded covariance matrix", LIST_LONG_ENCODED_MATRIX);</span>
-<span class="source-line-no">135</span><span id="line-135"></span>
-<span class="source-line-no">136</span><span id="line-136">                gd.showDialog();</span>
-<span class="source-line-no">137</span><span id="line-137">                if (gd.wasCanceled()) {</span>
-<span class="source-line-no">138</span><span id="line-138">                        return false;</span>
-<span class="source-line-no">139</span><span id="line-139">                }</span>
-<span class="source-line-no">140</span><span id="line-140"></span>
-<span class="source-line-no">141</span><span id="line-141">                DATA_SET = gd.getNextEnumChoice(DataSet.class);</span>
-<span class="source-line-no">142</span><span id="line-142">                MIN_REGION_SIZE = (int) gd.getNextNumber();</span>
-<span class="source-line-no">143</span><span id="line-143">                LIST_LONG_ENCODED_MATRIX = gd.getNextBoolean();</span>
-<span class="source-line-no">144</span><span id="line-144">                return true;</span>
-<span class="source-line-no">145</span><span id="line-145">        }</span>
-<span class="source-line-no">146</span><span id="line-146"></span>
-<span class="source-line-no">147</span><span id="line-147">}</span>
-<span class="source-line-no">148</span><span id="line-148"></span>
+<span class="source-line-no">132</span><span id="line-132">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">133</span><span id="line-133">                gd.addEnumChoice("Data set to use", DATA_SET);</span>
+<span class="source-line-no">134</span><span id="line-134">                gd.addNumericField("Minimum region size (pixels)", MIN_REGION_SIZE);</span>
+<span class="source-line-no">135</span><span id="line-135">                gd.addCheckbox("List long-encoded covariance matrix", LIST_LONG_ENCODED_MATRIX);</span>
+<span class="source-line-no">136</span><span id="line-136"></span>
+<span class="source-line-no">137</span><span id="line-137">                gd.showDialog();</span>
+<span class="source-line-no">138</span><span id="line-138">                if (gd.wasCanceled()) {</span>
+<span class="source-line-no">139</span><span id="line-139">                        return false;</span>
+<span class="source-line-no">140</span><span id="line-140">                }</span>
+<span class="source-line-no">141</span><span id="line-141"></span>
+<span class="source-line-no">142</span><span id="line-142">                DATA_SET = gd.getNextEnumChoice(DataSet.class);</span>
+<span class="source-line-no">143</span><span id="line-143">                MIN_REGION_SIZE = (int) gd.getNextNumber();</span>
+<span class="source-line-no">144</span><span id="line-144">                LIST_LONG_ENCODED_MATRIX = gd.getNextBoolean();</span>
+<span class="source-line-no">145</span><span id="line-145">                return true;</span>
+<span class="source-line-no">146</span><span id="line-146">        }</span>
+<span class="source-line-no">147</span><span id="line-147"></span>
+<span class="source-line-no">148</span><span id="line-148">}</span>
+<span class="source-line-no">149</span><span id="line-149"></span>
 
 
 

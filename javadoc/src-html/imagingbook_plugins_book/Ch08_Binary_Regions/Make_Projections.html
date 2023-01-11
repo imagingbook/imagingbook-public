@@ -30,7 +30,7 @@
 <span class="source-line-no">017</span><span id="line-17">import imagingbook.common.ij.DialogUtils;</span>
 <span class="source-line-no">018</span><span id="line-18">import imagingbook.common.image.Projection;</span>
 <span class="source-line-no">019</span><span id="line-19">import imagingbook.core.plugin.IjPluginName;</span>
-<span class="source-line-no">020</span><span id="line-20">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">020</span><span id="line-20">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">021</span><span id="line-21">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">022</span><span id="line-22"></span>
 <span class="source-line-no">023</span><span id="line-23">import static imagingbook.common.ij.IjUtils.noCurrentImage;</span>
@@ -156,24 +156,25 @@
 <span class="source-line-no">143</span><span id="line-143"></span>
 <span class="source-line-no">144</span><span id="line-144">        private boolean runDialog() {</span>
 <span class="source-line-no">145</span><span id="line-145">                GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());</span>
-<span class="source-line-no">146</span><span id="line-146">                gd.addNumericField("Size of projection plots", ProjectionSize, 0);</span>
-<span class="source-line-no">147</span><span id="line-147">                gd.addCheckbox("Show amount of black", ShowAmountOfBlack);</span>
-<span class="source-line-no">148</span><span id="line-148">                gd.addEnumChoice("Horizontal plot color", PlotColorH);</span>
-<span class="source-line-no">149</span><span id="line-149">                gd.addEnumChoice("Vertical plot color", PlotColorV);</span>
-<span class="source-line-no">150</span><span id="line-150">                gd.addEnumChoice("Plot background color", BackgroundColor);</span>
-<span class="source-line-no">151</span><span id="line-151">                </span>
-<span class="source-line-no">152</span><span id="line-152">                gd.showDialog();</span>
-<span class="source-line-no">153</span><span id="line-153">                if (gd.wasCanceled())</span>
-<span class="source-line-no">154</span><span id="line-154">                        return false;</span>
-<span class="source-line-no">155</span><span id="line-155">                </span>
-<span class="source-line-no">156</span><span id="line-156">                ProjectionSize = (int) gd.getNextNumber();</span>
-<span class="source-line-no">157</span><span id="line-157">                ShowAmountOfBlack = gd.getNextBoolean();</span>
-<span class="source-line-no">158</span><span id="line-158">                PlotColorH = gd.getNextEnumChoice(BasicAwtColor.class);</span>
-<span class="source-line-no">159</span><span id="line-159">                PlotColorV = gd.getNextEnumChoice(BasicAwtColor.class);</span>
-<span class="source-line-no">160</span><span id="line-160">                BackgroundColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
-<span class="source-line-no">161</span><span id="line-161">                return true;</span>
-<span class="source-line-no">162</span><span id="line-162">        }</span>
-<span class="source-line-no">163</span><span id="line-163">}</span>
+<span class="source-line-no">146</span><span id="line-146">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">147</span><span id="line-147">                gd.addNumericField("Size of projection plots", ProjectionSize, 0);</span>
+<span class="source-line-no">148</span><span id="line-148">                gd.addCheckbox("Show amount of black", ShowAmountOfBlack);</span>
+<span class="source-line-no">149</span><span id="line-149">                gd.addEnumChoice("Horizontal plot color", PlotColorH);</span>
+<span class="source-line-no">150</span><span id="line-150">                gd.addEnumChoice("Vertical plot color", PlotColorV);</span>
+<span class="source-line-no">151</span><span id="line-151">                gd.addEnumChoice("Plot background color", BackgroundColor);</span>
+<span class="source-line-no">152</span><span id="line-152">                </span>
+<span class="source-line-no">153</span><span id="line-153">                gd.showDialog();</span>
+<span class="source-line-no">154</span><span id="line-154">                if (gd.wasCanceled())</span>
+<span class="source-line-no">155</span><span id="line-155">                        return false;</span>
+<span class="source-line-no">156</span><span id="line-156">                </span>
+<span class="source-line-no">157</span><span id="line-157">                ProjectionSize = (int) gd.getNextNumber();</span>
+<span class="source-line-no">158</span><span id="line-158">                ShowAmountOfBlack = gd.getNextBoolean();</span>
+<span class="source-line-no">159</span><span id="line-159">                PlotColorH = gd.getNextEnumChoice(BasicAwtColor.class);</span>
+<span class="source-line-no">160</span><span id="line-160">                PlotColorV = gd.getNextEnumChoice(BasicAwtColor.class);</span>
+<span class="source-line-no">161</span><span id="line-161">                BackgroundColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
+<span class="source-line-no">162</span><span id="line-162">                return true;</span>
+<span class="source-line-no">163</span><span id="line-163">        }</span>
+<span class="source-line-no">164</span><span id="line-164">}</span>
 
 
 

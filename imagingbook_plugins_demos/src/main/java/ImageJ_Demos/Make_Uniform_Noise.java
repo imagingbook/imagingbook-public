@@ -11,15 +11,14 @@ package ImageJ_Demos;
 import ij.ImagePlus;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 
 import java.util.Random;
 
 /**
  * Fills the active image with uniform noise.
- * 
- * @author WB
  *
+ * @author WB
  */
 public class Make_Uniform_Noise implements PlugInFilter, JavaDocHelp {
 	

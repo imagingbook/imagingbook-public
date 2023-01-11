@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Ch09 Automatic Thresholding")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch09_Automatic_Thresholding;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

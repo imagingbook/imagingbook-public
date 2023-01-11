@@ -8,7 +8,7 @@
  ******************************************************************************/
 
 @IjPluginPath("B&B>Book>Ch02 Histograms/Statistics")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Ch02_Histograms_Statistics;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;

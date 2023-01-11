@@ -17,7 +17,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.histogram.HistogramPlot;
 import imagingbook.common.histogram.HistogramUtils;
 import imagingbook.common.ij.DialogUtils;
-import imagingbook.core.plugin.JavaDocHelp;
+import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
 
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
@@ -126,8 +126,8 @@ public class Match_Reference_Histogram_Stack implements PlugInFilter, JavaDocHel
 
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
+		gd.addHelp(getJavaDocUrl());
 		gd.addCheckbox("Show original histograms", ShowOriginalHistograms);
-
 		gd.addCheckbox("Show modified histograms", ShowModifiedHistograms);
 		gd.addCheckbox("Show modified cum. histograms", ShowModifiedCumulativeHistograms);
 

@@ -37,7 +37,7 @@
 <span class="source-line-no">024</span><span id="line-24">import imagingbook.common.regions.BinaryRegion;</span>
 <span class="source-line-no">025</span><span id="line-25">import imagingbook.common.regions.RegionContourSegmentation;</span>
 <span class="source-line-no">026</span><span id="line-26">import imagingbook.core.plugin.IjPluginName;</span>
-<span class="source-line-no">027</span><span id="line-27">import imagingbook.core.plugin.JavaDocHelp;</span>
+<span class="source-line-no">027</span><span id="line-27">import imagingbook.core.jdoc.JavaDocHelp;</span>
 <span class="source-line-no">028</span><span id="line-28">import imagingbook.sampleimages.GeneralSampleImage;</span>
 <span class="source-line-no">029</span><span id="line-29"></span>
 <span class="source-line-no">030</span><span id="line-30">import java.util.List;</span>
@@ -126,20 +126,21 @@
 <span class="source-line-no">113</span><span id="line-113"></span>
 <span class="source-line-no">114</span><span id="line-114">        private boolean runDialog() {</span>
 <span class="source-line-no">115</span><span id="line-115">                GenericDialog gd = new GenericDialog(Region_Contours_Demo.class.getSimpleName());</span>
-<span class="source-line-no">116</span><span id="line-116">                gd.addEnumChoice("Drawing color", DrawingColor);</span>
-<span class="source-line-no">117</span><span id="line-117">                gd.addNumericField("Stroke width", StrokeWidth, 1);</span>
-<span class="source-line-no">118</span><span id="line-118"></span>
-<span class="source-line-no">119</span><span id="line-119">                gd.showDialog();</span>
-<span class="source-line-no">120</span><span id="line-120">                if (gd.wasCanceled()) {</span>
-<span class="source-line-no">121</span><span id="line-121">                        return false;</span>
-<span class="source-line-no">122</span><span id="line-122">                }</span>
-<span class="source-line-no">123</span><span id="line-123"></span>
-<span class="source-line-no">124</span><span id="line-124">                DrawingColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
-<span class="source-line-no">125</span><span id="line-125">                StrokeWidth = gd.getNextNumber();</span>
-<span class="source-line-no">126</span><span id="line-126">                return true;</span>
-<span class="source-line-no">127</span><span id="line-127">        }</span>
-<span class="source-line-no">128</span><span id="line-128"></span>
-<span class="source-line-no">129</span><span id="line-129">}</span>
+<span class="source-line-no">116</span><span id="line-116">                gd.addHelp(getJavaDocUrl());</span>
+<span class="source-line-no">117</span><span id="line-117">                gd.addEnumChoice("Drawing color", DrawingColor);</span>
+<span class="source-line-no">118</span><span id="line-118">                gd.addNumericField("Stroke width", StrokeWidth, 1);</span>
+<span class="source-line-no">119</span><span id="line-119"></span>
+<span class="source-line-no">120</span><span id="line-120">                gd.showDialog();</span>
+<span class="source-line-no">121</span><span id="line-121">                if (gd.wasCanceled()) {</span>
+<span class="source-line-no">122</span><span id="line-122">                        return false;</span>
+<span class="source-line-no">123</span><span id="line-123">                }</span>
+<span class="source-line-no">124</span><span id="line-124"></span>
+<span class="source-line-no">125</span><span id="line-125">                DrawingColor = gd.getNextEnumChoice(BasicAwtColor.class);</span>
+<span class="source-line-no">126</span><span id="line-126">                StrokeWidth = gd.getNextNumber();</span>
+<span class="source-line-no">127</span><span id="line-127">                return true;</span>
+<span class="source-line-no">128</span><span id="line-128">        }</span>
+<span class="source-line-no">129</span><span id="line-129"></span>
+<span class="source-line-no">130</span><span id="line-130">}</span>
 
 
 

@@ -10,7 +10,7 @@
  * 
  */
 @IjPluginPath("B&B>Book>Tools")
-@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book")
+@JavaDocBaseUrl("https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook_plugins_book/")
 package Tools_;
 
 import imagingbook.core.jdoc.JavaDocBaseUrl;
