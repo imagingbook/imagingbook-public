@@ -51,7 +51,7 @@
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
 
 		<java.version>11</java.version>	<!-- need to step to 11 to make Javadoc API linking work! -->
-		<imagej.version>1.53v</imagej.version> <!-- see https://mvnrepository.com/artifact/net.imagej/ij -->
+		<imagej.version>1.54b</imagej.version> <!-- see https://mvnrepository.com/artifact/net.imagej/ij -->
 		<imagej.apilink>https://javadoc.io/doc/net.imagej/ij/1.53v</imagej.apilink>
 
 		<commons-math3.version>3.6.1</commons-math3.version>
