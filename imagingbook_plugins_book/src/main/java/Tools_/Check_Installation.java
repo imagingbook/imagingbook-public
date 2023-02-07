@@ -20,7 +20,7 @@ import imagingbook.core.jdoc.JavaDocHelp;
  * 
  * @author WB
  */
-public class Check_Installation implements PlugIn, JavaDocHelp {
+public class Check_Installation implements PlugIn {
 
 	@Override
 	public void run(String arg0) {
