@@ -14,6 +14,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
+import imagingbook.common.color.colorspace.AdobeRgbColorSpace;
 import imagingbook.common.color.colorspace.HlsColorSpace;
 import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.color.colorspace.LabColorSpace;
@@ -47,7 +48,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 public class Convert_To_Color_Stack implements PlugInFilter, JavaDocHelp {
 
 	private enum TargetSpaceType {
-		Lab, Luv, HLS, HSV, LinearRGB, XYZ;
+		Lab, Luv, HLS, HSV, LinearRGB, AdobeRGB, XYZ;
 	}
 
 	private static TargetSpaceType TargetSpace = TargetSpaceType.Lab;
@@ -85,6 +86,7 @@ public class Convert_To_Color_Stack implements PlugInFilter, JavaDocHelp {
 			case Luv: csp = LuvColorSpace.getInstance(); break;
 			case HLS: csp = HlsColorSpace.getInstance(); break;
 			case HSV: csp = HsvColorSpace.getInstance(); break;
+			case AdobeRGB:	csp = AdobeRgbColorSpace.getInstance(); break;
 			case LinearRGB:	csp = LinearRgb65ColorSpace.getInstance(); break;
 			case XYZ: csp = XYZ65ColorSpace.getInstance(); break;
 		}
@@ -107,7 +109,7 @@ public class Convert_To_Color_Stack implements PlugInFilter, JavaDocHelp {
 	private boolean runDialog() {
 		GenericDialog gd = new GenericDialog(this.getClass().getSimpleName());
 		gd.addHelp(getJavaDocUrl());
-		gd.addMessage("Convert RGB image to Lab/Luv stack.");
+		gd.addMessage("Convert RGB image to color stack.");
 		gd.addEnumChoice("Target color space", TargetSpace);
 		gd.addCheckbox("Reconstruct RGB image", ReconstructRGB);
 
