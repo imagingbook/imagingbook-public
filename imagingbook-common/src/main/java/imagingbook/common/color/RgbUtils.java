@@ -36,12 +36,24 @@ public abstract class RgbUtils {
 	 * blue.
 	 *
 	 * @param argb integer-encoded 8-bit RGB color in ARGB format
-	 * @return {@code int[]} with R, G, B components
+	 * @return {@code int[]} with R, G, B components in [0,255]
 	 */
 	public static int[] intToRgb(int argb) {
 		int[] RGB = new int[3];
 		decodeIntToRgb(argb, RGB);
 		return RGB;
+	}
+
+	/**
+	 * Converts the given 3-element {@code int[]} with components red, green and blue
+	 * to an integer-encoded 8-bit RGB color.
+	 *
+	 * @param RGB {@code int[]} with R, G, B components in [0,255]
+	 * @return integer-encoded 8-bit RGB color in ARGB format
+	 * @see #encodeRgbToInt(int[])
+	 */
+	public static int rgbToInt(int[] RGB) {
+		return encodeRgbToInt(RGB);
 	}
 
 	/**

@@ -12,13 +12,13 @@ package imagingbook.common.image;
 import ij.ImageStack;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
-import imagingbook.common.color.colorspace.sRgbColorSpace;
+import imagingbook.common.color.colorspace.sRGB65ColorSpace;
 
 import java.awt.color.ColorSpace;
 
 /**
  * This class defines a "color stack" as a subtype of {@link PixelPack} with exactly 3 components (slices), representing
- * a color image in a specific color space (default is {@link sRgbColorSpace}). It allows simple conversion to other
+ * a color image in a specific color space (default is {@link sRGB65ColorSpace}). It allows simple conversion to other
  * color spaces (see {@link #convertFromSrgbTo(ColorSpace)}). All conversions are 'destructive', i.e., the affected
  * color stack is modified. Pixel values are typically in [0,1], depending on the associated color space. A
  * {@link ColorPack} may be created from an existing {@link ColorProcessor} whose pixels are assumed to be in sRGB color
@@ -41,7 +41,7 @@ public class ColorPack extends PixelPack {
 	 */
 	public ColorPack(ColorProcessor cp) {
 		super(cp, 1.0/255, null);
-		setColorSpace(sRgbColorSpace.getInstance());
+		setColorSpace(sRGB65ColorSpace.getInstance());
 	}
 
 	// -----------------------------------------------------------------
@@ -80,11 +80,11 @@ public class ColorPack extends PixelPack {
 	 * @param targetColorspace the new color space
 	 */
 	public void convertFromSrgbTo(ColorSpace targetColorspace) {
-		if (!(colorspace instanceof sRgbColorSpace)) {
+		if (!(colorspace instanceof sRGB65ColorSpace)) {
 			throw new IllegalStateException("color stack must be in sRGB");
 		}
 
-		if (targetColorspace instanceof sRgbColorSpace) {
+		if (targetColorspace instanceof sRGB65ColorSpace) {
 			return;	// no effect
 			// throw new IllegalArgumentException("cannot convert color stack from sRGB to sRGB");
 		}
@@ -107,7 +107,7 @@ public class ColorPack extends PixelPack {
 	 * Converts this {@link ColorPack} to sRGB space. Has no effect if the color stack is in sRGB color space already.
 	 */
 	public void convertToSrgb() {
-		if (colorspace instanceof sRgbColorSpace) {
+		if (colorspace instanceof sRGB65ColorSpace) {
 			return;
 			// throw new IllegalStateException("color stack is in sRGB already");
 		}
@@ -120,14 +120,14 @@ public class ColorPack extends PixelPack {
 			setPix(i, srgb);
 		}
 
-		setColorSpace(sRgbColorSpace.getInstance());
+		setColorSpace(sRGB65ColorSpace.getInstance());
 	}
 
 	// ---------------------------------------------------------------
 
 	@Override
 	public ColorProcessor toColorProcessor() {
-		if (!(colorspace instanceof sRgbColorSpace)) {
+		if (!(colorspace instanceof sRGB65ColorSpace)) {
 			throw new IllegalStateException("color stack must be in sRGB to convert to ColorProcessor");
 		}
 		return super.toColorProcessor(255);

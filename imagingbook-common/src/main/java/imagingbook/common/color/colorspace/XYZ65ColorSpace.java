@@ -35,7 +35,7 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
  */
 @SuppressWarnings("serial")
 public class XYZ65ColorSpace extends ColorSpace implements DirectD65Conversion {
-	private static sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
+	private static sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
 	
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);

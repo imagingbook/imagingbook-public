@@ -37,7 +37,7 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
  */
 @SuppressWarnings("serial")
 public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
-	private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
+	private static final sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
 	private static final LabColorSpace instance = new LabColorSpace();
 	
 	public static LabColorSpace getInstance() {

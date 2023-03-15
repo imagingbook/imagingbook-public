@@ -15,16 +15,16 @@ import static org.junit.Assert.assertTrue;
 import java.awt.color.ColorSpace;
 import java.util.Random;
 
+import imagingbook.common.color.colorspace.sRGB65ColorSpace;
 import org.junit.Test;
 
-import imagingbook.common.color.colorspace.sRgbColorSpace;
 import imagingbook.common.math.Matrix;
 
 public class CieUtilTest {
 
 	@Test
 	public void test1() {
-		ColorSpace cs = sRgbColorSpace.getInstance();
+		ColorSpace cs = sRGB65ColorSpace.getInstance();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
 		doCheck(cs, new int[] {177, 0, 0});
@@ -35,7 +35,7 @@ public class CieUtilTest {
 	
 	@Test
 	public void test2() {
-		ColorSpace cs = sRgbColorSpace.getInstance();
+		ColorSpace cs = sRGB65ColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
@@ -47,7 +47,7 @@ public class CieUtilTest {
 	
 //	@Test	// tests all possible rgb combinations (slow!)
 //	public void test3() {
-//		CustomColorSpace cs = sRgbColorSpace.getInstance();
+//		CustomColorSpace cs = sRGB65ColorSpace.getInstance();
 //		for (int r = 0; r < 256; r++) {
 //			for (int g = 0; g < 256; g++) {
 //				for (int b = 0; b < 256; b++) {

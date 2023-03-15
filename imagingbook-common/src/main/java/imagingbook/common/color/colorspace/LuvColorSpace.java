@@ -34,7 +34,7 @@ import java.awt.color.ColorSpace;
  */
 @SuppressWarnings("serial")
 public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
-	private static final sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
+	private static final sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
 	private static final LuvColorSpace instance = new LuvColorSpace();
 	
 	public static LuvColorSpace getInstance() {

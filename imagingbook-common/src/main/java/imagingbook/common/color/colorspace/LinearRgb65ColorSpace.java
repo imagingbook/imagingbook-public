@@ -27,7 +27,7 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
  *
  * @author WB
  * @version 2022/11/14
- * @see sRgbColorSpace
+ * @see sRGB65ColorSpace
  */
 @SuppressWarnings("serial")
 public class LinearRgb65ColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {

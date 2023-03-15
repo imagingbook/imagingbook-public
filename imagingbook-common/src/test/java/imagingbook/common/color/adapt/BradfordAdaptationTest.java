@@ -16,12 +16,12 @@ import static org.junit.Assert.assertArrayEquals;
 import java.util.Arrays;
 import java.util.Random;
 
+import imagingbook.common.color.colorspace.sRGB65ColorSpace;
 import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.cie.Illuminant;
 import imagingbook.common.color.colorspace.DirectD65Conversion;
-import imagingbook.common.color.colorspace.sRgbColorSpace;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.testutils.NumericTestUtils;
@@ -63,7 +63,7 @@ public class BradfordAdaptationTest {
 	
 	@Test
 	public void test1() {
-		sRgbColorSpace cs = sRgbColorSpace.getInstance();
+		sRGB65ColorSpace cs = sRGB65ColorSpace.getInstance();
 		doCheck(cs, new int[] {0, 0, 0});
 		doCheck(cs, new int[] {255, 255, 255});
 		doCheck(cs, new int[] {177, 0, 0});
@@ -74,7 +74,7 @@ public class BradfordAdaptationTest {
 	
 	@Test
 	public void test2() {
-		sRgbColorSpace cs = sRgbColorSpace.getInstance();
+		sRGB65ColorSpace cs = sRGB65ColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
@@ -86,7 +86,7 @@ public class BradfordAdaptationTest {
 	
 //	@Test	// tests all possible rgb combinations
 //	public void test3() {
-//		ColorSpace cs = new sRgb65ColorSpace();
+//		ColorSpace cs = new sRGB65ColorSpace();
 //		for (int r = 0; r < 256; r++) {
 //			for (int g = 0; g < 256; g++) {
 //				for (int b = 0; b < 256; b++) {
