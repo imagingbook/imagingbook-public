@@ -18,26 +18,38 @@ import org.junit.Test;
 public class RgbUtilsTest {
 
 	@Test
-	public void test1() {
-		Object hlsC = null;
-		doCheck(hlsC, new int[] {0, 0, 0});
-		doCheck(hlsC, new int[] {255, 255, 255});
-		doCheck(hlsC, new int[] {177, 0, 0});
-		doCheck(hlsC, new int[] {0, 177, 0});
-		doCheck(hlsC, new int[] {0, 0, 177});
-		doCheck(hlsC, new int[] {19, 3, 174});
-	}
-	
-	@Test
-	public void test2() {
+	public void testDecodeEncode() {
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
 			int g = rd.nextInt(256);
 			int b = rd.nextInt(256);
-			doCheck(null, new int[] {r, g, b});
+			int[] RGB = new int[] {r, g, b};
+			checkEncodeDecode(RGB);
 		}
 	}
+
+	@Test
+	public void testNormalize1() {
+		checkNormalization(new int[] {0, 0, 0});
+		checkNormalization(new int[] {255, 255, 255});
+		checkNormalization(new int[] {177, 0, 0});
+		checkNormalization(new int[] {0, 177, 0});
+		checkNormalization(new int[] {0, 0, 177});
+		checkNormalization(new int[] {19, 3, 174});
+	}
+	
+	@Test
+	public void testNormalize2() {
+		Random rd = new Random(17);
+		for (int i = 0; i < 10000; i++) {
+			int r = rd.nextInt(256);
+			int g = rd.nextInt(256);
+			int b = rd.nextInt(256);
+			checkNormalization(new int[] {r, g, b});
+		}
+	}
+
 
 //	@Test	// tests all possible rgb combinations
 //	public void test3() {
@@ -49,10 +61,18 @@ public class RgbUtilsTest {
 //			}
 //		}
 //	}
-	
-	private static void doCheck(Object lcs, int[] RGB1) {
+
+	private static void checkEncodeDecode(int[] RGB1) {
+		int c = RgbUtils.rgbToInt(RGB1);
+		int[] RGB2 = RgbUtils.intToRgb(c);
+		assertArrayEquals("RgbUtils conversion problem for RGB=" + Arrays.toString(RGB1), RGB1, RGB2);
+	}
+
+	private static void checkNormalization(int[] RGB1) {
 		float[] srgb = RgbUtils.normalize(RGB1);
 		int[] RGB2 = RgbUtils.denormalize(srgb);
 		assertArrayEquals("RgbUtils conversion problem for RGB=" + Arrays.toString(RGB1), RGB1, RGB2);
 	}
+
+
 }

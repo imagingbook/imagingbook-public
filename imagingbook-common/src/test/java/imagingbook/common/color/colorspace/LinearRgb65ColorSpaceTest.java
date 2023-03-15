@@ -23,7 +23,7 @@ import imagingbook.common.math.Matrix;
 public class LinearRgb65ColorSpaceTest {
 	
 	private static LinearRgb65ColorSpace CS = LinearRgb65ColorSpace.getInstance();
-//	private static sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();
+//	private static sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
 
 	@Test
 	public void test1() {

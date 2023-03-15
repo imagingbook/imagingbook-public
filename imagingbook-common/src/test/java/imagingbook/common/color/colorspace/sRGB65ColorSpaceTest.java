@@ -21,9 +21,9 @@ import imagingbook.common.color.cie.StandardIlluminant;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
-public class sRgbColorSpaceTest {
+public class sRGB65ColorSpaceTest {
 	
-	static sRgbColorSpace CS = sRgbColorSpace.getInstance();
+	static sRGB65ColorSpace CS = sRGB65ColorSpace.getInstance();
 	static float TOL = 1e-6f;			
 
 	static {
@@ -118,7 +118,7 @@ public class sRgbColorSpaceTest {
 	@Test
 	public void testBookXYZValues() {	// check colors in book Table 14.3
 		PrintPrecision.set(4);
-		sRgbColorSpace cs = CS;
+		sRGB65ColorSpace cs = CS;
 		// original (book) values
 		checkXYZValues(cs, 0.00, 0.00, 0.00,  0.0000, 0.0000, 0.0000);
 		checkXYZValues(cs, 1.00, 0.00, 0.00,  0.4125, 0.2127, 0.0193);
@@ -157,7 +157,7 @@ public class sRgbColorSpaceTest {
 	}
 	
 	// RGB are sRGB values
-	private static void checkXYZValues(sRgbColorSpace cs, double R, double G, double B, double X, double Y, double Z) {
+	private static void checkXYZValues(sRGB65ColorSpace cs, double R, double G, double B, double X, double Y, double Z) {
 		float[] srgb1 = new float[] {(float)R, (float)G, (float)B};
 		
 		// convert to XYZ (D65)

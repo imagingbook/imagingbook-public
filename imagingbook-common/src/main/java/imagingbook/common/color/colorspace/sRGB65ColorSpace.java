@@ -36,16 +36,16 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
  * @see LinearRgb65ColorSpace
  */
 @SuppressWarnings("serial")
-public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {
+public class sRGB65ColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {
 	
 	// chromatic adaptation objects:
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
 	private static final ModifiedGammaMapping GammaMap = ModifiedGammaMapping.sRGB;
 	
-	private static final sRgbColorSpace instance = new sRgbColorSpace();
+	private static final sRGB65ColorSpace instance = new sRGB65ColorSpace();
 	
-	public static sRgbColorSpace getInstance() {
+	public static sRGB65ColorSpace getInstance() {
 		return instance;
 	}
 
@@ -77,7 +77,7 @@ public class sRgbColorSpace extends ColorSpace implements DirectD65Conversion, R
 	// ----------------------------------------------------
 	
 	/** Constructor (not public). */
-	private sRgbColorSpace() {
+	private sRGB65ColorSpace() {
 		super(ColorSpace.TYPE_RGB, 3);
 	}
 	

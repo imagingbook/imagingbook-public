@@ -28,7 +28,7 @@ public class XYZscalingAdaptationTest {
 
 	@Test
 	public void test1() {
-//		ColorSpace cs = sRgb65ColorSpace.getInstance();
+//		ColorSpace cs = sRGB65ColorSpace.getInstance();
 		doCheck(CS, new int[] {0, 0, 0});
 		doCheck(CS, new int[] {255, 255, 255});
 		doCheck(CS, new int[] {177, 0, 0});
@@ -39,7 +39,7 @@ public class XYZscalingAdaptationTest {
 	
 	@Test
 	public void test2() {
-//		ColorSpace cs = sRgb65ColorSpace.getInstance();
+//		ColorSpace cs = sRGB65ColorSpace.getInstance();
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
@@ -51,7 +51,7 @@ public class XYZscalingAdaptationTest {
 	
 //	@Test	// tests all possible rgb combinations
 //	public void test3() {
-//		ColorSpace cs = new sRgb65ColorSpace();
+//		ColorSpace cs = new sRGB65ColorSpace();
 //		for (int r = 0; r < 256; r++) {
 //			for (int g = 0; g < 256; g++) {
 //				for (int b = 0; b < 256; b++) {

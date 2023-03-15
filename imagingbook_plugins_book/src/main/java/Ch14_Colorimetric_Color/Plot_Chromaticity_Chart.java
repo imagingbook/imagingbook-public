@@ -16,7 +16,7 @@ import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
 import imagingbook.common.color.cie.CieUtils;
 import imagingbook.common.color.cie.CieXyPlot;
-import imagingbook.common.color.colorspace.sRgbColorSpace;
+import imagingbook.common.color.colorspace.sRGB65ColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
 import imagingbook.common.ij.overlay.ShapeOverlayAdapter;
@@ -60,7 +60,7 @@ public class Plot_Chromaticity_Chart implements PlugInFilter, JavaDocHelp {
         cpPlot.setColor(Color.lightGray);
         cpPlot.fill();
 
-        ColorSpace cs = sRgbColorSpace.getInstance();
+        ColorSpace cs = sRGB65ColorSpace.getInstance();
 
         int[] pixels = (int[]) cp.getPixels();
 
