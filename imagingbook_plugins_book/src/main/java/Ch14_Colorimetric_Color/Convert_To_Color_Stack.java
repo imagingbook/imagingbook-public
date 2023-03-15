@@ -21,6 +21,7 @@ import imagingbook.common.color.colorspace.LabColorSpace;
 import imagingbook.common.color.colorspace.LinearRgb65ColorSpace;
 import imagingbook.common.color.colorspace.LuvColorSpace;
 import imagingbook.common.color.colorspace.XYZ65ColorSpace;
+import imagingbook.common.color.colorspace.sRGB65ColorSpace;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.image.ColorPack;
 import imagingbook.core.jdoc.JavaDocHelp;
@@ -48,7 +49,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 public class Convert_To_Color_Stack implements PlugInFilter, JavaDocHelp {
 
 	private enum TargetSpaceType {
-		Lab, Luv, HLS, HSV, LinearRGB, AdobeRGB, XYZ;
+		Lab, Luv, HLS, HSV, LinearRGB, sRGB65, AdobeRGB, XYZ65;
 	}
 
 	private static TargetSpaceType TargetSpace = TargetSpaceType.Lab;
@@ -86,9 +87,10 @@ public class Convert_To_Color_Stack implements PlugInFilter, JavaDocHelp {
 			case Luv: csp = LuvColorSpace.getInstance(); break;
 			case HLS: csp = HlsColorSpace.getInstance(); break;
 			case HSV: csp = HsvColorSpace.getInstance(); break;
+			case sRGB65: csp = sRGB65ColorSpace.getInstance(); break;
 			case AdobeRGB:	csp = AdobeRgbColorSpace.getInstance(); break;
 			case LinearRGB:	csp = LinearRgb65ColorSpace.getInstance(); break;
-			case XYZ: csp = XYZ65ColorSpace.getInstance(); break;
+			case XYZ65: csp = XYZ65ColorSpace.getInstance(); break;
 		}
 
 		ColorPack cPack = new ColorPack((ColorProcessor) ip);
