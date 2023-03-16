@@ -23,10 +23,11 @@ import imagingbook.common.math.PrintPrecision;
 
 public class AdobeRgbColorSpaceTest {
 
+	static ColorSpace sRGB_CS = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 	static AdobeRgbColorSpace CS = AdobeRgbColorSpace.getInstance();
 	static float TOL = 1e-3f;	// a bit more accurate than standard AWT color spaces!
 
-	@Test
+	@Test	// convvert
 	public void test1A() {
 		doCheck(CS, new int[] {0, 0, 0});
 		doCheck(CS, new int[] {255, 255, 255});
@@ -114,19 +115,19 @@ public class AdobeRgbColorSpaceTest {
 	
 	// ---------------------------------------------------
 	
-	private static void doCheck(ColorSpace cs, int[] srgb) {
-		float[] srgbIN = RgbUtils.normalize(srgb);
-		float[] xyzPCS = ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN); // get some valid XYZ
+	private static void doCheck(ColorSpace cs, int[] sRGB) {
+		float[] srgbIN = RgbUtils.normalize(sRGB);
 		
-		{	// check fromCIEXYZ / toCIEXYZ 
-			float[] srgbTHIS = cs.fromCIEXYZ(xyzPCS);
-			float[] xyzOUT = cs.toCIEXYZ(srgbTHIS);
-			assertArrayEquals(xyzPCS, xyzOUT, TOL);
+		{	// check fromCIEXYZ / toCIEXYZ
+			float[] xyzIN = sRGB_CS.toCIEXYZ(srgbIN);
+			float[] rgbCS = cs.fromCIEXYZ(xyzIN);
+			float[] xyzOUT = cs.toCIEXYZ(rgbCS);
+			assertArrayEquals(xyzIN, xyzOUT, TOL);
 		}
 
 		{	// check fromRGB / toRGB 
-			float[] srgbTHIS = cs.fromRGB(srgbIN);
-			float[] srgbOUT = cs.toRGB(srgbTHIS);
+			float[] rgbCS = cs.fromRGB(srgbIN);
+			float[] srgbOUT = cs.toRGB(rgbCS);
 			assertArrayEquals(srgbIN, srgbOUT, TOL);
 		}
 	}

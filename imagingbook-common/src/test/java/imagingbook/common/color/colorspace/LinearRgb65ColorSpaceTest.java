@@ -112,8 +112,8 @@ public class LinearRgb65ColorSpaceTest {
 	
 	// ------------------------------------------
 	
-	private static void doCheck(DirectD65Conversion cs, int[] srgb) {
-		float[] srgb1 = RgbUtils.normalize(srgb);
+	private static void doCheck(DirectD65Conversion cs, int[] sRGB) {
+		float[] srgb1 = RgbUtils.normalize(sRGB);
 		float[] lab = cs.fromRGB(srgb1);
 		float[] srgb2 = cs.toRGB(lab);
 		assertArrayEquals(srgb1, srgb2, 1e-6f);

@@ -12,6 +12,7 @@ package imagingbook.common.color.colorspace;
 import imagingbook.common.color.adapt.BradfordAdaptation;
 import imagingbook.common.color.adapt.ChromaticAdaptation;
 import imagingbook.common.color.cie.StandardIlluminant;
+import imagingbook.common.math.Matrix;
 
 import java.awt.color.ColorSpace;
 
@@ -102,6 +103,8 @@ public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 	@Override
 	public float[] fromRGB(float[] srgb) {
 		float[] XYZ65 = srgbCS.toCIEXYZ65(srgb);
+		System.out.println("XYZ65=" + Matrix.toString(XYZ65));
+		System.out.println("D65=" + Matrix.toString(XYZref));
 		return this.fromCIEXYZ65(XYZ65);
 	}
 	

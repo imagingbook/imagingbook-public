@@ -22,7 +22,8 @@ import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
 public class sRGB65ColorSpaceTest {
-	
+
+	static ColorSpace sRGB_CS = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 	static sRGB65ColorSpace CS = sRGB65ColorSpace.getInstance();
 	static float TOL = 1e-6f;			
 
@@ -97,10 +98,10 @@ public class sRGB65ColorSpaceTest {
 	public void testWhite65() { //sRGB white in this color space must map to D65 XYZ with toCIEXYZ65()
 		float[] srgbTHIS = {1, 1, 1};
 		float[] wXYZ65 = CS.toCIEXYZ65(srgbTHIS);	// in PCS#
-//		System.out.println("wD65 = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
-//		System.out.println("wXYZ = " + Matrix.toString(wXYZ65));
+		System.out.println("wD65 = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
+		System.out.println("wXYZ = " + Matrix.toString(wXYZ65));
 		float[] whitePt = Matrix.toFloat(StandardIlluminant.D65.getXYZ()); 
-		//System.out.println("wIll = " + Matrix.toString(wIll));
+		System.out.println("wIll = " + Matrix.toString(whitePt));
 		assertArrayEquals(whitePt, wXYZ65, 1e-3f);
 	}
 	
@@ -136,22 +137,20 @@ public class sRGB65ColorSpaceTest {
 	}
 	
 	// ---------------------------------------------------
-	
-	private static void doCheck(DirectD65Conversion cs, int[] srgb) {
-		float[] srgbIN = RgbUtils.normalize(srgb);
-		float[] xyzPCS = ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN); // get some valid XYZ
-		
-		{	// check fromCIEXYZ / toCIEXYZ 				
-			float[] srgbTHIS = cs.fromCIEXYZ(xyzPCS);
-			float[] xyzOUT = cs.toCIEXYZ(srgbTHIS);
-			assertArrayEquals(xyzPCS, xyzOUT, TOL);	// works fine
+
+	private static void doCheck(ColorSpace cs, int[] sRGB) {
+		float[] srgbIN = RgbUtils.normalize(sRGB);
+
+		{	// check fromCIEXYZ / toCIEXYZ
+			float[] xyzIN = sRGB_CS.toCIEXYZ(srgbIN);
+			float[] rgbCS = cs.fromCIEXYZ(xyzIN);
+			float[] xyzOUT = cs.toCIEXYZ(rgbCS);
+			assertArrayEquals(xyzIN, xyzOUT, TOL);
 		}
 
-		{	// check fromRGB / toRGB 					
-			float[] srgbTHIS = cs.fromRGB(srgbIN);
-			float[] srgbOUT = cs.toRGB(srgbTHIS);
-//			System.out.println("srgbIN  = " + Matrix.toString(srgbIN));
-//			System.out.println("srgbOUT = " + Matrix.toString(srgbOUT));
+		{	// check fromRGB / toRGB
+			float[] rgbCS = cs.fromRGB(srgbIN);
+			float[] srgbOUT = cs.toRGB(rgbCS);
 			assertArrayEquals(srgbIN, srgbOUT, TOL);
 		}
 	}
