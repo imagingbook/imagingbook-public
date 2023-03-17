@@ -83,7 +83,7 @@ public class AdobeRgbColorSpaceTest {
 	}
 	
 	@Test
-	public void testWhite() { //sRGB white in this color space must map do D50-XYZ in PCS
+	public void testWhite() { //sRGB white in this color space must map to D50-XYZ in PCS
 		PrintPrecision.set(6);
 		float[] srgbTHIS = {1, 1, 1};
 		{
@@ -91,14 +91,14 @@ public class AdobeRgbColorSpaceTest {
 			float[] w50 = Matrix.toFloat(StandardIlluminant.D50.getXYZ());
 			//System.out.println("wXYZ = " + Matrix.toString(wXYZ));
 			//System.out.println("wIll = " + Matrix.toString(wIll));
-			assertArrayEquals(w50, xyz50, 1e-5f);
+			assertArrayEquals(w50, xyz50, 1e-3f);	// not very accurate!
 		}
 		{
 			float[] xyz65 = CS.toCIEXYZ65(srgbTHIS);	// in PCS
 			float[] w65 = CS.getWhitePoint();
 //			System.out.println("xyz65 = " + Matrix.toString(xyz65));
 //			System.out.println("w65   = " + Matrix.toString(w65));
-			assertArrayEquals(w65, xyz65, 1e-3f);	// inaccuracy due to Bradford adaptation?
+			assertArrayEquals(w65, xyz65, 1e-6f);
 		}
 	}
 	

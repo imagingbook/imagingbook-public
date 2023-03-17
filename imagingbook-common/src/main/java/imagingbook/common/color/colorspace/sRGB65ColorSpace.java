@@ -36,7 +36,7 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
  * @see LinearRgb65ColorSpace
  */
 @SuppressWarnings("serial")
-public class sRGB65ColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {
+public class sRGB65ColorSpace extends AbstractRgbColorSpace implements DirectD65Conversion {
 	
 	// chromatic adaptation objects:
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
@@ -52,15 +52,15 @@ public class sRGB65ColorSpace extends ColorSpace implements DirectD65Conversion,
 	/**
 	 * Matrix for conversion from XYZ to linear RGB. Its column vectors are the XYZ coordinates of the RGB primaries.
 	 */
-	private static final double[][] Mrgbi = 
-		{{0.412453, 0.357580, 0.180423},
-		 {0.212671, 0.715160, 0.072169},
-		 {0.019334, 0.119193, 0.950227}};
-	private static final float[][] MrgbiF = Matrix.toFloat(Mrgbi);
+	// private static final double[][] Mrgbi =
+	// 	{{0.412453, 0.357580, 0.180423},
+	// 	 {0.212671, 0.715160, 0.072169},
+	// 	 {0.019334, 0.119193, 0.950227}};
+	private final float[][] MrgbiF = Matrix.toFloat(Mrgbi);
 	
 	/** Matrix for conversion from linear RGB to XYZ (inverse of {@link #Mrgbi}). */
-	private static final double[][] Mrgb = Matrix.inverse(Mrgbi);
-	private static final float[][] MrgbF = Matrix.toFloat(Mrgb);
+	// private static final double[][] Mrgb = Matrix.inverse(Mrgbi);
+	private final float[][] MrgbF = Matrix.toFloat(Mrgb);
 	
 	// ----------------------------------------------------
 	
@@ -78,7 +78,8 @@ public class sRGB65ColorSpace extends ColorSpace implements DirectD65Conversion,
 	
 	/** Constructor (not public). */
 	private sRGB65ColorSpace() {
-		super(ColorSpace.TYPE_RGB, 3);
+		super(0.64, 0.33, 0.30, 0.60, 0.15, 0.06, 0.3127, 0.3290);
+		// super(ColorSpace.TYPE_RGB, 3);
 	}
 	
 	// direct conversion from/to D65-based XYZ space ------------------------------

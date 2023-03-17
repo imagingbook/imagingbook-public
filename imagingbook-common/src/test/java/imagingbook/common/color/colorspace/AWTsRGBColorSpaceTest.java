@@ -77,7 +77,7 @@ public class AWTsRGBColorSpaceTest {
 		//System.out.println("wXYZ = " + Matrix.toString(wXYZ));
 		float[] wIll = Matrix.toFloat(StandardIlluminant.D50.getXYZ()); 
 		//System.out.println("wIll = " + Matrix.toString(wIll));
-		assertArrayEquals(wIll, wXYZ, 1e-5f);
+		assertArrayEquals(wIll, wXYZ, 1e-3f);
 	}
 	
 	@Test

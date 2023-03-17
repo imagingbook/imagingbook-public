@@ -85,7 +85,7 @@ public class AWTCIEXYZColorSpaceTest {
 //		System.out.println("xyzIll = " + Matrix.toString(xyzIll));
 		// {0.9642000198364258, 1.0000000000000000, 0.8249000906944275}
 
-		assertArrayEquals(xyzIll, xyzTHIS, 1e-5f);
+		assertArrayEquals(xyzIll, xyzTHIS, 1e-3f);
 	}
 	
 	@Test

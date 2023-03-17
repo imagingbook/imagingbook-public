@@ -11,22 +11,30 @@ package imagingbook.common.color.colorspace;
 import imagingbook.common.color.cie.NamedIccProfile;
 import imagingbook.common.color.cie.StandardIlluminant;
 import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 
 import java.awt.color.ICC_ColorSpace;
 
 
 /**
  * <p>
- * This color space class is based on the "AdobeRGB1998.icc" profile. It only serves as an example for creating color
- * spaces from ICC profiles. See Sec. 14.5 of [1] for details.
+ * This color space class is based on the "AdobeRGB1998.icc" profile [1]. It only serves as an example for creating color
+ * spaces from ICC profiles. This color space uses D65 as its white point, primaries are the columns of matrix
+ * <pre>
+ *             | 0.57667, 0.18556, 0.18823 |
+ *     Mrgbi = | 0.29734, 0.62736, 0.07529 |
+ *             | 0.02703, 0.07069, 0.99134 |</pre>
+ * See Sec. 14.5 of [2] for details.
  * </p>
  * <p>
- * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
+ * [1] https://www.adobe.com/digitalimag/pdfs/AdobeRGB1998.pdf<br>
+ * [2] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
  * (2022).
  * </p>
  *
  * @author WB
- * @version 2022/11/13
+ * @version 2023/03/17
+ * @see NamedIccProfile#AdobeRGB1998
  */
 @SuppressWarnings("serial")
 public class AdobeRgbColorSpace extends ICC_ColorSpace implements DirectD65Conversion, RgbReferenceData {
@@ -39,7 +47,6 @@ public class AdobeRgbColorSpace extends ICC_ColorSpace implements DirectD65Conve
 
     /**
      * Returns an instance of {@link AdobeRgbColorSpace}.
-     *
      * @return an instance of {@link AdobeRgbColorSpace}
      */
     public static AdobeRgbColorSpace getInstance() {
@@ -49,21 +56,27 @@ public class AdobeRgbColorSpace extends ICC_ColorSpace implements DirectD65Conve
         return instance;
     }
 
-    // Taken from Adobe RGB (1998) Color Image Encoding (Version 2005-05)
-    private static final double[][] Mrgbi =
-            {{0.57667, 0.18556, 0.18823},
-             {0.29734, 0.62736, 0.07529},
-             {0.02703, 0.07069, 0.99134}};
-
     @Override
     public float[] getWhitePoint() {
         // (0.9505, 1.0000, 1.0891)
-        return Matrix.toFloat(StandardIlluminant.D65.getXYZ());
+        float[] rgb = {1, 1, 1};
+        return this.toCIEXYZ65(rgb);
+        // return StandardIlluminant.D65.getXYZ();
     }
 
     @Override
     public float[] getPrimary(int idx) {
-        return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));
+        float[] rgb = new float[3];
+        rgb[idx] = 1;
+        return this.toCIEXYZ65(rgb);
     }
+
+    // public static void main(String[] args) {
+    //     AdobeRgbColorSpace cs = AdobeRgbColorSpace.getInstance();
+    //     PrintPrecision.set(5);
+    //     for (int i = 0; i < 3; i++) {
+    //         System.out.println("XYZ=" + Matrix.toString(cs.getPrimary(i)));
+    //     }
+    // }
 
 }

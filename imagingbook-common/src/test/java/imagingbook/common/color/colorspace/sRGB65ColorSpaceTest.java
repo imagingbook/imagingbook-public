@@ -98,10 +98,11 @@ public class sRGB65ColorSpaceTest {
 	public void testWhite65() { //sRGB white in this color space must map to D65 XYZ with toCIEXYZ65()
 		float[] srgbTHIS = {1, 1, 1};
 		float[] wXYZ65 = CS.toCIEXYZ65(srgbTHIS);	// in PCS#
-		System.out.println("wD65 = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
-		System.out.println("wXYZ = " + Matrix.toString(wXYZ65));
+		PrintPrecision.set(9);
+		// System.out.println("wD65 = " + Matrix.toString(StandardIlluminant.D65.getXYZ()));
+		// System.out.println("wXYZ = " + Matrix.toString(wXYZ65));
 		float[] whitePt = Matrix.toFloat(StandardIlluminant.D65.getXYZ()); 
-		System.out.println("wIll = " + Matrix.toString(whitePt));
+		// System.out.println("wIll = " + Matrix.toString(whitePt));
 		assertArrayEquals(whitePt, wXYZ65, 1e-3f);
 	}
 	
@@ -122,14 +123,14 @@ public class sRGB65ColorSpaceTest {
 		sRGB65ColorSpace cs = CS;
 		// original (book) values
 		checkXYZValues(cs, 0.00, 0.00, 0.00,  0.0000, 0.0000, 0.0000);
-		checkXYZValues(cs, 1.00, 0.00, 0.00,  0.4125, 0.2127, 0.0193);
+		checkXYZValues(cs, 1.00, 0.00, 0.00,  0.4124, 0.2127, 0.0193);		// was 0.4125
 		checkXYZValues(cs, 1.00, 1.00, 0.00,  0.7700, 0.9278, 0.1385);
 		checkXYZValues(cs, 0.00, 1.00, 0.00,  0.3576, 0.7152, 0.1192);
-		checkXYZValues(cs, 0.00, 1.00, 1.00,  0.5380, 0.7873, 1.0694);
-		checkXYZValues(cs, 0.00, 0.00, 1.00,  0.1804, 0.0722, 0.9502);
-		checkXYZValues(cs, 1.00, 0.00, 1.00,  0.5929, 0.2848, 0.9696);
-		checkXYZValues(cs, 1.00, 1.00, 1.00,  0.9505, 1.0000, 1.0888);		// = D65 white point
-		checkXYZValues(cs, 0.50, 0.50, 0.50,  0.2034, 0.2140, 0.2330);
+		checkXYZValues(cs, 0.00, 1.00, 1.00,  0.5380, 0.7873, 1.0697);		// was 1.0694
+		checkXYZValues(cs, 0.00, 0.00, 1.00,  0.1804, 0.0722, 0.9505);		// was 0.9502
+		checkXYZValues(cs, 1.00, 0.00, 1.00,  0.5929, 0.2848, 0.9699);		// was 0.9696
+		checkXYZValues(cs, 1.00, 1.00, 1.00,  0.9505, 1.0000, 1.0891);		// = D65 white point, was 1.0888
+		checkXYZValues(cs, 0.50, 0.50, 0.50,  0.2034, 0.2140, 0.2331);		// was 0.2330
 		checkXYZValues(cs, 0.75, 0.00, 0.00,  0.2155, 0.1111, 0.0101);
 		checkXYZValues(cs, 0.50, 0.00, 0.00,  0.0883, 0.0455, 0.0041);
 		checkXYZValues(cs, 0.25, 0.00, 0.00,  0.0210, 0.0108, 0.0010);

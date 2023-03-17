@@ -153,9 +153,9 @@ public class LuvColorSpaceTest {	//TODO: adapt to Luv test!
 	// RGB are sRGB values
 	private static void checkLuvValues(LuvColorSpace lcs, double R, double G, double B, double L, double a, double b) {
 		float[] srgb1 = new float[] {(float)R, (float)G, (float)B};
-		System.out.println("sRGB=" + Matrix.toString(srgb1));
+		// System.out.println("sRGB=" + Matrix.toString(srgb1));
 		float[] luv = lcs.fromRGB(srgb1);
-		System.out.println("luv=" + Matrix.toString(luv));
+		// System.out.println("luv=" + Matrix.toString(luv));
 		assertArrayEquals(new float[] {(float)L, (float)a, (float)b}, luv, 0.02f);	// not very accurate!!
 	}
 

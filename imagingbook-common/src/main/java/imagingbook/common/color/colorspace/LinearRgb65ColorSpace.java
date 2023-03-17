@@ -30,21 +30,13 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
  * @see sRGB65ColorSpace
  */
 @SuppressWarnings("serial")
-public class LinearRgb65ColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {
+public class LinearRgb65ColorSpace extends AbstractRgbColorSpace implements DirectD65Conversion {
+
+	/** Matrix for conversion from XYZ to linear RGB. */
+	private final float[][] MrgbiF = Matrix.toFloat(this.getMrgbi());
 	
-	// we use the same RGB-XYZ matrices as sRGB
-	/** Matrix for conversion from XYZ to linear RGB. Its column vectors are the 
-	 * XYZ coordinates of the RGB primaries. */
-	private static final double[][] Mrgbi = 
-		{{0.412453, 0.357580, 0.180423},
-		 {0.212671, 0.715160, 0.072169},
-		 {0.019334, 0.119193, 0.950227}};
-	
-	private static final float[][] MrgbiF = Matrix.toFloat(Mrgbi);
-	
-	/** Matrix for conversion from linear RGB to XYZ (inverse of {@link #Mrgbi}). */
-	private static final double[][] Mrgb = Matrix.inverse(Mrgbi);
-	private static final float[][] MrgbF = Matrix.toFloat(Mrgb);
+	/** Matrix for conversion from linear RGB to XYZ (inverse of {@code Mrgbi}). */
+	private final float[][] MrgbF = Matrix.toFloat(this.getMrgb());
 	
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
@@ -58,7 +50,8 @@ public class LinearRgb65ColorSpace extends ColorSpace implements DirectD65Conver
 	
 	/** Constructor, non-public */
 	private LinearRgb65ColorSpace() {
-		super(ColorSpace.TYPE_RGB, 3);
+		super(0.64, 0.33, 0.30, 0.60, 0.15, 0.06, 0.3127, 0.3290);
+		// super(ColorSpace.TYPE_RGB, 3);
 	}
 	
 	// --------------------------------------------------------------------
@@ -121,14 +114,6 @@ public class LinearRgb65ColorSpace extends ColorSpace implements DirectD65Conver
 		float[] rgb = Matrix.multiply(MrgbF, xyz65);
 		return rgb;
 	}
-	
-	// ---------------------------------------------------------------------
-	
-	private static final String[] ComponentNames = {"R", "G", "B"};
-	
-	@Override
-	public String getName (int idx) {
-		return ComponentNames[idx];
-	}
+
 	
 }

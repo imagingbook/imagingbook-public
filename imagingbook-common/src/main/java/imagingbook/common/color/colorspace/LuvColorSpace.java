@@ -103,8 +103,8 @@ public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 	@Override
 	public float[] fromRGB(float[] srgb) {
 		float[] XYZ65 = srgbCS.toCIEXYZ65(srgb);
-		System.out.println("XYZ65=" + Matrix.toString(XYZ65));
-		System.out.println("D65=" + Matrix.toString(XYZref));
+		// System.out.println("XYZ65=" + Matrix.toString(XYZ65));
+		// System.out.println("D65=" + Matrix.toString(XYZref));
 		return this.fromCIEXYZ65(XYZ65);
 	}
 	

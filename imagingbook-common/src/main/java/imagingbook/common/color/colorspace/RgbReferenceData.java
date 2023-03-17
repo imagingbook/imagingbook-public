@@ -37,5 +37,9 @@ public interface RgbReferenceData {
 	 * @return the XYZ coordinate for the primary color
 	 */
 	public float[] getPrimary(int idx) ;
+
+	// ------------------------------------------------------------------
+
+
 	
 }
