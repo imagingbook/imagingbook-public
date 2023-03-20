@@ -67,7 +67,7 @@ public class AdobeRgbColorSpaceTest {
 			float[] rgb = new float[3];
 			rgb[i] = 1;
 			float[] xyz = CS.toCIEXYZ65(rgb);
-			float[] primary = CS.getPrimary(i);
+			float[] primary = Matrix.toFloat(CS.getPrimary(i));
 			
 //			System.out.println("xyz     = " + Matrix.toString(xyz));
 //			System.out.println("primary = " + Matrix.toString(primary));

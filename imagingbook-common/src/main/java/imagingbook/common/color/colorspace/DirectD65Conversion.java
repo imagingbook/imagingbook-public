@@ -32,8 +32,8 @@ public interface DirectD65Conversion {
 	// methods required by all implementations of ColorSpace:
 	public float[] toCIEXYZ(float[] value);
 	public float[] fromCIEXYZ(float[] value);
-	public float[] toRGB(float[] value);
-	public float[] fromRGB(float[] value);
+	// public float[] toRGB(float[] value);
+	// public float[] fromRGB(float[] value);
 	
 	// -----------------------------------------------------------------
 

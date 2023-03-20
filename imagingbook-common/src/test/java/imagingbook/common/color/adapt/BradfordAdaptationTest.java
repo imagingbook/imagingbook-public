@@ -134,7 +134,7 @@ public class BradfordAdaptationTest {
 		ChromaticAdaptation adapt65to50 = BradfordAdaptation.getInstance(D65, D50);	// adapts from D65 -> D50
 		ChromaticAdaptation adapt50to65 = BradfordAdaptation.getInstance(D50, D65);	// adapts from D50 -> D65
 		{	// float version
-			float[] XYZ65a =  cs.toCIEXYZ(srgb1);
+			float[] XYZ65a = cs.toCIEXYZ(srgb1);
 			float[] XYZ50 = adapt65to50.applyTo(XYZ65a);
 			float[] XYZ65b = adapt50to65.applyTo(XYZ50);
 			assertArrayEquals(XYZ65a, XYZ65b, (float)TOL);

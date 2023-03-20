@@ -45,17 +45,16 @@ public enum StandardIlluminant implements Illuminant {
 	F7	(0.31565, 0.32951),
 	/** Narrow Band White Fluorescent (4000K). */
 	F11	(0.38543, 0.37110);
-	
+
+	private final double x, y;
 	private final double X, Y, Z;
-	
-	// private StandardIlluminant(double X, double Y, double Z) {
-	// 	this.X = X; this.Y = Y; this.Z = Z;
-	// }
 	
 	private StandardIlluminant(double x, double y) {
 		if (Arithmetic.isZero(y)) {
 			throw new IllegalArgumentException("illuminant y cannot be zero");
 		}
+		this.x = x;
+		this.y = y;
 		double[] XYZ = CieUtils.xyYToXYZ(x, y, 1);
 		this.X = XYZ[0];
 		this.Y = XYZ[1];
@@ -69,5 +68,11 @@ public enum StandardIlluminant implements Illuminant {
 	public double[] getXYZ() {
 		return new double[] {X, Y, Z};
 	}
+
+	@Override
+	public double[] getXy() {
+		return new double[] {x, y};
+	}
+
 	
 }

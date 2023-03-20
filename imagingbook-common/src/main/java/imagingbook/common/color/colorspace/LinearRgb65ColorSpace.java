@@ -41,6 +41,15 @@ public class LinearRgb65ColorSpace extends AbstractRgbColorSpace implements Dire
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
 	private static final ModifiedGammaMapping GammaMap = ModifiedGammaMapping.sRGB;
+
+	// tristimulus values and white point:
+	private static final double xR = 0.64, yR = 0.33;
+	private static final double xG = 0.30, yG = 0.60;
+	private static final double xB = 0.15, yB = 0.06;
+
+	private static final double[] W = D65.getXYZ();
+	private static final double[] xyW = D65.getXy();
+
 	
 	private static final LinearRgb65ColorSpace instance = new LinearRgb65ColorSpace();
 	
@@ -50,7 +59,7 @@ public class LinearRgb65ColorSpace extends AbstractRgbColorSpace implements Dire
 	
 	/** Constructor, non-public */
 	private LinearRgb65ColorSpace() {
-		super(0.64, 0.33, 0.30, 0.60, 0.15, 0.06, 0.3127, 0.3290);
+		super(xR, yR, xG, yG, xB, yB, xyW[0], xyW[1]);	//	super(0.64, 0.33, 0.30, 0.60, 0.15, 0.06, 0.3127, 0.3290);
 		// super(ColorSpace.TYPE_RGB, 3);
 	}
 	
@@ -58,13 +67,13 @@ public class LinearRgb65ColorSpace extends AbstractRgbColorSpace implements Dire
 
 	@Override
 	public float[] getWhitePoint() {
-		return Matrix.toFloat(D65.getXYZ());
+		return Matrix.toFloat(W);
 	}
 	
-	@Override
-	public float[] getPrimary(int idx) {
-		return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));
-	}
+	// @Override
+	// public float[] getPrimary(int idx) {
+	// 	return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));
+	// }
 	
 	// --------------------------------------------------------------------
 

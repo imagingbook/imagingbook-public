@@ -65,10 +65,10 @@ public class AdobeRgbColorSpace extends ICC_ColorSpace implements DirectD65Conve
     }
 
     @Override
-    public float[] getPrimary(int idx) {
+    public double[] getPrimary(int idx) {
         float[] rgb = new float[3];
         rgb[idx] = 1;
-        return this.toCIEXYZ65(rgb);
+        return Matrix.toDouble(this.toCIEXYZ65(rgb));   // TODO: needs fixing!!
     }
 
     // public static void main(String[] args) {

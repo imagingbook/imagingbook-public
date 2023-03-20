@@ -25,6 +25,9 @@ import java.awt.color.ColorSpace;
  */
 public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbReferenceData {
 
+    static ColorSpace CS_sRGB = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+
+
     // private final double xr, yr, xg, yg, xb, yb;        // xy coordinates of RGB primaries
     // private final double xw, yw;                        // xy coordinates of white point
     // private final double[] XYZr, XYZg, XYZb, XYZw;      // XYZ coordinates of primaries and white point
@@ -82,8 +85,8 @@ public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbRef
     }
 
     @Override
-    public float[] getPrimary(int idx) {
-        return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));
+    public double[] getPrimary(int idx) {
+        return Matrix.getColumn(Mrgbi, idx);
     }
 
     /**
@@ -104,6 +107,21 @@ public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbRef
     public double[][] getMrgb() {
         return this.Mrgb;
     }
+
+
+    @Override   // convert from sRGB to a color in this space
+    public float[] fromRGB(float[] srgb) {
+        float[] xyz50 = CS_sRGB.fromRGB(srgb);
+        return this.fromCIEXYZ(xyz50);
+    }
+
+    @Override   // convert from a color in this space to sRGB
+    public float[] toRGB(float[] rgbTHIS) {
+        float[] xyz50 = this.toCIEXYZ(rgbTHIS);
+        return CS_sRGB.toRGB(xyz50);
+    }
+
+    // --------------------------------------------------------
 
     private static final String[] ComponentNames = {"R", "G", "B"};
 
