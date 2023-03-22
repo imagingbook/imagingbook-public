@@ -8,11 +8,16 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
+import imagingbook.common.color.adapt.BradfordAdaptation;
+import imagingbook.common.color.adapt.ChromaticAdaptation;
 import imagingbook.common.color.cie.CieUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
 import java.awt.color.ColorSpace;
+
+import static imagingbook.common.color.cie.StandardIlluminant.D50;
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
 
 /**
  * A color space specified by its RGB primaries and white point coordinates, all defined
@@ -25,17 +30,15 @@ import java.awt.color.ColorSpace;
  */
 public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbReferenceData {
 
-    static ColorSpace CS_sRGB = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+    private static final ColorSpace CS_sRGB = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 
-
-    // private final double xr, yr, xg, yg, xb, yb;        // xy coordinates of RGB primaries
-    // private final double xw, yw;                        // xy coordinates of white point
-    // private final double[] XYZr, XYZg, XYZb, XYZw;      // XYZ coordinates of primaries and white point
     private final double[] XYZw;      // XYZ coordinates of white point
     protected final double[][] Mrgb, Mrgbi;
+    protected final ChromaticAdaptation catWtoD50; // = BradfordAdaptation.getInstance(D65, D50);
+    protected final ChromaticAdaptation catD50toW; // = BradfordAdaptation.getInstance(D50, D65);
 
     /**
-     * Constructor, builds a color space from CIE xy-coordinates.
+     * Constructor, builds a color space from CIE xy-coordinates of tristimulus values and white point.
      * @param xr x-coordinate of primary R
      * @param yr y-coordinate of primary R
      * @param xg x-coordinate of primary G
@@ -47,27 +50,16 @@ public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbRef
      */
     public AbstractRgbColorSpace(double xr, double yr, double xg, double yg, double xb, double yb, double xw, double yw) {
         super(ColorSpace.TYPE_RGB, 3);
-        // this.xr = xr;
-        // this.yr = yr;
-        //
-        // this.xg = xg;
-        // this.yg = yg;
-        //
-        // this.xb = xb;
-        // this.yb = yb;
-        //
-        // this.xw = xw;
-        // this.yw = yw;
-
         this.XYZw = CieUtils.xyYToXYZ(xw, yw, 1);
+
+        this.catWtoD50 = BradfordAdaptation.getInstance(XYZw, D50.getXYZ());
+        this.catD50toW = BradfordAdaptation.getInstance(D50.getXYZ(), XYZw);
 
         double[][] M =
                {{xr / yr, xg / yg, xb / yb},
                 {1, 1, 1},
                 {(1 - xr - yr) / yr, (1 - xg - yg) / yg, (1 - xb - yb) / yb }};
-        double[] YYY = Matrix.solve(M, XYZw);   // = {Yr, Yg, Yb}
-        PrintPrecision.set(9);
-        // System.out.println("YYY = " + Matrix.toString(YYY));
+        double[] YYY = Matrix.solve(M, XYZw);   // determine {Yr, Yg, Yb}
 
         // RGB primaries in XYZ
         double[] XYZr = CieUtils.xyYToXYZ(xr, yr, YYY[0]);
@@ -76,7 +68,6 @@ public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbRef
 
         this.Mrgbi = Matrix.transpose(new double[][] {XYZr, XYZg, XYZb});
         this.Mrgb  = Matrix.inverse(Mrgbi);
-
     }
 
     @Override
@@ -85,8 +76,8 @@ public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbRef
     }
 
     @Override
-    public double[] getPrimary(int idx) {
-        return Matrix.getColumn(Mrgbi, idx);
+    public float[] getPrimary(int idx) {
+        return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));
     }
 
     /**
@@ -108,14 +99,15 @@ public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbRef
         return this.Mrgb;
     }
 
+    // -----------------------------------------------------------
 
-    @Override   // convert from sRGB to a color in this space
+    @Override   // convert from sRGB to a color in this space (via XYZ50)
     public float[] fromRGB(float[] srgb) {
         float[] xyz50 = CS_sRGB.fromRGB(srgb);
         return this.fromCIEXYZ(xyz50);
     }
 
-    @Override   // convert from a color in this space to sRGB
+    @Override   // convert from a color in this space to sRGB (via XYZ50)
     public float[] toRGB(float[] rgbTHIS) {
         float[] xyz50 = this.toCIEXYZ(rgbTHIS);
         return CS_sRGB.toRGB(xyz50);
@@ -136,15 +128,6 @@ public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbRef
 
         TestColorSpace() {
             super(0.64,0.33,0.30,0.60,0.15,0.06,0.3127,0.3290);
-        }
-        @Override
-        public float[] toRGB(float[] colorvalue) {
-            return new float[0];
-        }
-
-        @Override
-        public float[] fromRGB(float[] rgbvalue) {
-            return new float[0];
         }
 
         @Override

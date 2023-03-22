@@ -68,27 +68,27 @@ public class AWTsRGBColorSpaceTest {
 //		}
 //	}
 
-	@Test
-	public void testPrimaries() { // check primaries in D65
-		PrintPrecision.set(9);
-		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(D50, D65);
-		for (int i = 0; i < 3; i++) {
-			float[] rgb = new float[3];
-			rgb[i] = 1;
-			float[] xyz = CS.toCIEXYZ(rgb);
-			System.out.println("rgb = " + i);
-			System.out.println("  xyz50 = " + Matrix.toString(xyz));
-			System.out.println("  xy50  = " + Matrix.toString(CieUtils.XYZToxy(xyz)));
-			float[] xyz65 = adapt.applyTo(xyz);
-			System.out.println("  xyz65 = " + Matrix.toString(xyz65));
-			System.out.println("  xy65  = " + Matrix.toString(CieUtils.XYZToxy(xyz65)));
-
-			// float[] primary = CS.getPrimary(i);
-//			System.out.println("primary = " + Matrix.toString(primary));
-
+// 	@Test
+// 	public void testPrimaries() { // check primaries in D65
+// 		// PrintPrecision.set(9);
+// 		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(D50, D65);
+// 		for (int i = 0; i < 3; i++) {
+// 			float[] rgb = new float[3];
+// 			rgb[i] = 1;
+// 			float[] xyz = CS.toCIEXYZ(rgb);
+// 			// System.out.println("rgb = " + i);
+// 			// System.out.println("  xyz50 = " + Matrix.toString(xyz));
+// 			// System.out.println("  xy50  = " + Matrix.toString(CieUtils.XYZToxy(xyz)));
+// 			float[] xyz65 = adapt.applyTo(xyz);
+// 			// System.out.println("  xyz65 = " + Matrix.toString(xyz65));
+// 			// System.out.println("  xy65  = " + Matrix.toString(CieUtils.XYZToxy(xyz65)));
+//
+// 			float[] primary = CS.getPrimary(i);
+// //			System.out.println("primary = " + Matrix.toString(primary));
+//
 // 			assertArrayEquals(primary, xyz, 1e-6f);
-		}
-	}
+// 		}
+// 	}
 	
 	@Test
 	public void testBlack() { // check black point

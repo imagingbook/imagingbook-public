@@ -32,9 +32,7 @@ public interface DirectD65Conversion {
 	// methods required by all implementations of ColorSpace:
 	public float[] toCIEXYZ(float[] value);
 	public float[] fromCIEXYZ(float[] value);
-	// public float[] toRGB(float[] value);
-	// public float[] fromRGB(float[] value);
-	
+
 	// -----------------------------------------------------------------
 
 	/**
@@ -44,10 +42,11 @@ public interface DirectD65Conversion {
 	 * @param xyz65 D65-based XYZ color values
 	 * @return color values in this color space
 	 */
-	public default float[] fromCIEXYZ65(float[] xyz65) {
-		float[] XYZ50 = catD65toD50.applyTo(xyz65);
-		return this.fromCIEXYZ(XYZ50);
-	}
+	public float[] fromCIEXYZ65(float[] xyz65);
+	// public default float[] fromCIEXYZ65(float[] xyz65) {
+	// 	float[] XYZ50 = catD65toD50.applyTo(xyz65);
+	// 	return this.fromCIEXYZ(XYZ50);
+	// }
 
 	/**
 	 * Analogous to {@link #toCIEXYZ(float[])} but returns D65-based instead of D50-based PCS color values. D65-based
@@ -56,9 +55,10 @@ public interface DirectD65Conversion {
 	 * @param value color value in this color space
 	 * @return D65-based XYZ color values
 	 */
-	public default float[] toCIEXYZ65(float[] value) {
-		float[] XYZ50 = this.toCIEXYZ(value);
-		return catD50toD65.applyTo(XYZ50);
-	}
+	public float[] toCIEXYZ65(float[] value);
+	// public default float[] toCIEXYZ65(float[] value) {
+	// 	float[] XYZ50 = this.toCIEXYZ(value);
+	// 	return catD50toD65.applyTo(XYZ50);
+	// }
 	
 }

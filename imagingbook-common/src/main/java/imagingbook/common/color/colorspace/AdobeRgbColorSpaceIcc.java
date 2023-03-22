@@ -9,7 +9,6 @@
 package imagingbook.common.color.colorspace;
 
 import imagingbook.common.color.cie.NamedIccProfile;
-import imagingbook.common.color.cie.StandardIlluminant;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
@@ -37,46 +36,48 @@ import java.awt.color.ICC_ColorSpace;
  * @see NamedIccProfile#AdobeRGB1998
  */
 @SuppressWarnings("serial")
-public class AdobeRgbColorSpace extends ICC_ColorSpace implements DirectD65Conversion, RgbReferenceData {
+public class AdobeRgbColorSpaceIcc extends ICC_ColorSpace {
 
-    private static AdobeRgbColorSpace instance = null;
+    private static AdobeRgbColorSpaceIcc instance = null;
 
-    private AdobeRgbColorSpace() {
+    private AdobeRgbColorSpaceIcc() {
         super(NamedIccProfile.AdobeRGB1998.getProfile());    // constructor of ICC_ColorSpace
     }
 
     /**
-     * Returns an instance of {@link AdobeRgbColorSpace}.
-     * @return an instance of {@link AdobeRgbColorSpace}
+     * Returns an instance of {@link AdobeRgbColorSpaceIcc}.
+     * @return an instance of {@link AdobeRgbColorSpaceIcc}
      */
-    public static AdobeRgbColorSpace getInstance() {
+    public static AdobeRgbColorSpaceIcc getInstance() {
         if (instance == null) {
-            instance = new AdobeRgbColorSpace();
+            instance = new AdobeRgbColorSpaceIcc();
         }
         return instance;
     }
 
-    @Override
-    public float[] getWhitePoint() {
-        // (0.9505, 1.0000, 1.0891)
-        float[] rgb = {1, 1, 1};
-        return this.toCIEXYZ65(rgb);
-        // return StandardIlluminant.D65.getXYZ();
-    }
-
-    @Override
-    public double[] getPrimary(int idx) {
-        float[] rgb = new float[3];
-        rgb[idx] = 1;
-        return Matrix.toDouble(this.toCIEXYZ65(rgb));   // TODO: needs fixing!!
-    }
-
-    // public static void main(String[] args) {
-    //     AdobeRgbColorSpace cs = AdobeRgbColorSpace.getInstance();
-    //     PrintPrecision.set(5);
-    //     for (int i = 0; i < 3; i++) {
-    //         System.out.println("XYZ=" + Matrix.toString(cs.getPrimary(i)));
-    //     }
+    // @Override
+    // public float[] getWhitePoint() {
+    //     // (0.9505, 1.0000, 1.0891)
+    //     float[] rgb = {1, 1, 1};
+    //     return this.toCIEXYZ65(rgb);
+    //     // return StandardIlluminant.D65.getXYZ();
     // }
-
+    //
+    // @Override
+    // public float[] getPrimary(int idx) {
+    //     float[] rgb = new float[3];
+    //     rgb[idx] = 1;
+    //     return this.toCIEXYZ65(rgb);
+    // }
+    //
+    //
+    // @Override
+    // public float[] fromCIEXYZ65(float[] xyz65) {
+    //     return new float[0];
+    // }
+    //
+    // @Override
+    // public float[] toCIEXYZ65(float[] value) {
+    //     return new float[0];
+    // }
 }

@@ -13,7 +13,7 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.RgbUtils;
-import imagingbook.common.color.colorspace.AdobeRgbColorSpace;
+import imagingbook.common.color.colorspace.AdobeRgbColorSpaceIcc;
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.core.jdoc.JavaDocHelp;
 import imagingbook.sampleimages.GeneralSampleImage;
@@ -29,7 +29,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
  * @author WB
  * @version 2023/03/15
  *
- * @see AdobeRgbColorSpace
+ * @see AdobeRgbColorSpaceIcc
  */
 public class Convert_From_AdobeRGB implements PlugInFilter, JavaDocHelp {
 
@@ -57,7 +57,7 @@ public class Convert_From_AdobeRGB implements PlugInFilter, JavaDocHelp {
 		ColorProcessor cp1 = (ColorProcessor) ip;
 		ColorProcessor cp2 = (ColorProcessor) cp1.duplicate();
 
-		ColorSpace acs = AdobeRgbColorSpace.getInstance();				// AdobeRGB1998 color space
+		ColorSpace acs = AdobeRgbColorSpaceIcc.getInstance();				// AdobeRGB1998 color space
 		ColorSpace scs = ColorSpace.getInstance(ColorSpace.CS_sRGB);	// D50-based sRGB color space
 
 		int[] pix1 = (int[]) cp1.getPixels();		// AdobeRGB pixels

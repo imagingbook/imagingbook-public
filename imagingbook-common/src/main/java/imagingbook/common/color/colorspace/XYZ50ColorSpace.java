@@ -28,7 +28,7 @@ import java.awt.color.ColorSpace;
  * @see XYZ65ColorSpace
  */
 @SuppressWarnings("serial")
-public class XYZ50ColorSpace extends ColorSpace implements DirectD65Conversion {
+public class XYZ50ColorSpace extends ColorSpace {
 	private static sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
 	
 	private static final XYZ50ColorSpace instance = new XYZ50ColorSpace();
