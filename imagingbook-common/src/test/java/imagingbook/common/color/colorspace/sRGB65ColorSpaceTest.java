@@ -25,11 +25,7 @@ public class sRGB65ColorSpaceTest {
 
 	static ColorSpace sRGB_CS = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 	static sRGB65ColorSpace CS = sRGB65ColorSpace.getInstance();
-	static float TOL = 1e-6f;			
-
-	static {
-		PrintPrecision.set(15);
-	}
+	static float TOL = 1e-6f;
 	
 	@Test
 	public void test1() {
@@ -42,7 +38,7 @@ public class sRGB65ColorSpaceTest {
 	}
 	
 	@Test
-	public void test2() {					// TODO: too inaccurate, FIX!!
+	public void test2() {
 		Random rd = new Random(17);
 		for (int i = 0; i < 10000; i++) {
 			int r = rd.nextInt(256);
@@ -71,8 +67,8 @@ public class sRGB65ColorSpaceTest {
 			rgb[i] = 1;
 			float[] xyz = CS.toCIEXYZ65(rgb);
 			float[] primary = CS.getPrimary(i);
-//			System.out.println("primary = " + Matrix.toString(primary));
-//			System.out.println("xyz     = " + Matrix.toString(xyz));
+			// System.out.println("primary = " + Matrix.toString(primary));
+			// System.out.println("xyz     = " + Matrix.toString(xyz));
 			assertArrayEquals(primary, xyz, 1e-6f);
 		}
 	}
@@ -88,8 +84,8 @@ public class sRGB65ColorSpaceTest {
 	public void testWhite50() { //sRGB white in this color space must map to D50-XYZ in PCS
 		float[] srgbTHIS = {1, 1, 1};
 		float[] wXYZ50 = CS.toCIEXYZ(srgbTHIS);	// in PCS#
-//		System.out.println("wD50 = " + Matrix.toString(StandardIlluminant.D50.getXYZ()));
-//		System.out.println("wXYZ = " + Matrix.toString(wXYZ50));
+		// System.out.println("wD50 = " + Matrix.toString(StandardIlluminant.D50.getXYZ()));
+		// System.out.println("wXYZ = " + Matrix.toString(wXYZ50));
 		float[] wIll50 = Matrix.toFloat(StandardIlluminant.D50.getXYZ()); 
 		//System.out.println("wIll = " + Matrix.toString(wIll));
 		assertArrayEquals(wIll50, wXYZ50, 1e-6f);
@@ -120,7 +116,6 @@ public class sRGB65ColorSpaceTest {
 	
 	@Test
 	public void testBookXYZValues() {	// check colors in book Table 14.3
-		PrintPrecision.set(4);
 		sRGB65ColorSpace cs = CS;
 		// original (book) values
 		checkXYZValues(cs, 0.00, 0.00, 0.00,  0.0000, 0.0000, 0.0000);
@@ -160,12 +155,10 @@ public class sRGB65ColorSpaceTest {
 	// RGB are sRGB values
 	private static void checkXYZValues(sRGB65ColorSpace cs, double R, double G, double B, double X, double Y, double Z) {
 		float[] srgb1 = new float[] {(float)R, (float)G, (float)B};
-		
 		// convert to XYZ (D65)
 		float[] xyz = cs.toCIEXYZ65(srgb1);
-//		System.out.println(Matrix.toString(xyz));
+		// System.out.println(Matrix.toString(xyz));
 		assertArrayEquals(new float[] {(float)X, (float)Y, (float)Z}, xyz, 1e-4f);
-		
 		// back to sRGB
 		float[] srgb2 = cs.fromCIEXYZ65(xyz);
 		assertArrayEquals(srgb1, srgb2, 1e-4f);

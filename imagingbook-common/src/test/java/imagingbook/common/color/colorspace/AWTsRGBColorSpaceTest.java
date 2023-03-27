@@ -8,16 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.cie.StandardIlluminant.D50;
-import static imagingbook.common.color.cie.StandardIlluminant.D65;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.awt.color.ColorSpace;
 import java.util.Random;
 
-import imagingbook.common.color.adapt.BradfordAdaptation;
-import imagingbook.common.color.adapt.ChromaticAdaptation;
-import imagingbook.common.math.PrintPrecision;
 import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;

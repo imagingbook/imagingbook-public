@@ -29,8 +29,8 @@ import java.awt.color.ColorSpace;
  */
 @SuppressWarnings("serial")
 public class XYZ50ColorSpace extends ColorSpace {
-	private static sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
-	
+
+	private static final sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
 	private static final XYZ50ColorSpace instance = new XYZ50ColorSpace();
 	
 	public static XYZ50ColorSpace getInstance() {
@@ -43,9 +43,9 @@ public class XYZ50ColorSpace extends ColorSpace {
 
 	// -------------------------------------------------
 
-	@Override	// convert (D50-based) thisXyz to sRGB
-	public float[] toRGB(float[] thisXyz) {
-		return srgbCS.fromCIEXYZ(thisXyz);
+	@Override	// convert (D50-based) thisXYZ50 to sRGB
+	public float[] toRGB(float[] thisXYZ50) {
+		return srgbCS.fromCIEXYZ(thisXYZ50);
 	}
 
 	@Override	// convert sRGB to (D50-based) thisXyz
@@ -57,13 +57,13 @@ public class XYZ50ColorSpace extends ColorSpace {
 	// -------------------------------------------------
 
 	@Override
-	public float[] toCIEXYZ(float[] thisXyz) {
-		return thisXyz;	// nothing to do since D50-based XYZ already
+	public float[] toCIEXYZ(float[] thisXYZ50) {
+		return thisXYZ50;	// nothing to do since D50-based XYZ already
 	}
 
 	@Override
-	public float[] fromCIEXYZ(float[] xyz50) {
-		return xyz50;		// nothing to do, since D50-based XYZ is what we want
+	public float[] fromCIEXYZ(float[] XYZ50) {
+		return XYZ50;		// nothing to do, since D50-based XYZ is what we want
 	}
 	
 }

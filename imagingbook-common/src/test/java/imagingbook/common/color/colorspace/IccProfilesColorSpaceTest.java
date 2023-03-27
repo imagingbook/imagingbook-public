@@ -32,11 +32,12 @@ import imagingbook.common.math.Matrix;
  */
 public class IccProfilesColorSpaceTest {
 
-	private static float TOL = 1e-1f;	// a bit more accurate than standard AWT color spaces!
+	// private static float TOL = 1e-1f;	// a bit more accurate than standard AWT color spaces!
 
 	@Test
 	public void test1A() {
 		for (NamedIccProfile p : NamedIccProfile.values()) {
+			// System.out.println("profile=" + p);
 			ICC_ColorSpace CS = p.getColorSpace();
 			doCheck(CS, new int[] {0, 0, 0});
 			doCheck(CS, new int[] {255, 255, 255});
@@ -51,6 +52,7 @@ public class IccProfilesColorSpaceTest {
 	@Test
 	public void test2() {
 		for (NamedIccProfile p : NamedIccProfile.values()) {
+			// System.out.println("profile=" + p);
 			ICC_ColorSpace CS = p.getColorSpace();
 			Random rd = new Random(17);
 			for (int i = 0; i < 10000; i++) {
@@ -79,7 +81,7 @@ public class IccProfilesColorSpaceTest {
 			ICC_ColorSpace CS = p.getColorSpace();
 			float[] rgbTHIS = {0, 0, 0};
 			float[] xyzPCS = CS.toCIEXYZ(rgbTHIS);
-			assertArrayEquals(new float[] {0, 0, 0}, xyzPCS, 1e-3f);
+			assertArrayEquals(new float[] {0, 0, 0}, xyzPCS, 1e-4f);
 		}
 	}
 	
@@ -93,6 +95,7 @@ public class IccProfilesColorSpaceTest {
 			float[] wIll = Matrix.toFloat(StandardIlluminant.D50.getXYZ()); 
 			//System.out.println("wIll = " + Matrix.toString(wIll));
 			assertArrayEquals(wIll, wXYZ, 1e-3f);
+			assertArrayEquals(CieUtils.XYZToxy(wIll), CieUtils.XYZToxy(wXYZ), 1e-4f);
 		}
 	}
 	
@@ -112,14 +115,14 @@ public class IccProfilesColorSpaceTest {
 	
 	// ---------------------------------------------------
 	
-	private static void doCheck(ICC_ColorSpace cs, int[] val) {
-		float[] srgbIN = RgbUtils.normalize(val);
+	private static void doCheck(ICC_ColorSpace cs, int[] sRGB) {
+		float[] srgbIN = RgbUtils.normalize(sRGB);
 		float[] xyzPCS = ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN); // get some valid XYZ
 		
 		{	// check fromCIEXYZ / toCIEXYZ 
 			float[] srgbTHIS = cs.fromCIEXYZ(xyzPCS);
 			float[] xyzOUT = cs.toCIEXYZ(srgbTHIS);
-			assertArrayEquals(xyzPCS, xyzOUT, TOL);
+			assertArrayEquals(xyzPCS, xyzOUT, 1e-1f);
 		}
 
 			// most color spaces derived from ICC profiles do not pass this test!

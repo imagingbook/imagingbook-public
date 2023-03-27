@@ -8,16 +8,15 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
+import static imagingbook.common.color.cie.StandardIlluminant.D50;
+
+import java.awt.color.ColorSpace;
+
 import imagingbook.common.color.adapt.BradfordAdaptation;
 import imagingbook.common.color.adapt.ChromaticAdaptation;
 import imagingbook.common.color.cie.CieUtils;
 import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
-
-import java.awt.color.ColorSpace;
-
-import static imagingbook.common.color.cie.StandardIlluminant.D50;
-import static imagingbook.common.color.cie.StandardIlluminant.D65;
+//import imagingbook.common.math.PrintPrecision;
 
 /**
  * A color space specified by its RGB primaries and white point coordinates, all defined
@@ -28,9 +27,10 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
  * a system of linear equations to recover the unknown Yr, Yg, and Yb coordinates.
  *
  */
-public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbReferenceData {
+@SuppressWarnings("serial")
+public abstract class AbstractRgbColorSpace extends ColorSpace {
 
-    private static final ColorSpace CS_sRGB = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+	private static final ColorSpace CS_sRGB = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 
     private final double[] XYZw;      // XYZ coordinates of white point
     protected final double[][] Mrgb, Mrgbi;
@@ -70,12 +70,22 @@ public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbRef
         this.Mrgb  = Matrix.inverse(Mrgbi);
     }
 
-    @Override
+    /**
+	 * Returns the XYZ coordinates of the white point associated with this color space (typically D65 or D50).
+	 *
+	 * @return the white point
+	 */
     public float[] getWhitePoint() {
         return Matrix.toFloat(XYZw);
     }
 
-    @Override
+    /**
+	 * Returns the XYZ color coordinates for the primary color with the specified index, measured relative to the white
+	 * point of this color space (see {@link #getWhitePoint()}).
+	 *
+	 * @param idx the color index (R = 0, G = 1, B = 2)
+	 * @return the XYZ coordinate for the primary color
+	 */
     public float[] getPrimary(int idx) {
         return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));
     }
@@ -124,40 +134,40 @@ public abstract class AbstractRgbColorSpace extends ColorSpace implements RgbRef
 
     // --------------------------------------------------
 
-    private static class  TestColorSpace extends AbstractRgbColorSpace {
-
-        TestColorSpace() {
-            super(0.64,0.33,0.30,0.60,0.15,0.06,0.3127,0.3290);
-        }
-
-        @Override
-        public float[] toCIEXYZ(float[] colorvalue) {
-            return new float[0];
-        }
-
-        @Override
-        public float[] fromCIEXYZ(float[] colorvalue) {
-            return new float[0];
-        }
-    }
-
-    public static void main(String[] args) {
-        double xr = 0.64, yr = 0.33;        // sRGB primaries
-        double xg = 0.30, yg = 0.60;
-        double xb = 0.15, yb = 0.06;
-        double x65 = 0.3127, y65 = 0.3290;  // D65 white point
-        // AbstractRgbColorSpace cs = new AbstractRgbColorSpace(xr, yr, xg, yg, xb, yb, x65, y65);
-        AbstractRgbColorSpace cs = new TestColorSpace();
-
-        PrintPrecision.set(9);
-        System.out.println("XYZw = " + Matrix.toString(cs.getWhitePoint()));
-
-        System.out.println("XYZr = " + Matrix.toString(cs.getPrimary(0)));
-        System.out.println("XYZg = " + Matrix.toString(cs.getPrimary(1)));
-        System.out.println("XYZb = " + Matrix.toString(cs.getPrimary(2)));
-
-        System.out.println("Mrgbi = \n" + Matrix.toString(cs.getMrgbi()));
-        System.out.println("Mrgb  = \n" + Matrix.toString(cs.getMrgb()));
-
-    }
+//    private static class  TestColorSpace extends AbstractRgbColorSpace {
+//
+//        TestColorSpace() {
+//            super(0.64,0.33,0.30,0.60,0.15,0.06,0.3127,0.3290);
+//        }
+//
+//        @Override
+//        public float[] toCIEXYZ(float[] colorvalue) {
+//            return new float[0];
+//        }
+//
+//        @Override
+//        public float[] fromCIEXYZ(float[] colorvalue) {
+//            return new float[0];
+//        }
+//    }
+//
+//    public static void main(String[] args) {
+//        double xr = 0.64, yr = 0.33;        // sRGB primaries
+//        double xg = 0.30, yg = 0.60;
+//        double xb = 0.15, yb = 0.06;
+//        double x65 = 0.3127, y65 = 0.3290;  // D65 white point
+//        // AbstractRgbColorSpace cs = new AbstractRgbColorSpace(xr, yr, xg, yg, xb, yb, x65, y65);
+//        AbstractRgbColorSpace cs = new TestColorSpace();
+//
+//        PrintPrecision.set(9);
+//        System.out.println("XYZw = " + Matrix.toString(cs.getWhitePoint()));
+//
+//        System.out.println("XYZr = " + Matrix.toString(cs.getPrimary(0)));
+//        System.out.println("XYZg = " + Matrix.toString(cs.getPrimary(1)));
+//        System.out.println("XYZb = " + Matrix.toString(cs.getPrimary(2)));
+//
+//        System.out.println("Mrgbi = \n" + Matrix.toString(cs.getMrgbi()));
+//        System.out.println("Mrgb  = \n" + Matrix.toString(cs.getMrgb()));
+//
+//    }
 }

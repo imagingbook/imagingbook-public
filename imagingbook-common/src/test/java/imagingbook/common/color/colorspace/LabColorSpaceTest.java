@@ -8,16 +8,14 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.cie.StandardIlluminant.D65;
-import static org.junit.Assert.assertArrayEquals;
+import imagingbook.common.color.RgbUtils;
+import imagingbook.common.math.Matrix;
+import org.junit.Test;
 
 import java.util.Random;
 
-import org.junit.Test;
-
-import imagingbook.common.color.RgbUtils;
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
+import static org.junit.Assert.assertArrayEquals;
 
 public class LabColorSpaceTest {
 
@@ -55,9 +53,7 @@ public class LabColorSpaceTest {
 			checkXyzToLab(cs, new int[] {r, g, b});
 		}
 	}
-	
-	
-	
+
 //	@Test	// tests all possible rgb combinations
 //	public void test3() {
 //		LabColorSpace cs = LabColorSpace.getInstance();
@@ -81,46 +77,40 @@ public class LabColorSpaceTest {
 	
 	@Test
 	public void testWhiteXYZ() { //sRGB white in this color space must map to (100, 0, 0) in Lab
-		PrintPrecision.set(6);
 		LabColorSpace cs = LabColorSpace.getInstance();
-		//float[] rgb = {1, 1, 1};
 		float[] W65 =  Matrix.toFloat(D65.getXYZ());
 		float[] wLab = cs.fromCIEXYZ65(W65);
-//		System.out.println("wD65 = " + Matrix.toString(W65));
-//		System.out.println("wLab = " + Matrix.toString(wLab));
+		// PrintPrecision.set(6);
+		// System.out.println("wD65 = " + Matrix.toString(W65));
+		// System.out.println("wLab = " + Matrix.toString(wLab));
 		assertArrayEquals(new float[] {100, 0, 0}, wLab, 1e-4f);
 	}
 	
 	@Test
 	public void testWhiteRGB() { //sRGB white in this color space must map to D50-XYZ in PCS
-		PrintPrecision.set(6);
 		LabColorSpace cs = LabColorSpace.getInstance();
 		float[] rgb = {1, 1, 1};
-//		double[] W65 = StandardIlluminant.D65.getXYZ();
 		float[] wLab = cs.fromRGB(rgb);
-//		System.out.println("wD65 = " + Matrix.toString(W65));
-//		System.out.println("wLab = " + Matrix.toString(wLab));
-		assertArrayEquals(new float[] {100, 0, 0}, wLab, 0.1f); // inaccuracies due to float conversions? NO!
+		assertArrayEquals(new float[] {100, 0, 0}, wLab, 1e-4f);
 	}
 	
 	@Test
 	public void testBookTableValues() {	// check colors in book Table 14.3
-		PrintPrecision.set(4);
 		LabColorSpace cs = LabColorSpace.getInstance();
 		// original (book) values
-		checkLabValues(cs, 0.00, 0.00, 0.00,   0.00,    0.00,    0.00);
-		checkLabValues(cs, 1.00, 0.00, 0.00,  53.24,   80.09,   67.20);
-		checkLabValues(cs, 1.00, 1.00, 0.00,  97.14,   -21.55 ,  94.48);
-		checkLabValues(cs, 0.00, 1.00, 0.00,  87.74,   -86.18 ,  83.18);
-		checkLabValues(cs, 0.00, 1.00, 1.00,  91.11,   -48.09 , -14.12);	// was -14.13
-		checkLabValues(cs, 0.00, 0.00, 1.00,  32.30,   79.19,  -107.85);	// was -107.86
-		checkLabValues(cs, 1.00, 0.00, 1.00,  60.32,   98.23,  -60.81);		// was 98.24, -60.83
-		checkLabValues(cs, 1.00, 1.00, 1.00,  100.00,   0.00,   0.00);
-		checkLabValues(cs, 0.50, 0.50, 0.50,  53.39,   0.00,    0.00);
-		checkLabValues(cs, 0.75, 0.00, 0.00,  39.77,   64.51,   54.13);
-		checkLabValues(cs, 0.50, 0.00, 0.00,  25.42,   47.91,   37.91);
-		checkLabValues(cs, 0.25, 0.00, 0.00,   9.66,   29.68,   15.24);
-		checkLabValues(cs, 1.00, 0.50, 0.50,  68.11,   48.39,   22.84);		//  was 22.83
+		checkLabValues(cs, 0.00, 0.00, 0.00,   0.00,    0.00,    0.00);		// Black
+		checkLabValues(cs, 1.00, 0.00, 0.00,  53.24,   80.09,   67.20);		// Red
+		checkLabValues(cs, 1.00, 1.00, 0.00,  97.14,   -21.55 ,  94.48);	// Yellow
+		checkLabValues(cs, 0.00, 1.00, 0.00,  87.74,   -86.18 ,  83.18);	// Green
+		checkLabValues(cs, 0.00, 1.00, 1.00,  91.11,   -48.08 , -14.12);	// Cyan, was -48.09, -14.13
+		checkLabValues(cs, 0.00, 0.00, 1.00,  32.30,   79.19,  -107.85);	// Blue, was -107.86
+		checkLabValues(cs, 1.00, 0.00, 1.00,  60.32,   98.23,  -60.83);		// Magenta was 98.24
+		checkLabValues(cs, 1.00, 1.00, 1.00,  100.00,   0.00,   0.00);		// White
+		checkLabValues(cs, 0.50, 0.50, 0.50,  53.39,   0.00,    0.00);		// 50% Gray
+		checkLabValues(cs, 0.75, 0.00, 0.00,  39.77,   64.51,   54.13);		// 75% Red
+		checkLabValues(cs, 0.50, 0.00, 0.00,  25.42,   47.91,   37.91);		// 50% Red
+		checkLabValues(cs, 0.25, 0.00, 0.00,   9.66,   29.68,   15.24);		// 25% Red
+		checkLabValues(cs, 1.00, 0.50, 0.50,  68.11,   48.39,   22.84);		// Pink, was 22.83
 	}
 	
 	// --------------------------------------------------------
@@ -155,6 +145,6 @@ public class LabColorSpaceTest {
 		float[] srgb1 = new float[] {(float)R, (float)G, (float)B};
 		float[] lab = lcs.fromRGB(srgb1);
 //		System.out.println(Matrix.toString(lab));
-		assertArrayEquals(new float[] {(float)L, (float)a, (float)b}, lab, 0.02f);	// not very accurate!!
+		assertArrayEquals(new float[] {(float)L, (float)a, (float)b}, lab, 1e-2f);
 	}
 }

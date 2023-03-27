@@ -71,7 +71,7 @@ public class XYZ50ColorSpaceTest {
 		float[] rgb = {1, 1, 1};
 		float[] xyzTHIS = CS.fromRGB(rgb);
 
-		PrintPrecision.set(16);
+		// PrintPrecision.set(16);
 		//System.out.println("xyzTHIS = " + Matrix.toString(xyzTHIS));
 		// {0.9641662836074829, 1.0000028610229492, 0.8247155547142029}
 

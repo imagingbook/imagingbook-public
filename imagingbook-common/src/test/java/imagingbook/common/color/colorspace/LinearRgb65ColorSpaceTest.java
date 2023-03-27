@@ -24,16 +24,16 @@ import imagingbook.common.math.Matrix;
 public class LinearRgb65ColorSpaceTest {
 	
 	private static LinearRgb65ColorSpace CS = LinearRgb65ColorSpace.getInstance();
-//	private static sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
+
 
 	@Test
 	public void test1() {
-		doCheck(CS, new int[] {0, 0, 0});
-		doCheck(CS, new int[] {255, 255, 255});
-		doCheck(CS, new int[] {177, 0, 0});
-		doCheck(CS, new int[] {0, 177, 0});
-		doCheck(CS, new int[] {0, 0, 177});
-		doCheck(CS, new int[] {19, 3, 174});
+		checkToFromRGB(CS, new int[] {0, 0, 0});
+		checkToFromRGB(CS, new int[] {255, 255, 255});
+		checkToFromRGB(CS, new int[] {177, 0, 0});
+		checkToFromRGB(CS, new int[] {0, 177, 0});
+		checkToFromRGB(CS, new int[] {0, 0, 177});
+		checkToFromRGB(CS, new int[] {19, 3, 174});
 	}
 	
 	@Test
@@ -43,7 +43,7 @@ public class LinearRgb65ColorSpaceTest {
 			int r = rd.nextInt(256);
 			int g = rd.nextInt(256);
 			int b = rd.nextInt(256);
-			doCheck(CS, new int[] {r, g, b});
+			checkToFromRGB(CS, new int[] {r, g, b});
 		}
 	}
 	
@@ -63,18 +63,18 @@ public class LinearRgb65ColorSpaceTest {
 		for (int i = 0; i < 3; i++) {
 			float[] rgb = new float[3];
 			rgb[i] = 1;
-			float[] xyz = CS.toCIEXYZ65(rgb);
+			float[] xyz65 = CS.toCIEXYZ65(rgb);
 			float[] primary = CS.getPrimary(i);
 //			System.out.println("primary = " + Matrix.toString(primary));
 //			System.out.println("xyz     = " + Matrix.toString(xyz));
-			assertArrayEquals(primary, xyz, 1e-6f);
+			assertArrayEquals(primary, xyz65, 1e-6f);
 		}
 	}
 	
 	@Test
 	public void testWhite50() { //sRGB white in this color space must map to D50-XYZ in PCS
-		float[] rgbTHIS = {1, 1, 1};
-		float[] wXYZ50 = CS.toCIEXYZ(rgbTHIS);	// in PCS#
+		float[] rgb = {1, 1, 1};
+		float[] wXYZ50 = CS.toCIEXYZ(rgb);	// in PCS xyz
 //		System.out.println("wD50 = " + Matrix.toString(StandardIlluminant.D50.getXYZ()));
 //		System.out.println("wXYZ = " + Matrix.toString(wXYZ50));
 		float[] wIll50 = Matrix.toFloat(StandardIlluminant.D50.getXYZ()); 
@@ -113,10 +113,10 @@ public class LinearRgb65ColorSpaceTest {
 	
 	// ------------------------------------------
 	
-	private static void doCheck(ColorSpace cs, int[] sRGB) {
+	private static void checkToFromRGB(ColorSpace cs, int[] sRGB) {
 		float[] srgb1 = RgbUtils.normalize(sRGB);
-		float[] lab = cs.fromRGB(srgb1);
-		float[] srgb2 = cs.toRGB(lab);
+		float[] rgb   = cs.fromRGB(srgb1);	// linear rgb
+		float[] srgb2 = cs.toRGB(rgb);
 		assertArrayEquals(srgb1, srgb2, 1e-6f);
 	}
 

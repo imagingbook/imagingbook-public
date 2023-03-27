@@ -12,11 +12,14 @@ import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Random;
 
+import imagingbook.common.math.PrintPrecision;
 import org.junit.Test;
 
 import imagingbook.common.color.RgbUtils;
 
 public class HsvColorSpaceTest {
+
+	private static float TOL = 1e-6f;
 
 	@Test
 	public void test1() {
@@ -40,6 +43,26 @@ public class HsvColorSpaceTest {
 			doCheck(hlsC, new int[] {r, g, b});
 		}
 	}
+
+	@Test
+	public void testBookTableValues() {	// check colors listed in book Fig. 13.12
+		PrintPrecision.set(4);
+		HsvColorSpace cs = HsvColorSpace.getInstance();
+		// original (book) values
+		checkHsvValues(cs, 0.00, 0.00, 0.00,  0.00,  0.00,   0.00);		// Black
+		checkHsvValues(cs, 1.00, 0.00, 0.00,  0.00,  1.00,   1.00);		// Red
+		checkHsvValues(cs, 1.00, 1.00, 0.00,  1d/6,  1.00 ,  1.00);		// Yellow
+		checkHsvValues(cs, 0.00, 1.00, 0.00,  2d/6,  1.00 ,  1.00);		// Green
+		checkHsvValues(cs, 0.00, 1.00, 1.00,  3d/6,  1.00 ,  1.00);		// Cyan
+		checkHsvValues(cs, 0.00, 0.00, 1.00,  4d/6,  1.00 ,  1.00);		// Blue
+		checkHsvValues(cs, 1.00, 0.00, 1.00,  5d/6,  1.00 ,  1.00);		// Magenta
+		checkHsvValues(cs, 1.00, 1.00, 1.00,  0.00,  0.00,   1.00);		// White
+		checkHsvValues(cs, 0.50, 0.50, 0.50,  0.00,  0.00,   0.50);		// Gray
+		checkHsvValues(cs, 0.75, 0.00, 0.00,  0.00,  1.00,   0.75);		// 75% Red
+		checkHsvValues(cs, 0.50, 0.00, 0.00,  0.00,  1.00,   0.50);		// 50% Red
+		checkHsvValues(cs, 0.25, 0.00, 0.00,  0.00,  1.00,   0.25);		// 25% Red
+		checkHsvValues(cs, 1.00, 0.50, 0.50,  0.00,  0.50 ,  1.00);		// Pink
+	}
 	
 //	@Test	// tests all possible rgb combinations
 //	public void test3() {
@@ -60,5 +83,12 @@ public class HsvColorSpaceTest {
 		assertArrayEquals(srgb1, srgb2, 1e-5f);
 	}
 
+	// RGB are sRGB values
+	private static void checkHsvValues(HsvColorSpace cs, double R, double G, double B, double H, double S, double V) {
+		float[] srgb1 = new float[] {(float)R, (float)G, (float)B};
+		float[] hsv = cs.fromRGB(srgb1);
+//		System.out.println(Matrix.toString(lab));
+		assertArrayEquals(new float[] {(float)H, (float)S, (float)V}, hsv, TOL);
+	}
 
 }

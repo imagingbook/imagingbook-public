@@ -14,7 +14,7 @@ import ij.gui.GenericDialog;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import imagingbook.common.color.colorspace.AdobeRgbColorSpaceIcc;
+import imagingbook.common.color.colorspace.AdobeRgbColorSpace;
 import imagingbook.common.color.colorspace.HlsColorSpace;
 import imagingbook.common.color.colorspace.HsvColorSpace;
 import imagingbook.common.color.colorspace.LabColorSpace;
@@ -88,7 +88,7 @@ public class Convert_To_Color_Stack implements PlugInFilter, JavaDocHelp {
 			case HLS: csp = HlsColorSpace.getInstance(); break;
 			case HSV: csp = HsvColorSpace.getInstance(); break;
 			case sRGB65: csp = sRGB65ColorSpace.getInstance(); break;
-			case AdobeRGB:	csp = AdobeRgbColorSpaceIcc.getInstance(); break;
+			case AdobeRGB:	csp = AdobeRgbColorSpace.getInstance(); break;
 			case LinearRGB:	csp = LinearRgb65ColorSpace.getInstance(); break;
 			case XYZ65: csp = XYZ65ColorSpace.getInstance(); break;
 		}

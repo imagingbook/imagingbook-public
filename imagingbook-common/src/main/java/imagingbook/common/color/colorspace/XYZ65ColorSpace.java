@@ -35,13 +35,11 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
  */
 @SuppressWarnings("serial")
 public class XYZ65ColorSpace extends ColorSpace implements DirectD65Conversion {
-	private static sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
-	
+	private static final sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
-
-	
 	private static final XYZ65ColorSpace instance = new XYZ65ColorSpace();
+
 	public static XYZ65ColorSpace getInstance() {
 		return instance;
 	}
@@ -52,7 +50,7 @@ public class XYZ65ColorSpace extends ColorSpace implements DirectD65Conversion {
 
 	// ----------------------------------------------------
 
-	@Override	// convert this D65.based XYZ to sRGB 
+	@Override	// convert this D65-based XYZ to sRGB
 	public float[] toRGB(float[] thisXYZ65) {
 		float[] XYZ50 = this.toCIEXYZ(thisXYZ65);	// could be done directly!!
 		float[] srgb = srgbCS.fromCIEXYZ(XYZ50);
@@ -80,13 +78,13 @@ public class XYZ65ColorSpace extends ColorSpace implements DirectD65Conversion {
 	// -------------------------------------------------
 
 	@Override
-	public float[] fromCIEXYZ65(float[] xyz65) {
-		return xyz65;
+	public float[] fromCIEXYZ65(float[] XYZ65) {
+		return XYZ65;
 	}
 
 	@Override
-	public float[] toCIEXYZ65(float[] xyz65) {
-		return xyz65;
+	public float[] toCIEXYZ65(float[] XYZ65) {
+		return XYZ65;
 	}
 
 }

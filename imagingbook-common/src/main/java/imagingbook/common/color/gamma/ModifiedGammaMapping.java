@@ -80,7 +80,7 @@ public class ModifiedGammaMapping implements GammaMapping {
 	 * @param a0 the linear to non-linear transition point
 	 * @return the slope s of the linear section
 	 */
-	protected static double s(double gamma, double a0) {
+	protected static double s(double gamma, double a0) {	// protected only to show in JavaDoc
 		return gamma / (a0 * (gamma - 1) + Math.pow(a0, 1 - gamma));
 	}
 
@@ -92,9 +92,11 @@ public class ModifiedGammaMapping implements GammaMapping {
 	 * @param a0 the linear to non-linear transition point
 	 * @return the offset d of the non-linear section
 	 */
-	protected static double d(double gamma, double a0) {
+	protected static double d(double gamma, double a0) {	// protected only to show in JavaDoc
 		return 1.0 / (Math.pow(a0, gamma) * (gamma - 1) + 1) - 1;
 	}
+	
+	// -------------------------------------------------------------------------------------
 	
     @Override
 	public double applyFwd(double a) {

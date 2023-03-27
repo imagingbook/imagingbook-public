@@ -122,12 +122,12 @@ public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 	private static final double Kappa = 841.0/108;
 	
 	// Gamma correction for L* (forward)
-	private double f1 (double c) {
+	private static double f1 (double c) {
 		return (c > Epsilon) ? Math.cbrt(c) : (Kappa * c) + (16.0 / 116);
 	}
 	
 	// Gamma correction for L* (inverse)
-	private double f2 (double c) {
+	private static double f2 (double c) {
 		final double c3 = c * c * c; //Math.pow(c, 3.0);
 		return (c3 > Epsilon) ? c3 : (c - 16.0 / 116) / Kappa;
 	}

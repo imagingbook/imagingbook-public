@@ -28,10 +28,10 @@ import imagingbook.common.math.PrintPrecision;
 public class AdobeRgbColorSpaceTest {
 
 	private static ColorSpace sRGB_CS = ColorSpace.getInstance(ColorSpace.CS_sRGB);
-	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
+//	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
 
-	private static AdobeRgbColorSpaceIcc AdobeCS = AdobeRgbColorSpaceIcc.getInstance();
+	private static AdobeRgbColorSpace AdobeCS = AdobeRgbColorSpace.getInstance();
 	private static float TOL = 1e-3f;	// a bit more accurate than standard AWT color spaces!
 
 	@Test	// convvert
@@ -91,19 +91,19 @@ public class AdobeRgbColorSpaceTest {
 	
 	@Test
 	public void testWhite() { //sRGB white in this color space must map to D50-XYZ in PCS
-		float[] rgbWhite = {1, 1, 1};
-		float[] xyz65 = catD50toD65.applyTo(AdobeCS.toCIEXYZ(rgbWhite));
-		float[] w65 = Matrix.toFloat(D65.getXYZ());
+		final float[] rgbWhite = {1, 1, 1};
+		final float[] xyz65 = catD50toD65.applyTo(AdobeCS.toCIEXYZ(rgbWhite));
+		final float[] W65 = Matrix.toFloat(D65.getXYZ());
 		PrintPrecision.set(6);
-		System.out.println("xyz65 = " + Matrix.toString(xyz65));
-		System.out.println("w65   = " + Matrix.toString(w65));
-		assertArrayEquals(w65, xyz65, 1e-3f);	// not very accurate!
-		assertArrayEquals(CieUtils.XYZToxy(w65), CieUtils.XYZToxy(xyz65), 1e-4f);
+//		System.out.println("xyz65 = " + Matrix.toString(xyz65));
+//		System.out.println("w65   = " + Matrix.toString(w65));
+		assertArrayEquals(W65, xyz65, 1e-3f);	// XYZ not very accurate!
+		assertArrayEquals(CieUtils.XYZToxy(W65), CieUtils.XYZToxy(xyz65), 1e-4f); // test in xy space
 	}
 	
 	@Test
-	public void testGray() {	// any sRGB gray in this color space must map do white-xy
-		float[] w65 = Matrix.toFloat(StandardIlluminant.D65.getXy()); //{0.3457, 0.3585};
+	public void testGray() {	// any RGB gray in this color space must map do white-xy
+		final float[] w65 = Matrix.toFloat(StandardIlluminant.D65.getXy()); //{0.3457, 0.3585};
 		for (int c = 1; c < 256; c++) {
 			float[] rgbTHIS = {c, c, c};
 			float[] xyz65 = catD50toD65.applyTo(AdobeCS.toCIEXYZ(rgbTHIS));
@@ -118,15 +118,15 @@ public class AdobeRgbColorSpaceTest {
 		float[] srgbIN = RgbUtils.normalize(sRGB);
 		
 		{	// check fromCIEXYZ / toCIEXYZ
-			float[] xyzIN = sRGB_CS.toCIEXYZ(srgbIN);
-			float[] rgbCS = cs.fromCIEXYZ(xyzIN);
+			float[] xyzIN  = sRGB_CS.toCIEXYZ(srgbIN);
+			float[] rgbCS  = cs.fromCIEXYZ(xyzIN);
 			float[] xyzOUT = cs.toCIEXYZ(rgbCS);
 			assertArrayEquals(xyzIN, xyzOUT, TOL);
 		}
 
 		{	// check fromRGB / toRGB 
-			float[] rgbCS = cs.fromRGB(srgbIN);
-			float[] srgbOUT = cs.toRGB(rgbCS);
+			float[] rgbTHIS = cs.fromRGB(srgbIN);
+			float[] srgbOUT = cs.toRGB(rgbTHIS);
 			assertArrayEquals(srgbIN, srgbOUT, TOL);
 		}
 	}

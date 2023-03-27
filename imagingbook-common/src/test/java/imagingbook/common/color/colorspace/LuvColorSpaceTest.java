@@ -8,18 +8,17 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
-import static imagingbook.common.color.cie.StandardIlluminant.D65;
-import static org.junit.Assert.assertArrayEquals;
-
-import java.util.Random;
-
+import imagingbook.common.color.RgbUtils;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 import org.junit.Test;
 
-import imagingbook.common.color.RgbUtils;
+import java.util.Random;
 
-public class LuvColorSpaceTest {	//TODO: adapt to Luv test!
+import static imagingbook.common.color.cie.StandardIlluminant.D65;
+import static org.junit.Assert.assertArrayEquals;
+
+public class LuvColorSpaceTest {
 
 	@Test
 	public void test1a() {
@@ -56,8 +55,6 @@ public class LuvColorSpaceTest {	//TODO: adapt to Luv test!
 		}
 	}
 
-
-
 //	@Test	// tests all possible rgb combinations
 //	public void test3() {
 //		LuvColorSpace cs = LuvColorSpace.getInstance();
@@ -81,26 +78,22 @@ public class LuvColorSpaceTest {	//TODO: adapt to Luv test!
 
 	@Test
 	public void testWhiteXYZ() { //sRGB white in this color space must map to (100, 0, 0) in Luv
-		PrintPrecision.set(6);
 		LuvColorSpace cs = LuvColorSpace.getInstance();
 		//float[] rgb = {1, 1, 1};
 		float[] W65 =  Matrix.toFloat(D65.getXYZ());
 		float[] wLuv = cs.fromCIEXYZ65(W65);
-//		System.out.println("wD65 = " + Matrix.toString(W65));
-//		System.out.println("wLuv = " + Matrix.toString(wLuv));
+		// PrintPrecision.set(6);
+		// System.out.println("wD65 = " + Matrix.toString(W65));
+		// System.out.println("wLuv = " + Matrix.toString(wLuv));
 		assertArrayEquals(new float[] {100, 0, 0}, wLuv, 1e-4f);
 	}
 
 	@Test
 	public void testWhiteRGB() { //sRGB white in this color space must map to D50-XYZ in PCS
-		PrintPrecision.set(6);
 		LuvColorSpace cs = LuvColorSpace.getInstance();
 		float[] rgb = {1, 1, 1};
-//		double[] W65 = StandardIlluminant.D65.getXYZ();
 		float[] wLuv = cs.fromRGB(rgb);
-//		System.out.println("wD65 = " + Matrix.toString(W65));
-//		System.out.println("wLuv = " + Matrix.toString(wLuv));
-		assertArrayEquals(new float[] {100, 0, 0}, wLuv, 0.1f); // inaccuracies due to float conversions? NO!
+		assertArrayEquals(new float[] {100, 0, 0}, wLuv, 1e-4f); // inaccuracies due to float conversions? NO!
 	}
 
 	@Test
@@ -108,19 +101,19 @@ public class LuvColorSpaceTest {	//TODO: adapt to Luv test!
 		PrintPrecision.set(4);
 		LuvColorSpace cs = LuvColorSpace.getInstance();
 		// original (book) values
-		// checkLuvValues(cs, 0.00, 0.00, 0.00,   0.00,    0.00,    0.00);
-		// checkLuvValues(cs, 1.00, 0.00, 0.00,  53.24,  175.01,   37.75);
-		// checkLuvValues(cs, 1.00, 1.00, 0.00,  97.14,  7.70,  106.80);		// was 106.78
-		// checkLuvValues(cs, 0.00, 1.00, 0.00,  87.74,  -83.08,  107.41);		// was 107.39
-		// checkLuvValues(cs, 0.00, 1.00, 1.00,  91.11,   -70.48,  -15.20);
-		// checkLuvValues(cs, 0.00, 0.00, 1.00,  32.30,   -9.40, -130.34);
-		// checkLuvValues(cs, 1.00, 0.00, 1.00,  60.32,   84.07, -108.68);
-		checkLuvValues(cs, 1.00, 1.00, 1.00,  100.00,   0.00,   0.02);		// was 0.00
-		// checkLuvValues(cs, 0.50, 0.50, 0.50,  53.39,   0.00,    0.00);
-		// checkLuvValues(cs, 0.75, 0.00, 0.00,  39.77,   130.73,   28.20);
-		// checkLuvValues(cs, 0.50, 0.00, 0.00,  25.42,   83.56,   18.02);
-		// checkLuvValues(cs, 0.25, 0.00, 0.00,   9.66,   31.74,    6.85);
-		// checkLuvValues(cs, 1.00, 0.50, 0.50,  68.11,   92.15,   19.88);
+		checkLuvValues(cs, 0.00, 0.00, 0.00,   0.00,    0.00,    0.00);		// Black
+		checkLuvValues(cs, 1.00, 0.00, 0.00,  53.24,  175.01,   37.77);		// Red, was 37.75
+		checkLuvValues(cs, 1.00, 1.00, 0.00,  97.14,  7.70,  106.80);		// Yellow, was 106.78
+		checkLuvValues(cs, 0.00, 1.00, 0.00,  87.74,  -83.07,  107.41);		// Green, was -83.08, 107.39
+		checkLuvValues(cs, 0.00, 1.00, 1.00,  91.11,  -70.46,  -15.20);		// Cyan, was -70.48
+		checkLuvValues(cs, 0.00, 0.00, 1.00,  32.30,   -9.40, -130.35);		// Blue, was -130.34
+		checkLuvValues(cs, 1.00, 0.00, 1.00,  60.32,   84.06, -108.70);		// Magenta, was 84.07, -108.68
+		checkLuvValues(cs, 1.00, 1.00, 1.00,  100.00,   0.00,   0.00);		// White
+		checkLuvValues(cs, 0.50, 0.50, 0.50,  53.39,    0.00,   0.00);		// 50% Gray
+		checkLuvValues(cs, 0.75, 0.00, 0.00,  39.77,  130.73,   28.20);		// 75% Red
+		checkLuvValues(cs, 0.50, 0.00, 0.00,  25.42,   83.56,   18.02);		// 50% Red
+		checkLuvValues(cs, 0.25, 0.00, 0.00,   9.66,   31.74,    6.85);		// 25% Red
+		checkLuvValues(cs, 1.00, 0.50, 0.50,  68.11,   92.14,   19.88);		// Pink, was 92.15
 	}
 
 	// --------------------------------------------------------
@@ -151,12 +144,12 @@ public class LuvColorSpaceTest {	//TODO: adapt to Luv test!
 	}
 
 	// RGB are sRGB values
-	private static void checkLuvValues(LuvColorSpace lcs, double R, double G, double B, double L, double a, double b) {
+	private static void checkLuvValues(LuvColorSpace lcs, double R, double G, double B, double L, double u, double v) {
 		float[] srgb1 = new float[] {(float)R, (float)G, (float)B};
 		// System.out.println("sRGB=" + Matrix.toString(srgb1));
 		float[] luv = lcs.fromRGB(srgb1);
 		// System.out.println("luv=" + Matrix.toString(luv));
-		assertArrayEquals(new float[] {(float)L, (float)a, (float)b}, luv, 0.02f);	// not very accurate!!
+		assertArrayEquals(new float[] {(float)L, (float)u, (float)v}, luv, 1e-2f);
 	}
 
 }

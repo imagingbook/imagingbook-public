@@ -8,11 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.color.colorspace;
 
-import imagingbook.common.color.cie.NamedIccProfile;
-import imagingbook.common.math.Matrix;
-import imagingbook.common.math.PrintPrecision;
-
 import java.awt.color.ICC_ColorSpace;
+
+import imagingbook.common.color.cie.NamedIccProfile;
 
 
 /**
@@ -24,6 +22,7 @@ import java.awt.color.ICC_ColorSpace;
  *     Mrgbi = | 0.29734, 0.62736, 0.07529 |
  *             | 0.02703, 0.07069, 0.99134 |</pre>
  * See Sec. 14.5 of [2] for details.
+ * This is a singleton class with no public constructors, use {@link #getInstance()} to obtain the single instance.
  * </p>
  * <p>
  * [1] https://www.adobe.com/digitalimag/pdfs/AdobeRGB1998.pdf<br>
@@ -36,48 +35,23 @@ import java.awt.color.ICC_ColorSpace;
  * @see NamedIccProfile#AdobeRGB1998
  */
 @SuppressWarnings("serial")
-public class AdobeRgbColorSpaceIcc extends ICC_ColorSpace {
+public class AdobeRgbColorSpace extends ICC_ColorSpace {
 
-    private static AdobeRgbColorSpaceIcc instance = null;
+    private static AdobeRgbColorSpace instance = null;
 
-    private AdobeRgbColorSpaceIcc() {
+    private AdobeRgbColorSpace() {
         super(NamedIccProfile.AdobeRGB1998.getProfile());    // constructor of ICC_ColorSpace
     }
 
     /**
-     * Returns an instance of {@link AdobeRgbColorSpaceIcc}.
-     * @return an instance of {@link AdobeRgbColorSpaceIcc}
+     * Returns a singleton instance of {@link AdobeRgbColorSpace}.
+     * @return an instance of {@link AdobeRgbColorSpace}
      */
-    public static AdobeRgbColorSpaceIcc getInstance() {
+    public static AdobeRgbColorSpace getInstance() {
         if (instance == null) {
-            instance = new AdobeRgbColorSpaceIcc();
+            instance = new AdobeRgbColorSpace();
         }
         return instance;
     }
 
-    // @Override
-    // public float[] getWhitePoint() {
-    //     // (0.9505, 1.0000, 1.0891)
-    //     float[] rgb = {1, 1, 1};
-    //     return this.toCIEXYZ65(rgb);
-    //     // return StandardIlluminant.D65.getXYZ();
-    // }
-    //
-    // @Override
-    // public float[] getPrimary(int idx) {
-    //     float[] rgb = new float[3];
-    //     rgb[idx] = 1;
-    //     return this.toCIEXYZ65(rgb);
-    // }
-    //
-    //
-    // @Override
-    // public float[] fromCIEXYZ65(float[] xyz65) {
-    //     return new float[0];
-    // }
-    //
-    // @Override
-    // public float[] toCIEXYZ65(float[] value) {
-    //     return new float[0];
-    // }
 }
