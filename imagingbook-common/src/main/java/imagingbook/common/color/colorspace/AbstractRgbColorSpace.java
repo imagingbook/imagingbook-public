@@ -33,12 +33,17 @@ public abstract class AbstractRgbColorSpace extends ColorSpace {
 	private static final ColorSpace CS_sRGB = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 
     private final double[] XYZw;      // XYZ coordinates of white point
-    protected final double[][] Mrgb, Mrgbi;
+    /** The 3x3 matrix for converting (normalized) RGB to XYZ coordinates. */
+    protected final double[][] Mrgb;
+    /** The 3x3 matrix for converting XYZ to (normalized) RGB coordinates. Inverse of {@link #Mrgb}. */
+    protected final double[][] Mrgbi;
+    /** Chromatic adaptation instance for converting colors from this color space's white point to D50. */
     protected final ChromaticAdaptation catWtoD50; // = BradfordAdaptation.getInstance(D65, D50);
+    /** Chromatic adaptation instance for converting colors from D50 to this color space's white point. */
     protected final ChromaticAdaptation catD50toW; // = BradfordAdaptation.getInstance(D50, D65);
 
     /**
-     * Constructor, builds a color space from CIE xy-coordinates of tristimulus values and white point.
+     * Constructor, builds a {@link AbstractRgbColorSpace} from CIE xy-coordinates of tristimulus values and white point.
      * @param xr x-coordinate of primary R
      * @param yr y-coordinate of primary R
      * @param xg x-coordinate of primary G
@@ -48,7 +53,7 @@ public abstract class AbstractRgbColorSpace extends ColorSpace {
      * @param xw x-coordinate of white point
      * @param yw y-coordinate of white point
      */
-    public AbstractRgbColorSpace(double xr, double yr, double xg, double yg, double xb, double yb, double xw, double yw) {
+    protected AbstractRgbColorSpace(double xr, double yr, double xg, double yg, double xb, double yb, double xw, double yw) {
         super(ColorSpace.TYPE_RGB, 3);
         this.XYZw = CieUtils.xyYToXYZ(xw, yw, 1);
 
@@ -126,7 +131,7 @@ public abstract class AbstractRgbColorSpace extends ColorSpace {
     // --------------------------------------------------------
 
     private static final String[] ComponentNames = {"R", "G", "B"};
-
+    
     @Override
     public String getName (int idx) {
         return ComponentNames[idx];
@@ -137,7 +142,7 @@ public abstract class AbstractRgbColorSpace extends ColorSpace {
 //    private static class  TestColorSpace extends AbstractRgbColorSpace {
 //
 //        TestColorSpace() {
-//            super(0.64,0.33,0.30,0.60,0.15,0.06,0.3127,0.3290);
+//            super(0.64, 0.33, 0.30, 0.60, 0.15, 0.06, 0.3127, 0.3290);
 //        }
 //
 //        @Override
