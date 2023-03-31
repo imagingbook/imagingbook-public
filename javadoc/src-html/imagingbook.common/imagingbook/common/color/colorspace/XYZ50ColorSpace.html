@@ -41,9 +41,9 @@
 <span class="source-line-no">028</span><span id="line-28"> * @see XYZ65ColorSpace</span>
 <span class="source-line-no">029</span><span id="line-29"> */</span>
 <span class="source-line-no">030</span><span id="line-30">@SuppressWarnings("serial")</span>
-<span class="source-line-no">031</span><span id="line-31">public class XYZ50ColorSpace extends ColorSpace implements DirectD65Conversion {</span>
-<span class="source-line-no">032</span><span id="line-32">        private static sRgbColorSpace srgbCS = sRgbColorSpace.getInstance();</span>
-<span class="source-line-no">033</span><span id="line-33">        </span>
+<span class="source-line-no">031</span><span id="line-31">public class XYZ50ColorSpace extends ColorSpace {</span>
+<span class="source-line-no">032</span><span id="line-32"></span>
+<span class="source-line-no">033</span><span id="line-33">        private static final sRGB65ColorSpace srgbCS = sRGB65ColorSpace.getInstance();</span>
 <span class="source-line-no">034</span><span id="line-34">        private static final XYZ50ColorSpace instance = new XYZ50ColorSpace();</span>
 <span class="source-line-no">035</span><span id="line-35">        </span>
 <span class="source-line-no">036</span><span id="line-36">        public static XYZ50ColorSpace getInstance() {</span>
@@ -56,9 +56,9 @@
 <span class="source-line-no">043</span><span id="line-43"></span>
 <span class="source-line-no">044</span><span id="line-44">        // -------------------------------------------------</span>
 <span class="source-line-no">045</span><span id="line-45"></span>
-<span class="source-line-no">046</span><span id="line-46">        @Override       // convert (D50-based) thisXyz to sRGB</span>
-<span class="source-line-no">047</span><span id="line-47">        public float[] toRGB(float[] thisXyz) {</span>
-<span class="source-line-no">048</span><span id="line-48">                return srgbCS.fromCIEXYZ(thisXyz);</span>
+<span class="source-line-no">046</span><span id="line-46">        @Override       // convert (D50-based) thisXYZ50 to sRGB</span>
+<span class="source-line-no">047</span><span id="line-47">        public float[] toRGB(float[] thisXYZ50) {</span>
+<span class="source-line-no">048</span><span id="line-48">                return srgbCS.fromCIEXYZ(thisXYZ50);</span>
 <span class="source-line-no">049</span><span id="line-49">        }</span>
 <span class="source-line-no">050</span><span id="line-50"></span>
 <span class="source-line-no">051</span><span id="line-51">        @Override       // convert sRGB to (D50-based) thisXyz</span>
@@ -70,13 +70,13 @@
 <span class="source-line-no">057</span><span id="line-57">        // -------------------------------------------------</span>
 <span class="source-line-no">058</span><span id="line-58"></span>
 <span class="source-line-no">059</span><span id="line-59">        @Override</span>
-<span class="source-line-no">060</span><span id="line-60">        public float[] toCIEXYZ(float[] thisXyz) {</span>
-<span class="source-line-no">061</span><span id="line-61">                return thisXyz; // nothing to do since D50-based XYZ already</span>
+<span class="source-line-no">060</span><span id="line-60">        public float[] toCIEXYZ(float[] thisXYZ50) {</span>
+<span class="source-line-no">061</span><span id="line-61">                return thisXYZ50;       // nothing to do since D50-based XYZ already</span>
 <span class="source-line-no">062</span><span id="line-62">        }</span>
 <span class="source-line-no">063</span><span id="line-63"></span>
 <span class="source-line-no">064</span><span id="line-64">        @Override</span>
-<span class="source-line-no">065</span><span id="line-65">        public float[] fromCIEXYZ(float[] xyz50) {</span>
-<span class="source-line-no">066</span><span id="line-66">                return xyz50;           // nothing to do, since D50-based XYZ is what we want</span>
+<span class="source-line-no">065</span><span id="line-65">        public float[] fromCIEXYZ(float[] XYZ50) {</span>
+<span class="source-line-no">066</span><span id="line-66">                return XYZ50;           // nothing to do, since D50-based XYZ is what we want</span>
 <span class="source-line-no">067</span><span id="line-67">        }</span>
 <span class="source-line-no">068</span><span id="line-68">        </span>
 <span class="source-line-no">069</span><span id="line-69">}</span>

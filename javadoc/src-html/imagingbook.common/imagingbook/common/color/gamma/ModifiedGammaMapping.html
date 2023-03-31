@@ -93,7 +93,7 @@
 <span class="source-line-no">080</span><span id="line-80">         * @param a0 the linear to non-linear transition point</span>
 <span class="source-line-no">081</span><span id="line-81">         * @return the slope s of the linear section</span>
 <span class="source-line-no">082</span><span id="line-82">         */</span>
-<span class="source-line-no">083</span><span id="line-83">        protected static double s(double gamma, double a0) {</span>
+<span class="source-line-no">083</span><span id="line-83">        protected static double s(double gamma, double a0) {    // protected only to show in JavaDoc</span>
 <span class="source-line-no">084</span><span id="line-84">                return gamma / (a0 * (gamma - 1) + Math.pow(a0, 1 - gamma));</span>
 <span class="source-line-no">085</span><span id="line-85">        }</span>
 <span class="source-line-no">086</span><span id="line-86"></span>
@@ -105,65 +105,67 @@
 <span class="source-line-no">092</span><span id="line-92">         * @param a0 the linear to non-linear transition point</span>
 <span class="source-line-no">093</span><span id="line-93">         * @return the offset d of the non-linear section</span>
 <span class="source-line-no">094</span><span id="line-94">         */</span>
-<span class="source-line-no">095</span><span id="line-95">        protected static double d(double gamma, double a0) {</span>
+<span class="source-line-no">095</span><span id="line-95">        protected static double d(double gamma, double a0) {    // protected only to show in JavaDoc</span>
 <span class="source-line-no">096</span><span id="line-96">                return 1.0 / (Math.pow(a0, gamma) * (gamma - 1) + 1) - 1;</span>
 <span class="source-line-no">097</span><span id="line-97">        }</span>
 <span class="source-line-no">098</span><span id="line-98">        </span>
-<span class="source-line-no">099</span><span id="line-99">    @Override</span>
-<span class="source-line-no">100</span><span id="line-100">        public double applyFwd(double a) {</span>
-<span class="source-line-no">101</span><span id="line-101">                return (a &lt;= a0) ?</span>
-<span class="source-line-no">102</span><span id="line-102">                        s * a :</span>
-<span class="source-line-no">103</span><span id="line-103">                        (1 + d) * Math.pow(a, gamma) - d;</span>
-<span class="source-line-no">104</span><span id="line-104">    }</span>
-<span class="source-line-no">105</span><span id="line-105">    </span>
-<span class="source-line-no">106</span><span id="line-106">    @Override</span>
-<span class="source-line-no">107</span><span id="line-107">        public double applyInv(double b) {</span>
-<span class="source-line-no">108</span><span id="line-108">        return (b &lt;= b0) ?</span>
-<span class="source-line-no">109</span><span id="line-109">                (b / s) :</span>
-<span class="source-line-no">110</span><span id="line-110">                        Math.pow((b + d) / (1 + d), igamma);</span>
-<span class="source-line-no">111</span><span id="line-111">    }</span>
-<span class="source-line-no">112</span><span id="line-112">    </span>
-<span class="source-line-no">113</span><span id="line-113">    @Override</span>
-<span class="source-line-no">114</span><span id="line-114">        public float applyFwd(float a) {</span>
-<span class="source-line-no">115</span><span id="line-115">                return (float) applyFwd((double) a);</span>
-<span class="source-line-no">116</span><span id="line-116">    }</span>
-<span class="source-line-no">117</span><span id="line-117">    </span>
-<span class="source-line-no">118</span><span id="line-118">    @Override</span>
-<span class="source-line-no">119</span><span id="line-119">        public float applyInv(float b) {</span>
-<span class="source-line-no">120</span><span id="line-120">        return (float) applyInv((double) b);</span>
-<span class="source-line-no">121</span><span id="line-121">    }</span>
-<span class="source-line-no">122</span><span id="line-122">    </span>
-<span class="source-line-no">123</span><span id="line-123">    // -----------------------------------------------</span>
+<span class="source-line-no">099</span><span id="line-99">        // -------------------------------------------------------------------------------------</span>
+<span class="source-line-no">100</span><span id="line-100">        </span>
+<span class="source-line-no">101</span><span id="line-101">    @Override</span>
+<span class="source-line-no">102</span><span id="line-102">        public double applyFwd(double a) {</span>
+<span class="source-line-no">103</span><span id="line-103">                return (a &lt;= a0) ?</span>
+<span class="source-line-no">104</span><span id="line-104">                        s * a :</span>
+<span class="source-line-no">105</span><span id="line-105">                        (1 + d) * Math.pow(a, gamma) - d;</span>
+<span class="source-line-no">106</span><span id="line-106">    }</span>
+<span class="source-line-no">107</span><span id="line-107">    </span>
+<span class="source-line-no">108</span><span id="line-108">    @Override</span>
+<span class="source-line-no">109</span><span id="line-109">        public double applyInv(double b) {</span>
+<span class="source-line-no">110</span><span id="line-110">        return (b &lt;= b0) ?</span>
+<span class="source-line-no">111</span><span id="line-111">                (b / s) :</span>
+<span class="source-line-no">112</span><span id="line-112">                        Math.pow((b + d) / (1 + d), igamma);</span>
+<span class="source-line-no">113</span><span id="line-113">    }</span>
+<span class="source-line-no">114</span><span id="line-114">    </span>
+<span class="source-line-no">115</span><span id="line-115">    @Override</span>
+<span class="source-line-no">116</span><span id="line-116">        public float applyFwd(float a) {</span>
+<span class="source-line-no">117</span><span id="line-117">                return (float) applyFwd((double) a);</span>
+<span class="source-line-no">118</span><span id="line-118">    }</span>
+<span class="source-line-no">119</span><span id="line-119">    </span>
+<span class="source-line-no">120</span><span id="line-120">    @Override</span>
+<span class="source-line-no">121</span><span id="line-121">        public float applyInv(float b) {</span>
+<span class="source-line-no">122</span><span id="line-122">        return (float) applyInv((double) b);</span>
+<span class="source-line-no">123</span><span id="line-123">    }</span>
 <span class="source-line-no">124</span><span id="line-124">    </span>
-<span class="source-line-no">125</span><span id="line-125">    /**</span>
-<span class="source-line-no">126</span><span id="line-126">         * Forward Gamma mapping (from linear to non-linear component values).</span>
-<span class="source-line-no">127</span><span id="line-127">         * </span>
-<span class="source-line-no">128</span><span id="line-128">         * @param A an array of linear component values in [0,1]</span>
-<span class="source-line-no">129</span><span id="line-129">         * @return an array of gamma-corrected (non-linear) component values</span>
-<span class="source-line-no">130</span><span id="line-130">         */</span>
-<span class="source-line-no">131</span><span id="line-131">    public float[] applyFwd(float A[]) {</span>
-<span class="source-line-no">132</span><span id="line-132">        float[] B = new float[A.length];</span>
-<span class="source-line-no">133</span><span id="line-133">        for (int i = 0; i &lt; A.length; i++) {</span>
-<span class="source-line-no">134</span><span id="line-134">                B[i] = applyFwd(A[i]);</span>
-<span class="source-line-no">135</span><span id="line-135">        }</span>
-<span class="source-line-no">136</span><span id="line-136">                return B;</span>
-<span class="source-line-no">137</span><span id="line-137">    }</span>
-<span class="source-line-no">138</span><span id="line-138">    </span>
-<span class="source-line-no">139</span><span id="line-139">    /**</span>
-<span class="source-line-no">140</span><span id="line-140">         * Inverse Gamma mapping (from non-linear to linear component values).</span>
-<span class="source-line-no">141</span><span id="line-141">         * </span>
-<span class="source-line-no">142</span><span id="line-142">         * @param B an array of non-linear (Gamma-corrected) component value in [0,1]</span>
-<span class="source-line-no">143</span><span id="line-143">         * @return an array of linear component values</span>
-<span class="source-line-no">144</span><span id="line-144">         */</span>
-<span class="source-line-no">145</span><span id="line-145">    public float[] applyInv(float B[]) {</span>
-<span class="source-line-no">146</span><span id="line-146">        float[] A = new float[B.length];</span>
-<span class="source-line-no">147</span><span id="line-147">        for (int i = 0; i &lt; B.length; i++) {</span>
-<span class="source-line-no">148</span><span id="line-148">                A[i] = applyInv(B[i]);</span>
-<span class="source-line-no">149</span><span id="line-149">        }</span>
-<span class="source-line-no">150</span><span id="line-150">                return A;</span>
-<span class="source-line-no">151</span><span id="line-151">    }</span>
-<span class="source-line-no">152</span><span id="line-152"></span>
-<span class="source-line-no">153</span><span id="line-153">}</span>
+<span class="source-line-no">125</span><span id="line-125">    // -----------------------------------------------</span>
+<span class="source-line-no">126</span><span id="line-126">    </span>
+<span class="source-line-no">127</span><span id="line-127">    /**</span>
+<span class="source-line-no">128</span><span id="line-128">         * Forward Gamma mapping (from linear to non-linear component values).</span>
+<span class="source-line-no">129</span><span id="line-129">         * </span>
+<span class="source-line-no">130</span><span id="line-130">         * @param A an array of linear component values in [0,1]</span>
+<span class="source-line-no">131</span><span id="line-131">         * @return an array of gamma-corrected (non-linear) component values</span>
+<span class="source-line-no">132</span><span id="line-132">         */</span>
+<span class="source-line-no">133</span><span id="line-133">    public float[] applyFwd(float A[]) {</span>
+<span class="source-line-no">134</span><span id="line-134">        float[] B = new float[A.length];</span>
+<span class="source-line-no">135</span><span id="line-135">        for (int i = 0; i &lt; A.length; i++) {</span>
+<span class="source-line-no">136</span><span id="line-136">                B[i] = applyFwd(A[i]);</span>
+<span class="source-line-no">137</span><span id="line-137">        }</span>
+<span class="source-line-no">138</span><span id="line-138">                return B;</span>
+<span class="source-line-no">139</span><span id="line-139">    }</span>
+<span class="source-line-no">140</span><span id="line-140">    </span>
+<span class="source-line-no">141</span><span id="line-141">    /**</span>
+<span class="source-line-no">142</span><span id="line-142">         * Inverse Gamma mapping (from non-linear to linear component values).</span>
+<span class="source-line-no">143</span><span id="line-143">         * </span>
+<span class="source-line-no">144</span><span id="line-144">         * @param B an array of non-linear (Gamma-corrected) component value in [0,1]</span>
+<span class="source-line-no">145</span><span id="line-145">         * @return an array of linear component values</span>
+<span class="source-line-no">146</span><span id="line-146">         */</span>
+<span class="source-line-no">147</span><span id="line-147">    public float[] applyInv(float B[]) {</span>
+<span class="source-line-no">148</span><span id="line-148">        float[] A = new float[B.length];</span>
+<span class="source-line-no">149</span><span id="line-149">        for (int i = 0; i &lt; B.length; i++) {</span>
+<span class="source-line-no">150</span><span id="line-150">                A[i] = applyInv(B[i]);</span>
+<span class="source-line-no">151</span><span id="line-151">        }</span>
+<span class="source-line-no">152</span><span id="line-152">                return A;</span>
+<span class="source-line-no">153</span><span id="line-153">    }</span>
+<span class="source-line-no">154</span><span id="line-154"></span>
+<span class="source-line-no">155</span><span id="line-155">}</span>
 
 
 

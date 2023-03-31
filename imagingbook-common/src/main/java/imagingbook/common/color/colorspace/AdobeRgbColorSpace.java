@@ -17,10 +17,12 @@ import imagingbook.common.color.cie.NamedIccProfile;
  * <p>
  * This color space class is based on the "AdobeRGB1998.icc" profile [1]. It only serves as an example for creating color
  * spaces from ICC profiles. This color space uses D65 as its white point, primaries are the columns of matrix
+ * </p>
  * <pre>
  *             | 0.57667, 0.18556, 0.18823 |
  *     Mrgbi = | 0.29734, 0.62736, 0.07529 |
  *             | 0.02703, 0.07069, 0.99134 |</pre>
+ * <p>
  * See Sec. 14.5 of [2] for details.
  * This is a singleton class with no public constructors, use {@link #getInstance()} to obtain the single instance.
  * </p>
