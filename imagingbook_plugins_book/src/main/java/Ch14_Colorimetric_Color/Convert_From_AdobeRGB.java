@@ -60,16 +60,16 @@ public class Convert_From_AdobeRGB implements PlugInFilter, JavaDocHelp {
 		ColorSpace acs = AdobeRgbColorSpace.getInstance();				// AdobeRGB1998 color space
 		ColorSpace scs = ColorSpace.getInstance(ColorSpace.CS_sRGB);	// D50-based sRGB color space
 
-		int[] pix1 = (int[]) cp1.getPixels();
-		int[] pix2 = (int[]) cp2.getPixels();
+		int[] pix1 = (int[]) cp1.getPixels();		// AdobeRGB pixels
+		int[] pix2 = (int[]) cp2.getPixels();		// sRGB pixels
 
 		for (int i = 0; i < pix1.length; i++) {
-			int[] aRGB = RgbUtils.intToRgb(pix1[i]);
-			float[] argb = RgbUtils.normalize(aRGB);
-			float[] xyz = acs.toCIEXYZ(argb);
-			float[] srgb = scs.fromCIEXYZ(xyz);
-			int[] sRGB = RgbUtils.denormalize(srgb);
-			pix2[i] = RgbUtils.rgbToInt(sRGB);
+			int[] aRGB = RgbUtils.intToRgb(pix1[i]);	// AdobeRGB int to int[] in [0,255]
+			float[] argb = RgbUtils.normalize(aRGB);	// AdobeRGB float[] in [0,1]
+			float[] xyz = acs.toCIEXYZ(argb);			// convert AdobeRGB to XYZ
+			float[] srgb = scs.fromCIEXYZ(xyz);			// convert XYZ to sRGB [0,1]
+			int[] sRGB = RgbUtils.denormalize(srgb);	// sRGB [0,255]
+			pix2[i] = RgbUtils.rgbToInt(sRGB);			// sRGB int[] to int
 		}
 
 		new ImagePlus(title + " (sRGB)", cp2).show();

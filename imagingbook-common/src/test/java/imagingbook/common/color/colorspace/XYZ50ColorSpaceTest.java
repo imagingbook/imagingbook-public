@@ -22,7 +22,8 @@ import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 
 public class XYZ50ColorSpaceTest {
-	
+
+	static ColorSpace sRGB_CS = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 	static XYZ50ColorSpace CS = XYZ50ColorSpace.getInstance();
 	static float TOL = 1e-5f;
 
@@ -70,7 +71,7 @@ public class XYZ50ColorSpaceTest {
 		float[] rgb = {1, 1, 1};
 		float[] xyzTHIS = CS.fromRGB(rgb);
 
-		PrintPrecision.set(16);
+		// PrintPrecision.set(16);
 		//System.out.println("xyzTHIS = " + Matrix.toString(xyzTHIS));
 		// {0.9641662836074829, 1.0000028610229492, 0.8247155547142029}
 
@@ -93,20 +94,20 @@ public class XYZ50ColorSpaceTest {
 	}
 	
 	// ---------------------
-	
-	private static void doCheck(ColorSpace cs, int[] srgb) {
-		float[] srgbIN = RgbUtils.normalize(srgb);
-		float[] xyzPCS = ColorSpace.getInstance(ColorSpace.CS_sRGB).toCIEXYZ(srgbIN); // get some valid XYZ
-		
-		{	// check fromCIEXYZ / toCIEXYZ 
-			float[] srgbTHIS = cs.fromCIEXYZ(xyzPCS);
-			float[] xyzOUT = cs.toCIEXYZ(srgbTHIS);
-			assertArrayEquals(xyzPCS, xyzOUT, TOL);
+
+	private static void doCheck(ColorSpace cs, int[] sRGB) {
+		float[] srgbIN = RgbUtils.normalize(sRGB);
+
+		{	// check fromCIEXYZ / toCIEXYZ
+			float[] xyzIN = sRGB_CS.toCIEXYZ(srgbIN);
+			float[] rgbCS = cs.fromCIEXYZ(xyzIN);
+			float[] xyzOUT = cs.toCIEXYZ(rgbCS);
+			assertArrayEquals(xyzIN, xyzOUT, TOL);
 		}
 
-		{	// check fromRGB / toRGB 
-			float[] srgbTHIS = cs.fromRGB(srgbIN);
-			float[] srgbOUT = cs.toRGB(srgbTHIS);
+		{	// check fromRGB / toRGB
+			float[] rgbCS = cs.fromRGB(srgbIN);
+			float[] srgbOUT = cs.toRGB(rgbCS);
 			assertArrayEquals(srgbIN, srgbOUT, TOL);
 		}
 	}

@@ -22,7 +22,7 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
 /**
  * <p>
  * This class implements the CIELab color space. See Sec. 14.2 of [1] for details. All component values are assumed to
- * be in [0,1]. Conversion from/to sRGB is implemented directly through D65-based XYZ coordinates, i.e., without
+ * be in [0,1]. Conversion from/to sRGB is implemented directly on D65-based XYZ coordinates, i.e., without
  * conversion to Java's D50-based profile connection space. The methods fromCIEXYZ/toCIEXYZ still return D50-based XYZ
  * coordinates in Java's profile connection space. This is a singleton class with no public constructors, use
  * {@link #getInstance()} to obtain the single instance.
@@ -59,12 +59,14 @@ public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
 	}
 
 	// XYZ50 -> CIELab: returns Lab values from XYZ (relative to D50)
+
 	/**
-	 * Converts color points in D50-based XYZ space to CIELab coordinates.
-	 * This method implements {@link ColorSpace#fromCIEXYZ(float[])}), assuming that 
-	 * the specified color coordinate is in D50-based XYZ space (with components in [0,1]).
-	 * See also {@link #fromCIEXYZ65(float[])} for a D65-based version.
-	 * 
+	 * Converts color points in D50-based XYZ space to CIELab coordinates. This
+	 * method implements {@link ColorSpace#fromCIEXYZ(float[])}), assuming that
+	 * the specified color coordinate is in D50-based XYZ space (with components
+	 * in [0,1]). See also {@link #fromCIEXYZ65(float[])} for a D65-based
+	 * version.
+	 *
 	 * @param XYZ50 a color in D50-based XYZ space (components in [0,1])
 	 * @return the associated CIELab color
 	 */
@@ -123,12 +125,12 @@ public class LabColorSpace extends ColorSpace implements DirectD65Conversion {
 	private static final double Kappa = 841.0/108;
 
 	// Gamma correction for L* (forward)
-	private double f1 (double c) {
+	private static double f1 (double c) {
 		return (c > Epsilon) ? Math.cbrt(c) : (Kappa * c) + (16.0 / 116);
 	}
 
 	// Gamma correction for L* (inverse)
-	private double f2 (double c) {
+	private static double f2 (double c) {
 		double c3 = c * c * c; //Math.pow(c, 3.0);
 		return (c3 > Epsilon) ? c3 : (c - 16.0 / 116) / Kappa;
 	}

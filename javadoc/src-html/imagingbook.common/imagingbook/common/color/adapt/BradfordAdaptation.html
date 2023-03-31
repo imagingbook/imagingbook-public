@@ -23,135 +23,159 @@
 <span class="source-line-no">010</span><span id="line-10">package imagingbook.common.color.adapt;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
 <span class="source-line-no">012</span><span id="line-12">import imagingbook.common.color.cie.Illuminant;</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">import static imagingbook.common.math.Matrix.inverse;</span>
-<span class="source-line-no">015</span><span id="line-15">import static imagingbook.common.math.Matrix.multiply;</span>
+<span class="source-line-no">013</span><span id="line-13">import imagingbook.common.color.cie.StandardIlluminant;</span>
+<span class="source-line-no">014</span><span id="line-14">import imagingbook.common.math.Matrix;</span>
+<span class="source-line-no">015</span><span id="line-15">import imagingbook.common.math.PrintPrecision;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">/**</span>
-<span class="source-line-no">018</span><span id="line-18"> * &lt;p&gt;</span>
-<span class="source-line-no">019</span><span id="line-19"> * This class represents a linear chromatic adaptation transform, mapping XYZ color coordinates from a source white</span>
-<span class="source-line-no">020</span><span id="line-20"> * (reference) point to a target white point. Both white points are passed to the constructor. The actual color mapping</span>
-<span class="source-line-no">021</span><span id="line-21"> * is done by method {@link #applyTo(float[])}. The underlying linear transformation is specified by a 3x3 matrix, which</span>
-<span class="source-line-no">022</span><span id="line-22"> * may be retrieved by {@link #getAdaptationMatrix()}). See Sec. 14.6 of [1] for additional details and examples.</span>
-<span class="source-line-no">023</span><span id="line-23"> * &lt;/p&gt;</span>
-<span class="source-line-no">024</span><span id="line-24"> * &lt;p&gt;</span>
-<span class="source-line-no">025</span><span id="line-25"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
-<span class="source-line-no">026</span><span id="line-26"> * (2022).</span>
-<span class="source-line-no">027</span><span id="line-27"> * &lt;/p&gt;</span>
-<span class="source-line-no">028</span><span id="line-28"> *</span>
-<span class="source-line-no">029</span><span id="line-29"> * @author WB</span>
-<span class="source-line-no">030</span><span id="line-30"> * @version 2022/11/14</span>
-<span class="source-line-no">031</span><span id="line-31"> * @see XYZscalingAdaptation</span>
-<span class="source-line-no">032</span><span id="line-32"> */</span>
-<span class="source-line-no">033</span><span id="line-33">public class BradfordAdaptation implements ChromaticAdaptation {</span>
-<span class="source-line-no">034</span><span id="line-34">        </span>
-<span class="source-line-no">035</span><span id="line-35">        // CAT forward transform matrix from XYZ to "virtual" RGB scaling coordinates</span>
-<span class="source-line-no">036</span><span id="line-36">        private static final double[][] MCAT = {</span>
-<span class="source-line-no">037</span><span id="line-37">            { 0.8951,  0.2664, -0.1614},</span>
-<span class="source-line-no">038</span><span id="line-38">            {-0.7502,  1.7135,  0.0367},</span>
-<span class="source-line-no">039</span><span id="line-39">            { 0.0389, -0.0685,  1.0296}};</span>
-<span class="source-line-no">040</span><span id="line-40">           </span>
-<span class="source-line-no">041</span><span id="line-41">        // CAT inverse transform matrix from "virtual" RGB scaling coordinates back to XYZ</span>
-<span class="source-line-no">042</span><span id="line-42">        private static final double[][] MCATi = inverse(MCAT);    // we always invert for precision reasons</span>
-<span class="source-line-no">043</span><span id="line-43">//              {{ 0.9869929054667120, -0.1470542564209900, 0.1599626516637310}, </span>
-<span class="source-line-no">044</span><span id="line-44">//               { 0.4323052697233940,  0.5183602715367770, 0.0492912282128560}, </span>
-<span class="source-line-no">045</span><span id="line-45">//               {-0.0085286645751770,  0.0400428216540850, 0.9684866957875500}}</span>
-<span class="source-line-no">046</span><span id="line-46">        </span>
-<span class="source-line-no">047</span><span id="line-47">        // the complete color adaptation transformation matrix for transforming source XYZ to target XYZ,</span>
-<span class="source-line-no">048</span><span id="line-48">        // XYZ2 = Madapt * XYZ1, with</span>
-<span class="source-line-no">049</span><span id="line-49">        // Madapt = MCAT^-1 * DiagRGB * MCAT</span>
-<span class="source-line-no">050</span><span id="line-50">        private final double[][] Madapt;</span>
-<span class="source-line-no">051</span><span id="line-51">        private final double[][] Mdiag;</span>
-<span class="source-line-no">052</span><span id="line-52">        </span>
-<span class="source-line-no">053</span><span id="line-53">        // ---------------------------------------------------------------------------------</span>
-<span class="source-line-no">054</span><span id="line-54"></span>
-<span class="source-line-no">055</span><span id="line-55">        /**</span>
-<span class="source-line-no">056</span><span id="line-56">         * Returns a {@link BradfordAdaptation} instance for the specified white point coordinates.</span>
-<span class="source-line-no">057</span><span id="line-57">         *</span>
-<span class="source-line-no">058</span><span id="line-58">         * @param W1 source white point (to map from)</span>
-<span class="source-line-no">059</span><span id="line-59">         * @param W2 target white point (to map to)</span>
-<span class="source-line-no">060</span><span id="line-60">         * @return a {@link BradfordAdaptation} instance</span>
-<span class="source-line-no">061</span><span id="line-61">         */</span>
-<span class="source-line-no">062</span><span id="line-62">        public static BradfordAdaptation getInstance(double[] W1, double[] W2) {</span>
-<span class="source-line-no">063</span><span id="line-63">                return new BradfordAdaptation(W1, W2);</span>
-<span class="source-line-no">064</span><span id="line-64">        }</span>
-<span class="source-line-no">065</span><span id="line-65"></span>
-<span class="source-line-no">066</span><span id="line-66">        /**</span>
-<span class="source-line-no">067</span><span id="line-67">         * Returns a {@link BradfordAdaptation} instance for the specified illuminants (white points).</span>
-<span class="source-line-no">068</span><span id="line-68">         *</span>
-<span class="source-line-no">069</span><span id="line-69">         * @param illum1 source illuminant (white point to map from)</span>
-<span class="source-line-no">070</span><span id="line-70">         * @param illum2 target illuminant (white point to map to)</span>
-<span class="source-line-no">071</span><span id="line-71">         * @return a {@link BradfordAdaptation} instance</span>
-<span class="source-line-no">072</span><span id="line-72">         */</span>
-<span class="source-line-no">073</span><span id="line-73">        public static BradfordAdaptation getInstance(Illuminant illum1, Illuminant illum2) {</span>
-<span class="source-line-no">074</span><span id="line-74">                return getInstance(illum1.getXYZ(), illum2.getXYZ());</span>
-<span class="source-line-no">075</span><span id="line-75">        }</span>
-<span class="source-line-no">076</span><span id="line-76">        </span>
-<span class="source-line-no">077</span><span id="line-77">        /** Constructor (non-public) accepting two white points (XYZ-coordinates). */</span>
-<span class="source-line-no">078</span><span id="line-78">        private BradfordAdaptation(double[] W1, double[] W2) {</span>
-<span class="source-line-no">079</span><span id="line-79">                double[] rgb1 = multiply(MCAT, W1);</span>
-<span class="source-line-no">080</span><span id="line-80">                double[] rgb2 = multiply(MCAT, W2);</span>
-<span class="source-line-no">081</span><span id="line-81">                this.Mdiag = getRgbWhiteRatioMatrix(rgb1, rgb2);</span>
-<span class="source-line-no">082</span><span id="line-82">                this.Madapt = multiply(MCATi, multiply(Mdiag, MCAT));</span>
-<span class="source-line-no">083</span><span id="line-83">        }</span>
-<span class="source-line-no">084</span><span id="line-84">        </span>
-<span class="source-line-no">085</span><span id="line-85">        // ---------------------------------------------------------------------------------</span>
-<span class="source-line-no">086</span><span id="line-86">        </span>
-<span class="source-line-no">087</span><span id="line-87">        public static double[][] getMCAT() {</span>
-<span class="source-line-no">088</span><span id="line-88">                return MCAT;</span>
-<span class="source-line-no">089</span><span id="line-89">        }</span>
-<span class="source-line-no">090</span><span id="line-90">        </span>
-<span class="source-line-no">091</span><span id="line-91">        public static double[][] getMCATi() {</span>
-<span class="source-line-no">092</span><span id="line-92">                return MCATi;</span>
-<span class="source-line-no">093</span><span id="line-93">        }</span>
-<span class="source-line-no">094</span><span id="line-94">        </span>
-<span class="source-line-no">095</span><span id="line-95">        // ---------------------------------------------------------------------------------</span>
-<span class="source-line-no">096</span><span id="line-96">        </span>
-<span class="source-line-no">097</span><span id="line-97">        @Override</span>
-<span class="source-line-no">098</span><span id="line-98">        public float[] applyTo(float[] XYZA) {</span>
-<span class="source-line-no">099</span><span id="line-99">                // XYZB = Madapt . XYZA</span>
-<span class="source-line-no">100</span><span id="line-100">                float[] XYZB = new float[3];</span>
-<span class="source-line-no">101</span><span id="line-101">                for (int i = 0; i &lt; 3; i++) {</span>
-<span class="source-line-no">102</span><span id="line-102">                        XYZB[i] = (float) (Madapt[i][0] * XYZA[0] + Madapt[i][1] * XYZA[1] + Madapt[i][2] * XYZA[2]);</span>
-<span class="source-line-no">103</span><span id="line-103">                }</span>
-<span class="source-line-no">104</span><span id="line-104">                return XYZB;</span>
-<span class="source-line-no">105</span><span id="line-105">        }</span>
-<span class="source-line-no">106</span><span id="line-106">        </span>
-<span class="source-line-no">107</span><span id="line-107">        @Override</span>
-<span class="source-line-no">108</span><span id="line-108">        public double[] applyTo(double[] XYZA) {</span>
-<span class="source-line-no">109</span><span id="line-109">                // XYZB = Madapt . XYZA</span>
-<span class="source-line-no">110</span><span id="line-110">                double[] XYZB = new double[3];</span>
-<span class="source-line-no">111</span><span id="line-111">                for (int i = 0; i &lt; 3; i++) {</span>
-<span class="source-line-no">112</span><span id="line-112">                        XYZB[i] = Madapt[i][0] * XYZA[0] + Madapt[i][1] * XYZA[1] + Madapt[i][2] * XYZA[2];</span>
-<span class="source-line-no">113</span><span id="line-113">                }</span>
-<span class="source-line-no">114</span><span id="line-114">                return XYZB;</span>
-<span class="source-line-no">115</span><span id="line-115">        }</span>
-<span class="source-line-no">116</span><span id="line-116"></span>
-<span class="source-line-no">117</span><span id="line-117">        /**</span>
-<span class="source-line-no">118</span><span id="line-118">         * Returns the composite color adaptation transformation matrix.</span>
-<span class="source-line-no">119</span><span id="line-119">         *</span>
-<span class="source-line-no">120</span><span id="line-120">         * @return the color adaptation transformation matrix</span>
-<span class="source-line-no">121</span><span id="line-121">         */</span>
-<span class="source-line-no">122</span><span id="line-122">        public double[][] getAdaptationMatrix() {</span>
-<span class="source-line-no">123</span><span id="line-123">                return this.Madapt;</span>
-<span class="source-line-no">124</span><span id="line-124">        }</span>
-<span class="source-line-no">125</span><span id="line-125">        </span>
-<span class="source-line-no">126</span><span id="line-126"></span>
-<span class="source-line-no">127</span><span id="line-127">        // Creates a diagonal matrix with the ratios of the rgb components</span>
-<span class="source-line-no">128</span><span id="line-128">        // obtained by transforming the two white points</span>
-<span class="source-line-no">129</span><span id="line-129">        private static double[][] getRgbWhiteRatioMatrix(double[] rgbA, double[] rgbB) {</span>
-<span class="source-line-no">130</span><span id="line-130">                if (rgbA.length != rgbB.length) {</span>
-<span class="source-line-no">131</span><span id="line-131">                        throw new IllegalArgumentException();</span>
-<span class="source-line-no">132</span><span id="line-132">                }</span>
-<span class="source-line-no">133</span><span id="line-133">                final int n = rgbA.length;</span>
-<span class="source-line-no">134</span><span id="line-134">                double[][] M = new double[n][n];</span>
-<span class="source-line-no">135</span><span id="line-135">                for (int i = 0; i &lt; n; i++) {</span>
-<span class="source-line-no">136</span><span id="line-136">                        M[i][i] = rgbB[i] / rgbA[i];</span>
-<span class="source-line-no">137</span><span id="line-137">                }</span>
-<span class="source-line-no">138</span><span id="line-138">                return M;</span>
-<span class="source-line-no">139</span><span id="line-139">        }</span>
-<span class="source-line-no">140</span><span id="line-140">                </span>
-<span class="source-line-no">141</span><span id="line-141">}</span>
+<span class="source-line-no">017</span><span id="line-17">import static imagingbook.common.math.Matrix.inverse;</span>
+<span class="source-line-no">018</span><span id="line-18">import static imagingbook.common.math.Matrix.multiply;</span>
+<span class="source-line-no">019</span><span id="line-19"></span>
+<span class="source-line-no">020</span><span id="line-20">/**</span>
+<span class="source-line-no">021</span><span id="line-21"> * &lt;p&gt;</span>
+<span class="source-line-no">022</span><span id="line-22"> * This class represents a linear chromatic adaptation transform, mapping XYZ color coordinates from a source white</span>
+<span class="source-line-no">023</span><span id="line-23"> * (reference) point to a target white point. Both white points are passed to the constructor. The actual color mapping</span>
+<span class="source-line-no">024</span><span id="line-24"> * is done by method {@link #applyTo(float[])}. The underlying linear transformation is specified by a 3x3 matrix, which</span>
+<span class="source-line-no">025</span><span id="line-25"> * may be retrieved by {@link #getAdaptationMatrix()}). See Sec. 14.6 of [1] for additional details and examples.</span>
+<span class="source-line-no">026</span><span id="line-26"> * &lt;/p&gt;</span>
+<span class="source-line-no">027</span><span id="line-27"> * &lt;p&gt;</span>
+<span class="source-line-no">028</span><span id="line-28"> * [1] W. Burger, M.J. Burge, &lt;em&gt;Digital Image Processing &amp;ndash; An Algorithmic Introduction&lt;/em&gt;, 3rd ed, Springer</span>
+<span class="source-line-no">029</span><span id="line-29"> * (2022).</span>
+<span class="source-line-no">030</span><span id="line-30"> * &lt;/p&gt;</span>
+<span class="source-line-no">031</span><span id="line-31"> *</span>
+<span class="source-line-no">032</span><span id="line-32"> * @author WB</span>
+<span class="source-line-no">033</span><span id="line-33"> * @version 2022/11/14</span>
+<span class="source-line-no">034</span><span id="line-34"> * @see XYZscalingAdaptation</span>
+<span class="source-line-no">035</span><span id="line-35"> */</span>
+<span class="source-line-no">036</span><span id="line-36">public class BradfordAdaptation implements ChromaticAdaptation {</span>
+<span class="source-line-no">037</span><span id="line-37">        </span>
+<span class="source-line-no">038</span><span id="line-38">        // CAT forward transform matrix from XYZ to "virtual" RGB scaling coordinates</span>
+<span class="source-line-no">039</span><span id="line-39">        private static final double[][] MCAT = {</span>
+<span class="source-line-no">040</span><span id="line-40">            { 0.8951,  0.2664, -0.1614},</span>
+<span class="source-line-no">041</span><span id="line-41">            {-0.7502,  1.7135,  0.0367},</span>
+<span class="source-line-no">042</span><span id="line-42">            { 0.0389, -0.0685,  1.0296}};</span>
+<span class="source-line-no">043</span><span id="line-43">           </span>
+<span class="source-line-no">044</span><span id="line-44">        // CAT inverse transform matrix from "virtual" RGB scaling coordinates back to XYZ</span>
+<span class="source-line-no">045</span><span id="line-45">        private static final double[][] MCATi = inverse(MCAT);    // we always invert for precision reasons</span>
+<span class="source-line-no">046</span><span id="line-46">//              {{ 0.9869929054667120, -0.1470542564209900, 0.1599626516637310}, </span>
+<span class="source-line-no">047</span><span id="line-47">//               { 0.4323052697233940,  0.5183602715367770, 0.0492912282128560}, </span>
+<span class="source-line-no">048</span><span id="line-48">//               {-0.0085286645751770,  0.0400428216540850, 0.9684866957875500}}</span>
+<span class="source-line-no">049</span><span id="line-49">        </span>
+<span class="source-line-no">050</span><span id="line-50">        // the complete color adaptation transformation matrix for transforming source XYZ to target XYZ,</span>
+<span class="source-line-no">051</span><span id="line-51">        // XYZ2 = Madapt * XYZ1, with</span>
+<span class="source-line-no">052</span><span id="line-52">        // Madapt = MCAT^-1 * DiagRGB * MCAT</span>
+<span class="source-line-no">053</span><span id="line-53">        private final double[][] Madapt;</span>
+<span class="source-line-no">054</span><span id="line-54">        private final double[][] Mdiag;</span>
+<span class="source-line-no">055</span><span id="line-55">        </span>
+<span class="source-line-no">056</span><span id="line-56">        // ---------------------------------------------------------------------------------</span>
+<span class="source-line-no">057</span><span id="line-57"></span>
+<span class="source-line-no">058</span><span id="line-58">        /**</span>
+<span class="source-line-no">059</span><span id="line-59">         * Returns a {@link BradfordAdaptation} instance for the specified white point coordinates.</span>
+<span class="source-line-no">060</span><span id="line-60">         *</span>
+<span class="source-line-no">061</span><span id="line-61">         * @param W1 source white point (to map from)</span>
+<span class="source-line-no">062</span><span id="line-62">         * @param W2 target white point (to map to)</span>
+<span class="source-line-no">063</span><span id="line-63">         * @return a {@link BradfordAdaptation} instance</span>
+<span class="source-line-no">064</span><span id="line-64">         */</span>
+<span class="source-line-no">065</span><span id="line-65">        public static BradfordAdaptation getInstance(double[] W1, double[] W2) {</span>
+<span class="source-line-no">066</span><span id="line-66">                return new BradfordAdaptation(W1, W2);</span>
+<span class="source-line-no">067</span><span id="line-67">        }</span>
+<span class="source-line-no">068</span><span id="line-68"></span>
+<span class="source-line-no">069</span><span id="line-69">        /**</span>
+<span class="source-line-no">070</span><span id="line-70">         * Returns a {@link BradfordAdaptation} instance for the specified illuminants (white points).</span>
+<span class="source-line-no">071</span><span id="line-71">         *</span>
+<span class="source-line-no">072</span><span id="line-72">         * @param illum1 source illuminant (white point to map from)</span>
+<span class="source-line-no">073</span><span id="line-73">         * @param illum2 target illuminant (white point to map to)</span>
+<span class="source-line-no">074</span><span id="line-74">         * @return a {@link BradfordAdaptation} instance</span>
+<span class="source-line-no">075</span><span id="line-75">         */</span>
+<span class="source-line-no">076</span><span id="line-76">        public static BradfordAdaptation getInstance(Illuminant illum1, Illuminant illum2) {</span>
+<span class="source-line-no">077</span><span id="line-77">                return getInstance(illum1.getXYZ(), illum2.getXYZ());</span>
+<span class="source-line-no">078</span><span id="line-78">        }</span>
+<span class="source-line-no">079</span><span id="line-79">        </span>
+<span class="source-line-no">080</span><span id="line-80">        /** Constructor (non-public) accepting two white points (XYZ-coordinates). */</span>
+<span class="source-line-no">081</span><span id="line-81">        private BradfordAdaptation(double[] W1, double[] W2) {</span>
+<span class="source-line-no">082</span><span id="line-82">                double[] rgb1 = multiply(MCAT, W1);</span>
+<span class="source-line-no">083</span><span id="line-83">                double[] rgb2 = multiply(MCAT, W2);</span>
+<span class="source-line-no">084</span><span id="line-84">                this.Mdiag = getRgbWhiteRatioMatrix(rgb1, rgb2);</span>
+<span class="source-line-no">085</span><span id="line-85">                this.Madapt = multiply(MCATi, multiply(Mdiag, MCAT));</span>
+<span class="source-line-no">086</span><span id="line-86">        }</span>
+<span class="source-line-no">087</span><span id="line-87">        </span>
+<span class="source-line-no">088</span><span id="line-88">        // ---------------------------------------------------------------------------------</span>
+<span class="source-line-no">089</span><span id="line-89">        </span>
+<span class="source-line-no">090</span><span id="line-90">        public static double[][] getMCAT() {</span>
+<span class="source-line-no">091</span><span id="line-91">                return MCAT;</span>
+<span class="source-line-no">092</span><span id="line-92">        }</span>
+<span class="source-line-no">093</span><span id="line-93">        </span>
+<span class="source-line-no">094</span><span id="line-94">        public static double[][] getMCATi() {</span>
+<span class="source-line-no">095</span><span id="line-95">                return MCATi;</span>
+<span class="source-line-no">096</span><span id="line-96">        }</span>
+<span class="source-line-no">097</span><span id="line-97">        </span>
+<span class="source-line-no">098</span><span id="line-98">        // ---------------------------------------------------------------------------------</span>
+<span class="source-line-no">099</span><span id="line-99">        </span>
+<span class="source-line-no">100</span><span id="line-100">        @Override</span>
+<span class="source-line-no">101</span><span id="line-101">        public float[] applyTo(float[] XYZA) {</span>
+<span class="source-line-no">102</span><span id="line-102">                // XYZB = Madapt . XYZA</span>
+<span class="source-line-no">103</span><span id="line-103">                float[] XYZB = new float[3];</span>
+<span class="source-line-no">104</span><span id="line-104">                for (int i = 0; i &lt; 3; i++) {</span>
+<span class="source-line-no">105</span><span id="line-105">                        XYZB[i] = (float) (Madapt[i][0] * XYZA[0] + Madapt[i][1] * XYZA[1] + Madapt[i][2] * XYZA[2]);</span>
+<span class="source-line-no">106</span><span id="line-106">                }</span>
+<span class="source-line-no">107</span><span id="line-107">                return XYZB;</span>
+<span class="source-line-no">108</span><span id="line-108">        }</span>
+<span class="source-line-no">109</span><span id="line-109">        </span>
+<span class="source-line-no">110</span><span id="line-110">        @Override</span>
+<span class="source-line-no">111</span><span id="line-111">        public double[] applyTo(double[] XYZA) {</span>
+<span class="source-line-no">112</span><span id="line-112">                // XYZB = Madapt . XYZA</span>
+<span class="source-line-no">113</span><span id="line-113">                double[] XYZB = new double[3];</span>
+<span class="source-line-no">114</span><span id="line-114">                for (int i = 0; i &lt; 3; i++) {</span>
+<span class="source-line-no">115</span><span id="line-115">                        XYZB[i] = Madapt[i][0] * XYZA[0] + Madapt[i][1] * XYZA[1] + Madapt[i][2] * XYZA[2];</span>
+<span class="source-line-no">116</span><span id="line-116">                }</span>
+<span class="source-line-no">117</span><span id="line-117">                return XYZB;</span>
+<span class="source-line-no">118</span><span id="line-118">        }</span>
+<span class="source-line-no">119</span><span id="line-119"></span>
+<span class="source-line-no">120</span><span id="line-120">        /**</span>
+<span class="source-line-no">121</span><span id="line-121">         * Returns the composite color adaptation transformation matrix.</span>
+<span class="source-line-no">122</span><span id="line-122">         *</span>
+<span class="source-line-no">123</span><span id="line-123">         * @return the color adaptation transformation matrix</span>
+<span class="source-line-no">124</span><span id="line-124">         */</span>
+<span class="source-line-no">125</span><span id="line-125">        public double[][] getAdaptationMatrix() {</span>
+<span class="source-line-no">126</span><span id="line-126">                return this.Madapt;</span>
+<span class="source-line-no">127</span><span id="line-127">        }</span>
+<span class="source-line-no">128</span><span id="line-128">        </span>
+<span class="source-line-no">129</span><span id="line-129"></span>
+<span class="source-line-no">130</span><span id="line-130">        // Creates a diagonal matrix with the ratios of the rgb components</span>
+<span class="source-line-no">131</span><span id="line-131">        // obtained by transforming the two white points</span>
+<span class="source-line-no">132</span><span id="line-132">        private static double[][] getRgbWhiteRatioMatrix(double[] rgbA, double[] rgbB) {</span>
+<span class="source-line-no">133</span><span id="line-133">                if (rgbA.length != rgbB.length) {</span>
+<span class="source-line-no">134</span><span id="line-134">                        throw new IllegalArgumentException();</span>
+<span class="source-line-no">135</span><span id="line-135">                }</span>
+<span class="source-line-no">136</span><span id="line-136">                final int n = rgbA.length;</span>
+<span class="source-line-no">137</span><span id="line-137">                double[][] M = new double[n][n];</span>
+<span class="source-line-no">138</span><span id="line-138">                for (int i = 0; i &lt; n; i++) {</span>
+<span class="source-line-no">139</span><span id="line-139">                        M[i][i] = rgbB[i] / rgbA[i];</span>
+<span class="source-line-no">140</span><span id="line-140">                }</span>
+<span class="source-line-no">141</span><span id="line-141">                return M;</span>
+<span class="source-line-no">142</span><span id="line-142">        }</span>
+<span class="source-line-no">143</span><span id="line-143"></span>
+<span class="source-line-no">144</span><span id="line-144">        //-----------------------------------------------------------------------</span>
+<span class="source-line-no">145</span><span id="line-145"></span>
+<span class="source-line-no">146</span><span id="line-146">        public static void main(String[] args) {</span>
+<span class="source-line-no">147</span><span id="line-147">                PrintPrecision.set(9);</span>
+<span class="source-line-no">148</span><span id="line-148">                BradfordAdaptation a_65_50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);</span>
+<span class="source-line-no">149</span><span id="line-149">                System.out.println("M_65_50_diag = \n" + Matrix.toString(a_65_50.Mdiag));</span>
+<span class="source-line-no">150</span><span id="line-150">                System.out.println("M_65_50 = \n" + Matrix.toString(a_65_50.getAdaptationMatrix()));</span>
+<span class="source-line-no">151</span><span id="line-151"></span>
+<span class="source-line-no">152</span><span id="line-152">                BradfordAdaptation a_50_65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);</span>
+<span class="source-line-no">153</span><span id="line-153">                System.out.println("M_50_65_diag = \n" + Matrix.toString(a_50_65.Mdiag));</span>
+<span class="source-line-no">154</span><span id="line-154">                // System.out.println("M_50_65_diagI = \n" + Matrix.toString(Matrix.inverse(a_50_65.Mdiag)));</span>
+<span class="source-line-no">155</span><span id="line-155">                System.out.println("M_50_65 = \n" + Matrix.toString(a_50_65.getAdaptationMatrix()));</span>
+<span class="source-line-no">156</span><span id="line-156"></span>
+<span class="source-line-no">157</span><span id="line-157">                System.out.println("-----------------");</span>
+<span class="source-line-no">158</span><span id="line-158"></span>
+<span class="source-line-no">159</span><span id="line-159">                // converting ITU-R709 primaries to D50</span>
+<span class="source-line-no">160</span><span id="line-160">                System.out.println("D50 Red Primary = " + Matrix.toString(a_65_50.applyTo(0.64, 0.33)));</span>
+<span class="source-line-no">161</span><span id="line-161">                System.out.println("D50 Grn Primary = " + Matrix.toString(a_65_50.applyTo(0.30, 0.60)));</span>
+<span class="source-line-no">162</span><span id="line-162">                System.out.println("D50 Blu Primary = " + Matrix.toString(a_65_50.applyTo(0.15, 0.06)));</span>
+<span class="source-line-no">163</span><span id="line-163">        }</span>
+<span class="source-line-no">164</span><span id="line-164">                </span>
+<span class="source-line-no">165</span><span id="line-165">}</span>
 
 
 

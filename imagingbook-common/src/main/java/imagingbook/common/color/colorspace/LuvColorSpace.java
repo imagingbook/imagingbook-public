@@ -12,6 +12,7 @@ package imagingbook.common.color.colorspace;
 import imagingbook.common.color.adapt.BradfordAdaptation;
 import imagingbook.common.color.adapt.ChromaticAdaptation;
 import imagingbook.common.color.cie.StandardIlluminant;
+import imagingbook.common.math.Matrix;
 
 import java.awt.color.ColorSpace;
 
@@ -102,6 +103,8 @@ public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 	@Override
 	public float[] fromRGB(float[] srgb) {
 		float[] XYZ65 = srgbCS.toCIEXYZ65(srgb);
+		// System.out.println("XYZ65=" + Matrix.toString(XYZ65));
+		// System.out.println("D65=" + Matrix.toString(XYZref));
 		return this.fromCIEXYZ65(XYZ65);
 	}
 	
@@ -119,12 +122,12 @@ public class LuvColorSpace extends ColorSpace implements DirectD65Conversion {
 	private static final double Kappa = 841.0/108;
 	
 	// Gamma correction for L* (forward)
-	private double f1 (double c) {
+	private static double f1 (double c) {
 		return (c > Epsilon) ? Math.cbrt(c) : (Kappa * c) + (16.0 / 116);
 	}
 	
 	// Gamma correction for L* (inverse)
-	private double f2 (double c) {
+	private static double f2 (double c) {
 		final double c3 = c * c * c; //Math.pow(c, 3.0);
 		return (c3 > Epsilon) ? c3 : (c - 16.0 / 116) / Kappa;
 	}

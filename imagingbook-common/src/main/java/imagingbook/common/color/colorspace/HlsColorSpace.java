@@ -17,8 +17,9 @@ import static imagingbook.common.math.Arithmetic.min;
 /**
  * <p>
  * Implementation of HLS (hue/lightness/saturation) color space. See Sec. 13.2.3 of [1] for additional details. All
- * component values are assumed to be in [0,1]. This is a singleton class with no public constructors, use
- * {@link #getInstance()} to obtain the single instance.
+ * component values are assumed to be in [0,1]. Note that sRGB components passed to method {@link #fromRGB(float[])}
+ * and returned by method {@link #toRGB(float[])} are NOT converted to linear RGB.
+ * This is a singleton class with no public constructors, use {@link #getInstance()} to obtain the single instance.
  * </p>
  * <p>
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer

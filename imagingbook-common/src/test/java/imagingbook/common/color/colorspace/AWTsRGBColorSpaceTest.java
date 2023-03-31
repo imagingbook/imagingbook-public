@@ -62,6 +62,28 @@ public class AWTsRGBColorSpaceTest {
 //			}
 //		}
 //	}
+
+// 	@Test
+// 	public void testPrimaries() { // check primaries in D65
+// 		// PrintPrecision.set(9);
+// 		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(D50, D65);
+// 		for (int i = 0; i < 3; i++) {
+// 			float[] rgb = new float[3];
+// 			rgb[i] = 1;
+// 			float[] xyz = CS.toCIEXYZ(rgb);
+// 			// System.out.println("rgb = " + i);
+// 			// System.out.println("  xyz50 = " + Matrix.toString(xyz));
+// 			// System.out.println("  xy50  = " + Matrix.toString(CieUtils.XYZToxy(xyz)));
+// 			float[] xyz65 = adapt.applyTo(xyz);
+// 			// System.out.println("  xyz65 = " + Matrix.toString(xyz65));
+// 			// System.out.println("  xy65  = " + Matrix.toString(CieUtils.XYZToxy(xyz65)));
+//
+// 			float[] primary = CS.getPrimary(i);
+// //			System.out.println("primary = " + Matrix.toString(primary));
+//
+// 			assertArrayEquals(primary, xyz, 1e-6f);
+// 		}
+// 	}
 	
 	@Test
 	public void testBlack() { // check black point
@@ -74,10 +96,11 @@ public class AWTsRGBColorSpaceTest {
 	public void testWhite() { //sRGB white in this color space must map do D50-XYZ in PCS
 		float[] srgbTHIS = {1, 1, 1};
 		float[] wXYZ = CS.toCIEXYZ(srgbTHIS);	// in PCS
+		//PrintPrecision.set(9); PrintPrecision.set(9);
 		//System.out.println("wXYZ = " + Matrix.toString(wXYZ));
 		float[] wIll = Matrix.toFloat(StandardIlluminant.D50.getXYZ()); 
 		//System.out.println("wIll = " + Matrix.toString(wIll));
-		assertArrayEquals(wIll, wXYZ, 1e-5f);
+		assertArrayEquals(wIll, wXYZ, 1e-3f);
 	}
 	
 	@Test

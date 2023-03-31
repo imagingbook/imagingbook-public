@@ -116,21 +116,51 @@
 <span class="source-line-no">103</span><span id="line-103">    }</span>
 <span class="source-line-no">104</span><span id="line-104"></span>
 <span class="source-line-no">105</span><span id="line-105">    /**</span>
-<span class="source-line-no">106</span><span id="line-106">     * Float version of {@link #XYZToxy(double[])}.</span>
+<span class="source-line-no">106</span><span id="line-106">     * Calculates the 3D (x,y,z) color diagram coordinates for 3D XYZ color coordinates (X,Y,Z).</span>
 <span class="source-line-no">107</span><span id="line-107">     *</span>
 <span class="source-line-no">108</span><span id="line-108">     * @param XYZ the XYZ coordinate (3D)</span>
-<span class="source-line-no">109</span><span id="line-109">     * @return the xy-coordinate (2D)</span>
+<span class="source-line-no">109</span><span id="line-109">     * @return the xyz-coordinate (3D)</span>
 <span class="source-line-no">110</span><span id="line-110">     */</span>
-<span class="source-line-no">111</span><span id="line-111">    public static float[] XYZToxy(float[] XYZ) {</span>
+<span class="source-line-no">111</span><span id="line-111">    public static double[] XYZToxyz(double[] XYZ) {</span>
 <span class="source-line-no">112</span><span id="line-112">        double X = XYZ[0];</span>
 <span class="source-line-no">113</span><span id="line-113">        double Y = XYZ[1];</span>
 <span class="source-line-no">114</span><span id="line-114">        double Z = XYZ[2];</span>
 <span class="source-line-no">115</span><span id="line-115">        double mag = X + Y + Z;</span>
 <span class="source-line-no">116</span><span id="line-116">        return (Arithmetic.isZero(mag)) ?</span>
-<span class="source-line-no">117</span><span id="line-117">                new float[]{0, 0} : new float[]{(float) (X / mag), (float) (Y / mag)};</span>
+<span class="source-line-no">117</span><span id="line-117">                new double[]{0, 0, 0} : new double[]{X / mag, Y / mag, Z / mag};</span>
 <span class="source-line-no">118</span><span id="line-118">    }</span>
 <span class="source-line-no">119</span><span id="line-119"></span>
-<span class="source-line-no">120</span><span id="line-120">}</span>
+<span class="source-line-no">120</span><span id="line-120">    /**</span>
+<span class="source-line-no">121</span><span id="line-121">     * Float version of {@link #XYZToxy(double[])}.</span>
+<span class="source-line-no">122</span><span id="line-122">     *</span>
+<span class="source-line-no">123</span><span id="line-123">     * @param XYZ the XYZ coordinate (3D)</span>
+<span class="source-line-no">124</span><span id="line-124">     * @return the xy-coordinate (2D)</span>
+<span class="source-line-no">125</span><span id="line-125">     */</span>
+<span class="source-line-no">126</span><span id="line-126">    public static float[] XYZToxy(float[] XYZ) {</span>
+<span class="source-line-no">127</span><span id="line-127">        double X = XYZ[0];</span>
+<span class="source-line-no">128</span><span id="line-128">        double Y = XYZ[1];</span>
+<span class="source-line-no">129</span><span id="line-129">        double Z = XYZ[2];</span>
+<span class="source-line-no">130</span><span id="line-130">        double mag = X + Y + Z;</span>
+<span class="source-line-no">131</span><span id="line-131">        return (Arithmetic.isZero(mag)) ?</span>
+<span class="source-line-no">132</span><span id="line-132">                new float[]{0, 0} : new float[]{(float) (X / mag), (float) (Y / mag)};</span>
+<span class="source-line-no">133</span><span id="line-133">    }</span>
+<span class="source-line-no">134</span><span id="line-134"></span>
+<span class="source-line-no">135</span><span id="line-135">    /**</span>
+<span class="source-line-no">136</span><span id="line-136">     * Float version of {@link #XYZToxyz(double[])}.</span>
+<span class="source-line-no">137</span><span id="line-137">     *</span>
+<span class="source-line-no">138</span><span id="line-138">     * @param XYZ the XYZ coordinate (3D)</span>
+<span class="source-line-no">139</span><span id="line-139">     * @return the xyz-coordinate (§D)</span>
+<span class="source-line-no">140</span><span id="line-140">     */</span>
+<span class="source-line-no">141</span><span id="line-141">    public static float[] XYZToxyz(float[] XYZ) {</span>
+<span class="source-line-no">142</span><span id="line-142">        double X = XYZ[0];</span>
+<span class="source-line-no">143</span><span id="line-143">        double Y = XYZ[1];</span>
+<span class="source-line-no">144</span><span id="line-144">        double Z = XYZ[2];</span>
+<span class="source-line-no">145</span><span id="line-145">        double mag = X + Y + Z;</span>
+<span class="source-line-no">146</span><span id="line-146">        return (Arithmetic.isZero(mag)) ?</span>
+<span class="source-line-no">147</span><span id="line-147">                new float[]{0, 0, 0} : new float[]{(float) (X / mag), (float) (Y / mag), (float) (Z / mag)};</span>
+<span class="source-line-no">148</span><span id="line-148">    }</span>
+<span class="source-line-no">149</span><span id="line-149"></span>
+<span class="source-line-no">150</span><span id="line-150">}</span>
 
 
 

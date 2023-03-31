@@ -39,11 +39,11 @@
 <span class="source-line-no">026</span><span id="line-26">        /** Equal energy illuminant, neutral point (5400K). */</span>
 <span class="source-line-no">027</span><span id="line-27">        N       (1.0/3, 1.0/3),</span>
 <span class="source-line-no">028</span><span id="line-28">        /** D50 standard illuminant (5000K). */</span>
-<span class="source-line-no">029</span><span id="line-29">        D50     (0.9642, 1.0, 0.8249), // according to Specification ICC.1:2010 (Profile version 4.3.0.0)</span>
+<span class="source-line-no">029</span><span id="line-29">        D50 (0.3457, 0.3585),</span>
 <span class="source-line-no">030</span><span id="line-30">        /** D55 standard illuminant (5500K). */</span>
 <span class="source-line-no">031</span><span id="line-31">        D55 (0.33411, 0.34877), </span>
 <span class="source-line-no">032</span><span id="line-32">        /** D65 standard illuminant used for television and sRGB color space (6500K). */</span>
-<span class="source-line-no">033</span><span id="line-33">        D65 (0.9505, 1.0, 1.0890),      // according to Specification ICC.1:2010 (Profile version 4.3.0.0), was  (0.950456, 1.0, 1.088754),</span>
+<span class="source-line-no">033</span><span id="line-33">        D65 (0.3127, 0.3290),</span>
 <span class="source-line-no">034</span><span id="line-34">        /** D75 standard illuminant (7500K). */</span>
 <span class="source-line-no">035</span><span id="line-35">        D75 (0.29968, 0.31740),</span>
 <span class="source-line-no">036</span><span id="line-36">        /** Incandescent tungsten (2856K). */</span>
@@ -58,28 +58,37 @@
 <span class="source-line-no">045</span><span id="line-45">        F7      (0.31565, 0.32951),</span>
 <span class="source-line-no">046</span><span id="line-46">        /** Narrow Band White Fluorescent (4000K). */</span>
 <span class="source-line-no">047</span><span id="line-47">        F11     (0.38543, 0.37110);</span>
-<span class="source-line-no">048</span><span id="line-48">        </span>
-<span class="source-line-no">049</span><span id="line-49">        private final double X, Y, Z;</span>
-<span class="source-line-no">050</span><span id="line-50">        </span>
-<span class="source-line-no">051</span><span id="line-51">        private StandardIlluminant(double X, double Y, double Z) {</span>
-<span class="source-line-no">052</span><span id="line-52">                this.X = X; this.Y = Y; this.Z = Z;</span>
-<span class="source-line-no">053</span><span id="line-53">        }</span>
-<span class="source-line-no">054</span><span id="line-54">        </span>
-<span class="source-line-no">055</span><span id="line-55">        private StandardIlluminant(double x, double y) {</span>
-<span class="source-line-no">056</span><span id="line-56">                if (Arithmetic.isZero(y)) {</span>
-<span class="source-line-no">057</span><span id="line-57">                        throw new IllegalArgumentException("illuminant y cannot be zero");</span>
-<span class="source-line-no">058</span><span id="line-58">                }</span>
-<span class="source-line-no">059</span><span id="line-59">                this.Y = 1.0;</span>
-<span class="source-line-no">060</span><span id="line-60">                this.X = x * this.Y / y;</span>
-<span class="source-line-no">061</span><span id="line-61">                this.Z = (1.0 - x - y) * this.Y / y;</span>
-<span class="source-line-no">062</span><span id="line-62">        }</span>
-<span class="source-line-no">063</span><span id="line-63">        </span>
-<span class="source-line-no">064</span><span id="line-64">        @Override</span>
-<span class="source-line-no">065</span><span id="line-65">        public double[] getXYZ() {</span>
-<span class="source-line-no">066</span><span id="line-66">                return new double[] {X, Y, Z};</span>
-<span class="source-line-no">067</span><span id="line-67">        }</span>
-<span class="source-line-no">068</span><span id="line-68">        </span>
-<span class="source-line-no">069</span><span id="line-69">}</span>
+<span class="source-line-no">048</span><span id="line-48"></span>
+<span class="source-line-no">049</span><span id="line-49">        private final double x, y;</span>
+<span class="source-line-no">050</span><span id="line-50">        private final double X, Y, Z;</span>
+<span class="source-line-no">051</span><span id="line-51">        </span>
+<span class="source-line-no">052</span><span id="line-52">        private StandardIlluminant(double x, double y) {</span>
+<span class="source-line-no">053</span><span id="line-53">                if (Arithmetic.isZero(y)) {</span>
+<span class="source-line-no">054</span><span id="line-54">                        throw new IllegalArgumentException("illuminant y cannot be zero");</span>
+<span class="source-line-no">055</span><span id="line-55">                }</span>
+<span class="source-line-no">056</span><span id="line-56">                this.x = x;</span>
+<span class="source-line-no">057</span><span id="line-57">                this.y = y;</span>
+<span class="source-line-no">058</span><span id="line-58">                double[] XYZ = CieUtils.xyYToXYZ(x, y, 1);</span>
+<span class="source-line-no">059</span><span id="line-59">                this.X = XYZ[0];</span>
+<span class="source-line-no">060</span><span id="line-60">                this.Y = XYZ[1];</span>
+<span class="source-line-no">061</span><span id="line-61">                this.Z = XYZ[2];</span>
+<span class="source-line-no">062</span><span id="line-62">                // this.Y = 1.0;</span>
+<span class="source-line-no">063</span><span id="line-63">                // this.X = x * this.Y / y;</span>
+<span class="source-line-no">064</span><span id="line-64">                // this.Z = (1.0 - x - y) * this.Y / y;</span>
+<span class="source-line-no">065</span><span id="line-65">        }</span>
+<span class="source-line-no">066</span><span id="line-66">        </span>
+<span class="source-line-no">067</span><span id="line-67">        @Override</span>
+<span class="source-line-no">068</span><span id="line-68">        public double[] getXYZ() {</span>
+<span class="source-line-no">069</span><span id="line-69">                return new double[] {X, Y, Z};</span>
+<span class="source-line-no">070</span><span id="line-70">        }</span>
+<span class="source-line-no">071</span><span id="line-71"></span>
+<span class="source-line-no">072</span><span id="line-72">        @Override</span>
+<span class="source-line-no">073</span><span id="line-73">        public double[] getXy() {</span>
+<span class="source-line-no">074</span><span id="line-74">                return new double[] {x, y};</span>
+<span class="source-line-no">075</span><span id="line-75">        }</span>
+<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">077</span><span id="line-77">        </span>
+<span class="source-line-no">078</span><span id="line-78">}</span>
 
 
 

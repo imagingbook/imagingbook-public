@@ -103,6 +103,21 @@ public abstract class CieUtils {
     }
 
     /**
+     * Calculates the 3D (x,y,z) color diagram coordinates for 3D XYZ color coordinates (X,Y,Z).
+     *
+     * @param XYZ the XYZ coordinate (3D)
+     * @return the xyz-coordinate (3D)
+     */
+    public static double[] XYZToxyz(double[] XYZ) {
+        double X = XYZ[0];
+        double Y = XYZ[1];
+        double Z = XYZ[2];
+        double mag = X + Y + Z;
+        return (Arithmetic.isZero(mag)) ?
+                new double[]{0, 0, 0} : new double[]{X / mag, Y / mag, Z / mag};
+    }
+
+    /**
      * Float version of {@link #XYZToxy(double[])}.
      *
      * @param XYZ the XYZ coordinate (3D)
@@ -115,6 +130,21 @@ public abstract class CieUtils {
         double mag = X + Y + Z;
         return (Arithmetic.isZero(mag)) ?
                 new float[]{0, 0} : new float[]{(float) (X / mag), (float) (Y / mag)};
+    }
+
+    /**
+     * Float version of {@link #XYZToxyz(double[])}.
+     *
+     * @param XYZ the XYZ coordinate (3D)
+     * @return the xyz-coordinate (§D)
+     */
+    public static float[] XYZToxyz(float[] XYZ) {
+        double X = XYZ[0];
+        double Y = XYZ[1];
+        double Z = XYZ[2];
+        double mag = X + Y + Z;
+        return (Arithmetic.isZero(mag)) ?
+                new float[]{0, 0, 0} : new float[]{(float) (X / mag), (float) (Y / mag), (float) (Z / mag)};
     }
 
 }

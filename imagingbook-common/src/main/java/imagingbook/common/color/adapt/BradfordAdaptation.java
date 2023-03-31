@@ -10,6 +10,9 @@
 package imagingbook.common.color.adapt;
 
 import imagingbook.common.color.cie.Illuminant;
+import imagingbook.common.color.cie.StandardIlluminant;
+import imagingbook.common.math.Matrix;
+import imagingbook.common.math.PrintPrecision;
 
 import static imagingbook.common.math.Matrix.inverse;
 import static imagingbook.common.math.Matrix.multiply;
@@ -136,6 +139,27 @@ public class BradfordAdaptation implements ChromaticAdaptation {
 			M[i][i] = rgbB[i] / rgbA[i];
 		}
 		return M;
+	}
+
+	//-----------------------------------------------------------------------
+
+	public static void main(String[] args) {
+		PrintPrecision.set(9);
+		BradfordAdaptation a_65_50 = BradfordAdaptation.getInstance(StandardIlluminant.D65, StandardIlluminant.D50);
+		System.out.println("M_65_50_diag = \n" + Matrix.toString(a_65_50.Mdiag));
+		System.out.println("M_65_50 = \n" + Matrix.toString(a_65_50.getAdaptationMatrix()));
+
+		BradfordAdaptation a_50_65 = BradfordAdaptation.getInstance(StandardIlluminant.D50, StandardIlluminant.D65);
+		System.out.println("M_50_65_diag = \n" + Matrix.toString(a_50_65.Mdiag));
+		// System.out.println("M_50_65_diagI = \n" + Matrix.toString(Matrix.inverse(a_50_65.Mdiag)));
+		System.out.println("M_50_65 = \n" + Matrix.toString(a_50_65.getAdaptationMatrix()));
+
+		System.out.println("-----------------");
+
+		// converting ITU-R709 primaries to D50
+		System.out.println("D50 Red Primary = " + Matrix.toString(a_65_50.applyTo(0.64, 0.33)));
+		System.out.println("D50 Grn Primary = " + Matrix.toString(a_65_50.applyTo(0.30, 0.60)));
+		System.out.println("D50 Blu Primary = " + Matrix.toString(a_65_50.applyTo(0.15, 0.06)));
 	}
 		
 }

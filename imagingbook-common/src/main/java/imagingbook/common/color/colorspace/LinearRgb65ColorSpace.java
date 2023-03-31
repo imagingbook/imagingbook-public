@@ -30,25 +30,25 @@ import static imagingbook.common.color.cie.StandardIlluminant.D65;
  * @see sRGB65ColorSpace
  */
 @SuppressWarnings("serial")
-public class LinearRgb65ColorSpace extends ColorSpace implements DirectD65Conversion, RgbReferenceData {
+public class LinearRgb65ColorSpace extends AbstractRgbColorSpace implements DirectD65Conversion {
+
+	/** Matrix for conversion from D65-based XYZ to linear RGB. */
+	private final float[][] MrgbiF; // = Matrix.toFloat(this.getMrgbi());
 	
-	// we use the same RGB-XYZ matrices as sRGB
-	/** Matrix for conversion from XYZ to linear RGB. Its column vectors are the 
-	 * XYZ coordinates of the RGB primaries. */
-	private static final double[][] Mrgbi = 
-		{{0.412453, 0.357580, 0.180423},
-		 {0.212671, 0.715160, 0.072169},
-		 {0.019334, 0.119193, 0.950227}};
-	
-	private static final float[][] MrgbiF = Matrix.toFloat(Mrgbi);
-	
-	/** Matrix for conversion from linear RGB to XYZ (inverse of {@link #Mrgbi}). */
-	private static final double[][] Mrgb = Matrix.inverse(Mrgbi);
-	private static final float[][] MrgbF = Matrix.toFloat(Mrgb);
+	/** Matrix for conversion from linear RGB to D65-based XYZ (inverse of {@code Mrgbi}). */
+	private final float[][] MrgbF; // = Matrix.toFloat(this.getMrgb());
 	
 	private static final ChromaticAdaptation catD65toD50 = BradfordAdaptation.getInstance(D65, D50);
 	private static final ChromaticAdaptation catD50toD65 = BradfordAdaptation.getInstance(D50, D65);
 	private static final ModifiedGammaMapping GammaMap = ModifiedGammaMapping.sRGB;
+
+	// tristimulus values (ITU-709):
+	private static final double xR = 0.64, yR = 0.33;
+	private static final double xG = 0.30, yG = 0.60;
+	private static final double xB = 0.15, yB = 0.06;
+	// white point:
+	private static final double[] xyW = D65.getXy();
+
 	
 	private static final LinearRgb65ColorSpace instance = new LinearRgb65ColorSpace();
 	
@@ -58,57 +58,13 @@ public class LinearRgb65ColorSpace extends ColorSpace implements DirectD65Conver
 	
 	/** Constructor, non-public */
 	private LinearRgb65ColorSpace() {
-		super(ColorSpace.TYPE_RGB, 3);
-	}
-	
-	// --------------------------------------------------------------------
-
-	@Override
-	public float[] getWhitePoint() {
-		return Matrix.toFloat(D65.getXYZ());
-	}
-	
-	@Override
-	public float[] getPrimary(int idx) {
-		return Matrix.toFloat(Matrix.getColumn(Mrgbi, idx));
-	}
-	
-	// --------------------------------------------------------------------
-
-	@Override	// directly convert non-linear sRGB to linear rgb (D65-based)
-	public float[] fromRGB(float[] srgb) {
-//		final float[] rgb = new float[3];
-//		for (int k = 0; k < 3; k++) {
-//			rgb[k] = GammaMap.applyInv(srgb[k]);
-//		}
-		float[] rgb = GammaMap.applyInv(srgb);
-		return rgb;
-	}
-
-	@Override	// directly convert linear rgb (D65-based) to non-linear sRGB
-	public float[] toRGB(float[] rgb) {
-//		final float[] srgb = new float[3];
-//		for (int k = 0; k < 3; k++) {
-//			srgb[k] = GammaMap.applyFwd(rgb[k]);
-//		}
-		float[] srgb = GammaMap.applyFwd(rgb);
-		return srgb;
-	}
-	
-	@Override	// return D50-based PCS xyz
-	public float[] toCIEXYZ(float[] rgb) {
-		float[] xyz65 = this.toCIEXYZ65(rgb);
-		float[] xyz50 = catD65toD50.applyTo(xyz65);
-		return xyz50;
+		super(xR, yR, xG, yG, xB, yB, xyW[0], xyW[1]);	//	super(0.64, 0.33, 0.30, 0.60, 0.15, 0.06, 0.3127, 0.3290);
+		// super(ColorSpace.TYPE_RGB, 3);
+		this.MrgbiF = Matrix.toFloat(this.getMrgbi());
+		this.MrgbF = Matrix.toFloat(this.getMrgb());
 	}
 	
 	// ---------------------------------------------------------------------
-
-	@Override
-	public float[] fromCIEXYZ(float[] xyz50) {
-		float[] xyz65 = catD50toD65.applyTo(xyz50);
-		return this.fromCIEXYZ65(xyz65);
-	}
 	
 	@Override
 	public float[] toCIEXYZ65(float[] rgb) {
@@ -122,13 +78,35 @@ public class LinearRgb65ColorSpace extends ColorSpace implements DirectD65Conver
 		return rgb;
 	}
 	
-	// ---------------------------------------------------------------------
+
+	// --------------------------------------------------------------------
+
+	@Override	// directly convert non-linear sRGB to THIS linear rgb (D65-based)
+	public float[] fromRGB(float[] srgb) {
+		float[] rgb = GammaMap.applyInv(srgb);
+		return rgb;
+	}
+
+	@Override	// directly convert THIS linear rgb (D65-based) to non-linear sRGB
+	public float[] toRGB(float[] rgb) {
+		float[] srgb = GammaMap.applyFwd(rgb);
+		return srgb;
+	}
 	
-	private static final String[] ComponentNames = {"R", "G", "B"};
+	// --------------------------------------------------------------------
 	
-	@Override
-	public String getName (int idx) {
-		return ComponentNames[idx];
+	@Override	// return D50-based PCS xyz from THIS linear rgb
+	public float[] toCIEXYZ(float[] rgb) {
+		float[] xyz65 = this.toCIEXYZ65(rgb);
+		float[] xyz50 = catD65toD50.applyTo(xyz65);
+		return xyz50;
+	}
+	
+
+	@Override	// return THIS linear rgb from D50-based PCS xyz
+	public float[] fromCIEXYZ(float[] xyz50) {
+		float[] xyz65 = catD50toD65.applyTo(xyz50);
+		return this.fromCIEXYZ65(xyz65);
 	}
 	
 }

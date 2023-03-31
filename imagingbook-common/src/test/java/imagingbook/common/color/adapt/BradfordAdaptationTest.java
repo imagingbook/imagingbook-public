@@ -100,30 +100,26 @@ public class BradfordAdaptationTest {
 	@Test
 	public void testWhiteD65ToD50() { // check if white point is mapped (precisely)
 		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(D65, D50);
-		PrintPrecision.set(6);
-		
 		double[] W65 = D65.getXYZ();
 		double[] W50 = D50.getXYZ();
-		
 		double[] W50m = adapt.applyTo(W65);
-//		System.out.println("W50  = " + Matrix.toString(W50));
-//		System.out.println("W50m = " + Matrix.toString(W50m));
-			
+
+		// PrintPrecision.set(6);
+		// System.out.println("W50  = " + Matrix.toString(W50));
+		// System.out.println("W50m = " + Matrix.toString(W50m));
 		assertArrayEquals(W50, W50m, 1e-12);
 	}
 	
 	@Test
 	public void testWhiteD50ToD65() { // check if white point is mapped (precisely)
 		ChromaticAdaptation adapt = BradfordAdaptation.getInstance(D50, D65);
-		PrintPrecision.set(6);
-		
 		double[] W65 = D65.getXYZ();
 		double[] W50 = D50.getXYZ();
-		
 		double[] W65m = adapt.applyTo(W50);
-//		System.out.println("W65  = " + Matrix.toString(W65));
-//		System.out.println("W65m = " + Matrix.toString(W65m));
-			
+
+		// PrintPrecision.set(6);
+		// System.out.println("W65  = " + Matrix.toString(W65));
+		// System.out.println("W65m = " + Matrix.toString(W65m));
 		assertArrayEquals(W65, W65m, 1e-12);
 	}
 	
@@ -134,7 +130,7 @@ public class BradfordAdaptationTest {
 		ChromaticAdaptation adapt65to50 = BradfordAdaptation.getInstance(D65, D50);	// adapts from D65 -> D50
 		ChromaticAdaptation adapt50to65 = BradfordAdaptation.getInstance(D50, D65);	// adapts from D50 -> D65
 		{	// float version
-			float[] XYZ65a =  cs.toCIEXYZ(srgb1);
+			float[] XYZ65a = cs.toCIEXYZ(srgb1);
 			float[] XYZ50 = adapt65to50.applyTo(XYZ65a);
 			float[] XYZ65b = adapt50to65.applyTo(XYZ50);
 			assertArrayEquals(XYZ65a, XYZ65b, (float)TOL);
