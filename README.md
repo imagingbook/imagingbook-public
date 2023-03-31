@@ -2,6 +2,8 @@
 
 # `imagingbook` - Main Source Code Repository
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.imagingbook/imagingbook-public/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.imagingbook/imagingbook-public)
+
 This repository contains the **Java source code** accompanying the 
 **Digital Image Processing** textbooks by **W. Burger and M. J. Burge**, 
 published by Springer. This software is based on **[ImageJ](http://rsbweb.nih.gov/ij/index.html)**.
@@ -69,6 +71,8 @@ may happen at any time. Users are encouraged to report any enountered problems h
 
 
 ## Use With Maven
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.imagingbook/imagingbook-public/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.imagingbook/imagingbook-public)
 
 ### Using Libraries Only
 
