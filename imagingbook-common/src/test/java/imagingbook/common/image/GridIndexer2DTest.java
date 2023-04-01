@@ -18,7 +18,7 @@ public class GridIndexer2DTest {
 
 	@Test
 	public void testDefaultValue() {
-		OutOfBoundsStrategy strategy = OutOfBoundsStrategy.ZeroValues;
+		OutOfBoundsStrategy strategy = OutOfBoundsStrategy.DefaultValue;
 		GridIndexer2D pi = GridIndexer2D.create(W, H, strategy);
 		Assert.assertEquals(15070, pi.getIndex(70, 50));
 		Assert.assertEquals(-1, pi.getIndex(W + 10, 50));

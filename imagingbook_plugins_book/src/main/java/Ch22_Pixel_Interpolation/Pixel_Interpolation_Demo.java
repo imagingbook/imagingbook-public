@@ -40,7 +40,7 @@ import imagingbook.core.jdoc.JavaDocHelp;
 public class Pixel_Interpolation_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private static InterpolationMethod IPM = InterpolationMethod.Bicubic;
-	private static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.ZeroValues;
+	private static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.DefaultValue;
 	
 	private static double dx = 10.50;	// translation parameters
 	private static double dy = -3.25;

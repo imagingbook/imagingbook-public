@@ -32,7 +32,7 @@ public class ImageMapperTest {
 	static ByteProcessor ip1 = (ByteProcessor) GeneralSampleImage.MonasterySmall.getImagePlus().getProcessor();
 	static ColorProcessor ip2 = (ColorProcessor) GeneralSampleImage.Clown.getImagePlus().getProcessor();
 	
-	static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.ZeroValues;
+	static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.DefaultValue;
 	static InterpolationMethod IPM = InterpolationMethod.Bilinear;
 
 	@Test

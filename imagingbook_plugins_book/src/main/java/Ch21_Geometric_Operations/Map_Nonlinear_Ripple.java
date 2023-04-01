@@ -73,7 +73,7 @@ public class Map_Nonlinear_Ripple implements PlugInFilter, JavaDocHelp {
 			}
 		};
 		
-		new ImageMapper(imap, OutOfBoundsStrategy.ZeroValues, InterpolationMethod.Bicubic).map(ip);
+		new ImageMapper(imap, OutOfBoundsStrategy.DefaultValue, InterpolationMethod.Bicubic).map(ip);
 	}
 
 }

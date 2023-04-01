@@ -50,7 +50,7 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 public abstract class ImageAccessor {
 	
 	/** The default out-of-bounds strategy (see {@link OutOfBoundsStrategy}). */
-	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.ZeroValues;
+	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.DefaultValue;
 	/** The default pixel interpolation method (see {@link InterpolationMethod}). */
 	public static final InterpolationMethod DefaultInterpolationMethod = InterpolationMethod.Bilinear;
 	
