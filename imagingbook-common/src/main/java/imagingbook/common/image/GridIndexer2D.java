@@ -27,7 +27,7 @@ package imagingbook.common.image;
  * @version 2022/09/17
  * @see OutOfBoundsStrategy
  */
-public abstract class GridIndexer2D implements Cloneable {
+public abstract class GridIndexer2D {
 	
 	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.NearestBorder;
 
@@ -81,7 +81,7 @@ public abstract class GridIndexer2D implements Cloneable {
 	 * @param v y-coordinate
 	 * @return the associated 1D index
 	 */
-	private int getWithinBoundsIndex(int u, int v) {
+	protected int getWithinBoundsIndex(int u, int v) {
 		return width * v + u;
 	}
 	
@@ -137,7 +137,7 @@ public abstract class GridIndexer2D implements Cloneable {
 			else if (v >= height) {
 				v = height - 1;
 			}
-			return super.getWithinBoundsIndex(u, v);
+			return getWithinBoundsIndex(u, v);
 		}
 	}
 
@@ -163,7 +163,7 @@ public abstract class GridIndexer2D implements Cloneable {
 			if (v < 0) {
 				v = v + height; 
 			}
-			return super.getWithinBoundsIndex(u, v);
+			return getWithinBoundsIndex(u, v);
 		}
 	}
 
@@ -184,7 +184,7 @@ public abstract class GridIndexer2D implements Cloneable {
 				return -1;
 			}
 			else {
-				return super.getWithinBoundsIndex(u, v);
+				return getWithinBoundsIndex(u, v);
 			}
 		}
 	}
@@ -207,7 +207,7 @@ public abstract class GridIndexer2D implements Cloneable {
 						String.format("out-of-image position [%d,%d]", u, v));
 			}
 			else 
-				return super.getWithinBoundsIndex(u, v);
+				return getWithinBoundsIndex(u, v);
 		}
 	}
 	
