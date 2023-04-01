@@ -46,12 +46,14 @@ public abstract class GridIndexer2D {
 			obs = DefaultOutOfBoundsStrategy;
 		}
 		switch (obs) {
-		case DefaultValue: return new DefaultValueIndexer(width, height);
-		case NearestBorder	: return new NearestBorderIndexer(width, height);
-		case MirrorImage	: return new MirrorImageIndexer(width, height);
-		case ThrowException	: return new ExceptionIndexer(width, height);
+			case DefaultValue: return new DefaultValueIndexer(width, height);
+			case NearestBorder	: return new NearestBorderIndexer(width, height);
+			case MirrorImage	: return new MirrorImageIndexer(width, height);
+			case PeriodicImage	: return new PeriodicImageIndexer(width, height);
+			case ThrowException	: return new ExceptionIndexer(width, height);
+			default:
+				throw new IllegalStateException("Unexpected value: " + obs);
 		}
-		return null;
 	}
 
 	/**
@@ -160,22 +162,43 @@ public abstract class GridIndexer2D {
 	 * {@link OutOfBoundsStrategy#MirrorImage}.
 	 */
 	public static class MirrorImageIndexer extends GridIndexer2D {
+		private final int width2, height2;
 		
 		MirrorImageIndexer(int width, int height) {
 			super(width, height, OutOfBoundsStrategy.MirrorImage);
+			this.width2 = 2 * width;
+			this.height2 = 2 * height;
 		}
 
 		@Override
 		public int getIndex(int u, int v) {
-			// fast modulo operation for positive divisors only
-			u = u % width;
-			if (u < 0) {
-				u = u + width; 
-			}
-			v = v % height;
-			if (v < 0) {
-				v = v + height; 
-			}
+			int u2 = Math.floorMod(u, width2);
+			if (u2 >= width)
+				u2 = (width2) - u2 - 1;
+
+			int v2 = Math.floorMod(v, height2);
+			if (v2 >= height)
+				v2 = (height2) - v2 - 1;
+
+			return getWithinBoundsIndex(u2, v2);
+		}
+	}
+
+	/**
+	 * This indexer returns repetitive image values for coordinates outside the image bounds. There is no public
+	 * constructor. To instantiate use method {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)} with
+	 * {@link OutOfBoundsStrategy#PeriodicImage}.
+	 */
+	public static class PeriodicImageIndexer extends GridIndexer2D {
+
+		PeriodicImageIndexer(int width, int height) {
+			super(width, height, OutOfBoundsStrategy.PeriodicImage);
+		}
+
+		@Override
+		public int getIndex(int u, int v) {
+			u = Math.floorMod(u, width);
+			v = Math.floorMod(v, height);
 			return getWithinBoundsIndex(u, v);
 		}
 	}

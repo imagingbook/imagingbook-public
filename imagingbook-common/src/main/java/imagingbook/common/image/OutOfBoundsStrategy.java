@@ -22,6 +22,8 @@ public enum OutOfBoundsStrategy {
 	NearestBorder,
 	/** Replicate the image by mirroring at its borders. */
 	MirrorImage,
+	/** Replicate the image by periodic repetition. */
+	PeriodicImage,
 	/** Throws an exception when out-of-boundary coordinates are accessed. */
 	ThrowException;
 }
