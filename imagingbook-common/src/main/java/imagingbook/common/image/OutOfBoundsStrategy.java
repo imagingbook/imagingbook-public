@@ -16,14 +16,14 @@ package imagingbook.common.image;
  * @see GridIndexer2D
  */
 public enum OutOfBoundsStrategy {
-	/** Insert zero values. */
+	/** Replace out-of-bounds pixels by some default value. */
 	DefaultValue,
-	/** Insert the value of the nearest border pixel. */
+	/** Replace out-of-bounds pixels by the nearest border pixel. */
 	NearestBorder,
-	/** Replicate the image by mirroring at its borders. */
+	/** Treat the image as being infinitely mirrored at its borders. */
 	MirrorImage,
-	/** Replicate the image by periodic repetition. */
+	/** Treat the image as repeating ininitely in x/y directions. */
 	PeriodicImage,
-	/** Throws an exception when out-of-boundary coordinates are accessed. */
+	/** Throw an exception when out-of-boundary coordinates are accessed. */
 	ThrowException;
 }
