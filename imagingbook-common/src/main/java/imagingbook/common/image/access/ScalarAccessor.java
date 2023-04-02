@@ -31,9 +31,10 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	}
 
 	/**
-	 * Creates a new image accessor of general type {@link ScalarAccessor}. The conrete type of the returned instance
+	 * Creates a new image accessor of general type {@link ScalarAccessor}. The concrete type of the returned instance
 	 * depends on the specified image, i.e., {@link ByteAccessor} for {@link ByteProcessor}, {@link ShortAccessor} for
 	 * {@link ShortProcessor}, {@link FloatAccessor} for {@link FloatProcessor}.
+	 * An exception is thrown if the supplied image is not scalar-valued (i.e., a color image).
 	 *
 	 * @param ip the image to be accessed
 	 * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
@@ -50,6 +51,42 @@ public abstract class ScalarAccessor extends ImageAccessor {
 		throw new IllegalArgumentException(
 				"cannot create " + ScalarAccessor.class.getSimpleName() + " for " + ip.getClass().getSimpleName());
 	}
+
+	// /**
+	//  * Creates a new scalar accessor (subtype of {@link ScalarAccessor}) for the specified image.
+	//  *
+	//  * @param ip the image to be accessed
+	//  * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
+	//  * @param ipm the interpolation method to be used (use {@code null} for default settings)
+	//  * @return a new {@link ByteAccessor}
+	//  */
+	// public static ByteAccessor create(ByteProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+	// 	return new ByteAccessor(ip, obs, ipm);
+	// }
+	//
+	// /**
+	//  * Creates a new scalar accessor (subtype of {@link ScalarAccessor}) for the specified image.
+	//  *
+	//  * @param ip the image to be accessed
+	//  * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
+	//  * @param ipm the interpolation method to be used (use {@code null} for default settings)
+	//  * @return a new {@link ShortAccessor}
+	//  */
+	// public static ShortAccessor create(ShortProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+	// 	return new ShortAccessor(ip, obs, ipm);
+	// }
+	//
+	// /**
+	//  * Creates a new scalar accessor (subtype of {@link ScalarAccessor}) for the specified image.
+	//  *
+	//  * @param ip the image to be accessed
+	//  * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
+	//  * @param ipm the interpolation method to be used (use {@code null} for default settings)
+	//  * @return a new {@link FloatAccessor}
+	//  */
+	// public static FloatAccessor create(FloatProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+	// 	return new FloatAccessor(ip, obs, ipm);
+	// }
 	
 	@Override
 	public int getDepth() {
