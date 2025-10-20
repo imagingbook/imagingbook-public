@@ -63,8 +63,8 @@
 		<jtransforms.version>3.1</jtransforms.version>
 		<jtransforms.apilink>https://javadoc.io/doc/com.github.wendykierp/JTransforms</jtransforms.apilink>
 
-		<openpdf.version>1.3.30</openpdf.version>
-		<openpdf.apilink>https://javadoc.io/doc/com.github.librepdf/openpdf/1.3.30</openpdf.apilink>
+		<openpdf.version>1.4.2</openpdf.version> <!-- was 1.3.30 -->
+		<openpdf.apilink>https://javadoc.io/doc/com.github.librepdf/openpdf/1.4.2</openpdf.apilink>
 
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	    <maven.compiler.source>${java.version}</maven.compiler.source>
