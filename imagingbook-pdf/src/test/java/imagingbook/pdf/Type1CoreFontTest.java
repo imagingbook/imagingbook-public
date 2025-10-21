@@ -14,8 +14,13 @@ import static org.junit.Assert.assertNotNull;
 
 public class Type1CoreFontTest {
 
+    /**
+     * Locate the resource files for every enum value of Type1CoreFont and
+     * instantiate the associated font object.
+     * Note: this test used to have problems with class path / loader!
+     */
 	@Test
-	public void test1() {
+	public void testType1CoreFonts() {
 		for (Type1CoreFont fnt : Type1CoreFont.values()) {
 			assertNotNull("could not find URL for resource " + fnt, fnt.getURL());
 			assertNotNull("could not create font for resource " + fnt, fnt.getBaseFont());

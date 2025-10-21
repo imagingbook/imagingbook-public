@@ -80,7 +80,7 @@ public interface NamedResource {
 	}
 
 	public static String getRelativeDirectory(Class<? extends NamedResource> clazz) {
-		return clazz.getSimpleName() + RelativeDirectorySuffix;
+		return clazz.getSimpleName() + RelativeDirectorySuffix;   // TODO: use Paths.get(...) instead
 	}
 
 	/**
@@ -101,22 +101,26 @@ public interface NamedResource {
 	public String getFileName();
 
 	/**
-	 * Returns the URL to the associated resource. This method is not supposed to be overridden. Throws an exception if
-	 * the requested resource does not exist.
+	 * Returns the URL to the associated resource or null if the resource could not be
+     * located. This method is not supposed to be overridden.
 	 *
 	 * @return the URL to the associated resource
 	 */
 	public default URL getURL() {
 		Class<?> clazz = this.getClass();
+        // System.out.println("NamedResource.getURL(): clazz = " + clazz.getCanonicalName());
 		String relPath = this.getRelativePath();
+        // System.out.println("NamedResource.getURL(): relPath = " + relPath);
+
 		URL url = clazz.getResource(relPath);
-		if (url == null) {
-			throw new RuntimeException("could not find resource " +
-					clazz.getResource("") + relPath);
-		}
+        // System.out.println("NamedResource.getURL(): url = " + url);
+		// if (url == null) {
+		// 	throw new RuntimeException("could not find resource " + clazz.getResource("") + relPath);
+		// }
 		return url;
 	}
-	
+
+
 	/**
 	 * Returns true if the associated resource (class) was loaded from a JAR file.
 	 * 
@@ -148,7 +152,7 @@ public interface NamedResource {
 	 * @param clazz the resource class
 	 * @return an array of strings
 	 */
-	public static String[] getResourceFileNames(Class<? extends NamedResource> clazz) {
+	public static String[] getNamedResourceFileNames(Class<? extends NamedResource> clazz) {
 		// return ResourceUtils.getResourceFileNames(clazz, clazz.getSimpleName() + RelativeDirectorySuffix);
 		return ResourceUtils.getResourceFileNames(clazz, getRelativeDirectory(clazz));
 	}

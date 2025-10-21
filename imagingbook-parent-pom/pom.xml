@@ -221,7 +221,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.4.1</version>
+					<version>3.12.0</version>   <!--  was 3.4.1 -->
 				</plugin>
 
 				<plugin>
@@ -302,9 +302,9 @@
 								<!-- output some status information -->
 								<echo level="info">**** imagingbook.buildprofile = ${imagingbook.buildprofile}</echo>
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
-								<!--<echo level="info">**** outputDirectory = ${outputDirectory}</echo>-->
-								<echo level="info">**** reporting.outputDirectory = ${project.reporting.outputDirectory}</echo>
-								<!--<echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo>-->
+								<echo level="info">**** outputDirectory = ${outputDirectory}</echo>
+								<echo level="info">**** project.reporting.outputDirectory = ${project.reporting.outputDirectory}</echo>
+								<echo level="info">**** siteOutputDirectory = ${siteOutputDirectory}</echo>
 								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** imagingbook.javadocdir = ${imagingbook.javadocdir}</echo>
@@ -367,8 +367,10 @@
 				<configuration>
 					<!-- for some reason the standard property maven.javadoc.skip does not work as expected-->
 					<skip>${imagingbook.skipjavadoc}</skip>
-					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
-					<destDir>${imagingbook.javadocdir}</destDir>
+					<!--<reportOutputDirectory>${imagingbook.javadocdir}</reportOutputDirectory>  -->
+					<!-- <reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>  -->
+					<!-- <destDir>${imagingbook.javadocdir}</destDir>  -->
+					<legacyMode>true</legacyMode>
 					<show>protected</show>
 					<source>${java.version}</source>
 					<linksource>true</linksource>
@@ -418,6 +420,7 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
+							<skip>${imagingbook.skipjavadoc}</skip>
 						</configuration>
 					</execution>
 				</executions>

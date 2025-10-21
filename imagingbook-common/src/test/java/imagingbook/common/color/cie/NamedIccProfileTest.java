@@ -8,6 +8,7 @@
  ******************************************************************************/
 package imagingbook.common.color.cie;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.awt.color.ICC_ColorSpace;
@@ -20,8 +21,9 @@ import imagingbook.testutils.ResourceTestUtils;
 public class NamedIccProfileTest {
 	
 	@Test
-	public void test1() {
-		ResourceTestUtils.testNamedResource(NamedIccProfile.class);
+	public void testAllNamedResourceItems() {
+		int n = ResourceTestUtils.testNamedResource(NamedIccProfile.class);
+        assertEquals(NamedIccProfile.values().length, n);
 	}
 
 	@Test

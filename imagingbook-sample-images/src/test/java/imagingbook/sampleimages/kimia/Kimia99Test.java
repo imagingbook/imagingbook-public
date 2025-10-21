@@ -8,15 +8,19 @@
  ******************************************************************************/
 package imagingbook.sampleimages.kimia;
 
+import imagingbook.sampleimages.GeneralSampleImage;
 import imagingbook.sampleimages.kimia.Kimia99;
 import imagingbook.testutils.ResourceTestUtils;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class Kimia99Test {
 	
 	@Test
-	public void test1() {
-		ResourceTestUtils.testImageResource(Kimia99.class);
+	public void testKimia99() {
+		int n = ResourceTestUtils.testImageResource(Kimia99.class);
+        assertEquals(Kimia99.values().length, n);
 	}
 	
 }

@@ -9,10 +9,12 @@
 package imagingbook.common.color.cie;
 
 import imagingbook.core.resource.NamedResource;
+import imagingbook.core.resource.ResourceUtils;
 
 import java.awt.color.ICC_ColorSpace;
 import java.awt.color.ICC_Profile;
 import java.io.IOException;
+import java.net.URI;
 
 public enum NamedIccProfile implements NamedResource {
 	AdobeRGB1998("AdobeRGB1998.icc"),
@@ -71,5 +73,21 @@ public enum NamedIccProfile implements NamedResource {
 		}
 		return this.colorspace;
 	}
+
+    public static void main(String[] args) {
+        Class clazz = NamedIccProfile.AdobeRGB1998.getClass();
+        System.out.println("rel directory = " + NamedResource.getRelativeDirectory(clazz));
+        String relPath = NamedIccProfile.AdobeRGB1998.getRelativePath();
+        System.out.println("rel path = " + relPath);
+        System.out.println("URL = " + NamedIccProfile.AdobeRGB1998.getURL());
+
+        URI uri = ResourceUtils.getResourceUri(NamedIccProfile.AdobeRGB1998.getClass(), relPath);
+        System.out.println("uri = " + uri);
+
+        String[] names = NamedResource.getNamedResourceFileNames(NamedIccProfile.AdobeRGB1998.getClass());
+        for (String n : names) {
+            System.out.println("  " + n);
+        }
+    }
 
 }

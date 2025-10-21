@@ -12,11 +12,14 @@ import imagingbook.sampleimages.kimia.Kimia1070;
 import imagingbook.testutils.ResourceTestUtils;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class Kimia1070Test {
 	
 	@Test
-	public void test1() {
-		ResourceTestUtils.testImageResource(Kimia1070.class);
+	public void testKimia1070() {
+		int n = ResourceTestUtils.testImageResource(Kimia1070.class);
+        assertEquals(Kimia1070.values().length, n);
 	}
 	
 }
