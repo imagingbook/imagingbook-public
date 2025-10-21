@@ -82,7 +82,10 @@
 			<![CDATA[<br><font face="verdana"><B>]]>${project.name} ${project.version}<![CDATA[</B></font>]]>
 		</imagingbook.header>
 		<imagingbook.bottom>Build Date: ${maven.build.timestamp}</imagingbook.bottom>
-
+		
+		<!-- <skip.jar>false</skip.jar> -->
+		<!-- <skip.javadoc>false</skip.javadoc> -->	<!--  used? -->
+		<!-- <skip.source>false</skip.source> -->	<!--  used? -->
 	</properties>
 
 	<distributionManagement>
@@ -178,11 +181,15 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.3.0</version>
+					<version>3.4.2</version>		<!-- was 3.3.0 -->
+					<!-- <configuration>
+						<skip>${skip.jar}</skip>
+					</configuration> -->
 					<!-- how to add aggregated javadoc to pom-type parent project -->
 					<!-- https://stackoverflow.com/questions/53706943/how-to-upload-an-artifact-to-maven-central-with-an-empty-javadoc-jar-or-empty-s -->
 					<executions>
-						<execution>
+					
+						<!-- <execution>
 							<id>default-jar</id>
 							<phase>package</phase>
 							<goals>
@@ -198,7 +205,8 @@
 							<configuration>
 								<classifier>javadoc</classifier>
 							</configuration>
-						</execution>
+						</execution> -->
+						
 						<!-- <execution>
 							<id>sources-jar</id>
 							<phase>package</phase>
@@ -276,7 +284,7 @@
 					</filesets>
 				</configuration>
 			</plugin>
-
+			
 			<!-- do not deploy this artifact -->
 			<!-- <plugin>
 			  <groupId>org.apache.maven.plugins</groupId>
@@ -313,6 +321,11 @@
 								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
 								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
 								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
+								
+								<echo level="info">**** skip.jar = ${skip.jar}</echo>
+								<echo level="info">**** skip.javadoc = ${skip.javadoc}</echo>
+								<echo level="info">**** skip.source = ${skip.source}</echo>
+								
 								<!--<echo level="info">**** maven.multiModuleProjectDirectory = ${maven.multiModuleProjectDirectory}</echo>-->
 							</target>
 						</configuration>
@@ -324,6 +337,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+					<!-- <skip>${skip.jar}</skip> -->
+					<!-- <skip>true</skip> -->  <!-- prevent Maven from creating JAR files for POM-only modules and overwrite the POM files in your local repository -->
 					<!-- <useDefaultManifestFile>true</useDefaultManifestFile> --> <!-- not available since version 3.0.0 -->
 					<archive>
 						<manifest>
@@ -336,6 +351,18 @@
 						</manifestEntries>
 					</archive>
 				</configuration>
+				
+				<!-- disable JAR generation for this (POM) module -->
+				<!-- <executions>
+					<execution> 
+						<id>default-jar</id>
+						<phase>none</phase>
+					</execution>
+					<execution>
+						<id>javadoc-jar</id>
+						<phase>none</phase>
+					</execution>
+				</executions> -->
 			</plugin>
 
 			<plugin>  <!-- generate a separate jar file with source code -->
@@ -458,7 +485,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			
 		</plugins>
 	</build>
 
@@ -686,6 +713,26 @@
 				</resources>
 			</build>
 		</profile>
+		
+		
+		<!-- To skip maven-jar-plugin in POM-only (no-source) modules -->
+		<!-- Activates only for modules that lack a source folder -->
+		<!-- <profile>
+			<id>skip-build-plugins-if-no-src</id>
+			<activation>
+			  <file>
+				<missing>src</missing>
+			  </file>
+			</activation>
+			<properties>
+			  <skip.jar>false</skip.jar>
+			  <skip.javadoc>true</skip.javadoc>
+			  <skip.source>true</skip.source>
+			</properties>
+		</profile> -->
+
+
+		
 	</profiles>
 
 </project>
