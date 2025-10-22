@@ -82,10 +82,10 @@
 			<![CDATA[<br><font face="verdana"><B>]]>${project.name} ${project.version}<![CDATA[</B></font>]]>
 		</imagingbook.header>
 		<imagingbook.bottom>Build Date: ${maven.build.timestamp}</imagingbook.bottom>
-		
-		<!-- <skip.jar>false</skip.jar> -->
-		<!-- <skip.javadoc>false</skip.javadoc> -->	<!--  used? -->
-		<!-- <skip.source>false</skip.source> -->	<!--  used? -->
+
+		<!-- <skip.jar>false</skip.jar> -->         <!--  not used -->
+		<!-- <skip.javadoc>false</skip.javadoc> -->	<!--  not used -->
+		<!-- <skip.source>false</skip.source> -->	<!--  not used -->
 	</properties>
 
 	<distributionManagement>
@@ -300,11 +300,6 @@
 								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
 								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
 								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
-								
-								<echo level="info">**** skip.jar = ${skip.jar}</echo>
-								<echo level="info">**** skip.javadoc = ${skip.javadoc}</echo>
-								<echo level="info">**** skip.source = ${skip.source}</echo>
-								
 								<!--<echo level="info">**** maven.multiModuleProjectDirectory = ${maven.multiModuleProjectDirectory}</echo>-->
 							</target>
 						</configuration>
@@ -316,8 +311,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-					<!-- <skip>${skip.jar}</skip> -->
-					<!-- <skip>true</skip> -->  <!-- prevent Maven from creating JAR files for POM-only modules and overwrite the POM files in your local repository -->
+					<!-- <skip>true</skip> -->
 					<!-- <useDefaultManifestFile>true</useDefaultManifestFile> --> <!-- not available since version 3.0.0 -->
 					<archive>
 						<manifest>
@@ -692,8 +686,7 @@
 				</resources>
 			</build>
 		</profile>
-		
-		
+
 		<!-- To skip maven-jar-plugin in POM-only (no-source) modules -->
 		<!-- Activates only for modules that lack a source folder -->
 		<!-- <profile>
@@ -710,8 +703,6 @@
 			</properties>
 		</profile> -->
 
-
-		
 	</profiles>
 
 </project>
