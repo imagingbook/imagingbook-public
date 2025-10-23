@@ -110,9 +110,9 @@ public abstract class ResourceUtils {
 	 * @param clazz anchor class
 	 * @param relPath the path of the resource to be found (relative to the location of the anchor class)
 	 * @return the path to the specified resource
-	 * @version 2016/06/03: modified to return proper path to resource inside a JAR file.
 	 */
 	public static Path getResourcePath(Class<?> clazz, String relPath) {
+        // 2016/06/03: modified to return proper path to resource inside a JAR file.
 		URI uri = getResourceUri(clazz, relPath);
 		if (uri != null) {
 			return uriToPath(uri);
