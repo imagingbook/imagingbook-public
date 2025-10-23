@@ -69,7 +69,6 @@
 		</imagingbook.bottom>
 	</properties>
 
-
 	<build>
 		<plugins>
 			<!-- <plugin>
