@@ -225,10 +225,10 @@
 							<directory>${project.basedir}/${imagingbook.deploydir}</directory>
 							<includes><include>**/*</include></includes>
 						</fileset>
-						<!--<fileset>
+						<fileset>
 							<directory>${project.basedir}/${imagingbook.javadocdir}</directory>
 							<includes><include>**/*</include></includes>
-						</fileset>-->
+						</fileset>
 					</filesets>
 				</configuration>
 			</plugin>
