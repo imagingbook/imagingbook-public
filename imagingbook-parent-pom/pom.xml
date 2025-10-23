@@ -435,41 +435,6 @@
 		</plugins>
 	</build>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<!-- to stop Maven complaining about missing version number -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<reportSets>
-					<reportSet />
-				</reportSets>
-			</plugin>
-
-			<!-- NEEDED? aggregate JavaDoc (see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html) -->
-			<!--  see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<reportSets>
-					<reportSet>
-						<id>aggregate</id>
-						<inherited>false</inherited>
-						<reports>
-							<report>aggregate</report>
-						</reports>
-					</reportSet>
-					<reportSet>
-						<id>default</id>
-						<reports>
-							<report>javadoc</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-		</plugins>
-	</reporting>
-
 	<profiles>
 		<!-- ****************************************************************************
 			This is a special build profile for ImageJ plugin projects. If the project
