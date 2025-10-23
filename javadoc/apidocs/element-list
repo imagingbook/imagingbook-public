@@ -1,3 +1,4 @@
+module:imagingbook_plugins_book
 Ch02_Histograms_Statistics
 Ch03_Point_Operations
 Ch04_Filters
@@ -23,10 +24,13 @@ Ch23_Image_Matching
 Ch24_NonRigid_Matching
 Ch25_SIFT
 Ch26_MSER
+More_
+Tools_
+module:imagingbook_plugins_demos
 GenericFilterDemos
 ImageAccessorDemos
 ImageJ_Demos
-imagingbook.common
+module:imagingbook.common
 imagingbook.common.color
 imagingbook.common.color.adapt
 imagingbook.common.color.cie
@@ -84,7 +88,6 @@ imagingbook.common.math.nonlinear
 imagingbook.common.morphology
 imagingbook.common.mser
 imagingbook.common.mser.components
-imagingbook.common.noise
 imagingbook.common.noise.hashing
 imagingbook.common.noise.perlin
 imagingbook.common.ransac
@@ -99,15 +102,16 @@ imagingbook.common.util.bits
 imagingbook.common.util.progress
 imagingbook.common.util.random
 imagingbook.common.util.tuples
+module:imagingbook.core
 imagingbook.core
 imagingbook.core.jdoc
 imagingbook.core.plugin
 imagingbook.core.resource
+module:imagingbook.pdf
 imagingbook.pdf
+module:imagingbook.sampleimages
 imagingbook.sampleimages
 imagingbook.sampleimages.kimia
-imagingbook.spectral
+module:imagingbook.spectral
 imagingbook.spectral.dct
 imagingbook.spectral.dft
-More_
-Tools_

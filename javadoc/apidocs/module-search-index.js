@@ -1,1 +1,1 @@
-moduleSearchIndex = [];updateSearchResults();
+moduleSearchIndex = [{"l":"imagingbook_plugins_book"},{"l":"imagingbook_plugins_demos"},{"l":"imagingbook.common"},{"l":"imagingbook.core"},{"l":"imagingbook.pdf"},{"l":"imagingbook.sampleimages"},{"l":"imagingbook.spectral"}];updateSearchResults();
