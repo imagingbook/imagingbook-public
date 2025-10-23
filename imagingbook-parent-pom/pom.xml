@@ -272,14 +272,11 @@
 								<!-- output some status information -->
 								<echo level="info">**** imagingbook.buildprofile = ${imagingbook.buildprofile}</echo>
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
-								<echo level="info">**** outputDirectory = ${outputDirectory}</echo>
 								<echo level="info">**** project.reporting.outputDirectory = ${project.reporting.outputDirectory}</echo>
-								<!--<echo level="info">**** siteOutputDirectory = ${siteOutputDirectory}</echo>-->
 								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** imagingbook.javadocdir = ${imagingbook.javadocdir}</echo>
 								<echo level="info">**** imagingbook.skipjavadoc = ${imagingbook.skipjavadoc}</echo>
-								<!--<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>-->
 								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
 								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
 								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
