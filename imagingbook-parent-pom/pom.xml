@@ -381,6 +381,9 @@
 						</goals>
                         <phase>package</phase>
 						<configuration>
+                            <skippedModules>imagingbook-testing</skippedModules>
+                            <!-- Override aggregate output directory -->
+                            <outputDirectory>${project.basedir}/${imagingbook.javadocdir}</outputDirectory>
 						</configuration>
 					</execution>
 

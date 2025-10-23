@@ -86,15 +86,14 @@
 				</executions>
 			</plugin> -->
 			
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<skippedModules>imagingbook-testing</skippedModules>
-                    <!-- Override aggregate output directory -->
                     <outputDirectory>${project.basedir}/${imagingbook.javadocdir}</outputDirectory>
 				</configuration>
-			</plugin>
+			</plugin>-->
 			
 		</plugins>
 	</build>
