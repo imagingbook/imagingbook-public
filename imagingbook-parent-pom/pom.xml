@@ -32,14 +32,14 @@
 			<url>http://opensource.org/licenses/BSD-2-Clause</url>
 		</license>
 	</licenses>
-	
+
 	<scm>
 		<connection>scm:git:git://github.com/imagingbook/imagingbook-public.git</connection>
 		<developerConnection>scm:git:ssh://github.com:imagingbook/imagingbook-public.git.git</developerConnection>
 		<url>http://github.com/imagingbook/imagingbook-public.git/tree/master</url>
 	</scm>
 
-	<properties>	
+	<properties>
 		<directory-up-1>${project.basedir}${file.separator}..</directory-up-1>
 		<directory-up-2>${project.basedir}${file.separator}..${file.separator}..</directory-up-2>
 		<directory-up-3>${project.basedir}${file.separator}..${file.separator}..${file.separator}..</directory-up-3>
@@ -70,9 +70,9 @@
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
+
 		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
-		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
+		<!--<imagingbook.gpgSkip>true</imagingbook.gpgSkip>-->	<!-- set false on command line for deploy only: -->
 
 		<!--   *************** JavDoc related items ****************** -->
 		<imagingbook.skipjavadoc>true</imagingbook.skipjavadoc>
@@ -84,18 +84,18 @@
 	</properties>
 
 	<distributionManagement>
-	 	<!-- used by 'mvn deploy' -->
+	 	<!-- used during 'mvn deploy' -->
+        <snapshotRepository>
+            <id>local-deploy</id>
+            <url>file:${imagingbook.deploydir}</url>
+            <!-- <url>https://oss.sonatype.org/content/repositories/snapshots</url> -->
+        </snapshotRepository>
+
+        <!-- Release repo -->
 		<repository>
 			<id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-
-		<snapshotRepository>
-			<!-- <id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url> -->
-			<id>local-deploy</id>
-			<url>file:///${project.basedir}${file.separator}${imagingbook.deploydir}</url>
-		</snapshotRepository>
 	</distributionManagement>
 
 	<dependencyManagement>
@@ -141,17 +141,11 @@
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>3.9.0</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.5.4</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>3.1.4</version>
 				</plugin>
 
 				<plugin>
@@ -202,9 +196,10 @@
 					<version>2.19.1</version>
 				</plugin>
 
+
 			</plugins>
 		</pluginManagement>
-		
+
 		<!-- End of pluginManagement -->
 
 		<plugins>
@@ -232,7 +227,7 @@
 					</filesets>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -244,9 +239,15 @@
 					<!-- <compilerArgs>
 						<arg>-Xpkginfo:nonempty</arg>
 					</compilerArgs> -->
+                    <!--<compilerArgs>
+                        <arg>-Xpkginfo:nonempty</arg>
+                        <arg>-Xlint:all</arg>
+                    </compilerArgs>-->
+                    <parameters>true</parameters>
+                    <showWarnings>false</showWarnings> <!-- hides only Maven’s pre-compile checks -->
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
@@ -273,11 +274,11 @@
 								<echo level="info">**** imagingbook.buildprofile = ${imagingbook.buildprofile}</echo>
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
 								<echo level="info">**** project.reporting.outputDirectory = ${project.reporting.outputDirectory}</echo>
-								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** imagingbook.skipjavadoc = ${imagingbook.skipjavadoc}</echo>
-								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
-								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
+								<!--<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>-->
+                                <echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
+								<echo level="info">**** imagingbook.deploydir = ${project.basedir}/${imagingbook.deploydir}</echo>
 								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
 								<!--<echo level="info">**** maven.multiModuleProjectDirectory = ${maven.multiModuleProjectDirectory}</echo>-->
 							</target>
@@ -394,43 +395,17 @@
 
 				</executions>
 			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>3.0.1</version>
-				<configuration>
-        			<skip>${imagingbook.gpgSkip}</skip>	<!-- exception with Eclipse maven plugin! -->
-    			</configuration>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-				<!-- explicitly define maven-deploy-plugin after other to force exec order -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
+
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <skip>${imagingbook.skipdeploy}</skip>
+                    <publishingServerId>central</publishingServerId>
                 </configuration>
-				<executions>
-					<execution>
-						<id>deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
+            </plugin>
+
 		</plugins>
 	</build>
 
