@@ -9,6 +9,8 @@
 
 package imagingbook.common.image;
 
+import ij.process.ImageProcessor;
+
 /**
  * <p>
  * Instances of this class perform the transformation between 2D image coordinates and indexes into the associated 1D
@@ -18,7 +20,7 @@ package imagingbook.common.image;
  * </p>
  * <p>
  * The (abstract) method {@link #getIndex(int, int)} returns the 1D array index for a pair of 2D image coordinates. It
- * is implemented by the inner subclasses {@link ZeroValueIndexer}, {@link MirrorImageIndexer} and
+ * is implemented by the inner subclasses {@link DefaultValueIndexer}, {@link MirrorImageIndexer} and
  * {@link NearestBorderIndexer}. They exhibit different behaviors when accessing out-of-image coordinates (see
  * {@link OutOfBoundsStrategy}).
  * </p>
@@ -27,7 +29,7 @@ package imagingbook.common.image;
  * @version 2022/09/17
  * @see OutOfBoundsStrategy
  */
-public abstract class GridIndexer2D implements Cloneable {
+public abstract class GridIndexer2D {
 	
 	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.NearestBorder;
 
@@ -44,12 +46,24 @@ public abstract class GridIndexer2D implements Cloneable {
 			obs = DefaultOutOfBoundsStrategy;
 		}
 		switch (obs) {
-		case ZeroValues 	: return new ZeroValueIndexer(width, height);
-		case NearestBorder	: return new NearestBorderIndexer(width, height);
-		case MirrorImage	: return new MirrorImageIndexer(width, height);
-		case ThrowException	: return new ExceptionIndexer(width, height);
+			case DefaultValue: return new DefaultValueIndexer(width, height);
+			case NearestBorder	: return new NearestBorderIndexer(width, height);
+			case MirrorImage	: return new MirrorImageIndexer(width, height);
+			case PeriodicImage	: return new PeriodicImageIndexer(width, height);
+			case ThrowException	: return new ExceptionIndexer(width, height);
+			default:
+				throw new IllegalStateException("Unexpected value: " + obs);
 		}
-		return null;
+	}
+
+	/**
+	 * Creates and returns a new {@link GridIndexer2D} for the specified image and {@link OutOfBoundsStrategy}.
+	 * @param ip the image to be associated with the returned indexer
+	 * @param obs out-of-bounds strategy
+	 * @return a new {@link GridIndexer2D}
+	 */
+	public static GridIndexer2D create(ImageProcessor ip, OutOfBoundsStrategy obs) {
+		return create(ip.getWidth(), ip.getHeight(), obs);
 	}
 	
 	final int width;
@@ -64,7 +78,7 @@ public abstract class GridIndexer2D implements Cloneable {
 
 	/**
 	 * Returns the 1D array index for a given pair of image coordinates. For u, v coordinates outside the image, the
-	 * returned index depends on the concrete sub-class of {@link GridIndexer2D}. As a general rule, this method either
+	 * returned index depends on the implementing subclass of {@link GridIndexer2D}. As a general rule, this method either
 	 * returns a valid 1D array index or throws an exception.
 	 * Subclasses implement (override) this method.
 	 *
@@ -75,13 +89,14 @@ public abstract class GridIndexer2D implements Cloneable {
 	public abstract int getIndex(int u, int v);
 
 	/**
-	 * Returns the 1D array index assuming that the specified coordinates are inside the image.
+	 * Returns the 1D array index for a given pair of image coordinates, assuming that the specified position is
+	 * inside the image.
 	 *
 	 * @param u x-coordinate
 	 * @param v y-coordinate
 	 * @return the associated 1D index
 	 */
-	private int getWithinBoundsIndex(int u, int v) {
+	protected int getWithinBoundsIndex(int u, int v) {
 		return width * v + u;
 	}
 	
@@ -137,7 +152,7 @@ public abstract class GridIndexer2D implements Cloneable {
 			else if (v >= height) {
 				v = height - 1;
 			}
-			return super.getWithinBoundsIndex(u, v);
+			return getWithinBoundsIndex(u, v);
 		}
 	}
 
@@ -147,35 +162,56 @@ public abstract class GridIndexer2D implements Cloneable {
 	 * {@link OutOfBoundsStrategy#MirrorImage}.
 	 */
 	public static class MirrorImageIndexer extends GridIndexer2D {
+		private final int width2, height2;
 		
 		MirrorImageIndexer(int width, int height) {
 			super(width, height, OutOfBoundsStrategy.MirrorImage);
+			this.width2 = 2 * width;
+			this.height2 = 2 * height;
 		}
 
 		@Override
 		public int getIndex(int u, int v) {
-			// fast modulo operation for positive divisors only
-			u = u % width;
-			if (u < 0) {
-				u = u + width; 
-			}
-			v = v % height;
-			if (v < 0) {
-				v = v + height; 
-			}
-			return super.getWithinBoundsIndex(u, v);
+			int u2 = Math.floorMod(u, width2);
+			if (u2 >= width)
+				u2 = (width2) - u2 - 1;
+
+			int v2 = Math.floorMod(v, height2);
+			if (v2 >= height)
+				v2 = (height2) - v2 - 1;
+
+			return getWithinBoundsIndex(u2, v2);
 		}
 	}
 
 	/**
-	 * This indexer returns -1 for coordinates outside the image bounds, indicating that a (predefined) default value
-	 * should be used. There is no public constructor. To instantiate use method
-	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)} with {@link OutOfBoundsStrategy#ZeroValues}.
+	 * This indexer returns repetitive image values for coordinates outside the image bounds. There is no public
+	 * constructor. To instantiate use method {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)} with
+	 * {@link OutOfBoundsStrategy#PeriodicImage}.
 	 */
-	public static class ZeroValueIndexer extends GridIndexer2D {
+	public static class PeriodicImageIndexer extends GridIndexer2D {
+
+		PeriodicImageIndexer(int width, int height) {
+			super(width, height, OutOfBoundsStrategy.PeriodicImage);
+		}
+
+		@Override
+		public int getIndex(int u, int v) {
+			u = Math.floorMod(u, width);
+			v = Math.floorMod(v, height);
+			return getWithinBoundsIndex(u, v);
+		}
+	}
+
+	/**
+	 * This indexer returns -1 for coordinates outside the image bounds, indicating that a (predefined) default pixel value
+	 * should be used. There is no public constructor. To instantiate use method
+	 * {@link GridIndexer2D#create(int, int, OutOfBoundsStrategy)} with {@link OutOfBoundsStrategy#DefaultValue}.
+	 */
+	public static class DefaultValueIndexer extends GridIndexer2D {
 		
-		ZeroValueIndexer(int width, int height) {
-			super(width, height, OutOfBoundsStrategy.ZeroValues);
+		DefaultValueIndexer(int width, int height) {
+			super(width, height, OutOfBoundsStrategy.DefaultValue);
 		}
 
 		@Override
@@ -184,7 +220,7 @@ public abstract class GridIndexer2D implements Cloneable {
 				return -1;
 			}
 			else {
-				return super.getWithinBoundsIndex(u, v);
+				return getWithinBoundsIndex(u, v);
 			}
 		}
 	}
@@ -207,7 +243,7 @@ public abstract class GridIndexer2D implements Cloneable {
 						String.format("out-of-image position [%d,%d]", u, v));
 			}
 			else 
-				return super.getWithinBoundsIndex(u, v);
+				return getWithinBoundsIndex(u, v);
 		}
 	}
 	

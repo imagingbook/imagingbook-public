@@ -74,7 +74,7 @@ public class Map_Affine_Triangles implements PlugInFilter, JavaDocHelp {
 		// inverse mapping (target to source):
     	AffineMapping2D m = AffineMapping2D.fromPoints(P, Q);	// forward mapping P -> Q
 		AffineMapping2D mi = m.getInverse();					// inverse mapping Q -> P
-		new ImageMapper(mi, OutOfBoundsStrategy.ZeroValues, InterpolationMethod.Bicubic).map(ip);
+		new ImageMapper(mi, OutOfBoundsStrategy.DefaultValue, InterpolationMethod.Bicubic).map(ip);
 		
 		IJ.log("A = \n" + Matrix.toString(m.getTransformationMatrix()));
     }

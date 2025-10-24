@@ -93,7 +93,7 @@ public class Map_Projective implements PlugInFilter, JavaDocHelp {
 
 		// create a mapper instance:
 		ImageMapper mapper = 
-				new ImageMapper(mi, OutOfBoundsStrategy.ZeroValues, InterpolationMethod.Bicubic);
+				new ImageMapper(mi, OutOfBoundsStrategy.DefaultValue, InterpolationMethod.Bicubic);
 		
 		// apply the mapper:
 		mapper.map(source, target);

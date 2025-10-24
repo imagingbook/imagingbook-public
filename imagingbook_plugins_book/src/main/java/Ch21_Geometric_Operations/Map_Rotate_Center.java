@@ -42,7 +42,7 @@ public class Map_Rotate_Center implements PlugInFilter, JavaDocHelp {
 	
 	private static double alphaDeg = 15.0; 	// rotation angle (in degrees)
 	
-	private static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.ZeroValues;
+	private static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.DefaultValue;
 	private static InterpolationMethod IPM = InterpolationMethod.Bicubic;
 	
 	/**

@@ -145,7 +145,7 @@ public class sRGB65ColorSpaceTest {
 			assertArrayEquals(xyzIN, xyzOUT, TOL);
 		}
 
-		{	// check fromRGB / toRGB
+		{	// check fromRGB / toRGB -- unnecessary since frmRGB/toRGB don't do anything!
 			float[] rgbCS = cs.fromRGB(srgbIN);
 			float[] srgbOUT = cs.toRGB(rgbCS);
 			assertArrayEquals(srgbIN, srgbOUT, TOL);

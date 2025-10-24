@@ -11,11 +11,14 @@ package imagingbook.sampleimages.kimia;
 import imagingbook.testutils.ResourceTestUtils;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class KimiaCollageTest {
 	
 	@Test
-	public void test1() {
-		ResourceTestUtils.testImageResource(KimiaCollage.class);
+	public void testKimiaCollage() {
+		int n = ResourceTestUtils.testImageResource(KimiaCollage.class);
+        assertEquals(KimiaCollage.values().length, n);
 	}
 	
 }

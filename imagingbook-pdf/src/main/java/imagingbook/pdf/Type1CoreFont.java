@@ -16,7 +16,7 @@ import java.io.IOException;
 
 
 /**
- * This class collects the set of 14 Type-1 standard fonts that every PS/PDF reader is supposed to have available by
+ * This enum type collects the set of 14 Type-1 standard fonts that every PS/PDF reader is supposed to have available by
  * default. The associated resource directory contains both .AFM and .PFB files. iText/OpenPDF never embeds any of these
  * fonts on the exported PDF, which may cause problems during pre-press checking, where generally ALL fonts should be
  * embedded.
@@ -81,17 +81,19 @@ public enum Type1CoreFont implements NamedResource {
 
 	// -----------------------------------------------
 	
-	// public static void main(String[] args) {
-	// 	System.out.println("Font resource is in JAR: " + Type1CoreFont.Courier.isInsideJar());
-	// 	for (Type1CoreFont sf : Type1CoreFont.values()) {
-	// 		System.out.println(sf.toString() + ": " + sf.getBaseFont().getPostscriptFontName());
-	// 		System.out.println("   " + sf.getRelativePath());
-	// 		System.out.println("   " + sf.getStream());
-	// 		System.out.println("   " + sf.getURL());
-	// 		System.out.println("   " + sf.getBaseFont());
-	//
-	// 	}
-	// }
+/*
+    public static void main(String[] args) {
+		System.out.println("Font resource is in JAR: " + Type1CoreFont.Courier.isInsideJar());
+		for (Type1CoreFont sf : Type1CoreFont.values()) {
+			System.out.println(sf.toString() + ": " + sf.getBaseFont().getPostscriptFontName());
+			System.out.println("   " + sf.getRelativePath());
+			System.out.println("   " + sf.getStream());
+			System.out.println("   " + sf.getURL());
+			System.out.println("   " + sf.getBaseFont());
+
+		}
+	}
+*/
 
 }
 

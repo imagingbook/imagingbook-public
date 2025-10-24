@@ -71,13 +71,30 @@
 
 	<build>
 		<plugins>
-			<plugin>
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-jar</id>
+						<phase>none</phase>
+					</execution>
+					<execution>
+						<id>javadoc-jar</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin> -->
+			
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
-					<skippedModules>imagingbook-testing</skippedModules>	<!--effective in aggregate only-->
+					<skippedModules>imagingbook-testing</skippedModules>
+                    <outputDirectory>${project.basedir}/${imagingbook.javadocdir}</outputDirectory>
 				</configuration>
-			</plugin>
+			</plugin>-->
+			
 		</plugins>
 	</build>
 

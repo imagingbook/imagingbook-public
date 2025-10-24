@@ -79,7 +79,7 @@ public class Map_Nonlinear_Twirl implements PlugInFilter, JavaDocHelp {
 			}
 		};
 		
-		new ImageMapper(imap, OutOfBoundsStrategy.ZeroValues, InterpolationMethod.Bicubic).map(ip);
+		new ImageMapper(imap, OutOfBoundsStrategy.DefaultValue, InterpolationMethod.Bicubic).map(ip);
 	}
 	
 }

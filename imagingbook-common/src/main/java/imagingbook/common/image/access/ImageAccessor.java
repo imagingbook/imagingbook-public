@@ -50,7 +50,7 @@ import imagingbook.common.image.interpolation.InterpolationMethod;
 public abstract class ImageAccessor {
 	
 	/** The default out-of-bounds strategy (see {@link OutOfBoundsStrategy}). */
-	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.ZeroValues;
+	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.DefaultValue;
 	/** The default pixel interpolation method (see {@link InterpolationMethod}). */
 	public static final InterpolationMethod DefaultInterpolationMethod = InterpolationMethod.Bilinear;
 	
@@ -159,7 +159,7 @@ public abstract class ImageAccessor {
 	}
 	
 	/**
-	 * Returns the pixel value for the specified floating-point 
+	 * Returns the pixel value for the specified integer
 	 * position as a {@code float[]} with either 1 element for scalar-valued images
 	 * and or more elements (e.g., 3 for for RGB images).
 	 * 
@@ -170,7 +170,7 @@ public abstract class ImageAccessor {
 	public abstract float[] getPix(int u, int v);
 	
 	/**
-	 * Returns the interpolated pixel value for the specified floating-point 
+	 * Returns the interpolated pixel value for the specified continuous
 	 * position as a {@code float[]} with either 1 element for scalar-valued images
 	 * and or more elements (e.g., 3 for for RGB images).
 	 * Interpolation is used non-integer coordinates.
@@ -179,7 +179,7 @@ public abstract class ImageAccessor {
 	 * @param y the y-coordinate
 	 * @return the interpolated pixel value ({@code float[]})
 	 */
-	public abstract float[] getPix(double x, double y);		// returns interpolated pixel value at real position (x, y)
+	public abstract float[] getPix(double x, double y);
 	
 	/**
 	 * Sets the pixel value at the specified integer position.

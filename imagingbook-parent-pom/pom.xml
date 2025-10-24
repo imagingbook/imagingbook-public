@@ -50,8 +50,8 @@
 		<imagingbook.javadocdir>javadoc</imagingbook.javadocdir>
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
 
-		<java.version>11</java.version>	<!-- need to step to 11 to make Javadoc API linking work! -->
-		<imagej.version>1.54b</imagej.version> <!-- see https://mvnrepository.com/artifact/net.imagej/ij -->
+		<java.version>17</java.version>	<!-- need to step to 11 to make Javadoc API linking work! -->
+		<imagej.version>1.54p</imagej.version> <!-- see https://mvnrepository.com/artifact/net.imagej/ij -->
 		<!-- <imagej.apilink>https://javadoc.io/doc/net.imagej/ij</imagej.apilink> -->
 		<imagej.apilink>https://imagej.net/ij/developer/api/</imagej.apilink>
 
@@ -63,8 +63,8 @@
 		<jtransforms.version>3.1</jtransforms.version>
 		<jtransforms.apilink>https://javadoc.io/doc/com.github.wendykierp/JTransforms</jtransforms.apilink>
 
-		<openpdf.version>1.3.30</openpdf.version>
-		<openpdf.apilink>https://javadoc.io/doc/com.github.librepdf/openpdf/1.3.30</openpdf.apilink>
+		<openpdf.version>1.4.2</openpdf.version> <!-- was 1.3.30 -->
+		<openpdf.apilink>https://javadoc.io/doc/com.github.librepdf/openpdf/1.4.2</openpdf.apilink>
 
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	    <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -82,7 +82,6 @@
 			<![CDATA[<br><font face="verdana"><B>]]>${project.name} ${project.version}<![CDATA[</B></font>]]>
 		</imagingbook.header>
 		<imagingbook.bottom>Build Date: ${maven.build.timestamp}</imagingbook.bottom>
-
 	</properties>
 
 	<distributionManagement>
@@ -129,122 +128,85 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.5.0</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.3.0</version>
+					<version>3.3.1</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>3.3.0</version>
+					<version>3.9.0</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.5.4</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>3.0.0</version>
-					<configuration>
-						<skip>${imagingbook.skipdeploy}</skip>
-					</configuration>
+					<version>3.1.4</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>3.0.0-M7</version>
-					<configuration>
-						<goals>deploy</goals>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
-					</configuration>
+					<version>3.1.1</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.2.0</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.3.0</version>
-					<!-- how to add aggregated javadoc to pom-type parent project -->
-					<!-- https://stackoverflow.com/questions/53706943/how-to-upload-an-artifact-to-maven-central-with-an-empty-javadoc-jar-or-empty-s -->
-					<executions>
-						<execution>
-							<id>default-jar</id>
-							<phase>package</phase>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>javadoc-jar</id>
-							<phase>package</phase>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-							<configuration>
-								<classifier>javadoc</classifier>
-							</configuration>
-						</execution>
-						<!-- <execution>
-							<id>sources-jar</id>
-							<phase>package</phase>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-							<configuration>
-								<classifier>sources</classifier>
-							</configuration>
-						</execution> -->
-					</executions>
+					<version>3.4.2</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>3.2.1</version>
+					<version>3.3.1</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.4.1</version>
+					<version>3.12.0</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>3.4.1</version>
+					<version>3.9.0</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.10.1</version>
-					<configuration>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
-						<!-- <compilerArgs>
-            				<arg>-Xpkginfo:nonempty</arg>
-						</compilerArgs> -->
-					</configuration>
+					<version>3.14.1</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.14.1</version>
+					<version>2.19.1</version>
 				</plugin>
 
 			</plugins>
 		</pluginManagement>
+		
+		<!-- End of pluginManagement -->
 
 		<plugins>
 			<plugin>
@@ -263,22 +225,37 @@
 							<directory>${project.basedir}/${imagingbook.deploydir}</directory>
 							<includes><include>**/*</include></includes>
 						</fileset>
-						<!--<fileset>
-							<directory>${project.basedir}/${imagingbook.javadocdir}</directory>
+                        <!--JavaDoc is always placed in './apidocs'-->
+						<fileset>
+                            <directory>${project.basedir}/apidocs</directory>
 							<includes><include>**/*</include></includes>
-						</fileset>-->
+						</fileset>
 					</filesets>
 				</configuration>
 			</plugin>
-
-			<!-- do not deploy this artifact -->
-			<!-- <plugin>
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-deploy-plugin</artifactId>
-			  <configuration>
-			    <skip>true</skip>
-			  </configuration>
-			</plugin>	-->
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<!-- disables automatic module-path for non-modular projects -->
+					<release>${java.version}</release>
+					<!-- <compilerArgs>
+						<arg>-Xpkginfo:nonempty</arg>
+					</compilerArgs> -->
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<goals>deploy</goals>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
 
 			<!-- Output the value of certain variables for debugging -->
 			<plugin>
@@ -296,14 +273,11 @@
 								<!-- output some status information -->
 								<echo level="info">**** imagingbook.buildprofile = ${imagingbook.buildprofile}</echo>
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
-								<!--<echo level="info">**** outputDirectory = ${outputDirectory}</echo>-->
-								<echo level="info">**** reporting.outputDirectory = ${project.reporting.outputDirectory}</echo>
-								<!--<echo level="info">**** reportOutputDirectory = ${reportOutputDirectory}</echo>-->
+								<echo level="info">**** project.reporting.outputDirectory = ${project.reporting.outputDirectory}</echo>
 								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** imagingbook.javadocdir = ${imagingbook.javadocdir}</echo>
 								<echo level="info">**** imagingbook.skipjavadoc = ${imagingbook.skipjavadoc}</echo>
-								<!--<echo level="info">**** maven.javadoc.skip = ${maven.javadoc.skip}</echo>-->
 								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
 								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
 								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
@@ -318,6 +292,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+					<!-- <skip>true</skip> -->
 					<!-- <useDefaultManifestFile>true</useDefaultManifestFile> --> <!-- not available since version 3.0.0 -->
 					<archive>
 						<manifest>
@@ -330,6 +305,10 @@
 						</manifestEntries>
 					</archive>
 				</configuration>
+
+                <!-- how to add aggregated javadoc to pom-type parent project -->
+                <!-- https://stackoverflow.com/questions/53706943/how-to-upload-an-artifact-to-maven-central-with-an-empty-javadoc-jar-or-empty-s -->
+                <!-- CHECK version 7.1 for additional javadoc executions! -->
 			</plugin>
 
 			<plugin>  <!-- generate a separate jar file with source code -->
@@ -349,71 +328,73 @@
 				</executions>
 			</plugin>
 
+            <!-- Javadoc generation, see https://maven.apache.org/plugins/maven-javadoc-plugin/javadoc-mojo.html -->
+            <!-- https://docs.geotools.org/latest/userguide/build/maven/javadocs.html -->
+            <!-- To run on command line:
+                mvn clean install javadoc:aggregate
+                mvn javadoc:javadoc -Dimagingbook.skipjavadoc=false
+                mvn javadoc:aggregate -Dimagingbook.skipjavadoc=false
+            -->
 			<plugin>
-				<!-- Javadoc generation, see https://maven.apache.org/plugins/maven-javadoc-plugin/javadoc-mojo.html -->
-				<!-- https://docs.geotools.org/latest/userguide/build/maven/javadocs.html -->
-				<!-- To run on command line:
-					mvn javadoc:javadoc -Dimagingbook.skipjavadoc=false
-					mvn javadoc:aggregate -Dimagingbook.skipjavadoc=false
-				-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
-					<!-- for some reason the standard property maven.javadoc.skip does not work as expected-->
 					<skip>${imagingbook.skipjavadoc}</skip>
-					<reportOutputDirectory>${imagingbook.docdir}</reportOutputDirectory>
-					<destDir>${imagingbook.javadocdir}</destDir>
-					<show>protected</show>
-					<source>${java.version}</source>
-					<linksource>true</linksource>
-					<failOnError>false</failOnError>
-					<verbose>true</verbose>
-					<excludePackageNames>*.DATA:*.DATA.*</excludePackageNames>
-					<detectJavaApiLink>true</detectJavaApiLink>	<!-- got incorrect links for SE < 11 -->
-					<detectLinks>true</detectLinks>
+                    <source>${java.version}</source>
+                    <encoding>UTF-8</encoding>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
+                    <linksource>true</linksource>
+                    <show>protected</show>
+                    <failOnError>false</failOnError>
+                    <doclint>all,-missing</doclint>
+                    <excludePackageNames>*.DATA:*.DATA.*</excludePackageNames>
+                    <detectJavaApiLink>true</detectJavaApiLink>
 					<links>
 						<link>${imagej.apilink}</link>
 						<link>${commons-math3.apilink}</link>
 						<link>${jtransforms.apilink}</link>
 						<link>${openpdf.apilink}</link>
-						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-core/latest</link>
+						<!--<link>https://javadoc.io/doc/com.imagingbook/imagingbook-core/latest</link>
 						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-common/latest</link>
 						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-spectral/latest</link>
 						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-pdf/latest</link>
 						<link>https://javadoc.io/doc/com.imagingbook/imagingbook-spectral/latest</link>
-						<link>https://javadoc.io/doc/com.imagingbook/sample-images/latest</link>
+						<link>https://javadoc.io/doc/com.imagingbook/sample-images/latest</link>-->
 					</links>
-					<doctitle>${imagingbook.doctitle}</doctitle>
-					<header>${imagingbook.header}</header>
-					<!--<footer>${imagingbook.header}</footer>-->
-					<bottom>${imagingbook.bottom}</bottom>
-					<packagesheader>${project.name}</packagesheader>
-					<overview>${project.basedir}/docs/overview.html</overview>
-					<nohelp>true</nohelp>
-					<author>false</author>
-					<doclint>all,-missing</doclint>
+                    <doctitle>${imagingbook.doctitle}</doctitle>
+                    <header>${imagingbook.header}</header>
+                    <bottom>${imagingbook.bottom}</bottom>
+                    <packagesheader>${project.name}</packagesheader>
+                    <nohelp>true</nohelp>
+                    <author>false</author>
 				</configuration>
 
 				<executions>
 					<!-- see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html -->
 					<execution>
-						<id>aggregate</id>
+						<id>aggregate-javadoc</id>
 						<goals>
 							<goal>aggregate</goal>
 						</goals>
-						<phase>site</phase>
+                        <phase>package</phase>
 						<configuration>
+                            <skippedModules>imagingbook-testing</skippedModules>
+                            <!-- Override aggregate output directory -->
+                            <!--<outputDirectory>${project.basedir}/${imagingbook.javadocdir}</outputDirectory>-->
+                            <outputDirectory>${project.basedir}</outputDirectory>
 						</configuration>
 					</execution>
 
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-						</configuration>
-					</execution>
+                    <execution>
+                        <id>aggregate-jar</id>
+                        <goals>
+                            <goal>aggregate-jar</goal>
+                        </goals>
+                        <configuration>
+                        </configuration>
+                    </execution>
+
 				</executions>
 			</plugin>
 			
@@ -439,6 +420,9 @@
 				<!-- explicitly define maven-deploy-plugin after other to force exec order -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>${imagingbook.skipdeploy}</skip>
+                </configuration>
 				<executions>
 					<execution>
 						<id>deploy</id>
@@ -449,45 +433,9 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			
 		</plugins>
 	</build>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<!-- to stop Maven complaining about missing version number -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<reportSets>
-					<reportSet />
-				</reportSets>
-			</plugin>
-
-			<!-- NEEDED? aggregate JavaDoc (see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html) -->
-			<!--  see https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate.html -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<!-- <version>3.4.1</version> -->
-				<reportSets>
-					<reportSet>
-						<id>aggregate</id>
-						<inherited>false</inherited>
-						<reports>
-							<report>aggregate</report>
-						</reports>
-					</reportSet>
-					<reportSet>
-						<id>default</id>
-						<reports>
-							<report>javadoc</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-		</plugins>
-	</reporting>
 
 	<profiles>
 		<!-- ****************************************************************************
@@ -512,7 +460,7 @@
 				<pluginConfigFile>plugins.config</pluginConfigFile>
 				<!-- future use to specify general plugins path: -->
 				<pluginPrefix>"Plugins&gt;B&amp;B "</pluginPrefix>
-				<imagingbook.libs>imagingbook-core,imagingbook-common,imagingbook-spectral,imagingbook-pdf,imagingbook-sample-images</imagingbook.libs>
+				<imagingbook.libs>imagingbook-core,imagingbook-common,imagingbook-spectral,imagingbook-pdf,imagingbook-sample-images,imagingbook-calibrate-lib</imagingbook.libs>
 			</properties>
 
 			<build>
@@ -537,12 +485,13 @@
 										<include>**/*</include>
 									</includes>
 								</fileset>
-								<fileset> <!-- also clean the output directory (needed?) -->
+                                <!-- also clean the output directory (needed?) -->
+								<!--<fileset>
 									<directory>${outputDirectory}</directory>
 									<excludes>
 										<exclude>.gitignore</exclude>
 									</excludes>
-								</fileset>
+								</fileset>-->
 								<!-- because excludeDefaultDirectories=true, target doesn't get cleaned by default -->
 								<fileset>
 									<directory>${project.basedir}/target</directory>
@@ -555,7 +504,8 @@
 									<includes><include>**/*</include></includes>
 								</fileset>
 								<fileset>
-									<directory>${project.basedir}/${imagingbook.javadocdir}</directory>
+									<!--<directory>${project.basedir}/${imagingbook.javadocdir}</directory>-->
+                                    <directory>${project.basedir}/apidocs</directory>
 									<includes><include>**/*</include></includes>
 								</fileset>
 							</filesets>
@@ -677,6 +627,23 @@
 				</resources>
 			</build>
 		</profile>
+
+		<!-- To skip maven-jar-plugin in POM-only (no-source) modules -->
+		<!-- Activates only for modules that lack a source folder -->
+		<!-- <profile>
+			<id>skip-build-plugins-if-no-src</id>
+			<activation>
+			  <file>
+				<missing>src</missing>
+			  </file>
+			</activation>
+			<properties>
+			  <skip.jar>false</skip.jar>
+			  <skip.javadoc>true</skip.javadoc>
+			  <skip.source>true</skip.source>
+			</properties>
+		</profile> -->
+
 	</profiles>
 
 </project>

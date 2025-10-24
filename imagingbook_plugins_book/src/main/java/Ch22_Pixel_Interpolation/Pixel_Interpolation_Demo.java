@@ -40,7 +40,7 @@ import imagingbook.core.jdoc.JavaDocHelp;
 public class Pixel_Interpolation_Demo implements PlugInFilter, JavaDocHelp {
 	
 	private static InterpolationMethod IPM = InterpolationMethod.Bicubic;
-	private static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.ZeroValues;
+	private static OutOfBoundsStrategy OBS = OutOfBoundsStrategy.DefaultValue;
 	
 	private static double dx = 10.50;	// translation parameters
 	private static double dy = -3.25;
@@ -80,16 +80,16 @@ public class Pixel_Interpolation_Demo implements PlugInFilter, JavaDocHelp {
     	ImageProcessor target = source.createProcessor(w, h);
     	
     	// create ImageAccessor's for the source and target  image:
-    	ImageAccessor sA = ImageAccessor.create(source, OBS, IPM);
-    	ImageAccessor tA = ImageAccessor.create(target);
+    	ImageAccessor sa = ImageAccessor.create(source, OBS, IPM);
+    	ImageAccessor ta = ImageAccessor.create(target);
     	
     	// iterate over all pixels of the target image:
     	for (int u = 0; u < w; u++) {	// discrete target position (u,v)
     		for (int v = 0; v < h; v++) {
     			double x = u + dx;	// continuous source position (x,y)
     			double y = v + dy;
-    			float[] val = sA.getPix(x, y);
-    			tA.setPix(u, v, val);	// update target pixel
+    			float[] val = sa.getPix(x, y);
+    			ta.setPix(u, v, val);	// update target pixel
     		}
     	}
     	

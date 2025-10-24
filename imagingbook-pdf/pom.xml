@@ -21,7 +21,12 @@
 	<url>https://imagingbook.com</url>
 	
 	<dependencies>
-	
+
+        <dependency>
+            <groupId>net.imagej</groupId>
+            <artifactId>ij</artifactId>
+        </dependency>
+
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-core</artifactId>

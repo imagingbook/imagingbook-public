@@ -73,6 +73,6 @@ public class Map_Bilinear implements PlugInFilter, JavaDocHelp {
 	public void run(ImageProcessor ip) {
 		// we want the inverse mapping (Q -> P, so we swap P/Q):
 		BilinearMapping2D mi = BilinearMapping2D.fromPoints(Q, P);
-		new ImageMapper(mi, OutOfBoundsStrategy.ZeroValues, InterpolationMethod.Bicubic).map(ip);
+		new ImageMapper(mi, OutOfBoundsStrategy.DefaultValue, InterpolationMethod.Bicubic).map(ip);
     }
 }

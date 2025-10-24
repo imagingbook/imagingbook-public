@@ -131,7 +131,7 @@ public abstract class AbstractRgbColorSpace extends ColorSpace {
     // --------------------------------------------------------
 
     private static final String[] ComponentNames = {"R", "G", "B"};
-    
+
     @Override
     public String getName (int idx) {
         return ComponentNames[idx];

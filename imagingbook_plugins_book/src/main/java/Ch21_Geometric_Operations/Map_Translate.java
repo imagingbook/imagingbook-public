@@ -59,7 +59,7 @@ public class Map_Translate implements PlugInFilter, JavaDocHelp {
 	public void run(ImageProcessor ip) {
 
 		Translation2D imap = new Translation2D(dx, dy).getInverse();
-		new ImageMapper(imap, OutOfBoundsStrategy.ZeroValues, InterpolationMethod.Bicubic).map(ip);
+		new ImageMapper(imap, OutOfBoundsStrategy.DefaultValue, InterpolationMethod.Bicubic).map(ip);
     }
 
 }

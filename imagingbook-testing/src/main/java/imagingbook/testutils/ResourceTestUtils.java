@@ -39,7 +39,7 @@ public abstract class ResourceTestUtils {
 		assertTrue("class must implement " + NamedResource.class, 
 				NamedResource.class.isAssignableFrom(clazz));
 		
-		String[] names = NamedResource.getResourceFileNames(clazz);
+		String[] names = NamedResource.getNamedResourceFileNames(clazz);
 		HashSet<String> hs = new HashSet<>(Arrays.asList(names));
 		
 		int n = 0;

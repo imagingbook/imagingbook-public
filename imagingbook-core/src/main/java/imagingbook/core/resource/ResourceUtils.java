@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 
@@ -57,19 +58,22 @@ public abstract class ResourceUtils {
 		return file.isFile();
 	}
 
-	/**
+
+    /**
 	 * Finds the URI for a resource relative to a specified class. The resource may be located in the file system or
 	 * inside a JAR file.
 	 *
 	 * @param clazz the anchor class
-	 * @param relPath the resource path relative to the anchor class
+	 * @param relPath the resource path relative to the anchor class (file or directory)
 	 * @return the URI or {@code null} if the resource was not found
 	 */
 	public static URI getResourceUri(Class<?> clazz, String  relPath) {
+        // System.out.println("ResourceUtils.getResourceUri(): relPath = " + relPath);
 		URI uri = null;
 		if (isInsideJar(clazz)) {
+            // System.out.println("ResourceUtils.getResourceUri(): inside JAR");
 			String classPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
-			//String packagePath = clazz.getPackage().getName().replace('.', File.separatorChar);
+			// String packagePath = clazz.getPackage().getName().replace('.', File.separatorChar);
 			String packagePath = clazz.getPackage().getName().replace('.', '/');
 			String compPath = "jar:file:" + classPath + "!/" + packagePath + "/" + relPath;
 			try {
@@ -79,7 +83,10 @@ public abstract class ResourceUtils {
 			}	
 		}
 		else {	// regular file path
+            // System.out.println("ResourceUtils.getResourceUri(): regular file");
 			try {
+                URL url = clazz.getResource(relPath);
+                // System.out.println("ResourceUtils.getResourceUri(): url = " + url);
 				uri = clazz.getResource(relPath).toURI();
 			} catch (Exception e) {
 				//do nothing, just return null - was: throw new RuntimeException("getResourceURI: " + e.toString());
@@ -87,6 +94,8 @@ public abstract class ResourceUtils {
 		}
 		return uri;
 	}
+
+
 
 	/**
 	 * <p>
@@ -101,9 +110,9 @@ public abstract class ResourceUtils {
 	 * @param clazz anchor class
 	 * @param relPath the path of the resource to be found (relative to the location of the anchor class)
 	 * @return the path to the specified resource
-	 * @version 2016/06/03: modified to return proper path to resource inside a JAR file.
 	 */
 	public static Path getResourcePath(Class<?> clazz, String relPath) {
+        // 2016/06/03: modified to return proper path to resource inside a JAR file.
 		URI uri = getResourceUri(clazz, relPath);
 		if (uri != null) {
 			return uriToPath(uri);
@@ -199,7 +208,7 @@ public abstract class ResourceUtils {
 	 * @return a possibly empty array of paths
 	 */
 	public static Path[] getResourcePaths(Class<?> clazz, String relPath) {
-		URI uri = getResourceUri(clazz, relPath);
+        URI uri = getResourceUri(clazz, relPath);
 		if (uri == null) {
 			throw new RuntimeException("uri is null for resource class " + clazz.getSimpleName()
 					+ " and relative path " + relPath);
@@ -216,6 +225,9 @@ public abstract class ResourceUtils {
 	 * @return a possibly empty array of file names
 	 */
 	public static String[] getResourceFileNames(Class<?> clazz, String relDir) {
+        if (!relDir.endsWith("/")) {
+            relDir = relDir + "/";          // TODO: check for more elegant solution
+        }
 		Path[] paths = ResourceUtils.getResourcePaths(clazz, relDir);
 		List<String> names = new ArrayList<>();
 		for (Path p : paths) {
