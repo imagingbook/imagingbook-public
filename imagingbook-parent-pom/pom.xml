@@ -72,7 +72,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
-		<!--<imagingbook.gpgSkip>true</imagingbook.gpgSkip>-->	<!-- set false on command line for deploy only: -->
+		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
 
 		<!--   *************** JavDoc related items ****************** -->
 		<imagingbook.skipjavadoc>true</imagingbook.skipjavadoc>
@@ -276,7 +276,7 @@
 								<echo level="info">**** project.reporting.outputDirectory = ${project.reporting.outputDirectory}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
 								<echo level="info">**** imagingbook.skipjavadoc = ${imagingbook.skipjavadoc}</echo>
-								<!--<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>-->
+								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
                                 <echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
 								<echo level="info">**** imagingbook.deploydir = ${project.basedir}/${imagingbook.deploydir}</echo>
 								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
@@ -401,6 +401,7 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>3.2.8</version>
                 <configuration>
+                    <skip>${imagingbook.gpgSkip}</skip>
                     <useAgent>false</useAgent>
                     <passphraseServerId>gpg.passphrase</passphraseServerId>  <!-- as named in ~/.m2/settings.xml -->
                     <gpgArguments>
