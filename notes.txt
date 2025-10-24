@@ -49,3 +49,31 @@ Reactor Build Order:
 	[INFO] com.imagingbook:imagingbook-pdf                                    [jar]
 	[INFO] com.imagingbook:imagingbook_plugins_book                           [jar]
 	[INFO] com.imagingbook:imagingbook_plugins_demos                          [jar]
+
+
+
+`https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/imagingbook-parent-pom/pom.xml`
+`https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/pom.xml`
+
+https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/imagingbook-core/pom.xml
+https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/imagingbook-testing/pom.xml
+https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/imagingbook-sample-images/pom.xml
+https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/imagingbook-common/pom.xml
+https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/imagingbook-spectral/pom.xml
+https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/imagingbook-pdf/pom.xml
+https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/imagingbook_plugins_book/pom.xml
+https://github.com/imagingbook/imagingbook-public/raw/refs/heads/develop/imagingbook_plugins_demos/pom.xml
+
+
+Javadoc generation:
+mvn clean 
+mvn clean install -Dmaven.test.skip=true -Dimagingbook.skipjavadoc=true
+mvn javadoc:javadoc -Dimagingbook.skipjavadoc=false
+mvn javadoc:aggregate -Dimagingbook.skipjavadoc=false
+mvn javadoc:aggregate-jar -Dimagingbook.skipjavadoc=false
+
+mvn javadoc -Dimagingbook.skipjavadoc=false
+
+
+Finally do only this:
+mvn clean install -Dmaven.test.skip=true -Dimagingbook.skipjavadoc=false
