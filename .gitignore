@@ -4,5 +4,4 @@
 /.classpath
 DEPLOY
 *.iml
-/chat-status.txt
-/*.asc
+/notes.txt
