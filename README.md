@@ -84,7 +84,7 @@ project's `pom.xml`file:
 <dependency>
   <groupId>com.imagingbook</groupId>
   <artifactId>imagingbook-common</artifactId>
-  <version>7.1.0</version>
+  <version>7.2.0</version>
 </dependency>
 ```
 Replace the number in `<version>...</version>` by the most current release version found on 
