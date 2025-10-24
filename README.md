@@ -57,7 +57,7 @@ or copied manually to ImageJ's `plugins/` directory:
 
 ### API Documentation
 
-* [**imagingbook-public**](https://imagingbook.github.io/imagingbook-public/javadoc)
+* [**imagingbook-public**](https://imagingbook.github.io/imagingbook-public/apidocs)
   (aggregated JavaDoc for latest build)
 
 
