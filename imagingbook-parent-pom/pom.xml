@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.imagingbook</groupId>
 	<artifactId>imagingbook-parent-pom</artifactId>
-	<version>7.2.0-SNAPSHOT</version>
+	<version>7.2.0</version>
 	<packaging>pom</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -32,14 +32,14 @@
 			<url>http://opensource.org/licenses/BSD-2-Clause</url>
 		</license>
 	</licenses>
-	
+
 	<scm>
 		<connection>scm:git:git://github.com/imagingbook/imagingbook-public.git</connection>
 		<developerConnection>scm:git:ssh://github.com:imagingbook/imagingbook-public.git.git</developerConnection>
 		<url>http://github.com/imagingbook/imagingbook-public.git/tree/master</url>
 	</scm>
 
-	<properties>	
+	<properties>
 		<directory-up-1>${project.basedir}${file.separator}..</directory-up-1>
 		<directory-up-2>${project.basedir}${file.separator}..${file.separator}..</directory-up-2>
 		<directory-up-3>${project.basedir}${file.separator}..${file.separator}..${file.separator}..</directory-up-3>
@@ -47,7 +47,6 @@
 		<imagingbook.rootdir>${directory-up-1}</imagingbook.rootdir>   <!-- to be modified by nested projects -->
 		<imagingbook.deploydir>DEPLOY</imagingbook.deploydir>
 		<imagingbook.docdir>${project.basedir}</imagingbook.docdir>
-		<imagingbook.javadocdir>javadoc</imagingbook.javadocdir>
 		<imagingbook.buildprofile>DefaultProfile</imagingbook.buildprofile>
 
 		<java.version>17</java.version>	<!-- need to step to 11 to make Javadoc API linking work! -->
@@ -71,9 +70,9 @@
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
+
 		<imagingbook.skipdeploy>false</imagingbook.skipdeploy>	<!-- set true in downstream POMS to exclude from deployment -->
-		<imagingbook.gpgSkip>true</imagingbook.gpgSkip>	<!-- set false on command line for deploy only: -->
+		<!--<imagingbook.gpgSkip>true</imagingbook.gpgSkip>-->	<!-- set false on command line for deploy only: -->
 
 		<!--   *************** JavDoc related items ****************** -->
 		<imagingbook.skipjavadoc>true</imagingbook.skipjavadoc>
@@ -85,18 +84,18 @@
 	</properties>
 
 	<distributionManagement>
-	 	<!-- used by 'mvn deploy' -->
+	 	<!-- used during 'mvn deploy' -->
+        <snapshotRepository>
+            <id>local-deploy</id>
+            <url>file:${imagingbook.deploydir}</url>
+            <!-- <url>https://oss.sonatype.org/content/repositories/snapshots</url> -->
+        </snapshotRepository>
+
+        <!-- Release repo -->
 		<repository>
 			<id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-
-		<snapshotRepository>
-			<!-- <id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url> -->
-			<id>local-deploy</id>
-			<url>file:///${project.basedir}${file.separator}${imagingbook.deploydir}</url>
-		</snapshotRepository>
 	</distributionManagement>
 
 	<dependencyManagement>
@@ -142,17 +141,11 @@
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>3.9.0</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.5.4</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>3.1.4</version>
 				</plugin>
 
 				<plugin>
@@ -203,9 +196,10 @@
 					<version>2.19.1</version>
 				</plugin>
 
+
 			</plugins>
 		</pluginManagement>
-		
+
 		<!-- End of pluginManagement -->
 
 		<plugins>
@@ -233,7 +227,7 @@
 					</filesets>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -245,9 +239,15 @@
 					<!-- <compilerArgs>
 						<arg>-Xpkginfo:nonempty</arg>
 					</compilerArgs> -->
+                    <!--<compilerArgs>
+                        <arg>-Xpkginfo:nonempty</arg>
+                        <arg>-Xlint:all</arg>
+                    </compilerArgs>-->
+                    <parameters>true</parameters>
+                    <showWarnings>false</showWarnings> <!-- hides only Maven’s pre-compile checks -->
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
@@ -274,12 +274,11 @@
 								<echo level="info">**** imagingbook.buildprofile = ${imagingbook.buildprofile}</echo>
 								<echo level="info">**** imagingbook.rootdir = ${imagingbook.rootdir}</echo>
 								<echo level="info">**** project.reporting.outputDirectory = ${project.reporting.outputDirectory}</echo>
-								<echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
 								<echo level="info">**** imagingbook.docdir = ${imagingbook.docdir}</echo>
-								<echo level="info">**** imagingbook.javadocdir = ${imagingbook.javadocdir}</echo>
 								<echo level="info">**** imagingbook.skipjavadoc = ${imagingbook.skipjavadoc}</echo>
-								<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>
-								<echo level="info">**** imagingbook.deploydir = ${imagingbook.deploydir}</echo>
+								<!--<echo level="info">**** imagingbook.gpgSkip = ${imagingbook.gpgSkip}</echo>-->
+                                <echo level="info">**** imagingbook.skipdeploy = ${imagingbook.skipdeploy}</echo>
+								<echo level="info">**** imagingbook.deploydir = ${project.basedir}/${imagingbook.deploydir}</echo>
 								<echo level="info">**** maven.compiler.source = ${maven.compiler.source}</echo>
 								<!--<echo level="info">**** maven.multiModuleProjectDirectory = ${maven.multiModuleProjectDirectory}</echo>-->
 							</target>
@@ -380,8 +379,7 @@
                         <phase>package</phase>
 						<configuration>
                             <skippedModules>imagingbook-testing</skippedModules>
-                            <!-- Override aggregate output directory -->
-                            <!--<outputDirectory>${project.basedir}/${imagingbook.javadocdir}</outputDirectory>-->
+                            <!-- Override aggregate output directory (JavaDoc is always placed in ./apidocs) -->
                             <outputDirectory>${project.basedir}</outputDirectory>
 						</configuration>
 					</execution>
@@ -397,43 +395,44 @@
 
 				</executions>
 			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>3.0.1</version>
-				<configuration>
-        			<skip>${imagingbook.gpgSkip}</skip>	<!-- exception with Eclipse maven plugin! -->
-    			</configuration>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-				<!-- explicitly define maven-deploy-plugin after other to force exec order -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.8</version>
                 <configuration>
-                    <skip>${imagingbook.skipdeploy}</skip>
+                    <useAgent>false</useAgent>
+                    <passphraseServerId>gpg.passphrase</passphraseServerId>  <!-- as named in ~/.m2/settings.xml -->
+                    <gpgArguments>
+                        <arg>--batch</arg>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
                 </configuration>
-				<executions>
-					<execution>
-						<id>deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                    <waitUntil>validated</waitUntil>
+                </configuration>
+            </plugin>
+
 		</plugins>
 	</build>
 
@@ -478,6 +477,9 @@
 									<includes>
 										<include>**/ij.jar</include>
 									</includes>
+                                    <excludes>
+                                        <exclude>.gitignore</exclude>
+                                    </excludes>
 								</fileset>
 								<fileset> <!-- clean ImageJ/jars/  -->
 									<directory>${project.basedir}/ImageJ/jars</directory>
@@ -485,13 +487,6 @@
 										<include>**/*</include>
 									</includes>
 								</fileset>
-                                <!-- also clean the output directory (needed?) -->
-								<!--<fileset>
-									<directory>${outputDirectory}</directory>
-									<excludes>
-										<exclude>.gitignore</exclude>
-									</excludes>
-								</fileset>-->
 								<!-- because excludeDefaultDirectories=true, target doesn't get cleaned by default -->
 								<fileset>
 									<directory>${project.basedir}/target</directory>
@@ -504,7 +499,7 @@
 									<includes><include>**/*</include></includes>
 								</fileset>
 								<fileset>
-									<!--<directory>${project.basedir}/${imagingbook.javadocdir}</directory>-->
+                                    <!-- Override aggregate output directory (JavaDoc is always placed in ./apidocs) -->
                                     <directory>${project.basedir}/apidocs</directory>
 									<includes><include>**/*</include></includes>
 								</fileset>
