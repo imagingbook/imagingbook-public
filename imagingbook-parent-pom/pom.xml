@@ -225,8 +225,9 @@
 							<directory>${project.basedir}/${imagingbook.deploydir}</directory>
 							<includes><include>**/*</include></includes>
 						</fileset>
+                        <!--JavaDoc is always placed in './apidocs'-->
 						<fileset>
-							<directory>${project.basedir}/${imagingbook.javadocdir}</directory>
+                            <directory>${project.basedir}/apidocs</directory>
 							<includes><include>**/*</include></includes>
 						</fileset>
 					</filesets>
@@ -380,7 +381,8 @@
 						<configuration>
                             <skippedModules>imagingbook-testing</skippedModules>
                             <!-- Override aggregate output directory -->
-                            <outputDirectory>${project.basedir}/${imagingbook.javadocdir}</outputDirectory>
+                            <!--<outputDirectory>${project.basedir}/${imagingbook.javadocdir}</outputDirectory>-->
+                            <outputDirectory>${project.basedir}</outputDirectory>
 						</configuration>
 					</execution>
 
@@ -483,12 +485,13 @@
 										<include>**/*</include>
 									</includes>
 								</fileset>
-								<fileset> <!-- also clean the output directory (needed?) -->
+                                <!-- also clean the output directory (needed?) -->
+								<!--<fileset>
 									<directory>${outputDirectory}</directory>
 									<excludes>
 										<exclude>.gitignore</exclude>
 									</excludes>
-								</fileset>
+								</fileset>-->
 								<!-- because excludeDefaultDirectories=true, target doesn't get cleaned by default -->
 								<fileset>
 									<directory>${project.basedir}/target</directory>
@@ -501,7 +504,8 @@
 									<includes><include>**/*</include></includes>
 								</fileset>
 								<fileset>
-									<directory>${project.basedir}/${imagingbook.javadocdir}</directory>
+									<!--<directory>${project.basedir}/${imagingbook.javadocdir}</directory>-->
+                                    <directory>${project.basedir}/apidocs</directory>
 									<includes><include>**/*</include></includes>
 								</fileset>
 							</filesets>
