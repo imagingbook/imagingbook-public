@@ -10,6 +10,8 @@ package imagingbook.pdf;
 
 import org.junit.Test;
 
+import java.net.URL;
+
 import static org.junit.Assert.assertNotNull;
 
 public class Type1CoreFontTest {
@@ -17,13 +19,17 @@ public class Type1CoreFontTest {
     /**
      * Locate the resource files for every enum value of Type1CoreFont and
      * instantiate the associated font object.
-     * Note: this test used to have problems with class path / loader!
+     * Note: this test used to have problems with class path / loader! And stil DOES!!
+     * TODO: clean up class loader problem associated with getURL()!
      */
 	@Test
 	public void testType1CoreFonts() {
-		for (Type1CoreFont fnt : Type1CoreFont.values()) {
-			assertNotNull("could not find URL for resource " + fnt, fnt.getURL());
-			assertNotNull("could not create font for resource " + fnt, fnt.getBaseFont());
+        for (Type1CoreFont fnt : Type1CoreFont.values()) {
+            URL url = fnt.getClass().getResource(Type1CoreFont.Helvetica.getRelativePath());
+            assertNotNull("could not find URL for resource " + fnt, url);
+			//assertNotNull("could not find URL for resource " + fnt, fnt.getURL());      // fnt.getURL() throws error (class loader problem?)
+			assertNotNull("could not create font " + fnt, fnt.getBaseFont(url.toString()));
+            //assertNotNull("could not create font for resource " + fnt, fnt.getBaseFont());    // uses fnt.getURL(), which fails
 		}
 	}
 

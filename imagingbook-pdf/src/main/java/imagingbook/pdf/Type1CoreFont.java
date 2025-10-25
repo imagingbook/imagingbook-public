@@ -13,6 +13,7 @@ import com.lowagie.text.pdf.BaseFont;
 import imagingbook.core.resource.NamedResource;
 
 import java.io.IOException;
+import java.net.URL;
 
 
 /**
@@ -78,6 +79,20 @@ public enum Type1CoreFont implements NamedResource {
 		}
 		return basefont;
 	}
+
+    /**
+     * Returns the {@link BaseFont} instance associated with this enum element. The font is created when this method is
+     * called the first time. Experimental method avoiding getURL().
+     * @param fontpath the absolute path to the font file
+     * @return the {@link BaseFont} instance associated with this font
+     */
+    public BaseFont getBaseFont(String fontpath) {
+        try {
+            return BaseFont.createFont(fontpath, "", BaseFont.EMBEDDED);
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
 	// -----------------------------------------------
 	

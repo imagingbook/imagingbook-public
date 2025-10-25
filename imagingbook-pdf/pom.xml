@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.imagingbook</groupId>
 		<artifactId>imagingbook-public</artifactId>
-		<version>7.2.0</version>
+		<version>7.3.0</version>
 	</parent>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -30,13 +30,13 @@
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-core</artifactId>
-			<version>7.2.0</version>
+			<version>7.3.0</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-common</artifactId>
-			<version>7.2.0</version>
+			<version>7.3.0</version>
 		</dependency>
 		
 		<dependency>
