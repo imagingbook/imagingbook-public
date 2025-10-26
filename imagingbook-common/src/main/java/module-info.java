@@ -87,4 +87,6 @@ module imagingbook.common {
     requires org.apache.commons.math4.legacy.core;
     requires org.apache.commons.geometry.euclidean;
     requires org.apache.commons.math4.legacy.exception;
+    requires org.apache.commons.geometry.core;
+    requires org.apache.commons.geometry.hull;
 }

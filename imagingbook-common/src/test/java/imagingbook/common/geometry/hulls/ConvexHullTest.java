@@ -8,17 +8,16 @@
  ******************************************************************************/
 package imagingbook.common.geometry.hulls;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import imagingbook.common.geometry.basic.Pnt2d;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.junit.Test;
-
-import imagingbook.common.geometry.basic.Pnt2d;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ConvexHullTest {
 
@@ -57,8 +56,8 @@ public class ConvexHullTest {
 	@Test
 	public void testSinglePoint() {
 		List<Pnt2d> points = Arrays.asList(
-				Pnt2d.from(2, 5)
-				);
+                Pnt2d.from(2, 5)
+        );
 		ConvexHull hull = new ConvexHull(points);
 		Pnt2d[] vertices = hull.getVertices();
 		assertNotNull(vertices);

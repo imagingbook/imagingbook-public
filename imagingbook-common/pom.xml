@@ -36,38 +36,13 @@
 			<version>7.3.0</version>
 		</dependency>
 
-
-		
+        <!-- Commons Math 3 dependency (obsolete!) -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 		</dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-numbers-core</artifactId>
-            <version>1.2</version>
-        </dependency>
-
-        <!--<dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-geometry-euclidean-2d</artifactId>
-            <version>1.0</version>
-        </dependency>-->
-
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-numbers-complex</artifactId>
-            <version>1.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-geometry-euclidean</artifactId>
-            <version>1.0</version>
-        </dependency>
-
+        <!-- Commons Math 4 dependencies (legacy) -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math4-core</artifactId>
@@ -80,8 +55,45 @@
             <version>4.0-beta1</version>
         </dependency>
 
+        <!-- Modern Commons Math 4 dependencies -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-numbers-core</artifactId>
+            <version>1.0-beta1</version>
+        </dependency>
 
-		
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-numbers-arrays</artifactId>
+            <version>1.0-beta1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-numbers-complex</artifactId>
+            <version>1.0-beta1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-geometry-core</artifactId>
+            <version>1.0-beta1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-geometry-euclidean</artifactId>
+            <version>1.0-beta1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-geometry-hull</artifactId>
+            <version>1.0-beta1</version>
+        </dependency>
+
+        <!-- ++++++++++++++++++++++++++++++  -->
+
 		<dependency>
 			<groupId>com.imagingbook</groupId>
 			<artifactId>imagingbook-testing</artifactId>

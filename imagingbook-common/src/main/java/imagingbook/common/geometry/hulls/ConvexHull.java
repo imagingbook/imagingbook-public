@@ -12,12 +12,18 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.shape.ShapeProducer;
-// TODO: port to Commons Math 4 and/or other ConvexHull implementation
-//  (QuickHull3D (2D/3D) or JTS Topology Suite (robust geometry, convex hull via ConvexHull class)
-// Note: Commons Math 4 has no own Convex Hull implementation!
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHull2D;
-import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;
+
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.geometry.hull.euclidean.twod.ConvexHull2D;
+import org.apache.commons.geometry.hull.euclidean.twod.MonotoneChain;
+// NOTE: in final release 1.0, 'precision' was replaced by Precision.DoubleEquivalence from Commons Numbers!!
+import org.apache.commons.geometry.core.precision.DoublePrecisionContext;
+import org.apache.commons.geometry.core.precision.EpsilonDoublePrecisionContext;
+
+//import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+//import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHull2D;
+//import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHullGenerator2D;
+//import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;
 
 import java.awt.Shape;
 import java.awt.geom.Path2D;
@@ -37,8 +43,9 @@ import java.util.List;
  * Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer (2022).
  * </p>
  *
+ * Ported to org.apache.commons.geometry (version 1.0-beta1)
  * @author WB
- * @version 2022/06/24
+ * @version 2025/10/26
  */
 public class ConvexHull implements ShapeProducer {
 
@@ -54,9 +61,15 @@ public class ConvexHull implements ShapeProducer {
 		if (!points.iterator().hasNext()) {
 			throw new IllegalArgumentException("empty point sequence, at least one input point required");
 		}
+        // see https://javadoc.io/static/org.apache.commons/commons-geometry-hull/1.0-beta1/org/apache/commons/geometry/hull/euclidean/twod/ConvexHull2D.html
+
 		List<Vector2D> pts = toVector2D(points);
-        ConvexHull2D hull = new MonotoneChain().generate(pts);
-		Vector2D[] vecs = hull.getVertices();
+        System.out.println("1. made list pts");
+        DoublePrecisionContext precision = new EpsilonDoublePrecisionContext(1e-10);
+        System.out.println("2. made precision");
+        ConvexHull2D hull = new MonotoneChain(true, precision).generate(pts); // 'true' = include collinear points
+        System.out.println("3. made hull");
+		Vector2D[] vecs = hull.getVertices().toArray(new Vector2D[0]);
 		this.vertices = new Pnt2d[vecs.length];
 		for (int i = 0; i < vecs.length; i++) {
 			// vertices[i] = PntDouble.from(vecs[i]);
@@ -77,7 +90,7 @@ public class ConvexHull implements ShapeProducer {
 	private static List<Vector2D> toVector2D(Iterable<Pnt2d> points) {
 		List<Vector2D> vecs = new ArrayList<Vector2D>();
 		for (Pnt2d p : points) {
-			vecs.add(new Vector2D(p.getX(), p.getY()));
+			vecs.add(Vector2D.of(p.getX(), p.getY()));
 		}
 		return vecs;
 	}
