@@ -75,7 +75,6 @@ module imagingbook.common {
 	exports imagingbook.common.util.tuples;
 	exports imagingbook.common.util;
 
-	requires transitive commons.math3;
 	requires transitive ij;
 	requires transitive imagingbook.core;
 	requires java.datatransfer;

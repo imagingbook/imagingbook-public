@@ -18,8 +18,8 @@ import org.apache.commons.math4.legacy.linear.NonPositiveDefiniteMatrixException
 import org.apache.commons.math4.legacy.linear.RealMatrix;
 import org.apache.commons.math4.legacy.linear.RealVector;
 
-import static org.apache.commons.math3.linear.CholeskyDecomposition.DEFAULT_ABSOLUTE_POSITIVITY_THRESHOLD;
-import static org.apache.commons.math3.linear.CholeskyDecomposition.DEFAULT_RELATIVE_SYMMETRY_THRESHOLD;
+import static org.apache.commons.math4.legacy.linear.CholeskyDecomposition.DEFAULT_ABSOLUTE_POSITIVITY_THRESHOLD;
+import static org.apache.commons.math4.legacy.linear.CholeskyDecomposition.DEFAULT_RELATIVE_SYMMETRY_THRESHOLD;
 
 /**
  * <p>

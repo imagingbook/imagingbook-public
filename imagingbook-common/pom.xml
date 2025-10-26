@@ -37,10 +37,10 @@
 		</dependency>
 
         <!-- Commons Math 3 dependency (obsolete!) -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
-		</dependency>
+		</dependency>-->
 
         <!-- Commons Math 4 dependencies (legacy) -->
         <dependency>
