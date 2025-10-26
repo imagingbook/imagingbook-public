@@ -80,4 +80,11 @@ module imagingbook.common {
 	requires transitive imagingbook.core;
 	requires java.datatransfer;
 	requires transitive java.desktop;
+    requires org.apache.commons.math4.legacy;
+    requires org.apache.commons.numbers.complex;
+    requires org.apache.commons.numbers.core;
+    requires org.apache.commons.math4.core;
+    requires org.apache.commons.math4.legacy.core;
+    requires org.apache.commons.geometry.euclidean;
+    requires org.apache.commons.math4.legacy.exception;
 }

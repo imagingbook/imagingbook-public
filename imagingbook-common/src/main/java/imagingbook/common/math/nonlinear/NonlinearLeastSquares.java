@@ -8,18 +8,31 @@
  ******************************************************************************/
 package imagingbook.common.math.nonlinear;
 
-import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
-import org.apache.commons.math3.analysis.MultivariateVectorFunction;
-import org.apache.commons.math3.fitting.leastsquares.GaussNewtonOptimizer;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresProblem;
-import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
-import org.apache.commons.math3.linear.RealVector;
-import org.apache.commons.math3.optim.SimpleVectorValueChecker;
+import org.apache.commons.math4.legacy.analysis.MultivariateMatrixFunction;
+import org.apache.commons.math4.legacy.analysis.MultivariateVectorFunction;
+import org.apache.commons.math4.legacy.fitting.leastsquares.GaussNewtonOptimizer;
+import org.apache.commons.math4.legacy.fitting.leastsquares.LeastSquaresFactory;
+import org.apache.commons.math4.legacy.fitting.leastsquares.LeastSquaresOptimizer;
+import org.apache.commons.math4.legacy.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
+import org.apache.commons.math4.legacy.fitting.leastsquares.LeastSquaresProblem;
+import org.apache.commons.math4.legacy.fitting.leastsquares.LevenbergMarquardtOptimizer;
+import org.apache.commons.math4.legacy.linear.RealVector;
+import org.apache.commons.math4.legacy.optim.SimpleVectorValueChecker;
 
-import static org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.model;
+import static org.apache.commons.math4.legacy.fitting.leastsquares.LeastSquaresFactory.model;
+
+// import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
+// import org.apache.commons.math3.analysis.MultivariateVectorFunction;
+// import org.apache.commons.math3.fitting.leastsquares.GaussNewtonOptimizer;
+// import org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory;
+// import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
+// import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
+// import org.apache.commons.math3.fitting.leastsquares.LeastSquaresProblem;
+// import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
+// import org.apache.commons.math3.linear.RealVector;
+// import org.apache.commons.math3.optim.SimpleVectorValueChecker;
+
+// import static org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.model;
 
 /**
  * <p>

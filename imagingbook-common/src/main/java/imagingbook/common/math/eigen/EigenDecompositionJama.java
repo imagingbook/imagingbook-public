@@ -10,10 +10,16 @@ package imagingbook.common.math.eigen;
 
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.exception.MaxIterationsExceededException;
-import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
+//import org.apache.commons.math3.complex.Complex;
+// import org.apache.commons.math3.linear.MatrixUtils;
+// import org.apache.commons.math3.linear.RealMatrix;
+// import org.apache.commons.math3.linear.RealVector;
+
+import org.apache.commons.numbers.complex.Complex;
+import org.apache.commons.math4.legacy.linear.MatrixUtils;
+import org.apache.commons.math4.legacy.linear.RealMatrix;
+import org.apache.commons.math4.legacy.linear.RealVector;
+
 
 /**
  * Eigenvalues and eigenvectors of a real matrix. This code has been ported from
@@ -601,7 +607,8 @@ public class EigenDecompositionJama implements RealEigenDecomposition {
      */
     private Complex cdiv(final double xr, final double xi,
                          final double yr, final double yi) {
-        return new Complex(xr, xi).divide(new Complex(yr, yi));
+        //return new Complex(xr, xi).divide(new Complex(yr, yi));
+        return Complex.ofCartesian(xr, xi).divide(Complex.ofCartesian(yr, yi));
     }
 
 	// Nonsymmetric reduction from Hessenberg to real Schur form.

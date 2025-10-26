@@ -9,13 +9,21 @@
 
 package imagingbook.common.math;
 
-import static org.apache.commons.math3.util.FastMath.abs;
-import static org.apache.commons.math3.util.FastMath.atan2;
-import static org.apache.commons.math3.util.FastMath.cos;
-import static org.apache.commons.math3.util.FastMath.floor;
-import static org.apache.commons.math3.util.FastMath.floorMod;
-import static org.apache.commons.math3.util.FastMath.hypot;
-import static org.apache.commons.math3.util.FastMath.sin;
+import static org.apache.commons.math4.core.jdkmath.AccurateMath.abs;
+import static org.apache.commons.math4.core.jdkmath.AccurateMath.atan2;
+import static org.apache.commons.math4.core.jdkmath.AccurateMath.cos;
+import static org.apache.commons.math4.core.jdkmath.AccurateMath.floor;
+import static org.apache.commons.math4.core.jdkmath.AccurateMath.floorMod;
+import static org.apache.commons.math4.core.jdkmath.AccurateMath.hypot;
+import static org.apache.commons.math4.core.jdkmath.AccurateMath.sin;
+
+// import static org.apache.commons.math3.util.FastMath.abs;
+// import static org.apache.commons.math3.util.FastMath.atan2;
+// import static org.apache.commons.math3.util.FastMath.cos;
+// import static org.apache.commons.math3.util.FastMath.floor;
+// import static org.apache.commons.math3.util.FastMath.floorMod;
+// import static org.apache.commons.math3.util.FastMath.hypot;
+// import static org.apache.commons.math3.util.FastMath.sin;
 
 /**
  * This class defines static methods implementing arithmetic operations and predicates.

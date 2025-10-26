@@ -12,10 +12,14 @@ import static java.lang.Math.cos;
 import static java.lang.Math.exp;
 import static java.lang.Math.sin;
 
-import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
-import org.apache.commons.math3.analysis.MultivariateVectorFunction;
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math4.legacy.analysis.MultivariateMatrixFunction;
+import org.apache.commons.math4.legacy.analysis.MultivariateVectorFunction;
+import org.apache.commons.math4.legacy.linear.ArrayRealVector;
+import org.apache.commons.math4.legacy.linear.RealVector;
+// import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
+// import org.apache.commons.math3.analysis.MultivariateVectorFunction;
+// import org.apache.commons.math3.linear.ArrayRealVector;
+// import org.apache.commons.math3.linear.RealVector;
 import org.junit.Assert;
 import org.junit.Test;
 

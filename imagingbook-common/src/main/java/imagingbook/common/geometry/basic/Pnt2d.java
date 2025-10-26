@@ -10,9 +10,13 @@ package imagingbook.common.geometry.basic;
 
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.PrintPrecision;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealVector;
+
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math4.legacy.linear.MatrixUtils;
+import org.apache.commons.math4.legacy.linear.RealVector;
+// import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+// import org.apache.commons.math3.linear.MatrixUtils;
+// import org.apache.commons.math3.linear.RealVector;
 
 import java.awt.Point;
 import java.awt.Shape;
@@ -162,7 +166,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	 * @return a new vector
 	 */
 	public default Vector2D toVector2D() {
-		return new Vector2D(getX(), getY());
+		return Vector2D.of(getX(), getY());
+        // return new Vector2D(getX(), getY());
 	}
 
 	/**

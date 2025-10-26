@@ -9,11 +9,17 @@
 package imagingbook.common.geometry.fitting.points;
 
 import imagingbook.common.geometry.basic.Pnt2d;
-import org.apache.commons.math3.linear.DecompositionSolver;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
-import org.apache.commons.math3.linear.SingularValueDecomposition;
+
+import org.apache.commons.math4.legacy.linear.DecompositionSolver;
+import org.apache.commons.math4.legacy.linear.MatrixUtils;
+import org.apache.commons.math4.legacy.linear.RealMatrix;
+import org.apache.commons.math4.legacy.linear.RealVector;
+import org.apache.commons.math4.legacy.linear.SingularValueDecomposition;
+// import org.apache.commons.math3.linear.DecompositionSolver;
+// import org.apache.commons.math3.linear.MatrixUtils;
+// import org.apache.commons.math3.linear.RealMatrix;
+// import org.apache.commons.math3.linear.RealVector;
+// import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 /**
  * <p>

@@ -112,7 +112,7 @@
 				<version>${commons-math3.version}</version>
 			</dependency>
 
-			<dependency>
+            <dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>

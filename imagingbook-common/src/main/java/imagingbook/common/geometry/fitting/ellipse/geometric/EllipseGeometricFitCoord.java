@@ -17,18 +17,32 @@ import imagingbook.common.ij.DialogUtils.DialogLabel;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 import imagingbook.common.util.ParameterBundle;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresProblem;
-import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
-import org.apache.commons.math3.fitting.leastsquares.MultivariateJacobianFunction;
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
-import org.apache.commons.math3.optim.SimpleVectorValueChecker;
-import org.apache.commons.math3.util.Pair;
+
+import org.apache.commons.math4.legacy.fitting.leastsquares.LeastSquaresFactory;
+import org.apache.commons.math4.legacy.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
+import org.apache.commons.math4.legacy.fitting.leastsquares.LeastSquaresProblem;
+import org.apache.commons.math4.legacy.fitting.leastsquares.LevenbergMarquardtOptimizer;
+import org.apache.commons.math4.legacy.fitting.leastsquares.MultivariateJacobianFunction;
+import org.apache.commons.math4.legacy.linear.Array2DRowRealMatrix;
+import org.apache.commons.math4.legacy.linear.ArrayRealVector;
+import org.apache.commons.math4.legacy.linear.MatrixUtils;
+import org.apache.commons.math4.legacy.linear.RealMatrix;
+import org.apache.commons.math4.legacy.linear.RealVector;
+import org.apache.commons.math4.legacy.optim.SimpleVectorValueChecker;
+import org.apache.commons.math4.legacy.core.Pair;
+
+// import org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory;
+// import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
+// import org.apache.commons.math3.fitting.leastsquares.LeastSquaresProblem;
+// import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
+// import org.apache.commons.math3.fitting.leastsquares.MultivariateJacobianFunction;
+// import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+// import org.apache.commons.math3.linear.ArrayRealVector;
+// import org.apache.commons.math3.linear.MatrixUtils;
+// import org.apache.commons.math3.linear.RealMatrix;
+// import org.apache.commons.math3.linear.RealVector;
+// import org.apache.commons.math3.optim.SimpleVectorValueChecker;
+// import org.apache.commons.math3.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +50,12 @@ import java.util.List;
 import static imagingbook.common.math.Arithmetic.sqr;
 import static imagingbook.common.math.Matrix.makeRealMatrix;
 import static imagingbook.common.math.Matrix.subtract;
-import static org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.evaluationChecker;
-import static org.apache.commons.math3.linear.MatrixUtils.createRealVector;
+
+import static org.apache.commons.math4.legacy.fitting.leastsquares.LeastSquaresFactory.evaluationChecker;
+import static org.apache.commons.math4.legacy.linear.MatrixUtils.createRealVector;
+
+// import static org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.evaluationChecker;
+// import static org.apache.commons.math3.linear.MatrixUtils.createRealVector;
 
 /**
  * <p>

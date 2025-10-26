@@ -9,11 +9,13 @@
 
 package imagingbook.common.math;
 
-import org.apache.commons.math3.linear.CholeskyDecomposition;
-import org.apache.commons.math3.linear.EigenDecomposition;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.stat.correlation.Covariance;
+import org.apache.commons.math4.legacy.linear.CholeskyDecomposition;
+import org.apache.commons.math4.legacy.linear.MatrixUtils;
+import org.apache.commons.math4.legacy.linear.RealMatrix;
+
+// import org.apache.commons.math3.linear.CholeskyDecomposition;
+// import org.apache.commons.math3.linear.MatrixUtils;
+// import org.apache.commons.math3.linear.RealMatrix;
 
 import static imagingbook.common.math.Statistics.conditionCovarianceMatrix;
 import static imagingbook.common.math.Statistics.covarianceMatrix;
@@ -154,7 +156,7 @@ public class MahalanobisDistance {
 	 *
 	 * @param relativeSymmetryThreshold maximum deviation from symmetry (see {@link #DefaultRelativeSymmetryThreshold})
 	 * @param absolutePositivityThreshold maximum deviation from positivity (see {@link #DefaultAbsolutePositivityThreshold})
-	 * @return
+	 * @return the whitening transformation as a 2D array
 	 */
 	public double[][] getWhiteningTransformation(double relativeSymmetryThreshold, double absolutePositivityThreshold) {
 		CholeskyDecomposition cd =

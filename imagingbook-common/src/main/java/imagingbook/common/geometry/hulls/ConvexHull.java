@@ -12,6 +12,9 @@ import imagingbook.common.geometry.basic.Pnt2d;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.line.AlgebraicLine;
 import imagingbook.common.geometry.shape.ShapeProducer;
+// TODO: port to Commons Math 4 and/or other ConvexHull implementation
+//  (QuickHull3D (2D/3D) or JTS Topology Suite (robust geometry, convex hull via ConvexHull class)
+// Note: Commons Math 4 has no own Convex Hull implementation!
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHull2D;
 import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;
@@ -38,9 +41,8 @@ import java.util.List;
  * @version 2022/06/24
  */
 public class ConvexHull implements ShapeProducer {
-	
-	private final ConvexHull2D hull;
-	private final Pnt2d[] vertices;
+
+    private final Pnt2d[] vertices;
 
 	/**
 	 * Constructor, creates a {@link ConvexHull} instance from an {@link Iterable} over {@link Pnt2d}. At least one
@@ -53,11 +55,12 @@ public class ConvexHull implements ShapeProducer {
 			throw new IllegalArgumentException("empty point sequence, at least one input point required");
 		}
 		List<Vector2D> pts = toVector2D(points);
-		this.hull = new MonotoneChain().generate(pts);
+        ConvexHull2D hull = new MonotoneChain().generate(pts);
 		Vector2D[] vecs = hull.getVertices();
 		this.vertices = new Pnt2d[vecs.length];
 		for (int i = 0; i < vecs.length; i++) {
-			vertices[i] = PntDouble.from(vecs[i]);
+			// vertices[i] = PntDouble.from(vecs[i]);
+            vertices[i] = PntDouble.from(vecs[i].getX(), vecs[i].getY());
 		}
 	}
 

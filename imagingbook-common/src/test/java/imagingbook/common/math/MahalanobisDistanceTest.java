@@ -15,8 +15,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math4.legacy.linear.MatrixUtils;
+import org.apache.commons.math4.legacy.linear.RealMatrix;
+// import org.apache.commons.math3.linear.MatrixUtils;
+// import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Test;
 
 public class MahalanobisDistanceTest {
