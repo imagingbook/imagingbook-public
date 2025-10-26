@@ -14,11 +14,6 @@ import org.apache.commons.math4.legacy.linear.MatrixUtils;
 import org.apache.commons.math4.legacy.linear.RealMatrix;
 import org.apache.commons.math4.legacy.stat.correlation.Covariance;
 
-// import org.apache.commons.math3.linear.EigenDecomposition;
-// import org.apache.commons.math3.linear.MatrixUtils;
-// import org.apache.commons.math3.linear.RealMatrix;
-// import org.apache.commons.math3.stat.correlation.Covariance;
-
 /**
  * This class defines static methods for statistical calculations.
  * 

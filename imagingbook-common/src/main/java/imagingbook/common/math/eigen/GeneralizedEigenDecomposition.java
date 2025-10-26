@@ -13,10 +13,6 @@ import org.apache.commons.math4.legacy.linear.MatrixUtils;
 import org.apache.commons.math4.legacy.linear.RealMatrix;
 import org.apache.commons.math4.legacy.linear.RealVector;
 
-// import org.apache.commons.math3.linear.MatrixUtils;
-// import org.apache.commons.math3.linear.RealMatrix;
-// import org.apache.commons.math3.linear.RealVector;
-
 import static imagingbook.common.math.Matrix.isSquare;
 import static imagingbook.common.math.Matrix.sameSize;
 import static imagingbook.common.math.eigen.eispack.QZHES.qzhes;

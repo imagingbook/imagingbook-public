@@ -16,11 +16,6 @@ import org.apache.commons.math4.legacy.linear.RealMatrix;
 import org.apache.commons.math4.legacy.linear.SingularMatrixException;
 import org.apache.commons.math4.legacy.linear.SingularValueDecomposition;
 
-// import org.apache.commons.math3.linear.MatrixUtils;
-// import org.apache.commons.math3.linear.RealMatrix;
-// import org.apache.commons.math3.linear.SingularMatrixException;
-// import org.apache.commons.math3.linear.SingularValueDecomposition;
-
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**

@@ -13,10 +13,6 @@ import org.apache.commons.math4.legacy.linear.CholeskyDecomposition;
 import org.apache.commons.math4.legacy.linear.MatrixUtils;
 import org.apache.commons.math4.legacy.linear.RealMatrix;
 
-// import org.apache.commons.math3.linear.CholeskyDecomposition;
-// import org.apache.commons.math3.linear.MatrixUtils;
-// import org.apache.commons.math3.linear.RealMatrix;
-
 import static imagingbook.common.math.Statistics.conditionCovarianceMatrix;
 import static imagingbook.common.math.Statistics.covarianceMatrix;
 

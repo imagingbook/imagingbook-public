@@ -8,9 +8,6 @@
  ******************************************************************************/
 package imagingbook.common.math.eigen;
 
-//import org.apache.commons.math3.linear.EigenDecomposition;
-//import org.apache.commons.math3.linear.RealMatrix;
-//import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math4.legacy.linear.EigenDecomposition;
 import org.apache.commons.math4.legacy.linear.RealMatrix;
 import org.apache.commons.math4.legacy.linear.RealVector;

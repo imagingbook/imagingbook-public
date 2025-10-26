@@ -13,8 +13,6 @@ import imagingbook.common.geometry.basic.PntUtils;
 import imagingbook.common.math.Matrix;
 import org.apache.commons.math4.legacy.linear.RealMatrix;
 
-// import org.apache.commons.math3.linear.RealMatrix;
-
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**

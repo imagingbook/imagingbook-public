@@ -20,11 +20,6 @@ import org.apache.commons.geometry.hull.euclidean.twod.MonotoneChain;
 import org.apache.commons.geometry.core.precision.DoublePrecisionContext;
 import org.apache.commons.geometry.core.precision.EpsilonDoublePrecisionContext;
 
-//import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-//import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHull2D;
-//import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHullGenerator2D;
-//import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;
-
 import java.awt.Shape;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;

@@ -20,14 +20,6 @@ import org.apache.commons.math4.legacy.linear.RealMatrix;
 import org.apache.commons.math4.legacy.linear.RealVector;
 import org.apache.commons.math4.legacy.linear.SingularMatrixException;
 
-// import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-// import org.apache.commons.math3.linear.ArrayRealVector;
-// import org.apache.commons.math3.linear.DecompositionSolver;
-// import org.apache.commons.math3.linear.LUDecomposition;
-// import org.apache.commons.math3.linear.RealMatrix;
-// import org.apache.commons.math3.linear.RealVector;
-// import org.apache.commons.math3.linear.SingularMatrixException;
-
 import java.util.Random;
 
 import static imagingbook.common.math.Arithmetic.sqr;

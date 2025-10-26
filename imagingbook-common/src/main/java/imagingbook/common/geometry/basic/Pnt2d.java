@@ -14,9 +14,6 @@ import imagingbook.common.math.PrintPrecision;
 import org.apache.commons.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math4.legacy.linear.MatrixUtils;
 import org.apache.commons.math4.legacy.linear.RealVector;
-// import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-// import org.apache.commons.math3.linear.MatrixUtils;
-// import org.apache.commons.math3.linear.RealVector;
 
 import java.awt.Point;
 import java.awt.Shape;

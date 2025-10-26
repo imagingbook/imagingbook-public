@@ -13,8 +13,6 @@ import imagingbook.common.math.eigen.EigenDecompositionJama;
 import imagingbook.common.util.PrimitiveSortMap;
 
 import org.apache.commons.math4.legacy.linear.MatrixUtils;
-// import org.apache.commons.math3.linear.MatrixUtils;
-
 
 import static imagingbook.common.math.Arithmetic.sqr;
 

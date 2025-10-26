@@ -17,9 +17,10 @@ import imagingbook.common.image.ImageMapper;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 import imagingbook.common.math.Matrix;
 import imagingbook.common.mser.components.Component;
-import org.apache.commons.math3.linear.EigenDecomposition;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
+
+import org.apache.commons.math4.legacy.linear.EigenDecomposition;
+import org.apache.commons.math4.legacy.linear.MatrixUtils;
+import org.apache.commons.math4.legacy.linear.RealMatrix;
 
 /**
  * <p>
