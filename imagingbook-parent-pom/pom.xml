@@ -55,7 +55,7 @@
 		<imagej.apilink>https://imagej.net/ij/developer/api/</imagej.apilink>
 
 		<commons-math3.version>3.6.1</commons-math3.version>
-		<commons-math3.apilink>https://javadoc.io/doc/org.apache.commons/commons-math3/3.6.1</commons-math3.apilink>
+		<!--<commons-math3.apilink>https://javadoc.io/doc/org.apache.commons/commons-math3/3.6.1</commons-math3.apilink>-->
 
 		<junit.version>4.13.2</junit.version>
 
@@ -107,12 +107,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-math3</artifactId>
-				<version>${commons-math3.version}</version>
-			</dependency>
-
-            <dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
@@ -351,7 +345,7 @@
                     <detectJavaApiLink>true</detectJavaApiLink>
 					<links>
 						<link>${imagej.apilink}</link>
-						<link>${commons-math3.apilink}</link>
+						<!--<link>${commons-math3.apilink}</link>-->
 						<link>${jtransforms.apilink}</link>
 						<link>${openpdf.apilink}</link>
 						<!--<link>https://javadoc.io/doc/com.imagingbook/imagingbook-core/latest</link>

@@ -36,12 +36,6 @@
 			<version>7.3.0</version>
 		</dependency>
 
-        <!-- Commons Math 3 dependency (obsolete!) -->
-		<!--<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-math3</artifactId>
-		</dependency>-->
-
         <!-- Commons Math 4 dependencies (legacy) -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -62,11 +56,11 @@
             <version>1.0-beta1</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-numbers-arrays</artifactId>
             <version>1.0-beta1</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>
