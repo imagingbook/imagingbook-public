@@ -54,8 +54,9 @@
 		<!-- <imagej.apilink>https://javadoc.io/doc/net.imagej/ij</imagej.apilink> -->
 		<imagej.apilink>https://imagej.net/ij/developer/api/</imagej.apilink>
 
-		<commons-math3.version>3.6.1</commons-math3.version>
-		<!--<commons-math3.apilink>https://javadoc.io/doc/org.apache.commons/commons-math3/3.6.1</commons-math3.apilink>-->
+		<CommonsMath4LegacyVersion>4.0-beta1</CommonsMath4LegacyVersion>
+        <CommonsMath4NumbersVersion>1.0-beta1</CommonsMath4NumbersVersion>
+        <CommonsMath4GeometryVersion>1.0-beta1</CommonsMath4GeometryVersion>
 
 		<junit.version>4.13.2</junit.version>
 
