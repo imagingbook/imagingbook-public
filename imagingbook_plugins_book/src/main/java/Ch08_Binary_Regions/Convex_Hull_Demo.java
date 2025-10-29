@@ -16,7 +16,8 @@ import ij.plugin.filter.PlugInFilter;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 import imagingbook.common.color.sets.BasicAwtColor;
-import imagingbook.common.geometry.hulls.ConvexHull;
+import imagingbook.common.geometry.hulls.ConvexHull2d;
+
 import imagingbook.common.ij.DialogUtils;
 import imagingbook.common.ij.IjUtils;
 import imagingbook.common.ij.overlay.ColoredStroke;
@@ -33,7 +34,7 @@ import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
  * <p>
- * This ImageJ plugin demonstrates the use of the {@link ConvexHull} class. See Sec. 8.4.2 of [1] for additional
+ * This ImageJ plugin demonstrates the use of the {@link ConvexHull2d} class. See Sec. 8.4.2 of [1] for additional
  * details. It performs region segmentation, calculates the convex hull for each region found and then displays the
  * result in a new image. Requires a binary image. Zero-value pixels are considered background, all other pixels are
  * foreground. Display lookup tables (LUTs) are not considered. The resulting convex hull is shown as a vector overlay
@@ -99,8 +100,8 @@ public class Convex_Hull_Demo implements PlugInFilter, JavaDocHelp {
 		ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
 		
 		for (BinaryRegion r: regions) {
-			//ConvexHull hull = new ConvexHull(r);					// takes all region points
-			ConvexHull hull = new ConvexHull(r.getOuterContour());	// takes only outer contour points
+			//ConvexHull2d hull = new ConvexHull2d(r);					// takes all region points
+            ConvexHull2d hull = new ConvexHull2d(r.getOuterContour());	// takes only outer contour points
 			ola.addShapes(hull.getShapes());
 		}
 
