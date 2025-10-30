@@ -39,27 +39,21 @@
         <!-- Commons Math 4 dependencies (legacy) -->
         <dependency>
             <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math4-core</artifactId>
+            <artifactId>commons-math4-core</artifactId>   <!--JdkMath from math3-->
             <version>${CommonsMath4LegacyVersion}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math4-legacy</artifactId>
+            <artifactId>commons-math4-legacy</artifactId>   <!--linear algebra from math3-->
             <version>${CommonsMath4LegacyVersion}</version>
         </dependency>
 
         <!-- Modern Commons Math 4 dependencies -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-numbers-core</artifactId>
             <version>${CommonsMath4NumbersVersion}</version>
-        </dependency>
-
-        <!--<dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-numbers-arrays</artifactId>
-            <version>1.0-beta1</version>
         </dependency>-->
 
         <dependency>
@@ -68,25 +62,7 @@
             <version>${CommonsMath4NumbersVersion}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-geometry-core</artifactId>
-            <version>${CommonsMath4GeometryVersion}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-geometry-euclidean</artifactId>
-            <version>${CommonsMath4GeometryVersion}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-geometry-hull</artifactId>
-            <version>${CommonsMath4GeometryVersion}</version>
-        </dependency>
-
-        <!-- ++++++++++++++++++++++++++++++  -->
+       <!-- ++++++++++++++++++++++++++++++  -->
 
 		<dependency>
 			<groupId>com.imagingbook</groupId>
