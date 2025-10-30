@@ -49,13 +49,6 @@
             <version>${CommonsMath4LegacyVersion}</version>
         </dependency>
 
-        <!-- Modern Commons Math 4 dependencies -->
-        <!--<dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-numbers-core</artifactId>
-            <version>${CommonsMath4NumbersVersion}</version>
-        </dependency>-->
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-numbers-complex</artifactId>
