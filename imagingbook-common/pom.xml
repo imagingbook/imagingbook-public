@@ -24,7 +24,7 @@
 	</properties>
 
 	<dependencies>
-            
+
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>ij</artifactId>
@@ -40,19 +40,16 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math4-core</artifactId>   <!--JdkMath from math3-->
-            <!--<version>${CommonsMath4LegacyVersion}</version>-->
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math4-legacy</artifactId>   <!--linear algebra from math3-->
-            <!--<version>${CommonsMath4LegacyVersion}</version>-->
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-numbers-complex</artifactId>
-            <!--<version>${CommonsMath4NumbersVersion}</version>-->
         </dependency>
 
        <!-- test-only dependencies -->

@@ -19,6 +19,10 @@
 	</description>
 	<inceptionYear>2006</inceptionYear>
 	<url>https://imagingbook.com</url>
+
+    <properties>
+
+    </properties>
 	
 	<dependencies>
 
