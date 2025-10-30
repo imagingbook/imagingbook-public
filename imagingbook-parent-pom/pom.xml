@@ -113,7 +113,44 @@
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
-		</dependencies>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-math4-core</artifactId>   <!--JdkMath from math3-->
+                <version>${CommonsMath4LegacyVersion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-math4-legacy</artifactId>   <!--linear algebra from math3-->
+                <version>${CommonsMath4LegacyVersion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-numbers-complex</artifactId>
+                <version>${CommonsMath4NumbersVersion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-numbers-arrays</artifactId>
+                <version>${CommonsMath4NumbersVersion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-geometry-core</artifactId>
+                <version>${CommonsMath4GeometryVersion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-geometry-euclidean</artifactId>
+                <version>${CommonsMath4GeometryVersion}</version>
+            </dependency>
+
+        </dependencies>
 	</dependencyManagement>
 
 	<build>
