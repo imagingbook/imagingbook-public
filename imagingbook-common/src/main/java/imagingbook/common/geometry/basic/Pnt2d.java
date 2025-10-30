@@ -11,7 +11,7 @@ package imagingbook.common.geometry.basic;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.PrintPrecision;
 
-import org.apache.commons.geometry.euclidean.twod.Vector2D;
+// import org.apache.commons.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math4.legacy.linear.MatrixUtils;
 import org.apache.commons.math4.legacy.linear.RealVector;
 
@@ -157,15 +157,15 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		return new Point2D.Double(this.getX(), this.getY());
 	}
 
-	/**
-	 * Returns this point's coordinates as a new {@link Vector2D} instance (for interfacing with Apache Commons Math).
-	 *
-	 * @return a new vector
-	 */
-	public default Vector2D toVector2D() {
-		return Vector2D.of(getX(), getY());
-        // return new Vector2D(getX(), getY());
-	}
+	// /**
+	//  * Returns this point's coordinates as a new {@link Vector2D} instance (for interfacing with Apache Commons Math).
+	//  *
+	//  * @return a new vector
+	//  */
+	// public default Vector2D toVector2D() {
+	// 	return Vector2D.of(getX(), getY());
+    //     // return new Vector2D(getX(), getY());
+	// }
 
 	/**
 	 * Returns this point's coordinates as a new {@link RealVector} instance (for interfacing with Apache Commons
@@ -431,16 +431,16 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 			return new PntDouble(p.getX(), p.getY());
 		}
 
-		/**
-		 * Returns a new {@link PntDouble} instance with the same coordinates as the given Apache Commons Math
-		 * {@link Vector2D}.
-		 *
-		 * @param vec the original coordinate vector
-		 * @return the new point
-		 */
-		public static PntDouble from(Vector2D vec) {
-			return new PntDouble(vec.getX(), vec.getY());
-		}	
+		// /**
+		//  * Returns a new {@link PntDouble} instance with the same coordinates as the given Apache Commons Math
+		//  * {@link Vector2D}.
+		//  *
+		//  * @param vec the original coordinate vector
+		//  * @return the new point
+		//  */
+		// public static PntDouble from(Vector2D vec) {
+		// 	return new PntDouble(vec.getX(), vec.getY());
+		// }
 
 		// getter methods
 
