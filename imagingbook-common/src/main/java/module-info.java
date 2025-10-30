@@ -3,6 +3,18 @@
  * processing algorithms, associated data structures and utility code.
  */
 module imagingbook.common {
+    requires java.datatransfer;
+    requires transitive ij;
+    requires transitive imagingbook.core;
+    requires transitive java.desktop;
+
+    requires org.apache.commons.math4.core;
+    requires org.apache.commons.math4.legacy;
+    requires org.apache.commons.math4.legacy.core;
+    requires org.apache.commons.math4.legacy.exception;
+    requires org.apache.commons.numbers.complex;
+    requires org.apache.commons.numbers.core;
+
 	exports imagingbook.common.color.adapt;
 	exports imagingbook.common.color.cie;
 	exports imagingbook.common.color.colorspace;
@@ -74,18 +86,4 @@ module imagingbook.common {
 	exports imagingbook.common.util.random;
 	exports imagingbook.common.util.tuples;
 	exports imagingbook.common.util;
-
-	requires transitive ij;
-	requires transitive imagingbook.core;
-	requires java.datatransfer;
-	requires transitive java.desktop;
-    requires org.apache.commons.math4.legacy;
-    requires org.apache.commons.numbers.complex;
-    requires org.apache.commons.numbers.core;
-    requires org.apache.commons.math4.core;
-    requires org.apache.commons.math4.legacy.core;
-    requires org.apache.commons.geometry.euclidean;
-    requires org.apache.commons.math4.legacy.exception;
-    requires org.apache.commons.geometry.core;
-    requires org.apache.commons.geometry.hull;
 }
