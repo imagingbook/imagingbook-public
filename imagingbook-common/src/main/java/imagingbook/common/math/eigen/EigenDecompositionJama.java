@@ -19,8 +19,8 @@ import org.apache.commons.math4.legacy.linear.RealVector;
 
 /**
  * Eigenvalues and eigenvectors of a real matrix. This code has been ported from
- * https://math.nist.gov/javanumerics/jama/ (Version 1.0.3), with the public API (and some internals) adapted to Apache
- * Commons Math. Most comments below were taken from the original sources.
+ * <a href="https://math.nist.gov/javanumerics/jama/">JAMA</a> (Version 1.0.3), with the public API (and some internals)
+ * adapted to Apache Commons Math. Most comments below were taken from the original sources.
  * <p>
  * This is intended as a temporary substitute for Apache Commons Math's implementation
  * ({@link org.apache.commons.math3.linear.EigenDecomposition}, whose symmetry tolerance appears to be too low and thus
