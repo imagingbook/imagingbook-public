@@ -72,14 +72,15 @@ may happen at any time. Users are encouraged to report any enountered problems h
 
 ## Use With Maven
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-public.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-public)
-
 ### Using Libraries Only
 
 Each of the above modules is available as a 
 [Maven artifact on Maven Central](https://search.maven.org/search?q=g:com.imagingbook).
 For example, to use the `imagingbook-common` library, simply include the following in your
 project's `pom.xml`file:
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-public.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-common)
+
 ```
 <dependency>
   <groupId>com.imagingbook</groupId>
