@@ -29,7 +29,7 @@ dependencies. They may also be copied manually to ImageJ's `jars/` directory
 * **[imagingbook-spectral](imagingbook-spectral/)** [![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-spectral.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-spectral)<br>
     Library code related to spectral image processing (Fourier transforms etc.),
     separated from the main `imagingbook` library to minimize third-party dependencies.
-* **[imagingbook-pdf](imagingbook-pdf/)**<br>
+* **[imagingbook-pdf](imagingbook-pdf/)** [![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-pdf.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-pdf)<br>
     PDF-related library code, separated from the main `imagingbook` library to minimize 
     third-party dependencies.
 * **[imagingbook-sample-images](imagingbook-sample-images/)** [![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-sample-images.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-sample-images)<br>
