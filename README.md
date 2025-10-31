@@ -21,20 +21,20 @@ These "library-only" modules are packaged as `JAR` files and typically imported 
 dependencies. They may also be copied manually to ImageJ's `jars/` directory 
 (see <a href="#use-without-maven">Use Without Maven</a> below):
 
-* **[imagingbook-common](imagingbook-common/)** <br> 
+* **[imagingbook-common](imagingbook-common/)** [![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-common.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-common)<br> 
     This is the main `imagingbook` library with implementions of image processing algorithms,
     associated data structures and utility code. Users interested in applying `imagingbook`
     functionality in their own programs only need to import this module (artefact) as a Maven
     dependency.
-* **[imagingbook-spectral](imagingbook-spectral/)** <br>
+* **[imagingbook-spectral](imagingbook-spectral/)** [![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-spectral.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-spectral)<br>
     Library code related to spectral image processing (Fourier transforms etc.),
     separated from the main `imagingbook` library to minimize third-party dependencies.
 * **[imagingbook-pdf](imagingbook-pdf/)**<br>
     PDF-related library code, separated from the main `imagingbook` library to minimize 
     third-party dependencies.
-* **[imagingbook-sample-images](imagingbook-sample-images/)** <br>
+* **[imagingbook-sample-images](imagingbook-sample-images/)** [![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-sample-images.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-sample-images)<br>
     Provides a set of (JAR-packaged) sample images accessible as "named resources", mainly used for demos and testing.
-* **[imagingbook-core](imagingbook-core/)** <br>
+* **[imagingbook-core](imagingbook-core/)** [![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-core.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-core)<br>
     Minimal (bootstrap) infrastructure required for building the main `imagingbook` library modules.
     Includes code for basic file handling, managing resources and automatically compiling 
     `plugins.config` files for ImageJ plugin sets. 
@@ -45,11 +45,11 @@ These packages contain sets of `ImageJ` plugins that make use of the `imagingboo
 Each plugin set is packaged as a `JAR` file and may be imported as a Maven dependency
 or copied manually to ImageJ's `plugins/` directory:
 
-* **[imagingbook_plugins_book](imagingbook_plugins_book/)** <br>
+* **[imagingbook_plugins_book](imagingbook_plugins_book/)** [![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook_plugins_book.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook_plugins_book)<br>
     A collection of `ImageJ` plugins related to individual book chapters (including 
     materials from previous editions) and tools for working with `ImageJ` (e.g., exact
     zooming and PDF-export).
-* **[imagingbook_plugins_demos](imagingbook_plugins_demos/)** <br>
+* **[imagingbook_plugins_demos](imagingbook_plugins_demos/)**[![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook_plugins_demos.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook_plugins_demos)<br>
     Plugins demonstrating the use of various technical concepts in `ImageJ` and the
     `imagingbook` library.
 
@@ -79,7 +79,7 @@ Each of the above modules is available as a
 For example, to use the `imagingbook-common` library, simply include the following in your
 project's `pom.xml`file:
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-public.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-common)
+[![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-common.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-common)
 
 ```
 <dependency>
