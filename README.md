@@ -72,7 +72,7 @@ may happen at any time. Users are encouraged to report any enountered problems h
 
 ## Use With Maven
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.imagingbook/imagingbook-public/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.imagingbook/imagingbook-public)
+[![Maven Central](https://img.shields.io/maven-central/v/com.imagingbook/imagingbook-public.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.imagingbook/imagingbook-public)
 
 ### Using Libraries Only
 
