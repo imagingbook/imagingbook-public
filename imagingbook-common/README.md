@@ -38,15 +38,15 @@ in the project's `pom.xml`file:
 <dependency>
   <groupId>com.imagingbook</groupId>
   <artifactId>imagingbook-common</artifactId>
-  <version>7.0.0</version>
+  <version>7.2.0</version>
 </dependency>
 ```
-Replace `7.0.0` with the most current release version available on
+Replace `7.2.0` with the most current release version available on
 [Maven Central](https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common).
 
 **Repository:** [imagingbook-public](https://github.com/imagingbook/imagingbook-public)
 
-**JavaDoc:** https://imagingbook.github.io/imagingbook-public/javadoc/imagingbook.common/module-summary.html
+**JavaDoc:** https://imagingbook.github.io/imagingbook-public/apidocs/imagingbook.common/module-summary.html
 
 **Maven Artifact:** https://mvnrepository.com/artifact/com.imagingbook/imagingbook-common
 
