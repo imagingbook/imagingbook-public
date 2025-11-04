@@ -1,0 +1,99 @@
+/*******************************************************************************
+ * This software is provided as a supplement to the authors' textbooks on digital
+ * image processing published by Springer-Verlag in various languages and editions.
+ * Permission to use and distribute this software is granted under the BSD 2-Clause
+ * "Simplified" License (see http://opensource.org/licenses/BSD-2-Clause).
+ * Copyright (c) 2006-2025 Wilhelm Burger, Mark J. Burge. All rights reserved.
+ * Visit https://imagingbook.com for additional details.
+ ******************************************************************************/
+package imagingbook.testutils;
+
+import java.util.Random;
+
+/**
+ * Fully deterministic clone of java.util.Random (current LCG algorithm),
+ * ensuring stable sequences across all Java versions and platforms.
+ * To be used when absolute reproducibility is required.
+ */
+public class DeterministicRandom extends Random {
+
+    // Constants from java.util.Random
+    private static final long MULTIPLIER = 0x5DEECE66DL;
+    private static final long ADDEND = 0xBL;
+    private static final long MASK = (1L << 48) - 1;
+
+    private long seed;
+
+    public DeterministicRandom(long seed) {
+        // java.util.Random scrambles the seed with this XOR
+        this.seed = (seed ^ MULTIPLIER) & MASK;
+    }
+
+    // ------------------------------------
+
+    @Override
+    public synchronized void setSeed(long seed) {
+        this.seed = (seed ^ MULTIPLIER) & MASK;
+    }
+
+    @Override
+    protected int next(int bits) {
+        seed = (seed * MULTIPLIER + ADDEND) & MASK;
+        return (int) (seed >>> (48 - bits));
+    }
+
+    @Override
+    public int nextInt() {
+        return next(32);
+    }
+
+    @Override
+    public int nextInt(int bound) {
+        if (bound <= 0)
+            throw new IllegalArgumentException("bound must be positive");
+
+        if ((bound & -bound) == bound)  // power of two
+            return (int) ((bound * (long) next(31)) >> 31);
+
+        int bits, val;
+        do {
+            bits = next(31);
+            val = bits % bound;
+        } while (bits - val + (bound - 1) < 0);
+        return val;
+    }
+
+    @Override
+    public long nextLong() {
+        return ((long) (next(32)) << 32) + next(32);
+    }
+
+    @Override
+    public double nextDouble() {
+        return (((long) next(26) << 27) + next(27)) / (double) (1L << 53);
+    }
+
+    @Override
+    public boolean nextBoolean() {
+        return next(1) != 0;
+    }
+
+    @Override
+    public float nextFloat() {
+        return next(24) / ((float) (1 << 24));
+    }
+
+    @Override
+    public void nextBytes(byte[] bytes) {
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = (byte) next(8);
+        }
+    }
+
+    @Override
+    public double nextGaussian() {
+        throw new UnsupportedOperationException("nextGaussian() not implemented by "
+                + DeterministicRandom.class);
+    }
+}
+

@@ -8,23 +8,27 @@
  ******************************************************************************/
 package imagingbook.testutils;
 
-import java.util.Random;
-
+/**
+ * Generator for producing random matrices in a deterministic manner.
+ * To be used for testing.
+ */
 public class RandomMatrixGenerator {
+
+    private static final long seedUniquifier = 8682522807148012L;
 	
-	private final Random rg;
+	private final DeterministicRandom rg;
 	
 	public RandomMatrixGenerator(long seed) {
-		this.rg = new Random(seed);
+		this.rg = new DeterministicRandom(seed);
 	}
 	
-	public RandomMatrixGenerator() {
-		this.rg = new Random();
-	}
+	// public RandomMatrixGenerator() {
+	// 	this.rg = new DeterministicRandom(1);
+	// }
 	
-	public RandomMatrixGenerator(Random rg) {
-		this.rg = rg;
-	}
+	// public RandomMatrixGenerator(Random rg) {
+	// 	this.rg = rg;
+	// }
 	
 	public double[][] makeRandomMatrix(int rows, int cols, double s) {
 		double[][] A = new double[rows][cols];
