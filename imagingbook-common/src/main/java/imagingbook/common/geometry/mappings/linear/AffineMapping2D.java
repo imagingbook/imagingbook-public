@@ -124,9 +124,14 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 		//super(A[0][0], A[0][1], A[0][2], A[1][0], A[1][1], A[1][2], 0, 0);
 		super(extractAffineMatrix(A));
 	}
-	
+
+    /**
+     * Extract at most a 2 x 3 sub-array from A to create a 3x3 matrix.
+     * @param A
+     * @return
+     */
 	private static double[][] extractAffineMatrix(double[][] A) {
-		double[][] M = Matrix.idMatrix(3);
+        double[][] M = Matrix.idMatrix(3);
 		final int m = Math.min(2, A.length);	// max. 2 rows
 		for (int i = 0; i < m; i++) {
 			final int n = Math.min(3, A[i].length);	// max. 3 columns
@@ -204,8 +209,11 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	 * {@inheritDoc} Note that inverting an affine transformation always yields another affine transformation.
 	 */
 	@Override
-	public AffineMapping2D getInverse() {
+	public AffineMapping2D getInverse() {   // TODO: use numerical matrix method for inverse
 		double det = a00 * a11 - a01 * a10;
+        if (!Double.isFinite(1/det)) {
+            throw new ArithmeticException("cannot get inverse with zero determinant");
+        }
 		double b00 = a11 / det;
 		double b01 = -a01 / det;
 		double b02 = (a01 * a12 - a02 * a11) / det;
