@@ -47,7 +47,11 @@ public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {
 		this.label = label;
 		points = new ArrayList<Pnt2d>(INITIAL_SIZE);
 	}
-	
+
+    /**
+     * Adds the specified point to this contour.
+     * @param p the point to be added
+     */
 	public void addPoint (Pnt2d p) {
 		points.add(p);
 	}
