@@ -4,9 +4,8 @@
  * minimize third-party dependencies.
  */
 module imagingbook.spectral {
-	exports imagingbook.spectral.dft;
-	exports imagingbook.spectral.dct;
-
-	requires JTransforms;
+	requires org.jtransforms;
 	requires imagingbook.common;
+    exports imagingbook.spectral.dft;
+    exports imagingbook.spectral.dct;
 }
