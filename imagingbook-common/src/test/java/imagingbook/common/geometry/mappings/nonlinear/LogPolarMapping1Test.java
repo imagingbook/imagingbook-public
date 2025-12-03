@@ -8,7 +8,7 @@
  ******************************************************************************/
 package imagingbook.common.geometry.mappings.nonlinear;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class LogPolarMapping1Test {
 //		System.out.println("xy = " + xy2);
 		
 //		System.out.println("ra (for rmax) = " + lpm.applyTo(Pnt2d.from(rmax, 0)));
-		assertEquals(xy, xy2);
+		assertTrue(xy.isCloseTo(xy2));
 	}
 
 }

@@ -11,7 +11,6 @@ package imagingbook.common.geometry.basic;
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.PrintPrecision;
 
-// import org.apache.commons.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math4.legacy.linear.MatrixUtils;
 import org.apache.commons.math4.legacy.linear.RealVector;
 
@@ -271,21 +270,54 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 
 
 	// ----------------------------------------------------------
+    /**
+     * Tests if this point matches the given point, i.e., if both coordinate differences are zero (&lt; than the
+     * specified tolerance).
+     * This method is deprecated because of possible confusion with Java's
+     * {@code equals(Object)} method.
+     * See {@link #isCloseTo(Pnt2d, double)} instead.
+     *
+     * @param p the point to be matched to
+     * @param tolerance the tolerance (see also {@link #TOLERANCE}).
+     * @return true if both points match
+     */
+    @Deprecated
+    public default boolean equals(Pnt2d p, double tolerance) {
+        return isZero(this.getX() - p.getX(), tolerance)
+                && isZero(this.getY() - p.getY(), tolerance);
+    }
+
+    /**
+     * Tests if this point is close to another point, with x/y position
+     * difference less than the default tolerance ({@link #TOLERANCE}).
+     * This method may be used to check if points of different numerical
+     * coordinate types are (quasi) the same.
+     * See also {@link #isCloseTo(Pnt2d, double)} for supplying a specific
+     * tolerance.
+     *
+     *
+     * @param p the other point to be checked
+     * @return true if coordinates of both points agree within the default tolerance
+     */
+    public default boolean isCloseTo(Pnt2d p) {
+        return isCloseTo(p, TOLERANCE);
+    }
 
 	/**
-	 * Tests if this point matches the given point, i.e., if both coordinate differences are zero (&lt; than the
-	 * specified tolerance).
+	 * Tests if this point is close to another point, with x/y position
+     * difference less than the specified tolerance.
+     * See also {@link #isCloseTo(Pnt2d)}.
 	 *
-	 * @param p the point to be matched to
-	 * @param tolerance the tolerance (see also {@link #TOLERANCE}).
-	 * @return true if both points match
+	 * @param p the other point to be checked
+	 * @param tolerance the x/y position tolerance (see also {@link #TOLERANCE}).
+	 * @return true if coordinates of both points agree within the specified tolerance
 	 */
-	public default boolean equals(Pnt2d p, double tolerance) {
+	public default boolean isCloseTo(Pnt2d p, double tolerance) {
 		return isZero(this.getX() - p.getX(), tolerance) 
 				&& isZero(this.getY() - p.getY(), tolerance);
 	}
 
-	// ----------------------------------------------------------
+    // ----------------------------------------------------------
 
 	/**
 	 * Returns the squared L2 distance between this point and the given point.
@@ -482,12 +514,18 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		// equality -----------------------------------
 
 		@Override
-		public boolean equals(Object p) {
-			if (this == p) {
+		public boolean equals(Object obj) {
+			if (this == obj) {
 				return true;
 			}
-			if (p instanceof Pnt2d) {
-				return this.equals((Pnt2d) p, TOLERANCE);
+            if (obj instanceof Pnt2d.PntDouble other) {
+                return Double.compare(this.x, other.x) == 0 &&
+                        Double.compare(this.y, other.y) == 0;
+            }
+			if (obj instanceof Pnt2d other) {
+                //return this.equals((Pnt2d) obj, TOLERANCE);
+                return Double.compare(this.x, other.getX()) == 0 &&
+                       Double.compare(this.y, other.getY()) == 0;
 			}
 			return false;
 		}
@@ -697,22 +735,22 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 			return sqr(this.x - other.x) + sqr(this.y - other.y);
 		}
 
-		// equality -----------------------------------
+        // equality -----------------------------------
 
-		@Override
-		public boolean equals(Object p) {
-			if (this == p) {
-				return true;
-			}
-			if (p instanceof PntInt) {
-				PntInt pp = (PntInt) p;
-				return (this.x == pp.x) && (this.y == pp.y);
-			}
-			if (p instanceof Pnt2d) {
-				return this.equals((Pnt2d) p, TOLERANCE);
-			}
-			return false;
-		}
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj instanceof Pnt2d.PntInt other) {
+                return (this.x == other.x) && (this.y == other.y);
+            }
+            if (obj instanceof Pnt2d other) {
+                return Double.compare(this.x, other.getX()) == 0 &&
+                        Double.compare(this.y, other.getY()) == 0;
+            }
+            return false;
+        }
 
 		// misc -----------------------------------
 

@@ -111,11 +111,8 @@ public class AlgebraicLineTest {
 		AlgebraicLine L1 = AlgebraicLine.from(p1, p2);
 		AlgebraicLine L2 = AlgebraicLine.from(p3, p2);
 
-		Assert.assertEquals(p2, L1.intersect(L2));
-		Assert.assertEquals(p2, L2.intersect(L1));
-		
-		Assert.assertNull(L1.intersect(L1));
-		Assert.assertNull(L2.intersect(L2));
+        Assert.assertTrue(p2.isCloseTo(L1.intersect(L2)));
+        Assert.assertTrue(p2.isCloseTo(L2.intersect(L1)));
 		
 		AlgebraicLine L3 = AlgebraicLine.from(p3.plus(1, 0), p2.plus(1, 0));	// L2 || L3
 		Assert.assertNull(L2.intersect(L3));

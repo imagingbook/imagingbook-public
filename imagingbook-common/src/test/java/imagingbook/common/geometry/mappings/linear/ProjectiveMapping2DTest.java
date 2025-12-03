@@ -36,7 +36,7 @@ public class ProjectiveMapping2DTest {
 			ProjectiveMapping2D A = ProjectiveMapping2D.fromPoints(P, Q);
 //			System.out.println("A = " + A.toString());
 			for (int i = 0; i < P.length; i++) {
-				Assert.assertEquals(Q[i], A.applyTo(P[i]));
+				Assert.assertTrue(Q[i].isCloseTo(A.applyTo(P[i])));
 			}
 	}
 	
@@ -73,7 +73,7 @@ public class ProjectiveMapping2DTest {
 			ProjectiveMapping2D A = ProjectiveMapping2D.fromPoints(P, Q);
 			//System.out.println("A = " + A.toString());
 			for (int i = 0; i < P.length; i++) {
-				Assert.assertEquals(Q[i], A.applyTo(P[i]));
+				Assert.assertTrue(Q[i].isCloseTo(A.applyTo(P[i])));
 			}
 		}
 	}

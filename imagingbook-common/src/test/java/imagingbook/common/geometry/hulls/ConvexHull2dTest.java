@@ -44,7 +44,7 @@ public class ConvexHull2dTest {
 	}
 
     @Test
-    public void testSixPointSetDupllicates() {
+    public void testSixPointSetDuplicates() {
         List<Pnt2d> points = Arrays.asList(
                 Pnt2d.from(2, 5),
                 Pnt2d.from(5, 4),

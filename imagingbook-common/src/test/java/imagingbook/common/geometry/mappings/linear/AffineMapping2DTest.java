@@ -59,13 +59,13 @@ public class AffineMapping2DTest {
 		// check A(P_i) = Q_i
 		AffineMapping2D A = AffineMapping2D.fromPoints(P, Q);
 		for (int i = 0; i < P.length; i++) {
-			Assert.assertEquals(Q[i], A.applyTo(P[i]));
+			Assert.assertTrue(Q[i].isCloseTo(A.applyTo(P[i])));
 		}
 		
 		// check Ai(Q_i) = P_i
 		AffineMapping2D Ai = A.getInverse();
 		for (int i = 0; i < P.length; i++) {
-			Assert.assertEquals(P[i], Ai.applyTo(Q[i]));
+            Assert.assertTrue(P[i].isCloseTo(Ai.applyTo(Q[i])));
 		}	
 	}
 	
@@ -99,7 +99,7 @@ public class AffineMapping2DTest {
 			AffineMapping2D A = AffineMapping2D.fromPoints(P, Q);
 //			System.out.println("A = " + A.toString());
 			for (int i = 0; i < P.length; i++) {
-				Assert.assertEquals(Q[i], A.applyTo(P[i]));
+				Assert.assertTrue(Q[i].isCloseTo(A.applyTo(P[i])));
 			}
 		}
 	}

@@ -27,11 +27,11 @@ public class Pnt2dDuplicateTest {
 		// duplicates are always of the same class as the original
 		
 		Pnt2d p1 = PntInt.from(3, 8);
-		Assert.assertTrue(p1.duplicate() instanceof PntInt);
+		Assert.assertTrue(p1.duplicate() instanceof Pnt2d.PntInt);
 		Assert.assertTrue(p1.duplicate().getClass() == p1.getClass());
 		
 		Pnt2d p2 = PntDouble.from(3, 8);
-		Assert.assertTrue(p2.duplicate() instanceof PntDouble);
+		Assert.assertTrue(p2.duplicate() instanceof Pnt2d.PntDouble);
 		Assert.assertTrue(p2.duplicate().getClass() == p2.getClass());
 	}
 	
@@ -40,11 +40,11 @@ public class Pnt2dDuplicateTest {
 		// duplicates are always of the same class as the original
 		
 		Pnt2d p1 = PntInt.from(3, 8);
-		Assert.assertTrue(Pnt2d.from(p1) instanceof PntInt);
+		Assert.assertTrue(Pnt2d.from(p1) instanceof Pnt2d.PntInt);
 		Assert.assertTrue(Pnt2d.from(p1).getClass() == p1.getClass());
 		
 		Pnt2d p2 = PntDouble.from(3, 8);
-		Assert.assertTrue(Pnt2d.from(p2) instanceof PntDouble);
+		Assert.assertTrue(Pnt2d.from(p2) instanceof Pnt2d.PntDouble);
 		Assert.assertTrue(Pnt2d.from(p2).getClass() == p2.getClass());
 	}
 

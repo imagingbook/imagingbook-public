@@ -8,7 +8,7 @@
  ******************************************************************************/
 package imagingbook.common.geometry.mappings.nonlinear;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -40,7 +40,7 @@ public class BilinearMapping2DTest {
 		for (int i = 0; i < P.length; i++) {
 			Pnt2d Qim = bmPQ.applyTo(P[i]);
 //			System.out.println(P[i].toString() + " -> " + Qim.toString());
-			assertEquals(Q[i], Qim);
+			assertTrue(Q[i].isCloseTo(Qim));
 		}
 		
 		// backward check Q -> P
@@ -48,7 +48,7 @@ public class BilinearMapping2DTest {
 		for (int i = 0; i < Q.length; i++) {
 			Pnt2d Pim = bmQP.applyTo(Q[i]);
 //			System.out.println(P[i].toString() + " -> " + Pim.toString());
-			assertEquals(P[i], Pim);
+			assertTrue(P[i].isCloseTo(Pim));
 		}
 	}
 

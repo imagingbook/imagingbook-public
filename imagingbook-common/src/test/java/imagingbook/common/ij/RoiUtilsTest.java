@@ -21,6 +21,8 @@ import ij.gui.Roi;
 import ij.gui.RotatedRectRoi;
 import imagingbook.common.geometry.basic.Pnt2d;
 
+import java.util.Arrays;
+
 public class RoiUtilsTest {
 
 	@Test
@@ -30,10 +32,13 @@ public class RoiUtilsTest {
 		
 		Roi roi = new Line(x1, y1, x2, y2);
 		Pnt2d[] pts = RoiUtils.getOutlinePointsFloat(roi);
-//		System.out.println("V=" + Arrays.toString(pts));
-		
-		assertTrue(pts[0].equals(Pnt2d.from(x1, y1), TOL));
-		assertTrue(pts[1].equals(Pnt2d.from(x2, y2), TOL));
+		System.out.println("V=" + Arrays.toString(pts));
+        Pnt2d P1 = Pnt2d.from(x1, y1);
+        Pnt2d P2 = Pnt2d.from(x2, y2);
+        assertTrue(pts[0].distance(P1) < TOL);
+		assertTrue(pts[1].distance(P2) < TOL);
+        // assertTrue(pts[0].equals(Pnt2d.from(x1, y1), TOL));
+        // assertTrue(pts[1].equals(Pnt2d.from(x2, y2), TOL));
 	}
 	
 	@Test

@@ -41,8 +41,8 @@ public class Scaling2DTest {
 			}
 			
 			for (int i = 0; i < P.length; i++) {
-				Assert.assertEquals(P[i], Si1.applyTo(Q[i]));
-				Assert.assertEquals(P[i], Si2.applyTo(Q[i]));
+				Assert.assertTrue(P[i].isCloseTo(Si1.applyTo(Q[i])));
+				Assert.assertTrue(P[i].isCloseTo(Si2.applyTo(Q[i])));
 			}
 		}
 	}
