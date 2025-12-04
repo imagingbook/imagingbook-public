@@ -39,19 +39,19 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	/**
 	 * The default tolerance for matching coordinates (1E-6).
 	 */
-	public final static double TOLERANCE = 1E-6;
+    public double TOLERANCE = 1E-6;
 
 	/**
 	 * Returns the x-coordinate of this point.
 	 * @return the x-coordinate value
 	 */
-	double getX();
+	public double getX();
 
 	/**
 	 * Returns the y-coordinate of this point.
 	 * @return the y-coordinate value
 	 */
-	double getY();
+    public double getY();
 
 	/**
 	 * Returns the x-coordinate of this point as a (truncated) integer value.
@@ -155,16 +155,6 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	public default Point2D.Double toAwtPoint2D() {
 		return new Point2D.Double(this.getX(), this.getY());
 	}
-
-	// /**
-	//  * Returns this point's coordinates as a new {@link Vector2D} instance (for interfacing with Apache Commons Math).
-	//  *
-	//  * @return a new vector
-	//  */
-	// public default Vector2D toVector2D() {
-	// 	return Vector2D.of(getX(), getY());
-    //     // return new Vector2D(getX(), getY());
-	// }
 
 	/**
 	 * Returns this point's coordinates as a new {@link RealVector} instance (for interfacing with Apache Commons
@@ -297,24 +287,27 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
      *
      *
      * @param p the other point to be checked
-     * @return true if coordinates of both points agree within the default tolerance
+     * @return true if the squared distance between points is below the default tolerance
      */
     public default boolean isCloseTo(Pnt2d p) {
         return isCloseTo(p, TOLERANCE);
     }
 
 	/**
-	 * Tests if this point is close to another point, with x/y position
-     * difference less than the specified tolerance.
+	 * Tests if this point is close to another point.
      * See also {@link #isCloseTo(Pnt2d)}.
 	 *
 	 * @param p the other point to be checked
-	 * @param tolerance the x/y position tolerance (see also {@link #TOLERANCE}).
-	 * @return true if coordinates of both points agree within the specified tolerance
+	 * @param tol the x/y position tolerance (see also {@link #TOLERANCE}).
+	 * @return true if the squared distance between points is below the specified tolerance
 	 */
-	public default boolean isCloseTo(Pnt2d p, double tolerance) {
-		return isZero(this.getX() - p.getX(), tolerance) 
-				&& isZero(this.getY() - p.getY(), tolerance);
+	public default boolean isCloseTo(Pnt2d p, double tol) {
+        if (this.equals(p)) {
+            return true;
+        }
+        return this.distL1(p) < tol;
+		// return Math.abs(this.getX() - p.getX()) < tol  && Math.abs(this.getY() - p.getY()) < tol;
+
 	}
 
     // ----------------------------------------------------------
@@ -787,8 +780,6 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		public Point toAwtPoint() {
 			return new Point(this.x, this.y);
 		}
-
-
 
 	}
 
