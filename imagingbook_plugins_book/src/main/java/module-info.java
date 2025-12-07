@@ -40,7 +40,6 @@ module imagingbook_plugins_book {
 	exports More_;
 	exports Tools_;
 
-	requires commons.math3;
 	requires transitive ij;
 	requires transitive imagingbook.common;
 	requires imagingbook.core;
