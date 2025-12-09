@@ -8,48 +8,154 @@
  ******************************************************************************/
 package imagingbook.common.util.bits;
 
+import java.util.Arrays;
+
 /**
- * This interface defines the behavior of bit vectors, i.e., fixed-sized vectors with single bit elements. This is
- * similar to the standard Java class {@link java.util.BitSet}, which implements variable-sized vectors and additional
- * functionality.
+ * This class ...
  *
  * @author WB
  */
-public interface BitVector {
+public class BitVector {
+
+	private static final int WL = 64;
+
+    private final int length;
+	private final long[] data;
+    // private final long[] mask;   // mask[0] is the bitmask used for the final word
+
+    private BitVector(BitVector bv) {
+        this.data = bv.data.clone();
+        this.length = bv.length;
+    }
 
     /**
-     * Returns a copy of this {@link BitVector} which shares no data but is
-     * {@code equal} to the original.
-     * @return a copy of this {@link BitVector}
+     * Main constructor.
+     * @param length the number of bits to hold
      */
-    public BitVector duplicate();
-
-	/**
-	 * Returns {@code true} is the specified bit-element is set (1), {@code false}
-     * otherwise (0).
-	 * @param i the bit index
-	 * @return as described
-	 */
-	public boolean get(int i);
-
-	/**
-	 * Sets the specified bit-element to the given boolean value (1 for {@code true},
-     * 0 for {@code false}).
-	 * @param i the bit index
-	 * @param val a boolean value
-	 */
-	public default void set(int i, boolean val) {
-		if (val) 
-			this.set(i);
-		else
-			this.unset(i);
+	public BitVector(int length) {
+		if (length <= 0) {
+			throw new IllegalArgumentException("bit vector length must be at least 1");
+		}
+		this.length = length;
+        int n = (length + WL - 1) / WL;
+		//int n = (length % WL == 0) ? length / WL : length / WL + 1;	// word count
+		this.data = new long[n];
     }
-	
-	/**
-	 * Sets the specified bit to {@code true} (1).
-	 * @param i the bit index
-	 */
-	public void set(int i);
+
+    // package private, for debugging/testing only
+    long[] getData() {
+        return this.data;
+    }
+
+    /**
+     * Calculates and returns the bitmask for the last 64-bit word.
+     * For example, for length = 5 (whenever length % 64 == 5), the
+     * resulting mask is
+     * 1111100000000000000000000000000000000000000000000000000000000000"
+     * @return the bitmask as a long value
+     */
+    long getBitMask() {
+        int n =  this.length % 64;      // n = number of leading 1's
+        long mask =  (n == 0) ?
+            -1L :                 // all 64 bits = 1
+            -1L << (64 - n);     // shift in 64-n zeros from the right
+        return mask;
+    }
+
+    /**
+     * Helper method. Returns the bit pattern of a long value as a 0/1 string
+     * (in MSB-first order). All 64 bits (i.e., leading zeros) are included
+     * in the string.
+     * @param longVal a long value
+     * @return the corresponding 0/1 string
+     */
+    static String getLongAsString(long longVal) {
+        return String.format("%64s", Long.toBinaryString(longVal)).replace(' ', '0');
+    }
+
+    // -----------------------------------------------------------------------
+
+    public static BitVector from(byte[] bytes) {
+        BitVector bv = new BitVector(bytes.length);
+        bv.set(bytes);
+        return bv;
+    }
+
+    public void set(byte[] bytes) {
+        for (int i = 0; i < bytes.length; i++) {
+            if (bytes[i] != 0) {
+                this.set(i);
+            }
+        }
+    }
+
+    public BitVector from(boolean[] bools) {
+        BitVector bv = new BitVector(bools.length);
+        bv.set(bools);
+        return bv;
+    }
+
+	public void set(boolean[] bools) {
+		for (int i = 0; i < bools.length; i++) {
+			this.set(i, bools[i]);
+		}
+	}
+
+    // ---------------------------------------------------------------------
+
+	public int length() {
+		return this.length;
+	}
+
+	public boolean get(int i) {
+		if (i < 0 || i >= length) {
+			throw new IndexOutOfBoundsException("illegal index " + i);
+		}
+		final long mask = 1L << (i % WL);
+		return (data[i / WL] & mask) != 0L;
+	}
+
+	public void set(int i) {
+		if (i < 0 || i >= length) {
+			throw new IndexOutOfBoundsException("illegal index " + i);
+		}
+		final int j = i / WL;	// word index
+		final long mask = 1L << (i % WL);
+		data[j] =  data[j] | mask;
+	}
+
+	public void unset(int i) {
+		if (i < 0 || i >= length) {
+			throw new IndexOutOfBoundsException("illegal index " + i);
+		}
+		final int j = i / WL;	// word index
+		long mask = 1L << (i % WL);
+		data[j] =  data[j] & ~mask;
+	}
+
+	public void setAll() {
+        Arrays.fill(data, ~0L);
+        if (this.length % WL != 0) {    // not all bits are used
+            data[data.length - 1] &= this.getBitMask();
+        }
+	}
+
+	public void unsetAll() {
+        Arrays.fill(data, 0L);
+	}
+
+    /**
+     * Sets the specified bit-element to the given boolean value (1 for {@code true},
+     * 0 for {@code false}).
+     * @param i the bit index
+     * @param val a boolean value
+     */
+    public void set(int i, boolean val) {
+        if (val)
+            this.set(i);
+        else
+            this.unset(i);
+    }
 
     /**
      * Sets all bits of this {@link BitVector} to the contents of the supplied
@@ -58,7 +164,7 @@ public interface BitVector {
      * any non-0/1 character.
      * @param str01 a string of 0/1 values
      */
-    public default void set(String str01) {
+    public void set(String str01) {
         if (this.length() != str01.length()) {
             throw new IllegalArgumentException("wrong argument length: " + str01.length());
         }
@@ -71,64 +177,28 @@ public interface BitVector {
             }
         }
     }
-	
-	/**
-	 * Unsets the specified element (to bit-value 0).
-	 * @param i the element index
-	 */
-	public void unset(int i);
-	
-	/**
-	 * Sets all element values to 1.
-	 */
-	public void setAll();
-	
-	/**
-	 * Sets all element values to 0.
-	 */
-	public void unsetAll();
-	
-	/**
-	 * Returns the length of this bit vector.
-	 * @return the length of this bit vector
-	 */
-	public int length();
 
-    // ------------------------------------------------------------------------
-
-	/**
-	 * Returns the contents of this bit vector as a {@code byte} array.
+    /**
+     * Returns the contents of this bit vector as a {@code byte} array.
      * Bit-value false maps to byte value 0, true maps to 1.
-	 * @return a {@code byte} array
-	 */
-	public default byte[] asByteArray() {
-		byte[] bytes = new byte[this.length()];
-		for (int i = 0; i < bytes.length; i++) {
-			if (get(i)) {
-				bytes[i] = 1;
-			}
-		}
-		return bytes;
-	}
-
-	/**
-	 * Returns the contents of this bit vector as a {@code boolean} array.
-	 * @return a {@code boolean} array
-	 */
-	public default boolean[] asBooleanArray() {
-		boolean[] bools = new boolean[this.length()];
-		for (int i = 0; i < bools.length; i++) {
-			bools[i] = get(i);
-		}
-		return bools;
-	}
+     * @return a {@code byte} array
+     */
+    public byte[] asByteArray() {
+        byte[] bytes = new byte[this.length()];
+        for (int i = 0; i < bytes.length; i++) {
+            if (get(i)) {
+                bytes[i] = 1;
+            }
+        }
+        return bytes;
+    }
 
     /**
      * Returns the contents of this bit vector as a {@code String} of 0/1
      * characters. Bit-value false maps to '0', true maps to character '1'.
      * @return a {@code String} of 0/1 characters
      */
-    public default String asString() {
+    public String asString() {
         char[] chars = new char[this.length()];
         for (int i = 0; i < chars.length; i++) {
             chars[i] = get(i) ? '1' : '0';
@@ -136,87 +206,55 @@ public interface BitVector {
         return new String(chars);
     }
 
-
-	// static factory methods -----------------------------------------------
-
-	/**
-	 * Creates and returns a new bitvector of type {@link BitVector64} from the
-     * specified {@code byte} array. Each byte element b is interpreted as
-     * 0/false if b == 0 and 1/true otherwise.
-	 * @param bytes an array of byte values
-	 * @return a new bit vector
-	 */
-	public static BitVector from(byte[] bytes) {
-		return new BitVector64(bytes);
-	}
-
-	/**
-	 * Creates and returns a new bitvector of type {@link BitVector64} from the
-     * specified {@code boolean} array, setting elements to false (0) or true (1).
-	 * @param bools an array of boolean values
-	 * @return a new bit vector
-	 */
-	public static BitVector from(boolean[] bools) {
-		return new BitVector64(bools);
-	}
-
     /**
-     * Creates and returns a new bitvector of type {@link BitVector64} from the
-     * specified {@code boolean} array, setting elements to 0/false or 1/true.
-     * @param str01 a string of 0/1 characters
-     * @return a new bit vector
+     * Returns the contents of this bit vector as a {@code boolean} array.
+     * @return a {@code boolean} array
      */
-    public static BitVector from(String str01) {
-        BitVector bv = BitVector.create(str01.length());
-        bv.set(str01);
-        return bv;
+    public boolean[] asBooleanArray() {
+        boolean[] bools = new boolean[this.length()];
+        for (int i = 0; i < bools.length; i++) {
+            bools[i] = get(i);
+        }
+        return bools;
+    }
+		
+	
+	@Override
+	public String toString() {
+		StringBuilder buf = new StringBuilder();
+		buf.append(BitVector.class.getSimpleName() + "[");
+		for (int i = 0; i < length; i++) {
+			buf.append(this.get(i) ? "1" : "0");
+		}
+		buf.append("]");
+		return buf.toString();
+	}
+
+    // ---------------------------------------------------------------------
+
+    public BitVector duplicate() {
+        return new BitVector(this);
     }
 
-	/**
-	 * Creates and returns a new bitvector of type {@link BitVector64} with the
-     * specified length. Elements are initialized to 0/false.
-	 * @param length the length of the bit vector
-	 * @return a new bit vector
-	 */
-	public static BitVector create(int length) {
-        return (length <= 32) ?
-		    new BitVector32(length) : new BitVector64(length);
-	}
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(data);
+    }
 
-	/**
-	 * Binarizes the specified {@code byte[]} by replacing all non-zero values
-     * by 1. Returns a new array, the original array is not modified.
-	 * @param b a {@code byte[]}
-	 * @return a new {@code byte[]} with values 0/1 only
-	 */
-    @Deprecated         // move elsewhere (if used anywhere)
-	public static byte[] binarize(byte[] b) {
-		byte[] b2 = b.clone();
-		for (int i = 0; i < b2.length; i++) {
-			if (b2[i] != 0) {
-				b2[i] = 1;
-			}
-		}
-		return b2;
-	}
+    // ---------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Bit operations
-    // -------------------------------------------------------------------------
-
-    /**
-     * Calculates the 'cardinality' of this bit vectors, i.e., the number of
-     * true/1 bits.
-     * @return the number of true/1 bits
-     */
-    public default int cardinality() {
-        int n = this.length();
+    public int cardinality() {
         int card = 0;
-        for (int i = 0; i < n; i++)  {
-            if (this.get(i)) {
-                card++;
-            }
+        for (int k = 0; k < data.length; k++) {
+            card += Long.bitCount(data[k]);
         }
         return card;
+    }
+
+
+    public static void main(String[] args) {
+        for (int k = 0; k <= 128; k++) {
+            System.out.println(k + " -> " + (64 - k % 64));
+        }
     }
 }

@@ -57,7 +57,7 @@ public class BitMap {
 		this.height = height;
 		this.bitvec = (bytes != null) ? 
 				BitVector.from(bytes) : 
-				BitVector.create(width * height);
+				new BitVector(width * height);
 	}
 	
 	// ---------------------------------------------------------
