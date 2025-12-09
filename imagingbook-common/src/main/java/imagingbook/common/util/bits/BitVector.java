@@ -11,17 +11,22 @@ package imagingbook.common.util.bits;
 import java.util.Arrays;
 
 /**
- * This class ...
+ * This class implements a fixed-sized vector with single-bit elements. This is
+ * similar to the standard Java class {@link java.util.BitSet}, which implements
+ * variable-sized (extendable) bit vectors. Bit vectors allow efficient storage,
+ * logical operations and comparison of bit data. Bit vectors are not immutable,
+ * but their 0/1 elements can be modified. Operations between pairs of bit
+ * vectors are only implemented for vectors of the same length, similar to
+ * ordinary array operations. Bit vectors can be initialized from a variety
+ * of data sources, such as 0/1 strings, boolean arrays or byte arrays.
  *
  * @author WB
  */
 public class BitVector {
-
 	private static final int WL = 64;
 
     private final int length;
 	private final long[] data;
-    // private final long[] mask;   // mask[0] is the bitmask used for the final word
 
     private BitVector(BitVector bv) {
         this.data = bv.data.clone();
@@ -38,7 +43,6 @@ public class BitVector {
 		}
 		this.length = length;
         int n = (length + WL - 1) / WL;
-		//int n = (length % WL == 0) ? length / WL : length / WL + 1;	// word count
 		this.data = new long[n];
     }
 
@@ -75,6 +79,25 @@ public class BitVector {
 
     // -----------------------------------------------------------------------
 
+    /**
+     * Creates and returns a new {@link BitVector} from the
+     * specified {@code boolean} array, setting elements to 0=false or 1=true.
+     * @param str01 a string of 0/1 characters
+     * @return a new bit vector
+     */
+    public static BitVector from(String str01) {
+        BitVector bv = new BitVector(str01.length());
+        bv.set(str01);
+        return bv;
+    }
+
+    /**
+     * Creates and returns a new {@link BitVector} from the
+     * specified {@code byte} array. Each byte element b is interpreted as
+     * 0/false if b == 0 and 1/true otherwise.
+     * @param bytes an array of byte values
+     * @return a new bit vector
+     */
     public static BitVector from(byte[] bytes) {
         BitVector bv = new BitVector(bytes.length);
         bv.set(bytes);
@@ -89,6 +112,12 @@ public class BitVector {
         }
     }
 
+    /**
+     * Creates and returns a new {@link BitVector} from the
+     * specified {@code boolean} array, setting elements to false (0) or true (1).
+     * @param bools an array of boolean values
+     * @return a new bit vector
+     */
     public BitVector from(boolean[] bools) {
         BitVector bv = new BitVector(bools.length);
         bv.set(bools);
@@ -184,8 +213,8 @@ public class BitVector {
      * @return a {@code byte} array
      */
     public byte[] asByteArray() {
-        byte[] bytes = new byte[this.length()];
-        for (int i = 0; i < bytes.length; i++) {
+        byte[] bytes = new byte[this.length];
+        for (int i = 0; i < this.length; i++) {
             if (get(i)) {
                 bytes[i] = 1;
             }

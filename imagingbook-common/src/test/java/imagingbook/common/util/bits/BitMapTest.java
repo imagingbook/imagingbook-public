@@ -83,13 +83,31 @@ public class BitMapTest {
 			assertEquals(ip.getWidth(), bm.getWidth());
 			assertEquals(ip.getHeight(), bm.getHeight());
 			
-			byte[] ba = BitVector.binarize((byte[]) ip.getPixels());
+			byte[] ba = binarize((byte[]) ip.getPixels());
 			assertArrayEquals("problem with " + ir, ba, bm.toByteArray());
 		}
 	}
-	
-	
-	// ----------------------------------------------------------------
+
+    /**
+     * Binarizes the specified {@code byte[]} by replacing all non-zero values by 1. Returns a new array, the original
+     * array is not modified.
+     *
+     * @param b a {@code byte[]}
+     * @return a new {@code byte[]} with values 0/1 only
+     */
+    static byte[] binarize(byte[] b) {
+        byte[] b2 = b.clone();
+        for (int i = 0; i < b2.length; i++) {
+            if (b2[i] != 0) {
+                b2[i] = 1;
+            }
+        }
+        return b2;
+    }
+
+
+
+    // ----------------------------------------------------------------
 	
 	private byte[] makerandomBits(int n) {
 		byte[] ba = new byte[n];
