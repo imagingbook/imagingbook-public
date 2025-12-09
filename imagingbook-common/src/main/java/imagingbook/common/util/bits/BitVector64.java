@@ -8,6 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.util.bits;
 
+import java.util.Arrays;
+import java.util.BitSet;
+
 /**
  * This class implements {@link BitVector} with internal 64-bit {@code long} data.
  *
@@ -19,6 +22,11 @@ public class BitVector64 implements BitVector {
 	
 	private final long[] data;
 	private final int length;
+
+    private BitVector64(BitVector64 bv) {
+        this.data = bv.data.clone();
+        this.length = bv.length;
+    }
 	
 	public BitVector64(int length) {
 		if (length <= 0) {
@@ -106,5 +114,18 @@ public class BitVector64 implements BitVector {
 		buf.append("]");
 		return buf.toString();
 	}
+
+    // ---------------------------------------------------------------------
+
+    @Override
+    public BitVector64 duplicate() {
+        return new BitVector64(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(data);
+    }
+
 
 }

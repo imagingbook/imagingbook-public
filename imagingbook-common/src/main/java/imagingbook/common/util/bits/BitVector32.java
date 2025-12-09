@@ -20,6 +20,11 @@ public class BitVector32 implements BitVector {
 	
 	private final int[] data;
 	private final int length;
+
+    private BitVector32(BitVector32 bv) {
+        this.data = bv.data.clone();
+        this.length = bv.length;
+    }
 	
 	public BitVector32(int length) {
 		if (length <= 0) {
@@ -94,13 +99,25 @@ public class BitVector32 implements BitVector {
 	
 	@Override
 	public String toString() {
-		StringBuilder buf = new StringBuilder();
-		buf.append(BitVector32.class.getSimpleName() + "[");
-		for (int i = 0; i < length; i++) {
-			buf.append(this.get(i) ? "1" : "0");
-		}
-		buf.append("]");
-		return buf.toString();
-	}
+        StringBuilder buf = new StringBuilder();
+        buf.append(BitVector32.class.getSimpleName() + "[");
+        for (int i = 0; i < length; i++) {
+            buf.append(this.get(i) ? "1" : "0");
+        }
+        buf.append("]");
+        return buf.toString();
+    }
+
+    // --------------------------------------------------------------
+
+    @Override
+    public BitVector32 duplicate() {
+        return new BitVector32(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(data);
+    }
 
 }

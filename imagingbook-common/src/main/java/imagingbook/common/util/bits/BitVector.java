@@ -17,6 +17,8 @@ package imagingbook.common.util.bits;
  */
 public interface BitVector {
 
+    public BitVector duplicate();
+
 	/**
 	 * Returns {@code true} is the specified bit-element is set (1), {@code false} otherwise (0).
 	 *
@@ -147,5 +149,9 @@ public interface BitVector {
 		}
 		return b2;
 	}
+
+    // -------------------------------------------------------------------------
+    // Bit operations
+    // -------------------------------------------------------------------------
 
 }
