@@ -715,7 +715,7 @@ public abstract class IjUtils {
 	 * @see #convertToBitMap(ByteProcessor)
 	 */
 	public static ByteProcessor convertToByteProcessor(BitMap bitmap) {
-		byte[] pixels = bitmap.getBitVector().toByteArray();
+		byte[] pixels = bitmap.getBitVector().asByteArray();
 		return new ByteProcessor(bitmap.getWidth(), bitmap.getHeight(), pixels);
 	}
 

@@ -188,7 +188,7 @@ public class BitMap {
 	 * @return a one-dimensional {@code byte} array
 	 */
 	public byte[] toByteArray() {
-		return this.bitvec.toByteArray();
+		return this.bitvec.asByteArray();
 	}
 	
 	// static methods --------------------------------------------------

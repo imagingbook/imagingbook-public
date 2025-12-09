@@ -54,7 +54,7 @@ public class BitVector32 implements BitVector {
 	// ---------------------------------------------------------------------
 
 	@Override
-	public int getLength() {
+	public int length() {
 		return this.length;
 	}
 	

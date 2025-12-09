@@ -25,20 +25,20 @@ public class BitVector32Test {
 		byte[] ba = new byte[K];
 		
 		BitVector bv = new BitVector32(ba);
-		assertEquals(ba.length, bv.getLength());
-		assertArrayEquals(ba, bv.toByteArray());
+		assertEquals(ba.length, bv.length());
+		assertArrayEquals(ba, bv.asByteArray());
 		
 		Arrays.fill(ba, (byte) (0xFF & 1));
 		bv = new BitVector32(ba);
-		assertArrayEquals(ba, bv.toByteArray());
+		assertArrayEquals(ba, bv.asByteArray());
 		
 		// set/unset single elements
 		Arrays.fill(ba, (byte) 0);
 		bv.unsetAll();
-		for (int i = 0; i < bv.getLength(); i++) {
+		for (int i = 0; i < bv.length(); i++) {
 			ba[i] = (byte) 1;
 			bv.set(i);
-			assertArrayEquals(ba, bv.toByteArray());
+			assertArrayEquals(ba, bv.asByteArray());
 			ba[i] = (byte) 0;
 			bv.unset(i);
 		}
@@ -49,7 +49,7 @@ public class BitVector32Test {
 		for (int K : new int[] {1, 23, 79, 127, 128, 251, 255, 256, 6703}) {
 			byte[] ba = makerandomBits(K);
 			BitVector bv = new BitVector32(ba);
-			assertArrayEquals(ba, bv.toByteArray());
+			assertArrayEquals(ba, bv.asByteArray());
 		}
 		
 	}
@@ -62,5 +62,17 @@ public class BitVector32Test {
 		}
 		return ba;
 	}
+
+    // -----------------------------------------------------------
+
+    @Test
+    public void duplicateTest() {
+    }
+
+    @Test
+    public void testHashCodeTest() {
+    }
+
+
 
 }

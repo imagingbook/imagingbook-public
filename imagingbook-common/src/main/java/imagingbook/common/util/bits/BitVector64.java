@@ -9,7 +9,6 @@
 package imagingbook.common.util.bits;
 
 import java.util.Arrays;
-import java.util.BitSet;
 
 /**
  * This class implements {@link BitVector} with internal 64-bit {@code long} data.
@@ -17,26 +16,59 @@ import java.util.BitSet;
  * @author WB
  */
 public class BitVector64 implements BitVector {
-	
+
 	private static final int WL = 64;
-	
+
+    private final int length;
 	private final long[] data;
-	private final int length;
+    // private final long[] mask;   // mask[0] is the bitmask used for the final word
 
     private BitVector64(BitVector64 bv) {
         this.data = bv.data.clone();
         this.length = bv.length;
     }
-	
+
+    /**
+     * Main constructor.
+     * @param length the number of bits to hold
+     */
 	public BitVector64(int length) {
 		if (length <= 0) {
 			throw new IllegalArgumentException("bit vector length must be at least 1");
 		}
 		this.length = length;
-		int n = (length % WL == 0) ? length / WL : length / WL + 1;	// word count
+        int n = (length + WL - 1) / WL;
+		//int n = (length % WL == 0) ? length / WL : length / WL + 1;	// word count
 		this.data = new long[n];
-	}
-	
+    }
+
+    // package private, for debugging/testing only
+    long[] getData() {
+        return this.data;
+    }
+
+    /**
+     * Calculates and returns the bitmask for the last 64-bit word.
+     * For example, for length = 5 (whenever length % 64 == 5), the
+     * resulting mask is
+     * 1111100000000000000000000000000000000000000000000000000000000000"
+     * @return the bitmask as a long value
+     */
+    long getBitMask() {
+        int n =  this.length % 64;      // n = number of leading 1's
+        long mask =  (n == 0) ?
+            -1L :                 // all 64 bits = 1
+            -1L << (64 - n);     // shift in 64-n zeros from the right
+        return mask;
+    }
+
+    static String getLongAsString(long longVal) {
+        return String.format("%64s", Long.toBinaryString(longVal)).replace(' ', '0');
+    }
+
+    // -----------------------------------------------------------------------
+
+    @Deprecated
 	public BitVector64(byte[] bytes) {
 		this(bytes.length);
 		for (int i = 0; i < bytes.length; i++) {
@@ -45,7 +77,8 @@ public class BitVector64 implements BitVector {
 			}
 		}
 	}
-	
+
+    @Deprecated
 	public BitVector64(boolean[] bools) {
 		this(bools.length);
 		for (int i = 0; i < bools.length; i++) {
@@ -55,8 +88,12 @@ public class BitVector64 implements BitVector {
 	
 	// ---------------------------------------------------------------------
 
+
+
+    // ---------------------------------------------------------------------
+
 	@Override
-	public int getLength() {
+	public int length() {
 		return this.length;
 	}
 	
@@ -91,16 +128,15 @@ public class BitVector64 implements BitVector {
 	
 	@Override
 	public void setAll() {
-		for (int j = 0; j < data.length; j++) {
-			data[j] = ~0L;
-		}
+        Arrays.fill(data, ~0L);
+        if (this.length % WL != 0) {    // not all bits are used
+            data[data.length - 1] &= this.getBitMask();
+        }
 	}
 
 	@Override
 	public void unsetAll() {
-		for (int j = 0; j < data.length; j++) {
-			data[j] = 0L;
-		}
+        Arrays.fill(data, 0L);
 	}
 		
 	
@@ -127,5 +163,21 @@ public class BitVector64 implements BitVector {
         return Arrays.hashCode(data);
     }
 
+    // ---------------------------------------------------------------------
 
+    @Override
+    public int cardinality() {
+        int card = 0;
+        for (int k = 0; k < data.length; k++) {
+            card += Long.bitCount(data[k]);
+        }
+        return card;
+    }
+
+
+    public static void main(String[] args) {
+        for (int k = 0; k <= 128; k++) {
+            System.out.println(k + " -> " + (64 - k % 64));
+        }
+    }
 }

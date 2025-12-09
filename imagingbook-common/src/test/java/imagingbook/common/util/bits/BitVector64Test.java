@@ -8,12 +8,14 @@
  ******************************************************************************/
 package imagingbook.common.util.bits;
 
-import static org.junit.Assert.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Random;
 
-import org.junit.Test;
+import static imagingbook.common.util.bits.BitVector64.getLongAsString;
+import static org.junit.Assert.assertEquals;
 
 public class BitVector64Test {
 
@@ -24,20 +26,20 @@ public class BitVector64Test {
 		byte[] ba = new byte[K];
 		
 		BitVector bv = new BitVector64(ba);
-		assertEquals(ba.length, bv.getLength());
-		assertArrayEquals(ba, bv.toByteArray());
+		assertEquals(ba.length, bv.length());
+		Assert.assertArrayEquals(ba, bv.asByteArray());
 		
 		Arrays.fill(ba, (byte) (0xFF & 1));
 		bv = new BitVector64(ba);
-		assertArrayEquals(ba, bv.toByteArray());
+		Assert.assertArrayEquals(ba, bv.asByteArray());
 		
 		// set/unset single elements
 		Arrays.fill(ba, (byte) 0);
 		bv.unsetAll();
-		for (int i = 0; i < bv.getLength(); i++) {
+		for (int i = 0; i < bv.length(); i++) {
 			ba[i] = (byte) 1;
 			bv.set(i);
-			assertArrayEquals(ba, bv.toByteArray());
+			Assert.assertArrayEquals(ba, bv.asByteArray());
 			ba[i] = (byte) 0;
 			bv.unset(i);
 		}
@@ -48,7 +50,7 @@ public class BitVector64Test {
 		for (int K : new int[] {1, 23, 79, 127, 128, 251, 255, 256, 6703}) {
 			byte[] ba = makerandomBits(K);
 			BitVector bv = new BitVector64(ba);
-			assertArrayEquals(ba, bv.toByteArray());
+			Assert.assertArrayEquals(ba, bv.asByteArray());
 		}
 		
 	}
@@ -61,5 +63,75 @@ public class BitVector64Test {
 		}
 		return ba;
 	}
+
+    // replace tests above ----------------------------------------------------
+
+    @Test
+    public void constructorTest1() {
+        for (int n : new int[]{1, 33, 64, 3017, 71925}) {
+            BitVector64 bv = new BitVector64(n);
+            assertEquals(n, bv.length());
+        }
+    }
+
+
+    @Test
+    public void setAllTest() {
+        for (int n : new int[]{1, 33, 64, 3017, 71925}) {
+            BitVector64 bv = new BitVector64(n);
+            assertEquals(0, bv.cardinality());
+            bv.setAll();
+            assertEquals(n, bv.cardinality());
+            bv.unsetAll();
+            assertEquals(0, bv.cardinality());
+        }
+    }
+
+    @Test
+    public void testHashCode() {
+    }
+
+    @Test
+    public void cardinalityTest0() {
+        int n = 23; BitVector64 bv = new BitVector64(n);
+        int c = bv.cardinality();
+        assertEquals(0, c);
+
+        bv.setAll();
+        c = bv.cardinality();
+        assertEquals(n, c);
+    }
+
+    @Test
+    public void getBitMaskTest() {
+        int n;
+        BitVector64 bv;
+
+        n = 1; bv = new BitVector64(n);
+        assertEquals("1000000000000000000000000000000000000000000000000000000000000000", getLongAsString(bv.getBitMask()));
+
+        n = 5; bv = new BitVector64(n);
+        assertEquals("1111100000000000000000000000000000000000000000000000000000000000", getLongAsString(bv.getBitMask()));
+
+        n = 63; bv = new BitVector64(n);
+        assertEquals("1111111111111111111111111111111111111111111111111111111111111110", getLongAsString(bv.getBitMask()));
+
+        n = 64; bv = new BitVector64(n);
+        assertEquals("1111111111111111111111111111111111111111111111111111111111111111", getLongAsString(bv.getBitMask()));
+
+        n = 65;  bv = new BitVector64(n);
+        assertEquals("1000000000000000000000000000000000000000000000000000000000000000", getLongAsString(bv.getBitMask()));
+
+        n = 3917; bv = new BitVector64(n);
+        assertEquals("1111111111111000000000000000000000000000000000000000000000000000", getLongAsString(bv.getBitMask()));
+    }
+
+    @Test
+    public void getLongAsStringTest() {
+        assertEquals("0000000000000000000000000000000000000000000000000000000000000001", getLongAsString(1));
+        assertEquals("1111111111111111111111111111111111111111111111111111111111111111", getLongAsString(-1));
+        assertEquals("1111111111111111111111111111111111111010011111110011100111010010", getLongAsString(-92325422));
+    }
+
 
 }
