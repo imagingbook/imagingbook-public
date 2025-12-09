@@ -163,14 +163,14 @@ public class BitMap {
 	 * Sets all elements to 1.
 	 */
 	public void setAll() {
-		bitvec.setAll();
+		bitvec.set();
 	}
 	
 	/**
 	 * Sets all elements to 0.
 	 */
 	public void unsetAll() {
-		bitvec.unsetAll();
+		bitvec.unset();
 	}
 	
 	/**

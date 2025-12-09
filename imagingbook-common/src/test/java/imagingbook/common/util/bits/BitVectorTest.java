@@ -35,7 +35,7 @@ public class BitVectorTest {
 		
 		// set/unset single elements
 		Arrays.fill(ba, (byte) 0);
-		bv.unsetAll();
+		bv.unset();
 		for (int i = 0; i < bv.length(); i++) {
 			ba[i] = (byte) 1;
 			bv.set(i);
@@ -76,13 +76,13 @@ public class BitVectorTest {
 
 
     @Test
-    public void setAllTest() {
+    public void setTest() {
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv = new BitVector(n);
             assertEquals(0, bv.cardinality());
-            bv.setAll();
+            bv.set();
             assertEquals(n, bv.cardinality());
-            bv.unsetAll();
+            bv.unset();
             assertEquals(0, bv.cardinality());
         }
     }
@@ -103,7 +103,7 @@ public class BitVectorTest {
         int c = bv.cardinality();
         assertEquals(0, c);
 
-        bv.setAll();
+        bv.set();
         c = bv.cardinality();
         assertEquals(n, c);
     }
@@ -140,4 +140,19 @@ public class BitVectorTest {
     }
 
 
+    @Test
+    public void and() {
+    }
+
+    @Test
+    public void not() {
+    }
+
+    @Test
+    public void or() {
+    }
+
+    @Test
+    public void hammingDistance() {
+    }
 }

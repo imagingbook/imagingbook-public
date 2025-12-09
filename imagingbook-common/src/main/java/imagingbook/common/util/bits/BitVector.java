@@ -20,6 +20,11 @@ import java.util.Arrays;
  * ordinary array operations. Bit vectors can be initialized from a variety
  * of data sources, such as 0/1 strings, boolean arrays or byte arrays.
  *
+ * Bits are internally stored as a sequence (array) of 64-bit {@code long}
+ * values. All excess bits are always maintained at 0 values.
+ * Bit vectors must have at least 1 element. Zero-length bit vectors are not
+ * allowed.
+ *
  * @author WB
  */
 public class BitVector {
@@ -28,13 +33,8 @@ public class BitVector {
     private final int length;
 	private final long[] data;
 
-    private BitVector(BitVector bv) {
-        this.data = bv.data.clone();
-        this.length = bv.length;
-    }
-
     /**
-     * Main constructor.
+     * The one and only public constructor.
      * @param length the number of bits to hold
      */
 	public BitVector(int length) {
@@ -42,8 +42,13 @@ public class BitVector {
 			throw new IllegalArgumentException("bit vector length must be at least 1");
 		}
 		this.length = length;
-        int n = (length + WL - 1) / WL;
+        int n = (length + WL - 1) / WL; // number of long values required
 		this.data = new long[n];
+    }
+
+    private BitVector(BitVector bv) {
+        this.data = bv.data.clone();
+        this.length = bv.length;
     }
 
     // package private, for debugging/testing only
@@ -104,7 +109,18 @@ public class BitVector {
         return bv;
     }
 
+    /**
+     * Sets all bits of this {@link BitVector} to the contents of the supplied
+     * array. Each byte element b is interpreted as
+     * 0/false if b == 0 and 1/true otherwise.
+     * Throws {@link IllegalArgumentException} if the length of the array
+     * differs from this {@link BitVector}'s length.
+     * @param bytes an array of {@code byte} values
+     */
     public void set(byte[] bytes) {
+        if (this.length() != bytes.length) {
+            throw new IllegalArgumentException("wrong argument length: " + bytes.length);
+        }
         for (int i = 0; i < bytes.length; i++) {
             if (bytes[i] != 0) {
                 this.set(i);
@@ -124,7 +140,16 @@ public class BitVector {
         return bv;
     }
 
+    /**
+     * Sets all bits of this {@link BitVector} to the contents of the supplied
+     * array. Throws {@link IllegalArgumentException} if the length of the array
+     * differs from this {@link BitVector}'s length.
+     * @param bools an array of boolean values
+     */
 	public void set(boolean[] bools) {
+        if (this.length() != bools.length) {
+            throw new IllegalArgumentException("wrong argument length: " + bools.length);
+        }
 		for (int i = 0; i < bools.length; i++) {
 			this.set(i, bools[i]);
 		}
@@ -132,10 +157,20 @@ public class BitVector {
 
     // ---------------------------------------------------------------------
 
+    /**
+     * Returns the length of this bit vector.
+     * @return the length of this bit vector
+     */
 	public int length() {
 		return this.length;
 	}
 
+    /**
+     * Returns {@code true} is the specified bit-element is set (1), {@code false}
+     * otherwise (0).
+     * @param i the bit index
+     * @return as described
+     */
 	public boolean get(int i) {
 		if (i < 0 || i >= length) {
 			throw new IndexOutOfBoundsException("illegal index " + i);
@@ -144,6 +179,10 @@ public class BitVector {
 		return (data[i / WL] & mask) != 0L;
 	}
 
+    /**
+     * Sets the specified bit to {@code true} (1).
+     * @param i the bit index
+     */
 	public void set(int i) {
 		if (i < 0 || i >= length) {
 			throw new IndexOutOfBoundsException("illegal index " + i);
@@ -153,6 +192,10 @@ public class BitVector {
 		data[j] =  data[j] | mask;
 	}
 
+    /**
+     * Unsets the specified element (to bit-value 0).
+     * @param i the element index
+     */
 	public void unset(int i) {
 		if (i < 0 || i >= length) {
 			throw new IndexOutOfBoundsException("illegal index " + i);
@@ -162,14 +205,18 @@ public class BitVector {
 		data[j] =  data[j] & ~mask;
 	}
 
-	public void setAll() {
+    /**
+     * Sets all element values to 1.
+     */
+	public void set() {
         Arrays.fill(data, ~0L);
-        if (this.length % WL != 0) {    // not all bits are used
-            data[data.length - 1] &= this.getBitMask();
-        }
+        this.applyBitMask();
 	}
 
-	public void unsetAll() {
+    /**
+     * Sets all element values to 0.
+     */
+	public void unset() {
         Arrays.fill(data, 0L);
 	}
 
@@ -261,6 +308,11 @@ public class BitVector {
 
     // ---------------------------------------------------------------------
 
+    /**
+     * Returns a copy of this {@link BitVector} which shares no data but is
+     * {@code equal} to the original.
+     * @return a copy of this {@link BitVector}
+     */
     public BitVector duplicate() {
         return new BitVector(this);
     }
@@ -272,6 +324,11 @@ public class BitVector {
 
     // ---------------------------------------------------------------------
 
+    /**
+     * Calculates and returns the cardinality (number of 1-bits) of this
+     * bit vector.
+     * @return the cardinality of this bit vector
+     */
     public int cardinality() {
         int card = 0;
         for (int k = 0; k < data.length; k++) {
@@ -280,10 +337,75 @@ public class BitVector {
         return card;
     }
 
+    /**
+     * Performs a bitwise AND operation between this bit vector (a) and
+     * the supplied bit vector B. Both must have the same length.
+     * @param b the other bit vector
+     * @return the bit vector (a AND b)
+     */
+    public BitVector and(BitVector b) {
+        BitVector a = this;
+        checkSameLength(a, b);
+        BitVector c = a.duplicate();
+        for (int k = 0; k < a.data.length; k++) {
+            c.data[k] &= b.data[k];
+        }
+        return c;
+    }
 
-    public static void main(String[] args) {
-        for (int k = 0; k <= 128; k++) {
-            System.out.println(k + " -> " + (64 - k % 64));
+    /**
+     * Performs a bitwise NOT operation on this bit vector
+     * and returns the result as a new bit vector.
+     * @return the negated bit vector
+     */
+    public BitVector not() {
+        BitVector b = this.duplicate();
+        for (int k = 0; k < b.data.length; k++) {
+            b.data[k] = ~b.data[k];
+        }
+        b.applyBitMask();
+        return b;
+    }
+
+    private void applyBitMask() {
+        if (length % WL != 0) {    // not all bits are used
+            data[data.length - 1] &= getBitMask();
         }
     }
+
+    /**
+     * Performs a bitwise OR operation between this bit vector (a) and
+     * the supplied bit vector B. Both must have the same length.
+     * @param b the other bit vector
+     * @return the bit vector (a OR b)
+     */
+    public BitVector or(BitVector b) {
+        BitVector a = this;
+        checkSameLength(a, b);
+        BitVector c = a.duplicate();
+        for (int k = 0; k < a.data.length; k++) {
+            c.data[k] &= b.data[k];
+        }
+        return c;
+    }
+
+    public int hammingDistance(BitVector b) {
+        BitVector a = this;
+        checkSameLength(a, b);
+        int dist = 0;
+        for (int k = 0; k < a.data.length; k++) {
+            long c = a.data[k] ^ b.data[k];
+            dist += Long.bitCount(c);
+        }
+        return dist;
+    }
+
+    // ---------------------------------------------------------------------
+
+    private static void checkSameLength(BitVector a, BitVector b) {
+        if (a.length != b.length) {
+            throw new IllegalArgumentException("BitVectors a, b have different lengths");
+        }
+    }
+
 }
