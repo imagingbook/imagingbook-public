@@ -15,7 +15,7 @@ module imagingbook.common {
     requires org.apache.commons.numbers.complex;
     requires org.apache.commons.numbers.core;
 
-	exports imagingbook.common.color.adapt;
+    exports imagingbook.common.color.adapt;
 	exports imagingbook.common.color.cie;
 	exports imagingbook.common.color.colorspace;
 	exports imagingbook.common.color.gamma;

@@ -8,6 +8,7 @@
  ******************************************************************************/
 package imagingbook.common.util.bits;
 
+import imagingbook.testutils.DeterministicRandom;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,6 +17,8 @@ import java.util.Random;
 
 import static imagingbook.common.util.bits.BitVector.getLongAsString;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 public class BitVectorTest {
 
@@ -64,7 +67,7 @@ public class BitVectorTest {
 		return ba;
 	}
 
-    // replace tests above ----------------------------------------------------
+    // Revise/replace tests above ----------------------------------------------------
 
     @Test
     public void constructorTest1() {
@@ -114,22 +117,87 @@ public class BitVectorTest {
         BitVector bv;
 
         n = 1; bv = new BitVector(n);
-        assertEquals("1000000000000000000000000000000000000000000000000000000000000000", getLongAsString(bv.getBitMask()));
+        assertEquals("0000000000000000000000000000000000000000000000000000000000000001", getLongAsString(bv.getBitMask()));
 
         n = 5; bv = new BitVector(n);
-        assertEquals("1111100000000000000000000000000000000000000000000000000000000000", getLongAsString(bv.getBitMask()));
+        assertEquals("0000000000000000000000000000000000000000000000000000000000011111", getLongAsString(bv.getBitMask()));
 
         n = 63; bv = new BitVector(n);
-        assertEquals("1111111111111111111111111111111111111111111111111111111111111110", getLongAsString(bv.getBitMask()));
+        assertEquals("0111111111111111111111111111111111111111111111111111111111111111", getLongAsString(bv.getBitMask()));
 
         n = 64; bv = new BitVector(n);
         assertEquals("1111111111111111111111111111111111111111111111111111111111111111", getLongAsString(bv.getBitMask()));
 
         n = 65;  bv = new BitVector(n);
-        assertEquals("1000000000000000000000000000000000000000000000000000000000000000", getLongAsString(bv.getBitMask()));
+        assertEquals("0000000000000000000000000000000000000000000000000000000000000001", getLongAsString(bv.getBitMask()));
 
         n = 3917; bv = new BitVector(n);
-        assertEquals("1111111111111000000000000000000000000000000000000000000000000000", getLongAsString(bv.getBitMask()));
+        assertEquals("0000000000000000000000000000000000000000000000000001111111111111", getLongAsString(bv.getBitMask()));
+    }
+
+    @Test
+    public void equalsTest() {
+        BitVector bv1 = makeRandomBitVector(273, 15);
+        BitVector bv2 = bv1.duplicate();
+        assertEquals(bv1, bv1);
+        assertEquals(bv1, bv2);
+        assertEquals(bv2, bv1);
+    }
+
+    @Test
+    public void andTest() {
+        for (int n : new int[]{1, 33, 64, 3017, 71925}) {
+            BitVector bv1 = makeRandomBitVector(n, 29);
+            BitVector bv2 = new BitVector(bv1.length()); bv2.set(); // all 1s
+
+            assertEquals(bv1, bv1.and(bv1));    // and with itself
+            assertEquals(bv1, bv1.and(bv2));    // and with all 1s
+            assertEquals(bv1, bv2.and(bv1));
+        }
+    }
+
+    @Test
+    public void orTest() {
+        for (int n : new int[]{1, 33, 64, 3017, 71925}) {
+            BitVector bv1 = makeRandomBitVector(n, 107);
+            BitVector bv2 = new BitVector(bv1.length()); // all 0s
+            BitVector bv3 = bv2.not(); // all 1s
+
+            assertEquals(bv1, bv1.or(bv1));    // or with itself
+            assertEquals(bv1, bv1.or(bv2));    // or with all 0s
+            assertEquals(bv1, bv2.or(bv1));
+            assertEquals(bv3, bv1.or(bv1.not()));
+        }
+    }
+
+    @Test
+    public void notTest() {
+        for (int n : new int[]{1, 33, 64, 3017, 71925}) {
+            BitVector bv1 = makeRandomBitVector(n, 23);
+            BitVector bv2 = bv1.not();  // bv1 inverted
+            BitVector bv3 = bv2.not();  // bv2 inverted back to bv1
+
+            assertNotEquals(bv1, bv2);
+            assertEquals(bv1, bv3);
+
+            for (int i = 0; i < n; i++) {
+                assertNotEquals(bv1.get(i), bv2.get(i));
+                assertEquals(bv1.get(i), bv3.get(i));
+            }
+        }
+    }
+
+    @Test
+    public void hammingDistanceTest() {
+        for (int n : new int[]{1, 33, 64, 3017, 71925}) {
+            BitVector bv1 = makeRandomBitVector(n, 801);
+            BitVector bv2 = bv1.not();  // bv1 inverted
+            BitVector bv3 = new BitVector(n);   // all 0s
+
+            assertEquals(0, bv1.hammingDistance(bv1));  // 0 distance to itself
+            assertEquals(n, bv1.hammingDistance(bv2));  // n different bits
+            assertEquals(bv1.cardinality(), bv1.hammingDistance(bv3));  // number of 1s
+        }
     }
 
     @Test
@@ -139,20 +207,8 @@ public class BitVectorTest {
         assertEquals("1111111111111111111111111111111111111010011111110011100111010010", getLongAsString(-92325422));
     }
 
-
-    @Test
-    public void and() {
-    }
-
-    @Test
-    public void not() {
-    }
-
-    @Test
-    public void or() {
-    }
-
-    @Test
-    public void hammingDistance() {
+    // Uses a deterministic random generator for repeatable testing:
+    static BitVector makeRandomBitVector(int length, long seed) {
+        return BitVector.makeRandom(length,new DeterministicRandom(seed));
     }
 }

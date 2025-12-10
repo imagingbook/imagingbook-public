@@ -8,20 +8,25 @@
  ******************************************************************************/
 package imagingbook.common.util.bits;
 
+import imagingbook.common.geometry.basic.Pnt2d;
+
 import java.util.Arrays;
+import java.util.Random;
+import java.util.random.RandomGenerator;
 
 /**
  * This class implements a fixed-sized vector with single-bit elements. This is
  * similar to the standard Java class {@link java.util.BitSet}, which implements
  * variable-sized (extendable) bit vectors. Bit vectors allow efficient storage,
  * logical operations and comparison of bit data. Bit vectors are not immutable,
- * but their 0/1 elements can be modified. Operations between pairs of bit
+ * their 0/1 elements can be modified (but not their length). Operations between pairs of bit
  * vectors are only implemented for vectors of the same length, similar to
  * ordinary array operations. Bit vectors can be initialized from a variety
  * of data sources, such as 0/1 strings, boolean arrays or byte arrays.
  *
  * Bits are internally stored as a sequence (array) of 64-bit {@code long}
- * values. All excess bits are always maintained at 0 values.
+ * values, with the long's Least Significant Bit (LSB) being the first bit.
+ * All excess bits (toward the MSB) are always maintained at 0.
  * Bit vectors must have at least 1 element. Zero-length bit vectors are not
  * allowed.
  *
@@ -58,23 +63,26 @@ public class BitVector {
 
     /**
      * Calculates and returns the bitmask for the last 64-bit word.
-     * For example, for length = 5 (whenever length % 64 == 5), the
+     * For example, for length = 5 (and whenever length % 64 == 5), the
      * resulting mask is
-     * 1111100000000000000000000000000000000000000000000000000000000000"
+     * "0000000000000000000000000000000000000000000000000000000000011111".
+     * Note that this shows the leftmost bit is the MSB, the rightmost is ths LSB.
+     * That is, {@code BitVector.get(0)} returns the LSB of the first data
+     * word.
+     * .
      * @return the bitmask as a long value
      */
-    long getBitMask() {
-        int n =  this.length % 64;      // n = number of leading 1's
-        long mask =  (n == 0) ?
-            -1L :                 // all 64 bits = 1
-            -1L << (64 - n);     // shift in 64-n zeros from the right
-        return mask;
+     long getBitMask() {
+        final int n = this.length % 64;      // n = number of leading 1's
+        return (n == 0) ? -1L : ((1L << n) - 1);
     }
+
 
     /**
      * Helper method. Returns the bit pattern of a long value as a 0/1 string
      * (in MSB-first order). All 64 bits (i.e., leading zeros) are included
-     * in the string.
+     * in the string. Note that the resulting string is in reverse order to
+     * the string representation produced by the {@link #toString()} method!
      * @param longVal a long value
      * @return the corresponding 0/1 string
      */
@@ -173,10 +181,11 @@ public class BitVector {
      */
 	public boolean get(int i) {
 		if (i < 0 || i >= length) {
-			throw new IndexOutOfBoundsException("illegal index " + i);
+			throw new IndexOutOfBoundsException("illegal bit index " + i);
 		}
-		final long mask = 1L << (i % WL);
-		return (data[i / WL] & mask) != 0L;
+        long mask = 1L << (i % WL);
+        long q = data[i / WL] & mask;
+		return q != 0L;
 	}
 
     /**
@@ -206,15 +215,19 @@ public class BitVector {
 	}
 
     /**
-     * Sets all element values to 1.
+     * Sets all bits to 1.
      */
 	public void set() {
-        Arrays.fill(data, ~0L);
+        // System.out.println("1 setting all to " + Long.toBinaryString(~0L));
+        Arrays.fill(this.data, ~0L);
+        // System.out.println("2 setting all to " + Long.toBinaryString(data[0]));
         this.applyBitMask();
+        // System.out.println("3 setting all to " + Long.toBinaryString(this.data[0]));
+        // System.out.println("this = " + this.asString());
 	}
 
     /**
-     * Sets all element values to 0.
+     * Sets all bits to 0.
      */
 	public void unset() {
         Arrays.fill(data, 0L);
@@ -299,9 +312,10 @@ public class BitVector {
 	public String toString() {
 		StringBuilder buf = new StringBuilder();
 		buf.append(BitVector.class.getSimpleName() + "[");
-		for (int i = 0; i < length; i++) {
-			buf.append(this.get(i) ? "1" : "0");
-		}
+		// for (int i = 0; i < length; i++) {
+		// 	buf.append(this.get(i) ? "1" : "0");
+		// }
+        buf.append(this.asString());
 		buf.append("]");
 		return buf.toString();
 	}
@@ -369,7 +383,9 @@ public class BitVector {
 
     private void applyBitMask() {
         if (length % WL != 0) {    // not all bits are used
-            data[data.length - 1] &= getBitMask();
+            int lastIdx = data.length - 1;
+            long mask = getBitMask();
+            data[lastIdx] = data[lastIdx] & mask;
         }
     }
 
@@ -384,7 +400,7 @@ public class BitVector {
         checkSameLength(a, b);
         BitVector c = a.duplicate();
         for (int k = 0; k < a.data.length; k++) {
-            c.data[k] &= b.data[k];
+            c.data[k] |= b.data[k];
         }
         return c;
     }
@@ -400,11 +416,39 @@ public class BitVector {
         return dist;
     }
 
+    /**
+     * Produces a random {@link BitVector} of the specified length using the
+     * supplied random generator. For testing it is recommended to use
+     * a deterministic random generator such as {@code DeterministicRandom}
+     * with a fixed seed.
+     * @param length the length of the bit vector
+     * @param rg a {@link RandomGenerator} such as {@link Random}.
+     * @return a random bit vector
+     */
+    public static BitVector makeRandom(int length, RandomGenerator rg) {
+        BitVector bv = new BitVector(length);
+        for (int i = 0; i < length; i++) {
+            bv.set(i, rg.nextBoolean());
+        }
+        return bv;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof BitVector other) {
+            return Arrays.equals(this.data, other.data);
+        }
+        return false;
+    }
+
     // ---------------------------------------------------------------------
 
     private static void checkSameLength(BitVector a, BitVector b) {
         if (a.length != b.length) {
-            throw new IllegalArgumentException("BitVectors a, b have different lengths");
+            throw new IllegalArgumentException("BitVectors have different lengths");
         }
     }
 
