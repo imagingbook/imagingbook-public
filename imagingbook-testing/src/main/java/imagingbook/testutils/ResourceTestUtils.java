@@ -85,8 +85,10 @@ public abstract class ResourceTestUtils {
 //			System.out.println("URL = " + res.getURL());
 //			System.out.println("expected name " + res.getFileName());
 //			System.out.println("   is in Jar: " + res.isInsideJar());
-		
-			assertNotNull("could not find resource " + file.getAbsolutePath(), res.getURL());	
+
+            // getURL() only succeeds when the resource exists:
+			assertNotNull("could not find resource " + file.getAbsolutePath(), res.getURL());
+            // open the image from this resource and check if null:
 			assertNotNull("could not open image for resource " + res,  res.getImagePlus());
 			n++;
 		}

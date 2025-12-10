@@ -99,7 +99,7 @@ public interface ImageResource extends NamedResource {
 				return filename + "." + extension;
 			}
 		}
-		return itemname + ".png";
+		return itemname + ".png";   // TODO: let define a default extension!
 	}
 
 	/**
