@@ -69,14 +69,30 @@ public class BitVectorTest {
     }
 
     @Test
-    public void setTest() {
+    public void setBitFromAllTest() {
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv = new BitVector(n);
             assertEquals(0, bv.cardinality());
-            bv.set();
+            bv.setAll();
             assertEquals(n, bv.cardinality());
-            bv.unset();
+            bv.unsetAll();
             assertEquals(0, bv.cardinality());
+        }
+    }
+
+    @Test
+    public void flipBitTest() {
+        Random rand = new DeterministicRandom(99);
+        for (int n : new int[]{1, 33, 64, 3017, 71925}) {
+            BitVector bv1 = BitVector.makeRandom(n, rand);
+            BitVector bv2 = bv1.duplicate();
+            for (int i = 0; i < bv1.length(); i++) {
+                bv2.flipBit(i);
+                assertNotEquals(bv1, bv2);
+                assertEquals(1, bv1.hammingDistance(bv2));
+                bv2.flipBit(i);
+                assertEquals(bv1, bv2);
+            }
         }
     }
 
@@ -84,7 +100,7 @@ public class BitVectorTest {
     public void testHashCode() {
         String str = "1010101111100100101001010100110101010";
         BitVector bv1 = new BitVector(str.length());
-        bv1.set("1010101111100100101001010100110101010");
+        bv1.setFrom("1010101111100100101001010100110101010");
 
         BitVector bv2 = bv1.duplicate();
         assertEquals(bv1.hashCode(), bv2.hashCode());
@@ -96,7 +112,7 @@ public class BitVectorTest {
         int c = bv.cardinality();
         assertEquals(0, c);
 
-        bv.set();
+        bv.setAll();
         c = bv.cardinality();
         assertEquals(n, c);
     }
@@ -120,73 +136,73 @@ public class BitVectorTest {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = bv1.duplicate();
             int i = n/2;
-            bv2.set(i, !bv2.get(i));    // flip 1 bit
+            bv2.setBit(i, !bv2.getBit(i));    // flip 1 bit
             assertNotEquals(bv1, bv2);
         }
     }
 
     @Test
-    public void andTest() {
+    public void bitwiseANDTest() {
         Random rand = new DeterministicRandom(73);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
-            BitVector bv2 = new BitVector(bv1.length()); bv2.set(); // all 1s
+            BitVector bv2 = new BitVector(bv1.length()); bv2.setAll(); // all 1s
 
-            assertEquals(bv1, bv1.and(bv1));    // and with itself
-            assertEquals(bv1, bv1.and(bv2));    // and with all 1s
-            assertEquals(bv1, bv2.and(bv1));
+            assertEquals(bv1, bv1.bitwiseAND(bv1));    // and with itself
+            assertEquals(bv1, bv1.bitwiseAND(bv2));    // and with all 1s
+            assertEquals(bv1, bv2.bitwiseAND(bv1));
         }
     }
 
     @Test
-    public void orTest() {
+    public void bitwiseOrTest() {
         Random rand = new DeterministicRandom(311);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = new BitVector(bv1.length()); // all 0s
-            BitVector bv3 = bv2.not(); // all 1s
+            BitVector bv3 = bv2.bitwiseNOT(); // all 1s
 
-            assertEquals(bv1, bv1.or(bv1));    // or with itself
-            assertEquals(bv1, bv1.or(bv2));    // or with all 0s
-            assertEquals(bv1, bv2.or(bv1));
-            assertEquals(bv3, bv1.or(bv1.not()));
+            assertEquals(bv1, bv1.bitwiseOR(bv1));    // or with itself
+            assertEquals(bv1, bv1.bitwiseOR(bv2));    // or with all 0s
+            assertEquals(bv1, bv2.bitwiseOR(bv1));
+            assertEquals(bv3, bv1.bitwiseOR(bv1.bitwiseNOT()));
         }
     }
 
     @Test
-    public void xorTest1 () {
+    public void bitwiseXORTest1() {
         BitVector bv1 = BitVector.from("0011");
         BitVector bv2 = BitVector.from("0101");
-        BitVector bv3 = bv1.xor(bv2);
+        BitVector bv3 = bv1.bitwiseXOR(bv2);
         assertEquals(BitVector.from("0110"), bv3);
         assertEquals(bv1.hammingDistance(bv2), bv3.cardinality());
     }
 
     @Test
-    public void xorTest2 () {
+    public void bitwiseXORTest2() {
         Random rand = new DeterministicRandom(17);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = makeRandom(n, rand);
-            BitVector bv3 = bv1.xor(bv2);
+            BitVector bv3 = bv1.bitwiseXOR(bv2);
             assertEquals(bv1.hammingDistance(bv2), bv3.cardinality());
         }
     }
 
     @Test
-    public void notTest() {
+    public void bitwiseNOTTest() {
         Random rand = new DeterministicRandom(111);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
-            BitVector bv2 = bv1.not();  // bv1 inverted
-            BitVector bv3 = bv2.not();  // bv2 inverted back to bv1
+            BitVector bv2 = bv1.bitwiseNOT();  // bv1 inverted
+            BitVector bv3 = bv2.bitwiseNOT();  // bv2 inverted back to bv1
 
             assertNotEquals(bv1, bv2);
             assertEquals(bv1, bv3);
 
             for (int i = 0; i < n; i++) {
-                assertNotEquals(bv1.get(i), bv2.get(i));
-                assertEquals(bv1.get(i), bv3.get(i));
+                assertNotEquals(bv1.getBit(i), bv2.getBit(i));
+                assertEquals(bv1.getBit(i), bv3.getBit(i));
             }
         }
     }
@@ -196,7 +212,7 @@ public class BitVectorTest {
         Random rand = new DeterministicRandom(111);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
-            BitVector bv2 = bv1.not();  // bv1 inverted
+            BitVector bv2 = bv1.bitwiseNOT();  // bv1 inverted
             BitVector bv3 = new BitVector(n);   // all 0s
 
             assertEquals(0, bv1.hammingDistance(bv1));  // 0 distance to itself
@@ -237,5 +253,5 @@ public class BitVectorTest {
             assertEquals(bv1, bv2);
         }
     }
-    
+
 }

@@ -86,7 +86,7 @@ public class BitMap {
 	 * @return as described
 	 */
 	public boolean get(int x, int y) {
-		return bitvec.get(y * width + x);
+		return bitvec.getBit(y * width + x);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class BitMap {
 	 * @return as described
 	 */
 	public boolean get(PntInt p) {
-		return bitvec.get(p.y * width + p.x);
+		return bitvec.getBit(p.y * width + p.x);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class BitMap {
 	 * @param y the y-coordinate
 	 */
 	public void set(int x, int y) {
-		bitvec.set(y * width + x);
+		bitvec.setBit(y * width + x);
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class BitMap {
 	 * @param p the x/y-coordinate (point)
 	 */
 	public void set(PntInt p) {
-		bitvec.set(p.y * width + p.x);
+		bitvec.setBit(p.y * width + p.x);
 	}
 	
 	/**
@@ -148,7 +148,7 @@ public class BitMap {
 	 * @param y the y-coordinate
 	 */
 	public void unset(int x, int y) {
-		bitvec.unset(y * width + x);
+		bitvec.unsetAll(y * width + x);
 	}
 	
 	/**
@@ -156,21 +156,21 @@ public class BitMap {
 	 * @param p the x/y-coordinate (point)
 	 */
 	public void unset(PntInt p) {
-		bitvec.unset(p.y * width + p.x);
+		bitvec.unsetAll(p.y * width + p.x);
 	}
 	
 	/**
 	 * Sets all elements to 1.
 	 */
 	public void setAll() {
-		bitvec.set();
+		bitvec.setAll();
 	}
 	
 	/**
 	 * Sets all elements to 0.
 	 */
 	public void unsetAll() {
-		bitvec.unset();
+		bitvec.unsetAll();
 	}
 	
 	/**

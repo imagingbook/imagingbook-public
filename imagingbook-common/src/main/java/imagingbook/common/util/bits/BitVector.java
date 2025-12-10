@@ -8,8 +8,6 @@
  ******************************************************************************/
 package imagingbook.common.util.bits;
 
-import imagingbook.common.geometry.basic.Pnt2d;
-
 import java.util.Arrays;
 import java.util.Random;
 import java.util.random.RandomGenerator;
@@ -127,7 +125,7 @@ public class BitVector {
      */
     public static BitVector from(String str01) {
         BitVector bv = new BitVector(str01.length());
-        bv.set(str01);
+        bv.setFrom(str01);
         return bv;
     }
 
@@ -140,7 +138,7 @@ public class BitVector {
      */
     public static BitVector from(byte[] bytes) {
         BitVector bv = new BitVector(bytes.length);
-        bv.set(bytes);
+        bv.setFrom(bytes);
         return bv;
     }
 
@@ -152,7 +150,7 @@ public class BitVector {
      */
     public static BitVector from(boolean[] bools) {
         BitVector bv = new BitVector(bools.length);
-        bv.set(bools);
+        bv.setFrom(bools);
         return bv;
     }
 
@@ -163,7 +161,7 @@ public class BitVector {
      * this bit set is modified.
      * @param i the bit index
      */
-    public void set(int i) {
+    public void setBit(int i) {
         checkBitIndex(i);
         final int j = i / WL;	// word index
         final long mask = 1L << (i % WL);
@@ -176,18 +174,18 @@ public class BitVector {
      * @param i the bit index
      * @param val a boolean value
      */
-    public void set(int i, boolean val) {
+    public void setBit(int i, boolean val) {
         checkBitIndex(i);
         if (val)
-            this.set(i);
+            this.setBit(i);
         else
-            this.unset(i);
+            this.unsetAll(i);
     }
 
     /**
      * Sets all bits to 1.
      */
-    public void set() {
+    public void setAll() {
         Arrays.fill(data, ~0L);
         applyBitMask();
     }
@@ -201,13 +199,13 @@ public class BitVector {
      * differs from this {@link BitVector}'s length.
      * @param bytes an array of {@code byte} values
      */
-    public void set(byte[] bytes) {
+    public void setFrom(byte[] bytes) {
         if (this.length != bytes.length) {
             throw new IllegalArgumentException("wrong argument length: " + bytes.length);
         }
         for (int i = 0; i < bytes.length; i++) {
             if (bytes[i] != 0) {
-                set(i);
+                setBit(i);
             }
         }
     }
@@ -219,12 +217,12 @@ public class BitVector {
      * differs from this {@link BitVector}'s length.
      * @param bools an array of boolean values
      */
-	public void set(boolean[] bools) {
+	public void setFrom(boolean[] bools) {
         if (this.length != bools.length) {
             throw new IllegalArgumentException("wrong argument length: " + bools.length);
         }
 		for (int i = 0; i < bools.length; i++) {
-			set(i, bools[i]);
+			setBit(i, bools[i]);
 		}
 	}
 
@@ -233,7 +231,7 @@ public class BitVector {
      * Destructive operation, i.e., this bit set is modified.
      * @param i the element index
      */
-	public void unset(int i) {
+	public void unsetAll(int i) {
 		if (i < 0 || i >= length) {
 			throw new IndexOutOfBoundsException("illegal index " + i);
 		}
@@ -244,17 +242,17 @@ public class BitVector {
     /**
      * Sets all bits to 0.
      */
-	public void unset() {
+	public void unsetAll() {
         Arrays.fill(data, 0L);
 	}
 
     /**
-     * Flips the bit value of the specified index.
+     * Flips (inverts) the bit value of the specified index.
      * Destructive operation, i.e., this bit set is modified.
      * @param i the bit index
      */
-    public void not(int i) {
-        set(i, !get(i));
+    public void flipBit(int i) {
+        setBit(i, !getBit(i));
     }
 
     /**
@@ -265,15 +263,15 @@ public class BitVector {
      * any non-0/1 character.
      * @param str01 a string of 0/1 values
      */
-    public void set(String str01) {
+    public void setFrom(String str01) {
         if (this.length != str01.length()) {
             throw new IllegalArgumentException("wrong argument length: " + str01.length());
         }
         char[] chars01 = str01.toCharArray();
         for (int i = 0; i < chars01.length; i++) {
             switch(chars01[i]) {
-                case '0' -> unset(i);
-                case '1' -> set(i);
+                case '0' -> unsetAll(i);
+                case '1' -> setBit(i);
                 default ->  throw new IllegalArgumentException("illegal character in 0/1 string: " + chars01[i]);
             }
         }
@@ -285,7 +283,7 @@ public class BitVector {
      * @param i the bit index
      * @return as described
      */
-    public boolean get(int i) {
+    public boolean getBit(int i) {
         checkBitIndex(i);
         long mask = 1L << (i % WL);
         long q = data[i / WL] & mask;
@@ -312,7 +310,7 @@ public class BitVector {
     public String asString() {
         char[] chars = new char[this.length()];
         for (int i = 0; i < chars.length; i++) {
-            chars[i] = get(i) ? '1' : '0';
+            chars[i] = getBit(i) ? '1' : '0';
         }
         return new String(chars);
     }
@@ -325,7 +323,7 @@ public class BitVector {
     public byte[] asByteArray() {
         byte[] bytes = new byte[this.length];
         for (int i = 0; i < this.length; i++) {
-            if (get(i)) {
+            if (getBit(i)) {
                 bytes[i] = 1;
             }
         }
@@ -339,7 +337,7 @@ public class BitVector {
     public boolean[] asBooleanArray() {
         boolean[] bools = new boolean[this.length()];
         for (int i = 0; i < bools.length; i++) {
-            bools[i] = get(i);
+            bools[i] = getBit(i);
         }
         return bools;
     }
@@ -369,7 +367,7 @@ public class BitVector {
      * as a new bit vector.
      * @return the negated bit vector
      */
-    public BitVector not() {
+    public BitVector bitwiseNOT() {
         BitVector b = this.duplicate();
         for (int k = 0; k < b.data.length; k++) {
             b.data[k] = ~b.data[k];
@@ -384,7 +382,7 @@ public class BitVector {
      * @param b the other bit vector
      * @return the bit vector (a AND b)
      */
-    public BitVector and(BitVector b) {
+    public BitVector bitwiseAND(BitVector b) {
         BitVector a = this;
         checkSameLength(a, b);
         BitVector c = a.duplicate();
@@ -400,7 +398,7 @@ public class BitVector {
      * @param b the other bit vector
      * @return the bit vector (a OR b)
      */
-    public BitVector or(BitVector b) {
+    public BitVector bitwiseOR(BitVector b) {
         BitVector a = this;
         checkSameLength(a, b);
         BitVector c = a.duplicate();
@@ -416,7 +414,7 @@ public class BitVector {
      * @param b the other bit vector
      * @return the bit vector (a XOR b)
      */
-    public BitVector xor(BitVector b) {
+    public BitVector bitwiseXOR(BitVector b) {
         BitVector a = this;
         checkSameLength(a, b);
         BitVector c = a.duplicate();
@@ -474,7 +472,7 @@ public class BitVector {
     public static BitVector makeRandom(int length, RandomGenerator rg) {
         BitVector bv = new BitVector(length);
         for (int i = 0; i < length; i++) {
-            bv.set(i, rg.nextBoolean());
+            bv.setBit(i, rg.nextBoolean());
         }
         return bv;
     }
