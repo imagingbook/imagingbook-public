@@ -12,6 +12,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
+
 import java.util.Random;
 
 import org.junit.Test;
@@ -28,12 +30,13 @@ public class ZipCompressorTest {
 //		System.out.println("input=\"" + inputText + "\"");
 		
 		ZipCompressor compr = new ZipCompressor();
-		byte[] compressed = compr.compressByteArray(inputText.getBytes());
+		byte[] compressed = compr.compressByteArray(inputText.getBytes(StandardCharsets.UTF_8));
 //		System.out.println("compressed=\"" + new String(compressed) + "\" + length=" + compressed.length);
 
 		byte[] decompressed = compr.decompressByteArray(compressed);
-		String outputText = new String(decompressed);
+		String outputText = new String(decompressed, StandardCharsets.UTF_8);
 //		System.out.println("decompressed=\"" + outputText + "\"");
+//  		assertEquals("Result A:"+inputText + " / B:"+outputText,inputText, outputText);
 		assertEquals(inputText, outputText);
 	}
 
