@@ -36,8 +36,12 @@ public class HarrisCornerDetector extends GradientCornerDetector {
 
 	// ---------------------------------------------------------------------------
 	
-	public HarrisCornerDetector(ImageProcessor ip, Parameters params) {
+	public HarrisCornerDetector(ImageProcessor ip, GradientCornerDetector.Parameters params) {
 		super(ip, params);
+	}
+
+	public HarrisCornerDetector(ImageProcessor ip) {
+		this(ip, new GradientCornerDetector.Parameters());
 	}
 	
 	/**

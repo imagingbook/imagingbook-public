@@ -37,7 +37,11 @@ public class ShiTomasiCornerDetector extends GradientCornerDetector {
 	public ShiTomasiCornerDetector(ImageProcessor ip, GradientCornerDetector.Parameters params) {
 		super(ip, params);
 	}
-	
+
+	public ShiTomasiCornerDetector(ImageProcessor ip) {
+		this(ip, new GradientCornerDetector.Parameters());
+	}
+
 	// --------------------------------------------------------------
 
 	@Override

@@ -46,6 +46,10 @@ public class MopsCornerDetector extends GradientCornerDetector {
 	public MopsCornerDetector(ImageProcessor ip, GradientCornerDetector.Parameters params) {
 		super(ip, params);
 	}
+
+	public MopsCornerDetector(ImageProcessor ip) {
+		this(ip, new GradientCornerDetector.Parameters());
+	}
 	
 	// --------------------------------------------------------------
 
