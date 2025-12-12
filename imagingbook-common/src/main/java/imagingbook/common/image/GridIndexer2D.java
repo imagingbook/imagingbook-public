@@ -134,7 +134,7 @@ public abstract class GridIndexer2D {
 	 */
 	public static class NearestBorderIndexer extends GridIndexer2D {
 		
-		NearestBorderIndexer(int width, int height) {
+		public NearestBorderIndexer(int width, int height) {
 			super(width, height, OutOfBoundsStrategy.NearestBorder);
 		}
 
@@ -164,7 +164,7 @@ public abstract class GridIndexer2D {
 	public static class MirrorImageIndexer extends GridIndexer2D {
 		private final int width2, height2;
 		
-		MirrorImageIndexer(int width, int height) {
+		public MirrorImageIndexer(int width, int height) {
 			super(width, height, OutOfBoundsStrategy.MirrorImage);
 			this.width2 = 2 * width;
 			this.height2 = 2 * height;
@@ -191,7 +191,7 @@ public abstract class GridIndexer2D {
 	 */
 	public static class PeriodicImageIndexer extends GridIndexer2D {
 
-		PeriodicImageIndexer(int width, int height) {
+		public PeriodicImageIndexer(int width, int height) {
 			super(width, height, OutOfBoundsStrategy.PeriodicImage);
 		}
 
@@ -210,7 +210,7 @@ public abstract class GridIndexer2D {
 	 */
 	public static class DefaultValueIndexer extends GridIndexer2D {
 		
-		DefaultValueIndexer(int width, int height) {
+		public DefaultValueIndexer(int width, int height) {
 			super(width, height, OutOfBoundsStrategy.DefaultValue);
 		}
 
@@ -231,8 +231,8 @@ public abstract class GridIndexer2D {
 	 * {@link OutOfBoundsStrategy#ThrowException}.
 	 */
 	public static class ExceptionIndexer extends GridIndexer2D {
-		
-		ExceptionIndexer(int width, int height) {
+
+		public ExceptionIndexer(int width, int height) {
 			super(width, height, OutOfBoundsStrategy.ThrowException);
 		}
 
