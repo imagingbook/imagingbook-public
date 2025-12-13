@@ -22,7 +22,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
-public class ImageTestUtils {
+public final class ImageTestUtils {
+
+	private ImageTestUtils() {}
 	
 	public static float TOLERANCE = 1E-6f;
 	
@@ -92,7 +94,10 @@ public class ImageTestUtils {
 	// ---------------------------------------------------------------------
 	
 	public static ByteProcessor makeRandomByteProcessor(int width, int height, long seed) {
-		RandomGenerator rg = new DeterministicRandom(seed);
+		return makeRandomByteProcessor(width, height, new DeterministicRandom(seed));
+	}
+
+	public static ByteProcessor makeRandomByteProcessor(int width, int height, RandomGenerator rg) {
 		ByteProcessor bp = new ByteProcessor(width, height);
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
@@ -102,8 +107,13 @@ public class ImageTestUtils {
 		return bp;
 	}
 
+	// -------------
+
 	public static ShortProcessor makeRandomShortProcessor(int width, int height, long seed) {
-		RandomGenerator rg = new DeterministicRandom(seed);
+		return makeRandomShortProcessor(width, height, new DeterministicRandom(seed));
+	}
+
+	public static ShortProcessor makeRandomShortProcessor(int width, int height, RandomGenerator rg) {
 		ShortProcessor sp = new ShortProcessor(width, height);
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
@@ -113,8 +123,13 @@ public class ImageTestUtils {
 		return sp;
 	}
 
+	// ------------
+
 	public static FloatProcessor makeRandomFloatProcessor(int width, int height, long seed) {
-		RandomGenerator rg = new DeterministicRandom(seed);
+		return makeRandomFloatProcessor(width, height, new DeterministicRandom(seed));
+	}
+
+	public static FloatProcessor makeRandomFloatProcessor(int width, int height, RandomGenerator rg) {
 		var fp = new FloatProcessor(width, height);
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
@@ -123,9 +138,14 @@ public class ImageTestUtils {
 		}
 		return fp;
 	}
-	
+
+	// ---
+
 	public static ColorProcessor makeRandomColorProcessor(int width, int height, long seed) {
-		RandomGenerator rg = new DeterministicRandom(seed);
+		return makeRandomColorProcessor(width, height, new DeterministicRandom(seed));
+	}
+
+	public static ColorProcessor makeRandomColorProcessor(int width, int height, RandomGenerator rg) {
 		ColorProcessor cp = new ColorProcessor(width, height);
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
