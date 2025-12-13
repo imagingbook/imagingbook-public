@@ -62,37 +62,37 @@ public class PixelInterpolatorTest {
 		double x = 3.7;
 		double y = 7.1;
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Bicubic);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Bicubic, 0, 0);
 		assertEquals(223.98138f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.BicubicSharp);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.BicubicSharp, 0, 0);
 		assertEquals(224.00769f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.BicubicSmooth);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.BicubicSmooth, 0, 0);
 		assertEquals(223.97272f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Bilinear);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Bilinear, 0, 0);
 		assertEquals(224.5500030517578f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.CatmullRom);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.CatmullRom, 0, 0);
 		assertEquals(223.97365f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.CubicBSpline);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.CubicBSpline, 0, 0);
 		assertEquals(225.39142f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Lanzcos2);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Lanzcos2, 0, 0);
 		assertEquals(227.37834f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Lanzcos3);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Lanzcos3, 0, 0);
 		assertEquals(222.8695f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Lanzcos4);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.Lanzcos4, 0, 0);
 		assertEquals(224.20848f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.MitchellNetravali);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.MitchellNetravali, 0, 0);
 		assertEquals(224.50372f, ia.getVal(x, y), TOL);
 		
-		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.NearestNeighbor);
+		ia = ScalarAccessor.create(ip1, obs, InterpolationMethod.NearestNeighbor, 0, 0);
 		assertEquals(223.0f, ia.getVal(x, y), TOL);
 	}
 	
@@ -104,37 +104,37 @@ public class PixelInterpolatorTest {
 		
 		PrintPrecision.set(6);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Bicubic);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.Bicubic, 0, 0);
 		assertArrayEquals(new float[] {204.618500f, 122.229645f, 15.735641f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.BicubicSharp);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.BicubicSharp, 0, 0);
 		assertArrayEquals(new float[] {202.433472f, 119.938141f, 14.170171f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.BicubicSmooth);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.BicubicSmooth, 0, 0);
 		assertArrayEquals(new float[] {206.879440f, 124.602806f, 17.350653f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Bilinear);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.Bilinear, 0, 0);
 		assertArrayEquals(new float[] {207.470001f, 125.099998f, 17.900000f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.CatmullRom);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.CatmullRom, 0, 0);
 		assertArrayEquals(new float[] {206.117355f, 123.802681f, 16.806810f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.CubicBSpline);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.CubicBSpline, 0, 0);
 		assertArrayEquals(new float[] {209.850037f, 127.415482f, 19.893757f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Lanzcos2);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.Lanzcos2, 0, 0);
 		assertArrayEquals(new float[] {208.926010f, 125.351692f, 16.897646f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Lanzcos3);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.Lanzcos3, 0, 0);
 		assertArrayEquals(new float[] {204.818008f, 122.880867f, 16.386700f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.Lanzcos4);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.Lanzcos4, 0, 0);
 		assertArrayEquals(new float[] {206.367844f, 123.866913f, 16.870707f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.MitchellNetravali);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.MitchellNetravali, 0, 0);
 		assertArrayEquals(new float[] {207.441498f, 125.072327f, 17.883879f}, ia.getPix(x, y), TOL);
 		
-		ia = RgbAccessor.create(ip2, obs, InterpolationMethod.NearestNeighbor);
+		ia = new RgbAccessor(ip2, obs, InterpolationMethod.NearestNeighbor, 0, 0);
 		assertArrayEquals(new float[] {209, 127, 19}, ia.getPix(x, y), TOL);
 	}
 	
@@ -142,7 +142,7 @@ public class PixelInterpolatorTest {
 	
 	// check if interpolated pixel values at discrete grid points are the same as the original pixels
 	private void checkIntegerCoordinatesScalar(ByteProcessor ip, InterpolationMethod ipm) {
-		ScalarAccessor ia = ScalarAccessor.create(ip, obs, ipm);
+		ScalarAccessor ia = ScalarAccessor.create(ip, obs, ipm, 0, 0);
 		int w = ia.getWidth();
 		int h = ia.getHeight();
 		for (int u = 1; u < w - 1; u++) {
@@ -154,7 +154,7 @@ public class PixelInterpolatorTest {
 	
 	// check if interpolated pixel values at discrete grid points are the same as the original pixels
 	private void checkIntegerCoordinatesRgb(ColorProcessor ip, InterpolationMethod ipm) {
-		RgbAccessor ia = RgbAccessor.create((ColorProcessor)ip, obs, ipm);
+		RgbAccessor ia = new RgbAccessor((ColorProcessor)ip, obs, ipm, 0, 0);
 		int w = ia.getWidth();
 		int h = ia.getHeight();
 		for (int u = 1; u < w - 1; u++) {

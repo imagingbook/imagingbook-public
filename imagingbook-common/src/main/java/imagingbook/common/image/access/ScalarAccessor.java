@@ -25,29 +25,35 @@ public abstract class ScalarAccessor extends ImageAccessor {
 
 	private final PixelInterpolator interpolator; // performs interpolation
 
-	ScalarAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		super(ip, obs, ipm);
+	ScalarAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin) {
+		super(ip, obs, ipm, xOrigin, yOrigin);
 		this.interpolator = PixelInterpolator.create(interpolationMethod);
 	}
 
 	/**
-	 * Creates a new image accessor of general type {@link ScalarAccessor}. The concrete type of the returned instance
-	 * depends on the specified image, i.e., {@link ByteAccessor} for {@link ByteProcessor}, {@link ShortAccessor} for
-	 * {@link ShortProcessor}, {@link FloatAccessor} for {@link FloatProcessor}.
-	 * An exception is thrown if the supplied image is not scalar-valued (i.e., a color image).
+	 * Creates a new image accessor of general type {@link ScalarAccessor}. The
+	 * concrete type of the returned instance depends on the specified image,
+	 * i.e., {@link ByteAccessor} for {@link ByteProcessor},
+	 * {@link ShortAccessor} for {@link ShortProcessor}, {@link FloatAccessor}
+	 * for {@link FloatProcessor}. An exception is thrown if the supplied image
+	 * is not scalar-valued (i.e., a color image).
 	 *
 	 * @param ip the image to be accessed
-	 * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
-	 * @param ipm the interpolation method to be used (use {@code null} for default settings)
+	 * @param obs the out-of-bounds strategy to be used (use {@code null} for
+	 * default settings)
+	 * @param ipm the interpolation method to be used (use {@code null} for
+	 * default settings)
+	 * @param xOrigin origin x-value
+	 * @param yOrigin origin y-value
 	 * @return a new image accessor
 	 */
-	public static ScalarAccessor create(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+	public static ScalarAccessor create(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin) {
 		if (ip instanceof ByteProcessor)
-			return new ByteAccessor((ByteProcessor) ip, obs, ipm);
+			return new ByteAccessor((ByteProcessor) ip, obs, ipm, xOrigin, yOrigin);
 		if (ip instanceof ShortProcessor)
-			return new ShortAccessor((ShortProcessor) ip, obs, ipm);
+			return new ShortAccessor((ShortProcessor) ip, obs, ipm, xOrigin, yOrigin);
 		if (ip instanceof FloatProcessor)
-			return new FloatAccessor((FloatProcessor) ip, obs, ipm);
+			return new FloatAccessor((FloatProcessor) ip, obs, ipm, xOrigin, yOrigin);
 		throw new IllegalArgumentException(
 				"cannot create " + ScalarAccessor.class.getSimpleName() + " for " + ip.getClass().getSimpleName());
 	}
@@ -99,6 +105,10 @@ public abstract class ScalarAccessor extends ImageAccessor {
 		return this;
 	}
 
+	// -------------------------------------------------------------------------
+	// Non-overriding methods specific to ScalarAccessor
+	// -------------------------------------------------------------------------
+
 	/**
 	 * Reads and returns the scalar pixel value for the given image position. The value returned for coordinates outside
 	 * the image boundaries depends on the {@link OutOfBoundsStrategy} specified for this {@link ImageAccessor}.
@@ -107,18 +117,8 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	 * @param v the y-coordinate
 	 * @return the pixel value ({@code float})
 	 */
-	public abstract float getVal(int u, int v); // returns pixel value at integer position (u, v)
-	
-	@Override
-	public float getVal(int u, int v, int k) {
-		checkComponentIndex(k);
-		return this.getVal(u, v);
-	}
-	
-	@Override
-	public float getVal(double x, double y, int k) {
-		checkComponentIndex(k);
-		return this.getVal(x, y);
+	public final float getVal(int u, int v) {
+		return this._getVal(xOrigin + u, yOrigin + v);
 	}
 
 	/**
@@ -130,8 +130,8 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	 * @param y the y-coordinate
 	 * @return the pixel value ({@code float})
 	 */
-	public float getVal(double x, double y) { // interpolating version
-		return interpolator.getInterpolatedValue(this, x, y);
+	public final float getVal(double x, double y) { // interpolating version
+		return interpolator.getInterpolatedValue(this, xOrigin + x, yOrigin + y);
 	}
 
 	/**
@@ -142,9 +142,32 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	 * @param v the y-coordinate
 	 * @param val the new pixel value ({@code float})
 	 */
-	public abstract void setVal(int u, int v, float val);
+	public final void setVal(int u, int v, float val) {
+		this._setVal(xOrigin + u, yOrigin + v, val);
+	}
+
+	// to be implemented by subclasses of ScalarAccessor
+	abstract float _getVal(int u, int v);
+	abstract void _setVal(int u, int v, float val);
+
+	// -------------------------------------------------------------------------
+	// Overriding methods from ImageAccessor
+	// -------------------------------------------------------------------------
 	
-	public void setVal(int u, int v, int k, float val) {
+	@Override
+	float _getVal(int u, int v, int k) {
+		checkComponentIndex(k);
+		return this.getVal(u, v);
+	}
+	
+	@Override
+	float _getVal(double x, double y, int k) {
+		checkComponentIndex(k);
+		return this.getVal(x, y);
+	}
+
+	@Override
+	void _setVal(int u, int v, int k, float val) {
 		if (k == 0) {
 			this.setVal(u, v, val);
 		}
@@ -154,22 +177,22 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	}
 
 	@Override
-	public float[] getPix(int u, int v) {
-		return new float[] { this.getVal(u, v) };
+	float[] _getPix(int u, int v) {
+		return new float[] { this._getVal(u, v) };
 	}
 
 	@Override
-	public float[] getPix(double x, double y) {
+	float[] _getPix(double x, double y) {
 		return new float[] { this.getVal(x, y) };
 	}
 
 	@Override
-	public void setPix(int u, int v, float[] pix) {
+	void _setPix(int u, int v, float[] pix) {
 		this.setVal(u, v, pix[0]);
 	}
 	
 	// ---------------------------------------------------------------------
-	
+	// TODO: check/reactivate!
 //	@Override
 //	public void setDefaultValue(float val) {
 //		this.defaultValue = val;
@@ -181,11 +204,10 @@ public abstract class ScalarAccessor extends ImageAccessor {
 //		}
 //		this.setDefaultValue(vals[0]);
 //	}
-	
-	@Override
-	void checkComponentIndex(int k) {
-		if (k != 0) {
-			throw new IllegalArgumentException("invalid component index " + k);
-		}
-	}
+
+	// void checkComponentIndex(int k) {
+	// 	if (k != 0) {
+	// 		throw new IllegalArgumentException("invalid component index " + k);
+	// 	}
+	// }
 }

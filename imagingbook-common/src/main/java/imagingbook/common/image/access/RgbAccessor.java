@@ -28,25 +28,23 @@ public class RgbAccessor extends VectorAccessor {
 	 * @param ip the associated image
 	 * @param obs the out-of-bounds strategy to be used
 	 * @param ipm the interpolation method to be used
+	 * @param xOrigin origin x-value
+	 * @param yOrigin origin y-value
 	 */
-	public RgbAccessor(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		super(ip, 3, obs, ipm);
+	public RgbAccessor(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin) {
+		super(ip, 3, obs, ipm, xOrigin, yOrigin);
 		this.pixels = (int[]) this.ip.getPixels();
 	}
 	
 	@Override
 	ScalarAccessor makeComponentAccessor(int k) {
-		return new ComponentAccessor((ColorProcessor)ip, outOfBoundsStrategy, interpolationMethod, k);
-	}
-	
-	public static RgbAccessor create(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		return new RgbAccessor(ip, obs, ipm);
+		return new ComponentAccessor((ColorProcessor)ip, outOfBoundsStrategy, interpolationMethod, xOrigin, yOrigin, k);
 	}
 	
 	// ---------------------------------------------------------------------
 
 	@Override
-	public float[] getPix(int u, int v) { // returns an RGB value packed into a float[]
+	float[] _getPix(int u, int v) { // returns an RGB value packed into a float[]
 		float red = componentAccessors[0].getVal(u, v);  //(c & 0xff0000) >> 16;
 		float grn = componentAccessors[1].getVal(u, v);  //(c & 0xff00) >> 8;
 		float blu = componentAccessors[2].getVal(u, v);  //(c & 0xff);
@@ -54,7 +52,7 @@ public class RgbAccessor extends VectorAccessor {
 	}
 	
 	@Override
-	public float[] getPix(double x, double y) {
+	float[] _getPix(double x, double y) {
 		float red = componentAccessors[0].getVal(x, y);
 		float grn = componentAccessors[1].getVal(x, y);
 		float blu = componentAccessors[2].getVal(x, y); 
@@ -62,7 +60,7 @@ public class RgbAccessor extends VectorAccessor {
 	}
 	
 	@Override
-	public void setPix(int u, int v, float[] valf) {
+	void _setPix(int u, int v, float[] valf) {
 		for (int k = 0; k < 3; k++) {
 			componentAccessors[k].setVal(u, v, valf[k]);
 		}
@@ -115,14 +113,13 @@ public class RgbAccessor extends VectorAccessor {
 				(rgb, b) -> (rgb & 0xffffff00) | (b & 0xff)			// insert blue component
 		};
 		
-		private ComponentAccessor(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int k) {
-			super(ip, obs, ipm);
+		private ComponentAccessor(ColorProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin, int k) {
+			super(ip, obs, ipm, xOrigin, yOrigin);
 			this.k = k;
 		}
-		
 
 		@Override
-		public float getVal(int u, int v) {
+		float _getVal(int u, int v) {
 			int i = indexer.getIndex(u, v);
 			if (i < 0) {
 				return this.defaultValue;
@@ -132,7 +129,7 @@ public class RgbAccessor extends VectorAccessor {
 		}
 
 		@Override
-		public void setVal(int u, int v, float val) {
+		void _setVal(int u, int v, float val) {
 			int i = indexer.getIndex(u, v);
 			if (i >= 0) {
 				int vali = clamp(Math.round(val));

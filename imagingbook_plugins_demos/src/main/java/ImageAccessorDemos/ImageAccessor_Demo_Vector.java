@@ -38,7 +38,7 @@ public class ImageAccessor_Demo_Vector implements PlugInFilter, JavaDocHelp {
 		final int width = ip.getWidth();
 		final int height = ip.getHeight();
 		
-		ImageAccessor ia = ImageAccessor.create(ip, null, null);
+		ImageAccessor ia = ImageAccessor.create(ip, null, null, 0, 0);
 		IJ.log(ia.toString());
 		
 		for (int u = 0; u < width; u++) {

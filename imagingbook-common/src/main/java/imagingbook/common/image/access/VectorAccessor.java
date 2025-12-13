@@ -20,8 +20,8 @@ public abstract class VectorAccessor extends ImageAccessor {
 	final int depth;
 	final ScalarAccessor[] componentAccessors;
 
-	VectorAccessor(ImageProcessor ip, int depth, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		super(ip, obs, ipm);
+	VectorAccessor(ImageProcessor ip, int depth, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin) {
+		super(ip, obs, ipm, xOrigin, yOrigin);
 		this.depth = depth;
 		this.componentAccessors = new ScalarAccessor[this.depth];
 		for (int k = 0; k < depth; k++) {
@@ -50,25 +50,26 @@ public abstract class VectorAccessor extends ImageAccessor {
 	}
 	
 	@Override
-	public float getVal(int u, int v, int k) {
+	float _getVal(int u, int v, int k) {
 		checkComponentIndex(k);
 		return componentAccessors[k].getVal(u, v);
 	}
 	
 	@Override
-	public float getVal(double x, double y, int k) {
+	float _getVal(double x, double y, int k) {
 		checkComponentIndex(k);
 		return componentAccessors[k].getVal(x, y);
 	}
 	
 	@Override
-	public void setVal(int u, int v, int k, float val) {
+	void _setVal(int u, int v, int k, float val) {
 		checkComponentIndex(k);
 		componentAccessors[k].setVal(u, v, val);
 	}
 	
 	// ---------------------------------------------------------------------
-	
+
+	// TODO: check/reactivate!
 //	@Override
 //	public void setDefaultValue(float val) {
 //		for (int k = 0; k < depth; k++) {
@@ -85,12 +86,6 @@ public abstract class VectorAccessor extends ImageAccessor {
 //			componentAccessors[k].setDefaultValue(vals[k]);
 //		}
 //	}
-	
-	@Override
-	void checkComponentIndex(int k) {
-		if (k < 0 || k >= depth) {
-			throw new IllegalArgumentException("invalid component index " + k);
-		}
-	}
+
 
 }

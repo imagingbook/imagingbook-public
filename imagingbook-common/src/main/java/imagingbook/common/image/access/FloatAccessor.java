@@ -24,23 +24,24 @@ public class FloatAccessor extends ScalarAccessor {
 
 	/**
 	 * Constructor. See also the factory method
-	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy, InterpolationMethod)}.
+	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy,
+	 * InterpolationMethod, int, int)}.
 	 *
 	 * @param ip an instance of {@link FloatProcessor}
-	 * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
-	 * @param ipm the interpolation method to be used (use {@code null} for default settings)
+	 * @param obs the out-of-bounds strategy to be used (use {@code null} for
+	 * default settings)
+	 * @param ipm the interpolation method to be used (use {@code null} for
+	 * default settings)
+	 * @param xOrigin origin x-value
+	 * @param yOrigin origin y-value
 	 */
-	public FloatAccessor(FloatProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		super(ip, obs, ipm);
+	public FloatAccessor(FloatProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin) {
+		super(ip, obs, ipm, xOrigin, yOrigin);
 		this.pixels = (float[]) ip.getPixels();
-	}
-	
-	public static FloatAccessor create(FloatProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		return new FloatAccessor(ip, obs, ipm);
 	}
 
 	@Override
-	public float getVal(int u, int v) {
+	public float _getVal(int u, int v) {
 		int i = indexer.getIndex(u, v);
 		if (i < 0)
 			return this.defaultValue;
@@ -49,7 +50,7 @@ public class FloatAccessor extends ScalarAccessor {
 	}
 
 	@Override
-	public void setVal(int u, int v, float val) {
+	public void _setVal(int u, int v, float val) {
 		if (u >= 0 && u < width && v >= 0 && v < height) {
 			pixels[width * v + u] = val;
 		}

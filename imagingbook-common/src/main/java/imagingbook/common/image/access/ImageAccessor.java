@@ -57,8 +57,8 @@ public abstract class ImageAccessor {
 	protected final float defaultValue = 0.0f;
 	
 	protected final ImageProcessor ip;
-	protected final int width;
-	protected final int height;
+	protected final int width, height;
+	protected final int xOrigin, yOrigin;
 	protected final GridIndexer2D indexer;		// implements the specified OutOfBoundsStrategy
 	protected final OutOfBoundsStrategy outOfBoundsStrategy;
 	protected final InterpolationMethod interpolationMethod;
@@ -72,36 +72,42 @@ public abstract class ImageAccessor {
 	 * @return a new {@code ImageAccessor} instance
 	 */
 	public static final ImageAccessor create(ImageProcessor ip) {
-		return create(ip, DefaultOutOfBoundsStrategy, DefaultInterpolationMethod);
+		return create(ip, DefaultOutOfBoundsStrategy, DefaultInterpolationMethod, 0, 0);
 	}
 	
 	/**
-	 * Creates a new {@code ImageAccessor} instance for the given image,
-	 * using the specified out-of-bounds strategy and interpolation method.
-	 * The concrete type of the returned instance depends on the specified image.
-	 * 
+	 * Creates a new {@code ImageAccessor} instance for the given image, using
+	 * the specified out-of-bounds strategy and interpolation method. The
+	 * concrete type of the returned instance depends on the specified image.
+	 *
 	 * @param ip the source image
-	 * @param obs the out-of-bounds strategy (use {@code null} for default settings)
-	 * @param ipm the interpolation method (use {@code null} for default settings)
+	 * @param obs the out-of-bounds strategy (use {@code null} for default
+	 * settings)
+	 * @param ipm the interpolation method (use {@code null} for default
+	 * settings)
+	 * @param xOrigin origin x-value
+	 * @param yOrigin origin x-value
 	 * @return a new {@code ImageAccessor} instance
 	 */
-	public static ImageAccessor create(ImageProcessor ip,  OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+	public static ImageAccessor create(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin) {
 		if (ip instanceof ColorProcessor) {
-			return new RgbAccessor((ColorProcessor)ip, obs, ipm);
+			return new RgbAccessor((ColorProcessor)ip, obs, ipm, xOrigin, yOrigin);
 		}
 		else {
-			return ScalarAccessor.create(ip, obs, ipm);
+			return ScalarAccessor.create(ip, obs, ipm, xOrigin, yOrigin);
 		}
 	}
-	
+
 	// constructor (used by all subtypes)
-	ImageAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
+	ImageAccessor(ImageProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin) {
 		this.ip = ip;
 		this.width  = ip.getWidth();
 		this.height = ip.getHeight();
 		this.outOfBoundsStrategy = (obs != null) ? obs : DefaultOutOfBoundsStrategy;
 		this.interpolationMethod = (ipm != null) ? ipm : DefaultInterpolationMethod;
 		this.indexer = GridIndexer2D.create(width, height, this.outOfBoundsStrategy);
+		this.xOrigin = xOrigin;
+		this.yOrigin = yOrigin;
 	}
 	
 	/**
@@ -161,25 +167,35 @@ public abstract class ImageAccessor {
 	/**
 	 * Returns the pixel value for the specified integer
 	 * position as a {@code float[]} with either 1 element for scalar-valued images
-	 * and or more elements (e.g., 3 for for RGB images).
+	 * and or more elements (e.g., 3 for RGB images).
 	 * 
 	 * @param u the x-coordinate
 	 * @param v the y-coordinate
 	 * @return the pixel value ({@code float[]})
 	 */
-	public abstract float[] getPix(int u, int v);
+	//public abstract float[] getPix(int u, int v);
+	public final float[] getPix(int u, int v) {
+		return _getPix(xOrigin + u, yOrigin + v);
+	}
+
+	abstract float[] _getPix(int u, int v);
+
 	
 	/**
 	 * Returns the interpolated pixel value for the specified continuous
 	 * position as a {@code float[]} with either 1 element for scalar-valued images
-	 * and or more elements (e.g., 3 for for RGB images).
+	 * and or more elements (e.g., 3 for RGB images).
 	 * Interpolation is used non-integer coordinates.
 	 * 
 	 * @param x the x-coordinate
 	 * @param y the y-coordinate
 	 * @return the interpolated pixel value ({@code float[]})
 	 */
-	public abstract float[] getPix(double x, double y);
+	public final float[] getPix(double x, double y) {
+		return _getPix(xOrigin + x, yOrigin + y);
+	}
+
+	abstract float[] _getPix(double x, double y);
 	
 	/**
 	 * Sets the pixel value at the specified integer position.
@@ -189,7 +205,11 @@ public abstract class ImageAccessor {
 	 * @param v the y-coordinate
 	 * @param val the new pixel value ({@code float[]})
 	 */
-	public abstract void setPix(int u, int v, float[] val);
+	public final void setPix(int u, int v, float[] val) {
+		_setPix(xOrigin + u, yOrigin + v, val);
+	}
+
+	abstract void _setPix(int u, int v, float[] val);
 	
 	/**
 	 * Returns the value of the pixel's k-th component at the
@@ -202,7 +222,11 @@ public abstract class ImageAccessor {
 	 * @param k the component index
 	 * @return the component value ({@code float})
 	 */
-	public abstract float getVal(int u, int v, int k);
+	public final float getVal(int u, int v, int k) {
+		return _getVal(xOrigin + u, yOrigin + v, k);
+	}
+
+	abstract float _getVal(int u, int v, int k);
 	
 	
 	/**
@@ -216,7 +240,11 @@ public abstract class ImageAccessor {
 	 * @param k the component index
 	 * @return the interpolated component value ({@code float[]})
 	 */
-	public abstract float getVal(double x, double y, int k);
+	public final float getVal(double x, double y, int k) {
+		return _getVal(xOrigin + x, yOrigin + y, k);
+	}
+
+	abstract float _getVal(double x, double y, int k);
 	
 	/**
 	 * Sets the value of the pixel's k-th component at the
@@ -229,7 +257,11 @@ public abstract class ImageAccessor {
 	 * @param k the component index
 	 * @param val the new component value
 	 */
-	public abstract void setVal(int u, int v, int k, float val);
+	public final void setVal(int u, int v, int k, float val) {
+		_setVal(xOrigin + u, yOrigin + v, k, val);
+	}
+
+	abstract void _setVal(int u, int v, int k, float val);
 	
 	/**
 	 * Returns the {@link ImageAccessor} for the k-th component;
@@ -240,7 +272,11 @@ public abstract class ImageAccessor {
 	 * @return the component accessor.
 	 */
 	public abstract ScalarAccessor getComponentAccessor(int k);
-	
-	abstract void checkComponentIndex(int k);
+
+	void checkComponentIndex(int k) {
+		if (k < 0 || k >= getDepth()) {
+			throw new IllegalArgumentException("invalid component index " + k);
+		}
+	}
 		
 }

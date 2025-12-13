@@ -47,7 +47,7 @@ public class ScalarAccessorRandomValuesTest {
 	}
 	
 	private void run(ImageProcessor ip) {
-		ScalarAccessor ia = ScalarAccessor.create(ip, null, null);
+		ScalarAccessor ia = ScalarAccessor.create(ip, null, null, 0, 0);
 		assertEquals(width, ia.getWidth());
 		assertEquals(height, ia.getHeight());
 		assertEquals(1, ia.getDepth());

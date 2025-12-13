@@ -33,7 +33,7 @@ public class ImageAccessor_Demo_Scalar implements PlugInFilter, JavaDocHelp {
 		final int width = ip.getWidth();
 		final int height = ip.getHeight();
 		
-		ScalarAccessor ia = ScalarAccessor.create(ip, null, null);
+		ScalarAccessor ia = ScalarAccessor.create(ip, null, null, 0, 0);
 		
 		for (int u = 0; u < width; u++) {
 			for (int v = 0; v < height; v++) {

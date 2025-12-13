@@ -84,8 +84,8 @@ public class OutOfBoundsStrategy_Demo implements PlugInFilter, JavaDocHelp {
 
         ImageProcessor ip2 = ip1.createProcessor(w2, h2);
 
-        ImageAccessor ia1 = ImageAccessor.create(ip1, OBS, null);
-        ImageAccessor ia2 = ImageAccessor.create(ip2, null, null);
+        ImageAccessor ia1 = ImageAccessor.create(ip1, OBS, null, 0, 0);
+        ImageAccessor ia2 = ImageAccessor.create(ip2, null, null, 0, 0);
 
         for (int u = 0; u < w2; u++) {
             for (int v = 0; v < h2; v++) {

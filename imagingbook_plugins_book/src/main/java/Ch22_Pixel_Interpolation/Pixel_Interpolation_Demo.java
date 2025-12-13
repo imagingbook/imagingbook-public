@@ -80,7 +80,7 @@ public class Pixel_Interpolation_Demo implements PlugInFilter, JavaDocHelp {
     	ImageProcessor target = source.createProcessor(w, h);
     	
     	// create ImageAccessor's for the source and target  image:
-    	ImageAccessor sa = ImageAccessor.create(source, OBS, IPM);
+    	ImageAccessor sa = ImageAccessor.create(source, OBS, IPM, 0, 0);
     	ImageAccessor ta = ImageAccessor.create(target);
     	
     	// iterate over all pixels of the target image:

@@ -69,7 +69,7 @@ public class Jitter_Filter_ImageAccessor implements PlugInFilter, JavaDocHelp {
 
 		ImageProcessor ip2 = ip1.duplicate();
 		ImageAccessor ia1 = ImageAccessor.create(ip1);
-		ImageAccessor ia2 = ImageAccessor.create(ip2, OBS, null);
+		ImageAccessor ia2 = ImageAccessor.create(ip2, OBS, null, 0, 0);
 
 		Random rnd = new Random();
 		

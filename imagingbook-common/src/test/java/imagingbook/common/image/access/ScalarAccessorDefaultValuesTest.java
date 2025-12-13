@@ -48,7 +48,7 @@ public class ScalarAccessorDefaultValuesTest {
 	}
 	
 	private void run(ImageProcessor ip) {
-		ScalarAccessor ia = ScalarAccessor.create(ip, OutOfBoundsStrategy.DefaultValue, null);
+		ScalarAccessor ia = ScalarAccessor.create(ip, OutOfBoundsStrategy.DefaultValue, null, 0, 0);
 //		ia.setDefaultValue(defaultVal);
 		assertEquals(defaultVal, ia.getVal(-1, 10), TOL);
 		assertEquals(defaultVal, ia.getVal(width, 10), TOL);

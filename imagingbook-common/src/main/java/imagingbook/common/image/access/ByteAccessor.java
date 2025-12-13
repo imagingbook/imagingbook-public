@@ -24,19 +24,23 @@ public class ByteAccessor extends ScalarAccessor {
 
 	/**
 	 * Constructor. See also the factory method
-	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy, InterpolationMethod)}.
-	 *
+	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy,
+	 * InterpolationMethod, int, int)}.
 	 * @param ip an instance of {@link ByteProcessor}
-	 * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
-	 * @param ipm the interpolation method to be used (use {@code null} for default settings)
+	 * @param obs the out-of-bounds strategy to be used (use {@code null} for
+	 * default settings)
+	 * @param ipm the interpolation method to be used (use {@code null} for
+	 * default settings)
+	 * @param xOrigin origin x-value
+	 * @param yOrigin origin y-value
 	 */
-	public ByteAccessor(ByteProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		super(ip, obs, ipm);
+	public ByteAccessor(ByteProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin) {
+		super(ip, obs, ipm, xOrigin, yOrigin);
 		this.pixels = (byte[]) this.ip.getPixels();
 	}
 
 	@Override
-	public float getVal(int u, int v) {
+	float _getVal(int u, int v) {
 		final int i = indexer.getIndex(u, v);
 		if (i < 0)
 			return this.defaultValue;
@@ -46,7 +50,7 @@ public class ByteAccessor extends ScalarAccessor {
 	}
 
 	@Override
-	public void setVal(int u, int v, float val) {
+	void _setVal(int u, int v, float val) {
 		int i = indexer.getIndex(u, v);
 		if (i >= 0) {
 			int vali = Math.round(val);

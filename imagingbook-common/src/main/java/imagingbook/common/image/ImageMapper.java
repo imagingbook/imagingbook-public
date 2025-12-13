@@ -95,7 +95,7 @@ public class ImageMapper {
 		if (target == source) {
 			throw new IllegalArgumentException("source and target image must not be the same!");
 		}
-		ImageAccessor sourceAcc = ImageAccessor.create(source, obs, ipm);
+		ImageAccessor sourceAcc = ImageAccessor.create(source, obs, ipm, 0, 0);
 		ImageAccessor targetAcc = ImageAccessor.create(target);
 		map(sourceAcc, targetAcc);
 	}

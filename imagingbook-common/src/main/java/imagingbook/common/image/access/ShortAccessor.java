@@ -21,23 +21,23 @@ public class ShortAccessor extends ScalarAccessor {
 
 	/**
 	 * Constructor. See also the factory method
-	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy, InterpolationMethod)}.
-	 *
+	 * {@link ScalarAccessor#create(ImageProcessor, OutOfBoundsStrategy,
+	 * InterpolationMethod, int, int)}.
 	 * @param ip an instance of {@link ShortProcessor}
-	 * @param obs the out-of-bounds strategy to be used (use {@code null} for default settings)
-	 * @param ipm the interpolation method to be used (use {@code null} for default settings)
+	 * @param obs the out-of-bounds strategy to be used (use {@code null} for
+	 * default settings)
+	 * @param ipm the interpolation method to be used (use {@code null} for
+	 * default settings)
+	 * @param xOrigin origin x-value
+	 * @param yOrigin origin y-value
 	 */
-	public ShortAccessor(ShortProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		super(ip, obs, ipm);
+	public ShortAccessor(ShortProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm, int xOrigin, int yOrigin) {
+		super(ip, obs, ipm, xOrigin, yOrigin);
 		this.pixels = (short[]) this.ip.getPixels();
-	}
-	
-	public static ShortAccessor create(ShortProcessor ip, OutOfBoundsStrategy obs, InterpolationMethod ipm) {
-		return new ShortAccessor(ip, obs, ipm);
 	}
 
 	@Override
-	public float getVal(int u, int v) {
+	public float _getVal(int u, int v) {
 		int i = indexer.getIndex(u, v);
 		if (i < 0)
 			return this.defaultValue;
@@ -46,7 +46,7 @@ public class ShortAccessor extends ScalarAccessor {
 	}
 
 	@Override
-	public void setVal(int u, int v, float val) {
+	public void _setVal(int u, int v, float val) {
 		int vali = Math.round(val);
 		if (vali < 0)
 			vali = 0;

@@ -30,7 +30,7 @@ public class RgbAccessorRandomValuesTest {
 	@Test
 	public void testRgbRandomWriteAndRead() {
 		ImageProcessor ip = new ColorProcessor(width, height);
-		ImageAccessor ia = ImageAccessor.create(ip, null, null);
+		ImageAccessor ia = ImageAccessor.create(ip, null, null, 0, 0);
 		
 		assertEquals(width, ia.getWidth());
 		assertEquals(height, ia.getHeight());
