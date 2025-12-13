@@ -8,14 +8,18 @@
  ******************************************************************************/
 package imagingbook.testutils;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 /**
  * Fully deterministic clone of java.util.Random (current LCG algorithm),
  * ensuring stable sequences across all Java versions and platforms.
  * To be used when absolute reproducibility is required.
+ * This is a full implementation of the {@link RandomGenerator} interface
+ * to be completely independent of variations in JDK implementations.
+ * The code is copied from class java.util.Random.
+ * The
  */
-public class DeterministicRandom extends Random {
+public class DeterministicRandom implements RandomGenerator {
 
     // Constants from java.util.Random
     private static final long MULTIPLIER = 0x5DEECE66DL;
@@ -31,13 +35,7 @@ public class DeterministicRandom extends Random {
 
     // ------------------------------------
 
-    @Override
-    public synchronized void setSeed(long seed) {
-        this.seed = (seed ^ MULTIPLIER) & MASK;
-    }
-
-    @Override
-    protected int next(int bits) {
+    private int next(int bits) {
         seed = (seed * MULTIPLIER + ADDEND) & MASK;
         return (int) (seed >>> (48 - bits));
     }
@@ -88,12 +86,6 @@ public class DeterministicRandom extends Random {
         for (int i = 0; i < bytes.length; i++) {
             bytes[i] = (byte) next(8);
         }
-    }
-
-    @Override
-    public double nextGaussian() {
-        throw new UnsupportedOperationException("nextGaussian() not implemented by "
-                + DeterministicRandom.class);
     }
 }
 

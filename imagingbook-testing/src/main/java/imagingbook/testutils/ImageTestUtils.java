@@ -16,7 +16,7 @@ import ij.process.ShortProcessor;
 
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -92,7 +92,7 @@ public class ImageTestUtils {
 	// ---------------------------------------------------------------------
 	
 	public static ByteProcessor makeRandomByteProcessor(int width, int height, long seed) {
-		Random rg = (seed == 0) ? new Random() : new Random(seed);
+		RandomGenerator rg = new DeterministicRandom(seed);
 		ByteProcessor bp = new ByteProcessor(width, height);
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
@@ -101,9 +101,31 @@ public class ImageTestUtils {
 		}
 		return bp;
 	}
+
+	public static ShortProcessor makeRandomShortProcessor(int width, int height, long seed) {
+		RandomGenerator rg = new DeterministicRandom(seed);
+		ShortProcessor sp = new ShortProcessor(width, height);
+		for (int v = 0; v < height; v++) {
+			for (int u = 0; u < width; u++) {
+				sp.set(u, v, rg.nextInt(0x10000));
+			}
+		}
+		return sp;
+	}
+
+	public static FloatProcessor makeRandomFloatProcessor(int width, int height, long seed) {
+		RandomGenerator rg = new DeterministicRandom(seed);
+		var fp = new FloatProcessor(width, height);
+		for (int v = 0; v < height; v++) {
+			for (int u = 0; u < width; u++) {
+				fp.setf(u, v, rg.nextFloat(2f) - 1f);
+			}
+		}
+		return fp;
+	}
 	
 	public static ColorProcessor makeRandomColorProcessor(int width, int height, long seed) {
-		Random rg = (seed == 0) ? new Random() : new Random(seed);
+		RandomGenerator rg = new DeterministicRandom(seed);
 		ColorProcessor cp = new ColorProcessor(width, height);
 		for (int v = 0; v < height; v++) {
 			for (int u = 0; u < width; u++) {
