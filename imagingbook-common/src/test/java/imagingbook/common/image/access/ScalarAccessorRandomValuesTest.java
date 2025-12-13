@@ -10,8 +10,9 @@ package imagingbook.common.image.access;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
+import imagingbook.testutils.DeterministicRandom;
 import org.junit.Test;
 
 import ij.process.ByteProcessor;
@@ -52,10 +53,10 @@ public class ScalarAccessorRandomValuesTest {
 		assertEquals(height, ia.getHeight());
 		assertEquals(1, ia.getDepth());
 		
-		Random rd = new Random(17);
+		RandomGenerator rg = new DeterministicRandom(17);
 		for (int u = 0; u < width; u++) {
 			for (int v = 0; v < height; v++) {
-				int v1 = (int)(rd.nextFloat() * 255);
+				int v1 = (int)(rg.nextFloat() * 255);
 				ia.setVal(u, v, v1);
 				assertEquals(v1, ia.getVal(u, v), 1E-6F);
 				assertEquals(v1, ia.getVal((double)u, (double)v), 1E-6F);	// interpolated

@@ -11,7 +11,7 @@ package imagingbook.common.util.bits;
 import imagingbook.testutils.DeterministicRandom;
 import org.junit.Test;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import static imagingbook.common.util.bits.BitVector.getLongAsString;
 import static imagingbook.common.util.bits.BitVector.makeRandom;
@@ -82,7 +82,7 @@ public class BitVectorTest {
 
     @Test
     public void flipBitTest() {
-        Random rand = new DeterministicRandom(99);
+        RandomGenerator rand = new DeterministicRandom(99);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = BitVector.makeRandom(n, rand);
             BitVector bv2 = bv1.duplicate();
@@ -119,7 +119,7 @@ public class BitVectorTest {
 
     @Test
     public void equalsTest1() {
-        Random rand = new DeterministicRandom(99);
+        RandomGenerator rand = new DeterministicRandom(99);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = bv1.duplicate();
@@ -131,7 +131,7 @@ public class BitVectorTest {
 
     @Test
     public void equalsTest2() {
-        Random rand = new DeterministicRandom(99);
+        RandomGenerator rand = new DeterministicRandom(99);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = bv1.duplicate();
@@ -143,7 +143,7 @@ public class BitVectorTest {
 
     @Test
     public void bitwiseANDTest() {
-        Random rand = new DeterministicRandom(73);
+        RandomGenerator rand = new DeterministicRandom(73);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = new BitVector(bv1.length()); bv2.setAll(); // all 1s
@@ -156,7 +156,7 @@ public class BitVectorTest {
 
     @Test
     public void bitwiseOrTest() {
-        Random rand = new DeterministicRandom(311);
+        RandomGenerator rand = new DeterministicRandom(311);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = new BitVector(bv1.length()); // all 0s
@@ -180,7 +180,7 @@ public class BitVectorTest {
 
     @Test
     public void bitwiseXORTest2() {
-        Random rand = new DeterministicRandom(17);
+        RandomGenerator rand = new DeterministicRandom(17);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = makeRandom(n, rand);
@@ -191,7 +191,7 @@ public class BitVectorTest {
 
     @Test
     public void bitwiseNOTTest() {
-        Random rand = new DeterministicRandom(111);
+        RandomGenerator rand = new DeterministicRandom(111);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = bv1.bitwiseNOT();  // bv1 inverted
@@ -209,7 +209,7 @@ public class BitVectorTest {
 
     @Test
     public void hammingDistanceTest() {
-        Random rand = new DeterministicRandom(111);
+        RandomGenerator rand = new DeterministicRandom(111);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             BitVector bv2 = bv1.bitwiseNOT();  // bv1 inverted
@@ -223,7 +223,7 @@ public class BitVectorTest {
 
     @Test
     public void asStringTest() {
-        Random rand = new DeterministicRandom(191);
+        RandomGenerator rand = new DeterministicRandom(191);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             String str = bv1.asString();
@@ -234,7 +234,7 @@ public class BitVectorTest {
 
     @Test
     public void asByteArrayTest() {
-        Random rand = new DeterministicRandom(413);
+        RandomGenerator rand = new DeterministicRandom(413);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             byte[] bytes = bv1.asByteArray();
@@ -245,7 +245,7 @@ public class BitVectorTest {
 
     @Test
     public void asBooleanArrayTest() {
-        Random rand = new DeterministicRandom(1333);
+        RandomGenerator rand = new DeterministicRandom(1333);
         for (int n : new int[]{1, 33, 64, 3017, 71925}) {
             BitVector bv1 = makeRandom(n, rand);
             boolean[] bools = bv1.asBooleanArray();
