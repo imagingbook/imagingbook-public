@@ -81,11 +81,5 @@ public class DeterministicRandom implements RandomGenerator {
         return next(24) / ((float) (1 << 24));
     }
 
-    @Override
-    public void nextBytes(byte[] bytes) {
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = (byte) next(8);
-        }
-    }
-}
+ }
 
