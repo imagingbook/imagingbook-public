@@ -118,7 +118,7 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	 * @return the pixel value ({@code float})
 	 */
 	public final float getVal(int u, int v) {
-		return this._getVal(xOrigin + u, yOrigin + v);
+		return _getVal(xOrigin + u, yOrigin + v);
 	}
 
 	/**
@@ -131,7 +131,11 @@ public abstract class ScalarAccessor extends ImageAccessor {
 	 * @return the pixel value ({@code float})
 	 */
 	public final float getVal(double x, double y) { // interpolating version
-		return interpolator.getInterpolatedValue(this, xOrigin + x, yOrigin + y);
+		return _getVal(xOrigin + x, yOrigin + y);
+	}
+
+	float _getVal(double x, double y) {
+		return interpolator.getInterpolatedValue(this, x, y);
 	}
 
 	/**

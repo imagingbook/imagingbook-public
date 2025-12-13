@@ -45,17 +45,17 @@ public class RgbAccessor extends VectorAccessor {
 
 	@Override
 	float[] _getPix(int u, int v) { // returns an RGB value packed into a float[]
-		float red = componentAccessors[0].getVal(u, v);  //(c & 0xff0000) >> 16;
-		float grn = componentAccessors[1].getVal(u, v);  //(c & 0xff00) >> 8;
-		float blu = componentAccessors[2].getVal(u, v);  //(c & 0xff);
+		float red = componentAccessors[0]._getVal(u, v);  //(c & 0xff0000) >> 16;
+		float grn = componentAccessors[1]._getVal(u, v);  //(c & 0xff00) >> 8;
+		float blu = componentAccessors[2]._getVal(u, v);  //(c & 0xff);
 		return new float[] { red, grn, blu };
 	}
 	
 	@Override
 	float[] _getPix(double x, double y) {
-		float red = componentAccessors[0].getVal(x, y);
-		float grn = componentAccessors[1].getVal(x, y);
-		float blu = componentAccessors[2].getVal(x, y); 
+		float red = componentAccessors[0]._getVal(x, y);
+		float grn = componentAccessors[1]._getVal(x, y);
+		float blu = componentAccessors[2]._getVal(x, y);
 		return new float[] { red, grn, blu };
 	}
 	

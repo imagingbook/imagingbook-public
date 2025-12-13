@@ -163,6 +163,16 @@ public abstract class ImageAccessor {
 	public InterpolationMethod getInterpolationMethod() {
 		return interpolationMethod;
 	}
+
+	public int getXOrigin() {
+		return xOrigin;
+	}
+
+	public int getYOrigin() {
+		return yOrigin;
+	}
+
+	// ------------------------------------------------------------------------
 	
 	/**
 	 * Returns the pixel value for the specified integer
