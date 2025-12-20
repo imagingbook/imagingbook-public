@@ -38,6 +38,18 @@ public class SimilarityMapping2DTest {
     }
 
     @Test
+    public void constructorTest2() {
+        double s = 27;
+        double theta = -0.23;
+        SimilarityMapping2D sm = SimilarityMapping2D.fromScaleAndAngle(s, theta, 5, 7);
+        assertEquals(s, sm.getScale(), TOL);
+        assertEquals(theta, sm.getAngle(), TOL);
+        assertEquals(5, sm.a02, TOL);
+        assertEquals(7, sm.a12, TOL);
+        // System.out.println(sm);
+    }
+
+    @Test
     public void fromPointsTest1() {
         Pnt2d[] P = {p0, p1};
         SimilarityMapping2D sm = SimilarityMapping2D.fromPoints(P, P);

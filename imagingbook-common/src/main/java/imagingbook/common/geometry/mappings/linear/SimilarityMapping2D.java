@@ -16,6 +16,9 @@ import org.apache.commons.math4.legacy.linear.RealMatrix;
 import org.apache.commons.math4.legacy.linear.RealVector;
 import org.apache.commons.math4.legacy.linear.SingularValueDecomposition;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 /**
  * Linear similarity mapping which consists of a rotation, uniform scaling
  * and translation. The transformation matrix is (in homogeneous coordinates)
@@ -40,6 +43,10 @@ public class SimilarityMapping2D  extends AffineMapping2D {
      */
     public SimilarityMapping2D(double a, double b, double tx, double ty) {
         super(a, -b, tx, b, a, ty);
+    }
+
+    public static SimilarityMapping2D fromScaleAndAngle(double s, double theta, double tx, double ty) {
+        return new SimilarityMapping2D(s * cos(theta), s * sin(theta), tx, ty);
     }
 
     /**
