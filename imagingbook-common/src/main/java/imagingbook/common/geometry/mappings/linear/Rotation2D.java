@@ -27,7 +27,6 @@ public class Rotation2D extends AffineMapping2D {
 
 	/**
 	 * Constructor. Creates a 2D rotation by a given angle about the origin.
-	 *
 	 * @param alpha rotation angle (in radians)
 	 */
 	public Rotation2D(double alpha) {
@@ -38,19 +37,17 @@ public class Rotation2D extends AffineMapping2D {
 
 	/**
 	 * Auxiliary constructor used internally for duplicating instances.
-	 *
 	 * @param a00 matrix element A_00
 	 * @param a01 matrix element A_01
 	 * @param a10 matrix element A_10
 	 * @param a11 matrix element A_11
 	 */
-	protected Rotation2D(double a00, double a01, double a10, double a11) {
+	private Rotation2D(double a00, double a01, double a10, double a11) {
 		super(a00, a01, 0, a10, a11, 0);
 	}
 
 	/**
 	 * Constructor. Creates a new {@link Rotation2D} object from an existing instance.
-	 *
 	 * @param m a {@link Rotation2D} instance
 	 */
 	public Rotation2D(Rotation2D m) {
@@ -60,9 +57,8 @@ public class Rotation2D extends AffineMapping2D {
 	// ----------------------------------------------------------
 
 	/**
-	 * Concatenates this rotation (A) with another rotation (B) and returns a new rotation (C), such that C(x) =
-	 * B(A(x)).
-	 *
+	 * Concatenates this rotation (A) with another rotation (B) and returns a
+	 * new rotation (C), such that C(x) = B(A(x)).
 	 * @param B the second rotation
 	 * @return the concatenated rotations
 	 */

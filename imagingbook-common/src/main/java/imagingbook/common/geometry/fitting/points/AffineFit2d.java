@@ -49,7 +49,7 @@ public class AffineFit2d implements LinearFit2d {
 		RealMatrix M = MatrixUtils.createRealMatrix(2 * m, 6);
 		RealVector b = new ArrayRealVector(2 * m);
 		
-		// mount the matrix M
+		// mount matrix M
 		int row = 0;
 		for (Pnt2d p : P) {
 			M.setEntry(row, 0, p.getX());

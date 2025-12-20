@@ -15,6 +15,8 @@ import imagingbook.common.geometry.fitting.points.AffineFit2d;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
 
+import static java.lang.Math.abs;
+
 /**
  * <p>
  * This class represents an affine transformation in 2D, which can be defined by three pairs of corresponding points. It
@@ -179,9 +181,9 @@ public class AffineMapping2D extends ProjectiveMapping2D {
 	 */
 	public static boolean isAffine(LinearMapping2D map) {
 		final double tol = Arithmetic.EPSILON_DOUBLE; // max. deviation for 0/1 values
-		if (Math.abs(map.a20) > tol) return false;
-		if (Math.abs(map.a21) > tol) return false;
-		if (Math.abs(map.a22 - 1.0) > tol) return false;
+		if (abs(map.a20) > tol || abs(map.a21) > tol || abs(map.a22 - 1.0) > tol) {
+			return false;
+		}
 		return true;
 	}
 
