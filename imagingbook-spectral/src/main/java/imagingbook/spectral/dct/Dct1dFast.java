@@ -9,11 +9,6 @@
 
 package imagingbook.spectral.dct;
 
-
-// import edu.emory.mathcs.jtransforms.dct.DoubleDCT_1D;
-// import edu.emory.mathcs.org.jtransforms.dct.FloatDCT_1D;
-
-
 import org.jtransforms.dct.DoubleDCT_1D;
 import org.jtransforms.dct.FloatDCT_1D;
 

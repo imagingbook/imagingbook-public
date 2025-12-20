@@ -5,8 +5,9 @@
  */
 module imagingbook.spectral {
 	requires imagingbook.common;
+	requires org.jtransforms;
 	//requires org.jtransforms;
-	requires JTransforms;
+	//requires JTransforms;
 	exports imagingbook.spectral.dft;
 	exports imagingbook.spectral.dct;
 }
