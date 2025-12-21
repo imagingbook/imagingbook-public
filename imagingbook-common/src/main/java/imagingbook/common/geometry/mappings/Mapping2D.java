@@ -10,6 +10,10 @@ package imagingbook.common.geometry.mappings;
 
 import imagingbook.common.geometry.basic.Pnt2d;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Common interface to be implemented by all (linear and nonlinear) 2D mappings.
  * 
@@ -38,6 +42,19 @@ public interface Mapping2D extends Cloneable {
 			outPnts[i] = applyTo(pnts[i]);
 		}
 		return outPnts;
+	}
+
+	/**
+	 * Applies this mapping to a list of 2D points and returns a new
+	 * (modifiable) list of points.
+	 *
+	 * @param pnts the original points
+	 * @return the transformed points
+	 */
+	public default List<Pnt2d> applyTo(List<Pnt2d> pnts) {
+		return pnts.stream()
+				.map(this::applyTo)
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 }
