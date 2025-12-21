@@ -148,7 +148,7 @@ public class BitMap {
 	 * @param y the y-coordinate
 	 */
 	public void unset(int x, int y) {
-		bitvec.unsetAll(y * width + x);
+		bitvec.unsetBit(y * width + x);
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class BitMap {
 	 * @param p the x/y-coordinate (point)
 	 */
 	public void unset(PntInt p) {
-		bitvec.unsetAll(p.y * width + p.x);
+		bitvec.unsetBit(p.y * width + p.x);
 	}
 	
 	/**

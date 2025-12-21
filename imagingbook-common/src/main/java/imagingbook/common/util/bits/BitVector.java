@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.random.RandomGenerator;
 
 /**
- * This class implements a fixed-sized vector with single-bit elements. This is
+ * <p>This class implements a fixed-sized vector with single-bit elements. This is
  * similar to the standard Java class {@link java.util.BitSet}, which implements
  * variable-sized (extendable) bit vectors. Bit vectors allow efficient storage,
  * logical operations and comparison of bit data. Bit vectors are not immutable,
@@ -21,12 +21,14 @@ import java.util.random.RandomGenerator;
  * vectors are only implemented for vectors of the same length, similar to
  * ordinary array operations. Bit vectors can be initialized from a variety
  * of data sources, such as 0/1 strings, boolean arrays or byte arrays.
- *
+ * </p>
+ * <p>
  * Bits are internally stored as a sequence (array) of 64-bit {@code long}
  * values, with the long's Least Significant Bit (LSB) being the first bit.
  * All excess bits (toward the MSB) are always maintained at 0.
  * Bit vectors must have at least 1 element. Zero-length bit vectors are not
  * allowed.
+ * </p>
  *
  * @author WB
  */
@@ -179,7 +181,7 @@ public class BitVector {
         if (val)
             this.setBit(i);
         else
-            this.unsetAll(i);
+            this.unsetBit(i);
     }
 
     /**
@@ -231,7 +233,7 @@ public class BitVector {
      * Destructive operation, i.e., this bit set is modified.
      * @param i the element index
      */
-	public void unsetAll(int i) {
+	public void unsetBit(int i) {
 		if (i < 0 || i >= length) {
 			throw new IndexOutOfBoundsException("illegal index " + i);
 		}
@@ -270,7 +272,7 @@ public class BitVector {
         char[] chars01 = str01.toCharArray();
         for (int i = 0; i < chars01.length; i++) {
             switch(chars01[i]) {
-                case '0' -> unsetAll(i);
+                case '0' -> unsetBit(i);
                 case '1' -> setBit(i);
                 default ->  throw new IllegalArgumentException("illegal character in 0/1 string: " + chars01[i]);
             }

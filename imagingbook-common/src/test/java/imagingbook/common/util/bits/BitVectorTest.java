@@ -15,8 +15,7 @@ import java.util.random.RandomGenerator;
 
 import static imagingbook.common.util.bits.BitVector.getLongAsString;
 import static imagingbook.common.util.bits.BitVector.makeRandom;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class BitVectorTest {
 
@@ -253,5 +252,56 @@ public class BitVectorTest {
             assertEquals(bv1, bv2);
         }
     }
+
+    @Test
+    public void setBitTest() {
+        int n = 10000;
+        BitVector bv = new BitVector(n);
+        for (int i = 0; i < n; i++) {
+            assertFalse(bv.getBit(i));
+            bv.setBit(i);
+            assertTrue(bv.getBit(i));
+            assertEquals(i + 1, bv.cardinality());
+        }
+    }
+
+    @Test
+    public void unsetBitTest() {
+        int n = 10000;
+        BitVector bv = new BitVector(n);
+        bv.setAll();
+        for (int i = 0; i < n; i++) {
+            assertTrue(bv.getBit(i));
+            bv.unsetBit(i);
+            assertFalse(bv.getBit(i));
+            assertEquals(n - i - 1, bv.cardinality());
+        }
+    }
+
+    @Test
+    public void SetBitTest2() {
+        int n = 10000;
+        BitVector bv = new BitVector(n);
+        for (int i = 0; i < n; i++) {
+            assertFalse(bv.getBit(i));
+            bv.setBit(i, true);
+            assertTrue(bv.getBit(i));
+            assertEquals(i + 1, bv.cardinality());
+        }
+    }
+
+    @Test
+    public void setBitTest3() {
+        int n = 10000;
+        BitVector bv = new BitVector(n);
+        bv.setAll();
+        for (int i = 0; i < n; i++) {
+            assertTrue(bv.getBit(i));
+            bv.setBit(i, false);
+            assertFalse(bv.getBit(i));
+            assertEquals(n - i - 1, bv.cardinality());
+        }
+    }
+
 
 }
