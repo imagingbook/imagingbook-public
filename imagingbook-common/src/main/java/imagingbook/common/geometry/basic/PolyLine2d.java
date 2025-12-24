@@ -72,6 +72,20 @@ public class PolyLine2d extends AbstractPoly2d {
         return len;
     }
 
+    // --------------------------------------------------------------------------------------------
+
+    public Polygon2d simplify(double tol) {
+        List<Pnt2d> pts = this.getPnts();
+        final double tol2 = tol * tol;
+        final int n = pts.size();
+        if (n <= 3)
+            return new Polygon2d(this);
+
+        List<Pnt2d> out = AbstractPoly2d.simplify(pts, tol, false);
+        return new Polygon2d(out);
+    }
+
+
     // -----------------------------------------------------------------------
     //
     // public static void main(String[] args) {

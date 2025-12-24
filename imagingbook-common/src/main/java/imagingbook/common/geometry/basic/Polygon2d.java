@@ -8,6 +8,9 @@
  ******************************************************************************/
 package imagingbook.common.geometry.basic;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 import static imagingbook.common.math.Arithmetic.isZero;
@@ -126,6 +129,26 @@ public class Polygon2d extends AbstractPoly2d  {
         return 4 * Math.PI * area / sqr(len);
     }
 
+    // --------------------------------------------------------------------------------------------
+
+    public Polygon2d simplify(int startPt, double tol) {
+        List<Pnt2d> pts = this.getPnts();
+        final double tol2 = tol * tol;
+        final int n = pts.size();
+        if (n <= 3)
+            return new Polygon2d(this);
+
+        // Pick optimal starting index
+        // int startPt = getMostEccentricVertexIndex(pts);
+
+        // Rotate the polygon such that the designated start point comes first:
+        List<Pnt2d> rotatedPoly = new ArrayList<>(n + 1);
+        for (int i = 0; i < n; i++)
+            rotatedPoly.add(pts.get((startPt + i) % n));
+
+        List<Pnt2d> out = AbstractPoly2d.simplify(rotatedPoly, tol, true);
+        return new Polygon2d(out);
+    }
 
 
     // -----------------------------------------------------------------------

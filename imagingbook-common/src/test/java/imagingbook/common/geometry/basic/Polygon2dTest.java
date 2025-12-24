@@ -93,11 +93,20 @@ public class Polygon2dTest {
         assertArrayEquals(expected, ctr2, 1e-6);
     }
 
+    static final double polygonalApproxAccuracyRate =  0.03;
+
     @Test
     public void simplifyTest() {    // TODO
         List<Pnt2d> contour0 = makePntList(Polygon2dTestData.contour0);
         List<Pnt2d> corners0 = makePntList(Polygon2dTestData.corners0);
-        assertEquals(contour0.size(), new Polygon2d(contour0).length());
-        assertEquals(corners0.size(), new Polygon2d(corners0).length());
+        Polygon2d polyCont0 = new Polygon2d(contour0);
+        Polygon2d polyCorn0 = new Polygon2d(corners0);
+        assertEquals(contour0.size(), polyCont0.length());
+        assertEquals(corners0.size(), polyCorn0.length());
+
+        Polygon2d polyCont0simpl = polyCont0.simplify(0, polyCont0.length() * polygonalApproxAccuracyRate);
+        assertEquals(4, polyCont0simpl.length());
+
+
     }
 }
