@@ -12,9 +12,12 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static imagingbook.common.geometry.basic.AbstractPointSequence.makePntList;
 import static imagingbook.common.util.ListUtils.reversedCopy;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 public class PolyLine2dTest {
 
@@ -42,6 +45,37 @@ public class PolyLine2dTest {
         double[] ctr2 = new PolyLine2d(triangleCW).getCentroid().toDoubleArray();
         assertArrayEquals(expected, ctr1, 1e-6);
         assertArrayEquals(expected, ctr2, 1e-6);
+    }
+
+    @Test
+    public void duplicateTest() {
+        PolyLine2d poly = new PolyLine2d(makePntList(Polygon2dTestData.contour0));
+        PolyLine2d poly2 = poly.duplicate();
+        assertNotSame(poly, poly2);
+        assertEquals(poly.length(), poly2.length());
+        for (int i = 0; i < poly.length(); i++) {
+            assertSame(poly.getPnt(i), poly2.getPnt(i));
+        }
+    }
+
+    @Test
+    public void reverseTest() {
+        PolyLine2d poly = new PolyLine2d(makePntList(Polygon2dTestData.contour0));
+        PolyLine2d poly2 = poly.reverse();
+        assertNotSame(poly, poly2);
+        assertEquals(poly.length(), poly2.length());
+        for (int i = 0; i < poly.length(); i++) {
+            assertSame(poly.getPnt(i), poly2.getPnt(poly.length() - 1 - i));
+        }
+    }
+
+    @Test
+    public void equalsTest() {
+        PolyLine2d poly1 = new PolyLine2d(makePntList(Polygon2dTestData.contour0));
+        PolyLine2d poly2 = poly1.duplicate();
+        assertNotSame(poly1, poly2);
+        assertNotSame(poly1.pnts, poly2.pnts);
+        assertEquals(poly1, poly2);
     }
 
 }

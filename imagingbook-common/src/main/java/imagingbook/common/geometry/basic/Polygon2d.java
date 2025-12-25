@@ -8,7 +8,7 @@
  ******************************************************************************/
 package imagingbook.common.geometry.basic;
 
-import java.util.ArrayList;
+import java.awt.Shape;
 import java.util.List;
 
 import static imagingbook.common.math.Arithmetic.isZero;
@@ -19,7 +19,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
  * connecting to its first. Most functionality is identical to parent class
  * {@link PolyLine2d} except for methods assuming closedness.
  */
-public class Polygon2d extends AbstractPoly2d  {
+public class Polygon2d extends AbstractPointSequence {
 
     public Polygon2d(List<Pnt2d> pnts) {
         super(pnts);
@@ -29,7 +29,7 @@ public class Polygon2d extends AbstractPoly2d  {
         super(pnts);
     }
 
-    public Polygon2d(AbstractPoly2d poly) {
+    public Polygon2d(AbstractPointSequence poly) {
         this(poly.pnts); // array is cloned!
     }
 
@@ -38,11 +38,16 @@ public class Polygon2d extends AbstractPoly2d  {
     }
 
     public Polygon2d reverse() {
-        Polygon2d poly = new Polygon2d(pnts);
-        poly.reversePoints();
+        Polygon2d poly = this.duplicate();
+        poly.reverseD();
         return poly;
     }
 
+    public Polygon2d rotate(int distance) {
+        Polygon2d rotated  = this.duplicate();
+        rotated.rotateD(distance);
+        return rotated;
+    }
 
     // -----------------------------------------------------------------------
 
@@ -92,7 +97,7 @@ public class Polygon2d extends AbstractPoly2d  {
      * @return 0 if non-convex, 1 or -1 otherwise
      */
     public int getConvexity() {
-        List<Pnt2d> polygon = this.getPnts();
+        List<Pnt2d> polygon = this.getPntList();
         int n = polygon.size();
         // if (n < 4) return true; // triangles always convex (but we may want to know winding rule)
         if (n < 2) return 0;    // single points and lines are not convex
@@ -129,47 +134,35 @@ public class Polygon2d extends AbstractPoly2d  {
 
     // --------------------------------------------------------------------------------------------
 
-    // public Polygon2d simplify(int startPt, double tol) {
-    //     List<Pnt2d> pts = this.getPnts();
-    //     final double tol2 = tol * tol;
-    //     final int n = pts.size();
-    //     if (n <= 3)
-    //         return new Polygon2d(this);
-    //
-    //     // Rotate the polygon such that the start point comes first: TODO: use Collections.rotate
-    //     List<Pnt2d> rotatedPoly = new ArrayList<>();
-    //     for (int i = 0; i < n; i++) {
-    //         rotatedPoly.add(pts.get((startPt + i) % n));
-    //     }
-    //
-    //     // idxs is the list of simplified point indexes:
-    //     List<Integer> idxs = AbstractPoly2d.simplifyInternal(rotatedPoly, tol, true);
-    //
-    //     // Collect points of the simplified polygon
-    //     List<Pnt2d> simpl = new ArrayList<>();
-    //     for (int i : idxs) {
-    //         simpl.add(rotatedPoly.get(i));
-    //     }
-    //
-    //     return new Polygon2d(simpl);
-    // }
-    public Polygon2d simplify(double tol) {
-        List<Integer> idxs = simplify(tol, true);
-        // Collect points of the simplified polygon
-        List<Pnt2d> simpl = new ArrayList<>();
-        for (int i : idxs) {
-            simpl.add(pnts[i]);
-        }
-        return new Polygon2d(simpl);
+    public List<Integer> getSimplifiedCorners(double tol) {
+        return getSimplifiedCorners(tol, true);
     }
 
-
+    public Polygon2d simplify(double tol) {
+        List<Integer> idxs = this.getSimplifiedCorners(tol);
+        return new Polygon2d(getPntList(idxs));
+    }
 
     // -----------------------------------------------------------------------
 
-    // public static void main(String[] args) {
-    //     Polygon2d polygon = new Polygon2d(Arrays.asList(new Pnt2d[]{}));
-    //      for (Pnt2d pnt : polygon)
-    // }
+    @Override
+    public Shape getShape(double scale) {
+        // scale is ignored
+        return getShape(scale, true);
+    }
+
+    // equality -----------------------------------
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Polygon2d other) {
+            return super.equals(other);
+        }
+        return false;
+    }
+
 
 }

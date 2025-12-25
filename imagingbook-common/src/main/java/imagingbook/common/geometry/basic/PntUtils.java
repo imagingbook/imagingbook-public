@@ -16,7 +16,7 @@ import java.util.Arrays;
 /**
  * Defines static methods for manipulating 2D points.
  */
-public abstract class PntUtils {
+public final class PntUtils {
 	
 	private PntUtils() {}
 

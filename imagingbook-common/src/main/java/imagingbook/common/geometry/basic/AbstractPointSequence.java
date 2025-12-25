@@ -8,6 +8,11 @@
  ******************************************************************************/
 package imagingbook.common.geometry.basic;
 
+import imagingbook.common.geometry.shape.ShapeProducer;
+import imagingbook.common.util.bits.BitVector;
+
+import java.awt.Shape;
+import java.awt.geom.Path2D;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,21 +20,25 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import static imagingbook.common.math.Arithmetic.sqr;
 
-public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
+/**
+ * An ordered, immutable sequence of 2D points. Mainly serves as super class to
+ * {@link PolyLine2d} and {@link Polygon2d}.
+ */
+public abstract class AbstractPointSequence implements Iterable<Pnt2d>, ShapeProducer {
 
     final Pnt2d[] pnts;
 
-
-    public AbstractPoly2d(List<Pnt2d> pnts) {
+    public AbstractPointSequence(List<Pnt2d> pnts) {
         if (pnts.size() < 2)
             throw new IllegalArgumentException("at least 2 points required");
         this.pnts = pnts.toArray(new Pnt2d[0]);
     }
 
-    public AbstractPoly2d(Pnt2d[] pnts) {
+    public AbstractPointSequence(Pnt2d[] pnts) {
         if (pnts.length < 2)
             throw new IllegalArgumentException("at least 2 points required");
         this.pnts = pnts.clone();
@@ -38,45 +47,66 @@ public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
     // ------------------------------------------------------------------------
 
     /**
-     * Returns the number of points.
+     * Returns the number of points in this sequence.
      * @return the number of points
      */
     public int length() {
         return pnts.length;
     }
 
-    public List<Pnt2d> getPnts() {
+    /**
+     * Returns the points in this sequence as list of {@link Pnt2d} instances.
+     * @return the list of points
+     */
+    public List<Pnt2d> getPntList() {
         return Arrays.asList(pnts);
     }
 
+    /**
+     * Returns a list of only those points whose indexes are specified, in the
+     * order of the indexes.
+     * @param idxs the indexes of the requested points (duplicates allowed)
+     * @return a list of selected points.
+     */
+    public List<Pnt2d> getPntList(List<Integer> idxs) {
+        List<Pnt2d> selectedPts = new ArrayList<>();
+        for (int i : idxs) {
+            selectedPts.add(pnts[i]);
+        }
+        return selectedPts;
+    }
+
+    /**
+     * Returns a reference to the specified point.
+     * @param idx the point index
+     * @return a {@link Pnt2d} instance
+     */
     public Pnt2d getPnt(int idx) {
         return pnts[idx];
     }
 
-    // package private!
-    void reversePoints() {
+    /**
+     * Reverses this point sequence destructively. Non-public, only used by internal methods.
+     */
+    void reverseD() {
         Collections.reverse(Arrays.asList(pnts));
     }
 
-    // // non-public!!
-    // Pnt2d[] getPntsArray() {
-    //     return pnts;
-    // }
+    /**
+     * Rotate this point sequence destructively. Non-public, only used by internal methods.
+     */
+    void rotateD(int distance) {
+        Collections.rotate(Arrays.asList(pnts), distance);     // modifies the underlying array!
+    }
 
     // ------------------------------------------------------------------------
 
     /**
-     * The centroid of all point coordinates
-     * @return centroid of points
+     * Returns the 2D centroid of all point coordinates.
+     * @return centroid of all points as a {@link Pnt2d} instance
      */
     public Pnt2d getCentroid() {
-        int n = pnts.length;
-        double cx = 0, cy = 0;
-        for (var p : pnts) {
-            cx += p.getX();
-            cy += p.getY();
-        }
-        return Pnt2d.from(cx / n,  cy / n);
+        return PntUtils.centroid(pnts);
     }
 
     // ------------------------------------------------------------------------
@@ -88,7 +118,6 @@ public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
 
     // ------------------------------------------------------------------------
 
-
     /**
      * Simplifies the supplied polyline or closed polygon and returns a list of point indexes for
      * the simplified sequence. Indexes (and not the points themselves) are returned for more
@@ -97,7 +126,7 @@ public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
      * @param tol the allowed point distance from the current segment
      * @return indexes of points in the simplified sequence
      */
-    List<Integer> simplify(double tol, boolean closed) {
+    List<Integer> getSimplifiedCorners(double tol, boolean closed) {
         record Segment(int start, int end) {}
         double tol2 = sqr(tol);
         int n = pnts.length;
@@ -106,27 +135,23 @@ public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
         }
 
         // Standard DP stack
-        boolean[] keep = new boolean[n];
-        keep[0] = true;             // always keep the first point
-        keep[n - 1] = !closed;      // keep last point if open (polyline)
+        BitVector keep = new BitVector(n);  // mark surviving points
+        keep.setBit(0, true);           // always keep the first point
+        keep.setBit(n-1, !closed);      // keep last point if open (polyline)
 
         Deque<Segment> segmentStack = new ArrayDeque<>();
-        // Deque<int[]> segmentStack = new ArrayDeque<>();
         segmentStack.push(new Segment(0, n-1));
-        // segmentStack.push(new int[]{0, n-1});
 
         while (!segmentStack.isEmpty()) {
-            Segment segment = segmentStack.pop();
-            // int[] segment = segmentStack.pop();
-            int i0 = segment.start, i1 = segment.end;
-            // int i0 = segment[0], i1 = segment[1];
-            Pnt2d A = pnts[i0]; //poly.get(i0);
-            Pnt2d B = pnts[i1]; //poly.get(i1);
+            Segment seg = segmentStack.pop();
+            int i0 = seg.start, i1 = seg.end;
+            Pnt2d A = pnts[i0];
+            Pnt2d B = pnts[i1];
             double maxDist2 = -1;
             int maxIndex = -1;
 
             for (int i = i0 + 1; i < i1; i++) {
-                double d2 = perpDistSq(pnts[i], A, B);  //perpDistSq(poly.get(i), A, B);
+                double d2 = perpDistSq(A, B, pnts[i]);
                 if (d2 > maxDist2) {
                     maxDist2 = d2;
                     maxIndex = i;
@@ -134,18 +159,17 @@ public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
             }
 
             if (maxDist2 > tol2) {
-                keep[maxIndex] = true;
+                // keep[maxIndex] = true;
+                keep.setBit(maxIndex, true);
                 segmentStack.push(new Segment(i0, maxIndex));
-                // segmentStack.push(new int[]{i0, maxIndex});
                 segmentStack.push(new Segment(maxIndex, i1));
-                // segmentStack.push(new int[]{maxIndex, i1});
             }
         }
 
         // Assemble the list of simplified point indexes
         List<Integer> simplIdxs = new ArrayList<>();
         for (int i = 0; i < n; i++)
-            if (keep[i]) {
+            if (keep.getBit(i)) {              // (keep[i])
                 simplIdxs.add(i);
             }
 
@@ -153,7 +177,7 @@ public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
     }
 
     // Squared perpendicular distance from P to line AB
-    private static double perpDistSq(Pnt2d P, Pnt2d A, Pnt2d B) {
+    private static double perpDistSq(Pnt2d A, Pnt2d B, Pnt2d P) {
         final double ax = A.getX(), ay = A.getY();
         final double bx = B.getX(), by = B.getY();
         final double px = P.getX(), py = P.getY();
@@ -172,6 +196,36 @@ public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
     }
 
     // ------------------------------------------------------------------------
+
+    /**
+     * Shared internal method (non-public).
+     * @param scale
+     * @param closed
+     * @return
+     */
+    Shape getShape(double scale, boolean closed) {
+        // scale is ignored
+        Path2D path = new Path2D.Float();
+        if (pnts.length > 1) {
+            path.moveTo(pnts[0].getX(), pnts[0].getY());
+            for (int i = 1; i < pnts.length; i++) {
+                path.lineTo(pnts[i].getX(),  pnts[i].getY());
+            }
+            if (closed) path.closePath();
+        }
+        else {	// special case: mark a single point region "X"
+            double x = pnts[0].getX();
+            double y = pnts[0].getY();
+            path.moveTo(x - 0.5, y - 0.5);
+            path.lineTo(x + 0.5, y + 0.5);
+            path.moveTo(x - 0.5, y + 0.5);
+            path.lineTo(x + 0.5, y - 0.5);
+        }
+        return path;
+    }
+
+    // ------------------------------------------------------------------------
+
 
     /**
      * For testing.
@@ -199,5 +253,35 @@ public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
         return pntList;
     }
 
+    // ------------------------------------------------------------------------
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getClass().getSimpleName());
+        sb.append("[");
+        for (Pnt2d p : pnts) {
+            sb.append(String.format(Locale.US, "[%.2f, %.2f], ", p.getX(), p.getY()));
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof AbstractPointSequence other) {
+            if (this.length() != other.length())
+                return false;
+            for (int i = 0; i < this.length(); i++) {
+                if (!this.pnts[i].isCloseTo(other.pnts[i]))
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
 
 }

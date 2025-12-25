@@ -11,6 +11,7 @@ package imagingbook.common.regions;
 
 import imagingbook.common.geometry.basic.NeighborhoodType2D;
 import imagingbook.common.geometry.basic.Pnt2d;
+import imagingbook.common.geometry.basic.Polygon2d;
 
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
@@ -28,12 +29,11 @@ import java.util.List;
  *    // process p ...
  * }
  * </pre>
- *
+ * TODO: to be merged with {@link imagingbook.common.geometry.basic.Polygon2d}
  * @author WB
  * @version 2020/12/21
  */
 public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {
-	
 	static private int INITIAL_SIZE = 50;
 	
 	private final int label;
@@ -91,7 +91,17 @@ public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {
 	public int getLabel() {
 		return label;
 	}
-	
+
+	//--------------------- Interface to Polygon2d ------------------
+
+	/**
+	 * Returns a copy of this {@link Contour} as a {@link Polygon2d} instance.
+	 * @return a {@link Polygon2d} instance
+	 */
+	public Polygon2d getPolygon() {
+		return new Polygon2d(points);
+	}
+
 	//--------------------- debug methods ------------------
 	
 	@Override
@@ -180,6 +190,7 @@ public class Contour implements Comparable<Contour>, Iterable<Pnt2d> {
 		return false;
 	}
 
+	// -----------------------------------------------------------------------------------
 		
 	// Compare method for sorting contours by length (longer contours at front)
 	@Override
