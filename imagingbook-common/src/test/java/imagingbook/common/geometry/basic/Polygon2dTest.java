@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static imagingbook.common.geometry.basic.AbstractPointSequence.makePntList;
+import static imagingbook.common.geometry.basic.PntUtils.makePntList;
 import static imagingbook.common.util.ListUtils.reversedCopy;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;

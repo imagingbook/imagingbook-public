@@ -226,35 +226,6 @@ public abstract class AbstractPointSequence implements Iterable<Pnt2d>, ShapePro
 
     // ------------------------------------------------------------------------
 
-
-    /**
-     * For testing.
-     * @param coords a sequence of x/y coordinate pairs
-     * @return
-     */
-    public static List<Pnt2d> makePntList(double... coords) {
-        List<Pnt2d> pntList = new ArrayList<>();
-        for (int i = 0; i < coords.length; i+=2) {
-            pntList.add(Pnt2d.from(coords[i], coords[i + 1]));
-        }
-        return pntList;
-    }
-
-    /**
-     * For testing.
-     * @param coords a Nx2 array of x/y coordinate pairs
-     * @return
-     */
-    public static List<Pnt2d> makePntList(double[][] coords) {
-        List<Pnt2d> pntList = new ArrayList<>();
-        for (int i = 0; i < coords.length; i++) {
-            pntList.add(Pnt2d.from(coords[i][0], coords[i][1]));
-        }
-        return pntList;
-    }
-
-    // ------------------------------------------------------------------------
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

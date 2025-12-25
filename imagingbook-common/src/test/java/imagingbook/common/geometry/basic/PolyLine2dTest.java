@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static imagingbook.common.geometry.basic.AbstractPointSequence.makePntList;
+import static imagingbook.common.geometry.basic.PntUtils.makePntList;
 import static imagingbook.common.util.ListUtils.reversedCopy;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -24,9 +24,9 @@ public class PolyLine2dTest {
     // static List<Pnt2d> UNIT_SQUARE_CCW = Arrays.asList(Pnt2d.from(0, 0), Pnt2d.from(1, 0), Pnt2d.from(1, 1), Pnt2d.from(0, 1));
     // static List<Pnt2d> UNIT_SQUARE_CW = reversedCopy(UNIT_SQUARE_CCW);
 
-    static List<Pnt2d> unitSquareCW = Polygon2d.makePntList(0, 0, 0, 1, 1, 1, 1, 0);
+    static List<Pnt2d> unitSquareCW = PntUtils.makePntList(0, 0, 0, 1, 1, 1, 1, 0);
     static List<Pnt2d> unitSquareCCW = reversedCopy(unitSquareCW);
-    static List<Pnt2d> triangleCCW  = Polygon2d.makePntList(-2, -1, 4, 3, -1, 5);
+    static List<Pnt2d> triangleCCW  = PntUtils.makePntList(-2, -1, 4, 3, -1, 5);
     static List<Pnt2d> triangleCW  = reversedCopy(triangleCCW);
 
     @Test

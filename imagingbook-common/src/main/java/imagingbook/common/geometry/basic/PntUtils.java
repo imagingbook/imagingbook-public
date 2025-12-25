@@ -11,7 +11,9 @@ package imagingbook.common.geometry.basic;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Defines static methods for manipulating 2D points.
@@ -148,5 +150,30 @@ public final class PntUtils {
 		}
 		return pts;
 	}
-	
+
+    /**
+     * For testing.
+     * @param coords a sequence of x/y coordinate pairs
+     * @return
+     */
+    public static List<Pnt2d> makePntList(double... coords) {
+        List<Pnt2d> pntList = new ArrayList<>();
+        for (int i = 0; i < coords.length; i+=2) {
+            pntList.add(Pnt2d.from(coords[i], coords[i + 1]));
+        }
+        return pntList;
+    }
+
+    /**
+     * For testing.
+     * @param coords a Nx2 array of x/y coordinate pairs
+     * @return
+     */
+    public static List<Pnt2d> makePntList(double[][] coords) {
+        List<Pnt2d> pntList = new ArrayList<>();
+        for (int i = 0; i < coords.length; i++) {
+            pntList.add(Pnt2d.from(coords[i][0], coords[i][1]));
+        }
+        return pntList;
+    }
 }
