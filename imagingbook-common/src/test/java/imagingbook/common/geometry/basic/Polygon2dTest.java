@@ -104,7 +104,7 @@ public class Polygon2dTest {
         assertEquals(contour0.size(), polyCont0.length());
         assertEquals(corners0.size(), polyCorn0.length());
 
-        Polygon2d polyCont0simpl = polyCont0.simplify(0, polyCont0.length() * polygonalApproxAccuracyRate);
+        Polygon2d polyCont0simpl = polyCont0.simplify(polyCont0.length() * polygonalApproxAccuracyRate);
         assertEquals(4, polyCont0simpl.length());
 
 

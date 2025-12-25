@@ -81,8 +81,16 @@ public class PolyLine2d extends AbstractPoly2d {
         if (n <= 3)
             return new Polygon2d(this);
 
-        List<Pnt2d> out = AbstractPoly2d.simplify(pts, tol, false);
-        return new Polygon2d(out);
+        // idxs is the list of simplified point indexes:
+        List<Integer> idxs = simplify(tol, false);
+
+        // Collect points of the simplified polygon
+        List<Pnt2d> simpl = new ArrayList<>();
+        for (int i : idxs) {
+            simpl.add(pts.get(i));
+        }
+
+        return new Polygon2d(simpl);
     }
 
 

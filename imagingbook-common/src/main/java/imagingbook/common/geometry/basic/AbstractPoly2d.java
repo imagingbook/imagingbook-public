@@ -88,79 +88,68 @@ public abstract class AbstractPoly2d implements Iterable<Pnt2d> {
 
     // ------------------------------------------------------------------------
 
-    /**
-     *
-     * @param rotatedPoly rotated polygon
-     * @param tol
-     * @return
-     */
-    static List<Pnt2d> simplify(List<Pnt2d> rotatedPoly, double tol, boolean closed) {
-        // TODO: convert to array access!
-        final double tol2 = tol * tol;
-        final int n = rotatedPoly.size();
-        if (n <= 3)
-            return new ArrayList<>(rotatedPoly);
 
-        // // Rotate the polygon such that the designated start point comes first:
-        // List<Pnt2d> rotatedPoly = new ArrayList<>(n + 1);
-        // for (int i = 0; i < n; i++)
-        //     rotatedPoly.add(pts.get((startPt + i) % n));
+    /**
+     * Simplifies the supplied polyline or closed polygon and returns a list of point indexes for
+     * the simplified sequence. Indexes (and not the points themselves) are returned for more
+     * flexible use. Indexes are used to extract the final point sequence from {@code poly}.
+     *
+     * @param tol the allowed point distance from the current segment
+     * @return indexes of points in the simplified sequence
+     */
+    List<Integer> simplify(double tol, boolean closed) {
+        record Segment(int start, int end) {}
+        double tol2 = sqr(tol);
+        int n = pnts.length;
+        if (n <= 3) {
+            throw new IllegalArgumentException("at least 4 points required");
+        }
 
         // Standard DP stack
         boolean[] keep = new boolean[n];
         keep[0] = true;             // always keep the first point
         keep[n - 1] = !closed;      // keep last point if open (polyline)
 
-        Deque<int[]> stack = new ArrayDeque<>();
-        stack.push(new int[]{0, n - 1});
+        Deque<Segment> segmentStack = new ArrayDeque<>();
+        // Deque<int[]> segmentStack = new ArrayDeque<>();
+        segmentStack.push(new Segment(0, n-1));
+        // segmentStack.push(new int[]{0, n-1});
 
-        while (!stack.isEmpty()) {
-            int[] seg = stack.pop();
-            int i0 = seg[0], i1 = seg[1];
-
-            Pnt2d A = rotatedPoly.get(i0);
-            Pnt2d B = rotatedPoly.get(i1);
-
+        while (!segmentStack.isEmpty()) {
+            Segment segment = segmentStack.pop();
+            // int[] segment = segmentStack.pop();
+            int i0 = segment.start, i1 = segment.end;
+            // int i0 = segment[0], i1 = segment[1];
+            Pnt2d A = pnts[i0]; //poly.get(i0);
+            Pnt2d B = pnts[i1]; //poly.get(i1);
             double maxDist2 = -1;
-            int indexMax = -1;
+            int maxIndex = -1;
 
             for (int i = i0 + 1; i < i1; i++) {
-                double d2 = perpDistSq(rotatedPoly.get(i), A, B);
+                double d2 = perpDistSq(pnts[i], A, B);  //perpDistSq(poly.get(i), A, B);
                 if (d2 > maxDist2) {
                     maxDist2 = d2;
-                    indexMax = i;
+                    maxIndex = i;
                 }
             }
 
             if (maxDist2 > tol2) {
-                keep[indexMax] = true;
-                stack.push(new int[]{i0, indexMax});
-                stack.push(new int[]{indexMax, i1});
+                keep[maxIndex] = true;
+                segmentStack.push(new Segment(i0, maxIndex));
+                // segmentStack.push(new int[]{i0, maxIndex});
+                segmentStack.push(new Segment(maxIndex, i1));
+                // segmentStack.push(new int[]{maxIndex, i1});
             }
         }
 
-        // Assemble the simplified rotated polygon
-        List<Pnt2d> simp = new ArrayList<>();
+        // Assemble the list of simplified point indexes
+        List<Integer> simplIdxs = new ArrayList<>();
         for (int i = 0; i < n; i++)
             if (keep[i]) {
-                simp.add(rotatedPoly.get(i));
+                simplIdxs.add(i);
             }
 
-        // At this moment the first point on the contour is likely a corner,
-        // but this is not guaranteed.
-
-        // Rotate back
-        List<Pnt2d> out = new ArrayList<>();
-
-        // find index of first corner in original point sequence
-        int offset = simp.indexOf(rotatedPoly.get(0));
-
-        int m = simp.size();
-        for (int i = 0; i < m; i++) {
-            out.add(simp.get((offset + i) % m));
-        }
-
-        return out;
+        return simplIdxs;
     }
 
     // Squared perpendicular distance from P to line AB
