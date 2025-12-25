@@ -176,4 +176,55 @@ public final class PntUtils {
         }
         return pntList;
     }
+
+	// --------------------------------------------------------------------------------------
+
+	/**
+	 * Creates and returns a {@code double[2][N]} array, i.e., x and y
+	 * coordinates placed in a pair of separate arrays.
+	 * @param pts a list of 2D points of length {@code N}
+	 * @return a {@code double[2][N]} coordinate array
+	 */
+	public static double[][] toXYArray(List<Pnt2d> pts) {
+		int m = pts.size();
+		double[][] XY = new double[2][m]; // XY[0] are x-values, XY[1] are y-values
+		int i = 0;
+		for (Pnt2d p : pts) {
+			XY[0][i] = p.getX();
+			XY[1][i] = p.getY();
+			i++;
+		}
+		return XY;
+	}
+
+	/**
+	 * Creates and returns a list of {@code N} {@link Pnt2d} points derived
+	 * from the supplied {@code double[2][N]} array.
+	 * @param XY a {@code double[2][N]} coordinate array
+	 * @return a list of {@code N} {@link Pnt2d} instances
+	 */
+	public static List<Pnt2d> fromXYArray(double[][] XY) {
+		int m = XY[0].length;
+		if (m != XY[1].length) {
+			throw new IllegalArgumentException("mismatch XY subarray length");
+		}
+		List<Pnt2d> pntList = new ArrayList<>(m);
+		for (int i = 0; i < m; i++) {
+			pntList.add(Pnt2d.from(XY[0][i], XY[1][i]));
+		}
+		return pntList;
+	}
+
+	// ------------------------------------------------------------------------------------------
+
+	public static List<Pnt2d> makeCircle(double radius, int steps) {
+		List<Pnt2d> circle = new ArrayList<>(steps);
+		for (int i = 0; i < steps; i++) {
+			double angle = i * 2 * Math.PI / steps;
+			double x = radius * Math.cos(angle);
+			double y = radius * Math.sin(angle);
+			circle.add(Pnt2d.from(x, y));
+		}
+		return circle;
+	}
 }
