@@ -20,7 +20,7 @@ public final class Timing {
      * time in nanoseconds.
      * Usage:
      * <pre>
-     * long nanos = time(() -> {
+     * long nanos = timeNanos(() -> {
      *     doSomething();
      * });
      * System.out.println("Took " + nanos + " ns");
