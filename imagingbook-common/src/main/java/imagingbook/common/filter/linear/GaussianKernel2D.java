@@ -8,13 +8,14 @@
  ******************************************************************************/
 package imagingbook.common.filter.linear;
 
+import static imagingbook.common.filter.linear.GaussianKernel1D.DEFAULT_SIZE_FACTOR;
 import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * This class represents a 2D filter kernel.
  * 
  * @author WB
- * @version 2022/09/10
+ * @version 2025/12/27
  */
 public class GaussianKernel2D extends Kernel2D {
 	
@@ -39,39 +40,56 @@ public class GaussianKernel2D extends Kernel2D {
 	 * Creates and returns a 2D Gaussian filter kernel large enough to avoid truncation effects. The associated array is
 	 * odd-sized in both dimensions. The returned kernel is normalized.
 	 *
-	 * @param sigmaX the width (standard deviation) of the Gaussian in x-direction
-	 * @param sigmaY the width (standard deviation) of the Gaussian in y-direction
+	 * @param sigmaX the width (standard deviation) of the Gaussian in x-direction (min. 0.3)
+	 * @param sigmaY the width (standard deviation) of the Gaussian in y-direction (min. 0.3)
 	 * @return the Gaussian filter kernel
 	 */
 	public static float[][] makeGaussKernel2D(double sigmaX, double sigmaY) {
-		return makeGaussKernel2D(sigmaX, sigmaY, true);
+		return makeGaussKernel2D(sigmaX, sigmaY, true, DEFAULT_SIZE_FACTOR);
 	}
 
 	/**
 	 * Creates and returns a 2D Gaussian filter kernel large enough to avoid truncation effects. The associated array is
 	 * odd-sized in both dimensions. The returned kernel is optionally normalized.
-	 *
-	 * @param sigmaX the width (standard deviation) of the Gaussian in x-direction
-	 * @param sigmaY the width (standard deviation) of the Gaussian in y-direction
+	 * @param sigmaX the width (standard deviation) of the Gaussian in x-direction (min. 0.3)
+	 * @param sigmaY the width (standard deviation) of the Gaussian in y-direction (min. 0.3)
 	 * @param normalize set true to normalize the kernel
 	 * @return the Gaussian filter kernel
 	 */
 	public static float[][] makeGaussKernel2D(double sigmaX, double sigmaY, boolean normalize) {
-		final int radX = (int) Math.ceil(GaussianKernel1D.SIZE_FACTOR * sigmaX);
-		final int radY = (int) Math.ceil(GaussianKernel1D.SIZE_FACTOR * sigmaY);
+		return makeGaussKernel2D(sigmaX, sigmaY, normalize, DEFAULT_SIZE_FACTOR);
+	}
+
+	/**
+	 * Creates and returns a 2D Gaussian filter kernel large enough to avoid truncation effects. The associated array is
+	 * odd-sized in both dimensions. The returned kernel is optionally normalized.
+	 * @param sigmaX the width (standard deviation) of the Gaussian in x-direction (min. 0.3)
+	 * @param sigmaY the width (standard deviation) of the Gaussian in y-direction (min. 0.3)
+	 * @param normalize set true to normalize the kernel
+	 * @param sizeFactor kernel size relative to {@code sigma}, min 1, see {@link GaussianKernel1D#DEFAULT_SIZE_FACTOR})
+	 * @return the Gaussian filter kernel
+	 */
+	public static float[][] makeGaussKernel2D(double sigmaX, double sigmaY, boolean normalize, double sizeFactor) {
+		if (sigmaX < 0.3 || sigmaY < 0.3) {
+			throw new IllegalArgumentException("sigmaX and sigmaY must be > 0.3");
+		}
+		if (sizeFactor < 1) {
+			throw new IllegalArgumentException("sizeFactor > 1 required for Gaussian kernel");
+		}
+		final int radX = (int) Math.ceil(sizeFactor * sigmaX);
+		final int radY = (int) Math.ceil(sizeFactor * sigmaY);
 		final int sizeX = radX + radX + 1;
 		final int sizeY = radY + radY + 1;
 
 		final float[][] kernel = new float[sizeX][sizeY]; //center cell = kernel[rad][rad]
-		final double sigmaX2 = (sigmaX > 0.1) ? sqr(sigmaX) : 0.1;
-		final double sigmaY2 = (sigmaY > 0.1) ? sqr(sigmaY) : 0.1;
+		final double sigmaX2 = sqr(sigmaX);
+		final double sigmaY2 = sqr(sigmaY);
 		
 		for (int i = 0; i < sizeY; i++) {
 			final double  b = sqr(radY - i) / (2 * sigmaY2);
 			for (int j = 0; j < sizeX; j++) {
 				final double a = sqr(radX - j) / (2 * sigmaX2);
-				double g = Math.exp(-(a + b));
-				kernel[i][j] = (float) g;
+				kernel[i][j] = (float) Math.exp(-(a + b));
 			}
 		}
 		return (normalize) ? normalize(kernel) : kernel;
