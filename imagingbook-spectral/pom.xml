@@ -62,4 +62,42 @@
 		
 	</dependencies>
 
+
+<!--	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.4.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>com.github.wendykierp:JTransforms</include>
+								</includes>
+							</artifactSet>
+							<relocations>
+
+							</relocations>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>ignored</mainClass>
+									<manifestEntries>
+										<Automatic-Module-Name>org.jtransforms</Automatic-Module-Name>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>-->
+
+
 </project>

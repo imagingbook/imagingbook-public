@@ -6,6 +6,7 @@
 module imagingbook.spectral {
 	requires imagingbook.common;
     requires JTransforms;
+    // requires org.jtransforms;       // shadow module (maven-shade-plugin)
     exports imagingbook.spectral.dft;
 	exports imagingbook.spectral.dct;
 }
