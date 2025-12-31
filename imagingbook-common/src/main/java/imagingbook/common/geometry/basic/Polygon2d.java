@@ -37,10 +37,19 @@ public class Polygon2d extends AbstractPointSequence {
         return new Polygon2d(pnts);
     }
 
+    /**
+     * Reverses the order of vertices but keeps the first point in place.
+     * That is, if the initial polygon points were (0, 1, 2, ..., n-1) the points of the reversed
+     * polygon are (0, n-1, ..., 2, 1).
+     * @return a new polygon with point order reversed
+     */
     public Polygon2d reverse() {
-        Polygon2d poly = this.duplicate();
-        poly.reverseD();
-        return poly;
+        Polygon2d copy = this.duplicate();
+        for (int i = 1; i < pnts.length; i++) {
+            copy.pnts[i] = pnts[pnts.length - i];
+        }
+        //dup.reverseD();
+        return copy;
     }
 
     public Polygon2d rotate(int distance) {
@@ -86,8 +95,14 @@ public class Polygon2d extends AbstractPointSequence {
         return Math.abs(getSignedArea());
     }
 
-    public boolean isClockwise() {
-        return getSignedArea() < 0;
+    /**
+     * Returns true if the vertices of this polygon are arranged in clockwise (CW) order
+     * when viewed in <strong>screen coordinates</strong> (Y-axis running downward).
+     * This means that it runs counter-clockwise (CCW) in the standard Cartesian coordinates.
+     * @return true if clockwise (in screen coordinates)
+     */
+    public boolean isClockwiseOnScreen() {
+        return getSignedArea() > 0;
     }
 
     /**

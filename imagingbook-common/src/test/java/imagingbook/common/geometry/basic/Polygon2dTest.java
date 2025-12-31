@@ -60,12 +60,12 @@ public class Polygon2dTest {
     }
 
     @Test
-    public void isClockwiseTest() {
-        assertTrue(new Polygon2d(unitSquareCW).isClockwise());
-        assertFalse(new Polygon2d(unitSquareCCW).isClockwise());
+    public void isClockwiseOnScreenTest() {
+        assertFalse(new Polygon2d(unitSquareCW).isClockwiseOnScreen());
+        assertTrue(new Polygon2d(unitSquareCCW).isClockwiseOnScreen());
 
-        assertTrue(new Polygon2d(triangleCW).isClockwise());
-        assertFalse(new Polygon2d(triangleCCW).isClockwise());
+        assertFalse(new Polygon2d(triangleCW).isClockwiseOnScreen());
+        assertTrue(new Polygon2d(triangleCCW).isClockwiseOnScreen());
     }
 
     @Test
@@ -124,15 +124,17 @@ public class Polygon2dTest {
         }
     }
 
-    @Test
+    @Test   // reverse is special, keeps point 0 in place!
     public void reverseTest() {
         Polygon2d poly = new Polygon2d(makePntList(Polygon2dTestData.contour0));
         Polygon2d poly2 = poly.reverse();
         assertNotSame(poly, poly2);
         assertEquals(poly.length(), poly2.length());
-        for (int i = 0; i < poly.length(); i++) {
-            assertSame(poly.getPnt(i), poly2.getPnt(poly.length() - 1 - i));
+        assertSame(poly.getPnt(0), poly2.getPnt(0));
+        for (int i = 1; i < poly.length(); i++) {
+            assertSame(poly.getPnt(i), poly2.getPnt(poly.length() - i));
         }
+        assertEquals(poly.getSignedArea(), -poly2.getSignedArea(), 1e-6);
     }
 
     @Test
@@ -163,4 +165,5 @@ public class Polygon2dTest {
         assertNotSame(poly1.pnts, poly2.pnts);
         assertEquals(poly1, poly2);
     }
+
 }
