@@ -43,7 +43,7 @@ public class ProjectiveFit2d implements LinearFit2d {
 	 */
 	public ProjectiveFit2d(Pnt2d[] P, Pnt2d[] Q) {
 		checkSize(P, Q);
-		final int n = Math.min(P.length, Q.length);
+		int n = Math.min(P.length, Q.length);
 		
 		double[] ba = new double[2 * n];
 		double[][] Ma = new double[2 * n][];
