@@ -10,7 +10,6 @@
 package imagingbook.common.math;
 
 import imagingbook.common.math.exception.DivideByZeroException;
-
 import org.apache.commons.math4.legacy.linear.Array2DRowRealMatrix;
 import org.apache.commons.math4.legacy.linear.CholeskyDecomposition;
 import org.apache.commons.math4.legacy.linear.DecompositionSolver;
@@ -30,7 +29,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
 
 /**
  * <p>
- * This class defines a set of static methods for calculations with vectors and matrices using native Java arrays
+ * This class defines static methods for calculations with vectors and matrices using native Java arrays
  * without any enclosing object structures. Matrices are simple two-dimensional arrays {@code A[r][c]}, where {@code r}
  * is the (vertical) <strong>row</strong> index and {@code c} is the (horizontal) <strong>column</strong> index (as
  * common in linear algebra). This means that matrices are really vectors of row vectors. Only arrays of type
@@ -46,7 +45,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
  * @version 2022/08/29
  */
 @SuppressWarnings("serial")
-public abstract class Matrix {
+public final class Matrix {
 
 	private Matrix() {
 	}
@@ -1908,7 +1907,6 @@ public abstract class Matrix {
 		return minidx;
 	}
 
-
 	/**
 	 * Returns the index of the largest element in the specified vector. If the largest value is not unique, the lowest
 	 * index is returned. An exception is thrown if the vector has zero length.
@@ -1950,7 +1948,6 @@ public abstract class Matrix {
 		}
 		return maxidx;
 	}
-
 
 	/**
 	 * Returns the smallest value in the specified vector. An exception is thrown if the vector has zero length.
@@ -2143,7 +2140,6 @@ public abstract class Matrix {
 		}
 		return c;
 	}
-
 
 	// Homogeneous coordinates ---------------------------------
 
@@ -2541,6 +2537,68 @@ public abstract class Matrix {
 		} catch (SingularMatrixException e) {
 		}
 		return x;
+	}
+
+	// Matrix-vector conversions ---------------------------------------------------------------
+
+	/**
+	 * Creates a new {@link RealVector} instance from the elements of the supplied
+	 * {@link RealMatrix} arranged in row-major order.
+	 * @param A a {@link RealMatrix}
+	 * @return a {@link RealVector}
+	 */
+	public static RealVector getRowPackedVector(RealMatrix A) {
+		return getRowPackedVector(A, -1);
+	}
+
+	/**
+	 * Creates a new {@link RealVector} of the specified length {@code n} from the elements of the supplied
+	 * {@link RealMatrix}, extracted in row-major order. If {@code n} is smaller than the number of
+	 * matrix element, the remaining elements ignored. If {@code n} is greater, the unused vector
+	 * elements are filled with zeros.
+	 * @param A a {@link RealMatrix}
+	 * @param n the length of the output vector (set 0 to extract all matrix elements)
+	 * @return a {@link RealVector}
+	 */
+	public static RealVector getRowPackedVector(RealMatrix A, int n) {
+		double[][] AA = A.getData();
+		double[] V = (n > 0) ?
+				new double[n] :
+				new double[A.getColumnDimension() * A.getRowDimension()];
+		int k = 0;
+		outer: for (int i = 0; i < AA.length; i++) {
+			for (int j = 0; j < AA[0].length; j++) {
+				V[k] = AA[i][j];
+				k++;
+				if (k >= V.length) break outer;
+			}
+		}
+		return MatrixUtils.createRealVector(V);
+	}
+
+	/**
+	 * Creates a new {@link RealMatrix} instance from the element of a {@link RealVector},
+	 * by filling the matrix in row-major order. If the supplied vector is shorter than
+	 * the number of array elements, the remaining matrix elements are filled
+	 * with zeros. If the vector is too long, all superfluous vector elements are ignored.
+	 * TODO: move to imagingbook.common
+	 * @param V a {@link RealVector}
+	 * @param rows the number of matrix rows
+	 * @param columns the number of matrix columns
+	 * @return a new {@link RealMatrix} instance
+	 */
+	public static RealMatrix fromRowPackedVector(RealVector V, int rows, int columns) {
+		double[][] AA = new double[rows][columns];
+		double[] data = V.toArray();
+		int k = 0;
+		outer: for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				AA[i][j] = data[k];
+				k++;
+				if (k >= data.length) break outer;
+			}
+		}
+		return MatrixUtils.createRealMatrix(AA);
 	}
 
 	// Output to strings and streams ------------------------------------------

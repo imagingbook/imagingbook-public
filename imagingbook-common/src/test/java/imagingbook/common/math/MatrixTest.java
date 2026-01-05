@@ -9,6 +9,8 @@
 package imagingbook.common.math;
 
 import static imagingbook.common.math.Arithmetic.sqr;
+import static imagingbook.common.math.Matrix.fromRowPackedVector;
+import static imagingbook.common.math.Matrix.getRowPackedVector;
 import static imagingbook.testutils.NumericTestUtils.TOLERANCE;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -20,6 +22,7 @@ import org.apache.commons.math4.legacy.linear.MatrixUtils;
 import org.apache.commons.math4.legacy.linear.NonSymmetricMatrixException;
 import org.apache.commons.math4.legacy.linear.RealMatrix;
 
+import org.apache.commons.math4.legacy.linear.RealVector;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -775,7 +778,67 @@ public class MatrixTest {
 		double[][] M2 = Matrix.fromLongBits(ML);
 		NumericTestUtils.assert2dArrayEquals(M, M2, 0.0);
 	}
-	
+
+	// --------------------------------------------------------------------------------------
+
+	@Test
+	public void getRowPackedVectorTest1() {
+		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
+				{{1, 2, 3},
+						{4, 5, 6},
+						{7, 8, 9}});
+		RealVector V = getRowPackedVector(M);
+		assertArrayEquals(new double[] {1,2,3,4,5,6,7,8,9}, V.toArray(), 1e-6);
+	}
+
+	@Test   // vector shorter than matrix
+	public void getRowPackedVectorTest2() {
+		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
+				{{1, 2, 3},
+						{4, 5, 6},
+						{7, 8, 9}});
+		RealVector V = getRowPackedVector(M, 7);
+		assertEquals(7, V.getDimension());
+		assertArrayEquals(new double[] {1,2,3,4,5,6,7}, V.toArray(), 1e-6);
+	}
+
+	@Test   // vector longer than matrix
+	public void getRowPackedVectorTest3() {
+		RealMatrix M = MatrixUtils.createRealMatrix(new double[][]
+				{{1, 2, 3},
+						{4, 5, 6},
+						{7, 8, 9}});
+		RealVector V = getRowPackedVector(M, 11);
+		assertEquals(11, V.getDimension());
+		assertArrayEquals(new double[] {1,2,3,4,5,6,7,8,9,0,0}, V.toArray(), 1e-6);
+	}
+
+	@Test
+	public void fromRowPackedVectorTest1() {
+		double[] vec = {1,2,3,4,5,6,7,8,9};
+		RealMatrix M = fromRowPackedVector(MatrixUtils.createRealVector(vec), 3, 3);
+		assertArrayEquals(new double[] {1,2,3}, M.getRow(0), 1e-6);
+		assertArrayEquals(new double[] {4,5,6}, M.getRow(1), 1e-6);
+		assertArrayEquals(new double[] {7,8,9}, M.getRow(2), 1e-6);
+	}
+
+	@Test       // vector too short
+	public void fromRowPackedVectorTest2() {
+		double[] vec = {1,2,3,4,5,6,7};
+		RealMatrix M = fromRowPackedVector(MatrixUtils.createRealVector(vec), 3, 3);
+		assertArrayEquals(new double[] {1,2,3}, M.getRow(0), 1e-6);
+		assertArrayEquals(new double[] {4,5,6}, M.getRow(1), 1e-6);
+		assertArrayEquals(new double[] {7,0,0}, M.getRow(2), 1e-6);
+	}
+
+	@Test       // vector too long
+	public void fromRowPackedVectorTest3() {
+		double[] vec = {1,2,3,4,5,6,7,8,9,10,11,12};
+		RealMatrix M = fromRowPackedVector(MatrixUtils.createRealVector(vec), 3, 3);
+		assertArrayEquals(new double[] {1,2,3}, M.getRow(0), 1e-6);
+		assertArrayEquals(new double[] {4,5,6}, M.getRow(1), 1e-6);
+		assertArrayEquals(new double[] {7,8,9}, M.getRow(2), 1e-6);
+	}
 	
 	// ---------------------------------------------------------
 	
