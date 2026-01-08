@@ -15,6 +15,8 @@ import imagingbook.common.geometry.mappings.Inversion;
 import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.math.Arithmetic;
 import imagingbook.common.math.Matrix;
+import org.apache.commons.math4.legacy.linear.Array2DRowRealMatrix;
+import org.apache.commons.math4.legacy.linear.RealMatrix;
 
 /**
  * <p>
@@ -28,7 +30,7 @@ import imagingbook.common.math.Matrix;
  */
 public class LinearMapping2D implements Mapping2D, Inversion {
 	
-	protected final double 
+	protected final double
 		a00, a01, a02,
 		a10, a11, a12,
 		a20, a21, a22;
@@ -45,27 +47,35 @@ public class LinearMapping2D implements Mapping2D, Inversion {
 	}
 
 	/**
-	 * Creates a linear mapping from a transformation matrix of arbitrary size (may be even empty). The actual
-	 * transformation matrix is formed by inserting the given matrix into a 3x3 identity matrix starting at position
-	 * (0,0).
-	 *
-	 * @param A a matrix of arbitrary size
+	 * Creates a linear mapping from a transformation matrix of arbitrary size (may be even empty).
+	 * The actual transformation matrix is formed by inserting the given matrix into a 3x3 identity
+	 * matrix starting at (0,0). All redundant elements are ignored.
+	 * @param A a 2D {@code double} array of arbitrary size
 	 */
 	public LinearMapping2D(double[][] A) {
-		double[][] M = extract3x3Matrix(A);
+		double[][] M = extractFromMatrix(A);	// TODO: check if this is needed!
 		a00 = M[0][0]; a01 = M[0][1]; a02 = M[0][2];
 		a10 = M[1][0]; a11 = M[1][1]; a12 = M[1][2];
 		a20 = M[2][0]; a21 = M[2][1]; a22 = M[2][2];
 	}
 
 	/**
-	 * Inserts the given matrix into a new 3x3 identity matrix, starting at element (0,0). All elements outside 3x3 are
-	 * ignored.
-	 *
+	 * Creates a linear mapping from a transformation matrix of arbitrary size (may be even empty).
+	 * The actual transformation matrix is formed by inserting the given matrix into a 3x3 identity
+	 * matrix starting at (0,0). All redundant elements are ignored.
+	 * @param A a {@link RealMatrix} of arbitrary size
+	 */
+	public LinearMapping2D(RealMatrix A) {
+		this(A.getData());
+	}
+
+	/**
+	 * Inserts the given matrix into a new 3x3 identity matrix, starting at element (0,0).
+	 * All elements outside 3x3 are ignored.
 	 * @param A the original matrix
 	 * @return a 3x3 matrix
 	 */
-	private static double[][] extract3x3Matrix(double[][] A) {
+	private static double[][] extractFromMatrix(double[][] A) {
 		double[][] M = Matrix.idMatrix(3);
 		final int m = Math.min(3, A.length);	// max. 3 rows
 		for (int i = 0; i < m; i++) {
@@ -90,7 +100,7 @@ public class LinearMapping2D implements Mapping2D, Inversion {
 	 * @param a21 matrix element A_21
 	 * @param a22 matrix element A_22
 	 */
-	public LinearMapping2D (
+	public LinearMapping2D(
 			double a00, double a01, double a02, 
 			double a10, double a11, double a12,
 			double a20, double a21, double a22) {
@@ -104,7 +114,7 @@ public class LinearMapping2D implements Mapping2D, Inversion {
 	 *
 	 * @param lm a given linear mapping
 	 */
-	public LinearMapping2D (LinearMapping2D lm) {
+	public LinearMapping2D(LinearMapping2D lm) {
 		this(lm.getTransformationMatrix());
 	}
 	
@@ -143,19 +153,18 @@ public class LinearMapping2D implements Mapping2D, Inversion {
 	 */
 	@Override
 	public LinearMapping2D getInverse() {
-		// System.out.println("LinearMapping getInverse()");
 		double[][] ai = Matrix.inverse(this.getTransformationMatrix());
 		return new LinearMapping2D(ai);
 	}
 
 	/**
-	 * Concatenates this mapping A with another linear mapping B and returns a new mapping C, such that C(x) = B(A(x)).
-	 *
-	 * @param B the second mapping
+	 * Concatenates this mapping A with another linear mapping B and returns a new mapping C,
+	 * such that C(x) = B(A(x)).
+	 * @param other the second mapping
 	 * @return the concatenated mapping
 	 */
-	public LinearMapping2D concat(LinearMapping2D B) {
-		double[][] C = Matrix.multiply(B.getTransformationMatrix(), this.getTransformationMatrix());
+	public LinearMapping2D concat(LinearMapping2D other) {
+		double[][] C = Matrix.multiply(other.getTransformationMatrix(), this.getTransformationMatrix());
 		return new LinearMapping2D(C);
 	}
 
@@ -164,32 +173,39 @@ public class LinearMapping2D implements Mapping2D, Inversion {
 	 * Thus, the mapping An is applied first and A1 last, with the associated transformation matrix a = a1 * a2 * ... *
 	 * an. If AA is empty, the identity mapping is returned. If AA contains only a single mapping, a copy of this
 	 * mapping is returned.
-	 *
-	 * @param AA a (possibly empty) sequence of linear transformations
+	 * @param others a (possibly empty) sequence of linear transformations
 	 * @return the concatenated linear transformation
 	 */
-	public static LinearMapping2D concatenate(LinearMapping2D... AA) {
-		if (AA.length == 0) {
+	public static LinearMapping2D concatenate(LinearMapping2D... others) {
+		if (others.length == 0) {
 			return new LinearMapping2D();	// identity
 		}
 		else {
-			double[][] a = AA[0].getTransformationMatrix();
-			for (int i = 1; i < AA.length; i++) {
-				a = Matrix.multiply(a, AA[i].getTransformationMatrix());
+			double[][] a = others[0].getTransformationMatrix();
+			for (int i = 1; i < others.length; i++) {
+				a = Matrix.multiply(a, others[i].getTransformationMatrix());
 			}
 			return new LinearMapping2D(a);
 		}
 	}
 	
 	/**
-	 * Retrieves the transformation matrix for this mapping.
-	 * @return the 3x3 transformation matrix
+	 * Returns the mapping's 3x3 transformation matrix as a {@code double[][]}.
+	 * @return the transformation matrix
 	 */
 	public double[][] getTransformationMatrix() {
 		return new double[][]
 				{{a00, a01, a02},
 				 {a10, a11, a12},
 				 {a20, a21, a22}};
+	}
+
+	/**
+	 * Returns the mapping's 3x3 transformation matrix as a {@link RealMatrix}.
+	 * @return the transformation matrix
+	 */
+	public RealMatrix toRealMatrix() {
+		return new Array2DRowRealMatrix(this.getTransformationMatrix(), false);
 	}
 
 	/**
