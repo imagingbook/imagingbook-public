@@ -14,24 +14,31 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 /**
- * This is basically a mirror class of {@link BasicStroke} adding line and fill colors. Instances of this class are
- * cloneable and mutable, setters for all fields are provided, i.e., strokes can be easily customized. Use
- * {@link #getBasicStroke()} to convert to an AWT {@link BasicStroke} instance.
+ * This is an extension of AWT class {@link BasicStroke} which adds line and fill colors.
+ * Instances of this class are immutable, but an internal {@link Builder} class is provided
+ * for easy copying and constructing strokes, e.g.
+ * <pre>
+ * // new stroke from scratch:
+ * ColoredStroke stroke1 = new ColoredStroke.Builder()
+ * 				.withLineWidth(0.7)
+ * 				.withStrokeColor(Color.green)
+ * 				.withFillColor(Color.gray)
+ * 				.withDashArray(8, 4)
+ * 				.build();
  *
+ * // same as stroke1 but different color:
+ * ColoredStroke stroke2 = new ColoredStroke.Builder(stroke1)
+ * 				.withStrokeColor(Color.red)
+ * 				.build();
+ * </pre>
  * @author WB
- * @version 2021/10/26
+ * @version 2026/01/08
  */
-public class ColoredStroke implements Cloneable {	// TODO: simplify API
+public class ColoredStroke extends BasicStroke {
 	
 	public static final Color DefaultStrokeColor = Color.black;
 	public static final Color DefaultFillColor = null;
-	
-	private float lineWidth;
-	private int endCap;
-	private int lineJoin; 
-	private float miterLimit;
-	private float[] dashArray;
-	private float dashPhase;
+
 	private Color strokeColor;
 	private Color fillColor;
 	
@@ -40,137 +47,168 @@ public class ColoredStroke implements Cloneable {	// TODO: simplify API
 	}
 	
 	public ColoredStroke(BasicStroke bs) {
-		this(
-			bs.getLineWidth(),
-			bs.getEndCap(),
-			bs.getLineJoin(),
-			bs.getMiterLimit(),
-			bs.getDashArray(),
-			bs.getDashPhase(),
-			DefaultStrokeColor,
-			DefaultFillColor);
+		this(bs, DefaultStrokeColor, DefaultFillColor);
 	}
-	
+
+	public ColoredStroke(ColoredStroke cs) {
+		this((BasicStroke)cs, cs.strokeColor, cs.fillColor);
+	}
+
+	public ColoredStroke(BasicStroke bs, Color strokeColor, Color fillColor) {
+		this(bs.getLineWidth(),
+				bs.getEndCap(),
+				bs.getLineJoin(),
+				bs.getMiterLimit(),
+				bs.getDashArray(),
+				bs.getDashPhase(),
+				strokeColor,
+				fillColor);
+	}
+
 	public ColoredStroke(double lineWidth, int endCap, int lineJoin, 
 			double miterLimit, float[] dashArray, double dashPhase,
 			Color strokeColor, Color fillColor) {
-		this.lineWidth = (float) lineWidth;
-		this.endCap = endCap;
-		this.lineJoin =  lineJoin;
-		this.miterLimit = (float) miterLimit;
-		this.dashArray = dashArray;
-		this.dashPhase = (float) dashPhase;
+		super((float) lineWidth, endCap, lineJoin, (float) miterLimit, dashArray, (float) dashPhase);
 		this.strokeColor = strokeColor;
 		this.fillColor = fillColor;
 	}
-	
-	// convenience constructors 
-	
-	public ColoredStroke(double lineWidth, Color strokeColor, double dashLength) {
-		this();
-		this.setLineWidth(lineWidth);
-		this.setStrokeColor(strokeColor);
-		if (dashLength > 0) {
-			this.setDash(dashLength);
-		}
-	}
-	
+
+	@Deprecated
 	public ColoredStroke(double lineWidth, Color strokeColor) {
-		this();
-		this.setLineWidth(lineWidth);
-		this.setStrokeColor(strokeColor);
-	}
-	
-	public ColoredStroke(double lineWidth, Color strokeColor, Color fillColor) {
-		this();
-		this.setLineWidth(lineWidth);
-		this.setStrokeColor(strokeColor);
-		this.setFillColor(fillColor);
-	}
-	
-	@Override
-	public ColoredStroke clone() {
-		return new ColoredStroke(lineWidth, endCap, lineJoin, 
-			miterLimit, dashArray, dashPhase, strokeColor, fillColor);
+		this(instanceFrom(lineWidth, strokeColor));
 	}
 
-	// -------------------------------------------------------
-	
-	public void setLineWidth(double lineWidth) {
-		this.lineWidth = (float) lineWidth;
+	private static ColoredStroke instanceFrom(double lineWidth, Color strokeColor) {
+		return new Builder()
+				.withLineWidth(lineWidth)
+				.withStrokeColor(strokeColor)
+				.build();
 	}
 
-	public void setEndCap(int endCap) {
-		this.endCap = endCap;
-	}
-
-	public void setLineJoin(int lineJoin) {
-		this.lineJoin = lineJoin;
-	}
-
-	public void setMiterLimit(double miterLimit) {
-		this.miterLimit = (float) miterLimit;
-	}
-
-	public void setDashArray(float[] dashArray) {
-		this.dashArray = dashArray;
-	}
-
-	public void setDashPhase(double dashPhase) {
-		this.dashPhase = (float) dashPhase;
-	}
-
-	public void setStrokeColor(Color strokeColor) {
-		this.strokeColor = strokeColor;
-	}
-
-	public void setFillColor(Color fillColor) {
-		this.fillColor = fillColor;
-	}
-	
 	// -------------------------------------------------------------
 
-	/**
-	 * Convenience method to set (unset) the dash pattern Usage examples:
-	 * <pre>
-	 * setDash(6);      // = setDashArray(new float[] {6})
-	 * setDash(6, 4);   // = setDashArray(new float[] {6, 4})
-	 * setDash();       // = setDashArray(null)
-	 * </pre>
-	 *
-	 * @param dashes a (possibly empty) sequence of dash lengths
-	 * @see BasicStroke
-	 * @see BasicStroke#getDashArray()
-	 */
-	public void setDash(double... dashes) {
-		if (dashes == null || dashes.length == 0) {
-			this.dashArray = null;
-		}
-		else {
-			this.dashArray = Matrix.toFloat(dashes);
-		}
-	}
-	
-	// -------------------------------------------------------------
-	
 	public Color getStrokeColor() {
 		return this.strokeColor;
 	}
-	
+
 	public Color getFillColor() {
 		return this.fillColor;
 	}
 
-	// -------------------------------------------------------------
+	// -------------------------------------------------------------------------
+
+	public ColoredStroke duplicate() {
+		return new ColoredStroke((BasicStroke)this, strokeColor, fillColor);
+	}
+
+	// ---------------------------------------------------------------------------------------
 
 	/**
-	 * Returns a AWT {@link BasicStroke} instance for the current state of this stroke (with no color information).
-	 *
-	 * @return a AWT {@link BasicStroke}
+	 * Builder class for {@link ColoredStroke}.
 	 */
-	public BasicStroke getBasicStroke() {	// TODO: invoke once or only when parameters change?
-		return new BasicStroke(lineWidth, endCap, lineJoin, 
-			miterLimit, dashArray, dashPhase);
+	public static class Builder {
+		private float lineWidth;
+		private int endCap;
+		private int lineJoin;
+		private float miterLimit;
+		private float[] dashArray;
+		private float dashPhase;
+		private Color strokeColor;
+		private Color fillColor;
+
+		/**
+		 * Constructs a {@link ColoredStroke} object starting from default values.
+		 */
+		public Builder() {
+			this(new BasicStroke());
+			this.strokeColor = DefaultStrokeColor;
+			this.fillColor = DefaultFillColor;
+		}
+
+		/**
+		 * Constructs a {@link ColoredStroke} object starting from the supplied
+		 * {@link BasicStroke} or {@link ColoredStroke} instance.
+		 * @param str a {@link BasicStroke} or {@link ColoredStroke} instance
+		 */
+		public Builder(BasicStroke str) {
+			this.lineWidth = str.getLineWidth();
+			this.endCap = str.getEndCap();
+			this.lineJoin = str.getLineJoin();
+			this.miterLimit = str.getMiterLimit();
+			this.dashArray = str.getDashArray();
+			this.dashPhase = str.getDashPhase();
+
+			if (str instanceof ColoredStroke cs) {
+				this.strokeColor = cs.strokeColor;
+				this.fillColor = cs.fillColor;
+			}
+			else {
+				this.strokeColor = DefaultStrokeColor;
+				this.fillColor = DefaultFillColor;
+			}
+		}
+
+		public ColoredStroke build() {
+			return new ColoredStroke(
+					this.lineWidth,
+					this.endCap,
+					this.lineJoin,
+					this.miterLimit,
+					this.dashArray,
+					this.dashPhase,
+					this.strokeColor,
+					this.fillColor);
+		}
+
+		public Builder withLineWidth(double lineWidth) {
+			this.lineWidth = (float) lineWidth;
+			return this;
+		}
+
+		public Builder withEndCap(int endCap) {
+			this.endCap = endCap;
+			return this;
+		}
+
+		public Builder withLineJoin(int lineJoin) {
+			this.lineJoin = lineJoin;
+			return this;
+		}
+
+		public Builder withStrokeColor(Color color) {
+			this.strokeColor = color;
+			return this;
+		}
+
+		public Builder withFillColor(Color color) {
+			this.fillColor = color;
+			return this;
+		}
+
+		/**
+		 * Specify the dash pattern. Usage examples:
+		 * <pre>
+		 * withDashArray(6);      // dashArray = new float[] {6}
+		 * withDashArray(6, 4);   // dashArray = new float[] {6, 4}
+		 * withDashArray();       // dashArray = null
+		 * </pre>
+		 * @param dashes a (possibly empty) sequence of dash lengths
+		 * @see BasicStroke#getDashArray()
+		 */
+		public Builder withDashArray(double... dashes) {
+			if (dashes == null || dashes.length == 0) {
+				this.dashArray = null;
+			}
+			else {
+				this.dashArray = Matrix.toFloat(dashes);
+			}
+			return this;
+		}
+
+		public Builder withDashPhase(double dashPhase) {
+			this.dashPhase = (float)dashPhase;
+			return this;
+		}
 	}
 
 }

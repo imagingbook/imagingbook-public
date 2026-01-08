@@ -111,8 +111,14 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, RansacDrawSettings, 
 			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 
 			{	// draw inliers (points)
-				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, InlierColor, 0);
-				stroke.setFillColor(InlierColor);
+				// ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, InlierColor, 0);
+				// stroke.setFillColor(InlierColor);
+				ColoredStroke stroke = new ColoredStroke.Builder()
+						.withLineWidth(LineStrokeWidth)
+						.withStrokeColor(InlierColor)
+						.withFillColor(InlierColor)
+						.build();
+
 				for (Pnt2d p : sol.getInliers()) {
 					ola.addShape(p.getShape(InlierRadius), stroke);
 				}
@@ -120,19 +126,32 @@ public class Ransac_Ellipse_Detect implements PlugInFilter, RansacDrawSettings, 
 	
 			{ 	// draw initial circle
 				GeometricEllipse ellipse = sol.getPrimitiveInit();
-				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, InitialFitColor, 0);
+				// ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, InitialFitColor, 0);
+				ColoredStroke stroke = new ColoredStroke.Builder()
+						.withLineWidth(LineStrokeWidth)
+						.withStrokeColor(InitialFitColor)
+						.build();
 				ola.addShape(ellipse.getShape(), stroke);
 			}
 	
 			{ 	// draw final circle
 				GeometricEllipse ellipse = sol.getPrimitiveFinal();
-				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, FinalFitColor, 0);
+				// ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, FinalFitColor, 0);
+				ColoredStroke stroke = new ColoredStroke.Builder()
+						.withLineWidth(LineStrokeWidth)
+						.withStrokeColor(FinalFitColor)
+						.build();
 				ola.addShape(ellipse.getShape(), stroke);
 			}
 	
 			{	// draw the 5 random points used
-				ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, RandomDrawDotColor, 0);
-				stroke.setFillColor(RandomDrawDotColor);
+				// ColoredStroke stroke = new ColoredStroke(LineStrokeWidth, RandomDrawDotColor, 0);
+				// stroke.setFillColor(RandomDrawDotColor);
+				ColoredStroke stroke = new ColoredStroke.Builder()
+						.withLineWidth(LineStrokeWidth)
+						.withStrokeColor(RandomDrawDotColor)
+						.withFillColor(RandomDrawDotColor)
+						.build();
 				for (Pnt2d p : sol.getDraw()) {
 					ola.addShape(p.getShape(RandoDrawDotRadius), stroke);
 				}

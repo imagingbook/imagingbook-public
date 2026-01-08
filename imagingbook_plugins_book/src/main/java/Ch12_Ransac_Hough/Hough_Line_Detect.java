@@ -27,6 +27,7 @@ import imagingbook.sampleimages.GeneralSampleImage;
 import java.awt.Color;
 import java.awt.geom.Path2D;
 
+import static Ch08_Binary_Regions.Region_Contours_Demo.ContourStrokeWidth;
 import static imagingbook.common.ij.IjUtils.noCurrentImage;
 
 /**
@@ -129,13 +130,23 @@ public class Hough_Line_Detect implements PlugInFilter, JavaDocHelp {
 			double lineLength = Math.hypot(ip.getWidth(), ip.getHeight());
 
 			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-			ola.setStroke(new ColoredStroke(LineWidth, LineColor));
+			// ola.setStroke(new ColoredStroke(LineWidth, LineColor));
+			ola.setStroke(new ColoredStroke.Builder()
+					.withLineWidth(LineWidth)
+					.withStrokeColor(LineColor)
+					.build());
+
 			for (HoughLine hl : lines) {
 				ola.addShape(hl.getShape(lineLength));
 			}
 			
 			if (ShowReferencePoint) {
-				ola.setStroke(new ColoredStroke(0.5, ReferencePointColor));
+				// ola.setStroke(new ColoredStroke(0.5, ReferencePointColor));
+				ola.setStroke(new ColoredStroke.Builder()
+						.withLineWidth(0.5)
+						.withStrokeColor(ReferencePointColor)
+						.build());
+
 				ola.addShape(markPoint(ht.getXref(), ht.getYref()));
 			}
 

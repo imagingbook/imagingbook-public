@@ -79,8 +79,18 @@ public class Ellipse_Closest_Points_Demo implements PlugIn, JavaDocHelp {
 		
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 		
-		ColoredStroke ellipseStroke = new ColoredStroke(StrokeWidth, EllipseColor);
-		ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, PointColor);
+		// ColoredStroke ellipseStroke = new ColoredStroke(StrokeWidth, EllipseColor);
+		ColoredStroke ellipseStroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(EllipseColor)
+				.build();
+
+		// ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, PointColor);
+		ColoredStroke pointStroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(PointColor)
+				.build();
+
 		ola.addShapes(realEllipse.getShapes(), ellipseStroke);
 		
 		EllipseProjector projector = null;

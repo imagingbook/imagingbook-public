@@ -97,7 +97,11 @@ public class Axis_Aligned_Bounding_Box implements PlugInFilter, JavaDocHelp {
 		// draw bounding boxes as vector overlay
 
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
+		// ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
+		ola.setStroke(new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(DrawingColor.getColor())
+				.build());
 		
 		for (BinaryRegion r : regions) {
 			if (r.getSize() > 5) {

@@ -106,7 +106,12 @@ public class Find_Corners implements PlugInFilter, JavaDocHelp {
 		
 		// create a vector overlay to mark the resulting corners
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ola.setStroke(new ColoredStroke(CornerMarkStrokeWidth, CornerMarkColor.getColor()));
+		ola.setStroke(new ColoredStroke.Builder()
+				.withLineWidth(CornerMarkStrokeWidth)
+				.withStrokeColor(CornerMarkColor.getColor())
+				.build());
+		// ola.setStroke(new ColoredStroke(CornerMarkStrokeWidth, CornerMarkColor.getColor()));
+
 		
 		int cnt = 0;
 		for (Corner c : corners) {

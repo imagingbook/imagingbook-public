@@ -155,9 +155,13 @@ public class Fourier_Descriptor_Animation implements PlugInFilter, JavaDocHelp {
 					csq.setRandomSeed(17);
 					for (int m = 1; m <= FourierCoefficientPairs; m++) {
 						Color ellcol = csq.next();
-						ColoredStroke ellipseStroke = new ColoredStroke(ReconstructionStrokeWidth/2, ellcol);
-						
-						// draw the ellipse for FD pair m:
+						// ColoredStroke ellipseStroke = new ColoredStroke(ReconstructionStrokeWidth/2, ellcol);
+						ColoredStroke ellipseStroke = new ColoredStroke.Builder()
+								.withLineWidth(ReconstructionStrokeWidth/2)
+								.withStrokeColor(ellcol)
+								.build();
+
+								// draw the ellipse for FD pair m:
 						Shape ellipse = fd.getEllipse(m);			
 						AffineTransform trans = AffineTransform.getTranslateInstance(cc.re, cc.im);
 						Shape shape = trans.createTransformedShape(ellipse);
@@ -165,8 +169,12 @@ public class Fourier_Descriptor_Animation implements PlugInFilter, JavaDocHelp {
 
 						// show marker for current path position for t
 						Complex cNext = cc.add(fd.getShapePointPair(m, t));
-						ellipseStroke.setFillColor(ellcol);
-						ola.addShape(Pnt2d.from(cNext.toArray()).getShape(ReconstructionMarkerRadius), ellipseStroke);
+						// ellipseStroke.setFillColor(ellcol);
+						ColoredStroke ellipseStrokeFill = new ColoredStroke.Builder(ellipseStroke)
+								.withLineWidth(ReconstructionStrokeWidth/2)
+								.withFillColor(ellcol)
+								.build();
+						ola.addShape(Pnt2d.from(cNext.toArray()).getShape(ReconstructionMarkerRadius), ellipseStrokeFill);
 						
 						// make current point the center of the next ellipse
 						cc = cc.add(cNext);

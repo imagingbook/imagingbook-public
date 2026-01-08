@@ -150,8 +150,13 @@ public class SIFT_Matching_Demo implements PlugInFilter, JavaDocHelp {
 		
 		// add vertical separator between left and right image:
 		ola.addShape(new Line2D.Double(w2 - 0.5, 0, w2 - 0.5, h), 
-				new ColoredStroke(0.2, Color.green, 5)); 
-		
+				// new ColoredStroke(0.2, Color.green, 5));
+				new ColoredStroke.Builder()
+						.withLineWidth(0.2)
+						.withStrokeColor(Color.green)
+						.withDashArray(5)
+						.build());
+
 		// add SIFT markers, connecting lines and number labels
 		int n = 1;
 		for (SiftMatch m : matches) {

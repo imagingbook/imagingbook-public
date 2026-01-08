@@ -97,9 +97,15 @@ public class Delaunay_Demo implements PlugInFilter, JavaDocHelp {
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
 
 		// draw the triangles:
-		ColoredStroke triangleStroke = new ColoredStroke(StrokeWidth, DelaunayColor);
-		triangleStroke.setEndCap(BasicStroke.CAP_ROUND);
-		triangleStroke.setLineJoin(BasicStroke.JOIN_ROUND);
+		// ColoredStroke triangleStroke = new ColoredStroke(StrokeWidth, DelaunayColor);
+		// triangleStroke.setEndCap(BasicStroke.CAP_ROUND);
+		// triangleStroke.setLineJoin(BasicStroke.JOIN_ROUND);
+		ColoredStroke triangleStroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(DelaunayColor)
+				.withEndCap(BasicStroke.CAP_ROUND)
+				.withLineJoin(BasicStroke.JOIN_ROUND)
+				.build();
 		
 		ola.setStroke(triangleStroke);
 		for (Triangle trgl : triangles) {
@@ -107,7 +113,12 @@ public class Delaunay_Demo implements PlugInFilter, JavaDocHelp {
 		}
 		
 		// draw the vertices of the triangulation:
-		ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, PointColor);
+		// ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, PointColor);
+		ColoredStroke pointStroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(PointColor)
+				.build();
+
 		ola.setStroke(pointStroke);
 		for (Pnt2d p : allPoints) {
 			// get original Pnt2d shape (not Corner shape)

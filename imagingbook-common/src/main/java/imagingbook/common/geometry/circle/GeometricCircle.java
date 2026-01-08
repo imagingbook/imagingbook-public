@@ -153,7 +153,7 @@ public class GeometricCircle implements ShapeProducer, Primitive2d {
 	
 	// ------------------------------------------------------------------
 
-	private Shape getCenterShape(double radius) {
+	public Shape getCenterShape(double radius) {
 		Path2D path = new Path2D.Double();
 		path.moveTo(xc - radius, yc);
 		path.lineTo(xc + radius, yc);

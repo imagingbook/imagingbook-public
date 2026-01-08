@@ -91,7 +91,11 @@ public class Plot_Chromaticity_Chart implements PlugInFilter, JavaDocHelp {
 
         ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
         Shape xyPlot = new CieXyPlot(ImageSize);
-        ola.addShape(xyPlot, new ColoredStroke(0.35, Color.blue));
+        // ola.addShape(xyPlot, new ColoredStroke(0.35, Color.blue));
+        ola.addShape(xyPlot, new ColoredStroke.Builder()
+                .withLineWidth(0.35)
+                .withStrokeColor(Color.blue)
+                .build());
 
         if (ShowSrgbGamut) {
             float[] xyR = getxy(new int[] {1, 0, 0});
@@ -102,13 +106,21 @@ public class Plot_Chromaticity_Chart implements PlugInFilter, JavaDocHelp {
             path.lineTo(xyG[0] * ImageSize, (1 - xyG[1]) * ImageSize);
             path.lineTo(xyB[0] * ImageSize, (1 - xyB[1]) * ImageSize);
             path.closePath();
-            ola.addShape(path, new ColoredStroke(0.35, Color.black));
+            // ola.addShape(path, new ColoredStroke(0.35, Color.black));
+            ola.addShape(path, new ColoredStroke.Builder()
+                    .withLineWidth(0.35)
+                    .withStrokeColor(Color.black)
+                    .build());
         }
 
         if (MarkWhitePoint) {
             float[] xyW = getxy(new int[] {1, 1, 1});
             Pnt2d wp = Pnt2d.from(xyW[0] * ImageSize, (1 - xyW[1]) * ImageSize);
-            ola.addShape(wp.getShape(), new ColoredStroke(0.35, Color.black));
+            // ola.addShape(wp.getShape(), new ColoredStroke(0.35, Color.black));
+            ola.addShape(wp.getShape(), new ColoredStroke.Builder()
+                    .withLineWidth(0.35)
+                    .withStrokeColor(Color.black)
+                    .build());
         }
 
         imPlot.setOverlay(ola.getOverlay());

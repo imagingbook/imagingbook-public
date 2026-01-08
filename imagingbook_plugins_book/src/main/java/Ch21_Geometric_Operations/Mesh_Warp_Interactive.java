@@ -216,11 +216,27 @@ public class Mesh_Warp_Interactive implements PlugInFilter, JavaDocHelp {
 	
 	private Overlay makeGridOverlay(Pnt2d[][] pnts) {
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ColoredStroke pathstroke = new ColoredStroke(StrokeWidth, StrokeColorChoice.getColor());
-		ColoredStroke polystroke = new ColoredStroke(StrokeWidth, HighlightColorChoice.getColor());
-		ColoredStroke highlightstroke = 
-				new ColoredStroke(StrokeWidth, HighlightColorChoice.getColor(), HighlightColorChoice.getColor());
-		
+		// ColoredStroke pathstroke = new ColoredStroke(StrokeWidth, StrokeColorChoice.getColor());
+		ColoredStroke pathstroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(StrokeColorChoice.getColor())
+				.build();
+
+		// ColoredStroke polystroke = new ColoredStroke(StrokeWidth, HighlightColorChoice.getColor());
+		ColoredStroke polystroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(HighlightColorChoice.getColor())
+				.build();
+
+		// ColoredStroke highlightstroke =
+		// 		new ColoredStroke(StrokeWidth, HighlightColorChoice.getColor(), HighlightColorChoice.getColor());
+		ColoredStroke highlightstroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(HighlightColorChoice.getColor())
+				.withFillColor(HighlightColorChoice.getColor())
+				.build();
+
+
 		// draw the complete grid
 		Path2D.Double gridPath = new Path2D.Double();
 		

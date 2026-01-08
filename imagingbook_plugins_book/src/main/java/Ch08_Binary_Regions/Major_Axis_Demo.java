@@ -107,7 +107,12 @@ public class Major_Axis_Demo implements PlugInFilter, JavaDocHelp {	// TODO: con
 		
 		// draw major axis vectors (scaled by eccentricity) as vector overlays
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
+		// ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
+		ola.setStroke(new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(DrawingColor.getColor())
+				.build());
+
 		for (BinaryRegion r : regions) {
 			if (r.getSize() > 10) {
 				Pnt2d xc = r.getCenter();

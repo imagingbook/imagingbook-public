@@ -135,7 +135,11 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter, JavaDocHe
 			Pnt2d ctr = r.getCenter();
 			
 			if (ShowCenterMark) {
-				ola.setStroke(new ColoredStroke(CenterLineWidth, CenterColor));
+				// ola.setStroke(new ColoredStroke(CenterLineWidth, CenterColor));
+				ola.setStroke(new ColoredStroke.Builder()
+						.withLineWidth(CenterLineWidth)
+						.withStrokeColor(CenterColor)
+						.build());
 				// ola.addShape(makeCenterMark(xc, yc));
 				ola.addShape(ctr.getShape(CenterMarkSize));
 			}
@@ -168,14 +172,22 @@ public class Region_Eccentricity_Ellipse_Demo implements PlugInFilter, JavaDocHe
 				double dy = Math.sin(theta) * len;;
 				double xc = ctr.getX();
 				double yc = ctr.getY();
-				ola.setStroke(new ColoredStroke(AxisLineWidth, axisCol));
+				// ola.setStroke(new ColoredStroke(AxisLineWidth, axisCol));
+				ola.setStroke(new ColoredStroke.Builder()
+						.withLineWidth(AxisLineWidth)
+						.withStrokeColor(axisCol)
+						.build());
 				ola.addShape(new Line2D.Double(xc, yc, xc + dx, yc + dy));
 			}
 			
 			if (ShowEllipse) {
 				GeometricEllipse ellipse = r.getEquivalentEllipse();
 				if (ellipse != null) {
-					ola.setStroke(new ColoredStroke(AxisLineWidth, EllipseColor));
+					// ola.setStroke(new ColoredStroke(AxisLineWidth, EllipseColor));
+					ola.setStroke(new ColoredStroke.Builder()
+							.withLineWidth(AxisLineWidth)
+							.withStrokeColor(EllipseColor)
+							.build());
 					ola.addShape(ellipse.getShape());
 				}
 			}	

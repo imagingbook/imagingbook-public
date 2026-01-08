@@ -117,8 +117,17 @@ public class Region_Contours_Demo implements PlugInFilter, JavaDocHelp {
 
 		// Draw outer and inner contours for each detected region:
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ColoredStroke outerStroke = new ColoredStroke(ContourStrokeWidth, OuterContourColor.getColor());
-		ColoredStroke innerStroke = new ColoredStroke(ContourStrokeWidth, InnerContourColor.getColor());
+		// ColoredStroke outerStroke = new ColoredStroke(ContourStrokeWidth, OuterContourColor.getColor());
+		ColoredStroke outerStroke = new ColoredStroke.Builder()
+				.withLineWidth(ContourStrokeWidth)
+				.withStrokeColor(OuterContourColor.getColor())
+				.build();
+
+		// ColoredStroke innerStroke = new ColoredStroke(ContourStrokeWidth, InnerContourColor.getColor());
+		ColoredStroke innerStroke = new ColoredStroke.Builder()
+				.withLineWidth(ContourStrokeWidth)
+				.withStrokeColor(InnerContourColor.getColor())
+				.build();
 		
 		for (BinaryRegion r : seg.getRegions()) {
 			Contour oc = r.getOuterContour();

@@ -148,11 +148,11 @@ public class ShapeOverlayAdapter {
 	protected ShapeRoi shapeToRoi(Shape s, ColoredStroke stroke) {
 		s = (halfPixelOffset) ? PixelOffsetTransform.createTransformedShape(s) : s;
 		ShapeRoi roi = new ShapeRoi(s);
-		BasicStroke bs = stroke.getBasicStroke();
-		roi.setStrokeWidth(bs.getLineWidth());
+		// BasicStroke bs = stroke;
+		roi.setStrokeWidth(stroke.getLineWidth());
 		roi.setStrokeColor(stroke.getStrokeColor());
 		roi.setFillColor(stroke.getFillColor());
-		roi.setStroke(bs);
+		roi.setStroke(stroke);
 		roi.setAntiAlias(antiAlias);
 		if (stackPosition > 0) {
 			roi.setPosition(stackPosition);
@@ -206,10 +206,11 @@ public class ShapeOverlayAdapter {
 	// ----------------------------------------------------------
 	
 	private static ColoredStroke makeDefaultStroke() {
-		ColoredStroke stroke = new ColoredStroke();
-		stroke.setLineWidth(DefaultStrokeWidth);
-		stroke.setStrokeColor(DefaultTextColor);
-		return stroke;
+		// ColoredStroke stroke = new ColoredStroke();
+		// stroke.setLineWidth(DefaultStrokeWidth);
+		// stroke.setStrokeColor(DefaultTextColor);
+		// return stroke;
+		return new ColoredStroke();
 	}
 
 }

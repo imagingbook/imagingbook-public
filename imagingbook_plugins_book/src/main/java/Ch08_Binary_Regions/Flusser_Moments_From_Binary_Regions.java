@@ -87,7 +87,11 @@ public class Flusser_Moments_From_Binary_Regions implements PlugInFilter, JavaDo
         regions.sort(Comparator.comparingDouble(r -> r.getCenter().getY()));    // sort regions by Y-coordinates
 
         ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-        ola.setStroke(new ColoredStroke(0.5, Color.green));
+        // ola.setStroke(new ColoredStroke(0.5, Color.green));
+        ola.setStroke(new ColoredStroke.Builder()
+                .withLineWidth(0.5)
+                .withStrokeColor(Color.green)
+                .build());
         ola.setFont(MarkerFont);
         ola.setTextColor(MarkerColor);
         int i = 0;

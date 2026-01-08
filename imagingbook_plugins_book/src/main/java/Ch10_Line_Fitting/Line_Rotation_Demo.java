@@ -84,11 +84,32 @@ public class Line_Rotation_Demo implements PlugIn, JavaDocHelp {
 		
 		List<ImagePlus> imageList = new ArrayList<>();
 		
-		ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, PointColor, 0);
-		pointStroke.setFillColor(PointColor);
-		ColoredStroke strokeOrth = new ColoredStroke(StrokeWidth, OrthogonalFitColor, 0);
-		ColoredStroke strokeReg = new ColoredStroke(StrokeWidth, RegressionFitColor, DashLength);
-		ColoredStroke strokeCtr = new ColoredStroke(StrokeWidth, CentroidColor, 0);
+		// ColoredStroke pointStroke = new ColoredStroke(StrokeWidth, PointColor, 0);
+		// pointStroke.setFillColor(PointColor);
+		ColoredStroke pointStroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(PointColor)
+				.withFillColor(PointColor)
+				.build();
+
+		// ColoredStroke strokeOrth = new ColoredStroke(StrokeWidth, OrthogonalFitColor, 0);
+		ColoredStroke strokeOrth = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(OrthogonalFitColor)
+				.build();
+
+		// ColoredStroke strokeReg = new ColoredStroke(StrokeWidth, RegressionFitColor, DashLength);
+		ColoredStroke strokeReg = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(RegressionFitColor)
+				.withDashArray(DashLength)
+				.build();
+
+		// ColoredStroke strokeCtr = new ColoredStroke(StrokeWidth, CentroidColor, 0);
+		ColoredStroke strokeCtr = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(CentroidColor)
+				.build();
 
 		// step-wise rotation about the image center (in degrees):
 		for (int theta = 0; theta < 120; theta += 20) {		

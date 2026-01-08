@@ -121,7 +121,12 @@ public class Line_Fitting implements PlugInFilter, JavaDocHelp { // TODO: activa
 			IJ.log("Orthogonal line fit: " + lineO.toString());
 		}
 		
-		ColoredStroke orthogonalStroke = new ColoredStroke(StrokeWidth, OrthogonalFitColor.getColor());
+		// ColoredStroke orthogonalStroke = new ColoredStroke(StrokeWidth, OrthogonalFitColor.getColor());
+		ColoredStroke orthogonalStroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(OrthogonalFitColor.getColor())
+				.build();
+
 		ola.addShape(new HoughLine(lineO).getShape(width, height), orthogonalStroke);
 
 		// ------------------------------------------------------------------------
@@ -138,7 +143,11 @@ public class Line_Fitting implements PlugInFilter, JavaDocHelp { // TODO: activa
 			IJ.log("Regression line fit: " + lineR.toString());
 		}
 
-		ColoredStroke regressionStroke = new ColoredStroke(StrokeWidth, RegressionFitColor.getColor());
+		// ColoredStroke regressionStroke = new ColoredStroke(StrokeWidth, RegressionFitColor.getColor());
+		ColoredStroke regressionStroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(RegressionFitColor.getColor())
+				.build();
 		ola.addShape(new HoughLine(lineR).getShape(width, height), regressionStroke);
 	}
 

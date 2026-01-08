@@ -97,7 +97,11 @@ public class Convex_Hull_Demo implements PlugInFilter, JavaDocHelp {
 		
 		// draw convex hulls as vector overlay
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
+		// ola.setStroke(new ColoredStroke(StrokeWidth, DrawingColor.getColor()));
+		ola.setStroke(new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(DrawingColor.getColor())
+				.build());
 		
 		for (BinaryRegion r: regions) {
 			//ConvexHull2d hull = new ConvexHull2d(r);					// takes all region points

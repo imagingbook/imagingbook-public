@@ -107,7 +107,11 @@ public class Line_Make_Random implements PlugIn, JavaDocHelp {
 		
 		if (params.ShowRealCurve) {
 			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-			ColoredStroke lineStroke = new ColoredStroke(params.StrokeWidth, params.StrokeColor.getColor());
+			// ColoredStroke lineStroke = new ColoredStroke(params.StrokeWidth, params.StrokeColor.getColor());
+			ColoredStroke lineStroke = new ColoredStroke.Builder()
+					.withLineWidth(params.StrokeWidth)
+					.withStrokeColor(params.StrokeColor.getColor())
+					.build();
 			ola.addShape(realLine.getShape(params.W, params.H), lineStroke);
 			im.setOverlay(ola.getOverlay());
 		}

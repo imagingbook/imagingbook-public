@@ -122,7 +122,12 @@ public class Circle_Fitting implements PlugInFilter, JavaDocHelp {
 		IJ.log("  circle: " + initCircle.toString());
 		IJ.log(String.format(Locale.US, "  error = %.3f", initCircle.getMeanSquareError(points)));
 		
-		ColoredStroke initialStroke = new ColoredStroke(StrokeWidth, AlgebraicFitColor.getColor());
+		// ColoredStroke initialStroke = new ColoredStroke(StrokeWidth, AlgebraicFitColor.getColor());
+		ColoredStroke initialStroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(AlgebraicFitColor.getColor())
+				.build();
+
 		ola.addShapes(initCircle.getShapes(3), initialStroke);
 
 		// ------------------------------------------------------------------------
@@ -140,7 +145,12 @@ public class Circle_Fitting implements PlugInFilter, JavaDocHelp {
 		IJ.log(String.format(Locale.US, "  error = %.3f", finalCircle.getMeanSquareError(points)));
 		IJ.log("  iterations = " + fitG.getIterations());
 
-		ColoredStroke finalStroke = new ColoredStroke(StrokeWidth, GeometricFitColor.getColor());
+		// ColoredStroke finalStroke = new ColoredStroke(StrokeWidth, GeometricFitColor.getColor());
+		ColoredStroke finalStroke = new ColoredStroke.Builder()
+				.withLineWidth(StrokeWidth)
+				.withStrokeColor(GeometricFitColor.getColor())
+				.build();
+
 		ola.addShapes(finalCircle.getShapes(3), finalStroke);
 	}
 

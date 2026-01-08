@@ -126,7 +126,11 @@ public class Map_LogPolar_Demo implements PlugInFilter, MouseListener, JavaDocHe
 	
 	private Overlay getSupportRegionOverlay(double xc, double yc) {
 		ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-		ColoredStroke stroke = new ColoredStroke(OverlayStrokeWidth, OverlayColorChoice.getColor());
+		// ColoredStroke stroke = new ColoredStroke(OverlayStrokeWidth, OverlayColorChoice.getColor());
+		ColoredStroke stroke = new ColoredStroke.Builder()
+				.withLineWidth(OverlayStrokeWidth)
+				.withStrokeColor(OverlayColorChoice.getColor())
+				.build();
 		ola.setStroke(stroke);
 		
 		for (int i = 0; i < P; i++) {

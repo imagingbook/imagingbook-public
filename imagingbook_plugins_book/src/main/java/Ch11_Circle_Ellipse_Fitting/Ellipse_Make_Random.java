@@ -117,7 +117,12 @@ public class Ellipse_Make_Random implements PlugIn, JavaDocHelp {
 		
 		if (params.ShowRealCurve) {
 			ShapeOverlayAdapter ola = new ShapeOverlayAdapter();
-			ColoredStroke circleStroke = new ColoredStroke(params.StrokeWidth, params.StrokeColor.getColor());
+			// ColoredStroke circleStroke = new ColoredStroke(params.StrokeWidth, params.StrokeColor.getColor());
+			ColoredStroke circleStroke = new ColoredStroke.Builder()
+					.withLineWidth(params.StrokeWidth)
+					.withStrokeColor(params.StrokeColor.getColor())
+					.build();
+
 			ola.addShapes(realEllipse.getShapes(3), circleStroke);
 			im.setOverlay(ola.getOverlay());
 		}
