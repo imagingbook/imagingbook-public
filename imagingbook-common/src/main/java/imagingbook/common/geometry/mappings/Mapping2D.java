@@ -16,11 +16,9 @@ import java.util.stream.Collectors;
 
 /**
  * Common interface to be implemented by all (linear and nonlinear) 2D mappings.
- * 
  * @author WB
- *
  */
-public interface Mapping2D extends Cloneable {
+public interface Mapping2D {
 	
 	/**
 	 * Applies this mapping to a single 2D point.
