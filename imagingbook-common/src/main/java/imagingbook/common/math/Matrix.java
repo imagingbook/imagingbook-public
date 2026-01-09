@@ -19,6 +19,7 @@ import org.apache.commons.math4.legacy.linear.NonPositiveDefiniteMatrixException
 import org.apache.commons.math4.legacy.linear.RealMatrix;
 import org.apache.commons.math4.legacy.linear.RealVector;
 import org.apache.commons.math4.legacy.linear.SingularMatrixException;
+import org.apache.commons.math4.legacy.linear.SingularValueDecomposition;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -2599,6 +2600,34 @@ public final class Matrix {
 			}
 		}
 		return MatrixUtils.createRealMatrix(AA);
+	}
+
+	/**
+	 * Returns the 'condition number' of the given matrix.
+	 * @param matrix the matrix to be evaluated
+	 * @return the condition number
+	 */
+	public static double getConditionNumber(double[][] matrix) {
+		return getConditionNumber(new Array2DRowRealMatrix(matrix));
+	}
+
+	/**
+	 * Returns the 'condition number' of the given matrix.
+	 * @param matrix the matrix to be evaluated
+	 * @return the condition number
+	 */
+	public static double getConditionNumber(RealMatrix matrix) {
+		SingularValueDecomposition svd = new SingularValueDecomposition(matrix);
+		double[] s = svd.getSingularValues();
+		double smax = s[0];
+		// Use the last singular value (smallest)
+		double smin = s[s.length - 1];
+		// Define a tiny threshold to avoid division by zero
+		// 1E-12 is usually safe for double precision calibration data
+		if (smin < 1E-12) {
+			return Double.POSITIVE_INFINITY;
+		}
+		return smax / smin;
 	}
 
 	// Output to strings and streams ------------------------------------------
