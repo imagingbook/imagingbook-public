@@ -9,8 +9,7 @@
 package imagingbook.common.math;
 
 import static imagingbook.common.math.Arithmetic.sqr;
-import static imagingbook.common.math.Matrix.fromRowPackedVector;
-import static imagingbook.common.math.Matrix.getRowPackedVector;
+import static imagingbook.common.math.Matrix.*;
 import static imagingbook.testutils.NumericTestUtils.TOLERANCE;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -872,4 +871,22 @@ public class MatrixTest {
 		double[] b = {1, -2, 1, 5};
 		Matrix.solve(Ad, b);
 	}
+
+	@Test
+    public void testGetRowPackedVector() {
+    }
+
+	@Test
+    public void testFromRowPackedVector() {
+    }
+
+	@Test
+    public void testGetConditionNumber() {
+		double[][] M = {
+				{0.5, 17, -9},
+				{3, -1, 0},
+				{1, 1 , 8}};
+		assertEquals(6.3844075, getConditionNumber(M), 1e-6);
+    }
+
 }
