@@ -130,7 +130,6 @@ public final class PrintPrecision implements Closeable {
 	 */
 	@Deprecated
 	public static PrintPrecision set(int nDigits) {
-		System.out.println("PrintPrecision set: stack size = " + precisionStack.size());
 		return new PrintPrecision(nDigits);
 	}
 
