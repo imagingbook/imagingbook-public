@@ -338,9 +338,9 @@ public class AlgebraicLine implements ShapeProducer, Primitive2d {
 	
 	@Override
 	public String toString() {
-		String fStr = PrintPrecision.getFormatStringFloat();
-//		return String.format(Locale.US, "%s <a=%.3f, b=%.3f, c=%.3f>",
-		return String.format(Locale.US, "%s<" + fStr + ", " + fStr + ", " + fStr + ">",
+		String fStr = PrintPrecision.current().getFormatString();
+		Locale locale = PrintPrecision.current().getLocale();
+		return String.format(locale, "%s<" + fStr + ", " + fStr + ", " + fStr + ">",
 				this.getClass().getSimpleName(), A, B, C);
 	}
 

@@ -48,13 +48,7 @@ import static imagingbook.common.math.Arithmetic.sqr;
 @SuppressWarnings("serial")
 public final class Matrix {
 
-	private Matrix() {
-	}
-
-	/**
-	 * Locale used for printing decimal numbers by {@code toString()} methods.
-	 */
-	public static Locale PrintLocale = Locale.US;
+	private Matrix() {}
 
 	/**
 	 * Character used to separate successive vector and matrix elements by {@code toString()} methods.
@@ -2612,7 +2606,8 @@ public final class Matrix {
 	}
 
 	/**
-	 * Returns the 'condition number' of the given matrix.
+	 * Returns the 'condition number' of the given matrix, that is, the ratio between its
+	 * largest and smallest singular value.
 	 * @param matrix the matrix to be evaluated
 	 * @return the condition number
 	 */
@@ -2620,10 +2615,7 @@ public final class Matrix {
 		SingularValueDecomposition svd = new SingularValueDecomposition(matrix);
 		double[] s = svd.getSingularValues();
 		double smax = s[0];
-		// Use the last singular value (smallest)
 		double smin = s[s.length - 1];
-		// Define a tiny threshold to avoid division by zero
-		// 1E-12 is usually safe for double precision calibration data
 		if (smin < 1E-12) {
 			return Double.POSITIVE_INFINITY;
 		}
@@ -2632,9 +2624,16 @@ public final class Matrix {
 
 	// Output to strings and streams ------------------------------------------
 
+	// TODO: perhaps some wrapper like this, rework PrintPrecisision to implement AutoCloseable
+	// using a simple stack mechanism?
+	// public static String toString(double[] a, int digits) {
+	// 	try (PrintPrecision prec = PrintPrecision.set(digits)) {
+	// 		return toString(a);
+	// 	}
+	// }
+
 	/**
 	 * Returns a string representation of the specified vector.
-	 *
 	 * @param a a vector
 	 * @return the string representation
 	 */
@@ -2650,7 +2649,6 @@ public final class Matrix {
 
 	/**
 	 * Returns a string representation of the specified vector.
-	 *
 	 * @param a a vector
 	 * @return the string representation
 	 */
@@ -2666,7 +2664,6 @@ public final class Matrix {
 
 	/**
 	 * Returns a string representation of the specified vector.
-	 *
 	 * @param a a vector
 	 * @return the string representation
 	 */
@@ -2680,7 +2677,6 @@ public final class Matrix {
 
 	/**
 	 * Returns a string representation of the specified matrix.
-	 *
 	 * @param A a matrix
 	 * @return the string representation
 	 */
@@ -2696,7 +2692,6 @@ public final class Matrix {
 
 	/**
 	 * Returns a string representation of the specified matrix.
-	 *
 	 * @param A a matrix
 	 * @return the string representation
 	 */
@@ -2712,7 +2707,6 @@ public final class Matrix {
 
 	/**
 	 * Returns a string representation of the specified matrix with {@code long} elements.
-	 *
 	 * @param A a matrix
 	 * @return the string representation
 	 */
@@ -2728,7 +2722,6 @@ public final class Matrix {
 
 	/**
 	 * Returns a string representation of the specified matrix.
-	 *
 	 * @param A a matrix
 	 * @return the string representation
 	 */
@@ -2750,12 +2743,13 @@ public final class Matrix {
 	 * @see #toString(double[])
 	 */
 	public static void printToStream(double[] a, PrintStream strm) {
-		String fStr = PrintPrecision.getFormatStringFloat();
+		String fStr = PrintPrecision.current().getFormatString();
+		Locale locale = PrintPrecision.current().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < a.length; i++) {
 			if (i > 0)
 				strm.format("%c ", SeparationChar);
-			strm.format(PrintLocale, fStr, a[i]);
+			strm.format(locale, fStr, a[i]);
 		}
 		strm.format("%c", RightDelimitChar);
 		strm.flush();
@@ -2763,13 +2757,13 @@ public final class Matrix {
 
 	/**
 	 * Outputs a string representation of the given matrix to the specified output stream.
-	 *
 	 * @param A the matrix
 	 * @param strm the output stream
 	 * @see #toString(double[][])
 	 */
 	public static void printToStream(double[][] A, PrintStream strm) {
-		String fStr = PrintPrecision.getFormatStringFloat();
+		String fStr = PrintPrecision.current().getFormatString();
+		Locale locale = PrintPrecision.current().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < A.length; i++) {
 			if (i == 0)
@@ -2778,9 +2772,9 @@ public final class Matrix {
 				strm.format("%c \n%c", SeparationChar, LeftDelimitChar);
 			for (int j = 0; j < A[i].length; j++) {
 				if (j == 0)
-					strm.format(PrintLocale, fStr, A[i][j]);
+					strm.format(locale, fStr, A[i][j]);
 				else
-					strm.format(PrintLocale, "%c " + fStr, SeparationChar, A[i][j]);
+					strm.format(locale, "%c " + fStr, SeparationChar, A[i][j]);
 			}
 			strm.format("%c", RightDelimitChar);
 		}
@@ -2790,18 +2784,18 @@ public final class Matrix {
 
 	/**
 	 * Outputs a string representation of the given vector to the specified output stream.
-	 *
 	 * @param a the vector
 	 * @param strm the output stream
 	 * @see #toString(float[])
 	 */
 	public static void printToStream(float[] a, PrintStream strm) {
-		String fStr = PrintPrecision.getFormatStringFloat();
+		String fStr = PrintPrecision.current().getFormatString();
+		Locale locale = PrintPrecision.current().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < a.length; i++) {
 			if (i > 0)
 				strm.format("%c ", SeparationChar);
-			strm.format(PrintLocale, fStr, a[i]);
+			strm.format(locale, fStr, a[i]);
 		}
 		strm.format("%c", RightDelimitChar);
 		strm.flush();
@@ -2809,13 +2803,13 @@ public final class Matrix {
 
 	/**
 	 * Outputs a string representation of the given matrix to the specified output stream.
-	 *
 	 * @param A the matrix
 	 * @param strm the output stream
 	 * @see #toString(float[][])
 	 */
 	public static void printToStream(float[][] A, PrintStream strm) {
-		String fStr = PrintPrecision.getFormatStringFloat();
+		String fStr = PrintPrecision.current().getFormatString();
+		Locale locale = PrintPrecision.current().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < A.length; i++) {
 			if (i == 0)
@@ -2824,9 +2818,9 @@ public final class Matrix {
 				strm.format("%c \n%c", SeparationChar, LeftDelimitChar);
 			for (int j = 0; j < A[i].length; j++) {
 				if (j == 0)
-					strm.format(PrintLocale, fStr, A[i][j]);
+					strm.format(locale, fStr, A[i][j]);
 				else
-					strm.format(PrintLocale, "%c " + fStr, SeparationChar, A[i][j]);
+					strm.format(locale, "%c " + fStr, SeparationChar, A[i][j]);
 			}
 			strm.format("%c", RightDelimitChar);
 		}
@@ -2837,6 +2831,7 @@ public final class Matrix {
 	// --------------------------------------------------------------------------
 
 	public static void printToStream(long[][] A, PrintStream strm) {
+		Locale locale = PrintPrecision.current().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < A.length; i++) {
 			if (i == 0)
@@ -2845,9 +2840,9 @@ public final class Matrix {
 				strm.format("%c \n%c", SeparationChar, LeftDelimitChar);
 			for (int j = 0; j < A[i].length; j++) {
 				if (j == 0)
-					strm.format(PrintLocale, "%dL", A[i][j]);
+					strm.format(locale, "%dL", A[i][j]);
 				else
-					strm.format(PrintLocale, "%c %dL", SeparationChar, A[i][j]);
+					strm.format(locale, "%c %dL", SeparationChar, A[i][j]);
 			}
 			strm.format("%c", RightDelimitChar);
 		}

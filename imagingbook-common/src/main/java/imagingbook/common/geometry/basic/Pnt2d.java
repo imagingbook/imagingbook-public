@@ -10,7 +10,6 @@ package imagingbook.common.geometry.basic;
 
 import imagingbook.common.geometry.shape.ShapeProducer;
 import imagingbook.common.math.PrintPrecision;
-
 import org.apache.commons.math4.legacy.linear.MatrixUtils;
 import org.apache.commons.math4.legacy.linear.RealVector;
 
@@ -258,7 +257,6 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		return this.getY() * other.getX() - this.getX() * other.getY();
 	}
 
-
 	// ----------------------------------------------------------
     /**
      * Tests if this point matches the given point, i.e., if both coordinate differences are zero (&lt; than the
@@ -332,7 +330,6 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 	public default double distance(Pnt2d other) {
 		return Math.sqrt(this.distanceSq(other));
 	}
-
 
 	/**
 	 * Implementation required by {@link Primitive2d} interface.
@@ -456,17 +453,6 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 			return new PntDouble(p.getX(), p.getY());
 		}
 
-		// /**
-		//  * Returns a new {@link PntDouble} instance with the same coordinates as the given Apache Commons Math
-		//  * {@link Vector2D}.
-		//  *
-		//  * @param vec the original coordinate vector
-		//  * @return the new point
-		//  */
-		// public static PntDouble from(Vector2D vec) {
-		// 	return new PntDouble(vec.getX(), vec.getY());
-		// }
-
 		// getter methods
 
 		@Override
@@ -526,13 +512,14 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		// misc -----------------------------------
 
 		/**
-		 * {@inheritDoc} The number of output digits is specified by the current settings of {@link PrintPrecision}. Use
-		 * {@link PrintPrecision#set(int)} or {@link PrintPrecision#reset()} to change.
+		 * {@inheritDoc} The number of output digits is specified by the current settings of
+		 * {@link PrintPrecision}.
 		 */
 		@Override	
 		public String toString() {
-			String fStr = PrintPrecision.getFormatStringFloat();
-			return String.format(Locale.US, "%s[" + fStr + ", " + fStr + "]",
+			String fStr = PrintPrecision.current().getFormatString();
+			Locale locale = PrintPrecision.current().getLocale();
+			return String.format(locale, "%s[" + fStr + ", " + fStr + "]",
 					getClass().getSimpleName(), x, y);
 		}
 
