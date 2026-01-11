@@ -86,7 +86,7 @@ public class LucasKanade_Demo implements PlugInFilter, JavaDocHelp {
 	private static BasicAwtColor PerturbedQuadColor = BasicAwtColor.Blue;
 	private static BasicAwtColor FinalQuadColor = BasicAwtColor.Red;
 	
-	static {PrintPrecision.set(6);}
+	static {PrintPrecision.setTo(6);}
 	
 	private ImagePlus im;
 

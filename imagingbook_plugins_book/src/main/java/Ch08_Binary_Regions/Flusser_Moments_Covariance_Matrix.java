@@ -108,7 +108,7 @@ public class Flusser_Moments_Covariance_Matrix implements PlugIn, JavaDocHelp {
 		double[][] samplesA = samples.toArray(new double[0][]);
 		double[][] cov = Statistics.covarianceMatrix(samplesA);
 
-		PrintPrecision.set(9);
+		PrintPrecision.setTo(9);
 		IJ.log("covariance matrix (double):\n" + Matrix.toString(cov));
 
 		if ( LIST_LONG_ENCODED_MATRIX) {

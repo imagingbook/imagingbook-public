@@ -35,7 +35,7 @@ public class MahalanobisDistanceTest {
 	private static double[][] Samples = {X1, X2, X3, X4};
 	
 	static {
-		PrintPrecision.set(15);
+		PrintPrecision.setTo(15);
 	}
 
 	@Test

@@ -2743,8 +2743,8 @@ public final class Matrix {
 	 * @see #toString(double[])
 	 */
 	public static void printToStream(double[] a, PrintStream strm) {
-		String fStr = PrintPrecision.current().getFormatString();
-		Locale locale = PrintPrecision.current().getLocale();
+		String fStr = PrintPrecision.getCurrent().getFormatString();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < a.length; i++) {
 			if (i > 0)
@@ -2762,8 +2762,8 @@ public final class Matrix {
 	 * @see #toString(double[][])
 	 */
 	public static void printToStream(double[][] A, PrintStream strm) {
-		String fStr = PrintPrecision.current().getFormatString();
-		Locale locale = PrintPrecision.current().getLocale();
+		String fStr = PrintPrecision.getCurrent().getFormatString();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < A.length; i++) {
 			if (i == 0)
@@ -2789,8 +2789,8 @@ public final class Matrix {
 	 * @see #toString(float[])
 	 */
 	public static void printToStream(float[] a, PrintStream strm) {
-		String fStr = PrintPrecision.current().getFormatString();
-		Locale locale = PrintPrecision.current().getLocale();
+		String fStr = PrintPrecision.getCurrent().getFormatString();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < a.length; i++) {
 			if (i > 0)
@@ -2808,8 +2808,8 @@ public final class Matrix {
 	 * @see #toString(float[][])
 	 */
 	public static void printToStream(float[][] A, PrintStream strm) {
-		String fStr = PrintPrecision.current().getFormatString();
-		Locale locale = PrintPrecision.current().getLocale();
+		String fStr = PrintPrecision.getCurrent().getFormatString();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < A.length; i++) {
 			if (i == 0)
@@ -2831,7 +2831,7 @@ public final class Matrix {
 	// --------------------------------------------------------------------------
 
 	public static void printToStream(long[][] A, PrintStream strm) {
-		Locale locale = PrintPrecision.current().getLocale();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		strm.format("%c", LeftDelimitChar);
 		for (int i = 0; i < A.length; i++) {
 			if (i == 0)

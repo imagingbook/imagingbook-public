@@ -18,7 +18,7 @@ public class ObjectUtilsTest {
 
 	@Test
 	public void testStringEncoding() {
-		PrintPrecision.set(16);
+		PrintPrecision.setTo(16);
 		double[][] M1 =
 			{{3.240479, -1.537150, -0.498535},
 			 {-0.969256, 1.875992, 0.041556},

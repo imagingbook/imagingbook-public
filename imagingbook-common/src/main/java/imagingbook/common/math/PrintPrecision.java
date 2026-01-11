@@ -20,11 +20,18 @@ import java.util.Locale;
  * maintained, whose top element defines the current precision. Recommended use is within a
  * local try-with-resources block, for example:
  * <pre>
- *      try (var prec = new PrintPrecision(6, Locale.GERMAN)) {
+ *      try (var prec = PrintPrecision.set(Locale.GERMAN, 6)) {
  *            // perform some floating-point output here
  *      }</pre>
+ * Here {@code prec} is a dummy variable required by Java's try-syntax.
  * Precision is automatically reset to the previous setting at the end of the try-block.
  * Multiple try blocks may be nested.
+ * Alternatively (but not recommended) settings can be applied and reverted manually, for example,
+ * <pre>
+ *      PrintPrecision.set(8);
+ *            // perform some floating-point output here
+ *      PrintPrecision.revert();</pre>
+ * Use of the try-with-resources scheme is clearly preferred.
  * Note that this simple mechanism is mostly intended for debugging and not thread-safe.
  * @author WB
  */
@@ -44,29 +51,30 @@ public final class PrintPrecision implements Closeable {
 
 	static {
 		precisionStack = new ArrayDeque<>();
-		clearAll();
+		clear();
 	}
 
 	/**
 	 * Sets the current print precision and locale to default values, without clearing the
 	 * precision stack.
 	 */
-	public PrintPrecision() {
-		this(DefaultPrecision, DefaultLocale);
+	private PrintPrecision() {
+		this(DefaultLocale, DefaultPrecision);
 	}
 
 	/**
 	 * Sets the current print precision to the specified number of digits. For example, with
-	 * {@code nDigits = 5} the resulting element format string is {@code "%.5f"}.
-	 * If a value &le;0 is specified, the scientific float format string {@code "%e"} is used.
-	 * @param nDigits the number of digits to be used
+	 * {@code nDigits = 5} the resulting element format string is {@code "%.5f"}. If a value &le;0
+	 * is specified, the scientific float format string {@code "%e"} is used.
+	 *
 	 * @param locale the {@link Locale} to be used (for commas)
+	 * @param nDigits the number of digits to be used
 	 */
-	public PrintPrecision(int nDigits, Locale locale) {
+	private PrintPrecision(Locale locale, int nDigits) {
 		this.precision = Math.max(nDigits, 0);
 		this.locale = locale;
 		this.formatString = makeFormatString();
-		precisionStack.push(this);
+		// precisionStack.push(this);
 	}
 
 	/**
@@ -75,8 +83,8 @@ public final class PrintPrecision implements Closeable {
 	 * If a value &le;0 is specified, the scientific float format string {@code "%e"} is used.
 	 * @param nDigits the number of digits to be used
 	 */
-	public PrintPrecision(int nDigits) {
-		this(nDigits, DefaultLocale);
+	private PrintPrecision(int nDigits) {
+		this(DefaultLocale, nDigits);
 	}
 
 	private String makeFormatString() {
@@ -108,7 +116,7 @@ public final class PrintPrecision implements Closeable {
 	 * Returns the current {@link PrintPrecision} instance.
 	 * @return the current print precision
 	 */
-	public static PrintPrecision current() {
+	public static PrintPrecision getCurrent() {
 		checkPrecisionStack();
 		return precisionStack.peek();
 	}
@@ -116,21 +124,42 @@ public final class PrintPrecision implements Closeable {
 	/**
 	 * Resets everything to default settings.
 	 */
-	public static void clearAll() {
+	public static void clear() {
 		precisionStack.clear();
 		precisionStack.push(new PrintPrecision(DefaultPrecision));
+	}
+
+	/**
+	 * Obsolete method!
+	 * @deprecated Use {@link #set(int)} in try-with-resources instead!
+	 * @param nDigits the number of digits to be used
+	 * @return
+	 */
+	public static void setTo(int nDigits) {
+		set(DefaultLocale, nDigits);
 	}
 
 	/**
 	 * Set print precision to the specified number of digits. For example, with {@code nDigits = 5} the resulting
 	 * element format string is {@code "%.5f"}. If a value &le;0 is specified, the scientific float format string
 	 * {@code "%e"} is used.
-	 * @deprecated use try-with-resources instead!
 	 * @param nDigits the number of digits to be used
 	 */
-	@Deprecated
 	public static PrintPrecision set(int nDigits) {
-		return new PrintPrecision(nDigits);
+		return set(DefaultLocale, nDigits);
+	}
+
+	public static PrintPrecision set(Locale locale, int nDigits) {
+		PrintPrecision prec = new PrintPrecision(locale, nDigits);
+		precisionStack.push(prec);	// make current
+		return prec;
+	}
+
+	public static void revert() {
+		if (precisionStack.isEmpty()) {
+			throw new IllegalStateException("empty PrintPrecision stack - should never happen");
+		}
+		precisionStack.peek().close();
 	}
 
 	// /**
@@ -156,6 +185,10 @@ public final class PrintPrecision implements Closeable {
 	// 	return precisionStack.peek().formatString;
 	// }
 	// ---------------------------------------------------------------------------------------------
+
+	static int stackSize() {
+		return precisionStack.size();
+	}
 
 	private void checkClosedState() {
 		if (closed) {
@@ -186,7 +219,7 @@ public final class PrintPrecision implements Closeable {
 		if (precisionStack.peek() != this) {
 			throw new IllegalStateException("corrupted PrintPrecision stack");
 		}
-		precisionStack.pop();    // now remove self
+		precisionStack.pop();    // now remove self from stack
 		this.closed = true;
 	}
 }

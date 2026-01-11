@@ -72,7 +72,7 @@ public class CircleFitHyperSimple implements CircleFitAlgebraic {
 	// -------------------------------------------------------------------------
 
 	private double[] fit(Pnt2d[] pts, Pnt2d xref) {
-		PrintPrecision.set(3);
+		PrintPrecision.setTo(3);
 
 		final int n = pts.length;
 		if (n < 3) {

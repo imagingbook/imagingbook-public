@@ -517,8 +517,8 @@ public interface Pnt2d extends ShapeProducer, Primitive2d {
 		 */
 		@Override	
 		public String toString() {
-			String fStr = PrintPrecision.current().getFormatString();
-			Locale locale = PrintPrecision.current().getLocale();
+			String fStr = PrintPrecision.getCurrent().getFormatString();
+			Locale locale = PrintPrecision.getCurrent().getLocale();
 			return String.format(locale, "%s[" + fStr + ", " + fStr + "]",
 					getClass().getSimpleName(), x, y);
 		}

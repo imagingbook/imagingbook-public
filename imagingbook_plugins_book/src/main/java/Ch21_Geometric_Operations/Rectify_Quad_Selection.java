@@ -109,7 +109,7 @@ public class Rectify_Quad_Selection implements PlugInFilter, JavaDocHelp {
 				ProjectiveMapping2D.fromPoints(sourceCorners, targetCorners).getInverse();	
 
 		if (ListTransformationMatrix) {
-			PrintPrecision.set(6);
+			PrintPrecision.setTo(6);
 			IJ.log("Inverse transformation (target to source): M = \n" + mp.toString());
 		}
 	

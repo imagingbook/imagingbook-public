@@ -316,7 +316,7 @@ public class EllipseGeometricFitDist extends EllipseFitGeometric {
     public static void main(String[] args) {
     	
     	System.out.println("*** Testing "  + EllipseGeometricFitDist.class.getSimpleName() + " ***");
-    	PrintPrecision.set(9);
+    	PrintPrecision.setTo(9);
     	
     	GeometricEllipse realEllipse = new GeometricEllipse(params.ra, params.rb, params.xc, params.yc, 
 				Math.toRadians(params.theta));

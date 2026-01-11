@@ -99,7 +99,7 @@ public class EllipseFit5Points implements EllipseFitAlgebraic {
 	// --------------------------------------------------------------------------------------------
 	
 	public static void main(String[] args) {
-		PrintPrecision.set(9);
+		PrintPrecision.setTo(9);
 		Pnt2d p0 = Pnt2d.from(40, 53);
 		Pnt2d p1 = Pnt2d.from(107, 20);
 		Pnt2d p2 = Pnt2d.from(170, 26);

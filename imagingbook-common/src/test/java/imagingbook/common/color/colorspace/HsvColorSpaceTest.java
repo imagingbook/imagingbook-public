@@ -46,7 +46,7 @@ public class HsvColorSpaceTest {
 
 	@Test
 	public void testBookTableValues() {	// check colors listed in book Fig. 13.12
-		PrintPrecision.set(4);
+		PrintPrecision.setTo(4);
 		HsvColorSpace cs = HsvColorSpace.getInstance();
 		// original (book) values
 		checkHsvValues(cs, 0.00, 0.00, 0.00,  0.00,  0.00,   0.00);		// Black

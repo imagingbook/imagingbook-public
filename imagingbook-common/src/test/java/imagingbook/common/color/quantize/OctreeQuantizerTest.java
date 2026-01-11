@@ -342,7 +342,7 @@ public class OctreeQuantizerTest {
 		float[][] cm = quantizer.getColorMap();
 		
 		if (SHOWCOLORMAP) {
-			PrintPrecision.set(4);
+			PrintPrecision.setTo(4);
 			System.out.println(Matrix.toString(cm));
 			System.out.println();
 		}

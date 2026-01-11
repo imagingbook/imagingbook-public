@@ -102,7 +102,7 @@ public class PixelInterpolatorTest {
 		double x = 3.7;
 		double y = 7.1;
 		
-		PrintPrecision.set(6);
+		PrintPrecision.setTo(6);
 		
 		ia = new RgbAccessor(ip2, obs, InterpolationMethod.Bicubic, 0, 0);
 		assertArrayEquals(new float[] {204.618500f, 122.229645f, 15.735641f}, ia.getPix(x, y), TOL);

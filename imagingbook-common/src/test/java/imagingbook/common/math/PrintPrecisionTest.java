@@ -10,17 +10,18 @@ package imagingbook.common.math;
 
 import org.junit.Test;
 
+import static imagingbook.common.math.PrintPrecision.DefaultLocale;
 import static imagingbook.common.math.PrintPrecision.DefaultPrecision;
 import static org.junit.Assert.*;
 
 public class PrintPrecisionTest {
 
     @Test
-    public void clearAllTest() {
-    }
-
-    @Test
-    public void resetTest() {
+    public void clearTest() {
+        PrintPrecision.clear();
+        assertEquals(1, PrintPrecision.stackSize());
+        assertEquals(DefaultPrecision, PrintPrecision.getCurrent().getPrecision());
+        assertEquals(DefaultLocale, PrintPrecision.getCurrent().getLocale());
     }
 
     @Test
@@ -28,25 +29,42 @@ public class PrintPrecisionTest {
     }
 
     @Test
-    public void currentTest() {
+    public void getCurrentTest() {
     }
 
     @Test
-    public void currentFormatStringFloatTest() {
-    }
+    public void autoCloseableTest1() {
+        PrintPrecision.clear();
+        assertEquals(DefaultPrecision, PrintPrecision.getCurrent().getPrecision());
 
+        try (var prec1 = PrintPrecision.set(6)) {
+            assertEquals(6, PrintPrecision.getCurrent().getPrecision());
 
-    @Test
-    public void autoCloseableTest() {
-        PrintPrecision.clearAll();
-        assertEquals(DefaultPrecision, PrintPrecision.current().getPrecision());
-        try (var prec1 = new PrintPrecision(6)) {
-            assertEquals(6, PrintPrecision.current().getPrecision());
-            try (var prec2 = new PrintPrecision(10)) {
-                assertEquals(10, PrintPrecision.current().getPrecision());
+            try (var prec2 = PrintPrecision.set(10)) {
+                assertEquals(10, PrintPrecision.getCurrent().getPrecision());
             }
-            assertEquals(6, PrintPrecision.current().getPrecision());
+
+            assertEquals(6, PrintPrecision.getCurrent().getPrecision());
         }
-        assertEquals(DefaultPrecision, PrintPrecision.current().getPrecision());
+        assertEquals(DefaultPrecision, PrintPrecision.getCurrent().getPrecision());
     }
+
+    @Test
+    public void autoCloseableTest2() {
+        PrintPrecision.clear();
+        assertEquals(DefaultPrecision, PrintPrecision.getCurrent().getPrecision());
+
+        PrintPrecision.setTo(6);
+            assertEquals(6, PrintPrecision.getCurrent().getPrecision());
+
+            PrintPrecision.setTo(10);
+                assertEquals(10, PrintPrecision.getCurrent().getPrecision());
+            PrintPrecision.revert();
+
+            assertEquals(6, PrintPrecision.getCurrent().getPrecision());
+        PrintPrecision.revert();
+        assertEquals(DefaultPrecision, PrintPrecision.getCurrent().getPrecision());
+    }
+
+
 }

@@ -12,7 +12,6 @@ import static java.lang.Double.isFinite;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
-import imagingbook.common.math.Matrix;
 import imagingbook.common.math.PrintPrecision;
 import org.junit.Test;
 
@@ -43,7 +42,7 @@ public class StandardIlluminantTest {
 	public void testD50() {
 		double[] XYZ  = StandardIlluminant.D50.getXYZ();
 		double[] expected = {0.964295676, 1.000000000, 0.825104603};
-		PrintPrecision.set(9);
+		PrintPrecision.setTo(9);
 		// System.out.println("XYZ50=" + Matrix.toString(XYZ));
 		assertArrayEquals(expected, XYZ, 1e-6);
 	}
@@ -52,7 +51,7 @@ public class StandardIlluminantTest {
 	public void testD65() {
 		double[] XYZ  = StandardIlluminant.D65.getXYZ();
 		double[] expected = {0.950455927, 1.000000000, 1.089057751};
-		PrintPrecision.set(9);
+		PrintPrecision.setTo(9);
 		// System.out.println("XYZ65=" + Matrix.toString(XYZ));
 		assertArrayEquals(expected, XYZ, 1e-6);
 	}
@@ -61,7 +60,7 @@ public class StandardIlluminantTest {
 	public void testN() {
 		double[] XYZ  = StandardIlluminant.N.getXYZ();
 		double[] expected = {1, 1, 1};
-		PrintPrecision.set(9);
+		PrintPrecision.setTo(9);
 		// System.out.println("XYZN=" + Matrix.toString(XYZ));
 		assertArrayEquals(expected, XYZ, 1e-6);
 	}

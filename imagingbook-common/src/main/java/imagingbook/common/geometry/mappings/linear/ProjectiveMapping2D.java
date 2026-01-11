@@ -305,7 +305,7 @@ public class ProjectiveMapping2D extends LinearMapping2D implements Jacobian {
 	 * @param args ignored
 	 */
 	public static void main(String[] args) {
-		PrintPrecision.set(6);
+		PrintPrecision.setTo(6);
 
 		// book example:
 		Pnt2d[] P = {

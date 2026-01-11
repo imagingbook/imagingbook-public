@@ -99,7 +99,7 @@ public class IncrementalLineFitTest {
 	
 	@Test
 	public void test5() {
-		PrintPrecision.set(6);
+		PrintPrecision.setTo(6);
 		double[][] X = {{1, 8}, {4, 5}, {4, 7}, {6, 4}, {9, 4}}; // book example
 		Pnt2d[] pts = PntUtils.fromDoubleArray(X);
 		IncrementalLineFit fit = new IncrementalLineFit(pts);

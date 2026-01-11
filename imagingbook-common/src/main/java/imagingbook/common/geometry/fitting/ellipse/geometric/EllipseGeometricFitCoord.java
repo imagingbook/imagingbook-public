@@ -320,7 +320,7 @@ public class EllipseGeometricFitCoord extends EllipseFitGeometric {
     	
     	System.out.println("*** Testing "  + EllipseGeometricFitCoord.class.getSimpleName() + " ***");
     	
-    	PrintPrecision.set(9);
+    	PrintPrecision.setTo(9);
     	
     	GeometricEllipse realEllipse = new GeometricEllipse(params.ra, params.rb, params.xc, params.yc, 
 				Math.toRadians(params.theta));

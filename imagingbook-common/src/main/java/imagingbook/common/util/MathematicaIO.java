@@ -34,8 +34,8 @@ public abstract class MathematicaIO {
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, double[] A) {
-		String fs = PrintPrecision.current().getFormatString();
-		Locale locale = PrintPrecision.current().getLocale();
+		String fs = PrintPrecision.getCurrent().getFormatString();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		StringBuilder sb = new StringBuilder();
 		Formatter formatter = new Formatter(sb, locale);
 		formatter.format(name + " = {");
@@ -59,8 +59,8 @@ public abstract class MathematicaIO {
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, float[] A) {
-		String fs = PrintPrecision.current().getFormatString();
-		Locale locale = PrintPrecision.current().getLocale();
+		String fs = PrintPrecision.getCurrent().getFormatString();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		StringBuilder sb = new StringBuilder();
 		Formatter formatter = new Formatter(sb, locale);
 		formatter.format(name + " = {");
@@ -84,7 +84,7 @@ public abstract class MathematicaIO {
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, int[] A) {
-		Locale locale = PrintPrecision.current().getLocale();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		StringBuilder sb = new StringBuilder();
 		Formatter formatter = new Formatter(sb, locale);
 		formatter.format(name + " = {");
@@ -110,8 +110,8 @@ public abstract class MathematicaIO {
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, double[][] A) {
-		String fs = PrintPrecision.current().getFormatString();
-		Locale locale = PrintPrecision.current().getLocale();
+		String fs = PrintPrecision.getCurrent().getFormatString();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		StringBuilder sb = new StringBuilder();
 		Formatter formatter = new Formatter(sb, locale);
 		formatter.format(name + " = {");
@@ -143,8 +143,8 @@ public abstract class MathematicaIO {
 	 * @return a String holding the Mathematica definition.
 	 */
 	public static String listArray(String name, float[][] A) {
-		String fs = PrintPrecision.current().getFormatString();
-		Locale locale = PrintPrecision.current().getLocale();
+		String fs = PrintPrecision.getCurrent().getFormatString();
+		Locale locale = PrintPrecision.getCurrent().getLocale();
 		StringBuilder sb = new StringBuilder();
 		Formatter formatter = new Formatter(sb, Locale.US);
 		formatter.format(name + " = {");

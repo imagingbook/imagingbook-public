@@ -58,7 +58,7 @@ public class HlsColorSpaceTest {
 
 	@Test
 	public void testBookTableValues() {	// check colors listed in book Fig. 13.15
-		PrintPrecision.set(4);
+		PrintPrecision.setTo(4);
 		HlsColorSpace cs = HlsColorSpace.getInstance();
 		// original (book) values
 		checkHlsValues(cs, 0.00, 0.00, 0.00,  0.00,  0.00,   0.00);		// Black

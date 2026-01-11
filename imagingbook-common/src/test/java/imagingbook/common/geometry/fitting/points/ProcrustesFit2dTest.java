@@ -25,7 +25,7 @@ public class ProcrustesFit2dTest {
 
 	@Test
 	public void test1() {
-		PrintPrecision.set(6);
+		PrintPrecision.setTo(6);
 		int NDIGITS = 1;
 		
 		boolean allowTranslation = true;

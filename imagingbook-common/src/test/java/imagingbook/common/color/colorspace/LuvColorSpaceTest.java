@@ -98,7 +98,7 @@ public class LuvColorSpaceTest {
 
 	@Test
 	public void testBookTableValues() {	// check colors in book Table 14.4
-		PrintPrecision.set(4);
+		PrintPrecision.setTo(4);
 		LuvColorSpace cs = LuvColorSpace.getInstance();
 		// original (book) values
 		checkLuvValues(cs, 0.00, 0.00, 0.00,   0.00,    0.00,    0.00);		// Black

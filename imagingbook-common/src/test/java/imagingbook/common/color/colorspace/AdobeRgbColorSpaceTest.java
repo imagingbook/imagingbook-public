@@ -94,7 +94,7 @@ public class AdobeRgbColorSpaceTest {
 		final float[] rgbWhite = {1, 1, 1};
 		final float[] xyz65 = catD50toD65.applyTo(AdobeCS.toCIEXYZ(rgbWhite));
 		final float[] W65 = Matrix.toFloat(D65.getXYZ());
-		PrintPrecision.set(6);
+		PrintPrecision.setTo(6);
 //		System.out.println("xyz65 = " + Matrix.toString(xyz65));
 //		System.out.println("w65   = " + Matrix.toString(w65));
 		assertArrayEquals(W65, xyz65, 1e-3f);	// XYZ not very accurate!

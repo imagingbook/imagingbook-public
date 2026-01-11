@@ -77,7 +77,7 @@ public class AWTCIEXYZColorSpaceTest {
 		float[] rgb = {1, 1, 1};
 		float[] xyzTHIS = CS.fromRGB(rgb);
 
-		PrintPrecision.set(16);
+		PrintPrecision.setTo(16);
 //		System.out.println("xyzTHIS = " + Matrix.toString(xyzTHIS));
 		// {0.9642028808593750, 1.0000000000000000, 0.8248901367187500}
 
