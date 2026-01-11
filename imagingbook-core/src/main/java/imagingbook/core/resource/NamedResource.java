@@ -10,6 +10,7 @@ package imagingbook.core.resource;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Paths;
 
 /**
  * <p>
@@ -57,11 +58,13 @@ import java.net.URL;
 public interface NamedResource {
 
 	/**
-	 * Specifies the name of the resource directory relative to some resource class. For example, given some resource
-	 * class in
-	 * <pre>src/main/java/.../foo/ZeClass.java</pre>
-	 * the associated resource files are assumed to be in directory
-	 * <pre>src/main/resources/.../foo/ZeClass-data/</pre>
+	 * Specifies the name of the resource directory relative to some resource class. For example,
+	 * given a named resource class {@code MyNamedResource} in package {@code com.foo}, i.e.,
+	 * <pre>     com.foo.MyNamedResource</pre>
+	 * the associated resource files are assumed to be placed in directory
+	 * <pre>     com.foo.MyNamedResource-data</pre>
+	 * Note that the chosen name is intentionally NOT a legal Java package name to avoid confusion in
+	 * the build process.
 	 */
 	public static final String RelativeDirectorySuffix = "-data";
 
@@ -75,18 +78,16 @@ public interface NamedResource {
 	 * @return the relative resource directory for the associated resource
 	 */
 	public default String getRelativeDirectory() {
-		// return getClass().getSimpleName() + RelativeDirectorySuffix;
 		return getRelativeDirectory(this.getClass());
 	}
 
 	public static String getRelativeDirectory(Class<? extends NamedResource> clazz) {
-		return clazz.getSimpleName() + RelativeDirectorySuffix;   // TODO: use Paths.get(...) instead
+		return clazz.getSimpleName() + RelativeDirectorySuffix;
 	}
 
 	/**
 	 * Returns the path to the associated resource relative to the location of the implementing class. This method is
 	 * not supposed to be overridden.
-	 *
 	 * @return the relative path to the associated resource
 	 */
 	public default String getRelativePath() {
@@ -95,7 +96,6 @@ public interface NamedResource {
 
 	/**
 	 * Returns the file name for the associated resource (to be implemented by concrete classes).
-	 *
 	 * @return the name of the resource file
 	 */
 	public String getFileName();
@@ -103,7 +103,6 @@ public interface NamedResource {
 	/**
 	 * Returns the URL to the associated resource or null if the resource could not be
      * located. This method is not supposed to be overridden.
-	 *
 	 * @return the URL to the associated resource
 	 */
 	public default URL getURL() {
@@ -120,10 +119,8 @@ public interface NamedResource {
 		return url;
 	}
 
-
 	/**
 	 * Returns true if the associated resource (class) was loaded from a JAR file.
-	 * 
 	 * @return true if inside a JAR file
 	 */
 	public default boolean isInsideJar() {
@@ -137,7 +134,6 @@ public interface NamedResource {
 	/**
 	 * Returns an {@link InputStream} for reading from this resource. See also
 	 * {@link Class#getResourceAsStream(String)}. This method is not supposed to be overridden.
-	 *
 	 * @return an {@link InputStream} for the associated resource
 	 */
 	public default InputStream getStream() {
@@ -148,7 +144,6 @@ public interface NamedResource {
 	 * Returns the names of the actual files contained in the associated resource directory of the specified class,
 	 * which must implement the {@link NamedResource} interface. This can be used to check if a given named resource has
 	 * a matching file in a case-sensitive way.
-	 *
 	 * @param clazz the resource class
 	 * @return an array of strings
 	 */

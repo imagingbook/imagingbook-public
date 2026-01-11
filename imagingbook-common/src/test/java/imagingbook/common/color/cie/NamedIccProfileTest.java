@@ -41,4 +41,5 @@ public class NamedIccProfileTest {
 			assertNotNull(colorspace);
 		}
 	}
+
 }

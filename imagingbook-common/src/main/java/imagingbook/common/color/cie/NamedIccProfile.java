@@ -74,20 +74,20 @@ public enum NamedIccProfile implements NamedResource {
 		return this.colorspace;
 	}
 
-    public static void main(String[] args) {
-        Class clazz = NamedIccProfile.AdobeRGB1998.getClass();
-        System.out.println("rel directory = " + NamedResource.getRelativeDirectory(clazz));
-        String relPath = NamedIccProfile.AdobeRGB1998.getRelativePath();
-        System.out.println("rel path = " + relPath);
-        System.out.println("URL = " + NamedIccProfile.AdobeRGB1998.getURL());
-
-        URI uri = ResourceUtils.getResourceUri(NamedIccProfile.AdobeRGB1998.getClass(), relPath);
-        System.out.println("uri = " + uri);
-
-        String[] names = NamedResource.getNamedResourceFileNames(NamedIccProfile.AdobeRGB1998.getClass());
-        for (String n : names) {
-            System.out.println("  " + n);
-        }
-    }
+    // public static void main(String[] args) {
+    //     Class clazz = NamedIccProfile.AdobeRGB1998.getClass();
+    //     System.out.println("rel directory = " + NamedResource.getRelativeDirectory(clazz));
+    //     String relPath = NamedIccProfile.AdobeRGB1998.getRelativePath();
+    //     System.out.println("rel path = " + relPath);
+    //     System.out.println("URL = " + NamedIccProfile.AdobeRGB1998.getURL());
+	//
+    //     URI uri = ResourceUtils.getResourceUri(NamedIccProfile.AdobeRGB1998.getClass(), relPath);
+    //     System.out.println("uri = " + uri);
+	//
+    //     String[] names = NamedResource.getNamedResourceFileNames(NamedIccProfile.AdobeRGB1998.getClass());
+    //     for (String n : names) {
+    //         System.out.println("  " + n);
+    //     }
+    // }
 
 }
