@@ -101,7 +101,7 @@ public interface NamedResource {
 	public String getFileName();
 
 	/**
-	 * Returns the URL to the associated resource or null if the resource could not be
+	 * Returns the URL to the associated resource or {@code null} if the resource could not be
      * located. This method is not supposed to be overridden.
 	 * @return the URL to the associated resource
 	 */

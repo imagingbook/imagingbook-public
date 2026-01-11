@@ -26,7 +26,7 @@ public class ImageResourceTest {
 	}
 
 	@Test
-	public void testAutoName() {
+	public void testGetAutoName() {
 		assertEquals("a.png", DummyNamedResource.a.getFileName());
 		assertEquals("A.png", DummyNamedResource.A_png.getFileName());
 		assertEquals("foo.tif", DummyNamedResource.foo_tif.getFileName());

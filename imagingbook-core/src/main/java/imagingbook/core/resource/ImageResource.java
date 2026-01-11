@@ -18,33 +18,50 @@ import java.util.HashSet;
 
 /**
  * <p>
- * Interface to be implemented by named image resources. This indicates (for testing) that the associated resource can
- * be opened as an image (by ImageJ). Extends interface {@link NamedResource} by adding method {@link #getImagePlus()},
- * which returns an {@link ImagePlus} instance. By default, image files are assumed to reside in a directory at the same
- * level and with exactly the same name as the defining enum class itself. E.g., in a standard Maven-setup this is:
+ * This interface is supposed to be implemented by {@code enum} classes to provide a
+ * repository for images that is simple and safe to use.
+ * Since this repository can be tested at compile-time for completeness and readability,
+ * dependent code can be certain that all listed resources are available at runtime.
  * </p>
- * <pre>
- * .../java/    .../bar/MyImageResource.java          = enum class implementing 'ImageResource'
- * .../resource/.../bar/MyImageResource/image1.png    = associated image files
- * .../resource/.../bar/MyImageResource/image2.tif
- * .../resource/.../bar/MyImageResource/...</pre>
  * <p>
- * For example, given a named resource {@code MyImages.image1}, this can be used simply in the form
+ * Methods are provided to directly open the associated resources
+ * as images (by ImageJ).
+ * This interface extends i{@link NamedResource} by adding method {@link #getImagePlus()},
+ * which returns an {@link ImagePlus} instance.
+ * By default, image files are assumed to reside in a directory at the same
+ * package level as the associated enum-class in a special subdirectory named
+ * {@code <EnumClassName>-data}.
+ * For example, in a standard Maven setup this means:
  * </p>
  * <pre>
- * ImagePlus im = MyImages.image1.getImage();
+ * main/java/com/foo/MyImageResource.java          = 'ImageResource' enum class
+ * main/resources/com/foo/MyImageResource-data/image1.png    = image files
+ * main/resources/com/foo/MyImageResource-data/image2.tif
+ * main/resources/com/foo/MyImageResource-data/...</pre>
+ * <p>
+ * For example, given a named resource {@code MyImageResource.image1}, 
+ * this can be used simply in the form
+ * </p>
+ * <pre>
+ * ImagePlus im = MyImageResource.image1.getImage();
  * im.show();</pre>
  * <p>
- * By default, resource file names are derived automatically from the enum item's name (by method {@link #autoName()}).
- * If some other behavior is needed, method {@link #getFileName()} should be overridden.
- *
+ * By default, resource file names are derived automatically from the enum item's name (by method
+ * {@link #getAutoName()}). File extensions can be encoded in the enum-item's name
+ * (such as {@code bar_tif} for some image file {@code bar.tif}).
+ * If no extension is encoded, "png" is assumed as the default extension.
+ * This behavior can be changed by overriding method {@link #getDefaultExtension()}.
+ * If some different file-related behavior is needed, override method {@link #getFileName()}.
+ * </p>
+ * <p>
+ * See also {@code imagingbook.testutils.ResourceTestUtils#testImageResource(Class)} for testing.
+ * </p>
  * @author WB
  */
 public interface ImageResource extends NamedResource {
 
 	/**
 	 * Opens end returns a {@link ImagePlus} instance for this {@link ImageResource}.
-	 *
 	 * @return a {@link ImagePlus} instance
 	 */
 	public default ImagePlus getImagePlus() {
@@ -54,13 +71,13 @@ public interface ImageResource extends NamedResource {
 	
 	@Override
 	public default String getFileName() {
-		return this.autoName();
+		return this.getAutoName();
 	}
 	
 	/**
-	 * The set of image file extensions supported in {@link #autoName()}.
+	 * The set of image file extensions supported in {@link #getAutoName()}.
 	 */
-	static final HashSet<String> ValidImageExtensions = 
+	static final HashSet<String> ValidImageFileExtensions =
 			new HashSet<>(Arrays.asList("png", "tif", "tiff", "jpg", "jpeg", "gif"));
 
 	/**
@@ -71,13 +88,14 @@ public interface ImageResource extends NamedResource {
 	 * underscore followed by a valid image file extension, that is, "png", "tif", "tiff", "jpg", "jpeg" or "gif". In
 	 * this case, the last underscore of the enum name is replaced by a '.' character to form the file name. (Note that
 	 * '.' is no legal character in a Java identifier, thus cannot be used for the enum name directly.) If the last
-	 * underscore in a item's name is not followed by a valid extension, the default case is assumed ("png").
+	 * underscore in an item's name is not followed by a valid extension, the default case is assumed ("png").
+	 * This default-extension can be changed by overriding method {@link #getDefaultExtension()}.
 	 * </p>
 	 * <p>
 	 * Examples:
 	 * </p>
 	 * <pre>
-	 * enum DummyNamedResource implements ImageResource {
+	 * enum MyImageResource implements ImageResource {
 	 * 	a,                  // file "a.png"
 	 * 	A_png,              // file "A.png"
 	 * 	foo_tif,            // file "foo.tif"
@@ -86,20 +104,31 @@ public interface ImageResource extends NamedResource {
 	 * 	The_File_jpeg,      // file "The_File.jpeg"
 	 * 	_Some____File_bla;  // file "_Some____File_bla.png"
 	 * }</pre>
-	 *
+	 * TODO: support "-" in file names
 	 * @return the image filename derived from the enum item's name
 	 */
-	public default String autoName() {
+	public default String getAutoName() {
 		String itemname = this.toString();
 		int k = itemname.lastIndexOf('_');
 		if (k >= 0) {
 			String filename = itemname.substring(0, k);
 			String extension  = itemname.substring(k + 1);
-			if (ValidImageExtensions.contains(extension)) {
+			// found an encoded file extension:
+			if (ValidImageFileExtensions.contains(extension)) {
 				return filename + "." + extension;
 			}
 		}
-		return itemname + ".png";   // TODO: let define a default extension!
+		// no encoded file extension, use default extension
+		return itemname + "." + getDefaultExtension();
+	}
+
+	/**
+	 * Implementing classes should override this method if extensions are not encoded in enum-names,
+	 * all images for this resource have the same file extension that is not "png".
+	 * @return the default file extension, e.g. "jpg" (no dot!)
+	 */
+	public default String getDefaultExtension() {
+		return "png";
 	}
 
 	/**
@@ -115,37 +144,38 @@ public interface ImageResource extends NamedResource {
 		return ResourceUtils.getResourceFileNames(clazz, NamedResource.getRelativeDirectory(clazz));
 	}
 
-	// ---------------- icon handling --------------------------------------
+	// ---------------- thumbnail handling --------------------------------------
 
 	/**
-	 * The default icon size (maximum width or height).
+	 * The default thumbnail size (maximum width or height).
 	 */
-	static final int DefaultIconSize = 128;
-	static final HashMap<String, ImagePlus> IconMap = new HashMap<>();
+	static final int DefaultThumbSize = 128;
+	static final HashMap<String, ImagePlus> ThumbnailMap = new HashMap<>();
 
 	/**
-	 * Returns an icon for this {@link ImageResource} with the default icon size. All icons are cached, i.e., are only
+	 * Returns a thumbnail for this {@link ImageResource} with the default icon size.
+	 * All thumbnails are cached, i.e., are only
 	 * created once when first requested for a particular size.
 	 *
 	 * @return an {@link ImagePlus} instance containing the icon image
-	 * @see #DefaultIconSize
-	 * @see #getImageIcon(int)
+	 * @see #DefaultThumbSize
+	 * @see #getThumbnail(int)
 	 */
-	public default ImagePlus getImageIcon() {
-		return getImageIcon(DefaultIconSize);
+	public default ImagePlus getThumbnail() {
+		return getThumbnail(DefaultThumbSize);
 	}
 
 	/**
-	 * Returns an icon for this {@link ImageResource} with the specified size. All icons are cached, i.e., are only
+	 * Returns a thumbnail for this {@link ImageResource} with the specified size.
+	 * All thumbnails are cached, i.e., are only
 	 * created once when first requested for a particular size.
-	 *
-	 * @param iconSize
+	 * @param size the size of the thumbnail (largest dimension)
 	 * @return an {@link ImagePlus} instance containing the icon image
-	 * @see #getImageIcon()
+	 * @see #getThumbnail()
 	 */
-	public default ImagePlus getImageIcon(int iconSize) {
-		String key =  this.toString() + iconSize + this.getClass().getCanonicalName();
-		ImagePlus hashedImp = IconMap.get(key);
+	public default ImagePlus getThumbnail(int size) {
+		String key =  this.toString() + size + this.getClass().getCanonicalName();
+		ImagePlus hashedImp = ThumbnailMap.get(key);
 		if (hashedImp != null) {
 			return hashedImp;
 		}
@@ -155,11 +185,11 @@ public interface ImageResource extends NamedResource {
 			int h = im.getHeight(null);
 			int hints = Image.SCALE_SMOOTH;
 			Image imScaled = (w >= h) ?
-					im.getScaledInstance(iconSize, -1, hints) :
-					im.getScaledInstance(-1, iconSize, hints);
-			ImagePlus icon = new ImagePlus(null, imScaled);
-			IconMap.put(key, icon);
-			return icon;
+					im.getScaledInstance(size, -1, hints) :
+					im.getScaledInstance(-1, size, hints);
+			ImagePlus thumb = new ImagePlus(null, imScaled);
+			ThumbnailMap.put(key, thumb);
+			return thumb;
 		}
 	}
 

@@ -414,7 +414,7 @@ public abstract class DialogUtils {
 
 		if (suggested != null) {
 			gd.setInsets(10, 10, 10);
-			gd.addImage(suggested.getImageIcon());
+			gd.addImage(suggested.getThumbnail());
 		}
 
 		gd.enableYesNoCancel("Yes", "Cancel");

@@ -139,7 +139,7 @@ public enum GeneralSampleImage implements ImageResource {
 
 		@Override
 		public String getFileName() {
-			return (this.filename != null) ? this.filename : this.autoName();
+			return (this.filename != null) ? this.filename : this.getAutoName();
 		}
 
 		// public static void main(String[] args) {
