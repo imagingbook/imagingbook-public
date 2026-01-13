@@ -35,6 +35,7 @@ import java.util.Locale;
  * Note that this simple mechanism is mostly intended for debugging and not thread-safe.
  * @author WB
  */
+@Deprecated  // replace this mechanism completely!
 public final class PrintPrecision implements Closeable {
 
 	/**
