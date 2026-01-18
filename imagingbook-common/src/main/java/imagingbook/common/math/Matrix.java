@@ -2090,6 +2090,9 @@ public final class Matrix {
 			n = n + x.length;
 		}
 		double[] va = new double[n];
+		if (n == 0) {
+			return va;
+		}
 		int j = 0;
 		for (double[] x : as) {
 			for (int i = 0; i < x.length; i++) {
