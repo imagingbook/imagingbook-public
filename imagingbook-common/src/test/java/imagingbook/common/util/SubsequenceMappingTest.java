@@ -132,6 +132,22 @@ public class SubsequenceMappingTest {
     }
 
     @Test
+    public void mergeObjectTest0() {
+        BitVector subset = BitVector.from("1110011110");
+        imagingbook.common.util.SubsequenceMapping map = new imagingbook.common.util.SubsequenceMapping(subset);
+        String[] original = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        String[] subsequ = map.getSubSequence(original);
+        // System.out.println(Arrays.toString(subsequ));
+        for (int j = 0; j < subsequ.length; j++) {
+            subsequ[j] = "x" + subsequ[j];
+        }
+        String[] merged = map.merge(subsequ, original);
+        // System.out.println(Arrays.toString(merged));
+        assertArrayEquals(new String[] {"x1", "x2", "x3", "4", "5", "x6", "x7", "x8", "x9", "10"}, merged);
+        assertNotSame(original, merged);
+    }
+
+    @Test
     public void mergeObjectTest() {
         BitVector subset = BitVector.from("1110011110");
         imagingbook.common.util.SubsequenceMapping map = new imagingbook.common.util.SubsequenceMapping(subset);
