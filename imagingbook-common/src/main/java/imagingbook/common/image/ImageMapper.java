@@ -15,6 +15,10 @@ import imagingbook.common.geometry.mappings.Mapping2D;
 import imagingbook.common.image.access.ImageAccessor;
 import imagingbook.common.image.interpolation.InterpolationMethod;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 /**
  * This class defines methods to perform arbitrary geometric transformations on images. The geometric transformation
  * (mapping) must be specified at construction. The specified geometric mapping is supposed to be INVERTED, i.e.
@@ -39,6 +43,8 @@ public class ImageMapper {
 	private final OutOfBoundsStrategy obs;
 	private final InterpolationMethod ipm;
 	private final Mapping2D mapping;
+
+	public static boolean WORK_PARALLEL = false;
 
 	/**
 	 * Constructor - creates a new {@link ImageMapper} with the specified geometric mapping. The default pixel
@@ -97,7 +103,10 @@ public class ImageMapper {
 		}
 		ImageAccessor sourceAcc = ImageAccessor.create(source, obs, ipm, 0, 0);
 		ImageAccessor targetAcc = ImageAccessor.create(target);
-		map(sourceAcc, targetAcc);
+		if (WORK_PARALLEL)
+			mapParallel2(sourceAcc, targetAcc);
+		else
+			map(sourceAcc, targetAcc);
 	}
 
 	// ---------------------------------------------------------------------
@@ -125,6 +134,90 @@ public class ImageMapper {
 				Pnt2d sourcePt = this.mapping.applyTo(PntInt.from(u, v));
 				float[] val = sourceAcc.getPix(sourcePt.getX(), sourcePt.getY());
 				targetAcc.setPix(u, v, val);
+			}
+		}
+	}
+
+	public void mapParallel(ImageAccessor sourceAcc, ImageAccessor targetAcc) {
+		if (targetAcc.getProcessor() == sourceAcc.getProcessor()) {
+			throw new IllegalArgumentException("Source and target image must not be the same!");
+		}
+
+		ImageProcessor target = targetAcc.getProcessor();
+		final int w = target.getWidth();
+		final int h = target.getHeight();
+
+		int threads = Runtime.getRuntime().availableProcessors();
+		ExecutorService executor = Executors.newFixedThreadPool(threads);
+
+		try {
+			for (int v = 0; v < h; v++) {
+				final int currentRow = v;
+				executor.submit(() -> {
+					for (int u = 0; u < w; u++) {
+						Pnt2d sourcePt = this.mapping.applyTo(PntInt.from(u, currentRow));
+						float[] val = sourceAcc.getPix(sourcePt.getX(), sourcePt.getY());
+						targetAcc.setPix(u, currentRow, val);
+					}
+				});
+			}
+		} finally {
+			// Initiates an orderly shutdown
+			executor.shutdown();
+			try {
+				// Wait for all rows to finish processing (adjust timeout as needed)
+				if (!executor.awaitTermination(1, TimeUnit.HOURS)) {
+					executor.shutdownNow();
+				}
+			} catch (InterruptedException e) {
+				executor.shutdownNow();
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+
+	public void mapParallel2(ImageAccessor sourceAcc, ImageAccessor targetAcc) {
+		if (targetAcc.getProcessor() == sourceAcc.getProcessor()) {
+			throw new IllegalArgumentException("Source and target image must not be the same!");
+		}
+
+		ImageProcessor target = targetAcc.getProcessor();
+		final int w = target.getWidth();
+		final int h = target.getHeight();
+
+		int threads = Runtime.getRuntime().availableProcessors();
+		int rowsPerThread = (h + threads - 1) / threads; // Ceiling division
+		ExecutorService executor = Executors.newFixedThreadPool(threads);
+
+		try {
+			for (int t = 0; t < threads; t++) {
+				final int startRow = t * rowsPerThread;
+				final int endRow = Math.min(startRow + rowsPerThread, h);
+
+				if (startRow >= h) break; // Safety check
+
+				executor.submit(() -> {
+					for (int v = startRow; v < endRow; v++) {
+						for (int u = 0; u < w; u++) {
+							// Cache the point object if possible, or use primitives
+							Pnt2d sourcePt = this.mapping.applyTo(PntInt.from(u, v));
+							float[] val = sourceAcc.getPix(sourcePt.getX(), sourcePt.getY());
+							targetAcc.setPix(u, v, val);
+						}
+					}
+				});
+			}
+		} finally {
+			// Initiates an orderly shutdown
+			executor.shutdown();
+			try {
+				// Wait for all rows to finish processing (adjust timeout as needed)
+				if (!executor.awaitTermination(1, TimeUnit.HOURS)) {
+					executor.shutdownNow();
+				}
+			} catch (InterruptedException e) {
+				executor.shutdownNow();
+				Thread.currentThread().interrupt();
 			}
 		}
 	}

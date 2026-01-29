@@ -87,36 +87,5 @@ public class BilinearMapping2D implements Mapping2D {
 				"BilinearMapping[A = (%.3f, %.3f, %.3f, %.3f) / B = (%.3f, %.3f, %.3f, %.3f)]",
 				a0, a1, a2, a3, b0, b1, b2, b3);
 	}
-	
-	// ------------------------------------------------------------------------
-	
-	// /**
-	//  * For testing only.
-	//  * @param args ignored
-	//  */
-	// public static void main(String[] args) {
-	// 	Pnt2d[] P = {
-	// 			PntInt.from(2,5),
-	// 			PntInt.from(4,6),
-	// 			PntInt.from(7,9),
-	// 			PntInt.from(5,9),
-	// 			};
-	//
-	// 	Pnt2d[] Q = {
-	// 			PntInt.from(4,3),
-	// 			PntInt.from(5,2),
-	// 			PntInt.from(9,3),
-	// 			PntInt.from(7,5),
-	// 			};
-	//
-	// 	BilinearMapping2D bm = fromPoints(P, Q);
-	// 	System.out.println("\nbilinear mapping = \n" + bm.toString());
-	//
-	// 	for (int i = 0; i < P.length; i++) {
-	// 		Pnt2d Qi = bm.applyTo(P[i]);
-	// 		System.out.println(P[i].toString() + " -> " + Qi.toString());
-	// 	}
-	// }
-
 
 }
