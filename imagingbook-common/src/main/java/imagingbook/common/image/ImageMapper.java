@@ -35,16 +35,14 @@ import java.util.concurrent.TimeUnit;
 public class ImageMapper {
 	
 	/** Default out-of-bounds strategy (see {@link OutOfBoundsStrategy}). */
-	public static OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.NearestBorder;	
+	public static final OutOfBoundsStrategy DefaultOutOfBoundsStrategy = OutOfBoundsStrategy.NearestBorder;
 	
 	/** Default pixel interpolation method (see {@link InterpolationMethod}). */
-	public static InterpolationMethod DefaultInterpolationMethod = InterpolationMethod.Bicubic;	
+	public static final InterpolationMethod DefaultInterpolationMethod = InterpolationMethod.Bicubic;
 	
 	private final OutOfBoundsStrategy obs;
 	private final InterpolationMethod ipm;
 	private final Mapping2D mapping;
-
-	public static boolean WORK_PARALLEL = false;
 
 	/**
 	 * Constructor - creates a new {@link ImageMapper} with the specified geometric mapping. The default pixel
@@ -84,7 +82,6 @@ public class ImageMapper {
 		ImageProcessor source = ip.duplicate();
 		ImageProcessor target = ip;
 		map(source, target);
-		source = null;
 	}
 	
 	// ---------------------------------------------------------------------
@@ -103,10 +100,7 @@ public class ImageMapper {
 		}
 		ImageAccessor sourceAcc = ImageAccessor.create(source, obs, ipm, 0, 0);
 		ImageAccessor targetAcc = ImageAccessor.create(target);
-		if (WORK_PARALLEL)
-			mapParallel2(sourceAcc, targetAcc);
-		else
-			map(sourceAcc, targetAcc);
+		map(sourceAcc, targetAcc);
 	}
 
 	// ---------------------------------------------------------------------
@@ -118,6 +112,7 @@ public class ImageMapper {
 	 * source image coordinates. Access to source pixels is controlled by the out-of-bounds strategy and pixel
 	 * interpolation method settings of the source {@link ImageAccessor} (the corresponding settings of this
 	 * {@link ImageAccessor} are ignored).
+	 * Multithreaded version with each thread working on a block of image lines.
 	 *
 	 * @param sourceAcc {@link ImageAccessor} for the source image
 	 * @param targetAcc {@link ImageAccessor} for the target image
@@ -126,81 +121,23 @@ public class ImageMapper {
 		if (targetAcc.getProcessor() == sourceAcc.getProcessor()) {
 			throw new IllegalArgumentException("Source and target image must not be the same!");
 		}
-		ImageProcessor target = targetAcc.getProcessor();
-		final int w = target.getWidth();
-		final int h = target.getHeight();
-		for (int v = 0; v < h; v++) {
-			for (int u = 0; u < w; u++) {
-				Pnt2d sourcePt = this.mapping.applyTo(PntInt.from(u, v));
-				float[] val = sourceAcc.getPix(sourcePt.getX(), sourcePt.getY());
-				targetAcc.setPix(u, v, val);
-			}
-		}
-	}
-
-	public void mapParallel(ImageAccessor sourceAcc, ImageAccessor targetAcc) {
-		if (targetAcc.getProcessor() == sourceAcc.getProcessor()) {
-			throw new IllegalArgumentException("Source and target image must not be the same!");
-		}
 
 		ImageProcessor target = targetAcc.getProcessor();
 		final int w = target.getWidth();
 		final int h = target.getHeight();
-
-		int threads = Runtime.getRuntime().availableProcessors();
-		ExecutorService executor = Executors.newFixedThreadPool(threads);
+		int nThreads = Runtime.getRuntime().availableProcessors();
+		int rowsPerThread = (h + nThreads - 1) / nThreads; // Ceiling division
+		ExecutorService executor = Executors.newFixedThreadPool(nThreads);
 
 		try {
-			for (int v = 0; v < h; v++) {
-				final int currentRow = v;
-				executor.submit(() -> {
-					for (int u = 0; u < w; u++) {
-						Pnt2d sourcePt = this.mapping.applyTo(PntInt.from(u, currentRow));
-						float[] val = sourceAcc.getPix(sourcePt.getX(), sourcePt.getY());
-						targetAcc.setPix(u, currentRow, val);
-					}
-				});
-			}
-		} finally {
-			// Initiates an orderly shutdown
-			executor.shutdown();
-			try {
-				// Wait for all rows to finish processing (adjust timeout as needed)
-				if (!executor.awaitTermination(1, TimeUnit.HOURS)) {
-					executor.shutdownNow();
-				}
-			} catch (InterruptedException e) {
-				executor.shutdownNow();
-				Thread.currentThread().interrupt();
-			}
-		}
-	}
-
-	public void mapParallel2(ImageAccessor sourceAcc, ImageAccessor targetAcc) {
-		if (targetAcc.getProcessor() == sourceAcc.getProcessor()) {
-			throw new IllegalArgumentException("Source and target image must not be the same!");
-		}
-
-		ImageProcessor target = targetAcc.getProcessor();
-		final int w = target.getWidth();
-		final int h = target.getHeight();
-
-		int threads = Runtime.getRuntime().availableProcessors();
-		int rowsPerThread = (h + threads - 1) / threads; // Ceiling division
-		ExecutorService executor = Executors.newFixedThreadPool(threads);
-
-		try {
-			for (int t = 0; t < threads; t++) {
+			for (int t = 0; t < nThreads; t++) {
 				final int startRow = t * rowsPerThread;
 				final int endRow = Math.min(startRow + rowsPerThread, h);
-
 				if (startRow >= h) break; // Safety check
-
 				executor.submit(() -> {
 					for (int v = startRow; v < endRow; v++) {
 						for (int u = 0; u < w; u++) {
-							// Cache the point object if possible, or use primitives
-							Pnt2d sourcePt = this.mapping.applyTo(PntInt.from(u, v));
+							Pnt2d sourcePt = mapping.applyTo(PntInt.from(u, v));
 							float[] val = sourceAcc.getPix(sourcePt.getX(), sourcePt.getY());
 							targetAcc.setPix(u, v, val);
 						}
@@ -212,7 +149,7 @@ public class ImageMapper {
 			executor.shutdown();
 			try {
 				// Wait for all rows to finish processing (adjust timeout as needed)
-				if (!executor.awaitTermination(1, TimeUnit.HOURS)) {
+				if (!executor.awaitTermination(20, TimeUnit.SECONDS)) {
 					executor.shutdownNow();
 				}
 			} catch (InterruptedException e) {
@@ -221,5 +158,83 @@ public class ImageMapper {
 			}
 		}
 	}
+
+	// /**
+	//  * Transforms the source image to the target image using this geometric mapping and the specified pixel
+	//  * interpolation method. The two images are passed as instances of {@link ImageAccessor}. Note that source and
+	//  * target must be different images! The geometric mapping is supposed to be INVERTED, i.e. transforming target to
+	//  * source image coordinates. Access to source pixels is controlled by the out-of-bounds strategy and pixel
+	//  * interpolation method settings of the source {@link ImageAccessor} (the corresponding settings of this
+	//  * {@link ImageAccessor} are ignored).
+	//  * Multithreaded version assigning one thread to each image line.
+	//  *
+	//  * @param sourceAcc {@link ImageAccessor} for the source image
+	//  * @param targetAcc {@link ImageAccessor} for the target image
+	//  */
+	// public void mapParallel(ImageAccessor sourceAcc, ImageAccessor targetAcc) {
+	// 	if (targetAcc.getProcessor() == sourceAcc.getProcessor()) {
+	// 		throw new IllegalArgumentException("Source and target image must not be the same!");
+	// 	}
+	//
+	// 	ImageProcessor target = targetAcc.getProcessor();
+	// 	final int w = target.getWidth();
+	// 	final int h = target.getHeight();
+	//
+	// 	int threads = Runtime.getRuntime().availableProcessors();
+	// 	ExecutorService executor = Executors.newFixedThreadPool(threads);
+	//
+	// 	try {
+	// 		for (int v = 0; v < h; v++) {
+	// 			final int currentRow = v;
+	// 			executor.submit(() -> {
+	// 				for (int u = 0; u < w; u++) {
+	// 					Pnt2d sourcePt = this.mapping.applyTo(PntInt.from(u, currentRow));
+	// 					float[] val = sourceAcc.getPix(sourcePt.getX(), sourcePt.getY());
+	// 					targetAcc.setPix(u, currentRow, val);
+	// 				}
+	// 			});
+	// 		}
+	// 	} finally {
+	// 		// Initiates an orderly shutdown
+	// 		executor.shutdown();
+	// 		try {
+	// 			// Wait for all rows to finish processing (adjust timeout as needed)
+	// 			if (!executor.awaitTermination(1, TimeUnit.HOURS)) {
+	// 				executor.shutdownNow();
+	// 			}
+	// 		} catch (InterruptedException e) {
+	// 			executor.shutdownNow();
+	// 			Thread.currentThread().interrupt();
+	// 		}
+	// 	}
+	// }
+
+	// /**
+	//  * Transforms the source image to the target image using this geometric mapping and the specified pixel
+	//  * interpolation method. The two images are passed as instances of {@link ImageAccessor}. Note that source and
+	//  * target must be different images! The geometric mapping is supposed to be INVERTED, i.e. transforming target to
+	//  * source image coordinates. Access to source pixels is controlled by the out-of-bounds strategy and pixel
+	//  * interpolation method settings of the source {@link ImageAccessor} (the corresponding settings of this
+	//  * {@link ImageAccessor} are ignored).
+	//  * Sequential version.
+	//  *
+	//  * @param sourceAcc {@link ImageAccessor} for the source image
+	//  * @param targetAcc {@link ImageAccessor} for the target image
+	//  */
+	// public void map(ImageAccessor sourceAcc, ImageAccessor targetAcc) {
+	// 	if (targetAcc.getProcessor() == sourceAcc.getProcessor()) {
+	// 		throw new IllegalArgumentException("Source and target image must not be the same!");
+	// 	}
+	// 	ImageProcessor target = targetAcc.getProcessor();
+	// 	final int w = target.getWidth();
+	// 	final int h = target.getHeight();
+	// 	for (int v = 0; v < h; v++) {
+	// 		for (int u = 0; u < w; u++) {
+	// 			Pnt2d sourcePt = this.mapping.applyTo(PntInt.from(u, v));
+	// 			float[] val = sourceAcc.getPix(sourcePt.getX(), sourcePt.getY());
+	// 			targetAcc.setPix(u, v, val);
+	// 		}
+	// 	}
+	// }
 
 }
