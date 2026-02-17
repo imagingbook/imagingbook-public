@@ -25,14 +25,18 @@ import static imagingbook.common.math.Arithmetic.sqr;
  * [1] W. Burger, M.J. Burge, <em>Digital Image Processing &ndash; An Algorithmic Introduction</em>, 3rd ed, Springer
  * (2022).
  * </p>
- *
  * @author WB
  * @version 2022/11/18
  */
 public class ParametricLine {
 	
 	private final double[] s, v;
-	
+
+	/**
+	 * Constructor.
+	 * @param s start point
+	 * @param v direction vector
+	 */
 	public ParametricLine(double[] s, double[] v) {
 		if (s.length != 2 || v.length != 2) {
 			throw new IllegalArgumentException("vectors s, v must be of length 2");
@@ -72,21 +76,21 @@ public class ParametricLine {
 	
 	// --------------------------
 	
-	public static void main (String[] args) {
-		Pnt2d p1 = Pnt2d.from(1, 2);
-		Pnt2d p2 = Pnt2d.from(4, 3);
-		
-		AlgebraicLine al1 = AlgebraicLine.from(p1, p2);
-		System.out.println("al1 = " + al1);
-		
-		ParametricLine pl = ParametricLine.from(al1);
-		System.out.println("pl = " + pl);
-		
-		AlgebraicLine al2 = AlgebraicLine.from(pl);
-		System.out.println("al2 = " + al2);
-		
-		System.out.println("al1 = al2 ? " + al1.equals(al2, 1e-6));
-	}
+//	public static void main (String[] args) {
+//		Pnt2d p1 = Pnt2d.from(1, 2);
+//		Pnt2d p2 = Pnt2d.from(4, 3);
+//
+//		AlgebraicLine al1 = AlgebraicLine.from(p1, p2);
+//		System.out.println("al1 = " + al1);
+//
+//		ParametricLine pl = ParametricLine.from(al1);
+//		System.out.println("pl = " + pl);
+//
+//		AlgebraicLine al2 = AlgebraicLine.from(pl);
+//		System.out.println("al2 = " + al2);
+//
+//		System.out.println("al1 = al2 ? " + al1.equals(al2, 1e-6));
+//	}
 
 	/*
 	al1 = AlgebraicLine <a=-0.316, b=0.949, c=-1.581>
