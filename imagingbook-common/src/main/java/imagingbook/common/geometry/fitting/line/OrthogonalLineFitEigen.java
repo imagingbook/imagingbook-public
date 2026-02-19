@@ -34,7 +34,8 @@ import static imagingbook.common.math.Arithmetic.sqr;
 public class OrthogonalLineFitEigen implements LineFit {
 	
 	private final int n;
-	private final double[] p;	// algebraic line parameters A,B,C
+	private double[] params;	// algebraic line parameters A,B,C
+	private double err;	// the sum of the squared point distances
 
 	/**
 	 * Constructor, performs a orthogonal regression fit to the specified points. At least two different points are
@@ -47,7 +48,8 @@ public class OrthogonalLineFitEigen implements LineFit {
 			throw new IllegalArgumentException("line fit requires at least 2 points");
 		}
 		this.n = points.length;
-		this.p = fit(points);
+		// this.p = doFit(points);
+		doFit(points);
 	}
 	
 	@Override
@@ -57,10 +59,20 @@ public class OrthogonalLineFitEigen implements LineFit {
 
 	@Override
 	public double[] getLineParameters() {
-		return p;
+		return params;
 	}
-	
-	private double[] fit(Pnt2d[] points) {
+
+	/**
+	 * Returns the sum of squared orthogonal point distances from the fitted line.
+	 * For {@link OrthogonalLineFitEigen} this quantity is obtained as the smallest
+	 * eigenvalue of the scatter matrix, i.e., without any additional calculations.
+	 * @return the fitting error as the sum of squared orthogonal point distances
+	 */
+	public double getError() {
+		return err;
+	}
+
+	private void doFit(Pnt2d[] points) {
 		final int n = points.length;
 	
 		double Sx = 0, Sy = 0, Sxx = 0, Syy = 0, Sxy = 0;
@@ -87,13 +99,17 @@ public class OrthogonalLineFitEigen implements LineFit {
 		
 		EigenDecompositionJama es = new EigenDecompositionJama(MatrixUtils.createRealMatrix(S));	// Jama-derived local implementation
 //		EigenDecomposition es = new EigenDecomposition(MatrixUtils.createRealMatrix(S));	// Apache Commons Maths
-		int k = PrimitiveSortMap.getNthSmallestIndex(es.getRealEigenvalues(), 0);
-		double[] e = es.getEigenvector(k).toArray();
+		double[] eVals = es.getRealEigenvalues();
+		int k = PrimitiveSortMap.getNthSmallestIndex(eVals, 0);	// index of smallest eigenvalue
+		double eVal = eVals[k];		//  smallest eigenvalue = suared error
+		double[] eVec = es.getEigenvector(k).toArray();
 		
-		double A = e[0];
-		double B = e[1];
+		double A = eVec[0];
+		double B = eVec[1];
 		double C = -(A * Sx + B * Sy) / n;
 		
-		return new double[] {A, B, C};
+		// return new double[] {A, B, C};
+		this.params = new double[] {A, B, C};
+		this.err = eVal;
 	}
 }
