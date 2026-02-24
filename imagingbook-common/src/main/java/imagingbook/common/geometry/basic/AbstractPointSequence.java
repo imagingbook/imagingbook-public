@@ -55,6 +55,14 @@ public abstract class AbstractPointSequence implements Iterable<Pnt2d>, ShapePro
     }
 
     /**
+     * Returns the points in this sequence as an array.
+     * @return an array of points
+     */
+    public Pnt2d[] getPnts() {
+        return pnts;
+    }
+
+    /**
      * Returns the points in this sequence as list of {@link Pnt2d} instances.
      * @return the list of points
      */

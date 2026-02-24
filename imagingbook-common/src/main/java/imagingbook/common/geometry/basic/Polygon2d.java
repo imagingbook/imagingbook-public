@@ -9,6 +9,7 @@
 package imagingbook.common.geometry.basic;
 
 import java.awt.Shape;
+import java.util.Collections;
 import java.util.List;
 
 import static imagingbook.common.math.Arithmetic.isZero;
@@ -52,6 +53,12 @@ public class Polygon2d extends AbstractPointSequence {
         return copy;
     }
 
+    /**
+     * Rotates the vertices of this polygon by the specified distance.
+     * See {@link Collections#rotate(List, int)}.
+     * @param distance the distance to be rotated
+     * @return the rotated polygon
+     */
     public Polygon2d rotate(int distance) {
         Polygon2d rotated  = this.duplicate();
         rotated.rotateD(distance);
