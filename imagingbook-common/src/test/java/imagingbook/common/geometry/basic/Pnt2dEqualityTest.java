@@ -17,7 +17,10 @@ import org.junit.Test;
 import imagingbook.common.geometry.basic.Pnt2d.PntDouble;
 import imagingbook.common.geometry.basic.Pnt2d.PntInt;
 
+// TODO: eliminate equals()
 public class Pnt2dEqualityTest {
+
+    static double tol = 1e-6;
 
     static Pnt2d pi1 = PntInt.from(3, 8);
     static Pnt2d pi2 = PntInt.from(3, 8);
@@ -62,6 +65,38 @@ public class Pnt2dEqualityTest {
         Pnt2d pB = PntDouble.from(0.0/0.0, 1.0/0.0);
         assertEquals(pA, pB);
         assertEquals(pB, pA);
+    }
+
+    @Test
+    public void testDoubleFromComponents() {
+        Pnt2d pA = PntDouble.from(-5.6, 8.1);
+        Pnt2d pB = PntDouble.from(pA.getX(), pA.getY());
+        assertTrue(pA.isCloseTo(pB, tol));
+    }
+
+    @Test
+    public void testDoubleToInt() {
+        Pnt2d pA = PntDouble.from(-5.6, 8.1);
+
+        Pnt2d pB = Pnt2d.from(pA.getX(), pA.getY());
+        assertTrue(pB instanceof PntDouble);
+        assertTrue(pA.isCloseTo(pB, tol));
+
+        Pnt2d pC = PntDouble.from((int) pA.getX(), (int) pA.getY());
+        assertTrue(pC instanceof PntDouble);
+
+        Pnt2d pD = Pnt2d.from((int) pA.getX(), (int) pA.getY());
+        assertTrue(pD instanceof PntInt);
+
+        Pnt2d pE = Pnt2d.from((int) pA.getX(), pA.getY());
+        assertTrue(pE instanceof PntDouble);
+
+        Pnt2d pF = Pnt2d.from(pA.getX(), (int) pA.getY());
+        assertTrue(pF instanceof PntDouble);
+
+        // System.out.println(pF);
+        // System.out.println(pD);
+        // // assertTrue(pA.isCloseTo(pB, tol));
     }
 
 }
