@@ -19,7 +19,7 @@ import java.util.Arrays;
  * (b) where a subsequence element originated in the original sequence.
  * This is useful for extracting and manipulating subsequences while keeping their elements
  * linked to the elements in the original sequence.
- * Note that this class stores no data but only indexes to map between the two sequences.
+ * Note that this class stores no data but only provides indexes to map between the two sequences.
  * Also note that these are sequences and not sets, i.e., ordering is maintained and duplicate
  * values are allowed.
  * </p>
