@@ -60,10 +60,29 @@ public class BitVectorTest {
     }
 
     @Test
-    public void constructorTest1() {
+    public void constructorTest1A() {
         for (int n : new int[]{1, 33, 64, 65, 3017, 71925}) {
             BitVector bv = new BitVector(n);
             assertEquals(n, bv.length());
+            assertEquals(0, bv.cardinality());
+        }
+    }
+
+    @Test
+    public void constructorTest1B() {
+        for (int n : new int[]{1, 33, 64, 65, 3017, 71925}) {
+            BitVector bv = new BitVector(n, false);
+            assertEquals(n, bv.length());
+            assertEquals(0, bv.cardinality());
+        }
+    }
+
+    @Test
+    public void constructorTest2() {
+        for (int n : new int[]{1, 33, 64, 65, 3017, 71925}) {
+            BitVector bv = new BitVector(n, true);
+            assertEquals(n, bv.length());
+            assertEquals(n, bv.cardinality());
         }
     }
 

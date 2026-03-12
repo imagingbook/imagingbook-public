@@ -38,8 +38,10 @@ public class BitVector {
 	private final long[] data;
 
     // Constructors ------------------------------------------------------------
+
     /**
-     * The one and only public constructor.
+     * Creates a {@link BitVector} of the specified length, initializing all bits to
+     * zero (false).
      * @param length the number of bits to hold
      */
 	public BitVector(int length) {
@@ -49,6 +51,19 @@ public class BitVector {
 		this.length = length;
         int n = (length + WL - 1) / WL; // number of long values required
 		this.data = new long[n];
+    }
+
+    /**
+     * Creates a {@link BitVector} of the specified length, initializing all bits to
+     * either true or false.
+     * @param length the number of bits to hold
+     * @param initVal the initial bit value (true or false)
+     */
+    public BitVector(int length, boolean initVal) {
+        this(length);
+        if (initVal) {
+            this.setAll();
+        }
     }
 
     private BitVector(BitVector bv) {
